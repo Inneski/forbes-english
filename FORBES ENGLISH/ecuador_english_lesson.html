@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Through Ecuador — Interactive Lesson</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green-dark: #04342C;
+    --green-mid: #085041;
+    --green-main: #0F6E56;
+    --green-light: #1D9E75;
+    --green-soft: #5DCAA5;
+    --green-pale: #9FE1CB;
+    --green-wash: #E1F5EE;
+    --coral-dark: #712B13;
+    --coral-main: #993C1D;
+    --coral-light: #F0997B;
+    --coral-wash: #FAECE7;
+    --amber-main: #BA7517;
+    --amber-wash: #FAEEDA;
+    --text: #1a1a1a;
+    --text-muted: #5a5a5a;
+    --border: rgba(0,0,0,0.1);
+    --surface: #f7f6f2;
+    --white: #ffffff;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: var(--surface);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    background: var(--green-dark);
+    color: var(--green-wash);
+    padding: 4rem 2rem 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 120%, #0F6E56 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-flag { font-size: 56px; display: block; margin-bottom: 1rem; animation: float 3s ease-in-out infinite; }
+
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.15;
+    margin-bottom: 0.5rem;
+    position: relative;
+  }
+
+  .hero-sub {
+    font-size: 1rem;
+    color: var(--green-pale);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 600;
+    position: relative;
+  }
+
+  /* ─── PROGRESS ─── */
+  .progress-wrap {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 0.75rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .progress-track {
+    flex: 1;
+    height: 5px;
+    background: #e0ddd6;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--green-light);
+    border-radius: 3px;
+    transition: width 0.5s cubic-bezier(.4,0,.2,1);
+    width: 0%;
+  }
+
+  .progress-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--green-main);
+    white-space: nowrap;
+  }
+
+  /* ─── MAIN LAYOUT ─── */
+  .container { max-width: 760px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  .section { display: none; animation: fadeUp 0.35s ease both; }
+  .section.active { display: block; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+  /* ─── SECTION HEADERS ─── */
+  .sec-label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green-main);
+    background: var(--green-wash);
+    border-radius: 99px;
+    padding: 4px 12px;
+    margin-bottom: 0.75rem;
+  }
+
+  .sec-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 3.5vw, 2rem);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    line-height: 1.25;
+  }
+
+  .sec-intro {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.8;
+    margin-bottom: 2rem;
+    max-width: 640px;
+  }
+
+  /* ─── VOCAB CARDS ─── */
+  .vocab-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 2rem;
+  }
+
+  .vocab-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+    user-select: none;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .vocab-card::after {
+    content: 'tap to reveal';
+    position: absolute;
+    bottom: 10px;
+    right: 12px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: #bbb;
+    text-transform: uppercase;
+    transition: opacity 0.2s;
+  }
+
+  .vocab-card.flipped::after { opacity: 0; }
+
+  .vocab-card:hover { border-color: var(--green-light); box-shadow: 0 4px 16px rgba(29,158,117,0.12); transform: translateY(-2px); }
+  .vocab-card.flipped { background: var(--green-wash); border-color: var(--green-soft); }
+
+  .vocab-emoji { font-size: 28px; margin-bottom: 8px; display: block; }
+  .vocab-word { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .vocab-translation { font-size: 13px; color: var(--green-main); font-weight: 600; display: none; margin-top: 8px; }
+  .vocab-hint { font-size: 12px; color: var(--green-mid); line-height: 1.5; display: none; margin-top: 6px; }
+  .vocab-card.flipped .vocab-translation,
+  .vocab-card.flipped .vocab-hint { display: block; }
+  .vocab-card.flipped .vocab-word { color: var(--green-dark); }
+
+  /* ─── TIP BOX ─── */
+  .tip-box {
+    background: var(--amber-wash);
+    border-left: 3px solid var(--amber-main);
+    border-radius: 0 10px 10px 0;
+    padding: 14px 18px;
+    font-size: 14px;
+    color: #5a4010;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  .tip-box strong { color: var(--amber-main); }
+
+  /* ─── READING ─── */
+  .reading-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.75rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.9;
+    font-size: 15.5px;
+  }
+
+  .reading-card p { margin-bottom: 1rem; }
+  .reading-card p:last-child { margin-bottom: 0; }
+
+  .hl {
+    background: var(--green-pale);
+    color: var(--green-dark);
+    border-radius: 4px;
+    padding: 1px 5px;
+    font-weight: 600;
+    cursor: help;
+    border-bottom: 1.5px dashed var(--green-soft);
+    position: relative;
+  }
+
+  .hl:hover::after {
+    content: attr(data-def);
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--green-dark);
+    color: var(--green-wash);
+    font-size: 12px;
+    font-weight: 400;
+    padding: 6px 10px;
+    border-radius: 8px;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 10;
+    max-width: 200px;
+    white-space: normal;
+    text-align: center;
+  }
+
+  /* ─── GRAMMAR ─── */
+  .grammar-box {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+
+  .grammar-head {
+    background: var(--green-dark);
+    color: var(--green-pale);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 12px 20px;
+  }
+
+  .grammar-row {
+    display: flex;
+    gap: 16px;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--white);
+    font-size: 14px;
+    align-items: baseline;
+  }
+
+  .grammar-row:last-child { border-bottom: none; }
+
+  .gform {
+    font-weight: 600;
+    color: var(--green-main);
+    min-width: 220px;
+    font-size: 14px;
+  }
+
+  .gex { color: var(--text-muted); font-style: italic; line-height: 1.5; }
+
+  /* ─── FILL IN BLANKS ─── */
+  .fill-sentence {
+    font-size: 15px;
+    line-height: 2.4;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+
+  .blank {
+    border: none;
+    border-bottom: 2px solid var(--green-light);
+    background: transparent;
+    font-size: 15px;
+    color: var(--text);
+    font-family: 'Source Sans 3', sans-serif;
+    width: 140px;
+    outline: none;
+    padding: 2px 6px;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+
+  .blank:focus { border-color: var(--green-dark); }
+  .blank.correct { border-color: var(--green-main); background: var(--green-wash); color: var(--green-dark); border-radius: 4px 4px 0 0; }
+  .blank.wrong { border-color: var(--coral-main); background: var(--coral-wash); color: var(--coral-dark); border-radius: 4px 4px 0 0; }
+
+  /* ─── BUTTONS ─── */
+  .check-btn {
+    background: var(--green-main);
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    padding: 11px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: background 0.2s, transform 0.1s;
+    margin: 0.5rem 0 1rem;
+    display: inline-block;
+  }
+
+  .check-btn:hover { background: var(--green-mid); }
+  .check-btn:active { transform: scale(0.97); }
+
+  /* ─── FEEDBACK ─── */
+  .feedback {
+    font-size: 14px;
+    padding: 12px 18px;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    display: none;
+    line-height: 1.6;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.good { background: var(--green-wash); color: var(--green-dark); border: 1px solid var(--green-soft); }
+  .feedback.bad { background: var(--coral-wash); color: var(--coral-dark); border: 1px solid var(--coral-light); }
+
+  /* ─── QUIZ ─── */
+  .quiz-block {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .quiz-block:last-child { border-bottom: none; }
+
+  .quiz-emoji { font-size: 48px; text-align: center; display: block; margin-bottom: 1rem; }
+
+  .quiz-q {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+
+  .quiz-opts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 0.75rem;
+  }
+
+  @media (max-width: 480px) { .quiz-opts { grid-template-columns: 1fr; } }
+
+  .qopt {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+    color: var(--text);
+    font-family: 'Source Sans 3', sans-serif;
+    transition: all 0.18s;
+  }
+
+  .qopt:hover:not(:disabled) { border-color: var(--green-light); background: var(--green-wash); color: var(--green-dark); }
+  .qopt.correct { background: var(--green-wash); border-color: var(--green-main); color: var(--green-dark); }
+  .qopt.wrong { background: var(--coral-wash); border-color: var(--coral-main); color: var(--coral-dark); }
+  .qopt:disabled { cursor: default; }
+
+  /* ─── SCORE ─── */
+  .score-wrap {
+    text-align: center;
+    padding: 3rem 1rem;
+  }
+
+  .score-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 80px;
+    font-weight: 700;
+    color: var(--green-main);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .score-msg {
+    font-size: 18px;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .badges {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+
+  .badge {
+    background: var(--green-wash);
+    color: var(--green-dark);
+    border-radius: 999px;
+    padding: 6px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid var(--green-soft);
+  }
+
+  /* ─── NAVIGATION ─── */
+  .nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    gap: 12px;
+  }
+
+  .nav-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 11px 22px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    color: var(--text);
+    transition: all 0.18s;
+    white-space: nowrap;
+  }
+
+  .nav-btn:hover:not(:disabled) { background: var(--white); border-color: var(--green-light); }
+  .nav-btn:disabled { opacity: 0.3; cursor: default; }
+  .nav-btn.primary { background: var(--green-main); color: var(--white); border-color: var(--green-main); }
+  .nav-btn.primary:hover:not(:disabled) { background: var(--green-mid); }
+
+  .dots { display: flex; gap: 8px; }
+
+  .dot {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: #d0cdc5;
+    transition: background 0.3s, transform 0.3s;
+  }
+
+  .dot.done { background: var(--green-pale); }
+  .dot.active { background: var(--green-main); transform: scale(1.3); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 600px) {
+    .hero { padding: 3rem 1.25rem 2rem; }
+    .container { padding: 1.5rem 1rem 3rem; }
+    .grammar-row { flex-direction: column; gap: 4px; }
+    .gform { min-width: unset; }
+    .vocab-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <span class="hero-flag">🇪🇨</span>
+  <h1>English Through Ecuador</h1>
+  <p class="hero-sub">Vocabulary · Reading · Grammar · Quiz</p>
+</div>
+
+<!-- STICKY PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-track"><div class="progress-fill" id="progress"></div></div>
+  <div class="progress-label" id="prog-label">Section 1 of 4</div>
+</div>
+
+<!-- CONTENT -->
+<div class="container">
+
+  <!-- ── SECTION 1: VOCABULARY ── -->
+  <div class="section active" id="sec-0">
+    <div class="sec-label">Section 1 of 4</div>
+    <h2 class="sec-title">Ecuador — Key Vocabulary</h2>
+    <p class="sec-intro">Ecuador sits on the equator in South America. It is home to the Amazon rainforest, the Andes mountains, the Galápagos Islands, and extraordinary biodiversity. Tap each card to reveal its meaning and a fact.</p>
+
+    <div class="vocab-grid">
+      <div class="vocab-card" onclick="this.classList.toggle('flipped')">
+        <span class="vocab-emoji">🦜</span>
+        <div class="vocab-word">rainforest</div>
+        <div class="vocab-translation">selva / bosque tropical</div>
+        <div class="vocab-hint">Ecuador's Amazon covers over 40% of the country and holds thousands of unique species.</div>
+      </div>
+      <div class="vocab-card" onclick="this.classList.toggle('flipped')">
+        <span class="vocab-emoji">🏔</span>
+        <div class="vocab-word">volcano</div>
+        <div class="vocab-translation">volcán</div>
+        <div class="vocab-hint">Ecuador has 50+ volcanoes. Cotopaxi is one of the world's highest active volcanoes at 5,897 m.</div>
+      </div>
+      <div class="vocab-card" onclick="this.classList.toggle('flipped')">
+        <span class="vocab-emoji">🐢</span>
+        <div class="vocab-word">tortoise</div>
+        <div class="vocab-translation">tortuga gigante</div>
+        <div class="vocab-hint">The Galápagos giant tortoise can live over 100 years and weigh up to 400 kg.</div>
+      </div>
+      <div class="vocab-card" onclick="this.classList.toggle('flipped')">
+        <span class="vocab-emoji">🌿</span>
+        <div class="vocab-word">biodiversity</div>
+        <div class="vocab-translation">biodiversidad</div>
+        <div class="vocab-hint">Ecuador has more plant and animal species per km² than almost any country on Earth.</div>
+      </div>
+      <div class="vocab-card" onclick="this.classList.toggle('flipped')">
+        <span class="vocab-emoji">⛵</span>
+        <div class="vocab-word">archipelago</div>
+        <div class="vocab-translation">archipiélago</div>
+        <div class="vocab-hint">A group of islands. The Galápagos archipelago has 18 main islands and 3 more small ones.</div>
+      </div>
+      <div class="vocab-card" onclick="this.classList.toggle('flipped')">
+        <span class="vocab-emoji">🌹</span>
+        <div class="vocab-word">harvest</div>
+        <div class="vocab-translation">cosecha</div>
+        <div class="vocab-hint">Ecuador harvests bananas, cocoa, and roses year-round. It exports more roses than almost any country.</div>
+      </div>
+      <div class="vocab-card" onclick="this.classList.toggle('flipped')">
+        <span class="vocab-emoji">🦅</span>
+        <div class="vocab-word">endangered</div>
+        <div class="vocab-translation">en peligro de extinción</div>
+        <div class="vocab-hint">Many Galápagos species are endangered due to deforestation and the introduction of non-native animals.</div>
+      </div>
+      <div class="vocab-card" onclick="this.classList.toggle('flipped')">
+        <span class="vocab-emoji">🗻</span>
+        <div class="vocab-word">altitude</div>
+        <div class="vocab-translation">altitud</div>
+        <div class="vocab-hint">Quito, the capital, sits at 2,850 metres — one of the highest capital cities in the world.</div>
+      </div>
+    </div>
+
+    <div class="tip-box">
+      <strong>Study tip:</strong> After revealing all cards, try making your own sentence with each word. Example: <em>"The Galápagos archipelago is famous for its extraordinary biodiversity."</em>
+    </div>
+  </div>
+
+  <!-- ── SECTION 2: READING ── -->
+  <div class="section" id="sec-1">
+    <div class="sec-label">Section 2 of 4</div>
+    <h2 class="sec-title">Reading — The Galápagos Islands</h2>
+    <p class="sec-intro">Read the passage carefully. Hover over highlighted words to see their definitions. Then answer the comprehension questions below.</p>
+
+    <div class="reading-card">
+      <p>The <span class="hl" data-def="a group of islands">Galápagos archipelago</span> lies about 1,000 kilometres west of mainland Ecuador in the Pacific Ocean. These remote islands are famous for their extraordinary <span class="hl" data-def="the variety of plant and animal life in a place">biodiversity</span> and the role they played in Charles Darwin's theory of evolution.</p>
+      <p>The islands are home to species found nowhere else on Earth. The <span class="hl" data-def="a large reptile that lives in its shell and can live 100+ years">giant tortoise</span>, the marine iguana, and the blue-footed booby are just a few examples. Because the islands were so isolated, animals evolved in unique ways without the threat of human predators.</p>
+      <p>Today, the Galápagos face serious challenges. Many animals are <span class="hl" data-def="at serious risk of dying out forever">endangered</span> due to <span class="hl" data-def="the large-scale cutting down of forests">deforestation</span>, introduced species, and climate change. The Ecuadorian government and international organisations work hard to protect this natural wonder.</p>
+      <p>Visitors to the islands must follow strict rules to preserve the fragile ecosystem. Only a limited number of tourists are allowed each year. Despite this, tourism remains an important source of income for local communities.</p>
+    </div>
+
+    <div class="tip-box"><strong>Comprehension tip:</strong> Try to answer in full sentences. This practises both reading and writing skills at the same time.</div>
+
+    <div class="fill-sentence">1. The Galápagos Islands are approximately <input class="blank" id="r1" placeholder="______"> km from Ecuador.</div>
+    <div class="fill-sentence">2. Darwin used the islands to develop his theory of <input class="blank" id="r2" placeholder="______">.</div>
+    <div class="fill-sentence">3. One challenge the islands face today is <input class="blank" id="r3" placeholder="______">.</div>
+
+    <button class="check-btn" onclick="checkReading()">Check my answers</button>
+    <div class="feedback" id="fb-read"></div>
+  </div>
+
+  <!-- ── SECTION 3: GRAMMAR ── -->
+  <div class="section" id="sec-2">
+    <div class="sec-label">Section 3 of 4</div>
+    <h2 class="sec-title">Grammar — Comparatives &amp; Superlatives</h2>
+    <p class="sec-intro">Ecuador is a land of extremes! We use comparatives (to compare two things) and superlatives (to describe the most extreme version) to talk about it. Study the patterns below, then complete the sentences.</p>
+
+    <div class="grammar-box">
+      <div class="grammar-head">Comparative &amp; superlative patterns</div>
+      <div class="grammar-row">
+        <div class="gform">tall → taller → tallest</div>
+        <div class="gex">Cotopaxi is <em>taller</em> than most volcanoes. It is one of the <em>tallest</em> active volcanoes.</div>
+      </div>
+      <div class="grammar-row">
+        <div class="gform">large → larger → largest</div>
+        <div class="gex">The Amazon is <em>larger</em> than any other rainforest. It is the <em>largest</em> in the world.</div>
+      </div>
+      <div class="grammar-row">
+        <div class="gform">biodiverse → more… → most…</div>
+        <div class="gex">Ecuador is <em>more biodiverse</em> than most countries. It is one of the <em>most biodiverse</em> nations.</div>
+      </div>
+      <div class="grammar-row">
+        <div class="gform">good → better → best</div>
+        <div class="gex">Ecuador's chocolate is <em>better</em> than many others. Some say it is the <em>best</em> in the world.</div>
+      </div>
+      <div class="grammar-row">
+        <div class="gform">far → farther → farthest</div>
+        <div class="gex">The Galápagos is <em>farther</em> from the coast than most island chains.</div>
+      </div>
+    </div>
+
+    <div class="fill-sentence">1. Quito is <input class="blank" id="g1" placeholder="______"> (high) than most capital cities.</div>
+    <div class="fill-sentence">2. The giant tortoise is one of the <input class="blank" id="g2" placeholder="______"> (old) animals on Earth.</div>
+    <div class="fill-sentence">3. Ecuador's roses are considered the <input class="blank" id="g3" placeholder="______"> (good) in the world.</div>
+    <div class="fill-sentence">4. The rainforest is <input class="blank" id="g4" placeholder="______"> (biodiverse) than the mountains.</div>
+
+    <button class="check-btn" onclick="checkGrammar()">Check my answers</button>
+    <div class="feedback" id="fb-gram"></div>
+  </div>
+
+  <!-- ── SECTION 4: QUIZ ── -->
+  <div class="section" id="sec-3">
+    <div class="sec-label">Section 4 of 4</div>
+    <h2 class="sec-title">Final Quiz — Ecuador in English</h2>
+    <p class="sec-intro">Answer all five questions. Your score will appear at the end. Take your time — good luck!</p>
+
+    <div id="quiz-area"></div>
+    <div id="score-area" style="display:none"></div>
+  </div>
+
+  <!-- ── NAVIGATION ── -->
+  <div class="nav-bar">
+    <button class="nav-btn" id="prev-btn" onclick="navigate(-1)" disabled>← Previous</button>
+    <div class="dots" id="dots"></div>
+    <button class="nav-btn primary" id="next-btn" onclick="navigate(1)">Next →</button>
+  </div>
+
+</div>
+
+<script>
+  const TOTAL = 4;
+  let current = 0;
+
+  const quizData = [
+    { q:"What is an 'archipelago'?", img:"🏝", opts:["A type of volcano","A group of islands","A jungle animal","A mountain range"], ans:1, ex:"An archipelago is a group of islands. The Galápagos is Ecuador's famous archipelago." },
+    { q:"Which animal is the symbol of the Galápagos Islands?", img:"🐢", opts:["Jaguar","Flamingo","Giant tortoise","Anaconda"], ans:2, ex:"The giant tortoise is the iconic symbol of the Galápagos — it can live over 100 years!" },
+    { q:"What does 'endangered' mean?", img:"🦅", opts:["Very common","At risk of extinction","Found everywhere","Very colourful"], ans:1, ex:"'Endangered' means a species is at serious risk of dying out permanently." },
+    { q:"Complete: 'Ecuador is _____ biodiverse than most countries.'", img:"🌿", opts:["most","more","much","so"], ans:1, ex:"We use 'more' before longer adjectives for the comparative: 'more biodiverse'." },
+    { q:"Approximately how high is Quito above sea level?", img:"🗻", opts:["850 metres","1,200 metres","2,850 metres","5,000 metres"], ans:2, ex:"Quito sits at about 2,850 metres — one of the world's highest capitals." }
+  ];
+
+  let quizState = new Array(quizData.length).fill(null);
+  let quizScore = 0;
+
+  function buildQuiz() {
+    const area = document.getElementById('quiz-area');
+    area.innerHTML = quizData.map((q, qi) => `
+      <div class="quiz-block">
+        <span class="quiz-emoji">${q.img}</span>
+        <div class="quiz-q">Q${qi+1}: ${q.q}</div>
+        <div class="quiz-opts">
+          ${q.opts.map((o, oi) => `<button class="qopt" id="opt-${qi}-${oi}" onclick="answerQuiz(${qi},${oi})">${o}</button>`).join('')}
+        </div>
+        <div class="feedback" id="qfb-${qi}"></div>
+      </div>
+    `).join('');
+  }
+
+  function answerQuiz(qi, oi) {
+    if (quizState[qi] !== null) return;
+    quizState[qi] = oi;
+    const q = quizData[qi];
+    const ok = oi === q.ans;
+    if (ok) quizScore++;
+
+    for (let i = 0; i < q.opts.length; i++) {
+      const b = document.getElementById(`opt-${qi}-${i}`);
+      b.disabled = true;
+      if (i === q.ans) b.classList.add('correct');
+      else if (i === oi) b.classList.add('wrong');
+    }
+
+    const fb = document.getElementById(`qfb-${qi}`);
+    fb.textContent = (ok ? '✓ Correct! ' : '✗ Not quite. ') + q.ex;
+    fb.className = 'feedback show ' + (ok ? 'good' : 'bad');
+
+    if (quizState.every(x => x !== null)) showScore();
+  }
+
+  function showScore() {
+    const pct = Math.round(quizScore / quizData.length * 100);
+    const msg = pct === 100 ? 'Perfect score! You are an Ecuador expert!' :
+                pct >= 80  ? 'Excellent work — nearly flawless!' :
+                pct >= 60  ? 'Good effort! Review earlier sections to strengthen your knowledge.' :
+                             'Keep practising — Ecuador has much more to teach you!';
+    const badges = ['Lesson Complete'];
+    if (quizScore >= 3) badges.push('Quiz Champion');
+    if (quizScore === 5) badges.push('Ecuador Expert');
+
+    const area = document.getElementById('score-area');
+    area.style.display = 'block';
+    area.innerHTML = `
+      <div class="score-wrap">
+        <div class="score-num">${quizScore}/${quizData.length}</div>
+        <div class="score-msg">${msg}</div>
+        <div class="badges">${badges.map(b => `<span class="badge">${b}</span>`).join('')}</div>
+        <button class="check-btn" onclick="restart()">Start again ↺</button>
+      </div>
+    `;
+  }
+
+  function restart() {
+    current = 0;
+    quizScore = 0;
+    quizState = new Array(quizData.length).fill(null);
+    document.getElementById('score-area').style.display = 'none';
+    document.getElementById('quiz-area').innerHTML = '';
+    ['r1','r2','r3','g1','g2','g3','g4'].forEach(id => { const el = document.getElementById(id); if(el){el.value='';el.className='blank';} });
+    ['fb-read','fb-gram'].forEach(id => { const el = document.getElementById(id); if(el) el.className='feedback'; });
+    document.querySelectorAll('.vocab-card').forEach(c => c.classList.remove('flipped'));
+    navigate(0, true);
+  }
+
+  function checkReading() {
+    const r1 = (document.getElementById('r1').value||'').trim().toLowerCase();
+    const r2 = (document.getElementById('r2').value||'').trim().toLowerCase();
+    const r3 = (document.getElementById('r3').value||'').trim().toLowerCase();
+    let ok = 0;
+    if (r1.match(/1[\s,.]?000|thousand/)) { ok++; document.getElementById('r1').className='blank correct'; }
+    else document.getElementById('r1').className='blank wrong';
+    if (r2.includes('evol')) { ok++; document.getElementById('r2').className='blank correct'; }
+    else document.getElementById('r2').className='blank wrong';
+    if (r3.match(/deforest|species|climate|tourism|tourist/)) { ok++; document.getElementById('r3').className='blank correct'; }
+    else document.getElementById('r3').className='blank wrong';
+    const fb = document.getElementById('fb-read');
+    fb.className = 'feedback show ' + (ok >= 2 ? 'good' : 'bad');
+    fb.textContent = ok === 3 ? '✓ All three correct! Excellent reading comprehension.' :
+      `${ok}/3 correct. Suggested answers: 1) 1,000  2) evolution  3) deforestation (or climate change)`;
+  }
+
+  function checkGrammar() {
+    const answers = ['higher','oldest','best','more biodiverse'];
+    const ids = ['g1','g2','g3','g4'];
+    let ok = 0;
+    ids.forEach((id, i) => {
+      const val = (document.getElementById(id).value||'').trim().toLowerCase();
+      const correct = val === answers[i] || (i === 3 && val.includes('more') && val.includes('biod'));
+      if (correct) { ok++; document.getElementById(id).className='blank correct'; }
+      else document.getElementById(id).className='blank wrong';
+    });
+    const fb = document.getElementById('fb-gram');
+    fb.className = 'feedback show ' + (ok >= 3 ? 'good' : 'bad');
+    fb.textContent = ok === 4 ? '✓ Perfect! All four answers are correct.' :
+      `${ok}/4 correct. Answers: 1) higher  2) oldest  3) best  4) more biodiverse`;
+  }
+
+  function navigate(dir, reset) {
+    const secs = document.querySelectorAll('.section');
+    secs[current].classList.remove('active');
+    if (reset) current = 0;
+    else current = Math.max(0, Math.min(TOTAL - 1, current + dir));
+    secs[current].classList.add('active');
+    if (current === 3 && !document.getElementById('quiz-area').innerHTML) buildQuiz();
+    updateUI();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function updateUI() {
+    document.getElementById('prev-btn').disabled = current === 0;
+    const nxt = document.getElementById('next-btn');
+    nxt.disabled = current === TOTAL - 1;
+    nxt.textContent = current === TOTAL - 2 ? 'Take the Quiz →' : 'Next →';
+    const pct = (current / (TOTAL - 1)) * 100;
+    document.getElementById('progress').style.width = pct + '%';
+    document.getElementById('prog-label').textContent = `Section ${current + 1} of ${TOTAL}`;
+    const dots = document.getElementById('dots');
+    dots.innerHTML = Array.from({length: TOTAL}, (_, i) =>
+      `<div class="dot ${i < current ? 'done' : i === current ? 'active' : ''}"></div>`
+    ).join('');
+  }
+
+  updateUI();
+</script>
+</body>
+</html>

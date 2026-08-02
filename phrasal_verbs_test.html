@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English | Phrasal Verbs: make, do, take, put</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1c2a4a;
+    --blue:#2f5fd1;
+    --blue-light:#e8f0ff;
+    --green:#1e9e6b;
+    --green-light:#e6f8f0;
+    --red:#d64545;
+    --red-light:#fdeaea;
+    --amber:#e8a33d;
+    --grey:#6b7280;
+    --grey-light:#f4f5f7;
+    --white:#ffffff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Inter',sans-serif;
+    background:linear-gradient(180deg,#f6f8fc 0%,#eef1f8 100%);
+    color:var(--navy);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    padding:24px 14px 60px;
+  }
+  .app{
+    width:100%;
+    max-width:640px;
+  }
+  header{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom:18px;
+  }
+  .logo-wrap{flex-shrink:0;}
+  header h1{
+    font-family:'Poppins',sans-serif;
+    font-size:19px;
+    margin:0 0 2px 0;
+    color:var(--navy);
+  }
+  header p{
+    margin:0;
+    font-size:13px;
+    color:var(--grey);
+  }
+  .progress-outer{
+    background:#dde3ef;
+    border-radius:20px;
+    height:10px;
+    width:100%;
+    overflow:hidden;
+    margin-bottom:6px;
+  }
+  .progress-inner{
+    background:var(--blue);
+    height:100%;
+    width:0%;
+    border-radius:20px;
+    transition:width .35s ease;
+  }
+  .meta-row{
+    display:flex;
+    justify-content:space-between;
+    font-size:12.5px;
+    color:var(--grey);
+    margin-bottom:20px;
+  }
+  .score-pill{
+    background:var(--blue-light);
+    color:var(--blue);
+    font-weight:600;
+    padding:2px 10px;
+    border-radius:12px;
+  }
+  .card{
+    background:var(--white);
+    border-radius:16px;
+    padding:26px 24px 22px;
+    box-shadow:0 4px 18px rgba(28,42,74,0.08);
+  }
+  .qtag{
+    display:inline-block;
+    font-size:11.5px;
+    font-weight:600;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    color:var(--blue);
+    background:var(--blue-light);
+    padding:3px 10px;
+    border-radius:8px;
+    margin-bottom:14px;
+  }
+  .sentence{
+    font-size:17px;
+    line-height:1.55;
+    margin-bottom:22px;
+    color:var(--navy);
+  }
+  .blank{
+    display:inline-block;
+    min-width:90px;
+    border-bottom:2px solid var(--grey);
+    text-align:center;
+  }
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .opt{
+    text-align:left;
+    font-family:'Inter',sans-serif;
+    font-size:15px;
+    padding:13px 16px;
+    border-radius:10px;
+    border:1.5px solid #dde3ef;
+    background:var(--white);
+    cursor:pointer;
+    transition:border-color .15s, background .15s;
+  }
+  .opt:hover:not(:disabled){
+    border-color:var(--blue);
+    background:var(--blue-light);
+  }
+  .opt:disabled{cursor:default;}
+  .opt.correct{
+    border-color:var(--green);
+    background:var(--green-light);
+    color:var(--green);
+    font-weight:600;
+  }
+  .opt.incorrect{
+    border-color:var(--red);
+    background:var(--red-light);
+    color:var(--red);
+    font-weight:600;
+  }
+  .opt.dim{opacity:.55;}
+  .feedback{
+    margin-top:16px;
+    padding:13px 15px;
+    border-radius:10px;
+    font-size:14px;
+    line-height:1.5;
+    display:none;
+  }
+  .feedback.show{display:block;}
+  .feedback.correct-fb{background:var(--green-light);color:#146b48;}
+  .feedback.incorrect-fb{background:var(--red-light);color:#9c2f2f;}
+  .feedback strong{display:block;margin-bottom:3px;font-size:13.5px;}
+  .nav-row{
+    display:flex;
+    justify-content:flex-end;
+    margin-top:20px;
+  }
+  .next-btn{
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:14.5px;
+    padding:11px 26px;
+    border-radius:10px;
+    border:none;
+    background:var(--grey-light);
+    color:#9aa1ae;
+    cursor:not-allowed;
+    transition:background .15s,color .15s;
+  }
+  .next-btn.active{
+    background:var(--blue);
+    color:var(--white);
+    cursor:pointer;
+  }
+  .next-btn.active:hover{background:#2450b0;}
+  .results{
+    text-align:center;
+  }
+  .results h2{
+    font-family:'Poppins',sans-serif;
+    font-size:22px;
+    margin:6px 0 4px;
+  }
+  .ring{
+    width:130px;height:130px;margin:14px auto 18px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Poppins',sans-serif;
+    font-size:28px;font-weight:700;
+    color:var(--blue);
+    background:conic-gradient(var(--blue) calc(var(--pct)*1%), #e3e8f4 0);
+  }
+  .ring-inner{
+    width:100px;height:100px;background:var(--white);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .results p{color:var(--grey);font-size:14px;margin-bottom:22px;}
+  .restart-btn{
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:14.5px;
+    padding:11px 28px;
+    border-radius:10px;
+    border:none;
+    background:var(--navy);
+    color:var(--white);
+    cursor:pointer;
+  }
+  .restart-btn:hover{background:#12203d;}
+  .review-list{
+    text-align:left;
+    margin-top:8px;
+    border-top:1px solid #eef0f5;
+    padding-top:14px;
+  }
+  .review-item{
+    font-size:13.5px;
+    padding:9px 0;
+    border-bottom:1px solid #f2f3f7;
+    display:flex;
+    gap:8px;
+  }
+  .review-item:last-child{border-bottom:none;}
+  .tick{color:var(--green);font-weight:700;}
+  .cross{color:var(--red);font-weight:700;}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="logo-wrap">
+      <svg width="46" height="46" viewBox="0 0 46 46" xmlns="http://www.w3.org/2000/svg">
+        <rect width="46" height="46" rx="12" fill="#2f5fd1"/>
+        <text x="23" y="30" font-family="Poppins, sans-serif" font-size="19" font-weight="700" fill="#ffffff" text-anchor="middle">FE</text>
+      </svg>
+    </div>
+    <div>
+      <h1>Phrasal Verbs: make, do, take, put</h1>
+      <p>Forbes English | B2 vocabulary check</p>
+    </div>
+  </header>
+
+  <div class="progress-outer"><div class="progress-inner" id="progressBar"></div></div>
+  <div class="meta-row">
+    <span id="qCounter">Question 1 of 16</span>
+    <span class="score-pill" id="scorePill">Score: 0</span>
+  </div>
+
+  <div class="card" id="quizCard"></div>
+</div>
+
+<script>
+const questions = [
+  {
+    verb: "make off with",
+    sentence: "The burglars broke in through the back window and ___ several valuable paintings before anyone noticed.",
+    options: ["made off with", "made up for", "did away with", "put out"],
+    answer: "made off with",
+    explain: "'Make off with sth' means to steal something and escape with it."
+  },
+  {
+    verb: "make up for",
+    sentence: "He forgot her birthday, so he bought her flowers to ___ it.",
+    options: ["make up for", "make of", "do without", "take on"],
+    answer: "make up for",
+    explain: "'Make up for sth' means to compensate for something."
+  },
+  {
+    verb: "make of",
+    sentence: "I'm not sure what to ___ his strange behaviour lately.",
+    options: ["make of", "make up", "do away with", "put away"],
+    answer: "make of",
+    explain: "'Make of sb/sth' means to have an opinion or interpretation of them."
+  },
+  {
+    verb: "make up",
+    sentence: "Nobody believed his excuse - everyone thought he'd ___ the whole story.",
+    options: ["made up", "made off with", "done up", "taken in"],
+    answer: "made up",
+    explain: "'Make sth up' means to invent something untrue."
+  },
+  {
+    verb: "do away with",
+    sentence: "The new headteacher wants to ___ the old uniform rules completely.",
+    options: ["do away with", "do without", "make up for", "put off"],
+    answer: "do away with",
+    explain: "'Do away with sth' means to abolish or get rid of it."
+  },
+  {
+    verb: "do without",
+    sentence: "During the strike, the office had to ___ its usual delivery service for two weeks.",
+    options: ["do without", "do away with", "make of", "take back"],
+    answer: "do without",
+    explain: "'Do without sth' means to manage without having it."
+  },
+  {
+    verb: "could do with",
+    sentence: "After that long hike, I could really ___ a hot shower.",
+    options: ["do with", "do without", "make up", "put on"],
+    answer: "do with",
+    explain: "'Could do with sth' means you want or need something."
+  },
+  {
+    verb: "do up",
+    sentence: "They bought a run-down cottage and spent a year ___ it before moving in.",
+    options: ["doing up", "doing away with", "putting away", "taking on"],
+    answer: "doing up",
+    explain: "'Do sth up' means to renovate or repair it."
+  },
+  {
+    verb: "take on",
+    sentence: "The company is ___ ten new staff members for the busy season.",
+    options: ["taking on", "taking back", "taking in", "putting on"],
+    answer: "taking on",
+    explain: "'Take sb on' means to hire or employ someone."
+  },
+  {
+    verb: "take in",
+    sentence: "The lecture was so complex that I couldn't ___ half of what was said.",
+    options: ["take in", "take back", "take on", "put out"],
+    answer: "take in",
+    explain: "'Take sth in' means to fully understand or absorb information."
+  },
+  {
+    verb: "take over",
+    sentence: "After the founder retired, his daughter ___ the family business.",
+    options: ["took over", "took on", "took back", "put out"],
+    answer: "took over",
+    explain: "'Take over' means to assume control of something."
+  },
+  {
+    verb: "take back",
+    sentence: "As soon as he apologised, I asked him to ___ what he'd said about my work.",
+    options: ["take back", "take in", "take on", "put off"],
+    answer: "take back",
+    explain: "'Take sth back' means to withdraw or retract a statement."
+  },
+  {
+    verb: "put on",
+    sentence: "Could you ___ some background music while we wait for the guests?",
+    options: ["put on", "put out", "put away", "put off"],
+    answer: "put on",
+    explain: "'Put sth on' here means to play or start something, like music."
+  },
+  {
+    verb: "put off",
+    sentence: "The strange smell coming from the kitchen ___ me eating anything there.",
+    options: ["put off", "put out", "put away", "put on"],
+    answer: "put off",
+    explain: "'Put sb off' means to discourage or disgust them so they don't want to do something."
+  },
+  {
+    verb: "put away",
+    sentence: "Please ___ your toys before your friends arrive.",
+    options: ["put away", "put out", "put off", "put on"],
+    answer: "put away",
+    explain: "'Put sth away' means to store it in its proper place."
+  },
+  {
+    verb: "put out",
+    sentence: "It took the fire crew almost an hour to ___ the flames.",
+    options: ["put out", "put off", "put away", "put on"],
+    answer: "put out",
+    explain: "'Put sth out' means to extinguish a fire."
+  }
+];
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+let order = shuffle(questions.map((_,i)=>i));
+let current = 0;
+let score = 0;
+let answered = false;
+let log = [];
+
+const quizCard = document.getElementById('quizCard');
+const progressBar = document.getElementById('progressBar');
+const qCounter = document.getElementById('qCounter');
+const scorePill = document.getElementById('scorePill');
+
+function renderQuestion(){
+  answered = false;
+  const qIndex = order[current];
+  const q = questions[qIndex];
+  const shuffledOptions = shuffle(q.options);
+
+  progressBar.style.width = ((current)/order.length*100) + '%';
+  qCounter.textContent = 'Question ' + (current+1) + ' of ' + order.length;
+  scorePill.textContent = 'Score: ' + score;
+
+  let html = '<div class="qtag">Choose the correct phrasal verb</div>';
+  html += '<div class="sentence">' + q.sentence.replace('___','<span class="blank">______</span>') + '</div>';
+  html += '<div class="options" id="optionsWrap">';
+  shuffledOptions.forEach((opt,i)=>{
+    html += '<button class="opt" data-opt="' + i + '">' + opt + '</button>';
+  });
+  html += '</div>';
+  html += '<div class="feedback" id="feedback"></div>';
+  html += '<div class="nav-row"><button class="next-btn" id="nextBtn">' + (current===order.length-1 ? 'See results' : 'Next') + '</button></div>';
+
+  quizCard.innerHTML = html;
+
+  const buttons = quizCard.querySelectorAll('.opt');
+  buttons.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      if(answered) return;
+      answered = true;
+      const chosen = btn.textContent;
+      const isCorrect = chosen === q.answer;
+      if(isCorrect) score++;
+
+      buttons.forEach(b=>{
+        b.disabled = true;
+        if(b.textContent === q.answer){
+          b.classList.add('correct');
+        } else if(b === btn){
+          b.classList.add('incorrect');
+        } else {
+          b.classList.add('dim');
+        }
+      });
+
+      const fb = document.getElementById('feedback');
+      fb.classList.add('show');
+      if(isCorrect){
+        fb.classList.add('correct-fb');
+        fb.innerHTML = '<strong>Correct!</strong>' + q.explain;
+      } else {
+        fb.classList.add('incorrect-fb');
+        fb.innerHTML = '<strong>Not quite - the answer is "' + q.answer + '".</strong>' + q.explain;
+      }
+
+      scorePill.textContent = 'Score: ' + score;
+      log.push({sentence:q.sentence.replace('___', q.answer), verb:q.verb, correct:isCorrect});
+
+      const nextBtn = document.getElementById('nextBtn');
+      nextBtn.classList.add('active');
+      nextBtn.addEventListener('click', goNext);
+    });
+  });
+}
+
+function goNext(){
+  if(current < order.length-1){
+    current++;
+    renderQuestion();
+  } else {
+    renderResults();
+  }
+}
+
+function renderResults(){
+  progressBar.style.width = '100%';
+  qCounter.textContent = 'Finished';
+  scorePill.textContent = 'Score: ' + score + ' / ' + order.length;
+
+  const pct = Math.round((score/order.length)*100);
+  let comment;
+  if(pct === 100) comment = "Perfect score - these phrasal verbs are fully mastered.";
+  else if(pct >= 75) comment = "Strong result - just a couple to review.";
+  else if(pct >= 50) comment = "Good start - worth another pass on the ones you missed.";
+  else comment = "These take practice - try reviewing the explanations below and have another go.";
+
+  let html = '<div class="results">';
+  html += '<div class="ring" style="--pct:' + pct + '"><div class="ring-inner">' + pct + '%</div></div>';
+  html += '<h2>' + score + ' out of ' + order.length + ' correct</h2>';
+  html += '<p>' + comment + '</p>';
+  html += '<button class="restart-btn" id="restartBtn">Try again</button>';
+  html += '<div class="review-list">';
+  log.forEach(item=>{
+    html += '<div class="review-item"><span class="' + (item.correct ? 'tick' : 'cross') + '">' + (item.correct ? '\u2713' : '\u2717') + '</span><span>' + item.sentence + '</span></div>';
+  });
+  html += '</div></div>';
+
+  quizCard.innerHTML = html;
+  document.getElementById('restartBtn').addEventListener('click', restart);
+}
+
+function restart(){
+  order = shuffle(questions.map((_,i)=>i));
+  current = 0;
+  score = 0;
+  log = [];
+  renderQuestion();
+}
+
+renderQuestion();
+</script>
+</body>
+</html>

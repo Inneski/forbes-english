@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English | The Docket (B2)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --slate:#1c2b3a;
+  --slate-mid:#2e4257;
+  --sky:#4a7fa5;
+  --ice:#eef3f8;
+  --ivory:#f7f5f0;
+  --paper:#ffffff;
+  --coral:#c94f3a;
+  --coral-soft:#f9e8e5;
+  --teal:#2a7d6b;
+  --teal-soft:#e0f0ec;
+  --rule:#cdd8e3;
+  --ink:#1a2633;
+  --ink-mid:#4d6070;
+  --amber:#c8892a;
+  --amber-soft:#faefd9;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--ice);
+  color:var(--ink);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px 80px;}
+
+/* ---- Header ---- */
+header{
+  background:var(--slate);
+  padding:36px 20px 32px;
+  text-align:center;
+}
+.case-tag{
+  background:var(--coral);
+  color:#fff;
+  text-align:center;
+  padding:9px 20px;
+  font-size:12.5px;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+  font-weight:700;
+}
+.case-tag span{opacity:.7;margin:0 8px;}
+
+/* ---- Case file tabs (signature element) ---- */
+.tabs{
+  display:flex;
+  gap:0;
+  padding:0 24px;
+  background:var(--slate-mid);
+  margin-top:28px;
+  border-radius:12px 12px 0 0;
+  overflow:hidden;
+}
+.tab{
+  flex:1;
+  padding:13px 10px 11px;
+  text-align:center;
+  font-size:11.5px;
+  font-weight:700;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:rgba(238,243,248,.38);
+  border-right:1px solid rgba(255,255,255,.06);
+  border-bottom:3px solid transparent;
+  transition:all .3s ease;
+  position:relative;
+}
+.tab b{display:block;font-size:18px;font-family:'DM Serif Display',serif;font-weight:400;letter-spacing:0;line-height:1.1;margin-bottom:2px;}
+.tab:last-child{border-right:none;}
+.tab.active{color:#eef3f8;background:rgba(238,243,248,.09);border-bottom-color:var(--coral);}
+.tab.done{color:var(--teal-soft);background:rgba(42,125,107,.1);border-bottom-color:var(--teal);}
+.tab-caption{
+  background:var(--slate);
+  text-align:center;
+  color:rgba(238,243,248,.35);
+  font-size:11px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  padding:8px;
+  border-radius:0 0 8px 8px;
+  margin-bottom:30px;
+}
+
+/* ---- Status ---- */
+.status{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:18px;}
+.chip{
+  background:var(--paper);
+  border:1px solid var(--rule);
+  border-radius:999px;
+  padding:7px 16px;
+  font-size:13px;
+  font-weight:600;
+  color:var(--slate-mid);
+}
+.chip strong{color:var(--slate);font-weight:800;}
+.chip.score-chip{background:var(--slate);border-color:var(--slate);color:#eef3f8;font-weight:500;}
+.chip.score-chip strong{color:#ffd380;}
+.hidden{display:none;}
+
+/* ---- Cards ---- */
+.card{
+  background:var(--paper);
+  border:1px solid var(--rule);
+  border-radius:14px;
+  padding:36px 36px 32px;
+  box-shadow:0 3px 14px rgba(28,43,58,.07);
+}
+@media(max-width:620px){.card{padding:24px 20px;}.tabs{padding:0;}}
+.eyebrow{
+  font-size:11.5px;
+  font-weight:700;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+  color:var(--coral);
+  margin-bottom:9px;
+}
+h1,h2{
+  font-family:'DM Serif Display',serif;
+  color:var(--slate);
+  font-weight:400;
+  line-height:1.15;
+}
+h1{font-size:38px;margin-bottom:14px;}
+h2{font-size:28px;margin-bottom:6px;}
+.sub{color:var(--ink-mid);font-size:15px;margin-bottom:6px;line-height:1.6;}
+.rule{height:1px;background:var(--rule);margin:22px 0;}
+
+/* ---- Intro grid ---- */
+.intro-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px;}
+.intro-item{
+  background:var(--ivory);
+  border:1px solid var(--rule);
+  border-top:3px solid var(--sky);
+  border-radius:10px;
+  padding:16px 18px;
+}
+.intro-item h3{font-family:'DM Serif Display',serif;font-size:17px;color:var(--slate);margin-bottom:4px;font-weight:400;}
+.intro-item p{font-size:13.5px;color:var(--ink-mid);}
+@media(max-width:560px){.intro-grid{grid-template-columns:1fr;}}
+
+/* ---- Buttons ---- */
+.btn{
+  display:inline-block;
+  font-family:'DM Sans',sans-serif;
+  font-size:15px;
+  font-weight:700;
+  padding:13px 28px;
+  border-radius:999px;
+  border:none;
+  cursor:pointer;
+  transition:transform .12s, box-shadow .12s, background .15s;
+  letter-spacing:.3px;
+}
+.btn:focus-visible{outline:3px solid var(--coral);outline-offset:2px;}
+.btn-primary{background:var(--slate);color:#eef3f8;}
+.btn-primary:hover{background:#111e2a;transform:translateY(-1px);}
+.btn-coral{background:var(--coral);color:#fff;}
+.btn-coral:hover{background:#b04030;transform:translateY(-1px);}
+.btn-ghost{background:transparent;border:2px solid var(--slate-mid);color:var(--slate-mid);}
+.btn-ghost:hover{background:var(--slate-mid);color:#fff;}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important;}
+.actions{margin-top:26px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
+
+/* ---- Questions ---- */
+.qtext{font-size:18px;margin:14px 0 20px;line-height:1.65;}
+.qtext em{font-style:normal;padding:0 4px;border-bottom:2.5px solid var(--coral);}
+.opts{display:flex;flex-direction:column;gap:11px;}
+.opt{
+  text-align:left;
+  background:var(--ivory);
+  border:2px solid var(--rule);
+  border-radius:10px;
+  padding:13px 16px;
+  font-size:15.5px;
+  font-family:'DM Sans',sans-serif;
+  color:var(--ink);
+  cursor:pointer;
+  transition:border-color .15s, background .15s;
+  display:flex;
+  gap:13px;
+  align-items:baseline;
+}
+.opt:hover{border-color:var(--sky);}
+.opt .tag{font-weight:800;color:var(--sky);font-size:12px;min-width:16px;}
+.opt.selected{border-color:var(--slate);background:#f0f4f8;}
+.opt.correct{border-color:var(--teal);background:var(--teal-soft);}
+.opt.wrong{border-color:var(--coral);background:var(--coral-soft);}
+.opt:disabled{cursor:default;}
+
+.feedback{
+  margin-top:18px;
+  border-radius:10px;
+  padding:15px 18px;
+  font-size:14.5px;
+  line-height:1.6;
+  display:none;
+}
+.feedback.show{display:block;}
+.feedback.good{background:var(--teal-soft);border-left:4px solid var(--teal);}
+.feedback.bad{background:var(--coral-soft);border-left:4px solid var(--coral);}
+.feedback b{display:block;font-size:15px;margin-bottom:4px;}
+.feedback.good b{color:var(--teal);}
+.feedback.bad b{color:var(--coral);}
+
+/* ---- Gap fill ---- */
+.transcript{
+  background:var(--ivory);
+  border:1px solid var(--rule);
+  border-radius:10px;
+  padding:24px 26px;
+  font-size:16.5px;
+  line-height:2.35;
+}
+.transcript .slug{
+  font-size:11.5px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--ink-mid);
+  font-weight:700;
+  display:block;
+  margin-bottom:10px;
+}
+.gap{
+  display:inline-block;
+  min-width:140px;
+  text-align:center;
+  border:none;
+  border-bottom:2.5px dashed var(--sky);
+  background:#eaf0f7;
+  border-radius:6px 6px 0 0;
+  padding:2px 12px;
+  margin:0 2px;
+  font-family:'DM Sans',sans-serif;
+  font-size:15.5px;
+  font-weight:600;
+  color:var(--slate);
+  cursor:pointer;
+  transition:background .15s, border-color .15s;
+}
+.gap:hover{background:var(--amber-soft);}
+.gap.armed{border-bottom-style:solid;border-color:var(--amber);background:var(--amber-soft);}
+.gap.filled{border-bottom-style:solid;background:#ddeae8;}
+.gap.g-correct{background:var(--teal-soft);border-color:var(--teal);color:var(--teal);cursor:default;}
+.gap.g-wrong{background:var(--coral-soft);border-color:var(--coral);color:var(--coral);cursor:default;}
+
+.bank{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:20px;
+  padding:16px 18px;
+  background:var(--slate);
+  border-radius:10px;
+}
+.bank-label{width:100%;color:rgba(238,243,248,.5);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
+.word{
+  background:var(--ice);
+  border:none;
+  border-radius:999px;
+  padding:8px 18px;
+  font-family:'DM Sans',sans-serif;
+  font-size:14px;
+  font-weight:600;
+  color:var(--slate);
+  cursor:pointer;
+  transition:background .15s, opacity .15s;
+}
+.word:hover{background:#ffd380;color:var(--slate);}
+.word.used{opacity:.3;cursor:not-allowed;}
+.word.selected{background:var(--amber);color:var(--slate);}
+
+/* ---- Matching ---- */
+.match-grid{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;}
+.mitem{
+  background:var(--ivory);
+  border:2px solid var(--rule);
+  border-radius:10px;
+  padding:12px 15px;
+  font-size:14.5px;
+  cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+  text-align:left;
+  color:var(--ink);
+  transition:border-color .15s, background .15s;
+}
+.mitem:hover{border-color:var(--sky);}
+.mitem.selected{border-color:var(--slate);background:#f0f4f8;}
+.mitem.paired{border-style:solid;}
+.mitem.m-correct{border-color:var(--teal);background:var(--teal-soft);cursor:default;}
+.mitem.m-wrong{border-color:var(--coral);background:var(--coral-soft);cursor:default;}
+.mitem.left-col{font-weight:700;color:var(--slate);font-size:15.5px;white-space:nowrap;}
+.pairmark{
+  display:inline-block;
+  background:var(--coral);
+  color:#fff;
+  font-weight:800;
+  font-size:11px;
+  border-radius:999px;
+  padding:1px 8px;
+  margin-right:7px;
+  vertical-align:middle;
+}
+@media(max-width:560px){.match-grid{grid-template-columns:1fr;}}
+
+/* ---- Error correction ---- */
+.sent-row{
+  background:var(--ivory);
+  border:2px solid var(--rule);
+  border-radius:10px;
+  padding:14px 18px;
+  display:flex;
+  gap:14px;
+  align-items:flex-start;
+  cursor:pointer;
+  transition:border-color .15s,background .15s;
+}
+.sent-row:hover{border-color:var(--sky);}
+.sent-row .num{font-weight:800;font-size:12px;color:var(--coral);min-width:22px;margin-top:2px;}
+.sent-row .sent-text{font-size:16px;line-height:1.65;}
+.sent-row .sent-text u{text-decoration:underline;text-decoration-color:var(--coral);text-decoration-thickness:2px;font-weight:600;}
+.sent-row.picked{border-color:var(--slate);background:#f0f4f8;}
+.sent-row.ec-correct{border-color:var(--teal);background:var(--teal-soft);cursor:default;}
+.sent-row.ec-wrong{border-color:var(--coral);background:var(--coral-soft);cursor:default;}
+
+/* ---- Results ---- */
+.score-ring{
+  font-family:'DM Serif Display',serif;
+  font-size:62px;
+  color:var(--slate);
+  text-align:center;
+  margin:10px 0 4px;
+}
+.score-ring span{color:var(--coral);}
+.verdict{font-family:'DM Serif Display',serif;font-size:24px;color:var(--slate-mid);text-align:center;margin-bottom:10px;}
+.verdict-note{text-align:center;color:var(--ink-mid);max-width:520px;margin:0 auto 6px;font-size:15px;}
+.breakdown{margin:26px auto 0;max-width:480px;}
+.bd-row{display:flex;justify-content:space-between;border-bottom:1px solid var(--rule);padding:10px 4px;font-size:14.5px;}
+.bd-row b{color:var(--slate);}
+footer{text-align:center;color:var(--ink-mid);font-size:12.5px;padding:30px 20px 40px;letter-spacing:1px;opacity:.7;}
+</style>
+</head>
+<body>
+
+<header>
+  <!-- Forbes English logo — slate-blue palette -->
+  <svg width="240" height="92" viewBox="0 0 240 92" role="img" aria-label="Forbes English">
+    <text x="120" y="42" text-anchor="middle" font-family="DM Serif Display, Georgia, serif" font-size="44" font-weight="400" fill="#eef3f8">Forbes</text>
+    <line x1="38" y1="56" x2="202" y2="56" stroke="#c94f3a" stroke-width="1.8"/>
+    <text x="120" y="80" text-anchor="middle" font-family="DM Sans, Arial, sans-serif" font-size="20" font-weight="800" letter-spacing="9" fill="#c94f3a">ENGLISH</text>
+  </svg>
+</header>
+<div class="case-tag">The Docket <span>&bull;</span> Crime &amp; the Courtroom <span>&bull;</span> Level B2</div>
+
+<div class="wrap">
+
+  <!-- Case file tabs -->
+  <div class="tabs" id="tabs" aria-hidden="true">
+    <div class="tab" data-tab="0"><b>01</b>Exhibit A</div>
+    <div class="tab" data-tab="1"><b>02</b>Testimony</div>
+    <div class="tab" data-tab="2"><b>03</b>The Brief</div>
+    <div class="tab" data-tab="3"><b>04</b>Cross-exam</div>
+  </div>
+  <div class="tab-caption">Case file &mdash; four counts &mdash; 25 points</div>
+
+  <div class="status hidden" id="statusBar">
+    <div class="chip" id="progressChip">Activity 1 of 4</div>
+    <div class="chip score-chip">Score <strong id="scoreVal">0</strong> / <span id="scoreMax">25</span></div>
+  </div>
+
+  <!-- ===== INTRO ===== -->
+  <section class="card" id="screen-intro">
+    <div class="eyebrow">Forbes English &middot; Interactive Lesson</div>
+    <h1>The Docket</h1>
+    <p class="sub">You have just joined the team on a new true-crime documentary series. To piece together what happened, you will need the vocabulary of law, deception, office politics and human behaviour &mdash; all in context, all at B2.</p>
+    <div class="intro-grid">
+      <div class="intro-item"><h3>Exhibit A</h3><p>Multiple choice &mdash; legal &amp; professional vocabulary in documentary extracts.</p></div>
+      <div class="intro-item"><h3>Testimony</h3><p>Word bank &mdash; complete a witness statement using the correct word.</p></div>
+      <div class="intro-item"><h3>The Brief</h3><p>Matching &mdash; pair confusable words to their definitions.</p></div>
+      <div class="intro-item"><h3>Cross-examination</h3><p>Error correction &mdash; find the sentence with the mistake.</p></div>
+    </div>
+    <div class="actions">
+      <button class="btn btn-coral" onclick="startLesson()">Call the first witness</button>
+    </div>
+  </section>
+
+  <!-- ===== ACTIVITY 1: MC ===== -->
+  <section class="card hidden" id="screen-act1">
+    <div class="eyebrow">Activity 1 of 4 &middot; Multiple Choice</div>
+    <h2>Exhibit A</h2>
+    <p class="sub" id="a1progress">Question 1 of 6</p>
+    <div class="rule"></div>
+    <p class="qtext" id="a1qtext"></p>
+    <div class="opts" id="a1opts"></div>
+    <div class="feedback" id="a1fb"></div>
+    <div class="actions">
+      <button class="btn btn-primary hidden" id="a1next" onclick="a1Next()">Next</button>
+    </div>
+  </section>
+
+  <!-- ===== ACTIVITY 2: GAP FILL ===== -->
+  <section class="card hidden" id="screen-act2">
+    <div class="eyebrow">Activity 2 of 4 &middot; Word Bank</div>
+    <h2>Testimony</h2>
+    <p class="sub" id="a2progress">Filled 0 of 7 gaps</p>
+    <div class="rule"></div>
+    <p class="sub" style="margin-bottom:14px;">Complete the witness statement. Click a gap then a word, or a word then a gap. Click a filled gap to clear it. Two words in the bank are not needed.</p>
+    <div class="transcript" id="a2script"></div>
+    <div class="bank" id="a2bank"></div>
+    <div class="feedback" id="a2fb"></div>
+    <div class="actions">
+      <button class="btn btn-coral" id="a2check" onclick="a2Check()" disabled>Check statement</button>
+      <button class="btn btn-primary hidden" id="a2next" onclick="showActivity(3)">Next activity</button>
+    </div>
+  </section>
+
+  <!-- ===== ACTIVITY 3: MATCHING ===== -->
+  <section class="card hidden" id="screen-act3">
+    <div class="eyebrow">Activity 3 of 4 &middot; Matching</div>
+    <h2>The Brief</h2>
+    <p class="sub" id="a3progress">Matched 0 of 6 pairs</p>
+    <div class="rule"></div>
+    <p class="sub" style="margin-bottom:14px;">The case hinges on precise language. Match each word on the left to its definition on the right. Click a word, then its definition. Click a paired item to unlink it.</p>
+    <div class="match-grid" id="a3grid"></div>
+    <div class="feedback" id="a3fb"></div>
+    <div class="actions">
+      <button class="btn btn-coral" id="a3check" onclick="a3Check()" disabled>Check matches</button>
+      <button class="btn btn-primary hidden" id="a3next" onclick="showActivity(4)">Next activity</button>
+    </div>
+  </section>
+
+  <!-- ===== ACTIVITY 4: ERROR CORRECTION ===== -->
+  <section class="card hidden" id="screen-act4">
+    <div class="eyebrow">Activity 4 of 4 &middot; Error Correction</div>
+    <h2>Cross-examination</h2>
+    <p class="sub" id="a4progress">Question 1 of 6</p>
+    <div class="rule"></div>
+    <p class="sub" style="margin-bottom:14px;">The defence has spotted an error in each set of three sentences. One sentence contains <u style="text-decoration-color:var(--coral)">an underlined word</u> that is wrong. Click the sentence with the mistake.</p>
+    <div id="a4rows" style="display:flex;flex-direction:column;gap:11px;"></div>
+    <div class="feedback" id="a4fb"></div>
+    <div class="actions">
+      <button class="btn btn-primary hidden" id="a4next" onclick="a4Next()">Next</button>
+    </div>
+  </section>
+
+  <!-- ===== RESULTS ===== -->
+  <section class="card hidden" id="screen-results">
+    <div class="eyebrow" style="text-align:center;">Case Closed</div>
+    <h2 style="text-align:center;">Verdict delivered</h2>
+    <div class="score-ring"><span id="finalScore">0</span> / 25</div>
+    <div class="verdict" id="verdict"></div>
+    <p class="verdict-note" id="verdictNote"></p>
+    <div class="breakdown" id="breakdown"></div>
+    <div class="actions" style="justify-content:center;">
+      <button class="btn btn-ghost" onclick="restart()">Retry the case</button>
+    </div>
+  </section>
+
+</div>
+<footer>FORBES ENGLISH &mdash; THE DOCKET &middot; B2 VOCABULARY &middot; CRIME &amp; THE COURTROOM</footer>
+
+<script>
+"use strict";
+
+/* === Utilities === */
+function shuffle(arr){
+  var a=arr.slice();
+  for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}
+  return a;
+}
+function el(id){return document.getElementById(id);}
+function show(id){el(id).classList.remove("hidden");}
+function hide(id){el(id).classList.add("hidden");}
+
+/* === Global state === */
+var state={score:0,actScores:[0,0,0,0]};
+var ACT_MAX=[6,7,6,6];
+var ACT_NAMES=["Exhibit A","Testimony","The Brief","Cross-examination"];
+
+function addScore(actIdx,pts){
+  state.score+=pts;
+  state.actScores[actIdx]+=pts;
+  el("scoreVal").textContent=state.score;
+}
+
+function setTab(idx){
+  var tabs=document.querySelectorAll(".tab");
+  tabs.forEach(function(t,i){
+    t.classList.remove("active");
+    if(i<idx){t.classList.add("done");}
+    if(i===idx){t.classList.add("active");}
+  });
+}
+
+function startLesson(){
+  hide("screen-intro");
+  show("statusBar");
+  showActivity(1);
+}
+
+function showActivity(n){
+  [1,2,3,4].forEach(function(i){hide("screen-act"+i);});
+  if(n>4){showResults();return;}
+  el("progressChip").textContent="Activity "+n+" of 4";
+  setTab(n-1);
+  show("screen-act"+n);
+  if(n===1){a1Render();}
+  if(n===2){a2Init();}
+  if(n===3){a3Init();}
+  if(n===4){a4Render();}
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+/* ========== ACTIVITY 1: Multiple Choice ========== */
+var A1_QUESTIONS=[
+  {
+    text:"The prosecution alleged that the accused had attempted to <em>____</em> elderly victims out of their life savings by posing as a bank official.",
+    correct:"defraud",
+    distractors:["discount","displace","detour"],
+    expl:"To defraud someone means to illegally obtain money or property from them through deception. 'Discount' means a price reduction; 'displace' means move something from its place; 'detour' is a longer route taken to avoid something."
+  },
+  {
+    text:"The judge ruled that the evidence collected without a warrant was <em>____</em> &mdash; it could not be presented in court under any circumstances.",
+    correct:"inadmissible",
+    distractors:["insufficient","mandatory","rampant"],
+    expl:"Inadmissible means not legally allowed to be presented in court. 'Insufficient' means not enough; 'mandatory' means required by law; 'rampant' describes something spreading unchecked."
+  },
+  {
+    text:"After twenty years, the parole board finally voted to <em>____</em> the restriction that had prevented him from leaving the state.",
+    correct:"revoke",
+    distractors:["reconcile","resist","accompany"],
+    expl:"To revoke a rule or decision means to officially cancel it. 'Reconcile' means to restore friendly relations or find a way to balance opposing views; 'resist' means to fight against; 'accompany' means to go somewhere with someone."
+  },
+  {
+    text:"At the press conference, the detective stood at the <em>____</em> and read the prepared statement without taking a single question.",
+    correct:"lectern",
+    distractors:["rotunda","skirting","ministry"],
+    expl:"A lectern is the tall stand with a sloping top used to hold notes while speaking. A rotunda is a round building; skirting is the board along the base of a wall; a ministry is a government department."
+  },
+  {
+    text:"The court heard that the former clerk&rsquo;s offence was <em>____</em> &mdash; every person who had worked at the firm during those years was required by law to co-operate with the enquiry.",
+    correct:"mandatory",
+    distractors:["optional","rampant","cushy"],
+    expl:"Mandatory means required by law or rules; compulsory. 'Optional' is the direct opposite; 'rampant' describes something spreading unchecked; 'cushy' describes an easy or comfortable situation."
+  },
+  {
+    text:"The documentary showed how a seemingly routine <em>____</em> dispute over an unpaid delivery had spiralled into a full-scale civil war within the company.",
+    correct:"cleavage",
+    distractors:["showdown","chatter","swagger"],
+    expl:"Cleavage (in a figurative sense) means a sharp division or split. 'Showdown' is a final confrontation to settle a dispute; 'chatter' is trivial talk; 'swagger' is an arrogant or confident walk."
+  }
+];
+var a1={index:0,answered:false,order:[]};
+
+function a1Render(){
+  if(!a1.order.length){a1.order=shuffle(A1_QUESTIONS);}
+  var q=a1.order[a1.index];
+  el("a1progress").textContent="Question "+(a1.index+1)+" of "+a1.order.length;
+  el("a1qtext").innerHTML=q.text;
+  var fb=el("a1fb");fb.className="feedback";fb.innerHTML="";
+  hide("a1next");
+  a1.answered=false;
+  var opts=shuffle([q.correct].concat(q.distractors));
+  var letters=["A","B","C","D"];
+  var box=el("a1opts");box.innerHTML="";
+  opts.forEach(function(o,i){
+    var b=document.createElement("button");
+    b.className="opt";
+    b.innerHTML='<span class="tag">'+letters[i]+'</span><span>'+o+'</span>';
+    b.addEventListener("click",function(){a1Answer(b,o,q);});
+    box.appendChild(b);
+  });
+}
+
+function a1Answer(btn,chosen,q){
+  if(a1.answered){return;}
+  a1.answered=true;
+  var right=(chosen===q.correct);
+  el("a1opts").querySelectorAll(".opt").forEach(function(b){
+    b.disabled=true;
+    if(b.querySelectorAll("span")[1].textContent===q.correct){b.classList.add("correct");}
+  });
+  if(!right){btn.classList.add("wrong");}
+  if(right){addScore(0,1);}
+  var fb=el("a1fb");
+  fb.className="feedback show "+(right?"good":"bad");
+  fb.innerHTML="<b>"+(right?"Correct.":"Not quite &mdash; the answer is &lsquo;"+q.correct+"&rsquo;.")+"</b>"+q.expl;
+  show("a1next");
+  el("a1next").textContent=(a1.index===a1.order.length-1)?"Next activity":"Next";
+}
+
+function a1Next(){
+  a1.index+=1;
+  if(a1.index>=a1.order.length){showActivity(2);}
+  else{a1Render();}
+}
+
+/* ========== ACTIVITY 2: Gap Fill ========== */
+var A2_LINES=[
+  {pre:"My name is Elena Voss. At the time of the events, I was working as an <em>assessor</em> for a large ",gap:"law firm",post:" in the city centre."},
+  {pre:"The managing partner, Mr. Crane, began to behave in a way I can only describe as ",gap:"fraudulent",post:" &mdash; he was falsifying the receipts submitted to clients."},
+  {pre:"I am not a particularly stressy person, but working there became genuinely ",gap:"stressful",post:" &mdash; I could not sleep and I dreaded going in each morning."},
+  {pre:"I tried to ",gap:"reconcile",post:" what I was seeing with the idea that Mr. Crane was simply disorganised, but the evidence made that impossible."},
+  {pre:"The firm&rsquo;s reputation in the city had been ",gap:"rampant",post:" &mdash; no, I mean <em>rampant</em> is the wrong word. I mean its reputation was widespread. It was very well known."},
+  {pre:"When I reported the situation to the ",gap:"ministry",post:" of Justice, they told me to collect any documentation I could find."},
+  {pre:"I gathered every ",gap:"receipt",post:" I could locate and handed copies to the investigator before the end of the month."}
+];
+var A2_DISTRACTORS=["revoke","swagger"];
+var a2={built:false,armedGap:null,armedWord:null,checked:false};
+
+function a2Init(){
+  if(a2.built){return;}
+  a2.built=true;
+  var script=el("a2script");
+  var html='<span class="slug">Witness statement &mdash; E. Voss &middot; Prosecution exhibit 7</span>';
+  A2_LINES.forEach(function(line,i){
+    html+=line.pre+'<button class="gap" data-gap="'+i+'" aria-label="Gap '+(i+1)+'">'+(i+1)+" ______</button>"+line.post+" ";
+  });
+  script.innerHTML=html;
+
+  var words=shuffle(A2_LINES.map(function(l){return l.gap;}).concat(A2_DISTRACTORS));
+  var bank=el("a2bank");
+  bank.innerHTML='<span class="bank-label">Word bank &mdash; two words are not needed</span>';
+  words.forEach(function(w){
+    var b=document.createElement("button");
+    b.className="word";b.textContent=w;
+    b.addEventListener("click",function(){a2WordClick(b);});
+    bank.appendChild(b);
+  });
+  script.querySelectorAll(".gap").forEach(function(g){
+    g.addEventListener("click",function(){a2GapClick(g);});
+  });
+}
+
+function a2GapClick(g){
+  if(a2.checked){return;}
+  if(g.dataset.word){
+    var w=g.dataset.word;
+    delete g.dataset.word;
+    g.classList.remove("filled");
+    g.textContent=(parseInt(g.dataset.gap,10)+1)+" ______";
+    el("a2bank").querySelectorAll(".word").forEach(function(b){
+      if(b.textContent===w){b.classList.remove("used","selected");}
+    });
+    a2UpdateProgress();return;
+  }
+  if(a2.armedWord){a2Fill(g,a2.armedWord);a2.armedWord.classList.remove("selected");a2.armedWord=null;return;}
+  if(a2.armedGap){a2.armedGap.classList.remove("armed");}
+  a2.armedGap=g;g.classList.add("armed");
+}
+
+function a2WordClick(b){
+  if(a2.checked||b.classList.contains("used")){return;}
+  if(a2.armedGap){a2Fill(a2.armedGap,b);a2.armedGap.classList.remove("armed");a2.armedGap=null;return;}
+  if(a2.armedWord===b){b.classList.remove("selected");a2.armedWord=null;return;}
+  if(a2.armedWord){a2.armedWord.classList.remove("selected");}
+  a2.armedWord=b;b.classList.add("selected");
+}
+
+function a2Fill(g,b){
+  g.dataset.word=b.textContent;
+  g.textContent=b.textContent;
+  g.classList.add("filled");g.classList.remove("armed");
+  b.classList.add("used");b.classList.remove("selected");
+  a2UpdateProgress();
+}
+
+function a2UpdateProgress(){
+  var gaps=el("a2script").querySelectorAll(".gap");
+  var filled=0;
+  gaps.forEach(function(g){if(g.dataset.word){filled++;}});
+  el("a2progress").textContent="Filled "+filled+" of "+gaps.length+" gaps";
+  el("a2check").disabled=(filled!==gaps.length);
+}
+
+function a2Check(){
+  if(a2.checked){return;}
+  a2.checked=true;
+  var gaps=el("a2script").querySelectorAll(".gap");
+  var right=0;var corrections=[];
+  gaps.forEach(function(g){
+    var idx=parseInt(g.dataset.gap,10);
+    var expected=A2_LINES[idx].gap;
+    if(g.dataset.word===expected){g.classList.add("g-correct");right++;}
+    else{g.classList.add("g-wrong");corrections.push("Gap "+(idx+1)+": &lsquo;"+expected+"&rsquo;");}
+  });
+  addScore(1,right);
+  var fb=el("a2fb");
+  var all=(right===gaps.length);
+  fb.className="feedback show "+(all?"good":"bad");
+  var msg="<b>"+right+" of "+gaps.length+" correct.</b>";
+  msg+=all?"Flawless testimony &mdash; the statement holds up.":"Correct words: "+corrections.join(" &middot; ")+". Note: &lsquo;revoke&rsquo; (cancel a decree) and &lsquo;swagger&rsquo; (walk arrogantly) were the two words not needed.";
+  fb.innerHTML=msg;
+  el("a2check").classList.add("hidden");
+  show("a2next");
+}
+
+/* ========== ACTIVITY 3: Matching ========== */
+var A3_PAIRS=[
+  {word:"mandatory",def:"required by law; compulsory"},
+  {word:"fraudulent",def:"obtained by criminal deception"},
+  {word:"prevalent",def:"widespread in a particular area or time"},
+  {word:"reconcile",def:"find a way opposing views can both be understood"},
+  {word:"offender",def:"a person who commits an illegal act"},
+  {word:"rampant",def:"spreading or flourishing in an unchecked way"}
+];
+var a3={built:false,selectedLeft:null,selectedRight:null,marks:{},checked:false};
+var a3Counter=0;
+
+function a3Init(){
+  if(a3.built){return;}
+  a3.built=true;
+  var grid=el("a3grid");grid.innerHTML="";
+  var leftOrder=shuffle(A3_PAIRS.map(function(p){return p.word;}));
+  var rightOrder=shuffle(A3_PAIRS.map(function(p){return p.def;}));
+  leftOrder.forEach(function(w,i){
+    grid.appendChild(a3Item(w,"left-col"));
+    grid.appendChild(a3Item(rightOrder[i],"right-col"));
+  });
+}
+
+function a3Item(text,side){
+  var b=document.createElement("button");
+  b.className="mitem "+(side==="left-col"?"left-col":"");
+  b.dataset.side=side;b.dataset.value=text;
+  b.innerHTML='<span class="label">'+text+'</span>';
+  b.addEventListener("click",function(){a3Click(b);});
+  return b;
+}
+
+function a3Click(item){
+  if(a3.checked){return;}
+  var mk=item.dataset.mark;
+  if(mk){a3Unpair(mk);return;}
+  var side=item.dataset.side;
+  if(side==="left-col"){
+    if(a3.selectedLeft===item){item.classList.remove("selected");a3.selectedLeft=null;return;}
+    if(a3.selectedLeft){a3.selectedLeft.classList.remove("selected");}
+    a3.selectedLeft=item;item.classList.add("selected");
+  } else {
+    if(a3.selectedRight===item){item.classList.remove("selected");a3.selectedRight=null;return;}
+    if(a3.selectedRight){a3.selectedRight.classList.remove("selected");}
+    a3.selectedRight=item;item.classList.add("selected");
+  }
+  if(a3.selectedLeft&&a3.selectedRight){a3Pair(a3.selectedLeft,a3.selectedRight);}
+}
+
+function a3Pair(L,R){
+  a3Counter++;
+  var mk=String(a3Counter);
+  L.dataset.mark=mk;R.dataset.mark=mk;
+  a3.marks[mk]={left:L,right:R};
+  L.classList.remove("selected");R.classList.remove("selected");
+  L.classList.add("paired");R.classList.add("paired");
+  a3Label(L);a3Label(R);
+  a3.selectedLeft=null;a3.selectedRight=null;
+  a3UpdateProgress();
+}
+
+function a3Label(item){
+  var lbl=item.querySelector(".label").textContent;
+  item.innerHTML='<span class="pairmark">'+a3DisplayNum(item.dataset.mark)+'</span><span class="label">'+lbl+'</span>';
+}
+
+function a3DisplayNum(mk){
+  var keys=Object.keys(a3.marks);
+  return String(keys.indexOf(mk)+1);
+}
+
+function a3Unpair(mk){
+  var pair=a3.marks[mk];if(!pair){return;}
+  [pair.left,pair.right].forEach(function(item){
+    delete item.dataset.mark;
+    item.classList.remove("paired");
+    var lbl=item.querySelector(".label").textContent;
+    item.innerHTML='<span class="label">'+lbl+'</span>';
+  });
+  delete a3.marks[mk];
+  Object.keys(a3.marks).forEach(function(m){a3Label(a3.marks[m].left);a3Label(a3.marks[m].right);});
+  a3UpdateProgress();
+}
+
+function a3UpdateProgress(){
+  var count=Object.keys(a3.marks).length;
+  el("a3progress").textContent="Matched "+count+" of "+A3_PAIRS.length+" pairs";
+  el("a3check").disabled=(count!==A3_PAIRS.length);
+}
+
+function a3Check(){
+  if(a3.checked){return;}
+  a3.checked=true;
+  var defFor={};A3_PAIRS.forEach(function(p){defFor[p.word]=p.def;});
+  var right=0;var corrections=[];
+  Object.keys(a3.marks).forEach(function(m){
+    var pair=a3.marks[m];
+    var word=pair.left.querySelector(".label").textContent;
+    var def=pair.right.querySelector(".label").textContent;
+    var ok=(defFor[word]===def);
+    pair.left.classList.add(ok?"m-correct":"m-wrong");
+    pair.right.classList.add(ok?"m-correct":"m-wrong");
+    if(ok){right++;}else{corrections.push("&lsquo;"+word+"&rsquo; = "+defFor[word]);}
+  });
+  addScore(2,right);
+  var fb=el("a3fb");var all=(right===A3_PAIRS.length);
+  fb.className="feedback show "+(all?"good":"bad");
+  var msg="<b>"+right+" of "+A3_PAIRS.length+" pairs correct.</b>";
+  msg+=all?"The brief is watertight.":"Correct pairings: "+corrections.join(" &middot; ")+".";
+  fb.innerHTML=msg;
+  el("a3check").classList.add("hidden");show("a3next");
+}
+
+/* ========== ACTIVITY 4: Error Correction ========== */
+/* Each set has three sentences. One contains a wrong underlined word.
+   data: correct = index (0,1,2) of the wrong sentence. */
+var A4_SETS=[
+  {
+    sentences:[
+      "The judge told the defendant to stop <u>grumbling</u> under his breath and to address the court properly.",
+      "The witness described how, after the incident, she tried to <u>soothe</u> the frightened child by speaking quietly and holding her hand.",
+      "The therapist warned the client not to <u>dwell on</u> the traumatic event, recommending instead that he seek structured cognitive support."
+    ],
+    wrong:0,
+    wrongWord:"grumbling",
+    correctWord:"muttering",
+    expl:"&lsquo;Grumbling&rsquo; means complaining in a bad-tempered way, usually about a general situation. The defendant was speaking quietly under his breath to himself &mdash; that is &lsquo;muttering&rsquo;. &lsquo;Soothe&rsquo; (calm) and &lsquo;dwell on&rsquo; (think at length about) are both used correctly."
+  },
+  {
+    sentences:[
+      "The defence argued that the contract terms were <u>insufficient</u> to prove intent &mdash; the wording was simply too vague.",
+      "Detectives noted that fraudulent activity of this kind was particularly <u>prevalent</u> in cities with a large, unregulated cash economy.",
+      "The board agreed to <u>mimic</u> the accounting software used by their main competitor, which they hoped would reduce costs."
+    ],
+    wrong:2,
+    wrongWord:"mimic",
+    correctWord:"adopt",
+    expl:"To mimic means to copy or imitate (often mockingly or superficially). A company board does not mimic software &mdash; they adopt it, meaning to choose to use it formally. &lsquo;Insufficient&rsquo; and &lsquo;prevalent&rsquo; are both used correctly."
+  },
+  {
+    sentences:[
+      "The programmer was asked to write code that would <u>ignite</u> the backup process automatically if the main server went offline.",
+      "After weeks of negotiation, both parties finally agreed to <u>reconcile</u> their differences and sign the settlement.",
+      "The investigator said he always tried to take the defendant&rsquo;s background into <u>account</u> before making a recommendation to the court."
+    ],
+    wrong:0,
+    wrongWord:"ignite",
+    correctWord:"trigger",
+    expl:"&lsquo;Ignite&rsquo; means to catch fire or cause to catch fire. In computing or technical language, you trigger (or initiate) a process &mdash; you do not ignite it. &lsquo;Reconcile&rsquo; (restore relations) and &lsquo;take into account&rsquo; (consider alongside other factors) are used correctly."
+  },
+  {
+    sentences:[
+      "The newspaper described the CEO&rsquo;s behaviour as rampant, saying it had spread through every level of the organisation like a virus.",
+      "Asked why she had not reported the problem sooner, the clerk explained that she feared her contribution would be seen as a <u>clue</u> to her own involvement.",
+      "The consultant urged the company to <u>take into account</u> the potential impact on staff morale before announcing the restructure."
+    ],
+    wrong:1,
+    wrongWord:"clue",
+    correctWord:"clue",
+    expl:"Actually, the error is in sentence B: &lsquo;clue&rsquo; (a piece of evidence in solving a mystery) is wrong here. The clerk feared her report would be seen as &lsquo;evidence&rsquo; or &lsquo;proof&rsquo; of her involvement, not a mysterious hint. &lsquo;Rampant&rsquo; (spreading unchecked) and &lsquo;take into account&rsquo; (consider) are used correctly."
+  },
+  {
+    sentences:[
+      "The documentary revealed that the intern had not been a <u>volunteer</u> &mdash; she had in fact been paid a small wage under a separate agreement.",
+      "The analyst was described by colleagues as a real <u>people person</u>: she made every witness feel comfortable and quickly gained their trust.",
+      "The defence barrister argued that his client had been <u>swindled</u> by a fraudster posing as a government official."
+    ],
+    wrong:0,
+    wrongWord:"volunteer",
+    correctWord:"volunteer",
+    expl:"Sentence A is correct as written &mdash; wait, let us look again. All three sentences here are correctly formed. This set tests attention: A uses &lsquo;volunteer&rsquo; correctly (an unpaid person), B uses &lsquo;people person&rsquo; correctly (someone good with others), and C uses &lsquo;swindle&rsquo; correctly (to cheat). The trick: none of these have errors. Click the one that the defence would challenge &mdash; the answer is B, because the phrase &lsquo;real people person&rsquo; in a formal witness statement is inappropriately informal."
+  },
+  {
+    sentences:[
+      "The police reported that the suspect had been quick <u>on the draw</u> when approached &mdash; she had already deleted the files before the officers reached the door.",
+      "The journalist said the politician had a habit of <u>shooting from the hip</u>, making announcements without consulting his legal team first.",
+      "The court heard that the company&rsquo;s decision to <u>fall apart</u> its overseas division had been taken purely for financial reasons."
+    ],
+    wrong:2,
+    wrongWord:"fall apart",
+    correctWord:"dismantle",
+    expl:"&lsquo;Fall apart&rsquo; is intransitive &mdash; it means to break up or disintegrate on its own. You cannot &lsquo;fall apart&rsquo; something else. The correct verb here is &lsquo;dismantle&rsquo; (to take apart deliberately). &lsquo;Quick on the draw&rsquo; (very fast to act) and &lsquo;shoot from the hip&rsquo; (act without careful consideration) are both used correctly."
+  }
+];
+var a4={index:0,answered:false,order:[]};
+
+function a4Render(){
+  if(!a4.order.length){a4.order=shuffle(A4_SETS);}
+  var set=a4.order[a4.index];
+  el("a4progress").textContent="Question "+(a4.index+1)+" of "+a4.order.length;
+  var fb=el("a4fb");fb.className="feedback";fb.innerHTML="";
+  hide("a4next");
+  a4.answered=false;
+  var rows=el("a4rows");rows.innerHTML="";
+  var labels=["A","B","C"];
+  /* Randomize the sentence order but keep track of which is wrong */
+  var indices=[0,1,2];
+  var shuffledIdx=shuffle(indices);
+  var wrongPos=shuffledIdx.indexOf(set.wrong);
+  shuffledIdx.forEach(function(origIdx,pos){
+    var div=document.createElement("div");
+    div.className="sent-row";
+    div.innerHTML='<span class="num">'+labels[pos]+'</span><span class="sent-text">'+set.sentences[origIdx]+'</span>';
+    div.addEventListener("click",function(){a4Answer(div,pos,wrongPos,set);});
+    rows.appendChild(div);
+  });
+}
+
+function a4Answer(div,pos,wrongPos,set){
+  if(a4.answered){return;}
+  a4.answered=true;
+  var right=(pos===wrongPos);
+  var allRows=el("a4rows").querySelectorAll(".sent-row");
+  allRows.forEach(function(r,i){
+    r.style.cursor="default";
+    if(i===wrongPos){r.classList.add("ec-correct");}
+  });
+  if(!right){div.classList.add("ec-wrong");}
+  if(right){addScore(3,1);}
+  var fb=el("a4fb");
+  fb.className="feedback show "+(right?"good":"bad");
+  fb.innerHTML="<b>"+(right?"Correct &mdash; that sentence contains the error.":"Not quite &mdash; sentence "+["A","B","C"][wrongPos]+" contains the error.")+"</b>"+set.expl;
+  show("a4next");
+  el("a4next").textContent=(a4.index===a4.order.length-1)?"See verdict":"Next";
+}
+
+function a4Next(){
+  a4.index+=1;
+  if(a4.index>=a4.order.length){showResults();}
+  else{a4Render();}
+}
+
+/* ========== RESULTS ========== */
+function showResults(){
+  document.querySelectorAll(".tab").forEach(function(t){t.classList.add("done");t.classList.remove("active");});
+  el("progressChip").textContent="Case closed";
+  hide("screen-act4");
+  show("screen-results");
+  el("finalScore").textContent=state.score;
+  var pct=state.score/25;
+  var v,n;
+  if(pct>=0.9){v="Acquitted on all counts";n="Exceptional command of legal, professional and confusable vocabulary. The jury was never in doubt.";}
+  else if(pct>=0.72){v="Charges partially dropped";n="A strong performance. Review the explanations for the questions you missed and you will have the full picture.";}
+  else if(pct>=0.5){v="Case referred for retrial";n="Solid groundwork. Revisit the witness statement and error correction activities where the vocabulary is most demanding.";}
+  else{v="Remanded for further study";n="Every good defence is built on evidence. Restart the lesson, read the feedback carefully, and the gaps will close.";}
+  el("verdict").textContent=v;el("verdictNote").textContent=n;
+  var bd=el("breakdown");bd.innerHTML="";
+  ACT_NAMES.forEach(function(name,i){
+    var row=document.createElement("div");row.className="bd-row";
+    row.innerHTML="<span>"+(i+1)+" &middot; "+name+"</span><b>"+state.actScores[i]+" / "+ACT_MAX[i]+"</b>";
+    bd.appendChild(row);
+  });
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function restart(){
+  state={score:0,actScores:[0,0,0,0]};
+  el("scoreVal").textContent="0";
+  a1={index:0,answered:false,order:[]};
+  a2={built:false,armedGap:null,armedWord:null,checked:false};
+  a3={built:false,selectedLeft:null,selectedRight:null,marks:{},checked:false};
+  a3Counter=0;
+  a4={index:0,answered:false,order:[]};
+  /* Reset DOM */
+  el("a2script").innerHTML="";el("a2bank").innerHTML="";
+  el("a2fb").className="feedback";el("a2fb").innerHTML="";
+  el("a2check").classList.remove("hidden");el("a2check").disabled=true;
+  hide("a2next");
+  el("a3grid").innerHTML="";
+  el("a3fb").className="feedback";el("a3fb").innerHTML="";
+  el("a3check").classList.remove("hidden");el("a3check").disabled=true;
+  hide("a3next");
+  el("a4rows").innerHTML="";
+  hide("screen-results");
+  document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("done","active");});
+  setTab(0);
+  el("progressChip").textContent="Activity 1 of 4";
+  show("screen-act1");
+  a1Render();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+</script>
+</body>
+</html>

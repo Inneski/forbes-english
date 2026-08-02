@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Past Simple — Top Gear on the Slopes</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Noto+Sans+Arabic:wght@400;600&family=Noto+Sans+SC:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --snow: #f0f4f8;
+    --ice: #d6eaf8;
+    --sky: #1a3a5c;
+    --deep: #0d1f33;
+    --red: #e8202e;
+    --yellow: #f5c518;
+    --grey: #8fa3b8;
+    --white: #ffffff;
+    --correct: #27ae60;
+    --wrong: #e8202e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--deep);
+    color: var(--snow);
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  [dir="rtl"], .lang-support[lang="ar"] { font-family: 'Noto Sans Arabic', 'Barlow', sans-serif; }
+  .lang-support[lang="zh"] { font-family: 'Noto Sans SC', 'Barlow', sans-serif; }
+
+  /* FULL-SCREEN SLIDE DECK — no page-level scrolling */
+  html, body { height: 100%; overflow: hidden; }
+
+  .lang-support {
+    display: none;
+    font-size: 15px;
+    color: var(--yellow);
+    margin-top: 6px;
+    line-height: 1.6;
+    opacity: 0.9;
+  }
+
+  .lang-support.visible { display: block; }
+
+  /* Each slide fills the viewport minus the fixed nav bar; if content
+     is ever taller than the screen (e.g. a very short window, or a
+     longer translation), it scrolls internally — the page itself never does. */
+  .lesson-page {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 60px;
+    overflow-y: auto;
+    padding: 14px 24px;
+  }
+
+  .lesson-page.active { display: flex; flex-direction: column; justify-content: center; }
+
+  .slide-inner { max-width: 860px; margin: 0 auto; width: 100%; }
+
+  .lesson-page .section-label { margin-top: 0 !important; }
+
+  /* HERO SLIDE */
+  .hero-slide .slide-inner { display: flex; flex-direction: column; align-items: center; gap: 4vh; }
+
+  .hero-banner-img {
+    width: 100%;
+    max-height: 52vh;
+    object-fit: contain;
+    display: block;
+    border-radius: 6px;
+  }
+
+  .hero-text-block { text-align: center; }
+
+  .hero-tag {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 5px;
+    color: var(--yellow);
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .hero-text-block h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(46px, 9vw, 92px);
+    line-height: 0.9;
+    letter-spacing: 2px;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+
+  .hero-text-block h1 span { color: var(--red); }
+
+  .hero-sub {
+    font-size: 16.5px;
+    font-weight: 300;
+    color: var(--grey);
+    letter-spacing: 0.5px;
+    margin-top: 14px;
+    max-width: 520px;
+    line-height: 1.5;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* NAV BAR — fixed at bottom, always visible, never part of scroll */
+  .page-nav {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    height: 60px;
+    z-index: 50;
+    background: var(--deep);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 0 16px;
+  }
+
+  .page-btn {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--snow);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 15.5px;
+    letter-spacing: 2px;
+    padding: 9px 18px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .page-btn:hover:not(:disabled) { background: var(--red); border-color: var(--red); }
+  .page-btn:disabled { opacity: 0.3; cursor: default; }
+
+  .nav-lang select {
+    background: rgba(255,255,255,0.06);
+    color: var(--snow);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 4px;
+    padding: 6px 8px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    max-width: 110px;
+  }
+
+  .nav-lang select option {
+    background: var(--deep);
+    color: var(--snow);
+  }
+
+  .page-dots { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+
+  .page-dot {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    cursor: pointer;
+    transition: all 0.15s;
+    padding: 0;
+  }
+
+  .page-dot.active { background: var(--red); border-color: var(--red); }
+  .page-dot:hover { border-color: var(--yellow); }
+
+  @media (max-width: 500px) {
+    .page-btn { font-size: 13px; padding: 8px 12px; }
+  }
+
+  /* SECTION HEADERS */
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+    margin-top: 60px;
+  }
+
+  .section-label:first-child { margin-top: 0; }
+
+  .section-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 49.5px;
+    color: var(--red);
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .section-info h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    letter-spacing: 3px;
+    color: var(--yellow);
+    line-height: 1;
+  }
+
+  .section-info p {
+    font-size: 15.5px;
+    color: var(--grey);
+    letter-spacing: 1px;
+    margin-top: 3px;
+  }
+
+  /* WARM-UP GRID (Instagram-style icon tiles) */
+  .warmup-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 30px;
+  }
+
+  .warmup-card {
+    border-radius: 8px;
+    padding: 22px 20px;
+    position: relative;
+    overflow: hidden;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  .warmup-card .icon {
+    font-size: 38px;
+    margin-bottom: 10px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  }
+
+  .warmup-card .q {
+    font-size: 16.5px;
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.4;
+  }
+
+  .warmup-card.c1 { background: linear-gradient(135deg, #1a3a5c, #0d1f33); border: 1px solid rgba(245,197,24,0.25); }
+  .warmup-card.c2 { background: linear-gradient(135deg, #8f1a22, #3a0a0e); border: 1px solid rgba(245,197,24,0.25); }
+  .warmup-card.c3 { background: linear-gradient(135deg, #2a5c7a, #0d1f33); border: 1px solid rgba(245,197,24,0.25); }
+  .warmup-card.c4 { background: linear-gradient(135deg, #7a5c1a, #3a2a0a); border: 1px solid rgba(245,197,24,0.25); }
+
+  .warmup-card::after {
+    content: '';
+    position: absolute;
+    top: -30%; right: -20%;
+    width: 140px; height: 140px;
+    background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 70%);
+    pointer-events: none;
+  }
+
+  /* ACTIVATION / OUTPUT TOGGLE */
+  .mode-toggle {
+    display: inline-flex;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 30px;
+    padding: 4px;
+    margin-bottom: 20px;
+  }
+
+  .mode-btn {
+    background: transparent;
+    border: none;
+    color: var(--grey);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 15.5px;
+    letter-spacing: 2px;
+    padding: 9px 22px;
+    border-radius: 26px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .mode-btn.active { background: var(--red); color: white; }
+
+  .mode-panel { display: none; }
+  .mode-panel.active { display: block; }
+
+  .task-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-left: 4px solid var(--yellow);
+    border-radius: 4px;
+    padding: 24px 28px;
+  }
+
+  .task-card p { font-size: 17.5px; line-height: 1.7; color: var(--snow); margin-bottom: 14px; }
+
+  .starter-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+
+  .starter-chip {
+    background: rgba(245,197,24,0.1);
+    border: 1px solid rgba(245,197,24,0.3);
+    color: var(--yellow);
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 15px;
+    font-style: italic;
+  }
+
+  .scratch-textarea {
+    width: 100%;
+    min-height: 90px;
+    background: rgba(0,0,0,0.3);
+    border: 1px dashed rgba(255,255,255,0.25);
+    border-radius: 4px;
+    color: var(--snow);
+    font-family: 'Barlow', sans-serif;
+    font-size: 16.5px;
+    padding: 12px 14px;
+    resize: vertical;
+    margin-top: 10px;
+  }
+
+  .scratch-textarea:focus { outline: none; border-color: var(--yellow); }
+
+  .not-graded {
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    color: var(--grey);
+    text-transform: uppercase;
+    margin-top: 8px;
+    display: block;
+  }
+
+  /* GRAMMAR CARD */
+  .grammar-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-left: 4px solid var(--yellow);
+    border-radius: 4px;
+    padding: 28px 32px;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .grammar-card::after {
+    content: '📐';
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 33px;
+    opacity: 0.15;
+  }
+
+  .grammar-card h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 21px;
+    letter-spacing: 3px;
+    color: var(--yellow);
+    margin-bottom: 16px;
+  }
+
+  .rule-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .rule-box {
+    background: rgba(0,0,0,0.3);
+    border-radius: 4px;
+    padding: 14px 18px;
+    border-top: 2px solid var(--red);
+  }
+
+  .rule-box.green { border-top-color: var(--correct); }
+
+  .rule-box .label {
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: var(--grey);
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .rule-box .formula {
+    font-size: 16.5px;
+    font-weight: 600;
+    color: var(--snow);
+    line-height: 1.5;
+  }
+
+  .rule-box .formula em {
+    color: var(--yellow);
+    font-style: normal;
+  }
+
+  .rule-box .example {
+    font-size: 15.5px;
+    color: var(--grey);
+    margin-top: 8px;
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  .irregular-note {
+    background: rgba(232,32,46,0.1);
+    border: 1px solid rgba(232,32,46,0.25);
+    border-radius: 4px;
+    padding: 14px 18px;
+    font-size: 15.5px;
+    color: var(--grey);
+    line-height: 1.6;
+  }
+
+  .irregular-note strong { color: var(--red); font-weight: 600; }
+
+  /* VOCAB TABLE */
+  .vocab-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 30px;
+  }
+
+  .vocab-item {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 4px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: border-color 0.2s;
+  }
+
+  .vocab-item:hover { border-color: rgba(245,197,24,0.3); }
+
+  .vocab-icon { font-size: 26px; flex-shrink: 0; }
+
+  .vocab-text { width: 100%; }
+
+  .vocab-text .base {
+    font-weight: 600;
+    font-size: 16.5px;
+    color: var(--white);
+  }
+
+  .vocab-text .past {
+    font-size: 14px;
+    color: var(--yellow);
+    margin-top: 2px;
+  }
+
+  .vocab-text .def {
+    font-size: 13px;
+    color: var(--grey);
+    margin-top: 2px;
+  }
+
+  /* STORY */
+  .story-box {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 4px;
+    padding: 22px 28px;
+    line-height: 1.55;
+    font-size: 16.5px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  .story-box p { margin-bottom: 12px; }
+  .story-box p:last-child { margin-bottom: 0; }
+
+  .hl {
+    background: rgba(245,197,24,0.2);
+    color: var(--yellow);
+    padding: 0 3px;
+    border-radius: 2px;
+    font-weight: 600;
+  }
+
+  .story-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 17.5px;
+    letter-spacing: 3px;
+    color: var(--grey);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .story-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255,255,255,0.1);
+  }
+
+  /* EXERCISES */
+  .exercise { margin-bottom: 10px; }
+
+  .q-label {
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: var(--grey);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .q-label span {
+    background: var(--red);
+    color: white;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 15.5px;
+    padding: 1px 7px;
+    border-radius: 2px;
+    letter-spacing: 1px;
+  }
+
+  .q-text {
+    font-size: 17.5px;
+    line-height: 1.7;
+    color: var(--snow);
+    margin-bottom: 10px;
+  }
+
+  .blank-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+    vertical-align: middle;
+  }
+
+  .blank {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid var(--yellow);
+    color: var(--yellow);
+    font-family: 'Barlow', sans-serif;
+    font-size: 17.5px;
+    font-weight: 600;
+    padding: 2px 6px;
+    width: 120px;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .blank:focus { border-bottom-color: var(--white); }
+  .blank.correct { border-bottom-color: var(--correct); color: var(--correct); }
+  .blank.wrong { border-bottom-color: var(--wrong); color: var(--wrong); }
+
+  .hint {
+    font-size: 14px;
+    color: var(--grey);
+    font-style: italic;
+  }
+
+  /* MCQ */
+  .options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .opt-btn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--snow);
+    font-family: 'Barlow', sans-serif;
+    font-size: 16.5px;
+    padding: 8px 18px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.5px;
+  }
+
+  .opt-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--yellow); }
+  .opt-btn.selected-correct { background: rgba(39,174,96,0.2); border-color: var(--correct); color: var(--correct); }
+  .opt-btn.selected-wrong { background: rgba(232,32,46,0.15); border-color: var(--wrong); color: var(--wrong); }
+  .opt-btn:disabled { cursor: default; }
+
+  /* UNSCRAMBLE */
+  .scramble-words {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0;
+  }
+
+  .word-chip {
+    background: rgba(245,197,24,0.1);
+    border: 1px solid rgba(245,197,24,0.3);
+    color: var(--yellow);
+    padding: 6px 14px;
+    border-radius: 3px;
+    font-size: 16.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+
+  .word-chip:hover { background: rgba(245,197,24,0.2); }
+  .word-chip.used { opacity: 0.3; cursor: default; pointer-events: none; }
+
+  .sentence-builder {
+    min-height: 44px;
+    background: rgba(0,0,0,0.3);
+    border: 1px dashed rgba(255,255,255,0.2);
+    border-radius: 4px;
+    padding: 10px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    margin: 8px 0;
+    font-size: 16.5px;
+    color: var(--snow);
+  }
+
+  .placed-word {
+    background: rgba(26,58,92,0.8);
+    border: 1px solid var(--sky);
+    color: var(--white);
+    padding: 4px 12px;
+    border-radius: 3px;
+    font-size: 16.5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.15s;
+  }
+
+  .placed-word:hover { background: rgba(232,32,46,0.3); border-color: var(--red); }
+
+  .sentence-builder.correct-sentence { border-color: var(--correct); background: rgba(39,174,96,0.05); }
+  .sentence-builder.wrong-sentence { border-color: var(--wrong); background: rgba(232,32,46,0.05); }
+
+  /* FEEDBACK */
+  .feedback {
+    font-size: 14px;
+    margin-top: 6px;
+    min-height: 18px;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+  }
+
+  .feedback.ok { color: var(--correct); }
+  .feedback.bad { color: var(--wrong); }
+
+  /* BUTTONS */
+  .btn {
+    background: var(--red);
+    color: white;
+    border: none;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 17.5px;
+    letter-spacing: 3px;
+    padding: 10px 24px;
+    cursor: pointer;
+    border-radius: 3px;
+    margin-top: 8px;
+    transition: background 0.15s;
+    display: inline-block;
+  }
+
+  .btn:hover { background: #c0172c; }
+
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--yellow);
+    color: var(--yellow);
+  }
+
+  .btn-outline:hover { background: rgba(245,197,24,0.1); }
+
+  /* SCORE PANEL */
+  .score-panel {
+    background: linear-gradient(135deg, rgba(26,58,92,0.8), rgba(13,31,51,0.9));
+    border: 1px solid rgba(245,197,24,0.3);
+    border-radius: 6px;
+    padding: 30px;
+    text-align: center;
+    margin-top: 50px;
+    display: none;
+  }
+
+  .score-panel.visible { display: block; }
+
+  .score-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 94.5px;
+    color: var(--yellow);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .score-label {
+    font-size: 15.5px;
+    letter-spacing: 3px;
+    color: var(--grey);
+    margin-bottom: 20px;
+  }
+
+  .score-msg {
+    font-size: 19px;
+    line-height: 1.6;
+    color: var(--snow);
+  }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
+    margin: 50px 0;
+  }
+
+  .flag-strip {
+    height: 5px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--red) 0px, var(--red) 20px,
+      var(--white) 20px, var(--white) 40px,
+      var(--red) 40px
+    );
+    border-radius: 2px;
+    margin-bottom: 18px;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .rule-row { grid-template-columns: 1fr; }
+    .vocab-grid { grid-template-columns: 1fr; }
+    .warmup-grid { grid-template-columns: 1fr; }
+    .hero-banner-img { max-height: 30vh; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-nav">
+  <button class="page-btn" id="pageBtnBack" onclick="goPage(-1)">◀ BACK</button>
+  <div class="page-dots" id="pageDots"></div>
+  <div class="nav-lang">
+    <select id="langSelect" onchange="applyLanguage(this.value)">
+      <option value="">🌐 English only</option>
+      <option value="de">Deutsch</option>
+      <option value="it">Italiano</option>
+      <option value="es">Español</option>
+      <option value="fr">Français</option>
+      <option value="zh">中文</option>
+      <option value="ru">Русский</option>
+      <option value="ar">العربية</option>
+    </select>
+  </div>
+  <button class="page-btn" id="pageBtnNext" onclick="goPage(1)">NEXT ▶</button>
+</div>
+
+<div class="lesson-page active hero-slide" data-page="1">
+  <div class="slide-inner">
+    <img class="hero-banner-img" src="Top%20Gear/blackisler_3_skiiers_skiing_bluematch.png" alt="Three skiers racing down a mountain">
+    <div class="hero-text-block">
+      <span class="hero-tag">English Grammar · B1 Level</span>
+      <h1>Top Gear<span>Past Simple</span></h1>
+      <p class="hero-sub">Jeremy, Richard & James hit the Alps. Explosions, crashes, and frostbite guaranteed. Learn the past simple tense through the chaos.</p>
+    </div>
+  </div>
+</div>
+
+  <div class="lesson-page" data-page="2">
+  <div class="slide-inner">
+  <!-- WARM-UP -->
+  <div class="section-label" style="margin-top:0">
+    <div class="section-num">01</div>
+    <div class="section-info">
+      <h2>Warm-Up</h2>
+      <p>GET TALKING BEFORE WE START</p>
+    </div>
+  </div>
+
+  <div class="warmup-grid">
+    <div class="warmup-card c1">
+      <div class="icon">📺</div>
+      <div class="q">Have you ever watched a motoring or car TV show? What did you think of it?</div>
+      <div class="lang-support" data-lang-key="warmup0"></div>
+    </div>
+    <div class="warmup-card c2">
+      <div class="icon">⛷️</div>
+      <div class="q">Would you rather race down a mountain by car or on skis? Why?</div>
+      <div class="lang-support" data-lang-key="warmup1"></div>
+    </div>
+    <div class="warmup-card c3">
+      <div class="icon">🌨️</div>
+      <div class="q">What's the most extreme weather you've ever travelled or driven in?</div>
+      <div class="lang-support" data-lang-key="warmup2"></div>
+    </div>
+    <div class="warmup-card c4">
+      <div class="icon">🏔️</div>
+      <div class="q">Tell your partner about your ideal outdoor challenge.</div>
+      <div class="lang-support" data-lang-key="warmup3"></div>
+    </div>
+  </div>
+
+  </div>
+  </div>
+
+  <div class="lesson-page" data-page="3">
+  <div class="slide-inner">
+  <!-- TARGET LANGUAGE ACTIVATION -->
+  <div class="section-label">
+    <div class="section-num">02</div>
+    <div class="section-info">
+      <h2>Try It First</h2>
+      <p>USE THE LANGUAGE BEFORE WE STUDY THE RULES</p>
+    </div>
+  </div>
+
+  <div class="mode-toggle">
+    <button class="mode-btn active" id="actBtnSpeak" onclick="setMode('act','speak')">💬 SPEAKING</button>
+    <button class="mode-btn" id="actBtnWrite" onclick="setMode('act','write')">✍️ WRITING</button>
+  </div>
+
+  <div class="mode-panel active" id="actPanelSpeak">
+    <div class="task-card">
+      <p>Turn to a partner. Tell them about a time something didn't go to plan — a trip, a game, or a project. Try to use past tense verbs. Don't worry about mistakes yet!</p>
+      <div class="lang-support" data-lang-key="activation-speak"></div>
+      <div class="starter-chips">
+        <span class="starter-chip">Last year, I…</span>
+        <span class="starter-chip">It all went wrong when…</span>
+        <span class="starter-chip">In the end, we…</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="mode-panel" id="actPanelWrite">
+    <div class="task-card">
+      <p>Write 3–4 sentences about a time something didn't go to plan. Try to use past tense verbs.</p>
+      <div class="lang-support" data-lang-key="activation-write"></div>
+      <textarea class="scratch-textarea" placeholder="Last summer, I..."></textarea>
+      <span class="not-graded">Scratch space only — not graded</span>
+    </div>
+  </div>
+
+  </div>
+  </div>
+
+  <div class="lesson-page" data-page="4">
+  <div class="slide-inner">
+  <!-- GRAMMAR REFERENCE -->
+  <div class="section-label">
+    <div class="section-num">03</div>
+    <div class="section-info">
+      <h2>Grammar Engine</h2>
+      <p>HOW THE PAST SIMPLE WORKS</p>
+    </div>
+  </div>
+
+  <div class="grammar-card">
+    <h3>Formation</h3>
+    <div class="rule-row">
+      <div class="rule-box green">
+        <span class="label">✅ POSITIVE</span>
+        <div class="formula">Subject + <em>verb-ed</em> / <em>irregular form</em></div>
+        <div class="example">Jeremy <em>crashed</em> the car into a snowbank.<br>Richard <em>went</em> off-piste immediately.</div>
+        <div class="lang-support" data-lang-key="grammar-pos"></div>
+      </div>
+      <div class="rule-box">
+        <span class="label">❌ NEGATIVE</span>
+        <div class="formula">Subject + <em>didn't</em> + base verb</div>
+        <div class="example">James <em>didn't fall</em> over — not once.<br>They <em>didn't find</em> the resort easy.</div>
+        <div class="lang-support" data-lang-key="grammar-neg"></div>
+      </div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-box">
+        <span class="label">❓ QUESTION</span>
+        <div class="formula"><em>Did</em> + subject + base verb?</div>
+        <div class="example"><em>Did</em> they race down the mountain?<br>What <em>did</em> Jeremy <em>break</em> this time?</div>
+        <div class="lang-support" data-lang-key="grammar-q"></div>
+      </div>
+      <div class="rule-box" style="border-top-color:#5dade2">
+        <span class="label">🕒 TIME SIGNALS</span>
+        <div class="formula" style="font-size: 15.5px; color:var(--grey); font-weight:400; line-height:1.8">
+          <em>yesterday · last week · in 2003</em><br>
+          <em>ago · at that moment · when · then</em>
+        </div>
+        <div class="lang-support" data-lang-key="grammar-time"></div>
+      </div>
+    </div>
+    <div class="irregular-note">
+      <strong>⚠ Irregular verbs</strong> don't follow the -ed rule. Common ones in this lesson:
+      <em>go → went</em> · <em>drive → drove</em> · <em>fall → fell</em> · <em>crash → crashed*</em> · <em>break → broke</em> · <em>win → won</em> · <em>buy → bought</em> · <em>see → saw</em> · <em>hit → hit</em>
+      <br><small style="opacity:0.6">*crash is regular!</small>
+    </div>
+  </div>
+
+  </div>
+  </div>
+
+  <div class="lesson-page" data-page="5">
+  <div class="slide-inner">
+  <!-- VOCAB -->
+  <div class="section-label">
+    <div class="section-num">04</div>
+    <div class="section-info">
+      <h2>Key Vocabulary</h2>
+      <p>VERBS YOU'LL NEED — BASE FORM → PAST SIMPLE</p>
+    </div>
+  </div>
+
+  <div class="vocab-grid">
+    <div class="vocab-item">
+      <div class="vocab-icon">🚗</div>
+      <div class="vocab-text">
+        <div class="base">drive</div>
+        <div class="past">→ drove</div>
+        <div class="def">to control a vehicle</div>
+        <div class="lang-support" data-lang-key="vocab-drive"></div>
+      </div>
+    </div>
+    <div class="vocab-item">
+      <div class="vocab-icon">⛷️</div>
+      <div class="vocab-text">
+        <div class="base">ski</div>
+        <div class="past">→ skied</div>
+        <div class="def">to move on skis down snow</div>
+        <div class="lang-support" data-lang-key="vocab-ski"></div>
+      </div>
+    </div>
+    <div class="vocab-item">
+      <div class="vocab-icon">💥</div>
+      <div class="vocab-text">
+        <div class="base">crash</div>
+        <div class="past">→ crashed</div>
+        <div class="def">to hit something violently</div>
+        <div class="lang-support" data-lang-key="vocab-crash"></div>
+      </div>
+    </div>
+    <div class="vocab-item">
+      <div class="vocab-icon">🏆</div>
+      <div class="vocab-text">
+        <div class="base">win</div>
+        <div class="past">→ won</div>
+        <div class="def">to finish first in a competition</div>
+        <div class="lang-support" data-lang-key="vocab-win"></div>
+      </div>
+    </div>
+    <div class="vocab-item">
+      <div class="vocab-icon">😱</div>
+      <div class="vocab-text">
+        <div class="base">fall</div>
+        <div class="past">→ fell</div>
+        <div class="def">to drop down suddenly</div>
+        <div class="lang-support" data-lang-key="vocab-fall"></div>
+      </div>
+    </div>
+    <div class="vocab-item">
+      <div class="vocab-icon">🔥</div>
+      <div class="vocab-text">
+        <div class="base">set fire</div>
+        <div class="past">→ set fire</div>
+        <div class="def">to ignite something (irregular)</div>
+        <div class="lang-support" data-lang-key="vocab-fire"></div>
+      </div>
+    </div>
+    <div class="vocab-item">
+      <div class="vocab-icon">📺</div>
+      <div class="vocab-text">
+        <div class="base">film</div>
+        <div class="past">→ filmed</div>
+        <div class="def">to record on camera</div>
+        <div class="lang-support" data-lang-key="vocab-film"></div>
+      </div>
+    </div>
+    <div class="vocab-item">
+      <div class="vocab-icon">🏔️</div>
+      <div class="vocab-text">
+        <div class="base">race</div>
+        <div class="past">→ raced</div>
+        <div class="def">to compete at high speed</div>
+        <div class="lang-support" data-lang-key="vocab-race"></div>
+      </div>
+    </div>
+  </div>
+
+  </div>
+  </div>
+
+  <div class="lesson-page" data-page="6">
+  <div class="slide-inner">
+  <!-- STORY -->
+  <div class="section-label">
+    <div class="section-num">05</div>
+    <div class="section-info">
+      <h2>Reading: The Race</h2>
+      <p>READ AND NOTICE THE HIGHLIGHTED PAST SIMPLE VERBS</p>
+    </div>
+  </div>
+
+  <div class="story-box">
+    <div class="story-title">TOP GEAR · ALPINE SPECIAL</div>
+    <p>
+      Last winter, the Top Gear team <span class="hl">travelled</span> to the French Alps for a special challenge. The producers <span class="hl">gave</span> each presenter a sports car and a pair of skis. The challenge <span class="hl">was</span> simple: race from the top of the mountain to the village below — the skier against the car.
+    </p>
+    <p>
+      Jeremy <span class="hl">chose</span> to drive the car. He <span class="hl">put</span> his foot on the accelerator and <span class="hl">went</span> immediately off the road. He <span class="hl">hit</span> a snow barrier and <span class="hl">broke</span> the front bumper. The camera crew <span class="hl">laughed</span> and <span class="hl">filmed</span> everything.
+    </p>
+    <p>
+      Richard <span class="hl">decided</span> to ski. He <span class="hl">strapped</span> on his skis, <span class="hl">looked</span> down the enormous slope, and <span class="hl">said</span> nothing. Then he <span class="hl">pushed</span> off and <span class="hl">shot</span> down the mountain at incredible speed. He <span class="hl">fell</span> twice but <span class="hl">didn't stop</span>.
+    </p>
+    <p>
+      James <span class="hl">didn't race</span> at all. He <span class="hl">went</span> to a café, <span class="hl">ordered</span> a hot chocolate, and <span class="hl">watched</span> the whole disaster from a warm terrace. In the end, Richard <span class="hl">won</span>. Jeremy <span class="hl">arrived</span> last — with no bumper and a bruised ego.
+    </p>
+  </div>
+
+  </div>
+  </div>
+
+  <div class="lesson-page" data-page="7">
+  <div class="slide-inner">
+  <!-- EXERCISES -->
+  <div class="section-label" style="margin-top:0">
+    <div class="section-num">06</div>
+    <div class="section-info">
+      <h2>Controlled Practice</h2>
+      <p>PROVE YOUR PAST SIMPLE SKILLS</p>
+    </div>
+  </div>
+
+  <div class="flag-strip"></div>
+
+  <!-- EX A: Fill in the blanks -->
+  <div class="q-label"><span>A</span> FILL IN THE BLANK — correct past simple form</div>
+
+  <div class="exercise" id="ex-a1">
+    <div class="q-text">Yesterday, Jeremy ____________ his car straight into a snowdrift. <span class="hint">(drive)</span></div>
+    <input class="blank" type="text" placeholder="…" data-answer="drove" oninput="checkBlank(this)">
+    <div class="feedback"></div>
+  </div>
+
+  <div class="exercise" id="ex-a2">
+    <div class="q-text">Richard ____________ down the black run faster than anyone expected. <span class="hint">(ski)</span></div>
+    <input class="blank" type="text" placeholder="…" data-answer="skied" oninput="checkBlank(this)">
+    <div class="feedback"></div>
+  </div>
+
+  <div class="exercise" id="ex-a3">
+    <div class="q-text">James ____________ to the café and ____________ a large hot chocolate. <span class="hint">(go / order)</span></div>
+    <input class="blank" type="text" placeholder="…" data-answer="went" oninput="checkBlank(this)" style="width:90px">
+    &nbsp;and&nbsp;
+    <input class="blank" type="text" placeholder="…" data-answer="ordered" oninput="checkBlank(this)" style="width:100px">
+    <div class="feedback"></div>
+  </div>
+
+  <div class="exercise" id="ex-a4">
+    <div class="q-text">The producers ____________ each presenter £500 for equipment. <span class="hint">(give)</span></div>
+    <input class="blank" type="text" placeholder="…" data-answer="gave" oninput="checkBlank(this)">
+    <div class="feedback"></div>
+  </div>
+
+  <div class="exercise" id="ex-a5">
+    <div class="q-text">They ____________ the challenge because it ____________ too cold. <span class="hint">(not finish / be)</span></div>
+    <input class="blank" type="text" placeholder="…" data-answer="didn't finish" oninput="checkBlank(this)" style="width:140px">
+    &nbsp;because it&nbsp;
+    <input class="blank" type="text" placeholder="…" data-answer="was" oninput="checkBlank(this)" style="width:60px">
+    <div class="feedback"></div>
+  </div>
+
+  </div>
+  </div>
+
+  <div class="lesson-page" data-page="8">
+  <div class="slide-inner">
+  <div class="section-label" style="margin-top:0">
+    <div class="section-num">06</div>
+    <div class="section-info">
+      <h2>Controlled Practice</h2>
+      <p>PROVE YOUR PAST SIMPLE SKILLS</p>
+    </div>
+  </div>
+  <!-- EX B: Multiple Choice -->
+  <div class="q-label"><span>B</span> MULTIPLE CHOICE — pick the correct form</div>
+
+  <div class="exercise">
+    <div class="q-text">Richard ________ over on the moguls but got straight back up.</div>
+    <div class="options" id="mcq1">
+      <button class="opt-btn" onclick="checkMCQ(this,'mcq1','fell')">falled</button>
+      <button class="opt-btn" onclick="checkMCQ(this,'mcq1','fell')">fall</button>
+      <button class="opt-btn" onclick="checkMCQ(this,'mcq1','fell')">fell</button>
+      <button class="opt-btn" onclick="checkMCQ(this,'mcq1','fell')">was fall</button>
+    </div>
+    <div class="feedback" id="fb-mcq1"></div>
+  </div>
+
+  <div class="exercise">
+    <div class="q-text">________ Jeremy win the ski vs. car challenge?</div>
+    <div class="options" id="mcq2">
+      <button class="opt-btn" onclick="checkMCQ(this,'mcq2','Did')">Did</button>
+      <button class="opt-btn" onclick="checkMCQ(this,'mcq2','Did')">Does</button>
+      <button class="opt-btn" onclick="checkMCQ(this,'mcq2','Did')">Was</button>
+      <button class="opt-btn" onclick="checkMCQ(this,'mcq2','Did')">Do</button>
+    </div>
+    <div class="feedback" id="fb-mcq2"></div>
+  </div>
+
+  <div class="exercise">
+    <div class="q-text">The camera crew ________ everything on film.</div>
+    <div class="options" id="mcq3">
+      <button class="opt-btn" onclick="checkMCQ(this,'mcq3','captured')">captureed</button>
+      <button class="opt-btn" onclick="checkMCQ(this,'mcq3','captured')">captured</button>
+      <button class="opt-btn" onclick="checkMCQ(this,'mcq3','captured')">was capture</button>
+      <button class="opt-btn" onclick="checkMCQ(this,'mcq3','captured')">capture</button>
+    </div>
+    <div class="feedback" id="fb-mcq3"></div>
+  </div>
+
+  <div class="exercise">
+    <div class="q-text">James ________ to race — he preferred the café.</div>
+    <div class="options" id="mcq4">
+      <button class="opt-btn" onclick="checkMCQ(this,'mcq4','didn\'t want')">don't want</button>
+      <button class="opt-btn" onclick="checkMCQ(this,'mcq4','didn\'t want')">didn't wanted</button>
+      <button class="opt-btn" onclick="checkMCQ(this,'mcq4','didn\'t want')">didn't want</button>
+      <button class="opt-btn" onclick="checkMCQ(this,'mcq4','didn\'t want')">wasn't want</button>
+    </div>
+    <div class="feedback" id="fb-mcq4"></div>
+  </div>
+
+  </div>
+  </div>
+
+  <div class="lesson-page" data-page="9">
+  <div class="slide-inner">
+  <div class="section-label" style="margin-top:0">
+    <div class="section-num">06</div>
+    <div class="section-info">
+      <h2>Controlled Practice</h2>
+      <p>PROVE YOUR PAST SIMPLE SKILLS</p>
+    </div>
+  </div>
+  <!-- EX C: Unscramble -->
+  <div class="q-label"><span>C</span> UNSCRAMBLE — tap words to build the sentence</div>
+
+  <div class="exercise">
+    <div class="q-text" style="font-size: 15.5px; color:var(--grey); margin-bottom:10px">Tap the words in the correct order, then tap a placed word to remove it.</div>
+
+    <div id="uscr1">
+      <div class="scramble-words" id="chips1"></div>
+      <div class="sentence-builder" id="builder1"><span style="color:var(--grey); font-size: 15.5px; font-style:italic">Tap words above to build here…</span></div>
+      <div class="feedback" id="fb-uscr1"></div>
+      <div style="display:flex; gap:10px; margin-top:10px">
+        <button class="btn btn-outline" onclick="resetUnscramble(1)">RESET</button>
+        <button class="btn" onclick="checkUnscramble(1)">CHECK</button>
+      </div>
+    </div>
+
+    <div id="uscr2" style="margin-top:28px">
+      <div class="scramble-words" id="chips2"></div>
+      <div class="sentence-builder" id="builder2"><span style="color:var(--grey); font-size: 15.5px; font-style:italic">Tap words above to build here…</span></div>
+      <div class="feedback" id="fb-uscr2"></div>
+      <div style="display:flex; gap:10px; margin-top:10px">
+        <button class="btn btn-outline" onclick="resetUnscramble(2)">RESET</button>
+        <button class="btn" onclick="checkUnscramble(2)">CHECK</button>
+      </div>
+    </div>
+  </div>
+
+  </div>
+  </div>
+
+  <div class="lesson-page" data-page="10">
+  <div class="slide-inner">
+  <div class="section-label" style="margin-top:0">
+    <div class="section-num">06</div>
+    <div class="section-info">
+      <h2>Controlled Practice</h2>
+      <p>PROVE YOUR PAST SIMPLE SKILLS</p>
+    </div>
+  </div>
+  <!-- EX D: Transform -->
+  <div class="q-label"><span>D</span> TRANSFORM — rewrite the sentence in the past simple negative or question</div>
+
+  <div class="exercise">
+    <div class="q-text">Statement: <em>Jeremy won the race.</em><br>Negative: Jeremy ____________ the race.</div>
+    <input class="blank" type="text" placeholder="…" data-answer="didn't win" oninput="checkBlank(this)" style="width:150px">
+    <div class="feedback"></div>
+  </div>
+
+  <div class="exercise">
+    <div class="q-text">Statement: <em>They skied in France.</em><br>Question: ____________ they ski in France?</div>
+    <input class="blank" type="text" placeholder="…" data-answer="Did" oninput="checkBlank(this)" style="width:80px">
+    <div class="feedback"></div>
+  </div>
+
+  <div class="exercise">
+    <div class="q-text">Statement: <em>Richard fell on the slope.</em><br>Question: Where ____________ Richard ____________?</div>
+    <input class="blank" type="text" placeholder="…" data-answer="did" oninput="checkBlank(this)" style="width:60px">
+    &nbsp;Richard&nbsp;
+    <input class="blank" type="text" placeholder="…" data-answer="fall" oninput="checkBlank(this)" style="width:70px">
+    <div class="feedback"></div>
+  </div>
+
+  <div style="margin-top:40px; text-align:center">
+    <button class="btn" style="font-size: 21px; padding:16px 50px; letter-spacing:4px" onclick="calcScore()">CHECK MY SCORE ▶</button>
+  </div>
+
+  <!-- SCORE -->
+  <div class="score-panel" id="scorePanel">
+    <div class="score-num" id="scoreNum">0</div>
+    <div class="score-label" id="scoreLabel">POINTS OUT OF 20</div>
+    <div class="score-msg" id="scoreMsg"></div>
+  </div>
+
+  </div>
+  </div>
+
+  <div class="lesson-page" data-page="11">
+  <div class="slide-inner">
+  <div class="ski-banner" style="border-bottom:none; border-radius:6px; overflow:hidden; margin:0 0 12px;">
+    <img src="Top%20Gear/ski-touring-trio.png" alt="Three skiers walking up a mountain" style="width:100%; height:22vh; object-fit:cover; object-position:center 40%; display:block;">
+  </div>
+
+  <!-- FREER OUTPUT -->
+  <div class="section-label" style="margin-top:0">
+    <div class="section-num">07</div>
+    <div class="section-info">
+      <h2>Your Turn</h2>
+      <p>FREER PRACTICE — TELL YOUR OWN STORY</p>
+    </div>
+  </div>
+
+  <div class="mode-toggle">
+    <button class="mode-btn active" id="outBtnSpeak" onclick="setMode('out','speak')">💬 SPEAKING</button>
+    <button class="mode-btn" id="outBtnWrite" onclick="setMode('out','write')">✍️ WRITING</button>
+  </div>
+
+  <div class="mode-panel active" id="outPanelSpeak">
+    <div class="task-card">
+      <p>Choose one: tell your partner about an episode of Top Gear you've watched and what happened in it — <em>or</em> tell them about a real time you went skiing (or another winter sport). Describe what happened, step by step, using the past simple.</p>
+      <div class="lang-support" data-lang-key="output-speak"></div>
+      <div class="starter-chips">
+        <span class="starter-chip">In the episode, they…</span>
+        <span class="starter-chip">One time, I…</span>
+        <span class="starter-chip">In the end,…</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="mode-panel" id="outPanelWrite">
+    <div class="task-card">
+      <p>Write a short paragraph (5–6 sentences). Choose one: describe an episode of Top Gear you've watched, <em>or</em> a real time you went skiing or snowboarding. Use at least five past simple verbs, including two irregular ones.</p>
+      <div class="lang-support" data-lang-key="output-write"></div>
+      <textarea class="scratch-textarea" placeholder="In one episode, Jeremy... / Last winter, I..."></textarea>
+      <span class="not-graded">Scratch space only — not graded</span>
+    </div>
+  </div>
+
+  </div>
+</div>
+
+<script>
+// ── LANGUAGE SUPPORT ───────────────────────────────────────
+const SUPPORT = {
+  de: {
+    'warmup0':"Hast du schon einmal eine Auto- oder Motorsportsendung gesehen? Was hast du davon gehalten?",
+    'warmup1':"Würdest du lieber mit dem Auto oder auf Skiern einen Berg hinunterfahren? Warum?",
+    'warmup2':"Was ist das extremste Wetter, in dem du je gereist oder gefahren bist?",
+    'warmup3':"Erzähl deinem Partner von deiner idealen Outdoor-Herausforderung.",
+    'grammar-pos':"Subjekt + Verb-ed / unregelmäßige Form",
+    'grammar-neg':"Subjekt + didn't + Grundform",
+    'grammar-q':"Did + Subjekt + Grundform?",
+    'grammar-time':"Zeitsignale: yesterday, last week, ago, when …",
+    'vocab-drive':"ein Fahrzeug steuern", 'vocab-ski':"auf Skiern den Schnee hinunterfahren",
+    'vocab-crash':"heftig gegen etwas prallen", 'vocab-win':"bei einem Wettbewerb Erster werden",
+    'vocab-fall':"plötzlich hinfallen", 'vocab-fire':"etwas anzünden",
+    'vocab-film':"mit der Kamera aufnehmen", 'vocab-race':"mit hoher Geschwindigkeit einen Wettkampf machen",
+    'activation-speak':"Sprich mit einem Partner. Erzähl ihm von einer Situation, die nicht wie geplant lief. Fehler sind noch kein Problem!",
+    'activation-write':"Schreib 3–4 Sätze über eine Situation, die nicht wie geplant lief. Versuche, Verben im Simple Past zu benutzen.",
+    'output-speak':"Wähle: Erzähl von einer Top-Gear-Folge, die du gesehen hast, oder von einer echten Skifahrt. Benutze das Simple Past.",
+    'output-write':"Schreib 5–6 Sätze: über eine Top-Gear-Folge oder eine echte Skifahrt. Benutze mindestens fünf Verben im Simple Past, zwei davon unregelmäßig."
+  },
+  it: {
+    'warmup0':"Hai mai guardato un programma televisivo sulle auto o sui motori? Cosa ne pensavi?",
+    'warmup1':"Preferiresti scendere da una montagna in auto o sugli sci? Perché?",
+    'warmup2':"Qual è il clima più estremo in cui hai mai viaggiato o guidato?",
+    'warmup3':"Racconta al tuo compagno qual è la tua sfida all'aperto ideale.",
+    'grammar-pos':"Soggetto + verbo-ed / forma irregolare",
+    'grammar-neg':"Soggetto + didn't + verbo base",
+    'grammar-q':"Did + soggetto + verbo base?",
+    'grammar-time':"Indicatori di tempo: yesterday, last week, ago, when …",
+    'vocab-drive':"guidare un veicolo", 'vocab-ski':"scendere sulla neve con gli sci",
+    'vocab-crash':"scontrarsi violentemente con qualcosa", 'vocab-win':"arrivare primo in una gara",
+    'vocab-fall':"cadere improvvisamente", 'vocab-fire':"dare fuoco a qualcosa",
+    'vocab-film':"registrare con la videocamera", 'vocab-race':"gareggiare ad alta velocità",
+    'activation-speak':"Parla con un compagno. Racconta di una volta in cui qualcosa non è andato come previsto. Non preoccuparti degli errori!",
+    'activation-write':"Scrivi 3–4 frasi su una volta in cui qualcosa non è andato come previsto. Usa i verbi al past simple.",
+    'output-speak':"Scegli: racconta di un episodio di Top Gear che hai visto o di una volta reale in cui hai sciato. Usa il past simple.",
+    'output-write':"Scrivi 5–6 frasi: su un episodio di Top Gear o una vera sciata. Usa almeno cinque verbi al past simple, due irregolari."
+  },
+  es: {
+    'warmup0':"¿Alguna vez has visto un programa de televisión sobre coches o motores? ¿Qué te pareció?",
+    'warmup1':"¿Preferirías bajar una montaña en coche o esquiando? ¿Por qué?",
+    'warmup2':"¿Cuál es el clima más extremo en el que has viajado o conducido?",
+    'warmup3':"Cuéntale a tu compañero cuál sería tu desafío al aire libre ideal.",
+    'grammar-pos':"Sujeto + verbo-ed / forma irregular",
+    'grammar-neg':"Sujeto + didn't + verbo base",
+    'grammar-q':"Did + sujeto + verbo base?",
+    'grammar-time':"Marcadores de tiempo: yesterday, last week, ago, when …",
+    'vocab-drive':"conducir un vehículo", 'vocab-ski':"bajar por la nieve con esquís",
+    'vocab-crash':"chocar violentamente contra algo", 'vocab-win':"llegar primero en una competición",
+    'vocab-fall':"caerse de repente", 'vocab-fire':"prender fuego a algo",
+    'vocab-film':"grabar con una cámara", 'vocab-race':"competir a gran velocidad",
+    'activation-speak':"Habla con un compañero sobre una vez en que algo no salió como estaba previsto. ¡No te preocupes por los errores todavía!",
+    'activation-write':"Escribe 3–4 frases sobre una vez en que algo no salió como estaba previsto. Usa verbos en pasado simple.",
+    'output-speak':"Elige: cuenta un episodio de Top Gear que hayas visto o una vez real que esquiaste. Usa el pasado simple.",
+    'output-write':"Escribe 5–6 frases: sobre un episodio de Top Gear o una vez real que esquiaste. Usa al menos cinco verbos en pasado simple, dos irregulares."
+  },
+  fr: {
+    'warmup0':"As-tu déjà regardé une émission sur les voitures ou les sports mécaniques ? Qu'en as-tu pensé ?",
+    'warmup1':"Préférerais-tu descendre une montagne en voiture ou à skis ? Pourquoi ?",
+    'warmup2':"Quel est le temps le plus extrême dans lequel tu as déjà voyagé ou conduit ?",
+    'warmup3':"Raconte à ton/ta partenaire ton défi en plein air idéal.",
+    'grammar-pos':"Sujet + verbe-ed / forme irrégulière",
+    'grammar-neg':"Sujet + didn't + verbe de base",
+    'grammar-q':"Did + sujet + verbe de base ?",
+    'grammar-time':"Indicateurs de temps : yesterday, last week, ago, when …",
+    'vocab-drive':"conduire un véhicule", 'vocab-ski':"descendre la neige à skis",
+    'vocab-crash':"percuter quelque chose violemment", 'vocab-win':"finir premier dans une compétition",
+    'vocab-fall':"tomber soudainement", 'vocab-fire':"mettre le feu à quelque chose",
+    'vocab-film':"enregistrer avec une caméra", 'vocab-race':"faire la course à grande vitesse",
+    'activation-speak':"Raconte à un(e) partenaire une fois où quelque chose ne s'est pas passé comme prévu. Ne t'inquiète pas encore des erreurs !",
+    'activation-write':"Écris 3 à 4 phrases sur une fois où quelque chose ne s'est pas passé comme prévu, au prétérit.",
+    'output-speak':"Choisis : raconte un épisode de Top Gear que tu as vu, ou une fois où tu as skié. Utilise le prétérit.",
+    'output-write':"Écris 5 à 6 phrases : sur un épisode de Top Gear ou une fois où tu as skié. Utilise au moins cinq verbes au prétérit, dont deux irréguliers."
+  },
+  zh: {
+    'warmup0':"你看过关于汽车或赛车的电视节目吗？你觉得怎么样？",
+    'warmup1':"你更愿意开车还是滑雪冲下山？为什么？",
+    'warmup2':"你旅行或开车时经历过的最极端天气是什么？",
+    'warmup3':"告诉你的搭档你理想的户外挑战是什么。",
+    'grammar-pos':"主语 + 动词-ed / 不规则形式",
+    'grammar-neg':"主语 + didn't + 动词原形",
+    'grammar-q':"Did + 主语 + 动词原形？",
+    'grammar-time':"时间信号词：yesterday, last week, ago, when …",
+    'vocab-drive':"驾驶车辆", 'vocab-ski':"滑雪下坡",
+    'vocab-crash':"猛烈撞上某物", 'vocab-win':"在比赛中获得第一名",
+    'vocab-fall':"突然摔倒", 'vocab-fire':"点燃某物",
+    'vocab-film':"用摄像机录制", 'vocab-race':"高速比赛",
+    'activation-speak':"和同伴说话，告诉他们一次事情没有按计划进行的经历。现在不用担心犯错！",
+    'activation-write':"写3到4句话，讲述一次事情没有按计划进行的经历，试着使用过去式动词。",
+    'output-speak':"选择一个：讲述你看过的一集Top Gear发生了什么，或者一次真实的滑雪经历。使用一般过去时。",
+    'output-write':"写5到6句话：关于一集Top Gear或一次真实的滑雪经历。至少使用五个过去式动词，其中两个不规则。"
+  },
+  ru: {
+    'warmup0':"Ты когда-нибудь смотрел передачу об автомобилях или автоспорте? Что ты о ней думаешь?",
+    'warmup1':"Ты бы предпочёл спуститься с горы на машине или на лыжах? Почему?",
+    'warmup2':"Какая самая экстремальная погода, в которую ты когда-либо путешествовал или водил машину?",
+    'warmup3':"Расскажи партнёру о своём идеальном приключении на природе.",
+    'grammar-pos':"Подлежащее + глагол-ed / неправильная форма",
+    'grammar-neg':"Подлежащее + didn't + базовая форма",
+    'grammar-q':"Did + подлежащее + базовая форма?",
+    'grammar-time':"Указатели времени: yesterday, last week, ago, when …",
+    'vocab-drive':"управлять транспортным средством", 'vocab-ski':"спускаться на лыжах по снегу",
+    'vocab-crash':"сильно врезаться во что-то", 'vocab-win':"занять первое место в соревновании",
+    'vocab-fall':"внезапно упасть", 'vocab-fire':"поджечь что-то",
+    'vocab-film':"снимать на камеру", 'vocab-race':"соревноваться на высокой скорости",
+    'activation-speak':"Расскажи партнёру о случае, когда что-то пошло не по плану. Пока не переживай об ошибках!",
+    'activation-write':"Напиши 3–4 предложения о случае, когда что-то пошло не по плану, в прошедшем времени.",
+    'output-speak':"Выбери: расскажи об эпизоде Top Gear, который ты смотрел, или о реальном случае катания на лыжах. Используй прошедшее время.",
+    'output-write':"Напиши 5–6 предложений: об эпизоде Top Gear или реальной лыжной поездке. Используй минимум пять глаголов в прошедшем времени, два неправильных."
+  },
+  ar: {
+    'warmup0':"هل شاهدت من قبل برنامجًا تلفزيونيًا عن السيارات أو السباقات؟ ما رأيك فيه؟",
+    'warmup1':"هل تفضّل النزول من الجبل بالسيارة أم بالتزلج؟ ولماذا؟",
+    'warmup2':"ما أكثر طقس متطرف سافرت أو قدت السيارة فيه؟",
+    'warmup3':"أخبر زميلك عن تحدّيك المثالي في الهواء الطلق.",
+    'grammar-pos':"الفاعل + فعل + ed / الصيغة الشاذة",
+    'grammar-neg':"الفاعل + didn't + الفعل الأساسي",
+    'grammar-q':"Did + الفاعل + الفعل الأساسي؟",
+    'grammar-time':"كلمات الزمن: yesterday, last week, ago, when …",
+    'vocab-drive':"قيادة مركبة", 'vocab-ski':"النزول على الثلج بالتزلج",
+    'vocab-crash':"الاصطدام بشيء بعنف", 'vocab-win':"الفوز بالمركز الأول في منافسة",
+    'vocab-fall':"السقوط فجأة", 'vocab-fire':"إشعال النار في شيء",
+    'vocab-film':"التصوير بالكاميرا", 'vocab-race':"التسابق بسرعة عالية",
+    'activation-speak':"تحدّث مع زميلك عن مرة لم تسر فيها الأمور كما هو مخطط لها. لا تقلق بشأن الأخطاء الآن!",
+    'activation-write':"اكتب من ٣ إلى ٤ جمل عن مرة لم تسر فيها الأمور كما هو مخطط لها، باستخدام الماضي البسيط.",
+    'output-speak':"اختر: تحدث عن حلقة من Top Gear شاهدتها، أو عن مرة حقيقية مارست فيها التزلج. استخدم الماضي البسيط.",
+    'output-write':"اكتب من 5 إلى 6 جمل: عن حلقة من Top Gear أو مرة حقيقية تزلجت فيها. استخدم خمسة أفعال ماضٍ بسيط على الأقل، اثنان منها شاذّان."
+  }
+};
+
+function applyLanguage(code) {
+  document.querySelectorAll('[data-lang-key]').forEach(el => {
+    if (!code) {
+      el.classList.remove('visible');
+      el.textContent = '';
+      return;
+    }
+    const text = SUPPORT[code] && SUPPORT[code][el.dataset.langKey];
+    el.textContent = text || '';
+    el.lang = code;
+    el.dir = (code === 'ar') ? 'rtl' : 'ltr';
+    el.classList.toggle('visible', !!text);
+  });
+}
+
+// ── MODE TOGGLES (activation / output) ─────────────────────
+function setMode(section, mode) {
+  const prefix = section === 'act' ? 'act' : 'out';
+  document.getElementById(prefix + 'BtnSpeak').classList.toggle('active', mode === 'speak');
+  document.getElementById(prefix + 'BtnWrite').classList.toggle('active', mode === 'write');
+  document.getElementById(prefix + 'PanelSpeak').classList.toggle('active', mode === 'speak');
+  document.getElementById(prefix + 'PanelWrite').classList.toggle('active', mode === 'write');
+}
+
+// ── FILL IN THE BLANK ──────────────────────────────────────
+function normalize(s) {
+  return s.trim().toLowerCase().replace(/['']/g, "'");
+}
+
+function checkBlank(input) {
+  const answer = normalize(input.dataset.answer);
+  const val = normalize(input.value);
+  const fb = input.closest('.exercise').querySelector('.feedback');
+  if (!val) {
+    input.className = 'blank';
+    if (fb) fb.textContent = '';
+    return;
+  }
+  if (val === answer) {
+    input.className = 'blank correct';
+    if (fb) { fb.textContent = '✓ Correct!'; fb.className = 'feedback ok'; }
+  } else {
+    input.className = 'blank wrong';
+    if (fb) { fb.textContent = ''; fb.className = 'feedback bad'; }
+  }
+}
+
+// ── MULTIPLE CHOICE ────────────────────────────────────────
+function checkMCQ(btn, groupId, correct) {
+  const group = document.getElementById(groupId);
+  const btns = group.querySelectorAll('.opt-btn');
+  btns.forEach(b => { b.disabled = true; });
+  const fb = document.getElementById('fb-' + groupId);
+  if (btn.textContent === correct) {
+    btn.classList.add('selected-correct');
+    fb.textContent = '✓ Correct!'; fb.className = 'feedback ok';
+  } else {
+    btn.classList.add('selected-wrong');
+    fb.textContent = '✗ Not quite — the answer was: ' + correct;
+    fb.className = 'feedback bad';
+    btns.forEach(b => { if (b.textContent === correct) b.classList.add('selected-correct'); });
+  }
+}
+
+// ── UNSCRAMBLE ─────────────────────────────────────────────
+const unscrambles = {
+  1: {
+    words: ['They', 'raced', 'down', 'the', 'mountain', 'last', 'winter'],
+    answer: 'They raced down the mountain last winter'
+  },
+  2: {
+    words: ['Did', 'James', 'finish', 'the', 'race', '?'],
+    answer: 'Did James finish the race ?'
+  }
+};
+
+function buildChips(n) {
+  const data = unscrambles[n];
+  const shuffled = [...data.words].sort(() => Math.random() - 0.5);
+  const container = document.getElementById('chips' + n);
+  const builder = document.getElementById('builder' + n);
+  container.innerHTML = '';
+  builder.innerHTML = '<span style="color:var(--grey); font-size: 15.5px; font-style:italic">Tap words above to build here…</span>';
+  builder.className = 'sentence-builder';
+  builder._placed = [];
+
+  shuffled.forEach(word => {
+    const chip = document.createElement('div');
+    chip.className = 'word-chip';
+    chip.textContent = word;
+    chip.onclick = () => placeWord(n, chip, word);
+    container.appendChild(chip);
+  });
+}
+
+function placeWord(n, chip, word) {
+  if (chip.classList.contains('used')) return;
+  chip.classList.add('used');
+  const builder = document.getElementById('builder' + n);
+
+  if (builder._placed.length === 0) builder.innerHTML = '';
+  builder._placed.push({ word, chip });
+
+  const pw = document.createElement('div');
+  pw.className = 'placed-word';
+  pw.textContent = word;
+  pw.onclick = () => removeWord(n, pw, chip, word);
+  builder.appendChild(pw);
+}
+
+function removeWord(n, pw, chip, word) {
+  const builder = document.getElementById('builder' + n);
+  builder._placed = builder._placed.filter(p => p.word !== word || p.chip !== chip);
+  pw.remove();
+  chip.classList.remove('used');
+  if (builder._placed.length === 0) {
+    builder.innerHTML = '<span style="color:var(--grey); font-size: 15.5px; font-style:italic">Tap words above to build here…</span>';
+  }
+}
+
+function resetUnscramble(n) {
+  buildChips(n);
+  const fb = document.getElementById('fb-uscr' + n);
+  fb.textContent = '';
+}
+
+function checkUnscramble(n) {
+  const builder = document.getElementById('builder' + n);
+  const placed = (builder._placed || []).map(p => p.word).join(' ');
+  const answer = unscrambles[n].answer;
+  const fb = document.getElementById('fb-uscr' + n);
+
+  if (placed === answer) {
+    builder.classList.add('correct-sentence');
+    builder.classList.remove('wrong-sentence');
+    fb.textContent = '✓ Perfect sentence!'; fb.className = 'feedback ok';
+  } else {
+    builder.classList.add('wrong-sentence');
+    builder.classList.remove('correct-sentence');
+    fb.textContent = '✗ Not quite. Check the word order.'; fb.className = 'feedback bad';
+  }
+}
+
+// ── SCORE ──────────────────────────────────────────────────
+function calcScore() {
+  let correct = 0, total = 0;
+
+  // Blanks
+  document.querySelectorAll('.blank').forEach(b => {
+    total++;
+    if (normalize(b.value) === normalize(b.dataset.answer)) correct++;
+  });
+
+  // MCQs
+  ['mcq1','mcq2','mcq3','mcq4'].forEach(id => {
+    total++;
+    const grp = document.getElementById(id);
+    if (grp && grp.querySelector('.selected-correct')) correct++;
+  });
+
+  // Unscrambles
+  [1,2].forEach(n => {
+    total++;
+    const builder = document.getElementById('builder' + n);
+    if (builder && (builder._placed||[]).map(p=>p.word).join(' ') === unscrambles[n].answer) correct++;
+  });
+
+  const panel = document.getElementById('scorePanel');
+  document.getElementById('scoreNum').textContent = correct;
+  document.getElementById('scoreLabel').textContent = `POINTS OUT OF ${total}`;
+  const pct = Math.round((correct/total)*100);
+  let msg = '';
+  if (pct >= 90) msg = '🏆 Extraordinary! You handled that better than Richard on the slopes.';
+  else if (pct >= 70) msg = "✅ Solid performance. Jeremy would approve — though he'd still crash.";
+  else if (pct >= 50) msg = '⚙️ Not bad, but you need more laps. Review section 03 and try again!';
+  else msg = '❄️ James would say: go to the café, sit down, and study the grammar card again.';
+  document.getElementById('scoreMsg').textContent = msg;
+  panel.classList.add('visible');
+  panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// ── PAGINATION ─────────────────────────────────────────────
+const TOTAL_PAGES = document.querySelectorAll('.lesson-page').length;
+let currentPage = 1;
+const pageDotsEl = document.getElementById('pageDots');
+
+for (let i = 1; i <= TOTAL_PAGES; i++) {
+  const dot = document.createElement('button');
+  dot.className = 'page-dot' + (i === 1 ? ' active' : '');
+  dot.setAttribute('aria-label', 'Page ' + i);
+  dot.onclick = () => showPage(i);
+  pageDotsEl.appendChild(dot);
+}
+
+function showPage(n) {
+  if (n < 1 || n > TOTAL_PAGES) return;
+  currentPage = n;
+  document.querySelectorAll('.lesson-page').forEach(p => {
+    p.classList.toggle('active', Number(p.dataset.page) === n);
+  });
+  document.querySelectorAll('.page-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === n - 1);
+  });
+  document.getElementById('pageBtnBack').disabled = (n === 1);
+  document.getElementById('pageBtnNext').disabled = (n === TOTAL_PAGES);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goPage(delta) {
+  showPage(currentPage + delta);
+}
+
+// ── INIT ───────────────────────────────────────────────────
+buildChips(1);
+buildChips(2);
+showPage(1);
+</script>
+</body>
+</html>

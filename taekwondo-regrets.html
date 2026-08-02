@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taekwondo: Konjunktiv II der Vergangenheit</title>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@300;400;700&family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #c0392b;
+    --dark-red: #922b21;
+    --black: #0a0a0a;
+    --white: #f5f5f0;
+    --gold: #d4a017;
+    --mid: #1a1a1a;
+    --panel: #111111;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--black);
+    color: var(--white);
+    font-family: 'Roboto Condensed', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* === HEADER === */
+  header {
+    background: var(--black);
+    border-bottom: 3px solid var(--red);
+    padding: 2.2rem 2rem 1.6rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: 50%; transform: translateX(-50%);
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(192,57,43,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .belt-stripe {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    margin-bottom: 1rem;
+  }
+  .belt-stripe span {
+    display: block;
+    height: 6px;
+    border-radius: 3px;
+    animation: slideIn 0.6s ease both;
+  }
+  .belt-stripe span:nth-child(1) { width: 40px; background: var(--white); animation-delay: 0s; }
+  .belt-stripe span:nth-child(2) { width: 60px; background: #f5a623; animation-delay: 0.05s; }
+  .belt-stripe span:nth-child(3) { width: 60px; background: #27ae60; animation-delay: 0.1s; }
+  .belt-stripe span:nth-child(4) { width: 60px; background: #2980b9; animation-delay: 0.15s; }
+  .belt-stripe span:nth-child(5) { width: 80px; background: var(--red); animation-delay: 0.2s; }
+  .belt-stripe span:nth-child(6) { width: 80px; background: var(--black); border: 2px solid var(--gold); animation-delay: 0.25s; }
+  .belt-stripe span:nth-child(7) { width: 60px; background: var(--red); animation-delay: 0.3s; }
+  .belt-stripe span:nth-child(8) { width: 60px; background: #2980b9; animation-delay: 0.35s; }
+  .belt-stripe span:nth-child(9) { width: 60px; background: #27ae60; animation-delay: 0.4s; }
+  .belt-stripe span:nth-child(10) { width: 40px; background: white; animation-delay: 0.45s; }
+
+  .korean-title {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+    animation: fadeUp 0.8s ease both 0.3s;
+  }
+
+  h1 {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    letter-spacing: 0.05em;
+    color: var(--white);
+    line-height: 1;
+    animation: fadeUp 0.8s ease both 0.45s;
+  }
+  h1 span { color: var(--red); }
+
+  .subtitle {
+    margin-top: 0.6rem;
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: #888;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    animation: fadeUp 0.8s ease both 0.6s;
+  }
+
+  /* === GRAMMAR BOX === */
+  .grammar-section {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    animation: fadeUp 0.9s ease both 0.7s;
+  }
+
+  .grammar-box {
+    background: var(--panel);
+    border: 1px solid #2a2a2a;
+    border-left: 4px solid var(--gold);
+    border-radius: 6px;
+    padding: 1.6rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .grammar-box::after {
+    content: '段';
+    position: absolute;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 5rem;
+    color: rgba(255,255,255,0.03);
+    pointer-events: none;
+  }
+
+  .grammar-box h2 {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+
+  .formula {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.05rem;
+  }
+  .formula .part {
+    background: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 4px;
+    padding: 0.3rem 0.7rem;
+    font-weight: 700;
+  }
+  .formula .part.key { color: var(--red); border-color: var(--red); }
+  .formula .part.aux { color: var(--gold); border-color: var(--gold); }
+  .formula .plus { color: #555; font-size: 1.2rem; }
+  .formula .equals { color: #555; margin: 0 0.3rem; }
+
+  .example-formula {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #222;
+    font-size: 0.9rem;
+    color: #aaa;
+    line-height: 1.8;
+  }
+  .example-formula strong { color: var(--red); }
+  .example-formula em { color: #ccc; font-style: normal; }
+
+  /* === TABLE === */
+  .table-wrap {
+    max-width: 900px;
+    margin: 0 auto 3rem;
+    padding: 0 1.5rem;
+    animation: fadeUp 1s ease both 0.9s;
+  }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .section-label h2 {
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: #666;
+  }
+  .section-label::before, .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #222;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 6px;
+  }
+
+  thead tr th {
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #555;
+    font-weight: 400;
+    padding: 0.5rem 1.2rem;
+    text-align: left;
+  }
+  thead tr th:last-child { text-align: right; }
+
+  tbody tr {
+    background: var(--panel);
+    transition: background 0.2s;
+  }
+  tbody tr:hover { background: #161616; }
+
+  tbody tr td {
+    padding: 1rem 1.2rem;
+    vertical-align: top;
+    border-top: 1px solid #1d1d1d;
+    border-bottom: 1px solid #1d1d1d;
+  }
+  tbody tr td:first-child {
+    border-left: 1px solid #1d1d1d;
+    border-radius: 5px 0 0 5px;
+    width: 40px;
+  }
+  tbody tr td:last-child {
+    border-right: 1px solid #1d1d1d;
+    border-radius: 0 5px 5px 0;
+  }
+
+  .row-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: #1e1e1e;
+    border: 1px solid #2e2e2e;
+    font-size: 0.7rem;
+    color: #555;
+    font-weight: 700;
+  }
+
+  .german {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.4;
+  }
+  .german .highlight-haben { color: var(--gold); }
+  .german .highlight-verb { color: var(--red); }
+
+  .english {
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 0.3rem;
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .tag.attack { background: rgba(192,57,43,0.15); color: var(--red); border: 1px solid rgba(192,57,43,0.3); }
+  .tag.defense { background: rgba(41,128,185,0.12); color: #5dade2; border: 1px solid rgba(41,128,185,0.3); }
+  .tag.mental { background: rgba(212,160,23,0.1); color: var(--gold); border: 1px solid rgba(212,160,23,0.3); }
+  .tag.footwork { background: rgba(39,174,96,0.12); color: #58d68d; border: 1px solid rgba(39,174,96,0.3); }
+  .tag.timing { background: rgba(155,89,182,0.12); color: #af7ac5; border: 1px solid rgba(155,89,182,0.3); }
+
+  /* red-stripe category headers */
+  .cat-row td {
+    background: #180e0e !important;
+    border-color: #2a1515 !important;
+    padding: 0.6rem 1.2rem;
+  }
+  .cat-row td span {
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--red);
+    font-weight: 700;
+  }
+
+  /* === FOOTER === */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    border-top: 1px solid #1a1a1a;
+    color: #333;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  footer span { color: var(--red); }
+
+  /* === ANIMATIONS === */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: scaleX(0); }
+    to   { opacity: 1; transform: scaleX(1); }
+  }
+
+  /* === PRINT FRIENDLINESS === */
+  @media print {
+    body { background: white; color: black; }
+    header { border-color: black; }
+    .grammar-box, tbody tr { background: #f9f9f9; color: black; }
+    .german { color: #111; }
+    .english { color: #444; }
+  }
+
+  @media (max-width: 600px) {
+    .formula { font-size: 0.85rem; }
+    tbody tr td { padding: 0.75rem 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="belt-stripe">
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <p class="korean-title">태권도 — Grammatik</p>
+  <h1>Vergangene <span>Bedauern</span></h1>
+  <p class="subtitle">Konjunktiv II der Vergangenheit &nbsp;·&nbsp; Past Regrets with <em>hätte … sollen</em></p>
+</header>
+
+<!-- GRAMMAR BOX -->
+<section class="grammar-section">
+  <div class="grammar-box">
+    <h2>Die Formel &nbsp;/&nbsp; The Formula</h2>
+    <div class="formula">
+      <div class="part">Subjekt</div>
+      <span class="plus">+</span>
+      <div class="part aux">hätte(n)</div>
+      <span class="plus">+</span>
+      <div class="part">[Objekt / Adverb]</div>
+      <span class="plus">+</span>
+      <div class="part key">Infinitiv</div>
+      <span class="plus">+</span>
+      <div class="part key">sollen</div>
+    </div>
+    <div class="example-formula">
+      <strong>Ich</strong> &nbsp;<em>hätte</em>&nbsp; meine Deckung &nbsp;<strong>oben halten sollen.</strong>
+      &nbsp;→&nbsp; <em>I should have kept my guard up.</em><br>
+      <strong>Er</strong> &nbsp;<em>hätte</em>&nbsp; schneller &nbsp;<strong>reagieren sollen.</strong>
+      &nbsp;→&nbsp; <em>He should have reacted faster.</em>
+    </div>
+  </div>
+</section>
+
+<!-- TABLE -->
+<div class="table-wrap">
+  <div class="section-label"><h2>Übungssätze &nbsp;/&nbsp; Practice Sentences</h2></div>
+
+  <table>
+    <thead>
+      <tr>
+        <th></th>
+        <th>Deutsch</th>
+        <th style="text-align:right">Kategorie</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <!-- DEFENSE -->
+      <tr class="cat-row"><td colspan="3"><span>⚔ Verteidigung — Defense</span></td></tr>
+
+      <tr>
+        <td><span class="row-num">1</span></td>
+        <td>
+          <div class="german">Ich <span class="highlight-haben">hätte</span> meine Deckung oben <span class="highlight-verb">halten sollen</span>.</div>
+          <div class="english">I should have kept my guard up.</div>
+        </td>
+        <td style="text-align:right"><span class="tag defense">Verteidigung</span></td>
+      </tr>
+
+      <tr>
+        <td><span class="row-num">2</span></td>
+        <td>
+          <div class="german">Ich <span class="highlight-haben">hätte</span> den Gegner besser <span class="highlight-verb">beobachten sollen</span>.</div>
+          <div class="english">I should have watched my opponent more carefully.</div>
+        </td>
+        <td style="text-align:right"><span class="tag defense">Verteidigung</span></td>
+      </tr>
+
+      <tr>
+        <td><span class="row-num">3</span></td>
+        <td>
+          <div class="german">Ich <span class="highlight-haben">hätte</span> den Tritt <span class="highlight-verb">abwehren sollen</span>.</div>
+          <div class="english">I should have blocked the kick.</div>
+        </td>
+        <td style="text-align:right"><span class="tag defense">Verteidigung</span></td>
+      </tr>
+
+      <tr>
+        <td><span class="row-num">4</span></td>
+        <td>
+          <div class="german">Ich <span class="highlight-haben">hätte</span> mich schneller <span class="highlight-verb">bewegen sollen</span>.</div>
+          <div class="english">I should have moved faster.</div>
+        </td>
+        <td style="text-align:right"><span class="tag defense">Verteidigung</span></td>
+      </tr>
+
+      <!-- ATTACK -->
+      <tr class="cat-row"><td colspan="3"><span>🥋 Angriff — Attack</span></td></tr>
+
+      <tr>
+        <td><span class="row-num">5</span></td>
+        <td>
+          <div class="german">Ich <span class="highlight-haben">hätte</span> den Kick früher <span class="highlight-verb">ausführen sollen</span>.</div>
+          <div class="english">I should have thrown the kick earlier.</div>
+        </td>
+        <td style="text-align:right"><span class="tag attack">Angriff</span></td>
+      </tr>
+
+      <tr>
+        <td><span class="row-num">6</span></td>
+        <td>
+          <div class="german">Ich <span class="highlight-haben">hätte</span> den Roundhouse-Kick stärker <span class="highlight-verb">ausführen sollen</span>.</div>
+          <div class="english">I should have delivered the roundhouse kick with more power.</div>
+        </td>
+        <td style="text-align:right"><span class="tag attack">Angriff</span></td>
+      </tr>
+
+      <tr>
+        <td><span class="row-num">7</span></td>
+        <td>
+          <div class="german">Ich <span class="highlight-haben">hätte</span> eine Kombination <span class="highlight-verb">versuchen sollen</span>.</div>
+          <div class="english">I should have tried a combination.</div>
+        </td>
+        <td style="text-align:right"><span class="tag attack">Angriff</span></td>
+      </tr>
+
+      <tr>
+        <td><span class="row-num">8</span></td>
+        <td>
+          <div class="german">Ich <span class="highlight-haben">hätte</span> den Sprungkick nicht <span class="highlight-verb">riskieren sollen</span>.</div>
+          <div class="english">I should not have risked the jump kick.</div>
+        </td>
+        <td style="text-align:right"><span class="tag attack">Angriff</span></td>
+      </tr>
+
+      <!-- FOOTWORK -->
+      <tr class="cat-row"><td colspan="3"><span>👣 Beinarbeit — Footwork</span></td></tr>
+
+      <tr>
+        <td><span class="row-num">9</span></td>
+        <td>
+          <div class="german">Ich <span class="highlight-haben">hätte</span> einen Schritt zurück <span class="highlight-verb">machen sollen</span>.</div>
+          <div class="english">I should have taken a step back.</div>
+        </td>
+        <td style="text-align:right"><span class="tag footwork">Beinarbeit</span></td>
+      </tr>
+
+      <tr>
+        <td><span class="row-num">10</span></td>
+        <td>
+          <div class="german">Ich <span class="highlight-haben">hätte</span> meine Standposition <span class="highlight-verb">korrigieren sollen</span>.</div>
+          <div class="english">I should have corrected my stance.</div>
+        </td>
+        <td style="text-align:right"><span class="tag footwork">Beinarbeit</span></td>
+      </tr>
+
+      <tr>
+        <td><span class="row-num">11</span></td>
+        <td>
+          <div class="german">Ich <span class="highlight-haben">hätte</span> mehr Abstand <span class="highlight-verb">halten sollen</span>.</div>
+          <div class="english">I should have kept more distance.</div>
+        </td>
+        <td style="text-align:right"><span class="tag footwork">Beinarbeit</span></td>
+      </tr>
+
+      <!-- TIMING -->
+      <tr class="cat-row"><td colspan="3"><span>⏱ Timing</span></td></tr>
+
+      <tr>
+        <td><span class="row-num">12</span></td>
+        <td>
+          <div class="german">Ich <span class="highlight-haben">hätte</span> die Lücke sofort <span class="highlight-verb">nutzen sollen</span>.</div>
+          <div class="english">I should have used the opening immediately.</div>
+        </td>
+        <td style="text-align:right"><span class="tag timing">Timing</span></td>
+      </tr>
+
+      <tr>
+        <td><span class="row-num">13</span></td>
+        <td>
+          <div class="german">Ich <span class="highlight-haben">hätte</span> nicht so lange <span class="highlight-verb">warten sollen</span>.</div>
+          <div class="english">I should not have waited so long.</div>
+        </td>
+        <td style="text-align:right"><span class="tag timing">Timing</span></td>
+      </tr>
+
+      <tr>
+        <td><span class="row-num">14</span></td>
+        <td>
+          <div class="german">Ich <span class="highlight-haben">hätte</span> den Angriff früher <span class="highlight-verb">antizipieren sollen</span>.</div>
+          <div class="english">I should have anticipated the attack earlier.</div>
+        </td>
+        <td style="text-align:right"><span class="tag timing">Timing</span></td>
+      </tr>
+
+      <!-- MENTAL -->
+      <tr class="cat-row"><td colspan="3"><span>🧠 Mentale Stärke — Mental Game</span></td></tr>
+
+      <tr>
+        <td><span class="row-num">15</span></td>
+        <td>
+          <div class="german">Ich <span class="highlight-haben">hätte</span> ruhiger <span class="highlight-verb">bleiben sollen</span>.</div>
+          <div class="english">I should have stayed calmer.</div>
+        </td>
+        <td style="text-align:right"><span class="tag mental">Mental</span></td>
+      </tr>
+
+      <tr>
+        <td><span class="row-num">16</span></td>
+        <td>
+          <div class="german">Ich <span class="highlight-haben">hätte</span> mich besser <span class="highlight-verb">konzentrieren sollen</span>.</div>
+          <div class="english">I should have concentrated better.</div>
+        </td>
+        <td style="text-align:right"><span class="tag mental">Mental</span></td>
+      </tr>
+
+      <tr>
+        <td><span class="row-num">17</span></td>
+        <td>
+          <div class="german">Ich <span class="highlight-haben">hätte</span> nicht so nervös <span class="highlight-verb">sein sollen</span>.</div>
+          <div class="english">I should not have been so nervous.</div>
+        </td>
+        <td style="text-align:right"><span class="tag mental">Mental</span></td>
+      </tr>
+
+      <tr>
+        <td><span class="row-num">18</span></td>
+        <td>
+          <div class="german">Wir <span class="highlight-haben">hätten</span> mehr Sparring <span class="highlight-verb">üben sollen</span>.</div>
+          <div class="english">We should have practised more sparring.</div>
+        </td>
+        <td style="text-align:right"><span class="tag mental">Mental</span></td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+
+<footer>
+  태권도 <span>·</span> Konjunktiv II der Vergangenheit <span>·</span> hätte … sollen
+</footer>
+
+</body>
+</html>

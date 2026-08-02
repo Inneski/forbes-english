@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nietzsche Grammar Test — Part II</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=IM+Fell+English:ital@0;1&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0e1218;
+    --paper: #e8edf5;
+    --paper2: #d8e0f0;
+    --silver: #8a9ab8;
+    --blue: #2a3a6b;
+    --blue-light: #4a5f9e;
+    --red: #7a2030;
+    --shadow: rgba(5,8,20,0.5);
+    --mid: #5a6888;
+    --faint: #b0bcd8;
+    --gold: #c8a84a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #060810;
+    background-image:
+      radial-gradient(ellipse at 10% 10%, #0d1228 0%, transparent 55%),
+      radial-gradient(ellipse at 90% 90%, #100818 0%, transparent 55%),
+      radial-gradient(ellipse at 50% 50%, #080c1a 0%, transparent 80%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 20px 80px;
+    font-family: 'Crimson Text', Georgia, serif;
+  }
+
+  /* Floating stars */
+  body::before {
+    content: '✦ · · ✦ · · · · ✦ · ✦ · · · ✦';
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    text-align: center;
+    font-size: 10px;
+    color: rgba(180,190,220,0.15);
+    letter-spacing: 2em;
+    padding-top: 12px;
+    pointer-events: none;
+  }
+
+  .page {
+    max-width: 800px;
+    width: 100%;
+    background: var(--paper);
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E"),
+      linear-gradient(170deg, #edf2ff 0%, #dce5f8 35%, #ccd7f0 100%);
+    box-shadow:
+      0 0 0 1px #8899cc44,
+      0 0 80px rgba(0,0,40,0.95),
+      inset 0 0 100px rgba(80,100,180,0.06);
+    padding: 60px 70px;
+    position: relative;
+    animation: pageReveal 1.2s ease forwards;
+    opacity: 0;
+  }
+
+  @keyframes pageReveal {
+    from { opacity: 0; transform: translateY(28px) scale(0.99); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .page::before {
+    content: '';
+    position: absolute;
+    inset: 16px;
+    border: 1px solid #8899cc33;
+    pointer-events: none;
+  }
+  .page::after {
+    content: '';
+    position: absolute;
+    inset: 22px;
+    border: 1px solid #8899cc18;
+    pointer-events: none;
+  }
+
+  /* Part badge */
+  .part-badge {
+    position: absolute;
+    top: 28px;
+    right: 38px;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--blue-light);
+    border: 1px solid var(--faint);
+    padding: 4px 12px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding-bottom: 32px;
+    margin-bottom: 36px;
+    position: relative;
+  }
+
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--blue-light), transparent);
+  }
+
+  .eyebrow {
+    font-family: 'Crimson Text', serif;
+    font-size: 11px;
+    letter-spacing: 0.38em;
+    text-transform: uppercase;
+    color: var(--blue-light);
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 900;
+    color: var(--ink);
+    line-height: 1.1;
+    margin-bottom: 6px;
+  }
+
+  h1 em { font-style: italic; color: var(--red); }
+
+  .subtitle {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--mid);
+    margin-top: 10px;
+  }
+
+  .ornament {
+    color: var(--blue-light);
+    font-size: 1.2rem;
+    display: block;
+    margin: 14px auto 0;
+    letter-spacing: 0.4em;
+    opacity: 0.7;
+  }
+
+  .intro {
+    font-family: 'Crimson Text', serif;
+    font-size: 1.05rem;
+    color: var(--mid);
+    font-style: italic;
+    text-align: center;
+    margin-bottom: 32px;
+    line-height: 1.7;
+    padding: 0 20px;
+  }
+
+  /* Progress */
+  .progress-bar {
+    height: 2px;
+    background: var(--faint);
+    margin-bottom: 38px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--blue), var(--red));
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  /* Sections */
+  .section { margin-bottom: 46px; animation: fadeUp 0.8s ease both; }
+  .section:nth-child(2) { animation-delay: 0.1s; }
+  .section:nth-child(3) { animation-delay: 0.2s; }
+  .section:nth-child(4) { animation-delay: 0.3s; }
+  .section:nth-child(5) { animation-delay: 0.4s; }
+  .section:nth-child(6) { animation-delay: 0.5s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 8px;
+  }
+
+  .section-num {
+    background: var(--ink);
+    color: var(--blue-light);
+    font-family: 'Playfair Display', serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.12rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .section-instruction {
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--mid);
+    margin: 6px 0 16px 46px;
+  }
+
+  /* Nietzsche quote */
+  .nietzsche-quote {
+    border-left: 3px solid var(--blue-light);
+    padding: 12px 18px;
+    margin: 16px 0 12px;
+    background: rgba(74,95,158,0.06);
+  }
+  .nietzsche-quote p {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--ink);
+    line-height: 1.6;
+  }
+  .nietzsche-quote cite {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.76rem;
+    letter-spacing: 0.1em;
+    color: var(--blue-light);
+    text-transform: uppercase;
+    font-style: normal;
+  }
+
+  /* Questions */
+  .question {
+    margin-bottom: 18px;
+    padding: 16px 20px;
+    background: rgba(255,255,255,0.45);
+    border: 1px solid var(--faint);
+    transition: background 0.2s;
+  }
+  .question:hover { background: rgba(255,255,255,0.65); }
+
+  .q-text {
+    font-size: 1.05rem;
+    color: var(--ink);
+    line-height: 1.65;
+    margin-bottom: 12px;
+  }
+
+  .q-text strong {
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: var(--blue-light);
+    text-underline-offset: 3px;
+  }
+
+  .blank {
+    display: inline-block;
+    border-bottom: 2px solid var(--ink);
+    min-width: 80px;
+    color: var(--red);
+    font-style: italic;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+    padding: 9px 12px;
+    border: 1px solid transparent;
+    transition: all 0.18s;
+    font-size: 0.97rem;
+    color: var(--ink);
+    background: rgba(255,255,255,0.35);
+    text-align: left;
+    width: 100%;
+    font-family: 'Crimson Text', serif;
+    line-height: 1.5;
+  }
+
+  .option:hover:not(:disabled) {
+    border-color: var(--blue-light);
+    background: rgba(74,95,158,0.1);
+  }
+
+  .option .letter {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: var(--blue-light);
+    min-width: 18px;
+    padding-top: 2px;
+  }
+
+  .option.correct      { background: rgba(40,90,40,0.13); border-color: #5a8a5a; color: #1e4e1e; }
+  .option.wrong        { background: rgba(130,30,30,0.1); border-color: var(--red); color: var(--red); text-decoration: line-through; }
+  .option.reveal-correct { background: rgba(40,90,40,0.08); border-color: #5a8a5a; color: #1e4e1e; font-style: italic; }
+  .option:disabled     { cursor: default; }
+
+  .feedback {
+    margin-top: 10px;
+    font-size: 0.88rem;
+    font-style: italic;
+    color: var(--mid);
+    padding: 8px 12px;
+    border-left: 2px solid var(--blue-light);
+    background: rgba(74,95,158,0.05);
+    display: none;
+  }
+  .feedback.visible { display: block; }
+  .feedback.correct-fb { border-color: #5a8a5a; color: #2a5a2a; }
+  .feedback.wrong-fb   { border-color: var(--red); color: var(--red); }
+
+  /* Reorder question */
+  .reorder-container { display: flex; flex-direction: column; gap: 7px; margin-top: 4px; }
+
+  .word-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px;
+    border: 1px solid var(--faint);
+    background: rgba(255,255,255,0.5);
+    font-size: 0.97rem;
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    color: var(--ink);
+    cursor: grab;
+    user-select: none;
+    transition: all 0.15s;
+  }
+  .word-chip:active { cursor: grabbing; opacity: 0.7; }
+  .word-chip.dragging { opacity: 0.4; border-color: var(--blue-light); }
+  .word-chip .drag-handle { color: var(--faint); font-size: 0.8rem; }
+
+  .check-order-btn {
+    margin-top: 10px;
+    background: var(--blue);
+    color: #d0daf8;
+    border: none;
+    padding: 8px 22px;
+    font-family: 'Crimson Text', serif;
+    font-size: 0.92rem;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    transition: background 0.2s;
+  }
+  .check-order-btn:hover { background: var(--blue-light); }
+  .check-order-btn:disabled { opacity: 0.4; cursor: default; }
+
+  /* Submit */
+  .submit-section {
+    text-align: center;
+    margin-top: 42px;
+    padding-top: 32px;
+    border-top: 1px solid var(--faint);
+  }
+
+  .btn-check {
+    background: var(--ink);
+    color: var(--blue-light);
+    border: 1px solid var(--blue-light);
+    padding: 14px 52px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-check:hover { background: var(--blue); color: #e0e8ff; }
+
+  .score-panel {
+    display: none;
+    margin-top: 32px;
+    padding: 28px;
+    border: 1px solid var(--blue-light);
+    background: rgba(74,95,158,0.07);
+    animation: fadeUp 0.6s ease;
+  }
+  .score-panel.visible { display: block; }
+
+  .score-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.4rem;
+    font-weight: 900;
+    color: var(--ink);
+    line-height: 1;
+  }
+
+  .score-label {
+    font-size: 0.9rem;
+    color: var(--mid);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .verdict {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--red);
+    border-top: 1px solid var(--faint);
+    padding-top: 14px;
+    margin-top: 14px;
+    line-height: 1.6;
+  }
+
+  .btn-reset {
+    margin-top: 20px;
+    background: transparent;
+    color: var(--mid);
+    border: 1px solid var(--faint);
+    padding: 8px 28px;
+    font-family: 'Crimson Text', serif;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-reset:hover { border-color: var(--blue-light); color: var(--blue-light); }
+
+  @media (max-width: 600px) {
+    .page { padding: 36px 26px; }
+    .options { grid-template-columns: 1fr; }
+    h1 { font-size: 1.9rem; }
+    .part-badge { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="part-badge">Part II</div>
+
+  <header class="header">
+    <div class="eyebrow">English Grammar Examination — Volume II</div>
+    <h1>The <em>Grammar</em> of Power</h1>
+    <p class="subtitle">Five New Trials for the Wanderer of Language</p>
+    <span class="ornament">✦ &nbsp; · &nbsp; ✦ &nbsp; · &nbsp; ✦</span>
+  </header>
+
+  <p class="intro">
+    You have survived the first abyss. Now the abyss looks back with new questions.<br>
+    Modal verbs, reported speech, relative clauses, comparatives — and word order await.
+  </p>
+
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+  <!-- SECTION I: Modal Verbs -->
+  <div class="section">
+    <div class="section-label">
+      <div class="section-num">I</div>
+      <div class="section-title">Modal Verbs — The Language of Will</div>
+    </div>
+    <p class="section-instruction">Select the modal verb that best fits the meaning of each sentence.</p>
+
+    <div class="question" data-type="mc" data-answer="b">
+      <p class="q-text">You <span class="blank">___</span> read <em>Beyond Good and Evil</em> if you want to understand Nietzsche's critique of morality. It is essential.</p>
+      <div class="options">
+        <button class="option" data-val="a"><span class="letter">A</span> might</button>
+        <button class="option" data-val="b"><span class="letter">B</span> must</button>
+        <button class="option" data-val="c"><span class="letter">C</span> could</button>
+        <button class="option" data-val="d"><span class="letter">D</span> shall</button>
+      </div>
+      <div class="feedback">💡 <strong>Must</strong> expresses strong necessity or obligation. "Might" is uncertain possibility, "could" is ability or weak possibility — neither fits "it is essential."</div>
+    </div>
+
+    <div class="question" data-type="mc" data-answer="c">
+      <p class="q-text">Nietzsche <span class="blank">___</span> have felt very lonely; he had almost no close friends in his final years.</p>
+      <div class="options">
+        <button class="option" data-val="a"><span class="letter">A</span> should</button>
+        <button class="option" data-val="b"><span class="letter">B</span> will</button>
+        <button class="option" data-val="c"><span class="letter">C</span> must</button>
+        <button class="option" data-val="d"><span class="letter">D</span> would</button>
+      </div>
+      <div class="feedback">💡 <strong>Must have + past participle</strong> expresses a logical deduction about the past ("I'm almost certain that..."). This is different from obligation.</div>
+    </div>
+
+    <div class="question" data-type="mc" data-answer="d">
+      <p class="q-text">You <span class="blank">___</span> misquote Nietzsche to support nationalist ideology — he explicitly rejected German nationalism.</p>
+      <div class="options">
+        <button class="option" data-val="a"><span class="letter">A</span> mustn't</button>
+        <button class="option" data-val="b"><span class="letter">B</span> couldn't</button>
+        <button class="option" data-val="c"><span class="letter">C</span> mightn't</button>
+        <button class="option" data-val="d"><span class="letter">D</span> shouldn't</button>
+      </div>
+      <div class="feedback">💡 <strong>Shouldn't</strong> = moral advice / recommendation against something. <strong>Mustn't</strong> = strict prohibition. Here, we are advising, not issuing an absolute ban.</div>
+    </div>
+  </div>
+
+  <!-- SECTION II: Reported Speech -->
+  <div class="section">
+    <div class="section-label">
+      <div class="section-num">II</div>
+      <div class="section-title">Reported Speech — Zarathustra Speaks… Indirectly</div>
+    </div>
+    <p class="section-instruction">Transform or identify the correct reported speech form.</p>
+
+    <div class="nietzsche-quote">
+      <p>"Without music, life would be a mistake."</p>
+      <cite>— Twilight of the Idols</cite>
+    </div>
+
+    <div class="question" data-type="mc" data-answer="a">
+      <p class="q-text">Nietzsche said: "I am dynamite." → He said that he <span class="blank">___</span> dynamite.</p>
+      <div class="options">
+        <button class="option" data-val="a"><span class="letter">A</span> was</button>
+        <button class="option" data-val="b"><span class="letter">B</span> is</button>
+        <button class="option" data-val="c"><span class="letter">C</span> were</button>
+        <button class="option" data-val="d"><span class="letter">D</span> had been</button>
+      </div>
+      <div class="feedback">💡 In reported speech, the present tense <em>"am"</em> shifts back to the <strong>past tense</strong> <em>"was"</em>. This is called "backshifting."</div>
+    </div>
+
+    <div class="question" data-type="mc" data-answer="b">
+      <p class="q-text">Lou Salomé told him: "I will never marry you." → She told him that she <span class="blank">___</span> marry him.</p>
+      <div class="options">
+        <button class="option" data-val="a"><span class="letter">A</span> will never</button>
+        <button class="option" data-val="b"><span class="letter">B</span> would never</button>
+        <button class="option" data-val="c"><span class="letter">C</span> had never</button>
+        <button class="option" data-val="d"><span class="letter">D</span> could never</button>
+      </div>
+      <div class="feedback">💡 <strong>"Will"</strong> shifts to <strong>"would"</strong> in reported speech. Direct: "I will go." → Reported: "She said she would go."</div>
+    </div>
+
+    <div class="question" data-type="mc" data-answer="c">
+      <p class="q-text">His publisher asked him: "Have you finished the manuscript?" → His publisher asked him <span class="blank">___</span> the manuscript.</p>
+      <div class="options">
+        <button class="option" data-val="a"><span class="letter">A</span> if he has finished</button>
+        <button class="option" data-val="b"><span class="letter">B</span> whether has he finished</button>
+        <button class="option" data-val="c"><span class="letter">C</span> whether he had finished</button>
+        <button class="option" data-val="d"><span class="letter">D</span> if finished he had</button>
+      </div>
+      <div class="feedback">💡 Reported yes/no questions use <strong>whether / if + subject + verb</strong> (no inversion). The present perfect "have finished" shifts to past perfect "had finished."</div>
+    </div>
+  </div>
+
+  <!-- SECTION III: Relative Clauses -->
+  <div class="section">
+    <div class="section-label">
+      <div class="section-num">III</div>
+      <div class="section-title">Relative Clauses — Who, Which, That, Whose</div>
+    </div>
+    <p class="section-instruction">Choose the correct relative pronoun or decide if one is needed.</p>
+
+    <div class="question" data-type="mc" data-answer="b">
+      <p class="q-text">Nietzsche, <span class="blank">___</span> sister distorted his manuscripts, is often misunderstood as an antisemite.</p>
+      <div class="options">
+        <button class="option" data-val="a"><span class="letter">A</span> who</button>
+        <button class="option" data-val="b"><span class="letter">B</span> whose</button>
+        <button class="option" data-val="c"><span class="letter">C</span> which</button>
+        <button class="option" data-val="d"><span class="letter">D</span> that</button>
+      </div>
+      <div class="feedback">💡 <strong>Whose</strong> shows possession in relative clauses ("...his sister" = the sister belonging to Nietzsche). It works for both people and things.</div>
+    </div>
+
+    <div class="question" data-type="mc" data-answer="a">
+      <p class="q-text">The concept <span class="blank">___</span> influenced Nietzsche the most was the philosophy of Arthur Schopenhauer.</p>
+      <div class="options">
+        <button class="option" data-val="a"><span class="letter">A</span> that</button>
+        <button class="option" data-val="b"><span class="letter">B</span> who</button>
+        <button class="option" data-val="c"><span class="letter">C</span> whom</button>
+        <button class="option" data-val="d"><span class="letter">D</span> whose</button>
+      </div>
+      <div class="feedback">💡 <strong>That</strong> (or <em>which</em>) is used for things in defining relative clauses. <strong>Who / whom</strong> is reserved for people.</div>
+    </div>
+
+    <div class="question" data-type="mc" data-answer="d">
+      <p class="q-text">The philosopher <span class="blank">___</span> Nietzsche admired most, then despised, was Richard Wagner.</p>
+      <div class="options">
+        <button class="option" data-val="a"><span class="letter">A</span> which</button>
+        <button class="option" data-val="b"><span class="letter">B</span> who</button>
+        <button class="option" data-val="c"><span class="letter">C</span> whose</button>
+        <button class="option" data-val="d"><span class="letter">D</span> whom</button>
+      </div>
+      <div class="feedback">💡 <strong>Whom</strong> is used when the relative pronoun is the <em>object</em> of the clause (here: Nietzsche admired <em>him</em> → whom). It sounds formal but correct.</div>
+    </div>
+  </div>
+
+  <!-- SECTION IV: Comparatives & Superlatives -->
+  <div class="section">
+    <div class="section-label">
+      <div class="section-num">IV</div>
+      <div class="section-title">Comparatives &amp; Superlatives — Beyond Good, Better, Best</div>
+    </div>
+    <p class="section-instruction">Select the correct comparative or superlative form.</p>
+
+    <div class="nietzsche-quote">
+      <p>"The higher we soar, the smaller we appear to those who cannot fly."</p>
+      <cite>— Thus Spoke Zarathustra</cite>
+    </div>
+
+    <div class="question" data-type="mc" data-answer="c">
+      <p class="q-text">Nietzsche's later works are considered <span class="blank">___</span> his earlier writings on Wagner.</p>
+      <div class="options">
+        <button class="option" data-val="a"><span class="letter">A</span> more radical than</button>
+        <button class="option" data-val="b"><span class="letter">B</span> the most radical of</button>
+        <button class="option" data-val="c"><span class="letter">C</span> far more radical than</button>
+        <button class="option" data-val="d"><span class="letter">D</span> more radically as</button>
+      </div>
+      <div class="feedback">💡 <strong>Far more ... than</strong> is a common intensified comparative. Note: comparatives always use <em>than</em>, not <em>as</em>. "As radical as" is used for equality.</div>
+    </div>
+
+    <div class="question" data-type="mc" data-answer="a">
+      <p class="q-text"><em>Thus Spoke Zarathustra</em> is arguably <span class="blank">___</span> of all Nietzsche's books.</p>
+      <div class="options">
+        <button class="option" data-val="a"><span class="letter">A</span> the most poetic</button>
+        <button class="option" data-val="b"><span class="letter">B</span> most poetic</button>
+        <button class="option" data-val="c"><span class="letter">C</span> the more poetic</button>
+        <button class="option" data-val="d"><span class="letter">D</span> the poeticest</button>
+      </div>
+      <div class="feedback">💡 Superlatives of longer adjectives use <strong>the most + adjective</strong>. "The" is required before superlatives. "Poeticest" is not a real word!</div>
+    </div>
+
+    <div class="question" data-type="mc" data-answer="b">
+      <p class="q-text">Nietzsche's handwriting became <span class="blank">___</span> as his eyesight deteriorated over the years.</p>
+      <div class="options">
+        <button class="option" data-val="a"><span class="letter">A</span> more bad</button>
+        <button class="option" data-val="b"><span class="letter">B</span> worse</button>
+        <button class="option" data-val="c"><span class="letter">C</span> worst</button>
+        <button class="option" data-val="d"><span class="letter">D</span> more worse</button>
+      </div>
+      <div class="feedback">💡 <strong>Bad → worse → worst</strong> is an irregular comparative. Never say "more bad" or "more worse." Like German <em>schlecht → schlechter → am schlechtesten</em>.</div>
+    </div>
+  </div>
+
+  <!-- SECTION V: Word Order -->
+  <div class="section">
+    <div class="section-label">
+      <div class="section-num">V</div>
+      <div class="section-title">Word Order — English is Not German</div>
+    </div>
+    <p class="section-instruction">German puts verbs at the end of clauses — English does not. Choose the correctly ordered sentence.</p>
+
+    <div class="question" data-type="mc" data-answer="b">
+      <p class="q-text">Which sentence has the correct English word order?</p>
+      <div class="options">
+        <button class="option" data-val="a"><span class="letter">A</span> Nietzsche in Turin in 1889 had a mental breakdown.</button>
+        <button class="option" data-val="b"><span class="letter">B</span> Nietzsche had a mental breakdown in Turin in 1889.</button>
+        <button class="option" data-val="c"><span class="letter">C</span> In 1889 a mental breakdown Nietzsche had in Turin.</button>
+        <button class="option" data-val="d"><span class="letter">D</span> Nietzsche a mental breakdown had in Turin in 1889.</button>
+      </div>
+      <div class="feedback">💡 English word order: <strong>Subject → Verb → Object → Place → Time</strong>. Unlike German, the verb must follow the subject directly in a main clause.</div>
+    </div>
+
+    <div class="question" data-type="mc" data-answer="c">
+      <p class="q-text">Which sentence correctly places the adverb?</p>
+      <div class="options">
+        <button class="option" data-val="a"><span class="letter">A</span> He read always books by Schopenhauer late at night.</button>
+        <button class="option" data-val="b"><span class="letter">B</span> Always he read books by Schopenhauer late at night.</button>
+        <button class="option" data-val="c"><span class="letter">C</span> He always read books by Schopenhauer late at night.</button>
+        <button class="option" data-val="d"><span class="letter">D</span> He read books always by Schopenhauer late at night.</button>
+      </div>
+      <div class="feedback">💡 Frequency adverbs like <strong>always, often, never, usually</strong> go <em>before</em> the main verb but <em>after</em> auxiliary verbs: "He <strong>always</strong> reads" / "He has <strong>always</strong> read."</div>
+    </div>
+
+    <div class="question" data-type="mc" data-answer="d">
+      <p class="q-text">Which is the correct question form?</p>
+      <div class="options">
+        <button class="option" data-val="a"><span class="letter">A</span> Nietzsche wrote when <em>Thus Spoke Zarathustra</em>?</button>
+        <button class="option" data-val="b"><span class="letter">B</span> When Nietzsche wrote <em>Thus Spoke Zarathustra</em>?</button>
+        <button class="option" data-val="c"><span class="letter">C</span> When wrote Nietzsche <em>Thus Spoke Zarathustra</em>?</button>
+        <button class="option" data-val="d"><span class="letter">D</span> When did Nietzsche write <em>Thus Spoke Zarathustra</em>?</button>
+      </div>
+      <div class="feedback">💡 English questions use the auxiliary <strong>do/did</strong>: <em>Question word + did + subject + base verb</em>. The verb "write" does NOT move before the subject (unlike German).</div>
+    </div>
+  </div>
+
+  <!-- Submit -->
+  <div class="submit-section">
+    <button class="btn-check" id="btnCheck">Reveal My Score</button>
+
+    <div class="score-panel" id="scorePanel">
+      <div class="score-label">Your Score — Part II</div>
+      <div class="score-num" id="scoreNum">—</div>
+      <div class="verdict" id="verdict"></div>
+      <br>
+      <button class="btn-reset" id="btnReset">↺ &nbsp; Face the Eternal Recurrence Again</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const questions = document.querySelectorAll('.question[data-type="mc"]');
+  const TOTAL = questions.length;
+  const progressFill = document.getElementById('progressFill');
+  let answered = 0;
+
+  function updateProgress() {
+    progressFill.style.width = ((answered / TOTAL) * 100) + '%';
+  }
+
+  questions.forEach(q => {
+    const correct = q.dataset.answer;
+    const buttons = q.querySelectorAll('.option');
+    const feedback = q.querySelector('.feedback');
+    let done = false;
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (done) return;
+        done = true;
+        answered++;
+        updateProgress();
+
+        buttons.forEach(b => {
+          b.disabled = true;
+          if (b.dataset.val === correct) {
+            b.classList.add(btn.dataset.val === correct ? 'correct' : 'reveal-correct');
+          }
+        });
+
+        btn.classList.add(btn.dataset.val === correct ? 'correct' : 'wrong');
+        feedback.classList.add(btn.dataset.val === correct ? 'correct-fb' : 'wrong-fb');
+        feedback.classList.add('visible');
+      });
+    });
+  });
+
+  document.getElementById('btnCheck').addEventListener('click', () => {
+    questions.forEach(q => {
+      q.querySelectorAll('.option').forEach(b => {
+        b.disabled = true;
+        if (b.dataset.val === q.dataset.answer && !b.classList.contains('correct')) {
+          b.classList.add('reveal-correct');
+        }
+      });
+      const fb = q.querySelector('.feedback');
+      if (fb) fb.classList.add('visible');
+    });
+
+    let score = 0;
+    questions.forEach(q => {
+      const chosen = q.querySelector('.option.correct');
+      if (chosen) score++;
+    });
+
+    const panel = document.getElementById('scorePanel');
+    document.getElementById('scoreNum').textContent = score + ' / ' + TOTAL;
+    panel.classList.add('visible');
+    progressFill.style.width = '100%';
+
+    const verdicts = [
+      [0,  4,  '"He who has a why to live can bear almost any how." Find your why — and study more grammar.'],
+      [5,  8,  '"Man must surpass himself." You are making progress, Wanderer. Return to the mountain.'],
+      [9,  11, '"It is not enough to have a good mind; the main thing is to use it well." You used yours well.'],
+      [12, 15, '"I am not a man. I am dynamite." And your grammar? Also dynamite. Magnificent.'],
+    ];
+
+    const v = document.getElementById('verdict');
+    for (const [min, max, text] of verdicts) {
+      if (score >= min && score <= max) { v.textContent = text; break; }
+    }
+
+    panel.scrollIntoView({ behavior: 'smooth' });
+  });
+
+  document.getElementById('btnReset').addEventListener('click', () => location.reload());
+</script>
+</body>
+</html>

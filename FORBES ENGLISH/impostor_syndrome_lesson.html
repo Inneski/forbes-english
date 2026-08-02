@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Impostor Syndrome — English Lesson</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --teal:#0F6E56;--teal-light:#E1F5EE;--teal-mid:#1D9E75;
+  --amber:#BA7517;--amber-light:#FAEEDA;
+  --coral:#993C1D;--coral-light:#FAECE7;
+  --bg:#fff;--bg2:#f7f7f5;--text:#1a1a18;--text2:#666;
+  --border:rgba(0,0,0,0.12);--border2:rgba(0,0,0,0.22);
+  --radius:8px;--radius-lg:12px;
+  --font-serif:'Lora',serif;--font-sans:'DM Sans',sans-serif;
+}
+@media(prefers-color-scheme:dark){
+  :root{--bg:#1c1c1a;--bg2:#242422;--text:#e8e6df;--text2:#999;--border:rgba(255,255,255,0.12);--border2:rgba(255,255,255,0.22);}
+  .vocab-card,.card{background:var(--bg2)!important}
+}
+body{font-family:var(--font-sans);background:var(--bg2);color:var(--text);min-height:100vh;padding:2rem 1rem}
+.lesson-wrap{max-width:780px;margin:0 auto;background:var(--bg);border-radius:16px;padding:2rem;box-shadow:0 2px 20px rgba(0,0,0,0.07)}
+.lesson-header{border-bottom:1.5px solid var(--border);padding-bottom:1.25rem;margin-bottom:1.5rem}
+.lesson-eyebrow{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--text2);margin-bottom:.4rem}
+.lesson-title{font-family:var(--font-serif);font-size:26px;font-weight:400;line-height:1.3;color:var(--text)}
+.lesson-title em{color:var(--teal);font-style:italic}
+.lesson-meta{display:flex;gap:1rem;margin-top:.75rem;flex-wrap:wrap}
+.badge{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:500}
+.badge-teal{background:var(--teal-light);color:var(--teal)}
+.badge-amber{background:var(--amber-light);color:var(--amber)}
+.badge-coral{background:var(--coral-light);color:var(--coral)}
+.progress-bar{height:4px;background:var(--border);border-radius:2px;margin-bottom:1.5rem;overflow:hidden}
+.progress-fill{height:100%;background:var(--teal-mid);border-radius:2px;transition:width .4s ease}
+.tab-nav{display:flex;border-bottom:1px solid var(--border);margin-bottom:1.75rem;overflow-x:auto;scrollbar-width:none}
+.tab-nav::-webkit-scrollbar{display:none}
+.tab-btn{font-size:13px;font-weight:500;padding:.6rem 1rem;border:none;background:none;cursor:pointer;color:var(--text2);border-bottom:2px solid transparent;white-space:nowrap;font-family:var(--font-sans);transition:color .2s}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:var(--teal);border-bottom:2px solid var(--teal)}
+.section{display:none}.section.active{display:block}
+.section-title{font-family:var(--font-serif);font-size:19px;font-weight:400;margin-bottom:.3rem;color:var(--text)}
+.section-sub{font-size:13px;color:var(--text2);margin-bottom:1.5rem;line-height:1.5}
+.card{background:var(--bg);border:.5px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem}
+.card+.card{margin-top:.75rem}
+.warmup-q{font-family:var(--font-serif);font-size:15px;font-weight:400;margin-bottom:.75rem;line-height:1.5;font-style:italic;color:var(--text)}
+.radio-group{display:flex;flex-direction:column;gap:.5rem}
+.radio-opt{display:flex;align-items:center;gap:.6rem;cursor:pointer;font-size:14px;padding:.4rem .5rem;border-radius:6px;transition:background .15s;color:var(--text)}
+.radio-opt:hover{background:var(--bg2)}
+.radio-opt input{accent-color:var(--teal);width:15px;height:15px;cursor:pointer}
+.vocab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:.75rem}
+.vocab-card{background:var(--bg);border:.5px solid var(--border);border-radius:var(--radius-lg);padding:1rem;cursor:pointer;transition:border-color .2s;min-height:90px;position:relative;overflow:hidden}
+.vocab-card:hover{border-color:var(--border2)}
+.vocab-card.flipped .front{display:none}
+.vocab-card.flipped .back{display:flex}
+.front,.back{width:100%}
+.back{display:none;flex-direction:column;gap:.3rem}
+.vocab-word{font-family:var(--font-serif);font-size:15px;font-weight:500;color:var(--text);margin-bottom:.3rem}
+.vocab-pos{font-size:11px;color:var(--teal);font-weight:500;text-transform:uppercase;letter-spacing:.07em;display:block;margin-bottom:.5rem}
+.vocab-hint{font-size:12px;color:var(--text2)}
+.vocab-def{font-size:13px;color:var(--text);line-height:1.5}
+.vocab-ex{font-size:12px;color:var(--text2);font-style:italic;margin-top:.3rem;line-height:1.4}
+.flip-hint{font-size:11px;color:var(--text2);position:absolute;bottom:.5rem;right:.75rem}
+.text-passage{font-family:var(--font-serif);font-size:15px;line-height:1.9;color:var(--text)}
+.text-passage p{margin-bottom:1rem}
+.hl{background:var(--amber-light);border-radius:3px;padding:1px 3px;cursor:pointer;color:var(--amber);border-bottom:1px solid var(--amber)}
+.tooltip{position:relative;display:inline}
+.tooltip-box{display:none;position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);font-size:12px;padding:5px 10px;border-radius:6px;white-space:nowrap;font-family:var(--font-sans);z-index:10;pointer-events:none;line-height:1.4;max-width:220px;white-space:normal;text-align:center}
+.tooltip:hover .tooltip-box{display:block}
+.q-block{margin-bottom:1.5rem}
+.q-text{font-size:14px;font-weight:500;margin-bottom:.75rem;line-height:1.5;color:var(--text)}
+.q-opts{display:flex;flex-direction:column;gap:.4rem}
+.q-opt{display:flex;align-items:flex-start;gap:.6rem;padding:.5rem .75rem;border:.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:13.5px;line-height:1.4;transition:all .15s;color:var(--text)}
+.q-opt:hover{border-color:var(--border2);background:var(--bg2)}
+.q-opt.correct{background:#E1F5EE;border-color:#1D9E75;color:#0F6E56}
+.q-opt.wrong{background:#FAECE7;border-color:#D85A30;color:#993C1D}
+.q-opt.disabled{cursor:default;pointer-events:none}
+.feedback{font-size:13px;margin-top:.5rem;padding:.4rem .75rem;border-radius:6px;display:none}
+.feedback.show{display:block}
+.feedback.ok{background:#E1F5EE;color:#0F6E56}
+.feedback.no{background:#FAECE7;color:#993C1D}
+.score-box{background:var(--bg2);border-radius:var(--radius-lg);padding:1.25rem;text-align:center;margin-top:1.5rem;display:none}
+.score-num{font-family:var(--font-serif);font-size:36px;color:var(--teal);margin-bottom:.3rem}
+.score-label{font-size:13px;color:var(--text2)}
+.grammar-box{border-left:2.5px solid var(--teal-mid);padding:.75rem 1rem;margin-bottom:1rem;background:var(--teal-light);border-radius:0 8px 8px 0}
+.grammar-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.09em;color:var(--teal);margin-bottom:.35rem}
+.grammar-ex{font-family:var(--font-serif);font-size:14px;font-style:italic;color:#1a1a18;line-height:1.6}
+.grammar-note{font-size:13px;color:#555;margin-top:.3rem;line-height:1.5}
+.fill-blank{display:inline-block;border:none;border-bottom:1.5px solid var(--teal-mid);min-width:80px;height:22px;margin:0 4px;vertical-align:bottom;background:transparent;font-family:var(--font-serif);font-size:14px;color:var(--text);outline:none;padding:0 4px}
+.fill-blank:focus{border-color:var(--amber);background:var(--amber-light)}
+.fill-blank.right{border-color:#1D9E75;background:#E1F5EE;color:#0F6E56}
+.fill-blank.wrong{border-color:#D85A30;background:#FAECE7;color:#993C1D}
+.check-btn{background:var(--teal);color:#fff;border:none;border-radius:8px;padding:.5rem 1.25rem;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-sans);margin-top:1rem}
+.check-btn:hover{opacity:.88}
+.discuss-card{border-left:2.5px solid var(--border2);padding:.6rem 1rem;margin-bottom:.75rem;background:var(--bg2);border-radius:0 8px 8px 0}
+.discuss-num{font-size:11px;font-weight:500;color:var(--text2);margin-bottom:.2rem;text-transform:uppercase;letter-spacing:.07em}
+.discuss-q{font-family:var(--font-serif);font-size:15px;font-style:italic;line-height:1.6;color:var(--text)}
+.discuss-tip{font-size:12px;color:var(--text2);margin-top:.3rem}
+.reflect-area{width:100%;min-height:90px;font-family:var(--font-serif);font-size:14px;padding:.75rem;border:.5px solid var(--border);border-radius:var(--radius);background:var(--bg);color:var(--text);resize:vertical;line-height:1.7;outline:none}
+.reflect-area:focus{border-color:var(--teal-mid)}
+.reflect-label{font-size:13px;font-weight:500;margin-bottom:.4rem;color:var(--text);display:block}
+.reflect-prompt{font-family:var(--font-serif);font-size:15px;font-style:italic;margin-bottom:.5rem;color:var(--text2);line-height:1.6}
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;padding-top:1.25rem;border-top:.5px solid var(--border);flex-wrap:wrap;gap:.5rem}
+.nav-btn{background:none;border:.5px solid var(--border2);border-radius:8px;padding:.5rem 1.1rem;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-sans);color:var(--text);transition:background .15s}
+.nav-btn:hover{background:var(--bg2)}
+.nav-btn.primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.nav-btn.primary:hover{opacity:.88}
+.step-count{font-size:12px;color:var(--text2)}
+.tag-cloud{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
+.tag{font-size:12px;padding:4px 10px;border-radius:20px;background:var(--bg2);color:var(--text2);border:.5px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="lesson-wrap">
+  <div class="lesson-header">
+    <div class="lesson-eyebrow">English B2 · Listening &amp; Language</div>
+    <div class="lesson-title">Do You Feel Like a Fraud? — Understanding <em>Impostor Syndrome</em></div>
+    <div class="lesson-meta">
+      <span class="badge badge-teal">Psychology &amp; Society</span>
+      <span class="badge badge-amber">B2 — Upper Intermediate</span>
+      <span class="badge badge-coral">6 Activities</span>
+    </div>
+  </div>
+
+  <div class="progress-bar"><div class="progress-fill" id="prog" style="width:16.6%"></div></div>
+
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="goTo(0)">1 Warm Up</button>
+    <button class="tab-btn" onclick="goTo(1)">2 Vocabulary</button>
+    <button class="tab-btn" onclick="goTo(2)">3 Reading</button>
+    <button class="tab-btn" onclick="goTo(3)">4 Comprehension</button>
+    <button class="tab-btn" onclick="goTo(4)">5 Language Focus</button>
+    <button class="tab-btn" onclick="goTo(5)">6 Discussion</button>
+  </div>
+
+  <!-- SECTION 1 -->
+  <div id="sec-0" class="section active">
+    <div class="section-title">Warm Up</div>
+    <div class="section-sub">Before watching, think about your own experiences. There are no right or wrong answers here.</div>
+    <div class="card">
+      <p class="warmup-q">"Have you ever felt that you didn't really deserve your success — that people might find out you're not as capable as they think?"</p>
+      <div class="radio-group">
+        <label class="radio-opt"><input type="radio" name="wu1" value="a"> Yes, quite often — it's a familiar feeling</label>
+        <label class="radio-opt"><input type="radio" name="wu1" value="b"> Sometimes, especially in new situations</label>
+        <label class="radio-opt"><input type="radio" name="wu1" value="c"> Rarely — I usually trust my abilities</label>
+        <label class="radio-opt"><input type="radio" name="wu1" value="d"> Never — I am confident in what I do</label>
+      </div>
+    </div>
+    <div class="card">
+      <p class="warmup-q">Which of these people might surprise you by feeling like an impostor?</p>
+      <div class="radio-group">
+        <label class="radio-opt"><input type="radio" name="wu2" value="a"> A student who just passed their first exam</label>
+        <label class="radio-opt"><input type="radio" name="wu2" value="b"> An award-winning author with 11 published books</label>
+        <label class="radio-opt"><input type="radio" name="wu2" value="c"> A new intern on their first day of work</label>
+        <label class="radio-opt"><input type="radio" name="wu2" value="d"> Someone trying something for the very first time</label>
+      </div>
+    </div>
+    <div class="card">
+      <p class="warmup-q">What does the word <em>"fraudulence"</em> mean to you? Choose the closest meaning.</p>
+      <div class="radio-group">
+        <label class="radio-opt"><input type="radio" name="wu3" value="a"> Feeling proud of an achievement</label>
+        <label class="radio-opt"><input type="radio" name="wu3" value="b"> The feeling of being a fake or a cheat</label>
+        <label class="radio-opt"><input type="radio" name="wu3" value="c"> Being nervous before a presentation</label>
+        <label class="radio-opt"><input type="radio" name="wu3" value="d"> Forgetting something important</label>
+      </div>
+    </div>
+    <div class="nav-row">
+      <span class="step-count">Section 1 of 6</span>
+      <button class="nav-btn primary" onclick="goTo(1)">Next: Vocabulary →</button>
+    </div>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div id="sec-1" class="section">
+    <div class="section-title">Key Vocabulary</div>
+    <div class="section-sub">Tap a card to reveal the definition and an example sentence. Learn these words before reading.</div>
+    <div class="vocab-grid" id="vcards"></div>
+    <div class="nav-row">
+      <button class="nav-btn" onclick="goTo(0)">← Back</button>
+      <span class="step-count">Section 2 of 6</span>
+      <button class="nav-btn primary" onclick="goTo(2)">Next: Reading →</button>
+    </div>
+  </div>
+
+  <!-- SECTION 3 -->
+  <div id="sec-2" class="section">
+    <div class="section-title">Reading — Transcript</div>
+    <div class="section-sub">Read the video transcript. Hover or tap the <span style="background:var(--amber-light);color:var(--amber);padding:1px 5px;border-radius:3px;font-size:12px;border-bottom:1px solid var(--amber)">highlighted words</span> to see a quick definition.</div>
+    <div class="card">
+      <div class="text-passage" id="passage"></div>
+    </div>
+    <div class="nav-row">
+      <button class="nav-btn" onclick="goTo(1)">← Back</button>
+      <span class="step-count">Section 3 of 6</span>
+      <button class="nav-btn primary" onclick="goTo(3)">Next: Comprehension →</button>
+    </div>
+  </div>
+
+  <!-- SECTION 4 -->
+  <div id="sec-3" class="section">
+    <div class="section-title">Comprehension Check</div>
+    <div class="section-sub">Answer these questions based on what you read. Click an option to check your answer.</div>
+    <div id="qblock"></div>
+    <div class="score-box" id="score-box">
+      <div class="score-num" id="score-num">0/6</div>
+      <div class="score-label">comprehension score</div>
+      <div style="font-size:13px;color:var(--text2);margin-top:.5rem" id="score-msg"></div>
+    </div>
+    <div class="nav-row">
+      <button class="nav-btn" onclick="goTo(2)">← Back</button>
+      <span class="step-count">Section 4 of 6</span>
+      <button class="nav-btn primary" onclick="goTo(4)">Next: Language Focus →</button>
+    </div>
+  </div>
+
+  <!-- SECTION 5 -->
+  <div id="sec-4" class="section">
+    <div class="section-title">Language Focus</div>
+    <div class="section-sub">Notice how language is used in the text to describe feelings and experiences.</div>
+
+    <p style="font-size:14px;font-weight:500;margin-bottom:.75rem;color:var(--text)">A. Describing feelings with <em>can't + verb</em></p>
+    <div class="grammar-box">
+      <div class="grammar-label">Pattern</div>
+      <div class="grammar-ex">"Even after winning several awards, Maya Angelou <strong>couldn't escape</strong> the nagging doubt..."</div>
+      <div class="grammar-note">We use <em>can't / couldn't + verb</em> to show inability to control a feeling or thought — the person tries but fails to stop it.</div>
+    </div>
+    <div class="grammar-box">
+      <div class="grammar-label">Another example</div>
+      <div class="grammar-ex">"Why can't so many of us <strong>shake</strong> the feeling that we haven't earned our accomplishments?"</div>
+      <div class="grammar-note"><em>Shake</em> here means "get rid of" a feeling. Common collocations: <em>shake a feeling, escape doubt, silence the voice in your head.</em></div>
+    </div>
+
+    <p style="font-size:14px;font-weight:500;margin:.1.25rem 0 .75rem;padding-top:1.25rem;color:var(--text)">B. Hedging language — softening strong claims</p>
+    <div class="grammar-box">
+      <div class="grammar-label">Hedges in the text</div>
+      <div class="grammar-ex">"Imposterism <strong>may be</strong> more prevalent and <strong>disproportionately affect</strong> underrepresented groups."</div>
+      <div class="grammar-note">The writer uses <em>may</em> because research is not fully conclusive. Academic and professional writing often hedges with: <em>may, might, tends to, appears to, suggests that.</em></div>
+    </div>
+
+    <p style="font-size:14px;font-weight:500;padding-top:1.25rem;margin-bottom:.75rem;color:var(--text)">C. Fill in the blanks — use a word from the box</p>
+    <div class="tag-cloud">
+      <span class="tag">accolades</span><span class="tag">fraudulence</span><span class="tag">prevalent</span><span class="tag">unwarranted</span><span class="tag">susceptible</span><span class="tag">swindler</span>
+    </div>
+    <div class="card" id="fill-section" style="font-family:var(--font-serif);font-size:15px;line-height:2.4">
+      <p>1. Einstein called himself an "involuntary <input class="fill-blank" id="f1" placeholder="______">" — he felt his work wasn't worth the attention it received.</p>
+      <p style="margin-top:.5rem">2. Feelings of <input class="fill-blank" id="f2" placeholder="______"> are extremely common, even among very successful people.</p>
+      <p style="margin-top:.5rem">3. This insecurity is completely <input class="fill-blank" id="f3" placeholder="______"> — there is no real evidence to support these doubts.</p>
+      <p style="margin-top:.5rem">4. Impostor syndrome is more <input class="fill-blank" id="f4" placeholder="______"> among disadvantaged or underrepresented groups.</p>
+      <p style="margin-top:.5rem">5. Everyone is <input class="fill-blank" id="f5" placeholder="______"> to pluralistic ignorance — the belief that only we have doubts.</p>
+      <p style="margin-top:.5rem">6. People avoid applying for jobs because they feel they don't deserve the <input class="fill-blank" id="f6" placeholder="______"> that might follow.</p>
+      <button class="check-btn" onclick="checkFill()">Check answers</button>
+      <div id="fill-result" style="font-size:13px;margin-top:.75rem;display:none"></div>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn" onclick="goTo(3)">← Back</button>
+      <span class="step-count">Section 5 of 6</span>
+      <button class="nav-btn primary" onclick="goTo(5)">Next: Discussion →</button>
+    </div>
+  </div>
+
+  <!-- SECTION 6 -->
+  <div id="sec-5" class="section">
+    <div class="section-title">Discussion &amp; Reflection</div>
+    <div class="section-sub">Use these questions for pair or group discussion, or write your own thoughts below.</div>
+
+    <div class="discuss-card">
+      <div class="discuss-num">Question 1 — Personal experience</div>
+      <div class="discuss-q">"Can you think of a time when you felt you didn't deserve something you achieved? How did you deal with it?"</div>
+      <div class="discuss-tip">Try to use: <em>I remember feeling... / At the time I thought... / Looking back, I realise...</em></div>
+    </div>
+    <div class="discuss-card">
+      <div class="discuss-num">Question 2 — Society &amp; groups</div>
+      <div class="discuss-q">"Why might impostor syndrome affect some groups more than others — for example, women, minorities, or first-generation university students?"</div>
+      <div class="discuss-tip">Try to use: <em>It could be because... / One possible reason is... / I think society plays a role in...</em></div>
+    </div>
+    <div class="discuss-card">
+      <div class="discuss-num">Question 3 — Solutions</div>
+      <div class="discuss-q">"The text says talking about impostor syndrome is the most effective way to combat it. Do you agree? What other strategies might help?"</div>
+      <div class="discuss-tip">Try to use: <em>I agree / disagree because... / Another approach could be... / In my experience...</em></div>
+    </div>
+    <div class="discuss-card">
+      <div class="discuss-num">Question 4 — Language &amp; culture</div>
+      <div class="discuss-q">"Is there a word or phrase in your own language for the feeling of 'impostor syndrome'? Does your culture talk openly about self-doubt?"</div>
+      <div class="discuss-tip">Try to use: <em>In my language we say... / Culturally, it's common / unusual to...</em></div>
+    </div>
+
+    <div style="margin-top:1.5rem">
+      <span class="reflect-label">Personal reflection — write a few sentences</span>
+      <p class="reflect-prompt">"What is one thing from this lesson that you found surprising or that you can relate to personally?"</p>
+      <textarea class="reflect-area" placeholder="Write your thoughts here..."></textarea>
+    </div>
+
+    <div style="background:var(--teal-light);border-radius:var(--radius-lg);padding:1.25rem;margin-top:1.25rem">
+      <p style="font-family:var(--font-serif);font-size:15px;font-style:italic;color:var(--teal);line-height:1.7;margin-bottom:.5rem">"You have talent, you are capable, and you belong."</p>
+      <p style="font-size:13px;color:var(--teal)">— Closing message of the TED-Ed video</p>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn" onclick="goTo(4)">← Back</button>
+      <span class="step-count">Section 6 of 6 — Complete!</span>
+    </div>
+  </div>
+</div>
+
+<script>
+const vocabData=[
+  {word:"fraudulence",pos:"noun",hint:"feeling of being a fake",def:"The state of feeling like a cheat or a fake, despite having real achievements.",ex:"She couldn't shake the sense of fraudulence even after her promotion."},
+  {word:"accolade",pos:"noun",hint:"praise or an award",def:"An honour, prize, or special recognition given to someone for their achievement.",ex:"He received several accolades for his research, but still doubted himself."},
+  {word:"unwarranted",pos:"adjective",hint:"not deserved or justified",def:"Not justified or warranted by facts; without good reason.",ex:"Her fear of failure was completely unwarranted — her work was excellent."},
+  {word:"pervasive",pos:"adjective",hint:"spreading everywhere",def:"Spreading through every part of something; extremely common and widespread.",ex:"Impostor syndrome is pervasive across all genders, ages and professions."},
+  {word:"swindler",pos:"noun",hint:"someone who deceives others",def:"A person who uses tricks or deception to cheat others out of money or status.",ex:"He called himself an 'involuntary swindler', though his science was genuine."},
+  {word:"pluralistic ignorance",pos:"compound noun",hint:"privately doubting but thinking you're alone",def:"A situation where everyone privately doubts themselves but believes no one else feels the same way.",ex:"Pluralistic ignorance means we all feel alone in our self-doubt — when in fact, everyone shares it."},
+  {word:"prevalent",pos:"adjective",hint:"very common",def:"Existing very commonly, or widely found in a particular group or area.",ex:"Impostor syndrome may be more prevalent among people from minority backgrounds."},
+  {word:"susceptible",pos:"adjective",hint:"easily affected by something",def:"Likely to be influenced or harmed by something; not immune.",ex:"Everyone is susceptible to feeling like a fraud at some point in their lives."},
+  {word:"threshold",pos:"noun",hint:"a point or level",def:"A point or level at which something begins or changes; the minimum required.",ex:"There seems to be no threshold of success that makes the feeling go away."},
+  {word:"competence",pos:"noun",hint:"ability to do something well",def:"The ability to do something successfully and efficiently; skill.",ex:"She gradually came to recognise her own competence after documenting her lab's problems."}
+];
+
+const passageHTML=`<p>Even after writing eleven books and winning several prestigious awards, Maya Angelou couldn't escape the <span class="tooltip hl">nagging doubt<span class="tooltip-box">a persistent, annoying feeling that won't go away</span></span> that she hadn't really earned her accomplishments. Albert Einstein experienced something similar: he described himself as an <span class="tooltip hl">"involuntary swindler"<span class="tooltip-box">swindler: someone who deceives others; involuntary = not by choice</span></span> whose work didn't deserve as much attention as it had received.</p>
+<p>Accomplishments at the level of Angelou's or Einstein's are rare, but their feeling of <span class="tooltip hl">fraudulence<span class="tooltip-box">the feeling of being a fake or a cheat</span></span> is extremely common. Why can't so many of us shake feelings that we haven't earned our accomplishments, or that our ideas and skills aren't worthy of others' attention?</p>
+<p>Psychologist Pauline Rose Clance was the first to study this <span class="tooltip hl">unwarranted<span class="tooltip-box">not justified; without good reason</span></span> sense of insecurity. In her work as a therapist, she noticed many of her undergraduate patients shared a concern: though they had high grades, they didn't believe they deserved their spots at the university. Some even believed their acceptance had been an <span class="tooltip hl">admissions error<span class="tooltip-box">a mistake made by the university when accepting a student</span></span>.</p>
+<p>Together with colleague Suzanne Imes, Clance first studied <span class="tooltip hl">imposterism<span class="tooltip-box">the experience of feeling like an impostor or fraud</span></span> in female college students and faculty. Their work established <span class="tooltip hl">pervasive<span class="tooltip-box">spreading through every part; extremely widespread</span></span> feelings of fraudulence in this group. Since that first study, the same thing has been established across gender, race, age, and a huge range of occupations, though it may be more <span class="tooltip hl">prevalent<span class="tooltip-box">very common; widely found</span></span> and disproportionately affect the experiences of underrepresented or disadvantaged groups.</p>
+<p>To call it a syndrome is to downplay how universal it is. It's not a disease or an abnormality, and it isn't necessarily tied to depression, anxiety, or self-esteem. People who are highly skilled or accomplished tend to think others are just as skilled. This can <span class="tooltip hl">spiral into<span class="tooltip-box">gradually develop into something worse or more serious</span></span> feelings that they don't deserve <span class="tooltip hl">accolades<span class="tooltip-box">awards, honours, or special recognition</span></span> and opportunities. And as Angelou and Einstein experienced, there's often no <span class="tooltip hl">threshold<span class="tooltip-box">a point or level at which something changes</span></span> of accomplishment that puts these feelings to rest.</p>
+<p>Everyone is <span class="tooltip hl">susceptible<span class="tooltip-box">easily affected by something; not immune to it</span></span> to a phenomenon known as <span class="tooltip hl">pluralistic ignorance<span class="tooltip-box">privately doubting yourself while believing you are alone in feeling that way</span></span>, where we each doubt ourselves privately, but believe we're alone in thinking that way because no one else voices their doubts.</p>
+<p>The most surefire way to combat impostor syndrome is to <span class="tooltip hl">talk about it<span class="tooltip-box">research shows that simply naming the experience greatly reduces its power</span></span>. Hearing that a mentor has experienced feelings of imposterism can help relieve those feelings. The same goes for peers. Even simply finding out there's a term for these feelings can be an incredible relief. Once aware, you can combat your own impostor syndrome by collecting and revisiting positive feedback.</p>
+<p>We may never be able to banish these feelings entirely, but we can have open conversations about academic or professional challenges. With increasing awareness of how common these experiences are, perhaps we can feel freer to be frank — and build confidence in some simple truths: <em>you have talent, you are capable, and you belong.</em></p>`;
+
+const questions=[
+  {q:"What did Albert Einstein call himself in relation to his own work?",opts:["A genius who deserved more recognition","An involuntary swindler who didn't deserve attention","A hard-working scientist with no self-doubt","A fraud who had deliberately misled people"],ans:1,exp:"Einstein called himself an 'involuntary swindler' — meaning he felt his work received more attention than it deserved, though not by his own choice."},
+  {q:"Why did Pauline Rose Clance begin studying impostor syndrome?",opts:["She read about it in a psychology journal","She noticed it in famous public figures","Her undergraduate patients worried they didn't deserve their university places","Her own students were failing their exams"],ans:2,exp:"Clance noticed that many of her patient students, despite getting good grades, feared their acceptance was an admissions error — and she herself had felt the same in grad school."},
+  {q:"According to the text, calling impostor syndrome a 'syndrome' is problematic because…",opts:["it makes people think it only affects women","it suggests the feeling is abnormal or rare, when it is actually universal","it was never studied by a real psychologist","it makes people feel worse about their mental health"],ans:1,exp:"The text argues that labelling it a 'syndrome' downplays how universal the experience is — it's not a disease or abnormality."},
+  {q:"What is 'pluralistic ignorance'?",opts:["The belief that everyone is more intelligent than you","The idea that only women experience self-doubt","Privately doubting yourself while thinking you're the only one who feels that way","A scientific term for anxiety and depression combined"],ans:2,exp:"Pluralistic ignorance means everyone privately doubts themselves, but assumes others don't — because nobody voices their doubts openly."},
+  {q:"How did one scientist in the text overcome her impostor syndrome?",opts:["She asked her mentor for reassurance every day","She quit her job and started fresh","She started documenting the causes of problems and saw most were equipment failures","She won an award that proved her competence"],ans:2,exp:"By recording what went wrong in her lab, she realised most problems came from equipment failure — not from her own mistakes or incompetence."},
+  {q:"What does the text say is the most effective way to combat impostor syndrome?",opts:["Working harder to deserve your accomplishments","Avoiding situations where you might feel judged","Collecting awards and external recognition","Talking about the experience openly with others"],ans:3,exp:"The text states that 'the most surefire way to combat impostor syndrome is to talk about it' — even just hearing a mentor had the same feeling can help enormously."}
+];
+
+const fillAnswers=["swindler","fraudulence","unwarranted","prevalent","susceptible","accolades"];
+let answered=0,correctCount=0;
+
+function buildVocab(){
+  const g=document.getElementById('vcards');
+  vocabData.forEach(v=>{
+    const d=document.createElement('div');
+    d.className='vocab-card';
+    d.innerHTML=`<div class="front"><span class="vocab-pos">${v.pos}</span><div class="vocab-word">${v.word}</div><div class="vocab-hint">${v.hint}</div><div class="flip-hint">tap to reveal</div></div><div class="back"><span class="vocab-pos">${v.pos}</span><div class="vocab-def">${v.def}</div><div class="vocab-ex">"${v.ex}"</div></div>`;
+    d.onclick=()=>d.classList.toggle('flipped');
+    g.appendChild(d);
+  });
+}
+
+function buildPassage(){document.getElementById('passage').innerHTML=passageHTML;}
+
+function buildQuestions(){
+  const c=document.getElementById('qblock');
+  questions.forEach((q,qi)=>{
+    const b=document.createElement('div');b.className='q-block';
+    let opts=q.opts.map((o,oi)=>`<div class="q-opt" id="opt-${qi}-${oi}" onclick="pick(${qi},${oi},${q.ans},'${q.exp.replace(/'/g,"\\'")}')"><span>${String.fromCharCode(65+oi)}.</span> ${o}</div>`).join('');
+    b.innerHTML=`<p class="q-text">${qi+1}. ${q.q}</p><div class="q-opts">${opts}</div><div class="feedback" id="fb-${qi}"></div>`;
+    c.appendChild(b);
+  });
+}
+
+function pick(qi,oi,ans,exp){
+  document.querySelectorAll(`[id^="opt-${qi}-"]`).forEach(el=>el.classList.add('disabled'));
+  document.getElementById(`opt-${qi}-${oi}`).classList.add(oi===ans?'correct':'wrong');
+  if(oi!==ans)document.getElementById(`opt-${qi}-${ans}`).classList.add('correct');
+  const fb=document.getElementById(`fb-${qi}`);
+  fb.className='feedback show '+(oi===ans?'ok':'no');
+  fb.textContent=(oi===ans?'✓ Correct! ':'✗ Not quite. ')+exp;
+  if(oi===ans)correctCount++;
+  answered++;
+  if(answered===questions.length){
+    const sb=document.getElementById('score-box');sb.style.display='block';
+    document.getElementById('score-num').textContent=correctCount+'/'+questions.length;
+    const msgs=['Keep reviewing the text and try again!','Good effort — review the sections you missed.','Nice work! You understood most of the text.','Excellent! You have a strong grasp of the content.','Perfect score! Outstanding comprehension.'];
+    document.getElementById('score-msg').textContent=msgs[Math.min(Math.floor((correctCount/questions.length)*4),4)];
+  }
+}
+
+function checkFill(){
+  let ok=0;
+  fillAnswers.forEach((ans,i)=>{
+    const el=document.getElementById('f'+(i+1));
+    el.classList.remove('right','wrong');
+    if(el.value.trim().toLowerCase()===ans.toLowerCase()){el.classList.add('right');ok++;}
+    else el.classList.add('wrong');
+  });
+  const r=document.getElementById('fill-result');r.style.display='block';
+  r.style.color=ok===fillAnswers.length?'#0F6E56':'#993C1D';
+  r.textContent=ok===fillAnswers.length?'Perfect! All answers are correct.':ok+' of '+fillAnswers.length+' correct. The highlighted boxes need reviewing.';
+}
+
+function goTo(i){
+  document.querySelectorAll('.section').forEach((s,idx)=>s.classList.toggle('active',idx===i));
+  document.querySelectorAll('.tab-btn').forEach((b,idx)=>b.classList.toggle('active',idx===i));
+  document.getElementById('prog').style.width=((i+1)/6*100)+'%';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+buildVocab();buildPassage();buildQuestions();
+</script>
+</body>
+</html>

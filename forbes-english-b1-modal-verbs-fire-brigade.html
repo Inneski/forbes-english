@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>On Call: Modal Verbs for the Fire Brigade | Forbes English</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --soot:#1c1815;
+    --soot-deep:#121010;
+    --charcoal:#2b241f;
+    --charcoal-light:#372e27;
+    --border:#4a3e33;
+    --ember:#dd5237;
+    --ember-dark:#a83a24;
+    --ember-glow:rgba(221,82,55,0.18);
+    --brass:#cda059;
+    --brass-dark:#a67f3f;
+    --brass-glow:rgba(205,160,89,0.18);
+    --cream:#f5eee2;
+    --smoke:#af9f8d;
+    --font-serif:'Playfair Display', Georgia, serif;
+    --font-display:'Barlow Condensed', 'Arial Narrow', sans-serif;
+    --font-body:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --masthead-h:96px;
+    --nav-h:64px;
+  }
+
+  *{box-sizing:border-box;}
+  html, body{height:100%;overflow:hidden;margin:0;}
+  body{
+    background:
+      radial-gradient(ellipse 900px 500px at 50% -10%, var(--charcoal-light) 0%, transparent 60%),
+      var(--soot);
+    color:var(--cream);
+    font-family:var(--font-body);
+    line-height:1.55;
+  }
+
+  button{font-family:inherit;}
+  a{color:var(--brass);}
+
+  /* ============ MASTHEAD (fixed, compact) ============ */
+  .masthead{
+    position:fixed;
+    top:0; left:0; right:0;
+    height:var(--masthead-h);
+    z-index:20;
+    padding:8px 20px 6px;
+    text-align:center;
+    overflow:hidden;
+    border-bottom:1px solid var(--border);
+    background:var(--soot);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+  .masthead::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:repeating-linear-gradient(135deg, rgba(205,160,89,0.05) 0 2px, transparent 2px 26px);
+    pointer-events:none;
+  }
+  .masthead-inner{position:relative;}
+  .fe-logo{width:130px;max-width:40%;height:auto;display:block;margin:0 auto 4px;}
+  .lesson-heading{
+    font-family:var(--font-display);
+    font-weight:800;
+    font-size:clamp(16px,2.6vw,22px);
+    letter-spacing:0.5px;
+    margin:0;
+    color:var(--cream);
+    display:inline;
+  }
+  .lesson-heading em{font-style:normal;color:var(--ember);}
+  .lesson-sub{margin:0 0 0 8px;color:var(--smoke);font-size:12px;letter-spacing:0.3px;display:inline;}
+  .level-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:11px;
+    letter-spacing:1.5px;
+    color:var(--soot-deep);
+    background:var(--brass);
+    padding:3px 10px 2px;
+    border-radius:100px;
+    margin-left:10px;
+    vertical-align:middle;
+  }
+
+  /* ============ SCREENS (full-viewport slides) ============ */
+  .screen{
+    position:fixed;
+    top:var(--masthead-h);
+    bottom:var(--nav-h);
+    left:0; right:0;
+    display:none;
+    overflow:hidden;
+  }
+  .screen.active{display:flex;animation:fadeIn .3s ease;}
+  @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+  /* ============ LAYOUT SHELL: image panel + content column ============ */
+  .layout-shell{display:flex;width:100%;height:100%;}
+  .image-panel{
+    position:sticky;
+    top:0;
+    width:40%;
+    flex:none;
+    height:100%;
+    overflow:hidden;
+    background:var(--soot-deep);
+  }
+  .image-panel img{display:block;width:100%;height:100%;object-fit:cover;opacity:0.92;transition:opacity .25s ease;}
+  .image-panel::after{
+    content:"";
+    position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(18,16,16,0) 55%, rgba(18,16,16,0.55) 100%);
+  }
+  .content-col{
+    flex:1 1 auto;
+    min-width:0;
+    height:100%;
+    overflow-y:auto;
+    padding:22px 34px 30px;
+  }
+  .content-col-inner{max-width:640px;margin:0 auto;}
+
+  @media (max-width:900px){
+    .layout-shell{flex-direction:column;}
+    .image-panel{position:relative;width:100%;height:34vh;top:0;}
+    .content-col{height:auto;flex:1 1 auto;padding:16px 18px 26px;}
+  }
+
+  /* ============ FIXED BOTTOM NAV ============ */
+  .lesson-nav{
+    position:fixed;
+    bottom:0; left:0; right:0;
+    height:var(--nav-h);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:0 18px;
+    background:var(--charcoal);
+    border-top:1px solid var(--border);
+    z-index:20;
+  }
+  .nav-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:14px;
+    letter-spacing:0.4px;
+    padding:9px 16px;
+    border-radius:8px;
+    border:1px solid var(--border);
+    background:var(--charcoal-light);
+    color:var(--cream);
+    cursor:pointer;
+    transition:opacity .15s ease, background .15s ease;
+  }
+  .nav-btn:hover:not(:disabled){background:#3d3329;}
+  .nav-btn:disabled{opacity:0.35;cursor:not-allowed;}
+  .nav-btn.nav-primary{background:var(--ember);border-color:var(--ember-dark);}
+  .nav-btn.nav-primary:hover:not(:disabled){background:var(--ember-dark);}
+  .nav-dots{display:flex;gap:6px;align-items:center;flex:1;justify-content:center;overflow:hidden;}
+  .nav-dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--border);
+    border:none;padding:0;cursor:pointer;
+    transition:background .2s ease, transform .2s ease;
+    flex:none;
+  }
+  .nav-dot.dot-current{background:var(--ember);transform:scale(1.3);}
+  .nav-dot.dot-done{background:var(--brass);}
+  .nav-dot:disabled{cursor:default;}
+
+  @media (max-width:600px){
+    .lesson-nav{padding:0 10px;}
+    .nav-btn{padding:8px 11px;font-size:12.5px;}
+    .lesson-heading{font-size:15px;}
+    .lesson-sub{display:none;}
+  }
+
+  /* ============ WELCOME ============ */
+  .welcome-card{
+    background:var(--charcoal);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:26px 26px 28px;
+    position:relative;
+  }
+  .rivet{position:absolute;width:8px;height:8px;border-radius:50%;background:var(--brass-dark);box-shadow:inset 0 1px 1px rgba(0,0,0,.4), 0 0.5px 0 rgba(255,255,255,.15);}
+  .rivet.tl{top:10px;left:10px;} .rivet.tr{top:10px;right:10px;} .rivet.bl{bottom:10px;left:10px;} .rivet.br{bottom:10px;right:10px;}
+  .welcome-card h2{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:21px;
+    margin:0 0 10px;
+    color:var(--brass);
+    letter-spacing:0.3px;
+  }
+  .welcome-card p{margin:0 0 12px;color:var(--cream);font-size:14.5px;}
+  .brief-list{list-style:none;margin:0 0 18px;padding:0;display:grid;gap:8px;}
+  .brief-list li{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    font-size:14px;
+    color:var(--smoke);
+    background:var(--charcoal-light);
+    border:1px solid var(--border);
+    border-radius:9px;
+    padding:9px 12px;
+  }
+  .brief-list li strong{color:var(--cream);font-weight:600;}
+  .brief-list svg{flex:none;width:18px;height:18px;margin-top:1px;}
+
+  /* ============ BUTTONS ============ */
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:16px;
+    letter-spacing:0.4px;
+    padding:12px 26px;
+    border-radius:9px;
+    border:none;
+    cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+  }
+  .btn-primary{background:var(--ember);color:var(--cream);box-shadow:0 3px 0 var(--ember-dark);}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 0 var(--ember-dark);}
+  .btn-primary:active{transform:translateY(2px);box-shadow:0 1px 0 var(--ember-dark);}
+  .btn-primary:disabled{opacity:0.4;cursor:not-allowed;transform:none;box-shadow:0 3px 0 var(--ember-dark);}
+  .btn-block{width:100%;}
+  .btn-row{display:flex;justify-content:center;margin-top:20px;}
+
+  button:focus-visible, .option-btn:focus-visible, .match-item:focus-visible, .word-tile:focus-visible{
+    outline:2px solid var(--brass);
+    outline-offset:2px;
+  }
+  button:focus:not(:focus-visible){outline:none;}
+
+  /* ============ STATUS BAR ============ */
+  .status-bar{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin-bottom:18px;
+    flex-wrap:wrap;
+  }
+  .score-chip{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    background:var(--charcoal);
+    border:1px solid var(--border);
+    border-radius:100px;
+    padding:6px 16px 6px 8px;
+    flex:none;
+  }
+  .badge-icon{width:26px;height:30px;flex:none;}
+  .score-chip .label{font-family:var(--font-display);font-size:12px;letter-spacing:0.6px;color:var(--smoke);}
+  .score-chip .value{font-family:var(--font-display);font-size:15px;font-weight:700;color:var(--brass);margin-left:2px;}
+  .progress-wrap{flex:1 1 180px;min-width:160px;}
+  .progress-label{
+    font-family:var(--font-display);
+    font-size:12px;
+    letter-spacing:0.5px;
+    color:var(--smoke);
+    margin-bottom:5px;
+    display:block;
+  }
+  .progress-track{height:7px;border-radius:100px;background:var(--charcoal-light);border:1px solid var(--border);overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg, var(--brass-dark), var(--brass));border-radius:100px;transition:width .4s ease;}
+
+  /* ============ ACTIVITY HEADER ============ */
+  .activity-head{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+  .activity-icon{width:38px;height:38px;flex:none;}
+  .activity-head h2{
+    font-family:var(--font-display);
+    font-weight:800;
+    font-size:22px;
+    margin:0;
+    color:var(--cream);
+    letter-spacing:0.3px;
+  }
+  .activity-head p{margin:2px 0 0;font-size:13px;color:var(--smoke);}
+
+  /* ============ QUESTION CARD ============ */
+  .q-card{
+    background:var(--charcoal);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:22px 22px;
+    position:relative;
+  }
+  .q-sentence{
+    font-size:17px;
+    color:var(--cream);
+    margin:0 0 18px;
+    line-height:1.6;
+  }
+  .blank{
+    display:inline-block;
+    min-width:64px;
+    border-bottom:2px solid var(--brass);
+    color:transparent;
+    user-select:none;
+  }
+  .options{display:grid;gap:9px;}
+  .option-btn{
+    text-align:left;
+    background:var(--charcoal-light);
+    border:1px solid var(--border);
+    color:var(--cream);
+    border-radius:9px;
+    padding:12px 15px;
+    font-size:15px;
+    font-weight:500;
+    cursor:pointer;
+    transition:background .15s ease, border-color .15s ease, opacity .2s ease;
+    position:relative;
+  }
+  .option-btn:hover:not(:disabled){background:#3d3329;border-color:var(--smoke);}
+  .option-btn:disabled{cursor:default;}
+  .option-btn.correct{background:var(--brass-glow);border-color:var(--brass);}
+  .option-btn.correct::after{
+    content:"";
+    position:absolute;right:14px;top:50%;transform:translateY(-50%) rotate(45deg);
+    width:7px;height:12px;border-right:2px solid var(--brass);border-bottom:2px solid var(--brass);
+  }
+  .option-btn.incorrect{background:var(--ember-glow);border-color:var(--ember);}
+  .option-btn.incorrect::after{
+    content:"";
+    position:absolute;right:16px;top:50%;width:13px;height:13px;transform:translateY(-50%);
+    background:
+      linear-gradient(45deg, transparent 45%, var(--ember) 45%, var(--ember) 55%, transparent 55%),
+      linear-gradient(-45deg, transparent 45%, var(--ember) 45%, var(--ember) 55%, transparent 55%);
+  }
+  .option-btn.muted{opacity:0.45;}
+
+  .feedback{
+    display:none;
+    margin-top:16px;
+    padding:13px 15px;
+    border-radius:10px;
+    font-size:14px;
+    line-height:1.55;
+    border-left:4px solid var(--border);
+  }
+  .feedback-correct{background:var(--brass-glow);border-left-color:var(--brass);color:var(--cream);}
+  .feedback-incorrect{background:var(--ember-glow);border-left-color:var(--ember);color:var(--cream);}
+  .feedback strong{display:block;margin-bottom:3px;font-family:var(--font-display);letter-spacing:0.3px;font-size:14.5px;}
+
+  /* ============ MATCHING ============ */
+  .match-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px 12px;}
+  .match-col{display:grid;gap:9px;align-content:start;}
+  .match-item{
+    background:var(--charcoal-light);
+    border:1px solid var(--border);
+    color:var(--cream);
+    border-radius:9px;
+    padding:12px 13px;
+    font-size:14px;
+    text-align:left;
+    cursor:pointer;
+    transition:background .15s ease, border-color .15s ease, opacity .2s ease;
+  }
+  .match-item:hover:not(:disabled){background:#3d3329;border-color:var(--smoke);}
+  .match-item.selected{border-color:var(--ember);background:var(--ember-glow);}
+  .match-item.matched{border-color:var(--brass);background:var(--brass-glow);opacity:0.75;cursor:default;}
+  .match-item:disabled{cursor:default;}
+  .match-status{margin-top:14px;font-size:13.5px;color:var(--smoke);text-align:center;min-height:20px;}
+
+  /* ============ REORDER ============ */
+  .reorder-sentence-label{font-size:13px;color:var(--smoke);margin:0 0 10px;font-family:var(--font-display);letter-spacing:0.5px;}
+  .tile-area{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    min-height:52px;
+    padding:12px;
+    border:1.5px dashed var(--border);
+    border-radius:10px;
+    margin-bottom:14px;
+    align-items:flex-start;
+  }
+  .tile-area.bank{border-style:solid;border-color:transparent;background:var(--charcoal-light);}
+  .word-tile{
+    background:var(--soot-deep);
+    border:1px solid var(--border);
+    color:var(--cream);
+    border-radius:7px;
+    padding:9px 14px;
+    font-size:14.5px;
+    font-weight:500;
+    cursor:pointer;
+    transition:background .15s ease, border-color .15s ease;
+  }
+  .word-tile:hover:not(:disabled){border-color:var(--brass);}
+  .word-tile.placed{background:var(--charcoal-light);border-color:var(--brass-dark);}
+  .word-tile:disabled{cursor:default;opacity:0.85;}
+
+  /* ============ SPEAKING / WRITING ============ */
+  .speaking-card{
+    background:var(--charcoal);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:24px 24px;
+    text-align:left;
+  }
+  .speaking-card .kicker{font-weight:600;color:var(--brass);margin:0 0 10px;font-family:var(--font-display);letter-spacing:0.4px;font-size:15px;}
+  .speaking-card p{line-height:1.7;margin:0 0 14px;color:var(--cream);font-size:14.5px;}
+  .speaking-card ul{line-height:1.9;padding-left:20px;color:var(--cream);margin:0;font-size:14.5px;}
+
+  /* ============ RESULTS ============ */
+  .results-card{
+    background:var(--charcoal);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:28px 26px;
+    text-align:center;
+    position:relative;
+  }
+  .results-illustration{width:110px;height:auto;margin:0 auto 8px;display:block;}
+  .results-score{font-family:var(--font-display);font-weight:800;font-size:44px;color:var(--brass);margin:4px 0 0;}
+  .results-pct{font-size:13px;color:var(--smoke);margin:0 0 12px;letter-spacing:0.5px;}
+  .results-message{font-size:15.5px;color:var(--cream);margin:0 0 20px;max-width:440px;margin-left:auto;margin-right:auto;}
+  .breakdown{list-style:none;margin:0 0 22px;padding:0;display:grid;gap:8px;text-align:left;}
+  .breakdown li{
+    display:flex;justify-content:space-between;
+    background:var(--charcoal-light);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:9px 13px;
+    font-size:13.5px;
+  }
+  .breakdown li span:first-child{color:var(--smoke);}
+  .breakdown li span:last-child{color:var(--brass);font-weight:700;font-family:var(--font-display);}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important;}
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <h1 class="lesson-heading">On <em>Call</em>: Modal Verbs</h1>
+    <span class="lesson-sub">for the Fire Brigade</span>
+    <span class="level-tag">B1</span>
+  </div>
+</header>
+
+<main>
+
+  <!-- ================= WELCOME ================= -->
+  <section class="screen active" id="screen-welcome">
+    <div class="layout-shell">
+      <div class="image-panel">
+        <img src="Fire Brigade/fire-3-field.png" alt="A firefighter standing beside a fire engine in a field, watching a distant building fire">
+      </div>
+      <div class="content-col">
+        <div class="content-col-inner">
+          <div class="welcome-card">
+            <span class="rivet tl"></span><span class="rivet tr"></span><span class="rivet bl"></span><span class="rivet br"></span>
+            <h2>Briefing before you start</h2>
+            <p>You're joining the watch for this shift. Every scenario below is built around real fire-brigade situations — evacuations, safety checks, callouts, and station life — and every one of them needs a modal verb to sound right.</p>
+            <ul class="brief-list">
+              <li>
+                <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2L17 5V10C17 14 14 17 10 18C6 17 3 14 3 10V5L10 2Z" stroke="var(--brass)" stroke-width="1.6"/></svg>
+                <span><strong>Rules vs. advice</strong> — telling a strict regulation (must) apart from a friendly tip (should / ought to)</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="7.5" stroke="var(--brass)" stroke-width="1.6"/><path d="M10 6v4l3 2" stroke="var(--brass)" stroke-width="1.6" stroke-linecap="round"/></svg>
+                <span><strong>Necessity vs. choice</strong> — have to / need to against needn't and don't have to</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 10h12M13 6l4 4-4 4" stroke="var(--brass)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span><strong>Ability and possibility</strong> — can, could and might in real emergency contexts</span>
+              </li>
+            </ul>
+            <p style="color:var(--smoke);font-size:13px;margin-bottom:0;">Five activities, including a free speaking &amp; writing round. Twenty-four scored questions. Your score is tracked the whole way through.</p>
+          </div>
+          <div class="btn-row">
+            <button type="button" class="btn btn-primary" id="btn-start">Start the Shift</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MULTIPLE CHOICE ================= -->
+  <section class="screen" id="screen-mc">
+    <div class="layout-shell">
+      <div class="image-panel">
+        <img src="Fire Brigade/fire-1-street.png" alt="Fire crew responding to a callout on a city street">
+      </div>
+      <div class="content-col">
+        <div class="content-col-inner">
+          <div class="activity-head">
+            <svg class="activity-icon" viewBox="0 0 46 46" xmlns="http://www.w3.org/2000/svg"><path d="M23 4L38 9V21C38 30 32 36 23 40C14 36 8 30 8 21V9L23 4Z" fill="var(--brass)"/><path d="M23 4L38 9V21C38 30 32 36 23 40" fill="var(--brass-dark)"/><path d="M17 22l4 4 9-10" stroke="var(--soot-deep)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+            <div>
+              <h2>On Duty</h2>
+              <p>Activity 1 of 4 &middot; Multiple choice</p>
+            </div>
+          </div>
+          <div class="status-bar">
+            <div class="score-chip">
+              <svg class="badge-icon" viewBox="0 0 30 34" xmlns="http://www.w3.org/2000/svg"><path d="M15 2L27 6V17C27 26 22 31 15 33C8 31 3 26 3 17V6L15 2Z" fill="var(--brass)" stroke="var(--brass-dark)" stroke-width="1"/></svg>
+              <span class="label">SCORE</span><span class="value" id="score-value">0 / 24</span>
+            </div>
+            <div class="progress-wrap">
+              <span class="progress-label" id="mc-progress-label">Question 1 of 6</span>
+              <div class="progress-track"><div class="progress-fill" id="mc-progress-fill" style="width:0%"></div></div>
+            </div>
+          </div>
+          <div class="q-card">
+            <p class="q-sentence" id="mc-sentence"></p>
+            <div class="options" id="mc-options"></div>
+            <div class="feedback" id="mc-feedback"></div>
+          </div>
+          <div class="btn-row"><button type="button" class="btn btn-primary" id="mc-next" hidden>Next Question</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FILL IN THE BLANK ================= -->
+  <section class="screen" id="screen-fb">
+    <div class="layout-shell">
+      <div class="image-panel">
+        <img src="Fire Brigade/fire-2-truck.png" alt="Fire engine parked outside the station">
+      </div>
+      <div class="content-col">
+        <div class="content-col-inner">
+          <div class="activity-head">
+            <svg class="activity-icon" viewBox="0 0 46 46" xmlns="http://www.w3.org/2000/svg"><rect x="9" y="6" width="28" height="36" rx="3" fill="var(--charcoal-light)" stroke="var(--brass)" stroke-width="1.6"/><rect x="16" y="3" width="14" height="7" rx="2" fill="var(--brass)"/><line x1="14" y1="19" x2="32" y2="19" stroke="var(--smoke)" stroke-width="1.8"/><line x1="14" y1="25" x2="32" y2="25" stroke="var(--smoke)" stroke-width="1.8"/><line x1="14" y1="31" x2="25" y2="31" stroke="var(--smoke)" stroke-width="1.8"/></svg>
+            <div>
+              <h2>Station Life</h2>
+              <p>Activity 2 of 4 &middot; Fill in the blank</p>
+            </div>
+          </div>
+          <div class="status-bar">
+            <div class="score-chip">
+              <svg class="badge-icon" viewBox="0 0 30 34" xmlns="http://www.w3.org/2000/svg"><path d="M15 2L27 6V17C27 26 22 31 15 33C8 31 3 26 3 17V6L15 2Z" fill="var(--brass)" stroke="var(--brass-dark)" stroke-width="1"/></svg>
+              <span class="label">SCORE</span><span class="value" id="score-value-fb">0 / 24</span>
+            </div>
+            <div class="progress-wrap">
+              <span class="progress-label" id="fb-progress-label">Question 1 of 6</span>
+              <div class="progress-track"><div class="progress-fill" id="fb-progress-fill" style="width:0%"></div></div>
+            </div>
+          </div>
+          <div class="q-card">
+            <p class="q-sentence" id="fb-sentence"></p>
+            <div class="options" id="fb-options"></div>
+            <div class="feedback" id="fb-feedback"></div>
+          </div>
+          <div class="btn-row"><button type="button" class="btn btn-primary" id="fb-next" hidden>Next Question</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MATCHING ================= -->
+  <section class="screen" id="screen-matching">
+    <div class="layout-shell">
+      <div class="image-panel">
+        <img src="Fire Brigade/fire-3-field.png" alt="A firefighter standing beside a fire engine in a field, watching a distant building fire">
+      </div>
+      <div class="content-col">
+        <div class="content-col-inner">
+          <div class="activity-head">
+            <svg class="activity-icon" viewBox="0 0 46 46" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="14" width="16" height="22" rx="3" fill="var(--charcoal-light)" stroke="var(--brass)" stroke-width="1.6"/><rect x="24" y="14" width="16" height="22" rx="3" fill="var(--charcoal-light)" stroke="var(--brass)" stroke-width="1.6"/><circle cx="14" cy="21" r="2" fill="var(--brass)"/><circle cx="32" cy="21" r="2" fill="var(--brass)"/><line x1="10" y1="10" x2="14" y2="14" stroke="var(--brass)" stroke-width="1.6"/><line x1="36" y1="10" x2="32" y2="14" stroke="var(--brass)" stroke-width="1.6"/></svg>
+            <div>
+              <h2>Radio Check</h2>
+              <p>Activity 3 of 4 &middot; Matching</p>
+            </div>
+          </div>
+          <div class="status-bar">
+            <div class="score-chip">
+              <svg class="badge-icon" viewBox="0 0 30 34" xmlns="http://www.w3.org/2000/svg"><path d="M15 2L27 6V17C27 26 22 31 15 33C8 31 3 26 3 17V6L15 2Z" fill="var(--brass)" stroke="var(--brass-dark)" stroke-width="1"/></svg>
+              <span class="label">SCORE</span><span class="value" id="score-value-match">0 / 24</span>
+            </div>
+            <div class="progress-wrap">
+              <span class="progress-label" id="match-progress-label">0 of 6 matched</span>
+              <div class="progress-track"><div class="progress-fill" id="match-progress-fill" style="width:0%"></div></div>
+            </div>
+          </div>
+          <div class="q-card">
+            <p style="margin:0 0 14px;color:var(--smoke);font-size:13.5px;">Tap a modal verb, then tap the meaning it belongs to.</p>
+            <div class="match-grid">
+              <div class="match-col" id="match-left"></div>
+              <div class="match-col" id="match-right"></div>
+            </div>
+            <p class="match-status" id="match-status"></p>
+          </div>
+          <div class="btn-row"><button type="button" class="btn btn-primary" id="match-next" hidden>Continue</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= REORDER ================= -->
+  <section class="screen" id="screen-reorder">
+    <div class="layout-shell">
+      <div class="image-panel">
+        <img src="Fire Brigade/fire-1-street.png" alt="Fire crew responding to a callout on a city street">
+      </div>
+      <div class="content-col">
+        <div class="content-col-inner">
+          <div class="activity-head">
+            <svg class="activity-icon" viewBox="0 0 46 46" xmlns="http://www.w3.org/2000/svg"><line x1="14" y1="4" x2="14" y2="42" stroke="var(--brass)" stroke-width="3"/><line x1="32" y1="4" x2="32" y2="42" stroke="var(--brass)" stroke-width="3"/><line x1="14" y1="10" x2="32" y2="10" stroke="var(--brass-dark)" stroke-width="3"/><line x1="14" y1="18" x2="32" y2="18" stroke="var(--brass-dark)" stroke-width="3"/><line x1="14" y1="26" x2="32" y2="26" stroke="var(--brass-dark)" stroke-width="3"/><line x1="14" y1="34" x2="32" y2="34" stroke="var(--brass-dark)" stroke-width="3"/></svg>
+            <div>
+              <h2>Sound the Alarm</h2>
+              <p>Activity 4 of 4 &middot; Sentence builder</p>
+            </div>
+          </div>
+          <div class="status-bar">
+            <div class="score-chip">
+              <svg class="badge-icon" viewBox="0 0 30 34" xmlns="http://www.w3.org/2000/svg"><path d="M15 2L27 6V17C27 26 22 31 15 33C8 31 3 26 3 17V6L15 2Z" fill="var(--brass)" stroke="var(--brass-dark)" stroke-width="1"/></svg>
+              <span class="label">SCORE</span><span class="value" id="score-value-reorder">0 / 24</span>
+            </div>
+            <div class="progress-wrap">
+              <span class="progress-label" id="reorder-progress-label">Sentence 1 of 6</span>
+              <div class="progress-track"><div class="progress-fill" id="reorder-progress-fill" style="width:0%"></div></div>
+            </div>
+          </div>
+          <div class="q-card">
+            <p class="reorder-sentence-label">Tap the words in the correct order:</p>
+            <div class="tile-area" id="reorder-answer"></div>
+            <div class="tile-area bank" id="reorder-bank"></div>
+            <div class="feedback" id="reorder-feedback"></div>
+          </div>
+          <div class="btn-row">
+            <button type="button" class="btn btn-primary" id="reorder-check" disabled>Check Sentence</button>
+            <button type="button" class="btn btn-primary" id="reorder-next" hidden>Next Sentence</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SPEAKING / WRITING (free activation) ================= -->
+  <section class="screen" id="screen-speaking">
+    <div class="layout-shell">
+      <div class="image-panel">
+        <img src="Fire Brigade/fire-2-truck.png" alt="Fire engine parked outside the station">
+      </div>
+      <div class="content-col">
+        <div class="content-col-inner">
+          <div class="activity-head">
+            <svg class="activity-icon" viewBox="0 0 46 46" xmlns="http://www.w3.org/2000/svg"><path d="M12 30c0-8 5-14 11-14s11 6 11 14" stroke="var(--brass)" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="23" cy="14" r="6" fill="var(--brass)"/><path d="M8 34h30" stroke="var(--brass-dark)" stroke-width="2" stroke-linecap="round"/></svg>
+            <div>
+              <h2>Off the Radio</h2>
+              <p>Bonus round &middot; Free speaking or writing</p>
+            </div>
+          </div>
+          <div class="speaking-card">
+            <p class="kicker">No right or wrong answer here</p>
+            <p>Speak or write freely about the prompts below. Try to use as many modal verbs as you can: <strong>must, have to, should, can, might</strong>.</p>
+            <ul>
+              <li>Describe a shift at a fire station — what does a firefighter have to do, and what shouldn't they do?</li>
+              <li>Talk about a rule you had to follow at work or school that you disagreed with. What should it have been instead?</li>
+              <li>What might happen if a fire crew doesn't follow safety procedures?</li>
+            </ul>
+          </div>
+          <div class="btn-row"><button type="button" class="btn btn-primary" id="speaking-next">See My Results</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= RESULTS ================= -->
+  <section class="screen" id="screen-results">
+    <div class="layout-shell">
+      <div class="image-panel">
+        <img src="Fire Brigade/fire-3-field.png" alt="A firefighter standing beside a fire engine in a field, watching a distant building fire">
+      </div>
+      <div class="content-col">
+        <div class="content-col-inner">
+          <div class="results-card">
+            <span class="rivet tl"></span><span class="rivet tr"></span><span class="rivet bl"></span><span class="rivet br"></span>
+            <svg class="results-illustration" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Fire brigade badge">
+              <path d="M70 8L118 24V62C118 92 100 114 70 128C40 114 22 92 22 62V24L70 8Z" fill="var(--brass)"/>
+              <path d="M70 8L118 24V62C118 92 100 114 70 128" fill="var(--brass-dark)"/>
+              <path d="M70 20L108 33V62C108 86 94 104 70 116C46 104 32 86 32 62V33L70 20Z" fill="var(--soot-deep)" opacity="0.18"/>
+              <path d="M50 66l13 13 27-30" stroke="var(--soot-deep)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+            <p class="results-score" id="results-score">0 / 24</p>
+            <p class="results-pct" id="results-pct">0%</p>
+            <p class="results-message" id="results-message"></p>
+            <ul class="breakdown" id="results-breakdown"></ul>
+            <button type="button" class="btn btn-primary btn-block" id="btn-restart">Restart the Shift</button>
+          </div>
+          <footer style="text-align:center;margin-top:20px;color:var(--smoke);font-size:12px;letter-spacing:0.3px;">Forbes English &middot; On Call: Modal Verbs for the Fire Brigade &middot; Level B1</footer>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ================= FIXED BOTTOM NAV ================= -->
+<nav class="lesson-nav">
+  <button type="button" class="nav-btn" id="nav-back">&larr; Back</button>
+  <div class="nav-dots" id="nav-dots"></div>
+  <button type="button" class="nav-btn nav-primary" id="nav-next">Next &rarr;</button>
+</nav>
+
+<script>
+"use strict";
+
+/* ================= DATA ================= */
+
+var mcQuestions = [
+  {
+    sentence: "Fire safety regulations state that every building ___ have clearly marked emergency exits.",
+    options: ["must", "might", "could", "should"],
+    correct: "must",
+    explanation: "'Must' shows a strong, official rule. A regulation is not a suggestion, so a softer word like 'should' does not fit here."
+  },
+  {
+    sentence: "It is strictly forbidden: firefighters ___ remove their breathing apparatus inside a smoke-filled room.",
+    options: ["mustn't", "couldn't", "shouldn't", "wouldn't"],
+    correct: "mustn't",
+    explanation: "'Mustn't' means an action is prohibited. The other options describe inability, poor advice, or a hypothetical — not a firm rule."
+  },
+  {
+    sentence: "Off-duty firefighters ___ come to the station unless there's a major emergency.",
+    options: ["needn't", "mustn't", "shouldn't", "couldn't"],
+    correct: "needn't",
+    explanation: "'Needn't' means something is not necessary, though it's still allowed. 'Mustn't' would wrongly suggest they are banned from coming at all."
+  },
+  {
+    sentence: "As a helpful tip, new recruits ___ ask experienced officers for guidance during their first callouts.",
+    options: ["should", "must", "can't", "might"],
+    correct: "should",
+    explanation: "'Should' gives friendly advice. Calling it a 'tip' tells us this is a recommendation, not a strict obligation like 'must'."
+  },
+  {
+    sentence: "After years of training, experienced firefighters ___ carry a person twice their body weight down a ladder.",
+    options: ["can", "may", "must", "will"],
+    correct: "can",
+    explanation: "'Can' describes a learned physical ability. The sentence is about skill gained through training, not permission or obligation."
+  },
+  {
+    sentence: "There's a chance that strong winds ___ make the wildfire spread even faster.",
+    options: ["might", "will", "would", "shall"],
+    correct: "might",
+    explanation: "'Might' expresses a real but uncertain possibility. 'A chance that' rules out the certainty that 'will' would suggest."
+  }
+];
+
+var fbQuestions = [
+  {
+    sentence: "Because gas leaks are extremely dangerous, official protocol requires that crews ___ evacuate the entire street immediately.",
+    options: ["have to", "want to", "used to", "ought to"],
+    correct: "have to",
+    explanation: "'Have to' shows an obligation that comes from an outside rule — here, official protocol, not personal choice."
+  },
+  {
+    sentence: "After a tough call, remember: talking to the station counsellor is optional, but many experienced officers say you ___ try it at least once.",
+    options: ["ought to", "have to", "need to", "used to"],
+    correct: "ought to",
+    explanation: "'Ought to' is friendly, strong advice, close to 'should'. The word 'optional' rules out anything that sounds like a requirement."
+  },
+  {
+    sentence: "Before responding to a chemical spill, safety procedure dictates that crews ___ check the material safety data sheet first.",
+    options: ["need to", "want to", "used to", "ought to"],
+    correct: "need to",
+    explanation: "'Need to' expresses a real necessity, especially for safety. 'Dictates' shows this step cannot be skipped."
+  },
+  {
+    sentence: "Twenty years ago, this station ___ receive fewer than ten calls a week; now it's over a hundred.",
+    options: ["used to", "have to", "ought to", "want to"],
+    correct: "used to",
+    explanation: "'Used to' describes a past habit or state that has since changed, exactly what the contrast with 'now' signals."
+  },
+  {
+    sentence: "On a 24-hour shift, firefighters ___ sleep in the station's dormitory between emergency calls.",
+    options: ["have to", "ought to", "used to", "mustn't"],
+    correct: "have to",
+    explanation: "'Have to' describes a standard requirement of the job, not just good advice or a past routine."
+  },
+  {
+    sentence: "Fire safety experts recommend that homeowners ___ test their smoke alarms every month to make sure they're working.",
+    options: ["ought to", "have to", "used to", "mustn't"],
+    correct: "ought to",
+    explanation: "'Ought to' matches 'recommend'. This is good practice, not a legal requirement placed on homeowners."
+  }
+];
+
+var matchPairs = [
+  { left: "must", right: "A strong rule with no choice" },
+  { left: "mustn't", right: "Completely forbidden" },
+  { left: "don't have to", right: "Not necessary, but allowed" },
+  { left: "should", right: "Friendly advice" },
+  { left: "can", right: "A learned ability" },
+  { left: "might", right: "Possible, not certain" }
+];
+
+var reorderItems = [
+  {
+    words: ["Firefighters", "must", "wear", "protective", "helmets."],
+    explanation: "Word order: subject + must + base verb (no 'to'!) + object."
+  },
+  {
+    words: ["You", "mustn't", "smoke", "inside", "the", "station."],
+    explanation: "'Mustn't' + base verb shows something is forbidden."
+  },
+  {
+    words: ["She", "doesn't", "have", "to", "attend", "the", "meeting."],
+    explanation: "Unlike core modals, 'have to' needs 'to' before the base verb, even in the negative."
+  },
+  {
+    words: ["Could", "you", "check", "the", "oxygen", "tanks", "please?"],
+    explanation: "In questions, the modal moves before the subject: Could + you + base verb...?"
+  },
+  {
+    words: ["A", "fire", "might", "start", "in", "the", "kitchen."],
+    explanation: "'Might' + base verb expresses a real possibility."
+  },
+  {
+    words: ["New", "recruits", "should", "practise", "their", "drills."],
+    explanation: "'Should' + base verb gives advice or a recommendation."
+  }
+];
+
+var TOTAL_QUESTIONS = mcQuestions.length + fbQuestions.length + matchPairs.length + reorderItems.length;
+
+/* ================= SCREEN ORDER / NAV ================= */
+
+var screenOrder = ["welcome", "mc", "fb", "matching", "reorder", "speaking", "results"];
+var screenLabels = {
+  welcome: "Briefing",
+  mc: "On Duty",
+  fb: "Station Life",
+  matching: "Radio Check",
+  reorder: "Sound the Alarm",
+  speaking: "Off the Radio",
+  results: "Results"
+};
+var currentScreen = "welcome";
+var maxReachedIdx = 0;
+
+/* ================= STATE ================= */
+
+var state = {
+  score: 0,
+  mc: { index: 0, answered: false, correctFlags: mcQuestions.map(function(){ return false; }) },
+  fb: { index: 0, answered: false, correctFlags: fbQuestions.map(function(){ return false; }) },
+  match: {
+    matchedFlags: matchPairs.map(function(){ return false; }),
+    selectedLeft: null, selectedLeftEl: null,
+    selectedRight: null, selectedRightEl: null,
+    locked: false
+  },
+  reorder: { index: 0, answered: false, correctFlags: reorderItems.map(function(){ return false; }), current: [] }
+};
+
+/* ================= UTIL ================= */
+
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+
+function el(id){ return document.getElementById(id); }
+
+function updateAllScoreChips(){
+  var text = state.score + " / " + TOTAL_QUESTIONS;
+  el("score-value").textContent = text;
+  el("score-value-fb").textContent = text;
+  el("score-value-match").textContent = text;
+  el("score-value-reorder").textContent = text;
+}
+
+function buildNavDots(){
+  var wrap = el("nav-dots");
+  wrap.innerHTML = "";
+  screenOrder.forEach(function(name, idx){
+    var dot = document.createElement("button");
+    dot.type = "button";
+    dot.className = "nav-dot";
+    dot.setAttribute("aria-label", screenLabels[name]);
+    dot.title = screenLabels[name];
+    dot.addEventListener("click", function(){
+      if (idx <= maxReachedIdx){ showScreen(name); }
+    });
+    wrap.appendChild(dot);
+  });
+}
+
+function updateNavDots(){
+  var dots = document.querySelectorAll("#nav-dots .nav-dot");
+  var currentIdx = screenOrder.indexOf(currentScreen);
+  dots.forEach(function(dot, idx){
+    dot.classList.remove("dot-current", "dot-done");
+    dot.disabled = idx > maxReachedIdx;
+    if (idx === currentIdx){ dot.classList.add("dot-current"); }
+    else if (idx < currentIdx){ dot.classList.add("dot-done"); }
+  });
+}
+
+function updateNavButtons(){
+  var currentIdx = screenOrder.indexOf(currentScreen);
+  el("nav-back").disabled = (currentIdx <= 0);
+
+  var nextBtn = el("nav-next");
+  /* the nav-next button mirrors whichever in-content "forward" action
+     is currently valid for this screen; it stays disabled otherwise
+     so learners must complete gated activities via the in-content button. */
+  nextBtn.onclick = null;
+  if (currentScreen === "welcome"){
+    nextBtn.disabled = false;
+    nextBtn.textContent = "Start the Shift →";
+    nextBtn.onclick = function(){ el("btn-start").click(); };
+  } else if (currentScreen === "mc"){
+    nextBtn.disabled = el("mc-next").hidden;
+    nextBtn.textContent = "Next →";
+    nextBtn.onclick = function(){ if (!el("mc-next").hidden) el("mc-next").click(); };
+  } else if (currentScreen === "fb"){
+    nextBtn.disabled = el("fb-next").hidden;
+    nextBtn.textContent = "Next →";
+    nextBtn.onclick = function(){ if (!el("fb-next").hidden) el("fb-next").click(); };
+  } else if (currentScreen === "matching"){
+    nextBtn.disabled = el("match-next").hidden;
+    nextBtn.textContent = "Next →";
+    nextBtn.onclick = function(){ if (!el("match-next").hidden) el("match-next").click(); };
+  } else if (currentScreen === "reorder"){
+    nextBtn.disabled = el("reorder-next").hidden;
+    nextBtn.textContent = "Next →";
+    nextBtn.onclick = function(){ if (!el("reorder-next").hidden) el("reorder-next").click(); };
+  } else if (currentScreen === "speaking"){
+    nextBtn.disabled = false;
+    nextBtn.textContent = "See My Results →";
+    nextBtn.onclick = function(){ el("speaking-next").click(); };
+  } else if (currentScreen === "results"){
+    nextBtn.disabled = true;
+    nextBtn.textContent = "Next →";
+  }
+}
+
+/* call this whenever a hidden/visible state on an in-content next
+   button changes, so the fixed nav bar stays in sync */
+function syncNav(){ updateNavButtons(); updateNavDots(); }
+
+function showScreen(name){
+  var screens = document.querySelectorAll(".screen");
+  for (var i = 0; i < screens.length; i++){ screens[i].classList.remove("active"); }
+  el("screen-" + name).classList.add("active");
+  currentScreen = name;
+  var idx = screenOrder.indexOf(name);
+  if (idx > maxReachedIdx){ maxReachedIdx = idx; }
+  syncNav();
+}
+
+/* ================= MULTIPLE CHOICE + FILL IN THE BLANK (shared engine) ================= */
+
+var choiceConfig = {
+  mc: {
+    data: mcQuestions,
+    sub: state.mc,
+    sentenceEl: null, optionsEl: null, feedbackEl: null, nextBtn: null,
+    progressLabelEl: null, progressFillEl: null,
+    onDone: function(){ showScreen("fb"); renderChoice("fb"); }
+  },
+  fb: {
+    data: fbQuestions,
+    sub: state.fb,
+    sentenceEl: null, optionsEl: null, feedbackEl: null, nextBtn: null,
+    progressLabelEl: null, progressFillEl: null,
+    onDone: function(){ showScreen("matching"); renderMatching(); }
+  }
+};
+
+function wireChoiceElements(){
+  choiceConfig.mc.sentenceEl = el("mc-sentence");
+  choiceConfig.mc.optionsEl = el("mc-options");
+  choiceConfig.mc.feedbackEl = el("mc-feedback");
+  choiceConfig.mc.nextBtn = el("mc-next");
+  choiceConfig.mc.progressLabelEl = el("mc-progress-label");
+  choiceConfig.mc.progressFillEl = el("mc-progress-fill");
+
+  choiceConfig.fb.sentenceEl = el("fb-sentence");
+  choiceConfig.fb.optionsEl = el("fb-options");
+  choiceConfig.fb.feedbackEl = el("fb-feedback");
+  choiceConfig.fb.nextBtn = el("fb-next");
+  choiceConfig.fb.progressLabelEl = el("fb-progress-label");
+  choiceConfig.fb.progressFillEl = el("fb-progress-fill");
+}
+
+function renderChoice(key){
+  var cfg = choiceConfig[key];
+  var sub = cfg.sub;
+  var item = cfg.data[sub.index];
+  sub.answered = false;
+
+  cfg.sentenceEl.innerHTML = item.sentence.replace("___", "<span class=\"blank\">_____</span>");
+  cfg.optionsEl.innerHTML = "";
+  cfg.feedbackEl.style.display = "none";
+  cfg.feedbackEl.innerHTML = "";
+  cfg.nextBtn.hidden = true;
+
+  var shuffled = shuffle(item.options);
+  shuffled.forEach(function(opt){
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "option-btn";
+    btn.textContent = opt;
+    btn.addEventListener("click", function(){ handleChoiceAnswer(key, opt, btn); });
+    cfg.optionsEl.appendChild(btn);
+  });
+
+  cfg.progressLabelEl.textContent = "Question " + (sub.index + 1) + " of " + cfg.data.length;
+  cfg.progressFillEl.style.width = (sub.index / cfg.data.length * 100) + "%";
+  syncNav();
+}
+
+function handleChoiceAnswer(key, chosen, btnEl){
+  var cfg = choiceConfig[key];
+  var sub = cfg.sub;
+  if (sub.answered) return;
+  sub.answered = true;
+
+  var item = cfg.data[sub.index];
+  var isCorrect = (chosen === item.correct);
+  if (isCorrect){
+    sub.correctFlags[sub.index] = true;
+    state.score++;
+  }
+
+  var buttons = cfg.optionsEl.querySelectorAll(".option-btn");
+  buttons.forEach(function(btn){
+    btn.disabled = true;
+    if (btn.textContent === item.correct){
+      btn.classList.add("correct");
+    } else if (btn === btnEl){
+      btn.classList.add("incorrect");
+    } else {
+      btn.classList.add("muted");
+    }
+  });
+
+  cfg.feedbackEl.style.display = "block";
+  cfg.feedbackEl.className = "feedback " + (isCorrect ? "feedback-correct" : "feedback-incorrect");
+  cfg.feedbackEl.innerHTML = "<strong>" + (isCorrect ? "Correct!" : "Not quite.") + "</strong>" + item.explanation;
+  cfg.nextBtn.hidden = false;
+
+  cfg.progressFillEl.style.width = ((sub.index + 1) / cfg.data.length * 100) + "%";
+  updateAllScoreChips();
+  syncNav();
+}
+
+function goNextChoice(key){
+  var cfg = choiceConfig[key];
+  cfg.sub.index++;
+  if (cfg.sub.index >= cfg.data.length){
+    cfg.onDone();
+  } else {
+    renderChoice(key);
+  }
+}
+
+/* ================= MATCHING ================= */
+
+function renderMatching(){
+  var sub = state.match;
+  var leftEl = el("match-left");
+  var rightEl = el("match-right");
+  leftEl.innerHTML = "";
+  rightEl.innerHTML = "";
+
+  var leftItems = shuffle(matchPairs.map(function(p, i){ return { text: p.left, idx: i }; }));
+  var rightItems = shuffle(matchPairs.map(function(p, i){ return { text: p.right, idx: i }; }));
+
+  leftItems.forEach(function(item){
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "match-item";
+    btn.textContent = item.text;
+    if (sub.matchedFlags[item.idx]){ btn.classList.add("matched"); btn.disabled = true; }
+    btn.addEventListener("click", function(){ handleMatchClick("left", item.idx, btn); });
+    leftEl.appendChild(btn);
+  });
+
+  rightItems.forEach(function(item){
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "match-item";
+    btn.textContent = item.text;
+    if (sub.matchedFlags[item.idx]){ btn.classList.add("matched"); btn.disabled = true; }
+    btn.addEventListener("click", function(){ handleMatchClick("right", item.idx, btn); });
+    rightEl.appendChild(btn);
+  });
+
+  updateMatchProgress();
+  syncNav();
+}
+
+function updateMatchProgress(){
+  var sub = state.match;
+  var matchedCount = sub.matchedFlags.filter(Boolean).length;
+  el("match-progress-label").textContent = matchedCount + " of " + matchPairs.length + " matched";
+  el("match-progress-fill").style.width = (matchedCount / matchPairs.length * 100) + "%";
+}
+
+function handleMatchClick(side, idx, btnEl){
+  var sub = state.match;
+  if (sub.locked) return;
+  if (btnEl.disabled) return;
+
+  if (side === "left"){
+    if (sub.selectedLeftEl) sub.selectedLeftEl.classList.remove("selected");
+    sub.selectedLeft = idx;
+    sub.selectedLeftEl = btnEl;
+    btnEl.classList.add("selected");
+  } else {
+    if (sub.selectedRightEl) sub.selectedRightEl.classList.remove("selected");
+    sub.selectedRight = idx;
+    sub.selectedRightEl = btnEl;
+    btnEl.classList.add("selected");
+  }
+
+  if (sub.selectedLeft !== null && sub.selectedRight !== null){
+    sub.locked = true;
+    var isMatch = (sub.selectedLeft === sub.selectedRight);
+    var leftBtn = sub.selectedLeftEl;
+    var rightBtn = sub.selectedRightEl;
+
+    if (isMatch){
+      var matchedIdx = sub.selectedLeft;
+      sub.matchedFlags[matchedIdx] = true;
+      state.score++;
+      leftBtn.classList.remove("selected");
+      rightBtn.classList.remove("selected");
+      leftBtn.classList.add("matched");
+      rightBtn.classList.add("matched");
+      leftBtn.disabled = true;
+      rightBtn.disabled = true;
+      sub.selectedLeft = null; sub.selectedRight = null;
+      sub.selectedLeftEl = null; sub.selectedRightEl = null;
+      sub.locked = false;
+      updateAllScoreChips();
+      updateMatchProgress();
+      if (sub.matchedFlags.every(Boolean)){
+        el("match-status").textContent = "All matched! Nice radio work.";
+        el("match-next").hidden = false;
+        syncNav();
+      }
+    } else {
+      el("match-status").textContent = "Not a match, try again.";
+      setTimeout(function(){
+        leftBtn.classList.remove("selected");
+        rightBtn.classList.remove("selected");
+        sub.selectedLeft = null; sub.selectedRight = null;
+        sub.selectedLeftEl = null; sub.selectedRightEl = null;
+        sub.locked = false;
+        el("match-status").textContent = "";
+      }, 650);
+    }
+  }
+}
+
+/* ================= REORDER ================= */
+
+function renderReorder(){
+  var sub = state.reorder;
+  var item = reorderItems[sub.index];
+  sub.answered = false;
+  sub.current = [];
+
+  var bankEl = el("reorder-bank");
+  var answerEl = el("reorder-answer");
+  bankEl.innerHTML = "";
+  answerEl.innerHTML = "";
+  el("reorder-feedback").style.display = "none";
+  el("reorder-feedback").innerHTML = "";
+  el("reorder-next").hidden = true;
+  el("reorder-check").hidden = false;
+  el("reorder-check").disabled = true;
+
+  var shuffled = shuffle(item.words.map(function(w, i){ return { text: w, id: i }; }));
+  shuffled.forEach(function(w){
+    var tile = document.createElement("button");
+    tile.type = "button";
+    tile.className = "word-tile";
+    tile.textContent = w.text;
+    tile.addEventListener("click", function(){ moveTileToAnswer(w, tile); });
+    bankEl.appendChild(tile);
+  });
+
+  el("reorder-progress-label").textContent = "Sentence " + (sub.index + 1) + " of " + reorderItems.length;
+  el("reorder-progress-fill").style.width = (sub.index / reorderItems.length * 100) + "%";
+  syncNav();
+}
+
+function moveTileToAnswer(word, tileEl){
+  var sub = state.reorder;
+  if (sub.answered) return;
+  tileEl.remove();
+
+  var answerTile = document.createElement("button");
+  answerTile.type = "button";
+  answerTile.className = "word-tile placed";
+  answerTile.textContent = word.text;
+  answerTile.addEventListener("click", function(){ moveTileToBank(word, answerTile); });
+  el("reorder-answer").appendChild(answerTile);
+
+  sub.current.push(word.id);
+  el("reorder-check").disabled = (el("reorder-bank").children.length !== 0);
+}
+
+function moveTileToBank(word, tileEl){
+  var sub = state.reorder;
+  if (sub.answered) return;
+  tileEl.remove();
+
+  var bankTile = document.createElement("button");
+  bankTile.type = "button";
+  bankTile.className = "word-tile";
+  bankTile.textContent = word.text;
+  bankTile.addEventListener("click", function(){ moveTileToAnswer(word, bankTile); });
+  el("reorder-bank").appendChild(bankTile);
+
+  sub.current = sub.current.filter(function(id){ return id !== word.id; });
+  el("reorder-check").disabled = true;
+}
+
+function checkReorder(){
+  var sub = state.reorder;
+  if (sub.answered) return;
+  sub.answered = true;
+
+  var item = reorderItems[sub.index];
+  var isCorrect = (sub.current.length === item.words.length) && sub.current.every(function(id, i){ return id === i; });
+  if (isCorrect){
+    sub.correctFlags[sub.index] = true;
+    state.score++;
+  }
+
+  var placedTiles = el("reorder-answer").querySelectorAll(".word-tile");
+  placedTiles.forEach(function(btn){ btn.disabled = true; });
+  el("reorder-check").hidden = true;
+
+  var fbEl = el("reorder-feedback");
+  fbEl.style.display = "block";
+  fbEl.className = "feedback " + (isCorrect ? "feedback-correct" : "feedback-incorrect");
+  var correctSentence = item.words.join(" ");
+  var extra = isCorrect ? "" : (" The correct sentence is: \"" + correctSentence + "\"");
+  fbEl.innerHTML = "<strong>" + (isCorrect ? "Correct!" : "Not quite.") + "</strong>" + item.explanation + extra;
+
+  el("reorder-next").hidden = false;
+  el("reorder-progress-fill").style.width = ((sub.index + 1) / reorderItems.length * 100) + "%";
+  updateAllScoreChips();
+  syncNav();
+}
+
+function goNextReorder(){
+  state.reorder.index++;
+  if (state.reorder.index >= reorderItems.length){
+    showScreen("speaking");
+  } else {
+    renderReorder();
+  }
+}
+
+/* ================= RESULTS ================= */
+
+function renderResults(){
+  var pct = Math.round((state.score / TOTAL_QUESTIONS) * 100);
+  el("results-score").textContent = state.score + " / " + TOTAL_QUESTIONS;
+  el("results-pct").textContent = pct + "%";
+
+  var message;
+  if (pct >= 90){
+    message = "Outstanding! You've got the sharp instincts of a station veteran.";
+  } else if (pct >= 70){
+    message = "Well done! You have a solid handle on these modal verbs.";
+  } else if (pct >= 45){
+    message = "Good effort! A little more practice and this will feel automatic.";
+  } else {
+    message = "Keep practising! Re-read the explanations, then try the shift again.";
+  }
+  el("results-message").textContent = message;
+
+  var mcCorrect = state.mc.correctFlags.filter(Boolean).length;
+  var fbCorrect = state.fb.correctFlags.filter(Boolean).length;
+  var matchCorrect = state.match.matchedFlags.filter(Boolean).length;
+  var reorderCorrect = state.reorder.correctFlags.filter(Boolean).length;
+
+  el("results-breakdown").innerHTML =
+    "<li><span>On Duty (Multiple Choice)</span><span>" + mcCorrect + " / " + mcQuestions.length + "</span></li>" +
+    "<li><span>Station Life (Fill in the Blank)</span><span>" + fbCorrect + " / " + fbQuestions.length + "</span></li>" +
+    "<li><span>Radio Check (Matching)</span><span>" + matchCorrect + " / " + matchPairs.length + "</span></li>" +
+    "<li><span>Sound the Alarm (Sentence Builder)</span><span>" + reorderCorrect + " / " + reorderItems.length + "</span></li>";
+}
+
+/* ================= INIT ================= */
+
+function init(){
+  wireChoiceElements();
+  buildNavDots();
+
+  el("btn-start").addEventListener("click", function(){
+    showScreen("mc");
+    renderChoice("mc");
+  });
+
+  el("mc-next").addEventListener("click", function(){ goNextChoice("mc"); });
+  el("fb-next").addEventListener("click", function(){ goNextChoice("fb"); });
+  el("match-next").addEventListener("click", function(){ showScreen("reorder"); renderReorder(); });
+  el("reorder-check").addEventListener("click", checkReorder);
+  el("reorder-next").addEventListener("click", goNextReorder);
+  el("speaking-next").addEventListener("click", function(){ showScreen("results"); renderResults(); });
+  el("btn-restart").addEventListener("click", function(){ location.reload(); });
+
+  el("nav-back").addEventListener("click", function(){
+    var idx = screenOrder.indexOf(currentScreen);
+    if (idx > 0){ showScreen(screenOrder[idx - 1]); }
+  });
+
+  updateAllScoreChips();
+  showScreen("welcome");
+}
+
+init();
+</script>
+</body>
+</html>

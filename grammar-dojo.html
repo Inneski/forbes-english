@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grammar Dojo | must vs have to</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&family=Share+Tech+Mono&family=Zen+Antique&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --paper: #f5f0e8;
+    --red: #c0392b;
+    --red-light: #e74c3c;
+    --gold: #c9a84c;
+    --gold-light: #f0c869;
+    --brush: #2c2c3e;
+    --grey: #8b8b9a;
+    --green: #27ae60;
+    --green-light: #2ecc71;
+    --correct: #1a6b3a;
+    --wrong: #8b1a1a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Share Tech Mono', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(192,57,43,0.04) 60px),
+      repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(192,57,43,0.04) 60px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .kanji-bg {
+    position: fixed;
+    font-family: 'Zen Antique', serif;
+    font-size: 220px;
+    color: rgba(192,57,43,0.04);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 0;
+    user-select: none;
+    animation: kanji-pulse 8s ease-in-out infinite;
+  }
+
+  @keyframes kanji-pulse {
+    0%, 100% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.02); }
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 30px 0 20px;
+    border-bottom: 1px solid rgba(201,168,76,0.3);
+    margin-bottom: 28px;
+  }
+
+  .dojo-title {
+    font-family: 'Zen Antique', serif;
+    font-size: 14px;
+    color: var(--gold);
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    opacity: 0.8;
+  }
+
+  .main-title {
+    font-family: 'Zen Antique', serif;
+    font-size: 38px;
+    color: var(--paper);
+    letter-spacing: 2px;
+    line-height: 1.1;
+  }
+
+  .main-title span {
+    color: var(--red-light);
+  }
+
+  .subtitle {
+    font-size: 11px;
+    color: var(--grey);
+    margin-top: 8px;
+    letter-spacing: 3px;
+  }
+
+  /* Belt rank */
+  .belt-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .belt-label {
+    font-size: 11px;
+    color: var(--grey);
+    letter-spacing: 2px;
+  }
+
+  .belt-display {
+    display: flex;
+    gap: 6px;
+  }
+
+  .belt-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    transition: all 0.4s ease;
+  }
+
+  .belt-dot.earned { background: var(--gold); border-color: var(--gold); box-shadow: 0 0 8px var(--gold); }
+
+  .score-display {
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 1px;
+  }
+
+  /* Reference panel */
+  .ref-toggle {
+    background: none;
+    border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    padding: 6px 16px;
+    cursor: pointer;
+    letter-spacing: 2px;
+    margin-bottom: 14px;
+    transition: all 0.2s;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .ref-toggle:hover { background: rgba(201,168,76,0.08); border-color: var(--gold); }
+
+  .ref-panel {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-left: 3px solid var(--gold);
+    padding: 18px 20px;
+    margin-bottom: 24px;
+    display: none;
+    font-size: 12px;
+    line-height: 1.8;
+  }
+
+  .ref-panel.open { display: block; animation: slide-in 0.2s ease; }
+
+  @keyframes slide-in {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .ref-panel h3 {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+
+  .ref-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 500px) { .ref-grid { grid-template-columns: 1fr; } }
+
+  .ref-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 12px 14px;
+  }
+
+  .ref-card h4 {
+    color: var(--red-light);
+    font-size: 14px;
+    margin-bottom: 8px;
+    font-family: 'Noto Sans JP', sans-serif;
+  }
+
+  .ref-card .jp { color: var(--grey); font-size: 11px; margin-bottom: 6px; font-family: 'Noto Sans JP', sans-serif; }
+
+  .ref-point { color: var(--paper); opacity: 0.75; font-size: 11px; margin-bottom: 4px; padding-left: 8px; border-left: 2px solid rgba(255,255,255,0.15); }
+
+  .ref-example { color: var(--gold-light); font-size: 11px; margin-top: 6px; font-style: italic; opacity: 0.85; }
+
+  /* Exercise card */
+  .exercise-card {
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-top: 2px solid var(--red);
+    padding: 28px;
+    margin-bottom: 20px;
+    position: relative;
+    animation: card-appear 0.3s ease;
+  }
+
+  @keyframes card-appear {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .q-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+
+  .q-type {
+    font-size: 10px;
+    color: var(--red-light);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    background: rgba(192,57,43,0.12);
+    padding: 3px 10px;
+    border: 1px solid rgba(192,57,43,0.25);
+  }
+
+  .q-counter {
+    font-size: 11px;
+    color: var(--grey);
+    letter-spacing: 1px;
+  }
+
+  .jp-context {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+    color: var(--grey);
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.03);
+    border-left: 2px solid rgba(201,168,76,0.3);
+  }
+
+  .question-text {
+    font-size: 16px;
+    color: var(--paper);
+    line-height: 1.7;
+    margin-bottom: 20px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 300;
+  }
+
+  .blank {
+    display: inline-block;
+    border-bottom: 2px solid var(--gold);
+    min-width: 120px;
+    text-align: center;
+    color: var(--gold-light);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 15px;
+    padding: 0 4px;
+  }
+
+  /* Answer options */
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 480px) { .options { grid-template-columns: 1fr; } }
+
+  .option-btn {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--paper);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 13px;
+    padding: 12px 16px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .option-btn:hover:not(:disabled) {
+    background: rgba(201,168,76,0.1);
+    border-color: rgba(201,168,76,0.4);
+    color: var(--gold-light);
+  }
+
+  .option-btn.correct {
+    background: rgba(27,107,58,0.2);
+    border-color: var(--green);
+    color: var(--green-light);
+  }
+
+  .option-btn.wrong {
+    background: rgba(139,26,26,0.2);
+    border-color: var(--red);
+    color: rgba(231,76,60,0.8);
+    text-decoration: line-through;
+  }
+
+  .option-btn:disabled { cursor: default; }
+
+  .option-letter {
+    color: var(--grey);
+    margin-right: 10px;
+    font-size: 11px;
+  }
+
+  /* Text input for fill-in */
+  .fill-input-wrap {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .fill-input {
+    flex: 1;
+    min-width: 180px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-bottom: 2px solid var(--gold);
+    color: var(--paper);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 14px;
+    padding: 10px 14px;
+    outline: none;
+    transition: all 0.2s;
+  }
+
+  .fill-input:focus { border-color: var(--gold); background: rgba(201,168,76,0.05); }
+  .fill-input.correct { border-color: var(--green); color: var(--green-light); }
+  .fill-input.wrong { border-color: var(--red); color: rgba(231,76,60,0.8); }
+
+  .submit-btn {
+    background: var(--red);
+    border: none;
+    color: var(--paper);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    padding: 10px 20px;
+    cursor: pointer;
+    letter-spacing: 2px;
+    transition: all 0.2s;
+  }
+
+  .submit-btn:hover { background: var(--red-light); }
+  .submit-btn:disabled { opacity: 0.4; cursor: default; }
+
+  /* AI Feedback panel */
+  .feedback-panel {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-left: 3px solid var(--green);
+    padding: 16px 18px;
+    margin-top: 16px;
+    display: none;
+    font-size: 12px;
+    line-height: 1.8;
+    animation: slide-in 0.3s ease;
+  }
+
+  .feedback-panel.wrong-fb { border-left-color: var(--red-light); }
+  .feedback-panel.visible { display: block; }
+
+  .feedback-header {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .feedback-header.ok { color: var(--green-light); }
+  .feedback-header.bad { color: var(--red-light); }
+
+  .feedback-text {
+    color: rgba(245,240,232,0.85);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+  }
+
+  .feedback-jp {
+    color: var(--grey);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 12px;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .loading-dots::after {
+    content: '...';
+    animation: dots 1.2s steps(4, end) infinite;
+  }
+
+  @keyframes dots {
+    0%, 20% { content: ''; }
+    40% { content: '.'; }
+    60% { content: '..'; }
+    80%, 100% { content: '...'; }
+  }
+
+  /* Next button */
+  .next-btn {
+    display: none;
+    background: none;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    padding: 10px 28px;
+    cursor: pointer;
+    letter-spacing: 3px;
+    margin: 16px auto 0;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+
+  .next-btn:hover { background: rgba(201,168,76,0.1); }
+  .next-btn.visible { display: block; }
+
+  /* Progress bar */
+  .progress-wrap {
+    margin-bottom: 20px;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--grey);
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+
+  .progress-bar {
+    height: 3px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--red), var(--gold));
+    transition: width 0.5s ease;
+    border-radius: 2px;
+  }
+
+  /* Completion screen */
+  .completion {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+    animation: card-appear 0.5s ease;
+  }
+
+  .completion.visible { display: block; }
+
+  .completion-kanji {
+    font-family: 'Zen Antique', serif;
+    font-size: 80px;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 16px;
+    animation: kanji-pulse 3s ease-in-out infinite;
+  }
+
+  .completion h2 {
+    font-family: 'Zen Antique', serif;
+    font-size: 28px;
+    color: var(--paper);
+    margin-bottom: 10px;
+  }
+
+  .completion-score {
+    font-size: 40px;
+    color: var(--gold);
+    font-family: 'Share Tech Mono', monospace;
+    margin: 20px 0;
+  }
+
+  .completion p {
+    color: var(--grey);
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+    font-family: 'Noto Sans JP', sans-serif;
+  }
+
+  .restart-btn {
+    background: var(--red);
+    border: none;
+    color: var(--paper);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    padding: 14px 36px;
+    cursor: pointer;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    transition: all 0.2s;
+  }
+
+  .restart-btn:hover { background: var(--red-light); transform: translateY(-1px); }
+
+  /* Streak flash */
+  .streak-flash {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--gold);
+    color: var(--ink);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    padding: 8px 16px;
+    letter-spacing: 2px;
+    z-index: 100;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s;
+    pointer-events: none;
+  }
+
+  .streak-flash.show { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+<div class="kanji-bg">文法</div>
+<div class="streak-flash" id="streakFlash"></div>
+
+<div class="container">
+  <div class="header">
+    <div class="dojo-title">文法道場</div>
+    <div class="main-title">Grammar <span>Dojo</span></div>
+    <div class="subtitle">must &nbsp;·&nbsp; have to &nbsp;·&nbsp; don't have to &nbsp;·&nbsp; mustn't</div>
+  </div>
+
+  <div class="belt-bar">
+    <span class="belt-label">RANK:</span>
+    <div class="belt-display" id="beltDisplay">
+      <div class="belt-dot" id="bd0"></div>
+      <div class="belt-dot" id="bd1"></div>
+      <div class="belt-dot" id="bd2"></div>
+      <div class="belt-dot" id="bd3"></div>
+      <div class="belt-dot" id="bd4"></div>
+      <div class="belt-dot" id="bd5"></div>
+      <div class="belt-dot" id="bd6"></div>
+      <div class="belt-dot" id="bd7"></div>
+    </div>
+    <span class="score-display" id="scoreDisplay">0 / 0</span>
+  </div>
+
+  <button class="ref-toggle" onclick="toggleRef()">[ 参考 REFERENCE CHART ]</button>
+
+  <div class="ref-panel" id="refPanel">
+    <h3>must vs have to — Quick Ref</h3>
+    <div class="ref-grid">
+      <div class="ref-card">
+        <h4>must</h4>
+        <div class="jp">〜しなければならない (強い義務・内側から)</div>
+        <div class="ref-point">Speaker's own authority / strong personal feeling</div>
+        <div class="ref-point">Rules you impose yourself</div>
+        <div class="ref-point">No past tense form — use <em>had to</em></div>
+        <div class="ref-example">// You must read the docs carefully.</div>
+        <div class="ref-example">// This code must not run in production.</div>
+      </div>
+      <div class="ref-card">
+        <h4>have to</h4>
+        <div class="jp">〜しなければならない (外側からの義務・ルール)</div>
+        <div class="ref-point">External rules, laws, workplace policy</div>
+        <div class="ref-point">Has past: <em>had to</em>, future: <em>will have to</em></div>
+        <div class="ref-point">Has all persons: <em>he/she has to</em></div>
+        <div class="ref-example">// You have to push to a feature branch.</div>
+        <div class="ref-example">// She had to rewrite the whole function.</div>
+      </div>
+      <div class="ref-card">
+        <h4>mustn't</h4>
+        <div class="jp">〜してはいけない (禁止)</div>
+        <div class="ref-point">Prohibition — it is forbidden</div>
+        <div class="ref-point">Strong warning, danger, rule</div>
+        <div class="ref-example">// You mustn't push to main directly.</div>
+        <div class="ref-example">// ⚠️ You must NOT hardcode API keys.</div>
+      </div>
+      <div class="ref-card">
+        <h4>don't have to</h4>
+        <div class="jp">〜しなくてもいい (不必要)</div>
+        <div class="ref-point">No obligation — it's optional</div>
+        <div class="ref-point">Opposite of mustn't! No prohibition</div>
+        <div class="ref-example">// You don't have to use TypeScript.</div>
+        <div class="ref-example">// She didn't have to attend the standup.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>PROGRESS</span>
+      <span id="progressText">0 / 10</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  </div>
+
+  <div id="exerciseArea">
+    <div class="exercise-card" id="exerciseCard">
+      <div class="q-meta">
+        <span class="q-type" id="qType">MULTIPLE CHOICE</span>
+        <span class="q-counter" id="qCounter">Q 1 / 10</span>
+      </div>
+      <div class="jp-context" id="jpContext"></div>
+      <div class="question-text" id="questionText"></div>
+
+      <div id="mcArea" class="options"></div>
+
+      <div id="fillArea" class="fill-input-wrap" style="display:none">
+        <input type="text" class="fill-input" id="fillInput" placeholder="type here..." autocomplete="off" />
+        <button class="submit-btn" id="submitFill" onclick="checkFill()">CHECK →</button>
+      </div>
+
+      <div class="feedback-panel" id="feedbackPanel">
+        <div class="feedback-header" id="feedbackHeader"></div>
+        <div class="feedback-text" id="feedbackText"></div>
+        <div class="feedback-jp" id="feedbackJp"></div>
+      </div>
+
+      <button class="next-btn" id="nextBtn" onclick="nextQuestion()">次へ NEXT →</button>
+    </div>
+  </div>
+
+  <div class="completion" id="completionScreen">
+    <span class="completion-kanji">合格</span>
+    <h2>Training Complete</h2>
+    <div class="completion-score" id="finalScore">0 / 10</div>
+    <p id="completionMsg"></p>
+    <button class="restart-btn" onclick="restartDojo()">もう一回 RESTART</button>
+  </div>
+</div>
+
+<script>
+const QUESTIONS = [
+  {
+    type: "mc",
+    jp: "コードレビューのポリシー（会社のルール）について話しています。",
+    q: "According to company policy, all pull requests _____ be reviewed by at least two developers.",
+    options: ["must", "have to", "mustn't", "don't have to"],
+    answer: 1,
+    explain: "Company policy = external rule → <strong>have to</strong>. Both 'must' and 'have to' express obligation, but external rules/policies lean toward <em>have to</em>.",
+    explainJp: "会社のルールは外部からの義務なので「have to」がより自然です。"
+  },
+  {
+    type: "mc",
+    jp: "セキュリティの警告。絶対禁止のことを伝えています。",
+    q: "You _____ commit your .env file to the repository. It contains secret keys!",
+    options: ["must", "have to", "mustn't", "don't have to"],
+    answer: 2,
+    explain: "<strong>mustn't</strong> = prohibition / forbidden. This is NOT the same as 'don't have to' (which means no obligation). Committing .env is dangerous — it's FORBIDDEN.",
+    explainJp: "「mustn't」は禁止を表します。「don't have to」との違いに注意！「don't have to」は「する必要がない」という意味です。"
+  },
+  {
+    type: "mc",
+    jp: "TypeScriptは使っても使わなくてもいい状況です（選択自由）。",
+    q: "Our stack supports both JS and TS — you _____ use TypeScript if you prefer plain JavaScript.",
+    options: ["must", "mustn't", "don't have to", "have to"],
+    answer: 2,
+    explain: "<strong>don't have to</strong> = no obligation, it's optional. The team has a choice. This is very different from 'mustn't'!",
+    explainJp: "「don't have to」は義務がないことを表します。選択自由な状況に使います。"
+  },
+  {
+    type: "mc",
+    jp: "自分の強い個人的な意見として言っています。",
+    q: "I really think every developer _____ understand how Git rebasing works — it's fundamental!",
+    options: ["must", "have to", "mustn't", "doesn't have to"],
+    answer: 0,
+    explain: "<strong>must</strong> is perfect here — it's the speaker's own strong opinion/recommendation, not an external rule. Personal conviction → must.",
+    explainJp: "話者自身の強い意見や確信を表す場合は「must」を使います。"
+  },
+  {
+    type: "fill",
+    jp: "過去形の義務。昨日の状況について話しています。",
+    q: "The server was down, so we _____ deploy the hotfix manually last night.",
+    answer: "had to",
+    hint: "past tense of obligation (must has no past form!)",
+    explain: "<strong>had to</strong> is the past tense of both 'must' and 'have to'. <em>Must</em> has no past tense form — you always use <em>had to</em> for past obligation.",
+    explainJp: "「must」に過去形はありません。過去の義務には必ず「had to」を使います。"
+  },
+  {
+    type: "mc",
+    jp: "法律・規制について話しています。",
+    q: "By law, all applications that store user data _____ comply with GDPR regulations.",
+    options: ["must", "have to", "don't have to", "mustn't"],
+    answer: 1,
+    explain: "Legal requirements are external obligations → <strong>have to</strong>. You could also use 'must' here (laws can use either), but 'have to' emphasizes the external legal force.",
+    explainJp: "法律の規制など外部からの義務には「have to」がよく使われます。「must」も可能ですが「have to」の方がより自然です。"
+  },
+  {
+    type: "mc",
+    jp: "スタンドアップミーティングは必須かどうか聞いています。",
+    q: "— Do I need to join the daily standup?\n— No, it's async-friendly. You _____ join if you've already posted an update in Slack.",
+    options: ["must", "mustn't", "have to", "don't have to"],
+    answer: 3,
+    explain: "<strong>don't have to</strong> = it's not required, it's optional. Posting in Slack is enough — no obligation to join the call.",
+    explainJp: "「しなくてもいい」という意味には「don't have to」を使います。禁止ではなく、単に義務がないということです。"
+  },
+  {
+    type: "fill",
+    jp: "明日のデプロイについて話しています（未来の義務）。",
+    q: "We _____ migrate the database schema before we can deploy v2.0 tomorrow.",
+    answer: "will have to",
+    hint: "future obligation (must has no future form either)",
+    explain: "<strong>will have to</strong> is used for future obligation. 'Must' can imply future, but 'will have to' is more explicit about an upcoming external necessity.",
+    explainJp: "未来の義務には「will have to」を使います。「must」も使えますが「will have to」の方が明確に未来を示します。"
+  },
+  {
+    type: "mc",
+    jp: "三人称（彼女）の義務について話しています。",
+    q: "She's the only backend dev this sprint, so she _____ handle all the API work herself.",
+    options: ["must", "has to", "mustn't", "doesn't have to"],
+    answer: 1,
+    explain: "<strong>has to</strong> — with third person singular (he/she/it), 'have to' becomes 'has to'. This is an external situation forcing her to work alone — not a personal rule.",
+    explainJp: "三人称単数では「have to」→「has to」になります。彼女が一人でやらざるを得ない状況（外部からの義務）なので「has to」が適切です。"
+  },
+  {
+    type: "mc",
+    jp: "危険な警告。絶対してはいけないことです。",
+    q: "You _____ run `DROP TABLE` in production without a backup — it's irreversible!",
+    options: ["must", "have to", "mustn't", "don't have to"],
+    answer: 2,
+    explain: "<strong>mustn't</strong> = strong prohibition / forbidden. Running DROP TABLE without backup is dangerous and must NOT be done. This is prohibition, not just 'no obligation'.",
+    explainJp: "「mustn't」は強い禁止を表します。本番環境でのDROP TABLEは危険で絶対禁止です。「don't have to」（する必要がない）との違いを覚えましょう！"
+  }
+];
+
+let current = 0;
+let score = 0;
+let answered = false;
+let streak = 0;
+
+function init() {
+  current = 0; score = 0; streak = 0; answered = false;
+  document.getElementById('completionScreen').classList.remove('visible');
+  document.getElementById('exerciseArea').style.display = 'block';
+  updateBelt();
+  loadQuestion();
+}
+
+function loadQuestion() {
+  answered = false;
+  const q = QUESTIONS[current];
+  document.getElementById('qType').textContent = q.type === 'mc' ? 'MULTIPLE CHOICE' : 'FILL IN THE BLANK';
+  document.getElementById('qCounter').textContent = `Q ${current + 1} / ${QUESTIONS.length}`;
+  document.getElementById('jpContext').textContent = q.jp;
+
+  // Question text
+  const qt = document.getElementById('questionText');
+  if (q.type === 'fill') {
+    qt.innerHTML = q.q.replace('_____', '<span class="blank">_____</span>') + `<br><small style="color:var(--grey);font-size:11px;margin-top:8px;display:block;">💡 Hint: ${q.hint}</small>`;
+  } else {
+    qt.innerHTML = q.q.replace('_____', '<span class="blank">_____</span>');
+  }
+
+  // MC or Fill
+  const mcArea = document.getElementById('mcArea');
+  const fillArea = document.getElementById('fillArea');
+  const fillInput = document.getElementById('fillInput');
+
+  if (q.type === 'mc') {
+    mcArea.style.display = 'grid';
+    fillArea.style.display = 'none';
+    mcArea.innerHTML = '';
+    q.options.forEach((opt, i) => {
+      const letters = ['A', 'B', 'C', 'D'];
+      const btn = document.createElement('button');
+      btn.className = 'option-btn';
+      btn.innerHTML = `<span class="option-letter">${letters[i]}.</span>${opt}`;
+      btn.onclick = () => checkMC(i, btn);
+      mcArea.appendChild(btn);
+    });
+  } else {
+    mcArea.style.display = 'none';
+    fillArea.style.display = 'flex';
+    fillInput.value = '';
+    fillInput.className = 'fill-input';
+    fillInput.disabled = false;
+    document.getElementById('submitFill').disabled = false;
+    fillInput.onkeydown = (e) => { if (e.key === 'Enter') checkFill(); };
+    setTimeout(() => fillInput.focus(), 50);
+  }
+
+  // Reset feedback
+  const fb = document.getElementById('feedbackPanel');
+  fb.className = 'feedback-panel';
+  document.getElementById('nextBtn').className = 'next-btn';
+
+  // Progress
+  const pct = (current / QUESTIONS.length) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressText').textContent = `${current} / ${QUESTIONS.length}`;
+
+  // Card re-animate
+  const card = document.getElementById('exerciseCard');
+  card.style.animation = 'none';
+  requestAnimationFrame(() => { card.style.animation = 'card-appear 0.3s ease'; });
+}
+
+function checkMC(idx, btn) {
+  if (answered) return;
+  answered = true;
+  const q = QUESTIONS[current];
+  const btns = document.querySelectorAll('.option-btn');
+  btns.forEach(b => b.disabled = true);
+
+  const correct = idx === q.answer;
+  if (correct) {
+    btn.classList.add('correct');
+    score++;
+    streak++;
+    if (streak >= 2) showStreak(streak);
+  } else {
+    btn.classList.add('wrong');
+    btns[q.answer].classList.add('correct');
+    streak = 0;
+  }
+
+  updateBelt();
+  showFeedback(correct, q);
+}
+
+function checkFill() {
+  if (answered) return;
+  const q = QUESTIONS[current];
+  const input = document.getElementById('fillInput');
+  const val = input.value.trim().toLowerCase();
+  const ans = q.answer.toLowerCase();
+  const correct = val === ans;
+  answered = true;
+
+  input.classList.add(correct ? 'correct' : 'wrong');
+  input.disabled = true;
+  document.getElementById('submitFill').disabled = true;
+
+  if (correct) {
+    score++; streak++;
+    if (streak >= 2) showStreak(streak);
+  } else {
+    streak = 0;
+    input.value = val + `  →  ${q.answer}`;
+  }
+
+  updateBelt();
+  showFeedback(correct, q);
+}
+
+function showFeedback(correct, q) {
+  const panel = document.getElementById('feedbackPanel');
+  const header = document.getElementById('feedbackHeader');
+  const text = document.getElementById('feedbackText');
+  const jp = document.getElementById('feedbackJp');
+
+  header.className = 'feedback-header ' + (correct ? 'ok' : 'bad');
+  panel.classList.add('feedback-panel', correct ? '' : 'wrong-fb', 'visible');
+
+  if (correct) {
+    header.innerHTML = '✓ CORRECT &nbsp;·&nbsp; 正解';
+    text.innerHTML = q.explain;
+    jp.textContent = q.explainJp;
+  } else {
+    header.innerHTML = '✗ INCORRECT &nbsp;·&nbsp; 不正解 — AI Sensei is explaining...';
+    text.innerHTML = '<span class="loading-dots">Thinking</span>';
+    jp.textContent = '';
+    getAIFeedback(q, text, jp, header);
+  }
+
+  document.getElementById('nextBtn').classList.add('visible');
+  document.getElementById('scoreDisplay').textContent = `${score} / ${current + 1}`;
+}
+
+async function getAIFeedback(q, textEl, jpEl, headerEl) {
+  try {
+    const prompt = `You are an encouraging English grammar teacher for a Japanese software developer.
+They got this question WRONG:
+
+Question: "${q.q}"
+Correct answer: "${q.answer || q.options[q.answer]}"
+Grammar point: must vs have to vs mustn't vs don't have to
+
+In 2-3 SHORT sentences (plain English, no markdown), explain:
+1. WHY this answer is correct
+2. The KEY difference to remember (using a coding analogy if possible)
+
+Then on a new line starting with "JP: " give a 1-sentence Japanese explanation.
+Keep total response under 80 words.`;
+
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 180,
+        messages: [{ role: "user", content: prompt }]
+      })
+    });
+
+    const data = await res.json();
+    const reply = data.content.map(c => c.text || '').join('');
+    const parts = reply.split(/\nJP:\s*/);
+    headerEl.innerHTML = '✗ INCORRECT &nbsp;·&nbsp; Sensei says:';
+    textEl.innerHTML = parts[0].trim();
+    jpEl.textContent = parts[1] ? '🇯🇵 ' + parts[1].trim() : q.explainJp;
+  } catch(e) {
+    textEl.innerHTML = q.explain;
+    jpEl.textContent = q.explainJp;
+    headerEl.innerHTML = '✗ INCORRECT &nbsp;·&nbsp; 不正解';
+  }
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= QUESTIONS.length) {
+    showCompletion();
+  } else {
+    loadQuestion();
+  }
+}
+
+function showCompletion() {
+  document.getElementById('exerciseArea').style.display = 'none';
+  const comp = document.getElementById('completionScreen');
+  comp.classList.add('visible');
+  document.getElementById('finalScore').textContent = `${score} / ${QUESTIONS.length}`;
+  document.getElementById('progressFill').style.width = '100%';
+  document.getElementById('progressText').textContent = `${QUESTIONS.length} / ${QUESTIONS.length}`;
+
+  const pct = score / QUESTIONS.length;
+  let msg = '';
+  if (pct === 1) msg = '完璧！ Perfect score. You are a Grammar Master. 🥋';
+  else if (pct >= 0.8) msg = 'よくできました！ Great work. Almost perfect!';
+  else if (pct >= 0.6) msg = '頑張りました！ Good effort. Review the reference chart and try again.';
+  else msg = 'まだまだ！ Keep practicing. Study the reference chart carefully.';
+  document.getElementById('completionMsg').textContent = msg;
+}
+
+function updateBelt() {
+  const total = QUESTIONS.length;
+  const pct = score / total;
+  const earned = Math.floor(pct * 8);
+  for (let i = 0; i < 8; i++) {
+    document.getElementById('bd' + i).classList.toggle('earned', i < earned);
+  }
+}
+
+function showStreak(n) {
+  const el = document.getElementById('streakFlash');
+  const msgs = { 2: '🔥 COMBO x2', 3: '⚡ COMBO x3', 4: '💥 COMBO x4', 5: '🎯 PERFECT RUN' };
+  el.textContent = msgs[n] || `🔥 COMBO x${n}`;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 1800);
+}
+
+function toggleRef() {
+  const p = document.getElementById('refPanel');
+  p.classList.toggle('open');
+}
+
+function restartDojo() { init(); }
+
+init();
+</script>
+</body>
+</html>

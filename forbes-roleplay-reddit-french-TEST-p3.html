@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – Language Test Part 3 | Reddit & the French Market</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:        #0f1923;
+  --ink-mid:    #1e2d3d;
+  --steel:      #2e4057;
+  --teal:       #0d7377;
+  --teal-light: #14a8ad;
+  --teal-dim:   #0a5a5d;
+  --chalk:      #f0f4f5;
+  --warm:       #e8eeef;
+  --mist:       #c8d8da;
+  --gold:       #e8a838;
+  --gold-dim:   #c8921e;
+  --coach-bg:   #fffbf0;
+  --correct:    #1a6b42;
+  --correct-bg: #e4f4ec;
+  --wrong:      #8b1e2f;
+  --wrong-bg:   #fceaea;
+  --shadow:     0 2px 20px rgba(15,25,35,0.14);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+.top-strip {
+  background: var(--ink);
+  padding: 32px 24px 28px;
+  text-align: center;
+  position: relative;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.top-strip::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 10%; right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--teal-light), transparent);
+  opacity: 0.5;
+}
+.logo-svg { display: block; margin: 0 auto 18px; width: 200px; }
+.lesson-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  color: var(--teal-light);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.lesson-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.3rem, 3.5vw, 1.85rem);
+  color: var(--chalk);
+  line-height: 1.25;
+  max-width: 600px;
+  margin: 0 auto 8px;
+}
+.lesson-sub {
+  font-size: 0.83rem;
+  color: var(--mist);
+  font-weight: 300;
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ── SCORE BAR ── */
+.score-bar {
+  background: var(--ink-mid);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+.score-item {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 0.78rem; color: var(--mist);
+  font-family: 'DM Mono', monospace; letter-spacing: 0.04em;
+}
+.score-item .val { color: var(--teal-light); font-weight: 700; font-size: 1rem; }
+.progress-track { width: 140px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; }
+.progress-fill  { height: 100%; background: var(--teal-light); border-radius: 2px; transition: width 0.4s ease; }
+
+/* ── ACTIVITY NAV ── */
+.act-nav {
+  background: var(--ink-mid);
+  padding: 0 16px;
+  display: flex; overflow-x: auto; gap: 2px;
+  border-bottom: 2px solid rgba(255,255,255,0.05);
+  scrollbar-width: none;
+}
+.act-nav::-webkit-scrollbar { display: none; }
+.anav-btn {
+  flex-shrink: 0; padding: 11px 16px;
+  font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 500;
+  color: var(--mist); background: transparent; border: none;
+  border-bottom: 2px solid transparent; cursor: pointer;
+  transition: color 0.2s, border-color 0.2s; white-space: nowrap; margin-bottom: -2px;
+}
+.anav-btn:hover { color: var(--chalk); }
+.anav-btn.active { color: var(--teal-light); border-bottom-color: var(--teal-light); font-weight: 600; }
+.anav-btn.done::after { content: ' ✓'; color: var(--teal-light); font-size: 0.68rem; }
+
+/* ── MAIN ── */
+.main { max-width: 820px; margin: 0 auto; padding: 32px 16px 80px; }
+
+/* ── ACTIVITY HEADER ── */
+.act-header { margin-bottom: 24px; }
+.act-eyebrow {
+  font-family: 'DM Mono', monospace; font-size: 0.65rem;
+  letter-spacing: 0.16em; color: var(--teal-light);
+  text-transform: uppercase; margin-bottom: 6px;
+}
+.act-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  color: var(--chalk); margin-bottom: 6px;
+}
+.act-desc {
+  font-size: 0.83rem; color: var(--mist); line-height: 1.6;
+  font-weight: 300; max-width: 620px;
+}
+
+/* ── QUESTION CARD ── */
+.q-card {
+  background: var(--chalk); border-radius: 14px;
+  overflow: hidden; margin-bottom: 14px; box-shadow: var(--shadow);
+}
+.q-top {
+  background: var(--ink-mid); padding: 14px 20px;
+  display: flex; align-items: flex-start; gap: 12px;
+}
+.q-num {
+  background: var(--teal); color: white; font-size: 0.72rem; font-weight: 700;
+  min-width: 24px; height: 24px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 1px;
+}
+.q-stem { color: var(--chalk); font-size: 0.93rem; line-height: 1.6; }
+.q-stem em { color: var(--gold); font-style: normal; font-weight: 600; }
+.q-stem s  { color: var(--wrong-bg); text-decoration-color: #e85555; }
+.q-scenario-tag {
+  font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em;
+  color: var(--teal-light); background: rgba(13,115,119,0.25);
+  padding: 2px 8px; border-radius: 4px; white-space: nowrap;
+  flex-shrink: 0; margin-top: 3px;
+}
+.q-body { padding: 16px 20px 18px; }
+
+/* ── FLAWED RESPONSE (error correction) ── */
+.flawed-block {
+  background: var(--ink-mid);
+  border-left: 3px solid var(--wrong);
+  border-radius: 0 10px 10px 0;
+  padding: 13px 16px;
+  font-size: 0.88rem;
+  color: var(--chalk);
+  line-height: 1.65;
+  margin-bottom: 14px;
+  position: relative;
+}
+.flawed-label {
+  font-family: 'DM Mono', monospace; font-size: 0.6rem;
+  letter-spacing: 0.12em; color: #e88a8a; text-transform: uppercase;
+  margin-bottom: 6px; font-weight: 600;
+}
+.flawed-block .flaw { color: #e88a8a; font-weight: 600; text-decoration: underline wavy #e85555; }
+
+/* ── MCQ OPTIONS ── */
+.opts { display: grid; gap: 8px; }
+.opt {
+  background: var(--warm); border: 1.5px solid rgba(46,64,87,0.15);
+  border-radius: 9px; padding: 11px 14px;
+  display: flex; align-items: flex-start; gap: 10px;
+  cursor: pointer; font-size: 0.88rem; color: var(--ink);
+  line-height: 1.5; transition: border-color 0.18s, background 0.18s, transform 0.1s;
+  text-align: left; width: 100%; font-family: 'DM Sans', sans-serif;
+}
+.opt:hover:not(:disabled) { border-color: var(--teal-light); background: rgba(13,115,119,0.07); transform: translateX(2px); }
+.opt:disabled { cursor: default; }
+.opt-letter {
+  background: var(--steel); color: white; font-size: 0.68rem; font-weight: 700;
+  min-width: 20px; height: 20px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 1px; transition: background 0.18s;
+}
+.opt.correct { background: var(--correct-bg); border-color: var(--correct); }
+.opt.correct .opt-letter { background: var(--correct); }
+.opt.wrong   { background: var(--wrong-bg); border-color: var(--wrong); }
+.opt.wrong   .opt-letter { background: var(--wrong); }
+
+/* ── MULTI-WORD CLOZE ── */
+.cloze-full {
+  background: var(--ink-mid);
+  border-radius: 10px;
+  padding: 14px 18px;
+  font-size: 0.9rem;
+  line-height: 2.2;
+  color: var(--chalk);
+  margin-bottom: 12px;
+}
+.cloze-field {
+  display: inline-block;
+  min-width: 180px;
+  border: none;
+  border-bottom: 2px solid var(--teal);
+  background: transparent;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  color: var(--gold-dim);
+  padding: 1px 6px;
+  outline: none;
+  text-align: center;
+  transition: border-color 0.2s;
+  vertical-align: baseline;
+}
+.cloze-field:focus { border-color: var(--teal-light); }
+.cloze-field.correct { border-color: var(--correct); color: var(--correct); background: rgba(26,107,66,0.12); border-radius: 4px; }
+.cloze-field.wrong   { border-color: var(--wrong);   color: var(--wrong);   background: rgba(139,30,47,0.12); border-radius: 4px; }
+.phrase-bank {
+  display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px;
+}
+.phrase-chip {
+  background: var(--ink);
+  color: var(--teal-light);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(20,168,173,0.3);
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+  user-select: none;
+  line-height: 1.4;
+}
+.phrase-chip:hover { background: var(--ink-mid); }
+.phrase-chip.used { opacity: 0.28; pointer-events: none; text-decoration: line-through; }
+
+/* ── DIAGNOSIS (exchange display) ── */
+.exchange-block {
+  display: flex; flex-direction: column; gap: 8px;
+  margin-bottom: 14px;
+}
+.exch-bubble {
+  padding: 11px 15px;
+  border-radius: 12px;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  max-width: 88%;
+}
+.exch-bubble.client-b {
+  background: white;
+  border: 1px solid var(--mist);
+  border-bottom-left-radius: 4px;
+  align-self: flex-start;
+  color: var(--ink);
+}
+.exch-bubble.student-b {
+  background: rgba(139,30,47,0.15);
+  border: 1.5px solid rgba(139,30,47,0.35);
+  border-bottom-right-radius: 4px;
+  align-self: flex-end;
+  color: var(--ink);
+}
+.exch-label {
+  font-family: 'DM Mono', monospace; font-size: 0.6rem;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  margin-bottom: 3px; font-weight: 600;
+}
+.exch-label.cl { color: var(--steel); }
+.exch-label.st { color: var(--wrong); }
+.diagnosis-prompt {
+  background: rgba(232,168,56,0.1);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 8px 8px 0;
+  padding: 9px 13px;
+  font-size: 0.8rem;
+  color: #5a4010;
+  margin-bottom: 12px;
+  font-style: italic;
+}
+
+/* ── FEEDBACK ── */
+.fb {
+  background: var(--coach-bg);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 9px 9px 0;
+  padding: 10px 14px;
+  font-size: 0.8rem; line-height: 1.65;
+  color: #5a4010; margin-top: 10px;
+  display: none; animation: fdin 0.28s ease;
+}
+.fb.show { display: block; }
+.fb strong { color: #7a5510; }
+@keyframes fdin {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── NAV ROW ── */
+.nav-row {
+  display: flex; justify-content: flex-end; gap: 10px;
+  margin-top: 6px; align-items: center;
+}
+.btn-check {
+  background: var(--teal); color: white;
+  border: none; border-radius: 9px; padding: 10px 22px;
+  font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; transition: background 0.2s, transform 0.1s;
+}
+.btn-check:hover { background: var(--teal-dim); transform: translateY(-1px); }
+.btn-check:disabled { background: var(--mist); cursor: default; transform: none; color: var(--steel); }
+.btn-next-act {
+  background: var(--ink); color: var(--teal-light);
+  border: 1px solid rgba(20,168,173,0.3); border-radius: 9px; padding: 10px 20px;
+  font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; display: none; transition: background 0.2s, transform 0.1s;
+}
+.btn-next-act.show { display: inline-block; }
+.btn-next-act:hover { background: var(--ink-mid); transform: translateY(-1px); }
+
+/* ── RESULTS ── */
+.results {
+  background: var(--chalk); border-radius: 18px;
+  padding: 52px 36px; text-align: center;
+  box-shadow: var(--shadow); display: none;
+}
+.results.show { display: block; animation: fdin 0.4s ease; }
+.ring-wrap {
+  width: 128px; height: 128px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 24px;
+  box-shadow: 0 0 0 6px rgba(13,115,119,0.12);
+}
+.ring-inner {
+  width: 96px; height: 96px; border-radius: 50%; background: var(--chalk);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.ring-pct  { font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 700; color: var(--ink); line-height: 1; }
+.ring-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--steel); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 2px; }
+.results-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--ink); margin-bottom: 10px; }
+.results-msg { color: var(--steel); font-size: 0.88rem; line-height: 1.7; max-width: 480px; margin: 0 auto 24px; }
+.results-breakdown { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 28px; }
+.rb { background: var(--warm); border-radius: 10px; padding: 14px 20px; min-width: 110px; }
+.rb-val { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--ink); }
+.rb-lbl { font-family: 'DM Mono', monospace; font-size: 0.62rem; color: var(--steel); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 2px; }
+.btn-restart {
+  background: var(--teal); color: white; border: none; border-radius: 10px;
+  padding: 12px 32px; font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: background 0.2s;
+}
+.btn-restart:hover { background: var(--teal-dim); }
+
+/* ── SERIES BADGE ── */
+.series-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(20,168,173,0.1);
+  border: 1px solid rgba(20,168,173,0.3);
+  border-radius: 20px; padding: 4px 14px;
+  font-family: 'DM Mono', monospace; font-size: 0.65rem;
+  letter-spacing: 0.1em; color: var(--teal-light);
+  text-transform: uppercase; margin-bottom: 14px;
+}
+
+@media (max-width: 540px) {
+  .q-body { padding: 12px 14px 14px; }
+  .q-top  { padding: 12px 14px; }
+  .cloze-field { min-width: 130px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="top-strip">
+  <svg class="logo-svg" viewBox="0 0 200 68" xmlns="http://www.w3.org/2000/svg" aria-label="Forbes English">
+    <text x="100" y="28" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-size="26" font-weight="400" letter-spacing="5" fill="#14a8ad">FORBES</text>
+    <line x1="14" y1="36" x2="186" y2="36" stroke="#14a8ad" stroke-width="0.8" opacity="0.5"/>
+    <text x="100" y="55" text-anchor="middle" font-family="'DM Sans',Arial,sans-serif" font-size="11.5" font-weight="600" letter-spacing="9" fill="#f0f4f5">ENGLISH</text>
+  </svg>
+  <div class="series-badge">Part 3 of 3</div>
+  <div class="lesson-eyebrow">C1 \u00b7 Companion Test</div>
+  <h1 class="lesson-heading">Spot, Fix &amp; Diagnose</h1>
+  <p class="lesson-sub">Four new activity types: error correction, multi-word phrases, exchange diagnosis, and idioms in context. All material drawn from the role-play lesson.</p>
+</header>
+
+<!-- SCORE BAR -->
+<div class="score-bar">
+  <div class="score-item">Score <span class="val" id="score-val">0</span></div>
+  <div class="score-item">
+    <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+  </div>
+  <div class="score-item">Q <span class="val" id="q-val">\u2013</span></div>
+</div>
+
+<!-- ACTIVITY NAV -->
+<div class="act-nav" id="act-nav"></div>
+
+<!-- MAIN -->
+<main class="main">
+  <div id="app"></div>
+  <div class="results" id="results-screen">
+    <div class="ring-wrap" id="ring">
+      <div class="ring-inner">
+        <div class="ring-pct" id="ring-pct">0%</div>
+        <div class="ring-label">Score</div>
+      </div>
+    </div>
+    <h2 class="results-title">Part 3 Complete</h2>
+    <p class="results-msg" id="results-msg"></p>
+    <div class="results-breakdown">
+      <div class="rb"><div class="rb-val" id="rb-c">0</div><div class="rb-lbl">Correct</div></div>
+      <div class="rb"><div class="rb-val" id="rb-w">0</div><div class="rb-lbl">To Review</div></div>
+      <div class="rb"><div class="rb-val" id="rb-t">0</div><div class="rb-lbl">Total</div></div>
+    </div>
+    <button class="btn-restart" onclick="restartAll()">\u21ba Try Again</button>
+  </div>
+</main>
+
+<script>
+/* ════════════════════════════════════════
+   ACTIVITY DATA
+════════════════════════════════════════ */
+
+const activities = [
+
+/* ══ ACTIVITY 1: ERROR CORRECTION ══════
+   Each question shows a flawed consultant
+   response. Student identifies the problem
+   and selects the correct fix.
+═══════════════════════════════════════ */
+{
+  id: 1,
+  type: 'errorcorrect',
+  label: 'Spot the Mistake',
+  title: 'Error Correction: What Went Wrong?',
+  desc: `Each response below contains one professional mistake \u2014 a wrong word, a weak phrase, or a register error. Read the context, identify the problem, and choose the correct fix. The flawed section is underlined in each response.`,
+  questions: [
+    {
+      scenario: 'Cold Prospecting',
+      context: `The client has just said: \u201CWe already work with an agency.\u201D`,
+      flawed: `I completely <span class="flaw">disagree with that</span> \u2014 Reddit data shows that the 35\u201355 female demographic is the fastest-growing segment in beauty communities in France.`,
+      flaw_explanation: `The phrase \u201CI completely disagree\u201D is confrontational and dismissive. It invalidates the client\u2019s position rather than acknowledging it. At C1 professional level, you validate before you pivot.`,
+      stem: `Which replacement best corrects the underlined phrase while maintaining a professional register?`,
+      opts: [
+        `That\u2019s a fair point, and a lot of our clients felt the same before seeing the data`,
+        `That\u2019s an interesting point, though I\u2019d push back on it slightly`,
+        `I understand your concern but I think you\u2019re not seeing the full picture`,
+        `You might be right, but let me share something that could change your mind`
+      ],
+      answer: 0,
+      fb: `<strong>Correct.</strong> \u201CThat\u2019s a fair point, and a lot of our clients felt the same\u201D uses social proof to validate the objection without agreeing with it, then pivots naturally. Option A is still too combative (\u201Cpush back\u201D). Option C implies the client lacks information rather than perspective. Option D is conditional and sounds uncertain.`
+    },
+    {
+      scenario: 'Partnership Pitch',
+      context: `The CMO asks: \u201CWhat makes Reddit better than TikTok for our French launch?\u201D`,
+      flawed: `TikTok is good for reach, but Reddit is <span class="flaw">much better than TikTok</span> because it\u2019s where people go when they actually want to research before buying.`,
+      flaw_explanation: `Saying \u201Cmuch better than TikTok\u201D is a direct comparative that sounds like a sales argument and invites defensiveness. The lesson teaches framing Reddit as a complement, not a competitor.`,
+      stem: `Which replacement avoids direct comparison and instead positions Reddit strategically?`,
+      opts: [
+        `superior to TikTok in almost every meaningful metric for French audiences`,
+        `the peer validation layer that sits between TikTok awareness and the final purchase decision`,
+        `the only platform where French consumers actually engage with brand content seriously`,
+        `more trusted than TikTok by the demographic you\u2019re targeting in France`
+      ],
+      answer: 1,
+      fb: `<strong>Correct.</strong> \u201CThe peer validation layer between TikTok awareness and the final purchase decision\u201D positions Reddit within the funnel the CMO already understands, making it complementary rather than competitive. Options A, C, and D all make direct superiority claims that will trigger resistance from someone committed to their existing TikTok strategy.`
+    },
+    {
+      scenario: 'Cultural Navigation',
+      context: `Isabelle has said: \u201CThis feels very Anglo-Saxon.\u201D You need to respond.`,
+      flawed: `That\u2019s just how digital partnerships tend to work in our industry \u2014 things move quickly and <span class="flaw">you\u2019ll need to adapt to that pace</span> if you want to get the most out of this collaboration.`,
+      flaw_explanation: `Telling a senior French client she needs to \u201Cadapt\u201D to your pace is a serious register and cultural failure. It dismisses her concern and implies she is the problem. This would likely end the relationship.`,
+      stem: `Which replacement correctly acknowledges the cultural point and takes ownership?`,
+      opts: [
+        `we\u2019ll try to slow things down a bit and keep you better informed going forward`,
+        `perhaps a written protocol would help bridge the gap between our two working styles`,
+        `I should have created a more formal introduction structure before any contact was made \u2014 that\u2019s on me`,
+        `I appreciate you raising this \u2014 cultural differences in business can be challenging for both sides`
+      ],
+      answer: 2,
+      fb: `<strong>Correct.</strong> \u201CI should have created a more formal introduction structure \u2014 that\u2019s on me\u201D takes clean, personal ownership without over-apologising, and names the specific thing that went wrong. Option A is vague. Option C implies the client\u2019s culture is the variable to be managed. Option D is empathetic but deflects accountability onto abstract \u201Ccultural differences\u201D rather than the consultant\u2019s specific failure.`
+    },
+    {
+      scenario: 'Commercial Negotiation',
+      context: `The Finance Director says the fee is too high. You have started your response.`,
+      flawed: `I hear you, and we\u2019re very open to discussion. To keep your business, <span class="flaw">we can reduce the fee by twenty percent</span> right now if that helps.`,
+      flaw_explanation: `Immediately offering a twenty-percent discount without any scope change signals that the original price was inflated and destroys the value of your service. It also rewards price pressure, inviting further negotiation.`,
+      stem: `Which replacement correctly handles the price challenge without conceding value?`,
+      opts: [
+        `we could reduce the fee slightly, perhaps by five to ten percent, as a goodwill gesture`,
+        `I\u2019m afraid our fees are fixed, but I\u2019m happy to explain in more detail what justifies the cost`,
+        `we could offer a discount if you commit to a twelve-month contract rather than a quarterly arrangement`,
+        `I\u2019d rather adjust what we deliver than simply reduce the fee for the same work \u2014 let me show you what that might look like`
+      ],
+      answer: 3,
+      fb: `<strong>Correct.</strong> \u201CI\u2019d rather adjust what we deliver than simply reduce the fee for the same work\u201D is the principled concession from the lesson: any price movement requires a scope change. This signals that your fees are real, not padded. Option A is a straight discount with no scope logic. Option C is defensive and closes the conversation. Option D introduces a new commercial structure under pressure, which looks desperate.`
+    },
+    {
+      scenario: 'Expanding the Relationship',
+      context: `The CEO has just said the pilot results exceeded expectations and she wants to think about Germany and the Netherlands.`,
+      flawed: `Wonderful news! <span class="flaw">We can absolutely roll this out across both markets right away</span> \u2014 our model is completely transferable and we\u2019re ready to start as soon as you give the green light.`,
+      flaw_explanation: `Unqualified enthusiasm and \u201Cright away\u201D signals commercial eagerness over professional rigour. It makes the consultant sound like a vendor pitching, not a strategic partner. The lesson teaches discipline: acknowledge market differences before committing.`,
+      stem: `Which replacement shows credible expertise without dampening the momentum?`,
+      opts: [
+        `We\u2019d love to explore that, though both markets have their own dynamics \u2014 I\u2019d want to do a proper landscape read before we commit to timelines`,
+        `Both markets are definitely possible, though we\u2019d need to hire local community managers in each territory first`,
+        `That\u2019s exciting to hear \u2014 we\u2019d recommend starting with Germany first as it has the strongest Reddit presence`,
+        `Absolutely, and we could use the same community strategy with minimal adjustment for both markets`
+      ],
+      answer: 0,
+      fb: `<strong>Correct.</strong> \u201CI\u2019d want to do a proper landscape read before we commit to timelines\u201D is disciplined and credible \u2014 it signals that your \u201Cyes\u201D will be grounded in research, not enthusiasm. It also naturally creates the next step (the landscape read) without pushing for a commercial commitment prematurely. Option B introduces a headcount issue that wasn\u2019t asked about. Option C picks a market without being asked. Option D implies the strategy needs no adaptation, which contradicts the lesson\u2019s point about Reddit dynamics varying by market.`
+    },
+    {
+      scenario: 'Crisis Management',
+      context: `The client says: \u201CI\u2019m going to call the whole thing off.\u201D It is 8am, four hours before the noon launch.`,
+      flawed: `I completely understand your concern \u2014 <span class="flaw">this is a really serious situation and we should probably pause everything until we know more</span>.`,
+      flaw_explanation: `Validating the client\u2019s panic by calling the situation \u201Creally serious\u201D and suggesting a blanket pause amplifies anxiety rather than reducing it. The consultant\u2019s job is to bring rational structure, not echo the emotion.`,
+      stem: `Which replacement stabilises the conversation without dismissing the concern?`,
+      opts: [
+        `Let\u2019s not overreact \u2014 I\u2019ve dealt with situations like this before and they usually resolve themselves`,
+        `Before we make any decision, let\u2019s separate what\u2019s actually happening from what might happen \u2014 I have the facts in front of me`,
+        `I think we should delay, but let\u2019s be strategic about it and communicate the delay carefully to our stakeholders`,
+        `I hear you \u2014 but I want to make sure we\u2019re not making a major decision based on incomplete information, so let\u2019s book a call with Reddit first`
+      ],
+      answer: 1,
+      fb: `<strong>Correct.</strong> \u201CLet\u2019s separate what\u2019s actually happening from what might happen\u201D is the exact triage language from the lesson. It creates rational space before any decision. Option A dismisses the concern (\u201Coverreact\u201D, \u201Cusually resolves\u201D) which will feel invalidating. Option C has already accepted a delay before presenting options. Option D brings in a third party (Reddit) which introduces further delay and complexity when the client needs to feel that you are in control.`
+    }
+  ]
+},
+
+/* ══ ACTIVITY 2: MULTI-WORD CLOZE ══════
+   Gaps require 2\u20135 word phrases, not single
+   words. Tests retention of full expressions.
+═══════════════════════════════════════ */
+{
+  id: 2,
+  type: 'multiword',
+  label: 'Complete the Expression',
+  title: 'Multi-Word Cloze: Full Phrases',
+  desc: `Each sentence has a gap requiring a complete phrase from the lesson \u2014 between two and five words. Choose from the phrase bank below each question. Exact phrasing matters.`,
+  questions: [
+    {
+      scenario: 'Cold Prospecting',
+      before: `Rather than pitching directly, the consultant offered to send a brief over first, to lower `,
+      gap: `the perceived risk of the meeting`,
+      after: `.`,
+      fb: `<strong>\u201Cthe perceived risk of the meeting\u201D</strong> \u2014 This phrase captures why a pre-meeting brief works: it\u2019s not about the content, it\u2019s about reducing the psychological commitment the client feels before agreeing to give their time.`
+    },
+    {
+      scenario: 'Partnership Pitch',
+      before: `Instead of saying Reddit is better than TikTok, the consultant positioned it as `,
+      gap: `the insight and conversion layer`,
+      after: ` that makes the rest of the client\u2019s spend work harder.`,
+      fb: `<strong>\u201Cthe insight and conversion layer\u201D</strong> \u2014 This is the key reframe from Scenario 2. Calling Reddit a \u201Clayer\u201D places it within an existing structure rather than competing with it. \u201CInsight and conversion\u201D names two specific functions, which is far more persuasive than a general quality claim.`
+    },
+    {
+      scenario: 'Partnership Pitch',
+      before: `The consultant proposed that instead of defending fixed KPIs, both sides should `,
+      gap: `define the board-ready metrics together`,
+      after: `.`,
+      fb: `<strong>\u201Cdefine the board-ready metrics together\u201D</strong> \u2014 The word \u201Ctogether\u201D converts a deliverable into a collaboration. \u201CBoard-ready\u201D is precise business language showing the consultant understands the CMO\u2019s internal reporting pressure, not just the campaign itself.`
+    },
+    {
+      scenario: 'Cultural Navigation',
+      before: `The consultant\u2019s response to the trust challenge made two concrete commitments \u2014 a protocol document by Friday, and `,
+      gap: `a brief check-in call once a week`,
+      after: ` \u2014 to ensure nothing reached the client unexpectedly.`,
+      fb: `<strong>\u201Ca brief check-in call once a week\u201D</strong> \u2014 The key word here is \u201Cbrief.\u201D It signals awareness that the client\u2019s time is limited, which is culturally important in French professional relationships. Offering a regular rhythm rather than an ad hoc process is what rebuilds trust after a breach.`
+    },
+    {
+      scenario: 'Commercial Negotiation',
+      before: `The consultant reframed the competitor\u2019s offer by pointing out that monitoring tells you what people are saying, while their service tells you `,
+      gap: `why it matters and what to do about it`,
+      after: `.`,
+      fb: `<strong>\u201Cwhy it matters and what to do about it\u201D</strong> \u2014 This three-part structure (what / why / what to do) is a classic consulting value ladder. The competitor stops at \u201Cwhat.\u201D The consultant\u2019s service goes two levels deeper. Memorise this formulation \u2014 it works across industries.`
+    },
+    {
+      scenario: 'Crisis Management',
+      before: `The consultant proposed that if the thread grew beyond a certain size, they would `,
+      gap: `pause the listening post and convene a fifteen-minute call`,
+      after: ` before taking any further action.`,
+      fb: `<strong>\u201Cpause the listening post and convene a fifteen-minute call\u201D</strong> \u2014 This is the escalation protocol. Notice that both actions are specific and bounded: \u201Cpause\u201D (not \u201Ccancel\u201D) and \u201Cfifteen minutes\u201D (not \u201Ca call\u201D). Precision in crisis protocols signals control.`
+    },
+    {
+      scenario: 'Expanding the Relationship',
+      before: `Rather than immediately presenting a packaged proposal, the consultant suggested `,
+      gap: `a half-day working session`,
+      after: ` with whoever leads the client\u2019s European strategy, before any numbers were put together.`,
+      fb: `<strong>\u201Ca half-day working session\u201D</strong> \u2014 This is the co-design close. A \u201Cworking session\u201D is more intimate and collaborative than a \u201Cmeeting\u201D or a \u201Cpresentation.\u201D It implies both sides will be contributing, which is exactly the partner posture the lesson teaches.`
+    },
+    {
+      scenario: 'Cold Prospecting',
+      before: `When asked about the Reddit communities, the consultant didn\u2019t oversell \u2014 instead saying they wouldn\u2019t want to characterise it before the client had `,
+      gap: `seen it yourself`,
+      after: `.`,
+      fb: `<strong>\u201Cseen it yourself\u201D</strong> \u2014 This phrase creates curiosity without a claim. It transfers agency to the client (\u201Cyourself\u201D), which is a subtle power move: you\u2019re not telling them what to think, you\u2019re inviting them to discover. That\u2019s far more compelling than a pitch.`
+    }
+  ]
+},
+
+/* ══ ACTIVITY 3: EXCHANGE DIAGNOSIS ════
+   Student reads a short broken exchange
+   and identifies what the consultant did
+   wrong and why.
+═══════════════════════════════════════ */
+{
+  id: 3,
+  type: 'diagnosis',
+  label: 'Diagnose the Exchange',
+  title: 'What Went Wrong in this Conversation?',
+  desc: `Each question shows a short exchange where the consultant makes a professional error. The client\u2019s line is genuine; the consultant\u2019s response (shown in red) is flawed. Identify the core problem.`,
+  questions: [
+    {
+      scenario: 'Cold Prospecting',
+      client_line: `We already have an agency handling our digital strategy. I\u2019m not sure I see the need for another partner.`,
+      student_line: `I understand \u2014 but honestly, most agencies don\u2019t have access to the Reddit data we work with, so you\u2019re probably not getting the full picture with your current partner.`,
+      prompt: `What is the primary professional error in this response?`,
+      opts: [
+        `The consultant uses the word \u201Chonestly,\u201D which sounds informal in a first call.`,
+        `The consultant fails to mention Reddit by name early enough in the response.`,
+        `The consultant implies the client\u2019s current agency is inadequate, which is disrespectful and likely to create defensiveness.`,
+        `The response is too short and does not contain enough supporting evidence.`
+      ],
+      answer: 2,
+      fb: `<strong>Correct.</strong> Criticising or implicitly belittling the client\u2019s existing partner is a classic cold-call mistake. It puts the client in the position of either defending their choice or feeling foolish for making it \u2014 neither outcome helps you. The correct move is to validate their current setup and position your offer as additive, not corrective.`
+    },
+    {
+      scenario: 'Partnership Pitch',
+      client_line: `How do we know Reddit won\u2019t just be another channel that generates vanity metrics but no real commercial return?`,
+      student_line: `That\u2019s a really great question. I think the key thing to understand is that Reddit is genuinely different from other platforms and the engagement is much more authentic, which ultimately drives better outcomes.`,
+      prompt: `This response has two significant problems. Which answer correctly identifies both?`,
+      opts: [
+        `It uses the word \u201Cauthentic,\u201D which is overused in marketing, and it doesn\u2019t mention the CMO by name.`,
+        `It is too short and doesn\u2019t address the specific concern about vanity metrics directly enough.`,
+        `It fails to compare Reddit\u2019s metrics to TikTok or Pinterest, which the client mentioned earlier.`,
+        `It opens with filler praise and then makes a vague, unsupported claim instead of offering concrete KPIs or evidence.`
+      ],
+      answer: 3,
+      fb: `<strong>Correct.</strong> \u201CThat\u2019s a really great question\u201D is filler that senior clients see through immediately \u2014 it delays the answer and signals you weren\u2019t ready. More critically, \u201Cauthentic engagement drives better outcomes\u201D is a marketing assertion with no specificity. A C-level objection about commercial return requires concrete KPIs: brand sentiment scores, click-through-to-conversion, share of conversation. Vague quality claims are the wrong register entirely.`
+    },
+    {
+      scenario: 'Cultural Navigation',
+      client_line: `We chose you because we were told you understand the French market. Moments like this make us question that.`,
+      student_line: `I completely understand why you feel that way, Isabelle. We really value this relationship and I want you to know that we are fully committed to making this work and this kind of thing won\u2019t happen again.`,
+      prompt: `What is the main professional weakness of this response?`,
+      opts: [
+        `It is emotionally worded and makes a vague promise without any concrete, accountable commitment.`,
+        `It uses Isabelle\u2019s first name, which may be too informal for the seriousness of the moment.`,
+        `It acknowledges the concern too directly, which may cause the client to lose confidence in the consultant.`,
+        `It is too brief and the consultant should have provided a longer, more detailed explanation.`
+      ],
+      answer: 0,
+      fb: `<strong>Correct.</strong> \u201CWe are fully committed to making this work\u201D and \u201Cthis won\u2019t happen again\u201D are the classic empty reassurances that professionals say when they have no concrete plan. They feel hollow because they are \u2014 there\u2019s no mechanism, no timeline, no specific action attached. The lesson teaches: a protocol document by Friday, a weekly check-in call. Specific commitments rebuild trust. General promises compound the damage.`
+    },
+    {
+      scenario: 'Commercial Negotiation',
+      client_line: `Even so, I need to see some movement on cost. We\u2019re under budget pressure across the board.`,
+      student_line: `Of course \u2014 I completely understand budget pressures. We can offer you a fifteen percent reduction on the overall fee if that helps get this over the line.`,
+      prompt: `What is the key negotiation error in this response?`,
+      opts: [
+        `Fifteen percent is too large a discount to offer and will make the client suspect the original price was inflated.`,
+        `The consultant agrees too quickly and offers a discount without linking it to any change in scope or deliverables.`,
+        `The consultant uses the phrase \u201Cget this over the line,\u201D which sounds too casual for a formal financial discussion.`,
+        `The consultant should have asked what specific budget the client has available before making any offer.`
+      ],
+      answer: 1,
+      fb: `<strong>Correct.</strong> The core error is offering a price reduction with no scope change attached. This is the exact mistake the lesson warns against: any concession on price must be accompanied by a change in what is delivered, or you signal that your original fee was arbitrary. The correct response is: \u201CI\u2019d rather adjust scope than simply reduce the fee for the same work.\u201D Option B identifies a consequence of the error, not the error itself. Options C and D are secondary concerns at best.`
+    },
+    {
+      scenario: 'Expanding the Relationship',
+      client_line: `What would expanding to Germany and the Netherlands look like in terms of structure and fees?`,
+      student_line: `Great question. I\u2019d suggest a retainer increase of around thirty to forty percent to cover both markets, and we could start the onboarding process within the next four weeks if you\u2019d like to proceed.`,
+      prompt: `What two professional errors does this response make simultaneously?`,
+      opts: [
+        `It uses the word \u201Conboarding,\u201D which is too informal, and it fails to mention which team would manage the expansion.`,
+        `The price increase is too high and the four-week timeline is unrealistically fast for a European expansion.`,
+        `It gives a price range before the scope is defined, and it creates time pressure which may feel pushy to a CEO who hasn\u2019t yet decided.`,
+        `The consultant should have checked which internal team the CEO wants to involve before suggesting any commercial structure.`
+      ],
+      answer: 2,
+      fb: `<strong>Correct.</strong> Naming a fee before scope is agreed (\u201C30\u201340%\u201D) is commercially premature \u2014 the right structure depends on how the client wants to manage the two markets, their board timeline, and localisation preferences. None of that has been established. Adding \u201Cwithin four weeks\u201D then creates urgency the CEO hasn\u2019t invited, which can feel like pressure at exactly the moment when the relationship needs to feel most collaborative. The lesson\u2019s correct move: propose a working session first, put numbers together after.`
+    }
+  ]
+},
+
+/* ══ ACTIVITY 4: IDIOMS & COLLOCATIONS ══
+   Tests C1 vocabulary items from the lesson
+   in fresh sentences, not just lifted quotes.
+═══════════════════════════════════════ */
+{
+  id: 4,
+  type: 'idioms',
+  label: 'Idioms in Context',
+  title: 'Vocabulary & Collocations from the Lesson',
+  desc: `These questions test C1-level words, phrases, and collocations from the lesson \u2014 placed in fresh sentences you haven\u2019t seen before. Choose the best option.`,
+  questions: [
+    {
+      stem: `The account director told the client she didn\u2019t want to <em>characterise</em> the community data before they had reviewed it themselves. In this context, \u201Ccharacterise\u201D means:`,
+      opts: [
+        `to share or publish data without permission`,
+        `to compare data from one market against another`,
+        `to summarise data in a way that removes sensitive information`,
+        `to describe or define the nature of something before it\u2019s been independently assessed`
+      ],
+      answer: 3,
+      fb: `<strong>Correct.</strong> \u201CCharacterise\u201D means to describe or define the nature of something. In this professional context, avoiding premature characterisation is a technique for creating intrigue and preserving the client\u2019s sense of discovery \u2014 they form their own view rather than reacting to yours.`
+    },
+    {
+      stem: `During the pitch, the consultant said Reddit would \u201Caugment\u201D the client\u2019s existing go-to-market strategy. Which sentence uses \u201Caugment\u201D correctly?`,
+      opts: [
+        `The partnership was designed to augment the client\u2019s existing reach rather than replace it.`,
+        `The new hire was brought in to augment responsibilities from the outgoing manager.`,
+        `The board decided to augment the proposal before sending it to the investor group.`,
+        `We augmented the timeline by two weeks to allow more preparation time.`
+      ],
+      answer: 0,
+      fb: `<strong>Correct.</strong> \u201CAugment\u201D means to make something larger, stronger, or more effective by adding to it. Option B is the correct usage: adding to existing reach without replacing it. Option A confuses augment with transfer. Option C confuses it with amend or revise. Option D confuses it with extend.`
+    },
+    {
+      stem: `The consultant said the brands that \u201Ccome unstuck\u201D on Reddit are those who advertise without listening first. In a professional context, \u201Ccome unstuck\u201D most closely means:`,
+      opts: [
+        `to become well-known on a platform unexpectedly`,
+        `to fail or run into serious difficulties, especially after initial progress`,
+        `to withdraw from a platform after negative publicity`,
+        `to struggle to reach the right audience despite significant investment`
+      ],
+      answer: 1,
+      fb: `<strong>Correct.</strong> \u201CCome unstuck\u201D is a B2/C1 British English idiom meaning to fail or encounter serious problems, often after things seemed to be going well. It\u2019s used here to warn that brands who skip the listening phase tend to make avoidable mistakes that damage their reputation.`
+    },
+    {
+      stem: `The CFO asked for a meeting to \u201Craise the fee structure.\u201D In a business meeting, \u201Craise\u201D a topic means:`,
+      opts: [
+        `to increase or change the fee that has been agreed`,
+        `to question whether the fee is legally compliant with local regulations`,
+        `to introduce it for discussion, often unexpectedly or with some force`,
+        `to present a written proposal about the fee to the full board`
+      ],
+      answer: 2,
+      fb: `<strong>Correct.</strong> \u201CRaise\u201D a topic, issue, or concern means to bring it up for discussion. It carries a slight implication of seriousness or challenge \u2014 especially when an unexpected participant (like the Finance Director) raises it. It does not mean to increase the fee, which is a common confusion.`
+    },
+    {
+      stem: `The consultant used a \u201Csoft double option\u201D close: \u201CCould we find twenty minutes this week or next?\u201D What makes this technique effective?`,
+      opts: [
+        `It gives the client two specific time slots to choose from, making scheduling faster.`,
+        `It creates a sense of urgency by implying the consultant has limited availability.`,
+        `It allows the client to decide the agenda and format of the meeting in advance.`,
+        `It replaces a yes/no question with a choice between two positive options, both of which involve a meeting.`
+      ],
+      answer: 3,
+      fb: `<strong>Correct.</strong> The double option close works by replacing \u201Cwould you like to meet?\u201D (which allows a clean \u201Cno\u201D) with a choice between two outcomes that both presuppose a yes. The client is now choosing \u201Cwhen,\u201D not \u201Cif.\u201D It\u2019s subtle and non-pressuring \u2014 which is why it works better than explicit time pressure.`
+    },
+    {
+      stem: `The consultant said she wanted to \u201Cpre-socialise\u201D the proposal with the top brass before the board meeting. \u201CPre-socialise\u201D in a business context means:`,
+      opts: [
+        `to share a proposal informally with key decision-makers before the formal meeting, in order to build alignment and reduce resistance`,
+        `to host a social event for stakeholders before a major announcement`,
+        `to post about a new initiative on internal social media platforms ahead of the official launch`,
+        `to conduct market research with consumers before presenting findings to leadership`
+      ],
+      answer: 0,
+      fb: `<strong>Correct.</strong> \u201CPre-socialising\u201D is a sophisticated business term for the practice of informally aligning key stakeholders before a formal decision moment. It reduces the chance of surprise objections in the room and builds champions who will speak for the proposal before it\u2019s formally presented. It\u2019s a C1-level term that signals professional maturity.`
+    },
+    {
+      stem: `The Finance Director said the company was in a \u201Cdifficult budget environment.\u201D This phrase is a professional euphemism for:`,
+      opts: [
+        `a period in which all spending decisions require full board approval`,
+        `an accounting dispute with external auditors that has frozen discretionary spending`,
+        `a new financial year in which the budget has not yet been formally allocated`,
+        `a situation in which money is tight and spending is being reduced or scrutinised more carefully than usual`
+      ],
+      answer: 3,
+      fb: `<strong>Correct.</strong> \u201CDifficult budget environment\u201D is formal business language for financial pressure \u2014 budgets are tight, cuts are likely, and every spend needs justification. It\u2019s a euphemism that softens \u201Cwe don\u2019t have enough money\u201D while signalling that the client is serious about value. Recognising and responding correctly to this kind of indirect professional language is a core C1 skill.`
+    },
+    {
+      stem: `The consultant said: \u201CI\u2019d want to do a proper landscape read before committing to timelines.\u201D A \u201Clandscape read\u201D in a business development context refers to:`,
+      opts: [
+        `a site visit to assess the physical environment of a new market location`,
+        `a financial model comparing the costs of entering different markets simultaneously`,
+        `an overview assessment of the key players, dynamics, and conditions in a new market`,
+        `a legal review of the regulatory landscape before launching in a new country`
+      ],
+      answer: 2,
+      fb: `<strong>Correct.</strong> A \u201Clandscape read\u201D is an informal but widely used business expression for a broad preliminary assessment of a market or situation \u2014 who the main players are, what the conditions look like, what the opportunities and risks are. It\u2019s deliberately non-committal: doing a \u201Cread\u201D implies listening and observing before acting, which is the professional posture the consultant is modelling.`
+    }
+  ]
+}
+
+];
+
+/* ════════════════════════════════════════
+   STATE
+════════════════════════════════════════ */
+let state = {
+  actIdx: 0,
+  score: 0,
+  actDone: [],
+  answered: {}   // keyed by "actIdx-qIdx"
+};
+
+function totalItems() {
+  return activities.reduce((n, a) => {
+    if (a.type === 'multiword') return n + a.questions.length;
+    return n + a.questions.length;
+  }, 0);
+}
+
+function itemsDone() {
+  let n = 0;
+  activities.slice(0, state.actIdx).forEach(a => { n += a.questions.length; });
+  return n;
+}
+
+function updateBar() {
+  const done = itemsDone();
+  const total = totalItems();
+  document.getElementById('score-val').textContent = state.score;
+  document.getElementById('q-val').textContent = `${done} / ${total}`;
+  document.getElementById('prog-fill').style.width = total ? Math.round((done / total) * 100) + '%' : '0%';
+}
+
+function renderNav() {
+  const nav = document.getElementById('act-nav');
+  nav.innerHTML = activities.map((a, i) => {
+    let cls = 'anav-btn';
+    if (i === state.actIdx) cls += ' active';
+    if (state.actDone.includes(i)) cls += ' done';
+    return `<button class="${cls}" onclick="goAct(${i})">${a.label}</button>`;
+  }).join('');
+}
+
+function goAct(i) { state.actIdx = i; render(); }
+
+/* ════════════════════════════════════════
+   RENDER DISPATCHER
+════════════════════════════════════════ */
+function render() {
+  updateBar();
+  renderNav();
+  document.getElementById('results-screen').classList.remove('show');
+  const a = activities[state.actIdx];
+  const app = document.getElementById('app');
+
+  let html = `
+    <div class="act-header">
+      <div class="act-eyebrow">Activity ${state.actIdx + 1} of ${activities.length} \u00b7 ${a.label}</div>
+      <div class="act-title">${a.title}</div>
+      <div class="act-desc">${a.desc}</div>
+    </div>`;
+
+  if (a.type === 'errorcorrect') html += buildErrorCorrect(a);
+  if (a.type === 'multiword')    html += buildMultiword(a);
+  if (a.type === 'diagnosis')    html += buildDiagnosis(a);
+  if (a.type === 'idioms')       html += buildIdioms(a);
+
+  app.innerHTML = html;
+  attachListeners(a);
+}
+
+/* ════════════════════════════════════════
+   ERROR CORRECTION
+════════════════════════════════════════ */
+function buildErrorCorrect(a) {
+  const letters = ['A','B','C','D'];
+  return a.questions.map((q, qi) => {
+    const shuffled = shuffleWithIdx(q.opts);
+    const correctSh = shuffled.findIndex(s => s.orig === q.answer);
+    return `
+    <div class="q-card" id="ec-card-${qi}">
+      <div class="q-top">
+        <div class="q-num">${qi+1}</div>
+        <div class="q-stem"><strong>Context:</strong> ${q.context}</div>
+        <div class="q-scenario-tag">${q.scenario}</div>
+      </div>
+      <div class="q-body">
+        <div class="flawed-block">
+          <div class="flawed-label">\u26a0 Flawed consultant response</div>
+          ${q.flawed}
+        </div>
+        <div class="q-stem" style="margin-bottom:12px;color:var(--ink)">${q.stem}</div>
+        <div class="opts" id="ec-opts-${qi}">
+          ${shuffled.map((s, si) => `
+            <button class="opt" data-qi="${qi}" data-si="${si}" data-correct="${si === correctSh}" onclick="handleMCQ(this,'ec')">
+              <span class="opt-letter">${letters[si]}</span>
+              <span>${s.text}</span>
+            </button>`).join('')}
+        </div>
+        <div class="fb" id="ec-fb-${qi}">${q.fb}</div>
+      </div>
+    </div>`;
+  }).join('') + navRow('ec');
+}
+
+/* ════════════════════════════════════════
+   MULTI-WORD CLOZE
+════════════════════════════════════════ */
+function buildMultiword(a) {
+  const bank = shuffle(a.questions.map(q => q.gap));
+  return a.questions.map((q, qi) => `
+    <div class="q-card" id="mw-card-${qi}">
+      <div class="q-top">
+        <div class="q-num">${qi+1}</div>
+        <div class="q-stem">Complete the sentence with the correct phrase.</div>
+        <div class="q-scenario-tag">${q.scenario}</div>
+      </div>
+      <div class="q-body">
+        <div class="cloze-full">
+          ${q.before}<input class="cloze-field" id="mw-inp-${qi}" data-qi="${qi}" data-answer="${encodeURIComponent(q.gap)}" autocomplete="off" spellcheck="false" placeholder="___________">${q.after}
+        </div>
+        <div class="fb" id="mw-fb-${qi}">${q.fb}</div>
+      </div>
+    </div>`).join('') +
+  `<div class="q-card"><div class="q-body">
+    <div class="act-eyebrow" style="margin-bottom:8px">Phrase Bank</div>
+    <div class="phrase-bank" id="mw-bank">
+      ${bank.map(p => `<span class="phrase-chip" data-phrase="${encodeURIComponent(p)}">${p}</span>`).join('')}
+    </div>
+  </div></div>` + navRow('mw');
+}
+
+/* ════════════════════════════════════════
+   DIAGNOSIS
+════════════════════════════════════════ */
+function buildDiagnosis(a) {
+  const letters = ['A','B','C','D'];
+  return a.questions.map((q, qi) => {
+    const shuffled = shuffleWithIdx(q.opts);
+    const correctSh = shuffled.findIndex(s => s.orig === q.answer);
+    return `
+    <div class="q-card" id="dx-card-${qi}">
+      <div class="q-top">
+        <div class="q-num">${qi+1}</div>
+        <div class="q-stem">Read the exchange. The consultant\u2019s response contains a professional error.</div>
+        <div class="q-scenario-tag">${q.scenario}</div>
+      </div>
+      <div class="q-body">
+        <div class="exchange-block">
+          <div>
+            <div class="exch-label cl">Client</div>
+            <div class="exch-bubble client-b">${q.client_line}</div>
+          </div>
+          <div style="align-self:flex-end">
+            <div class="exch-label st">Consultant (flawed)</div>
+            <div class="exch-bubble student-b">${q.student_line}</div>
+          </div>
+        </div>
+        <div class="diagnosis-prompt">${q.prompt}</div>
+        <div class="opts" id="dx-opts-${qi}">
+          ${shuffled.map((s, si) => `
+            <button class="opt" data-qi="${qi}" data-si="${si}" data-correct="${si === correctSh}" onclick="handleMCQ(this,'dx')">
+              <span class="opt-letter">${letters[si]}</span>
+              <span>${s.text}</span>
+            </button>`).join('')}
+        </div>
+        <div class="fb" id="dx-fb-${qi}">${q.fb}</div>
+      </div>
+    </div>`;
+  }).join('') + navRow('dx');
+}
+
+/* ════════════════════════════════════════
+   IDIOMS
+════════════════════════════════════════ */
+function buildIdioms(a) {
+  const letters = ['A','B','C','D'];
+  return a.questions.map((q, qi) => {
+    const shuffled = shuffleWithIdx(q.opts);
+    const correctSh = shuffled.findIndex(s => s.orig === q.answer);
+    return `
+    <div class="q-card" id="id-card-${qi}">
+      <div class="q-top">
+        <div class="q-num">${qi+1}</div>
+        <div class="q-stem">${q.stem}</div>
+      </div>
+      <div class="q-body">
+        <div class="opts" id="id-opts-${qi}">
+          ${shuffled.map((s, si) => `
+            <button class="opt" data-qi="${qi}" data-si="${si}" data-correct="${si === correctSh}" onclick="handleMCQ(this,'id')">
+              <span class="opt-letter">${letters[si]}</span>
+              <span>${s.text}</span>
+            </button>`).join('')}
+        </div>
+        <div class="fb" id="id-fb-${qi}">${q.fb}</div>
+      </div>
+    </div>`;
+  }).join('') + navRow('id');
+}
+
+/* ════════════════════════════════════════
+   SHARED MCQ HANDLER
+════════════════════════════════════════ */
+function handleMCQ(btn, prefix) {
+  const qi = +btn.dataset.qi;
+  const key = `${state.actIdx}-${qi}`;
+  if (state.answered[key]) return;
+  state.answered[key] = true;
+  const correct = btn.dataset.correct === 'true';
+  if (correct) state.score++;
+  document.querySelectorAll(`.opt[data-qi="${qi}"]`).forEach(b => {
+    b.disabled = true;
+    if (b.dataset.correct === 'true') b.classList.add('correct');
+  });
+  if (!correct) btn.classList.add('wrong');
+  document.getElementById(`${prefix}-fb-${qi}`).classList.add('show');
+  updateBar();
+  checkAllAnswered(prefix);
+}
+
+function checkAllAnswered(prefix) {
+  const a = activities[state.actIdx];
+  const allDone = a.questions.every((_, qi) => state.answered[`${state.actIdx}-${qi}`]);
+  if (allDone) document.getElementById(`btn-next-${prefix}`).classList.add('show');
+}
+
+/* ════════════════════════════════════════
+   MULTI-WORD ATTACH
+════════════════════════════════════════ */
+function attachMultiword(a) {
+  // Chip clicks
+  document.querySelectorAll('.phrase-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const inputs = [...document.querySelectorAll('.cloze-field')];
+      let target = document.activeElement;
+      if (!target || !target.classList.contains('cloze-field') || target.value) {
+        target = inputs.find(inp => !inp.value) || null;
+      }
+      if (target && !target.value) {
+        target.value = decodeURIComponent(chip.dataset.phrase);
+        chip.classList.add('used');
+      }
+    });
+  });
+
+  document.getElementById('btn-check-mw').addEventListener('click', () => {
+    let allFilled = [...document.querySelectorAll('.cloze-field')].every(inp => inp.value.trim());
+    if (!allFilled) return;
+
+    document.querySelectorAll('.cloze-field').forEach(inp => {
+      const qi = +inp.dataset.qi;
+      const key = `${state.actIdx}-${qi}`;
+      if (state.answered[key]) return;
+      state.answered[key] = true;
+      const userVal = inp.value.trim().toLowerCase().replace(/\s+/g, ' ');
+      const correct = decodeURIComponent(inp.dataset.answer).toLowerCase().replace(/\s+/g, ' ');
+      if (userVal === correct) {
+        state.score++; inp.classList.add('correct');
+      } else {
+        inp.classList.add('wrong');
+        inp.value = decodeURIComponent(inp.dataset.answer);
+      }
+      inp.disabled = true;
+      document.getElementById(`mw-fb-${qi}`).classList.add('show');
+    });
+    updateBar();
+    document.getElementById('btn-check-mw').disabled = true;
+    document.getElementById('btn-next-mw').classList.add('show');
+    document.querySelectorAll('.phrase-chip').forEach(c => c.style.pointerEvents = 'none');
+  });
+}
+
+/* ════════════════════════════════════════
+   ATTACH LISTENERS
+════════════════════════════════════════ */
+function attachListeners(a) {
+  if (a.type === 'multiword') attachMultiword(a);
+  // MCQ types (errorcorrect, diagnosis, idioms) use inline onclick
+}
+
+/* ════════════════════════════════════════
+   NAV ROW
+════════════════════════════════════════ */
+function navRow(prefix) {
+  const isLast = state.actIdx === activities.length - 1;
+  const nextLabel = isLast ? 'See My Results' : 'Next Activity \u2192';
+  return `
+    <div class="nav-row">
+      ${prefix === 'mw'
+        ? `<button class="btn-check" id="btn-check-mw">Check Answers</button>`
+        : `<button class="btn-check" style="display:none"></button>`}
+      <button class="btn-next-act" id="btn-next-${prefix}" onclick="nextAct()">${nextLabel}</button>
+    </div>`;
+}
+
+/* ════════════════════════════════════════
+   NEXT / RESULTS
+════════════════════════════════════════ */
+function nextAct() {
+  if (!state.actDone.includes(state.actIdx)) state.actDone.push(state.actIdx);
+  if (state.actIdx < activities.length - 1) {
+    state.actIdx++;
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else {
+    showResults();
+  }
+}
+
+function showResults() {
+  document.getElementById('app').innerHTML = '';
+  const total = totalItems();
+  const pct = Math.round((state.score / total) * 100);
+  const wrong = total - state.score;
+
+  document.getElementById('rb-c').textContent = state.score;
+  document.getElementById('rb-w').textContent = wrong;
+  document.getElementById('rb-t').textContent = total;
+
+  let msg = '';
+  if (pct >= 90) msg = `Exceptional command. You\u2019ve moved from recall into genuine professional internalisation \u2014 you can spot errors, diagnose exchanges, correct language under pressure, and deploy idiomatic vocabulary with precision. That\u2019s the full C1 profile.`;
+  else if (pct >= 75) msg = `Strong work across all four activity types. Your error-spotting and diagnostic instincts are well developed. Review the idioms and multi-word phrases you missed \u2014 they\u2019re the fine-grained layer that separates C1 from C2.`;
+  else if (pct >= 58) msg = `Good foundations, with clear room to grow. The diagnosis and error-correction activities tend to reveal gaps in strategic understanding rather than just vocabulary. Revisit the coaching notes in the role-play lesson alongside these results.`;
+  else msg = `This material is genuinely challenging \u2014 Part 3 goes deeper than recall into professional judgement. Go back to the role-play conversations, read the coaching notes carefully, and return to this test. The patterns will start to click.`;
+
+  document.getElementById('results-msg').textContent = msg;
+  document.getElementById('results-screen').classList.add('show');
+  renderNav(); updateBar();
+
+  const ring = document.getElementById('ring');
+  const pctEl = document.getElementById('ring-pct');
+  let cur = 0;
+  const t = setInterval(() => {
+    cur++; if (cur > pct) { clearInterval(t); return; }
+    pctEl.textContent = cur + '%';
+    ring.style.background = `conic-gradient(#0d7377 ${Math.round(cur * 3.6)}deg, #e8eeef ${Math.round(cur * 3.6)}deg)`;
+  }, 20);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function restartAll() {
+  state = { actIdx: 0, score: 0, actDone: [], answered: {} };
+  document.getElementById('results-screen').classList.remove('show');
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ════════════════════════════════════════
+   UTILS
+════════════════════════════════════════ */
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function shuffleWithIdx(arr) {
+  return shuffle(arr.map((text, orig) => ({ text, orig })));
+}
+
+/* INIT */
+render();
+</script>
+</body>
+</html>

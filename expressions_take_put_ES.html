@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – Expresiones: take &amp; put</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #15151A;
+  --bg2:       #1E1E26;
+  --take:      #2EA55F;
+  --take-l:    #45C476;
+  --take-dim:  #1D7A43;
+  --put:       #3A7FDE;
+  --put-l:     #5597F0;
+  --put-dim:   #1E4EA0;
+  --cream:     #F3EDD8;
+  --cream-d:   #DDD4B5;
+  --gold:      #C9913A;
+  --gold-l:    #E8B04A;
+  --white:     #FDFAF4;
+  --card:      #FDFAF4;
+  --txt:       #1C1C22;
+  --txt-mid:   #3B4455;
+  --txt-light: rgba(243,237,216,0.75);
+  --shadow:    rgba(0,0,0,0.30);
+  --correct:   #1A7A42;
+  --correct-bg:#E2F8EC;
+  --wrong:     #C0392B;
+  --wrong-bg:  #FFF0EE;
+  --es:        #B8472A;
+  --es-bg:     #FDF0EC;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:var(--bg);min-height:100vh;color:var(--txt);}
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 55% 45% at 5% 15%,rgba(46,165,95,0.14) 0%,transparent 65%),
+    radial-gradient(ellipse 50% 50% at 95% 85%,rgba(58,127,222,0.14) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 40% at 50% 50%,rgba(201,145,58,0.05) 0%,transparent 70%);
+  pointer-events:none;z-index:0;
+}
+.wrap{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:2rem 1.2rem 5rem;}
+.logo-wrap{display:flex;justify-content:center;margin-bottom:1.8rem;}
+.hdr{
+  background:linear-gradient(135deg,#1E1E26 0%,#15151A 100%);
+  border:1px solid rgba(201,145,58,0.22);border-radius:22px;
+  padding:2rem 2rem 1.7rem;text-align:center;margin-bottom:1.6rem;
+  position:relative;overflow:hidden;
+}
+.hdr::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(46,165,95,0.13),transparent 70%);}
+.hdr::after{content:'';position:absolute;bottom:-50px;left:-50px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(58,127,222,0.13),transparent 70%);}
+.hdr-tag{display:inline-flex;align-items:center;background:var(--gold);color:#15151A;font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;padding:0.28em 0.9em;border-radius:20px;margin-bottom:0.9rem;}
+.hdr h1{font-family:'Playfair Display',serif;font-size:clamp(1.55rem,4vw,2.2rem);color:var(--cream);font-weight:700;line-height:1.2;margin-bottom:0.45rem;position:relative;z-index:1;}
+.hdr h1 .t{color:var(--take-l);}
+.hdr h1 .p{color:var(--put-l);}
+.hdr-sub{color:var(--txt-light);font-size:0.9rem;font-weight:300;position:relative;z-index:1;}
+.hud{display:none;background:var(--card);border-radius:14px;padding:0.8rem 1.3rem;margin-bottom:1.5rem;box-shadow:0 4px 20px var(--shadow);align-items:center;justify-content:space-between;gap:1rem;}
+.hud-score{font-weight:700;font-size:0.9rem;color:var(--txt-mid);}
+.hud-score span{font-size:1.25rem;color:var(--gold);}
+.prog-wrap{flex:1;}
+.prog-lbl{font-size:0.7rem;color:var(--txt-mid);text-align:center;margin-bottom:0.28rem;font-weight:500;}
+.prog-bar{height:8px;background:var(--cream-d);border-radius:10px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--take-l),var(--gold-l),var(--put-l));transition:width .5s cubic-bezier(.4,0,.2,1);}
+.sec{display:none;}
+.sec.active{display:block;animation:fadeUp .38s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.sec-hdr{display:flex;align-items:center;gap:0.75rem;margin-bottom:1.1rem;}
+.badge{display:inline-block;font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.3em 0.85em;border-radius:20px;white-space:nowrap;}
+.badge-gold{background:var(--gold);color:#15151A;}
+.badge-take{background:var(--take);color:#fff;}
+.badge-put{background:var(--put);color:#fff;}
+.badge-both{background:linear-gradient(90deg,var(--take),var(--put));color:#fff;}
+.sec-title{font-family:'Playfair Display',serif;font-size:1.22rem;color:var(--cream);font-weight:600;}
+.sec-instr{color:var(--txt-light);font-size:0.87rem;margin-bottom:1rem;line-height:1.55;}
+.card{background:var(--card);border-radius:16px;padding:1.4rem 1.5rem;margin-bottom:1rem;box-shadow:0 4px 20px var(--shadow);border:2px solid transparent;transition:border-color .2s;}
+.tw{color:var(--take-dim);font-weight:700;}
+.pw{color:var(--put-dim);font-weight:700;}
+.tw-hl{display:inline;background:rgba(46,165,95,0.13);color:var(--take-dim);font-weight:700;border-radius:4px;padding:0 3px;}
+.pw-hl{display:inline;background:rgba(58,127,222,0.13);color:var(--put-dim);font-weight:700;border-radius:4px;padding:0 3px;}
+.es-block{display:block;margin-top:0.45rem;background:var(--es-bg);color:var(--es);border-left:3px solid var(--es);border-radius:0 8px 8px 0;padding:0.4rem 0.7rem;font-size:0.82rem;font-weight:500;}
+.ref{background:var(--card);border-left:4px solid var(--gold);border-radius:0 12px 12px 0;padding:0.85rem 1.1rem;margin-bottom:1.3rem;font-size:0.87rem;line-height:1.6;color:var(--txt);}
+.ref strong{color:var(--gold);}
+.q-num{font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--txt-mid);margin-bottom:0.45rem;}
+.q-txt{font-size:0.97rem;line-height:1.65;color:var(--txt);margin-bottom:0.9rem;}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:0.55rem;}
+@media(max-width:500px){.opts{grid-template-columns:1fr;}}
+.opt{display:flex;align-items:center;gap:0.6rem;padding:0.6rem 0.8rem;border:2px solid var(--cream-d);background:var(--white);border-radius:10px;cursor:pointer;font-family:'Inter',sans-serif;font-size:0.9rem;color:var(--txt);font-weight:500;transition:border-color .18s,background .18s;text-align:left;}
+.opt:hover:not(:disabled){border-color:var(--gold);background:rgba(201,145,58,0.06);}
+.opt .ltr{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;border-radius:50%;background:var(--cream-d);font-size:0.68rem;font-weight:700;color:var(--txt-mid);flex-shrink:0;}
+.opt.c-ok{border-color:var(--correct);background:var(--correct-bg);}
+.opt.c-ok .ltr{background:var(--correct);color:#fff;}
+.opt.c-no{border-color:var(--wrong);background:var(--wrong-bg);}
+.opt.c-no .ltr{background:var(--wrong);color:#fff;}
+.opt:disabled{cursor:default;}
+.fb{display:none;margin-top:0.8rem;padding:0.7rem 0.9rem;border-radius:10px;font-size:0.86rem;line-height:1.6;}
+.fb.ok{display:block;background:var(--correct-bg);color:var(--correct);border-left:3px solid var(--correct);}
+.fb.no{display:block;background:var(--wrong-bg);color:var(--wrong);border-left:3px solid var(--wrong);}
+.pool-wrap{background:rgba(243,237,216,0.05);border:1px solid rgba(243,237,216,0.1);border-radius:14px;padding:0.9rem;display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1rem;min-height:52px;}
+.tok{padding:0.38em 0.85em;background:var(--white);border:2px solid var(--cream-d);border-radius:8px;font-size:0.88rem;font-weight:600;color:var(--txt);cursor:pointer;user-select:none;transition:border-color .15s,background .15s,box-shadow .15s;}
+.tok:hover:not(.tok-placed){border-color:var(--gold);box-shadow:0 2px 8px rgba(201,145,58,0.18);}
+.tok.tok-sel{border-color:var(--gold);background:rgba(201,145,58,0.1);}
+.tok.tok-placed{opacity:.38;cursor:default;pointer-events:none;}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:0.9rem;}
+.col-blk{border-radius:14px;overflow:hidden;}
+.col-hd{padding:0.65rem 1rem;font-weight:700;font-size:1rem;text-align:center;letter-spacing:0.04em;}
+.col-take .col-hd{background:var(--take);color:#fff;}
+.col-put  .col-hd{background:var(--put);color:#fff;}
+.col-zone{min-height:130px;padding:0.65rem;border:2px dashed var(--cream-d);border-top:none;border-radius:0 0 14px 14px;background:var(--cream);display:flex;flex-wrap:wrap;gap:0.45rem;align-content:flex-start;cursor:pointer;transition:background .18s,border-color .18s;}
+.col-zone:hover{background:rgba(201,145,58,0.05);border-color:rgba(201,145,58,0.35);}
+.ztok{padding:0.35em 0.8em;border-radius:7px;font-size:0.86rem;font-weight:600;cursor:pointer;}
+.col-take .ztok{background:rgba(46,165,95,0.15);color:var(--take-dim);border:1px solid rgba(46,165,95,0.3);}
+.col-put  .ztok{background:rgba(58,127,222,0.15);color:var(--put-dim);border:1px solid rgba(58,127,222,0.3);}
+.ztok.ztok-ok{border-color:var(--correct)!important;background:var(--correct-bg)!important;color:var(--correct)!important;cursor:default;}
+.ztok.ztok-no{border-color:var(--wrong)!important;background:var(--wrong-bg)!important;color:var(--wrong)!important;cursor:default;}
+.wbank{display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.1rem;}
+.wchip{padding:0.35em 0.8em;background:var(--cream);border:2px solid var(--cream-d);border-radius:20px;font-size:0.85rem;font-weight:600;color:var(--txt);cursor:pointer;transition:background .14s,border-color .14s;user-select:none;}
+.wchip:hover:not(.wused){background:rgba(201,145,58,0.12);border-color:var(--gold);}
+.wchip.wsel{border-color:var(--gold);background:rgba(201,145,58,0.14);}
+.wchip.wused{opacity:.35;cursor:default;text-decoration:line-through;}
+.fib-s{font-size:0.97rem;line-height:2.1;color:var(--txt);margin-bottom:0.4rem;}
+.slot{display:inline-block;min-width:120px;border-bottom:2px solid var(--txt-mid);text-align:center;font-weight:700;color:var(--txt-mid);cursor:pointer;padding:0 0.3rem;transition:border-color .18s;vertical-align:middle;}
+.slot:hover:not(.sfilled):not(.s-ok):not(.s-no){border-color:var(--gold);}
+.slot.sfilled{color:var(--txt);border-color:var(--gold);cursor:default;}
+.slot.s-ok{border-color:var(--correct);color:var(--correct);}
+.slot.s-no{border-color:var(--wrong);color:var(--wrong);}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;}
+.match-col-lbl{font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--txt-mid);margin-bottom:0.45rem;}
+.mi{padding:0.6rem 0.85rem;border-radius:10px;border:2px solid var(--cream-d);background:var(--card);font-size:0.88rem;font-weight:500;color:var(--txt);cursor:pointer;margin-bottom:0.45rem;transition:border-color .18s,background .18s;line-height:1.4;}
+.mi:hover:not(.m-ok):not(.m-dis){border-color:var(--gold);background:rgba(201,145,58,0.06);}
+.mi.m-sel{border-color:var(--gold);background:rgba(201,145,58,0.1);}
+.mi.m-ok{border-color:var(--correct);background:var(--correct-bg);cursor:default;}
+.mi.m-no{border-color:var(--wrong);background:var(--wrong-bg);}
+.mi.m-dis{opacity:.45;cursor:default;}
+.btn-p{background:linear-gradient(135deg,var(--gold-l),var(--gold));color:#15151A;border:none;border-radius:50px;padding:0.72rem 1.9rem;font-family:'Inter',sans-serif;font-size:0.93rem;font-weight:700;cursor:pointer;transition:transform .14s,box-shadow .14s;letter-spacing:0.03em;}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(201,145,58,0.35);}
+.btn-s{background:transparent;color:var(--cream);border:2px solid rgba(243,237,216,0.3);border-radius:50px;padding:0.68rem 1.6rem;font-family:'Inter',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;transition:border-color .18s,background .18s;}
+.btn-s:hover{border-color:var(--gold);background:rgba(201,145,58,0.08);}
+.btn-chk{background:var(--bg2);color:var(--cream);border:2px solid rgba(243,237,216,0.2);border-radius:50px;padding:0.62rem 1.5rem;font-family:'Inter',sans-serif;font-size:0.86rem;font-weight:600;cursor:pointer;transition:background .18s,border-color .18s;}
+.btn-chk:hover:not(:disabled){background:#2a2a36;border-color:var(--gold);}
+.btn-chk:disabled{opacity:.4;cursor:default;}
+.btn-row{display:flex;justify-content:flex-end;gap:0.75rem;margin-top:1.1rem;}
+.nxt{display:none;}
+.nxt.vis{display:inline-flex;align-items:center;gap:0.4rem;}
+.sort-fb,.fib-fb{display:none;margin-top:0.75rem;padding:0.7rem 0.95rem;border-radius:10px;font-size:0.86rem;line-height:1.6;}
+.sort-fb.show-ok,.fib-fb.show-ok{display:block;background:var(--correct-bg);color:var(--correct);}
+.sort-fb.show-no,.fib-fb.show-no{display:block;background:var(--wrong-bg);color:var(--wrong);}
+.intro{text-align:center;animation:fadeUp .4s ease;}
+.intro-card{background:var(--card);border-radius:22px;padding:2rem;box-shadow:0 8px 40px var(--shadow);margin-bottom:1.3rem;}
+.intro-card h2{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--txt);margin-bottom:0.5rem;}
+.intro-card p{font-size:0.9rem;color:var(--txt-mid);line-height:1.65;margin-bottom:1rem;}
+.vpair{display:flex;justify-content:center;gap:1rem;margin:1.2rem 0;}
+.vbrick{border-radius:12px;padding:0.5rem 1.3rem;font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;}
+.vbrick.t{background:var(--take);color:#fff;}
+.vbrick.p{background:var(--put);color:#fff;}
+.acts-list{display:flex;flex-direction:column;gap:0.5rem;text-align:left;margin:1.1rem 0;}
+.act-row{display:flex;align-items:flex-start;gap:0.65rem;font-size:0.88rem;color:var(--txt-mid);}
+.act-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:5px;}
+.expr-showcase{display:flex;flex-wrap:wrap;gap:0.55rem;justify-content:center;margin:1rem 0;}
+.ex-chip{display:flex;align-items:center;border-radius:9px;overflow:hidden;font-size:0.82rem;font-weight:700;box-shadow:0 2px 7px rgba(0,0,0,0.12);}
+.ex-chip .ev{padding:0.38em 0.6em;color:#fff;}
+.ex-chip.tc .ev{background:var(--take);}
+.ex-chip.pc .ev{background:var(--put);}
+.ex-chip .ep{padding:0.38em 0.6em;background:var(--cream-d);color:var(--txt);}
+.results{display:none;text-align:center;}
+.results.active{display:block;animation:fadeUp .5s ease;}
+.res-card{background:var(--card);border-radius:24px;padding:2.4rem 2rem;box-shadow:0 8px 40px var(--shadow);}
+.res-circle{width:118px;height:118px;border-radius:50%;background:linear-gradient(135deg,var(--bg2),#15151A);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 1.4rem;border:4px solid var(--gold);box-shadow:0 0 0 8px rgba(201,145,58,0.14);}
+.res-num{font-family:'Playfair Display',serif;font-size:2.1rem;font-weight:700;color:var(--gold-l);line-height:1;}
+.res-of{font-size:0.7rem;color:rgba(243,237,216,0.6);font-weight:500;}
+.res-h{font-family:'Playfair Display',serif;font-size:1.65rem;color:var(--txt);margin-bottom:0.45rem;}
+.res-msg{color:var(--txt-mid);font-size:0.93rem;line-height:1.6;margin-bottom:1.7rem;}
+.res-btns{display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="logo-wrap">
+  <svg width="178" height="56" viewBox="0 0 178 56" xmlns="http://www.w3.org/2000/svg">
+    <text x="89" y="24" font-family="Georgia,'Times New Roman',serif" font-size="22" font-weight="400" fill="#C9913A" text-anchor="middle" letter-spacing="3">Forbes</text>
+    <line x1="18" y1="31" x2="160" y2="31" stroke="#C9913A" stroke-width="0.8" opacity="0.45"/>
+    <text x="89" y="48" font-family="Arial,Helvetica,sans-serif" font-size="14" font-weight="700" fill="#F3EDD8" text-anchor="middle" letter-spacing="5">ENGLISH</text>
+  </svg>
+</div>
+
+<div class="hdr">
+  <div class="hdr-tag">B1 &middot; Vocabulario</div>
+  <h1>Expresiones comunes:<br><span class="t">take</span> &amp; <span class="p">put</span></h1>
+  <p class="hdr-sub">Colocaciones, frases fijas y patrones de oraci&oacute;n &nbsp;|&nbsp; con apoyo en espa&ntilde;ol</p>
+</div>
+
+<div class="intro" id="introScreen">
+  <div class="intro-card">
+    <div class="vpair"><span class="vbrick t">take</span><span class="vbrick p">put</span></div>
+    <h2>M&aacute;s que simples phrasal verbs</h2>
+    <p><strong>Take</strong> y <strong>put</strong> aparecen en decenas de expresiones fijas. Hoy practicar&aacute;s las m&aacute;s importantes: desde <em>put up with</em> hasta <em>take for granted</em>, desde <em>take a risk</em> hasta <em>put your foot in it</em>. Las traducciones al espa&ntilde;ol aparecen en rojo despu&eacute;s de cada respuesta.</p>
+    <div class="expr-showcase">
+      <span class="ex-chip tc"><span class="ev">take</span><span class="ep">for granted</span></span>
+      <span class="ex-chip tc"><span class="ev">take</span><span class="ep">a risk</span></span>
+      <span class="ex-chip tc"><span class="ev">take</span><span class="ep">the lead</span></span>
+      <span class="ex-chip tc"><span class="ev">take</span><span class="ep">turns</span></span>
+      <span class="ex-chip pc"><span class="ev">put</span><span class="ep">up with</span></span>
+      <span class="ex-chip pc"><span class="ev">put</span><span class="ep">forward</span></span>
+      <span class="ex-chip pc"><span class="ev">put</span><span class="ep">in writing</span></span>
+      <span class="ex-chip pc"><span class="ev">put</span><span class="ep">your foot in it</span></span>
+    </div>
+    <div class="acts-list">
+      <div class="act-row"><span class="act-dot"></span><span><strong>Actividad 1:</strong> Relaciona expresiones en negrita con sus sin&oacute;nimos</span></div>
+      <div class="act-row"><span class="act-dot"></span><span><strong>Actividad 2:</strong> Clasifica 18 expresiones en columnas <em style="color:var(--take)">take</em> o <em style="color:var(--put)">put</em></span></div>
+      <div class="act-row"><span class="act-dot"></span><span><strong>Actividad 3:</strong> Completa las oraciones con la expresi&oacute;n correcta</span></div>
+      <div class="act-row"><span class="act-dot"></span><span><strong>Actividad 4:</strong> Une los di&aacute;logos con sus respuestas</span></div>
+    </div>
+  </div>
+  <button class="btn-p" onclick="startLesson()">Empezar la lecci&oacute;n &rarr;</button>
+</div>
+
+<div class="hud" id="hud">
+  <div class="hud-score">Puntos: <span id="scoreDisp">0</span></div>
+  <div class="prog-wrap">
+    <div class="prog-lbl" id="progLbl">Actividad 1 de 4</div>
+    <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+  </div>
+</div>
+
+<!-- ACT 1 -->
+<div class="sec" id="s1">
+  <div class="sec-hdr"><span class="badge badge-gold">Actividad 1</span><span class="sec-title">Sustituye por un sin&oacute;nimo</span></div>
+  <p class="sec-instr">Cada oraci&oacute;n contiene una expresi&oacute;n en negrita con <span class="tw">take</span> o <span class="pw">put</span>. Elige la opci&oacute;n con el mismo significado. Las traducciones al espa&ntilde;ol aparecen despu&eacute;s de cada respuesta.</p>
+  <div class="ref">&#128161; <strong>Consejo:</strong> Sustituye mentalmente la expresi&oacute;n en negrita. &iquest;Sigue teniendo sentido la oraci&oacute;n? El sin&oacute;nimo correcto encaja perfectamente en el contexto.</div>
+  <div id="s1Qs"></div>
+  <div class="btn-row"><button class="btn-p nxt" id="s1nxt" onclick="goto(2)">Siguiente actividad &rarr;</button></div>
+</div>
+
+<!-- ACT 2 -->
+<div class="sec" id="s2">
+  <div class="sec-hdr"><span class="badge badge-both">Actividad 2</span><span class="sec-title">Clasifica en columnas</span></div>
+  <p class="sec-instr">Haz clic en una palabra o frase para seleccionarla <em>(amarillo = seleccionado)</em>, luego haz clic en la columna correcta &mdash; <strong style="color:var(--take-l)">take</strong> o <strong style="color:var(--put-l)">put</strong>. Haz clic en un token colocado para devolverlo al grupo.</p>
+  <div class="card">
+    <div style="font-size:0.82rem;font-weight:600;color:var(--txt-mid);margin-bottom:0.5rem;">Selecciona una expresi&oacute;n y luego haz clic en una columna:</div>
+    <div class="pool-wrap" id="s2pool"></div>
+    <div class="cols">
+      <div class="col-blk col-take"><div class="col-hd">take</div><div class="col-zone" id="zone-take" onclick="placeInZone('take')"></div></div>
+      <div class="col-blk col-put"><div class="col-hd">put</div><div class="col-zone" id="zone-put" onclick="placeInZone('put')"></div></div>
+    </div>
+    <div class="btn-row" style="justify-content:flex-start;margin-top:0.3rem;">
+      <button class="btn-chk" id="s2chk" onclick="checkSort()" disabled>Comprobar respuestas</button>
+    </div>
+    <div class="sort-fb" id="s2fb"></div>
+  </div>
+  <div class="btn-row"><button class="btn-p nxt" id="s2nxt" onclick="goto(3)">Siguiente actividad &rarr;</button></div>
+</div>
+
+<!-- ACT 3 -->
+<div class="sec" id="s3">
+  <div class="sec-hdr"><span class="badge badge-take">Actividad 3</span><span class="sec-title">Completa las oraciones</span></div>
+  <p class="sec-instr">Haz clic en una frase del banco de palabras y luego haz clic en el espacio en blanco para colocarla. Usa la forma verbal correcta cuando sea necesario.</p>
+  <div class="ref">&#128161; <strong>Nota gramatical:</strong> A veces hay que cambiar la forma del verbo &mdash; por ejemplo, <em>took</em> (pasado) o <em>taking</em> (despu&eacute;s de <em>is</em>). Las part&iacute;culas nunca cambian.</div>
+  <div class="card">
+    <div class="wbank" id="s3bank"></div>
+    <div id="s3sents"></div>
+    <div class="btn-row" style="justify-content:flex-start;margin-top:0.5rem;">
+      <button class="btn-chk" id="s3chk" onclick="checkFib()" disabled>Comprobar respuestas</button>
+    </div>
+    <div class="fib-fb" id="s3fb"></div>
+  </div>
+  <div class="btn-row"><button class="btn-p nxt" id="s3nxt" onclick="goto(4)">Siguiente actividad &rarr;</button></div>
+</div>
+
+<!-- ACT 4 -->
+<div class="sec" id="s4">
+  <div class="sec-hdr"><span class="badge badge-put">Actividad 4</span><span class="sec-title">Une los di&aacute;logos</span></div>
+  <p class="sec-instr">Haz clic en una frase de la columna A y luego en su respuesta correspondiente en la columna B. La expresi&oacute;n con <span class="tw">take</span> o <span class="pw">put</span> te dar&aacute; una pista muy &uacute;til.</p>
+  <div class="ref">&#128161; <strong>Estrategia:</strong> Lee la expresi&oacute;n en la columna A y pre g&uacute;ntate: &iquest;qu&eacute; situaci&oacute;n describe? &iquest;Una reacci&oacute;n emocional, una invitaci&oacute;n, una disculpa, un consejo?</div>
+  <div class="card">
+    <div class="match-grid">
+      <div><div class="match-col-lbl">Columna A</div><div id="s4left"></div></div>
+      <div><div class="match-col-lbl">Columna B &mdash; respuesta</div><div id="s4right"></div></div>
+    </div>
+    <div style="margin-top:0.7rem;font-size:0.85rem;" id="s4prog"></div>
+  </div>
+  <div class="btn-row"><button class="btn-p nxt" id="s4nxt" onclick="showResults()">Ver mis resultados &rarr;</button></div>
+</div>
+
+<!-- RESULTS -->
+<div class="results" id="resultsScreen">
+  <div class="res-card">
+    <div class="res-circle"><span class="res-num" id="rNum">0</span><span class="res-of" id="rOf">/ 0</span></div>
+    <h2 class="res-h" id="rH"></h2>
+    <p class="res-msg" id="rMsg"></p>
+    <div class="res-btns">
+      <button class="btn-p" onclick="restart()">Intentar de nuevo</button>
+      <button class="btn-s" onclick="showResults()">Ver puntuaci&oacute;n</button>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+var score = 0, total = 0;
+var LETTERS = ['A','B','C','D'];
+
+function shuffle(a) {
+  var r = a.slice();
+  for (var i = r.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = r[i]; r[i] = r[j]; r[j] = tmp;
+  }
+  return r;
+}
+function upd() { document.getElementById('scoreDisp').textContent = score; }
+function prog(n) {
+  document.getElementById('progFill').style.width = ((n-1)/4*100) + '%';
+  document.getElementById('progLbl').textContent = 'Actividad ' + n + ' de 4';
+}
+function goto(n) {
+  for (var i = 1; i <= 4; i++) document.getElementById('s'+i).classList.remove('active');
+  document.getElementById('s'+n).classList.add('active');
+  prog(n);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function startLesson() {
+  document.getElementById('introScreen').style.display = 'none';
+  document.getElementById('hud').style.display = 'flex';
+  goto(1);
+}
+
+// ── ACTIVIDAD 1 ───────────────────────────────────────
+var S1 = [
+  {
+    html: 'During the renovation, we had to <strong class="pw">put up with<\/strong> the sound of drilling every morning for six weeks.',
+    opts: ['increase','postpone','tolerate','record formally'],
+    ci: 2,
+    exp: '<strong>Put up with<\/strong> = tolerate something unpleasant without complaining. It is always followed by a noun or gerund: <em>put up with the noise \/ put up with waiting<\/em>.',
+    es: 'aguantar \/ soportar algo desagradable'
+  },
+  {
+    html: 'Most people <strong class="tw">take for granted<\/strong> that clean water will always come out of the tap.',
+    opts: ['worry about','appreciate deeply','assume without thinking','carefully plan for'],
+    ci: 2,
+    exp: '<strong>Take for granted<\/strong> = assume something is always available without appreciating it. We often only notice things when we lose them.',
+    es: 'dar algo por sentado \/ no apreciar lo que se tiene'
+  },
+  {
+    html: 'After months of debate, the committee finally decided to <strong class="pw">put forward<\/strong> a revised budget proposal.',
+    opts: ['reject officially','postpone indefinitely','suggest or submit formally','pay in advance'],
+    ci: 2,
+    exp: '<strong>Put forward<\/strong> = formally propose or suggest an idea, plan, or candidate. Very common in business meetings and political contexts.',
+    es: 'proponer \/ presentar formalmente una idea o candidato'
+  },
+  {
+    html: 'Nobody wanted to go first, so the intern stepped up and decided to <strong class="tw">take the lead<\/strong>.',
+    opts: ['take a break','take the blame','take charge and go first','take offence'],
+    ci: 2,
+    exp: '<strong>Take the lead<\/strong> = be the first to act or take control of a situation. It is used in sport, business, and group tasks.',
+    es: 'tomar la iniciativa \/ ponerse al frente'
+  },
+  {
+    html: 'Rather than arguing about who should present first, the three colleagues agreed to <strong class="tw">take turns<\/strong>.',
+    opts: ['take risks together','alternate one after another','take the lead','change direction'],
+    ci: 1,
+    exp: '<strong>Take turns<\/strong> = do something alternately so each person has a go. You can say <em>take turns doing sth<\/em> or <em>take it in turns to do sth<\/em>.',
+    es: 'turnarse \/ alternarse'
+  },
+  {
+    html: 'Before you hand over the deposit, make sure you <strong class="pw">put<\/strong> everything <strong class="pw">in writing<\/strong>.',
+    opts: ['memorise carefully','translate the document','record formally in a document','summarise briefly'],
+    ci: 2,
+    exp: '<strong>Put in writing<\/strong> = make something official by writing it down. Essential in legal and business contexts to avoid misunderstandings.',
+    es: 'poner algo por escrito \/ dejarlo por escrito'
+  },
+  {
+    html: 'The unexpected phone call during the presentation really <strong class="pw">put<\/strong> the speaker <strong class="pw">off<\/strong> her stride.',
+    opts: ['motivated strongly','encouraged loudly','distracted or unsettled','put in charge of'],
+    ci: 2,
+    exp: '<strong>Put (sb) off<\/strong> = distract, unsettle, or discourage someone. It can also mean to make someone lose enthusiasm for something.',
+    es: 'desconcentrar \/ quitar las ganas a alguien'
+  }
+];
+
+var s1done = {};
+function buildS1() {
+  var c = document.getElementById('s1Qs');
+  c.innerHTML = '';
+  S1.forEach(function(item, i) {
+    var pairs = item.opts.map(function(o, oi) { return {t: o, ok: oi === item.ci}; });
+    var sh = shuffle(pairs);
+    var div = document.createElement('div');
+    div.className = 'card';
+    div.id = 's1c' + i;
+    var opsHtml = sh.map(function(o, si) {
+      return '<button class="opt" id="s1o' + i + '_' + si + '" data-qi="' + i + '" data-si="' + si + '" data-ok="' + (o.ok ? '1' : '0') + '"><span class="ltr">' + LETTERS[si] + '<\/span>' + o.t + '<\/button>';
+    }).join('');
+    div.innerHTML = '<div class="q-num">Pregunta ' + (i+1) + ' de ' + S1.length + '<\/div><div class="q-txt">' + item.html + '<\/div><div class="opts">' + opsHtml + '<\/div><div class="fb" id="s1fb' + i + '"><\/div>';
+    c.appendChild(div);
+  });
+  c.querySelectorAll('.opt').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      ansS1(parseInt(this.dataset.qi), parseInt(this.dataset.si), this.dataset.ok === '1');
+    });
+  });
+}
+function ansS1(qi, si, ok) {
+  if (s1done[qi]) return;
+  s1done[qi] = true; total++;
+  for (var j = 0; j < 4; j++) { var b = document.getElementById('s1o'+qi+'_'+j); if(b) b.disabled=true; }
+  var btn = document.getElementById('s1o'+qi+'_'+si);
+  var fb  = document.getElementById('s1fb'+qi);
+  var esTag = '<span class="es-block">&#127466;&#127480; ' + S1[qi].es + '<\/span>';
+  if (ok) {
+    btn.classList.add('c-ok'); score++; upd();
+    fb.className = 'fb ok';
+    fb.innerHTML = '&#10003; &iexcl;Correcto! ' + S1[qi].exp + esTag;
+  } else {
+    btn.classList.add('c-no');
+    fb.className = 'fb no';
+    fb.innerHTML = '&#10007; No exactamente. ' + S1[qi].exp + esTag;
+  }
+  if (Object.keys(s1done).length === S1.length) document.getElementById('s1nxt').classList.add('vis');
+}
+
+// ── ACTIVIDAD 2 ───────────────────────────────────────
+var S2items = [
+  {lbl:'the lead',         cat:'take', es:'tomar la iniciativa'},
+  {lbl:'turns',            cat:'take', es:'turnarse'},
+  {lbl:'a risk',           cat:'take', es:'correr un riesgo'},
+  {lbl:'a stand',          cat:'take', es:'tomar una postura'},
+  {lbl:'advantage of',     cat:'take', es:'aprovechar algo'},
+  {lbl:'a break',          cat:'take', es:'hacer una pausa'},
+  {lbl:'the blame',        cat:'take', es:'asumir la culpa'},
+  {lbl:'for granted',      cat:'take', es:'dar por sentado'},
+  {lbl:'pride in',         cat:'take', es:'estar orgulloso de'},
+  {lbl:'forward',          cat:'put',  es:'proponer formalmente'},
+  {lbl:'in writing',       cat:'put',  es:'poner por escrito'},
+  {lbl:'up with',          cat:'put',  es:'aguantar \/ tolerar'},
+  {lbl:'up (a notice)',    cat:'put',  es:'colgar \/ poner un cartel'},
+  {lbl:'sb off',           cat:'put',  es:'desconcentrar \/ desanimar'},
+  {lbl:'sth aside',        cat:'put',  es:'reservar \/ dejar de lado'},
+  {lbl:'sb on the spot',   cat:'put',  es:'poner a alguien en un aprieto'},
+  {lbl:'your foot in it',  cat:'put',  es:'meter la pata'},
+  {lbl:'sth behind you',   cat:'put',  es:'dejar algo atr\u00e1s'}
+];
+
+var s2sel = null, s2checked = false;
+function buildS2() {
+  s2sel = null; s2checked = false;
+  document.getElementById('s2pool').innerHTML = '';
+  document.getElementById('zone-take').innerHTML = '';
+  document.getElementById('zone-put').innerHTML = '';
+  document.getElementById('s2fb').className = 'sort-fb';
+  document.getElementById('s2chk').disabled = true;
+  shuffle(S2items.map(function(x,i){return{lbl:x.lbl,cat:x.cat,es:x.es,idx:i};})).forEach(function(item) {
+    var t = document.createElement('span');
+    t.className='tok'; t.id='s2tok'+item.idx;
+    t.dataset.cat=item.cat; t.dataset.lbl=item.lbl; t.dataset.es=item.es; t.dataset.idx=item.idx;
+    t.textContent=item.lbl;
+    t.addEventListener('click', function(){ pickTok(this); });
+    document.getElementById('s2pool').appendChild(t);
+  });
+}
+function pickTok(el) {
+  if (el.classList.contains('tok-placed') || s2checked) return;
+  document.querySelectorAll('.tok').forEach(function(t){ t.classList.remove('tok-sel'); });
+  s2sel = el; el.classList.add('tok-sel');
+}
+function placeInZone(zone) {
+  if (!s2sel || s2checked) return;
+  var ztok = document.createElement('span');
+  ztok.className='ztok'; ztok.textContent=s2sel.dataset.lbl;
+  ztok.dataset.expected=s2sel.dataset.cat; ztok.dataset.zone=zone;
+  ztok.dataset.tokidx=s2sel.dataset.idx;
+  ztok.addEventListener('click', function() {
+    if (s2checked) return;
+    var orig = document.getElementById('s2tok'+this.dataset.tokidx);
+    if (orig) orig.classList.remove('tok-placed','tok-sel');
+    this.remove(); checkS2Enabled();
+  });
+  document.getElementById('zone-'+zone).appendChild(ztok);
+  s2sel.classList.add('tok-placed'); s2sel.classList.remove('tok-sel');
+  s2sel = null; checkS2Enabled();
+}
+function checkS2Enabled() {
+  document.getElementById('s2chk').disabled = (document.querySelectorAll('.ztok').length < S2items.length);
+}
+function checkSort() {
+  if (s2checked) return; s2checked = true;
+  var ok = 0;
+  document.querySelectorAll('.ztok').forEach(function(zt) {
+    var esText = S2items[parseInt(zt.dataset.tokidx)] ? S2items[parseInt(zt.dataset.tokidx)].es : '';
+    if (zt.dataset.zone === zt.dataset.expected) {
+      zt.classList.add('ztok-ok'); ok++;
+      zt.title = '\u{1F1EA}\u{1F1F8} ' + esText;
+    } else {
+      zt.classList.add('ztok-no');
+      zt.title = 'Va con: ' + zt.dataset.expected + ' | \u{1F1EA}\u{1F1F8} ' + esText;
+    }
+  });
+  total += S2items.length; score += ok; upd();
+  document.getElementById('s2chk').disabled = true;
+  var fb = document.getElementById('s2fb');
+  if (ok === S2items.length) {
+    fb.className = 'sort-fb show-ok';
+    fb.innerHTML = '&#10003; &iexcl;Perfecto! Todos los ' + S2items.length + ' en la columna correcta. Clave: las expresiones con <em>take<\/em> suelen describir algo que <strong>recibes o aceptas<\/strong> (the lead, the blame, a risk). Las de <em>put<\/em> describen algo que <strong>colocas o presentas<\/strong> (forward, in writing, aside). Pasa el rat\u00f3n por encima de los tokens verdes para ver la traducci\u00f3n al espa\u00f1ol.';
+  } else {
+    fb.className = 'sort-fb show-no';
+    fb.innerHTML = 'Has acertado <strong>' + ok + ' de ' + S2items.length + '<\/strong>. Los tokens en rojo est\u00e1n mal clasificados. Pasa el rat\u00f3n por encima para ver d\u00f3nde van y qu\u00e9 significan en espa\u00f1ol.';
+  }
+  document.getElementById('s2nxt').classList.add('vis');
+}
+
+// ── ACTIVIDAD 3 ───────────────────────────────────────
+var S3data = [
+  {
+    before: 'The marketing director',
+    after: 'during the board meeting and presented three alternative strategies.',
+    ans: 'took the lead',
+    exp: '<strong>Took the lead<\/strong> = past simple of <em>take the lead<\/em>. She moved into a position of control and acted first.',
+    es: 'tom\u00f3 la iniciativa'
+  },
+  {
+    before: 'The strong smell of paint in the office really',
+    after: 'working properly.',
+    ans: 'put everyone off',
+    exp: '<strong>Put (sb) off<\/strong> = distract or discourage someone. The smell made it hard to concentrate &mdash; it put everyone off.',
+    es: 'desconcentr\u00f3 a todo el mundo'
+  },
+  {
+    before: 'We need to',
+    after: 'some time each week for team development, or it will never happen.',
+    ans: 'put aside',
+    exp: '<strong>Put aside<\/strong> = reserve or save something (time, money) for a specific purpose. Also means to set a disagreement to one side temporarily.',
+    es: 'reservar \/ apartar tiempo o dinero para algo'
+  },
+  {
+    before: 'Neither director wanted to',
+    after: 'for the failed product launch, so they blamed external factors instead.',
+    ans: 'take the blame',
+    exp: '<strong>Take the blame<\/strong> = accept responsibility for a mistake. The opposite of blaming others.',
+    es: 'asumir la culpa \/ responsabilizarse del error'
+  },
+  {
+    before: 'The recruiter asked both candidates to',
+    after: 'their salary expectations before the second interview.',
+    ans: 'put in writing',
+    exp: '<strong>Put in writing<\/strong> = formally document something in a letter or email. In hiring, this makes the process transparent and binding.',
+    es: 'poner por escrito \/ hacer constar por escrito'
+  },
+  {
+    before: 'The journalist',
+    after: 'by asking about the internal audit report that nobody expected to be discussed.',
+    ans: 'put the CEO on the spot',
+    exp: '<strong>Put sb on the spot<\/strong> = force someone into an uncomfortable position where they must respond immediately without preparation.',
+    es: 'poner a alguien en un aprieto \/ en una situaci\u00f3n inc\u00f3moda'
+  },
+  {
+    before: "After the difficult merger, it took the company almost two years to",
+    after: 'and regain the trust of its employees.',
+    ans: 'put it behind them',
+    exp: '<strong>Put sth behind you<\/strong> = stop letting past difficulties affect the present. Common in personal development and business recovery contexts.',
+    es: 'dejar algo atr\u00e1s \/ pasar p\u00e1gina'
+  }
+];
+var S3bank = ['took the lead','put everyone off','put aside','take the blame','put in writing','put the CEO on the spot','put it behind them'];
+var s3sel = null, s3filled = {}, s3checked = false;
+
+function buildS3() {
+  s3sel = null; s3filled = {}; s3checked = false;
+  var bankEl = document.getElementById('s3bank');
+  bankEl.innerHTML = '';
+  shuffle(S3bank.map(function(w,i){return{w:w,i:i};})).forEach(function(item) {
+    var ch = document.createElement('span');
+    ch.className='wchip'; ch.id='wch'+item.i;
+    ch.dataset.word=item.w; ch.dataset.idx=item.i;
+    ch.textContent=item.w;
+    ch.addEventListener('click', function(){ pickChip(this); });
+    bankEl.appendChild(ch);
+  });
+  var ss = document.getElementById('s3sents');
+  ss.innerHTML = '';
+  S3data.forEach(function(item, i) {
+    var d = document.createElement('div');
+    d.className='card'; d.style.marginBottom='0.7rem';
+    d.innerHTML = '<div class="q-num">Oraci\u00f3n ' + (i+1) + '<\/div>'
+      + '<div class="fib-s">' + item.before
+      + ' <span class="slot" id="slot'+i+'" data-idx="'+i+'">____________<\/span> '
+      + item.after + '<\/div>'
+      + '<div class="fb" id="s3fb'+i+'"><\/div>';
+    ss.appendChild(d);
+  });
+  ss.querySelectorAll('.slot').forEach(function(sl) {
+    sl.addEventListener('click', function(){ fillSlot(parseInt(this.dataset.idx)); });
+  });
+  document.getElementById('s3chk').disabled = true;
+  document.getElementById('s3fb').className = 'fib-fb';
+}
+function pickChip(el) {
+  if (el.classList.contains('wused') || s3checked) return;
+  document.querySelectorAll('.wchip').forEach(function(c){ c.classList.remove('wsel'); });
+  s3sel = {word: el.dataset.word, el: el};
+  el.classList.add('wsel');
+}
+function fillSlot(idx) {
+  if (s3checked) return;
+  var slot = document.getElementById('slot'+idx);
+  if (!s3sel) {
+    if (s3filled[idx]) {
+      var pv = document.getElementById('wch'+s3filled[idx].chipIdx);
+      if (pv) pv.classList.remove('wused');
+      delete s3filled[idx];
+      slot.textContent='____________'; slot.classList.remove('sfilled');
+      checkS3Enabled();
+    }
+    return;
+  }
+  if (s3filled[idx]) {
+    var ov = document.getElementById('wch'+s3filled[idx].chipIdx);
+    if (ov) ov.classList.remove('wused');
+  }
+  s3filled[idx] = {word: s3sel.word, chipIdx: s3sel.el.dataset.idx};
+  slot.textContent = s3sel.word; slot.classList.add('sfilled');
+  s3sel.el.classList.add('wused'); s3sel.el.classList.remove('wsel');
+  s3sel = null; checkS3Enabled();
+}
+function checkS3Enabled() {
+  document.getElementById('s3chk').disabled = (Object.keys(s3filled).length < S3data.length);
+}
+function checkFib() {
+  if (s3checked) return; s3checked = true;
+  var ok = 0;
+  S3data.forEach(function(item, i) {
+    var slot = document.getElementById('slot'+i);
+    var given = s3filled[i] ? s3filled[i].word.trim().toLowerCase() : '';
+    var fb = document.getElementById('s3fb'+i);
+    var esTag = '<span class="es-block">&#127466;&#127480; ' + item.es + '<\/span>';
+    if (given === item.ans.toLowerCase()) {
+      slot.classList.add('s-ok'); slot.classList.remove('sfilled'); ok++;
+      fb.className='fb ok';
+      fb.innerHTML = '&#10003; &iexcl;Correcto! ' + item.exp + esTag;
+    } else {
+      slot.classList.add('s-no'); slot.classList.remove('sfilled');
+      fb.className='fb no';
+      fb.innerHTML = '&#10007; La respuesta es <strong>' + item.ans + '<\/strong>. ' + item.exp + esTag;
+    }
+  });
+  total += S3data.length; score += ok; upd();
+  document.getElementById('s3chk').disabled = true;
+  document.getElementById('s3nxt').classList.add('vis');
+}
+
+// ── ACTIVIDAD 4 ───────────────────────────────────────
+var S4left = [
+  {id:'L1', html:'I <span class="pw-hl">put my foot in it<\/span> badly &mdash; I told my colleague his presentation was boring and my boss overheard.', match:'R5'},
+  {id:'L2', html:'You look exhausted. Why don\'t you <span class="tw-hl">take a break<\/span> and get some fresh air?', match:'R3'},
+  {id:'L3', html:'Everyone was waiting for someone to start, so I decided to <span class="tw-hl">take the lead<\/span> and open the discussion.', match:'R6'},
+  {id:'L4', html:'The supplier is asking us to <span class="pw-hl">put<\/span> the revised delivery terms <span class="pw-hl">in writing<\/span>.', match:'R1'},
+  {id:'L5', html:'I know the project failed, but you really need to <span class="pw-hl">put it behind you<\/span> and focus on what\'s next.', match:'R2'},
+  {id:'L6', html:'She always <span class="tw-hl">takes advantage of<\/span> the language training the company offers.', match:'R4'}
+];
+var S4right = [
+  {id:'R1', txt:"Of course — I'll have legal send over the updated contract by end of day."},
+  {id:'R2', txt:"You're right. Dwelling on it won't change anything."},
+  {id:'R3', txt:"Good idea. I've been at my desk since seven this morning."},
+  {id:'R4', txt:"Absolutely — her English has improved so much this year."},
+  {id:'R5', txt:"Oh no! Did he hear the whole thing? That must have been awful."},
+  {id:'R6', txt:"That was courageous. It's not easy to go first in front of everyone."}
+];
+var S4answers = {L1:'R5',L2:'R3',L3:'R6',L4:'R1',L5:'R2',L6:'R4'};
+var s4selL=null, s4selR=null, s4done={}, s4count=0;
+
+function buildS4() {
+  s4selL=null; s4selR=null; s4done={}; s4count=0;
+  var lEl=document.getElementById('s4left'), rEl=document.getElementById('s4right');
+  lEl.innerHTML=''; rEl.innerHTML='';
+  S4left.forEach(function(item) {
+    var d=document.createElement('div');
+    d.className='mi'; d.id='ml'+item.id; d.dataset.id=item.id; d.innerHTML=item.html;
+    d.addEventListener('click', function(){ selLeft(item.id); });
+    lEl.appendChild(d);
+  });
+  shuffle(S4right.slice()).forEach(function(item) {
+    var d=document.createElement('div');
+    d.className='mi'; d.id='mr'+item.id; d.dataset.id=item.id; d.textContent=item.txt;
+    d.addEventListener('click', function(){ selRight(item.id); });
+    rEl.appendChild(d);
+  });
+  var pr=document.getElementById('s4prog'); pr.textContent=''; pr.style.color='';
+}
+function selLeft(id) {
+  if (s4done[id]) return;
+  document.querySelectorAll('#s4left .mi:not(.m-ok)').forEach(function(e){ e.classList.remove('m-sel'); });
+  s4selL=id; document.getElementById('ml'+id).classList.add('m-sel'); tryMatch4();
+}
+function selRight(id) {
+  var el=document.getElementById('mr'+id);
+  if (el.classList.contains('m-ok')||el.classList.contains('m-dis')) return;
+  document.querySelectorAll('#s4right .mi:not(.m-ok):not(.m-dis)').forEach(function(e){ e.classList.remove('m-sel'); });
+  s4selR=id; el.classList.add('m-sel'); tryMatch4();
+}
+function tryMatch4() {
+  if (!s4selL||!s4selR) return;
+  var lId=s4selL, rId=s4selR;
+  var lEl=document.getElementById('ml'+lId), rEl=document.getElementById('mr'+rId);
+  var correct=(S4answers[lId]===rId);
+  if (correct) {
+    lEl.classList.remove('m-sel'); lEl.classList.add('m-ok');
+    rEl.classList.remove('m-sel'); rEl.classList.add('m-ok');
+    s4done[lId]=true; s4count++; score++; total++; upd();
+    var pr=document.getElementById('s4prog');
+    pr.textContent='\u2713 ' + s4count + ' de ' + S4left.length + ' emparejados';
+    pr.style.color='var(--correct)';
+    if (s4count===S4left.length) document.getElementById('s4nxt').classList.add('vis');
+  } else {
+    lEl.classList.add('m-no'); rEl.classList.add('m-no'); total++;
+    setTimeout(function(){ lEl.classList.remove('m-no','m-sel'); rEl.classList.remove('m-no','m-sel'); }, 800);
+    var pr2=document.getElementById('s4prog');
+    pr2.textContent='\u2717 No es correcto \u2014 \u00a1int\u00e9ntalo de nuevo!';
+    pr2.style.color='var(--wrong)';
+  }
+  s4selL=null; s4selR=null;
+}
+
+// ── RESULTADOS ────────────────────────────────────────
+function showResults() {
+  for (var i=1;i<=4;i++) document.getElementById('s'+i).classList.remove('active');
+  document.getElementById('resultsScreen').classList.add('active');
+  document.getElementById('progFill').style.width='100%';
+  document.getElementById('progLbl').textContent='&iexcl;Completado!';
+  document.getElementById('rNum').textContent=score;
+  document.getElementById('rOf').textContent='/ '+total;
+  var pct=total>0?score/total:0, h, m;
+  if (pct>=0.85) {
+    h='&iexcl;Excelente! &#127881;';
+    m='Has obtenido <strong>'+score+'\/'+total+'<\/strong>. Tienes un dominio s\u00f3lido de las expresiones con <em>take<\/em> y <em>put<\/em>. Intenta usar <em>put forward<\/em> o <em>take the lead<\/em> en tu pr\u00f3xima conversaci\u00f3n en ingl\u00e9s.';
+  } else if (pct>=0.65) {
+    h='&iexcl;Buen trabajo! &#128077;';
+    m='Has obtenido <strong>'+score+'\/'+total+'<\/strong>. Conoces la mayor\u00eda de estas expresiones. Revisa los errores y presta atenci\u00f3n a si el verbo es <em style="color:var(--take)">take<\/em> o <em style="color:var(--put)">put<\/em>.';
+  } else {
+    h='&iexcl;Sigue practicando!';
+    m='Has obtenido <strong>'+score+'\/'+total+'<\/strong>. Estas expresiones necesitan tiempo. Lee cada una en una oraci\u00f3n y dila en voz alta: eso fija la memoria mucho mejor que estudiar una lista.';
+  }
+  document.getElementById('rH').innerHTML=h;
+  document.getElementById('rMsg').innerHTML=m;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── REINICIAR ─────────────────────────────────────────
+function restart() {
+  score=0; total=0;
+  s1done={}; s2sel=null; s2checked=false;
+  s3sel=null; s3filled={}; s3checked=false;
+  s4selL=null; s4selR=null; s4done={}; s4count=0;
+  document.getElementById('resultsScreen').classList.remove('active');
+  document.querySelectorAll('.nxt').forEach(function(b){ b.classList.remove('vis'); });
+  buildS1(); buildS2(); buildS3(); buildS4();
+  upd(); goto(1);
+}
+
+buildS1(); buildS2(); buildS3(); buildS4();
+</script>
+</body>
+</html>

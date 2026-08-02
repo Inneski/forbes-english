@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lights, Camera, Nietzsche — Vocabulary Test Part IV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Josefin+Sans:ital,wght@0,100;0,300;0,400;0,600;0,700;1,300&family=IM+Fell+DW+Pica:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black:     #0a0905;
+    --dark:      #120f08;
+    --card:      #1c1710;
+    --card2:     #231d13;
+    --border:    #3a3020;
+    --border2:   #5a4a28;
+    --amber:     #d4922a;
+    --gold:      #f0c060;
+    --cream:     #f5eed8;
+    --warm:      #e8d8a0;
+    --mid:       #8a7848;
+    --dim:       #4a3e22;
+    --spotlight: rgba(240,192,96,0.06);
+    --green:     #3a7a3a;
+    --green-lt:  #6abf6a;
+    --red:       #8a2020;
+    --red-lt:    #c06060;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    background-image:
+      /* film grain */
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23g)' opacity='0.07'/%3E%3C/svg%3E"),
+      /* spotlight */
+      radial-gradient(ellipse 70% 55% at 50% -5%, #2a2010 0%, transparent 65%);
+    min-height: 100vh;
+    font-family: 'IM Fell DW Pica', Georgia, serif;
+    color: var(--warm);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* ── FILM STRIP TOP ─── */
+  .filmstrip {
+    width: 100%;
+    height: 44px;
+    background: var(--dark);
+    border-bottom: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow: hidden;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .filmstrip::before, .filmstrip::after {
+    content: '';
+    position: absolute;
+    top: 6px; bottom: 6px;
+    width: 100%;
+    border-top: 2px solid var(--dim);
+    border-bottom: 2px solid var(--dim);
+    pointer-events: none;
+  }
+  .strip-hole {
+    width: 26px; height: 18px;
+    background: var(--black);
+    border: 1px solid var(--border2);
+    border-radius: 2px;
+    flex-shrink: 0;
+    margin: 0 6px;
+  }
+  .strip-label {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.4em;
+    color: var(--dim);
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding: 0 20px;
+    flex-shrink: 0;
+  }
+
+  /* ── CLAPPERBOARD HEADER ─── */
+  .clapper-wrap {
+    width: 100%;
+    max-width: 860px;
+    padding: 50px 60px 0;
+    animation: dropIn 1s cubic-bezier(0.16,1,0.3,1) forwards;
+    opacity: 0;
+  }
+  @keyframes dropIn {
+    from { opacity: 0; transform: translateY(-24px) rotate(-1deg); }
+    to   { opacity: 1; transform: translateY(0) rotate(0deg); }
+  }
+
+  .clapper {
+    background: var(--cream);
+    padding: 0;
+    position: relative;
+    box-shadow: 0 8px 60px rgba(0,0,0,0.8), 0 2px 0 var(--amber);
+  }
+
+  /* Striped top bar */
+  .clapper-stripes {
+    height: 36px;
+    background: repeating-linear-gradient(
+      -45deg,
+      var(--black) 0px, var(--black) 14px,
+      var(--cream) 14px, var(--cream) 28px
+    );
+    border-bottom: 3px solid var(--black);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 16px;
+    gap: 8px;
+  }
+  .clapper-stripes span {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.35em;
+    color: var(--cream);
+    background: var(--black);
+    padding: 2px 8px;
+  }
+  .clapper-stripes span.inv {
+    color: var(--black);
+    background: var(--cream);
+  }
+
+  .clapper-body {
+    padding: 22px 28px 24px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 20px;
+    align-items: center;
+    background: var(--cream);
+  }
+
+  .clapper-info { display: flex; flex-direction: column; gap: 6px; }
+
+  .clapper-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    border-bottom: 1.5px solid #ccc;
+    padding-bottom: 4px;
+  }
+  .clapper-key {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #666;
+    min-width: 72px;
+  }
+  .clapper-val {
+    font-family: 'Special Elite', serif;
+    font-size: 1rem;
+    color: var(--black);
+    letter-spacing: 0.05em;
+  }
+  .clapper-val.big {
+    font-size: 1.5rem;
+    font-weight: 400;
+  }
+
+  .clapper-circle {
+    width: 80px; height: 80px;
+    border: 4px solid var(--black);
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .clapper-circle .c-num {
+    font-family: 'Special Elite', serif;
+    font-size: 2.2rem;
+    color: var(--black);
+    line-height: 1;
+  }
+  .clapper-circle .c-label {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.5rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: #555;
+    text-transform: uppercase;
+  }
+
+  /* ── TAGLINE ─── */
+  .tagline-wrap {
+    width: 100%;
+    max-width: 860px;
+    padding: 32px 60px 0;
+    animation: dropIn 1s 0.15s cubic-bezier(0.16,1,0.3,1) forwards;
+    opacity: 0;
+  }
+
+  .tagline {
+    font-family: 'IM Fell DW Pica', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--mid);
+    line-height: 1.7;
+    border-left: 3px solid var(--amber);
+    padding-left: 18px;
+    max-width: 560px;
+  }
+
+  /* ── PROGRESS ─── */
+  .progress-wrap {
+    width: 100%;
+    max-width: 860px;
+    padding: 28px 60px 0;
+    animation: dropIn 1s 0.25s cubic-bezier(0.16,1,0.3,1) forwards;
+    opacity: 0;
+  }
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .progress-track { height: 3px; background: var(--border); overflow: hidden; }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--amber), var(--gold));
+    width: 0%;
+    transition: width 0.5s ease;
+  }
+
+  /* ── MAIN ─── */
+  .content {
+    width: 100%;
+    max-width: 860px;
+    padding: 42px 60px 80px;
+  }
+
+  /* Scene heading (like a screenplay) */
+  .scene-heading {
+    font-family: 'Special Elite', serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--amber);
+    padding: 8px 14px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    display: inline-block;
+    margin-bottom: 14px;
+  }
+
+  /* Section */
+  .section {
+    margin-bottom: 52px;
+    animation: slideUp 0.6s ease both;
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .section:nth-child(1) { animation-delay: 0.3s; }
+  .section:nth-child(2) { animation-delay: 0.45s; }
+  .section:nth-child(3) { animation-delay: 0.6s; }
+  .section:nth-child(4) { animation-delay: 0.75s; }
+  .section:nth-child(5) { animation-delay: 0.9s; }
+
+  .section-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 10px;
+  }
+
+  .section-tag {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 700;
+    font-size: 0.62rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--amber);
+    padding: 4px 10px;
+  }
+
+  .section-title {
+    font-family: 'Special Elite', serif;
+    font-size: 1.25rem;
+    color: var(--cream);
+    letter-spacing: 0.04em;
+  }
+
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--border2), transparent);
+    margin: 10px 0 16px;
+  }
+
+  .section-instruction {
+    font-family: 'IM Fell DW Pica', serif;
+    font-style: italic;
+    font-size: 0.98rem;
+    color: var(--mid);
+    margin-bottom: 20px;
+    line-height: 1.65;
+  }
+
+  /* Word bank */
+  .wordbank {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+  .wb-label {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-right: 6px;
+    flex-shrink: 0;
+  }
+  .wb-word {
+    font-family: 'Special Elite', serif;
+    font-size: 0.9rem;
+    color: var(--gold);
+    background: var(--card2);
+    border: 1px solid var(--border2);
+    padding: 3px 10px;
+  }
+
+  /* ── QUESTION ─── */
+  .question {
+    background: var(--card);
+    border: 1px solid var(--border);
+    margin-bottom: 18px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .question:hover { border-color: var(--border2); }
+
+  /* little frame number */
+  .q-num {
+    position: absolute;
+    top: 0; right: 0;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--dim);
+    background: var(--card2);
+    border-left: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 3px 8px;
+    text-transform: uppercase;
+  }
+
+  .q-inner { padding: 18px 22px 16px; }
+
+  .q-context {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 300;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 8px;
+  }
+
+  .q-text {
+    font-family: 'IM Fell DW Pica', serif;
+    font-size: 1.02rem;
+    color: var(--warm);
+    line-height: 1.75;
+    margin-bottom: 14px;
+  }
+  .q-text em { font-style: italic; color: var(--cream); }
+  .q-text strong { color: var(--gold); font-style: normal; }
+
+  .blank {
+    display: inline-block;
+    min-width: 110px;
+    border-bottom: 2px solid var(--amber);
+    color: var(--gold);
+    font-style: italic;
+    text-align: center;
+    padding: 0 6px;
+  }
+
+  /* Definition box */
+  .def-box {
+    background: var(--card2);
+    border-left: 3px solid var(--amber);
+    padding: 12px 16px;
+    margin-bottom: 14px;
+    font-family: 'IM Fell DW Pica', serif;
+    font-size: 0.97rem;
+    color: var(--mid);
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  /* Options */
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .options.col1 { grid-template-columns: 1fr; }
+
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 9px 13px;
+    border: 1px solid var(--border);
+    background: var(--dark);
+    cursor: pointer;
+    font-family: 'IM Fell DW Pica', serif;
+    font-size: 0.95rem;
+    color: var(--mid);
+    text-align: left;
+    width: 100%;
+    line-height: 1.5;
+    transition: all 0.15s;
+  }
+  .option:hover:not(:disabled) {
+    border-color: var(--amber);
+    background: rgba(212,146,42,0.08);
+    color: var(--warm);
+  }
+  .opt-letter {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--dim);
+    min-width: 16px;
+    padding-top: 2px;
+    flex-shrink: 0;
+    transition: color 0.15s;
+  }
+  .option:hover:not(:disabled) .opt-letter { color: var(--amber); }
+
+  .option.correct { border-color: var(--green); background: rgba(58,122,58,0.15); color: var(--green-lt); }
+  .option.correct .opt-letter { color: var(--green-lt); }
+  .option.wrong { border-color: var(--red); background: rgba(138,32,32,0.12); color: var(--red-lt); text-decoration: line-through; }
+  .option.wrong .opt-letter { color: var(--red-lt); }
+  .option.reveal-correct { border-color: var(--green); background: rgba(58,122,58,0.09); color: #7abf8a; font-style: italic; }
+  .option.reveal-correct .opt-letter { color: #6abf7a; }
+  .option:disabled { cursor: default; }
+
+  /* Feedback */
+  .feedback {
+    display: none;
+    padding: 11px 22px 13px;
+    border-top: 1px dashed var(--border2);
+    font-family: 'IM Fell DW Pica', serif;
+    font-style: italic;
+    font-size: 0.96rem;
+    line-height: 1.65;
+    color: var(--mid);
+    background: rgba(0,0,0,0.3);
+  }
+  .feedback.visible { display: block; }
+  .feedback.correct-fb { border-left: 3px solid var(--green); color: #7abf8a; }
+  .feedback.wrong-fb { border-left: 3px solid var(--red); color: var(--red-lt); }
+  .feedback strong { font-style: normal; color: inherit; }
+
+  /* ── SUBMIT ─── */
+  .submit-zone {
+    margin-top: 46px;
+    padding-top: 36px;
+    border-top: 2px solid var(--border);
+    text-align: center;
+    position: relative;
+  }
+
+  .submit-cue {
+    font-family: 'Special Elite', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 18px;
+  }
+
+  .btn-submit {
+    font-family: 'Special Elite', serif;
+    font-size: 1rem;
+    letter-spacing: 0.15em;
+    background: var(--amber);
+    color: var(--black);
+    border: none;
+    padding: 16px 56px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    box-shadow: 4px 4px 0 var(--dim);
+  }
+  .btn-submit:hover {
+    background: var(--gold);
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--dim);
+  }
+  .btn-submit:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--dim); }
+
+  /* Score */
+  .score-panel {
+    display: none;
+    margin-top: 40px;
+    background: var(--dark);
+    border: 2px solid var(--border2);
+    padding: 0;
+    overflow: hidden;
+    animation: slideUp 0.6s ease;
+  }
+  .score-panel.visible { display: block; }
+
+  .score-top {
+    background: repeating-linear-gradient(
+      -45deg,
+      var(--black) 0px, var(--black) 12px,
+      var(--card) 12px, var(--card) 24px
+    );
+    padding: 22px 32px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    border-bottom: 2px solid var(--border2);
+  }
+
+  .score-num-wrap { text-align: left; }
+  .score-num {
+    font-family: 'Special Elite', serif;
+    font-size: 5rem;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .score-total {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 300;
+    letter-spacing: 0.25em;
+    color: var(--dim);
+    text-transform: uppercase;
+  }
+
+  .score-bar-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .score-bar-label {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--amber);
+    text-transform: uppercase;
+  }
+  .score-bar-track { height: 8px; background: var(--border); }
+  .score-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--amber), var(--gold));
+    width: 0%;
+    transition: width 1.2s cubic-bezier(0.4,0,0.2,1) 0.3s;
+  }
+
+  .score-body { padding: 28px 32px; }
+
+  .verdict-scene {
+    font-family: 'Special Elite', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 10px;
+  }
+  .verdict-text {
+    font-family: 'IM Fell DW Pica', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--warm);
+    line-height: 1.75;
+    border-left: 3px solid var(--amber);
+    padding-left: 16px;
+  }
+  .verdict-attr {
+    display: block;
+    margin-top: 8px;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    color: var(--mid);
+    font-style: normal;
+    text-transform: uppercase;
+  }
+
+  .btn-retry {
+    margin-top: 24px;
+    background: transparent;
+    border: 1px solid var(--border2);
+    color: var(--mid);
+    padding: 10px 28px;
+    font-family: 'Special Elite', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+  }
+  .btn-retry:hover { border-color: var(--amber); color: var(--amber); }
+
+  @media (max-width: 640px) {
+    .clapper-wrap, .tagline-wrap, .progress-wrap, .content { padding-left: 22px; padding-right: 22px; }
+    .options { grid-template-columns: 1fr; }
+    .clapper-body { grid-template-columns: 1fr; }
+    .clapper-circle { display: none; }
+    .score-top { flex-direction: column; gap: 14px; }
+    .score-num { font-size: 3.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- FILM STRIP -->
+<div class="filmstrip">
+  <div class="strip-hole"></div><div class="strip-hole"></div><div class="strip-hole"></div>
+  <span class="strip-label">NIETZSCHE · A FILM · VOCABULARY EXAMINATION · PART IV</span>
+  <div class="strip-hole"></div><div class="strip-hole"></div><div class="strip-hole"></div><div class="strip-hole"></div>
+  <span class="strip-label">THUS SPAKE THE DIRECTOR</span>
+  <div class="strip-hole"></div><div class="strip-hole"></div><div class="strip-hole"></div>
+</div>
+
+<!-- CLAPPERBOARD -->
+<div class="clapper-wrap">
+  <div class="clapper">
+    <div class="clapper-stripes">
+      <span class="inv">TAKE 1</span>
+      <span>SOUND</span>
+      <span>SYNC</span>
+    </div>
+    <div class="clapper-body">
+      <div class="clapper-info">
+        <div class="clapper-row">
+          <span class="clapper-key">PRODUCTION</span>
+          <span class="clapper-val big">Thus Spake Nietzsche</span>
+        </div>
+        <div class="clapper-row">
+          <span class="clapper-key">DIRECTOR</span>
+          <span class="clapper-val">T.B.D. (probably you, after this test)</span>
+        </div>
+        <div class="clapper-row">
+          <span class="clapper-key">SCENE</span>
+          <span class="clapper-val">Vocabulary — Film Production English</span>
+        </div>
+        <div class="clapper-row">
+          <span class="clapper-key">DATE</span>
+          <span class="clapper-val">Principal Photography — Day 1</span>
+        </div>
+      </div>
+      <div class="clapper-circle">
+        <span class="c-num">IV</span>
+        <span class="c-label">Part</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAGLINE -->
+<div class="tagline-wrap">
+  <p class="tagline">
+    You have survived grammar. Now you must survive the <em>set</em>.
+    You are shooting a biographical film about Friedrich Nietzsche in Turin, 1889.
+    Budget is tight. The star keeps quoting his own character. The producer wants a happy ending.
+    Learn the vocabulary — or get fired.
+  </p>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-meta">
+    <span>FOOTAGE SHOT</span>
+    <span id="progressCount">0 / 15</span>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<main class="content">
+
+  <!-- ══ SECTION I: On Set Roles ══ -->
+  <div class="section">
+    <div class="scene-heading">INT. FILM SET — DAY — ON SET ROLES</div>
+    <div class="section-title-wrap">
+      <div class="section-tag">Scene 1</div>
+      <div class="section-title">The Crew — Who Does What?</div>
+    </div>
+    <div class="section-divider"></div>
+    <p class="section-instruction">Match the film crew role to its correct definition. You're the new production assistant — get these wrong and you'll be fired before lunch.</p>
+
+    <div class="question" data-answer="b">
+      <div class="q-num">Q 01</div>
+      <div class="q-inner">
+        <div class="q-context">On Set Role</div>
+        <div class="def-box">The person responsible for the overall artistic vision of the film — they direct the actors and decide how every scene is shot.</div>
+        <div class="options">
+          <button class="option" data-val="a"><span class="opt-letter">A</span> The producer</button>
+          <button class="option" data-val="b"><span class="opt-letter">B</span> The director</button>
+          <button class="option" data-val="c"><span class="opt-letter">C</span> The cinematographer</button>
+          <button class="option" data-val="d"><span class="opt-letter">D</span> The gaffer</button>
+        </div>
+      </div>
+      <div class="feedback">💡 The <strong>director</strong> leads the creative vision. The <strong>producer</strong> manages money and logistics. The <strong>cinematographer</strong> (also called Director of Photography / DP) controls the camera and lighting design. The <strong>gaffer</strong> is the chief lighting technician.</div>
+    </div>
+
+    <div class="question" data-answer="c">
+      <div class="q-num">Q 02</div>
+      <div class="q-inner">
+        <div class="q-context">On Set Role</div>
+        <div class="def-box">This crew member is responsible for keeping each scene visually consistent — if Nietzsche has a moustache in shot one, he must have it in shot two, even if filmed a week later.</div>
+        <div class="options">
+          <button class="option" data-val="a"><span class="opt-letter">A</span> The boom operator</button>
+          <button class="option" data-val="b"><span class="opt-letter">B</span> The focus puller</button>
+          <button class="option" data-val="c"><span class="opt-letter">C</span> The continuity supervisor</button>
+          <button class="option" data-val="d"><span class="opt-letter">D</span> The grip</button>
+        </div>
+      </div>
+      <div class="feedback">💡 The <strong>continuity supervisor</strong> (also called script supervisor) ensures visual consistency between shots. A <strong>boom operator</strong> holds the microphone on a long pole. A <strong>focus puller</strong> adjusts camera focus. A <strong>grip</strong> builds and moves camera equipment like dollies and cranes.</div>
+    </div>
+
+    <div class="question" data-answer="d">
+      <div class="q-num">Q 03</div>
+      <div class="q-inner">
+        <div class="q-context">On Set Role</div>
+        <div class="q-text">The director shouts: "We need someone to stand in the same position as our lead actor while we set up the lights — our actor is too tired to stand there for 40 minutes." Who does she call?</div>
+        <div class="options">
+          <button class="option" data-val="a"><span class="opt-letter">A</span> The stunt double</button>
+          <button class="option" data-val="b"><span class="opt-letter">B</span> The understudy</button>
+          <button class="option" data-val="c"><span class="opt-letter">C</span> The extra</button>
+          <button class="option" data-val="d"><span class="opt-letter">D</span> The stand-in</button>
+        </div>
+      </div>
+      <div class="feedback">💡 A <strong>stand-in</strong> substitutes for an actor during technical setup. A <strong>stunt double</strong> performs dangerous physical actions. An <strong>understudy</strong> (a theatre term) learns an actor's role to replace them if needed. An <strong>extra</strong> (or "background artist") appears in crowd scenes with no speaking lines.</div>
+    </div>
+  </div>
+
+  <!-- ══ SECTION II: Camera & Shots ══ -->
+  <div class="section">
+    <div class="scene-heading">EXT. TURIN PIAZZA — GOLDEN HOUR — CAMERA LANGUAGE</div>
+    <div class="section-title-wrap">
+      <div class="section-tag">Scene 2</div>
+      <div class="section-title">Camera Shots & Angles</div>
+    </div>
+    <div class="section-divider"></div>
+    <p class="section-instruction">Your cinematographer is waiting for instructions. Use the correct film vocabulary to describe each shot you need.</p>
+
+    <div class="question" data-answer="a">
+      <div class="q-num">Q 04</div>
+      <div class="q-inner">
+        <div class="q-context">Shot Type</div>
+        <div class="def-box">You want a wide shot that shows Nietzsche alone in a vast Turin piazza, with the mountains in the distance, to establish his isolation and the setting of the scene.</div>
+        <div class="options">
+          <button class="option" data-val="a"><span class="opt-letter">A</span> An establishing shot</button>
+          <button class="option" data-val="b"><span class="opt-letter">B</span> A close-up</button>
+          <button class="option" data-val="c"><span class="opt-letter">C</span> A two-shot</button>
+          <button class="option" data-val="d"><span class="opt-letter">D</span> A cutaway</button>
+        </div>
+      </div>
+      <div class="feedback">💡 An <strong>establishing shot</strong> opens a scene to show location and context — usually wide. A <strong>close-up</strong> frames the face tightly. A <strong>two-shot</strong> frames two characters together. A <strong>cutaway</strong> briefly cuts to something related but outside the main action.</div>
+    </div>
+
+    <div class="question" data-answer="c">
+      <div class="q-num">Q 05</div>
+      <div class="q-inner">
+        <div class="q-context">Camera Angle</div>
+        <div class="q-text">You want to make Nietzsche look powerful and imposing as he delivers his famous speech. The camera should be positioned <span class="blank">___</span>, looking up at him.</div>
+        <div class="options">
+          <button class="option" data-val="a"><span class="opt-letter">A</span> at eye level</button>
+          <button class="option" data-val="b"><span class="opt-letter">B</span> at a high angle</button>
+          <button class="option" data-val="c"><span class="opt-letter">C</span> at a low angle</button>
+          <button class="option" data-val="d"><span class="opt-letter">D</span> at a Dutch angle</button>
+        </div>
+      </div>
+      <div class="feedback">💡 A <strong>low angle</strong> (camera below the subject, pointing up) makes a subject appear powerful or threatening. A <strong>high angle</strong> (camera above, pointing down) makes subjects look small or vulnerable. A <strong>Dutch angle</strong> tilts the camera to create unease or disorientation. <strong>Eye level</strong> is neutral.</div>
+    </div>
+
+    <div class="question" data-answer="b">
+      <div class="q-num">Q 06</div>
+      <div class="q-inner">
+        <div class="q-context">Shot Movement</div>
+        <div class="def-box">You want the camera to follow Nietzsche as he walks through the piazza, gliding smoothly alongside him at the same pace. The camera itself moves through space.</div>
+        <div class="options">
+          <button class="option" data-val="a"><span class="opt-letter">A</span> A pan shot</button>
+          <button class="option" data-val="b"><span class="opt-letter">B</span> A tracking shot</button>
+          <button class="option" data-val="c"><span class="opt-letter">C</span> A tilt shot</button>
+          <button class="option" data-val="d"><span class="opt-letter">D</span> A zoom shot</button>
+        </div>
+      </div>
+      <div class="feedback">💡 A <strong>tracking shot</strong> moves the whole camera through space (on a dolly, crane, or Steadicam). A <strong>pan</strong> rotates the camera horizontally on a fixed axis. A <strong>tilt</strong> rotates vertically on a fixed axis. A <strong>zoom</strong> changes the focal length of the lens — the camera doesn't move.</div>
+    </div>
+  </div>
+
+  <!-- ══ SECTION III: Script & Screenplay ══ -->
+  <div class="section">
+    <div class="scene-heading">INT. PRODUCTION OFFICE — NIGHT — THE SCREENPLAY</div>
+    <div class="section-title-wrap">
+      <div class="section-tag">Scene 3</div>
+      <div class="section-title">Script & Screenplay Vocabulary</div>
+    </div>
+    <div class="section-divider"></div>
+    <p class="section-instruction">You're reading the screenplay for the first time. Choose the correct term for each script element described.</p>
+
+    <div class="wordbank">
+      <span class="wb-label">Word Bank</span>
+      <span class="wb-word">slug line</span>
+      <span class="wb-word">action line</span>
+      <span class="wb-word">dialogue</span>
+      <span class="wb-word">stage direction</span>
+      <span class="wb-word">plot twist</span>
+      <span class="wb-word">voiceover</span>
+      <span class="wb-word">cold open</span>
+      <span class="wb-word">montage</span>
+    </div>
+
+    <div class="question" data-answer="d">
+      <div class="q-num">Q 07</div>
+      <div class="q-inner">
+        <div class="q-context">Screenplay Term</div>
+        <div class="def-box">In the screenplay, you see: <strong style="color:var(--gold);font-style:normal;">EXT. TURIN PIAZZA — DAY</strong>. This header at the top of every new scene tells you whether the scene is inside or outside, where it takes place, and the time of day.</div>
+        <div class="options">
+          <button class="option" data-val="a"><span class="opt-letter">A</span> An action line</button>
+          <button class="option" data-val="b"><span class="opt-letter">B</span> A stage direction</button>
+          <button class="option" data-val="c"><span class="opt-letter">C</span> A cold open</button>
+          <button class="option" data-val="d"><span class="opt-letter">D</span> A slug line</button>
+        </div>
+      </div>
+      <div class="feedback">💡 A <strong>slug line</strong> (or scene heading) identifies every new scene with INT./EXT., the location, and DAY/NIGHT. It is always written in capitals in standard screenplay format. Scene headings are the skeleton of a screenplay.</div>
+    </div>
+
+    <div class="question" data-answer="a">
+      <div class="q-num">Q 08</div>
+      <div class="q-inner">
+        <div class="q-context">Screenplay Term</div>
+        <div class="q-text">The film opens with Nietzsche collapsing in the street — before the title card even appears. There is no introduction. What is this called?</div>
+        <div class="options">
+          <button class="option" data-val="a"><span class="opt-letter">A</span> A cold open</button>
+          <button class="option" data-val="b"><span class="opt-letter">B</span> A flashback</button>
+          <button class="option" data-val="c"><span class="opt-letter">C</span> A montage</button>
+          <button class="option" data-val="d"><span class="opt-letter">D</span> A voiceover</button>
+        </div>
+      </div>
+      <div class="feedback">💡 A <strong>cold open</strong> drops the audience straight into the action before any titles, credits, or introduction. It is designed to grab attention immediately — a technique used extensively in TV and cinema. Common in thrillers and dramas.</div>
+    </div>
+
+    <div class="question" data-answer="c">
+      <div class="q-num">Q 09</div>
+      <div class="q-inner">
+        <div class="q-context">Screenplay Term</div>
+        <div class="def-box">A sequence of short, rapidly edited shots showing Nietzsche writing feverishly: his pen scratching paper, candles burning down, dawn breaking — all condensed into one powerful 90-second scene without dialogue.</div>
+        <div class="options">
+          <button class="option" data-val="a"><span class="opt-letter">A</span> A cutaway</button>
+          <button class="option" data-val="b"><span class="opt-letter">B</span> A jump cut</button>
+          <button class="option" data-val="c"><span class="opt-letter">C</span> A montage</button>
+          <button class="option" data-val="d"><span class="opt-letter">D</span> B-roll</button>
+        </div>
+      </div>
+      <div class="feedback">💡 A <strong>montage</strong> compresses time through a rapid sequence of thematically linked shots — often with music instead of dialogue. Famous examples: the training sequence in <em>Rocky</em>, the cooking scenes in <em>Ratatouille</em>. <strong>B-roll</strong> refers to supplementary footage that covers cuts (e.g., crowd shots, objects). A <strong>jump cut</strong> is an abrupt edit within a continuous shot.</div>
+    </div>
+  </div>
+
+  <!-- ══ SECTION IV: Post-Production ══ -->
+  <div class="section">
+    <div class="scene-heading">INT. EDITING SUITE — LATE NIGHT — POST-PRODUCTION</div>
+    <div class="section-title-wrap">
+      <div class="section-tag">Scene 4</div>
+      <div class="section-title">Post-Production — Editing & Sound</div>
+    </div>
+    <div class="section-divider"></div>
+    <p class="section-instruction">The shoot is finished. Now you're in the editing suite. Choose the correct term for each editing or sound decision.</p>
+
+    <div class="question" data-answer="b">
+      <div class="q-num">Q 10</div>
+      <div class="q-inner">
+        <div class="q-context">Editing Transition</div>
+        <div class="def-box">Instead of cutting sharply between the young Nietzsche and the elderly one, the director wants the image of the young man to slowly fade out as the image of the old man fades in simultaneously, briefly overlapping.</div>
+        <div class="options">
+          <button class="option" data-val="a"><span class="opt-letter">A</span> A fade to black</button>
+          <button class="option" data-val="b"><span class="opt-letter">B</span> A dissolve</button>
+          <button class="option" data-val="c"><span class="opt-letter">C</span> A wipe</button>
+          <button class="option" data-val="d"><span class="opt-letter">D</span> A smash cut</button>
+        </div>
+      </div>
+      <div class="feedback">💡 A <strong>dissolve</strong> (cross-dissolve) overlaps two shots — one fades out as the next fades in. It often suggests the passage of time or a connection between two moments. A <strong>fade to black</strong> goes to a black screen (end of scene/act). A <strong>wipe</strong> replaces the image with a sliding edge. A <strong>smash cut</strong> is an abrupt, jarring cut for dramatic effect.</div>
+    </div>
+
+    <div class="question" data-answer="d">
+      <div class="q-num">Q 11</div>
+      <div class="q-inner">
+        <div class="q-context">Sound Design</div>
+        <div class="q-text">During the scene where Nietzsche reads a letter from Wagner, you want to add the sound of a quill pen scratching — but this sound was not recorded on set. Your sound designer records it separately in a studio and adds it in post. This is called <span class="blank">___</span>.</div>
+        <div class="options">
+          <button class="option" data-val="a"><span class="opt-letter">A</span> Dubbing</button>
+          <button class="option" data-val="b"><span class="opt-letter">B</span> Looping</button>
+          <button class="option" data-val="c"><span class="opt-letter">C</span> Mixing</button>
+          <button class="option" data-val="d"><span class="opt-letter">D</span> Foley</button>
+        </div>
+      </div>
+      <div class="feedback">💡 <strong>Foley</strong> is the art of creating and recording everyday sound effects in a studio in sync with a film — footsteps, clothing rustles, writing sounds. Named after sound artist Jack Foley. <strong>Dubbing</strong> replaces dialogue in a different language. <strong>Looping</strong> (ADR) re-records actors' dialogue. <strong>Mixing</strong> balances all audio tracks together.</div>
+    </div>
+
+    <div class="question" data-answer="a">
+      <div class="q-num">Q 12</div>
+      <div class="q-inner">
+        <div class="q-context">Editing Terminology</div>
+        <div class="def-box">The editor has assembled the first complete version of the film with all the scenes in order — but it's four hours long, unpolished, and includes every single take. This is the first working version.</div>
+        <div class="options">
+          <button class="option" data-val="a"><span class="opt-letter">A</span> A rough cut</button>
+          <button class="option" data-val="b"><span class="opt-letter">B</span> A director's cut</button>
+          <button class="option" data-val="c"><span class="opt-letter">C</span> A final cut</button>
+          <button class="option" data-val="d"><span class="opt-letter">D</span> A test screening</button>
+        </div>
+      </div>
+      <div class="feedback">💡 A <strong>rough cut</strong> is the first complete assembly — unrefined, often too long. A <strong>director's cut</strong> is the director's preferred version (not always released). A <strong>final cut</strong> is the approved, finished version. A <strong>test screening</strong> is when an early version is shown to a sample audience for feedback.</div>
+    </div>
+  </div>
+
+  <!-- ══ SECTION V: Film Industry Language ══ -->
+  <div class="section">
+    <div class="scene-heading">INT. PREMIERE — EVENING — FILM INDUSTRY VOCABULARY</div>
+    <div class="section-title-wrap">
+      <div class="section-tag">Scene 5</div>
+      <div class="section-title">Film Business & Festival Vocabulary</div>
+    </div>
+    <div class="section-divider"></div>
+    <p class="section-instruction">Your film is finished. Now you must navigate the world of film festivals, reviews, and distribution. Choose the correct term for each situation.</p>
+
+    <div class="question" data-answer="c">
+      <div class="q-num">Q 13</div>
+      <div class="q-inner">
+        <div class="q-context">Film Business</div>
+        <div class="q-text">Your film about Nietzsche is being shown publicly for the very first time anywhere in the world — at a cinema in Cannes. What is this event called?</div>
+        <div class="options">
+          <button class="option" data-val="a"><span class="opt-letter">A</span> A screening</button>
+          <button class="option" data-val="b"><span class="opt-letter">B</span> A premiere</button>
+          <button class="option" data-val="c"><span class="opt-letter">C</span> A world premiere</button>
+          <button class="option" data-val="d"><span class="opt-letter">D</span> A press junket</button>
+        </div>
+      </div>
+      <div class="feedback">💡 A <strong>world premiere</strong> is the very first public showing of a film anywhere on earth. A <strong>premiere</strong> can also refer to a regional or national first showing. A <strong>screening</strong> is any showing of a film. A <strong>press junket</strong> is an organised media event where cast and crew give many interviews in one location.</div>
+    </div>
+
+    <div class="question" data-answer="b">
+      <div class="q-num">Q 14</div>
+      <div class="q-inner">
+        <div class="q-context">Critical Reception</div>
+        <div class="def-box">A famous critic writes: "The film is self-indulgent, visually incoherent, and philosophically naive. It mistakes pretension for depth." She is writing a very negative review. What is the informal industry term for this type of review?</div>
+        <div class="options">
+          <button class="option" data-val="a"><span class="opt-letter">A</span> A puff piece</button>
+          <button class="option" data-val="b"><span class="opt-letter">B</span> A pan</button>
+          <button class="option" data-val="c"><span class="opt-letter">C</span> A pull quote</button>
+          <button class="option" data-val="d"><span class="opt-letter">D</span> A blurb</button>
+        </div>
+      </div>
+      <div class="feedback">💡 To <strong>pan</strong> a film means to criticise it harshly — the review is called "a pan." A <strong>puff piece</strong> is an overly flattering, uncritical article. A <strong>pull quote</strong> is a short quote taken from a review to use in advertising ("★★★★ — extraordinary!" — The Times). A <strong>blurb</strong> is a brief promotional description on a poster or packaging.</div>
+    </div>
+
+    <div class="question" data-answer="d">
+      <div class="q-num">Q 15</div>
+      <div class="q-inner">
+        <div class="q-context">Film Distribution</div>
+        <div class="q-text">After Cannes, a streaming platform offers to buy the rights to show your film in 190 countries simultaneously on the internet. What kind of distribution is this?</div>
+        <div class="options">
+          <button class="option" data-val="a"><span class="opt-letter">A</span> A theatrical release</button>
+          <button class="option" data-val="b"><span class="opt-letter">B</span> A limited release</button>
+          <button class="option" data-val="c"><span class="opt-letter">C</span> A box office run</button>
+          <button class="option" data-val="d"><span class="opt-letter">D</span> A streaming release</button>
+        </div>
+      </div>
+      <div class="feedback">💡 A <strong>streaming release</strong> makes the film available on demand via internet platforms (Netflix, Amazon, etc.). A <strong>theatrical release</strong> opens the film in cinemas. A <strong>limited release</strong> opens in just a few cinemas, often in major cities first. The <strong>box office</strong> refers to ticket revenue earned in cinemas.</div>
+    </div>
+  </div>
+
+  <!-- SUBMIT -->
+  <div class="submit-zone">
+    <p class="submit-cue">— Roll Credits —</p>
+    <button class="btn-submit" id="btnSubmit">Submit Final Cut</button>
+
+    <div class="score-panel" id="scorePanel">
+      <div class="score-top">
+        <div class="score-num-wrap">
+          <div class="score-num" id="scoreNum">—</div>
+          <div class="score-total">out of 15</div>
+        </div>
+        <div class="score-bar-wrap">
+          <div class="score-bar-label">Audience Score</div>
+          <div class="score-bar-track">
+            <div class="score-bar-fill" id="scoreBar"></div>
+          </div>
+        </div>
+      </div>
+      <div class="score-body">
+        <div class="verdict-scene">Director's Verdict</div>
+        <div class="verdict-text" id="verdict">—</div>
+        <br>
+        <button class="btn-retry" id="btnRetry">↺ &nbsp; Reshoot from the Top</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const questions = document.querySelectorAll('.question[data-answer]');
+  const TOTAL = questions.length;
+  let answered = 0;
+
+  const progressFill = document.getElementById('progressFill');
+  const progressCount = document.getElementById('progressCount');
+
+  function updateProgress() {
+    progressFill.style.width = ((answered / TOTAL) * 100) + '%';
+    progressCount.textContent = answered + ' / ' + TOTAL;
+  }
+
+  questions.forEach(q => {
+    const correct = q.dataset.answer;
+    const buttons = q.querySelectorAll('.option');
+    const feedback = q.querySelector('.feedback');
+    let done = false;
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (done) return;
+        done = true;
+        answered++;
+        updateProgress();
+
+        const isCorrect = btn.dataset.val === correct;
+        buttons.forEach(b => {
+          b.disabled = true;
+          if (b.dataset.val === correct) {
+            b.classList.add(isCorrect ? 'correct' : 'reveal-correct');
+          }
+        });
+        if (!isCorrect) btn.classList.add('wrong');
+        if (feedback) {
+          feedback.classList.add('visible', isCorrect ? 'correct-fb' : 'wrong-fb');
+        }
+      });
+    });
+  });
+
+  document.getElementById('btnSubmit').addEventListener('click', () => {
+    questions.forEach(q => {
+      q.querySelectorAll('.option').forEach(b => {
+        b.disabled = true;
+        if (b.dataset.val === q.dataset.answer && !b.classList.contains('correct')) {
+          b.classList.add('reveal-correct');
+        }
+      });
+      const fb = q.querySelector('.feedback');
+      if (fb && !fb.classList.contains('visible')) {
+        fb.classList.add('visible');
+      }
+    });
+
+    let score = 0;
+    questions.forEach(q => {
+      if (q.querySelector('.option.correct')) score++;
+    });
+
+    const pct = Math.round((score / TOTAL) * 100);
+    document.getElementById('scoreNum').textContent = score;
+    setTimeout(() => { document.getElementById('scoreBar').style.width = pct + '%'; }, 100);
+    progressFill.style.width = '100%';
+    progressCount.textContent = TOTAL + ' / ' + TOTAL;
+
+    const panel = document.getElementById('scorePanel');
+    panel.classList.add('visible');
+
+    const verdicts = [
+      { min: 0,  max: 4,  text: 'CUT! Your film has been pulled from distribution. Nietzsche would call this "the will to mediocrity." Study harder and come back for a reshoot.', attr: 'The Producer (furious)' },
+      { min: 5,  max: 8,  text: 'That\'s a wrap on Act One. Rough cut approved — but it needs serious work in post. You know the words, but you don\'t yet feel them. Nietzsche would say: you are still a camel, not a lion.', attr: 'The Director (unimpressed)' },
+      { min: 9,  max: 11, text: 'Strong dailies. The cinematographer is happy. A few scenes need pickup shots, but the bones of a great film are here. Nietzsche would approve of the effort — if not the moustache budget.', attr: 'The Editor (cautiously optimistic)' },
+      { min: 12, max: 14, text: 'Festival-ready. Standing ovation at Cannes likely. You have command of the language of cinema. Nietzsche could not have directed this film better — though he would have tried.', attr: 'The Distributor (very excited)' },
+      { min: 15, max: 15, text: 'Perfect score. The Palme d\'Or is yours. The film is a masterpiece. "Without music, life would be a mistake" — and without your vocabulary, this film would not exist. Become who you are.', attr: 'Friedrich Nietzsche (from beyond)' },
+    ];
+
+    const v = document.getElementById('verdict');
+    for (const { min, max, text, attr } of verdicts) {
+      if (score >= min && score <= max) {
+        v.innerHTML = `${text}<span class="verdict-attr">— ${attr}</span>`;
+        break;
+      }
+    }
+
+    panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+
+  document.getElementById('btnRetry').addEventListener('click', () => location.reload());
+</script>
+</body>
+</html>

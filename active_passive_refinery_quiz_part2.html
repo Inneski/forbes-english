@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Active & Passive Voice — Quiz Part 2</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0f1117; --bg2: #161b24; --bg3: #1e2533;
+    --border: rgba(255,255,255,0.08); --border-strong: rgba(255,255,255,0.15);
+    --text: #e8eaf0; --text-muted: #7b8399; --text-dim: #4a5168;
+    --green: #22c98a; --green-dim: rgba(34,201,138,0.12); --green-border: rgba(34,201,138,0.3);
+    --blue: #4d9fff; --blue-dim: rgba(77,159,255,0.1); --blue-border: rgba(77,159,255,0.3);
+    --amber: #f5a623; --amber-dim: rgba(245,166,35,0.1);
+    --red: #ff5e5e; --red-dim: rgba(255,94,94,0.1);
+    --coral: #ff7b54; --coral-dim: rgba(255,123,84,0.1);
+    --font: 'IBM Plex Sans', sans-serif; --mono: 'IBM Plex Mono', monospace;
+  }
+  html { background: var(--bg); color: var(--text); font-family: var(--font); }
+  body { min-height: 100vh; }
+  .shell { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem 6rem; }
+
+  .site-header { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 0 2rem; border-bottom: 1px solid var(--border); margin-bottom: 2.5rem; }
+  .site-logo { font-family: var(--mono); font-size: 12px; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; }
+  .site-tag { font-size: 11px; font-family: var(--mono); color: var(--coral); background: var(--coral-dim); border: 1px solid rgba(255,123,84,0.3); padding: 3px 10px; border-radius: 3px; }
+
+  .lesson-title-block { margin-bottom: 2rem; }
+  .lesson-eyebrow { font-family: var(--mono); font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 12px; }
+  .lesson-h1 { font-size: 34px; font-weight: 300; color: var(--text); line-height: 1.2; margin-bottom: 10px; }
+  .lesson-h1 strong { font-weight: 500; color: #fff; }
+  .lesson-desc { font-size: 15px; color: var(--text-muted); line-height: 1.7; max-width: 600px; }
+
+  /* PROGRESS */
+  .progress-outer { background: var(--bg3); border-radius: 2px; height: 4px; margin-bottom: 6px; overflow: hidden; }
+  .progress-inner { height: 100%; background: var(--green); border-radius: 2px; transition: width 0.4s ease; }
+  .progress-meta { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: var(--text-dim); margin-bottom: 2rem; }
+
+  /* SECTION TYPES */
+  .sec { display: none; animation: fadeIn 0.25s ease; }
+  .sec.on { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* CARD */
+  .card { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem 1.5rem; margin-bottom: 1rem; }
+  .callout { border-left: 3px solid var(--amber); background: var(--amber-dim); border-radius: 0 6px 6px 0; padding: 12px 16px; margin-bottom: 1.25rem; }
+  .callout p { font-size: 13px; color: #c8a96e; line-height: 1.7; }
+  .callout p strong { color: var(--amber); font-weight: 500; }
+  .callout.blue { border-color: var(--blue); background: var(--blue-dim); }
+  .callout.blue p { color: #8dbfff; }
+  .callout.blue p strong { color: var(--blue); }
+  .callout.green { border-color: var(--green); background: var(--green-dim); }
+  .callout.green p { color: #7dd9b4; }
+  .callout.green p strong { color: var(--green); }
+
+  .slabel { font-family: var(--mono); font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
+  .badge { display: inline-block; font-family: var(--mono); font-size: 11px; padding: 2px 9px; border-radius: 3px; margin-bottom: 8px; letter-spacing: 0.05em; }
+  .badge.act { background: var(--green-dim); color: var(--green); border: 1px solid var(--green-border); }
+  .badge.pas { background: var(--blue-dim); color: var(--blue); border: 1px solid var(--blue-border); }
+
+  /* SENTENCE BOXES */
+  .sbox { padding: 11px 15px; border-radius: 6px; margin-bottom: 6px; font-size: 14px; line-height: 1.7; }
+  .sbox .slbl2 { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.55; margin-bottom: 4px; }
+  .sbox.act { background: var(--green-dim); border-left: 3px solid var(--green); color: #9ef0cf; }
+  .sbox.pas { background: var(--blue-dim); border-left: 3px solid var(--blue); color: #a8d4ff; }
+  .hs { background: rgba(245,166,35,0.2); color: #f5d080; border-radius: 2px; padding: 0 3px; }
+  .hv { background: rgba(34,201,138,0.2); color: #7ee8be; border-radius: 2px; padding: 0 3px; }
+  .ho { background: rgba(77,159,255,0.2); color: #99c8ff; border-radius: 2px; padding: 0 3px; }
+
+  /* QUIZ */
+  .qcard { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin-bottom: 1.25rem; transition: border-color 0.2s; }
+  .qcard.answered-correct { border-color: var(--green-border); }
+  .qcard.answered-wrong { border-color: rgba(255,94,94,0.3); }
+  .qnum { font-family: var(--mono); font-size: 11px; color: var(--text-dim); margin-bottom: 10px; letter-spacing: 0.08em; }
+  .qtext { font-size: 15px; color: var(--text); margin-bottom: 8px; line-height: 1.6; font-weight: 400; }
+  .qcontext { font-size: 13px; color: var(--text-muted); background: var(--bg3); border-radius: 5px; padding: 10px 13px; margin-bottom: 14px; line-height: 1.65; border: 1px solid var(--border); font-style: italic; }
+  .qcontext strong { font-style: normal; color: var(--text); font-weight: 500; }
+  .qopts { display: flex; flex-direction: column; gap: 7px; }
+  .qopt { padding: 10px 15px; border-radius: 5px; border: 1px solid var(--border); background: var(--bg3); font-size: 13px; color: var(--text-muted); cursor: pointer; text-align: left; transition: all 0.15s; font-family: var(--font); line-height: 1.5; }
+  .qopt:hover:not(:disabled) { border-color: var(--border-strong); color: var(--text); background: #22293a; }
+  .qopt.correct { background: var(--green-dim); border-color: var(--green-border); color: var(--green); }
+  .qopt.wrong { background: var(--red-dim); border-color: rgba(255,94,94,0.3); color: #ff9f9f; }
+  .qopt:disabled { cursor: default; }
+  .qfb { margin-top: 12px; font-size: 13px; padding: 10px 13px; border-radius: 5px; display: none; line-height: 1.6; }
+  .qfb.show { display: block; }
+  .qfb.correct { background: var(--green-dim); color: #7dd9b4; border: 1px solid var(--green-border); }
+  .qfb.wrong { background: var(--red-dim); color: #ff9f9f; border: 1px solid rgba(255,94,94,0.3); }
+
+  /* FILL-IN */
+  .fill-input { width: 100%; font-size: 14px; padding: 10px 14px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg3); color: var(--text); font-family: var(--font); line-height: 1.5; transition: border-color 0.2s; margin-bottom: 8px; }
+  .fill-input:focus { outline: none; border-color: var(--border-strong); }
+  .fill-input:disabled { opacity: 0.6; }
+  .fill-submit { font-family: var(--mono); font-size: 12px; padding: 8px 18px; border-radius: 5px; border: 1px solid var(--border-strong); background: none; color: var(--text-muted); cursor: pointer; letter-spacing: 0.05em; transition: all 0.15s; margin-bottom: 8px; }
+  .fill-submit:hover:not(:disabled) { background: var(--bg3); color: var(--text); }
+  .fill-submit:disabled { opacity: 0.3; cursor: default; }
+
+  /* REORDER */
+  .reorder-wrap { margin-bottom: 10px; }
+  .word-pool { display: flex; flex-wrap: wrap; gap: 7px; min-height: 44px; padding: 10px; background: var(--bg3); border-radius: 6px; border: 1px solid var(--border); margin-bottom: 8px; }
+  .answer-zone { display: flex; flex-wrap: wrap; gap: 7px; min-height: 44px; padding: 10px; background: var(--bg); border-radius: 6px; border: 1px dashed var(--border-strong); margin-bottom: 8px; align-items: center; }
+  .answer-zone .zone-hint { font-family: var(--mono); font-size: 11px; color: var(--text-dim); pointer-events: none; }
+  .word-chip { padding: 5px 12px; border-radius: 4px; background: var(--bg2); border: 1px solid var(--border-strong); font-size: 13px; color: var(--text-muted); cursor: pointer; transition: all 0.15s; user-select: none; }
+  .word-chip:hover { background: var(--bg3); color: var(--text); border-color: var(--blue-border); }
+  .word-chip.placed { background: var(--blue-dim); border-color: var(--blue-border); color: var(--blue); }
+  .word-chip.correct-pos { background: var(--green-dim); border-color: var(--green-border); color: var(--green); cursor: default; }
+  .word-chip.wrong-pos { background: var(--red-dim); border-color: rgba(255,94,94,0.3); color: #ff9f9f; cursor: default; }
+  .reorder-check { font-family: var(--mono); font-size: 12px; padding: 8px 18px; border-radius: 5px; border: 1px solid var(--border-strong); background: none; color: var(--text-muted); cursor: pointer; letter-spacing: 0.05em; transition: all 0.15s; }
+  .reorder-check:hover:not(:disabled) { background: var(--bg3); color: var(--text); }
+  .reorder-check:disabled { opacity: 0.3; cursor: default; }
+
+  /* SCORE SCREEN */
+  .score-screen { display: none; text-align: center; padding: 3rem 2rem; animation: fadeIn 0.3s ease; }
+  .score-screen.on { display: block; }
+  .score-ring { width: 120px; height: 120px; margin: 0 auto 1.5rem; position: relative; }
+  .score-ring svg { transform: rotate(-90deg); }
+  .score-ring .ring-bg { fill: none; stroke: var(--bg3); stroke-width: 8; }
+  .score-ring .ring-val { fill: none; stroke: var(--green); stroke-width: 8; stroke-linecap: round; transition: stroke-dashoffset 1s ease; }
+  .score-num { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: var(--mono); font-size: 28px; font-weight: 500; color: var(--text); }
+  .score-label { font-size: 20px; font-weight: 300; color: var(--text); margin-bottom: 8px; }
+  .score-sub { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 2rem; max-width: 420px; margin-left: auto; margin-right: auto; }
+  .breakdown { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; margin-bottom: 2rem; text-align: left; }
+  .brow { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .brow:last-child { border-bottom: none; }
+  .brow-q { color: var(--text-muted); }
+  .brow-r { font-family: var(--mono); font-size: 12px; }
+  .brow-r.ok { color: var(--green); }
+  .brow-r.no { color: var(--red); }
+
+  /* NAV */
+  .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+  .nbtn { font-family: var(--mono); font-size: 12px; padding: 9px 20px; border-radius: 5px; border: 1px solid var(--border-strong); background: none; color: var(--text-muted); cursor: pointer; letter-spacing: 0.05em; transition: all 0.15s; }
+  .nbtn:hover { background: var(--bg3); color: var(--text); }
+  .nbtn.prim { border-color: var(--green-border); color: var(--green); background: var(--green-dim); }
+  .nbtn.prim:hover { background: rgba(34,201,138,0.2); }
+  .nbtn:disabled { opacity: 0.25; cursor: default; }
+
+  .ilist { list-style: none; }
+  .ilist li { font-size: 13px; color: var(--text-muted); padding: 5px 0; border-bottom: 1px solid var(--border); display: flex; gap: 10px; line-height: 1.55; }
+  .ilist li:last-child { border-bottom: none; }
+  .dot { width: 5px; height: 5px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+  .dot.g { background: var(--green); }
+  .dot.b { background: var(--blue); }
+  .dot.a { background: var(--amber); }
+
+  .site-footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .footer-text { font-family: var(--mono); font-size: 11px; color: var(--text-dim); }
+
+  em { font-style: italic; color: var(--text-muted); }
+  strong { font-weight: 500; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+  @media (max-width: 560px) { .two-col { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <header class="site-header">
+    <div class="site-logo">FRTU Grammar Series</div>
+    <div class="site-tag">Part 2 · Deputy Lead · Refinery</div>
+  </header>
+
+  <div class="lesson-title-block">
+    <div class="lesson-eyebrow">English Language · Module 01 — Quiz Part 2</div>
+    <h1 class="lesson-h1">Active &amp; passive voice — <strong>advanced practice</strong></h1>
+    <p class="lesson-desc">10 questions. Scenario-based, fill-in-the-blank, and sentence reordering. Covers all tenses and real-world refinery communication contexts.</p>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-outer"><div class="progress-inner" id="progBar" style="width:0%"></div></div>
+  <div class="progress-meta"><span id="progText">Question 1 of 10</span><span id="progScore">Score: 0</span></div>
+
+  <!-- ── Q1 MCQ ── -->
+  <div class="sec on" id="q1">
+    <div class="qcard" id="qc1">
+      <div class="qnum">Question 01 / 10 — Multiple choice</div>
+      <div class="qtext">Your supervisor radios you during an incident. Which message is clearest and most appropriate for fireground communication?</div>
+      <div class="qopts">
+        <button class="qopt" onclick="mcq(this,false,1)">A second hose line is to be requested from the south gate by you immediately.</button>
+        <button class="qopt" onclick="mcq(this,true,1)">Request a second hose line from the south gate immediately.</button>
+        <button class="qopt" onclick="mcq(this,false,1)">It has been decided that a second hose line should be requested.</button>
+        <button class="qopt" onclick="mcq(this,false,1)">The requesting of a second hose line from the south gate is recommended.</button>
+      </div>
+      <div class="qfb" id="fb1"></div>
+    </div>
+    <div class="nav"><button class="nbtn" disabled>← back</button><button class="nbtn prim" id="n1" onclick="go(2)" disabled>next →</button></div>
+  </div>
+
+  <!-- ── Q2 MCQ ── -->
+  <div class="sec" id="q2">
+    <div class="qcard" id="qc2">
+      <div class="qnum">Question 02 / 10 — Multiple choice</div>
+      <div class="qtext">Read this extract from an incident report. Choose the version with correct and consistent passive voice throughout.</div>
+      <div class="qopts">
+        <button class="qopt" onclick="mcq(this,false,2)">At 07:15, I discovered a gas leak at the CDU inlet. The control room was notified and we isolated the valve manually.</button>
+        <button class="qopt" onclick="mcq(this,true,2)">At 07:15, a gas leak was discovered at the CDU inlet. The control room was notified and the valve was isolated manually.</button>
+        <button class="qopt" onclick="mcq(this,false,2)">At 07:15, a gas leak was discovered at the CDU inlet. The control room was notified and we isolated the valve manually.</button>
+        <button class="qopt" onclick="mcq(this,false,2)">At 07:15, someone discovered a gas leak at the CDU inlet and the control room was notified by us.</button>
+      </div>
+      <div class="qfb" id="fb2"></div>
+    </div>
+    <div class="nav"><button class="nbtn" onclick="go(1)">← back</button><button class="nbtn prim" id="n2" onclick="go(3)" disabled>next →</button></div>
+  </div>
+
+  <!-- ── Q3 FILL IN ── -->
+  <div class="sec" id="q3">
+    <div class="qcard" id="qc3">
+      <div class="qnum">Question 03 / 10 — Fill in the blank</div>
+      <div class="qtext">Complete the sentence with the correct passive form of the verb in brackets.</div>
+      <div class="qcontext">The firewater pump <strong>_____</strong> (service) twice a year under the preventive maintenance schedule.</div>
+      <input class="fill-input" id="fi3" type="text" placeholder="Type the correct passive verb form..." />
+      <button class="fill-submit" id="fs3" onclick="checkFill(3, ['is serviced', 'is serviced twice'], 'is serviced')">check answer</button>
+      <div class="qfb" id="fb3"></div>
+    </div>
+    <div class="nav"><button class="nbtn" onclick="go(2)">← back</button><button class="nbtn prim" id="n3" onclick="go(4)" disabled>next →</button></div>
+  </div>
+
+  <!-- ── Q4 MCQ ── -->
+  <div class="sec" id="q4">
+    <div class="qcard" id="qc4">
+      <div class="qnum">Question 04 / 10 — Multiple choice</div>
+      <div class="qtext">Which sentence uses the <em>present perfect passive</em> correctly in a refinery context?</div>
+      <div class="qopts">
+        <button class="qopt" onclick="mcq(this,false,4)">The bund wall is repaired last week.</button>
+        <button class="qopt" onclick="mcq(this,false,4)">The bund wall was been repaired.</button>
+        <button class="qopt" onclick="mcq(this,true,4)">The bund wall has been repaired.</button>
+        <button class="qopt" onclick="mcq(this,false,4)">The bund wall have been repaired.</button>
+      </div>
+      <div class="qfb" id="fb4"></div>
+    </div>
+    <div class="nav"><button class="nbtn" onclick="go(3)">← back</button><button class="nbtn prim" id="n4" onclick="go(5)" disabled>next →</button></div>
+  </div>
+
+  <!-- ── Q5 REORDER ── -->
+  <div class="sec" id="q5">
+    <div class="qcard" id="qc5">
+      <div class="qnum">Question 05 / 10 — Reorder the words</div>
+      <div class="qtext">Arrange the words to form a correct passive sentence. Click words to place them in the answer zone. Click a placed word to return it.</div>
+      <div class="qcontext">Hint: This is a <strong>past simple passive</strong> sentence about equipment being checked before an operation.</div>
+      <div class="reorder-wrap">
+        <div class="slabel" style="margin-bottom:6px;">Word pool</div>
+        <div class="word-pool" id="pool5"></div>
+        <div class="slabel" style="margin-bottom:6px;">Your answer</div>
+        <div class="answer-zone" id="zone5"><span class="zone-hint" id="zh5">Click words above to build your sentence...</span></div>
+        <button class="reorder-check" id="rc5" onclick="checkReorder(5)">check answer</button>
+      </div>
+      <div class="qfb" id="fb5"></div>
+    </div>
+    <div class="nav"><button class="nbtn" onclick="go(4)">← back</button><button class="nbtn prim" id="n5" onclick="go(6)" disabled>next →</button></div>
+  </div>
+
+  <!-- ── Q6 MCQ ── -->
+  <div class="sec" id="q6">
+    <div class="qcard" id="qc6">
+      <div class="qnum">Question 06 / 10 — Multiple choice</div>
+      <div class="qtext">As deputy lead, you need to write a shift handover note. Which sentence most clearly assigns responsibility for an action?</div>
+      <div class="qopts">
+        <button class="qopt" onclick="mcq(this,false,6)">The hot work permit was suspended at 16:00.</button>
+        <button class="qopt" onclick="mcq(this,false,6)">Hot work was suspended at 16:00 by someone.</button>
+        <button class="qopt" onclick="mcq(this,true,6)">I suspended the hot work permit at 16:00 pending investigation.</button>
+        <button class="qopt" onclick="mcq(this,false,6)">The hot work permit suspension was carried out at 16:00.</button>
+      </div>
+      <div class="qfb" id="fb6"></div>
+    </div>
+    <div class="nav"><button class="nbtn" onclick="go(5)">← back</button><button class="nbtn prim" id="n6" onclick="go(7)" disabled>next →</button></div>
+  </div>
+
+  <!-- ── Q7 FILL IN ── -->
+  <div class="sec" id="q7">
+    <div class="qcard" id="qc7">
+      <div class="qnum">Question 07 / 10 — Fill in the blank</div>
+      <div class="qtext">Complete the sentence using the correct modal passive form.</div>
+      <div class="qcontext">All gas detectors <strong>_____</strong> (calibrate) before the unit restart. [Use <em>must</em>]</div>
+      <input class="fill-input" id="fi7" type="text" placeholder="Type the correct passive verb form..." />
+      <button class="fill-submit" id="fs7" onclick="checkFill(7, ['must be calibrated'], 'must be calibrated')">check answer</button>
+      <div class="qfb" id="fb7"></div>
+    </div>
+    <div class="nav"><button class="nbtn" onclick="go(6)">← back</button><button class="nbtn prim" id="n7" onclick="go(8)" disabled>next →</button></div>
+  </div>
+
+  <!-- ── Q8 MCQ ── -->
+  <div class="sec" id="q8">
+    <div class="qcard" id="qc8">
+      <div class="qnum">Question 08 / 10 — Multiple choice</div>
+      <div class="qtext">You are briefing your team before a scheduled flare tip replacement. Which sentence best combines active and passive voice appropriately?</div>
+      <div class="qopts">
+        <button class="qopt" onclick="mcq(this,false,8)">The scaffold has been erected, and it was confirmed safe by us and we will start work at 06:00.</button>
+        <button class="qopt" onclick="mcq(this,true,8)">The scaffold has been erected and confirmed safe. We will start work at 06:00.</button>
+        <button class="qopt" onclick="mcq(this,false,8)">We erected the scaffold and it was confirmed safe by us. The start of work will be at 06:00.</button>
+        <button class="qopt" onclick="mcq(this,false,8)">The scaffold was being erected and safety was confirmed and work start will be 06:00.</button>
+      </div>
+      <div class="qfb" id="fb8"></div>
+    </div>
+    <div class="nav"><button class="nbtn" onclick="go(7)">← back</button><button class="nbtn prim" id="n8" onclick="go(9)" disabled>next →</button></div>
+  </div>
+
+  <!-- ── Q9 REORDER ── -->
+  <div class="sec" id="q9">
+    <div class="qcard" id="qc9">
+      <div class="qnum">Question 09 / 10 — Reorder the words</div>
+      <div class="qtext">Build a correct <strong>future passive</strong> sentence from the words below. Click to place, click again to return.</div>
+      <div class="qcontext">Hint: This sentence is about personnel and a mandatory briefing before an operation.</div>
+      <div class="reorder-wrap">
+        <div class="slabel" style="margin-bottom:6px;">Word pool</div>
+        <div class="word-pool" id="pool9"></div>
+        <div class="slabel" style="margin-bottom:6px;">Your answer</div>
+        <div class="answer-zone" id="zone9"><span class="zone-hint" id="zh9">Click words above to build your sentence...</span></div>
+        <button class="reorder-check" id="rc9" onclick="checkReorder(9)">check answer</button>
+      </div>
+      <div class="qfb" id="fb9"></div>
+    </div>
+    <div class="nav"><button class="nbtn" onclick="go(8)">← back</button><button class="nbtn prim" id="n9" onclick="go(10)" disabled>next →</button></div>
+  </div>
+
+  <!-- ── Q10 MCQ ── -->
+  <div class="sec" id="q10">
+    <div class="qcard" id="qc10">
+      <div class="qnum">Question 10 / 10 — Multiple choice</div>
+      <div class="qtext">Read this full paragraph from a refinery safety investigation. Identify the sentence that has an <em>incorrect</em> passive construction.</div>
+      <div class="qcontext">
+        (A) The leak was first detected at 14:22 by the area operator.<br>
+        (B) Emergency isolation was initiated within four minutes.<br>
+        (C) All non-essential personnel were evacuated to the muster point.<br>
+        (D) The incident commander was arrive on scene at 14:35.<br>
+        (E) A full investigation has been launched by the HSE team.
+      </div>
+      <div class="qopts">
+        <button class="qopt" onclick="mcq(this,false,10)">Sentence A</button>
+        <button class="qopt" onclick="mcq(this,false,10)">Sentence B</button>
+        <button class="qopt" onclick="mcq(this,false,10)">Sentence C</button>
+        <button class="qopt" onclick="mcq(this,true,10)">Sentence D</button>
+        <button class="qopt" onclick="mcq(this,false,10)">Sentence E</button>
+      </div>
+      <div class="qfb" id="fb10"></div>
+    </div>
+    <div class="nav"><button class="nbtn" onclick="go(9)">← back</button><button class="nbtn prim" id="n10" onclick="showScore()" disabled>see results →</button></div>
+  </div>
+
+  <!-- ── SCORE SCREEN ── -->
+  <div class="score-screen" id="scoreScreen">
+    <div class="score-ring">
+      <svg width="120" height="120" viewBox="0 0 120 120">
+        <circle class="ring-bg" cx="60" cy="60" r="52"/>
+        <circle class="ring-val" id="ringVal" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="326.7"/>
+      </svg>
+      <div class="score-num" id="scoreNum">0/10</div>
+    </div>
+    <div class="score-label" id="scoreLabel">Loading...</div>
+    <div class="score-sub" id="scoreSub"></div>
+
+    <div class="breakdown" id="breakdown"></div>
+
+    <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+      <button class="nbtn" onclick="restartQuiz()">restart quiz</button>
+      <button class="nbtn prim" onclick="window.location.href='active_passive_refinery_lesson.html'">← back to lesson</button>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-text">Active &amp; Passive Voice · Part 2</div>
+    <div class="footer-text">FRTU Grammar Series · Module 01</div>
+  </footer>
+
+</div>
+<script>
+var cur = 1;
+var total = 10;
+var scores = {};
+var qLabels = {
+  1: "Q1 — Fireground radio command",
+  2: "Q2 — Incident report consistency",
+  3: "Q3 — Fill in the blank (present simple)",
+  4: "Q4 — Present perfect passive",
+  5: "Q5 — Sentence reorder (past simple)",
+  6: "Q6 — Shift handover responsibility",
+  7: "Q7 — Modal passive (must)",
+  8: "Q8 — Mixed voice briefing",
+  9: "Q9 — Sentence reorder (future passive)",
+  10: "Q10 — Spot the error"
+};
+
+var feedback = {
+  1: { c: "Correct. Active imperative ('Request a second hose line') is the clearest and fastest form for radio commands. The passive options are significantly longer and create ambiguity about who should act.", w: "Incorrect. For fireground radio commands, active voice — especially the imperative form — is always preferred. It is direct, short, and leaves no doubt about who should act." },
+  2: { c: "Correct. A good incident report maintains consistent passive voice throughout: 'was discovered', 'was notified', 'was isolated'. This creates an objective, professional record without personal pronouns.", w: "Incorrect. Option B is correct. A formal incident report should use consistent passive voice throughout. Mixing 'we isolated' (active) with passive constructions makes the report inconsistent and less professional." },
+  3: { c: "Correct. 'Is serviced' is the present simple passive — used for regular, scheduled actions. The formula is: is/are + past participle. 'Service' → 'serviced'.", w: "Not quite. The correct answer is 'is serviced'. Present simple passive for a recurring schedule: is/are + past participle. Service → serviced." },
+  4: { c: "Correct. Present perfect passive = has/have been + past participle. 'Has been repaired' is grammatically correct. 'Was repaired' would be past simple. 'Is repaired' would be present simple.", w: "Incorrect. The present perfect passive formula is: has (singular) / have (plural) + been + past participle. The correct answer is 'The bund wall has been repaired'." },
+  5: { c: "Correct. The sentence is: 'All equipment was checked before the operation.' Past simple passive: was/were + past participle.", w: "Not quite. The correct order is: All equipment was checked before the operation. Past simple passive: was + past participle." },
+  6: { c: "Correct. For shift handover notes, active voice with a named subject ('I suspended') clearly assigns accountability. The passive options hide who is responsible — useful in reports but less so when ownership matters.", w: "Incorrect. In a handover note, active voice clearly assigns responsibility. 'I suspended the hot work permit at 16:00' tells the incoming shift exactly who acted and what was done. Passive versions leave the actor unclear." },
+  7: { c: "Correct. Modal passive formula: modal verb + be + past participle. Must + be + calibrated = 'must be calibrated'. The infinitive 'be' does not change with the modal.", w: "Not quite. Modal passive: modal + be + past participle. Calibrate → calibrated. The full form is 'must be calibrated'." },
+  8: { c: "Correct. This sentence combines passive voice appropriately for the status update ('has been erected and confirmed safe') with active voice for the clear command ('We will start work at 06:00'). Mixing voices is correct when each suits its purpose.", w: "Incorrect. Option B is the best answer. It uses passive voice where appropriate (the scaffold's status — who built it is unimportant) and active voice for the action instruction, which is clearer and more direct." },
+  9: { c: "Correct. The sentence is: 'All personnel will be briefed before the operation.' Future passive: will + be + past participle.", w: "Not quite. The correct order is: All personnel will be briefed before the operation. Future passive: will + be + past participle." },
+  10: { c: "Correct. Sentence D — 'The incident commander was arrive on scene at 14:35' — is grammatically wrong. The passive form requires a past participle, not a base verb. It should read: 'The incident commander arrived on scene at 14:35' (active) or more formally, 'The incident commander's arrival was recorded at 14:35'.", w: "Incorrect. Sentence D contains the error: 'was arrive' is not a valid passive construction. You cannot use 'was' with the base form of a verb. The passive requires 'was + past participle', or the sentence should be rewritten as active voice." }
+};
+
+// REORDER DATA
+var reorderData = {
+  5: { words: ['All', 'equipment', 'was', 'checked', 'before', 'the', 'operation', '.'], answer: 'All equipment was checked before the operation .' },
+  9: { words: ['All', 'personnel', 'will', 'be', 'briefed', 'before', 'the', 'operation', '.'], answer: 'All personnel will be briefed before the operation .' }
+};
+var reorderState = { 5: [], 9: [] };
+
+function initReorder(qn) {
+  var data = reorderData[qn];
+  var pool = document.getElementById('pool' + qn);
+  pool.innerHTML = '';
+  reorderState[qn] = [];
+  var zone = document.getElementById('zone' + qn);
+  zone.innerHTML = '<span class="zone-hint" id="zh' + qn + '">Click words above to build your sentence...</span>';
+  data.words.forEach(function(w, i) {
+    var chip = document.createElement('button');
+    chip.className = 'word-chip';
+    chip.textContent = w;
+    chip.dataset.word = w;
+    chip.dataset.idx = i;
+    chip.onclick = function() { moveToZone(qn, chip); };
+    pool.appendChild(chip);
+  });
+}
+
+function moveToZone(qn, chip) {
+  if (chip.disabled) return;
+  var zone = document.getElementById('zone' + qn);
+  var zh = document.getElementById('zh' + qn);
+  if (zh) zh.remove();
+  chip.classList.add('placed');
+  reorderState[qn].push({ word: chip.dataset.word, idx: chip.dataset.idx, el: chip });
+  var placed = document.createElement('button');
+  placed.className = 'word-chip placed';
+  placed.textContent = chip.dataset.word;
+  placed.dataset.src = chip.dataset.idx;
+  placed.onclick = function() { returnToPool(qn, placed, chip); };
+  zone.appendChild(placed);
+  chip.style.visibility = 'hidden';
+}
+
+function returnToPool(qn, placed, original) {
+  reorderState[qn] = reorderState[qn].filter(function(s) { return s.el !== original; });
+  placed.remove();
+  original.style.visibility = 'visible';
+  original.classList.remove('placed');
+  var zone = document.getElementById('zone' + qn);
+  if (!zone.children.length) {
+    zone.innerHTML = '<span class="zone-hint" id="zh' + qn + '">Click words above to build your sentence...</span>';
+  }
+}
+
+function checkReorder(qn) {
+  var attempt = reorderState[qn].map(function(s) { return s.word; }).join(' ');
+  var correct = reorderData[qn].answer;
+  var isCorrect = attempt.trim() === correct.trim();
+  var btn = document.getElementById('rc' + qn);
+  btn.disabled = true;
+  var zone = document.getElementById('zone' + qn);
+  Array.from(zone.querySelectorAll('.word-chip')).forEach(function(c, i) {
+    var expected = correct.split(' ')[i];
+    c.className = 'word-chip ' + (c.textContent === expected && isCorrect ? 'correct-pos' : !isCorrect ? 'wrong-pos' : 'correct-pos');
+    c.onclick = null;
+  });
+  document.getElementById('pool' + qn).querySelectorAll('.word-chip').forEach(function(c) { c.style.visibility = 'hidden'; });
+  var fb = document.getElementById('fb' + qn);
+  fb.textContent = isCorrect ? feedback[qn].c : feedback[qn].w + ' Correct: "' + correct.replace(' .', '.') + '"';
+  fb.className = 'qfb show ' + (isCorrect ? 'correct' : 'wrong');
+  document.getElementById('qc' + qn).classList.add(isCorrect ? 'answered-correct' : 'answered-wrong');
+  scores[qn] = isCorrect ? 1 : 0;
+  document.getElementById('n' + qn).disabled = false;
+  updateProgress();
+}
+
+function mcq(btn, correct, qn) {
+  if (scores[qn] !== undefined) return;
+  scores[qn] = correct ? 1 : 0;
+  var opts = btn.parentElement.querySelectorAll('.qopt');
+  opts.forEach(function(o) { o.disabled = true; });
+  btn.classList.add(correct ? 'correct' : 'wrong');
+  if (!correct) {
+    opts.forEach(function(o) {
+      if (o.getAttribute('onclick') && o.getAttribute('onclick').indexOf('true') > -1) o.classList.add('correct');
+    });
+  }
+  var fb = document.getElementById('fb' + qn);
+  fb.textContent = correct ? feedback[qn].c : feedback[qn].w;
+  fb.className = 'qfb show ' + (correct ? 'correct' : 'wrong');
+  document.getElementById('qc' + qn).classList.add(correct ? 'answered-correct' : 'answered-wrong');
+  document.getElementById('n' + qn).disabled = false;
+  updateProgress();
+}
+
+function checkFill(qn, accepted, canonical) {
+  var val = document.getElementById('fi' + qn).value.trim().toLowerCase();
+  var correct = accepted.some(function(a) { return val === a.toLowerCase(); });
+  scores[qn] = correct ? 1 : 0;
+  document.getElementById('fi' + qn).disabled = true;
+  document.getElementById('fs' + qn).disabled = true;
+  var fb = document.getElementById('fb' + qn);
+  fb.textContent = correct ? feedback[qn].c : feedback[qn].w + ' Correct answer: "' + canonical + '"';
+  fb.className = 'qfb show ' + (correct ? 'correct' : 'wrong');
+  document.getElementById('qc' + qn).classList.add(correct ? 'answered-correct' : 'answered-wrong');
+  document.getElementById('n' + qn).disabled = false;
+  updateProgress();
+}
+
+function updateProgress() {
+  var answered = Object.keys(scores).length;
+  var pct = (answered / total) * 100;
+  document.getElementById('progBar').style.width = pct + '%';
+  document.getElementById('progText').textContent = 'Question ' + Math.min(answered + 1, total) + ' of ' + total;
+  var s = Object.values(scores).reduce(function(a, b) { return a + b; }, 0);
+  document.getElementById('progScore').textContent = 'Score: ' + s;
+}
+
+function go(n) {
+  document.getElementById('q' + cur).classList.remove('on');
+  cur = n;
+  if (n > 0 && n <= 10) {
+    document.getElementById('q' + n).classList.add('on');
+    document.getElementById('progText').textContent = 'Question ' + n + ' of ' + total;
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showScore() {
+  document.getElementById('q10').classList.remove('on');
+  var s = Object.values(scores).reduce(function(a, b) { return a + b; }, 0);
+  var screen = document.getElementById('scoreScreen');
+  screen.classList.add('on');
+  document.getElementById('scoreNum').textContent = s + '/10';
+  var labels = ['Keep reviewing — work through the lesson again.', 'Keep reviewing — revisit passive tense formation.', 'Some good answers — review the questions you missed.', 'Getting there — a few more points to review.', 'Fair effort — review the incorrect answers carefully.', 'Good — strong grasp with a few gaps.', 'Good — nearly there.', 'Very good — only minor gaps.', 'Excellent — strong command of both voices.', 'Excellent — near perfect.', 'Perfect score. Fully competent in active and passive voice.'];
+  document.getElementById('scoreLabel').textContent = labels[s] || labels[10];
+  document.getElementById('scoreSub').textContent = s >= 8 ? 'You have demonstrated a strong command of active and passive voice in professional refinery contexts.' : 'Return to the lesson to review the sections covering the questions you missed, then attempt the quiz again.';
+  var circ = 2 * Math.PI * 52;
+  var offset = circ - (s / 10) * circ;
+  setTimeout(function() { document.getElementById('ringVal').style.strokeDashoffset = offset; }, 100);
+  var bd = document.getElementById('breakdown');
+  bd.innerHTML = '<div class="slabel" style="margin-bottom:10px;">Question breakdown</div>';
+  for (var i = 1; i <= 10; i++) {
+    var r = scores[i];
+    var row = document.createElement('div');
+    row.className = 'brow';
+    row.innerHTML = '<span class="brow-q">' + qLabels[i] + '</span><span class="brow-r ' + (r ? 'ok' : 'no') + '">' + (r ? '✓ correct' : '✗ incorrect') + '</span>';
+    bd.appendChild(row);
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function restartQuiz() {
+  scores = {};
+  cur = 1;
+  document.getElementById('scoreScreen').classList.remove('on');
+  [1,2,3,4,5,6,7,8,9,10].forEach(function(n) {
+    var qc = document.getElementById('qc' + n);
+    qc.classList.remove('answered-correct', 'answered-wrong');
+    var fb = document.getElementById('fb' + n);
+    fb.className = 'qfb';
+    var next = document.getElementById('n' + n);
+    if (next) next.disabled = true;
+    qc.querySelectorAll('.qopt').forEach(function(o) { o.disabled = false; o.classList.remove('correct', 'wrong'); });
+    var fi = document.getElementById('fi' + n);
+    if (fi) { fi.disabled = false; fi.value = ''; }
+    var fs = document.getElementById('fs' + n);
+    if (fs) fs.disabled = false;
+  });
+  initReorder(5);
+  initReorder(9);
+  document.getElementById('progBar').style.width = '0%';
+  document.getElementById('progText').textContent = 'Question 1 of 10';
+  document.getElementById('progScore').textContent = 'Score: 0';
+  document.getElementById('q1').classList.add('on');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Init on load
+initReorder(5);
+initReorder(9);
+</script>
+</body>
+</html>

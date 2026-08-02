@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Must & Have To — Minecraft English Lesson</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323:wght@400&display=swap');
+
+  :root {
+    --grass: #5d9e30;
+    --dirt: #8B5E3C;
+    --stone: #8a8a8a;
+    --stone-dark: #5a5a5a;
+    --wood: #b5813f;
+    --sky: #5aa8e8;
+    --creeper: #3a8a3a;
+    --diamond: #5ee8e8;
+    --gold: #f9d63a;
+    --redstone: #e83030;
+    --obsidian: #1a1020;
+    --white: #f0f0f0;
+    --sand: #e8d870;
+    --lapis: #2040b8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background-color: var(--sky);
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 31px, rgba(255,255,255,0.05) 31px, rgba(255,255,255,0.05) 32px),
+      repeating-linear-gradient(90deg, transparent, transparent 31px, rgba(255,255,255,0.05) 31px, rgba(255,255,255,0.05) 32px);
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    color: var(--obsidian);
+    min-height: 100vh;
+    padding-bottom: 60px;
+  }
+
+  /* PIXEL BLOCK UTILITY */
+  .pixel-block {
+    image-rendering: pixelated;
+    box-shadow: inset -3px -3px 0 rgba(0,0,0,0.35), inset 3px 3px 0 rgba(255,255,255,0.2);
+  }
+
+  /* HEADER */
+  header {
+    background: var(--obsidian);
+    border-bottom: 6px solid var(--diamond);
+    padding: 20px 16px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(90deg, transparent 0px, transparent 31px, rgba(93,158,48,0.1) 31px, rgba(93,158,48,0.1) 32px);
+  }
+  header h1 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(10px, 2.5vw, 18px);
+    color: var(--diamond);
+    text-shadow: 3px 3px 0 #005555, -1px -1px 0 #003333;
+    line-height: 1.6;
+    position: relative;
+  }
+  header .subtitle {
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(7px, 1.5vw, 10px);
+    color: var(--gold);
+    margin-top: 10px;
+    text-shadow: 2px 2px 0 #806010;
+    position: relative;
+  }
+
+  /* TOOLBAR / HOTBAR */
+  .hotbar {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    padding: 10px;
+    background: var(--stone-dark);
+    border-bottom: 4px solid #333;
+  }
+  .hotbar-slot {
+    width: 44px; height: 44px;
+    background: var(--stone);
+    border: 3px solid #666;
+    box-shadow: inset -2px -2px 0 rgba(0,0,0,0.4), inset 2px 2px 0 rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    cursor: pointer;
+    transition: transform 0.1s;
+    position: relative;
+  }
+  .hotbar-slot:hover, .hotbar-slot.active {
+    border-color: var(--white);
+    transform: translateY(-3px);
+    background: #aaa;
+  }
+  .hotbar-slot .slot-label {
+    position: absolute;
+    bottom: -18px;
+    left: 50%; transform: translateX(-50%);
+    font-size: 10px;
+    color: var(--white);
+    white-space: nowrap;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 6px;
+  }
+
+  /* MAIN CONTENT */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 24px 16px;
+  }
+
+  /* SECTION / PANEL */
+  .panel {
+    background: var(--stone);
+    border: 4px solid var(--stone-dark);
+    box-shadow: 6px 6px 0 rgba(0,0,0,0.4), inset -3px -3px 0 rgba(0,0,0,0.2), inset 3px 3px 0 rgba(255,255,255,0.15);
+    margin-bottom: 28px;
+    display: none;
+  }
+  .panel.active { display: block; }
+
+  .panel-header {
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 4px solid var(--stone-dark);
+  }
+  .panel-icon { font-size: 32px; }
+  .panel-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(8px, 2vw, 13px);
+    color: var(--obsidian);
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.3);
+  }
+
+  .panel-body { padding: 18px; }
+
+  /* GRASS / DIRT PANEL */
+  .panel.grass .panel-header { background: var(--grass); }
+  .panel.grass .panel-header .panel-title { color: var(--white); text-shadow: 2px 2px 0 #1a4a00; }
+  .panel.dirt .panel-header { background: var(--dirt); }
+  .panel.dirt .panel-header .panel-title { color: var(--white); text-shadow: 2px 2px 0 #3a1a00; }
+  .panel.diamond .panel-header { background: #1a7878; }
+  .panel.diamond .panel-header .panel-title { color: var(--diamond); text-shadow: 2px 2px 0 #003333; }
+  .panel.gold .panel-header { background: #7a5a00; }
+  .panel.gold .panel-header .panel-title { color: var(--gold); text-shadow: 2px 2px 0 #3a2a00; }
+  .panel.redstone .panel-header { background: #6a0000; }
+  .panel.redstone .panel-header .panel-title { color: #ff6060; text-shadow: 2px 2px 0 #2a0000; }
+  .panel.lapis .panel-header { background: var(--lapis); }
+  .panel.lapis .panel-header .panel-title { color: #a0c0ff; text-shadow: 2px 2px 0 #000830; }
+
+  /* EXPLANATION BOXES */
+  .rule-box {
+    background: var(--obsidian);
+    border: 3px solid var(--diamond);
+    padding: 14px 16px;
+    margin: 12px 0;
+    position: relative;
+  }
+  .rule-box::before {
+    content: attr(data-label);
+    position: absolute;
+    top: -12px; left: 12px;
+    background: var(--diamond);
+    color: var(--obsidian);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    padding: 2px 8px;
+  }
+  .rule-box p { color: var(--white); line-height: 1.5; font-size: 20px; margin-bottom: 6px; }
+  .rule-box p:last-child { margin-bottom: 0; }
+  .rule-box.must { border-color: var(--redstone); }
+  .rule-box.must::before { background: var(--redstone); color: white; }
+  .rule-box.haveto { border-color: var(--gold); }
+  .rule-box.haveto::before { background: var(--gold); color: var(--obsidian); }
+  .rule-box.neg { border-color: var(--creeper); }
+  .rule-box.neg::before { background: var(--creeper); color: white; }
+
+  .example-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: rgba(0,0,0,0.25);
+    border-left: 4px solid var(--diamond);
+    padding: 10px 14px;
+    margin: 8px 0;
+    font-size: 20px;
+    line-height: 1.5;
+  }
+  .example-row .emoji { font-size: 28px; flex-shrink: 0; }
+  .example-row span { color: var(--white); }
+  .example-row .pl { color: #aaddff; font-size: 16px; display: block; }
+  .example-row.must-ex { border-color: var(--redstone); }
+  .example-row.haveto-ex { border-color: var(--gold); }
+  .example-row.neg-ex { border-color: var(--creeper); }
+  .example-row.tip-ex { border-color: var(--lapis); }
+
+  .highlight { color: var(--gold); font-weight: bold; }
+  .highlight-r { color: #ff8080; }
+  .highlight-b { color: var(--diamond); }
+
+  /* TABLE */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 18px;
+  }
+  th {
+    background: var(--obsidian);
+    color: var(--diamond);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    padding: 10px 12px;
+    text-align: left;
+    border: 3px solid #333;
+  }
+  td {
+    padding: 9px 12px;
+    border: 2px solid var(--stone-dark);
+    color: var(--white);
+  }
+  tr:nth-child(odd) td { background: rgba(0,0,0,0.3); }
+  tr:nth-child(even) td { background: rgba(255,255,255,0.07); }
+
+  /* QUIZ */
+  .quiz-q {
+    background: var(--obsidian);
+    border: 3px solid var(--stone-dark);
+    padding: 16px;
+    margin-bottom: 18px;
+    position: relative;
+  }
+  .quiz-q .q-text {
+    color: var(--white);
+    font-size: 21px;
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+  .quiz-q .q-num {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .options { display: flex; flex-direction: column; gap: 6px; }
+  .opt-btn {
+    background: var(--stone);
+    border: 3px solid var(--stone-dark);
+    box-shadow: 3px 3px 0 rgba(0,0,0,0.4);
+    color: var(--white);
+    padding: 10px 14px;
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.1s;
+    position: relative;
+  }
+  .opt-btn:hover:not(:disabled) {
+    background: #aaa;
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.4);
+  }
+  .opt-btn.correct { background: var(--creeper); border-color: #1a5a1a; color: white; }
+  .opt-btn.wrong { background: var(--redstone); border-color: #5a0000; color: white; }
+  .opt-btn:disabled { cursor: default; }
+  .feedback {
+    margin-top: 10px;
+    padding: 8px 12px;
+    font-size: 20px;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.ok { color: #88ff88; }
+  .feedback.bad { color: #ff8888; }
+
+  /* FILL IN */
+  .fill-input {
+    background: var(--obsidian);
+    border: 3px solid var(--stone-dark);
+    color: var(--diamond);
+    font-family: 'VT323', monospace;
+    font-size: 22px;
+    padding: 6px 10px;
+    width: 160px;
+    outline: none;
+    margin: 0 6px;
+  }
+  .fill-input:focus { border-color: var(--diamond); }
+  .fill-input.correct-f { border-color: var(--creeper); color: #88ff88; }
+  .fill-input.wrong-f { border-color: var(--redstone); color: #ff8888; }
+
+  .check-btn {
+    background: var(--grass);
+    border: 3px solid #2a5a00;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.4);
+    color: white;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    padding: 10px 18px;
+    cursor: pointer;
+    margin-top: 12px;
+    display: inline-block;
+    transition: all 0.1s;
+  }
+  .check-btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 rgba(0,0,0,0.4);
+  }
+  .check-btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 rgba(0,0,0,0.4); }
+
+  /* SCORE */
+  #score-display {
+    text-align: center;
+    padding: 20px;
+    display: none;
+  }
+  #score-display.show { display: block; }
+  #score-display .score-num {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 28px;
+    color: var(--gold);
+    text-shadow: 3px 3px 0 #806010;
+  }
+  #score-display .score-msg { color: var(--white); font-size: 22px; margin-top: 8px; }
+
+  /* STEVE SPRITE — CSS pixel art */
+  .steve {
+    display: inline-block;
+    width: 32px; height: 48px;
+    position: relative;
+    margin: 0 10px;
+    vertical-align: middle;
+    image-rendering: pixelated;
+  }
+
+  /* PROGRESS BAR */
+  .xp-bar-wrap {
+    background: var(--obsidian);
+    border: 3px solid #333;
+    height: 18px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .xp-bar {
+    background: linear-gradient(90deg, #5ee830, #a0ff50);
+    height: 100%;
+    transition: width 0.5s;
+  }
+  .xp-label {
+    position: absolute;
+    top: 50%; left: 50%; transform: translate(-50%,-50%);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: var(--white);
+    text-shadow: 1px 1px 0 #000;
+  }
+
+  /* CREEPER DIVIDER */
+  .creeper-divider {
+    text-align: center;
+    margin: 16px 0;
+    font-size: 24px;
+    letter-spacing: 8px;
+    color: rgba(255,255,255,0.2);
+  }
+
+  /* NAV BUTTONS */
+  .nav-row {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 14px;
+  }
+  .nav-btn {
+    background: var(--lapis);
+    border: 3px solid #1030a0;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.4);
+    color: #a0c0ff;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: all 0.1s;
+  }
+  .nav-btn:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 rgba(0,0,0,0.4); }
+  .nav-btn.next { background: var(--creeper); border-color: #1a4a00; color: #ccffcc; }
+  .nav-btn.prev { background: var(--dirt); border-color: #3a1a00; color: #ffd090; }
+
+  /* SPEAKING task */
+  .speak-card {
+    background: var(--obsidian);
+    border: 3px solid var(--gold);
+    padding: 14px 16px;
+    margin: 10px 0;
+    font-size: 20px;
+    color: var(--white);
+    line-height: 1.6;
+  }
+  .speak-card .scenario { color: var(--sand); font-size: 17px; margin-bottom: 6px; }
+
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+  .float { animation: float 2.5s ease-in-out infinite; }
+
+  @media(max-width:520px) {
+    .panel-title { font-size: 8px; }
+    .hotbar-slot { width: 36px; height: 36px; font-size: 18px; }
+    table { font-size: 15px; }
+    th { font-size: 7px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="float" style="font-size:40px;margin-bottom:8px">⛏️ 🧱 🪓</div>
+  <h1>MUST &amp; HAVE TO<br>English Grammar Quest</h1>
+  <div class="subtitle">⚔️ Polish High School Edition ⚔️</div>
+</header>
+
+<div class="hotbar" id="hotbar">
+  <div class="hotbar-slot active" data-tab="0" onclick="switchTab(0)">📖<span class="slot-label">THEORY</span></div>
+  <div class="hotbar-slot" data-tab="1" onclick="switchTab(1)">📊<span class="slot-label">TABLE</span></div>
+  <div class="hotbar-slot" data-tab="2" onclick="switchTab(2)">⚔️<span class="slot-label">QUIZ</span></div>
+  <div class="hotbar-slot" data-tab="3" onclick="switchTab(3)">✍️<span class="slot-label">FILL-IN</span></div>
+  <div class="hotbar-slot" data-tab="4" onclick="switchTab(4)">🗣️<span class="slot-label">SPEAK</span></div>
+</div>
+
+<main>
+
+<!-- XP BAR -->
+<div class="xp-bar-wrap">
+  <div class="xp-bar" id="xpBar" style="width:20%"></div>
+  <div class="xp-label" id="xpLabel">Section 1 / 5</div>
+</div>
+
+<!-- ======= TAB 0: THEORY ======= -->
+<div class="panel grass active" id="tab0">
+  <div class="panel-header">
+    <span class="panel-icon">📖</span>
+    <span class="panel-title">TEORIA: MUST vs HAVE TO</span>
+  </div>
+  <div class="panel-body">
+
+    <div class="rule-box must" data-label="MUST">
+      <p><span class="highlight-r">MUST</span> = obowiązek wewnętrzny — czujesz, że MUSISZ coś zrobić. Twoje własne przekonanie lub nakaz osoby mówiącej.</p>
+      <p style="color:#aaa;font-size:17px">→ The obligation comes from <em>you</em> (or the speaker).</p>
+    </div>
+
+    <div class="example-row must-ex">
+      <span class="emoji">🪓</span>
+      <span>I <span class="highlight-r">must</span> craft a sword before nightfall.<span class="pl">Muszę zrobić miecz przed zmrokiem. (Sam tak czuję!)</span></span>
+    </div>
+    <div class="example-row must-ex">
+      <span class="emoji">💎</span>
+      <span>You <span class="highlight-r">must</span> find diamonds — they're essential!<span class="pl">Musisz znaleźć diamenty — są niezbędne!</span></span>
+    </div>
+    <div class="example-row must-ex">
+      <span class="emoji">📢</span>
+      <span>You <span class="highlight-r">must</span> update the game. (sign / notice)<span class="pl">Musisz zaktualizować grę. (nakaz z plakatu)</span></span>
+    </div>
+
+    <div class="creeper-divider">🟢 🟢 🟢</div>
+
+    <div class="rule-box haveto" data-label="HAVE TO">
+      <p><span class="highlight">HAVE TO</span> = obowiązek zewnętrzny — ktoś inny lub przepisy mówią, że musisz.</p>
+      <p style="color:#aaa;font-size:17px">→ The obligation comes from <em>outside</em> (rules, parents, teacher, law).</p>
+    </div>
+
+    <div class="example-row haveto-ex">
+      <span class="emoji">🏫</span>
+      <span>In survival mode you <span class="highlight">have to</span> eat food.<span class="pl">W trybie survivalowym musisz jeść. (zasada gry)</span></span>
+    </div>
+    <div class="example-row haveto-ex">
+      <span class="emoji">👨‍👩‍👦</span>
+      <span>Steve <span class="highlight">has to</span> go to bed early. His mum said so.<span class="pl">Steve musi iść spać wcześnie. Jego mama tak powiedziała.</span></span>
+    </div>
+    <div class="example-row haveto-ex">
+      <span class="emoji">🎓</span>
+      <span>We <span class="highlight">have to</span> pass the English exam.<span class="pl">Musimy zdać egzamin z angielskiego. (wymóg szkolny)</span></span>
+    </div>
+
+    <div class="creeper-divider">🔴 🔴 🔴</div>
+
+    <div class="rule-box neg" data-label="NEGATION ⚠️">
+      <p><span style="color:#ff8888">MUSTN'T</span> = zakaz! (prohibition — DON'T do it!)</p>
+      <p><span style="color:#88ff88">DON'T HAVE TO</span> = brak obowiązku (no obligation — you CAN do it, but you don't need to)</p>
+      <p style="color:#ffcc88;font-size:17px">⚠️ These are COMPLETELY different! This is a very common mistake!</p>
+    </div>
+
+    <div class="example-row neg-ex">
+      <span class="emoji">💥</span>
+      <span>You <span style="color:#ff8888">mustn't</span> go near the Creeper!<span class="pl">Nie wolno ci podchodzić do Creepera! (zakaz!)</span></span>
+    </div>
+    <div class="example-row" style="border-color:var(--creeper)">
+      <span class="emoji">🏠</span>
+      <span>You <span style="color:#88ff88">don't have to</span> build a house — you can sleep outside.<span class="pl">Nie musisz budować domu — możesz spać na zewnątrz. (ale możesz!)</span></span>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn next" onclick="switchTab(1)">NEXT ▶</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======= TAB 1: TABLE ======= -->
+<div class="panel diamond" id="tab1">
+  <div class="panel-header">
+    <span class="panel-icon">📊</span>
+    <span class="panel-title">TABELA PORÓWNAWCZA</span>
+  </div>
+  <div class="panel-body">
+
+    <table>
+      <tr>
+        <th>Form</th>
+        <th>Meaning (PL)</th>
+        <th>Example</th>
+      </tr>
+      <tr>
+        <td><span style="color:#ff8080">must</span></td>
+        <td>muszę (moje przekonanie)</td>
+        <td>I must sleep — I'm exhausted.</td>
+      </tr>
+      <tr>
+        <td><span style="color:#f9d63a">have to / has to</span></td>
+        <td>muszę (zewnętrzny wymóg)</td>
+        <td>I have to wear armour in the Nether.</td>
+      </tr>
+      <tr>
+        <td><span style="color:#ff8080">mustn't</span></td>
+        <td>nie wolno (zakaz!)</td>
+        <td>You mustn't dig straight down.</td>
+      </tr>
+      <tr>
+        <td><span style="color:#88ff88">don't/doesn't have to</span></td>
+        <td>nie trzeba (brak obowiązku)</td>
+        <td>You don't have to use a sword.</td>
+      </tr>
+      <tr>
+        <td><span style="color:#f9d63a">had to</span></td>
+        <td>musiałem (PAST)</td>
+        <td>I had to respawn — I died!</td>
+      </tr>
+      <tr>
+        <td><span style="color:#a0c0ff">will have to</span></td>
+        <td>będę musiał (FUTURE)</td>
+        <td>You will have to find a village.</td>
+      </tr>
+    </table>
+
+    <div class="rule-box" data-label="💡 FORMA PYTAJĄCA" style="border-color:var(--lapis)">
+      <p style="color:#a0c0ff"><strong>MUST</strong> nie ma formy przeszłej! W czasie przeszłym używamy <span style="color:var(--gold)">HAD TO</span>.</p>
+      <p style="color:#a0c0ff">W pytaniach: <span style="color:var(--gold)">Do you have to...? / Must I...? / Did you have to...?</span></p>
+    </div>
+
+    <div class="creeper-divider">💎 💎 💎</div>
+
+    <div style="background:rgba(0,0,0,0.3);padding:14px;margin-top:10px">
+      <div style="font-family:'Press Start 2P',monospace;font-size:9px;color:var(--gold);margin-bottom:10px">SZYBKI TEST: Must czy Have to?</div>
+      <div class="example-row tip-ex">
+        <span class="emoji">🌙</span>
+        <span>It's getting dark. I <span class="highlight-r">must</span> build a shelter now!<span class="pl">Sam tak czuję → MUST ✓</span></span>
+      </div>
+      <div class="example-row tip-ex">
+        <span class="emoji">📋</span>
+        <span>The game rules say you <span class="highlight">have to</span> collect 10 resources.<span class="pl">Zasady gry → HAVE TO ✓</span></span>
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn prev" onclick="switchTab(0)">◀ PREV</button>
+      <button class="nav-btn next" onclick="switchTab(2)">NEXT ▶</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======= TAB 2: QUIZ ======= -->
+<div class="panel gold" id="tab2">
+  <div class="panel-header">
+    <span class="panel-icon">⚔️</span>
+    <span class="panel-title">QUIZ: WYBIERZ POPRAWNĄ FORMĘ</span>
+  </div>
+  <div class="panel-body">
+
+    <div id="quiz-container"></div>
+    <div id="score-display">
+      <div class="score-num" id="score-num">0 / 0</div>
+      <div class="score-msg" id="score-msg"></div>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn prev" onclick="switchTab(1)">◀ PREV</button>
+      <button class="nav-btn next" onclick="switchTab(3)">NEXT ▶</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======= TAB 3: FILL-IN ======= -->
+<div class="panel redstone" id="tab3">
+  <div class="panel-header">
+    <span class="panel-icon">✍️</span>
+    <span class="panel-title">UZUPEŁNIJ ZDANIA</span>
+  </div>
+  <div class="panel-body">
+
+    <div style="font-family:'Press Start 2P',monospace;font-size:9px;color:#ffaaaa;margin-bottom:14px">Wpisz: must / mustn't / have to / has to / don't have to / doesn't have to / had to</div>
+
+    <div id="fill-container"></div>
+
+    <button class="check-btn" onclick="checkFill()">⚡ CHECK ANSWERS</button>
+    <div id="fill-score" style="margin-top:12px;color:var(--gold);font-family:'Press Start 2P',monospace;font-size:11px;display:none"></div>
+
+    <div class="nav-row">
+      <button class="nav-btn prev" onclick="switchTab(2)">◀ PREV</button>
+      <button class="nav-btn next" onclick="switchTab(4)">NEXT ▶</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======= TAB 4: SPEAKING ======= -->
+<div class="panel lapis" id="tab4">
+  <div class="panel-header">
+    <span class="panel-icon">🗣️</span>
+    <span class="panel-title">SPEAKING &amp; WRITING TASK</span>
+  </div>
+  <div class="panel-body">
+
+    <div style="font-family:'Press Start 2P',monospace;font-size:9px;color:#a0c0ff;margin-bottom:16px">Zrób zadania ustnie lub pisemnie. Porozmawiaj z koleżanką/kolegą! 💬</div>
+
+    <div class="speak-card">
+      <div class="scenario">🎯 TASK 1: Minecraft Survival Rules</div>
+      Imagine you are a <strong>Minecraft expert</strong> explaining survival tips to a new player. Write or say <strong>5 sentences</strong> using must, have to, mustn't, don't have to.
+      <br><br>
+      <span style="color:#88ccff">Przykład: "You must always carry food. You have to sleep at night, otherwise Phantoms will attack you..."</span>
+    </div>
+
+    <div class="speak-card">
+      <div class="scenario">🎯 TASK 2: Szkolne obowiązki (School Life)</div>
+      Compare Minecraft rules with school rules. Use <strong>must/have to/mustn't/don't have to</strong>.
+      <br><br>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px">
+        <div style="background:rgba(255,255,255,0.05);padding:10px;border:2px solid var(--creeper)">
+          <div style="color:var(--creeper);font-size:15px;margin-bottom:6px">⛏️ In Minecraft...</div>
+          <div style="color:#ccc;font-size:17px">You <span style="color:var(--gold)">must</span> ...</div>
+          <div style="color:#ccc;font-size:17px">You <span style="color:var(--gold)">have to</span> ...</div>
+          <div style="color:#ccc;font-size:17px">You <span style="color:#ff8080">mustn't</span> ...</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.05);padding:10px;border:2px solid var(--lapis)">
+          <div style="color:#a0c0ff;font-size:15px;margin-bottom:6px">🏫 At school...</div>
+          <div style="color:#ccc;font-size:17px">I <span style="color:var(--gold)">must</span> ...</div>
+          <div style="color:#ccc;font-size:17px">I <span style="color:var(--gold)">have to</span> ...</div>
+          <div style="color:#ccc;font-size:17px">I <span style="color:#ff8080">mustn't</span> ...</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="speak-card">
+      <div class="scenario">🎯 TASK 3: Interview — Czasowy obowiązek w przeszłości</div>
+      Answer these questions in full sentences using <span style="color:var(--gold)">had to</span> or <span style="color:#88ff88">didn't have to</span>:
+      <ol style="margin-top:8px;margin-left:20px;color:#ccc;font-size:18px;line-height:2">
+        <li>What did you have to do yesterday?</li>
+        <li>What didn't you have to do last weekend?</li>
+        <li>Did Steve have to fight the Ender Dragon alone?</li>
+        <li>What did you have to learn for your last English test?</li>
+      </ol>
+    </div>
+
+    <div class="speak-card" style="border-color:var(--diamond)">
+      <div class="scenario">💡 BONUS: Przetłumacz na angielski</div>
+      <ol style="margin-left:20px;color:#ccc;font-size:18px;line-height:2">
+        <li>Nie wolno ci otwierać skrzynek innych graczy.</li>
+        <li>Muszę kupić nową wersję Minecrafta.</li>
+        <li>Nie musimy zbierać drewna — mamy go wystarczająco dużo.</li>
+        <li>Czy musiałeś walczyć ze Szkieletem w nocy?</li>
+        <li>Alex musi naprawić zbroję przed następną walką.</li>
+      </ol>
+    </div>
+
+    <div style="background:var(--obsidian);border:3px solid var(--gold);padding:14px;margin-top:16px">
+      <div style="font-family:'Press Start 2P',monospace;font-size:9px;color:var(--gold);margin-bottom:8px">🏆 ODPOWIEDZI DO TŁUMACZEŃ</div>
+      <ol style="margin-left:18px;color:#aaa;font-size:17px;line-height:2" id="answers" style="display:none">
+        <li>You mustn't open other players' chests.</li>
+        <li>I must buy a new version of Minecraft.</li>
+        <li>We don't have to collect wood — we have enough.</li>
+        <li>Did you have to fight the Skeleton at night?</li>
+        <li>Alex has to repair her armour before the next battle.</li>
+      </ol>
+      <button class="check-btn" style="margin-top:8px" onclick="toggleAnswers()">SHOW / HIDE ANSWERS</button>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn prev" onclick="switchTab(3)">◀ PREV</button>
+      <button class="nav-btn" onclick="switchTab(0)" style="background:#555;border-color:#333;color:#ccc">↩ RESTART</button>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+// ---- TAB SWITCHING ----
+function switchTab(n) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.hotbar-slot').forEach(s => s.classList.remove('active'));
+  document.getElementById('tab' + n).classList.add('active');
+  document.querySelector('[data-tab="' + n + '"]').classList.add('active');
+  const pct = [20, 40, 60, 80, 100][n];
+  document.getElementById('xpBar').style.width = pct + '%';
+  document.getElementById('xpLabel').textContent = 'Section ' + (n+1) + ' / 5';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ---- QUIZ DATA ----
+const quizData = [
+  {
+    q: "🌙 It's midnight in Minecraft. Steve thinks: \"I _____ build a shelter right now — it's my own idea!\"",
+    opts: ["must", "have to", "mustn't", "don't have to"],
+    ans: 0,
+    exp: "✅ MUST — to jego własne przekonanie, wewnętrzna potrzeba!"
+  },
+  {
+    q: "📋 The server rules say: Players _____ pay diamonds to enter the arena.",
+    opts: ["must", "have to", "mustn't", "don't have to"],
+    ans: 1,
+    exp: "✅ HAVE TO — zewnętrzna zasada serwera, nie Twój własny pomysł."
+  },
+  {
+    q: "💥 Warning sign: \"You _____ use TNT near the village!\" (it is forbidden)",
+    opts: ["must", "have to", "mustn't", "don't have to"],
+    ans: 2,
+    exp: "✅ MUSTN'T — zakaz! Nie wolno Ci używać TNT."
+  },
+  {
+    q: "🥕 Creative mode is on. You _____ eat food — your hunger bar doesn't decrease.",
+    opts: ["must", "have to", "mustn't", "don't have to"],
+    ans: 3,
+    exp: "✅ DON'T HAVE TO — brak obowiązku. Możesz jeść, ale nie musisz."
+  },
+  {
+    q: "😱 Last night was terrible! I _____ fight THREE Creepers at the same time!",
+    opts: ["must", "had to", "have to", "mustn't"],
+    ans: 1,
+    exp: "✅ HAD TO — czas przeszły! 'Must' nie ma formy przeszłej."
+  },
+  {
+    q: "👑 Alex _____ collect 64 blocks of wood before she can join the quest. (server requirement)",
+    opts: ["must", "has to", "mustn't", "doesn't have to"],
+    ans: 1,
+    exp: "✅ HAS TO — trzecia osoba + zewnętrzny wymóg serwera. Has to = have to dla he/she/it."
+  },
+  {
+    q: "🚫 You _____ cheat in this game. It ruins the fun for everyone.",
+    opts: ["must", "don't have to", "mustn't", "had to"],
+    ans: 2,
+    exp: "✅ MUSTN'T — to zakaz, zakaz, zakaz! Nie mylić z 'don't have to'!"
+  },
+  {
+    q: "🎮 The game is in easy mode, so you _____ wear armour — but you still can if you want.",
+    opts: ["mustn't", "must", "don't have to", "have to"],
+    ans: 2,
+    exp: "✅ DON'T HAVE TO — nie ma obowiązku, ale możesz. Łatwy tryb = bez przymusu."
+  }
+];
+
+let quizAnswered = 0, quizScore = 0;
+
+function buildQuiz() {
+  const cont = document.getElementById('quiz-container');
+  cont.innerHTML = '';
+  quizData.forEach((q, i) => {
+    const div = document.createElement('div');
+    div.className = 'quiz-q';
+    div.innerHTML = `
+      <div class="q-num">PYTANIE ${i+1} / ${quizData.length}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="options" id="opts-${i}">
+        ${q.opts.map((o,j) => `<button class="opt-btn" onclick="answerQ(${i},${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join('')}
+      </div>
+      <div class="feedback" id="fb-${i}"></div>
+    `;
+    cont.appendChild(div);
+  });
+}
+
+function answerQ(qi, chosen) {
+  const opts = document.getElementById('opts-' + qi);
+  const fb = document.getElementById('fb-' + qi);
+  if (opts.querySelector('.correct, .wrong')) return; // already answered
+  const buttons = opts.querySelectorAll('.opt-btn');
+  buttons.forEach(b => b.disabled = true);
+  buttons[quizData[qi].ans].classList.add('correct');
+  if (chosen !== quizData[qi].ans) {
+    buttons[chosen].classList.add('wrong');
+    fb.className = 'feedback show bad';
+    fb.textContent = '❌ ' + quizData[qi].exp;
+  } else {
+    quizScore++;
+    fb.className = 'feedback show ok';
+    fb.textContent = '⛏️ ' + quizData[qi].exp;
+  }
+  quizAnswered++;
+  if (quizAnswered === quizData.length) showQuizScore();
+}
+
+function showQuizScore() {
+  const sd = document.getElementById('score-display');
+  sd.classList.add('show');
+  document.getElementById('score-num').textContent = quizScore + ' / ' + quizData.length;
+  const pct = quizScore / quizData.length;
+  let msg = pct === 1 ? '🏆 PERFECT! Jesteś mistrzem gramatyki!' :
+            pct >= 0.75 ? '⚔️ Świetnie! Prawie perfekcja!' :
+            pct >= 0.5 ? '🪓 Nieźle! Powtórz teorię i spróbuj ponownie.' :
+            '💀 Wróć do teorii — Steve potrzebuje więcej treningu!';
+  document.getElementById('score-msg').textContent = msg;
+}
+
+// ---- FILL-IN DATA ----
+const fillData = [
+  {
+    before: "You ",
+    after: " touch other players' items without permission. It's strictly forbidden! 🚫",
+    answer: "mustn't",
+    hint: "(zakaz!)"
+  },
+  {
+    before: "In hardcore mode, Steve ",
+    after: " be very careful — he only has one life! (it's a game rule) ❤️",
+    answer: "has to",
+    hint: "(zewnętrzny wymóg / 3 osoba)"
+  },
+  {
+    before: "Yesterday was so hard! I ",
+    after: " fight the Ender Dragon alone because my friend disconnected. 🐉",
+    answer: "had to",
+    hint: "(czas przeszły)"
+  },
+  {
+    before: "In creative mode you ",
+    after: " collect resources — you already have everything! 🎁",
+    answer: "don't have to",
+    hint: "(brak obowiązku)"
+  },
+  {
+    before: "I ",
+    after: " go to sleep — I've been playing Minecraft for 6 hours! (moje własne przekonanie) 😴",
+    answer: "must",
+    hint: "(wewnętrzne przekonanie)"
+  },
+  {
+    before: "All new players ",
+    after: " read the server rules before they start playing. 📜",
+    answer: "have to",
+    hint: "(zewnętrzna zasada)"
+  }
+];
+
+function buildFill() {
+  const cont = document.getElementById('fill-container');
+  cont.innerHTML = '';
+  fillData.forEach((f, i) => {
+    const div = document.createElement('div');
+    div.className = 'quiz-q';
+    div.innerHTML = `
+      <div class="q-num">ZDANIE ${i+1} / ${fillData.length} <span style="color:#888;font-size:12px">${f.hint}</span></div>
+      <div class="q-text" style="display:flex;flex-wrap:wrap;align-items:center;gap:4px">
+        <span style="color:var(--white)">${f.before}</span>
+        <input class="fill-input" id="fill-${i}" type="text" placeholder="...">
+        <span style="color:var(--white)">${f.after}</span>
+      </div>
+    `;
+    cont.appendChild(div);
+  });
+}
+
+function checkFill() {
+  let score = 0;
+  fillData.forEach((f, i) => {
+    const inp = document.getElementById('fill-' + i);
+    const val = inp.value.trim().toLowerCase();
+    if (val === f.answer) {
+      inp.classList.remove('wrong-f'); inp.classList.add('correct-f');
+      score++;
+    } else {
+      inp.classList.remove('correct-f'); inp.classList.add('wrong-f');
+      inp.placeholder = '✗ ' + f.answer;
+    }
+  });
+  const sd = document.getElementById('fill-score');
+  sd.style.display = 'block';
+  const pct = score / fillData.length;
+  sd.textContent = `WYNIK: ${score}/${fillData.length} — ` +
+    (pct === 1 ? '🏆 PERFEKCJA!' : pct >= 0.7 ? '⚔️ Bardzo dobrze!' : '💀 Spróbuj jeszcze raz!');
+}
+
+function toggleAnswers() {
+  const el = document.getElementById('answers');
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+// ---- INIT ----
+buildQuiz();
+buildFill();
+</script>
+</body>
+</html>

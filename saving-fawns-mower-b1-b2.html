@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saving Fawns from the Mower — Forbes English</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1C2B38;
+  --ink-soft:#33495A;
+  --paper:#E6ECEE;
+  --paper-dark:#D3DEE3;
+  --straw:#E8A08C;
+  --straw-bright:#F0BCAE;
+  --dawn:#D98C6B;
+  --thermal:#C97A68;
+  --sky:#5F7F95;
+  --ok:#3E7A4C;
+  --bad:#A23B3B;
+  --shadow: 0 8px 24px rgba(28,43,56,0.20);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:
+    radial-gradient(ellipse at top left, rgba(232,160,140,0.14), transparent 55%),
+    radial-gradient(ellipse at bottom right, rgba(95,127,149,0.16), transparent 55%),
+    var(--paper);
+  background-attachment:fixed;
+  font-family:'Public Sans', sans-serif;
+  color:var(--ink);
+  min-height:100vh;
+  padding-bottom:60px;
+}
+h1,h2,h3{font-family:'Newsreader', serif; margin:0 0 .4em 0;}
+p{line-height:1.7; margin:0 0 1em 0;}
+button{font-family:'Public Sans', sans-serif; cursor:pointer;}
+.mono{font-family:'IBM Plex Mono', monospace;}
+a{color:var(--sky);}
+
+#topbar{
+  position:fixed; top:0; left:0; right:0; z-index:50;
+  background:linear-gradient(180deg, var(--ink) 0%, var(--ink-soft) 100%);
+  color:var(--paper);
+  padding:10px 18px;
+  box-shadow:var(--shadow);
+  display:flex; align-items:center; gap:16px;
+  flex-wrap:wrap;
+}
+#logo{display:flex; align-items:center; gap:10px; flex-shrink:0;}
+#logo svg{width:36px; height:36px;}
+#logo .word{font-family:'Newsreader', serif; font-weight:600; font-size:15px; line-height:1.1;}
+#logo .word span{display:block; font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:1.4px; color:var(--straw-bright); font-weight:500;}
+.topbar-spacer{flex:1;}
+#scoreChip{
+  font-family:'IBM Plex Mono',monospace; font-size:12px; background:rgba(255,255,255,0.10);
+  border:1px solid rgba(255,255,255,0.25); border-radius:20px; padding:6px 14px; white-space:nowrap;
+}
+#langToggle{
+  background:var(--straw); color:var(--ink); border:none; border-radius:20px;
+  padding:6px 14px; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600;
+  letter-spacing:.5px; flex-shrink:0;
+}
+#langToggle:hover{background:var(--straw-bright);}
+
+#wrap{max-width:800px; margin:0 auto; padding:82px 20px 40px 20px;}
+
+.hero{
+  text-align:center; padding:14px 6px 6px 6px; margin-bottom:26px;
+}
+.hero-img-wrap{border-radius:10px; overflow:hidden; margin-bottom:18px; box-shadow:var(--shadow);}
+.hero-img-wrap img{display:block; width:100%; height:220px; object-fit:cover;}
+.hero-icon{width:96px; height:70px; margin:0 auto 14px auto; display:block;}
+.hero .de-title{font-family:'Newsreader',serif; font-style:italic; font-size:19px; color:var(--ink-soft); margin-bottom:14px; display:none;}
+body.show-de .hero .de-title{display:block;}
+.hero .lede .de-block{font-style:italic; font-size:14.5px; margin-top:8px;}
+.de-para{
+  display:none; font-style:italic; color:var(--ink-soft); font-size:14.5px; margin-top:8px;
+  padding:10px 14px; background:rgba(201,162,39,0.08); border-left:3px solid var(--straw); border-radius:0 4px 4px 0;
+}
+body.show-de .de-para{display:block;}
+.para-block{margin-bottom:20px; padding-bottom:18px; border-bottom:1px solid rgba(33,58,38,0.08);}
+.para-block:last-child{border-bottom:none;}
+.tab-btn .de-tab{display:none; font-size:10px; font-weight:400; opacity:.85;}
+body.show-de .tab-btn .de-tab{display:block;}
+.q-de{display:none; font-size:13.5px; font-style:italic; color:var(--ink-soft); margin-bottom:12px;}
+body.show-de .q-de{display:block;}
+.de-word{display:none; font-size:10.5px; font-style:italic; color:var(--ink-soft);}
+body.show-de .de-word{display:block;}
+.hero .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--thermal); margin-bottom:10px;}
+.hero h1{font-size:34px; line-height:1.15; margin-bottom:14px;}
+.hero .lede{font-size:16px; color:var(--ink-soft); max-width:560px; margin:0 auto;}
+.level-row{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:20px;}
+.level-chip{font-family:'IBM Plex Mono',monospace; font-size:11px; padding:5px 12px; border-radius:20px; color:#fff; background:var(--sky);}
+
+.card{
+  background:#F7F9F2;
+  border:1px solid rgba(33,58,38,0.12);
+  border-radius:6px;
+  box-shadow:var(--shadow);
+  padding:30px 32px;
+  margin-bottom:24px;
+}
+
+.article-label{
+  display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:1px; text-transform:uppercase;
+  background:var(--ink); color:var(--paper); padding:5px 12px; border-radius:0 4px 4px 0; margin:-30px 0 20px -32px;
+}
+.article-text p{font-size:16px;}
+.article-text p:first-of-type::first-letter{
+  font-family:'Newsreader',serif; font-size:52px; font-weight:700; float:left; line-height:0.8;
+  padding:8px 8px 0 0; color:var(--thermal);
+}
+.glossary-box{
+  margin-top:22px; padding:16px 18px; background:rgba(201,162,39,0.09);
+  border:1px dashed rgba(201,162,39,0.55); border-radius:6px; font-size:13.5px;
+}
+.glossary-box .g-title{font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:1px; text-transform:uppercase; color:var(--straw); margin-bottom:10px;}
+.glossary-grid{display:grid; grid-template-columns:1fr 1fr; gap:5px 20px;}
+@media(max-width:560px){.glossary-grid{grid-template-columns:1fr;}}
+.glossary-box b{color:var(--ink);}
+.de-line{display:none; color:var(--ink-soft); font-style:italic;}
+body.show-de .de-line{display:inline;}
+body.show-de .de-block{display:block;}
+.de-block{display:none;}
+
+.tabs{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:20px;}
+.tab-btn{
+  background:var(--paper-dark); border:1.5px solid rgba(33,58,38,0.18); color:var(--ink-soft);
+  border-radius:20px; padding:9px 18px; font-size:13px; font-weight:600; font-family:'IBM Plex Mono',monospace;
+}
+.tab-btn.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+.activity-head{margin-bottom:20px;}
+.activity-head .a-num{font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--thermal); margin-bottom:4px;}
+.activity-head p{color:var(--ink-soft); font-size:14.5px;}
+
+.q-block{margin-bottom:26px; padding-bottom:24px; border-bottom:1px solid rgba(33,58,38,0.10);}
+.q-block:last-child{border-bottom:none; margin-bottom:0; padding-bottom:0;}
+.q-num{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-soft); margin-bottom:6px;}
+.q-text{font-size:15.5px; font-weight:600; margin-bottom:12px; line-height:1.55;}
+.q-text .blank{font-family:'IBM Plex Mono',monospace;}
+.opts{display:flex; flex-direction:column; gap:8px;}
+.opt-btn{
+  text-align:left; background:#fff; border:1.5px solid rgba(33,58,38,0.18); border-radius:6px;
+  padding:10px 14px; font-size:14px;
+}
+.opt-btn:hover:not(:disabled){border-color:var(--sky);}
+.opt-btn.correct{background:#e8f3e9; border-color:var(--ok); color:var(--ok); font-weight:600;}
+.opt-btn.incorrect{background:#f8eaea; border-color:var(--bad); color:var(--bad);}
+.opt-btn:disabled{cursor:default;}
+.feedback{margin-top:10px; padding:11px 14px; border-radius:6px; font-size:13.5px; line-height:1.55;}
+.feedback.correct{background:#e8f3e9; border-left:3px solid var(--ok);}
+.feedback.incorrect{background:#f8eaea; border-left:3px solid var(--bad);}
+
+.sort-instructions{font-size:14.5px; color:var(--ink-soft); margin-bottom:18px;}
+.word-pool{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:26px; min-height:40px;}
+.word-chip{
+  font-family:'IBM Plex Mono',monospace; font-size:13px; background:var(--paper-dark); border:1.5px solid rgba(33,58,38,0.2);
+  padding:8px 14px; border-radius:16px;
+}
+.word-chip.selected{background:var(--straw-bright); border-color:var(--straw);}
+.word-chip.placed{opacity:.4; cursor:default;}
+.categories{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+@media(max-width:560px){.categories{grid-template-columns:1fr;}}
+.cat-box{
+  border:2px dashed rgba(33,58,38,0.25); border-radius:8px; padding:14px; min-height:90px; background:rgba(255,255,255,0.5);
+}
+.cat-box .cat-title{font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.5px; text-transform:uppercase; color:var(--ink-soft); margin-bottom:8px;}
+.cat-box .cat-items{display:flex; flex-wrap:wrap; gap:6px;}
+.placed-chip{font-size:12.5px; font-family:'IBM Plex Mono',monospace; padding:5px 10px; border-radius:12px; color:#fff;}
+.placed-chip.correct{background:var(--ok);}
+.placed-chip.incorrect{background:var(--bad);}
+
+.full-glossary table{width:100%; border-collapse:collapse; font-size:14px;}
+.full-glossary td{padding:9px 6px; border-bottom:1px solid rgba(33,58,38,0.10); vertical-align:top;}
+.full-glossary td:first-child{font-weight:600; white-space:nowrap; width:190px;}
+.full-glossary .de-cell{display:none; color:var(--ink-soft); font-style:italic;}
+body.show-de .full-glossary .de-cell{display:table-cell;}
+
+.summary-note{text-align:center; font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-soft); margin-top:8px;}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <div id="logo">
+    <svg viewBox="0 0 100 70" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="50" cy="60" rx="46" ry="6" fill="#E0BE49" opacity="0.25"/>
+      <path d="M20 55 Q26 30 38 32 Q42 20 50 24 Q54 14 60 22 Q68 18 66 30 Q76 30 70 44 Q72 54 60 54 Z" fill="none" stroke="#E0BE49" stroke-width="1.6"/>
+      <g stroke="#B33F62" stroke-width="1.8" fill="none">
+        <circle cx="30" cy="16" r="3.2"/>
+        <line x1="30" y1="16" x2="18" y2="10"/>
+        <line x1="30" y1="16" x2="42" y2="10"/>
+        <line x1="30" y1="16" x2="18" y2="22"/>
+        <line x1="30" y1="16" x2="42" y2="22"/>
+        <circle cx="18" cy="10" r="2"/><circle cx="42" cy="10" r="2"/>
+        <circle cx="18" cy="22" r="2"/><circle cx="42" cy="22" r="2"/>
+      </g>
+    </svg>
+    <div class="word">Forbes English<span>SAVING FAWNS FROM THE MOWER</span></div>
+  </div>
+  <div class="topbar-spacer"></div>
+  <div id="scoreChip">✓ <span id="scoreVal">0</span>/40</div>
+  <button id="langToggle">DE</button>
+</div>
+
+<div id="wrap">
+
+  <div class="hero">
+    <div class="hero-img-wrap">
+      <img src="Animal Welfare/deer-mountain-hero.png" alt="Two fawns silhouetted by a mountain lake at dusk">
+    </div>
+    <svg class="hero-icon" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="100" cy="128" rx="95" ry="8" fill="#33523B" opacity="0.12"/>
+      <circle cx="150" cy="25" r="16" fill="#E0BE49" opacity="0.7"/>
+      <g stroke="#B33F62" stroke-width="2" fill="none">
+        <circle cx="70" cy="40" r="6"/>
+        <line x1="70" y1="40" x2="40" y2="24"/><line x1="70" y1="40" x2="100" y2="24"/>
+        <line x1="70" y1="40" x2="40" y2="56"/><line x1="70" y1="40" x2="100" y2="56"/>
+        <circle cx="40" cy="24" r="3.5"/><circle cx="100" cy="24" r="3.5"/>
+        <circle cx="40" cy="56" r="3.5"/><circle cx="100" cy="56" r="3.5"/>
+      </g>
+      <path d="M20 118 Q40 60 60 65 Q65 45 78 50 Q84 32 95 42 Q104 30 112 40 Q124 34 120 52 Q136 52 128 72 Q132 88 116 88 Q112 108 92 104 Q70 118 55 108 Q35 122 20 118 Z" fill="none" stroke="#33523B" stroke-width="2"/>
+    </svg>
+    <div class="eyebrow">Reading · Vocabulary · Grammar</div>
+    <h1>Saving Fawns from the Mower</h1>
+    <div class="de-title">Rehkitze vor dem Mähtod retten</div>
+    <p class="lede">Every spring, drone pilots fly thermal cameras over fields at dawn to find fawns hidden in the grass — before the combine harvesters arrive. Read the article, then work through four activities on the vocabulary and grammar of wildlife rescue.
+      <span class="de-block">Jeden Frühling fliegen Drohnenpiloten bei Morgendämmerung mit Wärmebildkameras über die Felder, um versteckte Rehkitze im Gras zu finden — bevor die Mähdrescher eintreffen. Lies den Artikel und bearbeite dann vier Übungen zu Wortschatz und Grammatik der Wildtierrettung.</span>
+    </p>
+    <div class="level-row">
+      <span class="level-chip" style="background:var(--sky)">CEFR B1–B2</span>
+      <span class="level-chip" style="background:var(--straw)">40 questions</span>
+      <span class="level-chip" style="background:var(--thermal)">Reading · Vocab · Grammar</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="article-label">Article</span>
+    <div class="article-text">
+      <div class="para-block">
+        <p>Every spring, deer give birth in the tall grass and meadows of the countryside. A newborn fawn has almost no scent and cannot run fast, so its main defence against danger is a simple instinct: freeze completely still and stay hidden in the grass. This instinct works well against foxes and wild boar — but it fails completely against something a fawn has never evolved to recognise: a combine harvester. A farmer cutting a field in early summer often cannot see a fawn lying motionless in the grass until it is far too late.</p>
+        <div class="de-para">Jedes Frühjahr bringen Rehe ihre Jungen im hohen Gras und auf den Wiesen der Landschaft zur Welt. Ein neugeborenes Rehkitz hat fast keinen Eigengeruch und kann nicht schnell laufen, deshalb ist seine wichtigste Verteidigung ein einfacher Instinkt: völlig regungslos verharren und sich im Gras verstecken. Dieser Instinkt funktioniert gut gegen Füchse und Wildschweine — versagt aber vollständig gegenüber etwas, das ein Rehkitz nie kennengelernt hat: einen Mähdrescher. Ein Landwirt, der im Frühsommer ein Feld mäht, kann ein reglos daliegendes Kitz im Gras oft erst viel zu spät sehen.</div>
+      </div>
+      <div class="para-block">
+        <p>This is why a growing network of volunteers now flies drones fitted with thermal imaging cameras over fields in the very early morning, just before the mowing season begins. At dawn, the ground is still cool, and a fawn's body heat stands out clearly on camera as a bright shape against a cool, dark background — a difference that disappears by mid-morning, once the sun has warmed the whole field.</p>
+        <div class="de-para">Deshalb fliegt ein wachsendes Netzwerk von Freiwilligen inzwischen mit Wärmebildkameras ausgestattete Drohnen sehr früh morgens über die Felder, kurz bevor die Mähsaison beginnt. Bei Sonnenaufgang ist der Boden noch kühl, und die Körperwärme eines Rehkitzes hebt sich auf der Kamera deutlich als heller Fleck vor dem kühlen, dunklen Hintergrund ab — ein Unterschied, der bis zum späten Vormittag verschwindet, sobald die Sonne das ganze Feld erwärmt hat.</div>
+      </div>
+      <div class="para-block">
+        <p>When a drone pilot spots a fawn, they alert a small ground team, who approach the animal carefully — usually wearing gloves and avoiding leaving their scent behind, since a doe may reject a fawn that smells of humans. The fawn isn't carried away. Instead, it's temporarily placed under a box or behind a barrier of cut branches, safely out of the mower's path. Once the field has been cut, the fawn is released again close to where it was found, so the doe can find it.</p>
+        <div class="de-para">Entdeckt ein Drohnenpilot ein Rehkitz, alarmiert er ein kleines Bodenteam, das sich dem Tier vorsichtig nähert — meist mit Handschuhen, um keinen menschlichen Geruch zu hinterlassen, da eine Ricke ein nach Mensch riechendes Kitz verstoßen könnte. Das Kitz wird nicht weggetragen, sondern vorübergehend unter einer Kiste oder hinter einer Barriere aus geschnittenen Ästen versteckt, sicher außerhalb der Mähbahn. Nach dem Mähen wird das Kitz wieder in der Nähe seines Fundorts freigelassen, damit die Ricke es wiederfindet.</div>
+      </div>
+      <div class="para-block">
+        <p>This work depends on close cooperation between people who don't always see the countryside the same way: farmers, hunters, drone pilots, and volunteer conservationists. Farmers announce their mowing dates in advance; hunters and local rescue groups organise teams; drone pilots donate their time and their expensive thermal equipment. In German, conservationists sometimes call an unnecessary fawn death the &ldquo;Mähtod&rdquo; — literally, &ldquo;mowing death.&rdquo; In a single season, a well-organised regional network can locate and relocate several thousand fawns before the blades ever reach them.</p>
+        <div class="de-para">Diese Arbeit hängt von enger Zusammenarbeit zwischen Menschen ab, die die Landschaft nicht immer gleich betrachten: Landwirten, Jägern, Drohnenpiloten und ehrenamtlichen Naturschützern. Landwirte kündigen ihre Mähtermine im Voraus an; Jäger und örtliche Rettungsgruppen organisieren Teams; Drohnenpiloten spenden ihre Zeit und ihre teure Wärmebildausrüstung. Auf Deutsch nennen Naturschützer einen unnötigen Rehkitztod manchmal &bdquo;Mähtod&rdquo;. In einer einzigen Saison kann ein gut organisiertes regionales Netzwerk mehrere tausend Rehkitze aufspüren und retten, bevor die Messer sie erreichen.</div>
+      </div>
+    </div>
+    <div class="glossary-box">
+      <div class="g-title">Key vocabulary in this article</div>
+      <div class="glossary-grid">
+        <div><b>fawn</b> — a young deer <span class="de-line">(das Rehkitz)</span></div>
+        <div><b>doe</b> — a female deer <span class="de-line">(die Rehgeiß / Ricke)</span></div>
+        <div><b>instinct</b> — natural, unlearned behaviour <span class="de-line">(der Instinkt)</span></div>
+        <div><b>combine harvester</b> — a large crop-cutting machine <span class="de-line">(der Mähdrescher)</span></div>
+        <div><b>thermal imaging camera</b> — a camera that detects heat <span class="de-line">(die Wärmebildkamera)</span></div>
+        <div><b>to relocate</b> — to move somewhere temporarily <span class="de-line">(umsiedeln)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabs" id="tabNav">
+    <button class="tab-btn active" data-tab="1">01 · Reading Comprehension<span class="de-tab">Leseverständnis</span></button>
+    <button class="tab-btn" data-tab="2">02 · Vocabulary in Context<span class="de-tab">Wortschatz im Kontext</span></button>
+    <button class="tab-btn" data-tab="3">03 · Word Sorting<span class="de-tab">Wörter sortieren</span></button>
+    <button class="tab-btn" data-tab="4">04 · Grammar Focus<span class="de-tab">Grammatik</span></button>
+  </div>
+
+  <!-- ACTIVITY 1 -->
+  <div class="card tab-panel active" id="panel-1">
+    <div class="activity-head">
+      <div class="a-num">Activity 1 of 4</div>
+      <h2>Reading Comprehension</h2>
+      <p>Answer based on the article above. Choose the best option — you'll see an explanation either way.</p>
+    </div>
+    <div id="mount-1"></div>
+  </div>
+
+  <!-- ACTIVITY 2 -->
+  <div class="card tab-panel" id="panel-2">
+    <div class="activity-head">
+      <div class="a-num">Activity 2 of 4</div>
+      <h2>Vocabulary in Context</h2>
+      <p>Complete each sentence with the word that fits best.</p>
+    </div>
+    <div id="mount-2"></div>
+  </div>
+
+  <!-- ACTIVITY 3 -->
+  <div class="card tab-panel" id="panel-3">
+    <div class="activity-head">
+      <div class="a-num">Activity 3 of 4</div>
+      <h2>Word Sorting</h2>
+      <p class="sort-instructions">Click a word below, then click the category it belongs to. Each word can only be placed once.</p>
+    </div>
+    <div id="mount-3"></div>
+  </div>
+
+  <!-- ACTIVITY 4 -->
+  <div class="card tab-panel" id="panel-4">
+    <div class="activity-head">
+      <div class="a-num">Activity 4 of 4</div>
+      <h2>Grammar Focus — Passive Voice, First Conditional &amp; Modals</h2>
+      <p>Complete each sentence with the correct grammatical form, all in the context of fawn rescue.</p>
+    </div>
+    <div id="mount-4"></div>
+  </div>
+
+  <div class="card full-glossary">
+    <span class="article-label">Full glossary</span>
+    <table>
+      <tbody id="glossaryTable"></tbody>
+    </table>
+  </div>
+
+  <div class="summary-note">Forbes English · CEFR B1–B2 · based on the real work of drone-assisted fawn rescue networks</div>
+
+</div>
+
+<script>
+/* ============================ DATA ============================ */
+
+let score = 0;
+const TOTAL = 40;
+
+function updateScore(){ document.getElementById('scoreVal').textContent = score; }
+
+/* ---------------- Activity 1: Reading Comprehension ---------------- */
+const readingQs = [
+  {q:"Why does a fawn's freezing instinct fail against farm machinery?",
+    opts:["Because staying still, which hides it from predators, doesn't help it avoid a machine that simply cuts through the grass.",
+          "Because fawns can hear the machine coming but choose to ignore it.",
+          "Because fawns are physically too weak to move at all.",
+          "Because farmers deliberately search fields for hidden fawns."],
+    correct:0,
+    exp:"The article explains the instinct evolved against predators like foxes, not machines — freezing offers no protection from a mower.",
+    expDE:"Der Instinkt hat sich gegen Fressfeinde wie Füchse entwickelt, nicht gegen Maschinen — Stillhalten schützt nicht vor einem Mähwerk."},
+  {q:"According to the text, when do drone teams usually fly over the fields, and why?",
+    opts:["Early morning, because the temperature difference between a fawn's body and the cool ground is easiest to detect then.",
+          "Midday, because bright sunlight helps the thermal cameras work.",
+          "At night, because fawns are most active after dark.",
+          "Any time — according to the article, timing doesn't really matter."],
+    correct:0,
+    exp:"At dawn, the ground is still cool, so a fawn's body heat contrasts sharply on a thermal camera.",
+    expDE:"Bei Morgendämmerung ist der Boden noch kühl, sodass sich die Körperwärme eines Kitzes auf der Wärmebildkamera deutlich abhebt."},
+  {q:"What happens to a fawn once a drone pilot finds it?",
+    opts:["It's temporarily covered or fenced off nearby until mowing is finished, then released close to where it was found.",
+          "It's taken to a wildlife rescue centre for several weeks.",
+          "It's moved to a completely different field, far from where it was found.",
+          "It's simply left in place, and the farmer mows carefully around it."],
+    correct:0,
+    exp:"The article describes a temporary, local relocation — under a box or behind cut branches — followed by release nearby.",
+    expDE:"Der Artikel beschreibt eine vorübergehende, örtliche Umsiedlung — unter einer Kiste oder hinter Astwerk — mit anschließender Freilassung in der Nähe."},
+  {q:"Why do rescue teams avoid touching fawns with bare hands?",
+    opts:["Because a doe may reject a fawn that smells of humans.",
+          "Because fawns can be aggressive when frightened.",
+          "Because it's against hunting law to touch wild animals.",
+          "Because gloves help keep the thermal camera's readings accurate."],
+    correct:0,
+    exp:"The article notes that a doe may reject a fawn carrying a human scent, so rescuers wear gloves.",
+    expDE:"Laut Artikel kann eine Ricke ein Kitz ablehnen, das nach Menschen riecht, deshalb tragen Helfer Handschuhe."},
+  {q:"Who is involved in the rescue network described in the article?",
+    opts:["Farmers, hunters, drone pilots, and volunteer conservationists.",
+          "Only farmers and veterinarians.",
+          "Only government wildlife agencies.",
+          "Only the companies that manufacture the drones."],
+    correct:0,
+    exp:"The article lists exactly this mix of people cooperating: farmers, hunters, drone pilots, and volunteers.",
+    expDE:"Der Artikel nennt genau diese Gruppe von Mitwirkenden: Landwirte, Jäger, Drohnenpiloten und Freiwillige."},
+  {q:"What German term does the article mention for an unnecessary fawn death caused by mowing?",
+    opts:["Mähtod","Waldsterben","Feldjagd","Tierschutz"],
+    correct:0,
+    exp:"&ldquo;Mähtod&rdquo; literally means &ldquo;mowing death&rdquo; — the term the article gives for this kind of accident.",
+    expDE:"&bdquo;Mähtod&rdquo; bedeutet wörtlich &bdquo;Tod durch Mähen&rdquo; — genau der Begriff, den der Artikel dafür nennt."},
+  {q:"What role does the farmer play in the network described?",
+    opts:["Announcing mowing dates in advance so a rescue team can be organised.",
+          "Personally flying the drones over their own fields.",
+          "Paying for all of the network's thermal cameras.",
+          "Releasing the fawns once mowing is complete."],
+    correct:0,
+    exp:"The article says farmers announce their mowing dates in advance, which lets rescue teams organise around them.",
+    expDE:"Der Artikel sagt, Landwirte geben ihre Mähtermine im Voraus bekannt, damit sich Rettungsteams danach richten können."},
+  {q:"According to the article, how many fawns can a well-organised regional network relocate in a single season?",
+    opts:["Several thousand.","Several dozen.","Several hundred thousand.","Exactly one hundred."],
+    correct:0,
+    exp:"The article states that a well-organised network across one region can relocate several thousand fawns per season.",
+    expDE:"Der Artikel besagt, dass ein gut organisiertes regionales Netzwerk mehrere Tausend Kitze pro Saison retten kann."}
+];
+
+/* ---------------- Activity 2: Vocabulary in Context ---------------- */
+const vocabQs = [
+  {q:"A newborn ___ has almost no scent, which normally protects it from predators.",
+    opts:["fawn","doe","hunter","drone"], correct:0,
+    exp:"A <b>fawn</b> is a young deer — the animal at the centre of this whole rescue effort.",
+    expDE:"Ein <i>fawn</i> ist ein junges Reh — das Tier, um das sich diese ganze Rettungsaktion dreht."},
+  {q:"The mother deer, or ___, will search for her baby after it has been moved.",
+    opts:["doe","fawn","volunteer","farmer"], correct:0,
+    exp:"A <b>doe</b> is a female deer — the mother of a fawn.",
+    expDE:"Eine <i>doe</i> ist ein weibliches Reh — die Mutter eines Kitzes."},
+  {q:"Freezing completely still is a natural ___, not something the animal has to learn.",
+    opts:["instinct","network","casualty","camouflage"], correct:0,
+    exp:"An <b>instinct</b> is unlearned, natural behaviour an animal is born with.",
+    expDE:"Ein <i>instinct</i> ist angeborenes, nicht erlerntes Verhalten."},
+  {q:"Farmers usually ___ their fields in early summer, once the grass has grown tall enough.",
+    opts:["mow","spot","relocate","donate"], correct:0,
+    exp:"To <b>mow</b> means to cut grass or crops with a machine.",
+    expDE:"<i>to mow</i> bedeutet, Gras oder Getreide mit einer Maschine zu schneiden (mähen)."},
+  {q:"A large ___ can cut through a field far faster than any traditional method.",
+    opts:["combine harvester","thermal imaging camera","deterrent device","scarecrow"], correct:0,
+    exp:"A <b>combine harvester</b> is the large machine that cuts and processes crops.",
+    expDE:"Ein <i>combine harvester</i> ist die große Maschine, die Getreide schneidet und verarbeitet (Mähdrescher)."},
+  {q:"A ___ detects body heat instead of light, so a warm animal appears as a bright shape on screen.",
+    opts:["thermal imaging camera","GPS device","deterrent device","drone pilot"], correct:0,
+    exp:"A <b>thermal imaging camera</b> shows heat differences rather than visible light.",
+    expDE:"Eine <i>thermal imaging camera</i> zeigt Wärmeunterschiede statt sichtbarem Licht (Wärmebildkamera)."},
+  {q:"Many rescue teams now use a ___ to search fields from above before mowing begins.",
+    opts:["drone","combine harvester","scent","barrier"], correct:0,
+    exp:"A <b>drone</b> is a small remotely-controlled flying aircraft, ideal for searching fields from above.",
+    expDE:"Eine <i>drone</i> ist ein kleines, ferngesteuertes Fluggerät, ideal zum Absuchen von Feldern von oben."},
+  {q:"The person flying it, called the ___, needs training and a steady hand at dawn.",
+    opts:["drone pilot","farmer","hunter","conservationist"], correct:0,
+    exp:"A <b>drone pilot</b> is a person trained to fly a drone.",
+    expDE:"Ein <i>drone pilot</i> ist eine Person, die ausgebildet ist, eine Drohne zu fliegen."},
+  {q:"Most people who search fields for fawns are ___ — nobody pays them for their early mornings.",
+    opts:["volunteers","employees","inspectors","contractors"], correct:0,
+    exp:"A <b>volunteer</b> offers to help without being paid.",
+    expDE:"Ein <i>volunteer</i> hilft freiwillig, ohne bezahlt zu werden."},
+  {q:"Once the fawn has been found, the next step is to ___ it safely out of the mower's path.",
+    opts:["relocate","donate","announce","evolve"], correct:0,
+    exp:"To <b>relocate</b> means to move something to a different place, here temporarily.",
+    expDE:"<i>to relocate</i> bedeutet, etwas — hier vorübergehend — an einen anderen Ort zu bringen."}
+];
+
+/* ---------------- Activity 3: Word Sorting ---------------- */
+const sortWords = [
+  {word:"farmer", cat:"people"}, {word:"hunter", cat:"people"}, {word:"drone pilot", cat:"people"},
+  {word:"drone", cat:"equipment"}, {word:"thermal imaging camera", cat:"equipment"}, {word:"deterrent device", cat:"equipment"},
+  {word:"fawn", cat:"animals"}, {word:"doe", cat:"animals"}, {word:"hare", cat:"animals"},
+  {word:"mow", cat:"actions"}, {word:"spot", cat:"actions"}, {word:"release", cat:"actions"}
+];
+const categories = [
+  {key:"people", label:"People & Roles"},
+  {key:"equipment", label:"Equipment"},
+  {key:"animals", label:"Animals"},
+  {key:"actions", label:"Actions & Process"}
+];
+let selectedWord = null;
+let placedCount = 0;
+
+/* ---------------- Activity 4: Grammar Focus ---------------- */
+const grammarQs = [
+  {q:"Every spring, thousands of fawns ___ hidden in fields across the countryside.",
+    opts:["are found","find","were found","have find"], correct:0,
+    exp:"Passive present simple: <b>are found</b> — the focus is on the fawns, not on who finds them.",
+    expDE:"Passiv im Present Simple: <i>are found</i> — der Fokus liegt auf den Kitzen, nicht darauf, wer sie findet."},
+  {q:"The fawn ___ with bare hands, to avoid leaving a human scent.",
+    opts:["is not touched","does not touch","was not touch","has not touched"], correct:0,
+    exp:"Passive negative present simple: <b>is not touched</b>.",
+    expDE:"Passiv verneint im Present Simple: <i>is not touched</i>."},
+  {q:"Mowing dates ___ by farmers several days in advance.",
+    opts:["are announced","announce","were announcing","has announced"], correct:0,
+    exp:"Passive present simple with plural subject: <b>are announced</b>.",
+    expDE:"Passiv im Present Simple mit Plural-Subjekt: <i>are announced</i>."},
+  {q:"The thermal cameras ___ by volunteer drone pilots, not bought by the rescue organisation.",
+    opts:["are donated","donate","was donated","have donate"], correct:0,
+    exp:"Passive present simple: <b>are donated</b> — the cameras are the subject, receiving the action.",
+    expDE:"Passiv im Present Simple: <i>are donated</i> — die Kameras sind das Subjekt und erhalten die Handlung."},
+  {q:"If a drone pilot ___ a fawn early in the morning, the rescue team ___ time to act before mowing starts.",
+    opts:["spots / will have","spot / has","spotted / would have","spots / would have"], correct:0,
+    exp:"First conditional: <i>if</i> + present simple (<i>spots</i>), + <i>will</i> + infinitive (<i>will have</i>), for a real, likely situation.",
+    expDE:"Erster Konditionalsatz: <i>if</i> + Present Simple (<i>spots</i>), + <i>will</i> + Infinitiv (<i>will have</i>), für eine reale, wahrscheinliche Situation."},
+  {q:"If nobody ___ the field first, many fawns ___ the mowing season.",
+    opts:["checks / won't survive","check / don't survive","checked / wouldn't survive","checks / don't survive"], correct:0,
+    exp:"<i>Checks</i> (present simple condition) + <i>won't survive</i> (will-future result) — a real, general possibility.",
+    expDE:"<i>checks</i> (Bedingung im Present Simple) + <i>won't survive</i> (will-future-Ergebnis) — eine reale, allgemeine Möglichkeit."},
+  {q:"The doe ___ her fawn if it ___ of humans.",
+    opts:["will reject / smells","would reject / smelled","rejects / will smell","will reject / smell"], correct:0,
+    exp:"First conditional pattern: <i>will reject</i> (result) + <i>smells</i> (condition, present simple).",
+    expDE:"Struktur des ersten Konditionalsatzes: <i>will reject</i> (Ergebnis) + <i>smells</i> (Bedingung, Present Simple)."},
+  {q:"Rescue teams ___ wear gloves when handling a fawn — it's an essential precaution.",
+    opts:["must","might","could","needn't"], correct:0,
+    exp:"<b>Must</b> expresses a strong obligation — something essential, not optional.",
+    expDE:"<i>must</i> drückt eine starke Verpflichtung aus — etwas Wesentliches, nicht Optionales."},
+  {q:"Farmers ___ report their mowing dates by law, but responsible farmers do it anyway.",
+    opts:["don't have to","mustn't","shouldn't","can't"], correct:0,
+    exp:"<b>Don't have to</b> means something isn't legally necessary, even if people often choose to do it.",
+    expDE:"<i>don't have to</i> bedeutet, dass etwas rechtlich nicht notwendig ist, auch wenn es oft freiwillig getan wird."},
+  {q:"You ___ approach a resting fawn calmly and quietly — sudden movement can cause it to bolt into danger.",
+    opts:["should","must","can't","needn't"], correct:0,
+    exp:"<b>Should</b> gives sensible advice or a recommendation, rather than a strict rule.",
+    expDE:"<i>should</i> gibt einen sinnvollen Ratschlag oder eine Empfehlung, keine strenge Regel."}
+];
+
+/* ---------------- Full glossary ---------------- */
+const fullGlossary = [
+  ["fawn","a young deer, especially with its mother","das Rehkitz"],
+  ["doe","a female deer, the mother of a fawn","die Rehgeiß / Ricke"],
+  ["instinct","natural, unlearned behaviour","der Instinkt"],
+  ["to mow","to cut grass or crops with a machine","mähen"],
+  ["combine harvester","a large machine that cuts and processes crops","der Mähdrescher"],
+  ["thermal imaging camera","a camera that detects heat instead of light","die Wärmebildkamera"],
+  ["drone","a small remotely-controlled flying aircraft","die Drohne"],
+  ["drone pilot","a person trained to fly a drone","der/die Drohnenpilot(in)"],
+  ["volunteer","a person who helps without being paid","der/die Freiwillige"],
+  ["to spot","to notice or see something, often something hard to find","entdecken"],
+  ["to relocate","to move something to a different place, often temporarily","umsiedeln"],
+  ["deterrent device","something used to frighten animals away from danger","das Vergrämungsmittel"],
+  ["casualty","a person or animal injured or killed in an accident","das Unfallopfer"],
+  ["camouflage","natural colouring that helps an animal hide","die Tarnung"],
+  ["network","a connected group who share information and resources","das Netzwerk"],
+  ["dawn","the very early morning, as the sun rises","die Morgendämmerung"]
+];
+
+/* ============================ ENGINE ============================ */
+
+function renderMCQBlock(mountId, questions, prefix){
+  const mount = document.getElementById(mountId);
+  mount.innerHTML = questions.map((q,i)=>`
+    <div class="q-block">
+      <div class="q-num">${prefix} ${i+1} / ${questions.length}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="opts" id="${mountId}-opts-${i}">
+        ${q.opts.map((o,oi)=>`<button class="opt-btn" data-i="${oi}">${o}</button>`).join('')}
+      </div>
+      <div id="${mountId}-fb-${i}"></div>
+    </div>
+  `).join('');
+
+  questions.forEach((q,i)=>{
+    const optWrap = document.getElementById(`${mountId}-opts-${i}`);
+    optWrap.querySelectorAll('.opt-btn').forEach(btn=>{
+      btn.onclick = ()=>{
+        const chosen = parseInt(btn.dataset.i);
+        const isCorrect = chosen === q.correct;
+        optWrap.querySelectorAll('.opt-btn').forEach((b,bi)=>{
+          b.disabled = true;
+          if(bi === q.correct) b.classList.add('correct');
+          else if(bi === chosen) b.classList.add('incorrect');
+        });
+        if(isCorrect){ score++; updateScore(); }
+        document.getElementById(`${mountId}-fb-${i}`).innerHTML = `
+          <div class="feedback ${isCorrect?'correct':'incorrect'}">
+            ${isCorrect ? 'Correct. ' : 'Not quite. '}${q.exp}
+            <div class="de-block">${q.expDE}</div>
+          </div>
+        `;
+      };
+    });
+  });
+}
+
+function renderWordSort(){
+  const mount = document.getElementById('mount-3');
+  mount.innerHTML = `
+    <div class="word-pool" id="wordPool">
+      ${sortWords.map((w,i)=>`<button class="word-chip" data-i="${i}">${w.word}</button>`).join('')}
+    </div>
+    <div class="categories">
+      ${categories.map(c=>`
+        <div class="cat-box" data-cat="${c.key}">
+          <div class="cat-title">${c.label}</div>
+          <div class="cat-items" id="cat-items-${c.key}"></div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+
+  document.querySelectorAll('#wordPool .word-chip').forEach(chip=>{
+    chip.onclick = ()=>{
+      if(chip.classList.contains('placed')) return;
+      document.querySelectorAll('#wordPool .word-chip').forEach(c=>c.classList.remove('selected'));
+      chip.classList.add('selected');
+      selectedWord = parseInt(chip.dataset.i);
+    };
+  });
+
+  document.querySelectorAll('.cat-box').forEach(box=>{
+    box.onclick = (e)=>{
+      if(selectedWord === null) return;
+      const chosenCat = box.dataset.cat;
+      const wordObj = sortWords[selectedWord];
+      const isCorrect = wordObj.cat === chosenCat;
+      const chip = document.querySelector(`#wordPool .word-chip[data-i="${selectedWord}"]`);
+      chip.classList.add('placed');
+      chip.classList.remove('selected');
+      chip.disabled = true;
+
+      const placedEl = document.createElement('span');
+      placedEl.className = 'placed-chip ' + (isCorrect ? 'correct' : 'incorrect');
+      placedEl.textContent = wordObj.word + (isCorrect ? ' ✓' : ' ✗ (' + categories.find(c=>c.key===wordObj.cat).label + ')');
+      document.getElementById('cat-items-' + chosenCat).appendChild(placedEl);
+
+      if(isCorrect){ score++; updateScore(); }
+      placedCount++;
+      selectedWord = null;
+    };
+  });
+}
+
+function renderGlossaryTable(){
+  const tbody = document.getElementById('glossaryTable');
+  tbody.innerHTML = fullGlossary.map(row=>`
+    <tr>
+      <td>${row[0]}</td>
+      <td>${row[1]}</td><td class="de-cell">${row[2]}</td>
+    </tr>
+  `).join('');
+}
+
+/* ---------------- tabs ---------------- */
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.onclick = ()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+  };
+});
+
+document.getElementById('langToggle').onclick = ()=>{
+  document.body.classList.toggle('show-de');
+  const isDE = document.body.classList.contains('show-de');
+  document.getElementById('langToggle').textContent = isDE ? 'EN' : 'DE';
+};
+
+/* ---------------- init ---------------- */
+renderMCQBlock('mount-1', readingQs, 'Question');
+renderMCQBlock('mount-2', vocabQs, 'Question');
+renderWordSort();
+renderMCQBlock('mount-4', grammarQs, 'Question');
+renderGlossaryTable();
+updateScore();
+</script>
+</body>
+</html>

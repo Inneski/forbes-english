@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🚒 Feuerwehr Grammatik – müssen & haben zu</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky: #E4E9EE;
+    --white: #FFFFFF;
+    --sun: #F0A860;
+    --sun-dark: #D9834A;
+    --coral: #E8703E;
+    --coral-dark: #C4562A;
+    --mint: #6E9DBF;
+    --mint-dark: #3E6E90;
+    --blue: #4A6B85;
+    --blue-dark: #1C2733;
+    --lavender: #8C6E8C;
+    --lavender-dark: #5C425C;
+    --peach: #F0A860;
+    --peach-dark: #D9834A;
+    --text: #1C2733;
+    --text-light: #5C6B78;
+    --card-shadow: 0 4px 20px rgba(16,21,28,0.14);
+    --bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --nav-h: 60px;
+    --score-h: 50px;
+    --foot-h: calc(var(--nav-h) + var(--score-h));
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    margin: 0;
+  }
+
+  body {
+    background: var(--sky);
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    position: relative;
+  }
+
+  /* Dusk gradient wash, echoing the hero photo */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(28,39,51,0.06) 0%, transparent 20%, rgba(240,168,96,0.05) 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.8) translateY(-20px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===================== SLIDE DECK SHELL ===================== */
+  .lesson-page {
+    position: fixed;
+    inset: 0;
+    bottom: var(--foot-h);
+    overflow-y: auto;
+    display: none;
+    z-index: 1;
+  }
+  .lesson-page.active {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .layout-shell {
+    display: flex;
+    width: 100%;
+    min-height: 100%;
+  }
+
+  .image-panel {
+    width: 40%;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    height: 100%;
+    min-height: 100%;
+    overflow: hidden;
+  }
+  .image-panel img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    object-fit: cover;
+    transition: opacity 0.25s ease;
+  }
+  .image-panel .image-caption {
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    color: white;
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(20px, 2.2vw, 30px);
+    text-shadow: 0 2px 10px rgba(0,0,0,0.6);
+  }
+  .image-panel { position: sticky; }
+  .image-panel-inner { position: relative; height: 100%; }
+
+  .content-col {
+    flex: 1;
+    min-width: 0;
+    padding: 28px 40px 28px;
+    overflow-y: auto;
+  }
+
+  @media (max-width: 899px) {
+    .layout-shell { flex-direction: column; }
+    .image-panel {
+      width: 100%;
+      height: 35vh;
+      min-height: 35vh;
+      position: relative;
+      top: auto;
+    }
+    .content-col { padding: 20px 18px; }
+  }
+
+  /* HERO SLIDE */
+  .hero {
+    text-align: center;
+    animation: popIn 0.6s var(--bounce) both;
+  }
+
+  .hero h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(32px, 6vw, 56px);
+    color: var(--coral);
+    text-shadow: 3px 3px 0 var(--coral-dark);
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+
+  .hero h1 span { color: var(--blue); text-shadow: 3px 3px 0 var(--blue-dark); }
+
+  .hero-sub {
+    font-size: 16px;
+    color: var(--text-light);
+    font-weight: 600;
+    background: white;
+    display: inline-block;
+    padding: 6px 20px;
+    border-radius: 50px;
+    box-shadow: var(--card-shadow);
+    margin-top: 10px;
+  }
+
+  .hero-intro {
+    margin-top: 24px;
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--text-light);
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .slide-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(24px, 3vw, 34px);
+    color: var(--blue);
+    margin-bottom: 18px;
+  }
+
+  /* GRAMMAR CARDS */
+  .ref-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    animation: popIn 0.6s var(--bounce) 0.1s both;
+  }
+  @media (max-width: 580px) { .ref-grid { grid-template-columns: 1fr; } }
+
+  .ref-card {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: var(--card-shadow);
+    border-bottom: 5px solid transparent;
+    transition: transform 0.2s var(--bounce);
+  }
+  .ref-card:hover { transform: translateY(-4px); }
+  .ref-card.muss  { border-bottom-color: var(--coral); }
+  .ref-card.haben { border-bottom-color: var(--blue); }
+
+  .ref-card h3 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 22px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .ref-card.muss  h3 { color: var(--coral); }
+  .ref-card.haben h3 { color: var(--blue); }
+
+  .tense-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .tense-table th {
+    color: var(--text-light);
+    text-align: left;
+    padding: 4px 6px 4px 0;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px dashed #EEE;
+  }
+  .tense-table td {
+    padding: 6px 6px 6px 0;
+    border-bottom: 1px dashed #F0F0F0;
+    vertical-align: top;
+  }
+  .tense-table td:first-child { font-weight: 800; width: 100px; }
+  .ref-card.muss  .tense-table td:first-child { color: var(--coral); }
+  .ref-card.haben .tense-table td:first-child { color: var(--blue); }
+  .tense-table b { background: #FFF3CD; padding: 1px 3px; border-radius: 4px; }
+
+  /* TENSE SECTION */
+  .tense-section { animation: slideUp 0.5s var(--bounce) both; }
+
+  .tense-banner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    border-radius: 50px;
+    margin-bottom: 16px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 20px;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  }
+  .tense-banner .tense-sub { font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700; opacity: 0.85; }
+
+  .banner-past    { background: linear-gradient(135deg, var(--lavender), #845EF7); }
+  .banner-present { background: linear-gradient(135deg, var(--mint), #20C997); }
+  .banner-future  { background: linear-gradient(135deg, var(--peach), var(--sun-dark)); }
+  .banner-subj    { background: linear-gradient(135deg, var(--blue), #4DABF7); }
+
+  /* EXERCISE CARD */
+  .ex-card {
+    background: white;
+    border-radius: 18px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.08);
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    transition: transform 0.2s var(--bounce), box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ex-card:hover { transform: translateY(-2px); box-shadow: 0 6px 22px rgba(0,0,0,0.12); }
+
+  .ex-card.correct { background: #F0FFF4; }
+  .ex-card.wrong   { background: #FFF5F5; }
+
+  .ex-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 5px;
+    background: var(--sky);
+    border-radius: 18px 0 0 18px;
+  }
+  .ex-card.correct::before { background: var(--mint); }
+  .ex-card.wrong::before   { background: var(--coral); }
+  .ex-card.unanswered::before { background: #E2E8F0; }
+
+  .ex-num {
+    font-family: 'Fredoka One', cursive;
+    font-size: 24px;
+    min-width: 28px;
+    line-height: 1;
+    margin-top: 4px;
+  }
+
+  .ex-body { flex: 1; }
+
+  .ex-sentence {
+    font-size: 15px;
+    line-height: 1.7;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+
+  .tense-pill {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    padding: 2px 10px;
+    border-radius: 50px;
+    margin-left: 6px;
+    vertical-align: middle;
+    text-transform: uppercase;
+  }
+
+  .pill-past    { background: #F3F0FF; color: var(--lavender-dark); }
+  .pill-present { background: #EBFBEE; color: var(--mint-dark); }
+  .pill-future  { background: #FFF4E6; color: var(--peach-dark); }
+  .pill-subj    { background: #E7F5FF; color: var(--blue-dark); }
+
+  .answer-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .answer-input {
+    background: #F7FAFC;
+    border: 2.5px solid #E2E8F0;
+    border-radius: 12px;
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 8px 14px;
+    min-width: 180px;
+    outline: none;
+    transition: border-color 0.2s, transform 0.15s var(--bounce);
+  }
+  .answer-input:focus { border-color: var(--blue); transform: scale(1.02); }
+  .answer-input.correct-input { border-color: var(--mint); background: #F0FFF4; }
+  .answer-input.wrong-input   { border-color: var(--coral); background: #FFF5F5; animation: shake 0.4s; }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%       { transform: translateX(-6px); }
+    40%       { transform: translateX(6px); }
+    60%       { transform: translateX(-4px); }
+    80%       { transform: translateX(4px); }
+  }
+
+  .btn {
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    padding: 8px 18px;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.15s var(--bounce), box-shadow 0.15s;
+  }
+  .btn:hover { transform: scale(1.07); }
+  .btn:active { transform: scale(0.96); }
+
+  .btn-check {
+    background: var(--blue);
+    color: white;
+    box-shadow: 0 3px 0 var(--blue-dark);
+  }
+  .btn-check:hover { box-shadow: 0 5px 0 var(--blue-dark); }
+
+  .btn-reveal {
+    background: white;
+    color: var(--text-light);
+    border: 2px solid #E2E8F0;
+    box-shadow: 0 2px 0 #E2E8F0;
+  }
+
+  .hint-text {
+    font-size: 13px;
+    font-weight: 700;
+    margin-top: 8px;
+    display: none;
+    padding: 6px 12px;
+    border-radius: 10px;
+  }
+  .hint-text.show        { display: block; }
+  .hint-text.correct     { background: #EBFBEE; color: var(--mint-dark); }
+  .hint-text.wrong       { background: #FFF5F5; color: var(--coral-dark); }
+  .hint-text.revealed    { background: #F8F9FA; color: var(--text-light); }
+
+  /* SPEAKING/WRITING SLIDE */
+  .speak-card { border-top: 6px solid var(--coral); }
+  .speak-card ul { line-height: 2; padding-left: 20px; color: var(--text); }
+  .speak-card textarea {
+    width: 100%;
+    margin-top: 16px;
+    min-height: 120px;
+    resize: vertical;
+    border: 2.5px solid #E2E8F0;
+    border-radius: 14px;
+    padding: 12px 16px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+  }
+  .speak-card textarea:focus { border-color: var(--blue); }
+
+  /* RESULTS SLIDE */
+  .results-wrap { text-align: center; }
+  .results-stars { font-size: 54px; margin-bottom: 6px; }
+  .results-score { font-family: 'Fredoka One', cursive; font-size: 30px; color: var(--coral); margin-bottom: 20px; }
+  .results-score span { color: var(--blue); }
+
+  /* ===================== FIXED FOOTER (score + nav) ===================== */
+  .score-panel {
+    position: fixed;
+    left: 0; right: 0;
+    bottom: var(--nav-h);
+    height: var(--score-h);
+    background: white;
+    border-top: 3px solid var(--sun);
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    z-index: 100;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+  }
+
+  .stars { font-size: 20px; letter-spacing: 2px; }
+
+  .score-label {
+    font-family: 'Fredoka One', cursive;
+    font-size: 18px;
+    color: var(--coral);
+    white-space: nowrap;
+  }
+
+  .score-label span { color: var(--blue); }
+
+  .progress-track {
+    flex: 1;
+    height: 12px;
+    background: #EEE;
+    border-radius: 50px;
+    overflow: hidden;
+    max-width: 320px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 50px;
+    background: linear-gradient(to right, var(--coral), var(--sun), var(--mint));
+    width: 0%;
+    transition: width 0.5s var(--bounce);
+  }
+
+  .btn-reset {
+    font-family: 'Nunito', sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    padding: 7px 14px;
+    background: white;
+    border: 2px solid #E2E8F0;
+    border-radius: 50px;
+    cursor: pointer;
+    color: var(--text-light);
+    transition: all 0.15s var(--bounce);
+    white-space: nowrap;
+  }
+  .btn-reset:hover { border-color: var(--coral); color: var(--coral); transform: scale(1.05); }
+
+  .nav-bar {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    height: var(--nav-h);
+    background: var(--blue-dark);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    z-index: 101;
+  }
+
+  .nav-btn {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    padding: 9px 20px;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    background: var(--coral);
+    color: white;
+    box-shadow: 0 3px 0 var(--coral-dark);
+    transition: transform 0.15s var(--bounce), opacity 0.15s;
+  }
+  .nav-btn:hover { transform: scale(1.05); }
+  .nav-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+  .nav-btn.back { background: var(--mint); box-shadow: 0 3px 0 var(--mint-dark); }
+
+  .dots {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .dot {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.15s var(--bounce), background 0.15s;
+  }
+  .dot.active { background: var(--sun); transform: scale(1.4); }
+
+  /* Confetti burst on correct */
+  .confetti-burst {
+    position: fixed;
+    pointer-events: none;
+    z-index: 999;
+    font-size: 28px;
+    animation: burst 0.8s ease-out forwards;
+  }
+  @keyframes burst {
+    0%   { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-80px) scale(0.5); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ========================================================= -->
+<!-- SLIDE 0 — HERO / INTRO -->
+<!-- ========================================================= -->
+<div class="lesson-page" id="page0">
+  <div class="layout-shell">
+    <div class="image-panel">
+      <div class="image-panel-inner">
+        <img src="Fire Brigade/fire-1-street.png" alt="A firefighter walking a city street at dusk, fire trucks in the background">
+        <div class="image-caption">Feuerwehr Deutsch</div>
+      </div>
+    </div>
+    <div class="content-col">
+      <div class="hero">
+        <h1>Müssen & <span>Haben zu</span></h1>
+        <div class="hero-sub">🔥 Feuerwehr Deutsch · Alle Zeiten · B1–B2</div>
+        <p class="hero-intro">In diesem Kurs übst du <strong>müssen</strong> und <strong>haben zu</strong> in allen Zeitformen — Präteritum, Perfekt, Präsens, Futur I & II und Konjunktiv II — mit Sätzen aus dem Alltag der Feuerwehr. Klicke unten auf <strong>Weiter</strong>, um zu starten.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================= -->
+<!-- SLIDE 1 — GRAMMAR REFERENCE -->
+<!-- ========================================================= -->
+<div class="lesson-page" id="page1">
+  <div class="layout-shell">
+    <div class="image-panel">
+      <div class="image-panel-inner">
+        <img src="Fire Brigade/fire-1-street.png" alt="A firefighter walking a city street at dusk, fire trucks in the background">
+        <div class="image-caption">Grammatik-Übersicht</div>
+      </div>
+    </div>
+    <div class="content-col">
+      <div class="slide-title">📖 Grammatik-Referenz</div>
+      <div class="ref-grid">
+        <div class="ref-card muss">
+          <h3>🔴 müssen <small style="font-size:14px;font-family:Nunito;font-weight:700;color:#aaa">(must)</small></h3>
+          <table class="tense-table">
+            <tr><th>Zeit</th><th>Beispiel</th></tr>
+            <tr><td>Präsens</td><td>Er <b>muss</b> fahren.</td></tr>
+            <tr><td>Präteritum</td><td>Wir <b>mussten</b> helfen.</td></tr>
+            <tr><td>Perfekt</td><td>Er hat fahren <b>müssen</b>.</td></tr>
+            <tr><td>Futur I</td><td>Sie <b>werden</b> üben <b>müssen</b>.</td></tr>
+            <tr><td>Futur II</td><td>Er wird es getan haben <b>müssen</b>.</td></tr>
+            <tr><td>Konj. II</td><td>Ich <b>müsste</b> dort sein.</td></tr>
+          </table>
+        </div>
+        <div class="ref-card haben">
+          <h3>🔵 haben zu <small style="font-size:14px;font-family:Nunito;font-weight:700;color:#aaa">(have to)</small></h3>
+          <table class="tense-table">
+            <tr><th>Zeit</th><th>Beispiel</th></tr>
+            <tr><td>Präsens</td><td>Ich <b>habe</b> zu tragen.</td></tr>
+            <tr><td>Präteritum</td><td>Wir <b>hatten</b> zu schreiben.</td></tr>
+            <tr><td>Perfekt</td><td>Er hat zu helfen <b>gehabt</b>.</td></tr>
+            <tr><td>Futur I</td><td>Sie <b>werden</b> zu melden <b>haben</b>.</td></tr>
+            <tr><td>Futur II</td><td>Er wird zu melden <b>gehabt haben</b>.</td></tr>
+            <tr><td>Konj. II</td><td>Du <b>hättest</b> es zu melden gehabt.</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================= -->
+<!-- SLIDE 2 — PAST -->
+<!-- ========================================================= -->
+<div class="lesson-page" id="page2">
+  <div class="layout-shell">
+    <div class="image-panel">
+      <div class="image-panel-inner">
+        <img src="Fire Brigade/fire-1-street.png" alt="A firefighter walking a city street at dusk, fire trucks in the background">
+        <div class="image-caption">Vergangenheit</div>
+      </div>
+    </div>
+    <div class="content-col">
+      <div class="tense-section">
+        <div class="tense-banner banner-past">
+          ⏪ Vergangenheit <span class="tense-sub">– Past Tenses (Präteritum · Perfekt)</span>
+        </div>
+
+        <div class="ex-card unanswered" id="ex1">
+          <div class="ex-num" style="color:var(--lavender)">1</div>
+          <div class="ex-body">
+            <div class="ex-sentence">
+              Der Feuerwehrmann ________ schnell den Schlauch anlegen.
+              <span class="tense-pill pill-past">Präteritum · müssen</span>
+            </div>
+            <div class="answer-row">
+              <input class="answer-input" type="text" placeholder="Verb…" data-answer="musste" data-id="1">
+              <button class="btn btn-check" onclick="checkAnswer(1)">✓ Prüfen</button>
+              <button class="btn btn-reveal" onclick="revealAnswer(1)">👁 Zeigen</button>
+            </div>
+            <div class="hint-text" id="hint1"></div>
+          </div>
+        </div>
+
+        <div class="ex-card unanswered" id="ex2">
+          <div class="ex-num" style="color:var(--lavender)">2</div>
+          <div class="ex-body">
+            <div class="ex-sentence">
+              Wir ________ die Leiter sofort aufzustellen.
+              <span class="tense-pill pill-past">Präteritum · haben zu</span>
+            </div>
+            <div class="answer-row">
+              <input class="answer-input" type="text" placeholder="Verb…" data-answer="hatten" data-id="2">
+              <button class="btn btn-check" onclick="checkAnswer(2)">✓ Prüfen</button>
+              <button class="btn btn-reveal" onclick="revealAnswer(2)">👁 Zeigen</button>
+            </div>
+            <div class="hint-text" id="hint2"></div>
+          </div>
+        </div>
+
+        <div class="ex-card unanswered" id="ex3">
+          <div class="ex-num" style="color:var(--lavender)">3</div>
+          <div class="ex-body">
+            <div class="ex-sentence">
+              Der Einsatzleiter hat drei Häuser evakuieren ________.
+              <span class="tense-pill pill-past">Perfekt · müssen</span>
+            </div>
+            <div class="answer-row">
+              <input class="answer-input" type="text" placeholder="Verb…" data-answer="müssen" data-id="3">
+              <button class="btn btn-check" onclick="checkAnswer(3)">✓ Prüfen</button>
+              <button class="btn btn-reveal" onclick="revealAnswer(3)">👁 Zeigen</button>
+            </div>
+            <div class="hint-text" id="hint3"></div>
+          </div>
+        </div>
+
+        <div class="ex-card unanswered" id="ex4">
+          <div class="ex-num" style="color:var(--lavender)">4</div>
+          <div class="ex-body">
+            <div class="ex-sentence">
+              Sie hat den Unfallbericht einzureichen ________.
+              <span class="tense-pill pill-past">Perfekt · haben zu</span>
+            </div>
+            <div class="answer-row">
+              <input class="answer-input" type="text" placeholder="Verb…" data-answer="gehabt" data-id="4">
+              <button class="btn btn-check" onclick="checkAnswer(4)">✓ Prüfen</button>
+              <button class="btn btn-reveal" onclick="revealAnswer(4)">👁 Zeigen</button>
+            </div>
+            <div class="hint-text" id="hint4"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================= -->
+<!-- SLIDE 3 — PRESENT -->
+<!-- ========================================================= -->
+<div class="lesson-page" id="page3">
+  <div class="layout-shell">
+    <div class="image-panel">
+      <div class="image-panel-inner">
+        <img src="Fire Brigade/fire-1-street.png" alt="A firefighter walking a city street at dusk, fire trucks in the background">
+        <div class="image-caption">Gegenwart</div>
+      </div>
+    </div>
+    <div class="content-col">
+      <div class="tense-section">
+        <div class="tense-banner banner-present">
+          ⏺ Gegenwart <span class="tense-sub">– Present (Präsens)</span>
+        </div>
+
+        <div class="ex-card unanswered" id="ex5">
+          <div class="ex-num" style="color:var(--mint)">5</div>
+          <div class="ex-body">
+            <div class="ex-sentence">
+              Die Mannschaft ________ sofort ausrücken.
+              <span class="tense-pill pill-present">Präsens · müssen</span>
+            </div>
+            <div class="answer-row">
+              <input class="answer-input" type="text" placeholder="Verb…" data-answer="muss" data-id="5">
+              <button class="btn btn-check" onclick="checkAnswer(5)">✓ Prüfen</button>
+              <button class="btn btn-reveal" onclick="revealAnswer(5)">👁 Zeigen</button>
+            </div>
+            <div class="hint-text" id="hint5"></div>
+          </div>
+        </div>
+
+        <div class="ex-card unanswered" id="ex6">
+          <div class="ex-num" style="color:var(--mint)">6</div>
+          <div class="ex-body">
+            <div class="ex-sentence">
+              Ich ________ die Schutzkleidung zu prüfen.
+              <span class="tense-pill pill-present">Präsens · haben zu</span>
+            </div>
+            <div class="answer-row">
+              <input class="answer-input" type="text" placeholder="Verb…" data-answer="habe" data-id="6">
+              <button class="btn btn-check" onclick="checkAnswer(6)">✓ Prüfen</button>
+              <button class="btn btn-reveal" onclick="revealAnswer(6)">👁 Zeigen</button>
+            </div>
+            <div class="hint-text" id="hint6"></div>
+          </div>
+        </div>
+
+        <div class="ex-card unanswered" id="ex7">
+          <div class="ex-num" style="color:var(--mint)">7</div>
+          <div class="ex-body">
+            <div class="ex-sentence">
+              Ihr ________ das Fahrzeug täglich kontrollieren.
+              <span class="tense-pill pill-present">Präsens · müssen</span>
+            </div>
+            <div class="answer-row">
+              <input class="answer-input" type="text" placeholder="Verb…" data-answer="müsst" data-id="7">
+              <button class="btn btn-check" onclick="checkAnswer(7)">✓ Prüfen</button>
+              <button class="btn btn-reveal" onclick="revealAnswer(7)">👁 Zeigen</button>
+            </div>
+            <div class="hint-text" id="hint7"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================= -->
+<!-- SLIDE 4 — FUTURE -->
+<!-- ========================================================= -->
+<div class="lesson-page" id="page4">
+  <div class="layout-shell">
+    <div class="image-panel">
+      <div class="image-panel-inner">
+        <img src="Fire Brigade/fire-1-street.png" alt="A firefighter walking a city street at dusk, fire trucks in the background">
+        <div class="image-caption">Zukunft</div>
+      </div>
+    </div>
+    <div class="content-col">
+      <div class="tense-section">
+        <div class="tense-banner banner-future">
+          ⏩ Zukunft <span class="tense-sub">– Future (Futur I · Futur II)</span>
+        </div>
+
+        <div class="ex-card unanswered" id="ex8">
+          <div class="ex-num" style="color:var(--peach)">8</div>
+          <div class="ex-body">
+            <div class="ex-sentence">
+              Die Feuerwehrleute werden die neue Ausrüstung testen ________.
+              <span class="tense-pill pill-future">Futur I · müssen</span>
+            </div>
+            <div class="answer-row">
+              <input class="answer-input" type="text" placeholder="Verb…" data-answer="müssen" data-id="8">
+              <button class="btn btn-check" onclick="checkAnswer(8)">✓ Prüfen</button>
+              <button class="btn btn-reveal" onclick="revealAnswer(8)">👁 Zeigen</button>
+            </div>
+            <div class="hint-text" id="hint8"></div>
+          </div>
+        </div>
+
+        <div class="ex-card unanswered" id="ex9">
+          <div class="ex-num" style="color:var(--peach)">9</div>
+          <div class="ex-body">
+            <div class="ex-sentence">
+              Der Kommandant wird Bericht zu erstatten ________.
+              <span class="tense-pill pill-future">Futur I · haben zu</span>
+            </div>
+            <div class="answer-row">
+              <input class="answer-input" type="text" placeholder="Verb…" data-answer="haben" data-id="9">
+              <button class="btn btn-check" onclick="checkAnswer(9)">✓ Prüfen</button>
+              <button class="btn btn-reveal" onclick="revealAnswer(9)">👁 Zeigen</button>
+            </div>
+            <div class="hint-text" id="hint9"></div>
+          </div>
+        </div>
+
+        <div class="ex-card unanswered" id="ex10">
+          <div class="ex-num" style="color:var(--peach)">10</div>
+          <div class="ex-body">
+            <div class="ex-sentence">
+              Er wird pünktlich erschienen sein ________. <em style="font-weight:400;color:#aaa;font-size:13px">(Er war verpflichtet)</em>
+              <span class="tense-pill pill-future">Futur II · müssen</span>
+            </div>
+            <div class="answer-row">
+              <input class="answer-input" type="text" placeholder="Verb…" data-answer="müssen" data-id="10">
+              <button class="btn btn-check" onclick="checkAnswer(10)">✓ Prüfen</button>
+              <button class="btn btn-reveal" onclick="revealAnswer(10)">👁 Zeigen</button>
+            </div>
+            <div class="hint-text" id="hint10"></div>
+          </div>
+        </div>
+
+        <div class="ex-card unanswered" id="ex11">
+          <div class="ex-num" style="color:var(--peach)">11</div>
+          <div class="ex-body">
+            <div class="ex-sentence">
+              Sie wird den Einsatz zu protokollieren ________ ________.
+              <span class="tense-pill pill-future">Futur II · haben zu (2 Wörter)</span>
+            </div>
+            <div class="answer-row">
+              <input class="answer-input" type="text" placeholder="2 Wörter…" data-answer="gehabt haben" data-id="11" style="min-width:200px">
+              <button class="btn btn-check" onclick="checkAnswer(11)">✓ Prüfen</button>
+              <button class="btn btn-reveal" onclick="revealAnswer(11)">👁 Zeigen</button>
+            </div>
+            <div class="hint-text" id="hint11"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================= -->
+<!-- SLIDE 5 — SUBJUNCTIVE -->
+<!-- ========================================================= -->
+<div class="lesson-page" id="page5">
+  <div class="layout-shell">
+    <div class="image-panel">
+      <div class="image-panel-inner">
+        <img src="Fire Brigade/fire-1-street.png" alt="A firefighter walking a city street at dusk, fire trucks in the background">
+        <div class="image-caption">Konjunktiv II</div>
+      </div>
+    </div>
+    <div class="content-col">
+      <div class="tense-section">
+        <div class="tense-banner banner-subj">
+          💭 Konjunktiv II <span class="tense-sub">– Subjunctive / Conditional</span>
+        </div>
+
+        <div class="ex-card unanswered" id="ex12">
+          <div class="ex-num" style="color:var(--blue)">12</div>
+          <div class="ex-body">
+            <div class="ex-sentence">
+              Du ________ eigentlich die Schutzkleidung tragen.
+              <span class="tense-pill pill-subj">Konjunktiv II · müssen</span>
+            </div>
+            <div class="answer-row">
+              <input class="answer-input" type="text" placeholder="Verb…" data-answer="müsstest" data-id="12">
+              <button class="btn btn-check" onclick="checkAnswer(12)">✓ Prüfen</button>
+              <button class="btn btn-reveal" onclick="revealAnswer(12)">👁 Zeigen</button>
+            </div>
+            <div class="hint-text" id="hint12"></div>
+          </div>
+        </div>
+
+        <div class="ex-card unanswered" id="ex13">
+          <div class="ex-num" style="color:var(--blue)">13</div>
+          <div class="ex-body">
+            <div class="ex-sentence">
+              Er ________ es sofort zu melden gehabt.
+              <span class="tense-pill pill-subj">Konjunktiv II · haben zu</span>
+            </div>
+            <div class="answer-row">
+              <input class="answer-input" type="text" placeholder="Verb…" data-answer="hätte" data-id="13">
+              <button class="btn btn-check" onclick="checkAnswer(13)">✓ Prüfen</button>
+              <button class="btn btn-reveal" onclick="revealAnswer(13)">👁 Zeigen</button>
+            </div>
+            <div class="hint-text" id="hint13"></div>
+          </div>
+        </div>
+
+        <div class="ex-card unanswered" id="ex14">
+          <div class="ex-num" style="color:var(--blue)">14</div>
+          <div class="ex-body">
+            <div class="ex-sentence">
+              Wir ________ damals mehr trainieren.
+              <span class="tense-pill pill-subj">Konjunktiv II Vergangenheit · müssen</span>
+            </div>
+            <div class="answer-row">
+              <input class="answer-input" type="text" placeholder="Verb…" data-answer="hätten müssen" data-id="14" style="min-width:200px">
+              <button class="btn btn-check" onclick="checkAnswer(14)">✓ Prüfen</button>
+              <button class="btn btn-reveal" onclick="revealAnswer(14)">👁 Zeigen</button>
+            </div>
+            <div class="hint-text" id="hint14"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================= -->
+<!-- SLIDE 6 — FREE SPEAKING / WRITING -->
+<!-- ========================================================= -->
+<div class="lesson-page" id="page6">
+  <div class="layout-shell">
+    <div class="image-panel">
+      <div class="image-panel-inner">
+        <img src="Fire Brigade/fire-1-street.png" alt="A firefighter walking a city street at dusk, fire trucks in the background">
+        <div class="image-caption">Frei sprechen</div>
+      </div>
+    </div>
+    <div class="content-col">
+      <div class="ref-card speak-card">
+        <h3 style="margin-bottom:14px;">🗣️ Frei sprechen oder schreiben</h3>
+        <p style="line-height:1.7; margin-bottom:16px; color:var(--text);">Keine richtige oder falsche Antwort — erzähle oder schreibe frei. Benutze so viele Sätze mit <strong>müssen</strong> und <strong>haben zu</strong> wie möglich.</p>
+        <ul>
+          <li>Was musstest du diese Woche unbedingt erledigen?</li>
+          <li>Beschreibe einen typischen Tag bei der Feuerwehr — was hat man alles zu tun?</li>
+          <li>Was hättest du gestern eigentlich machen müssen, hast es aber nicht getan?</li>
+        </ul>
+        <textarea placeholder="Schreibe hier deine Antwort (optional)…"></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================= -->
+<!-- SLIDE 7 — RESULTS -->
+<!-- ========================================================= -->
+<div class="lesson-page" id="page7">
+  <div class="layout-shell">
+    <div class="image-panel">
+      <div class="image-panel-inner">
+        <img src="Fire Brigade/fire-1-street.png" alt="A firefighter walking a city street at dusk, fire trucks in the background">
+        <div class="image-caption">Ergebnis</div>
+      </div>
+    </div>
+    <div class="content-col">
+      <div class="results-wrap">
+        <div class="slide-title">🏁 Ergebnis</div>
+        <div class="results-stars" id="resultsStars">☆</div>
+        <div class="results-score">Punkte: <span id="resultsScore">0 / 14</span></div>
+        <p style="color:var(--text-light); max-width:420px; margin:0 auto 20px;">Gut gemacht! Nutze den Reset-Knopf unten, um die Übungen noch einmal zu machen, oder geh mit „Zurück" zu den Aufgaben, die du wiederholen möchtest.</p>
+        <button class="btn-reset" onclick="resetAll()" style="padding:10px 22px; font-size:14px;">🔄 Neu starten</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================= -->
+<!-- FIXED FOOTER: SCORE PANEL + NAV BAR -->
+<!-- ========================================================= -->
+<div class="score-panel">
+  <div class="stars" id="starDisplay">⭐</div>
+  <div class="score-label">Punkte: <span id="scoreDisplay">0 / 14</span></div>
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+  <button class="btn-reset" onclick="resetAll()">🔄 Neu starten</button>
+</div>
+
+<div class="nav-bar">
+  <button class="nav-btn back" id="btnBack" onclick="goPage(-1)">← Zurück</button>
+  <div class="dots" id="dots"></div>
+  <button class="nav-btn" id="btnNext" onclick="goPage(1)">Weiter →</button>
+</div>
+
+<script>
+const TOTAL = 14;
+const answers = {};
+let correct = 0;
+
+const hintData = {
+  1:  { c:"🎉 Richtig! musste — er/sie/es musste",           w:"✗ Lösung: musste  (Präteritum Sg.)" },
+  2:  { c:"🎉 Richtig! hatten — wir hatten zu …",            w:"✗ Lösung: hatten  (Präteritum Pl.)" },
+  3:  { c:"🎉 Richtig! müssen — hat … müssen (Doppelinfin.)",w:"✗ Lösung: müssen  (Perfekt: hat gefahren müssen)" },
+  4:  { c:"🎉 Richtig! gehabt — hat zu … gehabt",            w:"✗ Lösung: gehabt  (Partizip II von haben)" },
+  5:  { c:"🎉 Richtig! muss — die Mannschaft muss",          w:"✗ Lösung: muss  (Präsens Sg.)" },
+  6:  { c:"🎉 Richtig! habe — ich habe zu …",                w:"✗ Lösung: habe  (1. Pers. Sg.)" },
+  7:  { c:"🎉 Richtig! müsst — ihr müsst",                   w:"✗ Lösung: müsst  (2. Pers. Pl.)" },
+  8:  { c:"🎉 Richtig! müssen — werden … müssen",            w:"✗ Lösung: müssen  (Futur I + Modalinfin.)" },
+  9:  { c:"🎉 Richtig! haben — werden … zu haben",           w:"✗ Lösung: haben  (Futur I haben zu)" },
+  10: { c:"🎉 Richtig! müssen — wird … müssen (Futur II)",   w:"✗ Lösung: müssen" },
+  11: { c:"🎉 Richtig! gehabt haben — Futur II haben zu",    w:"✗ Lösung: gehabt haben" },
+  12: { c:"🎉 Richtig! müsstest — du müsstest",              w:"✗ Lösung: müsstest  (Konj. II 2.Sg.)" },
+  13: { c:"🎉 Richtig! hätte — er hätte zu … gehabt",        w:"✗ Lösung: hätte  (Konj. II haben)" },
+  14: { c:"🎉 Richtig! hätten müssen — Konj. II Vergangenh.",w:"✗ Lösung: hätten müssen" },
+};
+
+function normalize(s) {
+  return s.trim().toLowerCase()
+    .replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss')
+    .replace(/\s+/g,' ');
+}
+
+function checkAnswer(id) {
+  if (answers[id]) return;
+  const input = document.querySelector(`[data-id="${id}"]`);
+  const block = document.getElementById(`ex${id}`);
+  const hint  = document.getElementById(`hint${id}`);
+  const userVal    = normalize(input.value);
+  const correctVal = normalize(input.dataset.answer);
+
+  if (userVal === correctVal) {
+    answers[id] = 'correct';
+    block.classList.remove('unanswered');
+    block.classList.add('correct');
+    input.classList.add('correct-input');
+    hint.textContent = hintData[id].c;
+    hint.className = 'hint-text show correct';
+    correct++;
+    spawnConfetti(input);
+  } else {
+    answers[id] = 'wrong';
+    block.classList.remove('unanswered');
+    block.classList.add('wrong');
+    input.classList.add('wrong-input');
+    hint.textContent = hintData[id].w;
+    hint.className = 'hint-text show wrong';
+  }
+  updateScore();
+}
+
+function revealAnswer(id) {
+  if (answers[id]) return;
+  const input = document.querySelector(`[data-id="${id}"]`);
+  const hint  = document.getElementById(`hint${id}`);
+  input.value = input.dataset.answer;
+  input.classList.add('correct-input');
+  answers[id] = 'revealed';
+  hint.textContent = '👁 Angezeigt: ' + input.dataset.answer;
+  hint.className = 'hint-text show revealed';
+  updateScore();
+}
+
+function updateScore() {
+  document.getElementById('scoreDisplay').textContent = `${correct} / ${TOTAL}`;
+  const pct = (correct / TOTAL) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  const stars = correct === TOTAL ? '⭐⭐⭐' : correct >= TOTAL * 0.7 ? '⭐⭐' : correct >= TOTAL * 0.4 ? '⭐' : '☆';
+  document.getElementById('starDisplay').textContent = stars;
+
+  const resultsScoreEl = document.getElementById('resultsScore');
+  const resultsStarsEl = document.getElementById('resultsStars');
+  if (resultsScoreEl) resultsScoreEl.textContent = `${correct} / ${TOTAL}`;
+  if (resultsStarsEl) resultsStarsEl.textContent = stars;
+}
+
+function spawnConfetti(el) {
+  const emojis = ['🎉','✨','🔥','⭐','🎊','💥'];
+  const rect = el.getBoundingClientRect();
+  for (let i = 0; i < 4; i++) {
+    const el2 = document.createElement('div');
+    el2.className = 'confetti-burst';
+    el2.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    el2.style.left = (rect.left + rect.width / 2 + (Math.random() - 0.5) * 80) + 'px';
+    el2.style.top  = (rect.top - 10) + 'px';
+    el2.style.animationDelay = (i * 0.08) + 's';
+    document.body.appendChild(el2);
+    setTimeout(() => el2.remove(), 1000);
+  }
+}
+
+function resetAll() {
+  for (let i = 1; i <= TOTAL; i++) {
+    const input = document.querySelector(`[data-id="${i}"]`);
+    const block = document.getElementById(`ex${i}`);
+    const hint  = document.getElementById(`hint${i}`);
+    input.value = '';
+    input.className = 'answer-input';
+    block.className = 'ex-card unanswered';
+    hint.className = 'hint-text';
+    delete answers[i];
+  }
+  correct = 0;
+  updateScore();
+}
+
+// Enter key support
+document.querySelectorAll('.answer-input').forEach(inp => {
+  inp.addEventListener('keydown', e => {
+    if (e.key === 'Enter') checkAnswer(Number(inp.dataset.id));
+  });
+});
+
+/* ===================== SLIDE-DECK NAVIGATION ===================== */
+const PAGES = ['page0','page1','page2','page3','page4','page5','page6','page7'];
+let current = 0;
+
+function buildDots() {
+  const dotsEl = document.getElementById('dots');
+  dotsEl.innerHTML = '';
+  PAGES.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'dot' + (i === current ? ' active' : '');
+    d.setAttribute('aria-label', 'Seite ' + (i + 1));
+    d.onclick = () => { current = i; render(); };
+    dotsEl.appendChild(d);
+  });
+}
+
+function render() {
+  PAGES.forEach((id, i) => {
+    document.getElementById(id).classList.toggle('active', i === current);
+  });
+  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+  document.getElementById('btnBack').disabled = current === 0;
+  document.getElementById('btnNext').disabled = current === PAGES.length - 1;
+  window.scrollTo(0, 0);
+}
+
+function goPage(delta) {
+  const next = current + delta;
+  if (next < 0 || next >= PAGES.length) return;
+  current = next;
+  render();
+}
+
+buildDots();
+render();
+</script>
+</body>
+</html>

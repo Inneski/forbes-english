@@ -1,0 +1,1824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – Penguins of the Past</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ocean-deep: #0B3D4A;
+    --ocean-mid:  #145C6E;
+    --ocean-light:#1A7A90;
+    --sand:       #F5E6C8;
+    --sand-light: #FDF6E8;
+    --coral:      #E8714A;
+    --coral-dark: #C85A35;
+    --aqua:       #7ECFDB;
+    --aqua-light: #C4EDF3;
+    --white:      #FFFFFF;
+    --text-dark:  #1A2E33;
+    --text-mid:   #2F5260;
+    --success:    #2EAA6B;
+    --error:      #D94F4F;
+    --warn:       #E8A838;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--ocean-deep);
+    color: var(--white);
+    min-height: 100vh;
+  }
+
+  /* ─── WAVE SVG dividers ─── */
+  .wave-down {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+  }
+  .wave-down svg { display: block; width: 100%; }
+
+  /* ─── HERO HEADER ─── */
+  .hero {
+    background: linear-gradient(160deg, var(--ocean-mid) 0%, var(--ocean-deep) 60%);
+    padding: 48px 24px 0;
+    text-align: center;
+    position: relative;
+  }
+
+  /* Forbes English SVG Logo */
+  .logo-wrap { display: inline-block; margin-bottom: 32px; }
+
+  .hero-badge {
+    display: inline-block;
+    background: var(--coral);
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 6vw, 3.6rem);
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--sand);
+    margin-bottom: 8px;
+  }
+  .hero h1 em {
+    color: var(--aqua);
+    font-style: italic;
+  }
+
+  .hero-sub {
+    font-size: 15px;
+    color: var(--aqua-light);
+    font-weight: 300;
+    margin-bottom: 12px;
+    opacity: 0.85;
+  }
+
+  .level-pill {
+    display: inline-flex;
+    gap: 8px;
+    margin-bottom: 36px;
+  }
+  .level-pill span {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.22);
+    color: var(--sand-light);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    padding: 4px 12px;
+    border-radius: 12px;
+  }
+
+  /* Penguin hero illustration */
+  .hero-illustration {
+    max-width: 680px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 0;
+  }
+
+  /* ─── MAIN CONTENT ─── */
+  main {
+    background: var(--sand-light);
+    color: var(--text-dark);
+  }
+
+  section { max-width: 820px; margin: 0 auto; padding: 48px 24px; }
+
+  /* ─── STORY SECTION ─── */
+  .story-section {
+    background: var(--sand-light);
+  }
+
+  .section-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 6px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    font-weight: 700;
+    color: var(--ocean-deep);
+    margin-bottom: 20px;
+    line-height: 1.2;
+  }
+
+  .story-intro-card {
+    background: var(--ocean-deep);
+    color: var(--sand);
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .story-intro-card::before {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 120px; height: 120px;
+    background: var(--coral);
+    opacity: 0.12;
+    border-radius: 50%;
+  }
+  .story-intro-card .german-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--aqua);
+    margin-bottom: 6px;
+  }
+  .story-intro-card p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--sand-light);
+  }
+  .story-intro-card p strong { color: var(--aqua); }
+
+  .story-text {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 28px 32px;
+    border-left: 5px solid var(--aqua);
+    line-height: 1.85;
+    font-size: 16px;
+    color: var(--text-dark);
+    margin-bottom: 16px;
+  }
+  .story-text p { margin-bottom: 14px; }
+  .story-text p:last-child { margin-bottom: 0; }
+
+  .story-verb {
+    background: var(--ocean-mid);
+    color: var(--white);
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-style: normal;
+  }
+
+  .german-note {
+    background: var(--aqua-light);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-top: 16px;
+    font-size: 13.5px;
+    color: var(--ocean-deep);
+    border-left: 4px solid var(--aqua);
+  }
+  .german-note .de-flag { font-size: 15px; margin-right: 6px; }
+  .german-note strong { color: var(--ocean-mid); }
+
+  .vocab-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .vocab-card {
+    background: var(--white);
+    border: 1.5px solid #e0d8c8;
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .vocab-en { font-weight: 700; color: var(--ocean-mid); font-size: 14.5px; }
+  .vocab-past { font-size: 12px; color: var(--coral); font-weight: 600; }
+  .vocab-de { font-size: 12px; color: #888; }
+
+  /* ─── GRAMMAR BOX ─── */
+  .grammar-band {
+    background: var(--ocean-mid);
+  }
+  .grammar-band section {
+    color: var(--white);
+  }
+  .grammar-band .section-title { color: var(--sand); }
+  .grammar-band .section-eyebrow { color: var(--aqua); }
+
+  .grammar-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border-radius: 12px;
+    overflow: hidden;
+    font-size: 14.5px;
+  }
+  .grammar-table thead { background: var(--ocean-deep); }
+  .grammar-table thead th {
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--aqua);
+  }
+  .grammar-table tbody tr:nth-child(odd) { background: rgba(255,255,255,0.06); }
+  .grammar-table tbody tr:nth-child(even) { background: rgba(255,255,255,0.11); }
+  .grammar-table td { padding: 11px 16px; color: var(--sand-light); }
+  .grammar-table .en { font-weight: 600; color: var(--white); }
+  .grammar-table .past { color: var(--aqua); font-weight: 700; }
+  .grammar-table .de { color: #a8d4dc; font-size: 13px; }
+
+  .grammar-rule {
+    background: rgba(255,255,255,0.09);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-top: 20px;
+    border-left: 4px solid var(--coral);
+  }
+  .grammar-rule p { font-size: 14.5px; line-height: 1.7; color: var(--sand-light); margin-bottom: 8px; }
+  .grammar-rule p:last-child { margin-bottom: 0; }
+  .grammar-rule strong { color: var(--aqua); }
+
+  /* ─── ACTIVITY SECTIONS ─── */
+  .activity-band { background: var(--sand-light); }
+  .activity-band-alt { background: #E8F5F8; }
+
+  .activity-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .activity-num {
+    width: 44px; height: 44px;
+    background: var(--coral);
+    color: var(--white);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .activity-meta { flex: 1; }
+  .activity-meta .type-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--coral);
+  }
+  .activity-meta h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--ocean-deep);
+    line-height: 1.2;
+  }
+
+  /* Score & Progress */
+  .progress-bar-wrap {
+    background: #dde8ec;
+    border-radius: 8px;
+    height: 7px;
+    margin-bottom: 6px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--coral);
+    border-radius: 8px;
+    transition: width 0.4s ease;
+  }
+  .progress-label {
+    font-size: 12px;
+    color: var(--text-mid);
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  /* ─── MULTIPLE CHOICE ─── */
+  .mc-question-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 22px 26px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(11,61,74,0.07);
+  }
+  .mc-q-text {
+    font-size: 15.5px;
+    font-weight: 600;
+    color: var(--ocean-deep);
+    margin-bottom: 6px;
+    line-height: 1.5;
+  }
+  .mc-q-de {
+    font-size: 12.5px;
+    color: #888;
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+  .mc-options { display: flex; flex-direction: column; gap: 9px; }
+  .mc-option {
+    background: var(--sand);
+    border: 2px solid transparent;
+    border-radius: 9px;
+    padding: 10px 14px;
+    cursor: pointer;
+    font-size: 14.5px;
+    color: var(--text-dark);
+    font-weight: 500;
+    transition: border-color 0.18s, background 0.18s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-align: left;
+  }
+  .mc-option:hover:not(.submitted) { border-color: var(--aqua); background: var(--aqua-light); }
+  .mc-option.selected:not(.submitted) { border-color: var(--ocean-mid); background: var(--aqua-light); }
+  .mc-option.correct { background: #d4f4e4; border-color: var(--success); color: var(--text-dark); }
+  .mc-option.wrong { background: #fde8e8; border-color: var(--error); }
+  .mc-option .opt-letter {
+    width: 26px; height: 26px;
+    background: var(--ocean-mid);
+    color: var(--white);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+    flex-shrink: 0;
+    transition: background 0.18s;
+  }
+  .mc-option.correct .opt-letter { background: var(--success); }
+  .mc-option.wrong .opt-letter { background: var(--error); }
+
+  .mc-feedback {
+    display: none;
+    background: #edfaf3;
+    border-left: 4px solid var(--success);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-top: 12px;
+    font-size: 13.5px;
+    color: var(--text-dark);
+    line-height: 1.6;
+  }
+  .mc-feedback.wrong-fb { background: #fef2f2; border-left-color: var(--error); }
+  .mc-feedback.show { display: block; }
+  .mc-feedback .fb-de { color: #888; font-style: italic; margin-top: 4px; font-size: 12.5px; }
+
+  /* ─── FILL IN THE BLANK ─── */
+  .fitb-item {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 6px rgba(11,61,74,0.06);
+  }
+  .fitb-sentence {
+    font-size: 15.5px;
+    color: var(--ocean-deep);
+    font-weight: 500;
+    margin-bottom: 4px;
+    line-height: 1.7;
+  }
+  .fitb-de {
+    font-size: 12.5px;
+    color: #888;
+    margin-bottom: 12px;
+    font-style: italic;
+  }
+  .fitb-input {
+    border: 2px solid #c8dde3;
+    border-radius: 7px;
+    padding: 7px 12px;
+    font-size: 15px;
+    font-family: 'Inter', sans-serif;
+    color: var(--text-dark);
+    width: 180px;
+    transition: border-color 0.18s;
+    background: var(--sand-light);
+  }
+  .fitb-input:focus { outline: none; border-color: var(--ocean-light); }
+  .fitb-input.correct { border-color: var(--success); background: #d4f4e4; }
+  .fitb-input.wrong { border-color: var(--error); background: #fde8e8; }
+  .fitb-hint { font-size: 12.5px; color: #666; margin-top: 4px; }
+  .fitb-hint span { color: var(--success); font-weight: 700; }
+
+  /* ─── DRAG AND DROP ─── */
+  .dnd-instruction {
+    font-size: 14px;
+    color: var(--text-mid);
+    background: var(--aqua-light);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 20px;
+  }
+
+  .dnd-bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 52px;
+    background: #dde8ec;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 20px;
+  }
+  .dnd-chip {
+    background: var(--ocean-mid);
+    color: var(--white);
+    padding: 7px 14px;
+    border-radius: 22px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: grab;
+    user-select: none;
+    transition: transform 0.12s, box-shadow 0.12s, opacity 0.2s;
+    touch-action: none;
+  }
+  .dnd-chip:active { cursor: grabbing; transform: scale(1.06); box-shadow: 0 6px 18px rgba(11,61,74,0.25); }
+  .dnd-chip.placed { opacity: 0; pointer-events: none; width: 0; padding: 0; margin: 0; overflow: hidden; }
+
+  .dnd-sentences { display: flex; flex-direction: column; gap: 12px; }
+  .dnd-row {
+    background: var(--white);
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: 0 1px 4px rgba(11,61,74,0.07);
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 15px;
+    color: var(--ocean-deep);
+    font-weight: 500;
+  }
+  .dnd-drop-zone {
+    display: inline-flex;
+    align-items: center;
+    min-width: 110px;
+    height: 34px;
+    border: 2px dashed #8cb8c4;
+    border-radius: 7px;
+    padding: 0 8px;
+    font-size: 14px;
+    color: var(--ocean-light);
+    cursor: pointer;
+    transition: border-color 0.18s, background 0.18s;
+    position: relative;
+    background: var(--aqua-light);
+    font-weight: 600;
+  }
+  .dnd-drop-zone.dragover { border-color: var(--coral); background: #fde8e0; }
+  .dnd-drop-zone.filled { border-style: solid; border-color: var(--ocean-mid); color: var(--white); background: var(--ocean-mid); cursor: pointer; }
+  .dnd-drop-zone.correct-zone { border-color: var(--success); background: #d4f4e4; color: var(--success); }
+  .dnd-drop-zone.wrong-zone { border-color: var(--error); background: #fde8e8; color: var(--error); }
+  .dnd-row-de { font-size: 12px; color: #999; font-style: italic; width: 100%; margin-top: 2px; }
+
+  /* ─── MATCHING ─── */
+  .match-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .match-col { display: flex; flex-direction: column; gap: 8px; }
+  .match-col-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ocean-mid);
+    margin-bottom: 4px;
+  }
+  .match-item {
+    background: var(--white);
+    border: 2px solid transparent;
+    border-radius: 9px;
+    padding: 10px 14px;
+    font-size: 14.5px;
+    font-weight: 500;
+    color: var(--text-dark);
+    cursor: pointer;
+    transition: border-color 0.18s, background 0.18s;
+    min-height: 46px;
+    display: flex;
+    align-items: center;
+  }
+  .match-item:hover { border-color: var(--aqua); }
+  .match-item.selected-left { background: var(--aqua-light); border-color: var(--ocean-mid); }
+  .match-item.matched-correct { background: #d4f4e4; border-color: var(--success); color: var(--text-dark); }
+  .match-item.matched-wrong { background: #fde8e8; border-color: var(--error); }
+  .match-item.disabled { cursor: default; }
+
+  .match-feedback-area {
+    font-size: 13px;
+    color: var(--text-mid);
+    min-height: 20px;
+    margin-bottom: 10px;
+  }
+
+  /* ─── BUTTONS ─── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 26px;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14.5px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.18s, transform 0.12s;
+  }
+  .btn:hover { opacity: 0.88; transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+
+  .btn-coral {
+    background: var(--coral);
+    color: var(--white);
+  }
+  .btn-ocean {
+    background: var(--ocean-mid);
+    color: var(--white);
+  }
+  .btn-outline {
+    background: transparent;
+    border: 2px solid var(--coral);
+    color: var(--coral);
+  }
+
+  .btn-row {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .btn[disabled] {
+    opacity: 0.38;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* ─── SCORE TRACKER ─── */
+  .score-ticker {
+    background: var(--ocean-deep);
+    color: var(--white);
+    border-radius: 10px;
+    padding: 10px 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  .score-ticker .score-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--aqua);
+  }
+
+  /* ─── FINAL SCREEN ─── */
+  .final-screen {
+    text-align: center;
+    padding: 60px 24px;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+  .final-screen .big-score {
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem;
+    font-weight: 900;
+    color: var(--coral);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .final-screen .final-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--ocean-mid);
+    margin-bottom: 20px;
+  }
+  .final-screen .final-msg {
+    font-size: 16.5px;
+    color: var(--text-mid);
+    line-height: 1.7;
+    margin-bottom: 32px;
+  }
+  .final-screen .final-msg strong { color: var(--ocean-mid); }
+
+  /* ─── SKIP NAV ─── */
+  .skip-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 16px 36px;
+  }
+  .skip-btn {
+    background: rgba(255,255,255,0.10);
+    border: 1.5px solid rgba(126,207,219,0.4);
+    color: var(--aqua-light);
+    font-family: 'Inter', sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 7px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.18s, border-color 0.18s, color 0.18s;
+  }
+  .skip-btn:hover {
+    background: var(--coral);
+    border-color: var(--coral);
+    color: var(--white);
+  }
+  .skip-btn .skip-num {
+    display: inline-block;
+    background: var(--coral);
+    color: var(--white);
+    border-radius: 50%;
+    width: 18px; height: 18px;
+    line-height: 18px;
+    text-align: center;
+    font-size: 11px;
+    margin-right: 5px;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--ocean-deep);
+    text-align: center;
+    padding: 28px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.5px;
+  }
+
+  /* ─── UTILITY ─── */
+  .hidden { display: none !important; }
+  .mt-16 { margin-top: 16px; }
+  .divider {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #c8dde3, transparent);
+    margin: 24px 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<div class="hero">
+  <div class="logo-wrap">
+    <svg width="200" height="60" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+      <text x="100" y="26" text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="26" font-weight="700" fill="#7ECFDB" letter-spacing="3">FORBES</text>
+      <rect x="20" y="32" width="160" height="1.5" fill="#E8714A" opacity="0.7"/>
+      <text x="100" y="52" text-anchor="middle"
+        font-family="'Inter', Arial, sans-serif"
+        font-size="15" font-weight="800" fill="#F5E6C8" letter-spacing="7">ENGLISH</text>
+    </svg>
+  </div>
+
+  <div class="hero-badge">A1 — Beginner</div>
+
+  <h1>Penguins<br>of the <em>Past</em></h1>
+  <p class="hero-sub">The Past Simple — mit Deutsch-Hilfe / with German support</p>
+  <div class="level-pill">
+    <span>Past Simple</span>
+    <span>🇩🇪 Deutsch</span>
+    <span>Story + Activities</span>
+  </div>
+
+  <!-- Hero Penguin Illustration -->
+  <div class="hero-illustration">
+    <svg viewBox="0 0 500 260" xmlns="http://www.w3.org/2000/svg" style="max-width:500px;width:100%;">
+      <!-- Ocean waves background -->
+      <ellipse cx="250" cy="230" rx="240" ry="40" fill="#0D4F5C" opacity="0.5"/>
+      <path d="M10 220 Q80 205 150 220 Q220 235 290 220 Q360 205 430 220 Q470 228 490 220 L490 260 L10 260 Z" fill="#0B3D4A" opacity="0.7"/>
+      <path d="M10 235 Q60 225 120 235 Q180 245 240 235 Q300 225 360 235 Q420 245 490 235 L490 260 L10 260 Z" fill="#145C6E" opacity="0.5"/>
+
+      <!-- Penguin body -->
+      <!-- João (man silhouette) -->
+      <ellipse cx="120" cy="195" rx="28" ry="45" fill="#1A3D2B" opacity="0.85"/>
+      <circle cx="120" cy="140" r="22" fill="#2E6B46" opacity="0.85"/>
+      <!-- Hat -->
+      <ellipse cx="120" cy="122" rx="18" ry="5" fill="#3A8A5A" opacity="0.85"/>
+      <rect x="107" y="106" width="26" height="16" rx="4" fill="#3A8A5A" opacity="0.85"/>
+      <!-- Arms out -->
+      <path d="M92 175 Q75 168 65 175" stroke="#1A3D2B" stroke-width="8" stroke-linecap="round" fill="none" opacity="0.85"/>
+      <!-- Heart connection line -->
+      <path d="M148 175 Q185 155 215 172" stroke="#E8714A" stroke-width="2" stroke-dasharray="5,4" fill="none" opacity="0.7"/>
+      <!-- Heart -->
+      <text x="176" y="158" text-anchor="middle" font-size="16" fill="#E8714A" opacity="0.9">♥</text>
+
+      <!-- Penguin -->
+      <!-- Body -->
+      <ellipse cx="240" cy="195" rx="30" ry="48" fill="#1A1A2E"/>
+      <!-- White belly -->
+      <ellipse cx="240" cy="200" rx="18" ry="34" fill="#F5E6C8"/>
+      <!-- Black spots on belly (Magellanic penguin) -->
+      <ellipse cx="240" cy="180" rx="15" ry="5" fill="#1A1A2E" opacity="0.6"/>
+      <!-- Head -->
+      <circle cx="240" cy="145" r="24" fill="#1A1A2E"/>
+      <!-- White face -->
+      <ellipse cx="240" cy="150" rx="15" ry="18" fill="#F5E6C8"/>
+      <!-- Eyes -->
+      <circle cx="234" cy="143" r="4" fill="#1A1A2E"/>
+      <circle cx="246" cy="143" r="4" fill="#1A1A2E"/>
+      <circle cx="235" cy="142" r="1.5" fill="white"/>
+      <circle cx="247" cy="142" r="1.5" fill="white"/>
+      <!-- Beak -->
+      <path d="M236 150 L240 158 L244 150 Z" fill="#E8A838"/>
+      <!-- Band markings (Magellanic) -->
+      <path d="M216 165 Q230 155 240 155 Q250 155 264 165" stroke="#7ECFDB" stroke-width="4" fill="none" opacity="0.6" stroke-linecap="round"/>
+      <!-- Flippers -->
+      <ellipse cx="213" cy="192" rx="10" ry="28" fill="#1A1A2E" transform="rotate(-15 213 192)"/>
+      <ellipse cx="267" cy="192" rx="10" ry="28" fill="#1A1A2E" transform="rotate(15 267 192)"/>
+      <!-- Feet -->
+      <ellipse cx="232" cy="238" rx="10" ry="5" fill="#E8A838" transform="rotate(-10 232 238)"/>
+      <ellipse cx="250" cy="238" rx="10" ry="5" fill="#E8A838" transform="rotate(10 250 238)"/>
+
+      <!-- Sardine in flipper -->
+      <path d="M267 178 Q285 173 295 178 Q285 183 267 178 Z" fill="#7ECFDB" opacity="0.8"/>
+      <circle cx="292" cy="178" r="2.5" fill="#1A1A2E"/>
+
+      <!-- Stars / water splashes -->
+      <text x="340" y="185" font-size="22" opacity="0.5" fill="#7ECFDB">✦</text>
+      <text x="310" y="215" font-size="14" opacity="0.4" fill="#E8714A">✦</text>
+      <text x="360" y="210" font-size="10" opacity="0.35" fill="#7ECFDB">✦</text>
+      <text x="80" y="215" font-size="12" opacity="0.35" fill="#F5E6C8">✦</text>
+
+      <!-- Distane arrows / 5000 miles label -->
+      <text x="390" y="170" font-family="Inter,sans-serif" font-size="11" fill="#7ECFDB" opacity="0.8" font-weight="700">5,000</text>
+      <text x="388" y="183" font-family="Inter,sans-serif" font-size="9" fill="#7ECFDB" opacity="0.65">MILES →</text>
+    </svg>
+  </div>
+
+  <!-- Skip nav -->
+  <div class="skip-nav">
+    <button class="skip-btn" onclick="jumpTo('story')"><span class="skip-num">📖</span>Story</button>
+    <button class="skip-btn" onclick="jumpTo('act1')"><span class="skip-num">1</span>Multiple Choice</button>
+    <button class="skip-btn" onclick="jumpTo('act2')"><span class="skip-num">2</span>Fill the Gap</button>
+    <button class="skip-btn" onclick="jumpTo('act3')"><span class="skip-num">3</span>Drag &amp; Drop</button>
+    <button class="skip-btn" onclick="jumpTo('act4')"><span class="skip-num">4</span>Matching</button>
+  </div>
+</div>
+
+<!-- wave -->
+<div class="wave-down">
+  <svg viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0 Q300 60 600 30 Q900 0 1200 40 L1200 60 L0 60 Z" fill="#FDF6E8"/>
+  </svg>
+</div>
+
+<!-- ═══ MAIN ═══ -->
+<main>
+
+<!-- ─── SECTION 0: STORY ─── -->
+<div class="story-section">
+<section>
+  <div class="section-eyebrow">Lies die Geschichte / Read the story</div>
+  <h2 class="section-title">A Penguin Swims 5,000 Miles — Every Year!</h2>
+
+  <div class="story-intro-card">
+    <div class="german-label">🇩🇪 Wortschatz-Hilfe / Vocabulary help</div>
+    <p>Die Verben in <strong>blau</strong> sind im <strong>Past Simple (Vergangenheit)</strong>. Finde sie in der Geschichte!<br>
+    <em>The verbs in blue are in the Past Simple (past tense). Find them in the story!</em></p>
+  </div>
+
+  <div class="story-text">
+    <p><strong>João Pereira de Souza</strong> is 71 years old. He lives on a small island near <strong>Rio de Janeiro, Brazil</strong>. He is a retired bricklayer. He still works as a part-time fisherman.</p>
+
+    <p>Five years ago, João <em class="story-verb">found</em> a tiny, sick penguin on the beach near his home. The penguin's feathers <em class="story-verb">were</em> covered in oil. João <em class="story-verb">felt</em> sorry for the sick, little bird. He <em class="story-verb">took</em> the penguin back to his home. He <em class="story-verb">cleaned</em> him and <em class="story-verb">fed</em> him sardines. He <em class="story-verb">gave</em> him the name <strong>Dindim</strong>.</p>
+
+    <p>The penguin soon <em class="story-verb">became</em> strong and healthy again.</p>
+
+    <p>After a week or two, João <em class="story-verb">went</em> down to the seashore and <em class="story-verb">tried</em> to put Dindim back into the water. The penguin didn't want to go. He <em class="story-verb">stayed</em> with João. Eight months <em class="story-verb">passed</em>. Then suddenly, one day in February, Dindim <em class="story-verb">disappeared</em>.</p>
+
+    <p>João <em class="story-verb">hoped</em> that the bird just <em class="story-verb">wanted</em> to return to his penguin family. Four more months <em class="story-verb">passed</em>. Then João <em class="story-verb">heard</em> a familiar "honking" sound — Dindim <em class="story-verb">was</em> back!</p>
+
+    <p>Every year since then, Dindim spends eight months with João and then disappears for four months. It is thought that he swims 2,500 miles to Argentina or Chile, starts a penguin family, and then swims 2,500 miles back. <strong>That's 5,000 miles a year — to be with the man who saved his life.</strong></p>
+  </div>
+
+  <div class="german-note">
+    <span class="de-flag">🇩🇪</span>
+    <strong>Grammatik-Notiz:</strong> Im Englischen gibt es für die Vergangenheit das <strong>Simple Past</strong>. Regelmäßige Verben bekommen <strong>-ed</strong> am Ende: <em>clean → cleaned, pass → passed</em>. Unregelmäßige Verben ändern sich: <em>find → found, take → took, go → went</em>.
+    <br><span style="color:#555;font-size:12px;margin-top:4px;display:block;"><em>In English, the past tense is called the Simple Past. Regular verbs add -ed. Irregular verbs change.</em></span>
+  </div>
+
+  <!-- Vocab list -->
+  <div class="section-eyebrow mt-16">Wichtige Vokabeln / Key verbs</div>
+  <div class="vocab-grid">
+    <div class="vocab-card"><span class="vocab-en">find</span><span class="vocab-past">→ found</span><span class="vocab-de">finden → fand</span></div>
+    <div class="vocab-card"><span class="vocab-en">take</span><span class="vocab-past">→ took</span><span class="vocab-de">nehmen → nahm</span></div>
+    <div class="vocab-card"><span class="vocab-en">feel</span><span class="vocab-past">→ felt</span><span class="vocab-de">fühlen → fühlte</span></div>
+    <div class="vocab-card"><span class="vocab-en">give</span><span class="vocab-past">→ gave</span><span class="vocab-de">geben → gab</span></div>
+    <div class="vocab-card"><span class="vocab-en">go</span><span class="vocab-past">→ went</span><span class="vocab-de">gehen → ging</span></div>
+    <div class="vocab-card"><span class="vocab-en">become</span><span class="vocab-past">→ became</span><span class="vocab-de">werden → wurde</span></div>
+    <div class="vocab-card"><span class="vocab-en">hear</span><span class="vocab-past">→ heard</span><span class="vocab-de">hören → hörte</span></div>
+    <div class="vocab-card"><span class="vocab-en">feed</span><span class="vocab-past">→ fed</span><span class="vocab-de">füttern → fütterte</span></div>
+    <div class="vocab-card"><span class="vocab-en">clean</span><span class="vocab-past">→ cleaned</span><span class="vocab-de">reinigen → reinigte</span></div>
+    <div class="vocab-card"><span class="vocab-en">stay</span><span class="vocab-past">→ stayed</span><span class="vocab-de">bleiben → blieb</span></div>
+    <div class="vocab-card"><span class="vocab-en">try</span><span class="vocab-past">→ tried</span><span class="vocab-de">versuchen → versuchte</span></div>
+    <div class="vocab-card"><span class="vocab-en">disappear</span><span class="vocab-past">→ disappeared</span><span class="vocab-de">verschwinden → verschwand</span></div>
+  </div>
+</section>
+</div>
+
+<!-- wave -->
+<div class="wave-down" style="background:var(--sand-light)">
+  <svg viewBox="0 0 1200 50" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 50 Q300 0 600 30 Q900 50 1200 10 L1200 50 Z" fill="#145C6E"/>
+  </svg>
+</div>
+
+<!-- ─── GRAMMAR BAND ─── -->
+<div class="grammar-band">
+<section>
+  <div class="section-eyebrow">Grammatik / Grammar</div>
+  <h2 class="section-title" style="color:var(--sand)">The Past Simple — Wie funktioniert das?</h2>
+
+  <table class="grammar-table">
+    <thead>
+      <tr>
+        <th>Type / Typ</th>
+        <th>Rule / Regel</th>
+        <th>English example</th>
+        <th>Deutsch</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Regular verb<br><span style="font-size:12px;color:#7ECFDB">Regelmäßig</span></td>
+        <td class="past">+ -ed</td>
+        <td class="en">clean → cleaned</td>
+        <td class="de">reinigen → reinigte</td>
+      </tr>
+      <tr>
+        <td>Verb ending in -e<br><span style="font-size:12px;color:#7ECFDB">Endet auf -e</span></td>
+        <td class="past">+ -d only</td>
+        <td class="en">hope → hoped</td>
+        <td class="de">hoffen → hoffte</td>
+      </tr>
+      <tr>
+        <td>Consonant + y<br><span style="font-size:12px;color:#7ECFDB">Konsonant + y</span></td>
+        <td class="past">-y → -ied</td>
+        <td class="en">try → tried</td>
+        <td class="de">versuchen → versuchte</td>
+      </tr>
+      <tr>
+        <td>Short vowel + consonant<br><span style="font-size:12px;color:#7ECFDB">Kurzer Vokal</span></td>
+        <td class="past">double + -ed</td>
+        <td class="en">stop → stopped</td>
+        <td class="de">stoppen → stoppte</td>
+      </tr>
+      <tr>
+        <td>Irregular / Unregelmäßig</td>
+        <td class="past">changes!</td>
+        <td class="en">find → <strong style="color:#E8714A">found</strong></td>
+        <td class="de">finden → fand</td>
+      </tr>
+      <tr>
+        <td>Negative / Negativ</td>
+        <td class="past">didn't + base</td>
+        <td class="en">He didn't want to go.</td>
+        <td class="de">Er wollte nicht gehen.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="grammar-rule">
+    <p><strong>🔑 Key rule:</strong> In the negative and in questions, use <strong>did / didn't</strong> + the <strong>base form</strong> (infinitive) — NOT the past form!</p>
+    <p>✅ <em>He didn't <strong>want</strong> to go.</em> &nbsp; ❌ <em>He didn't <strong>wanted</strong> to go.</em></p>
+    <p style="color:#a8d4dc;font-size:13px;">🇩🇪 Im Deutschen ist das ähnlich: Das Hilfsverb „did" trägt die Vergangenheit, das Hauptverb bleibt im Infinitiv.</p>
+  </div>
+</section>
+</div>
+
+<!-- wave -->
+<div class="wave-down" style="background:var(--ocean-mid)">
+  <svg viewBox="0 0 1200 50" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 10 Q300 50 600 20 Q900 0 1200 40 L1200 50 L0 50 Z" fill="#FDF6E8"/>
+  </svg>
+</div>
+
+<!-- ═══ ACTIVITY 1: MULTIPLE CHOICE ═══ -->
+<div class="activity-band">
+<section id="act1-section">
+  <div class="activity-header">
+    <div class="activity-num">1</div>
+    <div class="activity-meta">
+      <div class="type-tag">Multiple Choice — Auswahl</div>
+      <h2>Choose the correct Past Simple form</h2>
+    </div>
+  </div>
+
+  <div class="score-ticker" id="mc-score-ticker">
+    <div>Score / Punkte:</div>
+    <div class="score-num" id="mc-score-display">0</div>
+    <div style="opacity:0.5">/ 6</div>
+  </div>
+
+  <div id="mc-container"></div>
+
+  <div class="btn-row">
+    <button class="btn btn-coral" id="mc-submit-btn" onclick="submitMC()">Check answers / Antworten prüfen</button>
+    <button class="btn btn-ocean hidden" id="mc-next-btn" onclick="showAct2()">Next activity →</button>
+  </div>
+</section>
+</div>
+
+<!-- wave -->
+<div class="wave-down" style="background:var(--sand-light)">
+  <svg viewBox="0 0 1200 50" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 50 Q300 0 600 30 Q900 50 1200 5 L1200 50 Z" fill="#E8F5F8"/>
+  </svg>
+</div>
+
+<!-- ═══ ACTIVITY 2: FILL IN THE BLANK ═══ -->
+<div class="activity-band-alt">
+<section id="act2-section" class="hidden">
+  <div class="activity-header">
+    <div class="activity-num">2</div>
+    <div class="activity-meta">
+      <div class="type-tag">Fill in the blank — Lückentext</div>
+      <h2>Write the Past Simple form</h2>
+    </div>
+  </div>
+
+  <div class="score-ticker" id="fitb-score-ticker">
+    <div>Score / Punkte:</div>
+    <div class="score-num" id="fitb-score-display">0</div>
+    <div style="opacity:0.5">/ 6</div>
+  </div>
+
+  <div id="fitb-container"></div>
+
+  <div class="btn-row">
+    <button class="btn btn-coral" id="fitb-submit-btn" onclick="submitFITB()">Check answers / Antworten prüfen</button>
+    <button class="btn btn-ocean hidden" id="fitb-next-btn" onclick="showAct3()">Next activity →</button>
+  </div>
+</section>
+</div>
+
+<!-- wave -->
+<div class="wave-down" style="background:#E8F5F8">
+  <svg viewBox="0 0 1200 50" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 5 Q300 50 600 25 Q900 0 1200 45 L1200 50 L0 50 Z" fill="#FDF6E8"/>
+  </svg>
+</div>
+
+<!-- ═══ ACTIVITY 3: DRAG AND DROP ═══ -->
+<div class="activity-band">
+<section id="act3-section" class="hidden">
+  <div class="activity-header">
+    <div class="activity-num">3</div>
+    <div class="activity-meta">
+      <div class="type-tag">Drag &amp; Drop — Zuordnen</div>
+      <h2>Drag the verb into the correct gap</h2>
+    </div>
+  </div>
+
+  <div class="score-ticker" id="dnd-score-ticker">
+    <div>Score / Punkte:</div>
+    <div class="score-num" id="dnd-score-display">0</div>
+    <div style="opacity:0.5">/ 6</div>
+  </div>
+
+  <div class="dnd-instruction">
+    🇩🇪 Ziehe die richtige Verbform in die Lücke. / Drag the correct verb form into the gap.<br>
+    <span style="font-size:12px;color:#555;margin-top:4px;display:block;">On mobile: tap the verb, then tap the gap. / Auf dem Handy: Verb antippen, dann Lücke antippen.</span>
+  </div>
+
+  <div class="dnd-bank" id="dnd-bank"></div>
+  <div class="dnd-sentences" id="dnd-sentences"></div>
+
+  <div class="btn-row">
+    <button class="btn btn-coral" id="dnd-submit-btn" onclick="submitDnD()">Check answers / Antworten prüfen</button>
+    <button class="btn btn-ocean hidden" id="dnd-next-btn" onclick="showAct4()">Next activity →</button>
+  </div>
+</section>
+</div>
+
+<!-- wave -->
+<div class="wave-down" style="background:var(--sand-light)">
+  <svg viewBox="0 0 1200 50" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 40 Q300 0 600 30 Q900 55 1200 10 L1200 50 L0 50 Z" fill="#E8F5F8"/>
+  </svg>
+</div>
+
+<!-- ═══ ACTIVITY 4: MATCHING ═══ -->
+<div class="activity-band-alt">
+<section id="act4-section" class="hidden">
+  <div class="activity-header">
+    <div class="activity-num">4</div>
+    <div class="activity-meta">
+      <div class="type-tag">Matching — Zuordnen</div>
+      <h2>Match the verb to its Past Simple</h2>
+    </div>
+  </div>
+
+  <div class="score-ticker" id="match-score-ticker">
+    <div>Score / Punkte:</div>
+    <div class="score-num" id="match-score-display">0</div>
+    <div style="opacity:0.5">/ 6</div>
+  </div>
+
+  <p style="font-size:13.5px;color:var(--text-mid);margin-bottom:16px;">🇩🇪 Tippe auf ein Verb links, dann auf die richtige Vergangenheitsform rechts. / Click a verb on the left, then the Past Simple on the right.</p>
+
+  <div class="match-feedback-area" id="match-fb-area"></div>
+  <div class="match-grid" id="match-grid"></div>
+
+  <div class="btn-row">
+    <button class="btn btn-ocean hidden" id="match-next-btn" onclick="showFinal()">See final score →</button>
+  </div>
+</section>
+</div>
+
+<!-- ═══ FINAL SCREEN ═══ -->
+<div class="activity-band" id="final-section" style="display:none;">
+<section>
+  <div class="final-screen">
+    <!-- Penguin celebration SVG -->
+    <svg viewBox="0 0 220 180" xmlns="http://www.w3.org/2000/svg" style="max-width:200px;margin:0 auto 24px;display:block;">
+      <!-- Confetti -->
+      <rect x="30" y="20" width="8" height="8" rx="2" fill="#E8714A" opacity="0.8" transform="rotate(30 34 24)"/>
+      <rect x="160" y="15" width="8" height="8" rx="2" fill="#7ECFDB" opacity="0.8" transform="rotate(-20 164 19)"/>
+      <rect x="100" y="5" width="6" height="6" rx="1" fill="#E8A838" opacity="0.8" transform="rotate(45 103 8)"/>
+      <rect x="60" y="40" width="5" height="5" rx="1" fill="#7ECFDB" opacity="0.6" transform="rotate(15 62 42)"/>
+      <rect x="175" y="50" width="7" height="7" rx="1" fill="#E8714A" opacity="0.6" transform="rotate(-30 178 53)"/>
+      <!-- Star bursts -->
+      <text x="22" y="65" font-size="18" fill="#E8A838" opacity="0.7">✦</text>
+      <text x="175" y="75" font-size="14" fill="#7ECFDB" opacity="0.7">✦</text>
+      <!-- Penguin body -->
+      <ellipse cx="110" cy="138" rx="36" ry="52" fill="#1A1A2E"/>
+      <ellipse cx="110" cy="145" rx="22" ry="38" fill="#F5E6C8"/>
+      <circle cx="110" cy="90" r="28" fill="#1A1A2E"/>
+      <ellipse cx="110" cy="96" rx="18" ry="20" fill="#F5E6C8"/>
+      <circle cx="102" cy="87" r="5" fill="#1A1A2E"/>
+      <circle cx="118" cy="87" r="5" fill="#1A1A2E"/>
+      <circle cx="103" cy="85.5" r="2" fill="white"/>
+      <circle cx="119" cy="85.5" r="2" fill="white"/>
+      <!-- Happy mouth -->
+      <path d="M104 100 Q110 108 116 100" stroke="#E8A838" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <!-- Party hat -->
+      <path d="M90 76 L110 30 L130 76 Z" fill="#E8714A" opacity="0.9"/>
+      <path d="M90 76 L130 76" stroke="#E8714A" stroke-width="4" fill="none"/>
+      <circle cx="110" cy="30" r="4" fill="#E8A838"/>
+      <!-- Wings up -->
+      <ellipse cx="76" cy="135" rx="12" ry="30" fill="#1A1A2E" transform="rotate(-30 76 135)"/>
+      <ellipse cx="144" cy="135" rx="12" ry="30" fill="#1A1A2E" transform="rotate(30 144 135)"/>
+      <!-- Star from wing -->
+      <text x="140" y="115" font-size="20" fill="#E8A838">★</text>
+    </svg>
+
+    <div class="big-score" id="final-score">0</div>
+    <div class="final-label">Total score / Gesamtpunktzahl</div>
+    <div class="final-msg" id="final-msg">Loading…</div>
+
+    <!-- Score breakdown -->
+    <div id="score-breakdown" style="background:#f0f4f6;border-radius:12px;padding:18px;margin-bottom:28px;text-align:left;font-size:14px;color:var(--text-mid);">
+      <strong style="color:var(--ocean-deep);">Score breakdown / Ergebnis-Übersicht:</strong>
+      <div id="breakdown-list" style="margin-top:10px;"></div>
+    </div>
+
+    <button class="btn btn-coral" onclick="restartAll()" style="font-size:16px;padding:14px 36px;">
+      Try again / Nochmal versuchen 🔄
+    </button>
+  </div>
+</section>
+</div>
+
+</main>
+
+<!-- wave to footer -->
+<div class="wave-down" style="background:var(--sand-light)">
+  <svg viewBox="0 0 1200 50" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 20 Q300 55 600 25 Q900 0 1200 40 L1200 50 L0 50 Z" fill="#0B3D4A"/>
+  </svg>
+</div>
+
+<footer>
+  &copy; Forbes English — All activities based on the story of Dindim &amp; João Pereira de Souza &nbsp;|&nbsp; A1 Past Simple
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════════
+// FISHER-YATES SHUFFLE
+// ═══════════════════════════════════════════════════
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// ═══════════════════════════════════════════════════
+// SCORE TRACKING
+// ═══════════════════════════════════════════════════
+const scores = { mc: 0, fitb: 0, dnd: 0, match: 0 };
+
+// ═══════════════════════════════════════════════════
+// ACTIVITY 1 — MULTIPLE CHOICE
+// ═══════════════════════════════════════════════════
+const mcQuestions = [
+  {
+    q: "Five years ago, João _____ a tiny, sick penguin on the beach.",
+    de: "Vor f\u00fcnf Jahren _____ Jo\u00e3o einen kleinen, kranken Pinguin am Strand.",
+    options: ["finds", "found", "finded", "finding"],
+    correct: 1,
+    fb: "\u2705 <strong>found</strong> is the Past Simple of \u2018find\u2019 (irregular). \u2013 \u2018found\u2019 ist das Simple Past von \u2018find\u2019 (unregelm\u00e4\u00dfig).",
+    fbWrong: "\u274c The verb \u2018find\u2019 is irregular. Its Past Simple is <strong>found</strong>, not \u2018finded\u2019 or \u2018finds\u2019. \u2013 \u2018find\u2019 ist unregelm\u00e4\u00dfig: Simple Past = <strong>found</strong>."
+  },
+  {
+    q: "The penguin\u2019s feathers _____ covered in oil.",
+    de: "Die Federn des Pinguins _____ mit \u00d6l bedeckt.",
+    options: ["was", "were", "are", "be"],
+    correct: 1,
+    fb: "\u2705 <strong>were</strong> is the Past Simple of \u2018be\u2019 for plural subjects (\u2018feathers\u2019 = plural). \u2013 \u2018were\u2019 ist die Pluralform von \u2018be\u2019 im Simple Past.",
+    fbWrong: "\u274c \u2018Feathers\u2019 is plural, so use <strong>were</strong> (not \u2018was\u2019). \u2013 \u2018Feathers\u2019 ist Plural, deshalb: <strong>were</strong>."
+  },
+  {
+    q: "He _____ the penguin back to his home.",
+    de: "Er _____ den Pinguin zu seinem Haus.",
+    options: ["taked", "taking", "takes", "took"],
+    correct: 3,
+    fb: "\u2705 <strong>took</strong> is the Past Simple of \u2018take\u2019 (irregular). \u2013 \u2018took\u2019 ist das Simple Past von \u2018take\u2019 (unregelm\u00e4\u00dfig).",
+    fbWrong: "\u274c \u2018take\u2019 is irregular! The Past Simple is <strong>took</strong>, NOT \u2018taked\u2019. \u2013 \u2018take\u2019 ist unregelm\u00e4\u00dfig: Simple Past = <strong>took</strong>."
+  },
+  {
+    q: "The penguin soon _____ strong and healthy again.",
+    de: "Der Pinguin _____ bald wieder stark und gesund.",
+    options: ["became", "becomes", "becomed", "becoming"],
+    correct: 0,
+    fb: "\u2705 <strong>became</strong> is the Past Simple of \u2018become\u2019 (irregular). \u2013 \u2018became\u2019 ist das Simple Past von \u2018become\u2019 (unregelm\u00e4\u00dfig).",
+    fbWrong: "\u274c \u2018become\u2019 is irregular: Past Simple = <strong>became</strong>. \u2013 \u2018become\u2019 ist unregelm\u00e4\u00dfig: Simple Past = <strong>became</strong>."
+  },
+  {
+    q: "The penguin _____ want to go back into the water.",
+    de: "Der Pinguin _____ nicht ins Wasser zur\u00fcckkehren.",
+    options: ["didn\u2019t", "don\u2019t", "wasn\u2019t", "doesn\u2019t"],
+    correct: 0,
+    fb: "\u2705 <strong>didn\u2019t</strong> is used for negative sentences in the Past Simple. \u2013 F\u00fcr Verneinungen im Simple Past: <strong>didn\u2019t</strong> + Infinitiv.",
+    fbWrong: "\u274c For negatives in the Past Simple, use <strong>didn\u2019t</strong> + infinitive. \u2013 Im Simple Past: <strong>didn\u2019t</strong> + Infinitiv."
+  },
+  {
+    q: "João _____ a familiar honking sound — Dindim was back!",
+    de: "Jo\u00e3o _____ ein bekanntes \u201eHonking\u201c-Ger\u00e4usch \u2014 Dindim war zur\u00fcck!",
+    options: ["heared", "hears", "listened", "heard"],
+    correct: 3,
+    fb: "\u2705 <strong>heard</strong> is the Past Simple of \u2018hear\u2019 (irregular). \u2013 \u2018heard\u2019 ist das Simple Past von \u2018hear\u2019 (unregelm\u00e4\u00dfig).",
+    fbWrong: "\u274c \u2018hear\u2019 is irregular: Past Simple = <strong>heard</strong> (not \u2018heared\u2019!). \u2013 \u2018hear\u2019 ist unregelm\u00e4\u00dfig: Simple Past = <strong>heard</strong>."
+  }
+];
+
+let mcAnswers = new Array(mcQuestions.length).fill(null);
+
+function buildMC() {
+  const container = document.getElementById('mc-container');
+  container.innerHTML = '';
+  mcAnswers = new Array(mcQuestions.length).fill(null);
+
+  mcQuestions.forEach((q, qi) => {
+    const shuffledOpts = shuffle(q.options.map((o, i) => ({ text: o, origIdx: i })));
+    const correctShuffledIdx = shuffledOpts.findIndex(o => o.origIdx === q.correct);
+
+    const card = document.createElement('div');
+    card.className = 'mc-question-card';
+    const letters = ['A', 'B', 'C', 'D'];
+
+    card.innerHTML = `
+      <div class="mc-q-text">${qi + 1}. ${q.q}</div>
+      <div class="mc-q-de">\u{1F1E9}\u{1F1EA} ${q.de}</div>
+      <div class="mc-options" id="mc-opts-${qi}">
+        ${shuffledOpts.map((opt, si) => `
+          <button class="mc-option" data-qi="${qi}" data-si="${si}" data-orig="${opt.origIdx}" onclick="selectMC(${qi},${si})">
+            <span class="opt-letter">${letters[si]}</span>
+            <span>${opt.text}</span>
+          </button>
+        `).join('')}
+      </div>
+      <div class="mc-feedback" id="mc-fb-${qi}"></div>
+    `;
+    card.dataset.correctShuffled = correctShuffledIdx;
+    card.id = `mc-card-${qi}`;
+    container.appendChild(card);
+  });
+}
+
+function selectMC(qi, si) {
+  const opts = document.querySelectorAll(`#mc-opts-${qi} .mc-option`);
+  opts.forEach(o => o.classList.remove('selected'));
+  opts[si].classList.add('selected');
+  mcAnswers[qi] = si;
+}
+
+function submitMC() {
+  let correct = 0;
+  mcQuestions.forEach((q, qi) => {
+    const card = document.getElementById(`mc-card-${qi}`);
+    const correctShuffledIdx = parseInt(card.dataset.correctShuffled);
+    const opts = document.querySelectorAll(`#mc-opts-${qi} .mc-option`);
+    const fb = document.getElementById(`mc-fb-${qi}`);
+
+    opts.forEach((o, si) => {
+      o.classList.add('submitted');
+      o.style.pointerEvents = 'none';
+      if (si === correctShuffledIdx) o.classList.add('correct');
+      if (mcAnswers[qi] === si && si !== correctShuffledIdx) o.classList.add('wrong');
+    });
+
+    fb.classList.add('show');
+    if (mcAnswers[qi] === correctShuffledIdx) {
+      correct++;
+      fb.innerHTML = q.fb + `<div class="fb-de"></div>`;
+    } else {
+      fb.className = 'mc-feedback wrong-fb show';
+      fb.innerHTML = q.fbWrong;
+    }
+  });
+
+  scores.mc = correct;
+  document.getElementById('mc-score-display').textContent = correct;
+  document.getElementById('mc-submit-btn').disabled = true;
+  document.getElementById('mc-next-btn').classList.remove('hidden');
+}
+
+// ═══════════════════════════════════════════════════
+// ACTIVITY 2 — FILL IN THE BLANK
+// ═══════════════════════════════════════════════════
+const fitbQuestions = [
+  {
+    before: "Jo\u00e3o",
+    after: "sorry for the sick, little bird.",
+    de: "Jo\u00e3o _____ das arme, kranke V\u00f6gelchen leid.",
+    answer: "felt",
+    hint: "Base form: feel \u2014 Jo\u00e3o hatte Mitleid."
+  },
+  {
+    before: "He",
+    after: "him sardines every day.",
+    de: "Er _____ ihm jeden Tag Sardinen.",
+    answer: "fed",
+    hint: "Base form: feed \u2014 unregelm\u00e4\u00dfig!"
+  },
+  {
+    before: "Jo\u00e3o",
+    after: "the penguin the name Dindim.",
+    de: "Jo\u00e3o _____ dem Pinguin den Namen Dindim.",
+    answer: "gave",
+    hint: "Base form: give \u2014 unregelm\u00e4\u00dfig!"
+  },
+  {
+    before: "He",
+    after: "down to the seashore.",
+    de: "Er _____ zum Strand hinunter.",
+    answer: "went",
+    hint: "Base form: go \u2014 unregelm\u00e4\u00dfig!"
+  },
+  {
+    before: "Dindim",
+    after: "with Jo\u00e3o for eight months.",
+    de: "Dindim _____ acht Monate bei Jo\u00e3o.",
+    answer: "stayed",
+    hint: "Base form: stay \u2014 regelm\u00e4\u00dfig: + -ed"
+  },
+  {
+    before: "Four months",
+    after: ".",
+    de: "Vier Monate _____ (vergingen).",
+    answer: "passed",
+    hint: "Base form: pass \u2014 regelm\u00e4\u00dfig: + -ed"
+  }
+];
+
+function buildFITB() {
+  const container = document.getElementById('fitb-container');
+  container.innerHTML = '';
+  fitbQuestions.forEach((q, i) => {
+    container.innerHTML += `
+      <div class="fitb-item" id="fitb-item-${i}">
+        <div class="fitb-sentence">
+          ${i + 1}. ${q.before} <input class="fitb-input" id="fitb-input-${i}" type="text" placeholder="past simple\u2026" autocomplete="off" autocorrect="off" spellcheck="false"> ${q.after}
+        </div>
+        <div class="fitb-de">\u{1F1E9}\u{1F1EA} ${q.de}</div>
+        <div class="fitb-hint" id="fitb-hint-${i}" style="display:none">${q.hint} \u2192 <span>${q.answer}</span></div>
+      </div>
+    `;
+  });
+}
+
+function submitFITB() {
+  let correct = 0;
+  fitbQuestions.forEach((q, i) => {
+    const input = document.getElementById(`fitb-input-${i}`);
+    const hint = document.getElementById(`fitb-hint-${i}`);
+    const val = input.value.trim().toLowerCase();
+    input.disabled = true;
+    hint.style.display = 'block';
+    if (val === q.answer.toLowerCase()) {
+      input.classList.add('correct');
+      correct++;
+    } else {
+      input.classList.add('wrong');
+    }
+  });
+  scores.fitb = correct;
+  document.getElementById('fitb-score-display').textContent = correct;
+  document.getElementById('fitb-submit-btn').disabled = true;
+  document.getElementById('fitb-next-btn').classList.remove('hidden');
+}
+
+// ═══════════════════════════════════════════════════
+// ACTIVITY 3 — DRAG AND DROP
+// ═══════════════════════════════════════════════════
+const dndData = [
+  {
+    before: "He",
+    after: "the penguin with clean water.",
+    de: "Er _____ den Pinguin mit sauberem Wasser.",
+    answer: "cleaned",
+    verbs: ["cleaned", "cleaning", "cleans", "clean"]
+  },
+  {
+    before: "Jo\u00e3o",
+    after: "to put Dindim back into the water.",
+    de: "Jo\u00e3o _____ Dindim ins Wasser zur\u00fcckzusetzen.",
+    answer: "tried",
+    verbs: ["try", "tries", "tried", "trying"]
+  },
+  {
+    before: "Dindim",
+    after: "in February.",
+    de: "Dindim _____ im Februar.",
+    answer: "disappeared",
+    verbs: ["disappears", "disappeared", "disappearing", "disappear"]
+  },
+  {
+    before: "Jo\u00e3o",
+    after: "that the bird wanted to return home.",
+    de: "Jo\u00e3o _____, dass der Vogel nach Hause zur\u00fcckkehren wollte.",
+    answer: "hoped",
+    verbs: ["hope", "hoping", "hopes", "hoped"]
+  },
+  {
+    before: "Jo\u00e3o",
+    after: "a familiar honking sound.",
+    de: "Jo\u00e3o _____ ein bekanntes Honking-Ger\u00e4usch.",
+    answer: "heard",
+    verbs: ["listen", "listened", "hearing", "heard"]
+  },
+  {
+    before: "The penguin",
+    after: "strong and healthy.",
+    de: "Der Pinguin _____ stark und gesund.",
+    answer: "became",
+    verbs: ["becomed", "become", "became", "becomes"]
+  }
+];
+
+// Module-level state for DnD — avoids dataTransfer key compatibility issues
+let dndSelected = null;   // chip el selected by tap
+let dndDragChipId = null; // chip id being dragged (set on dragstart)
+
+function buildDnD() {
+  dndSelected = null;
+  dndDragChipId = null;
+
+  const bank = document.getElementById('dnd-bank');
+  const sentences = document.getElementById('dnd-sentences');
+  bank.innerHTML = '';
+  sentences.innerHTML = '';
+
+  // Build bank: all correct answers + 3 random distractors, shuffled
+  const bankVerbs = dndData.map((d, i) => ({ text: d.answer, id: 'chip-ans-' + i }));
+  const distractors = dndData.map((d, i) => {
+    const nonAns = d.verbs.filter(v => v !== d.answer);
+    const pick = nonAns[Math.floor(Math.random() * nonAns.length)];
+    return { text: pick, id: 'chip-dis-' + i };
+  });
+  const allBankItems = shuffle([...bankVerbs, ...distractors.slice(0, 3)]);
+
+  allBankItems.forEach(chip => {
+    const el = document.createElement('div');
+    el.className = 'dnd-chip';
+    el.id = chip.id;
+    el.textContent = chip.text;
+    el.draggable = true;
+    el.dataset.word = chip.text;
+
+    // Desktop: record chip id on dragstart (module var, no dataTransfer key needed)
+    el.addEventListener('dragstart', () => {
+      dndDragChipId = chip.id;
+    });
+
+    // Tap/click: select this chip
+    el.addEventListener('click', () => {
+      if (el.classList.contains('placed')) return;
+      // Deselect previous
+      if (dndSelected) dndSelected.style.outline = '';
+      if (dndSelected === el) { dndSelected = null; return; } // toggle off
+      dndSelected = el;
+      el.style.outline = '3px solid #E8714A';
+    });
+
+    bank.appendChild(el);
+  });
+
+  // Build sentence rows entirely with DOM methods — never use innerHTML += after appending children
+  dndData.forEach((d, i) => {
+    const row = document.createElement('div');
+    row.className = 'dnd-row';
+
+    // "1. Before text"
+    const beforeSpan = document.createElement('span');
+    beforeSpan.textContent = (i + 1) + '. ' + d.before;
+    row.appendChild(beforeSpan);
+
+    // Drop zone
+    const zone = document.createElement('div');
+    zone.className = 'dnd-drop-zone';
+    zone.id = 'dnd-zone-' + i;
+    zone.dataset.correct = d.answer;
+    zone.dataset.current = '';
+    zone.dataset.chipId = '';
+    zone.textContent = '___';
+
+    zone.addEventListener('dragover', e => {
+      e.preventDefault();
+      zone.classList.add('dragover');
+    });
+    zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.classList.remove('dragover');
+      if (!dndDragChipId) return;
+      // Use the text from the chip element directly — don't rely on dataTransfer
+      const chipEl = document.getElementById(dndDragChipId);
+      if (!chipEl) return;
+      placeInZone(zone, chipEl.dataset.word, dndDragChipId);
+      dndDragChipId = null;
+    });
+
+    // Tap: place selected chip, or unplace current chip back to bank
+    zone.addEventListener('click', () => {
+      if (zone.classList.contains('correct-zone') || zone.classList.contains('wrong-zone')) return;
+
+      if (dndSelected) {
+        // Place selected chip into this zone
+        placeInZone(zone, dndSelected.dataset.word, dndSelected.id);
+        dndSelected.style.outline = '';
+        dndSelected = null;
+      } else if (zone.dataset.chipId) {
+        // Tap an occupied zone with no chip selected → return chip to bank
+        const oldChip = document.getElementById(zone.dataset.chipId);
+        if (oldChip) oldChip.classList.remove('placed');
+        zone.textContent = '___';
+        zone.classList.remove('filled');
+        zone.dataset.current = '';
+        zone.dataset.chipId = '';
+      }
+    });
+
+    row.appendChild(zone);
+
+    // "After text"
+    const afterSpan = document.createElement('span');
+    afterSpan.textContent = d.after;
+    row.appendChild(afterSpan);
+
+    // German translation on its own line
+    const deDiv = document.createElement('div');
+    deDiv.className = 'dnd-row-de';
+    deDiv.textContent = '\uD83C\uDDE9\uD83C\uDDEA ' + d.de;
+    row.appendChild(deDiv);
+
+    sentences.appendChild(row);
+  });
+}
+
+function placeInZone(zone, word, chipId) {
+  // If zone already has a chip, return it to bank first
+  if (zone.dataset.chipId) {
+    const oldChip = document.getElementById(zone.dataset.chipId);
+    if (oldChip) oldChip.classList.remove('placed');
+  }
+  zone.textContent = word;
+  zone.classList.add('filled');
+  zone.dataset.current = word;
+  zone.dataset.chipId = chipId;
+  const chip = document.getElementById(chipId);
+  if (chip) chip.classList.add('placed');
+}
+
+function submitDnD() {
+  let correct = 0;
+  dndData.forEach((d, i) => {
+    const zone = document.getElementById('dnd-zone-' + i);
+    if (zone.dataset.current.toLowerCase() === d.answer.toLowerCase()) {
+      zone.classList.add('correct-zone');
+      correct++;
+    } else {
+      zone.classList.add('wrong-zone');
+      // Insert correct answer label after the zone
+      const note = document.createElement('span');
+      note.style.cssText = 'margin-left:6px;font-size:12px;color:#2EAA6B;font-weight:700;white-space:nowrap;';
+      note.textContent = '\u2192 ' + d.answer;
+      zone.after(note);
+    }
+  });
+  scores.dnd = correct;
+  document.getElementById('dnd-score-display').textContent = correct;
+  document.getElementById('dnd-submit-btn').disabled = true;
+  document.getElementById('dnd-next-btn').classList.remove('hidden');
+  document.querySelectorAll('.dnd-chip').forEach(c => { c.style.pointerEvents = 'none'; });
+}
+
+// ═══════════════════════════════════════════════════
+// ACTIVITY 4 — MATCHING
+// ═══════════════════════════════════════════════════
+const matchData = [
+  { base: "find", past: "found" },
+  { base: "take", past: "took" },
+  { base: "give", past: "gave" },
+  { base: "go",   past: "went" },
+  { base: "feel", past: "felt" },
+  { base: "feed", past: "fed" }
+];
+
+let matchSelectedLeft = null;
+let matchCorrect = 0;
+let matchDone = 0;
+
+function buildMatch() {
+  matchCorrect = 0;
+  matchDone = 0;
+  matchSelectedLeft = null;
+
+  const grid = document.getElementById('match-grid');
+  grid.innerHTML = '';
+
+  const leftCol = document.createElement('div');
+  leftCol.className = 'match-col';
+  leftCol.innerHTML = '<div class="match-col-label">Base form / Infinitiv</div>';
+
+  const rightCol = document.createElement('div');
+  rightCol.className = 'match-col';
+  rightCol.innerHTML = '<div class="match-col-label">Past Simple / Vergangenheit</div>';
+
+  const shuffledLeft = shuffle(matchData.map((d, i) => ({ ...d, idx: i })));
+  const shuffledRight = shuffle(matchData.map((d, i) => ({ ...d, idx: i })));
+
+  shuffledLeft.forEach(item => {
+    const el = document.createElement('div');
+    el.className = 'match-item';
+    el.textContent = item.base;
+    el.dataset.base = item.base;
+    el.dataset.past = item.past;
+    el.addEventListener('click', () => selectMatchLeft(el));
+    leftCol.appendChild(el);
+  });
+
+  shuffledRight.forEach(item => {
+    const el = document.createElement('div');
+    el.className = 'match-item';
+    el.textContent = item.past;
+    el.dataset.past = item.past;
+    el.addEventListener('click', () => selectMatchRight(el));
+    rightCol.appendChild(el);
+  });
+
+  grid.appendChild(leftCol);
+  grid.appendChild(rightCol);
+}
+
+function selectMatchLeft(el) {
+  if (el.classList.contains('matched-correct') || el.classList.contains('matched-wrong')) return;
+  document.querySelectorAll('.match-item').forEach(e => e.classList.remove('selected-left'));
+  matchSelectedLeft = el;
+  el.classList.add('selected-left');
+  document.getElementById('match-fb-area').textContent = '\u{1F1E9}\u{1F1EA} Jetzt w\u00e4hle die Vergangenheitsform! / Now choose the Past Simple form!';
+}
+
+function selectMatchRight(el) {
+  if (!matchSelectedLeft) return;
+  if (el.classList.contains('matched-correct')) return;
+
+  const baseEl = matchSelectedLeft;
+  const correctPast = baseEl.dataset.past;
+  const chosenPast = el.dataset.past;
+
+  matchDone++;
+
+  if (chosenPast === correctPast) {
+    baseEl.classList.remove('selected-left');
+    baseEl.classList.add('matched-correct', 'disabled');
+    el.classList.add('matched-correct', 'disabled');
+    matchCorrect++;
+    document.getElementById('match-fb-area').innerHTML =
+      `\u2705 <strong>${baseEl.textContent} \u2192 ${el.textContent}</strong> \u2014 Richtig! / Correct!`;
+  } else {
+    baseEl.classList.remove('selected-left');
+    baseEl.classList.add('matched-wrong', 'disabled');
+    el.classList.add('matched-wrong', 'disabled');
+    document.getElementById('match-fb-area').innerHTML =
+      `\u274c <strong>${baseEl.textContent}</strong> \u2192 should be <strong>${correctPast}</strong>, not ${chosenPast}. \u2013 Richtige Antwort: <strong>${correctPast}</strong>`;
+    setTimeout(() => {
+      baseEl.classList.remove('matched-wrong', 'disabled');
+      document.getElementById('match-fb-area').textContent = '\u{1F1E9}\u{1F1EA} Versuche es nochmal! / Try again!';
+    }, 1400);
+    matchDone--;
+  }
+
+  scores.match = matchCorrect;
+  document.getElementById('match-score-display').textContent = matchCorrect;
+  matchSelectedLeft = null;
+
+  if (matchDone >= matchData.length) {
+    setTimeout(() => {
+      document.getElementById('match-fb-area').innerHTML =
+        `\u2705 Fertig! / Done! ${matchCorrect}/${matchData.length} richtig.`;
+      document.getElementById('match-next-btn').classList.remove('hidden');
+    }, 800);
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════
+function showAct2() {
+  document.getElementById('act2-section').classList.remove('hidden');
+  document.getElementById('act2-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function showAct3() {
+  document.getElementById('act3-section').classList.remove('hidden');
+  document.getElementById('act3-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function showAct4() {
+  document.getElementById('act4-section').classList.remove('hidden');
+  document.getElementById('act4-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function showFinal() {
+  const total = scores.mc + scores.fitb + scores.dnd + scores.match;
+  const maxTotal = 6 + 6 + 6 + 6;
+  const pct = Math.round((total / maxTotal) * 100);
+
+  document.getElementById('final-section').style.display = 'block';
+  document.getElementById('final-score').textContent = `${total}/${maxTotal}`;
+
+  let msg = '';
+  if (pct >= 90) {
+    msg = '<strong>Ausgezeichnet! Excellent!</strong> You have mastered the Past Simple. Dindim would be proud of you! \u{1F427}';
+  } else if (pct >= 70) {
+    msg = '<strong>Sehr gut! Very good!</strong> You understand the Past Simple well. Review the irregular verbs a little more. \u{1F4AA}';
+  } else if (pct >= 50) {
+    msg = '<strong>Gut gemacht! Good job!</strong> You\u2019re making progress. Read the story again and try once more. \u{1F4D6}';
+  } else {
+    msg = '<strong>Weiter so! Keep going!</strong> Learning takes time. Read the grammar box again, then try the activities. You can do it! \u{1F31F}';
+  }
+
+  document.getElementById('final-msg').innerHTML = msg;
+
+  document.getElementById('breakdown-list').innerHTML = `
+    <div>\u2022 Activity 1 – Multiple Choice: <strong>${scores.mc}/6</strong></div>
+    <div>\u2022 Activity 2 – Fill in the blank: <strong>${scores.fitb}/6</strong></div>
+    <div>\u2022 Activity 3 – Drag &amp; Drop: <strong>${scores.dnd}/6</strong></div>
+    <div>\u2022 Activity 4 – Matching: <strong>${scores.match}/6</strong></div>
+  `;
+
+  document.getElementById('final-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ═══════════════════════════════════════════════════
+// SKIP NAVIGATION
+// ═══════════════════════════════════════════════════
+function jumpTo(target) {
+  // Reveal target section if hidden
+  const sectionMap = {
+    story:  'act1-section',   // story is always visible; scroll to it
+    act1:   'act1-section',
+    act2:   'act2-section',
+    act3:   'act3-section',
+    act4:   'act4-section'
+  };
+  const scrollTargetId = sectionMap[target];
+
+  if (target === 'story') {
+    // Scroll to the story section (first section in main)
+    const storyEl = document.querySelector('.story-section');
+    if (storyEl) storyEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return;
+  }
+
+  // Reveal act section
+  const el = document.getElementById(scrollTargetId);
+  if (!el) return;
+  el.classList.remove('hidden');
+  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+
+function restartAll() {
+  scores.mc = 0; scores.fitb = 0; scores.dnd = 0; scores.match = 0;
+
+  // Reset DnD module state
+  dndSelected = null;
+  dndDragChipId = null;
+
+  // Reset act1
+  document.getElementById('mc-submit-btn').disabled = false;
+  document.getElementById('mc-next-btn').classList.add('hidden');
+  document.getElementById('mc-score-display').textContent = 0;
+  buildMC();
+
+  // Hide acts 2-4
+  document.getElementById('act2-section').classList.add('hidden');
+  document.getElementById('act3-section').classList.add('hidden');
+  document.getElementById('act4-section').classList.add('hidden');
+  document.getElementById('final-section').style.display = 'none';
+
+  // Reset act2
+  document.getElementById('fitb-submit-btn').disabled = false;
+  document.getElementById('fitb-next-btn').classList.add('hidden');
+  document.getElementById('fitb-score-display').textContent = 0;
+  buildFITB();
+
+  // Reset act3
+  document.getElementById('dnd-submit-btn').disabled = false;
+  document.getElementById('dnd-next-btn').classList.add('hidden');
+  document.getElementById('dnd-score-display').textContent = 0;
+  buildDnD();
+
+  // Reset act4
+  document.getElementById('match-next-btn').classList.add('hidden');
+  document.getElementById('match-score-display').textContent = 0;
+  buildMatch();
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ═══════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════
+buildMC();
+buildFITB();
+buildDnD();
+buildMatch();
+</script>
+</body>
+</html>

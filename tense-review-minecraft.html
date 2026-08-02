@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English — Minecraft Edition</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #0a0e0a;
+    --surface:   #111811;
+    --surface2:  #192019;
+    --surface3:  #1f281f;
+    --border:    #2a3a2a;
+    --text:      #d4e8c8;
+    --muted:     #5a7a5a;
+    --accent:    #4caf50;   /* creeper green */
+    --accent2:   #8bc34a;   /* grass green */
+    --gold:      #ffd54f;   /* gold ore */
+    --diamond:   #4dd0e1;   /* diamond */
+    --redstone:  #ef5350;   /* redstone */
+    --netherite: #9e9e9e;   /* netherite */
+
+    /* tense colours — same system */
+    --c-ps:   #4a7fd4;
+    --c-pc:   #e8429a;
+    --c-pps:  #1a9b8a;
+    --c-ppc:  #2dbfaa;
+    --c-pas:  #b8956a;
+    --c-pac:  #d4b800;
+    --c-paps: #8b1a2e;
+    --c-papc: #6b2d9e;
+    --c-fs:   #c8960a;
+    --c-fc:   #e07020;
+    --c-fp:   #9a9aaa;
+    --c-fpc:  #7b3fbf;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    min-height: 100vh;
+    /* subtle pixel grid */
+    background-image:
+      linear-gradient(rgba(74,175,80,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(74,175,80,0.03) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--surface);
+    border-bottom: 3px solid var(--accent);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    padding: 20px 40px;
+    gap: 24px;
+    position: relative;
+    z-index: 1;
+  }
+  /* pixel decoration strip */
+  .pixel-strip {
+    height: 8px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--accent) 0px, var(--accent) 8px,
+      var(--accent2) 8px, var(--accent2) 16px,
+      #795548 16px, #795548 24px,
+      #607d8b 24px, #607d8b 32px
+    );
+    opacity: 0.6;
+  }
+
+  .logo-block {
+    background: var(--accent);
+    width: 44px; height: 44px;
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    box-shadow: inset -3px -3px 0 rgba(0,0,0,0.3), inset 3px 3px 0 rgba(255,255,255,0.15);
+  }
+  .logo-block svg { display: block; }
+
+  .header-titles { flex: 1; }
+  .header-sup {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: var(--accent2);
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+  .header-main {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.4;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+  }
+  .header-main span { color: var(--accent); }
+
+  .badges { display: flex; gap: 8px; flex-shrink: 0; }
+  .badge {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    padding: 6px 10px;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    line-height: 1.4;
+  }
+  .badge-b2  { background: var(--diamond); color: #003540; }
+  .badge-lvl { background: var(--gold);    color: #3a2800; }
+
+  /* ── PROGRESS ── */
+  #pbwrap {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 40px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .pb-label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px; color: var(--muted);
+    text-transform: uppercase; white-space: nowrap; letter-spacing: 0.05em;
+  }
+  .pb-track {
+    flex: 1; height: 12px;
+    background: var(--surface3);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+  }
+  .pb-fill {
+    height: 100%;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--accent) 0px, var(--accent) 10px,
+      var(--accent2) 10px, var(--accent2) 20px
+    );
+    border-radius: 1px;
+    transition: width 0.4s steps(10);
+    width: 0%;
+  }
+  .pb-score {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px; color: var(--gold); white-space: nowrap;
+  }
+
+  /* ── MAIN ── */
+  main { max-width: 920px; margin: 0 auto; padding: 48px 24px 80px; }
+  section { margin-bottom: 64px; animation: fadeUp 0.4s ease both; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none} }
+
+  /* ── SECTION HEADERS ── */
+  .sec-head {
+    display: flex; align-items: flex-start; gap: 0;
+    margin-bottom: 24px;
+  }
+  .sec-num-block {
+    background: var(--accent);
+    width: 48px; min-height: 64px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    border-radius: 4px 0 0 4px;
+    box-shadow: inset -3px -3px 0 rgba(0,0,0,0.25);
+  }
+  .sec-num-block span {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 16px; color: #fff;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.4);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    letter-spacing: 0.1em;
+  }
+  .sec-info {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: none;
+    border-radius: 0 4px 4px 0;
+    padding: 14px 20px;
+    flex: 1;
+  }
+  .sec-tag {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px; color: var(--accent2);
+    text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px;
+  }
+  .sec-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 12px; color: var(--text);
+    line-height: 1.5; margin-bottom: 7px;
+  }
+  .sec-instr { font-size: 14px; color: var(--muted); line-height: 1.6; font-style: italic; }
+
+  /* ── COLOUR KEY ── */
+  .colour-key {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 4px; padding: 14px 16px; margin-bottom: 36px;
+  }
+  .ki { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; font-family: 'DM Mono', monospace; }
+  .ks { width: 11px; height: 11px; border-radius: 1px; flex-shrink: 0; }
+
+  /* ── HIGHLIGHT SPANS ── */
+  .hl { border-radius: 2px; padding: 1px 5px; font-style: italic; font-weight: 700; font-family: 'DM Mono', monospace; font-size: 0.91em; }
+  .ps   { background: var(--c-ps);   color: #fff; }
+  .pc   { background: var(--c-pc);   color: #fff; }
+  .pps  { background: var(--c-pps);  color: #fff; }
+  .ppc  { background: var(--c-ppc);  color: #fff; }
+  .pas  { background: var(--c-pas);  color: #fff; }
+  .pac  { background: var(--c-pac);  color: #111; }
+  .paps { background: var(--c-paps); color: #fff; }
+  .papc { background: var(--c-papc); color: #fff; }
+  .fs   { background: var(--c-fs);   color: #111; }
+  .fc   { background: var(--c-fc);   color: #fff; }
+  .fp   { background: var(--c-fp);   color: #111; }
+  .fpc  { background: var(--c-fpc);  color: #fff; }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 24px;
+    margin-bottom: 14px;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+  .card.answered { border-color: var(--accent); }
+  /* pixel corner accent */
+  .card::after {
+    content: '';
+    position: absolute;
+    top: -1px; right: -1px;
+    width: 10px; height: 10px;
+    background: var(--accent);
+    border-radius: 0 4px 0 0;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .card.answered::after { opacity: 1; }
+
+  /* ── MC ── */
+  .mc-q {
+    font-size: 15px; line-height: 1.7; margin-bottom: 14px;
+    padding: 12px 14px;
+    background: var(--surface2); border-radius: 3px;
+    border-left: 3px solid var(--accent);
+  }
+  .mc-q .qn { font-family: 'Press Start 2P', monospace; font-size: 9px; color: var(--accent); display: block; margin-bottom: 6px; }
+  .opts { display: flex; flex-direction: column; gap: 7px; }
+  .opt {
+    background: var(--surface2); border: 1.5px solid var(--border);
+    border-radius: 3px; padding: 10px 14px; cursor: pointer;
+    font-size: 14px; font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s; display: flex; align-items: center; gap: 10px;
+    text-align: left; color: var(--text);
+  }
+  .opt:hover:not(.locked) { border-color: var(--accent); color: var(--accent); }
+  .opt.correct { border-color: var(--c-ppc); background: #2dbfaa18; color: var(--c-ppc); }
+  .opt.wrong   { border-color: var(--redstone); background: #ef535018; color: var(--redstone); }
+  .ol { font-family: 'Press Start 2P', monospace; font-size: 8px; color: var(--muted); min-width: 20px; }
+  .opt.correct .ol { color: var(--c-ppc); }
+  .opt.wrong   .ol { color: var(--redstone); }
+
+  .fb { font-size: 13px; margin-top: 10px; padding: 10px 14px; border-radius: 3px; display: none; line-height: 1.6; }
+  .fb.show { display: block; }
+  .fb.correct { background: #2dbfaa12; color: var(--c-ppc); border-left: 3px solid var(--c-ppc); }
+  .fb.wrong   { background: #ef535012; color: #ff8a80; border-left: 3px solid var(--redstone); }
+
+  /* ── FITB / MONOLOGUE ── */
+  .mono {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 4px; padding: 24px 28px; margin-bottom: 20px;
+    font-size: 15px; line-height: 2.2;
+    position: relative;
+  }
+  .mono-speaker {
+    font-family: 'Press Start 2P', monospace; font-size: 8px;
+    color: var(--gold); margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .mono-speaker::before { content: '▶'; color: var(--accent); font-size: 10px; }
+  .mono-speaker::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .bi {
+    background: var(--bg); border: none;
+    border-bottom: 2px solid var(--accent);
+    color: var(--text); font-family: 'DM Mono', monospace;
+    font-size: 13px; padding: 2px 8px;
+    min-width: 140px; outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    vertical-align: baseline; border-radius: 2px 2px 0 0;
+  }
+  .bi:focus { border-bottom-color: var(--diamond); background: #4dd0e108; }
+  .bi.correct { border-bottom-color: var(--c-ppc); background: #2dbfaa10; color: var(--c-ppc); }
+  .bi.wrong   { border-bottom-color: var(--redstone); background: #ef535010; color: #ff8a80; }
+  .bi:disabled { cursor: default; }
+  .hint { font-size: 10px; color: var(--muted); font-family: 'DM Mono', monospace; margin-left: 3px; font-style: italic; }
+
+  /* ── TRUE / FALSE ── */
+  .tf-row { padding: 16px 0; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: 14px; }
+  .tf-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .tf-num { font-family: 'Press Start 2P', monospace; font-size: 8px; color: var(--accent); margin-bottom: 5px; }
+  .tf-st { font-size: 15px; line-height: 1.65; flex: 1; }
+  .tf-expl { font-size: 12.5px; color: var(--muted); margin-top: 7px; display: none; font-style: italic; line-height: 1.6; }
+  .tf-expl.show { display: block; }
+  .tfbtns { display: flex; gap: 7px; flex-shrink: 0; }
+  .tfb {
+    width: 42px; height: 34px; border-radius: 3px; border: 1.5px solid var(--border);
+    background: var(--surface2); color: var(--text);
+    font-family: 'Press Start 2P', monospace; font-size: 9px;
+    cursor: pointer; transition: all 0.15s; text-transform: uppercase;
+  }
+  .tfb:hover:not(.locked) { border-color: var(--accent); color: var(--accent); }
+  .tfb.correct { border-color: var(--c-ppc); background: #2dbfaa18; color: var(--c-ppc); }
+  .tfb.wrong   { border-color: var(--redstone); background: #ef535018; color: var(--redstone); }
+
+  /* ── MATCHING / COLLOCATIONS ── */
+  .match-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 16px;
+  }
+  .match-col { display: flex; flex-direction: column; gap: 10px; }
+  .match-col-label {
+    font-family: 'Press Start 2P', monospace; font-size: 8px;
+    color: var(--accent2); text-transform: uppercase; letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+  .match-left {
+    background: var(--surface2); border: 1.5px solid var(--border);
+    border-radius: 3px; padding: 10px 14px;
+    font-family: 'DM Mono', monospace; font-size: 14px;
+    color: var(--gold); font-weight: 500;
+    display: flex; align-items: center; gap: 8px;
+    min-height: 46px;
+  }
+  .match-left .lnum { font-size: 9px; color: var(--muted); font-family: 'Press Start 2P', monospace; min-width: 16px; }
+  .match-sel {
+    width: 100%; margin-top: 6px;
+    background: var(--bg); border: 1.5px solid var(--border);
+    border-radius: 3px; color: var(--text);
+    padding: 8px 10px; font-size: 13px; font-family: 'DM Sans', sans-serif;
+    outline: none; cursor: pointer; transition: border-color 0.2s;
+  }
+  .match-sel:focus { border-color: var(--accent); }
+  .match-sel.correct { border-color: var(--c-ppc); color: var(--c-ppc); }
+  .match-sel.wrong   { border-color: var(--redstone); color: var(--redstone); }
+
+  /* ── ERROR CORRECTION ── */
+  .ec-row { margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid var(--border); }
+  .ec-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .ec-sent { font-size: 15px; line-height: 1.7; margin-bottom: 9px; }
+  .errword { color: var(--redstone); text-decoration: underline wavy var(--redstone); font-weight: 700; }
+  .ec-input-row { display: flex; align-items: center; gap: 9px; }
+  .eci {
+    background: var(--surface2); border: 1.5px solid var(--border);
+    border-radius: 3px; color: var(--text);
+    font-family: 'DM Mono', monospace; font-size: 13px;
+    padding: 7px 12px; flex: 1; outline: none; transition: border-color 0.2s;
+  }
+  .eci:focus { border-color: var(--accent); }
+  .eci.correct { border-color: var(--c-ppc); background: #2dbfaa10; color: var(--c-ppc); }
+  .eci.wrong   { border-color: var(--redstone); background: #ef535010; color: #ff8a80; }
+  .eci:disabled { cursor: default; }
+
+  /* ── BUTTONS ── */
+  .btn {
+    background: var(--accent); color: #0a1a0a; border: none;
+    border-radius: 3px; padding: 10px 22px;
+    font-family: 'Press Start 2P', monospace; font-size: 9px;
+    text-transform: uppercase; letter-spacing: 0.05em;
+    cursor: pointer; transition: all 0.15s;
+    box-shadow: 0 3px 0 #2e7d32, inset 0 1px 0 rgba(255,255,255,0.15);
+  }
+  .btn:hover { background: var(--accent2); transform: translateY(-1px); box-shadow: 0 4px 0 #2e7d32; }
+  .btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #2e7d32; }
+  .btn-sm { padding: 7px 14px; font-size: 8px; }
+  .btn2 {
+    background: transparent; border: 1.5px solid var(--border); color: var(--muted);
+    border-radius: 3px; padding: 8px 18px;
+    font-family: 'Press Start 2P', monospace; font-size: 8px;
+    text-transform: uppercase; letter-spacing: 0.05em;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .btn2:hover { border-color: var(--accent); color: var(--accent); }
+  .btnrow { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; align-items: center; }
+
+  /* ── RESULTS ── */
+  #res {
+    display: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--accent);
+    border-radius: 4px;
+    padding: 52px 36px;
+    text-align: center;
+    margin-top: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  #res::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(74,175,80,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(74,175,80,0.04) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+  }
+  .rscore {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 56px; color: var(--accent); line-height: 1;
+    margin-bottom: 8px; text-shadow: 4px 4px 0 rgba(0,0,0,0.5);
+    position: relative;
+  }
+  .rlabel { font-family: 'Press Start 2P', monospace; font-size: 9px; color: var(--muted); margin-bottom: 28px; letter-spacing: 0.1em; position: relative; }
+  .rmsg { font-size: 16px; color: var(--text); margin-bottom: 36px; line-height: 1.7; max-width: 500px; margin-left: auto; margin-right: auto; position: relative; }
+  .rbd { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 32px; position: relative; }
+  .rbi { background: var(--surface2); border: 1px solid var(--border); border-radius: 3px; padding: 14px 10px; }
+  .rv { font-family: 'Press Start 2P', monospace; font-size: 18px; color: var(--gold); line-height: 1; margin-bottom: 6px; }
+  .rk { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+
+  /* CHEST ANIMATION on results */
+  .chest { font-size: 40px; margin-bottom: 16px; display: block; animation: bounce 0.8s ease infinite alternate; }
+  @keyframes bounce { from{transform:translateY(0)} to{transform:translateY(-6px)} }
+
+  #nxt { position: fixed; bottom: 24px; right: 28px; z-index: 100; display: none; }
+  #nxt.on { display: block; }
+
+  /* pixel divider */
+  .px-divider { height: 4px; background: repeating-linear-gradient(90deg, var(--accent) 0,var(--accent) 4px,transparent 4px,transparent 8px); opacity: 0.3; margin: 0 0 36px; border-radius: 2px; }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div class="pixel-strip"></div>
+<header>
+  <div class="header-inner">
+    <div class="logo-block">
+      <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+        <!-- Creeper face pixel art -->
+        <rect width="28" height="28" fill="transparent"/>
+        <!-- eyes -->
+        <rect x="6" y="8" width="5" height="5" fill="#000" opacity="0.7"/>
+        <rect x="17" y="8" width="5" height="5" fill="#000" opacity="0.7"/>
+        <!-- mouth -->
+        <rect x="10" y="14" width="8" height="3" fill="#000" opacity="0.7"/>
+        <rect x="8" y="17" width="4" height="3" fill="#000" opacity="0.7"/>
+        <rect x="16" y="17" width="4" height="3" fill="#000" opacity="0.7"/>
+        <rect x="10" y="20" width="8" height="3" fill="#000" opacity="0.7"/>
+      </svg>
+    </div>
+    <div class="header-titles">
+      <div class="header-sup">Forbes English</div>
+      <div class="header-main">Tenses in the <span>Overworld</span></div>
+    </div>
+    <div class="badges">
+      <span class="badge badge-b2">B2–C1</span>
+      <span class="badge badge-lvl">30 pts</span>
+    </div>
+  </div>
+</header>
+
+<div id="pbwrap">
+  <span class="pb-label">XP</span>
+  <div class="pb-track"><div class="pb-fill" id="pbf"></div></div>
+  <span class="pb-score" id="pbs">0 / 30</span>
+</div>
+
+<main>
+
+<div class="colour-key">
+  <div class="ki"><div class="ks" style="background:var(--c-ps)"></div>Pres. Simple</div>
+  <div class="ki"><div class="ks" style="background:var(--c-pc)"></div>Pres. Cont.</div>
+  <div class="ki"><div class="ks" style="background:var(--c-pps)"></div>Pres. Perf. Sim.</div>
+  <div class="ki"><div class="ks" style="background:var(--c-ppc)"></div>Pres. Perf. Cont.</div>
+  <div class="ki"><div class="ks" style="background:var(--c-pas)"></div>Past Simple</div>
+  <div class="ki"><div class="ks" style="background:var(--c-pac)"></div>Past Cont.</div>
+  <div class="ki"><div class="ks" style="background:var(--c-paps)"></div>Past Perf. Sim.</div>
+  <div class="ki"><div class="ks" style="background:var(--c-papc)"></div>Past Perf. Cont.</div>
+  <div class="ki"><div class="ks" style="background:var(--c-fs)"></div>Future Simple</div>
+  <div class="ki"><div class="ks" style="background:var(--c-fc)"></div>Future Cont.</div>
+  <div class="ki"><div class="ks" style="background:var(--c-fp)"></div>Future Perf.</div>
+  <div class="ki"><div class="ks" style="background:var(--c-fpc)"></div>Future Perf. Cont.</div>
+</div>
+
+<!-- ══ SECTION 1: MULTIPLE CHOICE ══ -->
+<section>
+  <div class="sec-head">
+    <div class="sec-num-block"><span>01</span></div>
+    <div class="sec-info">
+      <div class="sec-tag">Section 1 · 6 points</div>
+      <div class="sec-title">Multiple Choice</div>
+      <div class="sec-instr">Choose the most grammatically correct verb form. All sentences are drawn from Minecraft gameplay, lore, or content creator commentary.</div>
+    </div>
+  </div>
+
+  <div class="card" id="mc1">
+    <div class="mc-q"><span class="qn">Question 1</span>"By the time the Ender Dragon respawns, the player _______ the outer islands for over three in-game days."</div>
+    <div class="opts">
+      <button class="opt" data-v="A" onclick="chkMC('mc1',this,'A','C')"><span class="ol">A</span>will be exploring</button>
+      <button class="opt" data-v="B" onclick="chkMC('mc1',this,'B','C')"><span class="ol">B</span>has been exploring</button>
+      <button class="opt" data-v="C" onclick="chkMC('mc1',this,'C','C')"><span class="ol">C</span>will have been exploring</button>
+    </div>
+    <div class="fb" id="fb-mc1"></div>
+  </div>
+
+  <div class="card" id="mc2">
+    <div class="mc-q"><span class="qn">Question 2</span>"When the Creeper exploded, she _______ a fully enchanted diamond sword — it was completely destroyed."</div>
+    <div class="opts">
+      <button class="opt" data-v="A" onclick="chkMC('mc2',this,'A','A')"><span class="ol">A</span>had been carrying</button>
+      <button class="opt" data-v="B" onclick="chkMC('mc2',this,'B','A')"><span class="ol">B</span>carried</button>
+      <button class="opt" data-v="C" onclick="chkMC('mc2',this,'C','A')"><span class="ol">C</span>has been carrying</button>
+    </div>
+    <div class="fb" id="fb-mc2"></div>
+  </div>
+
+  <div class="card" id="mc3">
+    <div class="mc-q"><span class="qn">Question 3</span>"Speedrunners _______ the world record dozens of times since the 1.16 Nether update changed routing strategies."</div>
+    <div class="opts">
+      <button class="opt" data-v="A" onclick="chkMC('mc3',this,'A','B')"><span class="ol">A</span>were breaking</button>
+      <button class="opt" data-v="B" onclick="chkMC('mc3',this,'B','B')"><span class="ol">B</span>have broken</button>
+      <button class="opt" data-v="C" onclick="chkMC('mc3',this,'C','B')"><span class="ol">C</span>had broken</button>
+    </div>
+    <div class="fb" id="fb-mc3"></div>
+  </div>
+
+  <div class="card" id="mc4">
+    <div class="mc-q"><span class="qn">Question 4</span>"While he _______ a Nether portal, a Ghast destroyed it with a fireball from behind."</div>
+    <div class="opts">
+      <button class="opt" data-v="A" onclick="chkMC('mc4',this,'A','B')"><span class="ol">A</span>built</button>
+      <button class="opt" data-v="B" onclick="chkMC('mc4',this,'B','B')"><span class="ol">B</span>was building</button>
+      <button class="opt" data-v="C" onclick="chkMC('mc4',this,'C','B')"><span class="ol">C</span>had built</button>
+    </div>
+    <div class="fb" id="fb-mc4"></div>
+  </div>
+
+  <div class="card" id="mc5">
+    <div class="mc-q"><span class="qn">Question 5</span>"The Warden _______ to vibrations and sniffing — it doesn't rely on sight at all."</div>
+    <div class="opts">
+      <button class="opt" data-v="A" onclick="chkMC('mc5',this,'A','C')"><span class="ol">A</span>is responding</button>
+      <button class="opt" data-v="B" onclick="chkMC('mc5',this,'B','C')"><span class="ol">B</span>has responded</button>
+      <button class="opt" data-v="C" onclick="chkMC('mc5',this,'C','C')"><span class="ol">C</span>responds</button>
+    </div>
+    <div class="fb" id="fb-mc5"></div>
+  </div>
+
+  <div class="card" id="mc6">
+    <div class="mc-q"><span class="qn">Question 6</span>"By the time the stream ends tonight, I _______ on this redstone contraption for nine hours straight."</div>
+    <div class="opts">
+      <button class="opt" data-v="A" onclick="chkMC('mc6',this,'A','B')"><span class="ol">A</span>will be working</button>
+      <button class="opt" data-v="B" onclick="chkMC('mc6',this,'B','B')"><span class="ol">B</span>will have been working</button>
+      <button class="opt" data-v="C" onclick="chkMC('mc6',this,'C','B')"><span class="ol">C</span>have been working</button>
+    </div>
+    <div class="fb" id="fb-mc6"></div>
+  </div>
+</section>
+
+<div class="px-divider"></div>
+
+<!-- ══ SECTION 2: FILL IN THE BLANK ══ -->
+<section>
+  <div class="sec-head">
+    <div class="sec-num-block"><span>02</span></div>
+    <div class="sec-info">
+      <div class="sec-tag">Section 2 · 7 points</div>
+      <div class="sec-title">Fill in the Blank</div>
+      <div class="sec-instr">Complete the streamer's live commentary. Type the correct form of the verb shown. Tense hints are colour-coded. Multiple answers accepted where more than one form is genuinely correct.</div>
+    </div>
+  </div>
+
+  <div class="mono">
+    <div class="mono-speaker">Dream — Hardcore Survival Stream, Day 47</div>
+
+    <p>OK chat, so — as you can see, I
+      <input class="bi" id="b1" data-a="have been mining|'ve been mining" placeholder="mine…" autocomplete="off" spellcheck="false">
+      <span class="hint">(<span style="color:var(--c-ppc)">Pres. Perf. Cont.</span> — mine)</span>
+      for diamonds all morning and I still <span class="hl ps">haven't found</span> a single vein. The seed <span class="hl ps">is</span> genuinely cooked.</p>
+
+    <p style="margin-top:14px">Right, so last night — before I logged off —
+      I <input class="bi" id="b2" data-a="had built|had already built|'d built|'d already built" placeholder="build…" autocomplete="off" spellcheck="false">
+      <span class="hint">(<span style="color:var(--c-paps)">Past Perf. Simple</span> — build)</span>
+      the entire skeleton of the farm, so when I logged back in this morning, the structure
+      <input class="bi" id="b3" data-a="was already there|was complete|was ready|was finished|was waiting" placeholder="already be…" autocomplete="off" spellcheck="false">
+      <span class="hint">(<span style="color:var(--c-pas)">Past Simple</span> — already be there)</span>.</p>
+
+    <p style="margin-top:14px">I actually think this world
+      <input class="bi" id="b4" data-a="is going to be|'s going to be" placeholder="be…" autocomplete="off" spellcheck="false">
+      <span class="hint">(going to — be)</span>
+      my longest hardcore run ever. If the next 50 days go well, I
+      <input class="bi" id="b5" data-a="will have been playing|'ll have been playing" placeholder="play…" autocomplete="off" spellcheck="false">
+      <span class="hint">(<span style="color:var(--c-fpc)">Future Perf. Cont.</span> — play)</span>
+      on this seed for almost 100 days by the time I beat the dragon.</p>
+
+    <p style="margin-top:14px">OK — Wither boss fight next. While I
+      <input class="bi" id="b6" data-a="am fighting|'m fighting" placeholder="fight…" autocomplete="off" spellcheck="false">
+      <span class="hint">(<span style="color:var(--c-pc)">Pres. Cont.</span> — fight)</span>
+      the Wither, I need someone in chat to track my health. Last time I
+      <input class="bi" id="b7" data-a="didn't realise|did not realise|didn't realize|did not realize" placeholder="not realise…" autocomplete="off" spellcheck="false">
+      <span class="hint">(<span style="color:var(--c-pas)">Past Simple</span> — not realise)</span>
+      I <span class="hl pas">was</span> on half a heart until it <span class="hl pas">was</span> nearly too late.</p>
+  </div>
+
+  <div class="btnrow">
+    <button class="btn" onclick="chkBlanks()">Check Answers</button>
+    <button class="btn2" onclick="revBlanks()">Reveal All</button>
+  </div>
+</section>
+
+<div class="px-divider"></div>
+
+<!-- ══ SECTION 3: TRUE / FALSE ══ -->
+<section>
+  <div class="sec-head">
+    <div class="sec-num-block"><span>03</span></div>
+    <div class="sec-info">
+      <div class="sec-tag">Section 3 · 5 points</div>
+      <div class="sec-title">True or False?</div>
+      <div class="sec-instr">Is each grammar claim about these Minecraft sentences correct? Click T or F — then read the explanation.</div>
+    </div>
+  </div>
+
+  <div class="card">
+
+    <div class="tf-row">
+      <div style="flex:1">
+        <div class="tf-num">Statement 1</div>
+        <div class="tf-st">In <em>"Villagers <span class="hl ps">trade</span> using emeralds as currency"</em>, the Present Simple is used because trading is a permanent mechanic — a general truth about the game.</div>
+        <div class="tf-expl" id="tf1">True. Present Simple describes permanent facts, rules, and states — including fixed game mechanics. "Villagers trade using emeralds" is a defining truth about how Minecraft functions.</div>
+      </div>
+      <div class="tfbtns"><button class="tfb" onclick="chkTF(this,'T','T',1)">T</button><button class="tfb" onclick="chkTF(this,'F','T',1)">F</button></div>
+    </div>
+
+    <div class="tf-row">
+      <div style="flex:1">
+        <div class="tf-num">Statement 2</div>
+        <div class="tf-st"><em>"She has been crafting a beacon since she found the first Wither skull"</em> — this sentence correctly uses Present Perfect Continuous to show an activity that started in the past and is still ongoing.</div>
+        <div class="tf-expl" id="tf2">True. "Has been crafting" = Present Perfect Continuous. The activity (crafting/gathering materials for a beacon) started at a past point (finding the first skull) and is still in progress now.</div>
+      </div>
+      <div class="tfbtns"><button class="tfb" onclick="chkTF(this,'T','T',2)">T</button><button class="tfb" onclick="chkTF(this,'F','T',2)">F</button></div>
+    </div>
+
+    <div class="tf-row">
+      <div style="flex:1">
+        <div class="tf-num">Statement 3</div>
+        <div class="tf-st"><em>"He was mining diamonds when suddenly a Creeper was exploding next to him"</em> — both underlined verbs are correctly in the Past Continuous.</div>
+        <div class="tf-expl" id="tf3">False. "Was exploding" is wrong. A Creeper explosion is a single, sudden, completed event — it should be Past Simple: "a Creeper exploded." The Past Continuous is correct for the ongoing background action (mining), not the interrupting event.</div>
+      </div>
+      <div class="tfbtns"><button class="tfb" onclick="chkTF(this,'T','F',3)">T</button><button class="tfb" onclick="chkTF(this,'F','F',3)">F</button></div>
+    </div>
+
+    <div class="tf-row">
+      <div style="flex:1">
+        <div class="tf-num">Statement 4</div>
+        <div class="tf-st"><em>"By the end of Update Aquatic, Mojang had already introduced dolphins, shipwrecks, and buried treasure"</em> — the Past Perfect here correctly describes actions completed before a specific past point.</div>
+        <div class="tf-expl" id="tf4">True. "Had already introduced" = Past Perfect Simple. These features were added before (or by the end of) a specific past moment (the release of Update Aquatic) — exactly the use case for Past Perfect.</div>
+      </div>
+      <div class="tfbtns"><button class="tfb" onclick="chkTF(this,'T','T',4)">T</button><button class="tfb" onclick="chkTF(this,'F','T',4)">F</button></div>
+    </div>
+
+    <div class="tf-row">
+      <div style="flex:1">
+        <div class="tf-num">Statement 5</div>
+        <div class="tf-st"><em>"I have visited the End last year and defeated the dragon on my first attempt"</em> is grammatically correct because the speaker is describing an experience with present relevance.</div>
+        <div class="tf-expl" id="tf5">False. "Last year" is a specific past time expression — incompatible with the Present Perfect. The sentence must use Past Simple: "I visited the End last year and defeated the dragon." Present Perfect cannot be combined with finished time references.</div>
+      </div>
+      <div class="tfbtns"><button class="tfb" onclick="chkTF(this,'T','F',5)">T</button><button class="tfb" onclick="chkTF(this,'F','F',5)">F</button></div>
+    </div>
+
+  </div>
+</section>
+
+<div class="px-divider"></div>
+
+<!-- ══ SECTION 4: VOCABULARY MATCHING ══ -->
+<section>
+  <div class="sec-head">
+    <div class="sec-num-block"><span>04</span></div>
+    <div class="sec-info">
+      <div class="sec-tag">Section 4 · 6 points</div>
+      <div class="sec-title">Collocations</div>
+      <div class="sec-instr">Match each Minecraft verb phrase on the left to its correct definition or collocating noun phrase on the right. Select your answer from the drop-down menu.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div style="margin-bottom:14px;font-size:13px;color:var(--muted);font-style:italic">Each verb phrase collocates naturally with exactly one of the definitions below.</div>
+
+    <!-- 1 -->
+    <div style="margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--border)">
+      <div style="font-size:15px;margin-bottom:8px">1. To <strong style="color:var(--gold)">spawn</strong> (in Minecraft)</div>
+      <select class="match-sel" id="m1" onchange="chkMatch('m1','to appear in the world at a set location')">
+        <option value="">— select definition —</option>
+        <option>to craft a new item from raw materials</option>
+        <option>to appear in the world at a set location</option>
+        <option>to upgrade a tool using an anvil</option>
+        <option>to travel between dimensions</option>
+      </select>
+      <div class="fb" id="fb-m1"></div>
+    </div>
+
+    <!-- 2 -->
+    <div style="margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--border)">
+      <div style="font-size:15px;margin-bottom:8px">2. To <strong style="color:var(--gold)">grind</strong> (streamer usage)</div>
+      <select class="match-sel" id="m2" onchange="chkMatch('m2','to spend a long time on a repetitive task to gain resources or XP')">
+        <option value="">— select definition —</option>
+        <option>to destroy blocks quickly using the correct tool</option>
+        <option>to spend a long time on a repetitive task to gain resources or XP</option>
+        <option>to combine two enchanted items at an anvil</option>
+        <option>to fight a boss mob in the End dimension</option>
+      </select>
+      <div class="fb" id="fb-m2"></div>
+    </div>
+
+    <!-- 3 -->
+    <div style="margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--border)">
+      <div style="font-size:15px;margin-bottom:8px">3. A <strong style="color:var(--gold)">biome</strong></div>
+      <select class="match-sel" id="m3" onchange="chkMatch('m3','a region of the world with distinct terrain, climate, and mobs')">
+        <option value="">— select definition —</option>
+        <option>a structure generated underground containing loot chests</option>
+        <option>a region of the world with distinct terrain, climate, and mobs</option>
+        <option>a type of crafting station used for potion-making</option>
+        <option>the maximum number of items a stack can hold</option>
+      </select>
+      <div class="fb" id="fb-m3"></div>
+    </div>
+
+    <!-- 4 -->
+    <div style="margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--border)">
+      <div style="font-size:15px;margin-bottom:8px">4. To <strong style="color:var(--gold)">agro</strong> / <strong style="color:var(--gold)">aggro</strong> a mob</div>
+      <select class="match-sel" id="m4" onchange="chkMatch('m4','to cause a neutral or passive mob to become hostile and attack')">
+        <option value="">— select definition —</option>
+        <option>to tame a wild animal using food items</option>
+        <option>to cause a neutral or passive mob to become hostile and attack</option>
+        <option>to breed two animals to produce offspring</option>
+        <option>to cure a zombie villager using a splash potion</option>
+      </select>
+      <div class="fb" id="fb-m4"></div>
+    </div>
+
+    <!-- 5 -->
+    <div style="margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--border)">
+      <div style="font-size:15px;margin-bottom:8px">5. A <strong style="color:var(--gold)">redstone contraption</strong></div>
+      <select class="match-sel" id="m5" onchange="chkMatch('m5','a mechanical device built using redstone circuits to automate actions')">
+        <option value="">— select definition —</option>
+        <option>a trap set to catch hostile mobs at night</option>
+        <option>a mechanical device built using redstone circuits to automate actions</option>
+        <option>a portal frame built from obsidian blocks</option>
+        <option>a decorative structure with no functional purpose</option>
+      </select>
+      <div class="fb" id="fb-m5"></div>
+    </div>
+
+    <!-- 6 -->
+    <div>
+      <div style="font-size:15px;margin-bottom:8px">6. To <strong style="color:var(--gold)">speedrun</strong> a game</div>
+      <select class="match-sel" id="m6" onchange="chkMatch('m6','to complete a game as fast as possible, often using glitches or optimised routes')">
+        <option value="">— select definition —</option>
+        <option>to play a game on the hardest difficulty setting</option>
+        <option>to complete a game as fast as possible, often using glitches or optimised routes</option>
+        <option>to stream a game live without any preparation</option>
+        <option>to play a game from the beginning after dying once</option>
+      </select>
+      <div class="fb" id="fb-m6"></div>
+    </div>
+  </div>
+</section>
+
+<div class="px-divider"></div>
+
+<!-- ══ SECTION 5: ERROR CORRECTION ══ -->
+<section>
+  <div class="sec-head">
+    <div class="sec-num-block"><span>05</span></div>
+    <div class="sec-info">
+      <div class="sec-tag">Section 5 · 6 points</div>
+      <div class="sec-title">Error Correction</div>
+      <div class="sec-instr">Each sentence from a Minecraft wiki article contains one tense error (underlined in red). Type only the correct verb form.</div>
+    </div>
+  </div>
+
+  <div class="card">
+
+    <div class="ec-row">
+      <div class="ec-sent"><strong>1.</strong> "Endermen <span class="errword">are becoming</span> hostile only when a player makes direct eye contact with them."</div>
+      <div class="ec-input-row">
+        <input class="eci" id="ec1" data-a="become" placeholder="correct form…" autocomplete="off" spellcheck="false">
+        <button class="btn btn-sm" onclick="chkEC('ec1')">Check</button>
+      </div>
+      <div class="fb" id="fb-ec1"></div>
+    </div>
+
+    <div class="ec-row">
+      <div class="ec-sent"><strong>2.</strong> "By the time Notch <span class="errword">has released</span> the full game in 2011, the beta had already attracted millions of players."</div>
+      <div class="ec-input-row">
+        <input class="eci" id="ec2" data-a="released" placeholder="correct form…" autocomplete="off" spellcheck="false">
+        <button class="btn btn-sm" onclick="chkEC('ec2')">Check</button>
+      </div>
+      <div class="fb" id="fb-ec2"></div>
+    </div>
+
+    <div class="ec-row">
+      <div class="ec-sent"><strong>3.</strong> "At the time of writing, Minecraft <span class="errword">sold</span> over 300 million copies across all platforms, making it the best-selling game of all time."</div>
+      <div class="ec-input-row">
+        <input class="eci" id="ec3" data-a="has sold" placeholder="correct form…" autocomplete="off" spellcheck="false">
+        <button class="btn btn-sm" onclick="chkEC('ec3')">Check</button>
+      </div>
+      <div class="fb" id="fb-ec3"></div>
+    </div>
+
+    <div class="ec-row">
+      <div class="ec-sent"><strong>4.</strong> "When the player <span class="errword">will enter</span> the Deep Dark biome, the Warden begins to detect nearby vibrations immediately."</div>
+      <div class="ec-input-row">
+        <input class="eci" id="ec4" data-a="enters" placeholder="correct form…" autocomplete="off" spellcheck="false">
+        <button class="btn btn-sm" onclick="chkEC('ec4')">Check</button>
+      </div>
+      <div class="fb" id="fb-ec4"></div>
+    </div>
+
+    <div class="ec-row">
+      <div class="ec-sent"><strong>5.</strong> "The developers <span class="errword">had been working</span> on the Caves &amp; Cliffs update for over a year when they announced a split release last year."</div>
+      <div class="ec-input-row">
+        <input class="eci" id="ec5" data-a="had been working|were working" placeholder="correct form…" autocomplete="off" spellcheck="false">
+        <button class="btn btn-sm" onclick="chkEC('ec5')">Check</button>
+      </div>
+      <div class="fb" id="fb-ec5"></div>
+    </div>
+
+    <div class="ec-row">
+      <div class="ec-sent"><strong>6.</strong> "While the Wither <span class="errword">has destroyed</span> the surrounding blocks, the player managed to place a bed and skip the night."</div>
+      <div class="ec-input-row">
+        <input class="eci" id="ec6" data-a="was destroying" placeholder="correct form…" autocomplete="off" spellcheck="false">
+        <button class="btn btn-sm" onclick="chkEC('ec6')">Check</button>
+      </div>
+      <div class="fb" id="fb-ec6"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- RESULTS -->
+<div id="res">
+  <span class="chest">🎁</span>
+  <div class="rscore" id="rpct">—</div>
+  <div class="rlabel">XP Earned</div>
+  <div class="rmsg" id="rmsg"></div>
+  <div class="rbd">
+    <div class="rbi"><div class="rv" id="r-mc">—</div><div class="rk">MC</div></div>
+    <div class="rbi"><div class="rv" id="r-fitb">—</div><div class="rk">Fill Blank</div></div>
+    <div class="rbi"><div class="rv" id="r-tf">—</div><div class="rk">T / F</div></div>
+    <div class="rbi"><div class="rv" id="r-match">—</div><div class="rk">Match</div></div>
+    <div class="rbi"><div class="rv" id="r-ec">—</div><div class="rk">Error Fix</div></div>
+  </div>
+  <button class="btn" onclick="location.reload()">Play Again</button>
+</div>
+
+</main>
+<div id="nxt"><button class="btn" onclick="showRes()">Final Score ▶</button></div>
+
+<script>
+const sc={mc:0,fitb:0,tf:0,match:0,ec:0};
+const mx={mc:6,fitb:7,tf:5,match:6,ec:6};
+const TOTAL=30;
+let ac=0;
+
+function upd(){
+  const s=Object.values(sc).reduce((a,b)=>a+b,0);
+  document.getElementById('pbf').style.width=Math.round(s/TOTAL*100)+'%';
+  document.getElementById('pbs').textContent=s+' / '+TOTAL;
+  ac++;
+  if(ac>=14) document.getElementById('nxt').classList.add('on');
+}
+
+// ── MC DATA ──
+const mcFB={
+  mc1:{C:'✓ Correct. Future Perfect Continuous (<em>will have been exploring</em>) — three days of ongoing exploration completed by the future point of the dragon\'s respawn.',
+       w:'Not quite. We need Future Perfect Continuous to express ongoing exploration completed (and measured by duration) by a future point: <em>will have been exploring</em>.'},
+  mc2:{A:'✓ Correct. Past Perfect Continuous (<em>had been carrying</em>) — she had been carrying the sword as an ongoing state before the explosion interrupted.',
+       w:'Think again. The carrying was an ongoing state before the explosion occurred → Past Perfect Continuous: <em>had been carrying</em>.'},
+  mc3:{B:'✓ Correct. Present Perfect Simple (<em>have broken</em>) — the record has been broken multiple times during an unfinished time period (since the 1.16 update).',
+       w:'Not quite. The record-breaking happened multiple times during an unfinished period (since 1.16) → Present Perfect Simple: <em>have broken</em>.'},
+  mc4:{B:'✓ Correct. Past Continuous (<em>was building</em>) — an ongoing background action interrupted by a sudden event (the Ghast\'s attack).',
+       w:'The portal-building was in progress when interrupted → Past Continuous: <em>was building</em>.'},
+  mc5:{C:'✓ Correct. Present Simple (<em>responds</em>) — a permanent mechanic / general truth about how the Warden functions.',
+       w:'The Warden\'s detection system is a permanent game mechanic → Present Simple: <em>responds</em>.'},
+  mc6:{B:'✓ Correct. Future Perfect Continuous (<em>will have been working</em>) — nine hours of ongoing work completed by the future endpoint (stream end), emphasising duration.',
+       w:'We need Future Perfect Continuous to show nine hours of continuous work measured up to a future endpoint: <em>will have been working</em>.'},
+};
+
+const ecFB={
+  ec1:{c:'✓ Correct. <em>Become</em> — Present Simple for a permanent rule / game mechanic.',
+       w:'Use Present Simple: <em>become</em>. This describes a permanent game rule — not an action in progress right now.'},
+  ec2:{c:'✓ Correct. <em>Released</em> — Past Simple. "In 2011" is a specific past time → Past Simple, not Present Perfect.',
+       w:'Use Past Simple: <em>released</em>. The year 2011 is a specific past time expression — incompatible with Present Perfect.'},
+  ec3:{c:'✓ Correct. <em>Has sold</em> — Present Perfect. "At the time of writing" is an unfinished time period → Present Perfect Simple.',
+       w:'Use Present Perfect: <em>has sold</em>. "At the time of writing" is an ongoing/unfinished reference point → Present Perfect.'},
+  ec4:{c:'✓ Correct. <em>Enters</em> — Present Simple in a conditional/temporal clause. After "when", we use Present Simple (not will) to refer to the future.',
+       w:'Use Present Simple: <em>enters</em>. In time clauses with "when", English uses Present Simple to refer to future events, not <em>will</em>.'},
+  ec5:{c:'✓ Correct. Both <em>had been working</em> and <em>were working</em> are acceptable here — the sentence is already correct as written! The Past Perfect Continuous is valid: ongoing work before the announcement.',
+       w:'Actually, the sentence is correct as written. Past Perfect Continuous (<em>had been working</em>) is appropriate: ongoing work before the past moment of the announcement.'},
+  ec6:{c:'✓ Correct. Past Continuous (<em>was destroying</em>) — the destruction was an ongoing background action while the player completed a separate action.',
+       w:'Use Past Continuous: <em>was destroying</em>. The Wither\'s destruction was an ongoing background action — "while" introduces a simultaneous ongoing event, not a completed one.'},
+};
+
+const done={};
+function chkMC(id,btn,chosen,correct){
+  if(done[id]) return; done[id]=true;
+  btn.parentElement.querySelectorAll('.opt').forEach(b=>b.classList.add('locked'));
+  const fb=document.getElementById('fb-'+id);
+  if(chosen===correct){
+    btn.classList.add('correct'); sc.mc=Math.min(sc.mc+1,mx.mc);
+    fb.innerHTML=mcFB[id][correct]; fb.className='fb show correct';
+  } else {
+    btn.classList.add('wrong');
+    btn.parentElement.querySelectorAll('.opt').forEach(b=>{if(b.dataset.v===correct)b.classList.add('correct');});
+    fb.innerHTML=mcFB[id].w; fb.className='fb show wrong';
+  }
+  document.getElementById(id).classList.add('answered');
+  upd();
+}
+
+// ── FITB ──
+const blanks=['b1','b2','b3','b4','b5','b6','b7'];
+function n(s){return s.trim().toLowerCase().replace(/['']/g,"'");}
+function chkBlanks(){
+  let g=0;
+  blanks.forEach(id=>{
+    const inp=document.getElementById(id);
+    if(!inp) return;
+    if(inp.disabled){if(inp.classList.contains('correct'))g++;return;}
+    const ok=inp.dataset.a.split('|').map(n).includes(n(inp.value));
+    inp.classList.toggle('correct',ok); inp.classList.toggle('wrong',!ok);
+    inp.disabled=true; if(ok)g++;
+  });
+  sc.fitb=g; upd();
+}
+function revBlanks(){
+  blanks.forEach(id=>{
+    const inp=document.getElementById(id);
+    if(!inp) return;
+    inp.value=inp.dataset.a.split('|')[0];
+    inp.classList.remove('wrong'); inp.classList.add('correct'); inp.disabled=true;
+  });
+  sc.fitb=mx.fitb; upd();
+}
+
+// ── T/F ──
+const tfd={};
+function chkTF(btn,chosen,correct,num){
+  if(tfd[num]) return; tfd[num]=true;
+  btn.closest('.tf-row').querySelectorAll('.tfb').forEach(b=>b.classList.add('locked'));
+  if(chosen===correct){btn.classList.add('correct');sc.tf=Math.min(sc.tf+1,mx.tf);}
+  else{btn.classList.add('wrong');btn.closest('.tf-row').querySelectorAll('.tfb').forEach(b=>{if(b.textContent.trim()===correct)b.classList.add('correct');});}
+  document.getElementById('tf'+num).classList.add('show');
+  upd();
+}
+
+// ── MATCHING ──
+const matchDefs={
+  m1:'to appear in the world at a set location',
+  m2:'to spend a long time on a repetitive task to gain resources or XP',
+  m3:'a region of the world with distinct terrain, climate, and mobs',
+  m4:'to cause a neutral or passive mob to become hostile and attack',
+  m5:'a mechanical device built using redstone circuits to automate actions',
+  m6:'to complete a game as fast as possible, often using glitches or optimised routes',
+};
+const matchFB={
+  m1:'✓ Correct. <em>Spawn</em> = to appear/be generated at a set location. Mobs, players, and items all spawn.',
+  m2:'✓ Correct. <em>Grind</em> = to put in long repetitive effort for resources, XP, or achievements. Common in gaming and now general English.',
+  m3:'✓ Correct. A <em>biome</em> is a region defined by its terrain type, climate, vegetation, and mob spawning rules.',
+  m4:'✓ Correct. To <em>aggro</em> a mob = to trigger its hostile AI so it targets and attacks the player.',
+  m5:'✓ Correct. A <em>redstone contraption</em> is any device using redstone logic to automate a function, from simple doors to complex farms.',
+  m6:'✓ Correct. To <em>speedrun</em> = to complete a game as quickly as possible, often exploiting mechanics, skips, or glitches.',
+};
+const matchWrong='Not quite. Check the definition again and try another option.';
+const mDone={};
+function chkMatch(id,correct){
+  if(mDone[id]) return;
+  const sel=document.getElementById(id);
+  if(!sel.value) return;
+  mDone[id]=true; sel.disabled=true;
+  const ok=sel.value===correct;
+  sel.classList.add(ok?'correct':'wrong');
+  const fb=document.getElementById('fb-'+id);
+  fb.innerHTML=ok?matchFB[id]:matchWrong+' <strong>Answer: '+correct+'</strong>';
+  fb.className='fb show '+(ok?'correct':'wrong');
+  if(ok) sc.match=Math.min(sc.match+1,mx.match);
+  upd();
+}
+
+// ── EC ──
+const ecd={};
+function chkEC(id){
+  if(ecd[id]) return;
+  const inp=document.getElementById(id);
+  const ok=inp.dataset.a.split('|').map(n).includes(n(inp.value));
+  ecd[id]=true; inp.disabled=true;
+  inp.classList.add(ok?'correct':'wrong');
+  const fb=document.getElementById('fb-'+id);
+  if(ok){sc.ec=Math.min(sc.ec+1,mx.ec);fb.innerHTML=ecFB[id].c;fb.className='fb show correct';}
+  else{fb.innerHTML=ecFB[id].w+' <strong>Answer: '+inp.dataset.a.split('|')[0]+'</strong>';fb.className='fb show wrong';}
+  upd();
+}
+
+// ── RESULTS ──
+function showRes(){
+  const s=Object.values(sc).reduce((a,b)=>a+b,0);
+  const pct=Math.round(s/TOTAL*100);
+  document.getElementById('rpct').textContent=pct+'%';
+  document.getElementById('r-mc').textContent=sc.mc+'/'+mx.mc;
+  document.getElementById('r-fitb').textContent=sc.fitb+'/'+mx.fitb;
+  document.getElementById('r-tf').textContent=sc.tf+'/'+mx.tf;
+  document.getElementById('r-match').textContent=sc.match+'/'+mx.match;
+  document.getElementById('r-ec').textContent=sc.ec+'/'+mx.ec;
+  const msgs=[
+    [90,'Achievement unlocked: Grammar Master. You command every tense with the precision of a speedrunner taking the optimal route.'],
+    [70,'You\'ve found most of the diamonds. A few perfect tenses and conditionals to mine before you hit full enchantment.'],
+    [50,'Solid progress — you\'re out of the starter house and exploring, but the End is still a stretch. Keep grinding.'],
+    [0, 'Don\'t rage-quit. Respawn, review the colour-coded sentences, and try again. Every good player dies on hardcore once.'],
+  ];
+  document.getElementById('rmsg').textContent=msgs.find(([t])=>pct>=t)[1];
+  document.getElementById('res').style.display='block';
+  document.getElementById('res').scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>

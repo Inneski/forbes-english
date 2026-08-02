@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gerunds · English for German Speakers</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Josefin+Sans:wght@300;400;600&family=Inconsolata:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --bg: #1a1f1c;
+  --board: #1e2820;
+  --chalk: #e8e4d8;
+  --chalk-dim: #9a9588;
+  --neon-green: #6bff8e;
+  --neon-yellow: #ffe566;
+  --neon-pink: #ff6bbd;
+  --neon-blue: #6bbfff;
+  --neon-orange: #ff9c44;
+  --line: rgba(255,255,255,0.07);
+  --correct: #6bff8e;
+  --wrong: #ff6b6b;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Josefin Sans', sans-serif;
+  background: var(--bg);
+  color: var(--chalk);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+body::before {
+  content:'';
+  position:fixed; inset:0;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(255,255,255,0.022) 28px),
+    repeating-linear-gradient(90deg, transparent, transparent 27px, rgba(255,255,255,0.008) 28px);
+  pointer-events:none; z-index:0;
+}
+.hero {
+  position: relative;
+  text-align: center;
+  padding: 4rem 2rem 3rem;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(107,255,142,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-kicker {
+  font-family: 'Inconsolata', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--neon-green);
+  margin-bottom: 1.2rem;
+  opacity: 0;
+  animation: slideUp 0.6s ease 0.1s forwards;
+}
+.hero h1 {
+  font-family: 'Caveat', cursive;
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 700;
+  line-height: 1.05;
+  color: var(--chalk);
+  opacity: 0;
+  animation: slideUp 0.6s ease 0.25s forwards;
+}
+.hero h1 .hl {
+  color: var(--neon-yellow);
+  display: inline-block;
+  position: relative;
+}
+.hero h1 .hl::after {
+  content: '';
+  position: absolute;
+  bottom: 2px; left: 0; right: 0; height: 3px;
+  background: var(--neon-yellow);
+  opacity: 0.5;
+  border-radius: 2px;
+}
+.hero-sub {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  color: var(--chalk-dim);
+  opacity: 0;
+  animation: slideUp 0.6s ease 0.4s forwards;
+}
+@keyframes slideUp {
+  from { opacity:0; transform: translateY(16px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+.tabs {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0 1.5rem 2rem;
+  position: relative; z-index: 1;
+}
+.tab {
+  font-family: 'Inconsolata', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.55rem 1.3rem;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: transparent;
+  color: var(--chalk-dim);
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 2px;
+}
+.tab:hover { border-color: var(--neon-green); color: var(--chalk); }
+.tab.active {
+  background: var(--neon-green);
+  color: var(--bg);
+  border-color: var(--neon-green);
+  font-weight: 700;
+}
+.content {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 1.5rem 6rem;
+  position: relative; z-index: 1;
+}
+.panel { display: none; }
+.panel.active { display: block; animation: panelIn 0.4s ease; }
+@keyframes panelIn {
+  from { opacity:0; transform: translateY(10px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+.sec-title {
+  font-family: 'Caveat', cursive;
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--chalk);
+  margin: 0 0 0.3rem;
+}
+.sec-title span { color: var(--neon-yellow); }
+.sec-div {
+  width: 48px; height: 3px;
+  background: var(--neon-green);
+  margin: 0.5rem 0 1.8rem;
+  border-radius: 2px;
+}
+p { font-size: 0.95rem; font-weight: 300; line-height: 1.75; margin-bottom: 1rem; color: var(--chalk-dim); }
+p strong { color: var(--chalk); font-weight: 600; }
+p em { color: var(--neon-blue); font-style: italic; }
+.chalk-sent {
+  font-family: 'Caveat', cursive;
+  font-size: 1.7rem;
+  line-height: 1.6;
+  margin: 1.5rem 0 0.5rem;
+  padding: 1.2rem 1.6rem;
+  background: var(--board);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 4px;
+  position: relative;
+}
+.chalk-sent::before {
+  content: attr(data-label);
+  position: absolute;
+  top: -10px; left: 1rem;
+  font-family: 'Inconsolata', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  background: var(--bg);
+  padding: 0 0.4rem;
+  color: var(--chalk-dim);
+}
+.w { display: inline-block; padding: 0.05em 0.15em; border-radius: 3px; cursor: default; transition: transform 0.15s; }
+.w:hover { transform: scale(1.05); }
+.w.S  { background: rgba(107,191,255,0.2); border-bottom: 2px solid var(--neon-blue);   color: var(--neon-blue); }
+.w.V  { background: rgba(255,229,102,0.15); border-bottom: 2px solid var(--neon-yellow); color: var(--neon-yellow); }
+.w.O  { background: rgba(255,107,189,0.18); border-bottom: 2px solid var(--neon-pink);   color: var(--neon-pink); }
+.w.GS { background: rgba(107,255,142,0.18); border-bottom: 2px solid var(--neon-green);  color: var(--neon-green); }
+.w.GO { background: rgba(255,156,68,0.18);  border-bottom: 2px solid var(--neon-orange); color: var(--neon-orange); }
+.legend {
+  display: flex; flex-wrap: wrap; gap: 0.8rem;
+  margin: 0.3rem 0 2rem;
+}
+.leg { display: flex; align-items: center; gap: 0.4rem; font-family: 'Inconsolata', monospace; font-size: 0.7rem; letter-spacing: 0.1em; }
+.ld { width: 10px; height: 10px; border-radius: 2px; }
+.ld-S  { background: var(--neon-blue); }
+.ld-V  { background: var(--neon-yellow); }
+.ld-O  { background: var(--neon-pink); }
+.ld-GS { background: var(--neon-green); }
+.ld-GO { background: var(--neon-orange); }
+.rule {
+  border: 1px solid var(--neon-green);
+  padding: 1.1rem 1.4rem;
+  margin: 1.5rem 0;
+  background: rgba(107,255,142,0.04);
+  border-radius: 4px;
+  font-size: 0.92rem; line-height: 1.7;
+}
+.rule .rtag { font-family: 'Inconsolata', monospace; font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--neon-green); display: block; margin-bottom: 0.5rem; }
+.rule em { color: var(--neon-blue); }
+.rule strong { color: var(--chalk); }
+.warn {
+  border: 1px solid var(--neon-yellow);
+  padding: 1.1rem 1.4rem;
+  margin: 1.5rem 0;
+  background: rgba(255,229,102,0.04);
+  border-radius: 4px;
+  font-size: 0.92rem; line-height: 1.7;
+}
+.warn .wtag { font-family: 'Inconsolata', monospace; font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--neon-yellow); display: block; margin-bottom: 0.5rem; }
+.compare {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+  background: rgba(255,255,255,0.07);
+  margin: 1.5rem 0;
+  border-radius: 4px; overflow: hidden;
+}
+.cc { background: var(--board); padding: 1rem 1.2rem; }
+.cc .clang { font-family: 'Inconsolata', monospace; font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 0.5rem; }
+.cc.de .clang { color: #f0a050; }
+.cc.en .clang { color: var(--neon-blue); }
+.cc .cex { font-family: 'Caveat', cursive; font-size: 1.25rem; color: var(--chalk); line-height: 1.4; }
+.cc .cnote { font-size: 0.78rem; color: var(--chalk-dim); margin-top: 0.35rem; font-family: 'Inconsolata', monospace; }
+@media (max-width:560px) { .compare { grid-template-columns: 1fr; } }
+.vtable { width: 100%; border-collapse: collapse; margin: 1.2rem 0; font-size: 0.87rem; }
+.vtable th { font-family: 'Inconsolata', monospace; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; text-align: left; padding: 0.6rem 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.15); color: var(--chalk-dim); }
+.vtable td { padding: 0.65rem 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: top; line-height: 1.55; }
+.vtable td em { color: var(--neon-blue); font-style: italic; }
+.vtable td .no { color: var(--wrong); font-size: 0.85em; }
+.vtable td .yes { color: var(--neon-green); }
+.vtable tr:hover td { background: rgba(255,255,255,0.025); }
+.sh { font-family: 'Caveat', cursive; font-size: 1.6rem; font-weight: 700; margin: 2.4rem 0 0.5rem; color: var(--chalk); }
+.sh .a { color: var(--neon-orange); }
+hr.chalk { border: none; border-top: 1px dashed rgba(255,255,255,0.1); margin: 2.5rem 0; }
+/* EXERCISES */
+.prog-track { height: 4px; background: rgba(255,255,255,0.08); margin-bottom: 2.5rem; border-radius: 2px; }
+.prog-fill { height: 100%; background: var(--neon-green); border-radius: 2px; transition: width 0.4s ease; width: 0%; }
+.ex-block {
+  background: var(--board);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px;
+  padding: 1.6rem 1.8rem;
+  margin-bottom: 1.4rem;
+  transition: border-color 0.3s;
+}
+.ex-block.done-c { border-color: rgba(107,255,142,0.35); }
+.ex-block.done-w { border-color: rgba(255,107,107,0.35); }
+.ex-num { font-family: 'Inconsolata', monospace; font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--chalk-dim); margin-bottom: 0.8rem; }
+.ex-q { font-family: 'Caveat', cursive; font-size: 1.35rem; line-height: 1.55; color: var(--chalk); margin-bottom: 1.2rem; }
+.ex-q em { color: var(--neon-blue); }
+.choices { display: flex; flex-direction: column; gap: 0.5rem; }
+.ch-btn {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.03);
+  color: var(--chalk-dim);
+  cursor: pointer;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 0.88rem; font-weight: 300;
+  border-radius: 3px;
+  transition: all 0.15s; line-height: 1.5;
+}
+.ch-btn:hover:not(:disabled) { border-color: var(--neon-blue); color: var(--chalk); background: rgba(107,191,255,0.06); }
+.ch-btn.correct { background: rgba(107,255,142,0.12); border-color: var(--neon-green); color: var(--neon-green); }
+.ch-btn.wrong   { background: rgba(255,107,107,0.1);  border-color: var(--wrong); color: var(--wrong); text-decoration: line-through; }
+.ch-btn:disabled { cursor: default; }
+.blank-wrap { font-family: 'Caveat', cursive; font-size: 1.35rem; line-height: 2; color: var(--chalk); }
+.blank-inp {
+  font-family: 'Inconsolata', monospace;
+  font-size: 1rem; font-weight: 500;
+  background: transparent;
+  border: none; border-bottom: 2px solid rgba(255,255,255,0.3);
+  color: var(--chalk);
+  padding: 0.1em 0.4em;
+  width: 150px; text-align: center;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.blank-inp:focus { border-bottom-color: var(--neon-blue); }
+.blank-inp.correct { border-bottom-color: var(--neon-green); color: var(--neon-green); }
+.blank-inp.wrong   { border-bottom-color: var(--wrong); color: var(--wrong); }
+.check-btn {
+  margin-top: 1rem;
+  font-family: 'Inconsolata', monospace;
+  font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 0.55rem 1.3rem;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: var(--chalk-dim);
+  cursor: pointer; border-radius: 2px;
+  transition: all 0.2s;
+}
+.check-btn:hover { border-color: var(--neon-green); color: var(--neon-green); }
+.feedback { display: none; margin-top: 1rem; padding: 0.8rem 1rem; border-radius: 3px; font-size: 0.88rem; line-height: 1.65; font-weight: 300; }
+.feedback.show { display: block; }
+.feedback.correct { background: rgba(107,255,142,0.1); color: var(--neon-green); border-left: 3px solid var(--neon-green); }
+.feedback.wrong   { background: rgba(255,107,107,0.08); color: #ff9999; border-left: 3px solid var(--wrong); }
+.feedback .dn { margin-top: 0.4rem; font-family: 'Inconsolata', monospace; font-size: 0.8rem; opacity: 0.75; }
+.score-float {
+  position: fixed; bottom: 1.5rem; right: 1.5rem;
+  font-family: 'Inconsolata', monospace;
+  font-size: 0.78rem; letter-spacing: 0.1em;
+  background: var(--board);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: var(--chalk);
+  padding: 0.55rem 1.2rem;
+  border-radius: 2rem;
+  z-index: 100;
+  box-shadow: 0 0 20px rgba(107,255,142,0.12);
+  transition: background 0.3s;
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-kicker">Englisch für Fortgeschrittene &nbsp;·&nbsp; Grammatik</div>
+  <h1>Subjects, Objects<br>&amp; the <span class="hl">Gerund</span></h1>
+  <p class="hero-sub">An advanced English grammar course for German speakers</p>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('theory',this)">01 · Theory</button>
+  <button class="tab" onclick="switchTab('contrast',this)">02 · DE vs EN</button>
+  <button class="tab" onclick="switchTab('exercises',this)">03 · Exercises</button>
+  <button class="tab" onclick="switchTab('advanced',this)">04 · Advanced</button>
+</div>
+
+<div class="content">
+
+<!-- THEORY -->
+<div id="theory" class="panel active">
+  <div class="sec-title">The <span>Grammar</span></div>
+  <div class="sec-div"></div>
+  <p>You already understand subjects and objects from German — but English signals them through <strong>word order</strong>, not case endings. The Subject–Verb–Object sequence is nearly unbreakable.</p>
+  <div class="legend">
+    <div class="leg"><div class="ld ld-S"></div> Subject</div>
+    <div class="leg"><div class="ld ld-V"></div> Verb</div>
+    <div class="leg"><div class="ld ld-O"></div> Object</div>
+    <div class="leg"><div class="ld ld-GS"></div> Gerund as Subject</div>
+    <div class="leg"><div class="ld ld-GO"></div> Gerund as Object</div>
+  </div>
+  <div class="chalk-sent" data-label="basic SVO">
+    <span class="w S">The linguist</span>&nbsp;<span class="w V">studies</span>&nbsp;<span class="w O">grammar</span>.
+  </div>
+  <div class="chalk-sent" data-label="double object">
+    <span class="w S">She</span>&nbsp;<span class="w V">sent</span>&nbsp;<span class="w O">her colleague</span>&nbsp;<span class="w O">a draft</span>.
+  </div>
+  <p style="margin-top:0.5rem">↑ Two objects in sequence — indirect then direct. No Dativ article. Position is everything.</p>
+  <hr class="chalk">
+  <div class="sh">What is a <span class="a">Gerund</span>?</div>
+  <p>A gerund is a <strong>verb + –ing</strong> functioning as a <strong>noun</strong>. It can occupy any noun slot: subject, object, or complement. German uses nominalized verbs (<em>das Lesen, das Schreiben</em>) — English does this with gerunds, constantly, and without an article.</p>
+  <div class="sh" style="font-size:1.3rem">① Gerund as <span class="a">Subject</span></div>
+  <div class="chalk-sent" data-label="gerund as subject">
+    <span class="w GS">Reading novels</span>&nbsp;<span class="w V">improves</span>&nbsp;<span class="w O">your vocabulary</span>.
+  </div>
+  <div class="chalk-sent" data-label="gerund as subject">
+    <span class="w GS">Swimming every morning</span>&nbsp;<span class="w V">takes</span>&nbsp;<span class="w O">discipline</span>.
+  </div>
+  <div class="rule">
+    <span class="rtag">Rule</span>
+    A gerund subject is <strong>singular</strong> — it always takes a third-person singular verb. <em>"Running is fun."</em> Never <em>"Running are fun."</em>
+  </div>
+  <div class="sh" style="font-size:1.3rem">② Gerund as <span class="a">Direct Object</span></div>
+  <p>Certain verbs <em>require</em> a gerund as their object. The infinitive is not possible here.</p>
+  <div class="chalk-sent" data-label="gerund as object">
+    <span class="w S">She</span>&nbsp;<span class="w V">enjoys</span>&nbsp;<span class="w GO">hiking in the Alps</span>.
+  </div>
+  <div class="chalk-sent" data-label="gerund as object">
+    <span class="w S">He</span>&nbsp;<span class="w V">finished</span>&nbsp;<span class="w GO">writing the report</span>.
+  </div>
+  <table class="vtable">
+    <tr><th>Gerund-only verbs</th><th>Correct</th><th>Wrong</th></tr>
+    <tr><td>enjoy, avoid, finish, consider,<br>suggest, keep, mind, deny,<br>admit, practice, postpone, risk</td>
+        <td><em>I enjoy swimming.</em></td>
+        <td><span class="no">✗ I enjoy to swim.</span></td></tr>
+  </table>
+  <div class="sh" style="font-size:1.3rem">③ Gerund after a <span class="a">Preposition</span></div>
+  <p>After <strong>any preposition</strong>, a following verb must be a gerund — never an infinitive.</p>
+  <div class="chalk-sent" data-label="prep + gerund">
+    <span class="w S">I</span>&nbsp;<span class="w V">look forward to</span>&nbsp;<span class="w GO">seeing you</span>.
+  </div>
+  <div class="chalk-sent" data-label="prep + gerund">
+    <span class="w S">She</span>&nbsp;<span class="w V">is good at</span>&nbsp;<span class="w GO">solving problems</span>.
+  </div>
+  <div class="warn">
+    <span class="wtag">⚠ German Speaker Trap</span>
+    <strong>"I look forward to see you"</strong> — the <em>to</em> here is a <strong>preposition</strong>, not an infinitive marker. Always: <em>look forward to + –ing</em>.<br><br>
+    More examples: <em>instead of doing · tired of waiting · without saying · before leaving · after arriving</em>
+  </div>
+</div>
+
+<!-- CONTRAST -->
+<div id="contrast" class="panel">
+  <div class="sec-title">DE <span>vs.</span> EN</div>
+  <div class="sec-div"></div>
+  <p>These structural gaps trip up even very advanced German speakers. Study each pattern carefully.</p>
+  <div class="sh">Nominalization <span class="a">→</span> Gerund</div>
+  <div class="compare">
+    <div class="cc de"><div class="clang">Deutsch</div><div class="cex">Das Rauchen schadet der Gesundheit.</div><div class="cnote">Definite article + capitalized noun</div></div>
+    <div class="cc en"><div class="clang">English</div><div class="cex">Smoking damages your health.</div><div class="cnote">No article. Direct –ing form as subject.</div></div>
+  </div>
+  <div class="compare">
+    <div class="cc de"><div class="clang">Deutsch</div><div class="cex">Das tägliche Joggen hält mich fit.</div></div>
+    <div class="cc en"><div class="clang">English</div><div class="cex">Jogging every day keeps me fit.</div><div class="cnote">✗ ~~The daily jogging~~ — sounds unnatural</div></div>
+  </div>
+  <div class="sh">Verb Groups: <span class="a">Gerund vs. Infinitive</span></div>
+  <table class="vtable">
+    <tr><th>Group</th><th>Verbs</th><th>Correct</th><th>Wrong</th></tr>
+    <tr>
+      <td><span style="color:var(--neon-orange)">Gerund only</span></td>
+      <td>enjoy, avoid, finish, mind, consider, risk</td>
+      <td><em>She enjoys reading.</em></td>
+      <td><span class="no">✗ to read</span></td>
+    </tr>
+    <tr>
+      <td><span style="color:var(--neon-blue)">Infinitive only</span></td>
+      <td>want, plan, decide, hope, need, expect, agree</td>
+      <td><em>He wants to leave.</em></td>
+      <td><span class="no">✗ leaving</span></td>
+    </tr>
+    <tr>
+      <td><span style="color:var(--neon-yellow)">Both — meaning changes!</span></td>
+      <td>stop, remember, forget, try, regret</td>
+      <td>See below ↓</td>
+      <td>—</td>
+    </tr>
+  </table>
+  <div class="rule">
+    <span class="rtag">Critical Pairs</span>
+    <strong>stop + –ing</strong> = quit a habit: <em>"She stopped smoking."</em><br>
+    <strong>stop + to –</strong> = pause in order to: <em>"She stopped to smoke."</em><br><br>
+    <strong>remember + –ing</strong> = recall a past action: <em>"I remember meeting him."</em><br>
+    <strong>remember + to –</strong> = not forget a future task: <em>"Remember to call me."</em><br><br>
+    <strong>try + –ing</strong> = experiment: <em>"Try restarting the router."</em><br>
+    <strong>try + to –</strong> = make an effort: <em>"Try to stay calm."</em>
+  </div>
+  <div class="sh">Preposition + Verb</div>
+  <div class="compare">
+    <div class="cc de"><div class="clang">Deutsch</div><div class="cex">Er ist daran interessiert, Sprachen zu lernen.</div><div class="cnote">Infinitiv mit zu</div></div>
+    <div class="cc en"><div class="clang">English</div><div class="cex">He is interested in learning languages.</div><div class="cnote">Preposition → always –ing</div></div>
+  </div>
+  <div class="compare">
+    <div class="cc de"><div class="clang">Deutsch</div><div class="cex">Anstatt zu arbeiten, schläft er.</div></div>
+    <div class="cc en"><div class="clang">English</div><div class="cex">Instead of working, he sleeps.</div></div>
+  </div>
+  <div class="sh">Possessive before a Gerund</div>
+  <p>In formal English, the doer of a gerund is expressed with a possessive — not an object pronoun. German has no equivalent structure.</p>
+  <div class="rule">
+    <span class="rtag">Formal vs Informal</span>
+    Informal: <em>"I don't mind <strong>him</strong> leaving early."</em> ✓<br>
+    Formal: <em>"I don't mind <strong>his</strong> leaving early."</em> ✓<br><br>
+    <span style="color:var(--chalk-dim); font-size:0.9em">Formal treats the phrase as a noun: <em>his leaving</em> = <em>sein Weggehen</em>.</span>
+  </div>
+</div>
+
+<!-- EXERCISES -->
+<div id="exercises" class="panel">
+  <div class="sec-title">Practice</div>
+  <div class="sec-div"></div>
+  <p>Eight exercises targeting the exact patterns where German speakers make errors. Each answer includes a German grammar note.</p>
+  <div class="prog-track"><div class="prog-fill" id="prog"></div></div>
+
+  <div class="ex-block" id="e1">
+    <div class="ex-num">Exercise 1 of 8 · Choose the correct sentence</div>
+    <div class="ex-q">Which sentence is grammatically correct?</div>
+    <div class="choices">
+      <button class="ch-btn" onclick="mc(this,'e1',false)">A. &nbsp; She enjoys to dance at weekends.</button>
+      <button class="ch-btn" onclick="mc(this,'e1',true)">B. &nbsp; She enjoys dancing at weekends.</button>
+      <button class="ch-btn" onclick="mc(this,'e1',false)">C. &nbsp; She enjoys dance at weekends.</button>
+    </div>
+    <div class="feedback" id="e1-fb"></div>
+  </div>
+
+  <div class="ex-block" id="e2">
+    <div class="ex-num">Exercise 2 of 8 · Identify the gerund's role</div>
+    <div class="ex-q"><em>"Cooking elaborate meals relaxes him."</em> — What grammatical role does "Cooking elaborate meals" play?</div>
+    <div class="choices">
+      <button class="ch-btn" onclick="mc(this,'e2',false)">A. &nbsp; Present participle modifying a noun.</button>
+      <button class="ch-btn" onclick="mc(this,'e2',true)">B. &nbsp; Gerund phrase acting as the subject of "relaxes".</button>
+      <button class="ch-btn" onclick="mc(this,'e2',false)">C. &nbsp; Direct object of the main verb.</button>
+    </div>
+    <div class="feedback" id="e2-fb"></div>
+  </div>
+
+  <div class="ex-block" id="e3">
+    <div class="ex-num">Exercise 3 of 8 · Fill in the blank</div>
+    <div class="blank-wrap">
+      He admitted <input class="blank-inp" id="e3-in" placeholder="———" autocomplete="off"> the money. &nbsp;<span style="font-family:'Inconsolata'; font-size:0.85rem; color:var(--chalk-dim)">(steal)</span>
+    </div>
+    <button class="check-btn" onclick="blank('e3','stealing','He admitted <strong>stealing</strong> the money.','<em>admit</em> gehört zur Gerundium-Gruppe. Vgl.: Er gab zu, das Geld gestohlen zu haben.')">Check Answer</button>
+    <div class="feedback" id="e3-fb"></div>
+  </div>
+
+  <div class="ex-block" id="e4">
+    <div class="ex-num">Exercise 4 of 8 · Preposition trap</div>
+    <div class="ex-q">Which sentence uses a gerund correctly as the object of a preposition?</div>
+    <div class="choices">
+      <button class="ch-btn" onclick="mc(this,'e4',false)">A. &nbsp; I am thinking about to change careers.</button>
+      <button class="ch-btn" onclick="mc(this,'e4',true)">B. &nbsp; I am thinking about changing careers.</button>
+      <button class="ch-btn" onclick="mc(this,'e4',false)">C. &nbsp; I am thinking about change careers.</button>
+    </div>
+    <div class="feedback" id="e4-fb"></div>
+  </div>
+
+  <div class="ex-block" id="e5">
+    <div class="ex-num">Exercise 5 of 8 · Translate into English</div>
+    <div class="ex-q" style="margin-bottom:0.7rem">Translate: <em>„Das tägliche Lesen verbessert das Schreiben."</em></div>
+    <div class="blank-wrap">
+      <input class="blank-inp" id="e5-in" placeholder="———" autocomplete="off" style="width:175px"> daily improves writing.
+    </div>
+    <button class="check-btn" onclick="blank('e5','reading','<strong>Reading</strong> daily improves writing.','Deutsch: Nominalisierung mit Artikel (<em>Das Lesen</em>). Englisch: Gerundium ohne Artikel.')">Check Answer</button>
+    <div class="feedback" id="e5-fb"></div>
+  </div>
+
+  <div class="ex-block" id="e6">
+    <div class="ex-num">Exercise 6 of 8 · Meaning distinction</div>
+    <div class="ex-q">What is the difference?<br><em>(a) She stopped to check her phone.<br>(b) She stopped checking her phone.</em></div>
+    <div class="choices">
+      <button class="ch-btn" onclick="mc(this,'e6',false)">A. &nbsp; No difference — both mean she no longer checks.</button>
+      <button class="ch-btn" onclick="mc(this,'e6',true)">B. &nbsp; (a) she paused in order to check; (b) she quit the habit.</button>
+      <button class="ch-btn" onclick="mc(this,'e6',false)">C. &nbsp; (a) is past tense, (b) is habitual present.</button>
+    </div>
+    <div class="feedback" id="e6-fb"></div>
+  </div>
+
+  <div class="ex-block" id="e7">
+    <div class="ex-num">Exercise 7 of 8 · The "to" trap</div>
+    <div class="blank-wrap">
+      I look forward to <input class="blank-inp" id="e7-in" placeholder="———" autocomplete="off"> you at the conference. &nbsp;<span style="font-family:'Inconsolata'; font-size:0.85rem; color:var(--chalk-dim)">(meet)</span>
+    </div>
+    <button class="check-btn" onclick="blank('e7','meeting','I look forward to <strong>meeting</strong> you at the conference.','Das <em>to</em> in <em>look forward to</em> ist eine Präposition — kein Infinitiv-Marker. Danach: Gerundium.')">Check Answer</button>
+    <div class="feedback" id="e7-fb"></div>
+  </div>
+
+  <div class="ex-block" id="e8">
+    <div class="ex-num">Exercise 8 of 8 · Identify the role</div>
+    <div class="ex-q"><em>"The thought of failing the exam terrified her."</em><br>What role does "failing" play?</div>
+    <div class="choices">
+      <button class="ch-btn" onclick="mc(this,'e8',false)">A. &nbsp; Present participle in a continuous tense.</button>
+      <button class="ch-btn" onclick="mc(this,'e8',false)">B. &nbsp; Direct object of "terrified".</button>
+      <button class="ch-btn" onclick="mc(this,'e8',true)">C. &nbsp; Gerund as the object of the preposition "of".</button>
+    </div>
+    <div class="feedback" id="e8-fb"></div>
+  </div>
+</div>
+
+<!-- ADVANCED -->
+<div id="advanced" class="panel">
+  <div class="sec-title">Advanced <span>Notes</span></div>
+  <div class="sec-div"></div>
+  <div class="sh">Gerund vs. <span class="a">Present Participle</span></div>
+  <p>Same –ing form, completely different function. This is a classic C1-level confusion point.</p>
+  <table class="vtable">
+    <tr><th></th><th>Function</th><th>Test</th></tr>
+    <tr>
+      <td><span style="color:var(--neon-green)">Gerund</span></td>
+      <td>Acts as a noun</td>
+      <td><em>"Swimming is fun."</em> → Can replace with noun? <span class="yes">✓</span></td>
+    </tr>
+    <tr>
+      <td><span style="color:var(--neon-yellow)">Participle</span></td>
+      <td>Modifies a noun; forms continuous tenses</td>
+      <td><em>"The swimming coach arrived."</em> → Modifies noun <span class="yes">✓</span></td>
+    </tr>
+  </table>
+  <div class="sh">Complex Gerund Phrases as <span class="a">Subjects</span></div>
+  <p>English comfortably places long gerund phrases as subjects. German speakers often reach for a <em>dass</em>-clause instead.</p>
+  <div class="compare">
+    <div class="cc de"><div class="clang">Deutsch (Nebensatz)</div><div class="cex">Dass wir uns täglich unterhalten, ist wichtig.</div></div>
+    <div class="cc en"><div class="clang">English (gerund phrase)</div><div class="cex">Talking to each other every day is important.</div></div>
+  </div>
+  <div class="sh">Negating a Gerund</div>
+  <div class="rule">
+    <span class="rtag">Structure</span>
+    ✓ <em>"Not knowing the answer is completely fine."</em><br>
+    ✗ <em>"Knowing not the answer..."</em>
+  </div>
+  <div class="sh">The <span class="a">Perfect Gerund</span></div>
+  <p>Use <strong>having + past participle</strong> to show the gerund action happened before the main verb.</p>
+  <div class="chalk-sent" data-label="perfect gerund">
+    <span class="w GS">Having studied in Berlin</span>, <span class="w S">she</span> <span class="w V">speaks</span> <span class="w O">flawless German</span>.
+  </div>
+  <div class="compare">
+    <div class="cc de"><div class="clang">Deutsch</div><div class="cex">Da sie in Berlin studiert hatte, spricht sie fehlerfreies Deutsch.</div></div>
+    <div class="cc en"><div class="clang">English</div><div class="cex">Having studied in Berlin, she speaks flawless German.</div></div>
+  </div>
+  <div class="sh">The <span class="a">Passive Gerund</span></div>
+  <div class="rule">
+    <span class="rtag">being + past participle</span>
+    <em>"She hates <strong>being interrupted</strong>."</em> → Sie hasst es, unterbrochen zu werden.<br>
+    <em>"He feared <strong>being recognised</strong>."</em> → Er fürchtete, erkannt zu werden.
+  </div>
+  <hr class="chalk">
+  <div class="sh">Quick Reference</div>
+  <table class="vtable">
+    <tr><th>Use</th><th>Structure</th><th>German parallel</th></tr>
+    <tr><td>Subject</td><td><em>–ing + verb</em></td><td>Das + Nominalisierung</td></tr>
+    <tr><td>Direct object</td><td><em>verb + –ing</em></td><td>verb + zu + Inf.</td></tr>
+    <tr><td>After preposition</td><td><em>prep. + –ing</em></td><td>Präp. + zu + Inf.</td></tr>
+    <tr><td>Negation</td><td><em>not + –ing</em></td><td>nicht + zu + Inf.</td></tr>
+    <tr><td>Perfect gerund</td><td><em>having + pp.</em></td><td>Plusquamperfekt-Nebensatz</td></tr>
+    <tr><td>Passive gerund</td><td><em>being + pp.</em></td><td>… zu werden</td></tr>
+  </table>
+</div>
+
+</div><!-- /content -->
+
+<div class="score-float" id="scoreBadge">Score: 0 / 8</div>
+
+<script>
+let score = 0, answered = 0;
+const total = 8;
+
+const fbs = {
+  e1:{c:"Correct! <em>enjoy</em> always takes a gerund — the infinitive is not possible here.",w:"Incorrect. <em>enjoy</em> is in the gerund-only group and cannot take an infinitive.",de:"Vgl.: <em>Sie tanzt gerne</em> → She enjoys dancing."},
+  e2:{c:"Correct! The entire phrase acts as a noun — specifically the subject of <em>relaxes</em>.",w:"Incorrect. The –ing form here functions as a noun (the subject), not as a participle.",de:"Vgl.: <em>Das Kochen aufwendiger Gerichte entspannt ihn.</em>"},
+  e4:{c:"Correct! <em>about</em> is a preposition, so the verb must take the –ing form.",w:"Incorrect. After a preposition only the gerund (–ing) is possible — never the infinitive.",de:"Nach Präpositionen immer Gerundium: <em>think about + –ing</em>."},
+  e6:{c:"Exactly right! This meaning distinction is crucial — two completely different situations.",w:"There is a significant difference. Infinitive = purpose/pause; gerund = cessation of a habit.",de:"<em>aufhören zu rauchen</em> = stop smoking. <em>anhalten, um zu rauchen</em> = stop to smoke."},
+  e8:{c:"Correct! <em>of</em> is a preposition, and <em>failing</em> is the gerund that follows it.",w:"Look again at the preposition <em>of</em> — a verb directly after a preposition is always a gerund.",de:"<em>Die Angst vor dem Versagen</em> = the fear of failing. Präposition + Gerundium."}
+};
+
+function mc(btn, id, ok) {
+  const b = document.getElementById(id);
+  if (b.dataset.done) return;
+  b.dataset.done = '1';
+  const btns = b.querySelectorAll('.ch-btn');
+  btns.forEach(x => x.disabled = true);
+  btn.classList.add(ok ? 'correct' : 'wrong');
+  if (!ok) btns.forEach(x => { if(x.getAttribute('onclick').includes('true')) x.classList.add('correct'); });
+  const f = document.getElementById(id+'-fb');
+  const t = fbs[id];
+  f.innerHTML = (ok?'✓ ':'✗ ') + (ok?t.c:t.w) + '<div class="dn">🇩🇪 '+t.de+'</div>';
+  f.className = 'feedback show '+(ok?'correct':'wrong');
+  b.classList.add(ok?'done-c':'done-w');
+  if (ok) score++;
+  answered++;
+  upd();
+}
+
+function blank(id, ans, html, de) {
+  const b = document.getElementById(id);
+  if (b.dataset.done) return;
+  const inp = document.getElementById(id+'-in');
+  const ok = inp.value.trim().toLowerCase() === ans.toLowerCase();
+  b.dataset.done = '1';
+  inp.disabled = true;
+  inp.classList.add(ok ? 'correct' : 'wrong');
+  const f = document.getElementById(id+'-fb');
+  f.innerHTML = (ok?'✓ Correct! ':'✗ Correct answer: ') + html + '<div class="dn">🇩🇪 '+de+'</div>';
+  f.className = 'feedback show '+(ok?'correct':'wrong');
+  b.classList.add(ok?'done-c':'done-w');
+  if (ok) score++;
+  answered++;
+  upd();
+}
+
+function upd() {
+  document.getElementById('prog').style.width = (answered/total*100)+'%';
+  const badge = document.getElementById('scoreBadge');
+  badge.textContent = 'Score: '+score+' / '+total;
+  if (answered === total) badge.style.background = score >= 6 ? 'rgba(107,255,142,0.15)' : 'rgba(255,107,107,0.1)';
+}
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+document.querySelectorAll('.blank-inp').forEach(inp => {
+  inp.addEventListener('keydown', e => {
+    if (e.key === 'Enter') inp.closest('.ex-block').querySelector('.check-btn').click();
+  });
+});
+</script>
+</body>
+</html>

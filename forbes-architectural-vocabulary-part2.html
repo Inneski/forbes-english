@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English — Material &amp; Space: Speaking &amp; Debate (C1)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#1F2742;
+    --bg2:#171E36;
+    --line:#303B5C;
+    --parch:#F2EDE3;
+    --parch2:#E5DBC9;
+    --clay:#CC6A4E;
+    --clay-d:#A8492F;
+    --gold:#C9A24B;
+    --teal:#2E7E72;
+    --ink:#1C2333;
+    --ink2:#586079;
+    --shadow:0 18px 42px -22px rgba(0,0,0,.6);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Archivo',system-ui,sans-serif;background:var(--bg);color:var(--ink);
+    line-height:1.55;-webkit-font-smoothing:antialiased;min-height:100vh;
+    background-image:radial-gradient(circle at 12% 0%,rgba(204,106,78,.12),transparent 52%),radial-gradient(circle at 95% 100%,rgba(201,162,75,.10),transparent 48%);
+  }
+  .wrap{max-width:780px;margin:0 auto;padding:28px 20px 64px;}
+
+  /* header / logo */
+  header.top{display:flex;flex-direction:column;align-items:center;gap:18px;padding:12px 0 22px;}
+  .logo{width:206px;height:auto;}
+  .meta{text-align:center;}
+  .meta h1{font-family:'Fraunces',serif;font-weight:500;color:var(--parch);font-size:clamp(1.45rem,4.4vw,2.1rem);margin:0;line-height:1.15;}
+  .meta p{color:var(--clay);margin:8px 0 0;font-size:.84rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;}
+  .badges{margin-top:13px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+  .pill{border:1px solid var(--line);color:var(--parch2);border-radius:999px;padding:4px 14px;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;}
+  .pill.accent{border-color:var(--clay-d);color:var(--clay);}
+
+  /* toolbar (persistent, NOT sticky) */
+  .toolbar{background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin-bottom:14px;}
+  .toolbar-row{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;}
+  .timer{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+  .timer-face{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:600;color:var(--parch);min-width:78px;letter-spacing:.5px;}
+  .timer-face.low{color:var(--clay);}
+  .t-presets{display:flex;gap:6px;}
+  .t-btn{font-family:inherit;font-size:.76rem;font-weight:700;border:1px solid var(--line);background:transparent;color:var(--parch2);border-radius:8px;padding:6px 10px;cursor:pointer;transition:.15s;}
+  .t-btn:hover{border-color:var(--clay);color:var(--clay);}
+  .t-btn.on{background:var(--clay);border-color:var(--clay);color:#fff;}
+  .t-go{background:var(--gold);border-color:var(--gold);color:var(--bg2);}
+  .t-go:hover{background:#d9b25e;color:var(--bg2);}
+  .t-bar{height:5px;background:var(--line);border-radius:999px;overflow:hidden;margin-top:12px;}
+  .t-fill{height:100%;width:100%;background:linear-gradient(90deg,var(--gold),var(--clay));transition:width 1s linear;}
+  .phrase-toggle{font-family:inherit;font-weight:700;font-size:.82rem;border:1px solid var(--clay-d);background:transparent;color:var(--clay);border-radius:999px;padding:8px 16px;cursor:pointer;transition:.15s;white-space:nowrap;}
+  .phrase-toggle:hover{background:rgba(204,106,78,.14);}
+
+  .phrase-panel{display:none;background:var(--parch);border-radius:16px;border:1px solid var(--parch2);padding:22px 22px 8px;margin-bottom:14px;box-shadow:var(--shadow);}
+  .phrase-panel.open{display:block;}
+  .phrase-panel h3{font-family:'Fraunces',serif;margin:0 0 4px;color:var(--ink);font-size:1.18rem;font-weight:600;}
+  .phrase-panel .lead{color:var(--ink2);font-size:.9rem;margin:0 0 16px;}
+  .pgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .pgroup h4{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--clay-d);font-weight:800;margin:0 0 8px;}
+  .pgroup ul{list-style:none;margin:0 0 16px;padding:0;display:flex;flex-direction:column;gap:6px;}
+  .pgroup li{font-size:.92rem;color:var(--ink);background:#fff;border:1px solid var(--parch2);border-radius:8px;padding:7px 11px;}
+
+  /* progress */
+  .stepline{display:flex;align-items:center;justify-content:space-between;margin:4px 2px 10px;}
+  .stepline .lbl{color:var(--parch2);font-size:.82rem;font-weight:700;letter-spacing:.02em;}
+  .stepline .lbl b{color:var(--clay);}
+  .rail{height:5px;background:var(--line);border-radius:999px;overflow:hidden;margin-bottom:24px;}
+  .rail-fill{height:100%;width:0;background:linear-gradient(90deg,var(--clay-d),var(--clay));transition:width .35s ease;border-radius:999px;}
+
+  /* card */
+  .card{background:var(--parch);border-radius:18px;padding:30px 28px;box-shadow:var(--shadow);border:1px solid var(--parch2);}
+  .eyebrow{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--clay-d);font-weight:800;margin:0 0 14px;}
+  .title{font-family:'Fraunces',serif;font-weight:500;color:var(--ink);font-size:1.5rem;line-height:1.28;margin:0 0 8px;}
+  .lead{color:var(--ink2);font-size:.95rem;margin:0 0 22px;}
+
+  /* warmup / generic question list */
+  .qlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:13px;}
+  .qlist li{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--parch2);border-radius:12px;padding:15px 16px;font-size:1.02rem;color:var(--ink);line-height:1.45;}
+  .qlist .dot{flex:0 0 9px;height:9px;margin-top:9px;border-radius:50%;background:var(--clay);}
+
+  /* toolkit groups */
+  .kit{display:flex;flex-direction:column;gap:18px;}
+  .kit-group h4{font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);font-weight:800;margin:0 0 9px;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{background:#fff;border:1px solid var(--parch2);border-radius:999px;padding:7px 14px;font-size:.92rem;font-weight:600;color:var(--ink);}
+  .note{margin-top:6px;background:#fff;border-left:3px solid var(--gold);border-radius:0 10px 10px 0;padding:12px 15px;color:var(--ink2);font-size:.92rem;}
+
+  /* motion card */
+  .motion-stmt{font-family:'Fraunces',serif;font-size:1.42rem;font-weight:500;color:var(--ink);line-height:1.34;margin:0 0 16px;}
+  .use-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 20px;}
+  .use-line .lab{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink2);font-weight:800;}
+  .use-tag{background:rgba(204,106,78,.12);border:1px solid rgba(204,106,78,.4);color:var(--clay-d);border-radius:7px;padding:4px 10px;font-size:.85rem;font-weight:700;}
+  .sides{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;}
+  .side{background:#fff;border:1px solid var(--parch2);border-radius:12px;padding:15px 16px;}
+  .side h5{margin:0 0 7px;font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;font-weight:800;}
+  .side.for h5{color:var(--teal);}
+  .side.against h5{color:var(--against,#B25A3C);}
+  .side p{margin:0;font-size:.95rem;color:var(--ink);line-height:1.5;}
+  .push{background:var(--bg);color:var(--parch);border-radius:12px;padding:14px 16px;font-size:.96rem;line-height:1.5;}
+  .push b{color:var(--gold);font-weight:700;letter-spacing:.04em;text-transform:uppercase;font-size:.72rem;display:block;margin-bottom:4px;}
+
+  /* roleplay steps */
+  .steps{list-style:none;margin:0 0 18px;padding:0;counter-reset:s;display:flex;flex-direction:column;gap:12px;}
+  .steps li{position:relative;padding-left:50px;min-height:34px;display:flex;align-items:center;font-size:1rem;color:var(--ink);background:#fff;border:1px solid var(--parch2);border-radius:12px;padding-top:13px;padding-bottom:13px;padding-right:16px;}
+  .steps li::before{counter-increment:s;content:counter(s);position:absolute;left:11px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:8px;background:var(--clay);color:#fff;font-weight:800;display:grid;place-items:center;font-size:.85rem;}
+  .steps li b{color:var(--clay-d);}
+  .challenge{background:var(--bg);color:var(--parch);border-radius:12px;padding:15px 17px;font-size:.96rem;line-height:1.5;}
+  .challenge b{color:var(--gold);}
+
+  /* checklist */
+  .check{list-style:none;margin:0 0 8px;padding:0;display:flex;flex-direction:column;gap:11px;}
+  .check li{display:flex;gap:13px;align-items:flex-start;background:#fff;border:1px solid var(--parch2);border-radius:12px;padding:14px 15px;cursor:pointer;transition:.15s;}
+  .check li:hover{border-color:var(--clay);}
+  .check .box{flex:0 0 24px;height:24px;border:2px solid var(--ink2);border-radius:7px;display:grid;place-items:center;transition:.15s;margin-top:1px;}
+  .check li.on{background:#FBF6EE;border-color:var(--teal);}
+  .check li.on .box{background:var(--teal);border-color:var(--teal);}
+  .check li.on .box::after{content:"\2713";color:#fff;font-size:.9rem;font-weight:800;}
+  .check span{font-size:1rem;color:var(--ink);line-height:1.45;}
+  .tally{margin-top:18px;text-align:center;color:var(--ink2);font-size:.92rem;}
+  .tally b{color:var(--ink);font-family:'Fraunces',serif;font-size:1.05rem;}
+  .closing{margin-top:14px;background:#fff;border-left:3px solid var(--clay);border-radius:0 10px 10px 0;padding:14px 16px;color:var(--ink2);font-size:.94rem;line-height:1.5;}
+
+  /* nav */
+  .nav{display:flex;justify-content:space-between;gap:12px;margin-top:26px;}
+  .btn{font-family:inherit;font-weight:700;font-size:.96rem;border-radius:11px;padding:13px 24px;cursor:pointer;border:none;transition:.15s;}
+  .btn-primary{background:var(--clay);color:#fff;}
+  .btn-primary:hover{background:var(--clay-d);}
+  .btn-ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink2);}
+  .btn-ghost:hover{border-color:var(--clay);color:var(--clay-d);}
+  .btn-ghost:disabled{opacity:.35;cursor:not-allowed;}
+  .btn-gold{background:var(--gold);color:var(--bg2);}
+  .btn-gold:hover{background:#d9b25e;}
+
+  @media (max-width:580px){
+    .card{padding:24px 18px;}
+    .sides{grid-template-columns:1fr;}
+    .pgrid{grid-template-columns:1fr;}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+  :focus-visible{outline:3px solid var(--clay);outline-offset:2px;border-radius:6px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <svg class="logo" viewBox="0 0 240 96" role="img" aria-label="Forbes English">
+      <text x="120" y="44" text-anchor="middle" font-family="Fraunces, serif" font-weight="600" font-size="42" fill="#CC6A4E" letter-spacing="0.5">Forbes</text>
+      <line x1="34" y1="58" x2="206" y2="58" stroke="#C9A24B" stroke-width="1.4"/>
+      <text x="120" y="84" text-anchor="middle" font-family="Archivo, sans-serif" font-weight="800" font-size="22" fill="#F2EDE3" letter-spacing="7">ENGLISH</text>
+    </svg>
+    <div class="meta">
+      <h1>Material &amp; Space &mdash; Speaking &amp; Debate</h1>
+      <p>Part 2 &middot; Put the vocabulary to work out loud</p>
+      <div class="badges">
+        <span class="pill accent">Level C1</span>
+        <span class="pill">Speaking</span>
+        <span class="pill">Teacher-led</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- persistent toolbar: timer + phrase bank toggle (not sticky) -->
+  <div class="toolbar">
+    <div class="toolbar-row">
+      <div class="timer">
+        <span class="timer-face" id="timerFace">2:00</span>
+        <div class="t-presets" id="presets">
+          <button class="t-btn" data-sec="60">1:00</button>
+          <button class="t-btn on" data-sec="120">2:00</button>
+          <button class="t-btn" data-sec="180">3:00</button>
+        </div>
+        <button class="t-btn t-go" id="startPause">Start</button>
+        <button class="t-btn" id="resetT">Reset</button>
+      </div>
+      <button class="phrase-toggle" id="phraseToggle">Debating phrases</button>
+    </div>
+    <div class="t-bar"><div class="t-fill" id="tFill"></div></div>
+  </div>
+
+  <div class="phrase-panel" id="phrasePanel"></div>
+
+  <div class="stepline">
+    <span class="lbl" id="stepLabel">Warm-up</span>
+    <span class="lbl">Station <b id="stepNo">1</b> of 12</span>
+  </div>
+  <div class="rail"><div class="rail-fill" id="railFill"></div></div>
+
+  <main id="stage" aria-live="polite"></main>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  function el(tag,cls,html){var n=document.createElement(tag);if(cls)n.className=cls;if(html!=null)n.innerHTML=html;return n;}
+
+  /* ---------------- content ---------------- */
+  var warmup = [
+    "Describe the room you are sitting in right now in three adjectives. Would a designer agree with you?",
+    "Name one building you love and one you cannot stand \u2014 and say exactly why.",
+    "Do interiors register with you, or do they wash over you? When did a space last change your mood?",
+    "If you could change one thing about where you live, what would it be \u2014 and what is stopping you?"
+  ];
+
+  var toolkit = [
+    {title:"Materials &amp; making", words:["galvanized","perforated","corroded","conduit","artisanal","suspended"]},
+    {title:"Space &amp; structure", words:["fenestration","articulation","threshold","liminal","continuum","juxtaposition"]},
+    {title:"Judgement &amp; style", words:["homage","pastiche","unobtrusive","conspicuous","reductive","vestigial"]}
+  ];
+
+  var phrases = [
+    {h:"Stake a position", items:["The way I see it\u2026","My position is simply that\u2026","Let me be clear where I stand\u2026"]},
+    {h:"Build &amp; agree", items:["That is exactly my point \u2014","I would go further than that \u2014","Building on what you said\u2026"]},
+    {h:"Push back", items:["I see it the other way round\u2026","That is true up to a point, but\u2026","I am not convinced, because\u2026"]},
+    {h:"Concede ground", items:["Fair enough \u2014 I will grant you that, however\u2026","You have a point there, though\u2026"]},
+    {h:"Hedge &amp; qualify", items:["It rather depends on\u2026","Broadly speaking\u2026","I would hesitate to say always\u2026"]},
+    {h:"Wrap it up", items:["So, to put it in a sentence\u2026","If I had to choose, I would\u2026"]}
+  ];
+
+  var motions = [
+    {
+      stmt:"A city should never demolish an old building if it can be saved. Heritage must outrank new development.",
+      use:["revere","conserve","vestige"],
+      forSeed:"Once historic fabric is gone, no rebuild is ever more than a copy \u2014 we owe the past our restraint.",
+      againstSeed:"A city frozen in homage to its own past cannot house the living; some vestiges are not worth the land.",
+      push:"Is there a building in your city you would fight to save \u2014 or one you would happily watch fall?"
+    },
+    {
+      stmt:"Open-plan living was a mistake. We should bring back walls, doors and proper thresholds.",
+      use:["threshold","liminal","articulation"],
+      forSeed:"A home with no thresholds has no privacy and no sense of arrival; rooms should be articulated, not dissolved.",
+      againstSeed:"Walls divide families as much as space; the flexible, liminal interior fits how people actually live now.",
+      push:"Where in your own home would one new wall improve your life \u2014 or ruin it?"
+    },
+    {
+      stmt:"Exposed conduit, ducts and beams are honest. Hiding the services behind plaster is a kind of lie.",
+      use:["conduit","suspended","unobtrusive"],
+      forSeed:"A building that shows how it works respects you; the suspended duct and bare conduit tell the truth.",
+      againstSeed:"Honesty is not the only virtue \u2014 most people want calm, unobtrusive surfaces, not their plumbing on show.",
+      push:"The industrial-loft look: timeless, or a fashion that will date badly?"
+    },
+    {
+      stmt:"A building's exterior matters more than its interior. The face it shows the street is what counts.",
+      use:["fenestration","conspicuous","eye-catching"],
+      forSeed:"A facade is a public gift or insult; few ever step inside, but everyone reads the fenestration.",
+      againstSeed:"We live inside, not on the pavement; a conspicuous, eye-catching shell with a grim interior is pure vanity.",
+      push:"Name a building that is lovely outside and miserable within \u2014 or the reverse."
+    },
+    {
+      stmt:"Copying old styles is lazy. A new building must look like its own time, not a pastiche of the past.",
+      use:["pastiche","homage","juxtaposition"],
+      forSeed:"Pastiche flatters the nostalgic and teaches nothing; far better an honest juxtaposition of new beside old.",
+      againstSeed:"A careful homage can heal a damaged street where a 'bold' new statement would only shout over it.",
+      push:"When is borrowing from the past true homage, and when is it merely pastiche?"
+    },
+    {
+      stmt:"The best interior is one you never notice. Good design should be unobtrusive, never eye-catching.",
+      use:["unobtrusive","obtrusive","conspicuous"],
+      forSeed:"Design that performs does not need to announce itself; the obtrusive 'statement' room exhausts you by month two.",
+      againstSeed:"A space you never notice is a space that never moved you; some rooms should be conspicuous and proud.",
+      push:"Should a hospital, a restaurant and a nightclub all follow the same rule?"
+    },
+    {
+      stmt:"A well-made mass-produced chair is every bit as valid as an artisanal, hand-made one.",
+      use:["artisanal","reductive","merely"],
+      forSeed:"'Hand-made' is often just a price tag; judging an object by its method is reductive \u2014 judge the result.",
+      againstSeed:"The artisanal piece carries a maker's decisions in every joint; the factory copy is merely competent and dead.",
+      push:"Would you genuinely pay three times more for 'made by hand'? Be honest."
+    },
+    {
+      stmt:"A great city is a deliberate juxtaposition of old and new \u2014 not a smooth continuum of one tidy style.",
+      use:["juxtaposition","continuum","overarching"],
+      forSeed:"Friction is life; the jolt between a medieval wall and a glass tower is what makes a place feel real.",
+      againstSeed:"Without an overarching order, juxtaposition is just noise; loved cities share a continuum of scale and material.",
+      push:"Is your favourite city more of a collision, or a continuum?"
+    }
+  ];
+
+  var roleplay = {
+    steps:[
+      "Pick a motion. <b>A</b> argues FOR, <b>B</b> argues AGAINST \u2014 even if it is not your real view.",
+      "<b>Open (1 min each):</b> state your case. Use the timer above.",
+      "<b>Rebut (1 min each):</b> answer your opponent \u2014 do not simply repeat your opening.",
+      "<b>Close (30 sec each):</b> one sharp final line, no new arguments.",
+      "Swap sides and run a different motion from scratch."
+    ],
+    challenge:"Challenge: each speaker must land at least <b>three</b> target words from the toolkit, used naturally \u2014 not bolted on."
+  };
+
+  var checklist = [
+    "I stated a clear position before giving my reasons.",
+    "I used at least five Part 1 words without forcing them.",
+    "I disagreed without just repeating the same point louder.",
+    "I conceded at least one point to the other side.",
+    "I hedged or qualified at least one strong claim.",
+    "I filled a timed turn without long, awkward silences."
+  ];
+
+  /* ---------------- stations ---------------- */
+  var stations = [{type:"warmup"},{type:"toolkit"}];
+  motions.forEach(function(m,i){ stations.push({type:"motion", idx:i}); });
+  stations.push({type:"roleplay"});
+  stations.push({type:"checklist"});
+  var TOTAL = stations.length;
+  var cur = 0;
+
+  var stage=document.getElementById('stage');
+  var stepLabel=document.getElementById('stepLabel');
+  var stepNo=document.getElementById('stepNo');
+  var railFill=document.getElementById('railFill');
+
+  function labelFor(s,i){
+    if(s.type==="warmup") return "Warm-up";
+    if(s.type==="toolkit") return "Your toolkit";
+    if(s.type==="motion") return "Motion "+(s.idx+1)+" of "+motions.length;
+    if(s.type==="roleplay") return "Roleplay debate";
+    return "Reflect";
+  }
+
+  function navRow(){
+    var nav=el('div','nav');
+    var back=el('button','btn btn-ghost','\u2190 Back');
+    back.disabled = cur===0;
+    back.onclick=function(){ if(cur>0){cur--;render();} };
+    var fwd;
+    if(cur<TOTAL-1){ fwd=el('button','btn btn-primary','Next \u2192'); fwd.onclick=function(){cur++;render();}; }
+    else { fwd=el('button','btn btn-gold','Start over'); fwd.onclick=function(){cur=0;render();}; }
+    nav.appendChild(back); nav.appendChild(fwd);
+    return nav;
+  }
+
+  function render(){
+    var s=stations[cur];
+    stepLabel.textContent=labelFor(s);
+    stepNo.textContent=(cur+1);
+    railFill.style.width=((cur+1)/TOTAL*100)+"%";
+    var c=el('div','card');
+
+    if(s.type==="warmup"){
+      c.appendChild(el('p','eyebrow','Loosen up \u00b7 speak freely'));
+      c.appendChild(el('h2','title','Before we argue, let us talk'));
+      c.appendChild(el('p','lead','No right answers here \u2014 just get talking. Aim for two or three full sentences per question, not one.'));
+      var ul=el('ul','qlist');
+      warmup.forEach(function(q){var li=el('li');li.appendChild(el('span','dot'));li.appendChild(el('span',null,q));ul.appendChild(li);});
+      c.appendChild(ul);
+    }
+
+    else if(s.type==="toolkit"){
+      c.appendChild(el('p','eyebrow','Words to deploy'));
+      c.appendChild(el('h2','title','Your toolkit from Part 1'));
+      c.appendChild(el('p','lead','Keep these in reach. A good debate answer slips two or three in without sounding like a vocabulary list.'));
+      var kit=el('div','kit');
+      toolkit.forEach(function(g){
+        var grp=el('div','kit-group');
+        grp.appendChild(el('h4',null,g.title));
+        var ch=el('div','chips');
+        g.words.forEach(function(w){ ch.appendChild(el('span','chip',w)); });
+        grp.appendChild(ch); kit.appendChild(grp);
+      });
+      c.appendChild(kit);
+      c.appendChild(el('div','note','Stuck for a way to phrase your point? Tap <b>Debating phrases</b> at the top for openers, rebuttals and ways to concede.'));
+    }
+
+    else if(s.type==="motion"){
+      var m=motions[s.idx];
+      c.appendChild(el('p','eyebrow','Take a side \u2014 then defend it'));
+      c.appendChild(el('div','motion-stmt','\u201c'+m.stmt+'\u201d'));
+      var ul2=el('div','use-line');
+      ul2.appendChild(el('span','lab','Try to use'));
+      m.use.forEach(function(w){ ul2.appendChild(el('span','use-tag',w)); });
+      c.appendChild(ul2);
+      var sides=el('div','sides');
+      var f=el('div','side for'); f.appendChild(el('h5',null,'Argue for')); f.appendChild(el('p',null,m.forSeed)); 
+      var a=el('div','side against'); a.appendChild(el('h5',null,'Argue against')); a.appendChild(el('p',null,m.againstSeed));
+      sides.appendChild(f); sides.appendChild(a);
+      c.appendChild(sides);
+      c.appendChild(el('div','push','<b>Push further</b>'+m.push));
+    }
+
+    else if(s.type==="roleplay"){
+      c.appendChild(el('p','eyebrow','Structured debate \u00b7 use the timer'));
+      c.appendChild(el('h2','title','One motion, two minutes, both sides'));
+      c.appendChild(el('p','lead','A short, formal round. Set the timer above for each turn and keep to it \u2014 the constraint sharpens the language.'));
+      var st=el('ul','steps');
+      roleplay.steps.forEach(function(x){ st.appendChild(el('li',null,x)); });
+      c.appendChild(st);
+      c.appendChild(el('div','challenge',roleplay.challenge));
+    }
+
+    else if(s.type==="checklist"){
+      c.appendChild(el('p','eyebrow','Reflect, do not score'));
+      c.appendChild(el('h2','title','How did that go?'));
+      c.appendChild(el('p','lead','Tick what felt true today. This is a map of what to push next time \u2014 not a grade.'));
+      var cl=el('ul','check');
+      checklist.forEach(function(t){
+        var li=el('li');
+        li.appendChild(el('span','box'));
+        li.appendChild(el('span',null,t));
+        li.onclick=function(){ li.classList.toggle('on'); updateTally(); };
+        cl.appendChild(li);
+      });
+      c.appendChild(cl);
+      var tally=el('div','tally'); tally.id='tallyBox';
+      c.appendChild(tally);
+      c.appendChild(el('div','closing','Whatever you ticked, the real goal was to keep talking and reach for precise words under a little pressure. That is exactly the skill that transfers to a meeting, a critique or a presentation.'));
+    }
+
+    c.appendChild(navRow());
+    stage.innerHTML=''; stage.appendChild(c);
+    if(s.type==="checklist") updateTally();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function updateTally(){
+    var box=document.getElementById('tallyBox');
+    if(!box) return;
+    var n=document.querySelectorAll('.check li.on').length;
+    box.innerHTML='<b>'+n+' of '+checklist.length+'</b> ticked \u2014 the unticked ones are simply your next targets.';
+  }
+
+  /* ---------------- phrase panel ---------------- */
+  (function buildPhrases(){
+    var p=document.getElementById('phrasePanel');
+    p.appendChild(el('h3',null,'Debating phrases'));
+    p.appendChild(el('p','lead','Reach for these to move a debate forward. Pair them with a target word for full marks.'));
+    var grid=el('div','pgrid');
+    phrases.forEach(function(g){
+      var col=el('div','pgroup');
+      col.appendChild(el('h4',null,g.h));
+      var ul=el('ul');
+      g.items.forEach(function(it){ ul.appendChild(el('li',null,it)); });
+      col.appendChild(ul); grid.appendChild(col);
+    });
+    p.appendChild(grid);
+  })();
+  document.getElementById('phraseToggle').onclick=function(){
+    document.getElementById('phrasePanel').classList.toggle('open');
+  };
+
+  /* ---------------- timer ---------------- */
+  var timer={duration:120, remaining:120, running:false, id:null};
+  var face=document.getElementById('timerFace');
+  var fill=document.getElementById('tFill');
+  var startPause=document.getElementById('startPause');
+
+  function fmt(s){var m=Math.floor(s/60),r=s%60;return m+":"+(r<10?"0":"")+r;}
+  function paintTimer(){
+    face.textContent=fmt(timer.remaining);
+    face.classList.toggle('low', timer.remaining<=10);
+    fill.style.width=(timer.remaining/timer.duration*100)+"%";
+  }
+  function tick(){
+    timer.remaining--;
+    if(timer.remaining<=0){ timer.remaining=0; stopTimer(); paintTimer(); face.classList.add('low'); return; }
+    paintTimer();
+  }
+  function startTimer(){
+    if(timer.running||timer.remaining<=0) return;
+    timer.running=true; startPause.textContent="Pause";
+    timer.id=setInterval(tick,1000);
+  }
+  function stopTimer(){
+    timer.running=false; startPause.textContent="Start";
+    if(timer.id){ clearInterval(timer.id); timer.id=null; }
+  }
+  startPause.onclick=function(){ timer.running?stopTimer():startTimer(); };
+  document.getElementById('resetT').onclick=function(){ stopTimer(); timer.remaining=timer.duration; paintTimer(); };
+  document.querySelectorAll('#presets .t-btn').forEach(function(b){
+    b.onclick=function(){
+      document.querySelectorAll('#presets .t-btn').forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on');
+      stopTimer();
+      timer.duration=parseInt(b.getAttribute('data-sec'),10);
+      timer.remaining=timer.duration;
+      paintTimer();
+    };
+  });
+  paintTimer();
+
+  /* ---------------- go ---------------- */
+  render();
+})();
+</script>
+</body>
+</html>

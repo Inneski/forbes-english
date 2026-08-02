@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English | Common Mistakes Review - Part 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1c2b45;
+    --indigo: #3d4f8c;
+    --gold: #c9a24b;
+    --cream: #faf7f0;
+    --ink: #23262f;
+    --green: #2e7d5b;
+    --red: #b8433c;
+    --border: #e2ddd0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(180deg, var(--cream) 0%, #f2ede0 100%);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px 60px;
+  }
+
+  .logo-wrap {
+    margin-bottom: 18px;
+  }
+
+  .header {
+    text-align: center;
+    max-width: 640px;
+    margin-bottom: 20px;
+  }
+
+  .header h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+
+  .header p {
+    font-size: 15px;
+    color: var(--indigo);
+    font-weight: 500;
+  }
+
+  .score-bar {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    max-width: 640px;
+    background: var(--cream);
+    padding: 8px 4px 14px;
+    z-index: 5;
+  }
+
+  .progress-track {
+    width: 100%;
+    height: 8px;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--indigo), var(--gold));
+    transition: width 0.35s ease;
+  }
+
+  .meta-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--indigo);
+    font-weight: 600;
+  }
+
+  .card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 26px;
+    width: 100%;
+    max-width: 640px;
+    box-shadow: 0 8px 24px rgba(28, 43, 69, 0.08);
+  }
+
+  #lesson-screen {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 640px;
+    align-items: center;
+  }
+
+  .prompt-text {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1.5;
+    margin-bottom: 8px;
+    white-space: pre-line;
+  }
+
+  .support-text {
+    font-size: 13px;
+    color: var(--gold);
+    font-style: italic;
+    margin-bottom: 20px;
+  }
+
+  .options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .option-btn {
+    text-align: left;
+    padding: 14px 16px;
+    border: 1.5px solid var(--border);
+    background: var(--cream);
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: var(--ink);
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease, transform 0.1s ease;
+  }
+
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--indigo);
+    background: #fff;
+    transform: translateY(-1px);
+  }
+
+  .option-btn:disabled {
+    cursor: default;
+  }
+
+  .option-btn.correct {
+    border-color: var(--green);
+    background: #e7f3ec;
+    color: #205c40;
+    font-weight: 600;
+  }
+
+  .option-btn.incorrect {
+    border-color: var(--red);
+    background: #fbeceb;
+    color: #8a2f29;
+    font-weight: 600;
+  }
+
+  .feedback-box {
+    display: none;
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+
+  .feedback-correct {
+    background: #e7f3ec;
+    border: 1px solid var(--green);
+    color: #205c40;
+  }
+
+  .feedback-incorrect {
+    background: #fbeceb;
+    border: 1px solid var(--red);
+    color: #8a2f29;
+  }
+
+  .next-btn {
+    align-self: flex-end;
+    padding: 12px 26px;
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, opacity 0.2s ease;
+  }
+
+  .next-btn:disabled {
+    background: #b7bdcb;
+    cursor: not-allowed;
+  }
+
+  .next-btn:not(:disabled):hover {
+    background: var(--indigo);
+  }
+
+  #results-screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 640px;
+    text-align: center;
+    padding: 40px 26px;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(28, 43, 69, 0.08);
+  }
+
+  #results-screen h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    color: var(--navy);
+    margin-bottom: 12px;
+  }
+
+  #final-score {
+    font-size: 44px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+
+  #results-message {
+    font-size: 15px;
+    color: var(--indigo);
+    margin-bottom: 26px;
+    max-width: 440px;
+  }
+
+  .restart-btn {
+    padding: 12px 30px;
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .restart-btn:hover {
+    background: var(--indigo);
+  }
+
+  @media (max-width: 480px) {
+    .card, #lesson-screen, .score-bar, #results-screen { max-width: 100%; }
+    .prompt-text { font-size: 16.5px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="logo-wrap">
+  <svg width="220" height="52" viewBox="0 0 220 52" xmlns="http://www.w3.org/2000/svg">
+    <rect x="1" y="1" width="50" height="50" rx="10" fill="#1c2b45"/>
+    <text x="26" y="35" font-family="Fraunces, serif" font-size="26" font-weight="700" fill="#c9a24b" text-anchor="middle">F</text>
+    <text x="62" y="34" font-family="Inter, sans-serif" font-size="21" font-weight="700" fill="#1c2b45">Forbes English</text>
+  </svg>
+</div>
+
+<div class="header">
+  <h1>Common Mistakes Review - Part 3</h1>
+  <p>Piensa antes de elegir &middot; Spanish support</p>
+</div>
+
+<div class="score-bar">
+  <div class="progress-track">
+    <div class="progress-fill" id="progress-fill"></div>
+  </div>
+  <div class="meta-row">
+    <span id="q-number">1 / 14</span>
+    <span>Score: <span id="score-display">0</span> / <span id="total-count">14</span></span>
+  </div>
+</div>
+
+<div id="lesson-screen">
+  <div class="card">
+    <div class="prompt-text" id="prompt-text"></div>
+    <div class="support-text" id="support-text"></div>
+    <div class="options-container" id="options-container"></div>
+    <div class="feedback-box" id="feedback-box"></div>
+    <button class="next-btn" id="next-btn" disabled onclick="nextQuestion()">Next</button>
+  </div>
+</div>
+
+<div id="results-screen">
+  <h2>Lesson Complete</h2>
+  <div id="final-score">0 / 14</div>
+  <p id="results-message"></p>
+  <button class="restart-btn" onclick="restartLesson()">Try Again</button>
+</div>
+
+<script>
+const LESSON_DATA = {
+  title: "Common Mistakes Review - Part 3",
+  subtitle: "Piensa antes de elegir",
+  questions: [
+    {
+      id: "q1",
+      prompt: "Choose the correct sentence.",
+      support: "ES: piensa bien en el verbo.",
+      options: ["I have 25 years old.", "I am 25 years old.", "I have 25 years.", "I am having 25 years."],
+      correctIndex: 1,
+      explanation: "In English we use \"to be\" for age, not \"to have\": \"I am 25 years old\". ES: en ingles la edad se expresa con el verbo \"to be\", no \"to have\"."
+    },
+    {
+      id: "q2",
+      prompt: "We arrived _____ the airport two hours early.",
+      support: "ES: cuidado con la preposicion.",
+      options: ["to", "at", "in", "on"],
+      correctIndex: 1,
+      explanation: "We say \"arrive at\" a building or small place (like an airport), and \"arrive in\" a city or country. \"Arrive to\" does not exist. ES: no existe \"arrive to\"."
+    },
+    {
+      id: "q3",
+      prompt: "This restaurant is very different _____ the one we went to last week.",
+      support: "ES: hay una preposicion mas natural que las otras.",
+      options: ["than", "from", "of", "with"],
+      correctIndex: 1,
+      explanation: "\"Different from\" is the standard, most natural form. \"Different than\" is used informally in American English, but \"different from\" is safest and most widely accepted. ES: \"different from\" es la forma mas segura."
+    },
+    {
+      id: "q4",
+      prompt: "Let's _____ the plan before we decide anything.",
+      support: "ES: este verbo no siempre necesita preposicion despues.",
+      options: ["discuss about", "discuss", "discuss on", "discuss of"],
+      correctIndex: 1,
+      explanation: "\"Discuss\" is followed directly by an object, with no preposition: \"discuss the plan\", not \"discuss about the plan\". ES: discuss + objeto directo, sin preposicion."
+    },
+    {
+      id: "q5",
+      prompt: "Choose the correct sentence.",
+      support: "ES: fijate si la palabra es contable o incontable.",
+      options: ["She gave me some advices.", "She gave me some advice.", "She gave me an advices.", "She gave me an advice."],
+      correctIndex: 1,
+      explanation: "\"Advice\" is an uncountable noun in English, so it has no plural form and no \"a/an\". We say \"some advice\" or \"a piece of advice\". ES: \"advice\" es incontable, nunca lleva -s."
+    },
+    {
+      id: "q6",
+      prompt: "How _____ people came to the party?",
+      support: "ES: piensa si esta palabra se puede contar.",
+      options: ["much", "many", "a lot", "few"],
+      correctIndex: 1,
+      explanation: "\"People\" is a countable noun (one person, two people), so we use \"how many\", not \"how much\". ES: \"people\" es contable."
+    },
+    {
+      id: "q7",
+      prompt: "I'm really _____. Can we stop for lunch soon?",
+      support: "ES: piensa en la estructura correcta para sensaciones fisicas.",
+      options: ["having hunger", "hunger", "hungry", "with hunger"],
+      correctIndex: 2,
+      explanation: "In English, physical sensations use \"to be\" + adjective: \"I am hungry\", not \"I have hunger\". ES: to be + adjetivo para sensaciones fisicas."
+    },
+    {
+      id: "q8",
+      prompt: "There were _____ people at the concert than we expected.",
+      support: "ES: fijate si la palabra siguiente es contable.",
+      options: ["less", "fewer", "little", "much"],
+      correctIndex: 1,
+      explanation: "\"Fewer\" is used with countable nouns like \"people\". \"Less\" is used with uncountable nouns. ES: fewer + contable, less + incontable."
+    },
+    {
+      id: "q9",
+      prompt: "Look, that's my dog _____ the photo!",
+      support: "ES: cuidado con la preposicion.",
+      options: ["at", "on", "in", "to"],
+      correctIndex: 2,
+      explanation: "We say something is \"in a photo\" or \"in a picture\", not \"at\" or \"on\". ES: \"in the photo\", no \"at the photo\"."
+    },
+    {
+      id: "q10",
+      prompt: "I love to _____ music while I'm cooking.",
+      support: "ES: este verbo suele llevar una preposicion.",
+      options: ["listen", "listen to", "hear to", "listen at"],
+      correctIndex: 1,
+      explanation: "\"Listen\" needs the preposition \"to\" before an object: \"listen to music\". ES: listen TO algo."
+    },
+    {
+      id: "q11",
+      prompt: "Could you _____ me outside the cinema? I'll only be five minutes.",
+      support: "ES: este verbo tambien suele llevar una preposicion.",
+      options: ["wait", "wait for", "wait to", "hope"],
+      correctIndex: 1,
+      explanation: "\"Wait\" needs the preposition \"for\" before a person or thing: \"wait for me\". ES: wait FOR alguien/algo."
+    },
+    {
+      id: "q12",
+      prompt: "PRONUNCIATION: how many syllables does \"comfortable\" have in natural spoken English?",
+      support: "ES: no siempre se pronuncian todas las silabas que se escriben.",
+      options: ["2", "3", "4", "5"],
+      correctIndex: 1,
+      explanation: "Although it looks like it has four syllables, \"comfortable\" is usually pronounced with three: /ˈkʌmftəbəl/. ES: se pronuncian tres silabas, no cuatro."
+    },
+    {
+      id: "q13",
+      prompt: "This documentary is so _____! I can't stop thinking about it.",
+      support: "ES: compara como te sientes tu con como es la cosa.",
+      options: ["bored", "boring", "bore", "to bore"],
+      correctIndex: 1,
+      explanation: "\"-ing\" adjectives describe the thing that causes the feeling (\"the documentary is boring\"), while \"-ed\" adjectives describe how a person feels (\"I am bored\"). ES: -ing describe la cosa, -ed describe a la persona."
+    },
+    {
+      id: "q14",
+      prompt: "Choose the correct sentence.",
+      support: "ES: esta palabra puede parecer plural sin serlo.",
+      options: ["The news are terrible today.", "The news is terrible today.", "The news were terrible today.", "The news be terrible today."],
+      correctIndex: 1,
+      explanation: "\"News\" looks plural but is always treated as an uncountable singular noun in English: \"the news is\", never \"the news are\". ES: \"news\" siempre es singular en ingles."
+    }
+  ]
+};
+
+function shuffle(array) {
+  const arr = array.slice();
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+  }
+  return arr;
+}
+
+let state = { order: [], current: 0, score: 0, answered: false, selectedIndex: null };
+
+function initLesson() {
+  state.order = shuffle(LESSON_DATA.questions.map(function (q, i) { return i; }));
+  state.current = 0;
+  state.score = 0;
+  document.getElementById('total-count').textContent = LESSON_DATA.questions.length;
+  document.getElementById('score-display').textContent = 0;
+  renderQuestion();
+}
+
+function getCurrentQuestion() {
+  const idx = state.order[state.current];
+  return LESSON_DATA.questions[idx];
+}
+
+function renderQuestion() {
+  state.answered = false;
+  state.selectedIndex = null;
+  state.hasErred = false;
+
+  const q = getCurrentQuestion();
+  const total = LESSON_DATA.questions.length;
+
+  document.getElementById('q-number').textContent = (state.current + 1) + ' / ' + total;
+  document.getElementById('progress-fill').style.width = (state.current / total * 100) + '%';
+  document.getElementById('prompt-text').textContent = q.prompt;
+  document.getElementById('support-text').textContent = q.support;
+  document.getElementById('feedback-box').style.display = 'none';
+  document.getElementById('feedback-box').className = 'feedback-box';
+  document.getElementById('next-btn').disabled = true;
+
+  const optOrder = shuffle(q.options.map(function (opt, i) { return i; }));
+  const optionsContainer = document.getElementById('options-container');
+  optionsContainer.innerHTML = '';
+
+  optOrder.forEach(function (origIndex) {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = q.options[origIndex];
+    btn.setAttribute('data-orig-index', origIndex);
+    btn.onclick = function () { selectOption(origIndex, btn); };
+    optionsContainer.appendChild(btn);
+  });
+}
+
+function selectOption(origIndex, btnEl) {
+  if (state.answered) return;
+
+  const q = getCurrentQuestion();
+  const isCorrect = origIndex === q.correctIndex;
+  const feedbackBox = document.getElementById('feedback-box');
+
+  if (isCorrect) {
+    state.answered = true;
+    if (!state.hasErred) {
+      state.score++;
+      document.getElementById('score-display').textContent = state.score;
+    }
+    btnEl.classList.add('correct');
+    document.querySelectorAll('.option-btn').forEach(function (b) { b.disabled = true; });
+
+    feedbackBox.style.display = 'block';
+    feedbackBox.className = 'feedback-box feedback-correct';
+    feedbackBox.textContent = 'Correct! ' + q.explanation;
+
+    document.getElementById('next-btn').disabled = false;
+  } else {
+    state.hasErred = true;
+    btnEl.classList.add('incorrect');
+    btnEl.disabled = true;
+
+    feedbackBox.style.display = 'block';
+    feedbackBox.className = 'feedback-box feedback-incorrect';
+    feedbackBox.textContent = 'Not quite, try again. ES: Intenta de nuevo.';
+  }
+}
+
+function nextQuestion() {
+  const total = LESSON_DATA.questions.length;
+  if (state.current < total - 1) {
+    state.current++;
+    renderQuestion();
+  } else {
+    showResults();
+  }
+}
+
+function showResults() {
+  const total = LESSON_DATA.questions.length;
+  document.getElementById('progress-fill').style.width = '100%';
+  document.getElementById('lesson-screen').style.display = 'none';
+  document.getElementById('results-screen').style.display = 'flex';
+  document.getElementById('final-score').textContent = state.score + ' / ' + total;
+
+  const pct = Math.round((state.score / total) * 100);
+  let message = '';
+  if (pct >= 90) message = 'Excellent work! You have a strong grasp of these points.';
+  else if (pct >= 70) message = 'Good job! A little more practice and these will stick.';
+  else if (pct >= 50) message = 'Solid effort. Review the explanations and try again.';
+  else message = 'Keep practicing. Review each explanation carefully and try again.';
+  document.getElementById('results-message').textContent = message;
+}
+
+function restartLesson() {
+  document.getElementById('results-screen').style.display = 'none';
+  document.getElementById('lesson-screen').style.display = 'flex';
+  initLesson();
+}
+
+window.onload = initLesson;
+</script>
+
+</body>
+</html>

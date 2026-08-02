@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – C1 Negotiation Language</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Instrument+Sans:wght@400;500;600&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f0e8;
+  --surface: #faf7f2;
+  --card: #ffffff;
+  --border: #ddd5c4;
+  --accent: #1a4a2e;
+  --accent-mid: #2d6b45;
+  --accent-light: rgba(26,74,46,0.08);
+  --accent-lighter: rgba(26,74,46,0.04);
+  --gold: #b8860b;
+  --gold-bg: rgba(184,134,11,0.08);
+  --text: #1c1a17;
+  --muted: #7a7060;
+  --correct: #1a4a2e;
+  --correct-bg: rgba(26,74,46,0.09);
+  --wrong: #8b2020;
+  --wrong-bg: rgba(139,32,32,0.08);
+  --radius: 10px;
+  --shadow: 0 2px 12px rgba(0,0,0,0.07);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  background-image: 
+    radial-gradient(ellipse at 20% 10%, rgba(26,74,46,0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 90%, rgba(184,134,11,0.05) 0%, transparent 50%);
+  color: var(--text);
+  font-family: 'Instrument Sans', sans-serif;
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+
+/* ─── HEADER ─────────────────────────── */
+.header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 32px 24px 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent) 0%, var(--gold) 50%, var(--accent) 100%);
+}
+
+.header-rule {
+  width: 60px;
+  height: 1px;
+  background: var(--border);
+  margin: 14px auto 10px;
+}
+
+.lesson-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent);
+  color: #f5f0e8;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 2px;
+  margin-top: 12px;
+}
+
+.lesson-tag::before {
+  content: '◆';
+  font-size: 7px;
+  color: var(--gold);
+}
+
+/* ─── SCORE BAR ───────────────────────── */
+.score-bar {
+  background: var(--accent);
+  padding: 11px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.score-pill {
+  color: #f5f0e8;
+  font-family: 'Courier Prime', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.score-pill span {
+  color: #f0d060;
+}
+
+.progress-wrap { flex: 1; }
+
+.progress-label {
+  color: rgba(245,240,232,0.6);
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.progress-bar {
+  background: rgba(255,255,255,0.15);
+  border-radius: 3px;
+  height: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  background: #f0d060;
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+}
+
+.q-global {
+  color: rgba(245,240,232,0.55);
+  font-family: 'Courier Prime', monospace;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* ─── MAIN ────────────────────────────── */
+.main {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 40px 20px 0;
+}
+
+/* ─── ACTIVITY HEADER ─────────────────── */
+.act-header {
+  margin-bottom: 32px;
+  animation: riseIn 0.5s ease both;
+  border-left: 3px solid var(--accent);
+  padding-left: 18px;
+}
+
+.act-eyebrow {
+  font-family: 'Courier Prime', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent-mid);
+  margin-bottom: 8px;
+}
+
+.act-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+
+.act-sub {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 600px;
+}
+
+/* ─── ILLUSTRATION ────────────────────── */
+.illus-wrap {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow);
+  animation: riseIn 0.5s 0.05s ease both;
+}
+
+/* ─── QUESTION CARD ───────────────────── */
+.q-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 30px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+  animation: riseIn 0.4s ease both;
+}
+
+.q-counter {
+  font-family: 'Courier Prime', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.q-counter::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.q-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--text);
+  margin-bottom: 22px;
+}
+
+.q-text em {
+  font-style: italic;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.q-context {
+  background: var(--accent-lighter);
+  border-left: 3px solid var(--accent);
+  padding: 14px 16px;
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 22px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text);
+  font-style: italic;
+}
+
+/* ─── OPTIONS ─────────────────────────── */
+.options { display: flex; flex-direction: column; gap: 9px; }
+
+.opt {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 13px 16px;
+  cursor: pointer;
+  font-size: 14.5px;
+  color: var(--text);
+  transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  line-height: 1.55;
+  text-align: left;
+}
+
+.opt:hover:not(.disabled) {
+  border-color: var(--accent);
+  background: var(--accent-light);
+  transform: translateX(2px);
+}
+
+.opt.selected { border-color: var(--accent); background: var(--accent-light); }
+.opt.correct { border-color: var(--correct); background: var(--correct-bg); }
+.opt.wrong { border-color: var(--wrong); background: var(--wrong-bg); }
+.opt.disabled { cursor: default; }
+
+.opt-lbl {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: 1.5px solid var(--border);
+  font-family: 'Courier Prime', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.opt.selected .opt-lbl { border-color: var(--accent); background: var(--accent); color: #fff; }
+.opt.correct .opt-lbl { border-color: var(--correct); background: var(--correct); color: #fff; }
+.opt.wrong .opt-lbl { border-color: var(--wrong); background: var(--wrong); color: #fff; }
+
+/* ─── FEEDBACK ────────────────────────── */
+.feedback {
+  border-radius: 8px;
+  padding: 15px 18px;
+  margin-top: 16px;
+  font-size: 14px;
+  line-height: 1.65;
+  display: none;
+}
+
+.feedback.show { display: block; animation: riseIn 0.3s ease; }
+
+.feedback.correct-fb {
+  background: var(--correct-bg);
+  border: 1px solid rgba(26,74,46,0.2);
+  color: var(--correct);
+}
+
+.feedback.wrong-fb {
+  background: var(--wrong-bg);
+  border: 1px solid rgba(139,32,32,0.2);
+  color: var(--wrong);
+}
+
+.fb-label {
+  font-family: 'Courier Prime', monospace;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* ─── BUTTONS ─────────────────────────── */
+.btn-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.btn {
+  background: var(--accent);
+  color: #f5f0e8;
+  border: none;
+  border-radius: 6px;
+  padding: 13px 26px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Instrument Sans', sans-serif;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  letter-spacing: 0.3px;
+}
+
+.btn:hover { background: var(--accent-mid); transform: translateY(-1px); }
+.btn:active { transform: none; }
+
+.btn.secondary {
+  background: transparent;
+  border: 1.5px solid var(--border);
+  color: var(--muted);
+}
+
+.btn.secondary:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+
+/* ─── FILL-IN ACTIVITY ────────────────── */
+.sentence-block {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 30px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+  animation: riseIn 0.4s ease both;
+}
+
+.sent-num {
+  font-family: 'Courier Prime', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.sent-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 19px;
+  line-height: 1.7;
+  color: var(--text);
+  margin-bottom: 14px;
+}
+
+.sent-text .blank-inline {
+  display: inline-block;
+  border-bottom: 2px solid var(--accent);
+  min-width: 160px;
+  margin: 0 4px;
+  vertical-align: bottom;
+}
+
+.blank-input {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  padding: 9px 14px;
+  font-size: 14px;
+  color: var(--text);
+  font-family: 'Instrument Sans', sans-serif;
+  width: 100%;
+  max-width: 340px;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.blank-input:focus { border-color: var(--accent); background: #fff; }
+.blank-input.correct { border-color: var(--correct); background: var(--correct-bg); color: var(--correct); }
+.blank-input.wrong { border-color: var(--wrong); background: var(--wrong-bg); color: var(--wrong); }
+.blank-input:disabled { opacity: 0.85; }
+
+.sent-fb {
+  font-size: 13px;
+  line-height: 1.6;
+  margin-top: 10px;
+  display: none;
+  padding: 10px 14px;
+  border-radius: 6px;
+}
+
+.sent-fb.show { display: block; }
+.sent-fb.correct-fb { background: var(--correct-bg); color: var(--correct); border: 1px solid rgba(26,74,46,0.15); }
+.sent-fb.wrong-fb { background: var(--wrong-bg); color: var(--wrong); border: 1px solid rgba(139,32,32,0.15); }
+
+/* ─── WORD BANK ───────────────────────── */
+.word-bank-wrap {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+}
+
+.wb-label {
+  font-family: 'Courier Prime', monospace;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.wb-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.wb-chip {
+  background: var(--accent-lighter);
+  border: 1.5px solid var(--border);
+  border-radius: 4px;
+  padding: 6px 13px;
+  font-size: 13px;
+  font-family: 'Courier Prime', monospace;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ─── REGISTER REWRITE ────────────────── */
+.rewrite-block {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 26px 28px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+  animation: riseIn 0.4s ease both;
+}
+
+.rw-from {
+  background: var(--gold-bg);
+  border-left: 3px solid var(--gold);
+  padding: 12px 16px;
+  border-radius: 0 6px 6px 0;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-style: italic;
+  color: var(--text);
+  margin-bottom: 14px;
+  line-height: 1.6;
+}
+
+.rw-label-from {
+  font-family: 'Courier Prime', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.rw-label-to {
+  font-family: 'Courier Prime', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.rw-options { display: flex; flex-direction: column; gap: 8px; }
+
+/* ─── FINAL SCREEN ────────────────────── */
+.final {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 48px 36px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  animation: riseIn 0.6s ease;
+}
+
+.final-ornament {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 48px;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.final-score-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 80px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.final-denom {
+  font-size: 18px;
+  color: var(--muted);
+  font-family: 'Courier Prime', monospace;
+  margin-bottom: 24px;
+}
+
+.final-msg {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-style: italic;
+  color: var(--text);
+  line-height: 1.7;
+  max-width: 500px;
+  margin: 0 auto 32px;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 32px 0;
+}
+
+/* ─── REVIEW TABLE ────────────────────── */
+.review-grid { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+
+.review-row {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.rr-phrase {
+  background: var(--accent);
+  color: #f5f0e8;
+  padding: 13px 16px;
+  font-family: 'Courier Prime', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+
+.rr-use {
+  background: var(--surface);
+  padding: 13px 16px;
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.55;
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 580px) {
+  .review-row { grid-template-columns: 1fr; }
+  .act-title { font-size: 24px; }
+  .q-text { font-size: 17px; }
+}
+
+/* ─── ANIMATIONS ──────────────────────── */
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+select option { background: #fff; color: #1c1a17; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <svg width="210" height="64" viewBox="0 0 210 64" xmlns="http://www.w3.org/2000/svg">
+    <text x="105" y="30" text-anchor="middle"
+          font-family="'Cormorant Garamond', Georgia, serif"
+          font-size="30" font-weight="700" fill="#1a4a2e" letter-spacing="6">FORBES</text>
+    <line x1="18" y1="39" x2="192" y2="39" stroke="#1a4a2e" stroke-width="0.7" opacity="0.4"/>
+    <text x="105" y="57" text-anchor="middle"
+          font-family="'Instrument Sans', Arial, sans-serif"
+          font-size="12" font-weight="600" fill="#b8860b" letter-spacing="9">ENGLISH</text>
+  </svg>
+  <div class="header-rule"></div>
+  <div class="lesson-tag">Negotiation Language · C1</div>
+</div>
+
+<!-- SCORE BAR -->
+<div class="score-bar" id="scoreBar">
+  <div class="score-pill">Score: <span id="scoreDisplay">0</span></div>
+  <div class="progress-wrap">
+    <div class="progress-label" id="progressLabel">Activity 1 of 3</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  </div>
+  <div class="q-global" id="qGlobal">0 / 18</div>
+</div>
+
+<div class="main" id="main"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// C1 CONTENT DATA
+// ═══════════════════════════════════════════════════════
+
+/*
+  ACTIVITY 1 — Multiple Choice: C1 negotiation register & nuance
+  ACTIVITY 2 — Fill-in-the-blank: sophisticated procurement phrases
+  ACTIVITY 3 — Register rewrite: plain → formal/diplomatic
+*/
+
+const ACT1 = {
+  type: 'mc',
+  eyebrow: 'Activity 1 — Critical Reading',
+  title: 'Register, Nuance & Precision',
+  sub: 'Each question presents a negotiation scenario. Choose the response that best reflects C1-level diplomatic and professional language.',
+  questions: [
+    {
+      ctx: 'During a contract negotiation, the client wants to push the contractor to reduce their fee without causing offence.',
+      q: 'Which phrasing most effectively <em>signals financial pressure while maintaining diplomatic tone</em>?',
+      opts: [
+        'We think your fee is too high and we want you to reduce it significantly.',
+        'We are not in a position to proceed at the current fee structure and would welcome a revised proposal.',
+        'Your price is honestly quite a problem for us and we really need something better.',
+        'We would prefer to pay less and hope that you can find a way to accommodate this.'
+      ],
+      correct: 1,
+      exp: '"We are not in a position to proceed at the current fee structure" is diplomatically firm — it signals a clear constraint without accusation. The phrase "welcome a revised proposal" keeps the dialogue open while placing the onus on the contractor to move.'
+    },
+    {
+      ctx: 'A contractor says: "We can complete the project by October, subject to receiving the structural drawings by 15 June."',
+      q: 'What does <em>subject to</em> signal in this contractual context?',
+      opts: [
+        'The contractor is uncertain about whether they can complete the project at all.',
+        'The October deadline is contingent on a specific condition being met by the client.',
+        'The contractor is requesting permission to begin work on the structural drawings.',
+        'The contractor is proposing October as a preferred date rather than a firm commitment.'
+      ],
+      correct: 1,
+      exp: '"Subject to" introduces a conditional clause — the commitment to the October deadline is only valid if the stated condition (drawings by 15 June) is fulfilled. At C1, recognising this conditional structure is essential for reading contracts precisely.'
+    },
+    {
+      ctx: 'A government client is reviewing three procurement bids. The evaluation team says: "Bid B represents the most advantageous offer in terms of whole-life cost."',
+      q: 'What does <em>whole-life cost</em> most likely refer to in this context?',
+      opts: [
+        'The total amount the contractor will earn across the duration of the project.',
+        'The initial construction cost plus ongoing maintenance and operational expenses over time.',
+        'A financial penalty applied if the contractor\'s costs exceed the agreed budget.',
+        'The client\'s full annual infrastructure budget across all current contracts.'
+      ],
+      correct: 1,
+      exp: 'Whole-life cost (also called lifecycle cost) refers to the total cost of a built asset from construction through operation, maintenance, and eventual decommissioning — not just the upfront price. It is a key concept in public procurement evaluation.'
+    },
+    {
+      ctx: 'A project director writes in a meeting summary: "Both parties acknowledged the ambiguity in Clause 14 and agreed to seek a mutually acceptable interpretation before the next milestone review."',
+      q: 'What does this sentence imply about Clause 14?',
+      opts: [
+        'Both parties have agreed that Clause 14 is incorrect and must be legally amended.',
+        'The clause contains language open to more than one reading, and this has not yet been resolved.',
+        'The project director has drafted a revised version of Clause 14 for approval.',
+        'Both parties have already agreed on an interpretation but need time to document it.'
+      ],
+      correct: 1,
+      exp: '"Ambiguity" means the clause is unclear or can be interpreted in more than one way. The parties have not yet resolved this — they have only agreed to try to find a shared interpretation before the next review. No revision has been made.'
+    },
+    {
+      ctx: 'A procurement consultant advises: "The client would be well-served by retaining some risk rather than seeking to transfer all project uncertainty to the contractor."',
+      q: 'Which of the following best paraphrases this advice in formal contract language?',
+      opts: [
+        'The client should refuse to sign any contract that allocates risk to the contractor.',
+        'An appropriate balance of risk allocation, rather than wholesale risk transfer, is likely to produce better project outcomes.',
+        'The consultant recommends that all project risk be shared equally between both parties.',
+        'The client should avoid engaging contractors who are unwilling to accept full project risk.'
+      ],
+      correct: 1,
+      exp: 'The consultant is recommending balanced risk allocation, not full transfer. Option B captures this nuance precisely. "Wholesale risk transfer" echoes the original meaning of "seeking to transfer all project uncertainty", while "better project outcomes" reflects the phrase "well-served".'
+    },
+    {
+      ctx: 'In a negotiation, one party says: "We would not wish to be prescriptive about methodology — we\'re more interested in outcomes."',
+      q: 'What does <em>prescriptive</em> mean in this negotiation context?',
+      opts: [
+        'Dictating in detail exactly how the work should be carried out.',
+        'Offering a recommendation about the preferred sequence of activities.',
+        'Requesting written documentation of all project methodologies.',
+        'Imposing financial penalties for deviating from an agreed method.'
+      ],
+      correct: 0,
+      exp: '"Prescriptive" in this context means specifying exactly how something must be done. By saying they do not wish to be prescriptive, the speaker signals they are willing to give the contractor freedom in methodology as long as the desired outcomes are achieved.'
+    },
+  ]
+};
+
+const ACT2 = {
+  type: 'fitb',
+  eyebrow: 'Activity 2 — Lexical Precision',
+  title: 'High-Stakes Vocabulary in Context',
+  sub: 'Complete each sentence with the correct term from the word bank. Each term is used once. Consider register, collocations, and contractual meaning carefully.',
+  bank: [
+    'pain/gain share', 'force majeure', 'novation', 'liquidated damages',
+    'invitation to tender', 'due diligence', 'mitigation', 'retention'
+  ],
+  sentences: [
+    {
+      before: 'The contractor was required to carry out full',
+      after: 'on all subcontractors before appointing them, verifying their financial stability and track record.',
+      answer: 'due diligence',
+      exp: '"Due diligence" is the formal investigation of a company or proposal before entering a legal or financial commitment. It collocates with "carry out" and "conduct".'
+    },
+    {
+      before: 'The contract included a',
+      after: 'clause that excused the contractor from liability for delays caused by the port strike, as this constituted an event beyond any party\'s reasonable control.',
+      answer: 'force majeure',
+      exp: '"Force majeure" (French: "superior force") is a standard contract clause that removes liability when extraordinary external events — floods, wars, strikes — prevent performance.'
+    },
+    {
+      before: 'Following the client\'s insolvency, a formal',
+      after: 'agreement was executed, transferring all contractual rights and obligations from the original client to the incoming public authority.',
+      answer: 'novation',
+      exp: '"Novation" is the legal transfer of contractual rights and obligations from one party to a new party, with the consent of all parties. It differs from "assignment" in that the original party is released entirely.'
+    },
+    {
+      before: 'The contract stipulated',
+      after: 'of €15,000 per day for each day the handover was delayed beyond the agreed completion date.',
+      answer: 'liquidated damages',
+      exp: '"Liquidated damages" (LDs) are pre-agreed financial penalties for specific breaches — most commonly late completion. The amount is fixed in advance, distinguishing LDs from general damages assessed after the fact.'
+    },
+    {
+      before: 'To incentivise cost efficiency, the target cost contract incorporated a',
+      after: 'mechanism, under which contractor and client split any savings or overruns in a 60:40 ratio.',
+      answer: 'pain/gain share',
+      exp: '"Pain/gain share" describes the mechanism in target cost contracts by which financial upside (gain) and downside (pain) are distributed between client and contractor according to a pre-agreed formula.'
+    },
+    {
+      before: 'The client issued a formal',
+      after: 'to six pre-qualified contractors, inviting them to submit pricing for the new terminal building by the end of the month.',
+      answer: 'invitation to tender',
+      exp: 'An "invitation to tender" (ITT) is a formal document sent to selected contractors asking them to submit a price and proposal. It follows pre-qualification and precedes contract award.'
+    },
+    {
+      before: 'The client withheld 5% of each payment certificate as',
+      after: ', to be released only upon successful completion of the defects liability period.',
+      answer: 'retention',
+      exp: '"Retention" (or "retainage") is a percentage of payment withheld by the client as security against defects. It is typically released in two halves: at practical completion and at the end of the defects period.'
+    },
+    {
+      before: 'The contractor had a contractual duty of',
+      after: 'and was required to take all reasonable steps to minimise the financial impact of the flood damage rather than simply claiming its full losses.',
+      answer: 'mitigation',
+      exp: 'A "duty of mitigation" requires the injured party to take reasonable steps to reduce the loss arising from a breach or event. Failing to mitigate can reduce the damages recoverable.'
+    },
+  ]
+};
+
+const ACT3 = {
+  type: 'rewrite',
+  eyebrow: 'Activity 3 — Register & Diplomacy',
+  title: 'From Blunt to Boardroom',
+  sub: 'Each item shows an informal or imprecise statement. Select the C1-level equivalent — the version that would be appropriate in a formal negotiation or written contract context.',
+  items: [
+    {
+      from: '"We want more money because everything got more expensive."',
+      q: 'Which formal equivalent best reflects this claim in a contract variation request?',
+      opts: [
+        'We are applying for a cost adjustment on account of material price escalation beyond the thresholds stipulated in the contract.',
+        'We need to revise our price due to various costs going up more than we expected.',
+        'We wish to inform you that our costs have increased and we would like this to be reflected in the contract sum.',
+        'Given recent market conditions, we believe our original quote no longer reflects current pricing realities.'
+      ],
+      correct: 0,
+      exp: 'Option A uses precise contractual language: "cost adjustment" (formal term for a price change), "material price escalation" (specific cause), and "thresholds stipulated in the contract" (grounding the claim in the contract terms). The other options are too vague or informal for a formal variation request.'
+    },
+    {
+      from: '"We can\'t deliver on time because our subcontractor let us down."',
+      q: 'Select the most appropriate C1-level equivalent for a formal notice of delay.',
+      opts: [
+        'We wish to advise that completion of the works will be delayed as a result of a subcontractor defaulting on their obligations, and we are assessing the programme implications accordingly.',
+        'Unfortunately our subcontractor has failed to perform and this will affect the completion date.',
+        'Due to circumstances beyond our control involving our supply chain, we may need to revise the delivery timeline.',
+        'We are sorry to inform you that there will be a delay caused by problems with one of our subcontractors.'
+      ],
+      correct: 0,
+      exp: '"Defaulting on their obligations" is precise legal language. "Programme implications" refers to the schedule impact. The phrase "we are assessing" signals proactive management. The other options are either too casual, too vague, or fail to use the correct formal register for a contractual notice.'
+    },
+    {
+      from: '"We think this contract clause is unfair and we don\'t agree with it."',
+      q: 'Which formal equivalent would be most appropriate in written contract negotiations?',
+      opts: [
+        'We wish to raise a concern regarding Clause 18 and respectfully submit that its current drafting creates an inequitable allocation of risk which we would like to discuss with a view to revision.',
+        'We disagree with Clause 18 and feel it is unfair to the contractor and should be reconsidered.',
+        'Our legal team has flagged Clause 18 as problematic and we would like to propose some changes.',
+        'We have reviewed Clause 18 and believe it should be amended as it does not reflect standard industry practice.'
+      ],
+      correct: 0,
+      exp: '"Inequitable allocation of risk" is the formal way to express that a risk distribution is unfair. "Respectfully submit" is a standard legal phrasing. "With a view to revision" signals the desired outcome without making a demand. The other options, while reasonable, are less precise or less diplomatically calibrated.'
+    },
+    {
+      from: '"The client keeps changing what they want and it\'s costing us money."',
+      q: 'Which option best represents this issue in a formal project correspondence?',
+      opts: [
+        'We write to formally record that repeated scope changes issued by the client have had a material cost and programme impact, and we hereby reserve our right to claim appropriate compensation.',
+        'We have incurred additional costs as a result of the client changing the project scope on several occasions and would like to be reimbursed.',
+        'The frequency of client-driven design changes has significantly exceeded our original expectations and is affecting project economics.',
+        'We wish to highlight that ongoing variations to the design have resulted in increased expenditure on our part.'
+      ],
+      correct: 0,
+      exp: '"Material cost and programme impact" is precise. "Hereby reserve our right to claim" is essential legal language that formally protects the contractor\'s position without immediately escalating to a dispute. The phrase "formally record" ensures this correspondence creates a documented paper trail.'
+    },
+    {
+      from: '"We\'re not going to take all the risk for something we can\'t control."',
+      q: 'Select the most appropriate formal equivalent for contract negotiations.',
+      opts: [
+        'We would respectfully contend that it is not appropriate for the contractor to carry unqualified liability for events outside their direct control, and we would propose that the contract reflect a more proportionate risk allocation.',
+        'We are unwilling to accept full liability for matters that fall outside the scope of our reasonable control.',
+        'As a matter of principle, we do not accept contracts that allocate risk to parties who are unable to influence the relevant outcomes.',
+        'We believe the current risk allocation in the draft contract is disproportionate and does not reflect standard market practice.'
+      ],
+      correct: 0,
+      exp: '"Unqualified liability" means unlimited or unconditional liability — precise legal vocabulary. "Proportionate risk allocation" is the formal goal being proposed. "Respectfully contend" maintains diplomacy while making a clear position statement. This option is the only one that frames both the problem and the desired solution in contractually precise terms.'
+    },
+    {
+      from: '"We haven\'t been paid and we need the money now."',
+      q: 'Which formal equivalent would be most appropriate in a payment notice?',
+      opts: [
+        'We hereby issue formal notice that payment certificate No. 7 remains outstanding beyond the contractual payment period and request that settlement be made within seven days to avoid further action.',
+        'We would like to draw your attention to the fact that our invoice has not yet been paid and we urgently require payment.',
+        'Payment has not been received in respect of our recent application and we request that this matter be prioritised.',
+        'We note that the payment due under our latest valuation has not yet been received and ask that this be addressed promptly.'
+      ],
+      correct: 0,
+      exp: '"Hereby issue formal notice" creates a legal record. "Payment certificate No. 7" specifies the exact document. "Contractual payment period" grounds the claim in the contract terms. "To avoid further action" is a diplomatic but clear warning. This option is the only one that functions as a proper formal notice rather than an informal reminder.'
+    },
+  ]
+};
+
+const activities = [ACT1, ACT2, ACT3];
+const totalQ = ACT1.questions.length + ACT2.sentences.length + ACT3.items.length;
+
+let score = 0;
+let answered = 0;
+let actIdx = 0;
+
+// MC state
+let mcIdx = 0;
+let mcDone = false;
+
+// FITB state
+let fitbChecked = false;
+
+// Rewrite state
+let rwIdx = 0;
+let rwDone = false;
+
+// ═══════════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════════
+
+function updateBar() {
+  document.getElementById('scoreDisplay').textContent = score;
+  document.getElementById('progressLabel').textContent = `Activity ${actIdx + 1} of ${activities.length}`;
+  document.getElementById('progressFill').style.width = (answered / totalQ * 100) + '%';
+  document.getElementById('qGlobal').textContent = `${answered} / ${totalQ}`;
+}
+
+function render() {
+  updateBar();
+  const m = document.getElementById('main');
+  m.innerHTML = '';
+  if (actIdx >= activities.length) { renderFinal(m); return; }
+  const act = activities[actIdx];
+  if (act.type === 'mc') renderMC(m, act);
+  else if (act.type === 'fitb') renderFITB(m, act);
+  else if (act.type === 'rewrite') renderRewrite(m, act);
+}
+
+function el(tag, cls, html) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (html) e.innerHTML = html;
+  return e;
+}
+
+// ═══════════════════════════════════════════════════════
+// SVG ILLUSTRATIONS
+// ═══════════════════════════════════════════════════════
+
+function svgNegotiation() {
+  return `<svg width="340" height="130" viewBox="0 0 340 130" xmlns="http://www.w3.org/2000/svg">
+  <!-- Table -->
+  <rect x="60" y="72" width="220" height="8" fill="#d4c9b0" rx="4"/>
+  <rect x="80" y="78" width="6" height="30" fill="#c4b99a" rx="2"/>
+  <rect x="254" y="78" width="6" height="30" fill="#c4b99a" rx="2"/>
+  <!-- Left person -->
+  <circle cx="90" cy="52" r="16" fill="#2d6b45"/>
+  <rect x="70" y="68" width="40" height="4" fill="#2d6b45" rx="2"/>
+  <!-- Speech bubble left -->
+  <rect x="18" y="22" width="80" height="32" fill="#f5f0e8" rx="6" stroke="#1a4a2e" stroke-width="1.2"/>
+  <polygon points="45,54 55,54 50,62" fill="#f5f0e8" stroke="#1a4a2e" stroke-width="1.2"/>
+  <rect x="25" y="30" width="66" height="3" fill="#1a4a2e" opacity="0.3" rx="2"/>
+  <rect x="25" y="37" width="50" height="3" fill="#1a4a2e" opacity="0.3" rx="2"/>
+  <rect x="25" y="44" width="58" height="3" fill="#1a4a2e" opacity="0.3" rx="2"/>
+  <!-- Right person -->
+  <circle cx="250" cy="52" r="16" fill="#b8860b"/>
+  <rect x="230" y="68" width="40" height="4" fill="#b8860b" rx="2"/>
+  <!-- Speech bubble right -->
+  <rect x="242" y="22" width="80" height="32" fill="#fff9ed" rx="6" stroke="#b8860b" stroke-width="1.2"/>
+  <polygon points="285,54 295,54 290,62" fill="#fff9ed" stroke="#b8860b" stroke-width="1.2"/>
+  <rect x="249" y="30" width="66" height="3" fill="#b8860b" opacity="0.3" rx="2"/>
+  <rect x="249" y="37" width="44" height="3" fill="#b8860b" opacity="0.3" rx="2"/>
+  <rect x="249" y="44" width="60" height="3" fill="#b8860b" opacity="0.3" rx="2"/>
+  <!-- Document on table -->
+  <rect x="145" y="56" width="50" height="36" fill="#fff" rx="3" stroke="#d4c9b0" stroke-width="1"/>
+  <rect x="150" y="62" width="40" height="2" fill="#1a4a2e" opacity="0.2" rx="1"/>
+  <rect x="150" y="67" width="30" height="2" fill="#1a4a2e" opacity="0.2" rx="1"/>
+  <rect x="150" y="72" width="36" height="2" fill="#1a4a2e" opacity="0.2" rx="1"/>
+  <rect x="150" y="77" width="24" height="2" fill="#1a4a2e" opacity="0.2" rx="1"/>
+  <line x1="150" y1="84" x2="188" y2="84" stroke="#1a4a2e" stroke-width="0.8" opacity="0.4"/>
+  <!-- middle icons -->
+  <text x="170" y="50" text-anchor="middle" font-size="14" fill="#1a4a2e" opacity="0.5">⇌</text>
+</svg>`;
+}
+
+function svgLexicon() {
+  return `<svg width="340" height="130" viewBox="0 0 340 130" xmlns="http://www.w3.org/2000/svg">
+  <!-- Open book -->
+  <path d="M 50 30 Q 50 20 170 20 Q 170 20 170 110 Q 50 110 50 100 Z" fill="#f5f0e8" stroke="#d4c9b0" stroke-width="1.2"/>
+  <path d="M 170 20 Q 290 20 290 30 L 290 100 Q 290 110 170 110 Z" fill="#faf7f2" stroke="#d4c9b0" stroke-width="1.2"/>
+  <line x1="170" y1="20" x2="170" y2="110" stroke="#d4c9b0" stroke-width="1.5"/>
+  <!-- Lines left page -->
+  <rect x="65" y="36" width="90" height="2.5" fill="#1a4a2e" opacity="0.15" rx="1"/>
+  <rect x="65" y="43" width="78" height="2.5" fill="#1a4a2e" opacity="0.15" rx="1"/>
+  <rect x="65" y="50" width="85" height="2.5" fill="#1a4a2e" opacity="0.15" rx="1"/>
+  <rect x="65" y="57" width="72" height="2.5" fill="#b8860b" opacity="0.3" rx="1"/>
+  <rect x="65" y="64" width="88" height="2.5" fill="#1a4a2e" opacity="0.15" rx="1"/>
+  <rect x="65" y="71" width="80" height="2.5" fill="#1a4a2e" opacity="0.15" rx="1"/>
+  <rect x="65" y="78" width="76" height="2.5" fill="#1a4a2e" opacity="0.15" rx="1"/>
+  <rect x="65" y="85" width="84" height="2.5" fill="#b8860b" opacity="0.3" rx="1"/>
+  <rect x="65" y="92" width="70" height="2.5" fill="#1a4a2e" opacity="0.15" rx="1"/>
+  <!-- Lines right page -->
+  <rect x="182" y="36" width="90" height="2.5" fill="#1a4a2e" opacity="0.15" rx="1"/>
+  <rect x="182" y="43" width="76" height="2.5" fill="#1a4a2e" opacity="0.15" rx="1"/>
+  <rect x="182" y="50" width="83" height="2.5" fill="#b8860b" opacity="0.3" rx="1"/>
+  <rect x="182" y="57" width="88" height="2.5" fill="#1a4a2e" opacity="0.15" rx="1"/>
+  <rect x="182" y="64" width="70" height="2.5" fill="#1a4a2e" opacity="0.15" rx="1"/>
+  <rect x="182" y="71" width="85" height="2.5" fill="#1a4a2e" opacity="0.15" rx="1"/>
+  <rect x="182" y="78" width="78" height="2.5" fill="#b8860b" opacity="0.3" rx="1"/>
+  <rect x="182" y="85" width="82" height="2.5" fill="#1a4a2e" opacity="0.15" rx="1"/>
+  <rect x="182" y="92" width="68" height="2.5" fill="#1a4a2e" opacity="0.15" rx="1"/>
+  <!-- Pen -->
+  <rect x="290" y="60" width="6" height="40" fill="#1a4a2e" rx="3" transform="rotate(-30 293 80)"/>
+  <polygon points="293,100 290,112 296,112" fill="#b8860b" transform="rotate(-30 293 106)"/>
+  <!-- Label -->
+  <text x="170" y="122" text-anchor="middle" font-family="'Courier Prime'" font-size="9" fill="#7a7060" letter-spacing="2">TERMINOLOGY</text>
+</svg>`;
+}
+
+function svgDiplomacy() {
+  return `<svg width="340" height="130" viewBox="0 0 340 130" xmlns="http://www.w3.org/2000/svg">
+  <!-- Two columns: informal → formal -->
+  <!-- Left card (informal) -->
+  <rect x="20" y="20" width="130" height="90" fill="#fff9ed" rx="8" stroke="#d4c9b0" stroke-width="1.2"/>
+  <rect x="30" y="30" width="50" height="4" fill="#b8860b" opacity="0.6" rx="2"/>
+  <rect x="30" y="30" width="110" height="4" fill="#b8860b" opacity="0.3" rx="2"/>
+  <rect x="30" y="40" width="95" height="3" fill="#7a7060" opacity="0.3" rx="1"/>
+  <rect x="30" y="47" width="80" height="3" fill="#7a7060" opacity="0.3" rx="1"/>
+  <rect x="30" y="54" width="100" height="3" fill="#7a7060" opacity="0.3" rx="1"/>
+  <rect x="30" y="61" width="75" height="3" fill="#7a7060" opacity="0.3" rx="1"/>
+  <text x="85" y="105" text-anchor="middle" font-family="'Courier Prime'" font-size="9" fill="#b8860b" opacity="0.8" font-weight="700">INFORMAL</text>
+  <!-- Arrow -->
+  <path d="M 158 65 Q 170 65 182 65" stroke="#1a4a2e" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#1a4a2e"/>
+    </marker>
+  </defs>
+  <text x="170" y="58" text-anchor="middle" font-size="10" fill="#1a4a2e" opacity="0.5">✦</text>
+  <!-- Right card (formal) -->
+  <rect x="190" y="20" width="130" height="90" fill="#f5f0e8" rx="8" stroke="#1a4a2e" stroke-width="1.5"/>
+  <rect x="200" y="30" width="110" height="4" fill="#1a4a2e" opacity="0.5" rx="2"/>
+  <rect x="200" y="40" width="105" height="3" fill="#1a4a2e" opacity="0.2" rx="1"/>
+  <rect x="200" y="47" width="90" height="3" fill="#1a4a2e" opacity="0.2" rx="1"/>
+  <rect x="200" y="54" width="112" height="3" fill="#1a4a2e" opacity="0.2" rx="1"/>
+  <rect x="200" y="61" width="98" height="3" fill="#1a4a2e" opacity="0.2" rx="1"/>
+  <rect x="200" y="68" width="80" height="3" fill="#1a4a2e" opacity="0.2" rx="1"/>
+  <line x1="200" y1="80" x2="310" y2="80" stroke="#1a4a2e" stroke-width="0.8" opacity="0.3"/>
+  <text x="255" y="105" text-anchor="middle" font-family="'Courier Prime'" font-size="9" fill="#1a4a2e" opacity="0.8" font-weight="700">C1 REGISTER</text>
+</svg>`;
+}
+
+// ═══════════════════════════════════════════════════════
+// ACTIVITY 1 — MULTIPLE CHOICE
+// ═══════════════════════════════════════════════════════
+
+function renderMC(m, act) {
+  mcDone = false;
+  const q = act.questions[mcIdx];
+
+  if (mcIdx === 0) {
+    const h = el('div', 'act-header');
+    h.innerHTML = `<div class="act-eyebrow">${act.eyebrow}</div><div class="act-title">${act.title}</div><div class="act-sub">${act.sub}</div>`;
+    m.appendChild(h);
+    const il = el('div', 'illus-wrap'); il.innerHTML = svgNegotiation(); m.appendChild(il);
+  } else {
+    const h = el('div', 'act-header', `<div class="act-eyebrow">${act.eyebrow}</div>`);
+    m.appendChild(h);
+  }
+
+  const card = el('div', 'q-card');
+  card.innerHTML = `
+    <div class="q-counter">Question ${mcIdx + 1} of ${act.questions.length}</div>
+    ${q.ctx ? `<div class="q-context">${q.ctx}</div>` : ''}
+    <div class="q-text">${q.q}</div>
+    <div class="options" id="opts"></div>
+    <div class="feedback" id="fb"></div>`;
+  m.appendChild(card);
+
+  const opts = card.querySelector('#opts');
+  const labels = ['A','B','C','D'];
+  q.opts.forEach((txt, i) => {
+    const o = el('div', 'opt');
+    o.innerHTML = `<span class="opt-lbl">${labels[i]}</span><span>${txt}</span>`;
+    o.addEventListener('click', () => {
+      if (mcDone) return;
+      mcDone = true;
+      answered++;
+      const isC = i === q.correct;
+      if (isC) score++;
+      opts.querySelectorAll('.opt').forEach((oo, ii) => {
+        oo.classList.add('disabled');
+        if (ii === q.correct) oo.classList.add('correct');
+        else if (ii === i) oo.classList.add('wrong');
+      });
+      const fb = card.querySelector('#fb');
+      fb.className = `feedback ${isC ? 'correct-fb' : 'wrong-fb'} show`;
+      fb.innerHTML = `<span class="fb-label">${isC ? '✓ Correct' : '✗ Incorrect'}</span>${q.exp}`;
+      document.getElementById('nextBtn').style.display = 'inline-block';
+      updateBar();
+    });
+    opts.appendChild(o);
+  });
+
+  const br = el('div', 'btn-row');
+  br.innerHTML = `<button class="btn" id="nextBtn" style="display:none" onclick="advanceMC(${act.questions.length})">Next →</button>`;
+  m.appendChild(br);
+}
+
+function advanceMC(total) {
+  mcIdx++;
+  if (mcIdx >= total) { actIdx++; mcIdx = 0; }
+  render();
+}
+
+// ═══════════════════════════════════════════════════════
+// ACTIVITY 2 — FILL IN THE BLANK
+// ═══════════════════════════════════════════════════════
+
+function renderFITB(m, act) {
+  fitbChecked = false;
+
+  const h = el('div', 'act-header');
+  h.innerHTML = `<div class="act-eyebrow">${act.eyebrow}</div><div class="act-title">${act.title}</div><div class="act-sub">${act.sub}</div>`;
+  m.appendChild(h);
+
+  const il = el('div', 'illus-wrap'); il.innerHTML = svgLexicon(); m.appendChild(il);
+
+  // Word bank
+  const wb = el('div', 'word-bank-wrap');
+  const shuffled = [...act.bank].sort(() => Math.random() - 0.5);
+  wb.innerHTML = `<div class="wb-label">◆ Word Bank</div><div class="wb-chips">${shuffled.map(w => `<div class="wb-chip">${w}</div>`).join('')}</div>`;
+  m.appendChild(wb);
+
+  // Sentences
+  act.sentences.forEach((s, i) => {
+    const block = el('div', 'sentence-block');
+    block.innerHTML = `
+      <div class="sent-num">Sentence ${i + 1} of ${act.sentences.length}</div>
+      <div class="sent-text" style="font-size:16px; line-height:1.8;">
+        <span style="font-family:'Cormorant Garamond',serif; font-size:18px;">${s.before} </span>
+        <input class="blank-input" id="fitb-${i}" placeholder="type your answer…" style="display:inline-block; width:200px; vertical-align:baseline; padding:5px 10px; font-size:14px;"
+          onkeydown="if(event.key==='Enter')checkFITB()">
+        <span style="font-family:'Cormorant Garamond',serif; font-size:18px;"> ${s.after}</span>
+      </div>
+      <div class="sent-fb" id="sfb-${i}"></div>`;
+    m.appendChild(block);
+  });
+
+  const br = el('div', 'btn-row');
+  br.innerHTML = `<button class="btn" id="checkFitbBtn" onclick="checkFITB()">Check All Answers</button>`;
+  m.appendChild(br);
+}
+
+function normalise(str) {
+  return str.trim().toLowerCase().replace(/[^a-z0-9/ ]/g, '').replace(/\s+/g, ' ');
+}
+
+function checkFITB() {
+  if (fitbChecked) return;
+  fitbChecked = true;
+  const act = ACT2;
+  let correct = 0;
+
+  act.sentences.forEach((s, i) => {
+    const input = document.getElementById(`fitb-${i}`);
+    const val = normalise(input.value);
+    const expected = normalise(s.answer);
+    const isC = val === expected;
+    if (isC) { correct++; score++; }
+    input.classList.add(isC ? 'correct' : 'wrong');
+    input.disabled = true;
+    if (!isC) input.value = s.answer;
+    const fb = document.getElementById(`sfb-${i}`);
+    fb.className = `sent-fb ${isC ? 'correct-fb' : 'wrong-fb'} show`;
+    fb.innerHTML = `<strong>${isC ? '✓' : '✗ Answer: ' + s.answer + ' —'}</strong> ${s.exp}`;
+    answered++;
+  });
+
+  score = score; // already incremented in loop
+  updateBar();
+
+  const btn = document.getElementById('checkFitbBtn');
+  if (btn) btn.outerHTML = `<button class="btn" onclick="nextAct()">Next Activity →</button>`;
+}
+
+function nextAct() { actIdx++; render(); }
+
+// ═══════════════════════════════════════════════════════
+// ACTIVITY 3 — REGISTER REWRITE (MC)
+// ═══════════════════════════════════════════════════════
+
+function renderRewrite(m, act) {
+  rwDone = false;
+  const item = act.items[rwIdx];
+
+  if (rwIdx === 0) {
+    const h = el('div', 'act-header');
+    h.innerHTML = `<div class="act-eyebrow">${act.eyebrow}</div><div class="act-title">${act.title}</div><div class="act-sub">${act.sub}</div>`;
+    m.appendChild(h);
+    const il = el('div', 'illus-wrap'); il.innerHTML = svgDiplomacy(); m.appendChild(il);
+  } else {
+    m.appendChild(el('div', 'act-header', `<div class="act-eyebrow">${act.eyebrow}</div>`));
+  }
+
+  const card = el('div', 'rewrite-block');
+  const labels = ['A','B','C','D'];
+  card.innerHTML = `
+    <div class="q-counter">Item ${rwIdx + 1} of ${act.items.length}</div>
+    <div class="rw-label-from">Informal / Imprecise</div>
+    <div class="rw-from">${item.from}</div>
+    <div class="rw-label-to">Select the C1-level equivalent ↓</div>
+    <div class="q-text" style="font-size:16px; margin-bottom:16px;">${item.q}</div>
+    <div class="rw-options" id="rwopts"></div>
+    <div class="feedback" id="rwfb"></div>`;
+  m.appendChild(card);
+
+  const opts = card.querySelector('#rwopts');
+  item.opts.forEach((txt, i) => {
+    const o = el('div', 'opt');
+    o.innerHTML = `<span class="opt-lbl">${labels[i]}</span><span>${txt}</span>`;
+    o.addEventListener('click', () => {
+      if (rwDone) return;
+      rwDone = true;
+      answered++;
+      const isC = i === item.correct;
+      if (isC) score++;
+      opts.querySelectorAll('.opt').forEach((oo, ii) => {
+        oo.classList.add('disabled');
+        if (ii === item.correct) oo.classList.add('correct');
+        else if (ii === i) oo.classList.add('wrong');
+      });
+      const fb = card.querySelector('#rwfb');
+      fb.className = `feedback ${isC ? 'correct-fb' : 'wrong-fb'} show`;
+      fb.innerHTML = `<span class="fb-label">${isC ? '✓ Correct' : '✗ Incorrect'}</span>${item.exp}`;
+      document.getElementById('rwNextBtn').style.display = 'inline-block';
+      updateBar();
+    });
+    opts.appendChild(o);
+  });
+
+  const br = el('div', 'btn-row');
+  const isLast = rwIdx === act.items.length - 1;
+  br.innerHTML = `<button class="btn" id="rwNextBtn" style="display:none" onclick="${isLast ? 'finishRewrite()' : 'advanceRewrite()'}">
+    ${isLast ? 'See Results →' : 'Next Item →'}
+  </button>`;
+  m.appendChild(br);
+}
+
+function advanceRewrite() { rwIdx++; render(); }
+function finishRewrite() { actIdx++; render(); }
+
+// ═══════════════════════════════════════════════════════
+// FINAL
+// ═══════════════════════════════════════════════════════
+
+function renderFinal(m) {
+  const pct = Math.round(score / totalQ * 100);
+  let msg = '';
+  if (pct >= 85) msg = 'Exceptional command of professional negotiation language. You are operating comfortably at C1 level.';
+  else if (pct >= 65) msg = 'A strong performance. Some terminology to consolidate — but your register awareness is evident.';
+  else msg = 'A solid foundation. Focus on the legal and diplomatic phrases in the review below — they are high-value at C1.';
+
+  m.innerHTML = `<div class="final">
+    <div class="final-ornament">✦</div>
+    <div class="final-score-num">${pct}%</div>
+    <div class="final-denom">${score} correct out of ${totalQ}</div>
+    <div class="final-msg">"${msg}"</div>
+    <div class="btn-row" style="justify-content:center">
+      <button class="btn" onclick="restartAll()">↺ Start Again</button>
+      <button class="btn secondary" onclick="toggleReview()">Review Key Phrases</button>
+    </div>
+    <div id="reviewPanel" style="display:none">
+      <hr class="divider">
+      <div style="font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:700; margin-bottom:20px; color:var(--accent);">C1 Negotiation Phrase Bank</div>
+      <div class="review-grid">
+        ${[
+          ['subject to', 'Introduces a condition: "Delivery by October, subject to receipt of drawings by June."'],
+          ['we are not in a position to…', 'Diplomatically signals a constraint without confrontation.'],
+          ['whole-life cost', 'Total cost of an asset across its entire lifespan, including maintenance and operation.'],
+          ['force majeure', 'Contract clause excusing performance when extraordinary external events occur.'],
+          ['liquidated damages', 'Pre-agreed financial penalties for specific breaches — most often late completion.'],
+          ['novation', 'Legal transfer of all contractual rights and obligations to a new party.'],
+          ['pain/gain share', 'Mechanism splitting cost savings and overruns between client and contractor.'],
+          ['retention', 'Percentage withheld from payments as security against defects; released after the defects period.'],
+          ['due diligence', 'Thorough investigation of a party or proposal before entering a commitment.'],
+          ['mitigation', 'Duty to take reasonable steps to minimise loss following a breach or adverse event.'],
+          ['we hereby reserve our right to claim…', 'Formal language preserving a legal position without immediately escalating.'],
+          ['prescriptive', 'Specifying in detail exactly how something must be done — contrasted with outcome-based.'],
+          ['inequitable allocation of risk', 'Formal way to describe an unfair distribution of financial risk in a contract.'],
+          ['proportionate risk allocation', 'The principle that risk should sit with the party best placed to manage it.'],
+        ].map(([phrase, use]) => `
+          <div class="review-row">
+            <div class="rr-phrase">${phrase}</div>
+            <div class="rr-use">${use}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+  </div>`;
+}
+
+function toggleReview() {
+  const p = document.getElementById('reviewPanel');
+  p.style.display = p.style.display === 'none' ? 'block' : 'none';
+}
+
+function restartAll() {
+  score = 0; answered = 0; actIdx = 0;
+  mcIdx = 0; mcDone = false;
+  fitbChecked = false;
+  rwIdx = 0; rwDone = false;
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// boot
+render();
+</script>
+</body>
+</html>

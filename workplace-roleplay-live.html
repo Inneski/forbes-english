@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English | Workplace Roleplay: Live Speaking Practice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c1f26;
+    --paper:#faf7f2;
+    --card:#ffffff;
+    --accent:#c1502e;
+    --accent-dark:#96391f;
+    --accent-soft:#f4d9cd;
+    --teacher:#2f5d8a;
+    --teacher-bg:#e8f0f7;
+    --student:#7a5a9e;
+    --student-bg:#f1eaf7;
+    --muted:#6b6f76;
+    --line:#e6e1d8;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Inter',sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:32px 16px 80px;
+  }
+  .wrap{width:100%;max-width:760px;}
+  header{display:flex;align-items:center;gap:14px;margin-bottom:10px;}
+  header .logo{width:44px;height:44px;flex-shrink:0;}
+  header h1{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:700;margin:0;line-height:1.2;}
+  header p{margin:2px 0 0;font-size:0.85rem;color:var(--muted);}
+
+  .intro{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:20px 24px;
+    margin:22px 0 26px;
+    font-size:0.9rem;
+    line-height:1.6;
+  }
+  .intro h2{font-family:'Fraunces',serif;font-size:1rem;margin:0 0 8px;}
+  .intro ul{margin:8px 0 0;padding-left:20px;}
+  .intro li{margin-bottom:4px;}
+
+  .scenario{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    margin-bottom:16px;
+    overflow:hidden;
+  }
+  .scenario-head{
+    padding:18px 22px;
+    cursor:pointer;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+  }
+  .scenario-head:hover{background:#fbf8f4;}
+  .scenario-num{
+    font-size:0.72rem;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    background:var(--accent-soft);
+    color:var(--accent-dark);
+    padding:3px 9px;
+    border-radius:20px;
+    font-weight:600;
+    display:inline-block;
+    margin-bottom:6px;
+  }
+  .scenario-title{font-family:'Fraunces',serif;font-size:1.08rem;font-weight:700;margin:0;}
+  .scenario-setting{font-size:0.87rem;color:var(--muted);margin-top:4px;line-height:1.5;}
+  .chevron{
+    font-size:1.1rem;
+    color:var(--accent);
+    transition:transform .2s;
+    flex-shrink:0;
+  }
+  .scenario.open .chevron{transform:rotate(180deg);}
+
+  .scenario-body{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .3s ease;
+    border-top:1px solid transparent;
+  }
+  .scenario.open .scenario-body{
+    border-top:1px solid var(--line);
+  }
+  .scenario-body-inner{padding:20px 22px 24px;}
+
+  .roles{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin-bottom:18px;
+  }
+  @media(max-width:560px){.roles{grid-template-columns:1fr;}}
+
+  .role-card{
+    border-radius:10px;
+    padding:15px 16px;
+    font-size:0.87rem;
+    line-height:1.55;
+  }
+  .role-card.teacher{background:var(--teacher-bg);border:1px solid #c9dcec;}
+  .role-card.student{background:var(--student-bg);border:1px solid #ddcfe9;}
+  .role-label{
+    font-weight:700;
+    font-size:0.75rem;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    margin-bottom:8px;
+    display:block;
+  }
+  .role-card.teacher .role-label{color:var(--teacher);}
+  .role-card.student .role-label{color:var(--student);}
+  .role-card p{margin:0 0 6px;}
+  .role-card p:last-child{margin-bottom:0;}
+  .role-card .obj{font-style:italic;color:var(--muted);}
+
+  .section-label{
+    font-weight:700;
+    font-size:0.82rem;
+    margin:16px 0 8px;
+    color:var(--ink);
+  }
+  .phrase-bank{
+    background:var(--paper);
+    border:1px dashed var(--line);
+    border-radius:10px;
+    padding:14px 16px;
+    font-size:0.87rem;
+    line-height:1.75;
+  }
+  .debrief{
+    font-size:0.87rem;
+    line-height:1.7;
+    color:var(--ink);
+  }
+  .debrief ol{margin:0;padding-left:20px;}
+
+  .swap-note{
+    margin-top:16px;
+    font-size:0.8rem;
+    color:var(--muted);
+    border-top:1px dashed var(--line);
+    padding-top:12px;
+  }
+
+  footer{
+    text-align:center;
+    font-size:0.78rem;
+    color:var(--muted);
+    margin-top:30px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <svg class="logo" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="22" cy="22" r="21" fill="#c1502e"/>
+      <text x="22" y="29" font-family="Fraunces, serif" font-size="19" font-weight="700" fill="#faf7f2" text-anchor="middle">FE</text>
+    </svg>
+    <div>
+      <h1>Workplace Roleplay: Live Speaking Practice</h1>
+      <p>Forbes English &middot; Animation Production &middot; B2&rarr;C1</p>
+    </div>
+  </header>
+
+  <div class="intro">
+    <h2>How to use this session</h2>
+    <p>Six scenarios, six real production-management situations. For each one: click to open it, read both role cards out loud together, then act it out fully in character for 5&ndash;8 minutes before looking at the phrase bank or debrief questions.</p>
+    <ul>
+      <li><strong>Teacher</strong> plays the role marked Teacher; <strong>Student</strong> plays the role marked Student.</li>
+      <li>Stay in character even if the conversation gets slightly awkward &mdash; that's usually where the useful language shows up.</li>
+      <li>After acting it out once, swap roles and run it again. Playing the "difficult" side is often the more useful practice.</li>
+      <li>Use the phrase bank only if you get stuck &mdash; try the scene once without looking first.</li>
+    </ul>
+  </div>
+
+  <div class="scenario" id="s1">
+    <div class="scenario-head" onclick="toggle('s1')">
+      <div>
+        <span class="scenario-num">Scene 1 &middot; Feedback</span>
+        <p class="scenario-title">The Missed Deadline Check-In</p>
+        <p class="scenario-setting">A shot is three days late. The animator has a reason, but it's not a great one.</p>
+      </div>
+      <span class="chevron">&#9662;</span>
+    </div>
+    <div class="scenario-body">
+      <div class="scenario-body-inner">
+        <div class="roles">
+          <div class="role-card teacher">
+            <span class="role-label">Teacher plays: Production Manager</span>
+            <p>You need this shot for a client review in two days. This animator has missed a deadline before. You want to understand the real cause without sounding like you're interrogating them, and you need a firm new date by the end of this conversation.</p>
+            <p class="obj">Objective: leave with a specific, committed new deadline.</p>
+          </div>
+          <div class="role-card student">
+            <span class="role-label">Student plays: Animator</span>
+            <p>You've been stuck on a difficult rig all week and didn't want to raise it earlier because you hoped you'd solve it yourself. You're a bit embarrassed. You genuinely think you can finish in two more days if nothing else interrupts you.</p>
+            <p class="obj">Objective: be honest about the delay without sounding like you're making excuses.</p>
+          </div>
+        </div>
+        <div class="section-label">Phrase bank (use if you get stuck)</div>
+        <div class="phrase-bank">
+          "Walk me through what happened." &middot; "I should have flagged this sooner." &middot; "Realistically, when can you have it?" &middot; "Is there anything blocking you right now?" &middot; "Let's agree on a date I can actually commit to." &middot; "I don't want this to happen again, so let's talk about how we catch it earlier next time."
+        </div>
+        <div class="section-label">Debrief questions</div>
+        <div class="debrief">
+          <ol>
+            <li>Did the PM get a specific date, or something vague?</li>
+            <li>What did the animator do well in explaining the delay?</li>
+            <li>How would this conversation change over Slack instead of face-to-face?</li>
+          </ol>
+        </div>
+        <div class="swap-note">Now swap roles and run it again &mdash; try being the animator who's genuinely at fault.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scenario" id="s2">
+    <div class="scenario-head" onclick="toggle('s2')">
+      <div>
+        <span class="scenario-num">Scene 2 &middot; Client management</span>
+        <p class="scenario-title">The Anxious Client Call</p>
+        <p class="scenario-setting">A client has seen an early cut and is worried the tone is "too dark" for their brand.</p>
+      </div>
+      <span class="chevron">&#9662;</span>
+    </div>
+    <div class="scenario-body">
+      <div class="scenario-body-inner">
+        <div class="roles">
+          <div class="role-card teacher">
+            <span class="role-label">Teacher plays: Client</span>
+            <p>You liked the pitch but the actual footage feels darker and more serious than you expected. You're not angry, but you're nervous about showing this to your own boss. You don't fully know how to describe what's bothering you &mdash; you just know something feels "off."</p>
+            <p class="obj">Objective: get a real answer, not just reassurance.</p>
+          </div>
+          <div class="role-card student">
+            <span class="role-label">Student plays: Production Manager / EP</span>
+            <p>You believe the tone is intentional and works well once music and colour grading are added, which the client hasn't seen yet. You need to reassure the client without dismissing their concern, and without over-promising changes you don't think are needed.</p>
+            <p class="obj">Objective: keep the client's trust while defending the creative direction.</p>
+          </div>
+        </div>
+        <div class="section-label">Phrase bank</div>
+        <div class="phrase-bank">
+          "Can you say more about what feels off?" &middot; "That's a fair read at this stage &mdash; here's what's still missing." &middot; "I want to make sure we're solving the right problem here." &middot; "Let's look at it again once the grade is in, and revisit this if it still feels off." &middot; "I hear the concern, and I don't want to just wave it away."
+        </div>
+        <div class="section-label">Debrief questions</div>
+        <div class="debrief">
+          <ol>
+            <li>Did the PM find out what was actually bothering the client, or just reassure them?</li>
+            <li>Was there a moment where the PM over-promised, even slightly?</li>
+            <li>How do you raise "let's wait and see" without sounding dismissive?</li>
+          </ol>
+        </div>
+        <div class="swap-note">Swap roles &mdash; being the nervous client is harder to do convincingly than it sounds.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scenario" id="s3">
+    <div class="scenario-head" onclick="toggle('s3')">
+      <div>
+        <span class="scenario-num">Scene 3 &middot; Budget negotiation</span>
+        <p class="scenario-title">The Freelancer Budget Ask</p>
+        <p class="scenario-setting">You need approval for two extra freelancers. The studio head is cost-conscious this quarter.</p>
+      </div>
+      <span class="chevron">&#9662;</span>
+    </div>
+    <div class="scenario-body">
+      <div class="scenario-body-inner">
+        <div class="roles">
+          <div class="role-card teacher">
+            <span class="role-label">Teacher plays: Studio Head</span>
+            <p>The studio is over budget on two other projects this quarter, so you're instinctively resistant to new spending. You're not against the idea, but you want to see the actual trade-off before you say yes, and you'll probably try to negotiate down to one freelancer.</p>
+            <p class="obj">Objective: approve the smallest spend that still protects the deadline.</p>
+          </div>
+          <div class="role-card student">
+            <span class="role-label">Student plays: Production Manager</span>
+            <p>You believe two freelancers for three weeks is the right call, but you know one is a realistic fallback if pushed. You have rough cost figures and a clear sense of what missing the deadline would cost the studio in overtime and client goodwill.</p>
+            <p class="obj">Objective: get approval for two, but have a fallback ready.</p>
+          </div>
+        </div>
+        <div class="section-label">Phrase bank</div>
+        <div class="phrase-bank">
+          "Here's the trade-off as I see it." &middot; "If we go with one instead, here's what that costs us in time." &middot; "I want to be upfront about the number before you ask." &middot; "That's a fair push-back &mdash; let me think through whether one could work." &middot; "What would make this an easier yes for you?"
+        </div>
+        <div class="section-label">Debrief questions</div>
+        <div class="debrief">
+          <ol>
+            <li>Did the PM lead with cost, or with the problem it solves?</li>
+            <li>At what point (if any) did the PM concede, and was it a good moment to concede?</li>
+            <li>What's the difference between negotiating and just repeating your request louder?</li>
+          </ol>
+        </div>
+        <div class="swap-note">Swap roles &mdash; try holding the budget line as the studio head without sounding unreasonable.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scenario" id="s4">
+    <div class="scenario-head" onclick="toggle('s4')">
+      <div>
+        <span class="scenario-num">Scene 4 &middot; Difficult feedback</span>
+        <p class="scenario-title">The Underperforming Senior Artist</p>
+        <p class="scenario-setting">A senior team member's recent work has slipped noticeably below their usual standard.</p>
+      </div>
+      <span class="chevron">&#9662;</span>
+    </div>
+    <div class="scenario-body">
+      <div class="scenario-body-inner">
+        <div class="roles">
+          <div class="role-card teacher">
+            <span class="role-label">Teacher plays: Senior Animator</span>
+            <p>You know your recent work hasn't been your best, but you feel a bit defensive because you've delivered strong work here for years. You're privately dealing with something outside work that's affecting your focus, but you don't necessarily want to explain it in detail.</p>
+            <p class="obj">Objective: be heard as a person, not just judged on recent output.</p>
+          </div>
+          <div class="role-card student">
+            <span class="role-label">Student plays: Production Manager</span>
+            <p>You respect this person's track record and don't want to damage the relationship, but the quality drop is affecting the whole sequence. You need to raise it honestly, leave room for them to explain, and agree on a concrete way forward.</p>
+            <p class="obj">Objective: address the issue directly without turning it into a confrontation.</p>
+          </div>
+        </div>
+        <div class="section-label">Phrase bank</div>
+        <div class="phrase-bank">
+          "I want to check in, not call you out." &middot; "This isn't like your usual work, and I wanted to ask about that directly." &middot; "Is there anything going on that's making this harder right now?" &middot; "I don't need details, just tell me what would help." &middot; "Let's agree on what the next two shots need to look like."
+        </div>
+        <div class="section-label">Debrief questions</div>
+        <div class="debrief">
+          <ol>
+            <li>Did the PM make space for a real answer, or just deliver the note and move on?</li>
+            <li>How did the tone differ from a first-time mistake conversation?</li>
+            <li>Where's the line between showing empathy and avoiding the issue entirely?</li>
+          </ol>
+        </div>
+        <div class="swap-note">Swap roles &mdash; delivering this kind of feedback well is a genuinely hard skill to practise from both sides.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scenario" id="s5">
+    <div class="scenario-head" onclick="toggle('s5')">
+      <div>
+        <span class="scenario-num">Scene 5 &middot; Remote team management</span>
+        <p class="scenario-title">The Time Zone Misunderstanding</p>
+        <p class="scenario-setting">A remote artist in another country has been missing early check-ins, and there's a hint of frustration on both sides.</p>
+      </div>
+      <span class="chevron">&#9662;</span>
+    </div>
+    <div class="scenario-body">
+      <div class="scenario-body-inner">
+        <div class="roles">
+          <div class="role-card teacher">
+            <span class="role-label">Teacher plays: Remote Artist</span>
+            <p>The check-in time is genuinely difficult for you &mdash; it's very early in your time zone, and you've been quietly struggling with it for weeks without saying so, partly because you didn't want to seem like you were complaining.</p>
+            <p class="obj">Objective: finally explain the real issue without sounding like you're making excuses.</p>
+          </div>
+          <div class="role-card student">
+            <span class="role-label">Student plays: Production Manager</span>
+            <p>From your side, this looks like a pattern of missed commitments, and it's starting to affect how you plan the week. You want to solve it, but you don't yet know the actual cause, and you need to be careful not to assume the worst.</p>
+            <p class="obj">Objective: find the real cause and agree on a workable fix.</p>
+          </div>
+        </div>
+        <div class="section-label">Phrase bank</div>
+        <div class="phrase-bank">
+          "I noticed a pattern and wanted to check in about it directly." &middot; "Is the time genuinely workable for you?" &middot; "I should have raised this earlier &mdash; I didn't want to make a fuss." &middot; "Let's find a time that actually works for both of us." &middot; "Thanks for telling me &mdash; that changes things."
+        </div>
+        <div class="section-label">Debrief questions</div>
+        <div class="debrief">
+          <ol>
+            <li>What assumption might the PM have made before this conversation, and was it fair?</li>
+            <li>Why might the artist have waited so long to raise this?</li>
+            <li>How does this conversation change across a bigger cultural gap, not just a time-zone one?</li>
+          </ol>
+        </div>
+        <div class="swap-note">Swap roles &mdash; try raising a scheduling problem you've been quietly avoiding yourself.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scenario" id="s6">
+    <div class="scenario-head" onclick="toggle('s6')">
+      <div>
+        <span class="scenario-num">Scene 6 &middot; Interview</span>
+        <p class="scenario-title">The Executive Producer Interview</p>
+        <p class="scenario-setting">A studio is interviewing for an EP role overseeing multiple productions at once.</p>
+      </div>
+      <span class="chevron">&#9662;</span>
+    </div>
+    <div class="scenario-body">
+      <div class="scenario-body-inner">
+        <div class="roles">
+          <div class="role-card teacher">
+            <span class="role-label">Teacher plays: Studio Interviewer</span>
+            <p>You're hiring for someone who can manage multiple productions, handle client relationships, and make hard calls under pressure. Push for specifics &mdash; if the candidate gives a vague or generic answer, ask a genuine follow-up question rather than moving straight to the next one.</p>
+            <p class="obj">Objective: find out whether this candidate can actually back up their claims with real examples.</p>
+          </div>
+          <div class="role-card student">
+            <span class="role-label">Student plays: Candidate</span>
+            <p>You have real production management experience to draw on. Answer with specific situations, the action you took, and a concrete result &mdash; and be ready for follow-up questions that push past your first answer.</p>
+            <p class="obj">Objective: sound confident and specific, not rehearsed or vague.</p>
+          </div>
+        </div>
+        <div class="section-label">Phrase bank</div>
+        <div class="phrase-bank">
+          "Can you give me a specific example of that?" &middot; "What would you have done differently?" &middot; "Talk me through how you actually made that decision." &middot; "On [project], the situation was&hellip;" &middot; "The result was&hellip;, which taught me&hellip;" &middot; "That's a fair challenge &mdash; here's how I'd think about it."
+        </div>
+        <div class="section-label">Debrief questions</div>
+        <div class="debrief">
+          <ol>
+            <li>Which answers felt specific, and which felt generic or rehearsed?</li>
+            <li>Did the interviewer's follow-up questions expose anything the first answer hid?</li>
+            <li>What's one answer you'd want to rebuild with a sharper result at the end?</li>
+          </ol>
+        </div>
+        <div class="swap-note">Swap roles &mdash; interviewing someone else sharpens your sense of what a strong answer actually sounds like.</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>Forbes English &middot; Live speaking practice &middot; run each scene twice, once per role</footer>
+
+</div>
+
+<script>
+function toggle(id){
+  const el = document.getElementById(id);
+  const body = el.querySelector('.scenario-body');
+  const isOpen = el.classList.contains('open');
+
+  document.querySelectorAll('.scenario').forEach(s => {
+    s.classList.remove('open');
+    s.querySelector('.scenario-body').style.maxHeight = null;
+  });
+
+  if(!isOpen){
+    el.classList.add('open');
+    body.style.maxHeight = body.scrollHeight + 'px';
+  }
+}
+</script>
+</body>
+</html>

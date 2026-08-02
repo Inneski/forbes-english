@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – Past Simple vs Present Perfect</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Barlow+Condensed:wght@700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green-deep: #1b3a28;
+    --green-mid: #2d6044;
+    --green-light: #4a8f61;
+    --green-pale: #e8f2ec;
+    --fairway: #c8dfc8;
+    --gold: #b8962e;
+    --gold-light: #f0d080;
+    --cream: #faf8f3;
+    --ink: #111;
+    --ink-soft: #333;
+    --muted: #6b7a6b;
+    --border: #c8d4c8;
+    --white: #ffffff;
+    --radius: 4px;
+    --radius-lg: 8px;
+    --correct: #2d7a3a;
+    --wrong: #b83232;
+    --correct-bg: #eaf5ec;
+    --wrong-bg: #fbeaea;
+  }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--white);
+    border-bottom: 3px solid var(--green-deep);
+    padding: 0 40px;
+  }
+  .header-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 0;
+  }
+  .logo {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+    gap: 2px;
+  }
+  .logo-forbes {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .logo-divider {
+    height: 2px;
+    background: var(--ink);
+    width: 100%;
+    margin: 3px 0 2px;
+  }
+  .logo-english {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--ink);
+    text-transform: uppercase;
+  }
+  .header-badge {
+    background: var(--green-deep);
+    color: var(--white);
+    font-family: 'Lato', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 2px;
+  }
+  .score-bar {
+    background: var(--green-deep);
+    color: var(--white);
+    text-align: center;
+    padding: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+  .score-bar span { opacity: 0.7; font-weight: 400; }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--green-deep);
+    color: var(--white);
+    padding: 52px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 30px, rgba(255,255,255,0.03) 30px, rgba(255,255,255,0.03) 31px),
+      repeating-linear-gradient(90deg, transparent, transparent 30px, rgba(255,255,255,0.03) 30px, rgba(255,255,255,0.03) 31px);
+  }
+  .hero-eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 46px;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+  .hero-sub {
+    font-size: 16px;
+    opacity: 0.8;
+    font-weight: 300;
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+  .hole-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 24px;
+  }
+  .hole-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .hole-dot.active { background: var(--gold-light); }
+  .hole-dot.done { background: rgba(255,255,255,0.55); }
+
+  /* ── MAIN ── */
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+  }
+
+  /* ── SECTION CARD ── */
+  .section-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    margin: 28px 0;
+    overflow: hidden;
+  }
+  .section-header {
+    background: var(--green-pale);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-icon {
+    width: 34px; height: 34px;
+    background: var(--green-deep);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    color: var(--white);
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--green-deep);
+  }
+  .section-body { padding: 24px; }
+
+  /* ── GRAMMAR TABLE ── */
+  .grammar-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .grammar-col {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .grammar-col-head {
+    padding: 12px 16px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .grammar-col.past .grammar-col-head { background: var(--green-deep); color: var(--white); }
+  .grammar-col.perfect .grammar-col-head { background: var(--gold); color: var(--white); }
+  .grammar-col-body { padding: 14px 16px; }
+  .grammar-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--green-pale);
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+  .grammar-item:last-child { border-bottom: none; }
+  .grammar-bullet {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+  .past .grammar-bullet { background: var(--green-mid); }
+  .perfect .grammar-bullet { background: var(--gold); }
+  .example-line {
+    font-style: italic;
+    color: var(--green-mid);
+    font-size: 13px;
+  }
+  .form-box {
+    background: var(--green-pale);
+    border-left: 3px solid var(--green-mid);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 12px 16px;
+    font-size: 14px;
+    margin: 8px 0;
+  }
+  .form-box strong { color: var(--green-deep); }
+
+  /* ── TIME SIGNALS ── */
+  .signals-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .signal-group { }
+  .signal-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .signal-label.past { color: var(--green-deep); }
+  .signal-label.perfect { color: var(--gold); }
+  .signal-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .signal-tag {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'Lato', sans-serif;
+  }
+  .signal-tag.past { background: var(--green-deep); color: var(--white); }
+  .signal-tag.perfect { background: var(--gold); color: var(--white); }
+
+  /* ── EXERCISES ── */
+  .exercise-intro {
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 400;
+    margin-bottom: 18px;
+    line-height: 1.6;
+  }
+  .exercise-block {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    background: var(--white);
+    transition: border-color 0.2s;
+  }
+  .exercise-block.answered { pointer-events: none; }
+  .exercise-block.correct { border-color: var(--correct); background: var(--correct-bg); }
+  .exercise-block.wrong { border-color: var(--wrong); background: var(--wrong-bg); }
+  .q-number {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .q-text {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink);
+    margin-bottom: 14px;
+  }
+  .q-text em { font-style: italic; color: var(--muted); font-size: 13px; }
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .option-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--white);
+    cursor: pointer;
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    text-align: left;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .option-btn:hover { border-color: var(--green-mid); background: var(--green-pale); }
+  .option-btn.selected-correct { border-color: var(--correct); background: var(--correct-bg); color: var(--correct); font-weight: 700; }
+  .option-btn.selected-wrong { border-color: var(--wrong); background: var(--wrong-bg); color: var(--wrong); font-weight: 700; }
+  .option-btn.reveal-correct { border-color: var(--correct); border-style: dashed; color: var(--correct); }
+  .option-letter {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--green-pale);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--green-mid);
+    flex-shrink: 0;
+  }
+  .option-btn.selected-correct .option-letter { background: var(--correct); color: var(--white); }
+  .option-btn.selected-wrong .option-letter { background: var(--wrong); color: var(--white); }
+  .option-btn.reveal-correct .option-letter { background: var(--correct); color: var(--white); }
+  .feedback {
+    display: none;
+    margin-top: 12px;
+    padding: 10px 14px;
+    border-radius: var(--radius);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .feedback.correct { display: block; background: rgba(45,122,58,0.1); color: var(--correct); }
+  .feedback.wrong { display: block; background: rgba(184,50,50,0.1); color: var(--wrong); }
+  .feedback strong { font-weight: 700; }
+
+  /* Fill-in-the-blank */
+  .blank-input {
+    border: none;
+    border-bottom: 2px solid var(--green-mid);
+    background: transparent;
+    font-family: 'Lato', sans-serif;
+    font-size: 16px;
+    color: var(--ink);
+    padding: 2px 6px;
+    width: 180px;
+    outline: none;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+  .blank-input:focus { border-color: var(--gold); }
+  .blank-input.correct { border-color: var(--correct); color: var(--correct); font-weight: 700; }
+  .blank-input.wrong { border-color: var(--wrong); color: var(--wrong); }
+  .check-btn {
+    margin-top: 12px;
+    padding: 8px 22px;
+    background: var(--green-deep);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius);
+    font-family: 'Lato', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .check-btn:hover { background: var(--green-mid); }
+  .check-btn:disabled { opacity: 0.4; cursor: default; }
+
+  /* ── SCORECARD ── */
+  .scorecard {
+    background: var(--green-deep);
+    color: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    margin: 28px 0;
+    text-align: center;
+    display: none;
+  }
+  .scorecard.visible { display: block; }
+  .scorecard-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .scorecard-sub {
+    opacity: 0.7;
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+  .scorecard-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .score-cell {
+    background: rgba(255,255,255,0.08);
+    border-radius: var(--radius);
+    padding: 14px 10px;
+  }
+  .score-cell-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 34px;
+    font-weight: 700;
+    color: var(--gold-light);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .score-cell-label {
+    font-size: 11px;
+    opacity: 0.65;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .scorecard-rating {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--gold-light);
+    margin-bottom: 20px;
+  }
+  .restart-btn {
+    padding: 12px 30px;
+    background: var(--gold);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .restart-btn:hover { background: var(--gold-light); color: var(--ink); }
+
+  /* ── NAV TABS ── */
+  .lesson-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid var(--green-deep);
+    margin-top: 24px;
+  }
+  .tab-btn {
+    padding: 11px 22px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: color 0.15s;
+  }
+  .tab-btn.active { color: var(--green-deep); border-bottom-color: var(--green-deep); }
+  .tab-btn:hover:not(.active) { color: var(--green-mid); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .grammar-grid, .signals-grid { grid-template-columns: 1fr; }
+    .scorecard-grid { grid-template-columns: 1fr 1fr; }
+    .hero h1 { font-size: 32px; }
+    header { padding: 0 16px; }
+    .section-body { padding: 16px; }
+    main { padding: 0 12px 40px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-forbes">Forbes</div>
+      <div class="logo-divider"></div>
+      <div class="logo-english">English</div>
+    </div>
+    <div class="header-badge">Grammar Clinic</div>
+  </div>
+</header>
+
+<div class="score-bar" id="scoreBar">
+  <span>Score:</span> <strong id="livePts">0</strong> / <strong id="liveTotal">0</strong>
+  &nbsp;&nbsp;|&nbsp;&nbsp;
+  <span>Correct:</span> <strong id="liveCorrect">0</strong>
+  &nbsp;&nbsp;|&nbsp;&nbsp;
+  <span>Wrong:</span> <strong id="liveWrong">0</strong>
+</div>
+
+<section class="hero">
+  <div class="hero-eyebrow">🏌 Forbes English · Golf Edition</div>
+  <h1>Past Simple<br><em>vs</em> Present Perfect</h1>
+  <p class="hero-sub">Master two of English's most important tenses through the world of golf — fairways, birdies, and champions.</p>
+  <div class="hole-dots" id="holeDots"></div>
+</section>
+
+<main>
+
+  <div class="lesson-tabs" id="mainTabs">
+    <button class="tab-btn active" onclick="switchTab('theory')">Theory</button>
+    <button class="tab-btn" onclick="switchTab('ex1')">Exercise 1 — Multiple Choice</button>
+    <button class="tab-btn" onclick="switchTab('ex2')">Exercise 2 — Fill in the Blank</button>
+    <button class="tab-btn" onclick="switchTab('ex3')">Exercise 3 — Correct the Error</button>
+  </div>
+
+  <!-- ─ THEORY ─ -->
+  <div class="tab-panel active" id="tab-theory">
+
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-icon">1</div>
+        <div class="section-title">The Key Difference</div>
+      </div>
+      <div class="section-body">
+        <div class="grammar-grid">
+          <div class="grammar-col past">
+            <div class="grammar-col-head">Past Simple</div>
+            <div class="grammar-col-body">
+              <div class="grammar-item">
+                <div class="grammar-bullet"></div>
+                <div>A <strong>finished action</strong> at a <strong>specific time</strong> in the past — the time is stated or clearly known.</div>
+              </div>
+              <div class="grammar-item">
+                <div class="grammar-bullet"></div>
+                <div class="example-line">"Tiger Woods <strong>won</strong> the Masters <strong>in 2005</strong>."</div>
+              </div>
+              <div class="grammar-item">
+                <div class="grammar-bullet"></div>
+                <div class="example-line">"She <strong>played</strong> her best round <strong>yesterday</strong>."</div>
+              </div>
+              <div class="grammar-item">
+                <div class="grammar-bullet"></div>
+                <div>The connection to the <strong>present</strong> is <strong>not</strong> important.</div>
+              </div>
+            </div>
+          </div>
+          <div class="grammar-col perfect">
+            <div class="grammar-col-head">Present Perfect</div>
+            <div class="grammar-col-body">
+              <div class="grammar-item">
+                <div class="grammar-bullet"></div>
+                <div>A past action with a <strong>connection to now</strong> — either the time is unspecified or the result matters today.</div>
+              </div>
+              <div class="grammar-item">
+                <div class="grammar-bullet"></div>
+                <div class="example-line">"Rory McIlroy <strong>has won</strong> four major championships."</div>
+              </div>
+              <div class="grammar-item">
+                <div class="grammar-bullet"></div>
+                <div class="example-line">"She <strong>has lost</strong> her 7-iron — she can't find it!"</div>
+              </div>
+              <div class="grammar-item">
+                <div class="grammar-bullet"></div>
+                <div>Focus on <strong>experience</strong>, <strong>change</strong>, or <strong>unfinished</strong> time periods.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-box">
+          <strong>Past Simple form:</strong> Subject + <strong>verb-ed</strong> (regular) / irregular form<br>
+          "He <em>putted</em> beautifully." &nbsp;|&nbsp; "She <em>drove</em> 300 yards."
+        </div>
+        <div class="form-box" style="border-color:var(--gold);">
+          <strong>Present Perfect form:</strong> Subject + <strong>have/has</strong> + <strong>past participle</strong><br>
+          "He <em>has putted</em> beautifully." &nbsp;|&nbsp; "She <em>has never driven</em> that far."
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-icon">2</div>
+        <div class="section-title">Time Signal Words</div>
+      </div>
+      <div class="section-body">
+        <div class="signals-grid">
+          <div class="signal-group">
+            <div class="signal-label past">Past Simple — look for these</div>
+            <div class="signal-tags">
+              <span class="signal-tag past">yesterday</span>
+              <span class="signal-tag past">last week/year</span>
+              <span class="signal-tag past">in 1997</span>
+              <span class="signal-tag past">ago</span>
+              <span class="signal-tag past">when I was…</span>
+              <span class="signal-tag past">in the 2000s</span>
+              <span class="signal-tag past">at the Open</span>
+            </div>
+          </div>
+          <div class="signal-group">
+            <div class="signal-label perfect">Present Perfect — look for these</div>
+            <div class="signal-tags">
+              <span class="signal-tag perfect">already</span>
+              <span class="signal-tag perfect">yet</span>
+              <span class="signal-tag perfect">just</span>
+              <span class="signal-tag perfect">ever / never</span>
+              <span class="signal-tag perfect">so far</span>
+              <span class="signal-tag perfect">this season</span>
+              <span class="signal-tag perfect">recently</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-box" style="margin-top:18px; border-color: var(--gold);">
+          ⚠ <strong>Watch out!</strong> "This season" uses present perfect if the season is still ongoing — but past simple if the season is finished!
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-icon">3</div>
+        <div class="section-title">Side-by-Side Golf Comparisons</div>
+      </div>
+      <div class="section-body">
+        <div style="display:flex;flex-direction:column;gap:14px;">
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div style="background:var(--green-pale);padding:14px;border-radius:var(--radius-lg);border-left:4px solid var(--green-deep);">
+              <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--green-mid);margin-bottom:6px;">Past Simple</div>
+              <div style="font-size:15px;color:var(--ink);">He <strong>scored</strong> a hole-in-one <strong>in 2019</strong>.</div>
+            </div>
+            <div style="background:#fdf8e8;padding:14px;border-radius:var(--radius-lg);border-left:4px solid var(--gold);">
+              <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;">Present Perfect</div>
+              <div style="font-size:15px;color:var(--ink);">He <strong>has scored</strong> a hole-in-one. <em>(at some point in his life)</em></div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div style="background:var(--green-pale);padding:14px;border-radius:var(--radius-lg);border-left:4px solid var(--green-deep);">
+              <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--green-mid);margin-bottom:6px;">Past Simple</div>
+              <div style="font-size:15px;color:var(--ink);">The caddie <strong>gave</strong> her the wrong club <strong>on the 18th hole</strong>.</div>
+            </div>
+            <div style="background:#fdf8e8;padding:14px;border-radius:var(--radius-lg);border-left:4px solid var(--gold);">
+              <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;">Present Perfect</div>
+              <div style="font-size:15px;color:var(--ink);">The caddie <strong>has given</strong> her the wrong club — she's furious!</div>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div style="background:var(--green-pale);padding:14px;border-radius:var(--radius-lg);border-left:4px solid var(--green-deep);">
+              <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--green-mid);margin-bottom:6px;">Past Simple</div>
+              <div style="font-size:15px;color:var(--ink);">The club <strong>hosted</strong> the Open Championship <strong>last summer</strong>.</div>
+            </div>
+            <div style="background:#fdf8e8;padding:14px;border-radius:var(--radius-lg);border-left:4px solid var(--gold);">
+              <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;">Present Perfect</div>
+              <div style="font-size:15px;color:var(--ink);">The club <strong>has hosted</strong> the Open three times.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin:28px 0;">
+      <button class="restart-btn" style="background:var(--green-deep);" onclick="switchTab('ex1')">Start Exercises →</button>
+    </div>
+
+  </div><!-- /theory -->
+
+  <!-- ─ EXERCISE 1: Multiple Choice ─ -->
+  <div class="tab-panel" id="tab-ex1">
+
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-icon">⛳</div>
+        <div class="section-title">Exercise 1 — Choose the Correct Tense</div>
+      </div>
+      <div class="section-body">
+        <p class="exercise-intro">Read each golf sentence and choose Past Simple or Present Perfect. Use the time signals and context to guide you.</p>
+        <div id="mc-container"></div>
+        <div style="margin-top:20px;display:flex;justify-content:flex-end;">
+          <button class="restart-btn" id="mcNextBtn" style="display:none;background:var(--green-deep);" onclick="switchTab('ex2')">Next Exercise →</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ─ EXERCISE 2: Fill in the blank ─ -->
+  <div class="tab-panel" id="tab-ex2">
+
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-icon">⛳</div>
+        <div class="section-title">Exercise 2 — Complete the Sentence</div>
+      </div>
+      <div class="section-body">
+        <p class="exercise-intro">Complete each sentence using the verb in brackets in either the Past Simple or Present Perfect form. Type your answer carefully.</p>
+        <div id="fib-container"></div>
+        <div style="margin-top:20px;display:flex;justify-content:flex-end;">
+          <button class="restart-btn" id="fibNextBtn" style="display:none;background:var(--green-deep);" onclick="switchTab('ex3')">Next Exercise →</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ─ EXERCISE 3: Error Correction ─ -->
+  <div class="tab-panel" id="tab-ex3">
+
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-icon">⛳</div>
+        <div class="section-title">Exercise 3 — Correct the Error</div>
+      </div>
+      <div class="section-body">
+        <p class="exercise-intro">Each sentence contains a grammar mistake. Choose the correct version from the two options given.</p>
+        <div id="err-container"></div>
+        <div style="margin-top:20px;display:flex;justify-content:flex-end;">
+          <button class="restart-btn" id="errDoneBtn" style="display:none;background:var(--gold);" onclick="showScorecard()">See My Scorecard →</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ─ SCORECARD ─ -->
+  <div class="scorecard" id="finalScorecard">
+    <div class="scorecard-title">Your Scorecard</div>
+    <div class="scorecard-sub">Forbes English Golf Lesson · Past vs Perfect</div>
+    <div class="scorecard-grid">
+      <div class="score-cell">
+        <div class="score-cell-val" id="sc-correct">–</div>
+        <div class="score-cell-label">Correct</div>
+      </div>
+      <div class="score-cell">
+        <div class="score-cell-val" id="sc-wrong">–</div>
+        <div class="score-cell-label">Wrong</div>
+      </div>
+      <div class="score-cell">
+        <div class="score-cell-val" id="sc-pct">–</div>
+        <div class="score-cell-label">Score %</div>
+      </div>
+    </div>
+    <div class="scorecard-rating" id="sc-rating">–</div>
+    <button class="restart-btn" onclick="restartAll()">Play Again</button>
+  </div>
+
+</main>
+
+<script>
+// ─────────── DATA ───────────
+
+const mcQuestions = [
+  {
+    q: "The player _____ a fantastic birdie on the 15th hole yesterday.",
+    hint: "Clue: 'yesterday' = finished, specific time",
+    options: ["has scored","scored","has been scoring","was scoring"],
+    answer: 1,
+    feedback: "<strong>Scored</strong> ✓ — 'yesterday' is a specific finished time, so we use Past Simple."
+  },
+  {
+    q: "McIlroy _____ the Open Championship four times in his career.",
+    hint: "Clue: 'in his career' = unfinished period — he's still playing",
+    options: ["won","has won","was winning","had won"],
+    answer: 1,
+    feedback: "<strong>Has won</strong> ✓ — 'in his career' refers to an unfinished period of time. He is still alive and playing, so Present Perfect is correct."
+  },
+  {
+    q: "She _____ golf since she was twelve years old and is still improving.",
+    hint: "Clue: an action that started in the past and continues now",
+    options: ["played","has played","plays","was playing"],
+    answer: 1,
+    feedback: "<strong>Has played</strong> ✓ — 'since she was twelve' shows an ongoing action from the past to the present. Use Present Perfect."
+  },
+  {
+    q: "The club _____ the British Open in 1895, 1921, and 1946.",
+    hint: "Clue: all three events happened at specific, finished times",
+    options: ["has hosted","hosted","is hosting","had hosted"],
+    answer: 1,
+    feedback: "<strong>Hosted</strong> ✓ — All three years are specific past times and those events are long over. Past Simple is correct."
+  },
+  {
+    q: "He can't start the round — he _____ his golf bag in the car park!",
+    hint: "Clue: focus on the present result of a past action",
+    options: ["left","has left","was leaving","had left"],
+    answer: 1,
+    feedback: "<strong>Has left</strong> ✓ — The bag is still missing now (present result). Present Perfect connects a past action to the current situation."
+  },
+  {
+    q: "The caddie _____ her the wrong club during the final round last Sunday.",
+    hint: "Clue: 'last Sunday' = specific finished time",
+    options: ["has given","gave","gives","has been giving"],
+    answer: 1,
+    feedback: "<strong>Gave</strong> ✓ — 'last Sunday' is a completed, specific time in the past. Use Past Simple."
+  },
+  {
+    q: "Have you ever _____ a hole-in-one?",
+    hint: "Clue: 'ever' asks about life experience — time unspecified",
+    options: ["scored","scoring","to score","score"],
+    answer: 0,
+    feedback: "<strong>Scored</strong> ✓ — In Present Perfect questions with 'ever', the main verb is always the past participle: have you ever <em>scored</em>?"
+  },
+  {
+    q: "This season, Jordan Spieth _____ already three top-ten finishes.",
+    hint: "Clue: 'this season' is still ongoing; 'already' = Present Perfect signal",
+    options: ["achieved","has achieved","achieves","was achieving"],
+    answer: 1,
+    feedback: "<strong>Has achieved</strong> ✓ — 'This season' is still in progress, and 'already' is a classic Present Perfect signal word."
+  }
+];
+
+const fibQuestions = [
+  {
+    q: "The ball ___ into the water hazard on hole 12. We never found it.",
+    verb: "fall",
+    answers: ["fell"],
+    hint: "(fall — Past Simple)",
+    feedback: "'<strong>Fell</strong>' is correct. The sentence describes a complete past event with a narrative feel — Past Simple."
+  },
+  {
+    q: "She ___ (not / play) this course before. It's her first time here.",
+    verb: "not play",
+    answers: ["has not played","hasn't played","has never played","has not been playing"],
+    hint: "(play — Present Perfect negative)",
+    feedback: "'<strong>Hasn't played</strong>' (or 'has not played') is correct. 'Before' + first experience = Present Perfect."
+  },
+  {
+    q: "Tiger Woods ___ his comeback in 2019 when he won the Masters.",
+    verb: "complete",
+    answers: ["completed"],
+    hint: "(complete — Past Simple)",
+    feedback: "'<strong>Completed</strong>' is correct. 'In 2019' is a specific finished time, so Past Simple is required."
+  },
+  {
+    q: "The tournament ___ just ___ and the scores are coming in.",
+    verb: "start",
+    answers: ["has just started","just started"],
+    hint: "(start — use 'just')",
+    feedback: "'<strong>Has just started</strong>' is the best answer. 'Just' typically signals Present Perfect when the event is very recent and relevant now."
+  },
+  {
+    q: "How many majors ___ Nicklaus ___ during his career?",
+    verb: "win",
+    answers: ["did nicklaus win","did jack nicklaus win","how many majors did","did he win"],
+    hint: "(win — Past Simple question)",
+    feedback: "'<strong>Did Nicklaus win</strong>' is correct. Nicklaus has retired, so his career is finished. We treat it as a closed period and use Past Simple."
+  },
+  {
+    q: "She ___ (practice) for six hours and is exhausted.",
+    verb: "practise / practice",
+    answers: ["has practised","has practiced","has been practising","has been practicing"],
+    hint: "(practise — Present Perfect)",
+    feedback: "'<strong>Has practised</strong>' (or 'has been practising') is correct. The practice is over but the result — exhaustion — is visible now."
+  }
+];
+
+const errQuestions = [
+  {
+    bad: "Incorrect: He has won the Masters in 2005.",
+    options: [
+      "He won the Masters in 2005.",
+      "He has won the Masters in 2005."
+    ],
+    answer: 0,
+    feedback: "<strong>He won</strong> ✓ — '2005' is a specific, finished year. Present Perfect cannot be used with a definite past time. Use Past Simple."
+  },
+  {
+    bad: "Incorrect: Did you ever play Augusta National?",
+    options: [
+      "Did you ever play Augusta National?",
+      "Have you ever played Augusta National?"
+    ],
+    answer: 1,
+    feedback: "<strong>Have you ever played</strong> ✓ — 'Ever' in a life-experience question requires Present Perfect, not Past Simple."
+  },
+  {
+    bad: "Incorrect: I have lost three balls yesterday.",
+    options: [
+      "I have lost three balls yesterday.",
+      "I lost three balls yesterday."
+    ],
+    answer: 1,
+    feedback: "<strong>I lost</strong> ✓ — 'Yesterday' is a specific past time. You cannot use Present Perfect with 'yesterday'. Past Simple is required."
+  },
+  {
+    bad: "Incorrect: She played golf for 20 years and is still competing.",
+    options: [
+      "She played golf for 20 years and is still competing.",
+      "She has played golf for 20 years and is still competing."
+    ],
+    answer: 1,
+    feedback: "<strong>She has played</strong> ✓ — She is STILL competing, so the action continues to the present. Use Present Perfect: 'has played for 20 years'."
+  },
+  {
+    bad: "Incorrect: The committee already decided the course layout.",
+    options: [
+      "The committee has already decided the course layout.",
+      "The committee already decided the course layout."
+    ],
+    answer: 0,
+    feedback: "<strong>The committee has already decided</strong> ✓ — 'Already' is a Present Perfect signal word. The decision is relevant to the present situation."
+  },
+  {
+    bad: "Incorrect: How long did you play golf since you started?",
+    options: [
+      "How long have you played golf since you started?",
+      "How long did you play golf since you started?"
+    ],
+    answer: 0,
+    feedback: "<strong>How long have you played</strong> ✓ — 'Since' always triggers Present Perfect when the action is still ongoing."
+  }
+];
+
+// ─────────── STATE ───────────
+
+let totalCorrect = 0;
+let totalWrong = 0;
+let totalAnswered = 0;
+let totalQuestions = mcQuestions.length + fibQuestions.length + errQuestions.length;
+
+function updateBar() {
+  document.getElementById('livePts').textContent = totalCorrect;
+  document.getElementById('liveTotal').textContent = totalAnswered;
+  document.getElementById('liveCorrect').textContent = totalCorrect;
+  document.getElementById('liveWrong').textContent = totalWrong;
+  updateDots();
+}
+
+function updateDots() {
+  const dots = document.querySelectorAll('.hole-dot');
+  let idx = 0;
+  dots.forEach((d,i) => {
+    d.className = 'hole-dot';
+    if (i < totalAnswered) { d.classList.add('done'); }
+  });
+  if (totalAnswered > 0 && totalAnswered <= dots.length) {
+    dots[Math.min(totalAnswered, dots.length-1)].classList.add('active');
+  } else if (totalAnswered === 0) {
+    dots[0] && dots[0].classList.add('active');
+  }
+}
+
+// ─────────── BUILD DOTS ───────────
+
+function buildDots() {
+  const container = document.getElementById('holeDots');
+  for (let i = 0; i < totalQuestions; i++) {
+    const d = document.createElement('div');
+    d.className = 'hole-dot' + (i === 0 ? ' active' : '');
+    container.appendChild(d);
+  }
+}
+
+// ─────────── TABS ───────────
+
+function switchTab(id) {
+  document.querySelectorAll('.tab-btn').forEach((b,i) => {
+    const ids = ['theory','ex1','ex2','ex3'];
+    b.classList.toggle('active', ids[i] === id);
+  });
+  document.querySelectorAll('.tab-panel').forEach(p => {
+    p.classList.toggle('active', p.id === 'tab-' + id);
+  });
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+// ─────────── MULTIPLE CHOICE ───────────
+
+let mcAnswered = 0;
+
+function buildMC() {
+  const container = document.getElementById('mc-container');
+  mcQuestions.forEach((q, qi) => {
+    const block = document.createElement('div');
+    block.className = 'exercise-block';
+    block.id = 'mc-' + qi;
+    const letters = ['A','B','C','D'];
+    block.innerHTML = `
+      <div class="q-number">Question ${qi+1} of ${mcQuestions.length}</div>
+      <div class="q-text">${q.q} <em>${q.hint}</em></div>
+      <div class="options" id="mc-opts-${qi}">
+        ${q.options.map((o,oi) => `
+          <button class="option-btn" onclick="answerMC(${qi},${oi})">
+            <div class="option-letter">${letters[oi]}</div>
+            ${o}
+          </button>`).join('')}
+      </div>
+      <div class="feedback" id="mc-fb-${qi}"></div>
+    `;
+    container.appendChild(block);
+  });
+}
+
+function answerMC(qi, chosen) {
+  const q = mcQuestions[qi];
+  const block = document.getElementById('mc-' + qi);
+  const opts = document.querySelectorAll(`#mc-opts-${qi} .option-btn`);
+  const fb = document.getElementById('mc-fb-' + qi);
+  block.classList.add('answered');
+  const correct = chosen === q.answer;
+  opts.forEach((btn, i) => {
+    if (i === chosen) btn.classList.add(correct ? 'selected-correct' : 'selected-wrong');
+    if (!correct && i === q.answer) btn.classList.add('reveal-correct');
+  });
+  fb.textContent = '';
+  fb.innerHTML = (correct ? '✓ Correct! ' : '✗ Not quite. ') + q.feedback;
+  fb.className = 'feedback ' + (correct ? 'correct' : 'wrong');
+  block.classList.add(correct ? 'correct' : 'wrong');
+  if (correct) totalCorrect++; else totalWrong++;
+  totalAnswered++;
+  mcAnswered++;
+  updateBar();
+  if (mcAnswered === mcQuestions.length) {
+    document.getElementById('mcNextBtn').style.display = 'inline-block';
+  }
+}
+
+// ─────────── FILL IN BLANK ───────────
+
+let fibDone = 0;
+
+function buildFIB() {
+  const container = document.getElementById('fib-container');
+  fibQuestions.forEach((q, qi) => {
+    const block = document.createElement('div');
+    block.className = 'exercise-block';
+    block.id = 'fib-' + qi;
+    block.innerHTML = `
+      <div class="q-number">Question ${qi+1} of ${fibQuestions.length}</div>
+      <div class="q-text" style="font-size:17px;font-weight:700;">${q.q.replace('___', `<input class="blank-input" id="fib-in-${qi}" placeholder="${q.verb}" autocomplete="off" spellcheck="false">`)}</div>
+      <div><em style="font-size:13px;color:var(--muted)">${q.hint}</em></div>
+      <div><button class="check-btn" id="fib-btn-${qi}" onclick="checkFIB(${qi})">Check Answer</button></div>
+      <div class="feedback" id="fib-fb-${qi}"></div>
+    `;
+    container.appendChild(block);
+    const inp = block.querySelector('input');
+    inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') checkFIB(qi); });
+  });
+}
+
+function checkFIB(qi) {
+  const q = fibQuestions[qi];
+  const block = document.getElementById('fib-' + qi);
+  const input = document.getElementById('fib-in-' + qi);
+  const btn = document.getElementById('fib-btn-' + qi);
+  const fb = document.getElementById('fib-fb-' + qi);
+  const val = input.value.trim().toLowerCase();
+  const correct = q.answers.some(a => val === a.toLowerCase() || val.replace(/\s+/g,' ') === a.toLowerCase());
+  input.disabled = true;
+  btn.disabled = true;
+  input.classList.add(correct ? 'correct' : 'wrong');
+  fb.innerHTML = (correct ? '✓ ' : '✗ ') + q.feedback + (!correct ? ` Suggested answer: <strong>${q.answers[0]}</strong>` : '');
+  fb.className = 'feedback ' + (correct ? 'correct' : 'wrong');
+  block.classList.add('answered', correct ? 'correct' : 'wrong');
+  if (correct) totalCorrect++; else totalWrong++;
+  totalAnswered++;
+  fibDone++;
+  updateBar();
+  if (fibDone === fibQuestions.length) {
+    document.getElementById('fibNextBtn').style.display = 'inline-block';
+  }
+}
+
+// ─────────── ERROR CORRECTION ───────────
+
+let errDone = 0;
+
+function buildERR() {
+  const container = document.getElementById('err-container');
+  errQuestions.forEach((q, qi) => {
+    const block = document.createElement('div');
+    block.className = 'exercise-block';
+    block.id = 'err-' + qi;
+    block.innerHTML = `
+      <div class="q-number">Question ${qi+1} of ${errQuestions.length}</div>
+      <div class="q-text" style="color:var(--wrong);font-style:italic;">${q.bad}</div>
+      <div style="margin-top:4px;font-size:13px;color:var(--muted);margin-bottom:10px;">Which is correct?</div>
+      <div class="options" id="err-opts-${qi}">
+        ${q.options.map((o,oi) => `
+          <button class="option-btn" onclick="answerERR(${qi},${oi})">
+            <div class="option-letter">${oi===0?'A':'B'}</div>
+            ${o}
+          </button>`).join('')}
+      </div>
+      <div class="feedback" id="err-fb-${qi}"></div>
+    `;
+    container.appendChild(block);
+  });
+}
+
+function answerERR(qi, chosen) {
+  const q = errQuestions[qi];
+  const block = document.getElementById('err-' + qi);
+  const opts = document.querySelectorAll(`#err-opts-${qi} .option-btn`);
+  const fb = document.getElementById('err-fb-' + qi);
+  block.classList.add('answered');
+  const correct = chosen === q.answer;
+  opts.forEach((btn, i) => {
+    if (i === chosen) btn.classList.add(correct ? 'selected-correct' : 'selected-wrong');
+    if (!correct && i === q.answer) btn.classList.add('reveal-correct');
+  });
+  fb.innerHTML = (correct ? '✓ Correct! ' : '✗ Not quite. ') + q.feedback;
+  fb.className = 'feedback ' + (correct ? 'correct' : 'wrong');
+  block.classList.add(correct ? 'correct' : 'wrong');
+  if (correct) totalCorrect++; else totalWrong++;
+  totalAnswered++;
+  errDone++;
+  updateBar();
+  if (errDone === errQuestions.length) {
+    document.getElementById('errDoneBtn').style.display = 'inline-block';
+  }
+}
+
+// ─────────── SCORECARD ───────────
+
+function showScorecard() {
+  const card = document.getElementById('finalScorecard');
+  card.classList.add('visible');
+  const pct = Math.round((totalCorrect / totalQuestions) * 100);
+  document.getElementById('sc-correct').textContent = totalCorrect;
+  document.getElementById('sc-wrong').textContent = totalWrong;
+  document.getElementById('sc-pct').textContent = pct + '%';
+  let rating = '';
+  if (pct >= 95) rating = 'Hole-in-One! Outstanding!';
+  else if (pct >= 80) rating = 'Eagle — Excellent Work!';
+  else if (pct >= 65) rating = 'Birdie — Well Played!';
+  else if (pct >= 50) rating = 'Par — Keep Practising';
+  else rating = 'Bogey — Review the Theory';
+  document.getElementById('sc-rating').textContent = rating;
+  card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function restartAll() {
+  totalCorrect = 0; totalWrong = 0; totalAnswered = 0;
+  updateBar();
+  document.getElementById('mc-container').innerHTML = '';
+  document.getElementById('fib-container').innerHTML = '';
+  document.getElementById('err-container').innerHTML = '';
+  document.getElementById('mcNextBtn').style.display = 'none';
+  document.getElementById('fibNextBtn').style.display = 'none';
+  document.getElementById('errDoneBtn').style.display = 'none';
+  document.getElementById('finalScorecard').classList.remove('visible');
+  mcAnswered = 0; fibDone = 0; errDone = 0;
+  buildMC(); buildFIB(); buildERR();
+  switchTab('theory');
+}
+
+// ─────────── INIT ───────────
+buildDots();
+buildMC();
+buildFIB();
+buildERR();
+updateBar();
+</script>
+</body>
+</html>

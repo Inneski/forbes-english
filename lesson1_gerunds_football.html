@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 1 — Verbs + Gerunds</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,600;0,800;1,800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink:     #0b0f0d;
+  --paper:   #f2efe8;
+  --grass:   #1d6b3a;
+  --lime:    #b8f03c;
+  --white:   #ffffff;
+  --red:     #e03030;
+  --muted:   #8a9188;
+  --card-bg: #f8f6f0;
+  --border:  #d8d4cc;
+}
+
+body {
+  font-family: 'Barlow', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.topbar {
+  background: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  height: 52px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.topbar-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+}
+
+.topbar-score {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  color: var(--lime);
+  letter-spacing: 0.04em;
+}
+.topbar-score span { color: rgba(255,255,255,0.3); font-weight: 300; font-size: 16px; }
+
+.hero {
+  background: var(--grass);
+  position: relative;
+  overflow: hidden;
+  padding: 3rem 2rem 2.5rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2rem;
+  align-items: center;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.035) 0 1px, transparent 1px 72px),
+    repeating-linear-gradient(0deg,  rgba(255,255,255,0.035) 0 1px, transparent 1px 72px);
+  pointer-events: none;
+}
+
+.hero-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--lime);
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+
+.hero-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-style: italic;
+  font-size: clamp(52px, 10vw, 96px);
+  line-height: 0.88;
+  color: var(--white);
+  text-transform: uppercase;
+}
+
+.hero-title em { color: var(--lime); font-style: italic; }
+
+.hero-sub {
+  margin-top: 1.1rem;
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.6);
+  max-width: 440px;
+  line-height: 1.7;
+}
+
+.pitch-strip {
+  background: var(--ink);
+  line-height: 0;
+  overflow: hidden;
+}
+
+.content {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 3rem 2rem 5rem;
+}
+
+.rule-block {
+  border: 1.5px solid var(--ink);
+  border-radius: 2px;
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 2.5rem;
+  position: relative;
+  background: var(--white);
+}
+
+.rule-block::before {
+  content: 'THE RULE';
+  position: absolute;
+  top: -10px;
+  left: 16px;
+  background: var(--lime);
+  color: var(--ink);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  padding: 2px 10px;
+}
+
+.rule-block p {
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--ink);
+}
+
+.pill-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 1.1rem;
+}
+
+.pill {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border: 1.5px solid var(--grass);
+  color: var(--grass);
+  border-radius: 1px;
+}
+
+.section-heading {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-style: italic;
+  font-size: 28px;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1.5px solid var(--ink);
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.section-heading .sh-num {
+  font-size: 13px;
+  font-weight: 300;
+  font-style: normal;
+  color: var(--muted);
+}
+
+.mistake-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+@media(max-width:540px){ .mistake-grid { grid-template-columns:1fr; } }
+
+.mistake-card { padding: 1rem 1.25rem; border-radius: 2px; }
+.mistake-card.bad  { background: #fdf0f0; border: 1.5px solid #e8c0c0; }
+.mistake-card.good { background: #f0f8f2; border: 1.5px solid #9fd4b2; }
+
+.mc-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.bad .mc-label  { color: var(--red); }
+.good .mc-label { color: var(--grass); }
+
+.mc-text { font-size: 14px; font-weight: 300; line-height: 1.6; color: var(--ink); }
+.mc-text u { color: var(--red); text-decoration-color: var(--red); }
+.mc-text strong { color: var(--grass); font-weight: 600; }
+
+.quiz-wrap { margin-top: 2.5rem; }
+
+.q-card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 2px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  transition: border-color 0.3s;
+}
+.q-card.state-correct { border-color: var(--grass); }
+.q-card.state-wrong   { border-color: var(--red); }
+
+.q-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+
+.q-text {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--ink);
+  margin-bottom: 1rem;
+}
+
+.q-blank {
+  display: inline-block;
+  border-bottom: 2.5px solid var(--grass);
+  min-width: 110px;
+  text-align: center;
+  color: var(--grass);
+  font-weight: 600;
+  font-style: italic;
+  padding: 0 4px;
+}
+
+.opts { display: flex; flex-direction: column; gap: 7px; }
+
+.opt-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--card-bg);
+  border: 1.5px solid var(--border);
+  border-radius: 2px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 14px;
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s;
+}
+.opt-btn:hover:not(:disabled) { border-color: var(--grass); background: #f0f8f2; }
+.opt-btn:disabled { cursor: default; opacity: 0.8; }
+.opt-btn.correct { background: #eaf8ee; border-color: var(--grass); color: #0e4d23; }
+.opt-btn.wrong   { background: #fdf0f0; border-color: var(--red);   color: #7a1010; }
+
+.opt-badge {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 11px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  color: var(--muted);
+  transition: all 0.15s;
+}
+.opt-btn.correct .opt-badge { background: var(--grass); border-color: var(--grass); color: white; }
+.opt-btn.wrong   .opt-badge { background: var(--red);   border-color: var(--red);   color: white; }
+
+.q-feedback {
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.6;
+  margin-top: 10px;
+  padding: 9px 13px;
+  border-radius: 2px;
+  display: none;
+}
+.q-feedback.show { display: block; }
+.q-feedback.ok  { background: #eaf8ee; color: #0e4d23; border-left: 3px solid var(--grass); }
+.q-feedback.err { background: #fdf0f0; color: #7a1010; border-left: 3px solid var(--red); }
+
+.scoreboard {
+  display: none;
+  background: var(--ink);
+  color: var(--white);
+  padding: 2.5rem;
+  border-radius: 2px;
+  text-align: center;
+  margin-top: 1.5rem;
+}
+.scoreboard.show { display: block; }
+
+.sb-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-style: italic;
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  color: var(--lime);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.sb-score {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-style: italic;
+  font-size: 88px;
+  line-height: 1;
+  color: var(--white);
+}
+.sb-score em { color: var(--lime); }
+
+.sb-msg {
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.55);
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.replay-btn {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 11px 32px;
+  background: var(--lime);
+  color: var(--ink);
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.replay-btn:hover { opacity: 0.85; }
+
+.progress-row {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 2rem;
+}
+.pdot {
+  height: 4px;
+  flex: 1;
+  border-radius: 2px;
+  background: var(--border);
+  transition: background 0.4s;
+}
+.pdot.correct { background: var(--grass); }
+.pdot.wrong   { background: var(--red); }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) both; }
+.d1 { animation-delay: 0.05s; }
+.d2 { animation-delay: 0.12s; }
+.d3 { animation-delay: 0.19s; }
+.d4 { animation-delay: 0.26s; }
+.d5 { animation-delay: 0.33s; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-label">Module 1 · Lesson 1 · Gerunds</span>
+  <div class="topbar-score" id="topScore">0 <span>/ 7 goals</span></div>
+</div>
+
+<div class="hero fade-up">
+  <div>
+    <div class="hero-eyebrow">English for Graphic Designers</div>
+    <h1 class="hero-title">Verbs<br><em>+ Gerunds</em></h1>
+    <p class="hero-sub">Some verbs always demand the <strong style="color:var(--lime);font-weight:500">-ing form</strong>. Never an infinitive. This is your most repeated mistake — fix it here.</p>
+  </div>
+  <!-- FLAT GEOMETRIC BALL -->
+  <svg width="130" height="130" viewBox="0 0 130 130" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+    <defs><clipPath id="bc"><circle cx="65" cy="65" r="58"/></clipPath></defs>
+    <circle cx="65" cy="65" r="58" fill="#f2efe8"/>
+    <g clip-path="url(#bc)">
+      <polygon points="65,26 82,39 76,61 54,61 48,39" fill="#0b0f0d"/>
+      <polygon points="65,26 82,39 96,26 80,12 50,12" fill="#0b0f0d"/>
+      <polygon points="82,39 96,26 112,36 108,57 89,63" fill="#0b0f0d"/>
+      <polygon points="76,61 89,63 92,84 72,92 56,80" fill="#0b0f0d"/>
+      <polygon points="54,61 56,80 37,86 23,70 31,51" fill="#0b0f0d"/>
+      <polygon points="48,39 31,51 16,39 25,22 47,16" fill="#0b0f0d"/>
+      <line x1="65" y1="26" x2="82" y2="39" stroke="#b8f03c" stroke-width="1.5"/>
+      <line x1="82" y1="39" x2="76" y2="61" stroke="#b8f03c" stroke-width="1.5"/>
+      <line x1="76" y1="61" x2="54" y2="61" stroke="#b8f03c" stroke-width="1.5"/>
+      <line x1="54" y1="61" x2="48" y2="39" stroke="#b8f03c" stroke-width="1.5"/>
+      <line x1="48" y1="39" x2="65" y2="26" stroke="#b8f03c" stroke-width="1.5"/>
+      <line x1="65" y1="26" x2="80" y2="12"  stroke="#b8f03c" stroke-width="1.5"/>
+      <line x1="82" y1="39" x2="96" y2="26"  stroke="#b8f03c" stroke-width="1.5"/>
+      <line x1="96" y1="26" x2="112" y2="36" stroke="#b8f03c" stroke-width="1.5"/>
+      <line x1="89" y1="63" x2="108" y2="57" stroke="#b8f03c" stroke-width="1.5"/>
+      <line x1="92" y1="84" x2="110" y2="90" stroke="#b8f03c" stroke-width="1.5"/>
+      <line x1="72" y1="92" x2="74" y2="112" stroke="#b8f03c" stroke-width="1.5"/>
+      <line x1="56" y1="80" x2="40" y2="96"  stroke="#b8f03c" stroke-width="1.5"/>
+      <line x1="37" y1="86" x2="20" y2="92"  stroke="#b8f03c" stroke-width="1.5"/>
+      <line x1="23" y1="70" x2="8"  y2="74"  stroke="#b8f03c" stroke-width="1.5"/>
+      <line x1="31" y1="51" x2="14" y2="46"  stroke="#b8f03c" stroke-width="1.5"/>
+      <line x1="48" y1="39" x2="47" y2="16"  stroke="#b8f03c" stroke-width="1.5"/>
+    </g>
+    <circle cx="65" cy="65" r="58" fill="none" stroke="#0b0f0d" stroke-width="2.5"/>
+    <line x1="127" y1="54" x2="145" y2="50" stroke="#b8f03c" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="128" y1="65" x2="148" y2="65" stroke="#b8f03c" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="127" y1="76" x2="145" y2="80" stroke="#b8f03c" stroke-width="2.5" stroke-linecap="round"/>
+  </svg>
+</div>
+
+<!-- PITCH STRIP WITH PLAYERS -->
+<div class="pitch-strip">
+<svg viewBox="0 0 900 130" width="100%" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+  <!-- dark base -->
+  <rect width="900" height="130" fill="#0b0f0d"/>
+  <!-- grass stripes -->
+  <rect x="0"   width="90" height="130" fill="#152b1d"/>
+  <rect x="90"  width="90" height="130" fill="#192e20"/>
+  <rect x="180" width="90" height="130" fill="#152b1d"/>
+  <rect x="270" width="90" height="130" fill="#192e20"/>
+  <rect x="360" width="90" height="130" fill="#152b1d"/>
+  <rect x="450" width="90" height="130" fill="#192e20"/>
+  <rect x="540" width="90" height="130" fill="#152b1d"/>
+  <rect x="630" width="90" height="130" fill="#192e20"/>
+  <rect x="720" width="90" height="130" fill="#152b1d"/>
+  <rect x="810" width="90" height="130" fill="#192e20"/>
+
+  <!-- pitch markings -->
+  <line x1="0"   y1="1"   x2="900" y2="1"   stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+  <line x1="0"   y1="129" x2="900" y2="129" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+  <line x1="450" y1="0"   x2="450" y2="130" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+  <circle cx="450" cy="65" r="44" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+  <circle cx="450" cy="65" r="3"  fill="rgba(255,255,255,0.25)"/>
+  <rect x="0"   y="28" width="110" height="74" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+  <rect x="0"   y="44" width="38"  height="42" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+  <rect x="790" y="28" width="110" height="74" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+  <rect x="862" y="44" width="38"  height="42" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+  <!-- penalty spots -->
+  <circle cx="80"  cy="65" r="2.5" fill="rgba(255,255,255,0.25)"/>
+  <circle cx="820" cy="65" r="2.5" fill="rgba(255,255,255,0.25)"/>
+
+  <!-- ═══ PLAYER A — dribbling, left, shirt #10, green kit ═══ -->
+  <g transform="translate(140,8)">
+    <!-- shadow -->
+    <ellipse cx="30" cy="118" rx="20" ry="5" fill="rgba(0,0,0,0.45)"/>
+    <!-- LEGS: geometric polygons -->
+    <!-- left leg: slightly back -->
+    <polygon points="18,76 27,76 20,104 9,116 1,112" fill="#1d6b3a"/>
+    <!-- right leg: forward stride -->
+    <polygon points="27,76 36,76 44,102 46,116 37,117" fill="#1d6b3a"/>
+    <!-- boots -->
+    <polygon points="0,111 9,116 6,121 -3,118" fill="#0b0f0d"/>
+    <polygon points="37,116 46,116 50,122 41,122" fill="#0b0f0d"/>
+    <!-- torso -->
+    <polygon points="14,40 46,40 50,76 10,76" fill="#1d6b3a"/>
+    <!-- kit accent stripe -->
+    <rect x="20" y="52" width="20" height="3" fill="rgba(184,240,60,0.45)"/>
+    <!-- left arm -->
+    <polygon points="14,44 1,64 -4,61 9,40" fill="#1d6b3a"/>
+    <!-- right arm extended -->
+    <polygon points="46,44 62,57 59,63 43,50" fill="#1d6b3a"/>
+    <!-- neck -->
+    <rect x="22" y="30" width="16" height="12" fill="#c4995e" rx="1"/>
+    <!-- head -->
+    <ellipse cx="30" cy="20" rx="16" ry="18" fill="#c4995e"/>
+    <!-- hair block -->
+    <rect x="14" y="5" width="32" height="13" fill="#1e1000" rx="2"/>
+    <!-- eyes: minimal rects -->
+    <rect x="21" y="18" width="5" height="5" rx="1.5" fill="#5a2c00" opacity="0.75"/>
+    <rect x="33" y="18" width="5" height="5" rx="1.5" fill="#5a2c00" opacity="0.75"/>
+    <!-- ball at feet -->
+    <circle cx="56" cy="116" r="10" fill="#f2efe8"/>
+    <polygon points="56,106 62,110 61,116 51,116 50,110" fill="#0b0f0d"/>
+    <polygon points="56,126 62,122 61,116 51,116 50,122" fill="#0b0f0d"/>
+    <line x1="56" y1="106" x2="56" y2="126" stroke="#ccc" stroke-width="0.7"/>
+    <line x1="46" y1="116" x2="66" y2="116" stroke="#ccc" stroke-width="0.7"/>
+    <!-- speech bubble -->
+    <rect x="48" y="-6" width="104" height="30" rx="3" fill="#b8f03c"/>
+    <polygon points="56,24 68,24 62,34" fill="#b8f03c"/>
+    <text x="100" y="9"  font-size="9" fill="#0b0f0d" font-family="'Barlow Condensed',sans-serif" font-weight="800" letter-spacing="0.08em" text-anchor="middle">I ENJOY</text>
+    <text x="100" y="20" font-size="9" fill="#0b0f0d" font-family="'Barlow Condensed',sans-serif" font-weight="600" letter-spacing="0.04em" text-anchor="middle">DRIBBLING!</text>
+  </g>
+
+  <!-- ═══ PLAYER B — heading, center, yellow kit ═══ -->
+  <g transform="translate(320,6)">
+    <ellipse cx="26" cy="120" rx="18" ry="4" fill="rgba(0,0,0,0.4)"/>
+    <!-- legs: spread for jump -->
+    <polygon points="14,72 22,72 12,104 2,116 -5,112" fill="#d4a017"/>
+    <polygon points="22,72 30,72 38,104 46,116 39,119" fill="#c89010"/>
+    <!-- boots -->
+    <polygon points="-6,111 2,116 0,121 -8,118" fill="#0b0f0d"/>
+    <polygon points="39,119 46,116 50,122 43,124" fill="#0b0f0d"/>
+    <!-- torso -->
+    <polygon points="10,36 40,36 44,72 6,72" fill="#d4a017"/>
+    <!-- arms wide -->
+    <polygon points="10,42 -8,55 -11,51 8,38" fill="#d4a017"/>
+    <polygon points="40,42 58,55 55,61 38,48" fill="#d4a017"/>
+    <!-- neck -->
+    <rect x="18" y="27" width="14" height="11" fill="#e0c090"/>
+    <!-- head, slightly tilted for header -->
+    <ellipse cx="26" cy="17" rx="15" ry="16" fill="#e0c090" transform="rotate(-6,26,17)"/>
+    <rect x="11" y="4" width="30" height="11" fill="#0b0f0d" rx="1"/>
+    <rect x="17" y="16" width="4" height="4" rx="1" fill="#5a3000" opacity="0.8"/>
+    <rect x="28" y="16" width="4" height="4" rx="1" fill="#5a3000" opacity="0.8"/>
+    <!-- ball above head — heading -->
+    <circle cx="26" cy="-6" r="11" fill="#f2efe8"/>
+    <polygon points="26,-16 32,-12 30,-6 22,-6 20,-12" fill="#0b0f0d"/>
+    <polygon points="26,5  32,1  30,-6 22,-6 20,1"  fill="#0b0f0d"/>
+    <line x1="26" y1="-17" x2="26" y2="6"  stroke="#ccc" stroke-width="0.7"/>
+    <line x1="15" y1="-6"  x2="37" y2="-6" stroke="#ccc" stroke-width="0.7"/>
+    <!-- bubble -->
+    <rect x="-40" y="-8" width="112" height="30" rx="3" fill="rgba(255,255,255,0.93)"/>
+    <polygon points="20,22 32,22 26,32" fill="rgba(255,255,255,0.93)"/>
+    <text x="16"  y="7"  font-size="9" fill="#0b0f0d" font-family="'Barlow Condensed',sans-serif" font-weight="800" letter-spacing="0.08em" text-anchor="middle">I KEEP</text>
+    <text x="16"  y="18" font-size="9" fill="#1d6b3a" font-family="'Barlow Condensed',sans-serif" font-weight="800" letter-spacing="0.04em" text-anchor="middle">PRACTISING!</text>
+  </g>
+
+  <!-- ═══ PLAYER C — goalkeeper dive, red kit ═══ -->
+  <g transform="translate(570,14)">
+    <ellipse cx="55" cy="112" rx="30" ry="5" fill="rgba(0,0,0,0.4)"/>
+    <!-- diving body — horizontal -->
+    <!-- trailing legs -->
+    <polygon points="0,85 14,76 22,90 8,98"  fill="#e03030"/>
+    <polygon points="14,76 26,68 34,82 22,90" fill="#c52828"/>
+    <!-- boots -->
+    <polygon points="26,68 38,64 40,70 30,74" fill="#0b0f0d"/>
+    <!-- torso diagonal -->
+    <polygon points="22,62 70,54 74,70 26,78" fill="#e03030"/>
+    <!-- reaching arm -->
+    <polygon points="70,54 94,48 97,58 74,66" fill="#e03030"/>
+    <!-- glove reaching — lime -->
+    <rect x="92" y="40" width="18" height="22" rx="3" fill="#b8f03c"/>
+    <rect x="94" y="38" width="14" height="8"  rx="2" fill="#9fcc30"/>
+    <!-- other glove at body -->
+    <polygon points="22,78 10,90 6,86 18,74" fill="#b8f03c"/>
+    <rect x="2" y="84" width="12" height="10" rx="2" fill="#9fcc30"/>
+    <!-- head -->
+    <ellipse cx="38" cy="56" rx="13" ry="14" fill="#d4a882"/>
+    <rect x="26" y="44" width="24" height="10" fill="#111" rx="1"/>
+    <rect x="30" y="55" width="4" height="4" rx="1" fill="#3d2000" opacity="0.8"/>
+    <rect x="40" y="54" width="4" height="4" rx="1" fill="#3d2000" opacity="0.8"/>
+    <!-- bubble -->
+    <rect x="50" y="-4" width="120" height="30" rx="3" fill="#b8f03c"/>
+    <polygon points="68,26 80,26 74,36" fill="#b8f03c"/>
+    <text x="110" y="9"  font-size="9" fill="#0b0f0d" font-family="'Barlow Condensed',sans-serif" font-weight="800" letter-spacing="0.08em" text-anchor="middle">I AVOID</text>
+    <text x="110" y="20" font-size="9" fill="#0b0f0d" font-family="'Barlow Condensed',sans-serif" font-weight="600" letter-spacing="0.04em" text-anchor="middle">CONCEDING!</text>
+  </g>
+
+  <!-- ═══ PLAYER D — celebrating, far right, arms up ═══ -->
+  <g transform="translate(800,10)">
+    <ellipse cx="26" cy="114" rx="18" ry="4" fill="rgba(0,0,0,0.4)"/>
+    <!-- legs -->
+    <polygon points="16,70 24,70 18,98 10,112 2,108" fill="#1d6b3a"/>
+    <polygon points="24,70 32,70 38,98 40,112 32,112" fill="#2d8a50"/>
+    <!-- boots -->
+    <polygon points="1,107 10,112 8,117 -1,114" fill="#0b0f0d"/>
+    <polygon points="32,112 40,112 42,118 34,118" fill="#0b0f0d"/>
+    <!-- torso -->
+    <polygon points="10,36 42,36 44,70 8,70" fill="#1d6b3a"/>
+    <rect x="18" y="48" width="16" height="3" fill="rgba(184,240,60,0.45)"/>
+    <!-- arms raised in celebration -->
+    <polygon points="10,40 -6,20 -2,16 14,36" fill="#1d6b3a"/>
+    <polygon points="42,40 58,20 62,24 46,40" fill="#1d6b3a"/>
+    <!-- fists -->
+    <rect x="-8" y="12" width="11" height="9" rx="2" fill="#c4995e"/>
+    <rect x="58" y="18" width="11" height="9" rx="2" fill="#c4995e"/>
+    <!-- neck -->
+    <rect x="19" y="28" width="14" height="10" fill="#c4995e"/>
+    <!-- head -->
+    <ellipse cx="26" cy="18" rx="16" ry="17" fill="#c4995e"/>
+    <rect x="11" y="5"  width="30" height="11" fill="#1e1000" rx="1"/>
+    <rect x="17" y="17" width="5"  height="5"  rx="1.5" fill="#5a2c00" opacity="0.7"/>
+    <rect x="29" y="17" width="5"  height="5"  rx="1.5" fill="#5a2c00" opacity="0.7"/>
+    <!-- smile -->
+    <path d="M 18 27 Q 26 33 34 27" fill="none" stroke="#5a2c00" stroke-width="2" stroke-linecap="round" opacity="0.75"/>
+  </g>
+</svg>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <div class="progress-row fade-up d1" id="progressRow"></div>
+
+  <div class="rule-block fade-up d2">
+    <p>These verbs always take the <strong>-ing form</strong> (gerund). Never use <em>to + verb</em> after them.</p>
+    <div class="pill-grid">
+      <span class="pill">enjoy</span><span class="pill">avoid</span><span class="pill">consider</span>
+      <span class="pill">finish</span><span class="pill">keep</span><span class="pill">miss</span>
+      <span class="pill">practise</span><span class="pill">recommend</span><span class="pill">suggest</span>
+      <span class="pill">mind</span><span class="pill">imagine</span><span class="pill">risk</span>
+      <span class="pill">can't stand</span><span class="pill">spend time</span>
+    </div>
+  </div>
+
+  <div class="section-heading fade-up d3">Your mistakes — corrected <span class="sh-num">from your actual lessons</span></div>
+
+  <div class="mistake-grid fade-up d3">
+    <div class="mistake-card bad"><div class="mc-label">Red card ✗</div><div class="mc-text">Once you finish <u>to do</u> 120 clips...</div></div>
+    <div class="mistake-card good"><div class="mc-label">Goal ✓</div><div class="mc-text">Once you finish <strong>doing</strong> 120 clips...</div></div>
+  </div>
+  <div class="mistake-grid fade-up d3">
+    <div class="mistake-card bad"><div class="mc-label">Red card ✗</div><div class="mc-text">I'm thinking about <u>to buy</u> a Mercedes SLK</div></div>
+    <div class="mistake-card good"><div class="mc-label">Goal ✓</div><div class="mc-text">I'm thinking about <strong>buying</strong> a Mercedes SLK</div></div>
+  </div>
+  <div class="mistake-grid fade-up d4">
+    <div class="mistake-card bad"><div class="mc-label">Red card ✗</div><div class="mc-text">I spend a lot of time <u>experiment</u> with modules</div></div>
+    <div class="mistake-card good"><div class="mc-label">Goal ✓</div><div class="mc-text">I spend a lot of time <strong>experimenting</strong> with modules</div></div>
+  </div>
+  <div class="mistake-grid fade-up d4">
+    <div class="mistake-card bad"><div class="mc-label">Red card ✗</div><div class="mc-text">I have stopped <u>to drink</u> alcohol</div></div>
+    <div class="mistake-card good"><div class="mc-label">Goal ✓</div><div class="mc-text">I have stopped <strong>drinking</strong> alcohol</div></div>
+  </div>
+
+  <div class="quiz-wrap">
+    <div class="section-heading fade-up d5">Match day <span class="sh-num">score your goals</span></div>
+    <div id="questionsEl"></div>
+    <div class="scoreboard" id="scoreboard">
+      <div class="sb-title">⚽ Full Time</div>
+      <div class="sb-score" id="sbScore">0<em>/7</em></div>
+      <div class="sb-msg" id="sbMsg"></div>
+      <button class="replay-btn" onclick="restart()">Play again ↺</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const qs = [
+  { text:'I really enjoy ___ with new layout styles in Figma.',
+    opts:['to experiment','experimenting','experiment'], ans:1,
+    fb:{ ok:'Goal! "Enjoy" always takes -ing. Enjoy experimenting, enjoy designing...', err:'"Enjoy" needs the gerund. → I enjoy experimenting.' }},
+  { text:'The FIFA brand guidelines recommend ___ a consistent typeface across all platforms.',
+    opts:['to use','use','using'], ans:2,
+    fb:{ ok:'On the scoresheet! "Recommend" + -ing.', err:'"Recommend" takes the gerund. → recommend using.' }},
+  { text:'Once you finish ___ the 120 highlight clips, export as H.264.',
+    opts:['editing','to edit','edit'], ans:0,
+    fb:{ ok:'This was your exact classroom mistake — now you\'ve nailed it! Finish + -ing.', err:'Your lesson notes show this exact error. → finish editing / finish doing.' }},
+  { text:'The client kept ___ for more iterations on the World Cup logo.',
+    opts:['to ask','asks','asking'], ans:2,
+    fb:{ ok:'Textbook! Keep + -ing.', err:'"Keep" always takes -ing. → kept asking.' }},
+  { text:'I spend a lot of time ___ with new motion design modules.',
+    opts:['to experiment','experimenting','experiment'], ans:1,
+    fb:{ ok:'Your teacher corrected this exact phrase. Spend time + -ing.', err:'"Spend time" always takes -ing. → spend time experimenting.' }},
+  { text:'I avoid ___ tight deadlines by planning well in advance.',
+    opts:['to miss','missing','miss'], ans:1,
+    fb:{ ok:'Solid technique! Avoid + -ing.', err:'"Avoid" takes the gerund. → avoid missing.' }},
+  { text:'Can you imagine ___ the entire FIFA visual identity from scratch?',
+    opts:['to redesign','redesigning','redesign'], ans:1,
+    fb:{ ok:'Hat-trick! Imagine + -ing. Lesson complete.', err:'"Imagine" takes the gerund. → imagine redesigning.' }}
+];
+
+let score=0, done=0;
+const total=qs.length;
+
+function buildProgress(){
+  const row=document.getElementById('progressRow'); row.innerHTML='';
+  qs.forEach((_,i)=>{ const d=document.createElement('div'); d.className='pdot'; d.id='pd'+i; row.appendChild(d); });
+  document.getElementById('topScore').innerHTML=`${score} <span>/ ${total} goals</span>`;
+}
+
+function buildQuestions(){
+  const el=document.getElementById('questionsEl'); el.innerHTML='';
+  qs.forEach((q,qi)=>{
+    const card=document.createElement('div');
+    card.className='q-card fade-up'; card.id='qc'+qi;
+    card.style.animationDelay=(qi*0.07)+'s';
+    card.innerHTML=`
+      <div class="q-num">Question ${qi+1} of ${total}</div>
+      <div class="q-text">${q.text.replace('___','<span class="q-blank" id="qb'+qi+'">___</span>')}</div>
+      <div class="opts" id="opts${qi}">
+        ${q.opts.map((o,oi)=>`<button class="opt-btn" onclick="pick(${qi},${oi})" id="ob${qi}_${oi}"><span class="opt-badge">${String.fromCharCode(65+oi)}</span>${o}</button>`).join('')}
+      </div>
+      <div class="q-feedback" id="fb${qi}"></div>`;
+    el.appendChild(card);
+  });
+}
+
+function pick(qi,sel){
+  const card=document.getElementById('qc'+qi);
+  if(card.dataset.done) return;
+  card.dataset.done='1';
+  const q=qs[qi];
+  const opts=document.querySelectorAll('#opts'+qi+' .opt-btn');
+  opts.forEach(b=>b.disabled=true);
+  const correct=sel===q.ans;
+  opts[sel].classList.add(correct?'correct':'wrong');
+  opts[sel].querySelector('.opt-badge').textContent=correct?'✓':'✗';
+  if(!correct){ opts[q.ans].classList.add('correct'); opts[q.ans].querySelector('.opt-badge').textContent='✓'; }
+  card.classList.add(correct?'state-correct':'state-wrong');
+  const blank=document.getElementById('qb'+qi);
+  blank.textContent=q.opts[q.ans];
+  blank.style.color=correct?'var(--grass)':'var(--red)';
+  blank.style.borderBottomColor=correct?'var(--grass)':'var(--red)';
+  const fb=document.getElementById('fb'+qi);
+  fb.textContent=correct?q.fb.ok:q.fb.err;
+  fb.classList.add('show',correct?'ok':'err');
+  document.getElementById('pd'+qi).classList.add(correct?'correct':'wrong');
+  if(correct) score++;
+  done++;
+  document.getElementById('topScore').innerHTML=`${score} <span>/ ${total} goals</span>`;
+  if(done===total) setTimeout(showSB,700);
+}
+
+function showSB(){
+  const sb=document.getElementById('scoreboard'); sb.classList.add('show');
+  document.getElementById('sbScore').innerHTML=`${score}<em>/${total}</em>`;
+  const msgs=['Keep going — study the rule and try again.','Getting there. Review your red cards.','Decent. Make the rule automatic — replay.','Good effort. One more run to cement it.','Strong performance. Nearly there.','Excellent. This rule is almost yours.','Perfect score. Full mastery. ⚽'];
+  document.getElementById('sbMsg').textContent=msgs[Math.min(score,msgs.length-1)];
+  sb.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function restart(){
+  score=0; done=0;
+  document.getElementById('scoreboard').classList.remove('show');
+  buildProgress(); buildQuestions();
+}
+
+buildProgress(); buildQuestions();
+</script>
+</body>
+</html>

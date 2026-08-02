@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English | Present Simple vs Present Continuous (Supereasy)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ps-color: #2E6BE6;
+    --pc-color: #ff2e93;
+    --bg: #faf8f5;
+    --card-bg: #ffffff;
+    --ink: #232323;
+    --muted: #6b6b6b;
+    --border: #eae6df;
+    --good: #1f9d55;
+    --bad: #e5484d;
+    --radius: 18px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    padding-bottom: 90px;
+  }
+
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 24px 18px 40px;
+  }
+
+  header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 8px;
+  }
+
+  header svg { flex-shrink: 0; }
+
+  .title-block h1 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    font-size: 1.5rem;
+    margin: 0 0 2px;
+    line-height: 1.15;
+  }
+
+  .title-block p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  .legend {
+    display: flex;
+    gap: 10px;
+    margin: 18px 0 10px;
+    flex-wrap: wrap;
+  }
+
+  .pill {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 0.8rem;
+    padding: 6px 12px;
+    border-radius: 999px;
+    color: #fff;
+  }
+
+  .pill.ps { background: var(--ps-color); }
+  .pill.pc { background: var(--pc-color); }
+
+  .progress-track {
+    width: 100%;
+    height: 10px;
+    background: var(--border);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--ps-color), var(--pc-color));
+    transition: width 0.35s ease;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 26px 22px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+  }
+
+  .q-count {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 10px;
+  }
+
+  .signal {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--muted);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 3px 10px;
+    border-radius: 999px;
+    margin-bottom: 12px;
+  }
+
+  .sentence {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 6px;
+  }
+
+  .translation {
+    color: var(--muted);
+    font-style: italic;
+    font-size: 0.95rem;
+    margin-bottom: 18px;
+  }
+
+  .blank {
+    display: inline-block;
+    min-width: 90px;
+    border-bottom: 3px solid var(--border);
+    text-align: center;
+    font-weight: 700;
+  }
+
+  .blank.filled.ps { border-color: var(--ps-color); color: var(--ps-color); }
+  .blank.filled.pc { border-color: var(--pc-color); color: var(--pc-color); }
+
+  .options {
+    display: grid;
+    gap: 12px;
+    margin-top: 6px;
+  }
+
+  .opt-btn {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.02rem;
+    font-weight: 600;
+    padding: 14px 16px;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    background: #fff;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s ease;
+    color: var(--ink);
+  }
+
+  .opt-btn:hover:not(:disabled) {
+    border-color: #cfcac1;
+    transform: translateY(-1px);
+  }
+
+  .opt-btn:disabled { cursor: not-allowed; }
+
+  .opt-btn.correct {
+    border-color: var(--good);
+    background: #eafaf0;
+    color: var(--good);
+  }
+
+  .opt-btn.incorrect {
+    border-color: var(--bad);
+    background: #fdecec;
+    color: var(--bad);
+  }
+
+  .feedback {
+    margin-top: 18px;
+    padding: 16px 18px;
+    border-radius: 12px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+
+  .feedback .fb-title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .feedback .fb-title.good { color: var(--good); }
+  .feedback .fb-title.bad { color: var(--bad); }
+
+  .feedback .fb-de {
+    color: var(--muted);
+    font-style: italic;
+    font-size: 0.92rem;
+    margin-top: 6px;
+  }
+
+  .next-btn {
+    margin-top: 20px;
+    width: 100%;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: var(--ink);
+    color: #fff;
+    cursor: pointer;
+    opacity: 0.35;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .next-btn.active { opacity: 1; pointer-events: auto; }
+  .next-btn:hover.active { background: #000; }
+
+  .score-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-top: 1px solid var(--border);
+    padding: 12px 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
+  }
+
+  .score-bar .score-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: linear-gradient(90deg, var(--ps-color), var(--pc-color));
+  }
+
+  .results {
+    text-align: center;
+    padding: 20px 6px 6px;
+  }
+
+  .results h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.8rem;
+    margin-bottom: 6px;
+  }
+
+  .results .big-score {
+    font-family: 'Poppins', sans-serif;
+    font-size: 3rem;
+    font-weight: 800;
+    background: linear-gradient(90deg, var(--ps-color), var(--pc-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 10px 0;
+  }
+
+  .results p.msg { color: var(--muted); margin-bottom: 22px; }
+  .results p.msg-de { color: var(--muted); font-style: italic; font-size: 0.92rem; margin-top: -14px; margin-bottom: 22px;}
+
+  .restart-btn {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 12px;
+    background: var(--ink);
+    color: #fff;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+
+  .restart-btn:hover { background: #000; }
+
+  .hidden { display: none !important; }
+
+  @media (max-width: 480px) {
+    .sentence { font-size: 1.1rem; }
+    .title-block h1 { font-size: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <svg width="52" height="52" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#2E6BE6"/>
+          <stop offset="100%" stop-color="#ff2e93"/>
+        </linearGradient>
+      </defs>
+      <circle cx="50" cy="50" r="48" fill="url(#logoGrad)"/>
+      <text x="50" y="43" font-family="Poppins, sans-serif" font-weight="800" font-size="22" fill="#ffffff" text-anchor="middle">FE</text>
+      <text x="50" y="66" font-family="Poppins, sans-serif" font-weight="600" font-size="12" fill="#ffffff" text-anchor="middle">HUB</text>
+    </svg>
+    <div class="title-block">
+      <h1>Present Simple vs Continuous</h1>
+      <p>Supereasy &middot; mit deutscher Unterstuetzung</p>
+    </div>
+  </header>
+
+  <div class="legend">
+    <span class="pill ps">Present Simple</span>
+    <span class="pill pc">Present Continuous</span>
+  </div>
+
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+
+  <div class="card" id="quizCard">
+    <div class="q-count" id="qCount">Question 1 / 10</div>
+    <div class="signal" id="signalTag">now</div>
+    <div class="sentence" id="sentenceText"></div>
+    <div class="translation" id="translationText"></div>
+    <div class="options" id="optionsBox"></div>
+    <div class="feedback" id="feedbackBox">
+      <div class="fb-title" id="fbTitle"></div>
+      <div id="fbText"></div>
+      <div class="fb-de" id="fbTextDe"></div>
+    </div>
+    <button class="next-btn" id="nextBtn">Next &rarr;</button>
+  </div>
+
+  <div class="card results hidden" id="resultsCard">
+    <h2>Well done!</h2>
+    <div class="big-score" id="finalScore">0 / 10</div>
+    <p class="msg" id="resultMsg"></p>
+    <p class="msg-de" id="resultMsgDe"></p>
+    <button class="restart-btn" id="restartBtn">Try again &middot; Nochmal versuchen</button>
+  </div>
+</div>
+
+<div class="score-bar">
+  <span class="score-dot"></span>
+  <span id="scoreDisplay">Score: 0 / 10</span>
+</div>
+
+<script>
+  var questionData = [
+    {
+      sentence: "Look! She ____ (write) a letter right now.",
+      translation: "Schau! Sie schreibt gerade einen Brief.",
+      signal: "right now",
+      correct: { text: "is writing", type: "pc" },
+      wrong: { text: "writes", type: "ps" },
+      explain: "We use present continuous because the action is happening at the moment of speaking (right now).",
+      explainDe: "Wir benutzen present continuous, weil die Handlung genau jetzt passiert (right now)."
+    },
+    {
+      sentence: "I always ____ (drink) coffee in the morning.",
+      translation: "Ich trinke immer morgens Kaffee.",
+      signal: "always",
+      correct: { text: "drink", type: "ps" },
+      wrong: { text: "am drinking", type: "pc" },
+      explain: "This is a habit that happens regularly, so we use present simple with always.",
+      explainDe: "Das ist eine Gewohnheit, die regelmaessig passiert, deshalb present simple mit always."
+    },
+    {
+      sentence: "My mum ____ (cook) dinner every day.",
+      translation: "Meine Mutter kocht jeden Tag Abendessen.",
+      signal: "every day",
+      correct: { text: "cooks", type: "ps" },
+      wrong: { text: "is cooking", type: "pc" },
+      explain: "Every day tells us this is a routine, so we use present simple.",
+      explainDe: "Every day zeigt eine Routine, deshalb present simple."
+    },
+    {
+      sentence: "Listen! The baby ____ (cry) in the next room.",
+      translation: "Hoer mal! Das Baby weint im naechsten Zimmer.",
+      signal: "listen!",
+      correct: { text: "is crying", type: "pc" },
+      wrong: { text: "cries", type: "ps" },
+      explain: "Listen! shows the action is happening now, so we use present continuous.",
+      explainDe: "Listen! zeigt, dass die Handlung jetzt passiert, deshalb present continuous."
+    },
+    {
+      sentence: "We ____ (study) English at the moment.",
+      translation: "Wir lernen gerade Englisch.",
+      signal: "at the moment",
+      correct: { text: "are studying", type: "pc" },
+      wrong: { text: "study", type: "ps" },
+      explain: "At the moment signals a temporary action happening now, so we use present continuous.",
+      explainDe: "At the moment zeigt eine voruebergehende Handlung, deshalb present continuous."
+    },
+    {
+      sentence: "He usually ____ (play) football on Saturdays.",
+      translation: "Er spielt samstags normalerweise Fussball.",
+      signal: "usually",
+      correct: { text: "plays", type: "ps" },
+      wrong: { text: "is playing", type: "pc" },
+      explain: "Usually shows a repeated habit, so we use present simple.",
+      explainDe: "Usually zeigt eine wiederholte Gewohnheit, deshalb present simple."
+    },
+    {
+      sentence: "Right now, they ____ (watch) a movie together.",
+      translation: "Gerade jetzt schauen sie zusammen einen Film.",
+      signal: "right now",
+      correct: { text: "are watching", type: "pc" },
+      wrong: { text: "watch", type: "ps" },
+      explain: "Right now tells us the action is in progress at this exact moment.",
+      explainDe: "Right now zeigt, dass die Handlung gerade in diesem Moment passiert."
+    },
+    {
+      sentence: "She ____ (like) chocolate very much.",
+      translation: "Sie mag Schokolade sehr gerne.",
+      signal: "stative verb",
+      correct: { text: "likes", type: "ps" },
+      wrong: { text: "is liking", type: "pc" },
+      explain: "Like is a stative verb, so we never use it in the continuous form.",
+      explainDe: "Like ist ein stative verb, deshalb nie im continuous form."
+    },
+    {
+      sentence: "Look! The dog ____ (run) in the garden.",
+      translation: "Schau! Der Hund rennt im Garten.",
+      signal: "look!",
+      correct: { text: "is running", type: "pc" },
+      wrong: { text: "runs", type: "ps" },
+      explain: "Look! shows the action is visible and happening now, so present continuous.",
+      explainDe: "Look! zeigt, dass die Handlung jetzt sichtbar passiert, deshalb present continuous."
+    },
+    {
+      sentence: "I ____ (go) to school every day.",
+      translation: "Ich gehe jeden Tag zur Schule.",
+      signal: "every day",
+      correct: { text: "go", type: "ps" },
+      wrong: { text: "am going", type: "pc" },
+      explain: "This is a daily routine, so we use present simple with every day.",
+      explainDe: "Das ist eine taegliche Routine, deshalb present simple mit every day."
+    }
+  ];
+
+  var order = [];
+  var currentIndex = 0;
+  var score = 0;
+  var answered = false;
+
+  function shuffle(array) {
+    var arr = array.slice();
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = arr[i];
+      arr[i] = arr[j];
+      arr[j] = temp;
+    }
+    return arr;
+  }
+
+  function initQuiz() {
+    order = shuffle(questionData.map(function (item, idx) { return idx; }));
+    currentIndex = 0;
+    score = 0;
+    updateScoreDisplay();
+    document.getElementById("resultsCard").classList.add("hidden");
+    document.getElementById("quizCard").classList.remove("hidden");
+    renderQuestion();
+  }
+
+  function updateScoreDisplay() {
+    document.getElementById("scoreDisplay").textContent = "Score: " + score + " / " + questionData.length;
+  }
+
+  function updateProgress() {
+    var pct = (currentIndex / questionData.length) * 100;
+    document.getElementById("progressFill").style.width = pct + "%";
+  }
+
+  function renderQuestion() {
+    answered = false;
+    updateProgress();
+
+    var qIndex = order[currentIndex];
+    var q = questionData[qIndex];
+
+    document.getElementById("qCount").textContent = "Question " + (currentIndex + 1) + " / " + questionData.length;
+    document.getElementById("signalTag").textContent = q.signal;
+    document.getElementById("sentenceText").textContent = q.sentence;
+    document.getElementById("translationText").textContent = q.translation;
+
+    var options = shuffle([q.correct, q.wrong]);
+    var optionsBox = document.getElementById("optionsBox");
+    optionsBox.innerHTML = "";
+
+    options.forEach(function (opt) {
+      var btn = document.createElement("button");
+      btn.className = "opt-btn";
+      btn.textContent = opt.text;
+      btn.addEventListener("click", function () {
+        handleAnswer(btn, opt, q, optionsBox);
+      });
+      optionsBox.appendChild(btn);
+    });
+
+    var feedbackBox = document.getElementById("feedbackBox");
+    feedbackBox.classList.remove("show");
+
+    var nextBtn = document.getElementById("nextBtn");
+    nextBtn.classList.remove("active");
+    nextBtn.textContent = (currentIndex === questionData.length - 1) ? "See results \u2192" : "Next \u2192";
+  }
+
+  function handleAnswer(btn, opt, q, optionsBox) {
+    if (answered) return;
+    answered = true;
+
+    var allBtns = optionsBox.querySelectorAll(".opt-btn");
+    allBtns.forEach(function (b) { b.disabled = true; });
+
+    var isCorrect = opt === q.correct;
+
+    if (isCorrect) {
+      btn.classList.add("correct");
+      score++;
+    } else {
+      btn.classList.add("incorrect");
+      allBtns.forEach(function (b) {
+        if (b.textContent === q.correct.text) {
+          b.classList.add("correct");
+        }
+      });
+    }
+
+    updateScoreDisplay();
+
+    var fbTitle = document.getElementById("fbTitle");
+    var fbText = document.getElementById("fbText");
+    var fbTextDe = document.getElementById("fbTextDe");
+    var feedbackBox = document.getElementById("feedbackBox");
+
+    fbTitle.className = "fb-title " + (isCorrect ? "good" : "bad");
+    fbTitle.textContent = isCorrect ? "Correct! Richtig!" : "Not quite. Nicht ganz.";
+    fbText.textContent = q.explain;
+    fbTextDe.textContent = q.explainDe;
+    feedbackBox.classList.add("show");
+
+    document.getElementById("nextBtn").classList.add("active");
+  }
+
+  document.getElementById("nextBtn").addEventListener("click", function () {
+    if (!answered) return;
+    currentIndex++;
+    if (currentIndex >= questionData.length) {
+      showResults();
+    } else {
+      renderQuestion();
+    }
+  });
+
+  function showResults() {
+    updateProgress();
+    document.getElementById("progressFill").style.width = "100%";
+    document.getElementById("quizCard").classList.add("hidden");
+    document.getElementById("resultsCard").classList.remove("hidden");
+    document.getElementById("finalScore").textContent = score + " / " + questionData.length;
+
+    var msg, msgDe;
+    if (score === questionData.length) {
+      msg = "Perfect score! You really understand present simple and continuous.";
+      msgDe = "Perfekte Punktzahl! Du verstehst present simple und continuous wirklich gut.";
+    } else if (score >= questionData.length * 0.7) {
+      msg = "Great job! Just a little more practice with the signal words.";
+      msgDe = "Gut gemacht! Uebe noch ein bisschen mit den Signalwoertern.";
+    } else {
+      msg = "Good try! Look at the signal words like always, now, and every day again.";
+      msgDe = "Guter Versuch! Schau dir die Signalwoerter wie always, now und every day nochmal an.";
+    }
+    document.getElementById("resultMsg").textContent = msg;
+    document.getElementById("resultMsgDe").textContent = msgDe;
+  }
+
+  document.getElementById("restartBtn").addEventListener("click", initQuiz);
+
+  initQuiz();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Present Perfect — Erklärung &amp; Test</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@500;600&family=Karla:wght@400;500;600;700&display=swap');
+
+:root{
+  --paper:#f6f1e7;
+  --ink:#241f1a;
+  --ink-soft:#5c5347;
+  --line:#d8cdb8;
+  --card:#fffdf8;
+  --gold:#c98a3a;
+  --teal:#2a8a7e;
+  --teal-light:rgba(42,138,126,0.10);
+  --teal-mid:rgba(42,138,126,0.22);
+  --green:#2f6b3e;
+  --green-light:rgba(47,107,62,0.10);
+  --red:#a13a2f;
+  --red-light:rgba(161,58,47,0.09);
+  --blue:#3b6ea5;
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--paper);
+  background-image:radial-gradient(circle at 1px 1px,rgba(36,31,26,0.06) 1px,transparent 0);
+  background-size:22px 22px;
+  color:var(--ink);
+  font-family:'Karla',sans-serif;
+  padding:40px 16px 80px;
+}
+.wrap{max-width:760px;margin:0 auto;}
+
+/* ── TOPBAR ── */
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;gap:12px;flex-wrap:wrap;}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo svg{width:32px;height:32px;}
+.logo-text{font-family:'Fraunces',serif;font-weight:700;font-size:14px;line-height:1.1;}
+.logo-text span{display:block;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;}
+.progress-wrap{flex:1;min-width:140px;}
+.progress-track{height:7px;background:rgba(36,31,26,0.08);border-radius:5px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--gold));border-radius:5px;width:0%;transition:width .35s ease;}
+.progress-label{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);margin-top:4px;text-align:right;}
+.score-pill{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;background:var(--card);border:1.5px solid var(--line);border-radius:20px;padding:5px 13px;white-space:nowrap;}
+
+/* ── EXPLAINER ── */
+.explainer{margin-bottom:0;}
+
+.ex-header{text-align:center;margin-bottom:28px;}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:8px;}
+.ex-header h1{font-family:'Fraunces',serif;font-weight:700;font-size:34px;margin:0 0 6px;letter-spacing:-.01em;}
+.ex-header .de{font-family:'Fraunces',serif;font-style:italic;color:var(--ink-soft);font-size:16px;margin:0 0 14px;}
+.rule{width:52px;height:3px;background:var(--gold);margin:0 auto;border-radius:2px;}
+
+/* Big "why" block */
+.why-block{
+  background:var(--teal);
+  color:#fff;
+  border-radius:12px;
+  padding:22px 24px;
+  margin-bottom:20px;
+  position:relative;
+  overflow:hidden;
+}
+.why-block::after{
+  content:"?";
+  position:absolute;right:-10px;top:-20px;
+  font-family:'Fraunces',serif;font-size:130px;font-weight:700;
+  color:rgba(255,255,255,0.07);line-height:1;pointer-events:none;
+}
+.why-block h2{font-family:'Fraunces',serif;font-size:19px;margin:0 0 10px;font-weight:700;}
+.why-block p{margin:0 0 8px;font-size:14.5px;line-height:1.6;}
+.why-block p:last-child{margin:0;}
+.why-block .de-note{font-style:italic;opacity:.85;font-size:13.5px;}
+
+/* Section cards */
+.section{
+  background:var(--card);
+  border:1.5px solid var(--line);
+  border-radius:12px;
+  padding:22px 22px 18px;
+  margin-bottom:18px;
+  position:relative;
+  overflow:hidden;
+}
+.section::before{content:"";position:absolute;top:0;left:0;width:6px;height:100%;background:var(--accent,var(--teal));}
+.section h3{font-family:'Fraunces',serif;font-weight:700;font-size:18px;margin:0 0 4px;color:var(--accent,var(--teal));}
+.section .s-de{font-family:'Fraunces',serif;font-style:italic;font-size:13px;color:var(--ink-soft);margin:0 0 14px;padding-bottom:12px;border-bottom:1px dashed var(--line);}
+
+/* Formula row */
+.formula-box{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:13.5px;
+  line-height:1.85;
+  background:rgba(36,31,26,0.035);
+  border-radius:8px;
+  padding:11px 14px;
+  margin-bottom:14px;
+}
+.formula-box .row{display:flex;align-items:baseline;gap:0;flex-wrap:wrap;}
+.tag{font-family:'Karla',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:.06em;font-weight:700;display:inline-block;min-width:72px;}
+.tag.pos{color:var(--green);}
+.tag.neg{color:var(--red);}
+.tag.q{color:var(--blue);}
+.hl-teal{color:var(--teal);font-weight:700;}
+.hl-green{color:var(--green);font-weight:700;}
+.hl-red{color:var(--red);font-weight:700;}
+
+/* Example pairs */
+.ex-pair{margin:5px 0 5px 0;}
+.ex-pair .en{font-size:14px;font-weight:600;margin:0 0 2px;}
+.ex-pair .en b{color:var(--teal);}
+.ex-pair .de{font-size:12.5px;color:var(--ink-soft);font-style:italic;margin:0;}
+
+/* Keyword pills */
+.kw-row{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 10px;}
+.kw{
+  display:inline-flex;flex-direction:column;align-items:center;
+  background:var(--card);border:1.5px solid var(--line);
+  border-radius:8px;padding:8px 14px;gap:3px;
+}
+.kw .word{font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:14px;color:var(--teal);}
+.kw .pos-tag{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.05em;}
+.kw .meaning{font-size:12px;color:var(--ink-soft);font-style:italic;}
+.kw .rule-note{font-size:11px;color:var(--gold);font-weight:700;margin-top:1px;}
+
+/* Achtung note */
+.achtung{
+  font-size:12.5px;color:var(--ink-soft);
+  background:rgba(201,138,58,0.09);
+  border-left:3px solid var(--gold);
+  padding:8px 12px;border-radius:0 6px 6px 0;
+  line-height:1.55;margin-top:12px;
+}
+.achtung b{color:var(--ink);}
+
+/* Participle mini-table */
+.pp-table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0 14px;}
+.pp-table th{font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);font-weight:700;text-align:left;padding:0 10px 6px 0;border-bottom:1px solid var(--line);}
+.pp-table td{padding:5px 10px 3px 0;border-bottom:1px dashed rgba(216,205,184,0.5);}
+.pp-table .f1{color:var(--ink-soft);}
+.pp-table .f2{color:var(--ink);}
+.pp-table .f3{color:var(--teal);font-weight:700;}
+.pp-table .reg{font-size:10px;background:var(--green-light);color:var(--green);font-weight:700;padding:1px 5px;border-radius:3px;letter-spacing:.04em;}
+.pp-table .irr{font-size:10px;background:rgba(161,58,47,0.10);color:var(--red);font-weight:700;padding:1px 5px;border-radius:3px;letter-spacing:.04em;}
+
+/* Start button */
+.start-btn{display:block;width:100%;padding:14px;border:none;border-radius:10px;background:var(--teal);color:#fff;font-family:'Karla',sans-serif;font-weight:700;font-size:15.5px;cursor:pointer;transition:opacity .2s;margin-top:6px;letter-spacing:.01em;}
+.start-btn:hover{opacity:.88;}
+
+/* ── QUIZ ── */
+.qcard{
+  background:var(--card);border:1.5px solid var(--line);border-radius:12px;
+  padding:22px 22px 18px;margin-bottom:16px;display:none;
+}
+.qcard.active{display:block;}
+.qmeta{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;}
+.qnum{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:600;letter-spacing:.04em;text-transform:uppercase;}
+.qtype-badge{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--teal);font-weight:700;text-transform:uppercase;letter-spacing:.06em;}
+
+.qtext{font-family:'Fraunces',serif;font-weight:600;font-size:18px;line-height:1.45;margin-bottom:4px;}
+.blank{display:inline-block;min-width:72px;border-bottom:2.5px dashed var(--line);text-align:center;vertical-align:bottom;}
+.qde{font-size:13px;color:var(--ink-soft);font-style:italic;margin-bottom:16px;}
+
+.options{display:flex;flex-direction:column;gap:9px;}
+.opt{
+  display:flex;align-items:center;gap:11px;
+  border:1.5px solid var(--line);border-radius:9px;padding:11px 14px;
+  background:var(--paper);cursor:pointer;transition:border-color .15s,background .15s;
+  font-size:14.5px;font-weight:500;
+}
+.opt:hover:not(.disabled){border-color:var(--teal);}
+.opt-letter{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;width:22px;height:22px;border-radius:50%;background:rgba(36,31,26,0.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.opt.selected{border-color:var(--ink);background:rgba(36,31,26,0.04);}
+.opt.correct{border-color:var(--green);background:var(--green-light);}
+.opt.incorrect{border-color:var(--red);background:var(--red-light);}
+.opt.disabled{cursor:default;}
+
+.feedback{margin-top:14px;padding:11px 13px;border-radius:0 6px 6px 0;font-size:13px;line-height:1.55;display:none;border-left:3px solid var(--green);background:var(--green-light);}
+.feedback.show{display:block;}
+.feedback.wrong{border-left-color:var(--red);background:var(--red-light);}
+.feedback b{color:var(--ink);}
+.feedback .fb-de{display:block;color:var(--ink-soft);font-style:italic;margin-top:4px;font-size:12px;}
+
+.next-btn{margin-top:16px;width:100%;padding:12px;border:none;border-radius:9px;background:var(--teal);color:#fff;font-family:'Karla',sans-serif;font-weight:700;font-size:14.5px;cursor:pointer;opacity:.3;pointer-events:none;transition:opacity .2s;}
+.next-btn.enabled{opacity:1;pointer-events:auto;}
+.next-btn.enabled:hover{opacity:.88;}
+
+/* ── RESULTS ── */
+.results{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:32px 26px;text-align:center;display:none;}
+.results.active{display:block;}
+.results .big-score{font-family:'Fraunces',serif;font-weight:700;font-size:52px;color:var(--teal);margin:6px 0 2px;}
+.results .score-label{font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-soft);margin-bottom:18px;}
+.results h2{font-family:'Fraunces',serif;font-size:21px;margin:0 0 4px;}
+.results .verdict-de{font-style:italic;color:var(--ink-soft);font-size:14px;margin-bottom:22px;}
+.retry-btn{padding:11px 26px;border:1.5px solid var(--teal);border-radius:9px;background:transparent;color:var(--teal);font-family:'Karla',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:background .2s,color .2s;}
+.retry-btn:hover{background:var(--teal);color:#fff;}
+
+footer{text-align:center;margin-top:36px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);opacity:.6;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="logo">
+      <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="24" cy="24" r="22" fill="#c98a3a"/>
+        <path d="M14 32V16h14M14 24h10M14 16l16 16" stroke="#fffdf8" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="logo-text">Forbes English<span>Present Perfect</span></div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-label" id="progressLabel">Frage 0 / 15</div>
+    </div>
+    <div class="score-pill" id="scorePill">0 / 15</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       EXPLAINER
+  ════════════════════════════════════════════════ -->
+  <div class="explainer" id="explainer">
+
+    <div class="ex-header">
+      <div class="eyebrow">Übungsheft Teil 3 · Erklärung</div>
+      <h1>Present Perfect</h1>
+      <p class="de">die dritte Zeitform — und warum sie sich lohnt</p>
+      <div class="rule"></div>
+    </div>
+
+    <!-- WHY -->
+    <div class="why-block">
+      <h2>Wann benutzt du das Present Perfect?</h2>
+      <p>Du benutzt es, wenn etwas in der Vergangenheit passiert ist, aber <strong>du keinen genauen Zeitpunkt nennst</strong> — oder wenn das Ergebnis noch jetzt wichtig ist.</p>
+      <p class="de-note">Vergleich: <em>I lost my keys yesterday.</em> (Past Simple — genaue Zeit: yesterday)<br>
+      → <em>I've lost my keys.</em> (Present Perfect — kein Zeitpunkt, aber jetzt: ich habe sie nicht!)</p>
+    </div>
+
+    <!-- SECTION 1: STRUCTURE -->
+    <div class="section" style="--accent:var(--teal);">
+      <h3>Teil 1 — Die Struktur</h3>
+      <div class="s-de">have/has + Past Participle (3. Verbform)</div>
+
+      <div class="formula-box">
+        <div class="row"><span class="tag pos">+</span> I / you / we / they &nbsp;<span class="hl-teal">have</span>&nbsp; + past participle</div>
+        <div class="row"><span class="tag pos">+</span> he / she / it &nbsp;<span class="hl-teal">has</span>&nbsp; + past participle</div>
+        <div class="row"><span class="tag neg">–</span> I / you / we / they &nbsp;<span class="hl-red">haven't</span>&nbsp; + past participle</div>
+        <div class="row"><span class="tag neg">–</span> he / she / it &nbsp;<span class="hl-red">hasn't</span>&nbsp; + past participle</div>
+        <div class="row"><span class="tag q">?</span> <span class="hl-teal" style="color:var(--blue)">Have</span>&nbsp; I / you / we / they + past participle ?</div>
+        <div class="row"><span class="tag q">?</span> <span class="hl-teal" style="color:var(--blue)">Has</span>&nbsp; he / she / it + past participle ?</div>
+      </div>
+
+      <div class="ex-pair"><div class="en">I<b>'ve bought</b> a new book.</div><div class="de">Ich habe ein neues Buch gekauft.</div></div>
+      <div class="ex-pair"><div class="en">She <b>hasn't called</b> me.</div><div class="de">Sie hat mich nicht angerufen.</div></div>
+      <div class="ex-pair"><div class="en"><b>Have</b> you <b>seen</b> this film?</div><div class="de">Hast du diesen Film gesehen?</div></div>
+
+      <div class="achtung"><b>Kurzformen:</b> I have → <b>I've</b> &nbsp;·&nbsp; he has → <b>he's</b> &nbsp;·&nbsp; have not → <b>haven't</b> &nbsp;·&nbsp; has not → <b>hasn't</b></div>
+
+      <!-- Mini participle table -->
+      <div style="margin-top:16px;margin-bottom:4px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);">Das Past Participle — die 3. Form</div>
+      <table class="pp-table">
+        <thead><tr><th>Infinitiv</th><th>Past Simple</th><th>Past Participle ✓</th><th></th></tr></thead>
+        <tbody>
+          <tr><td class="f1">walk</td><td class="f2">walked</td><td class="f3">walked</td><td><span class="reg">reg.</span></td></tr>
+          <tr><td class="f1">study</td><td class="f2">studied</td><td class="f3">studied</td><td><span class="reg">reg.</span></td></tr>
+          <tr><td class="f1">go</td><td class="f2">went</td><td class="f3">gone</td><td><span class="irr">unreg.</span></td></tr>
+          <tr><td class="f1">see</td><td class="f2">saw</td><td class="f3">seen</td><td><span class="irr">unreg.</span></td></tr>
+          <tr><td class="f1">buy</td><td class="f2">bought</td><td class="f3">bought</td><td><span class="irr">unreg.</span></td></tr>
+          <tr><td class="f1">win</td><td class="f2">won</td><td class="f3">won</td><td><span class="irr">unreg.</span></td></tr>
+        </tbody>
+      </table>
+      <div class="achtung"><b>Regel:</b> Regelmäßige Verben → Grundform + <b>-ed</b> (gleich wie Past Simple). Unregelmäßige Verben → 3. Form der Verbliste — auswendig lernen!</div>
+    </div>
+
+    <!-- SECTION 2: ALREADY / YET / JUST -->
+    <div class="section" style="--accent:#7a5fa0;">
+      <h3>Teil 2 — already / yet / just</h3>
+      <div class="s-de">schon / noch nicht / gerade eben — Position ist alles!</div>
+
+      <div class="kw-row">
+        <div class="kw">
+          <span class="word">already</span>
+          <span class="pos-tag">schon</span>
+          <span class="meaning">etwas ist erledigt</span>
+          <span class="rule-note">→ zwischen have &amp; Partizip</span>
+        </div>
+        <div class="kw">
+          <span class="word">yet</span>
+          <span class="pos-tag">noch nicht / schon</span>
+          <span class="meaning">in Verneinung &amp; Fragen</span>
+          <span class="rule-note">→ immer am Satzende</span>
+        </div>
+        <div class="kw">
+          <span class="word">just</span>
+          <span class="pos-tag">gerade eben</span>
+          <span class="meaning">vor sehr kurzer Zeit</span>
+          <span class="rule-note">→ zwischen have &amp; Partizip</span>
+        </div>
+      </div>
+
+      <div class="formula-box">
+        <div class="row"><span class="tag pos">already</span> have/has + <span class="hl-teal">already</span> + past participle</div>
+        <div class="row"><span class="tag pos">just</span> have/has + <span class="hl-teal">just</span> + past participle</div>
+        <div class="row"><span class="tag neg">yet</span> haven't/hasn't + past participle + <span class="hl-red">yet</span></div>
+        <div class="row"><span class="tag q">yet?</span> Have/Has + subject + past participle + <span class="hl-teal" style="color:var(--blue)">yet</span> ?</div>
+      </div>
+
+      <div class="ex-pair"><div class="en">I've <b>already</b> washed the car.</div><div class="de">Ich habe das Auto <b>schon</b> gewaschen.</div></div>
+      <div class="ex-pair"><div class="en">She's <b>just</b> called me.</div><div class="de">Sie hat mich <b>gerade eben</b> angerufen.</div></div>
+      <div class="ex-pair"><div class="en">I haven't done my homework <b>yet</b>.</div><div class="de">Ich habe meine Hausaufgaben noch <b>nicht</b> gemacht.</div></div>
+      <div class="ex-pair"><div class="en">Have you eaten <b>yet</b>?</div><div class="de">Hast du schon gegessen?</div></div>
+    </div>
+
+    <!-- SECTION 3: EVER / NEVER -->
+    <div class="section" style="--accent:var(--green);">
+      <h3>Teil 3 — ever / never</h3>
+      <div class="s-de">jemals / noch nie — für Erlebnisse im Leben</div>
+
+      <div class="kw-row">
+        <div class="kw">
+          <span class="word">ever</span>
+          <span class="pos-tag">jemals</span>
+          <span class="meaning">in Fragen</span>
+          <span class="rule-note">→ zwischen have &amp; Partizip</span>
+        </div>
+        <div class="kw">
+          <span class="word">never</span>
+          <span class="pos-tag">noch nie / nie</span>
+          <span class="meaning">in positiven Sätzen!</span>
+          <span class="rule-note">→ zwischen have &amp; Partizip</span>
+        </div>
+      </div>
+
+      <div class="formula-box">
+        <div class="row"><span class="tag q">ever?</span> Have/Has + subject + <span class="hl-teal" style="color:var(--blue)">ever</span> + past participle ?</div>
+        <div class="row"><span class="tag neg">never</span> subject + have/has + <span class="hl-red">never</span> + past participle</div>
+      </div>
+
+      <div class="ex-pair"><div class="en">Have you <b>ever</b> been to London?</div><div class="de">Bist du <b>jemals</b> in London gewesen?</div></div>
+      <div class="ex-pair"><div class="en">I've <b>never</b> eaten sushi.</div><div class="de">Ich habe <b>noch nie</b> Sushi gegessen.</div></div>
+
+      <div class="achtung"><b>Achtung:</b> <b>never</b> macht den Satz bereits negativ — kein zusätzliches "not" nötig! <em>I've never been</em> — nicht: <em>I haven't never been</em>.</div>
+    </div>
+
+    <button class="start-btn" id="startBtn">Test starten →</button>
+
+  </div><!-- /explainer -->
+
+  <!-- QUIZ AREA -->
+  <div id="quizArea"></div>
+
+  <!-- RESULTS -->
+  <div class="results" id="results">
+    <div class="score-label">Dein Ergebnis</div>
+    <div class="big-score" id="finalScore">0 / 15</div>
+    <h2 id="verdictText"></h2>
+    <p class="verdict-de" id="verdictDe"></p>
+    <button class="retry-btn" id="retryBtn">Nochmal versuchen</button>
+  </div>
+
+  <footer>Forbes English · Present Perfect · Teil 3</footer>
+</div>
+
+<script>
+/* ─────────────────────────────────────────
+   QUESTIONS
+   15 questions across three sub-topics:
+   1–5  basic form (+/–/?)
+   6–10 already / yet / just
+   11–15 ever / never
+───────────────────────────────────────── */
+const QUESTIONS = [
+  // ── BASIC FORM ──
+  {
+    type: "Struktur",
+    en: 'My dad <span class="blank">___</span> to America.',
+    de: "Mein Vater ist nach Amerika gegangen.",
+    options: ["has gone", "have gone", "has go", "has went"],
+    correct: 0,
+    feedbackEn: "<b>has gone</b> — he/she/it uses <b>has</b>, and the past participle of go is <b>gone</b> (not went).",
+    feedbackDe: "3. Person Singular → has. Unregelmäßig: go – went – <b>gone</b>."
+  },
+  {
+    type: "Struktur",
+    en: 'She <span class="blank">___</span> me the answer.',
+    de: "Sie hat mir die Antwort nicht gegeben.",
+    options: ["hasn't given", "haven't given", "hasn't gave", "didn't given"],
+    correct: 0,
+    feedbackEn: "<b>hasn't given</b> — she/he/it uses <b>hasn't</b> for negatives. Past participle of give is <b>given</b>.",
+    feedbackDe: "Verneinung mit he/she/it → hasn't + Partizip. give – gave – <b>given</b>."
+  },
+  {
+    type: "Struktur",
+    en: '__________ you <span class="blank">___</span> the new Billie Eilish song?',
+    de: "Hast du das neue Billie-Eilish-Lied gehört?",
+    options: ["Have / heard", "Has / heard", "Have / hear", "Did / heard"],
+    correct: 0,
+    feedbackEn: "<b>Have / heard</b> — questions with I/you/we/they use <b>Have</b>. Past participle of hear is <b>heard</b>.",
+    feedbackDe: "Frage mit 'you' → Have. hear – heard – <b>heard</b> (regelmäßig, aber Ausnahme in der Schreibweise)."
+  },
+  {
+    type: "Struktur",
+    en: 'I <span class="blank">___</span> Indian food lots of times.',
+    de: "Ich habe indisches Essen viele Male gegessen.",
+    options: ["'ve eaten", "'ve eat", "'ve ate", "has eaten"],
+    correct: 0,
+    feedbackEn: "<b>'ve eaten</b> — I + have → I've. Past participle of eat is <b>eaten</b> (not ate — that's past simple).",
+    feedbackDe: "I → have → 've. Unregelmäßig: eat – ate – <b>eaten</b>. Ate ist Past Simple, nicht Partizip!"
+  },
+  {
+    type: "Fehler finden",
+    en: 'Which sentence is correct?',
+    de: "Welcher Satz ist grammatisch richtig?",
+    options: [
+      "My favourite band has made a new album.",
+      "My favourite band have made a new album.",
+      "My favourite band has make a new album.",
+      "My favourite band has maked a new album."
+    ],
+    correct: 0,
+    feedbackEn: "<b>has made</b> — a band (= it) uses <b>has</b>. Past participle of make is <b>made</b>.",
+    feedbackDe: "'My favourite band' ist 3. Person Singular → has. make – made – <b>made</b> (unregelmäßig)."
+  },
+
+  // ── ALREADY / YET / JUST ──
+  {
+    type: "already / yet / just",
+    en: 'I\'ve <span class="blank">___</span> ordered a taxi.',
+    de: "Ich habe ein Taxi schon bestellt.",
+    options: ["already", "yet", "just yet", "never"],
+    correct: 0,
+    feedbackEn: "<b>already</b> = schon (etwas ist erledigt). It goes <b>between</b> have and the past participle.",
+    feedbackDe: "<b>already</b> = schon. Position: have/has + <b>already</b> + Partizip."
+  },
+  {
+    type: "already / yet / just",
+    en: 'We haven\'t got our tickets <span class="blank">___</span>.',
+    de: "Wir haben unsere Tickets noch nicht.",
+    options: ["yet", "already", "just", "ever"],
+    correct: 0,
+    feedbackEn: "<b>yet</b> = noch nicht. In negative sentences, <b>yet</b> always goes at the very <b>end</b> of the sentence.",
+    feedbackDe: "<b>yet</b> = noch nicht. In der Verneinung immer am <b>Satzende</b>."
+  },
+  {
+    type: "already / yet / just",
+    en: 'She\'s <span class="blank">___</span> gone to see her friend.',
+    de: "Sie ist gerade eben gegangen, um ihre Freundin zu besuchen.",
+    options: ["just", "yet", "already yet", "never"],
+    correct: 0,
+    feedbackEn: "<b>just</b> = gerade eben (a moment ago). Position: have/has + <b>just</b> + past participle.",
+    feedbackDe: "<b>just</b> = gerade eben, vor sehr kurzer Zeit. Position: have + <b>just</b> + Partizip."
+  },
+  {
+    type: "already / yet / just",
+    en: 'He <span class="blank">___</span> his computer yet, and he\'s already broken it.',
+    de: "Er hat seinen Computer noch nicht benutzt, und hat ihn schon kaputt gemacht.",
+    options: ["hasn't used", "has used", "haven't used", "hasn't use"],
+    correct: 0,
+    feedbackEn: "<b>hasn't used</b> — 'he' needs <b>hasn't</b> for the negative. 'yet' at the end confirms it's a negative sentence.",
+    feedbackDe: "'he' → hasn't. 'yet' am Satzende bestätigt die Verneinung. use – used – <b>used</b> (regelmäßig)."
+  },
+  {
+    type: "already / yet / just",
+    en: 'Which sentence puts "already" in the correct position?',
+    de: "Wo steht 'already' richtig?",
+    options: [
+      "She has already finished her homework.",
+      "She already has finished her homework.",
+      "She has finished already her homework.",
+      "Already she has finished her homework."
+    ],
+    correct: 0,
+    feedbackEn: "<b>has already finished</b> — already sits between <b>has</b> and the past participle, not before has and not after the participle.",
+    feedbackDe: "already steht immer zwischen <b>has/have</b> und dem Partizip — nirgendwo sonst."
+  },
+
+  // ── EVER / NEVER ──
+  {
+    type: "ever / never",
+    en: 'Have you <span class="blank">___</span> been to Hollywood?',
+    de: "Bist du jemals in Hollywood gewesen?",
+    options: ["ever", "never", "already", "yet"],
+    correct: 0,
+    feedbackEn: "<b>ever</b> = jemals. Used in questions to ask about life experience. Position: between <b>have</b> and the past participle.",
+    feedbackDe: "<b>ever</b> = jemals, in Fragen über Lebenserfahrungen. Position: have + <b>ever</b> + Partizip."
+  },
+  {
+    type: "ever / never",
+    en: 'I\'ve <span class="blank">___</span> broken a bone.',
+    de: "Ich habe noch nie einen Knochen gebrochen.",
+    options: ["never", "ever", "not ever", "yet"],
+    correct: 0,
+    feedbackEn: "<b>never</b> = noch nie / nie. The sentence is already negative — no extra 'not' needed.",
+    feedbackDe: "<b>never</b> macht den Satz alleine negativ — kein 'not' zusätzlich nötig!"
+  },
+  {
+    type: "ever / never",
+    en: 'Which sentence is correct?',
+    de: "Welcher Satz ist richtig?",
+    options: [
+      "She's never met a famous person.",
+      "She's never not met a famous person.",
+      "She hasn't never met a famous person.",
+      "She ever met a famous person."
+    ],
+    correct: 0,
+    feedbackEn: "<b>She's never met</b> — 'never' alone makes the sentence negative. Double negatives ('hasn't never') are wrong in English.",
+    feedbackDe: "'never' reicht alleine. Doppelte Verneinung ('hasn't never') ist auf Englisch falsch."
+  },
+  {
+    type: "ever / never",
+    en: '<span class="blank">___</span> she ever won a competition?',
+    de: "Hat sie jemals einen Wettbewerb gewonnen?",
+    options: ["Has", "Have", "Is", "Did"],
+    correct: 0,
+    feedbackEn: "<b>Has</b> — she = 3rd person singular, so the question starts with <b>Has</b>. Past participle of win = <b>won</b>.",
+    feedbackDe: "'she' = 3. Person Singular → <b>Has</b>. win – won – <b>won</b> (unregelmäßig)."
+  },
+  {
+    type: "ever / never",
+    en: 'My aunt Jessica <span class="blank">___</span> to more than fifteen different countries!',
+    de: "Meine Tante Jessica ist in mehr als fünfzehn verschiedene Länder gereist!",
+    options: ["has travelled", "have travelled", "has travel", "has travelling"],
+    correct: 0,
+    feedbackEn: "<b>has travelled</b> — she/he/it → <b>has</b>. travel + <b>-led</b> (regular verb, double the l in British English).",
+    feedbackDe: "3. Person Singular → has. travel → <b>travelled</b> (regelmäßig, Brit. Englisch verdoppelt das l)."
+  }
+];
+
+/* ─────────────── Fisher-Yates shuffle ─────────────── */
+function shuffle(arr){
+  const a=arr.slice();
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+
+let score=0, answered=[], runtimeQ=[];
+
+function prepareQuestions(){
+  runtimeQ=QUESTIONS.map(q=>{
+    const indexed=q.options.map((text,i)=>({text,isCorrect:i===q.correct}));
+    return {...q,shuffled:shuffle(indexed)};
+  });
+  answered=new Array(QUESTIONS.length).fill(false);
+}
+
+function renderQuiz(){
+  const area=document.getElementById('quizArea');
+  area.innerHTML='';
+  const letters=['A','B','C','D'];
+  runtimeQ.forEach((q,idx)=>{
+    const card=document.createElement('div');
+    card.className='qcard';
+    card.id='q'+idx;
+    const opts=q.shuffled.map((o,oi)=>`
+      <div class="opt" data-idx="${oi}" data-qidx="${idx}">
+        <span class="opt-letter">${letters[oi]}</span>
+        <span>${o.text}</span>
+      </div>`).join('');
+    card.innerHTML=`
+      <div class="qmeta">
+        <span class="qnum">Frage ${idx+1} von ${QUESTIONS.length}</span>
+        <span class="qtype-badge">${q.type}</span>
+      </div>
+      <div class="qtext">${q.en}</div>
+      <div class="qde">${q.de}</div>
+      <div class="options">${opts}</div>
+      <div class="feedback" id="fb${idx}"></div>
+      <button class="next-btn" id="next${idx}">${idx===QUESTIONS.length-1?'Ergebnis anzeigen →':'Nächste Frage →'}</button>`;
+    area.appendChild(card);
+  });
+  document.querySelectorAll('.opt').forEach(el=>el.addEventListener('click',handleClick));
+  runtimeQ.forEach((_,idx)=>document.getElementById('next'+idx).addEventListener('click',()=>goTo(idx+1)));
+}
+
+function handleClick(e){
+  const el=e.currentTarget;
+  const qidx=parseInt(el.dataset.qidx);
+  if(answered[qidx]) return;
+  answered[qidx]=true;
+  const oi=parseInt(el.dataset.idx);
+  const q=runtimeQ[qidx];
+  const chosen=q.shuffled[oi];
+  document.querySelectorAll(`.opt[data-qidx="${qidx}"]`).forEach(opt=>{
+    opt.classList.add('disabled');
+    const i=parseInt(opt.dataset.idx);
+    if(q.shuffled[i].isCorrect) opt.classList.add('correct');
+    else if(i===oi) opt.classList.add('incorrect');
+  });
+  if(chosen.isCorrect) score++;
+  const fb=document.getElementById('fb'+qidx);
+  fb.className='feedback show'+(chosen.isCorrect?'':' wrong');
+  fb.innerHTML=`${q.feedbackEn}<span class="fb-de">${q.feedbackDe}</span>`;
+  document.getElementById('scorePill').textContent=`${score} / ${QUESTIONS.length}`;
+  document.getElementById('next'+qidx).classList.add('enabled');
+}
+
+function updateProgress(idx){
+  const pct=(idx/QUESTIONS.length)*100;
+  document.getElementById('progressFill').style.width=pct+'%';
+  document.getElementById('progressLabel').textContent=`Frage ${Math.min(idx+1,QUESTIONS.length)} / ${QUESTIONS.length}`;
+}
+
+function goTo(idx){
+  document.querySelectorAll('.qcard').forEach(c=>c.classList.remove('active'));
+  if(idx>=QUESTIONS.length){showResults();return;}
+  document.getElementById('q'+idx).classList.add('active');
+  updateProgress(idx);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function showResults(){
+  document.getElementById('progressFill').style.width='100%';
+  document.getElementById('progressLabel').textContent=`Frage ${QUESTIONS.length} / ${QUESTIONS.length}`;
+  document.getElementById('results').classList.add('active');
+  document.getElementById('finalScore').textContent=`${score} / ${QUESTIONS.length}`;
+  const pct=score/QUESTIONS.length;
+  let v,vd;
+  if(pct>=0.87){v="Ausgezeichnet!";vd="Du hast das Present Perfect wirklich verstanden.";}
+  else if(pct>=0.6){v="Gut gemacht!";vd="Schau dir die Fehler noch einmal an — du bist fast da!";}
+  else{v="Weiter üben!";vd="Lies die Erklärung noch einmal durch und versuche es dann erneut.";}
+  document.getElementById('verdictText').textContent=v;
+  document.getElementById('verdictDe').textContent=vd;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function reset(){
+  score=0;
+  document.getElementById('results').classList.remove('active');
+  document.getElementById('explainer').style.display='block';
+  document.getElementById('quizArea').innerHTML='';
+  document.getElementById('scorePill').textContent='0 / 15';
+  document.getElementById('progressFill').style.width='0%';
+  document.getElementById('progressLabel').textContent='Frage 0 / 15';
+}
+
+document.getElementById('startBtn').addEventListener('click',()=>{
+  document.getElementById('explainer').style.display='none';
+  prepareQuestions();
+  renderQuiz();
+  goTo(0);
+});
+document.getElementById('retryBtn').addEventListener('click',reset);
+</script>
+</body>
+</html>

@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English | Question Words (A0)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent: #2E6FB5;
+    --accent-dark: #1E4E82;
+    --accent-light: #DCEAFB;
+    --accent-soft: #F0F6FD;
+    --correct: #2F9E5B;
+    --correct-bg: #E4F7EC;
+    --wrong: #D64545;
+    --wrong-bg: #FBE8E8;
+    --ink: #1F2937;
+    --muted: #6B7280;
+    --border: #E1E7EF;
+    --white: #FFFFFF;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(160deg, #F4F8FD 0%, #EAF2FB 100%);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 24px 16px 60px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .app {
+    width: 100%;
+    max-width: 720px;
+  }
+
+  header.top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+
+  .brand-text .name {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    font-size: 17px;
+    color: var(--accent-dark);
+  }
+
+  .brand-text .tag {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  .level-badge {
+    background: var(--accent);
+    color: var(--white);
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  .card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 28px 26px;
+    box-shadow: 0 10px 30px rgba(30, 78, 130, 0.10);
+    border: 1px solid var(--border);
+  }
+
+  h1.title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--accent-dark);
+    margin-bottom: 6px;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 18px;
+  }
+
+  .intro-block {
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-light);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+  }
+
+  .intro-block p {
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+
+  .intro-block p:last-child { margin-bottom: 0; }
+
+  .word-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    margin: 16px 0 4px;
+  }
+
+  .word-chip {
+    background: var(--white);
+    border: 2px solid var(--accent-light);
+    border-radius: 12px;
+    padding: 10px 12px;
+    text-align: center;
+  }
+
+  .word-chip .en {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    color: var(--accent-dark);
+    font-size: 15px;
+  }
+
+  .word-chip .de {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  button.primary-btn {
+    background: var(--accent);
+    color: var(--white);
+    border: none;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 13px 26px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.1s ease;
+    width: 100%;
+  }
+
+  button.primary-btn:hover:not(:disabled) { background: var(--accent-dark); }
+  button.primary-btn:active:not(:disabled) { transform: scale(0.98); }
+
+  button.primary-btn:disabled {
+    background: #C9D6E4;
+    cursor: not-allowed;
+  }
+
+  /* Progress + score bar */
+  .status-bar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+
+  .progress-track {
+    flex: 1;
+    height: 10px;
+    background: var(--accent-light);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 999px;
+    transition: width 0.3s ease;
+    width: 0%;
+  }
+
+  .score-pill {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    background: var(--accent-dark);
+    color: var(--white);
+    padding: 6px 14px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  .q-type-tag {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent-dark);
+    background: var(--accent-light);
+    padding: 4px 12px;
+    border-radius: 999px;
+    margin-bottom: 12px;
+  }
+
+  .q-prompt {
+    font-family: 'Poppins', sans-serif;
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 20px;
+    color: var(--ink);
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .option-btn {
+    text-align: left;
+    background: var(--white);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 13px 16px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  .option-btn:disabled { cursor: not-allowed; }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: #1D6B3E;
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+    color: #9E2E2E;
+  }
+
+  .feedback {
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 18px;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+
+  .feedback.correct-fb {
+    background: var(--correct-bg);
+    color: #1D6B3E;
+    border: 1px solid #BEE6CC;
+  }
+
+  .feedback.wrong-fb {
+    background: var(--wrong-bg);
+    color: #9E2E2E;
+    border: 1px solid #F3C6C6;
+  }
+
+  /* Results screen */
+  .results {
+    text-align: center;
+  }
+
+  .results .big-score {
+    font-family: 'Poppins', sans-serif;
+    font-size: 52px;
+    font-weight: 800;
+    color: var(--accent-dark);
+    margin: 6px 0;
+  }
+
+  .results .msg {
+    font-size: 15px;
+    color: var(--muted);
+    font-weight: 700;
+    margin-bottom: 22px;
+  }
+
+  .hidden { display: none !important; }
+
+  @media (max-width: 480px) {
+    .card { padding: 20px 16px; }
+    h1.title { font-size: 21px; }
+    .q-prompt { font-size: 17px; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="top">
+    <div class="brand">
+      <svg width="42" height="42" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="48" fill="#2E6FB5"/>
+        <text x="50" y="65" font-family="Poppins, sans-serif" font-weight="800" font-size="46" fill="#FFFFFF" text-anchor="middle">FE</text>
+      </svg>
+      <div class="brand-text">
+        <span class="name">Forbes English</span>
+        <span class="tag">Interactive Lesson</span>
+      </div>
+    </div>
+    <div class="level-badge">A0</div>
+  </header>
+
+  <!-- INTRO SCREEN -->
+  <section id="intro-screen" class="card">
+    <h1 class="title">Question Words</h1>
+    <p class="subtitle">Fragewörter &middot; mit deutscher Unterstützung</p>
+
+    <div class="intro-block">
+      <p>In English, many questions begin with a <strong>question word</strong>. These words ask for specific information: a person, a thing, a place, a time, a reason, or a way something is done.</p>
+      <p>A simple pattern for beginners: <strong>question word + verb + subject?</strong></p>
+      <p>Example: <strong>Where do you live?</strong> &nbsp;|&nbsp; <strong>How are you?</strong></p>
+    </div>
+
+    <div class="word-grid">
+      <div class="word-chip"><div class="en">Who</div><div class="de">Wer</div></div>
+      <div class="word-chip"><div class="en">What</div><div class="de">Was</div></div>
+      <div class="word-chip"><div class="en">Where</div><div class="de">Wo</div></div>
+      <div class="word-chip"><div class="en">When</div><div class="de">Wann</div></div>
+      <div class="word-chip"><div class="en">Why</div><div class="de">Warum</div></div>
+      <div class="word-chip"><div class="en">How</div><div class="de">Wie</div></div>
+    </div>
+
+    <br>
+    <button class="primary-btn" id="start-btn">Start the lesson</button>
+  </section>
+
+  <!-- QUIZ SCREEN -->
+  <section id="quiz-screen" class="hidden">
+    <div class="status-bar">
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+      <div class="score-pill" id="score-pill">Score: 0/0</div>
+    </div>
+
+    <div class="card">
+      <div class="q-type-tag" id="q-type-tag"></div>
+      <div class="q-prompt" id="q-prompt"></div>
+      <div class="options" id="options-container"></div>
+      <div class="feedback" id="feedback-box"></div>
+      <button class="primary-btn" id="next-btn" disabled>Next</button>
+    </div>
+  </section>
+
+  <!-- RESULTS SCREEN -->
+  <section id="results-screen" class="card results hidden">
+    <div class="q-type-tag">Complete</div>
+    <h1 class="title">Lesson Finished!</h1>
+    <div class="big-score" id="final-score">0/0</div>
+    <div class="msg" id="final-msg"></div>
+    <button class="primary-btn" id="restart-btn">Try Again</button>
+  </section>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var questions = [
+    // Type A: meaning
+    { type: "Meaning", prompt: "What does \"Who\" mean in German?", options: ["Wer", "Was", "Wo", "Wann"], correct: "Wer",
+      explanation: "\"Who\" = Wer. We use it to ask about a person. Example: Who is she?" },
+    { type: "Meaning", prompt: "What does \"What\" mean in German?", options: ["Wer", "Was", "Wie", "Warum"], correct: "Was",
+      explanation: "\"What\" = Was. We use it to ask about a thing. Example: What is this?" },
+    { type: "Meaning", prompt: "What does \"Where\" mean in German?", options: ["Wann", "Wer", "Wie", "Wo"], correct: "Wo",
+      explanation: "\"Where\" = Wo. We use it to ask about a place. Example: Where do you live?" },
+    { type: "Meaning", prompt: "What does \"When\" mean in German?", options: ["Wo", "Was", "Warum", "Wann"], correct: "Wann",
+      explanation: "\"When\" = Wann. We use it to ask about a time. Example: When is your birthday?" },
+    { type: "Meaning", prompt: "What does \"Why\" mean in German?", options: ["Wie", "Wer", "Wann", "Warum"], correct: "Warum",
+      explanation: "\"Why\" = Warum. We use it to ask for a reason. Example: Why are you happy?" },
+    { type: "Meaning", prompt: "What does \"How\" mean in German?", options: ["Warum", "Was", "Wo", "Wie"], correct: "Wie",
+      explanation: "\"How\" = Wie. We use it to ask about a way or a condition. Example: How are you?" },
+
+    // Type B: fill in the blank
+    { type: "Fill the Gap", prompt: "___ are you? (asking about feelings)", options: ["How", "Where", "What", "Who"], correct: "How",
+      explanation: "\"How are you?\" asks about someone's condition or feelings. Answer: I'm fine, thanks." },
+    { type: "Fill the Gap", prompt: "___ do you live?", options: ["When", "Where", "Why", "Who"], correct: "Where",
+      explanation: "\"Where do you live?\" asks about a place. Answer: I live in Berlin." },
+    { type: "Fill the Gap", prompt: "___ is your name?", options: ["How", "Why", "What", "When"], correct: "What",
+      explanation: "\"What is your name?\" asks for information about a thing (in this case, a name). Answer: I'm Anna." },
+    { type: "Fill the Gap", prompt: "___ is your birthday?", options: ["Who", "What", "Where", "When"], correct: "When",
+      explanation: "\"When is your birthday?\" asks about a time. Answer: It's in May." },
+    { type: "Fill the Gap", prompt: "___ are you learning English?", options: ["Why", "Who", "How", "Where"], correct: "Why",
+      explanation: "\"Why are you learning English?\" asks for a reason. Answer: To learn English." },
+    { type: "Fill the Gap", prompt: "___ is your teacher?", options: ["What", "When", "Where", "Who"], correct: "Who",
+      explanation: "\"Who is your teacher?\" asks about a person. Answer: Mrs Schmidt, for example." },
+
+    // Type C: match question to correct answer
+    { type: "Match the Answer", prompt: "Who are you?", options: ["I'm Maria.", "In Munich.", "A phone.", "I'm good."], correct: "I'm Maria.",
+      explanation: "\"Who\" asks about a person, so the answer names a person: I'm Maria." },
+    { type: "Match the Answer", prompt: "Where do you live?", options: ["I'm Maria.", "A phone.", "In Munich.", "At 10 o'clock."], correct: "In Munich.",
+      explanation: "\"Where\" asks about a place, so the answer gives a place: In Munich." },
+    { type: "Match the Answer", prompt: "What is this?", options: ["I'm Maria.", "In Munich.", "I'm good.", "A phone."], correct: "A phone.",
+      explanation: "\"What\" asks about a thing, so the answer names a thing: A phone." },
+    { type: "Match the Answer", prompt: "How are you?", options: ["In Munich.", "A phone.", "I'm good.", "To study English."], correct: "I'm good.",
+      explanation: "\"How are you?\" asks about a feeling or condition, so the answer describes that: I'm good." },
+    { type: "Match the Answer", prompt: "When is the lesson?", options: ["I'm Maria.", "A phone.", "To study English.", "At 10 o'clock."], correct: "At 10 o'clock.",
+      explanation: "\"When\" asks about a time, so the answer gives a time: At 10 o'clock." },
+    { type: "Match the Answer", prompt: "Why are you here?", options: ["I'm Maria.", "In Munich.", "At 10 o'clock.", "To study English."], correct: "To study English.",
+      explanation: "\"Why\" asks for a reason, so the answer gives a reason: To study English." }
+  ];
+
+  function shuffle(array) {
+    var arr = array.slice();
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = arr[i];
+      arr[i] = arr[j];
+      arr[j] = tmp;
+    }
+    return arr;
+  }
+
+  var introScreen = document.getElementById("intro-screen");
+  var quizScreen = document.getElementById("quiz-screen");
+  var resultsScreen = document.getElementById("results-screen");
+  var startBtn = document.getElementById("start-btn");
+  var restartBtn = document.getElementById("restart-btn");
+  var nextBtn = document.getElementById("next-btn");
+  var progressFill = document.getElementById("progress-fill");
+  var scorePill = document.getElementById("score-pill");
+  var qTypeTag = document.getElementById("q-type-tag");
+  var qPrompt = document.getElementById("q-prompt");
+  var optionsContainer = document.getElementById("options-container");
+  var feedbackBox = document.getElementById("feedback-box");
+  var finalScore = document.getElementById("final-score");
+  var finalMsg = document.getElementById("final-msg");
+
+  var currentIndex = 0;
+  var score = 0;
+  var answered = false;
+
+  function startLesson() {
+    currentIndex = 0;
+    score = 0;
+    introScreen.classList.add("hidden");
+    resultsScreen.classList.add("hidden");
+    quizScreen.classList.remove("hidden");
+    renderQuestion();
+  }
+
+  function renderQuestion() {
+    answered = false;
+    feedbackBox.classList.remove("show", "correct-fb", "wrong-fb");
+    feedbackBox.textContent = "";
+    nextBtn.disabled = true;
+
+    var q = questions[currentIndex];
+    qTypeTag.textContent = q.type;
+    qPrompt.textContent = q.prompt;
+
+    var shuffledOptions = shuffle(q.options);
+
+    optionsContainer.innerHTML = "";
+    shuffledOptions.forEach(function (optionText) {
+      var btn = document.createElement("button");
+      btn.className = "option-btn";
+      btn.type = "button";
+      btn.textContent = optionText;
+      btn.addEventListener("click", function () {
+        handleAnswer(btn, optionText, q);
+      });
+      optionsContainer.appendChild(btn);
+    });
+
+    updateStatusBar();
+  }
+
+  function handleAnswer(clickedBtn, optionText, q) {
+    if (answered) return;
+    answered = true;
+
+    var allButtons = optionsContainer.querySelectorAll(".option-btn");
+    allButtons.forEach(function (btn) {
+      btn.disabled = true;
+      if (btn.textContent === q.correct) {
+        btn.classList.add("correct");
+      }
+    });
+
+    var isCorrect = optionText === q.correct;
+
+    if (isCorrect) {
+      score++;
+      feedbackBox.classList.add("show", "correct-fb");
+      feedbackBox.textContent = "Correct! " + q.explanation;
+    } else {
+      clickedBtn.classList.add("wrong");
+      feedbackBox.classList.add("show", "wrong-fb");
+      feedbackBox.textContent = "Not quite. " + q.explanation;
+    }
+
+    nextBtn.disabled = false;
+    updateStatusBar();
+  }
+
+  function updateStatusBar() {
+    var pct = (currentIndex / questions.length) * 100;
+    progressFill.style.width = pct + "%";
+    scorePill.textContent = "Score: " + score + "/" + questions.length;
+  }
+
+  function goNext() {
+    currentIndex++;
+    if (currentIndex >= questions.length) {
+      showResults();
+    } else {
+      renderQuestion();
+    }
+  }
+
+  function showResults() {
+    quizScreen.classList.add("hidden");
+    resultsScreen.classList.remove("hidden");
+    progressFill.style.width = "100%";
+    finalScore.textContent = score + "/" + questions.length;
+
+    var pct = score / questions.length;
+    var msg;
+    if (pct === 1) {
+      msg = "Perfect! You know your question words very well.";
+    } else if (pct >= 0.75) {
+      msg = "Great work! Just a little more practice.";
+    } else if (pct >= 0.5) {
+      msg = "Good start. Review the words and try again.";
+    } else {
+      msg = "Keep practising. Look at the table again and try again.";
+    }
+    finalMsg.textContent = msg;
+  }
+
+  startBtn.addEventListener("click", startLesson);
+  nextBtn.addEventListener("click", goNext);
+  restartBtn.addEventListener("click", startLesson);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Behind the Curtains: Discussing Twin Peaks | Forbes English</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c2230;
+    --ink-soft:#3a4256;
+    --paper:#f4efe4;
+    --paper-2:#ece4d3;
+    --accent:#8c1f28;
+    --accent-2:#c8a24a;
+    --evidence:#2f5d50;
+    --line:#d8cdb0;
+    --good:#2f7d4f;
+    --bad:#a4302a;
+    --shadow:0 10px 30px rgba(28,34,48,0.18);
+
+    --tense-modal:#6a4fa3;
+    --tense-passive:#2f5d50;
+    --tense-reported:#a4302a;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Inter',sans-serif;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(140,31,40,0.06), transparent 45%),
+      radial-gradient(circle at 85% 90%, rgba(47,93,80,0.08), transparent 45%),
+      var(--paper);
+    color:var(--ink);
+    min-height:100vh;
+    padding:0 0 60px 0;
+  }
+
+  .wrap{max-width:760px;margin:0 auto;padding:0 20px;}
+
+  header.top{
+    padding:28px 20px 18px 20px;
+    border-bottom:3px solid var(--ink);
+    background:var(--paper-2);
+  }
+  .brandrow{display:flex;align-items:center;justify-content:space-between;max-width:760px;margin:0 auto;}
+  .brand{display:flex;align-items:center;gap:10px;}
+  .brand-name{font-weight:800;letter-spacing:0.02em;font-size:15px;color:var(--ink);}
+  .brand-name span{color:var(--accent);}
+  .level-badge{
+    font-family:'Special Elite',cursive;
+    font-size:12px;
+    border:2px solid var(--ink);
+    padding:4px 10px;
+    border-radius:3px;
+    background:var(--accent-2);
+    color:var(--ink);
+  }
+
+  .titleblock{max-width:760px;margin:22px auto 0 auto;padding:0 20px;}
+  h1{
+    font-family:'Special Elite',cursive;
+    font-size:clamp(24px,5vw,34px);
+    margin:0 0 6px 0;
+    color:var(--ink);
+    letter-spacing:0.01em;
+  }
+  .subtitle{color:var(--ink-soft);font-size:15px;margin:0 0 18px 0;line-height:1.5;}
+
+  .progress-shell{
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:var(--paper);
+    padding:10px 0 6px 0;
+  }
+  .progress-track{
+    max-width:760px;margin:0 auto;padding:0 20px;
+  }
+  .progress-bar-bg{
+    height:8px;background:var(--paper-2);border:1px solid var(--line);border-radius:6px;overflow:hidden;
+  }
+  .progress-bar-fill{
+    height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--evidence));transition:width .4s ease;
+  }
+  .progress-label{font-size:12px;color:var(--ink-soft);margin-top:5px;display:flex;justify-content:space-between;}
+
+  .card{
+    background:#fffdf7;
+    border:1px solid var(--line);
+    border-radius:10px;
+    box-shadow:var(--shadow);
+    margin:20px auto 0 auto;
+    max-width:760px;
+    overflow:hidden;
+  }
+
+  .scene{
+    padding:22px 24px 18px 24px;
+    border-bottom:2px dashed var(--line);
+  }
+  .scene-tag{
+    font-family:'Special Elite',cursive;
+    font-size:12px;
+    color:var(--accent);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    margin-bottom:6px;
+  }
+  .scene-title{
+    font-family:'Special Elite',cursive;
+    font-size:18px;
+    margin:0 0 10px 0;
+    color:var(--ink);
+  }
+  .scene-text{font-size:15.5px;line-height:1.65;color:var(--ink);}
+
+  .qblock{padding:20px 24px 24px 24px;}
+  .qtag{
+    display:inline-block;
+    font-size:11px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    padding:3px 9px;
+    border-radius:20px;
+    margin-bottom:12px;
+    color:#fff;
+  }
+  .qtext{font-size:16px;font-weight:600;margin:0 0 16px 0;line-height:1.5;}
+
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .opt{
+    text-align:left;
+    padding:12px 14px;
+    border:2px solid var(--line);
+    border-radius:8px;
+    background:#fff;
+    cursor:pointer;
+    font-size:15px;
+    font-family:'Inter',sans-serif;
+    color:var(--ink);
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .opt:hover:not(:disabled){border-color:var(--ink-soft);}
+  .opt:disabled{cursor:default;}
+  .opt.correct{border-color:var(--good);background:#eaf5ee;}
+  .opt.incorrect{border-color:var(--bad);background:#faeceb;}
+  .opt.dim{opacity:0.55;}
+
+  .feedback{
+    margin-top:14px;
+    padding:13px 15px;
+    border-radius:8px;
+    font-size:14.5px;
+    line-height:1.55;
+    display:none;
+  }
+  .feedback.show{display:block;}
+  .feedback.good{background:#eaf5ee;border:1px solid var(--good);color:#1e5236;}
+  .feedback.bad{background:#faeceb;border:1px solid var(--bad);color:#7a2521;}
+  .feedback strong{display:block;margin-bottom:3px;font-family:'Special Elite',cursive;font-size:13px;letter-spacing:0.03em;}
+
+  .nextrow{margin-top:18px;display:flex;justify-content:flex-end;}
+  .btn{
+    font-family:'Inter',sans-serif;
+    font-weight:700;
+    font-size:14.5px;
+    padding:11px 22px;
+    border-radius:8px;
+    border:2px solid var(--ink);
+    background:var(--ink);
+    color:#fff;
+    cursor:pointer;
+  }
+  .btn:disabled{opacity:0.35;cursor:not-allowed;}
+  .btn:hover:not(:disabled){background:var(--accent);border-color:var(--accent);}
+  .btn.secondary{background:#fff;color:var(--ink);}
+  .btn.secondary:hover:not(:disabled){background:var(--paper-2);}
+
+  .scorebar{
+    position:fixed;
+    bottom:0;left:0;right:0;
+    background:var(--ink);
+    color:#fff;
+    padding:10px 20px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:18px;
+    font-size:13.5px;
+    z-index:30;
+    box-shadow:0 -6px 18px rgba(0,0,0,0.2);
+  }
+  .scorebar .sb-item{display:flex;align-items:center;gap:6px;}
+  .scorebar .sb-dot{width:8px;height:8px;border-radius:50%;background:var(--accent-2);}
+
+  .results{
+    background:#fffdf7;
+    border:1px solid var(--line);
+    border-radius:10px;
+    box-shadow:var(--shadow);
+    max-width:760px;
+    margin:20px auto 0 auto;
+    padding:30px 26px;
+    text-align:center;
+  }
+  .results h2{font-family:'Special Elite',cursive;font-size:24px;margin:0 0 8px 0;}
+  .results .rank{
+    font-family:'Special Elite',cursive;
+    font-size:15px;
+    color:var(--accent);
+    margin:0 0 18px 0;
+  }
+  .results .scoreline{font-size:40px;font-weight:800;margin:6px 0 4px 0;color:var(--ink);}
+  .results p.desc{color:var(--ink-soft);font-size:15px;line-height:1.6;max-width:560px;margin:14px auto 22px auto;}
+  .results .btn{margin-top:6px;}
+
+  .sourcenote{
+    max-width:760px;margin:16px auto 0 auto;padding:0 24px;
+    font-size:12.5px;color:var(--ink-soft);line-height:1.5;
+  }
+
+  .hidden{display:none;}
+
+  @media (max-width:600px){
+    .scene, .qblock{padding-left:18px;padding-right:18px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brandrow">
+    <div class="brand">
+      <svg width="30" height="30" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="20" cy="20" r="18" stroke="#8c1f28" stroke-width="2.5" fill="#f4efe4"/>
+        <path d="M13 26 L13 14 L20 14 Q24 14 24 18 Q24 22 20 22 L15 22" stroke="#1c2230" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="20" y1="22" x2="27" y2="26" stroke="#2f5d50" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <div class="brand-name">FORBES <span>ENGLISH</span></div>
+    </div>
+    <div class="level-badge">B2 · READING &amp; DISCUSSION</div>
+  </div>
+</header>
+
+<div class="titleblock">
+  <h1>Behind the Curtains: Discussing Twin Peaks</h1>
+  <p class="subtitle">A short reading trail through the making, reception, and legacy of a landmark television series — in ten pieces, each with a language checkpoint. Read, answer, and build the fuller picture as you go.</p>
+</div>
+
+<div class="progress-shell">
+  <div class="progress-track">
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+    <div class="progress-label"><span id="progressText">Part 1 of 10</span><span id="progressPct">0%</span></div>
+  </div>
+</div>
+
+<div id="gameArea"></div>
+<div id="resultsArea" class="hidden"></div>
+
+<p class="sourcenote" id="sourceNote">Background facts summarised for teaching purposes from published interviews, reference sources, and contemporary press coverage of the series.</p>
+
+<div class="scorebar" id="scorebar">
+  <div class="sb-item"><span class="sb-dot"></span> Reading progress: <strong id="sbScene">1</strong>/10</div>
+  <div class="sb-item">Correct: <strong id="sbScore">0</strong></div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  function shuffle(arr){
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  var TAG_COLORS = {
+    "Vocabulary": "#8c1f28",
+    "Reported Speech": "var(--tense-reported)",
+    "Modals of Deduction": "var(--tense-modal)",
+    "Relative Clauses": "#3b6fd6",
+    "Passive Voice": "var(--tense-passive)",
+    "Phrasal Verbs": "#b98d4f",
+    "Conditionals": "#6a4fa3",
+    "Linking Devices": "#2f5d50",
+    "Idioms": "#a4302a"
+  };
+
+  var scenes = [
+    {
+      tag: "Part 1 — Two Writers",
+      title: "An Unlikely Partnership",
+      text: "In the mid-1980s, film director David Lynch and television writer Mark Frost worked together on a couple of projects that never reached the screen. When the pair pitched a new idea to a network in 1989 — a drama built around the death of a popular teenager in a small American town — nobody expected it to become one of the most talked-about shows of the decade.",
+      qtag: "Vocabulary",
+      question: "In this context, what does \"pitched\" mean?",
+      options: [
+        {text:"presented an idea, hoping it would be approved", correct:true},
+        {text:"refused to consider an offer", correct:false},
+        {text:"argued loudly about a decision", correct:false},
+        {text:"sold something at a reduced price", correct:false}
+      ],
+      explanation: "To \"pitch\" an idea means to present it to someone, usually briefly and persuasively, in the hope that they will accept or fund it — exactly what Lynch and Frost did with the network. The other options describe refusing, arguing, and discounting, none of which fit the context of proposing a new show."
+    },
+    {
+      tag: "Part 2 — Writing the Pilot",
+      title: "A Script Written at Speed",
+      text: "According to Frost, the two writers worked with unusual speed, producing a complete script for the opening episode in only a few weeks. That first episode, broadcast in April 1990, introduced viewers to a close-knit town, appearances hid a series of long-buried secrets.",
+      qtag: "Relative Clauses",
+      question: "Choose the correct possessive relative pronoun to complete the sentence: \"...introduced viewers to a close-knit town, ______ quiet appearance hid a series of long-buried secrets.\"",
+      options: [
+        {text:"whose", correct:true},
+        {text:"which", correct:false},
+        {text:"who", correct:false},
+        {text:"that", correct:false}
+      ],
+      explanation: "\"Whose\" shows possession and can refer to a place or thing as well as a person (\"a town whose appearance...\"). \"Which\" and \"that\" could introduce a relative clause about the town, but not a possessive one, and \"who\" is reserved for people."
+    },
+    {
+      tag: "Part 3 — The Premise",
+      title: "A Mystery With a Difference",
+      text: "At the centre of the story was an FBI agent, sent to a small town to investigate the death of a local teenager. What made the show unusual was not the mystery itself, but its tone: scenes of genuine grief and small-town gossip sat comfortably beside moments of dark comedy and strange, dreamlike events.",
+      qtag: "Passive Voice",
+      question: "Complete the sentence: \"An FBI agent ______ to the town to lead the investigation.\"",
+      options: [
+        {text:"was sent", correct:true},
+        {text:"sent", correct:false},
+        {text:"has sending", correct:false},
+        {text:"is sending", correct:false}
+      ],
+      explanation: "Since the agent receives the action rather than performing it, the passive \"was sent\" is correct here. \"Sent\" alone would need an active subject performing the sending, \"has sending\" is not a valid verb form, and \"is sending\" wrongly shifts the event into the present."
+    },
+    {
+      tag: "Part 4 — A Genre of Its Own",
+      title: "Impossible to Categorise",
+      text: "Critics struggled to place the series in a single category, since it moved between genres that rarely appeared together in mainstream television: crime drama, soap opera, horror, and slapstick comedy, sometimes within the same scene.",
+      qtag: "Vocabulary",
+      question: "What does \"categorise\" mean in this sentence?",
+      options: [
+        {text:"to put something into a particular group or class", correct:true},
+        {text:"to criticise something publicly", correct:false},
+        {text:"to translate something into another language", correct:false},
+        {text:"to cancel or remove something", correct:false}
+      ],
+      explanation: "\"Categorise\" means to sort or classify something into a group based on shared features — here, critics couldn't easily sort the show into one genre. \"Criticise,\" \"translate,\" and \"cancel\" are unrelated meanings that don't fit the sentence."
+    },
+    {
+      tag: "Part 5 — An Instant Sensation",
+      title: "A Huge First Audience",
+      text: "The opening episode drew an enormous audience for its time — reportedly more than thirty million viewers in the United States alone — and the series briefly became a genuine pop-culture talking point, discussed on magazine covers and in living rooms across the country.",
+      qtag: "Modals of Deduction",
+      question: "Which sentence best expresses a confident conclusion drawn from this evidence?",
+      options: [
+        {text:"Such huge numbers suggest the premiere must have generated enormous curiosity beforehand.", correct:true},
+        {text:"Such huge numbers suggest the premiere might generating some curiosity.", correct:false},
+        {text:"Such huge numbers suggest the premiere should generate curiosity.", correct:false},
+        {text:"Such huge numbers suggest the premiere can generate curiosity.", correct:false},
+      ],
+      explanation: "\"Must have + past participle\" expresses a strong, logical conclusion about the past based on clear evidence — thirty million viewers strongly implies real curiosity existed beforehand. \"Might generating\" is grammatically broken, \"should generate\" expresses advice or expectation rather than deduction, and \"can generate\" makes a general statement rather than a conclusion about this specific case."
+    },
+    {
+      tag: "Part 6 — The Excitement Fades",
+      title: "A Difficult Second Season",
+      text: "That early excitement did not last. As the second season introduced new storylines, ratings dropped, and the network moved the show to a less favourable time slot. The series was cancelled after two seasons, leaving several plot threads unresolved.",
+      qtag: "Conditionals",
+      question: "Complete the hypothetical sentence about the past: \"If the network hadn't moved the show to a worse time slot, it ______ cancelled so quickly.\"",
+      options: [
+        {text:"might not have been", correct:true},
+        {text:"doesn't get", correct:false},
+        {text:"won't be", correct:false},
+        {text:"isn't", correct:false}
+      ],
+      explanation: "This is a third conditional, describing an unreal past condition and its unreal past result: \"If + past perfect, ... might/would (not) have + past participle.\" The other options use present or future forms, which cannot combine with an \"if hadn't\" clause describing a hypothetical past."
+    },
+    {
+      tag: "Part 7 — Life After Cancellation",
+      title: "A Following That Would Not Disappear",
+      text: "Even after cancellation, the show refused to fade away. Fans kept discussing its unanswered questions for decades, and it gradually built the kind of devoted, long-term audience known as a cult following.",
+      qtag: "Vocabulary",
+      question: "What does the phrase \"cult following\" describe?",
+      options: [
+        {text:"a small but extremely loyal group of fans", correct:true},
+        {text:"a huge mainstream audience that watches once", correct:false},
+        {text:"an official fan club run by a TV network", correct:false},
+        {text:"a group of critics who dislike a show", correct:false}
+      ],
+      explanation: "A \"cult following\" refers to a relatively small, but intensely devoted and long-lasting, group of fans — exactly the kind of ongoing fascination this show kept generating after it ended. It does not describe a huge mainstream audience, an official club, or a group of critics."
+    },
+    {
+      tag: "Part 8 — Coming Back",
+      title: "A Return, Decades Later",
+      text: "In 2017, twenty-five years after it first ended, the series returned for a new season on a different network, reuniting much of the original cast and proving that its strange world still had plenty of stories left to tell.",
+      qtag: "Reported Speech",
+      question: "A critic said: \"This revival still feels genuinely strange.\" Report this statement correctly: A critic said that the revival ______ genuinely strange.",
+      options: [
+        {text:"still felt", correct:true},
+        {text:"still feels", correct:false},
+        {text:"will still feel", correct:false},
+        {text:"still feeling", correct:false}
+      ],
+      explanation: "Reported speech normally backshifts the present simple (\"feels\") to the past simple (\"felt\"). \"Still feels\" keeps the original tense unshifted, \"will still feel\" wrongly introduces a future form, and \"still feeling\" is not a complete verb form."
+    },
+    {
+      tag: "Part 9 — Changing Television",
+      title: "An Influence That Outlasted the Show",
+      text: "Decades later, the series is widely credited with changing what a television mystery could look like, paving the way for later dramas that treated ongoing mysteries and flawed characters as more important than tidy, one-episode resolutions.",
+      qtag: "Linking Devices",
+      question: "Complete the sentence with the best linking word: \"______ its original run lasted only two seasons, its influence on television has lasted for decades.\"",
+      options: [
+        {text:"Although", correct:true},
+        {text:"Because", correct:false},
+        {text:"So that", correct:false},
+        {text:"Moreover", correct:false}
+      ],
+      explanation: "\"Although\" introduces a contrast between two facts — a short original run versus a long-lasting influence — which is exactly the relationship here. \"Because\" would wrongly suggest the short run caused the influence, \"so that\" expresses purpose, and \"moreover\" simply adds information rather than contrasting it."
+    },
+    {
+      tag: "Part 10 — A Hard Act to Follow",
+      title: "Imitated, Rarely Matched",
+      text: "Many later dramas have tried to follow its example, blending mystery with a distinctive mood and unresolved questions. Few, however, have managed to reach the same standard, or to feel quite as strange and original.",
+      qtag: "Phrasal Verbs",
+      question: "Choose the best phrasal verb: \"Many later shows have tried to imitate its style, but few have managed to ______ its singular atmosphere.\"",
+      options: [
+        {text:"live up to", correct:true},
+        {text:"give up on", correct:false},
+        {text:"look down on", correct:false},
+        {text:"come up with", correct:false}
+      ],
+      explanation: "\"Live up to\" means to reach the standard set by something else — exactly the challenge later shows faced when compared to this one. \"Give up on\" means to stop trying, \"look down on\" means to consider something inferior, and \"come up with\" means to think of an idea — none match the meaning of matching a high standard."
+    }
+  ];
+
+  var current = 0;
+  var score = 0;
+  var answered = false;
+
+  var gameArea = document.getElementById('gameArea');
+  var resultsArea = document.getElementById('resultsArea');
+  var progressFill = document.getElementById('progressFill');
+  var progressText = document.getElementById('progressText');
+  var progressPct = document.getElementById('progressPct');
+  var sbScene = document.getElementById('sbScene');
+  var sbScore = document.getElementById('sbScore');
+  var sourceNote = document.getElementById('sourceNote');
+
+  function updateProgress(){
+    var pct = Math.round((current / scenes.length) * 100);
+    progressFill.style.width = pct + "%";
+    progressText.textContent = "Part " + (current + 1) + " of " + scenes.length;
+    progressPct.textContent = pct + "%";
+    sbScene.textContent = (current + 1);
+    sbScore.textContent = score;
+  }
+
+  function renderScene(){
+    answered = false;
+    var s = scenes[current];
+    var opts = shuffle(s.options);
+
+    var color = TAG_COLORS[s.qtag] || "#8c1f28";
+
+    var html = '';
+    html += '<div class="card">';
+    html += '  <div class="scene">';
+    html += '    <div class="scene-tag">' + s.tag + '</div>';
+    html += '    <h2 class="scene-title">' + s.title + '</h2>';
+    html += '    <p class="scene-text">' + s.text + '</p>';
+    html += '  </div>';
+    html += '  <div class="qblock">';
+    html += '    <span class="qtag" style="background:' + color + '">' + s.qtag + '</span>';
+    html += '    <p class="qtext">' + s.question + '</p>';
+    html += '    <div class="options" id="optionsWrap"></div>';
+    html += '    <div class="feedback" id="feedbackBox"></div>';
+    html += '    <div class="nextrow"><button class="btn" id="nextBtn" disabled>' + (current === scenes.length - 1 ? "See results" : "Next part") + '</button></div>';
+    html += '  </div>';
+    html += '</div>';
+
+    gameArea.innerHTML = html;
+
+    var wrap = document.getElementById('optionsWrap');
+    opts.forEach(function(opt){
+      var btn = document.createElement('button');
+      btn.className = 'opt';
+      btn.textContent = opt.text;
+      btn.addEventListener('click', function(){
+        handleAnswer(opt, wrap);
+      });
+      wrap.appendChild(btn);
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', goNext);
+    updateProgress();
+  }
+
+  function handleAnswer(chosen, wrap){
+    if (answered) return;
+    answered = true;
+
+    var s = scenes[current];
+    var buttons = wrap.querySelectorAll('.opt');
+    buttons.forEach(function(btn){
+      btn.disabled = true;
+      var label = btn.textContent;
+      var matchOption = s.options.filter(function(o){ return o.text === label; })[0];
+      if (matchOption.correct){
+        btn.classList.add('correct');
+      } else if (label === chosen.text){
+        btn.classList.add('incorrect');
+      } else {
+        btn.classList.add('dim');
+      }
+    });
+
+    var fb = document.getElementById('feedbackBox');
+    if (chosen.correct){
+      score++;
+      fb.className = 'feedback show good';
+      fb.innerHTML = '<strong>Correct</strong>' + s.explanation;
+    } else {
+      fb.className = 'feedback show bad';
+      fb.innerHTML = '<strong>Not quite</strong>' + s.explanation;
+    }
+
+    document.getElementById('nextBtn').disabled = false;
+    updateProgress();
+  }
+
+  function goNext(){
+    if (!answered) return;
+    current++;
+    if (current >= scenes.length){
+      showResults();
+    } else {
+      renderScene();
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+  }
+
+  function showResults(){
+    gameArea.classList.add('hidden');
+    document.getElementById('scorebar').classList.add('hidden');
+    document.querySelector('.progress-shell').classList.add('hidden');
+    sourceNote.classList.add('hidden');
+
+    var pct = Math.round((score / scenes.length) * 100);
+    var rank, desc;
+    if (score === scenes.length){
+      rank = "Cult Classic Completist";
+      desc = "A perfect read-through. You tracked every shift in tense, voice, and meaning across the full story of the show, from its earliest pitch meeting to its lasting influence.";
+    } else if (score >= scenes.length - 2){
+      rank = "Attentive Viewer";
+      desc = "A strong, careful read. A couple of details slipped past you, but you followed the show's history and the language points closely.";
+    } else if (score >= scenes.length / 2){
+      rank = "Casual Viewer";
+      desc = "You got the general picture, though a few grammar and vocabulary points are worth another look. Review the explanations above before moving on.";
+    } else {
+      rank = "Worth a Rewatch";
+      desc = "The reading raised more questions than it answered this time. Go back through the explanations for each part — the patterns will click on a second pass.";
+    }
+
+    var html = '';
+    html += '<div class="results">';
+    html += '  <h2>Reading Complete</h2>';
+    html += '  <p class="rank">' + rank + '</p>';
+    html += '  <div class="scoreline">' + score + ' / ' + scenes.length + '</div>';
+    html += '  <p class="desc">' + desc + ' You answered ' + pct + '% of the checkpoints correctly across vocabulary, relative clauses, passive voice, modals of deduction, conditionals, reported speech, linking devices, and phrasal verbs.</p>';
+    html += '  <button class="btn secondary" id="restartBtn">Read it again</button>';
+    html += '</div>';
+
+    resultsArea.innerHTML = html;
+    resultsArea.classList.remove('hidden');
+    document.getElementById('restartBtn').addEventListener('click', restart);
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function restart(){
+    current = 0;
+    score = 0;
+    resultsArea.classList.add('hidden');
+    gameArea.classList.remove('hidden');
+    document.getElementById('scorebar').classList.remove('hidden');
+    document.querySelector('.progress-shell').classList.remove('hidden');
+    sourceNote.classList.remove('hidden');
+    renderScene();
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  renderScene();
+})();
+</script>
+
+</body>
+</html>

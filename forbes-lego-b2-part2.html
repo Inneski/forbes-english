@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – Lego Car Building Part 2 | B2</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brick: #C8392B;
+    --brick-dark: #A02E22;
+    --brick-light: #E04535;
+    --cream: #F5F0E8;
+    --cream-dark: #EDE7D9;
+    --charcoal: #1C1C1E;
+    --charcoal-mid: #2E2E30;
+    --yellow: #F5C518;
+    --blue: #1A4D8F;
+    --white: #FFFFFF;
+    --text: #1C1C1E;
+    --subtext: #5A5A5C;
+    --correct: #2E7D32;
+    --incorrect: #C62828;
+    --correct-bg: #E8F5E9;
+    --incorrect-bg: #FFEBEE;
+    --radius: 12px;
+    --shadow: 0 4px 20px rgba(0,0,0,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+    background-image:
+      radial-gradient(circle at 10% 10%, rgba(200,57,43,0.06) 0%, transparent 50%),
+      radial-gradient(circle at 90% 90%, rgba(245,197,24,0.08) 0%, transparent 50%);
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--charcoal);
+    padding: 28px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.3);
+  }
+  .lesson-meta { text-align: right; }
+  .level-badge {
+    display: inline-block;
+    background: var(--yellow);
+    color: var(--charcoal);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 2px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .lesson-title { font-size: 13px; color: rgba(245,240,232,0.6); font-weight: 300; }
+
+  /* ── SCORE BAR ── */
+  .score-bar {
+    background: var(--charcoal-mid);
+    padding: 10px 40px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    font-size: 13px;
+    color: var(--cream);
+    border-bottom: 2px solid var(--brick);
+  }
+  .score-pill {
+    background: var(--brick);
+    color: white;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+  }
+  .progress-text { color: rgba(245,240,232,0.65); font-weight: 300; }
+  .activity-label {
+    margin-left: auto;
+    color: var(--yellow);
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* ── MAIN ── */
+  main { max-width: 820px; margin: 0 auto; padding: 48px 24px 80px; }
+
+  /* ── SECTION INTRO ── */
+  .section-intro { margin-bottom: 32px; animation: fadeUp 0.5s ease both; }
+  .section-intro h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    color: var(--charcoal);
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+  .section-intro p { font-size: 15px; color: var(--subtext); font-weight: 300; line-height: 1.6; }
+  .section-tag {
+    display: inline-block;
+    background: var(--brick);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 4px;
+    margin-bottom: 14px;
+  }
+
+  /* ── ILLUSTRATION ── */
+  .illustration-wrap {
+    background: var(--charcoal);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 36px;
+    box-shadow: var(--shadow);
+    animation: fadeUp 0.5s ease 0.1s both;
+  }
+
+  /* ── QUESTION CARD ── */
+  .question-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 32px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+    border-left: 5px solid var(--brick);
+    animation: fadeUp 0.4s ease both;
+  }
+  .question-text { font-size: 17px; font-weight: 500; line-height: 1.6; margin-bottom: 24px; color: var(--charcoal); }
+  .question-num { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--brick); margin-bottom: 8px; }
+
+  /* ── MC OPTIONS ── */
+  .options-grid { display: grid; gap: 10px; }
+  .option-btn {
+    background: var(--cream);
+    border: 2px solid var(--cream-dark);
+    border-radius: 8px;
+    padding: 14px 18px;
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--charcoal);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    line-height: 1.5;
+  }
+  .option-btn:hover:not(:disabled) { border-color: var(--brick); background: #FDF5F4; transform: translateY(-1px); }
+  .opt-label {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--charcoal); color: white;
+    font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 1px;
+  }
+  .option-btn.correct { background: var(--correct-bg); border-color: var(--correct); color: var(--correct); }
+  .option-btn.correct .opt-label { background: var(--correct); }
+  .option-btn.incorrect { background: var(--incorrect-bg); border-color: var(--incorrect); color: var(--incorrect); }
+  .option-btn.incorrect .opt-label { background: var(--incorrect); }
+  .option-btn:disabled { cursor: not-allowed; }
+
+  /* ── FEEDBACK ── */
+  .feedback-box {
+    margin-top: 16px; padding: 14px 18px; border-radius: 8px;
+    font-size: 14px; line-height: 1.6; display: none;
+    animation: fadeUp 0.3s ease both;
+  }
+  .feedback-box.show { display: block; }
+  .feedback-box.correct-fb { background: var(--correct-bg); border-left: 4px solid var(--correct); color: #1B5E20; }
+  .feedback-box.incorrect-fb { background: var(--incorrect-bg); border-left: 4px solid var(--incorrect); color: #B71C1C; }
+  .feedback-box strong { display: block; margin-bottom: 4px; }
+
+  /* ── ERROR CORRECTION ── */
+  .error-sentence {
+    font-size: 16px;
+    line-height: 1.9;
+    color: var(--charcoal);
+    margin-bottom: 18px;
+    font-style: italic;
+    background: #FAFAFA;
+    padding: 14px 18px;
+    border-radius: 8px;
+    border: 1.5px dashed var(--cream-dark);
+  }
+  .error-input-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+  .error-label { font-size: 13px; color: var(--subtext); min-width: 130px; font-weight: 500; }
+  .error-input {
+    flex: 1; min-width: 180px;
+    border: none; border-bottom: 2.5px solid var(--brick);
+    background: transparent; font-family: 'DM Sans', sans-serif;
+    font-size: 15px; color: var(--charcoal);
+    padding: 4px 8px; outline: none; transition: border-color 0.2s;
+  }
+  .error-input:focus { border-color: var(--charcoal); }
+  .error-input.correct-input { border-color: var(--correct); color: var(--correct); }
+  .error-input.incorrect-input { border-color: var(--incorrect); color: var(--incorrect); }
+  .error-input:disabled { opacity: 0.85; }
+  .error-hint { font-size: 12px; color: var(--subtext); font-style: italic; margin-bottom: 16px; }
+
+  /* ── MATCHING ── */
+  .match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .match-col-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--brick); margin-bottom: 8px; }
+  .match-left-items { display: flex; flex-direction: column; gap: 8px; }
+  .match-left-item {
+    background: var(--charcoal);
+    color: var(--cream);
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  .match-right-items { display: flex; flex-direction: column; gap: 8px; }
+  .match-select {
+    width: 100%;
+    background: var(--cream);
+    border: 2px solid var(--cream-dark);
+    border-radius: 8px;
+    padding: 11px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--charcoal);
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235A5A5C' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 32px;
+  }
+  .match-select:focus { border-color: var(--brick); }
+  .match-select.correct-select { border-color: var(--correct); background-color: var(--correct-bg); color: var(--correct); }
+  .match-select.incorrect-select { border-color: var(--incorrect); background-color: var(--incorrect-bg); color: var(--incorrect); }
+  .match-select:disabled { cursor: not-allowed; }
+  .match-row { display: flex; flex-direction: column; gap: 4px; }
+  .match-row-label { font-size: 11px; color: var(--subtext); font-weight: 500; letter-spacing: 0.5px; }
+  .match-feedback-line { font-size: 12px; padding: 4px 8px; border-radius: 4px; display: none; }
+  .match-feedback-line.show { display: block; }
+  .match-feedback-line.correct-fb { background: var(--correct-bg); color: #1B5E20; }
+  .match-feedback-line.incorrect-fb { background: var(--incorrect-bg); color: #B71C1C; }
+
+  /* ── NAV BUTTONS ── */
+  .btn-row { display: flex; justify-content: flex-end; gap: 12px; margin-top: 28px; }
+  .btn-primary {
+    background: var(--brick); color: white; border: none;
+    padding: 13px 32px; border-radius: 8px;
+    font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 700;
+    cursor: pointer; transition: all 0.2s; letter-spacing: 0.5px;
+  }
+  .btn-primary:hover { background: var(--brick-dark); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(200,57,43,0.4); }
+  .btn-primary:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
+  .btn-secondary {
+    background: transparent; color: var(--charcoal);
+    border: 2px solid var(--charcoal); padding: 11px 28px;
+    border-radius: 8px; font-family: 'DM Sans', sans-serif;
+    font-size: 15px; font-weight: 500; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-secondary:hover { background: var(--charcoal); color: white; }
+  .btn-secondary:disabled { border-color: #ccc; color: #ccc; cursor: not-allowed; }
+
+  /* ── FINAL ── */
+  .final-screen { text-align: center; animation: fadeUp 0.6s ease both; }
+  .final-score-ring { width: 160px; height: 160px; margin: 0 auto 28px; }
+  .final-title { font-family: 'Playfair Display', serif; font-size: 34px; margin-bottom: 12px; color: var(--charcoal); }
+  .final-message { font-size: 17px; color: var(--subtext); margin-bottom: 36px; font-weight: 300; line-height: 1.7; }
+
+  .hidden { display: none !important; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 600px) {
+    header { padding: 20px 16px; }
+    .score-bar { padding: 10px 16px; gap: 12px; }
+    main { padding: 32px 14px 60px; }
+    .question-card { padding: 20px 16px; }
+    .activity-label { display: none; }
+    .match-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════ HEADER ══════════ -->
+<header>
+  <div>
+    <svg width="130" height="52" viewBox="0 0 130 52" xmlns="http://www.w3.org/2000/svg">
+      <text x="0" y="24" font-family="Playfair Display, serif" font-size="26" font-weight="700" fill="#F5C518" letter-spacing="1">Forbes</text>
+      <rect x="0" y="30" width="130" height="1.5" fill="rgba(245,197,24,0.45)"/>
+      <text x="0" y="48" font-family="DM Sans, sans-serif" font-size="14" font-weight="700" fill="#F5F0E8" letter-spacing="5">ENGLISH</text>
+    </svg>
+  </div>
+  <div class="lesson-meta">
+    <div class="level-badge">B2 Upper-Intermediate</div>
+    <div class="lesson-title">Lego Car Building — Part 2</div>
+  </div>
+</header>
+
+<!-- ══════════ SCORE BAR ══════════ -->
+<div class="score-bar">
+  <span>Score: <span class="score-pill" id="score-display">0</span></span>
+  <span class="progress-text" id="progress-display">Activity 1 of 3</span>
+  <span class="activity-label" id="activity-label">Error Correction</span>
+</div>
+
+<main id="main-content">
+
+  <!-- ══════════════════════════════════════
+       SECTION 1 — ERROR CORRECTION
+  ══════════════════════════════════════ -->
+  <div id="section-1">
+    <div class="section-intro">
+      <span class="section-tag">Activity 4 – Error Correction</span>
+      <h2>Spot & Fix the Mistake</h2>
+      <p>Each sentence contains <strong>one grammatical or lexical error</strong> related to Lego car building. Identify the incorrect word or phrase, then write the correction in the box. Pay close attention to prepositions, word form, and collocation.</p>
+    </div>
+
+    <!-- Illustration: magnifying glass / workshop QC scene -->
+    <div class="illustration-wrap">
+      <svg viewBox="0 0 820 200" xmlns="http://www.w3.org/2000/svg" width="100%">
+        <rect width="820" height="200" fill="#1C1C1E"/>
+        <!-- Desk surface -->
+        <rect x="0" y="155" width="820" height="45" fill="#111"/>
+        <!-- Blueprint paper -->
+        <rect x="60" y="55" width="240" height="140" rx="5" fill="#0D2140" stroke="#1A4D8F" stroke-width="1.5"/>
+        <text x="75" y="82" font-family="DM Sans,sans-serif" font-size="9" fill="#F5C518" letter-spacing="2" font-weight="700">BUILD LOG — ERROR CHECK</text>
+        <line x1="75" y1="88" x2="285" y2="88" stroke="rgba(26,77,143,0.5)" stroke-width="1"/>
+        <!-- Error marks on blueprint -->
+        <rect x="75" y="98" width="180" height="8" rx="2" fill="rgba(26,77,143,0.3)"/>
+        <rect x="75" y="113" width="160" height="8" rx="2" fill="rgba(26,77,143,0.3)"/>
+        <rect x="75" y="128" width="170" height="8" rx="2" fill="rgba(26,77,143,0.3)"/>
+        <rect x="75" y="143" width="130" height="8" rx="2" fill="rgba(26,77,143,0.3)"/>
+        <!-- Red correction marks -->
+        <line x1="110" y1="96" x2="130" y2="108" stroke="#C8392B" stroke-width="2"/>
+        <line x1="130" y1="96" x2="110" y2="108" stroke="#C8392B" stroke-width="2"/>
+        <circle cx="160" cy="120" r="8" fill="none" stroke="#C8392B" stroke-width="2"/>
+        <line x1="190" y1="140" x2="220" y2="155" stroke="#C8392B" stroke-width="1.5" stroke-dasharray="3,2"/>
+
+        <!-- Magnifying glass -->
+        <circle cx="430" cy="105" r="55" fill="none" stroke="#888" stroke-width="4"/>
+        <circle cx="430" cy="105" r="50" fill="rgba(26,77,143,0.08)" stroke="#666" stroke-width="1"/>
+        <line x1="472" y1="147" x2="510" y2="185" stroke="#888" stroke-width="7" stroke-linecap="round"/>
+        <!-- Glass glare -->
+        <ellipse cx="412" cy="82" rx="18" ry="10" fill="rgba(255,255,255,0.06)" transform="rotate(-30 412 82)"/>
+        <!-- Inside glass: text with error highlighted -->
+        <text x="390" y="98" font-family="DM Sans,sans-serif" font-size="10" fill="rgba(245,240,232,0.7)">The axle</text>
+        <rect x="405" y="103" width="38" height="13" rx="2" fill="rgba(200,57,43,0.35)"/>
+        <text x="406" y="114" font-family="DM Sans,sans-serif" font-size="10" fill="#E04535" font-weight="700">is consist</text>
+        <text x="444" y="114" font-family="DM Sans,sans-serif" font-size="10" fill="rgba(245,240,232,0.7)">...</text>
+
+        <!-- Correction pen -->
+        <rect x="590" y="70" width="10" height="90" rx="5" fill="#F5C518" transform="rotate(20 595 115)"/>
+        <polygon points="598,155 586,165 610,165" fill="#D4A900" transform="rotate(20 595 115)"/>
+
+        <!-- Labels -->
+        <text x="595" y="185" font-family="DM Sans,sans-serif" font-size="10" fill="rgba(245,240,232,0.3)" text-anchor="middle" letter-spacing="3">IDENTIFY — CORRECT — EXPLAIN</text>
+      </svg>
+    </div>
+
+    <!-- Q1 -->
+    <div class="question-card" id="err-q1">
+      <div class="question-num">Question 1 of 5</div>
+      <div class="question-text">Find and correct the one error in this sentence:</div>
+      <div class="error-sentence">"The instructions advised builders to start <u>from</u> the chassis and work their way upwards, attaching each component <u>on</u> sequence."</div>
+      <div class="error-hint">Hint: focus on the prepositions — one of them doesn't collocate correctly here.</div>
+      <div class="error-input-row">
+        <span class="error-label">Wrong word:</span>
+        <input class="error-input" id="err-wrong-1" placeholder="type the wrong word…" autocomplete="off"/>
+      </div>
+      <div class="error-input-row">
+        <span class="error-label">Correction:</span>
+        <input class="error-input" id="err-correct-1" placeholder="type the correct word…" autocomplete="off"/>
+      </div>
+      <div class="feedback-box" id="fb-err-1"></div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="question-card hidden" id="err-q2">
+      <div class="question-num">Question 2 of 5</div>
+      <div class="question-text">Find and correct the one error in this sentence:</div>
+      <div class="error-sentence">"He was frustrated to discover that the rear axle was <u>incompatible</u> with the new wheel design, so he had to <u>substitute</u> the original wheels <u>with</u> a smaller alternative."</div>
+      <div class="error-hint">Hint: the verb <em>substitute</em> requires a specific preposition — check how it collocates.</div>
+      <div class="error-input-row">
+        <span class="error-label">Wrong word:</span>
+        <input class="error-input" id="err-wrong-2" placeholder="type the wrong word…" autocomplete="off"/>
+      </div>
+      <div class="error-input-row">
+        <span class="error-label">Correction:</span>
+        <input class="error-input" id="err-correct-2" placeholder="type the correct word…" autocomplete="off"/>
+      </div>
+      <div class="feedback-box" id="fb-err-2"></div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="question-card hidden" id="err-q3">
+      <div class="question-num">Question 3 of 5</div>
+      <div class="question-text">Find and correct the one error in this sentence:</div>
+      <div class="error-sentence">"The gear mechanism consists <u>from</u> three interlocking cogs, each <u>transmitting</u> rotational force to the drive shaft at a controlled ratio."</div>
+      <div class="error-hint">Hint: the verb <em>consist</em> always requires a particular preposition — which one?</div>
+      <div class="error-input-row">
+        <span class="error-label">Wrong word:</span>
+        <input class="error-input" id="err-wrong-3" placeholder="type the wrong word…" autocomplete="off"/>
+      </div>
+      <div class="error-input-row">
+        <span class="error-label">Correction:</span>
+        <input class="error-input" id="err-correct-3" placeholder="type the correct word…" autocomplete="off"/>
+      </div>
+      <div class="feedback-box" id="fb-err-3"></div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="question-card hidden" id="err-q4">
+      <div class="question-num">Question 4 of 5</div>
+      <div class="question-text">Find and correct the one error in this sentence:</div>
+      <div class="error-sentence">"Despite following the instructions <u>precisely</u>, she found that the steering column was <u>slightly</u> off-centre, which caused the vehicle to turn <u>inefficient</u> on tight bends."</div>
+      <div class="error-hint">Hint: one word is the wrong grammatical form for its position in the sentence.</div>
+      <div class="error-input-row">
+        <span class="error-label">Wrong word:</span>
+        <input class="error-input" id="err-wrong-4" placeholder="type the wrong word…" autocomplete="off"/>
+      </div>
+      <div class="error-input-row">
+        <span class="error-label">Correction:</span>
+        <input class="error-input" id="err-correct-4" placeholder="type the correct word…" autocomplete="off"/>
+      </div>
+      <div class="feedback-box" id="fb-err-4"></div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="question-card hidden" id="err-q5">
+      <div class="question-num">Question 5 of 5</div>
+      <div class="question-text">Find and correct the one error in this sentence:</div>
+      <div class="error-sentence">"The designer had to <u>reconsider</u> the suspension layout after <u>realising</u> that the current setup was <u>to</u> rigid to absorb the impact of uneven terrain effectively."</div>
+      <div class="error-hint">Hint: a very common spelling/grammar confusion is hiding in this sentence.</div>
+      <div class="error-input-row">
+        <span class="error-label">Wrong word:</span>
+        <input class="error-input" id="err-wrong-5" placeholder="type the wrong word…" autocomplete="off"/>
+      </div>
+      <div class="error-input-row">
+        <span class="error-label">Correction:</span>
+        <input class="error-input" id="err-correct-5" placeholder="type the correct word…" autocomplete="off"/>
+      </div>
+      <div class="feedback-box" id="fb-err-5"></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-secondary" id="err-check-btn" onclick="checkErrors()">Check Answers</button>
+      <button class="btn-primary hidden" id="err-next-btn" onclick="showSection(2)">Next Activity →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SECTION 2 — MULTIPLE CHOICE (Sentence Transformation)
+  ══════════════════════════════════════ -->
+  <div id="section-2" class="hidden">
+    <div class="section-intro">
+      <span class="section-tag">Activity 5 – Sentence Transformation</span>
+      <h2>Same Meaning, Different Words</h2>
+      <p>The sentence in <strong>bold</strong> is the original. Choose the option (A–D) that has the <strong>closest meaning</strong> while using the new word or phrase given. The meaning must stay the same — only the structure changes.</p>
+    </div>
+
+    <!-- Illustration: transformation / re-engineering scene -->
+    <div class="illustration-wrap">
+      <svg viewBox="0 0 820 190" xmlns="http://www.w3.org/2000/svg" width="100%">
+        <rect width="820" height="190" fill="#1C1C1E"/>
+
+        <!-- Car A — original version (left) -->
+        <g opacity="0.95">
+          <rect x="55" y="105" width="150" height="45" rx="4" fill="#C8392B"/>
+          <rect x="75" y="70" width="110" height="40" rx="4" fill="#E04535"/>
+          <polygon points="185,70 155,50 120,50 75,70" fill="#1A4D8F" opacity="0.9"/>
+          <circle cx="85" cy="152" r="20" fill="#111"/><circle cx="85" cy="152" r="11" fill="#333"/><circle cx="85" cy="152" r="5" fill="#F5C518"/>
+          <circle cx="185" cy="152" r="20" fill="#111"/><circle cx="185" cy="152" r="11" fill="#333"/><circle cx="185" cy="152" r="5" fill="#F5C518"/>
+          <!-- headlights -->
+          <rect x="196" y="120" width="10" height="7" rx="2" fill="#F5C518" opacity="0.7"/>
+          <!-- stud on roof -->
+          <circle cx="110" cy="47" r="6" fill="#C8392B" stroke="#A02E22" stroke-width="1.5"/>
+          <circle cx="130" cy="47" r="6" fill="#C8392B" stroke="#A02E22" stroke-width="1.5"/>
+          <circle cx="150" cy="47" r="6" fill="#C8392B" stroke="#A02E22" stroke-width="1.5"/>
+          <text x="130" y="183" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="rgba(245,240,232,0.4)" letter-spacing="1">ORIGINAL</text>
+        </g>
+
+        <!-- Arrows in centre -->
+        <g transform="translate(300,80)">
+          <path d="M30,30 L90,30" stroke="#F5C518" stroke-width="2" stroke-dasharray="6,4"/>
+          <polygon points="90,24 104,30 90,36" fill="#F5C518"/>
+          <path d="M104,50 L44,50" stroke="rgba(245,197,24,0.5)" stroke-width="2" stroke-dasharray="6,4"/>
+          <polygon points="44,44 30,50 44,56" fill="rgba(245,197,24,0.5)"/>
+          <text x="67" y="25" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="#F5C518" letter-spacing="1" font-weight="700">TRANSFORM</text>
+        </g>
+
+        <!-- Car B — new version (right) -->
+        <g opacity="0.95">
+          <rect x="555" y="105" width="150" height="45" rx="4" fill="#1A4D8F"/>
+          <rect x="575" y="72" width="110" height="38" rx="4" fill="#1E5AA0"/>
+          <polygon points="685,72 655,52 620,52 575,72" fill="#C8392B" opacity="0.9"/>
+          <circle cx="585" cy="152" r="20" fill="#111"/><circle cx="585" cy="152" r="11" fill="#333"/><circle cx="585" cy="152" r="5" fill="#F5C518"/>
+          <circle cx="685" cy="152" r="20" fill="#111"/><circle cx="685" cy="152" r="11" fill="#333"/><circle cx="685" cy="152" r="5" fill="#F5C518"/>
+          <rect x="696" y="120" width="10" height="7" rx="2" fill="#F5C518" opacity="0.7"/>
+          <circle cx="610" cy="49" r="6" fill="#1A4D8F" stroke="#0D3070" stroke-width="1.5"/>
+          <circle cx="630" cy="49" r="6" fill="#1A4D8F" stroke="#0D3070" stroke-width="1.5"/>
+          <circle cx="650" cy="49" r="6" fill="#1A4D8F" stroke="#0D3070" stroke-width="1.5"/>
+          <text x="630" y="183" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="10" fill="rgba(245,240,232,0.4)" letter-spacing="1">TRANSFORMED</text>
+        </g>
+
+        <text x="410" y="185" font-family="DM Sans,sans-serif" font-size="10" fill="rgba(245,240,232,0.2)" text-anchor="middle" letter-spacing="3">SAME MEANING — NEW STRUCTURE</text>
+      </svg>
+    </div>
+
+    <!-- Q1 -->
+    <div class="question-card" id="tr-q1">
+      <div class="question-num">Question 1 of 5</div>
+      <div class="question-text"><strong>Original:</strong> "It was impossible to complete the build without a pair of tweezers for the smallest parts."<br><br>Using: <em>…could not be completed…</em></div>
+      <div class="options-grid">
+        <button class="option-btn" data-correct="false" onclick="handleMC(this,'tr-q1',false)"><span class="opt-label">A</span>The build could not be completed because it was impossible to find a pair of tweezers.</button>
+        <button class="option-btn" data-correct="true" onclick="handleMC(this,'tr-q1',true)"><span class="opt-label">B</span>The build could not be completed without a pair of tweezers for the smallest parts.</button>
+        <button class="option-btn" data-correct="false" onclick="handleMC(this,'tr-q1',false)"><span class="opt-label">C</span>The build could not be completed, even though tweezers were available for the small parts.</button>
+        <button class="option-btn" data-correct="false" onclick="handleMC(this,'tr-q1',false)"><span class="opt-label">D</span>The build could not be completed if the tweezers were used on the smallest parts only.</button>
+      </div>
+      <div class="feedback-box" id="fb-tr-q1"></div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="question-card hidden" id="tr-q2">
+      <div class="question-num">Question 2 of 5</div>
+      <div class="question-text"><strong>Original:</strong> "He spent three hours assembling the engine block before he noticed a mistake."<br><br>Using: <em>…only to discover…</em></div>
+      <div class="options-grid">
+        <button class="option-btn" data-correct="false" onclick="handleMC(this,'tr-q2',false)"><span class="opt-label">C</span>He spent three hours on the engine block, and eventually he was able to discover his mistake.</button>
+        <button class="option-btn" data-correct="true" onclick="handleMC(this,'tr-q2',true)"><span class="opt-label">A</span>He spent three hours assembling the engine block, only to discover that he had made a mistake.</button>
+        <button class="option-btn" data-correct="false" onclick="handleMC(this,'tr-q2',false)"><span class="opt-label">D</span>He only discovered the engine block mistake after spending more than three hours on it later.</button>
+        <button class="option-btn" data-correct="false" onclick="handleMC(this,'tr-q2',false)"><span class="opt-label">B</span>He had only been working for three hours when he discovered the engine had been assembled wrongly.</button>
+      </div>
+      <div class="feedback-box" id="fb-tr-q2"></div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="question-card hidden" id="tr-q3">
+      <div class="question-num">Question 3 of 5</div>
+      <div class="question-text"><strong>Original:</strong> "The steering mechanism was so stiff that it was impossible to turn smoothly."<br><br>Using: <em>…too… to…</em></div>
+      <div class="options-grid">
+        <button class="option-btn" data-correct="false" onclick="handleMC(this,'tr-q3',false)"><span class="opt-label">B</span>The steering mechanism was too difficult, so turning it smoothly was something impossible to do.</button>
+        <button class="option-btn" data-correct="false" onclick="handleMC(this,'tr-q3',false)"><span class="opt-label">D</span>The steering mechanism was too stiff, but it was still possible to turn it with enough effort.</button>
+        <button class="option-btn" data-correct="false" onclick="handleMC(this,'tr-q3',false)"><span class="opt-label">A</span>The steering mechanism was too smooth to be turned stiffly without causing any real damage.</button>
+        <button class="option-btn" data-correct="true" onclick="handleMC(this,'tr-q3',true)"><span class="opt-label">C</span>The steering mechanism was too stiff to turn smoothly.</button>
+      </div>
+      <div class="feedback-box" id="fb-tr-q3"></div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="question-card hidden" id="tr-q4">
+      <div class="question-num">Question 4 of 5</div>
+      <div class="question-text"><strong>Original:</strong> "Although the model looked fragile, it proved to be extremely durable."<br><br>Using: <em>…despite…</em></div>
+      <div class="options-grid">
+        <button class="option-btn" data-correct="true" onclick="handleMC(this,'tr-q4',true)"><span class="opt-label">D</span>Despite its fragile appearance, the model proved to be extremely durable.</button>
+        <button class="option-btn" data-correct="false" onclick="handleMC(this,'tr-q4',false)"><span class="opt-label">A</span>Despite looking fragile, the model did not manage to prove that it was especially durable.</button>
+        <button class="option-btn" data-correct="false" onclick="handleMC(this,'tr-q4',false)"><span class="opt-label">B</span>Despite the model being durable, it also had a very fragile exterior that was extremely delicate.</button>
+        <button class="option-btn" data-correct="false" onclick="handleMC(this,'tr-q4',false)"><span class="opt-label">C</span>Despite the fact it was fragile, the model did not prove to be particularly durable in testing.</button>
+      </div>
+      <div class="feedback-box" id="fb-tr-q4"></div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="question-card hidden" id="tr-q5">
+      <div class="question-num">Question 5 of 5</div>
+      <div class="question-text"><strong>Original:</strong> "It is essential that all builders read the instructions carefully before starting."<br><br>Using: <em>…must…</em></div>
+      <div class="options-grid">
+        <button class="option-btn" data-correct="false" onclick="handleMC(this,'tr-q5',false)"><span class="opt-label">A</span>All builders must have read the instructions carefully, especially before they started.</button>
+        <button class="option-btn" data-correct="false" onclick="handleMC(this,'tr-q5',false)"><span class="opt-label">C</span>All builders must be reading the instructions carefully once they have already started building.</button>
+        <button class="option-btn" data-correct="true" onclick="handleMC(this,'tr-q5',true)"><span class="opt-label">B</span>All builders must read the instructions carefully before starting.</button>
+        <button class="option-btn" data-correct="false" onclick="handleMC(this,'tr-q5',false)"><span class="opt-label">D</span>All builders must read the instructions carefully, although starting before reading is also acceptable.</button>
+      </div>
+      <div class="feedback-box" id="fb-tr-q5"></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary hidden" id="tr-next-btn" onclick="showSection(3)">Next Activity →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SECTION 3 — MATCHING
+  ══════════════════════════════════════ -->
+  <div id="section-3" class="hidden">
+    <div class="section-intro">
+      <span class="section-tag">Activity 6 – Matching</span>
+      <h2>Definitions & Terms</h2>
+      <p>Match each technical term on the left with its correct definition on the right. Use the dropdown menus to select your answers. Each definition is used only once.</p>
+    </div>
+
+    <!-- Illustration -->
+    <div class="illustration-wrap">
+      <svg viewBox="0 0 820 185" xmlns="http://www.w3.org/2000/svg" width="100%">
+        <rect width="820" height="185" fill="#1C1C1E"/>
+
+        <!-- Left column: term tiles -->
+        <g font-family="DM Sans,sans-serif" font-size="12" font-weight="700">
+          <rect x="40" y="30" width="140" height="30" rx="6" fill="#C8392B"/>
+          <text x="110" y="50" text-anchor="middle" fill="white">torque</text>
+
+          <rect x="40" y="72" width="140" height="30" rx="6" fill="#1A4D8F"/>
+          <text x="110" y="92" text-anchor="middle" fill="white">camber</text>
+
+          <rect x="40" y="114" width="140" height="30" rx="6" fill="#2E7D32"/>
+          <text x="110" y="134" text-anchor="middle" fill="white">gear ratio</text>
+
+          <rect x="40" y="142" width="140" height="30" rx="6" fill="#6A1B9A"/>
+          <text x="110" y="162" text-anchor="middle" fill="white">suspension</text>
+        </g>
+
+        <!-- Connecting lines -->
+        <g stroke="rgba(245,197,24,0.2)" stroke-width="1.5" stroke-dasharray="4,4">
+          <line x1="190" y1="45" x2="300" y2="75"/>
+          <line x1="190" y1="87" x2="300" y2="120"/>
+          <line x1="190" y1="129" x2="300" y2="100"/>
+          <line x1="190" y1="157" x2="300" y2="145"/>
+        </g>
+
+        <!-- Right column: definition fragments -->
+        <g font-family="DM Sans,sans-serif" font-size="10" fill="rgba(245,240,232,0.6)">
+          <rect x="300" y="60" width="460" height="26" rx="5" fill="rgba(26,77,143,0.15)" stroke="rgba(26,77,143,0.3)" stroke-width="1"/>
+          <text x="315" y="77">The rotational force produced by an engine or motor</text>
+
+          <rect x="300" y="100" width="460" height="26" rx="5" fill="rgba(26,77,143,0.15)" stroke="rgba(26,77,143,0.3)" stroke-width="1"/>
+          <text x="315" y="117">The relationship between input and output speed of gears</text>
+
+          <rect x="300" y="140" width="460" height="26" rx="5" fill="rgba(26,77,143,0.15)" stroke="rgba(26,77,143,0.3)" stroke-width="1"/>
+          <text x="315" y="157">The angle at which a wheel is tilted relative to the vertical</text>
+        </g>
+        <text x="410" y="180" font-family="DM Sans,sans-serif" font-size="10" fill="rgba(245,240,232,0.2)" text-anchor="middle" letter-spacing="3">MATCH EACH TERM TO ITS DEFINITION</text>
+      </svg>
+    </div>
+
+    <!-- Matching activity -->
+    <div class="question-card">
+      <div class="question-num">Questions 1–5 of 5</div>
+      <div style="margin-bottom:20px">
+        <div class="match-col-label" style="margin-bottom:12px">Match each term with its correct definition</div>
+
+        <!-- Row 1 -->
+        <div style="display:grid;grid-template-columns:1fr 2fr;gap:12px;align-items:center;margin-bottom:14px">
+          <div class="match-left-item">torque</div>
+          <div class="match-row">
+            <select class="match-select" id="match-1">
+              <option value="">— select definition —</option>
+              <option value="a">The rotational force that causes an object to turn around an axis</option>
+              <option value="b">The angle at which a wheel is tilted relative to the vertical plane</option>
+              <option value="c">A system that absorbs shock and maintains contact with the ground</option>
+              <option value="d">The comparison of speeds between two meshing gears</option>
+              <option value="e">The maximum weight a structural element can safely support</option>
+            </select>
+            <div class="match-feedback-line" id="mfb-1"></div>
+          </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div style="display:grid;grid-template-columns:1fr 2fr;gap:12px;align-items:center;margin-bottom:14px">
+          <div class="match-left-item">camber</div>
+          <div class="match-row">
+            <select class="match-select" id="match-2">
+              <option value="">— select definition —</option>
+              <option value="a">The rotational force that causes an object to turn around an axis</option>
+              <option value="b">The angle at which a wheel is tilted relative to the vertical plane</option>
+              <option value="c">A system that absorbs shock and maintains contact with the ground</option>
+              <option value="d">The comparison of speeds between two meshing gears</option>
+              <option value="e">The maximum weight a structural element can safely support</option>
+            </select>
+            <div class="match-feedback-line" id="mfb-2"></div>
+          </div>
+        </div>
+
+        <!-- Row 3 -->
+        <div style="display:grid;grid-template-columns:1fr 2fr;gap:12px;align-items:center;margin-bottom:14px">
+          <div class="match-left-item">gear ratio</div>
+          <div class="match-row">
+            <select class="match-select" id="match-3">
+              <option value="">— select definition —</option>
+              <option value="a">The rotational force that causes an object to turn around an axis</option>
+              <option value="b">The angle at which a wheel is tilted relative to the vertical plane</option>
+              <option value="c">A system that absorbs shock and maintains contact with the ground</option>
+              <option value="d">The comparison of speeds between two meshing gears</option>
+              <option value="e">The maximum weight a structural element can safely support</option>
+            </select>
+            <div class="match-feedback-line" id="mfb-3"></div>
+          </div>
+        </div>
+
+        <!-- Row 4 -->
+        <div style="display:grid;grid-template-columns:1fr 2fr;gap:12px;align-items:center;margin-bottom:14px">
+          <div class="match-left-item">suspension</div>
+          <div class="match-row">
+            <select class="match-select" id="match-4">
+              <option value="">— select definition —</option>
+              <option value="a">The rotational force that causes an object to turn around an axis</option>
+              <option value="b">The angle at which a wheel is tilted relative to the vertical plane</option>
+              <option value="c">A system that absorbs shock and maintains contact with the ground</option>
+              <option value="d">The comparison of speeds between two meshing gears</option>
+              <option value="e">The maximum weight a structural element can safely support</option>
+            </select>
+            <div class="match-feedback-line" id="mfb-4"></div>
+          </div>
+        </div>
+
+        <!-- Row 5 -->
+        <div style="display:grid;grid-template-columns:1fr 2fr;gap:12px;align-items:center;margin-bottom:4px">
+          <div class="match-left-item">load capacity</div>
+          <div class="match-row">
+            <select class="match-select" id="match-5">
+              <option value="">— select definition —</option>
+              <option value="a">The rotational force that causes an object to turn around an axis</option>
+              <option value="b">The angle at which a wheel is tilted relative to the vertical plane</option>
+              <option value="c">A system that absorbs shock and maintains contact with the ground</option>
+              <option value="d">The comparison of speeds between two meshing gears</option>
+              <option value="e">The maximum weight a structural element can safely support</option>
+            </select>
+            <div class="match-feedback-line" id="mfb-5"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="feedback-box" id="fb-match"></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-secondary" id="match-check-btn" onclick="checkMatching()">Check Answers</button>
+      <button class="btn-primary hidden" id="match-next-btn" onclick="showFinal()">See My Results →</button>
+    </div>
+  </div>
+
+  <!-- ══════════ FINAL SCREEN ══════════ -->
+  <div id="final-screen" class="hidden">
+    <div class="final-screen">
+      <svg class="final-score-ring" viewBox="0 0 160 160">
+        <circle cx="80" cy="80" r="68" fill="none" stroke="#EDE7D9" stroke-width="10"/>
+        <circle cx="80" cy="80" r="68" fill="none" stroke="#C8392B" stroke-width="10"
+          stroke-dasharray="427" stroke-dashoffset="427"
+          stroke-linecap="round" transform="rotate(-90 80 80)"
+          id="score-arc"/>
+        <text x="80" y="74" text-anchor="middle" font-family="Playfair Display,serif" font-size="34" fill="#1C1C1E" font-weight="700" id="final-score-num">0</text>
+        <text x="80" y="96" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="13" fill="#5A5A5C">out of 15</text>
+      </svg>
+
+      <h2 class="final-title" id="final-title">Results</h2>
+      <p class="final-message" id="final-message"></p>
+
+      <!-- Mini celebration SVG -->
+      <svg viewBox="0 0 500 90" width="100%" style="max-width:480px;margin:0 auto 36px;display:block;border-radius:10px">
+        <rect width="500" height="90" fill="#1C1C1E"/>
+        <!-- Confetti dots -->
+        <circle cx="50" cy="30" r="5" fill="#C8392B"/><circle cx="90" cy="55" r="4" fill="#F5C518"/>
+        <circle cx="140" cy="20" r="6" fill="#1A4D8F"/><circle cx="180" cy="60" r="4" fill="#2E7D32"/>
+        <circle cx="230" cy="35" r="5" fill="#C8392B"/><circle cx="270" cy="65" r="6" fill="#F5C518"/>
+        <circle cx="320" cy="25" r="4" fill="#1A4D8F"/><circle cx="360" cy="55" r="5" fill="#2E7D32"/>
+        <circle cx="410" cy="30" r="6" fill="#C8392B"/><circle cx="450" cy="60" r="4" fill="#F5C518"/>
+        <!-- Trophy icon -->
+        <rect x="228" y="20" width="44" height="32" rx="5" fill="#F5C518"/>
+        <rect x="238" y="52" width="24" height="8" rx="2" fill="#D4A900"/>
+        <rect x="232" y="60" width="36" height="6" rx="3" fill="#D4A900"/>
+        <text x="250" y="42" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="16" fill="#1C1C1E" font-weight="700">★</text>
+        <text x="250" y="82" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="9" fill="rgba(245,240,232,0.3)" letter-spacing="3">PART 2 COMPLETE</text>
+      </svg>
+
+      <button class="btn-primary" onclick="restartLesson()">↺ Try Again</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+// ══════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════
+let totalScore = 0;
+let currentTRQ = 1;
+let trAnswered = 0;
+let errDone = false;
+let matchDone = false;
+
+// ══════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════
+function showSection(n) {
+  [1,2,3].forEach(i => document.getElementById('section-'+i).classList.add('hidden'));
+  document.getElementById('section-'+n).classList.remove('hidden');
+  const labels = ['Error Correction','Sentence Transformation','Matching'];
+  document.getElementById('activity-label').textContent = labels[n-1];
+  document.getElementById('progress-display').textContent = 'Activity '+n+' of 3';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function showFinal() {
+  [1,2,3].forEach(i => document.getElementById('section-'+i).classList.add('hidden'));
+  document.getElementById('final-screen').classList.remove('hidden');
+  document.getElementById('progress-display').textContent = 'Complete!';
+  document.getElementById('activity-label').textContent = 'Results';
+  renderFinalScore();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function restartLesson() { location.reload(); }
+
+function addScore(n) {
+  totalScore += n;
+  document.getElementById('score-display').textContent = totalScore;
+}
+
+// ══════════════════════════════════════════════
+// ACTIVITY 1 — ERROR CORRECTION
+// ══════════════════════════════════════════════
+/*
+  Correct answers:
+  Q1: wrong = "on"  → "in"      (in sequence)
+  Q2: wrong = "with" → "for"    (substitute X for Y)
+  Q3: wrong = "from" → "of"     (consists of)
+  Q4: wrong = "inefficient" → "inefficiently"  (adverb needed)
+  Q5: wrong = "to" → "too"      (too rigid)
+*/
+const ERR_DATA = {
+  1: { wrong: ['on'], correction: ['in'],
+       fb: '<strong>✓ The error was "on".</strong> The correct preposition is <em>in</em>: "in sequence." The phrase <em>in sequence</em> is a fixed collocation meaning in the correct order.' },
+  2: { wrong: ['with'], correction: ['for'],
+       fb: '<strong>✓ The error was "with".</strong> The verb <em>substitute</em> collocates with <em>for</em>, not <em>with</em>: "substitute the original wheels <em>for</em> a smaller alternative." Note: <em>replace</em> takes <em>with</em> — a common confusion.' },
+  3: { wrong: ['from'], correction: ['of'],
+       fb: '<strong>✓ The error was "from".</strong> The verb <em>consist</em> always takes the preposition <em>of</em>: "consists <em>of</em> three interlocking cogs." This is a fixed collocation with no exceptions.' },
+  4: { wrong: ['inefficient'], correction: ['inefficiently'],
+       fb: '<strong>✓ The error was "inefficient" (adjective).</strong> It modifies the verb <em>turn</em>, so an adverb is needed: <em>inefficiently</em>. Adverbs modify verbs; adjectives modify nouns.' },
+  5: { wrong: ['to'], correction: ['too'],
+       fb: '<strong>✓ The error was "to" (preposition/infinitive marker).</strong> The correct word is <em>too</em> (adverb of degree): "too rigid to absorb…" — meaning excessively rigid. This is a very common spelling confusion.' }
+};
+
+function checkErrors() {
+  if (errDone) return;
+  errDone = true;
+
+  let anyVisible = false;
+  for (let i = 1; i <= 5; i++) {
+    const card = document.getElementById('err-q' + i);
+    if (card.classList.contains('hidden')) continue;
+    anyVisible = true;
+
+    const wInp = document.getElementById('err-wrong-' + i);
+    const cInp = document.getElementById('err-correct-' + i);
+    const data = ERR_DATA[i];
+
+    const wVal = wInp.value.trim().toLowerCase().replace(/["""]/g,'');
+    const cVal = cInp.value.trim().toLowerCase().replace(/["""]/g,'');
+
+    const wOk = data.wrong.some(w => wVal === w);
+    const cOk = data.correction.some(c => cVal === c);
+    const bothOk = wOk && cOk;
+
+    wInp.disabled = cInp.disabled = true;
+
+    if (bothOk) {
+      wInp.classList.add('correct-input');
+      cInp.classList.add('correct-input');
+      addScore(1);
+    } else {
+      if (!wOk) wInp.classList.add('incorrect-input');
+      else wInp.classList.add('correct-input');
+      if (!cOk) cInp.classList.add('incorrect-input');
+      else cInp.classList.add('correct-input');
+    }
+
+    const fb = document.getElementById('fb-err-' + i);
+    fb.innerHTML = data.fb + (!bothOk ? '<br><em>Correct answer — Wrong word: "' + data.wrong[0] + '" → Correction: "' + data.correction[0] + '"</em>' : '');
+    fb.className = 'feedback-box show ' + (bothOk ? 'correct-fb' : 'incorrect-fb');
+  }
+
+  document.getElementById('err-check-btn').disabled = true;
+  document.getElementById('err-next-btn').classList.remove('hidden');
+}
+
+// ══════════════════════════════════════════════
+// ACTIVITY 2 — SENTENCE TRANSFORMATION (MC)
+// ══════════════════════════════════════════════
+const TR_FEEDBACK = {
+  'tr-q1': {
+    correct: '<strong>✓ Correct!</strong> Option B preserves the exact meaning of the original using the passive form "could not be completed" — the condition (needing tweezers) remains unchanged.',
+    incorrect: '<strong>✗ Not quite.</strong> The correct transformation is: "The build could not be completed without a pair of tweezers for the smallest parts." The meaning — that tweezers were essential — must stay the same. Other options change or add meaning.'
+  },
+  'tr-q2': {
+    correct: '<strong>✓ Correct!</strong> "Only to discover" expresses a disappointing or surprising outcome after effort — perfectly capturing the frustration of finding a mistake after three hours of work.',
+    incorrect: '<strong>✗ Not quite.</strong> "Only to discover" is used when a surprising or disappointing result follows sustained effort. The correct answer is: "He spent three hours assembling the engine block, only to discover that he had made a mistake."'
+  },
+  'tr-q3': {
+    correct: '<strong>✓ Correct!</strong> "Too + adjective + to + infinitive" is a concise structure meaning "so [adjective] that it was impossible to [verb]." Option C captures this perfectly.',
+    incorrect: '<strong>✗ Not quite.</strong> The correct transformation is simply: "The steering mechanism was too stiff to turn smoothly." The "too…to" structure replaces the "so…that it was impossible to" construction with no change in meaning.'
+  },
+  'tr-q4': {
+    correct: '<strong>✓ Correct!</strong> "Despite + noun phrase" replaces "Although + clause." Option D correctly converts "its fragile appearance" into the noun phrase following "despite," keeping the meaning intact.',
+    incorrect: '<strong>✗ Not quite.</strong> The correct answer is: "Despite its fragile appearance, the model proved to be extremely durable." Note that <em>despite</em> must be followed by a noun phrase, not a clause (not "despite it looked fragile").'
+  },
+  'tr-q5': {
+    correct: '<strong>✓ Correct!</strong> "It is essential that + subject + base verb" transforms directly into "subject + must + base verb" — both express strong obligation. Option B is accurate and unmodified.',
+    incorrect: '<strong>✗ Not quite.</strong> "It is essential that all builders read…" becomes "All builders must read the instructions carefully before starting." The modal <em>must</em> expresses the same strong obligation as <em>essential</em>.'
+  }
+};
+
+function handleMC(btn, qId, isCorrect) {
+  const card = document.getElementById(qId);
+  const btns = card.querySelectorAll('.option-btn');
+  btns.forEach(b => {
+    b.disabled = true;
+    if (b.dataset.correct === 'true') b.classList.add('correct');
+  });
+  if (!isCorrect) btn.classList.add('incorrect');
+
+  const fb = document.getElementById('fb-' + qId);
+  fb.innerHTML = isCorrect ? TR_FEEDBACK[qId].correct : TR_FEEDBACK[qId].incorrect;
+  fb.className = 'feedback-box show ' + (isCorrect ? 'correct-fb' : 'incorrect-fb');
+
+  if (isCorrect) addScore(1);
+
+  trAnswered++;
+  currentTRQ++;
+
+  setTimeout(() => {
+    if (currentTRQ <= 5) {
+      const next = document.getElementById('tr-q' + currentTRQ);
+      next.classList.remove('hidden');
+      next.scrollIntoView({behavior:'smooth', block:'start'});
+    } else {
+      document.getElementById('tr-next-btn').classList.remove('hidden');
+    }
+  }, 400);
+}
+
+// ══════════════════════════════════════════════
+// ACTIVITY 3 — MATCHING
+// torque → a, camber → b, gear ratio → d, suspension → c, load capacity → e
+// ══════════════════════════════════════════════
+const MATCH_ANSWERS = {
+  1: { key: 'a', term: 'torque', fb: '<strong>torque → </strong> The rotational force that causes an object to turn around an axis. In Lego Technic, torque is what makes the wheels spin — generated by the motor or manually turning a gear.' },
+  2: { key: 'b', term: 'camber', fb: '<strong>camber → </strong> The angle at which a wheel is tilted relative to the vertical plane. Negative camber (top of wheel tilting inward) improves cornering grip on racing cars.' },
+  3: { key: 'd', term: 'gear ratio', fb: '<strong>gear ratio → </strong> The comparison of speeds between two meshing gears. A 3:1 ratio means the output gear turns once for every three turns of the input gear — trading speed for torque.' },
+  4: { key: 'c', term: 'suspension', fb: '<strong>suspension → </strong> A system that absorbs shock and maintains tyre contact with the ground. In Lego Technic cars, suspension is built using spring elements and pivot joints.' },
+  5: { key: 'e', term: 'load capacity', fb: '<strong>load capacity → </strong> The maximum weight a structural element can safely support. Engineers calculate load capacity for chassis and axle beams to ensure the model doesn\'t buckle.' }
+};
+
+function checkMatching() {
+  if (matchDone) return;
+  matchDone = true;
+
+  let correct = 0;
+  for (let i = 1; i <= 5; i++) {
+    const sel = document.getElementById('match-' + i);
+    const fb = document.getElementById('mfb-' + i);
+    const isRight = sel.value === MATCH_ANSWERS[i].key;
+    sel.disabled = true;
+
+    if (isRight) {
+      sel.classList.add('correct-select');
+      correct++;
+      addScore(1);
+      fb.innerHTML = '✓ ' + MATCH_ANSWERS[i].fb;
+      fb.className = 'match-feedback-line show correct-fb';
+    } else {
+      sel.classList.add('incorrect-select');
+      fb.innerHTML = '✗ ' + MATCH_ANSWERS[i].fb + ' <em>(Your answer was incorrect.)</em>';
+      fb.className = 'match-feedback-line show incorrect-fb';
+    }
+  }
+
+  const mainFb = document.getElementById('fb-match');
+  mainFb.innerHTML = '<strong>' + correct + '/5 correct.</strong> Read the explanations above to understand each term fully.';
+  mainFb.className = 'feedback-box show ' + (correct >= 4 ? 'correct-fb' : 'incorrect-fb');
+
+  document.getElementById('match-check-btn').disabled = true;
+  document.getElementById('match-next-btn').classList.remove('hidden');
+}
+
+// ══════════════════════════════════════════════
+// FINAL SCREEN
+// ══════════════════════════════════════════════
+function renderFinalScore() {
+  const total = 15;
+  const pct = totalScore / total;
+  const circumference = 427;
+  const offset = circumference - circumference * pct;
+
+  document.getElementById('final-score-num').textContent = totalScore;
+  const arc = document.getElementById('score-arc');
+  setTimeout(() => {
+    arc.style.transition = 'stroke-dashoffset 1.2s cubic-bezier(0.4,0,0.2,1)';
+    arc.style.strokeDashoffset = offset;
+    arc.style.stroke = pct >= 0.8 ? '#2E7D32' : pct >= 0.6 ? '#F5C518' : '#C8392B';
+  }, 100);
+
+  let title, msg;
+  if (totalScore >= 14) {
+    title = 'Masterful!';
+    msg = 'You scored ' + totalScore + ' out of 15. Your precision with grammar, word form, and technical vocabulary is exceptional. You\'re operating at full B2 — and nudging C1.';
+  } else if (totalScore >= 11) {
+    title = 'Impressive work!';
+    msg = 'You scored ' + totalScore + ' out of 15. Strong performance across all three activities. Pay particular attention to any error correction items you missed — preposition collocations are a rich area for further study.';
+  } else if (totalScore >= 8) {
+    title = 'Solid effort!';
+    msg = 'You scored ' + totalScore + ' out of 15. You\'re building a strong foundation. Focus on the feedback for the sentences you missed — especially sentence transformation structures and technical definitions.';
+  } else {
+    title = 'Keep at it!';
+    msg = 'You scored ' + totalScore + ' out of 15. Technical and grammatical precision takes practice — just like assembling a complex Lego Technic set. Review the explanations, then try again.';
+  }
+
+  document.getElementById('final-title').textContent = title;
+  document.getElementById('final-message').textContent = msg;
+}
+</script>
+</body>
+</html>

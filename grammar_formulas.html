@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grammar Formulas — Quick Reference</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@500;600&family=Karla:wght@400;500;600;700&display=swap');
+
+:root{
+  --paper:#f6f1e7;
+  --ink:#241f1a;
+  --ink-soft:#5c5347;
+  --line:#d8cdb8;
+  --card:#fffdf8;
+  --gold:#c98a3a;
+
+  /* tense-system colours, reused where relevant */
+  --past-simple:#b08968;
+  --present-simple:#3b6ea5;
+  --future:#c08a1e;
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--paper);
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(36,31,26,0.06) 1px, transparent 0);
+  background-size:22px 22px;
+  color:var(--ink);
+  font-family:'Karla', sans-serif;
+  padding:48px 20px 80px;
+}
+
+.wrap{max-width:980px;margin:0 auto;}
+
+header{
+  text-align:center;
+  margin-bottom:46px;
+}
+.eyebrow{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:12px;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--gold);
+  font-weight:600;
+  margin-bottom:10px;
+}
+h1{
+  font-family:'Fraunces', serif;
+  font-weight:700;
+  font-size:42px;
+  margin:0 0 8px;
+  letter-spacing:-0.01em;
+}
+.de-sub{
+  font-family:'Fraunces', serif;
+  font-style:italic;
+  font-weight:500;
+  font-size:18px;
+  color:var(--ink-soft);
+  margin:0;
+}
+header .rule{
+  width:64px;height:3px;background:var(--gold);
+  margin:22px auto 0;border-radius:2px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:22px;
+}
+@media (max-width:760px){
+  .grid{grid-template-columns:1fr;}
+}
+
+.card{
+  background:var(--card);
+  border:1.5px solid var(--line);
+  border-radius:10px;
+  padding:24px 26px 22px;
+  position:relative;
+  overflow:hidden;
+}
+.card::before{
+  content:"";
+  position:absolute;
+  top:0;left:0;
+  width:6px;height:100%;
+  background:var(--accent, var(--gold));
+}
+
+.card-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:12px;
+  margin-bottom:4px;
+}
+.card-en{
+  font-family:'Fraunces', serif;
+  font-weight:700;
+  font-size:21px;
+  color:var(--ink);
+  letter-spacing:-0.01em;
+}
+.card-num{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:12px;
+  color:var(--ink-soft);
+  opacity:0.55;
+  font-weight:600;
+}
+.card-de{
+  font-family:'Fraunces', serif;
+  font-style:italic;
+  font-size:14.5px;
+  color:var(--ink-soft);
+  margin-bottom:16px;
+  padding-bottom:14px;
+  border-bottom:1px dashed var(--line);
+}
+
+.formula{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:14.5px;
+  line-height:1.9;
+  background:rgba(36,31,26,0.035);
+  border-radius:6px;
+  padding:12px 14px;
+  margin-bottom:14px;
+}
+.formula .pos{color:#2f6b3e;font-weight:600;}
+.formula .neg{color:#a13a2f;font-weight:600;}
+.formula .q{color:#3b6ea5;font-weight:600;}
+.formula .plus{color:var(--ink-soft);font-weight:400;padding:0 2px;}
+.formula .tag{
+  font-family:'Karla',sans-serif;
+  font-size:10.5px;
+  text-transform:uppercase;
+  letter-spacing:0.06em;
+  color:var(--ink-soft);
+  font-weight:700;
+  display:inline-block;
+  width:64px;
+}
+.formula-line{display:flex;align-items:baseline;}
+
+.example{
+  font-size:14px;
+  color:var(--ink);
+  margin:3px 0;
+  padding-left:2px;
+}
+.example .ex-en{font-weight:500;}
+.example .ex-de{color:var(--ink-soft);font-style:italic;font-size:13px;}
+
+.note{
+  margin-top:14px;
+  font-size:12.5px;
+  color:var(--ink-soft);
+  background:rgba(201,138,58,0.09);
+  border-left:3px solid var(--gold);
+  padding:8px 12px;
+  border-radius:0 5px 5px 0;
+  line-height:1.55;
+}
+.note b{color:var(--ink);}
+
+/* accent overrides per card, drawing from the established colour logic where it applies */
+.c-have-to{--accent:#3b6ea5;}
+.c-going-to{--accent:#c08a1e;}
+.c-might{--accent:#7a5fa0;}
+.c-past-simple{--accent:var(--past-simple);}
+.c-time-markers{--accent:var(--past-simple);}
+.c-one-ones{--accent:#3b6ea5;}
+.c-some-any{--accent:#3b6ea5;}
+.c-like-ing{--accent:#2f6b3e;}
+.c-must{--accent:#a13a2f;}
+.c-whose{--accent:#c98a3a;}
+.c-possessive{--accent:#c98a3a;}
+.c-who{--accent:#3b6ea5;}
+.c-participle{--accent:var(--past-simple);}
+
+footer{
+  text-align:center;
+  margin-top:50px;
+  font-family:'IBM Plex Mono', monospace;
+  font-size:11px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+  opacity:0.6;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Übungsheft Teil 2 · Grammar Reference</div>
+    <h1>Grammar Formulas</h1>
+    <p class="de-sub">13 Strukturen auf einen Blick</p>
+    <div class="rule"></div>
+  </header>
+
+  <div class="grid">
+
+    <!-- 1. have to / don't have to -->
+    <div class="card c-have-to">
+      <div class="card-top">
+        <div class="card-en">have to / don't have to</div>
+        <div class="card-num">01</div>
+      </div>
+      <div class="card-de">müssen / nicht müssen</div>
+      <div class="formula">
+        <div class="formula-line"><span class="tag pos">+</span> I/you/we/they <b>have to</b> + Grundform</div>
+        <div class="formula-line"><span class="tag pos">+</span> he/she/it <b>has to</b> + Grundform</div>
+        <div class="formula-line"><span class="tag neg">–</span> <b>don't / doesn't have to</b> + Grundform</div>
+      </div>
+      <div class="example"><span class="ex-en">I have to go now.</span><br><span class="ex-de">Ich muss jetzt gehen.</span></div>
+      <div class="example"><span class="ex-en">She doesn't have to work.</span><br><span class="ex-de">Sie muss nicht arbeiten.</span></div>
+      <div class="note"><b>Achtung:</b> "mustn't" bedeutet etwas ganz anderes — "nicht dürfen", nicht "nicht müssen"!</div>
+    </div>
+
+    <!-- 2. going to negative -->
+    <div class="card c-going-to">
+      <div class="card-top">
+        <div class="card-en">going to <span style="opacity:.6;font-style:italic;">(negative)</span></div>
+        <div class="card-num">02</div>
+      </div>
+      <div class="card-de">Zukunftsplan, verneint</div>
+      <div class="formula">
+        <div class="formula-line"><span class="tag pos">+</span> subject <span class="plus">+</span> <b>am/is/are</b> <span class="plus">+</span> <b>going to</b> <span class="plus">+</span> Grundform</div>
+        <div class="formula-line"><span class="tag neg">–</span> subject <span class="plus">+</span> <b>am/is/are + not</b> <span class="plus">+</span> <b>going to</b> <span class="plus">+</span> Grundform</div>
+      </div>
+      <div class="example"><span class="ex-en">I'm going to help you.</span><br><span class="ex-de">Ich werde dir helfen.</span></div>
+      <div class="example"><span class="ex-en">I'm not going to help you.</span><br><span class="ex-de">Ich werde dir nicht helfen.</span></div>
+      <div class="note">"going to" ist hier <b>keine</b> Bewegung ("gehen zu"), sondern die Ankündigung eines Plans. Nach "going to" folgt immer die Grundform, nie "to + Verb".</div>
+    </div>
+
+    <!-- 3. might / might not -->
+    <div class="card c-might">
+      <div class="card-top">
+        <div class="card-en">might / might not</div>
+        <div class="card-num">03</div>
+      </div>
+      <div class="card-de">vielleicht, könnte (Vermutung)</div>
+      <div class="formula">
+        <div class="formula-line"><span class="tag pos">+</span> subject <span class="plus">+</span> <b>might</b> <span class="plus">+</span> Grundform (Infinitiv ohne "to")</div>
+        <div class="formula-line"><span class="tag neg">–</span> subject <span class="plus">+</span> <b>might not</b> <span class="plus">+</span> Grundform (Infinitiv ohne "to")</div>
+      </div>
+      <div class="example"><span class="ex-en">I might go to the cinema tonight.</span><br><span class="ex-de">Ich gehe vielleicht heute Abend ins Kino.</span></div>
+      <div class="example"><span class="ex-en">It might not rain tomorrow.</span><br><span class="ex-de">Es regnet morgen vielleicht nicht.</span></div>
+      <div class="note">Gleiche Form für alle Personen — kein -s, kein "do/does", kein "to" nach might. Es gibt <b>keine Frageform</b> mit might in diesem Kapitel.</div>
+    </div>
+
+    <!-- 4. past simple -->
+    <div class="card c-past-simple">
+      <div class="card-top">
+        <div class="card-en">Past simple</div>
+        <div class="card-num">04</div>
+      </div>
+      <div class="card-de">regelmäßig &amp; unregelmäßig</div>
+      <div class="formula">
+        <div class="formula-line"><span class="tag pos">+</span> regelm.: Grundform <span class="plus">+</span> <b>-ed</b> &nbsp;|&nbsp; unregelm.: 2. Form auswendig</div>
+        <div class="formula-line"><span class="tag neg">–</span> subject + <b>didn't</b> + Grundform &nbsp;<span style="opacity:.6">(be: wasn't/weren't)</span></div>
+        <div class="formula-line"><span class="tag q">?</span> <b>Did</b> + subject + Grundform? &nbsp;<span style="opacity:.6">(be: Was/Were ...?)</span></div>
+      </div>
+      <div class="example"><span class="ex-en">I liked the film. — I didn't like it.</span><br><span class="ex-de">Mir gefiel der Film. — Mir gefiel er nicht.</span></div>
+      <div class="example"><span class="ex-en">Did you go to the party?</span><br><span class="ex-de">Bist du zur Party gegangen?</span></div>
+      <div class="note"><b>did/didn't</b> nie zusammen mit "was/wasn't" oder "were/weren't" benutzen.</div>
+    </div>
+
+    <!-- 5. past time markers -->
+    <div class="card c-time-markers">
+      <div class="card-top">
+        <div class="card-en">Past time markers</div>
+        <div class="card-num">05</div>
+      </div>
+      <div class="card-de">Zeitangaben in der Vergangenheit</div>
+      <div class="formula">
+        <div class="formula-line"><b>The next day/week/year</b> ... &nbsp;·&nbsp; <b>An hour ago</b> ...</div>
+        <div class="formula-line"><b>After half an hour</b> ... &nbsp;·&nbsp; <b>Finally</b> ... &nbsp;·&nbsp; <b>One day</b> ...</div>
+        <div class="formula-line"><b>Two hours later</b> ... &nbsp;·&nbsp; <b>In 2020</b> ... &nbsp;·&nbsp; <b>Then</b> ...</div>
+      </div>
+      <div class="example"><span class="ex-en">He arrived three days ago.</span><br><span class="ex-de">Er ist vor drei Tagen angekommen.</span></div>
+      <div class="example"><span class="ex-en">Finally, she arrived.</span><br><span class="ex-de">Schließlich kam sie an.</span></div>
+      <div class="note">Drücken aus, <b>wann</b> in der Vergangenheit etwas passiert ist — meist am Satzanfang.</div>
+    </div>
+
+    <!-- 6. one / ones -->
+    <div class="card c-one-ones">
+      <div class="card-top">
+        <div class="card-en">one – ones</div>
+        <div class="card-num">06</div>
+      </div>
+      <div class="card-de">Ersatzwort für ein Nomen</div>
+      <div class="formula">
+        <div class="formula-line"><span class="tag pos">Sg.</span> the / this / that + (adj.) + <b>one</b></div>
+        <div class="formula-line"><span class="tag pos">Pl.</span> the / these / those + (adj.) + <b>ones</b></div>
+      </div>
+      <div class="example"><span class="ex-en">I don't like the green T-shirt. I like the blue one.</span><br><span class="ex-de">Ich mag das blaue (T-Shirt).</span></div>
+      <div class="example"><span class="ex-en">Which jeans? — The blue ones.</span><br><span class="ex-de">Die blauen.</span></div>
+      <div class="note">Ersetzt ein Nomen, das im vorherigen Satz schon genannt wurde — Wiederholung vermeiden.</div>
+    </div>
+
+    <!-- 7. some / any -->
+    <div class="card c-some-any">
+      <div class="card-top">
+        <div class="card-en">some – any</div>
+        <div class="card-num">07</div>
+      </div>
+      <div class="card-de">unbestimmte Mengen</div>
+      <div class="formula">
+        <div class="formula-line"><span class="tag pos">+</span> <b>some</b> → Aussagesätze, Angebote/Bitten</div>
+        <div class="formula-line"><span class="tag neg">–/?</span> <b>any</b> → Verneinung &amp; Fragen (Nein erwartet)</div>
+      </div>
+      <div class="example"><span class="ex-en">We've got some onions.</span><br><span class="ex-de">Wir haben Zwiebeln.</span></div>
+      <div class="example"><span class="ex-en">We haven't got any onions.</span><br><span class="ex-de">Wir haben keine Zwiebeln.</span></div>
+      <div class="note">Bei Bitten ("Would you like ...?") wird trotzdem <b>some</b> verwendet, auch in der Frage.</div>
+    </div>
+
+    <!-- 8. like + -ing -->
+    <div class="card c-like-ing">
+      <div class="card-top">
+        <div class="card-en">like + -ing</div>
+        <div class="card-num">08</div>
+      </div>
+      <div class="card-de">Vorlieben ausdrücken (Gerund)</div>
+      <div class="formula">
+        <div class="formula-line">subject + <b>(don't/doesn't) like / love / hate</b> + Verb<span class="plus">+</span><b>-ing</b></div>
+      </div>
+      <div class="example"><span class="ex-en">She doesn't like reading.</span><br><span class="ex-de">Sie mag Lesen nicht.</span></div>
+      <div class="example"><span class="ex-en">James likes running.</span><br><span class="ex-de">James mag Laufen.</span></div>
+      <div class="note">Das Verb wird hier wie ein Nomen behandelt — diese Form heißt <b>Gerund</b>.</div>
+    </div>
+
+    <!-- 9. must / mustn't -->
+    <div class="card c-must">
+      <div class="card-top">
+        <div class="card-en">must / mustn't</div>
+        <div class="card-num">09</div>
+      </div>
+      <div class="card-de">müssen / nicht dürfen</div>
+      <div class="formula">
+        <div class="formula-line"><span class="tag pos">+</span> subject + <b>must</b> + Grundform &nbsp;=&nbsp; müssen</div>
+        <div class="formula-line"><span class="tag neg">–</span> subject + <b>mustn't</b> + Grundform &nbsp;=&nbsp; nicht dürfen</div>
+      </div>
+      <div class="example"><span class="ex-en">You must be home before ten.</span><br><span class="ex-de">Du musst vor zehn zu Hause sein.</span></div>
+      <div class="example"><span class="ex-en">You mustn't feed the animals.</span><br><span class="ex-de">Du darfst die Tiere nicht füttern.</span></div>
+      <div class="note">don't/doesn't have to = <b>nicht müssen</b> · mustn't = <b>nicht dürfen</b> — nicht verwechseln!</div>
+    </div>
+
+    <!-- 10. whose + possessive 's -->
+    <div class="card c-whose">
+      <div class="card-top">
+        <div class="card-en">whose + possessive 's</div>
+        <div class="card-num">10</div>
+      </div>
+      <div class="card-de">Besitz erfragen &amp; angeben</div>
+      <div class="formula">
+        <div class="formula-line"><span class="tag q">?</span> <b>Whose</b> is/are this/these + Nomen?</div>
+        <div class="formula-line"><span class="tag pos">+</span> It's/They're + Name <span class="plus">+</span> <b>'s</b> (bzw. nur <b>'</b> nach -s)</div>
+      </div>
+      <div class="example"><span class="ex-en">Whose is this bag? — It's Kevin's.</span><br><span class="ex-de">Wessen Tasche ist das? — Es ist Kevins.</span></div>
+      <div class="example"><span class="ex-en">It's Doris' bag.</span><br><span class="ex-de">Es ist Doris' Tasche.</span></div>
+      <div class="note">Endet der Name auf <b>-s</b>, wird nur ein Apostroph (') angehängt, kein zusätzliches s.</div>
+    </div>
+
+    <!-- 11. possessive pronouns -->
+    <div class="card c-possessive">
+      <div class="card-top">
+        <div class="card-en">Possessive pronouns</div>
+        <div class="card-num">11</div>
+      </div>
+      <div class="card-de">mein(s), dein(s), ihr(s) ...</div>
+      <div class="formula">
+        <div class="formula-line">my → <b>mine</b> &nbsp;·&nbsp; your → <b>yours</b> &nbsp;·&nbsp; her → <b>hers</b></div>
+        <div class="formula-line">his → <b>his</b> &nbsp;·&nbsp; our → <b>ours</b> &nbsp;·&nbsp; their → <b>theirs</b></div>
+      </div>
+      <div class="example"><span class="ex-en">Lucky is my cat. — Lucky is mine.</span><br><span class="ex-de">Lucky ist meine Katze. — Lucky ist meine.</span></div>
+      <div class="example"><span class="ex-en">Italy is famous for its good food.</span><br><span class="ex-de">Italien ist für sein gutes Essen bekannt.</span></div>
+      <div class="note">Possessive pronoun steht <b>ohne</b> Nomen danach — es ersetzt "Possessivpronomen + Nomen".</div>
+    </div>
+
+    <!-- 12. questions with who -->
+    <div class="card c-who">
+      <div class="card-top">
+        <div class="card-en">Questions with who</div>
+        <div class="card-num">12</div>
+      </div>
+      <div class="card-de">Wer-Fragen</div>
+      <div class="formula">
+        <div class="formula-line"><span class="tag q">?</span> <b>Who</b> + Verb (3. Pers. Singular, richtige Zeitform)?</div>
+      </div>
+      <div class="example"><span class="ex-en">Who plays the guitar?</span><br><span class="ex-de">Wer spielt Gitarre?</span></div>
+      <div class="example"><span class="ex-en">Who went to the cinema?</span><br><span class="ex-de">Wer ist ins Kino gegangen?</span></div>
+      <div class="note"><b>Kein</b> do/does/did, wenn die Frage mit "Who" beginnt — Who ist hier selbst das Subjekt.</div>
+    </div>
+
+    <!-- 13. past participles -->
+    <div class="card c-participle">
+      <div class="card-top">
+        <div class="card-en">Past participles</div>
+        <div class="card-num">13</div>
+      </div>
+      <div class="card-de">die "dritte Form" des Verbs</div>
+      <div class="formula">
+        <div class="formula-line"><span class="tag pos">reg.</span> Grundform <span class="plus">+</span> <b>-ed / -d</b> &nbsp;<span style="opacity:.6">(= Past simple)</span></div>
+        <div class="formula-line"><span class="tag neg">irreg.</span> eigene Form — <b>auswendig lernen!</b></div>
+      </div>
+      <div class="example"><span class="ex-en">walk — walked — walked</span><br><span class="ex-de">regelmäßig: 2. und 3. Form gleich</span></div>
+      <div class="example"><span class="ex-en">go — went — gone &nbsp;|&nbsp; see — saw — seen</span><br><span class="ex-de">unregelmäßig: alle drei Formen verschieden</span></div>
+      <div class="note">Wird für das <b>Present perfect</b> gebraucht: have/has + Past participle.</div>
+    </div>
+
+  </div>
+
+  <footer>Forbes English · Grammar Formulas Reference</footer>
+
+</div>
+</body>
+</html>

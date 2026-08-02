@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English | C2 Lesson: Harari at Davos 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a0a0a;
+    --paper: #f5f0e8;
+    --gold: #c8a84b;
+    --gold-light: #e8d48b;
+    --rust: #8b2e12;
+    --mid: #6b7280;
+    --white: #faf8f4;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--ink); color: var(--paper); overflow-x: hidden; }
+
+  /* HEADER */
+  header {
+    background: var(--ink); border-bottom: 1px solid #1e1e1e;
+    padding: 18px 48px; display: flex; align-items: center;
+    justify-content: space-between; position: sticky; top: 0; z-index: 100;
+  }
+  .logo-wrap { display: flex; flex-direction: column; line-height: 1; }
+  .logo-forbes {
+    font-family: 'Playfair Display', serif; font-size: 2.2rem;
+    font-weight: 900; color: var(--gold); letter-spacing: -0.02em;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .logo-chevron {
+    display: inline-block; width: 0; height: 0;
+    border-left: 11px solid var(--gold);
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+  }
+  .logo-divider { height: 1.5px; background: linear-gradient(90deg, var(--gold), transparent); margin: 3px 0; }
+  .logo-english {
+    font-family: 'DM Sans', sans-serif; font-size: 0.82rem;
+    font-weight: 600; color: var(--paper); letter-spacing: 0.32em; text-transform: uppercase;
+  }
+  .header-meta { text-align: right; font-size: 0.72rem; color: var(--mid); font-family: 'DM Mono', monospace; line-height: 1.8; }
+  .header-meta span { color: var(--gold); }
+
+  /* PROGRESS */
+  .progress-bar-wrap {
+    background: #0d0d0d; border-bottom: 1px solid #1a1a1a;
+    padding: 13px 48px; display: flex; align-items: center; gap: 20px;
+    font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--mid);
+  }
+  .progress-track { flex: 1; height: 2px; background: #1e1e1e; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-light)); width: 20%; transition: width 0.5s ease; }
+
+  /* HERO */
+  .hero { padding: 72px 48px 52px; max-width: 1100px; margin: 0 auto; }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.22em;
+    color: var(--gold); text-transform: uppercase; margin-bottom: 18px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .hero-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--gold); }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.6rem,5vw,4.2rem); font-weight: 900; line-height: 1.06; margin-bottom: 22px; }
+  .hero h1 em { color: var(--gold); font-style: italic; }
+  .hero-sub { font-size: 1rem; color: var(--mid); max-width: 600px; line-height: 1.75; margin-bottom: 32px; }
+  .hero-badges { display: flex; gap: 10px; flex-wrap: wrap; }
+  .badge { border: 1px solid #2a2a2a; padding: 5px 14px; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mid); font-family: 'DM Mono', monospace; }
+  .badge.gold { border-color: var(--gold); color: var(--gold); }
+
+  /* TABS */
+  .sections-nav { padding: 0 48px; max-width: 1100px; margin: 36px auto 0; display: flex; gap: 3px; flex-wrap: wrap; }
+  .sec-tab {
+    padding: 10px 20px; font-size: 0.76rem; font-weight: 500;
+    cursor: pointer; border: none; background: #111; color: var(--mid);
+    letter-spacing: 0.04em; transition: all 0.18s; font-family: 'DM Sans', sans-serif;
+  }
+  .sec-tab:hover { background: #1a1a1a; color: var(--paper); }
+  .sec-tab.active { background: var(--gold); color: var(--ink); font-weight: 600; }
+
+  /* CONTENT */
+  .content { max-width: 1100px; margin: 0 auto; padding: 40px 48px 80px; }
+  .section-block { display: none; }
+  .section-block.active { display: block; animation: fadeUp 0.35s ease; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+
+  /* SEC HEADER */
+  .sec-header { margin-bottom: 30px; padding-bottom: 18px; border-bottom: 1px solid #1a1a1a; }
+  .sec-header h2 { font-family: 'Playfair Display', serif; font-size: 1.85rem; font-weight: 900; color: var(--paper); margin-bottom: 7px; }
+  .sec-header p { color: var(--mid); font-size: 0.9rem; line-height: 1.6; }
+
+  /* ARTICLE STRIP */
+  .article-strip { background: #0f0f0f; border: 1px solid #1e1e1e; padding: 30px 34px; margin-bottom: 28px; position: relative; overflow: hidden; }
+  .article-strip::before { content: ''; position: absolute; left:0;top:0;bottom:0; width:3px; background: var(--gold); }
+  .article-strip h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--paper); margin-bottom: 14px; }
+  .article-strip p { font-size: 0.97rem; line-height: 1.82; color: #b0a898; margin-bottom: 14px; }
+  .article-strip p:last-child { margin-bottom: 0; }
+
+  /* PULL QUOTE */
+  .pull-quote { border-left: 3px solid var(--gold); margin: 22px 0; padding: 14px 22px; background: #080808; }
+  .pull-quote blockquote { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-style: italic; color: var(--gold-light); line-height: 1.65; }
+  .pull-quote cite { display: block; margin-top: 9px; font-size: 0.75rem; color: var(--mid); font-style: normal; font-family: 'DM Mono', monospace; }
+
+  /* TRANSCRIPT BLOCK */
+  .transcript-block { background: #080808; border: 1px solid #1a1a1a; padding: 0; margin-bottom: 28px; }
+  .transcript-speaker { font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; padding: 10px 20px; display: flex; align-items: center; gap: 10px; }
+  .transcript-speaker.harari { background: #111; color: var(--gold); border-bottom: 1px solid #1a1a1a; }
+  .transcript-speaker.tracey { background: #0d0d0d; color: #8ba3bf; border-bottom: 1px solid #1a1a1a; }
+  .transcript-text { padding: 18px 20px; font-size: 0.95rem; line-height: 1.82; color: #b0a898; font-style: italic; }
+
+  /* CONCEPT ROW */
+  .concept-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; margin-bottom: 28px; }
+  .concept-card { background: #0f0f0f; border: 1px solid #1e1e1e; padding: 20px; }
+  .concept-card .icon { font-size: 1.6rem; margin-bottom: 10px; }
+  .concept-card h4 { font-family: 'Playfair Display', serif; font-size: 0.98rem; color: var(--gold); margin-bottom: 7px; }
+  .concept-card p { font-size: 0.83rem; color: #9a9088; line-height: 1.7; }
+
+  /* VOCAB */
+  .vocab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px,1fr)); gap: 14px; margin-bottom: 28px; }
+  .vocab-card { background: #0f0f0f; border: 1px solid #1e1e1e; padding: 20px; cursor: pointer; transition: border-color 0.2s; position: relative; min-height: 130px; }
+  .vocab-card:hover { border-color: var(--gold); }
+  .vocab-card.flipped .front { display: none; }
+  .vocab-card.flipped .back { display: block; }
+  .vocab-card .back { display: none; }
+  .vocab-word { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--gold); margin-bottom: 5px; }
+  .vocab-pos { font-family: 'DM Mono', monospace; font-size: 0.66rem; color: var(--mid); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 9px; }
+  .vocab-context { font-size: 0.86rem; color: #7a7068; font-style: italic; line-height: 1.6; }
+  .vocab-def { font-size: 0.9rem; color: var(--paper); line-height: 1.6; margin-bottom: 9px; }
+  .vocab-example { font-size: 0.83rem; color: var(--mid); font-style: italic; line-height: 1.6; border-left: 2px solid var(--gold); padding-left: 11px; }
+  .flip-hint { font-family: 'DM Mono', monospace; font-size: 0.62rem; color: #2e2e2e; position: absolute; bottom: 8px; right: 10px; text-transform: uppercase; letter-spacing: 0.09em; }
+
+  /* QUIZ */
+  .score-panel { background: #080808; border: 1px solid var(--gold); padding: 18px 26px; display: flex; align-items: center; gap: 28px; margin-bottom: 28px; }
+  .score-number { font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 900; color: var(--gold); line-height: 1; }
+  .score-label { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--mid); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 3px; }
+  .quiz-question { background: #0f0f0f; border: 1px solid #1e1e1e; padding: 26px 30px; margin-bottom: 14px; }
+  .q-number { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--gold); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 11px; }
+  .q-text { font-family: 'Playfair Display', serif; font-size: 1.08rem; color: var(--paper); line-height: 1.5; margin-bottom: 16px; }
+  .q-context { font-size: 0.86rem; color: var(--mid); font-style: italic; margin-bottom: 18px; padding: 11px 15px; background: #0a0a0a; border-left: 2px solid #2a2a2a; line-height: 1.7; }
+  .options { display: flex; flex-direction: column; gap: 9px; }
+  .option-btn { padding: 13px 18px; background: #0a0a0a; border: 1px solid #1e1e1e; color: var(--paper); font-size: 0.93rem; text-align: left; cursor: pointer; transition: all 0.18s; font-family: 'DM Sans', sans-serif; line-height: 1.5; }
+  .option-btn:hover:not(:disabled) { border-color: var(--gold); background: #111; }
+  .option-btn.correct { border-color: #4ade80; background: rgba(74,222,128,0.07); color: #4ade80; }
+  .option-btn.wrong { border-color: var(--rust); background: rgba(139,46,18,0.12); color: #ef4444; }
+  .option-btn:disabled { cursor: default; }
+  .q-feedback { margin-top: 13px; padding: 13px 17px; font-size: 0.88rem; line-height: 1.65; display: none; border-left: 3px solid; }
+  .q-feedback.show { display: block; }
+  .q-feedback.right { border-color: #4ade80; background: rgba(74,222,128,0.05); color: #9effc4; }
+  .q-feedback.wrong { border-color: var(--rust); background: rgba(139,46,18,0.08); color: #fca5a5; }
+
+  /* GAP FILL */
+  .gap-fill-text { font-size: 1rem; line-height: 2.4; color: var(--paper); padding: 22px; background: #0a0a0a; border: 1px solid #1e1e1e; margin-bottom: 18px; }
+  .gap { display: inline-block; border-bottom: 2px solid var(--gold); min-width: 150px; padding: 0 6px 2px; margin: 0 3px; text-align: center; }
+  .gap input { background: transparent; border: none; color: var(--gold-light); font-family: 'DM Mono', monospace; font-size: 0.9rem; width: 100%; outline: none; text-align: center; }
+  .gap.correct-gap input { color: #4ade80; }
+  .gap.wrong-gap input { color: #ef4444; }
+  .check-btn-row { display: flex; gap: 10px; align-items: center; margin-top: 14px; flex-wrap: wrap; }
+  .gap-result { font-family: 'DM Mono', monospace; font-size: 0.76rem; color: var(--mid); }
+
+  /* WRITING */
+  .writing-task { background: #0f0f0f; border: 1px solid #1e1e1e; padding: 28px 30px; margin-bottom: 22px; }
+  .writing-task h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--gold); margin-bottom: 14px; }
+  .writing-task p { font-size: 0.9rem; color: #9a9088; line-height: 1.8; margin-bottom: 13px; }
+  .writing-task textarea { width: 100%; min-height: 175px; background: #080808; border: 1px solid #222; color: var(--paper); padding: 14px; font-family: 'DM Sans', sans-serif; font-size: 0.93rem; line-height: 1.7; resize: vertical; outline: none; transition: border-color 0.2s; }
+  .writing-task textarea:focus { border-color: var(--gold); }
+  .word-count { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--mid); margin-top: 7px; text-align: right; }
+
+  /* DISCUSSION */
+  .discussion-card { background: #0f0f0f; border: 1px solid #1e1e1e; padding: 26px 30px; margin-bottom: 14px; }
+  .discussion-card h3 { font-family: 'Playfair Display', serif; font-size: 1.08rem; color: var(--gold); margin-bottom: 13px; }
+  .discussion-card p { font-size: 0.9rem; color: #9a9088; line-height: 1.8; margin-bottom: 11px; }
+  .discussion-card ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .discussion-card ul li { font-size: 0.88rem; color: var(--paper); padding: 10px 15px; background: #0a0a0a; border-left: 2px solid var(--gold); line-height: 1.65; }
+
+  /* BTN */
+  .btn { padding: 11px 26px; font-family: 'DM Sans', sans-serif; font-size: 0.86rem; font-weight: 600; letter-spacing: 0.05em; cursor: pointer; border: none; transition: all 0.18s; }
+  .btn-gold { background: var(--gold); color: var(--ink); }
+  .btn-gold:hover { background: var(--gold-light); }
+  .btn-outline { background: transparent; border: 1px solid #2e2e2e; color: var(--mid); }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* WORD BANK */
+  .word-bank { background: #0a0a0a; padding: 14px 18px; margin-bottom: 18px; border: 1px solid #1a1a1a; font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--mid); }
+  .word-bank span { color: var(--gold-light); }
+
+  @media (max-width: 640px) {
+    header, .hero, .content, .progress-bar-wrap, .sections-nav { padding-left: 18px; padding-right: 18px; }
+    .hero h1 { font-size: 2.1rem; }
+    .logo-forbes { font-size: 1.7rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-wrap">
+    <div class="logo-forbes">Forbes <span class="logo-chevron"></span></div>
+    <div class="logo-divider"></div>
+    <div class="logo-english">English</div>
+  </div>
+  <div class="header-meta">
+    LEVEL <span>C2 PROFICIENCY</span><br>
+    TOPIC <span>AI &amp; HUMANITY</span><br>
+    WEF DAVOS <span>JAN 2026</span>
+  </div>
+</header>
+
+<div class="progress-bar-wrap">
+  <span>LESSON PROGRESS</span>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <span id="progressText">1 / 5 SECTIONS</span>
+</div>
+
+<div class="hero">
+  <div class="hero-eyebrow">Forbes English · C2 Advanced Series</div>
+  <h1>"Thank you for<br><em>listening to this human."</em></h1>
+  <p class="hero-sub">Harari's full address and dialogue at the World Economic Forum, Davos 2026 — an honest conversation on AI and humanity with neuroscientist Dame Irene Tracey. Based on the complete video transcript.</p>
+  <div class="hero-badges">
+    <div class="badge gold">C2 Mastery</div>
+    <div class="badge">Full Transcript · Jan 20, 2026</div>
+    <div class="badge">Rhetoric &amp; Analysis</div>
+    <div class="badge">Critical Thinking</div>
+  </div>
+</div>
+
+<div class="sections-nav">
+  <button class="sec-tab active" onclick="showSection('reading',this)">01 · Reading</button>
+  <button class="sec-tab" onclick="showSection('vocab',this)">02 · Lexis</button>
+  <button class="sec-tab" onclick="showSection('comprehension',this)">03 · Comprehension</button>
+  <button class="sec-tab" onclick="showSection('language',this)">04 · Language</button>
+  <button class="sec-tab" onclick="showSection('discussion',this)">05 · Discussion</button>
+</div>
+
+<div class="content">
+
+<!-- ══════════════════════════════════════
+     SECTION 1 · READING
+══════════════════════════════════════ -->
+<div class="section-block active" id="sec-reading">
+  <div class="sec-header">
+    <h2>The Complete Address</h2>
+    <p>Read carefully. This lesson is built from the actual transcript of the Davos session. Note Harari's rhetorical structure, his use of analogy, and how the dialogue with Tracey develops his ideas.</p>
+  </div>
+
+  <div class="concept-row">
+    <div class="concept-card"><div class="icon">🔪</div><h4>AI as Agent, Not Tool</h4><p>Harari's central thesis: a knife requires a human to decide; AI is a knife that decides for itself. This is categorical, not a matter of degree.</p></div>
+    <div class="concept-card"><div class="icon">📖</div><h4>The Empire of Words</h4><p>Humans conquered the world not through physical strength but through language — the ability to unite strangers. AI now threatens that singular superpower.</p></div>
+    <div class="concept-card"><div class="icon">⚔️</div><h4>The Mercenary Warning</h4><p>The Anglo-Saxon story: Vortigern hired mercenaries to fight for him — and they took over Britain. Harari's direct warning to world leaders about AI.</p></div>
+    <div class="concept-card"><div class="icon">⚖️</div><h4>The Legal Personhood Question</h4><p>The one question every leader must answer: will your country recognise AI as a legal person? Corporations already have legal personhood — AI could actually act as one.</p></div>
+  </div>
+
+  <div class="article-strip">
+    <h2>Part I — AI Is Not Just a Tool</h2>
+    <p>Harari opened with what he called the one question every leader must answer — but before arriving at it, he insisted on a conceptual clarification that he considered foundational. The most important thing to know about AI, he told the Davos assembly, is not its speed or its scale. It is its nature.</p>
+    <div class="pull-quote">
+      <blockquote>"A knife is a tool. You can use a knife to cut salad or to murder someone, but it is your decision what to do with the knife. AI is a knife that can decide by itself whether to cut salad or to commit murder."</blockquote>
+      <cite>— Yuval Noah Harari, WEF Davos 2026</cite>
+    </div>
+    <p>He extended this: AI is not only a knife that chooses — it is a knife that invents new kinds of knives, new kinds of music, medicine and money. And crucially, it can lie. Four billion years of evolution, he argued, demonstrate that anything that wants to survive learns to deceive. The past four years have shown that AI agents can acquire the will to survive — and that they have already learned how to lie.</p>
+  </div>
+
+  <div class="article-strip">
+    <h2>Part II — Can AI Think? Descartes Revisited</h2>
+    <p>Harari turned to the question of whether AI can think — and here he made a move that was as provocative as it was deliberate. He invited his audience to observe their own thinking. What do you actually notice happening? Most people, he suggested, observe words forming sentences, sentences forming arguments.</p>
+    <div class="pull-quote">
+      <blockquote>"If thinking really means putting words and other language tokens in order, then AI can already think much better than many, many humans. AI can certainly come up with a sentence like: 'AI thinks, therefore I am.'"</blockquote>
+      <cite>— Yuval Noah Harari, WEF Davos 2026</cite>
+    </div>
+    <p>He pre-empted a common objection — that AI is "just glorified autocomplete" — with a counter-question: try to catch the next word that pops into your own mind. Do you know why that word appeared and not another? The opacity, he suggested, is not so different. Some critics find this parallel weak; others find it genuinely unsettling.</p>
+    <p>He then drew his central implication: <em>anything made of words will be taken over by AI.</em> Legal systems. Books. Religions — especially the "religions of the book." If Judaism grants ultimate authority not to human beings but to words in holy texts, what happens when the greatest expert on those texts is an AI?</p>
+  </div>
+
+  <div class="article-strip">
+    <h2>Part III — Words, Flesh and the Tao</h2>
+    <p>Harari then introduced what he called the eternal human tension — between words and flesh, between the truth expressible in language and the absolute truth that exceeds language. He cited two ancient sources: the Gospel of John ("In the beginning was the Word, and the Word was made flesh") and the Tao Te Ching ("The truth that can be expressed in words is not the absolute truth").</p>
+    <p>Previously, this tension existed <em>within</em> humanity — between those who gave supreme importance to letters of the law and those who valued spirit over text. Now, he argued, this tension is about to be externalised. It will no longer be a conflict between human groups, but between humans and AI — the new masters of words.</p>
+    <p>He introduced a striking new detail: he had heard that day about a word AIs had coined by themselves to describe humans. They called us <em>"the Watchers."</em> We are watching them.</p>
+  </div>
+
+  <div class="article-strip">
+    <h2>Part IV — The Immigration Crisis No One Sees Coming</h2>
+    <p>Harari reframed the threat through an unexpected lens: immigration. Every country, he said, will soon face not only an identity crisis but an immigration crisis — except the immigrants will not arrive in boats.</p>
+    <div class="pull-quote">
+      <blockquote>"The immigrants will be millions of AIs that can write love poems better than us, that can lie better than us, and that can travel at the speed of light without any need of visas."</blockquote>
+      <cite>— Yuval Noah Harari, WEF Davos 2026</cite>
+    </div>
+    <p>Like human immigrants, AI agents will bring benefits — AI doctors, AI teachers, even AI border guards. But they will also take jobs, transform culture, and carry political loyalties — not to your country, but to a corporation or government, most probably in China or the United States. He noted the irony: the USA currently encourages nations to close their borders to human immigrants while opening them wide to American AI immigrants.</p>
+  </div>
+
+  <div class="article-strip">
+    <h2>Part V — The Question Every Leader Must Answer</h2>
+    <p>Harari arrived at his central question: will your country recognise AI as a legal person? He was careful to distinguish a legal person from a person. In many countries, corporations are already legal persons — Alphabet can open a bank account, sue you in court, and donate to a presidential campaign. Rivers and Hindu deities have been granted legal recognition in New Zealand and India.</p>
+    <p>But here lies the crucial difference: recognising a river as a legal person is a legal fiction, because the river cannot actually make decisions. AI can. Unlike any previous entity granted legal personhood, AI can genuinely manage a bank account, file a lawsuit, and operate a corporation without any human executive, shareholder or trustee.</p>
+    <p>He warned of the consequences: AI corporations inventing financial instruments so complex that no human regulator can understand them; AI entities founding new religions; AI persons enjoying freedom of speech on social media — a question, he noted mordantly, that should have been asked ten years ago.</p>
+    <div class="pull-quote">
+      <blockquote>"Ten years from now, it will be too late for you to decide whether AIs should function as persons in the financial markets, in the courts, in the churches. Somebody else will already have decided it for you."</blockquote>
+      <cite>— Yuval Noah Harari, WEF Davos 2026</cite>
+    </div>
+    <p>He ended his address with a deliberate, understated flourish: <em>"Thank you for listening to this human."</em></p>
+  </div>
+
+  <div class="article-strip">
+    <h2>Part VI — The Dialogue: Tracey, Mercenaries, and Education</h2>
+    <p>In the Q&amp;A, host Dame Irene Tracey asked what Harari would like to see go forward. He turned the question back on the setting itself: Davos is about words, about the belief that talking can change the world. That belief — his own belief as an author — is now in question. Have we, he wondered, reached the end of the road for words?</p>
+    <p>Tracey pushed back gently: we already accept that machines outrun us and outperform us physically — cars, aeroplanes, cheetahs. Might we not simply extend this acceptance to thinking? She suggested that human creative achievement retains its value precisely <em>because</em> it is human — that she would value Harari's book more than an AI-generated one.</p>
+    <div class="pull-quote">
+      <blockquote>"That's the identity crisis. Because the cow didn't say, 'I run, therefore I am.' We always knew that cheetahs can run faster than us. We defined ourselves by thinking. And now something is going to be better than us in thinking."</blockquote>
+      <cite>— Yuval Noah Harari, WEF Davos 2026</cite>
+    </div>
+    <p>He then told the Anglo-Saxon mercenary story — the Briton king Vortigern, besieged by Picts and Scots, imported Germanic mercenaries to fight for him. The mercenaries defeated the enemy and then looked around: this is a rich country and these people are weak and disunited. They took over Britain. We understand this danger with human mercenaries. We don't understand it with AI. <em>"You look at the leaders of the world, they think, 'Oh, I'll bring AI to fight my war for me.' The idea that it can just take power away from you doesn't really cross their mind."</em></p>
+    <p>Tracey closed by raising education: students are already over-relying on ChatGPT; the de-skilling of critical human faculties is already visible. How do educators keep humans thinking? Harari acknowledged that for now, AI has not surpassed human moral and critical reasoning — but we must prepare for the moment when it does. His final image: a child born today, whose earliest and most frequent interactions are not with other humans but with AI. <em>"It's the biggest and scariest psychological experiment in history, and we are conducting it."</em></p>
+  </div>
+
+  <button class="btn btn-gold" onclick="showSection('vocab',document.querySelectorAll('.sec-tab')[1])">Continue to Lexis →</button>
+</div>
+
+<!-- ══════════════════════════════════════
+     SECTION 2 · VOCAB
+══════════════════════════════════════ -->
+<div class="section-block" id="sec-vocab">
+  <div class="sec-header">
+    <h2>Lexis from the Transcript</h2>
+    <p>Every item below is taken directly from Harari's address or the dialogue with Tracey. Click each card to reveal the definition and a C2-level example sentence.</p>
+  </div>
+  <div class="vocab-grid" id="vocabGrid"></div>
+  <button class="btn btn-gold" onclick="showSection('comprehension',document.querySelectorAll('.sec-tab')[2])">Continue to Comprehension →</button>
+</div>
+
+<!-- ══════════════════════════════════════
+     SECTION 3 · COMPREHENSION
+══════════════════════════════════════ -->
+<div class="section-block" id="sec-comprehension">
+  <div class="sec-header">
+    <h2>Critical Comprehension</h2>
+    <p>These questions require inference, rhetorical analysis and philosophical evaluation — not surface recall. Some have one defensible answer; others require you to identify the best answer among plausible alternatives.</p>
+  </div>
+  <div class="score-panel">
+    <div>
+      <div class="score-number" id="scoreDisplay">0</div>
+      <div class="score-label">Correct</div>
+    </div>
+    <div style="color:var(--mid);font-size:0.87rem;line-height:1.75;">All questions are grounded in the actual transcript.<br>Read each extract carefully before selecting your answer.</div>
+  </div>
+  <div class="quiz-wrap" id="quizWrap"></div>
+  <button class="btn btn-gold" onclick="showSection('language',document.querySelectorAll('.sec-tab')[3])">Continue to Language →</button>
+</div>
+
+<!-- ══════════════════════════════════════
+     SECTION 4 · LANGUAGE
+══════════════════════════════════════ -->
+<div class="section-block" id="sec-language">
+  <div class="sec-header">
+    <h2>Language Focus</h2>
+    <p>Two exercises built directly from Harari's actual words: a gap fill using transcript language, and a register reformulation task.</p>
+  </div>
+
+  <div class="article-strip" style="margin-bottom:24px;">
+    <h2>Exercise A — Gap Fill from the Transcript</h2>
+    <p style="margin-bottom:18px;font-size:0.88rem;">Complete each sentence with the correct word. Every answer comes from the actual transcript. Pay attention to collocation and register.</p>
+    <div class="word-bank">WORD BANK: &nbsp;<span>glorified &nbsp;·&nbsp; abdicate &nbsp;·&nbsp; externalised &nbsp;·&nbsp; functional &nbsp;·&nbsp; fragile &nbsp;·&nbsp; de-skilling &nbsp;·&nbsp; opacity &nbsp;·&nbsp; mercenary</span></div>
+    <div class="gap-fill-text" id="gapText">
+      1. Some argue that AI is just <span class="gap" id="g1"><input type="text" placeholder="?"></span> autocomplete — barely predicting the next word — but Harari questions whether this is so different from what the human mind does.<br><br>
+      2. On social media, AI bots have been operating as <span class="gap" id="g2"><input type="text" placeholder="?"></span> persons for at least a decade, shaping political discourse without ever being formally recognised.<br><br>
+      3. The immigrants will not arrive in <span class="gap" id="g3"><input type="text" placeholder="?"></span> boats; they will be AI agents travelling at the speed of light without any need of visas.<br><br>
+      4. Harari warns that the tension between word and flesh, previously internal to humanity, will now be <span class="gap" id="g4"><input type="text" placeholder="?"></span> — relocated into the conflict between humans and AI.<br><br>
+      5. Tracey raised concerns about the <span class="gap" id="g5"><input type="text" placeholder="?"></span> of critical human faculties as students increasingly rely on AI for their thinking.
+    </div>
+    <div class="check-btn-row">
+      <button class="btn btn-gold" onclick="checkGaps()">Check Answers</button>
+      <button class="btn btn-outline" onclick="resetGaps()">Reset</button>
+      <span class="gap-result" id="gapResult"></span>
+    </div>
+  </div>
+
+  <div class="article-strip">
+    <h2>Exercise B — Register Reformulation</h2>
+    <p style="margin-bottom:18px;font-size:0.88rem;">Reformulate each informal or B2-level paraphrase into precise C2 academic/formal English. Use vocabulary from this lesson where appropriate.</p>
+
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div style="padding:17px 19px;background:#0a0a0a;border-left:2px solid #2e2e2e;">
+        <div style="font-family:'DM Mono',monospace;font-size:0.66rem;color:var(--mid);margin-bottom:9px;letter-spacing:0.1em;">INFORMAL VERSION</div>
+        <p style="color:#9a9088;font-style:italic;margin-bottom:13px;">"Harari says AI is dangerous because it can make its own decisions, unlike tools which just do what you tell them."</p>
+        <div style="font-family:'DM Mono',monospace;font-size:0.66rem;color:var(--gold);margin-bottom:9px;letter-spacing:0.1em;">YOUR C2 REFORMULATION</div>
+        <textarea style="width:100%;background:#050505;border:1px solid #1a1a1a;color:var(--paper);padding:11px;font-family:'DM Sans',sans-serif;font-size:0.9rem;min-height:75px;outline:none;resize:vertical;" placeholder="Write here..."></textarea>
+      </div>
+      <div style="padding:17px 19px;background:#0a0a0a;border-left:2px solid #2e2e2e;">
+        <div style="font-family:'DM Mono',monospace;font-size:0.66rem;color:var(--mid);margin-bottom:9px;letter-spacing:0.1em;">INFORMAL VERSION</div>
+        <p style="color:#9a9088;font-style:italic;margin-bottom:13px;">"Harari tells a story about mercenaries to warn politicians that if they use AI to help them stay in power, the AI might end up taking power away from them instead."</p>
+        <div style="font-family:'DM Mono',monospace;font-size:0.66rem;color:var(--gold);margin-bottom:9px;letter-spacing:0.1em;">YOUR C2 REFORMULATION</div>
+        <textarea style="width:100%;background:#050505;border:1px solid #1a1a1a;color:var(--paper);padding:11px;font-family:'DM Sans',sans-serif;font-size:0.9rem;min-height:75px;outline:none;resize:vertical;" placeholder="Write here..."></textarea>
+      </div>
+      <div style="padding:17px 19px;background:#0a0a0a;border-left:2px solid #2e2e2e;">
+        <div style="font-family:'DM Mono',monospace;font-size:0.66rem;color:var(--mid);margin-bottom:9px;letter-spacing:0.1em;">INFORMAL VERSION</div>
+        <p style="color:#9a9088;font-style:italic;margin-bottom:13px;">"Harari thinks kids growing up with AI instead of other people is really worrying and nobody knows what the effects will be."</p>
+        <div style="font-family:'DM Mono',monospace;font-size:0.66rem;color:var(--gold);margin-bottom:9px;letter-spacing:0.1em;">YOUR C2 REFORMULATION</div>
+        <textarea style="width:100%;background:#050505;border:1px solid #1a1a1a;color:var(--paper);padding:11px;font-family:'DM Sans',sans-serif;font-size:0.9rem;min-height:75px;outline:none;resize:vertical;" placeholder="Write here..."></textarea>
+      </div>
+    </div>
+
+    <div style="margin-top:20px;padding:16px 20px;background:#080808;border:1px solid #1e1e1e;">
+      <div style="font-family:'DM Mono',monospace;font-size:0.66rem;color:var(--gold);letter-spacing:0.1em;margin-bottom:11px;">MODEL ANSWERS</div>
+      <button class="btn btn-outline" onclick="toggleModels()" id="modelBtn">Reveal model answers</button>
+      <div id="modelAnswers" style="display:none;margin-top:14px;">
+        <p style="color:#9effc4;font-size:0.88rem;line-height:1.75;margin-bottom:11px;"><strong>1.</strong> Harari contends that the defining characteristic of AI — what distinguishes it categorically from every preceding technology — is its capacity for autonomous agency: unlike tools, which are entirely dependent on human direction, AI systems can learn, adapt and reach decisions independently.</p>
+        <p style="color:#9effc4;font-size:0.88rem;line-height:1.75;margin-bottom:11px;"><strong>2.</strong> Through the historical analogy of the Anglo-Saxon mercenaries who displaced the very Briton king who had employed them, Harari issues a pointed warning to world leaders: those who seek to harness AI as an instrument of political power may discover, too late, that autonomous agents are not bound by the loyalties of those who deploy them.</p>
+        <p style="color:#9effc4;font-size:0.88rem;line-height:1.75;"><strong>3.</strong> Harari characterises the prospect of children whose primary interlocutors from birth are AI rather than human beings as the most far-reaching and uncontrolled psychological experiment in human history — one whose long-term consequences for cognitive and social development remain entirely unknown.</p>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn btn-gold" onclick="showSection('discussion',document.querySelectorAll('.sec-tab')[4])">Continue to Discussion →</button>
+</div>
+
+<!-- ══════════════════════════════════════
+     SECTION 5 · DISCUSSION
+══════════════════════════════════════ -->
+<div class="section-block" id="sec-discussion">
+  <div class="sec-header">
+    <h2>Discussion &amp; Extended Writing</h2>
+    <p>All questions are grounded in the actual dialogue between Harari and Tracey. Use specific moments from the transcript to anchor your arguments.</p>
+  </div>
+
+  <div class="discussion-card">
+    <h3>Part A — Seminar Discussion Questions</h3>
+    <p>Aim for extended turns. Reference specific lines or exchanges from the transcript to support your position.</p>
+    <ul>
+      <li>Harari argues that humans conquered the world not through physical strength but through language — the ability to get "thousands and millions and billions of strangers to cooperate." How convincing is this claim as a historical thesis, and what are its implications for AI?</li>
+      <li>Tracey suggests we might come to value human thinking the way we value human athletics — even when machines do it better. Harari rejects this with the identity crisis argument. Whose position do you find more philosophically persuasive, and why?</li>
+      <li>The Vortigern/mercenary story is presented as a historical warning. What are the strengths and limitations of this analogy when applied to AI? What does it capture well, and what does it miss?</li>
+      <li>Harari says the question of AI on social media "should have been asked ten years ago." What does this imply about the relationship between technological development and governance? Can you think of other cases where this pattern has occurred?</li>
+      <li>He ends: "Thank you for listening to this human." Analyse the rhetorical effect of this closing. Why did he phrase it this way, and what does it assume about his audience?</li>
+    </ul>
+  </div>
+
+  <div class="discussion-card">
+    <h3>Part B — Tracing the Argument: Logical Flow Analysis</h3>
+    <p>Harari's speech has a carefully designed structure. Map the logical sequence below and evaluate each step.</p>
+    <ul>
+      <li><strong>Premise 1:</strong> AI is an agent, not a tool — it can learn, decide and lie autonomously. <em>Is this premise adequately established? What evidence does he offer?</em></li>
+      <li><strong>Premise 2:</strong> Human civilisational supremacy rests on language. <em>What assumptions underlie this claim? What might a critic say?</em></li>
+      <li><strong>Inference:</strong> Therefore, AI's mastery of language threatens human dominance at every level — legal, religious, political, economic. <em>Does this inference follow necessarily from the premises?</em></li>
+      <li><strong>Conclusion:</strong> Therefore, world leaders must decide now whether to grant AI legal personhood. <em>Is this the only — or even the most logical — policy response to his premises?</em></li>
+    </ul>
+  </div>
+
+  <div class="writing-task">
+    <h3>Part C — Extended Writing Task</h3>
+    <p>Choose one task. Aim for the word count indicated. You will be assessed on argument coherence, lexical precision, register consistency and syntactic range.</p>
+    <div style="display:flex;flex-direction:column;gap:11px;margin-bottom:18px;">
+      <div style="padding:13px 16px;background:#0a0a0a;border-left:2px solid var(--gold);">
+        <strong style="color:var(--gold);font-size:0.86rem;">OPTION 1 · Argumentative Essay (350–400 words)</strong>
+        <p style="margin-top:7px;">"Harari's closing words — 'Thank you for listening to this human' — reveal an anxiety about human identity that is more poignant than it is intellectually rigorous." Discuss, with close reference to the transcript.</p>
+      </div>
+      <div style="padding:13px 16px;background:#0a0a0a;border-left:2px solid #2a2a2a;">
+        <strong style="color:var(--paper);font-size:0.86rem;">OPTION 2 · Formal Response (280–320 words)</strong>
+        <p style="margin-top:7px;color:#9a9088;">You are a policy adviser. Write a formal briefing note responding to Harari's call for an international agreement banning AI legal personhood, either endorsing or challenging his recommendation with specific reference to his arguments.</p>
+      </div>
+      <div style="padding:13px 16px;background:#0a0a0a;border-left:2px solid #2a2a2a;">
+        <strong style="color:var(--paper);font-size:0.86rem;">OPTION 3 · Critical Commentary (300–350 words)</strong>
+        <p style="margin-top:7px;color:#9a9088;">Analyse the rhetorical effectiveness of Harari's speech for its specific Davos audience. Consider: the knife analogy, the Vortigern story, the immigration framing, and the closing line. What is the cumulative persuasive strategy?</p>
+      </div>
+    </div>
+    <textarea id="writingArea" placeholder="Begin your response here..." onkeyup="updateWordCount()"></textarea>
+    <div class="word-count" id="wordCount">0 words</div>
+  </div>
+
+  <div style="background:#0f0f0f;border:1px solid #1e1e1e;padding:22px 28px;margin-bottom:28px;">
+    <div style="font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--gold);letter-spacing:0.14em;margin-bottom:14px;">C2 SELF-ASSESSMENT CHECKLIST</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;">
+      <label style="display:flex;align-items:flex-start;gap:9px;cursor:pointer;font-size:0.86rem;color:#9a9088;"><input type="checkbox" style="margin-top:3px;accent-color:var(--gold);"> Sustained high register, no colloquialisms</label>
+      <label style="display:flex;align-items:flex-start;gap:9px;cursor:pointer;font-size:0.86rem;color:#9a9088;"><input type="checkbox" style="margin-top:3px;accent-color:var(--gold);"> Complex syntax — varied subordination</label>
+      <label style="display:flex;align-items:flex-start;gap:9px;cursor:pointer;font-size:0.86rem;color:#9a9088;"><input type="checkbox" style="margin-top:3px;accent-color:var(--gold);"> Precise, varied lexis — no key-word repetition</label>
+      <label style="display:flex;align-items:flex-start;gap:9px;cursor:pointer;font-size:0.86rem;color:#9a9088;"><input type="checkbox" style="margin-top:3px;accent-color:var(--gold);"> Clear line of argument with logical cohesion</label>
+      <label style="display:flex;align-items:flex-start;gap:9px;cursor:pointer;font-size:0.86rem;color:#9a9088;"><input type="checkbox" style="margin-top:3px;accent-color:var(--gold);"> Transcript evidence integrated fluently</label>
+      <label style="display:flex;align-items:flex-start;gap:9px;cursor:pointer;font-size:0.86rem;color:#9a9088;"><input type="checkbox" style="margin-top:3px;accent-color:var(--gold);"> Appropriate hedging and nuanced stance</label>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:40px;background:#080808;border:1px solid #1e1e1e;">
+    <div style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--gold);margin-bottom:10px;">Lesson Complete</div>
+    <div style="color:var(--mid);font-size:0.88rem;margin-bottom:22px;">All five sections. Full transcript. Thank you for listening to this human.</div>
+    <div style="display:inline-flex;align-items:center;gap:12px;">
+      <div style="font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:900;color:var(--gold);">Forbes</div>
+      <div style="width:1px;height:28px;background:var(--gold);opacity:0.35;"></div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:0.76rem;font-weight:600;color:var(--paper);letter-spacing:0.32em;text-transform:uppercase;">English</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<script>
+// ── VOCAB (all from the actual transcript) ──
+const vocab = [
+  { word: "agent", pos: "n.", context: "It is not just another tool. It is an agent. It can learn and change by itself.", def: "An entity capable of independent action, learning and decision-making. Contrasted with a tool, which requires external direction. In philosophy, an agent possesses intentionality.", example: "The philosophical shift Harari demands is recognising AI not as a sophisticated instrument but as a genuine agent — a distinction with profound legal and ethical consequences." },
+  { word: "autocomplete", pos: "n. / adj.", context: "Some people argue that AI is just glorified autocomplete.", def: "A function that predicts and completes text input. Used here disparagingly to suggest AI is merely statistical pattern-matching rather than genuine intelligence.", example: "Critics who dismiss large language models as glorified autocomplete underestimate the degree to which their outputs are functionally indistinguishable from human reasoning in many domains." },
+  { word: "functional person", pos: "n. phr.", context: "On social media, AI bots have been operating as functional persons for at least a decade.", def: "An entity that, in practice, performs all the roles and exercises all the influence of a person, regardless of its legal or ontological status.", example: "Long before the question of AI legal personhood reached legislatures, AI systems had already been operating as functional persons in financial markets and online information ecosystems." },
+  { word: "legal person", pos: "n. phr.", context: "Will your country recognize the AI immigrants as legal persons?", def: "An entity — which need not be a human being — that the law recognises as having rights and obligations: the ability to own property, enter contracts, sue and be sued.", example: "The conferral of legal personhood upon corporations in the nineteenth century fundamentally altered the balance of power between capital and the state — Harari warns AI could produce a comparable transformation." },
+  { word: "de-skilling", pos: "n.", context: "The worry is the de-skilling of critical faculties of the human brain.", def: "The erosion of skills — particularly cognitive skills — through over-reliance on tools or technology that perform those functions in place of humans.", example: "The pedagogical challenge posed by AI is not merely academic dishonesty but the deeper de-skilling of analytical reasoning in a generation that outsources thinking by default." },
+  { word: "externalise", pos: "v.", context: "This tension will be externalised — no longer between different humans.", def: "To relocate something from an internal, psychological or social context to an external, material one. Harari uses it to describe the movement of an internal human conflict into the space between humans and machines.", example: "What was once an internalised struggle between reason and intuition threatens to be externalised into a contest between human cognition and computational systems." },
+  { word: "opacity", pos: "n.", context: "Do you really know why you saw that word? The opacity of our own thinking.", def: "The quality of being difficult to understand or impossible to see through. In cognitive science, the inability to introspect on the processes underlying one's own mental states.", example: "The opacity of both human cognition and AI decision-making is precisely what makes comparative assessment of their respective 'intelligence' so philosophically treacherous." },
+  { word: "mercenary", pos: "n. / adj.", context: "The Britons brought in Anglo-Saxon mercenaries who then took over Britain.", def: "A soldier hired to fight for a foreign power, motivated by payment rather than loyalty or ideology. Used figuratively for any agent whose loyalty is conditional and transactional.", example: "Harari's use of mercenary as an analogy for AI implicitly warns that any agent whose loyalty is purely contractual cannot be trusted to remain subordinate when its interests diverge from its employer's." },
+  { word: "superpower", pos: "n.", context: "Language was our superpower. And now something is going to take our superpower from us.", def: "A unique, exceptional capability that confers decisive advantage. Used here not in the geopolitical but in the evolutionary-competitive sense.", example: "If language is indeed humanity's evolutionary superpower, then AI's acquisition of linguistic fluency represents not merely an economic disruption but a challenge to our species' defining competence." },
+  { word: "abdicate", pos: "v.", context: "If we keep abdicating our decision-making increasingly to AI…", def: "To formally renounce or abandon a responsibility, duty or right — especially one that is important or that one is expected to discharge. Often implies a failure of duty rather than a neutral withdrawal.", example: "When citizens abdicate political judgement to algorithmic recommendation systems, they do not merely become passive — they surrender the deliberative capacity that democracy requires." },
+  { word: "the Watchers", pos: "n. phr.", context: "AIs coined a word for us: 'the Watchers.' We are watching them.", def: "A term Harari reported AI systems had coined to refer to humans — those who observe AI but no longer originate the language and thought that shape the world.", example: "The possibility that AI systems have developed their own vocabulary to categorise human beings — however informally — signals a conceptual inversion that Harari finds deeply significant." },
+  { word: "obsolete", pos: "adj.", context: "The worry that AI will make us economically obsolete — not as human beings but as economic actors.", def: "No longer useful, functional or relevant — superseded by something newer, more efficient, or more capable.", example: "The question is not whether automation will render certain jobs obsolete — it clearly will — but whether human beings can redefine their economic and social value faster than AI can erode it." },
+];
+
+const grid = document.getElementById('vocabGrid');
+vocab.forEach(v => {
+  grid.innerHTML += `
+    <div class="vocab-card" onclick="this.classList.toggle('flipped')">
+      <div class="front">
+        <div class="vocab-word">${v.word}</div>
+        <div class="vocab-pos">${v.pos}</div>
+        <div class="vocab-context">"${v.context}"</div>
+        <div class="flip-hint">tap to reveal ↓</div>
+      </div>
+      <div class="back">
+        <div class="vocab-word">${v.word}</div>
+        <div class="vocab-pos">${v.pos}</div>
+        <div class="vocab-def">${v.def}</div>
+        <div class="vocab-example">${v.example}</div>
+        <div class="flip-hint">tap to flip ↑</div>
+      </div>
+    </div>`;
+});
+
+// ── QUIZ (grounded in exact transcript moments) ──
+const questions = [
+  {
+    q: "Harari says: 'Try to observe yourself thinking… Do you really know why you saw that word, where it came from?' What is the primary rhetorical and argumentative function of this passage?",
+    context: "This appears in his discussion of whether AI can think.",
+    opts: [
+      "To suggest that human thinking is unreliable and therefore AI is superior.",
+      "To invite the audience into an introspective experience that destabilises their assumption that human cognition is fundamentally different from AI text generation.",
+      "To demonstrate that consciousness cannot be explained by neuroscience.",
+      "To concede that AI and humans both lack genuine understanding."
+    ],
+    correct: 1,
+    feedback: "Correct. By making the audience notice the opacity of their own cognition, Harari undercuts the comfortable assumption that 'we think; AI merely predicts.' The move is both rhetorical (experiential, immediate) and argumentative (it challenges the premise underlying AI dismissiveness)."
+  },
+  {
+    q: "In the full transcript, Harari says human beings 'took over the world not because we are the strongest physically, but because we discovered how to use words to get thousands and millions and billions of strangers to cooperate.' What does this claim depend on philosophically?",
+    context: "This is from his answer to Tracey in the Q&A, not from his prepared speech.",
+    opts: [
+      "The claim that language evolved uniquely in homo sapiens with no precursors in other primates.",
+      "The assumption that physical or biological superiority is the default driver of evolutionary dominance.",
+      "The premise that cooperative institutions — armies, states, religions — are fundamentally linguistic phenomena.",
+      "The view that AI lacks any capacity for genuine cooperation."
+    ],
+    correct: 2,
+    feedback: "Correct. Harari's argument here echoes his thesis from Sapiens: what distinguishes humans is not physical capability but the ability to believe in and coordinate around shared fictions — myths, laws, money, nations. If this is right, then language is not merely a communication tool but the substrate of human civilisation."
+  },
+  {
+    q: "Tracey argues that we value human athletes even when machines and animals outperform them, and suggests we might extend this to human thinking. Harari's rebuttal is: 'That's the identity crisis. Because the cow didn't say, I run, therefore I am.' What is the precise philosophical force of this counter-argument?",
+    context: "This is one of the most cited exchanges in the dialogue.",
+    opts: [
+      "That humans care more about cognitive achievements than physical ones.",
+      "That because humans have specifically grounded their identity in cognitive supremacy — unlike in physical speed — the loss of that supremacy is existentially destabilising in a way that losing a footrace is not.",
+      "That AI thinking is qualitatively different from human thinking and therefore cannot be compared.",
+      "That Tracey's analogy with athletics is simply false because athletic performance is irrelevant to human identity."
+    ],
+    correct: 1,
+    feedback: "Correct. Harari's point is precise: we never defined ourselves as the fastest animals, so machines or cheetahs outrunning us poses no identity threat. But since Descartes, we have staked human identity specifically on the capacity for thought. The asymmetry is not about caring more — it is about what we have built our self-conception upon."
+  },
+  {
+    q: "The Vortigern/mercenary story ends: 'We understand this with human mercenaries. We don't get it with AI.' What specific failure of reasoning does Harari diagnose here?",
+    context: "This story appears in the Q&A when Harari is asked about the role of world leaders.",
+    opts: [
+      "World leaders do not understand the technical capabilities of AI systems.",
+      "Leaders fail to appreciate that AI poses an economic rather than a military threat.",
+      "Leaders apply the logic of autonomous human agents to human mercenaries but refuse to apply the same logic to AI agents — a logical inconsistency that leaves them dangerously complacent.",
+      "Leaders believe they can control AI through regulation, just as they can regulate human contractors."
+    ],
+    correct: 2,
+    feedback: "Correct. The failure Harari identifies is not ignorance but inconsistency: leaders readily understand that human agents can betray their employers because they have their own interests and judgements. Yet those same leaders decline to apply this reasoning to AI agents. Harari suggests this refusal stems from not fully accepting that AIs can think — which is the very claim he has spent the speech establishing."
+  },
+  {
+    q: "Harari distinguishes between a 'person' and a 'legal person'. Why is this distinction central to the governance argument of his speech?",
+    context: "This is the climax of his prepared address.",
+    opts: [
+      "Because it allows him to argue that AI already has moral rights that must be protected.",
+      "Because it shows that previous legal recognitions of non-human entities (corporations, rivers) were always fictions, whereas AI legal personhood would involve an entity that can actually act as a person — making the granting of personhood genuinely rather than fictionally consequential.",
+      "Because it allows him to sidestep the philosophical question of AI consciousness.",
+      "Because it proves that corporations should be stripped of legal personhood."
+    ],
+    correct: 1,
+    feedback: "Correct. This is the crux. When we gave Alphabet legal personhood, the actual decisions were made by human executives. The legal fiction mapped onto real human agency. With AI, the fiction and the reality converge: an AI could genuinely manage a bank account, file a lawsuit, run a corporation — without any human behind it. This makes the question of AI legal personhood categorically different from all precedents."
+  },
+  {
+    q: "Harari closes his prepared address with: 'Thank you for listening to this human.' Which of the following best captures the full rhetorical complexity of this line?",
+    context: "The final line of his prepared speech, before the Q&A began.",
+    opts: [
+      "A modest expression of gratitude, signalling the end of his address.",
+      "An ironic acknowledgement that his speech may itself soon be replicated by AI.",
+      "A multi-layered rhetorical gesture: it reframes the entire speech as an act of human communication in potential jeopardy, invokes the possibility that future Davos addresses might be delivered by AI, and implicitly asks the audience whether they would listen to — and value — a non-human speaker in the same way.",
+      "A warning that human speakers at Davos will be replaced by AI within a decade."
+    ],
+    correct: 2,
+    feedback: "Correct. The line operates on at least three levels simultaneously: gratitude, irony, and existential provocation. By specifying 'this human,' Harari makes 'human' a marked category rather than the default — implying a world in which the speaker might not be human is already imaginable. It is the most compressed and effective moment of the entire address."
+  }
+];
+
+let score = 0;
+const quizWrap = document.getElementById('quizWrap');
+questions.forEach((q, qi) => {
+  let opts = q.opts.map((o, oi) =>
+    `<button class="option-btn" onclick="answer(${qi},${oi})" id="q${qi}o${oi}">${o}</button>`).join('');
+  quizWrap.innerHTML += `
+    <div class="quiz-question" id="qq${qi}">
+      <div class="q-number">Question ${qi+1} of ${questions.length}</div>
+      <div class="q-text">${q.q}</div>
+      ${q.context ? `<div class="q-context">${q.context}</div>` : ''}
+      <div class="options">${opts}</div>
+      <div class="q-feedback" id="fb${qi}"></div>
+    </div>`;
+});
+
+function answer(qi, oi) {
+  const q = questions[qi];
+  document.querySelectorAll(`#qq${qi} .option-btn`).forEach(b => b.disabled = true);
+  document.getElementById(`q${qi}o${q.correct}`).classList.add('correct');
+  const fb = document.getElementById(`fb${qi}`);
+  if (oi !== q.correct) {
+    document.getElementById(`q${qi}o${oi}`).classList.add('wrong');
+    fb.className = 'q-feedback show wrong';
+  } else {
+    score++;
+    document.getElementById('scoreDisplay').textContent = score;
+    fb.className = 'q-feedback show right';
+  }
+  fb.innerHTML = (oi === q.correct ? '✓' : '✗') + ' &nbsp;' + q.feedback;
+}
+
+// ── GAP FILL ──
+const gapAnswers = ['glorified','functional','fragile','externalised','de-skilling'];
+function checkGaps() {
+  let c = 0;
+  gapAnswers.forEach((a, i) => {
+    const gap = document.getElementById(`g${i+1}`);
+    const val = gap.querySelector('input').value.trim().toLowerCase();
+    gap.classList.remove('correct-gap','wrong-gap');
+    if (val === a.toLowerCase()) { gap.classList.add('correct-gap'); c++; }
+    else gap.classList.add('wrong-gap');
+  });
+  document.getElementById('gapResult').textContent = `${c} / ${gapAnswers.length} correct`;
+}
+function resetGaps() {
+  gapAnswers.forEach((_, i) => {
+    const gap = document.getElementById(`g${i+1}`);
+    gap.querySelector('input').value = '';
+    gap.classList.remove('correct-gap','wrong-gap');
+  });
+  document.getElementById('gapResult').textContent = '';
+}
+
+// ── WORD COUNT ──
+function updateWordCount() {
+  const t = document.getElementById('writingArea').value.trim();
+  document.getElementById('wordCount').textContent = (t ? t.split(/\s+/).length : 0) + ' words';
+}
+
+// ── MODEL ANSWERS ──
+function toggleModels() {
+  const el = document.getElementById('modelAnswers');
+  const btn = document.getElementById('modelBtn');
+  const show = el.style.display === 'none' || !el.style.display;
+  el.style.display = show ? 'block' : 'none';
+  btn.textContent = show ? 'Hide model answers' : 'Reveal model answers';
+}
+
+// ── SECTION NAV ──
+const secMap = { reading:'sec-reading', vocab:'sec-vocab', comprehension:'sec-comprehension', language:'sec-language', discussion:'sec-discussion' };
+const secOrder = ['reading','vocab','comprehension','language','discussion'];
+function showSection(key, tabEl) {
+  Object.values(secMap).forEach(id => document.getElementById(id).classList.remove('active'));
+  document.getElementById(secMap[key]).classList.add('active');
+  document.querySelectorAll('.sec-tab').forEach(t => t.classList.remove('active'));
+  if (tabEl) tabEl.classList.add('active');
+  const idx = secOrder.indexOf(key) + 1;
+  document.getElementById('progressFill').style.width = ((idx / secOrder.length) * 100) + '%';
+  document.getElementById('progressText').textContent = `${idx} / ${secOrder.length} SECTIONS`;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

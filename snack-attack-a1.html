@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Snack Attack! – Forbes English A1</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream:    #FDF6EC;
+    --amber:    #F5A623;
+    --choc:     #3B1F0A;
+    --cinn:     #C4692A;
+    --sage:     #7A9E7E;
+    --muted:    #A0856D;
+    --card:     #FFFAF3;
+    --wrong:    #C0392B;
+    --right:    #27785A;
+    --shadow:   rgba(59,31,10,0.13);
+    --border:   rgba(196,105,42,0.18);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 17px; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--choc);
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+
+  /* ─── HEADER ───────────────────────────────── */
+  .site-header {
+    background: var(--choc);
+    padding: 28px 20px 24px;
+    text-align: center;
+  }
+  .logo-svg { display: inline-block; }
+
+  /* ─── HERO ─────────────────────────────────── */
+  .hero {
+    background: linear-gradient(160deg, #3B1F0A 0%, #6B330F 60%, #C4692A 100%);
+    padding: 44px 24px 52px;
+    text-align: center;
+    color: var(--cream);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-level {
+    display: inline-block;
+    background: var(--amber);
+    color: var(--choc);
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    line-height: 1.15;
+    margin-bottom: 10px;
+  }
+  .hero-sub {
+    font-size: 1rem;
+    color: rgba(253,246,236,0.75);
+    max-width: 520px;
+    margin: 0 auto 22px;
+    line-height: 1.6;
+  }
+  .hero-illustration { margin: 10px auto 0; max-width: 480px; }
+
+  /* ─── PROGRESS BAR ─────────────────────────── */
+  .progress-wrap {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 28px 24px 0;
+  }
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .progress-label { font-size: 0.85rem; font-weight: 600; color: var(--muted); }
+  .score-badge {
+    background: var(--amber);
+    color: var(--choc);
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 4px 14px;
+    border-radius: 20px;
+  }
+  .progress-track {
+    height: 7px;
+    background: rgba(196,105,42,0.18);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--cinn), var(--amber));
+    border-radius: 10px;
+    transition: width 0.5s ease;
+  }
+
+  /* ─── ACTIVITY CARD ─────────────────────────── */
+  .activity-card {
+    max-width: 780px;
+    margin: 28px auto 0;
+    background: var(--card);
+    border-radius: 18px;
+    border: 1.5px solid var(--border);
+    box-shadow: 0 6px 32px var(--shadow);
+    overflow: hidden;
+  }
+  .activity-header {
+    background: linear-gradient(90deg, var(--choc) 0%, #5a2b0c 100%);
+    color: var(--cream);
+    padding: 18px 28px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .activity-tag {
+    background: var(--amber);
+    color: var(--choc);
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 11px;
+    border-radius: 12px;
+    white-space: nowrap;
+  }
+  .activity-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+  .activity-illus {
+    border-bottom: 1.5px solid var(--border);
+    background: #f9f0e4;
+    display: flex;
+    justify-content: center;
+    padding: 18px 0 12px;
+  }
+  .activity-body { padding: 28px 28px 24px; }
+
+  /* ─── QUESTION ──────────────────────────────── */
+  .q-number {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--cinn);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+  .q-text {
+    font-size: 1.12rem;
+    font-weight: 600;
+    line-height: 1.55;
+    margin-bottom: 22px;
+    color: var(--choc);
+  }
+  .q-context {
+    background: rgba(245,166,35,0.10);
+    border-left: 3px solid var(--amber);
+    padding: 10px 14px;
+    border-radius: 0 8px 8px 0;
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin-bottom: 18px;
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  /* ─── MC OPTIONS ────────────────────────────── */
+  .options-grid { display: flex; flex-direction: column; gap: 10px; }
+  .option-btn {
+    width: 100%;
+    text-align: left;
+    background: var(--cream);
+    border: 2px solid rgba(196,105,42,0.22);
+    border-radius: 10px;
+    padding: 13px 18px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.97rem;
+    font-weight: 500;
+    color: var(--choc);
+    cursor: pointer;
+    transition: border-color 0.18s, background 0.18s, transform 0.12s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--cinn);
+    background: rgba(196,105,42,0.06);
+    transform: translateY(-1px);
+  }
+  .option-btn.correct {
+    border-color: var(--right);
+    background: rgba(39,120,90,0.10);
+    color: var(--right);
+    font-weight: 700;
+  }
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: rgba(192,57,43,0.08);
+    color: var(--wrong);
+  }
+  .option-btn:disabled { cursor: default; }
+  .opt-letter {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: rgba(196,105,42,0.14);
+    font-weight: 700;
+    font-size: 0.85rem;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    color: var(--cinn);
+    transition: background 0.18s, color 0.18s;
+  }
+  .option-btn.correct .opt-letter { background: var(--right); color: #fff; }
+  .option-btn.wrong .opt-letter { background: var(--wrong); color: #fff; }
+
+  /* ─── WORD-ORDER (UNMIX) ────────────────────── */
+  .word-bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 50px;
+    background: rgba(196,105,42,0.07);
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 14px;
+    border: 2px dashed rgba(196,105,42,0.25);
+  }
+  .answer-slots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 50px;
+    background: rgba(122,158,126,0.08);
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 18px;
+    border: 2px dashed rgba(122,158,126,0.35);
+  }
+  .word-chip {
+    background: var(--choc);
+    color: var(--cream);
+    border: none;
+    border-radius: 8px;
+    padding: 7px 13px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.12s, opacity 0.15s, background 0.15s;
+  }
+  .word-chip:hover { transform: translateY(-2px); opacity: 0.88; }
+  .word-chip.in-answer { background: var(--cinn); }
+  .word-chip.correct-chip { background: var(--right) !important; }
+  .word-chip.wrong-chip { background: var(--wrong) !important; }
+  .slot-label {
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    margin-bottom: 5px;
+  }
+
+  /* ─── FILL BLANK ────────────────────────────── */
+  .fill-wrap { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; line-height: 2; }
+  .fill-wrap span { font-size: 1.05rem; }
+  .blank-input {
+    border: none;
+    border-bottom: 2.5px solid var(--cinn);
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--choc);
+    width: 120px;
+    text-align: center;
+    outline: none;
+    padding: 2px 6px;
+    transition: border-color 0.2s;
+  }
+  .blank-input:focus { border-color: var(--amber); }
+  .blank-input.correct { border-color: var(--right); color: var(--right); }
+  .blank-input.wrong { border-color: var(--wrong); color: var(--wrong); }
+
+  /* ─── EXTRA WORD ────────────────────────────── */
+  .extra-word-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 18px;
+    align-items: center;
+  }
+  .word-toggle {
+    background: var(--cream);
+    border: 2px solid rgba(196,105,42,0.3);
+    border-radius: 8px;
+    padding: 8px 15px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.97rem;
+    font-weight: 600;
+    color: var(--choc);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .word-toggle.selected { border-color: var(--cinn); background: rgba(196,105,42,0.10); }
+  .word-toggle.correct-sel { border-color: var(--right); background: rgba(39,120,90,0.12); color: var(--right); }
+  .word-toggle.wrong-sel { border-color: var(--wrong); background: rgba(192,57,43,0.09); color: var(--wrong); }
+
+  /* ─── FEEDBACK ──────────────────────────────── */
+  .feedback-box {
+    border-radius: 10px;
+    padding: 13px 18px;
+    font-size: 0.94rem;
+    line-height: 1.55;
+    margin-top: 14px;
+    display: none;
+  }
+  .feedback-box.show { display: block; }
+  .feedback-box.correct-fb {
+    background: rgba(39,120,90,0.10);
+    border-left: 4px solid var(--right);
+    color: var(--right);
+  }
+  .feedback-box.wrong-fb {
+    background: rgba(192,57,43,0.08);
+    border-left: 4px solid var(--wrong);
+    color: var(--wrong);
+  }
+  .fb-icon { font-size: 1.1rem; margin-right: 6px; }
+
+  /* ─── BUTTONS ───────────────────────────────── */
+  .btn-row { display: flex; gap: 12px; margin-top: 22px; flex-wrap: wrap; }
+  .btn-check {
+    background: var(--cinn);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 13px 30px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.97rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.18s, transform 0.12s;
+  }
+  .btn-check:hover { background: var(--choc); transform: translateY(-1px); }
+  .btn-check:disabled { background: var(--muted); cursor: default; transform: none; }
+  .btn-next {
+    background: var(--amber);
+    color: var(--choc);
+    border: none;
+    border-radius: 10px;
+    padding: 13px 30px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.97rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.18s, transform 0.12s;
+    display: none;
+  }
+  .btn-next.show { display: inline-block; }
+  .btn-next:hover { background: var(--choc); color: var(--cream); transform: translateY(-1px); }
+  .btn-reset {
+    background: var(--sage);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 11px 26px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.18s;
+    margin-top: 8px;
+  }
+  .btn-reset:hover { background: var(--choc); }
+
+  /* ─── RESULTS SCREEN ────────────────────────── */
+  .results-screen {
+    max-width: 620px;
+    margin: 40px auto;
+    background: var(--card);
+    border-radius: 18px;
+    border: 1.5px solid var(--border);
+    box-shadow: 0 6px 32px var(--shadow);
+    padding: 48px 36px;
+    text-align: center;
+    display: none;
+  }
+  .results-screen.show { display: block; }
+  .results-trophy { font-size: 4rem; margin-bottom: 16px; }
+  .results-score {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--cinn);
+    margin-bottom: 6px;
+  }
+  .results-msg {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--muted);
+    max-width: 380px;
+    margin: 0 auto 28px;
+  }
+
+  /* ─── HIDDEN / VISIBLE ──────────────────────── */
+  .hidden { display: none !important; }
+
+  /* ─── RESPONSIVE ────────────────────────────── */
+  @media(max-width: 600px) {
+    .activity-body { padding: 20px 16px 18px; }
+    .activity-header { padding: 14px 18px; }
+    .progress-wrap { padding: 18px 16px 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER / LOGO -->
+<header class="site-header">
+  <div class="logo-svg">
+    <svg width="200" height="62" viewBox="0 0 200 62" xmlns="http://www.w3.org/2000/svg" aria-label="Forbes English">
+      <text x="100" y="32" text-anchor="middle"
+        font-family="'Playfair Display', Georgia, serif"
+        font-size="28" font-weight="700" letter-spacing="3"
+        fill="#F5A623">FORBES</text>
+      <line x1="14" y1="39" x2="186" y2="39" stroke="#C4692A" stroke-width="1.2"/>
+      <text x="100" y="56" text-anchor="middle"
+        font-family="'DM Sans', Arial, sans-serif"
+        font-size="13" font-weight="700" letter-spacing="7"
+        fill="#FDF6EC">ENGLISH</text>
+    </svg>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-level">Level A1 · Everyday English</div>
+  <h1>Snack Attack!</h1>
+  <p class="hero-sub">Watch the story, then test what you know. 12 questions across 3 activities.</p>
+  <!-- HERO VIDEO: this video's owner disabled cross-site embedding (YouTube error 153), so a real iframe player never plays here. Linking out to the video instead. -->
+  <a href="https://en.islcollective.com/english-esl-video-lessons/grammar-practice/general-grammar-practice/irregular-verbs-past-tense-v2/snack-attack-most-common-irregular-verbs-review/775431" target="_blank" rel="noopener" style="display:block;text-decoration:none;position:relative;" aria-label="Watch the Snack Attack video lesson on islcollective">
+  <div class="hero-illustration" style="position:relative;cursor:pointer;border-radius:14px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.3);">
+    <img src="https://i.ytimg.com/vi/reRcVxAWT1g/sddefault.jpg" alt="Snack Attack video thumbnail" style="display:block;width:100%;height:auto;">
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 55%,rgba(0,0,0,.55) 100%);"></div>
+    <div style="position:absolute;top:12px;right:12px;background:var(--amber);color:var(--choc);font-weight:700;font-size:0.78rem;letter-spacing:.04em;padding:6px 14px;border-radius:20px;box-shadow:0 2px 8px rgba(0,0,0,.25);">▶ Watch the video</div>
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:50%;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;">
+      <div style="width:0;height:0;border-top:14px solid transparent;border-bottom:14px solid transparent;border-left:22px solid #fff;margin-left:6px;"></div>
+    </div>
+  </div>
+  </a>
+</section>
+
+<!-- PROGRESS BAR -->
+<div class="progress-wrap">
+  <div class="progress-meta">
+    <span class="progress-label" id="progressLabel">Question 1 of 12</span>
+    <span class="score-badge" id="scoreBadge">Score: 0</span>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill" style="width:0%"></div>
+  </div>
+</div>
+
+<!-- ACTIVITY CARD -->
+<div class="activity-card" id="activityCard">
+
+  <!-- Activity header changes per section -->
+  <div class="activity-header" id="activityHeader">
+    <span class="activity-tag" id="activityTag">Activity 1</span>
+    <span class="activity-title" id="activityTitle">Multiple Choice</span>
+  </div>
+
+  <!-- Illustration strip (changes per activity) -->
+  <div class="activity-illus" id="activityIllus">
+    <!-- filled by JS -->
+  </div>
+
+  <div class="activity-body">
+    <div class="q-number" id="qNumber">Question 1 of 5</div>
+    <div class="q-text" id="qText"></div>
+    <div class="q-context" id="qContext" style="display:none"></div>
+    <div id="questionArea"></div>
+    <div class="feedback-box" id="feedbackBox"></div>
+    <div class="btn-row">
+      <button class="btn-check" id="btnCheck" onclick="checkAnswer()">Check</button>
+      <button class="btn-next show" id="btnNext" onclick="nextQuestion()" style="display:none">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS SCREEN -->
+<div class="results-screen" id="resultsScreen">
+  <div class="results-trophy" id="resultsTrophy">🍪</div>
+  <div class="results-score" id="resultsScore">0 / 12</div>
+  <p class="results-msg" id="resultsMsg"></p>
+  <button class="btn-reset" onclick="restartLesson()">↺ Try Again</button>
+</div>
+
+<!-- ACTIVITY ILLUSTRATIONS (SVG snippets, returned by getActivityIllus()) -->
+<script>
+// ─── ILLUSTRATIONS ─────────────────────────────────────────────────────────
+function getActivityIllus(actIndex) {
+  const illus = [
+    // Activity 1: MC — lady at machine, coin, sad face
+    `<svg viewBox="0 0 460 110" width="420" xmlns="http://www.w3.org/2000/svg" aria-label="Lady at vending machine">
+      <rect x="180" y="5" width="60" height="98" rx="7" fill="#4A2508"/>
+      <rect x="186" y="11" width="48" height="56" rx="4" fill="#1a0d03"/>
+      <rect x="192" y="17" width="12" height="8" rx="2" fill="#C4692A"/>
+      <rect x="208" y="17" width="12" height="8" rx="2" fill="#F5A623"/>
+      <rect x="224" y="17" width="8" height="8" rx="2" fill="#7A9E7E"/>
+      <rect x="192" y="30" width="12" height="8" rx="2" fill="#F5A623"/>
+      <rect x="208" y="30" width="12" height="8" rx="2" fill="#C4692A"/>
+      <rect x="224" y="30" width="8" height="8" rx="2" fill="#C4692A"/>
+      <rect x="192" y="43" width="12" height="8" rx="2" fill="#7A9E7E"/>
+      <rect x="208" y="43" width="12" height="8" rx="2" fill="#F5A623"/>
+      <rect x="192" y="73" width="38" height="10" rx="3" fill="#2a1205"/>
+      <!-- Lady body -->
+      <ellipse cx="120" cy="80" rx="18" ry="22" fill="#C4692A"/>
+      <circle cx="120" cy="46" r="18" fill="#F5C9A0"/>
+      <ellipse cx="120" cy="35" rx="18" ry="11" fill="#3B1F0A"/>
+      <ellipse cx="108" cy="52" rx="6" ry="11" fill="#3B1F0A"/>
+      <ellipse cx="132" cy="52" rx="6" ry="11" fill="#3B1F0A"/>
+      <!-- sad eyes -->
+      <ellipse cx="115" cy="46" rx="3" ry="3.5" fill="#fff"/>
+      <ellipse cx="125" cy="46" rx="3" ry="3.5" fill="#fff"/>
+      <circle cx="115" cy="47" r="2" fill="#3B1F0A"/>
+      <circle cx="125" cy="47" r="2" fill="#3B1F0A"/>
+      <path d="M113 54 Q119 50 125 54" fill="none" stroke="#3B1F0A" stroke-width="1.5" stroke-linecap="round"/>
+      <!-- arm reaching -->
+      <line x1="136" y1="68" x2="178" y2="78" stroke="#C4692A" stroke-width="8" stroke-linecap="round"/>
+      <circle cx="175" cy="79" r="6" fill="#F5A623"/>
+      <text x="175" y="83" text-anchor="middle" fill="#3B1F0A" font-size="7" font-weight="700">€</text>
+      <!-- legs -->
+      <rect x="109" y="98" width="8" height="14" rx="4" fill="#7A9E7E"/>
+      <rect x="121" y="98" width="8" height="14" rx="4" fill="#7A9E7E"/>
+
+      <!-- cookie on ground -->
+      <circle cx="330" cy="90" r="14" fill="#C4692A"/>
+      <circle cx="327" cy="86" r="2.5" fill="#3B1F0A"/>
+      <circle cx="334" cy="92" r="2" fill="#3B1F0A"/>
+      <circle cx="330" cy="87" r="1.5" fill="#F5A623"/>
+      <text x="330" y="76" text-anchor="middle" fill="#F5A623" font-size="9" font-weight="700">?</text>
+
+      <text x="330" y="110" text-anchor="middle" fill="#A0856D" font-size="10">What happened?</text>
+    </svg>`,
+
+    // Activity 2: Word order — speech bubbles and shuffled words
+    `<svg viewBox="0 0 460 100" width="420" xmlns="http://www.w3.org/2000/svg" aria-label="Sentence mixing illustration">
+      <!-- Word chips floating -->
+      <rect x="20" y="20" width="52" height="22" rx="6" fill="#3B1F0A"/>
+      <text x="46" y="35" text-anchor="middle" fill="#FDF6EC" font-size="11" font-weight="700">She</text>
+      <rect x="82" y="30" width="42" height="22" rx="6" fill="#C4692A"/>
+      <text x="103" y="45" text-anchor="middle" fill="#FDF6EC" font-size="11" font-weight="700">put</text>
+      <rect x="134" y="15" width="40" height="22" rx="6" fill="#7A9E7E"/>
+      <text x="154" y="30" text-anchor="middle" fill="#FDF6EC" font-size="11" font-weight="700">the</text>
+      <rect x="184" y="35" width="70" height="22" rx="6" fill="#3B1F0A"/>
+      <text x="219" y="50" text-anchor="middle" fill="#FDF6EC" font-size="11" font-weight="700">cookies</text>
+      <rect x="264" y="20" width="50" height="22" rx="6" fill="#F5A623"/>
+      <text x="289" y="35" text-anchor="middle" fill="#3B1F0A" font-size="11" font-weight="700">away</text>
+      <rect x="324" y="38" width="50" height="22" rx="6" fill="#C4692A"/>
+      <text x="349" y="53" text-anchor="middle" fill="#FDF6EC" font-size="11" font-weight="700">from</text>
+      <rect x="384" y="18" width="62" height="22" rx="6" fill="#3B1F0A"/>
+      <text x="415" y="33" text-anchor="middle" fill="#FDF6EC" font-size="11" font-weight="700">the man</text>
+      <!-- Arrow -->
+      <text x="230" y="88" text-anchor="middle" fill="#A0856D" font-size="11">Put the words in the right order!</text>
+    </svg>`,
+
+    // Activity 3: Gap fill — close-up cookie and text
+    `<svg viewBox="0 0 460 100" width="420" xmlns="http://www.w3.org/2000/svg" aria-label="Fill in the gap illustration">
+      <!-- Open newspaper / magazine -->
+      <rect x="110" y="10" width="240" height="78" rx="8" fill="#fff" stroke="#C4692A" stroke-width="1.5"/>
+      <line x1="230" y1="10" x2="230" y2="88" stroke="#C4692A" stroke-width="1" stroke-dasharray="4,3"/>
+      <rect x="118" y="18" width="100" height="8" rx="3" fill="#C4692A" opacity="0.3"/>
+      <rect x="118" y="30" width="80" height="6" rx="3" fill="#A0856D" opacity="0.25"/>
+      <rect x="118" y="40" width="90" height="6" rx="3" fill="#A0856D" opacity="0.25"/>
+      <rect x="118" y="50" width="70" height="6" rx="3" fill="#A0856D" opacity="0.25"/>
+      <rect x="118" y="60" width="85" height="6" rx="3" fill="#A0856D" opacity="0.25"/>
+      <rect x="118" y="70" width="60" height="6" rx="3" fill="#A0856D" opacity="0.25"/>
+      <!-- Right col: cookies -->
+      <circle cx="302" cy="38" r="18" fill="#C4692A"/>
+      <circle cx="297" cy="33" r="3" fill="#3B1F0A"/>
+      <circle cx="307" cy="41" r="2.5" fill="#3B1F0A"/>
+      <circle cx="302" cy="32" r="2" fill="#F5A623"/>
+      <!-- Half cookie -->
+      <path d="M302 52 A18 18 0 0 1 320 52" fill="none"/>
+      <path d="M284 56 Q302 42 320 56" fill="none" stroke="#3B1F0A" stroke-width="1.5" stroke-dasharray="3,2"/>
+      <circle cx="302" cy="68" r="14" fill="#C4692A" opacity="0.5"/>
+      <line x1="302" y1="57" x2="302" y2="79" stroke="#FDF6EC" stroke-width="1.5"/>
+      <text x="230" y="98" text-anchor="middle" fill="#A0856D" font-size="10">Complete the story!</text>
+    </svg>`
+  ];
+  return illus[actIndex] || illus[0];
+}
+
+// ─── QUESTION DATA ─────────────────────────────────────────────────────────
+const activities = [
+  {
+    tag: "Activity 1",
+    title: "Choose the Correct Option",
+    type: "mc",
+    questions: [
+      {
+        text: "She didn't ________ what she wanted.",
+        context: "The lady put a coin in the machine, but nothing came out.",
+        options: ["got", "get", "getted", "gets"],
+        correct: 1,
+        feedback: "We use 'get' after 'didn't'. 'Got' is past tense on its own. 'Getted' is not a real word!"
+      },
+      {
+        text: "Where did she put the snack?",
+        options: [
+          "She put it into her bag.",
+          "She putted it in her pocket.",
+          "She put it on the seat.",
+          "She putted it onto the table."
+        ],
+        correct: 0,
+        feedback: "'Put' is the same in present and past — 'putted' is incorrect. She put the snack into her bag."
+      },
+      {
+        text: "How many cookies did the young man have?",
+        options: [
+          "He had five cookies.",
+          "He had six cookies.",
+          "He had three cookies.",
+          "He had four cookies."
+        ],
+        correct: 2,
+        feedback: "In the story, the young man had three cookies — the same packet the lady thought was hers."
+      },
+      {
+        text: "What did the lady read?",
+        options: [
+          "She read a magazine.",
+          "She read a newspaper.",
+          "She read a leaflet.",
+          "She read a book."
+        ],
+        correct: 1,
+        feedback: "The lady read a newspaper while she waited. Not a book or a magazine!"
+      },
+      {
+        text: "She _________ angrily.",
+        options: ["leave", "leaved", "left", "lefted"],
+        correct: 2,
+        feedback: "'Left' is the past tense of 'leave'. 'Leaved' and 'lefted' are not correct forms."
+      }
+    ]
+  },
+  {
+    tag: "Activity 2",
+    title: "Unmix the Sentence",
+    type: "wordorder",
+    questions: [
+      {
+        text: "Put the words in the correct order.",
+        words: ["She", "put", "a", "coin", "into", "the", "vending", "machine."],
+        correct: "She put a coin into the vending machine.",
+        feedback: "Great! 'She put a coin into the vending machine.' — past tense, correct word order."
+      },
+      {
+        text: "Put the words in the correct order.",
+        words: ["She", "was", "very", "sad", "and", "angry."],
+        correct: "She was very sad and angry.",
+        feedback: "'She was very sad and angry.' — 'was' is the past of 'is', used here for feelings."
+      },
+      {
+        text: "Put the words in the correct order.",
+        words: ["She", "took", "the", "cookies", "away", "from", "the", "young", "man."],
+        correct: "She took the cookies away from the young man.",
+        feedback: "'She took the cookies away from the young man.' — 'took' is the past tense of 'take'."
+      },
+      {
+        text: "Put the words in the correct order.",
+        words: ["The", "lady", "spoke", "to", "the", "young", "man,", "but", "he", "didn't", "hear", "anything."],
+        correct: "The lady spoke to the young man, but he didn't hear anything.",
+        feedback: "'Spoke' is the past of 'speak'. He didn't hear because he had headphones!"
+      },
+      {
+        text: "Put the words in the correct order.",
+        words: ["He", "gave", "her", "half", "of", "the", "cookie."],
+        correct: "He gave her half of the cookie.",
+        feedback: "'Gave' is the past of 'give'. He gave her half to be kind — he thought they were sharing!"
+      }
+    ]
+  },
+  {
+    tag: "Activity 3",
+    title: "Fill the Gap & Find the Extra Word",
+    type: "mixed",
+    questions: [
+      {
+        subtype: "fill",
+        text: "Fill the gap. Type the missing word.",
+        sentence: ["He gave her", "___", "of the cookie."],
+        correct: "half",
+        altCorrect: [],
+        feedback: "'Half' means 50% — one part of two equal parts. He was sharing his cookie."
+      },
+      {
+        subtype: "fill",
+        text: "Fill the gap. Type the missing word.",
+        sentence: ["She", "___", "angrily."],
+        correct: "left",
+        altCorrect: ["Left"],
+        feedback: "'Left' is the past of 'leave'. She left quickly because she was angry."
+      },
+      {
+        subtype: "extra",
+        text: "Find the extra word. Which word should NOT be in this sentence?",
+        words: ["The", "young", "man", "did", "bought", "the", "same", "cookies."],
+        correct: "did",
+        correctSentence: "The young man bought the same cookies.",
+        feedback: "We use 'did' with the base form: 'did buy'. Here we only need 'bought' — the simple past. 'Did' is extra."
+      },
+      {
+        subtype: "fill",
+        text: "Fill the gap. Type the missing word.",
+        sentence: ["She", "___", "a coin into the vending machine."],
+        correct: "put",
+        altCorrect: ["Put"],
+        feedback: "'Put' is the past tense of 'put' — it doesn't change! Put → put (not 'putted')."
+      },
+      {
+        subtype: "extra",
+        text: "Find the extra word. Which word should NOT be in this sentence?",
+        words: ["She", "didn't", "got", "what", "she", "wanted."],
+        correct: "got",
+        correctSentence: "She didn't get what she wanted.",
+        feedback: "After 'didn't', we use the base form 'get', not the past 'got'. 'Got' is the extra word."
+      }
+    ]
+  }
+];
+
+// ─── STATE ─────────────────────────────────────────────────────────────────
+let currentActivity = 0;
+let currentQuestion = 0;
+let score = 0;
+let totalAnswered = 0;
+const totalQuestions = activities.reduce((s, a) => s + a.questions.length, 0);
+
+// Word-order state
+let bankWords = [];
+let answerWords = [];
+
+// Extra-word state
+let selectedExtraWord = null;
+
+// ─── RENDER ────────────────────────────────────────────────────────────────
+function getCurrentQ() {
+  return activities[currentActivity].questions[currentQuestion];
+}
+
+function render() {
+  const act = activities[currentActivity];
+  const q = getCurrentQ();
+  const overallIndex = getOverallIndex();
+
+  // Header
+  document.getElementById('activityTag').textContent = act.tag;
+  document.getElementById('activityTitle').textContent = act.title;
+
+  // Illustration
+  document.getElementById('activityIllus').innerHTML = getActivityIllus(currentActivity);
+
+  // Progress
+  document.getElementById('progressLabel').textContent = `Question ${overallIndex + 1} of ${totalQuestions}`;
+  document.getElementById('progressFill').style.width = `${(overallIndex / totalQuestions) * 100}%`;
+  document.getElementById('qNumber').textContent = `Question ${currentQuestion + 1} of ${act.questions.length}`;
+
+  // Q text
+  document.getElementById('qText').textContent = q.text;
+
+  // Context
+  const ctx = document.getElementById('qContext');
+  if (q.context) { ctx.style.display = ''; ctx.textContent = q.context; }
+  else { ctx.style.display = 'none'; }
+
+  // Reset feedback & buttons
+  const fb = document.getElementById('feedbackBox');
+  fb.className = 'feedback-box';
+  fb.textContent = '';
+  document.getElementById('btnCheck').disabled = false;
+  document.getElementById('btnCheck').style.display = '';
+  document.getElementById('btnNext').style.display = 'none';
+
+  // Render by type
+  const area = document.getElementById('questionArea');
+  area.innerHTML = '';
+
+  if (act.type === 'mc') renderMC(q, area);
+  else if (act.type === 'wordorder') renderWordOrder(q, area);
+  else if (act.type === 'mixed') {
+    if (q.subtype === 'fill') renderFill(q, area);
+    else if (q.subtype === 'extra') renderExtra(q, area);
+  }
+}
+
+function getOverallIndex() {
+  let idx = 0;
+  for (let a = 0; a < currentActivity; a++) idx += activities[a].questions.length;
+  idx += currentQuestion;
+  return idx;
+}
+
+// ─── MC ────────────────────────────────────────────────────────────────────
+function renderMC(q, area) {
+  // Shuffle options with Fisher-Yates, track correct
+  const indices = q.options.map((_, i) => i);
+  for (let i = indices.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [indices[i], indices[j]] = [indices[j], indices[i]];
+  }
+  const letters = ['A','B','C','D'];
+  const grid = document.createElement('div');
+  grid.className = 'options-grid';
+  indices.forEach((origIdx, pos) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.dataset.orig = origIdx;
+    btn.innerHTML = `<span class="opt-letter">${letters[pos]}</span>${q.options[origIdx]}`;
+    btn.onclick = () => selectMC(btn);
+    grid.appendChild(btn);
+  });
+  area.appendChild(grid);
+}
+
+function selectMC(btn) {
+  document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected-mc'));
+  btn.classList.add('selected-mc');
+  document.getElementById('btnCheck').disabled = false;
+  // Store selection
+  document.getElementById('questionArea').dataset.selected = btn.dataset.orig;
+}
+
+// ─── WORD ORDER ─────────────────────────────────────────────────────────────
+function renderWordOrder(q, area) {
+  bankWords = shuffle([...q.words]);
+  answerWords = [];
+
+  const slotLabel = document.createElement('div');
+  slotLabel.className = 'slot-label';
+  slotLabel.textContent = 'Your sentence:';
+  area.appendChild(slotLabel);
+
+  const answerDiv = document.createElement('div');
+  answerDiv.className = 'answer-slots';
+  answerDiv.id = 'answerSlots';
+  area.appendChild(answerDiv);
+
+  const bankLabel = document.createElement('div');
+  bankLabel.className = 'slot-label';
+  bankLabel.style.marginTop = '10px';
+  bankLabel.textContent = 'Word bank — click to add:';
+  area.appendChild(bankLabel);
+
+  const bankDiv = document.createElement('div');
+  bankDiv.className = 'word-bank';
+  bankDiv.id = 'wordBank';
+  area.appendChild(bankDiv);
+
+  renderWordChips();
+  document.getElementById('btnCheck').disabled = false;
+}
+
+function renderWordChips() {
+  const bankDiv = document.getElementById('wordBank');
+  const answerDiv = document.getElementById('answerSlots');
+  if (!bankDiv || !answerDiv) return;
+  bankDiv.innerHTML = '';
+  answerDiv.innerHTML = '';
+
+  bankWords.forEach((w, i) => {
+    const chip = document.createElement('button');
+    chip.className = 'word-chip';
+    chip.textContent = w;
+    chip.onclick = () => moveToAnswer(i);
+    bankDiv.appendChild(chip);
+  });
+
+  answerWords.forEach((w, i) => {
+    const chip = document.createElement('button');
+    chip.className = 'word-chip in-answer';
+    chip.textContent = w;
+    chip.onclick = () => moveToBank(i);
+    answerDiv.appendChild(chip);
+  });
+}
+
+function moveToAnswer(idx) {
+  answerWords.push(bankWords[idx]);
+  bankWords.splice(idx, 1);
+  renderWordChips();
+}
+
+function moveToBank(idx) {
+  bankWords.push(answerWords[idx]);
+  answerWords.splice(idx, 1);
+  renderWordChips();
+}
+
+// ─── FILL BLANK ─────────────────────────────────────────────────────────────
+function renderFill(q, area) {
+  const wrap = document.createElement('div');
+  wrap.className = 'fill-wrap';
+  q.sentence.forEach((part, i) => {
+    if (part === '___') {
+      const inp = document.createElement('input');
+      inp.type = 'text';
+      inp.className = 'blank-input';
+      inp.id = 'fillInput';
+      inp.placeholder = '?';
+      inp.autocomplete = 'off';
+      inp.spellcheck = false;
+      inp.oninput = () => { document.getElementById('btnCheck').disabled = false; };
+      wrap.appendChild(inp);
+    } else {
+      const span = document.createElement('span');
+      span.textContent = part;
+      wrap.appendChild(span);
+    }
+  });
+  area.appendChild(wrap);
+}
+
+// ─── EXTRA WORD ──────────────────────────────────────────────────────────────
+function renderExtra(q, area) {
+  selectedExtraWord = null;
+  const wrap = document.createElement('div');
+  wrap.className = 'extra-word-wrap';
+  q.words.forEach(w => {
+    const btn = document.createElement('button');
+    btn.className = 'word-toggle';
+    btn.textContent = w;
+    btn.dataset.word = w;
+    btn.onclick = () => selectExtra(btn, q);
+    wrap.appendChild(btn);
+  });
+  area.appendChild(wrap);
+  document.getElementById('btnCheck').disabled = true;
+}
+
+function selectExtra(btn, q) {
+  document.querySelectorAll('.word-toggle').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedExtraWord = btn.dataset.word;
+  document.getElementById('btnCheck').disabled = false;
+}
+
+// ─── CHECK ANSWER ────────────────────────────────────────────────────────────
+function checkAnswer() {
+  const act = activities[currentActivity];
+  const q = getCurrentQ();
+  let isCorrect = false;
+  const fb = document.getElementById('feedbackBox');
+
+  if (act.type === 'mc') {
+    const selected = parseInt(document.getElementById('questionArea').dataset.selected);
+    if (isNaN(selected)) return;
+    isCorrect = selected === q.correct;
+    // Style all buttons
+    document.querySelectorAll('.option-btn').forEach(btn => {
+      btn.disabled = true;
+      const orig = parseInt(btn.dataset.orig);
+      if (orig === q.correct) btn.classList.add('correct');
+      else if (orig === selected && !isCorrect) btn.classList.add('wrong');
+    });
+  }
+
+  else if (act.type === 'wordorder') {
+    const assembled = answerWords.join(' ');
+    isCorrect = assembled.trim() === q.correct.trim();
+    // Color chips
+    const chips = document.querySelectorAll('#answerSlots .word-chip');
+    chips.forEach(c => {
+      c.classList.add(isCorrect ? 'correct-chip' : 'wrong-chip');
+    });
+  }
+
+  else if (act.type === 'mixed') {
+    if (q.subtype === 'fill') {
+      const inp = document.getElementById('fillInput');
+      if (!inp) return;
+      const val = inp.value.trim().toLowerCase();
+      const correctLC = q.correct.toLowerCase();
+      const alts = (q.altCorrect || []).map(a => a.toLowerCase());
+      isCorrect = val === correctLC || alts.includes(val);
+      inp.disabled = true;
+      inp.classList.add(isCorrect ? 'correct' : 'wrong');
+      if (!isCorrect) inp.value = q.correct;
+    }
+    else if (q.subtype === 'extra') {
+      isCorrect = selectedExtraWord === q.correct;
+      document.querySelectorAll('.word-toggle').forEach(btn => {
+        btn.disabled = true;
+        if (btn.dataset.word === q.correct) btn.classList.add('correct-sel');
+        else if (btn.dataset.word === selectedExtraWord && !isCorrect) btn.classList.add('wrong-sel');
+      });
+    }
+  }
+
+  // Score
+  if (isCorrect) score++;
+  totalAnswered++;
+  document.getElementById('scoreBadge').textContent = `Score: ${score}`;
+
+  // Feedback
+  fb.className = 'feedback-box show ' + (isCorrect ? 'correct-fb' : 'wrong-fb');
+  fb.innerHTML = `<span class="fb-icon">${isCorrect ? '✓' : '✗'}</span> ${q.feedback}`;
+
+  // Buttons
+  document.getElementById('btnCheck').disabled = true;
+  document.getElementById('btnCheck').style.display = 'none';
+  document.getElementById('btnNext').style.display = 'inline-block';
+}
+
+// ─── NEXT ────────────────────────────────────────────────────────────────────
+function nextQuestion() {
+  const act = activities[currentActivity];
+  if (currentQuestion < act.questions.length - 1) {
+    currentQuestion++;
+    render();
+  } else if (currentActivity < activities.length - 1) {
+    currentActivity++;
+    currentQuestion = 0;
+    render();
+  } else {
+    showResults();
+  }
+}
+
+// ─── RESULTS ─────────────────────────────────────────────────────────────────
+function showResults() {
+  document.getElementById('activityCard').style.display = 'none';
+  document.getElementById('progressFill').style.width = '100%';
+  document.getElementById('progressLabel').textContent = `All ${totalQuestions} questions complete!`;
+
+  const res = document.getElementById('resultsScreen');
+  res.classList.add('show');
+  document.getElementById('resultsScore').textContent = `${score} / ${totalQuestions}`;
+
+  const pct = score / totalQuestions;
+  let trophy, msg;
+  if (pct === 1) {
+    trophy = '🏆'; msg = "Perfect score! You understood every part of the Snack Attack story. Amazing work!";
+  } else if (pct >= 0.75) {
+    trophy = '🍪'; msg = "Really good job! You understand most of the story. Review the questions you missed and try again!";
+  } else if (pct >= 0.5) {
+    trophy = '☕'; msg = "Not bad! You got some right. Read the feedback and have another go — you can do it!";
+  } else {
+    trophy = '📖'; msg = "Keep going! Every mistake is a lesson. Read the feedback carefully and try again. You've got this!";
+  }
+  document.getElementById('resultsTrophy').textContent = trophy;
+  document.getElementById('resultsMsg').textContent = msg;
+}
+
+// ─── RESTART ──────────────────────────────────────────────────────────────────
+function restartLesson() {
+  currentActivity = 0;
+  currentQuestion = 0;
+  score = 0;
+  totalAnswered = 0;
+  document.getElementById('scoreBadge').textContent = 'Score: 0';
+  document.getElementById('resultsScreen').classList.remove('show');
+  document.getElementById('activityCard').style.display = '';
+  render();
+}
+
+// ─── UTILS ────────────────────────────────────────────────────────────────────
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+render();
+</script>
+</body>
+</html>

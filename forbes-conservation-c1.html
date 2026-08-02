@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – Conservation Travel | C1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --deep: #0d2b35;
+    --ocean: #1a4a5a;
+    --teal: #2a7a8a;
+    --light-teal: #4aa8b8;
+    --amber: #c8841e;
+    --gold: #e8a830;
+    --cream: #f5f0e8;
+    --off-white: #faf8f4;
+    --text: #1a2a2e;
+    --muted: #5a7a82;
+    --card-bg: #ffffff;
+    --correct: #2d7a4f;
+    --wrong: #8b2a2a;
+    --correct-light: #e8f5ee;
+    --wrong-light: #f8eaea;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--deep);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 20%, rgba(42,122,138,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(200,132,30,0.08) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ===== HEADER ===== */
+  header {
+    padding: 32px 0 0;
+    text-align: center;
+  }
+
+  .logo-svg-wrap { display: inline-block; }
+
+  .lesson-meta {
+    margin-top: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: var(--light-teal);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .lesson-meta span { opacity: 0.5; }
+
+  /* ===== SCORE TRACKER ===== */
+  .score-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13,43,53,0.96);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(42,122,138,0.3);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .score-bar .label {
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .score-display {
+    color: var(--gold);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+
+  .progress-track {
+    height: 3px;
+    background: rgba(42,122,138,0.2);
+    border-radius: 2px;
+    overflow: hidden;
+    width: 160px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--teal), var(--gold));
+    border-radius: 2px;
+    transition: width 0.5s ease;
+  }
+
+  /* ===== HERO ILLUSTRATION ===== */
+  .hero-illo {
+    margin: 32px 0 28px;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ===== INTRO CARD ===== */
+  .intro-card {
+    background: var(--ocean);
+    border: 1px solid rgba(42,122,138,0.4);
+    border-radius: 10px;
+    padding: 36px 40px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .intro-card::before {
+    content: '';
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(42,122,138,0.3) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .intro-card h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+
+  .intro-card h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .level-badge {
+    display: inline-block;
+    background: var(--amber);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+  }
+
+  .intro-card p {
+    color: rgba(245,240,232,0.75);
+    font-size: 14.5px;
+    line-height: 1.7;
+    max-width: 640px;
+  }
+
+  /* ===== SECTION DIVIDER ===== */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 40px 0 22px;
+  }
+
+  .section-num {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--teal);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  .section-title-wrap h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--cream);
+    line-height: 1.2;
+  }
+
+  .section-title-wrap .section-sub {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(42,122,138,0.5), transparent);
+  }
+
+  /* ===== ILLUSTRATION SVGs ===== */
+  .illo-wrap {
+    margin: 0 0 24px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(42,122,138,0.2);
+  }
+
+  /* ===== QUESTION CARD ===== */
+  .question-card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 28px 32px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.15);
+    display: none;
+    animation: fadeUp 0.35s ease;
+  }
+
+  .question-card.active { display: block; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .q-progress {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .q-text {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.55;
+    margin-bottom: 20px;
+  }
+
+  /* MC options */
+  .options-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+
+  .option-btn {
+    width: 100%;
+    text-align: left;
+    padding: 12px 16px;
+    border: 1.5px solid #dde5e8;
+    border-radius: 7px;
+    background: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14.5px;
+    color: var(--text);
+    cursor: pointer;
+    transition: border-color 0.18s, background 0.18s;
+    line-height: 1.45;
+  }
+
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--teal);
+    background: #f0f8fa;
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-light);
+    color: var(--correct);
+  }
+
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-light);
+    color: var(--wrong);
+  }
+
+  .option-btn:disabled { cursor: default; }
+
+  /* Fill-in-blank */
+  .blank-sentence {
+    font-size: 16px;
+    line-height: 1.9;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+
+  .blank-input {
+    border: none;
+    border-bottom: 2px solid var(--teal);
+    outline: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--text);
+    padding: 2px 6px;
+    min-width: 120px;
+    background: transparent;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+
+  .blank-input.correct-input { border-color: var(--correct); color: var(--correct); background: var(--correct-light); border-radius: 4px; }
+  .blank-input.wrong-input { border-color: var(--wrong); color: var(--wrong); background: var(--wrong-light); border-radius: 4px; }
+
+  .word-bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 22px;
+    padding: 14px;
+    background: #f4f8fa;
+    border-radius: 8px;
+  }
+
+  .word-chip {
+    background: var(--ocean);
+    color: var(--cream);
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    cursor: pointer;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.15s, opacity 0.15s;
+  }
+
+  .word-chip:hover:not(:disabled) { background: var(--teal); }
+  .word-chip.used { opacity: 0.3; cursor: default; }
+
+  /* Matching activity */
+  .matching-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .match-col { display: flex; flex-direction: column; gap: 8px; }
+
+  .match-item {
+    padding: 11px 14px;
+    border-radius: 7px;
+    font-size: 13.5px;
+    line-height: 1.4;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    transition: all 0.18s;
+    user-select: none;
+  }
+
+  .match-left {
+    background: rgba(26,74,90,0.08);
+    border-color: rgba(26,74,90,0.2);
+    color: var(--ocean);
+    font-weight: 500;
+  }
+
+  .match-right {
+    background: rgba(200,132,30,0.06);
+    border-color: rgba(200,132,30,0.2);
+    color: #5a3a00;
+  }
+
+  .match-item.selected { border-color: var(--teal); background: rgba(42,122,138,0.12); }
+  .match-item.matched-correct { border-color: var(--correct); background: var(--correct-light); color: var(--correct); cursor: default; }
+  .match-item.matched-wrong { border-color: var(--wrong); background: var(--wrong-light); color: var(--wrong); }
+
+  /* Ordering activity */
+  .ordering-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+
+  .order-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 1.5px solid #dde5e8;
+    border-radius: 7px;
+    background: #fff;
+    cursor: grab;
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.45;
+    transition: box-shadow 0.15s;
+    user-select: none;
+  }
+
+  .order-item:active { cursor: grabbing; box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+  .order-item.dragging { opacity: 0.4; }
+  .order-item.drag-over { border-color: var(--teal); background: #f0f8fa; }
+
+  .drag-handle {
+    color: #aaa;
+    font-size: 16px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* Submit button */
+  .btn-submit {
+    background: var(--teal);
+    color: #fff;
+    border: none;
+    padding: 11px 26px;
+    border-radius: 7px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.18s;
+    letter-spacing: 0.02em;
+  }
+
+  .btn-submit:hover { background: var(--ocean); }
+
+  /* Feedback */
+  .feedback-box {
+    margin-top: 16px;
+    padding: 14px 16px;
+    border-radius: 7px;
+    font-size: 13.5px;
+    line-height: 1.55;
+    display: none;
+  }
+
+  .feedback-box.correct-fb { background: var(--correct-light); color: var(--correct); border-left: 3px solid var(--correct); }
+  .feedback-box.wrong-fb { background: var(--wrong-light); color: var(--wrong); border-left: 3px solid var(--wrong); }
+
+  .feedback-box .fb-label {
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  /* Next button */
+  .btn-next {
+    display: none;
+    margin-top: 14px;
+    background: var(--deep);
+    color: var(--gold);
+    border: 1.5px solid var(--amber);
+    padding: 10px 24px;
+    border-radius: 7px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: all 0.18s;
+  }
+
+  .btn-next:hover { background: var(--amber); color: #fff; }
+  .btn-next.show { display: inline-block; }
+
+  /* ===== DISCUSSION CARD ===== */
+  .discussion-card {
+    background: var(--ocean);
+    border: 1px solid rgba(74,168,184,0.3);
+    border-radius: 10px;
+    padding: 28px 32px;
+    margin-top: 32px;
+  }
+
+  .discussion-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    color: var(--cream);
+    margin-bottom: 14px;
+    font-weight: 600;
+  }
+
+  .discussion-card .disc-q {
+    padding: 11px 16px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 6px;
+    font-size: 14px;
+    color: rgba(245,240,232,0.85);
+    line-height: 1.55;
+    margin-bottom: 8px;
+    border-left: 3px solid var(--amber);
+  }
+
+  /* ===== FINAL SCREEN ===== */
+  #final-screen {
+    display: none;
+    text-align: center;
+    padding: 60px 40px;
+  }
+
+  .final-illo {
+    margin: 0 auto 30px;
+  }
+
+  #final-screen h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    color: var(--cream);
+    font-weight: 300;
+    margin-bottom: 10px;
+  }
+
+  #final-screen h2 em { color: var(--gold); font-style: italic; }
+
+  .final-score-big {
+    font-size: 72px;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    color: var(--gold);
+    line-height: 1;
+    margin: 12px 0 8px;
+  }
+
+  .final-score-sub {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  .final-message {
+    background: rgba(42,122,138,0.15);
+    border: 1px solid rgba(42,122,138,0.3);
+    border-radius: 10px;
+    padding: 20px 28px;
+    color: rgba(245,240,232,0.8);
+    font-size: 15px;
+    line-height: 1.65;
+    max-width: 500px;
+    margin: 0 auto 28px;
+  }
+
+  .btn-restart {
+    background: var(--amber);
+    color: #fff;
+    border: none;
+    padding: 13px 32px;
+    border-radius: 7px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: background 0.18s;
+  }
+
+  .btn-restart:hover { background: var(--gold); color: var(--deep); }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 600px) {
+    .intro-card { padding: 24px 22px; }
+    .question-card { padding: 22px 18px; }
+    .matching-grid { grid-template-columns: 1fr; }
+    .intro-card h1 { font-size: 24px; }
+    #final-screen { padding: 40px 20px; }
+    .final-score-big { font-size: 56px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="score-bar">
+  <div>
+    <div class="label">Score</div>
+    <div class="score-display" id="score-display">0 / 0</div>
+  </div>
+  <div style="text-align:center">
+    <div class="label" style="margin-bottom:6px" id="progress-label">Progress</div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  </div>
+  <div style="text-align:right">
+    <div class="label">Level</div>
+    <div class="score-display" style="font-size:16px;color:var(--light-teal)">C1 / C2</div>
+  </div>
+</div>
+
+<div class="wrapper">
+
+  <header>
+    <!-- Forbes English Logo SVG -->
+    <svg class="logo-svg-wrap" xmlns="http://www.w3.org/2000/svg" width="220" height="68" viewBox="0 0 220 68">
+      <text x="110" y="32" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="30" font-weight="400" letter-spacing="4" fill="#4aa8b8">FORBES</text>
+      <line x1="18" y1="41" x2="202" y2="41" stroke="#2a7a8a" stroke-width="0.8"/>
+      <text x="110" y="60" text-anchor="middle" font-family="'Arial Black', 'Helvetica Neue', sans-serif" font-size="13" font-weight="900" letter-spacing="8" fill="#c8841e">ENGLISH</text>
+    </svg>
+    <div class="lesson-meta">
+      <span>Interactive Lesson</span> · Conservation Travel · <span>C1 / C2</span>
+    </div>
+  </header>
+
+  <!-- Hero Illustration -->
+  <div class="hero-illo">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 260" width="100%" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="heroGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#0d2b35"/>
+          <stop offset="100%" style="stop-color:#1a4a5a"/>
+        </linearGradient>
+        <radialGradient id="sunGlow" cx="75%" cy="30%" r="30%">
+          <stop offset="0%" style="stop-color:#e8a830;stop-opacity:0.3"/>
+          <stop offset="100%" style="stop-color:transparent"/>
+        </radialGradient>
+        <clipPath id="heroClip"><rect width="860" height="260"/></clipPath>
+      </defs>
+      <rect width="860" height="260" fill="url(#heroGrad)"/>
+      <rect width="860" height="260" fill="url(#sunGlow)"/>
+      <!-- Water ripples -->
+      <ellipse cx="430" cy="220" rx="500" ry="80" fill="rgba(26,74,90,0.7)"/>
+      <ellipse cx="430" cy="240" rx="500" ry="60" fill="rgba(13,43,53,0.8)"/>
+      <!-- Mountains / landscape -->
+      <polygon points="0,260 0,140 80,90 160,140 220,80 300,130 380,60 440,100 520,40 600,90 680,50 760,100 860,60 860,260" fill="rgba(26,74,90,0.6)"/>
+      <polygon points="0,260 0,160 100,120 180,160 260,100 360,150 460,80 550,120 650,70 760,130 860,90 860,260" fill="rgba(22,60,72,0.8)"/>
+      <!-- Trees silhouettes -->
+      <g fill="rgba(13,43,53,0.9)">
+        <rect x="60" y="165" width="6" height="40"/>
+        <polygon points="63,80 40,170 86,170"/>
+        <polygon points="63,110 44,168 82,168"/>
+        <rect x="120" y="175" width="5" height="30"/>
+        <polygon points="122,105 102,178 142,178"/>
+        <polygon points="122,130 106,176 138,176"/>
+        <rect x="760" y="160" width="6" height="45"/>
+        <polygon points="763,75 740,165 786,165"/>
+        <polygon points="763,105 744,163 782,163"/>
+        <rect x="820" y="170" width="5" height="35"/>
+        <polygon points="822,100 804,173 840,173"/>
+      </g>
+      <!-- Bird silhouettes -->
+      <g fill="none" stroke="rgba(200,180,140,0.5)" stroke-width="1.5">
+        <path d="M350,70 Q360,65 370,70"/>
+        <path d="M375,60 Q385,55 395,60"/>
+        <path d="M330,85 Q338,81 346,85"/>
+        <path d="M560,50 Q570,45 580,50"/>
+        <path d="M590,62 Q598,57 606,62"/>
+      </g>
+      <!-- Turtle silhouette in water -->
+      <g transform="translate(400,205)">
+        <ellipse rx="28" ry="18" fill="rgba(42,122,138,0.5)"/>
+        <ellipse rx="20" ry="12" fill="rgba(42,122,138,0.7)"/>
+        <line x1="-30" y1="0" x2="-42" y2="-5" stroke="rgba(42,122,138,0.6)" stroke-width="5" stroke-linecap="round"/>
+        <line x1="30" y1="0" x2="42" y2="-5" stroke="rgba(42,122,138,0.6)" stroke-width="5" stroke-linecap="round"/>
+        <line x1="-18" y1="14" x2="-24" y2="22" stroke="rgba(42,122,138,0.6)" stroke-width="4" stroke-linecap="round"/>
+        <line x1="18" y1="14" x2="24" y2="22" stroke="rgba(42,122,138,0.6)" stroke-width="4" stroke-linecap="round"/>
+        <ellipse cx="0" cy="-2" rx="22" ry="15" fill="none" stroke="rgba(74,168,184,0.3)" stroke-width="1"/>
+      </g>
+      <!-- Coral/reef in water -->
+      <g transform="translate(200,230)" fill="rgba(42,100,115,0.6)">
+        <rect x="-4" y="-30" width="8" height="30" rx="4"/>
+        <rect x="8" y="-22" width="6" height="22" rx="3"/>
+        <rect x="-14" y="-18" width="6" height="18" rx="3"/>
+        <circle cx="0" cy="-30" r="6"/>
+        <circle cx="8" cy="-22" r="5"/>
+        <circle cx="-14" cy="-18" r="4"/>
+      </g>
+      <g transform="translate(650,238)" fill="rgba(42,100,115,0.5)">
+        <rect x="-4" y="-25" width="8" height="25" rx="4"/>
+        <rect x="8" y="-18" width="6" height="18" rx="3"/>
+        <rect x="-13" y="-15" width="6" height="15" rx="3"/>
+        <circle cx="0" cy="-25" r="5"/>
+        <circle cx="8" cy="-18" r="4"/>
+        <circle cx="-13" cy="-15" r="3.5"/>
+      </g>
+      <!-- Title text in hero -->
+      <text x="430" y="135" text-anchor="middle" font-family="Georgia, serif" font-size="26" font-weight="300" fill="rgba(245,240,232,0.9)" letter-spacing="1">Conservation Travel</text>
+      <text x="430" y="162" text-anchor="middle" font-family="'Arial', sans-serif" font-size="11" font-weight="400" fill="rgba(200,180,140,0.7)" letter-spacing="5">FROM CLOUD FORESTS TO CORAL REEFS</text>
+    </svg>
+  </div>
+
+  <div class="intro-card">
+    <div class="level-badge">C1 / C2 · Reading & Comprehension</div>
+    <h1>The world's best <em>conservation projects</em> worth travelling for</h1>
+    <p style="margin-top:14px">From Ecuador's mist-shrouded cloud forests to Japan's vanishing <em>ama</em> diving tradition, a new generation of conservation projects invites travellers to witness — and support — environmental restoration. Test your understanding of meaning, inference, and key ideas across three activities.</p>
+  </div>
+
+  <!-- ============================
+       ACTIVITY 1: MULTIPLE CHOICE
+       ============================ -->
+  <div class="section-header">
+    <div class="section-num">1</div>
+    <div class="section-title-wrap">
+      <h2>Multiple Choice – Comprehension & Inference</h2>
+      <div class="section-sub">Activity 1 of 3 · 6 questions</div>
+    </div>
+    <div class="section-line"></div>
+  </div>
+
+  <!-- Section illustration: Ecuador cloud forest -->
+  <div class="illo-wrap">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 180" width="100%">
+      <defs>
+        <linearGradient id="ecoGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" style="stop-color:#1a3a2a"/>
+          <stop offset="100%" style="stop-color:#0d2b35"/>
+        </linearGradient>
+      </defs>
+      <rect width="860" height="180" fill="url(#ecoGrad)"/>
+      <!-- Mist -->
+      <ellipse cx="200" cy="80" rx="180" ry="40" fill="rgba(200,230,220,0.06)"/>
+      <ellipse cx="600" cy="60" rx="200" ry="35" fill="rgba(200,230,220,0.05)"/>
+      <!-- Trees layered -->
+      <g opacity="0.7">
+        <rect x="30" y="60" width="12" height="120" fill="#0a2010"/>
+        <ellipse cx="36" cy="55" rx="28" ry="45" fill="#1a4a2a"/>
+        <rect x="90" y="80" width="10" height="100" fill="#0a2010"/>
+        <ellipse cx="95" cy="72" rx="22" ry="38" fill="#1e5530"/>
+        <rect x="150" y="50" width="14" height="130" fill="#0a2010"/>
+        <ellipse cx="157" cy="44" rx="32" ry="50" fill="#1a4a2a"/>
+        <rect x="220" y="70" width="10" height="110" fill="#0a2010"/>
+        <ellipse cx="225" cy="62" rx="24" ry="40" fill="#246030"/>
+        <rect x="680" y="55" width="13" height="125" fill="#0a2010"/>
+        <ellipse cx="686" cy="48" rx="30" ry="48" fill="#1a4a2a"/>
+        <rect x="740" y="72" width="10" height="108" fill="#0a2010"/>
+        <ellipse cx="745" cy="65" rx="22" ry="36" fill="#1e5530"/>
+        <rect x="800" y="48" width="14" height="132" fill="#0a2010"/>
+        <ellipse cx="807" cy="42" rx="32" ry="50" fill="#246030"/>
+      </g>
+      <!-- Frog silhouette -->
+      <g transform="translate(430,110)">
+        <ellipse rx="22" ry="14" fill="rgba(40,180,100,0.4)"/>
+        <circle cx="-10" cy="-10" r="5" fill="rgba(40,180,100,0.3)"/>
+        <circle cx="10" cy="-10" r="5" fill="rgba(40,180,100,0.3)"/>
+        <line x1="-22" y1="5" x2="-38" y2="14" stroke="rgba(40,180,100,0.4)" stroke-width="4" stroke-linecap="round"/>
+        <line x1="22" y1="5" x2="38" y2="14" stroke="rgba(40,180,100,0.4)" stroke-width="4" stroke-linecap="round"/>
+        <line x1="-15" y1="14" x2="-20" y2="26" stroke="rgba(40,180,100,0.4)" stroke-width="3" stroke-linecap="round"/>
+        <line x1="15" y1="14" x2="20" y2="26" stroke="rgba(40,180,100,0.4)" stroke-width="3" stroke-linecap="round"/>
+        <!-- transparent belly hint -->
+        <ellipse rx="14" ry="9" fill="rgba(150,255,200,0.1)" stroke="rgba(40,180,100,0.2)" stroke-width="0.8"/>
+      </g>
+      <text x="430" y="168" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="rgba(180,220,200,0.5)" letter-spacing="3">ECUADOR · ROMANIA · COSTA RICA · FRENCH POLYNESIA · JAPAN</text>
+    </svg>
+  </div>
+
+  <div id="mc-container"></div>
+
+  <!-- ============================
+       ACTIVITY 2: FILL IN THE BLANK
+       ============================ -->
+  <div class="section-header" id="fib-section" style="display:none">
+    <div class="section-num">2</div>
+    <div class="section-title-wrap">
+      <h2>Fill in the Blank – Key Vocabulary & Ideas</h2>
+      <div class="section-sub">Activity 2 of 3 · 6 questions · Use the word bank</div>
+    </div>
+    <div class="section-line"></div>
+  </div>
+
+  <!-- Ocean illustration -->
+  <div class="illo-wrap" id="fib-illo" style="display:none">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 150" width="100%">
+      <defs>
+        <linearGradient id="oceanGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" style="stop-color:#0d2b45"/>
+          <stop offset="70%" style="stop-color:#0a3855"/>
+          <stop offset="100%" style="stop-color:#062030"/>
+        </linearGradient>
+      </defs>
+      <rect width="860" height="150" fill="url(#oceanGrad)"/>
+      <!-- Light rays -->
+      <g opacity="0.12" fill="rgba(100,200,220,1)">
+        <polygon points="350,0 340,150 360,150"/>
+        <polygon points="430,0 415,150 445,150"/>
+        <polygon points="510,0 498,150 522,150"/>
+        <polygon points="260,0 250,150 268,150"/>
+      </g>
+      <!-- Coral structures -->
+      <g transform="translate(100,130)">
+        <rect x="-5" y="-50" width="10" height="50" rx="5" fill="rgba(220,80,60,0.5)"/>
+        <rect x="10" y="-35" width="8" height="35" rx="4" fill="rgba(220,80,60,0.4)"/>
+        <rect x="-16" y="-28" width="8" height="28" rx="4" fill="rgba(200,60,80,0.45)"/>
+        <circle cx="0" cy="-50" r="8" fill="rgba(220,80,60,0.5)"/>
+        <circle cx="10" cy="-35" r="6" fill="rgba(220,80,60,0.4)"/>
+        <circle cx="-16" cy="-28" r="5" fill="rgba(200,60,80,0.45)"/>
+      </g>
+      <g transform="translate(760,130)">
+        <rect x="-5" y="-45" width="10" height="45" rx="5" fill="rgba(80,180,160,0.5)"/>
+        <rect x="10" y="-30" width="8" height="30" rx="4" fill="rgba(80,180,160,0.4)"/>
+        <rect x="-16" y="-25" width="8" height="25" rx="4" fill="rgba(60,160,180,0.45)"/>
+        <circle cx="0" cy="-45" r="7" fill="rgba(80,180,160,0.5)"/>
+        <circle cx="10" cy="-30" r="5.5" fill="rgba(80,180,160,0.4)"/>
+        <circle cx="-16" cy="-25" r="4.5" fill="rgba(60,160,180,0.45)"/>
+      </g>
+      <!-- Fish -->
+      <g fill="rgba(200,200,100,0.5)">
+        <ellipse cx="300" cy="70" rx="14" ry="8"/>
+        <polygon points="286,70 272,62 272,78"/>
+        <ellipse cx="560" cy="50" rx="12" ry="7"/>
+        <polygon points="548,50 535,43 535,57"/>
+        <ellipse cx="480" cy="90" rx="10" ry="6"/>
+        <polygon points="470,90 459,84 459,96"/>
+      </g>
+      <!-- Diver silhouette -->
+      <g transform="translate(430,75)">
+        <ellipse rx="10" ry="13" fill="rgba(42,100,130,0.6)"/>
+        <circle cx="0" cy="-18" r="8" fill="rgba(42,100,130,0.6)"/>
+        <line x1="-10" y1="-5" x2="-24" y2="5" stroke="rgba(42,100,130,0.6)" stroke-width="5" stroke-linecap="round"/>
+        <line x1="10" y1="-5" x2="24" y2="5" stroke="rgba(42,100,130,0.6)" stroke-width="5" stroke-linecap="round"/>
+        <line x1="-5" y1="13" x2="-8" y2="28" stroke="rgba(42,100,130,0.6)" stroke-width="4" stroke-linecap="round"/>
+        <line x1="5" y1="13" x2="8" y2="28" stroke="rgba(42,100,130,0.6)" stroke-width="4" stroke-linecap="round"/>
+      </g>
+      <text x="430" y="143" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="rgba(100,180,200,0.4)" letter-spacing="4">FRENCH POLYNESIA · CORAL GARDENERS · AMA DIVERS</text>
+    </svg>
+  </div>
+
+  <div id="fib-container"></div>
+
+  <!-- ============================
+       ACTIVITY 3: SENTENCE ORDERING
+       ============================ -->
+  <div class="section-header" id="ord-section" style="display:none">
+    <div class="section-num">3</div>
+    <div class="section-title-wrap">
+      <h2>Sentence Ordering – Logical Sequence</h2>
+      <div class="section-sub">Activity 3 of 3 · 5 questions · Drag the steps into the correct order</div>
+    </div>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="illo-wrap" id="ord-illo" style="display:none">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 150" width="100%">
+      <defs>
+        <linearGradient id="savannaGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" style="stop-color:#1a2a10"/>
+          <stop offset="100%" style="stop-color:#0d1a08"/>
+        </linearGradient>
+      </defs>
+      <rect width="860" height="150" fill="url(#savannaGrad)"/>
+      <!-- Stars -->
+      <g fill="rgba(240,220,180,0.6)">
+        <circle cx="80" cy="20" r="1.2"/>
+        <circle cx="150" cy="35" r="0.8"/>
+        <circle cx="220" cy="15" r="1.4"/>
+        <circle cx="310" cy="28" r="1"/>
+        <circle cx="400" cy="12" r="1.5"/>
+        <circle cx="480" cy="30" r="0.9"/>
+        <circle cx="570" cy="18" r="1.2"/>
+        <circle cx="650" cy="35" r="0.8"/>
+        <circle cx="730" cy="22" r="1.3"/>
+        <circle cx="810" cy="10" r="1"/>
+      </g>
+      <!-- Horizon -->
+      <rect x="0" y="100" width="860" height="50" fill="rgba(30,50,20,0.8)"/>
+      <!-- Acacia tree -->
+      <g transform="translate(200,100)">
+        <rect x="-5" y="-55" width="10" height="55" fill="rgba(60,35,10,0.8)"/>
+        <ellipse cx="-30" cy="-52" rx="30" ry="14" fill="rgba(30,70,20,0.7)"/>
+        <ellipse cx="25" cy="-58" rx="28" ry="12" fill="rgba(30,70,20,0.7)"/>
+        <ellipse cx="0" cy="-68" rx="22" ry="10" fill="rgba(30,70,20,0.7)"/>
+      </g>
+      <g transform="translate(660,100)">
+        <rect x="-4" y="-48" width="8" height="48" fill="rgba(60,35,10,0.8)"/>
+        <ellipse cx="-25" cy="-46" rx="25" ry="12" fill="rgba(30,70,20,0.7)"/>
+        <ellipse cx="20" cy="-50" rx="22" ry="10" fill="rgba(30,70,20,0.7)"/>
+        <ellipse cx="0" cy="-58" rx="18" ry="8" fill="rgba(30,70,20,0.7)"/>
+      </g>
+      <!-- Bison/bear silhouette -->
+      <g transform="translate(430,105)">
+        <ellipse rx="35" ry="20" fill="rgba(50,35,20,0.7)"/>
+        <ellipse cx="-20" cy="-18" rx="16" ry="14" fill="rgba(50,35,20,0.7)"/>
+        <line x1="-55" y1="10" x2="-62" y2="25" stroke="rgba(50,35,20,0.7)" stroke-width="7" stroke-linecap="round"/>
+        <line x1="-30" y1="18" x2="-32" y2="30" stroke="rgba(50,35,20,0.7)" stroke-width="7" stroke-linecap="round"/>
+        <line x1="15" y1="18" x2="14" y2="30" stroke="rgba(50,35,20,0.7)" stroke-width="7" stroke-linecap="round"/>
+        <line x1="38" y1="14" x2="44" y2="26" stroke="rgba(50,35,20,0.7)" stroke-width="7" stroke-linecap="round"/>
+      </g>
+      <text x="430" y="143" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="rgba(180,200,150,0.4)" letter-spacing="4">ROMANIA · COSTA RICA · ECUADOR · REWILDING EUROPE</text>
+    </svg>
+  </div>
+
+  <div id="ord-container"></div>
+
+  <!-- Discussion -->
+  <div class="discussion-card" id="discussion-card" style="display:none">
+    <h3>🌿 Discussion Questions</h3>
+    <div class="disc-q">Which of the six conservation projects do you think is the most sustainable long-term, and why?</div>
+    <div class="disc-q">Can tourism realistically help conservation, or might it create new environmental problems?</div>
+    <div class="disc-q">Should travellers be required to contribute to conservation efforts if they visit fragile ecosystems?</div>
+  </div>
+
+  <!-- Final Screen -->
+  <div id="final-screen">
+    <svg class="final-illo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 160" width="200" height="160">
+      <circle cx="100" cy="80" r="70" fill="rgba(42,122,138,0.15)" stroke="rgba(42,122,138,0.3)" stroke-width="1.5"/>
+      <circle cx="100" cy="80" r="50" fill="rgba(42,122,138,0.1)" stroke="rgba(74,168,184,0.3)" stroke-width="1"/>
+      <!-- Globe meridians -->
+      <ellipse cx="100" cy="80" rx="50" ry="50" fill="none" stroke="rgba(74,168,184,0.2)" stroke-width="0.8"/>
+      <ellipse cx="100" cy="80" rx="30" ry="50" fill="none" stroke="rgba(74,168,184,0.2)" stroke-width="0.6"/>
+      <ellipse cx="100" cy="80" rx="50" ry="20" fill="none" stroke="rgba(74,168,184,0.2)" stroke-width="0.6"/>
+      <ellipse cx="100" cy="80" rx="50" ry="38" fill="none" stroke="rgba(74,168,184,0.15)" stroke-width="0.5"/>
+      <!-- Leaf -->
+      <g transform="translate(100,80)">
+        <path d="M0,-30 Q20,-10 0,20 Q-20,-10 0,-30 Z" fill="rgba(40,140,80,0.6)"/>
+        <line x1="0" y1="-30" x2="0" y2="20" stroke="rgba(40,140,80,0.4)" stroke-width="0.8"/>
+      </g>
+    </svg>
+    <h2>Lesson <em>complete</em></h2>
+    <div class="final-score-big" id="final-score-num">—</div>
+    <div class="final-score-sub" id="final-score-sub">questions answered correctly</div>
+    <div class="final-message" id="final-message"></div>
+    <button class="btn-restart" onclick="restartLesson()">↺ Start again</button>
+  </div>
+
+</div><!-- /wrapper -->
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+
+const mcQuestions = [
+  {
+    q: "What is the primary purpose of the article, according to its opening paragraphs?",
+    options: [
+      "To promote luxury eco-resorts and upscale wilderness retreats",
+      "To show how travel can support conservation and allow travellers to contribute directly",
+      "To argue that scientists should lead all conservation efforts without tourist involvement",
+      "To compare the effectiveness of wildlife protection schemes across six continents"
+    ],
+    correct: 1,
+    explanation: "The article's opening states that these projects offer 'the opportunity to meet the individuals leading such efforts and contribute your time' — making active participation central, not passive observation or luxury."
+  },
+  {
+    q: "Why is the Mashpi glass frog considered scientifically significant?",
+    options: [
+      "It is the largest transparent amphibian ever recorded in South America",
+      "It took five years to document a species that could have vanished before science knew it existed",
+      "It was the first frog species to be discovered using eco-acoustic monitoring devices",
+      "It proved that cloud forests contain more species than any other ecosystem on Earth"
+    ],
+    correct: 1,
+    explanation: "The article emphasises that the glass frog 'could have vanished before science knew it existed' — its significance lies in how close it came to extinction before being documented."
+  },
+  {
+    q: "What does the phrase 'Europe's Yellowstone' suggest about the Carpathian rewilding project?",
+    options: [
+      "It implies the mountains are as commercially developed as Yellowstone National Park",
+      "It compares the scale and ambition of wildlife recovery to a famous US conservation model",
+      "It suggests Romania is marketing its wilderness primarily to American tourists",
+      "It means the project relies exclusively on American funding and expertise"
+    ],
+    correct: 1,
+    explanation: "The comparison to Yellowstone evokes an ambitious, large-scale rewilding project — not commercialisation. The article describes reintroducing species and protecting old-growth forests on a continental scale."
+  },
+  {
+    q: "Why do conservationists relocate sea turtle nests to protected hatcheries in Costa Rica?",
+    options: [
+      "Because the beach environment is too hot for natural incubation to be successful",
+      "To study the eggs using scientific equipment that cannot be used on open beaches",
+      "To protect eggs from poaching and allow around-the-clock monitoring of nests",
+      "Because turtles lay their eggs in the wrong locations during nesting season"
+    ],
+    correct: 2,
+    explanation: "The article states that 'most nests are relocated to a protected hatchery where staff monitor them around the clock' — poaching protection and supervision are the key reasons."
+  },
+  {
+    q: "What makes the Coral Gardeners project in French Polynesia particularly innovative?",
+    options: [
+      "It exclusively uses traditional Polynesian reef knowledge, rejecting modern scientific tools",
+      "It selects climate-resilient corals that survived bleaching, then tracks regrowth using AI technology",
+      "It focuses on relocating endangered fish species rather than restoring reef structures",
+      "It replants corals at depths where bleaching events cannot reach them"
+    ],
+    correct: 1,
+    explanation: "The project 'cultivates climate-resilient coral fragments... selecting specimens that survived bleaching events' and tracks growth 'using AI technology' — a blend of ecological selection and modern tech."
+  },
+  {
+    q: "Why does the article suggest that the loss of ama divers represents more than the end of a profession?",
+    options: [
+      "Because ama divers are the only people with the legal right to fish in certain Japanese waters",
+      "Because generations of sustainable fishing knowledge and ecological understanding would be lost",
+      "Because their disappearance would cause the immediate collapse of local seafood industries",
+      "Because their tradition is the only evidence that Japanese women ever worked in coastal industries"
+    ],
+    correct: 1,
+    explanation: "The article explicitly states that 'what's being lost isn't just a profession but generations of sustainable fishing knowledge' — their practices regulate harvest to protect marine populations."
+  }
+];
+
+const fibQuestions = [
+  {
+    sentence: "Cloud forests are ______ high-altitude ecosystems, meaning they are relatively uncommon compared to other habitat types.",
+    answer: "rare",
+    hint: "The article uses this adjective directly before 'high-altitude ecosystems'.",
+    explanation: "The article describes cloud forests as 'rare high-altitude ecosystems' — emphasising their scarcity globally."
+  },
+  {
+    sentence: "Roque Sevilla bought land from a logging company and transformed it into a nature reserve, ______ former loggers and poachers as researchers.",
+    answer: "retraining",
+    hint: "A participial phrase describing what Sevilla did with the local workers.",
+    explanation: "The article states he was 'retraining local loggers and poachers as researchers' — turning environmental threat into conservation asset."
+  },
+  {
+    sentence: "The Coral Gardeners project blends ______ Polynesian knowledge with modern marine science to restore damaged reef sections.",
+    answer: "traditional",
+    hint: "An adjective describing the type of knowledge that indigenous communities hold.",
+    explanation: "The article describes 'traditional Polynesian knowledge' — indigenous understanding of the reef passed down through generations."
+  },
+  {
+    sentence: "Ama divers have been practising their craft for over two ______, relying entirely on breath control rather than oxygen tanks.",
+    answer: "millennia",
+    hint: "A plural noun meaning 'thousands of years'.",
+    explanation: "The article states 'for over two millennia' — roughly 2,000 years of uninterrupted diving tradition."
+  },
+  {
+    sentence: "The ama tradition was designated an Important Intangible Folk ______ Property by the Japanese government in 2017.",
+    answer: "Cultural",
+    hint: "This adjective appears in the formal designation given by the Japanese government.",
+    explanation: "The full title is 'Important Intangible Folk Cultural Property' — a formal recognition of the tradition's heritage value."
+  },
+  {
+    sentence: "Without urgent action, scientists warn that all coral reefs could face ______ by 2050.",
+    answer: "extinction",
+    hint: "The article uses this dramatic noun to describe the fate of coral reefs if nothing changes.",
+    explanation: "The article states that 'all coral reefs could face extinction by 2050' — underscoring the urgency of projects like Coral Gardeners."
+  }
+];
+
+const fibWordBank = ["rare", "retraining", "traditional", "millennia", "Cultural", "extinction"];
+
+const ordQuestions = [
+  {
+    q: "Arrange the steps in the Coral Gardeners restoration process in the correct order:",
+    steps: [
+      "Researchers identify coral specimens that survived past bleaching events",
+      "Selected coral fragments are cultivated in underwater nurseries",
+      "Healthy coral is transplanted onto damaged sections of reef",
+      "AI technology tracks the growth and recovery of replanted coral",
+      "Visitors join daily boat missions to observe and support the process"
+    ],
+    correctOrder: [0,1,2,3,4],
+    explanation: "The process flows logically: selection → cultivation → replanting → monitoring → visitor involvement. This sequence reflects the article's description of the Coral Gardeners project."
+  },
+  {
+    q: "Put the events in the history of the Mashpi Reserve in the correct chronological order:",
+    steps: [
+      "A logging company owned 1,500 acres of Chocó cloud forest",
+      "Roque Sevilla purchased the land and established the Mashpi Reserve",
+      "Local loggers and poachers were retrained as conservation researchers",
+      "A research team discovered the Mashpi glass frog on the Amagusa River",
+      "The reserve had recorded 24 new species in total"
+    ],
+    correctOrder: [0,1,2,3,4],
+    explanation: "The article traces this sequence: logging ownership → purchase → retraining → glass frog discovery → growing species count."
+  },
+  {
+    q: "Arrange the stages of a volunteer's experience during Costa Rica's sea turtle nesting season:",
+    steps: [
+      "Volunteers join night patrols searching for females coming ashore to lay eggs",
+      "Most nests are relocated from the beach to a protected hatchery",
+      "Staff monitor the eggs around the clock until they are ready to hatch",
+      "Volunteers measure the turtles and assist with relocating the egg clutches",
+      "Tiny hatchlings are released by the ocean at dawn"
+    ],
+    correctOrder: [0,1,2,3,4],
+    explanation: "The turtle experience follows: nocturnal patrol → nest relocation → monitoring → volunteer tasks → dawn release. The article describes this as the full volunteer arc."
+  },
+  {
+    q: "Order the following facts about ama divers from most historical to most recent:",
+    steps: [
+      "Ama divers begin practising breath-hold diving in coastal Japan",
+      "There were approximately 9,100 ama divers recorded across Japan",
+      "The tradition was designated an Important Intangible Folk Cultural Property",
+      "Amanemu resort begins working with veteran ama to preserve the tradition",
+      "Today only an estimated 2,000 ama divers remain active"
+    ],
+    correctOrder: [0,1,2,3,4],
+    explanation: "The timeline: ancient origins → 1978 peak of 9,100 divers → 2017 government designation → resort partnership → present-day figure of ~2,000."
+  },
+  {
+    q: "Arrange these statements about the article's argument in order from most general to most specific:",
+    steps: [
+      "Travel can play a role in supporting environmental conservation globally",
+      "Some projects combine luxury accommodation with active habitat restoration funding",
+      "Visitors to Mashpi Lodge can help analyse sounds from eco-acoustic monitoring devices",
+      "One research team discovered the Mashpi glass frog by torchlight on the Amagusa River",
+      "The frog took five years to fully document and could have vanished unrecorded"
+    ],
+    correctOrder: [0,1,2,3,4],
+    explanation: "This moves from the article's broad argument → specific project type → one activity → one discovery → one detail about that discovery. Good C1 skill: recognising macro to micro argumentation."
+  }
+];
+
+// ============================================================
+// STATE
+// ============================================================
+let totalCorrect = 0;
+let totalAnswered = 0;
+let totalQuestions = mcQuestions.length + fibQuestions.length + ordQuestions.length;
+
+let mcIndex = 0;
+let fibIndex = 0;
+let ordIndex = 0;
+
+let currentActivity = 'mc'; // mc, fib, ord, done
+let matchSelected = null;
+
+// ============================================================
+// RENDER FUNCTIONS
+// ============================================================
+
+function updateScoreBar() {
+  document.getElementById('score-display').textContent = totalCorrect + ' / ' + totalAnswered;
+  const pct = Math.round((totalAnswered / totalQuestions) * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+}
+
+// ---------- MULTIPLE CHOICE ----------
+function renderMC() {
+  const container = document.getElementById('mc-container');
+  container.innerHTML = '';
+
+  if (mcIndex >= mcQuestions.length) {
+    startFIB();
+    return;
+  }
+
+  const q = mcQuestions[mcIndex];
+  const card = document.createElement('div');
+  card.className = 'question-card active';
+
+  const qProg = document.createElement('div');
+  qProg.className = 'q-progress';
+  qProg.textContent = 'Question ' + (mcIndex + 1) + ' of ' + mcQuestions.length;
+  card.appendChild(qProg);
+
+  const qText = document.createElement('div');
+  qText.className = 'q-text';
+  qText.textContent = q.q;
+  card.appendChild(qText);
+
+  const ul = document.createElement('ul');
+  ul.className = 'options-list';
+
+  q.options.forEach((opt, i) => {
+    const li = document.createElement('li');
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = opt;
+    btn.onclick = () => handleMCAnswer(i, q.correct, btn, ul, feedback, nextBtn);
+    li.appendChild(btn);
+    ul.appendChild(li);
+  });
+  card.appendChild(ul);
+
+  const feedback = document.createElement('div');
+  feedback.className = 'feedback-box';
+  card.appendChild(feedback);
+
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'btn-next';
+  nextBtn.textContent = mcIndex < mcQuestions.length - 1 ? 'Next question →' : 'Move to Activity 2 →';
+  nextBtn.onclick = () => { mcIndex++; renderMC(); };
+  card.appendChild(nextBtn);
+
+  container.appendChild(card);
+}
+
+function handleMCAnswer(chosen, correct, clickedBtn, ul, feedback, nextBtn) {
+  const buttons = ul.querySelectorAll('.option-btn');
+  buttons.forEach((b, i) => {
+    b.disabled = true;
+    if (i === correct) b.classList.add('correct');
+    if (i === chosen && chosen !== correct) b.classList.add('wrong');
+  });
+
+  const isCorrect = chosen === correct;
+  totalAnswered++;
+  if (isCorrect) totalCorrect++;
+  updateScoreBar();
+
+  feedback.style.display = 'block';
+  feedback.className = 'feedback-box ' + (isCorrect ? 'correct-fb' : 'wrong-fb');
+  feedback.innerHTML = '<div class="fb-label">' + (isCorrect ? '✓ Correct' : '✗ Incorrect') + '</div>' + mcQuestions[mcIndex].explanation;
+
+  nextBtn.classList.add('show');
+}
+
+// ---------- FILL IN THE BLANK ----------
+function startFIB() {
+  document.getElementById('fib-section').style.display = 'flex';
+  document.getElementById('fib-illo').style.display = 'block';
+  fibIndex = 0;
+  renderFIB();
+}
+
+function renderFIB() {
+  const container = document.getElementById('fib-container');
+  container.innerHTML = '';
+
+  if (fibIndex >= fibQuestions.length) {
+    startORD();
+    return;
+  }
+
+  const q = fibQuestions[fibIndex];
+  const card = document.createElement('div');
+  card.className = 'question-card active';
+
+  const qProg = document.createElement('div');
+  qProg.className = 'q-progress';
+  qProg.textContent = 'Question ' + (fibIndex + 1) + ' of ' + fibQuestions.length;
+  card.appendChild(qProg);
+
+  // Word bank
+  const wbLabel = document.createElement('div');
+  wbLabel.style.cssText = 'font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;font-weight:500';
+  wbLabel.textContent = 'Word bank — click a word to place it';
+  card.appendChild(wbLabel);
+
+  const wb = document.createElement('div');
+  wb.className = 'word-bank';
+
+  // Shuffle word bank display
+  const shuffled = [...fibWordBank].sort(() => Math.random() - 0.5);
+  const chips = {};
+
+  shuffled.forEach(word => {
+    const chip = document.createElement('button');
+    chip.className = 'word-chip';
+    chip.textContent = word;
+    chip.dataset.word = word;
+    chip.onclick = () => {
+      if (chip.classList.contains('used')) return;
+      const input = card.querySelector('.blank-input');
+      if (input && !input.disabled) {
+        input.value = word;
+        chip.classList.add('used');
+      }
+    };
+    chips[word] = chip;
+    wb.appendChild(chip);
+  });
+  card.appendChild(wb);
+
+  // Sentence with blank
+  const parts = q.sentence.split('______');
+  const sentDiv = document.createElement('div');
+  sentDiv.className = 'blank-sentence';
+
+  const before = document.createTextNode(parts[0]);
+  sentDiv.appendChild(before);
+
+  const inp = document.createElement('input');
+  inp.type = 'text';
+  inp.className = 'blank-input';
+  inp.placeholder = '…';
+  sentDiv.appendChild(inp);
+
+  if (parts[1]) {
+    const after = document.createTextNode(parts[1]);
+    sentDiv.appendChild(after);
+  }
+  card.appendChild(sentDiv);
+
+  const submitBtn = document.createElement('button');
+  submitBtn.className = 'btn-submit';
+  submitBtn.textContent = 'Check answer';
+  card.appendChild(submitBtn);
+
+  const feedback = document.createElement('div');
+  feedback.className = 'feedback-box';
+  card.appendChild(feedback);
+
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'btn-next';
+  nextBtn.textContent = fibIndex < fibQuestions.length - 1 ? 'Next question →' : 'Move to Activity 3 →';
+  nextBtn.onclick = () => { fibIndex++; renderFIB(); };
+  card.appendChild(nextBtn);
+
+  submitBtn.onclick = () => {
+    const val = inp.value.trim();
+    if (!val) return;
+
+    const isCorrect = val.toLowerCase() === q.answer.toLowerCase();
+    inp.disabled = true;
+    submitBtn.disabled = true;
+
+    // Mark all chips as used/inactive
+    Object.values(chips).forEach(c => { c.disabled = true; c.classList.add('used'); });
+
+    inp.classList.add(isCorrect ? 'correct-input' : 'wrong-input');
+    if (!isCorrect) inp.value = val + '  →  ' + q.answer;
+
+    totalAnswered++;
+    if (isCorrect) totalCorrect++;
+    updateScoreBar();
+
+    feedback.style.display = 'block';
+    feedback.className = 'feedback-box ' + (isCorrect ? 'correct-fb' : 'wrong-fb');
+    feedback.innerHTML = '<div class="fb-label">' + (isCorrect ? '✓ Correct' : '✗ Incorrect — the answer is: ' + q.answer) + '</div>' + q.explanation;
+
+    nextBtn.classList.add('show');
+  };
+
+  container.appendChild(card);
+}
+
+// ---------- ORDERING ----------
+function startORD() {
+  document.getElementById('ord-section').style.display = 'flex';
+  document.getElementById('ord-illo').style.display = 'block';
+  ordIndex = 0;
+  renderORD();
+}
+
+function renderORD() {
+  const container = document.getElementById('ord-container');
+  container.innerHTML = '';
+
+  if (ordIndex >= ordQuestions.length) {
+    showFinal();
+    return;
+  }
+
+  const q = ordQuestions[ordIndex];
+  const card = document.createElement('div');
+  card.className = 'question-card active';
+
+  const qProg = document.createElement('div');
+  qProg.className = 'q-progress';
+  qProg.textContent = 'Question ' + (ordIndex + 1) + ' of ' + ordQuestions.length;
+  card.appendChild(qProg);
+
+  const qText = document.createElement('div');
+  qText.className = 'q-text';
+  qText.textContent = q.q;
+  card.appendChild(qText);
+
+  const instrEl = document.createElement('div');
+  instrEl.style.cssText = 'font-size:12px;color:var(--muted);margin-bottom:10px;letter-spacing:.04em';
+  instrEl.textContent = 'Drag and drop to reorder, then click Check order';
+  card.appendChild(instrEl);
+
+  // Shuffle steps (but keep track of original indices)
+  const shuffled = q.steps.map((s, i) => ({ text: s, origIdx: i })).sort(() => Math.random() - 0.5);
+
+  const list = document.createElement('div');
+  list.className = 'ordering-list';
+
+  // Use a closure variable to hold the element being dragged
+  let dragSrc = null;
+
+  shuffled.forEach((item) => {
+    const el = document.createElement('div');
+    el.className = 'order-item';
+    el.draggable = true;
+    el.dataset.origIdx = item.origIdx;
+
+    const handle = document.createElement('span');
+    handle.className = 'drag-handle';
+    handle.textContent = '⠿';
+    el.appendChild(handle);
+
+    const txt = document.createTextNode(item.text);
+    el.appendChild(txt);
+
+    el.addEventListener('dragstart', e => {
+      dragSrc = el;
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', ''); // required for Firefox
+      setTimeout(() => el.classList.add('dragging'), 0);
+    });
+
+    el.addEventListener('dragend', () => {
+      el.classList.remove('dragging');
+      list.querySelectorAll('.drag-over').forEach(x => x.classList.remove('drag-over'));
+      dragSrc = null;
+    });
+
+    el.addEventListener('dragover', e => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      if (el !== dragSrc) el.classList.add('drag-over');
+    });
+
+    el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
+
+    el.addEventListener('drop', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      el.classList.remove('drag-over');
+      if (!dragSrc || dragSrc === el) return;
+      // Swap the two elements
+      const allItems = Array.from(list.children);
+      const fromIdx = allItems.indexOf(dragSrc);
+      const toIdx = allItems.indexOf(el);
+      if (fromIdx < toIdx) {
+        list.insertBefore(dragSrc, el.nextSibling);
+      } else {
+        list.insertBefore(dragSrc, el);
+      }
+    });
+
+    list.appendChild(el);
+  });
+
+  card.appendChild(list);
+
+  const submitBtn = document.createElement('button');
+  submitBtn.className = 'btn-submit';
+  submitBtn.textContent = 'Check order';
+  card.appendChild(submitBtn);
+
+  const feedback = document.createElement('div');
+  feedback.className = 'feedback-box';
+  card.appendChild(feedback);
+
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'btn-next';
+  nextBtn.textContent = ordIndex < ordQuestions.length - 1 ? 'Next question →' : 'See your results →';
+  nextBtn.onclick = () => { ordIndex++; renderORD(); };
+  card.appendChild(nextBtn);
+
+  submitBtn.onclick = () => {
+    const currentOrder = Array.from(list.children).map(el => parseInt(el.dataset.origIdx));
+    const isCorrect = JSON.stringify(currentOrder) === JSON.stringify(q.correctOrder);
+
+    Array.from(list.children).forEach(el => { el.draggable = false; el.style.cursor = 'default'; });
+    submitBtn.disabled = true;
+
+    totalAnswered++;
+    if (isCorrect) totalCorrect++;
+    updateScoreBar();
+
+    feedback.style.display = 'block';
+    feedback.className = 'feedback-box ' + (isCorrect ? 'correct-fb' : 'wrong-fb');
+    const correctList = q.correctOrder.map((idx, pos) => (pos + 1) + '. ' + q.steps[idx]).join(' → ');
+    feedback.innerHTML = '<div class="fb-label">' + (isCorrect ? '✓ Correct order' : '✗ Not quite right') + '</div>' + q.explanation + (isCorrect ? '' : '<br><br><strong>Correct sequence:</strong> ' + correctList);
+
+    nextBtn.classList.add('show');
+  };
+
+  container.appendChild(card);
+}
+
+// ---------- FINAL ----------
+function showFinal() {
+  document.getElementById('discussion-card').style.display = 'block';
+  document.getElementById('final-screen').style.display = 'block';
+
+  const pct = Math.round((totalCorrect / totalQuestions) * 100);
+  document.getElementById('final-score-num').textContent = totalCorrect + ' / ' + totalQuestions;
+  document.getElementById('final-score-sub').textContent = 'questions answered correctly (' + pct + '%)';
+
+  let msg = '';
+  if (pct >= 90) {
+    msg = 'Outstanding work. You demonstrate exceptional comprehension of inference, vocabulary in context, and logical sequencing — the hallmarks of true C2 proficiency. Your understanding of conservation science and argument structure is impressive.';
+  } else if (pct >= 75) {
+    msg = 'Excellent result. You show strong C1 reading comprehension and a sophisticated grasp of the article\'s key arguments. Review any areas of difficulty and consider exploring the discussion questions with a partner.';
+  } else if (pct >= 55) {
+    msg = 'Good effort. You are working at C1 level and demonstrating solid understanding of the main ideas. Focus on inference questions — try rereading the article with those specific sections in mind.';
+  } else {
+    msg = 'Keep going. C1 texts are genuinely challenging, and engaging with complex conservation topics in English takes practice. Review the feedback for each question and try again — your comprehension will improve with every attempt.';
+  }
+  document.getElementById('final-message').textContent = msg;
+}
+
+function restartLesson() {
+  totalCorrect = 0; totalAnswered = 0;
+  mcIndex = 0; fibIndex = 0; ordIndex = 0;
+  currentActivity = 'mc';
+
+  document.getElementById('fib-section').style.display = 'none';
+  document.getElementById('fib-illo').style.display = 'none';
+  document.getElementById('fib-container').innerHTML = '';
+  document.getElementById('ord-section').style.display = 'none';
+  document.getElementById('ord-illo').style.display = 'none';
+  document.getElementById('ord-container').innerHTML = '';
+  document.getElementById('discussion-card').style.display = 'none';
+  document.getElementById('final-screen').style.display = 'none';
+
+  updateScoreBar();
+  renderMC();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ============================================================
+// INIT
+// ============================================================
+updateScoreBar();
+renderMC();
+</script>
+</body>
+</html>

@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English | Interior Design Vocabulary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --concrete: #c9c4ba;
+    --concrete-dark: #b3ada0;
+    --ink: #201e1a;
+    --ink-soft: #4a463f;
+    --brass: #a97c3e;
+    --brass-dark: #8a6430;
+    --teal: #2f4a52;
+    --teal-light: #4c6d76;
+    --cream: #f6f2e8;
+    --cream-dim: #ece5d5;
+    --good: #4f7a52;
+    --good-bg: #e4ece2;
+    --bad: #9c4b3e;
+    --bad-bg: #f1e0da;
+    --line: rgba(32,30,26,0.14);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Work Sans', sans-serif;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(32,30,26,0.05) 39px, rgba(32,30,26,0.05) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(32,30,26,0.05) 39px, rgba(32,30,26,0.05) 40px),
+      var(--concrete);
+    color: var(--ink);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding: 28px 16px 60px;
+  }
+
+  .wrap{ width:100%; max-width: 720px; }
+
+  /* ---------- Header / logo ---------- */
+  .brandbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .logo{ display:flex; align-items:center; gap:10px; }
+  .logo svg{ height:38px; width:auto; display:block; }
+  .level-tag{
+    font-family:'Work Sans', sans-serif;
+    font-weight:600;
+    font-size: 12px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--cream);
+    background: var(--teal);
+    padding: 6px 12px;
+    border-radius: 2px;
+  }
+
+  .swatchstrip{
+    display:flex;
+    height: 8px;
+    width: 100%;
+    border-radius: 2px;
+    overflow:hidden;
+    margin-bottom: 26px;
+    box-shadow: 0 1px 0 rgba(32,30,26,0.15);
+  }
+  .swatchstrip span{ flex:1; }
+  .sw1{ background:#8a6430; }
+  .sw2{ background:#2f4a52; }
+  .sw3{ background:#c9c4ba; }
+  .sw4{ background:#4f7a52; }
+  .sw5{ background:#201e1a; }
+
+  .titleblock{ margin-bottom: 22px; }
+  .titleblock h1{
+    font-family:'Fraunces', serif;
+    font-weight: 600;
+    font-size: 30px;
+    line-height:1.15;
+    margin: 0 0 6px 0;
+    color: var(--ink);
+  }
+  .titleblock p{
+    margin:0;
+    font-size: 14.5px;
+    color: var(--ink-soft);
+    max-width: 52ch;
+  }
+
+  /* ---------- Progress / score ---------- */
+  .statusbar{
+    display:flex;
+    align-items:center;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+  .progress-track{
+    flex:1;
+    height: 6px;
+    background: rgba(32,30,26,0.14);
+    border-radius: 3px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    background: var(--brass);
+    width:0%;
+    transition: width 0.35s ease;
+  }
+  .score-pill{
+    font-family:'Work Sans', sans-serif;
+    font-weight:600;
+    font-size: 13px;
+    color: var(--ink);
+    white-space:nowrap;
+  }
+
+  /* ---------- Card ---------- */
+  .card{
+    background: var(--cream);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 30px 28px 26px;
+    box-shadow: 0 10px 26px rgba(32,30,26,0.10);
+    position:relative;
+  }
+  .qnum{
+    font-family:'Fraunces', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--brass-dark);
+    margin: 0 0 10px 0;
+    letter-spacing: 0.02em;
+  }
+  .question{
+    font-family:'Fraunces', serif;
+    font-weight: 500;
+    font-size: 21px;
+    line-height: 1.45;
+    color: var(--ink);
+    margin: 0 0 24px 0;
+  }
+  .question .blank{
+    display:inline-block;
+    border-bottom: 2px solid var(--brass);
+    min-width: 90px;
+  }
+
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap: 10px;
+  }
+  .opt{
+    text-align:left;
+    font-family:'Work Sans', sans-serif;
+    font-size: 15.5px;
+    font-weight: 500;
+    color: var(--ink);
+    background: #fff;
+    border: 1.5px solid var(--line);
+    border-radius: 3px;
+    padding: 13px 16px;
+    cursor:pointer;
+    transition: border-color .15s ease, background .15s ease, transform .1s ease;
+  }
+  .opt:hover:not(:disabled){
+    border-color: var(--brass);
+    background: var(--cream-dim);
+  }
+  .opt:disabled{ cursor:default; }
+  .opt.correct{
+    background: var(--good-bg);
+    border-color: var(--good);
+    color: #2c4a2e;
+  }
+  .opt.incorrect{
+    background: var(--bad-bg);
+    border-color: var(--bad);
+    color: #6e2e23;
+  }
+  .opt.dim{ opacity: 0.55; }
+
+  .feedback{
+    margin-top: 20px;
+    padding: 14px 16px;
+    border-radius: 3px;
+    font-size: 14.5px;
+    line-height:1.55;
+    display:none;
+  }
+  .feedback.show{ display:block; }
+  .feedback.good{ background: var(--good-bg); color:#2c4a2e; border-left: 4px solid var(--good); }
+  .feedback.bad{ background: var(--bad-bg); color:#6e2e23; border-left: 4px solid var(--bad); }
+  .feedback strong{ font-family:'Fraunces', serif; font-weight:600; }
+
+  .controls{
+    display:flex;
+    justify-content:flex-end;
+    margin-top: 22px;
+  }
+  .nextbtn{
+    font-family:'Work Sans', sans-serif;
+    font-weight: 600;
+    font-size: 14.5px;
+    color: var(--cream);
+    background: var(--ink);
+    border:none;
+    border-radius: 3px;
+    padding: 12px 24px;
+    cursor:pointer;
+    opacity: 0.35;
+    pointer-events:none;
+    transition: opacity .2s ease, background .15s ease;
+  }
+  .nextbtn.active{ opacity:1; pointer-events:auto; }
+  .nextbtn.active:hover{ background: var(--teal); }
+
+  /* ---------- Results ---------- */
+  .results{ display:none; text-align:center; padding: 46px 28px; }
+  .results.show{ display:block; }
+  .results h2{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size: 26px;
+    margin: 0 0 6px 0;
+  }
+  .results .bigscore{
+    font-family:'Fraunces', serif;
+    font-size: 56px;
+    font-weight:600;
+    color: var(--brass-dark);
+    margin: 14px 0 8px;
+  }
+  .results p.verdict{
+    font-size: 15px;
+    color: var(--ink-soft);
+    max-width: 46ch;
+    margin: 0 auto 26px;
+    line-height:1.6;
+  }
+  .restartbtn{
+    font-family:'Work Sans', sans-serif;
+    font-weight:600;
+    font-size: 14.5px;
+    color: var(--ink);
+    background: transparent;
+    border: 1.5px solid var(--ink);
+    border-radius: 3px;
+    padding: 11px 22px;
+    cursor:pointer;
+  }
+  .restartbtn:hover{ background: var(--ink); color: var(--cream); }
+
+  .quizarea{ display:block; }
+  .quizarea.hidden{ display:none; }
+
+  @media (max-width: 480px){
+    .question{ font-size: 18.5px; }
+    .card{ padding: 24px 18px 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="brandbar">
+    <div class="logo">
+      <svg viewBox="0 0 220 46" xmlns="http://www.w3.org/2000/svg">
+        <text x="0" y="30" font-family="Fraunces, serif" font-size="26" font-weight="600" fill="#201e1a">Forbes</text>
+        <line x1="0" y1="36" x2="220" y2="36" stroke="#a97c3e" stroke-width="2"/>
+        <text x="0" y="46" font-family="Work Sans, sans-serif" font-size="13" font-weight="700" letter-spacing="3" fill="#a97c3e">ENGLISH</text>
+      </svg>
+    </div>
+    <div class="level-tag">C1 &middot; Interior Design</div>
+  </div>
+
+  <div class="swatchstrip">
+    <span class="sw1"></span><span class="sw2"></span><span class="sw3"></span><span class="sw4"></span><span class="sw5"></span>
+  </div>
+
+  <div class="titleblock">
+    <h1>Interior Design Vocabulary</h1>
+    <p>Precision language for architecture, heritage, and client-brief conversations. 24 questions &mdash; read each context carefully before you choose.</p>
+  </div>
+
+  <div class="quizarea" id="quizarea">
+    <div class="statusbar">
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="score-pill" id="scorePill">Score: 0 / 24</div>
+    </div>
+
+    <div class="card">
+      <p class="qnum" id="qnum">Question 1 of 24</p>
+      <p class="question" id="questionText"></p>
+      <div class="options" id="optionsWrap"></div>
+      <div class="feedback" id="feedback"></div>
+      <div class="controls">
+        <button class="nextbtn" id="nextBtn">Next question</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="results" id="results">
+    <h2>Assessment complete</h2>
+    <div class="bigscore" id="finalScore">0 / 24</div>
+    <p class="verdict" id="verdictText"></p>
+    <button class="restartbtn" id="restartBtn">Take the test again</button>
+  </div>
+
+</div>
+
+<script>
+(function(){
+
+  const QUESTIONS = [
+    {
+      q: "The designer wanted an <span class=\"blank\">&nbsp;</span> layout, where the client could move walls and furniture on a digital screen.",
+      options: ["interactive", "impartial", "vestigial", "perforated"],
+      correct: "interactive",
+      explain: "<strong>Interactive</strong> describes a system the client can operate and change themselves &mdash; exactly what a movable digital layout allows."
+    },
+    {
+      q: "The old factory conversion kept a few <span class=\"blank\">&nbsp;</span> traces of its industrial past, including the original steel beams.",
+      options: ["all-encompassing", "vestigial", "reductive", "artisanal"],
+      correct: "vestigial",
+      explain: "<strong>Vestigial</strong> describes something that remains in a small, reduced form from an earlier stage &mdash; a perfect fit for leftover beams."
+    },
+    {
+      q: "The lobby design was too loud and <span class=\"blank\">&nbsp;</span>; it distracted from the artwork.",
+      options: ["unobtrusive", "obtrusive", "rigorous", "overarching"],
+      correct: "obtrusive",
+      explain: "<strong>Obtrusive</strong> means too noticeable in a way that annoys or distracts &mdash; the opposite of what a good backdrop for art should be."
+    },
+    {
+      q: "The new brass staircase was extremely <span class=\"blank\">&nbsp;</span> and became the main feature of the hotel entrance.",
+      options: ["conspicuous", "liminal", "impartial", "corroded"],
+      correct: "conspicuous",
+      explain: "<strong>Conspicuous</strong> means standing out and easy to notice &mdash; here in a positive, showcase sense."
+    },
+    {
+      q: "The architect wanted an <span class=\"blank\">&nbsp;</span> design concept that connected all rooms through colour, material, and light.",
+      options: ["overarching", "artisanal", "perforated", "liminal"],
+      correct: "overarching",
+      explain: "<strong>Overarching</strong> describes a single idea broad enough to cover and unify everything beneath it."
+    },
+    {
+      q: "The client gave us some <span class=\"blank\">&nbsp;</span> on the budget, so we can upgrade the lighting if necessary.",
+      options: ["wiggle room", "rigor", "conscription", "threshold"],
+      correct: "wiggle room",
+      explain: "<strong>Wiggle room</strong> is informal for a small amount of flexibility within a fixed limit, such as a budget."
+    },
+    {
+      q: "The restoration team tried to <span class=\"blank\">&nbsp;</span> the original tiles rather than replace them.",
+      options: ["conserve", "cite", "govern", "corrode"],
+      correct: "conserve",
+      explain: "<strong>Conserve</strong> means to protect and keep something in its existing state &mdash; the core aim of restoration work."
+    },
+    {
+      q: "The metal handrail had become <span class=\"blank\">&nbsp;</span> after years of exposure to sea air.",
+      options: ["corroded", "galvanized", "suspended", "perforated"],
+      correct: "corroded",
+      explain: "<strong>Corroded</strong> describes metal that has been gradually damaged and worn away by chemical reaction, such as salt air."
+    },
+    {
+      q: "The designer used a <span class=\"blank\">&nbsp;</span> of vintage furniture, modern lighting, and handmade textiles.",
+      options: ["medley", "cartel", "threshold", "continuum"],
+      correct: "medley",
+      explain: "A <strong>medley</strong> is a mixture of different things brought together, often pleasingly varied."
+    },
+    {
+      q: "The apartment is only <span class=\"blank\">&nbsp;</span> from the client's studio, so site visits are easy.",
+      options: ["a stone's throw", "a continuum", "an ethnic group", "a threshold"],
+      correct: "a stone's throw",
+      explain: "<strong>A stone's throw</strong> is an idiom meaning a very short distance away."
+    },
+    {
+      q: "Which word means <em>fair, neutral, and not favouring one side</em>?",
+      options: ["impartial", "reductive", "rigorous", "liminal"],
+      correct: "impartial",
+      explain: "<strong>Impartial</strong> describes treating different people or options fairly, without taking sides."
+    },
+    {
+      q: "Which word describes <em>treating a complex issue in an over-simple way</em>?",
+      options: ["reductive", "all-encompassing", "unbiased", "artisanal"],
+      correct: "reductive",
+      explain: "<strong>Reductive</strong> means simplifying something complex to the point of losing important nuance."
+    },
+    {
+      q: "Which word means <em>connected with a transitional stage or space</em>?",
+      options: ["liminal", "promenade", "conduit", "threshold"],
+      correct: "liminal",
+      explain: "<strong>Liminal</strong> describes an in-between state or space &mdash; neither fully one thing nor the other."
+    },
+    {
+      q: "Which word means <em>to quote something as evidence</em>?",
+      options: ["cite", "govern", "venerate", "conserve"],
+      correct: "cite",
+      explain: "<strong>Cite</strong> means to refer to or quote a source in support of an argument."
+    },
+    {
+      q: "Which word means <em>to control or determine how something works grammatically</em>?",
+      options: ["govern", "cite", "promenade", "corrode"],
+      correct: "govern",
+      explain: "<strong>Govern</strong>, in a grammatical sense, means to determine the form or behaviour of another word."
+    },
+    {
+      q: "A client says, \u201cModern homes are always cold and ugly.\u201d You explain that this is a <span class=\"blank\">&nbsp;</span> view.",
+      options: ["reductive", "artisanal", "suspended", "overarching"],
+      correct: "reductive",
+      explain: "This opinion oversimplifies a broad, varied style into one exaggerated claim &mdash; a classic <strong>reductive</strong> statement."
+    },
+    {
+      q: "A hallway between a noisy street and a peaceful spa is a <span class=\"blank\">&nbsp;</span> space.",
+      options: ["liminal", "conspicuous", "galvanized", "perforated"],
+      correct: "liminal",
+      explain: "This hallway sits between two very different atmospheres, making it a <strong>liminal</strong>, transitional space."
+    },
+    {
+      q: "A designer respects the work of Carlo Scarpa deeply. We can say she <span class=\"blank\">&nbsp;</span> him.",
+      options: ["venerates", "cites", "shrugs off", "governs"],
+      correct: "venerates",
+      explain: "<strong>Venerate</strong> means to regard someone with deep respect and admiration."
+    },
+    {
+      q: "A hidden ventilation grill that does not attract attention is <span class=\"blank\">&nbsp;</span>.",
+      options: ["unobtrusive", "obtrusive", "eye-catching", "conspicuous"],
+      correct: "unobtrusive",
+      explain: "<strong>Unobtrusive</strong> means subtle and not drawing attention &mdash; the opposite of the other three options here."
+    },
+    {
+      q: "If a contractor dismisses a small defect as unimportant, he tries to <span class=\"blank\">&nbsp;</span> it.",
+      options: ["shrug off", "conserve", "promenade", "cite"],
+      correct: "shrug off",
+      explain: "<strong>Shrug off</strong> means to treat something as unimportant and not worth worrying about."
+    },
+    {
+      q: "Which word does <strong>not</strong> belong with the others?",
+      options: ["revere", "venerate", "shrug off", "admire"],
+      correct: "shrug off",
+      explain: "Revere, venerate, and admire all express deep respect. <strong>Shrug off</strong> means to dismiss something &mdash; the opposite feeling."
+    },
+    {
+      q: "Which word does <strong>not</strong> belong with the others?",
+      options: ["conspicuous", "eye-catching", "noticeable", "unobtrusive"],
+      correct: "unobtrusive",
+      explain: "Conspicuous, eye-catching, and noticeable all mean easy to notice. <strong>Unobtrusive</strong> means the opposite &mdash; subtle and low-key."
+    },
+    {
+      q: "Which word does <strong>not</strong> belong with the others?",
+      options: ["galvanized", "zinc-coated", "protected steel", "corroded"],
+      correct: "corroded",
+      explain: "Galvanized, zinc-coated, and protected steel all describe metal treated against rust. <strong>Corroded</strong> describes the damage that treatment prevents."
+    },
+    {
+      q: "Which word does <strong>not</strong> belong with the others?",
+      options: ["pastiche", "imitation", "homage", "pain threshold"],
+      correct: "pain threshold",
+      explain: "Pastiche, imitation, and homage all relate to copying or referencing another style. <strong>Pain threshold</strong> belongs to a completely different meaning of 'threshold'."
+    }
+  ];
+
+  // Fisher-Yates shuffle
+  function shuffle(arr){
+    const a = arr.slice();
+    for(let i = a.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  let order = shuffle(QUESTIONS.map((_, i) => i));
+  let current = 0;
+  let score = 0;
+  let answered = false;
+
+  const quizarea = document.getElementById('quizarea');
+  const resultsEl = document.getElementById('results');
+  const qnumEl = document.getElementById('qnum');
+  const questionTextEl = document.getElementById('questionText');
+  const optionsWrap = document.getElementById('optionsWrap');
+  const feedbackEl = document.getElementById('feedback');
+  const nextBtn = document.getElementById('nextBtn');
+  const progressFill = document.getElementById('progressFill');
+  const scorePill = document.getElementById('scorePill');
+
+  function renderQuestion(){
+    answered = false;
+    feedbackEl.className = 'feedback';
+    feedbackEl.innerHTML = '';
+    nextBtn.classList.remove('active');
+
+    const qData = QUESTIONS[order[current]];
+    qnumEl.textContent = 'Question ' + (current + 1) + ' of ' + QUESTIONS.length;
+    questionTextEl.innerHTML = qData.q;
+
+    const shuffledOptions = shuffle(qData.options);
+    optionsWrap.innerHTML = '';
+
+    shuffledOptions.forEach(function(optText){
+      const btn = document.createElement('button');
+      btn.className = 'opt';
+      btn.type = 'button';
+      btn.textContent = optText;
+      btn.addEventListener('click', function(){ handleAnswer(optText, btn); });
+      optionsWrap.appendChild(btn);
+    });
+
+    progressFill.style.width = ((current) / QUESTIONS.length * 100) + '%';
+    scorePill.textContent = 'Score: ' + score + ' / ' + QUESTIONS.length;
+  }
+
+  function handleAnswer(chosen, btnEl){
+    if(answered) return;
+    answered = true;
+
+    const qData = QUESTIONS[order[current]];
+    const isCorrect = chosen === qData.correct;
+    if(isCorrect) score++;
+
+    const allOpts = optionsWrap.querySelectorAll('.opt');
+    allOpts.forEach(function(b){
+      b.disabled = true;
+      if(b.textContent === qData.correct){
+        b.classList.add('correct');
+      } else if(b === btnEl && !isCorrect){
+        b.classList.add('incorrect');
+      } else {
+        b.classList.add('dim');
+      }
+    });
+
+    feedbackEl.classList.add('show');
+    feedbackEl.classList.add(isCorrect ? 'good' : 'bad');
+    feedbackEl.innerHTML = (isCorrect ? 'Correct. ' : 'Not quite. ') + qData.explain;
+
+    scorePill.textContent = 'Score: ' + score + ' / ' + QUESTIONS.length;
+    nextBtn.classList.add('active');
+    nextBtn.textContent = (current === QUESTIONS.length - 1) ? 'See results' : 'Next question';
+  }
+
+  nextBtn.addEventListener('click', function(){
+    if(!answered) return;
+    current++;
+    if(current >= QUESTIONS.length){
+      showResults();
+    } else {
+      renderQuestion();
+    }
+  });
+
+  function showResults(){
+    progressFill.style.width = '100%';
+    quizarea.classList.add('hidden');
+    resultsEl.classList.add('show');
+
+    document.getElementById('finalScore').textContent = score + ' / ' + QUESTIONS.length;
+
+    const pct = score / QUESTIONS.length;
+    let verdict;
+    if(pct === 1){
+      verdict = "A flawless read of the brief. Your vocabulary is ready for client presentations, heritage reports, and design critique alike.";
+    } else if(pct >= 0.8){
+      verdict = "A strong, confident grasp of professional design vocabulary. A quick review of the missed items and this range will be second nature.";
+    } else if(pct >= 0.6){
+      verdict = "A solid foundation with a few gaps worth revisiting &mdash; look again at the words you missed before your next client conversation.";
+    } else {
+      verdict = "This vocabulary set needs another pass. Work back through each explanation, then try the test again to consolidate what's new.";
+    }
+    document.getElementById('verdictText').innerHTML = verdict;
+  }
+
+  document.getElementById('restartBtn').addEventListener('click', function(){
+    order = shuffle(QUESTIONS.map((_, i) => i));
+    current = 0;
+    score = 0;
+    resultsEl.classList.remove('show');
+    quizarea.classList.remove('hidden');
+    renderQuestion();
+  });
+
+  renderQuestion();
+})();
+</script>
+</body>
+</html>

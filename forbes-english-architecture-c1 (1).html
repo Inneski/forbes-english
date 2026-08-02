@@ -1,0 +1,1551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – Architectural Presentations C1</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bone: #EFE9DE;
+    --parchment: #E2DACB;
+    --charcoal: #10151C;
+    --charcoal-mid: #1B2531;
+    --charcoal-light: #3C4A59;
+    --gold: #D9634A;
+    --gold-light: #E68A76;
+    --gold-pale: #F5DAD2;
+    --slate: #5C6B78;
+    --correct: #2D6A4F;
+    --correct-bg: #D8F0E5;
+    --incorrect: #7C2D12;
+    --incorrect-bg: #FDE8E0;
+    --shadow: 0 4px 24px rgba(16,21,28,0.14);
+    --shadow-lg: 0 12px 48px rgba(16,21,28,0.30);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: var(--bone);
+    color: var(--charcoal);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── FIXED BACKGROUND IMAGE ─── */
+  .bg-image-panel {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background: var(--charcoal);
+    overflow: hidden;
+  }
+  .bg-image-panel img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .bg-image-panel::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(16,21,28,0.55) 0%, rgba(16,21,28,0.30) 35%, rgba(16,21,28,0.60) 100%);
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* ─── LOGO ─── */
+  .logo-wrap {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    background: rgba(16,21,28,0.72);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-radius: 4px;
+    padding: 0;
+    margin-bottom: 40px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+  }
+
+  .hero-body {
+    padding: 36px 44px 40px;
+    position: relative;
+  }
+
+  .hero-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 14px;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 700;
+    color: var(--bone);
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  .hero-desc {
+    font-size: 15px;
+    color: #A8A09C;
+    line-height: 1.6;
+    max-width: 520px;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 24px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+
+  .meta-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    border: 1px solid rgba(184,146,42,0.35);
+    padding: 5px 12px;
+    border-radius: 2px;
+  }
+
+  /* ─── SCORE BAR ─── */
+  .score-bar {
+    background: var(--charcoal-mid);
+    border-radius: 3px;
+    padding: 14px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    box-shadow: var(--shadow);
+  }
+
+  .score-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--slate);
+  }
+
+  .score-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--gold-light);
+  }
+
+  .score-fraction {
+    font-size: 13px;
+    color: var(--slate);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ─── ACTIVITY SECTION ─── */
+  .activity {
+    display: none;
+  }
+  .activity.active {
+    display: block;
+    animation: fadeUp 0.4s ease forwards;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .activity-header {
+    margin-bottom: 32px;
+  }
+
+  .activity-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .activity-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .activity-intro {
+    font-size: 14px;
+    color: var(--gold);
+    line-height: 1.6;
+    border-left: 2px solid var(--gold);
+    padding-left: 14px;
+  }
+
+  /* ─── QUESTION CARD ─── */
+  .q-card {
+    background: rgba(255,255,255,0.82);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 3px;
+    padding: 32px 36px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-lg);
+    border-top: 3px solid var(--gold);
+    display: none;
+  }
+  .q-card.active { display: block; animation: fadeUp 0.35s ease forwards; }
+
+  .q-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+
+  .q-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .q-progress {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+  }
+
+  .q-text {
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--charcoal);
+    margin-bottom: 24px;
+    font-weight: 400;
+  }
+
+  .q-text strong {
+    font-weight: 600;
+    border-bottom: 1.5px solid var(--gold);
+  }
+
+  /* ─── ANSWER OPTIONS ─── */
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option-btn {
+    width: 100%;
+    text-align: left;
+    background: var(--bone);
+    border: 1.5px solid var(--parchment);
+    border-radius: 2px;
+    padding: 13px 18px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--charcoal-light);
+    cursor: pointer;
+    transition: border-color 0.18s, background 0.18s, color 0.18s;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    line-height: 1.5;
+  }
+
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--gold);
+    background: var(--gold-pale);
+    color: var(--charcoal);
+  }
+
+  .option-letter {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    min-width: 16px;
+    margin-top: 1px;
+    flex-shrink: 0;
+  }
+
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+  }
+  .option-btn.correct .option-letter { color: var(--correct); }
+
+  .option-btn.incorrect {
+    border-color: var(--incorrect);
+    background: var(--incorrect-bg);
+    color: var(--incorrect);
+  }
+  .option-btn.incorrect .option-letter { color: var(--incorrect); }
+
+  .option-btn:disabled { cursor: default; }
+
+  /* ─── FEEDBACK ─── */
+  .feedback {
+    display: none;
+    margin-top: 18px;
+    padding: 16px 20px;
+    border-radius: 2px;
+    font-size: 13.5px;
+    line-height: 1.6;
+  }
+  .feedback.show { display: block; animation: fadeUp 0.25s ease; }
+  .feedback.correct-fb {
+    background: var(--correct-bg);
+    border-left: 3px solid var(--correct);
+    color: var(--correct);
+  }
+  .feedback.incorrect-fb {
+    background: var(--incorrect-bg);
+    border-left: 3px solid var(--incorrect);
+    color: var(--incorrect);
+  }
+  .feedback strong { font-weight: 600; }
+
+  /* ─── FILL IN THE BLANK ─── */
+  .blank-input {
+    display: inline-block;
+    border: none;
+    border-bottom: 2px solid var(--gold);
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--charcoal);
+    padding: 2px 6px;
+    width: 160px;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.18s;
+  }
+  .blank-input:focus { border-color: var(--charcoal); }
+  .blank-input.correct-input { border-color: var(--correct); color: var(--correct); }
+  .blank-input.incorrect-input { border-color: var(--incorrect); color: var(--incorrect); }
+
+  .word-bank {
+    margin-bottom: 24px;
+    padding: 16px 20px;
+    background: var(--parchment);
+    border-radius: 2px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .word-bank-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--slate);
+    width: 100%;
+    margin-bottom: 4px;
+  }
+
+  .word-chip {
+    background: white;
+    border: 1.5px solid var(--parchment);
+    border-radius: 2px;
+    padding: 5px 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--charcoal-light);
+    cursor: default;
+    user-select: none;
+  }
+
+  /* ─── DRAG & DROP ─── */
+  .drag-area {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 48px;
+    padding: 12px;
+    background: var(--parchment);
+    border-radius: 2px;
+    border: 1.5px dashed rgba(184,146,42,0.35);
+    margin-bottom: 8px;
+    transition: border-color 0.18s, background 0.18s;
+  }
+  .drag-area.drag-over {
+    border-color: var(--gold);
+    background: var(--gold-pale);
+  }
+
+  .drag-item {
+    background: white;
+    border: 1.5px solid var(--parchment);
+    border-radius: 2px;
+    padding: 11px 16px;
+    font-size: 14px;
+    color: var(--charcoal);
+    cursor: grab;
+    user-select: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .drag-item:hover { border-color: var(--gold); box-shadow: var(--shadow); }
+  .drag-item.dragging { opacity: 0.4; cursor: grabbing; }
+
+  .drag-handle {
+    color: var(--gold);
+    font-size: 12px;
+    letter-spacing: -1px;
+    flex-shrink: 0;
+  }
+
+  .drag-zones {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+
+  .drag-zone-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+
+  /* ─── MATCHING ─── */
+  .match-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .match-col-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .match-item {
+    background: var(--bone);
+    border: 1.5px solid var(--parchment);
+    border-radius: 2px;
+    padding: 10px 14px;
+    font-size: 13.5px;
+    color: var(--charcoal);
+    margin-bottom: 8px;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+
+  .match-select {
+    width: 100%;
+    background: white;
+    border: 1.5px solid var(--parchment);
+    border-radius: 2px;
+    padding: 10px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13.5px;
+    color: var(--charcoal);
+    margin-bottom: 8px;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.18s;
+    min-height: 42px;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23B8922A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 34px;
+  }
+  .match-select:focus { border-color: var(--gold); }
+  .match-select.correct-select { border-color: var(--correct); color: var(--correct); }
+  .match-select.incorrect-select { border-color: var(--incorrect); color: var(--incorrect); }
+
+  /* ─── BUTTONS ─── */
+  .btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    padding: 12px 28px;
+    border-radius: 2px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.18s, transform 0.12s;
+  }
+
+  .btn-primary {
+    background: var(--charcoal);
+    color: var(--bone);
+  }
+  .btn-primary:hover { background: var(--charcoal-mid); transform: translateY(-1px); }
+
+  .btn-gold {
+    background: var(--gold);
+    color: white;
+  }
+  .btn-gold:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--gold);
+    border: 1.5px solid var(--gold);
+  }
+  .btn-outline:hover { background: var(--gold-pale); }
+
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  .btn-row {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+
+  /* ─── NAV TABS ─── */
+  .activity-nav {
+    display: flex;
+    gap: 0;
+    margin-bottom: 28px;
+    border-bottom: 1.5px solid var(--parchment);
+    overflow-x: auto;
+  }
+
+  .nav-tab {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding: 12px 18px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1.5px;
+    white-space: nowrap;
+    transition: color 0.18s, border-color 0.18s;
+  }
+  .nav-tab:hover { color: var(--gold); }
+  .nav-tab.active {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+    font-weight: 500;
+  }
+  .nav-tab.completed { color: var(--correct); }
+  .nav-tab.completed.active { border-bottom-color: var(--correct); }
+
+  /* ─── RESULTS SCREEN ─── */
+  #results-screen {
+    display: none;
+    text-align: center;
+    padding: 60px 40px;
+    background: rgba(255,255,255,0.82);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 3px;
+    box-shadow: var(--shadow-lg);
+    border-top: 3px solid var(--gold);
+    animation: fadeUp 0.5s ease;
+  }
+
+  .results-illustration {
+    margin: 0 auto 32px;
+    display: block;
+  }
+
+  .results-score {
+    font-family: 'Playfair Display', serif;
+    font-size: 80px;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .results-total {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    color: var(--slate);
+    margin-bottom: 24px;
+  }
+
+  .results-message {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--charcoal);
+    margin-bottom: 12px;
+    font-style: italic;
+  }
+
+  .results-sub {
+    font-size: 14px;
+    color: var(--slate);
+    max-width: 440px;
+    margin: 0 auto 36px;
+    line-height: 1.6;
+  }
+
+  .results-breakdown {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+  }
+
+  .breakdown-item {
+    text-align: center;
+  }
+
+  .breakdown-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    color: var(--charcoal);
+    display: block;
+  }
+
+  .breakdown-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--slate);
+  }
+
+  /* ─── SUBMIT ROW ─── */
+  .submit-row {
+    margin-top: 28px;
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .activity-score-display {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--slate);
+  }
+
+  /* ─── PROGRESS BAR ─── */
+  .progress-bar-wrap {
+    height: 3px;
+    background: var(--parchment);
+    border-radius: 2px;
+    margin-bottom: 32px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  /* ─── ILLUSTRATION PANELS ─── */
+  .illus-divider {
+    width: 100%;
+    margin: 36px 0;
+    opacity: 0.7;
+  }
+
+  @media (max-width: 600px) {
+    .page-wrap { padding: 24px 16px 60px; }
+    .hero-body { padding: 24px 24px 28px; }
+    .q-card { padding: 22px 20px; }
+    .drag-zones { grid-template-columns: 1fr; }
+    .match-grid { grid-template-columns: 1fr; }
+    .results-score { font-size: 60px; }
+  }
+</style>
+</head>
+<body>
+<div class="bg-image-panel">
+  <img src="Architecture/architecture-1-hero.png" alt="A red pathway leading through a city park at dusk toward a tower under construction">
+</div>
+<div class="page-wrap">
+
+  <!-- LOGO -->
+  <div class="logo-wrap">
+    <svg width="180" height="56" viewBox="0 0 180 56" xmlns="http://www.w3.org/2000/svg">
+      <text x="90" y="30" text-anchor="middle"
+        font-family="'Playfair Display', Georgia, serif"
+        font-size="28" font-weight="700" fill="#1C1C1E"
+        letter-spacing="3">FORBES</text>
+      <rect x="18" y="36" width="144" height="1.2" fill="#B8922A"/>
+      <text x="90" y="52" text-anchor="middle"
+        font-family="'DM Sans', Arial, sans-serif"
+        font-size="12" font-weight="600" fill="#B8922A"
+        letter-spacing="6">ENGLISH</text>
+    </svg>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-body">
+      <div class="hero-label">Forbes English · Lesson Series</div>
+      <h1>The Language of <em>Architecture</em> & Design</h1>
+      <p class="hero-desc">Master the sophisticated register of award-winning architectural presentation and interior design discourse — vocabulary, syntax, and rhetoric for the highest professional contexts.</p>
+      <div class="hero-meta">
+        <span class="meta-pill">C1 Advanced</span>
+        <span class="meta-pill">3 Activities</span>
+        <span class="meta-pill">24 Points</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCORE BAR -->
+  <div class="score-bar">
+    <span class="score-label">Total Score</span>
+    <div style="display:flex;align-items:baseline;gap:8px;">
+      <span class="score-value" id="total-score">0</span>
+      <span class="score-fraction" id="total-fraction">/ 24</span>
+    </div>
+  </div>
+
+  <!-- PROGRESS BAR -->
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progress-bar" style="width:0%"></div>
+  </div>
+
+  <!-- ACTIVITY NAV -->
+  <nav class="activity-nav">
+    <button class="nav-tab active" onclick="showActivity(0)" id="tab-0">01 · Multiple Choice</button>
+    <button class="nav-tab" onclick="showActivity(1)" id="tab-1">02 · Gap Fill</button>
+    <button class="nav-tab" onclick="showActivity(2)" id="tab-2">03 · Categorise</button>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════
+       ACTIVITY 1: MULTIPLE CHOICE
+  ═══════════════════════════════════════════════ -->
+  <div class="activity active" id="activity-0">
+    <div class="activity-header">
+      <div class="activity-tag">Activity 01 · Multiple Choice</div>
+      <div class="activity-title">Reading the Room</div>
+      <div class="activity-intro">Choose the word or phrase that best completes each sentence. These questions test your knowledge of the register, vocabulary, and rhetorical conventions of architectural and interior design presentations.</div>
+    </div>
+
+    <!-- Q1 -->
+    <div class="q-card active" id="a0-q0">
+      <div class="q-meta">
+        <span class="q-number">Question 01</span>
+        <span class="q-progress">1 of 6</span>
+      </div>
+      <p class="q-text">The jury praised the practice for achieving a <strong>___</strong> of raw materiality and spatial refinement — a quality rarely seen in projects of this scale.</p>
+      <div class="options">
+        <button class="option-btn" onclick="checkMC(this, 0, 0, false)"><span class="option-letter">A</span> reconciliation</button>
+        <button class="option-btn" onclick="checkMC(this, 0, 0, true)"><span class="option-letter">B</span> synthesis</button>
+        <button class="option-btn" onclick="checkMC(this, 0, 0, false)"><span class="option-letter">C</span> juxtaposition</button>
+        <button class="option-btn" onclick="checkMC(this, 0, 0, false)"><span class="option-letter">D</span> integration</button>
+      </div>
+      <div class="feedback" id="fb-a0-q0"></div>
+      <div class="btn-row"><button class="btn btn-primary" id="next-a0-q0" style="display:none" onclick="nextMCQ(0,0)">Next →</button></div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-card" id="a0-q1">
+      <div class="q-meta">
+        <span class="q-number">Question 02</span>
+        <span class="q-progress">2 of 6</span>
+      </div>
+      <p class="q-text">During her presentation at the Pritzker symposium, the architect argued that the building's <strong>___</strong> was not merely decorative but functioned as a dynamic threshold between interior and exterior worlds.</p>
+      <div class="options">
+        <button class="option-btn" onclick="checkMC(this, 0, 1, false)"><span class="option-letter">A</span> ornamentation</button>
+        <button class="option-btn" onclick="checkMC(this, 0, 1, false)"><span class="option-letter">B</span> articulation</button>
+        <button class="option-btn" onclick="checkMC(this, 0, 1, true)"><span class="option-letter">C</span> fenestration</button>
+        <button class="option-btn" onclick="checkMC(this, 0, 1, false)"><span class="option-letter">D</span> configuration</button>
+      </div>
+      <div class="feedback" id="fb-a0-q1"></div>
+      <div class="btn-row"><button class="btn btn-primary" id="next-a0-q1" style="display:none" onclick="nextMCQ(0,1)">Next →</button></div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-card" id="a0-q2">
+      <div class="q-meta">
+        <span class="q-number">Question 03</span>
+        <span class="q-progress">3 of 6</span>
+      </div>
+      <p class="q-text">The interior scheme was described as <strong>___</strong>, with each material and finish chosen to reinforce a single overarching concept rather than to impress through variety.</p>
+      <div class="options">
+        <button class="option-btn" onclick="checkMC(this, 0, 2, false)"><span class="option-letter">A</span> restrained</button>
+        <button class="option-btn" onclick="checkMC(this, 0, 2, false)"><span class="option-letter">B</span> understated</button>
+        <button class="option-btn" onclick="checkMC(this, 0, 2, false)"><span class="option-letter">C</span> economical</button>
+        <button class="option-btn" onclick="checkMC(this, 0, 2, true)"><span class="option-letter">D</span> reductive</button>
+      </div>
+      <div class="feedback" id="fb-a0-q2"></div>
+      <div class="btn-row"><button class="btn btn-primary" id="next-a0-q2" style="display:none" onclick="nextMCQ(0,2)">Next →</button></div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="q-card" id="a0-q3">
+      <div class="q-meta">
+        <span class="q-number">Question 04</span>
+        <span class="q-progress">4 of 6</span>
+      </div>
+      <p class="q-text">When presenting to the client board, she was careful to frame the spatial sequence not as a series of rooms, but as a <strong>___</strong> — an unfolding narrative that the occupant would inhabit over time.</p>
+      <div class="options">
+        <button class="option-btn" onclick="checkMC(this, 0, 3, false)"><span class="option-letter">A</span> continuum</button>
+        <button class="option-btn" onclick="checkMC(this, 0, 3, true)"><span class="option-letter">B</span> promenade</button>
+        <button class="option-btn" onclick="checkMC(this, 0, 3, false)"><span class="option-letter">C</span> progression</button>
+        <button class="option-btn" onclick="checkMC(this, 0, 3, false)"><span class="option-letter">D</span> procession</button>
+      </div>
+      <div class="feedback" id="fb-a0-q3"></div>
+      <div class="btn-row"><button class="btn btn-primary" id="next-a0-q3" style="display:none" onclick="nextMCQ(0,3)">Next →</button></div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="q-card" id="a0-q4">
+      <div class="q-meta">
+        <span class="q-number">Question 05</span>
+        <span class="q-progress">5 of 6</span>
+      </div>
+      <p class="q-text">The practice's submission cited the building's <strong>___</strong> as central to its award nomination — specifically its capacity to reduce energy consumption while maintaining exceptional daylighting performance.</p>
+      <div class="options">
+        <button class="option-btn" onclick="checkMC(this, 0, 4, false)"><span class="option-letter">A</span> ecological profile</button>
+        <button class="option-btn" onclick="checkMC(this, 0, 4, false)"><span class="option-letter">B</span> environmental data</button>
+        <button class="option-btn" onclick="checkMC(this, 0, 4, true)"><span class="option-letter">C</span> passive performance</button>
+        <button class="option-btn" onclick="checkMC(this, 0, 4, false)"><span class="option-letter">D</span> thermal efficiency</button>
+      </div>
+      <div class="feedback" id="fb-a0-q4"></div>
+      <div class="btn-row"><button class="btn btn-primary" id="next-a0-q4" style="display:none" onclick="nextMCQ(0,4)">Next →</button></div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="q-card" id="a0-q5">
+      <div class="q-meta">
+        <span class="q-number">Question 06</span>
+        <span class="q-progress">6 of 6</span>
+      </div>
+      <p class="q-text">Critics noted that the practice's use of exposed concrete was neither brutalist nor minimalist, but occupied an ambiguous <strong>___</strong> — one that made the building simultaneously familiar and deeply unsettling.</p>
+      <div class="options">
+        <button class="option-btn" onclick="checkMC(this, 0, 5, false)"><span class="option-letter">A</span> aesthetic register</button>
+        <button class="option-btn" onclick="checkMC(this, 0, 5, false)"><span class="option-letter">B</span> visual territory</button>
+        <button class="option-btn" onclick="checkMC(this, 0, 5, false)"><span class="option-letter">C</span> stylistic middle ground</button>
+        <button class="option-btn" onclick="checkMC(this, 0, 5, true)"><span class="option-letter">D</span> liminal position</button>
+      </div>
+      <div class="feedback" id="fb-a0-q5"></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="next-a0-q5" style="display:none" onclick="finishActivity(0)">Complete Activity →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       ACTIVITY 2: GAP FILL
+  ═══════════════════════════════════════════════ -->
+  <div class="activity" id="activity-1">
+    <div class="activity-header">
+      <div class="activity-tag">Activity 02 · Gap Fill</div>
+      <div class="activity-title">The Jury Citation</div>
+      <div class="activity-intro">Complete the award jury citation below using words from the word bank. Each word may be used only once. Consider register, collocation, and precision when choosing your answers.</div>
+    </div>
+
+    <div class="word-bank" id="word-bank-1">
+      <div class="word-bank-label">Word Bank</div>
+      <span class="word-chip">porosity</span>
+      <span class="word-chip">datum</span>
+      <span class="word-chip">programmatic</span>
+      <span class="word-chip">tectonic</span>
+      <span class="word-chip">phenomenological</span>
+      <span class="word-chip">vernacular</span>
+    </div>
+
+    <div class="q-card active" id="a1-q0">
+      <div class="q-meta">
+        <span class="q-number">Question 01</span>
+        <span class="q-progress">1 of 6</span>
+      </div>
+      <p class="q-text">The jury was struck by the building's <strong><input class="blank-input" id="gap-1-0" placeholder="____________" autocomplete="off"></strong> quality — the way light, air, and movement were allowed to permeate every threshold, dissolving the conventional boundary between public and private.</p>
+      <div class="feedback" id="fb-a1-q0"></div>
+      <div class="btn-row"><button class="btn btn-primary" id="next-a1-q0" style="display:none" onclick="nextMCQ(1,0)">Next →</button><button class="btn btn-gold" onclick="checkGap(0)">Check</button></div>
+    </div>
+
+    <div class="q-card" id="a1-q1">
+      <div class="q-meta">
+        <span class="q-number">Question 02</span>
+        <span class="q-progress">2 of 6</span>
+      </div>
+      <p class="q-text">The practice demonstrated rare mastery of <strong><input class="blank-input" id="gap-1-1" placeholder="____________" autocomplete="off"></strong> expression — the exposed joinery, the cantilevered stair, and the load-bearing stone wall each made the logic of construction legible to the informed observer.</p>
+      <div class="feedback" id="fb-a1-q1"></div>
+      <div class="btn-row"><button class="btn btn-primary" id="next-a1-q1" style="display:none" onclick="nextMCQ(1,1)">Next →</button><button class="btn btn-gold" onclick="checkGap(1)">Check</button></div>
+    </div>
+
+    <div class="q-card" id="a1-q2">
+      <div class="q-meta">
+        <span class="q-number">Question 03</span>
+        <span class="q-progress">3 of 6</span>
+      </div>
+      <p class="q-text">The ground floor slab was deployed as a horizontal <strong><input class="blank-input" id="gap-1-2" placeholder="____________" autocomplete="off"></strong> from which the vertical elements of the scheme were measured and ordered — a device that gave the project its remarkable compositional discipline.</p>
+      <div class="feedback" id="fb-a1-q2"></div>
+      <div class="btn-row"><button class="btn btn-primary" id="next-a1-q2" style="display:none" onclick="nextMCQ(1,2)">Next →</button><button class="btn btn-gold" onclick="checkGap(2)">Check</button></div>
+    </div>
+
+    <div class="q-card" id="a1-q3">
+      <div class="q-meta">
+        <span class="q-number">Question 04</span>
+        <span class="q-progress">4 of 6</span>
+      </div>
+      <p class="q-text">What elevates this project above its peers is not its formal invention but its <strong><input class="blank-input" id="gap-1-3" placeholder="____________" autocomplete="off"></strong> clarity — the way the brief's competing demands for openness and privacy, community and contemplation, have been resolved with apparent ease.</p>
+      <div class="feedback" id="fb-a1-q3"></div>
+      <div class="btn-row"><button class="btn btn-primary" id="next-a1-q3" style="display:none" onclick="nextMCQ(1,3)">Next →</button><button class="btn btn-gold" onclick="checkGap(3)">Check</button></div>
+    </div>
+
+    <div class="q-card" id="a1-q4">
+      <div class="q-meta">
+        <span class="q-number">Question 05</span>
+        <span class="q-progress">5 of 6</span>
+      </div>
+      <p class="q-text">The scheme draws meaningfully on local <strong><input class="blank-input" id="gap-1-4" placeholder="____________" autocomplete="off"></strong> — not as pastiche or surface quotation, but as a rigorous rethinking of traditional building types in response to contemporary needs.</p>
+      <div class="feedback" id="fb-a1-q4"></div>
+      <div class="btn-row"><button class="btn btn-primary" id="next-a1-q4" style="display:none" onclick="nextMCQ(1,4)">Next →</button><button class="btn btn-gold" onclick="checkGap(4)">Check</button></div>
+    </div>
+
+    <div class="q-card" id="a1-q5">
+      <div class="q-meta">
+        <span class="q-number">Question 06</span>
+        <span class="q-progress">6 of 6</span>
+      </div>
+      <p class="q-text">The jury's decision was also shaped by the project's <strong><input class="blank-input" id="gap-1-5" placeholder="____________" autocomplete="off"></strong> dimension: the building repays close attention, offering habitual users a heightened awareness of material, light, and time that few public buildings manage to sustain.</p>
+      <div class="feedback" id="fb-a1-q5"></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="next-a1-q5" style="display:none" onclick="finishActivity(1)">Complete Activity →</button>
+        <button class="btn btn-gold" onclick="checkGap(5)">Check</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       ACTIVITY 3: CATEGORISE (DRAG & DROP)
+  ═══════════════════════════════════════════════ -->
+  <div class="activity" id="activity-2">
+    <div class="activity-header">
+      <div class="activity-tag">Activity 03 · Categorise</div>
+      <div class="activity-title">Register & Context</div>
+      <div class="activity-intro">Drag each phrase into the correct category: <strong>Presentation Register</strong> (used when pitching to clients or juries) or <strong>Critical Register</strong> (used in reviews, essays, or critique). Consider tone, stance, and the relationship implied between speaker and audience.</div>
+    </div>
+
+    <div class="q-card active" id="a2-q0" style="display:block">
+      <div class="drag-zones">
+        <div>
+          <div class="drag-zone-label">Presentation Register</div>
+          <div class="drag-area" id="zone-presentation" ondragover="allowDrop(event)" ondrop="dropItem(event,'presentation')" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" onclick="placeInZone('zone-presentation')">
+            <span class="drop-placeholder" style="font-family:'DM Mono',monospace;font-size:11px;color:#9CA3AF;padding:8px;display:block;text-align:center">Drop phrases here</span>
+          </div>
+        </div>
+        <div>
+          <div class="drag-zone-label">Critical Register</div>
+          <div class="drag-area" id="zone-critical" ondragover="allowDrop(event)" ondrop="dropItem(event,'critical')" ondragenter="dragEnter(event)" ondragleave="dragLeave(event)" onclick="placeInZone('zone-critical')">
+            <span class="drop-placeholder" style="font-family:'DM Mono',monospace;font-size:11px;color:#9CA3AF;padding:8px;display:block;text-align:center">Drop phrases here</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="drag-zone-label" style="margin-bottom:10px">Phrases to categorise</div>
+      <div id="drag-bank">
+        <div class="drag-item" draggable="true" id="di-0" data-cat="presentation" ondragstart="dragStart(event)" onclick="selectForTouch(this)">
+          <span class="drag-handle">⠿</span>
+          <span>"Our proposal responds directly to the site's topographic conditions."</span>
+        </div>
+        <div class="drag-item" draggable="true" id="di-1" data-cat="critical" ondragstart="dragStart(event)" onclick="selectForTouch(this)">
+          <span class="drag-handle">⠿</span>
+          <span>"The practice's handling of the threshold is at once tentative and overreaching."</span>
+        </div>
+        <div class="drag-item" draggable="true" id="di-2" data-cat="presentation" ondragstart="dragStart(event)" onclick="selectForTouch(this)">
+          <span class="drag-handle">⠿</span>
+          <span>"We envision the courtyard as the emotional heart of the entire scheme."</span>
+        </div>
+        <div class="drag-item" draggable="true" id="di-3" data-cat="critical" ondragstart="dragStart(event)" onclick="selectForTouch(this)">
+          <span class="drag-handle">⠿</span>
+          <span>"The building resists easy categorisation, occupying a troubling formal ambiguity."</span>
+        </div>
+        <div class="drag-item" draggable="true" id="di-4" data-cat="presentation" ondragstart="dragStart(event)" onclick="selectForTouch(this)">
+          <span class="drag-handle">⠿</span>
+          <span>"The material palette has been selected to age gracefully over the lifetime of the building."</span>
+        </div>
+        <div class="drag-item" draggable="true" id="di-5" data-cat="critical" ondragstart="dragStart(event)" onclick="selectForTouch(this)">
+          <span class="drag-handle">⠿</span>
+          <span>"The interior speaks a language of deliberate restraint that borders on the austere."</span>
+        </div>
+      </div>
+
+      <div class="feedback" id="fb-a2-q0"></div>
+      <div class="submit-row">
+        <span class="activity-score-display" id="drag-score-display"></span>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-outline" id="drag-reset-btn" onclick="resetDrag()">Reset</button>
+          <button class="btn btn-gold" onclick="checkDrag()">Check Answers</button>
+        </div>
+      </div>
+      <p style="font-family:'DM Mono',monospace;font-size:10px;color:var(--slate);margin-top:12px;letter-spacing:0.1em">On touch devices: tap a phrase to select it (gold outline), then tap a category zone to place it.</p>
+    </div>
+
+    <!-- BONUS Q-CARDS: Matching (register context sentences) -->
+    <div class="q-card" id="a2-q1" style="margin-top:20px">
+      <div class="q-meta">
+        <span class="q-number">Bonus Activity · Match</span>
+        <span class="q-progress">Vocabulary in context</span>
+      </div>
+      <p class="q-text" style="margin-bottom:20px">Match each architectural term to its correct meaning as used in design presentations and critical writing.</p>
+
+      <div class="match-grid">
+        <div>
+          <div class="match-col-label">Term</div>
+          <div class="match-item">Haptic quality</div>
+          <div class="match-item">Articulation</div>
+          <div class="match-item">Threshold</div>
+          <div class="match-item">Massing</div>
+          <div class="match-item">Datum</div>
+          <div class="match-item">Prospect & Refuge</div>
+        </div>
+        <div>
+          <div class="match-col-label">Definition</div>
+          <select class="match-select" id="match-0">
+            <option value="">Select…</option>
+            <option value="a">The three-dimensional bulk and arrangement of a building's external form</option>
+            <option value="b">A reference line or plane used to organise and measure spatial relationships</option>
+            <option value="c">The textural, tactile dimension of a material experience beyond the visual</option>
+            <option value="d">The way structural or formal elements are expressed and joined to make the building's logic legible</option>
+            <option value="e">A liminal zone of transition between two spatial or experiential conditions</option>
+            <option value="f">A spatial theory about views outward and the sense of shelter, from Appleton's landscape aesthetics</option>
+          </select>
+          <select class="match-select" id="match-1">
+            <option value="">Select…</option>
+            <option value="a">The three-dimensional bulk and arrangement of a building's external form</option>
+            <option value="b">A reference line or plane used to organise and measure spatial relationships</option>
+            <option value="c">The textural, tactile dimension of a material experience beyond the visual</option>
+            <option value="d">The way structural or formal elements are expressed and joined to make the building's logic legible</option>
+            <option value="e">A liminal zone of transition between two spatial or experiential conditions</option>
+            <option value="f">A spatial theory about views outward and the sense of shelter, from Appleton's landscape aesthetics</option>
+          </select>
+          <select class="match-select" id="match-2">
+            <option value="">Select…</option>
+            <option value="a">The three-dimensional bulk and arrangement of a building's external form</option>
+            <option value="b">A reference line or plane used to organise and measure spatial relationships</option>
+            <option value="c">The textural, tactile dimension of a material experience beyond the visual</option>
+            <option value="d">The way structural or formal elements are expressed and joined to make the building's logic legible</option>
+            <option value="e">A liminal zone of transition between two spatial or experiential conditions</option>
+            <option value="f">A spatial theory about views outward and the sense of shelter, from Appleton's landscape aesthetics</option>
+          </select>
+          <select class="match-select" id="match-3">
+            <option value="">Select…</option>
+            <option value="a">The three-dimensional bulk and arrangement of a building's external form</option>
+            <option value="b">A reference line or plane used to organise and measure spatial relationships</option>
+            <option value="c">The textural, tactile dimension of a material experience beyond the visual</option>
+            <option value="d">The way structural or formal elements are expressed and joined to make the building's logic legible</option>
+            <option value="e">A liminal zone of transition between two spatial or experiential conditions</option>
+            <option value="f">A spatial theory about views outward and the sense of shelter, from Appleton's landscape aesthetics</option>
+          </select>
+          <select class="match-select" id="match-4">
+            <option value="">Select…</option>
+            <option value="a">The three-dimensional bulk and arrangement of a building's external form</option>
+            <option value="b">A reference line or plane used to organise and measure spatial relationships</option>
+            <option value="c">The textural, tactile dimension of a material experience beyond the visual</option>
+            <option value="d">The way structural or formal elements are expressed and joined to make the building's logic legible</option>
+            <option value="e">A liminal zone of transition between two spatial or experiential conditions</option>
+            <option value="f">A spatial theory about views outward and the sense of shelter, from Appleton's landscape aesthetics</option>
+          </select>
+          <select class="match-select" id="match-5">
+            <option value="">Select…</option>
+            <option value="a">The three-dimensional bulk and arrangement of a building's external form</option>
+            <option value="b">A reference line or plane used to organise and measure spatial relationships</option>
+            <option value="c">The textural, tactile dimension of a material experience beyond the visual</option>
+            <option value="d">The way structural or formal elements are expressed and joined to make the building's logic legible</option>
+            <option value="e">A liminal zone of transition between two spatial or experiential conditions</option>
+            <option value="f">A spatial theory about views outward and the sense of shelter, from Appleton's landscape aesthetics</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="feedback" id="fb-a2-q1"></div>
+      <div class="btn-row">
+        <button class="btn btn-gold" onclick="checkMatch()">Check Matches</button>
+        <button class="btn btn-primary" id="finish-btn" style="display:none" onclick="finishActivity(2)">See Results →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="results-screen">
+    <!-- Results illustration -->
+    <svg class="results-illustration" width="280" height="120" viewBox="0 0 280 120" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="archGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#B8922A" stop-opacity="0.15"/>
+          <stop offset="100%" stop-color="#B8922A" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <!-- Trophy / award motif -->
+      <rect x="120" y="80" width="40" height="8" rx="1" fill="#B8922A" opacity="0.7"/>
+      <rect x="130" y="60" width="20" height="22" rx="1" fill="#D4AA55" opacity="0.5"/>
+      <!-- Cup -->
+      <path d="M100 20 Q100 60 140 65 Q180 60 180 20 Z" fill="none" stroke="#B8922A" stroke-width="2" opacity="0.6"/>
+      <path d="M100 20 L180 20" stroke="#B8922A" stroke-width="2" opacity="0.6"/>
+      <!-- Handles -->
+      <path d="M100 30 Q82 30 82 42 Q82 54 100 54" fill="none" stroke="#B8922A" stroke-width="1.5" opacity="0.5"/>
+      <path d="M180 30 Q198 30 198 42 Q198 54 180 54" fill="none" stroke="#B8922A" stroke-width="1.5" opacity="0.5"/>
+      <!-- Stars -->
+      <text x="50" y="35" font-size="14" fill="#D4AA55" opacity="0.6">✦</text>
+      <text x="218" y="35" font-size="14" fill="#D4AA55" opacity="0.6">✦</text>
+      <text x="130" y="16" font-size="10" fill="#D4AA55" opacity="0.5">✦</text>
+      <!-- Base glow -->
+      <rect x="60" y="100" width="160" height="2" rx="1" fill="url(#archGrad)"/>
+    </svg>
+
+    <div class="results-score" id="final-score-display">0</div>
+    <div class="results-total" id="final-total-display">OUT OF 18</div>
+    <div class="results-message" id="results-message">Excellent work.</div>
+    <div class="results-sub" id="results-sub">Your command of architectural and design language demonstrates the register and precision expected at the highest professional levels.</div>
+
+    <div class="results-breakdown">
+      <div class="breakdown-item">
+        <span class="breakdown-num" id="r-a0">–</span>
+        <span class="breakdown-label">Multiple Choice</span>
+      </div>
+      <div class="breakdown-item">
+        <span class="breakdown-num" id="r-a1">–</span>
+        <span class="breakdown-label">Gap Fill</span>
+      </div>
+      <div class="breakdown-item">
+        <span class="breakdown-num" id="r-a2">–</span>
+        <span class="breakdown-label">Categorise & Match</span>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-outline" onclick="restartLesson()">Restart Lesson</button>
+      <button class="btn btn-primary" onclick="restartLesson()">Try Again</button>
+    </div>
+  </div>
+
+</div><!-- /page-wrap -->
+
+<script>
+// ─── STATE ───────────────────────────────────────────────────────────
+let totalScore = 0;
+let activityScores = [0, 0, 0];
+let totalMax = 24;
+let activityCompleted = [false, false, false];
+let currentActivity = 0;
+
+// ─── FEEDBACK DATA ───────────────────────────────────────────────────
+const mcFeedback = [
+  {
+    correct: "Correct. <strong>Synthesis</strong> implies a unified third thing emerged from two different qualities — the highest form of resolution. <em>Integration</em> merely combines; <em>reconciliation</em> resolves conflict; <em>juxtaposition</em> places things side by side without unifying them.",
+    incorrect: "The best word here is <strong>synthesis</strong>. It implies a new unified quality emerged from two different ones — not just a combination or side-by-side placement. Jury citations use it to signal genuine creative achievement."
+  },
+  {
+    correct: "Correct. <strong>Fenestration</strong> is the precise architectural term for the arrangement, proportioning, and design of windows and openings. <em>Articulation</em> refers to how elements are expressed/jointed; <em>ornamentation</em> is decorative embellishment; <em>configuration</em> is too general.",
+    incorrect: "The correct answer is <strong>fenestration</strong> — the technical term for a building's window arrangement. It's the only word that refers specifically to openings that could function as a spatial threshold between interior and exterior."
+  },
+  {
+    correct: "Correct. <strong>Reductive</strong> means consciously stripped back to a single essential idea — it implies an intellectual rigour and deliberate constraint. <em>Restrained</em>, <em>understated</em>, and <em>economical</em> all suggest less excess, but not the same commitment to a single governing concept.",
+    incorrect: "The best answer is <strong>reductive</strong>. In design criticism, it means the work is deliberately reduced to a single controlling idea — a conceptual discipline, not merely quiet taste. The sentence tells us each choice reinforces a <em>single concept</em>, which is the definition of reductive design."
+  },
+  {
+    correct: "Correct. <strong>Promenade architecturale</strong> is Le Corbusier's concept of architecture as a journey unfolded through movement. Using <em>promenade</em> alone carries this theoretical weight. <em>Procession</em> is ceremonial movement; <em>progression</em> and <em>continuum</em> lack the experiential/narrative implication.",
+    incorrect: "The answer is <strong>promenade</strong>, evoking the <em>promenade architecturale</em> — Le Corbusier's concept of architecture as a spatial narrative experienced through bodily movement. It uniquely implies both physical journey and unfolding drama."
+  },
+  {
+    correct: "Correct. <strong>Passive performance</strong> is the established technical phrase for a building's ability to manage energy and comfort through design (orientation, mass, shading, thermal mass) rather than active systems. The other options are vaguer or shift the focus: <em>thermal efficiency</em> is just one aspect; <em>ecological profile</em> is broader; <em>environmental data</em> refers to measurement, not performance.",
+    incorrect: "The answer is <strong>passive performance</strong> — a precise technical phrase meaning the building performs well through design strategies (orientation, mass, shading) rather than mechanical systems. The sentence specifies reducing energy while maintaining daylighting, which is the definition of passive performance."
+  },
+  {
+    correct: "Correct. <strong>Liminal position</strong> is the most precise: <em>liminal</em> (from Latin <em>limen</em>, threshold) describes an in-between state that is neither one thing nor another. It also echoes the uncanny/unsettling quality mentioned. The other phrases are vaguer and less theoretically loaded.",
+    incorrect: "The answer is <strong>liminal position</strong>. <em>Liminal</em> derives from the Latin for threshold and means in-between, belonging to neither category — exactly what a building that is 'neither brutalist nor minimalist' occupies. It also carries connotations of the uncanny, matching the 'deeply unsettling' in the sentence."
+  }
+];
+
+const gapAnswers = ["porosity","tectonic","datum","programmatic","vernacular","phenomenological"];
+const gapFeedback = [
+  "<strong>porosity</strong> — from Latin <em>porus</em> (pore). In architectural discourse, it describes the degree to which a building allows light, air, movement, and views to permeate through it. Used for buildings that avoid hard boundaries.",
+  "<strong>tectonic</strong> — from Greek <em>tekton</em> (builder/carpenter). In architecture it means making the logic of construction visible and expressive. A <em>tectonic</em> building reads its own making through joinery, structure, and detail.",
+  "<strong>datum</strong> — a fixed reference point or line from which all other measurements are taken. Used in architectural composition for a horizontal or vertical element that organises the entire scheme in relation to itself.",
+  "<strong>programmatic</strong> — relating to the building's programme: the functional brief, the uses it contains, and how those uses are distributed and related spatially. <em>Programmatic clarity</em> means the organisation of spaces is logical, resolved, and clearly driven by the brief.",
+  "<strong>vernacular</strong> — the traditional, locally evolved building tradition of a place or culture: its materials, forms, spatial types, and craft knowledge. Distinguished from authored architectural practice by its anonymous, collective authorship.",
+  "<strong>phenomenological</strong> — relating to phenomenology: the philosophical study of lived, bodily experience. In architecture it refers to how buildings are experienced through all the senses over time, not just perceived visually at one moment."
+];
+
+const dragCorrect = {
+  "di-0": "presentation",
+  "di-1": "critical",
+  "di-2": "presentation",
+  "di-3": "critical",
+  "di-4": "presentation",
+  "di-5": "critical"
+};
+
+// match: answers for Haptic, Articulation, Threshold, Massing, Datum, Prospect&Refuge
+const matchAnswers = ["c","d","e","a","b","f"];
+const matchFeedback = [
+  "<strong>Haptic quality → c</strong> (tactile/textural experience beyond the visual). From Greek <em>haptesthai</em>, to touch. Used to describe materials and spaces apprehended through bodily sensation.",
+  "<strong>Articulation → d</strong> (making the building's structural/formal logic legible through the expression and joining of elements). A building is well-articulated when you can read its structure and construction.",
+  "<strong>Threshold → e</strong> (a liminal zone of spatial or experiential transition). Thresholds are moments of crossing — between inside and outside, public and private, light and dark.",
+  "<strong>Massing → a</strong> (the three-dimensional bulk and arrangement of a building's external form). Massing is studied in section and model before detailing begins.",
+  "<strong>Datum → b</strong> (a reference line or plane organising spatial relationships). The word is borrowed from surveying and geometry.",
+  "<strong>Prospect & Refuge → f</strong> (Jay Appleton's 1975 landscape aesthetics theory: humans prefer spaces that offer both a view out — prospect — and a sense of shelter — refuge)."
+];
+
+// ─── NAVIGATION ──────────────────────────────────────────────────────
+function showActivity(idx) {
+  document.querySelectorAll('.activity').forEach(a => a.classList.remove('active'));
+  document.getElementById('activity-' + idx).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach((t,i) => {
+    t.classList.toggle('active', i === idx);
+  });
+  currentActivity = idx;
+}
+
+// ─── MULTIPLE CHOICE ─────────────────────────────────────────────────
+function checkMC(btn, actIdx, qIdx, isCorrect) {
+  const card = document.getElementById('a0-q' + qIdx);
+  const buttons = card.querySelectorAll('.option-btn');
+  buttons.forEach(b => b.disabled = true);
+
+  const fb = document.getElementById('fb-a0-q' + qIdx);
+  fb.classList.add('show');
+
+  if (isCorrect) {
+    btn.classList.add('correct');
+    fb.classList.add('correct-fb');
+    fb.innerHTML = '✓ ' + mcFeedback[qIdx].correct;
+    totalScore++;
+    activityScores[0]++;
+    updateScoreDisplay();
+  } else {
+    btn.classList.add('incorrect');
+    fb.classList.add('incorrect-fb');
+    fb.innerHTML = '✗ ' + mcFeedback[qIdx].incorrect;
+    // highlight correct
+    buttons.forEach(b => {
+      if (b.getAttribute('onclick').includes('true')) b.classList.add('correct');
+    });
+  }
+
+  document.getElementById('next-a0-q' + qIdx).style.display = 'inline-block';
+}
+
+function nextMCQ(actIdx, qIdx) {
+  document.getElementById('a' + actIdx + '-q' + qIdx).classList.remove('active');
+  document.getElementById('a' + actIdx + '-q' + qIdx).style.display = 'none';
+  const next = document.getElementById('a' + actIdx + '-q' + (qIdx + 1));
+  if (next) {
+    next.style.display = 'block';
+    setTimeout(() => next.classList.add('active'), 10);
+  }
+}
+
+// ─── GAP FILL ────────────────────────────────────────────────────────
+let gapAnswered = [false,false,false,false,false,false];
+
+function checkGap(qIdx) {
+  if (gapAnswered[qIdx]) return;
+  const input = document.getElementById('gap-1-' + qIdx);
+  const val = input.value.trim().toLowerCase();
+  const correct = gapAnswers[qIdx];
+  const fb = document.getElementById('fb-a1-q' + qIdx);
+  fb.classList.add('show');
+
+  const btns = document.querySelectorAll('#a1-q' + qIdx + ' button');
+  btns.forEach(b => { if (b.textContent === 'Check') b.disabled = true; });
+
+  if (val === correct) {
+    input.classList.add('correct-input');
+    fb.classList.add('correct-fb');
+    fb.innerHTML = '✓ Correct! ' + gapFeedback[qIdx];
+    totalScore++;
+    activityScores[1]++;
+    updateScoreDisplay();
+  } else {
+    input.classList.add('incorrect-input');
+    fb.classList.add('incorrect-fb');
+    fb.innerHTML = '✗ The correct answer is <strong>' + correct + '</strong>. ' + gapFeedback[qIdx];
+    input.value = correct;
+  }
+
+  gapAnswered[qIdx] = true;
+  document.getElementById('next-a1-q' + qIdx).style.display = 'inline-block';
+}
+
+// ─── DRAG & DROP ─────────────────────────────────────────────────────
+let draggedId = null;
+let dragChecked = false;
+let dragScore = 0;
+
+// ── Touch fallback: tap-to-select then tap-to-place ──
+let touchSelected = null;
+
+function selectForTouch(el) {
+  if (dragChecked) return;
+  if (touchSelected) touchSelected.style.outline = '';
+  if (touchSelected === el) { touchSelected = null; return; }
+  touchSelected = el;
+  el.style.outline = '2px solid var(--gold)';
+}
+
+function placeInZone(zoneId) {
+  if (!touchSelected || dragChecked) return;
+  const zone = document.getElementById(zoneId);
+  const placeholder = zone.querySelector('.drop-placeholder');
+  if (placeholder) placeholder.remove();
+  touchSelected.style.outline = '';
+  zone.appendChild(touchSelected);
+  touchSelected = null;
+}
+
+function dragStart(e) {
+  draggedId = e.currentTarget.id;
+  e.currentTarget.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+}
+
+function allowDrop(e) { e.preventDefault(); }
+function dragEnter(e) { e.currentTarget.classList.add('drag-over'); }
+function dragLeave(e) { e.currentTarget.classList.remove('drag-over'); }
+
+function dropItem(e, zone) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  if (!draggedId) return;
+  const item = document.getElementById(draggedId);
+  item.classList.remove('dragging');
+  // Only remove the placeholder, never a drag handle
+  const placeholder = e.currentTarget.querySelector('.drop-placeholder');
+  if (placeholder) placeholder.remove();
+  e.currentTarget.appendChild(item);
+  draggedId = null;
+}
+
+function resetDrag() {
+  if (dragChecked) return; // cannot reset after checking
+  const bank = document.getElementById('drag-bank');
+  ['di-0','di-1','di-2','di-3','di-4','di-5'].forEach(id => {
+    const el = document.getElementById(id);
+    el.style.borderColor = '';
+    el.style.background = '';
+    el.style.outline = '';
+    bank.appendChild(el);
+  });
+  ['zone-presentation','zone-critical'].forEach(zid => {
+    const zone = document.getElementById(zid);
+    if (!zone.querySelector('.drop-placeholder')) {
+      const span = document.createElement('span');
+      span.className = 'drop-placeholder';
+      span.style.cssText = "font-family:'DM Mono',monospace;font-size:11px;color:#9CA3AF;padding:8px;display:block;text-align:center";
+      span.textContent = 'Drop phrases here';
+      zone.appendChild(span);
+    }
+  });
+  touchSelected = null;
+  const fb = document.getElementById('fb-a2-q0');
+  fb.className = 'feedback';
+  fb.innerHTML = '';
+  document.getElementById('drag-score-display').textContent = '';
+}
+
+function checkDrag() {
+  if (dragChecked) return;
+  dragChecked = true;
+
+  // Disable reset button now that answers are locked
+  const resetBtn = document.getElementById('drag-reset-btn');
+  if (resetBtn) resetBtn.disabled = true;
+
+  // Disable touch selection on all drag items
+  document.querySelectorAll('.drag-item').forEach(el => {
+    el.style.cursor = 'default';
+    el.style.outline = '';
+    el.setAttribute('draggable', 'false');
+  });
+
+  let correct = 0;
+  const presZone = document.getElementById('zone-presentation');
+  const critZone = document.getElementById('zone-critical');
+
+  [...presZone.querySelectorAll('.drag-item')].forEach(el => {
+    const isRight = dragCorrect[el.id] === 'presentation';
+    el.style.borderColor = isRight ? 'var(--correct)' : 'var(--incorrect)';
+    el.style.background = isRight ? 'var(--correct-bg)' : 'var(--incorrect-bg)';
+    if (isRight) correct++;
+  });
+  [...critZone.querySelectorAll('.drag-item')].forEach(el => {
+    const isRight = dragCorrect[el.id] === 'critical';
+    el.style.borderColor = isRight ? 'var(--correct)' : 'var(--incorrect)';
+    el.style.background = isRight ? 'var(--correct-bg)' : 'var(--incorrect-bg)';
+    if (isRight) correct++;
+  });
+
+  dragScore = correct;
+  totalScore += correct;
+  activityScores[2] += correct;
+  updateScoreDisplay();
+
+  const fb = document.getElementById('fb-a2-q0');
+  fb.classList.add('show');
+  if (correct === 6) {
+    fb.classList.add('correct-fb');
+    fb.innerHTML = "✓ Perfect! You correctly identified all six phrases. <strong>Presentation register</strong> uses first person, inclusive language ('we envision', 'our proposal'), and invites the audience into a shared vision. <strong>Critical register</strong> uses third person, analytical distance, and evaluative language ('tentative', 'troubling ambiguity').";
+  } else if (correct >= 4) {
+    fb.classList.add('correct-fb');
+    fb.innerHTML = `✓ Good — ${correct}/6 correct. Presentation register invites and includes; critical register evaluates from a distance. Review any phrases marked in red.`;
+  } else {
+    fb.classList.add('incorrect-fb');
+    fb.innerHTML = `✗ ${correct}/6 correct. Remember: presentation register is collaborative and visionary; critical register is evaluative and distanced. Look for pronouns and evaluative adjectives as clues.`;
+  }
+  document.getElementById('drag-score-display').textContent = correct + '/6 correct';
+
+  // Show matching activity
+  const matchCard = document.getElementById('a2-q1');
+  matchCard.style.display = 'block';
+  setTimeout(() => matchCard.classList.add('active'), 50);
+}
+
+// ─── MATCHING ────────────────────────────────────────────────────────
+let matchChecked = false;
+let matchScore = 0;
+
+function checkMatch() {
+  if (matchChecked) return;
+  matchChecked = true;
+
+  let correct = 0;
+  matchAnswers.forEach((ans, i) => {
+    const sel = document.getElementById('match-' + i);
+    sel.disabled = true;
+    if (sel.value === ans) {
+      sel.classList.add('correct-select');
+      correct++;
+    } else {
+      sel.classList.add('incorrect-select');
+    }
+  });
+
+  matchScore = correct;
+  totalScore += correct;
+  activityScores[2] += correct;
+  updateScoreDisplay();
+
+  const fb = document.getElementById('fb-a2-q1');
+  fb.classList.add('show');
+  const msg = correct === 6
+    ? '✓ Excellent — 6/6. You have a thorough command of architectural critical vocabulary.'
+    : `${correct}/6 correct. Review the terms and their definitions below:`;
+  fb.classList.add(correct >= 4 ? 'correct-fb' : 'incorrect-fb');
+  fb.innerHTML = msg + '<br><br>' + matchFeedback.join('<br>');
+
+  document.getElementById('finish-btn').style.display = 'inline-block';
+}
+
+// ─── FINISH ACTIVITY ─────────────────────────────────────────────────
+function finishActivity(idx) {
+  activityCompleted[idx] = true;
+  const tab = document.getElementById('tab-' + idx);
+  tab.classList.add('completed');
+
+  if (idx < 2) {
+    showActivity(idx + 1);
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  } else {
+    showResults();
+  }
+  updateProgress();
+}
+
+// ─── RESULTS ─────────────────────────────────────────────────────────
+function showResults() {
+  document.querySelectorAll('.activity').forEach(a => a.classList.remove('active'));
+  const rs = document.getElementById('results-screen');
+  rs.style.display = 'block';
+
+  document.getElementById('final-score-display').textContent = totalScore;
+  document.getElementById('final-total-display').textContent = 'OUT OF ' + totalMax;
+  document.getElementById('r-a0').textContent = activityScores[0] + '/6';
+  document.getElementById('r-a1').textContent = activityScores[1] + '/6';
+  document.getElementById('r-a2').textContent = activityScores[2] + '/12';
+
+  const pct = totalScore / totalMax;
+  let msg, sub;
+  if (pct === 1) {
+    msg = "An impeccable performance.";
+    sub = "You have demonstrated complete mastery of architectural presentation language at C1 level. Your vocabulary, register awareness, and critical acuity are exceptional.";
+  } else if (pct >= 0.8) {
+    msg = "A distinguished result.";
+    sub = "You command the vocabulary and register of professional architectural discourse with confidence. Minor refinements remain, but your foundation is strong.";
+  } else if (pct >= 0.6) {
+    msg = "A solid foundation.";
+    sub = "You have a working grasp of architectural presentation language. Revisiting the gap-fill explanations will deepen your precision and register awareness.";
+  } else {
+    msg = "A revealing first attempt.";
+    sub = "This specialist vocabulary takes time to absorb. Review the feedback explanations carefully — understanding why each answer is correct will build your architectural register rapidly.";
+  }
+  document.getElementById('results-message').textContent = msg;
+  document.getElementById('results-sub').textContent = sub;
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+// ─── SCORE & PROGRESS ────────────────────────────────────────────────
+function updateScoreDisplay() {
+  document.getElementById('total-score').textContent = totalScore;
+  updateProgress();
+}
+
+function updateProgress() {
+  const done = activityCompleted.filter(Boolean).length;
+  const pct = (done / 3) * 100;
+  document.getElementById('progress-bar').style.width = pct + '%';
+}
+
+// ─── RESTART ─────────────────────────────────────────────────────────
+function restartLesson() {
+  location.reload();
+}
+</script>
+</body>
+</html>

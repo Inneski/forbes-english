@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Federal Agency for Nature Conservation — Vocabulary Assessment, Part 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest: #1F4D3B;
+    --forest-light: #2E6B52;
+    --forest-pale: #E4ECE6;
+    --gold: #C9A227;
+    --gold-light: #E0BE5C;
+    --cream: #F5F1E6;
+    --cream-dark: #EBE3CD;
+    --ink: #1B2A22;
+    --ink-light: #52655B;
+    --correct: #3C8C63;
+    --incorrect: #B3432B;
+    --border: #D8CFB4;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.55;
+    min-height: 100vh;
+    padding-bottom: 80px;
+  }
+
+  .header {
+    background: var(--forest);
+    color: var(--cream);
+    padding: 28px 24px 24px;
+    border-bottom: 4px solid var(--gold);
+  }
+
+  .header-inner {
+    max-width: 760px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .logo-svg { flex-shrink: 0; }
+
+  .header-text-wrap { flex: 1; }
+
+  .agency-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 4px;
+  }
+
+  .agency-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 1.2;
+    letter-spacing: -0.3px;
+  }
+
+  .header-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    padding: 4px 10px;
+    border-radius: 3px;
+  }
+
+  .badge-level {
+    background: var(--gold);
+    color: var(--forest);
+  }
+
+  .badge-part {
+    background: rgba(245,241,230,0.12);
+    color: var(--cream);
+    border: 1px solid rgba(245,241,230,0.3);
+  }
+
+  .progress-wrap {
+    max-width: 760px;
+    margin: 20px auto 0;
+    padding: 0 24px;
+  }
+
+  .progress-track {
+    width: 100%;
+    height: 8px;
+    background: var(--cream-dark);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--forest-light), var(--gold));
+    transition: width 0.4s ease;
+  }
+
+  .progress-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-light);
+    margin-top: 6px;
+  }
+
+  .container {
+    max-width: 760px;
+    margin: 28px auto 0;
+    padding: 0 24px;
+  }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  .card {
+    background: #FFFDF7;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px;
+    box-shadow: 0 2px 10px rgba(31,77,59,0.06);
+  }
+
+  .intro-scenario {
+    font-size: 15.5px;
+    color: var(--ink);
+  }
+
+  .intro-scenario p { margin-bottom: 14px; }
+  .intro-scenario p:last-child { margin-bottom: 0; }
+
+  .sec-heading {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 21px;
+    color: var(--forest);
+    margin-bottom: 4px;
+  }
+
+  .sec-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-light);
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  .q-counter {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--gold);
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .prompt-sentence {
+    font-size: 17px;
+    color: var(--ink);
+    margin-bottom: 14px;
+    line-height: 1.6;
+  }
+
+  .prompt-question {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--forest);
+    margin-bottom: 18px;
+  }
+
+  .hint {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--ink-light);
+    background: var(--forest-pale);
+    border-left: 3px solid var(--forest-light);
+    padding: 10px 14px;
+    border-radius: 4px;
+    margin-bottom: 18px;
+  }
+
+  .options-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option-btn {
+    text-align: left;
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 13px 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14.5px;
+    color: var(--ink);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--forest-light);
+    background: var(--forest-pale);
+  }
+
+  .option-btn:disabled { cursor: default; }
+
+  .opt-correct {
+    border-color: var(--correct) !important;
+    background: rgba(60,140,99,0.12) !important;
+    font-weight: 600;
+  }
+
+  .opt-incorrect {
+    border-color: var(--incorrect) !important;
+    background: rgba(179,67,43,0.1) !important;
+  }
+
+  .input-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+
+  .fib-input {
+    flex: 1;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: var(--ink);
+    background: #fff;
+  }
+
+  .fib-input:focus { outline: none; border-color: var(--forest-light); }
+
+  .input-correct { border-color: var(--correct) !important; background: rgba(60,140,99,0.08); }
+  .input-incorrect { border-color: var(--incorrect) !important; background: rgba(179,67,43,0.06); }
+
+  .check-btn {
+    background: var(--forest);
+    color: var(--cream);
+    border: none;
+    border-radius: 8px;
+    padding: 0 22px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 14.5px;
+    cursor: pointer;
+  }
+
+  .check-btn:disabled { opacity: 0.5; cursor: default; }
+
+  .feedback {
+    display: none;
+    margin-top: 18px;
+    padding: 14px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .feedback.visible { display: block; }
+
+  .feedback-correct {
+    background: rgba(60,140,99,0.1);
+    border-left: 3px solid var(--correct);
+    color: var(--ink);
+  }
+
+  .feedback-incorrect {
+    background: rgba(179,67,43,0.08);
+    border-left: 3px solid var(--incorrect);
+    color: var(--ink);
+  }
+
+  .next-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 22px;
+  }
+
+  .next-btn {
+    background: var(--gold);
+    color: var(--forest);
+    border: none;
+    border-radius: 8px;
+    padding: 12px 26px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 14.5px;
+    cursor: pointer;
+  }
+
+  .next-btn:disabled { opacity: 0.4; cursor: default; }
+
+  .start-btn {
+    background: var(--forest);
+    color: var(--cream);
+    border: none;
+    border-radius: 8px;
+    padding: 13px 28px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+
+  .match-grid-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .match-col-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 10px;
+  }
+
+  .match-col {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .match-tile {
+    text-align: left;
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 7px;
+    padding: 10px 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13.5px;
+    color: var(--ink);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .match-word { font-weight: 600; color: var(--forest); }
+
+  .match-tile:hover:not(.match-locked) { border-color: var(--forest-light); }
+
+  .match-selected {
+    border-color: var(--gold) !important;
+    background: rgba(201,162,39,0.12) !important;
+  }
+
+  .match-locked {
+    border-color: var(--correct) !important;
+    background: rgba(60,140,99,0.1) !important;
+    opacity: 0.6;
+    cursor: default;
+  }
+
+  .match-wrong {
+    border-color: var(--incorrect) !important;
+    background: rgba(179,67,43,0.1) !important;
+  }
+
+  #s3-counter {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-light);
+    margin-top: 18px;
+    text-align: center;
+  }
+
+  #s3-continue-btn {
+    display: none;
+    margin: 18px auto 0;
+  }
+
+  .results-card {
+    text-align: center;
+  }
+
+  .results-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--forest);
+    margin-bottom: 6px;
+  }
+
+  .results-total {
+    font-family: 'Fraunces', serif;
+    font-size: 46px;
+    font-weight: 900;
+    color: var(--gold);
+    margin: 18px 0 2px;
+  }
+
+  .results-pct {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    color: var(--ink-light);
+    margin-bottom: 24px;
+  }
+
+  .results-breakdown {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+
+  .rb-item {
+    flex: 1;
+    background: var(--forest-pale);
+    border-radius: 8px;
+    padding: 14px 8px;
+  }
+
+  .rb-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--ink-light);
+    margin-bottom: 6px;
+  }
+
+  .rb-score {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 19px;
+    color: var(--forest);
+  }
+
+  .results-message {
+    font-size: 15px;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+
+  .part-note {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    color: var(--ink-light);
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+  }
+
+  footer {
+    max-width: 760px;
+    margin: 40px auto 0;
+    padding: 0 24px;
+    text-align: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-light);
+    letter-spacing: 0.5px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <svg class="logo-svg" width="46" height="46" viewBox="0 0 46 46" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="23" cy="23" r="22" fill="none" stroke="#C9A227" stroke-width="1.5"/>
+      <path d="M23 8 C14 14, 14 24, 23 38 C32 24, 32 14, 23 8 Z" fill="#2E6B52" opacity="0.9"/>
+      <path d="M23 8 L23 38" stroke="#C9A227" stroke-width="1.2"/>
+      <path d="M23 16 C19 17, 17 20, 17 23" stroke="#E0BE5C" stroke-width="1" fill="none"/>
+      <path d="M23 24 C27 25, 29 28, 29 31" stroke="#E0BE5C" stroke-width="1" fill="none"/>
+    </svg>
+    <div class="header-text-wrap">
+      <div class="agency-label">Forbes English &middot; Professional Vocabulary Series</div>
+      <div class="agency-title">Federal Agency for Nature Conservation</div>
+      <div class="header-meta">
+        <span class="badge badge-level">C1</span>
+        <span class="badge badge-part">Vocabulary Assessment &middot; Part 2 of 2</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="progress-label" id="progress-label">Question 1 of 50</div>
+</div>
+
+<div class="container">
+
+  <div class="section active" id="intro-screen">
+    <div class="card">
+      <div class="sec-heading">Before you begin</div>
+      <div class="sec-sub">SIX WEEKS IN &middot; ELENA VOSS, FIELD OFFICER</div>
+      <div class="intro-scenario">
+        <p>Six weeks into the job, Elena Voss is no longer the newest face at the Federal Agency for Nature Conservation. She has sat in on a fraud investigation, learned which permits can and can't be revoked, and discovered that Tomas would rather count reed warblers alone than make small talk at the visitor centre.</p>
+        <p>This second assessment picks up where Part 1 left off, testing the remaining 50 words and phrases across three activities: <strong>word choice in context</strong>, <strong>fill in the blank</strong>, and <strong>matching</strong>. As before, context is everything at C1 level &mdash; several items here are easy to confuse with one another.</p>
+        <p>Completing this assessment finishes the full 100-item vocabulary series.</p>
+      </div>
+      <button class="start-btn" id="start-btn">Begin Assessment</button>
+    </div>
+  </div>
+
+  <div class="section" id="section-1">
+    <div class="card">
+      <div class="sec-heading">Section 1 &middot; Word Choice</div>
+      <div class="sec-sub">CHOOSE THE WORD THAT FITS THE SENTENCE</div>
+      <div id="section1-body"></div>
+      <div class="next-row"><button class="next-btn" id="s1-next-btn" disabled>Next &rarr;</button></div>
+    </div>
+  </div>
+
+  <div class="section" id="section-2">
+    <div class="card">
+      <div class="sec-heading">Section 2 &middot; Complete the Briefing</div>
+      <div class="sec-sub">TYPE THE MISSING WORD OR PHRASE</div>
+      <div id="section2-body"></div>
+      <div class="next-row"><button class="next-btn" id="s2-next-btn" disabled>Next &rarr;</button></div>
+    </div>
+  </div>
+
+  <div class="section" id="section-3">
+    <div class="card">
+      <div class="sec-heading">Section 3 &middot; Match the Terms</div>
+      <div class="sec-sub">CLICK A WORD, THEN CLICK ITS DEFINITION</div>
+      <div class="match-grid-wrap">
+        <div class="match-col">
+          <div class="match-col-label">Word</div>
+          <div class="match-col" id="s3-words"></div>
+        </div>
+        <div class="match-col">
+          <div class="match-col-label">Definition</div>
+          <div class="match-col" id="s3-defs"></div>
+        </div>
+      </div>
+      <div id="s3-counter">Matched 0 of 16</div>
+      <div style="text-align:center;">
+        <button class="next-btn" id="s3-continue-btn">See Results &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="results-screen">
+    <div class="card results-card">
+      <div class="sec-heading" style="text-align:center;">Assessment Complete</div>
+      <div class="results-title">Part 2 &middot; Federal Agency for Nature Conservation</div>
+      <div class="results-total" id="res-total">0 / 50</div>
+      <div class="results-pct" id="res-pct">0%</div>
+      <div class="results-breakdown">
+        <div class="rb-item">
+          <div class="rb-label">Definitions</div>
+          <div class="rb-score" id="res-s1">0 / 17</div>
+        </div>
+        <div class="rb-item">
+          <div class="rb-label">Fill-in</div>
+          <div class="rb-score" id="res-s2">0 / 17</div>
+        </div>
+        <div class="rb-item">
+          <div class="rb-label">Matching</div>
+          <div class="rb-score" id="res-s3">0 / 16</div>
+        </div>
+      </div>
+      <div class="results-message" id="res-message"></div>
+      <div class="part-note">You've now completed all 100 items in the Federal Agency for Nature Conservation vocabulary series.</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>FORBES ENGLISH &middot; C1 PROFESSIONAL VOCABULARY &middot; FEDERAL AGENCY FOR NATURE CONSERVATION, PART 2 OF 2</footer>
+
+<script>
+var section1Questions = [
+  {
+    id: "s1q1",
+    sentence: "Don't be so ___ about the site visit \u2014 the assessor's not going to bite,\" Priya laughed, handing Elena a coffee.",
+    question: "Choose the word that best completes the sentence.",
+    options: ["stressy", "stressful", "insufficient", "domineering"],
+    correct: 0,
+    explanation: "\"Stressy\" is an informal adjective describing a person's anxious manner \u2014 it fits Priya's casual tone perfectly. \"Stressful\" would describe the situation itself, not a person."
+  },
+  {
+    id: "s1q2",
+    sentence: "Coordinating three field teams during the flood was the most ___ week of Elena's career so far.",
+    question: "Choose the word that best completes the sentence.",
+    options: ["stressful", "stressy", "prevalent", "insufficient"],
+    correct: 0,
+    explanation: "\"Stressful\" describes a situation that causes stress. \"Stressy\" (informal) instead describes a person's manner, not a week or event."
+  },
+  {
+    id: "s1q3",
+    sentence: "The reserve keeps a list of the nearest ___ in case a ranger is injured on site.",
+    question: "Choose the word that best completes the sentence.",
+    options: ["physician", "physicist", "optician", "assessor"],
+    correct: 0,
+    explanation: "A \"physician\" is a medical doctor \u2014 exactly who you'd want on hand for an injury. A \"physicist\" studies physics, not medicine."
+  },
+  {
+    id: "s1q4",
+    sentence: "A ___ from the university joined the team to model how floodwater moves across the restored wetland.",
+    question: "Choose the word that best completes the sentence.",
+    options: ["physicist", "physician", "programmer", "assessor"],
+    correct: 0,
+    explanation: "Modelling the physical movement of floodwater is a job for a \"physicist\", not a medical \"physician\"."
+  },
+  {
+    id: "s1q5",
+    sentence: "Repeat ___ caught illegally netting salmon now face much steeper fines under the new bylaw.",
+    question: "Choose the word that best completes the sentence.",
+    options: ["offenders", "offenses", "critics", "assessors"],
+    correct: 0,
+    explanation: "An \"offender\" is the person who commits an illegal act. An \"offense\" is the act itself \u2014 it cannot be \"caught netting salmon\"."
+  },
+  {
+    id: "s1q6",
+    sentence: "Removing eggs from a protected nest is a criminal ___ under the Wildlife Act.",
+    question: "Choose the word that best completes the sentence.",
+    options: ["offense", "offender", "requirement", "revoke"],
+    correct: 0,
+    explanation: "\"Offense\" is the act itself \u2014 here, the crime of removing eggs. An \"offender\" would be the person committing it, which doesn't fit this sentence structure."
+  },
+  {
+    id: "s1q7",
+    sentence: "Local folklore gives the old yew grove a ___ quality, said to bring luck to anyone who plants a sapling there.",
+    question: "Choose the word that best completes the sentence.",
+    options: ["mystical", "mysterious", "ersatz", "prevalent"],
+    correct: 0,
+    explanation: "\"Mystical\" relates to spiritual or quasi-religious wonder \u2014 fitting for folklore and luck. \"Mysterious\" simply means hard to explain, which misses the spiritual angle here."
+  },
+  {
+    id: "s1q8",
+    sentence: "The sudden disappearance of the otters from the lower river remains ___, and the agency has opened an inquiry.",
+    question: "Choose the word that best completes the sentence.",
+    options: ["mysterious", "mystical", "insufficient", "rampant"],
+    correct: 0,
+    explanation: "\"Mysterious\" simply means difficult to explain \u2014 exactly why an inquiry has been opened. \"Mystical\" would wrongly suggest a spiritual explanation is intended."
+  },
+  {
+    id: "s1q9",
+    sentence: "Two contractors were prosecuted for trying to ___ the agency by billing for reeds that were never planted.",
+    question: "Choose the word that best completes the sentence.",
+    options: ["defraud", "revoke", "reconcile", "resist"],
+    correct: 0,
+    explanation: "\"Defraud\" means to illegally obtain money from someone by deception \u2014 exactly what fake billing amounts to."
+  },
+  {
+    id: "s1q10",
+    sentence: "The elderly landowner realised too late that the so-called 'carbon consultant' had tried to ___ him out of his grant money.",
+    question: "Choose the word that best completes the sentence.",
+    options: ["swindle", "revoke", "entangle", "soothe"],
+    correct: 0,
+    explanation: "\"Swindle\" (used with \"out of\") means to deceive someone out of money or possessions \u2014 a close cousin of \"defraud\", but with its own fixed pattern."
+  },
+  {
+    id: "s1q11",
+    sentence: "After the third breach of the site's access rules, the agency chose to ___ the contractor's permit entirely.",
+    question: "Choose the word that best completes the sentence.",
+    options: ["revoke", "reconcile", "occupy", "resist"],
+    correct: 0,
+    explanation: "\"Revoke\" means to officially cancel a decision, promise, or permit \u2014 exactly what happens to the contractor here."
+  },
+  {
+    id: "s1q12",
+    sentence: "Before the cull could go ahead, the agency needed ___ confirmation that the licence covered this specific site.",
+    question: "Choose the word that best completes the sentence.",
+    options: ["legal", "logical", "decent", "prevalent"],
+    correct: 0,
+    explanation: "\"Legal\" means permitted by, or relating to, the law \u2014 fitting for a licence question. \"Logical\" (reasoned, sensible) is a common confusable, but doesn't fit a question about permissions."
+  },
+  {
+    id: "s1q13",
+    sentence: "Priya's argument for moving the hide further from the nest was entirely ___, even if it meant a longer walk for visitors.",
+    question: "Choose the word that best completes the sentence.",
+    options: ["logical", "legal", "pithy", "decent"],
+    correct: 0,
+    explanation: "\"Logical\" describes reasoning that follows sound argument \u2014 distinct from \"legal\", which concerns what the law permits."
+  },
+  {
+    id: "s1q14",
+    sentence: "Submitting a habitat survey is now a formal ___ before any building permit near the reserve can be approved.",
+    question: "Choose the word that best completes the sentence.",
+    options: ["requirement", "requirements", "offense", "contribution"],
+    correct: 0,
+    explanation: "The singular \"a requirement\" refers to one specific necessary condition \u2014 matching the singular article \"a\" in the sentence."
+  },
+  {
+    id: "s1q15",
+    sentence: "The grant application lists several strict ___ that smaller conservation groups often struggle to meet.",
+    question: "Choose the word that best completes the sentence.",
+    options: ["requirements", "requirement", "features", "contributions"],
+    correct: 0,
+    explanation: "The plural \"requirements\" refers to multiple necessary conditions together \u2014 matching \"several strict\" in the sentence."
+  },
+  {
+    id: "s1q16",
+    sentence: "X-rays showed the trapped fox had fractured a ___, one of the long pointed teeth used for gripping prey.",
+    question: "Choose the word that best completes the sentence.",
+    options: ["canine", "incisor", "molar", "premolar"],
+    correct: 0,
+    explanation: "A \"canine\" is a pointed tooth between the incisors and premolars, often enlarged in carnivores like foxes \u2014 exactly as the sentence describes."
+  },
+  {
+    id: "s1q17",
+    sentence: "Rangers are trained to ___ the temptation to feed wildlife directly, however tame the animals seem.",
+    question: "Choose the word that best completes the sentence.",
+    options: ["resist", "entangle", "revoke", "soothe"],
+    correct: 0,
+    explanation: "\"Resist\" means to refrain from doing something tempting \u2014 exactly the discipline rangers need around approachable wildlife."
+  }
+];
+var section2Questions = [
+  {
+    id: "s2q1",
+    sentence: "The geologist pointed out the natural ___ in the slate, where the rock splits cleanly along parallel planes.",
+    answer: "cleavage",
+    hint: "A sharp division or split, often used of rock structure.",
+    explanation: "\"Cleavage\" describes a sharp division or split \u2014 in geology, the tendency of rock to split along flat planes."
+  },
+  {
+    id: "s2q2",
+    sentence: "Elena reminded the panel to take the drought forecast ___ ___ before approving the irrigation plan.",
+    answer: "into account",
+    hint: "Two words completing the idiom meaning \"to consider something along with other factors\".",
+    explanation: "\"Take something into account\" means to consider it as one factor among others when making a decision."
+  },
+  {
+    id: "s2q3",
+    sentence: "Director Bergmann set her notes on the ___ and began the annual funding briefing.",
+    answer: "lectern",
+    hint: "A tall stand with a sloping top for a speaker's notes.",
+    explanation: "A \"lectern\" is the stand a speaker places their notes on while presenting."
+  },
+  {
+    id: "s2q4",
+    sentence: "Priya spoke in a low, steady voice to ___ the panicked swan before untangling it from the fishing line.",
+    answer: "soothe",
+    hint: "To gently calm a person or animal.",
+    explanation: "\"Soothe\" means to gently calm someone or something distressed."
+  },
+  {
+    id: "s2q5",
+    sentence: "By lunchtime, ___ about the surprise inspection had spread through every department in the building.",
+    answer: "gossip",
+    hint: "Casual talk about other people, not always confirmed to be true.",
+    explanation: "\"Gossip\" is casual, often unconfirmed talk about other people or events."
+  },
+  {
+    id: "s2q6",
+    sentence: "The minister's visit ended with public ___ for the team's work on the otter reintroduction.",
+    answer: "praise",
+    hint: "Warm approval or admiration expressed for something.",
+    explanation: "\"Praise\" means warm approval or admiration expressed openly."
+  },
+  {
+    id: "s2q7",
+    sentence: "A few of the older rangers still ___ about the new digital reporting system, though most have adapted by now.",
+    answer: "grumble",
+    hint: "To complain in a bad-tempered way.",
+    explanation: "\"Grumble\" means to complain, typically in a low-level, bad-tempered way."
+  },
+  {
+    id: "s2q8",
+    sentence: "After struggling to read the tiny print on the survey forms, Tomas finally booked an appointment with the ___.",
+    answer: "optician",
+    hint: "A person who fits glasses and contact lenses.",
+    explanation: "An \"optician\" is qualified to test eyesight and fit glasses or contact lenses."
+  },
+  {
+    id: "s2q9",
+    sentence: "The new boardwalk was widened so that visitors using a ___ could reach the bird hide without difficulty.",
+    answer: "wheelchair",
+    hint: "A chair fitted with wheels, used by people unable to walk unaided.",
+    explanation: "A \"wheelchair\" is a wheeled chair used as a means of transport by people unable to walk."
+  },
+  {
+    id: "s2q10",
+    sentence: "Turn left at the ___ just past the visitor centre, and the car park is on your right.",
+    answer: "roundabout",
+    hint: "A road junction where traffic circles a central island.",
+    explanation: "A \"roundabout\" is a road junction where traffic moves in one direction around a central island."
+  },
+  {
+    id: "s2q11",
+    sentence: "The exhibition on wetland birds is displayed inside the museum's domed ___.",
+    answer: "rotunda",
+    hint: "A round building or room, often with a dome.",
+    explanation: "A \"rotunda\" is a round, typically domed building or room."
+  },
+  {
+    id: "s2q12",
+    sentence: "The report tried to put a monetary ___ on the flood protection the wetlands provide each year.",
+    answer: "value",
+    hint: "The numerical or worth-based measure of something.",
+    explanation: "\"Value\" here refers to the monetary worth assigned to something."
+  },
+  {
+    id: "s2q13",
+    sentence: "Given the choice, most of the survey team ___ early starts to avoid the midday heat.",
+    answer: "prefer",
+    hint: "To like one thing better than another.",
+    explanation: "\"Prefer\" means to like one option better than the alternative."
+  },
+  {
+    id: "s2q14",
+    sentence: "Tomas plays bass in a local band and had a ___ the same night as the reserve's open evening.",
+    answer: "gig",
+    hint: "Informal \u2014 a public performance, especially of music.",
+    explanation: "\"Gig\" is an informal term for a public performance, particularly a music show."
+  },
+  {
+    id: "s2q15",
+    sentence: "Nobody would call Tomas a ___ ___ \u2014 he'd rather spend the day alone counting reed warblers than lead a school tour.",
+    answer: "people person",
+    hint: "A two-word phrase for someone who enjoys interacting with others.",
+    explanation: "A \"people person\" is someone who enjoys, and is good at, interacting with others \u2014 the opposite of Tomas here."
+  },
+  {
+    id: "s2q16",
+    sentence: "Loose netting left on the riverbank can easily ___ young otters.",
+    answer: "entangle",
+    hint: "To cause something to become twisted together with, or caught in, something else.",
+    explanation: "\"Entangle\" means to cause something to become caught or twisted up in something else, like netting."
+  },
+  {
+    id: "s2q17",
+    sentence: "The site survey noted several unusual landscape ___, including an old flint quarry now used by nesting sand martins.",
+    answer: "features",
+    hint: "Distinctive attributes or aspects of something (plural noun).",
+    explanation: "\"Features\" are the distinctive attributes or aspects of something \u2014 here, notable elements of the landscape."
+  }
+];
+var section3Pairs = [
+  { id: "s3p1", word: "removed", definition: "(of a cousin) separated by a specific number of generations in descent" },
+  { id: "s3p2", word: "pithy", definition: "Expressed in a concise, forceful way" },
+  { id: "s3p3", word: "ignite", definition: "To catch fire, or cause something to catch fire" },
+  { id: "s3p4", word: "spark", definition: "A small fiery particle thrown off by fire or by striking two hard surfaces together" },
+  { id: "s3p5", word: "matchstick", definition: "The wooden stem of a match" },
+  { id: "s3p6", word: "philosophers", definition: "People who study, or are learned in, philosophy" },
+  { id: "s3p7", word: "density", definition: "The degree to which something is tightly packed or compact" },
+  { id: "s3p8", word: "destiny", definition: "The events that will necessarily happen to someone in the future" },
+  { id: "s3p9", word: "opposite", definition: "Positioned on the other side of something; facing it" },
+  { id: "s3p10", word: "survey", definition: "To examine and record measurements of an area of land" },
+  { id: "s3p11", word: "memorize", definition: "To commit something to memory; learn it by heart" },
+  { id: "s3p12", word: "fraudulent", definition: "Obtained or done through deception, especially criminal deception" },
+  { id: "s3p13", word: "slick", definition: "Done in a smooth, efficient, seemingly effortless way" },
+  { id: "s3p14", word: "crane", definition: "A tall machine used to lift and move heavy objects" },
+  { id: "s3p15", word: "flock", definition: "A group of birds of one kind, feeding or travelling together" },
+  { id: "s3p16", word: "ebb and flow", definition: "A recurring pattern of coming and going, or of decline and growth" }
+];
+// ---------- Utilities ----------
+function shuffle(array) {
+  const arr = array.slice();
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+// ---------- State ----------
+var state = {
+  s1: shuffle(section1Questions).map(q => {
+    const optOrder = shuffle(q.options.map((opt, idx) => ({ opt, idx })));
+    return {
+      ...q,
+      shuffledOptions: optOrder.map(o => o.opt),
+      shuffledCorrectIndex: optOrder.findIndex(o => o.idx === q.correct),
+      answered: false,
+      correctOnAttempt: false
+    };
+  }),
+  s2: shuffle(section2Questions).map(q => ({ ...q, answered: false, correctOnAttempt: false })),
+  s3pairs: section3Pairs,
+  s1Index: 0,
+  s2Index: 0,
+  s1Score: 0,
+  s2Score: 0,
+  s3Score: 0,
+  s3Matched: 0,
+  currentSection: 1,
+  s3Selection: { word: null, def: null }
+};
+
+var TOTAL_QUESTIONS = section1Questions.length + section2Questions.length + section3Pairs.length;
+
+// ---------- Progress ----------
+function answeredSoFar() {
+  const s1Done = state.s1.filter(q => q.answered).length;
+  const s2Done = state.s2.filter(q => q.answered).length;
+  return s1Done + s2Done + state.s3Matched;
+}
+
+function updateProgress() {
+  const done = answeredSoFar();
+  const pct = Math.round((done / TOTAL_QUESTIONS) * 100);
+  document.getElementById("progress-fill").style.width = pct + "%";
+  document.getElementById("progress-label").textContent =
+    "Question " + Math.min(done + 1, TOTAL_QUESTIONS) + " of " + TOTAL_QUESTIONS;
+}
+
+// ---------- Section 1: MCQ ----------
+function renderS1() {
+  const q = state.s1[state.s1Index];
+  const container = document.getElementById("section1-body");
+  container.innerHTML = "";
+
+  const secLabel = document.createElement("div");
+  secLabel.className = "q-counter";
+  secLabel.textContent = "Item " + (state.s1Index + 1) + " of " + state.s1.length;
+  container.appendChild(secLabel);
+
+  const sentEl = document.createElement("p");
+  sentEl.className = "prompt-sentence";
+  sentEl.textContent = q.sentence;
+  container.appendChild(sentEl);
+
+  const qEl = document.createElement("p");
+  qEl.className = "prompt-question";
+  qEl.textContent = q.question;
+  container.appendChild(qEl);
+
+  const optsWrap = document.createElement("div");
+  optsWrap.className = "options-wrap";
+
+  q.shuffledOptions.forEach((optText, i) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "option-btn";
+    btn.textContent = optText;
+    btn.addEventListener("click", () => handleS1Answer(i, btn, optsWrap));
+    optsWrap.appendChild(btn);
+  });
+
+  container.appendChild(optsWrap);
+
+  const feedback = document.createElement("div");
+  feedback.className = "feedback";
+  feedback.id = "s1-feedback";
+  container.appendChild(feedback);
+
+  const nextBtn = document.getElementById("s1-next-btn");
+  nextBtn.disabled = true;
+}
+
+function handleS1Answer(chosenIndex, btnEl, optsWrap) {
+  const q = state.s1[state.s1Index];
+  if (q.answered) return;
+  q.answered = true;
+
+  const allBtns = optsWrap.querySelectorAll(".option-btn");
+  allBtns.forEach(b => (b.disabled = true));
+
+  const isCorrect = chosenIndex === q.shuffledCorrectIndex;
+  q.correctOnAttempt = isCorrect;
+  if (isCorrect) {
+    state.s1Score++;
+    btnEl.classList.add("opt-correct");
+  } else {
+    btnEl.classList.add("opt-incorrect");
+    allBtns[q.shuffledCorrectIndex].classList.add("opt-correct");
+  }
+
+  const feedback = document.getElementById("s1-feedback");
+  feedback.classList.add("visible");
+  feedback.classList.add(isCorrect ? "feedback-correct" : "feedback-incorrect");
+  feedback.innerHTML =
+    "<strong>" + (isCorrect ? "Correct. " : "Not quite. ") + "</strong>" + q.explanation;
+
+  document.getElementById("s1-next-btn").disabled = false;
+  updateProgress();
+}
+
+function goToNextS1() {
+  if (state.s1Index < state.s1.length - 1) {
+    state.s1Index++;
+    renderS1();
+  } else {
+    switchSection(2);
+  }
+}
+
+// ---------- Section 2: Fill in the Blank ----------
+function renderS2() {
+  const q = state.s2[state.s2Index];
+  const container = document.getElementById("section2-body");
+  container.innerHTML = "";
+
+  const secLabel = document.createElement("div");
+  secLabel.className = "q-counter";
+  secLabel.textContent = "Item " + (state.s2Index + 1) + " of " + state.s2.length;
+  container.appendChild(secLabel);
+
+  const sentEl = document.createElement("p");
+  sentEl.className = "prompt-sentence";
+  sentEl.textContent = q.sentence;
+  container.appendChild(sentEl);
+
+  const hintEl = document.createElement("p");
+  hintEl.className = "hint";
+  hintEl.textContent = "Hint: " + q.hint;
+  container.appendChild(hintEl);
+
+  const inputRow = document.createElement("div");
+  inputRow.className = "input-row";
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.className = "fib-input";
+  input.id = "s2-input";
+  input.autocomplete = "off";
+  input.spellcheck = false;
+
+  const checkBtn = document.createElement("button");
+  checkBtn.type = "button";
+  checkBtn.className = "check-btn";
+  checkBtn.textContent = "Check";
+  checkBtn.addEventListener("click", () => handleS2Answer());
+
+  input.addEventListener("keydown", e => {
+    if (e.key === "Enter") handleS2Answer();
+  });
+
+  inputRow.appendChild(input);
+  inputRow.appendChild(checkBtn);
+  container.appendChild(inputRow);
+
+  const feedback = document.createElement("div");
+  feedback.className = "feedback";
+  feedback.id = "s2-feedback";
+  container.appendChild(feedback);
+
+  document.getElementById("s2-next-btn").disabled = true;
+  input.focus();
+}
+
+function normalizeAnswer(str) {
+  return str.trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+function handleS2Answer() {
+  const q = state.s2[state.s2Index];
+  if (q.answered) return;
+  const input = document.getElementById("s2-input");
+  const userVal = normalizeAnswer(input.value);
+  if (userVal.length === 0) return;
+
+  q.answered = true;
+  input.disabled = true;
+  document.querySelector("#section2-body .check-btn").disabled = true;
+
+  const isCorrect = userVal === normalizeAnswer(q.answer);
+  q.correctOnAttempt = isCorrect;
+  if (isCorrect) {
+    state.s2Score++;
+    input.classList.add("input-correct");
+  } else {
+    input.classList.add("input-incorrect");
+  }
+
+  const feedback = document.getElementById("s2-feedback");
+  feedback.classList.add("visible");
+  feedback.classList.add(isCorrect ? "feedback-correct" : "feedback-incorrect");
+  feedback.innerHTML =
+    "<strong>" +
+    (isCorrect ? "Correct. " : "Not quite \u2014 the answer was \"" + q.answer + "\". ") +
+    "</strong>" +
+    q.explanation;
+
+  document.getElementById("s2-next-btn").disabled = false;
+  updateProgress();
+}
+
+function goToNextS2() {
+  if (state.s2Index < state.s2.length - 1) {
+    state.s2Index++;
+    renderS2();
+  } else {
+    switchSection(3);
+  }
+}
+
+// ---------- Section 3: Matching ----------
+function renderS3() {
+  const wordsWrap = document.getElementById("s3-words");
+  const defsWrap = document.getElementById("s3-defs");
+  wordsWrap.innerHTML = "";
+  defsWrap.innerHTML = "";
+
+  const shuffledWords = shuffle(state.s3pairs);
+  const shuffledDefs = shuffle(state.s3pairs);
+
+  shuffledWords.forEach(pair => {
+    const tile = document.createElement("button");
+    tile.type = "button";
+    tile.className = "match-tile match-word";
+    tile.textContent = pair.word;
+    tile.dataset.id = pair.id;
+    tile.addEventListener("click", () => selectMatchTile(tile, "word", pair.id));
+    wordsWrap.appendChild(tile);
+  });
+
+  shuffledDefs.forEach(pair => {
+    const tile = document.createElement("button");
+    tile.type = "button";
+    tile.className = "match-tile match-def";
+    tile.textContent = pair.definition;
+    tile.dataset.id = pair.id;
+    tile.addEventListener("click", () => selectMatchTile(tile, "def", pair.id));
+    defsWrap.appendChild(tile);
+  });
+
+  document.getElementById("s3-counter").textContent =
+    "Matched " + state.s3Matched + " of " + state.s3pairs.length;
+  document.getElementById("s3-continue-btn").style.display = "none";
+}
+
+function selectMatchTile(tileEl, kind, id) {
+  if (tileEl.classList.contains("match-locked")) return;
+
+  if (kind === "word") {
+    document.querySelectorAll(".match-word").forEach(t => t.classList.remove("match-selected"));
+    tileEl.classList.add("match-selected");
+    state.s3Selection.word = { id, el: tileEl };
+  } else {
+    document.querySelectorAll(".match-def").forEach(t => t.classList.remove("match-selected"));
+    tileEl.classList.add("match-selected");
+    state.s3Selection.def = { id, el: tileEl };
+  }
+
+  const sel = state.s3Selection;
+  if (sel.word && sel.def) {
+    const isMatch = sel.word.id === sel.def.id;
+    if (isMatch) {
+      sel.word.el.classList.remove("match-selected");
+      sel.def.el.classList.remove("match-selected");
+      sel.word.el.classList.add("match-locked");
+      sel.def.el.classList.add("match-locked");
+      state.s3Matched++;
+      state.s3Score++;
+      document.getElementById("s3-counter").textContent =
+        "Matched " + state.s3Matched + " of " + state.s3pairs.length;
+      updateProgress();
+      if (state.s3Matched === state.s3pairs.length) {
+        document.getElementById("s3-continue-btn").style.display = "inline-block";
+      }
+    } else {
+      sel.word.el.classList.add("match-wrong");
+      sel.def.el.classList.add("match-wrong");
+      setTimeout(() => {
+        sel.word.el.classList.remove("match-selected", "match-wrong");
+        sel.def.el.classList.remove("match-selected", "match-wrong");
+      }, 550);
+    }
+    state.s3Selection = { word: null, def: null };
+  }
+}
+
+// ---------- Section switching ----------
+function switchSection(n) {
+  document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+  state.currentSection = n;
+  if (n === 1) {
+    document.getElementById("section-1").classList.add("active");
+    renderS1();
+  } else if (n === 2) {
+    document.getElementById("section-2").classList.add("active");
+    renderS2();
+  } else if (n === 3) {
+    document.getElementById("section-3").classList.add("active");
+    renderS3();
+  } else if (n === 4) {
+    showResults();
+  }
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// ---------- Results ----------
+function showResults() {
+  document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+  document.getElementById("results-screen").classList.add("active");
+
+  const total = state.s1Score + state.s2Score + state.s3Score;
+  const pct = Math.round((total / TOTAL_QUESTIONS) * 100);
+
+  document.getElementById("res-total").textContent = total + " / " + TOTAL_QUESTIONS;
+  document.getElementById("res-pct").textContent = pct + "%";
+  document.getElementById("res-s1").textContent = state.s1Score + " / " + state.s1.length;
+  document.getElementById("res-s2").textContent = state.s2Score + " / " + state.s2.length;
+  document.getElementById("res-s3").textContent = state.s3Score + " / " + state.s3pairs.length;
+
+  let msg;
+  if (pct >= 90) {
+    msg = "Outstanding. This is C1-level command of the vocabulary \u2014 ready for the field.";
+  } else if (pct >= 75) {
+    msg = "Strong result. A quick review of the missed items and you're fully briefed.";
+  } else if (pct >= 60) {
+    msg = "Solid foundation. Revisit the sections with lower scores before moving to Part 2.";
+  } else {
+    msg = "This vocabulary needs more time. Go back through the explanations and try again before Part 2.";
+  }
+  document.getElementById("res-message").textContent = msg;
+
+  document.getElementById("progress-fill").style.width = "100%";
+  document.getElementById("progress-label").textContent = "Assessment complete";
+}
+
+// ---------- Init ----------
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("start-btn").addEventListener("click", () => {
+    document.getElementById("intro-screen").classList.remove("active");
+    switchSection(1);
+  });
+  document.getElementById("s1-next-btn").addEventListener("click", goToNextS1);
+  document.getElementById("s2-next-btn").addEventListener("click", goToNextS2);
+  document.getElementById("s3-continue-btn").addEventListener("click", () => switchSection(4));
+  updateProgress();
+});
+</script>
+</body>
+</html>

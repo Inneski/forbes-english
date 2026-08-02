@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English | B2: The Truth About the Harry Quebert Affair</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1a2238;
+    --navy-light:#2a3454;
+    --maroon:#7d1f3b;
+    --maroon-light:#a3305a;
+    --cream:#f5f0e6;
+    --paper:#fffdf8;
+    --gold:#c9a227;
+    --ink:#241f1a;
+    --grey:#6b6558;
+    --correct:#2f6b3f;
+    --incorrect:#a3302f;
+    --tense-past-simple:#c9a074;
+    --tense-past-cont:#e07a4e;
+    --tense-past-perfect:#6b4ba1;
+    --radius:14px;
+    --shadow:0 6px 20px rgba(26,34,56,0.15);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+    padding-bottom:60px;
+  }
+  h1,h2,h3{font-family:'Merriweather',serif;}
+  .scorebar{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:var(--navy);
+    color:var(--cream);
+    padding:12px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    box-shadow:var(--shadow);
+  }
+  .scorebar .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;}
+  .scorebar .score{font-family:'Merriweather',serif;font-weight:700;font-size:15px;color:var(--gold);}
+  .progress-track{
+    height:8px;
+    background:rgba(255,255,255,0.15);
+  }
+  .progress-fill{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,var(--gold),var(--maroon-light));
+    transition:width .35s ease;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:30px 20px 10px;}
+  .hero{
+    background:var(--navy);
+    color:var(--cream);
+    border-radius:var(--radius);
+    padding:36px 30px;
+    margin-bottom:26px;
+    box-shadow:var(--shadow);
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::after{
+    content:"";
+    position:absolute;
+    right:-40px; top:-40px;
+    width:180px;height:180px;
+    background:radial-gradient(circle,rgba(201,162,39,0.18),transparent 70%);
+  }
+  .hero h1{margin:0 0 6px;font-size:26px;color:var(--cream);}
+  .hero .level-tag{
+    display:inline-block;
+    background:var(--maroon);
+    color:#fff;
+    padding:3px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:.5px;
+    margin-bottom:14px;
+  }
+  .hero p{margin:0;color:#d9d5c8;font-size:15px;max-width:60ch;}
+  .card{
+    background:var(--paper);
+    border-radius:var(--radius);
+    padding:26px 26px 22px;
+    margin-bottom:22px;
+    box-shadow:var(--shadow);
+    border:1px solid rgba(26,34,56,0.06);
+  }
+  .card h2{font-size:19px;margin:0 0 12px;color:var(--navy);}
+  .card h2 .num{
+    display:inline-flex;
+    align-items:center;justify-content:center;
+    width:26px;height:26px;
+    background:var(--gold);
+    color:var(--navy);
+    border-radius:50%;
+    font-size:13px;
+    font-family:'Inter',sans-serif;
+    font-weight:700;
+    margin-right:10px;
+  }
+  .story p{font-size:15px;color:var(--ink);}
+  .story .cap{color:var(--grey);font-size:13px;font-style:italic;margin-top:10px;}
+  .tense-key{
+    display:flex;gap:10px;flex-wrap:wrap;
+    margin:14px 0 4px;
+  }
+  .tense-key span{
+    font-size:12px;font-weight:600;
+    padding:4px 10px;border-radius:20px;color:#fff;
+  }
+  .k-simple{background:var(--tense-past-simple);}
+  .k-cont{background:var(--tense-past-cont);}
+  .k-perfect{background:var(--tense-past-perfect);}
+  .qtag{
+    display:inline-block;
+    font-size:11px;font-weight:700;
+    padding:3px 9px;border-radius:20px;
+    color:#fff;margin-bottom:10px;
+  }
+  .question-text{font-size:16px;font-weight:600;margin:0 0 16px;color:var(--ink);}
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .option{
+    text-align:left;
+    padding:12px 16px;
+    border:2px solid rgba(26,34,56,0.15);
+    background:#fff;
+    border-radius:10px;
+    font-size:14.5px;
+    font-family:'Inter',sans-serif;
+    cursor:pointer;
+    transition:all .15s ease;
+    color:var(--ink);
+  }
+  .option:hover:not(.locked){
+    border-color:var(--gold);
+    background:#fffaf0;
+  }
+  .option.correct{
+    border-color:var(--correct);
+    background:#eaf5ec;
+    color:var(--correct);
+    font-weight:600;
+  }
+  .option.incorrect{
+    border-color:var(--incorrect);
+    background:#fbeceb;
+    color:var(--incorrect);
+    font-weight:600;
+  }
+  .option.locked{cursor:default;}
+  .feedback{
+    margin-top:14px;
+    padding:12px 14px;
+    border-radius:10px;
+    font-size:13.5px;
+    display:none;
+  }
+  .feedback.show{display:block;}
+  .feedback.good{background:#eaf5ec;color:var(--correct);}
+  .feedback.bad{background:#fbeceb;color:var(--incorrect);}
+  .nav-row{
+    display:flex;justify-content:flex-end;margin-top:18px;
+  }
+  .next-btn{
+    background:var(--navy);
+    color:var(--cream);
+    border:none;
+    padding:11px 22px;
+    border-radius:10px;
+    font-weight:600;
+    font-size:14px;
+    cursor:pointer;
+    font-family:'Inter',sans-serif;
+    opacity:0.4;
+    pointer-events:none;
+    transition:opacity .2s ease;
+  }
+  .next-btn.enabled{opacity:1;pointer-events:all;}
+  .next-btn:hover.enabled{background:var(--maroon);}
+  .hidden{display:none;}
+  .results{
+    text-align:center;
+    padding:40px 26px;
+  }
+  .results .big-score{
+    font-family:'Merriweather',serif;
+    font-size:52px;
+    font-weight:900;
+    color:var(--gold);
+    margin:6px 0;
+  }
+  .results p.msg{font-size:15px;color:var(--grey);max-width:48ch;margin:0 auto 20px;}
+  .results .logo-final{margin-bottom:10px;}
+  .restart-btn{
+    background:var(--maroon);
+    color:#fff;
+    border:none;
+    padding:12px 26px;
+    border-radius:10px;
+    font-weight:600;
+    font-size:14px;
+    cursor:pointer;
+    margin-top:10px;
+  }
+  .section-divider{
+    text-align:center;
+    margin:34px 0 20px;
+    color:var(--maroon);
+    font-family:'Merriweather',serif;
+    font-weight:700;
+    font-size:14px;
+    text-transform:uppercase;
+    letter-spacing:1.5px;
+  }
+  .logo-svg{width:26px;height:26px;flex-shrink:0;}
+</style>
+</head>
+<body>
+
+<div class="scorebar">
+  <div class="brand">
+    <svg class="logo-svg" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+      <rect x="6" y="8" width="36" height="32" rx="3" fill="#c9a227"/>
+      <rect x="6" y="8" width="18" height="32" rx="3" fill="#7d1f3b"/>
+      <line x1="24" y1="8" x2="24" y2="40" stroke="#1a2238" stroke-width="1.5"/>
+      <path d="M14 16 L34 16" stroke="#f5f0e6" stroke-width="1.5" opacity="0.7"/>
+      <path d="M14 22 L34 22" stroke="#f5f0e6" stroke-width="1.5" opacity="0.5"/>
+      <path d="M14 28 L28 28" stroke="#f5f0e6" stroke-width="1.5" opacity="0.4"/>
+    </svg>
+    Forbes English
+  </div>
+  <div class="score" id="scoreDisplay">Score: 0 / 0</div>
+</div>
+<div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+<div class="wrap">
+
+  <div class="hero">
+    <span class="level-tag">B2 &middot; Upper Intermediate</span>
+    <h1>The Truth About the Harry&nbsp;Quebert Affair</h1>
+    <p>A literary mystery lesson built around narrative tenses and thriller vocabulary — investigate a decades-old disappearance, one grammar clue at a time.</p>
+  </div>
+
+  <div class="card story">
+    <h2><span class="num">i</span>Case File: Aurora, New Hampshire</h2>
+    <p>In the summer of 1975, a fifteen-year-old girl named Nola disappeared from the quiet town of Aurora. Thirty-three years later, the case reopened when workers found human remains buried in the garden of Harry Quebert, a celebrated novelist who had been living peacefully in the town ever since. Quebert's former student, a young writer named Marcus Goldman, was struggling with a severe case of writer's block when the scandal broke. Convinced that his mentor was innocent, Marcus travelled to Aurora to dig deeper into the affair himself. As he interviewed old neighbours and searched through forgotten letters, he slowly uncovered a web of lies that had protected the town for over three decades.</p>
+    <p class="cap">A short original synopsis written for this lesson — not an excerpt from the novel.</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="num">ii</span>Grammar Focus: Narrative Tenses</h2>
+    <p style="font-size:14.5px;">Storytelling in English usually mixes three past tenses. Watch the colour of each tag as you answer.</p>
+    <div class="tense-key">
+      <span class="k-simple">Past Simple</span>
+      <span class="k-cont">Past Continuous</span>
+      <span class="k-perfect">Past Perfect</span>
+    </div>
+    <p style="font-size:14px;color:var(--grey);margin-top:10px;">
+      <strong>Past Simple</strong> moves the main story forward &middot;
+      <strong>Past Continuous</strong> sets the background scene or gets interrupted &middot;
+      <strong>Past Perfect</strong> shows what had already happened before the main story.
+    </p>
+  </div>
+
+  <div class="section-divider">Part 1 — Mystery &amp; Thriller Vocabulary</div>
+  <div id="quiz-vocab"></div>
+
+  <div class="section-divider">Part 2 — Narrative Tenses</div>
+  <div id="quiz-grammar"></div>
+
+  <div class="section-divider">Part 3 — Reading Comprehension</div>
+  <div id="quiz-reading"></div>
+
+  <div class="card results hidden" id="resultsCard">
+    <svg class="logo-svg logo-final" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:44px;">
+      <rect x="6" y="8" width="36" height="32" rx="3" fill="#c9a227"/>
+      <rect x="6" y="8" width="18" height="32" rx="3" fill="#7d1f3b"/>
+      <line x1="24" y1="8" x2="24" y2="40" stroke="#1a2238" stroke-width="1.5"/>
+    </svg>
+    <h2 style="color:var(--navy);">Case Closed</h2>
+    <div class="big-score" id="finalScore">0 / 0</div>
+    <p class="msg" id="finalMsg"></p>
+    <button class="restart-btn" onclick="restartQuiz()">Reopen the Case</button>
+  </div>
+
+</div>
+
+<script>
+/* ============ DATA ============ */
+const QUESTIONS = {
+  vocab: [
+    {
+      q: "Police decided to ___ the case after new evidence was found near Harry's house.",
+      options: ["reopen", "rewrite", "reorder", "reclaim"],
+      correct: 0,
+      explain: "'Reopen a case' means to start investigating it again after it was officially closed."
+    },
+    {
+      q: "In a police report, 'remains' most likely refers to:",
+      options: ["a body or part of a body found after death", "leftover food at a crime scene", "documents left behind by a suspect", "money left in a will"],
+      correct: 0,
+      explain: "'Remains' is a formal, common word in crime reporting for a dead body."
+    },
+    {
+      q: "The idiom 'a web of lies' describes:",
+      options: ["a single lie told to protect someone", "a complicated network of connected lies", "a lie told over the internet", "an accidental mistake"],
+      correct: 1,
+      explain: "'A web of lies' pictures deception as a spider's web — many lies connected to and supporting each other."
+    },
+    {
+      q: "An 'alibi' is:",
+      options: ["proof that someone was somewhere else when a crime happened", "a lawyer who defends a suspect", "a written confession", "the motive behind a crime"],
+      correct: 0,
+      explain: "An alibi is evidence or testimony that a suspect was elsewhere at the time of the crime."
+    },
+    {
+      q: "'Allegations' are:",
+      options: ["accusations that have not yet been proven", "facts confirmed by a court", "official police records", "witnesses to a crime"],
+      correct: 0,
+      explain: "Allegations are claims or accusations made without proof — they may or may not turn out to be true."
+    },
+    {
+      q: "If a journalist decides to 'dig deeper' into a story, they:",
+      options: ["stop reporting on it", "investigate it more thoroughly", "publish it immediately", "hand it over to the police"],
+      correct: 1,
+      explain: "'Dig deeper' is a common phrasal expression meaning to investigate something more thoroughly."
+    }
+  ],
+  grammar: [
+    {
+      q: "By the time Marcus arrived in Aurora, Harry ___ there for over thirty years.",
+      tense: "perfect",
+      options: ["had lived", "was living", "lived", "has lived"],
+      correct: 0,
+      explain: "Past Perfect ('had lived') shows an action that started and continued before another past moment (Marcus's arrival)."
+    },
+    {
+      q: "While Marcus ___ the old letters, he found a name he didn't recognise.",
+      tense: "cont",
+      options: ["was reading", "read", "had read", "reads"],
+      correct: 0,
+      explain: "Past Continuous ('was reading') describes a background action in progress when something else happened."
+    },
+    {
+      q: "Nola ___ from Aurora in the summer of 1975.",
+      tense: "simple",
+      options: ["disappeared", "was disappearing", "had disappeared", "disappears"],
+      correct: 0,
+      explain: "Past Simple ('disappeared') is used for a single completed action that moves the main story forward."
+    },
+    {
+      q: "Workers found the remains because someone ___ the garden the week before.",
+      tense: "perfect",
+      options: ["had dug up", "was digging up", "dug up", "digs up"],
+      correct: 0,
+      explain: "Past Perfect shows the digging happened before the discovery — an earlier event in the story's timeline."
+    },
+    {
+      q: "The town ___ peacefully when the scandal suddenly broke.",
+      tense: "cont",
+      options: ["was living", "lived", "had lived", "lives"],
+      correct: 0,
+      explain: "Past Continuous sets the scene (an ongoing state) that gets interrupted by a Past Simple event."
+    },
+    {
+      q: "Marcus ___ his mentor's innocence and travelled to Aurora to prove it.",
+      tense: "simple",
+      options: ["believed", "was believing", "had believed", "believes"],
+      correct: 0,
+      explain: "Past Simple is correct here — 'believe' is a stative verb and rarely takes a continuous form, and this is a single main-story action."
+    }
+  ],
+  reading: [
+    {
+      q: "According to the case file, how long had Harry been living in Aurora before the case reopened?",
+      options: ["Over three decades", "About five years", "Since the previous summer", "Only a few months"],
+      correct: 0,
+      explain: "The text says Harry 'had been living peacefully in the town' for the decades since Nola's disappearance."
+    },
+    {
+      q: "What was Marcus struggling with when the scandal broke?",
+      options: ["Severe writer's block", "A police investigation into himself", "A lack of money", "A disagreement with Harry"],
+      correct: 0,
+      explain: "The text states Marcus 'was struggling with a severe case of writer's block'."
+    },
+    {
+      q: "What was found in Harry Quebert's garden?",
+      options: ["Human remains", "Old love letters", "A missing manuscript", "Nola's diary"],
+      correct: 0,
+      explain: "Workers found human remains buried in the garden, which is what reopened the case."
+    },
+    {
+      q: "Why did Marcus decide to go to Aurora himself?",
+      options: ["He believed his mentor was innocent and wanted to investigate", "He was ordered to by the police", "He wanted to write a news article for money", "He was Nola's relative"],
+      correct: 0,
+      explain: "The text says Marcus was 'convinced that his mentor was innocent' and travelled there to dig deeper into the affair."
+    }
+  ]
+};
+
+/* ============ LOGIC ============ */
+function shuffle(array){
+  const arr = array.slice();
+  for(let i = arr.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+const tenseLabel = {
+  simple: {text:"Past Simple", cls:"k-simple"},
+  cont: {text:"Past Continuous", cls:"k-cont"},
+  perfect: {text:"Past Perfect", cls:"k-perfect"}
+};
+
+let totalQuestions = 0;
+let answeredCorrect = 0;
+let answeredCount = 0;
+
+function buildSection(containerId, sectionKey, sectionLabel){
+  const container = document.getElementById(containerId);
+  const rawQuestions = QUESTIONS[sectionKey];
+
+  rawQuestions.forEach((item, qIndex) => {
+    totalQuestions++;
+
+    const correctText = item.options[item.correct];
+    const shuffledOptions = shuffle(item.options);
+    const newCorrectIndex = shuffledOptions.indexOf(correctText);
+
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.id = sectionKey + '-q' + qIndex;
+
+    let tagHtml = '';
+    if(item.tense){
+      const t = tenseLabel[item.tense];
+      tagHtml = '<span class="qtag ' + t.cls + '" style="background:var(--tense-' +
+        (item.tense === 'simple' ? 'past-simple' : item.tense === 'cont' ? 'past-cont' : 'past-perfect') +
+        ');">' + t.text + '</span><br>';
+    }
+
+    card.innerHTML =
+      '<h2><span class="num">' + (qIndex + 1) + '</span>' + sectionLabel + '</h2>' +
+      tagHtml +
+      '<p class="question-text">' + item.q + '</p>' +
+      '<div class="options"></div>' +
+      '<div class="feedback"></div>' +
+      '<div class="nav-row"><button class="next-btn">Next</button></div>';
+
+    const optionsDiv = card.querySelector('.options');
+    const feedbackDiv = card.querySelector('.feedback');
+    const nextBtn = card.querySelector('.next-btn');
+
+    shuffledOptions.forEach((optText, optIndex) => {
+      const btn = document.createElement('button');
+      btn.className = 'option';
+      btn.textContent = optText;
+      btn.addEventListener('click', () => {
+        if(btn.classList.contains('locked')) return;
+        const allOpts = optionsDiv.querySelectorAll('.option');
+        allOpts.forEach(o => o.classList.add('locked'));
+
+        answeredCount++;
+        if(optIndex === newCorrectIndex){
+          btn.classList.add('correct');
+          feedbackDiv.className = 'feedback show good';
+          feedbackDiv.textContent = 'Correct — ' + item.explain;
+          answeredCorrect++;
+        } else {
+          btn.classList.add('incorrect');
+          allOpts[newCorrectIndex].classList.add('correct');
+          feedbackDiv.className = 'feedback show bad';
+          feedbackDiv.textContent = 'Not quite — ' + item.explain;
+        }
+        nextBtn.classList.add('enabled');
+        updateScoreDisplay();
+        updateProgress();
+      });
+      optionsDiv.appendChild(btn);
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if(!nextBtn.classList.contains('enabled')) return;
+      card.classList.add('hidden');
+      const next = card.nextElementSibling;
+      if(next){
+        next.classList.remove('hidden');
+      } else {
+        goToNextSectionOrResults(card);
+      }
+    });
+
+    container.appendChild(card);
+  });
+}
+
+const sectionOrder = ['quiz-vocab', 'quiz-grammar', 'quiz-reading'];
+
+function goToNextSectionOrResults(currentCard){
+  const currentContainer = currentCard.parentElement;
+  const currentIndex = sectionOrder.indexOf(currentContainer.id);
+  const nextContainerId = sectionOrder[currentIndex + 1];
+  if(nextContainerId){
+    const nextContainer = document.getElementById(nextContainerId);
+    const firstCard = nextContainer.firstElementChild;
+    if(firstCard) firstCard.classList.remove('hidden');
+  } else {
+    showResults();
+  }
+}
+
+function updateScoreDisplay(){
+  document.getElementById('scoreDisplay').textContent = 'Score: ' + answeredCorrect + ' / ' + answeredCount;
+}
+
+function updateProgress(){
+  const pct = Math.round((answeredCount / totalQuestions) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+function showResults(){
+  document.getElementById('finalScore').textContent = answeredCorrect + ' / ' + totalQuestions;
+  const pct = answeredCorrect / totalQuestions;
+  let msg;
+  if(pct === 1) msg = "Flawless investigation. You've cracked the Aurora case and the narrative tenses that go with it.";
+  else if(pct >= 0.75) msg = "Sharp detective work. A quick review of the tricky clues and you'll have this case fully closed.";
+  else if(pct >= 0.5) msg = "A solid start to the investigation — revisit the grammar box and try the case again.";
+  else msg = "The case remains open. Review narrative tenses and the vocabulary above, then reopen the file.";
+  document.getElementById('finalMsg').textContent = msg;
+  document.getElementById('resultsCard').classList.remove('hidden');
+  document.getElementById('progressFill').style.width = '100%';
+}
+
+function restartQuiz(){
+  answeredCorrect = 0;
+  answeredCount = 0;
+  updateScoreDisplay();
+  document.getElementById('progressFill').style.width = '0%';
+  document.getElementById('resultsCard').classList.add('hidden');
+
+  sectionOrder.forEach(id => {
+    const container = document.getElementById(id);
+    container.innerHTML = '';
+  });
+
+  initQuiz();
+}
+
+function initQuiz(){
+  buildSection('quiz-vocab', 'vocab', 'Vocabulary in Context');
+  buildSection('quiz-grammar', 'grammar', 'Choose the Correct Tense');
+  buildSection('quiz-reading', 'reading', 'Reading Comprehension');
+
+  sectionOrder.forEach((id, idx) => {
+    const container = document.getElementById(id);
+    Array.from(container.children).forEach((card, cIdx) => {
+      if(!(idx === 0 && cIdx === 0)){
+        card.classList.add('hidden');
+      }
+    });
+  });
+
+  updateScoreDisplay();
+  updateProgress();
+}
+
+initQuiz();
+</script>
+</body>
+</html>

@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – Modal Verbs | B1 Lesson</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --burg:       #4a1a2e;
+    --burg-mid:   #62253d;
+    --burg-light: #7d2f4e;
+    --rose:       #c47a8a;
+    --rose-pale:  #f0d8de;
+    --cream:      #fdf6f0;
+    --amber:      #c47c20;
+    --amber-light:#e8a845;
+    --crimson:    #a82020;
+    --forest:     #2a4d30;
+    --snow:       #ffffff;
+    --text-dark:  #2a1018;
+    --text-mid:   #5a3040;
+    --text-light: #9a6878;
+    --card-bg:    rgba(255,255,255,0.97);
+    --shadow:     0 8px 40px rgba(74,26,46,0.18);
+    --shadow-sm:  0 2px 12px rgba(74,26,46,0.10);
+    --radius:     18px;
+    --radius-sm:  10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--burg);
+    min-height: 100vh;
+    color: var(--text-dark);
+    overflow-x: hidden;
+  }
+
+  .bg-scene { position: fixed; inset: 0; z-index: 0; overflow: hidden; }
+  .bg-scene svg { width: 100%; height: 100%; }
+
+  .page-wrap {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 32px 16px 60px;
+  }
+
+  .logo-wrap {
+    display: flex; flex-direction: column; align-items: center;
+    margin-bottom: 28px; animation: fadeDown 0.7s ease both;
+  }
+
+  .score-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%; max-width: 760px;
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(196,122,138,0.22);
+    backdrop-filter: blur(12px);
+    border-radius: 50px; padding: 10px 22px; margin-bottom: 22px;
+    animation: fadeDown 0.8s 0.1s ease both;
+  }
+  .score-label { color: var(--rose); font-size: 13px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; }
+  .score-value { color: var(--amber-light); font-size: 16px; font-weight: 700; }
+  .progress-pill {
+    background: rgba(196,122,138,0.15); border-radius: 30px; padding: 4px 14px;
+    color: var(--rose-pale); font-size: 13px; font-weight: 500;
+  }
+
+  .section-header { text-align: center; margin-bottom: 24px; animation: fadeUp 0.6s 0.2s ease both; }
+  .section-tag {
+    display: inline-block; background: var(--amber); color: var(--snow);
+    font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    border-radius: 4px; padding: 3px 10px; margin-bottom: 10px;
+  }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(20px,4vw,28px); color: var(--snow); line-height: 1.25; }
+  .section-sub   { color: var(--rose); font-size: 14px; margin-top: 6px; opacity: 0.9; }
+
+  .lesson-card {
+    background: var(--card-bg); border-radius: var(--radius);
+    box-shadow: var(--shadow); width: 100%; max-width: 760px;
+    padding: 36px 40px; animation: fadeUp 0.6s 0.25s ease both;
+    position: relative; overflow: hidden;
+  }
+  .lesson-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--amber), var(--rose), var(--burg-light));
+  }
+  @media(max-width:600px){ .lesson-card { padding: 24px 18px; } }
+
+  .q-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-light); margin-bottom: 8px; }
+  .q-text  { font-family: 'DM Serif Display', serif; font-size: clamp(16px,3vw,20px); color: var(--burg); line-height: 1.45; margin-bottom: 24px; }
+
+  /* Grammar highlight box */
+  .grammar-box {
+    background: #fdf0e0; border-left: 4px solid var(--amber);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 14px 18px; margin-bottom: 22px; font-size: 14px;
+    color: var(--text-mid); line-height: 1.6;
+  }
+  .grammar-box strong { color: var(--burg); display: block; margin-bottom: 4px; font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase; }
+  .grammar-box code { background: rgba(74,26,46,0.08); padding: 1px 6px; border-radius: 4px; font-family: 'DM Mono', monospace; font-size: 14px; color: var(--burg); }
+
+  /* Options */
+  .options-grid { display: flex; flex-direction: column; gap: 11px; margin-bottom: 24px; }
+  .option-btn {
+    display: flex; align-items: flex-start; gap: 13px;
+    background: var(--cream); border: 2px solid #e8d0d8;
+    border-radius: var(--radius-sm); padding: 14px 18px;
+    cursor: pointer; transition: all 0.18s ease;
+    text-align: left; font-family: 'DM Sans', sans-serif;
+    font-size: 15px; color: var(--text-dark); line-height: 1.4;
+  }
+  .option-btn:hover:not(:disabled) { border-color: var(--burg-light); background: #f5e4e9; transform: translateX(3px); }
+  .option-btn:disabled { cursor: default; }
+  .opt-letter {
+    min-width: 28px; height: 28px; border-radius: 50%;
+    background: #dbb8c2; color: var(--burg); font-weight: 700; font-size: 12px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: all 0.18s;
+  }
+  .option-btn.correct  { border-color: var(--forest); background: #d8eddc; }
+  .option-btn.wrong    { border-color: var(--crimson); background: #fce8e6; }
+  .option-btn.correct .opt-letter { background: var(--forest); color: #fff; }
+  .option-btn.wrong   .opt-letter { background: var(--crimson); color: #fff; }
+  .option-btn.missed  { border-color: var(--forest); background: #e8f5ea; opacity: 0.85; }
+
+  /* Word bank */
+  .word-bank {
+    display: flex; flex-wrap: wrap; gap: 9px; padding: 16px;
+    background: var(--cream); border-radius: var(--radius-sm);
+    border: 1.5px dashed #d8b8c4; margin-bottom: 20px;
+  }
+  .word-chip {
+    background: #fff; border: 1.5px solid #dbb8c2; border-radius: 20px;
+    padding: 5px 14px; font-size: 14px; font-weight: 600; color: var(--burg);
+    cursor: pointer; transition: all 0.15s; user-select: none;
+    font-family: 'DM Mono', monospace;
+  }
+  .word-chip:hover:not(.placed) { background: var(--burg); color: #fff; border-color: var(--burg); }
+  .word-chip.placed { background: var(--burg-light); color: #fff; border-color: var(--burg-light); }
+
+  .blank-slot {
+    display: inline-block; min-width: 120px; border-bottom: 2.5px solid var(--burg-light);
+    padding: 1px 6px; margin: 0 4px; color: var(--burg-light); cursor: pointer;
+    font-style: italic; font-size: 15px; transition: border-color 0.2s; vertical-align: middle;
+    font-family: 'DM Mono', monospace;
+  }
+  .blank-slot.filled  { color: var(--burg); font-style: normal; font-weight: 700; }
+  .blank-slot.correct { border-color: var(--forest); color: var(--forest); }
+  .blank-slot.wrong   { border-color: var(--crimson); color: var(--crimson); }
+
+  /* Reorder */
+  .reorder-container { margin-bottom: 20px; }
+  .reorder-zone {
+    min-height: 56px; border: 2px dashed #d8b8c4; border-radius: var(--radius-sm);
+    background: var(--cream); padding: 10px 12px;
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 14px;
+  }
+  .reorder-zone.has-content { border-style: solid; border-color: #dbb8c2; }
+  .reorder-label-sm { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em; color: var(--text-light); margin-bottom: 7px; }
+  .reorder-chip {
+    background: #fff; border: 1.5px solid #dbb8c2; border-radius: 6px;
+    padding: 7px 13px; font-size: 14px; cursor: pointer; user-select: none;
+    transition: all 0.15s; color: var(--burg); font-weight: 500;
+  }
+  .reorder-chip:hover { background: var(--burg); color: #fff; border-color: var(--burg); }
+  .reorder-chip.placed { background: var(--burg-light); color: #fff; border-color: var(--burg-light); cursor: pointer; }
+
+  /* Error correction */
+  .error-sentence {
+    font-size: 17px; line-height: 1.8; color: var(--burg); margin-bottom: 16px;
+    padding: 14px 18px; background: var(--cream); border-radius: var(--radius-sm);
+    border: 1.5px solid #e8d0d8;
+  }
+  .error-input {
+    border: none; border-bottom: 2.5px solid var(--burg-light);
+    background: transparent; font-size: 16px; color: var(--burg);
+    font-family: 'DM Mono', monospace; padding: 2px 6px;
+    min-width: 180px; outline: none; transition: border-color 0.2s;
+  }
+  .error-input:focus { border-color: var(--amber); }
+  .error-input.correct { border-color: var(--forest); color: var(--forest); }
+  .error-input.wrong   { border-color: var(--crimson); color: var(--crimson); }
+
+  /* Feedback */
+  .feedback-box {
+    border-radius: var(--radius-sm); padding: 14px 18px; margin-top: 6px; margin-bottom: 18px;
+    font-size: 14px; line-height: 1.55; display: none; animation: popIn 0.3s ease;
+  }
+  .feedback-box.correct { background: #d8eddc; border-left: 4px solid var(--forest); color: #1a3d22; }
+  .feedback-box.wrong   { background: #fce8e6; border-left: 4px solid var(--crimson); color: #7a1a12; }
+  .feedback-box strong  { display: block; margin-bottom: 4px; font-size: 15px; }
+  .feedback-box.show    { display: block; }
+  .feedback-box code    { background: rgba(42,77,48,0.12); padding: 1px 5px; border-radius: 3px; font-family: monospace; }
+
+  /* Buttons */
+  .btn-row { display: flex; gap: 12px; justify-content: flex-end; flex-wrap: wrap; }
+  .btn {
+    border: none; border-radius: 50px; padding: 13px 30px;
+    font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600;
+    cursor: pointer; transition: all 0.2s ease; letter-spacing: 0.02em;
+  }
+  .btn-primary { background: var(--burg); color: #fff; box-shadow: 0 4px 16px rgba(74,26,46,0.25); }
+  .btn-primary:hover { background: var(--burg-light); transform: translateY(-2px); }
+  .btn-amber   { background: var(--amber); color: #fff; box-shadow: 0 4px 16px rgba(196,124,32,0.35); }
+  .btn-amber:hover { background: var(--amber-light); transform: translateY(-2px); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
+
+  .illus-strip {
+    width: 100%; max-width: 760px; margin-bottom: 18px;
+    border-radius: var(--radius); overflow: hidden;
+    box-shadow: var(--shadow); animation: fadeUp 0.6s 0.15s ease both;
+  }
+
+  /* Finish */
+  .finish-screen { text-align: center; padding: 20px 0; }
+  .finish-trophy { font-size: 64px; margin-bottom: 16px; animation: bounce 0.6s ease; }
+  .finish-title  { font-family: 'Playfair Display', serif; font-size: 30px; color: var(--burg); margin-bottom: 10px; }
+  .finish-score  { font-size: 50px; font-weight: 700; color: var(--amber); margin: 10px 0; }
+  .finish-msg    { font-size: 16px; color: var(--text-mid); margin-bottom: 28px; max-width: 440px; margin-inline: auto; }
+  .finish-bars   { display: flex; gap: 6px; justify-content: center; margin-bottom: 28px; flex-wrap: wrap; }
+  .finish-bar    { height: 8px; width: 30px; border-radius: 4px; background: #e8d0d8; transition: background 0.4s; }
+  .finish-bar.lit { background: var(--amber); }
+
+  @keyframes fadeDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeUp   { from{opacity:0;transform:translateY(20px)}  to{opacity:1;transform:translateY(0)} }
+  @keyframes popIn    { from{opacity:0;transform:scale(0.94)}       to{opacity:1;transform:scale(1)} }
+  @keyframes bounce   { 0%,100%{transform:translateY(0)} 40%{transform:translateY(-16px)} 70%{transform:translateY(-8px)} }
+  @keyframes snowfall { 0%{transform:translateY(-20px) translateX(0);opacity:.7} 100%{transform:translateY(100vh) translateX(20px);opacity:0} }
+  .snowflake { position:fixed;color:rgba(240,216,222,0.45);font-size:12px;pointer-events:none;animation:snowfall linear infinite;z-index:0; }
+</style>
+</head>
+<body>
+
+<!-- BACKGROUND – dusk alpine, warm burgundy sky -->
+<div class="bg-scene">
+  <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"   stop-color="#2a0d1e"/>
+        <stop offset="40%"  stop-color="#6b1f3a"/>
+        <stop offset="75%"  stop-color="#c4603a"/>
+        <stop offset="100%" stop-color="#e89060"/>
+      </linearGradient>
+      <linearGradient id="mtnFarG" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"   stop-color="#9a3a5c"/>
+        <stop offset="100%" stop-color="#5a2240"/>
+      </linearGradient>
+      <linearGradient id="mtnMidG" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"   stop-color="#f0ccc0"/>
+        <stop offset="35%"  stop-color="#8a4050"/>
+        <stop offset="100%" stop-color="#3a1828"/>
+      </linearGradient>
+      <linearGradient id="mtnFrontG" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"   stop-color="#ffffff"/>
+        <stop offset="20%"  stop-color="#f0ccc0"/>
+        <stop offset="60%"  stop-color="#5a2240"/>
+        <stop offset="100%" stop-color="#2a0d1e"/>
+      </linearGradient>
+      <radialGradient id="sunsetG" cx="70%" cy="70%" r="45%">
+        <stop offset="0%"   stop-color="#f0a060" stop-opacity="0.7"/>
+        <stop offset="100%" stop-color="#f0a060" stop-opacity="0"/>
+      </radialGradient>
+      <filter id="blur4"><feGaussianBlur stdDeviation="5"/></filter>
+    </defs>
+    <rect width="1440" height="900" fill="url(#skyG)"/>
+    <!-- Sunset glow -->
+    <rect width="1440" height="900" fill="url(#sunsetG)"/>
+    <!-- Stars (faint, upper sky) -->
+    <g opacity="0.6">
+      <circle cx="80"  cy="50"  r="1.2" fill="#f8d8e8"/><circle cx="220" cy="30" r="0.9" fill="#f8d8e8"/>
+      <circle cx="400" cy="60"  r="1.1" fill="#fff"/><circle cx="560" cy="25"  r="0.8" fill="#f8d8e8"/>
+      <circle cx="700" cy="45"  r="1.3" fill="#fff"/><circle cx="820" cy="20"  r="0.7" fill="#f8d8e8"/>
+      <circle cx="950" cy="55"  r="1.0" fill="#fff"/><circle cx="1060" cy="35" r="0.9" fill="#f8d8e8"/>
+      <circle cx="150" cy="80"  r="0.8" fill="#fff"/><circle cx="330" cy="90"  r="1.2" fill="#f8d8e8"/>
+    </g>
+    <!-- Far mountains silhouette -->
+    <polygon points="0,640 180,300 360,500 580,220 800,450 1020,260 1220,420 1440,300 1440,680 0,680"
+             fill="url(#mtnFarG)" filter="url(#blur4)" opacity="0.8"/>
+    <!-- Mid mountains -->
+    <polygon points="0,700 200,370 400,540 640,250 860,490 1060,300 1260,470 1440,330 1440,740 0,740"
+             fill="url(#mtnMidG)"/>
+    <!-- Snow caps mid – pink-lit -->
+    <polygon points="640,250 610,325 670,325" fill="#f8e8e0" opacity="0.9"/>
+    <polygon points="1060,300 1030,375 1090,375" fill="#f8e8e0" opacity="0.85"/>
+    <polygon points="200,370 174,440 226,440"   fill="#f0d8d0" opacity="0.8"/>
+    <!-- Front mountains -->
+    <polygon points="-50,820 240,450 480,660 710,390 960,610 1200,370 1500,620 1500,900 -50,900"
+             fill="url(#mtnFrontG)"/>
+    <!-- Snow caps front – bright pink -->
+    <polygon points="710,390 672,480 748,480" fill="#fff" opacity="0.97"/>
+    <polygon points="1200,370 1162,468 1238,468" fill="#fff" opacity="0.95"/>
+    <polygon points="240,450 210,526 270,526"  fill="#faf0f0" opacity="0.9"/>
+    <!-- Ski slope lit by dusk -->
+    <path d="M670,430 Q770,510 850,610 Q930,710 970,820 L1050,820 Q1000,710 920,610 Q830,500 730,414 Z"
+          fill="rgba(255,220,200,0.35)"/>
+    <!-- Lodge silhouette dark -->
+    <g transform="translate(270,590)">
+      <rect x="0" y="55" width="140" height="85" fill="#1a0810"/>
+      <polygon points="-18,55 70,-10 158,55" fill="#12060c"/>
+      <rect x="55" y="88" width="24" height="52" fill="#c47c20" opacity="0.5"/>
+      <rect x="18" y="70" width="22" height="16" fill="#c47c20" opacity="0.35" rx="2"/>
+      <rect x="96" y="70" width="22" height="16" fill="#c47c20" opacity="0.35" rx="2"/>
+    </g>
+    <!-- Lift cables -->
+    <line x1="360" y1="530" x2="700" y2="430" stroke="rgba(240,190,170,0.3)" stroke-width="1.5"/>
+    <line x1="700" y1="430" x2="1040" y2="340" stroke="rgba(240,190,170,0.3)" stroke-width="1.5"/>
+    <!-- Gondola chairs – lit amber -->
+    <g transform="translate(520,486)" opacity="0.8">
+      <circle cx="0" cy="-3" r="4" fill="#c47c20"/>
+      <line x1="0" y1="0" x2="-9" y2="11" stroke="#c47c20" stroke-width="1.8"/>
+      <line x1="0" y1="0" x2="9"  y2="11" stroke="#c47c20" stroke-width="1.8"/>
+      <rect x="-11" y="11" width="22" height="9" rx="3" fill="#7d2f4e" opacity="0.9"/>
+    </g>
+    <g transform="translate(838,398)" opacity="0.8">
+      <circle cx="0" cy="-3" r="4" fill="#c47c20"/>
+      <line x1="0" y1="0" x2="-9" y2="11" stroke="#c47c20" stroke-width="1.8"/>
+      <line x1="0" y1="0" x2="9"  y2="11" stroke="#c47c20" stroke-width="1.8"/>
+      <rect x="-11" y="11" width="22" height="9" rx="3" fill="#7d2f4e" opacity="0.9"/>
+    </g>
+    <!-- Pine trees (dark silhouettes) -->
+    <g fill="#12060c" opacity="0.85">
+      <polygon points="60,820 80,758 100,820"/><rect x="77" y="818" width="6" height="18" fill="#0a0408"/>
+      <polygon points="96,820 118,750 140,820"/><rect x="115" y="817" width="8" height="20" fill="#0a0408"/>
+      <polygon points="134,820 154,762 174,820"/><rect x="151" y="817" width="6" height="18" fill="#0a0408"/>
+    </g>
+    <g fill="#12060c" opacity="0.82">
+      <polygon points="1280,800 1300,740 1320,800"/><rect x="1297" y="798" width="6" height="18" fill="#0a0408"/>
+      <polygon points="1315,800 1338,742 1361,800"/><rect x="1335" y="797" width="8" height="20" fill="#0a0408"/>
+      <polygon points="1358,800 1378,752 1398,800"/><rect x="1375" y="797" width="6" height="18" fill="#0a0408"/>
+    </g>
+    <rect width="1440" height="900" fill="rgba(80,10,30,0.08)"/>
+  </svg>
+</div>
+
+<div class="page-wrap">
+
+  <!-- LOGO -->
+  <div class="logo-wrap">
+    <svg width="220" height="70" viewBox="0 0 220 70" xmlns="http://www.w3.org/2000/svg">
+      <text x="110" y="34" font-family="Georgia,'Times New Roman',serif" font-size="36" font-weight="400"
+            fill="#c47a8a" text-anchor="middle" letter-spacing="2">Forbes</text>
+      <rect x="20" y="40" width="180" height="1.5" fill="#c47c20" opacity="0.9"/>
+      <text x="110" y="62" font-family="Arial,sans-serif" font-size="17" font-weight="700"
+            fill="#f0d8de" text-anchor="middle" letter-spacing="8">ENGLISH</text>
+    </svg>
+  </div>
+
+  <!-- SCORE BAR -->
+  <div class="score-bar" id="scoreBar">
+    <span class="score-label">Score: <span class="score-value" id="scoreDisplay">0 / 0</span></span>
+    <span class="progress-pill" id="progressDisplay">Starting…</span>
+    <span class="score-label">Activity <span class="score-value" id="activityDisplay">1 / 4</span></span>
+  </div>
+
+  <!-- ILLUSTRATION STRIP -->
+  <div class="illus-strip" id="illusStrip">
+    <svg viewBox="0 0 760 160" xmlns="http://www.w3.org/2000/svg" width="100%" height="160">
+      <defs>
+        <linearGradient id="iDusk" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%"   stop-color="#2a0d1e"/>
+          <stop offset="100%" stop-color="#5a2240"/>
+        </linearGradient>
+      </defs>
+      <rect width="760" height="160" fill="url(#iDusk)"/>
+      <!-- sky glow strip -->
+      <rect width="760" height="55" fill="#c4603a" opacity="0.3"/>
+      <!-- far mountains -->
+      <polygon points="0,160 100,70 200,120 360,42 520,100 640,58 760,88 760,160" fill="#5a2240" opacity="0.7"/>
+      <!-- mid mountains -->
+      <polygon points="0,160 80,98 170,135 305,68 425,124 565,74 665,112 760,85 760,160" fill="#7d2f4e" opacity="0.55"/>
+      <!-- snow caps pink-lit -->
+      <polygon points="305,68 285,104 325,104" fill="#f8e8e0" opacity="0.9"/>
+      <polygon points="565,74 548,110 582,110" fill="#f8e8e0" opacity="0.85"/>
+      <!-- ski slope dusk ribbon -->
+      <path d="M278,82 Q340,108 378,140 L400,140 Q360,106 296,76 Z" fill="rgba(255,210,190,0.28)"/>
+      <!-- lift cable -->
+      <line x1="0" y1="36" x2="760" y2="25" stroke="rgba(240,190,170,0.25)" stroke-width="1.5"/>
+      <!-- gondola chairs -->
+      <g transform="translate(120,33)" opacity="0.75">
+        <circle cx="0" cy="-2" r="3" fill="#c47c20"/>
+        <line x1="0" y1="0" x2="-7" y2="9"  stroke="#c47c20" stroke-width="1.3"/>
+        <line x1="0" y1="0" x2="7"  y2="9"  stroke="#c47c20" stroke-width="1.3"/>
+        <rect x="-8" y="9" width="16" height="7" rx="2" fill="#7d2f4e" opacity="0.9"/>
+      </g>
+      <g transform="translate(430,27)" opacity="0.75">
+        <circle cx="0" cy="-2" r="3" fill="#c47c20"/>
+        <line x1="0" y1="0" x2="-7" y2="9"  stroke="#c47c20" stroke-width="1.3"/>
+        <line x1="0" y1="0" x2="7"  y2="9"  stroke="#c47c20" stroke-width="1.3"/>
+        <rect x="-8" y="9" width="16" height="7" rx="2" fill="#7d2f4e" opacity="0.9"/>
+      </g>
+      <!-- trees -->
+      <g fill="#1a0810" opacity="0.85">
+        <polygon points="614,160 626,128 638,160"/><rect x="624" y="158" width="4" height="10" fill="#12060c"/>
+        <polygon points="634,160 649,122 664,160"/><rect x="646" y="157" width="6" height="12" fill="#12060c"/>
+        <polygon points="660,160 672,130 684,160"/><rect x="670" y="158" width="4" height="10" fill="#12060c"/>
+        <polygon points="682,160 692,134 702,160"/><rect x="690" y="158" width="4" height="9"  fill="#12060c"/>
+        <polygon points="700,160 710,136 720,160"/><rect x="708" y="158" width="4" height="9"  fill="#12060c"/>
+        <polygon points="718,160 728,130 738,160"/><rect x="726" y="158" width="4" height="10" fill="#12060c"/>
+        <polygon points="736,160 746,138 756,160"/><rect x="744" y="158" width="4" height="9"  fill="#12060c"/>
+      </g>
+      <rect width="760" height="160" fill="rgba(30,5,15,0.38)"/>
+      <text x="380" y="64"  font-family="Georgia,serif" font-size="26" font-weight="700" fill="#f0d8de" text-anchor="middle" letter-spacing="1.5">Modal Verb Syntax</text>
+      <text x="380" y="92"  font-family="Arial,sans-serif" font-size="13" fill="#c47c20" text-anchor="middle" letter-spacing="4" font-weight="700">B1 GRAMMAR LESSON</text>
+      <text x="380" y="122" font-family="Arial,sans-serif" font-size="12" fill="rgba(240,216,222,0.7)" text-anchor="middle">can · could · must · should · might · will · would</text>
+    </svg>
+  </div>
+
+  <!-- SECTION HEADER -->
+  <div class="section-header" id="sectionHeader">
+    <div class="section-tag"  id="activityTag">Activity 1 — Multiple Choice</div>
+    <h2 class="section-title" id="activityTitle">Choose the Correct Modal</h2>
+    <p  class="section-sub"   id="activitySub">Select the modal verb that best completes each sentence.</p>
+  </div>
+
+  <!-- MAIN CARD -->
+  <div class="lesson-card" id="mainCard"></div>
+</div>
+
+<script>
+(function(){
+  for(let i=0;i<16;i++){
+    const s=document.createElement('div'); s.className='snowflake';
+    s.textContent=['❄','❅','❆'][Math.floor(Math.random()*3)];
+    s.style.cssText=`left:${Math.random()*100}vw;top:${Math.random()*-50}px;font-size:${8+Math.random()*10}px;animation-duration:${7+Math.random()*10}s;animation-delay:${Math.random()*9}s;opacity:${0.25+Math.random()*0.45}`;
+    document.body.appendChild(s);
+  }
+})();
+
+const activities = [
+
+  // ── ACTIVITY 1: Multiple Choice – Choose the correct modal ──
+  {
+    type: 'mc',
+    tag:   'Activity 1 — Multiple Choice',
+    title: 'Choose the Correct Modal',
+    sub:   'Select the modal verb that best completes each sentence.',
+    questions: [
+      {
+        hint: { label: 'Grammar focus', text: 'Use <code>can</code> to talk about present ability — something you are able to do right now.' },
+        q: 'Maria is an expert skier. She _____ ski on black runs without any difficulty.',
+        opts: [
+          { text: 'can',    letter: 'A' },
+          { text: 'must',   letter: 'B' },
+          { text: 'should', letter: 'C' },
+          { text: 'might',  letter: 'D' },
+        ],
+        correct: 0,
+        why: '<code>can</code> is the correct modal here because we are talking about Maria\'s current ability — something she is able to do. "Must" expresses obligation, "should" gives advice, and "might" expresses possibility.'
+      },
+      {
+        hint: { label: 'Grammar focus', text: 'Use <code>must</code> for strong obligations — rules you have to follow.' },
+        q: 'All skiers _____ wear a helmet on the slopes. It is a resort rule.',
+        opts: [
+          { text: 'might',  letter: 'A' },
+          { text: 'could',  letter: 'B' },
+          { text: 'must',   letter: 'C' },
+          { text: 'would',  letter: 'D' },
+        ],
+        correct: 2,
+        why: '<code>must</code> expresses a strong obligation or rule. If the resort says helmets are compulsory, "must" is the correct modal. "Might" = possibility, "could" = past ability or polite request, "would" = conditional or habit.'
+      },
+      {
+        hint: { label: 'Grammar focus', text: 'Use <code>should</code> to give advice — to say what is the right or best thing to do.' },
+        q: 'You _____ take a lesson before trying the black run. It is very steep.',
+        opts: [
+          { text: 'will',   letter: 'A' },
+          { text: 'should', letter: 'B' },
+          { text: 'must',   letter: 'C' },
+          { text: 'can',    letter: 'D' },
+        ],
+        correct: 1,
+        why: '<code>should</code> is used to give a recommendation or advice. The speaker thinks a lesson is a good idea, but it is not an absolute rule. "Must" would be too strong (an obligation), "will" is a prediction, and "can" is about ability.'
+      },
+      {
+        hint: { label: 'Grammar focus', text: 'Use <code>might</code> to talk about possibility — something that is maybe true but not certain.' },
+        q: 'The weather looks cloudy. It _____ snow this afternoon, but I am not sure.',
+        opts: [
+          { text: 'will',   letter: 'A' },
+          { text: 'must',   letter: 'B' },
+          { text: 'might',  letter: 'C' },
+          { text: 'should', letter: 'D' },
+        ],
+        correct: 2,
+        why: '<code>might</code> expresses uncertainty — the speaker thinks snow is possible but is not sure. "Will" means you are certain it will happen. "Must" is about obligation. "Should" suggests something is expected or advisable.'
+      },
+      {
+        hint: { label: 'Grammar focus', text: 'Use <code>could</code> to make a polite request, or to talk about past ability.' },
+        q: 'Excuse me, _____ you show me how to put on my ski boots, please?',
+        opts: [
+          { text: 'must',   letter: 'A' },
+          { text: 'will',   letter: 'B' },
+          { text: 'should', letter: 'C' },
+          { text: 'could',  letter: 'D' },
+        ],
+        correct: 3,
+        why: '<code>could</code> is commonly used to make polite requests. "Could you...?" is a more indirect and polite form than "Can you...?". "Must" is an obligation, "will" is too direct, and "should" gives advice rather than making a request.'
+      },
+      {
+        hint: { label: 'Grammar focus', text: 'Use <code>would</code> + <code>like</code> to express a wish or preference politely.' },
+        q: 'I _____ like to book a ski lesson for tomorrow morning, please.',
+        opts: [
+          { text: 'could',  letter: 'A' },
+          { text: 'would',  letter: 'B' },
+          { text: 'must',   letter: 'C' },
+          { text: 'might',  letter: 'D' },
+        ],
+        correct: 1,
+        why: '<code>would like</code> is the standard polite way to express a wish or to make a request in a shop or service situation. It is more formal and polite than "want". "Could" makes a question form, not a statement of wish.'
+      },
+    ]
+  },
+
+  // ── ACTIVITY 2: Fill in the Blank ──
+  {
+    type: 'fitb',
+    tag:   'Activity 2 — Fill in the Blank',
+    title: 'Complete with a Modal Verb',
+    sub:   'Click a modal from the bank, then click the gap to fill it in.',
+    questions: [
+      {
+        hint: { label: 'Grammar focus', text: 'Negative of <code>must</code>: use <code>must not</code> (mustn\'t) to say something is forbidden.' },
+        before: 'You ',
+        blank:  'must not',
+        after:  ' ski off-piste without a guide. It is extremely dangerous.',
+        why: '"Must not" (mustn\'t) expresses prohibition — something that is forbidden or not allowed. The danger of off-piste skiing without a guide makes this a strong rule, not just advice.'
+      },
+      {
+        hint: { label: 'Grammar focus', text: '<code>could</code> is the past tense of <code>can</code>. Use it for past ability.' },
+        before: 'When she was younger, Anna ',
+        blank:  'could',
+        after:  ' ski perfectly, but she has not been on the slopes for ten years.',
+        why: '"Could" is the past form of "can" and is used here to describe a past ability that no longer exists or is no longer being used. "Can" would be wrong because we need the past tense.'
+      },
+      {
+        hint: { label: 'Grammar focus', text: 'Use <code>should not</code> (shouldn\'t) to say something is a bad idea or against your advice.' },
+        before: 'You ',
+        blank:  'should not',
+        after:  ' ski alone on the mountain — always go with a friend or a guide.',
+        why: '"Should not" (shouldn\'t) is used to give negative advice — you are telling someone that something is a bad idea. It is weaker than "must not" because it is a recommendation, not a strict rule.'
+      },
+      {
+        hint: { label: 'Grammar focus', text: 'Use <code>will</code> for future facts or predictions you are sure about.' },
+        before: 'If you practise every day this week, you ',
+        blank:  'will',
+        after:  ' definitely improve your technique before the race.',
+        why: '"Will" is used here for a confident prediction about the future. The speaker is sure that daily practice will lead to improvement. "Might" would suggest uncertainty, which is not the meaning here.'
+      },
+      {
+        hint: { label: 'Grammar focus', text: 'Use <code>might not</code> to say something is possibly not going to happen — uncertain negative.' },
+        before: 'The forecast is bad, so the lift ',
+        blank:  'might not',
+        after:  ' open tomorrow. We should check the resort website.',
+        why: '"Might not" expresses uncertainty about a negative outcome — the speaker thinks there is a chance the lift will not open, but they are not certain. "Will not" would be too definite for this uncertain situation.'
+      },
+    ],
+    bank: ['can', 'could', 'might not', 'must not', 'should not', 'will', 'would', 'must']
+  },
+
+  // ── ACTIVITY 3: Error Correction ──
+  {
+    type: 'error',
+    tag:   'Activity 3 — Error Correction',
+    title: 'Find and Fix the Error',
+    sub:   'Each sentence has ONE incorrect modal verb. Type the correct modal in the box.',
+    questions: [
+      {
+        hint: { label: 'Grammar focus', text: 'Remember: ability = <code>can</code>. "Must" is for obligations, not ability.' },
+        before: 'Tom is only five years old, so he ',
+        wrong:  'must',
+        after:  ' not ski on the difficult runs yet.',
+        correct_modal: 'cannot',
+        display_wrong: 'must',
+        why: 'The sentence is about ability, not obligation. Tom is too young and unable to ski difficult runs — so <code>cannot</code> (can\'t) is correct. "Must not" means it is forbidden, but here we mean he does not have the ability.'
+      },
+      {
+        hint: { label: 'Grammar focus', text: 'A polite request uses <code>could</code> or <code>can</code> — not <code>must</code>.' },
+        before: '_____ you help me carry my skis to the chairlift, please?',
+        wrong:  'Must',
+        after:  '',
+        correct_modal: 'Could',
+        display_wrong: 'Must',
+        why: 'To make a polite request, we use <code>Could</code> (or <code>Can</code>). "Must you...?" is not used for requests — it would actually sound like you are asking someone if they are obliged to do something.'
+      },
+      {
+        hint: { label: 'Grammar focus', text: '"Should" = advice. "Will" = future certainty. Choose the one that fits the meaning.' },
+        before: 'The mountain rescue team ',
+        wrong:  'should',
+        after:  ' arrive in about twenty minutes — they called ahead to tell us.',
+        correct_modal: 'will',
+        display_wrong: 'should',
+        why: '<code>Will</code> is the right modal here because the arrival is a confirmed, certain future event — they called ahead to say so. "Should" implies an expectation or advice, not a confirmed fact.'
+      },
+      {
+        hint: { label: 'Grammar focus', text: 'Past possibility = <code>might have</code> + past participle. Not "might" alone.' },
+        before: 'We cannot find your ski poles. You ',
+        wrong:  'might leave',
+        after:  ' them at the rental shop this morning.',
+        correct_modal: 'might have left',
+        display_wrong: 'might leave',
+        why: '<code>Might have left</code> is the correct form for a past possibility (modal + have + past participle). We are speculating about something that happened in the past, so we need the perfect modal form, not the bare infinitive.'
+      },
+      {
+        hint: { label: 'Grammar focus', text: 'Advice in the past uses <code>should have</code> + past participle, not "should" + base form.' },
+        before: 'You ',
+        wrong:  'should book',
+        after:  ' the ski school earlier — now all the sessions are full.',
+        correct_modal: 'should have booked',
+        display_wrong: 'should book',
+        why: '<code>Should have booked</code> is a past modal — it expresses regret or criticism about something that did not happen. "Should book" refers to the present or future, but the booking opportunity has already passed.'
+      },
+    ]
+  },
+
+  // ── ACTIVITY 4: Sentence Reorder ──
+  {
+    type: 'reorder',
+    tag:   'Activity 4 — Sentence Reorder',
+    title: 'Build the Modal Sentence',
+    sub:   'Click the chunks in order to make a correct sentence with a modal verb.',
+    questions: [
+      {
+        hint: { label: 'Grammar focus', text: 'Modal verb syntax: <code>Subject + modal + base infinitive</code>. The infinitive never has "to" after a modal.' },
+        sentence: 'You must always check the avalanche forecast before skiing off-piste.',
+        chunks:   ['You must', 'always check', 'the avalanche forecast', 'before skiing off-piste.'],
+        why: 'Modal verbs are always followed by the base infinitive — never "to + infinitive". The structure is: Subject (<em>You</em>) + modal (<em>must</em>) + base infinitive (<em>check</em>). The adverb <em>always</em> goes between the modal and the main verb.'
+      },
+      {
+        hint: { label: 'Grammar focus', text: 'Negative modal: <code>Subject + modal + not + base infinitive</code>.' },
+        sentence: 'Beginners should not attempt the black run without an instructor.',
+        chunks:   ['Beginners', 'should not', 'attempt the black run', 'without an instructor.'],
+        why: 'Negative modals are formed with <em>modal + not</em>. The base verb (<em>attempt</em>) follows directly. Never add "to" — "should not to attempt" is wrong. The phrase "without an instructor" is an adverbial phrase at the end.'
+      },
+      {
+        hint: { label: 'Grammar focus', text: 'Question form: <code>Modal + subject + base infinitive?</code> The modal moves to the front.' },
+        sentence: 'Could you show me how to use the ski lift, please?',
+        chunks:   ['Could you', 'show me', 'how to use the ski lift,', 'please?'],
+        why: 'In questions with modal verbs, the modal comes first: <em>Could + you + base verb</em>. There is no auxiliary "do" — "Do could you...?" is wrong. "Please" is added at the end to make the request more polite.'
+      },
+      {
+        hint: { label: 'Grammar focus', text: 'Past possibility: <code>Subject + might + have + past participle</code>.' },
+        sentence: 'She might have forgotten her ski pass at the hotel.',
+        chunks:   ['She might', 'have forgotten', 'her ski pass', 'at the hotel.'],
+        why: 'Past modal structures use <em>modal + have + past participle</em>. "Might have forgotten" speculates about a past event. Using just "might forget" would refer to the future, which changes the meaning completely.'
+      },
+      {
+        hint: { label: 'Grammar focus', text: 'Past advice / regret: <code>Subject + should + have + past participle</code>.' },
+        sentence: 'We should have booked the ski school sessions in advance.',
+        chunks:   ['We should', 'have booked', 'the ski school sessions', 'in advance.'],
+        why: '"Should have booked" is the past form used to express regret or say something was the right thing to do but did not happen. This is a common B1 structure: <em>should + have + past participle</em>.'
+      },
+    ]
+  }
+];
+
+// ── STATE ──
+let actIdx=0, qIdx=0, score=0, total=0, answered=false;
+let fitbCurrent=null;
+
+function updateScoreBar(){
+  const act=activities[actIdx];
+  document.getElementById('scoreDisplay').textContent=(score+' / '+total);
+  document.getElementById('activityDisplay').textContent=((actIdx+1)+' / '+activities.length);
+  const pd=document.getElementById('progressDisplay');
+  if(act.type==='mc'||act.type==='error') pd.textContent='Question '+(qIdx+1)+' of '+act.questions.length;
+  else if(act.type==='fitb')              pd.textContent='Gap '+(qIdx+1)+' of '+act.questions.length;
+  else if(act.type==='reorder')           pd.textContent='Sentence '+(qIdx+1)+' of '+act.questions.length;
+}
+
+function setHeader(act){
+  document.getElementById('activityTag').textContent   =act.tag;
+  document.getElementById('activityTitle').textContent =act.title;
+  document.getElementById('activitySub').textContent   =act.sub;
+}
+
+function renderActivity(){
+  const act=activities[actIdx]; setHeader(act); updateScoreBar();
+  if      (act.type==='mc')     renderMC();
+  else if (act.type==='fitb')   renderFITBActivity();
+  else if (act.type==='error')  renderError();
+  else if (act.type==='reorder')renderReorder();
+}
+
+function hintHTML(hint){
+  if(!hint) return '';
+  return '<div class="grammar-box"><strong>'+hint.label+'</strong>'+hint.text+'</div>';
+}
+
+// ── MC ──
+function renderMC(){
+  const act=activities[actIdx], q=act.questions[qIdx]; answered=false;
+  document.getElementById('mainCard').innerHTML=`
+    ${hintHTML(q.hint)}
+    <div class="q-label">Question ${qIdx+1} of ${act.questions.length}</div>
+    <div class="q-text">${q.q}</div>
+    <div class="options-grid">
+      ${q.opts.map((o,i)=>`
+        <button class="option-btn" onclick="handleMC(${i})">
+          <span class="opt-letter">${o.letter}</span>
+          <span style="font-family:'DM Mono',monospace;font-weight:600;font-size:16px">${o.text}</span>
+        </button>`).join('')}
+    </div>
+    <div class="feedback-box" id="feedbackBox"></div>
+    <div class="btn-row">
+      <button class="btn btn-amber" id="nextBtn" onclick="nextMC()" style="display:none">Next →</button>
+    </div>`;
+  updateScoreBar();
+}
+
+function handleMC(chosen){
+  if(answered)return; answered=true; total++;
+  const q=activities[actIdx].questions[qIdx];
+  const btns=document.querySelectorAll('.option-btn');
+  btns.forEach(b=>b.disabled=true);
+  const ok=chosen===q.correct;
+  if(ok)score++;
+  btns[chosen].classList.add(ok?'correct':'wrong');
+  if(!ok)btns[q.correct].classList.add('missed');
+  const fb=document.getElementById('feedbackBox');
+  fb.className='feedback-box '+(ok?'correct':'wrong')+' show';
+  fb.innerHTML='<strong>'+(ok?'✓ Correct!':'✗ Not quite.')+'</strong>'+q.why;
+  document.getElementById('nextBtn').style.display='inline-block';
+  updateScoreBar();
+}
+
+function nextMC(){
+  qIdx++;
+  const act=activities[actIdx];
+  if(qIdx<act.questions.length) renderMC();
+  else{qIdx=0;actIdx++;actIdx<activities.length?renderActivity():renderFinish();}
+}
+
+// ── FITB ──
+function renderFITBActivity(){
+  const act=activities[actIdx]; fitbCurrent=null; qIdx=0; renderFITBQ();
+}
+
+function renderFITBQ(){
+  const act=activities[actIdx], q=act.questions[qIdx];
+  const bank=[...act.bank].sort(()=>Math.random()-0.5);
+  document.getElementById('mainCard').innerHTML=`
+    ${hintHTML(q.hint)}
+    <div class="q-label">Gap ${qIdx+1} of ${act.questions.length}</div>
+    <div class="q-text" style="margin-bottom:10px">Fill in the correct modal verb.</div>
+    <div style="font-size:17px;color:var(--burg);line-height:1.8;margin-bottom:20px;padding:14px 18px;background:var(--cream);border-radius:var(--radius-sm);border:1.5px solid #e8d0d8">
+      ${q.before}<span class="blank-slot" id="theSlot" onclick="fillSlot()">click to fill</span>${q.after}
+    </div>
+    <div style="margin-bottom:10px;font-size:12px;color:var(--text-light);font-weight:600;text-transform:uppercase;letter-spacing:.08em">Modal bank — select a modal, then click the gap</div>
+    <div class="word-bank" id="wordBank">
+      ${bank.map(w=>`<div class="word-chip" data-word="${w}" onclick="selectWord(this)">${w}</div>`).join('')}
+    </div>
+    <div class="feedback-box" id="feedbackBox"></div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="checkBtn" onclick="checkFITB()" disabled>Check</button>
+      <button class="btn btn-amber"   id="nextBtn"  onclick="nextFITB()" style="display:none">Next →</button>
+    </div>`;
+  fitbCurrent=null; updateScoreBar();
+}
+
+function selectWord(el){
+  if(el.classList.contains('placed'))return;
+  document.querySelectorAll('.word-chip').forEach(c=>c.style.outline='');
+  el.style.outline='2.5px solid var(--amber)';
+  fitbCurrent=el.dataset.word;
+}
+
+function fillSlot(){
+  const slot=document.getElementById('theSlot');
+  if(!fitbCurrent)return;
+  slot.textContent=fitbCurrent; slot.classList.add('filled');
+  document.querySelectorAll('.word-chip').forEach(c=>{
+    if(c.dataset.word===fitbCurrent){c.classList.add('placed');c.style.outline='';}
+    else c.style.outline='';
+  });
+  fitbCurrent=null;
+  document.getElementById('checkBtn').disabled=false;
+}
+
+function checkFITB(){
+  const q=activities[actIdx].questions[qIdx];
+  const slot=document.getElementById('theSlot');
+  const ok=slot.textContent.trim().toLowerCase()===q.blank.toLowerCase();
+  total++; if(ok)score++;
+  slot.classList.add(ok?'correct':'wrong');
+  document.getElementById('checkBtn').disabled=true;
+  const fb=document.getElementById('feedbackBox');
+  fb.className='feedback-box '+(ok?'correct':'wrong')+' show';
+  fb.innerHTML='<strong>'+(ok?'✓ Correct!':'✗ The correct modal is: <code>'+q.blank+'</code>')+'</strong>'+q.why;
+  document.getElementById('nextBtn').style.display='inline-block';
+  updateScoreBar();
+}
+
+function nextFITB(){
+  qIdx++; fitbCurrent=null;
+  const act=activities[actIdx];
+  if(qIdx<act.questions.length) renderFITBQ();
+  else{qIdx=0;actIdx++;actIdx<activities.length?renderActivity():renderFinish();}
+}
+
+// ── ERROR CORRECTION ──
+function renderError(){
+  const act=activities[actIdx], q=act.questions[qIdx]; answered=false;
+  document.getElementById('mainCard').innerHTML=`
+    ${hintHTML(q.hint)}
+    <div class="q-label">Question ${qIdx+1} of ${act.questions.length} — correct the modal verb</div>
+    <div class="q-text" style="margin-bottom:14px">Find the incorrect modal verb and type the correct one below.</div>
+    <div class="error-sentence">
+      ${q.before}<span style="background:#fce8e6;border-radius:4px;padding:2px 6px;color:var(--crimson);font-weight:700;font-family:monospace;text-decoration:underline wavy var(--crimson);">${q.display_wrong}</span>${q.after}
+    </div>
+    <div style="margin-bottom:8px;font-size:13px;color:var(--text-light);font-weight:600;text-transform:uppercase;letter-spacing:.08em">Type the correct modal verb:</div>
+    <div style="margin-bottom:20px">
+      <input class="error-input" id="errorInput" type="text" placeholder="correct modal…" autocomplete="off" spellcheck="false"
+             onkeydown="if(event.key==='Enter')checkError()">
+    </div>
+    <div class="feedback-box" id="feedbackBox"></div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="checkBtn" onclick="checkError()">Check</button>
+      <button class="btn btn-amber"   id="nextBtn"  onclick="nextError()" style="display:none">Next →</button>
+    </div>`;
+  document.getElementById('errorInput').focus();
+  updateScoreBar();
+}
+
+function checkError(){
+  if(answered)return; answered=true;
+  const q=activities[actIdx].questions[qIdx];
+  const input=document.getElementById('errorInput');
+  const given=input.value.trim().toLowerCase();
+  const ok=given===q.correct_modal.toLowerCase();
+  total++; if(ok)score++;
+  input.classList.add(ok?'correct':'wrong');
+  input.disabled=true;
+  document.getElementById('checkBtn').disabled=true;
+  const fb=document.getElementById('feedbackBox');
+  fb.className='feedback-box '+(ok?'correct':'wrong')+' show';
+  fb.innerHTML='<strong>'+(ok?'✓ Correct!':'✗ The correct modal is: <code>'+q.correct_modal+'</code>')+'</strong>'+q.why;
+  document.getElementById('nextBtn').style.display='inline-block';
+  updateScoreBar();
+}
+
+function nextError(){
+  qIdx++;
+  const act=activities[actIdx];
+  if(qIdx<act.questions.length) renderError();
+  else{qIdx=0;actIdx++;actIdx<activities.length?renderActivity():renderFinish();}
+}
+
+// ── REORDER ──
+function renderReorder(){
+  const act=activities[actIdx]; qIdx=0; renderReorderQ();
+}
+
+function renderReorderQ(){
+  const act=activities[actIdx], q=act.questions[qIdx];
+  answered=false;
+  const shuffled=[...q.chunks].sort(()=>Math.random()-0.5);
+  let placed=[], bank=[...shuffled];
+
+  document.getElementById('mainCard').innerHTML=`
+    ${hintHTML(q.hint)}
+    <div class="q-label">Sentence ${qIdx+1} of ${act.questions.length}</div>
+    <div class="q-text" style="margin-bottom:4px">Click the chunks in the correct order.</div>
+    <div class="reorder-container">
+      <div class="reorder-label-sm">Your sentence</div>
+      <div class="reorder-zone" id="dropZone"></div>
+      <div class="reorder-label-sm">Chunks</div>
+      <div class="reorder-zone" id="bankZone"></div>
+    </div>
+    <div class="feedback-box" id="feedbackBox"></div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="checkBtn" onclick="doCheckReorder()" disabled>Check</button>
+      <button class="btn btn-amber"   id="nextBtn"  onclick="nextReorder()" style="display:none">Next →</button>
+    </div>`;
+
+  const bankZone=document.getElementById('bankZone');
+  const dropZone=document.getElementById('dropZone');
+
+  function render(){
+    bankZone.innerHTML=''; dropZone.innerHTML='';
+    dropZone.classList.toggle('has-content',placed.length>0);
+    bank.forEach((chunk,i)=>{
+      const el=document.createElement('div');
+      el.className='reorder-chip'; el.textContent=chunk;
+      el.addEventListener('click',()=>{placed.push(chunk);bank.splice(i,1);document.getElementById('checkBtn').disabled=placed.length===0;render();});
+      bankZone.appendChild(el);
+    });
+    placed.forEach((chunk,i)=>{
+      const el=document.createElement('div');
+      el.className='reorder-chip placed'; el.textContent=chunk;
+      el.addEventListener('click',()=>{bank.push(chunk);placed.splice(i,1);document.getElementById('checkBtn').disabled=placed.length===0;render();});
+      dropZone.appendChild(el);
+    });
+  }
+  render(); updateScoreBar();
+  window._reorderData={q,placed,bank};
+}
+
+function doCheckReorder(){
+  const {q,placed}=window._reorderData;
+  const ok=placed.join(' ')===q.chunks.join(' ');
+  total++; if(ok)score++; answered=true;
+  document.getElementById('checkBtn').disabled=true;
+  document.querySelectorAll('.reorder-chip').forEach(el=>el.style.pointerEvents='none');
+  const fb=document.getElementById('feedbackBox');
+  fb.className='feedback-box '+(ok?'correct':'wrong')+' show';
+  fb.innerHTML=ok
+    ?'<strong>✓ Perfect!</strong>'+q.why
+    :'<strong>✗ Not quite. The correct sentence is:</strong><br><em>"'+q.sentence+'"</em><br><br>'+q.why;
+  document.getElementById('nextBtn').style.display='inline-block';
+  updateScoreBar();
+}
+
+function nextReorder(){
+  qIdx++;
+  const act=activities[actIdx];
+  if(qIdx<act.questions.length) renderReorderQ();
+  else{qIdx=0;actIdx++;actIdx<activities.length?renderActivity():renderFinish();}
+}
+
+// ── FINISH ──
+function renderFinish(){
+  const pct=Math.round(score/total*100);
+  let msg,emoji;
+  if(pct>=90){msg="Outstanding! You have an excellent command of modal verbs. You are ready to use them confidently in conversation!";emoji="🏆";}
+  else if(pct>=70){msg="Well done! You understand most modal verbs well. Keep practising the tricky ones like past modals!";emoji="🎿";}
+  else if(pct>=50){msg="Good effort! Modal verbs can be tricky. Review the grammar notes and try the lesson again.";emoji="⛷️";}
+  else{msg="Keep going! Read the explanations carefully for each question — they will help you understand modal verbs better.";emoji="❄️";}
+
+  document.getElementById('sectionHeader').style.display='none';
+  document.getElementById('illusStrip').style.display='none';
+  const bars=Array.from({length:total},(_,i)=>'<div class="finish-bar'+(i<score?' lit':'')+'"></div>').join('');
+  document.getElementById('mainCard').innerHTML=`
+    <div class="finish-screen">
+      <div class="finish-trophy">${emoji}</div>
+      <div class="finish-title">Lesson Complete!</div>
+      <div class="finish-score">${score}<span style="font-size:24px;color:var(--text-light)"> / ${total}</span></div>
+      <div class="finish-msg">${msg}</div>
+      <div class="finish-bars">${bars}</div>
+      <div class="btn-row" style="justify-content:center">
+        <button class="btn btn-amber" onclick="restartLesson()">↺ Restart Lesson</button>
+      </div>
+    </div>`;
+  document.getElementById('activityTag').textContent  ='Lesson Complete';
+  document.getElementById('activityTitle').textContent='Score: '+pct+'%';
+  document.getElementById('activitySub').textContent  ='Thank you for completing the Forbes English Modal Verbs lesson.';
+  updateScoreBar();
+}
+
+function restartLesson(){
+  actIdx=0;qIdx=0;score=0;total=0;answered=false;fitbCurrent=null;
+  document.getElementById('sectionHeader').style.display='';
+  document.getElementById('illusStrip').style.display='';
+  renderActivity();
+}
+
+renderActivity();
+</script>
+</body>
+</html>

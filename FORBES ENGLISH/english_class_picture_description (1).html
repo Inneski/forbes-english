@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Forbes English — Describing a Picture</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #111010;
+    --ink-mid: #3a3838;
+    --ink-light: #7a7878;
+    --ink-faint: #c8c4c0;
+    --paper: #e8e4e0;
+    --paper-warm: #dedad6;
+    --paper-card: #f0ece8;
+    --green-ok: #2d5a27;
+    --red-no: #7a1f1f;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(17,16,16,0.032) 28px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .page-wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 2rem 6rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* MASTHEAD — inline, same max-width as content */
+  .masthead {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2rem 2rem 0;
+    display: flex;
+    align-items: flex-end;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .logo-lockup { display: flex; flex-direction: column; line-height: 1; }
+  .logo-forbes {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(38px, 6.5vw, 58px);
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    line-height: 0.92;
+  }
+  .logo-rule { height: 1.5px; background: var(--ink-light); margin: 5px 0 4px; width: 100%; }
+  .logo-english {
+    font-family: 'Source Serif 4', serif;
+    font-size: clamp(11px, 1.8vw, 16px);
+    font-weight: 400;
+    color: var(--ink);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  /* LESSON HEADER */
+  .lesson-header {
+    border-bottom: 2px solid var(--ink);
+    padding: 1.4rem 0 1.4rem;
+    margin-bottom: 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    font-family: 'Source Serif 4', serif;
+    margin-bottom: 0.3rem;
+  }
+  h1 { font-family: 'Playfair Display', serif; font-size: clamp(26px, 4.5vw, 40px); font-weight: 700; line-height: 1.1; color: var(--ink); }
+  h1 em { font-style: italic; }
+  .lesson-meta { text-align: right; font-size: 12px; color: var(--ink-light); line-height: 2; font-style: italic; }
+
+  /* SECTION TITLES */
+  .section-title {
+    font-family: 'Source Serif 4', serif;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .section-title::after { content: ''; flex: 1; height: 0.5px; background: var(--ink-faint); }
+
+  /* SCENE */
+  .scene-wrap { margin-bottom: 3rem; }
+  .scene-frame {
+    border: 1px solid var(--ink-faint);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 0.6rem;
+    background: var(--paper-warm);
+    box-shadow: 5px 5px 0 var(--ink-faint);
+  }
+  .scene-caption { font-size: 12px; font-style: italic; color: var(--ink-light); text-align: center; padding: 0.4rem; }
+
+  /* VOCAB */
+  .vocab-intro { font-size: 14px; color: var(--ink-mid); margin-bottom: 1.25rem; line-height: 1.6; font-weight: 300; }
+  .vocab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; margin-bottom: 3rem; }
+  .vocab-card {
+    background: var(--paper-card);
+    border: 1px solid var(--ink-faint);
+    padding: 0.9rem 1rem;
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+    position: relative;
+  }
+  .vocab-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--ink); opacity: 0; transition: opacity 0.15s; }
+  .vocab-card:hover { border-color: var(--ink-mid); box-shadow: 3px 3px 0 var(--ink-faint); transform: translate(-1px,-1px); }
+  .vocab-card.open { border-color: var(--ink); box-shadow: 3px 3px 0 rgba(17,16,16,0.15); }
+  .vocab-card.open::before { opacity: 1; }
+  .vocab-word { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 500; color: var(--ink); }
+  .vocab-pos { font-size: 11px; color: var(--ink-light); font-style: italic; margin-bottom: 0.35rem; }
+  .vocab-def { font-size: 12.5px; color: var(--ink-mid); line-height: 1.5; font-weight: 300; max-height: 0; overflow: hidden; transition: max-height 0.3s ease, opacity 0.2s; opacity: 0; }
+  .vocab-card.open .vocab-def { max-height: 120px; opacity: 1; }
+  .vocab-toggle { position: absolute; top: 0.85rem; right: 0.85rem; font-size: 16px; color: var(--ink-faint); transition: transform 0.2s; line-height: 1; }
+  .vocab-card.open .vocab-toggle { transform: rotate(45deg); color: var(--ink); }
+
+  /* TIPS */
+  .tips-box {
+    background: var(--paper-card);
+    border: 1px solid var(--ink-faint);
+    border-left: 3px solid var(--ink);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 3rem;
+  }
+  .tips-box h3 { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 500; color: var(--ink); margin-bottom: 0.7rem; }
+  .tips-box ul { padding-left: 1.2rem; }
+  .tips-box li { font-size: 13px; color: var(--ink-mid); line-height: 1.9; font-weight: 300; }
+
+  /* EXERCISES */
+  .exercise-block { margin-bottom: 3rem; }
+  .exercise-description { font-size: 14px; color: var(--ink-mid); line-height: 1.7; margin-bottom: 1.25rem; padding-left: 1rem; border-left: 2px solid var(--ink-faint); font-weight: 300; }
+
+  .progress-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+  .progress-track { flex: 1; height: 3px; background: var(--ink-faint); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--ink); border-radius: 2px; width: 0%; transition: width 0.4s ease; }
+  .progress-label { font-size: 12px; color: var(--ink-light); white-space: nowrap; }
+
+  .fill-sentence { background: var(--paper-card); border: 1px solid var(--ink-faint); padding: 0.9rem 1.25rem; margin-bottom: 9px; font-size: 15px; line-height: 2.1; transition: border-color 0.15s; }
+  .fill-sentence.answered-right { border-left: 3px solid var(--green-ok); }
+  .fill-sentence.answered-wrong { border-left: 3px solid var(--red-no); }
+
+  .blank-select {
+    font-family: 'Source Serif 4', serif; font-size: 15px; font-style: italic;
+    background: transparent; border: none; border-bottom: 1.5px solid var(--ink-faint);
+    color: var(--ink); padding: 0 18px 0 4px; cursor: pointer; outline: none; min-width: 130px;
+    -webkit-appearance: none; appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237a7878'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 4px center;
+    transition: border-color 0.15s;
+  }
+  .blank-select:focus { border-color: var(--ink); }
+  .blank-select.correct { border-color: var(--green-ok); color: var(--green-ok); }
+  .blank-select.wrong { border-color: var(--red-no); color: var(--red-no); }
+  .feedback-line { font-family: 'Source Serif 4', serif; font-size: 12px; margin-top: 3px; display: none; font-style: italic; }
+  .feedback-line.ok { color: var(--green-ok); display: block; }
+  .feedback-line.err { color: var(--red-no); display: block; }
+
+  /* WRITING */
+  .word-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1rem; }
+  .chip { font-family: 'Source Serif 4', serif; font-size: 12px; font-style: italic; padding: 3px 12px; border: 1px solid var(--ink-faint); border-radius: 20px; color: var(--ink-light); background: var(--paper-card); transition: all 0.2s; }
+  .chip.used { border-color: var(--green-ok); color: var(--green-ok); background: rgba(45,90,39,0.06); }
+  .writing-area { width: 100%; min-height: 140px; border: 1px solid var(--ink-faint); background: var(--paper-card); font-family: 'Source Serif 4', serif; font-size: 15px; font-weight: 300; color: var(--ink); padding: 1rem 1.25rem; resize: vertical; outline: none; line-height: 1.8; transition: border-color 0.15s; border-radius: 0; }
+  .writing-area:focus { border-color: var(--ink-mid); }
+  .word-count { font-size: 12px; color: var(--ink-light); text-align: right; margin-top: 0.4rem; font-style: italic; }
+
+  .btn { margin-top: 0.75rem; padding: 8px 22px; font-family: 'Source Serif 4', serif; font-size: 14px; border: 1px solid var(--ink-mid); background: transparent; color: var(--ink); cursor: pointer; letter-spacing: 0.04em; transition: background 0.15s, color 0.15s; }
+  .btn:hover { background: var(--ink); color: var(--paper); }
+
+  /* MODEL */
+  .model-box { background: var(--paper-card); border: 1px solid var(--ink-faint); border-left: 3px solid var(--ink); }
+  .model-header { padding: 0.85rem 1.25rem; border-bottom: 1px solid var(--ink-faint); font-size: 13px; color: var(--ink-light); display: flex; justify-content: space-between; align-items: center; }
+  .model-text { padding: 1.25rem; font-size: 15px; line-height: 1.9; font-weight: 300; display: none; }
+  .model-text.visible { display: block; }
+  .model-text mark { background: rgba(17,16,16,0.10); color: var(--ink); font-style: italic; padding: 0 2px; font-weight: 500; }
+
+  /* FOOTER */
+  footer { border-top: 1px solid var(--ink-faint); padding-top: 1.5rem; margin-top: 3rem; font-size: 12px; color: var(--ink-faint); font-style: italic; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+  .footer-logo { font-family: 'Playfair Display', serif; font-size: 13px; font-weight: 700; color: var(--ink-faint); font-style: normal; }
+
+  @media (max-width: 600px) {
+    .masthead { padding: 1.5rem 1.25rem 0; }
+    .page-wrap { padding: 0 1.25rem 4rem; }
+    .vocab-grid { grid-template-columns: 1fr 1fr; }
+    .lesson-header { flex-direction: column; align-items: flex-start; }
+    .lesson-meta { text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="logo-lockup">
+    <div class="logo-forbes">Forbes</div>
+    <div class="logo-rule"></div>
+    <div class="logo-english">English</div>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <div class="lesson-header">
+    <div>
+      <div class="eyebrow">Language Class · Lesson 04</div>
+      <h1>Describing <em>a Picture</em></h1>
+    </div>
+    <div class="lesson-meta">9 vocabulary words<br>3 exercises</div>
+  </div>
+
+  <!-- SCENE -->
+  <div class="scene-wrap">
+    <div class="section-title">The scene</div>
+    <div class="scene-frame">
+      <svg viewBox="0 0 860 320" xmlns="http://www.w3.org/2000/svg" width="100%" style="display:block;">
+        <defs>
+          <!-- sky gradient -->
+          <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#9e9990"/>
+            <stop offset="100%" stop-color="#b8b2a8"/>
+          </linearGradient>
+          <!-- ground gradient -->
+          <linearGradient id="groundGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#706a60"/>
+            <stop offset="100%" stop-color="#58524a"/>
+          </linearGradient>
+          <!-- label pill -->
+          <filter id="labelBg" x="-8%" y="-20%" width="116%" height="140%">
+            <feFlood flood-color="#111010" flood-opacity="0.72" result="bg"/>
+            <feMerge><feMergeNode in="bg"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- SKY -->
+        <rect width="860" height="320" fill="url(#skyGrad)"/>
+        <!-- CLOUDS -->
+        <ellipse cx="90"  cy="55" rx="78" ry="28" fill="#ccc8c0" opacity="0.55"/>
+        <ellipse cx="175" cy="44" rx="108" ry="35" fill="#c4c0b8" opacity="0.5"/>
+        <ellipse cx="310" cy="62" rx="72" ry="25" fill="#ccc8c0" opacity="0.45"/>
+        <ellipse cx="490" cy="40" rx="118" ry="37" fill="#c8c4bc" opacity="0.55"/>
+        <ellipse cx="615" cy="52" rx="82" ry="29" fill="#c0bcb4" opacity="0.5"/>
+        <ellipse cx="760" cy="44" rx="92" ry="31" fill="#ccc8c0" opacity="0.5"/>
+
+        <!-- HILLS -->
+        <polygon points="0,165 85,112 170,145 280,94 390,126 510,84 630,119 750,82 860,99 860,182 0,182" fill="#908a80"/>
+        <!-- MIDGROUND -->
+        <polygon points="0,178 58,158 140,170 240,152 380,166 510,148 648,162 758,148 860,160 860,230 0,230" fill="#787068"/>
+        <!-- GROUND -->
+        <rect x="0" y="220" width="860" height="100" fill="url(#groundGrad)"/>
+        <!-- grass tufts on ground -->
+        <ellipse cx="240" cy="222" rx="35" ry="5" fill="#686260" opacity="0.4"/>
+        <ellipse cx="500" cy="222" rx="40" ry="5" fill="#686260" opacity="0.35"/>
+        <ellipse cx="720" cy="222" rx="30" ry="4" fill="#686260" opacity="0.3"/>
+        <!-- PATH -->
+        <polygon points="378,320 414,222 450,222 486,320" fill="#504a42" opacity="0.5"/>
+
+        <!-- ===== RUINED BUILDING (LEFT) ===== -->
+        <!-- far-left isolated stub -->
+        <rect x="36" y="158" width="15" height="64" fill="#3e3a34"/>
+        <polygon points="36,158 40,148 45,157 50,144 51,158" fill="#3e3a34"/>
+        <!-- main left tall fragment -->
+        <rect x="53" y="90" width="27" height="132" fill="#4c4840"/>
+        <polygon points="53,90 57,79 63,91 68,75 74,88 78,80 80,90" fill="#4c4840"/>
+        <!-- cracks -->
+        <line x1="64" y1="95"  x2="61" y2="188" stroke="#252220" stroke-width="1.2" opacity="0.55"/>
+        <line x1="71" y1="108" x2="74" y2="162" stroke="#252220" stroke-width="0.7" opacity="0.3"/>
+        <!-- spall chunk -->
+        <polygon points="53,128 68,126 66,144 53,147" fill="#3c3830"/>
+        <!-- right of aperture: shorter wall -->
+        <rect x="130" y="150" width="26" height="72" fill="#484440"/>
+        <polygon points="130,150 135,138 141,151 147,140 152,151 156,144 156,150" fill="#484440"/>
+        <!-- tiny far right stub -->
+        <rect x="156" y="170" width="15" height="52" fill="#403c38"/>
+        <polygon points="156,170 160,162 164,170 168,163 171,170" fill="#403c38"/>
+        <!-- leaning fallen slab -->
+        <polygon points="172,198 194,192 198,222 166,222" fill="#383430" opacity="0.85"/>
+
+        <!-- ===== APERTURE — proper arched opening ===== -->
+        <!-- Stone surround (wall fill on left side of aperture) -->
+        <rect x="80" y="120" width="50" height="102" fill="#46423c"/>
+        <!-- Arch shape cut out: rectangle + semicircle top -->
+        <!-- sky/landscape visible through arch -->
+        <rect x="86" y="152" width="38" height="70" fill="#9a9890"/>
+        <ellipse cx="105" cy="152" rx="19" ry="19" fill="#9a9890"/>
+        <!-- slight depth/shadow on arch rim -->
+        <rect x="86" y="152" width="38" height="70" fill="none" stroke="#2a2620" stroke-width="2.5" opacity="0.35"/>
+        <ellipse cx="105" cy="152" rx="19" ry="19" fill="none" stroke="#2a2620" stroke-width="2.5" opacity="0.35"/>
+        <!-- keystone -->
+        <polygon points="99,133 105,128 111,133 109,140 101,140" fill="#3c3830"/>
+        <!-- mid-distance view through arch: hazy hills -->
+        <ellipse cx="105" cy="165" rx="17" ry="8" fill="#888480" opacity="0.5"/>
+        <ellipse cx="105" cy="175" rx="15" ry="5" fill="#707068" opacity="0.4"/>
+
+        <!-- Rubble piles -->
+        <polygon points="36,222 66,206 92,218 120,202 150,214 178,200 202,215 204,226 36,226" fill="#383430"/>
+        <polygon points="44,226 84,212 122,220 158,208 196,218 204,226 44,226" fill="#302c28"/>
+        <ellipse cx="54"  cy="231" rx="13" ry="5" fill="#3c3830"/>
+        <ellipse cx="82"  cy="235" rx="10" ry="4" fill="#302c28"/>
+        <ellipse cx="113" cy="228" rx="14" ry="5" fill="#3c3830"/>
+        <ellipse cx="146" cy="232" rx="11" ry="4" fill="#302c28"/>
+        <ellipse cx="176" cy="226" rx="9"  ry="3" fill="#3c3830"/>
+        <ellipse cx="38"  cy="240" rx="7"  ry="3" fill="#383430"/>
+        <ellipse cx="206" cy="237" rx="11" ry="4" fill="#383430"/>
+        <ellipse cx="220" cy="245" rx="7"  ry="3" fill="#302c28"/>
+
+        <!-- ===== RIGHT BUILDING — manor house, warm stone ===== -->
+        <!-- main body -->
+        <rect x="638" y="52" width="192" height="172" fill="#6a6358"/>
+        <!-- stone texture bands -->
+        <line x1="638" y1="80"  x2="830" y2="80"  stroke="#5a5348" stroke-width="0.8" opacity="0.5"/>
+        <line x1="638" y1="108" x2="830" y2="108" stroke="#5a5348" stroke-width="0.8" opacity="0.4"/>
+        <line x1="638" y1="136" x2="830" y2="136" stroke="#5a5348" stroke-width="0.8" opacity="0.4"/>
+        <line x1="638" y1="164" x2="830" y2="164" stroke="#5a5348" stroke-width="0.8" opacity="0.35"/>
+        <line x1="638" y1="192" x2="830" y2="192" stroke="#5a5348" stroke-width="0.8" opacity="0.35"/>
+        <!-- gabled roof -->
+        <polygon points="628,54 830,54 816,34 642,34" fill="#524e46"/>
+        <!-- roof ridge detail -->
+        <line x1="642" y1="34" x2="816" y2="34" stroke="#3e3c36" stroke-width="1.5"/>
+        <!-- two chimneys -->
+        <rect x="668" y="14" width="16" height="24" fill="#484440"/>
+        <rect x="663" y="11" width="26" height="5" fill="#38363060"/>
+        <rect x="790" y="16" width="16" height="22" fill="#484440"/>
+        <rect x="785" y="13" width="26" height="5" fill="#383630" opacity="0.9"/>
+        <!-- central gable pediment -->
+        <polygon points="712,34 760,34 736,20" fill="#484440"/>
+        <rect x="726" y="22" width="20" height="14" fill="#7a9aaa" opacity="0.5" rx="10" ry="7"/>
+
+        <!-- FENESTRATION — tall elegant arched windows, 4 rows × 4 cols -->
+        <!-- Row 1 -->
+        <rect x="652" y="62" width="24" height="34" fill="#7a9aaa" rx="12" ry="12" opacity="0.75"/>
+        <rect x="684" y="62" width="24" height="34" fill="#8aaaba" rx="12" ry="12" opacity="0.7"/>
+        <rect x="752" y="62" width="24" height="34" fill="#7a9aaa" rx="12" ry="12" opacity="0.8"/>
+        <rect x="784" y="62" width="24" height="34" fill="#6a8a9a" rx="12" ry="12" opacity="0.6"/>
+        <!-- mullion lines row 1 -->
+        <line x1="664" y1="63" x2="664" y2="95" stroke="#58524a" stroke-width="0.6" opacity="0.5"/>
+        <line x1="696" y1="63" x2="696" y2="95" stroke="#58524a" stroke-width="0.6" opacity="0.5"/>
+        <line x1="764" y1="63" x2="764" y2="95" stroke="#58524a" stroke-width="0.6" opacity="0.5"/>
+        <line x1="796" y1="63" x2="796" y2="95" stroke="#58524a" stroke-width="0.6" opacity="0.5"/>
+        <!-- Row 2 -->
+        <rect x="652" y="102" width="24" height="34" fill="#7a9aaa" rx="12" ry="12" opacity="0.6"/>
+        <rect x="684" y="102" width="24" height="34" fill="#1c1a16" rx="12" ry="12" opacity="0.85"/>
+        <rect x="752" y="102" width="24" height="34" fill="#8aaaba" rx="12" ry="12" opacity="0.7"/>
+        <rect x="784" y="102" width="24" height="34" fill="#7a9aaa" rx="12" ry="12" opacity="0.75"/>
+        <line x1="664" y1="103" x2="664" y2="135" stroke="#58524a" stroke-width="0.6" opacity="0.5"/>
+        <line x1="696" y1="103" x2="696" y2="135" stroke="#58524a" stroke-width="0.6" opacity="0.5"/>
+        <line x1="764" y1="103" x2="764" y2="135" stroke="#58524a" stroke-width="0.6" opacity="0.5"/>
+        <line x1="796" y1="103" x2="796" y2="135" stroke="#58524a" stroke-width="0.6" opacity="0.5"/>
+        <!-- Row 3 -->
+        <rect x="652" y="142" width="24" height="34" fill="#6a8a9a" rx="12" ry="12" opacity="0.65"/>
+        <rect x="684" y="142" width="24" height="34" fill="#7a9aaa" rx="12" ry="12" opacity="0.8"/>
+        <rect x="752" y="142" width="24" height="34" fill="#1c1a16" rx="12" ry="12" opacity="0.8"/>
+        <rect x="784" y="142" width="24" height="34" fill="#8aaaba" rx="12" ry="12" opacity="0.65"/>
+        <line x1="664" y1="143" x2="664" y2="175" stroke="#58524a" stroke-width="0.6" opacity="0.5"/>
+        <line x1="696" y1="143" x2="696" y2="175" stroke="#58524a" stroke-width="0.6" opacity="0.5"/>
+        <line x1="764" y1="143" x2="764" y2="175" stroke="#58524a" stroke-width="0.6" opacity="0.5"/>
+        <line x1="796" y1="143" x2="796" y2="175" stroke="#58524a" stroke-width="0.6" opacity="0.5"/>
+        <!-- Row 4 — smaller, near top -->
+        <rect x="652" y="182" width="24" height="30" fill="#7a9aaa" rx="12" ry="12" opacity="0.55"/>
+        <rect x="684" y="182" width="24" height="30" fill="#6a8a9a" rx="12" ry="12" opacity="0.7"/>
+        <rect x="752" y="182" width="24" height="30" fill="#7a9aaa" rx="12" ry="12" opacity="0.75"/>
+        <rect x="784" y="182" width="24" height="30" fill="#8aaaba" rx="12" ry="12" opacity="0.6"/>
+        <!-- central door — arched, elegant -->
+        <rect x="706" y="192" width="36" height="32" fill="#1c1a16" rx="18" ry="18"/>
+        <rect x="706" y="206" width="36" height="18" fill="#1c1a16"/>
+        <!-- door surround -->
+        <rect x="703" y="192" width="42" height="32" fill="none" stroke="#58524a" stroke-width="1.5" rx="21" ry="21"/>
+        <!-- corner quoins -->
+        <rect x="638" y="54"  width="10" height="18" fill="#5a5448" opacity="0.7"/>
+        <rect x="638" y="76"  width="8"  height="14" fill="#5a5448" opacity="0.5"/>
+        <rect x="638" y="94"  width="10" height="18" fill="#5a5448" opacity="0.7"/>
+        <rect x="820" y="54"  width="10" height="18" fill="#5a5448" opacity="0.7"/>
+        <rect x="820" y="76"  width="8"  height="14" fill="#5a5448" opacity="0.5"/>
+        <rect x="820" y="94"  width="10" height="18" fill="#5a5448" opacity="0.7"/>
+
+        <!-- ===== FOREGROUND ANIMALS ===== -->
+
+        <!-- SHEEP 1 — left of centre, facing right -->
+        <g transform="translate(285,230)">
+          <!-- body -->
+          <ellipse cx="0" cy="0" rx="22" ry="14" fill="#d8d4cc"/>
+          <!-- woolly bumps -->
+          <ellipse cx="-12" cy="-8" rx="10" ry="9" fill="#dedad4"/>
+          <ellipse cx="0"  cy="-11" rx="11" ry="9" fill="#e0dcd6"/>
+          <ellipse cx="12" cy="-8"  rx="10" ry="9" fill="#dedad4"/>
+          <!-- head -->
+          <ellipse cx="22" cy="-6" rx="8" ry="7" fill="#b8b4ae"/>
+          <!-- ear -->
+          <ellipse cx="26" cy="-11" rx="4" ry="3" fill="#a8a4a0" transform="rotate(-20,26,-11)"/>
+          <!-- eye -->
+          <circle cx="25" cy="-8" r="1.5" fill="#2a2820"/>
+          <!-- nose -->
+          <ellipse cx="29" cy="-4" rx="2" ry="1.5" fill="#9a9890"/>
+          <!-- legs -->
+          <rect x="-14" y="12" width="5" height="14" fill="#a0a09a" rx="2"/>
+          <rect x="-4"  y="13" width="5" height="14" fill="#a0a09a" rx="2"/>
+          <rect x="6"   y="12" width="5" height="14" fill="#a0a09a" rx="2"/>
+          <rect x="16"  y="11" width="5" height="13" fill="#a0a09a" rx="2"/>
+          <!-- hooves -->
+          <rect x="-14" y="24" width="5" height="4" fill="#3a3830" rx="1"/>
+          <rect x="-4"  y="25" width="5" height="4" fill="#3a3830" rx="1"/>
+          <rect x="6"   y="24" width="5" height="4" fill="#3a3830" rx="1"/>
+          <rect x="16"  y="23" width="5" height="4" fill="#3a3830" rx="1"/>
+          <!-- tail -->
+          <ellipse cx="-23" cy="-2" rx="5" ry="4" fill="#d0ccc6"/>
+        </g>
+
+        <!-- SHEEP 2 — smaller, slightly behind, facing left -->
+        <g transform="translate(360,238) scale(-0.78,0.78)">
+          <ellipse cx="0" cy="0" rx="22" ry="14" fill="#cccac4"/>
+          <ellipse cx="-12" cy="-8" rx="10" ry="9" fill="#d4d0ca"/>
+          <ellipse cx="0"   cy="-11" rx="11" ry="9" fill="#d8d4ce"/>
+          <ellipse cx="12"  cy="-8"  rx="10" ry="9" fill="#d4d0ca"/>
+          <ellipse cx="22" cy="-6" rx="8" ry="7" fill="#b0aca8"/>
+          <ellipse cx="26" cy="-11" rx="4" ry="3" fill="#a0a09a" transform="rotate(-20,26,-11)"/>
+          <circle cx="25" cy="-8" r="1.5" fill="#2a2820"/>
+          <ellipse cx="29" cy="-4" rx="2" ry="1.5" fill="#928e8a"/>
+          <rect x="-14" y="12" width="5" height="13" fill="#989692" rx="2"/>
+          <rect x="-4"  y="13" width="5" height="13" fill="#989692" rx="2"/>
+          <rect x="6"   y="12" width="5" height="13" fill="#989692" rx="2"/>
+          <rect x="16"  y="11" width="5" height="12" fill="#989692" rx="2"/>
+          <rect x="-14" y="23" width="5" height="4" fill="#3a3830" rx="1"/>
+          <rect x="-4"  y="24" width="5" height="4" fill="#3a3830" rx="1"/>
+          <rect x="6"   y="23" width="5" height="4" fill="#3a3830" rx="1"/>
+          <rect x="16"  y="22" width="5" height="4" fill="#3a3830" rx="1"/>
+          <ellipse cx="-23" cy="-2" rx="5" ry="4" fill="#ccc8c2"/>
+        </g>
+
+        <!-- LLAMA — right of centre, proud stance, facing left -->
+        <g transform="translate(530,200)">
+          <!-- long neck -->
+          <rect x="-6" y="-68" width="18" height="62" fill="#c8a870" rx="6"/>
+          <!-- neck shading -->
+          <rect x="-6" y="-68" width="5" height="62" fill="#b89860" rx="4" opacity="0.5"/>
+          <!-- head -->
+          <ellipse cx="4" cy="-76" rx="13" ry="11" fill="#c8a870"/>
+          <!-- snout elongated -->
+          <rect x="-4" y="-72" width="22" height="10" fill="#c0a068" rx="5"/>
+          <!-- nostril -->
+          <ellipse cx="16" cy="-67" rx="2.5" ry="2" fill="#a07848"/>
+          <!-- eye -->
+          <circle cx="8" cy="-80" r="3" fill="#1e1c18"/>
+          <circle cx="9" cy="-81" r="1" fill="#e8e0d0"/>
+          <!-- ear left -->
+          <polygon points="-2,-85 2,-98 8,-86" fill="#c8a870"/>
+          <polygon points="-1,-86 2,-95 7,-87" fill="#d8b880" opacity="0.7"/>
+          <!-- ear right -->
+          <polygon points="8,-85 14,-97 18,-85" fill="#c8a870"/>
+          <polygon points="9,-86 14,-94 17,-86" fill="#d8b880" opacity="0.7"/>
+          <!-- body -->
+          <ellipse cx="0" cy="-8" rx="28" ry="22" fill="#c4a46c"/>
+          <!-- body shading -->
+          <ellipse cx="-10" cy="-5" rx="12" ry="18" fill="#b89860" opacity="0.35"/>
+          <!-- fluffy chest -->
+          <ellipse cx="14" cy="-18" rx="10" ry="12" fill="#d8b87a" opacity="0.8"/>
+          <!-- tail -->
+          <ellipse cx="-26" cy="-12" rx="6" ry="4" fill="#b89860" transform="rotate(15,-26,-12)"/>
+          <!-- front legs -->
+          <rect x="8"  y="12" width="9" height="30" fill="#b89050" rx="3"/>
+          <rect x="18" y="12" width="9" height="28" fill="#b89050" rx="3"/>
+          <!-- back legs -->
+          <rect x="-18" y="12" width="9" height="32" fill="#b89050" rx="3"/>
+          <rect x="-8"  y="12" width="9" height="30" fill="#b89050" rx="3"/>
+          <!-- hooves -->
+          <rect x="8"   y="40" width="9" height="5" fill="#3a3028" rx="2"/>
+          <rect x="18"  y="38" width="9" height="5" fill="#3a3028" rx="2"/>
+          <rect x="-18" y="42" width="9" height="5" fill="#3a3028" rx="2"/>
+          <rect x="-8"  y="40" width="9" height="5" fill="#3a3028" rx="2"/>
+        </g>
+
+        <!-- FOREGROUND DEBRIS -->
+        <ellipse cx="248" cy="250" rx="14" ry="4" fill="#3c3830"/>
+        <ellipse cx="400" cy="248" rx="20" ry="6" fill="#383430"/>
+        <ellipse cx="456" cy="254" rx="9"  ry="3" fill="#302c28"/>
+        <ellipse cx="600" cy="244" rx="26" ry="7" fill="#3c3830"/>
+        <ellipse cx="630" cy="254" rx="14" ry="4" fill="#302c28"/>
+        <!-- ground texture -->
+        <line x1="0" y1="270" x2="860" y2="270" stroke="#28241e" stroke-width="0.5" opacity="0.3"/>
+        <line x1="0" y1="284" x2="860" y2="284" stroke="#28241e" stroke-width="0.5" opacity="0.2"/>
+        <line x1="0" y1="300" x2="860" y2="300" stroke="#28241e" stroke-width="0.4" opacity="0.15"/>
+
+        <!-- ===== VOCABULARY LABELS — dark pill backgrounds for legibility ===== -->
+        <!-- ruined label -->
+        <rect x="52" y="68" width="46" height="16" fill="#111010" rx="3" opacity="0.72"/>
+        <text x="75" y="80" font-family="'Source Serif 4',Georgia,serif" font-size="11" fill="#e8e4e0" text-anchor="middle" font-style="italic">ruined</text>
+        <!-- fenestration label -->
+        <rect x="673" y="18" width="86" height="16" fill="#111010" rx="3" opacity="0.72"/>
+        <text x="716" y="30" font-family="'Source Serif 4',Georgia,serif" font-size="11" fill="#e8e4e0" text-anchor="middle" font-style="italic">fenestration</text>
+        <!-- aperture label — pointing into arch -->
+        <rect x="135" y="148" width="56" height="16" fill="#111010" rx="3" opacity="0.72"/>
+        <text x="163" y="160" font-family="'Source Serif 4',Georgia,serif" font-size="11" fill="#e8e4e0" text-anchor="middle" font-style="italic">aperture</text>
+        <line x1="143" y1="156" x2="129" y2="162" stroke="#e8e4e0" stroke-width="0.8" opacity="0.6"/>
+        <!-- foreground label -->
+        <rect x="215" y="263" width="74" height="16" fill="#111010" rx="3" opacity="0.68"/>
+        <text x="252" y="275" font-family="'Source Serif 4',Georgia,serif" font-size="11" fill="#e8e4e0" text-anchor="middle" font-style="italic">foreground</text>
+        <!-- scenic / picturesque -->
+        <rect x="338" y="102" width="120" height="16" fill="#111010" rx="3" opacity="0.68"/>
+        <text x="398" y="114" font-family="'Source Serif 4',Georgia,serif" font-size="11" fill="#e8e4e0" text-anchor="middle" font-style="italic">scenic / picturesque</text>
+        <!-- rugged hills -->
+        <rect x="360" y="74" width="78" height="15" fill="#111010" rx="3" opacity="0.55"/>
+        <text x="399" y="85" font-family="'Source Serif 4',Georgia,serif" font-size="10" fill="#d8d4d0" text-anchor="middle" font-style="italic">rugged hills</text>
+        <!-- outdoors label -->
+        <rect x="452" y="130" width="56" height="15" fill="#111010" rx="3" opacity="0.55"/>
+        <text x="480" y="141" font-family="'Source Serif 4',Georgia,serif" font-size="10" fill="#d8d4d0" text-anchor="middle" font-style="italic">outdoors</text>
+        <!-- foreboding — over dark sky -->
+        <rect x="160" y="26" width="68" height="15" fill="#111010" rx="3" opacity="0.55"/>
+        <text x="194" y="37" font-family="'Source Serif 4',Georgia,serif" font-size="10" fill="#d8d4d0" text-anchor="middle" font-style="italic">foreboding…</text>
+      </svg>
+    </div>
+    <div class="scene-caption">A landscape with a ruined structure (left) and an inhabited building with elaborate fenestration (right).</div>
+  </div>
+
+  <!-- TIPS -->
+  <div class="tips-box">
+    <h3>How to describe a picture in English</h3>
+    <ul>
+      <li>Begin with a general overview: <em>"The picture shows…"</em> or <em>"In this image we can see…"</em></li>
+      <li>Move from the <strong>foreground</strong> (what is nearest) to the <strong>background</strong> (what is furthest away).</li>
+      <li>Describe the atmosphere and mood — is there a sense of <strong>foreboding</strong>, peace, energy?</li>
+      <li>Use precise adjectives: not just "old building" but "<strong>ruined</strong>", "<strong>picturesque</strong>", or "<strong>rugged</strong>".</li>
+      <li>Comment on spatial relationships: <em>"in the foreground," "to the left," "in the distance."</em></li>
+    </ul>
+  </div>
+
+  <!-- VOCABULARY -->
+  <div class="section-title">Vocabulary — 9 words</div>
+  <div class="vocab-intro">Click each card to reveal the definition.</div>
+  <div class="vocab-grid" id="vocab-grid"></div>
+
+  <!-- EXERCISE 1 -->
+  <div class="exercise-block">
+    <div class="section-title">Exercise 1 — fill in the blanks</div>
+    <p class="exercise-description">Choose the correct word from the dropdown to complete each sentence.</p>
+    <div class="progress-row">
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+      <div class="progress-label" id="progress-label">0 / 7</div>
+    </div>
+    <div id="fill-container"></div>
+  </div>
+
+  <!-- EXERCISE 2 -->
+  <div class="exercise-block">
+    <div class="section-title">Exercise 2 — describe the picture</div>
+    <p class="exercise-description">Write 5–8 sentences describing the scene above. Use at least <strong>5</strong> of the vocabulary words. Move from the foreground to the background and try to capture the atmosphere.</p>
+    <div class="word-chips" id="chips"></div>
+    <textarea class="writing-area" id="writing-area" placeholder="The foreground is strewn with rugged, broken stone…"></textarea>
+    <div class="word-count" id="word-count">0 words · 0 / 9 vocabulary words used</div>
+    <button class="btn" onclick="copyWriting()">Copy my answer</button>
+  </div>
+
+  <!-- EXERCISE 3 -->
+  <div class="exercise-block">
+    <div class="section-title">Exercise 3 — model answer</div>
+    <p class="exercise-description">Read the model description. Notice how the vocabulary words appear naturally within flowing sentences.</p>
+    <div class="model-box">
+      <div class="model-header">
+        <span>Model description</span>
+        <button class="btn" id="reveal-btn" onclick="revealModel()" style="margin:0;padding:5px 14px;font-size:12px;">Show answer</button>
+      </div>
+      <div class="model-text" id="model-text">
+        The <mark>foreground</mark> is dominated by <mark>rugged</mark>, broken ground — shards of old masonry half-swallowed by damp earth and coarse grass. Through a wide <mark>aperture</mark> in the <mark>ruined</mark> wall to the left, the eye is drawn straight <mark>outdoors</mark>, where a <mark>scenic</mark> and almost <mark>picturesque</mark> valley stretches toward a line of distant hills. To the right, a tall inhabited building rises above the plain; its elaborate <mark>fenestration</mark> — four neat rows of tall, narrow windows — catches what little grey light the sky offers. The clouds press low and the whole composition carries a quiet quality of <mark>foreboding</mark>, as though the landscape is holding its breath before something changes.
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">Forbes English</div>
+    <span>Vocabulary &amp; Writing · Level B1–B2 · 9 words · 3 exercises</span>
+  </footer>
+
+</div>
+
+<script>
+const vocab = [
+  { word: "scenic",        pos: "adjective",  def: "providing or relating to views of impressive or beautiful natural scenery" },
+  { word: "picturesque",   pos: "adjective",  def: "visually attractive, especially in a charming or quaint way" },
+  { word: "rugged",        pos: "adjective",  def: "(of ground or terrain) having a broken, rocky, and uneven surface" },
+  { word: "foreground",    pos: "noun",       def: "the front area in a picture or other artwork" },
+  { word: "outdoors",      pos: "noun / adv", def: "any area outside buildings or shelter, typically far from human habitation" },
+  { word: "fenestration",  pos: "noun",       def: "the arrangement of windows and doors on the elevations of a building" },
+  { word: "foreboding",    pos: "noun",       def: "fearful apprehension; a feeling that something bad will happen" },
+  { word: "aperture",      pos: "noun",       def: "an opening, hole, or gap" },
+  { word: "ruined",        pos: "adjective",  def: "(of a building or place) reduced to a state of decay and disrepair" }
+];
+
+const sentences = [
+  { pre: "The",                       blank: "rugged",       post: "path wound through loose boulders and broken rock.",             options: ["scenic","rugged","ruined","outdoors"] },
+  { pre: "Light fell through the",    blank: "aperture",     post: "in the crumbling wall, casting a pale oval on the floor.",       options: ["fenestration","foreboding","aperture","foreground"] },
+  { pre: "In the",                    blank: "foreground",   post: ", fragments of old pottery lay scattered across the mud.",       options: ["outdoors","foreground","aperture","ruined"] },
+  { pre: "The building's ornate",     blank: "fenestration", post: "— twelve tall windows in three rows — was remarkable.",         options: ["fenestration","aperture","scenic","foreboding"] },
+  { pre: "They preferred to dine",    blank: "outdoors",     post: ", surrounded by the pine-scented air of the mountains.",        options: ["outdoors","scenic","ruined","rugged"] },
+  { pre: "A heavy sense of",          blank: "foreboding",   post: "settled over them as the sky darkened above the valley.",       options: ["foreboding","fenestration","scenic","aperture"] },
+  { pre: "The village was so",        blank: "picturesque",  post: "that visitors often stopped to photograph its cobbled lanes.",  options: ["picturesque","rugged","ruined","foreboding"] }
+];
+
+const grid = document.getElementById('vocab-grid');
+vocab.forEach(v => {
+  const c = document.createElement('div');
+  c.className = 'vocab-card';
+  c.innerHTML = `<span class="vocab-toggle">+</span><div class="vocab-word">${v.word}</div><div class="vocab-pos">${v.pos}</div><div class="vocab-def">${v.def}</div>`;
+  c.onclick = () => c.classList.toggle('open');
+  grid.appendChild(c);
+});
+
+const chipArea = document.getElementById('chips');
+vocab.forEach(v => {
+  const ch = document.createElement('span');
+  ch.className = 'chip';
+  ch.textContent = v.word;
+  ch.id = 'chip-' + v.word;
+  chipArea.appendChild(ch);
+});
+
+const fillContainer = document.getElementById('fill-container');
+sentences.forEach((s, i) => {
+  const div = document.createElement('div');
+  div.className = 'fill-sentence';
+  const shuffled = [...s.options].sort(() => Math.random() - 0.5);
+  let opts = `<option value="">— choose —</option>`;
+  shuffled.forEach(o => { opts += `<option value="${o}">${o}</option>`; });
+  div.innerHTML = `${s.pre} <select class="blank-select" id="sel${i}">${opts}</select> ${s.post}<div class="feedback-line" id="fb${i}"></div>`;
+  fillContainer.appendChild(div);
+  document.getElementById('sel' + i).addEventListener('change', function() {
+    const fb = document.getElementById('fb' + i);
+    this.classList.remove('correct','wrong');
+    fb.classList.remove('ok','err');
+    div.classList.remove('answered-right','answered-wrong');
+    if (!this.value) { updateProgress(); return; }
+    if (this.value === s.blank) {
+      this.classList.add('correct'); fb.textContent = '✓ Correct'; fb.className = 'feedback-line ok'; div.classList.add('answered-right');
+    } else {
+      this.classList.add('wrong'); fb.textContent = `✗  The answer is "${s.blank}"`; fb.className = 'feedback-line err'; div.classList.add('answered-wrong');
+    }
+    updateProgress();
+  });
+});
+
+function updateProgress() {
+  let c = 0;
+  sentences.forEach((s, i) => { const el = document.getElementById('sel'+i); if (el && el.value === s.blank) c++; });
+  document.getElementById('progress-fill').style.width = (c/sentences.length*100) + '%';
+  document.getElementById('progress-label').textContent = `${c} / ${sentences.length}`;
+}
+
+const ta = document.getElementById('writing-area');
+ta.addEventListener('input', () => {
+  const text = ta.value.toLowerCase();
+  const words = ta.value.trim() ? ta.value.trim().split(/\s+/).length : 0;
+  let used = 0;
+  vocab.forEach(v => {
+    const found = text.includes(v.word);
+    const chip = document.getElementById('chip-'+v.word);
+    if (chip) chip.classList.toggle('used', found);
+    if (found) used++;
+  });
+  document.getElementById('word-count').textContent = `${words} word${words!==1?'s':''} · ${used} / 9 vocabulary words used`;
+});
+
+function copyWriting() {
+  const text = ta.value.trim();
+  if (!text) { alert('Please write something first!'); return; }
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target; const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = orig; }, 1800);
+  });
+}
+
+function revealModel() {
+  document.getElementById('model-text').classList.add('visible');
+  document.getElementById('reveal-btn').style.display = 'none';
+}
+</script>
+</body>
+</html>

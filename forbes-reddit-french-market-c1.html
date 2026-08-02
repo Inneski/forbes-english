@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – Reddit & the French Market | C1</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --indigo:    #1a1b3a;
+    --indigo-mid:#252650;
+    --gold:      #c8963e;
+    --gold-light:#e8b96a;
+    --cream:     #f5f0e8;
+    --warm-white:#fdfaf5;
+    --rose:      #d9bfa8;
+    --slate:     #4a5568;
+    --slate-light:#7a8694;
+    --correct:   #2d7a4f;
+    --correct-bg:#e6f4ec;
+    --wrong:     #9b2335;
+    --wrong-bg:  #fdecea;
+    --radius:    14px;
+    --shadow:    0 4px 24px rgba(26,27,58,0.13);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--cream);
+    font-family: 'Inter', sans-serif;
+    color: var(--indigo);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  .page-header {
+    background: var(--indigo);
+    padding: 36px 24px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 70% 50%, rgba(200,150,62,0.18) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .page-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  /* Forbes SVG logo */
+  .logo-svg {
+    display: block;
+    margin: 0 auto 20px;
+    width: 220px;
+  }
+
+  .lesson-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .badge {
+    background: rgba(200,150,62,0.18);
+    border: 1px solid rgba(200,150,62,0.4);
+    color: var(--gold-light);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+  .lesson-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    color: var(--warm-white);
+    line-height: 1.25;
+    margin-top: 14px;
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .lesson-subtitle {
+    font-size: 0.85rem;
+    color: var(--rose);
+    margin-top: 8px;
+    letter-spacing: 0.03em;
+    font-weight: 400;
+  }
+
+  /* ── SCORE BAR ── */
+  .score-bar {
+    background: var(--indigo-mid);
+    border-bottom: 2px solid rgba(200,150,62,0.25);
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .score-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--rose);
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  .score-item span.val {
+    color: var(--gold-light);
+    font-weight: 700;
+    font-size: 1rem;
+  }
+  .progress-dots {
+    display: flex;
+    gap: 5px;
+  }
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    transition: background 0.3s;
+  }
+  .dot.done { background: var(--gold); }
+  .dot.active { background: var(--gold-light); box-shadow: 0 0 0 2px rgba(200,150,62,0.35); }
+
+  /* ── MAIN LAYOUT ── */
+  .main {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+  }
+
+  /* ── SECTION HEADER ── */
+  .section-intro {
+    margin-bottom: 32px;
+    text-align: center;
+  }
+  .section-num {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.2rem, 3vw, 1.65rem);
+    color: var(--indigo);
+    line-height: 1.3;
+  }
+  .section-desc {
+    color: var(--slate);
+    font-size: 0.9rem;
+    margin-top: 8px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+  }
+
+  /* ── ILLUSTRATION ── */
+  .illustration-wrap {
+    margin: 0 0 36px;
+    display: flex;
+    justify-content: center;
+  }
+  .illustration-wrap svg {
+    width: 100%;
+    max-width: 720px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  /* ── QUESTION CARD ── */
+  .question-card {
+    background: var(--warm-white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(26,27,58,0.07);
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .question-top {
+    background: var(--indigo);
+    padding: 18px 24px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .q-num {
+    background: var(--gold);
+    color: var(--indigo);
+    font-weight: 700;
+    font-size: 0.8rem;
+    min-width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .q-text {
+    color: var(--warm-white);
+    font-size: 0.97rem;
+    line-height: 1.6;
+    font-weight: 400;
+  }
+  .q-text em {
+    color: var(--gold-light);
+    font-style: normal;
+    font-weight: 600;
+  }
+  .context-block {
+    background: rgba(200,150,62,0.1);
+    border-left: 3px solid var(--gold);
+    padding: 10px 14px;
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: var(--rose);
+    border-radius: 0 6px 6px 0;
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  /* ── OPTIONS ── */
+  .options-list {
+    padding: 18px 20px 20px;
+    display: grid;
+    gap: 10px;
+  }
+  .opt-btn {
+    background: var(--cream);
+    border: 1.5px solid rgba(26,27,58,0.12);
+    border-radius: 10px;
+    padding: 13px 16px 13px 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    text-align: left;
+    transition: border-color 0.2s, background 0.2s, transform 0.12s;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    color: var(--indigo);
+    line-height: 1.5;
+    width: 100%;
+  }
+  .opt-btn:hover:not(:disabled) {
+    border-color: var(--gold);
+    background: rgba(200,150,62,0.06);
+    transform: translateX(2px);
+  }
+  .opt-letter {
+    background: var(--indigo);
+    color: var(--warm-white);
+    font-size: 0.72rem;
+    font-weight: 700;
+    min-width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+    transition: background 0.2s;
+  }
+  .opt-btn:disabled { cursor: default; }
+  .opt-btn.correct {
+    background: var(--correct-bg);
+    border-color: var(--correct);
+  }
+  .opt-btn.correct .opt-letter { background: var(--correct); }
+  .opt-btn.wrong {
+    background: var(--wrong-bg);
+    border-color: var(--wrong);
+  }
+  .opt-btn.wrong .opt-letter { background: var(--wrong); }
+
+  /* ── FEEDBACK ── */
+  .feedback-box {
+    margin: 0 20px 20px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-size: 0.87rem;
+    line-height: 1.6;
+    display: none;
+    animation: fadeSlide 0.3s ease;
+  }
+  .feedback-box.correct {
+    background: var(--correct-bg);
+    border: 1px solid rgba(45,122,79,0.25);
+    color: #1a4d31;
+    display: block;
+  }
+  .feedback-box.wrong {
+    background: var(--wrong-bg);
+    border: 1px solid rgba(155,35,53,0.2);
+    color: #6b1a26;
+    display: block;
+  }
+  .feedback-icon {
+    font-size: 1rem;
+    margin-right: 6px;
+  }
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── NAV BUTTONS ── */
+  .nav-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 4px;
+    padding: 0 20px 20px;
+  }
+  .btn-next, .btn-start, .btn-restart {
+    background: var(--indigo);
+    color: var(--gold-light);
+    border: none;
+    border-radius: 10px;
+    padding: 11px 28px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.12s;
+    display: none;
+  }
+  .btn-next:hover, .btn-start:hover, .btn-restart:hover {
+    background: var(--indigo-mid);
+    transform: translateY(-1px);
+  }
+  .btn-next.visible { display: inline-block; }
+  .btn-start, .btn-restart { display: inline-block; }
+  .btn-activity {
+    background: linear-gradient(135deg, var(--indigo) 0%, var(--indigo-mid) 100%);
+    color: var(--gold-light);
+    border: none;
+    border-radius: 12px;
+    padding: 14px 36px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.12s;
+    margin-top: 10px;
+  }
+  .btn-activity:hover { opacity: 0.9; transform: translateY(-1px); }
+
+  /* ── RESULTS SCREEN ── */
+  .results-screen {
+    background: var(--warm-white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 48px 36px;
+    text-align: center;
+    display: none;
+  }
+  .results-screen.visible { display: block; animation: fadeSlide 0.4s ease; }
+  .results-score-ring {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: conic-gradient(var(--gold) 0%, var(--cream) 0%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    position: relative;
+    box-shadow: 0 0 0 6px rgba(200,150,62,0.15);
+  }
+  .results-score-inner {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: var(--warm-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .results-pct {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--indigo);
+    line-height: 1;
+  }
+  .results-pct-label {
+    font-size: 0.65rem;
+    color: var(--slate-light);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .results-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--indigo);
+    margin-bottom: 10px;
+  }
+  .results-msg {
+    color: var(--slate);
+    font-size: 0.9rem;
+    line-height: 1.7;
+    max-width: 480px;
+    margin: 0 auto 28px;
+  }
+  .results-breakdown {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+  .rb-item {
+    background: var(--cream);
+    border-radius: 10px;
+    padding: 14px 20px;
+    min-width: 120px;
+  }
+  .rb-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--indigo);
+  }
+  .rb-label {
+    font-size: 0.72rem;
+    color: var(--slate-light);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  /* ── ACTIVITY INTRO CARD ── */
+  .activity-intro {
+    background: var(--warm-white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 36px 32px;
+    text-align: center;
+    margin-bottom: 8px;
+    border-top: 4px solid var(--gold);
+  }
+  .activity-intro h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--indigo);
+    margin-bottom: 10px;
+  }
+  .activity-intro p {
+    color: var(--slate);
+    font-size: 0.9rem;
+    line-height: 1.65;
+    max-width: 540px;
+    margin: 0 auto 20px;
+  }
+
+  /* ── DIVIDER ── */
+  .gold-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 40px 0;
+    opacity: 0.4;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 520px) {
+    .options-list { padding: 14px 12px 16px; }
+    .question-top { padding: 14px 14px 12px; }
+    .nav-row { padding: 0 12px 16px; }
+    .feedback-box { margin: 0 12px 16px; }
+    .results-screen { padding: 32px 20px; }
+    .activity-intro { padding: 28px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ PAGE HEADER ══════════════ -->
+<header class="page-header">
+  <!-- Forbes English SVG Logo in gold/cream palette -->
+  <svg class="logo-svg" viewBox="0 0 220 72" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forbes English">
+    <text x="110" y="30" text-anchor="middle"
+      font-family="'Playfair Display', Georgia, serif"
+      font-size="28" font-weight="400" letter-spacing="6"
+      fill="#c8963e">FORBES</text>
+    <line x1="18" y1="38" x2="202" y2="38" stroke="#c8963e" stroke-width="0.9" opacity="0.7"/>
+    <text x="110" y="58" text-anchor="middle"
+      font-family="'Inter', Arial, sans-serif"
+      font-size="13" font-weight="700" letter-spacing="9"
+      fill="#f5f0e8">ENGLISH</text>
+  </svg>
+  <div class="lesson-meta">
+    <span class="badge">C1 Advanced</span>
+    <span class="badge">Role-Play Focus</span>
+    <span class="badge">Business English</span>
+  </div>
+  <h1 class="lesson-title">Reddit, Top Brass & the French Market</h1>
+  <p class="lesson-subtitle">Client partnerships · Senior stakeholder communication · Market prospecting</p>
+</header>
+
+<!-- ══════════════ SCORE BAR ══════════════ -->
+<div class="score-bar">
+  <div class="score-item">Score: <span class="val" id="score-display">0</span></div>
+  <div class="progress-dots" id="dot-row" aria-label="Progress"></div>
+  <div class="score-item">Question <span class="val" id="q-progress">–</span></div>
+</div>
+
+<!-- ══════════════ MAIN ══════════════ -->
+<main class="main">
+  <div id="app"></div>
+</main>
+
+<!-- ══════════════ SCRIPT ══════════════ -->
+<script>
+/* ─── DATA ─── */
+const activities = [
+
+  /* ══ ACTIVITY 1 ══ */
+  {
+    id: 1,
+    title: "Vocabulary in Context",
+    desc: "Choose the word or phrase that best completes each sentence. These extracts are taken from a briefing document preparing a team to partner with Reddit and prospect the French market at C-suite level.",
+    illustration: "paris_boardroom",
+    questions: [
+      {
+        q: `During the opening pitch, the VP asked the team to <em>briefly outline</em> how Reddit's community-driven data could augment their existing __________  in France.`,
+        context: "Context: A business development meeting with senior leadership.",
+        opts: [
+          { t: "market intelligence and consumer insight capabilities", c: false },
+          { t: "advertising spend and above-the-line media budget", c: false },
+          { t: "go-to-market strategy and distribution infrastructure", c: true },
+          { t: "compliance frameworks and regulatory reporting tools", c: false }
+        ],
+        fb: "Correct. 'Go-to-market strategy and distribution infrastructure' is the most coherent complement when discussing how Reddit's community data can augment a company's existing operational presence in a new market. 'Market intelligence' is also plausible, but Reddit's strength is specifically in enhancing reach and positioning strategy."
+      },
+      {
+        q: `The CMO was adamant that any partnership proposal should <em>clearly articulate</em> the __________ for French users, rather than simply translating the UK value proposition.`,
+        context: "Context: A strategic review session with C-level stakeholders.",
+        opts: [
+          { t: "localized return on investment and cultural resonance", c: true },
+          { t: "engagement metrics from comparable English-speaking markets", c: false },
+          { t: "technical specifications of the Reddit advertising platform", c: false },
+          { t: "projected headcount requirements for the Paris office", c: false }
+        ],
+        fb: "Correct. 'Localized ROI and cultural resonance' precisely captures what C-level stakeholders demand when expanding into francophone markets — they want proof of relevance, not a copy-paste strategy. The other options are either operationally narrow or irrelevant at the strategic level."
+      },
+      {
+        q: `To __________ the top brass before the board presentation, the team prepared a one-page executive summary framing Reddit as a premium insight channel rather than a social media platform.`,
+        context: "Context: Internal preparation before a high-stakes board meeting.",
+        opts: [
+          { t: "challenge and interrogate the assumptions held by", c: false },
+          { t: "align and pre-socialize the proposal with", c: true },
+          { t: "formally present and seek final approval from", c: false },
+          { t: "benchmark and evaluate the decision-making capacity of", c: false }
+        ],
+        fb: "Correct. 'Pre-socializing' is a key C1-level business concept — it means informally sharing a proposal with decision-makers before the formal meeting to build alignment and reduce resistance. 'Align' alone is correct but 'pre-socialize' is the more precise professional term in this context."
+      },
+      {
+        q: `Reddit's account manager stressed the importance of __________ with niche French subreddits to build authentic credibility before any paid media activation.`,
+        context: "Context: A briefing call with Reddit's partnership team.",
+        opts: [
+          { t: "conducting organic community engagement", c: true },
+          { t: "deploying performance-based advertising campaigns", c: false },
+          { t: "establishing formal content moderation protocols", c: false },
+          { t: "leveraging influencer co-creation partnerships", c: false }
+        ],
+        fb: "Correct. On Reddit, credibility is built through genuine community participation, not advertising. 'Organic community engagement' is the correct approach Reddit advocates — paid media without organic presence is widely seen as inauthentic and can trigger negative community reactions."
+      },
+      {
+        q: `When the Director of Strategy raised concerns about __________, the team acknowledged the challenge but pointed to Reddit AMA data as a way to test messaging with low financial risk.`,
+        context: "Context: A strategic objection raised during a partner review meeting.",
+        opts: [
+          { t: "the absence of a dedicated French-language content strategy", c: false },
+          { t: "the pace of platform feature updates and API changes", c: false },
+          { t: "scaling engagement beyond early adopters in the French market", c: true },
+          { t: "securing sufficient headcount for community management roles", c: false }
+        ],
+        fb: "Correct. 'Scaling beyond early adopters' is a classic strategic concern in new market entry — it aligns with why Reddit AMAs (Ask Me Anything sessions) are proposed as a low-risk test: they allow a brand to engage a wider, curious audience without heavy investment."
+      }
+    ]
+  },
+
+  /* ══ ACTIVITY 2 ══ */
+  {
+    id: 2,
+    title: "Role-Play: Register & Response Strategy",
+    desc: "In each scenario, a senior stakeholder makes a comment or asks a question. Choose the response that is most effective, professional, and appropriately pitched at C1 level.",
+    illustration: "negotiation_scene",
+    questions: [
+      {
+        q: `The CEO says: <em>"I'll be honest — I see Reddit as a platform for teenagers arguing about video games. Convince me this is worth my time."</em><br><br>How do you respond?`,
+        context: "Context: Opening moments of a 20-minute executive pitch. Your tone must be confident but not defensive.",
+        opts: [
+          { t: `"That's a fair perception, but Reddit's 100,000+ active francophone communities suggest the audience is far broader and more professional than you might expect."`, c: false },
+          { t: `"With respect, the data tells a very different story — Reddit has become one of the most trusted peer-review platforms among French 25–44 year-olds making high-consideration purchases."`, c: true },
+          { t: `"I completely understand that view — many of our clients felt the same way before reviewing the case studies we've prepared for today's session."`, c: false },
+          { t: `"Reddit has evolved significantly — let me pull up their latest demographic report to walk you through the key figures."`, c: false }
+        ],
+        fb: "Correct. Option B is the strongest because it acknowledges the CEO's implicit concern without validating the misconception ('with respect'), pivots immediately to a specific, data-grounded claim ('most trusted peer-review platform'), and names the relevant demographic ('French 25–44 year-olds'). This shows you've done your homework and commands authority. The other options are either too deferential or too procedural."
+      },
+      {
+        q: `The CFO interrupts: <em>"What's the expected ROI on a Reddit partnership in the French market? Give me a number."</em><br><br>Choose the most strategic response.`,
+        context: "Context: The CFO is known for cutting to the chase. Avoid vague commitments but do not be evasive.",
+        opts: [
+          { t: `"Based on comparable UK campaigns, we project a 15–20% uplift in brand consideration among target demographics within six months, with a more conservative 8–12% in France given the market maturity curve."`, c: true },
+          { t: `"ROI at this stage is difficult to quantify precisely — what we can say is that the qualitative value in terms of brand trust is substantial."`, c: false },
+          { t: `"We'd prefer to define ROI benchmarks collaboratively after the pilot phase, when we have localized performance data to anchor projections."`, c: false },
+          { t: `"The ROI will depend significantly on the scale of investment and the specific KPIs we agree upon in the partnership framework."`, c: false }
+        ],
+        fb: "Correct. Option A is the gold standard in C-suite communication: it leads with a concrete, data-anchored figure, differentiates between the known (UK) and projected (French) markets with appropriate epistemic humility, and demonstrates genuine market knowledge. Options C and D are classic deflection tactics that CFOs see through immediately. Option B is the weakest — 'qualitative value' without numbers is not a business case."
+      },
+      {
+        q: `The VP of Marketing says: <em>"Our agency is pushing us towards TikTok for the French launch. Why should we add Reddit to the mix rather than focusing our budget?"</em>`,
+        context: "Context: You need to position Reddit as complementary, not competitive, to protect the partnership proposal.",
+        opts: [
+          { t: `"TikTok and Reddit serve fundamentally different stages of the purchase funnel — TikTok drives top-of-funnel awareness; Reddit captures intent at the decision-making phase. Used together, they're more powerful than either alone."`, c: true },
+          { t: `"Reddit actually outperforms TikTok on several engagement metrics among the 30+ demographic, which is our primary target in France."`, c: false },
+          { t: `"That's a strategic decision above my brief — but I'd be delighted to share a channel comparison framework that your agency could use to model the trade-offs."`, c: false },
+          { t: `"Budget fragmentation is a real risk — but Reddit's cost per engagement is significantly lower than TikTok's for B2B-adjacent audiences."`, c: false }
+        ],
+        fb: "Correct. The strongest response frames Reddit and TikTok as funnel complements, not rivals — this removes competitive tension and positions Reddit as an additive investment. It also demonstrates strategic intelligence (funnel thinking) without undermining the agency relationship. Option B creates unnecessary conflict. Option C abdicates responsibility. Option D is too narrow and sounds defensive."
+      },
+      {
+        q: `The Head of France says in French-accented English: <em>"In France, trust is built slowly. We do not simply adopt a platform because it works in London or New York. What guarantees can you offer?"</em>`,
+        context: "Context: This stakeholder represents cultural credibility risk. Your response must demonstrate cultural intelligence.",
+        opts: [
+          { t: `"We'd offer a phased pilot — three months of community listening only, no paid activation — which aligns with the trust-first approach that French audiences genuinely respond to."`, c: false },
+          { t: `"We fully appreciate that the French market demands a tailored approach. Our proposal includes dedicated French-language community management and a francophone content strategy from day one."`, c: false },
+          { t: `"That concern is at the heart of our approach. We're proposing a listening-first strategy — using Reddit's francophone data to understand French sentiment before we say a single word publicly."`, c: true },
+          { t: `"Reddit's French community is one of its fastest-growing — r/france alone has over 800,000 members, which tells us French users are already there and engaged."`, c: false }
+        ],
+        fb: "Correct. Option C is most effective because it directly mirrors the stakeholder's language ('trust is built slowly' → 'listening-first strategy'), shows cultural empathy, and delays public brand presence until the brand has earned its right to speak. It also subtly reframes Reddit's community data as a tool for humility and learning, not just promotion — exactly what a French business partner needs to hear."
+      },
+      {
+        q: `After your pitch, the CEO closes with: <em>"Leave something with us — we'll review it internally and come back to you."</em><br><br>What is your most effective closing move?`,
+        context: "Context: You need to secure momentum without appearing pushy. Timing the close is critical at C-level.",
+        opts: [
+          { t: `Thank them, leave the executive summary, and follow up by email the next morning with a summary of the key decision points and a proposed next step.`, c: false },
+          { t: `Ask the CEO directly: "Before we close, may I ask what the key criteria will be when your team evaluates this proposal?"`, c: true },
+          { t: `Offer to schedule a follow-up call immediately and ask who the right internal contact should be for the review process.`, c: false },
+          { t: `Suggest a 90-day pilot agreement can be signed without board approval to maintain momentum while the review takes place.`, c: false }
+        ],
+        fb: "Correct. Asking for the evaluation criteria is a master-level closing technique — it gives you intelligence about what matters most, subtly positions you as a strategic equal, and creates a natural follow-up anchor ('we'll address your three criteria in our revised proposal'). Option A is passive. Option C is too procedural. Option D is presumptuous and likely to cause offence at the top-brass level."
+      }
+    ]
+  },
+
+  /* ══ ACTIVITY 3 ══ */
+  {
+    id: 3,
+    title: "Situational Judgement: Navigating the Complex Deal",
+    desc: "Each scenario presents a critical moment in the Reddit partnership and French market prospecting process. Choose the action that best reflects professional judgement at a senior level.",
+    illustration: "reddit_paris",
+    questions: [
+      {
+        q: `You discover that a French subreddit you planned to activate has recently been embroiled in controversy about a competitor brand. Your campaign is scheduled to launch in 10 days. What do you do?`,
+        context: "Context: Timeline pressure vs. reputational risk.",
+        opts: [
+          { t: "Delay the launch and brief the client immediately, recommending an alternative subreddit and adjusting the timeline with a clear rationale.", c: true },
+          { t: "Proceed as planned — subreddit controversies typically blow over within a week and the media plan is already committed.", c: false },
+          { t: "Launch on schedule but increase community monitoring frequency and prepare a reactive statement in case of negative comments.", c: false },
+          { t: "Escalate to Reddit's account manager and ask them to resolve the community issue before the launch date.", c: false }
+        ],
+        fb: "Correct. Pausing and briefing the client immediately is the only defensible professional action. Launching into a controversy-hit community risks brand contamination and undermines the trust-first strategy the whole French market approach is built on. Reddit's community dynamics are highly localized — you cannot outsource this decision to Reddit's team. Proactive transparency with the client is always the senior professional's first move."
+      },
+      {
+        q: `During a video call, the French CEO mispronounces your name and addresses you by your colleague's name for the entire meeting. You are the lead on the account. How do you handle it?`,
+        context: "Context: Professional identity, cultural sensitivity, and relationship management.",
+        opts: [
+          { t: "Correct the CEO politely at the first natural pause — 'Just to clarify — I'm [your name], and I'm leading this engagement' — then continue without dwelling on it.", c: true },
+          { t: "Say nothing during the meeting but send a polite clarifying email afterwards to avoid embarrassing the CEO.", c: false },
+          { t: "Ask your colleague to interject and introduce you correctly at the next opportunity.", c: false },
+          { t: "Let it pass entirely — the relationship is more important than the misunderstanding, and it may self-correct over time.", c: false }
+        ],
+        fb: "Correct. The most professional approach is a brief, warm, self-correction delivered without drama and at the earliest natural moment. This establishes your identity clearly and avoids letting the error compound. A post-meeting email (Option B) creates unnecessary awkwardness. Delegating to a colleague (Option C) undermines your authority. Saying nothing (Option D) means the relationship is built on a mistaken premise — that is not a strong foundation."
+      },
+      {
+        q: `Reddit offers your client a time-limited promotional package at a 40% discount — but the deadline is 48 hours away. Your client's CMO is on holiday and unreachable. What do you do?`,
+        context: "Context: Commercial opportunity vs. scope of authority.",
+        opts: [
+          { t: "Contact whoever holds the CMO's delegated authority, brief them clearly on the commercial terms, and ask for a decision within 24 hours.", c: true },
+          { t: "Accept the offer on your client's behalf and seek retroactive approval — the discount is too good to miss.", c: false },
+          { t: "Ask Reddit to extend the deadline by one week so the CMO can make an informed decision on their return.", c: false },
+          { t: "Decline the offer but ask Reddit if they can offer similar terms at the next renewal cycle.", c: false }
+        ],
+        fb: "Correct. Acting within the chain of authority is non-negotiable — you never commit a client's budget without delegated approval. Contacting whoever holds authority in the CMO's absence is the correct, professional, and commercially proactive approach. Accepting without authorisation (Option B) is a serious professional breach. Asking for an extension (Option C) is reasonable but passive. Declining outright (Option D) fails your client commercially without even attempting to exercise the correct escalation path."
+      },
+      {
+        q: `You're preparing for a call with Reddit's top brass to discuss expanding the French partnership. You've been told the decision-maker only has 15 minutes and has not read the briefing doc. What structure do you choose?`,
+        context: "Context: Executive communication — maximum impact in minimum time.",
+        opts: [
+          { t: "Situation → Complication → Resolution → Ask (SCRA framework) — covering the opportunity, the constraint, your proposed solution, and one clear decision point.", c: true },
+          { t: "Begin with the background context, then walk through the market data, then present the proposal, and close with next steps.", c: false },
+          { t: "Ask how much they already know and adapt your presentation in real time based on their response.", c: false },
+          { t: "Send a revised, simplified briefing document 30 minutes before the call and refer to it throughout the meeting.", c: false }
+        ],
+        fb: "Correct. The SCRA framework is purpose-built for senior time-constrained communication. It leads with relevance (the situation), creates urgency (the complication), demonstrates competence (the resolution), and forces a single decision (the ask). Option B is a classic junior mistake — building to the point is a luxury only available when your audience has time. Option C wastes precious minutes. Option D risks the document not being read and further complicates a tight call."
+      },
+      {
+        q: `After a successful first quarter, the French client asks if you can introduce them directly to Reddit's product development team to discuss custom feature requests — bypassing the standard account management structure. What do you do?`,
+        context: "Context: Managing partner relationships and internal channel integrity.",
+        opts: [
+          { t: "Explain that you need to raise this with Reddit's account team first, then facilitate a structured introduction through the correct channel if Reddit agrees.", c: true },
+          { t: "Arrange the introduction directly — your strong Reddit relationship makes this easy, and it will delight the client.", c: false },
+          { t: "Decline diplomatically: Reddit's product team doesn't typically meet with individual clients at this stage.", c: false },
+          { t: "Forward the client's feature requests to Reddit's product team by email without arranging a formal meeting.", c: false }
+        ],
+        fb: "Correct. Going around a partner's account management structure — even with good intentions — risks damaging both the Reddit relationship and your agency's credibility as a trusted intermediary. The correct move is always to broker the introduction through the established channel. This protects Reddit's internal processes, maintains your agency's value as the connective layer, and ultimately still delivers the client's goal. Shortcuts here often backfire at the worst possible moment."
+      }
+    ]
+  }
+];
+
+/* ─── STATE ─── */
+let state = {
+  actIdx: 0,
+  qIdx: 0,
+  score: 0,
+  total: 0,
+  answered: false,
+  phase: 'intro',   // 'intro' | 'activity' | 'results'
+  dotData: []       // { done, correct }
+};
+
+/* ─── HELPERS ─── */
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function totalQ() { return activities.reduce((s, a) => s + a.questions.length, 0); }
+
+function globalQNum() {
+  let n = 0;
+  for (let i = 0; i < state.actIdx; i++) n += activities[i].questions.length;
+  return n + state.qIdx + 1;
+}
+
+/* ─── ILLUSTRATIONS ─── */
+function illus(type) {
+  if (type === 'paris_boardroom') return `
+<svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a1b3a"/>
+      <stop offset="100%" stop-color="#252650"/>
+    </linearGradient>
+    <linearGradient id="floorG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a2040"/>
+      <stop offset="100%" stop-color="#1a1b3a"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="720" height="220" fill="url(#sky)"/>
+  <!-- Window / Paris skyline -->
+  <rect x="520" y="20" width="160" height="140" rx="4" fill="#252650" stroke="#c8963e" stroke-width="1" opacity="0.9"/>
+  <!-- Eiffel Tower silhouette -->
+  <g fill="#c8963e" opacity="0.55">
+    <polygon points="600,40 593,95 607,95" />
+    <rect x="589" y="95" width="22" height="4" rx="1"/>
+    <polygon points="600,99 584,135 616,135" />
+    <rect x="582" y="135" width="36" height="5" rx="1"/>
+    <rect x="591" y="140" width="5" height="20"/>
+    <rect x="604" y="140" width="5" height="20"/>
+  </g>
+  <!-- City lights -->
+  <rect x="530" y="130" width="3" height="3" fill="#c8963e" opacity="0.5"/>
+  <rect x="540" y="125" width="3" height="3" fill="#c8963e" opacity="0.4"/>
+  <rect x="555" y="132" width="3" height="3" fill="#c8963e" opacity="0.5"/>
+  <rect x="640" y="128" width="3" height="3" fill="#c8963e" opacity="0.4"/>
+  <rect x="655" y="120" width="3" height="3" fill="#c8963e" opacity="0.5"/>
+  <!-- Table -->
+  <rect x="60" y="150" width="440" height="12" rx="3" fill="#c8963e" opacity="0.35"/>
+  <rect x="80" y="162" width="400" height="50" rx="2" fill="#1a1b3a" opacity="0.5"/>
+  <!-- Laptop -->
+  <rect x="140" y="120" width="80" height="52" rx="4" fill="#252650" stroke="#c8963e" stroke-width="0.8"/>
+  <rect x="144" y="124" width="72" height="40" rx="2" fill="#1a1b3a"/>
+  <!-- Reddit alien on screen -->
+  <circle cx="180" cy="140" r="10" fill="#FF4500" opacity="0.85"/>
+  <circle cx="176" cy="137" r="3" fill="white"/>
+  <circle cx="184" cy="137" r="3" fill="white"/>
+  <circle cx="176" cy="138" r="1.5" fill="#1a1b3a"/>
+  <circle cx="184" cy="138" r="1.5" fill="#1a1b3a"/>
+  <path d="M174,144 Q180,148 186,144" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <ellipse cx="174" cy="133" rx="4" ry="2" fill="#f5f0e8" opacity="0.5"/>
+  <ellipse cx="186" cy="133" rx="4" ry="2" fill="#f5f0e8" opacity="0.5"/>
+  <!-- Documents -->
+  <rect x="270" y="118" width="55" height="72" rx="3" fill="#f5f0e8" opacity="0.9"/>
+  <rect x="278" y="128" width="38" height="2" rx="1" fill="#252650" opacity="0.4"/>
+  <rect x="278" y="134" width="30" height="2" rx="1" fill="#252650" opacity="0.3"/>
+  <rect x="278" y="140" width="34" height="2" rx="1" fill="#252650" opacity="0.3"/>
+  <rect x="278" y="146" width="28" height="2" rx="1" fill="#252650" opacity="0.3"/>
+  <rect x="278" y="152" width="32" height="2" rx="1" fill="#252650" opacity="0.2"/>
+  <!-- Figures -->
+  <circle cx="90" cy="108" r="14" fill="#c8963e" opacity="0.6"/>
+  <rect x="76" y="122" width="28" height="28" rx="4" fill="#c8963e" opacity="0.4"/>
+  <circle cx="380" cy="108" r="14" fill="#d9bfa8" opacity="0.6"/>
+  <rect x="366" y="122" width="28" height="28" rx="4" fill="#d9bfa8" opacity="0.4"/>
+  <circle cx="460" cy="108" r="14" fill="#c8963e" opacity="0.45"/>
+  <rect x="446" y="122" width="28" height="28" rx="4" fill="#c8963e" opacity="0.3"/>
+  <!-- Coffee cups -->
+  <rect x="430" y="145" width="12" height="7" rx="2" fill="#f5f0e8" opacity="0.8"/>
+  <path d="M442,147 Q447,149 442,151" stroke="#c8963e" stroke-width="1" fill="none"/>
+  <!-- Label -->
+  <text x="36" y="215" font-family="Inter,sans-serif" font-size="9" fill="#c8963e" opacity="0.7" letter-spacing="1">PARIS HEADQUARTERS — PARTNERSHIP STRATEGY REVIEW</text>
+</svg>`;
+
+  if (type === 'negotiation_scene') return `
+<svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="ng" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1a1b3a"/>
+      <stop offset="50%" stop-color="#252650"/>
+      <stop offset="100%" stop-color="#1a1b3a"/>
+    </linearGradient>
+  </defs>
+  <rect width="720" height="200" fill="url(#ng)"/>
+  <!-- Speech bubbles -->
+  <rect x="60" y="30" width="200" height="70" rx="10" fill="#c8963e" opacity="0.18" stroke="#c8963e" stroke-width="1"/>
+  <polygon points="100,100 80,115 120,100" fill="#c8963e" opacity="0.18"/>
+  <text x="160" y="60" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" fill="#e8b96a" opacity="0.9">"Convince me this</text>
+  <text x="160" y="75" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" fill="#e8b96a" opacity="0.9">is worth my time."</text>
+  <text x="160" y="92" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#d9bfa8" opacity="0.7">— CEO</text>
+  <!-- Response bubble right -->
+  <rect x="460" y="30" width="220" height="80" rx="10" fill="#f5f0e8" opacity="0.1" stroke="#f5f0e8" stroke-width="1" opacity="0.25"/>
+  <polygon points="580,110 560,125 600,110" fill="#f5f0e8" opacity="0.1"/>
+  <text x="570" y="58" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" fill="#f5f0e8" opacity="0.9">"With respect, the data</text>
+  <text x="570" y="73" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" fill="#f5f0e8" opacity="0.9">tells a very different</text>
+  <text x="570" y="88" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" fill="#f5f0e8" opacity="0.9">story..."</text>
+  <!-- Figures facing each other -->
+  <circle cx="130" cy="155" r="18" fill="#c8963e" opacity="0.55"/>
+  <rect x="112" y="173" width="36" height="25" rx="5" fill="#c8963e" opacity="0.4"/>
+  <circle cx="590" cy="155" r="18" fill="#d9bfa8" opacity="0.55"/>
+  <rect x="572" y="173" width="36" height="25" rx="5" fill="#d9bfa8" opacity="0.4"/>
+  <!-- Table between them -->
+  <rect x="200" y="165" width="320" height="10" rx="3" fill="#c8963e" opacity="0.25"/>
+  <!-- Papers on table -->
+  <rect x="270" y="150" width="50" height="65" rx="2" fill="#f5f0e8" opacity="0.15" transform="rotate(-5,295,182)"/>
+  <rect x="330" y="148" width="50" height="65" rx="2" fill="#f5f0e8" opacity="0.12" transform="rotate(3,355,180)"/>
+  <!-- Reddit alien small -->
+  <circle cx="360" cy="155" r="12" fill="#FF4500" opacity="0.7"/>
+  <circle cx="356" cy="152" r="3.5" fill="white"/>
+  <circle cx="364" cy="152" r="3.5" fill="white"/>
+  <circle cx="356" cy="153" r="1.8" fill="#1a1b3a"/>
+  <circle cx="364" cy="153" r="1.8" fill="#1a1b3a"/>
+  <path d="M354,159 Q360,163 366,159" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <!-- Label -->
+  <text x="360" y="196" text-anchor="middle" font-family="Inter,sans-serif" font-size="8.5" fill="#c8963e" opacity="0.7" letter-spacing="1">EXECUTIVE PITCH — ROLE-PLAY SCENARIOS</text>
+</svg>`;
+
+  /* reddit_paris */
+  return `
+<svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="rp" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a1b3a"/>
+      <stop offset="100%" stop-color="#252650"/>
+    </linearGradient>
+  </defs>
+  <rect width="720" height="200" fill="url(#rp)"/>
+  <!-- Left: Reddit alien large -->
+  <circle cx="130" cy="95" r="50" fill="#FF4500" opacity="0.2"/>
+  <circle cx="130" cy="95" r="38" fill="#FF4500" opacity="0.7"/>
+  <circle cx="118" cy="86" r="9" fill="white"/>
+  <circle cx="142" cy="86" r="9" fill="white"/>
+  <circle cx="118" cy="88" r="5" fill="#1a1b3a"/>
+  <circle cx="142" cy="88" r="5" fill="#1a1b3a"/>
+  <path d="M114,106 Q130,116 146,106" stroke="white" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <ellipse cx="112" cy="76" rx="12" ry="6" fill="#f5f0e8" opacity="0.6"/>
+  <ellipse cx="148" cy="76" rx="12" ry="6" fill="#f5f0e8" opacity="0.6"/>
+  <circle cx="168" cy="65" r="6" fill="#FF4500" opacity="0.8"/>
+  <!-- Connection line -->
+  <path d="M185,95 Q360,60 520,95" stroke="#c8963e" stroke-width="1.5" stroke-dasharray="6,4" fill="none" opacity="0.5"/>
+  <circle cx="360" cy="75" r="4" fill="#c8963e" opacity="0.7"/>
+  <text x="360" y="70" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#c8963e" opacity="0.8">PARTNERSHIP</text>
+  <!-- Right: Eiffel Tower large -->
+  <g fill="#c8963e" opacity="0.65" transform="translate(550,20)">
+    <polygon points="60,0 50,80 70,80"/>
+    <rect x="46" y="80" width="28" height="6" rx="1"/>
+    <polygon points="60,86 36,140 84,140"/>
+    <rect x="32" y="140" width="56" height="7" rx="2"/>
+    <rect x="42" y="147" width="8" height="40"/>
+    <rect x="70" y="147" width="8" height="40"/>
+    <rect x="38" y="100" width="44" height="3" rx="1" opacity="0.5"/>
+    <rect x="42" y="115" width="36" height="3" rx="1" opacity="0.5"/>
+    <rect x="46" y="128" width="28" height="3" rx="1" opacity="0.5"/>
+  </g>
+  <!-- Stars/lights -->
+  <circle cx="300" cy="40" r="1.5" fill="#c8963e" opacity="0.6"/>
+  <circle cx="320" cy="25" r="1" fill="#f5f0e8" opacity="0.5"/>
+  <circle cx="400" cy="35" r="1.5" fill="#c8963e" opacity="0.5"/>
+  <circle cx="450" cy="20" r="1" fill="#f5f0e8" opacity="0.5"/>
+  <circle cx="260" cy="55" r="1" fill="#f5f0e8" opacity="0.4"/>
+  <!-- Flag of France subtle -->
+  <rect x="345" y="25" width="9" height="17" fill="#002395" opacity="0.5"/>
+  <rect x="354" y="25" width="9" height="17" fill="white" opacity="0.4"/>
+  <rect x="363" y="25" width="9" height="17" fill="#ED2939" opacity="0.5"/>
+  <line x1="345" y1="25" x2="345" y2="10" stroke="#f5f0e8" stroke-width="1" opacity="0.5"/>
+  <!-- Label -->
+  <text x="360" y="192" text-anchor="middle" font-family="Inter,sans-serif" font-size="8.5" fill="#c8963e" opacity="0.7" letter-spacing="1">SITUATIONAL JUDGEMENT — REAL-WORLD PARTNERSHIP DECISIONS</text>
+</svg>`;
+}
+
+/* ─── RENDER DOTS ─── */
+function renderDots() {
+  const total = totalQ();
+  const row = document.getElementById('dot-row');
+  if (!row) return;
+  row.innerHTML = '';
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot';
+    const info = state.dotData[i];
+    if (info) d.classList.add('done');
+    else if (i === globalQNum() - 1 && state.phase === 'activity') d.classList.add('active');
+    row.appendChild(d);
+  }
+  document.getElementById('q-progress').textContent =
+    state.phase === 'activity' ? `${globalQNum()} of ${total}` : `– of ${total}`;
+  document.getElementById('score-display').textContent = state.score;
+}
+
+/* ─── BUILD QUESTION ─── */
+function buildQuestion() {
+  const act = activities[state.actIdx];
+  const q = act.questions[state.qIdx];
+  const shuffled = shuffle(q.opts.map((o, i) => ({ ...o, origIdx: i })));
+  const letters = ['A','B','C','D'];
+
+  return `
+    <div class="question-card">
+      <div class="question-top">
+        <div class="q-num">${globalQNum()}</div>
+        <div class="q-text">
+          <div>${q.q}</div>
+          ${q.context ? `<div class="context-block">${q.context}</div>` : ''}
+        </div>
+      </div>
+      <div class="options-list">
+        ${shuffled.map((o, i) => `
+          <button class="opt-btn" data-correct="${o.c}" data-feedback="${encodeURIComponent(q.fb)}" onclick="handleAnswer(this)">
+            <span class="opt-letter">${letters[i]}</span>
+            <span>${o.t}</span>
+          </button>
+        `).join('')}
+      </div>
+      <div class="feedback-box" id="feedback-box"></div>
+      <div class="nav-row">
+        <button class="btn-next" id="btn-next" onclick="nextStep()">
+          ${isLastQ() ? (isLastAct() ? 'See My Results →' : 'Next Activity →') : 'Next Question →'}
+        </button>
+      </div>
+    </div>`;
+}
+
+function isLastQ() {
+  return state.qIdx === activities[state.actIdx].questions.length - 1;
+}
+function isLastAct() {
+  return state.actIdx === activities.length - 1;
+}
+
+function handleAnswer(btn) {
+  if (state.answered) return;
+  state.answered = true;
+  const correct = btn.dataset.correct === 'true';
+  const fb = decodeURIComponent(btn.dataset.feedback);
+  const allBtns = btn.closest('.options-list').querySelectorAll('.opt-btn');
+  allBtns.forEach(b => {
+    b.disabled = true;
+    if (b.dataset.correct === 'true') b.classList.add('correct');
+  });
+  if (!correct) btn.classList.add('wrong');
+
+  if (correct) state.score++;
+  const gIdx = globalQNum() - 1;
+  state.dotData[gIdx] = { correct };
+
+  const fbBox = document.getElementById('feedback-box');
+  fbBox.className = 'feedback-box ' + (correct ? 'correct' : 'wrong');
+  fbBox.innerHTML = `<span class="feedback-icon">${correct ? '✓' : '✗'}</span> ${fb}`;
+
+  document.getElementById('score-display').textContent = state.score;
+  document.getElementById('btn-next').classList.add('visible');
+  renderDots();
+}
+
+function nextStep() {
+  state.answered = false;
+  if (isLastQ()) {
+    if (isLastAct()) {
+      showResults();
+    } else {
+      state.actIdx++;
+      state.qIdx = 0;
+      renderApp();
+    }
+  } else {
+    state.qIdx++;
+    renderApp();
+  }
+}
+
+/* ─── RESULTS ─── */
+function getResultMsg(pct) {
+  if (pct >= 90) return "Exceptional performance. You've demonstrated the kind of strategic intelligence and cultural fluency that top brass genuinely respect at the negotiating table. You're deal-ready.";
+  if (pct >= 75) return "Strong work — you're operating at a high professional register and showing real commercial acumen. A few areas to revisit will sharpen your edge in the most demanding rooms.";
+  if (pct >= 60) return "Solid foundation. You're thinking strategically, but some scenarios revealed opportunities to dial up your executive presence and close with more precision. Keep going.";
+  return "Good effort — these are genuinely challenging, senior-level scenarios. Use the feedback on each question to build a stronger playbook for your next pitch. Progress, not perfection.";
+}
+
+function showResults() {
+  state.phase = 'results';
+  const total = totalQ();
+  const pct = Math.round((state.score / total) * 100);
+  const correct = state.dotData.filter(d => d && d.correct).length;
+  const wrong = total - correct;
+
+  // animate ring
+  const deg = Math.round((pct / 100) * 360);
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <div class="results-screen visible">
+      <div class="results-score-ring" id="score-ring">
+        <div class="results-score-inner">
+          <div class="results-pct" id="pct-num">0%</div>
+          <div class="results-pct-label">Score</div>
+        </div>
+      </div>
+      <h2 class="results-title">Lesson Complete</h2>
+      <p class="results-msg">${getResultMsg(pct)}</p>
+      <div class="results-breakdown">
+        <div class="rb-item"><div class="rb-val">${state.score}</div><div class="rb-label">Correct</div></div>
+        <div class="rb-item"><div class="rb-val">${wrong}</div><div class="rb-label">To Review</div></div>
+        <div class="rb-item"><div class="rb-val">${total}</div><div class="rb-label">Total</div></div>
+      </div>
+      <button class="btn-restart" onclick="restartLesson()">↺ Restart Lesson</button>
+    </div>`;
+
+  // animate ring
+  const ring = document.getElementById('score-ring');
+  const pctEl = document.getElementById('pct-num');
+  let current = 0;
+  const timer = setInterval(() => {
+    current++;
+    if (current > pct) { clearInterval(timer); return; }
+    pctEl.textContent = current + '%';
+    const d = Math.round((current / 100) * 360);
+    ring.style.background = `conic-gradient(var(--gold) ${d}deg, var(--cream) ${d}deg)`;
+  }, 18);
+
+  renderDots();
+}
+
+function restartLesson() {
+  state = { actIdx: 0, qIdx: 0, score: 0, total: 0, answered: false, phase: 'activity', dotData: [] };
+  renderApp();
+}
+
+/* ─── MAIN RENDER ─── */
+function renderApp() {
+  const act = activities[state.actIdx];
+  const app = document.getElementById('app');
+
+  // Activity intro screen (shown at start of each activity)
+  if (state.phase === 'intro' || (state.qIdx === 0 && state.phase !== 'activity')) {
+    state.phase = 'activity';
+  }
+
+  renderDots();
+
+  // If first question of activity, show activity header + illustration + first question
+  let html = '';
+  if (state.qIdx === 0) {
+    html += `
+      <div class="section-intro">
+        <div class="section-num">Activity ${act.id} of ${activities.length}</div>
+        <h2 class="section-title">${act.title}</h2>
+        <p class="section-desc">${act.desc}</p>
+      </div>
+      <div class="illustration-wrap">${illus(act.illustration)}</div>
+    `;
+  }
+  html += buildQuestion();
+  app.innerHTML = html;
+}
+
+/* ─── INIT ─── */
+state.phase = 'activity';
+renderApp();
+</script>
+</body>
+</html>
+```

@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – Construction Presentations C1</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #0f1823;
+    --surface:   #182130;
+    --card:      #1e2b3d;
+    --border:    #2c3d52;
+    --brass:     #c9922a;
+    --brass-lt:  #e8b84b;
+    --brass-dim: #7a5518;
+    --slate:     #7ea8cc;
+    --slate-lt:  #b3cfe6;
+    --text:      #dde8f2;
+    --text-dim:  #7a95ae;
+    --correct:   #3a7d5c;
+    --correct-lt:#57c98d;
+    --wrong:     #7d3a3a;
+    --wrong-lt:  #e07070;
+    --radius:    12px;
+    --radius-sm: 7px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ── GRID TEXTURE ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(201,146,42,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,146,42,.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* ── LOGO ── */
+  .logo-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+  .logo-svg text { font-family: 'Playfair Display', serif; }
+
+  /* ── LESSON HEADER ── */
+  .lesson-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .lesson-label {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--brass);
+    border: 1px solid var(--brass-dim);
+    border-radius: 4px;
+    padding: 4px 12px;
+    margin-bottom: 14px;
+  }
+  .lesson-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 4vw, 36px);
+    color: var(--text);
+    line-height: 1.25;
+    margin-bottom: 10px;
+  }
+  .lesson-subtitle {
+    font-size: 15px;
+    color: var(--text-dim);
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  /* ── SCORE BAR ── */
+  .score-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 22px;
+    margin-bottom: 28px;
+  }
+  .score-bar-label {
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: .1em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+  }
+  .score-val {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--brass-lt);
+  }
+  .progress-dots {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--border);
+    transition: background .3s;
+  }
+  .dot.done   { background: var(--correct-lt); }
+  .dot.active { background: var(--brass); }
+  .dot.wrong  { background: var(--wrong-lt); }
+
+  /* ── ACTIVITY CARD ── */
+  .activity-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px;
+    margin-bottom: 24px;
+  }
+  .activity-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--brass);
+    margin-bottom: 18px;
+  }
+  .activity-tag .tag-icon {
+    width: 20px; height: 20px;
+    border-radius: 4px;
+    background: var(--brass-dim);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+  }
+  .q-counter {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+    letter-spacing: .08em;
+  }
+  .question-text {
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+  .question-context {
+    font-size: 14px;
+    color: var(--text-dim);
+    margin-bottom: 24px;
+    font-style: italic;
+    border-left: 2px solid var(--brass-dim);
+    padding-left: 14px;
+  }
+
+  /* ── MC OPTIONS ── */
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 13px 18px;
+    text-align: left;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    cursor: pointer;
+    transition: border-color .2s, background .2s, transform .1s;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--slate);
+    background: #1a2840;
+    transform: translateX(2px);
+  }
+  .option-btn:disabled { cursor: default; }
+  .option-btn.selected { border-color: var(--slate); background: #1a2840; }
+  .option-btn.correct  { border-color: var(--correct-lt) !important; background: rgba(57,125,92,.18) !important; }
+  .option-btn.wrong    { border-color: var(--wrong-lt) !important; background: rgba(125,58,58,.18) !important; }
+  .opt-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--brass);
+    min-width: 18px;
+    margin-top: 1px;
+    flex-shrink: 0;
+  }
+
+  /* ── FEEDBACK ── */
+  .feedback-box {
+    margin-top: 16px;
+    border-radius: var(--radius-sm);
+    padding: 14px 18px;
+    font-size: 14px;
+    line-height: 1.6;
+    display: none;
+  }
+  .feedback-box.show { display: block; }
+  .feedback-box.correct { background: rgba(57,125,92,.2); border: 1px solid var(--correct-lt); color: #9de8c0; }
+  .feedback-box.wrong   { background: rgba(125,58,58,.2); border: 1px solid var(--wrong-lt); color: #e8a0a0; }
+  .feedback-label { font-weight: 600; margin-bottom: 4px; display: block; }
+
+  /* ── FILL IN THE BLANK ── */
+  .fitb-sentence {
+    font-size: 17px;
+    line-height: 2;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+  .blank-input {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-bottom: 2px solid var(--brass);
+    border-radius: 4px 4px 0 0;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    padding: 4px 10px;
+    width: 200px;
+    outline: none;
+    transition: border-color .2s;
+  }
+  .blank-input:focus { border-color: var(--slate); border-bottom-color: var(--slate-lt); }
+  .blank-input:disabled { opacity: .7; cursor: default; }
+  .word-bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .word-chip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 14px;
+    color: var(--slate-lt);
+    font-family: 'DM Mono', monospace;
+  }
+  .word-chip.used { opacity: .35; text-decoration: line-through; }
+
+  /* ── DRAG & DROP ── */
+  .drag-instructions {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+  }
+  .drag-pool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 52px;
+    background: var(--surface);
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    margin-bottom: 20px;
+  }
+  .drag-item {
+    background: var(--card);
+    border: 1px solid var(--brass-dim);
+    border-radius: 6px;
+    padding: 7px 14px;
+    font-size: 14px;
+    cursor: grab;
+    user-select: none;
+    color: var(--brass-lt);
+    transition: transform .15s, box-shadow .15s;
+  }
+  .drag-item:active { cursor: grabbing; transform: scale(1.04); box-shadow: 0 4px 16px rgba(0,0,0,.4); }
+  .drag-item.dragging { opacity: .4; }
+  .sequence-slots {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .seq-slot {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 46px;
+    background: var(--surface);
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-sm);
+    padding: 8px 14px;
+    transition: border-color .2s, background .2s;
+  }
+  .seq-slot.drag-over { border-color: var(--brass); background: rgba(201,146,42,.08); }
+  .seq-slot.correct-slot { border-color: var(--correct-lt); background: rgba(57,125,92,.1); }
+  .seq-slot.wrong-slot   { border-color: var(--wrong-lt); background: rgba(125,58,58,.1); }
+  .slot-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+    min-width: 22px;
+  }
+  .slot-content { font-size: 14px; color: var(--text); flex: 1; }
+
+  /* ── MATCHING ── */
+  .match-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 20px;
+    margin-bottom: 20px;
+  }
+  .match-col-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    margin-bottom: 8px;
+  }
+  .match-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: border-color .2s, background .2s;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+  }
+  .match-item.selected { border-color: var(--brass); background: rgba(201,146,42,.1); color: var(--brass-lt); }
+  .match-item.matched-correct { border-color: var(--correct-lt); background: rgba(57,125,92,.15); color: var(--correct-lt); cursor: default; }
+  .match-item.matched-wrong   { border-color: var(--wrong-lt); background: rgba(125,58,58,.15); color: var(--wrong-lt); cursor: default; }
+  .match-item:disabled, .match-item.disabled { cursor: default; pointer-events: none; }
+
+  /* ── BUTTONS ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 28px;
+    border-radius: var(--radius-sm);
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform .15s, box-shadow .15s, opacity .2s;
+  }
+  .btn:disabled { opacity: .4; cursor: not-allowed; transform: none !important; }
+  .btn-primary {
+    background: var(--brass);
+    color: #0f1823;
+    font-weight: 600;
+  }
+  .btn-primary:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(201,146,42,.35); }
+  .btn-secondary {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+  }
+  .btn-secondary:hover:not(:disabled) { border-color: var(--slate); color: var(--text); }
+  .btn-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  /* ── SECTIONS / NAV ── */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ── ACTIVITY HEADER ── */
+  .activity-intro {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--brass);
+    border-radius: var(--radius);
+    padding: 22px 28px;
+    margin-bottom: 28px;
+  }
+  .activity-intro h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .activity-intro p { font-size: 14px; color: var(--text-dim); }
+
+  /* ── FINAL SCREEN ── */
+  .final-screen {
+    text-align: center;
+    padding: 60px 32px;
+  }
+  .final-badge {
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    border: 3px solid var(--brass);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 28px;
+    font-size: 36px;
+    background: rgba(201,146,42,.1);
+  }
+  .final-score-big {
+    font-family: 'Playfair Display', serif;
+    font-size: 56px;
+    color: var(--brass-lt);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .final-score-label { font-size: 14px; color: var(--text-dim); margin-bottom: 28px; }
+  .final-message {
+    font-size: 18px;
+    max-width: 440px;
+    margin: 0 auto 36px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 28px 0;
+  }
+
+  /* ── MISC ── */
+  .submit-row { margin-top: 20px; }
+  .hidden { display: none !important; }
+
+  @media (max-width: 600px) {
+    .match-grid { grid-template-columns: 1fr; }
+    .activity-card { padding: 22px 18px; }
+    .wrapper { padding: 24px 16px 60px; }
+    .score-bar { flex-wrap: wrap; gap: 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- LOGO -->
+  <div class="logo-wrap">
+    <svg class="logo-svg" width="200" height="62" viewBox="0 0 200 62" xmlns="http://www.w3.org/2000/svg">
+      <text x="100" y="30" text-anchor="middle"
+            font-family="'Playfair Display', serif"
+            font-size="32" font-weight="700"
+            fill="#c9922a" letter-spacing="3">Forbes</text>
+      <rect x="20" y="36" width="160" height="1.2" fill="#7a5518"/>
+      <text x="100" y="55" text-anchor="middle"
+            font-family="'DM Sans', sans-serif"
+            font-size="13" font-weight="700"
+            fill="#7ea8cc" letter-spacing="8">ENGLISH</text>
+    </svg>
+  </div>
+
+  <!-- LESSON HEADER -->
+  <div class="lesson-header">
+    <div class="lesson-label">C1 · Professional Communication</div>
+    <h1 class="lesson-title">Language for Construction Presentations</h1>
+    <p class="lesson-subtitle">Develop the precise vocabulary and rhetorical strategies used by professionals when presenting construction projects, proposals, and progress updates.</p>
+  </div>
+
+  <!-- SCORE BAR -->
+  <div class="score-bar">
+    <div>
+      <div class="score-bar-label">Score</div>
+      <div class="score-val" id="scoreDisplay">0 / 0</div>
+    </div>
+    <div id="progressDots" class="progress-dots"></div>
+    <div>
+      <div class="score-bar-label">Activity</div>
+      <div class="score-val" id="activityDisplay">1 / 3</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- ACTIVITY 1: MULTIPLE CHOICE -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div id="section-1" class="section active">
+    <div class="activity-intro">
+      <h2>Activity 1 — Multiple Choice</h2>
+      <p>Select the most appropriate word or phrase for a professional construction presentation context.</p>
+    </div>
+    <div id="mc-container"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- ACTIVITY 2: FILL IN THE BLANK -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div id="section-2" class="section">
+    <div class="activity-intro">
+      <h2>Activity 2 — Gap Fill</h2>
+      <p>Complete each sentence with the correct word or phrase from the word bank. Each item may only be used once.</p>
+    </div>
+    <div id="fitb-container"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- ACTIVITY 3: SEQUENCE / DRAG-AND-DROP -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div id="section-3" class="section">
+    <div class="activity-intro">
+      <h2>Activity 3 — Sentence Ordering</h2>
+      <p>Drag and drop the sentence segments into the correct order to form a coherent presentation statement.</p>
+    </div>
+    <div id="sort-container"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- FINAL SCREEN -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div id="section-final" class="section">
+    <div class="activity-card final-screen">
+      <div class="final-badge" id="finalBadge">🏗️</div>
+      <div class="final-score-big" id="finalScoreBig">—</div>
+      <div class="final-score-label" id="finalScoreLabel">questions answered correctly</div>
+      <p class="final-message" id="finalMessage"></p>
+      <button class="btn btn-primary" onclick="restartLesson()">↺ Restart Lesson</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════════
+
+const mcQuestions = [
+  {
+    context: "Opening a site progress report to the client steering committee:",
+    question: "\"What I'd like to do today is _______ you through the key milestones we've achieved over the last quarter.\"",
+    options: ["elaborate", "take", "walk", "guide"],
+    correct: 2,
+    explanation: "\"Walk you through\" is the idiomatic C1 phrase for presenting a structured overview. \"Guide\" is close but sounds more prescriptive; \"take\" requires a noun (\"take you on a tour\"); \"elaborate\" means to expand on a detail already mentioned."
+  },
+  {
+    context: "Explaining a delay due to subcontractor issues:",
+    question: "\"The holdup was largely _______ the late delivery of structural steel components from our main supplier.\"",
+    options: ["attributed to", "resulted from", "owing to", "caused through"],
+    correct: 2,
+    explanation: "\"Owing to\" is a formal prepositional phrase used to introduce a cause. \"Attributed to\" needs a passive construction (\"was attributed to\"). \"Caused through\" is not standard; \"resulted from\" is correct but slightly less formal than required here."
+  },
+  {
+    context: "Presenting revised cost projections to senior stakeholders:",
+    question: "\"We've revised our estimates _______, factoring in the increased cost of materials since Q1.\"",
+    options: ["accordingly", "henceforth", "upward", "comprehensively"],
+    correct: 2,
+    explanation: "\"Upward\" specifically conveys that figures have increased, which is the core meaning needed. \"Accordingly\" means in response to something mentioned, \"henceforth\" is temporal, and \"comprehensively\" describes thoroughness, not direction of change."
+  },
+  {
+    context: "Discussing risk on a high-rise development project:",
+    question: "\"The structural survey identified several _______ that could affect the timeline if left unaddressed.\"",
+    options: ["contingencies", "vulnerabilities", "parameters", "prerequisites"],
+    correct: 1,
+    explanation: "\"Vulnerabilities\" refers to weaknesses that could cause problems — exactly what a risk-focused survey would flag. \"Contingencies\" are planned responses to possible events. \"Parameters\" are defining limits of a system. \"Prerequisites\" are things required before you can proceed."
+  },
+  {
+    context: "Transitioning between sections of a detailed presentation:",
+    question: "\"Having covered the procurement phase, let me now _______ to the on-site construction schedule.\"",
+    options: ["shift", "redirect", "move", "transition"],
+    correct: 2,
+    explanation: "\"Move on to\" is the most natural, fluent signposting phrase at this level. \"Transition to\" is correct but slightly more formal and less idiomatic in spoken presentations. \"Redirect\" implies a course correction. \"Shift\" is informal and often signals an abrupt change."
+  },
+  {
+    context: "Describing a building's environmental performance credentials:",
+    question: "\"The development is _______ to achieve a BREEAM Excellent rating upon completion.\"",
+    options: ["projected", "anticipated", "on track", "targeted"],
+    correct: 2,
+    explanation: "\"On track to achieve\" is the standard professional phrase indicating confident progress toward a goal. \"Projected\" and \"targeted\" work as adjectives differently (\"the projected rating\"); \"anticipated\" is passive in feel and doesn't fit the active construction here."
+  },
+  {
+    context: "Addressing a question about foundation engineering choices:",
+    question: "\"The decision to use deep-pile foundations was made _______ the results of the geotechnical investigation.\"",
+    options: ["pursuant to", "following", "in light of", "against"],
+    correct: 2,
+    explanation: "\"In light of\" elegantly signals that a decision was informed by new evidence or findings. \"Pursuant to\" is more legal/formal. \"Following\" is acceptable but more informal. \"Against\" implies contradiction or opposition to the results."
+  }
+];
+
+const fitbQuestions = [
+  {
+    sentence: "We are currently operating _______ schedule, with the groundworks now three weeks ahead of the original programme.",
+    answer: "ahead of",
+    explanation: "\"Ahead of schedule\" is the fixed collocation used to describe positive progress against a project timeline. \"In front of\" or \"before\" are not used in this context."
+  },
+  {
+    sentence: "The client has raised a number of _______ regarding the proposed materials specification, which we will address in section three.",
+    answer: "reservations",
+    explanation: "\"Reservations\" (formal plural) describes doubts or concerns a client might hold about a proposal. \"Objections\" is slightly stronger and more confrontational; \"questions\" is too vague for a formal presentation."
+  },
+  {
+    sentence: "To _______ the environmental impact of the excavation works, we've employed low-emission plant machinery throughout.",
+    answer: "mitigate",
+    explanation: "\"Mitigate\" means to reduce the severity of something — the standard verb in environmental management and sustainability presentations. \"Reduce\" is correct but too generic for C1 professional use."
+  },
+  {
+    sentence: "I'd like to draw your attention to the revised _______, which shows the updated sequence of construction activities through to handover.",
+    answer: "programme",
+    explanation: "In UK construction English, \"programme\" (not \"schedule\" or \"timetable\") is the professional term for the document mapping the sequence and timing of project activities."
+  },
+  {
+    sentence: "The proposed design _______ both the planning authority's requirements and the client's aesthetic brief.",
+    answer: "satisfies",
+    explanation: "\"Satisfies\" is the precise formal verb for meeting requirements — stronger and more professional than \"meets\" or \"fulfils\" here, as it implies both compliance and quality of outcome."
+  },
+  {
+    sentence: "Should ground conditions prove more challenging than anticipated, we have a _______ plan in place to avoid any impact on the critical path.",
+    answer: "contingency",
+    explanation: "A \"contingency plan\" is the specific professional term for a backup arrangement prepared in advance. \"Backup\" or \"emergency\" plan are less formal and less standard in construction project management language."
+  }
+];
+
+const wordBank = ["ahead of","reservations","mitigate","programme","satisfies","contingency"];
+
+const sortQuestions = [
+  {
+    instruction: "Arrange these segments to form a correct project update sentence:",
+    segments: [
+      "the internal fit-out phase",
+      "is proceeding",
+      "in accordance with",
+      "the approved schedule",
+      "and remains within budget"
+    ],
+    correct: [0, 1, 2, 3, 4],
+    explanation: "The correct structure is: subject + verb phrase + prepositional phrase + qualification. \"Is proceeding in accordance with the approved schedule and remains within budget\" is the standard construction for a positive progress statement."
+  },
+  {
+    instruction: "Arrange these segments to form a correct risk statement:",
+    segments: [
+      "we have identified",
+      "a potential delay",
+      "to the cladding installation",
+      "arising from",
+      "supply chain disruption"
+    ],
+    correct: [0, 1, 2, 3, 4],
+    explanation: "\"We have identified a potential delay to [activity] arising from [cause]\" is the professional formula for presenting a risk: agent + identification verb + issue + affected element + cause."
+  },
+  {
+    instruction: "Arrange these segments to form a correct recommendation sentence:",
+    segments: [
+      "it is our recommendation",
+      "that the client approves",
+      "the revised structural drawings",
+      "prior to",
+      "the commencement of steelwork"
+    ],
+    correct: [0, 1, 2, 3, 4],
+    explanation: "\"It is our recommendation that [subject] approves [object] prior to [action]\" follows the formal structure for presenting a professional recommendation, using \"prior to\" + a noun phrase (not \"before\" + clause) for formality."
+  },
+  {
+    instruction: "Arrange these segments to form a correct scope explanation:",
+    segments: [
+      "the works",
+      "fall outside",
+      "the agreed contract scope",
+      "and are therefore",
+      "subject to a variation order"
+    ],
+    correct: [0, 1, 2, 3, 4],
+    explanation: "\"The works fall outside the agreed contract scope and are therefore subject to a variation order\" — \"fall outside scope\" and \"subject to a variation order\" are fixed professional collocations in UK construction contract language."
+  },
+  {
+    instruction: "Arrange these segments to form a correct closing statement:",
+    segments: [
+      "to summarise,",
+      "the project",
+      "is on track",
+      "to achieve practical completion",
+      "by the contracted date"
+    ],
+    correct: [0, 1, 2, 3, 4],
+    explanation: "A presentation close should begin with a signposting phrase (\"to summarise\"), then deliver the headline update. \"On track to achieve practical completion\" is the standard UK construction phrase; \"practical completion\" is a formal contract term."
+  }
+];
+
+// ═══════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════
+
+let totalQ = mcQuestions.length + fitbQuestions.length + sortQuestions.length;
+let score = 0;
+let answered = 0;
+let dotStates = [];
+let currentSection = 1;
+
+let mcIndex = 0;
+let fitbIndex = 0;
+let sortIndex = 0;
+
+// Drag state
+let draggedEl = null;
+let draggedFrom = null; // 'pool' or slot index
+
+// ═══════════════════════════════════════════════════════════
+// SCORE BAR
+// ═══════════════════════════════════════════════════════════
+
+function initDots() {
+  dotStates = new Array(totalQ).fill('pending');
+  renderDots();
+}
+
+function renderDots() {
+  const container = document.getElementById('progressDots');
+  container.innerHTML = '';
+  dotStates.forEach((state, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (state === 'done' ? ' done' : state === 'wrong' ? ' wrong' : '');
+    if (state === 'pending' && i === answered) d.classList.add('active');
+    container.appendChild(d);
+  });
+}
+
+function updateScore(correct) {
+  if (correct) {
+    score++;
+    dotStates[answered] = 'done';
+  } else {
+    dotStates[answered] = 'wrong';
+  }
+  answered++;
+  document.getElementById('scoreDisplay').textContent = score + ' / ' + answered;
+  renderDots();
+}
+
+function updateActivityDisplay(n) {
+  document.getElementById('activityDisplay').textContent = n + ' / 3';
+}
+
+// ═══════════════════════════════════════════════════════════
+// SECTION SWITCHING
+// ═══════════════════════════════════════════════════════════
+
+function showSection(n) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  const id = n === 'final' ? 'section-final' : 'section-' + n;
+  document.getElementById(id).classList.add('active');
+  currentSection = n;
+  if (n !== 'final') updateActivityDisplay(n);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ═══════════════════════════════════════════════════════════
+// ACTIVITY 1 – MULTIPLE CHOICE
+// ═══════════════════════════════════════════════════════════
+
+function buildMC() {
+  const container = document.getElementById('mc-container');
+  container.innerHTML = '';
+  renderMCQuestion(container, 0);
+}
+
+function renderMCQuestion(container, idx) {
+  if (idx >= mcQuestions.length) {
+    showSection(2);
+    buildFITB();
+    return;
+  }
+  const q = mcQuestions[idx];
+  const card = document.createElement('div');
+  card.className = 'activity-card';
+
+  const labels = ['A', 'B', 'C', 'D'];
+
+  card.innerHTML = `
+    <div class="activity-tag"><span class="tag-icon">◉</span> Multiple Choice</div>
+    <div class="q-counter">Question ${idx + 1} of ${mcQuestions.length}</div>
+    <div class="question-context">${q.context}</div>
+    <div class="question-text">${q.question}</div>
+    <div class="options" id="mc-opts-${idx}"></div>
+    <div class="feedback-box" id="mc-fb-${idx}"></div>
+    <div class="btn-row hidden" id="mc-next-${idx}">
+      <button class="btn btn-primary" onclick="nextMC(${idx + 1})">Next →</button>
+    </div>
+  `;
+  container.innerHTML = '';
+  container.appendChild(card);
+
+  const optsDiv = card.querySelector(`#mc-opts-${idx}`);
+  q.options.forEach((opt, oi) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="opt-label">${labels[oi]}</span> <span>${opt}</span>`;
+    btn.addEventListener('click', () => handleMCAnswer(idx, oi, btn, optsDiv, card));
+    optsDiv.appendChild(btn);
+  });
+}
+
+function handleMCAnswer(qIdx, chosen, btn, optsDiv, card) {
+  const q = mcQuestions[qIdx];
+  const correct = chosen === q.correct;
+  const allBtns = optsDiv.querySelectorAll('.option-btn');
+  allBtns.forEach(b => b.disabled = true);
+  allBtns[q.correct].classList.add('correct');
+  if (!correct) btn.classList.add('wrong');
+
+  const fb = card.querySelector(`#mc-fb-${qIdx}`);
+  fb.className = 'feedback-box show ' + (correct ? 'correct' : 'wrong');
+  fb.innerHTML = `<span class="feedback-label">${correct ? '✓ Correct' : '✗ Incorrect'}</span>${q.explanation}`;
+
+  card.querySelector(`#mc-next-${qIdx}`).classList.remove('hidden');
+  updateScore(correct);
+}
+
+function nextMC(nextIdx) {
+  renderMCQuestion(document.getElementById('mc-container'), nextIdx);
+}
+
+// ═══════════════════════════════════════════════════════════
+// ACTIVITY 2 – FILL IN THE BLANK
+// ═══════════════════════════════════════════════════════════
+
+let fitbUsed = [];
+let fitbAnswered = 0;
+let fitbScore = 0;
+
+function buildFITB() {
+  fitbUsed = new Array(wordBank.length).fill(false);
+  fitbAnswered = 0;
+  const container = document.getElementById('fitb-container');
+  container.innerHTML = '';
+
+  // Word bank
+  const bankDiv = document.createElement('div');
+  bankDiv.style.marginBottom = '24px';
+  bankDiv.innerHTML = `<div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;">Word Bank</div>`;
+  const chips = document.createElement('div');
+  chips.className = 'word-bank';
+  chips.id = 'fitb-bank';
+  wordBank.forEach((w, wi) => {
+    const chip = document.createElement('span');
+    chip.className = 'word-chip';
+    chip.id = `chip-${wi}`;
+    chip.textContent = w;
+    chips.appendChild(chip);
+  });
+  bankDiv.appendChild(chips);
+  container.appendChild(bankDiv);
+
+  fitbQuestions.forEach((q, qi) => renderFITBQuestion(container, qi, q));
+
+  const submitRow = document.createElement('div');
+  submitRow.className = 'btn-row';
+  submitRow.id = 'fitb-submit-row';
+  submitRow.innerHTML = `<button class="btn btn-primary" id="fitb-submit-btn" onclick="submitFITB()">Check Answers →</button>`;
+  container.appendChild(submitRow);
+}
+
+function renderFITBQuestion(container, qi, q) {
+  const card = document.createElement('div');
+  card.className = 'activity-card';
+  card.style.marginBottom = '16px';
+
+  const parts = q.sentence.split('_______');
+  card.innerHTML = `
+    <div class="activity-tag"><span class="tag-icon">✎</span> Gap Fill</div>
+    <div class="q-counter">Question ${qi + 1} of ${fitbQuestions.length}</div>
+    <div class="fitb-sentence">
+      ${parts[0]}<input class="blank-input" id="fitb-input-${qi}" type="text" placeholder="type here…" autocomplete="off" spellcheck="false">${parts[1]}
+    </div>
+    <div class="feedback-box" id="fitb-fb-${qi}"></div>
+  `;
+  container.appendChild(card);
+}
+
+function submitFITB() {
+  let allCorrect = 0;
+  fitbQuestions.forEach((q, qi) => {
+    const input = document.getElementById(`fitb-input-${qi}`);
+    const val = input.value.trim().toLowerCase();
+    const correct = val === q.answer.toLowerCase();
+    if (correct) allCorrect++;
+    input.disabled = true;
+    input.style.borderBottomColor = correct ? 'var(--correct-lt)' : 'var(--wrong-lt)';
+    input.style.color = correct ? 'var(--correct-lt)' : 'var(--wrong-lt)';
+
+    const fb = document.getElementById(`fitb-fb-${qi}`);
+    fb.className = 'feedback-box show ' + (correct ? 'correct' : 'wrong');
+    fb.innerHTML = `<span class="feedback-label">${correct ? '✓ Correct' : `✗ The answer is: "${q.answer}"`}</span>${q.explanation}`;
+
+    updateScore(correct);
+  });
+
+  // Update word bank chips
+  wordBank.forEach((w, wi) => {
+    const used = fitbQuestions.some(q => q.answer.toLowerCase() === w.toLowerCase());
+    if (used) document.getElementById(`chip-${wi}`).classList.add('used');
+  });
+
+  const submitBtn = document.getElementById('fitb-submit-btn');
+  submitBtn.textContent = 'Next Activity →';
+  submitBtn.onclick = () => { showSection(3); buildSort(); };
+}
+
+// ═══════════════════════════════════════════════════════════
+// ACTIVITY 3 – SENTENCE ORDERING (drag & drop)
+// ═══════════════════════════════════════════════════════════
+
+let sortState = []; // for each question: array of segment indices in slots
+
+function buildSort() {
+  const container = document.getElementById('sort-container');
+  container.innerHTML = '';
+  renderSortQuestion(container, 0);
+}
+
+function renderSortQuestion(container, qi) {
+  if (qi >= sortQuestions.length) {
+    showFinal();
+    return;
+  }
+  const q = sortQuestions[qi];
+  const card = document.createElement('div');
+  card.className = 'activity-card';
+
+  const poolId = `sort-pool-${qi}`;
+  const slotsId = `sort-slots-${qi}`;
+
+  card.innerHTML = `
+    <div class="activity-tag"><span class="tag-icon">⇅</span> Sentence Ordering</div>
+    <div class="q-counter">Question ${qi + 1} of ${sortQuestions.length}</div>
+    <div class="question-text">${q.instruction}</div>
+    <p class="drag-instructions">Drag the segments from the pool into the numbered slots below.</p>
+    <div class="drag-pool" id="${poolId}"></div>
+    <div class="sequence-slots" id="${slotsId}"></div>
+    <div class="feedback-box" id="sort-fb-${qi}"></div>
+    <div class="btn-row" id="sort-btns-${qi}">
+      <button class="btn btn-primary" onclick="checkSort(${qi})" id="sort-check-${qi}">Check →</button>
+    </div>
+  `;
+  container.innerHTML = '';
+  container.appendChild(card);
+
+  // Shuffle segments for the pool
+  const shuffled = [...q.correct].sort(() => Math.random() - .5);
+  const pool = card.querySelector(`#${poolId}`);
+  shuffled.forEach(segIdx => {
+    const el = createDragItem(segIdx, q.segments[segIdx], qi, pool);
+    pool.appendChild(el);
+  });
+
+  // Create slots
+  const slotsDiv = card.querySelector(`#${slotsId}`);
+  q.segments.forEach((_, si) => {
+    const slot = document.createElement('div');
+    slot.className = 'seq-slot';
+    slot.dataset.slot = si;
+    slot.innerHTML = `<span class="slot-num">${si + 1}</span><span class="slot-content" id="slot-content-${qi}-${si}"></span>`;
+    setupSlotDrop(slot, qi, pool, slotsDiv);
+    slotsDiv.appendChild(slot);
+  });
+}
+
+function createDragItem(segIdx, text, qi, pool) {
+  const el = document.createElement('div');
+  el.className = 'drag-item';
+  el.textContent = text;
+  el.dataset.segIdx = segIdx;
+  el.draggable = true;
+  el.addEventListener('dragstart', e => {
+    draggedEl = el;
+    draggedFrom = el.parentElement;
+    setTimeout(() => el.classList.add('dragging'), 0);
+  });
+  el.addEventListener('dragend', () => {
+    el.classList.remove('dragging');
+    draggedEl = null;
+  });
+  return el;
+}
+
+function setupSlotDrop(slot, qi, pool, slotsDiv) {
+  slot.addEventListener('dragover', e => { e.preventDefault(); slot.classList.add('drag-over'); });
+  slot.addEventListener('dragleave', () => slot.classList.remove('drag-over'));
+  slot.addEventListener('drop', e => {
+    e.preventDefault();
+    slot.classList.remove('drag-over');
+    if (!draggedEl) return;
+
+    const si = parseInt(slot.dataset.slot);
+    const contentEl = document.getElementById(`slot-content-${qi}-${si}`);
+
+    // If slot already has an item, send it back to pool
+    const existing = slot.querySelector('.drag-item');
+    if (existing) {
+      pool.appendChild(existing);
+    }
+
+    // If coming from another slot, clear that slot
+    if (draggedFrom && draggedFrom !== pool && draggedFrom.classList.contains('seq-slot')) {
+      const fromSi = parseInt(draggedFrom.dataset.slot);
+      const fromContent = document.getElementById(`slot-content-${qi}-${fromSi}`);
+      fromContent.textContent = '';
+    }
+
+    slot.appendChild(draggedEl);
+    contentEl.textContent = '';
+  });
+}
+
+function checkSort(qi) {
+  const q = sortQuestions[qi];
+  const slotsDiv = document.getElementById(`sort-slots-${qi}`);
+  const slots = slotsDiv.querySelectorAll('.seq-slot');
+
+  let correct = true;
+  slots.forEach((slot, si) => {
+    const item = slot.querySelector('.drag-item');
+    if (!item) { correct = false; slot.classList.add('wrong-slot'); return; }
+    const segIdx = parseInt(item.dataset.segIdx);
+    const isRight = q.correct[si] === segIdx;
+    slot.classList.add(isRight ? 'correct-slot' : 'wrong-slot');
+    if (!isRight) correct = false;
+    item.style.cursor = 'default';
+    item.draggable = false;
+  });
+
+  const fb = document.getElementById(`sort-fb-${qi}`);
+  fb.className = 'feedback-box show ' + (correct ? 'correct' : 'wrong');
+  const correctSentence = q.correct.map(i => q.segments[i]).join(' ');
+  fb.innerHTML = `<span class="feedback-label">${correct ? '✓ Correct!' : `✗ Correct order: "${correctSentence}"`}</span>${q.explanation}`;
+
+  updateScore(correct);
+
+  const btnRow = document.getElementById(`sort-btns-${qi}`);
+  const checkBtn = document.getElementById(`sort-check-${qi}`);
+  checkBtn.textContent = qi < sortQuestions.length - 1 ? 'Next →' : 'Finish →';
+  checkBtn.onclick = () => renderSortQuestion(document.getElementById('sort-container'), qi + 1);
+}
+
+// ═══════════════════════════════════════════════════════════
+// FINAL SCREEN
+// ═══════════════════════════════════════════════════════════
+
+function showFinal() {
+  showSection('final');
+  const pct = Math.round((score / totalQ) * 100);
+  document.getElementById('finalScoreBig').textContent = score + ' / ' + totalQ;
+  document.getElementById('finalScoreLabel').textContent = `correct (${pct}%)`;
+
+  let badge, msg;
+  if (pct >= 90) {
+    badge = '🏆'; msg = "Outstanding. Your command of professional construction presentation language is at an advanced level. You consistently selected precise, register-appropriate vocabulary and phrasing.";
+  } else if (pct >= 75) {
+    badge = '🥇'; msg = "Excellent work. You have a strong grasp of the language used in construction presentations. Review the items you missed to sharpen those final details.";
+  } else if (pct >= 55) {
+    badge = '🥈'; msg = "Good effort. You've demonstrated solid knowledge of several key areas. With targeted review of collocations and formal structures, you'll reach the next level quickly.";
+  } else {
+    badge = '🏗️'; msg = "Keep building. Construction presentation language has a specialised register that takes practice. Review the explanations and try again — every attempt strengthens the framework.";
+  }
+
+  document.getElementById('finalBadge').textContent = badge;
+  document.getElementById('finalMessage').textContent = msg;
+}
+
+// ═══════════════════════════════════════════════════════════
+// RESTART
+// ═══════════════════════════════════════════════════════════
+
+function restartLesson() {
+  score = 0;
+  answered = 0;
+  mcIndex = 0;
+  fitbIndex = 0;
+  sortIndex = 0;
+  initDots();
+  document.getElementById('scoreDisplay').textContent = '0 / 0';
+  showSection(1);
+  buildMC();
+}
+
+// ═══════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════
+
+initDots();
+buildMC();
+updateActivityDisplay(1);
+</script>
+</body>
+</html>

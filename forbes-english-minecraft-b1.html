@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – Minecraft B1 Lesson</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow+Condensed:wght@400;600;700;800&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal:    #1F6E6E;
+  --teal-dk: #144A4A;
+  --teal-lt: #2D9090;
+  --cream:   #F4F1EC;
+  --cream-dk:#E8E3D8;
+  --charcoal:#1A1F1F;
+  --char-md: #2E3838;
+  --char-lt: #526060;
+  --gold:    #D4A928;
+  --gold-dk: #A07D18;
+  --correct: #3A7D44;
+  --wrong:   #B33030;
+  --border:  rgba(26,31,31,0.15);
+  --shadow:  0 4px 24px rgba(26,31,31,0.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Lora',Georgia,serif;background:var(--cream);color:var(--charcoal);min-height:100vh;overflow-x:hidden}
+
+/* ── MASTHEAD ── */
+.masthead{
+  background:var(--cream-dk);
+  border-bottom:3px solid var(--charcoal);
+  padding:48px 40px 36px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.masthead::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 80% at 50% -20%, rgba(31,110,110,0.08) 0%, transparent 70%);
+  pointer-events:none;
+}
+.masthead::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:6px;
+  background:repeating-linear-gradient(90deg,var(--teal) 0,var(--teal) 12px,var(--gold) 12px,var(--gold) 24px,var(--charcoal) 24px,var(--charcoal) 36px,var(--cream-dk) 36px,var(--cream-dk) 48px);
+}
+.logo-svg-wrap{display:inline-block;width:min(680px,90vw)}
+
+/* ── SCORE STRIP ── */
+.score-strip{
+  background:var(--charcoal);color:var(--cream);
+  padding:10px 40px;display:flex;align-items:center;justify-content:center;gap:32px;
+  font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:600;
+  letter-spacing:2px;text-transform:uppercase;flex-wrap:wrap;
+}
+.score-strip .score-item{display:flex;align-items:center;gap:8px}
+.score-strip .score-num{font-size:22px;font-weight:800;color:var(--gold);letter-spacing:0}
+.score-divider{width:1px;height:24px;background:rgba(255,255,255,.2)}
+
+/* ── MAIN ── */
+main{max-width:860px;margin:0 auto;padding:0 20px 80px}
+
+/* ── ACTIVITY SECTIONS ── */
+.activity-section{padding:48px 0 32px;border-bottom:2px solid var(--border)}
+.activity-section:last-of-type{border-bottom:none}
+.act-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--teal);margin-bottom:8px}
+.act-title{font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,38px);font-weight:900;color:var(--charcoal);line-height:1.15;margin-bottom:10px}
+.act-instructions{font-family:'Lora',serif;font-size:15px;color:var(--char-lt);line-height:1.7;margin-bottom:28px;max-width:620px}
+
+/* ── PROGRESS ── */
+.prog-wrap{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.prog-bar{flex:1;height:6px;background:var(--cream-dk);border:1px solid var(--border);overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--gold));transition:width .4s ease}
+.prog-label{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;color:var(--char-lt);white-space:nowrap;text-transform:uppercase}
+
+/* ── Q CARD ── */
+.q-card{background:#fff;border:2px solid var(--charcoal);box-shadow:5px 5px 0 var(--charcoal);padding:28px 28px 24px;margin-bottom:16px}
+.q-hint{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.q-hint::before{content:'';display:inline-block;width:20px;height:2px;background:var(--teal)}
+.q-text{font-family:'Lora',serif;font-size:17px;line-height:1.65;color:var(--charcoal);margin-bottom:20px;font-weight:500}
+.q-text strong{color:var(--teal);font-weight:700}
+
+/* ── MC OPTIONS ── */
+.options{display:flex;flex-direction:column;gap:9px}
+.opt-btn{display:flex;align-items:flex-start;gap:14px;padding:13px 16px;background:var(--cream);border:1.5px solid var(--border);cursor:pointer;font-family:'Lora',serif;font-size:15px;color:var(--charcoal);text-align:left;transition:all .15s;line-height:1.5;width:100%}
+.opt-btn:hover:not(:disabled){background:var(--cream-dk);border-color:var(--teal);transform:translateX(3px)}
+.opt-btn .ltr{min-width:28px;height:28px;background:var(--charcoal);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;flex-shrink:0;transition:background .15s}
+.opt-btn.selected{background:var(--cream-dk);border-color:var(--teal)}
+.opt-btn.selected .ltr{background:var(--teal)}
+.opt-btn.correct{background:#EBF5EC;border-color:var(--correct);border-width:2px}
+.opt-btn.correct .ltr{background:var(--correct)}
+.opt-btn.incorrect{background:#FDECEC;border-color:var(--wrong);border-width:2px}
+.opt-btn.incorrect .ltr{background:var(--wrong)}
+.opt-btn:disabled{cursor:default;transform:none}
+
+/* ── FEEDBACK ── */
+.feedback{display:none;margin-top:14px;padding:14px 18px;font-family:'Lora',serif;font-size:14px;line-height:1.65;border-left:4px solid}
+.feedback.show{display:block}
+.feedback.correct-fb{background:#EBF5EC;border-color:var(--correct);color:#1D4D23}
+.feedback.incorrect-fb{background:#FDECEC;border-color:var(--wrong);color:#7A1A1A}
+.fb-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+
+/* ── FILL IN BLANK ── */
+.blank-input{display:inline-block;background:transparent;border:none;border-bottom:2.5px solid var(--teal);color:var(--charcoal);font-family:'Lora',serif;font-size:15px;font-weight:500;padding:2px 6px;width:160px;outline:none;vertical-align:middle;transition:border-color .2s}
+.blank-input:focus{border-color:var(--gold)}
+.blank-input.correct-input{border-color:var(--correct);color:var(--correct)}
+.blank-input.wrong-input{border-color:var(--wrong);color:var(--wrong)}
+
+/* ── DRAG & DROP ── */
+.dd-pool-label{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--char-lt);margin-bottom:10px}
+.dd-pool{display:flex;flex-wrap:wrap;gap:9px;padding:16px;background:#fff;border:2px dashed var(--border);min-height:58px;margin-bottom:18px}
+.drag-chip{padding:7px 15px;background:var(--charcoal);color:var(--cream);border:none;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:600;cursor:grab;user-select:none;transition:all .15s;letter-spacing:.5px}
+.drag-chip:hover{background:var(--teal);transform:translateY(-2px)}
+.drag-chip.dragging{opacity:.35}
+.drag-chip.placed{opacity:.3;cursor:not-allowed}
+.drop-sent{font-family:'Lora',serif;font-size:16px;line-height:2.4;color:var(--charcoal);margin-bottom:10px}
+.drop-zone{display:inline-block;min-width:130px;padding:2px 10px;background:var(--cream-dk);border:2px dashed var(--teal);vertical-align:middle;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;color:var(--teal);cursor:pointer;transition:all .15s;min-height:28px}
+.drop-zone.over{background:rgba(31,110,110,.1);border-color:var(--gold);color:var(--gold-dk)}
+.drop-zone.filled{border-style:solid;border-color:var(--charcoal);color:var(--charcoal);background:#fff;font-size:14px;letter-spacing:.3px}
+.drop-zone.correct-dz{border-color:var(--correct);background:#EBF5EC;color:var(--correct)}
+.drop-zone.wrong-dz{border-color:var(--wrong);background:#FDECEC;color:var(--wrong)}
+
+/* ── MATCHING ── */
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.match-col{display:flex;flex-direction:column;gap:8px}
+.match-col-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--char-lt);margin-bottom:4px}
+.match-card{padding:12px 14px;background:#fff;border:1.5px solid var(--border);box-shadow:3px 3px 0 var(--border);font-family:'Lora',serif;font-size:14px;line-height:1.45;cursor:pointer;transition:all .15s;color:var(--charcoal)}
+.match-card.left-c{border-left:4px solid var(--teal)}
+.match-card.right-c{border-right:4px solid var(--gold);color:var(--char-lt)}
+.match-card.selected{border-color:var(--teal);background:var(--cream-dk);box-shadow:3px 3px 0 var(--teal);color:var(--charcoal)}
+.match-card.matched{border-color:var(--correct);background:#EBF5EC;cursor:default}
+.match-card.wrong-flash{border-color:var(--wrong);background:#FDECEC;animation:shake .3s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.match-tally{text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--char-lt);margin-top:8px}
+.match-tally span{color:var(--teal)}
+
+/* ── ORDERING ── */
+.order-list{display:flex;flex-direction:column;gap:8px}
+.order-row{display:flex;align-items:center;gap:12px;padding:13px 15px;background:#fff;border:1.5px solid var(--border);box-shadow:3px 3px 0 var(--border);cursor:grab;font-family:'Lora',serif;font-size:15px;line-height:1.4;user-select:none;color:var(--charcoal);transition:all .15s}
+.order-row:hover{border-color:var(--teal);box-shadow:3px 3px 0 var(--teal)}
+.order-row.dragging-row{opacity:.4}
+.order-handle{font-family:'Barlow Condensed',sans-serif;font-size:18px;color:var(--char-lt);flex-shrink:0;letter-spacing:-1px}
+.order-idx{min-width:28px;height:28px;background:var(--charcoal);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;flex-shrink:0}
+.order-row.correct-row{border-color:var(--correct);background:#EBF5EC}
+.order-row.wrong-row{border-color:var(--wrong);background:#FDECEC}
+
+/* ── BUTTONS ── */
+.btn-row{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;align-items:center}
+.btn{padding:12px 26px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border:2px solid;cursor:pointer;transition:all .15s}
+.btn-primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.btn-primary:hover{background:var(--teal-dk);border-color:var(--teal-dk);transform:translateY(-1px);box-shadow:0 4px 12px rgba(31,110,110,.35)}
+.btn-secondary{background:transparent;color:var(--char-lt);border-color:var(--border)}
+.btn-secondary:hover{border-color:var(--teal);color:var(--teal)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* ── ILLUSTRATION DIVIDER ── */
+.illus-divider{width:100vw;margin-left:calc(-50vw + 50%);overflow:hidden;position:relative}
+
+/* ── FINAL ── */
+#final-screen{display:none;padding:56px 40px 64px;text-align:center;background:#fff;border:2px solid var(--charcoal);box-shadow:8px 8px 0 var(--charcoal);margin-top:40px}
+#final-screen.show{display:block}
+.final-ring-wrap{width:140px;height:140px;border-radius:50%;background:conic-gradient(var(--teal) 0%,var(--teal) var(--pct,0%),var(--cream-dk) var(--pct,0%));display:flex;align-items:center;justify-content:center;margin:0 auto 28px;box-shadow:0 0 0 6px var(--cream-dk),0 0 0 8px var(--charcoal)}
+.final-ring-inner{width:108px;height:108px;border-radius:50%;background:var(--cream);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.final-num{font-family:'Playfair Display',serif;font-size:38px;font-weight:900;color:var(--teal);line-height:1}
+.final-denom{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;color:var(--char-lt);text-transform:uppercase}
+.final-title{font-family:'Playfair Display',serif;font-size:32px;font-weight:900;color:var(--charcoal);margin-bottom:12px}
+.final-msg{font-family:'Lora',serif;font-size:16px;color:var(--char-lt);line-height:1.7;max-width:500px;margin:0 auto 32px}
+
+@media(max-width:620px){
+  .masthead{padding:32px 20px 28px}
+  main{padding:0 14px 60px}
+  .match-grid{grid-template-columns:1fr}
+  .q-card{padding:20px 16px 18px}
+  .act-title{font-size:24px}
+  .score-strip{gap:16px;padding:8px 20px}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ MASTHEAD ══════════════ -->
+<div class="masthead">
+  <!-- Subtle pixel skyline watermark -->
+  <svg style="position:absolute;bottom:0;left:0;width:100%;height:100%;opacity:.05;pointer-events:none" viewBox="0 0 1200 180" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+    <rect x="0"    y="90"  width="60"  height="90"  fill="#1A1F1F"/>
+    <rect x="60"   y="110" width="80"  height="70"  fill="#1A1F1F"/>
+    <rect x="140"  y="70"  width="40"  height="110" fill="#1A1F1F"/>
+    <rect x="180"  y="100" width="80"  height="80"  fill="#1A1F1F"/>
+    <rect x="260"  y="120" width="100" height="60"  fill="#1A1F1F"/>
+    <rect x="360"  y="60"  width="60"  height="120" fill="#1A1F1F"/>
+    <rect x="480"  y="80"  width="80"  height="100" fill="#1A1F1F"/>
+    <rect x="600"  y="50"  width="60"  height="130" fill="#1A1F1F"/>
+    <rect x="700"  y="90"  width="80"  height="90"  fill="#1A1F1F"/>
+    <rect x="840"  y="60"  width="60"  height="120" fill="#1A1F1F"/>
+    <rect x="960"  y="80"  width="80"  height="100" fill="#1A1F1F"/>
+    <rect x="1080" y="70"  width="60"  height="110" fill="#1A1F1F"/>
+    <rect x="1140" y="100" width="60"  height="80"  fill="#1A1F1F"/>
+    <rect x="100" y="22" width="5" height="5" fill="#1A1F1F"/>
+    <rect x="290" y="12" width="5" height="5" fill="#1A1F1F"/>
+    <rect x="520" y="18" width="5" height="5" fill="#1A1F1F"/>
+    <rect x="780" y="8"  width="5" height="5" fill="#1A1F1F"/>
+    <rect x="970" y="20" width="5" height="5" fill="#1A1F1F"/>
+  </svg>
+
+  <!-- BIG LOGO -->
+  <div class="logo-svg-wrap">
+    <svg viewBox="0 0 680 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+      <text x="340" y="98"
+        font-family="'Playfair Display', Georgia, serif"
+        font-size="108" font-weight="900" text-anchor="middle"
+        fill="#1A1F1F" letter-spacing="-2">Forbes</text>
+      <rect x="10" y="108" width="660" height="2" fill="#1A1F1F"/>
+      <text x="340" y="150"
+        font-family="'Barlow Condensed', Arial Narrow, sans-serif"
+        font-size="48" font-weight="800" text-anchor="middle"
+        fill="#1F6E6E" letter-spacing="12">ENGLISH</text>
+    </svg>
+  </div>
+
+  <div style="margin-top:18px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap">
+    <span style="display:inline-block;padding:5px 16px;background:var(--charcoal);color:var(--cream);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase">MINECRAFT</span>
+    <span style="display:inline-block;padding:5px 16px;background:var(--teal);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase">B1 · INTERMEDIATE</span>
+  </div>
+</div>
+
+<!-- Score strip -->
+<div class="score-strip">
+  <div class="score-item">
+    <span>SCORE</span>
+    <span class="score-num" id="total-score">0</span>
+    <span>/ <span id="total-possible">0</span></span>
+  </div>
+  <div class="score-divider"></div>
+  <div class="score-item"><span>SCROLL DOWN TO START</span></div>
+</div>
+
+<!-- ═══ ILLUSTRATION 1 — DAYTIME OVERWORLD ═══ -->
+<div class="illus-divider">
+  <svg viewBox="0 0 1200 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+    <defs>
+      <linearGradient id="sky1" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#4A9ECC"/>
+        <stop offset="100%" stop-color="#7EC8E3"/>
+      </linearGradient>
+    </defs>
+    <rect width="1200" height="220" fill="url(#sky1)"/>
+    <!-- Clouds -->
+    <rect x="60"  y="28" width="130" height="28" fill="white" opacity=".92"/>
+    <rect x="44"  y="40" width="60"  height="18" fill="white" opacity=".92"/>
+    <rect x="172" y="40" width="36"  height="18" fill="white" opacity=".92"/>
+    <rect x="400" y="18" width="160" height="30" fill="white" opacity=".92"/>
+    <rect x="380" y="30" width="60"  height="20" fill="white" opacity=".92"/>
+    <rect x="544" y="30" width="36"  height="20" fill="white" opacity=".92"/>
+    <rect x="820" y="32" width="140" height="26" fill="white" opacity=".92"/>
+    <rect x="804" y="44" width="50"  height="16" fill="white" opacity=".92"/>
+    <!-- Sun -->
+    <rect x="1050" y="14" width="52" height="52" fill="#F5C518" opacity=".95"/>
+    <rect x="1070" y="4"  width="12" height="12" fill="#F5C518"/>
+    <rect x="1100" y="26" width="12" height="8"  fill="#F5C518"/>
+    <rect x="1070" y="66" width="12" height="12" fill="#F5C518"/>
+    <rect x="1036" y="26" width="12" height="8"  fill="#F5C518"/>
+    <!-- Ground -->
+    <rect x="0" y="155" width="1200" height="65" fill="#5D9C3A"/>
+    <rect x="0" y="155" width="1200" height="12" fill="#7DC94E"/>
+    <rect x="0" y="198" width="1200" height="22" fill="#8B6440"/>
+    <!-- Big trees (blocky) -->
+    <!-- Tree 1 left -->
+    <rect x="90"  y="72"  width="20" height="83" fill="#6B3E1A"/>
+    <rect x="50"  y="40"  width="100" height="100" fill="#2D7A1E"/>
+    <rect x="42"  y="56"  width="116" height="80"  fill="#2D7A1E"/>
+    <rect x="60"  y="105" width="80"  height="50"  fill="#2D7A1E"/>
+    <!-- Tree 2 -->
+    <rect x="310" y="80"  width="18" height="75" fill="#6B3E1A"/>
+    <rect x="278" y="50"  width="82"  height="90" fill="#2D7A1E"/>
+    <rect x="270" y="65"  width="98"  height="72" fill="#2D7A1E"/>
+    <!-- Tree 3 centre-right -->
+    <rect x="680" y="75"  width="20" height="80" fill="#6B3E1A"/>
+    <rect x="640" y="44"  width="100" height="96" fill="#2D7A1E"/>
+    <rect x="630" y="60"  width="120" height="76" fill="#2D7A1E"/>
+    <!-- Tree 4 far right -->
+    <rect x="980" y="70"  width="20" height="85" fill="#6B3E1A"/>
+    <rect x="940" y="38"  width="100" height="100" fill="#2D7A1E"/>
+    <rect x="930" y="55"  width="120" height="80"  fill="#2D7A1E"/>
+    <!-- Steve walking -->
+    <g transform="translate(480,92)">
+      <rect x="3"  y="0"  width="30" height="30" fill="#C8956C"/>
+      <rect x="3"  y="0"  width="30" height="2"  fill="#D4A880"/>
+      <rect x="7"  y="7"  width="8"  height="9"  fill="white"/>
+      <rect x="21" y="7"  width="8"  height="9"  fill="white"/>
+      <rect x="9"  y="10" width="4"  height="5"  fill="#2A55C0"/>
+      <rect x="23" y="10" width="4"  height="5"  fill="#2A55C0"/>
+      <rect x="8"  y="20" width="20" height="4"  fill="#6B3010"/>
+      <rect x="3"  y="30" width="30" height="34" fill="#3A3ACC"/>
+      <rect x="3"  y="30" width="30" height="3"  fill="#4A4ADF"/>
+      <rect x="-10" y="32" width="13" height="26" fill="#C8956C"/>
+      <rect x="33"  y="32" width="13" height="26" fill="#C8956C"/>
+      <rect x="3"   y="64" width="13" height="22" fill="#2A2A9A"/>
+      <rect x="20"  y="64" width="13" height="22" fill="#2A2A9A"/>
+    </g>
+    <!-- Cow -->
+    <g transform="translate(820,148)">
+      <rect x="12"  y="0"  width="52" height="42" fill="#DDDDDD"/>
+      <rect x="0"   y="6"  width="68" height="32" fill="#DDDDDD"/>
+      <!-- Spots -->
+      <rect x="20" y="4"  width="16" height="14" fill="#555"/>
+      <rect x="44" y="10" width="12" height="12" fill="#555"/>
+      <!-- Head -->
+      <rect x="0"  y="6"  width="20" height="26" fill="#EEEEEE"/>
+      <rect x="4"  y="10" width="5"  height="6"  fill="#333"/>
+      <rect x="2"  y="28" width="8"  height="6"  fill="#EE9090"/><!-- nose -->
+      <!-- Legs -->
+      <rect x="14" y="42" width="10" height="18" fill="#CCCCCC"/>
+      <rect x="28" y="42" width="10" height="18" fill="#CCCCCC"/>
+      <rect x="42" y="42" width="10" height="18" fill="#CCCCCC"/>
+      <rect x="56" y="42" width="10" height="18" fill="#CCCCCC"/>
+    </g>
+    <!-- Creeper far left -->
+    <g transform="translate(180,136)">
+      <rect width="36" height="36" fill="#4A7C3F"/>
+      <rect x="5"  y="10" width="10" height="9"  fill="#1A0A2E"/>
+      <rect x="21" y="10" width="10" height="9"  fill="#1A0A2E"/>
+      <rect x="12" y="21" width="12" height="3"  fill="#1A0A2E"/>
+      <rect x="12" y="24" width="5"  height="8"  fill="#1A0A2E"/>
+      <rect x="19" y="24" width="5"  height="8"  fill="#1A0A2E"/>
+    </g>
+    <!-- Pig -->
+    <g transform="translate(1080,150)">
+      <rect x="10" y="0"  width="60" height="40" fill="#F8B0A0"/>
+      <rect x="0"  y="8"  width="70" height="30" fill="#F8B0A0"/>
+      <rect x="0"  y="8"  width="20" height="22" fill="#FFCABB"/>
+      <rect x="5"  y="14" width="5"  height="5"  fill="#333"/>
+      <rect x="2"  y="25" width="10" height="7"  fill="#E89088"/>
+      <rect x="12" y="40" width="10" height="16" fill="#F0A090"/>
+      <rect x="26" y="40" width="10" height="16" fill="#F0A090"/>
+      <rect x="40" y="40" width="10" height="16" fill="#F0A090"/>
+      <rect x="54" y="40" width="10" height="16" fill="#F0A090"/>
+    </g>
+    <!-- Flowers -->
+    <rect x="220" y="150" width="6" height="14" fill="#5D9C3A"/>
+    <rect x="217" y="144" width="12" height="8"  fill="#E83030"/>
+    <rect x="420" y="148" width="6" height="16" fill="#5D9C3A"/>
+    <rect x="417" y="142" width="12" height="8"  fill="#F5C518"/>
+    <rect x="560" y="150" width="6" height="14" fill="#5D9C3A"/>
+    <rect x="557" y="144" width="12" height="8"  fill="#E83030"/>
+    <rect x="760" y="148" width="6" height="16" fill="#5D9C3A"/>
+    <rect x="757" y="142" width="12" height="8"  fill="#CC88FF"/>
+  </svg>
+</div>
+
+<main>
+
+<!-- ═══ ACTIVITY 1 — MULTIPLE CHOICE ═══ -->
+<div class="activity-section" id="activity-0">
+  <div class="act-eyebrow">Activity 1 of 5 · B1 · Multiple Choice</div>
+  <div class="act-title">What Do You Know About Minecraft?</div>
+  <div class="act-instructions">Read each question carefully. Look at the hint above each question — it will help you think in the right direction. Choose the best answer from the four options.</div>
+  <div id="mc-container"></div>
+  <div class="btn-row">
+    <button class="btn btn-primary"   id="mc-next-btn"   style="display:none" onclick="mcNext()">Next Question →</button>
+    <button class="btn btn-secondary" id="mc-finish-btn" style="display:none" onclick="mcFinish()">Complete Activity ✓</button>
+  </div>
+</div>
+
+<!-- ═══ ILLUSTRATION 2 — CRAFTING TABLE ═══ -->
+<div class="illus-divider">
+  <svg viewBox="0 0 1200 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;background:#2A1F14">
+    <rect width="1200" height="200" fill="#2A1F14"/>
+    <!-- Wood plank background tiles -->
+    <rect x="0"   y="0"   width="200" height="100" fill="#8B5A1A" opacity=".6"/>
+    <rect x="200" y="100" width="200" height="100" fill="#8B5A1A" opacity=".6"/>
+    <rect x="400" y="0"   width="200" height="100" fill="#8B5A1A" opacity=".6"/>
+    <rect x="600" y="100" width="200" height="100" fill="#8B5A1A" opacity=".6"/>
+    <rect x="800" y="0"   width="200" height="100" fill="#8B5A1A" opacity=".6"/>
+    <rect x="1000" y="100" width="200" height="100" fill="#8B5A1A" opacity=".6"/>
+    <!-- Grid lines -->
+    <rect x="0"   y="98"  width="1200" height="4" fill="#5C3A10" opacity=".7"/>
+    <rect x="198" y="0"   width="4"   height="200" fill="#5C3A10" opacity=".7"/>
+    <rect x="398" y="0"   width="4"   height="200" fill="#5C3A10" opacity=".7"/>
+    <rect x="598" y="0"   width="4"   height="200" fill="#5C3A10" opacity=".7"/>
+    <rect x="798" y="0"   width="4"   height="200" fill="#5C3A10" opacity=".7"/>
+    <rect x="998" y="0"   width="4"   height="200" fill="#5C3A10" opacity=".7"/>
+    <!-- Crafting table block -->
+    <g transform="translate(460,30)">
+      <!-- Top face -->
+      <rect width="120" height="120" fill="#C4923F"/>
+      <!-- Crafting grid lines on top -->
+      <rect x="8"  y="8"  width="32" height="32" fill="#8B5A1A"/>
+      <rect x="44" y="8"  width="32" height="32" fill="#8B5A1A"/>
+      <rect x="80" y="8"  width="32" height="32" fill="#8B5A1A"/>
+      <rect x="8"  y="44" width="32" height="32" fill="#8B5A1A"/>
+      <rect x="44" y="44" width="32" height="32" fill="#8B5A1A"/>
+      <rect x="80" y="44" width="32" height="32" fill="#8B5A1A"/>
+      <rect x="8"  y="80" width="32" height="32" fill="#8B5A1A"/>
+      <rect x="44" y="80" width="32" height="32" fill="#8B5A1A"/>
+      <rect x="80" y="80" width="32" height="32" fill="#8B5A1A"/>
+      <!-- Highlight -->
+      <rect x="0"  y="0"  width="120" height="4"  fill="rgba(255,255,255,.15)"/>
+      <rect x="0"  y="0"  width="4"   height="120" fill="rgba(255,255,255,.1)"/>
+    </g>
+    <!-- Items being crafted (floating around) -->
+    <!-- Sword -->
+    <g transform="translate(220,40)">
+      <rect x="14" y="0"  width="12" height="12" fill="#DDDDDD"/>
+      <rect x="14" y="12" width="12" height="12" fill="#DDDDDD"/>
+      <rect x="14" y="24" width="12" height="8"  fill="#8B5A1A"/>
+      <rect x="8"  y="18" width="24" height="8"  fill="#8B5A1A"/>
+      <rect x="14" y="32" width="12" height="20" fill="#8B5A1A"/>
+    </g>
+    <!-- Pickaxe -->
+    <g transform="translate(680,40)">
+      <rect x="0"  y="4"  width="48" height="12" fill="#888"/>
+      <rect x="0"  y="0"  width="20" height="8"  fill="#888"/>
+      <rect x="20" y="16" width="8"  height="48" fill="#8B5A1A"/>
+    </g>
+    <!-- Torch -->
+    <g transform="translate(870,50)">
+      <rect x="6" y="24" width="8" height="32" fill="#8B5A1A"/>
+      <rect x="4" y="12" width="12" height="16" fill="#E85820"/>
+      <rect x="6" y="4"  width="8"  height="12" fill="#F5C518"/>
+    </g>
+    <!-- Arrow -->
+    <g transform="translate(290,120)">
+      <rect x="0"  y="10" width="40" height="4" fill="#8B5A1A"/>
+      <rect x="36" y="6"  width="12" height="12" fill="#888" transform="rotate(45 42 12)"/>
+      <rect x="0"  y="8"  width="6"  height="8"  fill="#888"/>
+    </g>
+    <!-- Log block -->
+    <g transform="translate(900,110)">
+      <rect width="60" height="60" fill="#8B5A1A"/>
+      <rect x="10" y="10" width="40" height="40" fill="#C4923F"/>
+      <rect x="18" y="18" width="24" height="24" fill="#8B5A1A"/>
+      <rect x="0" y="0" width="60" height="4" fill="rgba(255,255,255,.12)"/>
+      <rect x="0" y="0" width="4"  height="60" fill="rgba(255,255,255,.08)"/>
+    </g>
+    <!-- Label -->
+    <text x="100" y="170" font-family="'Barlow Condensed',sans-serif" font-size="18" font-weight="700" fill="#C4923F" letter-spacing="3" opacity=".7">CRAFTING TABLE</text>
+  </svg>
+</div>
+
+<!-- ═══ ACTIVITY 2 — FILL IN THE BLANK ═══ -->
+<div class="activity-section" id="activity-1">
+  <div class="act-eyebrow">Activity 2 of 5 · B1 · Fill in the Blank</div>
+  <div class="act-title">Complete the Sentences</div>
+  <div class="act-instructions">Read each sentence about Minecraft. Type the missing word in the gap. A hint tells you what kind of word you need. The sentences use common grammar patterns — think carefully about which word fits best.</div>
+  <div id="fitb-container"></div>
+  <div class="btn-row">
+    <button class="btn btn-primary"   id="fitb-check-btn" onclick="fitbCheck()">Check Answers</button>
+    <button class="btn btn-secondary" id="fitb-retry-btn" style="display:none" onclick="fitbRetry()">Try Again</button>
+  </div>
+  <div id="fitb-feedback" class="feedback" style="margin-top:16px"></div>
+</div>
+
+<!-- ═══ ILLUSTRATION 3 — NIGHT / MOB SCENE ═══ -->
+<div class="illus-divider">
+  <svg viewBox="0 0 1200 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+    <defs>
+      <linearGradient id="night1" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#0A0F20"/>
+        <stop offset="100%" stop-color="#1A2030"/>
+      </linearGradient>
+    </defs>
+    <rect width="1200" height="200" fill="url(#night1)"/>
+    <!-- Moon -->
+    <rect x="60" y="18" width="44" height="44" fill="#EEE8B0" opacity=".9"/>
+    <rect x="72" y="20" width="8"  height="8"  fill="#CCBB88" opacity=".6"/>
+    <rect x="84" y="36" width="6"  height="6"  fill="#CCBB88" opacity=".6"/>
+    <!-- Stars -->
+    <rect x="150" y="12" width="4" height="4" fill="white" opacity=".7"/>
+    <rect x="280" y="8"  width="4" height="4" fill="white" opacity=".6"/>
+    <rect x="420" y="18" width="4" height="4" fill="white" opacity=".8"/>
+    <rect x="560" y="6"  width="4" height="4" fill="white" opacity=".7"/>
+    <rect x="700" y="14" width="4" height="4" fill="white" opacity=".6"/>
+    <rect x="860" y="10" width="4" height="4" fill="white" opacity=".8"/>
+    <rect x="1000" y="16" width="4" height="4" fill="white" opacity=".7"/>
+    <rect x="1130" y="8"  width="4" height="4" fill="white" opacity=".6"/>
+    <!-- Ground -->
+    <rect x="0" y="152" width="1200" height="48" fill="#2A4A2A"/>
+    <rect x="0" y="152" width="1200" height="8"  fill="#3A6A3A"/>
+    <!-- Torch lights -->
+    <ellipse cx="300"  cy="152" rx="60" ry="20" fill="#F5C518" opacity=".12"/>
+    <ellipse cx="700"  cy="152" rx="60" ry="20" fill="#F5C518" opacity=".12"/>
+    <ellipse cx="1000" cy="152" rx="60" ry="20" fill="#F5C518" opacity=".12"/>
+    <!-- Zombie -->
+    <g transform="translate(150,88)">
+      <rect x="4"  y="0"  width="28" height="28" fill="#6AA86A"/>
+      <rect x="6"  y="6"  width="8"  height="8"  fill="#1A0A2E"/>
+      <rect x="18" y="6"  width="8"  height="8"  fill="#1A0A2E"/>
+      <rect x="8"  y="18" width="16" height="4"  fill="#3A6A3A"/>
+      <rect x="4"  y="28" width="28" height="32" fill="#4A7AC8"/>
+      <rect x="-8" y="28" width="12" height="28" fill="#6AA86A"/>
+      <rect x="32" y="28" width="12" height="28" fill="#6AA86A"/>
+      <rect x="4"  y="60" width="12" height="20" fill="#3A5A9A"/>
+      <rect x="20" y="60" width="12" height="20" fill="#3A5A9A"/>
+    </g>
+    <!-- Skeleton -->
+    <g transform="translate(420,90)">
+      <rect x="4"  y="0"  width="26" height="26" fill="#E8E8E8"/>
+      <rect x="6"  y="6"  width="7"  height="8"  fill="#1A0A2E"/>
+      <rect x="17" y="6"  width="7"  height="8"  fill="#1A0A2E"/>
+      <rect x="8"  y="18" width="14" height="4"  fill="#1A0A2E"/>
+      <rect x="6"  y="26" width="22" height="28" fill="#E8E8E8"/>
+      <rect x="-6" y="28" width="12" height="24" fill="#E8E8E8"/>
+      <rect x="28" y="28" width="12" height="24" fill="#E8E8E8"/>
+      <rect x="6"  y="54" width="8"  height="22" fill="#E8E8E8"/>
+      <rect x="20" y="54" width="8"  height="22" fill="#E8E8E8"/>
+    </g>
+    <!-- Spider -->
+    <g transform="translate(660,120)">
+      <rect x="14" y="6"  width="32" height="24" fill="#333"/>
+      <rect x="6"  y="10" width="48" height="16" fill="#333"/>
+      <rect x="6"  y="10" width="16" height="16" fill="#444"/>
+      <rect x="38" y="10" width="16" height="16" fill="#444"/>
+      <rect x="8"  y="12" width="6"  height="6"  fill="#CC0000"/>
+      <rect x="46" y="12" width="6"  height="6"  fill="#CC0000"/>
+      <!-- Legs -->
+      <rect x="-8"  y="12" width="16" height="3"  fill="#333" transform="rotate(-20 0 12)"/>
+      <rect x="-6"  y="18" width="16" height="3"  fill="#333" transform="rotate(10 0 18)"/>
+      <rect x="50"  y="12" width="16" height="3"  fill="#333" transform="rotate(20 60 12)"/>
+      <rect x="50"  y="18" width="16" height="3"  fill="#333" transform="rotate(-10 60 18)"/>
+    </g>
+    <!-- Enderman silhouette -->
+    <g transform="translate(900,52)" fill="#1A0A2E" opacity=".95">
+      <rect x="6"  y="0"  width="18" height="18"/>
+      <rect x="8"  y="5"  width="5"  height="5"  fill="#CC00CC"/>
+      <rect x="15" y="5"  width="5"  height="5"  fill="#CC00CC"/>
+      <rect x="8"  y="18" width="14" height="28"/>
+      <rect x="0"  y="20" width="8"  height="22"/>
+      <rect x="22" y="20" width="8"  height="22"/>
+      <rect x="8"  y="46" width="6"  height="22"/>
+      <rect x="16" y="46" width="6"  height="22"/>
+    </g>
+    <!-- Creeper in darkness -->
+    <g transform="translate(1060,100)">
+      <rect width="40" height="40" fill="#2A4A2A" opacity=".8"/>
+      <rect x="6"  y="10" width="11" height="10" fill="#0A0A18"/>
+      <rect x="23" y="10" width="11" height="10" fill="#0A0A18"/>
+      <rect x="14" y="22" width="12" height="4"  fill="#0A0A18"/>
+      <rect x="14" y="26" width="5"  height="10" fill="#0A0A18"/>
+      <rect x="21" y="26" width="5"  height="10" fill="#0A0A18"/>
+    </g>
+    <!-- Torch -->
+    <g transform="translate(290,118)">
+      <rect x="5" y="14" width="6" height="24" fill="#8B5A1A"/>
+      <rect x="3" y="6"  width="10" height="12" fill="#E85820"/>
+      <rect x="5" y="0"  width="6"  height="8"  fill="#F5C518"/>
+    </g>
+    <g transform="translate(690,118)">
+      <rect x="5" y="14" width="6" height="24" fill="#8B5A1A"/>
+      <rect x="3" y="6"  width="10" height="12" fill="#E85820"/>
+      <rect x="5" y="0"  width="6"  height="8"  fill="#F5C518"/>
+    </g>
+  </svg>
+</div>
+
+<!-- ═══ ACTIVITY 3 — DRAG & DROP ═══ -->
+<div class="activity-section" id="activity-2">
+  <div class="act-eyebrow">Activity 3 of 5 · B1 · Drag &amp; Drop</div>
+  <div class="act-title">Fill the Gap with the Right Word</div>
+  <div class="act-instructions">Drag a word or phrase from the word bank below into the correct gap in each sentence. Click a filled gap to return a word to the bank.</div>
+  <div id="dd-container"></div>
+  <div class="btn-row">
+    <button class="btn btn-primary"   id="dd-check-btn" onclick="ddCheck()">Check Answers</button>
+    <button class="btn btn-secondary" id="dd-retry-btn" style="display:none" onclick="ddRetry()">Try Again</button>
+  </div>
+  <div id="dd-feedback" class="feedback" style="margin-top:16px"></div>
+</div>
+
+<!-- ═══ ILLUSTRATION 4 — OCEAN & UNDERWATER ═══ -->
+<div class="illus-divider">
+  <svg viewBox="0 0 1200 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+    <defs>
+      <linearGradient id="ocean1" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#1A5C8C"/>
+        <stop offset="100%" stop-color="#0A2840"/>
+      </linearGradient>
+    </defs>
+    <rect width="1200" height="200" fill="url(#ocean1)"/>
+    <!-- Surface ripples -->
+    <rect x="0"   y="0"  width="1200" height="18" fill="#2878AA"/>
+    <rect x="0"   y="8"  width="1200" height="6"  fill="#3A8ABB" opacity=".6"/>
+    <!-- Light rays -->
+    <rect x="100" y="0" width="30" height="200" fill="rgba(100,180,255,.06)" transform="skewX(-8)"/>
+    <rect x="350" y="0" width="20" height="200" fill="rgba(100,180,255,.05)" transform="skewX(5)"/>
+    <rect x="700" y="0" width="28" height="200" fill="rgba(100,180,255,.06)" transform="skewX(-6)"/>
+    <rect x="950" y="0" width="22" height="200" fill="rgba(100,180,255,.05)" transform="skewX(8)"/>
+    <!-- Sand floor -->
+    <rect x="0" y="168" width="1200" height="32" fill="#9A8040"/>
+    <rect x="0" y="168" width="1200" height="8"  fill="#B89850"/>
+    <!-- Seagrass -->
+    <rect x="80"  y="148" width="6" height="28" fill="#2D7A2D"/>
+    <rect x="88"  y="140" width="6" height="36" fill="#2D7A2D" transform="rotate(8 91 156)"/>
+    <rect x="280" y="152" width="6" height="24" fill="#2D7A2D"/>
+    <rect x="288" y="144" width="6" height="32" fill="#2D7A2D" transform="rotate(-6 291 160)"/>
+    <rect x="580" y="148" width="6" height="28" fill="#2D7A2D"/>
+    <rect x="820" y="150" width="6" height="26" fill="#2D7A2D"/>
+    <rect x="1100" y="148" width="6" height="28" fill="#2D7A2D"/>
+    <!-- Fish (orange) -->
+    <g transform="translate(160,80)">
+      <rect x="8"  y="0"  width="36" height="28" fill="#E8680A"/>
+      <rect x="0"  y="6"  width="12" height="16" fill="#E8680A"/>
+      <!-- Stripe -->
+      <rect x="18" y="0"  width="8"  height="28" fill="white" opacity=".5"/>
+      <!-- Eye -->
+      <rect x="32" y="6"  width="6"  height="6"  fill="white"/>
+      <rect x="34" y="8"  width="3"  height="3"  fill="#333"/>
+      <!-- Tail -->
+      <rect x="-10" y="2"  width="12" height="8"  fill="#E8680A"/>
+      <rect x="-10" y="18" width="12" height="8"  fill="#E8680A"/>
+    </g>
+    <!-- Fish (blue) -->
+    <g transform="translate(580,60)">
+      <rect x="8"  y="0"  width="32" height="22" fill="#1A60BB"/>
+      <rect x="0"  y="4"  width="10" height="14" fill="#1A60BB"/>
+      <rect x="28" y="4"  width="5"  height="5"  fill="white"/>
+      <rect x="30" y="5"  width="2"  height="2"  fill="#333"/>
+      <rect x="-8" y="2"  width="10" height="6"  fill="#1A60BB"/>
+      <rect x="-8" y="14" width="10" height="6"  fill="#1A60BB"/>
+    </g>
+    <!-- Guardian (simplified) -->
+    <g transform="translate(820,90)">
+      <rect x="10" y="10" width="50" height="50" fill="#3A8A6A"/>
+      <rect x="0"  y="20" width="70" height="30" fill="#3A8A6A"/>
+      <!-- Spikes -->
+      <rect x="10" y="0"  width="8"  height="14" fill="#3A8A6A"/>
+      <rect x="32" y="0"  width="8"  height="14" fill="#3A8A6A"/>
+      <rect x="54" y="0"  width="8"  height="14" fill="#3A8A6A"/>
+      <rect x="10" y="56" width="8"  height="14" fill="#3A8A6A"/>
+      <rect x="32" y="56" width="8"  height="14" fill="#3A8A6A"/>
+      <rect x="54" y="56" width="8"  height="14" fill="#3A8A6A"/>
+      <!-- Eye -->
+      <rect x="26" y="22" width="18" height="18" fill="#CC6600"/>
+      <rect x="30" y="26" width="10" height="10" fill="#FF8800"/>
+    </g>
+    <!-- Drowned zombie -->
+    <g transform="translate(380,100)">
+      <rect x="4"  y="0"  width="28" height="28" fill="#4A8888"/>
+      <rect x="6"  y="7"  width="8"  height="8"  fill="#1A0A2E"/>
+      <rect x="18" y="7"  width="8"  height="8"  fill="#1A0A2E"/>
+      <rect x="8"  y="18" width="16" height="4"  fill="#3A6868"/>
+      <rect x="4"  y="28" width="28" height="32" fill="#2A6868"/>
+      <rect x="-8" y="30" width="12" height="26" fill="#4A8888"/>
+      <rect x="32" y="30" width="12" height="26" fill="#4A8888"/>
+      <rect x="4"  y="60" width="12" height="20" fill="#2A5858"/>
+      <rect x="20" y="60" width="12" height="20" fill="#2A5858"/>
+    </g>
+    <!-- Prismarine blocks on floor -->
+    <rect x="440" y="168" width="40" height="32" fill="#2A7A7A"/>
+    <rect x="442" y="170" width="36" height="28" fill="#3A9A8A"/>
+    <rect x="500" y="168" width="40" height="32" fill="#2A7A7A"/>
+    <rect x="502" y="170" width="36" height="28" fill="#3A9A8A"/>
+    <rect x="560" y="168" width="40" height="32" fill="#2A7A7A"/>
+  </svg>
+</div>
+
+<!-- ═══ ACTIVITY 4 — MATCHING ═══ -->
+<div class="activity-section" id="activity-3">
+  <div class="act-eyebrow">Activity 4 of 5 · B1 · Matching Pairs</div>
+  <div class="act-title">Match Each Word to Its Meaning</div>
+  <div class="act-instructions">Click a Minecraft word on the left, then click its meaning on the right. If they match, they will turn green. Press "Submit" when you have matched as many as you can.</div>
+  <div id="match-container"></div>
+  <div class="btn-row">
+    <button class="btn btn-primary" id="match-submit-btn" onclick="matchSubmit()">Submit Matches</button>
+  </div>
+</div>
+
+<!-- ═══ ILLUSTRATION 5 — SUNSET / BUILDING ═══ -->
+<div class="illus-divider">
+  <svg viewBox="0 0 1200 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+    <defs>
+      <linearGradient id="sunset1" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#F08030"/>
+        <stop offset="50%" stop-color="#D06020"/>
+        <stop offset="100%" stop-color="#8A3010"/>
+      </linearGradient>
+    </defs>
+    <rect width="1200" height="200" fill="url(#sunset1)"/>
+    <!-- Sun on horizon -->
+    <rect x="560" y="100" width="80" height="80" fill="#F5C518" opacity=".9"/>
+    <rect x="540" y="110" width="120" height="60" fill="#F5C518" opacity=".7"/>
+    <!-- Ground silhouette -->
+    <rect x="0" y="148" width="1200" height="52" fill="#1A0A00" opacity=".9"/>
+    <rect x="0" y="148" width="1200" height="8"  fill="#2A1000" opacity=".9"/>
+    <!-- Buildings / player's house silhouettes -->
+    <!-- Small house -->
+    <rect x="80"  y="80"  width="100" height="68" fill="#1A0A00" opacity=".85"/>
+    <polygon points="80,80 130,44 180,80" fill="#1A0A00" opacity=".85"/>
+    <rect x="102" y="108" width="28" height="40" fill="#3A2800" opacity=".6"/>
+    <!-- Castle -->
+    <rect x="280" y="48"  width="160" height="100" fill="#1A0A00" opacity=".85"/>
+    <rect x="280" y="28"  width="30"  height="50"  fill="#1A0A00" opacity=".85"/>
+    <rect x="410" y="28"  width="30"  height="50"  fill="#1A0A00" opacity=".85"/>
+    <rect x="284" y="18"  width="10"  height="14"  fill="#1A0A00" opacity=".85"/>
+    <rect x="298" y="18"  width="10"  height="14"  fill="#1A0A00" opacity=".85"/>
+    <rect x="412" y="18"  width="10"  height="14"  fill="#1A0A00" opacity=".85"/>
+    <rect x="426" y="18"  width="10"  height="14"  fill="#1A0A00" opacity=".85"/>
+    <!-- Windmill -->
+    <rect x="740" y="40"  width="20"  height="108" fill="#1A0A00" opacity=".85"/>
+    <rect x="710" y="40"  width="80"  height="30"  fill="#1A0A00" opacity=".85"/>
+    <!-- Tree silhouettes -->
+    <rect x="550" y="60"  width="12"  height="88" fill="#1A0A00" opacity=".85"/>
+    <rect x="520" y="38"  width="72"  height="80" fill="#1A0A00" opacity=".85"/>
+    <rect x="900" y="66"  width="12"  height="82" fill="#1A0A00" opacity=".85"/>
+    <rect x="872" y="44"  width="68"  height="76" fill="#1A0A00" opacity=".85"/>
+    <rect x="1060" y="72" width="12"  height="76" fill="#1A0A00" opacity=".85"/>
+    <rect x="1034" y="50" width="64"  height="70" fill="#1A0A00" opacity=".85"/>
+    <!-- Steve building on top of tower -->
+    <g transform="translate(306,10)" fill="#1A0A00" opacity=".75">
+      <rect x="4" y="0"  width="12" height="12"/>
+      <rect x="4" y="12" width="12" height="14"/>
+      <rect x="0" y="13" width="4"  height="10"/>
+      <rect x="16" y="13" width="4" height="10"/>
+      <rect x="4" y="26" width="5"  height="8"/>
+      <rect x="11" y="26" width="5" height="8"/>
+    </g>
+  </svg>
+</div>
+
+<!-- ═══ ACTIVITY 5 — ORDERING ═══ -->
+<div class="activity-section" id="activity-4">
+  <div class="act-eyebrow">Activity 5 of 5 · B1 · Sentence Ordering</div>
+  <div class="act-title">Put the Steps in the Right Order</div>
+  <div class="act-instructions">Drag the sentences below into the correct order to describe a typical first day in Minecraft — from waking up in a new world to going to sleep safely. Think about what you need to do first!</div>
+  <div id="order-container"></div>
+  <div class="btn-row">
+    <button class="btn btn-primary"   id="order-check-btn" onclick="orderCheck()">Check Order</button>
+    <button class="btn btn-secondary" id="order-retry-btn" style="display:none" onclick="orderRetry()">Try Again</button>
+  </div>
+  <div id="order-feedback" class="feedback" style="margin-top:16px"></div>
+</div>
+
+<!-- FINAL -->
+<div id="final-screen">
+  <div class="final-ring-wrap" id="final-ring">
+    <div class="final-ring-inner">
+      <span class="final-num"   id="final-num">0</span>
+      <span class="final-denom" id="final-denom">/ 0</span>
+    </div>
+  </div>
+  <div class="final-title" id="final-title">Lesson Complete!</div>
+  <p   class="final-msg"   id="final-msg"></p>
+  <button class="btn btn-primary" onclick="restartAll()">↩ Restart Lesson</button>
+</div>
+
+</main>
+
+<script>
+// ══════════════════════════════════════
+//  GLOBAL
+// ══════════════════════════════════════
+let totalScore=0,totalPossible=0;
+const actDone=[false,false,false,false,false];
+function addScore(n){totalScore+=n;document.getElementById('total-score').textContent=totalScore;}
+function addPoss(n) {totalPossible+=n;document.getElementById('total-possible').textContent=totalPossible;}
+function checkDone(){
+  if(!actDone.every(Boolean))return;
+  setTimeout(()=>{
+    document.querySelectorAll('.activity-section').forEach(a=>a.style.display='none');
+    document.querySelectorAll('.illus-divider').forEach(a=>a.style.display='none');
+    const fs=document.getElementById('final-screen');fs.classList.add('show');
+    const pct=Math.round(totalScore/totalPossible*100);
+    document.getElementById('final-num').textContent=totalScore;
+    document.getElementById('final-denom').textContent='/ '+totalPossible;
+    document.getElementById('final-ring').style.setProperty('--pct',pct+'%');
+    let t,m;
+    if(pct>=90){t='Fantastic Work!';m='You did extremely well! Your Minecraft knowledge is excellent and your English reading skills are very strong. Keep it up!';}
+    else if(pct>=70){t='Well Done!';m='Great performance! You understood most of the questions and sentences. Check the explanations for anything you missed and try again.';}
+    else if(pct>=50){t='Good Effort!';m='You are making good progress! Some of the questions were tricky. Read through the feedback carefully and have another go — you will improve.';}
+    else{t='Keep Practising!';m='Don\'t worry — learning takes time! Read the explanations for each question, think about the vocabulary and grammar, and try the lesson again.';}
+    document.getElementById('final-title').textContent=t;
+    document.getElementById('final-msg').textContent=m;
+  },700);
+}
+function restartAll(){location.reload();}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+// ══════════════════════════════════════
+//  ACTIVITY 1 — MULTIPLE CHOICE  (B1)
+//  Focus: Minecraft facts + simple reading comprehension
+// ══════════════════════════════════════
+const mcQs=[
+  {
+    hint:"Think about what happens when the sun goes down in Minecraft.",
+    q:"What <strong>happens at night</strong> in Minecraft that makes it dangerous?",
+    opts:["The player moves more slowly and cannot see very well in the dark.","Your tools break faster because the cold night air damages them.","Dangerous mobs like zombies, skeletons, and creepers start to appear.","All the animals go underground and you cannot find food."],
+    correct:2,
+    exp:"At night, hostile mobs — including zombies, skeletons, spiders, and creepers — start to spawn in dark areas. This is why the first thing most players do in Minecraft is build a shelter before the sun sets. During the day, most of these mobs burn in sunlight."
+  },
+  {
+    hint:"Think about the most important material you need to make a Nether Portal.",
+    q:"What <strong>material</strong> do you need to build a Nether Portal?",
+    opts:["You need diamond blocks arranged in a tall rectangular frame.","You need obsidian blocks arranged in a rectangular frame.","You need iron blocks placed in a square pattern on the ground.","You need gold blocks placed in an arch shape above a door."],
+    correct:1,
+    exp:"A Nether Portal is built using obsidian — one of the hardest blocks in the game, made by pouring water over lava. You need at least 10 obsidian blocks to make a portal frame (4 wide, 5 tall), then light it with flint and steel. It creates a purple glowing rectangle."
+  },
+  {
+    hint:"Think about the grammar — which option uses the present perfect correctly?",
+    q:"A player writes in a message: '________'. Which sentence is <strong>grammatically correct</strong>?",
+    opts:["I have built a house yesterday after I found the wood.","I built a house since I started playing three hours ago.","I have been playing for two hours and I just built my first house.","I am building a house since two hours when I start playing."],
+    correct:2,
+    exp:"Option C is correct. 'Have been playing' is the present perfect continuous — used for an action that started in the past and continues now ('for two hours'). 'Just built' is the present perfect for a recent completed action. Option A is wrong because 'yesterday' needs simple past, not present perfect."
+  },
+  {
+    hint:"Think about what animals in Minecraft need before they will breed.",
+    q:"What do you need to give two cows to make them <strong>breed</strong> and produce a baby calf?",
+    opts:["You need to give them each a bucket of water and some grass blocks.","You need to give them both some wheat, which puts them in love mode.","You need to build a fence around them and wait until morning comes.","You need to use a lead to tie them together inside a small pen."],
+    correct:1,
+    exp:"Feeding two cows wheat puts them in 'love mode' — they produce red hearts above their heads and then produce a baby calf. Most farm animals in Minecraft breed using a specific food item: cows and sheep use wheat, pigs use carrots or potatoes, and chickens use seeds."
+  },
+  {
+    hint:"Think about which sentence describes a repeated habit or general truth.",
+    q:"Which sentence correctly uses the <strong>present simple</strong> to describe a Minecraft habit?",
+    opts:["Every morning, I am checking my inventory before I go exploring outside.","I usually explore caves after I have finished to build my shelter completely.","When I find diamonds, I always make armour before I go to fight monsters.","I was crafting a sword whenever I needed to go out and fight at night."],
+    correct:2,
+    exp:"Option C correctly uses the present simple ('find', 'make', 'go') to describe a general habit or rule — what the player always does in this situation. Option A incorrectly uses 'am checking' (present continuous) for a routine habit. Option D incorrectly uses 'was crafting' (past continuous) for a present habit."
+  },
+  {
+    hint:"Think about what the word 'respawn' means — it tells you exactly what happens.",
+    q:"In Minecraft, when you <strong>respawn</strong> after dying, where do you appear?",
+    opts:["You appear at the exact location where you were standing when you died.","You appear at your spawn point — usually your bed or the world start point.","You appear at the nearest village where you can trade with villagers again.","You appear at the centre of the map, which is always a flat, open area."],
+    correct:1,
+    exp:"When you die in Minecraft, you 'respawn' — you appear again at your spawn point. If you have slept in a bed, that becomes your personal spawn point. If not, you return to the original world spawn point. The word 'respawn' comes from 'spawn' (to appear) with the prefix 're-' meaning again."
+  },
+];
+
+let mcI=0,mcAns=false,mcScore=0;
+const MC_POSS=mcQs.length;
+function renderMC(){addPoss(MC_POSS);renderMCQ();}
+function renderMCQ(){
+  const q=mcQs[mcI],L=['A','B','C','D'];
+  document.getElementById('mc-container').innerHTML=`
+    <div class="prog-wrap">
+      <div class="prog-bar"><div class="prog-fill" id="mc-prog" style="width:${(mcI/mcQs.length)*100}%"></div></div>
+      <div class="prog-label">Question ${mcI+1} of ${mcQs.length}</div>
+    </div>
+    <div class="q-card">
+      <div class="q-hint">${q.hint}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="options">
+        ${q.opts.map((o,i)=>`
+          <button class="opt-btn" id="mo${i}" onclick="mcSel(${i})">
+            <span class="ltr">${L[i]}</span><span>${o}</span>
+          </button>`).join('')}
+      </div>
+      <div class="feedback" id="mc-fb"></div>
+    </div>`;
+  mcAns=false;
+  document.getElementById('mc-next-btn').style.display='none';
+  document.getElementById('mc-finish-btn').style.display='none';
+}
+function mcSel(i){
+  if(mcAns)return;mcAns=true;
+  const q=mcQs[mcI],ok=i===q.correct;if(ok)mcScore++;
+  document.querySelectorAll('.opt-btn').forEach((b,j)=>{b.disabled=true;if(j===q.correct)b.classList.add('correct');else if(j===i&&!ok)b.classList.add('incorrect');});
+  const fb=document.getElementById('mc-fb');
+  fb.classList.add('show',ok?'correct-fb':'incorrect-fb');
+  fb.innerHTML=`<div class="fb-label">${ok?'✓ Correct':'✗ Incorrect'}</div>${q.exp}`;
+  if(mcI<mcQs.length-1)document.getElementById('mc-next-btn').style.display='inline-block';
+  else document.getElementById('mc-finish-btn').style.display='inline-block';
+}
+function mcNext(){mcI++;renderMCQ();}
+function mcFinish(){
+  addScore(mcScore);actDone[0]=true;
+  document.getElementById('mc-next-btn').style.display='none';
+  document.getElementById('mc-finish-btn').style.display='none';
+  const f=document.getElementById('mc-prog');if(f)f.style.width='100%';
+  const d=document.createElement('div');
+  d.style.cssText='text-align:center;padding:16px;font-family:Barlow Condensed,sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;color:var(--teal);text-transform:uppercase;';
+  d.textContent=`Activity Complete — ${mcScore} / ${MC_POSS} correct`;
+  document.getElementById('mc-container').appendChild(d);
+  checkDone();
+}
+
+// ══════════════════════════════════════
+//  ACTIVITY 2 — FILL IN THE BLANK  (B1)
+//  Focus: common verbs, connectors, basic game vocab
+// ══════════════════════════════════════
+const fitbItems=[
+  {
+    hint:"HINT: A verb meaning to make something new by putting materials together.",
+    before:"In Minecraft, you can ",blank:"craft",after:" new tools and items by putting materials into the crafting table in the right pattern.",
+    alts:["craft","make","create","build"],
+    exp:"'Craft' is the specific Minecraft term for making items at a crafting table. 'Make' and 'create' are also accepted because they have the same meaning in this context. 'Craft' as a verb means to make something with skill and careful attention to detail."
+  },
+  {
+    hint:"HINT: A connector meaning 'if you do not' — it introduces a warning.",
+    before:"You must build a shelter before it gets dark, ",blank:"otherwise",after:" dangerous mobs will come and attack you during the night.",
+    alts:["otherwise","or","or else"],
+    exp:"'Otherwise' means 'if that does not happen' or 'if not.' It introduces the negative consequence of not doing something. 'Or' and 'or else' are also accepted — they work the same way here. Example: 'Take an umbrella, otherwise you'll get wet.'"
+  },
+  {
+    hint:"HINT: A past tense verb — the action of finding/getting resources from trees.",
+    before:"First, I ",blank:"collected",after:" some wood by hitting nearby trees with my hands.",
+    alts:["collected","gathered","got","obtained","cut"],
+    exp:"All the listed answers are accepted because they correctly describe taking wood from trees in the past simple tense. 'Collected' and 'gathered' emphasise bringing together multiple items. 'Cut' specifically refers to cutting the tree. The past simple is used here because this is a completed action in a story."
+  },
+  {
+    hint:"HINT: A modal verb expressing ability — what the player is able to do.",
+    before:"If you find a horse and tame it, you ",blank:"can",after:" ride it to travel much faster than walking.",
+    alts:["can","could","are able to","will be able to"],
+    exp:"'Can' expresses present ability or possibility. Here it describes what is possible if you tame a horse. 'Are able to' means the same thing and is also accepted. 'Could' would suggest a hypothetical or past situation, which is less natural here. 'Will be able to' is also correct but less concise."
+  },
+  {
+    hint:"HINT: A preposition of time — used before periods of duration like 'three hours.'",
+    before:"I have been playing Minecraft ",blank:"for",after:" three hours and I still haven't found any diamonds yet.",
+    alts:["for"],
+    exp:"We use 'for' with the present perfect continuous to show how long an action has been happening: 'I have been playing for three hours.' Compare this with 'since,' which is used with a specific point in time: 'I have been playing since 2 o'clock.' 'For' + duration; 'since' + point in time."
+  },
+  {
+    hint:"HINT: An adverb showing that something happened very recently — just a moment ago.",
+    before:"I ",blank:"just",after:" found a village! There are lots of houses and villagers inside it.",
+    alts:["just"],
+    exp:"'Just' is used with the present perfect to talk about something that happened a very short time ago. 'I have just found a village' = I found it moments ago. This is a very common B1 structure. Compare: 'I already found a village' (earlier, before expected) and 'I haven't found a village yet' (still not done)."
+  },
+];
+
+let fitbChecked=false,fitbScore=0,fitbCommit=false;
+function renderFITB(){
+  addPoss(fitbItems.length);
+  document.getElementById('fitb-container').innerHTML=fitbItems.map((it,i)=>`
+    <div class="q-card" style="margin-bottom:14px">
+      <div class="q-hint">${it.hint}</div>
+      <div class="q-text">
+        ${i+1}. ${it.before}<input class="blank-input" id="fi${i}" placeholder="Type here…" autocomplete="off" spellcheck="false">${it.after}
+      </div>
+      <div class="feedback" id="ffb${i}"></div>
+    </div>`).join('');
+}
+function fitbCheck(){
+  if(fitbChecked)return;fitbChecked=true;fitbScore=0;
+  fitbItems.forEach((it,i)=>{
+    const inp=document.getElementById(`fi${i}`);const val=inp.value.trim().toLowerCase();
+    const ok=it.alts.some(a=>a.toLowerCase()===val);inp.disabled=true;
+    const fb=document.getElementById(`ffb${i}`);
+    if(ok){inp.classList.add('correct-input');fb.className='feedback show correct-fb';fb.innerHTML=`<div class="fb-label">✓ Correct</div>${it.exp}`;fitbScore++;}
+    else  {inp.classList.add('wrong-input');  fb.className='feedback show incorrect-fb';fb.innerHTML=`<div class="fb-label">✗ Answer: "${it.blank}"</div>${it.exp}`;}
+  });
+  if(!fitbCommit){addScore(fitbScore);fitbCommit=true;actDone[1]=true;checkDone();}
+  const mf=document.getElementById('fitb-feedback');
+  mf.className=`feedback show ${fitbScore>=fitbItems.length*.7?'correct-fb':'incorrect-fb'}`;
+  mf.innerHTML=`<div class="fb-label">Activity Complete</div>You scored ${fitbScore} out of ${fitbItems.length}.`;
+  document.getElementById('fitb-check-btn').disabled=true;
+  document.getElementById('fitb-retry-btn').style.display='inline-block';
+}
+function fitbRetry(){
+  fitbItems.forEach((_,i)=>{
+    const inp=document.getElementById(`fi${i}`);inp.disabled=false;inp.value='';
+    inp.classList.remove('correct-input','wrong-input');
+    const fb=document.getElementById(`ffb${i}`);fb.className='feedback';fb.innerHTML='';
+  });
+  fitbChecked=false;
+  document.getElementById('fitb-check-btn').disabled=false;
+  document.getElementById('fitb-feedback').className='feedback';
+  document.getElementById('fitb-retry-btn').style.display='none';
+}
+
+// ══════════════════════════════════════
+//  ACTIVITY 3 — DRAG & DROP  (B1)
+//  Focus: common verbs + collocations, game vocabulary
+// ══════════════════════════════════════
+const ddSents=[
+  {before:"You need to",blank:"sleep",after:"in a bed at night to skip the darkness and set your spawn point.",
+   pool:["sleep","rest","wait","sit down"],
+   exp:"'Sleep in a bed' is the natural collocation in English. 'Rest' is a similar word but does not collocate with 'in a bed' in the same way. 'Wait' and 'sit down' do not describe using a bed at all. In Minecraft, sleeping in a bed skips the night and sets your respawn location."},
+  {before:"Diamonds are very",blank:"rare",after:", which means you have to dig very deep underground to find them.",
+   pool:["rare","difficult","hard","uncommon"],
+   exp:"'Rare' means something that does not appear very often — it is the most natural adjective here. 'Uncommon' means nearly the same thing but is slightly more formal. 'Difficult' and 'hard' describe effort, not frequency — you would say 'it is difficult to find diamonds,' not 'diamonds are difficult.'"},
+  {before:"If you fall into lava, you will",blank:"take damage",after:"and lose all your hearts very quickly.",
+   pool:["take damage","get hurt badly","receive health loss","lose some hearts"],
+   exp:"'Take damage' is the standard gaming collocation in English — it means to receive harm or injury. 'Get hurt' is a more informal but also acceptable alternative. 'Receive health loss' is not a natural phrase. 'Lose some hearts' could work but 'quickly' makes 'some' inaccurate since lava kills very fast."},
+  {before:"You should",blank:"carry",after:"a torch when you go into a dark cave so you can see where you are going.",
+   pool:["carry","hold on to","bring along","keep near you"],
+   exp:"'Carry' is the most natural verb for taking something with you when you move. 'Bring' is also natural but needs an object ('bring a torch'). 'Carry' + object is the standard collocation for items you take on a journey or into a dangerous area."},
+  {before:"The Ender Dragon is the",blank:"final boss",after:"of Minecraft — defeating it shows the game's ending credits.",
+   pool:["final boss","last enemy","hardest mob","biggest creature"],
+   exp:"'Final boss' is the standard gaming term in English for the most powerful enemy at the end of a game. 'Last enemy' and 'hardest mob' are not standard terms. 'Biggest creature' is factually inaccurate — the Ender Dragon is large but size and difficulty are different things."},
+  {before:"In survival mode, you need to",blank:"eat",after:"food regularly to keep your hunger bar full and stay healthy.",
+   pool:["eat","consume","have some","feed yourself"],
+   exp:"'Eat' is the most direct and natural verb here. 'Consume' is correct but formal — more common in academic or technical writing. 'Have some' is too vague and informal without specifying what you have. 'Feed yourself' is grammatically correct but less natural as a standalone verb phrase in this sentence."},
+];
+
+let ddDrag=null,ddScore=0,ddChecked=false,ddCommit=false,ddPoss=false;
+function renderDD(){
+  if(!ddPoss){addPoss(ddSents.length);ddPoss=true;}
+  const seen=new Set(),pool=[];
+  ddSents.forEach(s=>s.pool.forEach(p=>{if(!seen.has(p)){seen.add(p);pool.push({text:p,id:'dp'+pool.length});}}));
+  shuffle(pool);
+  document.getElementById('dd-container').innerHTML=`
+    <div class="dd-pool-label">Word Bank — drag to gap:</div>
+    <div class="dd-pool" id="dd-pool">
+      ${pool.map(p=>`<div class="drag-chip" id="${p.id}" draggable="true" data-text="${p.text}"
+        ondragstart="ddDS(event)" ondragend="ddDE(event)">${p.text}</div>`).join('')}
+    </div>
+    ${ddSents.map((s,i)=>`
+      <div class="q-card" style="margin-bottom:12px">
+        <div class="drop-sent">
+          ${i+1}. ${s.before}
+          <span class="drop-zone" id="dz${i}"
+            ondragover="dzO(event)" ondragleave="dzL(event)" ondrop="dzD(event,${i})"
+            onclick="dzC(${i})" data-answer="" data-pid="">drop here</span>
+          ${s.after}
+        </div>
+        <div class="feedback" id="dfb${i}"></div>
+      </div>`).join('')}`;
+}
+function ddDS(e){ddDrag=e.currentTarget;e.currentTarget.classList.add('dragging');e.dataTransfer.setData('text/plain',e.currentTarget.dataset.text);e.dataTransfer.setData('pid',e.currentTarget.id);}
+function ddDE(e){e.currentTarget.classList.remove('dragging');}
+function dzO(e){e.preventDefault();e.currentTarget.classList.add('over');}
+function dzL(e){e.currentTarget.classList.remove('over');}
+function dzD(e,i){
+  e.preventDefault();if(ddChecked)return;
+  const dz=document.getElementById(`dz${i}`);dz.classList.remove('over');
+  const txt=e.dataTransfer.getData('text/plain'),pid=e.dataTransfer.getData('pid');
+  const pp=dz.dataset.pid;if(pp){const pe=document.getElementById(pp);if(pe)pe.classList.remove('placed');}
+  dz.textContent=txt;dz.dataset.answer=txt;dz.dataset.pid=pid;dz.classList.add('filled');
+  const item=document.getElementById(pid);if(item)item.classList.add('placed');
+}
+function dzC(i){
+  if(ddChecked)return;
+  const dz=document.getElementById(`dz${i}`);const pp=dz.dataset.pid;if(!pp)return;
+  const pe=document.getElementById(pp);if(pe)pe.classList.remove('placed');
+  dz.textContent='drop here';dz.dataset.answer='';dz.dataset.pid='';dz.classList.remove('filled');
+}
+function ddCheck(){
+  if(ddChecked)return;ddChecked=true;ddScore=0;
+  ddSents.forEach((s,i)=>{
+    const dz=document.getElementById(`dz${i}`);const ok=dz.dataset.answer===s.blank;
+    if(ok){ddScore++;dz.classList.add('correct-dz');}else dz.classList.add('wrong-dz');
+    const fb=document.getElementById(`dfb${i}`);
+    fb.className=`feedback show ${ok?'correct-fb':'incorrect-fb'}`;
+    fb.innerHTML=`<div class="fb-label">${ok?'✓ Correct':'✗ Answer: "'+s.blank+'"'}</div>${s.exp}`;
+  });
+  if(!ddCommit){addScore(ddScore);ddCommit=true;actDone[2]=true;checkDone();}
+  const fb=document.getElementById('dd-feedback');
+  fb.className=`feedback show ${ddScore>=ddSents.length*.7?'correct-fb':'incorrect-fb'}`;
+  fb.innerHTML=`<div class="fb-label">Activity Complete</div>You scored ${ddScore} out of ${ddSents.length}.`;
+  document.getElementById('dd-check-btn').disabled=true;
+  document.getElementById('dd-retry-btn').style.display='inline-block';
+}
+function ddRetry(){
+  ddChecked=false;ddScore=0;renderDD();
+  document.getElementById('dd-check-btn').disabled=false;
+  document.getElementById('dd-retry-btn').style.display='none';
+  document.getElementById('dd-feedback').className='feedback';
+}
+
+// ══════════════════════════════════════
+//  ACTIVITY 4 — MATCHING  (B1)
+//  Minecraft words matched to clear, simple definitions
+// ══════════════════════════════════════
+const matchPairs=[
+  {term:"Spawn",      def:"To appear in the game world — either for the first time or after dying."},
+  {term:"Craft",      def:"To make a new item by combining materials on a crafting table."},
+  {term:"Mine",       def:"To dig into rock or ground to collect materials like stone, coal, or iron."},
+  {term:"Mob",        def:"Any moving creature in the game, such as a zombie, cow, or chicken."},
+  {term:"Biome",      def:"An area of the world with its own weather, plants, and landscape type."},
+  {term:"Inventory",  def:"The list of all the items and materials your character is currently carrying."},
+  {term:"Smelt",      def:"To heat raw ore in a furnace to turn it into a usable material like iron."},
+];
+
+let mSel=null,mPairs=0,mScore=0,mDone=false,mCommit=false;
+function renderMatch(){
+  addPoss(matchPairs.length);
+  const sd=shuffle([...matchPairs]);
+  document.getElementById('match-container').innerHTML=`
+    <div class="match-grid">
+      <div class="match-col">
+        <div class="match-col-label">Minecraft Words</div>
+        ${matchPairs.map((p,i)=>`<div class="match-card left-c" id="mt${i}" onclick="mTerm(${i})">${p.term}</div>`).join('')}
+      </div>
+      <div class="match-col">
+        <div class="match-col-label">Meanings</div>
+        ${sd.map(p=>{const o=matchPairs.findIndex(x=>x.term===p.term);
+          return`<div class="match-card right-c" id="md${o}" onclick="mDef(${o})">${p.def}</div>`;}).join('')}
+      </div>
+    </div>
+    <div class="match-tally">Matched: <span id="mc2">0</span> / ${matchPairs.length}</div>
+    <div class="feedback" id="mfb" style="margin-top:14px"></div>`;
+}
+function mTerm(i){
+  if(mDone)return;const el=document.getElementById(`mt${i}`);if(el.classList.contains('matched'))return;
+  if(mSel&&mSel.side==='term'&&mSel.i===i){el.classList.remove('selected');mSel=null;return;}
+  document.querySelectorAll('.left-c.selected').forEach(e=>e.classList.remove('selected'));
+  if(mSel&&mSel.side==='def'){
+    const de=document.getElementById(`md${mSel.i}`);
+    if(mSel.i===i){el.classList.add('matched');de.classList.add('matched');mPairs++;document.getElementById('mc2').textContent=mPairs;mSel=null;if(mPairs===matchPairs.length)mFinish();}
+    else{el.classList.add('wrong-flash');de.classList.add('wrong-flash');setTimeout(()=>{el.classList.remove('wrong-flash');de.classList.remove('wrong-flash');},400);mSel=null;}
+  }else{el.classList.add('selected');mSel={side:'term',i};}
+}
+function mDef(i){
+  if(mDone)return;const el=document.getElementById(`md${i}`);if(el.classList.contains('matched'))return;
+  if(mSel&&mSel.side==='def'&&mSel.i===i){el.classList.remove('selected');mSel=null;return;}
+  document.querySelectorAll('.right-c.selected').forEach(e=>e.classList.remove('selected'));
+  if(mSel&&mSel.side==='term'){
+    const te=document.getElementById(`mt${mSel.i}`);
+    if(mSel.i===i){el.classList.add('matched');te.classList.add('matched');mPairs++;document.getElementById('mc2').textContent=mPairs;mSel=null;if(mPairs===matchPairs.length)mFinish();}
+    else{el.classList.add('wrong-flash');te.classList.add('wrong-flash');setTimeout(()=>{el.classList.remove('wrong-flash');te.classList.remove('wrong-flash');},400);mSel=null;}
+  }else{el.classList.add('selected');mSel={side:'def',i};}
+}
+function mFinish(){
+  mDone=true;document.getElementById('match-submit-btn').disabled=true;
+  document.querySelectorAll('.match-card:not(.matched)').forEach(el=>{el.classList.add('wrong-flash');el.style.opacity='.45';});
+  if(!mCommit){mScore=mPairs;addScore(mScore);mCommit=true;actDone[3]=true;checkDone();}
+  const fb=document.getElementById('mfb');
+  fb.className=`feedback show ${mPairs===matchPairs.length?'correct-fb':'incorrect-fb'}`;
+  fb.innerHTML=`<div class="fb-label">${mPairs===matchPairs.length?'✓ All Matched!':'Activity Complete'}</div>You matched ${mPairs} out of ${matchPairs.length} pairs correctly.`;
+}
+function matchSubmit(){if(!mDone)mFinish();}
+
+// ══════════════════════════════════════
+//  ACTIVITY 5 — ORDERING  (B1)
+//  A first day in Minecraft — clear narrative order
+// ══════════════════════════════════════
+const orderItems=[
+  {id:0,text:"You appear in a new world. You look around and see trees, grass, and open sky."},
+  {id:1,text:"You walk to the nearest tree and punch it with your hand to collect some wood."},
+  {id:2,text:"You open your crafting table and make a wooden pickaxe and a wooden axe."},
+  {id:3,text:"You use your new pickaxe to dig into the ground and collect stone and coal."},
+  {id:4,text:"You build a small shelter — four walls and a roof — before the sun starts to go down."},
+  {id:5,text:"You place some torches inside the shelter so it is light and mobs cannot spawn."},
+  {id:6,text:"You sleep in your bed and wait safely for morning to arrive."},
+];
+const correctOrder=[0,1,2,3,4,5,6];
+
+let oDrag=null,oTarget=null,oChecked=false,oScore=0,oCommit=false,oPoss=false;
+function renderOrder(){
+  if(!oPoss){addPoss(orderItems.length);oPoss=true;}
+  const sh=shuffle([...orderItems]);
+  document.getElementById('order-container').innerHTML=`
+    <div class="order-list" id="olist">
+      ${sh.map((it,pos)=>`
+        <div class="order-row" id="oi${it.id}" data-id="${it.id}" draggable="true"
+          ondragstart="oDragStart(event)" ondragend="oDragEnd(event)"
+          ondragover="oDragOver(event)" ondrop="oDrop(event)">
+          <span class="order-handle">⠿</span>
+          <span class="order-idx">${pos+1}</span>
+          <span>${it.text}</span>
+        </div>`).join('')}
+    </div>`;
+}
+function oDragStart(e){oDrag=e.currentTarget;e.currentTarget.classList.add('dragging-row');e.dataTransfer.effectAllowed='move';}
+function oDragEnd(e){e.currentTarget.classList.remove('dragging-row');document.querySelectorAll('.order-row').forEach(el=>el.style.borderTop='');oDrag=null;}
+function oDragOver(e){e.preventDefault();if(!oDrag||oDrag===e.currentTarget)return;e.currentTarget.style.borderTop='3px solid var(--teal)';oTarget=e.currentTarget;}
+function oDrop(e){
+  e.preventDefault();if(!oDrag||oDrag===e.currentTarget)return;
+  const list=document.getElementById('olist');list.insertBefore(oDrag,e.currentTarget);
+  list.querySelectorAll('.order-idx').forEach((n,i)=>n.textContent=i+1);
+  e.currentTarget.style.borderTop='';
+}
+function orderCheck(){
+  if(oChecked)return;oChecked=true;
+  const items=[...document.getElementById('olist').querySelectorAll('.order-row')];
+  const ids=items.map(el=>parseInt(el.dataset.id));oScore=0;
+  items.forEach((el,i)=>{
+    const ok=ids[i]===correctOrder[i];
+    if(ok){el.classList.add('correct-row');oScore++;}else el.classList.add('wrong-row');
+    el.draggable=false;
+  });
+  if(!oCommit){addScore(oScore);oCommit=true;actDone[4]=true;checkDone();}
+  const fb=document.getElementById('order-feedback');
+  fb.className=`feedback show ${oScore===orderItems.length?'correct-fb':'incorrect-fb'}`;
+  if(oScore===orderItems.length){
+    fb.innerHTML=`<div class="fb-label">✓ Perfect Order!</div>Great work! The correct order follows a very logical pattern: arrive → collect wood → craft tools → mine stone → build shelter → add torches → sleep safely. This is exactly what most Minecraft tutorials teach new players.`;
+  }else{
+    fb.innerHTML=`<div class="fb-label">Activity Complete — ${oScore}/${orderItems.length} correct</div>The correct order is: (1) arrive in the world → (2) collect wood → (3) craft tools → (4) mine stone and coal → (5) build a shelter → (6) place torches inside → (7) sleep until morning.`;
+  }
+  document.getElementById('order-check-btn').disabled=true;
+  document.getElementById('order-retry-btn').style.display='inline-block';
+}
+function orderRetry(){
+  oChecked=false;oScore=0;renderOrder();
+  document.getElementById('order-check-btn').disabled=false;
+  document.getElementById('order-retry-btn').style.display='none';
+  document.getElementById('order-feedback').className='feedback';
+}
+
+// ── INIT ──
+renderMC();
+renderFITB();
+renderDD();
+renderMatch();
+renderOrder();
+</script>
+</body>
+</html>

@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – Marilyn Monroe & Prepositions</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #1a1714;
+    --surface:   #242018;
+    --card:      #2e2820;
+    --gold:      #c9a84c;
+    --gold-lt:   #e2c97e;
+    --rose:      #c98a8a;
+    --cream:     #f0e8d8;
+    --muted:     #8a7e6e;
+    --correct:   #6aad8e;
+    --wrong:     #c96a6a;
+    --border:    rgba(201,168,76,0.18);
+    --radius:    14px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--cream);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 16px 60px;
+  }
+
+  /* ── HEADER ── */
+  header {
+    width: 100%;
+    max-width: 780px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 0 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 32px;
+  }
+
+  /* Forbes English SVG Logo */
+  .logo svg { display: block; }
+
+  /* Score pill */
+  .score-pill {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 8px 20px;
+    font-size: 13px;
+    color: var(--gold-lt);
+    font-weight: 500;
+    letter-spacing: .04em;
+    white-space: nowrap;
+  }
+  .score-pill span { color: var(--cream); font-weight: 700; }
+
+  /* ── HERO ── */
+  .hero {
+    width: 100%;
+    max-width: 780px;
+    display: flex;
+    gap: 36px;
+    align-items: flex-end;
+    margin-bottom: 36px;
+  }
+
+  .hero-text { flex: 1; }
+  .lesson-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    border-radius: 4px;
+    padding: 3px 10px;
+    margin-bottom: 14px;
+  }
+  .hero-text h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 5vw, 42px);
+    line-height: 1.2;
+    color: var(--cream);
+    margin-bottom: 14px;
+  }
+  .hero-text h1 em {
+    font-style: italic;
+    color: var(--gold-lt);
+  }
+  .hero-text p {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.65;
+    max-width: 420px;
+  }
+
+  /* SVG Illustration */
+  .illustration { flex-shrink: 0; }
+  .illustration svg {
+    width: clamp(120px, 22vw, 200px);
+    height: auto;
+    filter: drop-shadow(0 8px 32px rgba(201,168,76,0.15));
+  }
+
+  /* ── ACTIVITY WRAPPER ── */
+  .activity-wrapper {
+    width: 100%;
+    max-width: 780px;
+  }
+
+  .activity {
+    display: none;
+  }
+  .activity.active {
+    display: block;
+    animation: fadeUp .4s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .activity-header {
+    margin-bottom: 24px;
+  }
+  .activity-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: 8px;
+  }
+  .activity-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--cream);
+    margin-bottom: 6px;
+  }
+  .activity-instructions {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* Progress bar */
+  .progress-bar-wrap {
+    width: 100%;
+    height: 3px;
+    background: var(--card);
+    border-radius: 999px;
+    margin-bottom: 28px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--gold-lt));
+    border-radius: 999px;
+    transition: width .4s ease;
+  }
+
+  /* ── QUESTION CARD ── */
+  .question-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+
+  .question-counter {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: .06em;
+    margin-bottom: 12px;
+  }
+
+  .question-text {
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--cream);
+    margin-bottom: 22px;
+    font-weight: 400;
+  }
+
+  .blank {
+    display: inline-block;
+    border-bottom: 2px solid var(--gold);
+    min-width: 80px;
+    text-align: center;
+    padding: 0 6px;
+    color: var(--gold-lt);
+    font-style: italic;
+  }
+
+  /* ── MC OPTIONS ── */
+  .options { display: flex; flex-direction: column; gap: 10px; }
+
+  .option-btn {
+    background: var(--surface);
+    border: 1.5px solid rgba(201,168,76,0.15);
+    border-radius: 10px;
+    padding: 13px 18px;
+    text-align: left;
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    cursor: pointer;
+    transition: border-color .2s, background .2s, transform .1s;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--gold);
+    background: var(--card);
+    transform: translateX(3px);
+  }
+  .option-btn .opt-label {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.1);
+    border: 1.5px solid rgba(201,168,76,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+  .option-btn:disabled { cursor: default; }
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: rgba(106,173,142,0.12);
+  }
+  .option-btn.correct .opt-label {
+    background: var(--correct);
+    border-color: var(--correct);
+    color: #fff;
+  }
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: rgba(201,106,106,0.1);
+  }
+  .option-btn.wrong .opt-label {
+    background: var(--wrong);
+    border-color: var(--wrong);
+    color: #fff;
+  }
+
+  /* ── FEEDBACK ── */
+  .feedback-box {
+    display: none;
+    background: var(--surface);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    margin-top: 16px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+  .feedback-box.show { display: block; animation: fadeUp .3s ease; }
+  .feedback-box strong { color: var(--cream); }
+  .feedback-correct { color: var(--correct) !important; font-weight: 600; }
+  .feedback-wrong { color: var(--wrong) !important; font-weight: 600; }
+
+  /* ── FILL IN THE BLANK ── */
+  .fitb-select {
+    background: var(--surface);
+    border: 1.5px solid rgba(201,168,76,0.3);
+    border-radius: 8px;
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    padding: 6px 12px;
+    cursor: pointer;
+    outline: none;
+    transition: border-color .2s;
+  }
+  .fitb-select:focus { border-color: var(--gold); }
+  .fitb-select option { background: var(--card); }
+
+  .fitb-submit {
+    background: transparent;
+    border: 1.5px solid var(--gold);
+    color: var(--gold);
+    border-radius: 8px;
+    padding: 9px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 18px;
+    transition: background .2s, color .2s;
+  }
+  .fitb-submit:hover:not(:disabled) {
+    background: var(--gold);
+    color: var(--bg);
+  }
+  .fitb-submit:disabled { opacity: .4; cursor: default; }
+
+  /* ── DRAG AND DROP ── */
+  .drag-sentence {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--cream);
+    margin-bottom: 18px;
+  }
+
+  .drop-zone {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 90px;
+    height: 34px;
+    border-radius: 6px;
+    border: 2px dashed rgba(201,168,76,0.4);
+    background: rgba(201,168,76,0.05);
+    padding: 0 10px;
+    vertical-align: middle;
+    transition: border-color .2s, background .2s;
+    font-size: 14px;
+    color: var(--gold-lt);
+    font-style: italic;
+    cursor: default;
+  }
+  .drop-zone.drag-over {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.12);
+  }
+  .drop-zone.filled {
+    border-style: solid;
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.1);
+    color: var(--cream);
+    font-style: normal;
+    font-weight: 500;
+  }
+  .drop-zone.dz-correct { border-color: var(--correct); background: rgba(106,173,142,0.12); color: var(--correct); }
+  .drop-zone.dz-wrong   { border-color: var(--wrong);   background: rgba(201,106,106,0.1);  color: var(--wrong); }
+
+  .word-bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+  .word-chip {
+    background: var(--surface);
+    border: 1.5px solid rgba(201,168,76,0.25);
+    border-radius: 8px;
+    padding: 7px 16px;
+    font-size: 14px;
+    color: var(--gold-lt);
+    cursor: grab;
+    user-select: none;
+    transition: border-color .2s, opacity .2s;
+    font-weight: 500;
+  }
+  .word-chip:hover { border-color: var(--gold); }
+  .word-chip.used { opacity: .3; cursor: default; pointer-events: none; }
+
+  /* ── NEXT BUTTON ── */
+  .btn-next {
+    display: none;
+    margin-top: 24px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-lt));
+    color: var(--bg);
+    border: none;
+    border-radius: 999px;
+    padding: 13px 36px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: .03em;
+    transition: opacity .2s, transform .1s;
+  }
+  .btn-next:hover { opacity: .9; transform: translateY(-1px); }
+  .btn-next.show { display: inline-flex; align-items: center; gap: 8px; }
+
+  /* ── FINAL SCREEN ── */
+  #final-screen {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+    animation: fadeUp .5s ease;
+  }
+  #final-screen.show { display: block; }
+
+  .final-star {
+    font-size: 56px;
+    margin-bottom: 16px;
+    filter: drop-shadow(0 4px 16px rgba(201,168,76,0.5));
+  }
+  .final-score {
+    font-family: 'Playfair Display', serif;
+    font-size: 72px;
+    color: var(--gold-lt);
+    font-weight: 700;
+    margin-bottom: 8px;
+    line-height: 1;
+  }
+  .final-label {
+    font-size: 15px;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+  .final-msg {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--cream);
+    font-style: italic;
+    margin-bottom: 36px;
+    line-height: 1.5;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .btn-restart {
+    background: transparent;
+    border: 2px solid var(--gold);
+    color: var(--gold);
+    border-radius: 999px;
+    padding: 13px 40px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .2s, color .2s;
+  }
+  .btn-restart:hover { background: var(--gold); color: var(--bg); }
+
+  .divider {
+    width: 100%;
+    max-width: 780px;
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 32px 0 24px;
+  }
+
+  /* decorative grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+    pointer-events: none;
+    z-index: 0;
+    opacity: .5;
+  }
+  header, .hero, .activity-wrapper, #final-screen { position: relative; z-index: 1; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <!-- Forbes English SVG logo, gold/cream palette -->
+    <svg width="160" height="52" viewBox="0 0 160 52" xmlns="http://www.w3.org/2000/svg">
+      <text x="2" y="24" font-family="'Playfair Display', Georgia, serif" font-size="22" font-weight="400" fill="#c9a84c" letter-spacing="1">Forbes</text>
+      <rect x="2" y="30" width="156" height="1" fill="rgba(201,168,76,0.4)"/>
+      <text x="2" y="47" font-family="'DM Sans', Arial, sans-serif" font-size="13" font-weight="700" fill="#f0e8d8" letter-spacing="5">ENGLISH</text>
+    </svg>
+  </div>
+  <div class="score-pill">Score: <span id="score-display">0</span> / <span id="total-display">15</span></div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-text">
+    <div class="lesson-tag">B1 · Prepositions</div>
+    <h1>The Mystery<br><em>of Marilyn Monroe</em></h1>
+    <p>Practise prepositions of place, time, and movement through the story of Hollywood's most iconic — and most mysterious — star.</p>
+  </div>
+  <div class="illustration">
+    <!-- SVG portrait of Marilyn Monroe, stylised art deco illustration -->
+    <svg viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg" width="200" height="280">
+      <defs>
+        <radialGradient id="glow" cx="50%" cy="40%" r="50%">
+          <stop offset="0%" stop-color="#c9a84c" stop-opacity=".3"/>
+          <stop offset="100%" stop-color="#1a1714" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="skin" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#e8c8a0"/>
+          <stop offset="100%" stop-color="#c8986a"/>
+        </linearGradient>
+        <linearGradient id="dress" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#c9a84c"/>
+          <stop offset="100%" stop-color="#8a6a20"/>
+        </linearGradient>
+        <linearGradient id="hair" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#f5e090"/>
+          <stop offset="100%" stop-color="#c9a84c"/>
+        </linearGradient>
+      </defs>
+      <!-- glow background -->
+      <ellipse cx="100" cy="120" rx="90" ry="110" fill="url(#glow)"/>
+      <!-- neck -->
+      <rect x="87" y="148" width="26" height="30" rx="8" fill="url(#skin)"/>
+      <!-- shoulders / dress top -->
+      <path d="M40 195 Q60 160 87 155 L113 155 Q140 160 160 195 L170 280 L30 280 Z" fill="url(#dress)"/>
+      <!-- dress neckline detail -->
+      <path d="M87 155 Q100 175 113 155" fill="none" stroke="#f0e8d8" stroke-width="1.5" opacity=".6"/>
+      <!-- dress sparkle dots -->
+      <circle cx="72" cy="205" r="2" fill="#f0e8d8" opacity=".5"/>
+      <circle cx="85" cy="220" r="1.5" fill="#f0e8d8" opacity=".4"/>
+      <circle cx="110" cy="198" r="2" fill="#f0e8d8" opacity=".5"/>
+      <circle cx="130" cy="215" r="1.5" fill="#f0e8d8" opacity=".4"/>
+      <circle cx="95" cy="235" r="2" fill="#f0e8d8" opacity=".3"/>
+      <!-- head shape -->
+      <ellipse cx="100" cy="105" rx="42" ry="50" fill="url(#skin)"/>
+      <!-- hair - back/sides -->
+      <ellipse cx="100" cy="80" rx="46" ry="36" fill="url(#hair)" opacity=".9"/>
+      <!-- hair side waves -->
+      <path d="M58 90 Q50 110 58 135 Q62 125 66 130 Q62 110 68 95 Z" fill="url(#hair)"/>
+      <path d="M142 90 Q150 110 142 135 Q138 125 134 130 Q138 110 132 95 Z" fill="url(#hair)"/>
+      <!-- hair front curl left -->
+      <path d="M64 78 Q72 60 88 68 Q80 72 78 82 Q70 75 64 78 Z" fill="#e8d070"/>
+      <!-- hair front curl right -->
+      <path d="M136 78 Q128 60 112 68 Q120 72 122 82 Q130 75 136 78 Z" fill="#e8d070"/>
+      <!-- face shadow sides -->
+      <ellipse cx="68" cy="108" rx="12" ry="18" fill="rgba(160,90,40,0.15)"/>
+      <ellipse cx="132" cy="108" rx="12" ry="18" fill="rgba(160,90,40,0.15)"/>
+      <!-- eyebrows - arched, thin -->
+      <path d="M78 88 Q88 83 96 86" fill="none" stroke="#5a3020" stroke-width="2" stroke-linecap="round"/>
+      <path d="M104 86 Q112 83 122 88" fill="none" stroke="#5a3020" stroke-width="2" stroke-linecap="round"/>
+      <!-- eyes -->
+      <ellipse cx="88" cy="97" rx="10" ry="6" fill="#2a1a10"/>
+      <ellipse cx="112" cy="97" rx="10" ry="6" fill="#2a1a10"/>
+      <ellipse cx="88" cy="96" rx="8" ry="4.5" fill="#3a2515"/>
+      <ellipse cx="112" cy="96" rx="8" ry="4.5" fill="#3a2515"/>
+      <!-- eye whites -->
+      <ellipse cx="84" cy="96" rx="3" ry="2.5" fill="#e8c8a0" opacity=".25"/>
+      <ellipse cx="108" cy="96" rx="3" ry="2.5" fill="#e8c8a0" opacity=".25"/>
+      <!-- eye highlight -->
+      <ellipse cx="85" cy="94" rx="2" ry="1.5" fill="white" opacity=".8"/>
+      <ellipse cx="109" cy="94" rx="2" ry="1.5" fill="white" opacity=".8"/>
+      <!-- eyelashes -->
+      <path d="M80 93 Q82 88 88 91" fill="none" stroke="#1a0a05" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M88 91 Q94 88 96 92" fill="none" stroke="#1a0a05" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M104 92 Q106 88 112 91" fill="none" stroke="#1a0a05" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M112 91 Q118 88 120 93" fill="none" stroke="#1a0a05" stroke-width="1.5" stroke-linecap="round"/>
+      <!-- nose subtle -->
+      <path d="M98 100 Q100 108 102 100" fill="none" stroke="rgba(160,90,40,0.4)" stroke-width="1.2" stroke-linecap="round"/>
+      <circle cx="96" cy="110" r="3" fill="rgba(160,90,40,0.12)"/>
+      <circle cx="104" cy="110" r="3" fill="rgba(160,90,40,0.12)"/>
+      <!-- lips -->
+      <path d="M88 120 Q94 116 100 118 Q106 116 112 120 Q106 124 100 126 Q94 124 88 120 Z" fill="#c94040"/>
+      <path d="M88 120 Q94 117 100 118 Q106 117 112 120" fill="none" stroke="#a02828" stroke-width=".8"/>
+      <!-- cupid bow highlight -->
+      <path d="M94 118 Q97 115 100 118 Q103 115 106 118" fill="none" stroke="rgba(255,180,180,0.6)" stroke-width="1"/>
+      <!-- beauty spot -->
+      <circle cx="112" cy="118" r="2.5" fill="#3a1a10"/>
+      <!-- pearls / earrings -->
+      <circle cx="58" cy="118" r="5" fill="#f5f0e8" stroke="#c9a84c" stroke-width="1"/>
+      <circle cx="142" cy="118" r="5" fill="#f5f0e8" stroke="#c9a84c" stroke-width="1"/>
+      <!-- necklace -->
+      <path d="M78 152 Q100 165 122 152" fill="none" stroke="#f5f0e8" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="100" cy="163" r="4" fill="#f5f0e8" stroke="#c9a84c" stroke-width="1"/>
+      <circle cx="88" cy="158" r="3" fill="#f5f0e8" opacity=".8"/>
+      <circle cx="112" cy="158" r="3" fill="#f5f0e8" opacity=".8"/>
+      <!-- film strip decorative -->
+      <rect x="4" y="240" width="16" height="36" rx="2" fill="rgba(201,168,76,0.15)" stroke="rgba(201,168,76,0.3)" stroke-width="1"/>
+      <rect x="6" y="244" width="4" height="4" rx="1" fill="rgba(201,168,76,0.4)"/>
+      <rect x="6" y="252" width="4" height="4" rx="1" fill="rgba(201,168,76,0.4)"/>
+      <rect x="6" y="260" width="4" height="4" rx="1" fill="rgba(201,168,76,0.4)"/>
+      <rect x="6" y="268" width="4" height="4" rx="1" fill="rgba(201,168,76,0.4)"/>
+      <rect x="180" y="240" width="16" height="36" rx="2" fill="rgba(201,168,76,0.15)" stroke="rgba(201,168,76,0.3)" stroke-width="1"/>
+      <rect x="182" y="244" width="4" height="4" rx="1" fill="rgba(201,168,76,0.4)"/>
+      <rect x="182" y="252" width="4" height="4" rx="1" fill="rgba(201,168,76,0.4)"/>
+      <rect x="182" y="260" width="4" height="4" rx="1" fill="rgba(201,168,76,0.4)"/>
+      <rect x="182" y="268" width="4" height="4" rx="1" fill="rgba(201,168,76,0.4)"/>
+      <!-- star accent -->
+      <text x="8" y="22" font-size="14" fill="#c9a84c" opacity=".5">★</text>
+      <text x="176" y="22" font-size="14" fill="#c9a84c" opacity=".5">★</text>
+    </svg>
+  </div>
+</div>
+
+<!-- ACTIVITY WRAPPER -->
+<div class="activity-wrapper" id="activity-wrapper">
+
+  <!-- ══════════════════════════════════
+       ACTIVITY 1 – Multiple Choice (5 Qs)
+       ══════════════════════════════════ -->
+  <div class="activity active" id="act1">
+    <div class="activity-header">
+      <div class="activity-label">Activity 1 of 3</div>
+      <div class="activity-title">Multiple Choice</div>
+      <div class="activity-instructions">Choose the correct preposition to complete each sentence about Marilyn Monroe's life and the theories surrounding her death.</div>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="pb1" style="width:0%"></div></div>
+    <div id="mc-container"></div>
+    <div style="display:flex;justify-content:flex-end">
+      <button class="btn-next" id="mc-next">Next question →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       ACTIVITY 2 – Fill in the Blank (5 Qs)
+       ══════════════════════════════════ -->
+  <div class="activity" id="act2">
+    <div class="activity-header">
+      <div class="activity-label">Activity 2 of 3</div>
+      <div class="activity-title">Fill in the Blank</div>
+      <div class="activity-instructions">Select the correct preposition from the dropdown menu to complete each sentence.</div>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="pb2" style="width:0%"></div></div>
+    <div id="fitb-container"></div>
+    <div style="display:flex;justify-content:flex-end">
+      <button class="btn-next" id="fitb-next">Next question →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       ACTIVITY 3 – Drag & Drop (5 Qs)
+       ══════════════════════════════════ -->
+  <div class="activity" id="act3">
+    <div class="activity-header">
+      <div class="activity-label">Activity 3 of 3</div>
+      <div class="activity-title">Drag & Drop</div>
+      <div class="activity-instructions">Drag the correct preposition from the word bank into the gap in each sentence.</div>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="pb3" style="width:0%"></div></div>
+    <div id="dnd-container"></div>
+    <div style="display:flex;justify-content:flex-end">
+      <button class="btn-next" id="dnd-next">Next question →</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- FINAL SCREEN -->
+<div id="final-screen">
+  <div class="final-star">★</div>
+  <div class="final-score" id="final-score">0</div>
+  <div class="final-label">out of 15</div>
+  <div class="final-msg" id="final-msg"></div>
+  <button class="btn-restart" onclick="restartAll()">Start again</button>
+</div>
+
+<script>
+/* ═══════════════════════════════════════
+   DATA
+═══════════════════════════════════════ */
+
+const mcQuestions = [
+  {
+    q: "Marilyn Monroe was born ___ 1 June 1926, in Los Angeles.",
+    opts: ["at", "on", "in", "during"],
+    correct: 1,
+    exp: "<strong>On</strong> is used with specific dates and days of the week. We say 'on 1 June', 'on Monday', etc."
+  },
+  {
+    q: "She lived ___ a difficult childhood, moving between foster homes and an orphanage.",
+    opts: ["during", "through", "along", "beside"],
+    correct: 1,
+    exp: "<strong>Through</strong> expresses experiencing a difficult period from start to finish. 'During' is close, but 'through' emphasises overcoming the whole experience."
+  },
+  {
+    q: "Monroe was found dead ___ her bedroom in Brentwood, California.",
+    opts: ["on", "inside", "in", "within"],
+    correct: 2,
+    exp: "<strong>In</strong> is the standard preposition for rooms. 'In her bedroom' is the natural, correct expression."
+  },
+  {
+    q: "Her body was discovered ___ the early hours of 5 August 1962.",
+    opts: ["in", "during", "at", "on"],
+    correct: 0,
+    exp: "<strong>In</strong> is used with 'the early hours'. Compare: 'in the morning', 'in the evening', 'in the early hours'."
+  },
+  {
+    q: "Many people believe there was a conspiracy ___ the highest levels of government.",
+    opts: ["at", "from", "by", "inside"],
+    correct: 0,
+    exp: "<strong>At</strong> is used to describe position within a hierarchy: 'at the highest levels', 'at the top of the organisation'."
+  }
+];
+
+const fitbQuestions = [
+  {
+    sentence_before: "Monroe moved",
+    sentence_after: "Hollywood at the age of sixteen to pursue her dream of becoming a model.",
+    opts: ["to", "into", "towards", "through"],
+    correct: 0,
+    exp: "<strong>To</strong> indicates movement towards a destination. 'Moved to Hollywood' means she relocated there permanently."
+  },
+  {
+    sentence_before: "She married the baseball player Joe DiMaggio",
+    sentence_after: "January 1954, after a short courtship.",
+    opts: ["at", "in", "on", "during"],
+    correct: 1,
+    exp: "<strong>In</strong> is used with months and years: 'in January', 'in 1954', 'in the 1960s'."
+  },
+  {
+    sentence_before: "Conspiracy theorists claim that powerful people wanted to keep her",
+    sentence_after: "of public life.",
+    opts: ["away", "out", "outside", "apart"],
+    correct: 1,
+    exp: "<strong>Out of</strong> is the correct phrasal expression here. 'Keep someone out of' a situation means to prevent them from being involved."
+  },
+  {
+    sentence_before: "Her famous white dress blew up",
+    sentence_after: "a subway grate during filming in New York.",
+    opts: ["over", "above", "through", "across"],
+    correct: 3,
+    exp: "<strong>Across</strong> describes movement from one side of a surface to the other. The dress blew across the grate, which is a horizontal surface."
+  },
+  {
+    sentence_before: "The FBI kept a file",
+    sentence_after: "Monroe for many years because of her political associations.",
+    opts: ["about", "of", "on", "over"],
+    correct: 2,
+    exp: "<strong>On</strong> is used in the expression 'keep a file on someone'. It is the standard collocation in law enforcement and intelligence contexts."
+  }
+];
+
+const dndQuestions = [
+  {
+    before: "Monroe appeared",
+    after: "the cover of the very first issue of Playboy magazine in 1953.",
+    correct: "on",
+    pool: ["on", "in", "at", "above"],
+    exp: "<strong>On</strong> is used with surfaces like covers, pages, and screens: 'on the cover', 'on page 5', 'on television'."
+  },
+  {
+    before: "She was famous",
+    after: "her breathy singing voice and her natural charm.",
+    correct: "for",
+    pool: ["for", "of", "with", "by"],
+    exp: "<strong>Famous for</strong> is the correct collocation when describing what made someone well known. 'Famous of' is not standard English."
+  },
+  {
+    before: "She died",
+    after: "the age of thirty-six, at the height of her fame.",
+    correct: "at",
+    pool: ["at", "in", "on", "by"],
+    exp: "<strong>At</strong> is always used with ages: 'at the age of thirty-six', 'at thirty-six', 'at a young age'."
+  },
+  {
+    before: "Some believe she was silenced because she knew too much",
+    after: "the Kennedy family's private affairs.",
+    correct: "about",
+    pool: ["about", "of", "on", "regarding"],
+    exp: "<strong>About</strong> is the natural preposition after 'know' when referring to a subject or topic: 'know about something'."
+  },
+  {
+    before: "Her death was officially ruled a probable suicide",
+    after: "an overdose of barbiturates.",
+    correct: "from",
+    pool: ["from", "by", "due", "through"],
+    exp: "<strong>From</strong> is used when describing the cause of death in medical or formal language: 'died from an overdose', 'died from cancer'."
+  }
+];
+
+/* ═══════════════════════════════════════
+   STATE
+═══════════════════════════════════════ */
+let score = 0;
+let mcIndex = 0;
+let fitbIndex = 0;
+let dndIndex = 0;
+const TOTAL = 15;
+const labels = ['A','B','C','D'];
+
+function updateScore(){ document.getElementById('score-display').textContent = score; }
+
+/* ═══════════════════════════════════════
+   ACTIVITY 1 – MULTIPLE CHOICE
+═══════════════════════════════════════ */
+function renderMC(){
+  const q = mcQuestions[mcIndex];
+  const pb = ((mcIndex)/mcQuestions.length)*100;
+  document.getElementById('pb1').style.width = pb+'%';
+  document.getElementById('mc-next').classList.remove('show');
+
+  const container = document.getElementById('mc-container');
+  container.innerHTML = `
+    <div class="question-card">
+      <div class="question-counter">Question ${mcIndex+1} of ${mcQuestions.length}</div>
+      <div class="question-text">${q.q}</div>
+      <div class="options" id="mc-opts">
+        ${q.opts.map((o,i)=>`
+          <button class="option-btn" onclick="answerMC(${i})" id="mc-opt-${i}">
+            <span class="opt-label">${labels[i]}</span>${o}
+          </button>`).join('')}
+      </div>
+      <div class="feedback-box" id="mc-feedback"></div>
+    </div>`;
+}
+
+function answerMC(chosen){
+  const q = mcQuestions[mcIndex];
+  const correct = q.correct;
+  const btns = document.querySelectorAll('.option-btn');
+  btns.forEach(b=>b.disabled=true);
+
+  if(chosen===correct){
+    score++;
+    updateScore();
+    btns[chosen].classList.add('correct');
+    showFeedback('mc-feedback',true,`<span class="feedback-correct">✓ Correct!</span> ${q.exp}`);
+  } else {
+    btns[chosen].classList.add('wrong');
+    btns[correct].classList.add('correct');
+    showFeedback('mc-feedback',false,`<span class="feedback-wrong">✗ Not quite.</span> The correct answer is <strong>${q.opts[correct]}</strong>. ${q.exp}`);
+  }
+  document.getElementById('pb1').style.width = ((mcIndex+1)/mcQuestions.length)*100+'%';
+  document.getElementById('mc-next').classList.add('show');
+}
+
+document.getElementById('mc-next').addEventListener('click',()=>{
+  mcIndex++;
+  if(mcIndex < mcQuestions.length){ renderMC(); }
+  else { switchActivity('act1','act2'); renderFITB(); }
+});
+
+/* ═══════════════════════════════════════
+   ACTIVITY 2 – FILL IN THE BLANK
+═══════════════════════════════════════ */
+function renderFITB(){
+  const q = fitbQuestions[fitbIndex];
+  const pb = ((fitbIndex)/fitbQuestions.length)*100;
+  document.getElementById('pb2').style.width = pb+'%';
+  document.getElementById('fitb-next').classList.remove('show');
+
+  const container = document.getElementById('fitb-container');
+  const selectHtml = `<select class="fitb-select" id="fitb-select">
+    <option value="">— choose —</option>
+    ${q.opts.map((o,i)=>`<option value="${i}">${o}</option>`).join('')}
+  </select>`;
+
+  container.innerHTML = `
+    <div class="question-card">
+      <div class="question-counter">Question ${fitbIndex+1} of ${fitbQuestions.length}</div>
+      <div class="question-text">${q.sentence_before} ${selectHtml} ${q.sentence_after}</div>
+      <button class="fitb-submit" id="fitb-submit-btn" onclick="answerFITB()">Check answer</button>
+      <div class="feedback-box" id="fitb-feedback"></div>
+    </div>`;
+}
+
+function answerFITB(){
+  const q = fitbQuestions[fitbIndex];
+  const sel = document.getElementById('fitb-select');
+  if(sel.value==='') return;
+  const chosen = parseInt(sel.value);
+  sel.disabled = true;
+  document.getElementById('fitb-submit-btn').disabled = true;
+
+  if(chosen===q.correct){
+    score++;
+    updateScore();
+    showFeedback('fitb-feedback',true,`<span class="feedback-correct">✓ Correct!</span> ${q.exp}`);
+  } else {
+    showFeedback('fitb-feedback',false,`<span class="feedback-wrong">✗ Not quite.</span> The correct answer is <strong>${q.opts[q.correct]}</strong>. ${q.exp}`);
+  }
+  document.getElementById('pb2').style.width = ((fitbIndex+1)/fitbQuestions.length)*100+'%';
+  document.getElementById('fitb-next').classList.add('show');
+}
+
+document.getElementById('fitb-next').addEventListener('click',()=>{
+  fitbIndex++;
+  if(fitbIndex < fitbQuestions.length){ renderFITB(); }
+  else { switchActivity('act2','act3'); renderDND(); }
+});
+
+/* ═══════════════════════════════════════
+   ACTIVITY 3 – DRAG AND DROP
+═══════════════════════════════════════ */
+let dndDragging = null;
+
+function renderDND(){
+  const q = dndQuestions[dndIndex];
+  const pb = ((dndIndex)/dndQuestions.length)*100;
+  document.getElementById('pb3').style.width = pb+'%';
+  document.getElementById('dnd-next').classList.remove('show');
+
+  // Shuffle pool display
+  const shuffled = [...q.pool].sort(()=>Math.random()-.5);
+
+  const container = document.getElementById('dnd-container');
+  container.innerHTML = `
+    <div class="question-card">
+      <div class="question-counter">Question ${dndIndex+1} of ${dndQuestions.length}</div>
+      <div class="word-bank" id="dnd-bank">
+        ${shuffled.map(w=>`<div class="word-chip" draggable="true" data-word="${w}" id="chip-${w}">${w}</div>`).join('')}
+      </div>
+      <div class="drag-sentence">
+        ${q.before} <span class="drop-zone" id="dnd-drop" data-hint="drag here">drag here</span> ${q.after}
+      </div>
+      <div class="feedback-box" id="dnd-feedback"></div>
+    </div>`;
+
+  // Drag events for chips
+  container.querySelectorAll('.word-chip').forEach(chip=>{
+    chip.addEventListener('dragstart',e=>{
+      dndDragging = chip.dataset.word;
+      e.dataTransfer.setData('text/plain', chip.dataset.word);
+      setTimeout(()=>chip.style.opacity='.4',0);
+    });
+    chip.addEventListener('dragend',()=>{ chip.style.opacity=''; dndDragging=null; });
+    // touch support
+    chip.addEventListener('touchstart',handleTouchStart,{passive:true});
+    chip.addEventListener('touchmove',handleTouchMove,{passive:false});
+    chip.addEventListener('touchend',handleTouchEnd);
+  });
+
+  const dz = document.getElementById('dnd-drop');
+  dz.addEventListener('dragover',e=>{ e.preventDefault(); dz.classList.add('drag-over'); });
+  dz.addEventListener('dragleave',()=>dz.classList.remove('drag-over'));
+  dz.addEventListener('drop',e=>{ e.preventDefault(); dz.classList.remove('drag-over'); dropWord(e.dataTransfer.getData('text/plain')); });
+}
+
+function dropWord(word){
+  const dz = document.getElementById('dnd-drop');
+  if(dz.dataset.locked) return;
+  dz.textContent = word;
+  dz.classList.add('filled');
+  dz.dataset.placed = word;
+  // mark chip as used
+  const chip = document.getElementById('chip-'+word);
+  if(chip) chip.classList.add('used');
+  checkDND();
+}
+
+function checkDND(){
+  const q = dndQuestions[dndIndex];
+  const dz = document.getElementById('dnd-drop');
+  const placed = dz.dataset.placed;
+  dz.dataset.locked = 'true';
+  // disable all chips
+  document.querySelectorAll('.word-chip').forEach(c=>{ c.draggable=false; c.style.cursor='default'; });
+
+  if(placed===q.correct){
+    score++;
+    updateScore();
+    dz.classList.add('dz-correct');
+    showFeedback('dnd-feedback',true,`<span class="feedback-correct">✓ Correct!</span> ${q.exp}`);
+  } else {
+    dz.classList.add('dz-wrong');
+    showFeedback('dnd-feedback',false,`<span class="feedback-wrong">✗ Not quite.</span> The correct answer is <strong>${q.correct}</strong>. ${q.exp}`);
+  }
+  document.getElementById('pb3').style.width = ((dndIndex+1)/dndQuestions.length)*100+'%';
+  document.getElementById('dnd-next').classList.add('show');
+}
+
+// Simple touch → drag emulation
+let touchChip = null, touchStartX, touchStartY;
+function handleTouchStart(e){
+  touchChip = e.currentTarget;
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+}
+function handleTouchMove(e){ e.preventDefault(); }
+function handleTouchEnd(e){
+  if(!touchChip) return;
+  const touch = e.changedTouches[0];
+  const el = document.elementFromPoint(touch.clientX, touch.clientY);
+  if(el && (el.id==='dnd-drop' || el.closest('#dnd-drop'))){
+    dropWord(touchChip.dataset.word);
+  }
+  touchChip = null;
+}
+
+document.getElementById('dnd-next').addEventListener('click',()=>{
+  dndIndex++;
+  if(dndIndex < dndQuestions.length){ renderDND(); }
+  else { showFinalScreen(); }
+});
+
+/* ═══════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════ */
+function showFeedback(id, correct, html){
+  const fb = document.getElementById(id);
+  fb.innerHTML = html;
+  fb.classList.add('show');
+}
+
+function switchActivity(from, to){
+  document.getElementById(from).classList.remove('active');
+  document.getElementById(to).classList.add('active');
+}
+
+function showFinalScreen(){
+  document.getElementById('activity-wrapper').style.display='none';
+  const fs = document.getElementById('final-screen');
+  fs.classList.add('show');
+  document.getElementById('final-score').textContent = score;
+  const pct = score/TOTAL;
+  let msg;
+  if(pct>=0.9) msg="Extraordinary! You've cracked the case — your preposition skills are as iconic as Marilyn herself.";
+  else if(pct>=0.7) msg="Well done, darling. You've got a good eye for detail — keep practising and you'll reach the top.";
+  else if(pct>=0.5) msg="A solid start. The mystery isn't over — review the answers and try again to sharpen your skills.";
+  else msg="Everyone starts somewhere. Revisit the lesson, and remember: even Marilyn had to rehearse.";
+  document.getElementById('final-msg').textContent = msg;
+}
+
+function restartAll(){
+  score=0; mcIndex=0; fitbIndex=0; dndIndex=0;
+  updateScore();
+  document.getElementById('final-screen').classList.remove('show');
+  document.getElementById('activity-wrapper').style.display='';
+  document.getElementById('act1').classList.add('active');
+  document.getElementById('act2').classList.remove('active');
+  document.getElementById('act3').classList.remove('active');
+  renderMC();
+}
+
+/* ═══════════════════════════════════════
+   INIT
+═══════════════════════════════════════ */
+renderMC();
+</script>
+</body>
+</html>

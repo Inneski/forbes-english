@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>might vs. going to — Test</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@500;600&family=Karla:wght@400;500;600;700&display=swap');
+
+:root{
+  --paper:#f6f1e7;
+  --ink:#241f1a;
+  --ink-soft:#5c5347;
+  --line:#d8cdb8;
+  --card:#fffdf8;
+  --gold:#c98a3a;
+  --might:#7a5fa0;
+  --going:#c08a1e;
+  --green:#2f6b3e;
+  --red:#a13a2f;
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--paper);
+  background-image:radial-gradient(circle at 1px 1px, rgba(36,31,26,0.06) 1px, transparent 0);
+  background-size:22px 22px;
+  color:var(--ink);
+  font-family:'Karla', sans-serif;
+  padding:36px 16px 70px;
+  min-height:100vh;
+}
+
+.wrap{max-width:720px;margin:0 auto;}
+
+/* HEADER */
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:14px;flex-wrap:wrap;}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo svg{width:34px;height:34px;}
+.logo-text{font-family:'Fraunces',serif;font-weight:700;font-size:15px;line-height:1.1;}
+.logo-text span{display:block;font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;}
+
+.progress-wrap{flex:1;min-width:160px;}
+.progress-track{height:8px;background:rgba(36,31,26,0.08);border-radius:5px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--might),var(--going));border-radius:5px;width:0%;transition:width .35s ease;}
+.progress-label{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);margin-top:5px;text-align:right;}
+
+.score-pill{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12.5px;font-weight:600;
+  background:var(--card);border:1.5px solid var(--line);
+  border-radius:20px;padding:6px 14px;color:var(--ink);
+  white-space:nowrap;
+}
+
+/* INTRO */
+.intro{
+  background:var(--card);border:1.5px solid var(--line);border-radius:12px;
+  padding:26px 26px 22px;margin-bottom:22px;
+}
+.intro h1{font-family:'Fraunces',serif;font-weight:700;font-size:26px;margin:0 0 4px;letter-spacing:-.01em;}
+.intro .sub{font-family:'Fraunces',serif;font-style:italic;color:var(--ink-soft);font-size:14.5px;margin:0 0 18px;}
+
+.structure-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
+@media (max-width:560px){.structure-grid{grid-template-columns:1fr;}}
+.s-card{border-radius:9px;padding:14px 15px;border:1.5px solid var(--line);position:relative;overflow:hidden;}
+.s-card::before{content:"";position:absolute;top:0;left:0;width:5px;height:100%;}
+.s-might::before{background:var(--might);}
+.s-going::before{background:var(--going);}
+.s-card h3{font-family:'Fraunces',serif;font-size:16px;margin:0 0 8px;}
+.s-might h3{color:var(--might);}
+.s-going h3{color:var(--going);}
+.s-formula{font-family:'IBM Plex Mono',monospace;font-size:12.5px;line-height:1.8;background:rgba(36,31,26,0.035);border-radius:6px;padding:8px 10px;margin-bottom:8px;}
+.s-formula b{color:var(--ink);}
+.s-card .s-de{font-size:12px;color:var(--ink-soft);font-style:italic;line-height:1.5;}
+.s-card .s-meaning{font-size:12px;color:var(--ink);margin-top:6px;font-weight:600;}
+
+.intro-note{
+  font-size:12.5px;color:var(--ink-soft);
+  background:rgba(201,138,58,0.09);border-left:3px solid var(--gold);
+  padding:9px 13px;border-radius:0 6px 6px 0;line-height:1.55;margin-bottom:18px;
+}
+.intro-note b{color:var(--ink);}
+
+.start-btn{
+  display:block;width:100%;padding:14px;border:none;border-radius:9px;
+  background:var(--ink);color:var(--paper);font-family:'Karla',sans-serif;
+  font-weight:700;font-size:15.5px;cursor:pointer;letter-spacing:.01em;
+  transition:opacity .2s;
+}
+.start-btn:hover{opacity:.88;}
+
+/* QUESTION CARD */
+.qcard{
+  background:var(--card);border:1.5px solid var(--line);border-radius:12px;
+  padding:24px 24px 20px;margin-bottom:18px;display:none;
+}
+.qcard.active{display:block;}
+.qmeta{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;}
+.qnum{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:600;letter-spacing:.04em;text-transform:uppercase;}
+.qtype{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--gold);font-weight:700;text-transform:uppercase;letter-spacing:.06em;}
+
+.qtext{font-family:'Fraunces',serif;font-weight:600;font-size:18.5px;line-height:1.45;margin-bottom:6px;}
+.qde{font-size:13px;color:var(--ink-soft);font-style:italic;margin-bottom:18px;}
+.qtext .blank{display:inline-block;min-width:80px;border-bottom:2px dashed var(--line);text-align:center;}
+
+.options{display:flex;flex-direction:column;gap:10px;}
+.opt{
+  display:flex;align-items:center;gap:12px;
+  border:1.5px solid var(--line);border-radius:9px;padding:12px 14px;
+  background:var(--paper);cursor:pointer;transition:border-color .15s, background .15s;
+  font-size:15px;font-weight:500;
+}
+.opt:hover{border-color:var(--gold);}
+.opt .opt-letter{
+  font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;
+  width:22px;height:22px;border-radius:50%;background:rgba(36,31,26,0.07);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.opt.selected{border-color:var(--ink);background:rgba(36,31,26,0.04);}
+.opt.correct{border-color:var(--green);background:rgba(47,107,62,0.09);}
+.opt.incorrect{border-color:var(--red);background:rgba(161,58,47,0.09);}
+.opt.disabled{cursor:default;}
+.opt.disabled:hover{border-color:inherit;}
+
+.feedback{
+  margin-top:16px;padding:12px 14px;border-radius:0 6px 6px 0;
+  font-size:13.5px;line-height:1.55;display:none;border-left:3px solid var(--green);
+  background:rgba(47,107,62,0.08);
+}
+.feedback.show{display:block;}
+.feedback.wrong{border-left-color:var(--red);background:rgba(161,58,47,0.08);}
+.feedback b{color:var(--ink);}
+.feedback .fb-de{display:block;color:var(--ink-soft);font-style:italic;margin-top:4px;font-size:12.5px;}
+
+.next-btn{
+  margin-top:18px;width:100%;padding:13px;border:none;border-radius:9px;
+  background:var(--ink);color:var(--paper);font-family:'Karla',sans-serif;
+  font-weight:700;font-size:15px;cursor:pointer;opacity:.35;pointer-events:none;
+  transition:opacity .2s;
+}
+.next-btn.enabled{opacity:1;pointer-events:auto;}
+.next-btn:hover.enabled{opacity:.88;}
+
+/* RESULTS */
+.results{
+  background:var(--card);border:1.5px solid var(--line);border-radius:12px;
+  padding:34px 28px;text-align:center;display:none;
+}
+.results.active{display:block;}
+.results .big-score{font-family:'Fraunces',serif;font-weight:700;font-size:52px;color:var(--ink);margin:6px 0 2px;}
+.results .score-label{font-family:'IBM Plex Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-soft);margin-bottom:18px;}
+.results h2{font-family:'Fraunces',serif;font-size:22px;margin:0 0 4px;}
+.results .verdict-de{font-style:italic;color:var(--ink-soft);font-size:14px;margin-bottom:22px;}
+.retry-btn{
+  padding:12px 26px;border:1.5px solid var(--ink);border-radius:9px;
+  background:transparent;color:var(--ink);font-family:'Karla',sans-serif;
+  font-weight:700;font-size:14.5px;cursor:pointer;transition:background .2s;
+}
+.retry-btn:hover{background:var(--ink);color:var(--paper);}
+
+footer{
+  text-align:center;margin-top:34px;font-family:'IBM Plex Mono',monospace;
+  font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);opacity:.6;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="logo">
+      <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="24" cy="24" r="22" fill="#c98a3a"/>
+        <path d="M14 32V16h14M14 24h10M14 16l16 16" stroke="#fffdf8" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="logo-text">Forbes English<span>Grammar Test</span></div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-label" id="progressLabel">Question 0 / 15</div>
+    </div>
+    <div class="score-pill" id="scorePill">Score: 0 / 15</div>
+  </div>
+
+  <!-- INTRO -->
+  <div class="intro" id="intro">
+    <h1>might vs. going to</h1>
+    <p class="sub">zwei Zukunftsformen — aber sehr unterschiedlich sicher</p>
+
+    <div class="structure-grid">
+      <div class="s-card s-might">
+        <h3>might</h3>
+        <div class="s-formula">subject <b>+ might (not) +</b> Grundform<br><span style="opacity:.55">kein "to", kein -s, keine Frageform hier</span></div>
+        <div class="s-de">It <b>might rain</b>. — Es könnte regnen.</div>
+        <div class="s-meaning">= vielleicht, 50/50, nicht sicher</div>
+      </div>
+      <div class="s-card s-going">
+        <h3>be going to</h3>
+        <div class="s-formula">subject <b>+ am/is/are (not) + going to +</b> Grundform<br><span style="opacity:.55">"going to" + Infinitiv ohne "to" danach!</span></div>
+        <div class="s-de">It <b>'s going to rain</b>. — Es wird regnen.</div>
+        <div class="s-meaning">= geplant, sicher, Beweis vorhanden</div>
+      </div>
+    </div>
+
+    <div class="intro-note">
+      <b>Der Trick:</b> Nach <b>might</b> kommt direkt die Grundform — <i>might go</i>, nicht <i>might to go</i>. Nach <b>going to</b> kommt auch die Grundform, nie ein zweites Verb mit -s oder -ed — <i>going to go</i>, nicht <i>going to goes</i>. Beide Strukturen enden also gleich (Grundform), aber alles davor ist unterschiedlich!
+    </div>
+
+    <button class="start-btn" id="startBtn">Start the test →</button>
+  </div>
+
+  <!-- QUESTIONS render here -->
+  <div id="quizArea"></div>
+
+  <!-- RESULTS -->
+  <div class="results" id="results">
+    <div class="score-label">Your result</div>
+    <div class="big-score" id="finalScore">0 / 15</div>
+    <h2 id="verdictText"></h2>
+    <p class="verdict-de" id="verdictDe"></p>
+    <button class="retry-btn" id="retryBtn">Try again</button>
+  </div>
+
+  <footer>Forbes English · might vs. going to</footer>
+</div>
+
+<script>
+// ---------- DATA ----------
+// type: "mcq" (4 options) — correctIndex refers to position in `options` BEFORE shuffle
+const QUESTIONS = [
+  {
+    type: "Choose the form",
+    en: 'I bought the tickets yesterday. We <span class="blank">___</span> the opera tonight.',
+    de: "Ich habe die Tickets gestern gekauft.",
+    options: ["might go to", "are going to go to", "might to go to", "going to go to"],
+    correct: 1,
+    feedbackEn: "<b>are going to go to</b> is correct — the tickets are already bought, so this is a fixed plan, not a guess.",
+    feedbackDe: "Die Tickets sind schon gekauft — das ist ein fester Plan, keine Vermutung."
+  },
+  {
+    type: "Choose the form",
+    en: 'There\'s a 50% chance of rain. We <span class="blank">___</span> the party outside.',
+    de: "Es gibt eine 50%ige Regenwahrscheinlichkeit.",
+    options: ["are going to have", "might to have", "might have", "having"],
+    correct: 2,
+    feedbackEn: "<b>might have</b> is correct — a 50% chance means it's not certain, so we use might, not going to.",
+    feedbackDe: "50% Wahrscheinlichkeit bedeutet Unsicherheit — deshalb might, nicht going to."
+  },
+  {
+    type: "Spot the structure",
+    en: 'Which sentence has correct grammar?',
+    de: "Welcher Satz ist grammatisch richtig?",
+    options: ["She might to call later.", "She mights call later.", "She might calls later.", "She might call later."],
+    correct: 3,
+    feedbackEn: "After <b>might</b>, always use the bare base form — no \"to\", no \"-s\", no \"-ed\".",
+    feedbackDe: "Nach might steht immer die Grundform — kein \"to\", kein \"-s\", kein \"-ed\"."
+  },
+  {
+    type: "Spot the structure",
+    en: 'Which sentence has correct grammar?',
+    de: "Welcher Satz ist grammatisch richtig?",
+    options: ["He's going to studies tonight.", "He's going to study tonight.", "He's going to studied tonight.", "He going to study tonight."],
+    correct: 1,
+    feedbackEn: "<b>be (am/is/are) + going to + base form</b> — the form of \"be\" must always be there, and the second verb stays in its base form.",
+    feedbackDe: "be (am/is/are) + going to + Grundform — \"be\" darf nie fehlen, und das zweite Verb bleibt in der Grundform."
+  },
+  {
+    type: "Negative form",
+    en: 'Jim doesn\'t eat meat, so I <span class="blank">___</span> cook steak for him.',
+    de: "Jim isst kein Fleisch.",
+    options: ["amn't going to", "'m not going to", "might not to", "don't going to"],
+    correct: 1,
+    feedbackEn: "<b>'m not going to</b> — this is a firm decision based on a known fact (he doesn't eat meat), so going to fits, not might.",
+    feedbackDe: "Eine feste Entscheidung aufgrund einer bekannten Tatsache — deshalb going to, nicht might."
+  },
+  {
+    type: "Negative form",
+    en: 'Mum hates loud music, so she <span class="blank">___</span> like this punk song.',
+    de: "Mama hasst laute Musik.",
+    options: ["isn't going to", "might not", "doesn't might", "not going to"],
+    correct: 1,
+    feedbackEn: "<b>might not</b> works here too — but note: \"isn't going to\" would also be grammatically possible. In this exercise we're focusing on the prediction sense, so <b>might not</b> (less certain, based on a guess about taste) is the target answer.",
+    feedbackDe: "Hier ist eine Vorhersage gemeint, keine 100% Garantie — deshalb might not."
+  },
+  {
+    type: "Choose the meaning",
+    en: 'Look at those black clouds — it <span class="blank">___</span> rain very soon!',
+    de: "Schau dir diese schwarzen Wolken an!",
+    options: ["might", "'s going to", "might not", "isn't going to"],
+    correct: 1,
+    feedbackEn: "<b>'s going to</b> — we use going to when there's visible evidence (black clouds) pointing to something certain.",
+    feedbackDe: "Sichtbare Anzeichen (schwarze Wolken) → going to, weil es fast sicher ist."
+  },
+  {
+    type: "Choose the meaning",
+    en: 'I\'m not sure what I want for dinner. I <span class="blank">___</span> make pasta, or I <span class="blank">___</span> just order pizza.',
+    de: "Ich bin mir nicht sicher, was ich zum Abendessen will.",
+    options: ["am going to / am going to", "might / might", "might / am going to", "going to / going to"],
+    correct: 1,
+    feedbackEn: "<b>might / might</b> — \"not sure\" is the key signal. Two undecided options means might both times.",
+    feedbackDe: "\"Nicht sicher\" ist das Signalwort — zwei offene Möglichkeiten bedeuten might in beiden Teilen."
+  },
+  {
+    type: "Word order",
+    en: 'Put in the correct order: <i>not / going / I&rsquo;m / help / to / you</i>',
+    de: "Bringe die Wörter in die richtige Reihenfolge.",
+    options: ["I'm going not to help you", "I'm not going to help you", "I'm going to not help you", "Not I'm going to help you"],
+    correct: 1,
+    feedbackEn: "<b>I'm not going to help you.</b> — \"not\" goes right after the form of \"be\", before \"going to\".",
+    feedbackDe: "\"not\" steht direkt nach der be-Form, vor \"going to\"."
+  },
+  {
+    type: "Word order",
+    en: 'Put in the correct order: <i>not / understand / might / I / the questions</i>',
+    de: "Bringe die Wörter in die richtige Reihenfolge.",
+    options: ["I not might understand the questions", "I might understand not the questions", "I might not understand the questions", "I don't might understand the questions"],
+    correct: 2,
+    feedbackEn: "<b>I might not understand the questions.</b> — \"might not\" stays together as one block, directly before the base verb.",
+    feedbackDe: "\"might not\" bleibt als ein Block zusammen, direkt vor der Grundform."
+  },
+  {
+    type: "Choose the form",
+    en: 'It\'s only one o\'clock, and the interview is at three. William <span class="blank">___</span> walk there — he has plenty of time, but he hasn\'t decided yet.',
+    de: "Es ist erst ein Uhr, und das Interview ist um drei.",
+    options: ["'s going to", "might", "is might", "going to"],
+    correct: 1,
+    feedbackEn: "<b>might</b> — \"hasn't decided yet\" is the giveaway: this is a possibility, not a fixed plan.",
+    feedbackDe: "\"Noch nicht entschieden\" ist der Hinweis — das ist eine Möglichkeit, kein fester Plan."
+  },
+  {
+    type: "Find the mistake",
+    en: 'Find the mistake: <i>"We might to go to the cinema tonight."</i>',
+    de: "Finde den Fehler im Satz.",
+    options: ["\"might\" should be \"might not\"", "\"to\" should be removed", "\"go\" should be \"goes\"", "\"cinema\" should be \"the cinema\""],
+    correct: 1,
+    feedbackEn: "<b>\"to\" should be removed</b> — might is never followed by \"to\". Correct: \"We might go to the cinema tonight.\"",
+    feedbackDe: "Nach might steht nie \"to\". Richtig: \"We might go to the cinema tonight.\""
+  },
+  {
+    type: "Find the mistake",
+    en: 'Find the mistake: <i>"They aren\'t going to plays tennis."</i>',
+    de: "Finde den Fehler im Satz.",
+    options: ["\"aren't\" should be \"don't\"", "\"going\" should be removed", "\"plays\" should be \"play\"", "\"tennis\" should be \"the tennis\""],
+    correct: 2,
+    feedbackEn: "<b>\"plays\" should be \"play\"</b> — after going to, the verb always stays in its base form, with no -s.",
+    feedbackDe: "Nach going to steht das Verb immer in der Grundform, ohne -s."
+  },
+  {
+    type: "Choose the meaning",
+    en: 'A weather app shows 90% chance of sun all week for your holiday. You can say: "We <span class="blank">___</span> have a great time!"',
+    de: "Eine Wetter-App zeigt 90% Sonnenwahrscheinlichkeit für die ganze Woche. Du kannst sagen:",
+    options: ["might", "'re going to", "might not", "aren't going to"],
+    correct: 1,
+    feedbackEn: "<b>'re going to</b> — 90% is strong evidence, close to certain, so going to fits better than might.",
+    feedbackDe: "90% ist ein starker Beweis, fast sicher — deshalb going to statt might."
+  },
+  {
+    type: "Choose the form",
+    en: 'I can\'t decide what to wear. I <span class="blank">___</span> wear the blue dress, or I <span class="blank">___</span> wear the red one.',
+    de: "Ich kann mich nicht entscheiden, was ich anziehen soll.",
+    options: ["might / might", "'m going to / 'm going to", "might / 'm going to", "going to / might"],
+    correct: 0,
+    feedbackEn: "<b>might / might</b> — \"can't decide\" signals two open possibilities, so might fits both gaps.",
+    feedbackDe: "\"Kann mich nicht entscheiden\" zeigt zwei offene Möglichkeiten — deshalb might in beiden Lücken."
+  }
+];
+
+// ---------- Fisher-Yates shuffle (for option order, applied at runtime, indices remapped) ----------
+function shuffle(array) {
+  const arr = array.slice();
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+let currentIndex = 0;
+let score = 0;
+let answered = [];
+let runtimeQuestions = []; // holds shuffled-option versions
+
+function prepareQuestions() {
+  runtimeQuestions = QUESTIONS.map(q => {
+    const indexed = q.options.map((text, i) => ({ text, isCorrect: i === q.correct }));
+    const shuffled = shuffle(indexed);
+    return {
+      ...q,
+      shuffledOptions: shuffled
+    };
+  });
+  answered = new Array(QUESTIONS.length).fill(false);
+}
+
+function renderQuiz() {
+  const quizArea = document.getElementById('quizArea');
+  quizArea.innerHTML = '';
+  runtimeQuestions.forEach((q, idx) => {
+    const card = document.createElement('div');
+    card.className = 'qcard';
+    card.id = 'q' + idx;
+
+    const letters = ['A', 'B', 'C', 'D'];
+    let optionsHtml = '';
+    q.shuffledOptions.forEach((opt, oi) => {
+      optionsHtml += `<div class="opt" data-idx="${oi}" data-qidx="${idx}">
+        <span class="opt-letter">${letters[oi]}</span>
+        <span>${opt.text}</span>
+      </div>`;
+    });
+
+    card.innerHTML = `
+      <div class="qmeta">
+        <span class="qnum">Question ${idx + 1} of ${QUESTIONS.length}</span>
+        <span class="qtype">${q.type}</span>
+      </div>
+      <div class="qtext">${q.en}</div>
+      <div class="qde">${q.de}</div>
+      <div class="options">${optionsHtml}</div>
+      <div class="feedback" id="fb${idx}"></div>
+      <button class="next-btn" id="next${idx}">Next question →</button>
+    `;
+    quizArea.appendChild(card);
+  });
+
+  // attach listeners
+  document.querySelectorAll('.opt').forEach(optEl => {
+    optEl.addEventListener('click', handleOptionClick);
+  });
+  runtimeQuestions.forEach((q, idx) => {
+    document.getElementById('next' + idx).addEventListener('click', () => goToQuestion(idx + 1));
+  });
+}
+
+function handleOptionClick(e) {
+  const optEl = e.currentTarget;
+  const qidx = parseInt(optEl.dataset.qidx);
+  if (answered[qidx]) return; // already answered, lock it
+
+  answered[qidx] = true;
+  const oi = parseInt(optEl.dataset.idx);
+  const q = runtimeQuestions[qidx];
+  const chosen = q.shuffledOptions[oi];
+
+  const allOpts = document.querySelectorAll(`.opt[data-qidx="${qidx}"]`);
+  allOpts.forEach(el => {
+    el.classList.add('disabled');
+    const elOi = parseInt(el.dataset.idx);
+    if (q.shuffledOptions[elOi].isCorrect) {
+      el.classList.add('correct');
+    } else if (elOi === oi) {
+      el.classList.add('incorrect');
+    }
+  });
+
+  const fb = document.getElementById('fb' + qidx);
+  if (chosen.isCorrect) {
+    score++;
+    fb.className = 'feedback show';
+    fb.innerHTML = `${q.feedbackEn}<span class="fb-de">${q.feedbackDe}</span>`;
+  } else {
+    fb.className = 'feedback show wrong';
+    fb.innerHTML = `${q.feedbackEn}<span class="fb-de">${q.feedbackDe}</span>`;
+  }
+
+  updateScorePill();
+  document.getElementById('next' + qidx).classList.add('enabled');
+}
+
+function updateScorePill() {
+  document.getElementById('scorePill').textContent = `Score: ${score} / ${QUESTIONS.length}`;
+}
+
+function updateProgress(idx) {
+  const pct = (idx / QUESTIONS.length) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `Question ${Math.min(idx + 1, QUESTIONS.length)} / ${QUESTIONS.length}`;
+}
+
+function goToQuestion(idx) {
+  document.querySelectorAll('.qcard').forEach(c => c.classList.remove('active'));
+  if (idx >= QUESTIONS.length) {
+    showResults();
+    return;
+  }
+  currentIndex = idx;
+  document.getElementById('q' + idx).classList.add('active');
+  updateProgress(idx);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showResults() {
+  document.getElementById('progressFill').style.width = '100%';
+  document.getElementById('progressLabel').textContent = `Question ${QUESTIONS.length} / ${QUESTIONS.length}`;
+  document.getElementById('results').classList.add('active');
+  document.getElementById('finalScore').textContent = `${score} / ${QUESTIONS.length}`;
+
+  let verdict, verdictDe;
+  const pct = score / QUESTIONS.length;
+  if (pct >= 0.87) {
+    verdict = "Excellent! You've got the structures down.";
+    verdictDe = "Ausgezeichnet! Du hast die Strukturen verstanden.";
+  } else if (pct >= 0.6) {
+    verdict = "Good work — review the tricky ones.";
+    verdictDe = "Gute Arbeit — schau dir die schwierigen Fälle noch einmal an.";
+  } else {
+    verdict = "Keep practising the two structures.";
+    verdictDe = "Übe die beiden Strukturen noch etwas weiter.";
+  }
+  document.getElementById('verdictText').textContent = verdict;
+  document.getElementById('verdictDe').textContent = verdictDe;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function resetQuiz() {
+  currentIndex = 0;
+  score = 0;
+  document.getElementById('results').classList.remove('active');
+  document.getElementById('intro').style.display = 'block';
+  document.getElementById('quizArea').innerHTML = '';
+  updateScorePill();
+  document.getElementById('progressFill').style.width = '0%';
+  document.getElementById('progressLabel').textContent = `Question 0 / ${QUESTIONS.length}`;
+}
+
+document.getElementById('startBtn').addEventListener('click', () => {
+  document.getElementById('intro').style.display = 'none';
+  prepareQuestions();
+  renderQuiz();
+  goToQuestion(0);
+});
+
+document.getElementById('retryBtn').addEventListener('click', resetQuiz);
+</script>
+</body>
+</html>

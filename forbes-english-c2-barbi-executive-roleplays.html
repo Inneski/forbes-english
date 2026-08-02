@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English — The COO Briefings — C2 Roleplay Dossiers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F3F4EE;
+    --card: #FFFFFF;
+    --ink: #1C2B27;
+    --pine: #14453B;
+    --pine-soft: #DDE7E1;
+    --berry: #C13A63;
+    --berry-soft: #F7E3EA;
+    --brass: #A9852F;
+    --line: #C9D2CB;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Newsreader", Georgia, serif;
+    font-size: 18px;
+    line-height: 1.6;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 28px 20px 80px; }
+
+  /* ---------- Masthead ---------- */
+  header.masthead {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; padding-bottom: 18px; border-bottom: 3px solid var(--pine);
+  }
+  .logo { display: flex; align-items: center; gap: 12px; }
+  .logo-text {
+    font-family: "Archivo", sans-serif; font-weight: 800;
+    font-size: 17px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--pine);
+  }
+  .logo-text span { color: var(--berry); }
+  .level-chip {
+    font-family: "IBM Plex Mono", monospace; font-size: 12px; font-weight: 600;
+    letter-spacing: 0.12em; color: var(--card); background: var(--berry);
+    padding: 6px 12px; border-radius: 999px; white-space: nowrap;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero { padding: 40px 0 8px; }
+  .eyebrow {
+    font-family: "IBM Plex Mono", monospace; font-size: 12px; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--berry); margin-bottom: 14px;
+  }
+  h1 {
+    font-family: "Archivo", sans-serif; font-weight: 800; text-transform: uppercase;
+    font-size: clamp(34px, 6vw, 58px); line-height: 1.02; letter-spacing: -0.01em; color: var(--pine);
+  }
+  h1 em { font-style: normal; color: var(--berry); }
+  .hero p.lede {
+    margin-top: 18px; font-size: 20px; max-width: 640px; font-weight: 500;
+  }
+  .hero p.lede strong { color: var(--pine); }
+
+  /* ---------- How to play ---------- */
+  .howto {
+    margin-top: 30px; background: var(--pine); color: #EAF2ED;
+    border-radius: 14px; padding: 24px 26px;
+  }
+  .howto h2 {
+    font-family: "Archivo", sans-serif; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; font-size: 15px; color: #F3F4EE; margin-bottom: 12px;
+  }
+  .howto ol { list-style: none; counter-reset: step; }
+  .howto li {
+    counter-increment: step; position: relative; padding-left: 40px; margin-bottom: 10px;
+  }
+  .howto li::before {
+    content: counter(step, decimal-leading-zero);
+    position: absolute; left: 0; top: 3px;
+    font-family: "IBM Plex Mono", monospace; font-size: 13px; font-weight: 600; color: var(--berry-soft);
+  }
+
+  /* ---------- Progress ---------- */
+  .progress-block { margin: 34px 0 10px; }
+  .progress-row {
+    display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px;
+  }
+  .progress-label {
+    font-family: "IBM Plex Mono", monospace; font-size: 12px; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--pine);
+  }
+  .progress-count { font-family: "IBM Plex Mono", monospace; font-size: 13px; color: var(--ink); }
+  .progress-track {
+    height: 10px; background: var(--pine-soft); border-radius: 999px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; width: 0%; background: var(--berry); border-radius: 999px;
+    transition: width 0.4s ease;
+  }
+
+  /* ---------- Dossier cards ---------- */
+  .dossier {
+    background: var(--card); border: 1.5px solid var(--line); border-radius: 14px;
+    margin-top: 30px; overflow: hidden; position: relative;
+  }
+  .dossier-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    background: var(--pine-soft); padding: 12px 22px; border-bottom: 1.5px solid var(--line);
+  }
+  .dossier-code {
+    font-family: "IBM Plex Mono", monospace; font-size: 12px; font-weight: 600;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--pine);
+  }
+  .dossier.played .dossier-head { background: var(--berry-soft); }
+  .stamp {
+    font-family: "Archivo", sans-serif; font-weight: 800; text-transform: uppercase;
+    font-size: 12px; letter-spacing: 0.14em; color: var(--berry);
+    border: 2px solid var(--berry); padding: 3px 10px; border-radius: 4px;
+    transform: rotate(-4deg); display: none;
+  }
+  .dossier.played .stamp { display: inline-block; }
+  .dossier-body { padding: 24px 24px 26px; }
+  .dossier h3 {
+    font-family: "Archivo", sans-serif; font-weight: 800; text-transform: uppercase;
+    font-size: clamp(21px, 3.4vw, 27px); line-height: 1.1; color: var(--pine); margin-bottom: 16px;
+  }
+  .field { margin-bottom: 14px; }
+  .field-label {
+    font-family: "IBM Plex Mono", monospace; font-size: 11px; font-weight: 600;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--brass); display: block; margin-bottom: 3px;
+  }
+  .field ul { margin-left: 20px; }
+  .field li { margin-bottom: 5px; }
+
+  /* ---------- Phrase chips ---------- */
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+  .chip {
+    font-family: "IBM Plex Mono", monospace; font-size: 13.5px; font-weight: 500;
+    color: var(--pine); background: var(--card); border: 1.5px solid var(--pine);
+    border-radius: 999px; padding: 7px 14px; cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .chip:hover { background: var(--pine-soft); }
+  .chip:focus-visible, .btn:focus-visible {
+    outline: 3px solid var(--berry); outline-offset: 2px;
+  }
+  .chip.open { background: var(--pine); color: #F3F4EE; }
+  .phrase-detail {
+    display: none; margin-top: 12px; background: var(--berry-soft);
+    border-left: 4px solid var(--berry); border-radius: 0 10px 10px 0; padding: 14px 16px;
+  }
+  .phrase-detail.show { display: block; }
+  .phrase-detail .pd-phrase {
+    font-family: "Archivo", sans-serif; font-weight: 700; font-size: 16px; color: var(--berry);
+    margin-bottom: 4px;
+  }
+  .phrase-detail .pd-meaning { margin-bottom: 6px; }
+  .phrase-detail .pd-example { font-style: italic; color: var(--pine); }
+
+  /* ---------- Twist + played buttons ---------- */
+  .dossier-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+  .btn {
+    font-family: "Archivo", sans-serif; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; font-size: 13px; border-radius: 999px; padding: 11px 20px;
+    cursor: pointer; border: 2px solid var(--pine); background: var(--card); color: var(--pine);
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .btn:hover { background: var(--pine-soft); }
+  .btn-berry { border-color: var(--berry); color: var(--berry); }
+  .btn-berry:hover { background: var(--berry-soft); }
+  .btn-berry:disabled { opacity: 0.45; cursor: default; }
+  .btn-berry:disabled:hover { background: var(--card); }
+  .dossier.played .btn-played { background: var(--berry); border-color: var(--berry); color: #FFF; }
+  .twist {
+    display: none; margin-top: 16px; background: var(--pine); color: #EAF2ED;
+    border-radius: 10px; padding: 16px 18px;
+  }
+  .twist.show { display: block; }
+  .twist .twist-label {
+    font-family: "IBM Plex Mono", monospace; font-size: 11px; font-weight: 600;
+    letter-spacing: 0.16em; text-transform: uppercase; color: #F0B9CB; display: block; margin-bottom: 5px;
+  }
+
+  /* ---------- Debrief + completion ---------- */
+  .debrief {
+    margin-top: 40px; background: var(--card); border: 1.5px solid var(--line);
+    border-radius: 14px; padding: 26px;
+  }
+  .debrief h2, .completion h2 {
+    font-family: "Archivo", sans-serif; font-weight: 800; text-transform: uppercase;
+    font-size: 21px; color: var(--pine); margin-bottom: 12px;
+  }
+  .debrief ul { margin-left: 20px; }
+  .debrief li { margin-bottom: 7px; }
+  .completion {
+    display: none; margin-top: 30px; background: var(--berry); color: #FFF;
+    border-radius: 14px; padding: 28px; text-align: center;
+  }
+  .completion.show { display: block; }
+  .completion h2 { color: #FFF; }
+  .completion p { max-width: 560px; margin: 0 auto; }
+
+  footer {
+    margin-top: 50px; padding-top: 18px; border-top: 1.5px solid var(--line);
+    font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: 0.08em;
+    color: var(--pine); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+
+  @media (max-width: 560px) {
+    .dossier-body { padding: 20px 16px 22px; }
+    .dossier-head { padding: 10px 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="logo">
+      <svg width="46" height="46" viewBox="0 0 46 46" role="img" aria-label="Forbes English logo">
+        <rect x="1.5" y="1.5" width="43" height="43" rx="10" fill="#14453B"/>
+        <text x="23" y="26" text-anchor="middle" dominant-baseline="middle"
+              font-family="Archivo, sans-serif" font-weight="800" font-size="19" fill="#F3F4EE">F<tspan fill="#C13A63">E</tspan></text>
+      </svg>
+      <div class="logo-text">Forbes <span>English</span></div>
+    </div>
+    <div class="level-chip">C2 &middot; SPEAKING</div>
+  </header>
+
+  <section class="hero">
+    <p class="eyebrow">Executive roleplay dossiers &middot; prepared for Barbi</p>
+    <h1>The COO <em>Briefings</em></h1>
+    <p class="lede">Six situations pulled straight from your world &mdash; escalations, intakes, partnerships, coaching, bad news, and the boardroom. Each dossier arms you with <strong>three advanced C2 phrases</strong>. Your mission: land them naturally, under pressure.</p>
+  </section>
+
+  <section class="howto">
+    <h2>How to run a dossier</h2>
+    <ol>
+      <li>Read the setting and your brief. Tap each target phrase to study it before you begin.</li>
+      <li>Your teacher plays the person across the table &mdash; and they will not make it easy.</li>
+      <li>Improvise the conversation. Work all three phrases in without them sounding forced.</li>
+      <li>Feeling confident? Press <strong>Raise the stakes</strong> mid-scene for a complication.</li>
+      <li>Debrief, then stamp the dossier <strong>Played</strong>.</li>
+    </ol>
+  </section>
+
+  <section class="progress-block">
+    <div class="progress-row">
+      <span class="progress-label">Dossiers played</span>
+      <span class="progress-count" id="progressCount">0 / 6</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  </section>
+
+  <!-- RP-01 -->
+  <article class="dossier" data-id="rp1">
+    <div class="dossier-head">
+      <span class="dossier-code">RP-01 &middot; Client Operations</span>
+      <span class="stamp">Played</span>
+    </div>
+    <div class="dossier-body">
+      <h3>The Friday Escalation Call</h3>
+      <div class="field">
+        <span class="field-label">Setting</span>
+        A 30-minute emergency video call, late on a Friday. The VP of Engineering at a US healthtech scale-up is furious: your engineering pod missed a critical release, and he is openly questioning whether the partnership is worth it.
+      </div>
+      <div class="field">
+        <span class="field-label">Across the table (your teacher plays)</span>
+        The VP &mdash; frustrated, interrupting, and looking for someone to blame.
+      </div>
+      <div class="field">
+        <span class="field-label">Your brief</span>
+        <ul>
+          <li>Let him vent, then take ownership without throwing your engineers under the bus.</li>
+          <li>Present a concrete recovery plan with dates and named owners.</li>
+          <li>Close the issue firmly so it does not poison the next quarter.</li>
+        </ul>
+      </div>
+      <div class="field">
+        <span class="field-label">Target phrases &mdash; tap to study</span>
+        <div class="chips">
+          <button class="chip" type="button" data-phrase="p1">to smooth ruffled feathers</button>
+          <button class="chip" type="button" data-phrase="p2">to fall on your sword</button>
+          <button class="chip" type="button" data-phrase="p3">to draw a line under something</button>
+        </div>
+        <div class="phrase-detail" data-detail="p1">
+          <div class="pd-phrase">to smooth ruffled feathers</div>
+          <div class="pd-meaning">To calm someone who has been annoyed or offended, and repair the relationship.</div>
+          <div class="pd-example">"Before we talk process, let me spend a minute smoothing ruffled feathers &mdash; your team had every right to be frustrated on Tuesday."</div>
+        </div>
+        <div class="phrase-detail" data-detail="p2">
+          <div class="pd-phrase">to fall on your sword</div>
+          <div class="pd-meaning">To take full personal responsibility for a failure, especially to protect your team.</div>
+          <div class="pd-example">"I am happy to fall on my sword here &mdash; the staffing decision on that sprint was mine, not the engineers'."</div>
+        </div>
+        <div class="phrase-detail" data-detail="p3">
+          <div class="pd-phrase">to draw a line under something</div>
+          <div class="pd-meaning">To declare a difficult matter finished so that everyone can move forward.</div>
+          <div class="pd-example">"Once the recovery plan ships next Friday, I would like us to draw a line under this and refocus on the roadmap."</div>
+        </div>
+      </div>
+      <div class="twist">
+        <span class="twist-label">Complication</span>
+        Mid-call, the VP mentions &mdash; almost casually &mdash; that he has already requested quotes from a rival LATAM staffing firm. React without panicking, and without matching a price you have not seen.
+      </div>
+      <div class="dossier-actions">
+        <button class="btn btn-berry btn-twist" type="button">Raise the stakes</button>
+        <button class="btn btn-played" type="button">Mark as played</button>
+      </div>
+    </div>
+  </article>
+
+  <!-- RP-02 -->
+  <article class="dossier" data-id="rp2">
+    <div class="dossier-head">
+      <span class="dossier-code">RP-02 &middot; Recruiting</span>
+      <span class="stamp">Played</span>
+    </div>
+    <div class="dossier-body">
+      <h3>The Impossible Intake</h3>
+      <div class="field">
+        <span class="field-label">Setting</span>
+        An intake meeting with the CTO of a fintech startup, a brand-new client. She wants a full-stack engineer who is also an ML specialist, a DevOps expert and a team lead &mdash; at mid-level rates, hired within two weeks.
+      </div>
+      <div class="field">
+        <span class="field-label">Across the table (your teacher plays)</span>
+        The CTO &mdash; brilliant, impatient, and convinced this person exists.
+      </div>
+      <div class="field">
+        <span class="field-label">Your brief</span>
+        <ul>
+          <li>Take her requirements seriously &mdash; then reshape them into a search your team can actually win.</li>
+          <li>Persuade her to split the role or adjust the compensation band.</li>
+          <li>Leave the meeting with her trust intact and a realistic timeline agreed.</li>
+        </ul>
+      </div>
+      <div class="field">
+        <span class="field-label">Target phrases &mdash; tap to study</span>
+        <div class="chips">
+          <button class="chip" type="button" data-phrase="p4">to square the circle</button>
+          <button class="chip" type="button" data-phrase="p5">to rein in</button>
+          <button class="chip" type="button" data-phrase="p6">to bring someone round</button>
+        </div>
+        <div class="phrase-detail" data-detail="p4">
+          <div class="pd-phrase">to square the circle</div>
+          <div class="pd-meaning">To attempt something that seems impossible because it involves two contradictory demands.</div>
+          <div class="pd-example">"Senior ML expertise at mid-level rates in two weeks &mdash; honestly, that is asking us to square the circle. Let me show you two ways to make this solvable."</div>
+        </div>
+        <div class="phrase-detail" data-detail="p5">
+          <div class="pd-phrase">to rein in</div>
+          <div class="pd-meaning">To bring something ambitious or excessive under control; to limit it.</div>
+          <div class="pd-example">"If we rein in the must-have list to four core skills, the candidate pool goes from three people in all of LATAM to about two hundred."</div>
+        </div>
+        <div class="phrase-detail" data-detail="p6">
+          <div class="pd-phrase">to bring someone round</div>
+          <div class="pd-meaning">To gradually persuade someone to accept your point of view.</div>
+          <div class="pd-example">"Her first reaction was a hard no, but by the end of the call I had brought her round to a two-hire structure."</div>
+        </div>
+      </div>
+      <div class="twist">
+        <span class="twist-label">Complication</span>
+        She tells you a competitor has promised her a shortlist in five days. Do you match the promise, challenge it, or reframe what a good shortlist looks like?
+      </div>
+      <div class="dossier-actions">
+        <button class="btn btn-berry btn-twist" type="button">Raise the stakes</button>
+        <button class="btn btn-played" type="button">Mark as played</button>
+      </div>
+    </div>
+  </article>
+
+  <!-- RP-03 -->
+  <article class="dossier" data-id="rp3">
+    <div class="dossier-head">
+      <span class="dossier-code">RP-03 &middot; Partnerships</span>
+      <span class="stamp">Played</span>
+    </div>
+    <div class="dossier-body">
+      <h3>The Partnership Dinner</h3>
+      <div class="field">
+        <span class="field-label">Setting</span>
+        Dinner at a conference with the founder of a fast-growing payroll and EOR platform for Latin America. He is proposing a referral partnership: his clients need engineers, your clients need payroll. On paper, a perfect fit.
+      </div>
+      <div class="field">
+        <span class="field-label">Across the table (your teacher plays)</span>
+        The founder &mdash; charming, generous with the wine, and moving faster than you would like.
+      </div>
+      <div class="field">
+        <span class="field-label">Your brief</span>
+        <ul>
+          <li>State clearly what South Geeks brings and what you expect in return.</li>
+          <li>Explore the opportunity warmly &mdash; but commit to nothing tonight.</li>
+          <li>Protect your margins and your existing partner relationships.</li>
+        </ul>
+      </div>
+      <div class="field">
+        <span class="field-label">Target phrases &mdash; tap to study</span>
+        <div class="chips">
+          <button class="chip" type="button" data-phrase="p7">to set out your stall</button>
+          <button class="chip" type="button" data-phrase="p8">to overplay your hand</button>
+          <button class="chip" type="button" data-phrase="p9">to steal a march on</button>
+        </div>
+        <div class="phrase-detail" data-detail="p7">
+          <div class="pd-phrase">to set out your stall</div>
+          <div class="pd-meaning">To present your position, strengths and intentions clearly and confidently.</div>
+          <div class="pd-example">"Let me set out our stall: we place elite engineering talent, we do it fast, and we only partner where the incentives point the same way."</div>
+        </div>
+        <div class="phrase-detail" data-detail="p8">
+          <div class="pd-phrase">to overplay your hand</div>
+          <div class="pd-meaning">To push an advantage too far and end up weakening your own position.</div>
+          <div class="pd-example">"I love the ambition, but if we demand exclusivity from day one we risk overplaying our hand with partners we both need."</div>
+        </div>
+        <div class="phrase-detail" data-detail="p9">
+          <div class="pd-phrase">to steal a march on</div>
+          <div class="pd-meaning">To gain an advantage over rivals by acting before they do.</div>
+          <div class="pd-example">"Done well, this alliance lets both of us steal a march on the bigger players before they even notice the gap."</div>
+        </div>
+      </div>
+      <div class="twist">
+        <span class="twist-label">Complication</span>
+        Over dessert, he asks for exclusivity &mdash; tonight, with a handshake. Decline gracefully without cooling the relationship.
+      </div>
+      <div class="dossier-actions">
+        <button class="btn btn-berry btn-twist" type="button">Raise the stakes</button>
+        <button class="btn btn-played" type="button">Mark as played</button>
+      </div>
+    </div>
+  </article>
+
+  <!-- RP-04 -->
+  <article class="dossier" data-id="rp4">
+    <div class="dossier-head">
+      <span class="dossier-code">RP-04 &middot; People Ops</span>
+      <span class="stamp">Played</span>
+    </div>
+    <div class="dossier-body">
+      <h3>The Coaching Conversation</h3>
+      <div class="field">
+        <span class="field-label">Setting</span>
+        A one-to-one with a recruiting manager who has been with the company for years. She is openly resisting the new AI sourcing tools, her team is following her lead, and their pipeline metrics are slipping.
+      </div>
+      <div class="field">
+        <span class="field-label">Across the table (your teacher plays)</span>
+        The manager &mdash; proud of her track record, defensive, and quietly worried.
+      </div>
+      <div class="field">
+        <span class="field-label">Your brief</span>
+        <ul>
+          <li>Name the problem plainly &mdash; no hiding behind small talk.</li>
+          <li>Honour her experience genuinely, not with hollow compliments.</li>
+          <li>Get her to champion the tools with her team, and agree concrete next steps.</li>
+        </ul>
+      </div>
+      <div class="field">
+        <span class="field-label">Target phrases &mdash; tap to study</span>
+        <div class="chips">
+          <button class="chip" type="button" data-phrase="p10">to grasp the nettle</button>
+          <button class="chip" type="button" data-phrase="p11">to dig your heels in</button>
+          <button class="chip" type="button" data-phrase="p12">to win hearts and minds</button>
+        </div>
+        <div class="phrase-detail" data-detail="p10">
+          <div class="pd-phrase">to grasp the nettle</div>
+          <div class="pd-meaning">To tackle an unpleasant problem directly and bravely instead of avoiding it.</div>
+          <div class="pd-example">"I would rather grasp the nettle now than watch your team's numbers slide for another quarter &mdash; so let's talk about what is really going on."</div>
+        </div>
+        <div class="phrase-detail" data-detail="p11">
+          <div class="pd-phrase">to dig your heels in</div>
+          <div class="pd-meaning">To refuse stubbornly to change your position or behaviour.</div>
+          <div class="pd-example">"From where I sit, it looks like the team has dug its heels in on the new tools &mdash; help me understand what is driving that."</div>
+        </div>
+        <div class="phrase-detail" data-detail="p12">
+          <div class="pd-phrase">to win hearts and minds</div>
+          <div class="pd-meaning">To persuade people to support something willingly, emotionally as well as rationally.</div>
+          <div class="pd-example">"I do not need compliance from your team &mdash; I need you to win hearts and minds, because you are the one they trust."</div>
+        </div>
+      </div>
+      <div class="twist">
+        <span class="twist-label">Complication</span>
+        Her voice cracks: "Be honest with me, Barbi &mdash; these tools are here to replace people like me, aren't they?" Answer truthfully, warmly, and without making promises you cannot keep.
+      </div>
+      <div class="dossier-actions">
+        <button class="btn btn-berry btn-twist" type="button">Raise the stakes</button>
+        <button class="btn btn-played" type="button">Mark as played</button>
+      </div>
+    </div>
+  </article>
+
+  <!-- RP-05 -->
+  <article class="dossier" data-id="rp5">
+    <div class="dossier-head">
+      <span class="dossier-code">RP-05 &middot; Delivery</span>
+      <span class="stamp">Played</span>
+    </div>
+    <div class="dossier-body">
+      <h3>Losing the Finalist</h3>
+      <div class="field">
+        <span class="field-label">Setting</span>
+        A call you have been dreading. After a six-week interview process, the client's favourite candidate has just accepted a faster offer elsewhere. You have to break the news &mdash; and the slow process was the client's own doing.
+      </div>
+      <div class="field">
+        <span class="field-label">Across the table (your teacher plays)</span>
+        The hiring manager &mdash; disappointed, and looking for somewhere to put the blame.
+      </div>
+      <div class="field">
+        <span class="field-label">Your brief</span>
+        <ul>
+          <li>Deliver the news cleanly &mdash; no burying it in pleasantries.</li>
+          <li>Soften the blow without disguising the cause.</li>
+          <li>Push firmly for a two-week process commitment on the next search.</li>
+        </ul>
+      </div>
+      <div class="field">
+        <span class="field-label">Target phrases &mdash; tap to study</span>
+        <div class="chips">
+          <button class="chip" type="button" data-phrase="p13">to take the sting out of</button>
+          <button class="chip" type="button" data-phrase="p14">to be on the back foot</button>
+          <button class="chip" type="button" data-phrase="p15">to hold someone's feet to the fire</button>
+        </div>
+        <div class="phrase-detail" data-detail="p13">
+          <div class="pd-phrase">to take the sting out of</div>
+          <div class="pd-meaning">To make something painful or disappointing easier to accept.</div>
+          <div class="pd-example">"Nothing takes the sting out of losing him entirely, but I have two strong candidates who can be in final rounds by Thursday."</div>
+        </div>
+        <div class="phrase-detail" data-detail="p14">
+          <div class="pd-phrase">to be on the back foot</div>
+          <div class="pd-meaning">To be in a defensive or disadvantaged position.</div>
+          <div class="pd-example">"With a six-week process in this market, we were on the back foot from the second interview onwards."</div>
+        </div>
+        <div class="phrase-detail" data-detail="p15">
+          <div class="pd-phrase">to hold someone's feet to the fire</div>
+          <div class="pd-meaning">To put pressure on someone to honour a commitment or take responsibility.</div>
+          <div class="pd-example">"On the next search I will hold your team's feet to the fire on the timeline &mdash; and you should hold mine on candidate quality."</div>
+        </div>
+      </div>
+      <div class="twist">
+        <span class="twist-label">Complication</span>
+        The hiring manager snaps back: "Your team should have kept him warm. This is on South Geeks." Push back with facts, not apology &mdash; and keep the relationship.
+      </div>
+      <div class="dossier-actions">
+        <button class="btn btn-berry btn-twist" type="button">Raise the stakes</button>
+        <button class="btn btn-played" type="button">Mark as played</button>
+      </div>
+    </div>
+  </article>
+
+  <!-- RP-06 -->
+  <article class="dossier" data-id="rp6">
+    <div class="dossier-head">
+      <span class="dossier-code">RP-06 &middot; Leadership</span>
+      <span class="stamp">Played</span>
+    </div>
+    <div class="dossier-body">
+      <h3>The Quarterly Review</h3>
+      <div class="field">
+        <span class="field-label">Setting</span>
+        The quarterly leadership meeting. You are presenting operations results &mdash; including one weak number &mdash; and proposing a significant investment in AI tooling. The mood in the room is cost-cutting.
+      </div>
+      <div class="field">
+        <span class="field-label">Across the table (your teacher plays)</span>
+        The founders and a sceptical head of finance who would rather delay everything.
+      </div>
+      <div class="field">
+        <span class="field-label">Your brief</span>
+        <ul>
+          <li>Present the weak number honestly &mdash; cosmetic spin will cost you credibility.</li>
+          <li>Commit publicly and personally to the AI investment.</li>
+          <li>Refuse to let the decision be postponed into vagueness.</li>
+        </ul>
+      </div>
+      <div class="field">
+        <span class="field-label">Target phrases &mdash; tap to study</span>
+        <div class="chips">
+          <button class="chip" type="button" data-phrase="p16">to nail your colours to the mast</button>
+          <button class="chip" type="button" data-phrase="p17">to kick something into the long grass</button>
+          <button class="chip" type="button" data-phrase="p18">to paper over the cracks</button>
+        </div>
+        <div class="phrase-detail" data-detail="p16">
+          <div class="pd-phrase">to nail your colours to the mast</div>
+          <div class="pd-meaning">To declare your position openly and commit to it, whatever the consequences.</div>
+          <div class="pd-example">"I will nail my colours to the mast: I believe this tooling pays for itself within three quarters, and I am willing to be measured on it."</div>
+        </div>
+        <div class="phrase-detail" data-detail="p17">
+          <div class="pd-phrase">to kick something into the long grass</div>
+          <div class="pd-meaning">To postpone a decision indefinitely in the hope it will be forgotten.</div>
+          <div class="pd-example">"If we kick this into the long grass for two more quarters, our competitors will make the decision for us."</div>
+        </div>
+        <div class="phrase-detail" data-detail="p18">
+          <div class="pd-phrase">to paper over the cracks</div>
+          <div class="pd-meaning">To hide problems superficially instead of fixing them.</div>
+          <div class="pd-example">"I could paper over the cracks in the delivery numbers, but you hired me to tell you the truth &mdash; so here it is."</div>
+        </div>
+      </div>
+      <div class="twist">
+        <span class="twist-label">Complication</span>
+        The head of finance proposes freezing all new spend for two quarters &mdash; "including this AI experiment." The room goes quiet and everyone looks at you.
+      </div>
+      <div class="dossier-actions">
+        <button class="btn btn-berry btn-twist" type="button">Raise the stakes</button>
+        <button class="btn btn-played" type="button">Mark as played</button>
+      </div>
+    </div>
+  </article>
+
+  <section class="completion" id="completionBanner">
+    <h2>All six dossiers played</h2>
+    <p>Eighteen C2 phrases, six rooms survived. Final challenge: retell your toughest scene in 90 seconds &mdash; and use at least five phrases from other dossiers while you do it.</p>
+  </section>
+
+  <section class="debrief">
+    <h2>Debrief questions for after each scene</h2>
+    <ul>
+      <li>Which phrase felt natural &mdash; and which one did you have to force?</li>
+      <li>What would you say differently if the conversation were in front of your own team?</li>
+      <li>Where did you soften your message more than you needed to?</li>
+      <li>Replay the hardest 30 seconds of the scene &mdash; but this time, say less.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <span>FORBES ENGLISH &middot; C2 SPEAKING</span>
+    <span>DOSSIER SERIES &middot; 01</span>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var TOTAL = 6;
+
+  // Phrase chips: toggle one detail open per dossier
+  var chips = document.querySelectorAll(".chip");
+  Array.prototype.forEach.call(chips, function (chip) {
+    chip.addEventListener("click", function () {
+      var dossier = chip.closest(".dossier");
+      var id = chip.getAttribute("data-phrase");
+      var detail = dossier.querySelector('[data-detail="' + id + '"]');
+      var wasOpen = detail.classList.contains("show");
+
+      var openDetails = dossier.querySelectorAll(".phrase-detail.show");
+      Array.prototype.forEach.call(openDetails, function (d) { d.classList.remove("show"); });
+      var openChips = dossier.querySelectorAll(".chip.open");
+      Array.prototype.forEach.call(openChips, function (c) { c.classList.remove("open"); });
+
+      if (!wasOpen) {
+        detail.classList.add("show");
+        chip.classList.add("open");
+      }
+    });
+  });
+
+  // Raise the stakes: reveal twist once
+  var twistButtons = document.querySelectorAll(".btn-twist");
+  Array.prototype.forEach.call(twistButtons, function (btn) {
+    btn.addEventListener("click", function () {
+      var dossier = btn.closest(".dossier");
+      dossier.querySelector(".twist").classList.add("show");
+      btn.disabled = true;
+      btn.textContent = "Stakes raised";
+    });
+  });
+
+  // Mark as played: toggle + progress
+  function updateProgress() {
+    var played = document.querySelectorAll(".dossier.played").length;
+    document.getElementById("progressCount").textContent = played + " / " + TOTAL;
+    document.getElementById("progressFill").style.width = (played / TOTAL * 100) + "%";
+    var banner = document.getElementById("completionBanner");
+    if (played === TOTAL) {
+      banner.classList.add("show");
+    } else {
+      banner.classList.remove("show");
+    }
+  }
+
+  var playedButtons = document.querySelectorAll(".btn-played");
+  Array.prototype.forEach.call(playedButtons, function (btn) {
+    btn.addEventListener("click", function () {
+      var dossier = btn.closest(".dossier");
+      var nowPlayed = dossier.classList.toggle("played");
+      btn.textContent = nowPlayed ? "Played" : "Mark as played";
+      updateProgress();
+    });
+  });
+
+  updateProgress();
+})();
+</script>
+</body>
+</html>

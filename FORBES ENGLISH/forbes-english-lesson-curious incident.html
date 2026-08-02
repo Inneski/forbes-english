@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – Conditionals Lesson</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --terra: #C05C3A;
+    --terra-light: #D97B57;
+    --terra-dark: #8E3D22;
+    --cream: #F5EFE4;
+    --cream-dark: #EDE4D4;
+    --charcoal: #2A2520;
+    --charcoal-mid: #4A3F38;
+    --warm-grey: #9A8E85;
+    --white: #FDFAF6;
+    --correct: #3D7A5E;
+    --wrong: #B0392A;
+    --correct-bg: #EAF5EF;
+    --wrong-bg: #FCECEA;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: var(--cream);
+    color: var(--charcoal);
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 80% 10%, rgba(192,92,58,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 10% 90%, rgba(192,92,58,0.06) 0%, transparent 45%);
+  }
+
+  /* ── HEADER ── */
+  header {
+    background-color: var(--charcoal);
+    padding: 28px 40px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 20px rgba(42,37,32,0.25);
+  }
+
+  .logo-svg { height: 52px; width: auto; }
+
+  .score-badge {
+    background: var(--terra);
+    color: var(--white);
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+  .score-badge span { opacity: 0.75; font-weight: 300; }
+
+  /* ── MAIN ── */
+  main {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* ── LESSON INTRO ── */
+  .lesson-intro {
+    margin-bottom: 44px;
+    animation: fadeUp 0.6s ease both;
+  }
+  .lesson-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terra);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .lesson-intro h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.1rem;
+    color: var(--charcoal);
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .lesson-intro p {
+    color: var(--charcoal-mid);
+    font-size: 0.95rem;
+    line-height: 1.65;
+    max-width: 580px;
+  }
+  .level-pill {
+    display: inline-block;
+    border: 1.5px solid var(--terra);
+    color: var(--terra);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-weight: 600;
+    margin-left: 10px;
+    vertical-align: middle;
+  }
+
+  /* ── ACTIVITY CARD ── */
+  .activity-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 36px 40px;
+    margin-bottom: 32px;
+    box-shadow: 0 4px 24px rgba(42,37,32,0.07);
+    animation: fadeUp 0.5s ease both;
+    display: none;
+  }
+  .activity-card.active { display: block; }
+
+  .activity-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    gap: 16px;
+  }
+  .activity-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.35rem;
+    color: var(--charcoal);
+  }
+  .activity-subtitle {
+    font-size: 0.83rem;
+    color: var(--warm-grey);
+    margin-top: 4px;
+    font-style: italic;
+  }
+  .progress-pill {
+    flex-shrink: 0;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--charcoal-mid);
+    background: var(--cream-dark);
+    padding: 6px 14px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-bar-track {
+    height: 4px;
+    background: var(--cream-dark);
+    border-radius: 4px;
+    margin-bottom: 28px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--terra);
+    border-radius: 4px;
+    transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* ── QUESTION ── */
+  .question-block { animation: fadeUp 0.35s ease both; }
+  .question-text {
+    font-size: 1.02rem;
+    line-height: 1.65;
+    color: var(--charcoal);
+    margin-bottom: 8px;
+  }
+  .question-excerpt {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 0.93rem;
+    color: var(--charcoal-mid);
+    background: var(--cream);
+    border-left: 3px solid var(--terra-light);
+    padding: 10px 16px;
+    border-radius: 0 6px 6px 0;
+    margin: 12px 0 20px;
+    line-height: 1.7;
+  }
+
+  /* ── MC OPTIONS ── */
+  .mc-options { display: grid; gap: 10px; margin-bottom: 20px; }
+  .mc-btn {
+    width: 100%;
+    text-align: left;
+    padding: 13px 18px;
+    border: 2px solid var(--cream-dark);
+    border-radius: 10px;
+    background: var(--white);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.93rem;
+    color: var(--charcoal);
+    transition: border-color 0.18s, background 0.18s, transform 0.12s;
+    line-height: 1.45;
+  }
+  .mc-btn:hover:not(:disabled) {
+    border-color: var(--terra-light);
+    background: var(--cream);
+    transform: translateX(3px);
+  }
+  .mc-btn.selected { border-color: var(--terra); background: rgba(192,92,58,0.06); }
+  .mc-btn.correct { border-color: var(--correct); background: var(--correct-bg); color: var(--correct); }
+  .mc-btn.wrong { border-color: var(--wrong); background: var(--wrong-bg); color: var(--wrong); }
+  .mc-btn:disabled { cursor: default; }
+  .mc-option-letter {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    background: var(--cream-dark);
+    border-radius: 50%;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-align: center;
+    line-height: 22px;
+    margin-right: 10px;
+    flex-shrink: 0;
+    transition: background 0.18s;
+  }
+  .mc-btn.correct .mc-option-letter { background: var(--correct); color: white; }
+  .mc-btn.wrong .mc-option-letter { background: var(--wrong); color: white; }
+  .mc-btn.selected .mc-option-letter { background: var(--terra); color: white; }
+
+  /* ── FILL IN THE BLANK ── */
+  .fitb-sentence {
+    font-size: 1rem;
+    line-height: 2;
+    color: var(--charcoal);
+    margin-bottom: 18px;
+  }
+  .fitb-input {
+    border: none;
+    border-bottom: 2.5px solid var(--terra-light);
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    color: var(--charcoal);
+    padding: 2px 6px;
+    width: 160px;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .fitb-input:focus { border-color: var(--terra); }
+  .fitb-input.correct-input { border-color: var(--correct); color: var(--correct); }
+  .fitb-input.wrong-input { border-color: var(--wrong); color: var(--wrong); }
+  .fitb-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  .fitb-chip {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1.5px solid var(--cream-dark);
+    background: var(--cream);
+    font-size: 0.87rem;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+    color: var(--charcoal-mid);
+    font-style: italic;
+  }
+  .fitb-chip:hover { border-color: var(--terra-light); color: var(--terra); background: var(--white); }
+  .fitb-chip.used { opacity: 0.35; pointer-events: none; }
+
+  /* ── MATCHING ── */
+  .matching-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .match-col { display: flex; flex-direction: column; gap: 8px; }
+  .match-item {
+    padding: 11px 15px;
+    border-radius: 8px;
+    border: 2px solid var(--cream-dark);
+    background: var(--white);
+    font-size: 0.88rem;
+    color: var(--charcoal);
+    cursor: pointer;
+    transition: all 0.18s;
+    line-height: 1.4;
+    min-height: 54px;
+    display: flex;
+    align-items: center;
+  }
+  .match-item:hover:not(.matched):not(.wrong-match) { border-color: var(--terra-light); }
+  .match-item.selected-left { border-color: var(--terra); background: rgba(192,92,58,0.07); }
+  .match-item.matched { border-color: var(--correct); background: var(--correct-bg); color: var(--correct); }
+  .match-item.wrong-match { border-color: var(--wrong); background: var(--wrong-bg); animation: shake 0.4s; }
+
+  /* ── FEEDBACK ── */
+  .feedback-box {
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 18px;
+    display: none;
+  }
+  .feedback-box.show { display: block; animation: fadeUp 0.3s ease; }
+  .feedback-box.correct-fb { background: var(--correct-bg); color: #2D5E46; border: 1.5px solid #A8D5BC; }
+  .feedback-box.wrong-fb { background: var(--wrong-bg); color: #7A2218; border: 1.5px solid #F0B5AF; }
+  .feedback-label { font-weight: 700; margin-bottom: 4px; font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  /* ── BUTTONS ── */
+  .btn-row { display: flex; gap: 12px; align-items: center; justify-content: flex-end; }
+  .btn-submit, .btn-next, .btn-check {
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.18s;
+    letter-spacing: 0.04em;
+  }
+  .btn-submit {
+    background: var(--terra);
+    color: white;
+  }
+  .btn-submit:hover { background: var(--terra-dark); transform: translateY(-1px); }
+  .btn-submit:disabled { opacity: 0.4; cursor: default; transform: none; }
+  .btn-next {
+    background: var(--charcoal);
+    color: white;
+    display: none;
+  }
+  .btn-next:hover { background: var(--charcoal-mid); transform: translateY(-1px); }
+  .btn-next.show { display: block; }
+  .btn-check {
+    background: transparent;
+    color: var(--terra);
+    border: 1.5px solid var(--terra);
+  }
+  .btn-check:hover { background: rgba(192,92,58,0.07); }
+
+  /* ── FINAL SCREEN ── */
+  #final-screen {
+    display: none;
+    background: var(--white);
+    border-radius: 20px;
+    padding: 52px 44px;
+    text-align: center;
+    box-shadow: 0 4px 32px rgba(42,37,32,0.09);
+    animation: fadeUp 0.6s ease both;
+  }
+  #final-screen.show { display: block; }
+  .final-icon { font-size: 3rem; margin-bottom: 16px; }
+  .final-score-number {
+    font-family: 'DM Serif Display', serif;
+    font-size: 3.5rem;
+    color: var(--terra);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .final-score-label {
+    font-size: 0.85rem;
+    color: var(--warm-grey);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .final-message {
+    font-size: 1.05rem;
+    color: var(--charcoal-mid);
+    line-height: 1.65;
+    max-width: 440px;
+    margin: 0 auto 32px;
+  }
+  .btn-restart {
+    background: var(--terra);
+    color: white;
+    padding: 14px 36px;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.18s;
+    letter-spacing: 0.04em;
+  }
+  .btn-restart:hover { background: var(--terra-dark); transform: translateY(-2px); }
+
+  /* ── REORDER ── */
+  .reorder-words {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+    min-height: 44px;
+    padding: 8px;
+    border: 2px dashed var(--cream-dark);
+    border-radius: 8px;
+    background: var(--cream);
+    align-items: center;
+  }
+  .reorder-words.answer-zone {
+    background: var(--white);
+    border-color: var(--terra-light);
+    min-height: 52px;
+  }
+  .word-chip {
+    padding: 7px 13px;
+    background: var(--white);
+    border: 1.5px solid var(--cream-dark);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: grab;
+    user-select: none;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--charcoal);
+    transition: all 0.15s;
+    box-shadow: 0 1px 4px rgba(42,37,32,0.07);
+  }
+  .word-chip:hover { border-color: var(--terra-light); transform: translateY(-1px); }
+  .word-chip.dragging { opacity: 0.4; }
+  .zone-label {
+    font-size: 0.75rem;
+    color: var(--warm-grey);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+
+  /* ── ACTIVITY NAV TABS ── */
+  .activity-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 28px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--cream-dark);
+    padding: 4px;
+  }
+  .act-tab {
+    flex: 1;
+    padding: 9px 6px;
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--warm-grey);
+    letter-spacing: 0.06em;
+    border-radius: 7px;
+    transition: all 0.2s;
+    cursor: default;
+    text-transform: uppercase;
+  }
+  .act-tab.done { color: var(--correct); }
+  .act-tab.current { background: var(--white); color: var(--terra); box-shadow: 0 1px 6px rgba(42,37,32,0.1); }
+
+  @media (max-width: 600px) {
+    header { padding: 18px 20px; }
+    main { padding: 24px 16px 60px; }
+    .activity-card { padding: 24px 20px; }
+    .matching-grid { grid-template-columns: 1fr; }
+    .lesson-intro h1 { font-size: 1.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <!-- Forbes English Logo SVG – terracotta/cream on charcoal -->
+  <svg class="logo-svg" viewBox="0 0 200 56" xmlns="http://www.w3.org/2000/svg">
+    <text x="0" y="28" font-family="'Playfair Display', Georgia, serif" font-size="28" font-weight="700" fill="#F5EFE4" letter-spacing="1">Forbes</text>
+    <rect x="0" y="33" width="200" height="1.5" fill="#C05C3A" opacity="0.8"/>
+    <text x="1" y="52" font-family="'DM Sans', Arial, sans-serif" font-size="14" font-weight="700" fill="#C05C3A" letter-spacing="7.5">ENGLISH</text>
+  </svg>
+
+  <div class="score-badge">
+    <span>Score</span>
+    <strong id="score-display">0 / 0</strong>
+  </div>
+</header>
+
+<main>
+  <div class="lesson-intro">
+    <div class="lesson-tag">Grammar in Literature</div>
+    <h1>Conditionals <em style="font-family:'DM Serif Display',serif; font-weight:400;">in</em> <em style="font-family:'DM Serif Display',serif; font-weight:400; color:var(--terra);">The Curious Incident</em> <span class="level-pill">B2</span></h1>
+    <p>Explore the conditional structures in Mark Haddon's novel through three activities: multiple choice, fill-in-the-blank, and sentence matching. Each question is drawn from the themes, characters, and logic of Christopher Boone's world.</p>
+  </div>
+
+  <!-- ACTIVITY TABS -->
+  <div class="activity-tabs">
+    <div class="act-tab current" id="tab-1">Activity 1<br><span style="font-weight:300;font-size:0.7rem;letter-spacing:0">Multiple Choice</span></div>
+    <div class="act-tab" id="tab-2">Activity 2<br><span style="font-weight:300;font-size:0.7rem;letter-spacing:0">Fill in the Blank</span></div>
+    <div class="act-tab" id="tab-3">Activity 3<br><span style="font-weight:300;font-size:0.7rem;letter-spacing:0">Sentence Matching</span></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       ACTIVITY 1 – MULTIPLE CHOICE
+  ═══════════════════════════════════════════ -->
+  <div class="activity-card active" id="activity-1">
+    <div class="activity-header">
+      <div>
+        <div class="activity-title">Multiple Choice</div>
+        <div class="activity-subtitle">Choose the best conditional form for each context</div>
+      </div>
+      <div class="progress-pill" id="mc-progress">Question 1 of 6</div>
+    </div>
+    <div class="progress-bar-track"><div class="progress-bar-fill" id="mc-bar" style="width:0%"></div></div>
+    <div id="mc-question-area"></div>
+    <div class="feedback-box" id="mc-feedback"></div>
+    <div class="btn-row">
+      <button class="btn-submit" id="mc-submit" disabled>Check Answer</button>
+      <button class="btn-next show" id="mc-next" style="display:none">Next Question →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       ACTIVITY 2 – FILL IN THE BLANK
+  ═══════════════════════════════════════════ -->
+  <div class="activity-card" id="activity-2">
+    <div class="activity-header">
+      <div>
+        <div class="activity-title">Fill in the Blank</div>
+        <div class="activity-subtitle">Complete the conditional sentences using the verb in brackets</div>
+      </div>
+      <div class="progress-pill" id="fitb-progress">Question 1 of 5</div>
+    </div>
+    <div class="progress-bar-track"><div class="progress-bar-fill" id="fitb-bar" style="width:0%"></div></div>
+    <div id="fitb-question-area"></div>
+    <div class="feedback-box" id="fitb-feedback"></div>
+    <div class="btn-row">
+      <button class="btn-submit" id="fitb-submit">Check Answer</button>
+      <button class="btn-next" id="fitb-next" style="display:none">Next Question →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       ACTIVITY 3 – MATCHING
+  ═══════════════════════════════════════════ -->
+  <div class="activity-card" id="activity-3">
+    <div class="activity-header">
+      <div>
+        <div class="activity-title">Sentence Matching</div>
+        <div class="activity-subtitle">Match each conditional opening with its correct ending</div>
+      </div>
+      <div class="progress-pill" id="match-progress">0 of 5 matched</div>
+    </div>
+    <div class="progress-bar-track"><div class="progress-bar-fill" id="match-bar" style="width:0%"></div></div>
+    <div id="match-instruction" style="font-size:0.88rem;color:var(--warm-grey);margin-bottom:18px;">Click a sentence on the left, then click its matching ending on the right.</div>
+    <div class="matching-grid">
+      <div class="match-col" id="match-left"></div>
+      <div class="match-col" id="match-right"></div>
+    </div>
+    <div class="feedback-box" id="match-feedback"></div>
+    <div class="btn-row">
+      <button class="btn-next" id="match-next" style="display:none">See My Results →</button>
+    </div>
+  </div>
+
+  <!-- FINAL SCREEN -->
+  <div id="final-screen">
+    <div class="final-icon">📖</div>
+    <div class="final-score-number" id="final-score-num">—</div>
+    <div class="final-score-label">Your Total Score</div>
+    <div class="final-message" id="final-message"></div>
+    <button class="btn-restart" onclick="restartLesson()">↩ Try Again</button>
+  </div>
+</main>
+
+<script>
+/* ────────────────────────────────────────
+   DATA
+──────────────────────────────────────── */
+
+const mcQuestions = [
+  {
+    q: "Christopher says that he cannot tell lies. Read this sentence from the novel's logic:",
+    excerpt: ""I know that __________ someone asks me to describe something, I will always tell the exact truth."",
+    options: [
+      { letter: "A", text: "unless" },
+      { letter: "B", text: "if" },
+      { letter: "C", text: "although" },
+      { letter: "D", text: "provided that" }
+    ],
+    correct: 1, // B
+    explanation: "'If' is the standard zero conditional marker here — it describes a universal truth about Christopher's behaviour. 'Unless' would reverse the meaning, and 'although' is concessive, not conditional."
+  },
+  {
+    q: "Christopher imagines what would have happened if he had not found Wellington. Which sentence uses the correct third conditional structure?",
+    excerpt: null,
+    options: [
+      { letter: "A", text: "If Christopher wouldn't find Wellington, he hadn't started investigating." },
+      { letter: "B", text: "If Christopher hasn't found Wellington, he wouldn't have started investigating." },
+      { letter: "C", text: "If Christopher hadn't found Wellington, he wouldn't have started investigating." },
+      { letter: "D", text: "If Christopher didn't find Wellington, he wouldn't have started investigating." }
+    ],
+    correct: 2, // C
+    explanation: "The third conditional (if + past perfect → would have + past participle) describes an unreal situation in the past. Option C correctly uses 'hadn't found' and 'wouldn't have started'."
+  },
+  {
+    q: "Siobhan advises Christopher on social situations. Choose the most natural second conditional:",
+    excerpt: ""__________ you to trust people more, conversations would feel less overwhelming for you."",
+    options: [
+      { letter: "A", text: "Were" },
+      { letter: "B", text: "Should" },
+      { letter: "C", text: "If you would" },
+      { letter: "D", text: "Had" }
+    ],
+    correct: 0, // A
+    explanation: "'Were you to…' is a formal inversion of 'If you were to…', a valid second conditional structure. 'Had' works for the third conditional, and 'Should' is used for first conditionals. 'If you would' is not standard in this structure."
+  },
+  {
+    q: "Which sentence correctly expresses a general scientific truth — a zero conditional — in keeping with Christopher's love of logic?",
+    excerpt: null,
+    options: [
+      { letter: "A", text: "If you heated the water to 100°C, it would have boiled." },
+      { letter: "B", text: "If you heat water to 100°C, it boils." },
+      { letter: "C", text: "If you would heat water to 100°C, it boils." },
+      { letter: "D", text: "If you had heated water to 100°C, it boils." }
+    ],
+    correct: 1, // B
+    explanation: "Zero conditionals use present simple in both clauses (if + present simple → present simple) to express universal truths or facts. Option B is the only one that follows this structure correctly."
+  },
+  {
+    q: "Christopher reflects: 'I wish Father hadn't lied to me.' Which conditional thought logically follows?",
+    excerpt: null,
+    options: [
+      { letter: "A", text: "If he didn't lie, I would trust him more now." },
+      { letter: "B", text: "If he hadn't lied, I would be trusting him now." },
+      { letter: "C", text: "If he hadn't lied, I would have trusted him more." },
+      { letter: "D", text: "If he wouldn't lie, I will have trusted him." }
+    ],
+    correct: 2, // C
+    explanation: "This is a mixed conditional: 'if + past perfect' for the unreal past condition, with 'would have + past participle' for the unreal past result. Options A and B mix tenses incorrectly. Option D uses non-standard forms."
+  },
+  {
+    q: "Which sentence uses 'unless' correctly in a first conditional context about Christopher's routines?",
+    excerpt: null,
+    options: [
+      { letter: "A", text: "Unless he follows his routine, he will become distressed." },
+      { letter: "B", text: "Unless he will follow his routine, he becomes distressed." },
+      { letter: "C", text: "Unless he would follow his routine, he will become distressed." },
+      { letter: "D", text: "Unless he had followed his routine, he will become distressed." }
+    ],
+    correct: 0, // A
+    explanation: "'Unless' means 'if not'. In a first conditional, the structure is 'unless + present simple → will + infinitive'. Option A is the only sentence that follows this correctly."
+  }
+];
+
+const fitbQuestions = [
+  {
+    before: "If Christopher",
+    blank: "hadn't been",
+    after: "so methodical, he would never have solved the mystery of Wellington's death. (be — third conditional, negative)",
+    hint: "(be — third conditional, negative)",
+    options: ["hadn't been", "wasn't", "wouldn't be", "wouldn't have been"],
+    explanation: "Third conditional: 'if + past perfect negative → would have + past participle'. 'Hadn't been' correctly forms the unreal past condition."
+  },
+  {
+    before: "If Christopher",
+    blank: "were",
+    after: "better at reading facial expressions, social interactions would be far simpler for him.",
+    hint: "(be — second conditional)",
+    options: ["were", "was", "would be", "is"],
+    explanation: "Second conditional uses 'were' (not 'was') for all subjects in formal grammar, expressing an unlikely or imaginary present/future situation."
+  },
+  {
+    before: "Provided that his mother",
+    blank: "had written",
+    after: "to him sooner, he would not have believed she was dead for so long.",
+    hint: "(write — third conditional)",
+    options: ["had written", "wrote", "has written", "would write"],
+    explanation: "'Provided that' functions like 'if'. The third conditional requires 'had + past participle' in the condition clause. 'Had written' is correct."
+  },
+  {
+    before: "Christopher will attempt the A-level maths exam",
+    blank: "as long as",
+    after: "his school supports him properly.",
+    hint: "(choose a conditional connector: as long as / unless / even if)",
+    options: ["as long as", "unless", "even if", "despite"],
+    explanation: "'As long as' means 'on condition that' — perfect for a first conditional expressing a realistic future possibility. 'Despite' is not a conditional connector."
+  },
+  {
+    before: "If he",
+    blank: "had not travelled",
+    after: "to London alone, he would never have discovered his own independence.",
+    hint: "(travel — third conditional, negative)",
+    options: ["had not travelled", "did not travel", "would not travel", "has not travelled"],
+    explanation: "Third conditional condition: 'if + past perfect'. 'Had not travelled' correctly describes an unreal past event whose consequences are also in the past."
+  }
+];
+
+const matchPairs = [
+  {
+    left: "If Christopher had known the truth about his mother from the start,",
+    right: "he would have felt far less betrayed by his father.",
+    explanation: "Third conditional (past unreal → past consequence). 'Had known' + 'would have felt'."
+  },
+  {
+    left: "Unless Siobhan explains social rules clearly,",
+    right: "Christopher finds everyday conversations very confusing.",
+    explanation: "Zero/first conditional with 'unless' (= if not). Present simple in both clauses for habitual truth."
+  },
+  {
+    left: "If he were to encounter a stranger on the street,",
+    right: "he would most likely ignore them entirely.",
+    explanation: "Formal second conditional inversion 'were to' + 'would'. Describes an unlikely or hypothetical situation."
+  },
+  {
+    left: "Had his father been honest earlier,",
+    right: "the family crisis might never have escalated.",
+    explanation: "Inverted third conditional: 'Had + subject + past participle' replaces 'If + subject + had + past participle'."
+  },
+  {
+    left: "Christopher will continue to solve problems logically",
+    right: "provided that nobody interferes with his methods.",
+    explanation: "First conditional with 'provided that' (= as long as / if). Present simple + will."
+  }
+];
+
+/* ────────────────────────────────────────
+   STATE
+──────────────────────────────────────── */
+let totalCorrect = 0;
+let totalAnswered = 0;
+let mcIdx = 0, fitbIdx = 0;
+let mcAnswered = false;
+let fitbAnswered = false;
+
+/* ────────────────────────────────────────
+   SCORE
+──────────────────────────────────────── */
+function updateScore(correct) {
+  if (correct) totalCorrect++;
+  totalAnswered++;
+  document.getElementById('score-display').textContent = `${totalCorrect} / ${totalAnswered}`;
+}
+
+/* ────────────────────────────────────────
+   ACTIVITY 1 – MULTIPLE CHOICE
+──────────────────────────────────────── */
+function renderMC() {
+  const q = mcQuestions[mcIdx];
+  mcAnswered = false;
+
+  document.getElementById('mc-progress').textContent = `Question ${mcIdx + 1} of ${mcQuestions.length}`;
+  document.getElementById('mc-bar').style.width = `${(mcIdx / mcQuestions.length) * 100}%`;
+
+  const fb = document.getElementById('mc-feedback');
+  fb.className = 'feedback-box';
+  fb.innerHTML = '';
+
+  const nextBtn = document.getElementById('mc-next');
+  nextBtn.style.display = 'none';
+
+  const submitBtn = document.getElementById('mc-submit');
+  submitBtn.disabled = true;
+
+  let html = `<div class="question-block">
+    <p class="question-text">${q.q}</p>`;
+  if (q.excerpt) html += `<p class="question-excerpt">${q.excerpt}</p>`;
+  html += `<div class="mc-options">`;
+  q.options.forEach((opt, i) => {
+    html += `<button class="mc-btn" onclick="selectMC(${i})" id="mc-opt-${i}">
+      <span class="mc-option-letter">${opt.letter}</span>${opt.text}
+    </button>`;
+  });
+  html += `</div></div>`;
+  document.getElementById('mc-question-area').innerHTML = html;
+}
+
+let selectedMC = -1;
+function selectMC(i) {
+  if (mcAnswered) return;
+  selectedMC = i;
+  document.querySelectorAll('.mc-btn').forEach((b, idx) => {
+    b.className = 'mc-btn' + (idx === i ? ' selected' : '');
+  });
+  document.getElementById('mc-submit').disabled = false;
+}
+
+document.getElementById('mc-submit').addEventListener('click', () => {
+  if (selectedMC === -1 || mcAnswered) return;
+  mcAnswered = true;
+  const q = mcQuestions[mcIdx];
+  const correct = selectedMC === q.correct;
+  updateScore(correct);
+
+  document.querySelectorAll('.mc-btn').forEach((b, idx) => {
+    b.disabled = true;
+    if (idx === q.correct) b.className = 'mc-btn correct';
+    else if (idx === selectedMC && !correct) b.className = 'mc-btn wrong';
+    else b.className = 'mc-btn';
+  });
+
+  const fb = document.getElementById('mc-feedback');
+  fb.className = `feedback-box show ${correct ? 'correct-fb' : 'wrong-fb'}`;
+  fb.innerHTML = `<div class="feedback-label">${correct ? '✓ Correct' : '✗ Incorrect'}</div>${q.explanation}`;
+
+  document.getElementById('mc-submit').disabled = true;
+  const nextBtn = document.getElementById('mc-next');
+  nextBtn.style.display = 'block';
+});
+
+document.getElementById('mc-next').addEventListener('click', () => {
+  mcIdx++;
+  if (mcIdx < mcQuestions.length) {
+    selectedMC = -1;
+    renderMC();
+  } else {
+    // Advance to activity 2
+    document.getElementById('mc-bar').style.width = '100%';
+    setTimeout(() => {
+      document.getElementById('activity-1').classList.remove('active');
+      document.getElementById('activity-2').classList.add('active');
+      document.getElementById('tab-1').className = 'act-tab done';
+      document.getElementById('tab-2').className = 'act-tab current';
+      renderFITB();
+    }, 300);
+  }
+});
+
+/* ────────────────────────────────────────
+   ACTIVITY 2 – FILL IN THE BLANK
+──────────────────────────────────────── */
+function renderFITB() {
+  const q = fitbQuestions[fitbIdx];
+  fitbAnswered = false;
+
+  document.getElementById('fitb-progress').textContent = `Question ${fitbIdx + 1} of ${fitbQuestions.length}`;
+  document.getElementById('fitb-bar').style.width = `${(fitbIdx / fitbQuestions.length) * 100}%`;
+
+  const fb = document.getElementById('fitb-feedback');
+  fb.className = 'feedback-box';
+  fb.innerHTML = '';
+  document.getElementById('fitb-next').style.display = 'none';
+  document.getElementById('fitb-submit').disabled = false;
+
+  // Shuffle options
+  const shuffled = [...q.options].sort(() => Math.random() - 0.5);
+
+  let html = `<div class="question-block">
+    <p class="question-text" style="margin-bottom:6px;">Complete the sentence:</p>
+    <p style="font-size:0.82rem;color:var(--warm-grey);margin-bottom:14px;font-style:italic;">${q.hint}</p>
+    <p class="fitb-sentence">
+      ${q.before} <input type="text" class="fitb-input" id="fitb-input" placeholder="…" autocomplete="off"> ${q.after}
+    </p>
+    <div class="zone-label" style="margin-top:4px;">Word bank — click to insert:</div>
+    <div class="fitb-options" id="fitb-chips">`;
+  shuffled.forEach(opt => {
+    html += `<button class="fitb-chip" onclick="insertChip('${opt}')">${opt}</button>`;
+  });
+  html += `</div></div>`;
+  document.getElementById('fitb-question-area').innerHTML = html;
+
+  document.getElementById('fitb-input').addEventListener('input', () => {
+    document.getElementById('fitb-submit').disabled = false;
+  });
+}
+
+function insertChip(val) {
+  const inp = document.getElementById('fitb-input');
+  inp.value = val;
+  // Mark chip as used
+  document.querySelectorAll('.fitb-chip').forEach(c => {
+    c.classList.toggle('used', c.textContent === val);
+  });
+}
+
+document.getElementById('fitb-submit').addEventListener('click', () => {
+  if (fitbAnswered) return;
+  const q = fitbQuestions[fitbIdx];
+  const inp = document.getElementById('fitb-input');
+  const userVal = inp.value.trim().toLowerCase();
+  const correct = userVal === q.blank.toLowerCase();
+  fitbAnswered = true;
+  updateScore(correct);
+
+  inp.className = 'fitb-input ' + (correct ? 'correct-input' : 'wrong-input');
+  if (!correct) inp.value = `✗ ${inp.value}  →  ✓ ${q.blank}`;
+
+  document.querySelectorAll('.fitb-chip').forEach(c => c.disabled = true);
+
+  const fb = document.getElementById('fitb-feedback');
+  fb.className = `feedback-box show ${correct ? 'correct-fb' : 'wrong-fb'}`;
+  fb.innerHTML = `<div class="feedback-label">${correct ? '✓ Correct' : '✗ Incorrect — correct answer: <em>' + q.blank + '</em>'}</div>${q.explanation}`;
+
+  document.getElementById('fitb-submit').disabled = true;
+  document.getElementById('fitb-next').style.display = 'block';
+});
+
+document.getElementById('fitb-next').addEventListener('click', () => {
+  fitbIdx++;
+  if (fitbIdx < fitbQuestions.length) {
+    renderFITB();
+  } else {
+    document.getElementById('fitb-bar').style.width = '100%';
+    setTimeout(() => {
+      document.getElementById('activity-2').classList.remove('active');
+      document.getElementById('activity-3').classList.add('active');
+      document.getElementById('tab-2').className = 'act-tab done';
+      document.getElementById('tab-3').className = 'act-tab current';
+      renderMatch();
+    }, 300);
+  }
+});
+
+/* ────────────────────────────────────────
+   ACTIVITY 3 – MATCHING
+──────────────────────────────────────── */
+let matchedCount = 0;
+let selectedLeft = null;
+let matchAttempts = 0;
+let matchCorrect = 0;
+
+function renderMatch() {
+  matchedCount = 0;
+  matchAttempts = 0;
+  matchCorrect = 0;
+  selectedLeft = null;
+
+  // Shuffle right side
+  const rightShuffled = [...matchPairs].map((p, i) => ({ ...p, origIdx: i })).sort(() => Math.random() - 0.5);
+
+  const leftCol = document.getElementById('match-left');
+  const rightCol = document.getElementById('match-right');
+
+  leftCol.innerHTML = matchPairs.map((p, i) => `
+    <div class="match-item" id="ml-${i}" onclick="selectLeft(${i})">${p.left}</div>
+  `).join('');
+
+  rightCol.innerHTML = rightShuffled.map((p, i) => `
+    <div class="match-item" id="mr-${p.origIdx}" data-orig="${p.origIdx}" onclick="selectRight(${p.origIdx})">${p.right}</div>
+  `).join('');
+}
+
+function selectLeft(idx) {
+  if (document.getElementById(`ml-${idx}`).classList.contains('matched')) return;
+  document.querySelectorAll('.match-item').forEach(el => {
+    if (el.id.startsWith('ml-') && !el.classList.contains('matched')) el.classList.remove('selected-left');
+  });
+  selectedLeft = idx;
+  document.getElementById(`ml-${idx}`).classList.add('selected-left');
+}
+
+function selectRight(origIdx) {
+  if (selectedLeft === null) return;
+  if (document.getElementById(`mr-${origIdx}`).classList.contains('matched')) return;
+
+  matchAttempts++;
+  const correct = selectedLeft === origIdx;
+
+  if (correct) {
+    matchCorrect++;
+    matchedCount++;
+    document.getElementById(`ml-${selectedLeft}`).className = 'match-item matched';
+    document.getElementById(`mr-${origIdx}`).className = 'match-item matched';
+    updateScore(true);
+
+    // Show mini feedback
+    const fb = document.getElementById('match-feedback');
+    fb.className = 'feedback-box show correct-fb';
+    fb.innerHTML = `<div class="feedback-label">✓ Correct Match!</div>${matchPairs[origIdx].explanation}`;
+
+    document.getElementById('match-progress').textContent = `${matchedCount} of ${matchPairs.length} matched`;
+    document.getElementById('match-bar').style.width = `${(matchedCount / matchPairs.length) * 100}%`;
+
+    if (matchedCount === matchPairs.length) {
+      setTimeout(() => {
+        document.getElementById('match-next').style.display = 'block';
+      }, 600);
+    }
+  } else {
+    updateScore(false);
+    const leftEl = document.getElementById(`ml-${selectedLeft}`);
+    const rightEl = document.getElementById(`mr-${origIdx}`);
+    leftEl.classList.add('wrong-match');
+    rightEl.classList.add('wrong-match');
+    setTimeout(() => {
+      leftEl.classList.remove('wrong-match', 'selected-left');
+      rightEl.classList.remove('wrong-match');
+    }, 600);
+
+    const fb = document.getElementById('match-feedback');
+    fb.className = 'feedback-box show wrong-fb';
+    fb.innerHTML = `<div class="feedback-label">✗ Not quite</div>Try a different combination — look carefully at the conditional type in the opening clause.`;
+  }
+  selectedLeft = null;
+}
+
+document.getElementById('match-next').addEventListener('click', showFinalScreen);
+
+/* ────────────────────────────────────────
+   FINAL SCREEN
+──────────────────────────────────────── */
+function showFinalScreen() {
+  document.getElementById('activity-3').classList.remove('active');
+  document.getElementById('tab-3').className = 'act-tab done';
+
+  const total = totalAnswered;
+  const pct = Math.round((totalCorrect / total) * 100);
+
+  document.getElementById('final-score-num').textContent = `${totalCorrect} / ${total}`;
+
+  let msg = '';
+  if (pct >= 90) msg = "Outstanding, Christopher would approve of your precision! You've demonstrated confident mastery of all four conditional types. Excellent B2-level command of grammar.";
+  else if (pct >= 70) msg = "Well done — you have a solid grasp of conditional structures. Review the third conditional and formal inversions to push towards C1 confidence.";
+  else if (pct >= 50) msg = "A good start! The conditionals in this lesson are genuinely tricky. Focus on the difference between second and third conditionals, then try again.";
+  else msg = "Keep going — conditionals take time to master. Re-read the feedback explanations carefully and try the lesson again. Every attempt builds your understanding.";
+
+  document.getElementById('final-message').textContent = msg;
+  document.getElementById('final-screen').className = 'show';
+}
+
+function restartLesson() {
+  totalCorrect = 0; totalAnswered = 0;
+  mcIdx = 0; fitbIdx = 0;
+  selectedMC = -1;
+  matchedCount = 0;
+  document.getElementById('score-display').textContent = '0 / 0';
+
+  document.getElementById('final-screen').className = '';
+  document.getElementById('activity-1').classList.add('active');
+  document.getElementById('activity-2').classList.remove('active');
+  document.getElementById('activity-3').classList.remove('active');
+
+  document.getElementById('tab-1').className = 'act-tab current';
+  document.getElementById('tab-2').className = 'act-tab';
+  document.getElementById('tab-3').className = 'act-tab';
+
+  renderMC();
+  renderFITB();
+  document.getElementById('match-left').innerHTML = '';
+  document.getElementById('match-right').innerHTML = '';
+  document.getElementById('match-feedback').className = 'feedback-box';
+  document.getElementById('match-progress').textContent = '0 of 5 matched';
+  document.getElementById('match-bar').style.width = '0%';
+  document.getElementById('match-next').style.display = 'none';
+}
+
+/* ────────────────────────────────────────
+   INIT
+──────────────────────────────────────── */
+renderMC();
+</script>
+</body>
+</html>

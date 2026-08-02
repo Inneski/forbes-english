@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English — The Locked Study | Adjective Order (B1)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Karla:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#171221;
+    --bg-soft:#1e1730;
+    --card:#241b33;
+    --card-edge:#3a2d50;
+    --brass:#c9a55c;
+    --brass-bright:#e3c685;
+    --parchment:#efe5d0;
+    --muted:#a799bd;
+    --ok:#5fa08f;
+    --ok-soft:rgba(95,160,143,.14);
+    --bad:#c06a5d;
+    --bad-soft:rgba(192,106,93,.14);
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:
+      radial-gradient(1100px 600px at 85% -10%, rgba(201,165,92,.07), transparent 60%),
+      radial-gradient(900px 700px at -10% 110%, rgba(95,160,143,.05), transparent 55%),
+      var(--bg);
+    color:var(--parchment);
+    font-family:'Karla',sans-serif;
+    line-height:1.55;
+    min-height:100vh;
+    padding:28px 16px 64px;
+  }
+  .wrap{max-width:720px;margin:0 auto}
+
+  /* ---------- Header ---------- */
+  header{display:flex;flex-direction:column;align-items:center;gap:18px;margin-bottom:26px}
+  .logo{display:block}
+  .status{
+    width:100%;
+    display:flex;align-items:center;justify-content:space-between;gap:14px;
+    background:var(--bg-soft);
+    border:1px solid var(--card-edge);
+    border-radius:var(--radius);
+    padding:12px 18px;
+  }
+  .locks{display:flex;gap:10px;align-items:center}
+  .lock svg{display:block}
+  .lock .shackle{transition:transform .5s ease;transform-origin:7px 9px}
+  .lock.open .shackle{transform:rotate(-38deg) translateY(-1px)}
+  .lock .body-rect{fill:#3a2d50;stroke:#574374}
+  .lock.open .body-rect{fill:var(--brass);stroke:var(--brass-bright)}
+  .lock.open .keyhole{fill:#171221}
+  .scorebox{font-weight:700;letter-spacing:.04em;font-size:.95rem}
+  .scorebox span{color:var(--brass-bright)}
+  .progress{font-size:.85rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+
+  /* ---------- Cards / screens ---------- */
+  .screen{display:none}
+  .screen.active{display:block;animation:fade .35s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .card{
+    background:var(--card);
+    border:1px solid var(--card-edge);
+    border-radius:var(--radius);
+    padding:30px 28px;
+    box-shadow:0 18px 40px rgba(0,0,0,.35);
+  }
+  .room-tag{
+    display:inline-block;
+    font-size:.74rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--brass);
+    border:1px solid var(--brass);
+    border-radius:999px;
+    padding:4px 12px;margin-bottom:14px;
+  }
+  h1,h2{font-family:'Fraunces',serif;font-weight:600;line-height:1.2}
+  h1{font-size:2rem;margin-bottom:12px}
+  h2{font-size:1.45rem;margin-bottom:10px}
+  .story{color:var(--muted);margin-bottom:18px}
+  .story strong{color:var(--parchment)}
+
+  .rulebox{
+    background:var(--bg-soft);
+    border-left:3px solid var(--brass);
+    border-radius:0 10px 10px 0;
+    padding:14px 16px;margin:18px 0;
+    font-size:.95rem;
+  }
+  .rulebox b{color:var(--brass-bright)}
+  .rulebox .gridwrap{overflow-x:auto;margin-top:10px}
+  .rulegrid{border-collapse:collapse;width:100%;font-size:.85rem}
+  .rulegrid th,.rulegrid td{padding:5px 10px;text-align:left;border:1px solid var(--card-edge)}
+  .rulegrid th{background:var(--bg);color:var(--brass-bright);font-weight:700;letter-spacing:.06em;font-size:.78rem;text-transform:uppercase}
+  .rulegrid td:first-child{font-weight:800;color:var(--brass);text-align:center}
+  .rulegrid .cat9{background:rgba(201,165,92,.07)}
+  .example{font-style:italic;color:var(--brass-bright);font-size:.92rem;margin-top:12px}
+
+  .qtext{font-size:1.08rem;margin:6px 0 20px}
+
+  /* ---------- Buttons ---------- */
+  .btn{
+    font-family:'Karla',sans-serif;
+    font-weight:800;letter-spacing:.05em;
+    background:var(--brass);color:#241b33;
+    border:none;border-radius:10px;
+    padding:13px 26px;font-size:1rem;
+    cursor:pointer;
+    transition:transform .12s ease, background .15s ease;
+  }
+  .btn:hover{background:var(--brass-bright);transform:translateY(-1px)}
+  .btn:focus-visible{outline:3px solid var(--brass-bright);outline-offset:2px}
+  .btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+  .btn.ghost{background:transparent;color:var(--brass);border:1px solid var(--brass)}
+  .btn.ghost:hover{background:rgba(201,165,92,.1)}
+  .btnrow{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
+  .hidden{display:none !important}
+
+  /* ---------- MCQ ---------- */
+  .opts{display:flex;flex-direction:column;gap:10px}
+  .opt{
+    text-align:left;
+    background:var(--bg-soft);
+    border:1px solid var(--card-edge);
+    border-radius:10px;
+    color:var(--parchment);
+    font-family:'Karla',sans-serif;
+    font-size:1rem;
+    padding:14px 16px;
+    cursor:pointer;
+    display:flex;gap:12px;align-items:baseline;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .opt:hover{border-color:var(--brass)}
+  .opt:focus-visible{outline:3px solid var(--brass-bright);outline-offset:2px}
+  .opt .letter{font-weight:800;color:var(--brass);min-width:1.2em}
+  .opt.selected{border-color:var(--brass-bright);background:rgba(201,165,92,.1)}
+  .opt.correct{border-color:var(--ok);background:var(--ok-soft)}
+  .opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+  .opt.locked{cursor:default}
+
+  /* ---------- Chips ---------- */
+  .chiprow{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}
+  .chip{
+    background:var(--bg-soft);
+    border:1px solid var(--brass);
+    color:var(--parchment);
+    border-radius:999px;
+    padding:10px 18px;
+    font-size:1rem;font-weight:500;
+    cursor:grab;
+    user-select:none;
+    transition:background .15s ease, transform .12s ease, opacity .15s ease;
+  }
+  .chip:hover{background:rgba(201,165,92,.12)}
+  .chip:focus-visible{outline:3px solid var(--brass-bright);outline-offset:2px}
+  .chip.picked{background:var(--brass);color:#241b33;font-weight:700}
+  .chip.dragging{opacity:.45}
+  .chip.used{opacity:.3;pointer-events:none}
+  .chip.fixedword{border-style:dashed;border-color:var(--card-edge);cursor:default;color:var(--muted)}
+  .hint-small{font-size:.85rem;color:var(--muted);margin-bottom:4px}
+
+  .sentence-line{font-size:1.12rem;line-height:2.4;margin:14px 0}
+  .blank{
+    display:inline-block;
+    min-width:110px;
+    border-bottom:2px dashed var(--brass);
+    text-align:center;
+    padding:0 8px;
+    cursor:pointer;
+    color:var(--brass-bright);
+    font-weight:700;
+  }
+  .blank:focus-visible{outline:3px solid var(--brass-bright);outline-offset:2px}
+  .blank.filled{border-bottom-style:solid}
+  .blank.b-ok{border-bottom-color:var(--ok);color:var(--ok)}
+  .blank.b-bad{border-bottom-color:var(--bad);color:var(--bad)}
+
+  /* ---------- Feedback ---------- */
+  .feedback{
+    margin-top:18px;border-radius:10px;padding:14px 16px;font-size:.97rem;
+    display:none;
+  }
+  .feedback.show{display:block;animation:fade .3s ease}
+  .feedback.good{background:var(--ok-soft);border:1px solid var(--ok)}
+  .feedback.poor{background:var(--bad-soft);border:1px solid var(--bad)}
+  .feedback .verdict{font-weight:800;letter-spacing:.05em;display:block;margin-bottom:4px}
+  .feedback.good .verdict{color:var(--ok)}
+  .feedback.poor .verdict{color:var(--bad)}
+
+  /* ---------- Final ---------- */
+  .final{text-align:center}
+  .final .door{margin:6px auto 18px}
+  .bigscore{font-family:'Fraunces',serif;font-size:3.2rem;color:var(--brass-bright);margin:8px 0}
+  .final p{color:var(--muted);max-width:480px;margin:0 auto 8px}
+  .final .msg{color:var(--parchment);font-size:1.1rem;font-weight:700;margin-top:10px}
+
+  @media (max-width:520px){
+    .card{padding:22px 18px}
+    h1{font-size:1.6rem}
+    .status{flex-wrap:wrap;justify-content:center;text-align:center}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none !important;transition:none !important}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <svg class="logo" width="230" height="86" viewBox="0 0 230 86" role="img" aria-label="Forbes English">
+      <text x="115" y="38" text-anchor="middle"
+            font-family="Fraunces, Georgia, serif" font-size="40" font-weight="600"
+            fill="#efe5d0">Forbes</text>
+      <line x1="35" y1="52" x2="195" y2="52" stroke="#c9a55c" stroke-width="1.4"/>
+      <text x="115" y="76" text-anchor="middle"
+            font-family="Karla, Arial, sans-serif" font-size="21" font-weight="800"
+            letter-spacing="7" fill="#c9a55c">ENGLISH</text>
+    </svg>
+
+    <div class="status">
+      <div class="locks" aria-label="Rooms unlocked">
+        <span class="lock" id="lock0" title="Room 1">
+          <svg width="26" height="30" viewBox="0 0 14 17">
+            <path class="shackle" d="M4 9 V5 a3 3 0 0 1 6 0 V9" fill="none" stroke="#c9a55c" stroke-width="1.6"/>
+            <rect class="body-rect" x="2" y="8" width="10" height="8" rx="1.6" stroke-width="1"/>
+            <circle class="keyhole" cx="7" cy="12" r="1.3" fill="#c9a55c"/>
+          </svg>
+        </span>
+        <span class="lock" id="lock1" title="Room 2">
+          <svg width="26" height="30" viewBox="0 0 14 17">
+            <path class="shackle" d="M4 9 V5 a3 3 0 0 1 6 0 V9" fill="none" stroke="#c9a55c" stroke-width="1.6"/>
+            <rect class="body-rect" x="2" y="8" width="10" height="8" rx="1.6" stroke-width="1"/>
+            <circle class="keyhole" cx="7" cy="12" r="1.3" fill="#c9a55c"/>
+          </svg>
+        </span>
+        <span class="lock" id="lock2" title="Room 3">
+          <svg width="26" height="30" viewBox="0 0 14 17">
+            <path class="shackle" d="M4 9 V5 a3 3 0 0 1 6 0 V9" fill="none" stroke="#c9a55c" stroke-width="1.6"/>
+            <rect class="body-rect" x="2" y="8" width="10" height="8" rx="1.6" stroke-width="1"/>
+            <circle class="keyhole" cx="7" cy="12" r="1.3" fill="#c9a55c"/>
+          </svg>
+        </span>
+      </div>
+      <div class="progress" id="progressLabel">Ready to begin</div>
+      <div class="scorebox">Score: <span id="scoreVal">0</span> / 15</div>
+    </div>
+  </header>
+
+  <!-- INTRO -->
+  <section class="screen active" id="screen-intro">
+    <div class="card">
+      <span class="room-tag">The Locked Study &middot; B1</span>
+      <h1>Adjective Order: Escape the Study</h1>
+      <p class="story">
+        You wake up in <strong>Professor Whitlock&rsquo;s study</strong>. The door is locked. On the desk there is a note:
+        <em>&ldquo;Only a person who puts adjectives in the correct order can leave this room.&rdquo;</em>
+        Three locks stand between you and the exit.
+      </p>
+      <div class="rulebox">
+        <b>The Professor&rsquo;s rule:</b> When we use more than one adjective before a noun, they follow this order:
+        <div class="gridwrap">
+          <table class="rulegrid">
+            <thead>
+              <tr><th>#</th><th>Category</th><th>Examples</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>Opinion / Value</td><td>beautiful, priceless, strange</td></tr>
+              <tr><td>2</td><td>Size</td><td>big, small, tall, narrow</td></tr>
+              <tr><td>3</td><td>Age</td><td>old, new, ancient, modern</td></tr>
+              <tr><td>4</td><td>Shape</td><td>round, oval, spiral, rectangular</td></tr>
+              <tr><td>5</td><td>Colour</td><td>red, dark, yellowed</td></tr>
+              <tr><td>6</td><td>Origin / Period</td><td>French, Egyptian, Victorian</td></tr>
+              <tr><td>7</td><td>Material</td><td>wooden, silver, leather, iron</td></tr>
+              <tr class="cat9"><td>8</td><td>Purpose / Type / Style</td><td>hunting, dining, Impressionist</td></tr>
+              <tr><td>&mdash;</td><td><b>Noun</b></td><td>key, painting, lodge &hellip;</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="example">e.g. &ldquo;a priceless old round Victorian silver dining table&rdquo; &mdash; but native speakers rarely stack more than three!</p>
+      </div>
+      <div class="btnrow">
+        <button class="btn" data-action="start">Enter Room 1</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACTIVITY -->
+  <section class="screen" id="screen-activity">
+    <div class="card" id="activityCard"></div>
+  </section>
+
+  <!-- FINAL -->
+  <section class="screen" id="screen-final">
+    <div class="card final">
+      <svg class="door" width="90" height="110" viewBox="0 0 60 74" aria-hidden="true">
+        <rect x="6" y="4" width="48" height="66" rx="4" fill="#1e1730" stroke="#c9a55c" stroke-width="2"/>
+        <rect x="12" y="10" width="36" height="54" rx="2" fill="none" stroke="#3a2d50" stroke-width="1.5"/>
+        <circle cx="42" cy="38" r="3" fill="#e3c685"/>
+        <path d="M6 4 L26 12 V66 L6 70 Z" fill="#241b33" stroke="#c9a55c" stroke-width="1.5"/>
+      </svg>
+      <h2>The door swings open!</h2>
+      <div class="bigscore"><span id="finalScore">0</span> / 15</div>
+      <p class="msg" id="finalMsg"></p>
+      <p id="finalNote"></p>
+      <div class="btnrow" style="justify-content:center">
+        <button class="btn" data-action="restart">Play again</button>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /wrap -->
+
+<script>
+(function(){
+  "use strict";
+
+  /* ============================================================
+     DATA
+     All 9 adjective categories covered (Opinion, Size, Age,
+     Shape, Colour, Origin/Period, Material, Purpose/Type/Style)
+     Category numbers in comments = grid row from intro table
+  ============================================================ */
+
+  // ----- Activity 1: Multiple Choice -----
+  // Pick the sentence with correct adjective order.
+  // Distractors are permutations of the same three words so all
+  // options are the same length — no length hints.
+
+  var MCQ = [
+    {
+      prompt: "A clock sits on the mantlepiece. Which sentence has the correct adjective order?",
+      correct: "It is a beautiful small old clock.",
+      wrong: [
+        "It is a small beautiful old clock.",
+        "It is an old small beautiful clock.",
+        "It is a beautiful old small clock."
+      ],
+      why: "Opinion (beautiful) \u2192 size (small) \u2192 age (old). Opinion always leads; size comes before age."
+    },
+    {
+      prompt: "You spot a vase on the shelf. Which description is correct?",
+      correct: "It is a large ancient Egyptian vase.",
+      wrong: [
+        "It is an ancient large Egyptian vase.",
+        "It is a large Egyptian ancient vase.",
+        "It is an Egyptian large ancient vase."
+      ],
+      why: "Size (large) \u2192 age (ancient) \u2192 origin (Egyptian). Size precedes age, and origin always comes after age."
+    },
+    {
+      prompt: "On the wall hangs a painting. Which sentence uses the correct order?",
+      correct: "It is a priceless old Impressionist painting.",
+      wrong: [
+        "It is an old priceless Impressionist painting.",
+        "It is a priceless Impressionist old painting.",
+        "It is an Impressionist priceless old painting."
+      ],
+      why: "Opinion (priceless) \u2192 age (old) \u2192 style/purpose (Impressionist). Style/purpose always sits closest to the noun \u2014 this is category 8 in the grid."
+    },
+    {
+      prompt: "You look down a hallway. Which sentence is correct?",
+      correct: "You see a long dark wooden corridor.",
+      wrong: [
+        "You see a dark long wooden corridor.",
+        "You see a long wooden dark corridor.",
+        "You see a wooden dark long corridor."
+      ],
+      why: "Size (long) \u2192 colour (dark) \u2192 material (wooden). Colour comes after size but always before material."
+    },
+    {
+      prompt: "A building appears on the map. Which description is correct?",
+      correct: "It is an old Scottish hunting lodge.",
+      wrong: [
+        "It is a Scottish old hunting lodge.",
+        "It is an old hunting Scottish lodge.",
+        "It is a hunting old Scottish lodge."
+      ],
+      why: "Age (old) \u2192 origin (Scottish) \u2192 purpose/type (hunting). Purpose/type is category 8 and always goes last, right before the noun."
+    }
+  ];
+
+  // ----- Activity 2: Drag-to-reorder chips -----
+  // Three adjective chips per question; tap-to-swap on mobile.
+
+  var REORDER = [
+    {
+      lead: "a", noun: "ring",
+      order: ["priceless","Victorian","silver"],
+      why: "Opinion (priceless) \u2192 period/origin (Victorian) \u2192 material (silver). A priceless Victorian silver ring. The lock ticks!"
+    },
+    {
+      lead: "a", noun: "cabinet",
+      order: ["tall","old","wooden"],
+      why: "Size (tall) \u2192 age (old) \u2192 material (wooden). A drawer inside slides open."
+    },
+    {
+      lead: "an", noun: "chair",
+      order: ["elegant","French","dining"],
+      why: "Opinion (elegant) \u2192 origin (French) \u2192 purpose/type (dining). \u201cDining\u201d is category 8 \u2014 purpose/type always goes last before the noun."
+    },
+    {
+      lead: "a", noun: "fireplace",
+      order: ["huge","dark","stone"],
+      why: "Size (huge) \u2192 colour (dark) \u2192 material (stone). Behind the fireplace you spot a keypad."
+    },
+    {
+      lead: "a", noun: "briefcase",
+      order: ["mysterious","old","leather"],
+      why: "Opinion (mysterious) \u2192 age (old) \u2192 material (leather). The briefcase snaps open!"
+    }
+  ];
+
+  // ----- Activity 3: Word-bank cloze -----
+  // Two blanks per sentence; tap a bank word to place it,
+  // tap a filled blank to return it.
+
+  var CLOZE = [
+    {
+      before: "You discover a", after: "map inside the drawer.",
+      answer: ["faded","yellowed"],
+      distractors: ["yellowed","faded"],
+      why: "Opinion/quality (faded) \u2192 colour (yellowed). Opinion comes before colour."
+    },
+    {
+      before: "Behind the panel is a", after: "safe.",
+      answer: ["modern","digital"],
+      distractors: ["digital","modern"],
+      why: "Age (modern) \u2192 purpose/type (digital). \u201cDigital\u201d describes the type of safe \u2014 purpose/type is category 8 and goes last."
+    },
+    {
+      before: "You lift a", after: "chest from beneath the floorboards.",
+      answer: ["heavy","iron"],
+      distractors: ["iron","heavy"],
+      why: "Opinion/quality (heavy) \u2192 material (iron). Opinion always comes before material."
+    },
+    {
+      before: "The secret door opens onto a", after: "staircase.",
+      answer: ["narrow","spiral"],
+      distractors: ["spiral","narrow"],
+      why: "Size (narrow) \u2192 shape (spiral). Size comes before shape in the adjective order grid."
+    },
+    {
+      before: "Pinned to the wall is a", after: "blueprint.",
+      answer: ["massive","architectural"],
+      distractors: ["architectural","massive"],
+      why: "Size (massive) \u2192 purpose/type (architectural). Purpose/type is category 8 and always sits closest to the noun."
+    }
+  ];
+
+  var ROOMS = [
+    {
+      title: "Room 1: The Study",
+      tag: "Room 1 \u00b7 Multiple choice",
+      type: "mcq",
+      data: MCQ,
+      intro: "Choose the sentence with the correct adjective order. Read each option carefully \u2014 the words are the same, only the order changes."
+    },
+    {
+      title: "Room 2: The Vault",
+      tag: "Room 2 \u00b7 Put in order",
+      type: "reorder",
+      data: REORDER,
+      intro: "Drag the adjective chips into the correct order, then press Check. On a phone, tap one chip then tap another to swap them."
+    },
+    {
+      title: "Room 3: The Final Door",
+      tag: "Room 3 \u00b7 Fill the blanks",
+      type: "cloze",
+      data: CLOZE,
+      intro: "Tap the words in the correct order to fill the blanks. Tap a filled blank to return the word to the bank."
+    }
+  ];
+
+  /* ============================================================
+     STATE
+  ============================================================ */
+  var state = {
+    room: 0,
+    q: 0,
+    score: 0,
+    answered: false,
+    finished: false
+  };
+
+  /* ============================================================
+     HELPERS
+  ============================================================ */
+  function shuffle(arr){
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  function scrambled(arr){
+    if (arr.length < 2) return arr.slice();
+    var s = shuffle(arr);
+    var guard = 0;
+    while (s.join("|") === arr.join("|") && guard < 20){
+      s = shuffle(arr);
+      guard++;
+    }
+    return s;
+  }
+
+  function el(id){ return document.getElementById(id); }
+  function setScore(){ el("scoreVal").textContent = String(state.score); }
+
+  function setProgress(){
+    var room = ROOMS[state.room];
+    el("progressLabel").textContent =
+      "Room " + (state.room + 1) + " of 3 \u00b7 Q" + (state.q + 1) + " of " + room.data.length;
+  }
+
+  function showScreen(id){
+    var ss = document.querySelectorAll(".screen");
+    for (var i = 0; i < ss.length; i++) ss[i].classList.remove("active");
+    el(id).classList.add("active");
+  }
+
+  function feedbackHTML(){
+    return '<div class="feedback" id="fb">' +
+             '<span class="verdict" id="fbVerdict"></span>' +
+             '<span id="fbText"></span>' +
+           '</div>' +
+           '<div class="btnrow">' +
+             '<button class="btn ghost hidden" id="checkBtn" data-action="check">Check</button>' +
+             '<button class="btn hidden" id="nextBtn" data-action="next">Next</button>' +
+           '</div>';
+  }
+
+  function showFeedback(isRight, why){
+    var fb = el("fb");
+    fb.classList.add("show");
+    fb.classList.remove("good","poor");
+    fb.classList.add(isRight ? "good" : "poor");
+    el("fbVerdict").textContent = isRight
+      ? "Correct \u2014 the lock turns!"
+      : "Not quite \u2014 the lock stays shut.";
+    el("fbText").textContent = why;
+    el("nextBtn").classList.remove("hidden");
+    var lastRoom = state.room === ROOMS.length - 1;
+    var lastQ    = state.q   === ROOMS[state.room].data.length - 1;
+    el("nextBtn").textContent =
+      lastRoom && lastQ ? "Open the door" :
+      lastQ             ? "Enter the next room" :
+                          "Next";
+  }
+
+  /* ============================================================
+     RENDER
+  ============================================================ */
+  function renderQuestion(){
+    state.answered = false;
+    setProgress();
+    var room = ROOMS[state.room];
+    if      (room.type === "mcq")    renderMCQ();
+    else if (room.type === "reorder") renderReorder();
+    else                              renderCloze();
+  }
+
+  /* ----- MCQ ----- */
+  var mcqState = null;
+
+  function renderMCQ(){
+    var room = ROOMS[state.room];
+    var q    = room.data[state.q];
+    var opts = shuffle([q.correct].concat(q.wrong));
+    mcqState = { opts: opts, correct: q.correct };
+
+    var html = '<span class="room-tag">' + room.tag + '</span>';
+    html    += '<h2>' + room.title + '</h2>';
+    if (state.q === 0) html += '<p class="story">' + room.intro + '</p>';
+    html += '<p class="qtext">' + q.prompt + '</p>';
+    html += '<div class="opts" id="opts">';
+    var letters = ["A","B","C","D"];
+    for (var i = 0; i < opts.length; i++){
+      html += '<button class="opt" data-opt="' + i + '">' +
+                '<span class="letter">' + letters[i] + '</span>' +
+                '<span>' + opts[i] + '</span>' +
+              '</button>';
+    }
+    html += '</div>' + feedbackHTML();
+    el("activityCard").innerHTML = html;
+  }
+
+  function handleMCQClick(btn){
+    if (state.answered) return;
+    state.answered = true;
+    var idx     = parseInt(btn.getAttribute("data-opt"), 10);
+    var chosen  = mcqState.opts[idx];
+    var isRight = chosen === mcqState.correct;
+    if (isRight){ state.score++; setScore(); }
+
+    var all = document.querySelectorAll("#opts .opt");
+    for (var i = 0; i < all.length; i++){
+      all[i].classList.add("locked");
+      all[i].disabled = true;
+      if (mcqState.opts[i] === mcqState.correct) all[i].classList.add("correct");
+      else if (i === idx)                          all[i].classList.add("wrong");
+    }
+    showFeedback(isRight, ROOMS[state.room].data[state.q].why);
+  }
+
+  /* ----- Reorder ----- */
+  var reorderState = null;
+
+  function renderReorder(){
+    var room = ROOMS[state.room];
+    var q    = room.data[state.q];
+    reorderState = { chips: scrambled(q.order), picked: -1, dragSrc: -1 };
+
+    var html = '<span class="room-tag">' + room.tag + '</span>';
+    html    += '<h2>' + room.title + '</h2>';
+    if (state.q === 0) html += '<p class="story">' + room.intro + '</p>';
+    html += '<p class="qtext">Put the adjectives in the correct order:</p>';
+    html += '<p class="hint-small">Complete the phrase: <em>' + q.lead + ' &hellip; ' + q.noun + '</em></p>';
+    html += '<div class="chiprow" id="chiprow"></div>';
+    html += feedbackHTML();
+    el("activityCard").innerHTML = html;
+    el("checkBtn").classList.remove("hidden");
+    drawChips();
+  }
+
+  function drawChips(){
+    var q   = ROOMS[state.room].data[state.q];
+    var row = el("chiprow");
+    var html = '<span class="chip fixedword">' + q.lead + '</span>';
+    for (var i = 0; i < reorderState.chips.length; i++){
+      var cls = "chip" + (i === reorderState.picked ? " picked" : "");
+      html += '<span class="' + cls + '" draggable="true" tabindex="0" data-chip="' + i + '">' +
+              reorderState.chips[i] + '</span>';
+    }
+    html += '<span class="chip fixedword">' + q.noun + '</span>';
+    row.innerHTML = html;
+  }
+
+  function swapChips(a, b){
+    var t = reorderState.chips[a];
+    reorderState.chips[a] = reorderState.chips[b];
+    reorderState.chips[b] = t;
+  }
+
+  function handleChipTap(chipEl){
+    if (state.answered) return;
+    var idx = parseInt(chipEl.getAttribute("data-chip"), 10);
+    if      (reorderState.picked === -1)  { reorderState.picked = idx; }
+    else if (reorderState.picked === idx) { reorderState.picked = -1; }
+    else {
+      swapChips(reorderState.picked, idx);
+      reorderState.picked = -1;
+    }
+    drawChips();
+  }
+
+  function checkReorder(){
+    if (state.answered) return;
+    state.answered = true;
+    var q       = ROOMS[state.room].data[state.q];
+    var isRight = reorderState.chips.join("|") === q.order.join("|");
+    if (isRight){ state.score++; setScore(); }
+
+    reorderState.picked = -1;
+    var chips = el("chiprow").querySelectorAll(".chip:not(.fixedword)");
+    for (var i = 0; i < chips.length; i++){
+      chips[i].setAttribute("draggable","false");
+      chips[i].style.cursor = "default";
+      chips[i].style.borderColor =
+        (reorderState.chips[i] === q.order[i]) ? "var(--ok)" : "var(--bad)";
+    }
+    var why = q.why + (isRight ? "" : " Correct order: " + q.order.join(", ") + ".");
+    el("checkBtn").classList.add("hidden");
+    showFeedback(isRight, why);
+  }
+
+  /* ----- Cloze ----- */
+  var clozeState = null;
+
+  function renderCloze(){
+    var room = ROOMS[state.room];
+    var q    = room.data[state.q];
+    // Bank contains the two correct words shuffled
+    clozeState = {
+      bank: scrambled(q.answer),
+      filled: [null, null]
+    };
+
+    var html = '<span class="room-tag">' + room.tag + '</span>';
+    html    += '<h2>' + room.title + '</h2>';
+    if (state.q === 0) html += '<p class="story">' + room.intro + '</p>';
+    html += '<p class="qtext">Complete the sentence. Tap words in the correct order:</p>';
+    html += '<p class="sentence-line" id="clozeLine"></p>';
+    html += '<p class="hint-small">Word bank &mdash; tap to place:</p>';
+    html += '<div class="chiprow" id="clozeBank"></div>';
+    html += feedbackHTML();
+    el("activityCard").innerHTML = html;
+    el("checkBtn").classList.remove("hidden");
+    drawCloze();
+  }
+
+  function drawCloze(){
+    var q    = ROOMS[state.room].data[state.q];
+    var line = q.before + " ";
+    for (var b = 0; b < 2; b++){
+      var word = clozeState.filled[b] === null ? "\u00a0\u00a0\u00a0\u00a0\u00a0" : clozeState.bank[clozeState.filled[b]];
+      var cls  = "blank" + (clozeState.filled[b] === null ? "" : " filled");
+      line += '<span class="' + cls + '" tabindex="0" data-blank="' + b + '">' + word + '</span> ';
+    }
+    line += q.after;
+    el("clozeLine").innerHTML = line;
+
+    var bankHTML = "";
+    for (var i = 0; i < clozeState.bank.length; i++){
+      var used = clozeState.filled.indexOf(i) !== -1;
+      bankHTML += '<span class="chip' + (used ? " used" : "") + '" tabindex="0" data-bank="' + i + '">' +
+                  clozeState.bank[i] + '</span>';
+    }
+    el("clozeBank").innerHTML = bankHTML;
+  }
+
+  function handleBankTap(chipEl){
+    if (state.answered) return;
+    var idx = parseInt(chipEl.getAttribute("data-bank"), 10);
+    if (clozeState.filled.indexOf(idx) !== -1) return;
+    for (var b = 0; b < 2; b++){
+      if (clozeState.filled[b] === null){ clozeState.filled[b] = idx; break; }
+    }
+    drawCloze();
+  }
+
+  function handleBlankTap(blankEl){
+    if (state.answered) return;
+    var b = parseInt(blankEl.getAttribute("data-blank"), 10);
+    if (clozeState.filled[b] !== null){ clozeState.filled[b] = null; drawCloze(); }
+  }
+
+  function checkCloze(){
+    if (state.answered) return;
+    if (clozeState.filled[0] === null || clozeState.filled[1] === null) return;
+    state.answered = true;
+    var q      = ROOMS[state.room].data[state.q];
+    var placed = [clozeState.bank[clozeState.filled[0]], clozeState.bank[clozeState.filled[1]]];
+    var isRight = placed[0] === q.answer[0] && placed[1] === q.answer[1];
+    if (isRight){ state.score++; setScore(); }
+
+    var blanks = document.querySelectorAll("#clozeLine .blank");
+    for (var b = 0; b < blanks.length; b++){
+      blanks[b].classList.add(placed[b] === q.answer[b] ? "b-ok" : "b-bad");
+      blanks[b].setAttribute("tabindex","-1");
+    }
+    var why = q.why + (isRight ? "" : " Correct answer: " + q.answer.join(" ") + ".");
+    el("checkBtn").classList.add("hidden");
+    showFeedback(isRight, why);
+  }
+
+  /* ============================================================
+     NAVIGATION
+  ============================================================ */
+  function next(){
+    if (!state.answered) return;
+    var room = ROOMS[state.room];
+    if (state.q < room.data.length - 1){
+      state.q++;
+      renderQuestion();
+    } else {
+      el("lock" + state.room).classList.add("open");
+      if (state.room < ROOMS.length - 1){
+        state.room++;
+        state.q = 0;
+        renderQuestion();
+      } else {
+        finish();
+      }
+    }
+  }
+
+  function finish(){
+    state.finished = true;
+    el("finalScore").textContent = String(state.score);
+    var msg, note;
+    if (state.score === 15){
+      msg  = "A perfect escape!";
+      note = "Fifteen out of fifteen \u2014 Professor Whitlock would be impressed. Adjective order holds no secrets for you.";
+    } else if (state.score >= 12){
+      msg  = "You escaped in record time!";
+      note = "Excellent work. Review the questions you missed, paying attention to Purpose/Type/Style (category 8) \u2014 it always sits right next to the noun.";
+    } else if (state.score >= 8){
+      msg  = "You made it out!";
+      note = "Good escape. Remember: opinion \u2192 size \u2192 age \u2192 shape \u2192 colour \u2192 origin \u2192 material \u2192 purpose/type \u2192 noun. Try again to improve your score!";
+    } else {
+      msg  = "You found the way out \u2014 just in time!";
+      note = "The locks were tough today. Revisit the grid on the intro screen, then have another go.";
+    }
+    el("finalMsg").textContent  = msg;
+    el("finalNote").textContent = note;
+    el("progressLabel").textContent = "Escaped!";
+    showScreen("screen-final");
+  }
+
+  function restart(){
+    state.room     = 0;
+    state.q        = 0;
+    state.score    = 0;
+    state.answered = false;
+    state.finished = false;
+    setScore();
+    for (var i = 0; i < 3; i++) el("lock" + i).classList.remove("open");
+    el("progressLabel").textContent = "Ready to begin";
+    showScreen("screen-intro");
+  }
+
+  function start(){
+    showScreen("screen-activity");
+    renderQuestion();
+  }
+
+  /* ============================================================
+     DELEGATED EVENTS
+  ============================================================ */
+  document.addEventListener("click", function(e){
+    var t = e.target;
+
+    var actionEl = t.closest ? t.closest("[data-action]") : null;
+    if (actionEl){
+      var action = actionEl.getAttribute("data-action");
+      if      (action === "start")   start();
+      else if (action === "restart") restart();
+      else if (action === "next")    next();
+      else if (action === "check"){
+        var type = ROOMS[state.room].type;
+        if      (type === "reorder") checkReorder();
+        else if (type === "cloze")   checkCloze();
+      }
+      return;
+    }
+
+    var opt = t.closest ? t.closest(".opt") : null;
+    if (opt && ROOMS[state.room] && ROOMS[state.room].type === "mcq"){
+      handleMCQClick(opt); return;
+    }
+
+    var chip = t.closest ? t.closest(".chip[data-chip]") : null;
+    if (chip){ handleChipTap(chip); return; }
+
+    var bankChip = t.closest ? t.closest(".chip[data-bank]") : null;
+    if (bankChip){ handleBankTap(bankChip); return; }
+
+    var blank = t.closest ? t.closest(".blank") : null;
+    if (blank){ handleBlankTap(blank); return; }
+  });
+
+  // Keyboard: Enter / Space on interactive elements
+  document.addEventListener("keydown", function(e){
+    if (e.key !== "Enter" && e.key !== " ") return;
+    var t = e.target;
+    if (t.hasAttribute && (
+        t.hasAttribute("data-chip") ||
+        t.hasAttribute("data-bank") ||
+        t.hasAttribute("data-blank")
+      )){
+      e.preventDefault();
+      t.click();
+    }
+  });
+
+  // Drag-and-drop for reorder (dragSrc lives in reorderState, fresh per question)
+  document.addEventListener("dragstart", function(e){
+    var chip = e.target.closest ? e.target.closest(".chip[data-chip]") : null;
+    if (!chip || state.answered){ e.preventDefault(); return; }
+    reorderState.dragSrc = parseInt(chip.getAttribute("data-chip"), 10);
+    chip.classList.add("dragging");
+    if (e.dataTransfer){
+      e.dataTransfer.effectAllowed = "move";
+      e.dataTransfer.setData("text/plain", String(reorderState.dragSrc));
+    }
+  });
+
+  document.addEventListener("dragover", function(e){
+    if (e.target.closest && e.target.closest(".chip[data-chip]")) e.preventDefault();
+  });
+
+  document.addEventListener("drop", function(e){
+    var chip = e.target.closest ? e.target.closest(".chip[data-chip]") : null;
+    if (!chip || state.answered || !reorderState || reorderState.dragSrc < 0) return;
+    e.preventDefault();
+    var target = parseInt(chip.getAttribute("data-chip"), 10);
+    if (target !== reorderState.dragSrc) swapChips(reorderState.dragSrc, target);
+    reorderState.dragSrc = -1;
+    reorderState.picked  = -1;
+    drawChips();
+  });
+
+  document.addEventListener("dragend", function(){
+    if (reorderState) reorderState.dragSrc = -1;
+    var d = document.querySelector(".chip.dragging");
+    if (d) d.classList.remove("dragging");
+  });
+
+  /* ============================================================
+     INIT
+  ============================================================ */
+  setScore();
+
+})();
+</script>
+</body>
+</html>

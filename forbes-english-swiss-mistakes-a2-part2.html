@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English | Swiss Precision Part 2 (A2)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #C8102E;
+    --red-dark: #9E0B22;
+    --red-wash: #FBEAEC;
+    --paper: #F7F4EF;
+    --card: #FFFFFF;
+    --ink: #1C1B1A;
+    --slate: #66707A;
+    --line: #E4DFD6;
+    --green: #2E7D52;
+    --green-wash: #EAF4EE;
+    --shadow: 0 2px 10px rgba(28,27,26,0.07);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Archivo", Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 780px; margin: 0 auto; padding: 0 20px 80px; }
+
+  /* -------- Header -------- */
+  header { text-align: center; padding: 42px 0 0; }
+  .logo { display: inline-block; }
+  .train-scene { display: block; width: 100%; max-width: 780px; margin: 26px auto 0; }
+  .lesson-title {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: clamp(28px,5vw,40px);
+    font-weight: 700;
+    margin-top: 26px;
+    letter-spacing: -0.01em;
+  }
+  .lesson-sub {
+    color: var(--slate);
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-top: 10px;
+  }
+  .level-chip {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 16px;
+    background: var(--red);
+    color: #fff;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    padding: 6px 16px;
+    border-radius: 999px;
+  }
+
+  /* -------- Scorebar -------- */
+  .scorebar {
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    background: var(--ink);
+    color: #fff;
+    border-radius: 12px;
+    padding: 14px 20px;
+    margin: 34px 0 22px;
+    flex-wrap: wrap;
+  }
+  .scorebar.visible { display: flex; }
+  .sb-item { font-size: 14px; font-weight: 600; letter-spacing: 0.04em; }
+  .sb-item strong { color: #fff; font-weight: 800; }
+  .sb-label { color: rgba(255,255,255,0.65); text-transform: uppercase; font-size: 11px; letter-spacing: 0.12em; display: block; }
+  .sb-score strong { color: #F4B8C1; }
+
+  /* -------- Cards -------- */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    padding: 30px;
+    margin-top: 22px;
+  }
+  .act-eyebrow { color: var(--red); font-weight: 800; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; }
+  .act-title { font-family: "Playfair Display", Georgia, serif; font-size: 26px; font-weight: 700; margin-top: 6px; }
+  .act-instructions { color: var(--slate); margin-top: 10px; font-size: 16px; }
+  .progress-line { display: flex; align-items: center; gap: 14px; margin-top: 22px; }
+  .progress-text { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; color: var(--slate); text-transform: uppercase; white-space: nowrap; }
+  .progress-track { flex: 1; height: 6px; background: var(--line); border-radius: 999px; overflow: hidden; }
+  .progress-fill { height: 100%; width: 0%; background: var(--red); border-radius: 999px; transition: width 0.35s ease; }
+
+  /* -------- Options (MC / chips) -------- */
+  .options { display: grid; gap: 12px; margin-top: 22px; }
+  .options.chips { grid-template-columns: repeat(auto-fit, minmax(130px,1fr)); }
+  .opt {
+    font-family: "Archivo", Arial, sans-serif;
+    font-size: 17px;
+    text-align: left;
+    background: var(--paper);
+    border: 2px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease, transform 0.1s ease;
+    color: var(--ink);
+    line-height: 1.45;
+  }
+  .options.chips .opt { text-align: center; font-weight: 700; }
+  .opt:hover:not(:disabled) { border-color: var(--ink); background: #fff; }
+  .opt:active:not(:disabled) { transform: scale(0.99); }
+  .opt:focus-visible { outline: 3px solid var(--red); outline-offset: 2px; }
+  .opt:disabled { cursor: default; }
+  .opt.correct { border-color: var(--green); background: var(--green-wash); font-weight: 700; }
+  .opt.incorrect { border-color: var(--red); background: var(--red-wash); }
+  .opt.dim { opacity: 0.55; }
+
+  /* -------- Feedback -------- */
+  .feedback { margin-top: 20px; border-radius: 10px; padding: 16px 18px; font-size: 16px; display: none; }
+  .feedback.show { display: block; }
+  .feedback.good { background: var(--green-wash); border: 1px solid #BBDCC8; }
+  .feedback.bad { background: var(--red-wash); border: 1px solid #EFC1C9; }
+  .feedback .verdict { font-weight: 800; letter-spacing: 0.04em; display: block; margin-bottom: 4px; }
+  .feedback.good .verdict { color: var(--green); }
+  .feedback.bad .verdict { color: var(--red-dark); }
+  .feedback .de { display: block; margin-top: 8px; color: var(--slate); font-size: 14.5px; font-style: italic; }
+
+  /* -------- Button -------- */
+  .btn {
+    font-family: "Archivo", Arial, sans-serif;
+    background: var(--red);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    padding: 14px 30px;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.1s ease;
+  }
+  .btn:hover { background: var(--red-dark); }
+  .btn:active { transform: scale(0.98); }
+  .btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+  .next-row { margin-top: 24px; text-align: right; }
+
+  /* -------- Intro -------- */
+  .intro-list { margin-top: 20px; display: grid; gap: 12px; }
+  .intro-item { display: flex; gap: 14px; align-items: flex-start; }
+  .intro-num {
+    flex: none; width: 32px; height: 32px; border-radius: 50%;
+    background: var(--ink); color: #fff; font-weight: 800; font-size: 14px;
+    display: flex; align-items: center; justify-content: center; margin-top: 2px;
+  }
+  .intro-item h3 { font-size: 17px; font-weight: 700; }
+  .intro-item p { color: var(--slate); font-size: 15px; }
+  .intro-start { margin-top: 28px; text-align: center; }
+  .part-badge {
+    display: inline-block;
+    margin-bottom: 16px;
+    background: var(--ink);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    padding: 5px 14px;
+    border-radius: 999px;
+    text-transform: uppercase;
+  }
+
+  /* -------- Wrong-sentence block -------- */
+  .wrong-block {
+    margin-top: 26px;
+    background: var(--red-wash);
+    border-left: 4px solid var(--red);
+    border-radius: 0 10px 10px 0;
+    padding: 14px 18px;
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .wrong-block .tag {
+    display: block;
+    color: var(--red-dark);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  /* -------- Drag-sort (pronunciation sorter) -------- */
+  .sort-bins { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 14px; margin-top: 22px; }
+  .sort-bin {
+    border: 2px dashed var(--line);
+    border-radius: 12px;
+    padding: 12px;
+    min-height: 120px;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .sort-bin.drag-over { border-color: var(--red); background: var(--red-wash); }
+  .sort-bin.correct-bin { border-color: var(--green); border-style: solid; background: var(--green-wash); }
+  .sort-bin.wrong-bin { border-color: var(--red); border-style: solid; background: var(--red-wash); }
+  .bin-label {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--slate);
+    margin-bottom: 10px;
+    display: block;
+  }
+  .sort-pool { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+  .drag-chip {
+    font-family: "Archivo", Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    background: var(--ink);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 14px;
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+    transition: opacity 0.15s ease, transform 0.1s ease;
+  }
+  .drag-chip:active { cursor: grabbing; transform: scale(1.05); opacity: 0.85; }
+  .drag-chip.placed { opacity: 0.45; pointer-events: none; }
+  .bin-chip {
+    font-size: 14px;
+    font-weight: 700;
+    background: var(--ink);
+    color: #fff;
+    border-radius: 6px;
+    padding: 5px 10px;
+    display: inline-block;
+    margin: 2px;
+  }
+  .bin-chip.wrong-chip { background: var(--red); }
+
+  /* -------- Cloze -------- */
+  .cloze-text {
+    background: #F7F4EF;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 20px 22px;
+    font-size: 17px;
+    line-height: 2;
+    margin-top: 20px;
+  }
+  .cloze-blank {
+    display: inline-block;
+    border-bottom: 2px solid var(--red);
+    min-width: 100px;
+    text-align: center;
+    font-weight: 700;
+    color: var(--red);
+    cursor: pointer;
+    padding: 0 4px;
+    transition: background 0.15s;
+    border-radius: 4px 4px 0 0;
+  }
+  .cloze-blank:hover { background: var(--red-wash); }
+  .cloze-blank.filled { color: var(--ink); border-color: var(--slate); cursor: default; }
+  .cloze-blank.filled:hover { background: transparent; }
+  .cloze-blank.correct-fill { color: var(--green); border-color: var(--green); }
+  .cloze-blank.wrong-fill { color: var(--red-dark); border-color: var(--red); }
+  .word-bank { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+  .wb-chip {
+    font-family: "Archivo", Arial, sans-serif;
+    background: var(--ink);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    padding: 7px 14px;
+    cursor: pointer;
+    transition: opacity 0.15s, background 0.15s;
+  }
+  .wb-chip:hover:not(:disabled) { background: var(--red); }
+  .wb-chip:focus-visible { outline: 3px solid var(--red); outline-offset: 2px; }
+  .wb-chip:disabled { opacity: 0.35; cursor: default; }
+  .wb-chip.used { opacity: 0.35; cursor: default; pointer-events: none; }
+  .active-blank { background: var(--red-wash) !important; border-color: var(--red) !important; }
+
+  /* -------- Match -------- */
+  .match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 24px; }
+  .match-col { display: grid; gap: 10px; align-content: start; }
+  .match-col-label { font-size: 12px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--slate); }
+  .match-item {
+    font-family: "Archivo", Arial, sans-serif;
+    text-align: left;
+    background: var(--paper);
+    border: 2px solid var(--line);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 15px;
+    line-height: 1.4;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+    color: var(--ink);
+  }
+  .match-item.term { font-weight: 700; font-size: 16px; }
+  .match-item:hover:not(:disabled) { border-color: var(--ink); background: #fff; }
+  .match-item:focus-visible { outline: 3px solid var(--red); outline-offset: 2px; }
+  .match-item.selected { border-color: var(--red); background: var(--red-wash); }
+  .match-item.matched { border-color: var(--green); background: var(--green-wash); cursor: default; }
+  .match-item.shake { animation: shake 0.35s ease; }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+  @media (max-width: 560px) { .match-grid { grid-template-columns: 1fr; } .sort-bins { grid-template-columns: 1fr 1fr; } }
+
+  /* -------- Results -------- */
+  .results { text-align: center; padding: 44px 30px; }
+  .ring-wrap { width: 170px; margin: 24px auto 0; position: relative; }
+  .ring-score { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .ring-score strong { font-size: 40px; font-weight: 800; line-height: 1; }
+  .ring-score span { font-size: 13px; color: var(--slate); font-weight: 600; margin-top: 4px; }
+  .results h2 { font-family: "Playfair Display", Georgia, serif; font-size: 30px; margin-top: 26px; }
+  .results p.msg { color: var(--slate); max-width: 480px; margin: 12px auto 0; }
+  .breakdown { margin: 30px auto 0; max-width: 440px; display: grid; gap: 10px; text-align: left; }
+  .bd-row { display: flex; justify-content: space-between; gap: 12px; font-size: 15px; border-bottom: 1px dashed var(--line); padding-bottom: 8px; }
+  .bd-row span:last-child { font-weight: 800; }
+  .results .btn { margin-top: 32px; }
+
+  footer { text-align: center; color: var(--slate); font-size: 13px; margin-top: 60px; letter-spacing: 0.08em; }
+  footer .dot { color: var(--red); }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <svg class="logo" width="240" height="104" viewBox="0 0 240 104" role="img" aria-label="Forbes English">
+      <text x="120" y="48" text-anchor="middle" font-family="'Playfair Display', Georgia, serif" font-size="50" font-weight="600" fill="#C8102E">Forbes</text>
+      <line x1="36" y1="64" x2="204" y2="64" stroke="#1C1B1A" stroke-width="1.5"></line>
+      <text x="120" y="92" text-anchor="middle" font-family="'Archivo', Arial, sans-serif" font-size="21" font-weight="800" letter-spacing="9" fill="#1C1B1A">ENGLISH</text>
+    </svg>
+
+    <!-- Swiss train / hotel scene illustration -->
+    <svg class="train-scene" viewBox="0 0 780 150" preserveAspectRatio="xMidYMax meet" role="img" aria-label="Swiss train approaching a hotel">
+      <!-- sky gradient via rect -->
+      <rect x="0" y="0" width="780" height="110" fill="#EDE8E0"></rect>
+      <!-- distant mountains -->
+      <polygon points="0,90 80,30 160,90" fill="#B0B8C1" opacity="0.5"></polygon>
+      <polygon points="100,90 200,10 300,90" fill="#9AA2AC" opacity="0.45"></polygon>
+      <polygon points="250,90 360,20 450,90" fill="#B0B8C1" opacity="0.4"></polygon>
+      <!-- hotel building -->
+      <rect x="580" y="32" width="160" height="78" fill="#1C1B1A"></rect>
+      <rect x="590" y="40" width="24" height="24" fill="#F7F4EF" opacity="0.9"></rect>
+      <rect x="622" y="40" width="24" height="24" fill="#F7F4EF" opacity="0.9"></rect>
+      <rect x="654" y="40" width="24" height="24" fill="#F7F4EF" opacity="0.9"></rect>
+      <rect x="590" y="72" width="24" height="24" fill="#F7F4EF" opacity="0.9"></rect>
+      <rect x="622" y="72" width="24" height="24" fill="#C8102E" opacity="0.85"></rect>
+      <rect x="654" y="72" width="24" height="24" fill="#F7F4EF" opacity="0.9"></rect>
+      <rect x="618" y="96" width="32" height="14" fill="#C8102E"></rect>
+      <!-- flag -->
+      <line x1="660" y1="32" x2="660" y2="10" stroke="#1C1B1A" stroke-width="2"></line>
+      <rect x="660" y="10" width="18" height="12" fill="#C8102E"></rect>
+      <rect x="666" y="13" width="6" height="2" fill="#fff"></rect>
+      <rect x="668" y="11" width="2" height="6" fill="#fff"></rect>
+      <!-- track -->
+      <rect x="0" y="112" width="780" height="8" fill="#66707A"></rect>
+      <rect x="0" y="118" width="780" height="4" fill="#4E5860"></rect>
+      <line x1="0" y1="114" x2="780" y2="114" stroke="#E4DFD6" stroke-width="1.5" stroke-dasharray="18 12"></line>
+      <!-- train -->
+      <rect x="80" y="78" width="220" height="42" rx="6" fill="#C8102E"></rect>
+      <rect x="84" y="82" width="40" height="24" rx="3" fill="#FBEAEC" opacity="0.9"></rect>
+      <rect x="130" y="82" width="40" height="24" rx="3" fill="#FBEAEC" opacity="0.9"></rect>
+      <rect x="176" y="82" width="40" height="24" rx="3" fill="#FBEAEC" opacity="0.9"></rect>
+      <rect x="222" y="82" width="40" height="24" rx="3" fill="#FBEAEC" opacity="0.9"></rect>
+      <rect x="84" y="116" width="28" height="8" rx="4" fill="#1C1B1A"></rect>
+      <rect x="252" y="116" width="28" height="8" rx="4" fill="#1C1B1A"></rect>
+      <!-- SBB text on train -->
+      <text x="178" y="107" text-anchor="middle" font-family="'Archivo', sans-serif" font-size="11" font-weight="800" fill="#fff" letter-spacing="2">SBB</text>
+      <rect x="0" y="145" width="780" height="5" fill="#1C1B1A"></rect>
+    </svg>
+
+    <h1 class="lesson-title">Swiss Precision English</h1>
+    <p class="lesson-sub">Pronunciation, Vocabulary & Word Order &nbsp;|&nbsp; Part 2</p>
+    <span class="level-chip">LEVEL A2 <span style="opacity:0.7; font-weight:400;">|</span> PART 2</span>
+  </header>
+
+  <div class="scorebar" id="scorebar">
+    <div class="sb-item sb-score"><span class="sb-label">Score</span><strong id="sb-score-val">0</strong> / <span id="sb-total">0</span></div>
+    <div class="sb-item"><span class="sb-label">Activity</span><strong id="sb-activity">-</strong></div>
+    <div class="sb-item"><span class="sb-label">Answered</span><strong id="sb-answered">0</strong></div>
+  </div>
+
+  <main id="stage"></main>
+
+  <footer>FORBES ENGLISH <span class="dot">*</span> INTERACTIVE LESSON <span class="dot">*</span> PART 2</footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ======================================================
+     DATA
+  ====================================================== */
+
+  /* --- Activity 1: Pronunciation Sort (drag-and-drop) --- */
+  var ACT1 = {
+    type: "sort",
+    label: "Activity 1",
+    title: "Sound Groups",
+    instructions: "German speakers often add an extra vowel to English consonant endings. Drag each word into the correct sound group. Watch out for silent letters!",
+    bins: [
+      { id: "silent", label: "Silent letter" },
+      { id: "t_sound", label: "Final /t/ sound" },
+      { id: "d_sound", label: "Final /d/ sound" },
+      { id: "z_sound", label: "Final /z/ sound" }
+    ],
+    words: [
+      { word: "salmon",    bin: "silent",  explain: "The L is silent: SAM-un. German speakers often say sal-mon." },
+      { word: "castle",    bin: "silent",  explain: "The T is silent: CAS-ul. Like 'hustle', 'whistle', 'wrestle'." },
+      { word: "whole",     bin: "silent",  explain: "The W and H combine so only H is heard: HOLE. The W is silent." },
+      { word: "knocked",   bin: "silent",  explain: "The K is silent AND the -ed ending is /t/: NOKT." },
+      { word: "half",      bin: "silent",  explain: "The L is silent: HARF. Like 'calf', 'calm', 'palm'." },
+      { word: "looked",    bin: "t_sound", explain: "-ed after an unvoiced sound /k/ becomes /t/: LOOKT, not 'look-ed'." },
+      { word: "based",     bin: "t_sound", explain: "-ed after unvoiced /s/ becomes /t/: BAYST, not 'bay-zed'." },
+      { word: "whipped",   bin: "t_sound", explain: "-ed after unvoiced /p/ becomes /t/: WIPT, not 'whip-ped'." },
+      { word: "pleased",   bin: "d_sound", explain: "-ed after voiced /z/ becomes /d/: PLEEZD. The Z keeps it voiced." },
+      { word: "arrived",   bin: "d_sound", explain: "-ed after voiced /v/ becomes /d/: ARRIVD." },
+      { word: "countries", bin: "z_sound", explain: "-ies endings = /z/: KUN-treez. The plural S is voiced here." },
+      { word: "produces",  bin: "z_sound", explain: "The third-person S after a voiced sound = /z/: pro-DYOO-ziz." },
+      { word: "services",  bin: "z_sound", explain: "-ices endings = /iz/ sound. Plural of service: SER-vi-siz." }
+    ]
+  };
+
+  /* --- Activity 2: Word Stress (MC) --- */
+  var ACT2 = {
+    type: "mc",
+    label: "Activity 2",
+    title: "Which Syllable is Stressed?",
+    instructions: "German speakers sometimes put the stress in the wrong place. Choose the version that shows the correct stress. The STRESSED syllable is in CAPITALS.",
+    questions: [
+      {
+        prompt: "employees",
+        options: ["em-PLOY-ees", "EM-ploy-ees", "em-ploy-EES", "em-PLOY-eez"],
+        answer: "em-PLOY-ees",
+        explain: "The stress falls on the second syllable: em-PLOY-ees. The -ees ending is unstressed."
+      },
+      {
+        prompt: "subsidiary",
+        options: ["sub-SID-i-ary", "SUB-si-di-ary", "sub-sid-I-ary", "sub-sid-i-ARY"],
+        answer: "sub-SID-i-ary",
+        explain: "Stress on the second syllable: sub-SID-i-ary. A very common word in international business."
+      },
+      {
+        prompt: "expertise",
+        options: ["EX-per-tise", "ex-PER-tise", "ex-per-TISE", "ex-PERT-ise"],
+        answer: "ex-per-TISE",
+        explain: "The stress is on the final syllable: ex-per-TISE. Unlike 'expert' (EX-pert), where it is first."
+      },
+      {
+        prompt: "transferable",
+        options: ["TRANS-fer-able", "trans-FER-able", "trans-fer-A-ble", "trans-FER-a-ble"],
+        answer: "trans-FER-able",
+        explain: "Stress is on the second syllable: trans-FER-able. Not TRANS-fer-able, which is a very common mistake."
+      },
+      {
+        prompt: "revenue",
+        options: ["rev-EN-ue", "REV-en-ue", "rev-e-NUE", "REV-E-nue"],
+        answer: "REV-en-ue",
+        explain: "Stress on the first syllable: REV-en-ue. Three syllables total."
+      },
+      {
+        prompt: "enjoyable",
+        options: ["EN-joy-able", "en-JOY-able", "en-joy-A-ble", "en-JOY-a-ble"],
+        answer: "en-JOY-able",
+        explain: "The root verb 'enjoy' keeps its stress: en-JOY-able. The suffix -able does not take the stress."
+      },
+      {
+        prompt: "personalised",
+        options: ["per-SON-al-ised", "PER-son-al-ised", "per-son-AL-ised", "per-son-al-ISED"],
+        answer: "PER-son-al-ised",
+        explain: "Stress on the first syllable: PER-son-al-ised. Long words often keep the stress on the original root."
+      },
+      {
+        prompt: "cathedral",
+        options: ["CA-the-dral", "ca-THE-dral", "cath-e-DRAL", "ca-the-DRAL"],
+        answer: "ca-THE-dral",
+        explain: "Stress on the second syllable: ca-THE-dral. Three syllables: ca-the-dral."
+      }
+    ]
+  };
+
+  /* --- Activity 3: Travel & Hotel Cloze --- */
+  var ACT3 = {
+    type: "cloze",
+    label: "Activity 3",
+    title: "Hotel Review",
+    instructions: "Complete the hotel review. Click a blank space, then click the correct word from the word bank below.",
+    text: "The hotel was excellent from the moment of our [arrival]. It had easy [access] to the city centre, and there were many restaurants [nearby]. The hotel offered a good [variety] of services, including [personalised] recommendations for guests. The rooms were [clean], the breakfast was [tasty], and the whole stay was very [enjoyable]. One of the best [features] was the view of the old [cathedral].",
+    bank: ["arrival", "access", "nearby", "variety", "personalised", "clean", "tasty", "enjoyable", "features", "cathedral"],
+    explains: {
+      "arrival": "We talk about the moment of our ARRIVAL (noun). Not 'the moment we arrived' in formal writing.",
+      "access": "Easy ACCESS to a place means it is simple to get there or enter. 'Access' is uncountable.",
+      "nearby": "NEARBY is an adjective/adverb meaning close in distance. Not 'nearly' (=almost).",
+      "variety": "A VARIETY OF = several different types. Always 'a variety of' + plural noun.",
+      "personalised": "PERSONALISED recommendations = made specially for you as an individual.",
+      "clean": "CLEAN rooms is the normal hotel review collocation. Not 'cleaned rooms'.",
+      "tasty": "TASTY = has a good taste/flavour. A very common adjective for food.",
+      "enjoyable": "ENJOYABLE = pleasant and fun. The noun 'enjoy' + -able. Stress: en-JOY-able.",
+      "features": "FEATURES = important or interesting parts/characteristics. 'One of the best features' is a fixed phrase.",
+      "cathedral": "A CATHEDRAL is the main church of a region, often a tourist attraction. ca-THE-dral."
+    }
+  };
+
+  /* --- Activity 4: Sentence Rewrite (MC) --- */
+  var ACT4 = {
+    type: "mc",
+    label: "Activity 4",
+    title: "Make It Natural",
+    instructions: "Each sentence sounds like German put into English words. Choose the version that sounds natural in English.",
+    questions: [
+      {
+        prompt: "Where local people go are good restaurants.",
+        options: [
+          "Good restaurants are where local people go.",
+          "Restaurants that local people go are good ones.",
+          "Where is going the local people a good restaurant.",
+          "The local peoples go to good restaurants there."
+        ],
+        answer: "Good restaurants are where local people go.",
+        explain: "'People' (not 'peoples') is already plural. The natural structure puts the subject first: 'Good restaurants are...'"
+      },
+      {
+        prompt: "I like eat in cafes because the atmosphere is enjoyable.",
+        options: [
+          "I like to eat in cafes because the atmosphere is enjoyable.",
+          "I like eat in cafes because the atmosphere is enjoying.",
+          "I like eating in cafes because the atmosphere is enjoyable.",
+          "I like to eat in cafes because the atmosphere is enjoyable."
+        ],
+        answer: "I like to eat in cafes because the atmosphere is enjoyable.",
+        explain: "After 'like', you need either 'to eat' or 'eating'. The atmosphere IS enjoyable (adjective). 'Enjoying' would be a verb.",
+        de: "Both 'I like to eat' and 'I like eating' are correct, but here only one option appears, so it is the answer."
+      },
+      {
+        prompt: "The eat in the hotel was tasty.",
+        options: [
+          "The food in the hotel was tasty.",
+          "The eaten in the hotel was tasty.",
+          "The eating in the hotel was tasty.",
+          "The meal in the hotel was tasteful."
+        ],
+        answer: "The food in the hotel was tasty.",
+        explain: "'Eat' is a verb, not a noun. The noun is FOOD. 'Tasteful' means elegant style, not good flavour - that is 'tasty'.",
+        de: "DE: Das Essen = the food (noun). 'Essen' can be verb or noun in German, but 'eat' is only a verb in English."
+      },
+      {
+        prompt: "I prefer restaurants where local peoples go.",
+        options: [
+          "I prefer restaurants where local people go.",
+          "I prefer restaurants where local peoples are going.",
+          "I prefer the restaurants where local peoples go.",
+          "I prefer restaurants which local peoples go to."
+        ],
+        answer: "I prefer restaurants where local people go.",
+        explain: "'People' is already plural - we never say 'peoples' in everyday use. 'Where' is correct for places.",
+        de: "DE: Leute (plural already). 'peoples' only exists when talking about different cultures or nations."
+      },
+      {
+        prompt: "A long time before, this region had many castles.",
+        options: [
+          "A long time ago, this region had many castles.",
+          "A long time since, this region had many castles.",
+          "Long ago time, this region had many castles.",
+          "Long before now, this region had many castles."
+        ],
+        answer: "A long time ago, this region had many castles.",
+        explain: "AGO always looks back from the present moment. 'Before' needs another past reference point: 'before the war'. 'A long time ago' is a set phrase.",
+        de: "DE: vor langer Zeit = a long time ago (NOT 'a long time before')"
+      },
+      {
+        prompt: "That's mean the revenue increased.",
+        options: [
+          "That means the revenue increased.",
+          "That's meant the revenue increased.",
+          "That is meaning the revenue increased.",
+          "That mean the revenue it increased."
+        ],
+        answer: "That means the revenue increased.",
+        explain: "'That means...' uses simple present third person: mean + s. 'That's mean' = 'that is mean' = the revenue is unkind!",
+        de: "DE: Das bedeutet = that means. 'Mean' is also an adjective (unkind), so the wrong form creates a funny mistake."
+      },
+      {
+        prompt: "There is much sun and nearby access to the cathedral.",
+        options: [
+          "There is a lot of sun, and the cathedral is nearby.",
+          "There is many sun, and nearby is the cathedral.",
+          "There is much sun and the cathedral is near to.",
+          "There is a lot of sun, and nearby there cathedral."
+        ],
+        answer: "There is a lot of sun, and the cathedral is nearby.",
+        explain: "In positive sentences we use 'a lot of', not 'much'. 'Nearby' works as an adverb or adjective after a noun. 'Near to' needs an object: near to the station.",
+        de: "DE: viel Sonne = a lot of sun (positive). 'Much' is mainly for negatives and questions."
+      },
+      {
+        prompt: "It has variety of features.",
+        options: [
+          "It has a variety of features.",
+          "It has varieties of feature.",
+          "It has variety features.",
+          "It has a varieties of features."
+        ],
+        answer: "It has a variety of features.",
+        explain: "The phrase is always 'A variety of' - the article 'a' is essential. 'Variety' is singular here even though what follows is plural.",
+        de: "DE: eine Reihe von = a variety of. Always needs the article: a variety of + plural noun."
+      }
+    ]
+  };
+
+  /* --- Activity 5: Food & Cafe Vocabulary Match --- */
+  var ACT5 = {
+    type: "match",
+    label: "Activity 5",
+    title: "Cafe & Food Vocabulary",
+    instructions: "Click a word on the left, then click its definition on the right. Only your first attempt for each word counts!",
+    pairs: [
+      { term: "gather", def: "to come together in one place" },
+      { term: "brew", def: "to make a hot drink like coffee or tea" },
+      { term: "whipped cream", def: "cream that has been beaten until thick and light" },
+      { term: "pastry", def: "a baked food made from dough, often sweet" },
+      { term: "culture", def: "the customs and traditions of a group of people" },
+      { term: "title", def: "an official name or award given to someone" },
+      { term: "even", def: "used to emphasize something surprising or unexpected" },
+      { term: "whole", def: "complete, all of something" }
+    ]
+  };
+
+  var ACTIVITIES = [ACT1, ACT2, ACT3, ACT4, ACT5];
+
+  /* Sort: each word = 1 point; MC + cloze: each question = 1 point; match: each pair = 1 point */
+  var TOTAL_QUESTIONS = 0;
+  ACTIVITIES.forEach(function (a) {
+    if (a.type === "sort")  { TOTAL_QUESTIONS += a.words.length; }
+    else if (a.type === "cloze") { TOTAL_QUESTIONS += a.bank.length; }
+    else if (a.type === "match") { TOTAL_QUESTIONS += a.pairs.length; }
+    else { TOTAL_QUESTIONS += a.questions.length; }
+  });
+
+  /* ======================================================
+     STATE
+  ====================================================== */
+  var state = { actIndex: 0, qIndex: 0, score: 0, answered: 0 };
+
+  var stage   = document.getElementById("stage");
+  var scorebar = document.getElementById("scorebar");
+
+  function updateScorebar() {
+    document.getElementById("sb-score-val").textContent  = state.score;
+    document.getElementById("sb-total").textContent      = TOTAL_QUESTIONS;
+    document.getElementById("sb-answered").textContent   = state.answered + " of " + TOTAL_QUESTIONS;
+    var label = state.actIndex < ACTIVITIES.length
+      ? (state.actIndex + 1) + " of " + ACTIVITIES.length
+      : "Done";
+    document.getElementById("sb-activity").textContent = label;
+  }
+
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  function esc(s) {
+    return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  }
+
+  /* ======================================================
+     ROUTING
+  ====================================================== */
+  function renderCurrent() {
+    if (state.actIndex >= ACTIVITIES.length) { renderResults(); return; }
+    scorebar.classList.add("visible");
+    updateScorebar();
+    var act = ACTIVITIES[state.actIndex];
+    if      (act.type === "sort")  { renderSort(act); }
+    else if (act.type === "mc")    { renderMC(act); }
+    else if (act.type === "cloze") { renderCloze(act); }
+    else if (act.type === "match") { renderMatch(act); }
+  }
+
+  function goNext() {
+    var act = ACTIVITIES[state.actIndex];
+    var isMultiStep = (act.type === "mc");
+    var count = isMultiStep ? act.questions.length : 1;
+    if (isMultiStep && state.qIndex + 1 < count) {
+      state.qIndex += 1;
+    } else {
+      state.actIndex += 1;
+      state.qIndex = 0;
+    }
+    renderCurrent();
+    window.scrollTo({ top: scorebar.offsetTop - 12, behavior: "smooth" });
+  }
+
+  function advanceLabel(act, isLastQ) {
+    if (!isLastQ) return "Next question";
+    return (state.actIndex + 1 >= ACTIVITIES.length) ? "See my results" : "Next activity";
+  }
+
+  /* ======================================================
+     INTRO
+  ====================================================== */
+  function renderIntro() {
+    scorebar.classList.remove("visible");
+    var rows = ACTIVITIES.map(function (a, i) {
+      var count;
+      if      (a.type === "sort")  count = a.words.length;
+      else if (a.type === "cloze") count = a.bank.length;
+      else if (a.type === "match") count = a.pairs.length;
+      else                         count = a.questions.length;
+      return '<div class="intro-item">' +
+        '<div class="intro-num">' + (i + 1) + '</div>' +
+        '<div><h3>' + esc(a.title) + '</h3>' +
+        '<p>' + count + ' questions</p></div>' +
+        '</div>';
+    }).join("");
+    stage.innerHTML =
+      '<div class="card">' +
+      '<span class="part-badge">Part 2</span>' +
+      '<p class="act-eyebrow">Welcome back</p>' +
+      '<h2 class="act-title">More Swiss Precision</h2>' +
+      '<p class="act-instructions">Part 1 covered do/make/take and prepositions. ' +
+      'Part 2 moves into pronunciation, word stress, hotel and cafe vocabulary, and natural word order. ' +
+      'There are ' + TOTAL_QUESTIONS + ' questions across ' + ACTIVITIES.length + ' activities. Viel Erfolg!</p>' +
+      '<div class="intro-list">' + rows + '</div>' +
+      '<div class="intro-start"><button class="btn" id="start-btn">Start Part 2</button></div>' +
+      '</div>';
+    document.getElementById("start-btn").addEventListener("click", function () {
+      state.actIndex = 0; state.qIndex = 0;
+      renderCurrent();
+    });
+  }
+
+  /* ======================================================
+     SORT ACTIVITY (drag-and-drop)
+  ====================================================== */
+  function renderSort(act) {
+    var remaining = act.words.slice();
+    var placements = {};
+    var attempted  = {};
+    var totalWords = act.words.length;
+    var correctCount = 0;
+
+    var binsHtml = act.bins.map(function (b) {
+      return '<div class="sort-bin" id="bin-' + b.id + '" data-bin="' + b.id + '">' +
+        '<span class="bin-label">' + esc(b.label) + '</span>' +
+        '</div>';
+    }).join("");
+
+    var poolHtml = shuffle(act.words).map(function (w) {
+      return '<div class="drag-chip" draggable="true" data-word="' + esc(w.word) + '">' + esc(w.word) + '</div>';
+    }).join("");
+
+    stage.innerHTML =
+      '<div class="card">' +
+      '<p class="act-eyebrow">' + esc(act.label) + '</p>' +
+      '<h2 class="act-title">' + esc(act.title) + '</h2>' +
+      '<p class="act-instructions">' + esc(act.instructions) + '</p>' +
+      '<div class="progress-line">' +
+      '<span class="progress-text" id="sort-prog">Sorted 0 of ' + totalWords + '</span>' +
+      '<div class="progress-track"><div class="progress-fill" id="sort-fill" style="width:0%"></div></div>' +
+      '</div>' +
+      '<div class="sort-bins">' + binsHtml + '</div>' +
+      '<p style="color:var(--slate); font-size:14px; margin-top:14px;">Drag words from the pool below into the correct group:</p>' +
+      '<div class="sort-pool" id="sort-pool">' + poolHtml + '</div>' +
+      '<div class="feedback" id="feedback" aria-live="polite"></div>' +
+      '<div class="next-row" id="next-row"></div>' +
+      '</div>';
+
+    var bins  = Array.prototype.slice.call(document.querySelectorAll(".sort-bin"));
+    var chips = Array.prototype.slice.call(document.querySelectorAll(".drag-chip"));
+
+    var draggedWord = null;
+    var draggedEl   = null;
+
+    function refreshSortProg() {
+      var total = Object.keys(placements).length;
+      document.getElementById("sort-prog").textContent = "Sorted " + total + " of " + totalWords;
+      document.getElementById("sort-fill").style.width = Math.round(total / totalWords * 100) + "%";
+    }
+
+    function registerWord(word, binId) {
+      if (attempted[word]) return;
+      attempted[word] = true;
+      var wordData = act.words.filter(function (w) { return w.word === word; })[0];
+      var isCorrect = wordData && wordData.bin === binId;
+      state.answered += 1;
+      if (isCorrect) { state.score += 1; correctCount += 1; }
+      updateScorebar();
+
+      var fb = document.getElementById("feedback");
+      fb.classList.add("show", isCorrect ? "good" : "bad");
+      var verdict = isCorrect ? "Correct!" : "Not quite - that goes in: " + binLabel(wordData.bin);
+      fb.innerHTML = '<span class="verdict">' + esc(word) + ': ' + verdict + '</span>' + (wordData ? esc(wordData.explain) : "");
+
+      if (Object.keys(attempted).length === totalWords) {
+        window.setTimeout(finishSort, 600);
+      }
+    }
+
+    function binLabel(id) {
+      for (var i = 0; i < act.bins.length; i++) {
+        if (act.bins[i].id === id) return act.bins[i].label;
+      }
+      return id;
+    }
+
+    function finishSort() {
+      var fb = document.getElementById("feedback");
+      fb.className = "feedback show good";
+      fb.innerHTML = '<span class="verdict">All words sorted! ' + correctCount + ' of ' + totalWords + ' correct.</span>Review the groups above to check your answers.';
+      var isLastAct = state.actIndex + 1 >= ACTIVITIES.length;
+      document.getElementById("next-row").innerHTML =
+        '<button class="btn" id="next-btn">' + (isLastAct ? "See my results" : "Next activity") + '</button>';
+      document.getElementById("next-btn").addEventListener("click", goNext);
+      document.getElementById("next-btn").focus();
+    }
+
+    /* --- Drag (desktop) --- */
+    chips.forEach(function (chip) {
+      chip.addEventListener("dragstart", function (e) {
+        draggedWord = chip.getAttribute("data-word");
+        draggedEl   = chip;
+        e.dataTransfer.effectAllowed = "move";
+      });
+    });
+
+    bins.forEach(function (bin) {
+      bin.addEventListener("dragover", function (e) {
+        e.preventDefault();
+        bin.classList.add("drag-over");
+      });
+      bin.addEventListener("dragleave", function () {
+        bin.classList.remove("drag-over");
+      });
+      bin.addEventListener("drop", function (e) {
+        e.preventDefault();
+        bin.classList.remove("drag-over");
+        if (!draggedWord || attempted[draggedWord]) return;
+        var binId = bin.getAttribute("data-bin");
+        placements[draggedWord] = binId;
+        draggedEl.classList.add("placed");
+        var chipEl = document.createElement("span");
+        chipEl.className = "bin-chip";
+        chipEl.textContent = draggedWord;
+        bin.appendChild(chipEl);
+        refreshSortProg();
+        registerWord(draggedWord, binId);
+        draggedWord = null; draggedEl = null;
+      });
+    });
+
+    /* --- Touch (mobile) fallback: tap chip then tap bin --- */
+    var touchSelected = null;
+    chips.forEach(function (chip) {
+      chip.addEventListener("click", function () {
+        if (chip.classList.contains("placed")) return;
+        if (touchSelected) touchSelected.style.outline = "";
+        if (touchSelected === chip) { touchSelected = null; return; }
+        touchSelected = chip;
+        chip.style.outline = "3px solid var(--red)";
+      });
+    });
+    bins.forEach(function (bin) {
+      bin.addEventListener("click", function () {
+        if (!touchSelected) return;
+        var word = touchSelected.getAttribute("data-word");
+        if (attempted[word]) return;
+        var binId = bin.getAttribute("data-bin");
+        placements[word] = binId;
+        touchSelected.style.outline = "";
+        touchSelected.classList.add("placed");
+        var chipEl = document.createElement("span");
+        chipEl.className = "bin-chip";
+        chipEl.textContent = word;
+        bin.appendChild(chipEl);
+        touchSelected = null;
+        refreshSortProg();
+        registerWord(word, binId);
+      });
+    });
+  }
+
+  /* ======================================================
+     MC ACTIVITY
+  ====================================================== */
+  function renderMC(act) {
+    var q = act.questions[state.qIndex];
+    var total = act.questions.length;
+    var isLast = (state.qIndex + 1 === total);
+    var shuffled = shuffle(q.options);
+    var pct = Math.round(state.qIndex / total * 100);
+
+    var promptHtml = '<p class="q-prompt">' + esc(q.prompt) + '</p>';
+
+    var optsHtml = shuffled.map(function (opt) {
+      return '<button type="button" class="opt" data-value="' + esc(opt) + '">' + esc(opt) + '</button>';
+    }).join("");
+
+    stage.innerHTML =
+      '<div class="card">' +
+      '<p class="act-eyebrow">' + esc(act.label) + '</p>' +
+      '<h2 class="act-title">' + esc(act.title) + '</h2>' +
+      '<p class="act-instructions">' + esc(act.instructions) + '</p>' +
+      '<div class="progress-line">' +
+      '<span class="progress-text">Question ' + (state.qIndex+1) + ' of ' + total + '</span>' +
+      '<div class="progress-track"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
+      '</div>' +
+      promptHtml +
+      '<div class="options" id="opts">' + optsHtml + '</div>' +
+      '<div class="feedback" id="feedback" aria-live="polite"></div>' +
+      '<div class="next-row" id="next-row"></div>' +
+      '</div>';
+
+    var buttons = Array.prototype.slice.call(document.querySelectorAll("#opts .opt"));
+    buttons.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var chosen = btn.getAttribute("data-value");
+        var isCorrect = chosen === q.answer;
+        buttons.forEach(function (b) {
+          b.disabled = true;
+          var v = b.getAttribute("data-value");
+          if (v === q.answer)        b.classList.add("correct");
+          else if (b === btn && !isCorrect) b.classList.add("incorrect");
+          else                       b.classList.add("dim");
+        });
+        state.answered += 1;
+        if (isCorrect) state.score += 1;
+        updateScorebar();
+        var fb = document.getElementById("feedback");
+        fb.classList.add("show", isCorrect ? "good" : "bad");
+        var verdict = isCorrect ? "Correct!" : "Not quite. The answer is: " + esc(q.answer);
+        var deHtml = q.de ? '<span class="de">' + esc(q.de) + '</span>' : "";
+        fb.innerHTML = '<span class="verdict">' + verdict + '</span>' + esc(q.explain) + deHtml;
+        var nr = document.getElementById("next-row");
+        nr.innerHTML = '<button class="btn" id="next-btn">' + advanceLabel(act, isLast) + '</button>';
+        document.getElementById("next-btn").addEventListener("click", goNext);
+        document.getElementById("next-btn").focus();
+      });
+    });
+  }
+
+  /* ======================================================
+     CLOZE ACTIVITY
+  ====================================================== */
+  function renderCloze(act) {
+    /* Parse text: [word] marks blanks */
+    var blanks = [];
+    var textHtml = act.text.replace(/\[([^\]]+)\]/g, function (_, word) {
+      var idx = blanks.length;
+      blanks.push({ word: word, filled: false, answered: false });
+      return '<span class="cloze-blank" id="blank-' + idx + '" data-idx="' + idx + '" tabindex="0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>';
+    });
+
+    var bankHtml = shuffle(act.bank).map(function (w) {
+      return '<button type="button" class="wb-chip" data-word="' + esc(w) + '">' + esc(w) + '</button>';
+    }).join("");
+
+    stage.innerHTML =
+      '<div class="card">' +
+      '<p class="act-eyebrow">' + esc(act.label) + '</p>' +
+      '<h2 class="act-title">' + esc(act.title) + '</h2>' +
+      '<p class="act-instructions">' + esc(act.instructions) + '</p>' +
+      '<div class="progress-line">' +
+      '<span class="progress-text" id="cloze-prog">Filled 0 of ' + blanks.length + '</span>' +
+      '<div class="progress-track"><div class="progress-fill" id="cloze-fill" style="width:0%"></div></div>' +
+      '</div>' +
+      '<div class="cloze-text">' + textHtml + '</div>' +
+      '<div class="word-bank" id="word-bank">' + bankHtml + '</div>' +
+      '<div class="feedback" id="feedback" aria-live="polite"></div>' +
+      '<div class="next-row" id="next-row"></div>' +
+      '</div>';
+
+    var activeBlank = null;
+    var filledCount = 0;
+
+    function refreshClozeProg() {
+      document.getElementById("cloze-prog").textContent = "Filled " + filledCount + " of " + blanks.length;
+      document.getElementById("cloze-fill").style.width = Math.round(filledCount / blanks.length * 100) + "%";
+    }
+
+    function selectBlank(idx) {
+      if (blanks[idx].filled) return;
+      if (activeBlank !== null) {
+        var prev = document.getElementById("blank-" + activeBlank);
+        if (prev) prev.classList.remove("active-blank");
+      }
+      activeBlank = idx;
+      document.getElementById("blank-" + idx).classList.add("active-blank");
+    }
+
+    function placeWord(word, chipEl) {
+      if (activeBlank === null) return;
+      var idx = activeBlank;
+      if (blanks[idx].filled) return;
+
+      blanks[idx].filled = true;
+      var blankEl = document.getElementById("blank-" + idx);
+      blankEl.textContent = word;
+      blankEl.classList.remove("active-blank");
+      blankEl.classList.add("filled");
+      chipEl.disabled = true;
+      chipEl.classList.add("used");
+      activeBlank = null;
+      filledCount += 1;
+      refreshClozeProg();
+
+      /* Score only first attempt per blank */
+      if (!blanks[idx].answered) {
+        blanks[idx].answered = true;
+        var isCorrect = word === blanks[idx].word;
+        state.answered += 1;
+        if (isCorrect) state.score += 1;
+        updateScorebar();
+
+        var fb = document.getElementById("feedback");
+        fb.className = "feedback show " + (isCorrect ? "good" : "bad");
+        var verdict = isCorrect ? "Correct!" : 'Not quite - the correct word here is "' + blanks[idx].word + '".';
+        var explain = act.explains[blanks[idx].word] || "";
+        fb.innerHTML = '<span class="verdict">' + verdict + '</span>' + esc(explain);
+
+        if (!isCorrect) {
+          blankEl.classList.add("wrong-fill");
+          /* show correct word underneath */
+          blankEl.title = "Correct: " + blanks[idx].word;
+        } else {
+          blankEl.classList.add("correct-fill");
+        }
+      }
+
+      if (filledCount === blanks.length) {
+        window.setTimeout(function () {
+          var fb = document.getElementById("feedback");
+          fb.className = "feedback show good";
+          fb.innerHTML = '<span class="verdict">Review complete!</span>All blanks are filled. Check the coloured words above for feedback.';
+          var isLastAct = state.actIndex + 1 >= ACTIVITIES.length;
+          document.getElementById("next-row").innerHTML =
+            '<button class="btn" id="next-btn">' + (isLastAct ? "See my results" : "Next activity") + '</button>';
+          document.getElementById("next-btn").addEventListener("click", goNext);
+          document.getElementById("next-btn").focus();
+        }, 400);
+      }
+    }
+
+    /* blank clicks */
+    var blankEls = Array.prototype.slice.call(document.querySelectorAll(".cloze-blank"));
+    blankEls.forEach(function (el) {
+      el.addEventListener("click", function () { selectBlank(parseInt(el.getAttribute("data-idx"), 10)); });
+      el.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") selectBlank(parseInt(el.getAttribute("data-idx"), 10)); });
+    });
+
+    /* chip clicks */
+    var chipEls = Array.prototype.slice.call(document.querySelectorAll(".wb-chip"));
+    chipEls.forEach(function (chip) {
+      chip.addEventListener("click", function () { if (!chip.disabled) placeWord(chip.getAttribute("data-word"), chip); });
+    });
+  }
+
+  /* ======================================================
+     MATCH ACTIVITY
+  ====================================================== */
+  function renderMatch(act) {
+    var terms   = shuffle(act.pairs.map(function (p) { return p.term; }));
+    var defs    = shuffle(act.pairs.map(function (p) { return p.def; }));
+    var defByTerm = {};
+    act.pairs.forEach(function (p) { defByTerm[p.term] = p.def; });
+
+    var matchedCount = 0;
+    var attempted    = {};
+    var selectedTerm = null;
+
+    var termsHtml = terms.map(function (t) {
+      return '<button type="button" class="match-item term" data-term="' + esc(t) + '">' + esc(t) + '</button>';
+    }).join("");
+    var defsHtml = defs.map(function (d) {
+      return '<button type="button" class="match-item def" data-def="' + esc(d) + '">' + esc(d) + '</button>';
+    }).join("");
+
+    stage.innerHTML =
+      '<div class="card">' +
+      '<p class="act-eyebrow">' + esc(act.label) + '</p>' +
+      '<h2 class="act-title">' + esc(act.title) + '</h2>' +
+      '<p class="act-instructions">' + esc(act.instructions) + '</p>' +
+      '<div class="progress-line">' +
+      '<span class="progress-text" id="match-prog">Matched 0 of ' + act.pairs.length + '</span>' +
+      '<div class="progress-track"><div class="progress-fill" id="match-fill" style="width:0%"></div></div>' +
+      '</div>' +
+      '<div class="match-grid">' +
+      '<div class="match-col"><span class="match-col-label">Word</span>' + termsHtml + '</div>' +
+      '<div class="match-col"><span class="match-col-label">Meaning</span>' + defsHtml + '</div>' +
+      '</div>' +
+      '<div class="feedback" id="feedback" aria-live="polite"></div>' +
+      '<div class="next-row" id="next-row"></div>' +
+      '</div>';
+
+    var termBtns = Array.prototype.slice.call(document.querySelectorAll(".match-item.term"));
+    var defBtns  = Array.prototype.slice.call(document.querySelectorAll(".match-item.def"));
+
+    function refreshMatch() {
+      document.getElementById("match-prog").textContent = "Matched " + matchedCount + " of " + act.pairs.length;
+      document.getElementById("match-fill").style.width = Math.round(matchedCount / act.pairs.length * 100) + "%";
+    }
+
+    termBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        if (btn.classList.contains("matched")) return;
+        if (selectedTerm) selectedTerm.classList.remove("selected");
+        if (selectedTerm === btn) { selectedTerm = null; return; }
+        selectedTerm = btn;
+        btn.classList.add("selected");
+      });
+    });
+
+    defBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        if (btn.classList.contains("matched") || !selectedTerm) return;
+        var term = selectedTerm.getAttribute("data-term");
+        var def  = btn.getAttribute("data-def");
+        var isCorrect = defByTerm[term] === def;
+
+        if (!attempted[term]) {
+          attempted[term] = true;
+          state.answered += 1;
+          if (isCorrect) state.score += 1;
+          updateScorebar();
+        }
+
+        if (isCorrect) {
+          selectedTerm.classList.remove("selected");
+          selectedTerm.classList.add("matched");
+          selectedTerm.disabled = true;
+          btn.classList.add("matched");
+          btn.disabled = true;
+          selectedTerm = null;
+          matchedCount += 1;
+          refreshMatch();
+          if (matchedCount === act.pairs.length) {
+            document.getElementById("feedback").className = "feedback show good";
+            document.getElementById("feedback").innerHTML = '<span class="verdict">All pairs matched!</span>Excellent work on the cafe and food vocabulary.';
+            var isLastAct = state.actIndex + 1 >= ACTIVITIES.length;
+            document.getElementById("next-row").innerHTML =
+              '<button class="btn" id="next-btn">' + (isLastAct ? "See my results" : "Next activity") + '</button>';
+            document.getElementById("next-btn").addEventListener("click", goNext);
+            document.getElementById("next-btn").focus();
+          }
+        } else {
+          btn.classList.add("shake");
+          selectedTerm.classList.add("shake");
+          var sel = selectedTerm;
+          window.setTimeout(function () {
+            btn.classList.remove("shake");
+            sel.classList.remove("shake");
+          }, 380);
+        }
+      });
+    });
+  }
+
+  /* ======================================================
+     RESULTS
+  ====================================================== */
+  function renderResults() {
+    scorebar.classList.remove("visible");
+    var pct = Math.round(state.score / TOTAL_QUESTIONS * 100);
+    var heading, msg;
+    if (pct >= 90) {
+      heading = "Perfekt - outstanding!";
+      msg = "Your pronunciation awareness and natural English word order are excellent. You are ready to move up to B1.";
+    } else if (pct >= 75) {
+      heading = "Sehr gut!";
+      msg = "A strong result across two different skill areas. Review the few missed items and you will master them quickly.";
+    } else if (pct >= 50) {
+      heading = "Good progress!";
+      msg = "You are on the right track. Focus on the pronunciation groups and the do/make/take collocations - together Parts 1 and 2 cover the most common mistakes.";
+    } else {
+      heading = "Keep practising!";
+      msg = "These are genuinely difficult areas for German speakers. Read all the explanations and try again - you will see a big improvement.";
+    }
+    var circ = 2 * Math.PI * 70;
+    var dash = circ * pct / 100;
+    stage.innerHTML =
+      '<div class="card results">' +
+      '<p class="act-eyebrow">Part 2 Complete</p>' +
+      '<div class="ring-wrap">' +
+      '<svg width="170" height="170" viewBox="0 0 170 170">' +
+      '<circle cx="85" cy="85" r="70" fill="none" stroke="#E4DFD6" stroke-width="14"></circle>' +
+      '<circle cx="85" cy="85" r="70" fill="none" stroke="#C8102E" stroke-width="14" stroke-linecap="round" ' +
+      'stroke-dasharray="' + dash.toFixed(1) + ' ' + circ.toFixed(1) + '" transform="rotate(-90 85 85)"></circle>' +
+      '</svg>' +
+      '<div class="ring-score"><strong>' + pct + '%</strong><span>' + state.score + ' / ' + TOTAL_QUESTIONS + '</span></div>' +
+      '</div>' +
+      '<h2>' + heading + '</h2>' +
+      '<p class="msg">' + msg + '</p>' +
+      '<div class="breakdown">' +
+      '<div class="bd-row"><span>Total questions</span><span>' + TOTAL_QUESTIONS + '</span></div>' +
+      '<div class="bd-row"><span>Correct answers</span><span>' + state.score + '</span></div>' +
+      '<div class="bd-row"><span>Final score</span><span>' + pct + '%</span></div>' +
+      '</div>' +
+      '<button class="btn" id="restart-btn">Restart Part 2</button>' +
+      '</div>';
+    document.getElementById("restart-btn").addEventListener("click", function () {
+      state.actIndex = 0; state.qIndex = 0; state.score = 0; state.answered = 0;
+      updateScorebar();
+      renderIntro();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
+
+  /* ======================================================
+     INIT
+  ====================================================== */
+  renderIntro();
+
+})();
+</script>
+</body>
+</html>

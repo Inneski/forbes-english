@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English — Presenting on the Reconstruction of Ukraine (C1)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg1:#0d2a31;
+    --bg2:#15414b;
+    --card:#f7f2e8;
+    --card-edge:#e6dcc6;
+    --ink:#1d2b30;
+    --ink-soft:#4a5a5f;
+    --amber:#cf9237;
+    --amber-deep:#b67a26;
+    --cream:#f3ead7;
+    --teal:#2f7d63;
+    --teal-soft:#e3efe8;
+    --brick:#b0463a;
+    --brick-soft:#f4e2df;
+    --rule:#cdbf9f;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Inter',system-ui,sans-serif;
+    background:linear-gradient(155deg,var(--bg1),var(--bg2));
+    color:var(--ink);
+    min-height:100vh;
+    padding:34px 16px 64px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto;}
+
+  /* ---- Logo ---- */
+  .brand{text-align:center;margin-bottom:26px;}
+  .brand .forbes{
+    font-family:'Playfair Display',serif;
+    font-weight:700;
+    font-size:46px;
+    letter-spacing:1px;
+    color:var(--cream);
+    line-height:1;
+  }
+  .brand .rule{
+    width:212px;height:2px;background:var(--amber);
+    margin:8px auto 7px;border-radius:2px;
+  }
+  .brand .english{
+    font-family:'Inter',sans-serif;
+    font-weight:700;
+    font-size:21px;
+    letter-spacing:9px;
+    color:var(--amber);
+    padding-left:9px;
+  }
+  .subtitle{
+    text-align:center;color:#bfd3d2;font-size:13.5px;
+    margin-bottom:24px;letter-spacing:.4px;
+  }
+
+  /* ---- Status bar ---- */
+  .status{
+    display:flex;justify-content:space-between;align-items:center;
+    gap:14px;margin-bottom:16px;flex-wrap:wrap;
+  }
+  .dots{display:flex;gap:7px;}
+  .dot{
+    width:30px;height:6px;border-radius:6px;background:rgba(255,255,255,.18);
+    transition:background .3s;
+  }
+  .dot.active{background:var(--amber);}
+  .dot.done{background:var(--teal);}
+  .score-chip{
+    background:rgba(255,255,255,.10);color:var(--cream);
+    font-size:13px;font-weight:600;padding:7px 14px;border-radius:20px;
+    border:1px solid rgba(255,255,255,.14);letter-spacing:.3px;
+  }
+
+  /* ---- Card ---- */
+  .card{
+    background:var(--card);
+    border:1px solid var(--card-edge);
+    border-radius:16px;
+    padding:30px 30px 28px;
+    box-shadow:0 18px 40px -20px rgba(0,0,0,.55);
+  }
+  .act-label{
+    font-size:12px;font-weight:700;letter-spacing:1.6px;
+    text-transform:uppercase;color:var(--amber-deep);margin-bottom:6px;
+  }
+  .progress-line{
+    font-size:13px;color:var(--ink-soft);font-weight:500;margin-bottom:18px;
+  }
+  .act-title{
+    font-family:'Playfair Display',serif;font-weight:600;
+    font-size:23px;color:var(--ink);margin-bottom:6px;line-height:1.25;
+  }
+  .act-intro{font-size:14.5px;color:var(--ink-soft);margin-bottom:22px;line-height:1.55;}
+
+  .qtext{font-size:17px;line-height:1.6;margin-bottom:20px;color:var(--ink);}
+  .qtext .blank{
+    display:inline-block;min-width:96px;border-bottom:2px solid var(--amber-deep);
+    text-align:center;font-weight:600;color:var(--amber-deep);
+  }
+
+  /* ---- Options ---- */
+  .opts{display:flex;flex-direction:column;gap:11px;}
+  .opt{
+    text-align:left;background:#fff;border:1.6px solid var(--card-edge);
+    border-radius:11px;padding:14px 16px;font-size:15.5px;color:var(--ink);
+    cursor:pointer;font-family:inherit;transition:border-color .15s,background .15s;
+    line-height:1.4;
+  }
+  .opt:hover:not(:disabled){border-color:var(--amber);}
+  .opt:disabled{cursor:default;}
+  .opt.sel{border-color:var(--amber);background:#fffdf6;}
+  .opt.correct{border-color:var(--teal);background:var(--teal-soft);}
+  .opt.wrong{border-color:var(--brick);background:var(--brick-soft);}
+
+  /* ---- Feedback ---- */
+  .fb{
+    margin-top:18px;padding:14px 16px;border-radius:11px;font-size:14.5px;
+    line-height:1.55;display:none;
+  }
+  .fb.show{display:block;}
+  .fb.ok{background:var(--teal-soft);border:1px solid #bcdac9;color:#1f4d3a;}
+  .fb.no{background:var(--brick-soft);border:1px solid #e6c4be;color:#7d2b22;}
+  .fb b{font-weight:700;}
+
+  /* ---- Buttons ---- */
+  .actions{display:flex;justify-content:flex-end;margin-top:22px;gap:12px;}
+  .btn{
+    font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;
+    border:none;border-radius:10px;padding:12px 26px;letter-spacing:.3px;
+    transition:transform .08s,background .15s,opacity .15s;
+  }
+  .btn:active{transform:translateY(1px);}
+  .btn-primary{background:var(--amber);color:#2a1c05;}
+  .btn-primary:hover{background:var(--amber-deep);color:#fff;}
+  .btn-primary:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-ghost{background:transparent;color:var(--ink-soft);border:1.6px solid var(--card-edge);}
+
+  /* ---- Gap-fill ---- */
+  .gf-para{font-size:16px;line-height:2.15;color:var(--ink);margin-bottom:22px;}
+  .gf-slot{
+    display:inline-block;min-width:118px;padding:3px 10px;margin:0 2px;
+    border:1.8px dashed var(--amber-deep);border-radius:8px;text-align:center;
+    font-weight:600;color:var(--amber-deep);cursor:pointer;background:#fff;
+    vertical-align:middle;line-height:1.3;
+  }
+  .gf-slot.active{background:#fff6e3;border-style:solid;}
+  .gf-slot.filled{border-style:solid;color:var(--ink);background:#fff8ec;}
+  .gf-slot.correct{border-color:var(--teal);color:#1f4d3a;background:var(--teal-soft);border-style:solid;}
+  .gf-slot.wrong{border-color:var(--brick);color:#7d2b22;background:var(--brick-soft);border-style:solid;}
+  .bank{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:8px;}
+  .chip{
+    background:#fff;border:1.6px solid var(--card-edge);border-radius:9px;
+    padding:9px 15px;font-size:14.5px;font-weight:600;color:var(--ink);
+    cursor:pointer;font-family:inherit;transition:border-color .15s,opacity .15s;
+  }
+  .chip:hover:not(.used){border-color:var(--amber);}
+  .chip.used{opacity:.32;cursor:default;text-decoration:line-through;}
+  .hint{font-size:13px;color:var(--ink-soft);margin-bottom:16px;}
+
+  /* ---- Matching ---- */
+  .match-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .col-h{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--amber-deep);margin-bottom:10px;}
+  .mcol{display:flex;flex-direction:column;gap:10px;}
+  .mitem{
+    position:relative;text-align:left;background:#fff;border:1.6px solid var(--card-edge);
+    border-radius:10px;padding:12px 14px 12px 14px;font-size:14px;line-height:1.4;
+    color:var(--ink);cursor:pointer;font-family:inherit;transition:border-color .15s;
+  }
+  .mitem:hover:not(:disabled){border-color:var(--amber);}
+  .mitem:disabled{cursor:default;}
+  .mitem.sel{border-color:var(--amber);background:#fffdf6;}
+  .mitem.correct{border-color:var(--teal);background:var(--teal-soft);}
+  .mitem.wrong{border-color:var(--brick);background:var(--brick-soft);}
+  .badge{
+    display:inline-flex;align-items:center;justify-content:center;
+    min-width:22px;height:22px;border-radius:50%;background:var(--amber);
+    color:#2a1c05;font-size:12px;font-weight:700;margin-right:8px;vertical-align:middle;
+  }
+  .rnum{
+    position:absolute;top:8px;right:10px;font-size:12px;font-weight:700;color:var(--amber-deep);
+  }
+
+  /* ---- Reorder ---- */
+  .ro-answer{
+    min-height:58px;border:1.8px dashed var(--rule);border-radius:12px;
+    padding:12px;margin-bottom:16px;display:flex;flex-wrap:wrap;gap:9px;
+    background:#fffdf8;align-content:flex-start;
+  }
+  .ro-answer.empty::before{content:'Click chunks below in order…';color:#b3a989;font-size:14px;font-style:italic;}
+  .ro-bank{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:6px;}
+  .tile{
+    background:#fff;border:1.6px solid var(--card-edge);border-radius:10px;
+    padding:10px 14px;font-size:14.5px;color:var(--ink);cursor:pointer;
+    font-family:inherit;line-height:1.4;transition:border-color .15s;
+  }
+  .tile:hover{border-color:var(--amber);}
+  .tile.placed{background:#fff8ec;border-color:var(--amber);}
+  .tile.lock-correct{background:var(--teal-soft);border-color:var(--teal);cursor:default;}
+  .tile.lock-wrong{background:var(--brick-soft);border-color:var(--brick);cursor:default;}
+
+  /* ---- Results ---- */
+  .results{text-align:center;}
+  .res-ring{
+    width:150px;height:150px;border-radius:50%;margin:6px auto 22px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:conic-gradient(var(--amber) var(--pct,0%),#eadfc6 0);
+  }
+  .res-inner{
+    width:118px;height:118px;border-radius:50%;background:var(--card);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+  }
+  .res-pct{font-family:'Playfair Display',serif;font-size:34px;font-weight:700;color:var(--ink);}
+  .res-sub{font-size:12px;color:var(--ink-soft);}
+  .res-head{font-family:'Playfair Display',serif;font-size:26px;margin-bottom:8px;color:var(--ink);}
+  .res-msg{font-size:15px;color:var(--ink-soft);line-height:1.6;margin-bottom:24px;max-width:460px;margin-left:auto;margin-right:auto;}
+  .res-break{font-size:13.5px;color:var(--ink-soft);margin-bottom:24px;}
+  .res-break span{color:var(--amber-deep);font-weight:700;}
+
+  @media(max-width:560px){
+    .card{padding:24px 20px;}
+    .match-grid{grid-template-columns:1fr;}
+    .brand .forbes{font-size:38px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">
+    <div class="forbes">Forbes</div>
+    <div class="rule"></div>
+    <div class="english">ENGLISH</div>
+  </div>
+  <div class="subtitle">Presenting on the Reconstruction of Ukraine · Advanced (C1)</div>
+
+  <div class="status">
+    <div class="dots" id="dots"></div>
+    <div class="score-chip" id="score">Score: 0 / 23</div>
+  </div>
+
+  <div class="card" id="card"></div>
+</div>
+
+<script>
+"use strict";
+
+/* ---------------- Utilities ---------------- */
+function shuffle(arr){
+  var a = arr.slice();
+  for(var i=a.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));
+    var t=a[i];a[i]=a[j];a[j]=t;
+  }
+  return a;
+}
+function el(id){return document.getElementById(id);}
+
+/* ---------------- Data ---------------- */
+
+// Activity 1 — Multiple choice (6)
+var MC = [
+  {
+    q:"The opening session gave a sobering ___ of the destruction across the energy sector.",
+    options:["assessment","assertion","assignment","assortment"],
+    answer:"assessment",
+    fb:"An <b>assessment</b> is an evaluation or appraisal \u2014 exactly what a presentation gives of damage. An 'assertion' is a claim, an 'assignment' is a task, and an 'assortment' is a mixture."
+  },
+  {
+    q:"Reconstruction on this scale is without ___ in modern European history.",
+    options:["precedent","precaution","precision","preamble"],
+    answer:"precedent",
+    fb:"<b>Without precedent</b> means nothing comparable has happened before. A 'precaution' is a safeguard, 'precision' is accuracy, and a 'preamble' is an introduction."
+  },
+  {
+    q:"Donors have made their continued support ___ on measurable progress against corruption.",
+    options:["contingent","consistent","compliant","conclusive"],
+    answer:"contingent",
+    fb:"<b>Contingent on</b> means dependent or conditional on. 'Consistent', 'compliant' and 'conclusive' don't combine with 'on' to carry this meaning."
+  },
+  {
+    q:"Without a credible anti-corruption framework, donor confidence could quickly ___.",
+    options:["evaporate","exaggerate","elaborate","escalate"],
+    answer:"evaporate",
+    fb:"Confidence <b>evaporates</b> \u2014 it disappears. You can't 'exaggerate' or 'elaborate' confidence, and 'escalate' (increase) is the opposite of what the sentence implies."
+  },
+  {
+    q:"Let me ___ the myth that reconstruction can wait until the fighting has fully ended.",
+    options:["dispel","disperse","dissolve","distort"],
+    answer:"dispel",
+    fb:"You <b>dispel a myth</b> \u2014 drive it away. You 'disperse' a crowd, 'dissolve' a substance, and 'distort' (twist) a fact, but none of these collocates with 'myth' here."
+  },
+  {
+    q:"The figures I'm about to present should be ___ with some caution, given the volatility on the ground.",
+    options:["treated","tackled","trusted","tested"],
+    answer:"treated",
+    fb:"Figures are <b>treated with caution</b> \u2014 a fixed expression. 'Tackled', 'trusted' and 'tested' don't form this phrase."
+  }
+];
+
+// Activity 2 — Gap-fill word bank (6 gaps)
+var GAP = {
+  sentences:[
+    {pre:"To put these staggering figures into ", n:1, post:", the World Bank now estimates total recovery needs at well over half a trillion dollars."},
+    {pre:"I'll keep my remarks ", n:2, post:", so we leave ample room for questions at the end."},
+    {pre:"Allow me to ", n:3, post:" the three pillars on which our proposal rests, before we examine each in detail."},
+    {pre:"This timeline, I must ", n:4, post:", is contingent on a stable security environment throughout."},
+    {pre:"Having dealt with the costs, let me ", n:5, post:" to the equally pressing issue of oversight."},
+    {pre:"I'd be glad to ", n:6, post:" any of these themes in greater depth once I've finished."}
+  ],
+  correct:{1:"perspective",2:"concise",3:"outline",4:"stress",5:"turn",6:"explore"},
+  bank:["perspective","concise","outline","stress","turn","explore","digress","recap","gloss"],
+  fb:{
+    1:"<b>perspective</b> \u2014 'to put figures into perspective' makes a huge number meaningful.",
+    2:"<b>concise</b> \u2014 the only adjective that fits 'keep my remarks ___' (brief and to the point).",
+    3:"<b>outline</b> \u2014 you preview structure here; 'before we examine each in detail' signals an overview, not a summary.",
+    4:"<b>stress</b> \u2014 a parenthetical 'I must stress' emphasises a caveat.",
+    5:"<b>turn</b> \u2014 'let me turn to' is the standard signpost for moving to a new topic.",
+    6:"<b>explore</b> \u2014 'explore in greater depth' invites fuller discussion. ('digress', 'recap' and 'gloss' fit none of the gaps.)"
+  }
+};
+
+// Activity 3 — Matching (6)
+var MATCH = {
+  left:[
+    {id:"a", text:"\"Let me play devil's advocate for a moment\u2026\""},
+    {id:"b", text:"\"To give you a sense of scale, that's roughly the GDP of a mid-sized nation.\""},
+    {id:"c", text:"\"That's a fair question \u2014 I'll come back to it, if I may, in just a moment.\""},
+    {id:"d", text:"\"That said, the picture is not uniformly bleak.\""},
+    {id:"e", text:"\"If you take one thing away today, let it be this.\""},
+    {id:"f", text:"\"Correct me if I'm wrong, but my understanding is that funds are ring-fenced.\""}
+  ],
+  right:[
+    {id:"a", text:"Testing your own argument by voicing the opposing view"},
+    {id:"b", text:"Making an abstract figure relatable to the audience"},
+    {id:"c", text:"Deferring a question politely without dismissing it"},
+    {id:"d", text:"Introducing a qualifying or contrasting point"},
+    {id:"e", text:"Flagging the single key message to remember"},
+    {id:"f", text:"Hedging a claim and inviting correction"}
+  ],
+  fb:{
+    a:"'Devil's advocate' = arguing the opposite case on purpose to stress-test an idea.",
+    b:"Comparing a vast sum to something familiar helps the audience grasp its scale.",
+    c:"It acknowledges the question as valid while postponing the answer \u2014 a polite deferral.",
+    d:"'That said' pivots to a contrasting or softening point after a strong statement.",
+    e:"'Take one thing away' explicitly spotlights the core takeaway.",
+    f:"'Correct me if I'm wrong' softens a claim and signals openness to being corrected."
+  }
+};
+
+// Activity 4 — Reorder (5)
+var REORDER = [
+  {chunks:["Before I outline our proposal,","let me briefly summarise","the scale of the damage."]},
+  {chunks:["While the costs are daunting,","we cannot afford","the cost of inaction."]},
+  {chunks:["Public funds will get us started,","but to finish the job,","the private sector will be essential."]},
+  {chunks:["Before we move on,","let me address the elephant in the room:","the risk of corruption."]},
+  {chunks:["And before I hand over,","I'd like to leave you with one thought:","recovery is not a cost but an investment."]}
+];
+
+/* ---------------- State ---------------- */
+var TOTAL = MC.length + GAP.sentences.length + MATCH.left.length + REORDER.length; // 23
+var state = {activity:0, score:0};
+var sub = {};
+
+/* prepared shuffled data */
+var mcData, gapBank, matchLeft, matchRight, roData;
+
+function prepare(){
+  mcData = shuffle(MC).map(function(item){
+    return {q:item.q, answer:item.answer, fb:item.fb, options:shuffle(item.options)};
+  });
+  gapBank = shuffle(GAP.bank);
+  matchLeft = shuffle(MATCH.left);
+  matchRight = shuffle(MATCH.right);
+  roData = REORDER.map(function(item){
+    return {chunks:item.chunks, shuffled:shuffle(item.chunks)};
+  });
+}
+
+/* ---------------- Header ---------------- */
+function renderHeader(){
+  var dots = el("dots");
+  dots.innerHTML = "";
+  for(var i=0;i<4;i++){
+    var d = document.createElement("div");
+    d.className = "dot" + (i<state.activity?" done":(i===state.activity?" active":""));
+    dots.appendChild(d);
+  }
+  el("score").textContent = "Score: " + state.score + " / " + TOTAL;
+}
+
+/* ---------------- Activity 1: Multiple choice ---------------- */
+function startMC(){ sub = {q:0, answered:false, picked:null}; renderMC(); }
+
+function renderMC(){
+  renderHeader();
+  var d = mcData[sub.q];
+  var html = "";
+  html += "<div class='act-label'>Activity 1 of 4 \u00b7 Multiple choice</div>";
+  html += "<div class='progress-line'>Question " + (sub.q+1) + " of " + mcData.length + " \u00b7 Choose the best word</div>";
+  html += "<div class='qtext'>" + d.q + "</div>";
+  html += "<div class='opts' id='opts'></div>";
+  html += "<div class='fb' id='fb'></div>";
+  html += "<div class='actions'><button class='btn btn-primary' id='next' disabled>Next</button></div>";
+  el("card").innerHTML = html;
+
+  var opts = el("opts");
+  d.options.forEach(function(opt){
+    var b = document.createElement("button");
+    b.className = "opt";
+    b.textContent = opt;
+    b.onclick = function(){ pickMC(opt, b); };
+    opts.appendChild(b);
+  });
+  el("next").onclick = nextMC;
+}
+
+function pickMC(opt, btn){
+  if(sub.answered) return;
+  sub.answered = true;
+  sub.picked = opt;
+  var d = mcData[sub.q];
+  var buttons = el("opts").children;
+  for(var i=0;i<buttons.length;i++){
+    var b = buttons[i];
+    b.disabled = true;
+    if(b.textContent === d.answer) b.className = "opt correct";
+    else if(b.textContent === opt) b.className = "opt wrong";
+  }
+  var fb = el("fb");
+  var correct = (opt === d.answer);
+  if(correct) state.score++;
+  fb.className = "fb show " + (correct?"ok":"no");
+  fb.innerHTML = (correct?"<b>Correct.</b> ":"<b>Not quite.</b> ") + d.fb;
+  el("next").disabled = false;
+  el("next").textContent = (sub.q === mcData.length-1) ? "Continue" : "Next";
+  renderHeader();
+}
+
+function nextMC(){
+  if(sub.q < mcData.length-1){ sub.q++; sub.answered=false; renderMC(); }
+  else { state.activity = 1; startGap(); }
+}
+
+/* ---------------- Activity 2: Gap-fill ---------------- */
+function startGap(){
+  sub = {assign:{1:null,2:null,3:null,4:null,5:null,6:null}, active:null, checked:false};
+  renderGap();
+}
+
+function renderGap(){
+  renderHeader();
+  var html = "";
+  html += "<div class='act-label'>Activity 2 of 4 \u00b7 Fill in the blanks</div>";
+  html += "<div class='progress-line'>6 gaps \u00b7 Build a coherent presentation script</div>";
+  html += "<div class='hint'>Click a blank to select it, then click a word. Three words are not needed.</div>";
+  html += "<div class='gf-para' id='para'></div>";
+  html += "<div class='bank' id='bank'></div>";
+  html += "<div class='fb' id='fb'></div>";
+  html += "<div class='actions'><button class='btn btn-primary' id='check' disabled>Check answers</button></div>";
+  el("card").innerHTML = html;
+  el("check").onclick = checkGap;
+  drawGap();
+}
+
+function drawGap(){
+  var para = el("para");
+  para.innerHTML = "";
+  GAP.sentences.forEach(function(s){
+    para.appendChild(document.createTextNode(s.pre));
+    var slot = document.createElement("span");
+    var val = sub.assign[s.n];
+    slot.className = "gf-slot";
+    if(sub.active === s.n) slot.className += " active";
+    if(val) slot.className += " filled";
+    if(sub.checked){
+      slot.className = "gf-slot " + (val === GAP.correct[s.n] ? "correct":"wrong");
+    }
+    slot.textContent = val ? val : "\u00a0\u00a0\u00a0\u00a0\u00a0";
+    if(!sub.checked){
+      slot.onclick = function(){ slotClick(s.n); };
+    }
+    para.appendChild(slot);
+    para.appendChild(document.createTextNode(s.post + " "));
+  });
+
+  var bank = el("bank");
+  bank.innerHTML = "";
+  var usedWords = [];
+  for(var k in sub.assign){ if(sub.assign[k]) usedWords.push(sub.assign[k]); }
+  gapBank.forEach(function(w){
+    var c = document.createElement("button");
+    var isUsed = usedWords.indexOf(w) !== -1;
+    c.className = "chip" + (isUsed?" used":"");
+    c.textContent = w;
+    if(!sub.checked && !isUsed){ c.onclick = function(){ wordClick(w); }; }
+    else { c.disabled = true; }
+    bank.appendChild(c);
+  });
+
+  el("check").disabled = !allGapsFilled();
+}
+
+function allGapsFilled(){
+  for(var k in sub.assign){ if(!sub.assign[k]) return false; }
+  return true;
+}
+
+function slotClick(n){
+  if(sub.checked) return;
+  if(sub.assign[n]){ sub.assign[n] = null; sub.active = n; }
+  else { sub.active = (sub.active === n) ? null : n; }
+  drawGap();
+}
+
+function wordClick(w){
+  if(sub.checked || sub.active === null) return;
+  sub.assign[sub.active] = w;
+  // advance to next empty gap
+  var next = null;
+  for(var i=1;i<=6;i++){ if(!sub.assign[i]){ next=i; break; } }
+  sub.active = next;
+  drawGap();
+}
+
+function checkGap(){
+  sub.checked = true;
+  var correct = 0;
+  for(var k in sub.assign){ if(sub.assign[k] === GAP.correct[k]) correct++; }
+  state.score += correct;
+  var fb = el("fb");
+  fb.className = "fb show " + (correct===6?"ok":"no");
+  var lines = "<b>" + correct + " of 6 correct.</b><br>";
+  for(var i=1;i<=6;i++){ lines += "&bull; " + GAP.fb[i] + "<br>"; }
+  fb.innerHTML = lines;
+  var btn = el("check");
+  btn.textContent = "Continue";
+  btn.disabled = false;
+  btn.onclick = function(){ state.activity = 2; startMatch(); };
+  drawGap();
+  renderHeader();
+}
+
+/* ---------------- Activity 3: Matching ---------------- */
+function startMatch(){
+  sub = {selLeft:null, pairs:{}, checked:false};
+  renderMatch();
+}
+
+function renderMatch(){
+  renderHeader();
+  var html = "";
+  html += "<div class='act-label'>Activity 3 of 4 \u00b7 Matching</div>";
+  html += "<div class='progress-line'>6 pairs \u00b7 Match each phrase to its rhetorical function</div>";
+  html += "<div class='hint'>Click a phrase on the left, then its function on the right.</div>";
+  html += "<div class='match-grid'>";
+  html += "<div><div class='col-h'>Phrase</div><div class='mcol' id='leftcol'></div></div>";
+  html += "<div><div class='col-h'>Function</div><div class='mcol' id='rightcol'></div></div>";
+  html += "</div>";
+  html += "<div class='fb' id='fb'></div>";
+  html += "<div class='actions'><button class='btn btn-primary' id='check' disabled>Check answers</button></div>";
+  el("card").innerHTML = html;
+  el("check").onclick = checkMatch;
+  drawMatch();
+}
+
+function rightNumber(rid){
+  for(var i=0;i<matchRight.length;i++){ if(matchRight[i].id===rid) return i+1; }
+  return "";
+}
+
+function drawMatch(){
+  var lc = el("leftcol");
+  lc.innerHTML = "";
+  matchLeft.forEach(function(item){
+    var b = document.createElement("button");
+    b.className = "mitem";
+    var assigned = sub.pairs[item.id];
+    if(sub.selLeft === item.id) b.className += " sel";
+    if(sub.checked){
+      b.className = "mitem " + (assigned === item.id ? "correct":"wrong");
+    }
+    var badge = assigned ? "<span class='badge'>" + rightNumber(assigned) + "</span>" : "";
+    b.innerHTML = badge + item.text;
+    if(!sub.checked){ b.onclick = function(){ leftClick(item.id); }; }
+    else { b.disabled = true; }
+    lc.appendChild(b);
+  });
+
+  var rc = el("rightcol");
+  rc.innerHTML = "";
+  matchRight.forEach(function(item, idx){
+    var b = document.createElement("button");
+    b.className = "mitem";
+    b.innerHTML = "<span class='rnum'>" + (idx+1) + "</span>" + item.text;
+    if(!sub.checked){ b.onclick = function(){ rightClick(item.id); }; }
+    else { b.disabled = true; }
+    rc.appendChild(b);
+  });
+
+  el("check").disabled = !allMatched();
+}
+
+function allMatched(){
+  return Object.keys(sub.pairs).length === matchLeft.length;
+}
+
+function leftClick(lid){
+  if(sub.checked) return;
+  sub.selLeft = (sub.selLeft === lid) ? null : lid;
+  drawMatch();
+}
+
+function rightClick(rid){
+  if(sub.checked || sub.selLeft === null) return;
+  // remove this right from any other left
+  for(var k in sub.pairs){ if(sub.pairs[k] === rid) delete sub.pairs[k]; }
+  sub.pairs[sub.selLeft] = rid;
+  sub.selLeft = null;
+  drawMatch();
+}
+
+function checkMatch(){
+  sub.checked = true;
+  var correct = 0;
+  matchLeft.forEach(function(item){ if(sub.pairs[item.id] === item.id) correct++; });
+  state.score += correct;
+  var fb = el("fb");
+  fb.className = "fb show " + (correct===6?"ok":"no");
+  var lines = "<b>" + correct + " of 6 correct.</b><br>";
+  matchLeft.forEach(function(item){ lines += "&bull; " + MATCH.fb[item.id] + "<br>"; });
+  fb.innerHTML = lines;
+  var btn = el("check");
+  btn.textContent = "Continue";
+  btn.disabled = false;
+  btn.onclick = function(){ state.activity = 3; startReorder(); };
+  drawMatch();
+  renderHeader();
+}
+
+/* ---------------- Activity 4: Reorder ---------------- */
+function startReorder(){ sub = {q:0, placed:[], checked:false}; renderReorder(); }
+
+function renderReorder(){
+  renderHeader();
+  var html = "";
+  html += "<div class='act-label'>Activity 4 of 4 \u00b7 Reorder</div>";
+  html += "<div class='progress-line'>Question " + (sub.q+1) + " of " + roData.length + " \u00b7 Rebuild the signposted sentence</div>";
+  html += "<div class='ro-answer' id='answer'></div>";
+  html += "<div class='ro-bank' id='tiles'></div>";
+  html += "<div class='fb' id='fb'></div>";
+  html += "<div class='actions'>";
+  html += "<button class='btn btn-ghost' id='reset'>Reset</button>";
+  html += "<button class='btn btn-primary' id='check' disabled>Check</button>";
+  html += "</div>";
+  el("card").innerHTML = html;
+  el("reset").onclick = function(){ if(!sub.checked){ sub.placed=[]; drawReorder(); } };
+  el("check").onclick = checkReorder;
+  drawReorder();
+}
+
+function drawReorder(){
+  var d = roData[sub.q];
+  var ans = el("answer");
+  ans.innerHTML = "";
+  if(sub.placed.length===0 && !sub.checked) ans.className = "ro-answer empty";
+  else ans.className = "ro-answer";
+
+  sub.placed.forEach(function(chunk, idx){
+    var t = document.createElement("span");
+    t.className = "tile placed";
+    if(sub.checked){
+      t.className = "tile " + (chunk === d.chunks[idx] ? "lock-correct":"lock-wrong");
+    }
+    t.textContent = chunk;
+    if(!sub.checked){ t.onclick = function(){ unplace(idx); }; }
+    ans.appendChild(t);
+  });
+
+  var bank = el("tiles");
+  bank.innerHTML = "";
+  d.shuffled.forEach(function(chunk){
+    var used = sub.placed.indexOf(chunk) !== -1;
+    if(used) return;
+    var t = document.createElement("span");
+    t.className = "tile";
+    t.textContent = chunk;
+    if(!sub.checked){ t.onclick = function(){ place(chunk); }; }
+    bank.appendChild(t);
+  });
+
+  el("check").disabled = (sub.placed.length !== d.chunks.length) || sub.checked;
+}
+
+function place(chunk){
+  if(sub.checked) return;
+  sub.placed.push(chunk);
+  drawReorder();
+}
+function unplace(idx){
+  if(sub.checked) return;
+  sub.placed.splice(idx,1);
+  drawReorder();
+}
+
+function checkReorder(){
+  var d = roData[sub.q];
+  sub.checked = true;
+  var correct = (sub.placed.join(" ") === d.chunks.join(" "));
+  if(correct) state.score++;
+  var fb = el("fb");
+  fb.className = "fb show " + (correct?"ok":"no");
+  fb.innerHTML = (correct?"<b>Correct.</b> ":"<b>Not quite.</b> ") +
+    "The intended order is: <b>" + d.chunks.join(" ") + "</b>";
+  var btn = el("check");
+  btn.textContent = (sub.q === roData.length-1) ? "See results" : "Next";
+  btn.disabled = false;
+  btn.onclick = nextReorder;
+  drawReorder();
+  renderHeader();
+}
+
+function nextReorder(){
+  if(sub.q < roData.length-1){ sub.q++; sub.placed=[]; sub.checked=false; renderReorder(); }
+  else { state.activity = 4; renderResults(); }
+}
+
+/* ---------------- Results ---------------- */
+function renderResults(){
+  renderHeader();
+  var pct = Math.round(state.score/TOTAL*100);
+  var head, msg;
+  if(pct>=90){ head="Outstanding command."; msg="You're handling advanced presentation language and reconstruction vocabulary with real precision. You're ready to deliver this material live."; }
+  else if(pct>=70){ head="Strong work."; msg="You have a confident grasp of the language. Revisit the few items you missed and the register will be fully secure."; }
+  else if(pct>=50){ head="Solid foundation."; msg="The core ideas are there. A second pass through the feedback on signposting and collocations will sharpen things considerably."; }
+  else { head="Good start \u2014 keep going."; msg="This is demanding C1 material. Work back through the explanations, then restart; the phrasing will start to feel natural."; }
+
+  var html = "";
+  html += "<div class='results'>";
+  html += "<div class='res-ring' style='--pct:" + pct + "%'><div class='res-inner'>";
+  html += "<div class='res-pct'>" + pct + "%</div><div class='res-sub'>" + state.score + " / " + TOTAL + "</div>";
+  html += "</div></div>";
+  html += "<div class='res-head'>" + head + "</div>";
+  html += "<div class='res-msg'>" + msg + "</div>";
+  html += "<div class='res-break'>Multiple choice, fill-in-the-blank, matching &amp; reordering \u2014 <span>4 activities completed</span></div>";
+  html += "<div class='actions' style='justify-content:center'><button class='btn btn-primary' id='restart'>Restart lesson</button></div>";
+  html += "</div>";
+  el("card").innerHTML = html;
+  el("restart").onclick = function(){ state={activity:0,score:0}; prepare(); startMC(); };
+}
+
+/* ---------------- Boot ---------------- */
+prepare();
+startMC();
+</script>
+</body>
+</html>

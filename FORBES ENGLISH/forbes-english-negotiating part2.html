@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – Negotiations & Handling Objections</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1c2b1e;
+    --ink2: #2d4430;
+    --slate: #4a6b4e;
+    --mist: #8aaa8e;
+    --cream: #f0f4ee;
+    --paper: #f8fbf7;
+    --gold: #3a7d44;
+    --gold-light: #5aaa66;
+    --sage: #5a7a6a;
+    --correct: #2e6b3e;
+    --wrong: #8b3a3a;
+    --correct-bg: #e8f4eb;
+    --wrong-bg: #faeaea;
+    --rule: #c4d4c8;
+    --accent: #b8860b;
+    --accent-light: #d4a020;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 15% 0%, rgba(58,125,68,0.07) 0%, transparent 55%),
+      radial-gradient(ellipse at 90% 100%, rgba(184,134,11,0.07) 0%, transparent 55%);
+  }
+
+  .header {
+    background: var(--ink);
+    padding: 0 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+    border-bottom: 3px solid var(--gold);
+  }
+
+  .logo-wrap { display: flex; align-items: center; }
+  .logo-svg { height: 44px; width: auto; }
+
+  .score-pill {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 40px;
+    padding: 6px 18px;
+  }
+  .score-pill span { color: rgba(255,255,255,0.55); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .score-pill strong { color: var(--gold-light); font-size: 18px; font-weight: 600; }
+
+  .hero {
+    background: var(--ink2);
+    padding: 2.2rem 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    overflow: hidden;
+    position: relative;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 320px;
+    background: linear-gradient(90deg, transparent, rgba(58,125,68,0.08));
+    pointer-events: none;
+  }
+  .hero-text h1 { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: #fff; font-weight: 700; line-height: 1.2; }
+  .hero-text h1 em { color: var(--gold-light); font-style: normal; }
+  .hero-text p { color: var(--mist); font-size: 0.88rem; margin-top: 6px; letter-spacing: 0.02em; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(58,125,68,0.18); border: 1px solid rgba(90,170,102,0.4);
+    color: var(--gold-light); font-size: 11px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 4px 12px; border-radius: 20px; margin-bottom: 10px;
+  }
+  .hero-illo { flex-shrink: 0; opacity: 0.92; }
+
+  .progress-bar-wrap { background: var(--ink); padding: 0; height: 6px; }
+  .progress-bar-track { background: rgba(255,255,255,0.1); height: 6px; border-radius: 0; }
+  .progress-bar-fill { background: linear-gradient(90deg, var(--gold), var(--gold-light)); height: 6px; border-radius: 0; transition: width 0.5s ease; }
+
+  .main { max-width: 820px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+
+  .activity-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1.8rem; gap: 1rem; }
+  .activity-type { display: flex; align-items: center; gap: 10px; }
+  .activity-icon { width: 42px; height: 42px; background: var(--ink); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .activity-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--slate); font-weight: 600; }
+  .activity-title { font-family: 'Playfair Display', serif; font-size: 1.25rem; color: var(--ink); margin-top: 2px; }
+  .q-counter { font-size: 13px; color: var(--slate); background: var(--paper); border: 1px solid var(--rule); border-radius: 20px; padding: 5px 14px; white-space: nowrap; align-self: flex-start; margin-top: 2px; }
+
+  .scene-illo { margin-bottom: 1.5rem; border-radius: 12px; overflow: hidden; border: 1px solid var(--rule); }
+
+  .q-card { background: var(--paper); border: 1px solid var(--rule); border-radius: 14px; padding: 1.8rem; margin-bottom: 1.2rem; box-shadow: 0 2px 12px rgba(28,43,30,0.05); }
+  .q-stem { font-size: 1.05rem; color: var(--ink); line-height: 1.65; margin-bottom: 1.4rem; font-weight: 400; }
+  .q-stem strong { color: var(--ink2); font-weight: 600; }
+  .q-stem em { font-style: italic; color: var(--slate); }
+
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 13px 16px; border: 1.5px solid var(--rule); border-radius: 10px;
+    background: #fff; cursor: pointer; transition: all 0.18s;
+    font-size: 0.93rem; color: var(--ink2); line-height: 1.5;
+  }
+  .option:hover:not(.disabled) { border-color: var(--gold); background: rgba(58,125,68,0.04); transform: translateX(3px); }
+  .option.selected { border-color: var(--gold); background: rgba(58,125,68,0.06); }
+  .option.correct { border-color: var(--correct); background: var(--correct-bg); color: var(--ink); }
+  .option.incorrect { border-color: var(--wrong); background: var(--wrong-bg); }
+  .option.disabled { cursor: default; pointer-events: none; }
+
+  .opt-letter {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--cream); border: 1.5px solid var(--rule);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: var(--slate);
+    flex-shrink: 0; transition: all 0.18s; letter-spacing: 0;
+  }
+  .option.selected .opt-letter { background: var(--gold); border-color: var(--gold); color: #fff; }
+  .option.correct .opt-letter { background: var(--correct); border-color: var(--correct); color: #fff; }
+  .option.incorrect .opt-letter { background: var(--wrong); border-color: var(--wrong); color: #fff; }
+
+  .feedback-box {
+    border-radius: 10px; padding: 14px 18px; margin-top: 1rem;
+    font-size: 0.88rem; line-height: 1.6; display: none;
+    animation: fadeSlide 0.25s ease;
+  }
+  @keyframes fadeSlide { from { opacity:0; transform: translateY(-6px); } to { opacity:1; transform: translateY(0); } }
+  .feedback-box.correct { background: var(--correct-bg); border: 1px solid rgba(46,107,62,0.3); color: var(--correct); }
+  .feedback-box.incorrect { background: var(--wrong-bg); border: 1px solid rgba(139,58,58,0.3); color: var(--wrong); }
+  .feedback-box .fb-icon { font-weight: 700; font-size: 1rem; }
+  .feedback-box .fb-explain { color: var(--ink2); margin-top: 4px; }
+
+  .blank-sentence { font-size: 1.05rem; color: var(--ink); line-height: 2.2; margin-bottom: 1.2rem; }
+  .word-bank { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.4rem; padding: 14px; background: var(--cream); border-radius: 10px; border: 1px solid var(--rule); }
+  .word-chip { padding: 6px 14px; border-radius: 20px; background: #fff; border: 1.5px solid var(--rule); font-size: 0.88rem; cursor: pointer; transition: all 0.15s; color: var(--ink2); user-select: none; }
+  .word-chip:hover:not(.used) { border-color: var(--gold); background: rgba(58,125,68,0.06); color: var(--ink); }
+  .word-chip.used { opacity: 0.35; pointer-events: none; }
+  .word-chip.selected { background: var(--gold); border-color: var(--gold); color: #fff; }
+
+  .match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .match-col { display: flex; flex-direction: column; gap: 8px; }
+  .match-col-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--slate); font-weight: 600; margin-bottom: 4px; }
+  .match-item { padding: 11px 14px; border: 1.5px solid var(--rule); border-radius: 9px; background: #fff; font-size: 0.9rem; cursor: pointer; transition: all 0.17s; color: var(--ink2); min-height: 46px; display: flex; align-items: center; }
+  .match-item:hover:not(.matched):not(.disabled) { border-color: var(--gold); background: rgba(58,125,68,0.04); }
+  .match-item.active { border-color: var(--gold); background: rgba(58,125,68,0.08); color: var(--ink); }
+  .match-item.matched { border-color: var(--correct); background: var(--correct-bg); color: var(--correct); pointer-events: none; }
+  .match-item.wrong-flash { border-color: var(--wrong); background: var(--wrong-bg); animation: shake 0.3s ease; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+
+  .btn-row { display: flex; gap: 12px; margin-top: 1.5rem; justify-content: flex-end; flex-wrap: wrap; }
+  .btn { padding: 12px 28px; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.18s; letter-spacing: 0.02em; }
+  .btn-primary { background: var(--ink); color: #fff; border: 2px solid var(--ink); }
+  .btn-primary:hover { background: var(--ink2); border-color: var(--ink2); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(28,43,30,0.2); }
+  .btn-primary:disabled { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: none; }
+  .btn-ghost { background: transparent; color: var(--slate); border: 1.5px solid var(--rule); }
+  .btn-ghost:hover { border-color: var(--slate); color: var(--ink); }
+  .btn-gold { background: var(--gold); color: #fff; border: 2px solid var(--gold); }
+  .btn-gold:hover { background: #2d6035; border-color: #2d6035; transform: translateY(-1px); }
+
+  #final-screen { display: none; }
+  .final-card { background: var(--paper); border: 1px solid var(--rule); border-radius: 16px; padding: 3rem 2rem; text-align: center; box-shadow: 0 4px 24px rgba(28,43,30,0.07); }
+  .final-score-ring { width: 120px; height: 120px; border-radius: 50%; background: var(--ink); border: 4px solid var(--gold); display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 auto 1.8rem; }
+  .final-score-ring .big-num { font-size: 2.2rem; font-weight: 700; color: var(--gold-light); font-family: 'Playfair Display', serif; line-height: 1; }
+  .final-score-ring .denom { font-size: 0.75rem; color: var(--mist); margin-top: 2px; }
+  .final-card h2 { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--ink); margin-bottom: 10px; }
+  .final-card p { color: var(--slate); font-size: 0.95rem; line-height: 1.7; max-width: 480px; margin: 0 auto 2rem; }
+  .breakdown { display: flex; gap: 12px; justify-content: center; margin-bottom: 2rem; flex-wrap: wrap; }
+  .breakdown-item { background: var(--cream); border: 1px solid var(--rule); border-radius: 10px; padding: 14px 20px; min-width: 120px; }
+  .breakdown-item .bi-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--slate); font-weight: 600; }
+  .breakdown-item .bi-val { font-size: 1.5rem; font-weight: 600; color: var(--ink); margin-top: 4px; font-family: 'Playfair Display', serif; }
+
+  .lesson-section { animation: sectionIn 0.35s ease; }
+  @keyframes sectionIn { from { opacity:0; transform: translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+  @media (max-width: 600px) {
+    .header { padding: 0 1.2rem; }
+    .hero { padding: 1.5rem 1.2rem; flex-direction: column; }
+    .hero-illo { display: none; }
+    .main { padding: 1.5rem 1rem 3rem; }
+    .match-grid { grid-template-columns: 1fr; }
+    .activity-header { flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo-wrap">
+    <svg class="logo-svg" viewBox="0 0 160 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <text x="0" y="22" font-family="'Playfair Display', Georgia, serif" font-size="22" font-weight="700" fill="#5aaa66" letter-spacing="1">Forbes</text>
+      <rect x="0" y="27" width="130" height="1.2" fill="rgba(90,170,102,0.5)"/>
+      <text x="1" y="40" font-family="'DM Sans', Arial, sans-serif" font-size="11" font-weight="600" fill="#8aaa8e" letter-spacing="5">ENGLISH</text>
+    </svg>
+  </div>
+  <div class="score-pill">
+    <span>Score</span>
+    <strong id="header-score">0 / 0</strong>
+  </div>
+</header>
+
+<div class="progress-bar-wrap">
+  <div class="progress-bar-track">
+    <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-text">
+    <div class="badge">B2 · Part 2 of 3</div>
+    <h1>Negotiations &amp; <em>Handling Objections</em></h1>
+    <p>Respond to pushback, negotiate terms, and keep deals moving · 15 questions · 3 activity types</p>
+  </div>
+  <div class="hero-illo">
+    <svg width="180" height="110" viewBox="0 0 180 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="90" cy="96" rx="80" ry="10" fill="rgba(58,125,68,0.08)"/>
+      <!-- table -->
+      <rect x="30" y="72" width="120" height="6" rx="3" fill="#2d4430"/>
+      <rect x="45" y="78" width="6" height="20" rx="2" fill="#2d4430"/>
+      <rect x="129" y="78" width="6" height="20" rx="2" fill="#2d4430"/>
+      <!-- left person -->
+      <circle cx="48" cy="52" r="14" fill="#2d4430"/>
+      <circle cx="48" cy="47" r="6" fill="#8aaa8e"/>
+      <path d="M34 68 Q48 60 62 68" fill="#2d4430"/>
+      <!-- document on table -->
+      <rect x="72" y="56" width="36" height="16" rx="2" fill="#f0f4ee" stroke="#c4d4c8" stroke-width="1"/>
+      <rect x="75" y="60" width="20" height="1.5" rx="1" fill="#5aaa66" opacity="0.6"/>
+      <rect x="75" y="63" width="14" height="1.5" rx="1" fill="#2d4430" opacity="0.3"/>
+      <rect x="75" y="66" width="17" height="1.5" rx="1" fill="#2d4430" opacity="0.2"/>
+      <!-- handshake icon centre -->
+      <path d="M86 46 Q90 42 94 46" stroke="#5aaa66" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <circle cx="90" cy="40" r="6" fill="none" stroke="#5aaa66" stroke-width="1.5" opacity="0.6"/>
+      <!-- right person -->
+      <circle cx="132" cy="52" r="14" fill="#2d4430"/>
+      <circle cx="132" cy="47" r="6" fill="#8aaa8e"/>
+      <path d="M118 68 Q132 60 146 68" fill="#2d4430"/>
+      <!-- speech bubble objection -->
+      <rect x="96" y="18" width="68" height="24" rx="7" fill="#b8860b" opacity="0.85"/>
+      <polygon points="100,34 94,42 108,34" fill="#b8860b" opacity="0.85"/>
+      <rect x="102" y="24" width="22" height="2" rx="1" fill="rgba(255,255,255,0.8)"/>
+      <rect x="102" y="29" width="36" height="2" rx="1" fill="rgba(255,255,255,0.55)"/>
+    </svg>
+  </div>
+</div>
+
+<main class="main">
+
+  <!-- ACTIVITY 1: MULTIPLE CHOICE -->
+  <div id="activity-1" class="lesson-section">
+    <div class="activity-header">
+      <div class="activity-type">
+        <div class="activity-icon">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="9" stroke="#5aaa66" stroke-width="1.5"/><circle cx="11" cy="11" r="4" fill="#5aaa66"/></svg>
+        </div>
+        <div>
+          <div class="activity-label">Activity 1 of 3</div>
+          <div class="activity-title">Multiple Choice</div>
+        </div>
+      </div>
+      <div class="q-counter" id="mc-counter">Question 1 of 5</div>
+    </div>
+
+    <div class="scene-illo">
+      <svg width="100%" viewBox="0 0 760 110" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;background:#1c2b1e;">
+        <rect width="760" height="110" fill="#1c2b1e"/>
+        <rect x="0" y="107" width="760" height="3" fill="#5aaa66" opacity="0.6"/>
+        <!-- left negotiator -->
+        <circle cx="110" cy="50" r="18" fill="#2d4430"/>
+        <circle cx="110" cy="44" r="8" fill="#8aaa8e"/>
+        <path d="M92 68 Q110 58 128 68" fill="#2d4430"/>
+        <rect x="86" y="74" width="48" height="4" rx="2" fill="#2d4430" opacity="0.6"/>
+        <!-- negotiation cards -->
+        <rect x="175" y="28" width="88" height="52" rx="6" fill="#2d4430" opacity="0.7"/>
+        <rect x="175" y="28" width="88" height="52" rx="6" stroke="#5aaa66" stroke-width="1" opacity="0.5"/>
+        <rect x="181" y="36" width="40" height="2.5" rx="1" fill="#5aaa66" opacity="0.7"/>
+        <rect x="181" y="42" width="60" height="2" rx="1" fill="rgba(255,255,255,0.2)"/>
+        <rect x="181" y="48" width="50" height="2" rx="1" fill="rgba(255,255,255,0.15)"/>
+        <rect x="181" y="54" width="55" height="2" rx="1" fill="rgba(255,255,255,0.15)"/>
+        <rect x="181" y="60" width="30" height="2" rx="1" fill="#b8860b" opacity="0.7"/>
+        <!-- vs divider -->
+        <text x="380" y="56" text-anchor="middle" font-family="'Playfair Display',serif" font-size="18" fill="#5aaa66" opacity="0.5">vs</text>
+        <!-- right card -->
+        <rect x="497" y="28" width="88" height="52" rx="6" fill="#2d4430" opacity="0.7"/>
+        <rect x="497" y="28" width="88" height="52" rx="6" stroke="#b8860b" stroke-width="1" opacity="0.5"/>
+        <rect x="503" y="36" width="44" height="2.5" rx="1" fill="#b8860b" opacity="0.7"/>
+        <rect x="503" y="42" width="62" height="2" rx="1" fill="rgba(255,255,255,0.2)"/>
+        <rect x="503" y="48" width="52" height="2" rx="1" fill="rgba(255,255,255,0.15)"/>
+        <rect x="503" y="54" width="58" height="2" rx="1" fill="rgba(255,255,255,0.15)"/>
+        <rect x="503" y="60" width="32" height="2" rx="1" fill="#5aaa66" opacity="0.7"/>
+        <!-- right negotiator -->
+        <circle cx="650" cy="50" r="18" fill="#2d4430"/>
+        <circle cx="650" cy="44" r="8" fill="#8aaa8e"/>
+        <path d="M632 68 Q650 58 668 68" fill="#2d4430"/>
+        <rect x="626" y="74" width="48" height="4" rx="2" fill="#2d4430" opacity="0.6"/>
+        <text x="380" y="92" text-anchor="middle" font-family="'DM Sans',Arial,sans-serif" font-size="10" fill="#8aaa8e">Negotiation scenarios — choose the most effective response</text>
+      </svg>
+    </div>
+
+    <div id="mc-question-area"></div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" id="mc-check-btn" onclick="checkMC()" disabled>Check answer</button>
+      <button class="btn btn-primary" id="mc-next-btn" onclick="nextMC()" style="display:none">Next →</button>
+    </div>
+  </div>
+
+  <!-- ACTIVITY 2: FILL IN THE BLANK -->
+  <div id="activity-2" class="lesson-section" style="display:none">
+    <div class="activity-header">
+      <div class="activity-type">
+        <div class="activity-icon">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3" y="7" width="16" height="3" rx="1.5" fill="#5aaa66"/><rect x="3" y="12" width="10" height="3" rx="1.5" fill="#5aaa66" opacity="0.5"/><rect x="3" y="2" width="16" height="3" rx="1.5" fill="#5aaa66" opacity="0.3"/><rect x="15" y="14" width="4" height="6" rx="1" fill="#b8860b"/></svg>
+        </div>
+        <div>
+          <div class="activity-label">Activity 2 of 3</div>
+          <div class="activity-title">Fill in the Blank</div>
+        </div>
+      </div>
+      <div class="q-counter" id="fib-counter">Question 1 of 5</div>
+    </div>
+
+    <div class="scene-illo">
+      <svg width="100%" viewBox="0 0 760 90" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;background:#1c2b1e;">
+        <rect width="760" height="90" fill="#1c2b1e"/>
+        <rect x="0" y="87" width="760" height="3" fill="#b8860b" opacity="0.6"/>
+        <!-- contract scroll left -->
+        <rect x="55" y="12" width="90" height="68" rx="4" fill="#2d4430"/>
+        <rect x="55" y="12" width="90" height="10" rx="4" fill="#3a7d44" opacity="0.6"/>
+        <rect x="62" y="28" width="50" height="2" rx="1" fill="rgba(255,255,255,0.2)"/>
+        <rect x="62" y="34" width="65" height="2" rx="1" fill="#5aaa66" opacity="0.5"/>
+        <rect x="62" y="40" width="55" height="2" rx="1" fill="rgba(255,255,255,0.15)"/>
+        <rect x="62" y="46" width="60" height="2" rx="1" fill="rgba(255,255,255,0.15)"/>
+        <rect x="62" y="52" width="40" height="2" rx="1" fill="#b8860b" opacity="0.5"/>
+        <rect x="62" y="58" width="52" height="2" rx="1" fill="rgba(255,255,255,0.15)"/>
+        <rect x="62" y="64" width="45" height="2" rx="1" fill="rgba(255,255,255,0.1)"/>
+        <!-- pen signing -->
+        <line x1="118" y1="72" x2="140" y2="58" stroke="#5aaa66" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="140" cy="57" r="3" fill="#5aaa66"/>
+        <!-- centre text -->
+        <text x="380" y="38" text-anchor="middle" font-family="'Playfair Display',serif" font-size="14" fill="#5aaa66">Complete the negotiation phrase</text>
+        <text x="380" y="58" text-anchor="middle" font-family="'DM Sans',Arial,sans-serif" font-size="10" fill="#8aaa8e">Select from the word bank below each sentence</text>
+        <!-- balance scales right -->
+        <line x1="620" y1="20" x2="700" y2="20" stroke="#2d4430" stroke-width="2"/>
+        <circle cx="660" cy="20" r="4" fill="#5aaa66" opacity="0.7"/>
+        <line x1="620" y1="20" x2="620" y2="36" stroke="#2d4430" stroke-width="1.5"/>
+        <line x1="700" y1="20" x2="700" y2="30" stroke="#2d4430" stroke-width="1.5"/>
+        <rect x="608" y="36" width="24" height="10" rx="3" fill="#2d4430"/>
+        <rect x="688" y="30" width="24" height="10" rx="3" fill="#3a7d44"/>
+        <rect x="611" y="39" width="6" height="2" rx="1" fill="#5aaa66" opacity="0.5"/>
+        <rect x="691" y="33" width="8" height="2" rx="1" fill="#5aaa66" opacity="0.5"/>
+        <line x1="660" y1="24" x2="660" y2="72" stroke="#2d4430" stroke-width="1.5"/>
+        <rect x="644" y="72" width="32" height="5" rx="2" fill="#2d4430"/>
+      </svg>
+    </div>
+
+    <div id="fib-question-area"></div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" id="fib-check-btn" onclick="checkFIB()">Check answers</button>
+      <button class="btn btn-primary" id="fib-next-btn" onclick="nextFIB()" style="display:none">Next →</button>
+    </div>
+  </div>
+
+  <!-- ACTIVITY 3: MATCHING -->
+  <div id="activity-3" class="lesson-section" style="display:none">
+    <div class="activity-header">
+      <div class="activity-type">
+        <div class="activity-icon">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="4" width="8" height="5" rx="2" fill="#5aaa66"/><rect x="12" y="4" width="8" height="5" rx="2" fill="#b8860b"/><rect x="2" y="13" width="8" height="5" rx="2" fill="#5aaa66" opacity="0.5"/><rect x="12" y="13" width="8" height="5" rx="2" fill="#b8860b" opacity="0.6"/><line x1="10" y1="6.5" x2="12" y2="6.5" stroke="#5aaa66" stroke-width="1.5"/><line x1="10" y1="15.5" x2="12" y2="15.5" stroke="#b8860b" stroke-width="1.5"/></svg>
+        </div>
+        <div>
+          <div class="activity-label">Activity 3 of 3</div>
+          <div class="activity-title">Match the Expression</div>
+        </div>
+      </div>
+      <div class="q-counter" id="match-counter">0 of 5 matched</div>
+    </div>
+
+    <div class="scene-illo">
+      <svg width="100%" viewBox="0 0 760 80" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;background:#1c2b1e;">
+        <rect width="760" height="80" fill="#1c2b1e"/>
+        <rect x="0" y="77" width="760" height="3" fill="#5aaa66" opacity="0.4"/>
+        <rect x="50" y="15" width="110" height="22" rx="5" fill="#2d4430" opacity="0.6"/>
+        <rect x="54" y="21" width="55" height="2" rx="1" fill="#5aaa66" opacity="0.6"/>
+        <rect x="54" y="26" width="38" height="2" rx="1" fill="rgba(255,255,255,0.2)"/>
+        <rect x="55" y="42" width="110" height="22" rx="5" fill="#2d4430" opacity="0.8"/>
+        <rect x="59" y="48" width="50" height="2" rx="1" fill="#5aaa66" opacity="0.6"/>
+        <rect x="59" y="53" width="32" height="2" rx="1" fill="rgba(255,255,255,0.2)"/>
+        <path d="M162 26 L240 40" stroke="#5aaa66" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+        <path d="M162 53 L240 40" stroke="#b8860b" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+        <circle cx="245" cy="40" r="5" fill="#5aaa66" opacity="0.6"/>
+        <rect x="590" y="15" width="120" height="22" rx="5" fill="#2d4430" opacity="0.5"/>
+        <rect x="594" y="21" width="65" height="2" rx="1" fill="#b8860b" opacity="0.7"/>
+        <rect x="594" y="26" width="45" height="2" rx="1" fill="rgba(255,255,255,0.2)"/>
+        <rect x="590" y="42" width="120" height="22" rx="5" fill="#2d4430" opacity="0.7"/>
+        <rect x="594" y="48" width="50" height="2" rx="1" fill="#b8860b" opacity="0.7"/>
+        <rect x="594" y="53" width="30" height="2" rx="1" fill="rgba(255,255,255,0.2)"/>
+        <path d="M520" y1="40" x2="590" y2="26" stroke="#b8860b" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+        <text x="380" y="36" text-anchor="middle" font-family="'Playfair Display',serif" font-size="13" fill="#5aaa66">Match phrase to context</text>
+        <text x="380" y="52" text-anchor="middle" font-family="'DM Sans',Arial,sans-serif" font-size="10" fill="#8aaa8e">Click left then right to connect</text>
+      </svg>
+    </div>
+
+    <p style="font-size:0.88rem; color:var(--slate); margin-bottom:1rem;">Click a phrase on the left, then click its matching meaning on the right.</p>
+    <div id="match-area"></div>
+    <div id="match-feedback" class="feedback-box" style="margin-top:1rem;"></div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="match-finish-btn" onclick="finishMatch()" style="display:none">See my results →</button>
+    </div>
+  </div>
+
+  <!-- FINAL -->
+  <div id="final-screen">
+    <div class="final-card">
+      <div class="final-score-ring">
+        <div class="big-num" id="final-score-num">0</div>
+        <div class="denom" id="final-denom">out of 0</div>
+      </div>
+      <h2 id="final-heading">Well done!</h2>
+      <p id="final-message">Keep practising to build fluency in professional situations.</p>
+      <div class="breakdown">
+        <div class="breakdown-item"><div class="bi-label">Activity 1</div><div class="bi-val" id="score-act1">—</div></div>
+        <div class="breakdown-item"><div class="bi-label">Activity 2</div><div class="bi-val" id="score-act2">—</div></div>
+        <div class="breakdown-item"><div class="bi-label">Activity 3</div><div class="bi-val" id="score-act3">—</div></div>
+      </div>
+      <div class="btn-row" style="justify-content:center">
+        <button class="btn btn-gold" onclick="restartLesson()">↺ Restart lesson</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+const mcQuestions = [
+  {
+    stem: `A client says: "Your price is too high compared to your competitors." What is the most effective response?`,
+    options: [
+      { letter:"A", text:"Our competitors offer a lower quality product, so the comparison is not really fair." },
+      { letter:"B", text:"I understand your concern. Could you help me understand what budget you are working with so we can explore the best option together?" },
+      { letter:"C", text:"We cannot lower our prices, and that is our final position on the matter." },
+      { letter:"D", text:"If you think our price is high, perhaps a competitor would suit you better." },
+    ],
+    correct: 1,
+    explanation: "Asking about the client's budget is a classic negotiation move — it shifts from a dead end into a dialogue. Showing understanding first (\"I understand your concern\") prevents the client from becoming defensive."
+  },
+  {
+    stem: `A client says: "We need a decision from you by end of day." You are not ready to agree. What should you say?`,
+    options: [
+      { letter:"A", text:"That is not possible — we need at least a week to decide anything." },
+      { letter:"B", text:"I appreciate the urgency. I can get back to you with a preliminary position by end of day and confirm all details by tomorrow morning." },
+      { letter:"C", text:"We will try our best, but we cannot promise anything at this stage." },
+      { letter:"D", text:"Why is the deadline so tight? This seems unreasonable for a decision of this size." },
+    ],
+    correct: 1,
+    explanation: "Offering a partial commitment (\"preliminary position\") buys time without refusing. It shows respect for their timeline while being honest about what you can deliver — a key B2 negotiation skill."
+  },
+  {
+    stem: `You want to make a concession but expect something in return. Which phrase best expresses this?`,
+    options: [
+      { letter:"A", text:"We can lower the price, but only if you really need us to." },
+      { letter:"B", text:"We would be willing to reduce the price slightly if you could commit to a longer contract period." },
+      { letter:"C", text:"A price reduction is something we can consider, but we are not sure about it yet." },
+      { letter:"D", text:"It might be possible to discuss the price, depending on various factors we still need to assess." },
+    ],
+    correct: 1,
+    explanation: "\"If you could...\" is the conditional exchange structure used in professional negotiation. It signals willingness to move while making it clear that concessions go both ways — essential at B2 level."
+  },
+  {
+    stem: `A client says: "We've heard some negative feedback about your after-sales support." How should you respond?`,
+    options: [
+      { letter:"A", text:"I would be interested to know where that feedback came from, as it does not reflect our standards." },
+      { letter:"B", text:"That feedback is outdated — we have significantly improved our support over the past year." },
+      { letter:"C", text:"Thank you for raising that. We take feedback seriously and I would like to address those specific concerns directly." },
+      { letter:"D", text:"Negative reviews are common in our industry and do not always reflect the full picture." },
+    ],
+    correct: 2,
+    explanation: "Thanking someone for raising a concern shows confidence, not weakness. Saying you want to address it \"directly\" signals accountability. Options A and B sound defensive; option D dismisses the concern entirely."
+  },
+  {
+    stem: `You are in a negotiation and have reached the limits of what you can offer. What is the most professional way to signal this?`,
+    options: [
+      { letter:"A", text:"We have been very generous here — I am not sure what more you want from us." },
+      { letter:"B", text:"That is simply not possible, and I am afraid the conversation ends there." },
+      { letter:"C", text:"I have to be transparent — this is genuinely the best we can do within our current parameters." },
+      { letter:"D", text:"I think we have gone far enough with concessions and need to stop here." },
+    ],
+    correct: 2,
+    explanation: "\"I have to be transparent\" signals honesty and builds trust. \"Within our current parameters\" is formal and professional. This option closes the negotiation firmly without sounding aggressive or frustrated."
+  }
+];
+
+const fibQuestions = [
+  {
+    sentence: `We would be happy to _____ on the delivery schedule if you can confirm the order this week.`,
+    wordBank: ["compromise", "comply", "concede", "conform"],
+    correct: "compromise",
+    explanation: "\"Compromise on\" means to reach a middle ground. \"Concede\" means to give something up entirely (too strong here); \"comply\" and \"conform\" mean to follow rules, not negotiate terms."
+  },
+  {
+    sentence: `Before we go any further, could we _____ the key terms we have already agreed on?`,
+    wordBank: ["revisit", "recap", "restate", "reconsider"],
+    correct: "recap",
+    explanation: "\"Recap\" means to quickly summarise what has already been agreed — a standard negotiation tool. \"Revisit\" suggests reopening; \"reconsider\" means changing your mind; \"restate\" is too formal for this context."
+  },
+  {
+    sentence: `I understand your position, but I am afraid we cannot _____ on the payment terms.`,
+    wordBank: ["budge", "bend", "break", "back"],
+    correct: "budge",
+    explanation: "\"Cannot budge\" is a fixed expression meaning we cannot move from our position. It is firm but professional. The others (bend, break, back) do not collocate naturally with \"on\" in this context."
+  },
+  {
+    sentence: `Let me take this back to my team and see what we can _____ to the table.`,
+    wordBank: ["bring", "carry", "add", "push"],
+    correct: "bring",
+    explanation: "\"Bring to the table\" is a fixed business idiom meaning to contribute or offer something new in a negotiation. It is extremely common at B2 and above."
+  },
+  {
+    sentence: `We are prepared to offer a discount _____ that you place the order before the end of the quarter.`,
+    wordBank: ["provided", "despite", "unless", "although"],
+    correct: "provided",
+    explanation: "\"Provided that\" introduces a condition — it means \"on the condition that\". This is the standard connector for conditional offers in negotiations. \"Unless\" and \"although\" change the logic entirely."
+  }
+];
+
+const matchPairs = [
+  { phrase: "Lowball offer", meaning: "An opening bid that is deliberately very low" },
+  { phrase: "Walk away point", meaning: "The limit beyond which you will end the negotiation" },
+  { phrase: "Win-win outcome", meaning: "A result that benefits both sides equally" },
+  { phrase: "Anchor price", meaning: "The first number stated, which shapes the negotiation" },
+  { phrase: "Counteroffer", meaning: "A response to an offer that proposes different terms" },
+];
+
+// STATE
+let mcIndex = 0, mcScore = 0;
+let fibIndex = 0, fibScore = 0;
+let matchScore = 0;
+let totalScore = 0, totalMax = 15;
+let actScores = [null, null, null];
+let fibChecked = false;
+let matchPhraseSelected = null;
+let matchedCount = 0;
+let matchCorrectCount = 0;
+let matchLocked = false;
+
+function updateHeader() {
+  const answered = mcIndex + fibIndex + matchScore;
+  document.getElementById('header-score').textContent = totalScore + ' / ' + answered;
+}
+function updateProgress() {
+  const done = mcIndex + fibIndex + matchScore;
+  document.getElementById('progress-fill').style.width = Math.round((done / totalMax) * 100) + '%';
+}
+
+// MC
+function renderMC() {
+  const q = mcQuestions[mcIndex];
+  document.getElementById('mc-counter').textContent = 'Question ' + (mcIndex+1) + ' of ' + mcQuestions.length;
+  const area = document.getElementById('mc-question-area');
+  area.innerHTML = `<div class="q-card"><div class="q-stem">${q.stem}</div><div class="options" id="mc-options">${q.options.map((o,i) => `<div class="option" id="mc-opt-${i}" onclick="selectMC(${i})"><div class="opt-letter">${o.letter}</div><span>${o.text}</span></div>`).join('')}</div><div class="feedback-box" id="mc-feedback"></div></div>`;
+  document.getElementById('mc-check-btn').disabled = true;
+  document.getElementById('mc-check-btn').style.display = '';
+  document.getElementById('mc-next-btn').style.display = 'none';
+  window._mcSelected = null;
+}
+function selectMC(i) {
+  if (document.getElementById('mc-opt-0').classList.contains('disabled')) return;
+  window._mcSelected = i;
+  document.querySelectorAll('[id^=mc-opt-]').forEach((el,idx) => el.classList.toggle('selected', idx===i));
+  document.getElementById('mc-check-btn').disabled = false;
+}
+function checkMC() {
+  const q = mcQuestions[mcIndex];
+  const sel = window._mcSelected;
+  if (sel === null) return;
+  document.querySelectorAll('[id^=mc-opt-]').forEach(el => el.classList.add('disabled'));
+  const fb = document.getElementById('mc-feedback');
+  fb.style.display = 'block';
+  if (sel === q.correct) {
+    document.getElementById('mc-opt-'+sel).classList.add('correct');
+    fb.className = 'feedback-box correct';
+    fb.innerHTML = `<div class="fb-icon">Correct!</div><div class="fb-explain">${q.explanation}</div>`;
+    mcScore++; totalScore++;
+  } else {
+    document.getElementById('mc-opt-'+sel).classList.add('incorrect');
+    document.getElementById('mc-opt-'+q.correct).classList.add('correct');
+    fb.className = 'feedback-box incorrect';
+    fb.innerHTML = `<div class="fb-icon">Not quite.</div><div class="fb-explain">${q.explanation}</div>`;
+  }
+  document.getElementById('mc-check-btn').style.display = 'none';
+  document.getElementById('mc-next-btn').style.display = '';
+  mcIndex++;
+  updateHeader(); updateProgress();
+}
+function nextMC() {
+  if (mcIndex < mcQuestions.length) { renderMC(); }
+  else {
+    actScores[0] = mcScore + '/' + mcQuestions.length;
+    document.getElementById('activity-1').style.display = 'none';
+    document.getElementById('activity-2').style.display = 'block';
+    renderFIB();
+  }
+}
+
+// FIB
+function renderFIB() {
+  fibChecked = false;
+  const q = fibQuestions[fibIndex];
+  document.getElementById('fib-counter').textContent = 'Question ' + (fibIndex+1) + ' of ' + fibQuestions.length;
+  const shuffled = [...q.wordBank].sort(() => Math.random() - 0.5);
+  const area = document.getElementById('fib-question-area');
+  area.innerHTML = `<div class="q-card"><div class="q-stem" style="margin-bottom:1rem;">Choose the correct word for the blank:</div><div class="word-bank" id="fib-bank">${shuffled.map(w => `<div class="word-chip" id="chip-${w.replace(/\s/g,'_')}" onclick="selectFIBWord('${w}')">${w}</div>`).join('')}</div><div class="blank-sentence" id="fib-sentence"></div><div class="feedback-box" id="fib-feedback"></div></div>`;
+  document.getElementById('fib-check-btn').style.display = '';
+  document.getElementById('fib-next-btn').style.display = 'none';
+  window._fibSelected = null;
+  renderFIBSentence(q, null);
+}
+function renderFIBSentence(q, selected) {
+  const parts = q.sentence.split('_____');
+  const inputVal = selected
+    ? `<span style="display:inline-block;min-width:120px;border-bottom:2.5px solid var(--gold);padding:2px 8px;font-weight:500;color:var(--ink);">${selected}</span>`
+    : `<span style="display:inline-block;min-width:120px;border-bottom:2.5px solid var(--gold);padding:2px 8px;color:var(--mist);">_____</span>`;
+  document.getElementById('fib-sentence').innerHTML = parts[0] + inputVal + (parts[1] || '');
+}
+function selectFIBWord(word) {
+  if (fibChecked) return;
+  document.querySelectorAll('.word-chip').forEach(c => c.classList.remove('selected'));
+  window._fibSelected = word;
+  document.getElementById('chip-' + word.replace(/\s/g,'_')).classList.add('selected');
+  renderFIBSentence(fibQuestions[fibIndex], word);
+}
+function checkFIB() {
+  const q = fibQuestions[fibIndex];
+  const sel = window._fibSelected;
+  if (!sel) return;
+  fibChecked = true;
+  document.querySelectorAll('.word-chip').forEach(c => { c.classList.add('used'); c.classList.remove('selected'); });
+  const fb = document.getElementById('fib-feedback');
+  fb.style.display = 'block';
+  const parts = q.sentence.split('_____');
+  const isCorrect = sel === q.correct;
+  const color = isCorrect ? 'var(--correct)' : 'var(--wrong)';
+  document.getElementById('fib-sentence').innerHTML = parts[0] + `<span style="display:inline-block;min-width:120px;border-bottom:2.5px solid ${color};padding:2px 8px;font-weight:600;color:${color};">${sel}</span>` + (parts[1]||'');
+  if (isCorrect) {
+    fb.className = 'feedback-box correct';
+    fb.innerHTML = `<div class="fb-icon">Correct!</div><div class="fb-explain">${q.explanation}</div>`;
+    fibScore++; totalScore++;
+  } else {
+    fb.className = 'feedback-box incorrect';
+    fb.innerHTML = `<div class="fb-icon">The correct answer is: <strong>${q.correct}</strong></div><div class="fb-explain">${q.explanation}</div>`;
+  }
+  document.getElementById('fib-check-btn').style.display = 'none';
+  document.getElementById('fib-next-btn').style.display = '';
+  fibIndex++;
+  updateHeader(); updateProgress();
+}
+function nextFIB() {
+  if (fibIndex < fibQuestions.length) { renderFIB(); }
+  else {
+    actScores[1] = fibScore + '/' + fibQuestions.length;
+    document.getElementById('activity-2').style.display = 'none';
+    document.getElementById('activity-3').style.display = 'block';
+    renderMatch();
+  }
+}
+
+// MATCH
+function renderMatch() {
+  const shuffledMeanings = [...matchPairs].sort(() => Math.random() - 0.5);
+  const area = document.getElementById('match-area');
+  area.innerHTML = `<div class="match-grid"><div class="match-col"><div class="match-col-label">Term</div>${matchPairs.map((p,i) => `<div class="match-item phrase-item" id="phrase-${i}" onclick="selectPhrase(${i})">${p.phrase}</div>`).join('')}</div><div class="match-col"><div class="match-col-label">Meaning</div>${shuffledMeanings.map((p,i) => `<div class="match-item meaning-item" id="meaning-${i}" data-meaning="${p.meaning}" onclick="selectMeaning(${i})">${p.meaning}</div>`).join('')}</div></div>`;
+  matchPhraseSelected = null; matchedCount = 0; matchCorrectCount = 0; matchLocked = false;
+  document.getElementById('match-counter').textContent = '0 of 5 matched';
+}
+function selectPhrase(i) {
+  if (matchLocked) return;
+  if (document.getElementById('phrase-'+i).classList.contains('matched')) return;
+  document.querySelectorAll('.phrase-item').forEach(el => el.classList.remove('active'));
+  matchPhraseSelected = i;
+  document.getElementById('phrase-'+i).classList.add('active');
+}
+function selectMeaning(i) {
+  if (matchPhraseSelected === null || matchLocked) return;
+  const meaningEl = document.getElementById('meaning-'+i);
+  if (meaningEl.classList.contains('matched')) return;
+  const phraseEl = document.getElementById('phrase-'+matchPhraseSelected);
+  if (matchPairs[matchPhraseSelected].meaning === meaningEl.dataset.meaning) {
+    phraseEl.classList.add('matched'); meaningEl.classList.add('matched'); phraseEl.classList.remove('active');
+    matchedCount++; matchCorrectCount++; matchScore++; totalScore++;
+    matchPhraseSelected = null;
+    document.getElementById('match-counter').textContent = matchedCount + ' of 5 matched';
+    updateHeader(); updateProgress();
+    if (matchedCount === matchPairs.length) setTimeout(() => { document.getElementById('match-finish-btn').style.display = ''; }, 400);
+  } else {
+    matchLocked = true;
+    phraseEl.classList.add('wrong-flash'); meaningEl.classList.add('wrong-flash');
+    setTimeout(() => { phraseEl.classList.remove('wrong-flash','active'); meaningEl.classList.remove('wrong-flash'); matchPhraseSelected = null; matchLocked = false; }, 650);
+  }
+}
+function finishMatch() {
+  actScores[2] = matchCorrectCount + '/5';
+  document.getElementById('activity-3').style.display = 'none';
+  showFinal();
+}
+
+function showFinal() {
+  document.getElementById('progress-fill').style.width = '100%';
+  document.getElementById('final-score-num').textContent = totalScore;
+  document.getElementById('final-denom').textContent = 'out of ' + totalMax;
+  document.getElementById('header-score').textContent = totalScore + ' / ' + totalMax;
+  document.getElementById('score-act1').textContent = actScores[0] || '—';
+  document.getElementById('score-act2').textContent = actScores[1] || '—';
+  document.getElementById('score-act3').textContent = actScores[2] || '—';
+  const pct = totalScore / totalMax;
+  let heading, msg;
+  if (pct >= 0.9) { heading = 'Outstanding work!'; msg = 'You have excellent command of negotiation English. Your ability to handle objections and make conditional offers is at C1 level. Well done.'; }
+  else if (pct >= 0.7) { heading = 'Well done!'; msg = 'You have a strong grasp of negotiation language. Review the conditional offer structure ("if you could... we would be willing to...") to sharpen your edge.'; }
+  else if (pct >= 0.5) { heading = 'Good effort!'; msg = 'Negotiation language is challenging. Focus on fixed phrases like "bring to the table", "budge on", and the conditional exchange structure — these recur constantly in business English.'; }
+  else { heading = 'Keep practising!'; msg = 'These are advanced scenarios. Re-read each explanation carefully and try again — the language patterns will become more familiar with each attempt.'; }
+  document.getElementById('final-heading').textContent = heading;
+  document.getElementById('final-message').textContent = msg;
+  document.getElementById('final-screen').style.display = 'block';
+  document.getElementById('final-screen').scrollIntoView({ behavior: 'smooth' });
+}
+
+function restartLesson() {
+  mcIndex = 0; mcScore = 0; fibIndex = 0; fibScore = 0;
+  matchScore = 0; matchCorrectCount = 0; matchLocked = false;
+  totalScore = 0; actScores = [null,null,null];
+  document.getElementById('progress-fill').style.width = '0%';
+  document.getElementById('header-score').textContent = '0 / 0';
+  document.getElementById('final-screen').style.display = 'none';
+  document.getElementById('activity-2').style.display = 'none';
+  document.getElementById('activity-3').style.display = 'none';
+  document.getElementById('activity-1').style.display = 'block';
+  renderMC();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+renderMC();
+</script>
+</body>
+</html>

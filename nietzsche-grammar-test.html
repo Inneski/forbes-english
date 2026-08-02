@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nietzsche Grammar Test</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=IM+Fell+English:ital@0;1&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1410;
+    --parchment: #f5edd6;
+    --aged: #e8d9b5;
+    --gold: #b8962e;
+    --gold-light: #d4af5a;
+    --rust: #8b3a2a;
+    --shadow: rgba(10,5,0,0.4);
+    --mid: #6b5c42;
+    --faint: #c9b98a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: #0f0c08;
+    background-image:
+      radial-gradient(ellipse at 20% 0%, #1e1508 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 100%, #1a1005 0%, transparent 60%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 20px 80px;
+    font-family: 'Crimson Text', Georgia, serif;
+  }
+
+  .page {
+    max-width: 780px;
+    width: 100%;
+    background: var(--parchment);
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E"),
+      linear-gradient(160deg, #fdf4dc 0%, #f0e2bc 40%, #e8d5a8 100%);
+    box-shadow:
+      0 0 0 1px var(--faint),
+      0 0 60px rgba(0,0,0,0.9),
+      inset 0 0 80px rgba(180,140,60,0.08);
+    padding: 60px 70px;
+    position: relative;
+    animation: pageReveal 1.2s ease forwards;
+    opacity: 0;
+  }
+
+  @keyframes pageReveal {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Decorative border */
+  .page::before {
+    content: '';
+    position: absolute;
+    inset: 16px;
+    border: 1px solid var(--faint);
+    pointer-events: none;
+    opacity: 0.6;
+  }
+  .page::after {
+    content: '';
+    position: absolute;
+    inset: 20px;
+    border: 1px solid var(--faint);
+    pointer-events: none;
+    opacity: 0.3;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    border-bottom: 2px solid var(--gold);
+    padding-bottom: 32px;
+    margin-bottom: 40px;
+    position: relative;
+  }
+
+  .eyebrow {
+    font-family: 'Crimson Text', serif;
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', 'IM Fell English', serif;
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    font-weight: 900;
+    color: var(--ink);
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--rust);
+  }
+
+  .subtitle {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--mid);
+    margin-top: 10px;
+  }
+
+  .ornament {
+    color: var(--gold);
+    font-size: 1.4rem;
+    display: block;
+    margin: 14px auto 0;
+    letter-spacing: 0.3em;
+  }
+
+  /* Sections */
+  .section {
+    margin-bottom: 44px;
+    animation: fadeUp 0.8s ease both;
+  }
+  .section:nth-child(2) { animation-delay: 0.15s; }
+  .section:nth-child(3) { animation-delay: 0.3s; }
+  .section:nth-child(4) { animation-delay: 0.45s; }
+  .section:nth-child(5) { animation-delay: 0.6s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+
+  .section-num {
+    background: var(--ink);
+    color: var(--gold);
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: 0.02em;
+  }
+
+  .section-instruction {
+    font-family: 'Crimson Text', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--mid);
+    margin-bottom: 18px;
+    padding-left: 46px;
+  }
+
+  /* Quote block */
+  .nietzsche-quote {
+    border-left: 3px solid var(--gold);
+    padding: 12px 18px;
+    margin: 18px 0 10px;
+    background: rgba(184,150,46,0.06);
+  }
+  .nietzsche-quote p {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--ink);
+    line-height: 1.6;
+  }
+  .nietzsche-quote cite {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    text-transform: uppercase;
+    font-style: normal;
+  }
+
+  /* Questions */
+  .question {
+    margin-bottom: 20px;
+    padding: 16px 20px;
+    background: rgba(255,255,255,0.35);
+    border: 1px solid var(--faint);
+    transition: background 0.2s;
+  }
+
+  .question:hover { background: rgba(255,255,255,0.55); }
+
+  .q-text {
+    font-size: 1.05rem;
+    color: var(--ink);
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+
+  .q-text strong {
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: var(--gold);
+    text-underline-offset: 3px;
+  }
+
+  .blank {
+    display: inline-block;
+    border-bottom: 2px solid var(--ink);
+    min-width: 90px;
+    color: var(--rust);
+    font-style: italic;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 8px 12px;
+    border: 1px solid transparent;
+    transition: all 0.18s;
+    font-size: 0.97rem;
+    color: var(--ink);
+    background: rgba(255,255,255,0.3);
+    border-radius: 0;
+    text-align: left;
+    width: 100%;
+    font-family: 'Crimson Text', serif;
+  }
+
+  .option:hover:not(:disabled) {
+    border-color: var(--gold);
+    background: rgba(184,150,46,0.1);
+  }
+
+  .option .letter {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--gold);
+    min-width: 18px;
+  }
+
+  .option.correct {
+    background: rgba(60, 110, 60, 0.15);
+    border-color: #5a8a5a;
+    color: #2a5a2a;
+  }
+
+  .option.wrong {
+    background: rgba(140, 40, 30, 0.12);
+    border-color: var(--rust);
+    color: var(--rust);
+    text-decoration: line-through;
+  }
+
+  .option.reveal-correct {
+    background: rgba(60,110,60,0.1);
+    border-color: #5a8a5a;
+    color: #2a5a2a;
+    font-style: italic;
+  }
+
+  .option:disabled { cursor: default; }
+
+  .feedback {
+    margin-top: 10px;
+    font-size: 0.88rem;
+    font-style: italic;
+    color: var(--mid);
+    padding: 8px 12px;
+    border-left: 2px solid var(--gold);
+    background: rgba(184,150,46,0.06);
+    display: none;
+  }
+
+  .feedback.visible { display: block; }
+  .feedback.correct-fb { border-color: #5a8a5a; color: #2a5a2a; }
+  .feedback.wrong-fb { border-color: var(--rust); color: var(--rust); }
+
+  /* Fill-in the blank inputs */
+  .fill-input {
+    border: none;
+    border-bottom: 2px solid var(--ink);
+    background: transparent;
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--rust);
+    width: 130px;
+    padding: 2px 6px;
+    outline: none;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+
+  .fill-input:focus { border-color: var(--gold); }
+  .fill-input.correct-input { border-color: #5a8a5a; color: #2a5a2a; }
+  .fill-input.wrong-input { border-color: var(--rust); }
+
+  /* Submit & Score */
+  .submit-section {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 32px;
+    border-top: 1px solid var(--faint);
+  }
+
+  .btn-check {
+    background: var(--ink);
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 14px 52px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+
+  .btn-check:hover {
+    background: var(--gold);
+    color: var(--ink);
+  }
+
+  .score-panel {
+    display: none;
+    margin-top: 32px;
+    padding: 28px;
+    border: 1px solid var(--gold);
+    background: rgba(184,150,46,0.07);
+    animation: fadeUp 0.6s ease;
+  }
+
+  .score-panel.visible { display: block; }
+
+  .score-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: var(--ink);
+    line-height: 1;
+  }
+
+  .score-label {
+    font-family: 'Crimson Text', serif;
+    font-size: 1rem;
+    color: var(--mid);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .verdict {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--rust);
+    border-top: 1px solid var(--faint);
+    padding-top: 14px;
+    margin-top: 14px;
+  }
+
+  .btn-reset {
+    margin-top: 20px;
+    background: transparent;
+    color: var(--mid);
+    border: 1px solid var(--faint);
+    padding: 8px 28px;
+    font-family: 'Crimson Text', serif;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+  }
+
+  .btn-reset:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* Progress bar */
+  .progress-bar {
+    height: 3px;
+    background: var(--faint);
+    margin-bottom: 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--rust));
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  /* Intro paragraph */
+  .intro {
+    font-family: 'Crimson Text', serif;
+    font-size: 1.05rem;
+    color: var(--mid);
+    font-style: italic;
+    text-align: center;
+    margin-bottom: 36px;
+    line-height: 1.7;
+    padding: 0 20px;
+  }
+
+  @media (max-width: 600px) {
+    .page { padding: 36px 28px; }
+    .options { grid-template-columns: 1fr; }
+    h1 { font-size: 2rem; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <div class="eyebrow">English Grammar Examination</div>
+    <h1>Thus Spoke <em>Grammar</em></h1>
+    <p class="subtitle">A Philosophical Journey Through the English Language</p>
+    <span class="ornament">❧ &nbsp; ✦ &nbsp; ❧</span>
+  </header>
+
+  <p class="intro">
+    You stand at the crossroads of language and philosophy. Each question below draws from the writings of Friedrich Nietzsche. Conquer grammar — or grammar conquers you.
+  </p>
+
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+  <!-- SECTION 1: Articles -->
+  <div class="section">
+    <div class="section-label">
+      <div class="section-num">I</div>
+      <div class="section-title">Articles — Der, die, das... but in English</div>
+    </div>
+    <p class="section-instruction">Choose the correct article (a / an / the / no article) to complete each sentence.</p>
+
+    <div class="question" data-type="mc" data-answer="b">
+      <p class="q-text">Nietzsche believed that <span class="blank">___</span> Übermensch must create his own values.</p>
+      <div class="options">
+        <button class="option" data-val="a"><span class="letter">A</span> a</button>
+        <button class="option" data-val="b"><span class="letter">B</span> the</button>
+        <button class="option" data-val="c"><span class="letter">C</span> an</button>
+        <button class="option" data-val="d"><span class="letter">D</span> —</button>
+      </div>
+      <div class="feedback">💡 We use <strong>the</strong> because "Übermensch" refers to a specific concept already known to both speaker and listener.</div>
+    </div>
+
+    <div class="question" data-type="mc" data-answer="a">
+      <p class="q-text">He was <span class="blank">___</span> extraordinary philosopher who challenged all of Western thought.</p>
+      <div class="options">
+        <button class="option" data-val="a"><span class="letter">A</span> an</button>
+        <button class="option" data-val="b"><span class="letter">B</span> a</button>
+        <button class="option" data-val="c"><span class="letter">C</span> the</button>
+        <button class="option" data-val="d"><span class="letter">D</span> —</button>
+      </div>
+      <div class="feedback">💡 Use <strong>an</strong> before words beginning with a vowel sound — "extraordinary" starts with the sound /ɛ/.</div>
+    </div>
+
+    <div class="question" data-type="mc" data-answer="d">
+      <p class="q-text">"<span class="blank">___</span> God is dead," Nietzsche wrote in <em>The Gay Science</em>.</p>
+      <div class="options">
+        <button class="option" data-val="a"><span class="letter">A</span> The</button>
+        <button class="option" data-val="b"><span class="letter">B</span> A</button>
+        <button class="option" data-val="c"><span class="letter">C</span> An</button>
+        <button class="option" data-val="d"><span class="letter">D</span> —</button>
+      </div>
+      <div class="feedback">💡 Names and proper nouns treated as unique entities (like "God" in monotheistic usage) take <strong>no article</strong>.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: Verb Tenses -->
+  <div class="section">
+    <div class="section-label">
+      <div class="section-num">II</div>
+      <div class="section-title">Verb Tenses — The Eternal Recurrence of Grammar</div>
+    </div>
+    <p class="section-instruction">Select the correct verb form to complete the sentence.</p>
+
+    <div class="question" data-type="mc" data-answer="c">
+      <p class="q-text">Nietzsche <span class="blank">___</span> in Basel when he first conceived of the will to power.</p>
+      <div class="options">
+        <button class="option" data-val="a"><span class="letter">A</span> lives</button>
+        <button class="option" data-val="b"><span class="letter">B</span> has lived</button>
+        <button class="option" data-val="c"><span class="letter">C</span> was living</button>
+        <button class="option" data-val="d"><span class="letter">D</span> had been lives</button>
+      </div>
+      <div class="feedback">💡 Use <strong>past continuous</strong> (was living) for a background action in progress when another event occurred.</div>
+    </div>
+
+    <div class="question" data-type="mc" data-answer="b">
+      <p class="q-text">By the time he collapsed in Turin, Nietzsche <span class="blank">___</span> ten major works.</p>
+      <div class="options">
+        <button class="option" data-val="a"><span class="letter">A</span> wrote</button>
+        <button class="option" data-val="b"><span class="letter">B</span> had written</button>
+        <button class="option" data-val="c"><span class="letter">C</span> has written</button>
+        <button class="option" data-val="d"><span class="letter">D</span> was writing</button>
+      </div>
+      <div class="feedback">💡 Use <strong>past perfect</strong> (had written) for an action completed before a specific past moment.</div>
+    </div>
+
+    <div class="question" data-type="mc" data-answer="a">
+      <p class="q-text">Philosophers around the world still <span class="blank">___</span> Nietzsche's ideas today.</p>
+      <div class="options">
+        <button class="option" data-val="a"><span class="letter">A</span> study</button>
+        <button class="option" data-val="b"><span class="letter">B</span> studied</button>
+        <button class="option" data-val="c"><span class="letter">C</span> are studied</button>
+        <button class="option" data-val="d"><span class="letter">D</span> have studied</button>
+      </div>
+      <div class="feedback">💡 <strong>Simple present</strong> (study) is used for habits and ongoing truths. "Still... today" confirms this.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: Prepositions -->
+  <div class="section">
+    <div class="section-label">
+      <div class="section-num">III</div>
+      <div class="section-title">Prepositions — Navigating the Abyss</div>
+    </div>
+    <p class="section-instruction">Choose the correct preposition to complete each sentence.</p>
+
+    <div class="question" data-type="mc" data-answer="c">
+      <p class="q-text">Nietzsche was born <span class="blank">___</span> October 15, 1844, in the small town of Röcken.</p>
+      <div class="options">
+        <button class="option" data-val="a"><span class="letter">A</span> in</button>
+        <button class="option" data-val="b"><span class="letter">B</span> at</button>
+        <button class="option" data-val="c"><span class="letter">C</span> on</button>
+        <button class="option" data-val="d"><span class="letter">D</span> by</button>
+      </div>
+      <div class="feedback">💡 <strong>On</strong> is used with specific dates. Remember: <em>on</em> Monday, <em>in</em> October, <em>at</em> noon.</div>
+    </div>
+
+    <div class="question" data-type="mc" data-answer="b">
+      <p class="q-text">He suffered <span class="blank">___</span> severe migraines throughout most of his adult life.</p>
+      <div class="options">
+        <button class="option" data-val="a"><span class="letter">A</span> with</button>
+        <button class="option" data-val="b"><span class="letter">B</span> from</button>
+        <button class="option" data-val="c"><span class="letter">C</span> by</button>
+        <button class="option" data-val="d"><span class="letter">D</span> of</button>
+      </div>
+      <div class="feedback">💡 "Suffer <strong>from</strong>" is the fixed collocation for illnesses and conditions in English.</div>
+    </div>
+
+    <div class="question" data-type="mc" data-answer="d">
+      <p class="q-text"><em>Beyond Good and Evil</em> had a profound influence <span class="blank">___</span> twentieth-century thought.</p>
+      <div class="options">
+        <button class="option" data-val="a"><span class="letter">A</span> over</button>
+        <button class="option" data-val="b"><span class="letter">B</span> to</button>
+        <button class="option" data-val="c"><span class="letter">C</span> for</button>
+        <button class="option" data-val="d"><span class="letter">D</span> on</button>
+      </div>
+      <div class="feedback">💡 "Influence <strong>on</strong>" is the standard collocation — don't confuse it with "influence over," which implies control.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: Conditionals -->
+  <div class="section">
+    <div class="section-label">
+      <div class="section-num">IV</div>
+      <div class="section-title">Conditionals — What If the Eternal Returns?</div>
+    </div>
+    <p class="section-instruction">Select the grammatically correct conditional form.</p>
+
+    <div class="nietzsche-quote">
+      <p>"If you gaze long enough into an abyss, the abyss gazes also into you."</p>
+      <cite>— Beyond Good and Evil</cite>
+    </div>
+
+    <div class="question" data-type="mc" data-answer="a">
+      <p class="q-text">If Nietzsche <span class="blank">___</span> alive today, he <strong>would probably</strong> reject social media entirely.</p>
+      <div class="options">
+        <button class="option" data-val="a"><span class="letter">A</span> were</button>
+        <button class="option" data-val="b"><span class="letter">B</span> was</button>
+        <button class="option" data-val="c"><span class="letter">C</span> is</button>
+        <button class="option" data-val="d"><span class="letter">D</span> had been</button>
+      </div>
+      <div class="feedback">💡 <strong>Second conditional</strong> uses "if + past subjunctive (were)" for hypothetical situations. "If I were you..." is the classic model.</div>
+    </div>
+
+    <div class="question" data-type="mc" data-answer="b">
+      <p class="q-text">If he <span class="blank">___</span> his sister's manipulation of his manuscripts, his legacy might be very different.</p>
+      <div class="options">
+        <button class="option" data-val="a"><span class="letter">A</span> prevented</button>
+        <button class="option" data-val="b"><span class="letter">B</span> had prevented</button>
+        <button class="option" data-val="c"><span class="letter">C</span> would prevent</button>
+        <button class="option" data-val="d"><span class="letter">D</span> has prevented</button>
+      </div>
+      <div class="feedback">💡 <strong>Third conditional</strong> uses "if + past perfect" to talk about unreal past situations and their hypothetical results.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: Active vs Passive Voice -->
+  <div class="section">
+    <div class="section-label">
+      <div class="section-num">V</div>
+      <div class="section-title">Active vs. Passive Voice — The Will to Power… of Verbs</div>
+    </div>
+    <p class="section-instruction">Identify whether each sentence is in the Active (A) or Passive (P) voice.</p>
+
+    <div class="question" data-type="mc" data-answer="b">
+      <p class="q-text">"<em>Thus Spoke Zarathustra</em> <strong>was written</strong> by Nietzsche in just ten days."</p>
+      <div class="options">
+        <button class="option" data-val="a"><span class="letter">A</span> Active voice</button>
+        <button class="option" data-val="b"><span class="letter">B</span> Passive voice</button>
+      </div>
+      <div class="feedback">💡 <strong>Passive voice</strong>: the subject ("Zarathustra") receives the action. Form: <em>to be + past participle</em>.</div>
+    </div>
+
+    <div class="question" data-type="mc" data-answer="a">
+      <p class="q-text">"Nietzsche <strong>rejected</strong> the conventional morality of his time."</p>
+      <div class="options">
+        <button class="option" data-val="a"><span class="letter">A</span> Active voice</button>
+        <button class="option" data-val="b"><span class="letter">B</span> Passive voice</button>
+      </div>
+      <div class="feedback">💡 <strong>Active voice</strong>: the subject (Nietzsche) performs the action directly. Preferred for clarity and directness.</div>
+    </div>
+
+    <div class="question" data-type="mc" data-answer="b">
+      <p class="q-text">"His works <strong>have been misinterpreted</strong> by nationalist movements for over a century."</p>
+      <div class="options">
+        <button class="option" data-val="a"><span class="letter">A</span> Active voice</button>
+        <button class="option" data-val="b"><span class="letter">B</span> Passive voice</button>
+      </div>
+      <div class="feedback">💡 <strong>Passive voice</strong> in present perfect: <em>have/has + been + past participle</em>. Used here to emphasize the subject, not the agent.</div>
+    </div>
+  </div>
+
+  <!-- Submit -->
+  <div class="submit-section">
+    <button class="btn-check" id="btnCheck">Check My Answers</button>
+
+    <div class="score-panel" id="scorePanel">
+      <div class="score-label">Your Score</div>
+      <div class="score-num" id="scoreNum">— / —</div>
+      <div class="verdict" id="verdict"></div>
+      <br>
+      <button class="btn-reset" id="btnReset">Begin Again — Eternal Recurrence</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const TOTAL = document.querySelectorAll('.question[data-type="mc"]').length;
+  const progressFill = document.getElementById('progressFill');
+  let answered = 0;
+
+  function updateProgress() {
+    const pct = (answered / TOTAL) * 100;
+    progressFill.style.width = pct + '%';
+  }
+
+  document.querySelectorAll('.question[data-type="mc"]').forEach(q => {
+    const correct = q.dataset.answer;
+    const buttons = q.querySelectorAll('.option');
+    const feedback = q.querySelector('.feedback');
+    let done = false;
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (done) return;
+        done = true;
+        answered++;
+        updateProgress();
+
+        buttons.forEach(b => {
+          b.disabled = true;
+          if (b.dataset.val === correct) {
+            b.classList.add(btn.dataset.val === correct ? 'correct' : 'reveal-correct');
+          }
+        });
+
+        if (btn.dataset.val !== correct) {
+          btn.classList.add('wrong');
+          feedback.classList.add('wrong-fb');
+        } else {
+          feedback.classList.add('correct-fb');
+        }
+        feedback.classList.add('visible');
+      });
+    });
+  });
+
+  document.getElementById('btnCheck').addEventListener('click', () => {
+    // Force reveal all unanswered
+    document.querySelectorAll('.question[data-type="mc"]').forEach(q => {
+      const buttons = q.querySelectorAll('.option');
+      const feedback = q.querySelector('.feedback');
+      buttons.forEach(b => {
+        b.disabled = true;
+        if (b.dataset.val === q.dataset.answer && !b.classList.contains('correct')) {
+          b.classList.add('reveal-correct');
+        }
+        feedback.classList.add('visible');
+      });
+    });
+
+    // Count correct answers
+    let score = 0;
+    document.querySelectorAll('.question[data-type="mc"]').forEach(q => {
+      const correct = q.dataset.answer;
+      const chosen = q.querySelector('.option.correct, .option.wrong');
+      if (chosen && chosen.dataset.val === correct) score++;
+    });
+
+    const panel = document.getElementById('scorePanel');
+    const scoreEl = document.getElementById('scoreNum');
+    const verdictEl = document.getElementById('verdict');
+    panel.classList.add('visible');
+
+    scoreEl.textContent = score + ' / ' + TOTAL;
+
+    const verdicts = [
+      [0, 4, '"The higher we soar, the smaller we appear to those who cannot fly." Keep studying, Wanderer.'],
+      [5, 8, '"That which does not kill us makes us stronger." You are becoming stronger.'],
+      [9, 11, '"Man must surpass himself." You are well on your way, Übermensch.'],
+      [12, 14, '"One must still have chaos in oneself to give birth to a dancing star." A star is born.'],
+    ];
+    for (const [min, max, text] of verdicts) {
+      if (score >= min && score <= max) verdictEl.textContent = text;
+    }
+
+    progressFill.style.width = '100%';
+    panel.scrollIntoView({ behavior: 'smooth' });
+  });
+
+  document.getElementById('btnReset').addEventListener('click', () => {
+    location.reload();
+  });
+</script>
+</body>
+</html>

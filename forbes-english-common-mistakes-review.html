@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English | Common Mistakes Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1c2b45;
+    --indigo: #3d4f8c;
+    --gold: #c9a24b;
+    --cream: #faf7f0;
+    --ink: #23262f;
+    --green: #2e7d5b;
+    --red: #b8433c;
+    --border: #e2ddd0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(180deg, var(--cream) 0%, #f2ede0 100%);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px 60px;
+  }
+
+  .logo-wrap {
+    margin-bottom: 18px;
+  }
+
+  .header {
+    text-align: center;
+    max-width: 640px;
+    margin-bottom: 20px;
+  }
+
+  .header h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+
+  .header p {
+    font-size: 15px;
+    color: var(--indigo);
+    font-weight: 500;
+  }
+
+  .score-bar {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    max-width: 640px;
+    background: var(--cream);
+    padding: 8px 4px 14px;
+    z-index: 5;
+  }
+
+  .progress-track {
+    width: 100%;
+    height: 8px;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--indigo), var(--gold));
+    transition: width 0.35s ease;
+  }
+
+  .meta-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--indigo);
+    font-weight: 600;
+  }
+
+  .card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 26px;
+    width: 100%;
+    max-width: 640px;
+    box-shadow: 0 8px 24px rgba(28, 43, 69, 0.08);
+  }
+
+  #lesson-screen {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 640px;
+    align-items: center;
+  }
+
+  .prompt-text {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1.5;
+    margin-bottom: 8px;
+    white-space: pre-line;
+  }
+
+  .support-text {
+    font-size: 13px;
+    color: var(--gold);
+    font-style: italic;
+    margin-bottom: 20px;
+  }
+
+  .options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .option-btn {
+    text-align: left;
+    padding: 14px 16px;
+    border: 1.5px solid var(--border);
+    background: var(--cream);
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: var(--ink);
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease, transform 0.1s ease;
+  }
+
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--indigo);
+    background: #fff;
+    transform: translateY(-1px);
+  }
+
+  .option-btn:disabled {
+    cursor: default;
+  }
+
+  .option-btn.correct {
+    border-color: var(--green);
+    background: #e7f3ec;
+    color: #205c40;
+    font-weight: 600;
+  }
+
+  .option-btn.incorrect {
+    border-color: var(--red);
+    background: #fbeceb;
+    color: #8a2f29;
+    font-weight: 600;
+  }
+
+  .feedback-box {
+    display: none;
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+
+  .feedback-correct {
+    background: #e7f3ec;
+    border: 1px solid var(--green);
+    color: #205c40;
+  }
+
+  .feedback-incorrect {
+    background: #fbeceb;
+    border: 1px solid var(--red);
+    color: #8a2f29;
+  }
+
+  .next-btn {
+    align-self: flex-end;
+    padding: 12px 26px;
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, opacity 0.2s ease;
+  }
+
+  .next-btn:disabled {
+    background: #b7bdcb;
+    cursor: not-allowed;
+  }
+
+  .next-btn:not(:disabled):hover {
+    background: var(--indigo);
+  }
+
+  #results-screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 640px;
+    text-align: center;
+    padding: 40px 26px;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(28, 43, 69, 0.08);
+  }
+
+  #results-screen h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    color: var(--navy);
+    margin-bottom: 12px;
+  }
+
+  #final-score {
+    font-size: 44px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+
+  #results-message {
+    font-size: 15px;
+    color: var(--indigo);
+    margin-bottom: 26px;
+    max-width: 440px;
+  }
+
+  .restart-btn {
+    padding: 12px 30px;
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .restart-btn:hover {
+    background: var(--indigo);
+  }
+
+  @media (max-width: 480px) {
+    .card, #lesson-screen, .score-bar, #results-screen { max-width: 100%; }
+    .prompt-text { font-size: 16.5px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="logo-wrap">
+  <svg width="220" height="52" viewBox="0 0 220 52" xmlns="http://www.w3.org/2000/svg">
+    <rect x="1" y="1" width="50" height="50" rx="10" fill="#1c2b45"/>
+    <text x="26" y="35" font-family="Fraunces, serif" font-size="26" font-weight="700" fill="#c9a24b" text-anchor="middle">F</text>
+    <text x="62" y="34" font-family="Inter, sans-serif" font-size="21" font-weight="700" fill="#1c2b45">Forbes English</text>
+  </svg>
+</div>
+
+<div class="header">
+  <h1>Common Mistakes Review</h1>
+  <p>Errores frecuentes y vocabulario util &middot; Spanish support</p>
+</div>
+
+<div class="score-bar">
+  <div class="progress-track">
+    <div class="progress-fill" id="progress-fill"></div>
+  </div>
+  <div class="meta-row">
+    <span id="q-number">1 / 14</span>
+    <span>Score: <span id="score-display">0</span> / <span id="total-count">14</span></span>
+  </div>
+</div>
+
+<div id="lesson-screen">
+  <div class="card">
+    <div class="prompt-text" id="prompt-text"></div>
+    <div class="support-text" id="support-text"></div>
+    <div class="options-container" id="options-container"></div>
+    <div class="feedback-box" id="feedback-box"></div>
+    <button class="next-btn" id="next-btn" disabled onclick="nextQuestion()">Next</button>
+  </div>
+</div>
+
+<div id="results-screen">
+  <h2>Lesson Complete</h2>
+  <div id="final-score">0 / 14</div>
+  <p id="results-message"></p>
+  <button class="restart-btn" onclick="restartLesson()">Try Again</button>
+</div>
+
+<script>
+const LESSON_DATA = {
+  title: "Common Mistakes Review",
+  subtitle: "Errores frecuentes y vocabulario util",
+  questions: [
+    {
+      id: "q1",
+      prompt: "When I need to _____ something to her, I need AI to help me.",
+      support: "ES: No existe el verbo \"to explicate\" en ingles cotidiano.",
+      options: ["explicate", "explain", "expose", "express"],
+      correctIndex: 1,
+      explanation: "The correct verb is \"explain\". \"Explicate\" exists but is very formal/academic and is not the natural choice here. ES: El verbo correcto es \"explain\" (explicar)."
+    },
+    {
+      id: "q2",
+      prompt: "Which English verb translates the Spanish verb \"pedir\"?",
+      support: "ES: pedir = to ask (for something)",
+      options: ["to answer", "to ask", "to tell", "to say"],
+      correctIndex: 1,
+      explanation: "\"Pedir\" is translated as \"to ask\" (often \"to ask for\"). ES: pedir = to ask / to ask for."
+    },
+    {
+      id: "q3",
+      prompt: "I need _____ activate my account.",
+      support: "ES: need + to + infinitivo",
+      options: ["activate", "that I", "activating", "to"],
+      correctIndex: 3,
+      explanation: "\"Need\" is followed by \"to\" + infinitive: \"I need to activate\". ES: need to + verbo."
+    },
+    {
+      id: "q4",
+      prompt: "Choose the correct sentence.",
+      support: "ES: \"dead\" es un adjetivo, no un verbo.",
+      options: ["He is died.", "He is dead.", "He died is.", "He has dead."],
+      correctIndex: 1,
+      explanation: "\"Dead\" is an adjective describing a state, so we say \"He is dead\". \"To die\" is the verb: \"He died\" (past simple). ES: decimos \"He is dead\", no \"He is died\"."
+    },
+    {
+      id: "q5",
+      prompt: "_____ you read any of his books?",
+      support: "ES: experiencia de vida = present perfect",
+      options: ["Do", "Did", "Have", "Are"],
+      correctIndex: 2,
+      explanation: "For life experience with no specific time, we use the present perfect: \"Have you read...?\". ES: para experiencias de vida usamos el present perfect."
+    },
+    {
+      id: "q6",
+      prompt: "PRONUNCIATION: in which word does the underlined letter make the same sound as \"ch\" in \"chair\"?\nnature",
+      support: "ES: en \"nature\" la \"t\" suena como \"ch\".",
+      options: ["nature", "message", "effortless", "none of them"],
+      correctIndex: 0,
+      explanation: "In \"nature\" the \"t\" before \"ure\" is pronounced /tʃ/, like \"ch\" in \"chair\". \"Message\" ends in a /dʒ/ sound instead. ES: \"nature\" se pronuncia con el sonido \"ch\"."
+    },
+    {
+      id: "q7",
+      prompt: "I need to explain something _____ her.",
+      support: "ES: explain something TO someone",
+      options: ["at", "for", "with", "to"],
+      correctIndex: 3,
+      explanation: "The correct pattern is \"explain something to someone\". ES: explicar algo A alguien = explain something to someone."
+    },
+    {
+      id: "q8",
+      prompt: "\"From time to time\" means the same as...",
+      support: "ES: from time to time = de vez en cuando",
+      options: ["never", "always", "occasionally", "rarely"],
+      correctIndex: 2,
+      explanation: "\"From time to time\" = \"occasionally\", meaning not often but sometimes. ES: de vez en cuando."
+    },
+    {
+      id: "q9",
+      prompt: "Choose the correct sentence(s).\n1) I paid credit card.\n2) I paid with my card.\n3) I paid by credit card.",
+      support: "ES: falta una preposicion en la frase 1.",
+      options: ["Only 1", "Only 2", "2 and 3", "1 and 2"],
+      correctIndex: 2,
+      explanation: "We need a preposition: \"pay with my card\" or \"pay by credit card\". \"Pay credit card\" is missing a preposition. ES: se necesita \"with\" o \"by\" antes de \"card\"."
+    },
+    {
+      id: "q10",
+      prompt: "\"To be on time\" means...",
+      support: "ES: to be on time = llegar a tiempo",
+      options: ["llegar tarde", "llegar a tiempo", "llegar temprano", "no llegar"],
+      correctIndex: 1,
+      explanation: "\"To be on time\" means to arrive exactly when expected, neither early nor late. ES: llegar a tiempo, ni tarde ni temprano."
+    },
+    {
+      id: "q11",
+      prompt: "It depends _____ the case.",
+      support: "ES: depend ON something",
+      options: ["of", "from", "on", "in"],
+      correctIndex: 2,
+      explanation: "The correct preposition after \"depend\" is \"on\": \"it depends on the case\". ES: depende de = it depends on."
+    },
+    {
+      id: "q12",
+      prompt: "Choose the correct sentence.",
+      support: "ES: \"person\" es singular, \"people\" es plural.",
+      options: ["He is a strange people.", "He is a strange person.", "He are a strange person.", "He is strange peoples."],
+      correctIndex: 1,
+      explanation: "\"Person\" is the singular form; \"people\" is already plural and cannot follow \"a\". ES: usamos \"person\" en singular con \"a\"."
+    },
+    {
+      id: "q13",
+      prompt: "I have lived here _____ 2010.",
+      support: "ES: \"since\" + punto en el tiempo, \"for\" + duracion",
+      options: ["for", "since", "from", "at"],
+      correctIndex: 1,
+      explanation: "\"Since\" is used with a specific point in time (2010), while \"for\" is used with a duration (for ten years). A common mistake is choosing \"for\" here. ES: \"since\" + fecha/momento, \"for\" + duracion."
+    },
+    {
+      id: "q14",
+      prompt: "I like to travel _____ different countries.",
+      support: "ES: travel to + lugar",
+      options: ["at", "in", "on", "to"],
+      correctIndex: 3,
+      explanation: "\"Travel to\" is the correct collocation for a destination. ES: viajar a un lugar = travel to a place."
+    }
+  ]
+};
+
+function shuffle(array) {
+  const arr = array.slice();
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+  }
+  return arr;
+}
+
+let state = { order: [], current: 0, score: 0, answered: false, selectedIndex: null };
+
+function initLesson() {
+  state.order = shuffle(LESSON_DATA.questions.map(function (q, i) { return i; }));
+  state.current = 0;
+  state.score = 0;
+  document.getElementById('total-count').textContent = LESSON_DATA.questions.length;
+  document.getElementById('score-display').textContent = 0;
+  renderQuestion();
+}
+
+function getCurrentQuestion() {
+  const idx = state.order[state.current];
+  return LESSON_DATA.questions[idx];
+}
+
+function renderQuestion() {
+  state.answered = false;
+  state.selectedIndex = null;
+  state.hasErred = false;
+
+  const q = getCurrentQuestion();
+  const total = LESSON_DATA.questions.length;
+
+  document.getElementById('q-number').textContent = (state.current + 1) + ' / ' + total;
+  document.getElementById('progress-fill').style.width = (state.current / total * 100) + '%';
+  document.getElementById('prompt-text').textContent = q.prompt;
+  document.getElementById('support-text').textContent = q.support;
+  document.getElementById('feedback-box').style.display = 'none';
+  document.getElementById('feedback-box').className = 'feedback-box';
+  document.getElementById('next-btn').disabled = true;
+
+  const optOrder = shuffle(q.options.map(function (opt, i) { return i; }));
+  const optionsContainer = document.getElementById('options-container');
+  optionsContainer.innerHTML = '';
+
+  optOrder.forEach(function (origIndex) {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = q.options[origIndex];
+    btn.setAttribute('data-orig-index', origIndex);
+    btn.onclick = function () { selectOption(origIndex, btn); };
+    optionsContainer.appendChild(btn);
+  });
+}
+
+function selectOption(origIndex, btnEl) {
+  if (state.answered) return;
+
+  const q = getCurrentQuestion();
+  const isCorrect = origIndex === q.correctIndex;
+  const feedbackBox = document.getElementById('feedback-box');
+
+  if (isCorrect) {
+    state.answered = true;
+    if (!state.hasErred) {
+      state.score++;
+      document.getElementById('score-display').textContent = state.score;
+    }
+    btnEl.classList.add('correct');
+    document.querySelectorAll('.option-btn').forEach(function (b) { b.disabled = true; });
+
+    feedbackBox.style.display = 'block';
+    feedbackBox.className = 'feedback-box feedback-correct';
+    feedbackBox.textContent = 'Correct! ' + q.explanation;
+
+    document.getElementById('next-btn').disabled = false;
+  } else {
+    state.hasErred = true;
+    btnEl.classList.add('incorrect');
+    btnEl.disabled = true;
+
+    feedbackBox.style.display = 'block';
+    feedbackBox.className = 'feedback-box feedback-incorrect';
+    feedbackBox.textContent = 'Not quite, try again. ES: Intenta de nuevo.';
+  }
+}
+
+function nextQuestion() {
+  const total = LESSON_DATA.questions.length;
+  if (state.current < total - 1) {
+    state.current++;
+    renderQuestion();
+  } else {
+    showResults();
+  }
+}
+
+function showResults() {
+  const total = LESSON_DATA.questions.length;
+  document.getElementById('progress-fill').style.width = '100%';
+  document.getElementById('lesson-screen').style.display = 'none';
+  document.getElementById('results-screen').style.display = 'flex';
+  document.getElementById('final-score').textContent = state.score + ' / ' + total;
+
+  const pct = Math.round((state.score / total) * 100);
+  let message = '';
+  if (pct >= 90) message = 'Excellent work! You have a strong grasp of these points.';
+  else if (pct >= 70) message = 'Good job! A little more practice and these will stick.';
+  else if (pct >= 50) message = 'Solid effort. Review the explanations and try again.';
+  else message = 'Keep practicing. Review each explanation carefully and try again.';
+  document.getElementById('results-message').textContent = message;
+}
+
+function restartLesson() {
+  document.getElementById('results-screen').style.display = 'none';
+  document.getElementById('lesson-screen').style.display = 'flex';
+  initLesson();
+}
+
+window.onload = initLesson;
+</script>
+
+</body>
+</html>

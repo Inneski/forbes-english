@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MTB English — B1 Lesson</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --dirt: #2a1f0e;
+    --bark: #3d2b14;
+    --trail: #5c3d1e;
+    --mud: #7a5230;
+    --sand: #c4955a;
+    --moss: #4a7c3f;
+    --leaf: #6aab5e;
+    --sky: #7ec8e3;
+    --stone: #8c8c8c;
+    --chalk: #f0ece4;
+    --fog:   #d8d0c4;
+    --ink:   #1a1208;
+    --accent: #e8a020;
+    --accent2: #d45a1e;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--dirt);
+    color: var(--chalk);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── TOPOGRAPHY BACKGROUND ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.03) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.03) 40px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: relative;
+    z-index: 10;
+    padding: 2.5rem 2rem 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    background: linear-gradient(180deg, rgba(20,13,4,0.95) 0%, transparent 100%);
+  }
+
+  .header-inner {
+    max-width: 820px;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-end;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .logo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.8rem, 8vw, 4.5rem);
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    color: var(--chalk);
+    text-transform: uppercase;
+  }
+
+  .logo span {
+    display: block;
+    font-size: 0.38em;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.18em;
+    margin-bottom: 0.15em;
+  }
+
+  .level-badge {
+    background: var(--accent);
+    color: var(--ink);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    padding: 5px 14px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    margin-left: auto;
+    align-self: center;
+  }
+
+  /* ── PROGRESS TRACK ── */
+  .track-wrap {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 1.25rem 2rem;
+    position: relative;
+    z-index: 10;
+  }
+
+  .track {
+    display: flex;
+    gap: 0;
+    align-items: center;
+    position: relative;
+  }
+
+  .track-line {
+    position: absolute;
+    top: 50%;
+    left: 0; right: 0;
+    height: 2px;
+    background: rgba(255,255,255,0.1);
+    transform: translateY(-50%);
+    z-index: 0;
+  }
+
+  .track-fill {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: translateY(-50%);
+    z-index: 1;
+    transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+    width: 0%;
+  }
+
+  .track-node {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    cursor: pointer;
+  }
+
+  .node-dot {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.2);
+    background: var(--bark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--fog);
+    transition: all 0.3s;
+  }
+
+  .track-node.active .node-dot {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--ink);
+    box-shadow: 0 0 0 5px rgba(232,160,32,0.18);
+  }
+
+  .track-node.done .node-dot {
+    border-color: var(--leaf);
+    background: var(--leaf);
+    color: #fff;
+  }
+
+  .node-label {
+    font-size: 0.7rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fog);
+    opacity: 0.5;
+    transition: opacity 0.3s;
+  }
+
+  .track-node.active .node-label,
+  .track-node.done .node-label { opacity: 1; }
+
+  /* ── MAIN ── */
+  main {
+    position: relative;
+    z-index: 10;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 1.5rem 2rem 4rem;
+  }
+
+  /* ── SCREENS ── */
+  .screen { display: none; animation: slideIn 0.35s ease; }
+  .screen.active { display: block; }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SECTION HEADER ── */
+  .sec-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .sec-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+  }
+
+  .sec-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    line-height: 1;
+    color: var(--chalk);
+  }
+
+  .sec-desc {
+    margin-top: 0.6rem;
+    font-size: 0.92rem;
+    color: var(--fog);
+    line-height: 1.6;
+    max-width: 560px;
+  }
+
+  /* ── VOCAB ── */
+  .vocab-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    margin-bottom: 2rem;
+  }
+
+  .vocab-card {
+    background: var(--bark);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 6px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-height: 80px;
+    perspective: 600px;
+  }
+
+  .vocab-card:hover {
+    border-color: var(--accent);
+    background: var(--trail);
+    transform: translateY(-2px);
+  }
+
+  .vocab-card.flipped {
+    background: rgba(74,124,63,0.25);
+    border-color: var(--leaf);
+  }
+
+  .v-word {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--chalk);
+  }
+
+  .v-pos {
+    font-size: 0.72rem;
+    color: var(--sand);
+    font-style: italic;
+    margin-top: 2px;
+  }
+
+  .v-def {
+    font-size: 0.82rem;
+    color: #a8d99e;
+    margin-top: 8px;
+    line-height: 1.5;
+    display: none;
+  }
+
+  .vocab-card.flipped .v-def { display: block; }
+
+  .flip-hint {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.25);
+    margin-top: 4px;
+    display: block;
+  }
+
+  /* ── TRAIL SVG ── */
+  .trail-hero {
+    width: 100%;
+    height: 160px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    background: var(--bark);
+    border: 1px solid rgba(255,255,255,0.07);
+  }
+
+  /* ── READING ── */
+  .word-bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 1.5rem;
+    padding: 1rem 1.25rem;
+    background: var(--bark);
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.07);
+  }
+
+  .bank-word {
+    padding: 6px 16px;
+    border-radius: 3px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: transparent;
+    color: var(--chalk);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .bank-word:hover { border-color: var(--accent); color: var(--accent); }
+  .bank-word.selected { background: var(--accent); color: var(--ink); border-color: var(--accent); }
+  .bank-word.used { opacity: 0.25; pointer-events: none; text-decoration: line-through; }
+
+  .reading-box {
+    background: var(--bark);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 6px;
+    padding: 1.5rem;
+    font-size: 1rem;
+    line-height: 2.2;
+    color: var(--chalk);
+    margin-bottom: 1.25rem;
+  }
+
+  .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px solid var(--sand);
+    color: var(--accent);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: center;
+    cursor: pointer;
+    padding: 0 8px;
+    transition: all 0.2s;
+    vertical-align: bottom;
+  }
+
+  .blank:hover { border-bottom-color: var(--accent); }
+  .blank.empty { color: transparent; }
+  .blank.correct { border-bottom-color: var(--leaf); color: var(--leaf); }
+  .blank.wrong {
+    border-bottom-color: var(--accent2);
+    color: var(--accent2);
+    animation: shake 0.3s;
+  }
+
+  @keyframes shake {
+    0%,100%{transform:translateX(0)}
+    25%{transform:translateX(-5px)}
+    75%{transform:translateX(5px)}
+  }
+
+  /* ── QUIZ ── */
+  .quiz-q-text {
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: var(--chalk);
+    margin-bottom: 1.25rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--bark);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+  }
+
+  .quiz-opts {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 1rem;
+  }
+
+  .quiz-opt {
+    padding: 12px 18px;
+    border-radius: 5px;
+    border: 1px solid rgba(255,255,255,0.13);
+    background: var(--bark);
+    color: var(--chalk);
+    font-size: 0.93rem;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s;
+    line-height: 1.5;
+  }
+
+  .quiz-opt:hover { border-color: var(--accent); background: var(--trail); }
+  .quiz-opt.correct { background: rgba(74,124,63,0.3); border-color: var(--leaf); color: #c8eebc; pointer-events: none; }
+  .quiz-opt.wrong { background: rgba(212,90,30,0.2); border-color: var(--accent2); color: #f4b09a; pointer-events: none; }
+  .quiz-opt.reveal { background: rgba(74,124,63,0.15); border-color: var(--leaf); color: #c8eebc; pointer-events: none; }
+
+  .q-counter {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--sand);
+    margin-bottom: 1rem;
+  }
+
+  /* ── FEEDBACK ── */
+  .feedback-box {
+    padding: 12px 16px;
+    border-radius: 5px;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    display: none;
+    margin-top: 0.75rem;
+  }
+
+  .feedback-box.show { display: block; }
+  .feedback-box.good { background: rgba(74,124,63,0.25); border: 1px solid rgba(106,171,94,0.4); color: #c8eebc; }
+  .feedback-box.bad  { background: rgba(212,90,30,0.18); border: 1px solid rgba(212,90,30,0.35); color: #f4b09a; }
+
+  /* ── BUTTONS ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 24px;
+    border-radius: 4px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    text-decoration: none;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--ink);
+  }
+  .btn-primary:hover { background: #f0b030; transform: translateY(-1px); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--chalk);
+    border: 1px solid rgba(255,255,255,0.25);
+  }
+  .btn-outline:hover { border-color: var(--chalk); }
+
+  .btn-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 1.25rem;
+  }
+
+  /* ── SPEAKING ── */
+  .speaking-card {
+    background: var(--bark);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 6px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .speaking-card::before {
+    content: attr(data-num);
+    position: absolute;
+    right: 1.25rem;
+    top: 1rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 4rem;
+    line-height: 1;
+    color: rgba(255,255,255,0.04);
+  }
+
+  .sp-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .sp-q {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--chalk);
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+  }
+
+  .sp-cue {
+    font-size: 0.82rem;
+    color: var(--sand);
+    line-height: 1.6;
+    padding-left: 12px;
+    border-left: 2px solid rgba(196,149,90,0.4);
+  }
+
+  /* ── DONE CARD ── */
+  .done-card {
+    background: var(--bark);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+  }
+
+  .done-emoji { font-size: 3rem; margin-bottom: 0.75rem; }
+  .done-score {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 3.5rem;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .done-msg {
+    font-size: 0.95rem;
+    color: var(--fog);
+    margin-top: 0.5rem;
+  }
+
+  /* ── COMPLETION BANNER ── */
+  .complete-banner {
+    background: linear-gradient(135deg, rgba(74,124,63,0.3), rgba(106,171,94,0.15));
+    border: 1px solid rgba(106,171,94,0.4);
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .complete-banner h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 2.4rem;
+    text-transform: uppercase;
+    color: var(--leaf);
+    margin-bottom: 0.5rem;
+  }
+
+  .complete-banner p { font-size: 0.95rem; color: var(--fog); line-height: 1.6; }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--dirt); }
+  ::-webkit-scrollbar-thumb { background: var(--trail); border-radius: 3px; }
+
+  @media (max-width: 600px) {
+    header, main, .track-wrap { padding-left: 1rem; padding-right: 1rem; }
+    .vocab-grid { grid-template-columns: 1fr 1fr; }
+    .node-label { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <span>English Lesson</span>
+      Mountain<br>Biking
+    </div>
+    <div class="level-badge">B1 Level</div>
+  </div>
+</header>
+
+<!-- PROGRESS TRACK -->
+<div class="track-wrap">
+  <div class="track">
+    <div class="track-line"></div>
+    <div class="track-fill" id="track-fill"></div>
+    <div class="track-node active" id="node-0" onclick="goSection(0)">
+      <div class="node-dot">1</div>
+      <div class="node-label">Vocab</div>
+    </div>
+    <div class="track-node" id="node-1" onclick="goSection(1)">
+      <div class="node-dot">2</div>
+      <div class="node-label">Reading</div>
+    </div>
+    <div class="track-node" id="node-2" onclick="goSection(2)">
+      <div class="node-dot">3</div>
+      <div class="node-label">Grammar</div>
+    </div>
+    <div class="track-node" id="node-3" onclick="goSection(3)">
+      <div class="node-dot">4</div>
+      <div class="node-label">Speaking</div>
+    </div>
+  </div>
+</div>
+
+<main>
+
+  <!-- ───────── SCREEN 0: VOCABULARY ───────── -->
+  <div id="s0" class="screen active">
+    <div class="sec-header">
+      <div class="sec-eyebrow">Section 01 · warm-up</div>
+      <div class="sec-title">Vocabulary</div>
+      <div class="sec-desc">Click each card to flip it and reveal the meaning. Learn all 15 words before you continue.</div>
+    </div>
+
+    <svg class="trail-hero" viewBox="0 0 820 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <rect width="820" height="160" fill="#2a1a08"/>
+      <ellipse cx="100" cy="130" rx="120" ry="50" fill="#3d2b14"/>
+      <ellipse cx="300" cy="120" rx="160" ry="65" fill="#4a3518"/>
+      <ellipse cx="550" cy="110" rx="200" ry="75" fill="#3d2b14"/>
+      <ellipse cx="780" cy="125" rx="130" ry="55" fill="#4a3518"/>
+      <!-- Trees -->
+      <rect x="60" y="75" width="6" height="35" fill="#5c3d1e"/>
+      <polygon points="63,40 45,85 81,85" fill="#2d5a27"/>
+      <polygon points="63,55 47,88 79,88" fill="#3a7034"/>
+      <rect x="180" y="65" width="7" height="45" fill="#5c3d1e"/>
+      <polygon points="183.5,28 162,75 205,75" fill="#2d5a27"/>
+      <rect x="680" y="70" width="6" height="40" fill="#5c3d1e"/>
+      <polygon points="683,35 663,78 703,78" fill="#2d5a27"/>
+      <rect x="760" y="78" width="5" height="32" fill="#5c3d1e"/>
+      <polygon points="762.5,48 746,85 779,85" fill="#3a7034"/>
+      <!-- Trail path -->
+      <path d="M20,135 C80,120 140,100 200,108 C260,115 310,90 370,75 C430,60 500,80 560,65 C620,50 680,70 800,60" stroke="#c4955a" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M20,138 C80,123 140,103 200,111 C260,118 310,93 370,78 C430,63 500,83 560,68 C620,53 680,73 800,63" stroke="#7a5230" stroke-width="2" fill="none" stroke-dasharray="6,5"/>
+      <!-- Rider silhouette -->
+      <g transform="translate(390,55)">
+        <circle cx="0" cy="-22" r="5" fill="#e8a020"/>
+        <path d="M0,-17 L0,0 M0,0 L-12,15 M0,0 L12,15 M-5,-12 L10,-8" stroke="#e8a020" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="-12" cy="22" r="7" stroke="#e8a020" stroke-width="2" fill="none"/>
+        <circle cx="12" cy="22" r="7" stroke="#e8a020" stroke-width="2" fill="none"/>
+      </g>
+      <!-- Labels -->
+      <rect x="30" y="118" width="8" height="8" fill="#e8a020" rx="1"/>
+      <text x="45" y="127" font-family="Barlow Condensed,sans-serif" font-size="10" fill="#c4955a" font-weight="600" letter-spacing="1">START</text>
+      <rect x="774" y="48" width="8" height="8" fill="#6aab5e" rx="1"/>
+      <text x="748" y="44" font-family="Barlow Condensed,sans-serif" font-size="10" fill="#6aab5e" font-weight="600" letter-spacing="1">FINISH</text>
+    </svg>
+
+    <div class="vocab-grid" id="vocab-grid"></div>
+
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="completeSection(0)">Next: Reading →</button>
+    </div>
+  </div>
+
+  <!-- ───────── SCREEN 1: READING ───────── -->
+  <div id="s1" class="screen">
+    <div class="sec-header">
+      <div class="sec-eyebrow">Section 02 · reading</div>
+      <div class="sec-title">Gap-fill text</div>
+      <div class="sec-desc">Select a word from the bank, then click the blank where it belongs. Fill all six gaps correctly.</div>
+    </div>
+
+    <div class="word-bank" id="word-bank"></div>
+
+    <div class="reading-box" id="reading-text"></div>
+
+    <div class="feedback-box" id="read-feedback"></div>
+
+    <div class="btn-group">
+      <button class="btn btn-primary" id="check-btn" onclick="checkReading()">Check answers</button>
+      <button class="btn btn-outline" onclick="resetReading()">Reset</button>
+    </div>
+  </div>
+
+  <!-- ───────── SCREEN 2: GRAMMAR QUIZ ───────── -->
+  <div id="s2" class="screen">
+    <div class="sec-header">
+      <div class="sec-eyebrow">Section 03 · grammar</div>
+      <div class="sec-title">Multiple choice</div>
+      <div class="sec-desc">Choose the best grammatical option for each question.</div>
+    </div>
+
+    <div class="q-counter" id="q-counter"></div>
+    <div id="quiz-wrap"></div>
+    <button class="btn btn-primary" id="next-q-btn" style="display:none;margin-top:1rem;" onclick="nextQ()">Next question →</button>
+
+    <div id="quiz-done" style="display:none">
+      <div class="done-card">
+        <div class="done-emoji" id="done-emoji"></div>
+        <div class="done-score" id="done-score"></div>
+        <div class="done-msg" id="done-msg"></div>
+        <div class="btn-group" style="justify-content:center;margin-top:1.5rem;">
+          <button class="btn btn-outline" onclick="restartQuiz()">Try again</button>
+          <button class="btn btn-primary" onclick="completeSection(2)">Next: Speaking →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────── SCREEN 3: SPEAKING ───────── -->
+  <div id="s3" class="screen">
+    <div class="sec-header">
+      <div class="sec-eyebrow">Section 04 · production</div>
+      <div class="sec-title">Speaking prompts</div>
+      <div class="sec-desc">Read each prompt aloud. Use vocabulary and grammar from this lesson. Aim for 30–60 seconds per answer.</div>
+    </div>
+
+    <div id="speaking-list"></div>
+
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="finishLesson()">Complete lesson ✓</button>
+    </div>
+  </div>
+
+  <!-- ───────── SCREEN 4: COMPLETE ───────── -->
+  <div id="s4" class="screen">
+    <div class="complete-banner">
+      <h2>Trail complete!</h2>
+      <p>You've finished all four sections of the mountainbiking B1 English lesson.<br>
+      Review the vocabulary cards, re-read the passage, and practise speaking<br>each prompt for a full revision session.</p>
+      <div class="btn-group" style="justify-content:center;margin-top:1.5rem;">
+        <button class="btn btn-primary" onclick="goSection(0)">Start again</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+/* ── DATA ── */
+const vocab = [
+  { word: "trail",        def: "A path through nature used for cycling or hiking",               pos: "noun" },
+  { word: "handlebar",    def: "The horizontal bar on a bike you steer with",                     pos: "noun" },
+  { word: "suspension",   def: "The system that absorbs bumps and shocks on rough terrain",       pos: "noun" },
+  { word: "berm",         def: "A banked corner that helps you turn faster",                      pos: "noun" },
+  { word: "drop",         def: "A feature where the trail falls suddenly, requiring a jump",      pos: "noun" },
+  { word: "singletrack",  def: "A narrow trail wide enough for only one rider at a time",         pos: "noun" },
+  { word: "momentum",     def: "The force that keeps you moving forward",                         pos: "noun" },
+  { word: "grip",         def: "The traction between your tyres and the ground",                  pos: "noun" },
+  { word: "navigate",     def: "To find your way through a route or obstacles",                   pos: "verb" },
+  { word: "steep",        def: "A slope that goes up or down sharply at a large angle",           pos: "adjective" },
+  { word: "technical",    def: "Describing a trail or move that requires great skill",             pos: "adjective" },
+  { word: "flow",         def: "The smooth, connected feeling of riding a trail well",             pos: "noun" },
+  { word: "climb",        def: "To ride uphill on your bike",                                     pos: "verb" },
+  { word: "descend",      def: "To ride downhill, usually at speed",                              pos: "verb" },
+  { word: "protective gear", def: "Equipment worn to prevent injury — helmet, pads, gloves",     pos: "noun phrase" },
+];
+
+const readingParts = [
+  { text: "Last weekend, I rode a new " },
+  { blank: "singletrack" },
+  { text: " trail high in the mountains. The first section was gentle, but soon the path became very " },
+  { blank: "steep" },
+  { text: " and covered in loose rocks. Fortunately, my bike's " },
+  { blank: "suspension" },
+  { text: " absorbed most of the impact. I tried to maintain my " },
+  { blank: "momentum" },
+  { text: " on the uphill sections to avoid coming to a complete stop. The second half was far more " },
+  { blank: "technical" },
+  { text: ", with tight switchbacks and wooden bridges. My tyres had excellent " },
+  { blank: "grip" },
+  { text: " even on the damp tree roots." },
+];
+
+const bankWords = ["singletrack","steep","suspension","momentum","technical","grip"];
+
+const quizData = [
+  {
+    q: "You have just completed a long, hard climb. Which sentence correctly describes how you feel?",
+    opts: [
+      "I am exhausted after climbing that steep hill.",
+      "I am exhausting after climbing that steep hill.",
+      "I was exhausting when I climbed that hill.",
+      "I am being exhausted climbing that hill.",
+    ],
+    correct: 0,
+    exp: "'Exhausted' is the past-participle adjective that describes how you feel. 'Exhausting' describes the activity — e.g. 'It was an exhausting climb.'"
+  },
+  {
+    q: "Your friend asks how long you have been into mountainbiking. Choose the best answer:",
+    opts: [
+      "I rode mountain bikes since three years.",
+      "I have been riding mountain bikes for three years.",
+      "I am riding mountain bikes since three years.",
+      "I was riding mountain bikes since three years.",
+    ],
+    correct: 1,
+    exp: "Use the present perfect continuous ('have been + -ing') with 'for' to describe an activity that started in the past and continues now."
+  },
+  {
+    q: "You dream about a better bike. Choose the correct sentence:",
+    opts: [
+      "If I will have better suspension, I descend faster.",
+      "If I had better suspension, I would descend faster.",
+      "If I have better suspension, I will descended faster.",
+      "If I would have better suspension, I descend faster.",
+    ],
+    correct: 1,
+    exp: "This is a second conditional: 'If + past simple, would + infinitive'. It describes an imaginary or hypothetical present situation."
+  },
+  {
+    q: "Which sentence uses a relative clause correctly?",
+    opts: [
+      "The trail which I rode it yesterday was muddy.",
+      "The trail that I rode yesterday was muddy.",
+      "The trail I rode it yesterday was muddy.",
+      "The trail what I rode yesterday was muddy.",
+    ],
+    correct: 1,
+    exp: "In a defining relative clause with 'that', the relative pronoun replaces the object — you don't add 'it'. 'What' cannot introduce a relative clause."
+  },
+  {
+    q: "You are watching a rider on the trail right now. Which sentence is correct?",
+    opts: [
+      "She descends the steep section very fast.",
+      "She is descending the steep section very fast.",
+      "She has descended the steep section very fast.",
+      "She descended the steep section very fast.",
+    ],
+    correct: 1,
+    exp: "The present continuous ('is + -ing') is used for actions happening at the exact moment of speaking."
+  },
+  {
+    q: "Complete the advice: 'You should always wear protective gear _____ you get injured.'",
+    opts: ["so that", "in case", "although", "despite"],
+    correct: 1,
+    exp: "'In case' introduces a precaution against something that might happen. 'So that' introduces purpose. 'Although' and 'despite' introduce contrast."
+  },
+];
+
+const speakingData = [
+  { icon: "🏔", num: "01", q: "Describe an outdoor sport or physical activity you enjoy.", cue: "Use: present simple, adverbs of frequency, descriptive adjectives. Cover: where, how often, why you enjoy it." },
+  { icon: "🚵", num: "02", q: "Compare mountainbiking with one other sport you know well.", cue: "Use: comparatives (more ... than, -er than), 'whereas', 'on the other hand'. Think about: difficulty, equipment, physical demands." },
+  { icon: "⚠️", num: "03", q: "Explain why wearing protective gear is important in extreme sports. Give at least two reasons.", cue: "Use: modal verbs (should, must, might), 'in case', 'because', 'as a result'." },
+  { icon: "🌍", num: "04", q: "Talk about a sport or adventure you have never tried but would like to. Explain what appeals to you.", cue: "Use: present perfect ('I have never ...'), second conditional ('If I tried it, I would ...'). Be specific about the attraction." },
+];
+
+/* ── STATE ── */
+let currentSection = 0;
+let sectionsComplete = [false, false, false, false];
+let selectedBankBtn = null;
+let currentQ = 0, quizScore = 0;
+
+/* ── BUILD VOCAB ── */
+function buildVocab() {
+  const g = document.getElementById('vocab-grid');
+  vocab.forEach(v => {
+    const c = document.createElement('div');
+    c.className = 'vocab-card';
+    c.innerHTML = `<div class="v-word">${v.word}</div><div class="v-pos">${v.pos}</div><span class="flip-hint">↩ click to reveal</span><div class="v-def">${v.def}</div>`;
+    c.onclick = () => {
+      c.classList.toggle('flipped');
+      c.querySelector('.flip-hint').style.display = c.classList.contains('flipped') ? 'none' : 'block';
+    };
+    g.appendChild(c);
+  });
+}
+
+/* ── BUILD READING ── */
+function buildReading() {
+  const wb = document.getElementById('word-bank');
+  bankWords.forEach(w => {
+    const b = document.createElement('button');
+    b.className = 'bank-word';
+    b.textContent = w;
+    b.dataset.key = w;
+    b.onclick = () => selectBank(b);
+    wb.appendChild(b);
+  });
+
+  const rt = document.getElementById('reading-text');
+  readingParts.forEach(seg => {
+    if (seg.text !== undefined) {
+      rt.appendChild(document.createTextNode(seg.text));
+    } else {
+      const sp = document.createElement('span');
+      sp.className = 'blank empty';
+      sp.dataset.key = seg.blank;
+      sp.textContent = '___________';
+      sp.onclick = () => fillBlank(sp);
+      rt.appendChild(sp);
+    }
+  });
+}
+
+function selectBank(btn) {
+  document.querySelectorAll('.bank-word').forEach(b => {
+    b.classList.remove('selected');
+  });
+  if (selectedBankBtn === btn) { selectedBankBtn = null; return; }
+  selectedBankBtn = btn;
+  btn.classList.add('selected');
+}
+
+function fillBlank(sp) {
+  if (!selectedBankBtn) return;
+  const key = selectedBankBtn.dataset.key;
+  const prev = sp.dataset.filled;
+  if (prev) {
+    document.querySelectorAll('.bank-word').forEach(b => {
+      if (b.dataset.key === prev) b.classList.remove('used');
+    });
+  }
+  sp.textContent = key;
+  sp.dataset.filled = key;
+  sp.classList.remove('empty','correct','wrong');
+  selectedBankBtn.classList.remove('selected');
+  selectedBankBtn.classList.add('used');
+  selectedBankBtn = null;
+}
+
+function checkReading() {
+  let correct = 0, total = 0;
+  document.querySelectorAll('.blank').forEach(sp => {
+    total++;
+    sp.classList.remove('correct','wrong');
+    if (sp.dataset.filled === sp.dataset.key) { sp.classList.add('correct'); correct++; }
+    else sp.classList.add('wrong');
+  });
+  const fb = document.getElementById('read-feedback');
+  if (correct === total) {
+    fb.className = 'feedback-box show good';
+    fb.textContent = `✓ Perfect! All ${total} blanks correct. Excellent work!`;
+    completeSection(1);
+    document.getElementById('check-btn').disabled = true;
+  } else {
+    fb.className = 'feedback-box show bad';
+    fb.textContent = `${correct} / ${total} correct. Review the highlighted blanks and try again.`;
+  }
+}
+
+function resetReading() {
+  document.querySelectorAll('.blank').forEach(sp => {
+    sp.className = 'blank empty';
+    sp.textContent = '___________';
+    delete sp.dataset.filled;
+  });
+  document.querySelectorAll('.bank-word').forEach(b => {
+    b.classList.remove('used','selected');
+  });
+  selectedBankBtn = null;
+  const fb = document.getElementById('read-feedback');
+  fb.className = 'feedback-box';
+  document.getElementById('check-btn').disabled = false;
+}
+
+/* ── QUIZ ── */
+function buildQuiz() { renderQ(); }
+
+function renderQ() {
+  const wrap = document.getElementById('quiz-wrap');
+  document.getElementById('quiz-done').style.display = 'none';
+  document.getElementById('next-q-btn').style.display = 'none';
+  if (currentQ >= quizData.length) { showDone(); return; }
+  const q = quizData[currentQ];
+  document.getElementById('q-counter').textContent = `Question ${currentQ + 1} of ${quizData.length}`;
+  wrap.innerHTML = `
+    <div class="quiz-q-text">${q.q}</div>
+    <div class="quiz-opts">
+      ${q.opts.map((o,i) => `<button class="quiz-opt" onclick="answerQ(this,${i})">${o}</button>`).join('')}
+    </div>
+    <div class="feedback-box" id="qfb"></div>`;
+}
+
+function answerQ(btn, idx) {
+  const q = quizData[currentQ];
+  document.querySelectorAll('.quiz-opt').forEach(b => b.disabled = true);
+  const fb = document.getElementById('qfb');
+  if (idx === q.correct) {
+    btn.classList.add('correct');
+    quizScore++;
+    fb.className = 'feedback-box show good';
+    fb.textContent = '✓ Correct! ' + q.exp;
+  } else {
+    btn.classList.add('wrong');
+    document.querySelectorAll('.quiz-opt')[q.correct].classList.add('reveal');
+    fb.className = 'feedback-box show bad';
+    fb.textContent = '✗ Not quite. ' + q.exp;
+  }
+  document.getElementById('next-q-btn').style.display = 'inline-flex';
+}
+
+function nextQ() { currentQ++; renderQ(); }
+
+function showDone() {
+  document.getElementById('quiz-wrap').innerHTML = '';
+  document.getElementById('next-q-btn').style.display = 'none';
+  document.getElementById('quiz-done').style.display = 'block';
+  document.getElementById('q-counter').textContent = '';
+  const pct = quizScore / quizData.length;
+  const tiers = [
+    { emoji:'😅', msg:'Keep practising — review the grammar notes and try again.' },
+    { emoji:'🙂', msg:'Good effort! A few gaps — re-read the explanations.' },
+    { emoji:'👍', msg:'Well done! You have a solid B1 grammar foundation.' },
+    { emoji:'🎉', msg:'Excellent! Near-perfect — you are ready for B2.' },
+  ];
+  const t = pct < 0.4 ? 0 : pct < 0.67 ? 1 : pct < 0.9 ? 2 : 3;
+  document.getElementById('done-emoji').textContent = tiers[t].emoji;
+  document.getElementById('done-score').textContent = `${quizScore} / ${quizData.length}`;
+  document.getElementById('done-msg').textContent = tiers[t].msg;
+  if (pct >= 0.5) completeSection(2);
+}
+
+function restartQuiz() {
+  currentQ = 0; quizScore = 0;
+  document.getElementById('quiz-done').style.display = 'none';
+  renderQ();
+}
+
+/* ── SPEAKING ── */
+function buildSpeaking() {
+  const list = document.getElementById('speaking-list');
+  speakingData.forEach(p => {
+    const d = document.createElement('div');
+    d.className = 'speaking-card';
+    d.setAttribute('data-num', p.num);
+    d.innerHTML = `<span class="sp-icon">${p.icon}</span><div class="sp-q"><strong>Prompt ${p.num}:</strong> ${p.q}</div><div class="sp-cue">Language tip: ${p.cue}</div>`;
+    list.appendChild(d);
+  });
+}
+
+/* ── NAVIGATION ── */
+function goSection(n) {
+  document.querySelectorAll('.screen').forEach((s,i) => s.classList.toggle('active', i === n));
+  currentSection = n;
+  updateTrack();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function completeSection(n) {
+  sectionsComplete[n] = true;
+  updateTrack();
+  if (n < 3) setTimeout(() => goSection(n + 1), 400);
+  else goSection(4);
+}
+
+function updateTrack() {
+  const done = sectionsComplete.filter(Boolean).length;
+  // fill line: evenly spaced 4 nodes
+  const pct = done === 0 ? 0 : done === 4 ? 100 : (done / 3) * 100;
+  document.getElementById('track-fill').style.width = pct + '%';
+  for (let i = 0; i < 4; i++) {
+    const node = document.getElementById('node-' + i);
+    node.classList.remove('active','done');
+    if (sectionsComplete[i]) node.classList.add('done');
+    else if (i === currentSection) node.classList.add('active');
+  }
+}
+
+function finishLesson() { completeSection(3); }
+
+/* ── INIT ── */
+buildVocab();
+buildReading();
+buildQuiz();
+buildSpeaking();
+</script>
+</body>
+</html>

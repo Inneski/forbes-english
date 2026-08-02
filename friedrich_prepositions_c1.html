@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – Friedrich I of Prussia · Prepositions C1</title>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Spectral:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:         #0c0b08;
+    --surface:    #131108;
+    --card:       #1a1810;
+    --gold:       #c4923a;
+    --gold-lt:    #ddb868;
+    --gold-pale:  #f0d898;
+    --prussian:   #1e3050;
+    --prussian-lt:#2e4a78;
+    --silver:     #8a9ab0;
+    --parchment:  #ede4cc;
+    --muted:      #7a7060;
+    --correct:    #4a9e78;
+    --wrong:      #b84848;
+    --border:     rgba(196,146,58,0.15);
+    --radius:     12px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--bg);
+    color: var(--parchment);
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 0 16px 72px;
+  }
+
+  /* ornate parchment atmosphere */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 15% 5%,  rgba(196,146,58,0.07) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 70% at 85% 95%, rgba(30,48,80,0.15)   0%, transparent 55%),
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='.038'/%3E%3C/svg%3E");
+    background-size: cover, cover, 280px 280px;
+    pointer-events: none; z-index: 0;
+  }
+
+  /* cross-hatch vignette */
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 55%, rgba(0,0,0,0.55) 100%);
+    pointer-events: none; z-index: 0;
+  }
+
+  header, .hero, .activity-wrapper, #final-screen { position: relative; z-index: 1; }
+
+  /* ── HEADER ── */
+  header {
+    width: 100%; max-width: 840px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 28px 0 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 36px;
+  }
+
+  .score-pill {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 8px 20px;
+    font-size: 13px; color: var(--gold-lt);
+    font-weight: 500; letter-spacing: .04em; white-space: nowrap;
+  }
+  .score-pill span { color: var(--parchment); font-weight: 700; }
+
+  /* ── HERO ── */
+  .hero {
+    width: 100%; max-width: 840px;
+    display: flex; gap: 36px; align-items: flex-end;
+    margin-bottom: 44px;
+  }
+  .hero-text { flex: 1; }
+
+  .lesson-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 11px; font-weight: 700; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--gold);
+    border: 1px solid rgba(196,146,58,0.45);
+    border-radius: 3px; padding: 3px 10px; margin-bottom: 16px;
+  }
+  .part-badge {
+    background: rgba(196,146,58,0.1); border: 1px solid rgba(196,146,58,0.3);
+    border-radius: 3px; padding: 2px 7px;
+    font-size: 10px; color: var(--gold-pale);
+  }
+
+  .hero-text h1 {
+    font-family: 'IM Fell English', serif;
+    font-size: clamp(28px, 5vw, 50px);
+    line-height: 1.1; color: var(--parchment); margin-bottom: 16px;
+    text-shadow: 0 2px 20px rgba(196,146,58,0.2);
+  }
+  .hero-text h1 em { font-style: italic; color: var(--gold-pale); }
+
+  .hero-text p { font-size: 15px; color: var(--muted); line-height: 1.7; max-width: 430px; }
+
+  .illustration svg {
+    width: clamp(140px, 23vw, 220px); height: auto;
+    filter: drop-shadow(0 12px 48px rgba(196,146,58,0.18));
+  }
+
+  /* ── ORNAMENTAL DIVIDER ── */
+  .ornament {
+    width: 100%; max-width: 840px;
+    text-align: center;
+    font-family: 'IM Fell English', serif;
+    font-size: 22px; color: rgba(196,146,58,0.35);
+    letter-spacing: 8px; margin-bottom: 32px;
+    user-select: none;
+  }
+
+  /* ── ACTIVITIES ── */
+  .activity { display: none; }
+  .activity.active { display: block; animation: fadeUp .45s ease; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+
+  .activity-header { margin-bottom: 24px; }
+  .activity-label {
+    font-size: 11px; font-weight: 700; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--prussian-lt); margin-bottom: 8px;
+  }
+  .activity-title {
+    font-family: 'IM Fell English', serif;
+    font-size: 24px; color: var(--parchment); margin-bottom: 6px;
+  }
+  .activity-instructions { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+  .progress-bar-wrap {
+    width: 100%; height: 2px; background: var(--card);
+    border-radius: 999px; margin-bottom: 28px; overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--prussian), var(--gold));
+    border-radius: 999px; transition: width .4s ease;
+  }
+
+  /* ── QUESTION CARD ── */
+  .question-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 30px; margin-bottom: 20px;
+    position: relative; overflow: hidden;
+  }
+  /* subtle corner fleuron */
+  .question-card::before {
+    content: '❧';
+    position: absolute; top: 10px; right: 14px;
+    font-size: 16px; color: rgba(196,146,58,0.12);
+    pointer-events: none;
+  }
+
+  .question-counter {
+    font-size: 11px; font-weight: 700; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 14px;
+  }
+  .question-text {
+    font-family: 'Spectral', serif;
+    font-size: 17px; line-height: 1.8; color: var(--parchment); margin-bottom: 22px;
+    font-style: italic; font-weight: 300;
+  }
+  .question-text strong { font-style: normal; font-weight: 600; color: var(--gold-pale); }
+
+  /* ── OPTIONS ── */
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option-btn {
+    background: var(--surface);
+    border: 1.5px solid rgba(196,146,58,0.1);
+    border-radius: 9px; padding: 13px 18px;
+    text-align: left; color: var(--parchment);
+    font-family: 'Barlow', sans-serif; font-size: 15px;
+    cursor: pointer;
+    transition: border-color .2s, background .2s, transform .1s;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .option-btn:hover:not(:disabled) { border-color: var(--gold); background: var(--card); transform: translateX(4px); }
+  .option-btn:disabled { cursor: default; }
+  .option-btn .opt-label {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: rgba(196,146,58,0.07);
+    border: 1.5px solid rgba(196,146,58,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: var(--gold); flex-shrink: 0;
+  }
+  .option-btn.correct { border-color: var(--correct); background: rgba(74,158,120,0.09); }
+  .option-btn.correct .opt-label { background: var(--correct); border-color: var(--correct); color: #fff; }
+  .option-btn.wrong { border-color: var(--wrong); background: rgba(184,72,72,0.08); }
+  .option-btn.wrong .opt-label { background: var(--wrong); border-color: var(--wrong); color: #fff; }
+
+  /* ── FEEDBACK ── */
+  .feedback-box {
+    display: none; background: var(--surface);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 20px; margin-top: 16px;
+    font-size: 14px; line-height: 1.7; color: var(--muted);
+  }
+  .feedback-box.show { display: block; animation: fadeUp .3s ease; }
+  .feedback-box strong { color: var(--parchment); }
+  .feedback-correct { color: var(--correct) !important; font-weight: 600; }
+  .feedback-wrong { color: var(--wrong) !important; font-weight: 600; }
+
+  /* ── DROPDOWN ── */
+  .fitb-select {
+    background: var(--surface);
+    border: 1.5px solid rgba(196,146,58,0.28);
+    border-radius: 7px; color: var(--parchment);
+    font-family: 'Barlow', sans-serif; font-size: 15px;
+    padding: 6px 12px; cursor: pointer; outline: none;
+    transition: border-color .2s; vertical-align: middle;
+  }
+  .fitb-select:focus { border-color: var(--gold); }
+  .fitb-select option { background: var(--card); }
+
+  .action-btn {
+    background: transparent;
+    border: 1.5px solid var(--gold);
+    color: var(--gold-lt); border-radius: 8px;
+    padding: 9px 24px; font-family: 'Barlow', sans-serif;
+    font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 18px;
+    transition: background .2s, color .2s;
+  }
+  .action-btn:hover:not(:disabled) { background: var(--gold); color: var(--bg); }
+  .action-btn:disabled { opacity: .35; cursor: default; }
+
+  /* ── CLOZE PASSAGE (Act 3) ── */
+  .passage-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 30px; margin-bottom: 20px;
+    position: relative;
+  }
+  .passage-card::before { content:'❧'; position:absolute; top:10px; right:14px; font-size:16px; color:rgba(196,146,58,0.12); }
+
+  .passage-title {
+    font-family: 'IM Fell English', serif;
+    font-size: 15px; color: var(--gold); margin-bottom: 18px;
+    letter-spacing: .05em; text-align: center;
+  }
+
+  .passage-body {
+    font-family: 'Spectral', serif;
+    font-size: 16px; line-height: 2; color: var(--parchment);
+    font-weight: 300; font-style: italic;
+  }
+
+  .cloze-select {
+    background: var(--surface);
+    border: 1.5px solid rgba(196,146,58,0.28);
+    border-radius: 6px; color: var(--parchment);
+    font-family: 'Spectral', serif; font-style: italic;
+    font-size: 15px; padding: 3px 10px;
+    cursor: pointer; outline: none;
+    transition: border-color .2s; vertical-align: middle;
+  }
+  .cloze-select:focus { border-color: var(--gold); }
+  .cloze-select option { background: var(--card); font-style: normal; }
+  .cloze-select.c-correct { border-color: var(--correct); color: var(--correct); }
+  .cloze-select.c-wrong   { border-color: var(--wrong);   color: var(--wrong); }
+
+  .cloze-check {
+    display: block; margin: 22px auto 0;
+    background: transparent; border: 1.5px solid var(--gold);
+    color: var(--gold-lt); border-radius: 8px;
+    padding: 10px 32px; font-family: 'Barlow', sans-serif;
+    font-size: 14px; font-weight: 600; cursor: pointer;
+    transition: background .2s, color .2s;
+  }
+  .cloze-check:hover:not(:disabled) { background: var(--gold); color: var(--bg); }
+  .cloze-check:disabled { opacity: .35; cursor: default; }
+
+  .cloze-results {
+    margin-top: 20px;
+    display: none;
+    background: var(--surface);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    font-size: 14px; line-height: 1.75; color: var(--muted);
+  }
+  .cloze-results.show { display: block; animation: fadeUp .3s ease; }
+  .cloze-results ol { padding-left: 18px; margin-top: 8px; }
+  .cloze-results li { margin-bottom: 6px; }
+  .cr-correct { color: var(--correct); font-weight: 600; }
+  .cr-wrong   { color: var(--wrong);   font-weight: 600; }
+
+  /* ── NEXT ── */
+  .btn-next {
+    display: none; margin-top: 26px;
+    background: linear-gradient(135deg, var(--prussian), var(--prussian-lt));
+    color: var(--parchment); border: none; border-radius: 999px;
+    padding: 14px 40px; font-family: 'Barlow', sans-serif;
+    font-size: 15px; font-weight: 700; cursor: pointer; letter-spacing: .04em;
+    box-shadow: 0 4px 20px rgba(30,48,80,0.5);
+    transition: opacity .2s, transform .1s;
+  }
+  .btn-next:hover { opacity: .9; transform: translateY(-1px); }
+  .btn-next.show { display: inline-flex; align-items: center; gap: 8px; }
+
+  /* ── FINAL ── */
+  #final-screen { display: none; text-align: center; padding: 60px 20px; animation: fadeUp .5s ease; }
+  #final-screen.show { display: block; }
+  .final-crown { font-size: 56px; margin-bottom: 14px; filter: drop-shadow(0 4px 24px rgba(196,146,58,0.6)); }
+  .final-score { font-family: 'IM Fell English', serif; font-size: 80px; color: var(--gold-pale); font-weight: 400; margin-bottom: 6px; line-height: 1; }
+  .final-label { font-size: 15px; color: var(--muted); margin-bottom: 26px; }
+  .final-msg {
+    font-family: 'Spectral', serif; font-style: italic;
+    font-size: 21px; color: var(--parchment);
+    margin-bottom: 38px; line-height: 1.65;
+    max-width: 520px; margin-left: auto; margin-right: auto;
+    font-weight: 300;
+  }
+  .btn-restart {
+    background: transparent; border: 2px solid var(--gold);
+    color: var(--gold-lt); border-radius: 999px;
+    padding: 13px 44px; font-family: 'Barlow', sans-serif;
+    font-size: 15px; font-weight: 700; cursor: pointer;
+    transition: background .2s, color .2s; letter-spacing: .04em;
+  }
+  .btn-restart:hover { background: var(--gold); color: var(--bg); }
+
+  @media (max-width: 580px) {
+    .hero { flex-direction: column-reverse; align-items: flex-start; gap: 18px; }
+    .illustration svg { width: 120px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <svg width="162" height="52" viewBox="0 0 162 52" xmlns="http://www.w3.org/2000/svg">
+    <text x="2" y="24" font-family="'IM Fell English', Georgia, serif" font-size="22" font-weight="400" fill="#c4923a" letter-spacing="1">Forbes</text>
+    <rect x="2" y="30" width="158" height="1" fill="rgba(196,146,58,0.4)"/>
+    <text x="2" y="47" font-family="'Barlow', Arial, sans-serif" font-size="13" font-weight="700" fill="#ede4cc" letter-spacing="5">ENGLISH</text>
+  </svg>
+  <div class="score-pill">Score: <span id="score-display">0</span> / <span id="total-display">15</span></div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-text">
+    <div class="lesson-tag">C1 · Prepositions <span class="part-badge">PART 4</span></div>
+    <h1>The First King<br><em>of Prussia</em></h1>
+    <p>Friedrich I crowned himself King in Prussia in 1701 — an act of audacious ambition. Explore the prepositions of power, politics, and Baroque statecraft through one of Europe's most theatrical monarchs.</p>
+  </div>
+  <div class="illustration">
+    <!-- SVG: Friedrich I in full royal regalia, Baroque portrait style -->
+    <svg viewBox="0 0 210 310" xmlns="http://www.w3.org/2000/svg" width="210" height="310">
+      <defs>
+        <radialGradient id="rglow" cx="50%" cy="35%" r="55%">
+          <stop offset="0%" stop-color="#c4923a" stop-opacity=".22"/>
+          <stop offset="100%" stop-color="#0c0b08" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="robe" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#1e1060"/>
+          <stop offset="50%" stop-color="#140c48"/>
+          <stop offset="100%" stop-color="#0c0830"/>
+        </linearGradient>
+        <linearGradient id="ermine" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#e8e0d0"/>
+          <stop offset="100%" stop-color="#d0c8b8"/>
+        </linearGradient>
+        <linearGradient id="armour" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#8a9ab0"/>
+          <stop offset="100%" stop-color="#4a5a70"/>
+        </linearGradient>
+        <linearGradient id="skin" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#d4a878"/>
+          <stop offset="100%" stop-color="#b8845a"/>
+        </linearGradient>
+        <linearGradient id="curtain" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#5a1020"/>
+          <stop offset="100%" stop-color="#3a0a14"/>
+        </linearGradient>
+        <linearGradient id="gold-trim" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#ddb868"/>
+          <stop offset="100%" stop-color="#c4923a"/>
+        </linearGradient>
+      </defs>
+
+      <!-- background glow -->
+      <ellipse cx="105" cy="140" rx="100" ry="130" fill="url(#rglow)"/>
+
+      <!-- baroque curtain left -->
+      <path d="M0,0 Q20,60 10,160 Q5,220 15,310 L0,310 Z" fill="url(#curtain)" opacity=".8"/>
+      <path d="M0,0 Q28,80 18,180 Q12,240 20,310 L8,310 Q0,240 5,180 Q8,80 0,0Z" fill="rgba(90,16,32,0.4)"/>
+      <!-- gold tassel left -->
+      <line x1="16" y1="155" x2="16" y2="185" stroke="url(#gold-trim)" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="16" cy="186" r="6" fill="url(#gold-trim)"/>
+      <line x1="14" y1="192" x2="11" y2="202" stroke="#c4923a" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="16" y1="192" x2="16" y2="204" stroke="#c4923a" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="18" y1="192" x2="21" y2="202" stroke="#c4923a" stroke-width="1.5" stroke-linecap="round"/>
+
+      <!-- baroque curtain right -->
+      <path d="M210,0 Q190,60 200,160 Q205,220 195,310 L210,310 Z" fill="url(#curtain)" opacity=".8"/>
+      <!-- gold tassel right -->
+      <line x1="194" y1="155" x2="194" y2="185" stroke="url(#gold-trim)" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="194" cy="186" r="6" fill="url(#gold-trim)"/>
+      <line x1="192" y1="192" x2="189" y2="202" stroke="#c4923a" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="194" y1="192" x2="194" y2="204" stroke="#c4923a" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="196" y1="192" x2="199" y2="202" stroke="#c4923a" stroke-width="1.5" stroke-linecap="round"/>
+
+      <!-- stone floor perspective -->
+      <rect x="0" y="270" width="210" height="40" fill="#141008"/>
+      <line x1="0" y1="278" x2="210" y2="278" stroke="rgba(196,146,58,0.1)" stroke-width="1"/>
+      <line x1="0" y1="290" x2="210" y2="290" stroke="rgba(196,146,58,0.08)" stroke-width="1"/>
+      <line x1="42" y1="270" x2="42" y2="310" stroke="rgba(196,146,58,0.06)" stroke-width="1"/>
+      <line x1="84" y1="270" x2="84" y2="310" stroke="rgba(196,146,58,0.06)" stroke-width="1"/>
+      <line x1="126" y1="270" x2="126" y2="310" stroke="rgba(196,146,58,0.06)" stroke-width="1"/>
+      <line x1="168" y1="270" x2="168" y2="310" stroke="rgba(196,146,58,0.06)" stroke-width="1"/>
+
+      <!-- ROBE / body base -->
+      <path d="M35,200 Q28,240 22,310 L188,310 Q182,240 175,200 Q155,185 140,190 L105,195 L70,190 Q55,185 35,200Z" fill="url(#robe)"/>
+      <!-- ermine trim on robe bottom -->
+      <path d="M26,285 Q105,295 184,285 L188,310 L22,310 Z" fill="url(#ermine)"/>
+      <!-- ermine spots (black tails) -->
+      <g fill="#1a1410">
+        <ellipse cx="40"  cy="296" rx="3" ry="4"/>
+        <ellipse cx="60"  cy="300" rx="3" ry="4"/>
+        <ellipse cx="80"  cy="296" rx="3" ry="4"/>
+        <ellipse cx="100" cy="300" rx="3" ry="4"/>
+        <ellipse cx="120" cy="296" rx="3" ry="4"/>
+        <ellipse cx="140" cy="300" rx="3" ry="4"/>
+        <ellipse cx="160" cy="296" rx="3" ry="4"/>
+        <ellipse cx="180" cy="300" rx="3" ry="4"/>
+      </g>
+      <!-- robe gold embroidery -->
+      <path d="M55,210 Q80,220 105,215 Q130,220 155,210" fill="none" stroke="#c4923a" stroke-width="1" opacity=".5" stroke-dasharray="4,3"/>
+      <path d="M48,230 Q105,243 162,230" fill="none" stroke="#c4923a" stroke-width="0.8" opacity=".35" stroke-dasharray="3,4"/>
+      <!-- robe stars / fleur-de-lis hint -->
+      <text x="62" y="248" font-size="10" fill="rgba(196,146,58,0.4)" font-family="serif">✦</text>
+      <text x="96" y="252" font-size="10" fill="rgba(196,146,58,0.35)" font-family="serif">✦</text>
+      <text x="132" y="248" font-size="10" fill="rgba(196,146,58,0.4)" font-family="serif">✦</text>
+
+      <!-- ARMOUR breastplate over robe -->
+      <ellipse cx="105" cy="195" rx="38" ry="30" fill="url(#armour)"/>
+      <ellipse cx="105" cy="193" rx="32" ry="24" fill="#6a7a90" opacity=".5"/>
+      <!-- armour highlight -->
+      <ellipse cx="98" cy="186" rx="10" ry="7" fill="rgba(200,220,255,0.12)"/>
+      <!-- order / medal on chest -->
+      <circle cx="105" cy="200" r="8" fill="#c4923a"/>
+      <circle cx="105" cy="200" r="5" fill="#8a6020"/>
+      <text x="101.5" y="203.5" font-size="6" fill="#f0d898" font-family="serif">✦</text>
+      <!-- sash across chest -->
+      <path d="M70,178 Q88,195 105,205 Q122,215 140,225 L146,218 Q128,208 110,198 Q92,187 75,170 Z" fill="rgba(184,20,40,0.7)" opacity=".8"/>
+      <path d="M70,178 Q88,195 105,205" fill="none" stroke="#c4923a" stroke-width="1" opacity=".5"/>
+
+      <!-- NECK / CRAVAT (lace jabot) -->
+      <rect x="92" y="158" width="26" height="28" rx="6" fill="url(#skin)"/>
+      <!-- lace cravat -->
+      <path d="M90,172 Q98,178 105,182 Q112,178 120,172 Q114,185 105,190 Q96,185 90,172Z" fill="#e8e0d0" opacity=".9"/>
+      <path d="M97,182 Q101,188 105,192 Q109,188 113,182" fill="none" stroke="rgba(200,190,170,0.5)" stroke-width="1"/>
+      <!-- lace detail -->
+      <path d="M94,174 Q97,177 100,175" fill="none" stroke="rgba(200,190,170,0.4)" stroke-width="0.8"/>
+      <path d="M110,175 Q113,177 116,174" fill="none" stroke="rgba(200,190,170,0.4)" stroke-width="0.8"/>
+
+      <!-- SHOULDERS armoured pauldrons -->
+      <ellipse cx="68"  cy="180" rx="22" ry="14" fill="url(#armour)" transform="rotate(-10,68,180)"/>
+      <ellipse cx="142" cy="180" rx="22" ry="14" fill="url(#armour)" transform="rotate(10,142,180)"/>
+      <ellipse cx="66"  cy="178" rx="14" ry="8"  fill="#7a8aa0" opacity=".5" transform="rotate(-10,66,178)"/>
+      <ellipse cx="144" cy="178" rx="14" ry="8"  fill="#7a8aa0" opacity=".5" transform="rotate(10,144,178)"/>
+
+      <!-- HEAD -->
+      <ellipse cx="105" cy="128" rx="38" ry="44" fill="url(#skin)"/>
+      <!-- jaw shadow -->
+      <ellipse cx="105" cy="148" rx="28" ry="12" fill="rgba(140,80,30,0.2)"/>
+
+      <!-- PERIWIG / wig -->
+      <!-- wig back volume -->
+      <ellipse cx="105" cy="100" rx="46" ry="38" fill="#e8e4d8"/>
+      <!-- wig side curls left -->
+      <path d="M62,110 Q48,128 52,155 Q56,172 62,162 Q54,145 60,128 Q64,115 68,118 Z" fill="#ddd8c8"/>
+      <path d="M54,138 Q46,155 52,170 Q56,180 62,172" fill="none" stroke="#ccc8b8" stroke-width="3" stroke-linecap="round"/>
+      <!-- wig side curls right -->
+      <path d="M148,110 Q162,128 158,155 Q154,172 148,162 Q156,145 150,128 Q146,115 142,118 Z" fill="#ddd8c8"/>
+      <path d="M156,138 Q164,155 158,170 Q154,180 148,172" fill="none" stroke="#ccc8b8" stroke-width="3" stroke-linecap="round"/>
+      <!-- wig top curls -->
+      <path d="M80,85 Q88,72 98,80 Q91,78 88,88 Z" fill="#e8e4d8"/>
+      <path d="M112,80 Q122,72 130,85 Q128,78 122,88 Z" fill="#e8e4d8"/>
+      <!-- wig queue/ribbon at back hint -->
+      <rect x="100" y="156" width="10" height="18" rx="3" fill="#1a1060" opacity=".4"/>
+
+      <!-- FACE FEATURES -->
+      <!-- eyebrows – heavy, arched baroque style -->
+      <path d="M82,112 Q92,107 100,110" fill="none" stroke="#5a3518" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M110,110 Q118,107 128,112" fill="none" stroke="#5a3518" stroke-width="2.2" stroke-linecap="round"/>
+      <!-- eyes -->
+      <ellipse cx="92"  cy="120" rx="9" ry="5.5" fill="#2a1e10"/>
+      <ellipse cx="118" cy="120" rx="9" ry="5.5" fill="#2a1e10"/>
+      <ellipse cx="92"  cy="120" rx="6" ry="4"   fill="#3a2c18"/>
+      <ellipse cx="118" cy="120" rx="6" ry="4"   fill="#3a2c18"/>
+      <!-- eye highlight -->
+      <ellipse cx="90"  cy="118" rx="2" ry="1.5" fill="white" opacity=".7"/>
+      <ellipse cx="116" cy="118" rx="2" ry="1.5" fill="white" opacity=".7"/>
+      <!-- lashes top -->
+      <path d="M84,117 Q88,112 92,116" fill="none" stroke="#1a0e06" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M92,116 Q96,112 100,116" fill="none" stroke="#1a0e06" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M110,116 Q114,112 118,116" fill="none" stroke="#1a0e06" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M118,116 Q122,112 126,116" fill="none" stroke="#1a0e06" stroke-width="1.5" stroke-linecap="round"/>
+      <!-- nose – aquiline, proud -->
+      <path d="M103,126 Q105,136 107,126" fill="none" stroke="rgba(140,80,30,0.35)" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M100,136 Q103,140 106,137 Q109,140 112,136" fill="rgba(140,80,30,0.15)"/>
+      <!-- thin moustache -->
+      <path d="M96,144 Q101,141 105,143 Q109,141 114,144" fill="none" stroke="#5a3518" stroke-width="1.5" stroke-linecap="round"/>
+      <!-- lips – thin, imperious -->
+      <path d="M97,148 Q101,145 105,147 Q109,145 113,148 Q109,152 105,153 Q101,152 97,148Z" fill="#a06040"/>
+      <path d="M97,148 Q101,146 105,147 Q109,146 113,148" fill="none" stroke="#804020" stroke-width=".8"/>
+
+      <!-- CROWN (baroque, jewelled) -->
+      <path d="M72,96 L78,68 L90,82 L105,58 L120,82 L132,68 L138,96 Z" fill="url(#gold-trim)"/>
+      <!-- crown base band -->
+      <rect x="72" y="90" width="66" height="12" rx="3" fill="url(#gold-trim)"/>
+      <!-- crown jewels -->
+      <circle cx="105" cy="64" r="5" fill="#e040a0" stroke="#c4923a" stroke-width="1"/>
+      <circle cx="90"  cy="80" r="4" fill="#4080e0" stroke="#c4923a" stroke-width="1"/>
+      <circle cx="120" cy="80" r="4" fill="#40c080" stroke="#c4923a" stroke-width="1"/>
+      <circle cx="80"  cy="92" r="3" fill="#e0a040" stroke="#c4923a" stroke-width="1"/>
+      <circle cx="130" cy="92" r="3" fill="#e04040" stroke="#c4923a" stroke-width="1"/>
+      <!-- crown cross top -->
+      <rect x="103" y="50" width="4" height="12" rx="1" fill="#f0d898"/>
+      <rect x="100" y="54" width="10" height="4"  rx="1" fill="#f0d898"/>
+      <circle cx="105" cy="50" r="2.5" fill="#c4923a"/>
+
+      <!-- SCEPTRE in right hand -->
+      <line x1="150" y1="200" x2="165" y2="280" stroke="url(#gold-trim)" stroke-width="4" stroke-linecap="round"/>
+      <ellipse cx="150" cy="198" rx="7" ry="5" fill="url(#gold-trim)"/>
+      <circle cx="150" cy="192" r="8" fill="#c4923a"/>
+      <circle cx="150" cy="192" r="5" fill="#f0d898"/>
+      <text x="147" y="195" font-size="6" fill="#8a6020" font-family="serif">✦</text>
+
+      <!-- ORB in left hand -->
+      <circle cx="62" cy="210" r="14" fill="#c4923a"/>
+      <circle cx="62" cy="210" r="11" fill="#ddb868"/>
+      <!-- orb cross -->
+      <rect x="60" y="196" width="4" height="12" rx="1" fill="#f0d898"/>
+      <rect x="56" y="200" width="12" height="4"  rx="1" fill="#f0d898"/>
+      <!-- orb band -->
+      <path d="M50,210 Q62,205 74,210" fill="none" stroke="#c4923a" stroke-width="1.5"/>
+      <path d="M62,196 Q58,210 62,224" fill="none" stroke="#c4923a" stroke-width="1.5"/>
+
+      <!-- BLACK EAGLE of Prussia watermark in background -->
+      <text x="85" y="88" font-size="36" fill="rgba(30,16,96,0.18)" font-family="serif" transform="rotate(-15,105,80)">♙</text>
+
+      <!-- decorative corner fleurons -->
+      <text x="22" y="26"  font-size="14" fill="rgba(196,146,58,0.25)" font-family="serif">❧</text>
+      <text x="185" y="26" font-size="14" fill="rgba(196,146,58,0.25)" font-family="serif" transform="scale(-1,1) translate(-210,0)">❧</text>
+    </svg>
+  </div>
+</div>
+
+<div class="ornament">✦ · ✦ · ✦</div>
+
+<!-- ACTIVITIES -->
+<div class="activity-wrapper" id="activity-wrapper">
+
+  <!-- ACT 1: Multiple Choice (5 Qs) -->
+  <div class="activity active" id="act1">
+    <div class="activity-header">
+      <div class="activity-label">Activity 1 of 3</div>
+      <div class="activity-title">Multiple Choice</div>
+      <div class="activity-instructions">Select the correct preposition or prepositional expression. At C1, questions target complex collocations, register-specific choices, and prepositional phrases where near-synonyms produce meaningfully different results.</div>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="pb1" style="width:0%"></div></div>
+    <div id="mc-container"></div>
+    <div style="display:flex;justify-content:flex-end">
+      <button class="btn-next" id="mc-next">Next question →</button>
+    </div>
+  </div>
+
+  <!-- ACT 2: Fill in the Blank – dropdown (5 Qs) -->
+  <div class="activity" id="act2">
+    <div class="activity-header">
+      <div class="activity-label">Activity 2 of 3</div>
+      <div class="activity-title">Fill in the Blank</div>
+      <div class="activity-instructions">Choose the correct preposition from the dropdown. These questions focus on advanced prepositional collocations found in academic, historical, and formal writing.</div>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="pb2" style="width:0%"></div></div>
+    <div id="fitb-container"></div>
+    <div style="display:flex;justify-content:flex-end">
+      <button class="btn-next" id="fitb-next">Next question →</button>
+    </div>
+  </div>
+
+  <!-- ACT 3: Cloze Passage (5 gaps in a connected text) -->
+  <div class="activity" id="act3">
+    <div class="activity-header">
+      <div class="activity-label">Activity 3 of 3</div>
+      <div class="activity-title">Cloze Passage</div>
+      <div class="activity-instructions">Read the passage about Friedrich I and select the correct preposition for each gap. Consider register, collocation, and the logic of the full paragraph before choosing.</div>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="pb3" style="width:100%"></div></div>
+    <div id="cloze-container"></div>
+    <div style="display:flex;justify-content:flex-end">
+      <button class="btn-next" id="cloze-next">See results →</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- FINAL -->
+<div id="final-screen">
+  <div class="final-crown">♔</div>
+  <div class="final-score" id="final-score">0</div>
+  <div class="final-label">out of 15</div>
+  <div class="final-msg" id="final-msg"></div>
+  <button class="btn-restart" onclick="restartAll()">Begin again</button>
+</div>
+
+<script>
+/* ══════════════════════════════════
+   DATA
+══════════════════════════════════ */
+
+const mcQuestions = [
+  {
+    q: "Friedrich I was acutely conscious ___ the need to project royal magnificence in order to legitimise his newly acquired title.",
+    opts: ["about", "of", "regarding", "towards"],
+    correct: 1,
+    exp: "<strong>Conscious of</strong> is the fixed adjective–preposition collocation at C1 level. 'Aware of', 'mindful of', and 'conscious of' all use <em>of</em>. 'Conscious about' is non-standard in formal written English."
+  },
+  {
+    q: "The coronation ceremony ___ Königsberg in January 1701 was deliberately staged to rival the grandeur of Versailles.",
+    opts: ["in", "at", "within", "inside"],
+    correct: 0,
+    exp: "<strong>In</strong> is correct for cities and named places. 'At' is used for specific venues or events ('at the ceremony') rather than the city itself. 'Within' and 'inside' imply spatial containment."
+  },
+  {
+    q: "Friedrich's elevation to kingship was contingent ___ the support of the Holy Roman Emperor, Leopold I.",
+    opts: ["on", "upon", "about", "to"],
+    correct: 0,
+    exp: "<strong>Contingent on</strong> means dependent on a condition being fulfilled. Both 'on' and 'upon' are grammatically possible; however, in contemporary formal prose, 'contingent on' is now considerably more frequent than 'contingent upon', which is archaic."
+  },
+  {
+    q: "His court became renowned ___ its lavish expenditure on architecture, arts, and elaborate court ritual.",
+    opts: ["because of", "for", "through", "as"],
+    correct: 1,
+    exp: "<strong>Renowned for</strong> is the standard collocation. Like 'famous for', 'noted for', and 'celebrated for', the preposition is always <em>for</em>. 'Renowned because of' is possible informally but non-standard in formal registers."
+  },
+  {
+    q: "Friedrich insisted ___ being addressed as 'King in Prussia' rather than 'King of Prussia', a distinction that carried significant diplomatic weight.",
+    opts: ["about", "upon", "for", "on"],
+    correct: 1,
+    exp: "<strong>Insisted upon</strong> (or 'insisted on') means demanded something firmly. Both are correct; however, 'insist upon' is preferred in formal or literary registers, while 'insist on' is more common in everyday speech. At C1, recognising register is key."
+  }
+];
+
+const fitbQuestions = [
+  {
+    before: "The Brandenburg court was transformed",
+    after: "recognition as a major European power through Friedrich's aggressive cultural patronage.",
+    opts: ["in pursuit of", "in search of", "with a view to", "by means of"],
+    correct: 2,
+    exp: "<strong>With a view to</strong> is a formal prepositional expression meaning 'with the aim of' or 'in order to achieve'. It is followed by a noun or gerund. 'In pursuit of' and 'in search of' both describe seeking something, but they do not express purpose in the same way."
+  },
+  {
+    before: "Friedrich's claim to kingship rested",
+    after: "a complex argument involving both dynastic right and imperial negotiation.",
+    opts: ["on", "upon", "over", "across"],
+    correct: 0,
+    exp: "<strong>Rest on</strong> (or 'rest upon') means to be based on or depend on. 'Rest on' is the standard modern collocation; 'rest upon' is more formal or archaic. 'Claim rested on an argument' is the correct construction."
+  },
+  {
+    before: "The founding of the Prussian Academy of Sciences in 1700 was very much",
+    after: "keeping with the Enlightenment ideal of the learned monarch.",
+    opts: ["in", "within", "at", "by"],
+    correct: 0,
+    exp: "<strong>In keeping with</strong> is a fixed prepositional phrase meaning consistent with or in accordance with. It cannot be replaced by 'within', 'at', or 'by' in this construction."
+  },
+  {
+    before: "The Treaty of Utrecht ultimately confirmed that the Hohenzollern dynasty's title was",
+    after: "dispute, cementing Friedrich's gamble as a lasting dynastic triumph.",
+    opts: ["without", "beyond", "above", "past"],
+    correct: 1,
+    exp: "<strong>Beyond dispute</strong> is a fixed expression meaning undeniably established or not open to challenge. Compare: 'beyond doubt', 'beyond question', 'beyond reproach'. 'Without dispute' is possible but less idiomatic; 'above' and 'past' do not collocate with 'dispute' in this sense."
+  },
+  {
+    before: "Friedrich spent lavishly",
+    after: "proportion to Brandenburg-Prussia's actual revenues, bringing the state close to bankruptcy.",
+    opts: ["out of", "beyond", "in excess of", "without"],
+    correct: 0,
+    exp: "<strong>Out of proportion to</strong> is a fixed expression meaning not in a balanced relationship with something. 'In excess of' means more than a quantity. 'Beyond proportion' is not idiomatic. 'Without proportion' is not standard."
+  }
+];
+
+// Cloze passage – 5 gaps embedded in a connected paragraph
+const clozePassage = [
+  { text: "Friedrich I of Prussia was a monarch who understood, perhaps better than any of his contemporaries, that power is as much a matter of perception as of force. Born " },
+  { gap: true, id: 0, opts: ["to", "into", "within", "among"], correct: 1,
+    exp: "<strong>Born into</strong> is the correct expression for being born to a particular family, class, or condition. We say 'born into poverty', 'born into privilege', 'born into the Hohenzollern dynasty'. 'Born to' is used with parents ('born to a king') or fates ('born to rule')." },
+  { text: " the Hohenzollern dynasty, he inherited the Electorate of Brandenburg — a Protestant state of modest means. Yet Friedrich was determined to elevate his house " },
+  { gap: true, id: 1, opts: ["above", "beyond", "over", "past"], correct: 0,
+    exp: "<strong>Above</strong> is correct here in the sense of rising higher than or superior to something. 'Elevate above' means to lift to a level higher than. 'Beyond' would imply going past a limit; 'over' can work spatially but is less idiomatic in this figurative sense." },
+  { text: " the rank of mere elector and " },
+  { gap: true, id: 2, opts: ["on", "at", "in", "into"], correct: 3,
+    exp: "<strong>Into</strong> expresses transformation — moving from one state to another. 'To transform something into something' and 'to enter into a new status' both use 'into'. Here, Friedrich transforms his territory into a kingdom. 'In' would suggest location, not change of state." },
+  { text: " the ranks of European royalty. His strategy rested heavily " },
+  { gap: true, id: 3, opts: ["on", "upon", "over", "by"], correct: 0,
+    exp: "<strong>Rest on</strong> (or 'rest upon') means to be founded or dependent on. 'Rested heavily on' emphasises how much depended on this strategy. 'By' and 'over' do not collocate with 'rest' in this sense." },
+  { text: " the cultivation of Baroque splendour — his court at Berlin rivalled Versailles not merely in luxury but " },
+  { gap: true, id: 4, opts: ["in terms of", "with regard to", "in", "by way of"], correct: 2,
+    exp: "<strong>In</strong> is correct here. The parallel structure 'not merely in luxury but in symbolic intent' uses 'in' for both elements. 'In terms of' and 'with regard to' are too wordy for this elegant parallel construction; 'by way of' implies method, not equivalence." },
+  { text: " symbolic intent. His coronation was not a ceremony — it was a declaration." }
+];
+
+/* ══════════════════════════════════
+   STATE
+══════════════════════════════════ */
+let score = 0, mcIdx = 0, fitbIdx = 0;
+const TOTAL = 15;
+const LABELS = ['A','B','C','D'];
+
+function updateScore(){ document.getElementById('score-display').textContent = score; }
+
+/* ══════════════════════════════════
+   ACT 1 – MC
+══════════════════════════════════ */
+function renderMC(){
+  const q = mcQuestions[mcIdx];
+  document.getElementById('pb1').style.width = (mcIdx/mcQuestions.length*100)+'%';
+  document.getElementById('mc-next').classList.remove('show');
+  document.getElementById('mc-container').innerHTML = `
+    <div class="question-card">
+      <div class="question-counter">Question ${mcIdx+1} of ${mcQuestions.length}</div>
+      <div class="question-text">${q.q}</div>
+      <div class="options">
+        ${q.opts.map((o,i)=>`<button class="option-btn" onclick="answerMC(${i})" id="opt-${i}">
+          <span class="opt-label">${LABELS[i]}</span>${o}</button>`).join('')}
+      </div>
+      <div class="feedback-box" id="mc-fb"></div>
+    </div>`;
+}
+
+function answerMC(chosen){
+  const q = mcQuestions[mcIdx];
+  document.querySelectorAll('.option-btn').forEach(b=>b.disabled=true);
+  const ok = chosen===q.correct;
+  if(ok){ score++; updateScore(); }
+  document.getElementById(`opt-${chosen}`).classList.add(ok?'correct':'wrong');
+  if(!ok) document.getElementById(`opt-${q.correct}`).classList.add('correct');
+  showFb('mc-fb', ok
+    ? `<span class="feedback-correct">✓ Correct.</span> ${q.exp}`
+    : `<span class="feedback-wrong">✗ Incorrect.</span> The answer is <strong>${q.opts[q.correct]}</strong>. ${q.exp}`);
+  document.getElementById('pb1').style.width = ((mcIdx+1)/mcQuestions.length*100)+'%';
+  document.getElementById('mc-next').classList.add('show');
+}
+
+document.getElementById('mc-next').addEventListener('click',()=>{
+  mcIdx++;
+  if(mcIdx<mcQuestions.length) renderMC();
+  else { switchAct('act1','act2'); renderFITB(); }
+});
+
+/* ══════════════════════════════════
+   ACT 2 – FITB
+══════════════════════════════════ */
+function renderFITB(){
+  const q = fitbQuestions[fitbIdx];
+  document.getElementById('pb2').style.width = (fitbIdx/fitbQuestions.length*100)+'%';
+  document.getElementById('fitb-next').classList.remove('show');
+  const sel = `<select class="fitb-select" id="fitb-sel">
+    <option value="">— select —</option>
+    ${q.opts.map((o,i)=>`<option value="${i}">${o}</option>`).join('')}
+  </select>`;
+  document.getElementById('fitb-container').innerHTML = `
+    <div class="question-card">
+      <div class="question-counter">Question ${fitbIdx+1} of ${fitbQuestions.length}</div>
+      <div class="question-text">${q.before} ${sel} ${q.after}</div>
+      <button class="action-btn" id="fitb-btn" onclick="answerFITB()">Check answer</button>
+      <div class="feedback-box" id="fitb-fb"></div>
+    </div>`;
+}
+
+function answerFITB(){
+  const q = fitbQuestions[fitbIdx];
+  const sel = document.getElementById('fitb-sel');
+  if(!sel.value) return;
+  const chosen = parseInt(sel.value);
+  sel.disabled=true;
+  document.getElementById('fitb-btn').disabled=true;
+  const ok = chosen===q.correct;
+  if(ok){ score++; updateScore(); }
+  showFb('fitb-fb', ok
+    ? `<span class="feedback-correct">✓ Correct.</span> ${q.exp}`
+    : `<span class="feedback-wrong">✗ Incorrect.</span> The answer is <strong>${q.opts[q.correct]}</strong>. ${q.exp}`);
+  document.getElementById('pb2').style.width = ((fitbIdx+1)/fitbQuestions.length*100)+'%';
+  document.getElementById('fitb-next').classList.add('show');
+}
+
+document.getElementById('fitb-next').addEventListener('click',()=>{
+  fitbIdx++;
+  if(fitbIdx<fitbQuestions.length) renderFITB();
+  else { switchAct('act2','act3'); renderCloze(); }
+});
+
+/* ══════════════════════════════════
+   ACT 3 – CLOZE
+══════════════════════════════════ */
+function renderCloze(){
+  document.getElementById('cloze-next').classList.remove('show');
+
+  // Build HTML for the passage
+  let passageHTML = '';
+  clozePassage.forEach(seg=>{
+    if(!seg.gap){
+      passageHTML += seg.text;
+    } else {
+      const optsHTML = seg.opts.map((o,i)=>`<option value="${i}">${o}</option>`).join('');
+      passageHTML += `<select class="cloze-select" id="cg-${seg.id}">
+        <option value="">…</option>${optsHTML}</select>`;
+    }
+  });
+
+  document.getElementById('cloze-container').innerHTML = `
+    <div class="passage-card">
+      <div class="passage-title">— An extract on Friedrich I of Prussia —</div>
+      <div class="passage-body">${passageHTML}</div>
+      <button class="cloze-check" id="cloze-check-btn" onclick="checkCloze()">Check all answers</button>
+      <div class="cloze-results" id="cloze-results"></div>
+    </div>`;
+}
+
+function checkCloze(){
+  const gaps = clozePassage.filter(s=>s.gap);
+  let correct = 0;
+  let resultsHTML = '<strong>Results:</strong><ol>';
+
+  gaps.forEach(g=>{
+    const sel = document.getElementById(`cg-${g.id}`);
+    sel.disabled = true;
+    const chosen = parseInt(sel.value);
+    const ok = chosen === g.correct;
+    if(ok){ correct++; sel.classList.add('c-correct'); }
+    else { sel.classList.add('c-wrong'); }
+    const label = isNaN(chosen) ? '(no answer)' : g.opts[chosen];
+    const correctLabel = g.opts[g.correct];
+    resultsHTML += `<li>${ok
+      ? `<span class="cr-correct">✓ Correct</span> — <em>${correctLabel}</em>. ${g.exp}`
+      : `<span class="cr-wrong">✗ Incorrect</span> — you chose <em>${label||'nothing'}</em>; the answer is <strong>${correctLabel}</strong>. ${g.exp}`
+    }</li>`;
+  });
+
+  resultsHTML += '</ol>';
+  score += correct;
+  updateScore();
+  document.getElementById('pb3').style.width = '100%';
+  document.getElementById('cloze-check-btn').disabled = true;
+
+  const res = document.getElementById('cloze-results');
+  res.innerHTML = resultsHTML;
+  res.classList.add('show');
+  document.getElementById('cloze-next').classList.add('show');
+}
+
+document.getElementById('cloze-next').addEventListener('click', showFinalScreen);
+
+/* ══════════════════════════════════
+   HELPERS
+══════════════════════════════════ */
+function showFb(id, html){
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.innerHTML = html; el.classList.add('show');
+}
+function switchAct(from, to){
+  document.getElementById(from).classList.remove('active');
+  document.getElementById(to).classList.add('active');
+}
+
+function showFinalScreen(){
+  document.getElementById('activity-wrapper').style.display='none';
+  document.getElementById('final-screen').classList.add('show');
+  document.getElementById('final-score').textContent = score;
+  const pct = score/TOTAL;
+  let msg;
+  if(pct >= 0.93) msg = "Magnificent. Your command of English prepositions is worthy of the royal court itself. Friedrich would approve.";
+  else if(pct >= 0.8) msg = "A distinguished performance. A few subtleties eluded you — but your facility with formal English is considerable.";
+  else if(pct >= 0.6) msg = "A creditable effort at a demanding level. Review the collocations carefully — mastery comes through repetition.";
+  else if(pct >= 0.4) msg = "C1 is challenging precisely because the differences are subtle. Study the explanations and return to the court.";
+  else msg = "Even the greatest monarchs required years of instruction. Review the material carefully and attempt it again.";
+  document.getElementById('final-msg').textContent = msg;
+}
+
+function restartAll(){
+  score=0; mcIdx=0; fitbIdx=0;
+  updateScore();
+  document.getElementById('final-screen').classList.remove('show');
+  document.getElementById('activity-wrapper').style.display='';
+  ['act1','act2','act3'].forEach(id=>document.getElementById(id).classList.remove('active'));
+  document.getElementById('act1').classList.add('active');
+  renderMC();
+}
+
+/* INIT */
+renderMC();
+</script>
+</body>
+</html>

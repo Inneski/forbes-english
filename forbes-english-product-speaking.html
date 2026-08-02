@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – Professional Speaking Lesson</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #1a2a1f;
+    --surface: #21341f;  
+    --card: #f7f2e8;
+    --card-alt: #eee8d8;
+    --green: #2d5a3d;
+    --green-mid: #3d7a52;
+    --green-light: #6aaa80;
+    --green-pale: #d4e8db;
+    --brass: #c4962a;
+    --brass-light: #e8c06a;
+    --brass-pale: #f5e8c4;
+    --ink: #1a1a14;
+    --ink-mid: #4a4a38;
+    --ink-light: #8a8a70;
+    --cream: #f7f2e8;
+    --red-soft: #b04040;
+    --red-pale: #f5e4e4;
+    --shadow: 0 6px 32px rgba(0,0,0,0.25);
+    --shadow-card: 0 4px 20px rgba(0,0,0,0.12);
+    --radius: 16px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 15% 0%, rgba(45,90,61,0.6) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 100%, rgba(196,150,42,0.12) 0%, transparent 50%);
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: linear-gradient(180deg, #0f1a12 0%, #1a2a1f 100%);
+    padding: 36px 24px 32px;
+    text-align: center;
+    border-bottom: 1px solid rgba(196,150,42,0.2);
+    position: relative;
+  }
+  .site-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 120px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--brass), transparent);
+  }
+
+  .lesson-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(196,150,42,0.15);
+    border: 1px solid rgba(196,150,42,0.35);
+    color: var(--brass-light);
+    padding: 6px 18px;
+    border-radius: 40px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .lesson-badge::before { content: '◆'; font-size: 0.6em; }
+
+  /* ── PROGRESS STRIP ── */
+  .progress-strip {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    margin-top: 24px;
+    position: relative;
+  }
+  .progress-strip::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70%;
+    height: 1px;
+    background: rgba(196,150,42,0.2);
+  }
+  .prog-step {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: rgba(45,90,61,0.5);
+    border: 1.5px solid rgba(196,150,42,0.25);
+    color: rgba(196,150,42,0.5);
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    z-index: 1;
+    transition: all 0.4s;
+    margin: 0 16px;
+    cursor: default;
+  }
+  .prog-step.active {
+    background: var(--brass);
+    border-color: var(--brass);
+    color: #fff;
+    box-shadow: 0 0 0 4px rgba(196,150,42,0.2);
+    transform: scale(1.15);
+  }
+  .prog-step.done {
+    background: var(--green-mid);
+    border-color: var(--green-light);
+    color: #fff;
+  }
+  .prog-step.done::after { content: '✓'; position: absolute; }
+
+  /* ── MAIN CANVAS ── */
+  .canvas {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* ── ACTIVITY SCREEN ── */
+  .activity { display: none; animation: slideIn 0.45s cubic-bezier(0.2,0,0,1); }
+  .activity.active { display: block; }
+  @keyframes slideIn { from{opacity:0; transform:translateY(20px)} to{opacity:1; transform:translateY(0)} }
+
+  /* ── ACTIVITY LABEL ── */
+  .act-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+  .act-num {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    background: var(--brass);
+    color: #fff;
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 14px rgba(196,150,42,0.4);
+    flex-shrink: 0;
+  }
+  .act-info h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
+    color: var(--cream);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  .act-info p {
+    font-size: 0.82rem;
+    color: rgba(247,242,232,0.5);
+    margin-top: 3px;
+    font-weight: 400;
+  }
+
+  /* ── TEACHER NOTE ── */
+  .teacher-note {
+    background: rgba(196,150,42,0.1);
+    border: 1px solid rgba(196,150,42,0.25);
+    border-left: 3px solid var(--brass);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    font-size: 0.85rem;
+    color: var(--brass-light);
+    line-height: 1.6;
+  }
+  .teacher-note strong { color: var(--brass); }
+
+  /* ── SPEAKING CARD ── */
+  .speak-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 18px;
+    box-shadow: var(--shadow-card);
+    position: relative;
+    transition: transform 0.2s;
+  }
+  .speak-card.current { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.18); }
+
+  .card-tab {
+    background: var(--green);
+    color: rgba(247,242,232,0.85);
+    padding: 10px 20px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-tab .tab-icon { font-size: 0.9em; }
+
+  .card-tab.brass-tab { background: var(--brass); color: rgba(255,255,255,0.9); }
+  .card-tab.ink-tab { background: var(--ink); color: rgba(247,242,232,0.7); }
+  .card-tab.red-tab { background: var(--red-soft); color: rgba(247,242,232,0.9); }
+
+  .card-body {
+    padding: 24px 26px;
+  }
+  .card-body h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.15rem;
+    color: var(--ink);
+    margin-bottom: 10px;
+    line-height: 1.35;
+  }
+  .card-body h3 em {
+    font-style: italic;
+    color: var(--green);
+  }
+  .card-body p {
+    font-size: 0.95rem;
+    color: var(--ink-mid);
+    line-height: 1.7;
+  }
+  .card-body p strong { color: var(--ink); }
+
+  /* ── PROMPT BUBBLES ── */
+  .prompt-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .prompt-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 0.93rem;
+    color: var(--ink-mid);
+    line-height: 1.55;
+    padding: 12px 14px;
+    background: rgba(45,90,61,0.06);
+    border-radius: 10px;
+    border-left: 3px solid var(--green-light);
+    cursor: default;
+  }
+  .prompt-list li .bullet {
+    color: var(--green-mid);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+    font-size: 1em;
+  }
+
+  /* ── DIALOGUE BUBBLE ── */
+  .dialogue {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 4px;
+  }
+  .bubble-row { display: flex; align-items: flex-start; gap: 12px; }
+  .bubble-row.right { flex-direction: row-reverse; }
+  .bubble-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    letter-spacing: 0.03em;
+  }
+  .avatar-you { background: var(--green); color: #fff; }
+  .avatar-them { background: var(--ink); color: var(--cream); }
+  .bubble {
+    max-width: 80%;
+    padding: 12px 16px;
+    border-radius: 14px;
+    font-size: 0.91rem;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+  .bubble-you { background: var(--green-pale); border-bottom-right-radius: 4px; }
+  .bubble-them { background: var(--card-alt); border-bottom-left-radius: 4px; }
+  .bubble em { color: var(--red-soft); font-style: normal; font-weight: 600; }
+  .bubble strong { color: var(--green); }
+  .bubble-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    color: var(--ink-light);
+    padding-left: 2px;
+  }
+
+  /* ── SPEAKING PROMPT BOX ── */
+  .speak-prompt {
+    background: linear-gradient(135deg, var(--green) 0%, #1e4a2f 100%);
+    border-radius: var(--radius);
+    padding: 28px 30px;
+    margin-bottom: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .speak-prompt::before {
+    content: '💬';
+    position: absolute;
+    right: 24px; top: 20px;
+    font-size: 2.5rem;
+    opacity: 0.15;
+  }
+  .speak-prompt .sp-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green-light);
+    margin-bottom: 10px;
+  }
+  .speak-prompt h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.25rem;
+    color: var(--cream);
+    line-height: 1.4;
+    margin-bottom: 8px;
+  }
+  .speak-prompt p {
+    font-size: 0.88rem;
+    color: rgba(247,242,232,0.65);
+    line-height: 1.6;
+  }
+
+  /* ── PHRASE CHIPS ── */
+  .phrase-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  @media(max-width:520px) { .phrase-grid { grid-template-columns: 1fr; } }
+  .phrase-chip {
+    background: #fff;
+    border: 1.5px solid rgba(45,90,61,0.15);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 0.87rem;
+    color: var(--ink-mid);
+    line-height: 1.45;
+    position: relative;
+    padding-left: 32px;
+  }
+  .phrase-chip::before {
+    content: attr(data-prefix);
+    position: absolute;
+    left: 12px; top: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--green-mid);
+  }
+  .phrase-chip strong { color: var(--green); display: block; font-size: 0.8rem; margin-bottom: 2px; }
+
+  /* ── COMPARISON CARDS ── */
+  .compare-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  @media(max-width:500px) { .compare-pair { grid-template-columns: 1fr; } }
+  .compare-card {
+    border-radius: 12px;
+    padding: 16px 18px;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  .compare-weak {
+    background: var(--red-pale);
+    border: 1.5px solid rgba(176,64,64,0.2);
+    color: var(--red-soft);
+  }
+  .compare-weak .cc-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 8px; opacity: 0.7; }
+  .compare-strong {
+    background: var(--green-pale);
+    border: 1.5px solid rgba(45,90,61,0.2);
+    color: #1e4a2f;
+  }
+  .compare-strong .cc-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 8px; opacity: 0.7; }
+
+  /* ── SCENARIO CARD ── */
+  .scenario-header {
+    background: var(--ink);
+    border-radius: var(--radius) var(--radius) 0 0;
+    padding: 20px 24px 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .scenario-icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    background: var(--green);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+  }
+  .scenario-header h3 {
+    font-family: 'Fraunces', serif;
+    color: var(--cream);
+    font-size: 1.05rem;
+    line-height: 1.3;
+    margin-bottom: 2px;
+  }
+  .scenario-header p { font-size: 0.8rem; color: rgba(247,242,232,0.5); }
+
+  /* ── CHECKLIST ── */
+  .checklist { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+  .checklist li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.91rem;
+    color: var(--ink-mid);
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: rgba(45,90,61,0.05);
+    border: 1px solid rgba(45,90,61,0.1);
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .checklist li:hover { background: rgba(45,90,61,0.1); }
+  .checklist li.checked {
+    background: var(--green-pale);
+    border-color: rgba(45,90,61,0.25);
+    color: #1e4a2f;
+  }
+  .check-box {
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    border: 2px solid rgba(45,90,61,0.3);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    font-size: 0.75rem;
+    color: transparent;
+  }
+  .checklist li.checked .check-box {
+    background: var(--green-mid);
+    border-color: var(--green-mid);
+    color: #fff;
+  }
+
+  /* ── TIMER ── */
+  .timer-block {
+    background: var(--ink);
+    border-radius: 12px;
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .timer-info { color: rgba(247,242,232,0.7); font-size: 0.88rem; }
+  .timer-info strong { color: var(--brass-light); display: block; font-size: 1.05rem; margin-bottom: 2px; font-family: 'Fraunces', serif; }
+  .timer-display {
+    font-family: 'Fraunces', serif;
+    font-size: 2rem;
+    color: var(--brass-light);
+    letter-spacing: 0.05em;
+    min-width: 70px;
+    text-align: right;
+  }
+  .timer-display.running { color: var(--green-light); }
+  .timer-display.done { color: #fff; }
+  .timer-btns { display: flex; gap: 8px; }
+  .btn-timer {
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-start { background: var(--green-mid); color: #fff; }
+  .btn-start:hover { background: var(--green-light); }
+  .btn-reset { background: rgba(247,242,232,0.08); color: rgba(247,242,232,0.6); }
+  .btn-reset:hover { background: rgba(247,242,232,0.15); color: var(--cream); }
+
+  /* ── BOTTOM NAV ── */
+  .bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 32px;
+    gap: 12px;
+  }
+  .btn-next {
+    background: var(--brass);
+    color: #fff;
+    border: none;
+    padding: 15px 36px;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.18s;
+    box-shadow: 0 4px 16px rgba(196,150,42,0.35);
+    letter-spacing: 0.02em;
+    margin-left: auto;
+  }
+  .btn-next:hover { background: var(--brass-light); transform: translateY(-1px); box-shadow: 0 6px 22px rgba(196,150,42,0.45); }
+  .btn-prev {
+    background: transparent;
+    color: rgba(247,242,232,0.45);
+    border: 1px solid rgba(247,242,232,0.15);
+    padding: 14px 24px;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-prev:hover { color: var(--cream); border-color: rgba(247,242,232,0.3); }
+  .step-counter { color: rgba(247,242,232,0.35); font-size: 0.82rem; }
+
+  /* ── FINAL CARD ── */
+  .final-wrap {
+    background: var(--card);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .final-top {
+    background: linear-gradient(135deg, var(--green) 0%, #0f2a18 100%);
+    padding: 44px 40px 36px;
+    text-align: center;
+    position: relative;
+  }
+  .final-top::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 40px;
+    background: var(--card);
+    clip-path: ellipse(55% 100% at 50% 100%);
+  }
+  .final-star {
+    font-size: 3rem;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .final-top h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.8rem;
+    color: var(--cream);
+    margin-bottom: 10px;
+  }
+  .final-top p { color: rgba(247,242,232,0.65); font-size: 0.95rem; line-height: 1.6; }
+  .final-body { padding: 36px 36px 40px; }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  @media(max-width:480px){ .summary-grid{grid-template-columns:1fr} }
+  .summary-item {
+    background: rgba(45,90,61,0.07);
+    border-radius: 12px;
+    padding: 16px 18px;
+    border-left: 3px solid var(--green-light);
+  }
+  .summary-item h4 { font-family: 'Fraunces', serif; font-size: 0.95rem; color: var(--ink); margin-bottom: 6px; }
+  .summary-item p { font-size: 0.84rem; color: var(--ink-mid); line-height: 1.5; }
+  .homework-block {
+    background: var(--brass-pale);
+    border-radius: 14px;
+    padding: 22px 24px;
+    border: 1px solid rgba(196,150,42,0.2);
+    margin-bottom: 24px;
+  }
+  .homework-block h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 1rem;
+    color: var(--ink);
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .homework-block ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .homework-block li { font-size: 0.88rem; color: var(--ink-mid); padding-left: 20px; position: relative; line-height: 1.5; }
+  .homework-block li::before { content: '→'; position: absolute; left: 0; color: var(--brass); font-weight: 700; }
+  .btn-restart {
+    width: 100%;
+    background: var(--green);
+    color: #fff;
+    border: none;
+    padding: 16px;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.18s;
+    box-shadow: 0 4px 16px rgba(45,90,61,0.35);
+  }
+  .btn-restart:hover { background: var(--green-mid); transform: translateY(-1px); }
+
+  .deco-line {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(247,242,232,0.1), transparent);
+    margin: 24px 0;
+  }
+
+  /* ── ROLE CARDS ── */
+  .role-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+  @media(max-width:500px){ .role-cards{grid-template-columns:1fr} }
+  .role-card {
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+  }
+  .role-card-head {
+    padding: 14px 18px 10px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .role-student .role-card-head { background: var(--green); color: var(--green-pale); }
+  .role-roofer .role-card-head { background: var(--ink); color: rgba(247,242,232,0.7); }
+  .role-supplier .role-card-head { background: #3a3a2a; color: rgba(247,242,232,0.7); }
+  .role-card-body { background: var(--card); padding: 16px 18px; }
+  .role-card-body p { font-size: 0.88rem; color: var(--ink-mid); line-height: 1.55; }
+  .role-card-body strong { color: var(--ink); display: block; font-size: 0.82rem; margin-bottom: 6px; font-weight: 600; }
+
+  /* illustration strip */
+  .illus-strip { margin-bottom: 24px; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════ HEADER ══════════════════════════════════════ -->
+<div class="site-header">
+  <!-- Logo -->
+  <svg viewBox="0 0 240 72" width="220" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:16px">
+    <text x="120" y="36" font-family="'Fraunces',Georgia,serif" font-size="34" font-weight="700"
+          fill="#6aaa80" text-anchor="middle" letter-spacing="3">FORBES</text>
+    <rect x="28" y="44" width="184" height="1.5" fill="#c4962a" rx="1"/>
+    <text x="120" y="62" font-family="'DM Sans',Arial,sans-serif" font-size="14" font-weight="700"
+          fill="#c4962a" text-anchor="middle" letter-spacing="7">ENGLISH</text>
+  </svg>
+
+  <div class="lesson-badge">Speaking Lesson — B1 Professional</div>
+
+  <!-- Illustration: conversation scene -->
+  <svg viewBox="0 0 560 120" width="100%" style="max-width:560px;display:block;margin:0 auto 8px" xmlns="http://www.w3.org/2000/svg">
+    <!-- Figure 1: Student (PM) -->
+    <circle cx="110" cy="38" r="14" fill="#6aaa80" opacity="0.7"/>
+    <rect x="99" y="52" width="22" height="32" rx="6" fill="#3d7a52" opacity="0.8"/>
+    <line x1="99" y1="62" x2="88" y2="76" stroke="#3d7a52" stroke-width="5" stroke-linecap="round" opacity="0.8"/>
+    <line x1="121" y1="62" x2="130" y2="74" stroke="#3d7a52" stroke-width="5" stroke-linecap="round" opacity="0.8"/>
+    <line x1="105" y1="84" x2="103" y2="106" stroke="#3d7a52" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+    <line x1="115" y1="84" x2="117" y2="106" stroke="#3d7a52" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+    <text x="110" y="118" font-family="'DM Sans',sans-serif" font-size="8" fill="rgba(247,242,232,0.5)" text-anchor="middle">Student</text>
+
+    <!-- Speech bubble from student -->
+    <rect x="132" y="14" width="118" height="38" rx="8" fill="rgba(45,90,61,0.8)" stroke="rgba(106,170,128,0.3)" stroke-width="1"/>
+    <polygon points="136,36 128,44 144,36" fill="rgba(45,90,61,0.8)"/>
+    <text x="142" y="29" font-family="'DM Sans',sans-serif" font-size="7.5" fill="rgba(247,242,232,0.8)">"What do you look for</text>
+    <text x="142" y="41" font-family="'DM Sans',sans-serif" font-size="7.5" fill="rgba(247,242,232,0.8)">when choosing a product?"</text>
+
+    <!-- Figure 2: Roofer -->
+    <circle cx="350" cy="38" r="14" fill="#b08060" opacity="0.7"/>
+    <!-- hard hat -->
+    <path d="M338,35 Q350,24 362,35 Z" fill="#c4962a" opacity="0.7"/>
+    <rect x="338" y="34" width="24" height="5" rx="2.5" fill="#c4962a" opacity="0.7"/>
+    <rect x="337" y="52" width="26" height="30" rx="6" fill="#4a3a2a" opacity="0.8"/>
+    <line x1="337" y1="60" x2="326" y2="73" stroke="#4a3a2a" stroke-width="5" stroke-linecap="round" opacity="0.8"/>
+    <line x1="363" y1="60" x2="372" y2="72" stroke="#4a3a2a" stroke-width="5" stroke-linecap="round" opacity="0.8"/>
+    <line x1="343" y1="82" x2="341" y2="106" stroke="#4a3a2a" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+    <line x1="353" y1="82" x2="355" y2="106" stroke="#4a3a2a" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+    <text x="350" y="118" font-family="'DM Sans',sans-serif" font-size="8" fill="rgba(247,242,232,0.5)" text-anchor="middle">UK Roofer</text>
+
+    <!-- Reply bubble from roofer -->
+    <rect x="308" y="14" width="124" height="38" rx="8" fill="rgba(42,42,30,0.85)" stroke="rgba(196,150,42,0.25)" stroke-width="1"/>
+    <polygon points="374,52 364,44 380,44" fill="rgba(42,42,30,0.85)"/>
+    <text x="318" y="29" font-family="'DM Sans',sans-serif" font-size="7.5" fill="rgba(247,242,232,0.75)">"Price matters — but if it</text>
+    <text x="318" y="41" font-family="'DM Sans',sans-serif" font-size="7.5" fill="rgba(247,242,232,0.75)">tears easily, it's a nightmare."</text>
+
+    <!-- Supplier figure -->
+    <circle cx="490" cy="38" r="14" fill="#8090b0" opacity="0.7"/>
+    <rect x="479" y="52" width="22" height="32" rx="6" fill="#3d5a6c" opacity="0.8"/>
+    <line x1="479" y1="62" x2="468" y2="74" stroke="#3d5a6c" stroke-width="5" stroke-linecap="round" opacity="0.8"/>
+    <line x1="501" y1="62" x2="510" y2="72" stroke="#3d5a6c" stroke-width="5" stroke-linecap="round" opacity="0.8"/>
+    <line x1="485" y1="84" x2="483" y2="106" stroke="#3d5a6c" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+    <line x1="495" y1="84" x2="497" y2="106" stroke="#3d5a6c" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+    <text x="490" y="118" font-family="'DM Sans',sans-serif" font-size="8" fill="rgba(247,242,232,0.5)" text-anchor="middle">Supplier</text>
+
+    <!-- decorative dots -->
+    <circle cx="240" cy="60" r="3" fill="rgba(196,150,42,0.3)"/>
+    <circle cx="260" cy="48" r="2" fill="rgba(106,170,128,0.25)"/>
+    <circle cx="220" cy="75" r="2" fill="rgba(196,150,42,0.2)"/>
+  </svg>
+
+  <!-- Progress steps -->
+  <div class="progress-strip">
+    <div class="prog-step active" id="ps1">1</div>
+    <div class="prog-step" id="ps2">2</div>
+    <div class="prog-step" id="ps3">3</div>
+    <div class="prog-step" id="ps4">4</div>
+    <div class="prog-step" id="ps5">5</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ CANVAS ══════════════════════════════════════ -->
+<div class="canvas">
+
+<!-- ══════════════
+  ACTIVITY 1 — WARM-UP
+══════════════ -->
+<div class="activity active" id="act1">
+  <div class="act-label">
+    <div class="act-num">1</div>
+    <div class="act-info">
+      <h2>Warm-Up: Talk About Your Work</h2>
+      <p>Speaking fluency · 5–8 minutes · No preparation needed</p>
+    </div>
+  </div>
+
+  <div class="teacher-note">
+    <strong>Teacher:</strong> Ask these questions naturally — one at a time. Don't rush. Listen for grammar patterns, hesitation, and vocabulary gaps. Make notes but <em>don't correct yet</em>. Your goal is to get the student speaking freely and to understand how he talks about his job right now.
+  </div>
+
+  <div class="speak-prompt">
+    <div class="sp-label">Student speaks first</div>
+    <h3>Tell me about your role and your company.</h3>
+    <p>Answer as naturally as you can — imagine you're meeting a new business contact for the first time.</p>
+  </div>
+
+  <div class="speak-card current">
+    <div class="card-tab"><span class="tab-icon">🎙</span> Conversation Questions — take your time</div>
+    <div class="card-body">
+      <ul class="prompt-list">
+        <li><span class="bullet">Q1</span> Can you describe your role? What are you responsible for day to day?</li>
+        <li><span class="bullet">Q2</span> What kinds of products do you manage? Who makes them and who buys them?</li>
+        <li><span class="bullet">Q3</span> Who do you usually speak to in English — customers, suppliers, retailers, colleagues?</li>
+        <li><span class="bullet">Q4</span> What is the most difficult part of speaking English at work for you?</li>
+        <li><span class="bullet">Q5</span> Can you describe a recent conversation in English that was difficult? What made it hard?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="speak-card">
+    <div class="card-tab brass-tab"><span class="tab-icon">👂</span> Teacher — listen for these</div>
+    <div class="card-body">
+      <div class="compare-pair">
+        <div class="compare-card compare-weak">
+          <div class="cc-label">❌ Watch for</div>
+          <p>"I <strong>make</strong> market research"<br>"responsible <strong>to</strong> develop"<br>"We discuss <strong>about</strong> suppliers"<br>"I am working <strong>since</strong> five years"</p>
+        </div>
+        <div class="compare-card compare-strong">
+          <div class="cc-label">✓ Target forms</div>
+          <p>"I <strong>conduct</strong> market research"<br>"responsible <strong>for</strong> developing"<br>"We discuss <strong>this</strong> with suppliers"<br>"I <strong>have been</strong> working for five years"</p>
+        </div>
+      </div>
+      <p style="font-size:0.83rem;color:var(--ink-light);margin-top:4px">Note patterns — bring them back later in the lesson as natural corrections, not a list of errors.</p>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <span class="step-counter">Activity 1 of 5</span>
+    <button class="btn-next" onclick="goAct(2)">Next Activity →</button>
+  </div>
+</div>
+
+<!-- ══════════════
+  ACTIVITY 2 — UPGRADING WEAK SENTENCES
+══════════════ -->
+<div class="activity" id="act2">
+  <div class="act-label">
+    <div class="act-num">2</div>
+    <div class="act-info">
+      <h2>Say It Better</h2>
+      <p>Spoken upgrade challenge · 8–10 minutes · the student speaks each improved version aloud</p>
+    </div>
+  </div>
+
+  <div class="teacher-note">
+    <strong>Teacher:</strong> Read the <em>weak sentence</em> aloud. Ask the student: <em>"How could you say this more professionally?"</em> Give him 10–15 seconds to think. Then reveal the strong version together. He must say the strong version aloud — ideally <em>twice</em>, once slowly and once at normal speed. The goal is muscle memory, not just recognition.
+  </div>
+
+  <div class="speak-card current">
+    <div class="card-tab"><span class="tab-icon">🔄</span> Upgrade 1</div>
+    <div class="card-body">
+      <div class="compare-pair">
+        <div class="compare-card compare-weak">
+          <div class="cc-label">❌ Weak — teacher reads this</div>
+          <p>"I make market research with customers in England."</p>
+        </div>
+        <div class="compare-card compare-strong">
+          <div class="cc-label">✓ Strong — student says this</div>
+          <p>"I <strong>conduct</strong> market research with customers in England."</p>
+        </div>
+      </div>
+      <p style="font-size:0.85rem;color:var(--ink-mid);line-height:1.6"><strong>Why?</strong> We "conduct" research, surveys, interviews and meetings. "Make" is for physical things. Say it twice — once slowly, once naturally.</p>
+    </div>
+  </div>
+
+  <div class="speak-card">
+    <div class="card-tab"><span class="tab-icon">🔄</span> Upgrade 2</div>
+    <div class="card-body">
+      <div class="compare-pair">
+        <div class="compare-card compare-weak">
+          <div class="cc-label">❌ Weak</div>
+          <p>"I am responsible to develop the product strategy."</p>
+        </div>
+        <div class="compare-card compare-strong">
+          <div class="cc-label">✓ Strong — say this aloud</div>
+          <p>"I am responsible <strong>for developing</strong> the product strategy."</p>
+        </div>
+      </div>
+      <p style="font-size:0.85rem;color:var(--ink-mid);line-height:1.6"><strong>Why?</strong> "Responsible for + -ing" is fixed in professional English. "Responsible to do" sounds unnatural to native speakers.</p>
+    </div>
+  </div>
+
+  <div class="speak-card">
+    <div class="card-tab"><span class="tab-icon">🔄</span> Upgrade 3</div>
+    <div class="card-body">
+      <div class="compare-pair">
+        <div class="compare-card compare-weak">
+          <div class="cc-label">❌ Weak</div>
+          <p>"Customers have problems with the membrane when it is wet."</p>
+        </div>
+        <div class="compare-card compare-strong">
+          <div class="cc-label">✓ Strong — say this aloud</div>
+          <p>"A common <strong>pain point</strong> is handling the membrane in wet conditions."</p>
+        </div>
+      </div>
+      <p style="font-size:0.85rem;color:var(--ink-mid);line-height:1.6"><strong>Why?</strong> "Pain point" is standard product management vocabulary. It sounds professional to customers and suppliers alike.</p>
+    </div>
+  </div>
+
+  <div class="speak-card">
+    <div class="card-tab"><span class="tab-icon">🔄</span> Upgrade 4</div>
+    <div class="card-body">
+      <div class="compare-pair">
+        <div class="compare-card compare-weak">
+          <div class="cc-label">❌ Weak</div>
+          <p>"Can you make the membrane more lighter?"</p>
+        </div>
+        <div class="compare-card compare-strong">
+          <div class="cc-label">✓ Strong — say this aloud</div>
+          <p>"<strong>Would it be possible</strong> to reduce the weight of the material?"</p>
+        </div>
+      </div>
+      <p style="font-size:0.85rem;color:var(--ink-mid);line-height:1.6"><strong>Why?</strong> "Would it be possible to…?" is the professional way to ask a supplier about changing a product. It is polite but direct. Also note: "more lighter" is a double comparative — always avoid this.</p>
+    </div>
+  </div>
+
+  <div class="speak-card">
+    <div class="card-tab"><span class="tab-icon">🔄</span> Upgrade 5</div>
+    <div class="card-body">
+      <div class="compare-pair">
+        <div class="compare-card compare-weak">
+          <div class="cc-label">❌ Weak</div>
+          <p>"We discuss with suppliers about the new product."</p>
+        </div>
+        <div class="compare-card compare-strong">
+          <div class="cc-label">✓ Strong — say this aloud</div>
+          <p>"We are <strong>discussing</strong> the new product <strong>with</strong> our suppliers."</p>
+        </div>
+      </div>
+      <p style="font-size:0.85rem;color:var(--ink-mid);line-height:1.6"><strong>Why?</strong> "Discuss" does not take "about" — we discuss <em>something</em>, not "about something". This is one of the most common errors for non-native speakers in business English.</p>
+    </div>
+  </div>
+
+  <div class="speak-card">
+    <div class="card-tab brass-tab"><span class="tab-icon">🎯</span> Quick Drill — say these from memory</div>
+    <div class="card-body">
+      <p style="margin-bottom:14px;font-size:0.88rem;color:var(--ink-mid)">Teacher reads the <em>situation</em> — the student responds with the correct phrase without looking.</p>
+      <ul class="prompt-list">
+        <li><span class="bullet">1</span> "You want to study your customers' needs." → <em>I need to conduct…</em></li>
+        <li><span class="bullet">2</span> "Your job is to manage the product range." → <em>I am responsible for…</em></li>
+        <li><span class="bullet">3</span> "Roofers complain about slippery surfaces." → <em>A common pain point is…</em></li>
+        <li><span class="bullet">4</span> "You want the supplier to change the weight." → <em>Would it be possible to…</em></li>
+        <li><span class="bullet">5</span> "You are talking to a supplier about a new idea." → <em>We are discussing… with…</em></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="btn-prev" onclick="goAct(1)">← Back</button>
+    <span class="step-counter">Activity 2 of 5</span>
+    <button class="btn-next" onclick="goAct(3)">Next Activity →</button>
+  </div>
+</div>
+
+<!-- ══════════════
+  ACTIVITY 3 — ROOFER ROLEPLAY
+══════════════ -->
+<div class="activity" id="act3">
+  <div class="act-label">
+    <div class="act-num">3</div>
+    <div class="act-info">
+      <h2>Market Research Roleplay</h2>
+      <p>Roleplay conversation · 12–15 minutes · Teacher plays a UK roofer</p>
+    </div>
+  </div>
+
+  <div class="teacher-note">
+    <strong>Teacher:</strong> You are a roofer in England — straight-talking, experienced, slightly impatient. the student must ask you questions and follow up naturally. <em>Do not volunteer information</em> — make him dig for it. If he asks a closed question like "Is price important?", answer only yes or no and wait. This forces him to ask better follow-up questions. Correct his questions only after the roleplay ends.
+  </div>
+
+  <div class="role-cards">
+    <div class="role-card role-student">
+      <div class="role-card-head">🎙 the student — Product Manager</div>
+      <div class="role-card-body">
+        <strong>Your goal today:</strong>
+        <p>You are conducting market research with a roofer in England. You want to understand how he chooses membranes, what problems he has, and what would make his job easier. Ask open questions and follow up on every answer.</p>
+      </div>
+    </div>
+    <div class="role-card role-roofer">
+      <div class="role-card-head">🔨 Teacher — UK Roofer</div>
+      <div class="role-card-body">
+        <strong>Character notes:</strong>
+        <p>You've been roofing for 18 years. You care about speed, reliability, and availability. You don't like membranes that tear or are slippery. You decide which products to buy, not the contractor. Be helpful but brief unless pushed.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="speak-card">
+    <div class="card-tab"><span class="tab-icon">💬</span> the student — useful questions to practise</div>
+    <div class="card-body">
+      <p style="font-size:0.87rem;color:var(--ink-mid);margin-bottom:14px">Use these as a guide — don't read them. Try to ask naturally, and always follow up.</p>
+      <div class="phrase-grid">
+        <div class="phrase-chip" data-prefix="→">
+          <strong>Opening</strong>
+          "What type of projects do you usually work on?"
+        </div>
+        <div class="phrase-chip" data-prefix="→">
+          <strong>Discovering needs</strong>
+          "What do you look for when choosing a membrane?"
+        </div>
+        <div class="phrase-chip" data-prefix="→">
+          <strong>Finding problems</strong>
+          "What problems do you usually have during installation?"
+        </div>
+        <div class="phrase-chip" data-prefix="→">
+          <strong>Digging deeper</strong>
+          "Can you give me an example of that?"
+        </div>
+        <div class="phrase-chip" data-prefix="→">
+          <strong>Buying decisions</strong>
+          "Who usually decides which product to buy on site?"
+        </div>
+        <div class="phrase-chip" data-prefix="→">
+          <strong>Improvement</strong>
+          "What would make the product easier to use?"
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="speak-card">
+    <div class="card-tab ink-tab"><span class="tab-icon">📋</span> Teacher — roofer answers (use freely, mix these up)</div>
+    <div class="card-body">
+      <ul class="prompt-list">
+        <li><span class="bullet">"</span>To be honest, price matters — but if something tears easily on a windy day, it's a nightmare."</li>
+        <li><span class="bullet">"</span>Availability is a big thing. If my supplier doesn't stock it, I won't use it. Simple as that."</li>
+        <li><span class="bullet">"</span>Some membranes are too slippery when the roof is wet. That's a safety issue."</li>
+        <li><span class="bullet">"</span>The instructions are sometimes unclear — especially when it's raining and you're trying to read them."</li>
+        <li><span class="bullet">"</span>I care about breathability, durability and ease of installation. In that order."</li>
+        <li><span class="bullet">"</span>I usually decide what we buy. The contractor leaves it to me."</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="speak-card">
+    <div class="card-tab brass-tab"><span class="tab-icon">⚡</span> After the roleplay — correction focus</div>
+    <div class="card-body">
+      <p style="font-size:0.87rem;color:var(--ink-mid);margin-bottom:14px">Ask the student to repeat these common weak questions as strong versions:</p>
+      <div class="compare-pair">
+        <div class="compare-card compare-weak">
+          <div class="cc-label">❌ Closed / weak questions</div>
+          <p>"You like this product?"<br>"Is price important?"<br>"You have problems?"<br>"What you need?"</p>
+        </div>
+        <div class="compare-card compare-strong">
+          <div class="cc-label">✓ Open / strong — say these</div>
+          <p>"What do you <strong>like</strong> about it?"<br>"How <strong>important</strong> is price?"<br>"What <strong>kind of</strong> problems…?"<br>"What do you <strong>need</strong> from…?"</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="btn-prev" onclick="goAct(2)">← Back</button>
+    <span class="step-counter">Activity 3 of 5</span>
+    <button class="btn-next" onclick="goAct(4)">Next Activity →</button>
+  </div>
+</div>
+
+<!-- ══════════════
+  ACTIVITY 4 — SUPPLIER DISCUSSION
+══════════════ -->
+<div class="activity" id="act4">
+  <div class="act-label">
+    <div class="act-num">4</div>
+    <div class="act-info">
+      <h2>Supplier Discussion</h2>
+      <p>Roleplay conversation · 10–12 minutes · Teacher plays a supplier</p>
+    </div>
+  </div>
+
+  <div class="teacher-note">
+    <strong>Teacher:</strong> You are a technical supplier — professional, busy, and numbers-focused. the student must relay what the roofer told him (from Activity 3) and negotiate a product improvement. Push back on cost and timeline. Don't make it easy. Listen for whether he uses the summary phrase <em>"Based on our research, we have noticed that…"</em> and whether he asks structured feasibility questions.
+  </div>
+
+  <!-- Scenario brief -->
+  <div class="speak-card current" style="overflow:hidden">
+    <div class="scenario-header">
+      <div class="scenario-icon">🏭</div>
+      <div>
+        <h3>The Scenario</h3>
+        <p>the student is meeting a supplier to discuss improving the membrane product based on market feedback.</p>
+      </div>
+    </div>
+    <div class="card-body">
+      <p style="font-size:0.95rem;color:var(--ink-mid);line-height:1.7">
+        <strong>The situation:</strong> After talking to roofers in England, you have clear feedback: the membrane is strong, but it is <em>difficult to install quickly in wet or windy weather</em> and <em>sometimes slippery</em>. Your job is to explain this to your supplier and explore whether the product can be improved. You need to ask about feasibility, cost impact, and timeline.
+      </p>
+    </div>
+  </div>
+
+  <div class="role-cards">
+    <div class="role-card role-student">
+      <div class="role-card-head">🎙 the student — Product Manager</div>
+      <div class="role-card-body">
+        <strong>Your goals in this conversation:</strong>
+        <p>Share the customer research findings. Ask if the product can be improved. Discuss specifications, cost, and timeline. Summarise what was agreed.</p>
+      </div>
+    </div>
+    <div class="role-card role-supplier">
+      <div class="role-card-head">🔩 Teacher — Supplier</div>
+      <div class="role-card-body">
+        <strong>Character notes:</strong>
+        <p>You are interested in the feedback but cautious about cost. Reducing weight is technically possible. Adding grip coating adds 8–12% to cost. Development takes 4–6 months. Ask for written specifications before committing.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="speak-card">
+    <div class="card-tab"><span class="tab-icon">💬</span> the student — key phrases to use in this conversation</div>
+    <div class="card-body">
+      <div class="phrase-grid">
+        <div class="phrase-chip" data-prefix="→">
+          <strong>Sharing research</strong>
+          "Based on our customer research, we have noticed that…"
+        </div>
+        <div class="phrase-chip" data-prefix="→">
+          <strong>Introducing requirement</strong>
+          "One important requirement from the market is…"
+        </div>
+        <div class="phrase-chip" data-prefix="→">
+          <strong>Asking feasibility</strong>
+          "Would it be possible to adjust the…?"
+        </div>
+        <div class="phrase-chip" data-prefix="→">
+          <strong>Asking about cost</strong>
+          "How would this affect the production cost?"
+        </div>
+        <div class="phrase-chip" data-prefix="→">
+          <strong>Asking about timing</strong>
+          "What would be a realistic timeline for development?"
+        </div>
+        <div class="phrase-chip" data-prefix="→">
+          <strong>Checking understanding</strong>
+          "So, if I understand correctly…"
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="speak-card">
+    <div class="card-tab brass-tab"><span class="tab-icon">⚡</span> After the roleplay — spoken summary challenge</div>
+    <div class="card-body">
+      <p style="font-size:0.9rem;color:var(--ink-mid);margin-bottom:14px">Ask the student to summarise what was agreed in the roleplay — spoken, without notes. He should cover:</p>
+      <ul class="prompt-list">
+        <li><span class="bullet">1</span> What did the customers say? (the feedback)</li>
+        <li><span class="bullet">2</span> What did you ask the supplier to change?</li>
+        <li><span class="bullet">3</span> What did the supplier say about cost and timeline?</li>
+        <li><span class="bullet">4</span> What is the next step?</li>
+      </ul>
+      <p style="font-size:0.83rem;color:var(--ink-light);margin-top:12px">This practises reporting and summarising — essential for meetings and internal updates.</p>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="btn-prev" onclick="goAct(3)">← Back</button>
+    <span class="step-counter">Activity 4 of 5</span>
+    <button class="btn-next" onclick="goAct(5)">Next Activity →</button>
+  </div>
+</div>
+
+<!-- ══════════════
+  ACTIVITY 5 — PRODUCT PITCH + SELF-CHECK
+══════════════ -->
+<div class="activity" id="act5">
+  <div class="act-label">
+    <div class="act-num">5</div>
+    <div class="act-info">
+      <h2>Product Pitch — Speak for 2 Minutes</h2>
+      <p>Fluency task + self-assessment · 10–12 minutes</p>
+    </div>
+  </div>
+
+  <div class="teacher-note">
+    <strong>Teacher:</strong> Tell the student you are a new retailer in Ireland who knows construction but not his product range. He must pitch <em>one product</em> for 2 minutes — no notes. Use the timer below. After he speaks, ask him to self-assess using the checklist, then give your own feedback. End with the 3-part teacher feedback: one thing he did well, one correction, one upgrade phrase.
+  </div>
+
+  <!-- Timer -->
+  <div class="timer-block">
+    <div class="timer-info">
+      <strong>2-Minute Speaking Timer</strong>
+      Pitch one product — no notes allowed
+    </div>
+    <div class="timer-btns">
+      <button class="btn-timer btn-reset" onclick="resetTimer()">Reset</button>
+      <button class="btn-timer btn-start" id="timerBtn" onclick="toggleTimer()">▶ Start</button>
+    </div>
+    <div class="timer-display" id="timerDisplay">2:00</div>
+  </div>
+
+  <div class="speak-prompt">
+    <div class="sp-label">The scenario</div>
+    <h3>"I'm a new retailer in Ireland. I understand construction but I don't know your products. Tell me about one of your membranes."</h3>
+    <p>Speak for 2 minutes. Cover: what it is, who uses it, what problem it solves, why it is better than alternatives.</p>
+  </div>
+
+  <div class="speak-card">
+    <div class="card-tab"><span class="tab-icon">🏗️</span> Structure guide — keep this in your head, not on paper</div>
+    <div class="card-body">
+      <ul class="prompt-list">
+        <li><span class="bullet">1st</span> Introduce the product — <em>"This product is designed for…"</em></li>
+        <li><span class="bullet">2nd</span> Explain the purpose — <em>"Its main purpose is to…"</em></li>
+        <li><span class="bullet">3rd</span> Describe the benefit — <em>"The main advantage is that…"</em></li>
+        <li><span class="bullet">4th</span> Compare — <em>"Compared with standard options, this…"</em></li>
+        <li><span class="bullet">5th</span> Summarise simply — <em>"In simple terms, it helps…"</em></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Self-assessment checklist -->
+  <div class="speak-card">
+    <div class="card-tab brass-tab"><span class="tab-icon">✅</span> Self-Assessment — the student ticks these after speaking</div>
+    <div class="card-body">
+      <p style="font-size:0.87rem;color:var(--ink-mid);margin-bottom:14px">Click each point if you feel you did it well. Be honest.</p>
+      <ul class="checklist" id="selfCheck">
+        <li onclick="toggleCheck(this)"><span class="check-box">✓</span> I explained what the product is and who uses it.</li>
+        <li onclick="toggleCheck(this)"><span class="check-box">✓</span> I explained the main purpose clearly.</li>
+        <li onclick="toggleCheck(this)"><span class="check-box">✓</span> I described at least one key benefit or advantage.</li>
+        <li onclick="toggleCheck(this)"><span class="check-box">✓</span> I compared it to an alternative or cheaper option.</li>
+        <li onclick="toggleCheck(this)"><span class="check-box">✓</span> I used professional vocabulary (not "problems" or "things").</li>
+        <li onclick="toggleCheck(this)"><span class="check-box">✓</span> I spoke for most of the 2 minutes without stopping.</li>
+        <li onclick="toggleCheck(this)"><span class="check-box">✓</span> My sentences were complete — subject + verb + object.</li>
+        <li onclick="toggleCheck(this)"><span class="check-box">✓</span> I finished with a clear summary sentence.</li>
+      </ul>
+      <p style="font-size:0.8rem;color:var(--ink-light);margin-top:14px" id="checkScore">Ticked: 0 of 8</p>
+    </div>
+  </div>
+
+  <div class="speak-card">
+    <div class="card-tab ink-tab"><span class="tab-icon">💡</span> Teacher — 3-part feedback model</div>
+    <div class="card-body">
+      <ul class="prompt-list">
+        <li><span class="bullet">①</span> <strong>Praise:</strong> Name one specific thing he did well — e.g. <em>"You explained the purpose very clearly and your structure was logical."</em></li>
+        <li><span class="bullet">②</span> <strong>Correct:</strong> Give one correction from what you heard — e.g. <em>"Instead of 'we make research', say 'we conduct research'."</em></li>
+        <li><span class="bullet">③</span> <strong>Upgrade:</strong> Give one stronger phrase — e.g. <em>"Instead of 'it is better', you could say 'the key advantage is its durability in wet conditions'."</em></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="btn-prev" onclick="goAct(4)">← Back</button>
+    <span class="step-counter">Activity 5 of 5</span>
+    <button class="btn-next" onclick="goAct(6)">Finish Lesson →</button>
+  </div>
+</div>
+
+<!-- ══════════════
+  FINAL SCREEN
+══════════════ -->
+<div class="activity" id="act6">
+  <div class="final-wrap">
+    <div class="final-top">
+      <span class="final-star">⭐</span>
+      <h2>Great work today!</h2>
+      <p>You practised real professional conversations — the kind you have every week at work. Every lesson we'll make these more natural and more confident.</p>
+    </div>
+    <div class="final-body">
+      <div class="summary-grid">
+        <div class="summary-item">
+          <h4>Warm-Up</h4>
+          <p>Speaking freely about your role and identifying language patterns to work on.</p>
+        </div>
+        <div class="summary-item">
+          <h4>Say It Better</h4>
+          <p>Five professional upgrades — conduct, responsible for, pain points, would it be possible, discuss with.</p>
+        </div>
+        <div class="summary-item">
+          <h4>Roofer Roleplay</h4>
+          <p>Asking open questions, following up, and listening actively in a market research conversation.</p>
+        </div>
+        <div class="summary-item">
+          <h4>Supplier Discussion</h4>
+          <p>Sharing feedback, requesting changes, and asking structured professional questions.</p>
+        </div>
+      </div>
+
+      <div class="homework-block">
+        <h4>📋 Homework — Spoken, not written</h4>
+        <ul>
+          <li>Prepare a 2-minute explanation of a different product from your range. Cover: what it is, who uses it, what problem it solves, and one key benefit.</li>
+          <li>Write down 5 real questions a customer or supplier has asked you recently in English. Bring them to the next lesson — we'll turn them into speaking practice.</li>
+          <li>Practise saying these three phrases aloud ten times each: <em>"I conduct market research." / "I am responsible for developing…" / "Based on our research, we have noticed that…"</em></li>
+        </ul>
+      </div>
+
+      <button class="btn-restart" onclick="window.location.reload()">↺ Start Lesson Again</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- /canvas -->
+
+<!-- ══════════════════════════════════════ JAVASCRIPT ══════════════════════════════════════ -->
+<script>
+// ── Navigation ──
+function goAct(n) {
+  document.querySelectorAll('.activity').forEach(a => a.classList.remove('active'));
+  const target = document.getElementById('act'+n);
+  if(target) target.classList.add('active');
+
+  // Update progress steps
+  for(let i=1;i<=5;i++){
+    const s = document.getElementById('ps'+i);
+    if(!s) continue;
+    s.classList.remove('active','done');
+    if(i < n) s.classList.add('done');
+    else if(i === n) s.classList.add('active');
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── Checklist ──
+function toggleCheck(li) {
+  li.classList.toggle('checked');
+  const total = document.querySelectorAll('#selfCheck li').length;
+  const checked = document.querySelectorAll('#selfCheck li.checked').length;
+  document.getElementById('checkScore').textContent = 'Ticked: '+checked+' of '+total;
+}
+
+// ── Timer ──
+let timerRunning = false;
+let timerSeconds = 120;
+let timerInterval = null;
+
+function toggleTimer() {
+  if(timerRunning) {
+    clearInterval(timerInterval);
+    timerRunning = false;
+    document.getElementById('timerBtn').textContent = '▶ Resume';
+    document.getElementById('timerDisplay').classList.remove('running');
+  } else {
+    if(timerSeconds <= 0) return;
+    timerRunning = true;
+    document.getElementById('timerBtn').textContent = '⏸ Pause';
+    document.getElementById('timerDisplay').classList.add('running');
+    timerInterval = setInterval(() => {
+      timerSeconds--;
+      const m = Math.floor(timerSeconds/60);
+      const s = timerSeconds%60;
+      const disp = document.getElementById('timerDisplay');
+      disp.textContent = m+':'+(s<10?'0':'')+s;
+      if(timerSeconds <= 0) {
+        clearInterval(timerInterval);
+        timerRunning = false;
+        document.getElementById('timerBtn').textContent = 'Time up!';
+        document.getElementById('timerBtn').disabled = true;
+        disp.classList.remove('running');
+        disp.classList.add('done');
+        disp.textContent = '0:00';
+      }
+    }, 1000);
+  }
+}
+
+function resetTimer() {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  timerSeconds = 120;
+  document.getElementById('timerDisplay').textContent = '2:00';
+  document.getElementById('timerDisplay').classList.remove('running','done');
+  const btn = document.getElementById('timerBtn');
+  btn.textContent = '▶ Start';
+  btn.disabled = false;
+}
+</script>
+</body>
+</html>

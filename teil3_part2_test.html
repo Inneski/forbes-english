@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teil 3 — Adverbs · will/won't · So/Neither</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@500;600&family=Karla:wght@400;500;600;700&display=swap');
+
+:root{
+  --paper:#f6f1e7;
+  --ink:#241f1a;
+  --ink-soft:#5c5347;
+  --line:#d8cdb8;
+  --card:#fffdf8;
+  --gold:#c98a3a;
+  --adv:#2f6b3e;       /* green — adverbs */
+  --adv-bg:rgba(47,107,62,0.09);
+  --will:#c08a1e;      /* ochre — future */
+  --will-bg:rgba(192,138,30,0.09);
+  --so:#3b6ea5;        /* blue — so/neither */
+  --so-bg:rgba(59,110,165,0.09);
+  --green:#2f6b3e;
+  --green-bg:rgba(47,107,62,0.09);
+  --red:#a13a2f;
+  --red-bg:rgba(161,58,47,0.09);
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--paper);
+  background-image:radial-gradient(circle at 1px 1px,rgba(36,31,26,0.06) 1px,transparent 0);
+  background-size:22px 22px;
+  color:var(--ink);
+  font-family:'Karla',sans-serif;
+  padding:40px 16px 80px;
+}
+.wrap{max-width:760px;margin:0 auto;}
+
+/* ── TOPBAR ── */
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;gap:12px;flex-wrap:wrap;}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo svg{width:32px;height:32px;}
+.logo-text{font-family:'Fraunces',serif;font-weight:700;font-size:14px;line-height:1.1;}
+.logo-text span{display:block;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;}
+.progress-wrap{flex:1;min-width:140px;}
+.progress-track{height:7px;background:rgba(36,31,26,0.08);border-radius:5px;overflow:hidden;}
+.progress-fill{height:100%;border-radius:5px;width:0%;transition:width .35s ease;}
+.progress-fill.sec-adv{background:linear-gradient(90deg,var(--adv),var(--adv));}
+.progress-fill.sec-will{background:linear-gradient(90deg,var(--adv),var(--will));}
+.progress-fill.sec-so{background:linear-gradient(90deg,var(--adv),var(--will),var(--so));}
+.progress-label{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);margin-top:4px;text-align:right;}
+.score-pill{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;background:var(--card);border:1.5px solid var(--line);border-radius:20px;padding:5px 13px;white-space:nowrap;}
+
+/* ── INTRO ── */
+.intro-screen{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:28px 24px 22px;margin-bottom:0;}
+.intro-header{text-align:center;margin-bottom:22px;}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:8px;}
+.intro-header h1{font-family:'Fraunces',serif;font-weight:700;font-size:30px;margin:0 0 5px;letter-spacing:-.01em;}
+.intro-header .sub{font-family:'Fraunces',serif;font-style:italic;color:var(--ink-soft);font-size:15px;margin:0 0 14px;}
+.rule{width:48px;height:3px;margin:0 auto;border-radius:2px;}
+
+/* Three topic pills */
+.topic-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0 20px;}
+@media(max-width:520px){.topic-grid{grid-template-columns:1fr;}}
+.topic-pill{border-radius:10px;padding:14px 14px 12px;border:1.5px solid var(--line);position:relative;overflow:hidden;}
+.topic-pill::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;}
+.tp-adv::before{background:var(--adv);}
+.tp-will::before{background:var(--will);}
+.tp-so::before{background:var(--so);}
+.tp-num{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;opacity:.5;margin-bottom:4px;}
+.tp-title{font-family:'Fraunces',serif;font-weight:700;font-size:16px;margin:0 0 3px;}
+.tp-adv .tp-title{color:var(--adv);}
+.tp-will .tp-title{color:var(--will);}
+.tp-so .tp-title{color:var(--so);}
+.tp-de{font-size:12px;color:var(--ink-soft);font-style:italic;}
+.tp-count{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);margin-top:6px;}
+
+/* Mini reference blocks in intro */
+.ref-block{border-radius:8px;padding:12px 14px;margin-bottom:10px;font-size:13px;line-height:1.7;}
+.ref-block.adv{background:var(--adv-bg);border-left:3px solid var(--adv);}
+.ref-block.will{background:var(--will-bg);border-left:3px solid var(--will);}
+.ref-block.so{background:var(--so-bg);border-left:3px solid var(--so);}
+.ref-block h4{font-family:'Fraunces',serif;font-size:14px;margin:0 0 6px;font-weight:700;}
+.ref-block.adv h4{color:var(--adv);}
+.ref-block.will h4{color:var(--will);}
+.ref-block.so h4{color:var(--so);}
+.ref-block code{font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:600;}
+.ref-block .de{font-style:italic;color:var(--ink-soft);font-size:12px;}
+
+.start-btn{display:block;width:100%;padding:13px;border:none;border-radius:10px;background:var(--ink);color:var(--paper);font-family:'Karla',sans-serif;font-weight:700;font-size:15px;cursor:pointer;transition:opacity .2s;margin-top:4px;}
+.start-btn:hover{opacity:.85;}
+
+/* ── SECTION DIVIDERS ── */
+.section-banner{
+  border-radius:9px;padding:12px 16px;margin-bottom:14px;display:none;
+  font-family:'Fraunces',serif;font-weight:600;font-size:17px;
+  position:relative;overflow:hidden;
+}
+.section-banner.active{display:flex;align-items:center;gap:12px;}
+.section-banner::after{
+  content:attr(data-num);
+  position:absolute;right:10px;top:50%;transform:translateY(-50%);
+  font-family:'IBM Plex Mono',monospace;font-size:40px;font-weight:700;
+  opacity:.08;line-height:1;
+}
+.sb-adv{background:var(--adv-bg);color:var(--adv);border:1.5px solid rgba(47,107,62,0.2);}
+.sb-will{background:var(--will-bg);color:var(--will);border:1.5px solid rgba(192,138,30,0.2);}
+.sb-so{background:var(--so-bg);color:var(--so);border:1.5px solid rgba(59,110,165,0.2);}
+.sb-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;}
+.sb-adv .sb-icon{background:var(--adv);}
+.sb-will .sb-icon{background:var(--will);}
+.sb-so .sb-icon{background:var(--so);}
+.sb-text .sb-de{font-size:12px;opacity:.7;font-style:italic;font-family:'Karla',sans-serif;font-weight:400;}
+
+/* ── QUESTION CARDS ── */
+.qcard{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:22px 22px 18px;margin-bottom:0;display:none;}
+.qcard.active{display:block;}
+.qcard.sec-adv{border-top:3px solid var(--adv);}
+.qcard.sec-will{border-top:3px solid var(--will);}
+.qcard.sec-so{border-top:3px solid var(--so);}
+
+.qmeta{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;}
+.qnum{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:600;letter-spacing:.04em;text-transform:uppercase;}
+.qtype-badge{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;}
+.qtype-badge.adv{color:var(--adv);}
+.qtype-badge.will{color:var(--will);}
+.qtype-badge.so{color:var(--so);}
+
+.qtext{font-family:'Fraunces',serif;font-weight:600;font-size:18px;line-height:1.45;margin-bottom:4px;}
+.blank{display:inline-block;min-width:72px;border-bottom:2.5px dashed var(--line);text-align:center;vertical-align:bottom;}
+.qde{font-size:13px;color:var(--ink-soft);font-style:italic;margin-bottom:16px;}
+
+.options{display:flex;flex-direction:column;gap:9px;}
+.opt{display:flex;align-items:center;gap:11px;border:1.5px solid var(--line);border-radius:9px;padding:11px 14px;background:var(--paper);cursor:pointer;transition:border-color .15s,background .15s;font-size:14.5px;font-weight:500;}
+.opt:hover:not(.disabled){border-color:var(--gold);}
+.opt-letter{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;width:22px;height:22px;border-radius:50%;background:rgba(36,31,26,0.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.opt.correct{border-color:var(--green);background:var(--green-bg);}
+.opt.incorrect{border-color:var(--red);background:var(--red-bg);}
+.opt.disabled{cursor:default;}
+
+.feedback{margin-top:14px;padding:11px 13px;border-radius:0 6px 6px 0;font-size:13px;line-height:1.55;display:none;border-left:3px solid var(--green);background:var(--green-bg);}
+.feedback.show{display:block;}
+.feedback.wrong{border-left-color:var(--red);background:var(--red-bg);}
+.feedback b{color:var(--ink);}
+.feedback .fb-de{display:block;color:var(--ink-soft);font-style:italic;margin-top:4px;font-size:12px;}
+
+.next-btn{margin-top:16px;width:100%;padding:12px;border:none;border-radius:9px;background:var(--ink);color:var(--paper);font-family:'Karla',sans-serif;font-weight:700;font-size:14.5px;cursor:pointer;opacity:.28;pointer-events:none;transition:opacity .2s;}
+.next-btn.enabled{opacity:1;pointer-events:auto;}
+.next-btn.enabled:hover{opacity:.85;}
+
+/* ── RESULTS ── */
+.results{background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:32px 26px;text-align:center;display:none;}
+.results.active{display:block;}
+.results .big-score{font-family:'Fraunces',serif;font-weight:700;font-size:52px;color:var(--ink);margin:6px 0 2px;}
+.results .score-label{font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-soft);margin-bottom:16px;}
+.results h2{font-family:'Fraunces',serif;font-size:21px;margin:0 0 4px;}
+.results .verdict-de{font-style:italic;color:var(--ink-soft);font-size:14px;margin-bottom:8px;}
+
+/* Section breakdown */
+.breakdown{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0 22px;}
+.bd-cell{border-radius:9px;padding:12px 10px;text-align:center;}
+.bd-cell.adv{background:var(--adv-bg);border:1.5px solid rgba(47,107,62,0.2);}
+.bd-cell.will{background:var(--will-bg);border:1.5px solid rgba(192,138,30,0.2);}
+.bd-cell.so{background:var(--so-bg);border:1.5px solid rgba(59,110,165,0.2);}
+.bd-cell .bd-score{font-family:'Fraunces',serif;font-weight:700;font-size:26px;}
+.bd-cell.adv .bd-score{color:var(--adv);}
+.bd-cell.will .bd-score{color:var(--will);}
+.bd-cell.so .bd-score{color:var(--so);}
+.bd-cell .bd-label{font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);margin-top:2px;}
+
+.retry-btn{padding:11px 26px;border:1.5px solid var(--ink);border-radius:9px;background:transparent;color:var(--ink);font-family:'Karla',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:background .2s,color .2s;}
+.retry-btn:hover{background:var(--ink);color:var(--paper);}
+
+footer{text-align:center;margin-top:36px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);opacity:.6;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="logo">
+      <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="24" cy="24" r="22" fill="#c98a3a"/>
+        <path d="M14 32V16h14M14 24h10M14 16l16 16" stroke="#fffdf8" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="logo-text">Forbes English<span>Teil 3 · Part 2 Test</span></div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-track"><div class="progress-fill sec-adv" id="progressFill"></div></div>
+      <div class="progress-label" id="progressLabel">Frage 0 / 15</div>
+    </div>
+    <div class="score-pill" id="scorePill">0 / 15</div>
+  </div>
+
+  <!-- ═══ INTRO ═══ -->
+  <div class="intro-screen" id="intro">
+    <div class="intro-header">
+      <div class="eyebrow">Übungsheft Teil 3 · Test</div>
+      <h1>Drei Themen, ein Test</h1>
+      <p class="sub">15 Fragen — 5 pro Thema</p>
+      <div class="rule" style="background:var(--gold);"></div>
+    </div>
+
+    <div class="topic-grid">
+      <div class="topic-pill tp-adv">
+        <div class="tp-num">Teil 1</div>
+        <div class="tp-title">Adverbs</div>
+        <div class="tp-de">Wie etwas passiert</div>
+        <div class="tp-count">Fragen 1–5</div>
+      </div>
+      <div class="topic-pill tp-will">
+        <div class="tp-num">Teil 2</div>
+        <div class="tp-title">will / won't</div>
+        <div class="tp-de">Zukunft &amp; Vorhersagen</div>
+        <div class="tp-count">Fragen 6–10</div>
+      </div>
+      <div class="topic-pill tp-so">
+        <div class="tp-num">Teil 3</div>
+        <div class="tp-title">So / Neither</div>
+        <div class="tp-de">ich auch / ich auch nicht</div>
+        <div class="tp-count">Fragen 11–15</div>
+      </div>
+    </div>
+
+    <!-- Quick-reference blocks -->
+    <div class="ref-block adv">
+      <h4>Adverbs of manner</h4>
+      Adjektiv + <code>-ly</code> → <em>quick → quickly, careful → carefully</em><br>
+      <code>-y</code> → <code>-ily</code> &nbsp;·&nbsp; <em>happy → happ<b>ily</b></em><br>
+      <code>-le</code> → <code>-ly</code> &nbsp;·&nbsp; <em>terrible → terrib<b>ly</b></em><br>
+      Ausnahmen: <code>good → well</code> &nbsp;·&nbsp; <code>fast → fast</code><br>
+      <span class="de">Das Adverb beschreibt das Verb — das Adjektiv beschreibt das Nomen.</span>
+    </div>
+
+    <div class="ref-block will">
+      <h4>will / won't</h4>
+      <code>subject + will / 'll + Grundform</code> &nbsp;·&nbsp; <em>I'll go, she'll win</em><br>
+      <code>subject + won't + Grundform</code> &nbsp;·&nbsp; <em>I won't know, it won't be fun</em><br>
+      <span class="de">Gleiche Form für alle Personen — kein -s. Nach will/'ll immer die Grundform.</span>
+    </div>
+
+    <div class="ref-block so">
+      <h4>So … I &nbsp;/&nbsp; Neither … I</h4>
+      Positiver Satz → <code>So + Hilfsverb + I</code><br>
+      Negativer Satz → <code>Neither + Hilfsverb + I</code><br>
+      <em>I like rap. → <b>So do I.</b> &nbsp;·&nbsp; I can't swim. → <b>Neither can I.</b></em><br>
+      <span class="de">Das Hilfsverb spiegelt die Zeitform des Vorgängers — do/did/have/can.</span>
+    </div>
+
+    <button class="start-btn" id="startBtn">Test starten →</button>
+  </div>
+
+  <!-- Section banners (shown before each new topic) -->
+  <div class="section-banner sb-adv" id="banner-adv" data-num="1">
+    <div class="sb-icon">1</div>
+    <div class="sb-text">Adverbs of manner<div class="sb-de">Wie etwas passiert — Adjektiv + -ly</div></div>
+  </div>
+  <div class="section-banner sb-will" id="banner-will" data-num="2">
+    <div class="sb-icon">2</div>
+    <div class="sb-text">will / won't<div class="sb-de">Zukunft — subject + will + Grundform</div></div>
+  </div>
+  <div class="section-banner sb-so" id="banner-so" data-num="3">
+    <div class="sb-icon">3</div>
+    <div class="sb-text">So … I &nbsp;/&nbsp; Neither … I<div class="sb-de">ich auch / ich auch nicht</div></div>
+  </div>
+
+  <!-- Quiz area -->
+  <div id="quizArea"></div>
+
+  <!-- RESULTS -->
+  <div class="results" id="results">
+    <div class="score-label">Dein Ergebnis</div>
+    <div class="big-score" id="finalScore">0 / 15</div>
+    <h2 id="verdictText"></h2>
+    <p class="verdict-de" id="verdictDe"></p>
+    <div class="breakdown">
+      <div class="bd-cell adv"><div class="bd-score" id="scoreAdv">0/5</div><div class="bd-label">Adverbs</div></div>
+      <div class="bd-cell will"><div class="bd-score" id="scoreWill">0/5</div><div class="bd-label">will / won't</div></div>
+      <div class="bd-cell so"><div class="bd-score" id="scoreSo">0/5</div><div class="bd-label">So / Neither</div></div>
+    </div>
+    <button class="retry-btn" id="retryBtn">Nochmal versuchen</button>
+  </div>
+
+  <footer>Forbes English · Übungsheft Teil 3 · Part 2</footer>
+</div>
+
+<script>
+/* ─────────────────────────────────────
+   QUESTIONS
+   Q 0–4  : Adverbs of manner   (sec:"adv")
+   Q 5–9  : will / won't        (sec:"will")
+   Q 10–14: So / Neither        (sec:"so")
+───────────────────────────────────── */
+const QUESTIONS = [
+
+  // ── ADVERBS 1–5 ──
+  {
+    sec:"adv",
+    type:"Adverbs",
+    en:'She smiled <span class="blank">___</span>. It was a wonderful day.',
+    de:"Sie lächelte glücklich.",
+    options:["happily","happyly","happily's","happy"],
+    correct:0,
+    feedbackEn:"<b>happily</b> — adjectives ending in <b>-y</b> drop the y and add <b>-ily</b>. happy → happ<b>ily</b>.",
+    feedbackDe:"Adjektiv auf <b>-y</b>: y wird zu <b>-ily</b>. happy → happ<b>ily</b>."
+  },
+  {
+    sec:"adv",
+    type:"Adverbs",
+    en:'He did his homework <span class="blank">___</span> and made no mistakes.',
+    de:"Er machte seine Hausaufgaben sorgfältig.",
+    options:["carefully","careful","carely","caringly"],
+    correct:0,
+    feedbackEn:"<b>carefully</b> — adjectives ending in <b>-e</b> simply add <b>-ly</b>: careful → care<b>fully</b>. The adverb describes the verb 'did'.",
+    feedbackDe:"<b>carefully</b> — das Adverb beschreibt das Verb 'did', nicht das Nomen. careful → care<b>fully</b>."
+  },
+  {
+    sec:"adv",
+    type:"Adverbs",
+    en:'Which sentence uses the correct word?',
+    de:"Welcher Satz ist richtig?",
+    options:[
+      "He speaks Italian brilliantly.",
+      "He speaks Italian brilliant.",
+      "He speaks Italian brilliantely.",
+      "He speaks brilliantly Italian."
+    ],
+    correct:0,
+    feedbackEn:"<b>brilliantly</b> — the adverb describes the verb 'speaks' and comes after the verb (and its object). brilliant + <b>-ly</b>.",
+    feedbackDe:"Das Adverb steht nach dem Verb (und dem Objekt), nie davor. brilliant → brilliant<b>ly</b>."
+  },
+  {
+    sec:"adv",
+    type:"Adverbs",
+    en:'He ran really <span class="blank">___</span> and won the race.',
+    de:"Er lief sehr schnell und gewann das Rennen.",
+    options:["fast","fastly","quick","well"],
+    correct:0,
+    feedbackEn:"<b>fast</b> — 'fast' is an exception: the adverb and the adjective are <b>identical</b>. There is no word 'fastly'.",
+    feedbackDe:"<b>fast</b> ist eine Ausnahme — Adjektiv und Adverb sind identisch. 'Fastly' gibt es nicht!"
+  },
+  {
+    sec:"adv",
+    type:"Adverbs",
+    en:'It was a <span class="blank">___</span> Monday morning.',
+    de:"Es war ein normaler Montagmorgen.",
+    options:["normal","normally","normaly","norm"],
+    correct:0,
+    feedbackEn:"<b>normal</b> — here we need an <b>adjective</b> because it describes the noun 'Monday morning', not a verb. Adjectives never get -ly.",
+    feedbackDe:"Hier brauchen wir ein <b>Adjektiv</b>, weil es das Nomen 'Montagmorgen' beschreibt — kein -ly!"
+  },
+
+  // ── WILL / WON'T 6–10 ──
+  {
+    sec:"will",
+    type:"will / won't",
+    en:'I\'m sure he <span class="blank">___</span> ideas about what we can do.',
+    de:"Er hat bestimmt Ideen — Sam ist ein guter Freund.",
+    options:["'ll have","'ll has","won't have","will having"],
+    correct:0,
+    feedbackEn:"<b>'ll have</b> — will (= 'll) is followed by the <b>bare base form</b>. No -s, no -ing, no past form. Same for all persons.",
+    feedbackDe:"will / 'll + <b>Grundform</b> — kein -s, kein -ing, kein -ed. Gilt für alle Personen."
+  },
+  {
+    sec:"will",
+    type:"will / won't",
+    en:'She certainly <span class="blank">___</span> to Jane\'s party — they had an argument.',
+    de:"Sie und Jane haben sich gestritten — sie sind keine Freundinnen mehr.",
+    options:["won't come","will come","won't comes","isn't coming"],
+    correct:0,
+    feedbackEn:"<b>won't come</b> — won't = will not. Negative future. The base form 'come' follows, never 'comes'.",
+    feedbackDe:"<b>won't</b> = will not — negative Zukunft. Danach immer Grundform: won't <b>come</b>, nie 'comes'."
+  },
+  {
+    sec:"will",
+    type:"will / won't",
+    en:'Which sentence is correct?',
+    de:"Welcher Satz ist richtig?",
+    options:[
+      "I'll become a famous footballer.",
+      "I'll became a famous footballer.",
+      "I'll becoming a famous footballer.",
+      "I wills become a famous footballer."
+    ],
+    correct:0,
+    feedbackEn:"<b>I'll become</b> — 'll is a contraction of will. The verb after will is always the <b>base form</b>: become, not became or becoming. And 'wills' doesn't exist.",
+    feedbackDe:"Nach 'll / will kommt immer die <b>Grundform</b>. 'became' = Past Simple, 'becoming' = -ing-Form — beide falsch. 'wills' existiert nicht."
+  },
+  {
+    sec:"will",
+    type:"will / won't",
+    en:'It <span class="blank">___</span> fun. I won\'t know anyone at the party.',
+    de:"Die Party macht keinen Spaß — er kennt dort niemanden.",
+    options:["won't be","will be","won't is","will isn't"],
+    correct:0,
+    feedbackEn:"<b>won't be</b> — negative prediction. won't = will not, followed by the base form 'be'.",
+    feedbackDe:"Negative Vorhersage: <b>won't</b> + Grundform. 'be' ist die Grundform von is/are/am."
+  },
+  {
+    sec:"will",
+    type:"will / won't",
+    en:'Perhaps I <span class="blank">___</span> at home and do my homework.',
+    de:"Er überlegt, was er am Samstagabend machen soll.",
+    options:["'ll stay","stays","'ll staying","will stayed"],
+    correct:0,
+    feedbackEn:"<b>'ll stay</b> — 'perhaps' signals a spontaneous decision about the future. will + base form 'stay'.",
+    feedbackDe:"'Perhaps' zeigt eine spontane Entscheidung für die Zukunft. will / 'll + <b>Grundform</b> = stay."
+  },
+
+  // ── SO / NEITHER 11–15 ──
+  {
+    sec:"so",
+    type:"So / Neither",
+    en:'A: I like rap music. &nbsp; B: <span class="blank">___</span>',
+    de:"A sagt etwas Positives.",
+    options:["So do I.","Neither do I.","So have I.","So did I."],
+    correct:0,
+    feedbackEn:"<b>So do I.</b> — A's sentence is positive and uses the present simple (like). Echo with <b>So + do + I</b>.",
+    feedbackDe:"Positiver Satz im Present Simple → <b>So do I.</b> Das Hilfsverb 'do' spiegelt den Vorgänger."
+  },
+  {
+    sec:"so",
+    type:"So / Neither",
+    en:'A: I can\'t go to Dave\'s party. &nbsp; B: <span class="blank">___</span>',
+    de:"A kann nicht zur Party gehen.",
+    options:["Neither can I.","So can I.","Neither do I.","Neither did I."],
+    correct:0,
+    feedbackEn:"<b>Neither can I.</b> — A's sentence is negative and uses 'can't'. Echo with <b>Neither + can + I</b>. The modal verb is repeated, not do/did.",
+    feedbackDe:"Negativer Satz mit 'can't' → <b>Neither can I.</b> Bei Modalverben (can/must etc.) kein do/did!"
+  },
+  {
+    sec:"so",
+    type:"So / Neither",
+    en:'A: I went to bed late last night. &nbsp; B: <span class="blank">___</span>',
+    de:"A spricht über gestern Abend.",
+    options:["So did I.","So do I.","So have I.","Neither did I."],
+    correct:0,
+    feedbackEn:"<b>So did I.</b> — A's sentence is positive and uses the past simple (went). Echo with <b>So + did + I</b>.",
+    feedbackDe:"Positiver Satz im Past Simple → <b>So did I.</b> 'did' spiegelt die Vergangenheitsform."
+  },
+  {
+    sec:"so",
+    type:"So / Neither",
+    en:'A: I haven\'t got any money. &nbsp; B: <span class="blank">___</span>',
+    de:"A hat kein Geld.",
+    options:["Neither have I.","So have I.","Neither do I.","Neither did I."],
+    correct:0,
+    feedbackEn:"<b>Neither have I.</b> — A's sentence is negative and uses 'haven't'. Echo with <b>Neither + have + I</b>. 'have' is repeated, not do.",
+    feedbackDe:"Negativer Satz mit 'haven't' → <b>Neither have I.</b> 'have' wiederholen, nicht 'do'!"
+  },
+  {
+    sec:"so",
+    type:"So / Neither",
+    en:'A: I didn\'t enjoy the book. &nbsp; B: <span class="blank">___</span>',
+    de:"A hat das Buch nicht gemocht.",
+    options:["Neither did I.","So did I.","Neither do I.","Neither have I."],
+    correct:0,
+    feedbackEn:"<b>Neither did I.</b> — A's sentence is negative and uses the past simple (didn't). Echo with <b>Neither + did + I</b>.",
+    feedbackDe:"Negativer Satz im Past Simple → <b>Neither did I.</b> 'did' spiegelt die Vergangenheitsform."
+  }
+];
+
+/* ── Fisher-Yates shuffle ── */
+function shuffle(arr){
+  const a=arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+let score=0, sectionScores={adv:0,will:0,so:0};
+let answered=[], runtimeQ=[];
+
+function prepareQuestions(){
+  runtimeQ=QUESTIONS.map(q=>{
+    const indexed=q.options.map((text,i)=>({text,isCorrect:i===q.correct}));
+    return {...q,shuffled:shuffle(indexed)};
+  });
+  answered=new Array(QUESTIONS.length).fill(false);
+}
+
+function getSecClass(idx){
+  if(idx<5) return 'adv';
+  if(idx<10) return 'will';
+  return 'so';
+}
+
+function renderQuiz(){
+  const area=document.getElementById('quizArea');
+  area.innerHTML='';
+  const letters=['A','B','C','D'];
+  runtimeQ.forEach((q,idx)=>{
+    const sec=getSecClass(idx);
+    const card=document.createElement('div');
+    card.className=`qcard sec-${sec}`;
+    card.id='q'+idx;
+    const opts=q.shuffled.map((o,oi)=>`
+      <div class="opt" data-idx="${oi}" data-qidx="${idx}">
+        <span class="opt-letter">${letters[oi]}</span>
+        <span>${o.text}</span>
+      </div>`).join('');
+    card.innerHTML=`
+      <div class="qmeta">
+        <span class="qnum">Frage ${idx+1} von ${QUESTIONS.length}</span>
+        <span class="qtype-badge ${sec}">${q.type}</span>
+      </div>
+      <div class="qtext">${q.en}</div>
+      <div class="qde">${q.de}</div>
+      <div class="options">${opts}</div>
+      <div class="feedback" id="fb${idx}"></div>
+      <button class="next-btn" id="next${idx}">${idx===QUESTIONS.length-1?'Ergebnis anzeigen →':'Nächste Frage →'}</button>`;
+    area.appendChild(card);
+  });
+  document.querySelectorAll('.opt').forEach(el=>el.addEventListener('click',handleClick));
+  runtimeQ.forEach((_,idx)=>document.getElementById('next'+idx).addEventListener('click',()=>goTo(idx+1)));
+}
+
+function handleClick(e){
+  const el=e.currentTarget;
+  const qidx=parseInt(el.dataset.qidx);
+  if(answered[qidx]) return;
+  answered[qidx]=true;
+  const oi=parseInt(el.dataset.idx);
+  const q=runtimeQ[qidx];
+  const chosen=q.shuffled[oi];
+
+  document.querySelectorAll(`.opt[data-qidx="${qidx}"]`).forEach(opt=>{
+    opt.classList.add('disabled');
+    const i=parseInt(opt.dataset.idx);
+    if(q.shuffled[i].isCorrect) opt.classList.add('correct');
+    else if(i===oi) opt.classList.add('incorrect');
+  });
+
+  if(chosen.isCorrect){
+    score++;
+    sectionScores[q.sec]++;
+  }
+
+  const fb=document.getElementById('fb'+qidx);
+  fb.className='feedback show'+(chosen.isCorrect?'':' wrong');
+  fb.innerHTML=`${q.feedbackEn}<span class="fb-de">${q.feedbackDe}</span>`;
+  document.getElementById('scorePill').textContent=`${score} / ${QUESTIONS.length}`;
+  document.getElementById('next'+qidx).classList.add('enabled');
+}
+
+const SECTION_FIRST={adv:0,will:5,so:10};
+
+function updateProgress(idx){
+  const pct=(idx/QUESTIONS.length)*100;
+  const fill=document.getElementById('progressFill');
+  fill.style.width=pct+'%';
+  // update gradient class to reflect current section
+  fill.className='progress-fill';
+  if(idx<5) fill.classList.add('sec-adv');
+  else if(idx<10) fill.classList.add('sec-will');
+  else fill.classList.add('sec-so');
+  document.getElementById('progressLabel').textContent=`Frage ${Math.min(idx+1,QUESTIONS.length)} / ${QUESTIONS.length}`;
+}
+
+function goTo(idx){
+  // hide all cards and banners
+  document.querySelectorAll('.qcard').forEach(c=>c.classList.remove('active'));
+  document.querySelectorAll('.section-banner').forEach(b=>b.classList.remove('active'));
+
+  if(idx>=QUESTIONS.length){showResults();return;}
+
+  // show section banner when entering a new section
+  const sec=getSecClass(idx);
+  if(idx===SECTION_FIRST[sec]){
+    document.getElementById('banner-'+sec).classList.add('active');
+  }
+
+  document.getElementById('q'+idx).classList.add('active');
+  updateProgress(idx);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function showResults(){
+  document.getElementById('progressFill').style.width='100%';
+  document.getElementById('progressFill').className='progress-fill sec-so';
+  document.getElementById('progressLabel').textContent=`Frage ${QUESTIONS.length} / ${QUESTIONS.length}`;
+  document.getElementById('results').classList.add('active');
+  document.getElementById('finalScore').textContent=`${score} / ${QUESTIONS.length}`;
+  document.getElementById('scoreAdv').textContent=`${sectionScores.adv}/5`;
+  document.getElementById('scoreWill').textContent=`${sectionScores.will}/5`;
+  document.getElementById('scoreSo').textContent=`${sectionScores.so}/5`;
+
+  const pct=score/QUESTIONS.length;
+  let v,vd;
+  if(pct>=0.87){v="Ausgezeichnet!";vd="Alle drei Themen sitzen — sehr gut!";}
+  else if(pct>=0.6){v="Gut gemacht!";vd="Schau dir die Fehler noch einmal an.";}
+  else{v="Weiter üben!";vd="Lies die Erklärungen noch einmal und versuche es erneut.";}
+  document.getElementById('verdictText').textContent=v;
+  document.getElementById('verdictDe').textContent=vd;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function reset(){
+  score=0;
+  sectionScores={adv:0,will:0,so:0};
+  document.getElementById('results').classList.remove('active');
+  document.getElementById('intro').style.display='block';
+  document.getElementById('quizArea').innerHTML='';
+  document.querySelectorAll('.section-banner').forEach(b=>b.classList.remove('active'));
+  document.getElementById('scorePill').textContent='0 / 15';
+  document.getElementById('progressFill').style.width='0%';
+  document.getElementById('progressFill').className='progress-fill sec-adv';
+  document.getElementById('progressLabel').textContent='Frage 0 / 15';
+}
+
+document.getElementById('startBtn').addEventListener('click',()=>{
+  document.getElementById('intro').style.display='none';
+  prepareQuestions();
+  renderQuiz();
+  // show first section banner then first question
+  document.getElementById('banner-adv').classList.add('active');
+  document.getElementById('q0').classList.add('active');
+  updateProgress(0);
+});
+document.getElementById('retryBtn').addEventListener('click',reset);
+</script>
+</body>
+</html>

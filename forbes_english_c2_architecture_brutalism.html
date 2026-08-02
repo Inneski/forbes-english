@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English | C2 Architecture: Brutalism and the City</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #16232e;
+    --navy-dark: #0b131b;
+    --terracotta: #e8927a;
+    --terracotta-light: #f0b09e;
+    --concrete: #eef0ea;
+    --concrete-dark: #dadfd6;
+    --ink: #1c262f;
+    --correct: #2f7d4f;
+    --incorrect: #b3402f;
+    --white: #ffffff;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: var(--concrete);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  header {
+    position: relative;
+    z-index: 2;
+    background: var(--navy);
+    color: var(--white);
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand-text { font-family: 'Fraunces', serif; font-size: 1.25rem; font-weight: 600; letter-spacing: 0.02em; }
+  .brand-sub { font-size: 0.72rem; color: var(--terracotta-light); text-transform: uppercase; letter-spacing: 0.12em; margin-top: 2px; }
+
+  .meta-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .tag {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.22);
+    color: var(--white);
+    font-size: 0.72rem;
+    padding: 5px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.02em;
+  }
+
+  .layout-shell { position: relative; }
+  .image-panel {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 0;
+    background: var(--navy-dark);
+    overflow: hidden;
+  }
+  .image-panel::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(11,19,27,0.30) 0%, rgba(11,19,27,0.12) 40%, rgba(11,19,27,0.38) 100%);
+  }
+  .image-panel img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+  }
+  .content-col {
+    position: relative;
+    z-index: 1;
+    height: calc(100vh - 66px);
+    overflow-y: auto;
+  }
+
+
+  .lang-select {
+    background: var(--terracotta);
+    color: var(--navy-dark);
+    border: none;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    padding: 6px 10px;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  .lang-select:hover { background: var(--terracotta-light); }
+
+  .lang-block { display: none; font-style: italic; color: var(--ink); opacity: 0.8; margin-top: 6px; }
+  .lang-block.section { font-size: 0.95rem; margin-top: -8px; margin-bottom: 18px; color: var(--terracotta); }
+  .lang-block.show { display: block; }
+  .lang-inline { display: none; }
+  .lang-inline.show { display: block; margin-top: 8px; font-style: italic; opacity: 0.85; }
+
+  .progress-shell {
+    background: var(--concrete-dark);
+    height: 6px;
+    width: 100%;
+  }
+  .progress-fill {
+    background: var(--terracotta);
+    height: 100%;
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  main {
+    max-width: 740px;
+    margin: 0 auto;
+    padding: 36px 22px 100px;
+  }
+
+  .card {
+    background: rgba(255,255,255,0.80);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 14px;
+    padding: 32px;
+    box-shadow: 0 4px 28px rgba(11,19,27,0.35);
+    border: 1px solid rgba(255,255,255,0.35);
+  }
+
+  .step-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--terracotta);
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .time-chip {
+    background: var(--concrete);
+    color: var(--navy);
+    padding: 2px 9px;
+    border-radius: 10px;
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+  }
+
+  h2.section-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: var(--navy);
+    margin: 0 0 18px;
+  }
+
+  .passage {
+    font-size: 1.02rem;
+    line-height: 1.75;
+    color: var(--ink);
+  }
+  .passage p { margin: 0 0 16px; }
+
+  .discussion-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .discussion-list li {
+    background: var(--concrete);
+    border-left: 4px solid var(--terracotta);
+    padding: 14px 18px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    line-height: 1.55;
+  }
+
+  .question-text {
+    font-size: 1.08rem;
+    line-height: 1.6;
+    margin-bottom: 22px;
+    color: var(--navy-dark);
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option-btn {
+    text-align: left;
+    background: var(--white);
+    border: 1.5px solid var(--concrete-dark);
+    border-radius: 10px;
+    padding: 13px 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.96rem;
+    line-height: 1.5;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+    color: var(--ink);
+  }
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--navy);
+    background: var(--concrete);
+  }
+  .option-btn:disabled { cursor: default; }
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: #eaf6ee;
+    color: var(--correct);
+    font-weight: 600;
+  }
+  .option-btn.incorrect {
+    border-color: var(--incorrect);
+    background: #fbeceA;
+    color: var(--incorrect);
+    font-weight: 600;
+  }
+
+  .feedback {
+    margin-top: 18px;
+    padding: 15px 18px;
+    border-radius: 10px;
+    font-size: 0.94rem;
+    line-height: 1.6;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: #eaf6ee; color: #1f5e37; border: 1px solid #bfe4cc; }
+  .feedback.incorrect-fb { background: #fbeceA; color: #8a2e20; border: 1px solid #f0c6bd; }
+  .nav-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 26px;
+  }
+
+  .next-btn {
+    background: var(--navy);
+    color: var(--white);
+    border: none;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    transition: background 0.15s ease, opacity 0.15s ease;
+  }
+  .next-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+  .next-btn:not(:disabled):hover { background: var(--terracotta); }
+
+  .score-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--navy-dark);
+    color: var(--white);
+    padding: 10px 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+    z-index: 10;
+  }
+  .score-bar span.label { color: var(--terracotta-light); font-weight: 600; }
+
+  .results-screen { text-align: center; }
+  .results-score {
+    font-family: 'Fraunces', serif;
+    font-size: 3rem;
+    color: var(--navy);
+    margin: 12px 0 6px;
+  }
+  .results-sub { color: #555; margin-bottom: 26px; }
+  .results-msg {
+    background: var(--concrete);
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 10px;
+    line-height: 1.6;
+  }
+
+  .welcome-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.9rem;
+    color: var(--navy);
+    margin: 0 0 10px;
+  }
+  .welcome-sub { color: #555; line-height: 1.6; margin-bottom: 22px; }
+  .agenda {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 24px;
+  }
+  .agenda li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--concrete-dark);
+    font-size: 0.94rem;
+  }
+  .agenda li:last-child { border-bottom: none; }
+  .agenda .a-time { color: var(--terracotta); font-weight: 600; }
+
+  @media (max-width: 560px) {
+    .card { padding: 22px; }
+    .results-score { font-size: 2.3rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <svg width="42" height="42" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+      <rect x="2" y="2" width="44" height="44" rx="10" fill="#101c33"/>
+      <path d="M14 34V14h16v4H19v6h9v4h-9v6z" fill="#b5652d"/>
+      <rect x="14" y="34" width="20" height="3" fill="#e0a877"/>
+    </svg>
+    <div>
+      <div class="brand-text">Forbes English</div>
+      <div class="brand-sub">C2 Architecture Module</div>
+    </div>
+  </div>
+  <div class="meta-tags">
+    <span class="tag">Level: C2</span>
+    <span class="tag">Duration: 50 min</span>
+    <select class="lang-select" id="langSelect">
+      <option value="en">EN</option>
+      <option value="de">DE</option>
+      <option value="it">IT</option>
+      <option value="es">ES</option>
+      <option value="pl">PL</option>
+      <option value="zh">ZH</option>
+      <option value="fr">FR</option>
+      <option value="ru">RU</option>
+    </select>
+  </div>
+</header>
+
+<div class="layout-shell">
+  <div class="image-panel">
+    <img id="stepImg" src="Brutalism/brutalism-1-hero.png" alt="A city skyline of tall brutalist and glass towers at dusk">
+  </div>
+  <div class="content-col">
+    <div class="progress-shell"><div class="progress-fill" id="progressFill"></div></div>
+    <main>
+      <div class="card" id="cardRoot"></div>
+    </main>
+  </div>
+</div>
+
+<div class="score-bar" id="scoreBar" style="display:none;">
+  <span><span class="label">Score</span> <span id="scoreVal">0</span>/<span id="scoreTotal">0</span></span>
+  <span><span class="label">Step</span> <span id="stepVal">1</span>/<span id="stepTotal">1</span></span>
+</div>
+
+<script>
+(function() {
+
+  let currentLang = 'en';
+  function applyLanguage(lang) {
+    currentLang = lang;
+    document.querySelectorAll('.lang-block, .lang-inline').forEach(function(el) {
+      if (lang !== 'en' && el.getAttribute('data-lang') === lang) el.classList.add('show');
+      else el.classList.remove('show');
+    });
+  }
+  document.getElementById('langSelect').addEventListener('change', function(e) {
+    applyLanguage(e.target.value);
+  });
+
+  // ---------- Fisher-Yates shuffle ----------
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  // ---------- Content data ----------
+
+  const warmup = {
+    type: 'info',
+    label: 'Warm-up discussion',
+    time: '~5 min',
+    title: 'Before we begin',
+    render: function() {
+      return (
+        '<p class="question-text">Discuss these questions with your teacher before moving on. There are no right or wrong answers here - this is a chance to activate what you already know.</p>' +
+        '<div class="lang-block section" data-lang="ru">Обсудите эти вопросы с преподавателем, прежде чем двигаться дальше. Здесь нет правильных или неправильных ответов — это возможность активировать уже имеющиеся знания.</div>' +
+        '<ul class="discussion-list">' +
+        '<li>What is the first building in London that comes to mind when you hear the word architecture? Why?' +
+          '<div class="lang-block" data-lang="ru">Какое здание в Лондоне первым приходит вам в голову при слове «архитектура»? Почему?</div></li>' +
+        '<li>Is there a building in Moscow, St Petersburg, or another Russian city that provokes strong opinions, positive or negative?' +
+          '<div class="lang-block" data-lang="ru">Есть ли здание в Москве, Санкт-Петербурге или другом российском городе, которое вызывает сильные мнения, положительные или отрицательные?</div></li>' +
+        '<li>Do you think a building can be both ugly and important at the same time?' +
+          '<div class="lang-block" data-lang="ru">Как вы думаете, может ли здание быть одновременно некрасивым и важным?</div></li>' +
+        '</ul>'
+      );
+    }
+  };
+
+  const vocabQuestions = [
+    {
+      q: 'In architectural criticism, the term "vernacular architecture" refers to:',
+      options: [
+        'Buildings designed using cutting-edge parametric software',
+        'Buildings designed using traditional local materials and methods, reflecting regional needs and customs',
+        'Structures officially registered as protected heritage sites',
+        'Buildings that imitate classical Greek and Roman forms'
+      ],
+      correct: 1,
+      explain: 'Vernacular architecture describes ordinary, traditional buildings shaped by local climate, materials, and custom, rather than the work of professional architects.',
+      ru: 'Russian: народная / традиционная архитектура'
+    },
+    {
+      q: 'A "cantilevered" balcony is one that:',
+      options: [
+        'Is supported by columns beneath it',
+        'Hangs from cables attached to the roof',
+        'Projects outward from a building, supported only at one end',
+        'Is built partially underground for insulation'
+      ],
+      correct: 2,
+      explain: 'A cantilever is a rigid structural element that extends horizontally, supported at only one end, with no external bracing at the other.',
+      ru: 'Russian: консольный (балкон)'
+    },
+    {
+      q: 'The term "brutalism" in architecture primarily describes:',
+      options: [
+        'A movement rejecting all ornamentation in favour of glass curtain walls',
+        'An early twentieth-century decorative style influenced by nature',
+        'Buildings deliberately designed to look unfinished or ruined',
+        'A style characterised by exposed raw concrete and bold geometric forms'
+      ],
+      correct: 3,
+      explain: 'Brutalism (from the French beton brut, or raw concrete) is defined by exposed, unadorned concrete and monumental, geometric forms.',
+      ru: 'Russian: брутализм'
+    },
+    {
+      q: '"Fenestration" refers to:',
+      options: [
+        'The arrangement and design of windows in a building',
+        'The layering of structural steel beams',
+        'The process of restoring a historic facade',
+        'A type of load-bearing masonry wall'
+      ],
+      correct: 0,
+      explain: 'Fenestration is the design, placement, and proportion of windows and openings on a building\'s facade.',
+      ru: 'Russian: остекление, расположение окон'
+    },
+    {
+      q: 'If a critic praises a building\'s "tectonic expression," they are commenting on:',
+      options: [
+        'The seismic safety features integrated into the foundation',
+        'The symbolic meaning encoded in the building\'s ornamentation',
+        'How the structure\'s construction and materials are visibly and honestly expressed in its design',
+        'The building\'s alignment with the cardinal directions'
+      ],
+      correct: 2,
+      explain: 'Tectonic expression refers to the honest, visible articulation of how a building is actually built, its structure made legible rather than hidden.',
+      ru: 'Russian: тектоническая выразительность'
+    },
+    {
+      q: 'A "brise-soleil" is:',
+      options: [
+        'An open-air courtyard found in Mediterranean housing',
+        'A fixed or adjustable architectural feature designed to shade a building from direct sunlight',
+        'A decorative cornice found on Baroque facades',
+        'A glazed roof structure over an atrium'
+      ],
+      correct: 1,
+      explain: 'A brise-soleil (French for "sun breaker") is a shading device, often a grid of fins or louvres, fixed to a facade to reduce solar heat gain.',
+      ru: 'Russian: солнцезащитный экран'
+    },
+    {
+      q: 'In urban studies, "gentrification" describes:',
+      options: [
+        'The government requisition of land for public housing',
+        'The conversion of industrial buildings into museums',
+        'The demolition of listed buildings to make way for new development',
+        'The process by which a neighbourhood\'s rising property values displace lower-income residents as it is renovated'
+      ],
+      correct: 3,
+      explain: 'Gentrification describes the transformation of a working-class or neglected area through an influx of wealthier residents and investment, typically displacing the original community.',
+      ru: 'Russian: джентрификация'
+    },
+    {
+      q: 'A building with "listed" status in the UK is one that:',
+      options: [
+        'Has been nominated for an international design award',
+        'Is legally protected for its special architectural or historic interest, restricting alterations',
+        'Appears on a public register of energy-efficient buildings',
+        'Has been condemned and scheduled for demolition'
+      ],
+      correct: 1,
+      explain: 'Listed status is a legal designation in the UK that protects buildings of special architectural or historic interest from unauthorised alteration or demolition.',
+      ru: 'Russian: здание, включённое в реестр охраняемых памятников'
+    }
+  ];
+
+  const readingIntro = {
+    type: 'info',
+    label: 'Reading',
+    time: '~7 min',
+    title: 'The Barbican Estate',
+    render: function() {
+      return (
+        '<div class="passage">' +
+        '<p>Few residential developments provoke such polarised reactions as the Barbican Estate. Completed in 1976 after nearly two decades of construction, the complex was conceived by architects Chamberlin, Powell and Bon as a self-contained urban village rising from the rubble of a district flattened during the Blitz. Its raised walkways, sculpted concrete towers and sunken lake reflect an ambition rarely seen in British housing: to reconcile high-density living with generous civic space.</p>' +
+        '<div class="lang-block" data-lang="ru">Немногие жилые комплексы вызывают столь противоречивую реакцию, как Барбикан. Завершённый в 1976 году после почти двадцати лет строительства, комплекс был задуман архитекторами Чемберлином, Пауэллом и Боном как самодостаточный городской посёлок, выросший из руин района, разрушенного во время Блица. Его приподнятые пешеходные дорожки, скульптурные бетонные башни и утопленное озеро отражают амбицию, редкую для британского жилищного строительства: примирить высокую плотность застройки с щедрым общественным пространством.</div>' +
+        '<p>For decades, the Barbican was dismissed by many Londoners as a forbidding maze of grey concrete, its brutalist vocabulary at odds with the city\'s brick-and-stucco heritage. Yet the same qualities that once invited scorn, the raw materiality, the geometric confidence, the refusal to disguise structure, have since been reappraised. Younger architects now cite the estate as a model of how density need not come at the expense of light, greenery or a sense of place.</p>' +
+        '<div class="lang-block" data-lang="ru">Десятилетиями многие лондонцы отвергали Барбикан как пугающий лабиринт серого бетона, чей бруталистский язык противоречил кирпично-штукатурному наследию города. Однако те же качества, что когда-то вызывали презрение — грубая материальность, геометрическая уверенность, отказ скрывать конструкцию — впоследствии были переосмыслены. Молодые архитекторы теперь приводят комплекс как пример того, что плотность застройки не обязательно достигается за счёт света, зелени или ощущения места.</div>' +
+        '<p>Whether one finds the Barbican monumental or merely monstrous, its influence is difficult to overstate. It anticipated debates that dominate housing policy today: how to build enough homes without hollowing out the communities that inhabit them, and whether concrete, so often maligned, might yet be the material of a more sustainable city.</p>' +
+        '<div class="lang-block" data-lang="ru">Считает ли кто-то Барбикан монументальным или просто чудовищным, его влияние трудно переоценить. Он предвосхитил споры, которые сегодня доминируют в жилищной политике: как построить достаточно жилья, не разрушив сообщества, которые в нём живут, и не станет ли бетон, столь часто порицаемый, материалом более устойчивого города.</div>' +
+        '</div>'
+      );
+    }
+  };
+
+  const readingQuestions = [
+    {
+      q: 'According to the passage, why was the Barbican Estate originally built on that site?',
+      options: [
+        'The site was chosen for its proximity to the Thames',
+        'The area had been destroyed by wartime bombing and needed rebuilding',
+        'An earlier housing estate was demolished due to structural failure',
+        'The land had been reserved for a Victorian railway that was never built'
+      ],
+      correct: 1,
+      explain: 'The passage states the estate rose "from the rubble of a district flattened during the Blitz," referring to wartime bombing of London.',
+      ru: 'В тексте говорится, что комплекс вырос «из руин района, разрушенного во время Блица» — то есть военных бомбардировок Лондона.'
+    },
+    {
+      q: 'What does the writer suggest about attitudes toward the Barbican over time?',
+      options: [
+        'Public opinion has remained consistently negative since 1976',
+        'The estate has lost its architectural significance entirely',
+        'Features once criticised are now viewed more favourably by architects',
+        'Only tourists appreciate its brutalist design'
+      ],
+      correct: 2,
+      explain: 'The text describes how qualities that "once invited scorn... have since been reappraised" by younger architects.',
+      ru: 'В тексте описывается, как качества, «когда-то вызывавшие презрение... впоследствии были переосмыслены» молодыми архитекторами.'
+    },
+    {
+      q: 'The phrase "its brutalist vocabulary at odds with the city\'s brick-and-stucco heritage" implies that:',
+      options: [
+        'The Barbican used more expensive materials than nearby buildings',
+        'The architects intentionally referenced Georgian brickwork',
+        'The estate\'s style visually contrasted with London\'s traditional building materials',
+        'The estate was built using imported stucco from abroad'
+      ],
+      correct: 2,
+      explain: '"At odds with" means in conflict or contrast with; the Barbican\'s raw concrete style clashed visually with London\'s traditional brick and stucco buildings.',
+      ru: '«At odds with» означает «в конфликте с, в контрасте с»; грубый бетонный стиль Барбикана визуально противоречил традиционным кирпичным и оштукатуренным зданиям Лондона.'
+    },
+    {
+      q: 'What wider debate does the writer connect to the Barbican\'s legacy?',
+      options: [
+        'Whether concrete buildings should automatically receive listed status',
+        'How to increase housing density without displacing existing communities',
+        'Whether London needs more sunken gardens and lakes',
+        'The environmental cost of demolishing older housing estates'
+      ],
+      correct: 1,
+      explain: 'The final paragraph links the Barbican to debates about building enough homes "without hollowing out the communities that inhabit them."',
+      ru: 'Последний абзац связывает Барбикан со спорами о строительстве достаточного количества жилья «без разрушения сообществ, которые в нём живут».'
+    },
+    {
+      q: 'Which best describes the writer\'s overall stance on the Barbican?',
+      options: [
+        'Uncritically celebratory, treating it as an unqualified triumph',
+        'Dismissive, agreeing that the estate is a failed housing experiment',
+        'Neutral to the point of avoiding any evaluation of the building',
+        'Balanced, acknowledging both historical criticism and contemporary reappraisal'
+      ],
+      correct: 3,
+      explain: 'The writer presents both the historical dismissal ("forbidding maze of grey concrete") and the contemporary reappraisal, without settling fully on either side.',
+      ru: 'Автор представляет и историческое отвержение («пугающий лабиринт серого бетона»), и современное переосмысление, не отдавая полного предпочтения ни одной из сторон.'
+    }
+  ];
+
+  const grammarIntro = {
+    type: 'info',
+    label: 'Register and grammar',
+    time: '~10 min',
+    title: 'Formal register: nominalisation, passive voice, and cleft sentences',
+    render: function() {
+      return (
+        '<div class="passage">' +
+        '<p>Academic and critical writing about architecture favours a formal register. Three features do much of the work:</p>' +
+        '<div class="lang-block" data-lang="ru">Академические и критические тексты об архитектуре тяготеют к формальному регистру. Основную роль здесь играют три особенности:</div>' +
+        '<p><strong>Nominalisation</strong> turns a verb or adjective into a noun (reappraise &rarr; reappraisal), shifting focus from who did something to the concept itself.</p>' +
+        '<div class="lang-block" data-lang="ru"><strong>Номинализация</strong> превращает глагол или прилагательное в существительное (reappraise → reappraisal), смещая фокус с того, кто что-то сделал, на сам концепт.</div>' +
+        '<p><strong>Passive voice</strong> removes or de-emphasises the agent, appropriate when the process matters more than the actor (the building was completed in 1976, rather than they completed the building).</p>' +
+        '<div class="lang-block" data-lang="ru"><strong>Страдательный залог</strong> убирает или отодвигает на второй план деятеля — уместно, когда процесс важнее исполнителя (the building was completed in 1976, а не they completed the building).</div>' +
+        '<p><strong>Cleft sentences</strong> (It is X that... / What Y does is...) add emphasis without relying on informal intensifiers like "really" or "very much".</p>' +
+        '<div class="lang-block" data-lang="ru"><strong>Расщеплённые предложения</strong> (It is X that... / What Y does is...) добавляют акцент без опоры на разговорные усилители вроде «really» или «very much».</div>' +
+        '<p>In each question below, choose the rewrite that best matches a formal, academic register.</p>' +
+        '<div class="lang-block" data-lang="ru">В каждом вопросе ниже выберите вариант, наиболее соответствующий формальному академическому регистру.</div>' +
+        '</div>'
+      );
+    }
+  };
+
+  const grammarQuestions = [
+    {
+      q: 'Informal: "They completed the building in 1976 after they had worked on it for almost 20 years." Choose the best academic rewrite.',
+      options: [
+        'In 1976 they finished building it after twenty years of work.',
+        'The building was completed in 1976, following nearly two decades of construction.',
+        'After working on it for 20 years, the building got completed by them in 1976.',
+        'The building, having been being worked on for 20 years, was then completed in 1976.'
+      ],
+      correct: 1,
+      explain: 'This option uses passive voice ("was completed") and nominalisation ("construction" instead of "they had worked"), producing a concise, formal sentence.',
+      ru: 'В этом варианте используются страдательный залог («was completed») и номинализация («construction» вместо «they had worked»), что даёт краткое, формальное предложение.'
+    },
+    {
+      q: 'Informal: "Critics dismissed the estate because it looked like a maze made of grey concrete."',
+      options: [
+        'Critics had dismissed the estate, it looked like a grey concrete maze.',
+        'Because it look like a grey concrete maze, critics dismissed the estate.',
+        'The estate, critics dismissed it, because it looked like a grey concrete maze.',
+        'The estate was dismissed by critics for resembling a maze of grey concrete.'
+      ],
+      correct: 3,
+      explain: 'Passive voice ("was dismissed by critics") foregrounds the estate rather than the critics, and "for resembling" is a more compact, formal alternative to "because it looked like".',
+      ru: 'Страдательный залог («was dismissed by critics») выдвигает на первый план комплекс, а не критиков, а «for resembling» — более компактная, формальная альтернатива «because it looked like».'
+    },
+    {
+      q: 'Which sentence best uses nominalisation to shift focus from action to concept?',
+      options: [
+        'They decided to reappraise the estate\'s brutalist features.',
+        'People are now reappraising the estate\'s brutalist features again.',
+        'The reappraisal of the estate\'s brutalist features reflects a broader shift in architectural taste.',
+        'Reappraising the features, the estate is seen differently by architects now.'
+      ],
+      correct: 2,
+      explain: 'Turning "reappraise" into the noun "reappraisal" allows it to become the grammatical subject, which is typical of formal academic prose discussing trends and concepts.',
+      ru: 'Превращение «reappraise» в существительное «reappraisal» позволяет ему стать грамматическим подлежащим — типичный приём формальной академической прозы при обсуждении тенденций и концептов.'
+    },
+    {
+      q: 'Informal: "The architects didn\'t hide the structure; instead, they showed it clearly."',
+      options: [
+        'The structure wasn\'t hidden, the architects showed it instead.',
+        'Rather than concealing the structure, the architects deliberately exposed it.',
+        'Not hiding the structure, the architects, instead, showed it.',
+        'The architects, they didn\'t hide the structure, they showed it.'
+      ],
+      correct: 1,
+      explain: '"Rather than concealing" is a formal alternative to "didn\'t hide", and "deliberately exposed" is more precise and academic than "showed it clearly".',
+      ru: '«Rather than concealing» — формальная альтернатива «didn\'t hide», а «deliberately exposed» точнее и академичнее, чем «showed it clearly».'
+    },
+    {
+      q: 'Which sentence uses a cleft structure to add emphasis, appropriate for architectural critique?',
+      options: [
+        'The raw materiality of the Barbican continues to divide opinion very much.',
+        'Continuing to divide opinion is the raw materiality of the Barbican, really.',
+        'The Barbican\'s raw materiality, it continues, really, to divide opinion.',
+        'It is the raw materiality of the Barbican that continues to divide opinion.'
+      ],
+      correct: 3,
+      explain: 'The cleft structure "It is X that..." isolates and emphasises "the raw materiality of the Barbican" without resorting to informal intensifiers like "really" or "very much".',
+      ru: 'Расщеплённая конструкция «It is X that...» выделяет и подчёркивает «the raw materiality of the Barbican», не прибегая к разговорным усилителям вроде «really» или «very much».'
+    }
+  ];
+
+  const discussion = {
+    type: 'info',
+    label: 'Speaking',
+    time: '~10 min',
+    title: 'Discussion: Brutalism across two cities',
+    render: function() {
+      return (
+        '<ul class="discussion-list">' +
+        '<li>Compare Brutalism in London (for example, the Barbican) with Soviet modernist or Constructivist architecture you know from Russia. What similarities or differences stand out?' +
+          '<div class="lang-block" data-lang="ru">Сравните брутализм в Лондоне (например, Барбикан) с советским модернизмом или конструктивизмом, знакомым вам по России. Какие сходства или различия выделяются?</div></li>' +
+        '<li>Moscow\'s "Seven Sisters" and London\'s Barbican both provoke strong reactions. Which do you find more successful as urban design, and why?' +
+          '<div class="lang-block" data-lang="ru">Московские «Семь сестёр» и лондонский Барбикан оба вызывают сильные реакции. Какой из них вы считаете более удачным градостроительным решением и почему?</div></li>' +
+        '<li>Should controversial buildings ever be granted listed or heritage status? Justify your view using vocabulary from today\'s lesson.' +
+          '<div class="lang-block" data-lang="ru">Должны ли спорные здания когда-либо получать статус охраняемого памятника? Обоснуйте своё мнение, используя лексику из сегодняшнего урока.</div></li>' +
+        '<li>If you were advising a city on renovating a Soviet-era mikrorayon, what lessons from the Barbican\'s reappraisal might apply?' +
+          '<div class="lang-block" data-lang="ru">Если бы вы консультировали город по реновации советского микрорайона, какие уроки из переосмысления Барбикана могли бы пригодиться?</div></li>' +
+        '</ul>'
+      );
+    }
+  };
+
+  // ---------- Build step sequence ----------
+  function buildQuestionStep(qData, label, time) {
+    return {
+      type: 'question',
+      label: label,
+      time: time,
+      data: qData
+    };
+  }
+
+  const shuffledVocab = shuffle(vocabQuestions);
+  const shuffledReading = shuffle(readingQuestions);
+  const shuffledGrammar = shuffle(grammarQuestions);
+
+  const steps = [];
+  steps.push({ type: 'welcome' });
+  steps.push(warmup);
+  shuffledVocab.forEach(function(q) { steps.push(buildQuestionStep(q, 'Vocabulary', '~10 min')); });
+  steps.push(readingIntro);
+  shuffledReading.forEach(function(q) { steps.push(buildQuestionStep(q, 'Reading comprehension', '~7 min')); });
+  steps.push(grammarIntro);
+  shuffledGrammar.forEach(function(q) { steps.push(buildQuestionStep(q, 'Grammar and register', '~10 min')); });
+  steps.push(discussion);
+  steps.push({ type: 'results' });
+
+  let current = 0;
+  let score = 0;
+  let scoredTotal = shuffledVocab.length + shuffledReading.length + shuffledGrammar.length;
+  let answered = new Array(steps.length).fill(false);
+
+  const cardRoot = document.getElementById('cardRoot');
+  const progressFill = document.getElementById('progressFill');
+  const scoreBar = document.getElementById('scoreBar');
+  const scoreVal = document.getElementById('scoreVal');
+  const scoreTotal = document.getElementById('scoreTotal');
+  const stepVal = document.getElementById('stepVal');
+  const stepTotal = document.getElementById('stepTotal');
+
+  scoreTotal.textContent = scoredTotal;
+  stepTotal.textContent = steps.length - 2; // exclude welcome and results from count shown
+
+  function updateProgress() {
+    const pct = Math.round((current / (steps.length - 1)) * 100);
+    progressFill.style.width = pct + '%';
+    stepVal.textContent = Math.min(current, steps.length - 2);
+    scoreVal.textContent = score;
+  }
+
+  function renderWelcome() {
+    scoreBar.style.display = 'none';
+    cardRoot.innerHTML =
+      '<div class="welcome-title">Brutalism and the City</div>' +
+      '<div class="lang-block section" data-lang="de">Brutalismus und die Stadt</div>' +
+      '<div class="lang-block section" data-lang="it">Brutalismo e la città</div>' +
+      '<div class="lang-block section" data-lang="es">Brutalismo y la ciudad</div>' +
+      '<div class="lang-block section" data-lang="pl">Brutalizm i miasto</div>' +
+      '<div class="lang-block section" data-lang="zh">粗野主义与城市</div>' +
+      '<div class="lang-block section" data-lang="fr">Le brutalisme et la ville</div>' +
+      '<div class="lang-block section" data-lang="ru">Брутализм и город</div>' +
+      '<div class="welcome-sub">A C2-level architecture module built for Forbes English. This session moves between vocabulary, reading, formal grammar, and open discussion, structured to fit a 50-minute private lesson.</div>' +
+      '<div class="lang-block" data-lang="de">Ein Architekturmodul auf C2-Niveau für Forbes English. Die Einheit verbindet Wortschatz, Lesen, formales Grammatikregister und freie Diskussion und ist für eine 50-minütige Einzelstunde konzipiert.</div>' +
+      '<div class="lang-block" data-lang="it">Un modulo di architettura di livello C2 creato per Forbes English. La lezione alterna vocabolario, lettura, registro grammaticale formale e discussione libera, pensata per una lezione privata di 50 minuti.</div>' +
+      '<div class="lang-block" data-lang="es">Un módulo de arquitectura de nivel C2 creado para Forbes English. La clase combina vocabulario, lectura, registro gramatical formal y debate abierto, pensada para una clase privada de 50 minutos.</div>' +
+      '<div class="lang-block" data-lang="pl">Moduł architektoniczny na poziomie C2 stworzony dla Forbes English. Zajęcia łączą słownictwo, czytanie, formalny rejestr gramatyczny i swobodną dyskusję, dopasowane do 50-minutowej lekcji indywidualnej.</div>' +
+      '<div class="lang-block" data-lang="zh">这是为Forbes English设计的C2级建筑学模块。本课在词汇、阅读、正式语法及自由讨论之间展开，专为50分钟的私人课程设计。</div>' +
+      '<div class="lang-block" data-lang="fr">Un module d’architecture de niveau C2 conçu pour Forbes English. La séance alterne vocabulaire, lecture, registre grammatical formel et discussion libre, adaptée à un cours particulier de 50 minutes.</div>' +
+      '<div class="lang-block" data-lang="ru">Модуль по архитектуре уровня C2 для Forbes English. Занятие включает лексику, чтение, официальный грамматический регистр и свободную дискуссию, рассчитано на 50-минутный индивидуальный урок.</div>' +
+      '<ul class="agenda">' +
+        '<li><span>Warm-up discussion</span><span class="a-time">~5 min</span></li>' +
+        '<li><span>Vocabulary: architectural terminology</span><span class="a-time">~10 min</span></li>' +
+        '<li><span>Reading: the Barbican Estate</span><span class="a-time">~7 min</span></li>' +
+        '<li><span>Formal register and grammar</span><span class="a-time">~10 min</span></li>' +
+        '<li><span>Speaking: Brutalism across two cities</span><span class="a-time">~10 min</span></li>' +
+        '<li><span>Results and wrap-up</span><span class="a-time">~5 min</span></li>' +
+      '</ul>' +
+      '<div class="nav-row"><button class="next-btn" id="beginBtn">Begin lesson</button></div>';
+    document.getElementById('beginBtn').addEventListener('click', function() {
+      current++;
+      renderStep();
+    });
+  }
+
+  function renderInfoStep(step) {
+    scoreBar.style.display = 'flex';
+    cardRoot.innerHTML =
+      '<div class="step-label">' + step.label + ' <span class="time-chip">' + step.time + '</span></div>' +
+      '<h2 class="section-title">' + step.title + '</h2>' +
+      step.render() +
+      '<div class="nav-row"><button class="next-btn" id="nextBtn">Continue</button></div>';
+    document.getElementById('nextBtn').addEventListener('click', function() {
+      current++;
+      renderStep();
+    });
+    updateProgress();
+  }
+
+  function renderQuestionStep(step) {
+    scoreBar.style.display = 'flex';
+    const q = step.data;
+    const optionOrder = shuffle(q.options.map(function(opt, idx) { return { text: opt, isCorrect: idx === q.correct }; }));
+
+    let optionsHtml = '';
+    optionOrder.forEach(function(opt, i) {
+      optionsHtml += '<button class="option-btn" data-correct="' + opt.isCorrect + '">' + opt.text + '</button>';
+    });
+
+    cardRoot.innerHTML =
+      '<div class="step-label">' + step.label + ' <span class="time-chip">' + step.time + '</span></div>' +
+      '<div class="question-text">' + q.q + '</div>' +
+      '<div class="options" id="optionsWrap">' + optionsHtml + '</div>' +
+      '<div class="feedback" id="feedbackBox"></div>' +
+      '<div class="nav-row"><button class="next-btn" id="nextBtn" disabled>Next</button></div>';
+
+    const optionButtons = cardRoot.querySelectorAll('.option-btn');
+    const feedbackBox = document.getElementById('feedbackBox');
+    const nextBtn = document.getElementById('nextBtn');
+    let locked = false;
+
+    optionButtons.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        if (locked) return;
+        locked = true;
+        const isCorrect = btn.getAttribute('data-correct') === 'true';
+
+        optionButtons.forEach(function(b) {
+          b.disabled = true;
+          if (b.getAttribute('data-correct') === 'true') b.classList.add('correct');
+        });
+        if (!isCorrect) btn.classList.add('incorrect');
+
+        if (isCorrect && !answered[current]) {
+          score++;
+          answered[current] = true;
+        }
+
+        feedbackBox.className = 'feedback show ' + (isCorrect ? 'correct-fb' : 'incorrect-fb');
+        let msg = (isCorrect ? 'Correct. ' : 'Not quite. ') + q.explain;
+        if (q.ru) msg += '<span class="lang-inline' + (currentLang === 'ru' ? ' show' : '') + '" data-lang="ru">' + q.ru + '</span>';
+        feedbackBox.innerHTML = msg;
+
+        nextBtn.disabled = false;
+        updateProgress();
+      });
+    });
+
+    nextBtn.addEventListener('click', function() {
+      current++;
+      renderStep();
+    });
+    updateProgress();
+  }
+
+  function renderResults() {
+    scoreBar.style.display = 'none';
+    const pct = Math.round((score / scoredTotal) * 100);
+    let message;
+    if (pct >= 85) {
+      message = 'An outstanding result. Your command of architectural terminology and formal register at this level is excellent.';
+    } else if (pct >= 65) {
+      message = 'A solid result. Review the explanations for any missed items, particularly the register-focused grammar questions, before your next session.';
+    } else {
+      message = 'A good foundation to build on. Revisit the vocabulary and grammar explanations together with your teacher, then repeat the module in a week.';
+    }
+    cardRoot.innerHTML =
+      '<div class="results-screen">' +
+      '<div class="step-label" style="justify-content:center;">Lesson complete</div>' +
+      '<div class="results-score">' + score + ' / ' + scoredTotal + '</div>' +
+      '<div class="results-sub">' + pct + '% overall</div>' +
+      '<div class="results-msg">' + message + '</div>' +
+      '<div class="results-msg">Recommended follow-up: bring one photograph of a building from your city to the next lesson and describe it using at least three terms from today\'s vocabulary list.</div>' +
+      '</div>';
+    progressFill.style.width = '100%';
+  }
+
+  const stepImg = document.getElementById('stepImg');
+  function updateStepImage(step) {
+    let src = 'Brutalism/brutalism-1-hero.png';
+    const label = (step.label || '').toLowerCase();
+    if (label.indexOf('vocabulary') !== -1) src = 'Brutalism/brutalism-2-vocab.png';
+    else if (label.indexOf('reading') !== -1) src = 'Brutalism/brutalism-3-reading.png';
+    else if (label.indexOf('grammar') !== -1) src = 'Brutalism/brutalism-4-grammar.png';
+    else if (label.indexOf('speaking') !== -1) src = 'Brutalism/brutalism-5-discussion.png';
+    else if (step.type === 'results') src = 'Brutalism/brutalism-5-discussion.png';
+    if (stepImg.getAttribute('src') !== src) {
+      stepImg.style.opacity = '0';
+      setTimeout(function() {
+        stepImg.src = src;
+        stepImg.style.opacity = '1';
+      }, 150);
+    }
+  }
+
+  function renderStep() {
+    const step = steps[current];
+    updateStepImage(step);
+    if (step.type === 'welcome') renderWelcome();
+    else if (step.type === 'info') renderInfoStep(step);
+    else if (step.type === 'question') renderQuestionStep(step);
+    else if (step.type === 'results') renderResults();
+    if (window.innerWidth <= 900) window.scrollTo({ top: 0, behavior: 'smooth' });
+    else { const cc = document.querySelector('.content-col'); if (cc) cc.scrollTo({ top: 0, behavior: 'smooth' }); }
+  }
+
+  renderStep();
+
+})();
+</script>
+
+</body>
+</html>

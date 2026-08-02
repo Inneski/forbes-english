@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English — Flow State Lesson</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-dark: #8B6914;
+    --gold-pale: #F7F0DC;
+    --ink: #1A1A1A;
+    --ink-mid: #3A3A3A;
+    --ink-light: #6A6A6A;
+    --cream: #FAF8F3;
+    --cream-dark: #F0EBE0;
+    --white: #FFFFFF;
+    --correct-bg: #EAF3DE;
+    --correct-text: #27500A;
+    --correct-border: #639922;
+    --wrong-bg: #FCEBEB;
+    --wrong-text: #501313;
+    --wrong-border: #A32D2D;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    line-height: 1.7;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--ink);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.4);
+  }
+  .header-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 1.25rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.6rem;
+  }
+  .logo-forbes {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+  .logo-divider {
+    width: 1px;
+    height: 2rem;
+    background: var(--gold);
+    opacity: 0.5;
+    margin-bottom: 2px;
+  }
+  .logo-english {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--gold);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .header-rule {
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold-dark) 0%, var(--gold-light) 50%, var(--gold-dark) 100%);
+  }
+  .nav-steps {
+    display: flex;
+    gap: 0.25rem;
+  }
+  .nav-step {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    padding: 4px 10px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: color 0.2s, background 0.2s;
+    text-decoration: none;
+    border: none;
+    background: transparent;
+  }
+  .nav-step:hover { color: var(--gold); }
+  .nav-step.active { color: var(--gold); background: rgba(201,168,76,0.12); }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--ink);
+    padding: 3.5rem 2rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    border: 40px solid rgba(201,168,76,0.06);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    border: 30px solid rgba(201,168,76,0.04);
+  }
+  .hero-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+  }
+  .badge {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 11px;
+    border-radius: 2px;
+  }
+  .badge-gold { background: var(--gold); color: var(--ink); }
+  .badge-outline { background: transparent; color: var(--gold); border: 1px solid rgba(201,168,76,0.4); }
+  .badge-dim { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.45); border: 1px solid rgba(255,255,255,0.1); }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.18;
+    margin-bottom: 1rem;
+  }
+  .hero-title em {
+    color: var(--gold);
+    font-style: italic;
+  }
+  .hero-subtitle {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.55);
+    max-width: 600px;
+    line-height: 1.75;
+  }
+
+  /* ── MAIN ── */
+  .main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+  }
+
+  .section {
+    margin-bottom: 4rem;
+    animation: fadeUp 0.5s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .section-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--gold);
+    opacity: 0.35;
+    line-height: 1;
+    min-width: 2.5rem;
+  }
+  .section-title-wrap {}
+  .section-part {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    margin-bottom: 2px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+  .section-rule {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(201,168,76,0.5), transparent);
+  }
+
+  /* ── VIDEO ── */
+  .video-wrap {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid rgba(201,168,76,0.25);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  }
+  .video-wrap iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border: none;
+  }
+  .video-note {
+    font-size: 0.8rem;
+    color: var(--ink-light);
+    margin-top: 0.75rem;
+    font-style: italic;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .video-note::before {
+    content: '';
+    display: inline-block;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+
+  /* ── VOCAB ── */
+  .vocab-intro {
+    font-size: 0.875rem;
+    color: var(--ink-light);
+    margin-bottom: 1.25rem;
+  }
+  .vocab-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 0.875rem;
+  }
+  .vocab-card {
+    background: var(--white);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 5px;
+    padding: 1rem 1.1rem;
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.18s, box-shadow 0.18s;
+    position: relative;
+    overflow: hidden;
+  }
+  .vocab-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s;
+  }
+  .vocab-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  }
+  .vocab-card:hover::after { transform: scaleX(1); }
+  .vocab-card.open .definition { display: block; }
+  .vocab-card.open .tap-hint { display: none; }
+  .vocab-word {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .vocab-pos {
+    font-size: 0.68rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--gold-dark);
+    margin: 3px 0 5px;
+  }
+  .tap-hint {
+    font-size: 0.72rem;
+    color: rgba(0,0,0,0.28);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .tap-hint::before {
+    content: '▶';
+    font-size: 0.5rem;
+    color: var(--gold);
+  }
+  .definition {
+    font-size: 0.825rem;
+    color: var(--ink-mid);
+    line-height: 1.55;
+    display: none;
+    margin-top: 5px;
+    border-top: 1px solid rgba(201,168,76,0.15);
+    padding-top: 6px;
+  }
+
+  /* ── QUIZ ── */
+  .quiz-intro {
+    font-size: 0.875rem;
+    color: var(--ink-light);
+    margin-bottom: 1.5rem;
+  }
+  .quiz-card {
+    background: var(--white);
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 5px;
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+    transition: border-color 0.2s;
+  }
+  .quiz-q {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+  .quiz-q span {
+    display: inline-block;
+    background: var(--ink);
+    color: var(--gold);
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 24px;
+    margin-right: 8px;
+    flex-shrink: 0;
+    font-weight: 700;
+  }
+  .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .quiz-opt {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 1rem;
+    border: 1px solid rgba(0,0,0,0.09);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: var(--ink-mid);
+    background: var(--cream);
+    transition: background 0.15s, border-color 0.15s;
+    user-select: none;
+  }
+  .quiz-opt:hover:not(.locked) {
+    background: var(--cream-dark);
+    border-color: var(--gold);
+    color: var(--ink);
+  }
+  .quiz-opt .letter {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(0,0,0,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 500;
+    flex-shrink: 0;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .quiz-opt.correct {
+    background: var(--correct-bg);
+    border-color: var(--correct-border);
+    color: var(--correct-text);
+  }
+  .quiz-opt.correct .letter {
+    background: var(--correct-border);
+    border-color: var(--correct-border);
+    color: #fff;
+  }
+  .quiz-opt.wrong {
+    background: var(--wrong-bg);
+    border-color: var(--wrong-border);
+    color: var(--wrong-text);
+  }
+  .quiz-opt.wrong .letter {
+    background: var(--wrong-border);
+    border-color: var(--wrong-border);
+    color: #fff;
+  }
+  .quiz-feedback {
+    font-size: 0.82rem;
+    line-height: 1.55;
+    margin-top: 0.75rem;
+    padding: 0.65rem 0.9rem;
+    border-radius: 4px;
+    display: none;
+  }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct { background: var(--correct-bg); color: var(--correct-text); border-left: 3px solid var(--correct-border); }
+  .quiz-feedback.wrong { background: var(--wrong-bg); color: var(--wrong-text); border-left: 3px solid var(--wrong-border); }
+
+  /* ── SCOREBOARD ── */
+  .scoreboard {
+    background: var(--ink);
+    border-radius: 6px;
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .score-left {}
+  .score-label {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 2px;
+  }
+  .score-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .score-message {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.4);
+    margin-top: 4px;
+  }
+  .progress-track {
+    flex: 1;
+    min-width: 180px;
+  }
+  .progress-label {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .progress-bar-outer {
+    height: 6px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-bar-inner {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold-dark), var(--gold-light));
+    border-radius: 3px;
+    transition: width 0.5s ease;
+    width: 0%;
+  }
+  .progress-dots {
+    display: flex;
+    gap: 5px;
+    margin-top: 8px;
+  }
+  .pdot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    transition: background 0.3s;
+  }
+  .pdot.done { background: var(--gold); }
+  .pdot.wrong-dot { background: var(--wrong-border); }
+
+  /* ── DISCUSSION ── */
+  .discussion-intro {
+    font-size: 0.875rem;
+    color: var(--ink-light);
+    margin-bottom: 1.25rem;
+  }
+  .disc-item {
+    display: flex;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+    background: var(--white);
+    border-radius: 5px;
+    border: 1px solid rgba(201,168,76,0.15);
+    padding: 1.25rem 1.5rem;
+    transition: border-color 0.2s;
+  }
+  .disc-item:hover { border-color: rgba(201,168,76,0.4); }
+  .disc-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--gold);
+    opacity: 0.4;
+    line-height: 1;
+    min-width: 2rem;
+    margin-top: 2px;
+  }
+  .disc-content {}
+  .disc-type {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    margin-bottom: 5px;
+  }
+  .disc-q {
+    font-size: 0.9rem;
+    color: var(--ink-mid);
+    line-height: 1.7;
+  }
+  .disc-q strong { color: var(--ink); font-weight: 500; }
+  .disc-q em { color: var(--gold-dark); font-style: italic; }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--ink);
+    border-top: 3px solid var(--gold-dark);
+    padding: 2rem;
+    text-align: center;
+  }
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: -0.5px;
+  }
+  .footer-logo span { color: var(--gold); opacity: 0.5; }
+  .footer-copy {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.2);
+    margin-top: 0.4rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .header-inner { padding: 1rem; }
+    .nav-steps { display: none; }
+    .hero { padding: 2rem 1.25rem; }
+    .main { padding: 2rem 1.25rem; }
+    .vocab-grid { grid-template-columns: 1fr 1fr; }
+    .scoreboard { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-forbes">Forbes</div>
+      <div class="logo-divider"></div>
+      <div class="logo-english">English</div>
+    </div>
+    <nav class="nav-steps">
+      <a href="#watch" class="nav-step">Watch</a>
+      <a href="#vocab" class="nav-step">Vocabulary</a>
+      <a href="#quiz" class="nav-step">Quiz</a>
+      <a href="#discuss" class="nav-step">Discuss</a>
+    </nav>
+  </div>
+  <div class="header-rule"></div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-meta">
+      <span class="badge badge-gold">B2 — Advanced</span>
+      <span class="badge badge-outline">Psychology &amp; Productivity</span>
+      <span class="badge badge-dim">⏱ 45 min lesson</span>
+    </div>
+    <h1 class="hero-title">The Language of <em>Flow:</em><br>Peak Performance &amp; Focus</h1>
+    <p class="hero-subtitle">Watch a TED-Ed talk on entering a "flow state," build academic vocabulary, test your comprehension, and practise high-level discussion in English.</p>
+  </div>
+</section>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- PART 1: VIDEO -->
+  <section class="section" id="watch">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div class="section-title-wrap">
+        <div class="section-part">Part One</div>
+        <div class="section-title">Watch the Video</div>
+      </div>
+      <div class="section-rule"></div>
+    </div>
+    <div class="video-wrap">
+      <iframe src="https://www.youtube.com/embed/0rIjFCNay2Q?rel=0&modestbranding=1" title="How to Enter Flow State — TED-Ed" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+    </div>
+    <p class="video-note">Watch the full video before continuing. Take notes on any unfamiliar words or ideas.</p>
+  </section>
+
+  <!-- PART 2: VOCABULARY -->
+  <section class="section" id="vocab">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <div class="section-title-wrap">
+        <div class="section-part">Part Two</div>
+        <div class="section-title">Key Vocabulary</div>
+      </div>
+      <div class="section-rule"></div>
+    </div>
+    <p class="vocab-intro">Eight essential terms from the video. Click any card to reveal its definition.</p>
+    <div class="vocab-grid" id="vocab-grid"></div>
+  </section>
+
+  <!-- PART 3: QUIZ -->
+  <section class="section" id="quiz">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <div class="section-title-wrap">
+        <div class="section-part">Part Three</div>
+        <div class="section-title">Comprehension Quiz</div>
+      </div>
+      <div class="section-rule"></div>
+    </div>
+    <p class="quiz-intro">Five questions based on the video. Select the best answer for each.</p>
+    <div id="quiz-container"></div>
+    <div class="scoreboard">
+      <div class="score-left">
+        <div class="score-label">Your score</div>
+        <div class="score-value" id="score-display">0 / 5</div>
+        <div class="score-message" id="score-msg">Answer questions to see your result</div>
+      </div>
+      <div class="progress-track">
+        <div class="progress-label">Progress</div>
+        <div class="progress-bar-outer">
+          <div class="progress-bar-inner" id="prog-bar"></div>
+        </div>
+        <div class="progress-dots" id="prog-dots"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PART 4: DISCUSSION -->
+  <section class="section" id="discuss">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <div class="section-title-wrap">
+        <div class="section-part">Part Four</div>
+        <div class="section-title">Discussion Questions</div>
+      </div>
+      <div class="section-rule"></div>
+    </div>
+    <p class="discussion-intro">Use these prompts for speaking practice or written responses (150–200 words each).</p>
+    <div id="disc-container"></div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-logo">Forbes <span>English</span></div>
+  <div class="footer-copy">Premium Language &amp; Thinking Skills — Advanced Programme</div>
+</footer>
+
+<script>
+// ── VOCAB DATA ──
+const vocab = [
+  { word: "flow state", pos: "noun phrase", def: "A mental state of complete immersion and energised focus in an activity, originally described by psychologist Mihaly Csikszentmihalyi." },
+  { word: "immersion", pos: "noun", def: "Deep mental or physical involvement in something; being completely absorbed by an activity or experience." },
+  { word: "intrinsic motivation", pos: "noun phrase", def: "The desire to do something for its own internal reward, rather than for external incentives like money or praise." },
+  { word: "cognitive load", pos: "noun phrase", def: "The total amount of mental effort being used in working memory at any given time during a task." },
+  { word: "optimal challenge", pos: "noun phrase", def: "A task that is demanding enough to fully engage your skill level, but not so hard it causes anxiety or frustration." },
+  { word: "neurological", pos: "adjective", def: "Relating to the nervous system and brain; describing processes that occur in the brain's networks and chemical systems." },
+  { word: "temporal distortion", pos: "noun phrase", def: "The subjective experience of time passing at a different rate than it actually does — a hallmark of the flow state." },
+  { word: "productivity", pos: "noun", def: "The efficiency with which meaningful work is completed; the quality of generating significant output in a given period." },
+];
+
+// ── QUIZ DATA ──
+const quiz = [
+  {
+    q: "What is the key relationship between skill level and challenge to achieve flow?",
+    opts: ["Skill must greatly exceed the challenge", "Challenge and skill must be roughly equal", "Challenge must greatly exceed skill", "Skill level is irrelevant to flow"],
+    ans: 1,
+    exp: "Flow occurs at the balance point — when the challenge and your skill level are evenly matched, neither too easy to bore you nor too hard to cause anxiety."
+  },
+  {
+    q: "Which psychologist is most closely associated with research on flow states?",
+    opts: ["Sigmund Freud", "Albert Bandura", "Mihaly Csikszentmihalyi", "William James"],
+    ans: 2,
+    exp: "Mihaly Csikszentmihalyi coined and popularised the concept of flow through decades of research into optimal experience."
+  },
+  {
+    q: "What typically happens to our sense of time during a flow state?",
+    opts: ["It slows down considerably", "It stays the same", "It distorts — we often lose track of it", "We become hyper-aware of every second"],
+    ans: 2,
+    exp: "Temporal distortion is one of the hallmarks of flow — hours can feel like minutes when you are fully absorbed in an activity."
+  },
+  {
+    q: "Which of these conditions is described as helping a person enter flow?",
+    opts: ["Multitasking on several projects at once", "Having clear goals and immediate feedback", "Working in a noisy, stimulating environment", "Setting very easy, quickly achievable targets"],
+    ans: 1,
+    exp: "Clear goals and real-time feedback are two of the most consistently cited conditions for entering flow — they help the brain focus without ambiguity."
+  },
+  {
+    q: "Which phrase best describes 'intrinsic motivation' as used in the context of flow?",
+    opts: ["Being paid well for completing a task", "Being motivated by external rewards or recognition", "Being driven by internal enjoyment of the activity itself", "Being told by others that you are highly talented"],
+    ans: 2,
+    exp: "Intrinsic motivation means the activity itself is the reward — curiosity, the pleasure of mastery, and enjoyment are the driving forces, not external pressures."
+  },
+];
+
+// ── DISCUSSION DATA ──
+const discussions = [
+  { type: "Personal Experience", q: "Can you describe a time when you entered a flow state? What activity were you doing, and what conditions made it possible? Try to use at least <strong>three vocabulary terms</strong> from Part 2 in your answer." },
+  { type: "Critical Thinking", q: "The video implies that modern technology and constant notifications are enemies of flow. Do you agree? How might someone <strong>redesign their daily routine</strong> to protect periods of deep, uninterrupted focus?" },
+  { type: "Language Focus", q: "The phrase <em>'lost in the moment'</em> informally describes flow. Can you think of <strong>three other English idioms or expressions</strong> that describe intense concentration or absorption? Use each one in an original sentence." },
+  { type: "Debate", q: "Some argue that not all work can — or should — feel like flow, and that struggle and discomfort are also valuable. <strong>To what extent do you agree?</strong> Justify your position with specific examples from your own experience." },
+];
+
+// ── BUILD VOCAB ──
+const vg = document.getElementById('vocab-grid');
+vocab.forEach(v => {
+  const c = document.createElement('div');
+  c.className = 'vocab-card';
+  c.innerHTML = `<div class="vocab-word">${v.word}</div><div class="vocab-pos">${v.pos}</div><div class="tap-hint">Click to reveal definition</div><div class="definition">${v.def}</div>`;
+  c.addEventListener('click', () => c.classList.toggle('open'));
+  vg.appendChild(c);
+});
+
+// ── BUILD QUIZ ──
+let correctCount = 0;
+const answered = new Array(quiz.length).fill(false);
+const qc = document.getElementById('quiz-container');
+const dotsEl = document.getElementById('prog-dots');
+const progBar = document.getElementById('prog-bar');
+const scoreDisp = document.getElementById('score-display');
+const scoreMsg = document.getElementById('score-msg');
+
+const letters = ['A', 'B', 'C', 'D'];
+const messages = ['Keep going!', 'Good start!', 'Not bad!', 'Well done!', 'Excellent!', 'Perfect score!'];
+
+quiz.forEach((q, qi) => {
+  const dot = document.createElement('div');
+  dot.className = 'pdot';
+  dot.id = `dot-${qi}`;
+  dotsEl.appendChild(dot);
+
+  const card = document.createElement('div');
+  card.className = 'quiz-card';
+  card.innerHTML = `
+    <div class="quiz-q"><span>${qi + 1}</span>${q.q}</div>
+    <div class="quiz-options">
+      ${q.opts.map((o, oi) => `<div class="quiz-opt" data-q="${qi}" data-o="${oi}"><span class="letter">${letters[oi]}</span>${o}</div>`).join('')}
+    </div>
+    <div class="quiz-feedback" id="fb-${qi}"></div>
+  `;
+  qc.appendChild(card);
+});
+
+document.querySelectorAll('.quiz-opt').forEach(el => {
+  el.addEventListener('click', function() {
+    const qi = +this.dataset.q;
+    const oi = +this.dataset.o;
+    if (answered[qi]) return;
+    answered[qi] = true;
+
+    const opts = document.querySelectorAll(`[data-q="${qi}"]`);
+    opts.forEach(o => { o.classList.add('locked'); o.style.cursor = 'default'; });
+
+    const fb = document.getElementById(`fb-${qi}`);
+    const dot = document.getElementById(`dot-${qi}`);
+
+    if (oi === quiz[qi].ans) {
+      this.classList.add('correct');
+      this.querySelector('.letter').textContent = '✓';
+      correctCount++;
+      fb.textContent = '✓ Correct — ' + quiz[qi].exp;
+      fb.className = 'quiz-feedback correct show';
+      dot.classList.add('done');
+    } else {
+      this.classList.add('wrong');
+      this.querySelector('.letter').textContent = '✗';
+      opts[quiz[qi].ans].classList.add('correct');
+      opts[quiz[qi].ans].querySelector('.letter').textContent = '✓';
+      fb.textContent = '✗ Not quite — ' + quiz[qi].exp;
+      fb.className = 'quiz-feedback wrong show';
+      dot.classList.add('wrong-dot');
+    }
+
+    const done = answered.filter(Boolean).length;
+    scoreDisp.textContent = `${correctCount} / ${quiz.length}`;
+    progBar.style.width = `${(done / quiz.length) * 100}%`;
+    scoreMsg.textContent = done === quiz.length ? messages[correctCount] : `${quiz.length - done} question${quiz.length - done !== 1 ? 's' : ''} remaining`;
+  });
+});
+
+// ── BUILD DISCUSSION ──
+const dc = document.getElementById('disc-container');
+discussions.forEach((d, i) => {
+  const div = document.createElement('div');
+  div.className = 'disc-item';
+  div.innerHTML = `<div class="disc-num">${i + 1}</div><div class="disc-content"><div class="disc-type">${d.type}</div><div class="disc-q">${d.q}</div></div>`;
+  dc.appendChild(div);
+});
+
+// ── NAV HIGHLIGHT ──
+const sections = ['watch', 'vocab', 'quiz', 'discuss'];
+const navLinks = document.querySelectorAll('.nav-step');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const link = document.querySelector(`.nav-step[href="#${entry.target.id}"]`);
+      if (link) link.classList.add('active');
+    }
+  });
+}, { threshold: 0.4 });
+sections.forEach(id => { const el = document.getElementById(id); if (el) observer.observe(el); });
+</script>
+</body>
+</html>

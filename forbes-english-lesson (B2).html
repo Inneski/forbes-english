@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – AI & Learning Lesson</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e1a12;
+    --surface: #162018;
+    --surface2: #1e2e21;
+    --accent: #a8e063;
+    --accent2: #5fba47;
+    --accent-muted: rgba(168,224,99,0.12);
+    --text: #e8f0e9;
+    --text-muted: #7a9b7e;
+    --text-dim: #4a664e;
+    --wrong: #e05a5a;
+    --wrong-muted: rgba(224,90,90,0.12);
+    --correct: #a8e063;
+    --correct-muted: rgba(168,224,99,0.12);
+    --border: rgba(168,224,99,0.15);
+    --radius: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── BACKGROUND TEXTURE ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 10% 0%, rgba(95,186,71,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 90% 100%, rgba(168,224,99,0.05) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* ── LOGO ── */
+  .logo-wrap {
+    text-align: center;
+    margin-bottom: 48px;
+    animation: fadeDown 0.7s ease both;
+  }
+
+  .logo-svg {
+    display: inline-block;
+  }
+
+  /* ── LESSON HEADER ── */
+  .lesson-header {
+    text-align: center;
+    margin-bottom: 40px;
+    animation: fadeDown 0.7s 0.1s ease both;
+  }
+
+  .lesson-tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-muted);
+    border: 1px solid var(--border);
+    padding: 4px 14px;
+    border-radius: 99px;
+    margin-bottom: 16px;
+  }
+
+  .lesson-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 5vw, 38px);
+    font-weight: 900;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+
+  .lesson-subtitle {
+    color: var(--text-muted);
+    font-size: 15px;
+    font-weight: 300;
+  }
+
+  /* ── PROGRESS ── */
+  .progress-bar-outer {
+    height: 3px;
+    background: var(--surface2);
+    border-radius: 99px;
+    margin-bottom: 32px;
+    overflow: hidden;
+  }
+
+  .progress-bar-inner {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    border-radius: 99px;
+    transition: width 0.5s cubic-bezier(.4,0,.2,1);
+  }
+
+  .progress-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .score-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    background: var(--accent-muted);
+    border: 1px solid var(--border);
+    padding: 3px 10px;
+    border-radius: 99px;
+  }
+
+  /* ── ACTIVITY CARD ── */
+  .activity-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 36px;
+    margin-bottom: 28px;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .activity-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 8px;
+  }
+
+  .question-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    font-style: italic;
+    color: var(--text);
+    line-height: 1.5;
+    margin-bottom: 28px;
+  }
+
+  /* ── CONTEXT QUOTE ── */
+  .context-quote {
+    background: var(--surface2);
+    border-left: 3px solid var(--accent);
+    padding: 14px 18px;
+    border-radius: 0 8px 8px 0;
+    font-size: 14px;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+
+  /* ── MULTIPLE CHOICE ── */
+  .choices {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .choice-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  .choice-btn:hover:not(:disabled) {
+    border-color: var(--accent);
+    background: var(--accent-muted);
+    transform: translateX(3px);
+  }
+
+  .choice-btn:disabled { cursor: default; }
+
+  .choice-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-muted);
+    color: var(--correct);
+  }
+
+  .choice-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-muted);
+    color: var(--wrong);
+  }
+
+  .choice-letter {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    min-width: 22px;
+    height: 22px;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.7;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ── FILL IN THE BLANK ── */
+  .blank-sentence {
+    font-size: 18px;
+    line-height: 2;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+
+  .blank-input {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid var(--accent);
+    color: var(--accent);
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-style: italic;
+    padding: 2px 6px;
+    width: 160px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .blank-input:focus { border-color: var(--text); }
+  .blank-input.correct { border-color: var(--correct); color: var(--correct); }
+  .blank-input.wrong { border-color: var(--wrong); color: var(--wrong); }
+  .blank-input:disabled { cursor: default; }
+
+  /* ── MATCHING ── */
+  .match-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .match-col { display: flex; flex-direction: column; gap: 8px; }
+  .match-col-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .match-item {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    line-height: 1.4;
+  }
+
+  .match-item.selected {
+    border-color: var(--accent);
+    background: var(--accent-muted);
+    color: var(--accent);
+  }
+
+  .match-item.matched {
+    border-color: var(--correct);
+    background: var(--correct-muted);
+    color: var(--correct);
+    cursor: default;
+  }
+
+  .match-item.wrong-match {
+    border-color: var(--wrong);
+    background: var(--wrong-muted);
+  }
+
+  /* ── ORDERING ── */
+  .order-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .order-item {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    transition: border-color 0.2s, transform 0.15s;
+    user-select: none;
+  }
+
+  .order-item:active { cursor: grabbing; }
+  .order-item.dragging { opacity: 0.4; transform: scale(0.97); }
+  .order-item.drag-over { border-color: var(--accent); background: var(--accent-muted); }
+
+  .order-handle {
+    font-family: 'DM Mono', monospace;
+    color: var(--text-dim);
+    font-size: 12px;
+    min-width: 20px;
+  }
+
+  .order-item.correct-order { border-color: var(--correct); color: var(--correct); }
+  .order-item.wrong-order { border-color: var(--wrong); color: var(--wrong); }
+
+  /* ── FEEDBACK ── */
+  .feedback-box {
+    margin-top: 16px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.6;
+    display: none;
+  }
+
+  .feedback-box.show { display: block; animation: fadeUp 0.3s ease; }
+  .feedback-box.correct-fb { background: var(--correct-muted); border: 1px solid rgba(168,224,99,0.3); color: var(--correct); }
+  .feedback-box.wrong-fb { background: var(--wrong-muted); border: 1px solid rgba(224,90,90,0.3); color: var(--wrong); }
+  .feedback-box .fb-label { font-weight: 600; margin-bottom: 4px; }
+  .feedback-box .fb-explain { color: var(--text-muted); font-size: 13px; }
+
+  /* ── BUTTONS ── */
+  .btn-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #0e1a12;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    display: none;
+  }
+
+  .btn-primary.show { display: inline-flex; align-items: center; gap: 6px; }
+  .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+
+  .btn-submit {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 12px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .btn-submit:hover { background: var(--accent-muted); transform: translateY(-1px); }
+  .btn-submit:disabled { opacity: 0.3; cursor: default; transform: none; }
+
+  /* ── SECTION DIVIDER ── */
+  .section-divider {
+    text-align: center;
+    margin: 48px 0 36px;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .section-divider-line {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+
+  .section-divider-line::before,
+  .section-divider-line::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .section-icon {
+    font-size: 18px;
+    opacity: 0.6;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .section-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  /* ── FINAL SCREEN ── */
+  .final-screen {
+    display: none;
+    text-align: center;
+    padding: 60px 40px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .final-screen.show { display: block; }
+
+  .final-score-ring {
+    width: 140px;
+    height: 140px;
+    margin: 0 auto 32px;
+    position: relative;
+  }
+
+  .final-score-ring svg { transform: rotate(-90deg); }
+
+  .final-score-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .final-score-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--accent);
+  }
+
+  .final-score-denom {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .final-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 900;
+    margin-bottom: 12px;
+  }
+
+  .final-message {
+    color: var(--text-muted);
+    font-size: 15px;
+    margin-bottom: 32px;
+    line-height: 1.7;
+    max-width: 460px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .btn-restart {
+    background: var(--accent);
+    color: #0e1a12;
+    border: none;
+    border-radius: 8px;
+    padding: 14px 36px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .btn-restart:hover { background: var(--accent2); transform: translateY(-2px); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── HIDDEN ── */
+  .hidden { display: none !important; }
+
+  /* ── VOCAB HIGHLIGHT ── */
+  .vocab { 
+    color: var(--accent); 
+    font-weight: 500; 
+    border-bottom: 1px dashed rgba(168,224,99,0.4);
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- LOGO -->
+  <div class="logo-wrap">
+    <svg class="logo-svg" width="320" height="90" viewBox="0 0 320 90" xmlns="http://www.w3.org/2000/svg">
+      <!-- Forbes text in Playfair-like serif style -->
+      <text x="160" y="52" 
+        font-family="'Playfair Display', Georgia, serif" 
+        font-size="52" 
+        font-weight="900"
+        fill="#a8e063"
+        text-anchor="middle"
+        letter-spacing="-1">Forbes</text>
+      <!-- Divider line -->
+      <line x1="20" y1="62" x2="300" y2="62" stroke="#a8e063" stroke-width="1.2" opacity="0.5"/>
+      <!-- English text -->
+      <text x="160" y="85"
+        font-family="'DM Sans', Arial, sans-serif"
+        font-size="22"
+        font-weight="700"
+        fill="#a8e063"
+        text-anchor="middle"
+        letter-spacing="6">ENGLISH</text>
+    </svg>
+  </div>
+
+  <!-- LESSON HEADER -->
+  <div class="lesson-header">
+    <div class="lesson-tag">B2 · Listening & Comprehension</div>
+    <h1 class="lesson-title">AI, Learning & the Productive Struggle</h1>
+    <p class="lesson-subtitle">Based on a TED Talk about the science of learning and artificial intelligence</p>
+  </div>
+
+  <!-- PROGRESS -->
+  <div id="progressWrap">
+    <div class="progress-label">
+      <span id="progressText">Activity 1 of 3</span>
+      <span class="score-badge">Score: <span id="scoreDisplay">0</span></span>
+    </div>
+    <div class="progress-bar-outer">
+      <div class="progress-bar-inner" id="progressBar" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════ -->
+  <!-- ACTIVITY 1: MULTIPLE CHOICE     -->
+  <!-- ════════════════════════════════ -->
+  <div id="activity1">
+    <div class="section-divider">
+      <div class="section-divider-line"><span class="section-icon">◈</span></div>
+      <div class="section-title">Part 1 — Comprehension</div>
+      <div class="section-desc">Multiple choice · 5 questions · Choose the best answer</div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════ -->
+  <!-- ACTIVITY 2: FILL IN THE BLANK   -->
+  <!-- ════════════════════════════════ -->
+  <div id="activity2" class="hidden">
+    <div class="section-divider">
+      <div class="section-divider-line"><span class="section-icon">◈</span></div>
+      <div class="section-title">Part 2 — Key Vocabulary</div>
+      <div class="section-desc">Fill in the blank · 5 sentences · Type the missing word</div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════ -->
+  <!-- ACTIVITY 3: MATCHING            -->
+  <!-- ════════════════════════════════ -->
+  <div id="activity3" class="hidden">
+    <div class="section-divider">
+      <div class="section-divider-line"><span class="section-icon">◈</span></div>
+      <div class="section-title">Part 3 — Concepts & Definitions</div>
+      <div class="section-desc">Matching · Click a term, then click its definition</div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════ -->
+  <!-- ACTIVITY 4: ORDERING            -->
+  <!-- ════════════════════════════════ -->
+  <div id="activity4" class="hidden">
+    <div class="section-divider">
+      <div class="section-divider-line"><span class="section-icon">◈</span></div>
+      <div class="section-title">Part 4 — Logical Sequence</div>
+      <div class="section-desc">Ordering · Drag the sentences into the correct order</div>
+    </div>
+  </div>
+
+  <!-- FINAL SCREEN -->
+  <div class="activity-card final-screen" id="finalScreen">
+    <div class="final-score-ring">
+      <svg width="140" height="140" viewBox="0 0 140 140">
+        <circle cx="70" cy="70" r="58" fill="none" stroke="#1e2e21" stroke-width="10"/>
+        <circle cx="70" cy="70" r="58" fill="none" stroke="#a8e063" stroke-width="10"
+          stroke-dasharray="364.4" id="scoreCircle" stroke-dashoffset="364.4"
+          stroke-linecap="round" style="transition: stroke-dashoffset 1s ease"/>
+      </svg>
+      <div class="final-score-text">
+        <div class="final-score-num" id="finalNum">0</div>
+        <div class="final-score-denom" id="finalDenom">/15</div>
+      </div>
+    </div>
+    <h2 class="final-title" id="finalTitle">Well done!</h2>
+    <p class="final-message" id="finalMessage"></p>
+    <button class="btn-restart" onclick="restart()">Start Again ↺</button>
+  </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════
+
+const mcQuestions = [
+  {
+    q: "According to the speaker, why were 74% of teachers considering leaving their jobs?",
+    context: '"74 percent of teachers want to quit their jobs in the next three years. Why? It\'s because of workload."',
+    choices: [
+      { text: "They felt undervalued by school leadership and their colleagues", letter: "A" },
+      { text: "Their salaries had not kept pace with the cost of living", letter: "B" },
+      { text: "They were overwhelmed by the burden of constant assessment and data work", letter: "C" },
+      { text: "They disagreed with the national curriculum that had been introduced", letter: "D" },
+    ],
+    answer: 2,
+    explain: "The speaker says teachers spend so much time micro-marking and micro-assessing that they effectively become 'data analysts by night' — workload is the explicit reason given."
+  },
+  {
+    q: "What did a fifth of children admit when surveyed about their use of AI with homework?",
+    context: '"A staggering fifth of children admitted they get AI to do all of their work for them."',
+    choices: [
+      { text: "They sometimes used AI to check their spelling before submitting", letter: "A" },
+      { text: "They relied on AI to generate their entire assignments without engaging themselves", letter: "B" },
+      { text: "They preferred AI tutors to their classroom teachers for explanations", letter: "C" },
+      { text: "They found AI-generated feedback more helpful than teacher comments", letter: "D" },
+    ],
+    answer: 1,
+    explain: "The survey result was that 20% of children were using AI to do all of their work — actively avoiding learning rather than using AI as a study tool."
+  },
+  {
+    q: "What does the speaker mean by an 'illusion of competence'?",
+    context: '"Fluency we often mistake for learning… people end up with this sort of illusion of competence, like they know everything."',
+    choices: [
+      { text: "Believing you can complete a task independently when you have only read about it", letter: "A" },
+      { text: "The mistaken sense that reading fluent AI-generated text means you have truly understood the content", letter: "B" },
+      { text: "Overconfidence caused by receiving consistently high marks on easy assignments", letter: "C" },
+      { text: "Thinking that memorising facts is equivalent to developing critical thinking skills", letter: "D" },
+    ],
+    answer: 1,
+    explain: "The speaker explains that AI responses feel fluent to read, and that fluency is mistaken for personal understanding — creating the false feeling that you have learned the material."
+  },
+  {
+    q: "What did the study of London taxi drivers reveal about the human brain?",
+    context: '"Neuroscientists scanned their brains and found that parts of the hippocampus were larger in experienced cabbies."',
+    choices: [
+      { text: "That stress caused by demanding jobs leads to long-term cognitive deterioration", letter: "A" },
+      { text: "That professional drivers have naturally better spatial awareness from birth", letter: "B" },
+      { text: "That intense and sustained mental effort can physically develop relevant brain regions", letter: "C" },
+      { text: "That memorisation tasks are only effective for people who begin training before age 30", letter: "D" },
+    ],
+    answer: 2,
+    explain: "The hippocampus — responsible for spatial memory — was found to be larger in experienced taxi drivers who had to memorise 26,000 streets, showing that sustained effort produces measurable brain growth."
+  },
+  {
+    q: "How does the speaker characterise the proper role of AI in relation to human expertise?",
+    context: '"AI is not there to replace our expertise. It\'s there to allow our expertise to expand."',
+    choices: [
+      { text: "AI should gradually take over repetitive intellectual tasks as it becomes more reliable", letter: "A" },
+      { text: "AI functions best as a tool that amplifies what humans already know and can do", letter: "B" },
+      { text: "AI is primarily valuable in scientific research and has limited applications in daily learning", letter: "C" },
+      { text: "AI will eventually match human creativity once it is trained on enough data", letter: "D" },
+    ],
+    answer: 1,
+    explain: "The speaker is clear that AI is a partner that extends human capability — we still frame the questions, set goals, and decide which discoveries matter. It expands expertise rather than replacing it."
+  },
+];
+
+const fitbQuestions = [
+  {
+    pre: "Researchers call the mental effort required for real learning a '",
+    blank: "productive",
+    post: " struggle' — and it is this effort that builds genuine understanding.",
+    hint: "adj. — useful or effective in producing results",
+    explain: "'Productive struggle' is the term used in learning sciences for the kind of effortful thinking that actually strengthens memory and understanding."
+  },
+  {
+    pre: "Instead of cramming everything at once, students benefit from ",
+    blank: "spacing",
+    post: " their practice across multiple sessions over time.",
+    hint: "gerund — distributing something over a period",
+    explain: "Spacing (or distributed practice) means returning to material at intervals, reinforcing retrieval each time rather than reviewing it all in one sitting."
+  },
+  {
+    pre: "The first learning technique the speaker describes is ",
+    blank: "retrieval",
+    post: " — the simple act of pulling information from memory rather than re-reading it.",
+    hint: "noun — the process of getting something back",
+    explain: "Retrieval practice means actively recalling what you know, which has been shown to create stronger memory traces than passive re-reading."
+  },
+  {
+    pre: "When students have to generate answers themselves, even if they are initially wrong, they build a stronger memory ",
+    blank: "trace",
+    post: ".",
+    hint: "noun — a mark or sign left by something that has passed",
+    explain: "A 'memory trace' is the neurological record of a learned experience. Generating answers (rather than being told them) deepens this trace."
+  },
+  {
+    pre: "The speaker argues that AI is brilliant at spotting ",
+    blank: "patterns",
+    post: " in data, which is what makes it so powerful for personalising education.",
+    hint: "plural noun — repeated or regular arrangements",
+    explain: "Pattern recognition in large datasets is AI's core strength — it enables the system to predict when a student is about to forget something and intervene at the right moment."
+  },
+];
+
+const matchItems = [
+  { term: "Retrieval practice", def: "Actively recalling information from memory rather than re-reading it" },
+  { term: "Spacing", def: "Distributing study sessions over time instead of learning everything at once" },
+  { term: "Generation effect", def: "Creating stronger recall when you produce an answer yourself, even if incorrect" },
+  { term: "Structured feedback", def: "Guidance that identifies current performance, a learning goal, and the gap between them" },
+  { term: "Hippocampus", def: "The brain region linked to spatial memory that grew larger in experienced London taxi drivers" },
+];
+
+const orderSentences = [
+  { id: 0, text: "The speaker founded a social enterprise and began funding meals, vaccines, and schools." },
+  { id: 1, text: "She discovered that 20% of UK secondary school leavers could not read or write adequately." },
+  { id: 2, text: "She identified two key problems: one-size-fits-all teaching and excessive teacher workload." },
+  { id: 3, text: "She proposed combining AI with neuroscience to personalise learning and reduce workload." },
+  { id: 4, text: "She concluded that durable learning requires effort and that AI should expand — not replace — human cognition." },
+];
+
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
+let score = 0;
+let totalQuestions = mcQuestions.length + fitbQuestions.length + 1 + 1; // MC + FITB + matching + ordering
+let mcIndex = 0;
+let fitbIndex = 0;
+let matchSelected = null;
+let matchDone = 0;
+let matchCorrect = 0;
+let orderCorrect = false;
+
+// ═══════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════
+function updateProgress(activityNum) {
+  const pct = ((activityNum - 1) / 4) * 100;
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressText').textContent = `Activity ${activityNum} of 4`;
+  document.getElementById('scoreDisplay').textContent = score;
+}
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+// ═══════════════════════════════════════════
+// ACTIVITY 1: MULTIPLE CHOICE
+// ═══════════════════════════════════════════
+function renderMC() {
+  const container = document.getElementById('activity1');
+  // Remove old cards
+  container.querySelectorAll('.activity-card').forEach(el => el.remove());
+
+  if (mcIndex >= mcQuestions.length) {
+    startActivity2();
+    return;
+  }
+
+  const q = mcQuestions[mcIndex];
+  const card = document.createElement('div');
+  card.className = 'activity-card';
+
+  // Shuffle choices while tracking correct index
+  const indexed = q.choices.map((c, i) => ({ ...c, origIndex: i }));
+  const shuffled = shuffle([...indexed]);
+  const correctShuffledIdx = shuffled.findIndex(c => c.origIndex === q.answer);
+
+  card.innerHTML = `
+    <div class="activity-label">Question ${mcIndex + 1} of ${mcQuestions.length}</div>
+    <div class="question-text">${q.q}</div>
+    <div class="context-quote">${q.context}</div>
+    <div class="choices" id="choices-mc"></div>
+    <div class="feedback-box" id="fb-mc"></div>
+    <div class="btn-row">
+      <button class="btn-primary" id="next-mc">Next question →</button>
+    </div>
+  `;
+  container.appendChild(card);
+
+  const choicesEl = card.querySelector('#choices-mc');
+  const letters = ['A','B','C','D'];
+  shuffled.forEach((choice, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerHTML = `<span class="choice-letter">${letters[i]}</span><span>${choice.text}</span>`;
+    btn.onclick = () => checkMC(i, correctShuffledIdx, q.explain, shuffled.length);
+    choicesEl.appendChild(btn);
+  });
+
+  card.querySelector('#next-mc').addEventListener('click', () => {
+    mcIndex++;
+    renderMC();
+  });
+}
+
+function checkMC(chosen, correct, explain, total) {
+  const btns = document.querySelectorAll('#activity1 .choice-btn');
+  btns.forEach(b => b.disabled = true);
+
+  const fb = document.getElementById('fb-mc');
+  if (chosen === correct) {
+    btns[chosen].classList.add('correct');
+    fb.className = 'feedback-box correct-fb show';
+    fb.innerHTML = `<div class="fb-label">Correct</div><div class="fb-explain">${explain}</div>`;
+    score++;
+  } else {
+    btns[chosen].classList.add('wrong');
+    btns[correct].classList.add('correct');
+    fb.className = 'feedback-box wrong-fb show';
+    fb.innerHTML = `<div class="fb-label">Not quite</div><div class="fb-explain">${explain}</div>`;
+  }
+  document.getElementById('scoreDisplay').textContent = score;
+  document.getElementById('next-mc').classList.add('show');
+}
+
+// ═══════════════════════════════════════════
+// ACTIVITY 2: FILL IN THE BLANK
+// ═══════════════════════════════════════════
+function startActivity2() {
+  document.getElementById('activity2').classList.remove('hidden');
+  updateProgress(2);
+  renderFITB();
+}
+
+function renderFITB() {
+  const container = document.getElementById('activity2');
+  container.querySelectorAll('.activity-card').forEach(el => el.remove());
+
+  if (fitbIndex >= fitbQuestions.length) {
+    startActivity3();
+    return;
+  }
+
+  const q = fitbQuestions[fitbIndex];
+  const card = document.createElement('div');
+  card.className = 'activity-card';
+
+  card.innerHTML = `
+    <div class="activity-label">Sentence ${fitbIndex + 1} of ${fitbQuestions.length}</div>
+    <div class="question-text" style="font-style:normal;font-size:16px;">Complete the sentence with the correct word:</div>
+    <div class="blank-sentence">
+      ${q.pre}<input class="blank-input" id="fitb-input" placeholder="______" autocomplete="off" autocorrect="off" spellcheck="false">${q.post}
+    </div>
+    <div style="font-size:12px;color:var(--text-dim);font-style:italic;margin-bottom:16px;">Hint: ${q.hint}</div>
+    <div class="feedback-box" id="fb-fitb"></div>
+    <div class="btn-row">
+      <button class="btn-submit" id="submit-fitb">Check answer</button>
+      <button class="btn-primary" id="next-fitb">Next sentence →</button>
+    </div>
+  `;
+  container.appendChild(card);
+
+  const input = card.querySelector('#fitb-input');
+  const submitBtn = card.querySelector('#submit-fitb');
+  const nextBtn = card.querySelector('#next-fitb');
+
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') submitBtn.click(); });
+
+  submitBtn.addEventListener('click', () => {
+    const val = input.value.trim().toLowerCase();
+    const correct = q.blank.toLowerCase();
+    const fb = document.getElementById('fb-fitb');
+    submitBtn.disabled = true;
+    input.disabled = true;
+
+    if (val === correct) {
+      input.classList.add('correct');
+      fb.className = 'feedback-box correct-fb show';
+      fb.innerHTML = `<div class="fb-label">Correct</div><div class="fb-explain">${q.explain}</div>`;
+      score++;
+    } else {
+      input.classList.add('wrong');
+      fb.className = 'feedback-box wrong-fb show';
+      fb.innerHTML = `<div class="fb-label">The answer is <strong style="color:var(--correct)">${q.blank}</strong></div><div class="fb-explain">${q.explain}</div>`;
+    }
+    document.getElementById('scoreDisplay').textContent = score;
+    nextBtn.classList.add('show');
+  });
+
+  nextBtn.addEventListener('click', () => {
+    fitbIndex++;
+    renderFITB();
+  });
+}
+
+// ═══════════════════════════════════════════
+// ACTIVITY 3: MATCHING
+// ═══════════════════════════════════════════
+function startActivity3() {
+  document.getElementById('activity3').classList.remove('hidden');
+  updateProgress(3);
+  renderMatching();
+}
+
+function renderMatching() {
+  const container = document.getElementById('activity3');
+  const card = document.createElement('div');
+  card.className = 'activity-card';
+
+  const shuffledDefs = shuffle([...matchItems.map((m, i) => ({ ...m, origIndex: i }))]);
+
+  card.innerHTML = `
+    <div class="activity-label">Match each term to its definition</div>
+    <div class="question-text" style="font-style:normal;font-size:15px;">Click a <span class="vocab">term</span> on the left, then click its matching definition on the right.</div>
+    <div class="match-grid">
+      <div class="match-col">
+        <div class="match-col-label">Terms</div>
+        <div id="terms-col"></div>
+      </div>
+      <div class="match-col">
+        <div class="match-col-label">Definitions</div>
+        <div id="defs-col"></div>
+      </div>
+    </div>
+    <div class="feedback-box" id="fb-match"></div>
+    <div class="btn-row">
+      <button class="btn-primary show" id="next-match" style="display:none">Continue to Part 4 →</button>
+    </div>
+  `;
+  container.appendChild(card);
+
+  const termsCol = card.querySelector('#terms-col');
+  const defsCol = card.querySelector('#defs-col');
+
+  matchItems.forEach((item, i) => {
+    const t = document.createElement('div');
+    t.className = 'match-item';
+    t.textContent = item.term;
+    t.dataset.termIdx = i;
+    t.addEventListener('click', () => selectTerm(t, i));
+    termsCol.appendChild(t);
+  });
+
+  shuffledDefs.forEach((item, i) => {
+    const d = document.createElement('div');
+    d.className = 'match-item';
+    d.textContent = item.def;
+    d.dataset.origIdx = item.origIndex;
+    d.addEventListener('click', () => selectDef(d));
+    defsCol.appendChild(d);
+  });
+
+  card.querySelector('#next-match').addEventListener('click', startActivity4);
+}
+
+function selectTerm(el, idx) {
+  if (el.classList.contains('matched')) return;
+  document.querySelectorAll('#activity3 .match-item[data-term-idx]').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+  matchSelected = idx;
+}
+
+function selectDef(el) {
+  if (el.classList.contains('matched') || matchSelected === null) return;
+  const origIdx = parseInt(el.dataset.origIdx);
+  const termEl = document.querySelector(`#activity3 .match-item[data-term-idx="${matchSelected}"]`);
+
+  if (origIdx === matchSelected) {
+    el.classList.add('matched');
+    termEl.classList.remove('selected');
+    termEl.classList.add('matched');
+    matchCorrect++;
+    matchDone++;
+  } else {
+    el.classList.add('wrong-match');
+    termEl.classList.add('wrong-match');
+    matchDone++;
+    setTimeout(() => {
+      el.classList.remove('wrong-match');
+      termEl.classList.remove('wrong-match', 'selected');
+    }, 700);
+  }
+  matchSelected = null;
+
+  if (matchDone >= matchItems.length || matchCorrect === matchItems.length) {
+    // Check if all matched
+    const fb = document.getElementById('fb-match');
+    score += matchCorrect;
+    document.getElementById('scoreDisplay').textContent = score;
+    fb.className = 'feedback-box ' + (matchCorrect >= 4 ? 'correct-fb' : 'wrong-fb') + ' show';
+    fb.innerHTML = `<div class="fb-label">You matched ${matchCorrect} out of ${matchItems.length} correctly.</div><div class="fb-explain">All five concepts come from the TED Talk's explanation of evidence-based learning techniques.</div>`;
+    document.getElementById('next-match').style.display = 'inline-flex';
+    document.querySelectorAll('#activity3 .match-item').forEach(e => e.style.pointerEvents = 'none');
+  }
+}
+
+// ═══════════════════════════════════════════
+// ACTIVITY 4: ORDERING
+// ═══════════════════════════════════════════
+function startActivity4() {
+  document.getElementById('activity4').classList.remove('hidden');
+  updateProgress(4);
+  renderOrdering();
+}
+
+let dragSrc = null;
+
+function renderOrdering() {
+  const container = document.getElementById('activity4');
+  const card = document.createElement('div');
+  card.className = 'activity-card';
+
+  const shuffled = shuffle([...orderSentences]);
+
+  card.innerHTML = `
+    <div class="activity-label">Drag to reorder</div>
+    <div class="question-text" style="font-style:normal;font-size:15px;">Put these events from the TED Talk in the correct order, from first to last.</div>
+    <div class="order-list" id="order-list"></div>
+    <div class="feedback-box" id="fb-order"></div>
+    <div class="btn-row">
+      <button class="btn-submit" id="submit-order">Check order</button>
+      <button class="btn-primary" id="next-order">See results →</button>
+    </div>
+  `;
+  container.appendChild(card);
+
+  const list = card.querySelector('#order-list');
+
+  function rebuildList(items) {
+    list.innerHTML = '';
+    items.forEach((item, i) => {
+      const el = document.createElement('div');
+      el.className = 'order-item';
+      el.draggable = true;
+      el.dataset.id = item.id;
+      el.innerHTML = `<span class="order-handle">${i + 1}</span><span>${item.text}</span>`;
+
+      el.addEventListener('dragstart', e => {
+        dragSrc = el;
+        el.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+      });
+      el.addEventListener('dragend', () => el.classList.remove('dragging', 'drag-over'));
+      el.addEventListener('dragover', e => { e.preventDefault(); el.classList.add('drag-over'); });
+      el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
+      el.addEventListener('drop', e => {
+        e.preventDefault();
+        el.classList.remove('drag-over');
+        if (dragSrc && dragSrc !== el) {
+          const allItems = [...list.querySelectorAll('.order-item')];
+          const srcIdx = allItems.indexOf(dragSrc);
+          const tgtIdx = allItems.indexOf(el);
+          if (srcIdx < tgtIdx) list.insertBefore(dragSrc, el.nextSibling);
+          else list.insertBefore(dragSrc, el);
+          // Update numbers
+          [...list.querySelectorAll('.order-handle')].forEach((h, n) => h.textContent = n + 1);
+        }
+      });
+      list.appendChild(el);
+    });
+  }
+
+  rebuildList(shuffled);
+
+  card.querySelector('#submit-order').addEventListener('click', () => {
+    const items = [...list.querySelectorAll('.order-item')];
+    const userOrder = items.map(el => parseInt(el.dataset.id));
+    const correctOrder = orderSentences.map(s => s.id);
+    let correct = 0;
+    userOrder.forEach((id, i) => { if (id === correctOrder[i]) correct++; });
+
+    items.forEach((el, i) => {
+      el.draggable = false;
+      if (parseInt(el.dataset.id) === correctOrder[i]) el.classList.add('correct-order');
+      else el.classList.add('wrong-order');
+    });
+
+    const fb = document.getElementById('fb-order');
+    const pts = correct >= 4 ? 1 : 0;
+    score += pts;
+    document.getElementById('scoreDisplay').textContent = score;
+    fb.className = 'feedback-box ' + (pts ? 'correct-fb' : 'wrong-fb') + ' show';
+    fb.innerHTML = `<div class="fb-label">You got ${correct} out of 5 positions correct.</div><div class="fb-explain">The green items are in the right place. The talk moves from the speaker's origins, through the problems she found, to her solution and its implications for the future of learning.</div>`;
+    card.querySelector('#submit-order').disabled = true;
+    card.querySelector('#next-order').classList.add('show');
+  });
+
+  card.querySelector('#next-order').addEventListener('click', showFinal);
+}
+
+// ═══════════════════════════════════════════
+// FINAL SCREEN
+// ═══════════════════════════════════════════
+function showFinal() {
+  document.getElementById('progressWrap').style.display = 'none';
+  ['activity1','activity2','activity3','activity4'].forEach(id => {
+    document.getElementById(id).classList.add('hidden');
+  });
+
+  const total = mcQuestions.length + fitbQuestions.length + matchItems.length + 1;
+  const pct = Math.round((score / total) * 100);
+
+  document.getElementById('finalNum').textContent = score;
+  document.getElementById('finalDenom').textContent = '/' + total;
+
+  let title, message;
+  if (pct >= 85) {
+    title = "Excellent work.";
+    message = "You clearly engaged deeply with the material. As the speaker herself would say — that kind of productive struggle is exactly what makes learning stick.";
+  } else if (pct >= 60) {
+    title = "Good effort.";
+    message = "You've shown solid comprehension. Try reviewing the sections on the four learning techniques — spacing, retrieval, generation, and reflection — and see if you can close any remaining gaps.";
+  } else {
+    title = "Keep going.";
+    message = "This was challenging material. The speaker's point about generation and retrieval practice applies here too — try listening again, then returning to these questions without notes.";
+  }
+
+  document.getElementById('finalTitle').textContent = title;
+  document.getElementById('finalMessage').textContent = message;
+  document.getElementById('finalScreen').classList.add('show');
+
+  setTimeout(() => {
+    const circumference = 364.4;
+    const offset = circumference - (pct / 100) * circumference;
+    document.getElementById('scoreCircle').style.strokeDashoffset = offset;
+  }, 300);
+}
+
+function restart() {
+  score = 0; mcIndex = 0; fitbIndex = 0;
+  matchSelected = null; matchDone = 0; matchCorrect = 0;
+  document.getElementById('finalScreen').classList.remove('show');
+  document.getElementById('progressWrap').style.display = 'block';
+  ['activity2','activity3','activity4'].forEach(id => document.getElementById(id).classList.add('hidden'));
+  document.getElementById('activity1').querySelectorAll('.activity-card').forEach(e => e.remove());
+  document.getElementById('activity2').querySelectorAll('.activity-card').forEach(e => e.remove());
+  document.getElementById('activity3').querySelectorAll('.activity-card').forEach(e => e.remove());
+  document.getElementById('activity4').querySelectorAll('.activity-card').forEach(e => e.remove());
+  updateProgress(1);
+  renderMC();
+}
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+updateProgress(1);
+renderMC();
+</script>
+</body>
+</html>

@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🚒 Firefighter English – must & have to</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky: #EAEDEF;
+    --coral: #D9502E;
+    --coral-dark: #B33A1D;
+    --mint: #5C7A94;
+    --mint-dark: #35526B;
+    --blue: #33465A;
+    --blue-dark: #171F28;
+    --lavender: #7A5C5C;
+    --lavender-dark: #4A3535;
+    --peach: #E89B5C;
+    --peach-dark: #C97A3D;
+    --sun: #E89B5C;
+    --sun-dark: #C97A3D;
+    --crimson: #D9502E;
+    --crimson-dark: #B33A1D;
+    --text: #1C242D;
+    --text-light: #5C6873;
+    --bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --shadow: 0 4px 20px rgba(15,20,26,0.16);
+    --navh: 68px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { height:100%; overflow:hidden; margin:0; }
+  body {
+    background: var(--sky);
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+  }
+  body::after {
+    content:'';
+    position:fixed; inset:0;
+    background: linear-gradient(180deg, rgba(23,31,40,0.05) 0%, transparent 25%, rgba(232,155,92,0.06) 100%);
+    pointer-events:none; z-index:0;
+  }
+
+  /* ===== SLIDE DECK SHELL ===== */
+  .lesson-page { position:fixed; inset:0; bottom:60px; overflow-y:auto; display:none; z-index:1; }
+  .lesson-page.active { display:flex; flex-direction:column; }
+
+  .layout-shell { display:flex; flex:1; min-height:100%; }
+  .image-panel { width:40%; flex-shrink:0; position:sticky; top:0; height:100vh; overflow:hidden; }
+  .image-panel img { display:block; width:100%; height:100%; object-fit:cover; transition:opacity 0.35s ease; }
+  .content-col { flex:1; padding:28px 40px 32px; display:flex; flex-direction:column; justify-content:center; min-width:0; }
+
+  @media(max-width:900px) {
+    .layout-shell { flex-direction:column; }
+    .image-panel { width:100%; height:36vh; position:relative; top:0; flex-shrink:0; }
+    .content-col { padding:20px 18px 28px; }
+  }
+
+  .slide-eyebrow { font-size:13px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--coral); margin-bottom:6px; }
+  .slide-title { font-family:'Fredoka One',cursive; font-size:clamp(22px,4vw,34px); color:var(--blue); margin-bottom:14px; }
+
+  /* HERO */
+  .hero { text-align:center; margin:auto 0; animation: popIn 0.6s var(--bounce) both; }
+  @keyframes popIn { from{opacity:0;transform:scale(0.8) translateY(-20px)} to{opacity:1;transform:scale(1) translateY(0)} }
+  .hero h1 { font-family:'Fredoka One',cursive; font-size:clamp(28px,6vw,52px); color:var(--coral); text-shadow:3px 3px 0 var(--coral-dark); line-height:1.1; margin-bottom:8px; }
+  .hero h1 span { color:var(--blue); text-shadow:3px 3px 0 var(--blue-dark); }
+  .hero-sub { font-size:15px; color:var(--text-light); font-weight:700; background:white; display:inline-block; padding:6px 20px; border-radius:50px; box-shadow:var(--shadow); margin-top:8px; }
+  .hero-desc { font-size:14px; line-height:1.7; color:var(--text); max-width:520px; margin:18px auto 0; }
+
+  /* GRAMMAR CARDS */
+  .ref-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px; animation:popIn 0.6s var(--bounce) 0.1s both; }
+  @media(max-width:580px){ .ref-grid{grid-template-columns:1fr} }
+  .ref-card { background:white; border-radius:20px; padding:20px; box-shadow:var(--shadow); border-bottom:5px solid transparent; transition:transform 0.2s var(--bounce); }
+  .ref-card:hover { transform:translateY(-4px); }
+  .ref-card.must-card   { border-bottom-color:var(--coral); }
+  .ref-card.haveto-card { border-bottom-color:var(--blue); }
+  .ref-card h3 { font-family:'Fredoka One',cursive; font-size:20px; margin-bottom:10px; }
+  .ref-card.must-card   h3 { color:var(--coral); }
+  .ref-card.haveto-card h3 { color:var(--blue); }
+  .german-note { font-size:11px; background:#FFF9DB; border-left:3px solid var(--sun-dark); padding:6px 10px; border-radius:0 8px 8px 0; margin-bottom:12px; color:#7B6000; font-weight:700; }
+  .tense-table { width:100%; border-collapse:collapse; font-size:13px; }
+  .tense-table th { color:var(--text-light); text-align:left; padding:4px 6px 4px 0; font-size:11px; text-transform:uppercase; letter-spacing:0.5px; border-bottom:2px dashed #EEE; }
+  .tense-table td { padding:6px 6px 6px 0; border-bottom:1px dashed #F0F0F0; vertical-align:top; line-height:1.4; }
+  .tense-table td:first-child { font-weight:800; width:100px; }
+  .ref-card.must-card   .tense-table td:first-child { color:var(--coral); }
+  .ref-card.haveto-card .tense-table td:first-child { color:var(--blue); }
+  .tense-table b { background:#FFF3CD; padding:1px 3px; border-radius:4px; }
+  .de { color:#999; font-size:11px; font-style:italic; display:block; }
+
+  /* WARN BOX */
+  .warn-box { background:white; border-radius:16px; padding:16px 20px; margin-bottom:8px; box-shadow:var(--shadow); border-left:5px solid var(--crimson); }
+  .warn-box h4 { font-family:'Fredoka One',cursive; color:var(--crimson); font-size:17px; margin-bottom:8px; }
+  .warn-box p { font-size:13px; line-height:1.7; color:var(--text); }
+  .warn-box .pair { display:flex; gap:20px; flex-wrap:wrap; margin-top:8px; }
+  .warn-box .col { flex:1; min-width:200px; }
+  .warn-box .col strong { font-size:12px; text-transform:uppercase; letter-spacing:0.5px; }
+  .warn-box .col.bad  strong { color:var(--crimson); }
+  .warn-box .col.good strong { color:var(--mint-dark); }
+  .warn-box li { font-size:13px; margin-left:16px; margin-top:4px; }
+
+  /* TENSE BANNERS */
+  .tense-section { margin-bottom:18px; animation:slideUp 0.5s var(--bounce) both; }
+  @keyframes slideUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+
+  .tense-banner { display:flex; align-items:center; gap:12px; padding:12px 22px; border-radius:50px; margin-bottom:14px; font-family:'Fredoka One',cursive; font-size:20px; color:white; box-shadow:0 4px 12px rgba(0,0,0,0.12); flex-wrap:wrap; }
+  .tense-banner .sub { font-family:'Nunito',sans-serif; font-size:13px; font-weight:700; opacity:0.85; }
+  .tense-banner .de-tag { font-family:'Nunito',sans-serif; font-size:12px; opacity:0.75; margin-left:auto; background:rgba(255,255,255,0.2); padding:3px 10px; border-radius:20px; }
+  .banner-past    { background:linear-gradient(135deg,var(--lavender),#845EF7); }
+  .banner-present { background:linear-gradient(135deg,var(--mint),#20C997); }
+  .banner-future  { background:linear-gradient(135deg,var(--peach),var(--sun-dark)); }
+  .banner-regret  { background:linear-gradient(135deg,var(--crimson),#FF6B6B); }
+  .banner-cond    { background:linear-gradient(135deg,var(--blue),#4DABF7); }
+
+  /* EXERCISE CARDS */
+  .ex-card { background:white; border-radius:18px; padding:18px 20px; margin-bottom:12px; box-shadow:0 3px 14px rgba(0,0,0,0.08); display:flex; gap:14px; align-items:flex-start; transition:transform 0.2s var(--bounce),box-shadow 0.2s; position:relative; overflow:hidden; }
+  .ex-card:hover { transform:translateY(-2px); box-shadow:0 6px 22px rgba(0,0,0,0.12); }
+  .ex-card.correct { background:#F0FFF4; }
+  .ex-card.wrong   { background:#FFF5F5; }
+  .ex-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:5px; border-radius:18px 0 0 18px; background:#E2E8F0; }
+  .ex-card.correct::before { background:var(--mint); }
+  .ex-card.wrong::before   { background:var(--coral); }
+
+  .ex-num { font-family:'Fredoka One',cursive; font-size:28px; min-width:30px; line-height:1; margin-top:2px; }
+  .ex-body { flex:1; }
+
+  .de-sentence { font-size:13px; color:#888; font-style:italic; margin-bottom:8px; padding:6px 12px; background:#FFFBEB; border-radius:8px; border-left:3px solid var(--sun-dark); }
+  .de-sentence::before { content:'🇩🇪 '; }
+
+  .ex-sentence { font-size:15px; line-height:1.8; font-weight:700; color:var(--text); margin-bottom:10px; }
+  .ex-sentence::before { content:'🇬🇧 '; }
+
+  .tense-pill { display:inline-block; font-size:11px; font-weight:800; padding:2px 10px; border-radius:50px; margin-left:6px; vertical-align:middle; text-transform:uppercase; }
+  .pill-past    { background:#F3F0FF; color:var(--lavender-dark); }
+  .pill-present { background:#EBFBEE; color:var(--mint-dark); }
+  .pill-future  { background:#FFF4E6; color:var(--peach-dark); }
+  .pill-regret  { background:#FFF5F5; color:var(--crimson-dark); }
+  .pill-cond    { background:#E7F5FF; color:var(--blue-dark); }
+
+  .answer-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .answer-input { background:#F7FAFC; border:2.5px solid #E2E8F0; border-radius:12px; color:var(--text); font-family:'Nunito',sans-serif; font-size:15px; font-weight:700; padding:8px 14px; min-width:200px; outline:none; transition:border-color 0.2s,transform 0.15s var(--bounce); }
+  .answer-input:focus { border-color:var(--blue); transform:scale(1.02); }
+  .answer-input.correct-input { border-color:var(--mint); background:#F0FFF4; }
+  .answer-input.wrong-input   { border-color:var(--coral); background:#FFF5F5; animation:shake 0.4s; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
+
+  .btn { font-family:'Nunito',sans-serif; font-size:14px; font-weight:800; padding:8px 18px; border-radius:50px; border:none; cursor:pointer; transition:transform 0.15s var(--bounce),box-shadow 0.15s; }
+  .btn:hover  { transform:scale(1.07); }
+  .btn:active { transform:scale(0.96); }
+  .btn-check  { background:var(--blue); color:white; box-shadow:0 3px 0 var(--blue-dark); }
+  .btn-check:hover { box-shadow:0 5px 0 var(--blue-dark); }
+  .btn-reveal { background:white; color:var(--text-light); border:2px solid #E2E8F0; box-shadow:0 2px 0 #E2E8F0; }
+
+  .hint-text { font-size:13px; font-weight:700; margin-top:8px; display:none; padding:7px 12px; border-radius:10px; line-height:1.5; }
+  .hint-text.show     { display:block; }
+  .hint-text.correct  { background:#EBFBEE; color:var(--mint-dark); }
+  .hint-text.wrong    { background:#FFF5F5; color:var(--coral-dark); }
+  .hint-text.revealed { background:#F8F9FA; color:var(--text-light); }
+
+  /* SPEAKING/WRITING */
+  .speak-card { background:white; border-radius:20px; padding:24px 26px; box-shadow:var(--shadow); border-top:6px solid var(--coral); }
+  .speak-card p { line-height:1.7; margin-bottom:16px; color:var(--text); }
+  .speak-card ul { line-height:2; padding-left:20px; color:var(--text); }
+
+  /* RESULTS */
+  .results-card { background:white; border-radius:20px; padding:30px; box-shadow:var(--shadow); text-align:center; max-width:480px; margin:0 auto; }
+  .results-stars { font-size:44px; letter-spacing:6px; margin-bottom:10px; }
+  .results-score { font-family:'Fredoka One',cursive; font-size:30px; color:var(--coral); margin-bottom:14px; }
+  .results-score span { color:var(--blue); }
+
+  /* ===== NAV BAR ===== */
+  .nav-bar { position:fixed; bottom:0; left:0; right:0; background:white; border-top:3px solid var(--sun); padding:10px 24px; display:flex; align-items:center; gap:16px; z-index:100; box-shadow:0 -4px 20px rgba(0,0,0,0.08); height:60px; }
+  .nav-btn { font-family:'Nunito',sans-serif; font-size:14px; font-weight:800; padding:8px 20px; border-radius:50px; border:none; cursor:pointer; background:var(--blue); color:white; box-shadow:0 3px 0 var(--blue-dark); transition:transform 0.15s var(--bounce); }
+  .nav-btn:hover:not(:disabled) { transform:scale(1.06); }
+  .nav-btn:disabled { opacity:0.35; cursor:default; box-shadow:none; }
+  .dots { flex:1; display:flex; justify-content:center; gap:7px; flex-wrap:wrap; }
+  .dot { width:9px; height:9px; border-radius:50%; background:#E2E8F0; cursor:pointer; transition:all 0.2s; }
+  .dot.active { background:var(--coral); width:22px; border-radius:6px; }
+  .score-chip { font-family:'Fredoka One',cursive; font-size:16px; color:var(--coral); white-space:nowrap; display:none; align-items:center; gap:8px; }
+  .score-chip span { color:var(--blue); }
+  .progress-track { width:80px; height:10px; background:#EEE; border-radius:50px; overflow:hidden; display:none; }
+  .progress-fill  { height:100%; border-radius:50px; background:linear-gradient(to right,var(--coral),var(--sun),var(--mint)); width:0%; transition:width 0.5s var(--bounce); }
+  @media(max-width:700px){ .score-chip, .progress-track { display:none !important; } .nav-bar{ padding:10px 12px; gap:8px; } .nav-btn{ padding:8px 14px; } }
+
+  .confetti-burst { position:fixed; pointer-events:none; z-index:999; font-size:28px; animation:burst 0.9s ease-out forwards; }
+  @keyframes burst { 0%{opacity:1;transform:translateY(0) scale(1)} 100%{opacity:0;transform:translateY(-90px) scale(0.4)} }
+</style>
+</head>
+<body>
+
+<!-- ============ SLIDE 0: HERO / INTRO ============ -->
+<section class="lesson-page active" id="page0">
+  <div class="layout-shell">
+    <div class="image-panel"><img class="step-img" src="Fire Brigade/fire-2-truck.png" alt="A red fire truck parked at dusk with a burning tower block in the background"></div>
+    <div class="content-col">
+      <div class="hero">
+        <h1>MUST &amp; <span>HAVE TO</span></h1>
+        <div class="hero-sub">🇬🇧 English for German Firefighters · All Tenses · B1–B2</div>
+        <p class="hero-desc">In this lesson you will review how <strong>must</strong> and <strong>have to</strong> work across every tense — present, past, future, past regrets and conditional — with sentences from real firefighting situations. Use the buttons below to move through the slides.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 1: GRAMMAR REFERENCE ============ -->
+<section class="lesson-page" id="page1">
+  <div class="layout-shell">
+    <div class="image-panel"><img class="step-img" src="Fire Brigade/fire-2-truck.png" alt="Fire truck at dusk"></div>
+    <div class="content-col">
+      <div class="slide-eyebrow">Grammar reference</div>
+      <div class="slide-title">must vs. have to</div>
+      <div class="ref-grid">
+        <div class="ref-card must-card">
+          <h3>🔴 must</h3>
+          <div class="german-note">🇩🇪 müssen — innere Überzeugung, Befehl, Verbot</div>
+          <table class="tense-table">
+            <tr><th>Use</th><th>Example</th></tr>
+            <tr><td>Present</td><td>You <b>must</b> wear your helmet.<span class="de">innere Überzeugung / Regel</span></td></tr>
+            <tr><td>Future</td><td>I <b>must</b> train next week.<span class="de">persönlicher Entschluss</span></td></tr>
+            <tr><td>Forbidden</td><td>You <b>must not</b> enter.<span class="de">darf nicht = Verbot!</span></td></tr>
+            <tr><td>Past ⚠️</td><td><em>No past form!</em> → use <b>had to</b><span class="de">müssen (Vergangenheit) = had to</span></td></tr>
+          </table>
+        </div>
+        <div class="ref-card haveto-card">
+          <h3>🔵 have to</h3>
+          <div class="german-note">🇩🇪 müssen — äußere Pflicht, Vorschriften, Regeln</div>
+          <table class="tense-table">
+            <tr><th>Tense</th><th>Example</th></tr>
+            <tr><td>Present</td><td>I <b>have to</b> check the hose.<span class="de">externe Regel</span></td></tr>
+            <tr><td>Past</td><td>We <b>had to</b> evacuate.<span class="de">mussten → had to</span></td></tr>
+            <tr><td>Perfect</td><td>He <b>has had to</b> report.<span class="de">hat … müssen → has had to</span></td></tr>
+            <tr><td>Future</td><td>She <b>will have to</b> sign.<span class="de">wird … müssen → will have to</span></td></tr>
+            <tr><td>Not nec.</td><td><b>don't have to</b> = not needed<span class="de">braucht nicht ≠ must not!</span></td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="warn-box">
+        <h4>⚠️ Achtung! Common mistakes for German speakers</h4>
+        <div class="pair">
+          <div class="col bad">
+            <strong>❌ Wrong</strong>
+            <ul>
+              <li>"You <s>must not</s> come" (= forbidden!)<br><em>when you mean: not necessary</em></li>
+              <li>"I <s>must</s> go yesterday"<br><em>must has NO past tense!</em></li>
+            </ul>
+          </div>
+          <div class="col good">
+            <strong>✅ Correct</strong>
+            <ul>
+              <li>"You <b>don't have to</b> come" = nicht nötig</li>
+              <li>"I <b>had to</b> go yesterday" = ich musste</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 2: EXERCISES 1-3 (PAST) ============ -->
+<section class="lesson-page" id="page2">
+  <div class="layout-shell">
+    <div class="image-panel"><img class="step-img" src="Fire Brigade/fire-2-truck.png" alt="Fire truck at dusk"></div>
+    <div class="content-col">
+      <div class="tense-section">
+        <div class="tense-banner banner-past">
+          ⏪ Past <span class="sub">– had to / has had to</span>
+          <span class="de-tag">🇩🇪 Vergangenheit</span>
+        </div>
+
+        <div class="ex-card" id="ex1">
+          <div class="ex-num" style="color:var(--lavender)">1</div>
+          <div class="ex-body">
+            <div class="de-sentence">Gestern mussten wir sehr schnell reagieren.</div>
+            <div class="ex-sentence">Yesterday, we ________ react very quickly. <span class="tense-pill pill-past">Simple Past</span></div>
+            <div class="answer-row">
+              <input class="answer-input" type="text" placeholder="verb phrase…" data-answer="had to" data-id="1">
+              <button class="btn btn-check" onclick="check(1)">✓ Check</button>
+              <button class="btn btn-reveal" onclick="reveal(1)">👁 Show</button>
+            </div>
+            <div class="hint-text" id="hint1"></div>
+          </div>
+        </div>
+
+        <div class="ex-card" id="ex2">
+          <div class="ex-num" style="color:var(--lavender)">2</div>
+          <div class="ex-body">
+            <div class="de-sentence">Der Feuerwehrmann musste die Leiter aufstellen.</div>
+            <div class="ex-sentence">The firefighter ________ put up the ladder. <span class="tense-pill pill-past">Simple Past</span></div>
+            <div class="answer-row">
+              <input class="answer-input" type="text" placeholder="verb phrase…" data-answer="had to" data-id="2">
+              <button class="btn btn-check" onclick="check(2)">✓ Check</button>
+              <button class="btn btn-reveal" onclick="reveal(2)">👁 Show</button>
+            </div>
+            <div class="hint-text" id="hint2"></div>
+          </div>
+        </div>
+
+        <div class="ex-card" id="ex3">
+          <div class="ex-num" style="color:var(--lavender)">3</div>
+          <div class="ex-body">
+            <div class="de-sentence">Er hat diese Woche schon zweimal Überstunden machen müssen.</div>
+            <div class="ex-sentence">He ________ do overtime twice this week already. <span class="tense-pill pill-past">Present Perfect</span></div>
+            <div class="answer-row">
+              <input class="answer-input" type="text" placeholder="verb phrase…" data-answer="has had to" data-id="3">
+              <button class="btn btn-check" onclick="check(3)">✓ Check</button>
+              <button class="btn btn-reveal" onclick="reveal(3)">👁 Show</button>
+            </div>
+            <div class="hint-text" id="hint3"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 3: EXERCISES 4-7 (PRESENT) ============ -->
+<section class="lesson-page" id="page3">
+  <div class="layout-shell">
+    <div class="image-panel"><img class="step-img" src="Fire Brigade/fire-2-truck.png" alt="Fire truck at dusk"></div>
+    <div class="content-col">
+      <div class="tense-section">
+        <div class="tense-banner banner-present">
+          ⏺ Present <span class="sub">– must / have to / must not / don't have to</span>
+          <span class="de-tag">🇩🇪 Gegenwart</span>
+        </div>
+
+        <div class="ex-card" id="ex4">
+          <div class="ex-num" style="color:var(--mint)">4</div>
+          <div class="ex-body">
+            <div class="de-sentence">Es gibt eine offizielle Vorschrift: Alle müssen einen Helm tragen.</div>
+            <div class="ex-sentence">According to regulations, all firefighters ________ wear a helmet on site. <span class="tense-pill pill-present">Present – external rule</span></div>
+            <div class="answer-row">
+              <input class="answer-input" type="text" placeholder="verb phrase…" data-answer="have to" data-id="4">
+              <button class="btn btn-check" onclick="check(4)">✓ Check</button>
+              <button class="btn btn-reveal" onclick="reveal(4)">👁 Show</button>
+            </div>
+            <div class="hint-text" id="hint4"></div>
+          </div>
+        </div>
+
+        <div class="ex-card" id="ex5">
+          <div class="ex-num" style="color:var(--mint)">5</div>
+          <div class="ex-body">
+            <div class="de-sentence">Ich persönlich bin überzeugt: Das ist wirklich sehr gefährlich!</div>
+            <div class="ex-sentence">I think this building is really dangerous — everyone ________ leave now! <span class="tense-pill pill-present">Present – strong conviction</span></div>
+            <div class="answer-row">
+              <input class="answer-input" type="text" placeholder="verb phrase…" data-answer="must" data-id="5">
+              <button class="btn btn-check" onclick="check(5)">✓ Check</button>
+              <button class="btn btn-reveal" onclick="reveal(5)">👁 Show</button>
+            </div>
+            <div class="hint-text" id="hint5"></div>
+          </div>
+        </div>
+
+        <div class="ex-card" id="ex6">
+          <div class="ex-num" style="color:var(--mint)">6</div>
+          <div class="ex-body">
+            <div class="de-sentence">Du darfst auf keinen Fall das Gebäude betreten — Lebensgefahr!</div>
+            <div class="ex-sentence">You ________ enter that building — it is life-threatening! <span class="tense-pill pill-present">Present – forbidden</span></div>
+            <div class="answer-row">
+              <input class="answer-input" type="text" placeholder="verb phrase…" data-answer="must not" data-id="6">
+              <button class="btn btn-check" onclick="check(6)">✓ Check</button>
+              <button class="btn btn-reveal" onclick="reveal(6)">👁 Show</button>
+            </div>
+            <div class="hint-text" id="hint6"></div>
+          </div>
+        </div>
+
+        <div class="ex-card" id="ex7">
+          <div class="ex-num" style="color:var(--mint)">7</div>
+          <div class="ex-body">
+            <div class="de-sentence">Es ist kein Pflichttermin — er braucht nicht zu kommen.</div>
+            <div class="ex-sentence">It is optional — he ________ attend the meeting. <span class="tense-pill pill-present">Present – not necessary</span></div>
+            <div class="answer-row">
+              <input class="answer-input" type="text" placeholder="verb phrase…" data-answer="doesn't have to" data-id="7">
+              <button class="btn btn-check" onclick="check(7)">✓ Check</button>
+              <button class="btn btn-reveal" onclick="reveal(7)">👁 Show</button>
+            </div>
+            <div class="hint-text" id="hint7"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 4: EXERCISES 8-10 (FUTURE) ============ -->
+<section class="lesson-page" id="page4">
+  <div class="layout-shell">
+    <div class="image-panel"><img class="step-img" src="Fire Brigade/fire-2-truck.png" alt="Fire truck at dusk"></div>
+    <div class="content-col">
+      <div class="tense-section">
+        <div class="tense-banner banner-future">
+          ⏩ Future <span class="sub">– must / will have to</span>
+          <span class="de-tag">🇩🇪 Zukunft</span>
+        </div>
+
+        <div class="ex-card" id="ex8">
+          <div class="ex-num" style="color:var(--peach)">8</div>
+          <div class="ex-body">
+            <div class="de-sentence">Ich habe mir fest vorgenommen: Nächste Woche gehe ich ins Fitnessstudio.</div>
+            <div class="ex-sentence">I ________ go to the gym next week — I've already decided. <span class="tense-pill pill-future">Future – personal decision</span></div>
+            <div class="answer-row">
+              <input class="answer-input" type="text" placeholder="verb phrase…" data-answer="must" data-id="8">
+              <button class="btn btn-check" onclick="check(8)">✓ Check</button>
+              <button class="btn btn-reveal" onclick="reveal(8)">👁 Show</button>
+            </div>
+            <div class="hint-text" id="hint8"></div>
+          </div>
+        </div>
+
+        <div class="ex-card" id="ex9">
+          <div class="ex-num" style="color:var(--peach)">9</div>
+          <div class="ex-body">
+            <div class="de-sentence">Die neue Vorschrift tritt nächsten Monat in Kraft — alle werden sich daran halten müssen.</div>
+            <div class="ex-sentence">The new regulation starts next month — everyone ________ follow it. <span class="tense-pill pill-future">Future – external obligation</span></div>
+            <div class="answer-row">
+              <input class="answer-input" type="text" placeholder="verb phrase…" data-answer="will have to" data-id="9">
+              <button class="btn btn-check" onclick="check(9)">✓ Check</button>
+              <button class="btn btn-reveal" onclick="reveal(9)">👁 Show</button>
+            </div>
+            <div class="hint-text" id="hint9"></div>
+          </div>
+        </div>
+
+        <div class="ex-card" id="ex10">
+          <div class="ex-num" style="color:var(--peach)">10</div>
+          <div class="ex-body">
+            <div class="de-sentence">Nach dem Einsatz wird der Kommandant einen Bericht erstatten müssen.</div>
+            <div class="ex-sentence">After the operation, the commander ________ submit a full report. <span class="tense-pill pill-future">Future – external rule</span></div>
+            <div class="answer-row">
+              <input class="answer-input" type="text" placeholder="verb phrase…" data-answer="will have to" data-id="10">
+              <button class="btn btn-check" onclick="check(10)">✓ Check</button>
+              <button class="btn btn-reveal" onclick="reveal(10)">👁 Show</button>
+            </div>
+            <div class="hint-text" id="hint10"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 5: EXERCISES 11-15 (PAST REGRETS) ============ -->
+<section class="lesson-page" id="page5">
+  <div class="layout-shell">
+    <div class="image-panel"><img class="step-img" src="Fire Brigade/fire-2-truck.png" alt="Fire truck at dusk"></div>
+    <div class="content-col">
+      <div class="tense-section">
+        <div class="tense-banner banner-regret">
+          😔 Past Regrets &amp; Criticism <span class="sub">– should have / shouldn't have / needn't have</span>
+          <span class="de-tag">🇩🇪 Vorwürfe &amp; Bedauern</span>
+        </div>
+
+        <div class="ex-card" id="ex11">
+          <div class="ex-num" style="color:var(--crimson)">11</div>
+          <div class="ex-body">
+            <div class="de-sentence">Du hättest früher Alarm schlagen sollen! (Vorwurf)</div>
+            <div class="ex-sentence">You ________ raised the alarm earlier! We lost time. <span class="tense-pill pill-regret">Criticism</span></div>
+            <div class="answer-row">
+              <input class="answer-input" type="text" placeholder="verb phrase…" data-answer="should have" data-id="11">
+              <button class="btn btn-check" onclick="check(11)">✓ Check</button>
+              <button class="btn btn-reveal" onclick="reveal(11)">👁 Show</button>
+            </div>
+            <div class="hint-text" id="hint11"></div>
+          </div>
+        </div>
+
+        <div class="ex-card" id="ex12">
+          <div class="ex-num" style="color:var(--crimson)">12</div>
+          <div class="ex-body">
+            <div class="de-sentence">Wir hätten mehr trainieren sollen — der Einsatz war sehr schwierig.</div>
+            <div class="ex-sentence">We ________ trained more — the operation was very difficult. <span class="tense-pill pill-regret">Regret</span></div>
+            <div class="answer-row">
+              <input class="answer-input" type="text" placeholder="verb phrase…" data-answer="should have" data-id="12">
+              <button class="btn btn-check" onclick="check(12)">✓ Check</button>
+              <button class="btn btn-reveal" onclick="reveal(12)">👁 Show</button>
+            </div>
+            <div class="hint-text" id="hint12"></div>
+          </div>
+        </div>
+
+        <div class="ex-card" id="ex13">
+          <div class="ex-num" style="color:var(--crimson)">13</div>
+          <div class="ex-body">
+            <div class="de-sentence">Er hat das Gebäude betreten — das war falsch und gefährlich.</div>
+            <div class="ex-sentence">He ________ entered that building — it was far too dangerous. <span class="tense-pill pill-regret">Criticism – wrong action</span></div>
+            <div class="answer-row">
+              <input class="answer-input" type="text" placeholder="verb phrase…" data-answer="shouldn't have" data-id="13">
+              <button class="btn btn-check" onclick="check(13)">✓ Check</button>
+              <button class="btn btn-reveal" onclick="reveal(13)">👁 Show</button>
+            </div>
+            <div class="hint-text" id="hint13"></div>
+          </div>
+        </div>
+
+        <div class="ex-card" id="ex14">
+          <div class="ex-num" style="color:var(--crimson)">14</div>
+          <div class="ex-body">
+            <div class="de-sentence">Es war doch gar nicht nötig, dass du die ganze Nacht geblieben bist!</div>
+            <div class="ex-sentence">You ________ stayed all night — the situation was under control! <span class="tense-pill pill-regret">Unnecessary past action</span></div>
+            <div class="answer-row">
+              <input class="answer-input" type="text" placeholder="verb phrase…" data-answer="needn't have" data-id="14">
+              <button class="btn btn-check" onclick="check(14)">✓ Check</button>
+              <button class="btn btn-reveal" onclick="reveal(14)">👁 Show</button>
+            </div>
+            <div class="hint-text" id="hint14"></div>
+          </div>
+        </div>
+
+        <div class="ex-card" id="ex15">
+          <div class="ex-num" style="color:var(--crimson)">15</div>
+          <div class="ex-body">
+            <div class="de-sentence">Der Einsatzleiter bedauert: Ich hätte die Entscheidung anders treffen sollen.</div>
+            <div class="ex-sentence">The incident commander says: "I ________ made a different decision — I regret it now." <span class="tense-pill pill-regret">Personal regret</span></div>
+            <div class="answer-row">
+              <input class="answer-input" type="text" placeholder="verb phrase…" data-answer="should have" data-id="15">
+              <button class="btn btn-check" onclick="check(15)">✓ Check</button>
+              <button class="btn btn-reveal" onclick="reveal(15)">👁 Show</button>
+            </div>
+            <div class="hint-text" id="hint15"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 6: EXERCISES 16-17 (CONDITIONAL) ============ -->
+<section class="lesson-page" id="page6">
+  <div class="layout-shell">
+    <div class="image-panel"><img class="step-img" src="Fire Brigade/fire-2-truck.png" alt="Fire truck at dusk"></div>
+    <div class="content-col">
+      <div class="tense-section">
+        <div class="tense-banner banner-cond">
+          💭 Conditional <span class="sub">– would have to</span>
+          <span class="de-tag">🇩🇪 Konjunktiv II</span>
+        </div>
+
+        <div class="ex-card" id="ex16">
+          <div class="ex-num" style="color:var(--blue)">16</div>
+          <div class="ex-body">
+            <div class="de-sentence">Wenn der Brand größer wäre, müsstest du alle evakuieren.</div>
+            <div class="ex-sentence">If the fire were bigger, you ________ evacuate the whole area. <span class="tense-pill pill-cond">Conditional</span></div>
+            <div class="answer-row">
+              <input class="answer-input" type="text" placeholder="verb phrase…" data-answer="would have to" data-id="16">
+              <button class="btn btn-check" onclick="check(16)">✓ Check</button>
+              <button class="btn btn-reveal" onclick="reveal(16)">👁 Show</button>
+            </div>
+            <div class="hint-text" id="hint16"></div>
+          </div>
+        </div>
+
+        <div class="ex-card" id="ex17">
+          <div class="ex-num" style="color:var(--blue)">17</div>
+          <div class="ex-body">
+            <div class="de-sentence">Ohne das neue Fahrzeug müssten wir viel länger warten.</div>
+            <div class="ex-sentence">Without the new vehicle, we ________ wait much longer. <span class="tense-pill pill-cond">Conditional</span></div>
+            <div class="answer-row">
+              <input class="answer-input" type="text" placeholder="verb phrase…" data-answer="would have to" data-id="17">
+              <button class="btn btn-check" onclick="check(17)">✓ Check</button>
+              <button class="btn btn-reveal" onclick="reveal(17)">👁 Show</button>
+            </div>
+            <div class="hint-text" id="hint17"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 7: FREE SPEAKING / WRITING ============ -->
+<section class="lesson-page" id="page7">
+  <div class="layout-shell">
+    <div class="image-panel"><img class="step-img" src="Fire Brigade/fire-2-truck.png" alt="Fire truck at dusk"></div>
+    <div class="content-col">
+      <div class="slide-eyebrow">Activation round</div>
+      <div class="slide-title">Free Speaking or Writing</div>
+      <div class="speak-card">
+        <p>No right or wrong answer here — speak or write freely. Use as many sentences with <strong>must</strong> and <strong>have to</strong> as you can.</p>
+        <ul>
+          <li>What did you absolutely have to get done this week?</li>
+          <li>Describe a typical shift at the fire station — what does a firefighter have to do?</li>
+          <li>Think of a time you had to make a fast decision in an emergency. What happened?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 8: RESULTS ============ -->
+<section class="lesson-page" id="page8">
+  <div class="layout-shell">
+    <div class="image-panel"><img class="step-img" src="Fire Brigade/fire-2-truck.png" alt="Fire truck at dusk"></div>
+    <div class="content-col">
+      <div class="slide-eyebrow">Well done</div>
+      <div class="slide-title">Your Results</div>
+      <div class="results-card">
+        <div class="results-stars" id="starDisplay">☆</div>
+        <div class="results-score">Score: <span id="scoreDisplay">0 / 17</span></div>
+        <div class="progress-track" style="display:block; width:100%; height:14px; margin:0 auto 18px;"><div class="progress-fill" id="progressFillBig" style="width:0%"></div></div>
+        <button class="nav-btn" onclick="resetAll()">🔄 Reset answers</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FIXED NAV BAR ============ -->
+<nav class="nav-bar">
+  <button class="nav-btn" id="backBtn" onclick="goPage(-1)">← Back</button>
+  <div class="dots" id="dots"></div>
+  <div class="score-chip"><span id="scoreDisplayNav">0</span>/17</div>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <button class="nav-btn" id="nextBtn" onclick="goPage(1)">Next →</button>
+</nav>
+
+<script>
+const TOTAL = 17;
+const answers = {};
+let correct = 0;
+
+const hints = {
+  1:  { c:"🎉 had to — past of 'have to' (must has NO past form!)", w:"✗ had to — mussten → we had to. Remember: must has no past tense!" },
+  2:  { c:"🎉 had to — simple past (er musste → he had to)", w:"✗ had to — musste → had to (simple past)" },
+  3:  { c:"🎉 has had to — present perfect of 'have to' (have + had to)", w:"✗ has had to — present perfect: has/have + had to" },
+  4:  { c:"🎉 have to — external rule (Vorschrift) → have to, not must", w:"✗ have to — official rules/regulations use 'have to'" },
+  5:  { c:"🎉 must — personal strong conviction → must (not have to)", w:"✗ must — your own strong feeling/conviction → must" },
+  6:  { c:"🎉 must not — 'darf nicht' = forbidden → must not (≠ don't have to!)", w:"✗ must not — forbidden = must not. Don't have to = not necessary (very different!)" },
+  7:  { c:"🎉 doesn't have to — 'braucht nicht' = not necessary → doesn't have to", w:"✗ doesn't have to — not necessary = don't/doesn't have to (NOT must not!)" },
+  8:  { c:"🎉 must — personal decision about the future → must (not will have to)", w:"✗ must — your own personal commitment about the future uses 'must'" },
+  9:  { c:"🎉 will have to — future external obligation (neue Vorschrift)", w:"✗ will have to — future rule from outside → will have to" },
+  10: { c:"🎉 will have to — future external requirement", w:"✗ will have to — future obligation from rules → will have to" },
+  11: { c:"🎉 should have — criticism: they didn't do it but they should have", w:"✗ should have — hättest sollen → should have (+ past participle)" },
+  12: { c:"🎉 should have — regret: we didn't train enough but we should have", w:"✗ should have — hätten sollen → should have (+ past participle)" },
+  13: { c:"🎉 shouldn't have — he did it but he shouldn't have (wrong action)", w:"✗ shouldn't have — he did the wrong thing → shouldn't have (+ past participle)" },
+  14: { c:"🎉 needn't have — you did it but it wasn't necessary (war nicht nötig)", w:"✗ needn't have — done but not necessary → needn't have (different from shouldn't have!)" },
+  15: { c:"🎉 should have — personal regret about a past decision", w:"✗ should have — hätte sollen → should have (+ past participle)" },
+  16: { c:"🎉 would have to — conditional (wenn … dann müsstest du → would have to)", w:"✗ would have to — conditional: if … would have to" },
+  17: { c:"🎉 would have to — conditional without the new vehicle", w:"✗ would have to — müssten → would have to (conditional)" },
+};
+
+function norm(s) {
+  return s.trim().toLowerCase().replace(/\s+/g,' ')
+    .replace(/n't/g," not").replace(/shouldn't/g,"should not").replace(/needn't/g,"need not").replace(/doesn't/g,"does not");
+}
+function normAns(s) {
+  return s.trim().toLowerCase().replace(/\s+/g,' ')
+    .replace(/shouldn't/g,"should not").replace(/needn't/g,"need not").replace(/doesn't/g,"does not");
+}
+
+function check(id) {
+  if (answers[id]) return;
+  const inp   = document.querySelector(`[data-id="${id}"]`);
+  const block = document.getElementById(`ex${id}`);
+  const hint  = document.getElementById(`hint${id}`);
+  const user  = norm(inp.value);
+  const ans   = normAns(inp.dataset.answer);
+
+  if (user === ans) {
+    answers[id] = 'correct';
+    block.classList.add('correct');
+    inp.classList.add('correct-input');
+    hint.textContent = hints[id].c;
+    hint.className = 'hint-text show correct';
+    correct++;
+    burst(inp);
+  } else {
+    answers[id] = 'wrong';
+    block.classList.add('wrong');
+    inp.classList.add('wrong-input');
+    hint.textContent = hints[id].w;
+    hint.className = 'hint-text show wrong';
+  }
+  updateScore();
+}
+
+function reveal(id) {
+  if (answers[id]) return;
+  const inp  = document.querySelector(`[data-id="${id}"]`);
+  const hint = document.getElementById(`hint${id}`);
+  inp.value = inp.dataset.answer;
+  inp.classList.add('correct-input');
+  answers[id] = 'revealed';
+  hint.textContent = '👁 Answer: ' + inp.dataset.answer;
+  hint.className = 'hint-text show revealed';
+  updateScore();
+}
+
+function updateScore() {
+  document.getElementById('scoreDisplay').textContent = `${correct} / ${TOTAL}`;
+  document.getElementById('scoreDisplayNav').textContent = correct;
+  const pct = (correct/TOTAL*100) + '%';
+  document.getElementById('progressFill').style.width = pct;
+  document.getElementById('progressFillBig').style.width = pct;
+  const s = correct===TOTAL ? '⭐⭐⭐' : correct >= 12 ? '⭐⭐' : correct >= 6 ? '⭐' : '☆';
+  document.getElementById('starDisplay').textContent = s;
+}
+
+function burst(el) {
+  const emojis = ['🎉','✨','🔥','⭐','🎊','💥','🚒'];
+  const r = el.getBoundingClientRect();
+  for (let i=0; i<5; i++) {
+    const d = document.createElement('div');
+    d.className = 'confetti-burst';
+    d.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    d.style.left = (r.left + r.width/2 + (Math.random()-0.5)*100) + 'px';
+    d.style.top  = (r.top - 10) + 'px';
+    d.style.animationDelay = (i*0.08) + 's';
+    document.body.appendChild(d);
+    setTimeout(() => d.remove(), 1100);
+  }
+}
+
+function resetAll() {
+  for (let i=1; i<=TOTAL; i++) {
+    const inp   = document.querySelector(`[data-id="${i}"]`);
+    const block = document.getElementById(`ex${i}`);
+    const hint  = document.getElementById(`hint${i}`);
+    inp.value = '';
+    inp.className = 'answer-input';
+    block.className = 'ex-card';
+    hint.className = 'hint-text';
+    delete answers[i];
+  }
+  correct = 0;
+  updateScore();
+}
+
+document.querySelectorAll('.answer-input').forEach(inp => {
+  inp.addEventListener('keydown', e => { if(e.key==='Enter') check(Number(inp.dataset.id)); });
+});
+
+/* ===== SLIDE DECK NAVIGATION ===== */
+const pages = Array.from(document.querySelectorAll('.lesson-page'));
+const PAGE_COUNT = pages.length;
+let current = 0;
+
+const dotsEl = document.getElementById('dots');
+for (let i=0; i<PAGE_COUNT; i++) {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i===0 ? ' active' : '');
+  d.addEventListener('click', () => { current = i; render(); });
+  dotsEl.appendChild(d);
+}
+const dotEls = Array.from(dotsEl.children);
+
+function render() {
+  pages.forEach((p, i) => p.classList.toggle('active', i === current));
+  dotEls.forEach((d, i) => d.classList.toggle('active', i === current));
+  document.getElementById('backBtn').disabled = current === 0;
+  document.getElementById('nextBtn').disabled = current === PAGE_COUNT - 1;
+  const scoreChip = document.querySelector('.score-chip');
+  const progTrack = document.querySelector('.nav-bar .progress-track');
+  const showScoreUI = current >= 2 && current <= 6;
+  scoreChip.style.display = showScoreUI ? 'flex' : 'none';
+  progTrack.style.display = showScoreUI ? 'block' : 'none';
+  pages[current].scrollTop = 0;
+}
+
+function goPage(delta) {
+  const next = current + delta;
+  if (next < 0 || next >= PAGE_COUNT) return;
+  current = next;
+  render();
+}
+
+render();
+</script>
+</body>
+</html>

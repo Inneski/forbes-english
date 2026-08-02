@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Lesson – Past Simple | Busch Gardens Tampa</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --jungle: #0a4f2e;
+    --leaf: #1a8c4e;
+    --lime: #4cd964;
+    --sky: #0097b2;
+    --sun: #ffb800;
+    --fire: #ff5722;
+    --sand: #fff8e7;
+    --cream: #fffdf5;
+    --bark: #3d2b1f;
+    --mist: #e8f7ef;
+    --purple: #7c3aed;
+    --red: #dc2626;
+    --gold: #f59e0b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--cream);
+    background-image:
+      radial-gradient(ellipse at 10% 10%, rgba(76,217,100,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 90% 80%, rgba(0,151,178,0.08) 0%, transparent 50%);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, var(--jungle) 0%, #0d6e3f 40%, var(--sky) 100%);
+    color: white;
+    padding: 3rem 1.5rem 5rem;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+  .hero::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+  .hero-emoji-row {
+    font-size: 2.5rem;
+    letter-spacing: 0.5rem;
+    margin-bottom: 1rem;
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+  .hero h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(2rem, 6vw, 4rem);
+    letter-spacing: 1px;
+    line-height: 1.1;
+    text-shadow: 0 3px 12px rgba(0,0,0,0.3);
+  }
+  .hero h1 span { color: var(--sun); }
+  .hero p {
+    margin-top: 0.75rem;
+    font-size: 1.1rem;
+    opacity: 0.9;
+    font-style: italic;
+  }
+
+  .progress-bar-wrap {
+    max-width: 500px;
+    margin: 2rem auto 0;
+    background: rgba(255,255,255,0.2);
+    border-radius: 99px;
+    height: 14px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--lime), var(--sun));
+    border-radius: 99px;
+    transition: width 0.6s cubic-bezier(.4,0,.2,1);
+  }
+  .progress-label {
+    font-size: 0.85rem;
+    opacity: 0.85;
+    margin-top: 0.4rem;
+  }
+
+  /* ── NAV TABS ── */
+  .nav-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    padding: 1.5rem 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,253,245,0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid rgba(0,0,0,0.06);
+    box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+  }
+  .tab-btn {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 0.5rem 1.1rem;
+    border: 2.5px solid transparent;
+    border-radius: 99px;
+    cursor: pointer;
+    background: var(--mist);
+    color: var(--jungle);
+    transition: all 0.25s;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+  .tab-btn.active { background: var(--jungle); color: white; box-shadow: 0 4px 14px rgba(10,79,46,0.3); }
+
+  /* ── SECTIONS ── */
+  .section { display: none; max-width: 820px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+  .section.visible { display: block; animation: fadeUp 0.4s ease both; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:none} }
+
+  /* ── CARDS ── */
+  .card {
+    background: white;
+    border-radius: 20px;
+    padding: 1.5rem 1.75rem;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+    margin-bottom: 1.5rem;
+    border: 1.5px solid rgba(0,0,0,0.05);
+  }
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  .card-icon {
+    font-size: 1.8rem;
+    line-height: 1;
+  }
+  .card-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.35rem;
+    color: var(--bark);
+  }
+
+  /* ── FORMULA BOX ── */
+  .formula {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+  .formula.green { background: #dcfce7; color: var(--jungle); border: 2px solid #86efac; }
+  .formula.red   { background: #fee2e2; color: #991b1b; border: 2px solid #fca5a5; }
+  .formula.purple{ background: #ede9fe; color: #4c1d95; border: 2px solid #c4b5fd; }
+
+  .formula span { background: white; border-radius: 6px; padding: 2px 8px; font-size: 0.9rem; }
+
+  .tip {
+    background: #fff9e6;
+    border-left: 4px solid var(--sun);
+    border-radius: 0 12px 12px 0;
+    padding: 0.65rem 1rem;
+    font-size: 0.9rem;
+    color: #78400a;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  /* ── EXAMPLE ROWS ── */
+  .example-row {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.5rem 1rem;
+    align-items: start;
+    padding: 0.75rem 0;
+    border-bottom: 1px dashed rgba(0,0,0,0.08);
+    font-size: 0.95rem;
+  }
+  .example-row:last-child { border-bottom: none; }
+  .example-subj {
+    font-weight: 800;
+    color: var(--jungle);
+    min-width: 70px;
+  }
+  .example-en { font-weight: 600; color: #1a1a1a; }
+  .example-es { font-style: italic; color: #777; font-size: 0.85rem; }
+
+  /* ── VOCAB TABLE ── */
+  .vocab-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 0.75rem;
+  }
+  .vocab-item {
+    background: var(--mist);
+    border-radius: 14px;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid #c6f0d6;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .vocab-item:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(26,140,78,0.15); }
+  .vocab-item .v-en { font-weight: 800; color: var(--jungle); font-size: 0.95rem; }
+  .vocab-item .v-es { font-size: 0.82rem; color: #555; margin-top: 2px; }
+  .vocab-item .v-ex { font-size: 0.8rem; color: var(--sky); margin-top: 4px; font-style: italic; display: none; }
+  .vocab-item.revealed .v-ex { display: block; }
+  .vocab-item .reveal-hint { font-size: 0.72rem; color: #aaa; margin-top: 4px; }
+
+  /* ── EXERCISES ── */
+  .exercise-section { margin-bottom: 2rem; }
+  .ex-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.2rem;
+    margin-bottom: 0.3rem;
+    color: var(--bark);
+  }
+  .ex-instruction {
+    font-size: 0.88rem;
+    color: #666;
+    font-style: italic;
+    margin-bottom: 1rem;
+  }
+
+  .question-card {
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 0.85rem;
+    transition: border-color 0.3s;
+  }
+  .question-card.correct { border-color: var(--lime); background: #f0fdf4; }
+  .question-card.wrong { border-color: var(--red); background: #fef2f2; }
+
+  .q-prompt { font-weight: 700; color: #1a1a1a; font-size: 0.95rem; margin-bottom: 0.5rem; }
+  .q-spanish { font-style: italic; color: #888; font-size: 0.83rem; margin-bottom: 0.65rem; }
+
+  .q-input {
+    width: 100%;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 0.5rem 0.75rem;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    outline: none;
+    transition: border-color 0.2s;
+    background: #fafafa;
+  }
+  .q-input:focus { border-color: var(--leaf); background: white; }
+  .question-card.correct .q-input { border-color: var(--lime); color: var(--jungle); }
+  .question-card.wrong .q-input { border-color: var(--red); }
+
+  /* MCQ */
+  .mcq-options { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
+  .mcq-btn {
+    background: #f3f4f6;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 0.45rem 1rem;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #374151;
+  }
+  .mcq-btn:hover:not(:disabled) { border-color: var(--sky); background: #e0f2fe; color: var(--sky); transform: translateY(-2px); }
+  .mcq-btn.selected-correct { background: #dcfce7; border-color: var(--leaf); color: var(--jungle); }
+  .mcq-btn.selected-wrong { background: #fee2e2; border-color: var(--red); color: var(--red); }
+  .mcq-btn.show-answer { background: #dcfce7; border-color: var(--leaf); color: var(--jungle); opacity: 0.7; }
+  .mcq-btn:disabled { cursor: default; }
+
+  .feedback {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.ok { color: var(--leaf); }
+  .feedback.no { color: var(--red); }
+
+  /* ── SUBMIT BTN ── */
+  .check-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, var(--jungle), var(--leaf));
+    color: white;
+    border: none;
+    border-radius: 99px;
+    padding: 0.7rem 1.8rem;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 1rem;
+    box-shadow: 0 4px 14px rgba(10,79,46,0.35);
+    transition: all 0.2s;
+  }
+  .check-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(10,79,46,0.4); }
+  .check-btn:active { transform: translateY(0); }
+
+  .score-badge {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    background: var(--mist);
+    border: 2px solid #86efac;
+    border-radius: 14px;
+    padding: 0.65rem 1.2rem;
+    font-weight: 800;
+    color: var(--jungle);
+    font-size: 0.95rem;
+  }
+  .score-badge.show { display: flex; }
+
+  /* ── SPEAKING ── */
+  .speaking-prompt {
+    background: linear-gradient(135deg, #0a4f2e, #0d6e3f);
+    color: white;
+    border-radius: 18px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .speaking-prompt p { font-size: 0.95rem; line-height: 1.6; }
+  .speaking-prompt strong { color: var(--sun); }
+
+  textarea.q-input {
+    min-height: 70px;
+    resize: vertical;
+    line-height: 1.5;
+  }
+
+  /* ── SUMMARY ── */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+  }
+  .summary-card {
+    border-radius: 18px;
+    padding: 1.25rem 1.4rem;
+    border: 2.5px solid;
+  }
+  .summary-card.pos { background: #f0fdf4; border-color: #86efac; }
+  .summary-card.neg { background: #fef2f2; border-color: #fca5a5; }
+  .summary-card.que { background: #ede9fe; border-color: #c4b5fd; }
+  .summary-card h3 { font-family: 'Fredoka One', cursive; font-size: 1.15rem; margin-bottom: 0.4rem; }
+  .summary-card.pos h3 { color: var(--jungle); }
+  .summary-card.neg h3 { color: var(--red); }
+  .summary-card.que h3 { color: var(--purple); }
+  .summary-card .formula-mini { font-weight: 800; font-size: 0.85rem; background: rgba(0,0,0,0.06); border-radius: 8px; padding: 3px 8px; display: inline-block; margin-bottom: 0.5rem; }
+  .summary-card .ex { font-size: 0.85rem; color: #444; line-height: 1.5; }
+  .summary-card .trans { font-size: 0.78rem; color: #888; font-style: italic; }
+
+  /* ── ANIMATIONS ── */
+  .burst { animation: burst 0.4s ease both; }
+  @keyframes burst { 0%{transform:scale(0.8);opacity:0} 60%{transform:scale(1.1)} 100%{transform:scale(1);opacity:1} }
+
+  /* ── FOOTER ── */
+  .lesson-footer {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    font-size: 0.85rem;
+    color: #aaa;
+    background: white;
+    border-top: 1px solid #f0f0f0;
+  }
+
+  /* ── CONFETTI ── */
+  .confetti-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
+  .confetti-piece {
+    position: absolute;
+    width: 10px; height: 10px;
+    border-radius: 2px;
+    animation: confetti-fall 2s ease forwards;
+  }
+  @keyframes confetti-fall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 1.8rem; }
+    .vocab-grid { grid-template-columns: 1fr 1fr; }
+    .summary-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-emoji-row">🎢 🐆 🦁 🌴 🎡</div>
+  <h1>English Lesson<br><span>Past Simple</span></h1>
+  <p>¡Una aventura en Busch Gardens Tampa! 🌴 — for Spanish speakers in Miami</p>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="globalProgress"></div>
+  </div>
+  <div class="progress-label" id="progressLabel">Complete exercises to track your progress!</div>
+</div>
+
+<nav class="nav-tabs">
+  <button class="tab-btn active" onclick="showSection('vocab')">📖 Vocabulary</button>
+  <button class="tab-btn" onclick="showSection('grammar')">📚 Grammar</button>
+  <button class="tab-btn" onclick="showSection('ex1')">✅ Ex. 1 Positive</button>
+  <button class="tab-btn" onclick="showSection('ex2')">❌ Ex. 2 Negative</button>
+  <button class="tab-btn" onclick="showSection('ex3')">❓ Ex. 3 Questions</button>
+  <button class="tab-btn" onclick="showSection('ex4')">🌴 Ex. 4 Speaking</button>
+  <button class="tab-btn" onclick="showSection('summary')">🗂️ Summary</button>
+</nav>
+
+<!-- ══════════════════════════════════════════ VOCAB -->
+<section class="section visible" id="sec-vocab">
+  <div class="card">
+    <div class="card-header">
+      <span class="card-icon">📖</span>
+      <span class="card-title">Key Vocabulary — Vocabulario Clave</span>
+    </div>
+    <p style="font-size:0.88rem;color:#666;margin-bottom:1rem;">👇 Tap each word to see an example sentence! <em>(¡Toca cada palabra para ver un ejemplo!)</em></p>
+    <div class="vocab-grid" id="vocabGrid"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ GRAMMAR -->
+<section class="section" id="sec-grammar">
+  <!-- POSITIVE -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-icon">✅</span>
+      <span class="card-title">POSITIVE — Afirmativo</span>
+    </div>
+    <div class="formula green">
+      <span>Subject</span> + <span>Past Verb</span>
+    </div>
+    <div class="tip">⚠️ Regular verbs add <strong>-ed</strong> (waited, enjoyed). Irregular verbs change completely (go → went, see → saw, ride → rode). <em>(Los verbos irregulares cambian de forma.)</em></div>
+    <div id="posExamples"></div>
+  </div>
+
+  <!-- NEGATIVE -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-icon">❌</span>
+      <span class="card-title">NEGATIVE — Negativo</span>
+    </div>
+    <div class="formula red">
+      <span>Subject</span> + <span>didn't</span> + <span>Base Verb</span>
+    </div>
+    <div class="tip">⚠️ The main verb returns to its <strong>base form</strong> — DID does all the past work! <em>(El verbo principal vuelve a su forma base. ¡DID hace el trabajo!)</em></div>
+    <div id="negExamples"></div>
+  </div>
+
+  <!-- QUESTIONS -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-icon">❓</span>
+      <span class="card-title">QUESTIONS — Preguntas</span>
+    </div>
+    <div class="formula purple">
+      <span>Did</span> + <span>Subject</span> + <span>Base Verb</span> + <span>?</span>
+    </div>
+    <div class="tip">
+      💬 Short answers: <strong>Yes, I did.</strong> &nbsp;/&nbsp; <strong>No, I didn't.</strong>
+      <em>(Así se responde de forma corta.)</em>
+    </div>
+    <div id="queExamples"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ EX 1 -->
+<section class="section" id="sec-ex1">
+  <div class="card">
+    <div class="card-header"><span class="card-icon">✅</span><span class="card-title">Exercise 1 — Make it POSITIVE</span></div>
+    <p class="ex-instruction">Choose the correct past form to complete each sentence. <em>(Elige la forma correcta del pasado.)</em></p>
+    <div id="ex1Container"></div>
+    <button class="check-btn" onclick="checkEx1()">🔍 Check Answers</button>
+    <div class="score-badge" id="ex1Score"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ EX 2 -->
+<section class="section" id="sec-ex2">
+  <div class="card">
+    <div class="card-header"><span class="card-icon">❌</span><span class="card-title">Exercise 2 — Make it NEGATIVE</span></div>
+    <p class="ex-instruction">Type the negative form using <strong>didn't</strong>. <em>(Escribe la forma negativa usando didn't.)</em></p>
+    <div id="ex2Container"></div>
+    <button class="check-btn" onclick="checkEx2()">🔍 Check Answers</button>
+    <div class="score-badge" id="ex2Score"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ EX 3 -->
+<section class="section" id="sec-ex3">
+  <div class="card">
+    <div class="card-header"><span class="card-icon">❓</span><span class="card-title">Exercise 3 — Make it a QUESTION</span></div>
+    <p class="ex-instruction">Choose the correct question form. <em>(Elige la pregunta correcta.)</em></p>
+    <div id="ex3Container"></div>
+    <div class="score-badge" id="ex3Score" style="margin-top:1rem;"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ EX 4 -->
+<section class="section" id="sec-ex4">
+  <div class="card">
+    <div class="card-header"><span class="card-icon">🌴</span><span class="card-title">Exercise 4 — Tell Your Story!</span></div>
+    <div class="speaking-prompt">
+      <p>🎢 <strong>Imagine you visited Busch Gardens Tampa last weekend!</strong> Answer these questions in full sentences using the past simple.<br>
+      <em>(¡Imagina que fuiste a Busch Gardens el fin de semana pasado! Responde con oraciones completas en pasado simple.)</em></p>
+    </div>
+    <div id="ex4Container"></div>
+    <button class="check-btn" onclick="saveSpeaking()">💾 Save My Answers</button>
+    <div class="score-badge" id="ex4Score"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════ SUMMARY -->
+<section class="section" id="sec-summary">
+  <div class="card">
+    <div class="card-header"><span class="card-icon">🗂️</span><span class="card-title">Quick Summary — Resumen Rápido</span></div>
+    <div class="summary-grid">
+      <div class="summary-card pos">
+        <h3>✅ Positive</h3>
+        <div class="formula-mini">Subject + past verb</div>
+        <div class="ex">I <strong>rode</strong> SheiKra.<br>She <strong>saw</strong> the cheetahs.<br>We <strong>ate</strong> near the Serengeti.</div>
+        <div class="trans">Monté / Ella vio / Comimos</div>
+      </div>
+      <div class="summary-card neg">
+        <h3>❌ Negative</h3>
+        <div class="formula-mini">Subject + didn't + base verb</div>
+        <div class="ex">I <strong>didn't ride</strong> SheiKra.<br>She <strong>didn't see</strong> the lions.<br>We <strong>didn't wait</strong> long.</div>
+        <div class="trans">No monté / No vio / No esperamos</div>
+      </div>
+      <div class="summary-card que">
+        <h3>❓ Question</h3>
+        <div class="formula-mini">Did + subject + base verb?</div>
+        <div class="ex"><strong>Did</strong> you <strong>ride</strong> Montu?<br><strong>Did</strong> she <strong>see</strong> the giraffes?<br>Yes, I <strong>did</strong>. / No, I <strong>didn't</strong>.</div>
+        <div class="trans">¿Montaste? / ¿Vio? / Sí / No</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:1.5rem;">
+    <div class="card-header"><span class="card-icon">🦁</span><span class="card-title">Irregular Verbs — Verbos Irregulares</span></div>
+    <div id="irregGrid"></div>
+  </div>
+
+  <div class="card" style="background: linear-gradient(135deg,#0a4f2e,#0d6e3f); color:white; text-align:center;">
+    <div style="font-size:2.5rem;margin-bottom:0.5rem;">🎉</div>
+    <div style="font-family:'Fredoka One',cursive;font-size:1.5rem;color:var(--sun);margin-bottom:0.4rem;">¡Buen trabajo!</div>
+    <div style="font-size:0.95rem;opacity:0.9;">You've completed the lesson! Keep practicing your Past Simple every day.<br><em>¡Sigue practicando el pasado simple cada día!</em></div>
+    <div id="totalScore" style="margin-top:1rem;font-weight:800;font-size:1.1rem;color:var(--lime);"></div>
+  </div>
+</section>
+
+<div class="lesson-footer">
+  🌴 English Lesson — Past Simple · Theme: Busch Gardens Tampa · Made for Spanish speakers in Miami 🦁
+</div>
+
+<div class="confetti-container" id="confettiContainer"></div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────────────
+
+const VOCAB = [
+  { en: "to ride (a ride)", es: "montar (en una atracción)", ex: "I rode SheiKra!" },
+  { en: "to wait in line", es: "hacer cola / esperar", ex: "We waited 20 minutes." },
+  { en: "to see", es: "ver", ex: "She saw the tigers." },
+  { en: "to eat", es: "comer", ex: "They ate at the park." },
+  { en: "to buy", es: "comprar", ex: "He bought a hat." },
+  { en: "to go", es: "ir", ex: "We went on SheiKra." },
+  { en: "to enjoy", es: "disfrutar", ex: "I enjoyed the show!" },
+  { en: "to take (a photo)", es: "tomar (una foto)", ex: "We took many photos." },
+  { en: "to walk", es: "caminar", ex: "We walked all day." },
+  { en: "to watch", es: "ver / observar", ex: "They watched the birds." },
+];
+
+const POS_EX = [
+  { subj:"I", en:"I rode SheiKra, the big roller coaster!", es:"¡Monté SheiKra, la gran montaña rusa!" },
+  { subj:"She", en:"She saw the cheetahs in Cheetah Hunt.", es:"Ella vio los guepardos." },
+  { subj:"We", en:"We ate lunch near the Serengeti Plain.", es:"Comimos cerca del Serengeti." },
+  { subj:"They", en:"They bought matching T-shirts.", es:"Compraron camisetas iguales." },
+  { subj:"He", en:"He enjoyed the Sesame Street Safari.", es:"Él disfrutó el safari de Barrio Sésamo." },
+];
+
+const NEG_EX = [
+  { subj:"I", en:"I didn't wait long for the Montu ride.", es:"No esperé mucho para Montu." },
+  { subj:"She", en:"She didn't buy the expensive hat.", es:"Ella no compró el sombrero caro." },
+  { subj:"We", en:"We didn't go to the water park area.", es:"No fuimos al área acuática." },
+  { subj:"They", en:"They didn't see the bird show.", es:"No vieron el show de pájaros." },
+  { subj:"He", en:"He didn't eat the funnel cake.", es:"Él no comió el funnel cake." },
+];
+
+const QUE_EX = [
+  { subj:"Did you...?", en:"Did you ride the Falcon's Fury drop tower?", es:"¿Montaste la caída libre Falcon's Fury?" },
+  { subj:"Did she...?", en:"Did she see the elephants on the safari?", es:"¿Vio ella los elefantes en el safari?" },
+  { subj:"Did they...?", en:"Did they enjoy the roller coasters?", es:"¿Disfrutaron las montañas rusas?" },
+  { subj:"Did he...?", en:"Did he wait in line for a long time?", es:"¿Esperó él mucho en la fila?" },
+  { subj:"Did we...?", en:"Did we take a photo with the flamingos?", es:"¿Nos tomamos una foto con los flamencos?" },
+];
+
+const IRREGULAR = [
+  ["go","went","ir → fue"],["see","saw","ver → vio"],["ride","rode","montar → montó"],
+  ["eat","ate","comer → comió"],["buy","bought","comprar → compró"],["take","took","tomar → tomó"],
+  ["have","had","tener → tuvo"],["give","gave","dar → dio"],
+];
+
+// ─── EXERCISE DATA ───────────────────────────────────────────────────────────
+
+const EX1_DATA = [
+  { prompt:"Maria and her family ___ (go) to Busch Gardens last Saturday.", spanish:"María y su familia ___ a Busch Gardens el sábado pasado.", options:["goed","went","go","goes"], answer:"went" },
+  { prompt:"I ___ (see) the lions and giraffes on the Serengeti Safari.", spanish:"Vi los leones y jirafas en el Safari.", options:["seed","saw","seen","see"], answer:"saw" },
+  { prompt:"We ___ (ride) SheiKra three times!", spanish:"¡Montamos SheiKra tres veces!", options:["rided","rides","rode","ride"], answer:"rode" },
+  { prompt:"He ___ (buy) a cool souvenir at the gift shop.", spanish:"Él compró un recuerdo en la tienda.", options:["buyed","bought","buy","buys"], answer:"bought" },
+  { prompt:"They ___ (wait) 30 minutes for Cheetah Hunt.", spanish:"Esperaron 30 minutos para Cheetah Hunt.", options:["waited","wait","waits","waitting"], answer:"waited" },
+  { prompt:"She ___ (enjoy) the bird show near the lagoon.", spanish:"Ella disfrutó el show de pájaros.", options:["enjoy","enjoyed","enjoied","enjoying"], answer:"enjoyed" },
+];
+
+const EX2_DATA = [
+  { positive:"I rode SheiKra.", base:"ride", spanish:"No monté SheiKra.", answer:"I didn't ride SheiKra." },
+  { positive:"She bought a souvenir.", base:"buy", spanish:"Ella no compró un recuerdo.", answer:"She didn't buy a souvenir." },
+  { positive:"We waited 30 minutes.", base:"wait", spanish:"No esperamos 30 minutos.", answer:"We didn't wait 30 minutes." },
+  { positive:"He enjoyed the bird show.", base:"enjoy", spanish:"Él no disfrutó el show de pájaros.", answer:"He didn't enjoy the bird show." },
+  { positive:"They went on Falcon's Fury.", base:"go", spanish:"No fueron en Falcon's Fury.", answer:"They didn't go on Falcon's Fury." },
+];
+
+const EX3_DATA = [
+  { statement:"You rode Montu.", spanish:"¿Montaste Montu?", options:["You rode Montu?","Did you ride Montu?","Did you rode Montu?","Do you ride Montu?"], answer:"Did you ride Montu?", short:"Yes, I did. / No, I didn't." },
+  { statement:"She saw the lions.", spanish:"¿Vio ella los leones?", options:["Did she see the lions?","Did she saw the lions?","Does she see the lions?","She saw the lions?"], answer:"Did she see the lions?", short:"Yes, she did. / No, she didn't." },
+  { statement:"They ate lunch at the park.", spanish:"¿Comieron en el parque?", options:["Did they eat lunch at the park?","Did they ate lunch at the park?","They ate lunch?","Do they eat at the park?"], answer:"Did they eat lunch at the park?", short:"Yes, they did. / No, they didn't." },
+  { statement:"He waited a long time.", spanish:"¿Esperó él mucho tiempo?", options:["Did he wait a long time?","Did he waited a long time?","He waited long time?","Does he wait a long time?"], answer:"Did he wait a long time?", short:"Yes, he did. / No, he didn't." },
+  { statement:"We took the train ride.", spanish:"¿Tomamos el paseo en tren?", options:["Did we take the train ride?","Did we took the train ride?","We took the train?","Do we take the train ride?"], answer:"Did we take the train ride?", short:"Yes, we did. / No, we didn't." },
+];
+
+const EX4_PROMPTS = [
+  { q:"What ride did you go on first?", hint:"I rode / I went on ...", spanish:"¿En qué atracción montaste primero?" },
+  { q:"What did you eat at the park?", hint:"I ate ...", spanish:"¿Qué comiste en el parque?" },
+  { q:"What did you NOT do? (use didn't)", hint:"I didn't ...", spanish:"¿Qué no hiciste? (usa didn't)" },
+  { q:"Did you see any animals? Answer with Yes/No!", hint:"Yes, I did. I saw... / No, I didn't.", spanish:"¿Viste algún animal? (responde Sí/No)" },
+  { q:"Did you buy anything?", hint:"Yes, I bought... / No, I didn't buy anything.", spanish:"¿Compraste algo?" },
+  { q:"Who did you go with?", hint:"I went with my...", spanish:"¿Con quién fuiste?" },
+];
+
+// ─── SCORE TRACKING ──────────────────────────────────────────────────────────
+let scores = { ex1: null, ex2: null, ex3: 0, ex4: false };
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+function init() {
+  buildVocab();
+  buildGrammarExamples();
+  buildEx1();
+  buildEx2();
+  buildEx3();
+  buildEx4();
+  buildIrregGrid();
+}
+
+// ─── VOCAB ────────────────────────────────────────────────────────────────────
+function buildVocab() {
+  const grid = document.getElementById('vocabGrid');
+  VOCAB.forEach((v, i) => {
+    const d = document.createElement('div');
+    d.className = 'vocab-item';
+    d.innerHTML = `<div class="v-en">${v.en}</div><div class="v-es">${v.es}</div><div class="v-ex">📝 ${v.ex}</div><div class="reveal-hint">Tap for example ↓</div>`;
+    d.onclick = () => {
+      d.classList.toggle('revealed');
+      d.querySelector('.reveal-hint').textContent = d.classList.contains('revealed') ? 'Tap to hide ↑' : 'Tap for example ↓';
+    };
+    grid.appendChild(d);
+  });
+}
+
+// ─── GRAMMAR EXAMPLES ────────────────────────────────────────────────────────
+function buildExampleBlock(data, containerId) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = data.map(r => `
+    <div class="example-row">
+      <div class="example-subj">${r.subj}</div>
+      <div><div class="example-en">${r.en}</div><div class="example-es">${r.es}</div></div>
+    </div>`).join('');
+}
+function buildGrammarExamples() {
+  buildExampleBlock(POS_EX, 'posExamples');
+  buildExampleBlock(NEG_EX, 'negExamples');
+  buildExampleBlock(QUE_EX, 'queExamples');
+}
+
+// ─── EXERCISE 1 (MCQ) ─────────────────────────────────────────────────────────
+function buildEx1() {
+  const c = document.getElementById('ex1Container');
+  EX1_DATA.forEach((q, i) => {
+    const shuffled = [...q.options].sort(() => Math.random()-0.5);
+    c.innerHTML += `
+      <div class="question-card" id="ex1q${i}">
+        <div class="q-prompt">${q.prompt}</div>
+        <div class="q-spanish">${q.spanish}</div>
+        <div class="mcq-options">
+          ${shuffled.map(opt => `<button class="mcq-btn" onclick="selectEx1(${i},'${opt}')" data-val="${opt}">${opt}</button>`).join('')}
+        </div>
+        <div class="feedback" id="ex1fb${i}"></div>
+      </div>`;
+  });
+}
+function selectEx1(qi, val) {
+  const card = document.getElementById(`ex1q${qi}`);
+  const btns = card.querySelectorAll('.mcq-btn');
+  btns.forEach(b => { b.disabled = true; b.classList.remove('selected-correct','selected-wrong'); });
+  const clicked = [...btns].find(b => b.dataset.val === val);
+  const correct = EX1_DATA[qi].answer;
+  if (val === correct) {
+    clicked.classList.add('selected-correct');
+  } else {
+    clicked.classList.add('selected-wrong');
+    [...btns].find(b => b.dataset.val === correct).classList.add('show-answer');
+  }
+}
+function checkEx1() {
+  let score = 0;
+  EX1_DATA.forEach((q, i) => {
+    const card = document.getElementById(`ex1q${i}`);
+    const selected = card.querySelector('.mcq-btn.selected-correct, .mcq-btn.selected-wrong');
+    const fb = document.getElementById(`ex1fb${i}`);
+    if (!selected) {
+      fb.textContent = "⚠️ Please choose an answer!";
+      fb.className = "feedback show no";
+    } else {
+      const isRight = selected.classList.contains('selected-correct');
+      if (isRight) { score++; fb.textContent = "✅ ¡Correcto!"; fb.className = "feedback show ok"; }
+      else { fb.textContent = `❌ The answer is: ${q.answer}`; fb.className = "feedback show no"; }
+    }
+  });
+  const badge = document.getElementById('ex1Score');
+  badge.innerHTML = `🎯 Score: ${score}/${EX1_DATA.length}`;
+  badge.className = 'score-badge show burst';
+  scores.ex1 = score;
+  if (score === EX1_DATA.length) confetti();
+  updateProgress();
+}
+
+// ─── EXERCISE 2 (TYPE) ────────────────────────────────────────────────────────
+function buildEx2() {
+  const c = document.getElementById('ex2Container');
+  EX2_DATA.forEach((q, i) => {
+    c.innerHTML += `
+      <div class="question-card" id="ex2q${i}">
+        <div class="q-prompt">✅ <em>${q.positive}</em> → ❌ Make it negative using <strong>didn't + ${q.base}</strong></div>
+        <div class="q-spanish">${q.spanish}</div>
+        <input class="q-input" id="ex2inp${i}" placeholder="Type the negative sentence here..." autocomplete="off" spellcheck="false">
+        <div class="feedback" id="ex2fb${i}"></div>
+      </div>`;
+  });
+}
+function normalize(s) { return s.trim().toLowerCase().replace(/['']/g,"'").replace(/\s+/g,' '); }
+function checkEx2() {
+  let score = 0;
+  EX2_DATA.forEach((q, i) => {
+    const inp = document.getElementById(`ex2inp${i}`);
+    const fb = document.getElementById(`ex2fb${i}`);
+    const card = document.getElementById(`ex2q${i}`);
+    const val = normalize(inp.value);
+    const ans = normalize(q.answer);
+    // flexible: must contain "didn't" + base verb
+    const hasDidnt = val.includes("didn't") || val.includes("did not");
+    const hasBase = val.includes(q.base.toLowerCase());
+    if (val === ans || (hasDidnt && hasBase)) {
+      score++;
+      card.className = 'question-card correct';
+      fb.textContent = "✅ ¡Perfecto!";
+      fb.className = 'feedback show ok';
+    } else {
+      card.className = 'question-card wrong';
+      fb.innerHTML = `❌ Answer: <strong>${q.answer}</strong>`;
+      fb.className = 'feedback show no';
+    }
+  });
+  const badge = document.getElementById('ex2Score');
+  badge.innerHTML = `🎯 Score: ${score}/${EX2_DATA.length}`;
+  badge.className = 'score-badge show burst';
+  scores.ex2 = score;
+  if (score === EX2_DATA.length) confetti();
+  updateProgress();
+}
+
+// ─── EXERCISE 3 (MCQ with auto-check) ────────────────────────────────────────
+let ex3Answers = {};
+function buildEx3() {
+  const c = document.getElementById('ex3Container');
+  EX3_DATA.forEach((q, i) => {
+    const shuffled = [...q.options].sort(() => Math.random()-0.5);
+    c.innerHTML += `
+      <div class="question-card" id="ex3q${i}">
+        <div class="q-prompt">Statement: <em>${q.statement}</em></div>
+        <div class="q-spanish">Pregunta: ${q.spanish}</div>
+        <div class="mcq-options">
+          ${shuffled.map(opt => `<button class="mcq-btn" onclick="selectEx3(${i},'${opt.replace(/'/g,"\\'")}',this)" data-val="${opt.replace(/"/g,'&quot;')}">${opt}</button>`).join('')}
+        </div>
+        <div class="feedback" id="ex3fb${i}"></div>
+      </div>`;
+  });
+}
+function selectEx3(qi, val, btn) {
+  if (ex3Answers[qi] !== undefined) return;
+  ex3Answers[qi] = val;
+  const card = document.getElementById(`ex3q${qi}`);
+  const btns = card.querySelectorAll('.mcq-btn');
+  btns.forEach(b => b.disabled = true);
+  const correct = EX3_DATA[qi].answer;
+  const fb = document.getElementById(`ex3fb${qi}`);
+  if (val === correct) {
+    btn.classList.add('selected-correct');
+    card.className = 'question-card correct';
+    fb.textContent = `✅ ¡Correcto! Short answer: ${EX3_DATA[qi].short}`;
+    fb.className = 'feedback show ok';
+    scores.ex3++;
+  } else {
+    btn.classList.add('selected-wrong');
+    card.className = 'question-card wrong';
+    [...btns].find(b => b.dataset.val === correct)?.classList.add('show-answer');
+    fb.innerHTML = `❌ Correct: <strong>${correct}</strong> | Short answer: ${EX3_DATA[qi].short}`;
+    fb.className = 'feedback show no';
+  }
+  const badge = document.getElementById('ex3Score');
+  const total = Object.keys(ex3Answers).length;
+  badge.innerHTML = `🎯 Progress: ${scores.ex3}/${total} answered`;
+  badge.className = 'score-badge show';
+  if (total === EX3_DATA.length && scores.ex3 === EX3_DATA.length) confetti();
+  updateProgress();
+}
+
+// ─── EXERCISE 4 (speaking / writing) ─────────────────────────────────────────
+function buildEx4() {
+  const c = document.getElementById('ex4Container');
+  EX4_PROMPTS.forEach((p, i) => {
+    c.innerHTML += `
+      <div class="question-card" id="ex4q${i}">
+        <div class="q-prompt">Q${i+1}: ${p.q}</div>
+        <div class="q-spanish">🇪🇸 ${p.spanish}</div>
+        <div style="font-size:0.82rem;color:#aaa;margin-bottom:0.4rem;">💡 Hint: ${p.hint}</div>
+        <textarea class="q-input" id="ex4inp${i}" placeholder="Write your answer here... (at least 3 words)" rows="2"></textarea>
+      </div>`;
+  });
+}
+function saveSpeaking() {
+  let filled = 0;
+  EX4_PROMPTS.forEach((_, i) => {
+    const val = document.getElementById(`ex4inp${i}`).value.trim();
+    const card = document.getElementById(`ex4q${i}`);
+    if (val.split(' ').length >= 3) { filled++; card.className='question-card correct'; }
+    else { card.className='question-card wrong'; }
+  });
+  const badge = document.getElementById('ex4Score');
+  badge.innerHTML = `🎯 ${filled}/${EX4_PROMPTS.length} questions answered!`;
+  badge.className = 'score-badge show burst';
+  scores.ex4 = filled >= 4;
+  if (filled === EX4_PROMPTS.length) confetti();
+  updateProgress();
+}
+
+// ─── IRREGULAR GRID ──────────────────────────────────────────────────────────
+function buildIrregGrid() {
+  const el = document.getElementById('irregGrid');
+  el.style.cssText = "display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:0.6rem;";
+  IRREGULAR.forEach(([base,past,es]) => {
+    const d = document.createElement('div');
+    d.style.cssText = "background:var(--mist);border-radius:12px;padding:0.6rem 0.9rem;border:1.5px solid #c6f0d6;";
+    d.innerHTML = `<span style="font-weight:800;color:var(--jungle)">${base}</span> <span style="color:#999;font-size:0.85rem">→</span> <span style="font-weight:800;color:var(--sky)">${past}</span><div style="font-size:0.78rem;color:#888;font-style:italic;margin-top:2px">${es}</div>`;
+    el.appendChild(d);
+  });
+}
+
+// ─── PROGRESS ────────────────────────────────────────────────────────────────
+function updateProgress() {
+  let total = 0, done = 0;
+  if (scores.ex1 !== null) { total += EX1_DATA.length; done += scores.ex1; }
+  if (scores.ex2 !== null) { total += EX2_DATA.length; done += scores.ex2; }
+  total += EX3_DATA.length; done += scores.ex3;
+
+  const pct = total > 0 ? Math.round((done/total)*100) : 0;
+  document.getElementById('globalProgress').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = total > 0
+    ? `${done}/${total} correct answers (${pct}%) 🌟`
+    : 'Complete exercises to track your progress!';
+
+  document.getElementById('totalScore').textContent =
+    `Total Score: ${done} correct answers out of ${total} 🏆`;
+}
+
+// ─── NAV ─────────────────────────────────────────────────────────────────────
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sec-' + id).classList.add('visible');
+  event.target.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─── CONFETTI ─────────────────────────────────────────────────────────────────
+function confetti() {
+  const container = document.getElementById('confettiContainer');
+  const colors = ['#ff5722','#ffb800','#4cd964','#0097b2','#7c3aed','#ff3b77'];
+  for (let i = 0; i < 60; i++) {
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.top = '-20px';
+    p.style.background = colors[Math.floor(Math.random()*colors.length)];
+    p.style.width = (8 + Math.random()*8) + 'px';
+    p.style.height = (8 + Math.random()*8) + 'px';
+    p.style.animationDuration = (1.2 + Math.random()*1.5) + 's';
+    p.style.animationDelay = (Math.random()*0.8) + 's';
+    container.appendChild(p);
+    setTimeout(() => p.remove(), 4000);
+  }
+}
+
+// ─── START ────────────────────────────────────────────────────────────────────
+init();
+</script>
+</body>
+</html>

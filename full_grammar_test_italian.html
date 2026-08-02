@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grammar Test — Cheat Sheet completo</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Space+Mono:wght@400;700&family=Karla:ital,wght@0,400;0,600;1,400&display=swap');
+
+:root {
+  --bg:     #f8f7f3;
+  --ink:    #1e1b17;
+  --muted:  #8a8078;
+  --card:   #ffffff;
+  --line:   #e4e0d8;
+
+  --c-modal:  #5b4fcf;
+  --c-going:  #c07a1a;
+  --c-will:   #b8621a;
+  --c-past:   #8b6343;
+  --c-pp:     #2a8a7e;
+  --c-vocab:  #3b6ea5;
+  --c-adv:    #3a7a4a;
+  --c-so:     #7a4a8a;
+
+  --green:    #2f6b3e;
+  --green-bg: rgba(47,107,62,0.08);
+  --red:      #a13a2f;
+  --red-bg:   rgba(161,58,47,0.08);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { min-height: 100%; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Karla', sans-serif;
+  padding: 40px 16px 80px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: 720px; margin: 0 auto; }
+
+/* ── TOPBAR ── */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 14px; flex-wrap: wrap; margin-bottom: 24px;
+}
+.logo { display: flex; align-items: center; gap: 10px; }
+.logo svg { width: 30px; height: 30px; }
+.logo-text { font-family: 'Fraunces', serif; font-weight: 700; font-size: 14px; line-height: 1.1; }
+.logo-text span { display: block; font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+
+.progress-wrap { flex: 1; min-width: 140px; }
+.progress-track { height: 6px; background: rgba(30,27,23,0.08); border-radius: 4px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 4px; width: 0%; transition: width .4s ease; background: var(--accent-fill, var(--c-modal)); }
+.progress-label { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); margin-top: 5px; text-align: right; }
+
+.score-pill { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; background: var(--card); border: 1.5px solid var(--line); border-radius: 20px; padding: 5px 14px; white-space: nowrap; }
+
+/* ── INTRO ── */
+.intro { background: var(--card); border: 1.5px solid var(--line); border-radius: 12px; padding: 32px 28px 26px; }
+.intro-eye { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+.intro h1 { font-family: 'Fraunces', serif; font-weight: 700; font-size: 28px; letter-spacing: -.01em; margin-bottom: 6px; }
+.intro .sub { font-size: 14px; color: var(--muted); font-style: italic; margin-bottom: 24px; }
+
+.topic-list {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 6px 16px;
+  margin-bottom: 26px; font-size: 13px;
+}
+@media(max-width:520px){ .topic-list{ grid-template-columns:1fr; } }
+.topic-item { display: flex; align-items: center; gap: 8px; padding: 4px 0; }
+.topic-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.topic-name { color: var(--ink); font-weight: 600; }
+.topic-de { color: var(--muted); font-style: italic; font-size: 12px; }
+
+.type-legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 26px; }
+.type-tag { font-family: 'Space Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: .08em; padding: 4px 10px; border-radius: 4px; background: var(--bg); border: 1px solid var(--line); color: var(--muted); }
+
+.start-btn { display: block; width: 100%; padding: 14px; border: none; border-radius: 9px; background: var(--ink); color: #fff; font-family: 'Karla', sans-serif; font-weight: 700; font-size: 15px; cursor: pointer; transition: opacity .2s; }
+.start-btn:hover { opacity: .85; }
+
+/* ── SECTION BANNER ── */
+.sec-banner {
+  display: none; align-items: center; gap: 14px;
+  padding: 16px 20px; border-radius: 10px; margin-bottom: 14px;
+  border: 1.5px solid rgba(0,0,0,0.06);
+}
+.sec-banner.show { display: flex; }
+.sec-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; color: #fff; flex-shrink: 0; background: var(--c); }
+.sec-title { font-family: 'Fraunces', serif; font-weight: 700; font-size: 16px; color: var(--c); }
+.sec-de { font-size: 12px; color: var(--muted); font-style: italic; }
+.sec-qrange { margin-left: auto; font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); white-space: nowrap; }
+
+/* ── QUESTION CARD ── */
+.qcard { background: var(--card); border: 1.5px solid var(--line); border-radius: 12px; padding: 24px 24px 20px; display: none; border-top: 3.5px solid var(--c, var(--ink)); }
+.qcard.show { display: block; }
+
+.qmeta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.qnum { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
+.qtype-tag { font-family: 'Space Mono', monospace; font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; padding: 3px 8px; border-radius: 3px; background: color-mix(in srgb, var(--c) 12%, transparent); color: var(--c); }
+
+.qtext { font-family: 'Fraunces', serif; font-weight: 700; font-size: 18px; line-height: 1.45; margin-bottom: 4px; }
+.blank { display: inline-block; min-width: 80px; border-bottom: 2.5px dashed var(--line); text-align: center; vertical-align: bottom; }
+.qde { font-size: 13px; color: var(--muted); font-style: italic; margin-bottom: 18px; }
+
+/* MCQ options */
+.options { display: flex; flex-direction: column; gap: 9px; }
+.opt { display: flex; align-items: center; gap: 11px; border: 1.5px solid var(--line); border-radius: 8px; padding: 11px 14px; background: var(--bg); cursor: pointer; font-size: 14px; font-weight: 500; transition: border-color .15s, background .15s; }
+.opt:hover:not(.disabled) { border-color: var(--c, var(--ink)); }
+.opt-letter { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; width: 22px; height: 22px; border-radius: 50%; background: rgba(30,27,23,0.06); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.opt.correct { border-color: var(--green); background: var(--green-bg); }
+.opt.incorrect { border-color: var(--red); background: var(--red-bg); }
+.opt.disabled { cursor: default; }
+
+/* Gap fill */
+.gap-wrap { margin-bottom: 4px; }
+.gap-input { font-family: 'Karla', sans-serif; font-size: 15px; font-weight: 600; border: 1.5px solid var(--line); border-radius: 8px; padding: 10px 14px; width: 100%; background: var(--bg); color: var(--ink); outline: none; transition: border-color .15s; }
+.gap-input:focus { border-color: var(--c, var(--ink)); background: var(--card); }
+.gap-input.correct { border-color: var(--green); background: var(--green-bg); }
+.gap-input.incorrect { border-color: var(--red); background: var(--red-bg); }
+.gap-hint { font-size: 11.5px; color: var(--muted); margin-top: 5px; font-style: italic; }
+.submit-gap { margin-top: 12px; padding: 10px 22px; border: 1.5px solid var(--c, var(--ink)); border-radius: 7px; background: transparent; color: var(--c, var(--ink)); font-family: 'Karla', sans-serif; font-weight: 700; font-size: 13.5px; cursor: pointer; transition: background .15s, color .15s; }
+.submit-gap:hover { background: var(--c, var(--ink)); color: #fff; }
+.submit-gap:disabled { opacity: .35; cursor: default; }
+
+/* Feedback */
+.feedback { margin-top: 14px; padding: 11px 14px; border-radius: 0 7px 7px 0; font-size: 13px; line-height: 1.6; display: none; border-left: 3px solid var(--green); background: var(--green-bg); }
+.feedback.show { display: block; }
+.feedback.wrong { border-left-color: var(--red); background: var(--red-bg); }
+.feedback b { color: var(--ink); }
+.fb-it { display: block; color: var(--muted); font-style: italic; font-size: 12px; margin-top: 4px; }
+
+/* Next button */
+.next-btn { margin-top: 16px; width: 100%; padding: 12px; border: none; border-radius: 8px; background: var(--ink); color: #fff; font-family: 'Karla', sans-serif; font-weight: 700; font-size: 14px; cursor: pointer; opacity: .25; pointer-events: none; transition: opacity .2s; }
+.next-btn.on { opacity: 1; pointer-events: auto; }
+.next-btn.on:hover { opacity: .85; }
+
+/* ── RESULTS ── */
+.results { background: var(--card); border: 1.5px solid var(--line); border-radius: 12px; padding: 36px 28px; display: none; }
+.results.show { display: block; }
+.res-eye { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); text-align: center; margin-bottom: 6px; }
+.big-score { font-family: 'Fraunces', serif; font-weight: 700; font-size: 58px; text-align: center; color: var(--ink); }
+.verdict { font-family: 'Fraunces', serif; font-size: 20px; text-align: center; margin: 4px 0 2px; }
+.verdict-de { font-size: 13px; color: var(--muted); font-style: italic; text-align: center; margin-bottom: 28px; }
+
+.breakdown-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 28px; }
+@media(max-width:520px){ .breakdown-grid{ grid-template-columns:1fr; } }
+.bd { border-radius: 9px; padding: 14px 12px; text-align: center; border: 1.5px solid var(--line); }
+.bd-score { font-family: 'Fraunces', serif; font-weight: 700; font-size: 22px; color: var(--c, var(--ink)); }
+.bd-label { font-family: 'Space Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-top: 3px; }
+
+.retry-btn { display: block; width: 100%; padding: 13px; border: 1.5px solid var(--ink); border-radius: 8px; background: transparent; color: var(--ink); font-family: 'Karla', sans-serif; font-weight: 700; font-size: 14px; cursor: pointer; transition: background .2s, color .2s; }
+.retry-btn:hover { background: var(--ink); color: #fff; }
+
+footer { text-align: center; margin-top: 40px; font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; color: #ccc; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="logo">
+    <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="24" cy="24" r="22" fill="#c98a3a"/>
+      <path d="M14 32V16h14M14 24h10M14 16l16 16" stroke="#fffdf8" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div class="logo-text">Forbes English<span>Grammar · Test completo</span></div>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label" id="progressLabel">0 / 45</div>
+  </div>
+  <div class="score-pill" id="scorePill">0 / 45</div>
+</div>
+
+<!-- INTRO -->
+<div class="intro" id="intro">
+  <div class="intro-eye">Cheat Sheet Test · Tutti gli argomenti</div>
+  <h1>45 domande</h1>
+  <p class="sub">15 argomenti grammaticali · 3 domande per argomento · con supporto in italiano</p>
+
+  <div class="topic-list">
+    <div class="topic-item"><div class="topic-dot" style="background:var(--c-modal)"></div><div><div class="topic-name">might</div></div></div>
+    <div class="topic-item"><div class="topic-dot" style="background:var(--c-modal)"></div><div><div class="topic-name">must / mustn't</div></div></div>
+    <div class="topic-item"><div class="topic-dot" style="background:var(--c-modal)"></div><div><div class="topic-name">have to / don't have to</div></div></div>
+    <div class="topic-item"><div class="topic-dot" style="background:var(--c-modal)"></div><div><div class="topic-name">like + -ing</div></div></div>
+    <div class="topic-item"><div class="topic-dot" style="background:var(--c-going)"></div><div><div class="topic-name">be going to</div></div></div>
+    <div class="topic-item"><div class="topic-dot" style="background:var(--c-will)"></div><div><div class="topic-name">will / won't</div></div></div>
+    <div class="topic-item"><div class="topic-dot" style="background:var(--c-past)"></div><div><div class="topic-name">Past Simple</div></div></div>
+    <div class="topic-item"><div class="topic-dot" style="background:var(--c-pp)"></div><div><div class="topic-name">Present Perfect</div></div></div>
+    <div class="topic-item"><div class="topic-dot" style="background:var(--c-pp)"></div><div><div class="topic-name">already / yet / just</div></div></div>
+    <div class="topic-item"><div class="topic-dot" style="background:var(--c-pp)"></div><div><div class="topic-name">ever / never</div></div></div>
+    <div class="topic-item"><div class="topic-dot" style="background:var(--c-vocab)"></div><div><div class="topic-name">some / any</div></div></div>
+    <div class="topic-item"><div class="topic-dot" style="background:var(--c-vocab)"></div><div><div class="topic-name">one / ones</div></div></div>
+    <div class="topic-item"><div class="topic-dot" style="background:var(--c-vocab)"></div><div><div class="topic-name">whose / possessive 's</div></div></div>
+    <div class="topic-item"><div class="topic-dot" style="background:var(--c-adv)"></div><div><div class="topic-name">Adverbs of manner</div></div></div>
+    <div class="topic-item"><div class="topic-dot" style="background:var(--c-so)"></div><div><div class="topic-name">So / Neither</div></div></div>
+  </div>
+
+  <div class="type-legend">
+    <span class="type-tag">MCQ — Scelta multipla</span>
+    <span class="type-tag">GAP — Testo lacunoso</span>
+    <span class="type-tag">ERR — Trova l'errore</span>
+  </div>
+
+  <button class="start-btn" id="startBtn">Inizia il test →</button>
+</div>
+
+<!-- Section banners and question cards injected here -->
+<div id="testArea"></div>
+
+<!-- RESULTS -->
+<div class="results" id="results">
+  <div class="res-eye">Il tuo risultato</div>
+  <div class="big-score" id="bigScore">—</div>
+  <div class="verdict" id="verdict"></div>
+  <div class="verdict-de" id="verdictDe"></div>
+  <div class="breakdown-grid" id="breakdownGrid"></div>
+  <button class="retry-btn" id="retryBtn">Riprova</button>
+</div>
+
+<footer>Forbes English · Grammar Cheat Sheet Test</footer>
+</div><!-- /wrap -->
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   DATA
+   type: "mcq" | "gap" | "err"
+   For mcq: options[], correct (index into options BEFORE shuffle)
+   For gap: answer (string, trimmed lowercase for comparison), hint
+   For err: options[] (A is always "Correct — no mistake" or the fixed version),
+             correct index
+═══════════════════════════════════════════════════════════ */
+
+const SECTIONS = [
+  { id:"might",   label:"might",              de:"Possibilità — forse",     color:"var(--c-modal)", qs:[0,1,2]   },
+  { id:"must",    label:"must / mustn't",     de:"Obbligo — non si può",       color:"var(--c-modal)", qs:[3,4,5]   },
+  { id:"haveto",  label:"have to",            de:"dovere / non essere necessario",        color:"var(--c-modal)", qs:[6,7,8]   },
+  { id:"liking",  label:"like + -ing",        de:"Preferenze — gerundio",           color:"var(--c-modal)", qs:[9,10,11] },
+  { id:"goingto", label:"be going to",        de:"Piani e intenzioni",             color:"var(--c-going)", qs:[12,13,14]},
+  { id:"will",    label:"will / won't",       de:"Previsioni e decisioni",    color:"var(--c-will)",  qs:[15,16,17]},
+  { id:"past",    label:"Past Simple",        de:"Passato",                color:"var(--c-past)",  qs:[18,19,20]},
+  { id:"pp",      label:"Present Perfect",    de:"have/has + participio passato",          color:"var(--c-pp)",    qs:[21,22,23]},
+  { id:"alryet",  label:"already / yet / just",de:"Posizione nella frase",           color:"var(--c-pp)",    qs:[24,25,26]},
+  { id:"evernev", label:"ever / never",       de:"Esperienze di vita",            color:"var(--c-pp)",    qs:[27,28,29]},
+  { id:"someany", label:"some / any",         de:"quantità indeterminate",           color:"var(--c-vocab)", qs:[30,31,32]},
+  { id:"oneones", label:"one / ones",         de:"Sostituto del nome",         color:"var(--c-vocab)", qs:[33,34,35]},
+  { id:"whose",   label:"whose / possessive 's",de:"Esprimere il possesso",            color:"var(--c-vocab)", qs:[36,37,38]},
+  { id:"adv",     label:"Adverbs of manner",  de:"Aggettivo → Avverbio",            color:"var(--c-adv)",   qs:[39,40,41]},
+  { id:"so",      label:"So / Neither",       de:"anch'io / neanche io",    color:"var(--c-so)",    qs:[42,43,44]},
+];
+
+const QUESTIONS = [
+  // ── 0–2  might ──
+  { type:"mcq", color:"var(--c-modal)",
+    en:'I\'m not sure about dinner. I <span class="blank">___</span> make pasta.',
+    de:"Non so ancora cosa fare a cena.",
+    options:["might make","might to make","might makes","mights make"], correct:0,
+    feedbackEn:"<b>might make</b> — subject + <b>might</b> + base form. Never 'to', never -s.",
+    feedbackDe:"might + <b>forma base</b> — niente 'to', niente -s." },
+
+  { type:"gap", color:"var(--c-modal)",
+    en:'She <span class="blank">___</span> not come to the party — she has a cold.',
+    de:"Ha il raffreddore e non sa se potrà venire.",
+    answer:"might", hint:"might / might not / could",
+    feedbackEn:"<b>might</b> — She might not come. 'might not' = vielleicht nicht.",
+    feedbackDe:"might not = forse non. 'might' è il verbo ausiliare corretto." },
+
+  { type:"err", color:"var(--c-modal)",
+    en:'Find the mistake: <i>"It mights rain — take an umbrella."</i>',
+    de:"Trova l'errore.",
+    options:["It might rain — take an umbrella.","It mights rain — take an umbrella.","It might to rain — take an umbrella.","It is might rain — take an umbrella."], correct:0,
+    feedbackEn:"<b>might</b> never takes -s. Correct: <b>It might rain.</b>",
+    feedbackDe:"might non cambia mai — niente -s, uguale per tutte le persone." },
+
+  // ── 3–5  must / mustn't ──
+  { type:"mcq", color:"var(--c-modal)",
+    en:'You <span class="blank">___</span> feed the animals. It\'s against the rules.',
+    de:"Non puoi dare da mangiare agli animali — è vietato.",
+    options:["mustn't","don't have to","shouldn't to","must not to"], correct:0,
+    feedbackEn:"<b>mustn't</b> = nicht dürfen (forbidden). 'don't have to' = nicht müssen (not necessary — very different!).",
+    feedbackDe:"<b>mustn't</b> = vietato / non si può. 'don't have to' = non è necessario — due significati molto diversi!" },
+
+  { type:"gap", color:"var(--c-modal)",
+    en:'You <span class="blank">___</span> be home before ten. It\'s a school night.',
+    de:"Devi essere a casa prima delle dieci.",
+    answer:"must", hint:"must / mustn't / have to",
+    feedbackEn:"<b>must</b> — an obligation. Subject + must + base form.",
+    feedbackDe:"<b>must</b> = dovere. soggetto + must + forma base." },
+
+  { type:"err", color:"var(--c-modal)",
+    en:'Find the mistake: <i>"She musts finish her homework before dinner."</i>',
+    de:"Finde den Fehler.",
+    options:["She must finish her homework before dinner.","She musts finish her homework before dinner.","She must to finish her homework before dinner.","She must finishes her homework before dinner."], correct:0,
+    feedbackEn:"<b>must</b> never takes -s. Correct: <b>She must finish.</b>",
+    feedbackDe:"must non prende -s. Corretto: She <b>must</b> finish." },
+
+  // ── 6–8  have to ──
+  { type:"mcq", color:"var(--c-modal)",
+    en:'He works from home, so he <span class="blank">___</span> drive to the office.',
+    de:"Non è necessario che vada in ufficio.",
+    options:["doesn't have to","mustn't","don't have to","hasn't to"], correct:0,
+    feedbackEn:"<b>doesn't have to</b> — he/she/it uses 'doesn't'. 'mustn't' would mean it's forbidden, which is wrong here.",
+    feedbackDe:"<b>doesn't have to</b> = non è necessario (nessun obbligo). 'mustn't' = vietato — qui è sbagliato." },
+
+  { type:"gap", color:"var(--c-modal)",
+    en:'<span class="blank">___</span> you have to work at the weekend?',
+    de:"Devi lavorare nel fine settimana?",
+    answer:"do", hint:"do / does / have / must",
+    feedbackEn:"<b>Do</b> you have to…? — Questions with have to use do/does.",
+    feedbackDe:"Domanda con 'have to': <b>Do/Does</b> + soggetto + have to + forma base." },
+
+  { type:"err", color:"var(--c-modal)",
+    en:'Find the mistake: <i>"I have to wore a uniform at my old school."</i>',
+    de:"Finde den Fehler.",
+    options:["I had to wear a uniform at my old school.","I have to wore a uniform at my old school.","I have to wearing a uniform at my old school.","I must wore a uniform at my old school."], correct:0,
+    feedbackEn:"Past of 'have to' = <b>had to</b> + base form. 'wore' is past simple — you can't mix it with 'have to'.",
+    feedbackDe:"Passato di 'have to' = <b>had to</b> + forma base. Mai 'have to + past form'." },
+
+  // ── 9–11  like + -ing ──
+  { type:"mcq", color:"var(--c-modal)",
+    en:'My little brother <span class="blank">___</span> video games.',
+    de:"Al mio fratellino piace giocare ai videogiochi.",
+    options:["loves playing","loves to playing","love playing","loves play"], correct:0,
+    feedbackEn:"<b>loves playing</b> — after love/like/hate, use the <b>-ing</b> form.",
+    feedbackDe:"Dopo love/like/hate si usa sempre la forma <b>-ing</b>." },
+
+  { type:"gap", color:"var(--c-modal)",
+    en:'She hates <span class="blank">___</span> up early on Saturdays.',
+    de:"Odia alzarsi presto il sabato.",
+    answer:"getting", hint:"get / gets / getting / to get",
+    feedbackEn:"<b>getting</b> — hate + -ing form. 'get' → 'getting' (double the t).",
+    feedbackDe:"hate + <b>-ing</b>. get → get<b>t</b>ing (consonante raddoppiata)." },
+
+  { type:"err", color:"var(--c-modal)",
+    en:'Find the mistake: <i>"James likes run in the park every morning."</i>',
+    de:"Finde den Fehler.",
+    options:["James likes running in the park every morning.","James likes run in the park every morning.","James likes to running in the park every morning.","James like running in the park every morning."], correct:0,
+    feedbackEn:"<b>likes running</b> — after 'like' we need the -ing form, not the base form.",
+    feedbackDe:"Dopo 'like' si usa la forma <b>-ing</b>: likes <b>running</b>." },
+
+  // ── 12–14  be going to ──
+  { type:"mcq", color:"var(--c-going)",
+    en:'Look at those clouds. It <span class="blank">___</span> rain.',
+    de:"Guarda quelle nuvole scure!",
+    options:["'s going to","'s going to to","will going to","go to"], correct:0,
+    feedbackEn:"<b>'s going to</b> — visible evidence of something about to happen. be + going to + base form.",
+    feedbackDe:"Prove visibili → <b>going to</b>. is + going to + forma base." },
+
+  { type:"gap", color:"var(--c-going)",
+    en:'We <span class="blank">___</span> not going to finish the project today.',
+    de:"Non finiremo il progetto oggi.",
+    answer:"are", hint:"am / is / are",
+    feedbackEn:"<b>are</b> — we + are + not going to. The verb 'be' must always be there.",
+    feedbackDe:"we → <b>are</b>. Il verbo 'be' non può mai mancare: we <b>are</b> not going to." },
+
+  { type:"err", color:"var(--c-going)",
+    en:'Find the mistake: <i>"She\'s going to studies all weekend."</i>',
+    de:"Finde den Fehler.",
+    options:["She's going to study all weekend.","She's going to studies all weekend.","She going to study all weekend.","She's going to studied all weekend."], correct:0,
+    feedbackEn:"<b>going to study</b> — after 'going to', the verb is always the <b>base form</b>. Never -s, never -ed.",
+    feedbackDe:"Dopo 'going to' si usa sempre la <b>forma base</b>: going to <b>study</b>." },
+
+  // ── 15–17  will / won't ──
+  { type:"mcq", color:"var(--c-will)",
+    en:'I think she <span class="blank">___</span> the competition — she\'s incredibly talented.',
+    de:"È molto talentuosa — una previsione per la gara.",
+    options:["'ll win","'ll wins","will winning","won't win"], correct:0,
+    feedbackEn:"<b>'ll win</b> — will + base form. No -s, no -ing, same for all persons.",
+    feedbackDe:"'ll / will + <b>forma base</b> — niente -s, niente -ing." },
+
+  { type:"gap", color:"var(--c-will)",
+    en:'Don\'t worry — I <span class="blank">___</span> forget your birthday.',
+    de:"Vuole rassicurarla — non dimenticherà il suo compleanno.",
+    answer:"won't", hint:"won't / will not / wouldn't",
+    feedbackEn:"<b>won't</b> — contraction of will not. Negative future.",
+    feedbackDe:"<b>won't</b> = will not. Futuro negativo." },
+
+  { type:"err", color:"var(--c-will)",
+    en:'Find the mistake: <i>"He wills become a famous footballer one day."</i>',
+    de:"Finde den Fehler.",
+    options:["He'll become a famous footballer one day.","He wills become a famous footballer one day.","He will becomes a famous footballer one day.","He will became a famous footballer one day."], correct:0,
+    feedbackEn:"<b>He'll become</b> — 'will' never takes -s. Correct: will + base form.",
+    feedbackDe:"'will' non prende -s. Corretto: he <b>will</b> become / he<b>'ll</b> become." },
+
+  // ── 18–20  Past Simple ──
+  { type:"mcq", color:"var(--c-past)",
+    en:'We <span class="blank">___</span> to the cinema last Saturday.',
+    de:"Siamo andati al cinema sabato scorso.",
+    options:["went","gone","have gone","go"], correct:0,
+    feedbackEn:"<b>went</b> — past simple of 'go'. 'last Saturday' signals past simple, not present perfect.",
+    feedbackDe:"<b>went</b> = Past Simple di 'go'. 'last Saturday' = momento preciso → Past Simple." },
+
+  { type:"gap", color:"var(--c-past)",
+    en:'<span class="blank">___</span> you enjoy the concert last night?',
+    de:"Ti sei goduto il concerto ieri sera?",
+    answer:"did", hint:"did / have / do / was",
+    feedbackEn:"<b>Did</b> — past simple question: Did + subject + base form.",
+    feedbackDe:"Domanda al Past Simple: <b>Did</b> + soggetto + forma base." },
+
+  { type:"err", color:"var(--c-past)",
+    en:'Find the mistake: <i>"Did she went to the party?"</i>',
+    de:"Finde den Fehler.",
+    options:["Did she go to the party?","Did she went to the party?","Did she goes to the party?","Did she going to the party?"], correct:0,
+    feedbackEn:"<b>Did she go</b> — after 'did', always the base form. 'went' is already past, so you can't use it with 'did'.",
+    feedbackDe:"Dopo 'did' si usa sempre la <b>forma base</b>. Mai: did + past simple." },
+
+  // ── 21–23  Present Perfect ──
+  { type:"mcq", color:"var(--c-pp)",
+    en:'My aunt Jessica <span class="blank">___</span> to more than fifteen countries.',
+    de:"Mia zia ha viaggiato in più di quindici paesi.",
+    options:["has travelled","have travelled","has travel","travelled"], correct:0,
+    feedbackEn:"<b>has travelled</b> — she/he/it → has. Regular verb: travel + <b>led</b>.",
+    feedbackDe:"3a persona singolare → <b>has</b>. travel → travel<b>led</b> (regolare)." },
+
+  { type:"gap", color:"var(--c-pp)",
+    en:'I <span class="blank">___</span> never eaten sushi in my life.',
+    de:"Non ho mai mangiato sushi in vita mia.",
+    answer:"have", hint:"have / has / had",
+    feedbackEn:"<b>have</b> — I + have + never + past participle.",
+    feedbackDe:"I → <b>have</b>. I have never + participio passato." },
+
+  { type:"err", color:"var(--c-pp)",
+    en:'Find the mistake: <i>"He has saw this film three times."</i>',
+    de:"Finde den Fehler.",
+    options:["He has seen this film three times.","He has saw this film three times.","He have seen this film three times.","He has see this film three times."], correct:0,
+    feedbackEn:"<b>has seen</b> — the past participle of 'see' is <b>seen</b>, not 'saw' (that's past simple).",
+    feedbackDe:"Participio di 'see' = <b>seen</b>. 'saw' è il Past Simple — non il participio!" },
+
+  // ── 24–26  already / yet / just ──
+  { type:"mcq", color:"var(--c-pp)",
+    en:'Don\'t make dinner — I\'ve <span class="blank">___</span> eaten.',
+    de:"Non preparare la cena — ho già mangiato.",
+    options:["already","yet","just yet","never"], correct:0,
+    feedbackEn:"<b>already</b> = schon. Position: have + <b>already</b> + past participle.",
+    feedbackDe:"<b>already</b> = già. Posizione: have + <b>already</b> + participio." },
+
+  { type:"gap", color:"var(--c-pp)",
+    en:'Have you finished your homework <span class="blank">___</span>?',
+    de:"Hai già finito i compiti?",
+    answer:"yet", hint:"yet / already / just / ever",
+    feedbackEn:"<b>yet</b> — in questions, 'yet' goes at the end and means 'already' in German.",
+    feedbackDe:"<b>yet</b> nelle domande = già? Va sempre alla fine della frase." },
+
+  { type:"err", color:"var(--c-pp)",
+    en:'Find the mistake: <i>"She has yet finished her lunch."</i>',
+    de:"Finde den Fehler.",
+    options:["She has already finished her lunch.","She has yet finished her lunch.","She yet has finished her lunch.","She has finished yet her lunch."], correct:0,
+    feedbackEn:"<b>already</b>, not 'yet' — positive statements use 'already'. 'yet' is for negatives and questions only.",
+    feedbackDe:"Frase positiva → <b>already</b>. 'yet' solo per negazioni e domande." },
+
+  // ── 27–29  ever / never ──
+  { type:"mcq", color:"var(--c-pp)",
+    en:'Have you <span class="blank">___</span> been to London?',
+    de:"Sei mai stato a Londra?",
+    options:["ever","never","yet","already"], correct:0,
+    feedbackEn:"<b>ever</b> — used in questions about life experience. Position: have + <b>ever</b> + participle.",
+    feedbackDe:"<b>ever</b> = mai (in domande) — sulle esperienze di vita. Posizione: have + <b>ever</b> + participio." },
+
+  { type:"gap", color:"var(--c-pp)",
+    en:'I\'ve <span class="blank">___</span> broken a bone — I\'ve been very lucky.',
+    de:"Non mi sono mai rotto un osso.",
+    answer:"never", hint:"never / ever / not / yet",
+    feedbackEn:"<b>never</b> — makes the sentence negative on its own. No extra 'not' needed.",
+    feedbackDe:"<b>never</b> rende la frase negativa da solo. Non serve 'not'!" },
+
+  { type:"err", color:"var(--c-pp)",
+    en:'Find the mistake: <i>"She hasn\'t never won a competition."</i>',
+    de:"Finde den Fehler.",
+    options:["She has never won a competition.","She hasn't never won a competition.","She never has won a competition.","She hasn't ever not won a competition."], correct:0,
+    feedbackEn:"<b>never</b> is already negative — 'hasn't never' is a double negative, which is wrong in English.",
+    feedbackDe:"<b>never</b> è già negativo — 'hasn't never' è una doppia negazione. In inglese è sbagliato!" },
+
+  // ── 30–32  some / any ──
+  { type:"mcq", color:"var(--c-vocab)",
+    en:'We haven\'t got <span class="blank">___</span> milk left.',
+    de:"Non abbiamo più latte.",
+    options:["any","some","no any","much any"], correct:0,
+    feedbackEn:"<b>any</b> — negative sentences use 'any', not 'some'.",
+    feedbackDe:"Frase negativa → <b>any</b>. 'some' solo nelle frasi positive." },
+
+  { type:"gap", color:"var(--c-vocab)",
+    en:'Would you like <span class="blank">___</span> tea?',
+    de:"Vuoi del tè?",
+    answer:"some", hint:"some / any",
+    feedbackEn:"<b>some</b> — offers and requests use 'some', even in question form.",
+    feedbackDe:"Offerte → <b>some</b>, anche nelle domande." },
+
+  { type:"err", color:"var(--c-vocab)",
+    en:'Find the mistake: <i>"I\'d like some informations, please."</i>',
+    de:"Finde den Fehler.",
+    options:["I'd like some information, please.","I'd like some informations, please.","I'd like any information, please.","I'd like some an information, please."], correct:0,
+    feedbackEn:"<b>information</b> is uncountable — no plural -s. 'some information' is correct.",
+    feedbackDe:"'information' è non numerabile — niente -s plurale! Corretto: some <b>information</b>." },
+
+  // ── 33–35  one / ones ──
+  { type:"mcq", color:"var(--c-vocab)",
+    en:'I like the red dress, but I prefer the blue <span class="blank">___</span>.',
+    de:"Mi piace il vestito rosso, ma preferisco quello blu.",
+    options:["one","ones","it","dress"], correct:0,
+    feedbackEn:"<b>one</b> — singular replacement for a noun already mentioned. 'ones' would be for plural.",
+    feedbackDe:"<b>one</b> = sostituto singolare del nome. 'ones' sarebbe plurale." },
+
+  { type:"gap", color:"var(--c-vocab)",
+    en:'Which trainers do you prefer — the white ones or the black <span class="blank">___</span>?',
+    de:"Quali scarpe da ginnastica preferisci — le bianche o le nere?",
+    answer:"ones", hint:"one / ones / them",
+    feedbackEn:"<b>ones</b> — plural replacement (trainers). 'one' would be singular.",
+    feedbackDe:"<b>ones</b> = sostituto plurale. 'one' sarebbe singolare." },
+
+  { type:"err", color:"var(--c-vocab)",
+    en:'Find the mistake: <i>"I don\'t like these glasses. I prefer those one."</i>',
+    de:"Finde den Fehler.",
+    options:["I don't like these glasses. I prefer those ones.","I don't like these glasses. I prefer those one.","I don't like these glasses. I prefer that ones.","I don't like these glasses. I prefer those it."], correct:0,
+    feedbackEn:"<b>those ones</b> — 'glasses' is plural, so the replacement must be plural: <b>ones</b>.",
+    feedbackDe:"'glasses' è plurale → il sostituto deve essere plurale: <b>ones</b>." },
+
+  // ── 36–38  whose / possessive 's ──
+  { type:"mcq", color:"var(--c-vocab)",
+    en:'<span class="blank">___</span> bag is this? — It\'s Sarah\'s.',
+    de:"Di chi è questa borsa? — È di Sarah.",
+    options:["Whose","Who's","Who","Which"], correct:0,
+    feedbackEn:"<b>Whose</b> = wessen (possession). 'Who's' = who is — completely different!",
+    feedbackDe:"<b>Whose</b> = di chi. 'Who's' = who is — due parole completamente diverse!" },
+
+  { type:"gap", color:"var(--c-vocab)",
+    en:'These are Tom<span class="blank">___</span> keys — he left them on the table.',
+    de:"Queste sono le chiavi di Tom — le ha lasciate sul tavolo.",
+    answer:"'s", hint:"'s  /  s'  /  s",
+    feedbackEn:"<b>'s</b> — Tom's keys. Apostrophe + s after a singular name shows possession.",
+    feedbackDe:"Tom<b>'s</b> — apostrofo + s indica il possesso per persone singole." },
+
+  { type:"err", color:"var(--c-vocab)",
+    en:'Find the mistake: <i>"It\'s Doris\'s book — she left it here."</i>',
+    de:"Finde den Fehler.",
+    options:["It's Doris' book — she left it here.","It's Doris's book — she left it here.","It's Dorises book — she left it here.","It's Doris book — she left it here."], correct:0,
+    feedbackEn:"<b>Doris'</b> — when a name ends in -s, just add an apostrophe, no extra s.",
+    feedbackDe:"Nomi che finiscono in -s: solo apostrofo, niente s in più. Corretto: <b>Doris'</b> book." },
+
+  // ── 39–41  Adverbs of manner ──
+  { type:"mcq", color:"var(--c-adv)",
+    en:'She did really <span class="blank">___</span> in the test — she got 98%!',
+    de:"Ha fatto davvero bene al test.",
+    options:["well","good","goodly","badly"], correct:0,
+    feedbackEn:"<b>well</b> — irregular adverb. 'good' is the adjective; 'well' is the adverb. There is no 'goodly'.",
+    feedbackDe:"<b>well</b> è l'eccezione — l'avverbio di 'good'. 'goodly' non esiste." },
+
+  { type:"gap", color:"var(--c-adv)",
+    en:'The children were playing <span class="blank">___</span> outside. (happy)',
+    de:"I bambini giocavano felicemente fuori.",
+    answer:"happily", hint:"happy / happily / happyly",
+    feedbackEn:"<b>happily</b> — adjectives ending in -y: drop the y, add -ily.",
+    feedbackDe:"Aggettivo in -y: y → <b>-ily</b>. happy → happ<b>ily</b>." },
+
+  { type:"err", color:"var(--c-adv)",
+    en:'Find the mistake: <i>"He drives fastly and dangerously."</i>',
+    de:"Finde den Fehler.",
+    options:["He drives fast and dangerously.","He drives fastly and dangerously.","He drives fastly and dangerous.","He drives fast and dangerous."], correct:0,
+    feedbackEn:"<b>fast</b> is both the adjective and the adverb — 'fastly' does not exist.",
+    feedbackDe:"<b>fast</b> è un'eccezione — uguale come aggettivo e avverbio. 'fastly' non esiste!" },
+
+  // ── 42–44  So / Neither ──
+  { type:"mcq", color:"var(--c-so)",
+    en:'A: I went to bed really late last night.  B: <span class="blank">___</span>',
+    de:"A parla di ieri sera — frase positiva.",
+    options:["So did I.","So do I.","Neither did I.","So have I."], correct:0,
+    feedbackEn:"<b>So did I.</b> — positive past simple (went) → So + <b>did</b> + I.",
+    feedbackDe:"Frase positiva, Past Simple → <b>So did I.</b> 'did' rispecchia il tempo verbale." },
+
+  { type:"gap", color:"var(--c-so)",
+    en:'A: I can\'t stand horror films. &nbsp; B: <span class="blank">___</span> can I.',
+    de:"Ad A non piacciono i film horror — frase negativa.",
+    answer:"neither", hint:"so / neither",
+    feedbackEn:"<b>Neither</b> — negative statement → Neither + can + I.",
+    feedbackDe:"Frase negativa → <b>Neither</b> can I. 'Neither' per le negazioni." },
+
+  { type:"err", color:"var(--c-so)",
+    en:'Find the mistake: <i>"A: I have a headache.  B: So do I."</i>',
+    de:"Finde den Fehler.",
+    options:["A: I have a headache.  B: So have I.","A: I have a headache.  B: So do I.","A: I have a headache.  B: So did I.","A: I have a headache.  B: Neither have I."], correct:0,
+    feedbackEn:"<b>So have I.</b> — 'I have a headache' uses 'have', so the echo uses <b>have</b>, not 'do'.",
+    feedbackDe:"'have' come verbo principale → risposta con <b>have</b>: So <b>have</b> I. Non 'do'!" },
+];
+
+/* ══ SHUFFLE ══ */
+function shuffle(arr){
+  const a=arr.slice();
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+
+/* ══ STATE ══ */
+let score=0, answered=new Array(45).fill(false), current=0;
+let sectionScores=Object.fromEntries(SECTIONS.map(s=>[s.id,0]));
+let runtimeQ=[];
+
+function sectionOf(idx){ return SECTIONS.find(s=>s.qs.includes(idx)); }
+
+/* ══ PREP ══ */
+function prepareQuestions(){
+  runtimeQ=QUESTIONS.map(q=>{
+    if(q.type==='mcq'||q.type==='err'){
+      const indexed=q.options.map((t,i)=>({t,isCorrect:i===q.correct}));
+      return {...q, shuffled:shuffle(indexed)};
+    }
+    return {...q};
+  });
+  answered=new Array(45).fill(false);
+  score=0;
+  sectionScores=Object.fromEntries(SECTIONS.map(s=>[s.id,0]));
+}
+
+/* ══ RENDER ══ */
+function renderAll(){
+  const area=document.getElementById('testArea');
+  area.innerHTML='';
+  const letters=['A','B','C','D'];
+
+  SECTIONS.forEach(sec=>{
+    // Banner
+    const bn=document.createElement('div');
+    bn.className='sec-banner';
+    bn.id='banner-'+sec.id;
+    bn.style.setProperty('--c',sec.color);
+    bn.style.background=`color-mix(in srgb, ${sec.color} 8%, white)`;
+    bn.innerHTML=`<div class="sec-icon" style="background:${sec.color}">${sec.qs[0]+1}–${sec.qs[2]+1}</div>
+      <div><div class="sec-title">${sec.label}</div><div class="sec-de">${sec.de}</div></div>
+      <div class="sec-qrange">Domande ${sec.qs[0]+1}–${sec.qs[2]+1}</div>`;
+    area.appendChild(bn);
+
+    sec.qs.forEach(qi=>{
+      const q=runtimeQ[qi];
+      const card=document.createElement('div');
+      card.className='qcard';
+      card.id='qcard'+qi;
+      card.style.setProperty('--c', q.color);
+
+      const typeLabel = q.type==='mcq'?'MCQ':q.type==='gap'?'GAP':'ERR';
+      let inner=`<div class="qmeta">
+        <span class="qnum">Domanda ${qi+1} · ${typeLabel}</span>
+        <span class="qtype-tag">${typeLabel}</span>
+      </div>
+      <div class="qtext">${q.en}</div>
+      <div class="qde">${q.de}</div>`;
+
+      if(q.type==='mcq'||q.type==='err'){
+        inner+=`<div class="options">`;
+        q.shuffled.forEach((o,oi)=>{
+          inner+=`<div class="opt" data-qi="${qi}" data-oi="${oi}">
+            <span class="opt-letter">${letters[oi]}</span><span>${o.t}</span></div>`;
+        });
+        inner+=`</div>`;
+      } else {
+        // gap fill
+        inner+=`<div class="gap-wrap">
+          <input class="gap-input" id="gi${qi}" type="text" placeholder="…" autocomplete="off" autocorrect="off" spellcheck="false"/>
+          <div class="gap-hint">Suggerimento: ${q.hint}</div>
+        </div>
+        <button class="submit-gap" id="gs${qi}">Controlla</button>`;
+      }
+
+      inner+=`<div class="feedback" id="fb${qi}"></div>
+        <button class="next-btn" id="nb${qi}">${qi===44?'Risultati →':'Prossima →'}</button>`;
+      card.innerHTML=inner;
+      area.appendChild(card);
+    });
+  });
+
+  // MCQ listeners
+  document.querySelectorAll('.opt').forEach(el=>{
+    el.addEventListener('click',()=>{
+      const qi=parseInt(el.dataset.qi), oi=parseInt(el.dataset.oi);
+      if(answered[qi]) return;
+      handleMCQ(qi,oi);
+    });
+  });
+
+  // Gap submit listeners
+  QUESTIONS.forEach((q,qi)=>{
+    if(q.type!=='gap') return;
+    const btn=document.getElementById('gs'+qi);
+    const inp=document.getElementById('gi'+qi);
+    btn.addEventListener('click',()=>{ if(!answered[qi]) handleGap(qi); });
+    inp.addEventListener('keydown',e=>{ if(e.key==='Enter'&&!answered[qi]) handleGap(qi); });
+  });
+
+  // Next listeners
+  for(let qi=0;qi<45;qi++){
+    document.getElementById('nb'+qi).addEventListener('click',()=>goTo(qi+1));
+  }
+}
+
+function handleMCQ(qi,oi){
+  answered[qi]=true;
+  const q=runtimeQ[qi];
+  const chosen=q.shuffled[oi];
+  const correct=chosen.isCorrect;
+  if(correct){ score++; sectionScores[sectionOf(qi).id]++; }
+
+  document.querySelectorAll(`.opt[data-qi="${qi}"]`).forEach(el=>{
+    el.classList.add('disabled');
+    const i=parseInt(el.dataset.oi);
+    if(q.shuffled[i].isCorrect) el.classList.add('correct');
+    else if(i===oi) el.classList.add('incorrect');
+  });
+  showFeedback(qi,correct);
+}
+
+function handleGap(qi){
+  const q=QUESTIONS[qi];
+  const inp=document.getElementById('gi'+qi);
+  const val=inp.value.trim().toLowerCase().replace(/['']/g,"'");
+  // accept any acceptable answer (allow multiple correct forms separated by /)
+  const acceptedRaw=q.answer.split('/').map(s=>s.trim().toLowerCase());
+  const correct=acceptedRaw.includes(val);
+  answered[qi]=true;
+  if(correct){ score++; sectionScores[sectionOf(qi).id]++; }
+  inp.classList.add(correct?'correct':'incorrect');
+  inp.disabled=true;
+  document.getElementById('gs'+qi).disabled=true;
+  showFeedback(qi,correct);
+}
+
+function showFeedback(qi,correct){
+  const q=QUESTIONS[qi];
+  const fb=document.getElementById('fb'+qi);
+  fb.className='feedback show'+(correct?'':' wrong');
+  fb.innerHTML=`${q.feedbackEn}<span class="fb-it">${q.feedbackDe}</span>`;
+  document.getElementById('scorePill').textContent=`${score} / 45`;
+  const nb=document.getElementById('nb'+qi);
+  nb.classList.add('on');
+}
+
+function goTo(next){
+  // hide current card
+  document.querySelectorAll('.qcard.show').forEach(c=>c.classList.remove('show'));
+  document.querySelectorAll('.sec-banner.show').forEach(b=>b.classList.remove('show'));
+
+  if(next>=45){ showResults(); return; }
+
+  // show banner if entering new section
+  const sec=sectionOf(next);
+  if(sec && sec.qs[0]===next){
+    document.getElementById('banner-'+sec.id).classList.add('show');
+  }
+
+  document.getElementById('qcard'+next).classList.add('show');
+  current=next;
+  updateProgress(next);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function updateProgress(idx){
+  const pct=(idx/45)*100;
+  const fill=document.getElementById('progressFill');
+  fill.style.width=pct+'%';
+  const sec=sectionOf(idx);
+  if(sec) fill.style.background=sec.color.replace('var(','').replace(')','');
+  // resolve the actual colour value
+  fill.style.background=getComputedStyle(document.documentElement).getPropertyValue(
+    sec ? sec.color.replace('var(--','--').replace(')','') : '--ink'
+  ).trim() || '#1e1b17';
+  document.getElementById('progressLabel').textContent=`${idx+1} / 45`;
+}
+
+function showResults(){
+  document.getElementById('progressFill').style.width='100%';
+  document.getElementById('progressLabel').textContent='45 / 45';
+  const res=document.getElementById('results');
+  res.classList.add('show');
+  document.getElementById('bigScore').textContent=`${score} / 45`;
+
+  const pct=score/45;
+  let v,vd;
+  if(pct>=0.89){v="Ottimo!";vd="Conosci davvero bene tutte le strutture.";}
+  else if(pct>=0.75){v="Molto bene!";vd="Ancora qualche punto da migliorare.";}
+  else if(pct>=0.6){v="Ben fatto!";vd="Ricontrolla gli errori.";}
+  else{v="Continua a studiare!";vd="Rileggi i cheat sheet e riprova.";}
+  document.getElementById('verdict').textContent=v;
+  document.getElementById('verdictDe').textContent=vd;
+
+  // Breakdown grid
+  const grid=document.getElementById('breakdownGrid');
+  grid.innerHTML='';
+  SECTIONS.forEach(sec=>{
+    const s=sectionScores[sec.id], t=3;
+    const cell=document.createElement('div');
+    cell.className='bd';
+    cell.style.borderTopColor=sec.color.replace('var(','').replace(')','');
+    cell.style.borderTopWidth='3px';
+    // resolve colour
+    const col=getComputedStyle(document.documentElement).getPropertyValue(
+      sec.color.replace('var(--','--').replace(')','')
+    ).trim();
+    cell.innerHTML=`<div class="bd-score" style="color:${col}">${s}/${t}</div><div class="bd-label">${sec.label}</div>`;
+    grid.appendChild(cell);
+  });
+
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function reset(){
+  document.getElementById('results').classList.remove('show');
+  document.getElementById('intro').style.display='block';
+  document.getElementById('testArea').innerHTML='';
+  document.getElementById('scorePill').textContent='0 / 45';
+  document.getElementById('progressFill').style.width='0%';
+  document.getElementById('progressLabel').textContent='0 / 45';
+  current=0;
+}
+
+/* ══ START ══ */
+document.getElementById('startBtn').addEventListener('click',()=>{
+  document.getElementById('intro').style.display='none';
+  prepareQuestions();
+  renderAll();
+  // show first banner + first card
+  document.getElementById('banner-'+SECTIONS[0].id).classList.add('show');
+  document.getElementById('qcard0').classList.add('show');
+  updateProgress(0);
+});
+
+document.getElementById('retryBtn').addEventListener('click',reset);
+</script>
+</body>
+</html>

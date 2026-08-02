@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grammar Court — B1 Test | Forbes English</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --forest:   #1d3628;
+  --forest-mid: #2a4d3a;
+  --forest-soft: #3b6350;
+  --ivory:    #f5f0e8;
+  --ivory-dim: #ede7d9;
+  --ivory-edge: #d9d0bc;
+  --copper:   #b8722a;
+  --copper-light: #d48f4a;
+  --copper-pale: #f5e6d0;
+  --ink:      #1a1a18;
+  --ink-soft: #5a5a50;
+  --verdict-yes: #2d6a4f;
+  --verdict-yes-bg: #d8f0e4;
+  --verdict-no:  #8b2e2e;
+  --verdict-no-bg: #f5dada;
+  --r: 10px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--forest);
+  background-image:
+    radial-gradient(ellipse at 20% 0%, rgba(184,114,42,0.12) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 100%, rgba(45,106,79,0.2) 0%, transparent 50%);
+  font-family: 'Inter', sans-serif;
+  color: var(--ink);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+.shell {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 32px 18px 110px;
+}
+
+/* ── LOGO ────────────────────────── */
+header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+.logo svg { width: 160px; height: auto; display: block; }
+.logo .f-word  { font-family: 'Playfair Display', serif; font-style: italic; font-size: 28px; fill: var(--copper-light); }
+.logo .rule-el { stroke: var(--ivory-edge); stroke-width: 1.5; }
+.logo .e-word  { font-family: 'Inter', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: 6px; fill: var(--ivory); }
+
+.masthead { flex: 1; min-width: 240px; }
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--copper-light);
+  margin-bottom: 6px;
+}
+.masthead h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 5vw, 42px);
+  font-weight: 700;
+  color: var(--ivory);
+  line-height: 1.15;
+  margin-bottom: 8px;
+}
+.masthead h1 em {
+  font-style: italic;
+  color: var(--copper-light);
+}
+.masthead p {
+  color: #a8bfb0;
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 480px;
+}
+.level-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(184,114,42,0.15);
+  border: 1px solid rgba(184,114,42,0.35);
+  color: var(--copper-light);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 999px;
+  margin-top: 10px;
+}
+.level-pill::before {
+  content: "";
+  width: 6px; height: 6px;
+  background: var(--copper);
+  border-radius: 50%;
+}
+
+/* ── CASE FILE (dashboard) ─────────── */
+.case-file {
+  background: var(--forest-mid);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--r);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.docket-strip {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.docket {
+  width: 42px; height: 42px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: #6a8f7a;
+  transition: all .3s;
+  cursor: default;
+  position: relative;
+}
+.docket.active {
+  background: var(--copper);
+  border-color: var(--copper-light);
+  color: #fff;
+  box-shadow: 0 0 0 3px rgba(184,114,42,0.3);
+  transform: scale(1.08);
+}
+.docket.done {
+  background: var(--verdict-yes);
+  border-color: #3a8f66;
+  color: #d8f0e4;
+}
+.docket.done::after {
+  content: "✓";
+  position: absolute;
+  font-size: 10px;
+  bottom: 2px;
+  right: 3px;
+  font-family: sans-serif;
+}
+
+.score-block {
+  text-align: right;
+  flex-shrink: 0;
+}
+.score-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--copper-light);
+  line-height: 1;
+}
+.score-num span { font-size: 18px; color: #6a8f7a; }
+.score-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #6a8f7a;
+  margin-top: 3px;
+}
+
+/* ── CARD ──────────────────────────── */
+.card {
+  background: var(--ivory);
+  border-radius: var(--r);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.35), 0 2px 8px rgba(0,0,0,0.2);
+  overflow: hidden;
+}
+
+.card-tab {
+  background: var(--forest-mid);
+  padding: 14px 22px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-bottom: 2px solid var(--copper);
+}
+.tab-icon { width: 36px; height: 36px; flex-shrink: 0; }
+.tab-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ivory);
+}
+.tab-de {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: #8ab09a;
+  margin-top: 2px;
+}
+
+.card-body { padding: 24px; }
+
+/* progress */
+.prog-row {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+}
+.prog-bar {
+  height: 4px;
+  background: var(--ivory-edge);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 22px;
+}
+.prog-bar > div {
+  height: 100%;
+  background: linear-gradient(90deg, var(--copper), var(--copper-light));
+  transition: width .4s ease;
+  border-radius: 2px;
+}
+
+/* rule box */
+.rule-box {
+  background: #fdfaf5;
+  border: 1px solid var(--ivory-edge);
+  border-left: 4px solid var(--copper);
+  border-radius: 6px;
+  padding: 14px 16px;
+  margin-bottom: 22px;
+  font-size: 13.5px;
+  line-height: 1.65;
+}
+.rule-box-head {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin-bottom: 8px;
+}
+.rule-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.rule-table th, .rule-table td {
+  border: 1px solid var(--ivory-edge);
+  padding: 6px 10px;
+  text-align: left;
+}
+.rule-table th {
+  background: var(--ivory-dim);
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--forest-soft);
+}
+.formula {
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--forest);
+  color: var(--ivory);
+  padding: 7px 12px;
+  border-radius: 5px;
+  display: inline-block;
+  font-size: 13px;
+  margin: 6px 0;
+}
+
+/* prompt */
+.prompt {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--ink);
+  margin-bottom: 18px;
+}
+.prompt .gap {
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--ivory-dim);
+  border: 1px solid var(--ivory-edge);
+  padding: 1px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+.prompt .target {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: var(--forest-soft);
+}
+
+/* options grid */
+.options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+@media (max-width: 520px) { .options { grid-template-columns: 1fr; } }
+
+.opt {
+  background: #fdfaf5;
+  border: 2px solid var(--ivory-edge);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14.5px;
+  text-align: left;
+  cursor: pointer;
+  color: var(--ink);
+  transition: border-color .15s, background .15s, transform .1s;
+  line-height: 1.4;
+}
+.opt:hover:not(:disabled) { border-color: var(--copper); transform: translateY(-1px); }
+.opt.chosen { border-color: var(--forest-soft); background: #eaf3ec; }
+.opt.correct { border-color: var(--verdict-yes); background: var(--verdict-yes-bg); }
+.opt.wrong   { border-color: var(--verdict-no); background: var(--verdict-no-bg); }
+.opt:disabled { cursor: default; }
+
+/* fill */
+.fill-wrap { margin-bottom: 20px; }
+.fill-input {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 15px;
+  padding: 11px 14px;
+  border: 2px solid var(--ivory-edge);
+  border-radius: 8px;
+  width: 100%;
+  max-width: 340px;
+  background: #fdfaf5;
+  color: var(--ink);
+}
+.fill-input:focus { outline: 2px solid var(--copper); border-color: var(--copper); }
+.fill-input.correct { border-color: var(--verdict-yes); background: var(--verdict-yes-bg); }
+.fill-input.wrong   { border-color: var(--verdict-no); background: var(--verdict-no-bg); }
+.hint-tag {
+  display: inline-block;
+  margin-top: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1px;
+  background: var(--forest);
+  color: var(--copper-light);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+/* reorder */
+.build-zone {
+  min-height: 50px;
+  border: 2px dashed var(--ivory-edge);
+  border-radius: 8px;
+  background: #fdfaf5;
+  padding: 10px 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.build-zone.correct { border-color: var(--verdict-yes); background: var(--verdict-yes-bg); }
+.build-zone.wrong   { border-color: var(--verdict-no); background: var(--verdict-no-bg); }
+.word-bank { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.chip {
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  font-weight: 500;
+  padding: 7px 13px;
+  border-radius: 6px;
+  border: none;
+  background: var(--forest-mid);
+  color: var(--ivory);
+  cursor: pointer;
+  transition: transform .1s, opacity .15s, background .15s;
+}
+.chip:hover:not(:disabled) { transform: translateY(-2px); background: var(--forest-soft); }
+.chip:disabled { opacity: 0.3; cursor: default; }
+.chip.placed { background: var(--copper); color: #fff; }
+
+/* matching */
+.match-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 20px;
+  margin-bottom: 20px;
+}
+@media (max-width: 520px) { .match-grid { grid-template-columns: 1fr; } }
+.match-btn {
+  background: #fdfaf5;
+  border: 2px solid var(--ivory-edge);
+  border-radius: 8px;
+  padding: 10px 13px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  color: var(--ink);
+  transition: border-color .15s, background .15s;
+  line-height: 1.4;
+}
+.match-btn.right { font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+.match-btn.chosen { border-color: var(--forest-soft); background: #eaf3ec; }
+.match-btn.solved { border-color: var(--verdict-yes); background: var(--verdict-yes-bg); pointer-events: none; }
+.match-btn.shake  { border-color: var(--verdict-no); background: var(--verdict-no-bg); }
+
+/* ── VERDICT RIBBON ── (signature element) */
+@keyframes verdictIn {
+  from { transform: translateY(-8px) scaleX(0.97); opacity: 0; }
+  to   { transform: translateY(0) scaleX(1); opacity: 1; }
+}
+.verdict {
+  border-radius: 8px;
+  padding: 0;
+  margin-bottom: 18px;
+  overflow: hidden;
+  animation: verdictIn .25s ease forwards;
+}
+.verdict-ribbon {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.verdict.good .verdict-ribbon { background: var(--verdict-yes); color: #fff; }
+.verdict.bad  .verdict-ribbon { background: var(--verdict-no); color: #fff; }
+.verdict-ribbon::before {
+  content: "";
+  width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.6);
+  flex-shrink: 0;
+}
+.verdict-body {
+  padding: 12px 14px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  background: #fdfaf5;
+  border: 1px solid var(--ivory-edge);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+}
+.verdict.good .verdict-body { border-color: var(--verdict-yes); }
+.verdict.bad  .verdict-body { border-color: var(--verdict-no); }
+
+/* actions */
+.actions { display: flex; justify-content: flex-end; gap: 10px; }
+.btn {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  padding: 11px 24px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: transform .1s, opacity .15s;
+}
+.btn:hover:not(:disabled) { transform: translateY(-1px); }
+.btn-primary { background: var(--copper); color: #fff; }
+.btn-primary:hover:not(:disabled) { background: var(--copper-light); }
+.btn-primary:disabled { background: var(--ivory-edge); color: var(--ink-soft); cursor: not-allowed; }
+.btn-ghost { background: transparent; border: 2px solid var(--forest-soft); color: var(--forest-soft); }
+.btn-ghost:hover { background: var(--ivory-dim); }
+
+/* ── START / FINAL ─────────────────── */
+.hero-body { padding: 32px 28px; }
+.court-seal {
+  display: block;
+  margin: 0 auto 24px;
+}
+.hero-body h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--forest);
+  margin-bottom: 10px;
+  text-align: center;
+}
+.hero-body h2 em { font-style: italic; color: var(--copper); }
+.hero-body .sub {
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 500px;
+  margin: 0 auto 22px;
+}
+.case-list {
+  background: var(--ivory-dim);
+  border: 1px solid var(--ivory-edge);
+  border-radius: 8px;
+  padding: 16px 20px;
+  font-size: 13.5px;
+  line-height: 1.8;
+  max-width: 500px;
+  margin: 0 auto 24px;
+}
+.case-list strong {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin-bottom: 6px;
+}
+.case-list li { margin-left: 18px; }
+.hero-cta { text-align: center; }
+
+.final-score-big {
+  font-family: 'Playfair Display', serif;
+  font-size: 64px;
+  font-weight: 700;
+  color: var(--copper);
+  text-align: center;
+  line-height: 1;
+  margin: 8px 0 4px;
+}
+.final-score-big span { font-size: 28px; color: var(--ink-soft); }
+.final-msg { text-align: center; font-size: 15px; line-height: 1.6; margin: 8px 0 4px; }
+.final-es  { text-align: center; color: var(--ink-soft); font-size: 13px; font-style: italic; margin-bottom: 20px; }
+
+/* ── FOOTER ────────────────────────── */
+footer {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: rgba(29,54,40,0.97);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding: 11px 20px;
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 1px;
+  flex-wrap: wrap;
+}
+footer .lbl { color: #5a8a6a; }
+footer strong { color: var(--copper-light); }
+
+@media (max-width: 600px) {
+  .card-body { padding: 16px; }
+  .hero-body { padding: 22px 16px; }
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <header>
+    <div class="logo">
+      <svg viewBox="0 0 200 68" xmlns="http://www.w3.org/2000/svg" aria-label="Forbes English">
+        <text x="100" y="28" text-anchor="middle" class="f-word">Forbes</text>
+        <line x1="20" y1="38" x2="180" y2="38" class="rule-el"/>
+        <text x="100" y="58" text-anchor="middle" class="e-word">ENGLISH</text>
+      </svg>
+    </div>
+    <div class="masthead">
+      <div class="eyebrow">B1 Grammar Assessment</div>
+      <h1>Grammar <em>Court</em></h1>
+      <p>Seven cases, forty verdicts. Each case examines a grammar structure you need at B1. Present your evidence carefully.</p>
+      <div class="level-pill">B1 · Intermediate · Spanish support included</div>
+    </div>
+  </header>
+
+  <div class="case-file" id="caseFile">
+    <div class="docket-strip" id="docketStrip"></div>
+    <div class="score-block">
+      <div class="score-num" id="scoreNum">0 <span>/ 40</span></div>
+      <div class="score-label">Verdicts won</div>
+    </div>
+  </div>
+
+  <div class="card" id="card"></div>
+
+</div>
+
+<footer>
+  <span><span class="lbl">CASE </span><strong id="footerCase">1 / 7</strong></span>
+  <span><span class="lbl">SCORE </span><strong id="footerScore">0 / 40</strong></span>
+</footer>
+
+<script>
+/* ============================================================
+   ICONS
+   ============================================================ */
+const icons = {
+  gavel: `<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+    <rect x="2" y="24" width="22" height="7" rx="2" fill="#2a4d3a"/>
+    <rect x="6" y="2" width="24" height="10" rx="2" fill="#b8722a" transform="rotate(45 18 12)"/>
+    <rect x="14" y="16" width="4" height="16" rx="2" fill="#3b6350" transform="rotate(-45 16 24)"/>
+  </svg>`,
+  scales: `<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+    <rect x="17" y="3" width="2" height="24" fill="#3b6350"/>
+    <rect x="5" y="9" width="26" height="2" fill="#3b6350"/>
+    <path d="M5,11 l4,8 h-8 z" fill="#b8722a"/>
+    <path d="M27,11 l4,8 h-8 z" fill="#b8722a" opacity="0.7"/>
+    <rect x="12" y="31" width="12" height="2.5" rx="1" fill="#3b6350"/>
+  </svg>`,
+  quill: `<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+    <path d="M30,2 Q18,8 8,30 L12,32 Q22,10 30,2 Z" fill="#b8722a"/>
+    <path d="M8,30 Q10,28 12,32" fill="none" stroke="#2a4d3a" stroke-width="2"/>
+    <line x1="11" y1="31" x2="6" y2="36" stroke="#2a4d3a" stroke-width="1.5"/>
+  </svg>`,
+  book: `<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+    <rect x="4" y="4" width="13" height="28" rx="1" fill="#3b6350"/>
+    <rect x="19" y="4" width="13" height="28" rx="1" fill="#2a4d3a"/>
+    <rect x="16" y="4" width="4" height="28" fill="#b8722a"/>
+    <rect x="7" y="10" width="7" height="1.5" fill="rgba(255,255,255,0.3)"/>
+    <rect x="7" y="14" width="7" height="1.5" fill="rgba(255,255,255,0.3)"/>
+    <rect x="7" y="18" width="5" height="1.5" fill="rgba(255,255,255,0.3)"/>
+  </svg>`,
+  magnify: `<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="15" cy="15" r="10" fill="none" stroke="#b8722a" stroke-width="3"/>
+    <circle cx="15" cy="15" r="5" fill="#f5e6d0"/>
+    <line x1="22" y1="22" x2="33" y2="33" stroke="#2a4d3a" stroke-width="3.5" stroke-linecap="round"/>
+  </svg>`,
+  speech: `<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+    <rect x="3" y="3" width="24" height="18" rx="3" fill="#b8722a"/>
+    <polygon points="8,21 14,21 10,28" fill="#b8722a"/>
+    <rect x="7" y="8" width="14" height="2" fill="rgba(255,255,255,0.7)"/>
+    <rect x="7" y="13" width="10" height="2" fill="rgba(255,255,255,0.7)"/>
+    <rect x="14" y="18" width="14" height="12" rx="3" fill="#3b6350"/>
+    <rect x="17" y="22" width="8" height="1.5" fill="rgba(255,255,255,0.6)"/>
+    <rect x="17" y="25" width="6" height="1.5" fill="rgba(255,255,255,0.6)"/>
+  </svg>`,
+  chain: `<svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+    <rect x="2" y="14" width="11" height="8" rx="4" fill="none" stroke="#b8722a" stroke-width="3"/>
+    <rect x="23" y="14" width="11" height="8" rx="4" fill="none" stroke="#3b6350" stroke-width="3"/>
+    <rect x="13" y="16" width="10" height="4" fill="#2a4d3a"/>
+  </svg>`
+};
+
+const sealSVG = `<svg class="court-seal" width="110" height="110" viewBox="0 0 110 110" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="55" cy="55" r="52" fill="none" stroke="#d9d0bc" stroke-width="1.5"/>
+  <circle cx="55" cy="55" r="44" fill="#f5f0e8"/>
+  <circle cx="55" cy="55" r="44" fill="none" stroke="#d9d0bc" stroke-width="1"/>
+  <path d="M55,18 L58,28 L69,28 L60,35 L63,46 L55,39 L47,46 L50,35 L41,28 L52,28 Z" fill="#b8722a"/>
+  <rect x="42" y="54" width="26" height="18" rx="2" fill="#2a4d3a"/>
+  <rect x="42" y="54" width="26" height="6" fill="#1d3628"/>
+  <rect x="39" y="50" width="32" height="5" rx="1" fill="#3b6350"/>
+  <text x="55" y="88" text-anchor="middle" font-family="'Playfair Display', serif" font-style="italic" font-size="7.5" fill="#5a5a50">Forbes English</text>
+</svg>`;
+
+/* ============================================================
+   STATIONS DATA
+   ============================================================ */
+const stations = [
+  {
+    title: "Case 1 — Present Perfect vs Past Simple",
+    de: "Present Perfect (has/have + participio) vs. Pasado Simple. ¿Es relevante para ahora o quedó en el pasado?",
+    icon: "gavel",
+    type: "mcq",
+    intro: "The court must decide: does each sentence need the Present Perfect or the Past Simple? Choose the correct form.",
+    rule: {
+      heading: "The key distinction",
+      html: `
+        <table class="rule-table">
+          <tr><th>Present Perfect</th><th>Past Simple</th></tr>
+          <tr><td>Connection to <strong>now</strong></td><td>A <strong>finished</strong> moment in the past</td></tr>
+          <tr><td><em>I have lost my keys.</em> (still lost)</td><td><em>I lost my keys yesterday.</em></td></tr>
+          <tr><td>Triggers: ever, never, just, already, yet, since, for</td><td>Triggers: yesterday, last week, in 2019, ago, when</td></tr>
+        </table>
+        <p style="margin-top:10px;font-size:13px;color:#5a5a50;">En español: Present Perfect = pretérito perfecto («he perdido»); Past Simple = pretérito indefinido («perdí»).</p>
+      `
+    },
+    items: [
+      {
+        prompt: 'Choose the correct form: She ______ in Berlin for three years and she\'s still living there.',
+        options: ["has lived", "lived", "was living", "had lived"],
+        correct: 0,
+        explanation: "«Has lived» is correct — she still lives there now, so the action connects to the present. «For» with a continuing situation needs the Present Perfect. «Lived» (Past Simple) would imply she no longer lives there."
+      },
+      {
+        prompt: 'Choose the correct form: I ______ that film last Saturday with my flatmate.',
+        options: ["have watched", "was watching", "watched", "have been watching"],
+        correct: 2,
+        explanation: "«Watched» (Past Simple) is correct — «last Saturday» is a finished, specific moment in the past. The Past Simple is always used with specific past time expressions."
+      },
+      {
+        prompt: 'Choose the correct form: ______ you ever ______ sushi before?',
+        options: ["Have ... tried", "Did ... try", "Had ... tried", "Were ... trying"],
+        correct: 0,
+        explanation: "«Have you ever tried» — «ever» is a classic Present Perfect trigger. It asks about experience at any point in your life up to now. «Did you ever try» also exists in informal American English, but «have you ever» is the standard B1 form."
+      },
+      {
+        prompt: 'Choose the correct form: When I arrived at the party, Tom ______ already ______.',
+        options: ["has ... left", "had ... left", "was ... leaving", "did ... leave"],
+        correct: 1,
+        explanation: "«Had already left» — this is the Past Perfect, used for an action that happened before another past action. When I arrived (past) → Tom had already left (even earlier past)."
+      },
+      {
+        prompt: 'Choose the correct form: I ______ three coffees this morning — I feel terrible.',
+        options: ["drank", "was drinking", "had drunk", "have drunk"],
+        correct: 3,
+        explanation: "«Have drunk» — this morning is still the current period of time (we're still in the morning / it's still relevant now). The Present Perfect links a past action to a present result or current time period."
+      },
+      {
+        prompt: 'Choose the correct form: The company ______ in 1987 by two university friends.',
+        options: ["has been founded", "is founded", "was founded", "has founded"],
+        correct: 2,
+        explanation: "«Was founded» — 1987 is a specific, finished moment in the past, so we use the Past Simple passive. The Present Perfect «has been founded» would suggest it was founded very recently with present relevance."
+      }
+    ]
+  },
+
+  {
+    title: "Case 2 — Second Conditional",
+    de: "Condicional 2: situaciones hipotéticas. «If» + pasado simple → «would» + infinitivo.",
+    icon: "scales",
+    type: "mcq",
+    intro: "Six hypothetical situations. Find the correctly formed second conditional in each case.",
+    rule: {
+      heading: "Second conditional formula",
+      html: `
+        <div class="formula">If + past simple ... , would + infinitive</div>
+        <div class="formula">would + infinitive ... if + past simple</div>
+        <p style="margin-top:10px;font-size:13px;">Key: the situation is <strong>imaginary or unlikely now</strong>. «If I <em>were</em> you» is the standard form (not «was»), even in informal English.</p>
+        <p style="margin-top:6px;font-size:13px;color:#5a5a50;">En español = condicional simple: «Si tuviera dinero, viajaría.»</p>
+      `
+    },
+    items: [
+      {
+        prompt: 'Choose the correct form: If I ______ more money, I ______ travel around the world.',
+        options: ["have ... will", "had ... would", "would have ... would", "have ... would"],
+        correct: 1,
+        explanation: "Second conditional: «if + past simple (had), ... would + infinitive (travel)». The situation is hypothetical — I don't have the money right now."
+      },
+      {
+        prompt: 'Choose the correct form: I ______ call the police if I ______ you.',
+        options: ["will ... am", "would ... were", "would ... was", "will ... were"],
+        correct: 1,
+        explanation: "«Would call ... if I were you» — the standard second conditional. «If I were you» uses «were» for all persons (not «was»), especially in formal and exam English. «Would» not «will» because the situation is hypothetical."
+      },
+      {
+        prompt: 'Choose the correct form: What ______ you do if you ______ the lottery?',
+        options: ["will ... win", "would ... won", "would ... win", "will ... won"],
+        correct: 1,
+        explanation: "«What would you do if you won» — both parts need the correct second conditional forms: would in the main clause, past simple (won) in the if-clause."
+      },
+      {
+        prompt: 'Choose the correct form: She ______ be happier if she ______ a job she enjoyed.',
+        options: ["would ... found", "will ... finds", "would ... had", "would ... find"],
+        correct: 0,
+        explanation: "«Would be ... if she found» — past simple (found) in the if-clause, would in the main clause. «Had» is wrong here because we need the past simple of «find», not «have»."
+      },
+      {
+        prompt: 'Choose the correct form: If he ______ harder, he ______ the exam.',
+        options: ["studied ... will pass", "would study ... would pass", "studied ... would pass", "studies ... would pass"],
+        correct: 2,
+        explanation: "«If he studied (past simple), he would pass» — the if-clause takes past simple, not «would». A common mistake is putting «would» in both clauses."
+      },
+      {
+        prompt: 'Choose the correct form: ______ you take the job if they ______ it to you?',
+        options: ["Will ... offer", "Would ... offered", "Do ... offered", "Would ... offer"],
+        correct: 1,
+        explanation: "«Would you take ... if they offered» — past simple «offered» in the if-clause, «would» in the question. The situation is hypothetical: they haven't offered it yet."
+      }
+    ]
+  },
+
+  {
+    title: "Case 3 — Modal Verbs of Deduction",
+    de: "Deducción: must (casi seguro), can't (imposible), might/could (posible). Siempre seguidos de infinitivo.",
+    icon: "magnify",
+    type: "mcq",
+    intro: "The court reviews the evidence. Choose the modal verb that correctly expresses the degree of certainty.",
+    rule: {
+      heading: "Modal deduction — present",
+      html: `
+        <table class="rule-table">
+          <tr><th>Modal</th><th>Meaning</th><th>Example</th></tr>
+          <tr><td><strong>must</strong></td><td>Almost certain (positive)</td><td><em>She must be tired — she's been working all day.</em></td></tr>
+          <tr><td><strong>can't</strong></td><td>Almost certain (negative)</td><td><em>That can't be right — I just checked.</em></td></tr>
+          <tr><td><strong>might / could</strong></td><td>Possible but not certain</td><td><em>He might be at the gym.</em></td></tr>
+        </table>
+        <p style="margin-top:10px;font-size:13px;color:#5a5a50;">All followed by infinitive (bare): must be, can't know, might have (for past deduction).</p>
+      `
+    },
+    items: [
+      {
+        prompt: 'Choose the correct modal: She ______ be exhausted — she\'s been awake for 30 hours.',
+        options: ["can't", "might not", "could not", "must"],
+        correct: 3,
+        explanation: "«Must be» — the evidence (30 hours awake) makes exhaustion almost certain. «Must» expresses logical deduction when we are fairly sure something is true."
+      },
+      {
+        prompt: 'Choose the correct modal: That ______ be Marco\'s car — he doesn\'t own a car.',
+        options: ["must", "might", "could", "can't"],
+        correct: 3,
+        explanation: "«Can't be» — we're almost certain this is NOT Marco's car because we know he doesn't own one. «Can't» expresses near-certainty that something is impossible or untrue."
+      },
+      {
+        prompt: 'Choose the correct modal: He ______ be at home — I can see his light is on, but I\'m not sure.',
+        options: ["must", "can't", "should", "might"],
+        correct: 3,
+        explanation: "«Might be» — the light is evidence, but it doesn't prove he's home. «Might» or «could» express possibility without certainty. «Must» would be too strong here."
+      },
+      {
+        prompt: 'Choose the correct modal: They ______ have arrived already — the flight takes six hours and they only left two hours ago.',
+        options: ["must", "might", "can't", "should"],
+        correct: 2,
+        explanation: "«Can't have arrived» — past deduction: it's impossible they've arrived because of the flight time. For past deduction, use «can't have + past participle» or «must have + past participle»."
+      },
+      {
+        prompt: 'Choose the correct modal: You ______ be hungry — you\'ve just had a three-course meal!',
+        options: ["might", "could", "must", "can't"],
+        correct: 3,
+        explanation: "«Can't be hungry» — logically impossible after a three-course meal. «Can't» is used when the evidence makes something almost certainly untrue."
+      },
+      {
+        prompt: 'Choose the correct modal: There\'s no answer at the door. She ______ have gone out.',
+        options: ["can't", "mustn't", "might", "shouldn't"],
+        correct: 2,
+        explanation: "«Might have gone out» — it's one possible explanation, but we don't know for certain. «Mustn't» is not used for deduction — it expresses prohibition. For uncertain past deduction, use «might have + past participle»."
+      }
+    ]
+  },
+
+  {
+    title: "Case 4 — Reported Speech",
+    de: "Estilo indirecto: los tiempos verbales retroceden un paso. «Said that», «told me that».",
+    icon: "speech",
+    type: "fill",
+    intro: "Transform each sentence into reported speech. Type the missing verb form.",
+    rule: {
+      heading: "Reported speech — tense shift",
+      html: `
+        <table class="rule-table">
+          <tr><th>Direct speech</th><th>Reported speech</th></tr>
+          <tr><td>«I <em>am</em> tired.»</td><td>She said she <em>was</em> tired.</td></tr>
+          <tr><td>«I <em>work</em> here.»</td><td>He said he <em>worked</em> there.</td></tr>
+          <tr><td>«I <em>will</em> call you.»</td><td>She said she <em>would</em> call me.</td></tr>
+          <tr><td>«I <em>have finished</em>.»</td><td>He said he <em>had finished</em>.</td></tr>
+          <tr><td>«I <em>can</em> help.»</td><td>She said she <em>could</em> help.</td></tr>
+        </table>
+        <p style="margin-top:8px;font-size:13px;color:#5a5a50;">Note: «say» → reported with «said (that)»; «tell» → reported with «told + person»: «He told me (that)...»</p>
+      `
+    },
+    items: [
+      { prompt: '«I am really tired.» → She said she ______ really tired.', hint: "am → ?", answers: ["was"], explanation: "Present simple «am» shifts back to past simple «was» in reported speech." },
+      { prompt: '«I will call you tomorrow.» → He said he ______ call me the next day.', hint: "will → ?", answers: ["would"], explanation: "«Will» shifts back to «would» in reported speech. Note also: «tomorrow» becomes «the next day»." },
+      { prompt: '«I can\'t come to the meeting.» → She told me she ______ come to the meeting.', hint: "can't → ?", answers: ["couldn't"], explanation: "«Can't» shifts back to «couldn't» in reported speech." },
+      { prompt: '«We have already eaten.» → They said they ______ already ______.', hint: "two words", answers: ["had already eaten", "had eaten"], explanation: "Present perfect «have eaten» shifts back to past perfect «had eaten» in reported speech." },
+      { prompt: '«I don\'t know the answer.» → He said he ______ know the answer.', hint: "don't → ?", answers: ["didn't"], explanation: "Present simple negative «don't» shifts back to past simple «didn't» in reported speech." }
+    ]
+  },
+
+  {
+    title: "Case 5 — Relative Clauses",
+    de: "Cláusulas de relativo: who (persona), which (cosa), that (persona/cosa), where (lugar), whose (posesión).",
+    icon: "chain",
+    type: "mcq",
+    intro: "Choose the correct relative pronoun or decide whether it can be omitted.",
+    rule: {
+      heading: "Relative pronouns",
+      html: `
+        <table class="rule-table">
+          <tr><th>Pronoun</th><th>Used for</th><th>Example</th></tr>
+          <tr><td><strong>who</strong></td><td>People</td><td><em>the man who called</em></td></tr>
+          <tr><td><strong>which</strong></td><td>Things</td><td><em>the book which I read</em></td></tr>
+          <tr><td><strong>that</strong></td><td>People or things (defining only)</td><td><em>the film that I loved</em></td></tr>
+          <tr><td><strong>where</strong></td><td>Places</td><td><em>the city where I grew up</em></td></tr>
+          <tr><td><strong>whose</strong></td><td>Possession</td><td><em>the woman whose car was stolen</em></td></tr>
+        </table>
+        <p style="margin-top:8px;font-size:13px;color:#5a5a50;">If the relative pronoun is the <strong>object</strong> of the clause, it can usually be omitted: «the film (that) I watched».</p>
+      `
+    },
+    items: [
+      {
+        prompt: 'Choose the correct word: The woman ______ wallet was stolen reported it to the police.',
+        options: ["who", "which", "whose", "where"],
+        correct: 2,
+        explanation: "«Whose» — this is a possessive relative clause. «The woman whose wallet» means «the wallet belonged to the woman». «Who» or «which» don't show possession."
+      },
+      {
+        prompt: 'Choose the correct word: This is the hotel ______ we stayed on our honeymoon.',
+        options: ["which", "who", "that", "where"],
+        correct: 3,
+        explanation: "«Where» — after a noun referring to a place, use «where» (not «that» or «which» unless followed by a preposition: «the hotel that/which we stayed in»)."
+      },
+      {
+        prompt: 'Choose the correct option: The report ______ I wrote last week has already been approved.',
+        options: ["which / that", "who", "where", "whose"],
+        correct: 0,
+        explanation: "«Which» or «that» — both are correct for things. «The report» is a thing, not a person or place. «That» is slightly more informal; «which» is more formal."
+      },
+      {
+        prompt: 'Choose the correct option: The colleague ______ helped me with the project has left the company.',
+        options: ["whose", "which", "where", "who"],
+        correct: 3,
+        explanation: "«Who» — used for people as the subject of the relative clause. «Which» is for things only."
+      },
+      {
+        prompt: 'Choose the correct option: Is this the new phone ______ everyone is talking about?',
+        options: ["who", "whose", "where", "that"],
+        correct: 3,
+        explanation: "«That» — correct for things in defining relative clauses. Note: «which» also works here. The relative pronoun could also be omitted: «the phone everyone is talking about»."
+      },
+      {
+        prompt: 'Choose the correct option: My neighbour, ______ is a doctor, gave me some good advice.',
+        options: ["who", "that", "which", "whose"],
+        correct: 0,
+        explanation: "«Who» — this is a non-defining relative clause (with commas), giving extra information about the neighbour. In non-defining clauses, «that» CANNOT be used — only «who», «which», or «whose»."
+      }
+    ]
+  },
+
+  {
+    title: "Case 6 — Passive Voice",
+    de: "Pasiva: «be» conjugado + participio pasado. El foco cambia del agente a la acción o al objeto.",
+    icon: "book",
+    type: "reorder",
+    intro: "Put the words in the correct order to form a grammatically correct passive sentence.",
+    rule: {
+      heading: "Passive voice formula",
+      html: `
+        <div class="formula">subject + be (conjugated) + past participle (+ by + agent)</div>
+        <table class="rule-table" style="margin-top:8px;">
+          <tr><th>Tense</th><th>Passive form</th></tr>
+          <tr><td>Present simple</td><td><em>The reports are written every month.</em></td></tr>
+          <tr><td>Past simple</td><td><em>The window was broken last night.</em></td></tr>
+          <tr><td>Present perfect</td><td><em>The project has been completed.</em></td></tr>
+          <tr><td>Modal</td><td><em>The form must be signed.</em></td></tr>
+        </table>
+      `
+    },
+    items: [
+      { chips: ["The", "report", "was", "written", "by", "the", "manager."], answer: "The report was written by the manager.", explanation: "Past simple passive: «was + past participle (written)». The agent (manager) follows «by»." },
+      { chips: ["English", "is", "spoken", "in", "many", "countries."], answer: "English is spoken in many countries.", explanation: "Present simple passive: «is + past participle (spoken)». No agent needed — it's obvious or unimportant." },
+      { chips: ["The", "project", "has", "been", "delayed", "twice."], answer: "The project has been delayed twice.", explanation: "Present perfect passive: «has been + past participle (delayed)». Note the double auxiliary: «has been»." },
+      { chips: ["The", "new", "law", "must", "be", "approved", "by", "parliament."], answer: "The new law must be approved by parliament.", explanation: "Modal passive: «must be + past participle (approved)». Modal + be + past participle — never «must been»." },
+      { chips: ["The", "tickets", "can", "be", "bought", "online."], answer: "The tickets can be bought online.", explanation: "Modal passive: «can be + past participle (bought)». No agent needed here — it's general information." }
+    ]
+  },
+
+  {
+    title: "Case 7 — Linking & Time Connectives",
+    de: "Conectores: although/even though (contraste), in spite of/despite (+ -ing/noun), by the time, as soon as, while.",
+    icon: "quill",
+    type: "mcq",
+    intro: "Choose the linking word or phrase that fits the meaning and grammar of each sentence.",
+    rule: {
+      heading: "Key connectives at B1",
+      html: `
+        <table class="rule-table">
+          <tr><th>Connective</th><th>Pattern</th><th>Use</th></tr>
+          <tr><td>although / even though</td><td>+ clause (subject + verb)</td><td>Contrast</td></tr>
+          <tr><td>despite / in spite of</td><td>+ noun / -ing</td><td>Contrast</td></tr>
+          <tr><td>as soon as</td><td>+ clause</td><td>Immediately after</td></tr>
+          <tr><td>by the time</td><td>+ clause</td><td>Before a deadline/moment</td></tr>
+          <tr><td>unless</td><td>+ positive clause</td><td>Except if</td></tr>
+          <tr><td>provided (that)</td><td>+ clause</td><td>On condition that</td></tr>
+        </table>
+      `
+    },
+    items: [
+      {
+        prompt: 'Choose the correct connective: ______ it was raining heavily, we decided to go for a walk.',
+        options: ["Despite", "In spite of", "Although", "However"],
+        correct: 2,
+        explanation: "«Although» — followed by a full clause (subject + verb: «it was raining»). «Despite» and «in spite of» are followed by a noun or -ing form, not a full clause: «Despite the heavy rain, ...»."
+      },
+      {
+        prompt: 'Choose the correct connective: ______ working very hard, she didn\'t pass the exam.',
+        options: ["Although", "Even though", "However", "Despite"],
+        correct: 3,
+        explanation: "«Despite» (or «in spite of») — followed by an -ing form («working»). «Although» and «even though» need a full clause with a subject and verb."
+      },
+      {
+        prompt: 'Choose the correct connective: ______ you leave now, you\'ll miss the beginning of the film.',
+        options: ["Although", "Unless", "Despite", "However"],
+        correct: 1,
+        explanation: "«Unless» means «except if» — «Unless you leave now» = «If you don't leave now». It's used with a positive verb to express a condition."
+      },
+      {
+        prompt: 'Choose the correct connective: I\'ll send you the document ______ I finish writing it.',
+        options: ["by the time", "despite", "unless", "as soon as"],
+        correct: 3,
+        explanation: "«As soon as» means «immediately when» — expressing that the action will happen right after finishing. «By the time» refers to a deadline point, not an immediate sequence."
+      },
+      {
+        prompt: 'Choose the correct connective: You can borrow my car ______ you drive carefully.',
+        options: ["unless", "despite", "provided that", "although"],
+        correct: 2,
+        explanation: "«Provided that» (= as long as) — sets a condition for permission. «Unless you drive carefully» would mean the opposite: «you can't borrow it if you don't drive carefully»."
+      },
+      {
+        prompt: 'Choose the correct connective: ______ I arrived at the office, the meeting had already started.',
+        options: ["As soon as", "Unless", "By the time", "Although"],
+        correct: 2,
+        explanation: "«By the time» — this expresses that one event (the meeting starting) happened before another past moment (my arrival). It often pairs with the Past Perfect: «had already started»."
+      }
+    ]
+  }
+];
+
+const TOTAL = stations.reduce((s, st) => s + (st.items ? st.items.length : st.pairs.length), 0);
+
+/* ============================================================
+   STATE
+   ============================================================ */
+let screen = "start";
+let curS = 0, curI = 0, score = 0;
+const matchState = {};
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+function shuffle(a) {
+  const b = [...a];
+  for (let i = b.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [b[i], b[j]] = [b[j], b[i]];
+  }
+  return b;
+}
+
+function updateDashboard() {
+  // dockets
+  const strip = document.getElementById("docketStrip");
+  strip.innerHTML = "";
+  stations.forEach((_, i) => {
+    const d = document.createElement("div");
+    d.className = "docket" + (screen === "station" && i === curS ? " active" : "") + (i < curS || screen === "final" ? " done" : "");
+    d.textContent = i + 1;
+    d.title = stations[i].title;
+    strip.appendChild(d);
+  });
+  // score
+  document.getElementById("scoreNum").innerHTML = `${score} <span>/ ${TOTAL}</span>`;
+  // footer
+  const caseNum = screen === "final" ? stations.length : curS + 1;
+  document.getElementById("footerCase").textContent = `${caseNum} / ${stations.length}`;
+  document.getElementById("footerScore").textContent = `${score} / ${TOTAL}`;
+}
+
+/* ============================================================
+   RENDER: START
+   ============================================================ */
+function renderStart() {
+  document.getElementById("card").innerHTML = `
+    <div class="card-tab" style="background:var(--forest);">
+      <div class="tab-icon">${icons.gavel}</div>
+      <div>
+        <div class="tab-title">The Court is in Session</div>
+        <div class="tab-de">El tribunal está en sesión</div>
+      </div>
+    </div>
+    <div class="hero-body">
+      ${sealSVG}
+      <h2>Grammar <em>Court</em> — B1</h2>
+      <p class="sub">Seven grammar cases, forty verdicts to reach. Each case targets a key B1 structure. Read the evidence, study the rule, then make your ruling.</p>
+      <div class="case-list">
+        <strong>Cases before the court / Casos en el tribunal</strong>
+        <ol>
+          <li>Present Perfect vs Past Simple</li>
+          <li>Second Conditional</li>
+          <li>Modal Verbs of Deduction</li>
+          <li>Reported Speech</li>
+          <li>Relative Clauses</li>
+          <li>Passive Voice</li>
+          <li>Linking &amp; Time Connectives</li>
+        </ol>
+      </div>
+      <div class="hero-cta">
+        <button class="btn btn-primary" onclick="startCourt()">Call the first case &rarr;</button>
+      </div>
+    </div>
+  `;
+  updateDashboard();
+}
+
+function startCourt() { screen = "station"; curS = 0; curI = 0; renderStation(); }
+
+/* ============================================================
+   RENDER: STATION
+   ============================================================ */
+function renderStation() {
+  const st = stations[curS];
+  let ruleHTML = "";
+  if (st.rule) {
+    ruleHTML = `<div class="rule-box"><div class="rule-box-head">${st.rule.heading}</div>${st.rule.html}</div>`;
+  }
+  let body = "";
+  if (st.type === "matching") {
+    body = matchingHTML(curS);
+  } else {
+    body = itemHTML(curS, curI);
+  }
+  document.getElementById("card").innerHTML = `
+    <div class="card-tab">
+      <div class="tab-icon">${icons[st.icon]}</div>
+      <div>
+        <div class="tab-title">${st.title}</div>
+        <div class="tab-de">${st.de}</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p style="margin-bottom:16px;font-size:14px;color:var(--ink-soft);">${st.intro}</p>
+      ${ruleHTML}
+      <div id="stBody">${body}</div>
+    </div>
+  `;
+  if (st.type === "matching") initMatching(curS);
+  else wireItem(curS, curI);
+  updateDashboard();
+}
+
+/* ============================================================
+   ITEMS
+   ============================================================ */
+function itemHTML(si, ii) {
+  const st = stations[si], total = st.items.length, item = st.items[ii];
+  const pct = Math.round((ii / total) * 100);
+  let core = "";
+
+  if (st.type === "mcq" || st.type === "truefalse") {
+    const opts = st.type === "truefalse"
+      ? [{ text: "Correct (verdadero)", isCorrect: item.isTrue }, { text: "Incorrect (falso)", isCorrect: !item.isTrue }]
+      : shuffle(item.options.map((o, i) => ({ text: o, isCorrect: i === item.correct })));
+    core = `<div class="prompt">${item.prompt}</div>
+      <div class="options" id="optGrid">${opts.map(o => `<button class="opt" data-correct="${o.isCorrect}" onclick="pickOpt(this)">${o.text}</button>`).join("")}</div>`;
+  } else if (st.type === "fill") {
+    core = `<div class="prompt">${item.prompt}</div>
+      <div class="fill-wrap">
+        <input class="fill-input" id="fillIn" type="text" autocomplete="off" spellcheck="false" placeholder="type your answer">
+        <div class="hint-tag">hint: ${item.hint}</div>
+      </div>`;
+  } else if (st.type === "reorder") {
+    const chips = shuffle(item.chips.map((c, i) => ({ t: c, i })));
+    core = `<div class="prompt" style="font-size:14px;color:var(--ink-soft);margin-bottom:10px;">Put the words in the correct order.</div>
+      <div class="build-zone" id="buildZone"></div>
+      <div class="word-bank" id="wordBank">${chips.map(c => `<button class="chip" data-txt="${c.t.replace(/"/g,'&quot;')}" onclick="placeChip(this)">${c.t}</button>`).join("")}</div>`;
+  }
+
+  return `
+    <div class="prog-row"><span>Question ${ii + 1} of ${total}</span><span>${pct}% complete</span></div>
+    <div class="prog-bar"><div style="width:${pct}%"></div></div>
+    ${core}
+    <div id="verdictArea"></div>
+    <div class="actions" id="actArea">
+      ${(st.type === "mcq" || st.type === "truefalse") ? `<button class="btn btn-primary" id="checkBtn" disabled onclick="checkMCQ()">Submit verdict</button>` : ""}
+      ${st.type === "fill" ? `<button class="btn btn-primary" id="checkBtn" onclick="checkFill()">Submit verdict</button>` : ""}
+      ${st.type === "reorder" ? `<button class="btn btn-primary" id="checkBtn" disabled onclick="checkReorder()">Submit verdict</button>` : ""}
+    </div>`;
+}
+
+function wireItem(si, ii) {
+  const st = stations[si];
+  if (st.type === "fill") {
+    const inp = document.getElementById("fillIn");
+    inp.focus();
+    inp.addEventListener("keydown", e => { if (e.key === "Enter") checkFill(); });
+  }
+}
+
+/* ---- MCQ ---- */
+function pickOpt(btn) {
+  if (btn.parentElement.dataset.locked) return;
+  document.querySelectorAll("#optGrid .opt").forEach(o => o.classList.remove("chosen"));
+  btn.classList.add("chosen");
+  document.getElementById("checkBtn").disabled = false;
+}
+function checkMCQ() {
+  const grid = document.getElementById("optGrid");
+  if (grid.dataset.locked) return;
+  grid.dataset.locked = "1";
+  const sel = grid.querySelector(".opt.chosen");
+  if (!sel) return;
+  const ok = sel.dataset.correct === "true";
+  document.querySelectorAll("#optGrid .opt").forEach(o => {
+    o.disabled = true;
+    if (o.dataset.correct === "true") o.classList.add("correct");
+    else if (o === sel) o.classList.add("wrong");
+  });
+  if (ok) score++;
+  showVerdict(ok, stations[curS].items[curI].explanation);
+  showNext();
+  updateDashboard();
+}
+
+/* ---- FILL ---- */
+function checkFill() {
+  const inp = document.getElementById("fillIn");
+  if (inp.disabled) return;
+  const item = stations[curS].items[curI];
+  const val = inp.value.trim();
+  const ok = item.answers.some(a => a.toLowerCase() === val.toLowerCase());
+  inp.disabled = true;
+  inp.classList.add(ok ? "correct" : "wrong");
+  document.getElementById("checkBtn").disabled = true;
+  if (ok) score++;
+  const seen = new Set();
+  const uniq = item.answers.filter(a => { const k = a.toLowerCase(); if(seen.has(k)) return false; seen.add(k); return true; });
+  let exp = item.explanation;
+  if (!ok) exp = `Correct answer: <strong>${uniq.map(a => `«${a}»`).join(" or ")}</strong>. ${exp}`;
+  showVerdict(ok, exp);
+  showNext();
+  updateDashboard();
+}
+
+/* ---- REORDER ---- */
+function placeChip(btn) {
+  const zone = document.getElementById("buildZone");
+  if (zone.dataset.locked || btn.disabled) return;
+  btn.disabled = true;
+  btn.classList.add("placed");
+  const p = document.createElement("button");
+  p.className = "chip placed";
+  p.dataset.src = btn.dataset.txt;
+  p.textContent = btn.dataset.txt;
+  p.onclick = () => returnChip(p, btn);
+  zone.appendChild(p);
+  refreshReorderBtn();
+}
+function returnChip(placed, orig) {
+  const zone = document.getElementById("buildZone");
+  if (zone.dataset.locked) return;
+  placed.remove();
+  orig.disabled = false;
+  orig.classList.remove("placed");
+  refreshReorderBtn();
+}
+function refreshReorderBtn() {
+  const zone = document.getElementById("buildZone");
+  const total = stations[curS].items[curI].chips.length;
+  document.getElementById("checkBtn").disabled = zone.children.length !== total;
+}
+function checkReorder() {
+  const zone = document.getElementById("buildZone");
+  if (zone.dataset.locked) return;
+  zone.dataset.locked = "1";
+  const item = stations[curS].items[curI];
+  const built = [...zone.children].map(c => c.dataset.src).join(" ");
+  const ok = built === item.answer;
+  zone.classList.add(ok ? "correct" : "wrong");
+  document.querySelectorAll("#wordBank .chip").forEach(c => c.disabled = true);
+  document.getElementById("checkBtn").disabled = true;
+  if (ok) score++;
+  let exp = item.explanation;
+  if (!ok) exp = `Correct order: <strong>«${item.answer}»</strong>. ${exp}`;
+  showVerdict(ok, exp);
+  showNext();
+  updateDashboard();
+}
+
+/* ---- VERDICT / NEXT ---- */
+function showVerdict(ok, text) {
+  document.getElementById("verdictArea").innerHTML = `
+    <div class="verdict ${ok ? "good" : "bad"}">
+      <div class="verdict-ribbon">${ok ? "Verdict: Correct" : "Verdict: Incorrect"}</div>
+      <div class="verdict-body">${text}</div>
+    </div>`;
+}
+function showNext() {
+  const st = stations[curS];
+  const lastItem = curI === st.items.length - 1;
+  const lastCase = curS === stations.length - 1;
+  const label = lastItem && lastCase ? "Deliver final ruling &rarr;" : lastItem ? "Next case &rarr;" : "Next question &rarr;";
+  document.getElementById("actArea").innerHTML += `<button class="btn btn-ghost" onclick="advance()">${label}</button>`;
+}
+function advance() {
+  const st = stations[curS];
+  if (curI < st.items.length - 1) { curI++; renderStation(); }
+  else if (curS < stations.length - 1) { curS++; curI = 0; renderStation(); }
+  else { screen = "final"; renderFinal(); }
+}
+
+/* ============================================================
+   MATCHING
+   ============================================================ */
+function matchingHTML(si) {
+  const st = stations[si];
+  if (!matchState[si]) {
+    matchState[si] = { solved: new Set(), lo: shuffle(st.pairs.map((_,i)=>i)), ro: shuffle(st.pairs.map((_,i)=>i)), selL: null };
+  }
+  const ms = matchState[si];
+  const total = st.pairs.length, pct = Math.round(ms.solved.size / total * 100);
+  let L = "", R = "";
+  ms.lo.forEach(i => {
+    const s = ms.solved.has(i);
+    L += `<button class="match-btn ${s?"solved":""}" data-i="${i}" ${s?"disabled":""} onclick="selLeft(${i})">${st.pairs[i].left}</button>`;
+  });
+  ms.ro.forEach(i => {
+    const s = ms.solved.has(i);
+    R += `<button class="match-btn right ${s?"solved":""}" data-i="${i}" ${s?"disabled":""} onclick="selRight(${i})">${st.pairs[i].right}</button>`;
+  });
+  return `
+    <div class="prog-row"><span>${ms.solved.size} of ${total} matched</span><span>${pct}% complete</span></div>
+    <div class="prog-bar"><div style="width:${pct}%"></div></div>
+    <div class="match-grid"><div id="mL">${L}</div><div id="mR">${R}</div></div>
+    <div id="verdictArea"></div><div class="actions" id="actArea"></div>`;
+}
+function initMatching(si) {
+  if (matchState[si] && matchState[si].solved.size === stations[si].pairs.length) showMatchDone();
+}
+function selLeft(i) {
+  const ms = matchState[curS];
+  if (ms.solved.has(i)) return;
+  document.querySelectorAll("#mL .match-btn").forEach(b => b.classList.remove("chosen"));
+  ms.selL = i;
+  document.querySelector(`#mL .match-btn[data-i="${i}"]`).classList.add("chosen");
+}
+function selRight(i) {
+  const ms = matchState[curS];
+  if (ms.solved.has(i) || ms.selL === null) return;
+  const lb = document.querySelector(`#mL .match-btn[data-i="${ms.selL}"]`);
+  const rb = document.querySelector(`#mR .match-btn[data-i="${i}"]`);
+  if (ms.selL === i) {
+    ms.solved.add(i); score++;
+    lb.classList.remove("chosen"); lb.classList.add("solved"); lb.disabled = true;
+    rb.classList.add("solved"); rb.disabled = true;
+    ms.selL = null;
+    const total = stations[curS].pairs.length, pct = Math.round(ms.solved.size / total * 100);
+    document.querySelector(".prog-row span:first-child").textContent = `${ms.solved.size} of ${total} matched`;
+    document.querySelector(".prog-bar div").style.width = pct + "%";
+    updateDashboard();
+    if (ms.solved.size === total) showMatchDone();
+  } else {
+    rb.classList.add("shake"); lb.classList.add("shake");
+    setTimeout(() => { rb.classList.remove("shake"); lb.classList.remove("shake","chosen"); }, 380);
+    ms.selL = null;
+  }
+}
+function showMatchDone() {
+  const last = curS === stations.length - 1;
+  document.getElementById("verdictArea").innerHTML = `
+    <div class="verdict good">
+      <div class="verdict-ribbon">All pairs correctly matched</div>
+      <div class="verdict-body">Every pair is correctly connected — the case is closed. Proceed when ready.</div>
+    </div>`;
+  document.getElementById("actArea").innerHTML = `<button class="btn btn-ghost" onclick="advMatch()">${last ? "Deliver final ruling &rarr;" : "Next case &rarr;"}</button>`;
+}
+function advMatch() {
+  if (curS < stations.length - 1) { curS++; curI = 0; renderStation(); }
+  else { screen = "final"; renderFinal(); }
+}
+
+/* ============================================================
+   FINAL
+   ============================================================ */
+function renderFinal() {
+  const pct = Math.round(score / TOTAL * 100);
+  const [msg, es] = pct >= 88
+    ? ["Outstanding. The court finds you demonstrate strong B1 grammar command across all seven areas.", "Sobresaliente. El tribunal declara que demuestras un dominio sólido de la gramática B1."]
+    : pct >= 72
+    ? ["Solid work. Most cases ruled correctly — a few structures need further consolidation.", "Buen trabajo. La mayoría de los casos resueltos correctamente — algunas estructuras necesitan consolidarse."]
+    : pct >= 55
+    ? ["Good progress. Several rulings were sound; revisit the cases where the verdict went against you.", "Buen progreso. Varias respuestas fueron correctas; repasa los casos donde el veredicto fue en tu contra."]
+    : ["The court recommends further study before the next session. Review each case carefully.", "El tribunal recomienda más estudio antes de la próxima sesión. Repasa cada caso con atención."];
+  document.getElementById("card").innerHTML = `
+    <div class="card-tab" style="background:var(--forest);">
+      <div class="tab-icon">${icons.gavel}</div>
+      <div><div class="tab-title">Court Adjourned</div><div class="tab-de">Sesión levantada</div></div>
+    </div>
+    <div class="hero-body">
+      ${sealSVG}
+      <h2>Final <em>Ruling</em></h2>
+      <div class="final-score-big">${score} <span>/ ${TOTAL}</span></div>
+      <p class="final-msg">${msg}</p>
+      <p class="final-es">${es}</p>
+      <div class="hero-cta">
+        <button class="btn btn-primary" onclick="restartCourt()">Reconvene the court &rarr;</button>
+      </div>
+    </div>`;
+  updateDashboard();
+}
+function restartCourt() {
+  screen = "start"; curS = 0; curI = 0; score = 0;
+  Object.keys(matchState).forEach(k => delete matchState[k]);
+  renderStart();
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+renderStart();
+</script>
+</body>
+</html>

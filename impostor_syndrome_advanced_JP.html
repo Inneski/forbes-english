@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Impostor Syndrome — Advanced English · C1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500&family=Shippori+Mincho:wght@400;500&family=Syne:wght@400;500;600&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a1814;--ink2:#5a5550;--ink3:#9a9590;
+  --paper:#faf9f6;--paper2:#f2f0eb;--paper3:#e8e5de;
+  --red:#8b1a1a;--red-light:#f5ebe8;
+  --indigo:#1a2856;--indigo-light:#eaecf5;
+  --gold:#7a5c1a;--gold-light:#f5f0e3;
+  --green:#1a4a2e;--green-light:#e8f2ec;
+  --border:rgba(26,24,20,0.12);--border2:rgba(26,24,20,0.22);
+  --font-display:'Syne',sans-serif;
+  --font-jp:'Noto Serif JP','Shippori Mincho',serif;
+  --font-body:'Noto Sans JP','Noto Sans',sans-serif;
+  --font-serif:'Noto Serif JP',Georgia,serif;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --ink:#e8e5de;--ink2:#a8a59e;--ink3:#686560;
+    --paper:#1a1814;--paper2:#222018;--paper3:#2a2820;
+    --border:rgba(232,229,222,0.12);--border2:rgba(232,229,222,0.22);
+    --red-light:#2a1212;--indigo-light:#121625;--gold-light:#221c0a;--green-light:#0a1812;
+  }
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--paper2);color:var(--ink);line-height:1.7;font-size:15px}
+
+/* HERO HEADER */
+.hero{background:var(--indigo);color:#eaecf5;padding:2.5rem 2rem 2rem;position:relative;overflow:hidden}
+.hero::before{content:'偽物';position:absolute;right:-1rem;top:-1rem;font-family:var(--font-jp);font-size:120px;font-weight:300;color:rgba(255,255,255,0.04);letter-spacing:-4px;line-height:1;pointer-events:none}
+.hero-eyebrow{font-family:var(--font-display);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(234,236,245,0.55);margin-bottom:.6rem}
+.hero-title{font-family:var(--font-display);font-size:clamp(20px,4vw,30px);font-weight:600;line-height:1.2;margin-bottom:.75rem;color:#eaecf5}
+.hero-title span{color:#a8b4e8}
+.hero-sub{font-size:13px;color:rgba(234,236,245,0.6);line-height:1.6;max-width:520px;margin-bottom:1.25rem}
+.hero-tags{display:flex;gap:.5rem;flex-wrap:wrap}
+.htag{font-size:10px;padding:3px 10px;border-radius:20px;font-weight:500;letter-spacing:.05em;font-family:var(--font-display)}
+.htag-blue{background:rgba(168,180,232,0.18);color:#a8b4e8;border:0.5px solid rgba(168,180,232,0.3)}
+.htag-red{background:rgba(220,160,140,0.15);color:#e8b4a0;border:0.5px solid rgba(220,160,140,0.25)}
+.htag-gold{background:rgba(220,190,100,0.12);color:#d4b870;border:0.5px solid rgba(220,190,100,0.2)}
+
+/* LAYOUT */
+.wrap{max-width:820px;margin:0 auto;padding:1.5rem 1rem 4rem}
+
+/* PROGRESS */
+.progress-track{display:flex;gap:.4rem;margin-bottom:1.75rem;align-items:center}
+.progress-step{flex:1;height:3px;background:var(--paper3);border-radius:2px;transition:background .4s}
+.progress-step.done{background:var(--indigo)}
+.progress-step.active{background:var(--red)}
+.progress-label{font-size:11px;color:var(--ink3);min-width:80px;text-align:right;font-family:var(--font-display);letter-spacing:.04em}
+
+/* TABS */
+.tab-scroll{overflow-x:auto;scrollbar-width:none;margin-bottom:2rem}
+.tab-scroll::-webkit-scrollbar{display:none}
+.tab-nav{display:flex;border-bottom:1px solid var(--border);min-width:max-content}
+.tab-btn{font-family:var(--font-display);font-size:12px;font-weight:500;padding:.6rem 1.1rem;border:none;background:none;cursor:pointer;color:var(--ink3);border-bottom:2px solid transparent;white-space:nowrap;letter-spacing:.04em;text-transform:uppercase;transition:color .2s}
+.tab-btn:hover{color:var(--ink)}
+.tab-btn.active{color:var(--red);border-bottom:2px solid var(--red)}
+
+/* SECTIONS */
+.section{display:none}.section.active{display:block}
+.sec-head{margin-bottom:1.5rem}
+.sec-title{font-family:var(--font-display);font-size:20px;font-weight:600;color:var(--ink);margin-bottom:.2rem}
+.sec-jp{font-family:var(--font-jp);font-size:11px;color:var(--ink3);margin-bottom:.4rem;display:block}
+.sec-sub{font-size:13px;color:var(--ink2);line-height:1.6}
+
+/* CARDS */
+.card{background:var(--paper);border:.5px solid var(--border);border-radius:10px;padding:1.25rem}
+.card+.card,.card+div.card-gap{margin-top:.75rem}
+.card-gap{margin-top:.75rem}
+
+/* CULTURAL PANEL */
+.cultural-panel{background:var(--indigo-light);border-left:3px solid var(--indigo);border-radius:0 10px 10px 0;padding:1rem 1.25rem;margin-bottom:1rem}
+.cp-label{font-family:var(--font-display);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--indigo);margin-bottom:.4rem;display:flex;align-items:center;gap:.4rem}
+.cp-jp{font-family:var(--font-jp);font-size:18px;color:var(--indigo);margin-bottom:.3rem;letter-spacing:.05em}
+.cp-text{font-size:13px;color:var(--ink2);line-height:1.7}
+
+/* VOCAB */
+.vocab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:.75rem}
+.vcard{background:var(--paper);border:.5px solid var(--border);border-radius:10px;padding:1rem 1.1rem;cursor:pointer;min-height:100px;position:relative;transition:border-color .2s}
+.vcard:hover{border-color:var(--border2)}
+.vcard.flipped .vfront{display:none}
+.vcard.flipped .vback{display:flex}
+.vfront,.vback{width:100%}
+.vback{display:none;flex-direction:column;gap:.3rem}
+.vword{font-family:var(--font-display);font-size:15px;font-weight:600;color:var(--ink);margin-bottom:.2rem}
+.vpos{font-size:10px;color:var(--red);font-weight:500;text-transform:uppercase;letter-spacing:.09em;display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem}
+.vjp{font-family:var(--font-jp);font-size:12px;color:var(--ink3);margin-left:auto}
+.vhint{font-size:12px;color:var(--ink2);font-style:italic}
+.vdef{font-size:13px;color:var(--ink);line-height:1.55}
+.vex{font-size:12px;color:var(--ink2);font-style:italic;margin-top:.35rem;line-height:1.5;padding-left:.75rem;border-left:2px solid var(--paper3)}
+.vcoll{font-size:11px;color:var(--gold);margin-top:.3rem;font-weight:500}
+.flip-hint{font-size:10px;color:var(--ink3);position:absolute;bottom:.5rem;right:.75rem;letter-spacing:.03em}
+
+/* PASSAGE */
+.passage{font-family:var(--font-serif);font-size:15px;line-height:2;color:var(--ink)}
+.passage p{margin-bottom:1.1rem}
+.gls{background:var(--gold-light);border-radius:3px;padding:1px 4px;cursor:pointer;color:var(--gold);border-bottom:1.5px solid currentColor;font-style:normal;position:relative}
+.gls:hover .gls-box{display:block}
+.gls-box{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--ink);color:var(--paper);font-size:11.5px;padding:6px 12px;border-radius:7px;white-space:nowrap;font-family:var(--font-body);z-index:20;pointer-events:none;line-height:1.5;min-width:180px;max-width:260px;white-space:normal;text-align:center}
+.gls-box .jp{font-family:var(--font-jp);font-size:12px;color:rgba(232,229,222,0.65);display:block;margin-top:2px}
+
+/* ANNOTATION toggle */
+.annot-toggle{display:flex;align-items:center;gap:.5rem;margin-bottom:1rem;font-size:12px;color:var(--ink2)}
+.toggle-sw{width:36px;height:20px;background:var(--paper3);border-radius:10px;cursor:pointer;position:relative;transition:background .2s;border:.5px solid var(--border)}
+.toggle-sw.on{background:var(--indigo)}
+.toggle-sw::after{content:'';width:14px;height:14px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:left .2s}
+.toggle-sw.on::after{left:18px}
+
+/* COMPREHENSION */
+.q-num{font-family:var(--font-display);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:.3rem}
+.q-text{font-size:14px;font-weight:500;margin-bottom:.75rem;line-height:1.5;color:var(--ink)}
+.q-type{font-size:11px;color:var(--indigo);font-style:italic;margin-bottom:.5rem}
+.q-opts{display:flex;flex-direction:column;gap:.4rem}
+.q-opt{display:flex;align-items:flex-start;gap:.6rem;padding:.55rem .8rem;border:.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:13.5px;line-height:1.5;transition:all .15s;color:var(--ink)}
+.q-opt:hover{border-color:var(--border2);background:var(--paper2)}
+.q-opt.correct{background:var(--green-light);border-color:#1a4a2e;color:#1a4a2e}
+.q-opt.wrong{background:var(--red-light);border-color:#8b1a1a;color:#8b1a1a}
+.q-opt.disabled{cursor:default;pointer-events:none}
+.opt-letter{font-family:var(--font-display);font-size:11px;font-weight:600;min-width:18px;margin-top:1px}
+.fb{font-size:13px;margin-top:.5rem;padding:.5rem .9rem;border-radius:7px;display:none;line-height:1.6}
+.fb.show{display:block}
+.fb.ok{background:var(--green-light);color:var(--green)}
+.fb.no{background:var(--red-light);color:var(--red)}
+.fb .jp-note{font-family:var(--font-jp);font-size:12px;color:inherit;opacity:.7;display:block;margin-top:.25rem}
+.score-reveal{background:var(--indigo-light);border-radius:10px;padding:1.5rem;text-align:center;margin-top:1.5rem;display:none;border:.5px solid rgba(26,40,86,0.15)}
+.sc-num{font-family:var(--font-display);font-size:42px;font-weight:600;color:var(--indigo);line-height:1}
+.sc-denom{font-size:16px;color:var(--ink3)}
+.sc-bar{height:5px;background:var(--paper3);border-radius:3px;margin:.75rem 0;overflow:hidden}
+.sc-fill{height:100%;background:var(--indigo);border-radius:3px;transition:width 1s ease}
+.sc-msg{font-size:13px;color:var(--ink2);line-height:1.6}
+
+/* GRAMMAR */
+.grammar-section{margin-bottom:2rem}
+.grammar-label{font-family:var(--font-display);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:.75rem;padding-bottom:.4rem;border-bottom:.5px solid var(--border)}
+.grammar-rule{border-left:3px solid var(--red);padding:.75rem 1rem;margin-bottom:.75rem;background:var(--red-light);border-radius:0 8px 8px 0}
+.rule-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--red);margin-bottom:.3rem;font-family:var(--font-display)}
+.rule-ex{font-family:var(--font-serif);font-size:14px;font-style:italic;color:var(--ink);line-height:1.7}
+.rule-note{font-size:13px;color:var(--ink2);margin-top:.35rem;line-height:1.6}
+.rule-jp{font-family:var(--font-jp);font-size:12px;color:var(--ink3);margin-top:.2rem;display:block}
+
+/* ERROR CORRECTION */
+.err-sentence{font-family:var(--font-serif);font-size:15px;line-height:1.9;padding:.75rem 1rem;border:.5px solid var(--border);border-radius:8px;margin-bottom:.5rem;position:relative;cursor:pointer;transition:border-color .2s;color:var(--ink)}
+.err-sentence:hover{border-color:var(--border2)}
+.err-sentence .err-marker{color:var(--red);text-decoration:underline wavy var(--red);cursor:help;position:relative}
+.err-input{border:none;border-bottom:1.5px solid var(--gold);background:transparent;font-family:var(--font-serif);font-size:14px;color:var(--ink);outline:none;padding:0 3px;min-width:90px;width:auto}
+.err-input:focus{border-color:var(--red)}
+.err-input.right{border-color:#1a4a2e;background:var(--green-light);color:#1a4a2e}
+.err-input.wrong{border-color:#8b1a1a;background:var(--red-light);color:#8b1a1a}
+
+/* COLLOCATIONS */
+.colloc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.6rem}
+.colloc-card{padding:.6rem .9rem;border:.5px solid var(--border);border-radius:8px;font-size:13px;cursor:pointer;transition:all .15s;color:var(--ink2)}
+.colloc-card.selected{border-color:var(--indigo);background:var(--indigo-light);color:var(--indigo)}
+.colloc-card.right{border-color:#1a4a2e;background:var(--green-light);color:#1a4a2e}
+.colloc-card.wrong{border-color:#8b1a1a;background:var(--red-light);color:#8b1a1a}
+.colloc-head{font-family:var(--font-serif);font-size:14px;font-style:italic;margin-bottom:.2rem;color:var(--ink)}
+.colloc-sub{font-size:11px}
+
+/* WRITING PLANNER */
+.planner{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+@media(max-width:600px){.planner{grid-template-columns:1fr}}
+.plan-box{background:var(--paper);border:.5px solid var(--border);border-radius:10px;padding:1rem}
+.plan-label{font-family:var(--font-display);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:.4rem}
+.plan-hint{font-size:12px;color:var(--ink3);font-style:italic;margin-bottom:.4rem;font-family:var(--font-serif);line-height:1.5}
+.plan-jp{font-family:var(--font-jp);font-size:11px;color:var(--ink3);display:block;margin-bottom:.4rem}
+textarea.plan-area{width:100%;min-height:75px;font-family:var(--font-serif);font-size:13px;padding:.5rem .65rem;border:.5px solid var(--border);border-radius:6px;background:var(--paper2);color:var(--ink);resize:vertical;outline:none;line-height:1.7}
+textarea.plan-area:focus{border-color:var(--red)}
+
+/* DISCOURSE MARKERS */
+.dm-table{width:100%;border-collapse:collapse;font-size:13px}
+.dm-table th{font-family:var(--font-display);font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);text-align:left;padding:.4rem .75rem;border-bottom:.5px solid var(--border)}
+.dm-table td{padding:.45rem .75rem;border-bottom:.5px solid var(--border);color:var(--ink);vertical-align:top}
+.dm-table tr:last-child td{border-bottom:none}
+.dm-table .marker{font-family:var(--font-serif);font-style:italic;color:var(--indigo);font-weight:500}
+.dm-table .jp{font-family:var(--font-jp);font-size:11px;color:var(--ink3)}
+
+/* DISCUSSION */
+.discuss-item{margin-bottom:.75rem;background:var(--paper);border:.5px solid var(--border);border-radius:10px;overflow:hidden}
+.discuss-header{padding:.75rem 1rem;cursor:pointer;display:flex;align-items:flex-start;gap:.75rem;transition:background .15s}
+.discuss-header:hover{background:var(--paper2)}
+.discuss-num-badge{font-family:var(--font-display);font-size:10px;font-weight:600;background:var(--indigo-light);color:var(--indigo);padding:2px 8px;border-radius:20px;white-space:nowrap;margin-top:2px}
+.discuss-q-text{font-family:var(--font-serif);font-size:14px;font-style:italic;line-height:1.6;color:var(--ink)}
+.discuss-body{display:none;padding:0 1rem 1rem 1rem;border-top:.5px solid var(--border)}
+.discuss-body.open{display:block}
+.discuss-sub{font-size:12px;color:var(--ink2);margin-bottom:.5rem;padding-top:.75rem}
+.lang-chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.75rem}
+.chip{font-size:11px;padding:3px 9px;border-radius:20px;background:var(--gold-light);color:var(--gold);border:.5px solid rgba(122,92,26,0.2);font-family:var(--font-serif);font-style:italic}
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:.5rem}
+@media(max-width:500px){.compare-grid{grid-template-columns:1fr}}
+.compare-box{background:var(--paper2);border-radius:8px;padding:.65rem .9rem;font-size:12px}
+.compare-label{font-family:var(--font-display);font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin-bottom:.3rem}
+.compare-text{color:var(--ink2);line-height:1.6;font-style:italic}
+
+/* REFLECTION */
+.reflect-textarea{width:100%;min-height:100px;font-family:var(--font-serif);font-size:14px;padding:.75rem;border:.5px solid var(--border);border-radius:8px;background:var(--paper);color:var(--ink);resize:vertical;line-height:1.8;outline:none}
+.reflect-textarea:focus{border-color:var(--red)}
+
+/* PHRASE BANK */
+.phrase-bank{background:var(--gold-light);border-radius:10px;padding:1rem 1.25rem;margin-bottom:1.25rem;border:.5px solid rgba(122,92,26,0.15)}
+.pb-label{font-family:var(--font-display);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:.6rem}
+.pb-phrases{display:flex;flex-wrap:wrap;gap:.4rem}
+.pb-phrase{font-family:var(--font-serif);font-size:12px;font-style:italic;padding:3px 9px;background:rgba(122,92,26,0.1);border-radius:20px;color:var(--gold);cursor:pointer;border:.5px solid rgba(122,92,26,0.2);transition:background .15s}
+.pb-phrase:hover{background:rgba(122,92,26,0.2)}
+
+/* NAV */
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:2.25rem;padding-top:1.25rem;border-top:.5px solid var(--border);flex-wrap:wrap;gap:.6rem}
+.nav-btn{font-family:var(--font-display);font-size:12px;font-weight:500;letter-spacing:.05em;background:none;border:.5px solid var(--border2);border-radius:7px;padding:.5rem 1.1rem;cursor:pointer;color:var(--ink);transition:background .15s}
+.nav-btn:hover{background:var(--paper2)}
+.nav-btn.primary{background:var(--indigo);color:#eaecf5;border-color:var(--indigo)}
+.nav-btn.primary:hover{opacity:.88}
+.step-indicator{font-family:var(--font-display);font-size:11px;color:var(--ink3);letter-spacing:.05em}
+
+/* CHECK BTN */
+.check-btn{font-family:var(--font-display);font-size:12px;font-weight:500;letter-spacing:.05em;background:var(--red);color:#fff;border:none;border-radius:7px;padding:.5rem 1.25rem;cursor:pointer;margin-top:1rem;transition:opacity .15s}
+.check-btn:hover{opacity:.87}
+
+/* DIVIDER */
+.rule-divider{height:.5px;background:var(--border);margin:1.5rem 0}
+
+/* CLOSING QUOTE */
+.closing-quote{background:var(--indigo);border-radius:10px;padding:1.5rem;color:#eaecf5;margin-top:1.5rem}
+.cq-text{font-family:var(--font-serif);font-size:16px;font-style:italic;line-height:1.8;margin-bottom:.5rem}
+.cq-jp{font-family:var(--font-jp);font-size:13px;color:rgba(234,236,245,0.6);line-height:1.8;display:block;margin-bottom:.4rem}
+.cq-attr{font-family:var(--font-display);font-size:11px;color:rgba(234,236,245,0.45);letter-spacing:.06em}
+
+/* TOOLTIP SECTION */
+.section-tooltip{position:relative;display:inline}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-eyebrow">Advanced English · C1 Level · For Japanese Learners</div>
+  <div class="hero-title">Why Do High Achievers Feel Like <span>Frauds?</span></div>
+  <div class="hero-sub">An advanced language study of impostor syndrome — exploring vocabulary in depth, academic grammar, cultural comparison with Japanese concepts, and guided writing practice.</div>
+  <div class="hero-tags">
+    <span class="htag htag-blue">C1 Academic English</span>
+    <span class="htag htag-red">Psychology &amp; Society</span>
+    <span class="htag htag-gold">日英文化比較</span>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="progress-track" id="prog-track">
+    <div class="progress-step active" id="ps0"></div>
+    <div class="progress-step" id="ps1"></div>
+    <div class="progress-step" id="ps2"></div>
+    <div class="progress-step" id="ps3"></div>
+    <div class="progress-step" id="ps4"></div>
+    <div class="progress-step" id="ps5"></div>
+    <div class="progress-step" id="ps6"></div>
+    <div class="progress-label" id="prog-label">Step 1 / 7</div>
+  </div>
+
+  <div class="tab-scroll">
+    <div class="tab-nav" id="tabrow">
+      <button class="tab-btn active" onclick="goTo(0)">1 · Pre-Reading</button>
+      <button class="tab-btn" onclick="goTo(1)">2 · Vocabulary</button>
+      <button class="tab-btn" onclick="goTo(2)">3 · Annotated Text</button>
+      <button class="tab-btn" onclick="goTo(3)">4 · Comprehension</button>
+      <button class="tab-btn" onclick="goTo(4)">5 · Grammar &amp; Style</button>
+      <button class="tab-btn" onclick="goTo(5)">6 · Cultural Link</button>
+      <button class="tab-btn" onclick="goTo(6)">7 · Writing Task</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 1 — PRE-READING
+  ═══════════════════════════════════════════ -->
+  <div id="sec-0" class="section active">
+    <div class="sec-head">
+      <div class="sec-title">Pre-Reading Activation</div>
+      <span class="sec-jp">読む前に考えよう</span>
+      <div class="sec-sub">Engage your critical thinking before you encounter the text. These questions have no single correct answer.</div>
+    </div>
+
+    <div class="cultural-panel">
+      <div class="cp-label">
+        <span>Cultural Warm-Up</span>
+      </div>
+      <div class="cp-jp">「偽物症候群」について</div>
+      <div class="cp-text">In Japanese society, there is a well-known concept of <em>kenson</em> (謙遜) — the virtue of modesty and self-deprecation. Consider: could a cultural expectation of humility actually <em>intensify</em> feelings of impostorism? Keep this question in mind as you read.</div>
+    </div>
+
+    <div class="card" style="margin-bottom:.75rem">
+      <p style="font-size:13px;font-weight:500;margin-bottom:.75rem;color:var(--ink)">Which of the following statements do you find most surprising? Select one and think about <em>why</em>.</p>
+      <div id="pre-opts">
+        <div class="q-opt" onclick="prePick(this,0)"><span class="opt-letter">A</span>Maya Angelou, author of 11 books and recipient of numerous prestigious awards, regularly feared she was intellectually fraudulent.</div>
+        <div class="q-opt" onclick="prePick(this,1)"><span class="opt-letter">B</span>Albert Einstein — arguably the most celebrated scientist of the 20th century — believed his own achievements were the product of involuntary deception.</div>
+        <div class="q-opt" onclick="prePick(this,2)"><span class="opt-letter">C</span>Research confirms that there is <em>no level of achievement</em> that reliably eliminates feelings of impostorism — success does not cure doubt.</div>
+        <div class="q-opt" onclick="prePick(this,3)"><span class="opt-letter">D</span>Impostor syndrome disproportionately affects people from underrepresented or disadvantaged groups — those who already face systemic obstacles.</div>
+      </div>
+      <div id="pre-fb" style="display:none" class="fb show ok"></div>
+    </div>
+
+    <div class="card">
+      <p style="font-size:13px;font-weight:500;margin-bottom:.6rem;color:var(--ink)">Predict: which of the following does the text argue is the <em>most effective</em> strategy to combat impostor syndrome?</p>
+      <div id="pred-opts">
+        <div class="q-opt" onclick="predPick(this,0)"><span class="opt-letter">A</span>Achieving more — accumulating awards and accolades until the feeling fades</div>
+        <div class="q-opt" onclick="predPick(this,1)"><span class="opt-letter">B</span>Therapy and medication to address underlying anxiety</div>
+        <div class="q-opt" onclick="predPick(this,2)"><span class="opt-letter">C</span>Open discussion — naming the experience and sharing it with peers and mentors</div>
+        <div class="q-opt" onclick="predPick(this,3)"><span class="opt-letter">D</span>Comparing yourself objectively with others to establish your real ability</div>
+      </div>
+      <div id="pred-fb" style="display:none" class="fb ok show" style="margin-top:.5rem"></div>
+    </div>
+
+    <div class="nav-row">
+      <span class="step-indicator">Section 1 of 7</span>
+      <button class="nav-btn primary" onclick="goTo(1)">Next: Vocabulary →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 2 — VOCABULARY
+  ═══════════════════════════════════════════ -->
+  <div id="sec-1" class="section">
+    <div class="sec-head">
+      <div class="sec-title">Advanced Vocabulary</div>
+      <span class="sec-jp">高度な語彙学習　—　タップして裏を確認</span>
+      <div class="sec-sub">Tap each card to reveal the full definition, Japanese equivalent, common collocations, and an example sentence. Pay attention to how these words function in academic writing.</div>
+    </div>
+    <div class="vocab-grid" id="vcards"></div>
+    <div class="nav-row">
+      <button class="nav-btn" onclick="goTo(0)">← Back</button>
+      <span class="step-indicator">Section 2 of 7</span>
+      <button class="nav-btn primary" onclick="goTo(2)">Next: Annotated Text →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 3 — ANNOTATED TEXT
+  ═══════════════════════════════════════════ -->
+  <div id="sec-2" class="section">
+    <div class="sec-head">
+      <div class="sec-title">Annotated Reading</div>
+      <span class="sec-jp">注釈付き読解テキスト</span>
+      <div class="sec-sub">Read the full transcript. Hover over (or tap) <span class="gls" style="position:static">highlighted phrases<span class="gls-box" style="display:none"></span></span> to see definitions and notes. Toggle annotations below.</div>
+    </div>
+    <div class="annot-toggle">
+      <div class="toggle-sw on" id="annot-sw" onclick="toggleAnnot(this)"></div>
+      <span>Show annotations</span>
+    </div>
+    <div class="card">
+      <div class="passage" id="passage-text"></div>
+    </div>
+    <div class="nav-row">
+      <button class="nav-btn" onclick="goTo(1)">← Back</button>
+      <span class="step-indicator">Section 3 of 7</span>
+      <button class="nav-btn primary" onclick="goTo(3)">Next: Comprehension →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 4 — COMPREHENSION (ADVANCED)
+  ═══════════════════════════════════════════ -->
+  <div id="sec-3" class="section">
+    <div class="sec-head">
+      <div class="sec-title">Critical Comprehension</div>
+      <span class="sec-jp">批判的読解問題　—　推論・意図・含意を問う</span>
+      <div class="sec-sub">These questions test inference, author's purpose, and implied meaning — not just literal recall. Read carefully before answering.</div>
+    </div>
+    <div id="qblock"></div>
+    <div class="score-reveal" id="score-box">
+      <div class="sc-num" id="sc-num">0</div><span class="sc-denom">/7</span>
+      <div class="sc-bar"><div class="sc-fill" id="sc-fill" style="width:0%"></div></div>
+      <div class="sc-msg" id="sc-msg"></div>
+    </div>
+    <div class="nav-row">
+      <button class="nav-btn" onclick="goTo(2)">← Back</button>
+      <span class="step-indicator">Section 4 of 7</span>
+      <button class="nav-btn primary" onclick="goTo(4)">Next: Grammar →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 5 — GRAMMAR & STYLE
+  ═══════════════════════════════════════════ -->
+  <div id="sec-4" class="section">
+    <div class="sec-head">
+      <div class="sec-title">Grammar &amp; Academic Style</div>
+      <span class="sec-jp">文法・アカデミックスタイル分析</span>
+      <div class="sec-sub">Analyse how this text achieves its persuasive and academic effect. Focus on structures that are especially challenging for Japanese learners.</div>
+    </div>
+
+    <!-- A: NOMINALIZATION -->
+    <div class="grammar-section">
+      <div class="grammar-label">A · Nominalisation 名詞化</div>
+      <div class="grammar-rule">
+        <div class="rule-label">Key pattern</div>
+        <div class="rule-ex">"Their work <strong>established pervasive feelings of fraudulence</strong> in this group."</div>
+        <div class="rule-note">Instead of "They found that people in this group felt fraudulent," academic English converts verbs and adjectives into <strong>noun phrases</strong>. This creates a more formal, dense, and objective tone — and is a hallmark of C1+ writing.</div>
+        <span class="rule-jp">動詞・形容詞を名詞句に変換することでアカデミックな文体になります。</span>
+      </div>
+      <div class="grammar-rule">
+        <div class="rule-label">Practice: rewrite as nominalisations</div>
+        <div class="rule-ex" id="nom-display" style="margin-bottom:.75rem">
+          Original: "They discovered that many people feel anxious about their performance."<br><br>
+          Nominalised: <input class="err-input" id="nom-in" placeholder="Their discovery of..." style="min-width:300px"> 
+        </div>
+        <button class="check-btn" style="background:var(--indigo)" onclick="checkNom()">Check</button>
+        <div id="nom-fb" class="fb" style="margin-top:.5rem"></div>
+      </div>
+    </div>
+
+    <!-- B: HEDGING -->
+    <div class="grammar-section">
+      <div class="grammar-label">B · Hedging Language 断定を避ける表現</div>
+      <div class="grammar-rule">
+        <div class="rule-label">From the text</div>
+        <div class="rule-ex">"…it <strong>may be</strong> more prevalent and <strong>disproportionately affect</strong> the experiences of underrepresented groups."<br><br>"We <strong>may never be able</strong> to banish these feelings entirely…"</div>
+        <div class="rule-note">Hedging signals intellectual caution — the writer acknowledges uncertainty rather than overstating. Contrasted with Japanese direct modesty (謙遜), English academic hedging functions structurally, not personally.</div>
+        <span class="rule-jp">断定を避ける表現はアカデミック英語の重要な特徴です。may/might/tends to/appears toなどを使います。</span>
+      </div>
+
+      <p style="font-size:13px;font-weight:500;margin:.75rem 0 .5rem;color:var(--ink)">Identify the hedging device: which word/phrase makes each sentence appropriately tentative?</p>
+      <div id="hedge-qs"></div>
+    </div>
+
+    <!-- C: COLLOCATIONS -->
+    <div class="grammar-section">
+      <div class="grammar-label">C · High-Frequency Collocations コロケーション</div>
+      <p style="font-size:13px;color:var(--ink2);margin-bottom:.75rem;line-height:1.6">Which verbs collocate naturally with the following nouns from the text? Select the best option — some may have more than one possible answer, but choose the most natural in academic English.</p>
+      <div id="colloc-container"></div>
+    </div>
+
+    <!-- D: DISCOURSE MARKERS -->
+    <div class="grammar-section">
+      <div class="grammar-label">D · Discourse Markers for Academic Writing 談話標識</div>
+      <div class="card">
+        <table class="dm-table">
+          <thead><tr><th>Function</th><th>Marker</th><th>Example from text</th><th class="jp">日本語の目安</th></tr></thead>
+          <tbody>
+            <tr><td>Contrast</td><td class="marker">on the other hand</td><td>"…but <em>on the other hand</em>, hearing that a mentor…"</td><td class="jp">一方で</td></tr>
+            <tr><td>Concession</td><td class="marker">to call X is to Y</td><td>"<em>To call it a syndrome is to</em> downplay how universal it is."</td><td class="jp">Xと呼ぶことはYを軽視することだ</td></tr>
+            <tr><td>Addition</td><td class="marker">the same goes for</td><td>"<em>The same goes for</em> peers."</td><td class="jp">〜にも同じことが言える</td></tr>
+            <tr><td>Cause-result</td><td class="marker">spiral into</td><td>"This <em>can spiral into</em> feelings that…"</td><td class="jp">〜へと悪化していく</td></tr>
+            <tr><td>Condition</td><td class="marker">once + present</td><td>"<em>Once</em> you're aware of the phenomenon…"</td><td class="jp">〜するやいなや / 一旦〜したら</td></tr>
+            <tr><td>Emphasis</td><td class="marker">there is/are no X that</td><td>"<em>There's often no threshold</em> of accomplishment that…"</td><td class="jp">〜するXはない</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- E: ERROR CORRECTION -->
+    <div class="grammar-section">
+      <div class="grammar-label">E · Error Correction 誤り訂正 — Common mistakes for Japanese learners</div>
+      <p style="font-size:13px;color:var(--ink2);margin-bottom:.75rem;line-height:1.6">Each sentence below contains one error — a type commonly made by Japanese learners of English. Identify and correct it by typing the correct word in the blank.</p>
+      <div id="err-container"></div>
+      <button class="check-btn" onclick="checkErrors()">Check all corrections</button>
+      <div id="err-result" style="font-size:13px;margin-top:.75rem;display:none"></div>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn" onclick="goTo(3)">← Back</button>
+      <span class="step-indicator">Section 5 of 7</span>
+      <button class="nav-btn primary" onclick="goTo(5)">Next: Cultural Link →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 6 — CULTURAL LINK
+  ═══════════════════════════════════════════ -->
+  <div id="sec-5" class="section">
+    <div class="sec-head">
+      <div class="sec-title">Cultural Connections</div>
+      <span class="sec-jp">日本文化との比較　— 文化的視点から考える</span>
+      <div class="sec-sub">Explore how concepts in the text connect to — and diverge from — Japanese cultural frameworks. Use this section to deepen your analytical writing.</div>
+    </div>
+
+    <div class="cultural-panel" style="border-left-color:var(--red)">
+      <div class="cp-label">Key Concept</div>
+      <div class="cp-jp">謙遜 (Kenson) vs. Impostor Syndrome</div>
+      <div class="cp-text"><em>Kenson</em> is a culturally valued form of modesty in Japan — publicly downplaying one's abilities is considered polite and socially appropriate. Impostor syndrome, by contrast, is an <em>internal, private</em> experience of fraudulence that the sufferer wishes they did not feel. Consider: does a culture of public humility make internal doubt harder to voice, or does it provide a social script that normalises it?</div>
+    </div>
+
+    <div class="cultural-panel" style="border-left-color:var(--gold)">
+      <div class="cp-label">Key Concept</div>
+      <div class="cp-jp">空気を読む (Kuuki wo yomu) &amp; Pluralistic Ignorance</div>
+      <div class="cp-text">The Japanese concept of <em>kuuki wo yomu</em> — reading the atmosphere, understanding unspoken group norms — maps closely onto <strong>pluralistic ignorance</strong> described in the text. In both cases, people monitor what others appear to feel and adjust their expressed beliefs accordingly — often misjudging what others truly experience.</div>
+    </div>
+
+    <div class="cultural-panel" style="border-left-color:var(--green)">
+      <div class="cp-label">Key Concept</div>
+      <div class="cp-jp">高学歴競争とイメージのギャップ</div>
+      <div class="cp-text">Japan's highly competitive university entrance system (<em>juken</em> 受験) creates enormous pressure to reach certain institutions. Students who succeed may feel — like Clance's patients — that their success was accidental. Yet the very intensity of the selection process makes this belief especially irrational. This is a rich example of how cultural context shapes the <em>triggers</em> of impostorism even when the psychology is universal.</div>
+    </div>
+
+    <div class="rule-divider"></div>
+
+    <div id="discuss-container"></div>
+
+    <div class="nav-row">
+      <button class="nav-btn" onclick="goTo(4)">← Back</button>
+      <span class="step-indicator">Section 6 of 7</span>
+      <button class="nav-btn primary" onclick="goTo(6)">Next: Writing Task →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 7 — WRITING TASK
+  ═══════════════════════════════════════════ -->
+  <div id="sec-6" class="section">
+    <div class="sec-head">
+      <div class="sec-title">Guided Writing Task</div>
+      <span class="sec-jp">アカデミックライティング　—　構成と表現のガイド付き</span>
+      <div class="sec-sub">Write a 200–250 word analytical response using the planner below. Your essay should demonstrate C1-level skills: hedging, nominalisation, and discourse markers.</div>
+    </div>
+
+    <div class="card" style="margin-bottom:1rem">
+      <p style="font-family:var(--font-serif);font-size:15px;font-style:italic;line-height:1.7;color:var(--ink);margin-bottom:.5rem">"To what extent is impostor syndrome a universal psychological experience, and to what extent is it shaped by cultural and social factors?"</p>
+      <p style="font-size:12px;color:var(--ink3)">Write 200–250 words. Use evidence from the text and your own cultural knowledge.</p>
+    </div>
+
+    <div class="phrase-bank">
+      <div class="pb-label">Useful academic phrases — click to copy</div>
+      <div class="pb-phrases" id="pb-phrases"></div>
+    </div>
+
+    <div class="planner">
+      <div class="plan-box">
+        <div class="plan-label">Introduction</div>
+        <span class="plan-jp">導入 — 問いを言い換え、立場を示す</span>
+        <div class="plan-hint">Restate the question, establish your position, and introduce a key concept.</div>
+        <textarea class="plan-area" placeholder="The question of whether impostor syndrome is universal or culturally contingent is..."></textarea>
+      </div>
+      <div class="plan-box">
+        <div class="plan-label">Universal argument</div>
+        <span class="plan-jp">普遍性の根拠 — テキストからの証拠</span>
+        <div class="plan-hint">Use evidence from the text + a hedged claim about the global evidence.</div>
+        <textarea class="plan-area" placeholder="The text suggests that impostorism appears to be broadly universal, given that..."></textarea>
+      </div>
+      <div class="plan-box">
+        <div class="plan-label">Cultural argument</div>
+        <span class="plan-jp">文化的要因 — 日本文化との比較</span>
+        <div class="plan-hint">Introduce a specific cultural example (e.g. kenson / juken) that complicates the universal claim.</div>
+        <textarea class="plan-area" placeholder="However, cultural context appears to modulate both the triggers and the expression of these feelings..."></textarea>
+      </div>
+      <div class="plan-box">
+        <div class="plan-label">Conclusion</div>
+        <span class="plan-jp">結論 — 両者を統合した判断</span>
+        <div class="plan-hint">Synthesise both arguments. Avoid simply repeating — add a nuanced final position.</div>
+        <textarea class="plan-area" placeholder="In conclusion, while the psychological mechanism may be universal, its manifestation and severity are..."></textarea>
+      </div>
+    </div>
+
+    <div class="rule-divider"></div>
+    <span style="font-size:13px;font-weight:500;display:block;margin-bottom:.5rem;color:var(--ink)">Full draft — write your complete response here</span>
+    <textarea class="reflect-textarea" style="min-height:160px" placeholder="Write your 200–250 word essay here, incorporating hedging language, nominalisations, and discourse markers from the lesson..."></textarea>
+
+    <div class="closing-quote">
+      <div class="cq-text">"We may never be able to banish these feelings entirely, but we can have open conversations about academic or professional challenges."</div>
+      <span class="cq-jp">「このような感情を完全に消し去ることは難しいかもしれないが、学業や職業上の困難について率直に話し合うことはできる。」</span>
+      <div class="cq-attr">— TED-Ed · Impostor Syndrome</div>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn" onclick="goTo(5)">← Back</button>
+      <span class="step-indicator">Section 7 of 7 — Complete</span>
+    </div>
+  </div>
+</div>
+
+<script>
+const vocab=[
+  {w:"fraudulence",pos:"n",jp:"詐欺性・偽物感",hint:"the internal experience of being a fake",def:"An unwarranted conviction that one has deceived others into overestimating one's abilities or achievements.",ex:"Her sense of fraudulence persisted despite a decade of published, peer-reviewed research.",coll:"sense of ~, pervasive ~, feelings of ~"},
+  {w:"accolade",pos:"n",jp:"称賛・栄誉",hint:"formal recognition or praise",def:"An award, honour, or expression of approval — particularly one bestowed by an authoritative body or the wider public.",ex:"No accolade, however prestigious, appeared capable of quieting his self-doubt.",coll:"receive / garner / merit an ~, prestigious ~"},
+  {w:"unwarranted",pos:"adj",jp:"根拠のない・不当な",hint:"without justification or evidence",def:"Not justified by facts or circumstances; lacking any reasonable basis. Often used to describe beliefs or emotional responses that contradict objective evidence.",ex:"The committee concluded that his anxiety about being exposed as incompetent was entirely unwarranted.",coll:"~ concern / fear / criticism / assumption"},
+  {w:"pervasive",pos:"adj",jp:"蔓延している・広く浸透した",hint:"present throughout; extremely widespread",def:"Spreading widely through every part of something; present in all aspects of a situation or affecting virtually all members of a group.",ex:"The pervasive nature of self-doubt across professions suggests a structural, rather than individual, cause.",coll:"~ influence / culture / feeling / inequality — remain ~"},
+  {w:"disproportionate",pos:"adj",jp:"不均衡な・過度の",hint:"larger or smaller than it should be",def:"Not in proportion to what is reasonable, expected, or just; describing an unequal distribution of something across groups.",ex:"The research reveals a disproportionate burden of impostor syndrome among first-generation graduates.",coll:"~ impact / burden / effect / response — ~ly affect"},
+  {w:"pluralistic ignorance",pos:"n",jp:"多元的無知",hint:"falsely believing you are uniquely doubtful",def:"A psychological phenomenon in which each member of a group privately doubts or rejects a norm, while assuming that other group members accept it — because no one voices their private view.",ex:"Pluralistic ignorance helps explain why seminar rooms fall silent: each student assumes the others understand perfectly.",coll:"perpetuate / reinforce / overcome ~"},
+  {w:"imposterism",pos:"n",jp:"詐欺師感覚・インポスター体験",hint:"the experience of feeling like an impostor",def:"The broader experiential pattern of impostor syndrome — encompassing the self-doubt, fear of exposure, and attribution of success to luck rather than ability. Preferred in academic literature over 'syndrome'.",ex:"Clance's longitudinal study traced imposterism across twenty years of academic careers.",coll:"experience / suffer from / study ~"},
+  {w:"threshold",pos:"n",jp:"閾値・基準点",hint:"a minimum level at which something changes",def:"A point, level, or degree at which a change occurs. In psychology, a minimum stimulus needed to trigger a response; in general use, a critical limit.",ex:"There appears to be no achievement threshold above which the fear of exposure becomes irrational rather than understandable.",coll:"reach / exceed / establish a ~ — below / above the ~"},
+  {w:"surefire",pos:"adj",jp:"確実な・間違いない",hint:"certain to succeed or work",def:"Certain to achieve the intended result; reliably effective. Informal register, but used emphatically here to contrast with the lack of guaranteed cures.",ex:"Regular peer disclosure is described as the most surefire method for reducing impostor-related anxiety.",coll:"~ way / method / solution / approach"},
+  {w:"banish",pos:"v",jp:"追い払う・消し去る",hint:"to drive away permanently",def:"To get rid of something completely; to dispel a feeling, thought, or unwanted presence from one's experience. Often implies a definitive, sustained act of will.",ex:"Rather than attempting to banish self-doubt entirely, therapists now recommend acknowledging and contextualising it.",coll:"~ doubt / fear / a feeling — ~ from one's mind"},
+  {w:"spiral (into)",pos:"v",jp:"悪循環に陥る・螺旋状に悪化する",hint:"to worsen progressively in a cycle",def:"To develop progressively and rapidly, usually toward a worse state; to move in an inward, tightening cycle. Often used with 'into' to indicate the outcome.",ex:"Unaddressed, the initial anxiety can spiral into a paralysing conviction that exposure and humiliation are inevitable.",coll:"~ into depression / crisis / failure — a downward ~"},
+  {w:"susceptible (to)",pos:"adj",jp:"〜の影響を受けやすい・感受性が高い",hint:"easily influenced or affected by",def:"Likely to be affected by something; not resistant or immune. Often implies vulnerability to an external force or internal pressure.",ex:"No personality type appears wholly immune; even the most confident individuals are susceptible to situational self-doubt.",coll:"be ~ to pressure / disease / criticism / influence"}
+];
+
+const passageHTML=`<p>Even after writing eleven books and winning several prestigious awards, Maya Angelou couldn't escape the <span class="gls">nagging doubt<span class="gls-box">nagging: persistently troubling; refuses to go away<span class="jp">頭から離れない不安</span></span></span> that she hadn't really earned her accomplishments. Albert Einstein experienced something similar: he described himself as an <span class="gls">"involuntary swindler"<span class="gls-box">involuntary: not by choice. swindler: a person who deceives others for personal gain — Einstein felt his acclaim was somehow fraudulently obtained<span class="jp">意図しない詐欺師</span></span></span> whose work didn't deserve as much attention as it had received.</p>
+
+<p>Accomplishments at the level of Angelou's or Einstein's are rare, but their feeling of <span class="gls">fraudulence<span class="gls-box">fraudulence: the state of feeling one is a fake; closely related to fraud (詐欺). Note: the suffix -ence creates an abstract noun from the adjective fraudulent<span class="jp">偽物感・詐欺性</span></span></span> is extremely common. Why can't so many of us <span class="gls">shake<span class="gls-box">shake (a feeling): to rid oneself of an unwanted emotion. Compare: "shake off a cold." This collocation is very common in English — Japanese learners often forget it<span class="jp">〜を振り払う（感情を）</span></span></span> feelings that we haven't earned our accomplishments, or that our ideas and skills aren't worthy of others' attention?</p>
+
+<p>Psychologist Pauline Rose Clance was the first to study this <span class="gls">unwarranted<span class="gls-box">unwarranted: without justification; the prefix un- negates warranted (justified). A key academic adjective for describing baseless beliefs<span class="jp">根拠のない・不当な</span></span></span> sense of insecurity. In her work as a therapist, she noticed many of her undergraduate patients shared a concern: though they had high grades, they didn't believe they deserved their spots at the university. Some even believed their acceptance had been an <span class="gls">admissions error<span class="gls-box">admissions error: a mistake in the university enrolment process. The students feared their acceptance was accidental — not merit-based<span class="jp">入学選考のミス</span></span></span>.</p>
+
+<p>Together with colleague Suzanne Imes, Clance first studied <span class="gls">imposterism<span class="gls-box">imposterism: preferred academic term over 'impostor syndrome' — the suffix -ism frames it as a phenomenon or experience rather than a medical diagnosis<span class="jp">詐欺師体験・インポスター現象</span></span></span> in female college students and faculty. Their work established <span class="gls">pervasive<span class="gls-box">pervasive: present throughout; from the Latin pervadere (to go through). A high-frequency academic adjective — compare: 'the pervasive influence of social media'<span class="jp">広く浸透した・蔓延している</span></span></span> feelings of fraudulence in this group. Since that first study, the same thing has been established across gender, race, age, and a huge range of occupations, though it may be more prevalent and <span class="gls">disproportionately affect<span class="gls-box">disproportionately: to a degree that is unfairly large or small relative to what is just or expected. Key word in social justice and inequality discourse<span class="jp">不均衡に・過度に</span></span></span> the experiences of underrepresented or disadvantaged groups.</p>
+
+<p>To call it a syndrome is to <span class="gls">downplay<span class="gls-box">downplay: to represent something as less important than it is. Opposite: overstate. Note the discourse structure: "To call X is to Y" — a sophisticated concessive pattern<span class="jp">軽く見る・過小評価する</span></span></span> how universal it is. It's not a disease or an abnormality, and it isn't necessarily tied to depression, anxiety, or self-esteem. People who are highly skilled or accomplished tend to think others are just as skilled. This can <span class="gls">spiral into<span class="gls-box">spiral into: to worsen progressively, forming a self-reinforcing cycle. The metaphor of a downward spiral implies both momentum and difficulty of escape<span class="jp">〜へと悪化する・悪循環に陥る</span></span></span> feelings that they don't deserve <span class="gls">accolades<span class="gls-box">accolades: awards or public recognition. From French accolade (an embrace). Often appears in formal, literary, and journalistic registers<span class="jp">称賛・栄誉・受賞</span></span></span> and opportunities over other people.</p>
+
+<p>Everyone is <span class="gls">susceptible to<span class="gls-box">susceptible to: vulnerable to; easily affected by. Always followed by a noun — 'susceptible to doubt,' not 'susceptible to doubt about.' A common collocation error for Japanese learners<span class="jp">〜に対して脆弱な・影響を受けやすい</span></span></span> a phenomenon known as <span class="gls">pluralistic ignorance<span class="gls-box">pluralistic ignorance: a collective self-deception where every group member privately doubts the norm but assumes the others accept it. 'Pluralistic' = involving many; 'ignorance' = lack of knowledge (of what others truly believe)<span class="jp">多元的無知 — 全員が密かに疑いながら、他者は疑っていないと思い込む</span></span></span>, where we each doubt ourselves privately, but believe we're alone in thinking that way because no one else voices their doubts. Since it's tough to really know how hard our peers work, how difficult they find certain tasks, or how much they doubt themselves, there's no easy way to dismiss feelings that we're less capable than the people around us.</p>
+
+<p>Intense feelings of imposterism can prevent people from sharing their great ideas or applying for jobs and programs where they'd excel. At least so far, the most <span class="gls">surefire<span class="gls-box">surefire: certain to be effective; colloquial register used here for emphasis. Note the contrast with the measured hedging elsewhere in the text — the author becomes unusually direct at this point<span class="jp">確実な・絶対に効く</span></span></span> way to combat impostor syndrome is to talk about it. Even hearing that an advisor or mentor has experienced feelings of imposterism can help relieve those feelings. Even simply finding out there's a term for these feelings can be an incredible relief.</p>
+
+<p>Once you're aware of the phenomenon, you can combat your own impostor syndrome by collecting and revisiting positive feedback. We may never be able to <span class="gls">banish<span class="gls-box">banish: to get rid of permanently; to expel. Usually refers to people or objects, but here metaphorically applied to feelings — a deliberate stylistic elevation<span class="jp">追い払う・永久に消し去る</span></span></span> these feelings entirely, but we can have open conversations about academic or professional challenges. With increasing awareness of how common these experiences are, perhaps we can feel freer to be frank about our feelings and build confidence in some simple truths: <em>you have talent, you are capable, and you belong.</em></p>`;
+
+const questions=[
+  {q:"What is the most likely reason the author mentions both Maya Angelou and Albert Einstein in the opening paragraph?",qtype:"Inference — author's purpose",opts:["To suggest that only famous people suffer from impostor syndrome","To establish credibility by citing well-known sources","To demonstrate that impostorism persists regardless of the level or type of achievement, in order to challenge readers' assumptions","To contrast literary and scientific achievements"],ans:2,exp:"The author selects figures from opposite fields — literature and science — whose achievements are universally recognised as exceptional. The purpose is to pre-empt the objection that 'if I were truly successful, I wouldn't feel this way.'",jpnote:"著名人を例に挙げることで、「本当に優秀ならこんな気持ちにならない」という読者の思い込みを崩す意図があります。"},
+  {q:"Why does the author argue that calling impostor syndrome a 'syndrome' is problematic?",qtype:"Language analysis — connotation",opts:["Because the term was coined before sufficient research had been done","Because the word 'syndrome' implies it is a rare, pathological condition — which understates how common and normal the experience actually is","Because medical language alienates readers who have not studied psychology","Because it suggests the condition is untreatable"],ans:1,exp:"'Syndrome' carries medical connotations of abnormality and disease. The author argues that this framing is misleading because imposterism is a near-universal human experience, not a clinical disorder — 'to call it a syndrome is to downplay how universal it is.'",jpnote:"'症候群'という言葉には異常・疾患のニュアンスがあります。しかしインポスター体験は普遍的なものであり、病気ではありません。"},
+  {q:"According to the text, why does positive feedback often fail to relieve impostor feelings?",qtype:"Inference — psychology",opts:["Because the person does not trust the source of the feedback","Because people with impostor syndrome selectively dismiss or reattribute positive feedback as luck or as others' misperception, rather than internalising it","Because the feedback addresses the wrong issue — performance rather than identity","Because it is typically given too infrequently to have a lasting effect"],ans:1,exp:"The text notes that 'even when people receive positive feedback, it often fails to ease feelings of fraudulence.' This reflects a core feature of impostorism — external validation cannot override an entrenched internal narrative of inadequacy.",jpnote:"インポスター体験の核心は「他者の評価を自分の能力の証拠として内面化できない」という点にあります。"},
+  {q:"What is the relationship between 'pluralistic ignorance' and impostor syndrome, as described in the text?",qtype:"Conceptual relationship",opts:["They are the same phenomenon described with different terms","Pluralistic ignorance is a cause of impostor syndrome — it prevents individuals from discovering that self-doubt is universal, which would relieve their sense of being uniquely fraudulent","Pluralistic ignorance is a consequence of impostor syndrome — sufferers keep quiet, causing others to feel alone in doubting themselves","They are unrelated: pluralistic ignorance describes group dynamics, while impostor syndrome is individual"],ans:1,exp:"The text presents pluralistic ignorance as a mechanism that sustains and amplifies impostorism. Because everyone privately doubts but no one voices it, each person concludes that their self-doubt is exceptional — reinforcing the 'impostor' narrative.",jpnote:"多元的無知がインポスター体験を持続させるメカニズムとして機能しています。誰も疑いを口にしないため、自分だけが劣っていると誤認するのです。"},
+  {q:"The scientist who documented laboratory problems is presented as evidence for which claim?",qtype:"Textual evidence — function",opts:["That impostor syndrome can only be overcome with professional therapy","That impostor syndrome does not affect people in scientific fields","That deliberately collecting and examining contrary evidence can help dismantle false beliefs about one's own incompetence","That equipment failure is the leading cause of scientific error"],ans:2,exp:"The anecdote functions as a concrete, practical illustration of the abstract claim that 'collecting and revisiting positive feedback' helps. Her data-collection reframed her narrative — from 'I am incompetent' to 'the equipment fails frequently.'",jpnote:"この科学者の事例は、証拠を意識的に集めることで「自分が無能だ」という誤った物語を書き換えられることを示す、具体的な実例として機能しています。"},
+  {q:"What does the author imply by the phrase 'there is often no threshold of accomplishment that puts these feelings to rest'?",qtype:"Vocabulary in context — implication",opts:["Accomplishment has no value in terms of career advancement","The feeling of fraudulence intensifies the more successful a person becomes","Achieving more does not reliably eliminate impostorism — the underlying cognitive pattern persists regardless of external success","Therapists should focus on achievement-building rather than emotional processing"],ans:2,exp:"The phrase 'threshold' implies a level above which the problem would be resolved. By saying no such threshold exists, the author argues that accumulating success is not a cure — because impostorism is a cognitive and emotional pattern, not a rational response to a deficit of achievement.",jpnote:"「閾値がない」とは、いくら成功しても詐欺師感覚は消えないという意味です。これは認知パターンの問題であり、達成不足の問題ではないからです。"},
+  {q:"The text states that imposterism 'may be more prevalent and disproportionately affect' underrepresented groups. What is the effect of using 'may be' rather than stating this as a fact?",qtype:"Register &amp; hedging",opts:["It weakens the argument and suggests the author is unsure whether this is true","It signals that the evidence exists but is not yet definitive — a hallmark of responsible academic writing that distinguishes between established findings and emerging or contested ones","It is a stylistic choice with no functional significance in academic writing","It implies the author disagrees with this finding but is obliged to include it"],ans:1,exp:"'May be' is a hedging device. Academic writers hedge not from uncertainty but from intellectual rigour — they distinguish between well-replicated findings and those that are suggestive but not yet conclusive. This also protects against the risk of overstating findings.",jpnote:"'may be'はアカデミック英語における断定回避表現です。証拠はあるが確定的でない場合に使用し、知的誠実さを示します。"}
+];
+
+const collocData=[
+  {noun:"self-doubt",choices:["harbour","commit","achieve","ignore"],ans:0,note:"'harbour' is the natural academic collocate: 'to harbour self-doubt / resentment / suspicion.' Japanese learners often write 'have self-doubt' which is weaker."},
+  {noun:"an accolade",choices:["reach","garner","commit","dismiss"],ans:1,note:"'garner' (to accumulate over time) is the formal collocate. 'Receive' is also correct but less marked; 'garner' is preferred in press and literary contexts."},
+  {noun:"a threshold",choices:["achieve","exceed","dismiss","banish"],ans:1,note:"'exceed a threshold' — you go beyond a limit. Note also 'reach / fall below / establish a threshold.'"},
+  {noun:"feelings of fraudulence",choices:["commit","perpetuate","achieve","avoid"],ans:1,note:"'perpetuate' (to cause to continue indefinitely) — academic and precise. The phrase 'perpetuate feelings of X' is a strong academic collocate."}
+];
+
+const errorData=[
+  {sent:"Despite of her many achievements, she continued to doubt her own ability.",err:"Despite of",correct:"Despite",note:"'Despite' is a preposition used alone — never 'despite of.' Japanese learners often confuse it with 'in spite of.' ✓ Despite her achievements / ✗ Despite of her achievements"},
+  {sent:"The researcher suggested that impostor syndrome may effects even experienced professionals.",err:"effects",correct:"affect",note:"'Effect' is usually a noun; 'affect' is the verb meaning 'to have an influence on.' A very frequent error. ✓ may affect / ✗ may effects"},
+  {sent:"It is widely acknowledged that the phenomenon is more prevalently in some groups than others.",err:"prevalently",correct:"prevalent",note:"'Prevalent' is an adjective: '...is more prevalent in...' — it modifies a noun state, not a verb. Adding -ly to make an adverb is incorrect here."},
+  {sent:"She couldn't shake the feeling which she had not deserved her position.",err:"which",correct:"that",note:"After words expressing abstract feelings or beliefs (feeling, idea, fact, belief), use 'that' — not 'which.' 'Which' is a relative pronoun that refers to nouns, not content clauses."},
+  {sent:"Talking about the experience is more surefire than keep quiet about it.",err:"keep",correct:"keeping",note:"After a comparative structure (more/less + adj + than), the verb must take the gerund form (-ing). ✓ more effective than keeping quiet / ✗ than keep quiet"}
+];
+
+const discussData=[
+  {q:"The text describes impostor syndrome as 'not a disease or abnormality.' Yet in Japan, seeking mental health support (精神科・カウンセリング) still carries social stigma in many contexts. How might this affect how Japanese people experience and manage impostorism?",
+   tip:"Language to use:",phrases:["This raises the question of...","One might argue that...","It is plausible that cultural attitudes towards...","Far from being trivial, this distinction...","The tension between X and Y suggests that..."],
+   compare:[{label:"Japan (傾向)",text:"Emotional difficulty often managed privately; open expression of personal doubt may conflict with tatemae (建前)"},{label:"Western context",text:"Growing cultural movement encouraging 'vulnerability' as strength (cf. Brené Brown); therapy more normalised in many demographics"}]},
+  {q:"Consider the Japanese educational concept of 受験 (juken) — the hyper-competitive university entrance exam system. How might succeeding in juken and entering a top university paradoxically intensify, rather than resolve, feelings of impostorism?",
+   tip:"Structure your response:",phrases:["The very intensity of...","One could argue that...","This apparent paradox can be explained by...","Having undergone X, a student might subsequently...","The gap between expectation and experience..."],
+   compare:[{label:"Juken success",text:"Entry is framed as the culmination of years of effort — yet once inside, the student may feel surrounded by 'equally deserving' peers"},{label:"Impostor mechanism",text:"The text states that skilled people 'tend to think others are just as skilled' — a top-university environment makes this perception particularly acute"}]},
+  {q:"The text claims that 'talking about it' is the most surefire remedy. In a Japanese workplace or university context, what structural or cultural barriers might make this advice difficult to follow — and can you suggest adaptations?",
+   tip:"Useful phrases:",phrases:["While the advice is theoretically sound...","A structural barrier in this context would be...","One adaptation might involve...","Rather than assuming a one-size-fits-all approach...","Cultural competence in mental health requires..."],
+   compare:[{label:"Barrier",text:"Hierarchy (先輩・後輩) may make admitting doubt to superiors feel professionally dangerous; group harmony (和) may discourage individual disclosure"},{label:"Possible adaptation",text:"Anonymous peer-feedback systems, mentoring programmes framed as 'career development' rather than 'emotional support'"}]}
+];
+
+const phraseBank=["It is widely acknowledged that...","The text suggests / implies / indicates that...","This raises the question of whether...","While X is undoubtedly the case, it should be noted that...","Far from being merely anecdotal, this evidence...","The distinction between X and Y is of particular significance...","One might argue that, given the evidence...","Cultural context appears to modulate...","There is, however, no threshold of achievement at which...","It would be an oversimplification to conclude that...","The interplay between universal psychology and cultural specificity...","This phenomenon disproportionately affects..."];
+
+let qAnswered=0,qCorrect=0;
+let annotOn=true;
+
+// BUILD VOCAB
+function buildVocab(){
+  const g=document.getElementById('vcards');
+  vocab.forEach(v=>{
+    const d=document.createElement('div');
+    d.className='vcard';
+    d.innerHTML=`<div class="vfront"><div class="vpos"><span>${v.pos}</span><span class="vjp">${v.jp}</span></div><div class="vword">${v.w}</div><div class="vhint">${v.hint}</div><div class="flip-hint">tap to reveal</div></div><div class="vback"><div class="vpos"><span>${v.pos}</span><span class="vjp">${v.jp}</span></div><div class="vdef">${v.def}</div><div class="vex">"${v.ex}"</div><div class="vcoll">Collocations: ${v.coll}</div></div>`;
+    d.onclick=()=>d.classList.toggle('flipped');
+    g.appendChild(d);
+  });
+}
+
+// BUILD PASSAGE
+function buildPassage(){document.getElementById('passage-text').innerHTML=passageHTML;}
+
+function toggleAnnot(sw){
+  sw.classList.toggle('on');
+  annotOn=sw.classList.contains('on');
+  document.querySelectorAll('.gls-box').forEach(b=>b.style.display=annotOn?'':'none !important');
+  document.querySelectorAll('.gls').forEach(g=>{
+    g.style.borderBottom=annotOn?'1.5px solid currentColor':'none';
+    g.style.background=annotOn?'var(--gold-light)':'transparent';
+    g.style.cursor=annotOn?'pointer':'default';
+  });
+}
+
+// BUILD QUESTIONS
+function buildQuestions(){
+  const c=document.getElementById('qblock');
+  questions.forEach((q,qi)=>{
+    const b=document.createElement('div');b.className='card card-gap';
+    let opts=q.opts.map((o,oi)=>`<div class="q-opt" id="opt-${qi}-${oi}" onclick="pick(${qi},${oi},${q.ans},'${q.exp.replace(/'/g,"\\'").replace(/"/g,"&quot;")}','${(q.jpnote||"").replace(/'/g,"\\'")}')"><span class="opt-letter">${String.fromCharCode(65+oi)}</span>${o}</div>`).join('');
+    b.innerHTML=`<div class="q-num">Question ${qi+1} · <em>${q.qtype}</em></div><p class="q-text">${q.q}</p><div class="q-opts">${opts}</div><div class="fb" id="fb-${qi}"></div>`;
+    c.appendChild(b);
+  });
+}
+
+function pick(qi,oi,ans,exp,jpnote){
+  document.querySelectorAll(`[id^="opt-${qi}-"]`).forEach(el=>el.classList.add('disabled'));
+  document.getElementById(`opt-${qi}-${oi}`).classList.add(oi===ans?'correct':'wrong');
+  if(oi!==ans)document.getElementById(`opt-${qi}-${ans}`).classList.add('correct');
+  const fb=document.getElementById(`fb-${qi}`);
+  fb.className='fb show '+(oi===ans?'ok':'no');
+  fb.innerHTML=(oi===ans?'<strong>Correct.</strong> ':'<strong>Not quite.</strong> ')+exp+(jpnote?`<span class="jp-note">${jpnote}</span>`:'');
+  if(oi===ans)qCorrect++;
+  qAnswered++;
+  if(qAnswered===questions.length){
+    const sb=document.getElementById('score-box');sb.style.display='block';
+    document.getElementById('sc-num').textContent=qCorrect;
+    document.getElementById('sc-fill').style.width=(qCorrect/questions.length*100)+'%';
+    const msgs=["Review the text carefully — focus on inference questions.","A solid attempt. Revisit the sections on hedging language and author purpose.","Good analytical reading. Work on distinguishing implied from stated meaning.","Excellent. Your comprehension of implied meaning and academic register is strong.","Outstanding — you demonstrate C1-level critical reading skills."];
+    document.getElementById('sc-msg').textContent=msgs[Math.min(Math.floor(qCorrect/questions.length*4),4)];
+  }
+}
+
+// HEDGING QS
+const hedgeQs=[
+  {sent:"Imposterism ___ be more prevalent among underrepresented groups.",ans:"may",opts:["may","will","should","can"]},
+  {sent:"This ___ to suggest that cultural factors amplify the experience.",opts:["appears","proves","shows","confirms"],ans:"appears"},
+  {sent:"There ___ to be no threshold of accomplishment that resolves these feelings.",opts:["seems","is known","proves","is shown"],ans:"seems"}
+];
+function buildHedge(){
+  const c=document.getElementById('hedge-qs');
+  hedgeQs.forEach((h,i)=>{
+    const wrap=document.createElement('div');wrap.style.marginBottom='.75rem';
+    let btns=h.opts.map(o=>`<button class="nav-btn" style="margin:.25rem .25rem 0 0;font-size:12px;padding:.3rem .7rem" onclick="pickHedge(this,${i},'${o}','${h.ans}')">${o}</button>`).join('');
+    wrap.innerHTML=`<p style="font-family:var(--font-serif);font-size:14px;font-style:italic;margin-bottom:.35rem;color:var(--ink)">"${h.sent}"</p>${btns}<div id="hfb-${i}" style="font-size:12px;margin-top:.3rem;display:none"></div>`;
+    c.appendChild(wrap);
+  });
+}
+function pickHedge(btn,i,chosen,ans){
+  btn.parentElement.querySelectorAll('button').forEach(b=>{b.disabled=true;b.style.opacity='.5'});
+  btn.style.opacity='1';
+  const ok=chosen===ans;
+  btn.style.background=ok?'var(--green-light)':'var(--red-light)';
+  btn.style.color=ok?'var(--green)':'var(--red)';
+  const fb=document.getElementById('hfb-'+i);
+  fb.style.display='block';
+  fb.style.color=ok?'var(--green)':'var(--red)';
+  fb.textContent=ok?'Correct — "'+ans+'" is the appropriate hedge here.':'The hedge should be "'+ans+'" — it expresses possibility without commitment.';
+}
+
+// COLLOCATIONS
+function buildColloc(){
+  const c=document.getElementById('colloc-container');
+  collocData.forEach((item,i)=>{
+    const wrap=document.createElement('div');wrap.style.marginBottom='1rem';
+    wrap.innerHTML=`<p style="font-size:13px;font-weight:500;margin-bottom:.5rem;color:var(--ink)">Complete the collocation: to ___ <em>${item.noun}</em></p>`;
+    const grid=document.createElement('div');grid.className='colloc-grid';
+    item.choices.forEach((ch,ci)=>{
+      const card=document.createElement('div');card.className='colloc-card';
+      card.innerHTML=`<div class="colloc-head">to ${ch}</div><div class="colloc-sub">${ch} ${item.noun}</div>`;
+      card.onclick=()=>{
+        grid.querySelectorAll('.colloc-card').forEach(c2=>{c2.classList.remove('selected','right','wrong');c2.onclick=null});
+        card.classList.add(ci===item.ans?'right':'wrong');
+        const note=document.createElement('div');note.style.cssText='font-size:12px;color:var(--ink2);margin-top:.4rem;padding:.4rem .7rem;background:var(--paper2);border-radius:6px;line-height:1.6';
+        note.textContent=item.note;
+        wrap.appendChild(note);
+      };
+      grid.appendChild(card);
+    });
+    wrap.appendChild(grid);
+    c.appendChild(wrap);
+  });
+}
+
+// ERROR CORRECTION
+function buildErrors(){
+  const c=document.getElementById('err-container');
+  errorData.forEach((item,i)=>{
+    const p=document.createElement('div');p.style.marginBottom='.75rem';
+    const parts=item.sent.split(item.err);
+    p.innerHTML=`<div class="err-sentence">${i+1}. ${parts[0]}<input class="err-input" id="ec-${i}" placeholder="${item.err}" style="width:${item.err.length*9+20}px">${parts[1]}</div>`;
+    c.appendChild(p);
+  });
+}
+function checkErrors(){
+  let ok=0;
+  errorData.forEach((item,i)=>{
+    const el=document.getElementById('ec-'+i);
+    el.classList.remove('right','wrong');
+    const val=el.value.trim();
+    const correct=val.toLowerCase()===item.correct.toLowerCase();
+    el.classList.add(correct?'right':'wrong');
+    if(correct)ok++;
+  });
+  const r=document.getElementById('err-result');r.style.display='block';
+  const allRight=ok===errorData.length;
+  r.style.color=allRight?'var(--green)':'var(--red)';
+  r.textContent=allRight?'All correct! Excellent attention to grammatical accuracy.':ok+'/'+errorData.length+' correct. Check the highlighted errors. Correct answers: '+errorData.map(d=>d.correct).join(', ')+'.';
+}
+
+// NOM CHECK
+function checkNom(){
+  const val=document.getElementById('nom-in').value.toLowerCase().trim();
+  const fb=document.getElementById('nom-fb');
+  const ok=val.includes('discovery')||val.includes('their finding')||val.includes('anxiety')||val.includes('many people');
+  fb.className='fb show '+(ok?'ok':'no');
+  fb.textContent=ok?'Good — you have used a nominalised structure. A strong example: "Their discovery of widespread anxiety about performance among...". The key is converting the verb (discovered) and adjective (anxious) into noun phrases.':'Try again. Convert the verb "discovered" → "discovery" and the adjective "anxious" → "anxiety." Example: "Their discovery of widespread performance anxiety among..."';
+}
+
+// DISCUSSION
+function buildDiscuss(){
+  const c=document.getElementById('discuss-container');
+  discussData.forEach((d,i)=>{
+    const item=document.createElement('div');item.className='discuss-item';
+    const header=document.createElement('div');header.className='discuss-header';
+    header.innerHTML=`<span class="discuss-num-badge">Q${i+1}</span><div class="discuss-q-text">${d.q}</div>`;
+    const body=document.createElement('div');body.className='discuss-body';
+    body.innerHTML=`<div class="discuss-sub">${d.tip}</div><div class="lang-chips">${d.phrases.map(p=>`<span class="chip">${p}</span>`).join('')}</div><div class="compare-grid">${d.compare.map(cx=>`<div class="compare-box"><div class="compare-label">${cx.label}</div><div class="compare-text">${cx.text}</div></div>`).join('')}</div><textarea class="reflect-textarea" style="margin-top:.75rem;min-height:80px" placeholder="Write your response here..."></textarea>`;
+    header.onclick=()=>body.classList.toggle('open');
+    item.appendChild(header);item.appendChild(body);
+    c.appendChild(item);
+  });
+}
+
+// PHRASE BANK
+function buildPhrases(){
+  const c=document.getElementById('pb-phrases');
+  phraseBank.forEach(p=>{
+    const s=document.createElement('span');s.className='pb-phrase';s.textContent=p;
+    s.onclick=()=>{
+      const areas=document.querySelectorAll('textarea.plan-area, .reflect-textarea');
+      const active=document.activeElement;
+      if(active&&(active.tagName==='TEXTAREA')){
+        const cur=active.value;active.value=cur+(cur&&!cur.endsWith(' ')?' ':'')+p+' ';
+      } else {
+        navigator.clipboard.writeText(p).catch(()=>{});
+        s.style.background='rgba(122,92,26,0.35)';setTimeout(()=>s.style.background='',600);
+      }
+    };
+    c.appendChild(s);
+  });
+}
+
+// PRE-READING interactions
+function prePick(el,i){
+  document.querySelectorAll('#pre-opts .q-opt').forEach(o=>{o.classList.remove('correct');o.onclick=null});
+  el.classList.add('correct');
+  const msgs=["Maya Angelou's case challenges the assumption that literary achievement and eloquence indicate emotional resilience — her prolific output coexisted with chronic self-doubt.","Einstein's case is particularly striking because his doubt was not about whether he was capable — he knew his physics — but whether the world's estimation of him was proportionate. His anxiety was about public reception, not private ability.","This is the most epistemologically significant finding: impostor syndrome is not a deficit to be resolved through achievement. It is a cognitive pattern that persists independently of evidence.","This finding has significant implications for educational and workplace equity — it suggests that systemic disadvantage is amplified by a psychological burden that more privileged groups are less likely to carry."];
+  const fb=document.getElementById('pre-fb');fb.style.display='block';fb.textContent=msgs[i];
+}
+function predPick(el,i){
+  document.querySelectorAll('#pred-opts .q-opt').forEach(o=>{o.classList.remove('correct','wrong');o.onclick=null;o.classList.add('disabled')});
+  el.classList.add(i===2?'correct':'wrong');
+  document.querySelectorAll('#pred-opts .q-opt')[2].classList.add('correct');
+  const fb=document.getElementById('pred-fb');fb.style.display='block';
+  fb.textContent=i===2?'Correct prediction. The text argues that open discussion — naming the experience — is the most effective intervention. This may seem counterintuitive in cultures where disclosing doubt is uncomfortable.':'The text identifies option C as the most effective strategy. Notably, it argues that accumulating achievements (A) explicitly does not work — there is no "threshold" of success that resolves impostorism.';
+}
+
+// NAVIGATION
+function goTo(i){
+  document.querySelectorAll('.section').forEach((s,idx)=>s.classList.toggle('active',idx===i));
+  document.querySelectorAll('.tab-btn').forEach((b,idx)=>b.classList.toggle('active',idx===i));
+  for(let j=0;j<7;j++){
+    const ps=document.getElementById('ps'+j);
+    if(j<i)ps.className='progress-step done';
+    else if(j===i)ps.className='progress-step active';
+    else ps.className='progress-step';
+  }
+  document.getElementById('prog-label').textContent='Step '+(i+1)+' / 7';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+buildVocab();buildPassage();buildQuestions();buildHedge();buildColloc();buildErrors();buildDiscuss();buildPhrases();
+</script>
+</body>
+</html>

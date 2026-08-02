@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – Tennis Club English (A2)</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --clay:#B5522A;--clay-lt:#CC6B40;--clay-dk:#8C3C18;
+  --cream:#F6EFE2;--cream-dk:#EDE0C8;--cream-dkr:#D9CBAF;
+  --green:#1A4A2C;--green-lt:#245E38;--green-xlt:#2E7A48;
+  --white:#FDFAF3;--ink:#18140E;--muted:#6E6050;
+  --line:#C0A882;--correct:#1A4A2C;--correct-bg:#E5EFE8;
+  --wrong:#7A1A1A;--wrong-bg:#F5E8E8;
+  --shadow: 0 4px 24px rgba(24,20,14,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;padding-bottom:60px}
+
+/* ── HEADER ── */
+.hdr{background:var(--green);padding:32px 20px 28px;text-align:center;position:relative;overflow:hidden}
+.hdr::before{content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(45deg,transparent,transparent 18px,rgba(255,255,255,.025) 18px,rgba(255,255,255,.025) 19px);
+  pointer-events:none}
+.hdr-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:16px}
+
+/* SVG logo */
+.logo-svg{width:180px;height:auto}
+
+.level-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);
+  border-radius:40px;padding:6px 16px;color:rgba(255,255,255,.85);
+  font-size:13px;font-weight:500;letter-spacing:.04em}
+.level-dot{width:8px;height:8px;border-radius:50%;background:var(--clay-lt)}
+
+.hdr-title{color:#fff;font-family:'Playfair Display',serif;font-size:clamp(20px,4vw,26px);font-weight:400;letter-spacing:.01em;line-height:1.3}
+.hdr-sub{color:rgba(255,255,255,.65);font-size:14px;font-weight:300;letter-spacing:.03em}
+
+/* ── COURT ILLUSTRATION ── */
+.court-wrap{background:var(--clay);padding:20px;display:flex;justify-content:center}
+.court-svg{width:100%;max-width:600px;height:auto;display:block}
+
+/* ── SCENARIO BOX ── */
+.scenario{max-width:680px;margin:28px auto 0;padding:0 16px}
+.scenario-card{
+  background:var(--white);border-radius:14px;padding:24px 26px;
+  border-left:4px solid var(--clay);box-shadow:var(--shadow)}
+.scenario-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--clay);margin-bottom:8px}
+.scenario-text{font-size:15px;line-height:1.65;color:var(--ink)}
+.scenario-text strong{color:var(--green)}
+.staff-row{display:flex;gap:16px;margin-top:16px;flex-wrap:wrap}
+.staff-chip{
+  display:flex;align-items:center;gap:8px;
+  background:var(--cream);border-radius:40px;padding:7px 14px;
+  font-size:13px;font-weight:500;color:var(--green)}
+.staff-chip svg{width:18px;height:18px}
+
+/* ── PROGRESS BAR ── */
+.progress-wrap{max-width:680px;margin:24px auto 0;padding:0 16px}
+.progress-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.progress-label{font-size:13px;font-weight:600;color:var(--muted);letter-spacing:.02em}
+.score-display{
+  font-size:14px;font-weight:700;color:var(--green);
+  background:var(--correct-bg);border-radius:20px;padding:4px 14px}
+.progress-track{height:6px;background:var(--cream-dk);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--clay);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+
+/* ── ACTIVITY HEADER ── */
+.activity-hdr{max-width:680px;margin:28px auto 0;padding:0 16px}
+.act-tag{
+  display:inline-block;background:var(--green);color:#fff;
+  font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  border-radius:4px;padding:4px 10px;margin-bottom:10px}
+.act-title{font-family:'Playfair Display',serif;font-size:clamp(18px,3.5vw,22px);font-weight:700;color:var(--ink);line-height:1.3}
+.act-instr{font-size:14px;color:var(--muted);margin-top:6px;line-height:1.5}
+
+/* ── QUESTION CARD ── */
+.q-wrap{max-width:680px;margin:18px auto 0;padding:0 16px}
+.q-card{background:var(--white);border-radius:14px;padding:26px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.q-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--clay)}
+.q-num{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--clay);margin-bottom:10px}
+.q-text{font-size:16px;font-weight:500;line-height:1.55;color:var(--ink);margin-bottom:20px}
+.q-text em{font-style:italic;color:var(--muted)}
+
+/* ── OPTIONS ── */
+.options{display:flex;flex-direction:column;gap:10px}
+.opt-btn{
+  width:100%;text-align:left;background:var(--cream);
+  border:2px solid var(--cream-dk);border-radius:10px;
+  padding:13px 16px;font-size:14px;font-weight:400;color:var(--ink);
+  font-family:'DM Sans',sans-serif;cursor:pointer;
+  transition:border-color .15s,background .15s,transform .1s;
+  line-height:1.4;position:relative}
+.opt-btn:hover:not(:disabled){background:var(--cream-dk);border-color:var(--line);transform:translateX(2px)}
+.opt-btn.correct{background:var(--correct-bg)!important;border-color:var(--correct)!important;color:var(--correct)!important;font-weight:600}
+.opt-btn.wrong{background:var(--wrong-bg)!important;border-color:var(--wrong)!important;color:var(--wrong)!important}
+.opt-btn:disabled{cursor:default;transform:none}
+.opt-letter{display:inline-block;width:22px;height:22px;border-radius:50%;
+  background:var(--cream-dkr);color:var(--muted);font-size:11px;font-weight:700;
+  text-align:center;line-height:22px;margin-right:10px;flex-shrink:0;
+  transition:background .15s,color .15s}
+.opt-btn.correct .opt-letter{background:var(--correct);color:#fff}
+.opt-btn.wrong .opt-letter{background:var(--wrong);color:#fff}
+
+/* ── FEEDBACK ── */
+.feedback{
+  margin-top:16px;padding:14px 16px;border-radius:10px;
+  font-size:14px;line-height:1.55;display:none}
+.feedback.correct{background:var(--correct-bg);color:var(--correct);border:1px solid rgba(26,74,44,.2)}
+.feedback.wrong{background:var(--wrong-bg);color:var(--wrong);border:1px solid rgba(122,26,26,.2)}
+.feedback-icon{font-size:16px;margin-right:6px}
+
+/* ── FILL IN THE BLANK ── */
+.blank-sentence{font-size:16px;font-weight:500;line-height:2;margin-bottom:18px;color:var(--ink)}
+.blank-input{
+  display:inline-block;min-width:140px;border:none;border-bottom:2px solid var(--clay);
+  background:transparent;font-size:15px;font-family:'DM Sans',sans-serif;
+  color:var(--ink);padding:2px 6px;outline:none;text-align:center;
+  transition:border-color .2s}
+.blank-input:focus{border-color:var(--green)}
+.blank-input.correct{border-color:var(--correct);color:var(--correct);font-weight:600}
+.blank-input.wrong{border-color:var(--wrong);color:var(--wrong)}
+.blank-input:disabled{cursor:default}
+.word-bank{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.word-chip{
+  background:var(--green);color:#fff;border-radius:6px;
+  padding:6px 14px;font-size:13px;font-weight:500;cursor:pointer;
+  border:none;font-family:'DM Sans',sans-serif;
+  transition:background .15s,opacity .15s,transform .1s}
+.word-chip:hover:not(:disabled){background:var(--green-lt);transform:translateY(-1px)}
+.word-chip.used{opacity:.35;cursor:default;pointer-events:none}
+.word-chip:disabled{cursor:default}
+
+/* ── DRAG & DROP MATCHING ── */
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px}
+.match-col-hdr{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;text-align:center}
+.match-left,.match-right{display:flex;flex-direction:column;gap:8px}
+.match-item{
+  background:var(--cream);border:2px solid var(--cream-dk);border-radius:8px;
+  padding:10px 12px;font-size:13px;font-weight:500;color:var(--ink);
+  cursor:pointer;transition:border-color .15s,background .15s;text-align:center;
+  line-height:1.4}
+.match-item.selected{border-color:var(--clay);background:rgba(181,82,42,.08)}
+.match-item.matched{border-color:var(--correct);background:var(--correct-bg);color:var(--correct);cursor:default}
+.match-item.wrong-match{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong)}
+.match-item.disabled{cursor:default}
+
+/* ── REORDER ── */
+.reorder-list{display:flex;flex-direction:column;gap:8px;margin-bottom:8px}
+.ro-item{
+  background:var(--cream);border:2px solid var(--cream-dk);border-radius:8px;
+  padding:12px 14px;font-size:14px;font-weight:500;color:var(--ink);
+  cursor:grab;display:flex;align-items:center;gap:10px;
+  transition:border-color .15s,box-shadow .15s,opacity .15s;
+  user-select:none}
+.ro-item:active{cursor:grabbing;box-shadow:0 6px 18px rgba(0,0,0,.15)}
+.ro-item.dragging{opacity:.4}
+.ro-item.drag-over{border-color:var(--clay);background:rgba(181,82,42,.06)}
+.ro-item.correct-pos{border-color:var(--correct);background:var(--correct-bg);color:var(--correct)}
+.ro-item.wrong-pos{border-color:var(--wrong);background:var(--wrong-bg)}
+.ro-handle{color:var(--line);font-size:18px;flex-shrink:0;line-height:1}
+.ro-item.disabled{cursor:default}
+
+/* ── NEXT BTN ── */
+.next-wrap{max-width:680px;margin:16px auto 0;padding:0 16px;display:none}
+.next-btn{
+  background:var(--clay);color:#fff;border:none;border-radius:10px;
+  padding:14px 28px;font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;
+  cursor:pointer;transition:background .15s,transform .1s;width:100%}
+.next-btn:hover{background:var(--clay-lt);transform:translateY(-1px)}
+.next-btn:active{transform:translateY(0)}
+
+/* ── CHECK BTN ── */
+.check-wrap{max-width:680px;margin:16px auto 0;padding:0 16px}
+.check-btn{
+  background:var(--green);color:#fff;border:none;border-radius:10px;
+  padding:14px 28px;font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;
+  cursor:pointer;transition:background .15s,transform .1s;width:100%}
+.check-btn:hover{background:var(--green-lt);transform:translateY(-1px)}
+.check-btn:disabled{opacity:.5;cursor:default;transform:none}
+
+/* ── RESULTS SCREEN ── */
+#results-screen{display:none;max-width:680px;margin:40px auto;padding:0 16px}
+.results-card{background:var(--white);border-radius:18px;padding:40px 32px;text-align:center;box-shadow:var(--shadow)}
+.results-trophy{font-size:56px;margin-bottom:16px}
+.results-title{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--green);margin-bottom:8px}
+.results-score-big{font-size:52px;font-weight:700;color:var(--clay);line-height:1;margin:16px 0 8px}
+.results-total{font-size:16px;color:var(--muted);margin-bottom:20px}
+.results-msg{font-size:15px;color:var(--ink);line-height:1.6;max-width:400px;margin:0 auto 28px}
+.restart-btn{
+  background:var(--green);color:#fff;border:none;border-radius:10px;
+  padding:15px 36px;font-size:15px;font-weight:700;font-family:'DM Sans',sans-serif;
+  cursor:pointer;transition:background .15s}
+.restart-btn:hover{background:var(--green-lt)}
+
+/* ── DIVIDER ── */
+.act-divider{max-width:680px;margin:32px auto 0;padding:0 16px;display:flex;align-items:center;gap:12px}
+.act-divider-line{flex:1;height:1px;background:var(--cream-dkr)}
+.act-divider-icon{color:var(--clay);font-size:18px}
+
+/* ── UTILITY ── */
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ HEADER ══════════════════ -->
+<header class="hdr">
+  <div class="hdr-inner">
+
+    <!-- Forbes English SVG Logo -->
+    <svg class="logo-svg" viewBox="0 0 200 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <text x="100" y="28" font-family="'Playfair Display', Georgia, serif" font-size="26" font-weight="700"
+        fill="#F6EFE2" text-anchor="middle" letter-spacing="2">Forbes</text>
+      <rect x="20" y="36" width="160" height="1.2" fill="rgba(246,239,226,0.35)"/>
+      <text x="100" y="56" font-family="'DM Sans', Arial, sans-serif" font-size="13" font-weight="700"
+        fill="rgba(246,239,226,0.75)" text-anchor="middle" letter-spacing="5">ENGLISH</text>
+    </svg>
+
+    <div class="level-badge">
+      <span class="level-dot"></span>
+      A2 — Elementary
+    </div>
+
+    <h1 class="hdr-title">At the Tennis Club:<br>Giving Instructions</h1>
+    <p class="hdr-sub">Workplace English for Receptionist &amp; Facility Staff</p>
+  </div>
+</header>
+
+<!-- ══════════════════ COURT ILLUSTRATION ══════════════════ -->
+<div class="court-wrap">
+  <svg class="court-svg" viewBox="0 0 600 180" xmlns="http://www.w3.org/2000/svg">
+    <!-- Court background -->
+    <rect width="600" height="180" fill="#B5522A"/>
+    <!-- Court surface -->
+    <rect x="60" y="20" width="480" height="140" fill="#C9683E" rx="2"/>
+    <!-- Court lines -->
+    <rect x="60" y="20" width="480" height="140" fill="none" stroke="#E8C4A0" stroke-width="2"/>
+    <!-- Singles sidelines -->
+    <rect x="100" y="20" width="400" height="140" fill="none" stroke="#E8C4A0" stroke-width="1.5"/>
+    <!-- Service boxes vertical -->
+    <line x1="300" y1="20" x2="300" y2="160" stroke="#E8C4A0" stroke-width="1.5"/>
+    <!-- Service line left -->
+    <line x1="100" y1="90" x2="300" y2="90" stroke="#E8C4A0" stroke-width="1.5"/>
+    <!-- Service line right -->
+    <line x1="300" y1="90" x2="500" y2="90" stroke="#E8C4A0" stroke-width="1.5"/>
+    <!-- Baseline center marks -->
+    <line x1="297" y1="20" x2="303" y2="26" stroke="#E8C4A0" stroke-width="1.5"/>
+    <line x1="297" y1="160" x2="303" y2="154" stroke="#E8C4A0" stroke-width="1.5"/>
+    <!-- Net -->
+    <rect x="58" y="83" width="484" height="14" fill="none" stroke="#E8C4A0" stroke-width="1.5"/>
+    <line x1="298" y1="83" x2="302" y2="97" stroke="#E8C4A0" stroke-width="2"/>
+    <!-- Net mesh dots -->
+    <g fill="none" stroke="rgba(232,196,160,0.3)" stroke-width="0.7">
+      <line x1="100" y1="83" x2="100" y2="97"/><line x1="140" y1="83" x2="140" y2="97"/>
+      <line x1="180" y1="83" x2="180" y2="97"/><line x1="220" y1="83" x2="220" y2="97"/>
+      <line x1="260" y1="83" x2="260" y2="97"/><line x1="340" y1="83" x2="340" y2="97"/>
+      <line x1="380" y1="83" x2="380" y2="97"/><line x1="420" y1="83" x2="420" y2="97"/>
+      <line x1="460" y1="83" x2="460" y2="97"/>
+      <line x1="58" y1="87" x2="542" y2="87"/><line x1="58" y1="91" x2="542" y2="91"/><line x1="58" y1="95" x2="542" y2="95"/>
+    </g>
+
+    <!-- Tennis ball -->
+    <circle cx="155" cy="55" r="10" fill="#C8D84B"/>
+    <path d="M148 50 Q155 60 162 50" fill="none" stroke="white" stroke-width="1.2"/>
+    <path d="M148 60 Q155 50 162 60" fill="none" stroke="white" stroke-width="1.2"/>
+
+    <!-- Player 1 (left) — stick figure with racket -->
+    <g transform="translate(130,108)">
+      <circle cx="0" cy="-38" r="7" fill="#F6EFE2"/>
+      <line x1="0" y1="-31" x2="0" y2="-10" stroke="#F6EFE2" stroke-width="3" stroke-linecap="round"/>
+      <line x1="0" y1="-24" x2="-14" y2="-18" stroke="#F6EFE2" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="0" y1="-24" x2="14" y2="-30" stroke="#F6EFE2" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="0" y1="-10" x2="-8" y2="8" stroke="#F6EFE2" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="0" y1="-10" x2="8" y2="8" stroke="#F6EFE2" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- racket -->
+      <ellipse cx="22" cy="-34" rx="10" ry="14" fill="none" stroke="#C8D84B" stroke-width="2.5"/>
+      <line x1="14" y1="-24" x2="14" y2="-18" stroke="#C8D84B" stroke-width="2"/>
+      <line x1="14" y1="-34" x2="22" y2="-34" stroke="rgba(200,216,75,.4)" stroke-width="1"/>
+      <line x1="14" y1="-38" x2="30" y2="-38" stroke="rgba(200,216,75,.4)" stroke-width="1"/>
+      <line x1="14" y1="-30" x2="30" y2="-30" stroke="rgba(200,216,75,.4)" stroke-width="1"/>
+      <line x1="18" y1="-48" x2="18" y2="-20" stroke="rgba(200,216,75,.4)" stroke-width="1"/>
+      <line x1="26" y1="-48" x2="26" y2="-20" stroke="rgba(200,216,75,.4)" stroke-width="1"/>
+    </g>
+
+    <!-- Player 2 (right) -->
+    <g transform="translate(470,108) scale(-1,1)">
+      <circle cx="0" cy="-38" r="7" fill="#F6EFE2"/>
+      <line x1="0" y1="-31" x2="0" y2="-10" stroke="#F6EFE2" stroke-width="3" stroke-linecap="round"/>
+      <line x1="0" y1="-24" x2="-14" y2="-18" stroke="#F6EFE2" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="0" y1="-24" x2="14" y2="-30" stroke="#F6EFE2" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="0" y1="-10" x2="-8" y2="8" stroke="#F6EFE2" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="0" y1="-10" x2="8" y2="8" stroke="#F6EFE2" stroke-width="2.5" stroke-linecap="round"/>
+      <ellipse cx="22" cy="-34" rx="10" ry="14" fill="none" stroke="#C8D84B" stroke-width="2.5"/>
+      <line x1="14" y1="-24" x2="14" y2="-18" stroke="#C8D84B" stroke-width="2"/>
+      <line x1="14" y1="-34" x2="22" y2="-34" stroke="rgba(200,216,75,.4)" stroke-width="1"/>
+      <line x1="14" y1="-38" x2="30" y2="-38" stroke="rgba(200,216,75,.4)" stroke-width="1"/>
+      <line x1="14" y1="-30" x2="30" y2="-30" stroke="rgba(200,216,75,.4)" stroke-width="1"/>
+      <line x1="18" y1="-48" x2="18" y2="-20" stroke="rgba(200,216,75,.4)" stroke-width="1"/>
+      <line x1="26" y1="-48" x2="26" y2="-20" stroke="rgba(200,216,75,.4)" stroke-width="1"/>
+    </g>
+
+    <!-- Reception desk icon -->
+    <g transform="translate(520,30)">
+      <rect x="0" y="18" width="52" height="28" rx="4" fill="rgba(246,239,226,.15)" stroke="rgba(246,239,226,.4)" stroke-width="1.5"/>
+      <rect x="6" y="22" width="18" height="12" rx="2" fill="rgba(246,239,226,.25)"/>
+      <circle cx="36" cy="28" r="5" fill="rgba(246,239,226,.3)"/>
+      <line x1="30" y1="34" x2="42" y2="34" stroke="rgba(246,239,226,.4)" stroke-width="1"/>
+      <text x="26" y="55" font-family="'DM Sans',sans-serif" font-size="7" fill="rgba(246,239,226,.6)" text-anchor="middle" font-weight="600">RECEPTION</text>
+      <!-- Kati figure -->
+      <circle cx="26" cy="10" r="5" fill="#F6EFE2" opacity="0.7"/>
+      <line x1="26" y1="15" x2="26" y2="18" stroke="#F6EFE2" stroke-width="2" opacity="0.7" stroke-linecap="round"/>
+    </g>
+
+    <!-- Shoe icons at bottom -->
+    <g transform="translate(20,150)">
+      <!-- Tennis shoe -->
+      <path d="M0 15 Q4 0 20 2 L36 2 Q42 2 42 8 L42 15 Q36 18 20 18 L4 18 Z" fill="#C8D84B" opacity="0.8"/>
+      <text x="21" y="12" font-family="'DM Sans',sans-serif" font-size="7" fill="#3a3000" text-anchor="middle" font-weight="700">OK</text>
+    </g>
+    <g transform="translate(540,148)">
+      <!-- Street shoe with X -->
+      <path d="M0 17 Q2 4 16 4 L30 4 Q36 6 38 10 L38 17 Q30 20 16 20 L2 20 Z" fill="rgba(122,26,26,0.6)" opacity="0.9"/>
+      <line x1="10" y1="8" x2="28" y2="18" stroke="white" stroke-width="2"/>
+      <line x1="28" y1="8" x2="10" y2="18" stroke="white" stroke-width="2"/>
+    </g>
+    <text x="300" y="174" font-family="'DM Sans',sans-serif" font-size="9" fill="rgba(246,239,226,0.5)" text-anchor="middle">Tennis Point Vienna</text>
+  </svg>
+</div>
+
+<!-- ══════════════════ SCENARIO ══════════════════ -->
+<div class="scenario">
+  <div class="scenario-card">
+    <div class="scenario-label">Your Situation</div>
+    <p class="scenario-text">
+      You work at <strong>Tennis Point Vienna</strong> — one of the largest racket sports halls in Vienna.
+      Many guests come from different countries, so you often speak English at the reception desk.
+      Your job is to help guests follow the club rules clearly and politely.
+    </p>
+    <div class="staff-row">
+      <div class="staff-chip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        Kati — Reception
+      </div>
+      <div class="staff-chip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 12h6M12 9v6"/></svg>
+        Patrick — Facility
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ PROGRESS BAR ══════════════════ -->
+<div class="progress-wrap" id="progress-wrap">
+  <div class="progress-meta">
+    <span class="progress-label" id="progress-label">Activity 1 — Question 1 of 5</span>
+    <span class="score-display" id="score-display">Score: 0</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+</div>
+
+<!-- ══════════════════ ACTIVITY AREA ══════════════════ -->
+<div id="lesson-area"></div>
+
+<!-- ══════════════════ RESULTS ══════════════════ -->
+<div id="results-screen">
+  <div class="results-card">
+    <div class="results-trophy" id="results-trophy">🎾</div>
+    <h2 class="results-title">Well done!</h2>
+    <div class="results-score-big" id="results-score">0</div>
+    <div class="results-total" id="results-total">out of 20 points</div>
+    <p class="results-msg" id="results-msg">Great work! Keep practising your tennis club English.</p>
+    <button class="restart-btn" onclick="restartLesson()">Play Again</button>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════
+
+const activities = [
+
+  // ─── ACTIVITY 1: Multiple Choice ───
+  {
+    type: 'mc',
+    tag: 'Activity 1 of 3',
+    title: 'Multiple Choice',
+    instruction: 'Kati is at the reception desk. Choose the best thing to say to the guest.',
+    questions: [
+      {
+        text: 'A guest arrives at the court without checking in. What does Kati say?',
+        opts: [
+          'Could you please check in at the reception first?',
+          'You are not allowed inside the building today.',
+          'Please wait here until a coach arrives shortly.',
+          'Your reservation is not showing on our system.'
+        ],
+        correct: 0,
+        feedback: '"Could you please check in first?" is polite and clear. At A2, we use "could you please" to give instructions politely without sounding rude.'
+      },
+      {
+        text: 'A guest is wearing street shoes on the court. Patrick needs to stop them. He says:',
+        opts: [
+          'I am sorry, but those shoes are not suitable here.',
+          'You need to wear proper tennis shoes on the court.',
+          'Your shoes look nice, but they are the wrong style.',
+          'We only allow white shoes on all of our courts.'
+        ],
+        correct: 1,
+        feedback: '"You need to wear tennis shoes on the court" is a direct, clear instruction. "You need to…" is a common A2 structure for rules and requirements.'
+      },
+      {
+        text: 'A guest wants to play but has no booking. Kati explains:',
+        opts: [
+          'You have to book a court in advance to play here.',
+          'The courts are all full because of a big tournament.',
+          'Unfortunately our system is down and cannot show slots.',
+          'Please come back again tomorrow when we have space.'
+        ],
+        correct: 0,
+        feedback: '"You have to book in advance" uses "have to" — perfect for rules that are not optional. It is polite but firm, which is exactly right at the reception desk.'
+      },
+      {
+        text: 'The guest confirmed the shoe rule when booking online, but forgot. Kati reminds them:',
+        opts: [
+          'You agreed to this rule when you made your booking.',
+          'This rule is written on a sign near the entrance door.',
+          'The website clearly explained all of our court policies.',
+          'Other guests have the same problem quite often too.'
+        ],
+        correct: 0,
+        feedback: '"You agreed to this rule when you made your booking" is factual and polite. It reminds the guest they already accepted the rule, which avoids an argument.'
+      },
+      {
+        text: 'A guest asks why tennis shoes are required. Kati explains:',
+        opts: [
+          'Street shoes can damage the court surface very quickly.',
+          'The club owner decided this rule a long time ago.',
+          'Other members sometimes complain about dirty floors.',
+          'Tennis shoes are available for sale in our small shop.'
+        ],
+        correct: 0,
+        feedback: '"Street shoes can damage the court surface" gives a clear, logical reason. Using "can" explains possibility/risk — a useful A2 structure for explaining rules.'
+      }
+    ]
+  },
+
+  // ─── ACTIVITY 2: Fill in the Blank ───
+  {
+    type: 'fill',
+    tag: 'Activity 2 of 3',
+    title: 'Fill in the Blank',
+    instruction: 'Complete each sentence with the correct word from the word bank. Click a word, then click the blank.',
+    wordBank: ['need', 'allowed', 'must', 'have', 'required', 'please', 'welcome', 'sorry'],
+    questions: [
+      {
+        before: 'You',
+        blank: 'need',
+        after: 'to check in at the reception before using the court.',
+        feedback: '"Need to" is a natural A2 way to give instructions. It means the action is necessary — similar to "must" but a little softer.'
+      },
+      {
+        before: 'Street shoes are not',
+        blank: 'allowed',
+        after: 'on the court at Tennis Point Vienna.',
+        feedback: '"Not allowed" is used to explain that something is forbidden. It is polite and clear — perfect for explaining club rules to guests.'
+      },
+      {
+        before: 'You',
+        blank: 'must',
+        after: 'wear tennis shoes. This is a club rule for everyone.',
+        feedback: '"Must" is stronger than "need to" and used for strict rules. Because guests confirm this rule at booking, "must" is appropriate here.'
+      },
+      {
+        before: 'Could you',
+        blank: 'please',
+        after: 'show me your booking confirmation at the desk?',
+        feedback: '"Could you please…" is a polite way to ask someone to do something. It is very common in professional service situations.'
+      },
+      {
+        before: 'Tennis shoes are',
+        blank: 'required',
+        after: 'on all courts. This keeps the surface in good condition.',
+        feedback: '"Required" means it is mandatory. It is a slightly more formal word than "needed" — good for written signs and spoken explanations to guests.'
+      }
+    ]
+  },
+
+  // ─── ACTIVITY 3: Matching ───
+  {
+    type: 'match',
+    tag: 'Activity 3 of 3',
+    title: 'Matching',
+    instruction: 'Match each situation on the left with the correct instruction on the right. Click a situation, then click the matching instruction.',
+    pairs: [
+      { left: 'Guest has no booking', right: 'You need to reserve a court first.' },
+      { left: 'Street shoes on court', right: 'Please change to tennis shoes.' },
+      { left: 'Guest skipped reception', right: 'Could you check in with us first?' },
+      { left: 'Guest asks about the rule', right: 'Street shoes can damage the surface.' },
+      { left: 'Guest forgot confirmation', right: 'You agreed to this when you booked.' }
+    ]
+  }
+];
+
+// ══════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════
+let actIdx = 0;
+let qIdx   = 0;
+let score  = 0;
+let totalQ = 0;
+let answeredQ = 0;
+
+// fill state
+let selectedWord = null;
+let selectedBlankId = null;
+let fillAnswers = {};  // {qi: word}
+
+// match state
+let selectedLeft  = null;
+let selectedRight = null;
+let matchedPairs  = {};
+
+function countTotalQ() {
+  let n = 0;
+  activities.forEach(a => {
+    if (a.type === 'mc')    n += a.questions.length;
+    if (a.type === 'fill')  n += a.questions.length;
+    if (a.type === 'match') n += a.pairs.length;
+  });
+  return n;
+}
+
+// ══════════════════════════════════════════════
+// PROGRESS
+// ══════════════════════════════════════════════
+function updateProgress(labelTxt) {
+  document.getElementById('progress-label').textContent = labelTxt;
+  document.getElementById('score-display').textContent = 'Score: ' + score;
+  const pct = totalQ > 0 ? (answeredQ / totalQ) * 100 : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+}
+
+// ══════════════════════════════════════════════
+// RENDER DISPATCH
+// ══════════════════════════════════════════════
+function renderCurrent() {
+  if (actIdx >= activities.length) { showResults(); return; }
+  const act = activities[actIdx];
+  if (act.type === 'mc')    renderMC(act);
+  if (act.type === 'fill')  renderFill(act);
+  if (act.type === 'match') renderMatch(act);
+}
+
+// ══════════════════════════════════════════════
+// MULTIPLE CHOICE
+// ══════════════════════════════════════════════
+function renderMC(act) {
+  const q = act.questions[qIdx];
+  const area = document.getElementById('lesson-area');
+  const letters = ['A','B','C','D'];
+
+  // shuffle options keeping track of correct
+  const shuffled = q.opts.map((o,i)=>({text:o, orig:i}));
+  shuffleArray(shuffled);
+  const correctShuffled = shuffled.findIndex(o=>o.orig===q.correct);
+
+  area.innerHTML = `
+    <div class="activity-hdr">
+      <div class="act-tag">${act.tag} · Multiple Choice</div>
+      <h2 class="act-title">${act.title}</h2>
+      <p class="act-instr">${act.instruction}</p>
+    </div>
+    <div class="q-wrap">
+      <div class="q-card">
+        <div class="q-num">Question ${qIdx+1} of ${act.questions.length}</div>
+        <div class="q-text">${q.text}</div>
+        <div class="options" id="opts">
+          ${shuffled.map((o,i)=>`
+            <button class="opt-btn" id="opt-${i}" onclick="selectMC(${i},${correctShuffled},this)">
+              <span class="opt-letter">${letters[i]}</span>${o.text}
+            </button>`).join('')}
+        </div>
+        <div class="feedback" id="feedback"></div>
+      </div>
+    </div>`;
+
+  document.getElementById('next-wrap') && (document.getElementById('next-wrap').style.display='none');
+  showNextWrap(false);
+  updateProgress(`Activity ${actIdx+1} of 3 · Question ${qIdx+1} of ${act.questions.length}`);
+}
+
+function selectMC(chosen, correct, btn) {
+  const btns = document.querySelectorAll('.opt-btn');
+  btns.forEach(b => { b.disabled = true; });
+  const fb = document.getElementById('feedback');
+  const act = activities[actIdx];
+  const q = act.questions[qIdx];
+
+  if (chosen === correct) {
+    btn.classList.add('correct');
+    fb.className = 'feedback correct';
+    fb.innerHTML = '<span class="feedback-icon">✓</span> Correct! ' + q.feedback;
+    score++;
+  } else {
+    btn.classList.add('wrong');
+    document.getElementById('opt-'+correct).classList.add('correct');
+    fb.className = 'feedback wrong';
+    fb.innerHTML = '<span class="feedback-icon">✗</span> Not quite. ' + q.feedback;
+  }
+  fb.style.display = 'block';
+  answeredQ++;
+  updateProgress(`Activity ${actIdx+1} of 3 · Question ${qIdx+1} of ${act.questions.length}`);
+  showNextWrap(true);
+}
+
+// ══════════════════════════════════════════════
+// FILL IN THE BLANK
+// ══════════════════════════════════════════════
+function renderFill(act) {
+  selectedWord = null; selectedBlankId = null; fillAnswers = {};
+  const area = document.getElementById('lesson-area');
+
+  const bankWords = [...act.wordBank];
+  shuffleArray(bankWords);
+
+  area.innerHTML = `
+    <div class="activity-hdr">
+      <div class="act-tag">${act.tag} · Fill in the Blank</div>
+      <h2 class="act-title">${act.title}</h2>
+      <p class="act-instr">${act.instruction}</p>
+    </div>
+    <div class="q-wrap">
+      <div class="q-card">
+        <div class="q-num">Complete all 5 sentences</div>
+        <div class="word-bank" id="word-bank">
+          ${bankWords.map(w=>`<button class="word-chip" id="chip-${w}" onclick="selectWord('${w}',this)">${w}</button>`).join('')}
+        </div>
+        ${act.questions.map((q,i)=>`
+          <div class="blank-sentence" id="sent-${i}">
+            ${q.before} <input class="blank-input" id="blank-${i}" type="text" placeholder="___" readonly
+              onclick="selectBlank(${i})" onfocus="selectBlank(${i})"> ${q.after}
+          </div>
+          <div class="feedback hidden" id="fb-${i}"></div>
+        `).join('')}
+      </div>
+    </div>
+    <div class="check-wrap"><button class="check-btn" id="check-fill" onclick="checkFill()" disabled>Check My Answers</button></div>`;
+
+  showNextWrap(false);
+  updateProgress(`Activity ${actIdx+1} of 3 · Fill in the Blank`);
+}
+
+function selectWord(w, el) {
+  // deselect previous
+  document.querySelectorAll('.word-chip').forEach(c=>c.style.outline='');
+  if (selectedWord === w && !el.classList.contains('used')) {
+    selectedWord = null;
+    if (selectedBlankId !== null) tryFillBlank();
+    return;
+  }
+  selectedWord = w;
+  el.style.outline = '2px solid var(--clay)';
+  if (selectedBlankId !== null) tryFillBlank();
+}
+
+function selectBlank(i) {
+  // deselect previous blank highlight
+  document.querySelectorAll('.blank-input').forEach(b=>b.style.borderColor='var(--clay)');
+  selectedBlankId = i;
+  document.getElementById('blank-'+i).style.borderColor = 'var(--green)';
+  if (selectedWord !== null) tryFillBlank();
+}
+
+function tryFillBlank() {
+  if (selectedWord === null || selectedBlankId === null) return;
+  const inp = document.getElementById('blank-'+selectedBlankId);
+  // if blank already has a word, return it to the bank
+  const prev = fillAnswers[selectedBlankId];
+  if (prev) {
+    const prevChip = document.getElementById('chip-'+prev);
+    if (prevChip) prevChip.classList.remove('used');
+  }
+  // fill the blank
+  inp.value = selectedWord;
+  fillAnswers[selectedBlankId] = selectedWord;
+  // mark chip used
+  const chip = document.getElementById('chip-'+selectedWord);
+  if (chip) { chip.classList.add('used'); chip.style.outline=''; }
+  selectedWord = null;
+  selectedBlankId = null;
+  document.querySelectorAll('.blank-input').forEach(b=>b.style.borderColor='var(--clay)');
+
+  // enable check if all filled
+  const act = activities[actIdx];
+  if (Object.keys(fillAnswers).length === act.questions.length) {
+    document.getElementById('check-fill').disabled = false;
+  }
+}
+
+function checkFill() {
+  const act = activities[actIdx];
+  document.getElementById('check-fill').disabled = true;
+  document.querySelectorAll('.word-chip').forEach(c=>{ c.disabled=true; });
+
+  act.questions.forEach((q,i) => {
+    const inp = document.getElementById('blank-'+i);
+    const fb  = document.getElementById('fb-'+i);
+    inp.disabled = true;
+    const given = (inp.value||'').trim().toLowerCase();
+    const correct = q.blank.toLowerCase();
+    if (given === correct) {
+      inp.classList.add('correct');
+      fb.className = 'feedback correct';
+      fb.innerHTML = '<span class="feedback-icon">✓</span> Correct! ' + q.feedback;
+      score++;
+    } else {
+      inp.classList.add('wrong');
+      inp.value = q.blank;
+      inp.classList.remove('wrong'); inp.classList.add('correct');
+      fb.className = 'feedback wrong';
+      fb.innerHTML = `<span class="feedback-icon">✗</span> The answer is "<strong>${q.blank}</strong>". ` + q.feedback;
+    }
+    fb.classList.remove('hidden');
+    answeredQ++;
+  });
+  updateProgress(`Activity ${actIdx+1} of 3 · Fill in the Blank`);
+  showNextWrap(true, 'Continue to Matching →');
+}
+
+// ══════════════════════════════════════════════
+// MATCHING
+// ══════════════════════════════════════════════
+function renderMatch(act) {
+  selectedLeft = null; selectedRight = null; matchedPairs = {};
+  const area = document.getElementById('lesson-area');
+
+  const leftItems  = act.pairs.map(p=>p.left);
+  const rightItems = act.pairs.map(p=>p.right);
+  shuffleArray(rightItems);
+
+  area.innerHTML = `
+    <div class="activity-hdr">
+      <div class="act-tag">${act.tag} · Matching</div>
+      <h2 class="act-title">${act.title}</h2>
+      <p class="act-instr">${act.instruction}</p>
+    </div>
+    <div class="q-wrap">
+      <div class="q-card">
+        <div class="q-num">Match all 5 pairs</div>
+        <div class="match-grid">
+          <div>
+            <div class="match-col-hdr">Situation</div>
+            <div class="match-left" id="match-left">
+              ${leftItems.map((l,i)=>`<div class="match-item" id="ml-${i}" onclick="selectMatchLeft(${i},'${escQ(l)}')">${l}</div>`).join('')}
+            </div>
+          </div>
+          <div>
+            <div class="match-col-hdr">Instruction</div>
+            <div class="match-right" id="match-right">
+              ${rightItems.map((r,i)=>`<div class="match-item" id="mr-${i}" onclick="selectMatchRight(${i},'${escQ(r)}')">${r}</div>`).join('')}
+            </div>
+          </div>
+        </div>
+        <div class="feedback hidden" id="match-feedback"></div>
+      </div>
+    </div>`;
+
+  showNextWrap(false);
+  updateProgress(`Activity ${actIdx+1} of 3 · Matching`);
+}
+
+function escQ(s){ return s.replace(/'/g,"\\'"); }
+
+function selectMatchLeft(idx, text) {
+  if (document.getElementById('ml-'+idx).classList.contains('matched')) return;
+  document.querySelectorAll('#match-left .match-item:not(.matched)').forEach(el=>el.classList.remove('selected'));
+  selectedLeft = {idx, text};
+  document.getElementById('ml-'+idx).classList.add('selected');
+  if (selectedRight) tryMatch();
+}
+
+function selectMatchRight(idx, text) {
+  if (document.getElementById('mr-'+idx).classList.contains('matched')) return;
+  document.querySelectorAll('#match-right .match-item:not(.matched)').forEach(el=>el.classList.remove('selected'));
+  selectedRight = {idx, text};
+  document.getElementById('mr-'+idx).classList.add('selected');
+  if (selectedLeft) tryMatch();
+}
+
+function tryMatch() {
+  const act = activities[actIdx];
+  const lText = selectedLeft.text;
+  const rText = selectedRight.text;
+  const li = selectedLeft.idx;
+  const ri = selectedRight.idx;
+
+  // find correct pair
+  const pair = act.pairs.find(p=>p.left === lText);
+  const correct = pair && pair.right === rText;
+
+  const lEl = document.getElementById('ml-'+li);
+  const rEl = document.getElementById('mr-'+ri);
+
+  if (correct) {
+    lEl.classList.add('matched'); lEl.classList.remove('selected');
+    rEl.classList.add('matched'); rEl.classList.remove('selected');
+    score++;
+  } else {
+    lEl.classList.add('wrong-match');
+    rEl.classList.add('wrong-match');
+    setTimeout(()=>{
+      lEl.classList.remove('wrong-match','selected');
+      rEl.classList.remove('wrong-match','selected');
+    }, 900);
+  }
+  answeredQ++;
+  selectedLeft = null; selectedRight = null;
+  updateProgress(`Activity ${actIdx+1} of 3 · Matching`);
+
+  // check if all matched
+  const matched = document.querySelectorAll('#match-left .matched').length;
+  if (matched === act.pairs.length) {
+    const fb = document.getElementById('match-feedback');
+    fb.className = 'feedback correct';
+    fb.innerHTML = '<span class="feedback-icon">✓</span> Excellent! You matched all the situations correctly. Using clear, polite phrases like these helps guests feel respected even when rules must be enforced.';
+    fb.classList.remove('hidden');
+    showNextWrap(true, 'See My Results →');
+  }
+}
+
+// ══════════════════════════════════════════════
+// NEXT BUTTON
+// ══════════════════════════════════════════════
+function showNextWrap(show, label) {
+  let wrap = document.getElementById('next-wrap');
+  if (!wrap) {
+    wrap = document.createElement('div');
+    wrap.className = 'next-wrap';
+    wrap.id = 'next-wrap';
+    wrap.innerHTML = `<button class="next-btn" id="next-btn" onclick="nextStep()">Next →</button>`;
+    document.getElementById('lesson-area').after(wrap);
+  }
+  wrap.style.display = show ? 'block' : 'none';
+  if (label) document.getElementById('next-btn').textContent = label;
+  else document.getElementById('next-btn').textContent = 'Next Question →';
+}
+
+function nextStep() {
+  const act = activities[actIdx];
+  if (act.type === 'mc') {
+    qIdx++;
+    if (qIdx >= act.questions.length) { actIdx++; qIdx = 0; }
+  } else {
+    actIdx++;
+  }
+  renderCurrent();
+}
+
+// ══════════════════════════════════════════════
+// RESULTS
+// ══════════════════════════════════════════════
+function showResults() {
+  document.getElementById('progress-wrap').style.display = 'none';
+  document.getElementById('lesson-area').innerHTML = '';
+  const wrap = document.getElementById('next-wrap');
+  if (wrap) wrap.style.display = 'none';
+
+  const rs = document.getElementById('results-screen');
+  rs.style.display = 'block';
+  document.getElementById('results-score').textContent = score;
+  document.getElementById('results-total').textContent = 'out of ' + totalQ + ' points';
+
+  const pct = score / totalQ;
+  let trophy, msg;
+  if (pct >= 0.9) { trophy='🏆'; msg='Outstanding! Your English at the reception desk is excellent. Guests at Tennis Point Vienna are lucky to have you!'; }
+  else if (pct >= 0.7) { trophy='🎾'; msg='Great work! You have a strong understanding of giving polite instructions in English. A little more practice and you will be perfect.'; }
+  else if (pct >= 0.5) { trophy='💪'; msg='Good effort! You know the basics. Review the feedback and try again to improve your score.'; }
+  else { trophy='📚'; msg='Keep practising! Every mistake helps you learn. Try the lesson again and focus on the polite instruction phrases.'; }
+
+  document.getElementById('results-trophy').textContent = trophy;
+  document.getElementById('results-msg').textContent = msg;
+  rs.scrollIntoView({behavior:'smooth'});
+}
+
+function restartLesson() {
+  actIdx=0; qIdx=0; score=0; answeredQ=0;
+  fillAnswers={}; matchedPairs={}; selectedLeft=null; selectedRight=null; selectedWord=null; selectedBlankId=null;
+  document.getElementById('results-screen').style.display='none';
+  document.getElementById('progress-wrap').style.display='block';
+  renderCurrent();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ══════════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════════
+function shuffleArray(arr) {
+  for (let i = arr.length-1; i>0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]] = [arr[j],arr[i]];
+  }
+}
+
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+totalQ = countTotalQ();
+renderCurrent();
+</script>
+</body>
+</html>

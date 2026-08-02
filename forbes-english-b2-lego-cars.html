@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English | Brick by Brick: Building Lego Cars (B2)</title>
+<style>
+  :root{
+    --lego-red:#D01012;
+    --lego-yellow:#FFD500;
+    --lego-black:#101010;
+    --lego-grey:#5a5a5a;
+    --bg:#f4f2ee;
+    --card:#ffffff;
+    --correct:#1f8a44;
+    --incorrect:#c62828;
+    --border:#e2ddd4;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Segoe UI', Roboto, -apple-system, sans-serif;
+    background:var(--bg);
+    color:var(--lego-black);
+    line-height:1.5;
+  }
+  .app{max-width:760px;margin:0 auto;padding:0 18px 60px;}
+
+  /* SCORE BAR - sticky exception per house style */
+  .scorebar{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:var(--lego-black);
+    color:#fff;
+    padding:10px 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    font-size:14px;
+    font-weight:600;
+  }
+  .scorebar .track{
+    flex:1;
+    height:8px;
+    background:#333;
+    border-radius:6px;
+    margin:0 14px;
+    overflow:hidden;
+  }
+  .scorebar .fill{
+    height:100%;
+    background:var(--lego-yellow);
+    width:0%;
+    transition:width .35s ease;
+  }
+
+  /* LOGO */
+  .logo-wrap{display:flex;justify-content:center;margin:28px 0 6px;}
+  .logo-wrap svg{width:230px;height:auto;}
+
+  .subtitle{
+    text-align:center;
+    color:var(--lego-grey);
+    font-size:14px;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+    margin-bottom:28px;
+  }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:26px 24px;
+    margin-bottom:22px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.04);
+  }
+
+  h1{font-size:26px;margin:0 0 8px;}
+  h2{font-size:20px;margin:0 0 14px;color:var(--lego-red);}
+  h3{font-size:16px;margin:0 0 10px;}
+  p{margin:0 0 14px;}
+
+  .badge{
+    display:inline-block;
+    background:var(--lego-yellow);
+    color:var(--lego-black);
+    font-weight:700;
+    font-size:12px;
+    padding:4px 10px;
+    border-radius:20px;
+    margin-bottom:14px;
+    letter-spacing:.4px;
+  }
+
+  .btn{
+    appearance:none;
+    border:none;
+    background:var(--lego-red);
+    color:#fff;
+    font-size:15px;
+    font-weight:700;
+    padding:13px 22px;
+    border-radius:10px;
+    cursor:pointer;
+    transition:transform .12s ease, background .2s ease, opacity .2s ease;
+  }
+  .btn:hover:not(:disabled){transform:translateY(-1px);}
+  .btn:disabled{background:#c9c4ba;cursor:not-allowed;opacity:.7;}
+  .btn.secondary{background:var(--lego-black);}
+  .btn-row{display:flex;justify-content:flex-end;margin-top:18px;}
+
+  .option{
+    display:block;
+    width:100%;
+    text-align:left;
+    background:#fbfaf7;
+    border:2px solid var(--border);
+    border-radius:10px;
+    padding:13px 16px;
+    margin-bottom:10px;
+    font-size:15px;
+    cursor:pointer;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .option:hover:not(.locked){border-color:var(--lego-red);}
+  .option.selected{border-color:var(--lego-red);background:#fff4ef;}
+  .option.correct{border-color:var(--correct);background:#eaf7ee;}
+  .option.incorrect{border-color:var(--incorrect);background:#fdecec;}
+  .option.locked{cursor:default;}
+
+  .feedback{
+    margin-top:14px;
+    padding:13px 16px;
+    border-radius:10px;
+    font-size:14.5px;
+    display:none;
+  }
+  .feedback.show{display:block;}
+  .feedback.correct-fb{background:#eaf7ee;color:var(--correct);border:1px solid #bfe6cb;}
+  .feedback.incorrect-fb{background:#fdecec;color:var(--incorrect);border:1px solid #f3c4c4;}
+
+  .reading-text{
+    background:#fbfaf7;
+    border-left:4px solid var(--lego-yellow);
+    padding:16px 18px;
+    border-radius:6px;
+    font-size:15px;
+    margin-bottom:18px;
+  }
+
+  .q-count{
+    font-size:13px;
+    color:var(--lego-grey);
+    font-weight:600;
+    margin-bottom:10px;
+    text-transform:uppercase;
+    letter-spacing:.4px;
+  }
+
+  .discussion-prompt{
+    background:#fbfaf7;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:14px 16px;
+    margin-bottom:12px;
+    font-size:15px;
+  }
+  .discussion-prompt strong{color:var(--lego-red);}
+
+  .results-score{
+    text-align:center;
+    font-size:48px;
+    font-weight:800;
+    color:var(--lego-red);
+    margin:6px 0;
+  }
+  .results-msg{text-align:center;font-size:16px;color:var(--lego-grey);margin-bottom:20px;}
+
+  .hidden{display:none !important;}
+
+  .gap{
+    font-weight:700;
+    color:var(--lego-red);
+  }
+
+  footer{
+    text-align:center;
+    font-size:12px;
+    color:var(--lego-grey);
+    margin-top:30px;
+  }
+</style>
+</head>
+<body>
+
+<div class="scorebar">
+  <span id="scoreLabel">Score: 0 / 0</span>
+  <div class="track"><div class="fill" id="progressFill"></div></div>
+  <span id="progressLabel">0%</span>
+</div>
+
+<div class="app">
+
+  <div class="logo-wrap">
+    <svg viewBox="0 0 300 90" xmlns="http://www.w3.org/2000/svg">
+      <text x="150" y="42" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="34" fill="var(--lego-black)">Forbes</text>
+      <rect x="40" y="52" width="220" height="3" fill="var(--lego-red)"/>
+      <text x="150" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="24" letter-spacing="3" fill="var(--lego-red)">ENGLISH</text>
+    </svg>
+  </div>
+  <div class="subtitle">Brick by Brick — Building Lego Cars · Level B2</div>
+
+  <!-- INTRO -->
+  <div class="card" id="screen-intro">
+    <span class="badge">Vocabulary · Reading · Grammar · Speaking</span>
+    <h1>Brick by Brick: Building Lego Cars</h1>
+    <p>From a handful of coloured bricks to fully working supercars with real gears and steering — Lego has been engineering tiny automotive marvels for decades. In this lesson you'll build your vocabulary, read about how Lego designs its most famous car sets, practise the passive voice, and finish with some speaking practice of your own.</p>
+    <p><strong>You will complete:</strong> 12 vocabulary questions, a short reading text with 6 comprehension questions, 8 grammar questions on the passive voice, and 4 speaking prompts.</p>
+    <div class="btn-row"><button class="btn" onclick="goTo('vocab-intro')">Start Building →</button></div>
+  </div>
+
+  <!-- VOCAB INTRO -->
+  <div class="card hidden" id="screen-vocab-intro">
+    <span class="badge">Part 1 · Vocabulary</span>
+    <h2>Key Building Vocabulary</h2>
+    <p>Complete each sentence with the correct word. Read carefully — some options are close in meaning!</p>
+    <div class="btn-row"><button class="btn" onclick="startSection('vocab')">Begin</button></div>
+  </div>
+
+  <!-- READING INTRO -->
+  <div class="card hidden" id="screen-reading-intro">
+    <span class="badge">Part 2 · Reading</span>
+    <h2>From Baseplate to Bugatti</h2>
+    <div class="reading-text" id="readingText"></div>
+    <div class="btn-row"><button class="btn" onclick="startSection('reading')">Answer the Questions</button></div>
+  </div>
+
+  <!-- GRAMMAR INTRO -->
+  <div class="card hidden" id="screen-grammar-intro">
+    <span class="badge">Part 3 · Grammar Focus</span>
+    <h2>The Passive Voice</h2>
+    <p>We use the <strong>passive voice</strong> when the process or the result is more important than who performs the action — perfect for describing manufacturing and design.</p>
+    <p>Structure: <em>subject + to be + past participle</em> (e.g. "The bricks <span class="gap">are produced</span> in Denmark.")</p>
+    <p>Choose the correct passive form to complete each sentence.</p>
+    <div class="btn-row"><button class="btn" onclick="startSection('grammar')">Begin</button></div>
+  </div>
+
+  <!-- DISCUSSION -->
+  <div class="card hidden" id="screen-discussion">
+    <span class="badge">Part 4 · Speaking Practice</span>
+    <h2>Talk It Through</h2>
+    <p>Speak your answers aloud — alone, with a partner, or record yourself. There are no right or wrong answers here.</p>
+    <div class="discussion-prompt"><strong>1.</strong> Did you ever build with Lego (or similar toys) as a child? What did you enjoy building most?</div>
+    <div class="discussion-prompt"><strong>2.</strong> Why do you think adults are increasingly interested in building Lego Technic supercars?</div>
+    <div class="discussion-prompt"><strong>3.</strong> Describe the step-by-step process of building something you've made — using the passive voice where you can.</div>
+    <div class="discussion-prompt"><strong>4.</strong> If you could design a Lego set of any vehicle, what would it be and why?</div>
+    <div class="btn-row"><button class="btn" onclick="goTo('results')">See My Results →</button></div>
+  </div>
+
+  <!-- QUESTION SCREEN (shared template) -->
+  <div class="card hidden" id="screen-question">
+    <span class="badge" id="qBadge">Part</span>
+    <div class="q-count" id="qCount">Question 1 of 12</div>
+    <h3 id="qText"></h3>
+    <div id="qOptions"></div>
+    <div class="feedback" id="qFeedback"></div>
+    <div class="btn-row"><button class="btn" id="nextBtn" disabled onclick="nextQuestion()">Next →</button></div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="card hidden" id="screen-results">
+    <span class="badge">Results</span>
+    <h2>Well Built!</h2>
+    <div class="results-score" id="finalScore">0 / 26</div>
+    <div class="results-msg" id="finalMsg"></div>
+    <p>You've covered essential vocabulary for describing how things are built, practised reading for detail, and reviewed the passive voice — a structure you'll hear constantly in manufacturing, engineering, and design contexts.</p>
+    <div class="btn-row"><button class="btn secondary" onclick="restart()">Restart Lesson</button></div>
+  </div>
+
+  <footer>Forbes English · Interactive Lesson · Level B2</footer>
+</div>
+
+<script>
+/* ---------------- DATA ---------------- */
+
+const readingText = `Every Lego car begins life not on a factory floor, but on a screen. Designers at the Lego Group start by studying a real vehicle in extraordinary detail — sometimes with the manufacturer's own blueprints — before any brick is chosen. For sets like the record-breaking Bugatti Chiron, engineers had to recreate a working eight-speed gearbox, a steering system, and even a W16 engine with moving pistons, using nothing but small plastic pieces.
+
+Once a digital model is approved, a physical prototype is built by hand. This version is tested repeatedly: Does the chassis stay sturdy under weight? Do the doors open smoothly? Is the model aerodynamic enough to resemble the real car's silhouette? Only after dozens of adjustments is a final instruction manual created, translated into more than twenty languages, and sent for production.
+
+Interestingly, many of the most technical car sets are designed for adults rather than children. Lego's "18+" range has turned brick-built vehicles into a serious hobby, with fans spending twenty hours or more assembling a single scale model — proof that building a car, brick by brick, never really goes out of style.`;
+
+const vocabQuestions = [
+  {q:"Before mass production begins, designers build a __________ to test how all the pieces fit together.",
+   options:["prototype","blueprint","chassis","baseplate"], correct:0,
+   fb:"A prototype is an early working model built to test a design before it's finalised."},
+  {q:"The little bumps on top of each Lego brick are called __________.",
+   options:["gears","axles","studs","hinges"], correct:2,
+   fb:"Studs are the round bumps on top of a brick that allow other bricks to click on."},
+  {q:"A car's __________ is the frame that holds the engine, wheels, and body together.",
+   options:["bumper","panel","baseplate","chassis"], correct:3,
+   fb:"The chassis is the structural frame of a vehicle."},
+  {q:"The wheels are connected to a metal __________ so that they can spin freely.",
+   options:["axle","gear","stud","bracket"], correct:0,
+   fb:"An axle is a rod that a wheel rotates around."},
+  {q:"Lego Technic sets often include tiny __________ that work together to create real mechanical movement.",
+   options:["hinges","studs","axles","gears"], correct:3,
+   fb:"Gears are toothed wheels that transmit motion between mechanical parts."},
+  {q:"Formula 1 cars are built to be extremely __________, so air flows smoothly over the body and reduces drag.",
+   options:["sturdy","symmetrical","aerodynamic","portable"], correct:2,
+   fb:"Aerodynamic describes a shape designed to move through air with minimal resistance."},
+  {q:"Every Lego set comes with a step-by-step __________ that shows exactly which piece goes where.",
+   options:["prototype","scale model","blueprint","instruction manual"], correct:3,
+   fb:"An instruction manual is the printed guide showing each building step in order."},
+  {q:"If two bricks __________, you'll hear a small click and know they are firmly connected.",
+   options:["wear out","snap into place","fall apart","come loose"], correct:1,
+   fb:"'Snap into place' means to fit together firmly, usually with a clicking sound."},
+  {q:"The finished model is a 1:8 __________ of a real Bugatti Chiron, so every detail is precisely proportioned.",
+   options:["chassis","prototype","scale model","baseplate"], correct:2,
+   fb:"A scale model is a smaller (or larger) copy built to exact, consistent proportions of the original."},
+  {q:"Despite being made of plastic, Technic models are surprisingly __________ and can support real weight.",
+   options:["fragile","aerodynamic","flexible","sturdy"], correct:3,
+   fb:"Sturdy means strongly built and not easily damaged."},
+  {q:"You always start a build on a flat __________ to keep the structure stable.",
+   options:["axle","bracket","chassis","baseplate"], correct:3,
+   fb:"A baseplate is the flat board used as the foundation of a build."},
+  {q:"Engineers created a working __________ before deciding on the final design of the toy car's suspension.",
+   options:["manual","prototype","baseplate","blueprint"], correct:1,
+   fb:"A prototype is used to test and refine a design before it's approved."}
+];
+
+const readingQuestions = [
+  {q:"According to the text, where does the design process for a Lego car actually begin?",
+   options:["On the factory floor","On a screen, studying the real vehicle","With a physical prototype","With the instruction manual"], correct:1,
+   fb:"The text states designers begin by studying a real vehicle on screen before choosing any bricks."},
+  {q:"What specific mechanical features did engineers recreate for the Bugatti Chiron set?",
+   options:["Only the exterior colour scheme","A working gearbox, steering system, and moving engine","A remote-control motor","Working headlights"], correct:1,
+   fb:"The text mentions a working eight-speed gearbox, steering system, and a W16 engine with moving pistons."},
+  {q:"What is tested during the physical prototype stage?",
+   options:["The packaging design only","Chassis sturdiness, door movement, and aerodynamic shape","The price of the set","The colour of the bricks"], correct:1,
+   fb:"The text lists chassis sturdiness, smooth door opening, and aerodynamic resemblance as tested features."},
+  {q:"What happens to the instruction manual before production?",
+   options:["It is kept in one language only","It is translated into more than twenty languages","It is removed from the box","It is replaced by a video guide"], correct:1,
+   fb:"The text says the manual is translated into more than twenty languages before production."},
+  {q:"Who is the main audience for many of the most technical Lego car sets?",
+   options:["Young children","Toy shop owners","Adults","Professional car engineers only"], correct:2,
+   fb:"The text explains that many technical car sets are designed for adults, part of the '18+' range."},
+  {q:"Roughly how long might a fan spend building a single scale model, according to the text?",
+   options:["Two hours or less","Twenty hours or more","One full week","Under thirty minutes"], correct:1,
+   fb:"The text states fans may spend twenty hours or more assembling a single scale model."}
+];
+
+const grammarQuestions = [
+  {q:"Each new set __________ by a team of professional builders before it reaches the shops.",
+   options:["designs","is designed","designed","has design"], correct:1,
+   fb:"Present simple passive: is/are + past participle. 'is designed' is correct here."},
+  {q:"Millions of bricks __________ in Lego factories every day.",
+   options:["produce","are produced","produced","is producing"], correct:1,
+   fb:"Plural subject 'bricks' needs 'are produced' (present simple passive)."},
+  {q:"The prototype __________ thoroughly before the final version is approved.",
+   options:["tests","is testing","is tested","tested"], correct:2,
+   fb:"'is tested' is the present simple passive form, matching the routine process described."},
+  {q:"In the 1970s, the first wheeled Lego elements __________ to the range.",
+   options:["were introduced","are introduced","introduced","have introduced"], correct:0,
+   fb:"Past simple passive for a completed historical event: 'were introduced'."},
+  {q:"Right now, a new supercar set __________ in secret at Lego headquarters.",
+   options:["is developed","develops","is being developed","was developed"], correct:2,
+   fb:"Present continuous passive ('is being + past participle') fits an action happening right now."},
+  {q:"The instructions __________ into more than 20 languages before release.",
+   options:["translate","are translated","is translated","translated"], correct:1,
+   fb:"Plural subject 'instructions' takes 'are translated' (present simple passive)."},
+  {q:"By the time the set launches, over a year __________ on development.",
+   options:["will have been spent","will spend","is spent","has spent"], correct:0,
+   fb:"Future perfect passive ('will have been + past participle') describes an action completed before a future point."},
+  {q:"This particular model __________ by hand over 24 hours by an expert fan.",
+   options:["builds","was built","is building","builds itself"], correct:1,
+   fb:"Past simple passive: 'was built' correctly describes a completed past action."}
+];
+
+/* ---------------- STATE ---------------- */
+let currentQueue = [];
+let currentIndex = 0;
+let currentSectionName = "";
+let score = 0;
+let totalAnswered = 0;
+const TOTAL_QUESTIONS = vocabQuestions.length + readingQuestions.length + grammarQuestions.length;
+
+/* ---------------- UTIL ---------------- */
+function shuffle(array){
+  const arr = array.slice();
+  for(let i = arr.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function goTo(screenKey){
+  document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
+  if(screenKey === 'results'){
+    showResults();
+    document.getElementById('screen-results').classList.remove('hidden');
+  } else {
+    document.getElementById('screen-' + screenKey).classList.remove('hidden');
+  }
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+document.getElementById('readingText').textContent = readingText;
+
+/* ---------------- SECTION FLOW ---------------- */
+function startSection(name){
+  currentSectionName = name;
+  currentIndex = 0;
+  if(name === 'vocab') currentQueue = vocabQuestions;
+  if(name === 'reading') currentQueue = readingQuestions;
+  if(name === 'grammar') currentQueue = grammarQuestions;
+  renderQuestion();
+  goTo('question');
+}
+
+function renderQuestion(){
+  const item = currentQueue[currentIndex];
+  const badgeMap = {vocab:"Part 1 · Vocabulary", reading:"Part 2 · Reading Comprehension", grammar:"Part 3 · Grammar Focus"};
+  document.getElementById('qBadge').textContent = badgeMap[currentSectionName];
+  document.getElementById('qCount').textContent = `Question ${currentIndex + 1} of ${currentQueue.length}`;
+  document.getElementById('qText').textContent = item.q;
+
+  const optsWithIndex = item.options.map((text, idx) => ({text, isCorrect: idx === item.correct}));
+  const shuffled = shuffle(optsWithIndex);
+
+  const optWrap = document.getElementById('qOptions');
+  optWrap.innerHTML = "";
+  shuffled.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    btn.textContent = opt.text;
+    btn.onclick = () => selectOption(btn, opt.isCorrect, item.fb, shuffled);
+    optWrap.appendChild(btn);
+  });
+
+  const fb = document.getElementById('qFeedback');
+  fb.className = 'feedback';
+  fb.textContent = '';
+  document.getElementById('nextBtn').disabled = true;
+  document.getElementById('nextBtn').textContent = (currentIndex === currentQueue.length - 1) ? "Continue →" : "Next →";
+}
+
+function selectOption(btn, isCorrect, explanation, allOptions){
+  const allBtns = document.querySelectorAll('#qOptions .option');
+  if([...allBtns].some(b => b.classList.contains('locked'))) return; // already answered
+
+  allBtns.forEach(b => b.classList.add('locked'));
+  btn.classList.add('selected');
+
+  allBtns.forEach((b, i) => {
+    const optData = allOptions[i];
+    if(optData.isCorrect) b.classList.add('correct');
+    else if(b === btn && !isCorrect) b.classList.add('incorrect');
+  });
+
+  const fb = document.getElementById('qFeedback');
+  fb.classList.add('show');
+  if(isCorrect){
+    score++;
+    fb.classList.add('correct-fb');
+    fb.textContent = "✓ Correct — " + explanation;
+  } else {
+    fb.classList.add('incorrect-fb');
+    fb.textContent = "✗ Not quite — " + explanation;
+  }
+  totalAnswered++;
+  updateScoreBar();
+  document.getElementById('nextBtn').disabled = false;
+}
+
+function nextQuestion(){
+  currentIndex++;
+  if(currentIndex < currentQueue.length){
+    renderQuestion();
+  } else {
+    if(currentSectionName === 'vocab') goTo('reading-intro');
+    else if(currentSectionName === 'reading') goTo('grammar-intro');
+    else if(currentSectionName === 'grammar') goTo('discussion');
+  }
+}
+
+function updateScoreBar(){
+  document.getElementById('scoreLabel').textContent = `Score: ${score} / ${totalAnswered}`;
+  const pct = Math.round((totalAnswered / TOTAL_QUESTIONS) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = pct + '%';
+}
+
+function showResults(){
+  document.getElementById('finalScore').textContent = `${score} / ${TOTAL_QUESTIONS}`;
+  const pct = Math.round((score / TOTAL_QUESTIONS) * 100);
+  let msg = "";
+  if(pct >= 90) msg = "Outstanding! You've mastered this building vocabulary and the passive voice.";
+  else if(pct >= 70) msg = "Great work! You have a solid grasp of the topic — review a few points and you're set.";
+  else if(pct >= 50) msg = "Good effort! A second pass through the vocabulary and grammar sections will help it stick.";
+  else msg = "Keep building! Revisit the sections above — the more you practise, the sturdier your English becomes.";
+  document.getElementById('finalMsg').textContent = msg;
+}
+
+function restart(){
+  score = 0;
+  totalAnswered = 0;
+  updateScoreBar();
+  goTo('intro');
+}
+</script>
+</body>
+</html>

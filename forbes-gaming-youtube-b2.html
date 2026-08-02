@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English — Gaming YouTuber</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   DESIGN: Retro Arcade / CRT Neon
+═══════════════════════════════════════ */
+:root {
+  --void:       #080c08;
+  --deep:       #0c110c;
+  --panel:      #111811;
+  --card:       #141c14;
+  --border:     #1e2e1e;
+  --border-hi:  #2a4a2a;
+  --neon:       #39ff14;
+  --neon-dim:   #1a8a00;
+  --neon-glow:  rgba(57,255,20,0.18);
+  --neon-pale:  rgba(57,255,20,0.07);
+  --cyan:       #00e5ff;
+  --cyan-dim:   #007a8a;
+  --magenta:    #ff2d78;
+  --magenta-dim:#8a0030;
+  --amber-g:    #ffb700;
+  --text:       #c8e8c0;
+  --text-mid:   #7aaa6a;
+  --text-dim:   #3d6030;
+  --correct:    #39ff14;
+  --wrong:      #ff2d78;
+  --correct-bg: rgba(57,255,20,0.07);
+  --wrong-bg:   rgba(255,45,120,0.07);
+  --r:          10px;
+  --r-sm:       6px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--void);
+  color: var(--text);
+  font-family: 'Barlow', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: crosshair;
+}
+
+/* Scanline overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.18) 2px,
+    rgba(0,0,0,0.18) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Grid background */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(57,255,20,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(57,255,20,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 22px 100px;
+}
+
+/* ── HEADER ── */
+.site-header {
+  padding: 44px 0 36px;
+  text-align: center;
+  position: relative;
+  margin-bottom: 40px;
+}
+
+/* Glowing horizontal rule */
+.site-header::after {
+  content: '';
+  display: block;
+  margin: 28px auto 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--neon), var(--cyan), var(--neon), transparent);
+  box-shadow: 0 0 12px var(--neon);
+}
+
+.logo-svg { display: inline-block; }
+
+.lesson-tags {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 22px 0 18px;
+}
+
+.tag {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  padding: 5px 14px;
+  border-radius: 3px;
+  border: 1px solid;
+  text-transform: uppercase;
+}
+.tag-neon    { color: var(--neon); border-color: var(--neon-dim); background: var(--neon-pale); }
+.tag-cyan    { color: var(--cyan); border-color: var(--cyan-dim); background: rgba(0,229,255,0.06); }
+.tag-magenta { color: var(--magenta); border-color: var(--magenta-dim); background: rgba(255,45,120,0.06); }
+
+.lesson-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(32px, 6vw, 56px);
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  line-height: 1.05;
+  text-transform: uppercase;
+  color: var(--text);
+}
+.lesson-title .hl {
+  color: var(--neon);
+  text-shadow: 0 0 20px var(--neon), 0 0 40px rgba(57,255,20,0.4);
+}
+
+/* ── SCORE BAR ── */
+.scorebar {
+  display: grid;
+  grid-template-columns: repeat(3,1fr) 2fr;
+  gap: 1px;
+  background: var(--border-hi);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--r);
+  overflow: hidden;
+  margin-bottom: 44px;
+  box-shadow: 0 0 20px rgba(57,255,20,0.08);
+}
+
+.sc {
+  background: var(--panel);
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.sc-lbl {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.sc-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--text);
+}
+.sc-val.neon { color: var(--neon); text-shadow: 0 0 10px var(--neon); }
+
+.sc-bar-cell { background: var(--panel); padding: 16px 18px; }
+.sc-bar-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.track {
+  height: 6px;
+  background: var(--border);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--neon), var(--cyan));
+  border-radius: 99px;
+  width: 0%;
+  transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: 0 0 8px var(--neon);
+}
+
+/* ── ACTIVITY HEADER ── */
+.act-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 26px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.act-head::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 0;
+  width: 60px; height: 2px;
+  background: var(--neon);
+  box-shadow: 0 0 8px var(--neon);
+}
+
+.act-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 64px;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--neon);
+  opacity: 0.12;
+  letter-spacing: -0.04em;
+  min-width: 64px;
+  text-shadow: 0 0 30px var(--neon);
+}
+.act-info h2 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 5px;
+}
+.act-info p { font-size: 13px; color: var(--text-mid); line-height: 1.6; }
+
+/* ── QUESTION CARD ── */
+.qcard {
+  background: var(--card);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--r);
+  padding: 30px;
+  display: none;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(57,255,20,0.05);
+  animation: appear 0.3s ease;
+}
+.qcard.on { display: block; }
+
+@keyframes appear {
+  from { opacity:0; transform:translateY(12px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+.qnum {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.qnum-pip {
+  width: 6px; height: 6px;
+  background: var(--neon);
+  border-radius: 1px;
+  box-shadow: 0 0 6px var(--neon);
+  transform: rotate(45deg);
+}
+.qnum-text {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.qstem {
+  font-family: 'Barlow', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.65;
+  color: var(--text);
+  margin-bottom: 24px;
+}
+
+/* ── MC OPTIONS ── */
+.opts { display: flex; flex-direction: column; gap: 9px; }
+
+.opt {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 13px 16px;
+  background: var(--deep);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  font-family: 'Barlow', sans-serif;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--text);
+  text-align: left;
+  width: 100%;
+  transition: all 0.12s;
+}
+.opt:hover:not(:disabled) {
+  border-color: var(--neon-dim);
+  background: var(--neon-pale);
+  transform: translateX(5px);
+}
+.opt-k {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  min-width: 18px;
+  padding-top: 1px;
+  flex-shrink: 0;
+}
+.opt.ok  { border-color: var(--correct); background: var(--correct-bg); }
+.opt.ok  .opt-k { color: var(--correct); }
+.opt.bad { border-color: var(--wrong); background: var(--wrong-bg); }
+.opt.bad .opt-k { color: var(--wrong); }
+.opt:disabled { cursor: default; }
+
+/* ── FEEDBACK ── */
+.fb {
+  display: none;
+  margin-top: 18px;
+  padding: 16px 20px;
+  border-radius: var(--r-sm);
+  border-left: 3px solid;
+  animation: appear 0.2s ease;
+}
+.fb.show { display: block; }
+.fb.fb-ok  { border-color: var(--correct); background: var(--correct-bg); }
+.fb.fb-bad { border-color: var(--wrong);   background: var(--wrong-bg); }
+.fb.fb-mid { border-color: var(--amber-g); background: rgba(255,183,0,0.07); }
+
+.fb-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.fb-ok  .fb-title { color: var(--correct); text-shadow: 0 0 8px var(--neon); }
+.fb-bad .fb-title { color: var(--wrong); }
+.fb-mid .fb-title { color: var(--amber-g); }
+
+.fb-body { font-size: 13px; line-height: 1.65; color: var(--text-mid); }
+
+/* ── BUTTONS ── */
+.btn-row { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+
+.btn {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 11px 26px;
+  border-radius: var(--r-sm);
+  border: none;
+  cursor: pointer;
+  transition: all 0.13s;
+}
+.btn-neon {
+  background: var(--neon);
+  color: var(--void);
+  box-shadow: 0 0 16px rgba(57,255,20,0.3);
+}
+.btn-neon:hover { background: #55ff35; box-shadow: 0 0 28px rgba(57,255,20,0.5); transform: translateY(-1px); }
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--border-hi);
+  color: var(--text-dim);
+}
+.btn-ghost:hover { border-color: var(--neon-dim); color: var(--neon); }
+.btn-check {
+  background: var(--cyan);
+  color: var(--void);
+  font-weight: 800;
+  box-shadow: 0 0 14px rgba(0,229,255,0.25);
+}
+.btn-check:hover { background: #33eeff; box-shadow: 0 0 24px rgba(0,229,255,0.4); transform: translateY(-1px); }
+.btn:disabled { opacity: 0.3; cursor: default; transform: none !important; box-shadow: none !important; }
+
+/* ── WORD BANK ── */
+.wbank {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  background: var(--deep);
+  border: 1px dashed var(--border-hi);
+  border-radius: var(--r-sm);
+}
+.wb-lbl {
+  width: 100%;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 4px;
+}
+.chip {
+  padding: 6px 14px;
+  background: var(--panel);
+  border: 1px solid var(--border-hi);
+  border-radius: 3px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.12s;
+  user-select: none;
+}
+.chip:hover:not(.chip-used):not(.chip-sel) { border-color: var(--neon-dim); color: var(--neon); }
+.chip-sel { border-color: var(--neon); background: var(--neon); color: var(--void); box-shadow: 0 0 12px var(--neon); }
+.chip-used { opacity: 0.2; pointer-events: none; }
+
+.fitb-line {
+  font-family: 'Barlow', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 2.2;
+  color: var(--text);
+}
+.blank {
+  display: inline-block;
+  min-width: 120px;
+  border-bottom: 2px solid var(--neon);
+  background: transparent;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--neon);
+  text-align: center;
+  padding: 0 10px 2px;
+  cursor: pointer;
+  transition: all 0.12s;
+  vertical-align: middle;
+  text-shadow: 0 0 8px var(--neon);
+}
+.blank-empty { color: var(--text-dim); border-color: var(--border-hi); text-shadow: none; }
+.blank-ok    { border-color: var(--correct); color: var(--correct); text-shadow: 0 0 8px var(--neon); }
+.blank-bad   { border-color: var(--wrong); color: var(--wrong); text-shadow: none; }
+
+/* ── REORDER ── */
+.ro-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+
+.ro-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--deep);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--r-sm);
+  cursor: grab;
+  user-select: none;
+  font-family: 'Barlow', sans-serif;
+  font-size: 13.5px;
+  color: var(--text);
+  transition: all 0.12s;
+}
+.ro-item:hover { border-color: rgba(57,255,20,0.35); }
+.ro-item.ro-over { border-color: var(--cyan); background: rgba(0,229,255,0.05); }
+.ro-item.dragging { opacity: 0.3; }
+.ro-handle { color: var(--text-dim); font-size: 16px; flex-shrink: 0; }
+.ro-item.ro-ok  { border-color: var(--correct); background: var(--correct-bg); }
+.ro-item.ro-bad { border-color: var(--wrong); background: var(--wrong-bg); }
+
+/* ── DIVIDER ── */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 50px 0;
+}
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-hi);
+}
+.div-ico {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--neon-dim);
+  letter-spacing: 0.15em;
+}
+
+/* ── FINAL ── */
+#final {
+  display: none;
+  text-align: center;
+  padding: 60px 36px;
+  background: var(--card);
+  border: 1px solid var(--border-hi);
+  border-radius: var(--r);
+  box-shadow: 0 0 40px rgba(57,255,20,0.08), 0 20px 60px rgba(0,0,0,0.5);
+  animation: appear 0.5s ease;
+}
+.final-ico { font-size: 72px; margin-bottom: 20px; }
+.final-pct {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 100px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--neon);
+  text-shadow: 0 0 40px var(--neon), 0 0 80px rgba(57,255,20,0.3);
+  margin-bottom: 8px;
+}
+.final-msg {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 14px;
+}
+.final-sub {
+  font-size: 14px;
+  color: var(--text-mid);
+  line-height: 1.75;
+  max-width: 500px;
+  margin: 0 auto 32px;
+}
+.final-row {
+  display: inline-flex;
+  gap: 0;
+  border: 1px solid var(--border-hi);
+  border-radius: var(--r-sm);
+  overflow: hidden;
+  margin-bottom: 32px;
+}
+.fbox {
+  padding: 14px 28px;
+  background: var(--panel);
+  border-right: 1px solid var(--border-hi);
+}
+.fbox:last-child { border-right: none; }
+.fbox-lbl {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 4px;
+}
+.fbox-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--text);
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ═══ HEADER ═══ -->
+<header class="site-header">
+  <svg class="logo-svg" viewBox="0 0 260 86" width="220" xmlns="http://www.w3.org/2000/svg">
+    <text x="130" y="40" text-anchor="middle"
+          font-family="'Barlow Condensed',Arial,sans-serif"
+          font-size="44" font-weight="900" letter-spacing="3"
+          fill="#c8e8c0">Forbes</text>
+    <rect x="28" y="50" width="204" height="1.5" rx="1" fill="#39ff14"
+          style="filter:drop-shadow(0 0 4px #39ff14)"/>
+    <text x="130" y="72" text-anchor="middle"
+          font-family="'Barlow Condensed',Arial,sans-serif"
+          font-size="14" font-weight="900" letter-spacing="11"
+          fill="#39ff14">ENGLISH</text>
+  </svg>
+
+  <div class="lesson-tags">
+    <span class="tag tag-neon">B2 Level</span>
+    <span class="tag tag-cyan">3 Activities</span>
+    <span class="tag tag-magenta">16 Questions</span>
+  </div>
+
+  <h1 class="lesson-title">Gaming<br><span class="hl">YouTubers</span></h1>
+</header>
+
+<!-- ═══ SCOREBAR ═══ -->
+<div class="scorebar">
+  <div class="sc">
+    <span class="sc-lbl">Score</span>
+    <span class="sc-val neon" id="sc-pct">0%</span>
+  </div>
+  <div class="sc">
+    <span class="sc-lbl">Correct</span>
+    <span class="sc-val" id="sc-cor">0</span>
+  </div>
+  <div class="sc">
+    <span class="sc-lbl">Done</span>
+    <span class="sc-val" id="sc-done">0/16</span>
+  </div>
+  <div class="sc sc-bar-cell">
+    <div class="sc-bar-label" id="sc-lbl">0 of 16 complete</div>
+    <div class="track"><div class="fill" id="sc-fill"></div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     ACT 1 — MULTIPLE CHOICE
+═══════════════════════════════════════ -->
+<div id="act1">
+  <div class="act-head">
+    <span class="act-num">01</span>
+    <div class="act-info">
+      <h2>Multiple Choice — Gaming Channel Knowledge</h2>
+      <p>Select the best answer. All options are plausible — read each question carefully and use your knowledge of gaming culture and YouTube.</p>
+    </div>
+  </div>
+
+  <!-- Q1 -->
+  <div class="qcard on" id="q1">
+    <div class="qnum"><span class="qnum-pip"></span><span class="qnum-text">Act 1 · Q1 of 5</span></div>
+    <p class="qstem">A young gaming YouTuber plays a popular video game in their videos. The game's publisher sends them a copyright claim on their content. What does this most likely mean?</p>
+    <div class="opts">
+      <button class="opt" data-ok="0" onclick="mc(this,'q1')"><span class="opt-k">A</span>The creator's channel will be permanently deleted unless they remove all gaming content immediately</button>
+      <button class="opt" data-ok="0" onclick="mc(this,'q1')"><span class="opt-k">B</span>The creator must obtain a professional licence and pay a monthly fee to continue using the footage</button>
+      <button class="opt" data-ok="1" onclick="mc(this,'q1')"><span class="opt-k">C</span>The publisher may claim the advertising revenue from those videos rather than the creator receiving it</button>
+      <button class="opt" data-ok="0" onclick="mc(this,'q1')"><span class="opt-k">D</span>The creator is automatically banned from monetising any gaming-related content for twelve months</button>
+    </div>
+    <div class="fb" id="fb-q1"></div>
+    <div class="btn-row"><button class="btn btn-neon" id="n-q1" style="display:none" onclick="adv('q1','q2')">Next ▶</button></div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="qcard" id="q2">
+    <div class="qnum"><span class="qnum-pip"></span><span class="qnum-text">Act 1 · Q2 of 5</span></div>
+    <p class="qstem">Which type of gaming content is most often described as <strong>"evergreen"</strong> — meaning it continues attracting views long after it is published?</p>
+    <div class="opts">
+      <button class="opt" data-ok="0" onclick="mc(this,'q2')"><span class="opt-k">A</span>Live-streamed reactions to major gaming events broadcast in real time to a global audience</button>
+      <button class="opt" data-ok="0" onclick="mc(this,'q2')"><span class="opt-k">B</span>News videos discussing recently announced games or newly released gaming hardware updates</button>
+      <button class="opt" data-ok="0" onclick="mc(this,'q2')"><span class="opt-k">C</span>Highlight clips from popular online tournaments that trend heavily for a week after the event</button>
+      <button class="opt" data-ok="1" onclick="mc(this,'q2')"><span class="opt-k">D</span>Tutorial and how-to videos explaining mechanics, secrets, or strategies in well-established games</button>
+    </div>
+    <div class="fb" id="fb-q2"></div>
+    <div class="btn-row"><button class="btn btn-neon" id="n-q2" style="display:none" onclick="adv('q2','q3')">Next ▶</button></div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="qcard" id="q3">
+    <div class="qnum"><span class="qnum-pip"></span><span class="qnum-text">Act 1 · Q3 of 5</span></div>
+    <p class="qstem">A gaming creator's channel focuses only on Minecraft. Compared to a general gaming channel, what is the main <strong>advantage</strong> of this focused approach?</p>
+    <div class="opts">
+      <button class="opt" data-ok="0" onclick="mc(this,'q3')"><span class="opt-k">A</span>The creator will always earn more advertising revenue because Minecraft has a larger audience overall</button>
+      <button class="opt" data-ok="1" onclick="mc(this,'q3')"><span class="opt-k">B</span>The channel builds a more loyal and engaged community of viewers who share a specific interest</button>
+      <button class="opt" data-ok="0" onclick="mc(this,'q3')"><span class="opt-k">C</span>The algorithm will always recommend the channel first because single-game channels are prioritised</button>
+      <button class="opt" data-ok="0" onclick="mc(this,'q3')"><span class="opt-k">D</span>The creator needs to produce fewer videos since the same audience watches every upload automatically</button>
+    </div>
+    <div class="fb" id="fb-q3"></div>
+    <div class="btn-row"><button class="btn btn-neon" id="n-q3" style="display:none" onclick="adv('q3','q4')">Next ▶</button></div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="qcard" id="q4">
+    <div class="qnum"><span class="qnum-pip"></span><span class="qnum-text">Act 1 · Q4 of 5</span></div>
+    <p class="qstem">A kids' gaming YouTuber wants to use background music in their videos. Which option is the <strong>safest</strong> choice to avoid copyright strikes?</p>
+    <div class="opts">
+      <button class="opt" data-ok="0" onclick="mc(this,'q4')"><span class="opt-k">A</span>Downloading popular songs from streaming platforms and reducing the volume to under fifty percent</button>
+      <button class="opt" data-ok="0" onclick="mc(this,'q4')"><span class="opt-k">B</span>Using chart music briefly for under thirty seconds, as short clips are exempt from copyright rules</button>
+      <button class="opt" data-ok="1" onclick="mc(this,'q4')"><span class="opt-k">C</span>Using tracks from YouTube's Audio Library or other sources that offer royalty-free licences</button>
+      <button class="opt" data-ok="0" onclick="mc(this,'q4')"><span class="opt-k">D</span>Crediting the original artist in the video description, which removes the need for any formal licence</button>
+    </div>
+    <div class="fb" id="fb-q4"></div>
+    <div class="btn-row"><button class="btn btn-neon" id="n-q4" style="display:none" onclick="adv('q4','q5')">Next ▶</button></div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="qcard" id="q5">
+    <div class="qnum"><span class="qnum-pip"></span><span class="qnum-text">Act 1 · Q5 of 5</span></div>
+    <p class="qstem">In gaming YouTube culture, what does the term <strong>"let's play"</strong> refer to?</p>
+    <div class="opts">
+      <button class="opt" data-ok="0" onclick="mc(this,'q5')"><span class="opt-k">A</span>A competitive online multiplayer session recorded for the purpose of ranking analysis and coaching</button>
+      <button class="opt" data-ok="0" onclick="mc(this,'q5')"><span class="opt-k">B</span>A short edited highlights reel that captures only the most exciting moments of a gaming session</button>
+      <button class="opt" data-ok="0" onclick="mc(this,'q5')"><span class="opt-k">C</span>A live-streamed gaming event where two creators compete against each other in front of an audience</button>
+      <button class="opt" data-ok="1" onclick="mc(this,'q5')"><span class="opt-k">D</span>A recorded playthrough of a game, typically with live commentary from the creator throughout</button>
+    </div>
+    <div class="fb" id="fb-q5"></div>
+    <div class="btn-row"><button class="btn btn-neon" id="n-q5" style="display:none" onclick="reveal('act2','dv1')">Next Activity ▶</button></div>
+  </div>
+</div>
+
+<div class="divider" id="dv1" style="display:none"><span class="div-ico">// STAGE 02 //</span></div>
+
+<!-- ═══════════════════════════════════════
+     ACT 2 — FILL IN THE BLANK
+═══════════════════════════════════════ -->
+<div id="act2" style="display:none">
+  <div class="act-head">
+    <span class="act-num">02</span>
+    <div class="act-info">
+      <h2>Fill in the Blank — Gaming Vocabulary</h2>
+      <p>Click a word from the word bank to select it, then click the blank to place it. Each word is used once only.</p>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="qcard on" id="q6">
+    <div class="qnum"><span class="qnum-pip"></span><span class="qnum-text">Act 2 · Q1 of 6</span></div>
+    <p class="qstem">Choose the correct gaming vocabulary word.</p>
+    <div class="wbank" id="wb6">
+      <div class="wb-lbl">Word Bank</div>
+      <span class="chip" data-w="speedrun" onclick="sel(this,'q6')">speedrun</span>
+      <span class="chip" data-w="walkthrough" onclick="sel(this,'q6')">walkthrough</span>
+      <span class="chip" data-w="livestream" onclick="sel(this,'q6')">livestream</span>
+      <span class="chip" data-w="commentary" onclick="sel(this,'q6')">commentary</span>
+    </div>
+    <p class="fitb-line">A <span class="blank blank-empty" id="bl6" onclick="place('bl6','q6','walkthrough')">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> is a video that guides viewers step by step through a game, showing how to complete levels, find secrets, and defeat bosses.</p>
+    <div class="fb" id="fb-q6"></div>
+    <div class="btn-row"><button class="btn btn-neon" id="n-q6" style="display:none" onclick="adv('q6','q7')">Next ▶</button></div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="qcard" id="q7">
+    <div class="qnum"><span class="qnum-pip"></span><span class="qnum-text">Act 2 · Q2 of 6</span></div>
+    <p class="qstem">Choose the correct gaming vocabulary word.</p>
+    <div class="wbank" id="wb7">
+      <div class="wb-lbl">Word Bank</div>
+      <span class="chip" data-w="speedrun" onclick="sel(this,'q7')">speedrun</span>
+      <span class="chip" data-w="rage-quit" onclick="sel(this,'q7')">rage-quit</span>
+      <span class="chip" data-w="grind" onclick="sel(this,'q7')">grind</span>
+      <span class="chip" data-w="commentary" onclick="sel(this,'q7')">commentary</span>
+    </div>
+    <p class="fitb-line">When a creator attempts a <span class="blank blank-empty" id="bl7" onclick="place('bl7','q7','speedrun')">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>, they try to complete a game as quickly as possible, often using advanced techniques or discovered glitches to break the game's intended design.</p>
+    <div class="fb" id="fb-q7"></div>
+    <div class="btn-row"><button class="btn btn-neon" id="n-q7" style="display:none" onclick="adv('q7','q8')">Next ▶</button></div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="qcard" id="q8">
+    <div class="qnum"><span class="qnum-pip"></span><span class="qnum-text">Act 2 · Q3 of 6</span></div>
+    <p class="qstem">Choose the correct gaming vocabulary word.</p>
+    <div class="wbank" id="wb8">
+      <div class="wb-lbl">Word Bank</div>
+      <span class="chip" data-w="commentary" onclick="sel(this,'q8')">commentary</span>
+      <span class="chip" data-w="grind" onclick="sel(this,'q8')">grind</span>
+      <span class="chip" data-w="meta" onclick="sel(this,'q8')">meta</span>
+      <span class="chip" data-w="loot" onclick="sel(this,'q8')">loot</span>
+    </div>
+    <p class="fitb-line">A creator's spoken <span class="blank blank-empty" id="bl8" onclick="place('bl8','q8','commentary')">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> — their live reactions, jokes, and explanations while playing — is often what distinguishes a successful gaming channel from a simple screen recording.</p>
+    <div class="fb" id="fb-q8"></div>
+    <div class="btn-row"><button class="btn btn-neon" id="n-q8" style="display:none" onclick="adv('q8','q9')">Next ▶</button></div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="qcard" id="q9">
+    <div class="qnum"><span class="qnum-pip"></span><span class="qnum-text">Act 2 · Q4 of 6</span></div>
+    <p class="qstem">Choose the correct gaming vocabulary word.</p>
+    <div class="wbank" id="wb9">
+      <div class="wb-lbl">Word Bank</div>
+      <span class="chip" data-w="meta" onclick="sel(this,'q9')">meta</span>
+      <span class="chip" data-w="grind" onclick="sel(this,'q9')">grind</span>
+      <span class="chip" data-w="loot" onclick="sel(this,'q9')">loot</span>
+      <span class="chip" data-w="respawn" onclick="sel(this,'q9')">respawn</span>
+    </div>
+    <p class="fitb-line">In gaming, the <span class="blank blank-empty" id="bl9" onclick="place('bl9','q9','meta')">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> refers to the most effective strategies, characters, or equipment currently used by competitive players — content about the meta always attracts serious gamers looking for an advantage.</p>
+    <div class="fb" id="fb-q9"></div>
+    <div class="btn-row"><button class="btn btn-neon" id="n-q9" style="display:none" onclick="adv('q9','q10')">Next ▶</button></div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="qcard" id="q10">
+    <div class="qnum"><span class="qnum-pip"></span><span class="qnum-text">Act 2 · Q5 of 6</span></div>
+    <p class="qstem">Choose the correct gaming vocabulary word.</p>
+    <div class="wbank" id="wb10">
+      <div class="wb-lbl">Word Bank</div>
+      <span class="chip" data-w="loot" onclick="sel(this,'q10')">loot</span>
+      <span class="chip" data-w="grind" onclick="sel(this,'q10')">grind</span>
+      <span class="chip" data-w="respawn" onclick="sel(this,'q10')">respawn</span>
+      <span class="chip" data-w="patch" onclick="sel(this,'q10')">patch</span>
+    </div>
+    <p class="fitb-line">Many popular YouTubers react to a new game <span class="blank blank-empty" id="bl10" onclick="place('bl10','q10','patch')">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> — an update that fixes bugs and changes character or weapon balancing — as these videos attract players who want to know how the update affects their gameplay.</p>
+    <div class="fb" id="fb-q10"></div>
+    <div class="btn-row"><button class="btn btn-neon" id="n-q10" style="display:none" onclick="adv('q10','q11')">Next ▶</button></div>
+  </div>
+
+  <!-- Q11 -->
+  <div class="qcard" id="q11">
+    <div class="qnum"><span class="qnum-pip"></span><span class="qnum-text">Act 2 · Q6 of 6</span></div>
+    <p class="qstem">Choose the correct gaming vocabulary word.</p>
+    <div class="wbank" id="wb11">
+      <div class="wb-lbl">Word Bank</div>
+      <span class="chip" data-w="loot" onclick="sel(this,'q11')">loot</span>
+      <span class="chip" data-w="grind" onclick="sel(this,'q11')">grind</span>
+      <span class="chip" data-w="respawn" onclick="sel(this,'q11')">respawn</span>
+      <span class="chip" data-w="clip" onclick="sel(this,'q11')">clip</span>
+    </div>
+    <p class="fitb-line">To <span class="blank blank-empty" id="bl11" onclick="place('bl11','q11','grind')">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> in a game means to repeat the same actions over and over — such as completing missions for experience points — and creators who document this process often attract viewers who want to progress faster without doing it themselves.</p>
+    <div class="fb" id="fb-q11"></div>
+    <div class="btn-row"><button class="btn btn-neon" id="n-q11" style="display:none" onclick="reveal('act3','dv2')">Next Activity ▶</button></div>
+  </div>
+</div>
+
+<div class="divider" id="dv2" style="display:none"><span class="div-ico">// STAGE 03 //</span></div>
+
+<!-- ═══════════════════════════════════════
+     ACT 3 — SENTENCE REORDER
+═══════════════════════════════════════ -->
+<div id="act3" style="display:none">
+  <div class="act-head">
+    <span class="act-num">03</span>
+    <div class="act-info">
+      <h2>Sentence Reordering — Gaming Strategy</h2>
+      <p>Drag the steps into the correct logical order. Think about gaming content workflows and best practices for young creators.</p>
+    </div>
+  </div>
+
+  <!-- Q12 -->
+  <div class="qcard on" id="q12">
+    <div class="qnum"><span class="qnum-pip"></span><span class="qnum-text">Act 3 · Q1 of 5</span></div>
+    <p class="qstem">Arrange these steps for <strong>producing a gaming walkthrough video</strong> in the correct order.</p>
+    <ul class="ro-list" id="rl12" data-order="Choose a game and identify which part or level to cover|Play through the section to understand it fully before recording|Record the gameplay with microphone commentary enabled|Edit the footage to remove mistakes and add on-screen text|Export and upload with an optimised title and thumbnail">
+      <li class="ro-item" draggable="true"><span class="ro-handle">⠿</span>Record the gameplay with microphone commentary enabled</li>
+      <li class="ro-item" draggable="true"><span class="ro-handle">⠿</span>Choose a game and identify which part or level to cover</li>
+      <li class="ro-item" draggable="true"><span class="ro-handle">⠿</span>Export and upload with an optimised title and thumbnail</li>
+      <li class="ro-item" draggable="true"><span class="ro-handle">⠿</span>Play through the section to understand it fully before recording</li>
+      <li class="ro-item" draggable="true"><span class="ro-handle">⠿</span>Edit the footage to remove mistakes and add on-screen text</li>
+    </ul>
+    <div class="fb" id="fb-q12"></div>
+    <div class="btn-row">
+      <button class="btn btn-check" id="chk12" onclick="chkRo('q12')">Check Order</button>
+      <button class="btn btn-neon" id="n-q12" style="display:none" onclick="adv('q12','q13')">Next ▶</button>
+    </div>
+  </div>
+
+  <!-- Q13 -->
+  <div class="qcard" id="q13">
+    <div class="qnum"><span class="qnum-pip"></span><span class="qnum-text">Act 3 · Q2 of 5</span></div>
+    <p class="qstem">A young gaming creator wants to grow their channel by <strong>reacting to a new game release</strong>. Put these steps in order.</p>
+    <ul class="ro-list" id="rl13" data-order="Monitor gaming news to identify highly anticipated upcoming releases|Prepare talking points and questions to discuss during the reaction|Record your genuine first reaction while playing or watching the trailer|Edit the video to highlight the most engaging and emotional moments|Publish immediately after the release to capitalise on search interest">
+      <li class="ro-item" draggable="true"><span class="ro-handle">⠿</span>Prepare talking points and questions to discuss during the reaction</li>
+      <li class="ro-item" draggable="true"><span class="ro-handle">⠿</span>Publish immediately after the release to capitalise on search interest</li>
+      <li class="ro-item" draggable="true"><span class="ro-handle">⠿</span>Monitor gaming news to identify highly anticipated upcoming releases</li>
+      <li class="ro-item" draggable="true"><span class="ro-handle">⠿</span>Edit the video to highlight the most engaging and emotional moments</li>
+      <li class="ro-item" draggable="true"><span class="ro-handle">⠿</span>Record your genuine first reaction while playing or watching the trailer</li>
+    </ul>
+    <div class="fb" id="fb-q13"></div>
+    <div class="btn-row">
+      <button class="btn btn-check" id="chk13" onclick="chkRo('q13')">Check Order</button>
+      <button class="btn btn-neon" id="n-q13" style="display:none" onclick="adv('q13','q14')">Next ▶</button>
+    </div>
+  </div>
+
+  <!-- Q14 -->
+  <div class="qcard" id="q14">
+    <div class="qnum"><span class="qnum-pip"></span><span class="qnum-text">Act 3 · Q3 of 5</span></div>
+    <p class="qstem">Arrange these steps for <strong>setting up a gaming YouTube channel</strong> from scratch in the correct order.</p>
+    <ul class="ro-list" id="rl14" data-order="Decide on the type of gaming content and target audience age group|Create a channel name, logo, and banner that reflect the gaming theme|Set up recording equipment: capture card, microphone, and editing software|Film a short channel trailer introducing yourself and your content style|Publish your first three videos and promote them in gaming communities">
+      <li class="ro-item" draggable="true"><span class="ro-handle">⠿</span>Film a short channel trailer introducing yourself and your content style</li>
+      <li class="ro-item" draggable="true"><span class="ro-handle">⠿</span>Set up recording equipment: capture card, microphone, and editing software</li>
+      <li class="ro-item" draggable="true"><span class="ro-handle">⠿</span>Create a channel name, logo, and banner that reflect the gaming theme</li>
+      <li class="ro-item" draggable="true"><span class="ro-handle">⠿</span>Publish your first three videos and promote them in gaming communities</li>
+      <li class="ro-item" draggable="true"><span class="ro-handle">⠿</span>Decide on the type of gaming content and target audience age group</li>
+    </ul>
+    <div class="fb" id="fb-q14"></div>
+    <div class="btn-row">
+      <button class="btn btn-check" id="chk14" onclick="chkRo('q14')">Check Order</button>
+      <button class="btn btn-neon" id="n-q14" style="display:none" onclick="adv('q14','q15')">Next ▶</button>
+    </div>
+  </div>
+
+  <!-- Q15 -->
+  <div class="qcard" id="q15">
+    <div class="qnum"><span class="qnum-pip"></span><span class="qnum-text">Act 3 · Q4 of 5</span></div>
+    <p class="qstem">A gaming YouTuber wants to start <strong>live streaming</strong> for the first time. Put these preparation steps in the correct order.</p>
+    <ul class="ro-list" id="rl15" data-order="Test your internet connection speed and ensure it is stable enough for streaming|Set up streaming software such as OBS and configure the stream settings|Do a short private test stream to check audio, video, and overlay quality|Announce the upcoming stream to your audience in advance on social media|Go live at the scheduled time and engage with viewers in the chat actively">
+      <li class="ro-item" draggable="true"><span class="ro-handle">⠿</span>Go live at the scheduled time and engage with viewers in the chat actively</li>
+      <li class="ro-item" draggable="true"><span class="ro-handle">⠿</span>Set up streaming software such as OBS and configure the stream settings</li>
+      <li class="ro-item" draggable="true"><span class="ro-handle">⠿</span>Test your internet connection speed and ensure it is stable enough for streaming</li>
+      <li class="ro-item" draggable="true"><span class="ro-handle">⠿</span>Announce the upcoming stream to your audience in advance on social media</li>
+      <li class="ro-item" draggable="true"><span class="ro-handle">⠿</span>Do a short private test stream to check audio, video, and overlay quality</li>
+    </ul>
+    <div class="fb" id="fb-q15"></div>
+    <div class="btn-row">
+      <button class="btn btn-check" id="chk15" onclick="chkRo('q15')">Check Order</button>
+      <button class="btn btn-neon" id="n-q15" style="display:none" onclick="adv('q15','q16')">Next ▶</button>
+    </div>
+  </div>
+
+  <!-- Q16 -->
+  <div class="qcard" id="q16">
+    <div class="qnum"><span class="qnum-pip"></span><span class="qnum-text">Act 3 · Q5 of 5</span></div>
+    <p class="qstem">A young creator wants to handle a <strong>negative comment or toxic viewer</strong> professionally. Arrange these steps in the most appropriate order.</p>
+    <ul class="ro-list" id="rl16" data-order="Read the comment carefully and decide if it is constructive criticism or purely toxic|If constructive, note the feedback and consider how to improve future videos|If purely toxic, do not respond emotionally or engage with the commenter|Use YouTube's tools to hide or report the comment to protect the community|Refocus on creating positive content rather than dwelling on the negativity">
+      <li class="ro-item" draggable="true"><span class="ro-handle">⠿</span>Use YouTube's tools to hide or report the comment to protect the community</li>
+      <li class="ro-item" draggable="true"><span class="ro-handle">⠿</span>Read the comment carefully and decide if it is constructive criticism or purely toxic</li>
+      <li class="ro-item" draggable="true"><span class="ro-handle">⠿</span>Refocus on creating positive content rather than dwelling on the negativity</li>
+      <li class="ro-item" draggable="true"><span class="ro-handle">⠿</span>If constructive, note the feedback and consider how to improve future videos</li>
+      <li class="ro-item" draggable="true"><span class="ro-handle">⠿</span>If purely toxic, do not respond emotionally or engage with the commenter</li>
+    </ul>
+    <div class="fb" id="fb-q16"></div>
+    <div class="btn-row">
+      <button class="btn btn-check" id="chk16" onclick="chkRo('q16')">Check Order</button>
+      <button class="btn btn-neon" id="n-q16" style="display:none" onclick="showFinal()">See Results ▶</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ FINAL ═══ -->
+<div id="final">
+  <div class="final-ico" id="f-ico">🎮</div>
+  <div class="final-pct" id="f-pct">—</div>
+  <div class="final-msg" id="f-msg">GG!</div>
+  <p class="final-sub" id="f-sub"></p>
+  <div class="final-row">
+    <div class="fbox"><div class="fbox-lbl">Correct</div><div class="fbox-val" id="f-cor">—</div></div>
+    <div class="fbox"><div class="fbox-lbl">Total</div><div class="fbox-val">16</div></div>
+    <div class="fbox"><div class="fbox-lbl">Score</div><div class="fbox-val" id="f-pct2">—</div></div>
+  </div>
+  <button class="btn btn-neon" onclick="location.reload()" style="font-size:15px;padding:13px 40px;letter-spacing:0.12em">↺ PLAY AGAIN</button>
+</div>
+
+</div><!-- /wrap -->
+
+<script>
+// ── State ──────────────────────────────────────────
+const TOTAL = 16;
+let answered = 0, corr = 0;
+
+function upd() {
+  const p = Math.round((corr/TOTAL)*100);
+  document.getElementById('sc-pct').textContent  = p + '%';
+  document.getElementById('sc-cor').textContent  = corr;
+  document.getElementById('sc-done').textContent = answered + '/16';
+  document.getElementById('sc-fill').style.width = Math.round((answered/TOTAL)*100) + '%';
+  document.getElementById('sc-lbl').textContent  = answered + ' of 16 complete';
+}
+
+// ── MC data ─────────────────────────────────────────
+const MCF = {
+  q1:{ok:"Correct. A copyright claim means the rights holder — in this case the game publisher — asserts ownership over the content. On YouTube, this typically redirects the video's ad revenue to the claimant rather than deleting the video. The creator's channel is not banned.",
+      no:"Not quite. A copyright claim does not delete your channel or automatically ban monetisation. The most common outcome is that the publisher claims the advertising revenue from those videos instead of the creator."},
+  q2:{ok:"Correct. Tutorial and how-to videos are the classic example of evergreen content — people search for game guides months or years after a game's release, so this type of content accumulates views steadily over a long period.",
+      no:"Not quite. Livestreams, news videos, and tournament clips are all time-sensitive content — they spike quickly but their relevance fades. Tutorials and guides remain useful long after publication, making them evergreen."},
+  q3:{ok:"Correct. A focused niche channel builds a more loyal community because subscribers know exactly what kind of content to expect. This leads to higher engagement rates, which the algorithm rewards more than raw subscriber numbers alone.",
+      no:"Not quite. Revenue and algorithmic priority are not automatically higher for niche channels, and loyal viewers still need regular uploads. The true advantage is community loyalty and higher engagement from a clearly defined audience."},
+  q4:{ok:"Correct. YouTube's Audio Library provides tracks that are free to use in monetised videos. Royalty-free music services also offer properly licenced tracks. Lowering volume, using short clips, or crediting an artist do NOT remove copyright obligations.",
+      no:"Not quite. Reducing volume, using only 30 seconds, or adding a credit in the description does NOT grant you a licence to use copyrighted music. The only safe options are tracks with royalty-free licences, such as those in YouTube's own Audio Library."},
+  q5:{ok:"Correct. A 'let's play' is a recorded playthrough where the creator's live commentary — reactions, jokes, and personal observations — is the core of the content. It differs from a tutorial (which focuses on instruction) and from a clip or highlight reel.",
+      no:"Not quite. A 'let's play' is not competitive, not a highlights reel, and not a live stream in its traditional form. It is a recorded playthrough with continuous spoken commentary, which is what makes the creator's personality the main attraction."},
+};
+
+// ── FITB data ──────────────────────────────────────
+const FITBF = {
+  q6:{w:'walkthrough', ok:"Correct! A 'walkthrough' is a step-by-step guide through a game. It's one of the most searched gaming content types because players return to it whenever they get stuck.",
+      no:"The correct answer is 'walkthrough' — a step-by-step guide through a game. The clue is 'shows how to complete levels, find secrets, and defeat bosses'."},
+  q7:{w:'speedrun', ok:"Correct! A 'speedrun' is a playthrough where the goal is to complete the game as fast as possible, often exploiting glitches. Speedrun content is hugely popular on YouTube and Twitch.",
+      no:"The correct answer is 'speedrun' — completing a game as fast as possible. The clue is 'as quickly as possible' and 'using glitches to break the game's intended design'."},
+  q8:{w:'commentary', ok:"Correct! 'Commentary' refers to the creator speaking live while playing — their personality, humour, and reactions are often more important than the gameplay itself for building a loyal audience.",
+      no:"The correct answer is 'commentary' — the creator's spoken reactions while playing. The clue is 'spoken... live reactions, jokes, and explanations'."},
+  q9:{w:'meta', ok:"Correct! 'Meta' (short for 'most effective tactics available') refers to the optimal strategies in a game at any given time. Meta videos attract competitive players who want to improve.",
+      no:"The correct answer is 'meta' — the most effective current strategies. The clue is 'most effective strategies, characters, or equipment currently used by competitive players'."},
+  q10:{w:'patch', ok:"Correct! A 'patch' is an update that changes game balance — fixing bugs, adjusting character strength, or altering weapons. Patch reaction videos always spike in views after major updates.",
+       no:"The correct answer is 'patch' — a game update that fixes bugs and changes balance. The clue is 'fixes bugs and changes character or weapon balancing'."},
+  q11:{w:'grind', ok:"Correct! To 'grind' means to repeat actions (like completing missions) for slow rewards. Many viewers watch grind content to learn efficient methods or simply enjoy the experience vicariously.",
+       no:"The correct answer is 'grind' — repeating the same actions for gradual rewards. The clue is 'repeat the same actions over and over... for experience points'."},
+};
+
+// ── RO data ────────────────────────────────────────
+const ROF = {
+  q12:"A walkthrough requires understanding before recording — you can't guide others through something you haven't learned first. Then record, edit, and finally publish with optimised metadata.",
+  q13:"Reaction content works best when you monitor in advance, prepare questions, record genuinely, edit for impact, and then publish quickly to capture search volume before it fades.",
+  q14:"Channel setup follows: concept → branding → equipment → trailer → first videos. Each step builds on the previous — you can't record without equipment, and you can't promote before publishing.",
+  q15:"Streaming setup follows a logical technical sequence: check your connection first (the foundation), then configure software, test privately, announce publicly, and finally go live.",
+  q16:"Handling negativity professionally means: assess first (is it useful?), use it if constructive, disengage if toxic, report/hide it, then move forward. Reacting emotionally first is the most common mistake.",
+};
+
+// ── MC handler ─────────────────────────────────────
+function mc(btn, qid) {
+  const card = document.getElementById(qid);
+  if (card.querySelector('button[disabled]')) return;
+  card.querySelectorAll('button.opt').forEach(b => b.disabled = true);
+  const isOk = btn.dataset.ok === '1';
+  btn.classList.add(isOk ? 'ok' : 'bad');
+  if (!isOk) card.querySelectorAll('button.opt').forEach(b => { if (b.dataset.ok==='1') b.classList.add('ok'); });
+  answered++; if (isOk) corr++;
+  upd();
+  const d = MCF[qid];
+  const fb = document.getElementById('fb-'+qid);
+  fb.className = 'fb show ' + (isOk?'fb-ok':'fb-bad');
+  fb.innerHTML = `<div class="fb-title">${isOk?'✓ CORRECT':'✗ INCORRECT'}</div><div class="fb-body">${isOk?d.ok:d.no}</div>`;
+  document.getElementById('n-'+qid).style.display = 'inline-block';
+}
+
+// ── FITB ───────────────────────────────────────────
+let active = {};
+function sel(el, qid) {
+  document.getElementById('wb'+qid.replace('q','')).querySelectorAll('.chip').forEach(c=>c.classList.remove('chip-sel'));
+  el.classList.add('chip-sel');
+  active[qid] = el;
+}
+function place(blId, qid, correctW) {
+  const bl = document.getElementById(blId);
+  if (bl.dataset.locked) return;
+  const chip = active[qid];
+  if (!chip) return;
+  const w = chip.dataset.w;
+  bl.textContent = w;
+  bl.dataset.locked = '1';
+  chip.classList.remove('chip-sel');
+  chip.classList.add('chip-used');
+  active[qid] = null;
+  const wbNum = qid.replace('q','');
+  document.getElementById('wb'+wbNum).querySelectorAll('.chip').forEach(c=>{ c.style.pointerEvents='none'; c.classList.remove('chip-sel'); });
+  const isOk = w === correctW;
+  bl.classList.remove('blank-empty');
+  bl.classList.add(isOk ? 'blank-ok' : 'blank-bad');
+  if (!isOk) bl.textContent = w + ' ✗';
+  answered++; if (isOk) corr++;
+  upd();
+  const d = FITBF[qid];
+  const fb = document.getElementById('fb-'+qid);
+  fb.className = 'fb show ' + (isOk?'fb-ok':'fb-bad');
+  fb.innerHTML = `<div class="fb-title">${isOk?'✓ CORRECT':'✗ INCORRECT — answer: ' + correctW}</div><div class="fb-body">${isOk?d.ok:d.no}</div>`;
+  document.getElementById('n-'+qid).style.display = 'inline-block';
+}
+
+// ── Drag reorder ───────────────────────────────────
+let grabbed = null;
+document.addEventListener('dragstart', e => {
+  const it = e.target.closest('.ro-item');
+  if (!it) return;
+  grabbed = it; it.classList.add('dragging');
+});
+document.addEventListener('dragend', () => {
+  document.querySelectorAll('.ro-item').forEach(i=>i.classList.remove('dragging','ro-over'));
+  grabbed = null;
+});
+document.addEventListener('dragover', e => {
+  e.preventDefault();
+  const it = e.target.closest('.ro-item');
+  if (!it || it===grabbed) return;
+  document.querySelectorAll('.ro-item').forEach(i=>i.classList.remove('ro-over'));
+  it.classList.add('ro-over');
+});
+document.addEventListener('drop', e => {
+  e.preventDefault();
+  const tgt = e.target.closest('.ro-item');
+  if (!tgt || !grabbed || tgt===grabbed || tgt.parentNode!==grabbed.parentNode) return;
+  const items = [...tgt.parentNode.querySelectorAll('.ro-item')];
+  const gi=items.indexOf(grabbed), ti=items.indexOf(tgt);
+  gi<ti ? tgt.parentNode.insertBefore(grabbed,tgt.nextSibling) : tgt.parentNode.insertBefore(grabbed,tgt);
+});
+
+function chkRo(qid) {
+  const list = document.getElementById('rl'+qid.replace('q',''));
+  const correct = list.dataset.order.split('|');
+  const items = [...list.querySelectorAll('.ro-item')];
+  let allOk = true;
+  items.forEach((it,i)=>{
+    const txt = it.textContent.replace('⠿','').trim();
+    const ok = txt===correct[i];
+    it.classList.add(ok?'ro-ok':'ro-bad');
+    if(!ok) allOk=false;
+    it.draggable=false; it.style.cursor='default';
+  });
+  answered++; if (allOk) corr++;
+  upd();
+  const fb = document.getElementById('fb-'+qid);
+  fb.className = 'fb show ' + (allOk?'fb-ok':'fb-mid');
+  let html = `<div class="fb-title">${allOk?'✓ PERFECT ORDER':'~ NOT QUITE RIGHT'}</div><div class="fb-body">${ROF[qid]}`;
+  if (!allOk) html += '<br><br><strong style="color:var(--text)">Correct order:</strong><ol style="margin:8px 0 0 18px;line-height:2;color:var(--text-mid)">' + correct.map(s=>`<li>${s}</li>`).join('') + '</ol>';
+  html += '</div>';
+  fb.innerHTML = html;
+  document.getElementById('chk'+qid.replace('q','')).style.display='none';
+  document.getElementById('n-'+qid).style.display='inline-block';
+}
+
+// ── Nav ────────────────────────────────────────────
+function adv(cur, nxt) {
+  document.getElementById(cur).classList.remove('on');
+  const n = document.getElementById(nxt);
+  n.classList.add('on');
+  n.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function reveal(secId, divId) {
+  document.getElementById(divId).style.display='flex';
+  document.getElementById(secId).style.display='block';
+  document.getElementById(secId).scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ── Final ──────────────────────────────────────────
+function showFinal() {
+  const fs = document.getElementById('final');
+  fs.style.display='block';
+  fs.scrollIntoView({behavior:'smooth',block:'start'});
+  const p = Math.round((corr/TOTAL)*100);
+  document.getElementById('f-pct').textContent  = p+'%';
+  document.getElementById('f-pct2').textContent = p+'%';
+  document.getElementById('f-cor').textContent  = corr;
+  let ico,msg,sub;
+  if(p>=90){ico='🏆';msg='LEGENDARY!';sub=`You scored ${corr}/16 — an outstanding result. Your knowledge of gaming YouTube culture, vocabulary, and creator strategy is at an excellent B2 level. You're ready to discuss this world with confidence in English!`;}
+  else if(p>=75){ico='🎮';msg='GG — GREAT GAME!';sub=`You scored ${corr}/16. Strong work! You understand the core concepts well. Review the questions you missed and try again to reach legendary status.`;}
+  else if(p>=55){ico='📹';msg='RESPAWNING…';sub=`You scored ${corr}/16. Good effort! Go back through the feedback for each question to strengthen the areas where you lost points, then try again.`;}
+  else{ico='🎯';msg='KEEP GRINDING';sub=`You scored ${corr}/16. Don't give up — even the best gamers had to practise. Read all the feedback carefully and have another run at it.`;}
+  document.getElementById('f-ico').textContent=ico;
+  document.getElementById('f-msg').textContent=msg;
+  document.getElementById('f-sub').textContent=sub;
+}
+
+upd();
+</script>
+</body>
+</html>

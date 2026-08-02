@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English | Dailies Review: Giving Feedback Diplomatically</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c1f26;
+    --paper:#faf7f2;
+    --card:#ffffff;
+    --accent:#c1502e;
+    --accent-dark:#96391f;
+    --accent-soft:#f4d9cd;
+    --correct:#2f7a4f;
+    --correct-bg:#e6f3ea;
+    --wrong:#b23a3a;
+    --wrong-bg:#fbe9e9;
+    --muted:#6b6f76;
+    --line:#e6e1d8;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Inter',sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:32px 16px 80px;
+  }
+  .wrap{width:100%;max-width:720px;}
+  header{display:flex;align-items:center;gap:14px;margin-bottom:18px;}
+  header .logo{width:44px;height:44px;flex-shrink:0;}
+  header h1{font-family:'Fraunces',serif;font-size:1.15rem;font-weight:700;margin:0;line-height:1.2;}
+  header p{margin:2px 0 0;font-size:0.85rem;color:var(--muted);}
+
+  .progress-track{height:6px;background:var(--line);border-radius:4px;overflow:hidden;margin-bottom:24px;}
+  .progress-fill{height:100%;background:var(--accent);width:0%;transition:width .35s ease;}
+
+  .score-bar{
+    position:sticky;top:0;
+    background:var(--paper);
+    padding:8px 0 14px;
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:0.85rem;color:var(--muted);
+    z-index:5;
+  }
+  .score-bar span.count{font-weight:600;color:var(--ink);}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:28px;
+    margin-bottom:18px;
+    box-shadow:0 2px 10px rgba(28,31,38,0.04);
+  }
+
+  .scene-tag{
+    display:inline-block;
+    font-size:0.72rem;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    background:var(--accent-soft);
+    color:var(--accent-dark);
+    padding:4px 10px;
+    border-radius:20px;
+    margin-bottom:14px;
+    font-weight:600;
+  }
+
+  .scene-text{
+    font-size:0.98rem;
+    line-height:1.6;
+    margin-bottom:18px;
+  }
+  .scene-text .speaker{font-weight:700;color:var(--accent-dark);}
+
+  .prompt{font-weight:600;margin-bottom:14px;font-size:1rem;}
+
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .option{
+    text-align:left;
+    border:1.5px solid var(--line);
+    background:var(--paper);
+    border-radius:10px;
+    padding:13px 16px;
+    font-size:0.94rem;
+    line-height:1.5;
+    cursor:pointer;
+    transition:border-color .15s, background .15s;
+    font-family:'Inter',sans-serif;
+    color:var(--ink);
+  }
+  .option:hover:not(:disabled){border-color:var(--accent);}
+  .option:disabled{cursor:default;}
+  .option.correct{border-color:var(--correct);background:var(--correct-bg);}
+  .option.wrong{border-color:var(--wrong);background:var(--wrong-bg);}
+
+  .feedback{
+    margin-top:16px;
+    padding:14px 16px;
+    border-radius:10px;
+    font-size:0.9rem;
+    line-height:1.55;
+    display:none;
+  }
+  .feedback.show{display:block;}
+  .feedback.correct-fb{background:var(--correct-bg);color:#1f5735;}
+  .feedback.wrong-fb{background:var(--wrong-bg);color:#7a2727;}
+  .feedback b{display:block;margin-bottom:4px;}
+
+  .vocab-note{
+    margin-top:12px;
+    font-size:0.83rem;
+    color:var(--muted);
+    border-top:1px dashed var(--line);
+    padding-top:10px;
+  }
+
+  .next-btn{
+    margin-top:20px;
+    width:100%;
+    padding:13px;
+    border:none;
+    border-radius:10px;
+    background:var(--accent);
+    color:#fff;
+    font-weight:600;
+    font-size:0.95rem;
+    cursor:pointer;
+    font-family:'Inter',sans-serif;
+    opacity:0.4;
+    pointer-events:none;
+    transition:opacity .15s;
+  }
+  .next-btn.enabled{opacity:1;pointer-events:auto;}
+  .next-btn:hover.enabled{background:var(--accent-dark);}
+
+  .results{text-align:center;padding:40px 28px;}
+  .results h2{font-family:'Fraunces',serif;font-size:1.6rem;margin-bottom:6px;}
+  .results .score-big{font-size:2.6rem;font-weight:700;color:var(--accent);margin:14px 0 4px;font-family:'Fraunces',serif;}
+  .results p.msg{color:var(--muted);font-size:0.95rem;max-width:480px;margin:0 auto 20px;line-height:1.55;}
+  .results .toolkit{
+    text-align:left;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:18px 20px;
+    margin-top:20px;
+    font-size:0.88rem;
+    line-height:1.7;
+  }
+  .results .toolkit h3{font-size:0.9rem;margin:0 0 8px;font-family:'Inter',sans-serif;}
+  .restart-btn{
+    margin-top:22px;
+    padding:11px 22px;
+    border-radius:10px;
+    border:1.5px solid var(--accent);
+    background:transparent;
+    color:var(--accent-dark);
+    font-weight:600;
+    cursor:pointer;
+    font-family:'Inter',sans-serif;
+  }
+  .hidden{display:none;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <svg class="logo" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="22" cy="22" r="21" fill="#c1502e"/>
+      <text x="22" y="29" font-family="Fraunces, serif" font-size="19" font-weight="700" fill="#faf7f2" text-anchor="middle">FE</text>
+    </svg>
+    <div>
+      <h1>Dailies Review: Giving Feedback Diplomatically</h1>
+      <p>Forbes English &middot; Animation Production &middot; B1&rarr;B2</p>
+    </div>
+  </header>
+
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="score-bar">
+    <span id="questionLabel">Question 1 of 10</span>
+    <span>Score: <span class="count" id="scoreLabel">0</span>/10</span>
+  </div>
+
+  <div id="quizArea"></div>
+
+  <div class="card results hidden" id="resultsCard">
+    <h2>Review complete</h2>
+    <div class="score-big" id="finalScore">0/10</div>
+    <p class="msg" id="finalMsg"></p>
+    <div class="toolkit">
+      <h3>Your feedback toolkit — phrases to reuse in real reviews</h3>
+      <p>
+        &middot; "One thing worth revisiting is the timing on shot 12."<br>
+        &middot; "It might work better if the weight settled a beat earlier."<br>
+        &middot; "I really like the read here — could we push the anticipation a touch more?"<br>
+        &middot; "Talk me through your thinking on this choice."<br>
+        &middot; "Overall this is close — a couple of notes and we're there."
+      </p>
+    </div>
+    <button class="restart-btn" onclick="restartQuiz()">Restart lesson</button>
+  </div>
+
+</div>
+
+<script>
+const scenario = [
+  {
+    tag: "Scene 1 · The Dailies Room",
+    scene: "<span class='speaker'>Context:</span> You're a production manager reviewing shots with the animation lead, Marco. A character's walk cycle feels stiff and needs another pass, but the team is already tired and slightly behind schedule.",
+    prompt: "How do you open the note on the walk cycle?",
+    options: [
+      { text: "The timing on the walk cycle feels a little off across the whole shot — let's aim to have a fully retimed version ready by end of day.", correct:false, fb:"Sounds confident and professional, but it jumps straight to an instruction and a deadline without naming what's actually wrong — Marco doesn't yet know what to fix." },
+      { text: "One thing worth revisiting is the weight in the hips — right now the contact poses read a little stiff.", correct:true, fb:"This diagnoses the specific problem (weight in the hips) before asking for a fix — that's what makes a note actionable rather than just a demand." },
+      { text: "The walk cycle needs another pass — the arm swing looks slightly exaggerated in the last few frames.", correct:false, fb:"Polite and warm, but 'a bit more polish' gives Marco nothing concrete to act on — vague praise-wrapped feedback like this often gets misread as 'no real changes needed.'" }
+    ],
+    vocab: "Vocabulary: <b>walk cycle</b> (a looped animation of a character walking), <b>read</b> (how a shot appears/comes across to the viewer), <b>weight</b> (the sense of physical mass in movement)."
+  },
+  {
+    tag: "Scene 1 · The Dailies Room",
+    scene: "<span class='speaker'>Marco:</span> \"Honestly, we're already tight on this sequence. Another pass could push us a day.\"",
+    prompt: "You want to acknowledge the pressure but still ask for the fix. What do you say?",
+    options: [
+      { text: "I completely understand the pressure you're under, but this pass really has to happen no matter what it costs us.", correct:false, fb:"'I understand' sounds like it's acknowledging Marco, but 'no matter what it costs' dismisses the constraint he just raised rather than actually engaging with it." },
+      { text: "I hear you on the schedule — let's fold this into tomorrow's pass instead of adding a full day.", correct:true, fb:"This genuinely engages with the constraint and offers a concrete lower-cost path forward, instead of just repeating the request or jumping to the worst-case fix." },
+      { text: "That's completely fair, so honestly let's just go ahead and push the whole sequence deadline back a full day.", correct:false, fb:"Sounds collaborative, but it concedes the full extra day immediately, without first trying to solve the problem within the existing schedule — a costlier fix than necessary." }
+    ],
+    vocab: "Functional phrase: <b>\"I hear you on...\"</b> is a natural way to acknowledge a concern before redirecting."
+  },
+  {
+    tag: "Scene 2 · Client Call",
+    scene: "<span class='speaker'>Context:</span> A client asks why a sequence is two days behind the original schedule.",
+    prompt: "Which response manages the client's expectations most professionally?",
+    options: [
+      { text: "We ran into a rigging issue that took longer than expected — we're back on track, updated schedule coming today.", correct:true, fb:"Names a specific, credible cause, confirms current status, and commits to a concrete next step with a timeframe — this is what reassures a client." },
+      { text: "There were a few unexpected technical hiccups on our end this week, but honestly I really wouldn't worry too much about it.", correct:false, fb:"Sounds calm and confident, but 'technical hiccups' is vague and 'I wouldn't worry about it' tells the client how to feel instead of giving them information to judge for themselves." },
+      { text: "The delay came from a rigging issue on the lead character — these things do happen on complex builds.", correct:false, fb:"Gives a real cause, which is good, but stops there — it explains the past without confirming current status or the next step, leaving the client unsure where things stand now." }
+    ],
+    vocab: "Vocabulary: <b>rigging</b> (building the digital skeleton/controls that let animators move a character), <b>on track</b> (progressing as planned)."
+  },
+  {
+    tag: "Scene 2 · Client Call",
+    scene: "<span class='speaker'>Client:</span> \"We were told this wouldn't happen again after last time.\"",
+    prompt: "How do you respond to push back diplomatically without over-promising?",
+    options: [
+      { text: "That's a fair concern — this was a different issue, and here's specifically what we're doing to prevent a repeat.", correct:true, fb:"Validates the concern, distinguishes this issue from the last one, and follows with concrete prevention — specific without promising something you can't guarantee." },
+      { text: "I completely understand your frustration about this, and I can personally assure you it absolutely will not happen again.", correct:false, fb:"Sounds reassuring in the moment, but 'absolutely won't happen again' is a guarantee no PM can actually make about a creative production — it can damage trust further if anything else goes wrong." },
+      { text: "That's fair, though honestly these kinds of technical issues are always hard to predict in a production like this.", correct:false, fb:"Validates the concern, which is good, but 'hard to predict' quietly shifts responsibility away from the studio instead of showing what you're actually doing about it." }
+    ],
+    vocab: "Functional phrase: <b>\"That's a fair concern...\"</b> validates the other person before you redirect the conversation."
+  },
+  {
+    tag: "Scene 3 · Internal Budget Meeting",
+    scene: "<span class='speaker'>Context:</span> You need to ask your studio head for two extra freelance animators to hit a deadline.",
+    prompt: "Which framing makes the strongest case?",
+    options: [
+      { text: "I'd really like to bring on two freelancers for three weeks so we can keep this sequence fully on schedule.", correct:false, fb:"Clear and reasonable, but it's a request with no cost-benefit reasoning behind it — at budget-approval level, decision-makers want to see the trade-off, not just the ask." },
+      { text: "Bringing on two freelancers for three weeks runs about [X], but it protects the delivery date and avoids bigger costs later.", correct:true, fb:"This names the cost and pairs it with the trade-off it protects against — exactly the reasoning a studio head needs to approve a budget request quickly." },
+      { text: "We could genuinely use two more freelancers this month, otherwise I think we're going to miss the final deadline.", correct:false, fb:"Direct and honest, but 'otherwise we'll miss the deadline' frames the request as pressure rather than a costed proposal — less persuasive in a budget conversation." }
+    ],
+    vocab: "Vocabulary: <b>overtime</b>, <b>trade-off</b>, <b>freelancer</b>, <b>delivery date</b>."
+  },
+  {
+    tag: "Scene 3 · Internal Budget Meeting",
+    scene: "<span class='speaker'>Studio Head:</span> \"Can we do it with one freelancer instead of two?\"",
+    prompt: "How do you negotiate here, staying professional but holding your ground?",
+    options: [
+      { text: "One freelancer should honestly be enough for this — I think we can definitely make that work for us.", correct:false, fb:"Agreeable and confident-sounding, but it commits to the compromise without naming any concrete consequence — if the timeline does slip later, you've given away your leverage." },
+      { text: "One freelancer would stretch the timeline by about a week — if that's acceptable, we can absolutely try it.", correct:true, fb:"States the specific consequence of the compromise, then hands the decision back — this is how you negotiate without either digging in or caving." },
+      { text: "It's possible with just one, though I'd want to flag that it may possibly affect the overall shot quality.", correct:false, fb:"Raises a real concern, but 'may affect quality somewhat' is too vague to act on — a studio head can't weigh a risk that isn't quantified or specific." }
+    ],
+    vocab: "Negotiation phrase: state the concrete consequence of a compromise, then hand the decision back."
+  },
+  {
+    tag: "Scene 4 · Cross-Cultural Team Check-in",
+    scene: "<span class='speaker'>Context:</span> You're managing a distributed team across three time zones. A team member in another country has missed two check-ins.",
+    prompt: "How do you raise this without sounding accusatory?",
+    options: [
+      { text: "I noticed you've missed a couple of check-ins recently — is everything doing okay on your end these days?", correct:false, fb:"Warm and well-intentioned, but it shifts the conversation toward the person's personal wellbeing rather than the practical scheduling issue — better suited to a closer relationship than a working check-in." },
+      { text: "I noticed the last two check-ins didn't happen — is the time slot still working, or should we find something better?", correct:true, fb:"Assumes good intent, stays focused on the practical issue (the time slot), and offers a concrete fix — ideal tone for managing a distributed team." },
+      { text: "We've now missed the last two scheduled check-ins in a row — should we look at moving to a completely different time slot?", correct:false, fb:"Practical and reasonable, but 'we've missed' quietly makes it collective when only one person missed them, which can blur the actual issue and make the fix less targeted." }
+    ],
+    vocab: "Vocabulary: <b>check-in</b> (a short status update meeting), <b>distributed team</b> (a team working across different locations/time zones)."
+  },
+  {
+    tag: "Scene 5 · Interview for an EP Role",
+    scene: "<span class='speaker'>Interviewer:</span> \"Tell me about a time you had to manage a difficult stakeholder.\"",
+    prompt: "Which answer structure is strongest for a leadership interview?",
+    options: [
+      { text: "On [project], we had a fairly difficult client who wanted a lot of last-minute changes, which was honestly really stressful, but we somehow got through it okay.", correct:false, fb:"Sounds like a genuine, specific story, but it stops at 'we got through it fine' — there's no clear action you took or measurable result, which is what interviewers are listening for." },
+      { text: "On [project], the client wanted major changes late in production. I proposed a phased revision plan that protected the deadline, and we delivered on time.", correct:true, fb:"This follows situation, action, result — the concrete plan and the on-time outcome are exactly what a PM/EP interviewer needs to evaluate your leadership." },
+      { text: "I managed a very demanding client on [project] by staying calm, communicating clearly, and making sure the whole team stayed aligned throughout the process.", correct:false, fb:"Confident and specific-sounding with the project name, but 'staying calm and communicating clearly' describes a trait, not an action — there's still no concrete plan or result." }
+    ],
+    vocab: "Interview technique: Situation &rarr; Action &rarr; Result. Always land on a measurable or concrete outcome."
+  },
+  {
+    tag: "Scene 6 · Presenting to Studio Leadership",
+    scene: "<span class='speaker'>Context:</span> You're presenting the quarter's production status to senior leadership, including one sequence that is at risk.",
+    prompt: "How do you introduce the at-risk item without causing alarm or hiding the issue?",
+    options: [
+      { text: "The slate is progressing pretty well overall this quarter, though the chase scene might possibly need a little extra attention going forward.", correct:false, fb:"Calm and measured in tone, but 'may need some extra attention' softens a real risk to the point where leadership may not register it as something requiring a decision from them." },
+      { text: "Most of the slate is on track. The chase scene is currently at risk — here's the plan to bring it back on schedule.", correct:true, fb:"Leads with the overall picture, uses the clear status flag 'at risk' rather than a euphemism, and immediately pairs it with a plan — this is what leadership needs to trust your report." },
+      { text: "We're keeping a close eye on the chase scene, but everything else remains on schedule exactly as planned.", correct:false, fb:"Reassuring in tone, but 'keeping an eye on' doesn't clearly communicate that the sequence is genuinely at risk, and there's no plan attached — leadership is left without the full picture." }
+    ],
+    vocab: "Vocabulary: <b>at risk</b> (a status flag for something that may miss its target), <b>slate</b> (the full list of projects/sequences in production)."
+  },
+  {
+    tag: "Scene 6 · Presenting to Studio Leadership",
+    scene: "<span class='speaker'>Leadership:</span> \"What do you need from us to fix it?\"",
+    prompt: "What's the strongest closing response to end the presentation?",
+    options: [
+      { text: "If we could get a bit more support from the team this week, that would really help us stay on schedule.", correct:false, fb:"Polite and reasonable-sounding, but 'a bit more support' names neither a quantity nor a deadline, so leadership can't actually act on it — a specific ask closes a presentation better." },
+      { text: "Sign-off on two extra freelance days by Friday would let us absorb the delay without moving the final deadline.", correct:true, fb:"Names a specific number, a deadline, and the outcome it protects — this precision is what makes a closing ask sound confident and executive-level rather than tentative." },
+      { text: "We'd sincerely appreciate any additional resources the studio might be able to provide before the end of this week.", correct:false, fb:"Sounds professional and grateful in tone, but 'any additional resources' leaves the actual decision entirely to leadership instead of proposing a specific, actionable solution." }
+    ],
+    vocab: "Closing technique: end asks with a specific number, a deadline, and the outcome it protects."
+  }
+];
+
+let current = 0;
+let score = 0;
+let answered = false;
+
+const quizArea = document.getElementById('quizArea');
+const progressFill = document.getElementById('progressFill');
+const questionLabel = document.getElementById('questionLabel');
+const scoreLabel = document.getElementById('scoreLabel');
+const resultsCard = document.getElementById('resultsCard');
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function renderQuestion(){
+  answered = false;
+  const q = scenario[current];
+  const shuffledOptions = shuffle(q.options);
+
+  questionLabel.textContent = "Question " + (current+1) + " of " + scenario.length;
+  scoreLabel.textContent = score;
+  progressFill.style.width = ((current)/scenario.length*100) + "%";
+
+  let html = '<div class="card">';
+  html += '<span class="scene-tag">' + q.tag + '</span>';
+  html += '<div class="scene-text">' + q.scene + '</div>';
+  html += '<div class="prompt">' + q.prompt + '</div>';
+  html += '<div class="options" id="optionsWrap">';
+  shuffledOptions.forEach((opt, idx) => {
+    html += '<button class="option" data-correct="' + opt.correct + '" data-fb="' + encodeURIComponent(opt.fb) + '" onclick="selectOption(this)">' + opt.text + '</button>';
+  });
+  html += '</div>';
+  html += '<div class="feedback" id="feedbackBox"></div>';
+  html += '<div class="vocab-note">' + q.vocab + '</div>';
+  html += '<button class="next-btn" id="nextBtn" onclick="nextQuestion()">' + (current === scenario.length-1 ? 'See results' : 'Next') + '</button>';
+  html += '</div>';
+
+  quizArea.innerHTML = html;
+}
+
+function selectOption(btn){
+  if(answered) return;
+  answered = true;
+  const isCorrect = btn.getAttribute('data-correct') === 'true';
+  const fb = decodeURIComponent(btn.getAttribute('data-fb'));
+
+  document.querySelectorAll('#optionsWrap .option').forEach(o => {
+    o.disabled = true;
+    if(o.getAttribute('data-correct') === 'true'){
+      o.classList.add('correct');
+    } else if(o === btn){
+      o.classList.add('wrong');
+    }
+  });
+
+  const feedbackBox = document.getElementById('feedbackBox');
+  feedbackBox.className = 'feedback show ' + (isCorrect ? 'correct-fb' : 'wrong-fb');
+  feedbackBox.innerHTML = '<b>' + (isCorrect ? 'Good choice' : 'Not quite') + '</b>' + fb;
+
+  if(isCorrect){
+    score++;
+    scoreLabel.textContent = score;
+  }
+
+  document.getElementById('nextBtn').classList.add('enabled');
+}
+
+function nextQuestion(){
+  if(!answered) return;
+  current++;
+  if(current >= scenario.length){
+    showResults();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showResults(){
+  progressFill.style.width = "100%";
+  quizArea.innerHTML = '';
+  resultsCard.classList.remove('hidden');
+  document.getElementById('finalScore').textContent = score + "/" + scenario.length;
+
+  let msg;
+  if(score >= 9){
+    msg = "Excellent — you're already choosing the diplomatic, structured language that PM/EP roles run on. Keep building fluency with real meeting practice.";
+  } else if(score >= 6){
+    msg = "Solid instincts. A few of your choices sounded professional but were missing something concrete — specificity, a real trade-off, or a clear next step. Review the feedback above.";
+  } else {
+    msg = "Good first pass. Re-read the feedback for each question closely — the pattern to notice is: acknowledge, be specific, propose a concrete next step, and avoid vague reassurance.";
+  }
+  document.getElementById('finalMsg').textContent = msg;
+}
+
+function restartQuiz(){
+  current = 0;
+  score = 0;
+  resultsCard.classList.add('hidden');
+  renderQuestion();
+}
+
+renderQuestion();
+</script>
+</body>
+</html>

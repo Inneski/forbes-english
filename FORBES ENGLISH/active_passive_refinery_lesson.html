@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Active & Passive Voice — Refinery Deputy Lead</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f1117;
+    --bg2: #161b24;
+    --bg3: #1e2533;
+    --border: rgba(255,255,255,0.08);
+    --border-strong: rgba(255,255,255,0.15);
+    --text: #e8eaf0;
+    --text-muted: #7b8399;
+    --text-dim: #4a5168;
+    --green: #22c98a;
+    --green-dim: rgba(34,201,138,0.12);
+    --green-border: rgba(34,201,138,0.3);
+    --blue: #4d9fff;
+    --blue-dim: rgba(77,159,255,0.1);
+    --blue-border: rgba(77,159,255,0.3);
+    --amber: #f5a623;
+    --amber-dim: rgba(245,166,35,0.1);
+    --red: #ff5e5e;
+    --red-dim: rgba(255,94,94,0.1);
+    --font: 'IBM Plex Sans', sans-serif;
+    --mono: 'IBM Plex Mono', monospace;
+  }
+
+  html { background: var(--bg); color: var(--text); font-family: var(--font); }
+  body { min-height: 100vh; }
+
+  /* LAYOUT */
+  .shell { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem 6rem; }
+
+  /* HEADER */
+  .site-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 0 2rem; border-bottom: 1px solid var(--border);
+    margin-bottom: 2.5rem;
+  }
+  .site-logo { font-family: var(--mono); font-size: 12px; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; }
+  .site-tag { font-size: 11px; font-family: var(--mono); color: var(--green); background: var(--green-dim); border: 1px solid var(--green-border); padding: 3px 10px; border-radius: 3px; }
+
+  /* LESSON TITLE BLOCK */
+  .lesson-title-block { margin-bottom: 2.5rem; }
+  .lesson-eyebrow { font-family: var(--mono); font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 12px; }
+  .lesson-h1 { font-size: 36px; font-weight: 300; color: var(--text); line-height: 1.2; margin-bottom: 10px; }
+  .lesson-h1 strong { font-weight: 500; color: #fff; }
+  .lesson-desc { font-size: 15px; color: var(--text-muted); line-height: 1.7; max-width: 560px; }
+
+  /* PROGRESS */
+  .progress-wrap { margin-bottom: 1.75rem; }
+  .progress-labels { display: flex; gap: 4px; margin-bottom: 8px; }
+  .plabel { flex: 1; font-size: 11px; font-family: var(--mono); color: var(--text-dim); text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .plabel.cur { color: var(--green); }
+  .plabel.done { color: var(--blue); }
+  .progress-track { display: flex; gap: 4px; }
+  .pbar { flex: 1; height: 2px; background: var(--bg3); border-radius: 1px; cursor: pointer; transition: background 0.3s; }
+  .pbar.cur { background: var(--green); }
+  .pbar.done { background: var(--blue); opacity: 0.6; }
+
+  /* NAV TABS */
+  .tab-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
+  .tab { font-family: var(--mono); font-size: 12px; padding: 6px 14px; border-radius: 4px; border: 1px solid transparent; color: var(--text-muted); background: none; cursor: pointer; transition: all 0.2s; letter-spacing: 0.04em; }
+  .tab:hover { color: var(--text); background: var(--bg3); }
+  .tab.on { color: var(--green); border-color: var(--green-border); background: var(--green-dim); }
+
+  /* SECTIONS */
+  .sec { display: none; animation: fadeIn 0.2s ease; }
+  .sec.on { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* CARDS */
+  .card { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem 1.5rem; margin-bottom: 1rem; }
+  .card.green-accent { border-color: var(--green-border); }
+  .card.blue-accent { border-color: var(--blue-border); }
+
+  /* TWO COL */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+  @media (max-width: 580px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* CALLOUTS */
+  .callout { border-left: 3px solid var(--amber); background: var(--amber-dim); border-radius: 0 6px 6px 0; padding: 12px 16px; margin-bottom: 1rem; }
+  .callout p { font-size: 13px; color: #c8a96e; line-height: 1.7; }
+  .callout p strong { color: var(--amber); font-weight: 500; }
+  .callout.green { border-color: var(--green); background: var(--green-dim); }
+  .callout.green p { color: #7dd9b4; }
+  .callout.green p strong { color: var(--green); }
+  .callout.blue { border-color: var(--blue); background: var(--blue-dim); }
+  .callout.blue p { color: #8dbfff; }
+  .callout.blue p strong { color: var(--blue); }
+
+  /* SECTION LABEL */
+  .slabel { font-family: var(--mono); font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
+
+  /* BADGE */
+  .badge { display: inline-block; font-family: var(--mono); font-size: 11px; padding: 2px 9px; border-radius: 3px; margin-bottom: 10px; letter-spacing: 0.05em; }
+  .badge.act { background: var(--green-dim); color: var(--green); border: 1px solid var(--green-border); }
+  .badge.pas { background: var(--blue-dim); color: var(--blue); border: 1px solid var(--blue-border); }
+  .badge.warn { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(245,166,35,0.3); }
+
+  /* SENTENCE BOXES */
+  .sbox { padding: 12px 16px; border-radius: 6px; margin-bottom: 8px; font-size: 14px; line-height: 1.7; }
+  .sbox .slbl2 { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.6; margin-bottom: 5px; }
+  .sbox.act { background: var(--green-dim); border-left: 3px solid var(--green); color: #9ef0cf; }
+  .sbox.pas { background: var(--blue-dim); border-left: 3px solid var(--blue); color: #a8d4ff; }
+
+  /* HIGHLIGHTS */
+  .hs { background: rgba(245,166,35,0.2); color: #f5d080; border-radius: 2px; padding: 0 3px; }
+  .hv { background: rgba(34,201,138,0.2); color: #7ee8be; border-radius: 2px; padding: 0 3px; }
+  .ho { background: rgba(77,159,255,0.2); color: #99c8ff; border-radius: 2px; padding: 0 3px; }
+
+  /* FORMULA BOX */
+  .formula { background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; padding: 12px 16px; font-size: 13px; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.7; font-family: var(--mono); }
+  .formula strong { color: var(--text); font-weight: 500; }
+
+  /* TABLE */
+  .tbl { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 1rem; }
+  .tbl th { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--border-strong); font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.07em; }
+  .tbl td { padding: 9px 12px; border-bottom: 1px solid var(--border); color: var(--text-muted); vertical-align: top; font-size: 13px; line-height: 1.5; }
+  .tbl td:first-child { font-weight: 500; color: var(--text); font-family: var(--mono); font-size: 12px; }
+  .tbl tr:last-child td { border-bottom: none; }
+  .tbl-wrap { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 1rem; }
+
+  /* TRANSFORM DEMO */
+  .xform { background: var(--bg3); border-radius: 8px; padding: 1.25rem; margin-bottom: 1rem; }
+  .xrow { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+  .xrow:last-child { margin-bottom: 0; }
+  .xsent { flex: 1; min-width: 180px; padding: 9px 13px; border-radius: 5px; font-size: 13px; line-height: 1.5; }
+  .xact { background: var(--green-dim); color: #9ef0cf; }
+  .xpas { background: var(--blue-dim); color: #a8d4ff; }
+  .xarrow { color: var(--text-dim); font-size: 16px; flex-shrink: 0; font-family: var(--mono); }
+  .xlbl { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.09em; opacity: 0.55; margin-bottom: 4px; }
+
+  /* LIST */
+  .ilist { list-style: none; }
+  .ilist li { font-size: 13px; color: var(--text-muted); padding: 6px 0; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: 10px; line-height: 1.55; }
+  .ilist li:last-child { border-bottom: none; }
+  .dot { width: 5px; height: 5px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+  .dot.g { background: var(--green); }
+  .dot.b { background: var(--blue); }
+  .dot.a { background: var(--amber); }
+
+  /* QUIZ */
+  .qcard { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem 1.5rem; margin-bottom: 1rem; }
+  .qtext { font-size: 14px; font-weight: 400; color: var(--text); margin-bottom: 12px; line-height: 1.6; }
+  .qsent { font-size: 13px; font-style: italic; color: var(--text-muted); background: var(--bg3); border-radius: 5px; padding: 9px 13px; margin-bottom: 12px; line-height: 1.6; border: 1px solid var(--border); }
+  .qopts { display: flex; flex-direction: column; gap: 6px; }
+  .qopt { padding: 9px 14px; border-radius: 5px; border: 1px solid var(--border); background: var(--bg3); font-size: 13px; color: var(--text-muted); cursor: pointer; text-align: left; transition: all 0.15s; font-family: var(--font); }
+  .qopt:hover { border-color: var(--border-strong); color: var(--text); }
+  .qopt.correct { background: var(--green-dim); border-color: var(--green-border); color: var(--green); }
+  .qopt.wrong { background: var(--red-dim); border-color: rgba(255,94,94,0.3); color: #ff9f9f; }
+  .qopt:disabled { cursor: default; }
+  .qfb { margin-top: 10px; font-size: 13px; padding: 9px 13px; border-radius: 5px; display: none; line-height: 1.55; }
+  .qfb.show { display: block; }
+  .qfb.correct { background: var(--green-dim); color: #7dd9b4; border: 1px solid var(--green-border); }
+  .qfb.wrong { background: var(--red-dim); color: #ff9f9f; border: 1px solid rgba(255,94,94,0.3); }
+
+  /* SCORE */
+  .score-banner { text-align: center; padding: 2rem; background: var(--bg2); border-radius: 8px; border: 1px solid var(--border); margin-bottom: 1.25rem; display: none; }
+  .score-big { font-size: 48px; font-weight: 300; color: var(--green); font-family: var(--mono); }
+  .score-lbl { font-size: 13px; color: var(--text-muted); margin-top: 6px; }
+
+  /* CONVERT */
+  .convert textarea { width: 100%; font-size: 13px; padding: 10px 13px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg3); color: var(--text); resize: vertical; line-height: 1.6; min-height: 68px; font-family: var(--font); transition: border-color 0.2s; }
+  .convert textarea:focus { outline: none; border-color: var(--border-strong); }
+  .convert-result { min-height: 46px; border-radius: 6px; padding: 10px 13px; font-size: 13px; line-height: 1.6; display: none; margin-top: 8px; }
+  .convert-result.ok { background: var(--green-dim); color: #7dd9b4; border: 1px solid var(--green-border); display: block; }
+  .convert-result.check { background: var(--amber-dim); color: #c8a96e; border: 1px solid rgba(245,166,35,0.3); display: block; }
+  .convert-result.info { background: var(--blue-dim); color: #8dbfff; border: 1px solid var(--blue-border); display: block; }
+
+  /* NAV BUTTONS */
+  .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+  .nbtn { font-family: var(--mono); font-size: 12px; padding: 9px 20px; border-radius: 5px; border: 1px solid var(--border-strong); background: none; color: var(--text-muted); cursor: pointer; letter-spacing: 0.05em; transition: all 0.15s; }
+  .nbtn:hover { background: var(--bg3); color: var(--text); }
+  .nbtn.prim { border-color: var(--green-border); color: var(--green); background: var(--green-dim); }
+  .nbtn.prim:hover { background: rgba(34,201,138,0.2); }
+  .nbtn:disabled { opacity: 0.25; cursor: default; }
+
+  /* UTILITY */
+  em { font-style: italic; color: var(--text-muted); }
+  strong { font-weight: 500; }
+  .mt { margin-top: 8px; }
+  .mb { margin-bottom: 8px; }
+
+  /* FOOTER */
+  .site-footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .footer-text { font-family: var(--mono); font-size: 11px; color: var(--text-dim); }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <header class="site-header">
+    <div class="site-logo">FRTU Grammar Series</div>
+    <div class="site-tag">Deputy Lead · Refinery</div>
+  </header>
+
+  <div class="lesson-title-block">
+    <div class="lesson-eyebrow">English Language · Module 01</div>
+    <h1 class="lesson-h1"><strong>Active</strong> &amp; passive voice</h1>
+    <p class="lesson-desc">Grammar skills for clear communication on the fireground, in radio calls, and in formal incident reports.</p>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-labels">
+      <span class="plabel cur" id="pl0">01 What is it</span>
+      <span class="plabel" id="pl1">02 Form it</span>
+      <span class="plabel" id="pl2">03 When to use</span>
+      <span class="plabel" id="pl3">04 Practice</span>
+      <span class="plabel" id="pl4">05 Quiz</span>
+    </div>
+    <div class="progress-track">
+      <div class="pbar cur" id="pb0" onclick="go(0)"></div>
+      <div class="pbar" id="pb1" onclick="go(1)"></div>
+      <div class="pbar" id="pb2" onclick="go(2)"></div>
+      <div class="pbar" id="pb3" onclick="go(3)"></div>
+      <div class="pbar" id="pb4" onclick="go(4)"></div>
+    </div>
+  </div>
+
+  <div class="tab-row">
+    <button class="tab on" onclick="go(0)">01 / What is it?</button>
+    <button class="tab" onclick="go(1)">02 / How to form it</button>
+    <button class="tab" onclick="go(2)">03 / When to use each</button>
+    <button class="tab" onclick="go(3)">04 / Practice</button>
+    <button class="tab" onclick="go(4)">05 / Quiz</button>
+  </div>
+
+  <!-- ── SECTION 0 ── -->
+  <div class="sec on" id="s0">
+    <div class="callout blue">
+      <p><strong>Why this matters:</strong> As a deputy lead, your words direct people in high-risk situations. Active voice delivers clear commands and assigns accountability. Passive voice is the standard for formal reports and procedures. Knowing both — and when to switch — is a mark of a professional communicator.</p>
+    </div>
+
+    <div class="slabel">The core difference</div>
+    <div class="two-col">
+      <div class="card green-accent">
+        <div class="badge act">Active voice</div>
+        <p style="font-size:13px; color:var(--text-muted); line-height:1.65; margin-bottom:12px;">The <strong>subject</strong> performs the action. Clear, direct, accountable.</p>
+        <div class="sbox act">
+          <div class="slbl2">Active</div>
+          <span class="hs">The team leader</span> <span class="hv">isolated</span> <span class="ho">the valve</span>.
+        </div>
+        <p style="font-size:12px; color:var(--text-dim);">We know exactly who did what.</p>
+      </div>
+      <div class="card blue-accent">
+        <div class="badge pas">Passive voice</div>
+        <p style="font-size:13px; color:var(--text-muted); line-height:1.65; margin-bottom:12px;">The <strong>object</strong> receives the action. The doer may be hidden or unimportant.</p>
+        <div class="sbox pas">
+          <div class="slbl2">Passive</div>
+          <span class="ho">The valve</span> <span class="hv">was isolated</span>.
+        </div>
+        <p style="font-size:12px; color:var(--text-dim);">Who did it? Not stated here.</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:1rem;">
+      <div class="slabel" style="margin-bottom:12px;">Colour key</div>
+      <div style="display:flex; gap:20px; flex-wrap:wrap; font-size:13px; color:var(--text-muted); align-items:center;">
+        <span><span class="hs">Subject</span> — who / what acts</span>
+        <span><span class="hv">Verb</span> — the action word</span>
+        <span><span class="ho">Object</span> — what receives the action</span>
+      </div>
+    </div>
+
+    <div class="slabel">More examples — your working environment</div>
+    <div class="card">
+      <div class="mb">
+        <div class="sbox act"><div class="slbl2">Active</div><span class="hs">The incident commander</span> <span class="hv">ordered</span> <span class="ho">an evacuation</span>.</div>
+        <div class="sbox pas"><div class="slbl2">Passive</div><span class="ho">An evacuation</span> <span class="hv">was ordered</span> by the incident commander.</div>
+      </div>
+      <div class="mb">
+        <div class="sbox act"><div class="slbl2">Active</div><span class="hs">Maintenance</span> <span class="hv">repaired</span> <span class="ho">the pump seal</span> this morning.</div>
+        <div class="sbox pas"><div class="slbl2">Passive</div><span class="ho">The pump seal</span> <span class="hv">was repaired</span> this morning.</div>
+      </div>
+      <div>
+        <div class="sbox act"><div class="slbl2">Active</div><span class="hs">Our team</span> <span class="hv">tested</span> <span class="ho">the deluge system</span> last week.</div>
+        <div class="sbox pas"><div class="slbl2">Passive</div><span class="ho">The deluge system</span> <span class="hv">was tested</span> last week.</div>
+      </div>
+    </div>
+
+    <div class="nav">
+      <button class="nbtn" disabled>← back</button>
+      <button class="nbtn prim" onclick="go(1)">how to form it →</button>
+    </div>
+  </div>
+
+  <!-- ── SECTION 1 ── -->
+  <div class="sec" id="s1">
+    <div class="slabel">Building active sentences</div>
+    <div class="formula"><strong>Subject + verb + object</strong><br>The person or thing doing the action comes first. Verb follows. Then what was acted on.</div>
+
+    <div class="card green-accent" style="margin-bottom:1rem;">
+      <div class="badge act">Active — Subject → Verb → Object</div>
+      <div style="display:flex; flex-direction:column; gap:6px; margin-top:4px;">
+        <div class="sbox act" style="margin-bottom:0;"><span class="hs">I</span> <span class="hv">submitted</span> <span class="ho">the incident report</span>.</div>
+        <div class="sbox act" style="margin-bottom:0;"><span class="hs">The crew</span> <span class="hv">deployed</span> <span class="ho">hose line 3</span>.</div>
+        <div class="sbox act" style="margin-bottom:0;"><span class="hs">She</span> <span class="hv">confirmed</span> <span class="ho">the ESD actuation</span>.</div>
+      </div>
+    </div>
+
+    <div class="slabel">Building passive sentences</div>
+    <div class="formula"><strong>Object + [to be] + past participle  (+ "by" + agent)</strong><br>The object moves to the front and becomes the new subject. The verb is a form of <em>to be</em> plus the past participle. Add "by + doer" at the end — or leave it out if the doer is unimportant.</div>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>Tense</th>
+            <th>Formula</th>
+            <th>Refinery example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Present simple</td><td>is / are + past participle</td><td>The alarm <em>is tested</em> daily.</td></tr>
+          <tr><td>Past simple</td><td>was / were + past participle</td><td>The valve <em>was closed</em> immediately.</td></tr>
+          <tr><td>Present perfect</td><td>has / have been + past participle</td><td>The pump <em>has been repaired</em>.</td></tr>
+          <tr><td>Future (will)</td><td>will be + past participle</td><td>All staff <em>will be briefed</em> tomorrow.</td></tr>
+          <tr><td>Modal</td><td>must / should be + past participle</td><td>Equipment <em>must be inspected</em> before use.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <p><strong>Past participles:</strong> Regular verbs add -ed: test → tested, seal → sealed, inspect → inspected. Irregular verbs change form: write → written, do → done, give → given. Quick test — if the word fits naturally in "The report was ___", it is the past participle.</p>
+    </div>
+
+    <div class="nav">
+      <button class="nbtn" onclick="go(0)">← back</button>
+      <button class="nbtn prim" onclick="go(2)">when to use each →</button>
+    </div>
+  </div>
+
+  <!-- ── SECTION 2 ── -->
+  <div class="sec" id="s2">
+    <div class="two-col">
+      <div class="card green-accent">
+        <div class="badge act">Use active voice when...</div>
+        <ul class="ilist mt">
+          <li><span class="dot g"></span>Giving orders or commands on the fireground</li>
+          <li><span class="dot g"></span>Assigning clear responsibility to a named person</li>
+          <li><span class="dot g"></span>Speaking on radio — short, direct, no ambiguity</li>
+          <li><span class="dot g"></span>Delivering verbal briefings to your team</li>
+          <li><span class="dot g"></span>Recording who did what in shift handovers</li>
+        </ul>
+      </div>
+      <div class="card blue-accent">
+        <div class="badge pas">Use passive voice when...</div>
+        <ul class="ilist mt">
+          <li><span class="dot b"></span>Writing formal incident reports or investigation logs</li>
+          <li><span class="dot b"></span>The action matters more than who performed it</li>
+          <li><span class="dot b"></span>The doer is unknown or not relevant</li>
+          <li><span class="dot b"></span>Drafting standard operating procedures</li>
+          <li><span class="dot b"></span>Maintaining an objective tone in sensitive matters</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="slabel">Same situation — different voice</div>
+
+    <div class="card" style="margin-bottom:1rem;">
+      <div class="slabel" style="margin-bottom:10px;">Fireground radio call</div>
+      <div class="sbox act"><div class="slbl2">Active — preferred</div>"Alpha team, advance hose line 3 to the north bund wall."</div>
+      <div class="sbox pas"><div class="slbl2">Passive — too slow for radio</div>"Hose line 3 is to be advanced to the north bund wall by Alpha team."</div>
+    </div>
+
+    <div class="card" style="margin-bottom:1rem;">
+      <div class="slabel" style="margin-bottom:10px;">Incident report writing</div>
+      <div class="sbox pas"><div class="slbl2">Passive — preferred</div>"The isolation valve was confirmed closed at 14:32. All personnel were evacuated from the risk zone."</div>
+      <div class="sbox act"><div class="slbl2">Active — less formal</div>"I confirmed the isolation valve closed at 14:32. We evacuated all personnel from the risk zone."</div>
+    </div>
+
+    <div class="card" style="margin-bottom:1rem;">
+      <div class="slabel" style="margin-bottom:10px;">Standard operating procedure</div>
+      <div class="sbox pas"><div class="slbl2">Passive — traditional SOP style</div>"All breathing apparatus sets must be checked before each shift. Defects must be reported immediately."</div>
+      <div class="sbox act"><div class="slbl2">Active — modern SOP style</div>"Check all breathing apparatus sets before each shift. Report any defects immediately."</div>
+    </div>
+
+    <div class="callout">
+      <p><strong>Deputy lead rule of thumb:</strong> When you speak — use active. When you write a formal report — use passive. Commands must always be active. The passive voice in reports creates an objective, professional tone that is the industry standard.</p>
+    </div>
+
+    <div class="nav">
+      <button class="nbtn" onclick="go(1)">← back</button>
+      <button class="nbtn prim" onclick="go(3)">practice →</button>
+    </div>
+  </div>
+
+  <!-- ── SECTION 3 ── -->
+  <div class="sec" id="s3">
+    <div class="slabel">Active to passive — conversion examples</div>
+    <div class="callout blue"><p>Study each transformation. Notice what changes: word order, verb form, and the placement of "by".</p></div>
+
+    <div class="xform">
+      <div class="xrow">
+        <div class="xsent xact"><div class="xlbl">Active</div><span class="hs">The safety officer</span> <span class="hv">filed</span> <span class="ho">the near-miss report</span>.</div>
+        <div class="xarrow">→</div>
+        <div class="xsent xpas"><div class="xlbl">Passive</div><span class="ho">The near-miss report</span> <span class="hv">was filed</span> by the safety officer.</div>
+      </div>
+      <div class="xrow">
+        <div class="xsent xact"><div class="xlbl">Active</div><span class="hs">The crew</span> <span class="hv">extinguished</span> <span class="ho">the flange fire</span>.</div>
+        <div class="xarrow">→</div>
+        <div class="xsent xpas"><div class="xlbl">Passive</div><span class="ho">The flange fire</span> <span class="hv">was extinguished</span> by the crew.</div>
+      </div>
+      <div class="xrow">
+        <div class="xsent xact"><div class="xlbl">Active</div><span class="hs">Engineers</span> <span class="hv">have completed</span> <span class="ho">the fireproofing inspection</span>.</div>
+        <div class="xarrow">→</div>
+        <div class="xsent xpas"><div class="xlbl">Passive</div><span class="ho">The fireproofing inspection</span> <span class="hv">has been completed</span>.</div>
+      </div>
+      <div class="xrow">
+        <div class="xsent xact"><div class="xlbl">Active</div><span class="hs">The shift commander</span> <span class="hv">will update</span> <span class="ho">the emergency plan</span> next month.</div>
+        <div class="xarrow">→</div>
+        <div class="xsent xpas"><div class="xlbl">Passive</div><span class="ho">The emergency plan</span> <span class="hv">will be updated</span> next month.</div>
+      </div>
+    </div>
+
+    <div class="slabel">The three steps</div>
+    <div class="card" style="margin-bottom:1.25rem;">
+      <ul class="ilist">
+        <li><span class="dot a"></span>Move the object to the front — it becomes the new grammatical subject</li>
+        <li><span class="dot a"></span>Change the verb to the correct form of <em>to be</em> + past participle, keeping the same tense</li>
+        <li><span class="dot a"></span>Add "by + original subject" at the end — or omit it entirely if the doer is not important</li>
+      </ul>
+    </div>
+
+    <div class="slabel">Your turn</div>
+    <div class="convert" style="margin-bottom:8px;">
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom:8px;">Convert this active sentence to passive: <em style="color:var(--text);">"The deputy lead inspected the bund wall after the incident."</em></p>
+      <textarea id="uinput" placeholder="Type your passive version here..." oninput="checkConvert()"></textarea>
+      <div id="cresult" class="convert-result"></div>
+    </div>
+    <button class="nbtn" onclick="showAnswer()" style="margin-bottom:0;">show model answer</button>
+
+    <div class="nav">
+      <button class="nbtn" onclick="go(2)">← back</button>
+      <button class="nbtn prim" onclick="go(4)">quiz →</button>
+    </div>
+  </div>
+
+  <!-- ── SECTION 4 ── -->
+  <div class="sec" id="s4">
+    <div class="slabel">Knowledge check — 6 questions</div>
+
+    <div class="score-banner" id="scoreBanner">
+      <div class="score-big" id="scoreVal">0/6</div>
+      <div class="score-lbl" id="scoreLbl"></div>
+    </div>
+
+    <div class="qcard">
+      <div class="qtext">1. Which sentence is in the active voice?</div>
+      <div class="qopts">
+        <button class="qopt" onclick="ans(this,false,0)">The fire was suppressed by the crew.</button>
+        <button class="qopt" onclick="ans(this,true,0)">The crew suppressed the fire.</button>
+        <button class="qopt" onclick="ans(this,false,0)">The fire has been extinguished.</button>
+      </div>
+      <div class="qfb" id="fb0"></div>
+    </div>
+
+    <div class="qcard">
+      <div class="qtext">2. Convert to passive: "We test the gas detectors every quarter."</div>
+      <div class="qopts">
+        <button class="qopt" onclick="ans(this,false,1)">The gas detectors are being tested every quarter.</button>
+        <button class="qopt" onclick="ans(this,false,1)">The gas detectors were tested every quarter.</button>
+        <button class="qopt" onclick="ans(this,true,1)">The gas detectors are tested every quarter.</button>
+      </div>
+      <div class="qfb" id="fb1"></div>
+    </div>
+
+    <div class="qcard">
+      <div class="qtext">3. You are writing a formal incident report. Which phrasing is most appropriate?</div>
+      <div class="qopts">
+        <button class="qopt" onclick="ans(this,false,2)">I ordered the evacuation at 09:45 and we closed all valves.</button>
+        <button class="qopt" onclick="ans(this,true,2)">The evacuation was ordered at 09:45. All isolation valves were closed.</button>
+        <button class="qopt" onclick="ans(this,false,2)">Evacuation ordered 09:45 — valves closed.</button>
+      </div>
+      <div class="qfb" id="fb2"></div>
+    </div>
+
+    <div class="qcard">
+      <div class="qtext">4. A fireground radio command should normally be:</div>
+      <div class="qopts">
+        <button class="qopt" onclick="ans(this,true,3)">Active — "Bravo team, withdraw to the muster point."</button>
+        <button class="qopt" onclick="ans(this,false,3)">Passive — "Bravo team is to be withdrawn to the muster point."</button>
+        <button class="qopt" onclick="ans(this,false,3)">Either is equally appropriate on the fireground.</button>
+      </div>
+      <div class="qfb" id="fb3"></div>
+    </div>
+
+    <div class="qcard">
+      <div class="qtext">5. What is wrong with this statement? "The deluge system was activated is grammatically incorrect — passive sentences must always state who performed the action."</div>
+      <div class="qopts">
+        <button class="qopt" onclick="ans(this,true,4)">The statement is false — "The deluge system was activated" is correct. The agent ("by whom") is optional in passive voice.</button>
+        <button class="qopt" onclick="ans(this,false,4)">The statement is true — passive sentences must always include "by + agent".</button>
+        <button class="qopt" onclick="ans(this,false,4)">The statement is partially correct — it only applies in formal reports.</button>
+      </div>
+      <div class="qfb" id="fb4"></div>
+    </div>
+
+    <div class="qcard">
+      <div class="qtext">6. Convert to passive: "The refinery manager approved the emergency plan."</div>
+      <div class="qopts">
+        <button class="qopt" onclick="ans(this,false,5)">The emergency plan has been approved by the refinery manager.</button>
+        <button class="qopt" onclick="ans(this,true,5)">The emergency plan was approved by the refinery manager.</button>
+        <button class="qopt" onclick="ans(this,false,5)">The emergency plan is approved by the refinery manager.</button>
+      </div>
+      <div class="qfb" id="fb5"></div>
+    </div>
+
+    <div class="nav">
+      <button class="nbtn" onclick="go(3)">← back</button>
+      <button class="nbtn prim" onclick="go(0)">restart lesson →</button>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-text">Active &amp; Passive Voice · Refinery Deputy Lead Training</div>
+    <div class="footer-text">Module 01 of the FRTU Grammar Series</div>
+  </footer>
+
+</div>
+
+<script>
+var cur = 0;
+var sc = [null,null,null,null,null,null];
+var fbs = [
+  "Correct. In 'The crew suppressed the fire', the subject (the crew) performs the action — that is the definition of active voice.",
+  "Correct. The active sentence uses present simple ('we test'), so the passive must also be present simple: 'are tested'. 'Were tested' is past tense. 'Are being tested' is present continuous, implying it is happening right now.",
+  "Correct. Formal incident reports use passive voice to create an objective, professional tone — 'The evacuation was ordered' rather than the personal 'I ordered'.",
+  "Correct. Active voice delivers direct, unambiguous commands. Passive constructions are significantly longer and slower — a critical disadvantage in radio communication during an incident.",
+  "Correct. In passive voice the agent (the person who performed the action) is entirely optional. 'The deluge system was activated' is grammatically complete and correct.",
+  "Correct. The original is past simple active ('approved'), so the passive must be past simple passive: 'was approved by'. 'Has been approved' changes the tense to present perfect. 'Is approved' is present simple."
+];
+
+function ans(btn, correct, i) {
+  if (sc[i] !== null) return;
+  sc[i] = correct ? 1 : 0;
+  var opts = btn.parentElement.querySelectorAll('.qopt');
+  opts.forEach(function(o){ o.disabled = true; });
+  btn.classList.add(correct ? 'correct' : 'wrong');
+  if (!correct) {
+    opts.forEach(function(o){
+      if (o.getAttribute('onclick') && o.getAttribute('onclick').indexOf('true') > -1) o.classList.add('correct');
+    });
+  }
+  var fb = document.getElementById('fb'+i);
+  fb.textContent = fbs[i];
+  fb.className = 'qfb show ' + (correct ? 'correct' : 'wrong');
+  var done = sc.filter(function(s){ return s !== null; }).length;
+  if (done === 6) showScore();
+}
+
+function showScore(){
+  var total = sc.reduce(function(a,b){ return a+(b||0); }, 0);
+  var b = document.getElementById('scoreBanner');
+  document.getElementById('scoreVal').textContent = total + '/6';
+  var m = [
+    'Keep at it — review the earlier sections and try again.',
+    'A couple of points to revisit — go back to sections 1 and 2.',
+    'Good effort — nearly there. Review the questions you missed.',
+    'Good — solid understanding with a couple of points to review.',
+    'Very good — strong command of active and passive voice.',
+    'Excellent — ready for the next module.',
+    'Perfect score. You have a confident command of both voices.'
+  ];
+  document.getElementById('scoreLbl').textContent = m[total];
+  b.style.display = 'block';
+  b.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function go(n) {
+  document.getElementById('s'+cur).classList.remove('on');
+  cur = n;
+  document.getElementById('s'+n).classList.add('on');
+  ['pb0','pb1','pb2','pb3','pb4'].forEach(function(id, i){
+    var el = document.getElementById(id);
+    var lel = document.getElementById('pl'+i);
+    el.className = 'pbar' + (i < n ? ' done' : i === n ? ' cur' : '');
+    lel.className = 'plabel' + (i < n ? ' done' : i === n ? ' cur' : '');
+  });
+  document.querySelectorAll('.tab').forEach(function(t,i){ t.classList.toggle('on', i===n); });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showAnswer(){
+  var r = document.getElementById('cresult');
+  r.innerHTML = '<strong>Model answer:</strong> "The bund wall was inspected by the deputy lead after the incident." — The object moves to the front, the verb becomes <em>was inspected</em> (past simple passive), and "by the deputy lead" provides the agent.';
+  r.className = 'convert-result info';
+}
+
+function checkConvert(){
+  var v = document.getElementById('uinput').value.toLowerCase().trim();
+  var r = document.getElementById('cresult');
+  if (v.indexOf('was inspected') > -1 && v.indexOf('bund wall') > -1) {
+    r.innerHTML = 'That looks correct — "was inspected" with the bund wall as subject. Well done.';
+    r.className = 'convert-result ok';
+  } else if (v.length > 10) {
+    r.innerHTML = 'Check your answer — make sure the bund wall is the subject and the verb is "was inspected".';
+    r.className = 'convert-result check';
+  } else {
+    r.className = 'convert-result';
+  }
+}
+</script>
+</body>
+</html>

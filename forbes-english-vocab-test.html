@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – Vocabulary Test</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #1e1218;
+    --bg2: #160d13;
+    --surface: #261620;
+    --card: #f8f4f0;
+    --card-alt: #f0ebe4;
+    --burgundy: #7a1f3a;
+    --burgundy-mid: #9e2a4a;
+    --burgundy-light: #c4506a;
+    --burgundy-pale: #f5dde4;
+    --gold: #c4922a;
+    --gold-light: #e0b84a;
+    --gold-pale: #f8efd4;
+    --ink: #1a1410;
+    --ink-mid: #4a4038;
+    --ink-light: #8a8070;
+    --cream: #f8f4f0;
+    --correct: #2e6e48;
+    --correct-pale: #e0f0e8;
+    --wrong: #8a2828;
+    --wrong-pale: #f5e0e0;
+    --shadow: 0 6px 36px rgba(0,0,0,0.35);
+    --shadow-card: 0 3px 18px rgba(0,0,0,0.13);
+    --radius: 15px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 20% 0%, rgba(122,31,58,0.5) 0%, transparent 55%),
+      radial-gradient(ellipse at 80% 100%, rgba(196,146,42,0.1) 0%, transparent 50%);
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: var(--bg2);
+    padding: 32px 24px 28px;
+    text-align: center;
+    border-bottom: 1px solid rgba(196,146,42,0.15);
+    position: relative;
+    overflow: hidden;
+  }
+  .site-header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(122,31,58,0.3) 0%, transparent 70%);
+  }
+
+  .lesson-badge {
+    position: relative; z-index: 1;
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(196,146,42,0.12);
+    border: 1px solid rgba(196,146,42,0.28);
+    color: var(--gold-light);
+    padding: 5px 16px; border-radius: 30px;
+    font-size: 0.73rem; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+
+  /* ── SCORE TICKER ── */
+  .score-ticker {
+    position: fixed;
+    top: 20px; right: 20px;
+    background: var(--bg2);
+    border: 1.5px solid rgba(196,146,42,0.3);
+    color: var(--gold-light);
+    padding: 9px 18px;
+    border-radius: 30px;
+    font-size: 0.84rem; font-weight: 600;
+    letter-spacing: 0.03em;
+    box-shadow: var(--shadow);
+    z-index: 200;
+    transition: transform 0.15s;
+  }
+  .score-ticker.bump { animation: bump 0.3s ease; }
+  @keyframes bump { 0%,100%{transform:scale(1)} 50%{transform:scale(1.14)} }
+
+  /* ── PROGRESS ── */
+  .prog-wrap {
+    position: relative; z-index: 1;
+    max-width: 560px; margin: 20px auto 0;
+    padding: 0 4px;
+  }
+  .prog-row {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 7px;
+  }
+  .prog-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: rgba(248,244,240,0.35); }
+  .prog-score-label { font-size: 0.75rem; color: var(--gold-light); font-weight: 600; }
+  .prog-track { height: 5px; background: rgba(255,255,255,0.07); border-radius: 5px; overflow: hidden; }
+  .prog-fill { height: 100%; background: linear-gradient(90deg, var(--burgundy-mid), var(--gold)); border-radius: 5px; transition: width 0.5s cubic-bezier(0.4,0,0.2,1); width: 0%; }
+
+  /* ── CANVAS ── */
+  .canvas { max-width: 760px; margin: 0 auto; padding: 36px 22px 80px; }
+
+  /* ── SECTION ── */
+  .section { display: none; animation: rise 0.4s cubic-bezier(0.2,0,0,1); }
+  .section.active { display: block; }
+  @keyframes rise { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+
+  /* ── SECTION HEADER ── */
+  .sec-header { display: flex; align-items: center; gap: 13px; margin-bottom: 24px; }
+  .sec-num {
+    width: 48px; height: 48px; border-radius: 13px;
+    background: var(--burgundy); color: #fff;
+    font-family: 'Fraunces', serif; font-size: 1.3rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 14px rgba(122,31,58,0.45); flex-shrink: 0;
+  }
+  .sec-info h2 { font-family: 'Fraunces', serif; font-size: 1.25rem; color: var(--cream); font-weight: 600; line-height: 1.25; }
+  .sec-info p { font-size: 0.8rem; color: rgba(248,244,240,0.38); margin-top: 2px; }
+
+  /* ── Q CARD ── */
+  .q-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow-card);
+    transition: transform 0.2s;
+  }
+  .q-card.answered { opacity: 0.85; }
+  .q-tab {
+    padding: 9px 20px;
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .qt-burg { background: var(--burgundy); color: rgba(255,255,255,0.85); }
+  .qt-gold { background: var(--gold); color: rgba(255,255,255,0.9); }
+  .qt-slate { background: #2e2838; color: rgba(248,244,240,0.7); }
+  .qt-dark { background: #1e1a28; color: rgba(248,244,240,0.6); }
+  .q-num-badge {
+    background: rgba(255,255,255,0.15);
+    padding: 2px 8px; border-radius: 10px;
+    font-size: 0.65rem;
+  }
+  .q-body { padding: 20px 22px; }
+  .q-word {
+    font-family: 'Fraunces', serif; font-size: 1.35rem; font-weight: 700;
+    color: var(--burgundy); margin-bottom: 6px; line-height: 1.2;
+  }
+  .q-stem {
+    font-size: 0.97rem; color: var(--ink-mid); line-height: 1.65;
+    margin-bottom: 16px;
+  }
+  .q-stem strong { color: var(--ink); }
+  .q-stem em { font-style: italic; color: var(--burgundy-mid); }
+
+  /* ── OPTIONS ── */
+  .opts { display: flex; flex-direction: column; gap: 8px; }
+  .opt {
+    display: flex; align-items: flex-start; gap: 11px;
+    padding: 12px 16px;
+    border: 1.5px solid rgba(26,20,16,0.1);
+    border-radius: 10px;
+    background: var(--card-alt);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: 0.92rem;
+    color: var(--ink-mid); text-align: left;
+    transition: all 0.16s;
+    position: relative; overflow: hidden;
+  }
+  .opt::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: var(--burgundy-mid);
+    transform: scaleY(0); transition: transform 0.18s;
+    border-radius: 2px 0 0 2px;
+  }
+  .opt:hover:not(:disabled) { border-color: var(--burgundy-light); background: #fff; transform: translateX(2px); }
+  .opt:hover:not(:disabled)::before { transform: scaleY(1); }
+  .opt:disabled { cursor: default; }
+  .opt.correct { border-color: var(--correct); background: var(--correct-pale); color: var(--correct); }
+  .opt.wrong { border-color: var(--wrong); background: var(--wrong-pale); color: var(--wrong); opacity: 0.75; text-decoration: line-through; }
+  .opt-letter {
+    width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+    background: rgba(122,31,58,0.1); color: var(--burgundy-mid);
+    font-size: 0.76rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 1px; transition: all 0.16s;
+  }
+  .opt.correct .opt-letter { background: var(--correct); color: #fff; }
+  .opt.wrong .opt-letter { background: var(--wrong); color: #fff; }
+
+  /* ── FEEDBACK ── */
+  .fb {
+    margin-top: 12px; padding: 12px 16px;
+    border-radius: 9px; font-size: 0.88rem; line-height: 1.6;
+    display: none;
+  }
+  .fb.show { display: block; animation: rise 0.25s ease; }
+  .fb.correct { background: var(--correct-pale); color: var(--correct); border: 1px solid rgba(46,110,72,0.2); }
+  .fb.wrong { background: var(--wrong-pale); color: var(--wrong); border: 1px solid rgba(138,40,40,0.18); }
+
+  /* ── WORD BANK ── */
+  .word-bank {
+    display: flex; flex-wrap: wrap; gap: 7px;
+    margin-bottom: 18px; padding: 14px 16px;
+    background: rgba(122,31,58,0.06);
+    border-radius: 11px; border: 1px dashed rgba(122,31,58,0.22);
+  }
+  .wchip {
+    background: #fff; border: 1.5px solid rgba(122,31,58,0.25);
+    color: var(--burgundy); padding: 5px 14px; border-radius: 30px;
+    font-size: 0.86rem; font-weight: 600; cursor: pointer;
+    transition: all 0.14s; user-select: none;
+  }
+  .wchip:hover { background: var(--burgundy); color: #fff; border-color: var(--burgundy); }
+  .wchip.selected { background: var(--burgundy); color: #fff; border-color: var(--burgundy); outline: 3px solid rgba(122,31,58,0.3); }
+  .wchip.used { opacity: 0.3; pointer-events: none; }
+
+  .blank {
+    border: none; border-bottom: 2.5px solid var(--burgundy-mid);
+    background: transparent; font-family: 'DM Sans', sans-serif;
+    font-size: 0.97rem; color: var(--ink);
+    padding: 2px 5px; margin: 0 4px;
+    width: 150px; outline: none; cursor: pointer;
+    transition: border-color 0.15s;
+    font-weight: 500;
+  }
+  .blank:focus { border-color: var(--burgundy); }
+  .blank.correct { border-color: var(--correct); color: var(--correct); }
+  .blank.wrong { border-color: var(--wrong); color: var(--wrong); }
+
+  /* ── ODD ONE OUT ── */
+  .trio-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 9px; margin-bottom: 10px; }
+  @media(max-width:420px){ .trio-grid{grid-template-columns:1fr} }
+  .trio-btn {
+    padding: 14px 10px; border-radius: 11px; text-align: center;
+    border: 1.5px solid rgba(26,20,16,0.1); background: var(--card-alt);
+    font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 600;
+    color: var(--ink-mid); cursor: pointer; transition: all 0.17s;
+  }
+  .trio-btn:hover:not(:disabled) { border-color: var(--gold); background: var(--gold-pale); color: var(--ink); transform: translateY(-2px); }
+  .trio-btn:disabled { cursor: default; }
+  .trio-btn.correct { border-color: var(--correct); background: var(--correct-pale); color: var(--correct); }
+  .trio-btn.wrong { border-color: var(--wrong); background: var(--wrong-pale); color: var(--wrong); opacity: 0.7; }
+
+  /* ── BOTTOM NAV ── */
+  .bottom-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 28px; gap: 12px; }
+  .btn-next {
+    background: var(--burgundy); color: #fff; border: none;
+    padding: 14px 32px; border-radius: 11px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.94rem; font-weight: 600;
+    cursor: pointer; transition: all 0.17s;
+    box-shadow: 0 4px 16px rgba(122,31,58,0.4); margin-left: auto;
+    display: none;
+  }
+  .btn-next.show { display: block; animation: rise 0.3s ease; }
+  .btn-next:hover { background: var(--burgundy-mid); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(122,31,58,0.5); }
+  .btn-prev {
+    background: transparent; color: rgba(248,244,240,0.35);
+    border: 1px solid rgba(248,244,240,0.12);
+    padding: 13px 20px; border-radius: 11px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.86rem;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .btn-prev:hover { color: var(--cream); border-color: rgba(248,244,240,0.28); }
+  .btn-submit {
+    background: var(--gold); color: #fff; border: none;
+    padding: 14px 28px; border-radius: 11px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.94rem; font-weight: 600;
+    cursor: pointer; transition: all 0.17s;
+    box-shadow: 0 4px 14px rgba(196,146,42,0.35);
+  }
+  .btn-submit:hover { background: var(--gold-light); transform: translateY(-1px); }
+  .btn-submit:disabled { opacity: 0.45; cursor: default; transform: none; }
+  .step-label { font-size: 0.78rem; color: rgba(248,244,240,0.28); }
+
+  /* ── FINAL ── */
+  .final-card {
+    background: var(--bg2);
+    border: 1px solid rgba(196,146,42,0.15);
+    border-radius: 20px; padding: 48px 36px;
+    text-align: center; box-shadow: var(--shadow);
+    position: relative; overflow: hidden;
+  }
+  .final-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(122,31,58,0.35) 0%, transparent 65%);
+  }
+  .score-ring {
+    width: 120px; height: 120px; border-radius: 50%;
+    border: 3px solid var(--gold); background: rgba(196,146,42,0.1);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 24px; position: relative; z-index: 1;
+    flex-direction: column;
+  }
+  .score-big { font-family: 'Fraunces', serif; font-size: 2.4rem; color: var(--gold-light); font-weight: 700; line-height: 1; }
+  .score-of { font-size: 0.7rem; color: rgba(248,244,240,0.45); letter-spacing: 0.04em; margin-top: 3px; }
+  .final-title { font-family: 'Fraunces', serif; font-size: 1.8rem; color: var(--cream); margin-bottom: 10px; position: relative; z-index: 1; }
+  .final-msg { color: rgba(248,244,240,0.6); font-size: 0.95rem; line-height: 1.65; margin-bottom: 28px; position: relative; z-index: 1; max-width: 460px; margin-left: auto; margin-right: auto; }
+  .breakdown {
+    background: rgba(255,255,255,0.05); border-radius: 12px;
+    padding: 20px 24px; margin-bottom: 28px;
+    position: relative; z-index: 1; text-align: left;
+  }
+  .bd-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-size: 0.88rem; color: rgba(248,244,240,0.7);
+  }
+  .bd-row:last-child { border-bottom: none; }
+  .bd-score { font-weight: 700; color: var(--gold-light); }
+  .btn-restart {
+    background: var(--burgundy); color: #fff; border: none;
+    padding: 14px 36px; border-radius: 11px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.97rem; font-weight: 600;
+    cursor: pointer; transition: all 0.17s;
+    position: relative; z-index: 1;
+    box-shadow: 0 4px 16px rgba(122,31,58,0.45);
+  }
+  .btn-restart:hover { background: var(--burgundy-mid); transform: translateY(-1px); }
+</style>
+</head>
+<body>
+
+<div class="score-ticker" id="scoreTicker">Score: <span id="scoreDisp">0</span> / <span id="maxDisp">30</span></div>
+
+<!-- ════════ HEADER ════════ -->
+<div class="site-header">
+  <div style="position:relative;z-index:1">
+    <svg viewBox="0 0 240 72" width="200" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto 14px">
+      <text x="120" y="36" font-family="'Fraunces',Georgia,serif" font-size="34" font-weight="700"
+            fill="#c4506a" text-anchor="middle" letter-spacing="3">FORBES</text>
+      <rect x="28" y="44" width="184" height="1.5" fill="#c4922a" rx="1"/>
+      <text x="120" y="62" font-family="'DM Sans',Arial,sans-serif" font-size="14" font-weight="700"
+            fill="#c4922a" text-anchor="middle" letter-spacing="7">ENGLISH</text>
+    </svg>
+    <div class="lesson-badge">Vocabulary Test · B1+</div>
+    <div class="prog-wrap">
+      <div class="prog-row">
+        <span class="prog-label" id="progText">Activity 1 of 4</span>
+        <span class="prog-score-label"><span id="scoreDisp2">0</span> / 30 points</span>
+      </div>
+      <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="canvas">
+
+<!-- ════════════════════════════════
+  SECTION 1 — MATCH THE DEFINITION (MC)
+════════════════════════════════ -->
+<div class="section active" id="sec1">
+  <div class="sec-header">
+    <div class="sec-num">1</div>
+    <div class="sec-info">
+      <h2>Match the Definition</h2>
+      <p>Multiple choice · 8 questions · Choose the word that matches the definition</p>
+    </div>
+  </div>
+
+  <!-- Q1 -->
+  <div class="q-card" id="s1q1">
+    <div class="q-tab qt-burg"><span>Question 1 of 8</span><span class="q-num-badge">1 pt</span></div>
+    <div class="q-body">
+      <div class="q-stem">The ability to withstand wear, pressure, or damage over a long period of time.</div>
+      <div class="opts">
+        <button class="opt" onclick="mc(this,'s1q1',false,'C')"><span class="opt-letter">A</span> resilience</button>
+        <button class="opt" onclick="mc(this,'s1q1',false,'C')"><span class="opt-letter">B</span> firmness</button>
+        <button class="opt" onclick="mc(this,'s1q1',true,'C')"><span class="opt-letter">C</span> durability</button>
+        <button class="opt" onclick="mc(this,'s1q1',false,'C')"><span class="opt-letter">D</span> reliability</button>
+      </div>
+      <div class="fb" id="s1q1-fb"></div>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="q-card" id="s1q2">
+    <div class="q-tab qt-burg"><span>Question 2 of 8</span><span class="q-num-badge">1 pt</span></div>
+    <div class="q-body">
+      <div class="q-stem">A plan that can be followed if the original plan is not possible.</div>
+      <div class="opts">
+        <button class="opt" onclick="mc(this,'s1q2',false,'B')"><span class="opt-letter">A</span> assumption</button>
+        <button class="opt" onclick="mc(this,'s1q2',true,'B')"><span class="opt-letter">B</span> contingency plan</button>
+        <button class="opt" onclick="mc(this,'s1q2',false,'B')"><span class="opt-letter">C</span> precaution</button>
+        <button class="opt" onclick="mc(this,'s1q2',false,'B')"><span class="opt-letter">D</span> requirement</button>
+      </div>
+      <div class="fb" id="s1q2-fb"></div>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="q-card" id="s1q3">
+    <div class="q-tab qt-burg"><span>Question 3 of 8</span><span class="q-num-badge">1 pt</span></div>
+    <div class="q-body">
+      <div class="q-stem">A thing that is accepted as true or certain to happen, without proof.</div>
+      <div class="opts">
+        <button class="opt" onclick="mc(this,'s1q3',false,'D')"><span class="opt-letter">A</span> precaution</button>
+        <button class="opt" onclick="mc(this,'s1q3',false,'D')"><span class="opt-letter">B</span> opinion</button>
+        <button class="opt" onclick="mc(this,'s1q3',false,'D')"><span class="opt-letter">C</span> concern</button>
+        <button class="opt" onclick="mc(this,'s1q3',true,'D')"><span class="opt-letter">D</span> assumption</button>
+      </div>
+      <div class="fb" id="s1q3-fb"></div>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="q-card" id="s1q4">
+    <div class="q-tab qt-burg"><span>Question 4 of 8</span><span class="q-num-badge">1 pt</span></div>
+    <div class="q-body">
+      <div class="q-stem">To be greater in number or size than a quantity or measurable thing.</div>
+      <div class="opts">
+        <button class="opt" onclick="mc(this,'s1q4',false,'A')"><span class="opt-letter">A</span> exceed</button>
+        <button class="opt" onclick="mc(this,'s1q4',false,'A')"><span class="opt-letter">B</span> provoke</button>
+        <button class="opt" onclick="mc(this,'s1q4',false,'A')"><span class="opt-letter">C</span> persuade</button>
+        <button class="opt" onclick="mc(this,'s1q4',false,'A')"><span class="opt-letter">D</span> exaggerate</button>
+      </div>
+      <div class="fb" id="s1q4-fb"></div>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="q-card" id="s1q5">
+    <div class="q-tab qt-burg"><span>Question 5 of 8</span><span class="q-num-badge">1 pt</span></div>
+    <div class="q-body">
+      <div class="q-stem">A deficit — when there is less of something than was required or expected.</div>
+      <div class="opts">
+        <button class="opt" onclick="mc(this,'s1q5',false,'C')"><span class="opt-letter">A</span> delay</button>
+        <button class="opt" onclick="mc(this,'s1q5',false,'C')"><span class="opt-letter">B</span> trade-off</button>
+        <button class="opt" onclick="mc(this,'s1q5',true,'C')"><span class="opt-letter">C</span> shortfall</button>
+        <button class="opt" onclick="mc(this,'s1q5',false,'C')"><span class="opt-letter">D</span> threshold</button>
+      </div>
+      <div class="fb" id="s1q5-fb"></div>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="q-card" id="s1q6">
+    <div class="q-tab qt-burg"><span>Question 6 of 8</span><span class="q-num-badge">1 pt</span></div>
+    <div class="q-body">
+      <div class="q-stem">Occurring at the same time and having some connection to each other.</div>
+      <div class="opts">
+        <button class="opt" onclick="mc(this,'s1q6',false,'B')"><span class="opt-letter">A</span> ad hoc</button>
+        <button class="opt" onclick="mc(this,'s1q6',true,'B')"><span class="opt-letter">B</span> in parallel</button>
+        <button class="opt" onclick="mc(this,'s1q6',false,'B')"><span class="opt-letter">C</span> post hoc</button>
+        <button class="opt" onclick="mc(this,'s1q6',false,'B')"><span class="opt-letter">D</span> homogeneous</button>
+      </div>
+      <div class="fb" id="s1q6-fb"></div>
+    </div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="q-card" id="s1q7">
+    <div class="q-tab qt-burg"><span>Question 7 of 8</span><span class="q-num-badge">1 pt</span></div>
+    <div class="q-body">
+      <div class="q-stem">A measure taken in advance to prevent something dangerous or unpleasant from happening.</div>
+      <div class="opts">
+        <button class="opt" onclick="mc(this,'s1q7',false,'D')"><span class="opt-letter">A</span> requirement</button>
+        <button class="opt" onclick="mc(this,'s1q7',false,'D')"><span class="opt-letter">B</span> contingency plan</button>
+        <button class="opt" onclick="mc(this,'s1q7',false,'D')"><span class="opt-letter">C</span> trial</button>
+        <button class="opt" onclick="mc(this,'s1q7',true,'D')"><span class="opt-letter">D</span> precaution</button>
+      </div>
+      <div class="fb" id="s1q7-fb"></div>
+    </div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="q-card" id="s1q8">
+    <div class="q-tab qt-burg"><span>Question 8 of 8</span><span class="q-num-badge">1 pt</span></div>
+    <div class="q-body">
+      <div class="q-stem">Something created specifically as needed, rather than planned in advance.</div>
+      <div class="opts">
+        <button class="opt" onclick="mc(this,'s1q8',true,'A')"><span class="opt-letter">A</span> ad hoc</button>
+        <button class="opt" onclick="mc(this,'s1q8',false,'A')"><span class="opt-letter">B</span> post hoc</button>
+        <button class="opt" onclick="mc(this,'s1q8',false,'A')"><span class="opt-letter">C</span> actual</button>
+        <button class="opt" onclick="mc(this,'s1q8',false,'A')"><span class="opt-letter">D</span> appropriate</button>
+      </div>
+      <div class="fb" id="s1q8-fb"></div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <span class="step-label">Section 1 of 4</span>
+    <button class="btn-next" id="s1next" onclick="goSec(2)">Next Section →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+  SECTION 2 — FILL IN THE BLANK
+════════════════════════════════ -->
+<div class="section" id="sec2">
+  <div class="sec-header">
+    <div class="sec-num">2</div>
+    <div class="sec-info">
+      <h2>Fill in the Blank</h2>
+      <p>Word bank · 8 questions · Click a word, then click the blank to place it</p>
+    </div>
+  </div>
+
+  <div class="word-bank" id="wb2">
+    <span class="wchip" data-w="pain point" onclick="selWord(this)">pain point</span>
+    <span class="wchip" data-w="time-consuming" onclick="selWord(this)">time-consuming</span>
+    <span class="wchip" data-w="airtight" onclick="selWord(this)">airtight</span>
+    <span class="wchip" data-w="fire-retardant" onclick="selWord(this)">fire-retardant</span>
+    <span class="wchip" data-w="retrofit" onclick="selWord(this)">retrofit</span>
+    <span class="wchip" data-w="moisture" onclick="selWord(this)">moisture</span>
+    <span class="wchip" data-w="reliable" onclick="selWord(this)">reliable</span>
+    <span class="wchip" data-w="hazardous" onclick="selWord(this)">hazardous</span>
+  </div>
+
+  <!-- FIB Q1 -->
+  <div class="q-card" id="fq1">
+    <div class="q-tab qt-gold"><span>Question 1 of 8</span><span class="q-num-badge">1 pt</span></div>
+    <div class="q-body">
+      <div class="q-stem">A slow installation process is a common <input class="blank" id="f1" readonly onclick="placeWord('f1')" placeholder="…"> for carpenters fitting vapour barriers in tight spaces.</div>
+      <div class="fb" id="fq1-fb"></div>
+    </div>
+  </div>
+
+  <!-- FIB Q2 -->
+  <div class="q-card" id="fq2">
+    <div class="q-tab qt-gold"><span>Question 2 of 8</span><span class="q-num-badge">1 pt</span></div>
+    <div class="q-body">
+      <div class="q-stem">The membrane must create an <input class="blank" id="f2" readonly onclick="placeWord('f2')" placeholder="…"> seal to prevent warm air from escaping into the roof space.</div>
+      <div class="fb" id="fq2-fb"></div>
+    </div>
+  </div>
+
+  <!-- FIB Q3 -->
+  <div class="q-card" id="fq3">
+    <div class="q-tab qt-gold"><span>Question 3 of 8</span><span class="q-num-badge">1 pt</span></div>
+    <div class="q-body">
+      <div class="q-stem">Getting all the paperwork approved before installation can be very <input class="blank" id="f3" readonly onclick="placeWord('f3')" placeholder="…"> — sometimes it takes two weeks.</div>
+      <div class="fb" id="fq3-fb"></div>
+    </div>
+  </div>
+
+  <!-- FIB Q4 -->
+  <div class="q-card" id="fq4">
+    <div class="q-tab qt-gold"><span>Question 4 of 8</span><span class="q-num-badge">1 pt</span></div>
+    <div class="q-body">
+      <div class="q-stem">When <input class="blank" id="f4" readonly onclick="placeWord('f4')" placeholder="…"> builds up inside a wall, it can cause mould and structural damage over time.</div>
+      <div class="fb" id="fq4-fb"></div>
+    </div>
+  </div>
+
+  <!-- FIB Q5 -->
+  <div class="q-card" id="fq5">
+    <div class="q-tab qt-gold"><span>Question 5 of 8</span><span class="q-num-badge">1 pt</span></div>
+    <div class="q-body">
+      <div class="q-stem">Working with certain adhesives in an enclosed space can be <input class="blank" id="f5" readonly onclick="placeWord('f5')" placeholder="…"> without proper ventilation.</div>
+      <div class="fb" id="fq5-fb"></div>
+    </div>
+  </div>
+
+  <!-- FIB Q6 -->
+  <div class="q-card" id="fq6">
+    <div class="q-tab qt-gold"><span>Question 6 of 8</span><span class="q-num-badge">1 pt</span></div>
+    <div class="q-body">
+      <div class="q-stem">Many older buildings need to <input class="blank" id="f6" readonly onclick="placeWord('f6')" placeholder="…"> insulation and vapour barriers that were not part of the original construction.</div>
+      <div class="fb" id="fq6-fb"></div>
+    </div>
+  </div>
+
+  <!-- FIB Q7 -->
+  <div class="q-card" id="fq7">
+    <div class="q-tab qt-gold"><span>Question 7 of 8</span><span class="q-num-badge">1 pt</span></div>
+    <div class="q-body">
+      <div class="q-stem">Building regulations in the UK now require <input class="blank" id="f7" readonly onclick="placeWord('f7')" placeholder="…"> materials in all new commercial developments.</div>
+      <div class="fb" id="fq7-fb"></div>
+    </div>
+  </div>
+
+  <!-- FIB Q8 -->
+  <div class="q-card" id="fq8">
+    <div class="q-tab qt-gold"><span>Question 8 of 8</span><span class="q-num-badge">1 pt</span></div>
+    <div class="q-body">
+      <div class="q-stem">Tradespeople want products they can count on — something <input class="blank" id="f8" readonly onclick="placeWord('f8')" placeholder="…"> that performs the same way every single time.</div>
+      <div class="fb" id="fq8-fb"></div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="btn-prev" onclick="goSec(1)">← Back</button>
+    <span class="step-label">Section 2 of 4</span>
+    <button class="btn-submit" id="s2submit" onclick="submitFIB()">Check Answers</button>
+    <button class="btn-next" id="s2next" onclick="goSec(3)" style="display:none;margin-left:0">Next Section →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+  SECTION 3 — ODD ONE OUT
+════════════════════════════════ -->
+<div class="section" id="sec3">
+  <div class="sec-header">
+    <div class="sec-num">3</div>
+    <div class="sec-info">
+      <h2>Odd One Out</h2>
+      <p>7 questions · Click the word that does NOT belong with the others</p>
+    </div>
+  </div>
+
+  <!-- OOO Q1 -->
+  <div class="q-card" id="oq1">
+    <div class="q-tab qt-slate"><span>Question 1 of 7</span><span class="q-num-badge">1 pt</span></div>
+    <div class="q-body">
+      <div class="q-stem">Three of these words describe something <strong>negative or difficult</strong>. One does not.</div>
+      <div class="trio-grid">
+        <button class="trio-btn" onclick="ooo(this,'oq1',false)">hazardous</button>
+        <button class="trio-btn" onclick="ooo(this,'oq1',true)">resilient</button>
+        <button class="trio-btn" onclick="ooo(this,'oq1',false)">arduous</button>
+        <button class="trio-btn" onclick="ooo(this,'oq1',false)">exhaustion</button>
+      </div>
+      <div class="fb" id="oq1-fb"></div>
+    </div>
+  </div>
+
+  <!-- OOO Q2 -->
+  <div class="q-card" id="oq2">
+    <div class="q-tab qt-slate"><span>Question 2 of 7</span><span class="q-num-badge">1 pt</span></div>
+    <div class="q-body">
+      <div class="q-stem">Three of these relate to <strong>time or planning</strong>. One does not.</div>
+      <div class="trio-grid">
+        <button class="trio-btn" onclick="ooo(this,'oq2',false)">contingency plan</button>
+        <button class="trio-btn" onclick="ooo(this,'oq2',false)">delay</button>
+        <button class="trio-btn" onclick="ooo(this,'oq2',true)">competitor</button>
+        <button class="trio-btn" onclick="ooo(this,'oq2',false)">in parallel</button>
+      </div>
+      <div class="fb" id="oq2-fb"></div>
+    </div>
+  </div>
+
+  <!-- OOO Q3 -->
+  <div class="q-card" id="oq3">
+    <div class="q-tab qt-slate"><span>Question 3 of 7</span><span class="q-num-badge">1 pt</span></div>
+    <div class="q-body">
+      <div class="q-stem">Three of these words describe <strong>what something is like</strong> (qualities). One describes <strong>what someone does</strong> (an action).</div>
+      <div class="trio-grid">
+        <button class="trio-btn" onclick="ooo(this,'oq3',false)">monotonous</button>
+        <button class="trio-btn" onclick="ooo(this,'oq3',false)">homogeneous</button>
+        <button class="trio-btn" onclick="ooo(this,'oq3',true)">persuade</button>
+        <button class="trio-btn" onclick="ooo(this,'oq3',false)">dense</button>
+      </div>
+      <div class="fb" id="oq3-fb"></div>
+    </div>
+  </div>
+
+  <!-- OOO Q4 -->
+  <div class="q-card" id="oq4">
+    <div class="q-tab qt-slate"><span>Question 4 of 7</span><span class="q-num-badge">1 pt</span></div>
+    <div class="q-body">
+      <div class="q-stem">Three of these are connected to <strong>buildings or construction</strong>. One is not.</div>
+      <div class="trio-grid">
+        <button class="trio-btn" onclick="ooo(this,'oq4',false)">moisture</button>
+        <button class="trio-btn" onclick="ooo(this,'oq4',false)">airtight</button>
+        <button class="trio-btn" onclick="ooo(this,'oq4',true)">carpet</button>
+        <button class="trio-btn" onclick="ooo(this,'oq4',false)">tiles</button>
+      </div>
+      <div class="fb" id="oq4-fb"></div>
+    </div>
+  </div>
+
+  <!-- OOO Q5 -->
+  <div class="q-card" id="oq5">
+    <div class="q-tab qt-slate"><span>Question 5 of 7</span><span class="q-num-badge">1 pt</span></div>
+    <div class="q-body">
+      <div class="q-stem">Three of these describe something you can <strong>hear or sense physically</strong>. One is a mental/emotional state.</div>
+      <div class="trio-grid">
+        <button class="trio-btn" onclick="ooo(this,'oq5',false)">audible</button>
+        <button class="trio-btn" onclick="ooo(this,'oq5',true)">agitated</button>
+        <button class="trio-btn" onclick="ooo(this,'oq5',false)">dense</button>
+        <button class="trio-btn" onclick="ooo(this,'oq5',false)">firmness</button>
+      </div>
+      <div class="fb" id="oq5-fb"></div>
+    </div>
+  </div>
+
+  <!-- OOO Q6 -->
+  <div class="q-card" id="oq6">
+    <div class="q-tab qt-slate"><span>Question 6 of 7</span><span class="q-num-badge">1 pt</span></div>
+    <div class="q-body">
+      <div class="q-stem">Three of these relate to <strong>business and commerce</strong>. One does not.</div>
+      <div class="trio-grid">
+        <button class="trio-btn" onclick="ooo(this,'oq6',false)">demand</button>
+        <button class="trio-btn" onclick="ooo(this,'oq6',false)">competitor</button>
+        <button class="trio-btn" onclick="ooo(this,'oq6',true)">startle</button>
+        <button class="trio-btn" onclick="ooo(this,'oq6',false)">shortfall</button>
+      </div>
+      <div class="fb" id="oq6-fb"></div>
+    </div>
+  </div>
+
+  <!-- OOO Q7 -->
+  <div class="q-card" id="oq7">
+    <div class="q-tab qt-slate"><span>Question 7 of 7</span><span class="q-num-badge">1 pt</span></div>
+    <div class="q-body">
+      <div class="q-stem">Three of these words are about <strong>thinking or believing something</strong>. One is about taking action.</div>
+      <div class="trio-grid">
+        <button class="trio-btn" onclick="ooo(this,'oq7',false)">assumption</button>
+        <button class="trio-btn" onclick="ooo(this,'oq7',true)">remove</button>
+        <button class="trio-btn" onclick="ooo(this,'oq7',false)">opinion</button>
+        <button class="trio-btn" onclick="ooo(this,'oq7',false)">take for granted</button>
+      </div>
+      <div class="fb" id="oq7-fb"></div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="btn-prev" onclick="goSec(2)">← Back</button>
+    <span class="step-label">Section 3 of 4</span>
+    <button class="btn-next" id="s3next" onclick="goSec(4)">Next Section →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+  SECTION 4 — WORD IN CONTEXT (MC)
+════════════════════════════════ -->
+<div class="section" id="sec4">
+  <div class="sec-header">
+    <div class="sec-num">4</div>
+    <div class="sec-info">
+      <h2>Word in Context</h2>
+      <p>Multiple choice · 7 questions · Choose the word that fits the sentence naturally</p>
+    </div>
+  </div>
+
+  <!-- Q1 -->
+  <div class="q-card" id="cq1">
+    <div class="q-tab qt-dark"><span>Question 1 of 7</span><span class="q-num-badge">1 pt</span></div>
+    <div class="q-body">
+      <div class="q-stem">We need to <em>___</em> our product strategy after the new competitor entered the market last month.</div>
+      <div class="opts">
+        <button class="opt" onclick="mc(this,'cq1',false,'B')"><span class="opt-letter">A</span> remove</button>
+        <button class="opt" onclick="mc(this,'cq1',true,'B')"><span class="opt-letter">B</span> reassess</button>
+        <button class="opt" onclick="mc(this,'cq1',false,'B')"><span class="opt-letter">C</span> locate</button>
+        <button class="opt" onclick="mc(this,'cq1',false,'B')"><span class="opt-letter">D</span> retrofit</button>
+      </div>
+      <div class="fb" id="cq1-fb"></div>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="q-card" id="cq2">
+    <div class="q-tab qt-dark"><span>Question 2 of 7</span><span class="q-num-badge">1 pt</span></div>
+    <div class="q-body">
+      <div class="q-stem">There is growing <em>___</em> for breathable roofing membranes in the Irish market, particularly from roofers working on older buildings.</div>
+      <div class="opts">
+        <button class="opt" onclick="mc(this,'cq2',true,'A')"><span class="opt-letter">A</span> demand</button>
+        <button class="opt" onclick="mc(this,'cq2',false,'A')"><span class="opt-letter">B</span> concern</button>
+        <button class="opt" onclick="mc(this,'cq2',false,'A')"><span class="opt-letter">C</span> shortfall</button>
+        <button class="opt" onclick="mc(this,'cq2',false,'A')"><span class="opt-letter">D</span> threshold</button>
+      </div>
+      <div class="fb" id="cq2-fb"></div>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="q-card" id="cq3">
+    <div class="q-tab qt-dark"><span>Question 3 of 7</span><span class="q-num-badge">1 pt</span></div>
+    <div class="q-body">
+      <div class="q-stem">The supplier said delivery would take three weeks, but the <em>___</em> arrival time was five — which caused problems on site.</div>
+      <div class="opts">
+        <button class="opt" onclick="mc(this,'cq3',false,'C')"><span class="opt-letter">A</span> current</button>
+        <button class="opt" onclick="mc(this,'cq3',false,'C')"><span class="opt-letter">B</span> appropriate</button>
+        <button class="opt" onclick="mc(this,'cq3',true,'C')"><span class="opt-letter">C</span> actual</button>
+        <button class="opt" onclick="mc(this,'cq3',false,'C')"><span class="opt-letter">D</span> unintended</button>
+      </div>
+      <div class="fb" id="cq3-fb"></div>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="q-card" id="cq4">
+    <div class="q-tab qt-dark"><span>Question 4 of 7</span><span class="q-num-badge">1 pt</span></div>
+    <div class="q-body">
+      <div class="q-stem">Every new product idea involves a <em>___</em> — you can reduce weight, but usually at the cost of durability.</div>
+      <div class="opts">
+        <button class="opt" onclick="mc(this,'cq4',false,'D')"><span class="opt-letter">A</span> callback</button>
+        <button class="opt" onclick="mc(this,'cq4',false,'D')"><span class="opt-letter">B</span> shortfall</button>
+        <button class="opt" onclick="mc(this,'cq4',false,'D')"><span class="opt-letter">C</span> precaution</button>
+        <button class="opt" onclick="mc(this,'cq4',true,'D')"><span class="opt-letter">D</span> trade-off</button>
+      </div>
+      <div class="fb" id="cq4-fb"></div>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="q-card" id="cq5">
+    <div class="q-tab qt-dark"><span>Question 5 of 7</span><span class="q-num-badge">1 pt</span></div>
+    <div class="q-body">
+      <div class="q-stem">The noise from the drilling was barely <em>___</em> from the office next door, so work continued without complaints.</div>
+      <div class="opts">
+        <button class="opt" onclick="mc(this,'cq5',false,'B')"><span class="opt-letter">A</span> manageable</button>
+        <button class="opt" onclick="mc(this,'cq5',true,'B')"><span class="opt-letter">B</span> audible</button>
+        <button class="opt" onclick="mc(this,'cq5',false,'B')"><span class="opt-letter">C</span> affordable</button>
+        <button class="opt" onclick="mc(this,'cq5',false,'B')"><span class="opt-letter">D</span> persuasive</button>
+      </div>
+      <div class="fb" id="cq5-fb"></div>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="q-card" id="cq6">
+    <div class="q-tab qt-dark"><span>Question 6 of 7</span><span class="q-num-badge">1 pt</span></div>
+    <div class="q-body">
+      <div class="q-stem">We ran a product <em>___</em> with ten roofers in England to test the membrane before the full launch.</div>
+      <div class="opts">
+        <button class="opt" onclick="mc(this,'cq6',false,'C')"><span class="opt-letter">A</span> advert</button>
+        <button class="opt" onclick="mc(this,'cq6',false,'C')"><span class="opt-letter">B</span> assumption</button>
+        <button class="opt" onclick="mc(this,'cq6',true,'C')"><span class="opt-letter">C</span> trial</button>
+        <button class="opt" onclick="mc(this,'cq6',false,'C')"><span class="opt-letter">D</span> callback</button>
+      </div>
+      <div class="fb" id="cq6-fb"></div>
+    </div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="q-card" id="cq7">
+    <div class="q-tab qt-dark"><span>Question 7 of 7</span><span class="q-num-badge">1 pt</span></div>
+    <div class="q-body">
+      <div class="q-stem">We should not <em>___</em> that all carpenters in England work in the same way — regional practices vary significantly.</div>
+      <div class="opts">
+        <button class="opt" onclick="mc(this,'cq7',false,'A')"><span class="opt-letter">A</span> take for granted</button>
+        <button class="opt" onclick="mc(this,'cq7',false,'A')"><span class="opt-letter">B</span> exaggerate</button>
+        <button class="opt" onclick="mc(this,'cq7',false,'A')"><span class="opt-letter">C</span> provoke</button>
+        <button class="opt" onclick="mc(this,'cq7',false,'A')"><span class="opt-letter">D</span> reassess</button>
+      </div>
+      <div class="fb" id="cq7-fb"></div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="btn-prev" onclick="goSec(3)">← Back</button>
+    <span class="step-label">Section 4 of 4</span>
+    <button class="btn-next" id="s4next" onclick="showFinal()">See Results →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+  FINAL
+════════════════════════════════ -->
+<div class="section" id="secFinal">
+  <div class="final-card">
+    <div class="score-ring">
+      <div class="score-big" id="finalScore">0</div>
+      <div class="score-of">out of 30</div>
+    </div>
+    <div class="final-title" id="finalTitle">Test complete!</div>
+    <div class="final-msg" id="finalMsg"></div>
+    <div class="breakdown">
+      <div class="bd-row"><span>Section 1 — Match the Definition</span><span class="bd-score" id="bd1">0 / 8</span></div>
+      <div class="bd-row"><span>Section 2 — Fill in the Blank</span><span class="bd-score" id="bd2">0 / 8</span></div>
+      <div class="bd-row"><span>Section 3 — Odd One Out</span><span class="bd-score" id="bd3">0 / 7</span></div>
+      <div class="bd-row"><span>Section 4 — Word in Context</span><span class="bd-score" id="bd4">0 / 7</span></div>
+    </div>
+    <button class="btn-restart" onclick="window.location.reload()">↺ Try Again</button>
+  </div>
+</div>
+
+</div><!-- /canvas -->
+
+<script>
+// ── State ──
+const secScores = {1:0, 2:0, 3:0, 4:0};
+const secMax = {1:8, 2:8, 3:7, 4:7};
+const s1answered = {};
+const s3answered = {};
+const s4answered = {};
+let totalScore = 0;
+
+function updateTicker() {
+  totalScore = secScores[1]+secScores[2]+secScores[3]+secScores[4];
+  document.getElementById('scoreDisp').textContent = totalScore;
+  document.getElementById('scoreDisp2').textContent = totalScore;
+  const t = document.getElementById('scoreTicker');
+  t.classList.remove('bump'); void t.offsetWidth; t.classList.add('bump');
+}
+
+// ── Section navigation ──
+function goSec(n) {
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec'+n).classList.add('active');
+  const pct = Math.round(((n-1)/4)*100);
+  document.getElementById('progFill').style.width = pct+'%';
+  document.getElementById('progText').textContent = 'Activity '+n+' of 4';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function showFinal() {
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('secFinal').classList.add('active');
+  document.getElementById('progFill').style.width = '100%';
+  document.getElementById('progText').textContent = 'Test Complete';
+  totalScore = secScores[1]+secScores[2]+secScores[3]+secScores[4];
+  document.getElementById('finalScore').textContent = totalScore;
+  document.getElementById('bd1').textContent = secScores[1]+' / 8';
+  document.getElementById('bd2').textContent = secScores[2]+' / 8';
+  document.getElementById('bd3').textContent = secScores[3]+' / 7';
+  document.getElementById('bd4').textContent = secScores[4]+' / 7';
+  const pct = Math.round((totalScore/30)*100);
+  let title, msg;
+  if(pct>=87){title="Excellent!"; msg="You have a strong command of this vocabulary. You can use these words accurately in context — keep building on this by using them in your own speaking and writing.";}
+  else if(pct>=67){title="Good work!"; msg="You know most of these words well. Review the ones you missed — pay attention to how they work in a sentence, not just their definition.";}
+  else if(pct>=47){title="Keep going!"; msg="You have a good foundation. Focus on the words you missed in context — many vocabulary errors come from knowing a definition but not how the word is actually used.";}
+  else{title="Good start."; msg="This vocabulary covers some challenging words. Review each section's feedback carefully, and try to use these words in a real sentence for each one you missed.";}
+  document.getElementById('finalTitle').textContent = title;
+  document.getElementById('finalMsg').textContent = msg;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── Section 1 & 4: Multiple choice ──
+const mcFB = {
+  s1q1: {c:"✓ Correct. Durability = the ability to last and withstand wear. Resilience means recovering from difficulties — related but different. Firmness is about surface texture. Reliability is about performance consistency.", w:"✗ Not quite. Durability = the ability to withstand wear, pressure, or damage over time. Resilience = recovering from difficulty. Firmness = surface texture. Reliability = consistent performance."},
+  s1q2: {c:"✓ Correct. A contingency plan is a backup plan used when the original plan fails.", w:"✗ Not quite. A contingency plan is specifically a backup plan for when the original cannot be followed. A precaution prevents problems from happening. A requirement is something necessary. An assumption is something accepted without proof."},
+  s1q3: {c:"✓ Correct. An assumption is something you accept as true without proof — you assume it.", w:"✗ Not quite. An assumption is accepted as true without proof. An opinion is a personal view. A concern is a worry. A precaution is a protective action taken in advance."},
+  s1q4: {c:"✓ Correct. Exceed = to be greater than a number, limit, or expectation.", w:"✗ Not quite. Exceed = to go beyond or be greater than something measurable. Exaggerate = to make something seem bigger or worse than it is. Provoke = to cause a reaction. Persuade = to convince someone."},
+  s1q5: {c:"✓ Correct. A shortfall is when the actual amount is less than the required or expected amount.", w:"✗ Not quite. A shortfall is a deficit — when you have less than you expected or needed. A threshold is a minimum level. A trade-off is an exchange of one thing for another. A delay is about time."},
+  s1q6: {c:"✓ Correct. In parallel = happening at the same time with some connection.", w:"✗ Not quite. In parallel = occurring simultaneously and related to each other. Ad hoc = arranged as needed, not planned. Post hoc = after the event. Homogeneous = all the same kind."},
+  s1q7: {c:"✓ Correct. A precaution is taken in advance to prevent something bad from happening.", w:"✗ Not quite. A precaution is a preventive measure taken before a problem occurs. A contingency plan is used when the original plan fails. A requirement is something necessary. A trial is a test."},
+  s1q8: {c:"✓ Correct. Ad hoc = created specifically as needed, not planned in advance.", w:"✗ Not quite. Ad hoc = for this specific purpose, created as needed. Post hoc = after the event. Actual = existing in fact. Appropriate = suitable."},
+  cq1: {c:"✓ Correct. Reassess = to consider or evaluate something again, especially when new factors emerge.", w:"✗ Not quite. Reassess = to evaluate again with new information. Remove = to take something away. Locate = to find something. Retrofit = to add something that wasn't originally there."},
+  cq2: {c:"✓ Correct. Demand = a need for goods or services. 'Growing demand' is a very common business phrase.", w:"✗ Not quite. Demand = the need for goods or services to be supplied. Concern = a worry. Shortfall = a deficit. Threshold = a minimum level that must be reached."},
+  cq3: {c:"✓ Correct. Actual = the real, true situation — as contrasted with what was expected or planned.", w:"✗ Not quite. Actual = what really happened, as opposed to what was planned or expected. Current = happening now. Appropriate = suitable. Unintended = not planned."},
+  cq4: {c:"✓ Correct. A trade-off is when you gain one thing by giving up another — very common in product development.", w:"✗ Not quite. A trade-off = exchanging one quality for another, usually as a compromise. A callback = an invitation to return. A shortfall = a deficit. A precaution = a protective measure."},
+  cq5: {c:"✓ Correct. Audible = able to be heard. 'Barely audible' means almost impossible to hear.", w:"✗ Not quite. Audible = able to be heard. Manageable = possible to deal with. Affordable = reasonably priced. Persuasive = good at convincing people."},
+  cq6: {c:"✓ Correct. A trial = a test of performance, quality, or suitability before a full launch.", w:"✗ Not quite. A trial = a test to assess suitability or performance. An advert = an advertisement. An assumption = something believed without proof. A callback = an invitation to return."},
+  cq7: {c:"✓ Correct. Take for granted = to fail to appreciate something because you assume it will always be there or true.", w:"✗ Not quite. Take for granted = to assume something without appreciating it. Exaggerate = to overstate. Provoke = to cause a reaction. Reassess = to evaluate again."},
+};
+
+const s1total = 8, s4total = 7;
+const s1q_answered = {s1q1:false,s1q2:false,s1q3:false,s1q4:false,s1q5:false,s1q6:false,s1q7:false,s1q8:false};
+const cq_answered = {cq1:false,cq2:false,cq3:false,cq4:false,cq5:false,cq6:false,cq7:false};
+
+function mc(btn, qid, isCorrect, correctKey) {
+  const card = document.getElementById(qid);
+  if(card.querySelector('.correct')) return;
+  const allBtns = card.querySelectorAll('.opt, .trio-btn');
+  allBtns.forEach(b=>b.disabled=true);
+  const fb = document.getElementById(qid+'-fb');
+  const data = mcFB[qid];
+  if(isCorrect) {
+    btn.classList.add('correct');
+    fb.className = 'fb show correct';
+    fb.innerHTML = data.c;
+    if(qid.startsWith('s1')) { secScores[1]++; s1q_answered[qid]=true; }
+    else if(qid.startsWith('cq')) { secScores[4]++; cq_answered[qid]=true; }
+    updateTicker();
+  } else {
+    btn.classList.add('wrong');
+    fb.className = 'fb show wrong';
+    fb.innerHTML = data.w;
+    allBtns.forEach(b=>{
+      const oc = b.getAttribute('onclick')||'';
+      if(oc.includes('true')) b.classList.add('correct');
+    });
+    if(qid.startsWith('s1')) s1q_answered[qid]=true;
+    else if(qid.startsWith('cq')) cq_answered[qid]=true;
+  }
+  // Check section complete
+  if(qid.startsWith('s1')) {
+    if(Object.values(s1q_answered).every(v=>v)) {
+      document.getElementById('s1next').classList.add('show');
+    }
+  }
+  if(qid.startsWith('cq')) {
+    if(Object.values(cq_answered).every(v=>v)) {
+      document.getElementById('s4next').classList.add('show');
+    }
+  }
+}
+
+// ── Section 2: Fill in blank ──
+let selectedW = null;
+const fibCorrect = {
+  f1:'pain point', f2:'airtight', f3:'time-consuming',
+  f4:'moisture', f5:'hazardous', f6:'retrofit',
+  f7:'fire-retardant', f8:'reliable'
+};
+const fibFB = {
+  f1:"'Pain point' = a specific problem or difficulty that a customer regularly experiences. Common in product management.",
+  f2:"'Airtight' = not allowing air to pass through. Essential in vapour barrier installation to prevent heat loss.",
+  f3:"'Time-consuming' = taking a long time. Note the hyphen and the -ing ending.",
+  f4:"'Moisture' = water vapour or liquid in small quantities. A key concern in building construction.",
+  f5:"'Hazardous' = dangerous; risky. Always used for physical danger, not emotional risk.",
+  f6:"'Retrofit' = to add something that was not part of the original design. Very common in building renovation.",
+  f7:"'Fire-retardant' = slowing or halting the spread of fire. Note: retardant, not retarded (a very different word).",
+  f8:"'Reliable' = something that can be trusted to work consistently. Tradespeople value this above almost everything else.",
+};
+
+function selWord(chip) {
+  document.querySelectorAll('#wb2 .wchip').forEach(c=>{c.classList.remove('selected');});
+  selectedW = chip.dataset.w;
+  chip.classList.add('selected');
+}
+function placeWord(inputId) {
+  if(!selectedW) return;
+  const inp = document.getElementById(inputId);
+  if(inp.disabled) return;
+  inp.value = selectedW;
+}
+function submitFIB() {
+  let correct = 0;
+  for(const [id, ans] of Object.entries(fibCorrect)) {
+    const inp = document.getElementById(id);
+    const val = (inp.value||'').trim().toLowerCase();
+    const fb = document.getElementById('fq'+id.slice(1)+'-fb');
+    inp.disabled = true;
+    if(val === ans) {
+      inp.classList.add('correct'); correct++;
+      fb.className = 'fb show correct';
+      fb.innerHTML = '✓ Correct. '+fibFB[id];
+    } else {
+      inp.classList.add('wrong');
+      inp.value = ans;
+      fb.className = 'fb show wrong';
+      fb.innerHTML = '✗ The answer is <strong>'+ans+'</strong>. '+fibFB[id];
+    }
+  }
+  document.querySelectorAll('#wb2 .wchip').forEach(c=>c.classList.add('used'));
+  secScores[2] = correct;
+  updateTicker();
+  document.getElementById('s2submit').disabled = true;
+  document.getElementById('s2next').style.display = 'block';
+}
+
+// ── Section 3: Odd one out ──
+const oooFB = {
+  oq1:{c:"✓ Correct. Resilient is the odd one out — it means able to recover from difficulty, which is a positive quality. The others (hazardous, arduous, exhaustion) are all negative.", w:"✗ Not quite. Resilient is the odd one out — it is positive (able to recover from difficulty). Hazardous = dangerous, arduous = very tiring and difficult, exhaustion = extreme tiredness."},
+  oq2:{c:"✓ Correct. Competitor is the odd one out — it relates to business rivalry, not time or planning. Contingency plan, delay, and in parallel all relate to timing and schedules.", w:"✗ Not quite. Competitor is the odd one out — it refers to a rival business, not time or planning. The others all relate to timing: contingency plan (backup timing), delay (lateness), in parallel (simultaneous)."},
+  oq3:{c:"✓ Correct. Persuade is the odd one out — it is a verb (an action). Monotonous, homogeneous, and dense are all adjectives (describing qualities).", w:"✗ Not quite. Persuade is the odd one out — it is a verb (something you do). Monotonous = boring/repetitive (adjective), homogeneous = all the same (adjective), dense = closely packed (adjective)."},
+  oq4:{c:"✓ Correct. Carpet is the odd one out — it is a floor covering, not directly connected to building protection or exterior construction. Moisture, airtight, and tiles are all connected to building work.", w:"✗ Not quite. Carpet is the odd one out — it is a floor covering. Moisture, airtight, and tiles all relate directly to building construction and weatherproofing."},
+  oq5:{c:"✓ Correct. Agitated is the odd one out — it describes an emotional/mental state (feeling troubled or nervous). Audible, dense, and firmness all describe physical, sensory qualities.", w:"✗ Not quite. Agitated is the odd one out — it is a mental/emotional state (feeling nervous or troubled). Audible = able to be heard, dense = closely packed (physical), firmness = solid surface quality (physical)."},
+  oq6:{c:"✓ Correct. Startle is the odd one out — it means to cause sudden shock or alarm. Demand, competitor, and shortfall are all business and commercial terms.", w:"✗ Not quite. Startle is the odd one out — it means to cause sudden shock. Demand, competitor, and shortfall are all core business vocabulary."},
+  oq7:{c:"✓ Correct. Remove is the odd one out — it is a physical action (take something away). Assumption, opinion, and take for granted all relate to how people think or believe things.", w:"✗ Not quite. Remove is the odd one out — it means to physically take something away. Assumption, opinion, and take for granted all relate to beliefs, perceptions, or mental attitudes."},
+};
+const oq_answered = {oq1:false,oq2:false,oq3:false,oq4:false,oq5:false,oq6:false,oq7:false};
+
+function ooo(btn, qid, isCorrect) {
+  const card = document.getElementById(qid);
+  if(card.querySelector('.correct')) return;
+  const allBtns = card.querySelectorAll('.trio-btn');
+  allBtns.forEach(b=>b.disabled=true);
+  const fb = document.getElementById(qid+'-fb');
+  const data = oooFB[qid];
+  if(isCorrect) {
+    btn.classList.add('correct');
+    fb.className = 'fb show correct';
+    fb.innerHTML = data.c;
+    secScores[3]++; updateTicker();
+  } else {
+    btn.classList.add('wrong');
+    allBtns.forEach(b=>{ if((b.getAttribute('onclick')||'').includes('true')) b.classList.add('correct'); });
+    fb.className = 'fb show wrong';
+    fb.innerHTML = data.w;
+  }
+  oq_answered[qid] = true;
+  if(Object.values(oq_answered).every(v=>v)) {
+    document.getElementById('s3next').classList.add('show');
+  }
+}
+</script>
+</body>
+</html>

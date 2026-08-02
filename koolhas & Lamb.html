@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – B2 Lesson: Koolhaas & Lamb</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F5EFE6;
+    --warm-white: #FAF7F2;
+    --terracotta: #C4613A;
+    --terracotta-dark: #9E4A28;
+    --terracotta-light: #E07B53;
+    --clay: #D4845A;
+    --rust: #8B3A1F;
+    --sage: #7A8C7B;
+    --slate: #4A5568;
+    --charcoal: #2C2C2C;
+    --gold: #C9974A;
+    --gold-light: #E8BC78;
+    --surface: #EDE5D8;
+    --card-bg: #F8F3EC;
+    --border: #D9C9B5;
+    --correct: #5A8C6B;
+    --incorrect: #B84040;
+    --correct-bg: #EBF5EF;
+    --incorrect-bg: #F9EAEA;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: var(--cream);
+    color: var(--charcoal);
+    min-height: 100vh;
+    background-image: 
+      radial-gradient(ellipse at 0% 0%, rgba(196,97,58,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 100% 100%, rgba(201,151,74,0.08) 0%, transparent 50%);
+  }
+
+  /* ─── HEADER ─── */
+  .site-header {
+    background-color: var(--warm-white);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(44,44,44,0.06);
+  }
+
+  .header-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .score-badge {
+    background: var(--terracotta);
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 20px;
+    letter-spacing: 0.02em;
+    min-width: 100px;
+    text-align: center;
+  }
+
+  /* ─── LOGO SVG ─── */
+  .logo-svg {
+    width: 160px;
+    height: auto;
+  }
+
+  /* ─── MAIN LAYOUT ─── */
+  .main-wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* ─── LESSON INTRO ─── */
+  .lesson-intro {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px;
+    margin-bottom: 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .lesson-intro::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--terracotta), var(--gold));
+  }
+
+  .lesson-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--terracotta-dark);
+    margin-bottom: 20px;
+  }
+
+  .lesson-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px;
+    color: var(--charcoal);
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+
+  .lesson-title em {
+    color: var(--terracotta);
+    font-style: italic;
+  }
+
+  .lesson-desc {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--slate);
+    max-width: 600px;
+  }
+
+  .lesson-meta {
+    display: flex;
+    gap: 16px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+
+  .meta-pill {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--slate);
+  }
+
+  .meta-pill span { color: var(--terracotta); font-weight: 600; }
+
+  /* ─── ACTIVITY SECTION ─── */
+  .activity-section { display: none; }
+  .activity-section.active { display: block; }
+
+  .activity-header {
+    margin-bottom: 28px;
+  }
+
+  .activity-number {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 6px;
+  }
+
+  .activity-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    color: var(--charcoal);
+    margin-bottom: 8px;
+  }
+
+  .activity-instructions {
+    font-size: 14px;
+    color: var(--slate);
+    line-height: 1.6;
+    background: var(--surface);
+    border-left: 3px solid var(--gold);
+    padding: 10px 16px;
+    border-radius: 0 8px 8px 0;
+  }
+
+  /* ─── PROGRESS BAR ─── */
+  .progress-wrap {
+    margin-bottom: 24px;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--slate);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .progress-bar {
+    height: 6px;
+    background: var(--surface);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--terracotta), var(--gold));
+    border-radius: 10px;
+    transition: width 0.4s ease;
+  }
+
+  /* ─── QUESTION CARD ─── */
+  .question-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 32px;
+    margin-bottom: 20px;
+    animation: slideIn 0.3s ease;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .question-text {
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.6;
+    color: var(--charcoal);
+    margin-bottom: 24px;
+  }
+
+  .question-context {
+    font-size: 14px;
+    color: var(--slate);
+    background: var(--surface);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    line-height: 1.7;
+    font-style: italic;
+    border-left: 3px solid var(--terracotta-light);
+  }
+
+  /* ─── MULTIPLE CHOICE ─── */
+  .choices-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  @media(max-width: 600px) { .choices-grid { grid-template-columns: 1fr; } }
+
+  .choice-btn {
+    background: var(--warm-white);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--charcoal);
+    cursor: pointer;
+    transition: all 0.18s ease;
+    line-height: 1.5;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .choice-btn:hover:not(:disabled) {
+    border-color: var(--terracotta);
+    background: #FFF8F5;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(196,97,58,0.12);
+  }
+
+  .choice-label {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--terracotta);
+    flex-shrink: 0;
+    letter-spacing: 0;
+  }
+
+  .choice-btn.selected {
+    border-color: var(--terracotta);
+    background: #FFF8F5;
+  }
+
+  .choice-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    color: var(--correct);
+  }
+
+  .choice-btn.correct .choice-label {
+    background: var(--correct);
+    color: white;
+  }
+
+  .choice-btn.incorrect {
+    border-color: var(--incorrect);
+    background: var(--incorrect-bg);
+    color: var(--incorrect);
+  }
+
+  .choice-btn.incorrect .choice-label {
+    background: var(--incorrect);
+    color: white;
+  }
+
+  .choice-btn:disabled { cursor: default; }
+
+  /* ─── FEEDBACK BOX ─── */
+  .feedback-box {
+    display: none;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-top: 16px;
+    font-size: 14px;
+    line-height: 1.6;
+    animation: slideIn 0.25s ease;
+  }
+
+  .feedback-box.correct {
+    background: var(--correct-bg);
+    border: 1px solid var(--correct);
+    color: #2d6a45;
+  }
+
+  .feedback-box.incorrect {
+    background: var(--incorrect-bg);
+    border: 1px solid var(--incorrect);
+    color: #7a2020;
+  }
+
+  .feedback-icon { font-size: 16px; margin-right: 6px; }
+  .feedback-label { font-weight: 700; }
+
+  /* ─── FILL IN THE BLANK ─── */
+  .fitb-sentence {
+    font-size: 16px;
+    line-height: 2;
+    color: var(--charcoal);
+    margin-bottom: 20px;
+  }
+
+  .blank-input {
+    border: none;
+    border-bottom: 2px solid var(--terracotta);
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--terracotta-dark);
+    padding: 2px 8px;
+    min-width: 140px;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .blank-input:focus { border-bottom-color: var(--gold); }
+  .blank-input.correct { border-bottom-color: var(--correct); color: var(--correct); }
+  .blank-input.incorrect { border-bottom-color: var(--incorrect); color: var(--incorrect); }
+  .blank-input:disabled { background: transparent; }
+
+  .word-bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+    padding: 16px;
+    background: var(--surface);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+
+  .word-bank-label {
+    width: 100%;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--slate);
+    margin-bottom: 8px;
+  }
+
+  .word-chip {
+    background: var(--card-bg);
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--charcoal);
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+
+  .word-chip:hover { border-color: var(--terracotta); color: var(--terracotta); background: #FFF8F5; }
+  .word-chip.used { opacity: 0.35; pointer-events: none; text-decoration: line-through; }
+
+  /* ─── MATCHING ─── */
+  .matching-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+
+  @media(max-width: 600px) { .matching-grid { grid-template-columns: 1fr; } }
+
+  .matching-col-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 10px;
+  }
+
+  .match-item {
+    background: var(--warm-white);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 14px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.18s;
+    line-height: 1.5;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+  }
+
+  .match-item:hover:not(.disabled) { border-color: var(--terracotta); background: #FFF8F5; }
+  .match-item.selected { border-color: var(--terracotta); background: #FFF8F5; box-shadow: 0 0 0 3px rgba(196,97,58,0.15); }
+  .match-item.matched-correct { border-color: var(--correct); background: var(--correct-bg); color: var(--correct); }
+  .match-item.matched-incorrect { border-color: var(--incorrect); background: var(--incorrect-bg); }
+  .match-item.disabled { cursor: default; }
+
+  /* ─── DRAG & DROP ─── */
+  .drag-instruction {
+    font-size: 13px;
+    color: var(--slate);
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+
+  .drag-words {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+    min-height: 50px;
+    padding: 12px;
+    background: var(--surface);
+    border-radius: 10px;
+    border: 1px dashed var(--border);
+  }
+
+  .drag-chip {
+    background: var(--warm-white);
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: grab;
+    transition: all 0.15s;
+    user-select: none;
+    color: var(--charcoal);
+  }
+
+  .drag-chip:hover { border-color: var(--terracotta); color: var(--terracotta); }
+  .drag-chip.dragging { opacity: 0.4; }
+
+  .drop-zones {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .drop-zone-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .drop-zone-label {
+    font-size: 14px;
+    color: var(--charcoal);
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .drop-zone {
+    min-width: 160px;
+    min-height: 40px;
+    border: 2px dashed var(--border);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: var(--slate);
+    transition: all 0.15s;
+    padding: 6px 12px;
+    background: var(--warm-white);
+  }
+
+  .drop-zone.dragover { border-color: var(--terracotta); background: #FFF8F5; }
+  .drop-zone.filled { border-style: solid; color: var(--charcoal); font-weight: 500; }
+  .drop-zone.correct-zone { border-color: var(--correct); background: var(--correct-bg); color: var(--correct); }
+  .drop-zone.incorrect-zone { border-color: var(--incorrect); background: var(--incorrect-bg); color: var(--incorrect); }
+
+  /* ─── BUTTONS ─── */
+  .btn-primary {
+    background: var(--terracotta);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 13px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+
+  .btn-primary:hover { background: var(--terracotta-dark); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(196,97,58,0.3); }
+  .btn-primary:disabled { opacity: 0.4; cursor: default; transform: none; box-shadow: none; }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--terracotta);
+    border: 1.5px solid var(--terracotta);
+    border-radius: 10px;
+    padding: 11px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-secondary:hover { background: var(--terracotta); color: white; }
+
+  .btn-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+
+  /* ─── ACTIVITY NAV (tab-style) ─── */
+  .activity-nav {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+
+  .act-tab {
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: default;
+    letter-spacing: 0.04em;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--slate);
+    transition: all 0.2s;
+  }
+
+  .act-tab.active {
+    background: var(--terracotta);
+    color: white;
+    border-color: var(--terracotta);
+  }
+
+  .act-tab.completed {
+    background: var(--surface);
+    color: var(--correct);
+    border-color: var(--correct);
+  }
+
+  /* ─── FINAL SCREEN ─── */
+  #final-screen {
+    display: none;
+    text-align: center;
+    padding: 60px 32px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    animation: slideIn 0.4s ease;
+  }
+
+  .final-score-ring {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--terracotta), var(--gold));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 28px;
+    box-shadow: 0 8px 32px rgba(196,97,58,0.3);
+  }
+
+  .final-score-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 44px;
+    color: white;
+    line-height: 1;
+  }
+
+  .final-score-denom {
+    font-size: 13px;
+    color: rgba(255,255,255,0.8);
+    font-weight: 500;
+  }
+
+  .final-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 30px;
+    color: var(--charcoal);
+    margin-bottom: 12px;
+  }
+
+  .final-message {
+    font-size: 15px;
+    color: var(--slate);
+    max-width: 480px;
+    margin: 0 auto 32px;
+    line-height: 1.7;
+  }
+
+  .final-breakdown {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+
+  .breakdown-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 24px;
+    min-width: 120px;
+  }
+
+  .breakdown-label { font-size: 11px; color: var(--slate); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+  .breakdown-val { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--terracotta); }
+
+  /* ─── REORDER ACTIVITY ─── */
+  .reorder-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .reorder-item {
+    background: var(--warm-white);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 14px;
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.15s;
+    line-height: 1.5;
+  }
+
+  .reorder-item:hover { border-color: var(--terracotta); background: #FFF8F5; }
+  .reorder-item.dragging-item { opacity: 0.4; }
+  .reorder-item.drag-over-item { border-color: var(--gold); border-style: dashed; }
+
+  .drag-handle {
+    color: var(--border);
+    font-size: 18px;
+    cursor: grab;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  .reorder-item.correct-order { border-color: var(--correct); background: var(--correct-bg); }
+  .reorder-item.incorrect-order { border-color: var(--incorrect); background: var(--incorrect-bg); }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--surface); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 32px 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<header class="site-header">
+  <div class="header-inner">
+    <!-- Forbes English Logo SVG -->
+    <svg class="logo-svg" viewBox="0 0 200 64" xmlns="http://www.w3.org/2000/svg">
+      <text x="100" y="30" font-family="Georgia, 'Times New Roman', serif" font-size="30" font-weight="700" fill="#C4613A" text-anchor="middle" letter-spacing="1">Forbes</text>
+      <line x1="10" y1="38" x2="190" y2="38" stroke="#D9C9B5" stroke-width="1.2"/>
+      <text x="100" y="56" font-family="'Arial Black', 'Arial', sans-serif" font-size="14" font-weight="900" fill="#9E4A28" text-anchor="middle" letter-spacing="6">ENGLISH</text>
+    </svg>
+    <div class="score-badge" id="score-badge">Score: 0 / 0</div>
+  </div>
+</header>
+
+<!-- ─── MAIN ─── -->
+<main class="main-wrap">
+
+  <!-- INTRO -->
+  <div class="lesson-intro">
+    <div class="lesson-tag">📐 Architecture &amp; Design</div>
+    <h1 class="lesson-title">Rem Koolhaas &amp; Max Lamb:<br><em>Talking About Projects</em></h1>
+    <p class="lesson-desc">
+      In this B2 lesson, you will explore language used in professional conversations about architectural and design projects. 
+      Practice the vocabulary, grammar, and discourse patterns that designers and architects use when discussing their creative vision and process.
+    </p>
+    <div class="lesson-meta">
+      <div class="meta-pill">Level: <span>B2 Upper-Intermediate</span></div>
+      <div class="meta-pill">Activities: <span>3</span></div>
+      <div class="meta-pill">Questions: <span>16</span></div>
+      <div class="meta-pill">Topic: <span>Architecture &amp; Design</span></div>
+    </div>
+  </div>
+
+  <!-- ACTIVITY NAV -->
+  <div class="activity-nav">
+    <div class="act-tab active" id="tab-1">Activity 1: Multiple Choice</div>
+    <div class="act-tab" id="tab-2">Activity 2: Fill in the Blank</div>
+    <div class="act-tab" id="tab-3">Activity 3: Sentence Reordering</div>
+  </div>
+
+  <!-- ════════════════════════════════════ -->
+  <!-- ACTIVITY 1: MULTIPLE CHOICE         -->
+  <!-- ════════════════════════════════════ -->
+  <div class="activity-section active" id="activity-1">
+    <div class="activity-header">
+      <div class="activity-number">Activity 1 of 3</div>
+      <h2 class="activity-title">Reading Comprehension &amp; Vocabulary</h2>
+      <div class="activity-instructions">
+        Read each question carefully about the professional worlds of architect Rem Koolhaas and designer Max Lamb.
+        Choose the best answer (A–D). After selecting, you will see feedback explaining the correct answer.
+      </div>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span id="a1-progress-text">Question 1 of 6</span>
+        <span id="a1-score-text">0 correct</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="a1-bar" style="width:0%"></div></div>
+    </div>
+
+    <div id="a1-container"></div>
+
+    <div class="btn-row">
+      <button class="btn-primary" id="a1-next" style="display:none" onclick="nextQ(1)">Next Question →</button>
+      <button class="btn-primary" id="a1-finish" style="display:none" onclick="finishActivity(1)">Go to Activity 2 →</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════ -->
+  <!-- ACTIVITY 2: FILL IN THE BLANK       -->
+  <!-- ════════════════════════════════════ -->
+  <div class="activity-section" id="activity-2">
+    <div class="activity-header">
+      <div class="activity-number">Activity 2 of 3</div>
+      <h2 class="activity-title">Fill in the Blank</h2>
+      <div class="activity-instructions">
+        Complete each sentence using the correct word from the word bank. Click a word to select it, then click the blank to fill it in. Each word is used only once.
+      </div>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span id="a2-progress-text">Sentence 1 of 5</span>
+        <span id="a2-score-text">0 correct</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="a2-bar" style="width:0%"></div></div>
+    </div>
+
+    <div id="a2-container"></div>
+
+    <div class="btn-row">
+      <button class="btn-primary" id="a2-check" onclick="checkFITB()" disabled>Check Answers</button>
+      <button class="btn-primary" id="a2-finish" style="display:none" onclick="finishActivity(2)">Go to Activity 3 →</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════ -->
+  <!-- ACTIVITY 3: SENTENCE REORDERING     -->
+  <!-- ════════════════════════════════════ -->
+  <div class="activity-section" id="activity-3">
+    <div class="activity-header">
+      <div class="activity-number">Activity 3 of 3</div>
+      <h2 class="activity-title">Sentence Reordering</h2>
+      <div class="activity-instructions">
+        Each set of words is a jumbled sentence. Drag and drop the segments into the correct order to form a grammatically correct and meaningful sentence. Sentences are based on themes from design and architecture discussions.
+      </div>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span id="a3-progress-text">Sentence 1 of 5</span>
+        <span id="a3-score-text">0 correct</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="a3-bar" style="width:0%"></div></div>
+    </div>
+
+    <div id="a3-container"></div>
+
+    <div class="btn-row">
+      <button class="btn-primary" id="a3-next" style="display:none" onclick="nextReorder()">Next Sentence →</button>
+      <button class="btn-primary" id="a3-finish" style="display:none" onclick="showFinalScreen()">See Final Results →</button>
+    </div>
+  </div>
+
+  <!-- ─── FINAL SCREEN ─── -->
+  <div id="final-screen">
+    <div class="final-score-ring">
+      <div class="final-score-num" id="final-num">0</div>
+      <div class="final-score-denom" id="final-denom">out of 16</div>
+    </div>
+    <h2 class="final-title" id="final-title">Well done!</h2>
+    <p class="final-message" id="final-message"></p>
+    <div class="final-breakdown">
+      <div class="breakdown-item">
+        <div class="breakdown-label">Activity 1</div>
+        <div class="breakdown-val" id="bd-1">—</div>
+      </div>
+      <div class="breakdown-item">
+        <div class="breakdown-label">Activity 2</div>
+        <div class="breakdown-val" id="bd-2">—</div>
+      </div>
+      <div class="breakdown-item">
+        <div class="breakdown-label">Activity 3</div>
+        <div class="breakdown-val" id="bd-3">—</div>
+      </div>
+    </div>
+    <button class="btn-primary" onclick="restartLesson()">↺ Restart Lesson</button>
+  </div>
+
+</main>
+
+<script>
+// ══════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════
+
+// ACTIVITY 1: Multiple Choice (6 questions)
+const mcQuestions = [
+  {
+    context: "Rem Koolhaas, founder of OMA (Office for Metropolitan Architecture), is known for questioning conventional approaches to design and urban planning.",
+    question: "When Koolhaas describes a project as 'programmatically complex', he most likely means the building:",
+    choices: [
+      { label: "A", text: "uses expensive or difficult construction materials" },
+      { label: "B", text: "serves multiple distinct purposes within a single structure" },
+      { label: "C", text: "follows a complicated digital modelling process" },
+      { label: "D", text: "requires a large team of specialists to manage" }
+    ],
+    correct: 1,
+    explanation: "'Programmatically complex' is architectural terminology for a building that accommodates several different functions or activities — for example, combining retail, housing, and public space. This is distinct from material or technical complexity."
+  },
+  {
+    context: "Max Lamb is a British designer known for working with raw, industrial, and natural materials — from pewter poured directly onto a beach to furniture made in quarries.",
+    question: "Which phrase best describes Max Lamb's design philosophy as illustrated by his working methods?",
+    choices: [
+      { label: "A", text: "privileging digital precision over physical interaction" },
+      { label: "B", text: "letting commercial demands guide the outcome" },
+      { label: "C", text: "allowing the material and process to shape the final form" },
+      { label: "D", text: "replicating historical craft techniques without modification" }
+    ],
+    correct: 2,
+    explanation: "Lamb's practice is defined by a deep engagement with materials and processes — he often works directly in the landscape and lets the character of the material (stone, metal, wood) determine the object's final appearance. This is 'process-led' or 'material-driven' design."
+  },
+  {
+    context: "In an interview, Koolhaas says: 'We were interested not in what the building looks like, but in what it does.'",
+    question: "Koolhaas is making a distinction between two approaches to architecture. What does this statement emphasise?",
+    choices: [
+      { label: "A", text: "function and social impact over purely visual aesthetics" },
+      { label: "B", text: "engineering performance over client satisfaction" },
+      { label: "C", text: "the importance of sustainability over visual form" },
+      { label: "D", text: "cost efficiency over decorative architectural language" }
+    ],
+    correct: 0,
+    explanation: "'What it does' versus 'what it looks like' is a classic distinction in architecture between functionalism and formalism. Koolhaas is prioritising a building's social, cultural, and spatial performance over its exterior appearance."
+  },
+  {
+    context: "Max Lamb has said that he prefers to work in series rather than creating one-off objects, because it allows him to 'exhaust the possibilities of a material'.",
+    question: "What does the phrase 'exhaust the possibilities of a material' most likely mean in this design context?",
+    choices: [
+      { label: "A", text: "to test a material until it breaks or becomes unusable" },
+      { label: "B", text: "to fully explore everything a material can do or express" },
+      { label: "C", text: "to use up stock efficiently and avoid commercial waste" },
+      { label: "D", text: "to document a material's properties for future reference" }
+    ],
+    correct: 1,
+    explanation: "'Exhaust the possibilities' is an idiomatic expression meaning to fully explore or push something to its limits. For Lamb, this means experimenting with a material in every way imaginable — testing its limits, textures, forms, and meanings."
+  },
+  {
+    context: "Koolhaas's firm OMA often produces theoretical research alongside built projects, sometimes publishing findings that challenge assumptions about cities and architecture.",
+    question: "In professional English, what does 'to challenge assumptions' mean?",
+    choices: [
+      { label: "A", text: "to reject all established ideas and begin from scratch" },
+      { label: "B", text: "to disagree with a client's written project brief" },
+      { label: "C", text: "to question beliefs or ideas that are taken for granted" },
+      { label: "D", text: "to conduct formal legal or financial investigations" }
+    ],
+    correct: 2,
+    explanation: "'To challenge assumptions' means to critically examine ideas that people accept without question. It does not imply rejection — it means asking 'why do we believe this?' and testing whether those beliefs hold up."
+  },
+  {
+    context: "Both Koolhaas and Lamb have described their practices as being driven by curiosity rather than a fixed aesthetic agenda.",
+    question: "What does having a 'fixed aesthetic agenda' suggest about a designer?",
+    choices: [
+      { label: "A", text: "the designer works exclusively on public commissions" },
+      { label: "B", text: "the designer has a predetermined and unchanging visual style" },
+      { label: "C", text: "the designer focuses mainly on pricing and budget constraints" },
+      { label: "D", text: "the designer prefers working with a stable team of collaborators" }
+    ],
+    correct: 1,
+    explanation: "An 'aesthetic agenda' refers to a set of visual or stylistic goals. A 'fixed' agenda means it is rigid and doesn't change project to project. Both Koolhaas and Lamb resist this — their approach is driven by context, material, and ideas rather than a recognisable signature style."
+  }
+];
+
+// ACTIVITY 2: Fill in the Blank (5 sentences)
+const fitbData = {
+  wordBank: ["commission", "iterate", "vernacular", "collaborator", "prototype", "articulate", "spatial", "precedent"],
+  sentences: [
+    {
+      before: "Rem Koolhaas often works closely with a trusted",
+      blank: "collaborator",
+      after: "— someone who contributes expertise and ideas throughout the entire design process.",
+      hint: "collaborator",
+      explanation: "A 'collaborator' is a person who works jointly with others on a project. This is a key word in professional design and creative fields."
+    },
+    {
+      before: "Max Lamb typically builds a physical",
+      blank: "prototype",
+      after: "before committing to a final form — this allows him to test how the material actually behaves.",
+      hint: "prototype",
+      explanation: "A 'prototype' is an early, experimental model of a product used for testing and evaluation before the final version is produced."
+    },
+    {
+      before: "Good designers are able to clearly",
+      blank: "articulate",
+      after: "the reasons behind their decisions, both in writing and in verbal presentations to clients.",
+      hint: "articulate",
+      explanation: "To 'articulate' means to express ideas clearly and fluently. In professional contexts, this refers to the ability to explain your thinking in a precise and persuasive way."
+    },
+    {
+      before: "When working in a foreign city, Koolhaas always researches the local architectural",
+      blank: "vernacular",
+      after: "— the traditional building styles and forms particular to that region.",
+      hint: "vernacular",
+      explanation: "The 'vernacular' refers to locally or regionally characteristic forms of architecture that use local materials and traditions, as opposed to imported or international styles."
+    },
+    {
+      before: "Before committing to a final layout, the OMA team continued to",
+      blank: "iterate",
+      after: "— testing multiple versions of the floor plan until the spatial logic felt coherent.",
+      hint: "iterate",
+      explanation: "To 'iterate' means to repeat a process with modifications, improving on each version. It is used heavily in design and technology industries to describe a cyclical process of testing and refining."
+    }
+  ]
+};
+
+// ACTIVITY 3: Sentence Reordering (5 sentences)
+const reorderData = [
+  {
+    segments: ["Koolhaas argues that", "the most innovative buildings", "challenge the expectations", "of the people who use them"],
+    correct: [0, 1, 2, 3],
+    explanation: "The correct sentence is: 'Koolhaas argues that the most innovative buildings challenge the expectations of the people who use them.' This is a reporting structure (argue + that clause) followed by a relative clause."
+  },
+  {
+    segments: ["Max Lamb rarely begins", "with a sketch —", "he prefers to", "work directly with the material"],
+    correct: [0, 1, 2, 3],
+    explanation: "The correct order is: 'Max Lamb rarely begins with a sketch — he prefers to work directly with the material.' The dash introduces a contrasting or elaborating clause."
+  },
+  {
+    segments: ["The client asked the architects", "to reconsider their proposal", "after the initial design", "failed to meet the brief"],
+    correct: [0, 1, 2, 3],
+    explanation: "'The client asked the architects to reconsider their proposal after the initial design failed to meet the brief.' This uses the structure: [subject] + asked + [object] + infinitive + [time clause]."
+  },
+  {
+    segments: ["By working with raw stone", "rather than processed materials,", "Lamb ensures that", "each piece retains its unique character"],
+    correct: [0, 1, 2, 3],
+    explanation: "'By working with raw stone rather than processed materials, Lamb ensures that each piece retains its unique character.' This uses an introductory 'by + gerund' clause to explain method."
+  },
+  {
+    segments: ["What distinguishes OMA", "from other firms", "is their willingness to question", "the very purpose of a building"],
+    correct: [0, 1, 2, 3],
+    explanation: "'What distinguishes OMA from other firms is their willingness to question the very purpose of a building.' This uses a 'what' nominal clause as subject, followed by the main predicate."
+  }
+];
+
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+let a1Current = 0, a1Score = 0, a1Done = false;
+let a2Score = 0, a2Done = false;
+let a3Current = 0, a3Score = 0, a3Done = false;
+let selectedWord = null;
+let totalScore = 0;
+let activityScores = {1: 0, 2: 0, 3: 0};
+
+// ══════════════════════════════════════════
+// SCORE BADGE
+// ══════════════════════════════════════════
+function updateBadge() {
+  const total = activityScores[1] + activityScores[2] + activityScores[3];
+  const possible = (a1Done ? 6 : 0) + (a2Done ? 5 : 0) + (a3Done ? 5 : 0);
+  document.getElementById('score-badge').textContent = `Score: ${total} / ${possible || '?'}`;
+}
+
+// ══════════════════════════════════════════
+// ACTIVITY 1 — MULTIPLE CHOICE
+// ══════════════════════════════════════════
+function renderMC(idx) {
+  const q = mcQuestions[idx];
+  const total = mcQuestions.length;
+  document.getElementById('a1-progress-text').textContent = `Question ${idx+1} of ${total}`;
+  document.getElementById('a1-score-text').textContent = `${a1Score} correct`;
+  document.getElementById('a1-bar').style.width = `${(idx/total)*100}%`;
+
+  let html = `<div class="question-card">`;
+  if (q.context) html += `<div class="question-context">${q.context}</div>`;
+  html += `<div class="question-text">${q.question}</div>`;
+  html += `<div class="choices-grid">`;
+  q.choices.forEach((c, i) => {
+    html += `<button class="choice-btn" id="choice-${i}" onclick="selectMC(${i}, ${q.correct}, ${idx})">
+      <span class="choice-label">${c.label}</span>
+      <span>${c.text}</span>
+    </button>`;
+  });
+  html += `</div>`;
+  html += `<div class="feedback-box" id="a1-feedback"></div>`;
+  html += `</div>`;
+  document.getElementById('a1-container').innerHTML = html;
+  document.getElementById('a1-next').style.display = 'none';
+  document.getElementById('a1-finish').style.display = 'none';
+}
+
+function selectMC(chosen, correct, idx) {
+  const btns = document.querySelectorAll('.choice-btn');
+  btns.forEach(b => b.disabled = true);
+
+  btns[chosen].classList.add(chosen === correct ? 'correct' : 'incorrect');
+  if (chosen !== correct) btns[correct].classList.add('correct');
+
+  const fb = document.getElementById('a1-feedback');
+  const isCorrect = chosen === correct;
+  if (isCorrect) a1Score++;
+  activityScores[1] = a1Score;
+  updateBadge();
+
+  fb.className = `feedback-box ${isCorrect ? 'correct' : 'incorrect'}`;
+  fb.style.display = 'block';
+  fb.innerHTML = `<span class="feedback-icon">${isCorrect ? '✓' : '✗'}</span>
+    <span class="feedback-label">${isCorrect ? 'Correct!' : 'Not quite.'}</span> ${mcQuestions[idx].explanation}`;
+
+  const isLast = idx === mcQuestions.length - 1;
+  document.getElementById(isLast ? 'a1-finish' : 'a1-next').style.display = 'inline-block';
+
+  document.getElementById('a1-progress-text').textContent = `Question ${idx+1} of ${mcQuestions.length}`;
+  document.getElementById('a1-score-text').textContent = `${a1Score} correct`;
+}
+
+function nextQ(act) {
+  if (act === 1) {
+    a1Current++;
+    renderMC(a1Current);
+  }
+}
+
+// ══════════════════════════════════════════
+// ACTIVITY 2 — FILL IN THE BLANK
+// ══════════════════════════════════════════
+function renderFITB() {
+  const data = fitbData;
+  let bankHTML = `<div class="word-bank"><div class="word-bank-label">Word Bank</div>`;
+  const shuffled = [...data.wordBank].sort(() => Math.random() - 0.5);
+  shuffled.forEach(w => {
+    bankHTML += `<div class="word-chip" id="chip-${w}" onclick="selectWord('${w}')">${w}</div>`;
+  });
+  bankHTML += `</div>`;
+
+  let sentHTML = '';
+  data.sentences.forEach((s, i) => {
+    sentHTML += `<div class="question-card" style="margin-bottom:12px">
+      <div class="fitb-sentence">
+        <strong>${i+1}.</strong> ${s.before} <input type="text" class="blank-input" id="blank-${i}" placeholder="click to fill" readonly onclick="fillBlank(${i})" /> ${s.after}
+      </div>
+      <div class="feedback-box" id="fb-${i}"></div>
+    </div>`;
+  });
+
+  document.getElementById('a2-container').innerHTML = bankHTML + sentHTML;
+  updateA2Progress();
+}
+
+function selectWord(w) {
+  // deselect previous
+  document.querySelectorAll('.word-chip').forEach(c => c.style.outline = 'none');
+  selectedWord = w;
+  const chip = document.getElementById(`chip-${w}`);
+  if (chip) chip.style.outline = '2px solid var(--terracotta)';
+}
+
+function fillBlank(idx) {
+  if (!selectedWord) return;
+  const input = document.getElementById(`blank-${idx}`);
+  if (input.disabled) return;
+  // Remove word from previous blank if it was there
+  document.querySelectorAll('.blank-input').forEach((inp, i) => {
+    if (inp.value === selectedWord && i !== idx) {
+      inp.value = '';
+      document.getElementById(`chip-${selectedWord}`).classList.remove('used');
+    }
+  });
+  input.value = selectedWord;
+  document.getElementById(`chip-${selectedWord}`).classList.add('used');
+  selectedWord = null;
+  document.querySelectorAll('.word-chip').forEach(c => c.style.outline = 'none');
+  checkAllFilled();
+}
+
+function checkAllFilled() {
+  const all = document.querySelectorAll('.blank-input');
+  const filled = [...all].every(i => i.value !== '');
+  document.getElementById('a2-check').disabled = !filled;
+  updateA2Progress();
+}
+
+function updateA2Progress() {
+  const all = document.querySelectorAll('.blank-input');
+  const filled = [...all].filter(i => i.value !== '').length;
+  document.getElementById('a2-progress-text').textContent = `${filled} of ${fitbData.sentences.length} filled`;
+  document.getElementById('a2-score-text').textContent = ``;
+}
+
+function checkFITB() {
+  let score = 0;
+  fitbData.sentences.forEach((s, i) => {
+    const input = document.getElementById(`blank-${i}`);
+    const fb = document.getElementById(`fb-${i}`);
+    input.disabled = true;
+    const correct = input.value.toLowerCase().trim() === s.blank.toLowerCase();
+    if (correct) score++;
+    input.classList.add(correct ? 'correct' : 'incorrect');
+    fb.className = `feedback-box ${correct ? 'correct' : 'incorrect'}`;
+    fb.style.display = 'block';
+    fb.innerHTML = `<span class="feedback-icon">${correct ? '✓' : '✗'}</span>
+      <span class="feedback-label">${correct ? 'Correct!' : `The answer is: <em>${s.blank}</em>.`}</span> ${s.explanation}`;
+  });
+  a2Score = score;
+  activityScores[2] = a2Score;
+  document.getElementById('a2-score-text').textContent = `${a2Score} / ${fitbData.sentences.length} correct`;
+  document.getElementById('a2-check').style.display = 'none';
+  document.getElementById('a2-finish').style.display = 'inline-block';
+  document.getElementById('a2-bar').style.width = '100%';
+  a2Done = true;
+  updateBadge();
+}
+
+// ══════════════════════════════════════════
+// ACTIVITY 3 — REORDERING
+// ══════════════════════════════════════════
+let dragSrcIdx = null;
+let reorderCurrentOrder = [];
+
+function renderReorder(idx) {
+  const item = reorderData[idx];
+  const total = reorderData.length;
+  document.getElementById('a3-progress-text').textContent = `Sentence ${idx+1} of ${total}`;
+  document.getElementById('a3-score-text').textContent = `${a3Score} correct`;
+  document.getElementById('a3-bar').style.width = `${(idx/total)*100}%`;
+  document.getElementById('a3-next').style.display = 'none';
+  document.getElementById('a3-finish').style.display = 'none';
+
+  // Shuffle segments
+  const shuffled = [...item.segments.map((s,i)=>({text:s, origIdx:i}))].sort(() => Math.random()-0.5);
+  reorderCurrentOrder = shuffled.map(s => s.origIdx);
+
+  let html = `<div class="question-card">
+    <div class="question-text" style="margin-bottom:12px">Rearrange the segments to form a correct sentence:</div>
+    <div class="drag-instruction">Drag the segments into the correct order:</div>
+    <div class="reorder-list" id="reorder-list">`;
+  shuffled.forEach((seg, i) => {
+    html += `<div class="reorder-item" draggable="true" data-idx="${i}" ondragstart="roDragStart(event,${i})" ondragover="roDragOver(event,${i})" ondrop="roDrop(event,${i})" ondragleave="roDragLeave(event,${i})">
+      <span class="drag-handle">⠿</span>
+      <span class="seg-text">${seg.text}</span>
+    </div>`;
+  });
+  html += `</div>
+    <div class="feedback-box" id="a3-feedback"></div>
+    <div style="margin-top:16px">
+      <button class="btn-primary" onclick="checkReorder(${idx})" id="check-reorder-btn">Check Order</button>
+    </div>
+  </div>`;
+  document.getElementById('a3-container').innerHTML = html;
+  document.getElementById('a3-next').style.display = 'none';
+  document.getElementById('a3-finish').style.display = 'none';
+}
+
+function roDragStart(e, i) { dragSrcIdx = i; e.currentTarget.classList.add('dragging-item'); }
+function roDragLeave(e, i) { e.currentTarget.classList.remove('drag-over-item'); }
+function roDragOver(e, i) { e.preventDefault(); e.currentTarget.classList.add('drag-over-item'); }
+
+function roDrop(e, i) {
+  e.preventDefault();
+  const list = document.getElementById('reorder-list');
+  const items = [...list.querySelectorAll('.reorder-item')];
+  if (dragSrcIdx === null || dragSrcIdx === i) {
+    items.forEach(el => el.classList.remove('drag-over-item', 'dragging-item'));
+    return;
+  }
+  const src = items[dragSrcIdx];
+  const target = items[i];
+  // Swap DOM
+  const srcClone = src.cloneNode(true);
+  const tgtClone = target.cloneNode(true);
+  src.replaceWith(tgtClone);
+  target.replaceWith(srcClone);
+
+  // Re-wire drag events
+  const newItems = [...list.querySelectorAll('.reorder-item')];
+  newItems.forEach((el, idx2) => {
+    el.setAttribute('data-idx', idx2);
+    el.setAttribute('ondragstart', `roDragStart(event,${idx2})`);
+    el.setAttribute('ondragover', `roDragOver(event,${idx2})`);
+    el.setAttribute('ondrop', `roDrop(event,${idx2})`);
+    el.setAttribute('ondragleave', `roDragLeave(event,${idx2})`);
+    el.classList.remove('drag-over-item', 'dragging-item');
+  });
+  dragSrcIdx = null;
+}
+
+function checkReorder(idx) {
+  const list = document.getElementById('reorder-list');
+  const items = [...list.querySelectorAll('.reorder-item')];
+  const item = reorderData[idx];
+
+  // Get current text order and match to original segments
+  const currentTexts = items.map(el => el.querySelector('.seg-text').textContent.trim());
+  const correct = item.segments; // correct order by text
+
+  const isCorrect = currentTexts.every((t, i) => t === correct[i]);
+  if (isCorrect) a3Score++;
+  activityScores[3] = a3Score;
+
+  items.forEach((el, i) => {
+    el.classList.add(currentTexts[i] === correct[i] ? 'correct-order' : 'incorrect-order');
+    el.setAttribute('draggable', 'false');
+  });
+
+  document.getElementById('check-reorder-btn').disabled = true;
+  document.getElementById('a3-score-text').textContent = `${a3Score} correct`;
+
+  const fb = document.getElementById('a3-feedback');
+  fb.className = `feedback-box ${isCorrect ? 'correct' : 'incorrect'}`;
+  fb.style.display = 'block';
+  let explanation = item.explanation;
+  if (!isCorrect) explanation = `<strong>Correct order:</strong> "${item.segments.join(' ')}" — ` + explanation;
+  fb.innerHTML = `<span class="feedback-icon">${isCorrect ? '✓' : '✗'}</span>
+    <span class="feedback-label">${isCorrect ? 'Perfect order!' : 'Not quite right.'}</span> ${explanation}`;
+
+  const isLast = idx === reorderData.length - 1;
+  if (isLast) {
+    a3Done = true;
+    document.getElementById('a3-bar').style.width = '100%';
+    document.getElementById('a3-finish').style.display = 'inline-block';
+  } else {
+    document.getElementById('a3-next').style.display = 'inline-block';
+  }
+  updateBadge();
+}
+
+function nextReorder() {
+  a3Current++;
+  renderReorder(a3Current);
+}
+
+// ══════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════
+function finishActivity(act) {
+  document.getElementById(`activity-${act}`).classList.remove('active');
+  document.getElementById(`tab-${act}`).classList.remove('active');
+  document.getElementById(`tab-${act}`).classList.add('completed');
+
+  const next = act + 1;
+  if (next <= 3) {
+    document.getElementById(`activity-${next}`).classList.add('active');
+    document.getElementById(`tab-${next}`).classList.add('active');
+    if (next === 2) renderFITB();
+    if (next === 3) { a3Done = false; renderReorder(0); }
+  }
+  if (act === 1) a1Done = true;
+  updateBadge();
+}
+
+function showFinalScreen() {
+  document.getElementById('activity-3').classList.remove('active');
+  document.getElementById('tab-3').classList.add('completed');
+
+  const total = activityScores[1] + activityScores[2] + activityScores[3];
+  const max = 16;
+  document.getElementById('final-num').textContent = total;
+  document.getElementById('final-denom').textContent = `out of ${max}`;
+  document.getElementById('bd-1').textContent = `${activityScores[1]}/6`;
+  document.getElementById('bd-2').textContent = `${activityScores[2]}/5`;
+  document.getElementById('bd-3').textContent = `${activityScores[3]}/5`;
+
+  const pct = total / max;
+  let title, msg;
+  if (pct >= 0.9) {
+    title = 'Exceptional work!';
+    msg = 'You have demonstrated a strong command of architectural vocabulary and professional English. Your understanding of how designers like Koolhaas and Lamb discuss their work is excellent. Keep reading and listening to authentic English in design contexts!';
+  } else if (pct >= 0.7) {
+    title = 'Well done!';
+    msg = 'You have a solid grasp of the vocabulary and language patterns used in professional design discussions. Review any areas where you lost marks — especially vocabulary in context — and you will be at C1 level in no time.';
+  } else if (pct >= 0.5) {
+    title = 'Good effort!';
+    msg = 'You are making good progress with professional English in design contexts. Focus on expanding your vocabulary around architecture and design process. Re-read the feedback explanations — they contain key vocabulary and grammar patterns to practise.';
+  } else {
+    title = 'Keep practising!';
+    msg = 'This topic uses specialist vocabulary that takes time to master. Read the feedback explanations carefully and try to use these words in your own sentences. Every lesson brings you closer to fluency — don\'t give up!';
+  }
+
+  document.getElementById('final-title').textContent = title;
+  document.getElementById('final-message').textContent = msg;
+  document.getElementById('final-screen').style.display = 'block';
+  document.getElementById('score-badge').textContent = `Final: ${total} / ${max}`;
+}
+
+function restartLesson() {
+  a1Current = 0; a1Score = 0; a1Done = false;
+  a2Score = 0; a2Done = false;
+  a3Current = 0; a3Score = 0; a3Done = false;
+  activityScores = {1: 0, 2: 0, 3: 0};
+  selectedWord = null;
+
+  document.getElementById('final-screen').style.display = 'none';
+  ['1','2','3'].forEach(n => {
+    document.getElementById(`activity-${n}`).classList.remove('active');
+    document.getElementById(`tab-${n}`).classList.remove('active', 'completed');
+  });
+  document.getElementById('activity-1').classList.add('active');
+  document.getElementById('tab-1').classList.add('active');
+
+  renderMC(0);
+  updateBadge();
+}
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+renderMC(0);
+updateBadge();
+</script>
+</body>
+</html>

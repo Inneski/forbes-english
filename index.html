@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English — Lesson Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Barlow+Condensed:wght@700;800&family=Lato:wght@300;400;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --green-deep: #1b3a28;
+    --green-mid: #2d6044;
+    --green-light: #4a8f61;
+    --green-pale: #e8f2ec;
+    --gold: #b8962e;
+    --gold-light: #f0d080;
+    --gold-bright: #e8c04a;
+    --cream: #faf8f3;
+    --ink: #111;
+    --ink-soft: #333;
+    --muted: #6b7a6b;
+    --border: #c8d4c8;
+    --white: #ffffff;
+    --radius: 10px;
+    --pro: #1b3a28;
+    --pro-bg: #e8f2ec;
+    --free: #1a6b3c;
+    --free-bg: #dff3e6;
+  }
+  body {
+    font-family: 'Lato', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+  header {
+    background: var(--green-deep);
+    padding: 0 24px;
+  }
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 18px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .fe-logo-lockup { display: flex; flex-direction: column; align-items: flex-start; line-height: 1; text-decoration: none; }
+  .fe-logo-svg { width: 108px; height: auto; display: block; color: var(--cream); }
+  .fe-logo-sub {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    letter-spacing: 3.5px;
+    font-size: 0.72rem;
+    color: var(--gold-bright);
+    margin-top: 4px;
+  }
+  .nav-links { display: flex; gap: 10px; }
+  .nav-pill {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    color: var(--cream);
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 8px 16px;
+    border-radius: 999px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background .15s ease;
+  }
+  .nav-pill:hover { background: rgba(255,255,255,0.16); }
+  .nav-pill.gold { background: var(--gold-bright); color: var(--ink); border-color: var(--gold-bright); font-weight: 800; }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(180deg, var(--green-deep), #234a33);
+    padding: 20px 24px 24px;
+  }
+  .hero-inner { max-width: 1100px; margin: 0 auto; text-align: center; }
+  .hero-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold-bright);
+    font-size: 0.72rem;
+    margin-bottom: 4px;
+  }
+  .hero h1 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.25rem, 2.5vw, 1.8rem);
+    color: var(--cream);
+    line-height: 1.2;
+    max-width: 720px;
+    margin: 0 auto 6px;
+    letter-spacing: -0.3px;
+  }
+  .hero h1 .h1-sub {
+    display: block;
+    font-size: 0.5em;
+    font-weight: 600;
+    color: #cddccf;
+    margin-top: 4px;
+    letter-spacing: 0;
+  }
+  .hero p {
+    color: #cddccf;
+    max-width: 620px;
+    margin: 0 auto 12px;
+    line-height: 1.4;
+    font-size: 0.78rem;
+  }
+  .hero-img {
+    display: block;
+    max-width: 420px;
+    width: 100%;
+    margin: 0 auto 14px;
+    border-radius: var(--radius);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+  }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    max-width: 620px;
+    margin: 0 auto;
+  }
+  @media (max-width: 620px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+  .stat {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: var(--radius);
+    padding: 10px 18px;
+    min-width: 110px;
+  }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 1.3rem;
+    color: var(--gold-bright);
+    line-height: 1;
+  }
+  .stat-lbl {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #cddccf;
+    font-size: 0.65rem;
+    margin-top: 3px;
+    text-transform: uppercase;
+  }
+  .stat-deck {
+    background: #2fae5c;
+    border: 1px solid #38c96a;
+    border-radius: var(--radius);
+    padding: 16px 12px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    box-shadow: 0 4px 16px rgba(47,174,92,.35);
+    transition: background .15s ease, transform .15s ease;
+  }
+  .stat-deck:hover { background: #38c96a; transform: translateY(-2px); }
+  .stat-ico {
+    font-size: 1.35rem;
+    line-height: 1;
+    height: 1.35rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .stat-deck .stat-lbl {
+    color: #0f1a13;
+    opacity: 1;
+    margin-top: 0;
+    text-align: center;
+    line-height: 1.25;
+    font-size: 0.7rem;
+    letter-spacing: 0.6px;
+  }
+
+  main { max-width: 1100px; margin: 0 auto; padding: 32px 24px 80px; }
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+    align-items: center;
+  }
+  #search {
+    flex: 1 1 260px;
+    padding: 12px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    font-family: 'Lato', sans-serif;
+    font-size: 1rem;
+    background: var(--white);
+  }
+  #search:focus { outline: none; border-color: var(--green-mid); }
+  .filter-row { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .filter-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-right: 4px;
+  }
+  .level-btn, .cat-btn, .free-toggle {
+    padding: 7px 14px;
+    border: 1.5px solid var(--border);
+    background: var(--white);
+    border-radius: 999px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.82rem;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    color: var(--ink-soft);
+    transition: all .15s ease;
+  }
+  .level-btn:hover, .cat-btn:hover, .free-toggle:hover { border-color: var(--green-light); }
+  .level-btn.active, .cat-btn.active, .free-toggle.active {
+    background: var(--green-deep);
+    border-color: var(--green-deep);
+    color: var(--white);
+  }
+  .free-toggle.active { background: var(--free); border-color: var(--free); }
+  #count { color: var(--muted); font-size: 0.9rem; margin-bottom: 16px; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 16px;
+  }
+  .card {
+    position: relative;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    padding: 0;
+    text-decoration: none;
+    color: var(--ink);
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow .15s ease, transform .15s ease, border-color .15s ease;
+  }
+  .card:hover {
+    box-shadow: 0 4px 16px rgba(27,58,40,0.12);
+    border-color: var(--green-light);
+    transform: translateY(-2px);
+  }
+  .card-img-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--green-pale);
+    flex: none;
+  }
+  .card-img-wrap img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .card-img-wrap.placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .card-img-wrap.placeholder .ph-icon {
+    font-size: 2.1rem;
+    opacity: 0.55;
+    filter: grayscale(0.15);
+  }
+  .card-body {
+    padding: 14px 18px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1 1 auto;
+  }
+  .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+  .card-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+  .card-cat {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-top: 2px;
+  }
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    line-height: 1.35;
+    color: var(--green-deep);
+  }
+  .badge {
+    align-self: flex-start;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 0.72rem;
+    letter-spacing: 0.5px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: var(--green-pale);
+    color: var(--green-mid);
+  }
+  .badge.gold { background: var(--gold-light); color: #6b5010; }
+  .access-badge {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 0.7rem;
+    letter-spacing: 0.5px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .access-badge.free { background: var(--free-bg); color: var(--free); }
+  .access-badge.pro { background: var(--pro-bg); color: var(--pro); }
+  .empty {
+    text-align: center;
+    color: var(--muted);
+    padding: 60px 0;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.1rem;
+  }
+  .sherpa-banner {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    max-width: 620px;
+    margin: 12px auto 0;
+    padding: 14px 20px;
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, #C2185B, #7A0F3E);
+    border: 1px solid #e0568f;
+    text-decoration: none;
+    box-shadow: 0 4px 16px rgba(194,24,91,.35);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .sherpa-banner:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(194,24,91,.5); }
+  .sherpa-banner .sherpa-ico { font-size: 1.7rem; line-height: 1; }
+  .sherpa-banner .sherpa-text { text-align: left; }
+  .sherpa-banner .sherpa-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 0.95rem;
+    letter-spacing: 0.4px;
+    color: #fff;
+    text-transform: uppercase;
+  }
+  .sherpa-banner .sherpa-sub {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.78rem;
+    color: #f6cfe1;
+    margin-top: 2px;
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="fe-logo-lockup" aria-label="Forbes English">
+      <svg class="fe-logo-svg" viewBox="670 345 1530 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forbes">
+      <g transform="translate(0,1504) scale(0.1,-0.1)" fill="currentColor" stroke="none">
+      <path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47
+      l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21
+      -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9
+      -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58
+      105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141
+      144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392
+      -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31
+      c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55
+      -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0
+      -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226
+      144 331 156 51 6 127 -4 183 -25z"/>
+      <path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95
+      -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72
+      -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0
+      -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18
+      108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553
+      -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70
+      -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3
+      469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38
+      -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/>
+      <path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73
+      -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939
+      -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1
+      205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247
+      -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22
+      -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24
+      -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449
+      121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/>
+      <path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611
+      -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538
+      -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77
+      144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430
+      -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67
+      347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580
+      -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132
+      -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87
+      66 245 85 341 40z"/>
+      <path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140
+      -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134
+      -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287
+      -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101
+      -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107
+      173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392
+      207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599
+      281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241
+      111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2
+      347 -112 40 c-318 112 -594 149 -892 121z"/>
+      <path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149
+      l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801
+      -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6
+      -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294
+      -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12
+      -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29
+      -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55
+      -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12
+      -33 22 -42 21 -9 0 -199 -27 -422 -60z"/>
+      </g>
+      </svg>
+      <span class="fe-logo-sub">ENGLISH</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-pill" href="front-page.html">Front Page</a>
+      <a class="nav-pill" href="#" id="navAll">All materials</a>
+      <a class="nav-pill" href="#" id="navFree">Free materials</a>
+    </div>
+  </div>
+</header>
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Lesson Library</div>
+    <h1>Ready-to-use ESL materials<span class="h1-sub">built for real classes.</span></h1>
+    <p>Browse every Forbes English lesson plan, grammar activity, and speaking activity in one place — searchable by level, category, and topic.</p>
+    <img class="hero-img" src="HOUSE STYLE/blackisler_cool_female_student_studying_at_home_with_books_No_f252909d-c97d-494b-b5b6-596be1e11502_2.png" alt="Illustration of a student reading a book on a red sofa">
+    <div class="stats" id="stats"></div>
+    <a class="sherpa-banner" href="sherpa-tensing-route-map.html">
+      <div class="sherpa-ico">🏔️</div>
+      <div class="sherpa-text">
+        <div class="sherpa-title">Sherpa Tensing</div>
+        <div class="sherpa-sub">The route up the tenses — 13 camps, active &amp; passive voice</div>
+      </div>
+    </a>
+  </div>
+</div>
+<main>
+  <div class="controls">
+    <input type="text" id="search" placeholder="Search lessons by topic, e.g. golf, negotiation, Ukraine…">
+  </div>
+  <div class="filter-row" style="margin-bottom:10px;">
+    <span class="filter-label">Level</span>
+    <div class="level-filters" id="levelFilters" style="display:contents;"></div>
+  </div>
+  <div class="filter-row" style="margin-bottom:16px;">
+    <span class="filter-label">Category</span>
+    <div id="catFilters" style="display:contents;"></div>
+    <button class="free-toggle" id="freeToggle" style="margin-left:10px;">Free only</button>
+  </div>
+  <div id="count"></div>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" style="display:none;">No lessons match your search.</div>
+</main>
+
+<script>
+const LESSONS = [
+  {file:"sherpa-tensing-route-map.html", title:"Sherpa Tensing — The Route: All Tenses, Active & Passive", level:"A2-C1"},
+  {file:"sherpa-tensing-camp-one-present-continuous.html", title:"Sherpa Tensing — Camp One: Present Continuous", level:"A2"},
+  {file:"sherpa-tensing-camp-two-present-simple.html", title:"Sherpa Tensing — Camp Two: Present Simple", level:"A2"},
+  {file:"active_passive_refinery_lesson.html", title:"Active & Passive Voice — Refinery Deputy Lead", level:"B2"},
+  {file:"active_passive_refinery_quiz_part2.html", title:"Active & Passive Voice — Quiz Part 2", level:"B2"},
+  {file:"champions_league_english.html", title:"Forbes English — Champions League", level:"C1"},
+  {file:"-dinosaurs C1.html", title:"Dinosaurs (C1)", level:"C1"},
+  {file:"ecuador_english_lesson.html", title:"English Through Ecuador — Interactive Lesson", level:"A2"},
+  {file:"ecuador_english_lesson_part2.html", title:"English Through Ecuador — Part 2", level:"B1"},
+  {file:"english_class_picture_description (1).html", title:"Forbes English — Describing a Picture", level:"B2"},
+  {file:"english_class_picture_description (ireland).html", title:"Forbes English — Describing a Picture (Ireland)", level:"B2"},
+  {file:"english_class_picture_description.html", title:"English Class — Describing a Picture", level:"B2"},
+  {file:"exam-prep-5hour-courseEXP.html", title:"Out of This World — 5-Hour English Test Prep (EXP)", level:"A2"},
+  {file:"fashion_english_exercises (2).html", title:"Forbes English — Business Grammar", level:"B2"},
+  {file:"fashion_english_exercises.html", title:"Business English — Fashion & Film", level:"B2"},
+  {file:"fashion_grammar_lesson.html", title:"Forbes English — Voice & Vision", level:"B2"},
+  {file:"football_c1_roleplay.html", title:"Full-Time Pressure — C1 Football Role-Play"},
+  {file:"Forbes English - Product Strategy & Market Research Speaking (2).html", title:"Product Strategy & Market Research Speaking", level:"C1"},
+  {file:"forbes_english_filmmaking_lesson.html", title:"Filmmaking in English · B2"},
+  {file:"forbes_english_lesson.html", title:"Refinery Safety & Turnaround", level:"B1"},
+  {file:"forbes-c1-negotiation.html", title:"C1 Negotiation Language"},
+  {file:"forbes-construction-contracts.html", title:"Construction Contracts", level:"B2"},
+  {file:"forbes-dartboard-c1.html", title:"Electronic Dartboards: Bar Placement & Japan Tournaments (C1)"},
+  {file:"forbes-el-zar-c2.html", title:"El Zar: Words of Force & Effect"},
+  {file:"forbes-english-architecture-c1 (1).html", title:"Architectural Presentations C1"},
+  {file:"forbes-english-b1-adjective-order-escape-room.html", title:"The Locked Study | Adjective Order (B1)"},
+  {file:"forbes-english-bronte-lesson.html", title:"The Brontë Sisters", level:"B2"},
+  {file:"forbes-english-c1.html", title:"C1 Lesson"},
+  {file:"forbes-english-construction-presentations.html", title:"Construction Presentations C1"},
+  {file:"forbes-english-dinosaurs.html", title:"Advanced Dinosaur Facts | C1"},
+  {file:"forbes-english-emails calls part3.html", title:"Emails, Calls & Follow-ups", level:"B2"},
+  {file:"forbes-english-food-ordering-a1-part2.html", title:"Ordering Food & Drink Part 2 (A1+)"},
+  {file:"forbes-english-frankfurt-2-lesson.html", title:"Eintracht Frankfurt C1 Lesson"},
+  {file:"forbes-english-golf-lesson.html", title:"Past Simple vs Present Perfect (Golf)", level:"B1"},
+  {file:"forbes-english-hiking-c1.html", title:"Solo Hiking Safety (C1)"},
+  {file:"forbes-english-hiking-c1-part2.html", title:"Solo Hiking Safety Part 2 (C1)"},
+  {file:"forbes-english-lesson (2).html", title:"Business Conditionals B2"},
+  {file:"forbes-english-lesson (B2).html", title:"AI & Learning Lesson"},
+  {file:"forbes-english-lesson (data).html", title:"C1 Lesson: Climate Data & Policy"},
+  {file:"forbes-english-lesson (dinosoausrs c1).html", title:"Dino-Craft: C1 English Expedition"},
+  {file:"forbes-english-lesson (flow).html", title:"Flow State Lesson", level:"B2"},
+  {file:"forbes-english-lesson (talking with clients).html", title:"Talking with Clients", level:"B2"},
+  {file:"forbes-english-lesson_self-improvement (self).html", title:"Self-Improvement Lesson", level:"B1"},
+  {file:"forbes-english-lesson-2.html", title:"The Design Pitch", level:"B2"},
+  {file:"forbes-english-lesson-curious incident.html", title:"Conditionals Lesson", level:"B2"},
+  {file:"forbes-english-lesson-managing energy.html", title:"Energy Sector Project Management", level:"B2"},
+  {file:"forbes-english-lesson-TopGear.html", title:"Active & Passive Voice (Top Gear)", level:"B1"},
+  {file:"forbes-english-meetings.html", title:"Open Answer Practice — Meetings", level:"B2"},
+  {file:"forbes-english-minecraft-b1.html", title:"Minecraft B1 Lesson"},
+  {file:"forbes-english-minecraft-c1.html", title:"Minecraft C1 Lesson"},
+  {file:"forbes-english-minecraft-editorial.html", title:"Minecraft Trivia Lesson", level:"B1"},
+  {file:"forbes-english-modal-verbs-B1.html", title:"Modal Verbs | B1 Lesson"},
+  {file:"forbes-english-negotiating part2.html", title:"Negotiations & Handling Objections", level:"B2"},
+  {file:"forbes-english-ope- say in your words.html", title:"Open Answer Practice", level:"B2"},
+  {file:"forbes-english-photography-b2.html", title:"Advanced Photography (B2)"},
+  {file:"forbes-english-possessive-pronouns-a1.html", title:"My, Your, Her… (A1)"},
+  {file:"forbes-english-product-speaking.html", title:"Professional Speaking Lesson", level:"B2"},
+  {file:"forbes-english-skiing-B1.html", title:"Skiing at the Resort | B1 Lesson"},
+  {file:"forbes-english-skiing-lesson.html", title:"Skiing at the Resort | B2 Lesson"},
+  {file:"forbes-english-swiss-mistakes-a2.html", title:"Swiss Precision: Common Mistakes for German Speakers (A2)"},
+  {file:"forbes-english-swiss-mistakes-a2-part2.html", title:"Swiss Precision Part 2 (A2)"},
+  {file:"forbes-english-tennis-present-perfect-a2.html", title:"Present Perfect | Tennis Club (A2)"},
+  {file:"forbes-english-the-docket-b2.html", title:"The Docket (B2)"},
+  {file:"forbes-english-tolle (2).html", title:"The Power of Now: Eckhart Tolle", level:"C1"},
+  {file:"forbes-english-venezuela.html", title:"Used To & Be Used To — Venezuela Edition", level:"B1"},
+  {file:"forbes-english-writers-nightmare.html", title:"The Writer's Nightmare", level:"B2"},
+  {file:"forbes-gap-fill.html", title:"Gap Fill: Talking with Clients", level:"B1"},
+  {file:"forbes-nietzsche-c1.html", title:"Making a Film About Nietzsche | C1"},
+  {file:"forbes-tennis-a2.html", title:"Tennis Club English (A2)"},
+  {file:"forbes-ukraine-presentations-c1 fixed.html", title:"Giving Presentations: Reconstructing Ukraine (C1)"},
+  {file:"friedrich_prepositions_c1.html", title:"Friedrich I of Prussia · Prepositions C1"},
+  {file:"geopolitics-english-class.html", title:"Questions & If-Clauses in Geopolitics (C2)"},
+  {file:"harari_davos_c2_lesson_v2.html", title:"C2 Lesson: Harari at Davos (v2)"},
+  {file:"impostor_syndrome_advanced_JP.html", title:"Impostor Syndrome — Advanced English · C1"},
+  {file:"impostor_syndrome_lesson.html", title:"Impostor Syndrome — English Lesson", level:"B2"},
+  {file:"jfk_prepositions_b2.html", title:"JFK & Prepositions Part 2", level:"B2"},
+  {file:"koolhas & Lamb.html", title:"B2 Lesson: Koolhaas & Lamb"},
+  {file:"lesson1_gerunds_football.html", title:"Verbs + Gerunds (Football)", level:"B1"},
+  {file:"marilyn_prepositions.html", title:"Marilyn Monroe & Prepositions", level:"B1"},
+  {file:"mtb-english-lesson.html", title:"MTB English — B1 Lesson"},
+  {file:"mtb-perfect-vs-simple.html", title:"MTB English — Present Perfect vs Past Simple", level:"B1"},
+  {file:"nietzsche-film-vocab-c1-part5.html", title:"Nietzsche on Film — C1 Vocabulary · Part V"},
+  {file:"nietzsche-grammar-test-part2.html", title:"Nietzsche Grammar Test — Part II", level:"C1"},
+  {file:"nietzsche-grammar-test-part3.html", title:"Nietzsche Grammar — Part III: The Final Trial", level:"C1"},
+  {file:"nietzsche-grammar-test-part4.html", title:"Lights, Camera, Nietzsche — Vocabulary Test Part IV", level:"C1"},
+  {file:"penguins_past_simple (2).html", title:"Penguins of the Past", level:"A1"},
+  {file:"prepositions_crime_lesson (fixed).html", title:"The Preposition Files — Crime Grammar Lesson", level:"A2"},
+  {file:"present-simple-vs-continuous.html", title:"Present Simple vs Present Continuous", level:"A2"},
+  {file:"preview.html", title:"Possessive Pronouns A1"},
+  {file:"snack-attack-a1.html", title:"Snack Attack! (A1)", video:true},
+  {file:"stranger-things-b1-lesson.html", title:"Stranger Things B1"},
+  {file:"ukraine-reconstruction-lesson.html", title:"Presenting on the Reconstruction of Ukraine (C1)"},
+  {file:"vw_grammar_atelier_final.html", title:"Grammar Atelier", level:"B1"},
+  {file:"alchemist_b2_lesson.html", title:"The Alchemist (B2)"},
+  {file:"alchemist_present_perfect_lesson.html", title:"Present Perfect Simple vs Continuous (B2)"},
+  {file:"b1_prepositions_double_lesson.html", title:"Prepositions Double Lesson (B1)"},
+  {file:"b2_prepositions_advanced_lesson.html", title:"Advanced Prepositions (B2)"},
+  {file:"b2_prepositions_advanced_lesson_part2.html", title:"Advanced Prepositions (B2) — Part 2"},
+  {file:"case-file-b2-roleplay.html", title:"Case File: The Silver Pines Mystery"},
+  {file:"contingency-trade-offs-vocab.html", title:"Contingency Plans & Trade-offs", level:"C1"},
+  {file:"dailies-review-feedback.html", title:"Dailies Review: Giving Feedback Diplomatically", level:"C1"},
+  {file:"ecommerce-vocabulary-b1.html", title:"E-commerce Vocabulary (B1)"},
+  {file:"expressions_take_put_ES.html", title:"Expressions: take & put (ES support)", level:"B2"},
+  {file:"expressions_take_put_PL.html", title:"Expressions: take & put (PL support)", level:"B2"},
+  {file:"expressions_take_put_v2.html", title:"Expressions: take & put", level:"B2"},
+  {file:"fireshield-pitch-part2.html", title:"The FireShield Pitch — Part 2", level:"B2"},
+  {file:"fireshield-pitch-part3.html", title:"The FireShield Pitch — Part 3", level:"B2"},
+  {file:"fireshield-pitch-roleplay.html", title:"The FireShield Pitch", level:"B2"},
+  {file:"Forbes English - Buying Selling Sharing Online (B2).html", title:"Buying, Selling & Sharing Online (B2)"},
+  {file:"Forbes English - Decision-Making Under Uncertainty.html", title:"Decision-Making Under Uncertainty", level:"C1"},
+  {file:"Forbes_English_A0_Question_Words.html", title:"Question Words (A0)", level:"A1"},
+  {file:"Forbes_English_A0_Water_Polo.html", title:"Water Polo Vocabulary (A0)", level:"A1"},
+  {file:"Forbes_English_A1_Water_Polo_Part2.html", title:"Water Polo: Ask & Answer (A1) — Part 2"},
+  {file:"forbes_english_c2_architecture_brutalism.html", title:"C2 Architecture: Brutalism and the City"},
+  {file:"forbes-english-b2-lego-cars.html", title:"Brick by Brick: Building Lego Cars (B2)"},
+  {file:"forbes-english-body-parts-c1.html", title:"Anatomy of a Sentence (C1)"},
+  {file:"forbes-english-body-parts-c1-zh.html", title:"Anatomy of a Sentence (C1, ZH support)"},
+  {file:"forbes-english-c1-scooter-tricks.html", title:"Sending It: The Language of Scooter Tricks (C1)"},
+  {file:"forbes-english-c2-barbi-executive-roleplays.html", title:"The COO Briefings — Roleplay Dossiers (C2)"},
+  {file:"forbes-english-c2-barbi-phrase-test.html", title:"The COO Briefings — Phrase Test (C2)"},
+  {file:"forbes-english-common-mistakes-b1-b2.html", title:"Common Mistakes: Get It Right (B1-B2)"},
+  {file:"forbes-english-common-mistakes-review.html", title:"Common Mistakes Review", level:"B1"},
+  {file:"forbes-english-common-mistakes-review-part2.html", title:"Common Mistakes Review — Part 2", level:"B1"},
+  {file:"forbes-english-common-mistakes-review-part3.html", title:"Common Mistakes Review — Part 3", level:"B1"},
+  {file:"forbes-english-football-b1.html", title:"Football Vocabulary (B1)"},
+  {file:"forbes-english-football-b1-argentina.html", title:"Football Vocabulary (B1, Argentina edition)"},
+  {file:"forbes-english-football-b1-part2.html", title:"Football Vocabulary — Part 2 (B1)"},
+  {file:"forbes-english-speaking-2.html", title:"Professional Speaking Lesson", level:"B2"},
+  {file:"forbes-english-vocab-test.html", title:"Vocabulary Test", level:"B2"},
+  {file:"forbes-nature-agency-part1.html", title:"Federal Agency for Nature Conservation — Part 1", level:"C1"},
+  {file:"forbes-nature-agency-part2.html", title:"Federal Agency for Nature Conservation — Part 2", level:"C1"},
+  {file:"full-vocabulary-test.html", title:"Vocabulary Test", level:"B2"},
+  {file:"harry-quebert-b2.html", title:"B2: The Truth About the Harry Quebert Affair"},
+  {file:"make-v-do.html", title:"Make v Do", level:"A2"},
+  {file:"phrasal_verbs_test.html", title:"Phrasal Verbs: make, do, take, put", level:"B1"},
+  {file:"present_simple_continuous_de.html", title:"Present Simple vs Present Continuous (Supereasy)", level:"A1"},
+  {file:"twin_peaks_prepositions_v5.html", title:"Between Two Worlds — Advanced Prepositions (v5)", level:"C1"},
+  {file:"twin-peaks-b2-discussion.html", title:"Behind the Curtains: Discussing Twin Peaks"},
+  {file:"vapour-barriers-lesson.html", title:"Bringing a Membrane to Market", level:"B2"},
+  {file:"workplace-roleplay-live.html", title:"Workplace Roleplay: Live Speaking Practice", level:"B2"},
+  {file:"busch_gardens_english_lesson.html", title:"Past Simple | Busch Gardens Tampa", level:"A2"},
+  {file:"eintracht-gerunds-lesson.html", title:"SGE English — Gerunds as Subjects & Objects", level:"B1"},
+  {file:"english-lesson-gerunds.html", title:"Gerunds · English for German Speakers", level:"B1"},
+  {file:"forbes-architectural-vocabulary-part2.html", title:"Material & Space: Speaking & Debate (C1)"},
+  {file:"forbes-architectural-vocabulary.html", title:"Material & Space (C1)"},
+  {file:"forbes-b2-past-simple-type6.html", title:"Past Simple: Honda Civic Type 6"},
+  {file:"forbes-english-b1-mixed-grammar-test-part2.html", title:"B1 Mixed Grammar Test — Part 2"},
+  {file:"forbes-english-b1-mixed-grammar-test.html", title:"B1 Mixed Grammar Test"},
+  {file:"forbes-english-dinosaur-minecraft-part2.html", title:"Dino-Craft Part II: The Lost Biome", level:"C1"},
+  {file:"forbes-english-dinosaur-minecraft.html", title:"Dino-Craft: C1 English Expedition (Minecraft ed.)"},
+  {file:"forbes-english-lego-lesson-part2.html", title:"LEGO Prepositions & Phrasal Verbs — Part 2", level:"B2"},
+  {file:"forbes-english-lego-lesson.html", title:"LEGO Prepositions & Phrasal Verbs", level:"B1"},
+  {file:"forbes-english-lego-passive-active.html", title:"Active & Passive Voice (LEGO ed.)", level:"B1"},
+  {file:"forbes-english-past-modals-minecraft.html", title:"Past Modals in Minecraft", level:"B2"},
+  {file:"forbes-english-present-perfect-lego-b1.html", title:"Present Perfect with Lego (B1)"},
+  {file:"forbes-english-skyline-lego-b2.html", title:"Nissan Skyline GTR LEGO (B2)"},
+  {file:"forbes-gaming-youtube-b2.html", title:"Gaming YouTuber (B2)"},
+  {file:"forbes-interior-design-c1.html", title:"Interior Design Presentation Phrases (C1)"},
+  {file:"forbes-lego-b2-part2.html", title:"Lego Car Building — Part 2 (B2)"},
+  {file:"forbes-lego-b2.html", title:"Lego Car Building (B2)"},
+  {file:"forbes-linking-devices-cars.html", title:"Linking Devices: The World of Cars", level:"B2"},
+  {file:"interior-design-vocabulary.html", title:"Interior Design Vocabulary", level:"C1"},
+  {file:"minecraft-lesson.html", title:"Must & Have To — Minecraft Edition", level:"A2"},
+  {file:"must-have-to-lego-polish.html", title:"Must & Have To — LEGO Grammar Factory (PL support)", level:"B1"},
+  {file:"must-have-to-vfb-stuttgart.html", title:"Must & Have To — VfB Stuttgart", level:"B1"},
+  {file:"stranger-things-test-german.html", title:"Stranger Things English Test (DE support)", level:"A2"},
+  {file:"stranger-things-test.html", title:"Stranger Things English Test", level:"A2"},
+  {file:"tense-review-minecraft.html", title:"Tense Review — Minecraft Edition", level:"B2"},
+  {file:"top-gear-skiing-lesson.html", title:"Past Simple — Top Gear on the Slopes", level:"B1"},
+  {file:"ridgeline_run.html", title:"The Ridgeline Run — C1 Roleplay · Mountain Biking"},
+  {file:"forbes-reddit-french-market-c1.html", title:"Reddit × French Market Prospecting (C1)"},
+  {file:"forbes-roleplay-reddit-french-TEST-p3.html", title:"Reddit French Market — Role-Play Negotiation (C1)"},
+  {file:"forbes-dnd-rpg.html", title:"The Parisian Conquest — Business D&D RPG (C1)"},
+  {file:"nietzsche-grammar-test.html", title:"Nietzsche Grammar Test — Part I", level:"C1"},
+  {file:"forbes-english-b1-modal-verbs-fire-brigade.html", title:"On Call: Modal Verbs for the Fire Brigade (B1)"},
+  {file:"german_firefighter_happy.html", title:"Feuerwehr Modalverben — Vergangenheit & Zukunft (DE)", level:"B2"},
+  {file:"english_firefighter_v3.html", title:"Modal Verbs for Firefighters — English for German Speakers", level:"B2"},
+  {file:"grammar_formulas.html", title:"German Grammar Formula Reference — Part I", level:"B1"},
+  {file:"grammar_formulas_part2.html", title:"German Grammar Formula Reference — Part II", level:"B1"},
+  {file:"cheat_sheet.html", title:"Grammar Cheat Sheet — 18 Structures (DE support)", level:"B1"},
+  {file:"cheat_sheet_part2.html", title:"Grammar Cheat Sheet — Question Forms (DE support)", level:"B1"},
+  {file:"cheat_sheet_italian.html", title:"Grammar Cheat Sheet — 18 Structures (IT support)", level:"B1"},
+  {file:"full_grammar_test.html", title:"Full Grammar Test — 45 Questions (DE support)", level:"B1"},
+  {file:"full_grammar_test_italian.html", title:"Full Grammar Test — 45 Questions (IT support)", level:"B1"},
+  {file:"might_vs_going_to_test.html", title:"Might vs Going To — A2 Test (DE support)"},
+  {file:"present_perfect_test.html", title:"Present Perfect — Ultra-Clear Test (DE support)", level:"B1"},
+  {file:"teil3_part2_test.html", title:"Adverbs, Will & So/Neither — Test (DE support)", level:"B1"},
+  {file:"grammar-dojo.html", title:"文法道場 Grammar Dojo — Must vs Have To (Coding ed.)", level:"A2"},
+  {file:"taekwondo-regrets.html", title:"Taekwondo Past Regrets — Should Have (DE support)", level:"B2"},
+  {file:"taekwondo-english-kids.html", title:"Taekwondo English for Kids — Must, Have To & Should Have", level:"A2"},
+  {file:"taekwondo-exercises.html", title:"Taekwondo Grammar Exercises — Must, Have To & Should Have", level:"B2"},
+  {file:"forbes-english-B1-grammar-court.html", title:"Grammar Court — B1, Part I (ES support)"},
+  {file:"forbes-english-B1-grammar-court-part2.html", title:"Grammar Court — B1, Part II (ES support)"},
+  {file:"forbes-english-us-civics-b1.html", title:"U.S. Civics & Government Vocabulary (B1)"},
+  {file:"wild-frame.html", title:"Wild Frame — Documentary Filmmaker Career Quest (B1-B2)"},
+  {file:"wild-frame-part-2.html", title:"Wild Frame Part II — The Palace Set (B2)"},
+  {file:"forbes-coding-interview-c1.html", title:"Tech Interview Masterclass — Coding Engineer (C1)", level:"C1"},
+  {file:"feedback-that-lands.html", title:"Feedback That Lands — Four Professionals on Giving Feedback", level:"B2", video:true},
+  {file:"saving-fawns-mower-b1.html", title:"Saving Fawns from the Mower (B1, German support)", level:"B1"},
+  {file:"saving-fawns-mower-b1-b2.html", title:"Saving Fawns from the Mower (B1-B2)", level:"B2"},
+  {file:"forbes-conservation-c1.html", title:"Conservation Travel — Global Projects (C1)", level:"C1"},
+  {file:"forbes-geoscience-idioms.html", title:"Business Idioms for Geoscience Professionals", level:"C1"},
+  {file:"forbes-geoscience-phrases.html", title:"Technical Geoscience Phrases", level:"C1"},
+  {file:"forbes-geoscience-business-idioms-v2.html", title:"Ground-Level Business Idioms (Geoscience, C1)", level:"C1"},
+  {file:"forbes-english-b2-lesson.html", title:"Top Gear — Advanced Grammar in Context (B2)", level:"B2"},
+  {file:"twin-peaks-deck-viewer.html", title:"Twin Peaks Prepositions — Between Two Worlds (Slide Deck, in progress)", deck:true}
+];
+
+function detectLevel(item) {
+  if (item.level) return item.level;
+  const m = (item.title + ' ' + item.file).match(/\b(A1|A2|B1|B2|C1|C2)\b/i);
+  return m ? m[1].toUpperCase() : '';
+}
+// Lessons whose title/filename says "roleplay" but whose actual content is a
+// graded multiple-choice test with a narrative skin (no real speech output) —
+// verified by hand against each file's JS data, since keyword-matching alone
+// can't tell a real dialogue script from an MCQ wearing a story costume.
+const NOT_ACTUALLY_SPEAKING = new Set([
+  'case-file-b2-roleplay.html',
+  'football_c1_roleplay.html',
+  'fireshield-pitch-roleplay.html',
+  'ridgeline_run.html',
+  'forbes-roleplay-reddit-french-TEST-p3.html'
+]);
+
+function detectCategories(item) {
+  const t = (item.title + ' ' + item.file).toLowerCase();
+  const cats = [];
+  if (/stranger[\s_-]?things|twin[\s_-]?peaks|harry[\s_-]?quebert|filmmaking|\bfilm\b|cinema|top gear/.test(t)) cats.push('Film & TV');
+  if (/geopolitics|ukraine|harari|davos|venezuela|el zar|friedrich.*prussia|\bjfk\b|falklands/.test(t)) cats.push('Geopolitics');
+  if (/nietzsche|eckhart tolle|\btolle\b/.test(t)) cats.push('Philosophy');
+  if (/minecraft|\blego\b|\bdnd\b|dungeon|d&d/.test(t)) cats.push('Gaming');
+  if (/football|soccer|champions league|eintracht|vfb[\s_-]?stuttgart|\bgolf\b|tennis|skiing|\bski\b|water polo|\bmtb\b|mountain[\s_-]?bik|ridgeline|dartboard|scooter tricks/.test(t)) cats.push('Sports');
+  if (/architect|rem koolhaas|max lamb|interior design/.test(t)) cats.push('Architectural Design');
+  if (/construction|site visit|contracts?\b/.test(t)) cats.push('Construction');
+  if (/refinery|turnaround|pipeline|petrochemical|\boil\b|\bgas\b|geoscience/.test(t)) cats.push('Energy');
+  if (/negotiat/.test(t)) cats.push('Negotiation');
+  if (/business|market prospecting|strategic vocabulary|supply chain|staffing strateg|sales tactics|e-?commerce|product strategy/.test(t)) cats.push('Business');
+  if (/animal welfare|\bfawn\b|\bdeer\b|mower/.test(t)) cats.push('Animal Welfare');
+  if (/ecuador|penguin|dinosaur|dino-craft|conservation|nature/.test(t)) cats.push('Nature & Wildlife');
+  if (/email|talking with clients|meetings?\b|professional speaking|dailies review|workplace roleplay|coo briefings|decision-making under uncertainty|contingency|fireshield|energy sector project management|design pitch/.test(t)) cats.push('Workplace Communication');
+  if (/fire[\s_-]?brigade|feuerwehr|firefighter/.test(t)) cats.push('Emergency Services');
+  if (/taekwondo/.test(t)) cats.push('Martial Arts');
+  if (/\bmodal\b|\bmust\b|have to|\bshould\b|might vs|going to/.test(t)) cats.push('Modal Verbs');
+  if (/past simple|present perfect|present continuous|present simple|past continuous|past modals|\btense\b/.test(t)) cats.push('Tenses');
+  if (/preposition/.test(t)) cats.push('Prepositions');
+  if (/phrasal verb|take.{0,3}put|make.{0,3}do/.test(t)) cats.push('Phrasal Verbs');
+  if (/passive/.test(t)) cats.push('Passive Voice');
+  if (/gerund|infinitive/.test(t)) cats.push('Gerunds & Infinitives');
+  if (item.video) cats.push('Video Lessons');
+  if (NOT_ACTUALLY_SPEAKING.has(item.file)) {
+    cats.push('Grammar activity');
+  } else if (/quiz|grammar[\s_-]?test|jeopardy|grammar atelier/.test(t)) {
+    cats.push('Grammar activity');
+  } else if (/roleplay|role-play|escape room|alias|speaking activity/.test(t)) {
+    cats.push('Speaking activity');
+  }
+  if (/\.pptx$/i.test(item.file) || item.deck) cats.push('Slide Decks');
+  if (cats.length === 0) cats.push('Lesson plan');
+  return cats;
+}
+// Deterministic Free/Pro split (no real paywall behind this yet — just mirrors
+// the enghub.pro-style badge so it's easy to wire up real gating later).
+function hashStr(s) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) { h = (h * 31 + s.charCodeAt(i)) >>> 0; }
+  return h;
+}
+function detectAccess(item) {
+  return (hashStr(item.file) % 5 === 0) ? 'Free' : 'Pro';
+}
+
+LESSONS.forEach(l => {
+  l.level = detectLevel(l);
+  l.categories = detectCategories(l);
+  l.access = detectAccess(l);
+});
+
+const levels = ['ALL', ...Array.from(new Set(LESSONS.map(l => l.level).filter(Boolean))).sort()];
+const levelFilters = document.getElementById('levelFilters');
+let activeLevel = 'ALL';
+
+levels.forEach(lvl => {
+  const btn = document.createElement('button');
+  btn.className = 'level-btn' + (lvl === 'ALL' ? ' active' : '');
+  btn.textContent = lvl;
+  btn.dataset.level = lvl;
+  btn.addEventListener('click', () => {
+    activeLevel = lvl;
+    document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    render();
+  });
+  levelFilters.appendChild(btn);
+});
+
+const categories = ['ALL', 'Film & TV', 'Geopolitics', 'Philosophy', 'Gaming', 'Sports', 'Architectural Design', 'Construction', 'Energy', 'Negotiation', 'Business', 'Animal Welfare', 'Nature & Wildlife', 'Workplace Communication', 'Emergency Services', 'Martial Arts', 'Video Lessons', 'Modal Verbs', 'Tenses', 'Prepositions', 'Phrasal Verbs', 'Passive Voice', 'Gerunds & Infinitives', 'Grammar activity', 'Speaking activity', 'Lesson plan', 'Slide Decks'];
+const catLabels = {
+  'ALL': 'All',
+  'Film & TV': 'Film & TV',
+  'Geopolitics': 'Geopolitics',
+  'Philosophy': 'Philosophy',
+  'Gaming': 'Gaming',
+  'Sports': 'Sports',
+  'Architectural Design': 'Architectural Design',
+  'Construction': 'Construction',
+  'Energy': 'Energy',
+  'Negotiation': 'Negotiation',
+  'Business': 'Business',
+  'Animal Welfare': 'Animal Welfare',
+  'Nature & Wildlife': 'Nature & Wildlife',
+  'Workplace Communication': 'Workplace Communication',
+  'Emergency Services': 'Emergency Services',
+  'Martial Arts': 'Martial Arts',
+  'Video Lessons': 'Video Lessons',
+  'Modal Verbs': 'Modal Verbs',
+  'Tenses': 'Tenses',
+  'Prepositions': 'Prepositions',
+  'Phrasal Verbs': 'Phrasal Verbs',
+  'Passive Voice': 'Passive Voice',
+  'Gerunds & Infinitives': 'Gerunds & Infinitives',
+  'Grammar activity': 'Grammar activities',
+  'Speaking activity': 'Speaking activities',
+  'Lesson plan': 'Lesson plans',
+  'Slide Decks': 'Slide Decks'
+};
+const catFilters = document.getElementById('catFilters');
+let activeCategory = 'ALL';
+
+categories.forEach(cat => {
+  const btn = document.createElement('button');
+  btn.className = 'cat-btn' + (cat === 'ALL' ? ' active' : '');
+  btn.textContent = catLabels[cat];
+  btn.dataset.cat = cat;
+  btn.addEventListener('click', () => {
+    activeCategory = cat;
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    render();
+  });
+  catFilters.appendChild(btn);
+});
+
+let freeOnly = false;
+const freeToggleBtn = document.getElementById('freeToggle');
+freeToggleBtn.addEventListener('click', () => {
+  freeOnly = !freeOnly;
+  freeToggleBtn.classList.toggle('active', freeOnly);
+  render();
+});
+
+document.getElementById('navFree').addEventListener('click', (e) => {
+  e.preventDefault();
+  freeOnly = true;
+  freeToggleBtn.classList.add('active');
+  render();
+  window.scrollTo({top: document.querySelector('main').offsetTop - 20, behavior: 'smooth'});
+});
+document.getElementById('navAll').addEventListener('click', (e) => {
+  e.preventDefault();
+  window.scrollTo({top: document.querySelector('main').offsetTop - 20, behavior: 'smooth'});
+});
+
+const grid = document.getElementById('grid');
+const countEl = document.getElementById('count');
+const emptyEl = document.getElementById('empty');
+const searchEl = document.getElementById('search');
+const statsEl = document.getElementById('stats');
+
+function renderStats() {
+  const counts = { 'Grammar activity': 0, 'Speaking activity': 0 };
+  LESSONS.forEach(l => {
+    if (l.categories.includes('Grammar activity')) counts['Grammar activity']++;
+    if (l.categories.includes('Speaking activity')) counts['Speaking activity']++;
+  });
+  statsEl.innerHTML = `
+    <a class="stat-deck" href="#" id="lessonPlansBtn"><div class="stat-ico">📚</div><div class="stat-lbl">${LESSONS.length} Lesson Plans</div></a>
+    <a class="stat-deck" href="#" id="grammarBtn"><div class="stat-ico">✏️</div><div class="stat-lbl">${counts['Grammar activity']} Grammar Activities</div></a>
+    <a class="stat-deck" href="#" id="speakingBtn"><div class="stat-ico">🗣️</div><div class="stat-lbl">${counts['Speaking activity']} Speaking Activities</div></a>
+    <a class="stat-deck" href="twin-peaks-deck-viewer.html" target="_blank" rel="noopener"><div class="stat-ico">▶</div><div class="stat-lbl">Open Slide Deck</div></a>
+    <a class="stat-deck" href="#cat=Video+Lessons" id="videoLessonsBtn"><div class="stat-ico">🎬</div><div class="stat-lbl">Video Lessons</div></a>
+    <a class="stat-deck" href="mailto:forbes@goodtimebook.com"><div class="stat-ico">✉️</div><div class="stat-lbl">Work With Me</div></a>
+  `;
+  document.getElementById('lessonPlansBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo({top: document.querySelector('main').offsetTop - 20, behavior: 'smooth'});
+  });
+  document.getElementById('grammarBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo({top: document.querySelector('main').offsetTop - 20, behavior: 'smooth'});
+  });
+  document.getElementById('speakingBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo({top: document.querySelector('main').offsetTop - 20, behavior: 'smooth'});
+  });
+  function goToCategory(cat) {
+    activeCategory = cat;
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === cat));
+    render();
+    window.scrollTo({top: document.querySelector('main').offsetTop - 20, behavior: 'smooth'});
+  }
+  document.getElementById('videoLessonsBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    goToCategory('Video Lessons');
+  });
+  window.applyHashCategory = function() {
+    const hash = window.location.hash;
+    const m = hash.match(/cat=([^&]+)/);
+    if (m) {
+      const cat = decodeURIComponent(m[1].replace(/\+/g, ' '));
+      if (categories.includes(cat)) goToCategory(cat);
+    }
+  };
+}
+
+function normalizeForSearch(s) {
+  return s.toLowerCase().replace(/[_\-.]+/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+// hero image for cards where custom lesson art exists — file (as in LESSONS) -> image path
+const LESSON_IMAGES = {
+  "forbes-english-architecture-c1 (1).html": "Architecture/architecture-1-hero.png",
+  "Forbes_English_A0_Water_Polo.html": "Water Polo/water-polo-swimmer.png",
+  "Forbes_English_A1_Water_Polo_Part2.html": "Water Polo/water-polo-splash.png",
+  "forbes_english_c2_architecture_brutalism.html": "Brutalism/brutalism-1-hero.png",
+  "german_firefighter_happy.html": "Fire Brigade/fire-1-street.png",
+  "english_firefighter_v3.html": "Fire Brigade/fire-2-truck.png",
+  "forbes-english-b1-modal-verbs-fire-brigade.html": "Fire Brigade/fire-3-field.png",
+  "saving-fawns-mower-b1.html": "Animal Welfare/deer-sunset-hero.png",
+  "saving-fawns-mower-b1-b2.html": "Animal Welfare/deer-mountain-hero.png"
+};
+
+// category -> [gradient, icon] for lessons without custom art yet
+const CATEGORY_STYLE = {
+  'Grammar activity':          ['#e8f2ec,#cfe4d7', '✏️'],
+  'Speaking activity':         ['#fbeaf0,#f6cfe1', '🗣️'],
+  'Video Lessons':             ['#e6eef8,#c9dbf0', '🎬'],
+  'Modal Verbs':                ['#eef2e8,#dbe4cc', '🧩'],
+  'Tenses':                    ['#f3ecf8,#e0cdf0', '⏳'],
+  'Prepositions':              ['#e8f2f2,#cce4e0', '🧭'],
+  'Phrasal Verbs':              ['#f8f2e8,#f0dfc9', '🔤'],
+  'Passive Voice':             ['#f2e8ec,#e4c9d3', '🔁'],
+  'Gerunds & Infinitives':      ['#e8eef2,#c9d9e4', '🔗'],
+  'Emergency Services':         ['#fbe9e6,#f5c6bd', '🚒'],
+  'Gaming':                    ['#e9f0fb,#c9dbf5', '🎮'],
+  'Martial Arts':              ['#f0e9f7,#d9c5ef', '🥋'],
+  default:                     ['#e8f2ec,#d5e6dc', '📖']
+};
+
+// per-file placeholder override for signature lessons without licensed art yet
+const PLACEHOLDER_OVERRIDE = {
+  "sherpa-tensing-route-map.html": ['#fbeaf0,#f6cfe1', '🏔️']
+};
+
+function cardImageHTML(l) {
+  const img = LESSON_IMAGES[l.file];
+  if (img) {
+    return `<div class="card-img-wrap"><img src="${encodeURI(img)}" alt="" loading="lazy"></div>`;
+  }
+  const override = PLACEHOLDER_OVERRIDE[l.file];
+  const cat = l.categories.find(c => CATEGORY_STYLE[c]) || 'default';
+  const [gradient, icon] = override || CATEGORY_STYLE[cat] || CATEGORY_STYLE.default;
+  return `<div class="card-img-wrap placeholder" style="background:linear-gradient(135deg, ${gradient});"><span class="ph-icon">${icon}</span></div>`;
+}
+
+function render() {
+  const q = normalizeForSearch(searchEl.value.trim());
+  const filtered = LESSONS.filter(l => {
+    const matchesLevel = activeLevel === 'ALL' || l.level === activeLevel;
+    const matchesCategory = activeCategory === 'ALL' || l.categories.includes(activeCategory);
+    const matchesFree = !freeOnly || l.access === 'Free';
+    const matchesQuery = !q || normalizeForSearch(l.title).includes(q) || normalizeForSearch(l.file).includes(q);
+    return matchesLevel && matchesCategory && matchesFree && matchesQuery;
+  });
+  grid.innerHTML = '';
+  filtered.forEach(l => {
+    const a = document.createElement('a');
+    a.className = 'card';
+    a.href = encodeURI(l.file);
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.innerHTML = `
+      ${cardImageHTML(l)}
+      <div class="card-body">
+        <div class="card-top">
+          <div>
+            <div class="card-cat">${l.categories.join(' · ')}</div>
+            ${l.level ? `<span class="badge${l.level.startsWith('C') ? ' gold' : ''}">${l.level}</span>` : ''}
+          </div>
+          <span class="access-badge ${l.access.toLowerCase()}">${l.access}</span>
+        </div>
+        <span class="card-title">${l.title}</span>
+      </div>
+    `;
+    grid.appendChild(a);
+  });
+  countEl.textContent = `${filtered.length} lesson${filtered.length !== 1 ? 's' : ''}`;
+  emptyEl.style.display = filtered.length === 0 ? 'block' : 'none';
+}
+
+searchEl.addEventListener('input', render);
+renderStats();
+render();
+if (window.applyHashCategory) window.applyHashCategory();
+window.addEventListener('hashchange', () => { if (window.applyHashCategory) window.applyHashCategory(); });
+</script>
+</body>
+</html>

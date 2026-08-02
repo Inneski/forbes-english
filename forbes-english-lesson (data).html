@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – C1 Lesson: Climate Data &amp; Policy</title>
+<style>
+/* ── SYSTEM FONTS ONLY – no external dependency ── */
+:root {
+  --bg:      #0e1a2b;
+  --surf:    #152237;
+  --card:    #1c2e47;
+  --bdr:     #253d5c;
+  --grn:     #3eb88a;
+  --amb:     #f0a04b;
+  --txt:     #e8eff8;
+  --mute:    #7a97b8;
+  --ok:      #3eb88a;
+  --err:     #e05252;
+  --serif:   Georgia, 'Times New Roman', serif;
+  --sans:    -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --mono:    'Courier New', Courier, monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--sans);background:var(--bg);color:var(--txt);
+  min-height:100vh;padding-bottom:60px;
+  background-image:
+    radial-gradient(ellipse 70% 45% at 85% 8%, rgba(62,184,138,.07) 0%,transparent 60%),
+    radial-gradient(ellipse 55% 65% at 8% 85%, rgba(240,160,75,.05) 0%,transparent 60%);
+}
+
+/* HEADER */
+header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:22px 44px 18px;border-bottom:1px solid var(--bdr);
+  position:sticky;top:0;background:rgba(14,26,43,.94);
+  backdrop-filter:blur(14px);z-index:200;
+}
+.logo-wrap{display:flex;flex-direction:column;align-items:flex-start;gap:0;line-height:1}
+.logo-forbes{
+  font-family:var(--serif);font-size:1.55rem;font-weight:700;
+  letter-spacing:.06em;color:var(--txt);
+}
+.logo-rule{width:100%;height:1px;background:var(--grn);margin:3px 0}
+.logo-english{
+  font-family:var(--sans);font-size:.6rem;font-weight:700;
+  letter-spacing:.45em;color:var(--grn);text-transform:uppercase;
+}
+.score-pill{
+  font-family:var(--mono);font-size:.78rem;color:var(--grn);
+  border:1px solid var(--grn);padding:6px 16px;border-radius:20px;
+  letter-spacing:.07em;white-space:nowrap;
+}
+
+/* MAIN */
+main{max-width:800px;margin:40px auto 0;padding:0 20px}
+
+/* INTRO */
+.intro{text-align:center;margin-bottom:44px;animation:up .6s ease both}
+.intro h1{font-family:var(--serif);font-size:1.9rem;font-weight:700;line-height:1.25;margin-bottom:10px}
+.intro h1 em{color:var(--grn);font-style:italic}
+.intro p{color:var(--mute);font-size:.93rem;line-height:1.75;max-width:560px;margin:0 auto}
+.tags{display:flex;justify-content:center;gap:8px;margin-top:14px;flex-wrap:wrap}
+.tag{
+  font-size:.68rem;font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;
+  padding:4px 10px;border-radius:4px;
+  background:rgba(62,184,138,.11);color:var(--grn);border:1px solid rgba(62,184,138,.28);
+}
+.tag.amb{background:rgba(240,160,75,.11);color:var(--amb);border-color:rgba(240,160,75,.28)}
+
+/* NAV TABS */
+.act-nav{display:flex;gap:6px;margin-bottom:30px;flex-wrap:wrap}
+.a-tab{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:6px 14px;border-radius:20px;border:1px solid var(--bdr);
+  color:var(--mute);background:transparent;cursor:default;transition:all .3s;
+}
+.a-tab.done{border-color:var(--grn);color:var(--grn)}
+.a-tab.cur{background:var(--grn);color:#0e1a2b;border-color:var(--grn);font-weight:700}
+
+/* ACTIVITY */
+.act{display:none;animation:up .4s ease both}
+.act.on{display:block}
+.act-hdr{margin-bottom:24px}
+.act-num{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;color:var(--mute);text-transform:uppercase;margin-bottom:4px}
+.act-title{font-family:var(--serif);font-size:1.3rem;font-weight:700}
+.act-desc{font-size:.87rem;color:var(--mute);line-height:1.65;margin-bottom:26px}
+
+/* PROGRESS */
+.prog-wrap{margin-bottom:10px}
+.prog-lbl{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.68rem;color:var(--mute);margin-bottom:6px;letter-spacing:.05em}
+.prog-track{height:3px;background:var(--bdr);border-radius:2px;overflow:hidden}
+.prog-bar{height:100%;background:linear-gradient(90deg,var(--grn),#6de0b4);border-radius:2px;transition:width .5s ease}
+
+/* CARDS */
+.q-card{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:26px 28px;margin-bottom:14px}
+.q-text{font-size:.97rem;line-height:1.75;margin-bottom:20px}
+.q-text strong{color:var(--amb);font-weight:600}
+.q-text em{color:var(--grn);font-style:italic}
+
+/* OPTIONS GRID */
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+@media(max-width:560px){.opts{grid-template-columns:1fr}}
+.opt{
+  background:var(--surf);border:1px solid var(--bdr);border-radius:8px;
+  padding:13px 15px;color:var(--txt);font-family:var(--sans);font-size:.88rem;
+  line-height:1.45;cursor:pointer;text-align:left;transition:all .2s;
+  display:flex;gap:11px;align-items:flex-start;
+}
+.opt:hover:not(:disabled){border-color:var(--grn);background:rgba(62,184,138,.07)}
+.opt-lbl{font-family:var(--mono);font-size:.72rem;color:var(--mute);flex-shrink:0;margin-top:1px;letter-spacing:.07em}
+.opt.ok{border-color:var(--ok)!important;background:rgba(62,184,138,.13)!important}
+.opt.bad{border-color:var(--err)!important;background:rgba(224,82,82,.1)!important}
+.opt.sel{border-color:var(--grn);background:rgba(62,184,138,.07)}
+.opt:disabled{cursor:default}
+
+/* FEEDBACK */
+.fb{border-radius:9px;padding:14px 18px;margin-top:12px;font-size:.86rem;line-height:1.6;display:none;animation:up .3s ease both}
+.fb.show{display:block}
+.fb.ok-fb{background:rgba(62,184,138,.1);border:1px solid rgba(62,184,138,.3);color:var(--grn)}
+.fb.bad-fb{background:rgba(224,82,82,.08);border:1px solid rgba(224,82,82,.25);color:#f08080}
+.fb .vd{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;margin-bottom:4px}
+.fb .ex{color:var(--txt);opacity:.88}
+
+/* BUTTONS */
+.btn-row{display:flex;gap:10px;margin-top:22px;justify-content:flex-end}
+.btn{
+  font-family:var(--sans);font-size:.88rem;font-weight:600;
+  padding:10px 24px;border-radius:8px;cursor:pointer;border:none;
+  transition:all .2s;letter-spacing:.02em;
+}
+.btn-sub{background:transparent;color:var(--grn);border:1px solid var(--grn)}
+.btn-sub:hover:not(:disabled){background:rgba(62,184,138,.1)}
+.btn-sub:disabled{opacity:.38;cursor:default}
+.btn-nxt{background:var(--grn);color:#0e1a2b;display:none}
+.btn-nxt.show{display:inline-block}
+.btn-nxt:hover{background:#5cd8a8;transform:translateY(-1px)}
+
+/* FITB */
+.word-bank{
+  display:flex;flex-wrap:wrap;gap:8px;padding:14px 16px;
+  background:var(--surf);border:1px dashed var(--bdr);border-radius:10px;min-height:50px;
+  margin-bottom:16px;
+}
+.chip{
+  background:var(--card);border:1px solid var(--bdr);border-radius:6px;
+  padding:6px 13px;font-size:.83rem;cursor:grab;user-select:none;
+  transition:all .2s;color:var(--txt);font-family:var(--mono);
+}
+.chip:hover{border-color:var(--grn);color:var(--grn)}
+.chip.dragging{opacity:.35}
+.chip.ok-chip{border-color:var(--ok);color:var(--ok);background:rgba(62,184,138,.1);cursor:default}
+.chip.bad-chip{border-color:var(--err);color:var(--err);background:rgba(224,82,82,.09);cursor:default}
+
+.fitb-row{
+  background:var(--card);border:1px solid var(--bdr);border-radius:10px;
+  padding:18px 22px;margin-bottom:10px;font-size:.93rem;line-height:2;
+}
+.drop-zone{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:140px;height:32px;
+  border-bottom:2px solid var(--grn);padding:0 10px;border-radius:4px 4px 0 0;
+  background:rgba(62,184,138,.05);transition:all .2s;
+  margin:0 4px;vertical-align:middle;cursor:default;
+}
+.drop-zone.over{background:rgba(62,184,138,.18);border-color:#5de0b2}
+.drop-zone.ok-z{border-color:var(--ok);background:rgba(62,184,138,.1)}
+.drop-zone.bad-z{border-color:var(--err);background:rgba(224,82,82,.07)}
+
+/* MATCHING */
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+@media(max-width:580px){.match-grid{grid-template-columns:1fr}}
+.match-col-lbl{font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin-bottom:8px;padding-left:2px}
+.match-left,.match-right{display:flex;flex-direction:column;gap:8px}
+.match-term-box{
+  background:var(--card);border:1px solid var(--bdr);border-radius:8px;
+  padding:12px 15px;font-size:.86rem;line-height:1.45;
+  display:flex;align-items:flex-start;gap:10px;min-height:64px;
+}
+.m-num{font-family:var(--mono);font-size:.72rem;color:var(--grn);flex-shrink:0;margin-top:1px}
+.match-sel{
+  width:100%;background:var(--surf);border:1px solid var(--bdr);border-radius:8px;
+  padding:12px 36px 12px 14px;font-size:.84rem;color:var(--txt);font-family:var(--sans);
+  cursor:pointer;outline:none;transition:border-color .2s;
+  appearance:none;min-height:64px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7' viewBox='0 0 12 7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a97b8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;
+}
+.match-sel:focus{border-color:var(--grn)}
+.match-sel.ok-s{border-color:var(--ok);background-color:rgba(62,184,138,.08)}
+.match-sel.bad-s{border-color:var(--err);background-color:rgba(224,82,82,.07)}
+option{background:#1c2e47;color:var(--txt)}
+
+/* DND */
+.dnd-sent{
+  background:var(--card);border:1px solid var(--bdr);border-radius:10px;
+  padding:16px 20px;font-size:.9rem;line-height:2;
+  display:flex;align-items:center;flex-wrap:wrap;gap:5px;
+}
+
+/* REORDER */
+.reord-list{display:flex;flex-direction:column;gap:8px}
+.reord-item{
+  background:var(--card);border:1px solid var(--bdr);border-radius:8px;
+  padding:13px 16px;font-size:.88rem;line-height:1.55;
+  cursor:grab;display:flex;align-items:flex-start;gap:12px;
+  transition:all .2s;user-select:none;
+}
+.reord-item:hover:not(.locked){border-color:var(--grn)}
+.reord-item.drag-over{border-color:var(--amb);background:rgba(240,160,75,.07)}
+.handle{color:var(--mute);font-size:.85rem;flex-shrink:0;margin-top:1px}
+.reord-item.ok-r{border-color:var(--ok);background:rgba(62,184,138,.07)}
+.reord-item.bad-r{border-color:var(--err);background:rgba(224,82,82,.06)}
+
+/* FINAL */
+#final{display:none;text-align:center;padding:44px 28px;animation:up .6s ease both}
+#final.on{display:block}
+.ring-wrap{position:relative;width:120px;height:120px;margin:0 auto 26px}
+.ring-svg{transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:var(--bdr);stroke-width:8}
+.ring-fg{fill:none;stroke:var(--grn);stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 1s ease}
+.ring-pct{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-family:var(--serif);font-size:1.7rem;font-weight:700;color:var(--grn);
+}
+.final-title{font-family:var(--serif);font-size:1.55rem;font-weight:700;margin-bottom:10px}
+.final-msg{color:var(--mute);font-size:.93rem;line-height:1.75;max-width:480px;margin:0 auto 26px}
+.stats-row{display:inline-flex;gap:28px;background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:16px 32px;margin-bottom:30px}
+.stat-val{font-family:var(--serif);font-size:1.45rem;font-weight:700;color:var(--grn)}
+.stat-lbl{font-size:.7rem;font-family:var(--mono);color:var(--mute);letter-spacing:.08em;margin-top:2px}
+
+/* VOCAB */
+.voc{display:inline;background:rgba(240,160,75,.13);color:var(--amb);border-radius:3px;padding:0 4px;font-style:italic}
+
+/* ANIM */
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-wrap">
+    <div class="logo-forbes">Forbes</div>
+    <div class="logo-rule"></div>
+    <div class="logo-english">English</div>
+  </div>
+  <div class="score-pill" id="score-pill">Score: 0 / 0</div>
+</header>
+
+<main>
+  <!-- INTRO -->
+  <div class="intro">
+    <h1>Data, Media &amp; <em>Climate Diplomacy</em></h1>
+    <p>A C1-level professional English lesson on advising data products, communicating with press, and pressuring governments on climate performance.</p>
+    <div class="tags">
+      <span class="tag">C1 Advanced</span>
+      <span class="tag amb">Policy &amp; Diplomacy</span>
+      <span class="tag">Climate Data</span>
+      <span class="tag amb">Media Relations</span>
+    </div>
+  </div>
+
+  <!-- NAV TABS -->
+  <div class="act-nav" id="act-nav">
+    <div class="a-tab cur" id="t1">I · Multiple Choice</div>
+    <div class="a-tab" id="t2">II · Fill in the Blank</div>
+    <div class="a-tab" id="t3">III · Matching</div>
+    <div class="a-tab" id="t4">IV · Drag &amp; Drop</div>
+    <div class="a-tab" id="t5">V · Reorder</div>
+  </div>
+
+  <!-- ══════════ ACTIVITY 1 – MULTIPLE CHOICE ══════════ -->
+  <div class="act on" id="act1">
+    <div class="act-hdr">
+      <div class="act-num">Activity I · Multiple Choice</div>
+      <div class="act-title">Policy Comprehension &amp; Judgement</div>
+    </div>
+    <p class="act-desc">Choose the most appropriate option for each situation. All distractors are plausible — read every option carefully before answering.</p>
+    <div id="mc-wrap"></div>
+    <div class="btn-row">
+      <button class="btn btn-sub" id="mc-sub" onclick="submitMC()">Check Answers</button>
+      <button class="btn btn-nxt" id="mc-nxt" onclick="goTo(2)">Next Activity →</button>
+    </div>
+  </div>
+
+  <!-- ══════════ ACTIVITY 2 – FILL IN THE BLANK ══════════ -->
+  <div class="act" id="act2">
+    <div class="act-hdr">
+      <div class="act-num">Activity II · Fill in the Blank</div>
+      <div class="act-title">Lexical Precision</div>
+    </div>
+    <p class="act-desc">Drag each word or phrase from the bank into the correct gap. Click a placed word to return it to the bank. Each item is used once.</p>
+    <div class="word-bank" id="fitb-bank"></div>
+    <div id="fitb-wrap"></div>
+    <div class="btn-row">
+      <button class="btn btn-sub" id="fitb-sub" onclick="submitFITB()">Check Answers</button>
+      <button class="btn btn-nxt" id="fitb-nxt" onclick="goTo(3)">Next Activity →</button>
+    </div>
+  </div>
+
+  <!-- ══════════ ACTIVITY 3 – MATCHING ══════════ -->
+  <div class="act" id="act3">
+    <div class="act-hdr">
+      <div class="act-num">Activity III · Matching</div>
+      <div class="act-title">Terminology &amp; Definitions</div>
+    </div>
+    <p class="act-desc">Match each term on the left with its correct definition using the dropdown on the right.</p>
+    <div class="match-grid" id="match-wrap"></div>
+    <div class="fb" id="match-fb"></div>
+    <div class="btn-row">
+      <button class="btn btn-sub" id="match-sub" onclick="submitMatch()">Check Answers</button>
+      <button class="btn btn-nxt" id="match-nxt" onclick="goTo(4)">Next Activity →</button>
+    </div>
+  </div>
+
+  <!-- ══════════ ACTIVITY 4 – DRAG & DROP ══════════ -->
+  <div class="act" id="act4">
+    <div class="act-hdr">
+      <div class="act-num">Activity IV · Drag &amp; Drop</div>
+      <div class="act-title">Collocations in Context</div>
+    </div>
+    <p class="act-desc">Drag the correct word or phrase from the bank into the gap in each sentence. Click a placed word to return it.</p>
+    <div class="word-bank" id="dnd-bank"></div>
+    <div id="dnd-wrap"></div>
+    <div class="btn-row">
+      <button class="btn btn-sub" id="dnd-sub" onclick="submitDND()">Check Answers</button>
+      <button class="btn btn-nxt" id="dnd-nxt" onclick="goTo(5)">Next Activity →</button>
+    </div>
+  </div>
+
+  <!-- ══════════ ACTIVITY 5 – REORDER ══════════ -->
+  <div class="act" id="act5">
+    <div class="act-hdr">
+      <div class="act-num">Activity V · Sentence Reordering</div>
+      <div class="act-title">Discourse &amp; Argumentation</div>
+    </div>
+    <p class="act-desc">Drag the sentences into a logical order to form a coherent paragraph. Consider coherence, cohesion, and rhetorical structure.</p>
+    <div id="reord-wrap"></div>
+    <div class="btn-row">
+      <button class="btn btn-sub" id="reord-sub" onclick="submitReorder()">Check Answers</button>
+      <button class="btn btn-nxt" id="reord-nxt" onclick="showFinal()">See Results →</button>
+    </div>
+  </div>
+
+  <!-- ══════════ FINAL SCREEN ══════════ -->
+  <div id="final">
+    <div class="ring-wrap">
+      <svg class="ring-svg" width="120" height="120" viewBox="0 0 120 120">
+        <circle class="ring-bg" cx="60" cy="60" r="52"/>
+        <circle class="ring-fg" id="ring-fg" cx="60" cy="60" r="52"
+          stroke-dasharray="326.7" stroke-dashoffset="326.7"/>
+      </svg>
+      <div class="ring-pct" id="ring-pct">0%</div>
+    </div>
+    <div class="final-title" id="final-title">Lesson Complete</div>
+    <p class="final-msg" id="final-msg"></p>
+    <div class="stats-row">
+      <div><div class="stat-val" id="fs-c">0</div><div class="stat-lbl">Correct</div></div>
+      <div><div class="stat-val" id="fs-t">0</div><div class="stat-lbl">Total</div></div>
+      <div><div class="stat-val" id="fs-p">0%</div><div class="stat-lbl">Score</div></div>
+    </div>
+    <br>
+    <button class="btn btn-nxt show" onclick="restart()">↺ Restart Lesson</button>
+  </div>
+</main>
+
+<script>
+/* ══════════════════════════════════════════════
+   DATA
+══════════════════════════════════════════════ */
+const MC = [
+  {
+    q: `A senior analyst is preparing a briefing on carbon emission datasets for a government minister. She wants to ensure the data products are <strong>actionable</strong>. Which approach best achieves this?`,
+    opts: [
+      "Presenting raw datasets with full metadata and minimal commentary to preserve objectivity",
+      "Structuring outputs around the specific policy decisions the minister must make this quarter",
+      "Maximising granularity by including every available emission variable at national level",
+      "Translating all technical indicators into absolute tonnage figures for easier comparison"
+    ],
+    ans: 1,
+    exp: "Actionable data products are organised around the decisions the end user must make, not around the data itself. Structuring outputs around upcoming policy choices means the minister can act directly on the findings."
+  },
+  {
+    q: `During a press conference, a journalist asks: <em>"Can you confirm your government will meet its 2030 target?"</em> You are advising the spokesperson. Which response best manages this media interaction?`,
+    opts: [
+      "Redirect to the published NDC document and offer a technical follow-up briefing later that week",
+      "Confirm the target unequivocally and cite three flagship renewable energy projects as evidence",
+      "Decline to comment on projections and state that all data is commercially sensitive at this stage",
+      "Acknowledge current trajectories, specify interim milestones achieved, and note remaining challenges"
+    ],
+    ans: 3,
+    exp: "Effective press strategy involves transparent acknowledgement of both progress and gaps. This builds credibility and avoids the reputational damage caused by over-claiming or stonewalling."
+  },
+  {
+    q: `An NGO is developing an index to benchmark countries' climate performance for annual public reporting. Which methodological consideration is most critical to its credibility?`,
+    opts: [
+      "Limiting the index to OECD nations to ensure data comparability across development contexts",
+      "Using a single composite score to allow straightforward ranking and immediate media uptake",
+      "Ensuring transparent weighting methodology and publishing sensitivity analyses with results",
+      "Prioritising per-capita metrics over absolute figures to remove the size advantage of smaller states"
+    ],
+    ans: 2,
+    exp: "Index credibility depends most critically on methodological transparency. Publishing the weighting rationale and sensitivity analyses allows external scrutiny, prevents accusations of bias, and enables peer validation."
+  },
+  {
+    q: `A policy advisor wants to pressure a government that has made ambitious climate pledges but shows little implementation progress. Which instrument is most likely to produce measurable change?`,
+    opts: [
+      "Commissioning a comparative study of the country's pledges against its regional neighbours' commitments",
+      "Coordinating with institutional investors to link sovereign bond ratings to verified climate implementation",
+      "Publishing an open letter signed by prominent academics calling for greater ambition in future pledges",
+      "Requesting that the government submit additional voluntary progress reports to the UNFCCC secretariat"
+    ],
+    ans: 1,
+    exp: "Financial leverage through institutional investors creates direct economic consequences governments cannot easily ignore. Linking sovereign bond ratings to climate delivery translates rhetoric into measurable pressure."
+  },
+  {
+    q: `Which of the following most accurately describes <span class="voc">greenwashing</span> in the context of governmental climate reporting?`,
+    opts: [
+      "Investing heavily in renewable energy domestically while maintaining equivalent fossil fuel export volumes",
+      "Selectively reporting favourable emissions metrics while omitting scope 3 and land-use change data",
+      "Overstating the economic co-benefits of climate policy to increase domestic public approval ratings",
+      "Relabelling existing environmental regulations as new climate initiatives within NDC submissions"
+    ],
+    ans: 3,
+    exp: "Greenwashing in governmental reporting most specifically involves presenting existing or minimal actions as new ambitious commitments — such as relabelling existing regulations within NDCs — to create an impression of greater ambition than is actually delivered."
+  }
+];
+
+const FITB = [
+  { sent: ["The dashboard provides highly ", " data, allowing analysts to drill down to municipality level for each emission source."], ans: "granular", exp: "'Granular' describes fine-grained, detailed data. It collocates naturally with 'data' and 'reporting' in policy contexts." },
+  { sent: ["The report will be published under a 48-hour ", ", giving news desks time to prepare analysis before the public release date."], ans: "embargo", exp: "An 'embargo' in media relations restricts publication until a specified time, giving journalists preparation time while controlling the news cycle." },
+  { sent: ["Without an effective ", ", there is little incentive for governments to move from pledge to implementation."], ans: "accountability mechanism", exp: "An 'accountability mechanism' is a formal system ensuring compliance with commitments — essential vocabulary in policy and governance discourse." },
+  { sent: ["The minister spoke ", " to the correspondent, sharing context that informed the article without appearing in print."], ans: "off the record", exp: "'Off the record' is a standard media convention: information shared that cannot be attributed or published directly." },
+  { sent: ["Repeated calls for action without visible results risk creating ", " among civil society organisations."], ans: "stakeholder fatigue", exp: "'Stakeholder fatigue' describes the reduced engagement that results when repeated demands yield no visible progress." },
+  { sent: ["Climate finance can be used as political ", " to secure more ambitious commitments from recipient governments."], ans: "leverage", exp: "'Leverage' in diplomatic contexts means using resources or influence as a tool to extract a desired commitment from another party." },
+  { sent: ["Current emission ", " suggests the country will overshoot its 2030 target by approximately 18%."], ans: "trajectory", exp: "'Trajectory' describes the projected path of change over time — widely used in both data science and climate policy contexts." },
+  { sent: ["Loan ", " tied to measurable climate outcomes is increasingly common in multilateral development bank agreements."], ans: "conditionality", exp: "'Conditionality' refers to the requirements that must be met to access financial support — a core term in international finance and policy." }
+];
+const FITB_BANK = ["leverage","granular","accountability mechanism","off the record","embargo","trajectory","stakeholder fatigue","conditionality"];
+
+const MATCH_TERMS = [
+  "Nationally Determined Contribution (NDC)",
+  "Carbon budget",
+  "Loss and damage",
+  "Just transition",
+  "Scope 3 emissions"
+];
+const MATCH_DEFS = [
+  "A country's self-defined climate action plan submitted to the UNFCCC, specifying emission reduction targets and adaptation measures for a given period",
+  "The cumulative quantity of carbon dioxide that can be emitted globally while still limiting warming to a specific temperature threshold",
+  "The harm suffered by vulnerable nations resulting from climate impacts that mitigation efforts and adaptation measures cannot fully prevent or address",
+  "A framework ensuring that the shift to a low-carbon economy actively protects the workers, communities, and regions most dependent on fossil fuel industries",
+  "Indirect greenhouse gas emissions occurring throughout a company's or country's full value chain, including both upstream suppliers and downstream consumers"
+];
+// correct: MATCH_TERMS[i] pairs with MATCH_DEFS[i]
+
+const DND_ITEMS = [
+  {
+    parts: ["The research team decided to ", "GAP", " its findings by cross-referencing them with independent satellite imagery data."],
+    ans: "corroborate",
+    exp: "'Corroborate' means to confirm or support with additional evidence — the correct collocation with 'findings' in academic and policy writing."
+  },
+  {
+    parts: ["A strong public narrative can ", "GAP", " the technical complexity of climate data for general audiences."],
+    ans: "demystify",
+    exp: "'Demystify' means to make something easier to understand — precisely the function of science communication aimed at non-specialist audiences."
+  },
+  {
+    parts: ["The advocacy coalition sought to ", "GAP", " the government's pledge by demanding a statutory implementation timeline."],
+    ans: "operationalise",
+    exp: "'Operationalise' means to put a concept or commitment into practical operation — a key term in policy implementation discourse."
+  },
+  {
+    parts: ["The spokesperson was careful not to ", "GAP", " causality between the policy intervention and the emission reductions observed."],
+    ans: "overstate",
+    exp: "'Overstate' means to exaggerate or claim more than the evidence supports — a critical risk when communicating data findings to the press."
+  },
+  {
+    parts: ["Civil society groups are increasingly using social media to ", "GAP", " governments that fail to meet their climate pledges."],
+    ans: "hold accountable",
+    exp: "'Hold accountable' is the standard collocation in governance and advocacy language for demanding responsibility and transparency from institutions."
+  }
+];
+const DND_BANK = ["corroborate","demystify","operationalise","overstate","hold accountable"];
+
+const REORD = [
+  {
+    title: "Advising a government on data transparency",
+    sents: [
+      { id:"ra1", t:"Governments wishing to build credibility on climate policy should prioritise the transparency of their underlying data products." },
+      { id:"ra2", t:"This means not merely publishing headline statistics, but releasing the full methodologies, assumptions, and raw datasets on which national targets are based." },
+      { id:"ra3", t:"In doing so, they move from a position of assertion to one of evidence — a transition that fundamentally changes the terms of public debate." },
+      { id:"ra4", t:"Furthermore, data made publicly accessible in machine-readable formats enables independent researchers and civil society to conduct their own analyses, strengthening overall accountability." },
+      { id:"ra5", t:"Ultimately, radical data transparency is not a concession to critics; it is a strategic asset for any government serious about its climate commitments." }
+    ],
+    correct: ["ra1","ra2","ra3","ra4","ra5"],
+    exp: "The paragraph follows a classic argument structure: recommendation → specific elaboration → rhetorical reframing → supporting evidence → evaluative conclusion."
+  },
+  {
+    title: "Preparing a media strategy on climate performance",
+    sents: [
+      { id:"rb1", t:"Before engaging with the press on climate performance, a communications team must conduct a thorough audit of the data they intend to reference." },
+      { id:"rb2", t:"This audit should identify not only what the data supports, but also where it is incomplete or potentially misleading if presented without proper context." },
+      { id:"rb3", t:"Once the data has been verified, key messages should be distilled into no more than three to four core claims, each supported by specific evidence." },
+      { id:"rb4", t:"Anticipating the most challenging questions journalists are likely to raise — particularly around data gaps or missed targets — is therefore an essential part of any pre-briefing process." },
+      { id:"rb5", t:"It is equally important to prepare holding lines for questions that fall outside the agreed messaging, to prevent spokespeople from being caught off guard." }
+    ],
+    correct: ["rb1","rb2","rb3","rb4","rb5"],
+    exp: "The paragraph follows a process structure: initiate audit → identify limitations → distil messages → anticipate challenges → prepare holding lines. Each step logically follows the previous one."
+  }
+];
+
+/* ══════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════ */
+let totalOk = 0, totalQ = 0;
+let mcSel = {};
+let fitbState = {}; // idx -> word placed
+let dndState  = {}; // idx -> word placed
+
+/* ══════════════════════════════════════════════
+   SCORE
+══════════════════════════════════════════════ */
+function addScore(ok, total) {
+  totalOk += ok; totalQ += total;
+  document.getElementById('score-pill').textContent = `Score: ${totalOk} / ${totalQ}`;
+}
+
+/* ══════════════════════════════════════════════
+   NAV
+══════════════════════════════════════════════ */
+function goTo(n) {
+  document.querySelectorAll('.act').forEach(a => a.classList.remove('on'));
+  document.getElementById('act'+n).classList.add('on');
+  document.querySelectorAll('.a-tab').forEach((t,i) => {
+    t.classList.remove('cur','done');
+    if (i+1 < n) t.classList.add('done');
+    if (i+1 === n) t.classList.add('cur');
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ══════════════════════════════════════════════
+   FINAL
+══════════════════════════════════════════════ */
+function showFinal() {
+  document.querySelectorAll('.act').forEach(a => a.classList.remove('on'));
+  document.getElementById('act-nav').style.display = 'none';
+  const pct = totalQ > 0 ? Math.round(totalOk/totalQ*100) : 0;
+  const circum = 2 * Math.PI * 52; // 326.7
+  document.getElementById('ring-fg').style.strokeDashoffset = circum - (circum * pct / 100);
+  document.getElementById('ring-pct').textContent = pct+'%';
+  document.getElementById('fs-c').textContent = totalOk;
+  document.getElementById('fs-t').textContent = totalQ;
+  document.getElementById('fs-p').textContent = pct+'%';
+  const msgs = [
+    [90,"Outstanding Performance","You demonstrate near-native command of the vocabulary and analytical reasoning required in climate policy communication. Exceptional work."],
+    [75,"Strong C1 Competence","You show solid command of policy discourse and media communication. Review the explanations for any errors to sharpen your precision further."],
+    [55,"Good Progress","You have a sound grasp of the core concepts. Careful review of the answer explanations will significantly improve your accuracy."],
+    [0,"Keep Practising","This is a highly specialised domain. Work through each explanation carefully — they contain the key insights needed to move forward with confidence."]
+  ];
+  const [,title,msg] = msgs.find(([t]) => pct >= t);
+  document.getElementById('final-title').textContent = title;
+  document.getElementById('final-msg').textContent = msg;
+  document.getElementById('final').classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function restart() {
+  totalOk = 0; totalQ = 0; mcSel = {}; fitbState = {}; dndState = {};
+  document.getElementById('score-pill').textContent = 'Score: 0 / 0';
+  document.getElementById('final').classList.remove('on');
+  document.getElementById('act-nav').style.display = 'flex';
+  buildAll();
+  goTo(1);
+}
+
+/* ══════════════════════════════════════════════
+   ACTIVITY 1 – MULTIPLE CHOICE
+══════════════════════════════════════════════ */
+function buildMC() {
+  const wrap = document.getElementById('mc-wrap');
+  wrap.innerHTML = '';
+  MC.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    const pct = ((qi+1)/MC.length*100).toFixed(0);
+    card.innerHTML = `
+      <div class="prog-wrap">
+        <div class="prog-lbl"><span>Question ${qi+1} of ${MC.length}</span><span>Activity I</span></div>
+        <div class="prog-track"><div class="prog-bar" style="width:${pct}%"></div></div>
+      </div>
+      <p class="q-text">${q.q}</p>
+      <div class="opts" id="opts-${qi}">
+        ${q.opts.map((o,oi)=>`
+          <button class="opt" id="opt-${qi}-${oi}" onclick="pickMC(${qi},${oi})">
+            <span class="opt-lbl">${String.fromCharCode(65+oi)}</span>
+            <span>${o}</span>
+          </button>`).join('')}
+      </div>
+      <div class="fb" id="mc-fb-${qi}"></div>`;
+    wrap.appendChild(card);
+  });
+}
+
+function pickMC(qi, oi) {
+  mcSel[qi] = oi;
+  document.querySelectorAll(`#opts-${qi} .opt`).forEach((b,i) => {
+    b.classList.toggle('sel', i === oi);
+  });
+}
+
+function submitMC() {
+  let ok = 0;
+  MC.forEach((q, qi) => {
+    const chosen = mcSel[qi];
+    const fb = document.getElementById(`mc-fb-${qi}`);
+    document.querySelectorAll(`#opts-${qi} .opt`).forEach(b => b.disabled = true);
+    if (chosen === undefined) {
+      fb.className = 'fb bad-fb show';
+      fb.innerHTML = `<div class="vd">Not answered</div><div class="ex">Correct: <strong>${String.fromCharCode(65+q.ans)}</strong>. ${q.exp}</div>`;
+    } else {
+      const right = chosen === q.ans;
+      if (right) ok++;
+      document.getElementById(`opt-${qi}-${chosen}`).classList.add(right?'ok':'bad');
+      if (!right) document.getElementById(`opt-${qi}-${q.ans}`).classList.add('ok');
+      fb.className = `fb ${right?'ok-fb':'bad-fb'} show`;
+      fb.innerHTML = `<div class="vd">${right?'✓ Correct':'✗ Incorrect'}</div><div class="ex">${q.exp}</div>`;
+    }
+  });
+  addScore(ok, MC.length);
+  document.getElementById('mc-sub').disabled = true;
+  document.getElementById('mc-nxt').classList.add('show');
+}
+
+/* ══════════════════════════════════════════════
+   ACTIVITY 2 – FILL IN THE BLANK
+══════════════════════════════════════════════ */
+function buildFITB() {
+  fitbState = {};
+  const bank = document.getElementById('fitb-bank');
+  const wrap = document.getElementById('fitb-wrap');
+  bank.innerHTML = '';
+  wrap.innerHTML = '';
+
+  // Shuffle bank
+  const shuffled = [...FITB_BANK].sort(()=>Math.random()-.5);
+  shuffled.forEach(w => bank.appendChild(makeBankChip(w, 'fitb')));
+
+  // Sentences
+  FITB.forEach((item, i) => {
+    const row = document.createElement('div');
+    row.className = 'fitb-row';
+
+    item.sent.forEach((part, pi) => {
+      if (pi === 1) {
+        // drop zone
+        const zone = document.createElement('span');
+        zone.className = 'drop-zone';
+        zone.dataset.idx = i;
+        zone.dataset.ans = item.ans;
+        setupFITBZone(zone, i);
+        row.appendChild(zone);
+      }
+      const span = document.createElement('span');
+      span.textContent = part;
+      row.appendChild(span);
+    });
+
+    const fb = document.createElement('div');
+    fb.className = 'fb';
+    fb.id = `fitb-fb-${i}`;
+    wrap.appendChild(row);
+    wrap.appendChild(fb);
+  });
+}
+
+function makeBankChip(word, pool) {
+  const c = document.createElement('div');
+  c.className = 'chip';
+  c.textContent = word;
+  c.draggable = true;
+  c.dataset.word = word;
+  c.dataset.pool = pool;
+  c.addEventListener('dragstart', e => {
+    e.dataTransfer.setData('word', word);
+    e.dataTransfer.setData('from', 'bank');
+    e.dataTransfer.setData('pool', pool);
+    setTimeout(()=>c.classList.add('dragging'), 0);
+  });
+  c.addEventListener('dragend', ()=>c.classList.remove('dragging'));
+  return c;
+}
+
+function makePlacedChip(word, idx, pool) {
+  const c = document.createElement('div');
+  c.className = 'chip';
+  c.textContent = word;
+  c.draggable = true;
+  c.dataset.word = word;
+  c.dataset.pool = pool;
+  c.addEventListener('dragstart', e => {
+    e.dataTransfer.setData('word', word);
+    e.dataTransfer.setData('from', 'zone');
+    e.dataTransfer.setData('fromIdx', idx);
+    e.dataTransfer.setData('pool', pool);
+    setTimeout(()=>c.classList.add('dragging'),0);
+  });
+  c.addEventListener('dragend', ()=>c.classList.remove('dragging'));
+  c.addEventListener('click', () => {
+    // return to bank
+    returnToBank(word, pool);
+    c.remove();
+    if (pool === 'fitb') fitbState[idx] = undefined;
+    else dndState[idx] = undefined;
+  });
+  return c;
+}
+
+function returnToBank(word, pool) {
+  const bankEl = document.getElementById(pool === 'fitb' ? 'fitb-bank' : 'dnd-bank');
+  bankEl.appendChild(makeBankChip(word, pool));
+}
+
+function setupFITBZone(zone, idx) {
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('over'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('over'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault();
+    zone.classList.remove('over');
+    const word = e.dataTransfer.getData('word');
+    const from = e.dataTransfer.getData('from');
+    const pool = e.dataTransfer.getData('pool');
+    if (pool !== 'fitb') return;
+
+    // Evict existing
+    if (zone.children.length) {
+      const oldWord = zone.children[0].dataset.word;
+      zone.children[0].remove();
+      returnToBank(oldWord, 'fitb');
+      fitbState[idx] = undefined;
+    }
+    // Remove from source
+    if (from === 'bank') {
+      const bc = [...document.getElementById('fitb-bank').querySelectorAll('.chip')].find(c=>c.dataset.word===word);
+      if(bc) bc.remove();
+    } else {
+      const fromIdx = parseInt(e.dataTransfer.getData('fromIdx'));
+      const fz = document.querySelector(`.drop-zone[data-idx="${fromIdx}"]`);
+      if (fz && fz.children.length) { fz.children[0].remove(); fitbState[fromIdx]=undefined; }
+    }
+    const placed = makePlacedChip(word, idx, 'fitb');
+    zone.appendChild(placed);
+    fitbState[idx] = word;
+  });
+}
+
+function submitFITB() {
+  let ok = 0;
+  FITB.forEach((item, i) => {
+    const zone = document.querySelector(`.drop-zone[data-idx="${i}"]`);
+    const fb = document.getElementById(`fitb-fb-${i}`);
+    const placed = fitbState[i];
+    const right = placed && placed.toLowerCase().trim() === item.ans.toLowerCase().trim();
+    if (right) ok++;
+    zone.classList.add(right?'ok-z':'bad-z');
+    if (zone.children[0]) {
+      zone.children[0].classList.add(right?'ok-chip':'bad-chip');
+      zone.children[0].draggable = false;
+    }
+    fb.className = `fb ${right?'ok-fb':'bad-fb'} show`;
+    fb.innerHTML = `<div class="vd">${right?'✓ Correct':`✗ Incorrect — Answer: "${item.ans}"`}</div><div class="ex">${item.exp}</div>`;
+  });
+  addScore(ok, FITB.length);
+  document.getElementById('fitb-sub').disabled = true;
+  document.getElementById('fitb-nxt').classList.add('show');
+  document.getElementById('fitb-bank').querySelectorAll('.chip').forEach(c=>c.draggable=false);
+}
+
+/* ══════════════════════════════════════════════
+   ACTIVITY 3 – MATCHING
+══════════════════════════════════════════════ */
+function buildMatch() {
+  const wrap = document.getElementById('match-wrap');
+  wrap.innerHTML = '';
+
+  // Shuffle defs for dropdown options
+  const shuffledDefs = [...MATCH_DEFS].sort(()=>Math.random()-.5);
+
+  const leftCol = document.createElement('div');
+  leftCol.className = 'match-left';
+  leftCol.innerHTML = '<div class="match-col-lbl">Term</div>';
+
+  const rightCol = document.createElement('div');
+  rightCol.className = 'match-right';
+  rightCol.innerHTML = '<div class="match-col-lbl">Definition — select the correct one</div>';
+
+  MATCH_TERMS.forEach((term, i) => {
+    // Left: term box
+    const box = document.createElement('div');
+    box.className = 'match-term-box';
+    box.innerHTML = `<span class="m-num">${i+1}.</span><span>${term}</span>`;
+    leftCol.appendChild(box);
+
+    // Right: dropdown with full definitions
+    const sel = document.createElement('select');
+    sel.className = 'match-sel';
+    sel.id = `ms-${i}`;
+    sel.innerHTML = '<option value="">— choose the correct definition —</option>' +
+      shuffledDefs.map((d, di) => `<option value="${di}">${d}</option>`).join('');
+    // The correct shuffled index for this term
+    const correctShuffIdx = shuffledDefs.indexOf(MATCH_DEFS[i]);
+    sel.dataset.correct = correctShuffIdx;
+    rightCol.appendChild(sel);
+  });
+
+  wrap.appendChild(leftCol);
+  wrap.appendChild(rightCol);
+}
+
+function submitMatch() {
+  let ok = 0;
+  MATCH_TERMS.forEach((_, i) => {
+    const sel = document.getElementById(`ms-${i}`);
+    const chosen = parseInt(sel.value);
+    const correct = parseInt(sel.dataset.correct);
+    const right = chosen === correct;
+    if (right) ok++;
+    sel.classList.add(right?'ok-s':'bad-s');
+    sel.disabled = true;
+  });
+  addScore(ok, MATCH_TERMS.length);
+  document.getElementById('match-sub').disabled = true;
+  document.getElementById('match-nxt').classList.add('show');
+  const fb = document.getElementById('match-fb');
+  fb.className = `fb ${ok===MATCH_TERMS.length?'ok-fb':'bad-fb'} show`;
+  fb.innerHTML = `<div class="vd">${ok} of ${MATCH_TERMS.length} matched correctly</div><div class="ex">These terms are foundational in climate policy discourse. Review any you found difficult using UNFCCC or IPCC terminology glossaries.</div>`;
+}
+
+/* ══════════════════════════════════════════════
+   ACTIVITY 4 – DRAG & DROP
+══════════════════════════════════════════════ */
+function buildDND() {
+  dndState = {};
+  const bank = document.getElementById('dnd-bank');
+  const wrap = document.getElementById('dnd-wrap');
+  bank.innerHTML = '';
+  wrap.innerHTML = '';
+
+  const shuffled = [...DND_BANK].sort(()=>Math.random()-.5);
+  shuffled.forEach(w => bank.appendChild(makeBankChip(w, 'dnd')));
+
+  DND_ITEMS.forEach((item, i) => {
+    const row = document.createElement('div');
+    row.className = 'dnd-sent';
+
+    item.parts.forEach(part => {
+      if (part === 'GAP') {
+        const zone = document.createElement('span');
+        zone.className = 'drop-zone';
+        zone.dataset.idx = i;
+        zone.dataset.ans = item.ans;
+        setupDNDZone(zone, i);
+        row.appendChild(zone);
+      } else {
+        const span = document.createElement('span');
+        span.textContent = part;
+        row.appendChild(span);
+      }
+    });
+
+    const fb = document.createElement('div');
+    fb.className = 'fb';
+    fb.id = `dnd-fb-${i}`;
+    const rowWrap = document.createElement('div');
+    rowWrap.style.marginBottom = '12px';
+    rowWrap.appendChild(row);
+    rowWrap.appendChild(fb);
+    wrap.appendChild(rowWrap);
+  });
+}
+
+function setupDNDZone(zone, idx) {
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('over'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('over'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault();
+    zone.classList.remove('over');
+    const word = e.dataTransfer.getData('word');
+    const from = e.dataTransfer.getData('from');
+    const pool = e.dataTransfer.getData('pool');
+    if (pool !== 'dnd') return;
+
+    // Evict existing
+    if (zone.children.length) {
+      const oldWord = zone.children[0].dataset.word;
+      zone.children[0].remove();
+      returnToBank(oldWord, 'dnd');
+      dndState[idx] = undefined;
+    }
+    // Remove from source
+    if (from === 'bank') {
+      const bc = [...document.getElementById('dnd-bank').querySelectorAll('.chip')].find(c=>c.dataset.word===word);
+      if(bc) bc.remove();
+    } else {
+      const fromIdx = parseInt(e.dataTransfer.getData('fromIdx'));
+      const fz = document.querySelectorAll(`.drop-zone[data-idx="${fromIdx}"]`);
+      fz.forEach(z => { if(z.dataset.pool!=='fitb' && z.children.length){ z.children[0].remove(); dndState[fromIdx]=undefined; } });
+    }
+    const placed = makePlacedChip(word, idx, 'dnd');
+    zone.appendChild(placed);
+    dndState[idx] = word;
+  });
+}
+
+function submitDND() {
+  let ok = 0;
+  DND_ITEMS.forEach((item, i) => {
+    // find the dnd drop zone (not fitb) with this idx
+    const zones = document.querySelectorAll(`.drop-zone[data-idx="${i}"]`);
+    let zone;
+    zones.forEach(z => { if(!z.closest('#fitb-wrap')) zone = z; });
+    const fb = document.getElementById(`dnd-fb-${i}`);
+    const placed = dndState[i];
+    const right = placed && placed.toLowerCase() === item.ans.toLowerCase();
+    if (right) ok++;
+    if (zone) {
+      zone.classList.add(right?'ok-z':'bad-z');
+      if (zone.children[0]) {
+        zone.children[0].classList.add(right?'ok-chip':'bad-chip');
+        zone.children[0].draggable = false;
+      }
+    }
+    fb.className = `fb ${right?'ok-fb':'bad-fb'} show`;
+    fb.innerHTML = `<div class="vd">${right?'✓ Correct':`✗ Incorrect — Answer: "${item.ans}"`}</div><div class="ex">${item.exp}</div>`;
+  });
+  addScore(ok, DND_ITEMS.length);
+  document.getElementById('dnd-sub').disabled = true;
+  document.getElementById('dnd-nxt').classList.add('show');
+  document.getElementById('dnd-bank').querySelectorAll('.chip').forEach(c=>c.draggable=false);
+}
+
+/* ══════════════════════════════════════════════
+   ACTIVITY 5 – REORDER
+══════════════════════════════════════════════ */
+function buildReorder() {
+  const wrap = document.getElementById('reord-wrap');
+  wrap.innerHTML = '';
+
+  REORD.forEach((set, si) => {
+    const outer = document.createElement('div');
+    outer.style.marginBottom = '30px';
+
+    const title = document.createElement('div');
+    title.style.cssText = 'font-family:var(--serif);font-size:.98rem;font-weight:700;color:var(--amb);margin-bottom:12px';
+    title.textContent = `${si+1}. ${set.title}`;
+    outer.appendChild(title);
+
+    const list = document.createElement('div');
+    list.className = 'reord-list';
+    list.id = `rl-${si}`;
+
+    const shuffled = [...set.sents].sort(()=>Math.random()-.5);
+    shuffled.forEach(s => {
+      const item = document.createElement('div');
+      item.className = 'reord-item';
+      item.draggable = true;
+      item.dataset.id = s.id;
+      item.innerHTML = `<span class="handle">⠿</span><span>${s.t}</span>`;
+
+      item.addEventListener('dragstart', e => {
+        e.dataTransfer.setData('rid', s.id);
+        e.dataTransfer.setData('si', si);
+        setTimeout(()=>item.classList.add('dragging'),0);
+      });
+      item.addEventListener('dragend', ()=>item.classList.remove('dragging'));
+      item.addEventListener('dragover', e => { e.preventDefault(); item.classList.add('drag-over'); });
+      item.addEventListener('dragleave', ()=>item.classList.remove('drag-over'));
+      item.addEventListener('drop', e => {
+        e.preventDefault();
+        item.classList.remove('drag-over');
+        const rid = e.dataTransfer.getData('rid');
+        const srcSi = parseInt(e.dataTransfer.getData('si'));
+        if (srcSi !== si) return;
+        const listEl = document.getElementById(`rl-${si}`);
+        const dragged = listEl.querySelector(`[data-id="${rid}"]`);
+        if (dragged && dragged !== item) {
+          const all = [...listEl.querySelectorAll('.reord-item')];
+          if (all.indexOf(dragged) < all.indexOf(item))
+            listEl.insertBefore(dragged, item.nextSibling);
+          else listEl.insertBefore(dragged, item);
+        }
+      });
+      list.appendChild(item);
+    });
+
+    outer.appendChild(list);
+    const fb = document.createElement('div');
+    fb.className = 'fb';
+    fb.id = `rof-${si}`;
+    outer.appendChild(fb);
+    wrap.appendChild(outer);
+  });
+}
+
+function submitReorder() {
+  let ok = 0;
+  REORD.forEach((set, si) => {
+    const list = document.getElementById(`rl-${si}`);
+    const items = [...list.querySelectorAll('.reord-item')];
+    const userOrder = items.map(i=>i.dataset.id);
+    const right = JSON.stringify(userOrder) === JSON.stringify(set.correct);
+    if (right) ok++;
+    items.forEach((item, ii) => {
+      item.classList.add('locked');
+      item.draggable = false;
+      item.classList.add(userOrder[ii]===set.correct[ii]?'ok-r':'bad-r');
+    });
+    const fb = document.getElementById(`rof-${si}`);
+    fb.className = `fb ${right?'ok-fb':'bad-fb'} show`;
+    fb.innerHTML = `<div class="vd">${right?'✓ Correct order':'✗ Incorrect order'}</div><div class="ex">${set.exp}</div>`;
+  });
+  addScore(ok, REORD.length);
+  document.getElementById('reord-sub').disabled = true;
+  document.getElementById('reord-nxt').classList.add('show');
+}
+
+/* ══════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════ */
+function buildAll() {
+  mcSel = {};
+  buildMC(); buildFITB(); buildMatch(); buildDND(); buildReorder();
+  ['mc-sub','fitb-sub','match-sub','dnd-sub','reord-sub'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.disabled = false;
+  });
+  ['mc-nxt','fitb-nxt','match-nxt','dnd-nxt','reord-nxt'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('show');
+  });
+}
+
+// Fix: DND zones share idx with FITB zones; namespace them via data-pool on zones
+// Patch: add pool attr to fitb zones so dnd drop handler can distinguish
+(function patchDropZones() {})(); // placeholder — handled via pool dataTransfer
+
+buildAll();
+</script>
+</body>
+</html>

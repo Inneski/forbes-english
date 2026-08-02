@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English — Self-Improvement Lesson</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --gold: #C9A84C; --gold-light: #E8C97A; --gold-dark: #8B6914;
+    --navy: #0D1B2E; --navy-mid: #162440; --navy-light: #1E3055;
+    --ink: #1A1A1A; --ink-mid: #3A3A3A; --ink-light: #6A6A6A;
+    --cream: #FAF8F3; --cream-dark: #F0EBE0; --white: #FFFFFF;
+    --correct-bg: #EAF3DE; --correct-text: #27500A; --correct-border: #639922;
+    --wrong-bg: #FCEBEB; --wrong-text: #501313; --wrong-border: #A32D2D;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; line-height: 1.7; }
+
+  .header { background: var(--navy); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 24px rgba(0,0,0,0.5); }
+  .header-inner { max-width: 960px; margin: 0 auto; padding: 1.25rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+  .logo { display: flex; align-items: flex-end; gap: 0.6rem; }
+  .logo-forbes { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 900; color: #fff; line-height: 1; letter-spacing: -1px; }
+  .logo-divider { width: 1px; height: 2rem; background: var(--gold); opacity: 0.5; margin-bottom: 2px; }
+  .logo-english { font-size: 0.75rem; font-weight: 500; color: var(--gold); letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 3px; }
+  .header-rule { height: 3px; background: linear-gradient(90deg, var(--gold-dark), var(--gold-light), var(--gold-dark)); }
+  .nav-steps { display: flex; gap: 0.25rem; }
+  .nav-step { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.35); padding: 4px 10px; border-radius: 2px; text-decoration: none; transition: color 0.2s, background 0.2s; }
+  .nav-step:hover { color: var(--gold); }
+  .nav-step.active { color: var(--gold); background: rgba(201,168,76,0.12); }
+
+  .hero { background: var(--navy); padding: 3.5rem 2rem 3rem; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -60px; right: -60px; width: 300px; height: 300px; border-radius: 50%; border: 40px solid rgba(201,168,76,0.06); }
+  .hero::after  { content: ''; position: absolute; bottom: -80px; left: -40px; width: 200px; height: 200px; border-radius: 50%; border: 30px solid rgba(201,168,76,0.04); }
+  .hero-inner { max-width: 960px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+  .badge { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 11px; border-radius: 2px; }
+  .badge-gold    { background: var(--gold); color: var(--navy); }
+  .badge-outline { background: transparent; color: var(--gold); border: 1px solid rgba(201,168,76,0.4); }
+  .badge-dim     { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.45); border: 1px solid rgba(255,255,255,0.1); }
+  .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem,5vw,3rem); font-weight: 900; color: #fff; line-height: 1.18; margin-bottom: 1rem; }
+  .hero-title em { color: var(--gold); font-style: italic; }
+  .hero-subtitle { font-size: 1rem; color: rgba(255,255,255,0.55); max-width: 600px; line-height: 1.75; }
+
+  .main { max-width: 960px; margin: 0 auto; padding: 3rem 2rem; }
+  .section { margin-bottom: 4rem; animation: fadeUp 0.5s ease both; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(16px);} to { opacity:1; transform:translateY(0);} }
+  .section-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+  .section-num   { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 900; color: var(--gold); opacity: 0.35; line-height: 1; min-width: 2.5rem; }
+  .section-part  { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 2px; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; color: var(--ink); line-height: 1.2; }
+  .section-rule  { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(201,168,76,0.5), transparent); }
+
+  /* VIDEO */
+  .video-card { background: var(--navy); border-radius: 8px; overflow: hidden; border: 1px solid rgba(201,168,76,0.22); box-shadow: 0 8px 32px rgba(0,0,0,0.18); }
+  .video-thumb { position: relative; aspect-ratio: 16/9; display: block; overflow: hidden; cursor: pointer; background: var(--navy-mid); text-decoration: none; }
+  .thumb-svg { width: 100%; height: 100%; display: block; position: absolute; inset: 0; }
+  .play-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+  .video-thumb:hover .play-overlay { background: rgba(0,0,0,0.1); }
+  .play-circle { width: 80px; height: 80px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: transform 0.2s, background 0.2s; box-shadow: 0 6px 28px rgba(0,0,0,0.55); }
+  .video-thumb:hover .play-circle { transform: scale(1.12); background: var(--gold-light); }
+  .play-circle svg { margin-left: 5px; }
+  .video-label { position: absolute; top: 16px; left: 16px; background: rgba(0,0,0,0.65); color: #fff; font-size: 0.68rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; border-radius: 2px; border-left: 2px solid var(--gold); z-index: 2; }
+  .video-info { padding: 1.25rem 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; border-top: 1px solid rgba(201,168,76,0.15); }
+  .video-title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 3px; }
+  .video-sub   { font-size: 0.78rem; color: rgba(255,255,255,0.4); }
+  .watch-btn { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--gold); color: var(--navy); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.65rem 1.35rem; border-radius: 3px; text-decoration: none; transition: background 0.2s, transform 0.15s; white-space: nowrap; font-family: 'DM Sans', sans-serif; }
+  .watch-btn:hover { background: var(--gold-light); transform: translateY(-1px); }
+  .video-note { font-size: 0.78rem; color: var(--ink-light); margin-top: 0.75rem; font-style: italic; display: flex; align-items: center; gap: 0.4rem; }
+  .video-note::before { content: ''; display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+
+  /* READING */
+  .reading-card { background: var(--white); border: 1px solid rgba(201,168,76,0.18); border-radius: 8px; padding: 2rem 2.25rem; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+  .reading-label { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+  .reading-label::after { content: ''; flex: 1; height: 1px; background: rgba(201,168,76,0.2); }
+  .reading-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--ink); margin-bottom: 1.25rem; line-height: 1.3; }
+  .reading-body { font-size: 0.9rem; color: var(--ink-mid); line-height: 1.85; }
+  .reading-body p { margin-bottom: 1rem; }
+  .reading-body p:last-child { margin-bottom: 0; }
+  .reading-body strong { color: var(--ink); font-weight: 500; }
+
+  /* VOCAB */
+  .vocab-intro { font-size: 0.875rem; color: var(--ink-light); margin-bottom: 1.25rem; }
+  .vocab-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(210px,1fr)); gap: 0.875rem; }
+  .vocab-card { background: var(--white); border: 1px solid rgba(201,168,76,0.2); border-radius: 5px; padding: 1rem 1.1rem; cursor: pointer; transition: border-color 0.2s, transform 0.18s, box-shadow 0.18s; position: relative; overflow: hidden; }
+  .vocab-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 0.25s; }
+  .vocab-card:hover { border-color: var(--gold); transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.08); }
+  .vocab-card:hover::after { transform: scaleX(1); }
+  .vocab-card.open .definition { display: block; }
+  .vocab-card.open .tap-hint  { display: none; }
+  .vocab-word { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--ink); }
+  .vocab-pos  { font-size: 0.68rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gold-dark); margin: 3px 0 5px; }
+  .tap-hint   { font-size: 0.72rem; color: rgba(0,0,0,0.28); display: flex; align-items: center; gap: 4px; }
+  .tap-hint::before { content: '▶'; font-size: 0.5rem; color: var(--gold); }
+  .definition { font-size: 0.825rem; color: var(--ink-mid); line-height: 1.55; display: none; margin-top: 5px; border-top: 1px solid rgba(201,168,76,0.15); padding-top: 6px; }
+  .vocab-example { font-size: 0.78rem; color: var(--ink-light); font-style: italic; margin-top: 5px; border-top: 1px dashed rgba(201,168,76,0.12); padding-top: 5px; }
+
+  /* QUIZ */
+  .quiz-intro { font-size: 0.875rem; color: var(--ink-light); margin-bottom: 1.5rem; }
+  .quiz-card { background: var(--white); border: 1px solid rgba(0,0,0,0.08); border-radius: 5px; padding: 1.5rem; margin-bottom: 1.25rem; }
+  .quiz-q { font-size: 0.95rem; font-weight: 500; color: var(--ink); line-height: 1.6; margin-bottom: 1rem; display: flex; align-items: flex-start; gap: 0.6rem; }
+  .qnum { display: inline-flex; align-items: center; justify-content: center; background: var(--navy); color: var(--gold); font-family: 'Playfair Display', serif; font-size: 0.85rem; width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0; margin-top: 1px; font-weight: 700; }
+  .quiz-options { display: flex; flex-direction: column; gap: 0.5rem; }
+  .quiz-opt { display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 1rem; border: 1px solid rgba(0,0,0,0.09); border-radius: 4px; cursor: pointer; font-size: 0.875rem; color: var(--ink-mid); background: var(--cream); transition: background 0.15s, border-color 0.15s; user-select: none; }
+  .quiz-opt:hover:not(.locked) { background: var(--cream-dark); border-color: var(--gold); color: var(--ink); }
+  .quiz-opt .letter { width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 500; flex-shrink: 0; }
+  .quiz-opt.correct { background: var(--correct-bg); border-color: var(--correct-border); color: var(--correct-text); }
+  .quiz-opt.correct .letter { background: var(--correct-border); border-color: var(--correct-border); color: #fff; }
+  .quiz-opt.wrong   { background: var(--wrong-bg);   border-color: var(--wrong-border);   color: var(--wrong-text); }
+  .quiz-opt.wrong   .letter { background: var(--wrong-border); border-color: var(--wrong-border); color: #fff; }
+  .quiz-feedback { font-size: 0.82rem; line-height: 1.55; margin-top: 0.75rem; padding: 0.65rem 0.9rem; border-radius: 4px; display: none; }
+  .quiz-feedback.show    { display: block; }
+  .quiz-feedback.correct { background: var(--correct-bg); color: var(--correct-text); border-left: 3px solid var(--correct-border); }
+  .quiz-feedback.wrong   { background: var(--wrong-bg);   color: var(--wrong-text);   border-left: 3px solid var(--wrong-border); }
+
+  /* SCOREBOARD */
+  .scoreboard { background: var(--navy); border-radius: 6px; padding: 1.5rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
+  .score-label   { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 2px; }
+  .score-value   { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900; color: var(--gold); line-height: 1; }
+  .score-message { font-size: 0.82rem; color: rgba(255,255,255,0.4); margin-top: 4px; }
+  .progress-track { flex: 1; min-width: 180px; }
+  .progress-label { font-size: 0.7rem; color: rgba(255,255,255,0.3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+  .progress-bar-outer { height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; }
+  .progress-bar-inner { height: 100%; background: linear-gradient(90deg, var(--gold-dark), var(--gold-light)); border-radius: 3px; transition: width 0.5s ease; width: 0%; }
+  .progress-dots { display: flex; gap: 5px; margin-top: 8px; }
+  .pdot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.15); transition: background 0.3s; }
+  .pdot.done      { background: var(--gold); }
+  .pdot.wrong-dot { background: var(--wrong-border); }
+
+  /* GAP FILL */
+  .gap-fill-intro { font-size: 0.875rem; color: var(--ink-light); margin-bottom: 1.5rem; }
+  .gap-word-bank { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; padding: 1rem 1.25rem; background: #FBF6E9; border-radius: 5px; border: 1px solid rgba(201,168,76,0.25); }
+  .gap-word-bank-label { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-dark); width: 100%; margin-bottom: 0.25rem; }
+  .bank-word { background: var(--white); border: 1px solid rgba(201,168,76,0.35); border-radius: 3px; padding: 3px 10px; font-size: 0.82rem; font-weight: 500; color: var(--gold-dark); cursor: pointer; transition: background 0.15s; }
+  .bank-word:hover { background: #FBF6E9; }
+  .bank-word.used  { opacity: 0.35; text-decoration: line-through; cursor: default; }
+  .gap-sentence { font-size: 0.9rem; color: var(--ink-mid); line-height: 1.8; margin-bottom: 0.75rem; display: flex; align-items: center; flex-wrap: wrap; gap: 0.35rem; }
+  .gap-num { font-size: 0.75rem; font-weight: 700; color: var(--gold-dark); margin-right: 4px; }
+  .gap-blank { display: inline-block; min-width: 120px; border-bottom: 2px solid var(--gold); padding: 2px 6px; font-size: 0.88rem; font-weight: 500; color: var(--gold-dark); cursor: pointer; border-radius: 2px 2px 0 0; transition: background 0.15s; }
+  .gap-blank:hover:not(.filled):not(.correct-gap):not(.wrong-gap) { background: #FBF6E9; }
+  .gap-blank.filled      { background: #FBF6E9; }
+  .gap-blank.correct-gap { background: var(--correct-bg); border-color: var(--correct-border); color: var(--correct-text); cursor: default; }
+  .gap-blank.wrong-gap   { background: var(--wrong-bg);   border-color: var(--wrong-border);   color: var(--wrong-text);   cursor: default; }
+  .gap-check-btn { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--navy); color: var(--gold); border: none; font-family: 'DM Sans',sans-serif; font-size: 0.82rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.65rem 1.5rem; border-radius: 3px; cursor: pointer; transition: background 0.2s, transform 0.15s; margin-top: 1.25rem; }
+  .gap-check-btn:hover { background: var(--navy-light); transform: translateY(-1px); }
+  .gap-reset-btn { display: inline-flex; align-items: center; gap: 0.5rem; background: transparent; color: var(--ink-light); border: 1px solid rgba(0,0,0,0.12); font-family: 'DM Sans',sans-serif; font-size: 0.82rem; font-weight: 500; padding: 0.65rem 1.25rem; border-radius: 3px; cursor: pointer; transition: background 0.15s; margin-top: 1.25rem; margin-left: 0.75rem; }
+  .gap-reset-btn:hover { background: rgba(0,0,0,0.04); }
+  .gap-result { font-size: 0.85rem; margin-top: 1rem; padding: 0.75rem 1rem; border-radius: 4px; display: none; }
+  .gap-result.show { display: block; }
+  .gap-result.gap-correct { background: var(--correct-bg); color: var(--correct-text); border-left: 3px solid var(--correct-border); }
+  .gap-result.gap-partial { background: #FFF8E6; color: #5C3D00; border-left: 3px solid #E0A020; }
+  .gap-result.gap-wrong   { background: var(--wrong-bg);   color: var(--wrong-text);   border-left: 3px solid var(--wrong-border); }
+
+  /* DISCUSSION */
+  .discussion-intro { font-size: 0.875rem; color: var(--ink-light); margin-bottom: 1.25rem; }
+  .disc-item { display: flex; gap: 1.25rem; margin-bottom: 1.25rem; background: var(--white); border-radius: 5px; border: 1px solid rgba(201,168,76,0.15); padding: 1.25rem 1.5rem; transition: border-color 0.2s; }
+  .disc-item:hover { border-color: rgba(201,168,76,0.4); }
+  .disc-num  { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; color: var(--gold); opacity: 0.4; line-height: 1; min-width: 2rem; margin-top: 2px; }
+  .disc-type { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 5px; }
+  .disc-q    { font-size: 0.9rem; color: var(--ink-mid); line-height: 1.7; }
+  .disc-q strong { color: var(--ink); font-weight: 500; }
+  .disc-q em     { color: var(--gold-dark); font-style: italic; }
+
+  /* FOOTER */
+  .footer { background: var(--navy); border-top: 3px solid var(--gold-dark); padding: 2rem; text-align: center; }
+  .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 900; color: rgba(255,255,255,0.2); letter-spacing: -0.5px; }
+  .footer-logo span { color: var(--gold); opacity: 0.5; }
+  .footer-copy { font-size: 0.72rem; color: rgba(255,255,255,0.2); margin-top: 0.4rem; letter-spacing: 0.05em; }
+
+  @media (max-width: 600px) {
+    .header-inner { padding: 1rem; }
+    .nav-steps { display: none; }
+    .hero { padding: 2rem 1.25rem; }
+    .main { padding: 2rem 1.25rem; }
+    .vocab-grid { grid-template-columns: 1fr 1fr; }
+    .scoreboard { flex-direction: column; }
+    .reading-card { padding: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-forbes">Forbes</div>
+      <div class="logo-divider"></div>
+      <div class="logo-english">English</div>
+    </div>
+    <nav class="nav-steps">
+      <a href="#watch"   class="nav-step">Watch</a>
+      <a href="#read"    class="nav-step">Read</a>
+      <a href="#vocab"   class="nav-step">Vocabulary</a>
+      <a href="#quiz"    class="nav-step">Quiz</a>
+      <a href="#gap"     class="nav-step">Gap Fill</a>
+      <a href="#discuss" class="nav-step">Discuss</a>
+    </nav>
+  </div>
+  <div class="header-rule"></div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-meta">
+      <span class="badge badge-gold">B1 — Intermediate</span>
+      <span class="badge badge-outline">Personal Development</span>
+      <span class="badge badge-dim">⏱ 50 min lesson</span>
+    </div>
+    <h1 class="hero-title">The Language of<br><em>Self-Improvement</em></h1>
+    <p class="hero-subtitle">Watch a TED Talk, read a short article, build key vocabulary, test your comprehension, and practise speaking about personal growth in English.</p>
+  </div>
+</section>
+
+<main class="main">
+
+  <!-- PART 1 -->
+  <section class="section" id="watch">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div class="section-title-wrap">
+        <div class="section-part">Part One</div>
+        <div class="section-title">Watch the Video</div>
+      </div>
+      <div class="section-rule"></div>
+    </div>
+    <div class="video-card">
+      <a class="video-thumb" href="https://www.youtube.com/watch?v=UNP03fDSj1U" target="_blank" rel="noopener">
+        <!-- Bold typographic SVG thumbnail -->
+        <svg class="thumb-svg" viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <!-- Background -->
+          <rect width="960" height="540" fill="#0D1B2E"/>
+          <!-- Subtle grid -->
+          <line x1="0" y1="180" x2="960" y2="180" stroke="#162440" stroke-width="1"/>
+          <line x1="0" y1="360" x2="960" y2="360" stroke="#162440" stroke-width="1"/>
+          <line x1="320" y1="0" x2="320" y2="540" stroke="#162440" stroke-width="1"/>
+          <line x1="640" y1="0" x2="640" y2="540" stroke="#162440" stroke-width="1"/>
+          <!-- Large decorative circle top-right -->
+          <circle cx="870" cy="60"  r="200" fill="none" stroke="#C9A84C" stroke-width="1.5" opacity="0.1"/>
+          <circle cx="870" cy="60"  r="130" fill="none" stroke="#C9A84C" stroke-width="1"   opacity="0.07"/>
+          <!-- Decorative circle bottom-left -->
+          <circle cx="90"  cy="480" r="150" fill="none" stroke="#C9A84C" stroke-width="1"   opacity="0.06"/>
+          <!-- Gold left accent bar -->
+          <rect x="0" y="0" width="7" height="540" fill="#C9A84C"/>
+          <!-- Gold top rule under label -->
+          <rect x="60" y="96" width="500" height="3" fill="#C9A84C" opacity="0.6"/>
+          <!-- TED label -->
+          <rect x="60" y="54" width="76" height="24" rx="2" fill="#C9A84C"/>
+          <text x="73" y="70" font-family="Arial,sans-serif" font-size="10" font-weight="800" letter-spacing="2" fill="#0D1B2E">TED TALK</text>
+          <!-- Main title line 1 -->
+          <text x="60" y="188" font-family="Georgia,serif" font-size="70" font-weight="900" fill="#FFFFFF" letter-spacing="-2">Try Something</text>
+          <!-- Main title line 2 — gold italic -->
+          <text x="60" y="270" font-family="Georgia,serif" font-size="70" font-weight="900" fill="#C9A84C" letter-spacing="-2" font-style="italic">New for 30 Days</text>
+          <!-- Thin rule -->
+          <rect x="60" y="295" width="340" height="2" fill="#C9A84C" opacity="0.35"/>
+          <!-- Speaker -->
+          <text x="60" y="336" font-family="Arial,sans-serif" font-size="20" font-weight="400" fill="rgba(255,255,255,0.5)" letter-spacing="4">MATT  CUTTS</text>
+          <!-- Tagline -->
+          <text x="60" y="416" font-family="Arial,sans-serif" font-size="15" fill="rgba(255,255,255,0.28)" letter-spacing="1.2">Small changes. Big results. Start today.</text>
+          <!-- Duration pill -->
+          <rect x="60" y="442" width="78" height="24" rx="11" fill="none" stroke="#C9A84C" stroke-width="1.2" opacity="0.7"/>
+          <text x="72" y="458" font-family="Arial,sans-serif" font-size="11" fill="#C9A84C" letter-spacing="0.3">▶  3 min 27 s</text>
+          <!-- Dot trio -->
+          <circle cx="63"  cy="500" r="3.5" fill="#C9A84C" opacity="0.55"/>
+          <circle cx="79"  cy="500" r="3.5" fill="#C9A84C" opacity="0.35"/>
+          <circle cx="95"  cy="500" r="3.5" fill="#C9A84C" opacity="0.18"/>
+          <!-- Right decorative text -->
+          <text x="680" y="490" font-family="Georgia,serif" font-size="120" font-weight="900" fill="rgba(201,168,76,0.04)" letter-spacing="-4">30</text>
+        </svg>
+        <div class="video-label">TED · 3 min</div>
+        <div class="play-overlay">
+          <div class="play-circle">
+            <svg width="26" height="26" viewBox="0 0 24 24"><polygon points="7,4 20,12 7,20" fill="#1A1A1A"/></svg>
+          </div>
+        </div>
+      </a>
+      <div class="video-info">
+        <div>
+          <div class="video-title">Try Something New for 30 Days — Matt Cutts</div>
+          <div class="video-sub">TED Talk &nbsp;·&nbsp; 3 min 27 s &nbsp;·&nbsp; Opens YouTube in a new tab</div>
+        </div>
+        <a class="watch-btn" href="https://www.youtube.com/watch?v=UNP03fDSj1U" target="_blank" rel="noopener">
+          <svg width="14" height="14" viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21" fill="currentColor"/></svg>
+          Watch on YouTube
+        </a>
+      </div>
+    </div>
+    <p class="video-note">This video is only 3.5 minutes. Watch it before continuing — what is Matt Cutts' main advice?</p>
+  </section>
+
+  <!-- PART 2 -->
+  <section class="section" id="read">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <div class="section-title-wrap">
+        <div class="section-part">Part Two</div>
+        <div class="section-title">Reading Passage</div>
+      </div>
+      <div class="section-rule"></div>
+    </div>
+    <div class="reading-card">
+      <div class="reading-label">Short Article · B1 Level · ~300 words</div>
+      <div class="reading-title">Why Small Steps Lead to Big Changes</div>
+      <div class="reading-body">
+        <p>Many people want to improve their lives, but they often feel <strong>overwhelmed</strong> when they think about making big changes. They want to get fit, learn a language, or find a better job — but they don't know where to start. The good news is that you don't need to change everything at once.</p>
+        <p>Experts in <strong>personal development</strong> say that small, consistent actions are more powerful than one big effort. For example, reading for just 15 minutes a day, or going for a short walk every morning, can make a huge difference over time. This idea is sometimes called the <strong>"1% rule"</strong> — if you get just 1% better each day, you will be almost 38 times better after one year.</p>
+        <p>Another important idea is <strong>building habits</strong>. A habit is something you do automatically, without thinking. Good habits — like sleeping early, eating healthy food, or practising a skill — help you make progress without using a lot of willpower. The key is to start small and be <strong>consistent</strong>.</p>
+        <p>It is also important to have a <strong>growth mindset</strong>. This means believing that your abilities are not fixed — you can always learn and improve. People with a growth mindset see mistakes as opportunities to learn, not as reasons to give up.</p>
+        <p>Finally, self-improvement is not just about <strong>achieving goals</strong>. It is also about knowing yourself better — understanding your strengths, your weaknesses, and your values. When you understand who you are, it is easier to make choices that lead to a happy and <strong>fulfilling</strong> life.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PART 3 -->
+  <section class="section" id="vocab">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <div class="section-title-wrap">
+        <div class="section-part">Part Three</div>
+        <div class="section-title">Key Vocabulary</div>
+      </div>
+      <div class="section-rule"></div>
+    </div>
+    <p class="vocab-intro">Eight key words and phrases from the video and reading. Click any card to reveal the definition and an example sentence.</p>
+    <div class="vocab-grid" id="vocab-grid"></div>
+  </section>
+
+  <!-- PART 4 -->
+  <section class="section" id="quiz">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <div class="section-title-wrap">
+        <div class="section-part">Part Four</div>
+        <div class="section-title">Comprehension Quiz</div>
+      </div>
+      <div class="section-rule"></div>
+    </div>
+    <p class="quiz-intro">Six questions based on the video and reading. Choose the best answer for each question.</p>
+    <div id="quiz-container"></div>
+    <div class="scoreboard">
+      <div>
+        <div class="score-label">Your score</div>
+        <div class="score-value" id="score-display">0 / 6</div>
+        <div class="score-message" id="score-msg">Answer all questions to see your result</div>
+      </div>
+      <div class="progress-track">
+        <div class="progress-label">Progress</div>
+        <div class="progress-bar-outer"><div class="progress-bar-inner" id="prog-bar"></div></div>
+        <div class="progress-dots" id="prog-dots"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PART 5 -->
+  <section class="section" id="gap">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <div class="section-title-wrap">
+        <div class="section-part">Part Five</div>
+        <div class="section-title">Gap Fill Exercise</div>
+      </div>
+      <div class="section-rule"></div>
+    </div>
+    <p class="gap-fill-intro">Click a word in the word bank to select it, then click the gap where it belongs. Click a filled gap to remove it.</p>
+    <div class="gap-word-bank" id="word-bank"><div class="gap-word-bank-label">Word Bank</div></div>
+    <div id="gap-sentences"></div>
+    <div>
+      <button class="gap-check-btn" id="gap-check-btn">✓ Check Answers</button>
+      <button class="gap-reset-btn" id="gap-reset-btn">↺ Reset</button>
+    </div>
+    <div class="gap-result" id="gap-result"></div>
+  </section>
+
+  <!-- PART 6 -->
+  <section class="section" id="discuss">
+    <div class="section-header">
+      <div class="section-num">06</div>
+      <div class="section-title-wrap">
+        <div class="section-part">Part Six</div>
+        <div class="section-title">Discussion Questions</div>
+      </div>
+      <div class="section-rule"></div>
+    </div>
+    <p class="discussion-intro">Talk about these questions with your teacher or a partner. Try to speak for at least one minute on each topic.</p>
+    <div id="disc-container"></div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-logo">Forbes <span>English</span></div>
+  <div class="footer-copy">Premium Language &amp; Thinking Skills — Intermediate Programme</div>
+</footer>
+
+<script>
+const vocab = [
+  { word: "self-improvement", pos: "noun",        def: "The process of making yourself better through learning, new habits, and personal effort.", ex: "She reads books about self-improvement every week." },
+  { word: "consistent",       pos: "adjective",   def: "Doing something regularly, without stopping. Always the same.", ex: "To learn a language, you need to be consistent — study a little every day." },
+  { word: "habit",            pos: "noun",        def: "Something you do regularly and automatically, often without thinking about it.", ex: "Going to the gym every morning has become a good habit for him." },
+  { word: "growth mindset",   pos: "noun phrase", def: "The belief that you can always learn and get better, even if something is hard at first.", ex: "With a growth mindset, she saw her failure as a chance to improve." },
+  { word: "overwhelmed",      pos: "adjective",   def: "Feeling that something is too big or too difficult to manage.", ex: "He felt overwhelmed when he saw how much work he had to do." },
+  { word: "willpower",        pos: "noun",        def: "The ability to control your behaviour and do difficult things, even when you don't feel like it.", ex: "She used her willpower to stop eating sugar for a whole month." },
+  { word: "fulfilling",       pos: "adjective",   def: "Making you feel happy and satisfied because it has meaning or purpose.", ex: "Teaching is a challenging but very fulfilling career." },
+  { word: "sustainable",      pos: "adjective",   def: "Able to continue for a long time without stopping or becoming a problem.", ex: "Small daily changes are more sustainable than extreme diets." }
+];
+
+// Correct answers spread deliberately across A(0), B(1), C(2), D(3)
+const quiz = [
+  {
+    q: "In the TED Talk, what does Matt Cutts suggest people should do?",
+    opts: ["Work harder at their current job every day","Try something new every single hour of the day","Try something new for 30 days","Watch less television each week"],
+    ans: 2,
+    exp: "Matt Cutts' main idea is simple: think of something you've always wanted to try, and do it for the next 30 days. He says 30 days is the right amount of time to build or break a habit."
+  },
+  {
+    q: "According to the reading, what is the '1% rule'?",
+    opts: ["Working 1% harder than your colleagues","Getting 1% better each day, which adds up to huge progress over a year","Spending only 1% of your time on social media","Saving 1% of your salary every month"],
+    ans: 1,
+    exp: "The reading explains that improving just 1% every day adds up to being almost 38 times better after one year — a powerful idea about small, consistent progress."
+  },
+  {
+    q: "Which of the following best describes a 'growth mindset'?",
+    opts: ["Believing your abilities can always improve through effort and learning","Thinking talent is something you are born with and cannot change","Focusing only on your strengths and ignoring weaknesses","Setting very large goals and working 100% every day"],
+    ans: 0,
+    exp: "A growth mindset means believing you can always learn and improve. People with this mindset see mistakes as opportunities to learn, not as reasons to stop trying."
+  },
+  {
+    q: "Why does Matt Cutts say the 30-day challenge made his life more memorable?",
+    opts: ["He travelled to many new countries","He met many famous and interesting people","He wrote a successful book during the challenge","Instead of time flying by, he remembered exactly what he did each day"],
+    ans: 3,
+    exp: "Matt Cutts says that instead of 'months flying by forgotten', the time felt more memorable because he was actively doing something new and was present each day."
+  },
+  {
+    q: "According to the reading, why are small, consistent actions better than one big effort?",
+    opts: ["They require no effort or willpower at all","They are the only way to achieve any goal in life","They are more likely to become long-term habits that lead to real progress","They make you feel overwhelmed in a positive and exciting way"],
+    ans: 2,
+    exp: "Small, consistent actions are more powerful because they turn into habits — things you do automatically. This means you make progress without needing huge willpower every day."
+  },
+  {
+    q: "What does the word 'sustainable' mean in the context of self-improvement?",
+    opts: ["Able to continue for a long time without stopping","Very exciting and motivating from the beginning","Possible to do perfectly without any mistakes","Extremely difficult and requiring maximum effort"],
+    ans: 0,
+    exp: "'Sustainable' means something you can keep doing over a long period. Matt Cutts says small, sustainable changes are more likely to stick than big, difficult ones."
+  }
+];
+
+const gapData = {
+  words: ["consistent","habit","overwhelmed","sustainable","willpower","fulfilling","growth mindset","self-improvement"],
+  sentences: [
+    { before: "It is easy to feel",          blank: "overwhelmed",      after: "when you have too many things to do at the same time." },
+    { before: "Going to bed at the same time every night is a good", blank: "habit", after: "that helps you sleep better." },
+    { before: "People with a",               blank: "growth mindset",   after: "believe that they can always learn and improve." },
+    { before: "She works hard every day because she wants to achieve her goals in",  blank: "self-improvement", after: "and become a better version of herself." },
+    { before: "Learning a new skill requires", blank: "willpower",      after: "— especially when it feels difficult and boring." },
+    { before: "To improve your English, you must be", blank: "consistent", after: "and practise every single day." },
+    { before: "Working with children is very", blank: "fulfilling",     after: "because you can see how much they learn and grow." },
+    { before: "Small daily changes are more", blank: "sustainable",     after: "than extreme diets or big, sudden challenges." }
+  ]
+};
+
+const discussions = [
+  { type: "Personal Experience",  q: "Do you have any good habits? How did you start them? If you could try <em>one new thing</em> for 30 days, what would it be and <strong>why</strong>?" },
+  { type: "Vocabulary Practice",  q: "Think of a time when you felt <em>overwhelmed</em>. What happened? How did you manage the situation? Use at least <strong>two vocabulary words</strong> from Part 3 in your answer." },
+  { type: "Critical Thinking",    q: "Matt Cutts says that <em>\"small, sustainable changes\"</em> work better than big ones. Do you agree? Can you think of an example from your own life where a small change made a <strong>big difference</strong>?" },
+  { type: "Discussion & Debate",  q: "Some people say you should always try to be better. Others say it is important to <strong>accept yourself</strong> as you are. Which idea do you agree with more? Can both ideas be true at the same time?" }
+];
+
+// Build vocab
+vocab.forEach(v => {
+  const c = document.createElement('div');
+  c.className = 'vocab-card';
+  c.innerHTML = `<div class="vocab-word">${v.word}</div><div class="vocab-pos">${v.pos}</div><div class="tap-hint">Click to reveal definition</div><div class="definition">${v.def}<div class="vocab-example">"${v.ex}"</div></div>`;
+  c.addEventListener('click', () => c.classList.toggle('open'));
+  document.getElementById('vocab-grid').appendChild(c);
+});
+
+// Build quiz
+let correctCount = 0;
+const answered = new Array(quiz.length).fill(false);
+const letters = ['A','B','C','D'];
+const messages = ['Keep trying!','Good effort!','Not bad!','Well done!','Great job!','Excellent!','Perfect score!'];
+
+quiz.forEach((q, qi) => {
+  const dot = document.createElement('div');
+  dot.className = 'pdot'; dot.id = `dot-${qi}`;
+  document.getElementById('prog-dots').appendChild(dot);
+  const card = document.createElement('div');
+  card.className = 'quiz-card';
+  card.innerHTML = `<div class="quiz-q"><span class="qnum">${qi+1}</span><span>${q.q}</span></div><div class="quiz-options">${q.opts.map((o,oi)=>`<div class="quiz-opt" data-q="${qi}" data-o="${oi}"><span class="letter">${letters[oi]}</span>${o}</div>`).join('')}</div><div class="quiz-feedback" id="fb-${qi}"></div>`;
+  document.getElementById('quiz-container').appendChild(card);
+});
+
+document.querySelectorAll('.quiz-opt').forEach(el => {
+  el.addEventListener('click', function() {
+    const qi = +this.dataset.q, oi = +this.dataset.o;
+    if (answered[qi]) return;
+    answered[qi] = true;
+    const opts = document.querySelectorAll(`[data-q="${qi}"]`);
+    opts.forEach(o => { o.classList.add('locked'); o.style.cursor='default'; });
+    const fb = document.getElementById(`fb-${qi}`);
+    const dot = document.getElementById(`dot-${qi}`);
+    if (oi === quiz[qi].ans) {
+      this.classList.add('correct'); this.querySelector('.letter').textContent='✓';
+      correctCount++;
+      fb.textContent='✓ Correct — '+quiz[qi].exp; fb.className='quiz-feedback correct show'; dot.classList.add('done');
+    } else {
+      this.classList.add('wrong'); this.querySelector('.letter').textContent='✗';
+      opts[quiz[qi].ans].classList.add('correct'); opts[quiz[qi].ans].querySelector('.letter').textContent='✓';
+      fb.textContent='✗ Not quite — '+quiz[qi].exp; fb.className='quiz-feedback wrong show'; dot.classList.add('wrong-dot');
+    }
+    const done = answered.filter(Boolean).length;
+    document.getElementById('score-display').textContent=`${correctCount} / ${quiz.length}`;
+    document.getElementById('prog-bar').style.width=`${(done/quiz.length)*100}%`;
+    document.getElementById('score-msg').textContent = done===quiz.length ? messages[correctCount] : `${quiz.length-done} question${quiz.length-done!==1?'s':''} remaining`;
+  });
+});
+
+// Build gap fill
+let selectedWord = null;
+const filledAnswers = {};
+const wb = document.getElementById('word-bank');
+gapData.words.forEach(w => {
+  const span = document.createElement('span');
+  span.className='bank-word'; span.textContent=w; span.dataset.word=w;
+  span.addEventListener('click', () => {
+    if (span.classList.contains('used')) return;
+    document.querySelectorAll('.bank-word').forEach(b => b.style.outline='');
+    selectedWord=w; span.style.outline='2px solid var(--gold)';
+  });
+  wb.appendChild(span);
+});
+
+const gs = document.getElementById('gap-sentences');
+gapData.sentences.forEach((s,i) => {
+  const div = document.createElement('div');
+  div.className = 'gap-sentence';
+  const blank = document.createElement('span');
+  blank.className='gap-blank'; blank.id=`gap-${i}`; blank.textContent='___________';
+  blank.addEventListener('click', () => {
+    if (blank.classList.contains('correct-gap')||blank.classList.contains('wrong-gap')) return;
+    if (selectedWord) {
+      if (filledAnswers[i]) {
+        const prev = document.querySelector(`.bank-word[data-word="${filledAnswers[i]}"]`);
+        if (prev) { prev.classList.remove('used'); prev.style.outline=''; }
+      }
+      filledAnswers[i]=selectedWord; blank.textContent=selectedWord; blank.classList.add('filled');
+      const btn = document.querySelector(`.bank-word[data-word="${selectedWord}"]`);
+      if (btn) btn.classList.add('used');
+      selectedWord=null; document.querySelectorAll('.bank-word').forEach(b => b.style.outline='');
+    } else if (filledAnswers[i]) {
+      const btn = document.querySelector(`.bank-word[data-word="${filledAnswers[i]}"]`);
+      if (btn) { btn.classList.remove('used'); btn.style.outline=''; }
+      delete filledAnswers[i]; blank.textContent='___________'; blank.classList.remove('filled');
+    }
+  });
+  div.innerHTML=`<span class="gap-num">${i+1}.</span> `;
+  div.appendChild(document.createTextNode(s.before+' '));
+  div.appendChild(blank);
+  div.appendChild(document.createTextNode(' '+s.after));
+  gs.appendChild(div);
+});
+
+document.getElementById('gap-check-btn').addEventListener('click', () => {
+  let correct=0;
+  gapData.sentences.forEach((s,i) => {
+    const blank=document.getElementById(`gap-${i}`);
+    if ((filledAnswers[i]||'').toLowerCase()===s.blank.toLowerCase()) {
+      blank.classList.add('correct-gap'); blank.classList.remove('wrong-gap','filled'); correct++;
+    } else {
+      blank.classList.add('wrong-gap'); blank.classList.remove('correct-gap','filled');
+      if (!filledAnswers[i]) blank.textContent=`[${s.blank}]`;
+    }
+  });
+  const r=document.getElementById('gap-result'); r.classList.add('show');
+  if (correct===gapData.sentences.length) { r.className='gap-result show gap-correct'; r.textContent=`✓ Excellent! All ${correct} answers correct.`; }
+  else if (correct>=gapData.sentences.length/2) { r.className='gap-result show gap-partial'; r.textContent=`You got ${correct} out of ${gapData.sentences.length} correct. Review the words in red and try again!`; }
+  else { r.className='gap-result show gap-wrong'; r.textContent=`You got ${correct} out of ${gapData.sentences.length} correct. Study the vocabulary and reset to try again.`; }
+});
+
+document.getElementById('gap-reset-btn').addEventListener('click', () => {
+  Object.keys(filledAnswers).forEach(k => delete filledAnswers[k]);
+  selectedWord=null;
+  gapData.sentences.forEach((s,i) => { const b=document.getElementById(`gap-${i}`); b.textContent='___________'; b.className='gap-blank'; });
+  document.querySelectorAll('.bank-word').forEach(b => { b.classList.remove('used'); b.style.outline=''; });
+  const r=document.getElementById('gap-result'); r.className='gap-result'; r.textContent='';
+});
+
+// Build discussion
+discussions.forEach((d,i) => {
+  const div=document.createElement('div'); div.className='disc-item';
+  div.innerHTML=`<div class="disc-num">${i+1}</div><div class="disc-content"><div class="disc-type">${d.type}</div><div class="disc-q">${d.q}</div></div>`;
+  document.getElementById('disc-container').appendChild(div);
+});
+
+// Nav highlight
+const observer=new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.querySelectorAll('.nav-step').forEach(l => l.classList.remove('active'));
+      const link=document.querySelector(`.nav-step[href="#${e.target.id}"]`);
+      if (link) link.classList.add('active');
+    }
+  });
+}, {threshold:0.3});
+['watch','read','vocab','quiz','gap','discuss'].forEach(id => { const el=document.getElementById(id); if (el) observer.observe(el); });
+</script>
+</body>
+</html>

@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English — Material & Space (C1)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green-deep:#123A33;
+    --green-deeper:#0D2A25;
+    --green-line:#1E4D44;
+    --parchment:#F3EEE4;
+    --parchment-dim:#E8DFCF;
+    --brass:#C7A24F;
+    --brass-dark:#9C7B36;
+    --ink:#1B2723;
+    --ink-soft:#52605A;
+    --correct:#2E6B4D;
+    --correct-bg:#E1EEE5;
+    --correct-line:#9CC4AB;
+    --wrong:#974137;
+    --wrong-bg:#F3E3DF;
+    --wrong-line:#D9B4AC;
+    --shadow:0 18px 40px -22px rgba(0,0,0,.55);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Archivo',system-ui,sans-serif;
+    background:var(--green-deep);
+    color:var(--ink);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(circle at 20% 0%,rgba(199,162,79,.10),transparent 55%),radial-gradient(circle at 90% 100%,rgba(13,42,37,.6),transparent 50%);
+    min-height:100vh;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:28px 20px 64px;}
+
+  /* ---------- header / logo ---------- */
+  header.top{display:flex;flex-direction:column;align-items:center;gap:20px;padding:14px 0 26px;}
+  .logo{width:208px;height:auto;}
+  .lesson-meta{text-align:center;}
+  .lesson-meta h1{
+    font-family:'Fraunces',serif;font-weight:500;color:var(--parchment);
+    font-size:clamp(1.5rem,4.5vw,2.15rem);margin:0;letter-spacing:.2px;line-height:1.15;
+  }
+  .lesson-meta p{color:var(--brass);margin:8px 0 0;font-size:.86rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;}
+  .level-badge{
+    display:inline-block;margin-top:14px;border:1px solid var(--brass-dark);
+    color:var(--brass);border-radius:999px;padding:4px 16px;font-size:.74rem;
+    letter-spacing:.16em;text-transform:uppercase;font-weight:700;
+  }
+
+  /* ---------- status bar ---------- */
+  .status{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+    background:var(--green-deeper);border:1px solid var(--green-line);
+    border-radius:14px;padding:12px 16px;margin-bottom:22px;
+  }
+  .status .step{color:var(--parchment-dim);font-size:.82rem;font-weight:600;letter-spacing:.02em;}
+  .status .step b{color:var(--brass);font-weight:700;}
+  .score-pill{
+    display:flex;align-items:baseline;gap:6px;background:var(--brass);
+    color:var(--green-deeper);border-radius:999px;padding:6px 15px;font-weight:800;
+    font-size:.82rem;letter-spacing:.02em;white-space:nowrap;
+  }
+  .score-pill span{font-size:.72rem;font-weight:700;opacity:.8;}
+  .progress-rail{height:5px;background:var(--green-line);border-radius:999px;overflow:hidden;margin-bottom:26px;}
+  .progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--brass-dark),var(--brass));transition:width .4s ease;border-radius:999px;}
+
+  /* ---------- card ---------- */
+  .card{
+    background:var(--parchment);border-radius:18px;padding:30px 28px;box-shadow:var(--shadow);
+    border:1px solid var(--parchment-dim);
+  }
+  .eyebrow{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--brass-dark);font-weight:700;margin:0 0 14px;}
+  .prompt{font-family:'Fraunces',serif;font-size:1.32rem;font-weight:500;color:var(--ink);margin:0 0 6px;line-height:1.32;}
+  .sub{color:var(--ink-soft);font-size:.92rem;margin:0 0 22px;}
+
+  /* ---------- options (MC) ---------- */
+  .options{display:flex;flex-direction:column;gap:11px;}
+  .opt{
+    text-align:left;width:100%;background:#fff;border:1.5px solid var(--parchment-dim);
+    border-radius:11px;padding:14px 16px;font-family:inherit;font-size:1rem;color:var(--ink);
+    cursor:pointer;transition:border-color .15s,background .15s,transform .05s;display:flex;align-items:center;gap:12px;
+  }
+  .opt .tick{flex:0 0 24px;height:24px;border:1.5px solid var(--brass-dark);border-radius:50%;display:grid;place-items:center;font-size:.78rem;font-weight:800;color:var(--brass-dark);}
+  .opt:hover:not(:disabled){border-color:var(--brass);}
+  .opt:active:not(:disabled){transform:translateY(1px);}
+  .opt:disabled{cursor:default;}
+  .opt.chosen{border-color:var(--brass);background:#FBF7EE;}
+  .opt.correct{border-color:var(--correct-line);background:var(--correct-bg);}
+  .opt.correct .tick{border-color:var(--correct);color:#fff;background:var(--correct);}
+  .opt.incorrect{border-color:var(--wrong-line);background:var(--wrong-bg);}
+  .opt.incorrect .tick{border-color:var(--wrong);color:#fff;background:var(--wrong);}
+
+  /* ---------- matching ---------- */
+  .match-grid{display:grid;grid-template-columns:1fr 1.25fr;gap:14px;}
+  .match-col h3{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;margin:0 0 10px;}
+  .term,.def{
+    background:#fff;border:1.5px solid var(--parchment-dim);border-radius:11px;
+    padding:12px 13px;margin-bottom:10px;cursor:pointer;font-size:.95rem;color:var(--ink);
+    display:flex;gap:10px;align-items:flex-start;transition:border-color .15s,background .15s;
+  }
+  .term{font-weight:600;font-family:'Fraunces',serif;font-size:1.02rem;align-items:center;}
+  .def{line-height:1.4;}
+  .term:hover,.def:hover{border-color:var(--brass);}
+  .term.active{border-color:var(--brass);background:#FBF7EE;box-shadow:0 0 0 3px rgba(199,162,79,.18);}
+  .badge{flex:0 0 22px;height:22px;border-radius:6px;display:grid;place-items:center;font-size:.74rem;font-weight:800;background:var(--parchment-dim);color:var(--ink-soft);}
+  .term.linked .badge,.def.linked .badge{background:var(--brass);color:var(--green-deeper);}
+  .term.ok,.def.ok{border-color:var(--correct-line);background:var(--correct-bg);}
+  .term.ok .badge,.def.ok .badge{background:var(--correct);color:#fff;}
+  .term.bad,.def.bad{border-color:var(--wrong-line);background:var(--wrong-bg);}
+  .term.bad .badge,.def.bad .badge{background:var(--wrong);color:#fff;}
+  .def .answer-tag{display:block;margin-top:6px;font-size:.78rem;font-weight:700;color:var(--correct);}
+
+  /* ---------- fill in the blank ---------- */
+  .passage{font-size:1.06rem;line-height:1.95;color:var(--ink);margin:0 0 22px;}
+  .blank{
+    display:inline-block;min-width:118px;text-align:center;border-bottom:2px solid var(--brass-dark);
+    padding:1px 8px;margin:0 2px;font-weight:700;color:var(--brass-dark);cursor:pointer;border-radius:4px 4px 0 0;
+    transition:background .15s;
+  }
+  .blank:hover{background:#FBF7EE;}
+  .blank.filled{color:var(--ink);background:#FBF7EE;}
+  .blank.sel{background:#F0E7D2;box-shadow:0 0 0 2px rgba(199,162,79,.35);}
+  .blank.ok{border-color:var(--correct);color:var(--correct);background:var(--correct-bg);}
+  .blank.bad{border-color:var(--wrong);color:var(--wrong);background:var(--wrong-bg);}
+  .bank{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px;}
+  .chip{
+    background:#fff;border:1.5px solid var(--parchment-dim);border-radius:9px;padding:9px 15px;
+    font-family:inherit;font-size:.95rem;font-weight:600;color:var(--ink);cursor:pointer;transition:border-color .15s,background .15s,transform .05s;
+  }
+  .chip:hover:not(:disabled){border-color:var(--brass);}
+  .chip:active:not(:disabled){transform:translateY(1px);}
+  .chip.sel{border-color:var(--brass);background:#FBF7EE;box-shadow:0 0 0 3px rgba(199,162,79,.18);}
+  .chip.used{opacity:.32;pointer-events:none;}
+  .chip:disabled{cursor:default;}
+
+  /* ---------- feedback ---------- */
+  .feedback{margin-top:20px;border-radius:12px;padding:15px 17px;font-size:.94rem;line-height:1.55;display:none;}
+  .feedback.show{display:block;}
+  .feedback.good{background:var(--correct-bg);border:1px solid var(--correct-line);color:#21503a;}
+  .feedback.bad{background:var(--wrong-bg);border:1px solid var(--wrong-line);color:#6f2f27;}
+  .feedback b{font-weight:800;}
+
+  /* ---------- buttons / nav ---------- */
+  .nav{display:flex;justify-content:flex-end;gap:12px;margin-top:24px;}
+  .btn{
+    font-family:inherit;font-weight:700;font-size:.96rem;border-radius:11px;padding:13px 26px;cursor:pointer;
+    border:none;transition:background .15s,transform .05s,opacity .15s;letter-spacing:.01em;
+  }
+  .btn-primary{background:var(--brass);color:var(--green-deeper);}
+  .btn-primary:hover:not(:disabled){background:var(--brass-dark);color:#fff;}
+  .btn-primary:active:not(:disabled){transform:translateY(1px);}
+  .btn-primary:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-ghost{background:transparent;border:1.5px solid var(--brass-dark);color:var(--brass);}
+  .btn-ghost:hover{background:rgba(199,162,79,.12);}
+
+  /* ---------- intro / results ---------- */
+  .center{text-align:center;}
+  .intro-list{list-style:none;padding:0;margin:22px 0 0;text-align:left;display:flex;flex-direction:column;gap:12px;}
+  .intro-list li{display:flex;gap:12px;align-items:flex-start;color:var(--ink-soft);font-size:.95rem;}
+  .intro-list .n{flex:0 0 26px;height:26px;border-radius:7px;background:var(--green-deep);color:var(--brass);display:grid;place-items:center;font-weight:800;font-size:.82rem;}
+  .intro-list b{color:var(--ink);}
+  .result-score{font-family:'Fraunces',serif;font-size:3.4rem;font-weight:600;color:var(--green-deep);margin:6px 0 0;line-height:1;}
+  .result-score small{font-size:1.3rem;color:var(--ink-soft);font-weight:500;}
+  .result-msg{font-size:1.05rem;color:var(--ink-soft);margin:14px auto 0;max-width:440px;}
+  .ring-wrap{display:grid;place-items:center;margin:8px 0 4px;}
+
+  @media (max-width:560px){
+    .card{padding:24px 18px;}
+    .match-grid{grid-template-columns:1fr;}
+    .status{flex-direction:row;}
+    .nav{justify-content:stretch;}
+    .nav .btn{flex:1;}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+  :focus-visible{outline:3px solid var(--brass);outline-offset:2px;border-radius:6px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <svg class="logo" viewBox="0 0 240 96" role="img" aria-label="Forbes English">
+      <text x="120" y="44" text-anchor="middle" font-family="Fraunces, serif" font-weight="600" font-size="42" fill="#C7A24F" letter-spacing="0.5">Forbes</text>
+      <line x1="34" y1="58" x2="206" y2="58" stroke="#C7A24F" stroke-width="1.4"/>
+      <text x="120" y="84" text-anchor="middle" font-family="Archivo, sans-serif" font-weight="800" font-size="22" fill="#F3EEE4" letter-spacing="7">ENGLISH</text>
+    </svg>
+    <div class="lesson-meta">
+      <h1>Material &amp; Space</h1>
+      <p>Vocabulary for interiors &amp; architecture</p>
+      <span class="level-badge">Level C1</span>
+    </div>
+  </header>
+
+  <div class="status">
+    <div class="step" id="stepLabel">Ready when you are</div>
+    <div class="score-pill"><span>Score</span><b id="scoreNow">0</b><span>/ 16</span></div>
+  </div>
+  <div class="progress-rail"><div class="progress-fill" id="progressFill"></div></div>
+
+  <main id="stage" aria-live="polite"></main>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------------- helpers ---------------- */
+  function shuffle(arr){
+    var a = arr.slice();
+    for(var i=a.length-1;i>0;i--){
+      var j = Math.floor(Math.random()*(i+1));
+      var t=a[i]; a[i]=a[j]; a[j]=t;
+    }
+    return a;
+  }
+  function el(tag, cls, html){
+    var n=document.createElement(tag);
+    if(cls) n.className=cls;
+    if(html!=null) n.innerHTML=html;
+    return n;
+  }
+
+  /* ---------------- data ---------------- */
+  var TOTAL = 16;
+
+  var mc = [
+    {
+      q:"The architect specified ______ steel for the seafront balustrades, knowing the zinc coating would shrug off the salt air for decades.",
+      options:[
+        {t:"galvanized", correct:true},
+        {t:"perforated", correct:false},
+        {t:"corroded",   correct:false},
+        {t:"suspended",  correct:false}
+      ],
+      why:"<b>Galvanized</b> means coated with a protective layer of zinc — exactly what resists salt-air corrosion. <i>Corroded</i> is the opposite outcome, and <i>perforated</i> / <i>suspended</i> describe holes and hanging, not weather protection."
+    },
+    {
+      q:"Rather than restoring the warehouse to one period, the team embraced a deliberate ______ of eras — Victorian brick beside mid-century chairs beside raw industrial fittings.",
+      options:[
+        {t:"medley",    correct:true},
+        {t:"vestige",   correct:false},
+        {t:"continuum", correct:false},
+        {t:"threshold", correct:false}
+      ],
+      why:"A <b>medley</b> is a varied mixture of distinct things — fitting for clashing eras placed side by side. A <i>continuum</i> blends imperceptibly (these are sharply contrasted), and a <i>vestige</i> is a single faint trace, not a mixture."
+    },
+    {
+      q:"The renovation pays loving ______ to the building's Art Deco past, reproducing the original geometric motifs across the new lobby floor.",
+      options:[
+        {t:"reconciliation", correct:false},
+        {t:"homage",         correct:true},
+        {t:"articulation",   correct:false},
+        {t:"defenestration", correct:false}
+      ],
+      why:"To pay <b>homage</b> is to show public honour or respect — here, to a heritage style. <i>Reconciliation</i> is making conflicting views compatible, <i>articulation</i> is jointing, and <i>defenestration</i> is throwing someone from a window."
+    },
+    {
+      q:"A glazed bridge links the two wings; its glass floor leaves the structural beams ______ from the ceiling like an exposed skeleton.",
+      options:[
+        {t:"perforated", correct:false},
+        {t:"galvanized", correct:false},
+        {t:"suspended",  correct:true},
+        {t:"corroded",   correct:false}
+      ],
+      why:"<b>Suspended</b> means supported by attachment from above — beams hanging <i>from the ceiling</i>. The other three describe surface holes, zinc coating, and chemical decay, none of which fit \u201changing from above\u201d."
+    },
+    {
+      q:"The studio is known for its ______ approach: every joint is hand-finished and every surface signed by the maker who crafted it.",
+      options:[
+        {t:"reductive",  correct:false},
+        {t:"vestigial",  correct:false},
+        {t:"artisanal",  correct:true},
+        {t:"liminal",    correct:false}
+      ],
+      why:"<b>Artisanal</b> work is made by hand with craft skill — matching \u201chand-finished\u201d and \u201cthe maker who crafted it.\u201d <i>Reductive</i> means stripped to a crude minimum (the opposite of careful craft), and the others mean vestige-like or transitional."
+    }
+  ];
+
+  var matchPairs = [
+    {term:"fenestration",  def:"The arrangement of windows and doors across a building's elevations."},
+    {term:"articulation",  def:"The way the parts of a structure are jointed or visually divided."},
+    {term:"liminal",       def:"Relating to a transitional, in-between space or threshold."},
+    {term:"conduit",       def:"A tube or channel that protects runs of electrical wiring."},
+    {term:"juxtaposition", def:"The placing of two things close together for contrasting effect."},
+    {term:"vestigial",     def:"Forming a small surviving remnant of something once larger."}
+  ];
+
+  // fill: segments joined by blanks (b1..b5)
+  var fillSegments = [
+    "The conversion is a study in restraint. Every cable run is gathered into a single surface-mounted ",
+    ", so the wiring reads as a drawn line rather than a mess. New brass fixtures sit in careful ",
+    " with the rough concrete, each material sharpening the other. A ",
+    " steel screen at reception filters the afternoon light into a soft grid of shadows. The signage, by contrast, is almost ",
+    " \u2014 there when you need it, easy to ignore when you don't. Together these moves lift the building well above the ",
+    " of the ordinary refit."
+  ];
+  var fillAnswers = ["conduit","juxtaposition","perforated","unobtrusive","threshold"];
+  var fillWhy = {
+    conduit:"a tube/channel protecting wiring",
+    juxtaposition:"placing two things together for contrast",
+    perforated:"pierced with holes (so light passes through as a grid)",
+    unobtrusive:"not drawing attention \u2014 \u201ceasy to ignore\u201d",
+    threshold:"the level that must be exceeded \u2014 here, the bar of \u201cthe ordinary\u201d"
+  };
+  var fillDistractors = ["corroded","conspicuous"];
+
+  /* ---------------- state ---------------- */
+  var score = 0;
+  var phase = "intro";   // intro | mc | match | fill | results
+  var mcIndex = 0;
+  var mcShuffled = [];   // per-question shuffled options
+  var stage = document.getElementById('stage');
+  var stepLabel = document.getElementById('stepLabel');
+  var scoreNow = document.getElementById('scoreNow');
+  var progressFill = document.getElementById('progressFill');
+
+  function answeredCount(){
+    // how many of the 16 items resolved so far (for progress bar)
+    if(phase==="intro") return 0;
+    if(phase==="mc") return mcIndex;            // 0..5 as you advance
+    if(phase==="match") return 5;
+    if(phase==="fill") return 11;
+    return 16;
+  }
+  function updateHud(){
+    scoreNow.textContent = score;
+    var done = answeredCount();
+    progressFill.style.width = (done/TOTAL*100) + "%";
+  }
+
+  /* ---------------- intro ---------------- */
+  function renderIntro(){
+    phase="intro";
+    stepLabel.textContent="Ready when you are";
+    updateHud();
+    var c = el('div','card center');
+    c.appendChild(el('p','eyebrow','C1 \u00b7 16 questions \u00b7 ~15 minutes'));
+    c.appendChild(el('h2','prompt','The language of material and space'));
+    c.appendChild(el('p','sub','Precise vocabulary that designers, architects and critics use when they talk about how a building is made and how it feels to move through.'));
+    var ul = el('ul','intro-list');
+    var rows = [
+      ['1','<b>Word in context</b> &mdash; choose the term that fits a design sentence.'],
+      ['2','<b>Match the term</b> &mdash; pair six words with their precise meaning.'],
+      ['3','<b>Fill the critique</b> &mdash; complete a review using a word bank.']
+    ];
+    rows.forEach(function(r){
+      var li=el('li');
+      li.appendChild(el('span','n',r[0]));
+      li.appendChild(el('span',null,r[1]));
+      ul.appendChild(li);
+    });
+    c.appendChild(ul);
+    var nav=el('div','nav');
+    var b=el('button','btn btn-primary','Begin lesson');
+    b.onclick=function(){ mcIndex=0; renderMc(); };
+    nav.appendChild(b);
+    c.appendChild(nav);
+    stage.innerHTML=''; stage.appendChild(c);
+  }
+
+  /* ---------------- multiple choice ---------------- */
+  function renderMc(){
+    phase="mc";
+    var item = mc[mcIndex];
+    mcShuffled = shuffle(item.options);
+    stepLabel.innerHTML = 'Word in context \u00b7 <b>'+(mcIndex+1)+'</b> of 5';
+    updateHud();
+
+    var c = el('div','card');
+    c.appendChild(el('p','eyebrow','Choose the best word'));
+    c.appendChild(el('h2','prompt', item.q.replace('______','<span style="color:var(--brass-dark)">\u2014\u2014\u2014</span>')));
+
+    var opts = el('div','options');
+    var locked=false;
+    var labels=['A','B','C','D'];
+    mcShuffled.forEach(function(o, i){
+      var btn=el('button','opt');
+      btn.type='button';
+      btn.innerHTML='<span class="tick">'+labels[i]+'</span><span>'+o.t+'</span>';
+      btn.onclick=function(){
+        if(locked) return;
+        locked=true;
+        if(o.correct) score++;
+        Array.prototype.forEach.call(opts.children,function(child,ci){
+          child.disabled=true;
+          var oo=mcShuffled[ci];
+          if(oo.correct) child.classList.add('correct');
+          else if(oo===o) child.classList.add('incorrect');
+        });
+        var fb=c.querySelector('.feedback');
+        fb.className='feedback show '+(o.correct?'good':'bad');
+        fb.innerHTML=(o.correct?'<b>Correct.</b> ':'<b>Not quite.</b> The answer is <b>'+findCorrect(mcShuffled).t+'</b>. ')+item.why;
+        nextBtn.disabled=false;
+        nextBtn.focus();
+        updateHud();
+      };
+      opts.appendChild(btn);
+    });
+    c.appendChild(opts);
+    c.appendChild(el('div','feedback'));
+
+    var nav=el('div','nav');
+    var nextBtn=el('button','btn btn-primary', mcIndex<4?'Next':'To matching');
+    nextBtn.disabled=true;
+    nextBtn.onclick=function(){
+      if(mcIndex<4){ mcIndex++; renderMc(); }
+      else { renderMatch(); }
+    };
+    nav.appendChild(nextBtn);
+    c.appendChild(nav);
+
+    stage.innerHTML=''; stage.appendChild(c);
+  }
+  function findCorrect(list){ for(var i=0;i<list.length;i++){ if(list[i].correct) return list[i]; } }
+
+  /* ---------------- matching ---------------- */
+  function renderMatch(){
+    phase="match";
+    stepLabel.innerHTML='Match the term \u00b7 <b>6</b> pairs';
+    updateHud();
+
+    var terms = shuffle(matchPairs);
+    var defs  = shuffle(matchPairs);
+    var assign = {};        // termWord -> defWord
+    var selected = null;    // termWord
+    var locked = false;
+
+    var c = el('div','card');
+    c.appendChild(el('p','eyebrow','Pair each word with its meaning'));
+    c.appendChild(el('h2','prompt','Six terms, six definitions'));
+    c.appendChild(el('p','sub','Tap a term, then tap its definition. Tap a paired term again to change it.'));
+
+    var grid = el('div','match-grid');
+    var colT = el('div','match-col');
+    colT.appendChild(el('h3','Term'));
+    var colD = el('div','match-col');
+    colD.appendChild(el('h3','Definition'));
+
+    function badgeFor(termWord){
+      // stable number = index of the term in the displayed term list +1
+      for(var i=0;i<terms.length;i++){ if(terms[i].term===termWord) return i+1; }
+      return '';
+    }
+
+    function repaint(){
+      // terms
+      Array.prototype.forEach.call(colT.querySelectorAll('.term'),function(node){
+        var w=node.getAttribute('data-term');
+        node.classList.toggle('active', !locked && selected===w);
+        node.classList.toggle('linked', !!assign[w]);
+        node.querySelector('.badge').textContent = badgeFor(w);
+      });
+      // defs
+      Array.prototype.forEach.call(colD.querySelectorAll('.def'),function(node){
+        var dw=node.getAttribute('data-def');
+        var ownerTerm=null;
+        for(var t in assign){ if(assign[t]===dw){ ownerTerm=t; break; } }
+        node.classList.toggle('linked', !!ownerTerm);
+        node.querySelector('.badge').textContent = ownerTerm? badgeFor(ownerTerm): '';
+      });
+      checkBtn.disabled = Object.keys(assign).length!==6;
+    }
+
+    terms.forEach(function(p){
+      var node=el('div','term');
+      node.setAttribute('data-term',p.term);
+      node.innerHTML='<span class="badge"></span><span>'+p.term+'</span>';
+      node.onclick=function(){
+        if(locked) return;
+        if(assign[p.term]){ delete assign[p.term]; }
+        selected = (selected===p.term)? null : p.term;
+        repaint();
+      };
+      colT.appendChild(node);
+    });
+    defs.forEach(function(p){
+      var node=el('div','def');
+      node.setAttribute('data-def',p.term);
+      node.innerHTML='<span class="badge"></span><span class="dtext">'+p.def+'</span>';
+      node.onclick=function(){
+        if(locked||!selected) return;
+        // free this def from any other term
+        for(var t in assign){ if(assign[t]===p.term) delete assign[t]; }
+        assign[selected]=p.term;
+        selected=null;
+        repaint();
+      };
+      colD.appendChild(node);
+    });
+
+    grid.appendChild(colT); grid.appendChild(colD);
+    c.appendChild(grid);
+    c.appendChild(el('div','feedback'));
+
+    var nav=el('div','nav');
+    var checkBtn=el('button','btn btn-primary','Check pairs');
+    checkBtn.disabled=true;
+    var nextBtn=el('button','btn btn-primary','To the critique');
+    nextBtn.style.display='none';
+
+    checkBtn.onclick=function(){
+      if(locked) return; locked=true;
+      var got=0;
+      Array.prototype.forEach.call(colT.querySelectorAll('.term'),function(node){
+        var w=node.getAttribute('data-term');
+        var right = assign[w]===w;
+        if(right) got++;
+        node.classList.remove('active','linked');
+        node.classList.add(right?'ok':'bad');
+      });
+      Array.prototype.forEach.call(colD.querySelectorAll('.def'),function(node){
+        var dw=node.getAttribute('data-def');
+        var owner=null; for(var t in assign){ if(assign[t]===dw){ owner=t; break; } }
+        var right = owner===dw;
+        node.classList.remove('linked');
+        node.classList.add(right?'ok':'bad');
+        if(!right){
+          var tag=el('span','answer-tag','\u2192 '+dw);
+          node.appendChild(tag);
+        }
+      });
+      score += got;
+      var fb=c.querySelector('.feedback');
+      fb.className='feedback show '+(got===6?'good':'bad');
+      fb.innerHTML='<b>'+got+' of 6 correct.</b> Green rows are right; any red definition shows its true term on the right.';
+      checkBtn.style.display='none';
+      nextBtn.style.display='';
+      nextBtn.focus();
+      updateHud();
+    };
+    nextBtn.onclick=function(){ renderFill(); };
+    nav.appendChild(checkBtn); nav.appendChild(nextBtn);
+    c.appendChild(nav);
+
+    stage.innerHTML=''; stage.appendChild(c);
+    repaint();
+  }
+
+  /* ---------------- fill in the blank ---------------- */
+  function renderFill(){
+    phase="fill";
+    stepLabel.innerHTML='Fill the critique \u00b7 <b>5</b> blanks';
+    updateHud();
+
+    var placed = [null,null,null,null,null];  // word per blank
+    var selectedChip = null;
+    var selectedBlank = null;
+    var locked = false;
+
+    var c = el('div','card');
+    c.appendChild(el('p','eyebrow','Complete the design review'));
+    c.appendChild(el('h2','prompt','A critic walks the converted building'));
+    c.appendChild(el('p','sub','Tap a word, then tap a blank \u2014 or tap a blank first. Tap a filled blank to clear it.'));
+
+    // passage
+    var pp = el('p','passage');
+    for(var i=0;i<fillSegments.length;i++){
+      pp.appendChild(document.createTextNode(fillSegments[i]));
+      if(i<5){
+        var bspan=el('span','blank','\u2002\u2002\u2002\u2002');
+        bspan.setAttribute('data-blank', i);
+        (function(idx,node){
+          node.onclick=function(){
+            if(locked) return;
+            if(placed[idx]){            // clear it back to bank
+              placed[idx]=null; selectedBlank=null;
+            } else if(selectedChip){    // fill from selected chip
+              placed[idx]=selectedChip; selectedChip=null; selectedBlank=null;
+            } else {                    // select this blank to receive next chip
+              selectedBlank = (selectedBlank===idx)? null : idx;
+            }
+            repaint();
+          };
+        })(i,bspan);
+        pp.appendChild(bspan);
+      }
+    }
+    c.appendChild(pp);
+
+    var bank = el('div','bank');
+    var chips = shuffle(fillAnswers.concat(fillDistractors));
+    chips.forEach(function(w){
+      var chip=el('button','chip',w);
+      chip.type='button';
+      chip.setAttribute('data-word',w);
+      chip.onclick=function(){
+        if(locked) return;
+        if(selectedBlank!=null){           // drop into the waiting blank
+          placed[selectedBlank]=w; selectedBlank=null; selectedChip=null;
+        } else {
+          selectedChip = (selectedChip===w)? null : w;
+        }
+        repaint();
+      };
+      bank.appendChild(chip);
+    });
+    c.appendChild(bank);
+    c.appendChild(el('div','feedback'));
+
+    function repaint(){
+      var usedWords = placed.filter(Boolean);
+      Array.prototype.forEach.call(pp.querySelectorAll('.blank'),function(node){
+        var idx=+node.getAttribute('data-blank');
+        if(placed[idx]){ node.textContent=placed[idx]; node.classList.add('filled'); }
+        else { node.innerHTML='\u2002\u2002\u2002\u2002'; node.classList.remove('filled'); }
+        node.classList.toggle('sel', selectedBlank===idx);
+      });
+      Array.prototype.forEach.call(bank.querySelectorAll('.chip'),function(node){
+        var w=node.getAttribute('data-word');
+        node.classList.toggle('used', usedWords.indexOf(w)!==-1);
+        node.classList.toggle('sel', selectedChip===w);
+      });
+      checkBtn.disabled = placed.filter(Boolean).length!==5;
+    }
+
+    var nav=el('div','nav');
+    var checkBtn=el('button','btn btn-primary','Check answers');
+    checkBtn.disabled=true;
+    var finishBtn=el('button','btn btn-primary','See results');
+    finishBtn.style.display='none';
+
+    checkBtn.onclick=function(){
+      if(locked) return; locked=true;
+      var got=0; var lines=[];
+      Array.prototype.forEach.call(pp.querySelectorAll('.blank'),function(node){
+        var idx=+node.getAttribute('data-blank');
+        var right = placed[idx]===fillAnswers[idx];
+        node.classList.remove('sel');
+        node.classList.add(right?'ok':'bad');
+        if(right){ got++; }
+        else { node.textContent = fillAnswers[idx]; }
+      });
+      score += got;
+      fillAnswers.forEach(function(w){
+        lines.push('<b>'+w+'</b> \u2014 '+fillWhy[w]);
+      });
+      var fb=c.querySelector('.feedback');
+      fb.className='feedback show '+(got===5?'good':'bad');
+      fb.innerHTML='<b>'+got+' of 5 correct.</b><br>'+lines.join('<br>')+'<br><span style="opacity:.75">(<i>corroded</i> and <i>conspicuous</i> were the decoys \u2014 note <i>conspicuous</i> is the opposite of \u201ceasy to ignore.\u201d)</span>';
+      Array.prototype.forEach.call(bank.querySelectorAll('.chip'),function(n){n.disabled=true;});
+      checkBtn.style.display='none';
+      finishBtn.style.display='';
+      finishBtn.focus();
+      updateHud();
+    };
+    finishBtn.onclick=function(){ renderResults(); };
+    nav.appendChild(checkBtn); nav.appendChild(finishBtn);
+    c.appendChild(nav);
+
+    stage.innerHTML=''; stage.appendChild(c);
+    repaint();
+  }
+
+  /* ---------------- results ---------------- */
+  function renderResults(){
+    phase="results";
+    stepLabel.textContent="Lesson complete";
+    updateHud();
+
+    var pct = Math.round(score/TOTAL*100);
+    var msg;
+    if(pct>=85) msg="Excellent. You handle this register with real precision \u2014 the kind of vocabulary that reads as fluent in a design brief or a critique.";
+    else if(pct>=65) msg="Strong work. The core terms are landing; a quick second pass over the trickier pairs will sharpen the rest.";
+    else if(pct>=40) msg="A solid start. These words are specialised \u2014 reread the feedback, then run it again to lock them in.";
+    else msg="This is a demanding set. Don't be discouraged \u2014 revisit the explanations and try once more; it climbs quickly.";
+
+    var c = el('div','card center');
+    c.appendChild(el('p','eyebrow','Your result'));
+
+    var ring = el('div','ring-wrap');
+    var circ = 2*Math.PI*52;
+    var off = circ*(1-score/TOTAL);
+    ring.innerHTML =
+      '<svg width="150" height="150" viewBox="0 0 120 120">'+
+        '<circle cx="60" cy="60" r="52" fill="none" stroke="#E8DFCF" stroke-width="10"/>'+
+        '<circle cx="60" cy="60" r="52" fill="none" stroke="#C7A24F" stroke-width="10" stroke-linecap="round" stroke-dasharray="'+circ.toFixed(1)+'" stroke-dashoffset="'+off.toFixed(1)+'" transform="rotate(-90 60 60)"/>'+
+        '<text x="60" y="66" text-anchor="middle" font-family="Fraunces,serif" font-size="30" font-weight="600" fill="#123A33">'+pct+'%</text>'+
+      '</svg>';
+    c.appendChild(ring);
+
+    c.appendChild(el('div','result-score', score+'<small> / '+TOTAL+'</small>'));
+    c.appendChild(el('p','result-msg',msg));
+
+    var nav=el('div','nav');nav.style.justifyContent='center';
+    var again=el('button','btn btn-ghost','Restart lesson');
+    again.onclick=function(){ score=0; mcIndex=0; renderIntro(); };
+    nav.appendChild(again);
+    c.appendChild(nav);
+
+    stage.innerHTML=''; stage.appendChild(c);
+  }
+
+  /* ---------------- go ---------------- */
+  renderIntro();
+})();
+</script>
+</body>
+</html>

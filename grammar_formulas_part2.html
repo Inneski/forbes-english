@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grammar Formulas — Teil 3 · Quick Reference</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@500;600&family=Karla:wght@400;500;600;700&display=swap');
+
+:root{
+  --paper:#f6f1e7;
+  --ink:#241f1a;
+  --ink-soft:#5c5347;
+  --line:#d8cdb8;
+  --card:#fffdf8;
+  --gold:#c98a3a;
+
+  /* tense-system colours */
+  --present-perfect:#2a8a7e;
+  --future-simple:#c08a1e;
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--paper);
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(36,31,26,0.06) 1px, transparent 0);
+  background-size:22px 22px;
+  color:var(--ink);
+  font-family:'Karla', sans-serif;
+  padding:48px 20px 80px;
+}
+
+.wrap{max-width:980px;margin:0 auto;}
+
+header{
+  text-align:center;
+  margin-bottom:46px;
+}
+.eyebrow{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:12px;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--gold);
+  font-weight:600;
+  margin-bottom:10px;
+}
+h1{
+  font-family:'Fraunces', serif;
+  font-weight:700;
+  font-size:42px;
+  margin:0 0 8px;
+  letter-spacing:-0.01em;
+}
+.de-sub{
+  font-family:'Fraunces', serif;
+  font-style:italic;
+  font-weight:500;
+  font-size:18px;
+  color:var(--ink-soft);
+  margin:0;
+}
+header .rule{
+  width:64px;height:3px;background:var(--gold);
+  margin:22px auto 0;border-radius:2px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:22px;
+}
+@media (max-width:760px){
+  .grid{grid-template-columns:1fr;}
+}
+
+/* Full-width card (spans both columns) */
+.card-wide{
+  grid-column: 1 / -1;
+}
+
+.card{
+  background:var(--card);
+  border:1.5px solid var(--line);
+  border-radius:10px;
+  padding:24px 26px 22px;
+  position:relative;
+  overflow:hidden;
+}
+.card::before{
+  content:"";
+  position:absolute;
+  top:0;left:0;
+  width:6px;height:100%;
+  background:var(--accent, var(--gold));
+}
+
+.card-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:12px;
+  margin-bottom:4px;
+}
+.card-en{
+  font-family:'Fraunces', serif;
+  font-weight:700;
+  font-size:21px;
+  color:var(--ink);
+  letter-spacing:-0.01em;
+}
+.card-num{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:12px;
+  color:var(--ink-soft);
+  opacity:0.55;
+  font-weight:600;
+}
+.card-de{
+  font-family:'Fraunces', serif;
+  font-style:italic;
+  font-size:14.5px;
+  color:var(--ink-soft);
+  margin-bottom:16px;
+  padding-bottom:14px;
+  border-bottom:1px dashed var(--line);
+}
+
+.formula{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:14px;
+  line-height:1.9;
+  background:rgba(36,31,26,0.035);
+  border-radius:6px;
+  padding:12px 14px;
+  margin-bottom:14px;
+}
+.formula .pos{color:#2f6b3e;font-weight:600;}
+.formula .neg{color:#a13a2f;font-weight:600;}
+.formula .q{color:#3b6ea5;font-weight:600;}
+.formula .plus{color:var(--ink-soft);font-weight:400;padding:0 2px;}
+.formula .tag{
+  font-family:'Karla',sans-serif;
+  font-size:10.5px;
+  text-transform:uppercase;
+  letter-spacing:0.06em;
+  color:var(--ink-soft);
+  font-weight:700;
+  display:inline-block;
+  width:64px;
+}
+.formula-line{display:flex;align-items:baseline;flex-wrap:wrap;gap:0;}
+
+/* Wide-card formula: two-column layout inside */
+.formula-cols{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+@media(max-width:600px){
+  .formula-cols{grid-template-columns:1fr;}
+}
+.formula-cols .formula{margin-bottom:0;}
+.formula-col-label{
+  font-family:'Karla',sans-serif;
+  font-size:10.5px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.07em;
+  margin-bottom:6px;
+}
+
+.example{
+  font-size:14px;
+  color:var(--ink);
+  margin:3px 0;
+  padding-left:2px;
+}
+.example .ex-en{font-weight:500;}
+.example .ex-de{color:var(--ink-soft);font-style:italic;font-size:13px;}
+
+/* adverb exception table */
+.exc-table{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:6px 8px;
+  margin:10px 0 14px;
+  font-size:13px;
+}
+.exc-table .h{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10.5px;
+  font-weight:700;
+  color:var(--ink-soft);
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  padding-bottom:4px;
+  border-bottom:1px solid var(--line);
+}
+.exc-table .adj{font-weight:600;}
+.exc-table .adv{color:#a13a2f;font-style:italic;}
+.exc-table .rule-adv{color:#2f6b3e;font-style:italic;}
+
+/* so/neither table */
+.sn-table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:13px;
+  margin:10px 0 14px;
+}
+.sn-table th{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10.5px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  color:var(--ink-soft);
+  text-align:left;
+  padding:0 8px 6px 0;
+  border-bottom:1px solid var(--line);
+}
+.sn-table td{
+  padding:5px 8px 2px 0;
+  vertical-align:top;
+  border-bottom:1px dashed rgba(216,205,184,0.5);
+  line-height:1.4;
+}
+.sn-table .trigger{font-style:italic;color:var(--ink-soft);}
+.sn-table .response{font-weight:600;color:#2f6b3e;}
+.sn-table .response-neg{font-weight:600;color:#a13a2f;}
+
+.note{
+  margin-top:14px;
+  font-size:12.5px;
+  color:var(--ink-soft);
+  background:rgba(201,138,58,0.09);
+  border-left:3px solid var(--gold);
+  padding:8px 12px;
+  border-radius:0 5px 5px 0;
+  line-height:1.55;
+}
+.note b{color:var(--ink);}
+
+/* accent colours — teal for present perfect, gold/ochre for future */
+.c-pp       {--accent:var(--present-perfect);}
+.c-already  {--accent:var(--present-perfect);}
+.c-ever     {--accent:var(--present-perfect);}
+.c-adverb   {--accent:#2f6b3e;}
+.c-will     {--accent:var(--future-simple);}
+.c-so       {--accent:#3b6ea5;}
+
+footer{
+  text-align:center;
+  margin-top:50px;
+  font-family:'IBM Plex Mono', monospace;
+  font-size:11px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+  opacity:0.6;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Übungsheft Teil 3 · Grammar Reference · Part 2</div>
+    <h1>Grammar Formulas</h1>
+    <p class="de-sub">6 Strukturen auf einen Blick</p>
+    <div class="rule"></div>
+  </header>
+
+  <div class="grid">
+
+    <!-- 1. Present Perfect (basic) -->
+    <div class="card c-pp">
+      <div class="card-top">
+        <div class="card-en">Present Perfect</div>
+        <div class="card-num">01</div>
+      </div>
+      <div class="card-de">Vergangenheit ohne genauen Zeitpunkt</div>
+      <div class="formula">
+        <div class="formula-line"><span class="tag pos">+</span> I/you/we/they <b>have</b> <span class="plus">+</span> <b>past participle</b></div>
+        <div class="formula-line"><span class="tag pos">+</span> he/she/it <b>has</b> <span class="plus">+</span> <b>past participle</b></div>
+        <div class="formula-line"><span class="tag neg">–</span> I/you/we/they <b>haven't</b> <span class="plus">+</span> <b>past participle</b></div>
+        <div class="formula-line"><span class="tag neg">–</span> he/she/it <b>hasn't</b> <span class="plus">+</span> <b>past participle</b></div>
+        <div class="formula-line"><span class="tag q">?</span> <b>Have</b> I/you/we/they <span class="plus">+</span> <b>past participle</b>?</div>
+        <div class="formula-line"><span class="tag q">?</span> <b>Has</b> he/she/it <span class="plus">+</span> <b>past participle</b>?</div>
+      </div>
+      <div class="example"><span class="ex-en">I've bought a new pair of shoes.</span><br><span class="ex-de">Ich habe ein neues Paar Schuhe gekauft.</span></div>
+      <div class="example"><span class="ex-en">Has he been here a long time?</span><br><span class="ex-de">Ist er schon lange hier?</span></div>
+      <div class="note"><b>Kurzformen:</b> I have → <b>I've</b> · he has → <b>he's</b> · have not → <b>haven't</b> · has not → <b>hasn't</b>. Das Past participle = 3. Form der Verbliste (z.B. go – went – <b>gone</b>).</div>
+    </div>
+
+    <!-- 2. Present Perfect with already / yet / just -->
+    <div class="card c-already">
+      <div class="card-top">
+        <div class="card-en">already / yet / just</div>
+        <div class="card-num">02</div>
+      </div>
+      <div class="card-de">schon / noch nicht / gerade eben</div>
+      <div class="formula">
+        <div class="formula-line"><span class="tag pos">already</span> have/has <span class="plus">+</span> <b>already</b> <span class="plus">+</span> past participle</div>
+        <div class="formula-line"><span class="tag neg">not … yet</span> haven't/hasn't <span class="plus">+</span> past participle <span class="plus">+</span> <b>yet</b></div>
+        <div class="formula-line"><span class="tag pos">just</span> have/has <span class="plus">+</span> <b>just</b> <span class="plus">+</span> past participle</div>
+      </div>
+      <div class="example"><span class="ex-en">I've <b>already</b> washed the car.</span><br><span class="ex-de">Ich habe das Auto <b>schon</b> gewaschen.</span></div>
+      <div class="example"><span class="ex-en">I haven't done my homework <b>yet</b>.</span><br><span class="ex-de">Ich habe meine Hausaufgaben noch <b>nicht</b> gemacht.</span></div>
+      <div class="example"><span class="ex-en">She's <b>just</b> called me.</span><br><span class="ex-de">Sie hat mich <b>gerade eben</b> angerufen.</span></div>
+      <div class="note"><b>already</b> und <b>just</b> stehen zwischen have/has und dem Partizip. <b>yet</b> steht immer am <b>Satzende</b>.</div>
+    </div>
+
+    <!-- 3. Present Perfect with ever / never -->
+    <div class="card c-ever">
+      <div class="card-top">
+        <div class="card-en">ever / never</div>
+        <div class="card-num">03</div>
+      </div>
+      <div class="card-de">jemals / noch nie</div>
+      <div class="formula">
+        <div class="formula-line"><span class="tag q">ever?</span> <b>Have/Has</b> + subject <span class="plus">+</span> <b>ever</b> <span class="plus">+</span> past participle?</div>
+        <div class="formula-line"><span class="tag neg">never</span> subject <span class="plus">+</span> <b>have/has never</b> <span class="plus">+</span> past participle</div>
+      </div>
+      <div class="example"><span class="ex-en">Have you <b>ever</b> been to Hollywood?</span><br><span class="ex-de">Bist du <b>jemals</b> in Hollywood gewesen?</span></div>
+      <div class="example"><span class="ex-en">I've <b>never</b> been to Hollywood.</span><br><span class="ex-de">Ich bin <b>noch nie</b> in Hollywood gewesen.</span></div>
+      <div class="note"><b>ever</b> und <b>never</b> stehen wie already/just zwischen have/has und dem Partizip. <b>never</b> macht den Satz bereits negativ — kein zusätzliches "not" nötig.</div>
+    </div>
+
+    <!-- 4. Adverbs of Manner -->
+    <div class="card c-adverb">
+      <div class="card-top">
+        <div class="card-en">Adverbs of manner</div>
+        <div class="card-num">04</div>
+      </div>
+      <div class="card-de">Wie? — die Art und Weise beschreiben</div>
+      <div class="formula">
+        <div class="formula-line"><span class="tag pos">Regel</span> Adjektiv <span class="plus">+</span> <b>-ly</b></div>
+        <div class="formula-line"><span class="tag neg">-y</span> -y wird zu <b>-ily</b> &nbsp;<span style="opacity:.6">(happy → happ<b>ily</b>)</span></div>
+        <div class="formula-line"><span class="tag neg">-le</span> -le wird zu <b>-ly</b> &nbsp;<span style="opacity:.6">(terrible → terrib<b>ly</b>)</span></div>
+      </div>
+      <div class="exc-table">
+        <div class="h">Adjektiv</div><div class="h">Adverb</div><div class="h">Adjektiv</div><div class="h">Adverb</div>
+        <div class="adj">good</div><div class="adv">well ⚠</div><div class="adj">fast</div><div class="adv">fast ⚠</div>
+        <div class="adj">quiet</div><div class="rule-adv">quietly</div><div class="adj">happy</div><div class="rule-adv">happily</div>
+        <div class="adj">serious</div><div class="rule-adv">seriously</div><div class="adj">terrible</div><div class="rule-adv">terribly</div>
+      </div>
+      <div class="example"><span class="ex-en">She smiled <b>happily</b>. He sings really <b>well</b>.</span><br><span class="ex-de">Das Adverb beschreibt das <b>Verb</b>, nicht das Nomen.</span></div>
+      <div class="note"><b>Achtung:</b> <b>good → well</b> und <b>fast → fast</b> sind Ausnahmen — auswendig lernen! Das Adverb steht nach dem Verb, nicht davor.</div>
+    </div>
+
+    <!-- 5. Will / won't (Future Simple) -->
+    <div class="card c-will">
+      <div class="card-top">
+        <div class="card-en">will / won't</div>
+        <div class="card-num">05</div>
+      </div>
+      <div class="card-de">Zukunft — Vorhersagen &amp; spontane Entschlüsse</div>
+      <div class="formula">
+        <div class="formula-line"><span class="tag pos">+</span> subject <span class="plus">+</span> <b>will / 'll</b> <span class="plus">+</span> Grundform</div>
+        <div class="formula-line"><span class="tag neg">–</span> subject <span class="plus">+</span> <b>won't</b> <span class="plus">+</span> Grundform</div>
+        <div class="formula-line"><span class="tag q">?</span> <b>Will</b> + subject <span class="plus">+</span> Grundform?</div>
+      </div>
+      <div class="example"><span class="ex-en">I think she'll win the prize.</span><br><span class="ex-de">Ich glaube, sie wird den Preis gewinnen.</span></div>
+      <div class="example"><span class="ex-en">He won't know anyone at the party.</span><br><span class="ex-de">Er wird niemanden auf der Party kennen.</span></div>
+      <div class="note">Gleiche Form für alle Personen — kein <b>-s</b>. <b>won't = will not</b>. Nach will/'ll immer die <b>Grundform</b> (kein "to", kein "-ing").</div>
+    </div>
+
+    <!-- 6. So do/have/did/can I — Neither do/have/did/can I (WIDE) -->
+    <div class="card c-so card-wide">
+      <div class="card-top">
+        <div class="card-en">So … I &nbsp;/&nbsp; Neither … I</div>
+        <div class="card-num">06</div>
+      </div>
+      <div class="card-de">ich auch / ich auch nicht</div>
+
+      <div class="formula-cols">
+        <div>
+          <div class="formula-col-label" style="color:#2f6b3e;">So … I — „ich auch" (positiv)</div>
+          <div class="formula" style="margin-bottom:0;">
+            <div class="formula-line"><b>So</b> <span class="plus">+</span> Hilfsverb <span class="plus">+</span> <b>I</b></div>
+            <div class="formula-line" style="opacity:.6;font-size:12px;">Hilfsverb = das des Vorgängers</div>
+          </div>
+        </div>
+        <div>
+          <div class="formula-col-label" style="color:#a13a2f;">Neither … I — „ich auch nicht" (negativ)</div>
+          <div class="formula" style="margin-bottom:0;">
+            <div class="formula-line"><b>Neither</b> <span class="plus">+</span> Hilfsverb <span class="plus">+</span> <b>I</b></div>
+            <div class="formula-line" style="opacity:.6;font-size:12px;">Hilfsverb = das des Vorgängers</div>
+          </div>
+        </div>
+      </div>
+
+      <table class="sn-table" style="margin-top:14px;">
+        <thead>
+          <tr>
+            <th style="width:44%">Was jemand sagt …</th>
+            <th style="width:28%">„ich auch"</th>
+            <th style="width:28%">„ich auch nicht"</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="trigger">I <b>like</b> rap. / I <b>don't</b> like rock.</td>
+            <td><span class="response">So <b>do</b> I.</span></td>
+            <td><span class="response-neg">Neither <b>do</b> I.</span></td>
+          </tr>
+          <tr>
+            <td class="trigger">I <b>went</b> out. / I <b>didn't</b> go out.</td>
+            <td><span class="response">So <b>did</b> I.</span></td>
+            <td><span class="response-neg">Neither <b>did</b> I.</span></td>
+          </tr>
+          <tr>
+            <td class="trigger">I <b>have</b> a laptop. / I <b>haven't</b> got one.</td>
+            <td><span class="response">So <b>have</b> I.</span></td>
+            <td><span class="response-neg">Neither <b>have</b> I.</span></td>
+          </tr>
+          <tr>
+            <td class="trigger">I <b>can</b> swim. / I <b>can't</b> swim.</td>
+            <td><span class="response">So <b>can</b> I.</span></td>
+            <td><span class="response-neg">Neither <b>can</b> I.</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note"><b>Regel:</b> Ist der erste Satz <b>positiv</b> → <b>So</b> + Hilfsverb + I. Ist er <b>negativ</b> → <b>Neither</b> + Hilfsverb + I. Das Hilfsverb spiegelt immer die Zeitform des Vorgängers. Bei <b>do/does/did</b> als Hilfsverb kein "have/can" einsetzen — und umgekehrt!</div>
+    </div>
+
+  </div>
+
+  <footer>Forbes English · Grammar Formulas Reference · Teil 3 · Part 2</footer>
+
+</div>
+</body>
+</html>

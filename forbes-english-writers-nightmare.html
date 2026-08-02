@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English — The Writer's Nightmare</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --gold: #BA7517; --gold-light: #EF9F27; --gold-dark: #633806;
+    --ink: #2C2C2A; --ink-mid: #444441; --ink-light: #5F5E5A;
+    --cream: #F1EFE8; --cream-dark: #D3D1C7; --white: #FFFFFF;
+    --correct-bg: #EAF3DE; --correct-text: #27500A; --correct-border: #639922;
+    --wrong-bg: #FCEBEB; --wrong-text: #501313; --wrong-border: #A32D2D;
+    --warn-bg: #FAEEDA; --warn-text: #633806; --warn-border: #BA7517;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; line-height: 1.7; }
+
+  /* ── HEADER ── */
+  .header { background: var(--ink); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 20px rgba(0,0,0,0.35); }
+  .header-inner { max-width: 960px; margin: 0 auto; padding: 1.1rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+  .logo { display: flex; align-items: center; gap: 0.6rem; }
+  .logo-forbes { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 900; color: #fff; line-height: 1; letter-spacing: -1px; }
+  .logo-divider { width: 1px; height: 2rem; background: var(--gold); opacity: 0.5; }
+  .logo-english { font-size: 0.75rem; font-weight: 500; color: var(--gold-light); letter-spacing: 0.3em; text-transform: uppercase; }
+  .header-rule { height: 3px; background: linear-gradient(90deg, var(--gold-dark), var(--gold-light), var(--gold-dark)); }
+  .nav-steps { display: flex; gap: 0.25rem; }
+  .nav-step { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.35); padding: 4px 10px; border-radius: 2px; text-decoration: none; transition: color 0.2s, background 0.2s; }
+  .nav-step:hover { color: var(--gold-light); }
+  .nav-step.active { color: var(--gold-light); background: rgba(186,117,23,0.15); }
+
+  /* ── HERO ── */
+  .hero { background: var(--ink); padding: 3.5rem 2rem 3rem; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -60px; right: -60px; width: 280px; height: 280px; border-radius: 50%; border: 40px solid rgba(186,117,23,0.06); }
+  .hero::after  { content: ''; position: absolute; bottom: -80px; left: -40px; width: 200px; height: 200px; border-radius: 50%; border: 30px solid rgba(186,117,23,0.04); }
+  .hero-inner { max-width: 960px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+  .badge { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 11px; border-radius: 2px; }
+  .badge-gold    { background: var(--gold); color: #fff; }
+  .badge-outline { background: transparent; color: var(--gold-light); border: 1px solid rgba(186,117,23,0.5); }
+  .badge-dim     { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.45); border: 1px solid rgba(255,255,255,0.1); }
+  .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; color: #fff; line-height: 1.18; margin-bottom: 1rem; }
+  .hero-title em { color: var(--gold-light); font-style: italic; }
+  .hero-subtitle { font-size: 1rem; color: rgba(255,255,255,0.55); max-width: 620px; line-height: 1.75; }
+
+  /* ── LAYOUT ── */
+  .main { max-width: 960px; margin: 0 auto; padding: 3rem 2rem; }
+  .section { margin-bottom: 4rem; animation: fadeUp 0.5s ease both; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  .section-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+  .section-num { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 900; color: var(--gold); opacity: 0.35; line-height: 1; min-width: 2.5rem; }
+  .section-part  { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 2px; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; color: var(--ink); line-height: 1.2; }
+  .section-rule  { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(186,117,23,0.5), transparent); }
+
+  /* ── VIDEO ── */
+  .video-card { background: var(--ink); border-radius: 8px; overflow: hidden; border: 1px solid rgba(186,117,23,0.2); box-shadow: 0 8px 32px rgba(0,0,0,0.1); }
+  .video-thumb { position: relative; aspect-ratio: 16/9; display: block; overflow: hidden; cursor: pointer; }
+  .video-thumb img { width: 100%; height: 100%; object-fit: cover; opacity: 0.75; transition: opacity 0.3s, transform 0.4s; display: block; }
+  .video-thumb:hover img { opacity: 0.95; transform: scale(1.02); }
+  .play-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.15); transition: background 0.2s; }
+  .video-thumb:hover .play-overlay { background: rgba(0,0,0,0.05); }
+  .play-circle { width: 80px; height: 80px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: transform 0.2s, background 0.2s; box-shadow: 0 6px 28px rgba(0,0,0,0.5); }
+  .video-thumb:hover .play-circle { transform: scale(1.12); background: var(--gold-light); }
+  .play-circle svg { margin-left: 5px; }
+  .video-label { position: absolute; top: 16px; left: 16px; background: rgba(0,0,0,0.7); color: #fff; font-size: 0.68rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; border-radius: 2px; border-left: 2px solid var(--gold); }
+  .video-info { padding: 1.25rem 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; border-top: 1px solid rgba(186,117,23,0.15); }
+  .video-title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 3px; }
+  .video-sub { font-size: 0.78rem; color: rgba(255,255,255,0.4); }
+  .watch-btn { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--gold); color: #fff; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.65rem 1.35rem; border-radius: 3px; text-decoration: none; transition: background 0.2s, transform 0.15s; white-space: nowrap; }
+  .watch-btn:hover { background: var(--gold-light); transform: translateY(-1px); }
+  .video-note { font-size: 0.78rem; color: var(--ink-light); margin-top: 0.75rem; font-style: italic; display: flex; align-items: center; gap: 0.4rem; }
+  .video-note::before { content: ''; display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+
+  /* ── STORY PASSAGE ── */
+  .passage-wrap { background: var(--white); border: 1px solid rgba(186,117,23,0.18); border-radius: 8px; padding: 2rem 2.25rem; position: relative; }
+  .passage-wrap::before { content: '\201C'; font-family: 'Playfair Display', serif; font-size: 6rem; color: var(--gold); opacity: 0.12; position: absolute; top: -0.5rem; left: 1.25rem; line-height: 1; pointer-events: none; }
+  .passage-text { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-style: italic; line-height: 1.85; color: var(--ink-mid); position: relative; }
+  .passage-text strong { font-style: normal; font-weight: 700; color: var(--gold-dark); background: rgba(186,117,23,0.08); padding: 0 3px; border-radius: 2px; }
+  .passage-note { font-size: 0.78rem; color: var(--ink-light); margin-top: 1rem; display: flex; align-items: center; gap: 0.5rem; font-style: italic; }
+  .passage-note::before { content: ''; display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+
+  /* ── VOCAB ── */
+  .vocab-intro { font-size: 0.875rem; color: var(--ink-light); margin-bottom: 1.25rem; }
+  .vocab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 0.875rem; }
+  .vocab-card { background: var(--white); border: 1px solid rgba(186,117,23,0.2); border-radius: 5px; padding: 1rem 1.1rem; cursor: pointer; transition: border-color 0.2s, transform 0.18s, box-shadow 0.18s; position: relative; overflow: hidden; }
+  .vocab-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--gold-dark), var(--gold-light)); transform: scaleX(0); transform-origin: left; transition: transform 0.25s; }
+  .vocab-card:hover { border-color: var(--gold); transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.07); }
+  .vocab-card:hover::after { transform: scaleX(1); }
+  .vocab-card.open .definition { display: block; }
+  .vocab-card.open .tap-hint  { display: none; }
+  .vocab-word { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--ink); }
+  .vocab-pos  { font-size: 0.68rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gold-dark); margin: 3px 0 5px; }
+  .vocab-ipa  { font-size: 0.75rem; color: var(--ink-light); margin-bottom: 4px; }
+  .tap-hint   { font-size: 0.72rem; color: rgba(0,0,0,0.28); display: flex; align-items: center; gap: 4px; }
+  .tap-hint::before { content: '▶'; font-size: 0.5rem; color: var(--gold); }
+  .definition { font-size: 0.825rem; color: var(--ink-mid); line-height: 1.55; display: none; margin-top: 5px; border-top: 1px solid rgba(186,117,23,0.15); padding-top: 6px; }
+  .vocab-es   { font-size: 0.75rem; color: var(--ink-light); margin-top: 5px; font-style: italic; }
+
+  /* ── GRAMMAR ── */
+  .grammar-intro { font-size: 0.875rem; color: var(--ink-light); margin-bottom: 1.5rem; }
+  .grammar-block { background: var(--white); border: 1px solid rgba(0,0,0,0.07); border-radius: 6px; padding: 1.5rem; margin-bottom: 1.25rem; }
+  .grammar-block + .grammar-block { margin-top: 0; }
+  .grammar-rule-label { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 0.6rem; }
+  .grammar-rule-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--ink); margin-bottom: 0.75rem; }
+  .grammar-rule-body { font-size: 0.9rem; color: var(--ink-mid); line-height: 1.7; margin-bottom: 1rem; }
+  .grammar-rule-body strong { color: var(--ink); }
+  .ex-row { display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 0.5rem; }
+  .ex-bad  { font-size: 0.875rem; color: var(--wrong-text); background: var(--wrong-bg); border-left: 3px solid var(--wrong-border); padding: 0.45rem 0.85rem; border-radius: 0 4px 4px 0; }
+  .ex-good { font-size: 0.875rem; color: var(--correct-text); background: var(--correct-bg); border-left: 3px solid var(--correct-border); padding: 0.45rem 0.85rem; border-radius: 0 4px 4px 0; }
+  .ex-note { font-size: 0.78rem; color: var(--ink-light); font-style: italic; padding-left: 0.5rem; }
+  .warn-box { background: var(--warn-bg); border: 1px solid var(--warn-border); border-radius: 4px; padding: 0.6rem 0.9rem; font-size: 0.82rem; color: var(--warn-text); margin-top: 0.75rem; line-height: 1.6; }
+  .warn-box strong { font-weight: 500; }
+
+  .neg-table-wrap { overflow-x: auto; margin-top: 0.75rem; }
+  .neg-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+  .neg-table thead th { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); text-align: left; padding: 0.5rem 0.75rem; border-bottom: 1px solid rgba(0,0,0,0.1); background: var(--cream); }
+  .neg-table tbody tr:nth-child(even) { background: var(--cream); }
+  .neg-table tbody td { padding: 0.6rem 0.75rem; color: var(--ink-mid); border-bottom: 1px solid rgba(0,0,0,0.05); vertical-align: top; }
+  .neg-table tbody td:first-child { color: var(--ink); font-weight: 500; }
+  .neg-table tbody td .en-key { color: var(--gold-dark); font-weight: 500; }
+  .neg-table tbody td .es-cell { font-style: italic; color: var(--ink-light); font-size: 0.8rem; display: block; margin-top: 2px; }
+  .neg-table tbody tr:last-child td { border-bottom: none; }
+
+  /* ── PRONUNCIATION ── */
+  .pron-intro { font-size: 0.875rem; color: var(--ink-light); margin-bottom: 1.25rem; }
+  .pron-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem; }
+  .pron-card { background: var(--white); border: 1px solid rgba(186,117,23,0.18); border-radius: 5px; padding: 0.9rem 1rem; cursor: pointer; transition: border-color 0.18s, transform 0.18s, box-shadow 0.18s; }
+  .pron-card:hover, .pron-card.active { border-color: var(--gold); transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,0.07); }
+  .pron-card.active { background: rgba(186,117,23,0.04); }
+  .pron-word  { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+  .pron-ipa   { font-size: 0.8rem; color: var(--gold-dark); letter-spacing: 0.03em; }
+  .pron-stress{ font-size: 0.72rem; color: var(--ink-light); margin-top: 3px; }
+  .pron-detail { background: var(--white); border: 1px solid rgba(186,117,23,0.2); border-radius: 6px; padding: 1.25rem 1.5rem; display: none; }
+  .pron-detail.show { display: block; }
+  .pron-detail-word { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
+  .pron-detail-ipa  { font-size: 1rem; color: var(--gold-dark); margin-bottom: 0.85rem; }
+  .pron-detail-body { font-size: 0.88rem; color: var(--ink-mid); line-height: 1.7; }
+  .pron-detail-body strong { color: var(--ink); }
+  .pron-detail-body .tip-es { display: inline-block; margin-top: 0.5rem; background: var(--cream); padding: 3px 8px; border-radius: 3px; font-size: 0.8rem; color: var(--ink-light); font-style: italic; }
+
+  /* ── QUIZ ── */
+  .quiz-intro { font-size: 0.875rem; color: var(--ink-light); margin-bottom: 1.5rem; }
+  .quiz-card { background: var(--white); border: 1px solid rgba(0,0,0,0.08); border-radius: 5px; padding: 1.5rem; margin-bottom: 1.25rem; }
+  .quiz-q { font-size: 0.95rem; font-weight: 500; color: var(--ink); line-height: 1.6; margin-bottom: 1rem; display: flex; align-items: flex-start; gap: 0.6rem; }
+  .qnum { display: inline-flex; align-items: center; justify-content: center; background: var(--ink); color: var(--gold-light); font-family: 'Playfair Display', serif; font-size: 0.85rem; width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0; margin-top: 1px; font-weight: 700; }
+  .quiz-options { display: flex; flex-direction: column; gap: 0.5rem; }
+  .quiz-opt { display: flex; align-items: center; gap: 0.75rem; padding: 0.65rem 1rem; border: 1px solid rgba(0,0,0,0.09); border-radius: 4px; cursor: pointer; font-size: 0.875rem; color: var(--ink-mid); background: var(--cream); transition: background 0.15s, border-color 0.15s; user-select: none; }
+  .quiz-opt:hover:not(.locked) { background: var(--cream-dark); border-color: var(--gold); color: var(--ink); }
+  .quiz-opt .letter { width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 500; flex-shrink: 0; }
+  .quiz-opt.correct { background: var(--correct-bg); border-color: var(--correct-border); color: var(--correct-text); }
+  .quiz-opt.correct .letter { background: var(--correct-border); border-color: var(--correct-border); color: #fff; }
+  .quiz-opt.wrong   { background: var(--wrong-bg); border-color: var(--wrong-border); color: var(--wrong-text); }
+  .quiz-opt.wrong .letter { background: var(--wrong-border); border-color: var(--wrong-border); color: #fff; }
+  .quiz-feedback { font-size: 0.82rem; line-height: 1.55; margin-top: 0.75rem; padding: 0.65rem 0.9rem; border-radius: 4px; display: none; }
+  .quiz-feedback.show    { display: block; }
+  .quiz-feedback.correct { background: var(--correct-bg); color: var(--correct-text); border-left: 3px solid var(--correct-border); }
+  .quiz-feedback.wrong   { background: var(--wrong-bg);   color: var(--wrong-text);   border-left: 3px solid var(--wrong-border); }
+
+  .scoreboard { background: var(--ink); border-radius: 6px; padding: 1.5rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
+  .score-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 2px; }
+  .score-value { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900; color: var(--gold-light); line-height: 1; }
+  .score-message { font-size: 0.82rem; color: rgba(255,255,255,0.4); margin-top: 4px; }
+  .progress-track { flex: 1; min-width: 180px; }
+  .progress-label { font-size: 0.7rem; color: rgba(255,255,255,0.3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+  .progress-bar-outer { height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; }
+  .progress-bar-inner { height: 100%; background: linear-gradient(90deg, var(--gold-dark), var(--gold-light)); border-radius: 3px; transition: width 0.5s ease; width: 0%; }
+  .progress-dots { display: flex; gap: 5px; margin-top: 8px; }
+  .pdot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.15); transition: background 0.3s; }
+  .pdot.done      { background: var(--gold-light); }
+  .pdot.wrong-dot { background: var(--wrong-border); }
+
+  /* ── DISCUSSION ── */
+  .discussion-intro { font-size: 0.875rem; color: var(--ink-light); margin-bottom: 1.25rem; }
+  .disc-item { display: flex; gap: 1.25rem; margin-bottom: 1.25rem; background: var(--white); border-radius: 5px; border: 1px solid rgba(186,117,23,0.15); padding: 1.25rem 1.5rem; transition: border-color 0.2s; }
+  .disc-item:hover { border-color: rgba(186,117,23,0.4); }
+  .disc-num { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; color: var(--gold); opacity: 0.4; line-height: 1; min-width: 2rem; margin-top: 2px; }
+  .disc-type { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 5px; }
+  .disc-q { font-size: 0.9rem; color: var(--ink-mid); line-height: 1.7; }
+  .disc-q strong { color: var(--ink); font-weight: 500; }
+  .disc-q em { color: var(--gold-dark); font-style: italic; }
+
+  /* ── FOOTER ── */
+  .footer { background: var(--ink); border-top: 3px solid var(--gold); padding: 2rem; text-align: center; }
+  .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 900; color: rgba(255,255,255,0.2); letter-spacing: -0.5px; }
+  .footer-logo span { color: var(--gold); opacity: 0.5; }
+  .footer-copy { font-size: 0.72rem; color: rgba(255,255,255,0.2); margin-top: 0.4rem; letter-spacing: 0.05em; }
+
+  @media (max-width: 600px) {
+    .header-inner { padding: 1rem; }
+    .nav-steps { display: none; }
+    .hero { padding: 2rem 1.25rem; }
+    .main { padding: 2rem 1.25rem; }
+    .vocab-grid, .pron-grid { grid-template-columns: 1fr 1fr; }
+    .scoreboard { flex-direction: column; }
+    .passage-wrap { padding: 1.25rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">
+      <svg width="34" height="34" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M18 28 C18 28 8 25 6 12 L6 8 C6 8 12 9 18 14 L18 28Z" fill="#BA7517" opacity="0.9"/>
+        <path d="M18 28 C18 28 28 25 30 12 L30 8 C30 8 24 9 18 14 L18 28Z" fill="#EF9F27" opacity="0.75"/>
+        <line x1="18" y1="14" x2="18" y2="28" stroke="#633806" stroke-width="1" opacity="0.6"/>
+        <path d="M26 6 L30 2 L31 5 L28 8 Z" fill="#EF9F27"/>
+        <line x1="26" y1="6" x2="21" y2="11" stroke="#BA7517" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <div class="logo-forbes">Forbes</div>
+      <div class="logo-divider"></div>
+      <div class="logo-english">English</div>
+    </div>
+    <nav class="nav-steps">
+      <a href="#read"   class="nav-step">Read</a>
+      <a href="#vocab"  class="nav-step">Vocabulary</a>
+      <a href="#grammar" class="nav-step">Grammar</a>
+      <a href="#pron"   class="nav-step">Pronunciation</a>
+      <a href="#quiz"   class="nav-step">Quiz</a>
+      <a href="#discuss" class="nav-step">Discuss</a>
+    </nav>
+  </div>
+  <div class="header-rule"></div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-meta">
+      <span class="badge badge-gold">B2 — Upper Intermediate</span>
+      <span class="badge badge-outline">Creative Writing &amp; Language</span>
+      <span class="badge badge-dim">⏱ 50 min lesson</span>
+    </div>
+    <h1 class="hero-title">The Writer's <em>Nightmare:</em><br>Creativity, Block &amp; the Blank Page</h1>
+    <p class="hero-subtitle">Read a short story about a novelist facing writer's block, master 10 key vocabulary items, study essential grammar rules for Spanish speakers, and sharpen your English pronunciation.</p>
+  </div>
+</section>
+
+<main class="main">
+
+  <!-- ── PART 1: READING ── -->
+  <section class="section" id="read">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div class="section-title-wrap">
+        <div class="section-part">Part One</div>
+        <div class="section-title">Read the Story</div>
+      </div>
+      <div class="section-rule"></div>
+    </div>
+    <p class="vocab-intro">Read the passage carefully. All target vocabulary appears in bold. Note how each word is used in context before studying the definitions in Part 2.</p>
+    <div class="passage-wrap">
+      <p class="passage-text">
+        <strong>It</strong> is true — writer's block is a <strong>nightmare</strong>. Maya stares at the blank page every morning. <strong>She doesn't</strong> write a single word for days. The cursor blinks, <strong>consistent</strong> and merciless. <strong>It</strong> has the opposite effect: the more she tries to force ideas, the less <strong>creative</strong> she feels.<br><br>
+        Her process is <strong>different from</strong> other writers she knows. Some authors say <strong>it</strong> is <strong>exhausting</strong> to fight the block. <strong>Experts</strong> say the <strong>changes</strong> in a writer's routine need to be gradual and intentional. A <strong>fixed</strong> mindset <strong>doesn't</strong> help. <strong>Choices</strong> matter — she can take a long walk, read something entirely <strong>different to</strong> her usual genre, or simply let her mind wander without <strong>it</strong> feeling like failure.<br><br>
+        The idea comes on a quiet Tuesday. Almost <strong>automatically</strong>, without forcing anything. Her novel is about two characters who couldn't be more opposite in personality. But as they say: <strong>opposites attract</strong>. Their <strong>growth</strong> — painful, slow, real — is the story. And when Maya finally reads the first chapter back, <strong>it</strong> is <strong>overwhelmingly</strong> good. The nightmare is over.
+      </p>
+      <p class="passage-note">All target vocabulary and grammar structures appear in bold. Return to this passage after completing Parts 2–4.</p>
+    </div>
+  </section>
+
+  <!-- ── PART 2: VOCABULARY ── -->
+  <section class="section" id="vocab">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <div class="section-title-wrap">
+        <div class="section-part">Part Two</div>
+        <div class="section-title">Key Vocabulary</div>
+      </div>
+      <div class="section-rule"></div>
+    </div>
+    <p class="vocab-intro">Ten essential words and expressions from the story. Click any card to reveal the full definition and Spanish equivalent.</p>
+    <div class="vocab-grid" id="vocab-grid"></div>
+  </section>
+
+  <!-- ── PART 3: GRAMMAR ── -->
+  <section class="section" id="grammar">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <div class="section-title-wrap">
+        <div class="section-part">Part Three</div>
+        <div class="section-title">Grammar Focus</div>
+      </div>
+      <div class="section-rule"></div>
+    </div>
+    <p class="grammar-intro">Three grammar rules that are especially important for Spanish speakers. Study each rule, then find examples in the reading passage above.</p>
+
+    <!-- Rule A -->
+    <div class="grammar-block">
+      <div class="grammar-rule-label">Rule A</div>
+      <div class="grammar-rule-title">Every English sentence needs a subject</div>
+      <div class="grammar-rule-body">
+        In Spanish, the subject pronoun is optional because the verb ending tells you who is acting: <em>"Escribe cada mañana"</em> is perfectly correct. In English, the subject is <strong>always mandatory</strong> — the verb ending gives no information about the person.
+      </div>
+      <div class="ex-row">
+        <div class="ex-bad">✗ &nbsp;Writes every morning. &nbsp;<em>(missing subject)</em></div>
+        <div class="ex-good">✓ &nbsp;<strong>She</strong> writes every morning.</div>
+      </div>
+      <div class="ex-row">
+        <div class="ex-bad">✗ &nbsp;Is exhausting to fight the block.</div>
+        <div class="ex-good">✓ &nbsp;<strong>It</strong> is exhausting to fight the block.</div>
+      </div>
+      <div class="ex-row">
+        <div class="ex-bad">✗ &nbsp;Doesn't help to force ideas.</div>
+        <div class="ex-good">✓ &nbsp;<strong>It</strong> doesn't help to force ideas.</div>
+      </div>
+      <div class="warn-box">
+        <strong>The dummy subject "it"</strong> — English uses <em>it</em> as a placeholder subject when there is no real person or thing. This is very common and almost invisible to English ears, but Spanish speakers often forget it entirely.<br>
+        <em>"It is true." / "It has the opposite effect." / "It is consistent with what experts say."</em>
+      </div>
+    </div>
+
+    <!-- Rule B -->
+    <div class="grammar-block">
+      <div class="grammar-rule-label">Rule B</div>
+      <div class="grammar-rule-title">Different from / to / than</div>
+      <div class="grammar-rule-body">
+        All three forms exist, but their use depends on variety and context. The most important thing for Spanish speakers: <strong>never say "different of"</strong> — this is a direct mistranslation of <em>diferente de</em>.
+      </div>
+      <table class="neg-table" style="margin-top:0.5rem">
+        <thead>
+          <tr><th>Form</th><th>Variety</th><th>Example</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>different from</strong></td>
+            <td>British &amp; American — always correct</td>
+            <td><em>"Her style is different <strong>from</strong> mine."</em></td>
+          </tr>
+          <tr>
+            <td><strong>different to</strong></td>
+            <td>British English only</td>
+            <td><em>"This chapter is different <strong>to</strong> the last."</em></td>
+          </tr>
+          <tr>
+            <td><strong>different than</strong></td>
+            <td>American English — before a clause</td>
+            <td><em>"It's different <strong>than</strong> I expected."</em></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="warn-box" style="margin-top:0.85rem">
+        <strong>Common mistake:</strong> <em style="color:var(--wrong-text)">"Her writing is different <u>of</u> mine."</em> — This does not exist in English. Use <em>from</em> when in doubt.
+      </div>
+    </div>
+
+    <!-- Rule C -->
+    <div class="grammar-block">
+      <div class="grammar-rule-label">Rule C</div>
+      <div class="grammar-rule-title">Negative sentences in the Present Simple</div>
+      <div class="grammar-rule-body">
+        Form: <strong>Subject + do not (don't) / does not (doesn't) + base verb</strong><br>
+        Use <em>don't</em> with I / you / we / they. Use <em>doesn't</em> with he / she / it.<br>
+        <strong>Critical:</strong> after <em>doesn't</em>, the verb stays in its base form — never add <em>-s</em>.
+      </div>
+      <div class="ex-row">
+        <div class="ex-bad">✗ &nbsp;She doesn't <u>writes</u> when she's overwhelmed.</div>
+        <div class="ex-good">✓ &nbsp;She doesn't <strong>write</strong> when she's overwhelmed.</div>
+      </div>
+      <div class="neg-table-wrap">
+        <table class="neg-table">
+          <thead>
+            <tr><th>English (negative)</th><th>Español</th></tr>
+          </thead>
+          <tbody id="neg-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PART 4: PRONUNCIATION ── -->
+  <section class="section" id="pron">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <div class="section-title-wrap">
+        <div class="section-part">Part Four</div>
+        <div class="section-title">Pronunciation Guide</div>
+      </div>
+      <div class="section-rule"></div>
+    </div>
+    <p class="pron-intro">Eleven target words with common pronunciation challenges for Spanish speakers. Click any word for a detailed breakdown.</p>
+    <div class="pron-grid" id="pron-grid"></div>
+    <div class="pron-detail" id="pron-detail"></div>
+  </section>
+
+  <!-- ── PART 5: QUIZ ── -->
+  <section class="section" id="quiz">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <div class="section-title-wrap">
+        <div class="section-part">Part Five</div>
+        <div class="section-title">Comprehension &amp; Language Quiz</div>
+      </div>
+      <div class="section-rule"></div>
+    </div>
+    <p class="quiz-intro">Eight questions covering vocabulary, grammar, and pronunciation from today's lesson. Select the best answer for each.</p>
+    <div id="quiz-container"></div>
+    <div class="scoreboard">
+      <div>
+        <div class="score-label">Your score</div>
+        <div class="score-value" id="score-display">0 / 8</div>
+        <div class="score-message" id="score-msg">Answer questions to see your result</div>
+      </div>
+      <div class="progress-track">
+        <div class="progress-label">Progress</div>
+        <div class="progress-bar-outer"><div class="progress-bar-inner" id="prog-bar"></div></div>
+        <div class="progress-dots" id="prog-dots"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PART 6: DISCUSSION ── -->
+  <section class="section" id="discuss">
+    <div class="section-header">
+      <div class="section-num">06</div>
+      <div class="section-title-wrap">
+        <div class="section-part">Part Six</div>
+        <div class="section-title">Discussion Questions</div>
+      </div>
+      <div class="section-rule"></div>
+    </div>
+    <p class="discussion-intro">Use these prompts for speaking practice or written responses (150–200 words each). Try to include at least three vocabulary items from Part 2 in every answer.</p>
+    <div id="disc-container"></div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-logo">
+    <svg width="20" height="20" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;vertical-align:middle;margin-right:6px;opacity:0.35">
+      <path d="M18 28 C18 28 8 25 6 12 L6 8 C6 8 12 9 18 14 L18 28Z" fill="#BA7517"/>
+      <path d="M18 28 C18 28 28 25 30 12 L30 8 C30 8 24 9 18 14 L18 28Z" fill="#EF9F27" opacity="0.75"/>
+      <line x1="18" y1="14" x2="18" y2="28" stroke="#633806" stroke-width="1"/>
+    </svg>Forbes <span>English</span>
+  </div>
+  <div class="footer-copy">Premium Language &amp; Thinking Skills — Upper Intermediate Programme</div>
+</footer>
+
+<script>
+// ── VOCABULARY DATA ──
+const vocab = [
+  { word: "nightmare",         pos: "noun",         ipa: "/ˈnaɪt.meə/",     def: "1. A frightening dream. 2. (informal) A very difficult or unpleasant experience or situation.", es: "pesadilla / situación horrible" },
+  { word: "opposites attract", pos: "expression",   ipa: "/ˈɒp.ə.zɪts əˈtrækt/", def: "People or things that are very different from each other are often strongly drawn together.", es: "los opuestos se atraen" },
+  { word: "consistent",        pos: "adjective",    ipa: "/kənˈsɪs.tənt/",   def: "Always behaving or performing in the same way; regular and reliable over time.", es: "constante / coherente" },
+  { word: "exhausting",        pos: "adjective",    ipa: "/ɪɡˈzɔː.stɪŋ/",   def: "Making you feel extremely tired, either physically or mentally.", es: "agotador/a" },
+  { word: "overwhelming",      pos: "adjective",    ipa: "/ˌoʊ.vəˈwel.mɪŋ/", def: "Very great in amount or degree; difficult to manage or resist. Can be positive or negative.", es: "abrumador/a / aplastante" },
+  { word: "fixed",             pos: "adjective",    ipa: "/fɪkst/",          def: "Not changing or likely to change; firmly set. A 'fixed mindset' means believing your abilities cannot grow.", es: "fijo/a / inamovible" },
+  { word: "growth",            pos: "noun",         ipa: "/ɡroʊθ/",          def: "The process of developing or increasing, physically, emotionally, or in skill and understanding.", es: "crecimiento / desarrollo" },
+  { word: "automatically",     pos: "adverb",       ipa: "/ˌɔː.tə.ˈmæt.ɪ.kli/", def: "Without conscious thought or effort; happening as a natural result or by itself.", es: "automáticamente" },
+  { word: "choices",           pos: "noun (plural)",ipa: "/ˈtʃɔɪ.sɪz/",     def: "Decisions made by selecting from a range of options; the things you decide to do or not do.", es: "elecciones / decisiones" },
+  { word: "experts",           pos: "noun (plural)",ipa: "/ˈek.spɜːts/",    def: "People who have great skill, knowledge, or experience in a particular subject or field.", es: "expertos / especialistas" },
+];
+
+// ── NEGATIVE SENTENCES TABLE ──
+const negSentences = [
+  { en: "She <span class='en-key'>doesn't</span> write when she's overwhelmed.", es: "No escribe cuando está agobiada." },
+  { en: "Writer's block <span class='en-key'>doesn't</span> follow consistent patterns.", es: "El bloqueo no sigue patrones constantes." },
+  { en: "Experts <span class='en-key'>don't</span> always agree on the best solutions.", es: "Los expertos no siempre se ponen de acuerdo." },
+  { en: "A fixed mindset <span class='en-key'>doesn't</span> help creativity.", es: "Una mentalidad fija no ayuda a la creatividad." },
+  { en: "It <span class='en-key'>doesn't</span> help to force new ideas.", es: "No ayuda forzar nuevas ideas." },
+  { en: "The changes <span class='en-key'>don't</span> happen automatically.", es: "Los cambios no ocurren automáticamente." },
+  { en: "I <span class='en-key'>don't</span> find writing exhausting — I find it rewarding.", es: "No me resulta agotador escribir, me resulta gratificante." },
+];
+
+// ── PRONUNCIATION DATA ──
+const pronWords = [
+  { word: "nightmare",    ipa: "/ˈnaɪt.meə/",    stress: "Stress: NIGHT-mare",   detail: "Two syllables: <strong>NIGHT</strong>-mare. The 'gh' is completely silent — there is no /g/ or /h/ sound. The second syllable is very light and unstressed.", es: "🇪🇸 La 'gh' no se pronuncia en absoluto. Piensa: NAIT-meə." },
+  { word: "exhausting",   ipa: "/ɪɡˈzɔː.stɪŋ/",  stress: "Stress: ex-HAUST-ing", detail: "Three syllables: ex-<strong>HAUST</strong>-ing. The 'x' is pronounced /gz/ — not /ks/ or /s/. The vowel in 'haust' is the long British /ɔː/ (like 'or').", es: "🇪🇸 La 'x' suena /gz/, no /s/. Practica: ig-ZORS-ting." },
+  { word: "changes",      ipa: "/ˈtʃeɪndʒɪz/",   stress: "Stress: CHAN-ges",     detail: "Two syllables: <strong>CHAN</strong>-ges. The 'ch' is /tʃ/ (as in 'church') — not /k/ or /ʃ/. The plural ending -es adds a syllable because of the /dʒ/ sound before it.", es: "🇪🇸 'Ch' en inglés = /tʃ/ como en 'mucho'. No digas /ʃ/ (como en francés)." },
+  { word: "overwhelmed",  ipa: "/ˌoʊ.vəˈwelmd/", stress: "Stress: o-ver-WHELMD",  detail: "Three syllables: o-ver-<strong>WHELMD</strong>. Stress falls on the final syllable. The 'wh' is simply /w/ in modern English. The final consonant cluster -lmd can feel difficult: practise slowly.", es: "🇪🇸 El acento va en la última sílaba: o-ver-WELMD. La 'wh' es solo /w/." },
+  { word: "experts",      ipa: "/ˈek.spɜːts/",   stress: "Stress: EX-perts",     detail: "Two syllables: <strong>EX</strong>-perts. Stress on the first syllable. The 'x' here is /ks/ (not /gz/ — because it follows a short vowel). The plural -s is pronounced /ts/ at the end.", es: "🇪🇸 La 'x' aquí suena /ks/: EKS-perts. Distinto de 'exhausting' donde suena /gz/." },
+  { word: "it is true",   ipa: "/ɪt ɪz truː/",   stress: "Stress: it iz TRUE",   detail: "In natural speech this is often linked: <em>\"it-iz-TRUE\"</em>. The word <strong>true</strong> carries the main stress. The /t/ at the start of 'true' is slightly aspirated — a small puff of air.", es: "🇪🇸 Las palabras se unen en el habla: 'itis-TRUE'. La vocal /uː/ en 'true' es larga." },
+  { word: "auto",         ipa: "/ˈɔː.toʊ/",      stress: "Stress: AU-to",        detail: "Two syllables: <strong>AU</strong>-to. The 'au' vowel in English is /ɔː/ — a long, rounded back vowel. It does NOT sound like the Spanish 'au' in 'automático'. The second syllable has the /oʊ/ diphthong.", es: "🇪🇸 La 'a' en inglés 'auto' suena como la 'o' española larga: AW-toe. No 'AH-uto'." },
+  { word: "consistent",   ipa: "/kənˈsɪs.tənt/", stress: "Stress: con-SIS-tent",  detail: "Three syllables: con-<strong>SIS</strong>-tent. Stress on the middle syllable. The first syllable is reduced to the schwa /ə/ — a very short, neutral sound. The final -ent is also reduced.", es: "🇪🇸 La primera sílaba es muy breve y neutra /kən/. El acento va en la segunda: con-SIS-tent." },
+  { word: "growth",       ipa: "/ɡroʊθ/",        stress: "One syllable",          detail: "One syllable only. The vowel is the diphthong /oʊ/ (as in 'go'). The word ends in /θ/ — the 'th' sound as in 'think'. This is NOT /t/, /d/, or /f/. Your tongue must touch the back of your upper teeth.", es: "🇪🇸 El sonido /θ/ final no existe en español. Saca la lengua levemente entre los dientes: groʊTH." },
+  { word: "fixed",        ipa: "/fɪkst/",         stress: "One syllable",          detail: "One syllable. The word ends in the consonant cluster /kst/ — three consonants together. Practise slowly: /fɪk/ → /fɪks/ → /fɪkst/. Do not add a vowel between the consonants.", es: "🇪🇸 No añadas una vocal extra: no digas 'FIXT-ed'. Es una sola sílaba: FIKST." },
+  { word: "choices",      ipa: "/ˈtʃɔɪ.sɪz/",    stress: "Stress: CHOI-ces",      detail: "Two syllables: <strong>CHOI</strong>-ces. The 'ch' is /tʃ/ as in 'church'. The diphthong /ɔɪ/ (as in 'boy') is the main vowel. The plural -ces is /sɪz/ — it adds a syllable.", es: "🇪🇸 'Ch' = /tʃ/. La vocal /ɔɪ/ es como en español 'hoy': TCHOI-sis." },
+];
+
+// ── QUIZ DATA ──
+const quiz = [
+  { q: "Which sentence is grammatically correct in English?", opts: ["Doesn't help to force ideas.", "She doesn't helps with the block.", "It doesn't help to force ideas.", "Not help to force the ideas."], ans: 2, exp: "English always needs a subject. 'It' is the dummy subject here. After 'doesn't', the verb stays in the base form: 'help', not 'helps'." },
+  { q: "A novelist says her approach is very different ___ her co-author's. Which word is ALWAYS correct?", opts: ["of", "to", "from", "at"], ans: 2, exp: "'Different from' is correct in both British and American English. 'Different to' is British English only. 'Different of' does not exist — a common Spanish speaker mistake." },
+  { q: "What does 'nightmare' mean in this sentence: \"Meeting that deadline was a nightmare\"?", opts: ["A dream during sleep", "A very difficult or unpleasant experience", "A type of creative block", "An automatic process"], ans: 1, exp: "In informal usage, 'nightmare' describes any very difficult or unpleasant situation — it doesn't need to involve sleep." },
+  { q: "How many syllables does 'exhausting' have?", opts: ["Two: ex-HAUS-ting", "Three: ex-HAUST-ing", "One: XAUSTING", "Four: ex-haus-ti-ng"], ans: 1, exp: "Three syllables: ex-HAUST-ing. Stress on the second syllable. The 'x' sounds like /gz/ — not /s/ or /ks/." },
+  { q: "Make this sentence negative: 'The changes happen automatically.'", opts: ["The changes not happen automatically.", "The changes doesn't happen automatically.", "The changes don't happen automatically.", "The changes aren't happen automatically."], ans: 2, exp: "'Changes' is a plural noun, so we use 'don't' (not 'doesn't'). The verb stays in the base form: 'happen', not 'happens'." },
+  { q: "The expression 'opposites attract' is used when...", opts: ["Two people share identical personalities and interests", "A writer can't find any ideas", "Very different people or things are drawn to each other", "Someone has automatic creative inspiration"], ans: 2, exp: "'Opposites attract' means that people or things with very different qualities are often strongly drawn together — a classic English expression." },
+  { q: "Which word contains the /θ/ sound (as in 'think')?", opts: ["choices", "changes", "growth", "fixed"], ans: 2, exp: "'Growth' ends with the /θ/ sound — the voiceless 'th'. This sound doesn't exist in Spanish and requires the tongue to touch the back of the upper teeth." },
+  { q: "A writer 'doesn't write' when overwhelmed. This is an example of...", opts: ["Present Perfect negative", "Past Simple negative", "Present Simple negative", "Future Simple negative"], ans: 2, exp: "'Doesn't write' is Present Simple negative. It describes a habitual action — something she regularly does not do. Structure: subject + doesn't + base verb." },
+];
+
+// ── DISCUSSION DATA ──
+const discussions = [
+  { type: "Personal Experience", q: "Have you ever experienced a creative block — in writing, music, art, or another area? Describe what it felt like and how you managed it. Try to use at least <strong>three vocabulary items</strong> from Part 2." },
+  { type: "Language Focus", q: "The expression <em>'opposites attract'</em> comes from physics (magnets). Can you think of <strong>two other English expressions</strong> borrowed from science or nature? Use each in an original sentence about creativity or writing." },
+  { type: "Critical Thinking", q: "The story suggests that <em>forcing</em> creativity has <strong>the opposite effect</strong>. Do you agree? Is there ever a situation where discipline and structure help produce creative work, even when inspiration is absent?" },
+  { type: "Grammar in Use", q: "Write six sentences about your own daily routine using the Present Simple. Include at least <strong>three negative sentences</strong> with <em>don't</em> or <em>doesn't</em>, and try to use vocabulary from today's lesson." },
+];
+
+// ── RENDER VOCAB ──
+const vg = document.getElementById('vocab-grid');
+vocab.forEach(v => {
+  const c = document.createElement('div');
+  c.className = 'vocab-card';
+  c.innerHTML = `<div class="vocab-word">${v.word}</div><div class="vocab-pos">${v.pos}</div><div class="vocab-ipa">${v.ipa}</div><div class="tap-hint">Click to reveal definition</div><div class="definition">${v.def}<div class="vocab-es">🇪🇸 ${v.es}</div></div>`;
+  c.addEventListener('click', () => c.classList.toggle('open'));
+  vg.appendChild(c);
+});
+
+// ── RENDER NEGATIVE TABLE ──
+const ntb = document.getElementById('neg-table-body');
+negSentences.forEach(r => {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td>${r.en}<span class="es-cell">${r.es}</span></td>`;
+  ntb.appendChild(tr);
+});
+
+// ── RENDER PRONUNCIATION ──
+const pg = document.getElementById('pron-grid');
+const pd = document.getElementById('pron-detail');
+let activePron = null;
+pronWords.forEach((pw, i) => {
+  const card = document.createElement('div');
+  card.className = 'pron-card';
+  card.innerHTML = `<div class="pron-word">${pw.word}</div><div class="pron-ipa">${pw.ipa}</div><div class="pron-stress">${pw.stress}</div>`;
+  card.addEventListener('click', () => {
+    if (activePron === i) {
+      card.classList.remove('active');
+      pd.classList.remove('show');
+      pd.innerHTML = '';
+      activePron = null;
+      return;
+    }
+    document.querySelectorAll('.pron-card').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+    activePron = i;
+    pd.innerHTML = `<div class="pron-detail-word">${pw.word}</div><div class="pron-detail-ipa">${pw.ipa}</div><div class="pron-detail-body">${pw.detail}<br><span class="tip-es">${pw.es}</span></div>`;
+    pd.classList.add('show');
+    setTimeout(() => pd.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+  });
+  pg.appendChild(card);
+});
+
+// ── RENDER QUIZ ──
+let correctCount = 0;
+const answered = new Array(quiz.length).fill(false);
+const qc       = document.getElementById('quiz-container');
+const dotsEl   = document.getElementById('prog-dots');
+const progBar  = document.getElementById('prog-bar');
+const scoreDisp = document.getElementById('score-display');
+const scoreMsg  = document.getElementById('score-msg');
+const letters  = ['A','B','C','D'];
+const messages = ['Keep trying!','Getting there!','Not bad!','Good effort!','Well done!','Excellent!','Outstanding!','Perfect score!','Perfect score!'];
+
+quiz.forEach((q, qi) => {
+  const dot = document.createElement('div');
+  dot.className = 'pdot'; dot.id = `dot-${qi}`;
+  dotsEl.appendChild(dot);
+  const card = document.createElement('div');
+  card.className = 'quiz-card';
+  card.innerHTML = `<div class="quiz-q"><span class="qnum">${qi+1}</span><span>${q.q}</span></div><div class="quiz-options">${q.opts.map((o,oi)=>`<div class="quiz-opt" data-q="${qi}" data-o="${oi}"><span class="letter">${letters[oi]}</span>${o}</div>`).join('')}</div><div class="quiz-feedback" id="fb-${qi}"></div>`;
+  qc.appendChild(card);
+});
+
+document.querySelectorAll('.quiz-opt').forEach(el => {
+  el.addEventListener('click', function() {
+    const qi = +this.dataset.q, oi = +this.dataset.o;
+    if (answered[qi]) return;
+    answered[qi] = true;
+    const opts = document.querySelectorAll(`[data-q="${qi}"]`);
+    opts.forEach(o => { o.classList.add('locked'); o.style.cursor = 'default'; });
+    const fb  = document.getElementById(`fb-${qi}`);
+    const dot = document.getElementById(`dot-${qi}`);
+    if (oi === quiz[qi].ans) {
+      this.classList.add('correct'); this.querySelector('.letter').textContent = '✓';
+      correctCount++;
+      fb.textContent = '✓ Correct — ' + quiz[qi].exp;
+      fb.className = 'quiz-feedback correct show';
+      dot.classList.add('done');
+    } else {
+      this.classList.add('wrong'); this.querySelector('.letter').textContent = '✗';
+      opts[quiz[qi].ans].classList.add('correct'); opts[quiz[qi].ans].querySelector('.letter').textContent = '✓';
+      fb.textContent = '✗ Not quite — ' + quiz[qi].exp;
+      fb.className = 'quiz-feedback wrong show';
+      dot.classList.add('wrong-dot');
+    }
+    const done = answered.filter(Boolean).length;
+    scoreDisp.textContent = `${correctCount} / ${quiz.length}`;
+    progBar.style.width = `${(done / quiz.length) * 100}%`;
+    scoreMsg.textContent = done === quiz.length ? messages[correctCount] : `${quiz.length - done} question${quiz.length - done !== 1 ? 's' : ''} remaining`;
+  });
+});
+
+// ── RENDER DISCUSSION ──
+const dc = document.getElementById('disc-container');
+discussions.forEach((d, i) => {
+  const div = document.createElement('div');
+  div.className = 'disc-item';
+  div.innerHTML = `<div class="disc-num">${i+1}</div><div class="disc-content"><div class="disc-type">${d.type}</div><div class="disc-q">${d.q}</div></div>`;
+  dc.appendChild(div);
+});
+
+// ── NAV SCROLL SPY ──
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      document.querySelectorAll('.nav-step').forEach(l => l.classList.remove('active'));
+      const link = document.querySelector(`.nav-step[href="#${entry.target.id}"]`);
+      if (link) link.classList.add('active');
+    }
+  });
+}, { threshold: 0.3 });
+['read','vocab','grammar','pron','quiz','discuss'].forEach(id => { const el = document.getElementById(id); if (el) observer.observe(el); });
+</script>
+</body>
+</html>

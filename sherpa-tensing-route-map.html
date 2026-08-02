@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sherpa Tensing - Vector Mountain Route V2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#2B0F1D; --ink-soft:#6B4A57; --paper:#FDF7F5; --card:#FFFFFF;
+    --accent:#C2185B; --accent-dark:#7A0F3E; --accent-light:#F6CFE1; --accent-lighter:#FBEAF0;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;}
+  h1,h2,h3{font-family:'Fraunces',serif;font-weight:600;margin:0 0 .4em;color:var(--ink);}
+  .wordmark{display:flex;align-items:center;justify-content:space-between;max-width:1160px;margin:0 auto;padding:28px 24px 0;}
+  .wordmark .brand{font-family:'Fraunces',serif;font-weight:700;font-size:20px;letter-spacing:.02em;}
+  .wordmark .brand span{color:var(--accent);}
+  .wordmark .sub{font-size:13px;color:var(--ink-soft);}
+  main{max-width:1160px;margin:0 auto;padding:0 24px 80px;}
+  .intro{padding:36px 0 8px;max-width:64ch;}
+  .intro .eyebrow{
+    display:inline-block;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--accent-dark);background:var(--accent-lighter);padding:6px 12px;border-radius:999px;margin-bottom:14px;
+  }
+  .intro h1{font-size:34px;}
+  .intro p{color:var(--ink-soft);font-size:16px;}
+  .panels{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:24px;}
+  @media (max-width:820px){.panels{grid-template-columns:1fr;}}
+  .map-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:16px;}
+  .map-card h3{font-size:15px;text-align:center;margin-bottom:8px;}
+  .map-card .map-sub{font-size:12px;color:var(--ink-soft);text-align:center;margin-bottom:10px;}
+  .map-card svg{width:100%;height:auto;display:block;}
+  .camp-dot{cursor:pointer;}
+  .camp-dot .dot-label{opacity:0;transition:opacity .15s ease;}
+  .camp-dot:hover .dot-label,
+  .camp-dot.lit .dot-label,
+  .camp-dot.live .dot-label{opacity:1;}
+  .camp-dot .dot-fill{transition:fill .15s ease;}
+  .descent-map .dot-label{
+    fill:#F3EEE7;paint-order:stroke;stroke:#172731;stroke-width:3px;stroke-linejoin:round;
+  }
+  .legend{display:flex;gap:18px;flex-wrap:wrap;align-items:center;font-size:13px;color:var(--ink-soft);margin-top:16px;padding:0 4px;}
+  .legend-item{display:flex;align-items:center;gap:6px;}
+  .dot{width:11px;height:11px;border-radius:50%;background:#C9C6C2;display:inline-block;}
+  .dot.lit-demo{background:var(--accent);}
+  .zones{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px;}
+  .zone-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:18px 20px;}
+  .zone-card h3{font-size:15px;margin-bottom:4px;}
+  .zone-card .zone-sub{font-size:12px;color:var(--ink-soft);margin-bottom:10px;}
+  .zone-card ol{margin:0;padding:0;list-style:none;font-size:14px;}
+  .zone-card li{margin-bottom:6px;display:flex;align-items:center;gap:9px;}
+  .zone-card .tense-bar{width:5px;height:16px;border-radius:3px;flex:none;}
+  .zone-card .tense-num{color:var(--ink-soft);font-size:12px;font-variant-numeric:tabular-nums;width:1.4em;flex:none;}
+  .zone-card a{color:var(--ink);text-decoration:none;}
+  .zone-card a:hover{color:var(--accent-dark);}
+  .zone-card li.soon a{color:var(--ink-soft);}
+  @media (max-width:760px){.zones{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;overflow:hidden">
+  <defs>
+    <linearGradient id="day-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#D9E1E1"/>
+      <stop offset=".58" stop-color="#E8E9E4"/>
+      <stop offset="1" stop-color="#F1E9DF"/>
+    </linearGradient>
+    <radialGradient id="summit-glow" cx="50%" cy="20%" r="52%">
+      <stop offset="0" stop-color="#F4DDC4" stop-opacity=".7"/>
+      <stop offset="1" stop-color="#F4DDC4" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="mountain-grain" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency=".42" numOctaves="3" seed="11" result="noise"/>
+      <feColorMatrix in="noise" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 .17 0"/>
+    </filter>
+    <filter id="cloud-shadow" x="-20%" y="-30%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#425862" flood-opacity=".2"/>
+    </filter>
+    <clipPath id="massif-clip">
+      <path d="M26 600 L76 548 L126 515 L174 436 L232 363 L286 294 L338 213 L400 72 L451 116 L498 173 L557 230 L615 320 L681 402 L748 520 L800 583 L800 620 L0 620 Z"/>
+    </clipPath>
+    <clipPath id="night-massif-clip">
+      <path d="M0 620 L64 566 L118 531 L155 474 L220 446 L260 361 L319 323 L350 238 L391 174 L414 62 L446 153 L492 205 L536 284 L598 326 L637 411 L702 457 L746 536 L800 574 L800 620 Z"/>
+    </clipPath>
+    <symbol id="dreamtime-mountain" viewBox="0 0 800 620">
+      <rect width="800" height="620" fill="url(#day-sky)"/>
+      <rect width="800" height="390" fill="url(#summit-glow)"/>
+
+      <!-- broad shafts of light add scale without introducing loud colour -->
+      <g fill="#FFF7EC" opacity=".22">
+        <path d="M333 0 L383 0 L315 410 L190 510 Z"/>
+        <path d="M431 0 L469 0 L613 470 L515 401 Z"/>
+      </g>
+      <rect width="800" height="290" filter="url(#mountain-grain)" opacity=".13"/>
+
+      <!-- lesson clouds -->
+      <g transform="translate(32 95)" filter="url(#cloud-shadow)">
+        <path d="M18 72 C2 72 -6 58 3 46 C9 38 18 35 28 37 C31 18 46 7 65 12 C76 -3 101 -2 111 15 C132 8 152 22 152 42 C172 42 183 55 177 69 C173 78 164 82 151 82 L25 82 C20 82 17 78 18 72 Z" fill="#F4EADF" stroke="#BAC7C6" stroke-width="2"/>
+        <path d="M22 68 C51 74 118 73 168 65" fill="none" stroke="#D4C2B8" stroke-width="3" stroke-dasharray="2 8" opacity=".75"/>
+        <text x="89" y="55" text-anchor="middle" font-family="Inter, sans-serif" font-size="18" font-weight="700" fill="#354B55">used to</text>
+      </g>
+      <g transform="translate(542 73)" filter="url(#cloud-shadow)">
+        <path d="M10 83 C-5 78 -3 59 10 51 C18 46 28 45 38 49 C39 28 56 14 76 18 C89 -3 120 -4 134 17 C156 8 181 21 184 44 C205 42 219 57 214 74 C211 85 201 91 184 91 L25 91 C18 91 13 88 10 83 Z" fill="#F1E6DB" stroke="#B4C2C2" stroke-width="2"/>
+        <path d="M18 78 C61 85 152 84 205 74" fill="none" stroke="#CFBEB5" stroke-width="3" stroke-dasharray="2 8" opacity=".75"/>
+        <text x="108" y="61" text-anchor="middle" font-family="Inter, sans-serif" font-size="15.5" font-weight="700" fill="#354B55">to be used to doing</text>
+      </g>
+
+      <!-- quiet, distant ranges -->
+      <path d="M0 520 L92 446 L164 493 L258 408 L342 474 L434 391 L519 466 L610 414 L704 475 L800 421 L800 620 L0 620 Z" fill="#D8DEDC"/>
+      <path d="M0 557 L110 489 L188 531 L278 456 L365 526 L475 439 L566 519 L666 457 L800 527 L800 620 L0 620 Z" fill="#C4CECC" opacity=".88"/>
+
+      <!-- broad, asymmetric main massif -->
+      <path d="M26 600 L76 548 L126 515 L174 436 L232 363 L286 294 L338 213 L400 72 L451 116 L498 173 L557 230 L615 320 L681 402 L748 520 L800 583 L800 620 L0 620 Z" fill="#667A82" stroke="#405963" stroke-width="2"/>
+
+      <!-- cool shadow face -->
+      <path d="M0 620 L76 548 L126 515 L174 436 L232 363 L286 294 L338 213 L400 72 L367 183 L325 244 L300 333 L248 373 L218 459 L158 509 L120 585 L92 620 Z" fill="#485F69"/>
+      <path d="M184 620 L252 527 L302 487 L335 397 L373 349 L400 72 L428 145 L408 239 L449 290 L408 355 L458 434 L399 477 L474 548 L500 620 Z" fill="#83969B" opacity=".9"/>
+
+      <!-- long snow and stone planes, borrowed from the reference's sweeping geometry -->
+      <path d="M400 72 L451 116 L498 173 L557 230 L615 320 L681 402 L748 520 L800 583 L742 529 L664 470 L591 404 L529 345 L470 291 L436 238 L417 168 Z" fill="#E7DDD2"/>
+      <path d="M410 112 L438 148 L470 190 L450 230 L421 196 L397 160 Z" fill="#B8C4C4"/>
+      <path d="M321 270 L366 188 L391 111 L374 267 L338 345 L302 387 L322 330 Z" fill="#AEBDBF"/>
+      <path d="M248 420 L299 353 L339 318 L314 398 L273 465 L214 515 Z" fill="#AEBDBF"/>
+      <path d="M428 281 L473 310 L526 363 L586 421 L657 483 L704 545 L629 495 L558 448 L499 406 L454 357 Z" fill="#C8A9A3" opacity=".72"/>
+      <path d="M362 417 L404 374 L454 433 L516 479 L581 530 L624 589 L548 550 L480 509 L419 474 Z" fill="#D8BCB5" opacity=".62"/>
+      <path d="M112 543 L206 466 L263 382 L326 282 L381 145" fill="none" stroke="#D7E0DE" stroke-width="5" opacity=".28" stroke-linecap="round"/>
+      <path d="M433 170 L505 254 L570 343 L645 433 L727 525" fill="none" stroke="#3A535E" stroke-width="6" opacity=".3" stroke-linecap="round"/>
+
+      <!-- stronger screen-print grain and worn marks -->
+      <rect x="0" y="60" width="800" height="560" clip-path="url(#massif-clip)" filter="url(#mountain-grain)" opacity=".68"/>
+      <g clip-path="url(#massif-clip)" fill="none" stroke="#F3EEE8" stroke-linecap="round" opacity=".25">
+        <path d="M103 543 L211 478 M144 521 L276 429 M240 360 L331 274 M462 214 L590 340 M510 304 L681 461" stroke-width="3" stroke-dasharray="2 10"/>
+        <path d="M91 570 L207 505 M286 466 L368 392 M495 399 L644 501" stroke-width="2" stroke-dasharray="1 8"/>
+      </g>
+
+      <!-- foreground shelf keeps the diagram grounded without a loud extra peak -->
+      <path d="M0 575 L85 552 L172 571 L248 548 L334 581 L431 550 L520 576 L615 545 L704 565 L800 535 L800 620 L0 620 Z" fill="#526B74" opacity=".72"/>
+    </symbol>
+
+    <symbol id="night-mountain" viewBox="0 0 800 620">
+      <rect width="800" height="620" fill="#172731"/>
+
+      <!-- moonlit sky -->
+      <circle cx="116" cy="104" r="43" fill="#E7DDD0" opacity=".9"/>
+      <circle cx="135" cy="88" r="43" fill="#172731"/>
+      <g fill="#D9E0DE" opacity=".7">
+        <circle cx="55" cy="72" r="1.4"/><circle cx="202" cy="62" r="1.2"/>
+        <circle cx="271" cy="116" r="1.5"/><circle cx="325" cy="55" r="1"/>
+        <circle cx="506" cy="74" r="1.3"/><circle cx="576" cy="125" r="1"/>
+        <circle cx="663" cy="68" r="1.5"/><circle cx="738" cy="137" r="1.2"/>
+        <circle cx="183" cy="175" r="1"/><circle cx="548" cy="184" r="1.4"/>
+        <circle cx="704" cy="220" r="1"/><circle cx="78" cy="235" r="1.2"/>
+      </g>
+
+      <!-- low nocturnal ranges -->
+      <path d="M0 508 L83 455 L158 491 L228 420 L310 479 L382 410 L474 476 L564 421 L649 471 L727 414 L800 456 L800 620 L0 620 Z" fill="#263A46"/>
+      <path d="M0 561 L95 506 L187 546 L267 481 L352 540 L445 469 L538 531 L632 478 L714 521 L800 474 L800 620 L0 620 Z" fill="#314854" opacity=".86"/>
+
+      <!-- a steeper, broken silhouette for the descent -->
+      <path d="M0 620 L64 566 L118 531 L155 474 L220 446 L260 361 L319 323 L350 238 L391 174 L414 62 L446 153 L492 205 L536 284 L598 326 L637 411 L702 457 L746 536 L800 574 L800 620 Z" fill="#354A56"/>
+      <path d="M0 620 L64 566 L118 531 L155 474 L220 446 L260 361 L319 323 L350 238 L391 174 L414 62 L395 202 L362 266 L340 354 L286 397 L259 478 L196 506 L150 584 L120 620 Z" fill="#243945"/>
+      <path d="M414 62 L446 153 L492 205 L536 284 L598 326 L637 411 L702 457 L746 536 L800 574 L743 548 L682 509 L621 468 L563 414 L515 374 L477 304 L440 236 Z" fill="#566B74"/>
+
+      <!-- thin moonlit snow, deliberately colder and sharper than the ascent -->
+      <path d="M414 62 L446 153 L492 205 L472 213 L445 184 L424 132 Z" fill="#CAD5D3"/>
+      <path d="M391 174 L414 62 L405 192 L378 246 L349 285 L360 226 Z" fill="#879A9E"/>
+      <path d="M319 323 L350 238 L344 341 L305 400 L260 438 L282 373 Z" fill="#71868C"/>
+      <path d="M450 244 L490 278 L536 320 L571 365 L617 410 L585 391 L536 360 L494 327 L463 291 Z" fill="#73868B" opacity=".72"/>
+      <path d="M366 402 L403 350 L449 402 L505 445 L557 492 L597 552 L531 513 L471 476 L414 443 Z" fill="#60767D" opacity=".72"/>
+
+      <!-- coarse nocturnal print texture -->
+      <rect x="0" y="50" width="800" height="570" clip-path="url(#night-massif-clip)" filter="url(#mountain-grain)" opacity=".44"/>
+      <g clip-path="url(#night-massif-clip)" fill="none" stroke="#C7D3D2" stroke-linecap="round" opacity=".16">
+        <path d="M82 565 L213 489 M174 468 L306 390 M266 359 L377 261 M455 198 L574 327 M514 350 L682 477" stroke-width="3" stroke-dasharray="2 11"/>
+        <path d="M110 592 L236 522 M301 476 L390 402 M486 425 L645 529" stroke-width="2" stroke-dasharray="1 8"/>
+      </g>
+
+      <path d="M0 584 L78 561 L159 583 L243 558 L329 589 L421 555 L516 583 L610 552 L704 578 L800 545 L800 620 L0 620 Z" fill="#1E323D" opacity=".9"/>
+    </symbol>
+
+    <!-- New, fully redrawn vector artwork -->
+    <pattern id="day-etch-v2" width="13" height="13" patternUnits="userSpaceOnUse" patternTransform="rotate(-22)">
+      <path d="M0 2 H13 M0 9 H13" stroke="#E7EFEC" stroke-width="1" opacity=".23"/>
+    </pattern>
+    <pattern id="night-etch-v2" width="15" height="15" patternUnits="userSpaceOnUse" patternTransform="rotate(24)">
+      <path d="M0 3 H15 M0 11 H15" stroke="#B9CBCC" stroke-width="1" opacity=".16"/>
+    </pattern>
+    <linearGradient id="day-v2-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#CCDADB"/>
+      <stop offset=".55" stop-color="#E4E7E2"/>
+      <stop offset="1" stop-color="#F1E6DC"/>
+    </linearGradient>
+    <linearGradient id="night-v2-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#101D29"/>
+      <stop offset=".62" stop-color="#1B2E3A"/>
+      <stop offset="1" stop-color="#304653"/>
+    </linearGradient>
+    <clipPath id="day-v2-clip">
+      <path d="M0 620 L55 574 L115 542 L166 463 L222 428 L269 344 L316 299 L357 198 L399 76 L430 139 L474 198 L521 243 L566 326 L629 371 L680 459 L741 515 L800 574 L800 620 Z"/>
+    </clipPath>
+    <clipPath id="night-v2-clip">
+      <path d="M0 620 L72 570 L129 527 L188 468 L241 430 L278 345 L337 307 L367 211 L408 78 L438 153 L477 191 L509 270 L559 306 L594 390 L654 429 L701 507 L759 546 L800 586 L800 620 Z"/>
+    </clipPath>
+
+    <symbol id="epic-day-v2" viewBox="0 0 800 620">
+      <rect width="800" height="620" fill="url(#day-v2-sky)"/>
+      <circle cx="128" cy="119" r="68" fill="#F3DAC2" opacity=".48"/>
+      <g fill="#FFF9F0" opacity=".18">
+        <path d="M74 0 L146 0 L258 493 L188 430 Z"/>
+        <path d="M355 0 L420 0 L505 414 L448 350 Z"/>
+      </g>
+
+      <!-- restrained, smaller grammar clouds -->
+      <g transform="translate(33 88)" filter="url(#cloud-shadow)">
+        <path d="M9 61 C-2 54 4 39 17 37 C20 20 38 13 52 21 C62 4 89 5 98 23 C118 15 139 28 140 47 C157 46 168 58 163 69 L18 69 C12 69 9 66 9 61 Z" fill="#F3E9DE" stroke="#AEBFC0" stroke-width="1.6"/>
+        <text x="82" y="51" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="#3A5059">used to</text>
+      </g>
+      <g transform="translate(579 78)" filter="url(#cloud-shadow)">
+        <path d="M7 67 C-4 58 3 43 18 41 C20 24 38 15 54 22 C67 2 96 6 103 25 C125 15 150 29 149 51 C169 49 180 64 173 76 L20 76 C14 76 9 72 7 67 Z" fill="#F1E6DC" stroke="#AABABD" stroke-width="1.6"/>
+        <text x="89" y="57" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" font-weight="700" fill="#3A5059">to be used to doing</text>
+      </g>
+
+      <!-- distant ranges -->
+      <path d="M0 491 L91 425 L165 475 L250 391 L326 466 L418 378 L504 452 L598 389 L687 456 L800 373 L800 620 L0 620 Z" fill="#BCC9C8" opacity=".75"/>
+      <path d="M0 548 L95 484 L184 526 L276 449 L357 526 L454 434 L550 512 L646 449 L725 506 L800 464 L800 620 L0 620 Z" fill="#94A9AC" opacity=".62"/>
+
+      <!-- sweeping main massif -->
+      <path d="M0 620 L55 574 L115 542 L166 463 L222 428 L269 344 L316 299 L357 198 L399 76 L430 139 L474 198 L521 243 L566 326 L629 371 L680 459 L741 515 L800 574 L800 620 Z" fill="#536A75" stroke="#304A55" stroke-width="2"/>
+      <path d="M0 620 L55 574 L115 542 L166 463 L222 428 L269 344 L316 299 L357 198 L399 76 L378 218 L338 286 L316 372 L263 410 L228 500 L161 534 L116 607 L97 620 Z" fill="#324E5B"/>
+      <path d="M399 76 L430 139 L474 198 L521 243 L566 326 L629 371 L680 459 L741 515 L800 574 L741 542 L671 505 L611 459 L553 415 L510 348 L466 305 L429 219 Z" fill="#81959B"/>
+      <path d="M399 76 L430 139 L474 198 L522 244 L496 250 L455 221 L423 168 Z" fill="#E7DDD1"/>
+      <path d="M357 198 L399 76 L386 235 L354 307 L316 347 L331 269 Z" fill="#AEBFC0"/>
+      <path d="M269 344 L316 299 L299 402 L255 470 L204 512 L225 429 Z" fill="#9EB1B4"/>
+      <path d="M432 246 L481 276 L535 327 L590 377 L649 439 L711 512 L642 473 L576 432 L518 391 L467 333 Z" fill="#D1ADA8" opacity=".78"/>
+      <path d="M343 431 L395 363 L445 417 L506 463 L568 515 L610 580 L544 544 L475 506 L412 474 Z" fill="#B8C3C1" opacity=".72"/>
+
+      <!-- vector texture: hatching, gouged contours and stipple -->
+      <rect width="800" height="620" fill="url(#day-etch-v2)" clip-path="url(#day-v2-clip)"/>
+      <rect width="800" height="620" clip-path="url(#day-v2-clip)" filter="url(#mountain-grain)" opacity=".55"/>
+      <g fill="none" stroke="#E4EBE7" stroke-linecap="round" opacity=".3" clip-path="url(#day-v2-clip)">
+        <path d="M70 580 C172 531 226 439 284 348 S362 181 390 101" stroke-width="5" stroke-dasharray="1 12"/>
+        <path d="M430 185 C505 260 562 348 623 419 S712 514 775 563" stroke-width="4" stroke-dasharray="2 13"/>
+        <path d="M210 548 L311 473 M272 513 L372 433 M471 491 L574 548" stroke-width="3" stroke-dasharray="1 10"/>
+      </g>
+      <path d="M0 584 L83 557 L161 580 L245 548 L329 586 L420 551 L514 583 L608 548 L701 577 L800 539 L800 620 L0 620 Z" fill="#405B67" opacity=".84"/>
+    </symbol>
+
+    <symbol id="epic-night-v2" viewBox="0 0 800 620">
+      <rect width="800" height="620" fill="url(#night-v2-sky)"/>
+      <circle cx="116" cy="111" r="49" fill="#E7DDCB" opacity=".92"/>
+      <circle cx="138" cy="92" r="49" fill="#111F2B"/>
+      <g fill="#D7E2E0" opacity=".74">
+        <circle cx="46" cy="64" r="1.3"/><circle cx="207" cy="63" r="1"/><circle cx="268" cy="127" r="1.4"/>
+        <circle cx="335" cy="51" r="1"/><circle cx="512" cy="67" r="1.3"/><circle cx="579" cy="143" r="1"/>
+        <circle cx="662" cy="79" r="1.5"/><circle cx="745" cy="126" r="1"/><circle cx="700" cy="220" r="1.2"/>
+      </g>
+      <path d="M0 501 L83 444 L158 486 L239 404 L322 470 L410 387 L498 466 L591 398 L681 458 L748 399 L800 429 L800 620 L0 620 Z" fill="#263B48"/>
+      <path d="M0 552 L102 498 L185 539 L272 467 L360 537 L453 456 L542 524 L632 465 L720 518 L800 463 L800 620 L0 620 Z" fill="#314A57" opacity=".83"/>
+
+      <!-- separate silhouette: a narrow horn and fractured descent face -->
+      <path d="M0 620 L72 570 L129 527 L188 468 L241 430 L278 345 L337 307 L367 211 L408 78 L438 153 L477 191 L509 270 L559 306 L594 390 L654 429 L701 507 L759 546 L800 586 L800 620 Z" fill="#344B58" stroke="#9EB0B1" stroke-width="1.4" stroke-opacity=".35"/>
+      <path d="M0 620 L72 570 L129 527 L188 468 L241 430 L278 345 L337 307 L367 211 L408 78 L386 224 L348 288 L324 370 L274 413 L241 498 L182 525 L135 592 L117 620 Z" fill="#1F3542"/>
+      <path d="M408 78 L438 153 L477 191 L509 270 L559 306 L594 390 L654 429 L701 507 L759 546 L800 586 L744 561 L684 530 L622 486 L570 447 L526 382 L483 339 L444 242 Z" fill="#526B75"/>
+      <path d="M408 78 L438 153 L477 191 L458 209 L432 181 L414 128 Z" fill="#D0D9D5"/>
+      <path d="M367 211 L408 78 L395 232 L367 299 L336 342 L346 266 Z" fill="#82989C"/>
+      <path d="M278 345 L337 307 L316 401 L274 461 L225 500 L245 424 Z" fill="#697F86"/>
+      <path d="M438 258 L486 287 L535 335 L583 382 L637 444 L694 510 L633 477 L575 441 L520 402 L474 346 Z" fill="#72868A" opacity=".68"/>
+      <path d="M345 438 L397 374 L446 425 L501 466 L558 516 L600 582 L533 544 L468 508 L405 475 Z" fill="#526B74" opacity=".75"/>
+
+      <rect width="800" height="620" fill="url(#night-etch-v2)" clip-path="url(#night-v2-clip)"/>
+      <rect width="800" height="620" clip-path="url(#night-v2-clip)" filter="url(#mountain-grain)" opacity=".5"/>
+      <g fill="none" stroke="#BCCBCB" stroke-linecap="round" opacity=".22" clip-path="url(#night-v2-clip)">
+        <path d="M66 583 C167 535 231 445 285 349 S367 185 397 102" stroke-width="5" stroke-dasharray="1 12"/>
+        <path d="M445 196 C513 272 566 356 624 426 S706 520 772 570" stroke-width="4" stroke-dasharray="2 13"/>
+      </g>
+      <path d="M0 586 L79 560 L160 584 L244 554 L331 590 L421 557 L514 585 L608 551 L704 580 L800 546 L800 620 L0 620 Z" fill="#1B303C" opacity=".94"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="wordmark">
+  <div class="brand">Sherpa <span>Tensing</span></div>
+  <div class="sub"><a href="front-page.html" style="color:var(--accent-dark);text-decoration:none;font-weight:600;">Forbes English</a> &middot; a route up the tenses</div>
+</div>
+
+<main>
+  <div class="intro">
+    <span class="eyebrow">Route map</span>
+    <h1>Thirteen camps, two faces</h1>
+    <p>The ascent, in active voice, ordered by how often you'll actually reach for each tense. The descent, in passive voice, the same thirteen camps in reverse. Every marker starts dim &mdash; click one to light it up and see what it is. The two that are already open climb straight through in full colour.</p>
+  </div>
+
+  <div class="panels">
+    <div class="map-card">
+      <h3>The ascent</h3>
+      <div class="map-sub">active voice &middot; base camp to summit</div>
+      <svg viewBox="0 0 800 620" role="img" aria-label="A layered mountain silhouette with thirteen dim markers along a path from base to peak, representing the thirteen tenses in active voice; click a marker to reveal it">
+        <use href="#epic-day-v2"/>
+        <path d="M400,560 L217,521 L567,482 L250,443 L533,404 L283,365 L500,326 L317,287 L467,248 L350,209 L433,170 L383,131 L400,90" fill="none" stroke="#3D4F5E" stroke-width="1.5" stroke-linecap="round"/>
+        <g class="camp-dot live" data-color="#C2185B" data-href="sherpa-tensing-camp-one-present-continuous.html">
+  <circle class="dot-fill" cx="400" cy="560" r="11" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
+  <g transform="translate(400,560)"><g stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round" fill="none"><path d="M-6,-2 q2.5,-3.5 5,0 q2.5,3.5 5,0"/><path d="M-6,3 q2.5,-3.5 5,0 q2.5,3.5 5,0"/></g></g>
+  <text class="dot-label" x="418" y="560" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Present continuous</text>
+</g>
+<g class="camp-dot live" data-color="#16345C" data-href="sherpa-tensing-camp-two-present-simple.html">
+  <circle class="dot-fill" cx="217" cy="521" r="11" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
+  <g transform="translate(217,521)"><path d="M-3,-6 v12 M-3,-6 l6,3 l-6,3" fill="none" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></g>
+  <text class="dot-label" x="199" y="521" text-anchor="end" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Present simple</text>
+</g>
+<g class="camp-dot" data-color="#B08968" >
+  <circle class="dot-fill" cx="567" cy="482" r="11" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
+  <g transform="translate(567,482)"><path d="M-3,-6 v12 M-3,-6 l6,3 l-6,3" fill="none" stroke="#B08968" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></g>
+  <text class="dot-label" x="585" y="482" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Past simple</text>
+</g>
+<g class="camp-dot" data-color="#0F6E56" >
+  <circle class="dot-fill" cx="250" cy="443" r="11" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
+  <g transform="translate(250,443)"><path d="M-6,3 A6,6 0 0 1 6,3" fill="none" stroke="#0F6E56" stroke-width="1.4" stroke-linecap="round"/></g>
+  <text class="dot-label" x="232" y="443" text-anchor="end" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Present perfect</text>
+</g>
+<g class="camp-dot" data-color="#639922" >
+  <circle class="dot-fill" cx="533" cy="404" r="11" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
+  <g transform="translate(533,404)"><g stroke="#639922" stroke-width="1.4" stroke-linecap="round" fill="none"><circle r="6"/><path d="M0,-2.5 L0,0 L2.5,1.5"/></g></g>
+  <text class="dot-label" x="551" y="404" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Going to</text>
+</g>
+<g class="camp-dot" data-color="#FFD400" >
+  <circle class="dot-fill" cx="283" cy="365" r="11" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
+  <g transform="translate(283,365)"><g stroke="#FFD400" stroke-width="1.4" stroke-linecap="round" fill="none"><path d="M-6,-2 q2.5,-3.5 5,0 q2.5,3.5 5,0"/><path d="M-6,3 q2.5,-3.5 5,0 q2.5,3.5 5,0"/></g></g>
+  <text class="dot-label" x="265" y="365" text-anchor="end" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Past continuous</text>
+</g>
+<g class="camp-dot" data-color="#E8632A" >
+  <circle class="dot-fill" cx="500" cy="326" r="11" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
+  <g transform="translate(500,326)"><path d="M-3,-6 v12 M-3,-6 l6,3 l-6,3" fill="none" stroke="#E8632A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></g>
+  <text class="dot-label" x="518" y="326" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Future simple</text>
+</g>
+<g class="camp-dot" data-color="#2FA6A1" >
+  <circle class="dot-fill" cx="317" cy="287" r="11" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
+  <g transform="translate(317,287)"><g stroke="#2FA6A1" stroke-width="1.3" stroke-linecap="round" fill="none"><path d="M-6,1 A6,6 0 0 1 6,1"/><path d="M-3,5 q1.5,-1.8 3,0 q1.5,1.8 3,0"/></g></g>
+  <text class="dot-label" x="299" y="287" text-anchor="end" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Present perfect continuous</text>
+</g>
+<g class="camp-dot" data-color="#F0A500" >
+  <circle class="dot-fill" cx="467" cy="248" r="11" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
+  <g transform="translate(467,248)"><g stroke="#F0A500" stroke-width="1.4" stroke-linecap="round" fill="none"><path d="M-6,-2 q2.5,-3.5 5,0 q2.5,3.5 5,0"/><path d="M-6,3 q2.5,-3.5 5,0 q2.5,3.5 5,0"/></g></g>
+  <text class="dot-label" x="485" y="248" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Future continuous</text>
+</g>
+<g class="camp-dot" data-color="#6E0B24" >
+  <circle class="dot-fill" cx="350" cy="209" r="11" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
+  <g transform="translate(350,209)"><path d="M-6,3 A6,6 0 0 1 6,3" fill="none" stroke="#6E0B24" stroke-width="1.4" stroke-linecap="round"/></g>
+  <text class="dot-label" x="332" y="209" text-anchor="end" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Past perfect</text>
+</g>
+<g class="camp-dot" data-color="#4B1A7A" >
+  <circle class="dot-fill" cx="433" cy="170" r="11" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
+  <g transform="translate(433,170)"><g stroke="#4B1A7A" stroke-width="1.3" stroke-linecap="round" fill="none"><path d="M-6,1 A6,6 0 0 1 6,1"/><path d="M-3,5 q1.5,-1.8 3,0 q1.5,1.8 3,0"/></g></g>
+  <text class="dot-label" x="451" y="170" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Past perfect continuous</text>
+</g>
+<g class="camp-dot" data-color="#454545" >
+  <circle class="dot-fill" cx="383" cy="131" r="11" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
+  <g transform="translate(383,131)"><path d="M-6,3 A6,6 0 0 1 6,3" fill="none" stroke="#454545" stroke-width="1.4" stroke-linecap="round"/></g>
+  <text class="dot-label" x="365" y="131" text-anchor="end" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Future perfect</text>
+</g>
+<g class="camp-dot" data-color="#B0B0B0" >
+  <circle class="dot-fill" cx="400" cy="90" r="11" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
+  <g transform="translate(400,90)"><g stroke="#B0B0B0" stroke-width="1.3" stroke-linecap="round" fill="none"><path d="M-6,1 A6,6 0 0 1 6,1"/><path d="M-3,5 q1.5,-1.8 3,0 q1.5,1.8 3,0"/></g></g>
+  <text class="dot-label" x="418" y="90" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Future perfect continuous</text>
+</g>
+      </svg>
+    </div>
+
+    <div class="map-card">
+      <h3>The descent</h3>
+      <div class="map-sub">passive voice &middot; summit to ground</div>
+      <svg class="descent-map" viewBox="0 0 800 620" role="img" aria-label="A rugged mountain at night with thirteen dim diamond markers along a path from peak to base, representing the same thirteen tenses in passive voice; click a marker to reveal it">
+        <use href="#epic-night-v2"/>
+        <path d="M400,90 L417,131 L367,170 L450,209 L333,248 L483,287 L300,326 L517,365 L267,404 L550,443 L233,482 L583,521 L400,560" fill="none" stroke="#D1DBD9" stroke-width="1.5" stroke-linecap="round" opacity=".8"/>
+        <g class="camp-dot" data-color="#B0B0B0" >
+  <polygon class="dot-fill" points="400,78 412,90 400,102 388,90" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
+  <g transform="translate(400,90)"><g stroke="#B0B0B0" stroke-width="1.3" stroke-linecap="round" fill="none"><path d="M-6,1 A6,6 0 0 1 6,1"/><path d="M-3,5 q1.5,-1.8 3,0 q1.5,1.8 3,0"/></g></g>
+  <text class="dot-label" x="418" y="90" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Future perfect continuous passive</text>
+</g>
+<g class="camp-dot" data-color="#454545" >
+  <polygon class="dot-fill" points="417,119 429,131 417,143 405,131" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
+  <g transform="translate(417,131)"><path d="M-6,3 A6,6 0 0 1 6,3" fill="none" stroke="#454545" stroke-width="1.4" stroke-linecap="round"/></g>
+  <text class="dot-label" x="435" y="131" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Future perfect passive</text>
+</g>
+<g class="camp-dot" data-color="#4B1A7A" >
+  <polygon class="dot-fill" points="367,158 379,170 367,182 355,170" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
+  <g transform="translate(367,170)"><g stroke="#4B1A7A" stroke-width="1.3" stroke-linecap="round" fill="none"><path d="M-6,1 A6,6 0 0 1 6,1"/><path d="M-3,5 q1.5,-1.8 3,0 q1.5,1.8 3,0"/></g></g>
+  <text class="dot-label" x="349" y="170" text-anchor="end" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Past perfect continuous passive</text>
+</g>
+<g class="camp-dot" data-color="#6E0B24" >
+  <polygon class="dot-fill" points="450,197 462,209 450,221 438,209" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
+  <g transform="translate(450,209)"><path d="M-6,3 A6,6 0 0 1 6,3" fill="none" stroke="#6E0B24" stroke-width="1.4" stroke-linecap="round"/></g>
+  <text class="dot-label" x="468" y="209" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Past perfect passive</text>
+</g>
+<g class="camp-dot" data-color="#F0A500" >
+  <polygon class="dot-fill" points="333,236 345,248 333,260 321,248" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
+  <g transform="translate(333,248)"><g stroke="#F0A500" stroke-width="1.4" stroke-linecap="round" fill="none"><path d="M-6,-2 q2.5,-3.5 5,0 q2.5,3.5 5,0"/><path d="M-6,3 q2.5,-3.5 5,0 q2.5,3.5 5,0"/></g></g>
+  <text class="dot-label" x="315" y="248" text-anchor="end" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Future continuous passive</text>
+</g>
+<g class="camp-dot" data-color="#2FA6A1" >
+  <polygon class="dot-fill" points="483,275 495,287 483,299 471,287" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
+  <g transform="translate(483,287)"><g stroke="#2FA6A1" stroke-width="1.3" stroke-linecap="round" fill="none"><path d="M-6,1 A6,6 0 0 1 6,1"/><path d="M-3,5 q1.5,-1.8 3,0 q1.5,1.8 3,0"/></g></g>
+  <text class="dot-label" x="501" y="287" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Present perfect continuous passive</text>
+</g>
+<g class="camp-dot" data-color="#E8632A" >
+  <polygon class="dot-fill" points="300,314 312,326 300,338 288,326" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
+  <g transform="translate(300,326)"><path d="M-3,-6 v12 M-3,-6 l6,3 l-6,3" fill="none" stroke="#E8632A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></g>
+  <text class="dot-label" x="282" y="326" text-anchor="end" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Future simple passive</text>
+</g>
+<g class="camp-dot" data-color="#FFD400" >
+  <polygon class="dot-fill" points="517,353 529,365 517,377 505,365" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
+  <g transform="translate(517,365)"><g stroke="#FFD400" stroke-width="1.4" stroke-linecap="round" fill="none"><path d="M-6,-2 q2.5,-3.5 5,0 q2.5,3.5 5,0"/><path d="M-6,3 q2.5,-3.5 5,0 q2.5,3.5 5,0"/></g></g>
+  <text class="dot-label" x="535" y="365" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Past continuous passive</text>
+</g>
+<g class="camp-dot" data-color="#639922" >
+  <polygon class="dot-fill" points="267,392 279,404 267,416 255,404" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
+  <g transform="translate(267,404)"><g stroke="#639922" stroke-width="1.4" stroke-linecap="round" fill="none"><circle r="6"/><path d="M0,-2.5 L0,0 L2.5,1.5"/></g></g>
+  <text class="dot-label" x="249" y="404" text-anchor="end" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Going to passive</text>
+</g>
+<g class="camp-dot" data-color="#0F6E56" >
+  <polygon class="dot-fill" points="550,431 562,443 550,455 538,443" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
+  <g transform="translate(550,443)"><path d="M-6,3 A6,6 0 0 1 6,3" fill="none" stroke="#0F6E56" stroke-width="1.4" stroke-linecap="round"/></g>
+  <text class="dot-label" x="568" y="443" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Present perfect passive</text>
+</g>
+<g class="camp-dot" data-color="#B08968" >
+  <polygon class="dot-fill" points="233,470 245,482 233,494 221,482" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
+  <g transform="translate(233,482)"><path d="M-3,-6 v12 M-3,-6 l6,3 l-6,3" fill="none" stroke="#B08968" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></g>
+  <text class="dot-label" x="215" y="482" text-anchor="end" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Past simple passive</text>
+</g>
+<g class="camp-dot" data-color="#16345C" >
+  <polygon class="dot-fill" points="583,509 595,521 583,533 571,521" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
+  <g transform="translate(583,521)"><path d="M-3,-6 v12 M-3,-6 l6,3 l-6,3" fill="none" stroke="#16345C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></g>
+  <text class="dot-label" x="601" y="521" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Present simple passive</text>
+</g>
+<g class="camp-dot" data-color="#C2185B" >
+  <polygon class="dot-fill" points="400,548 412,560 400,572 388,560" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
+  <g transform="translate(400,560)"><g stroke="#C2185B" stroke-width="1.4" stroke-linecap="round" fill="none"><path d="M-6,-2 q2.5,-3.5 5,0 q2.5,3.5 5,0"/><path d="M-6,3 q2.5,-3.5 5,0 q2.5,3.5 5,0"/></g></g>
+  <text class="dot-label" x="418" y="560" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Present continuous passive</text>
+</g>
+      </svg>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span class="legend-item"><span class="dot"></span>tap to reveal</span>
+    <span class="legend-item"><span class="dot lit-demo"></span>revealed / open lesson</span>
+    <span class="legend-item">circle = active voice, diamond = passive voice</span>
+  </div>
+
+  <div class="zones">
+    <div class="zone-card">
+      <h3>Foundation camps</h3>
+      <div class="zone-sub">reach for these daily</div>
+      <ol>
+        <li><span class="tense-num">1.</span><span class="tense-bar" style="background:#C2185B;"></span><a href="sherpa-tensing-camp-one-present-continuous.html">Present continuous</a></li>
+        <li><span class="tense-num">2.</span><span class="tense-bar" style="background:#16345C;"></span><a href="sherpa-tensing-camp-two-present-simple.html">Present simple</a></li>
+        <li class="soon"><span class="tense-num">3.</span><span class="tense-bar" style="background:#B08968;"></span><a href="#">Past simple</a></li>
+        <li class="soon"><span class="tense-num">4.</span><span class="tense-bar" style="background:#0F6E56;"></span><a href="#">Present perfect</a></li>
+        <li class="soon"><span class="tense-num">5.</span><span class="tense-bar" style="background:#639922;"></span><a href="#">Going to</a></li>
+      </ol>
+    </div>
+    <div class="zone-card">
+      <h3>The ridge</h3>
+      <div class="zone-sub">common, but need more care</div>
+      <ol>
+        <li class="soon"><span class="tense-num">6.</span><span class="tense-bar" style="background:#FFD400;"></span><a href="#">Past continuous</a></li>
+        <li class="soon"><span class="tense-num">7.</span><span class="tense-bar" style="background:#E8632A;"></span><a href="#">Future simple</a></li>
+        <li class="soon"><span class="tense-num">8.</span><span class="tense-bar" style="background:#2FA6A1;"></span><a href="#">Present perfect continuous</a></li>
+        <li class="soon"><span class="tense-num">9.</span><span class="tense-bar" style="background:#F0A500;"></span><a href="#">Future continuous</a></li>
+      </ol>
+    </div>
+    <div class="zone-card">
+      <h3>Summit push</h3>
+      <div class="zone-sub">rare, mostly written English</div>
+      <ol>
+        <li class="soon"><span class="tense-num">10.</span><span class="tense-bar" style="background:#6E0B24;"></span><a href="#">Past perfect</a></li>
+        <li class="soon"><span class="tense-num">11.</span><span class="tense-bar" style="background:#4B1A7A;"></span><a href="#">Past perfect continuous</a></li>
+        <li class="soon"><span class="tense-num">12.</span><span class="tense-bar" style="background:#454545;"></span><a href="#">Future perfect</a></li>
+        <li class="soon"><span class="tense-num">13.</span><span class="tense-bar" style="background:#B0B0B0;"></span><a href="#">Future perfect continuous</a></li>
+      </ol>
+    </div>
+  </div>
+</main>
+
+<script>
+document.querySelectorAll(".camp-dot").forEach(function(g){
+  var color = g.getAttribute("data-color");
+  var href = g.getAttribute("data-href");
+  var fillEl = g.querySelector(".dot-fill");
+  if (href){
+    fillEl.setAttribute("fill", color);
+    g.addEventListener("click", function(){ window.location.href = href; });
+  } else {
+    g.addEventListener("click", function(){
+      var lit = g.classList.toggle("lit");
+      fillEl.setAttribute("fill", lit ? color : "#C9C6C2");
+    });
+  }
+});
+</script>
+
+</body>
+</html>

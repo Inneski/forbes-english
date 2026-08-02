@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English | Full-Time Pressure — C1 Football Role-Play</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pitch-dark:#0d3b26;
+    --pitch:#166534;
+    --pitch-light:#1e8449;
+    --chalk:#f4f9f2;
+    --gold:#e0a726;
+    --gold-dark:#b9860f;
+    --red-card:#c0392b;
+    --ink:#0f2419;
+    --grey:#5c6b63;
+    --card-bg:#ffffff;
+    --line:#dfe8e1;
+    --shadow:0 10px 30px rgba(13,59,38,0.14);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Inter',sans-serif;
+    background:
+      radial-gradient(circle at 15% 10%, #1c6b3f 0%, transparent 45%),
+      linear-gradient(180deg,var(--pitch-dark) 0%, var(--pitch) 55%, var(--pitch-light) 100%);
+    background-attachment:fixed;
+    color:var(--ink);
+    min-height:100vh;
+    padding:32px 16px 60px;
+  }
+  .wrap{max-width:760px;margin:0 auto;}
+  header.brand{display:flex;align-items:center;gap:14px;margin-bottom:22px;}
+  header.brand svg{width:52px;height:52px;flex-shrink:0;}
+  .brand-text h1{font-family:'Outfit',sans-serif;color:var(--chalk);font-size:1.5rem;margin:0;letter-spacing:.5px;}
+  .brand-text p{color:#cfe9d8;margin:2px 0 0;font-size:.85rem;}
+
+  .title-card{
+    background:linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+    border-radius:18px;padding:26px 26px 22px;color:#241a02;box-shadow:var(--shadow);margin-bottom:22px;
+    position:relative;overflow:hidden;
+  }
+  .title-card::after{
+    content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;
+    border-radius:50%;border:6px dashed rgba(255,255,255,0.25);
+  }
+  .title-card h2{font-family:'Outfit',sans-serif;font-size:1.6rem;margin:0 0 6px;}
+  .title-card p{margin:0;font-size:.95rem;line-height:1.5;max-width:90%;}
+  .meta-row{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;}
+  .pill{background:rgba(255,255,255,0.35);border-radius:999px;padding:4px 12px;font-size:.78rem;font-weight:600;}
+
+  .status-bar{
+    display:flex;justify-content:space-between;align-items:center;background:var(--card-bg);
+    border-radius:14px;padding:14px 18px;box-shadow:var(--shadow);margin-bottom:20px;gap:12px;flex-wrap:wrap;
+  }
+  .progress-outer{flex:1;min-width:140px;height:10px;background:var(--line);border-radius:6px;overflow:hidden;}
+  .progress-inner{height:100%;background:linear-gradient(90deg,var(--pitch-light),var(--gold));width:0%;transition:width .4s ease;}
+  .spirit{display:flex;align-items:center;gap:8px;font-weight:600;font-size:.85rem;color:var(--ink);}
+  .spirit-meter{width:90px;height:10px;background:var(--line);border-radius:6px;overflow:hidden;}
+  .spirit-fill{height:100%;background:linear-gradient(90deg,#c0392b,var(--gold),#1e8449);width:60%;transition:width .4s ease;}
+
+  .scene-card{
+    background:var(--card-bg);border-radius:18px;padding:26px;box-shadow:var(--shadow);
+    display:none;animation:fade .35s ease;
+  }
+  .scene-card.active{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+  .scene-tag{display:inline-block;background:var(--pitch);color:#fff;font-size:.72rem;font-weight:700;
+    text-transform:uppercase;letter-spacing:.6px;padding:4px 10px;border-radius:6px;margin-bottom:12px;}
+  .scene-narrative{font-size:.98rem;line-height:1.6;color:var(--ink);margin-bottom:14px;}
+  .scene-narrative b{color:var(--pitch-dark);}
+  .speaker-box{
+    background:var(--chalk);border-left:4px solid var(--gold-dark);border-radius:8px;
+    padding:14px 16px;margin-bottom:18px;font-style:italic;color:#2b3b32;font-size:.95rem;
+  }
+  .speaker-box .who{display:block;font-style:normal;font-weight:700;color:var(--pitch-dark);margin-bottom:4px;font-size:.8rem;text-transform:uppercase;letter-spacing:.4px;}
+
+  .prompt{font-weight:600;margin-bottom:12px;color:var(--ink);font-size:.95rem;}
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .opt{
+    text-align:left;border:2px solid var(--line);background:#fff;border-radius:12px;padding:13px 16px;
+    font-family:'Inter',sans-serif;font-size:.92rem;line-height:1.45;cursor:pointer;transition:.15s;color:var(--ink);
+  }
+  .opt:hover{border-color:var(--gold-dark);background:#fffaf0;}
+  .opt.correct{border-color:var(--pitch-light);background:#eafbf1;}
+  .opt.incorrect{border-color:var(--red-card);background:#fdecea;}
+  .opt:disabled{cursor:default;}
+
+  .feedback{
+    margin-top:16px;padding:14px 16px;border-radius:10px;font-size:.9rem;line-height:1.55;display:none;
+  }
+  .feedback.show{display:block;animation:fade .3s ease;}
+  .feedback.good{background:#eafbf1;border:1px solid #a9dfbf;color:#1b4d33;}
+  .feedback.bad{background:#fdecea;border:1px solid #f1b0aa;color:#7b241c;}
+  .feedback b{display:block;margin-bottom:4px;}
+
+  .next-btn{
+    margin-top:18px;width:100%;padding:13px;border:none;border-radius:10px;font-family:'Outfit',sans-serif;
+    font-weight:700;font-size:.95rem;background:var(--pitch-dark);color:#fff;cursor:not-allowed;opacity:.45;
+    transition:.2s;
+  }
+  .next-btn.ready{cursor:pointer;opacity:1;background:var(--gold-dark);}
+  .next-btn.ready:hover{background:var(--gold);color:#241a02;}
+
+  .results{display:none;text-align:center;padding:34px 26px;}
+  .results.active{display:block;}
+  .results .medal{font-size:3rem;margin-bottom:6px;}
+  .results h2{font-family:'Outfit',sans-serif;color:var(--pitch-dark);margin:0 0 8px;}
+  .results p{color:var(--grey);line-height:1.6;font-size:.95rem;}
+  .score-big{font-family:'Outfit',sans-serif;font-size:2.4rem;color:var(--gold-dark);font-weight:800;margin:12px 0;}
+  .restart{margin-top:16px;padding:12px 22px;border:none;border-radius:10px;background:var(--pitch);color:#fff;
+    font-family:'Outfit',sans-serif;font-weight:700;cursor:pointer;}
+  .restart:hover{background:var(--pitch-light);}
+
+  footer.credit{text-align:center;color:#cfe9d8;font-size:.75rem;margin-top:26px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="brand">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="50" r="46" fill="#e0a726"/>
+      <path d="M50 12 L61 38 L89 41 L67 60 L74 88 L50 73 L26 88 L33 60 L11 41 L39 38 Z" fill="#0d3b26"/>
+      <circle cx="50" cy="50" r="46" fill="none" stroke="#f4f9f2" stroke-width="3"/>
+    </svg>
+    <div class="brand-text">
+      <h1>Forbes English</h1>
+      <p>Speaking &amp; Role-Play Series — C1 Advanced</p>
+    </div>
+  </header>
+
+  <div class="title-card">
+    <h2>⚽ Full-Time Pressure</h2>
+    <p>You're a professional footballer. Ninety minutes of pressure, decisions and diplomacy — from the tunnel to the post-match interview. Choose the response a seasoned professional would actually give.</p>
+    <div class="meta-row">
+      <span class="pill">CEFR C1</span>
+      <span class="pill">Role-Play · No timer</span>
+      <span class="pill">Sport & Media Register</span>
+      <span class="pill">11 Scenes</span>
+    </div>
+  </div>
+
+  <div class="status-bar">
+    <div class="progress-outer"><div class="progress-inner" id="progressBar"></div></div>
+    <div class="spirit">
+      Team Spirit
+      <div class="spirit-meter"><div class="spirit-fill" id="spiritFill"></div></div>
+    </div>
+  </div>
+
+  <div id="sceneContainer"></div>
+
+  <div class="scene-card results" id="resultsCard">
+    <div class="medal" id="medalIcon">🏆</div>
+    <h2 id="resultsTitle">Full-Time Whistle</h2>
+    <div class="score-big"><span id="finalScore">0</span>/<span id="totalScenes">11</span></div>
+    <p id="resultsText"></p>
+    <button class="restart" onclick="restartGame()">Play Again</button>
+  </div>
+
+  <footer class="credit">Forbes English · Interactive Speaking Practice</footer>
+</div>
+
+<script>
+const scenes = [
+  {
+    tag: "1 · Tunnel — Pre-Match",
+    narrative: "It's ten minutes before kick-off. Your captain notices a young teammate looking visibly nervous ahead of his first big start.",
+    speaker: { who: "Teammate (quietly)", line: "\"I don't know if I'm ready for this. What if I mess it up?\"" },
+    prompt: "How do you respond?",
+    options: [
+      { text: "\"Look, nerves are normal — even the best players get them. Just focus on the basics and trust your instincts; we've got your back out there.\"", correct: true,
+        feedback: "Reassuring, idiomatic, and appropriately supportive — 'trust your instincts' and 'we've got your back' are natural C1 collocations for encouragement." },
+      { text: "\"Don't be stupid, you'll be fine, stop worrying about it.\"", correct: false,
+        feedback: "Too blunt and dismissive for the context — it minimises his feelings rather than reassuring him." },
+      { text: "\"Honestly, I was terrified before my debut too, so it would be strange if you weren't.\"", correct: false,
+        feedback: "Not wrong in tone, but it doesn't offer any forward-looking reassurance or practical advice — a missed chance to actually help him refocus." },
+      { text: "\"If you're not ready, maybe you should tell the manager now before it's too late.\"", correct: false,
+        feedback: "Undermining rather than supportive — this would likely increase his anxiety, not calm it." }
+    ]
+  },
+  {
+    tag: "2 · 23' — Contentious Decision",
+    narrative: "The referee waves away a clear penalty appeal after you were caught in the box. Your captain jogs over as tempers start to rise around you.",
+    speaker: { who: "Captain", line: "\"Keep it together — arguing won't change his mind, and we can't afford to lose our heads here.\"" },
+    prompt: "You need to calm down a furious teammate who's about to confront the referee. What do you say?",
+    options: [
+      { text: "\"Leave it — kicking off with him now will only get you booked. Save the energy, we'll make it count further up the pitch.\"", correct: true,
+        feedback: "Excellent — 'kicking off' (to start an argument) and 'make it count' are natural idiomatic phrasal choices, and the advice is practical and de-escalating." },
+      { text: "\"Yeah, that was definitely a penalty, you should tell him exactly what you think.\"", correct: false,
+        feedback: "This escalates the situation rather than defusing it — the opposite of what's needed at this moment." },
+      { text: "\"Calm down please, do not speak to the referee, it is forbidden.\"", correct: false,
+        feedback: "Grammatically correct but overly formal and robotic for a heated on-pitch moment — doesn't sound like natural spoken English between teammates." },
+      { text: "\"It doesn't matter, forget it, referees are always against us anyway.\"", correct: false,
+        feedback: "Fatalistic and unhelpful — reinforces a grievance instead of refocusing your teammate on the game." }
+    ]
+  },
+  {
+    tag: "3 · 38' — Teammate's Error",
+    narrative: "A misplaced pass from your midfielder leads directly to the opposition's opening goal. He's clearly furious with himself as play restarts.",
+    speaker: { who: "Midfielder", line: "\"That's on me. I've cost us the goal.\"" },
+    prompt: "How do you respond as you jog past him?",
+    options: [
+      { text: "\"Shake it off — one mistake doesn't define the game. Heads up, there's still an hour left to put it right.\"", correct: true,
+        feedback: "'Shake it off' and 'put it right' are exactly the kind of resilient, encouraging idioms a teammate would use in this situation." },
+      { text: "\"Yeah, that was a really bad mistake, try not to do that again.\"", correct: false,
+        feedback: "Technically true but tactless — dwelling on the error rather than motivating him is the wrong instinct in the heat of the moment." },
+      { text: "\"Don't worry about it, it wasn't your fault at all.\"", correct: false,
+        feedback: "Dishonest reassurance — he made the error and knows it; false denial can come across as patronising rather than supportive." },
+      { text: "\"I told the manager we shouldn't have picked you today.\"", correct: false,
+        feedback: "Cruel and completely inappropriate — this would damage trust and team morale badly." }
+    ]
+  },
+  {
+    tag: "4 · 44' — Injury on the Pitch",
+    narrative: "An opponent goes down clutching his ankle after a strong but fair challenge from you. The physio is on, and the crowd is jeering.",
+    speaker: { who: "Opposition player (on the ground)", line: "\"That was reckless — you could've broken my leg!\"" },
+    prompt: "You crouch down to check on him. What do you say?",
+    options: [
+      { text: "\"I'm sorry, that wasn't my intention — are you okay? I'll go and speak to the ref if it helps.\"", correct: true,
+        feedback: "Genuine, measured, and diplomatic — acknowledging his concern without admitting fault he doesn't deserve, while showing good sportsmanship." },
+      { text: "\"It's football, mate, these things happen, get up.\"", correct: false,
+        feedback: "Dismissive tone that could inflame the situation further, especially with an injured player and a hostile crowd." },
+      { text: "\"That's not true, I barely touched you, stop exaggerating.\"", correct: false,
+        feedback: "Defensive and confrontational — even if true, this isn't the moment to argue; it risks provoking both players and fans." },
+      { text: "\"Well, you shouldn't have been in my way then.\"", correct: false,
+        feedback: "Blaming an injured opponent is poor sportsmanship and would likely draw a card or further conflict." }
+    ]
+  },
+  {
+    tag: "5 · Half-Time — Dressing Room",
+    narrative: "1-0 down at the break. The manager wants tactical feedback before addressing the squad.",
+    speaker: { who: "Manager", line: "\"What are you seeing out there? Be honest with me.\"" },
+    prompt: "You give your honest tactical assessment. What do you say?",
+    options: [
+      { text: "\"Their left side is exposed whenever we overload it — if we push our full-back higher, I think we can exploit that gap.\"", correct: true,
+        feedback: "Precise, analytical, and solution-focused — exactly the kind of concise tactical feedback a manager needs at half-time." },
+      { text: "\"I don't know, we're just not playing well, everyone needs to try harder.\"", correct: false,
+        feedback: "Vague and unhelpful — offers no actionable insight for the manager to work with." },
+      { text: "\"Honestly, the referee has ruined the game for us, there's nothing we can do.\"", correct: false,
+        feedback: "Deflects responsibility instead of offering constructive tactical input — not what the manager asked for." },
+      { text: "\"I think some players aren't putting in enough effort, if I'm honest.\"", correct: false,
+        feedback: "Throws teammates under the bus rather than addressing tactics — damaging to squad unity and not the analysis requested." }
+    ]
+  },
+  {
+    tag: "6 · Half-Time — System Change",
+    narrative: "Still 1-0 down. The manager is weighing up a switch from a flat back four to a back three to get more numbers forward in the second half.",
+    speaker: { who: "Manager", line: "\"I'm thinking of going to a back three to get more bodies forward. What's your take?\"" },
+    prompt: "The manager wants your tactical opinion before he commits to the change. What do you say?",
+    options: [
+      { text: "\"That could work — it'd let the wing-backs push on and overload them out wide, but we'll need to stay compact when we lose the ball.\"", correct: true,
+        feedback: "Sharp tactical input — 'push on', 'overload' and 'stay compact out of possession' are exactly the collocations coaches and players use to weigh up a system change." },
+      { text: "\"I don't really understand tactics, you should just decide.\"", correct: false,
+        feedback: "Too passive — the manager is asking for your read of the game, and ducking the question wastes a chance to contribute." },
+      { text: "\"No, forget that, we should just hit long balls all game.\"", correct: false,
+        feedback: "Dismisses the manager's idea outright without engaging with it, and 'all game' is a vague, unconvincing tactical suggestion." },
+      { text: "\"Whatever you think is best, gaffer, it doesn't matter to me.\"", correct: false,
+        feedback: "A non-answer — offers no tactical insight when the manager has specifically asked for your assessment." }
+    ]
+  },
+  {
+    tag: "7 · 58' — Press or Drop Off",
+    narrative: "Since the system change, the opposition goalkeeper is now under no pressure with the ball at his feet. Your winger looks across at you for a signal on how to approach it.",
+    speaker: { who: "Winger (shouting across)", line: "\"Do we go and press him, or drop into a block?\"" },
+    prompt: "As the more experienced player, what instruction do you give?",
+    options: [
+      { text: "\"Let's press as a unit — cut off his short options and force it long, we can win it back higher up the pitch.\"", correct: true,
+        feedback: "Concise, coordinated instruction using precise tactical vocabulary — 'press as a unit', 'cut off options' and 'win it back higher up' are exactly how players communicate pressing triggers." },
+      { text: "\"Just go and press him yourself, I can't be bothered.\"", correct: false,
+        feedback: "Lazy and unhelpful — leaves the winger isolated and shows poor leadership in a moment that needs coordination." },
+      { text: "\"Drop off completely and let them have the ball all game.\"", correct: false,
+        feedback: "An extreme, passive instruction — ceding all territory 'all game' isn't a realistic or sound tactical approach." },
+      { text: "\"I don't know, just do whatever you want.\"", correct: false,
+        feedback: "Indecisive — as the senior player being asked directly, failing to organise the press leaves your teammate without direction." }
+    ]
+  },
+  {
+    tag: "8 · 68' — Substitution",
+    narrative: "You're being brought off for a fresh striker. You're frustrated, but the manager's decision is final.",
+    speaker: { who: "Manager (as you reach the touchline)", line: "\"Good effort out there. We need fresh legs up front now.\"" },
+    prompt: "How do you react as you come off?",
+    options: [
+      { text: "\"No problem, gaffer — makes sense with the game the way it is. I'll be ready if you need me again.\"", correct: true,
+        feedback: "Professional and mature — accepting the decision gracefully while staying ready is exactly the tone expected of an experienced player." },
+      { text: "\"Why me? I was playing fine, take someone else off instead.\"", correct: false,
+        feedback: "Publicly questioning the manager's decision on the touchline is unprofessional and reflects poorly on team discipline." },
+      { text: "\"Fine, whatever you say.\"", correct: false,
+        feedback: "Passive-aggressive and sulky — undermines team spirit even if technically compliant." },
+      { text: "\"This is a joke, I'm the best player on this pitch.\"", correct: false,
+        feedback: "Arrogant and disrespectful — the kind of reaction that damages a player's reputation with staff and teammates." }
+    ]
+  },
+  {
+    tag: "9 · 89' — Sledging from an Opponent",
+    narrative: "With the score level, an opposition defender starts needling you verbally, trying to provoke a reaction before a crucial free kick.",
+    speaker: { who: "Opponent (smirking)", line: "\"You've been anonymous all game — no wonder they're subbing your mates and not you.\"" },
+    prompt: "How do you respond, staying focused on the free kick?",
+    options: [
+      { text: "\"Save your breath — I've got a free kick to take.\" (You turn and walk away calmly.)", correct: true,
+        feedback: "'Save your breath' is an excellent idiomatic put-down that shuts down the provocation without giving the opponent a reaction to feed off." },
+      { text: "\"At least I'll still have a career after this season, unlike you.\"", correct: false,
+        feedback: "Trading insults risks a card and plays right into the opponent's attempt to distract you before the kick." },
+      { text: "You say nothing and shove him in the chest.", correct: false,
+        feedback: "Physical retaliation is exactly what the opponent wants — high risk of a card and completely against the spirit of the scenario." },
+      { text: "\"That really hurts my feelings, you shouldn't say things like that.\"", correct: false,
+        feedback: "Overly sensitive and out of register for a competitive match context — unlikely to be how a professional would actually respond." }
+    ]
+  },
+  {
+    tag: "10 · Full-Time — Pitch-Side Interview",
+    narrative: "Final whistle: a hard-fought 1-1 draw. A reporter approaches you immediately for a reaction, microphone in hand.",
+    speaker: { who: "Reporter", line: "\"A point at home — are you satisfied with that result, or is it two points dropped?\"" },
+    prompt: "How do you respond to the cameras?",
+    options: [
+      { text: "\"I'll take it, all things considered — we dug deep after going behind, and there are definitely positives to build on.\"", correct: true,
+        feedback: "Perfect media register — 'dug deep' and 'positives to build on' are natural, diplomatic phrases footballers genuinely use in post-match interviews." },
+      { text: "\"Honestly, it's rubbish, we should've won easily, the team was terrible today.\"", correct: false,
+        feedback: "Overly negative and unprofessional for a media interview — publicly criticising teammates reflects badly on the player." },
+      { text: "\"I don't want to talk about the match, ask someone else.\"", correct: false,
+        feedback: "Evasive and unhelpful — while players can decline interviews, this comes across as rude given the reporter's polite question." },
+      { text: "\"We are satisfied of the result because we play good today.\"", correct: false,
+        feedback: "Grammatically flawed ('satisfied of' should be 'satisfied with'; 'play good' should be 'played well') — not the fluent, natural register expected at C1." }
+    ]
+  },
+  {
+    tag: "Bonus · Stoppage Time — Wonder Goal",
+    narrative: "96th minute. You've just smashed in a ridiculous, top-corner overhead kick to win it. You rip your shirt off before you even realise what you're doing. Cameras swarm you before you've even reached the bench — and today, humility can wait.",
+    speaker: { who: "Reporter (breathless)", line: "\"Unbelievable goal! What's the secret?\"" },
+    prompt: "You're in full showman mode. What's your reaction? (This scene rewards flair and confidence, not diplomacy — but there's still a line between funny arrogance and genuine disrespect.)",
+    options: [
+      { text: "\"Secret? There isn't one — some of us were just born to do this. Somebody had to score it, might as well be me.\"", correct: true,
+        feedback: "This is the register you're after — supreme, almost comic confidence delivered as pure entertainment ('born to do this', 'might as well be me') without actually insulting anyone else on the pitch. Cocky, quotable, and grammatically flawless." },
+      { text: "\"I am very good player, best in world, everybody know this.\"", correct: false,
+        feedback: "The swagger is there, but the grammar lets it down at C1 — missing article ('a very good player'), and subject-verb agreement error ('everybody knows'). Even superstars need agreement to match their confidence." },
+      { text: "\"Oh, it was nothing really — the whole team deserves the credit for that one.\"", correct: false,
+        feedback: "Textbook diplomatic footballer-speak — perfectly fine in Scene 10, completely out of character here. This scene is asking for showmanship, not humility." },
+      { text: "\"Obviously I'm better than everyone else out there — some of these guys don't even deserve to be on the same pitch as me.\"", correct: false,
+        feedback: "This crosses the line from funny bravado into genuinely disrespecting your own teammates — the humour disappears and it just sounds arrogant and divisive rather than entertainingly confident." }
+    ]
+  }
+];
+
+let current = 0;
+let score = 0;
+let spirit = 60;
+const container = document.getElementById('sceneContainer');
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function renderScene(){
+  const s = scenes[current];
+  const shuffled = shuffle(s.options);
+  const div = document.createElement('div');
+  div.className = 'scene-card active';
+  div.innerHTML = `
+    <span class="scene-tag">${s.tag}</span>
+    <p class="scene-narrative">${s.narrative}</p>
+    <div class="speaker-box"><span class="who">${s.speaker.who}</span>${s.speaker.line}</div>
+    <p class="prompt">${s.prompt}</p>
+    <div class="options"></div>
+    <div class="feedback" id="fb-${current}"></div>
+    <button class="next-btn" id="next-${current}" disabled>Next Scene →</button>
+  `;
+  const optsWrap = div.querySelector('.options');
+  shuffled.forEach(opt=>{
+    const btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.textContent = opt.text;
+    btn.onclick = () => selectOption(btn, opt, div, s, optsWrap);
+    optsWrap.appendChild(btn);
+  });
+  container.innerHTML = '';
+  container.appendChild(div);
+  updateProgress();
+}
+
+function selectOption(btn, opt, div, s, optsWrap){
+  const allBtns = optsWrap.querySelectorAll('.opt');
+  allBtns.forEach(b=>b.disabled = true);
+  const fb = div.querySelector(`#fb-${current}`);
+  const nextBtn = div.querySelector(`#next-${current}`);
+
+  if(opt.correct){
+    btn.classList.add('correct');
+    score++;
+    spirit = Math.min(100, spirit+8);
+    fb.className = 'feedback good show';
+    fb.innerHTML = `<b>✅ Well said.</b>${opt.feedback}`;
+  } else {
+    btn.classList.add('incorrect');
+    spirit = Math.max(0, spirit-8);
+    fb.className = 'feedback bad show';
+    fb.innerHTML = `<b>❌ Not quite.</b>${opt.feedback}`;
+    const correctBtn = [...allBtns].find(b => s.options.find(o=>o.text===b.textContent && o.correct));
+    if(correctBtn) correctBtn.classList.add('correct');
+  }
+  document.getElementById('spiritFill').style.width = spirit + '%';
+  nextBtn.disabled = false;
+  nextBtn.classList.add('ready');
+  nextBtn.onclick = advance;
+}
+
+function advance(){
+  current++;
+  if(current >= scenes.length){
+    showResults();
+  } else {
+    renderScene();
+  }
+}
+
+function updateProgress(){
+  const pct = (current / scenes.length) * 100;
+  document.getElementById('progressBar').style.width = pct + '%';
+}
+
+function showResults(){
+  container.innerHTML = '';
+  document.getElementById('progressBar').style.width = '100%';
+  const card = document.getElementById('resultsCard');
+  card.classList.add('active');
+  document.getElementById('finalScore').textContent = score;
+  document.getElementById('totalScenes').textContent = scenes.length;
+  const pct = score / scenes.length;
+  let title, text, medal;
+  if(pct >= 0.8){
+    medal = '🏆'; title = 'Man of the Match';
+    text = "Composed, diplomatic and fluent under pressure — exactly how a seasoned professional handles tactics, the media, teammates and rivals. Excellent command of C1 idiomatic and sport-register English.";
+  } else if(pct >= 0.55){
+    medal = '🥈'; title = 'Solid Performance';
+    text = "A strong showing with a few lapses in composure, tactics or register. Review the feedback above to sharpen your diplomatic and idiomatic responses under pressure.";
+  } else {
+    medal = '🔁'; title = 'Back to the Drawing Board';
+    text = "Some tough moments out there. Replay the scene and pay close attention to tone, idiom and register — professional football English relies heavily on measured, diplomatic language.";
+  }
+  document.getElementById('medalIcon').textContent = medal;
+  document.getElementById('resultsTitle').textContent = title;
+  document.getElementById('resultsText').textContent = text;
+}
+
+function restartGame(){
+  current = 0; score = 0; spirit = 60;
+  document.getElementById('spiritFill').style.width = spirit + '%';
+  document.getElementById('resultsCard').classList.remove('active');
+  renderScene();
+}
+
+renderScene();
+</script>
+</body>
+</html>

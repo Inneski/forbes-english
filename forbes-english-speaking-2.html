@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – Professional Speaking Lesson</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #1c1e24;
+    --bg2: #14161b;
+    --card: #f6f5f1;
+    --card-alt: #eeecе6;
+    --slate: #2e3a4a;
+    --slate-mid: #3d5068;
+    --slate-light: #6a8aaa;
+    --slate-pale: #d4dfe8;
+    --silver: #c0c8d4;
+    --silver-light: #e0e6ee;
+    --copper: #b5703a;
+    --copper-light: #d4904e;
+    --copper-pale: #f5ead8;
+    --cream: #f6f5f1;
+    --ink: #1a1c22;
+    --ink-mid: #484c58;
+    --ink-light: #8a8e9a;
+    --correct: #3a6e4e;
+    --correct-pale: #e2f0e8;
+    --warn: #8a4a2a;
+    --warn-pale: #f5e8de;
+    --shadow: 0 6px 36px rgba(0,0,0,0.3);
+    --shadow-card: 0 3px 18px rgba(0,0,0,0.13);
+    --radius: 16px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 0% 0%, rgba(46,58,74,0.7) 0%, transparent 55%),
+      radial-gradient(ellipse at 100% 100%, rgba(181,112,58,0.1) 0%, transparent 50%);
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: var(--bg2);
+    padding: 36px 24px 30px;
+    text-align: center;
+    border-bottom: 1px solid rgba(192,200,212,0.12);
+    position: relative;
+    overflow: hidden;
+  }
+  .site-header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      -60deg, transparent, transparent 40px,
+      rgba(46,58,74,0.15) 40px, rgba(46,58,74,0.15) 41px
+    );
+  }
+
+  .lesson-badge {
+    position: relative; z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(181,112,58,0.15);
+    border: 1px solid rgba(181,112,58,0.3);
+    color: var(--copper-light);
+    padding: 6px 18px;
+    border-radius: 40px;
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  /* ── PROGRESS DOTS ── */
+  .progress-strip {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    margin-top: 22px;
+    position: relative; z-index: 1;
+  }
+  .prog-connector {
+    width: 40px; height: 1px;
+    background: rgba(192,200,212,0.15);
+  }
+  .prog-step {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: rgba(46,58,74,0.6);
+    border: 1.5px solid rgba(192,200,212,0.2);
+    color: rgba(192,200,212,0.4);
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.4s cubic-bezier(0.2,0,0,1);
+    flex-shrink: 0;
+  }
+  .prog-step.active {
+    background: var(--copper);
+    border-color: var(--copper);
+    color: #fff;
+    box-shadow: 0 0 0 5px rgba(181,112,58,0.18);
+    transform: scale(1.18);
+  }
+  .prog-step.done {
+    background: var(--slate-mid);
+    border-color: var(--slate-light);
+    color: #fff;
+  }
+  .prog-step.done::after { content: '✓'; }
+  .prog-step.done span { display: none; }
+
+  /* ── CANVAS ── */
+  .canvas {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* ── ACTIVITY ── */
+  .activity { display: none; animation: rise 0.45s cubic-bezier(0.2,0,0,1); }
+  .activity.active { display: block; }
+  @keyframes rise { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+
+  /* ── ACTIVITY HEADER ── */
+  .act-label {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .act-num {
+    width: 50px; height: 50px;
+    border-radius: 14px;
+    background: var(--copper);
+    color: #fff;
+    font-family: 'Fraunces', serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(181,112,58,0.4);
+    flex-shrink: 0;
+  }
+  .act-info h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
+    color: var(--cream);
+    font-weight: 600;
+    line-height: 1.25;
+  }
+  .act-info p { font-size: 0.82rem; color: rgba(246,245,241,0.4); margin-top: 3px; }
+
+  /* ── TEACHER NOTE ── */
+  .teacher-note {
+    background: rgba(181,112,58,0.1);
+    border: 1px solid rgba(181,112,58,0.22);
+    border-left: 3px solid var(--copper);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 22px;
+    font-size: 0.86rem;
+    color: rgba(212,144,78,0.9);
+    line-height: 1.65;
+  }
+  .teacher-note strong { color: var(--copper-light); }
+
+  /* ── CARD ── */
+  .speak-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-card);
+  }
+
+  .card-tab {
+    padding: 10px 20px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tab-slate { background: var(--slate); color: rgba(246,245,241,0.75); }
+  .tab-copper { background: var(--copper); color: rgba(255,255,255,0.9); }
+  .tab-dark { background: var(--ink); color: rgba(246,245,241,0.65); }
+  .tab-silver { background: #404a58; color: var(--silver-light); }
+
+  .card-body { padding: 22px 24px; }
+  .card-body p {
+    font-size: 0.94rem;
+    color: var(--ink-mid);
+    line-height: 1.7;
+  }
+  .card-body p strong { color: var(--ink); }
+
+  /* ── PROMPT LIST ── */
+  .prompt-list { list-style: none; display: flex; flex-direction: column; gap: 9px; margin-top: 12px; }
+  .prompt-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 0.92rem;
+    color: var(--ink-mid);
+    line-height: 1.55;
+    padding: 11px 14px;
+    background: rgba(46,58,74,0.06);
+    border-radius: 10px;
+    border-left: 3px solid var(--slate-light);
+  }
+  .prompt-list li .blt {
+    color: var(--slate-mid);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+    font-size: 0.95em;
+  }
+
+  /* ── COMPARE ── */
+  .compare-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 11px;
+    margin-bottom: 12px;
+  }
+  @media(max-width:500px){ .compare-pair{grid-template-columns:1fr} }
+  .cc {
+    border-radius: 11px;
+    padding: 15px 17px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+  .cc-weak {
+    background: var(--warn-pale);
+    border: 1.5px solid rgba(138,74,42,0.18);
+    color: var(--warn);
+  }
+  .cc-strong {
+    background: var(--correct-pale);
+    border: 1.5px solid rgba(58,110,78,0.2);
+    color: var(--correct);
+  }
+  .cc-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    opacity: 0.75;
+  }
+
+  /* ── SPEAK PROMPT ── */
+  .speak-prompt {
+    background: linear-gradient(135deg, var(--slate) 0%, #1e2836 100%);
+    border-radius: var(--radius);
+    padding: 26px 28px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .speak-prompt::after {
+    content: '🎙';
+    position: absolute;
+    right: 22px; top: 18px;
+    font-size: 2.2rem;
+    opacity: 0.12;
+  }
+  .sp-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--slate-light);
+    margin-bottom: 10px;
+  }
+  .speak-prompt h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.2rem;
+    color: var(--cream);
+    line-height: 1.45;
+    margin-bottom: 8px;
+  }
+  .speak-prompt p { font-size: 0.87rem; color: rgba(246,245,241,0.55); line-height: 1.6; }
+
+  /* ── PHRASE GRID ── */
+  .phrase-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  @media(max-width:520px){ .phrase-grid{grid-template-columns:1fr} }
+  .phrase-chip {
+    background: #fff;
+    border: 1.5px solid rgba(46,58,74,0.12);
+    border-radius: 10px;
+    padding: 12px 14px 12px 30px;
+    font-size: 0.87rem;
+    color: var(--ink-mid);
+    line-height: 1.45;
+    position: relative;
+  }
+  .phrase-chip::before {
+    content: '→';
+    position: absolute;
+    left: 12px; top: 13px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--copper);
+  }
+  .phrase-chip strong {
+    color: var(--ink);
+    display: block;
+    font-size: 0.78rem;
+    margin-bottom: 3px;
+    font-weight: 600;
+  }
+
+  /* ── ROLE CARDS ── */
+  .role-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  @media(max-width:500px){ .role-cards{grid-template-columns:1fr} }
+  .role-card { border-radius: 13px; overflow: hidden; box-shadow: var(--shadow-card); }
+  .role-head {
+    padding: 12px 18px 10px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .rh-student { background: var(--slate); color: var(--slate-pale); }
+  .rh-carpenter { background: #3a2e1e; color: #c8b898; }
+  .rh-retailer { background: #1e3028; color: #a0c8b0; }
+  .rh-supplier { background: #2a2e3a; color: var(--silver); }
+  .role-body { background: var(--card); padding: 15px 18px; }
+  .role-body strong { color: var(--ink); display: block; font-size: 0.82rem; margin-bottom: 5px; font-weight: 600; }
+  .role-body p { font-size: 0.87rem; color: var(--ink-mid); line-height: 1.55; }
+
+  /* ── SCENARIO HEADER ── */
+  .scenario-head {
+    background: var(--slate);
+    border-radius: var(--radius) var(--radius) 0 0;
+    padding: 18px 22px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .scenario-icon {
+    width: 44px; height: 44px;
+    border-radius: 11px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+  .si-copper { background: var(--copper); }
+  .si-dark { background: rgba(246,245,241,0.08); }
+  .scenario-head h3 {
+    font-family: 'Fraunces', serif;
+    color: var(--cream);
+    font-size: 1rem;
+    line-height: 1.3;
+    margin-bottom: 2px;
+  }
+  .scenario-head p { font-size: 0.78rem; color: rgba(246,245,241,0.45); }
+
+  /* ── CHECKLIST ── */
+  .checklist { list-style: none; display: flex; flex-direction: column; gap: 7px; margin-top: 10px; }
+  .checklist li {
+    display: flex; align-items: center; gap: 11px;
+    font-size: 0.9rem; color: var(--ink-mid);
+    padding: 10px 13px;
+    border-radius: 9px;
+    background: rgba(46,58,74,0.05);
+    border: 1px solid rgba(46,58,74,0.09);
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .checklist li:hover { background: rgba(46,58,74,0.1); }
+  .checklist li.checked { background: var(--correct-pale); border-color: rgba(58,110,78,0.2); color: #2a4e38; }
+  .check-box {
+    width: 22px; height: 22px; border-radius: 6px;
+    border: 2px solid rgba(46,58,74,0.25);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; color: transparent;
+    transition: all 0.2s;
+  }
+  .checklist li.checked .check-box { background: var(--correct); border-color: var(--correct); color: #fff; }
+
+  /* ── TIMER ── */
+  .timer-block {
+    background: var(--ink);
+    border-radius: 13px;
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    gap: 14px;
+    flex-wrap: wrap;
+    border: 1px solid rgba(192,200,212,0.08);
+  }
+  .timer-info strong { color: var(--silver-light); display: block; font-family: 'Fraunces', serif; font-size: 1rem; margin-bottom: 2px; }
+  .timer-info span { font-size: 0.82rem; color: rgba(246,245,241,0.4); }
+  .timer-display {
+    font-family: 'Fraunces', serif;
+    font-size: 2.1rem;
+    color: var(--copper-light);
+    letter-spacing: 0.04em;
+    min-width: 72px;
+    text-align: right;
+  }
+  .timer-display.running { color: var(--slate-light); }
+  .timer-display.done { color: var(--cream); }
+  .timer-btns { display: flex; gap: 8px; }
+  .btn-timer {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem; font-weight: 600;
+    border: none; cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-go { background: var(--slate-mid); color: #fff; }
+  .btn-go:hover { background: var(--slate-light); }
+  .btn-rst { background: rgba(246,245,241,0.07); color: rgba(246,245,241,0.55); }
+  .btn-rst:hover { background: rgba(246,245,241,0.13); color: var(--cream); }
+
+  /* ── PRODUCT TAG ── */
+  .product-tag {
+    display: inline-block;
+    background: rgba(181,112,58,0.12);
+    border: 1px solid rgba(181,112,58,0.25);
+    color: var(--copper-light);
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    margin-right: 6px;
+    margin-bottom: 6px;
+  }
+  .product-tag.blue {
+    background: rgba(106,138,170,0.12);
+    border-color: rgba(106,138,170,0.25);
+    color: var(--slate-light);
+  }
+
+  /* ── AUDIENCE GRID ── */
+  .audience-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 10px;
+    margin-top: 12px;
+  }
+  @media(max-width:480px){ .audience-grid{grid-template-columns:1fr} }
+  .audience-card {
+    background: #fff;
+    border-radius: 11px;
+    padding: 16px 15px;
+    border: 1.5px solid rgba(46,58,74,0.1);
+    text-align: center;
+  }
+  .audience-card .aud-icon { font-size: 1.6rem; margin-bottom: 8px; }
+  .audience-card h4 { font-family: 'Fraunces', serif; font-size: 0.95rem; color: var(--ink); margin-bottom: 5px; }
+  .audience-card p { font-size: 0.8rem; color: var(--ink-mid); line-height: 1.45; }
+
+  /* ── INFO STRIP ── */
+  .info-strip {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+  }
+  .info-pill {
+    background: rgba(46,58,74,0.4);
+    border: 1px solid rgba(192,200,212,0.12);
+    color: rgba(246,245,241,0.55);
+    padding: 6px 16px;
+    border-radius: 30px;
+    font-size: 0.78rem;
+    font-weight: 500;
+  }
+
+  /* ── BOTTOM NAV ── */
+  .bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    gap: 12px;
+  }
+  .btn-next {
+    background: var(--copper);
+    color: #fff;
+    border: none;
+    padding: 14px 34px;
+    border-radius: 11px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.18s;
+    box-shadow: 0 4px 16px rgba(181,112,58,0.35);
+    margin-left: auto;
+  }
+  .btn-next:hover { background: var(--copper-light); transform: translateY(-1px); box-shadow: 0 6px 22px rgba(181,112,58,0.45); }
+  .btn-prev {
+    background: transparent;
+    color: rgba(246,245,241,0.38);
+    border: 1px solid rgba(246,245,241,0.12);
+    padding: 13px 22px;
+    border-radius: 11px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.87rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-prev:hover { color: var(--cream); border-color: rgba(246,245,241,0.28); }
+  .step-counter { color: rgba(246,245,241,0.28); font-size: 0.8rem; }
+
+  /* ── FINAL ── */
+  .final-wrap { background: var(--card); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); }
+  .final-top {
+    background: linear-gradient(140deg, var(--slate) 0%, var(--bg2) 100%);
+    padding: 48px 40px 40px;
+    text-align: center;
+    position: relative;
+    border-bottom: 1px solid rgba(192,200,212,0.1);
+  }
+  .final-top .f-icon { font-size: 2.8rem; display: block; margin-bottom: 16px; }
+  .final-top h2 { font-family: 'Fraunces', serif; font-size: 1.8rem; color: var(--cream); margin-bottom: 10px; }
+  .final-top p { color: rgba(246,245,241,0.6); font-size: 0.95rem; line-height: 1.65; max-width: 480px; margin: 0 auto; }
+  .final-body { padding: 36px 36px 40px; }
+  .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; margin-bottom: 26px; }
+  @media(max-width:480px){ .summary-grid{grid-template-columns:1fr} }
+  .sum-item {
+    background: rgba(46,58,74,0.06);
+    border-radius: 12px;
+    padding: 16px 18px;
+    border-left: 3px solid var(--slate-light);
+  }
+  .sum-item h4 { font-family: 'Fraunces', serif; font-size: 0.95rem; color: var(--ink); margin-bottom: 5px; }
+  .sum-item p { font-size: 0.83rem; color: var(--ink-mid); line-height: 1.5; }
+  .hw-block {
+    background: var(--copper-pale);
+    border-radius: 13px;
+    padding: 20px 22px;
+    border: 1px solid rgba(181,112,58,0.18);
+    margin-bottom: 22px;
+  }
+  .hw-block h4 { font-family: 'Fraunces', serif; font-size: 0.97rem; color: var(--ink); margin-bottom: 11px; }
+  .hw-block ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .hw-block li { font-size: 0.87rem; color: var(--ink-mid); padding-left: 20px; position: relative; line-height: 1.55; }
+  .hw-block li::before { content: '→'; position: absolute; left: 0; color: var(--copper); font-weight: 700; }
+  .btn-restart {
+    width: 100%;
+    background: var(--slate);
+    color: #fff;
+    border: none;
+    padding: 15px;
+    border-radius: 11px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.18s;
+    box-shadow: 0 4px 16px rgba(46,58,74,0.35);
+  }
+  .btn-restart:hover { background: var(--slate-mid); transform: translateY(-1px); }
+
+  .spacer12 { height: 12px; }
+  .note-small { font-size: 0.8rem; color: var(--ink-light); margin-top: 10px; line-height: 1.55; }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════ HEADER ════════════════════ -->
+<div class="site-header">
+  <div style="position:relative;z-index:1">
+
+    <!-- Logo -->
+    <svg viewBox="0 0 240 72" width="210" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:16px;display:block;margin-left:auto;margin-right:auto">
+      <text x="120" y="36" font-family="'Fraunces',Georgia,serif" font-size="34" font-weight="700"
+            fill="#6a8aaa" text-anchor="middle" letter-spacing="3">FORBES</text>
+      <rect x="28" y="44" width="184" height="1.5" fill="#b5703a" rx="1"/>
+      <text x="120" y="62" font-family="'DM Sans',Arial,sans-serif" font-size="14" font-weight="700"
+            fill="#b5703a" text-anchor="middle" letter-spacing="7">ENGLISH</text>
+    </svg>
+
+    <div class="lesson-badge">Speaking Lesson · B1+ Professional</div>
+
+    <!-- Illustration -->
+    <svg viewBox="0 0 620 130" width="100%" style="max-width:620px;display:block;margin:16px auto 6px" xmlns="http://www.w3.org/2000/svg">
+      <!-- Building cross-section -->
+      <rect x="20" y="20" width="110" height="100" rx="4" fill="rgba(46,58,74,0.5)" stroke="rgba(106,138,170,0.3)" stroke-width="1.5"/>
+      <!-- Roof -->
+      <polygon points="20,20 75,0 130,20" fill="rgba(46,58,74,0.7)" stroke="rgba(106,138,170,0.3)" stroke-width="1.5"/>
+      <!-- Roofing membrane layer -->
+      <polygon points="22,21 75,2 128,21 126,26 75,7 24,26" fill="rgba(181,112,58,0.5)" stroke="rgba(181,112,58,0.4)" stroke-width="1"/>
+      <!-- Membrane label -->
+      <line x1="126" y1="23" x2="155" y2="15" stroke="rgba(181,112,58,0.5)" stroke-width="1" stroke-dasharray="3,2"/>
+      <text x="157" y="18" font-family="'DM Sans',sans-serif" font-size="7.5" fill="rgba(212,144,78,0.8)" font-weight="600">Roofing membrane</text>
+      <!-- Cladding on side -->
+      <rect x="20" y="40" width="8" height="80" rx="2" fill="rgba(181,112,58,0.35)" stroke="rgba(181,112,58,0.3)" stroke-width="1"/>
+      <line x1="14" y1="55" x2="0" y2="65" stroke="rgba(181,112,58,0.4)" stroke-width="1" stroke-dasharray="3,2"/>
+      <text x="-2" y="68" font-family="'DM Sans',sans-serif" font-size="7" fill="rgba(212,144,78,0.7)" text-anchor="end" font-weight="600">Cladding</text>
+      <!-- Interior vapour barrier -->
+      <rect x="29" y="30" width="90" height="88" rx="2" fill="rgba(106,138,170,0.12)" stroke="rgba(106,138,170,0.4)" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <line x1="119" y1="74" x2="145" y2="90" stroke="rgba(106,138,170,0.4)" stroke-width="1" stroke-dasharray="3,2"/>
+      <text x="147" y="93" font-family="'DM Sans',sans-serif" font-size="7.5" fill="rgba(106,138,170,0.8)" font-weight="600">Vapour barrier</text>
+      <text x="147" y="103" font-family="'DM Sans',sans-serif" font-size="7" fill="rgba(106,138,170,0.6)">(interior)</text>
+
+      <!-- Student figure — PM -->
+      <circle cx="270" cy="38" r="13" fill="#7a9090" opacity="0.75"/>
+      <rect cx="270" cy="51" x="259" y="51" width="22" height="30" rx="6" fill="#2e3a4a" opacity="0.85"/>
+      <line x1="259" y1="60" x2="249" y2="73" stroke="#2e3a4a" stroke-width="5" stroke-linecap="round" opacity="0.85"/>
+      <line x1="281" y1="60" x2="290" y2="72" stroke="#2e3a4a" stroke-width="5" stroke-linecap="round" opacity="0.85"/>
+      <line x1="265" y1="81" x2="263" y2="104" stroke="#2e3a4a" stroke-width="4" stroke-linecap="round" opacity="0.85"/>
+      <line x1="275" y1="81" x2="277" y2="104" stroke="#2e3a4a" stroke-width="4" stroke-linecap="round" opacity="0.85"/>
+      <!-- clipboard -->
+      <rect x="288" y="58" width="24" height="30" rx="3" fill="#f6f5f1" stroke="rgba(46,58,74,0.2)" stroke-width="1.5"/>
+      <rect x="292" y="53" width="16" height="7" rx="2.5" fill="rgba(46,58,74,0.2)"/>
+      <line x1="292" y1="68" x2="308" y2="68" stroke="rgba(181,112,58,0.4)" stroke-width="1.5"/>
+      <line x1="292" y1="74" x2="307" y2="74" stroke="rgba(181,112,58,0.4)" stroke-width="1.5"/>
+      <line x1="292" y1="80" x2="308" y2="80" stroke="rgba(181,112,58,0.4)" stroke-width="1.5"/>
+      <text x="270" y="120" font-family="'DM Sans',sans-serif" font-size="8" fill="rgba(246,245,241,0.4)" text-anchor="middle">Product Manager</text>
+
+      <!-- Speech bubble PM → Carpenter -->
+      <rect x="308" y="8" width="130" height="36" rx="8" fill="rgba(46,58,74,0.85)" stroke="rgba(106,138,170,0.25)" stroke-width="1"/>
+      <polygon points="312,30 304,38 320,30" fill="rgba(46,58,74,0.85)"/>
+      <text x="318" y="23" font-family="'DM Sans',sans-serif" font-size="7.5" fill="rgba(246,245,241,0.8)">"What do you look for when</text>
+      <text x="318" y="35" font-family="'DM Sans',sans-serif" font-size="7.5" fill="rgba(246,245,241,0.8)">choosing a vapour barrier?"</text>
+
+      <!-- Carpenter figure -->
+      <circle cx="490" cy="38" r="13" fill="#a08060" opacity="0.75"/>
+      <!-- cap -->
+      <rect x="479" y="27" width="22" height="7" rx="3.5" fill="#3a2e1e" opacity="0.7"/>
+      <rect x="479" y="25" width="14" height="5" rx="2" fill="#3a2e1e" opacity="0.7"/>
+      <rect x="479" y="51" width="22" height="30" rx="6" fill="#5a3a1e" opacity="0.85"/>
+      <line x1="479" y1="60" x2="469" y2="73" stroke="#5a3a1e" stroke-width="5" stroke-linecap="round" opacity="0.85"/>
+      <line x1="501" y1="60" x2="510" y2="72" stroke="#5a3a1e" stroke-width="5" stroke-linecap="round" opacity="0.85"/>
+      <line x1="485" y1="81" x2="483" y2="104" stroke="#5a3a1e" stroke-width="4" stroke-linecap="round" opacity="0.85"/>
+      <line x1="495" y1="81" x2="497" y2="104" stroke="#5a3a1e" stroke-width="4" stroke-linecap="round" opacity="0.85"/>
+      <!-- saw tool -->
+      <rect x="506" y="68" width="22" height="6" rx="2" fill="#8a6a3a" opacity="0.7"/>
+      <path d="M506,74 L510,80 L514,74 L518,80 L522,74 L526,80 L528,74" stroke="#8a6a3a" stroke-width="1.5" fill="none" opacity="0.7"/>
+      <text x="490" y="120" font-family="'DM Sans',sans-serif" font-size="8" fill="rgba(246,245,241,0.4)" text-anchor="middle">Carpenter</text>
+
+      <!-- Reply bubble -->
+      <rect x="430" y="8" width="130" height="36" rx="8" fill="rgba(42,30,16,0.85)" stroke="rgba(181,112,58,0.2)" stroke-width="1"/>
+      <polygon points="476,44 466,44 476,38" fill="rgba(42,30,16,0.85)"/>
+      <text x="440" y="23" font-family="'DM Sans',sans-serif" font-size="7.5" fill="rgba(246,245,241,0.75)">"Ease of fitting and that it</text>
+      <text x="440" y="35" font-family="'DM Sans',sans-serif" font-size="7.5" fill="rgba(246,245,241,0.75)">won't tear on the job."</text>
+
+      <!-- Swiss cross subtle -->
+      <rect x="590" y="10" width="18" height="6" rx="1" fill="rgba(255,255,255,0.07)"/>
+      <rect x="595" y="5" width="6" height="16" rx="1" fill="rgba(255,255,255,0.07)"/>
+    </svg>
+
+    <!-- Progress strip -->
+    <div class="progress-strip">
+      <div class="prog-step active" id="ps1"><span>1</span></div>
+      <div class="prog-connector"></div>
+      <div class="prog-step" id="ps2"><span>2</span></div>
+      <div class="prog-connector"></div>
+      <div class="prog-step" id="ps3"><span>3</span></div>
+      <div class="prog-connector"></div>
+      <div class="prog-step" id="ps4"><span>4</span></div>
+      <div class="prog-connector"></div>
+      <div class="prog-step" id="ps5"><span>5</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════ CANVAS ════════════════════ -->
+<div class="canvas">
+
+<!-- ══════════════════════════════
+  ACTIVITY 1 — WARM-UP: YOUR PRODUCTS & PEOPLE
+══════════════════════════════ -->
+<div class="activity active" id="act1">
+  <div class="act-label">
+    <div class="act-num">1</div>
+    <div class="act-info">
+      <h2>Warm-Up: Your Products and Your People</h2>
+      <p>Speaking fluency · 6–8 minutes · No preparation needed</p>
+    </div>
+  </div>
+
+  <div class="teacher-note">
+    <strong>Teacher:</strong> The goal here is to hear how the student currently explains their products and audiences in English. Ask one question at a time. Do not correct — just listen and note patterns. Pay special attention to how they distinguish between the two product types (vapour barriers vs roofing/cladding membranes) and the three audiences (carpenters, roofers, retailers).
+  </div>
+
+  <div class="info-strip">
+    <span class="info-pill">🏗️ Vapour barriers — interior use</span>
+    <span class="info-pill">🏠 Roofing membranes — exterior</span>
+    <span class="info-pill">🧱 Cladding membranes — exterior</span>
+  </div>
+
+  <div class="speak-prompt">
+    <div class="sp-label">Start here — student answers first</div>
+    <h3>Tell me what your company makes and who buys it.</h3>
+    <p>Imagine you are speaking to a new business contact who does not know your industry. Explain it simply and clearly.</p>
+  </div>
+
+  <div class="speak-card">
+    <div class="card-tab tab-slate"><span>🎙</span> Conversation questions</div>
+    <div class="card-body">
+      <ul class="prompt-list">
+        <li><span class="blt">Q1</span> What is the difference between a vapour barrier and a roofing membrane? Explain it to me as if I have never worked in construction.</li>
+        <li><span class="blt">Q2</span> Who are your three main types of customer? What does each one care about most?</li>
+        <li><span class="blt">Q3</span> Why is it important for you to speak English with customers in England and Ireland specifically?</li>
+        <li><span class="blt">Q4</span> What is harder for you — speaking with a roofer on site, or presenting a product strategy to a retailer? Why?</li>
+        <li><span class="blt">Q5</span> Tell me about one recent conversation in English that was difficult. What happened? What would you do differently now?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="speak-card">
+    <div class="card-tab tab-copper"><span>👂</span> Teacher — listen for these patterns</div>
+    <div class="card-body">
+      <div class="compare-pair">
+        <div class="cc cc-weak">
+          <div class="cc-label">❌ Common errors</div>
+          <p>"We <em>produce</em> membranes <em>for protect</em> buildings"<br>
+             "I am responsible <em>to develop</em>"<br>
+             "We discuss <em>about</em> the product"<br>
+             "I make researches with carpenters"<br>
+             "The membrane is <em>more better</em>"</p>
+        </div>
+        <div class="cc cc-strong">
+          <div class="cc-label">✓ Target forms</div>
+          <p>"We manufacture membranes <em>to protect</em> buildings"<br>
+             "I am responsible <em>for developing</em>"<br>
+             "We discuss <em>the product</em> with suppliers"<br>
+             "I conduct market research with carpenters"<br>
+             "The membrane offers <em>greater</em> protection"</p>
+        </div>
+      </div>
+      <p class="note-small">Note which errors appear naturally — save them for Activity 2. Don't correct mid-answer unless it causes genuine confusion.</p>
+    </div>
+  </div>
+
+  <div class="speak-card">
+    <div class="card-tab tab-silver"><span>🧩</span> Follow-up: Three audiences — speak about each one</div>
+    <div class="card-body">
+      <p style="margin-bottom:14px">Ask the student to describe each customer type in their own words. Then ask: <em>"What is different about how you speak to each of them?"</em></p>
+      <div class="audience-grid">
+        <div class="audience-card">
+          <div class="aud-icon">🪵</div>
+          <h4>Carpenter</h4>
+          <p>Interior work. Fitting vapour barriers. Cares about ease of installation and airtight seals.</p>
+        </div>
+        <div class="audience-card">
+          <div class="aud-icon">🏠</div>
+          <h4>Roofer</h4>
+          <p>Exterior work. Roofing membranes under tiles or slates. Cares about durability, breathability, speed.</p>
+        </div>
+        <div class="audience-card">
+          <div class="aud-icon">🏪</div>
+          <h4>Retailer</h4>
+          <p>Sells to tradespeople. Cares about margin, availability, brand trust, and easy product explanation.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <span class="step-counter">Activity 1 of 5</span>
+    <button class="btn-next" onclick="goAct(2)">Next Activity →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+  ACTIVITY 2 — SAY IT BETTER
+══════════════════════════════ -->
+<div class="activity" id="act2">
+  <div class="act-label">
+    <div class="act-num">2</div>
+    <div class="act-info">
+      <h2>Say It Better</h2>
+      <p>Spoken upgrade challenge · 8–10 minutes · Student says each improved version aloud</p>
+    </div>
+  </div>
+
+  <div class="teacher-note">
+    <strong>Teacher:</strong> Read the weak sentence. Pause. Ask: <em>"How would you say that more professionally?"</em> Give 10 seconds to think, then reveal the strong version together. Student says the strong version aloud — once slowly, once at natural speed. End with the no-notes drill at the bottom. Use errors you noticed in Activity 1 as bonus items.
+  </div>
+
+  <div class="speak-card">
+    <div class="card-tab tab-slate"><span>🔄</span> Upgrade 1 — Describing your product</div>
+    <div class="card-body">
+      <div class="compare-pair">
+        <div class="cc cc-weak"><div class="cc-label">❌ Weak — teacher reads</div>
+          <p>"We make a special plastic sheet that stops water going into the building."</p>
+        </div>
+        <div class="cc cc-strong"><div class="cc-label">✓ Strong — student says this</div>
+          <p>"We <strong>manufacture</strong> a <strong>roofing membrane</strong> designed to <strong>prevent moisture ingress</strong> while allowing the structure to breathe."</p>
+        </div>
+      </div>
+      <p class="note-small"><strong>Why:</strong> "Manufacture" is the correct verb for physical products. "Moisture ingress" is standard building industry language. "Designed to" sounds far more professional than "that stops".</p>
+    </div>
+  </div>
+
+  <div class="speak-card">
+    <div class="card-tab tab-slate"><span>🔄</span> Upgrade 2 — Explaining your role</div>
+    <div class="card-body">
+      <div class="compare-pair">
+        <div class="cc cc-weak"><div class="cc-label">❌ Weak</div>
+          <p>"My job is to think about what products we need and then talk to customers and suppliers about it."</p>
+        </div>
+        <div class="cc cc-strong"><div class="cc-label">✓ Strong — say this</div>
+          <p>"I am <strong>responsible for developing</strong> a structured <strong>product strategy</strong>, which involves <strong>conducting market research</strong> with customers and <strong>coordinating with suppliers</strong> on product development."</p>
+        </div>
+      </div>
+      <p class="note-small"><strong>Why:</strong> Three key collocations here — <em>responsible for + -ing</em>, <em>conducting market research</em>, <em>coordinating with</em>. All are standard in B1+ professional English.</p>
+    </div>
+  </div>
+
+  <div class="speak-card">
+    <div class="card-tab tab-slate"><span>🔄</span> Upgrade 3 — Describing customer needs</div>
+    <div class="card-body">
+      <div class="compare-pair">
+        <div class="cc cc-weak"><div class="cc-label">❌ Weak</div>
+          <p>"Carpenters say the vapour barrier is sometimes hard to put in and it takes too long."</p>
+        </div>
+        <div class="cc cc-strong"><div class="cc-label">✓ Strong — say this</div>
+          <p>"A common <strong>pain point</strong> for carpenters is that <strong>installation</strong> can be time-consuming, particularly when <strong>achieving an airtight seal</strong> in complex areas."</p>
+        </div>
+      </div>
+      <p class="note-small"><strong>Why:</strong> "Pain point" is essential product management vocabulary. "Installation" and "airtight seal" are the correct technical terms carpenters and roofers use. Using their language builds trust immediately.</p>
+    </div>
+  </div>
+
+  <div class="speak-card">
+    <div class="card-tab tab-slate"><span>🔄</span> Upgrade 4 — Talking to a retailer about benefits</div>
+    <div class="card-body">
+      <div class="compare-pair">
+        <div class="cc cc-weak"><div class="cc-label">❌ Weak</div>
+          <p>"Our product is good because it is strong and roofers like it."</p>
+        </div>
+        <div class="cc cc-strong"><div class="cc-label">✓ Strong — say this</div>
+          <p>"The <strong>key benefit</strong> for your customers is its <strong>durability</strong> in exposed conditions. Roofers consistently <strong>report</strong> that it holds up well in wind and rain, which <strong>reduces callbacks</strong> for your trade customers."</p>
+        </div>
+      </div>
+      <p class="note-small"><strong>Why:</strong> When speaking to a retailer, connect product benefits to <em>their business</em> — fewer returns, happier trade customers. "Reduces callbacks" is powerful retailer language.</p>
+    </div>
+  </div>
+
+  <div class="speak-card">
+    <div class="card-tab tab-slate"><span>🔄</span> Upgrade 5 — Asking a supplier about changes</div>
+    <div class="card-body">
+      <div class="compare-pair">
+        <div class="cc cc-weak"><div class="cc-label">❌ Weak</div>
+          <p>"Can you make the membrane a bit easier to cut? Customers don't like how hard it is."</p>
+        </div>
+        <div class="cc cc-strong"><div class="cc-label">✓ Strong — say this</div>
+          <p>"<strong>Based on our customer research</strong>, one important <strong>requirement</strong> is improved <strong>workability</strong> — specifically, easier cutting on site. <strong>Would it be possible</strong> to adjust the material composition to address this?"</p>
+        </div>
+      </div>
+      <p class="note-small"><strong>Why:</strong> Opening with "Based on our customer research" immediately gives credibility. "Workability" is the industry term. "Would it be possible to…?" is more professional than "Can you…?" when speaking with a supplier.</p>
+    </div>
+  </div>
+
+  <div class="speak-card">
+    <div class="card-tab tab-copper"><span>⚡</span> No-notes drill — student responds without looking</div>
+    <div class="card-body">
+      <p style="margin-bottom:14px;font-size:0.88rem;color:var(--ink-mid)">Teacher gives the situation — student responds with the professional phrase from memory.</p>
+      <ul class="prompt-list">
+        <li><span class="blt">1</span> "What does your company do?" → <em>We manufacture… designed to…</em></li>
+        <li><span class="blt">2</span> "What is your job?" → <em>I am responsible for developing… which involves conducting…</em></li>
+        <li><span class="blt">3</span> "What do carpenters complain about?" → <em>A common pain point is… particularly when…</em></li>
+        <li><span class="blt">4</span> "Why should I stock your product?" → <em>The key benefit for your customers is…</em></li>
+        <li><span class="blt">5</span> "You want the supplier to change the product." → <em>Based on our customer research… would it be possible to…?</em></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="btn-prev" onclick="goAct(1)">← Back</button>
+    <span class="step-counter">Activity 2 of 5</span>
+    <button class="btn-next" onclick="goAct(3)">Next Activity →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+  ACTIVITY 3 — CARPENTER ROLEPLAY
+══════════════════════════════ -->
+<div class="activity" id="act3">
+  <div class="act-label">
+    <div class="act-num">3</div>
+    <div class="act-info">
+      <h2>Market Research: Interview a Carpenter</h2>
+      <p>Roleplay conversation · 12–15 minutes · Teacher plays a UK carpenter</p>
+    </div>
+  </div>
+
+  <div class="teacher-note">
+    <strong>Teacher:</strong> You are a carpenter in England who fits vapour barriers in loft conversions and timber-frame houses. You are experienced but not interested in technical jargon — you care about what works on site. Answer questions briefly at first. If the student asks a closed question (yes/no), give only yes or no and wait. This forces better follow-up questions. After the roleplay, use the correction panel below.
+  </div>
+
+  <div class="role-cards">
+    <div class="role-card">
+      <div class="role-head rh-student">🎙 Student — Product Manager</div>
+      <div class="role-body">
+        <strong>Your goal today:</strong>
+        <p>You are conducting market research with a carpenter in England. You want to understand how he chooses vapour barriers, what problems he encounters during fitting, and what would make his job easier. Ask open questions and always follow up.</p>
+      </div>
+    </div>
+    <div class="role-card">
+      <div class="role-head rh-carpenter">🪵 Teacher — UK Carpenter</div>
+      <div class="role-body">
+        <strong>Character notes:</strong>
+        <p>20 years in the trade. You work mainly on loft conversions and timber-frame builds in the Midlands. You care about products that cut cleanly, seal well, and don't slow you down. You find some European products hard to source locally.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="speak-card">
+    <div class="card-tab tab-slate"><span>💬</span> Student — useful question structures</div>
+    <div class="card-body">
+      <p style="margin-bottom:12px;font-size:0.87rem;color:var(--ink-mid)">Use these as a guide — not a script. Try each type of question naturally during the conversation.</p>
+      <div class="phrase-grid">
+        <div class="phrase-chip">
+          <strong>Opening</strong>
+          "What type of projects do you mainly work on?"
+        </div>
+        <div class="phrase-chip">
+          <strong>Choosing products</strong>
+          "What do you look for when selecting a vapour barrier?"
+        </div>
+        <div class="phrase-chip">
+          <strong>Finding problems</strong>
+          "What challenges do you typically face during fitting?"
+        </div>
+        <div class="phrase-chip">
+          <strong>Digging deeper</strong>
+          "Can you give me an example of that?"
+        </div>
+        <div class="phrase-chip">
+          <strong>Buying decisions</strong>
+          "Who usually decides which brand to use on a project?"
+        </div>
+        <div class="phrase-chip">
+          <strong>Improvement</strong>
+          "What would make this product easier to work with?"
+        </div>
+        <div class="phrase-chip">
+          <strong>Availability</strong>
+          "How easy is it for you to source this type of product locally?"
+        </div>
+        <div class="phrase-chip">
+          <strong>Comparison</strong>
+          "How does our product compare to what you normally use?"
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="speak-card">
+    <div class="card-tab tab-dark"><span>📋</span> Teacher — carpenter's answers (use freely, mix these up)</div>
+    <div class="card-body">
+      <ul class="prompt-list">
+        <li><span class="blt">"</span>Mainly loft conversions and the odd new-build. Timber frame, mostly. Cold roofs."</li>
+        <li><span class="blt">"</span>It needs to cut cleanly. If it tears when I score it, that's time wasted and money lost."</li>
+        <li><span class="blt">"</span>The tape is sometimes the problem — if it doesn't bond properly to the barrier, you lose your airtight seal."</li>
+        <li><span class="blt">"</span>I tend to stick with what I know. Changing products means a learning curve on site."</li>
+        <li><span class="blt">"</span>Availability matters. I can't be waiting a week for materials when I've got a customer waiting."</li>
+        <li><span class="blt">"</span>The instructions are sometimes in German or French. I just throw them away and figure it out."</li>
+        <li><span class="blt">"</span>Mostly it's me. The builder trusts me on this stuff. I recommend what I use."</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="speak-card">
+    <div class="card-tab tab-copper"><span>⚡</span> After the roleplay — question upgrade</div>
+    <div class="card-body">
+      <p style="margin-bottom:12px;font-size:0.87rem;color:var(--ink-mid)">Ask the student to convert these weak questions into strong open questions — spoken, without looking:</p>
+      <div class="compare-pair">
+        <div class="cc cc-weak">
+          <div class="cc-label">❌ Weak questions</div>
+          <p>"Is the product easy to use?"<br>"Do you have problems with it?"<br>"You like this brand?"<br>"Is price important for you?"<br>"Can you get it locally?"</p>
+        </div>
+        <div class="cc cc-strong">
+          <div class="cc-label">✓ Open questions — say these</div>
+          <p>"How easy is it to work with on site?"<br>"What kind of problems do you encounter?"<br>"What do you like about this brand?"<br>"How important is price in your decision?"<br>"How easy is it to source locally?"</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="btn-prev" onclick="goAct(2)">← Back</button>
+    <span class="step-counter">Activity 3 of 5</span>
+    <button class="btn-next" onclick="goAct(4)">Next Activity →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+  ACTIVITY 4 — RETAILER PITCH (IRELAND)
+══════════════════════════════ -->
+<div class="activity" id="act4">
+  <div class="act-label">
+    <div class="act-num">4</div>
+    <div class="act-info">
+      <h2>Retailer Pitch: Ireland</h2>
+      <p>Spoken product presentation · 10–12 minutes · Teacher plays an Irish builders' merchant</p>
+    </div>
+  </div>
+
+  <div class="teacher-note">
+    <strong>Teacher:</strong> You are a buyers' manager at a builders' merchant in Munster, Ireland. You stock membranes from two existing suppliers and are cautious about adding new brands. You care about price, availability, and whether your trade customers will actually buy it. Push back with practical objections. Listen for whether the student connects product benefits to <em>your</em> business, not just their product.
+  </div>
+
+  <div class="speak-card" style="overflow:hidden">
+    <div class="scenario-head">
+      <div class="scenario-icon si-copper">🏪</div>
+      <div>
+        <h3>The Scenario</h3>
+        <p>Student is visiting a builders' merchant in Ireland to present two products and discuss stocking them.</p>
+      </div>
+    </div>
+    <div class="card-body">
+      <p>You are visiting a builders' merchant in Munster, Ireland. They currently stock membranes from two other brands. Your goal is to explain the <strong>vapour barrier</strong> and the <strong>roofing membrane</strong> clearly, highlight their key benefits, and persuade the retailer that their customers — carpenters and roofers — will prefer your product.</p>
+      <div style="margin-top:14px">
+        <span class="product-tag">Product A: Interior Vapour Barrier</span>
+        <span class="product-tag blue">Product B: Roofing Membrane</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="role-cards">
+    <div class="role-card">
+      <div class="role-head rh-student">🎙 Student — Product Manager</div>
+      <div class="role-body">
+        <strong>Your goals:</strong>
+        <p>Explain both products clearly to a non-expert. Highlight the benefits for carpenters and roofers. Handle objections about price, availability, and brand recognition. Ask what the retailer needs from a supplier.</p>
+      </div>
+    </div>
+    <div class="role-card">
+      <div class="role-head rh-retailer">🏪 Teacher — Irish Retailer</div>
+      <div class="role-body">
+        <strong>Character notes:</strong>
+        <p>Your trade customers are mostly roofers and carpenters in Munster. You need products that sell themselves — your staff can't explain technical specs. Price must be competitive. Delivery lead times matter a lot in Ireland.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="speak-card">
+    <div class="card-tab tab-slate"><span>💬</span> Student — key phrases for this conversation</div>
+    <div class="card-body">
+      <div class="phrase-grid">
+        <div class="phrase-chip">
+          <strong>Introducing a product</strong>
+          "This product is designed for use in…"
+        </div>
+        <div class="phrase-chip">
+          <strong>Explaining the benefit</strong>
+          "The key benefit for your trade customers is…"
+        </div>
+        <div class="phrase-chip">
+          <strong>Handling an objection</strong>
+          "That's a fair point. What I can tell you is…"
+        </div>
+        <div class="phrase-chip">
+          <strong>Comparing products</strong>
+          "Compared with standard alternatives, this offers…"
+        </div>
+        <div class="phrase-chip">
+          <strong>Asking what they need</strong>
+          "What would you need from us as a supplier to make this work?"
+        </div>
+        <div class="phrase-chip">
+          <strong>Summarising</strong>
+          "So in simple terms, what we're offering is…"
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="speak-card">
+    <div class="card-tab tab-dark"><span>📋</span> Teacher — retailer objections (use 2 or 3)</div>
+    <div class="card-body">
+      <ul class="prompt-list">
+        <li><span class="blt">"</span>I've never heard of your brand. My roofers are loyal to what they know."</li>
+        <li><span class="blt">"</span>What's the lead time from Switzerland? I can't have gaps in my stock."</li>
+        <li><span class="blt">"</span>My staff won't understand the technical side. Is this easy to explain to a carpenter who just wants to get the job done?"</li>
+        <li><span class="blt">"</span>I've got two suppliers already. Why would I add a third and complicate things?"</li>
+        <li><span class="blt">"</span>Can you give me a sample pack? I'd want my best customer to try it before I commit."</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="speak-card">
+    <div class="card-tab tab-copper"><span>⚡</span> After the roleplay — spoken summary</div>
+    <div class="card-body">
+      <p style="margin-bottom:12px;font-size:0.87rem;color:var(--ink-mid)">Ask the student to summarise the conversation in 4–5 sentences — no notes. They should cover:</p>
+      <ul class="prompt-list">
+        <li><span class="blt">1</span> Which products did you present and to whom?</li>
+        <li><span class="blt">2</span> What objections did the retailer raise?</li>
+        <li><span class="blt">3</span> How did you respond to the objections?</li>
+        <li><span class="blt">4</span> What is the next step?</li>
+      </ul>
+      <p class="note-small">This summarising skill is essential for reporting back to your manager or team after a customer visit.</p>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="btn-prev" onclick="goAct(3)">← Back</button>
+    <span class="step-counter">Activity 4 of 5</span>
+    <button class="btn-next" onclick="goAct(5)">Next Activity →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+  ACTIVITY 5 — PRODUCT STRATEGY UPDATE
+══════════════════════════════ -->
+<div class="activity" id="act5">
+  <div class="act-label">
+    <div class="act-num">5</div>
+    <div class="act-info">
+      <h2>Product Strategy Update</h2>
+      <p>Fluency task · 2-minute spoken presentation + self-assessment · 10–12 minutes</p>
+    </div>
+  </div>
+
+  <div class="teacher-note">
+    <strong>Teacher:</strong> You are a senior manager from Swiss HQ visiting for a strategy update. The student must brief you on the UK and Ireland market — what they have learned from customers, what product opportunities they have identified, and what the next steps are. No notes allowed. Use the 2-minute timer. After they speak, work through the self-assessment together, then deliver 3-part feedback.
+  </div>
+
+  <!-- Timer -->
+  <div class="timer-block">
+    <div class="timer-info">
+      <strong>2-Minute Strategy Update</strong>
+      <span>No notes · Speak continuously · UK &amp; Ireland market</span>
+    </div>
+    <div class="timer-btns">
+      <button class="btn-timer btn-rst" onclick="resetTimer()">Reset</button>
+      <button class="btn-timer btn-go" id="timerBtn" onclick="toggleTimer()">▶ Start</button>
+    </div>
+    <div class="timer-display" id="timerDisplay">2:00</div>
+  </div>
+
+  <div class="speak-prompt">
+    <div class="sp-label">The scenario</div>
+    <h3>"Tell me what you've learned from the UK and Ireland market, and what your product recommendations are."</h3>
+    <p>Give a 2-minute spoken update covering market findings, customer needs, product opportunities, and next steps. No notes.</p>
+  </div>
+
+  <div class="speak-card">
+    <div class="card-tab tab-slate"><span>🏗️</span> Structure to keep in your head</div>
+    <div class="card-body">
+      <ul class="prompt-list">
+        <li><span class="blt">1st</span> <strong>Market situation</strong> — <em>"At the moment, we see strong demand for… in England and Ireland."</em></li>
+        <li><span class="blt">2nd</span> <strong>Customer research findings</strong> — <em>"Based on conversations with carpenters and roofers, the main pain points are…"</em></li>
+        <li><span class="blt">3rd</span> <strong>Product opportunity</strong> — <em>"This creates an opportunity to develop / improve…"</em></li>
+        <li><span class="blt">4th</span> <strong>Retailer insight</strong> — <em>"Retailers in Ireland have told us that… which means we need to…"</em></li>
+        <li><span class="blt">5th</span> <strong>Next steps</strong> — <em>"The next step is to discuss technical specifications with our supplier and…"</em></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Self-assessment -->
+  <div class="speak-card">
+    <div class="card-tab tab-copper"><span>✅</span> Self-Assessment — student reviews their own performance</div>
+    <div class="card-body">
+      <p style="margin-bottom:12px;font-size:0.87rem;color:var(--ink-mid)">Click each point if you feel you achieved it. Be honest — this helps identify what to practise next.</p>
+      <ul class="checklist" id="selfCheck">
+        <li onclick="toggleCheck(this)"><span class="check-box">✓</span> I described the market situation clearly — not just my products.</li>
+        <li onclick="toggleCheck(this)"><span class="check-box">✓</span> I used customer research language — "based on our research… / we have noticed that…"</li>
+        <li onclick="toggleCheck(this)"><span class="check-box">✓</span> I mentioned at least two customer types and what they care about.</li>
+        <li onclick="toggleCheck(this)"><span class="check-box">✓</span> I identified a product opportunity — not just a problem.</li>
+        <li onclick="toggleCheck(this)"><span class="check-box">✓</span> I used professional vocabulary — not everyday words like "things" or "problems".</li>
+        <li onclick="toggleCheck(this)"><span class="check-box">✓</span> I finished with a clear next step — not a vague statement.</li>
+        <li onclick="toggleCheck(this)"><span class="check-box">✓</span> I spoke for most of the 2 minutes without long pauses.</li>
+        <li onclick="toggleCheck(this)"><span class="check-box">✓</span> My sentences had a clear subject, verb, and object — no incomplete ideas.</li>
+      </ul>
+      <p class="note-small" id="checkScore" style="margin-top:12px">Ticked: 0 of 8</p>
+    </div>
+  </div>
+
+  <div class="speak-card">
+    <div class="card-tab tab-dark"><span>💡</span> Teacher — 3-part feedback</div>
+    <div class="card-body">
+      <ul class="prompt-list">
+        <li><span class="blt">①</span> <strong>Praise specifically</strong> — e.g. <em>"You connected the customer research to the product opportunity very clearly. That structure is exactly right for a strategy meeting."</em></li>
+        <li><span class="blt">②</span> <strong>One correction</strong> — e.g. <em>"You said 'we make researches' — the correct phrase is 'we conduct market research'. No plural."</em></li>
+        <li><span class="blt">③</span> <strong>One upgrade</strong> — e.g. <em>"Instead of 'the product is good for wet weather', say: 'the membrane performs consistently in exposed conditions'. That's the level of language for a strategy presentation."</em></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="btn-prev" onclick="goAct(4)">← Back</button>
+    <span class="step-counter">Activity 5 of 5</span>
+    <button class="btn-next" onclick="goAct(6)">Finish Lesson →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+  FINAL SCREEN
+══════════════════════════════ -->
+<div class="activity" id="act6">
+  <div class="final-wrap">
+    <div class="final-top">
+      <span class="f-icon">🎯</span>
+      <h2>Lesson complete.</h2>
+      <p>Every activity today was built around real conversations you have at work — with carpenters, retailers, and your own team. That is the fastest route to confident professional English.</p>
+    </div>
+    <div class="final-body">
+
+      <div class="summary-grid">
+        <div class="sum-item">
+          <h4>Products &amp; People</h4>
+          <p>Describing vapour barriers, roofing membranes, and cladding to different audiences — in plain, clear English.</p>
+        </div>
+        <div class="sum-item">
+          <h4>Say It Better</h4>
+          <p>Five professional upgrades: manufacture, responsible for, pain point, key benefit, based on our research.</p>
+        </div>
+        <div class="sum-item">
+          <h4>Carpenter Interview</h4>
+          <p>Open questions, active follow-up, and listening for what customers don't say directly.</p>
+        </div>
+        <div class="sum-item">
+          <h4>Retailer Pitch</h4>
+          <p>Presenting two products, handling objections, and connecting benefits to the retailer's business — not just the product spec.</p>
+        </div>
+      </div>
+
+      <div class="hw-block">
+        <h4>📋 Homework — spoken, not written</h4>
+        <ul>
+          <li>Prepare a 2-minute spoken explanation of the vapour barrier for a carpenter who has never used your brand. Cover: what it is, how it is fitted, what problem it solves, and one key advantage over alternatives.</li>
+          <li>Think of a real objection a customer in England or Ireland has raised recently. Practise your spoken response — try to use at least one of the upgrade phrases from today.</li>
+          <li>Say these three sentences aloud ten times each: <em>"We manufacture membranes designed to prevent moisture ingress." / "Based on our customer research, we have noticed that…" / "The key benefit for your trade customers is…"</em></li>
+        </ul>
+      </div>
+
+      <button class="btn-restart" onclick="window.location.reload()">↺ Start Lesson Again</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- /canvas -->
+
+<!-- ════════════════════ JS ════════════════════ -->
+<script>
+function goAct(n) {
+  document.querySelectorAll('.activity').forEach(a => a.classList.remove('active'));
+  const t = document.getElementById('act'+n);
+  if(t) t.classList.add('active');
+  for(let i=1;i<=5;i++){
+    const s = document.getElementById('ps'+i);
+    if(!s) continue;
+    s.classList.remove('active','done');
+    if(i < n) s.classList.add('done');
+    else if(i === n) s.classList.add('active');
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function toggleCheck(li) {
+  li.classList.toggle('checked');
+  const total = document.querySelectorAll('#selfCheck li').length;
+  const checked = document.querySelectorAll('#selfCheck li.checked').length;
+  document.getElementById('checkScore').textContent = 'Ticked: '+checked+' of '+total;
+}
+
+let timerRunning = false;
+let timerSeconds = 120;
+let timerInterval = null;
+
+function toggleTimer() {
+  if(timerRunning) {
+    clearInterval(timerInterval);
+    timerRunning = false;
+    document.getElementById('timerBtn').textContent = '▶ Resume';
+    document.getElementById('timerDisplay').classList.remove('running');
+  } else {
+    if(timerSeconds <= 0) return;
+    timerRunning = true;
+    document.getElementById('timerBtn').textContent = '⏸ Pause';
+    document.getElementById('timerDisplay').classList.add('running');
+    timerInterval = setInterval(() => {
+      timerSeconds--;
+      const m = Math.floor(timerSeconds/60);
+      const s = timerSeconds%60;
+      const d = document.getElementById('timerDisplay');
+      d.textContent = m+':'+(s<10?'0':'')+s;
+      if(timerSeconds <= 0) {
+        clearInterval(timerInterval);
+        timerRunning = false;
+        document.getElementById('timerBtn').textContent = 'Done!';
+        document.getElementById('timerBtn').disabled = true;
+        d.classList.remove('running');
+        d.classList.add('done');
+        d.textContent = '0:00';
+      }
+    }, 1000);
+  }
+}
+
+function resetTimer() {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  timerSeconds = 120;
+  const d = document.getElementById('timerDisplay');
+  d.textContent = '2:00';
+  d.classList.remove('running','done');
+  const b = document.getElementById('timerBtn');
+  b.textContent = '▶ Start';
+  b.disabled = false;
+}
+</script>
+</body>
+</html>

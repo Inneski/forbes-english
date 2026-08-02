@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grammar Dojo – Exercises! 🥋</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sky:#e8f4fd; --yellow:#ffd93d; --orange:#ff6b35; --red:#e63946;
+  --blue:#4ecdc4; --green:#6bcb77; --purple:#c77dff; --white:#ffffff;
+  --ink:#2d2d2d; --soft:#f9f5ef;
+  --shadow: 0 5px 0 #ccdbe8, 0 8px 20px rgba(0,0,0,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;background:var(--sky);color:var(--ink);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:radial-gradient(circle,#ffd93d55 2px,transparent 2px),radial-gradient(circle,#ff6b3544 2px,transparent 2px),radial-gradient(circle,#4ecdc455 2px,transparent 2px);
+  background-size:60px 60px,80px 80px,70px 70px;background-position:0 0,30px 40px,15px 60px;}
+.page{position:relative;z-index:1;max-width:780px;margin:0 auto;padding:1.2rem 1rem 3rem;}
+
+/* HEADER */
+header{background:var(--white);border-radius:22px;padding:1.5rem 1.5rem 1.2rem;text-align:center;
+  box-shadow:var(--shadow);margin-bottom:1.4rem;animation:popIn .6s cubic-bezier(.34,1.56,.64,1) both;}
+.mascot{font-size:3rem;display:block;animation:bounce 2s ease-in-out infinite;}
+header h1{font-family:'Fredoka One',cursive;font-size:clamp(1.8rem,5vw,2.8rem);color:var(--red);line-height:1.1;}
+header h1 span{color:var(--orange);}
+header p{font-size:.95rem;font-weight:700;color:#888;margin-top:.3rem;}
+
+/* PROGRESS BAR */
+.progress-wrap{background:var(--white);border-radius:16px;padding:1rem 1.3rem;
+  box-shadow:var(--shadow);margin-bottom:1.2rem;animation:popIn .5s cubic-bezier(.34,1.56,.64,1) both .1s;}
+.progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;}
+.progress-top .label{font-family:'Fredoka One',cursive;font-size:.9rem;color:#aaa;}
+.score-badge{background:var(--yellow);color:var(--ink);font-family:'Fredoka One',cursive;
+  font-size:1rem;padding:.2rem .8rem;border-radius:20px;box-shadow:0 3px 0 #e6c400;}
+.bar-bg{background:#eee;border-radius:10px;height:12px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--orange),var(--red));
+  transition:width .5s cubic-bezier(.34,1.56,.64,1);}
+
+/* SECTION TABS */
+.tabs{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap;}
+.tab-btn{font-family:'Fredoka One',cursive;font-size:.85rem;padding:.4rem .9rem;border:none;
+  border-radius:20px;cursor:pointer;background:var(--white);color:#aaa;
+  box-shadow:0 3px 0 #ccdbe8;transition:all .15s;font-family:'Nunito',sans-serif;font-weight:800;}
+.tab-btn.active{background:var(--red);color:var(--white);box-shadow:0 3px 0 #a82030;color:white;}
+.tab-btn:hover:not(.active){background:#f0f7ff;color:var(--ink);}
+
+/* QUESTION CARD */
+.q-card{background:var(--white);border-radius:20px;padding:1.5rem;box-shadow:var(--shadow);
+  margin-bottom:1rem;animation:fadeSlide .4s ease both;position:relative;overflow:hidden;}
+.q-card::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:var(--red);}
+.q-card.must-q::before{background:#0077aa;}
+.q-card.haveto-q::before{background:var(--green);}
+.q-card.mixed-q::before{background:var(--purple);}
+
+.q-num{font-size:.7rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:#ccc;margin-bottom:.5rem;}
+.q-type-badge{display:inline-block;font-size:.65rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+  padding:.15rem .5rem;border-radius:20px;margin-left:.5rem;vertical-align:middle;}
+.badge-regret{background:#ffeaea;color:var(--red);}
+.badge-must{background:#e8f7ff;color:#0077aa;}
+.badge-haveto{background:#eefbee;color:#1a7a1a;}
+.badge-mixed{background:#f5eeff;color:#7b47c1;}
+
+.q-text{font-size:1.1rem;font-weight:700;line-height:1.6;margin-bottom:1rem;color:var(--ink);}
+.q-text .blank{display:inline-block;min-width:120px;border-bottom:3px solid var(--orange);
+  text-align:center;padding:0 4px;font-style:italic;color:#bbb;vertical-align:bottom;}
+.q-text .blank.filled-correct{color:var(--green);border-color:var(--green);}
+.q-text .blank.filled-wrong{color:var(--red);border-color:var(--red);}
+.q-german{font-size:.82rem;color:#bbb;font-style:italic;font-weight:600;margin-bottom:1rem;}
+.q-emoji{font-size:1.4rem;margin-bottom:.3rem;}
+
+/* MC OPTIONS */
+.options{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;}
+@media(max-width:480px){.options{grid-template-columns:1fr;}}
+.opt-btn{padding:.7rem 1rem;border:2.5px solid #e0e0e0;border-radius:12px;background:var(--white);
+  font-family:'Nunito',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;text-align:left;
+  transition:all .15s;color:var(--ink);}
+.opt-btn:hover:not(:disabled){border-color:var(--orange);background:#fff8f0;transform:translateY(-2px);}
+.opt-btn.correct{border-color:var(--green);background:#eefbee;color:#1a7a1a;}
+.opt-btn.wrong{border-color:var(--red);background:#ffeaea;color:var(--red);}
+.opt-btn:disabled{cursor:default;}
+
+/* WORD BANK (drag/click) */
+.word-bank{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.8rem;}
+.word-chip{padding:.4rem .85rem;background:#f0f7ff;border:2px solid #c5ddf0;border-radius:20px;
+  font-weight:800;font-size:.9rem;cursor:pointer;transition:all .15s;user-select:none;}
+.word-chip:hover:not(.used){background:#daeeff;transform:translateY(-2px);}
+.word-chip.used{opacity:.35;cursor:default;text-decoration:line-through;}
+.word-chip.correct-chip{background:#eefbee;border-color:var(--green);color:#1a7a1a;}
+.word-chip.wrong-chip{background:#ffeaea;border-color:var(--red);color:var(--red);}
+
+/* BUILD sentence */
+.build-area{min-height:48px;background:#f9f9f9;border:2.5px dashed #ddd;border-radius:12px;
+  padding:.6rem .8rem;display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;margin-bottom:.8rem;
+  font-weight:700;font-size:.95rem;}
+.build-word{padding:.3rem .7rem;background:var(--white);border:2px solid #ccc;border-radius:20px;
+  cursor:pointer;font-size:.85rem;font-weight:700;transition:all .15s;}
+.build-word:hover{background:#ffeaea;border-color:var(--red);}
+.build-placeholder{color:#ccc;font-style:italic;font-size:.85rem;}
+
+/* FEEDBACK */
+.feedback{margin-top:.8rem;padding:.7rem 1rem;border-radius:12px;font-weight:700;font-size:.9rem;
+  display:none;align-items:center;gap:.5rem;}
+.feedback.show{display:flex;}
+.feedback.correct-fb{background:#eefbee;color:#1a7a1a;border:2px solid #a3ddb0;}
+.feedback.wrong-fb{background:#ffeaea;color:#a32020;border:2px solid #f0b0b0;}
+
+/* NEXT BTN */
+.next-btn{display:none;margin-top:.8rem;padding:.7rem 1.8rem;background:var(--orange);color:white;
+  border:none;border-radius:20px;font-family:'Nunito',sans-serif;font-weight:800;font-size:1rem;
+  cursor:pointer;box-shadow:0 4px 0 #c04a10;transition:all .15s;}
+.next-btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 #c04a10;}
+.next-btn.show{display:inline-flex;align-items:center;gap:.4rem;}
+
+/* FINISH SCREEN */
+.finish-screen{display:none;text-align:center;background:var(--white);border-radius:22px;
+  padding:2.5rem 2rem;box-shadow:var(--shadow);animation:popIn .6s cubic-bezier(.34,1.56,.64,1) both;}
+.finish-screen.show{display:block;}
+.finish-trophy{font-size:4rem;display:block;animation:bounce 1.5s ease-in-out infinite;}
+.finish-screen h2{font-family:'Fredoka One',cursive;font-size:2.2rem;color:var(--orange);margin:.5rem 0;}
+.finish-screen p{font-size:1rem;font-weight:700;color:#777;margin-bottom:1.2rem;}
+.big-score{font-family:'Fredoka One',cursive;font-size:3.5rem;color:var(--red);}
+.restart-btn{padding:.8rem 2rem;background:var(--red);color:white;border:none;border-radius:20px;
+  font-family:'Nunito',sans-serif;font-weight:800;font-size:1.05rem;cursor:pointer;
+  box-shadow:0 4px 0 #a82030;transition:all .15s;margin-top:.5rem;}
+.restart-btn:hover{transform:translateY(-2px);}
+
+/* CONFETTI */
+.confetti-wrap{position:fixed;inset:0;pointer-events:none;z-index:100;}
+.cf{position:absolute;width:10px;height:10px;border-radius:2px;animation:fall linear forwards;}
+@keyframes fall{0%{transform:translateY(-20px) rotate(0deg);opacity:1;}100%{transform:translateY(100vh) rotate(720deg);opacity:0;}}
+
+/* ANIMATIONS */
+@keyframes popIn{from{opacity:0;transform:scale(.85) translateY(10px);}to{opacity:1;transform:scale(1) translateY(0);}}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+.shake{animation:shake .3s ease;}
+
+input[type=text].fill-input{border:2.5px solid #ddd;border-radius:10px;padding:.5rem .8rem;
+  font-family:'Nunito',sans-serif;font-weight:700;font-size:1rem;width:100%;margin-bottom:.5rem;
+  outline:none;transition:border-color .2s;}
+input[type=text].fill-input:focus{border-color:var(--orange);}
+input[type=text].fill-input.correct-input{border-color:var(--green);background:#eefbee;}
+input[type=text].fill-input.wrong-input{border-color:var(--red);background:#ffeaea;}
+</style>
+</head>
+<body>
+<div class="page">
+
+<header>
+  <span class="mascot">🥋</span>
+  <h1>Grammar <span>Dojo</span> – Exercises! 💪</h1>
+  <p>Should have · Must · Have to &nbsp;— Let's train your English! 🏆</p>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-top">
+    <span class="label" id="progressLabel">Question 1 of 15</span>
+    <span class="score-badge">⭐ <span id="scoreDisplay">0</span> pts</span>
+  </div>
+  <div class="bar-bg"><div class="bar-fill" id="barFill" style="width:0%"></div></div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="filterSection('all')">🥋 All</button>
+  <button class="tab-btn" onclick="filterSection('regret')">😬 Should have</button>
+  <button class="tab-btn" onclick="filterSection('must')">💪 Must</button>
+  <button class="tab-btn" onclick="filterSection('haveto')">📋 Have to</button>
+</div>
+
+<div id="questionArea"></div>
+<div class="finish-screen" id="finishScreen">
+  <span class="finish-trophy">🏆</span>
+  <h2>Training Complete!</h2>
+  <p id="finishMsg">Awesome work, champion!</p>
+  <div class="big-score" id="finalScore">0 / 15</div>
+  <br>
+  <button class="restart-btn" onclick="restart()">🔄 Train Again!</button>
+</div>
+
+</div>
+
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<script>
+const ALL_QUESTIONS = [
+
+  // ── MULTIPLE CHOICE: Should have ──
+  {type:'mc', section:'regret', emoji:'😬',
+   prompt:'I _____ my guard up! (Ich hätte meine Deckung oben halten sollen.)',
+   german:'Ich hätte meine Deckung oben halten sollen.',
+   options:['should have kept','must keep','have to keep','had kept'],
+   answer:'should have kept', badge:'badge-regret', label:'Should have'},
+
+  {type:'mc', section:'regret', emoji:'⏰',
+   prompt:'I _____ earlier! (Ich hätte früher gekickt haben sollen.)',
+   german:'Ich hätte früher kicken sollen.',
+   options:['should have kicked','must kicked','have to kicked','should kick'],
+   answer:'should have kicked', badge:'badge-regret', label:'Should have'},
+
+  {type:'mc', section:'regret', emoji:'😤',
+   prompt:'We _____ more sparring. (Wir hätten mehr Sparring üben sollen.)',
+   german:'Wir hätten mehr Sparring üben sollen.',
+   options:['should have practised','must practise','had to practise','should practised'],
+   answer:'should have practised', badge:'badge-regret', label:'Should have'},
+
+  {type:'mc', section:'regret', emoji:'💨',
+   prompt:'I _____ my feet faster! (Ich hätte meine Füße schneller bewegen sollen.)',
+   german:'Ich hätte meine Füße schneller bewegen sollen.',
+   options:['should have moved','must have moved','have to moved','should moved'],
+   answer:'should have moved', badge:'badge-regret', label:'Should have'},
+
+  // ── FILL IN THE BLANK: Must ──
+  {type:'fill', section:'must', emoji:'🏋️',
+   prompt:'I _____ harder every day! (Ich muss jeden Tag härter trainieren!)',
+   german:'Ich muss jeden Tag härter trainieren!',
+   prefix:'I ', suffix:' harder every day!',
+   answer:'must train', accept:['must train'], badge:'badge-must', label:'Must'},
+
+  {type:'fill', section:'must', emoji:'🎯',
+   prompt:'She _____ her roundhouse kick. (Sie muss ihren Roundhouse-Kick üben.)',
+   german:'Sie muss ihren Roundhouse-Kick üben.',
+   prefix:'She ', suffix:' her roundhouse kick.',
+   answer:'must practise', accept:['must practise','must practice'], badge:'badge-must', label:'Must'},
+
+  {type:'fill', section:'must', emoji:'✊',
+   prompt:'We _____ — fighting! (Wir dürfen nicht aufgeben!)',
+   german:'Wir dürfen nicht aufgeben — kämpft weiter!',
+   prefix:'We ', suffix:' — fighting!',
+   answer:'must not give up', accept:['must not give up',"mustn't give up"], badge:'badge-must', label:'Must'},
+
+  // ── WORD ORDER: Have to ──
+  {type:'order', section:'haveto', emoji:'🙇',
+   prompt:'Put the words in the right order!',
+   german:'Wir müssen uns verbeugen, wenn wir das Dojo betreten.',
+   words:['We','have to','bow','when','we','enter','the dojo'],
+   answer:'We have to bow when we enter the dojo', badge:'badge-haveto', label:'Have to'},
+
+  {type:'order', section:'haveto', emoji:'👕',
+   prompt:'Put the words in the right order!',
+   german:'Er muss einen weißen Dobok tragen.',
+   words:['He','has to','wear','a white','dobok'],
+   answer:'He has to wear a white dobok', badge:'badge-haveto', label:'Have to'},
+
+  {type:'order', section:'haveto', emoji:'😵',
+   prompt:'Put the words in the right order!',
+   german:'Ich musste nach dem Training 50 Liegestütze machen!',
+   words:['I','had to do','50 push-ups','after training'],
+   answer:'I had to do 50 push-ups after training', badge:'badge-haveto', label:'Have to'},
+
+  // ── MC: Must vs Have to ──
+  {type:'mc', section:'mixed', emoji:'🤔',
+   prompt:'"I _____ train harder." — You WANT to, it comes from YOU.',
+   german:'"Ich muss härter trainieren." — Dein eigener Wille!',
+   options:['must','have to','has to','had to'],
+   answer:'must', badge:'badge-mixed', label:'Must vs Have to'},
+
+  {type:'mc', section:'mixed', emoji:'📏',
+   prompt:'"She _____ bow to the coach." — It is a DOJO RULE.',
+   german:'"Sie muss den Coach begrüßen." — Das ist eine Regel!',
+   options:['has to','must','should have','had'],
+   answer:'has to', badge:'badge-mixed', label:'Must vs Have to'},
+
+  {type:'mc', section:'mixed', emoji:'😂',
+   prompt:'"We _____ fight today — just patterns!" — The coach said so.',
+   german:'"Wir müssen heute nicht kämpfen!" — Der Coach hat es gesagt.',
+   options:["don't have to","mustn't","shouldn't have","don't must"],
+   answer:"don't have to", badge:'badge-mixed', label:'Must vs Have to'},
+
+  // ── FILL: Should have ──
+  {type:'fill', section:'regret', emoji:'😬',
+   prompt:'I _____ not so nervous! (Ich hätte nicht so nervös sein sollen.)',
+   german:'Ich hätte nicht so nervös sein sollen.',
+   prefix:'I ', suffix:' so nervous!',
+   answer:'should not have been', accept:["should not have been","shouldn't have been"], badge:'badge-regret', label:'Should have'},
+
+  // ── MC: Mixed wrap-up ──
+  {type:'mc', section:'mixed', emoji:'🧠',
+   prompt:'Which sentence is CORRECT for a past regret?',
+   german:'Welcher Satz drückt ein vergangenes Bedauern aus?',
+   options:['I should have listened.','I must have listened.','I have to listened.','I should listen.'],
+   answer:'I should have listened.', badge:'badge-mixed', label:'Mix up!'},
+];
+
+let questions = [...ALL_QUESTIONS];
+let current = 0;
+let score = 0;
+let answered = false;
+let builtWords = [];
+let activeSection = 'all';
+
+function filterSection(sec){
+  activeSection = sec;
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>{
+    b.classList.toggle('active', ['all','regret','must','haveto','mixed'][i]===sec||(!['regret','must','haveto','mixed'].includes(sec)&&i===0));
+  });
+  if(sec==='all') questions=[...ALL_QUESTIONS];
+  else questions=ALL_QUESTIONS.filter(q=>q.section===sec);
+  restart();
+}
+
+function restart(){
+  current=0; score=0; answered=false; builtWords=[];
+  document.getElementById('finishScreen').classList.remove('show');
+  document.getElementById('scoreDisplay').textContent='0';
+  updateBar();
+  renderQuestion();
+}
+
+function updateBar(){
+  const pct = questions.length ? (current/questions.length)*100 : 0;
+  document.getElementById('barFill').style.width=pct+'%';
+  document.getElementById('progressLabel').textContent=`Question ${Math.min(current+1,questions.length)} of ${questions.length}`;
+}
+
+function renderQuestion(){
+  if(current>=questions.length){showFinish();return;}
+  updateBar();
+  answered=false; builtWords=[];
+  const q=questions[current];
+  const area=document.getElementById('questionArea');
+  area.innerHTML='';
+
+  let cardClass='q-card';
+  if(q.section==='must') cardClass+=' must-q';
+  else if(q.section==='haveto') cardClass+=' haveto-q';
+  else if(q.section==='mixed') cardClass+=' mixed-q';
+
+  let inner='';
+  inner+=`<div class="q-num">Question ${current+1} <span class="q-type-badge ${q.badge}">${q.label}</span></div>`;
+  inner+=`<div class="q-emoji">${q.emoji}</div>`;
+
+  if(q.type==='mc'){
+    inner+=`<div class="q-text">${q.prompt}</div>`;
+    inner+=`<div class="q-german">${q.german}</div>`;
+    inner+=`<div class="options" id="optGrid">`;
+    q.options.forEach((o,i)=>{
+      inner+=`<button class="opt-btn" onclick="checkMC(this,'${escQ(o)}','${escQ(q.answer)}')">${o}</button>`;
+    });
+    inner+=`</div>`;
+  }
+
+  else if(q.type==='fill'){
+    inner+=`<div class="q-text">${q.prompt}</div>`;
+    inner+=`<div class="q-german">${q.german}</div>`;
+    inner+=`<div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-bottom:.5rem;">`;
+    inner+=`<span style="font-weight:700">${q.prefix}</span>`;
+    inner+=`<input type="text" class="fill-input" id="fillInput" placeholder="type here…" style="width:200px" onkeydown="if(event.key==='Enter')checkFill()" autocomplete="off">`;
+    inner+=`<span style="font-weight:700">${q.suffix}</span>`;
+    inner+=`</div>`;
+    inner+=`<button class="next-btn show" style="background:var(--blue);box-shadow:0 4px 0 #2a9d94;" onclick="checkFill()">✅ Check!</button>`;
+  }
+
+  else if(q.type==='order'){
+    inner+=`<div class="q-text">${q.prompt}</div>`;
+    inner+=`<div class="q-german">${q.german}</div>`;
+    // shuffled word bank
+    const shuffled=[...q.words].sort(()=>Math.random()-.5);
+    inner+=`<div class="word-bank" id="wordBank">`;
+    shuffled.forEach((w,i)=>{
+      inner+=`<div class="word-chip" id="chip_${i}" onclick="addWord('${escQ(w)}',${i})">${w}</div>`;
+    });
+    inner+=`</div>`;
+    inner+=`<div class="build-area" id="buildArea"><span class="build-placeholder" id="buildPlaceholder">Tap words to build your sentence…</span></div>`;
+    inner+=`<div style="display:flex;gap:.6rem;flex-wrap:wrap;">`;
+    inner+=`<button class="next-btn show" style="background:var(--blue);box-shadow:0 4px 0 #2a9d94;" onclick="checkOrder('${escQ(q.answer)}')">✅ Check!</button>`;
+    inner+=`<button class="next-btn show" style="background:#ccc;box-shadow:0 4px 0 #aaa;color:#555;" onclick="clearOrder()">🔄 Clear</button>`;
+    inner+=`</div>`;
+  }
+
+  inner+=`<div class="feedback" id="feedback"></div>`;
+  if(q.type!=='fill'&&q.type!=='order') inner+=`<button class="next-btn" id="nextBtn" onclick="nextQ()">Next ➡️</button>`;
+  else inner+=`<button class="next-btn" id="nextBtn" style="display:none" onclick="nextQ()">Next ➡️</button>`;
+
+  const card=document.createElement('div');
+  card.className=cardClass;
+  card.innerHTML=inner;
+  area.appendChild(card);
+
+  if(q.type==='fill') setTimeout(()=>{const el=document.getElementById('fillInput');if(el)el.focus();},50);
+}
+
+function escQ(s){return (s+'').replace(/'/g,"\\'");}
+
+function checkMC(btn, chosen, correct){
+  if(answered) return;
+  answered=true;
+  const btns=document.querySelectorAll('.opt-btn');
+  btns.forEach(b=>b.disabled=true);
+  const isCorrect = chosen===correct;
+  if(isCorrect){btn.classList.add('correct'); score++; document.getElementById('scoreDisplay').textContent=score; showFeedback(true);}
+  else{
+    btn.classList.add('wrong');
+    btns.forEach(b=>{if(b.textContent===correct) b.classList.add('correct');});
+    showFeedback(false,'The correct answer is: '+correct);
+  }
+  document.getElementById('nextBtn').classList.add('show');
+}
+
+function checkFill(){
+  if(answered) return;
+  const inp=document.getElementById('fillInput');
+  if(!inp) return;
+  const val=inp.value.trim().toLowerCase();
+  const q=questions[current];
+  const isCorrect=q.accept.some(a=>a.toLowerCase()===val);
+  answered=true;
+  inp.disabled=true;
+  if(isCorrect){inp.classList.add('correct-input');score++;document.getElementById('scoreDisplay').textContent=score;showFeedback(true);}
+  else{inp.classList.add('wrong-input');showFeedback(false,'The answer is: '+q.answer);}
+  document.getElementById('nextBtn').style.display='';
+  document.getElementById('nextBtn').classList.add('show');
+  // hide check btn
+  const chk=document.querySelector('.next-btn[style*="blue"]');
+  if(chk) chk.style.display='none';
+}
+
+let chipMap = {};
+function addWord(word, idx){
+  const chip=document.getElementById('chip_'+idx);
+  if(chip.classList.contains('used')) return;
+  chip.classList.add('used');
+  builtWords.push({word,idx});
+  renderBuildArea();
+}
+function renderBuildArea(){
+  const area=document.getElementById('buildArea');
+  if(!area) return;
+  if(builtWords.length===0){area.innerHTML='<span class="build-placeholder" id="buildPlaceholder">Tap words to build your sentence…</span>';return;}
+  area.innerHTML='';
+  builtWords.forEach((item,i)=>{
+    const span=document.createElement('span');
+    span.className='build-word';
+    span.textContent=item.word;
+    span.title='Click to remove';
+    span.onclick=()=>removeWord(i);
+    area.appendChild(span);
+  });
+}
+function removeWord(i){
+  if(answered) return;
+  const item=builtWords[i];
+  const chip=document.getElementById('chip_'+item.idx);
+  if(chip) chip.classList.remove('used');
+  builtWords.splice(i,1);
+  renderBuildArea();
+}
+function clearOrder(){
+  if(answered) return;
+  builtWords=[];
+  document.querySelectorAll('.word-chip').forEach(c=>c.classList.remove('used'));
+  renderBuildArea();
+}
+function checkOrder(correct){
+  if(answered) return;
+  const built=builtWords.map(b=>b.word).join(' ');
+  const isCorrect=built.toLowerCase()===correct.toLowerCase();
+  answered=true;
+  document.querySelectorAll('.word-chip').forEach(c=>c.style.pointerEvents='none');
+  document.querySelectorAll('.build-word').forEach(w=>w.style.pointerEvents='none');
+  if(isCorrect){score++;document.getElementById('scoreDisplay').textContent=score;showFeedback(true);
+    document.querySelectorAll('.word-chip.used').forEach(c=>c.classList.add('correct-chip'));}
+  else{showFeedback(false,'Correct order: '+correct);
+    document.querySelectorAll('.word-chip.used').forEach(c=>c.classList.add('wrong-chip'));}
+  // show next, hide check+clear
+  document.getElementById('nextBtn').style.display='';
+  document.getElementById('nextBtn').classList.add('show');
+  document.querySelectorAll('.next-btn[style*="blue"],.next-btn[style*="aaa"]').forEach(b=>b.style.display='none');
+}
+
+function showFeedback(correct, msg=''){
+  const fb=document.getElementById('feedback');
+  if(correct){
+    const phrases=['Great kick! 🦵','Excellent! 🌟','Perfect form! 🥋','Fantastic! 💪','You nailed it! 🎯'];
+    fb.innerHTML='✅ '+phrases[Math.floor(Math.random()*phrases.length)];
+    fb.className='feedback show correct-fb';
+    spawnConfetti(8);
+  } else {
+    fb.innerHTML='❌ Oops! '+(msg||'Try again next time! Keep training! 💪');
+    fb.className='feedback show wrong-fb';
+    const card=document.querySelector('.q-card');
+    if(card){card.classList.add('shake');setTimeout(()=>card.classList.remove('shake'),400);}
+  }
+}
+
+function nextQ(){
+  current++;
+  renderQuestion();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function showFinish(){
+  document.getElementById('questionArea').innerHTML='';
+  const fs=document.getElementById('finishScreen');
+  fs.classList.add('show');
+  const pct=Math.round((score/questions.length)*100);
+  document.getElementById('finalScore').textContent=score+' / '+questions.length;
+  let msg='';
+  if(pct===100) msg='PERFECT! 🏆 Black belt English!';
+  else if(pct>=80) msg='Amazing! You\'re a red belt! 🔴';
+  else if(pct>=60) msg='Good work! Keep training! 💪';
+  else msg='Don\'t give up — every champion starts somewhere! 🥋';
+  document.getElementById('finishMsg').textContent=msg;
+  spawnConfetti(30);
+  document.getElementById('barFill').style.width='100%';
+}
+
+function spawnConfetti(n){
+  const wrap=document.getElementById('confettiWrap');
+  const colors=['#ffd93d','#ff6b35','#e63946','#4ecdc4','#6bcb77','#c77dff'];
+  for(let i=0;i<n;i++){
+    setTimeout(()=>{
+      const c=document.createElement('div');
+      c.className='cf';
+      c.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*30}%;background:${colors[Math.floor(Math.random()*colors.length)]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;animation-duration:${1.2+Math.random()*1.5}s;animation-delay:${Math.random()*.4}s;border-radius:${Math.random()>0.5?'50%':'2px'};`;
+      wrap.appendChild(c);
+      setTimeout(()=>c.remove(),2500);
+    },i*60);
+  }
+}
+
+// init
+renderQuestion();
+</script>
+</body>
+</html>

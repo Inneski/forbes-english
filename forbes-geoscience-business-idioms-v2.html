@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – Ground-Level Business Idioms</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Syne:wght@400;500;600;700&family=Syne+Mono&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#f2e8d8;
+  --bg2:#ece0cc;
+  --card:#faf5ed;
+  --card2:#f4edd e;
+  --clay:#b8673a;
+  --clay2:#8f4e28;
+  --clay3:#c8845a;
+  --rust:#a03820;
+  --ochre:#b8892a;
+  --ochre2:#d4a848;
+  --slate:#2a3540;
+  --slate2:#3d5060;
+  --sage:#4e7a52;
+  --sage2:#6a9e6e;
+  --sand:#e8d8c0;
+  --sand2:#d8c8a8;
+  --text:#22303a;
+  --text2:#4a5c68;
+  --text3:#7a8c96;
+  --border:rgba(140,90,50,0.16);
+  --border2:rgba(140,90,50,0.32);
+  --ok:#4a7a4a;
+  --err:#a03030;
+  --r:10px;--rl:16px;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Syne',sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* subtle grain texture via repeating radial */
+body::after{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:.6;
+}
+
+.wrap{position:relative;z-index:1;max-width:840px;margin:0 auto;padding:2rem 1.5rem 5rem}
+
+/* ── LOGO ── */
+.header{text-align:center;padding-top:1.5rem;margin-bottom:2.5rem}
+.logo-svg{display:block;margin:0 auto 2rem}
+
+.badge-row{display:flex;justify-content:center;gap:.6rem;flex-wrap:wrap;margin-bottom:1.2rem}
+.badge{
+  font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  padding:4px 13px;border-radius:100px;
+  border:1px solid var(--border2);color:var(--clay2);
+  background:rgba(184,103,58,.09);
+}
+
+.lesson-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.9rem,4.5vw,2.9rem);font-weight:700;
+  color:var(--slate);line-height:1.15;margin-bottom:.6rem;
+}
+.lesson-sub{font-size:.9rem;color:var(--text3);line-height:1.65;max-width:480px;margin:0 auto}
+
+/* ── SCORE BAR ── */
+.score-bar{
+  display:flex;align-items:center;gap:1rem;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r);padding:.85rem 1.4rem;
+  margin-bottom:1.6rem;
+  box-shadow:0 2px 14px rgba(42,53,64,.07);
+}
+.sc-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text3)}
+.sc-val{font-family:'Syne Mono',monospace;font-size:1.05rem;color:var(--clay);min-width:54px}
+.prog-track{flex:1;height:5px;background:var(--sand2);border-radius:99px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--clay),var(--ochre2));border-radius:99px;transition:width .4s ease;width:0%}
+.prog-label{font-size:11px;color:var(--text3);white-space:nowrap;font-weight:500}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:.4rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.tab{
+  padding:5px 14px;border-radius:100px;font-size:11px;font-weight:600;
+  letter-spacing:.05em;background:transparent;
+  border:1px solid var(--border);color:var(--text3);
+}
+.tab.active{background:var(--clay2);border-color:var(--clay2);color:#fff}
+.tab.done{background:rgba(184,103,58,.12);color:var(--clay2);border-color:var(--border2)}
+
+/* ── SECTION INTRO ── */
+.intro{
+  background:var(--card);border:1px solid var(--border);
+  border-top:3px solid var(--clay);
+  border-radius:var(--r);padding:1.4rem 1.6rem;
+  margin-bottom:1.8rem;
+  box-shadow:0 2px 12px rgba(42,53,64,.05);
+}
+.intro-label{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--clay);margin-bottom:.4rem}
+.intro-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:var(--slate);margin-bottom:.5rem}
+.intro-desc{font-size:.88rem;color:var(--text2);line-height:1.65}
+
+/* ── ILLUSTRATION ── */
+.illo{display:block;margin:0 auto 2rem;border-radius:var(--r);overflow:hidden}
+
+/* ── QUESTION CARD ── */
+.qcard{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--rl);padding:1.8rem;margin-bottom:1.2rem;
+  box-shadow:0 2px 16px rgba(42,53,64,.07);
+}
+.q-num{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:.8rem}
+.q-txt{font-size:1rem;line-height:1.75;color:var(--slate);margin-bottom:1.4rem}
+.q-txt .phrase{color:var(--rust);font-weight:600;font-style:italic}
+
+/* ── OPTIONS ── */
+.opts{display:grid;gap:.55rem}
+.opt{
+  display:flex;align-items:flex-start;gap:10px;
+  width:100%;text-align:left;
+  padding:.8rem 1.1rem;
+  background:var(--sand);border:1px solid var(--border);
+  border-radius:var(--r);color:var(--text);
+  font-family:'Syne',sans-serif;font-size:.88rem;line-height:1.55;
+  cursor:pointer;transition:all .15s;
+}
+.opt:hover:not(:disabled){background:var(--sand2);border-color:var(--border2)}
+.opt.correct{background:rgba(74,122,74,.09);border-color:rgba(74,122,74,.5)}
+.opt.wrong{background:rgba(160,48,32,.07);border-color:rgba(160,48,32,.35);color:var(--text2)}
+.opt:disabled{cursor:default}
+.opt-l{
+  flex-shrink:0;width:22px;height:22px;line-height:22px;
+  text-align:center;border-radius:50%;
+  background:rgba(140,90,50,.1);border:1px solid var(--border2);
+  font-size:10px;font-weight:700;color:var(--clay2);margin-top:1px;
+}
+.opt.correct .opt-l{background:rgba(74,122,74,.2);border-color:rgba(74,122,74,.6);color:var(--ok)}
+.opt.wrong .opt-l{background:rgba(160,48,32,.12);border-color:rgba(160,48,32,.4);color:var(--err)}
+
+/* ── FEEDBACK ── */
+.fb{margin-top:1rem;padding:1rem 1.2rem;border-radius:var(--r);font-size:.88rem;line-height:1.65;display:none}
+.fb.show{display:block}
+.fb.correct{background:rgba(74,122,74,.08);border:1px solid rgba(74,122,74,.3);color:#2d5a2d}
+.fb.wrong{background:rgba(160,48,32,.06);border:1px solid rgba(160,48,32,.25);color:#7a2828}
+.fb-label{font-weight:700;margin-bottom:.3rem}
+
+/* ── FITB ── */
+.fitb-sent{font-size:1rem;line-height:2.2;color:var(--slate);margin-bottom:.75rem}
+.blank{
+  display:inline-block;border:none;
+  border-bottom:2px solid var(--clay);
+  background:transparent;color:var(--rust);
+  font-family:'Syne',sans-serif;font-size:.95rem;font-weight:600;
+  padding:2px 8px;min-width:140px;outline:none;text-align:center;
+  transition:border-color .2s;
+}
+.blank:focus{border-bottom-color:var(--rust)}
+.blank.correct{border-bottom-color:var(--ok);color:var(--ok)}
+.blank.wrong{border-bottom-color:var(--err);color:var(--err)}
+.blank:disabled{cursor:default}
+.bank{display:flex;flex-wrap:wrap;gap:.5rem;margin:.75rem 0}
+.chip{
+  padding:5px 15px;background:var(--sand);border:1px solid var(--border2);
+  border-radius:100px;font-size:.84rem;font-weight:500;color:var(--clay2);
+  cursor:pointer;transition:all .15s;
+}
+.chip:hover:not(.used){background:var(--sand2);border-color:var(--clay);color:var(--clay2)}
+.chip.used{opacity:.3;cursor:default;text-decoration:line-through}
+
+/* ── DRAG / REORDER ── */
+.rlist{display:flex;flex-direction:column;gap:.5rem;margin:.75rem 0}
+.ritem{
+  display:flex;align-items:center;gap:12px;
+  padding:.8rem 1rem;background:var(--sand);
+  border:1px solid var(--border);border-radius:var(--r);
+  font-size:.9rem;color:var(--text);cursor:grab;user-select:none;transition:all .15s;
+}
+.ritem:active{cursor:grabbing;opacity:.7}
+.ritem.over{border-color:var(--clay);background:rgba(184,103,58,.1)}
+.ritem.correct-pos{border-color:rgba(74,122,74,.5);background:rgba(74,122,74,.07)}
+.ritem.wrong-pos{border-color:rgba(160,48,32,.4);background:rgba(160,48,32,.06)}
+.rhandle{color:var(--clay2);opacity:.45;font-size:13px;flex-shrink:0}
+.rnum{
+  flex-shrink:0;width:24px;height:24px;border-radius:50%;
+  background:rgba(140,90,50,.1);border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:var(--clay2);
+}
+
+/* ── MATCHING ── */
+.mcols{display:grid;grid-template-columns:1fr 1fr;gap:.6rem 1.2rem;margin:.75rem 0}
+.mcol-hdr{
+  font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--text3);padding-bottom:.5rem;border-bottom:1px solid var(--border);text-align:center;
+}
+.mitem{
+  padding:.65rem .9rem;background:var(--sand);border:1px solid var(--border);
+  border-radius:var(--r);font-size:.84rem;cursor:pointer;transition:all .15s;
+  text-align:center;line-height:1.45;
+}
+.mitem.left{color:var(--slate);font-weight:500}
+.mitem.right{color:var(--text2);font-style:italic}
+.mitem.sel{border-color:var(--clay);background:rgba(184,103,58,.11);color:var(--slate)}
+.mitem.mc{border-color:rgba(74,122,74,.5);background:rgba(74,122,74,.08);color:var(--ok);cursor:default}
+.mitem.mw{border-color:rgba(160,48,32,.4);background:rgba(160,48,32,.06);color:var(--err);cursor:default}
+
+/* ── BUTTONS ── */
+.btn-row{display:flex;justify-content:flex-end;margin-top:1.5rem;gap:.75rem}
+.btn{
+  padding:.75rem 2rem;border-radius:var(--r);
+  font-family:'Syne',sans-serif;font-size:.9rem;font-weight:600;
+  cursor:pointer;transition:all .18s;border:none;outline:none;letter-spacing:.02em;
+}
+.btn-p{background:var(--clay2);color:#fff}
+.btn-p:hover{background:var(--rust)}
+.btn-p:disabled{opacity:.35;cursor:default}
+
+/* ── FINAL ── */
+.final{display:none;text-align:center;padding:3rem 1.5rem}
+.final.show{display:block}
+.score-ring{
+  width:140px;height:140px;border-radius:50%;
+  border:3px solid var(--clay);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  margin:1.5rem auto;background:rgba(184,103,58,.06);
+}
+.score-big{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:700;color:var(--clay2);line-height:1}
+.score-sub{font-size:.8rem;color:var(--text3);margin-top:4px}
+.final-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--slate);margin-bottom:.75rem}
+.final-msg{font-size:.95rem;color:var(--text2);line-height:1.75;max-width:520px;margin:0 auto 2rem}
+
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ═══ HEADER ═══ -->
+<header class="header">
+  <svg class="logo-svg" width="210" height="62" viewBox="0 0 210 62" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <text x="105" y="28" text-anchor="middle" font-family="'Cormorant Garamond',Georgia,serif" font-size="26" font-weight="700" fill="#8f4e28" letter-spacing="5">FORBES</text>
+    <rect x="18" y="34" width="174" height="1" fill="#b8673a" opacity=".65"/>
+    <text x="105" y="52" text-anchor="middle" font-family="'Syne',Arial,sans-serif" font-size="12" font-weight="600" fill="#c8845a" letter-spacing="7">ENGLISH</text>
+  </svg>
+
+  <!-- Volcanic / geological landscape illustration -->
+  <svg class="illo" width="680" height="110" viewBox="0 0 680 110" xmlns="http://www.w3.org/2000/svg">
+    <rect width="680" height="110" fill="#e8d4b8"/>
+    <!-- Sky gradient via rects -->
+    <rect width="680" height="55" fill="#d4c0a0" opacity=".5"/>
+    <!-- Distant mountains -->
+    <polygon points="0,70 60,30 120,70" fill="#c8b090" opacity=".5"/>
+    <polygon points="80,70 160,20 240,70" fill="#b8a080" opacity=".45"/>
+    <polygon points="200,70 300,15 400,70" fill="#c0a878" opacity=".5"/>
+    <polygon points="360,70 460,28 560,70" fill="#b8a070" opacity=".45"/>
+    <polygon points="520,70 610,35 680,70" fill="#c0a878" opacity=".4"/>
+    <!-- Lava flow lines -->
+    <path d="M300 15 Q310 40 295 60 Q288 75 300 90" stroke="#b85c38" stroke-width="3" fill="none" opacity=".5"/>
+    <path d="M300 15 Q320 45 315 65 Q312 80 325 95" stroke="#c87040" stroke-width="2" fill="none" opacity=".4"/>
+    <path d="M300 15 Q285 42 282 62 Q280 78 270 95" stroke="#a84828" stroke-width="2" fill="none" opacity=".35"/>
+    <!-- Ground -->
+    <rect x="0" y="88" width="680" height="22" fill="#a07840" opacity=".55"/>
+    <!-- Strata lines in ground -->
+    <line x1="0" y1="94" x2="680" y2="94" stroke="#8a6030" stroke-width=".8" opacity=".4"/>
+    <line x1="0" y1="100" x2="680" y2="100" stroke="#8a6030" stroke-width=".8" opacity=".35"/>
+    <line x1="0" y1="107" x2="680" y2="107" stroke="#8a6030" stroke-width=".8" opacity=".3"/>
+    <!-- Sun -->
+    <circle cx="580" cy="28" r="18" fill="#d4a848" opacity=".4"/>
+    <circle cx="580" cy="28" r="12" fill="#e0b850" opacity=".5"/>
+    <!-- Haze / atmosphere lines -->
+    <line x1="40" y1="58" x2="130" y2="58" stroke="#c8b090" stroke-width="1" opacity=".4"/>
+    <line x1="160" y1="52" x2="230" y2="52" stroke="#c8b090" stroke-width="1" opacity=".35"/>
+    <line x1="420" y1="55" x2="510" y2="55" stroke="#c8b090" stroke-width="1" opacity=".35"/>
+    <!-- Borehole marker -->
+    <line x1="500" y1="70" x2="500" y2="110" stroke="#7a4f2f" stroke-width="2" opacity=".4"/>
+    <polygon points="500,70 494,82 506,82" fill="#8f4e28" opacity=".5"/>
+    <text x="510" y="80" fill="#7a4f2f" font-family="Syne Mono" font-size="8" opacity=".6">WELL-1</text>
+  </svg>
+
+  <div class="badge-row">
+    <span class="badge">C1 Advanced</span>
+    <span class="badge">Business English</span>
+    <span class="badge">Geoscience</span>
+  </div>
+  <h1 class="lesson-title">Ground-Level Business Idioms</h1>
+  <p class="lesson-sub">Figurative language drawn from the earth sciences — used every day in boardrooms, project briefings, and investor communications</p>
+</header>
+
+<!-- ═══ SCORE BAR ═══ -->
+<div class="score-bar">
+  <div><div class="sc-label">Score</div><div class="sc-val" id="scVal">0 / 0</div></div>
+  <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+  <div class="prog-label" id="progLabel">Activity 1 of 3</div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <span class="tab active" id="tab1">1 · Multiple Choice</span>
+  <span class="tab" id="tab2">2 · Fill in the Blank</span>
+  <span class="tab" id="tab3">3 · Matching</span>
+</div>
+
+<!-- ══════════════════════════════
+     ACT 1 – MCQ
+══════════════════════════════ -->
+<div id="act1">
+  <div class="intro">
+    <div class="intro-label">Activity 1 · Multiple Choice</div>
+    <div class="intro-title">Reading Between the Layers</div>
+    <p class="intro-desc">Each sentence uses a business idiom with roots in the language of geology, mining, or earth science. Choose the answer that best explains the idiom <em>as it functions in its professional context</em>. Plausible distractors draw on the geological literal meaning — read carefully.</p>
+  </div>
+
+  <!-- Seismic wiggle-trace illustration -->
+  <svg class="illo" width="680" height="100" viewBox="0 0 680 100" xmlns="http://www.w3.org/2000/svg">
+    <rect width="680" height="100" fill="#e8d4b8"/>
+    <!-- Wiggle traces -->
+    <g opacity=".55" stroke-width="1.2" fill="none">
+      <path d="M40 50 Q50 30 60 50 Q70 70 80 50 Q90 30 100 50 Q110 70 120 50 Q130 30 140 50 Q150 70 160 50 Q170 30 180 50" stroke="#7a4f2f"/>
+      <path d="M190 50 Q200 20 210 50 Q220 80 230 50 Q240 20 250 50 Q260 80 270 50 Q280 20 290 50 Q300 80 310 50" stroke="#8f4e28"/>
+      <path d="M320 50 Q330 35 340 50 Q350 65 360 50 Q370 35 380 50 Q390 65 400 50 Q410 35 420 50 Q430 65 440 50" stroke="#7a4f2f"/>
+      <path d="M450 50 Q460 15 470 50 Q480 85 490 50 Q500 15 510 50 Q520 85 530 50 Q540 15 550 50 Q560 85 570 50" stroke="#b85c38" stroke-width="2.5"/>
+      <path d="M580 50 Q590 32 600 50 Q610 68 620 50 Q630 32 640 50 Q650 68 660 50 Q670 32 680 50" stroke="#7a4f2f"/>
+    </g>
+    <!-- Bright spot annotation -->
+    <rect x="450" y="8" width="130" height="18" rx="4" fill="rgba(184,103,58,.15)" stroke="rgba(184,103,58,.35)" stroke-width=".8"/>
+    <text x="515" y="20" text-anchor="middle" fill="#8f4e28" font-family="Syne Mono" font-size="8.5">AMPLITUDE ANOMALY</text>
+    <line x1="515" y1="26" x2="515" y2="40" stroke="#b85c38" stroke-width=".8" stroke-dasharray="3,2" opacity=".6"/>
+    <!-- TWT axis -->
+    <line x1="20" y1="10" x2="20" y2="90" stroke="rgba(90,58,30,.3)" stroke-width="1"/>
+    <text x="5" y="50" fill="rgba(90,58,30,.5)" font-family="Syne Mono" font-size="8" text-anchor="middle" transform="rotate(-90,5,50)">TWT (s)</text>
+  </svg>
+
+  <div id="mcqBox"></div>
+  <div class="btn-row"><button class="btn btn-p hidden" id="mcqNext">Next Activity →</button></div>
+</div>
+
+<!-- ══════════════════════════════
+     ACT 2 – FITB
+══════════════════════════════ -->
+<div id="act2" class="hidden">
+  <div class="intro">
+    <div class="intro-label">Activity 2 · Fill in the Blank</div>
+    <div class="intro-title">Completing the Section</div>
+    <p class="intro-desc">Select the correct idiom from the word bank to complete each sentence. All items are used once. The sentences come from earnings calls, project presentations, and internal strategy documents.</p>
+  </div>
+
+  <!-- Core tray illustration -->
+  <svg class="illo" width="680" height="95" viewBox="0 0 680 95" xmlns="http://www.w3.org/2000/svg">
+    <rect width="680" height="95" fill="#e8d4b8"/>
+    <!-- Core tray outline -->
+    <rect x="20" y="15" width="640" height="65" rx="6" fill="#d8c4a0" stroke="#b8956a" stroke-width="1"/>
+    <!-- Core sections -->
+    <rect x="28" y="22" width="88" height="51" rx="3" fill="#c8956b" opacity=".6"/>
+    <rect x="120" y="22" width="88" height="51" rx="3" fill="#b87040" opacity=".55"/>
+    <rect x="212" y="22" width="88" height="51" rx="3" fill="#c09a3c" opacity=".55"/>
+    <rect x="304" y="22" width="88" height="51" rx="3" fill="#a07030" opacity=".5"/>
+    <rect x="396" y="22" width="88" height="51" rx="3" fill="#8a6028" opacity=".5"/>
+    <rect x="488" y="22" width="88" height="51" rx="3" fill="#c8956b" opacity=".45"/>
+    <rect x="580" y="22" width="72" height="51" rx="3" fill="#b87040" opacity=".4"/>
+    <!-- Dividers -->
+    <line x1="116" y1="15" x2="116" y2="80" stroke="#b8956a" stroke-width=".8" opacity=".6"/>
+    <line x1="208" y1="15" x2="208" y2="80" stroke="#b8956a" stroke-width=".8" opacity=".6"/>
+    <line x1="300" y1="15" x2="300" y2="80" stroke="#b8956a" stroke-width=".8" opacity=".6"/>
+    <line x1="392" y1="15" x2="392" y2="80" stroke="#b8956a" stroke-width=".8" opacity=".6"/>
+    <line x1="484" y1="15" x2="484" y2="80" stroke="#b8956a" stroke-width=".8" opacity=".6"/>
+    <line x1="576" y1="15" x2="576" y2="80" stroke="#b8956a" stroke-width=".8" opacity=".6"/>
+    <!-- Depth labels -->
+    <text x="72" y="12" text-anchor="middle" fill="#7a4f2f" font-family="Syne Mono" font-size="7.5" opacity=".65">0–5m</text>
+    <text x="164" y="12" text-anchor="middle" fill="#7a4f2f" font-family="Syne Mono" font-size="7.5" opacity=".65">5–10m</text>
+    <text x="256" y="12" text-anchor="middle" fill="#7a4f2f" font-family="Syne Mono" font-size="7.5" opacity=".65">10–15m</text>
+    <text x="348" y="12" text-anchor="middle" fill="#7a4f2f" font-family="Syne Mono" font-size="7.5" opacity=".65">15–20m</text>
+    <text x="440" y="12" text-anchor="middle" fill="#7a4f2f" font-family="Syne Mono" font-size="7.5" opacity=".65">20–25m</text>
+    <text x="532" y="12" text-anchor="middle" fill="#7a4f2f" font-family="Syne Mono" font-size="7.5" opacity=".65">25–30m</text>
+  </svg>
+
+  <div id="fitbBox"></div>
+  <div class="btn-row"><button class="btn btn-p hidden" id="fitbNext">Next Activity →</button></div>
+</div>
+
+<!-- ══════════════════════════════
+     ACT 3 – MATCHING
+══════════════════════════════ -->
+<div id="act3" class="hidden">
+  <div class="intro">
+    <div class="intro-label">Activity 3 · Matching</div>
+    <div class="intro-title">Correlating the Idioms</div>
+    <p class="intro-desc">Match each geoscience-derived business idiom with its correct meaning. Select one item from each column to make a pair. All idioms appear in authentic professional English contexts.</p>
+  </div>
+
+  <!-- Topographic contour map illustration -->
+  <svg class="illo" width="680" height="100" viewBox="0 0 680 100" xmlns="http://www.w3.org/2000/svg">
+    <rect width="680" height="100" fill="#e8d4b8"/>
+    <!-- Contour lines (basin shape - syncline) -->
+    <ellipse cx="340" cy="50" rx="60" ry="35" fill="none" stroke="#a07030" stroke-width="2.2" opacity=".65"/>
+    <ellipse cx="340" cy="50" rx="110" ry="55" fill="none" stroke="#b87040" stroke-width="1.6" opacity=".5"/>
+    <ellipse cx="340" cy="50" rx="160" ry="68" fill="none" stroke="#c8956b" stroke-width="1.2" opacity=".4"/>
+    <ellipse cx="340" cy="50" rx="210" ry="75" fill="none" stroke="#d4a870" stroke-width="1" opacity=".35"/>
+    <ellipse cx="340" cy="50" rx="260" ry="80" fill="none" stroke="#d8b880" stroke-width=".8" opacity=".3"/>
+    <!-- Low point marker (basin centre) -->
+    <circle cx="340" cy="50" r="5" fill="#a03820" opacity=".7"/>
+    <text x="352" y="47" fill="#7a2a10" font-family="Syne Mono" font-size="8" opacity=".75">BASIN LOW</text>
+    <!-- Contour values -->
+    <text x="294" y="40" fill="#7a4f2f" font-family="Syne Mono" font-size="7" opacity=".55">−500m</text>
+    <text x="248" y="32" fill="#7a4f2f" font-family="Syne Mono" font-size="7" opacity=".5">−300m</text>
+    <text x="192" y="26" fill="#7a4f2f" font-family="Syne Mono" font-size="7" opacity=".45">−100m</text>
+    <!-- River/drainage lines -->
+    <path d="M100 10 Q200 35 340 50" stroke="#8a6028" stroke-width="1.5" fill="none" opacity=".3" stroke-dasharray="4,3"/>
+    <path d="M580 8 Q470 30 340 50" stroke="#8a6028" stroke-width="1.5" fill="none" opacity=".3" stroke-dasharray="4,3"/>
+    <path d="M340 50 Q340 75 340 95" stroke="#8a6028" stroke-width="1.5" fill="none" opacity=".3" stroke-dasharray="4,3"/>
+    <!-- North -->
+    <polygon points="640,12 636,24 640,21 644,24" fill="#7a4f2f" opacity=".45"/>
+    <text x="640" y="10" text-anchor="middle" fill="#7a4f2f" font-family="Syne Mono" font-size="8" opacity=".5">N</text>
+  </svg>
+
+  <div id="matchBox"></div>
+  <div class="btn-row"><button class="btn btn-p hidden" id="matchNext">See Results →</button></div>
+</div>
+
+<!-- ═══ FINAL ═══ -->
+<div class="final" id="finalScreen">
+  <svg width="200" height="160" viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto 1rem">
+    <!-- Outcrop with strata -->
+    <rect x="35" y="40" width="130" height="90" rx="8" fill="#dfc9ae"/>
+    <rect x="35" y="40" width="130" height="15" rx="5" fill="#c8956b" opacity=".7"/>
+    <rect x="35" y="55" width="130" height="18" fill="#b87040" opacity=".6"/>
+    <rect x="35" y="73" width="130" height="14" fill="#c09a3c" opacity=".55"/>
+    <rect x="35" y="87" width="130" height="20" fill="#a07030" opacity=".5"/>
+    <rect x="35" y="107" width="130" height="23" rx="3" fill="#8a6028" opacity=".45"/>
+    <!-- Pick hammer -->
+    <rect x="88" y="20" width="24" height="9" rx="3" fill="#7a4f2f" opacity=".65"/>
+    <rect x="98" y="10" width="4" height="22" rx="2" fill="#b87040" opacity=".65"/>
+    <!-- Formation marker lines right side -->
+    <line x1="168" y1="47" x2="176" y2="47" stroke="#7a4f2f" stroke-width="1" opacity=".45"/>
+    <line x1="168" y1="64" x2="176" y2="64" stroke="#7a4f2f" stroke-width="1" opacity=".45"/>
+    <line x1="168" y1="80" x2="176" y2="80" stroke="#7a4f2f" stroke-width="1" opacity=".45"/>
+    <line x1="168" y1="94" x2="176" y2="94" stroke="#7a4f2f" stroke-width="1" opacity=".45"/>
+    <line x1="168" y1="108" x2="176" y2="108" stroke="#7a4f2f" stroke-width="1" opacity=".45"/>
+    <!-- Ground -->
+    <rect x="15" y="130" width="170" height="12" rx="4" fill="#b8956b" opacity=".5"/>
+  </svg>
+  <div class="score-ring">
+    <div class="score-big" id="fNum">0</div>
+    <div class="score-sub" id="fSub">of 0 correct</div>
+  </div>
+  <h2 class="final-title" id="fTitle"></h2>
+  <p class="final-msg" id="fMsg"></p>
+  <button class="btn btn-p" onclick="restart()" style="margin:0 auto;display:block">↩ Restart Lesson</button>
+</div>
+
+</div><!-- /wrap -->
+<script>
+// ══════════════════════════════════
+// DATA
+// ══════════════════════════════════
+const MCQ = [
+  {
+    q: `After three rounds of due diligence, the acquisitions director declared that the team had finally <span class="phrase">hit a rich seam</span> — a target company with strong margins, a clean balance sheet, and an untapped distribution network.`,
+    opts:[
+      {t:"Discovered a highly productive and valuable source of opportunity or advantage",c:true},
+      {t:"Located an underground mineral deposit requiring immediate extraction planning",c:false},
+      {t:"Reached a point of impasse in negotiations that would require external arbitration",c:false},
+      {t:"Identified a systemic weakness that had been concealed in the financial statements",c:false}
+    ],
+    exp:"<strong>Hit a rich seam</strong> comes from mining, where a seam is a layer of ore. Figuratively, it means to find an especially productive source — of profit, talent, ideas, or opportunity."
+  },
+  {
+    q: `The operations lead warned that without a clearer mandate, the cross-functional team risked <span class="phrase">shifting the goalposts on solid ground</span> — spending resources on a problem that had, in fact, already been resolved.`,
+    opts:[
+      {t:"Changing the criteria or objectives of a project after work has already been completed or stabilised",c:true},
+      {t:"Moving the headquarters of a business unit to a more geologically stable location",c:false},
+      {t:"Investing capital in a well-performing asset that no longer requires further intervention",c:false},
+      {t:"Aligning strategic targets with the existing strengths of the organisation",c:false}
+    ],
+    exp:"<strong>Shifting the goalposts</strong> means changing the rules or requirements midway through a process — especially unfairly. Here, the phrase is extended with <em>on solid ground</em> to emphasise the absurdity of disrupting something already stable."
+  },
+  {
+    q: `In her closing remarks, the CFO noted that the company had made significant <span class="phrase">inroads into previously impermeable markets</span> in Southeast Asia, a process that had taken five years of relationship-building to achieve.`,
+    opts:[
+      {t:"Successfully penetrated or accessed markets that had previously been very difficult to enter",c:true},
+      {t:"Constructed transport infrastructure through territories with low-porosity geological formations",c:false},
+      {t:"Reduced barriers to trade by lobbying regulatory bodies in multiple jurisdictions",c:false},
+      {t:"Identified new business partners in regions with limited existing commercial activity",c:false}
+    ],
+    exp:"<strong>Making inroads</strong> means making progress into difficult territory. <strong>Impermeable</strong> is borrowed from geology — rock that does not allow fluids to pass through — here describing markets that resist outside entrants."
+  },
+  {
+    q: `The strategy consultant concluded her report by arguing that the company's biggest risk was <span class="phrase">volcanic complacency</span> — the tendency to ignore accumulating pressure until a sudden and damaging rupture became unavoidable.`,
+    opts:[
+      {t:"Dangerous overconfidence that builds quietly and invisibly until it causes a sudden, severe failure",c:true},
+      {t:"An excessive focus on geological risk in project planning at the expense of commercial considerations",c:false},
+      {t:"A pattern of erratic decision-making associated with high-growth and volatile market conditions",c:false},
+      {t:"Failure to conduct environmental impact assessments prior to extraction activities",c:false}
+    ],
+    exp:"<strong>Volcanic complacency</strong> uses the image of a dormant volcano — which appears inactive while pressure builds internally — to describe organisations that ignore slow-accumulating problems until they erupt catastrophically."
+  },
+  {
+    q: `The partnership negotiations had <span class="phrase">reached an alluvial plain</span>: after months of turbulence and rapid movement, the process had slowed, spread wide, and lost the momentum needed to reach a conclusion.`,
+    opts:[
+      {t:"Arrived at a phase of reduced energy and direction after an earlier period of rapid, forceful progress",c:true},
+      {t:"Entered a legally protected zone where further negotiation was subject to environmental regulation",c:false},
+      {t:"Achieved a broadly equitable settlement acceptable to all parties in the agreement",c:false},
+      {t:"Reached a geographical area suitable for the establishment of a new operational facility",c:false}
+    ],
+    exp:"An <strong>alluvial plain</strong> is formed when a fast-moving river slows and deposits its sediment across a broad, flat area. Figuratively, it captures the moment when momentum is lost and a process becomes diffuse and stagnant."
+  },
+  {
+    q: `The board chair opened the annual review by acknowledging that the previous year had been one of <span class="phrase">tectonic realignment</span> — a reorganisation so fundamental that the company that emerged bore little structural resemblance to the one that had entered it.`,
+    opts:[
+      {t:"A profound and comprehensive structural transformation affecting the entire organisation at its deepest level",c:true},
+      {t:"A recalibration of the company's geological risk exposure following a series of failed exploration projects",c:false},
+      {t:"A regulatory compliance exercise requiring the reclassification of subsurface assets",c:false},
+      {t:"A deliberate process of senior leadership succession carried out over an extended period",c:false}
+    ],
+    exp:"<strong>Tectonic realignment</strong> draws on plate tectonics — the slow, massive movement of the earth's crustal plates that reshapes continents over geological time. In business, it describes transformations so deep they redefine the organisation's fundamental structure."
+  }
+];
+
+const FITB = [
+  {
+    s:"The due diligence team had spent three weeks {BLANK} the acquisition target's supply chain, and what they found beneath the polished surface presentation was far less stable than the seller had implied.",
+    ans:"excavating",
+    bank:["excavating","sedimenting","faulting","eroding","uplisting"],
+    exp:"<strong>Excavating</strong> (from geological fieldwork — digging to expose what lies beneath) is used figuratively to mean investigating deeply and systematically, with the implication of uncovering things that were deliberately buried or obscured."
+  },
+  {
+    s:"The startup's rapid growth had begun to show signs of {BLANK}: the original culture was being steadily worn away by the pressures of scaling, and little of its founding character remained.",
+    ans:"erosion",
+    bank:["erosion","uplift","lithification","folding","cementation"],
+    exp:"<strong>Erosion</strong> in geology is the gradual wearing away of material by natural forces. In business English, it describes the slow, often imperceptible loss of something valuable — culture, market share, trust, or margin — under sustained pressure."
+  },
+  {
+    s:"The new partnership agreement had taken two years to negotiate, but the team remained cautious: without ongoing oversight, they feared the relationship could {BLANK} into a series of transactional exchanges with no strategic depth.",
+    ans:"stratify",
+    bank:["stratify","sediment","compact","lithify","abrade"],
+    exp:"<strong>Stratify</strong> means to form into distinct, separate layers (as sedimentary rock does). Figuratively here, it suggests the relationship might harden into rigid, separate tiers of interaction — losing the flexibility and integration that makes it strategically valuable."
+  },
+  {
+    s:"After a decade of cautious, incremental expansion, the CEO announced what she called a {BLANK} moment: a bold, irreversible commitment that would define the company's direction for the next generation.",
+    ans:"fault-line",
+    bank:["fault-line","delta","moraine","rift-point","mineral"],
+    exp:"A <strong>fault-line moment</strong> describes a point of rupture — a decisive break from what came before. In geology, a fault is a fracture in rock where movement occurs; in business, it marks a point after which nothing is quite the same."
+  },
+  {
+    s:"The mid-year review revealed that the project had been {BLANK} by a combination of scope changes and underfunded resource allocation — the original timeline was now buried under months of compounded delay.",
+    ans:"overlain",
+    bank:["overlain","eroded","compacted","intruded","laminated"],
+    exp:"<strong>Overlain</strong> (from geological layering — when younger strata are deposited on top of older ones) is used to describe one problem or process being buried and obscured by successive layers of additional complications."
+  },
+  {
+    s:"The investor relations director acknowledged that market confidence had undergone significant {BLANK} following the profit warning — a gradual, irreversible shift in how the company was perceived by the institutional community.",
+    ans:"subsidence",
+    bank:["subsidence","exhumation","folding","compaction","weathering"],
+    exp:"<strong>Subsidence</strong> is the gradual sinking or settling of ground, often irreversibly. In business English, it describes a slow, sustained downward shift in something — confidence, value, or reputation — that is hard to reverse once it has begun."
+  }
+];
+
+const MATCH = [
+  {term:"to resurface",def:"to return to prominence or activity after a period of dormancy or absence"},
+  {term:"to weather attrition",def:"to endure a prolonged, gradual loss of resources, people, or advantage without being destroyed"},
+  {term:"a pressure point",def:"a moment or location in a system where accumulated stress is most likely to cause failure"},
+  {term:"to lay the groundwork",def:"to establish the necessary foundations before beginning a main project or initiative"},
+  {term:"a seismic announcement",def:"a piece of news so significant that it fundamentally changes the landscape of an industry or situation"},
+  {term:"to run deep",def:"to be strongly embedded or long-established within an organisation, culture, or relationship"},
+  {term:"to crystallise",def:"to become clear and definite after a period of ambiguity or gradual formation"}
+];
+
+// ══════════════════════════════════
+// STATE
+// ══════════════════════════════════
+let totC=0,totA=0;
+const totQ=MCQ.length+FITB.length+MATCH.length;
+let mcqD=new Array(MCQ.length).fill(false);
+let fitbD=new Array(FITB.length).fill(false);
+let fitbSel={};
+let ms={lSel:null,rSel:null,matched:{}};
+
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+
+function upd(){
+  document.getElementById("scVal").textContent=totC+" / "+totA;
+  document.getElementById("progFill").style.width=(totA/totQ*100)+"%";
+}
+
+function setTab(n){
+  [1,2,3].forEach(i=>{
+    const t=document.getElementById("tab"+i);
+    t.className="tab"+(i===n?" active":i<n?" done":"");
+  });
+  document.getElementById("progLabel").textContent="Activity "+n+" of 3";
+}
+
+// ── MCQ ──
+function buildMCQ(){
+  const c=document.getElementById("mcqBox");c.innerHTML="";
+  MCQ.forEach((q,qi)=>{
+    const opts=shuffle(q.opts.map(o=>({...o})));
+    const L=["A","B","C","D"];
+    const d=document.createElement("div");d.className="qcard";
+    d.innerHTML=`<div class="q-num">Question ${qi+1} of ${MCQ.length}</div>
+      <div class="q-txt">${q.q}</div>
+      <div class="opts" id="og${qi}">
+        ${opts.map((o,li)=>`<button class="opt" id="ob${qi}_${li}" onclick="pickM(${qi},${li},${o.c})">
+          <span class="opt-l">${L[li]}</span>${o.t}</button>`).join("")}
+      </div>
+      <div class="fb" id="fb${qi}"></div>`;
+    c.appendChild(d);
+  });
+}
+
+function pickM(qi,li,c){
+  if(mcqD[qi])return;
+  mcqD[qi]=true;totA++;if(c)totC++;upd();
+  const btns=document.querySelectorAll(`#og${qi} .opt`);
+  btns.forEach((b,i)=>{
+    b.disabled=true;
+    const isC=b.getAttribute("onclick").includes(",true)");
+    if(i===li)b.classList.add(c?"correct":"wrong");
+    if(isC&&!c)b.classList.add("correct");
+  });
+  const fb=document.getElementById("fb"+qi);
+  fb.className="fb show "+(c?"correct":"wrong");
+  fb.innerHTML=`<div class="fb-label">${c?"✓ Correct":"✗ Incorrect"}</div>${MCQ[qi].exp}`;
+  if(mcqD.every(Boolean))document.getElementById("mcqNext").classList.remove("hidden");
+}
+
+document.getElementById("mcqNext").addEventListener("click",()=>{
+  document.getElementById("act1").classList.add("hidden");
+  document.getElementById("act2").classList.remove("hidden");
+  setTab(2);buildFITB();
+});
+
+// ── FITB ──
+function buildFITB(){
+  const c=document.getElementById("fitbBox");c.innerHTML="";
+  FITB.forEach((q,qi)=>{
+    const bank=shuffle(q.bank);
+    const d=document.createElement("div");d.className="qcard";
+    const sent=q.s.replace("{BLANK}",`<input class="blank" id="bi${qi}" placeholder="…" readonly>`);
+    d.innerHTML=`<div class="q-num">Question ${qi+1} of ${FITB.length}</div>
+      <div class="fitb-sent">${sent}</div>
+      <div class="bank" id="bk${qi}">
+        ${bank.map((w,wi)=>`<span class="chip" id="ch${qi}_${wi}" onclick="pickF(${qi},'${w.replace(/'/g,"\\'")}',${wi})">${w}</span>`).join("")}
+      </div>
+      <div class="fb" id="ffb${qi}"></div>`;
+    c.appendChild(d);
+  });
+}
+
+function pickF(qi,word,ci){
+  if(fitbD[qi])return;
+  if(fitbSel[qi]!==undefined){
+    const p=document.getElementById(`ch${qi}_${fitbSel[qi]}`);
+    if(p)p.classList.remove("used");
+  }
+  fitbSel[qi]=ci;
+  document.getElementById("bi"+qi).value=word;
+  document.querySelectorAll(`#bk${qi} .chip`).forEach(c=>c.classList.remove("used"));
+  document.getElementById(`ch${qi}_${ci}`).classList.add("used");
+
+  fitbD[qi]=true;totA++;
+  const ok=word.toLowerCase()===FITB[qi].ans.toLowerCase();
+  if(ok)totC++;upd();
+
+  const inp=document.getElementById("bi"+qi);
+  inp.classList.add(ok?"correct":"wrong");inp.disabled=true;
+
+  document.querySelectorAll(`#bk${qi} .chip`).forEach(c=>{
+    c.onclick=null;c.style.cursor="default";
+    if(!ok&&c.textContent.toLowerCase()===FITB[qi].ans.toLowerCase()){
+      c.style.borderColor="rgba(74,122,74,.6)";c.style.color="var(--ok)";c.style.opacity="1";
+    }
+  });
+
+  const fb=document.getElementById("ffb"+qi);
+  fb.className="fb show "+(ok?"correct":"wrong");
+  fb.innerHTML=`<div class="fb-label">${ok?"✓ Correct":`✗ The correct answer was: <em>${FITB[qi].ans}</em>`}</div>${FITB[qi].exp}`;
+  if(fitbD.every(Boolean))document.getElementById("fitbNext").classList.remove("hidden");
+}
+
+document.getElementById("fitbNext").addEventListener("click",()=>{
+  document.getElementById("act2").classList.add("hidden");
+  document.getElementById("act3").classList.remove("hidden");
+  setTab(3);buildMatch();
+});
+
+// ── MATCH ──
+function buildMatch(){
+  const right=shuffle(MATCH.map((m,i)=>({def:m.def,oi:i})));
+  const c=document.getElementById("matchBox");c.innerHTML="";
+  const d=document.createElement("div");d.className="qcard";
+
+  let rows="";
+  for(let i=0;i<MATCH.length;i++){
+    rows+=`<div class="mitem left" id="ml${i}" onclick="mPick('l',${i})">${MATCH[i].term}</div>`;
+    rows+=`<div class="mitem right" id="mr${right[i].oi}" onclick="mPick('r',${right[i].oi})">${right[i].def}</div>`;
+  }
+
+  d.innerHTML=`<div class="q-txt" style="margin-bottom:1rem">Select an idiom from the left, then its matching meaning from the right.</div>
+    <div class="mcols">
+      <div class="mcol-hdr">Idiom</div><div class="mcol-hdr">Meaning</div>
+      ${rows}
+    </div>
+    <div class="fb" id="mfb" style="margin-top:1rem"></div>`;
+  c.appendChild(d);
+}
+
+function mPick(side,idx){
+  const matched=Object.entries(ms.matched);
+  if(side==="l"&&ms.matched[idx]!==undefined)return;
+  if(side==="r"&&matched.some(([,v])=>v===idx))return;
+
+  if(side==="l"){
+    if(ms.lSel!==null){const e=document.getElementById("ml"+ms.lSel);if(e&&!e.classList.contains("mc")&&!e.classList.contains("mw"))e.classList.remove("sel");}
+    ms.lSel=idx;
+    const e=document.getElementById("ml"+idx);if(e&&!e.classList.contains("mc")&&!e.classList.contains("mw"))e.classList.add("sel");
+  }else{
+    if(ms.rSel!==null){const e=document.getElementById("mr"+ms.rSel);if(e&&!e.classList.contains("mc")&&!e.classList.contains("mw"))e.classList.remove("sel");}
+    ms.rSel=idx;
+    const e=document.getElementById("mr"+idx);if(e&&!e.classList.contains("mc")&&!e.classList.contains("mw"))e.classList.add("sel");
+  }
+
+  if(ms.lSel!==null&&ms.rSel!==null){
+    const li=ms.lSel,ri=ms.rSel,ok=li===ri;
+    ms.matched[li]=ri;totA++;if(ok)totC++;upd();
+    const lE=document.getElementById("ml"+li),rE=document.getElementById("mr"+ri);
+    lE.classList.remove("sel");rE.classList.remove("sel");
+    lE.classList.add(ok?"mc":"mw");rE.classList.add(ok?"mc":"mw");
+    lE.onclick=null;rE.onclick=null;
+    ms.lSel=null;ms.rSel=null;
+
+    if(Object.keys(ms.matched).length===MATCH.length){
+      document.getElementById("matchNext").classList.remove("hidden");
+      const fb=document.getElementById("mfb");
+      fb.className="fb show correct";
+      fb.innerHTML=`<div class="fb-label">All pairs matched.</div>Green pairs are correctly matched. Any red pairs indicate a mismatch — take note of where the idiom's geological root led you to the wrong meaning.`;
+    }
+  }
+}
+
+document.getElementById("matchNext").addEventListener("click",()=>{
+  document.getElementById("act3").classList.add("hidden");
+  showFinal();
+});
+
+// ── FINAL ──
+function showFinal(){
+  document.getElementById("finalScreen").classList.add("show");
+  const pct=Math.round(totC/totA*100);
+  document.getElementById("fNum").textContent=totC;
+  document.getElementById("fSub").textContent="of "+totA+" correct";
+  let title,msg;
+  if(pct>=85){
+    title="Deep-formation vocabulary.";
+    msg="You command these idioms with the confidence of someone who uses them naturally in context. The geological roots you identified are not just curiosities — they carry explanatory weight that helps your listeners visualise abstract business dynamics. Use them precisely and your professional English will stand out.";
+  }else if(pct>=60){
+    title="A productive formation.";
+    msg="You have solid coverage of this register. A few of the more subtle idioms — particularly those where the geological literal meaning is a plausible distractor — may benefit from further attention. Consider keeping a log of idioms encountered in reading and noting their figurative meaning alongside their geological origin.";
+  }else{
+    title="Every stratum rewards patience.";
+    msg="Geoscience-derived idioms are a rich but specialised corner of professional English. The feedback explanations in this lesson trace each idiom back to its geological root — reading those again carefully will help consolidate both the meaning and the image behind each phrase.";
+  }
+  document.getElementById("fTitle").textContent=title;
+  document.getElementById("fMsg").textContent=msg;
+}
+
+function restart(){
+  totC=0;totA=0;
+  mcqD=new Array(MCQ.length).fill(false);
+  fitbD=new Array(FITB.length).fill(false);
+  fitbSel={};ms={lSel:null,rSel:null,matched:{}};
+  upd();
+  document.getElementById("finalScreen").classList.remove("show");
+  ["act2","act3"].forEach(id=>document.getElementById(id).classList.add("hidden"));
+  document.getElementById("act1").classList.remove("hidden");
+  ["mcqBox","fitbBox","matchBox"].forEach(id=>document.getElementById(id).innerHTML="");
+  ["mcqNext","fitbNext","matchNext"].forEach(id=>document.getElementById(id).classList.add("hidden"));
+  setTab(1);buildMCQ();
+}
+
+buildMCQ();upd();
+</script>
+</body>
+</html>

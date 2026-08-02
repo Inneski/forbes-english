@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English | Bringing a Membrane to Market</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c2a2e;
+    --paper:#f4f2ec;
+    --slate:#3d5a5c;
+    --clay:#b5603f;
+    --sand:#d8b483;
+    --steel:#5c7c8a;
+    --line:#d8d3c5;
+    --good:#3f7d52;
+    --bad:#b5453f;
+    --present-simple:#3b6ea5;
+    --past-simple:#c9a15a;
+    --present-continuous:#d1568a;
+    --past-continuous:#7a5fa0;
+    --present-perfect-continuous:#4a8f6b;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Inter',sans-serif; line-height:1.5;
+  }
+  header{
+    background:var(--ink); color:var(--paper);
+    padding:28px 20px 24px; display:flex; align-items:center; gap:16px;
+  }
+  header svg{flex-shrink:0;}
+  header h1{font-family:'Fraunces',serif; font-size:1.5rem; margin:0; font-weight:600;}
+  header p{margin:2px 0 0; font-size:0.85rem; color:#c8c4b6; letter-spacing:0.02em;}
+  .wrap{max-width:720px; margin:0 auto; padding:24px 20px 80px;}
+  .progress-bar{
+    position:sticky; top:0; z-index:5; height:6px; background:var(--line);
+    margin:0 auto; max-width:720px;
+  }
+  .progress-fill{height:100%; background:var(--clay); width:0%; transition:width .3s ease;}
+  .section-tag{
+    font-family:'Fraunces',serif; font-size:0.78rem; text-transform:uppercase;
+    letter-spacing:0.08em; color:var(--slate); margin-bottom:6px; font-weight:600;
+  }
+  .card{
+    background:#fff; border:1px solid var(--line); border-radius:10px;
+    padding:22px 22px 20px; margin-top:18px;
+  }
+  .prompt{font-size:1.08rem; font-weight:600; margin:0 0 14px;}
+  .tense-tag{
+    display:inline-block; font-size:0.7rem; font-weight:700; letter-spacing:0.03em;
+    color:#fff; padding:2px 9px; border-radius:20px; margin-bottom:10px;
+  }
+  .opt{
+    display:block; width:100%; text-align:left; background:var(--paper);
+    border:1.5px solid var(--line); border-radius:8px; padding:11px 14px;
+    margin-bottom:9px; font-size:0.98rem; font-family:'Inter',sans-serif;
+    cursor:pointer; color:var(--ink); transition:border-color .15s, background .15s;
+  }
+  .opt:hover:not(:disabled){border-color:var(--steel);}
+  .opt:disabled{cursor:default;}
+  .opt.correct{background:#e7f2ea; border-color:var(--good); color:var(--good); font-weight:600;}
+  .opt.wrong{background:#f7e9e8; border-color:var(--bad); color:var(--bad);}
+  .feedback{
+    margin-top:12px; padding:12px 14px; border-radius:8px; font-size:0.92rem;
+    display:none; border-left:4px solid var(--steel); background:#eef3f2;
+  }
+  .feedback.show{display:block;}
+  .next-btn{
+    margin-top:16px; background:var(--ink); color:#fff; border:none;
+    padding:10px 22px; border-radius:24px; font-size:0.92rem; font-weight:600;
+    cursor:pointer; opacity:0.35; pointer-events:none; transition:opacity .15s;
+    font-family:'Inter',sans-serif;
+  }
+  .next-btn.active{opacity:1; pointer-events:auto;}
+  .next-btn:hover.active{background:var(--slate);}
+  .score-bar{
+    position:fixed; bottom:0; left:0; right:0; background:var(--ink); color:var(--paper);
+    padding:10px 20px; display:flex; justify-content:space-between; align-items:center;
+    font-size:0.85rem; font-family:'Inter',sans-serif; z-index:10;
+  }
+  .score-bar b{color:var(--clay);}
+  .results{text-align:center; padding:30px 20px;}
+  .results h2{font-family:'Fraunces',serif; font-size:1.8rem;}
+  .results .big{font-size:3rem; font-weight:700; color:var(--clay); font-family:'Fraunces',serif;}
+  .reference{
+    background:#fff; border:1px solid var(--line); border-radius:10px;
+    padding:20px 22px; margin-top:24px;
+  }
+  .reference h3{font-family:'Fraunces',serif; margin-top:0; font-size:1.05rem;}
+  .stress-row{display:flex; flex-wrap:wrap; gap:8px 18px; font-size:0.92rem;}
+  .stress-row span{white-space:nowrap;}
+  .stress-row b{color:var(--clay);}
+  .intro-card{background:#fff; border:1px solid var(--line); border-radius:10px; padding:20px 22px;}
+  .intro-card p{margin:0 0 10px;}
+  .start-btn{
+    background:var(--clay); color:#fff; border:none; padding:12px 26px; border-radius:24px;
+    font-size:1rem; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; margin-top:6px;
+  }
+  .start-btn:hover{background:#9c4f34;}
+  .hidden{display:none;}
+</style>
+</head>
+<body>
+
+<header>
+  <svg width="46" height="46" viewBox="0 0 46 46" xmlns="http://www.w3.org/2000/svg">
+    <rect x="1" y="1" width="44" height="44" rx="9" fill="#b5603f"/>
+    <path d="M13 33V13h16v4.2H17.6v5.2h9.8v4.1h-9.8V33H13z" fill="#f4f2ec"/>
+  </svg>
+  <div>
+    <h1>Bringing a Membrane to Market</h1>
+    <p>Forbes English &middot; B1&ndash;B2 &middot; Product &amp; construction vocabulary</p>
+  </div>
+</header>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<div class="wrap">
+
+  <div class="intro-card" id="introCard">
+    <p>This lesson is built around the language of launching a product like a vapour barrier or roofing membrane: stress patterns on technical words, the prepositions that go with test/install/keep, adverb placement, and the tenses you need to describe finished actions and long, unspecified stretches of experience.</p>
+    <p>18 questions, grouped into five sections. Feedback appears after every answer.</p>
+    <button class="start-btn" id="startBtn">Start the lesson</button>
+  </div>
+
+  <div id="quizArea"></div>
+
+  <div class="results hidden" id="results">
+    <div class="section-tag">Complete</div>
+    <h2>Lesson finished</h2>
+    <div class="big" id="finalScore"></div>
+    <p id="finalMsg"></p>
+  </div>
+
+  <div class="reference" id="referenceCard" style="display:none;">
+    <h3>Word stress reference</h3>
+    <div class="stress-row" id="stressRef"></div>
+  </div>
+
+</div>
+
+<div class="score-bar" id="scoreBar" style="display:none;">
+  <span>Question <span id="qNum">1</span> / <span id="qTotal">18</span></span>
+  <span>Score: <b id="scoreNum">0</b></span>
+</div>
+
+<script>
+const TENSE_COLORS = {
+  "Present Simple": "var(--present-simple)",
+  "Past Simple": "var(--past-simple)",
+  "Present Continuous": "var(--present-continuous)",
+  "Past Continuous": "var(--past-continuous)",
+  "Present Perfect Continuous": "var(--present-perfect-continuous)"
+};
+
+const questions = [
+  // --- SECTION 1: Word stress ---
+  {section:"Word stress", prompt:"Where is the stress in 'strategic'?",
+   options:["STRA-te-gic","stra-TE-gic","stra-te-GIC"], correct:1,
+   explain:"stra'TEgic — the stress falls on the second syllable, and the vowel changes to a short 'eh' sound."},
+  {section:"Word stress", prompt:"Where is the stress in 'membrane'?",
+   options:["MEM-brane","mem-BRANE"], correct:0,
+   explain:"'MEMbrane — stress on the first syllable, as in most two-syllable technical nouns."},
+  {section:"Word stress", prompt:"Where is the stress in 'accurately'?",
+   options:["AC-cu-rate-ly","ac-CU-rate-ly","ac-cu-RATE-ly"], correct:0,
+   explain:"'ACcurately — stress stays on the first syllable, matching 'accurate'."},
+  {section:"Word stress", prompt:"Where is the stress in 'negotiating'?",
+   options:["ne-GO-ti-a-ting","NE-go-ti-a-ting","ne-go-ti-A-ting"], correct:0,
+   explain:"ne'GOtiating — stress on the second syllable, same as 'negotiate'."},
+  {section:"Word stress", prompt:"Where is the stress in 'developer'?",
+   options:["DE-vel-o-per","de-VEL-o-per","de-vel-OP-er"], correct:1,
+   explain:"de'VELoper — stress on the second syllable, same pattern as 'develop'."},
+  {section:"Word stress", prompt:"Where is the stress in 'primarily'?",
+   options:["PRI-mar-i-ly","pri-MAR-i-ly"], correct:0,
+   explain:"'PRImarily — many learners misplace this on the second syllable, but the stress is on the first."},
+  {section:"Word stress", prompt:"Where is the stress in 'temperature'?",
+   options:["TEM-per-a-ture","tem-PER-a-ture"], correct:0,
+   explain:"'TEMperature — stress on the first syllable; the middle 'per' is unstressed and often shortened in speech."},
+  {section:"Word stress", prompt:"Where is the stress in 'elevation'?",
+   options:["EL-e-va-tion","el-e-VA-tion","e-LE-va-tion"], correct:1,
+   explain:"el-e'VAtion — stress on the third syllable, just before the '-tion' ending, which is typical for words ending in '-ation'."},
+
+  // --- SECTION 2: Preposition + -ing form ---
+  {section:"Preposition + -ing", prompt:"Which is correct?",
+   options:["We priced the membrane for install.","We priced the membrane for installing.","We priced the membrane for to install."], correct:1,
+   explain:"After a preposition (for, before, without, etc.), the verb takes the -ing form: 'for installing', not 'for install'."},
+  {section:"Preposition + -ing", prompt:"Which is correct?",
+   options:["Before selling the helmet, we need to make a test.","Before selling the helmet, we need to do a test.","Before selling the helmet, we need to conduct a test."], correct:1,
+   explain:"'To do a test' is the natural collocation. 'Make a test' is a common mistranslation and sounds unnatural in English."},
+  {section:"Preposition + -ing", prompt:"Which is correct?",
+   options:["The adhesive is drying in the moment.","The adhesive is drying at the moment.","The adhesive is drying on the moment."], correct:1,
+   explain:"'At the moment' is the fixed expression for 'right now'. 'In the moment' means something different (being fully present/absorbed)."},
+  {section:"Preposition + -ing", prompt:"Which is correct?",
+   options:["Keep the adhesive roll to stay it in the shadow.","Keep the adhesive roll in the shade.","Keep the adhesive roll on the shadow."], correct:1,
+   explain:"'Shade' is the area protected from direct sun; 'shadow' is the dark shape an object casts. Store materials 'in the shade'."},
+
+  // --- SECTION 3: Adverbs ---
+  {section:"Adverbs", prompt:"Which is correct?",
+   options:["You can take it on the roof short before use.","You can take it on the roof shortly before use.","You can take it on the roof shortening before use."], correct:1,
+   explain:"'Shortly' is the adverb modifying the verb phrase 'before use'; 'short' is an adjective and can't do that job here."},
+  {section:"Adverbs", prompt:"Which is correct?",
+   options:["The team is delaying the launch appropriate.","The team is delaying the launch appropriately.","The team is delaying the launch appropriateness."], correct:1,
+   explain:"To modify the verb 'delaying', you need the adverb 'appropriately', not the adjective 'appropriate' or the noun 'appropriateness'."},
+  {section:"Adverbs", prompt:"Which is correct?",
+   options:["He explained the risk accurate.","He explained the risk accurately.","He explained the risk accuracy."], correct:1,
+   explain:"'Accurately' is the adverb modifying 'explained'. 'Accurate' is an adjective (describes a noun); 'accuracy' is a noun."},
+
+  // --- SECTION 4: Tense choice ---
+  {section:"Tense choice", prompt:"'___ all weekend, so I missed your call.' (long, unspecified action in the past)",
+   options:["I cycled","I was cycling","I have been cycling"], correct:1, tense:"Past Continuous",
+   explain:"Past Continuous describes a long, background action in progress at a past time: 'I was cycling all weekend.'"},
+  {section:"Tense choice", prompt:"'___ there in 2019.' (a finished action at a specified time)",
+   options:["I went cycling","I was cycling","I have been cycling"], correct:0, tense:"Past Simple",
+   explain:"Past Simple is used for a completed action at a stated time in the past: 'I went cycling there in 2019.'"},
+  {section:"Tense choice", prompt:"'___ in Austria?' 'Yes, I have.' (finished action, no specific time given)",
+   options:["Did you cycle","Have you ever been cycling","Were you cycling"], correct:1, tense:"Present Perfect Continuous",
+   explain:"Present Perfect Continuous asks about experience without a specific time: 'Have you ever been cycling in Austria?'"}
+];
+
+// Fisher-Yates shuffle
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+let order = [];
+let current = 0;
+let score = 0;
+
+function buildOrder(){
+  order = questions.map((q,i)=>i);
+}
+
+function renderStressReference(){
+  const items = [
+    "stra'tegic","'membrane","de'layed","'accurately","ex'aggerating","ne'gotiating",
+    "main'taining","de'laying","app'ropriately","de'velop","de'veloper","pri'marily",
+    "'accuracy","o'ccurring","cre'vasses","'purpose","fa'talities","'temperature",
+    "pre'caution","ele'vation","'flooding","'injury","te'rrain","'argues"
+  ];
+  document.getElementById("stressRef").innerHTML = items.map(w=>{
+    const parts = w.split("'");
+    return `<span>${parts[0]}<b>'</b>${parts[1]}</span>`;
+  }).join("");
+}
+
+function startQuiz(){
+  document.getElementById("introCard").classList.add("hidden");
+  document.getElementById("scoreBar").style.display = "flex";
+  document.getElementById("qTotal").textContent = questions.length;
+  buildOrder();
+  current = 0;
+  score = 0;
+  renderQuestion();
+}
+
+function updateProgress(){
+  const pct = (current / questions.length) * 100;
+  document.getElementById("progressFill").style.width = pct + "%";
+  document.getElementById("qNum").textContent = current + 1;
+  document.getElementById("scoreNum").textContent = score;
+}
+
+function renderQuestion(){
+  updateProgress();
+  const qArea = document.getElementById("quizArea");
+  if(current >= questions.length){
+    finish();
+    return;
+  }
+  const q = questions[order[current]];
+  const optIndices = shuffle(q.options.map((_,i)=>i));
+
+  let tenseTag = "";
+  if(q.tense){
+    tenseTag = `<div class="tense-tag" style="background:${TENSE_COLORS[q.tense]}">${q.tense}</div><br>`;
+  }
+
+  qArea.innerHTML = `
+    <div class="card">
+      <div class="section-tag">${q.section}</div>
+      ${tenseTag}
+      <p class="prompt">${q.prompt}</p>
+      <div id="optsBox"></div>
+      <div class="feedback" id="feedbackBox"></div>
+      <button class="next-btn" id="nextBtn">Next</button>
+    </div>
+  `;
+
+  const optsBox = document.getElementById("optsBox");
+  optIndices.forEach(origIdx=>{
+    const btn = document.createElement("button");
+    btn.className = "opt";
+    btn.textContent = q.options[origIdx];
+    btn.addEventListener("click", ()=>selectAnswer(origIdx, q));
+    optsBox.appendChild(btn);
+  });
+
+  document.getElementById("nextBtn").addEventListener("click", ()=>{
+    current++;
+    renderQuestion();
+  });
+}
+
+function selectAnswer(chosenIdx, q){
+  const buttons = document.querySelectorAll("#optsBox .opt");
+  buttons.forEach(b=> b.disabled = true);
+  buttons.forEach(b=>{
+    if(b.textContent === q.options[q.correct]) b.classList.add("correct");
+  });
+  if(chosenIdx !== q.correct){
+    buttons.forEach(b=>{
+      if(b.textContent === q.options[chosenIdx]) b.classList.add("wrong");
+    });
+  } else {
+    score++;
+    document.getElementById("scoreNum").textContent = score;
+  }
+  const fb = document.getElementById("feedbackBox");
+  fb.textContent = q.explain;
+  fb.classList.add("show");
+  document.getElementById("nextBtn").classList.add("active");
+}
+
+function finish(){
+  document.getElementById("quizArea").innerHTML = "";
+  document.getElementById("scoreBar").style.display = "none";
+  document.getElementById("progressFill").style.width = "100%";
+  const results = document.getElementById("results");
+  results.classList.remove("hidden");
+  document.getElementById("finalScore").textContent = score + " / " + questions.length;
+  let msg = "";
+  const pct = score / questions.length;
+  if(pct === 1) msg = "Perfect score — every stress, preposition and tense landed correctly.";
+  else if(pct >= 0.75) msg = "Strong result — review the explanations above for anything you missed.";
+  else msg = "Good first pass — worth going through the stress reference below and trying again.";
+  document.getElementById("finalMsg").textContent = msg;
+  document.getElementById("referenceCard").style.display = "block";
+}
+
+document.getElementById("startBtn").addEventListener("click", startQuiz);
+renderStressReference();
+</script>
+
+</body>
+</html>

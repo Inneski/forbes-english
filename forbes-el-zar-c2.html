@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – El Zar: Words of Force & Effect</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #12080e;
+    --surface:   #1e0f19;
+    --card:      #271526;
+    --border:    #4a2040;
+    --gold:      #c9a84c;
+    --gold-pale: #e8d09a;
+    --crimson:   #8b1a3a;
+    --cream:     #f0e6d3;
+    --muted:     #9a7a8a;
+    --right:     #3a7d5a;
+    --wrong:     #8b2a2a;
+    --text:      #e8d8c8;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(139,26,58,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 30% at 80% 80%, rgba(201,168,76,0.07) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+  }
+
+  .logo-wrap { display: flex; justify-content: center; margin-bottom: 48px; }
+
+  .hero { text-align: center; margin-bottom: 48px; }
+  .hero-eyebrow {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 6vw, 3.2rem);
+    font-weight: 700; color: var(--cream);
+    line-height: 1.15; margin-bottom: 16px;
+  }
+  .hero h1 em { color: var(--gold); font-style: italic; }
+  .hero p { color: var(--muted); font-size: 15px; max-width: 520px; margin: 0 auto; font-style: italic; }
+
+  /* SCORE BAR */
+  .scorebar {
+    position: sticky; top: 16px; z-index: 100;
+    background: rgba(30,15,25,0.92); backdrop-filter: blur(12px);
+    border: 1px solid var(--border); border-radius: 12px;
+    padding: 12px 20px;
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 40px; gap: 12px; flex-wrap: wrap;
+  }
+  .scorebar-left { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 600; color: var(--cream); }
+  .scorebar-left span { color: var(--gold); }
+  .prog-track { flex: 1; min-width: 120px; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .prog-fill { height: 100%; background: linear-gradient(90deg, var(--crimson), var(--gold)); border-radius: 2px; transition: width 0.5s ease; }
+  .scorebar-right { font-size: 13px; color: var(--muted); }
+
+  /* TASK HEADERS */
+  .task-header { margin-bottom: 28px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+  .task-header h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 700; color: var(--cream); margin-bottom: 4px; }
+  .task-header p { color: var(--muted); font-size: 14px; font-style: italic; }
+  .task-badge {
+    display: inline-block; background: var(--crimson); color: var(--cream);
+    font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 20px; margin-bottom: 10px;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 28px; margin-bottom: 20px;
+    position: relative; overflow: hidden; transition: border-color 0.3s;
+  }
+  .card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--crimson), var(--gold));
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .card.done::before { opacity: 1; }
+
+  .item-num { font-family: 'Cormorant Garamond', serif; font-size: 0.75rem; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; }
+  .item-text { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 600; color: var(--cream); margin-bottom: 20px; line-height: 1.4; }
+
+  /* CHOICES */
+  .choices-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media(max-width:560px) { .choices-grid { grid-template-columns: 1fr; } }
+
+  .choice-btn {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 16px;
+    color: var(--text); font-family: 'Source Sans 3', sans-serif; font-size: 14px;
+    cursor: pointer; text-align: left;
+    transition: background 0.2s, border-color 0.2s, transform 0.1s;
+    display: flex; align-items: flex-start; gap: 10px;
+  }
+  .choice-btn:hover:not(:disabled) { background: rgba(201,168,76,0.08); border-color: var(--gold); transform: translateY(-1px); }
+  .choice-letter {
+    flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
+    background: var(--border); display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600; color: var(--gold); margin-top: 1px;
+  }
+  .choice-btn.right { background: rgba(58,125,90,0.25); border-color: var(--right); }
+  .choice-btn.wrong { background: rgba(139,42,42,0.25);  border-color: var(--wrong); }
+  .choice-btn.right .choice-letter { background: var(--right); color: #fff; }
+  .choice-btn.wrong .choice-letter { background: var(--wrong); color: #fff; }
+  .choice-btn:disabled { cursor: default; transform: none; }
+
+  /* FEEDBACK */
+  .feedback { display: none; margin-top: 16px; padding: 14px 16px; border-radius: 10px; font-size: 14px; line-height: 1.5; border-left: 4px solid; }
+  .feedback.show { display: block; }
+  .feedback.right { background: rgba(58,125,90,0.15); border-color: var(--right); color: #a8d4b8; }
+  .feedback.wrong { background: rgba(139,42,42,0.15);  border-color: var(--wrong); color: #d4a8a8; }
+  .feedback strong { color: var(--cream); }
+
+  /* FILL THE GAP */
+  .fitb-input {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    padding: 10px 14px; color: var(--cream);
+    font-family: 'Source Sans 3', sans-serif; font-size: 15px;
+    width: 100%; max-width: 340px; transition: border-color 0.2s; outline: none; margin-top: 10px;
+  }
+  .fitb-input:focus { border-color: var(--gold); }
+  .fitb-input.right { border-color: var(--right); background: rgba(58,125,90,0.15); }
+  .fitb-input.wrong { border-color: var(--wrong); background: rgba(139,42,42,0.15); }
+
+  /* WORD BANK */
+  .word-bank {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px;
+    padding: 16px; background: var(--surface);
+    border: 1px dashed var(--border); border-radius: 10px;
+  }
+  .word-chip {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 20px; padding: 5px 14px; font-size: 13px;
+    color: var(--gold-pale); cursor: pointer; transition: all 0.2s; user-select: none;
+  }
+  .word-chip:hover { background: rgba(201,168,76,0.1); border-color: var(--gold); }
+  .word-chip.used  { opacity: 0.3; cursor: default; pointer-events: none; }
+
+  /* MATCHING */
+  .match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media(max-width:560px) { .match-grid { grid-template-columns: 1fr; } }
+  .match-col-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; font-weight: 600; }
+  .match-item {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 11px 14px; font-size: 14px;
+    cursor: pointer; transition: all 0.2s; min-height: 48px;
+    display: flex; align-items: center;
+  }
+  .match-item:hover:not(.matched):not(.used-right) { border-color: var(--gold); background: rgba(201,168,76,0.07); }
+  .match-item.chosen  { border-color: var(--gold); background: rgba(201,168,76,0.13); }
+  .match-item.matched { border-color: var(--right); background: rgba(58,125,90,0.2); color: #a8d4b8; cursor: default; }
+  .match-item.bad-flash { border-color: var(--wrong); background: rgba(139,42,42,0.2); }
+  .match-item.used-right { opacity: 0.35; cursor: default; }
+  .match-left-col, .match-right-col { display: flex; flex-direction: column; gap: 8px; }
+
+  /* ORDER */
+  .order-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .order-item {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 12px 16px; cursor: grab;
+    display: flex; align-items: center; gap: 12px; font-size: 14px;
+    transition: all 0.2s; user-select: none;
+  }
+  .order-item:active { cursor: grabbing; }
+  .order-item.dragging  { opacity: 0.4; border-style: dashed; }
+  .order-item.drag-over { border-color: var(--gold); background: rgba(201,168,76,0.08); }
+  .drag-handle { color: var(--muted); font-size: 16px; flex-shrink: 0; }
+  .order-num {
+    flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%;
+    background: var(--border); display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600; color: var(--gold);
+  }
+  .order-item.right-place { border-color: var(--right); background: rgba(58,125,90,0.15); }
+  .order-item.wrong-place { border-color: var(--wrong); background: rgba(139,42,42,0.15); }
+
+  /* BUTTONS */
+  .btn-row { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+  .btn-hand-in, .btn-go-on, .btn-check {
+    font-family: 'Source Sans 3', sans-serif; font-size: 14px; font-weight: 600;
+    letter-spacing: 0.5px; border: none; border-radius: 8px; padding: 11px 24px; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-hand-in, .btn-check { background: linear-gradient(135deg, var(--crimson), #6b1230); color: var(--cream); }
+  .btn-hand-in:hover, .btn-check:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(139,26,58,0.4); }
+  .btn-go-on { background: linear-gradient(135deg, var(--gold), #a07a30); color: var(--bg); display: none; }
+  .btn-go-on.show { display: inline-flex; align-items: center; gap: 6px; }
+  .btn-go-on:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(201,168,76,0.4); }
+  .btn-hand-in:disabled, .btn-check:disabled { opacity: 0.5; cursor: default; transform: none; }
+
+  /* TASK BLOCKS */
+  .task-block { display: none; margin-bottom: 60px; }
+  .task-block.active { display: block; }
+
+  /* LAST SCREEN */
+  #last-screen { display: none; text-align: center; padding: 60px 20px; }
+  #last-screen.active { display: block; }
+  .score-ring {
+    width: 140px; height: 140px; border-radius: 50%;
+    border: 4px solid var(--gold); display: flex; flex-direction: column;
+    align-items: center; justify-content: center; margin: 0 auto 32px;
+    background: var(--card); box-shadow: 0 0 40px rgba(201,168,76,0.2);
+  }
+  .score-big { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 700; color: var(--gold); line-height: 1; }
+  .score-word { font-size: 12px; color: var(--muted); letter-spacing: 1px; }
+  .last-heading { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--cream); margin-bottom: 12px; }
+  .last-note { color: var(--muted); font-size: 15px; font-style: italic; max-width: 460px; margin: 0 auto 32px; }
+  .btn-again {
+    background: linear-gradient(135deg, var(--gold), #a07a30); color: var(--bg);
+    font-family: 'Source Sans 3', sans-serif; font-size: 14px; font-weight: 600;
+    border: none; border-radius: 8px; padding: 13px 32px; cursor: pointer;
+    letter-spacing: 0.5px; transition: all 0.2s;
+  }
+  .btn-again:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(201,168,76,0.4); }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- LOGO -->
+  <div class="logo-wrap">
+    <svg width="160" height="60" viewBox="0 0 160 60" xmlns="http://www.w3.org/2000/svg">
+      <text x="80" y="28" font-family="Georgia,'Times New Roman',serif" font-size="26" font-weight="700" fill="#c9a84c" text-anchor="middle" letter-spacing="3">FORBES</text>
+      <rect x="10" y="34" width="140" height="1.2" fill="#4a2040"/>
+      <text x="80" y="52" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="700" fill="#e8d8c8" text-anchor="middle" letter-spacing="6">ENGLISH</text>
+    </svg>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <p class="hero-eyebrow">C2 · Words of Force &amp; Effect</p>
+    <h1>El Zar —<br><em>The Pull of These Words</em></h1>
+    <p>Twenty words that shape how strength shifts, fades, or breaks through. Work through each task to make them yours.</p>
+  </div>
+
+  <!-- SCORE BAR -->
+  <div class="scorebar">
+    <div class="scorebar-left">Score: <span id="score-out">0</span></div>
+    <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="scorebar-right" id="prog-label">Task 1 of 4</div>
+  </div>
+
+  <!-- TASK 1 -->
+  <div class="task-block active" id="task-1">
+    <div class="task-header">
+      <span class="task-badge">Task 1</span>
+      <h2>Pick the Right Word</h2>
+      <p>Choose the word that fits the gap most sharply. Only one is right.</p>
+    </div>
+    <div id="mc-wrap"></div>
+    <div class="btn-row">
+      <button class="btn-go-on" id="mc-go-on">Go on to Task 2 →</button>
+    </div>
+  </div>
+
+  <!-- TASK 2 -->
+  <div class="task-block" id="task-2">
+    <div class="task-header">
+      <span class="task-badge">Task 2</span>
+      <h2>Fill the Gap</h2>
+      <p>Pick from the words below — click a word to drop it into the gap you have open, or type it in. Each word is used only once.</p>
+    </div>
+    <div class="word-bank" id="word-bank"></div>
+    <div id="fitb-wrap"></div>
+    <div class="btn-row">
+      <button class="btn-hand-in" id="fitb-hand-in">Hand In</button>
+      <button class="btn-go-on" id="fitb-go-on">Go on to Task 3 →</button>
+    </div>
+  </div>
+
+  <!-- TASK 3 -->
+  <div class="task-block" id="task-3">
+    <div class="task-header">
+      <span class="task-badge">Task 3</span>
+      <h2>Match the Meanings</h2>
+      <p>Click a word on the left, then click what it means on the right.</p>
+    </div>
+    <div class="match-grid">
+      <div>
+        <div class="match-col-label">Word</div>
+        <div class="match-left-col" id="match-left"></div>
+      </div>
+      <div>
+        <div class="match-col-label">What it means</div>
+        <div class="match-right-col" id="match-right"></div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-go-on" id="match-go-on">Go on to Task 4 →</button>
+    </div>
+    <div class="feedback" id="match-fb"></div>
+  </div>
+
+  <!-- TASK 4 -->
+  <div class="task-block" id="task-4">
+    <div class="task-header">
+      <span class="task-badge">Task 4</span>
+      <h2>Put It in Order</h2>
+      <p>Drag the chunks into the right order to build a well-formed line.</p>
+    </div>
+    <div id="order-wrap"></div>
+    <div class="btn-row">
+      <button class="btn-check" id="order-check">Check All</button>
+      <button class="btn-go-on" id="order-go-on">See Your Score →</button>
+    </div>
+  </div>
+
+  <!-- LAST SCREEN -->
+  <div id="last-screen">
+    <div class="score-ring">
+      <div class="score-big" id="last-num">0</div>
+      <div class="score-word">OUT OF 20</div>
+    </div>
+    <h2 class="last-heading" id="last-heading">Well done.</h2>
+    <p class="last-note" id="last-note"></p>
+    <button class="btn-again" onclick="startAgain()">Start Again</button>
+  </div>
+
+</div>
+
+<script>
+/* ── STATE ── */
+let score = 0;
+let nowOn = 1;
+const TOPS = 20;
+
+function addScore(n) {
+  score += n;
+  document.getElementById("score-out").textContent = score;
+}
+
+/* ── TASK 1: PICK THE RIGHT WORD ── */
+const mcItems = [
+  {
+    text: "The producer used wide, rolling reverb to ______ the sharpness of the lead guitar, keeping the mix warm at high volumes.",
+    choices: ["exacerbate","attenuate","precipitate","underscore"],
+    right: 1,
+    why: "<strong>Attenuate</strong> means to bring down the strength or sharpness of something. The producer wanted less harshness — not more (exacerbate), not a sudden shift (precipitate), and not further stress on it (underscore)."
+  },
+  {
+    text: "The tour was meant to ______ the growing ill-feeling between the two founding members — yet within three nights it had ______ a lasting rift.",
+    choices: ["assuage … precipitated","bolster … engendered","circumscribe … attenuated","mollify … corroborated"],
+    right: 0,
+    why: "<strong>Assuage</strong> means to make a painful feeling less sharp; <strong>precipitated</strong> means brought something about very fast and suddenly. The gap between what was hoped and what happened is the whole weight of the line."
+  },
+  {
+    text: "The band's handler spoke in a rolling fog of vague, shifting words at every press gathering — plainly meant to ______ the truth rather than shed light on it.",
+    choices: ["elucidate","substantiate","corroborate","obfuscate"],
+    right: 3,
+    why: "<strong>Obfuscate</strong> means to cloud or muddy something on purpose. The other three words all move toward clarity or backing up a claim — the other way round from what the handler was doing."
+  },
+  {
+    text: "Three write-ups, each glowing and each written without knowledge of the others, went a long way to ______ the claim that El Zar's live shows had reached a new height.",
+    choices: ["diminish","curtail","corroborate","abate"],
+    right: 2,
+    why: "<strong>Corroborate</strong> means to back up a claim with further backing. Three writers arriving at the same reading without talking to each other is strong, added proof — it builds the claim up rather than wearing it down."
+  },
+  {
+    text: "By choosing to ______ his usual sweeping, layered style — stripping things to a voice and a single string — the lyricist ______ a fresh chapter in the band's sound.",
+    choices: ["engender … precipitated","temper … engendered","bolster … obfuscated","assuage … curtailed"],
+    right: 1,
+    why: "<strong>Temper</strong> means to soften or hold back something; <strong>engendered</strong> means gave rise to something new. Pulling back from a big, loud style opened up a new era — it brought something fresh into being."
+  }
+];
+
+const ABC = ["A","B","C","D"];
+
+function buildMC() {
+  const wrap = document.getElementById("mc-wrap");
+  let done = 0;
+  mcItems.forEach((q, qi) => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <div class="item-num">Item ${qi+1} of ${mcItems.length}</div>
+      <div class="item-text">${q.text}</div>
+      <div class="choices-grid" id="cg-${qi}"></div>
+      <div class="feedback" id="mc-fb-${qi}"></div>
+    `;
+    wrap.appendChild(card);
+    const grid = card.querySelector("#cg-"+qi);
+    q.choices.forEach((ch, ci) => {
+      const btn = document.createElement("button");
+      btn.className = "choice-btn";
+      btn.innerHTML = `<span class="choice-letter">${ABC[ci]}</span><span>${ch}</span>`;
+      btn.addEventListener("click", () => {
+        if (card.classList.contains("done")) return;
+        card.classList.add("done");
+        grid.querySelectorAll(".choice-btn").forEach(b => b.disabled = true);
+        const fb = card.querySelector("#mc-fb-"+qi);
+        if (ci === q.right) {
+          btn.classList.add("right"); addScore(1);
+          fb.className = "feedback right show";
+          fb.innerHTML = "✓ Right. " + q.why;
+        } else {
+          btn.classList.add("wrong");
+          grid.querySelectorAll(".choice-btn")[q.right].classList.add("right");
+          fb.className = "feedback wrong show";
+          fb.innerHTML = "✗ Not quite. " + q.why;
+        }
+        done++;
+        setBar(1, done, mcItems.length);
+        if (done === mcItems.length) document.getElementById("mc-go-on").classList.add("show");
+      });
+      grid.appendChild(btn);
+    });
+  });
+}
+
+/* ── TASK 2: FILL THE GAP ── */
+const fitbItems = [
+  {
+    line: "Years of thin funding had begun to ______ the band's standing, which had once been thought the strongest in the field.",
+    answer: "diminish",
+    why: "<strong>Diminish</strong> means to make smaller or weaker by degrees. Standing that was once strong wore away through neglect."
+  },
+  {
+    line: "Rather than deal with the row head-on, the label put out a statement so hedged and murky it seemed likely to ______ things rather than settle them.",
+    answer: "exacerbate",
+    why: "<strong>Exacerbate</strong> means to make something bad even worse. Hedging and murkiness inflame rather than calm a row."
+  },
+  {
+    line: "The tour manager hoped that handing out free backstage passes might ______ the anger of fans who had been turned away at the gate.",
+    answer: "mollify",
+    why: "<strong>Mollify</strong> means to calm someone's anger or soften their mood. A goodwill offering is a classic way of trying to mollify."
+  },
+  {
+    line: "The venue's deal ______ the band's freedom to play their own songs, setting a rule that at least forty in every hundred tracks had to be licensed covers.",
+    answer: "circumscribed",
+    why: "<strong>Circumscribed</strong> means to draw a tight boundary around something — to hold it within set walls. The deal put a hard limit on their creative freedom."
+  },
+  {
+    line: "The teacher played a track from El Zar's third record to ______ the idea of 'timbral layering' — a term that had meant nothing to the students when it was set out in the abstract.",
+    answer: "elucidate",
+    why: "<strong>Elucidate</strong> means to make something clear, to shed light on it. A real, heard example brought a dry idea to life."
+  }
+];
+
+const bankWords = ["diminish","exacerbate","mollify","circumscribed","elucidate","assuage","curtail","bolster"];
+
+function buildFITB() {
+  const bank = document.getElementById("word-bank");
+  [...bankWords].sort(() => Math.random()-0.5).forEach(w => {
+    const chip = document.createElement("div");
+    chip.className = "word-chip"; chip.textContent = w; chip.dataset.word = w;
+    chip.addEventListener("click", () => {
+      const hot = document.querySelector(".fitb-input:focus");
+      if (hot && !chip.classList.contains("used")) {
+        if (hot.dataset.chipWord) {
+          const old = bank.querySelector(`[data-word="${hot.dataset.chipWord}"]`);
+          if (old) old.classList.remove("used");
+        }
+        hot.value = w; hot.dataset.chipWord = w; chip.classList.add("used");
+      }
+    });
+    bank.appendChild(chip);
+  });
+  const wrap = document.getElementById("fitb-wrap");
+  fitbItems.forEach((q, qi) => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <div class="item-num">Item ${qi+1} of ${fitbItems.length}</div>
+      <div class="item-text">${q.line.replace("______","___________")}</div>
+      <input class="fitb-input" type="text" placeholder="Type your answer…" data-qi="${qi}" autocomplete="off" autocorrect="off" spellcheck="false">
+      <div class="feedback" id="fitb-fb-${qi}"></div>
+    `;
+    wrap.appendChild(card);
+    const inp = card.querySelector("input");
+    inp.addEventListener("input", () => {
+      const prev = inp.dataset.chipWord;
+      if (prev && inp.value !== prev) {
+        const ch = bank.querySelector(`[data-word="${prev}"]`);
+        if (ch) ch.classList.remove("used");
+        delete inp.dataset.chipWord;
+      }
+    });
+  });
+  document.getElementById("fitb-hand-in").addEventListener("click", checkFITB);
+}
+
+function checkFITB() {
+  let got = 0;
+  fitbItems.forEach((q, qi) => {
+    const inp = document.querySelector(`.fitb-input[data-qi="${qi}"]`);
+    const val = inp.value.trim().toLowerCase();
+    const fb  = document.getElementById("fitb-fb-"+qi);
+    inp.disabled = true;
+    if (val === q.answer.toLowerCase()) {
+      inp.classList.add("right"); fb.className = "feedback right show";
+      fb.innerHTML = "✓ Right. " + q.why; got++;
+    } else {
+      inp.classList.add("wrong"); fb.className = "feedback wrong show";
+      fb.innerHTML = `✗ The word is <strong>${q.answer}</strong>. ${q.why}`;
+    }
+  });
+  addScore(got);
+  document.getElementById("fitb-hand-in").disabled = true;
+  document.getElementById("fitb-go-on").classList.add("show");
+  setBar(2, fitbItems.length, fitbItems.length);
+}
+
+/* ── TASK 3: MATCH THE MEANINGS ── */
+const matchPairs = [
+  { word: "mitigate",     meaning: "To make something harmful less sharp or strong in its reach" },
+  { word: "engender",     meaning: "To bring a feeling, mood, or state of things into being" },
+  { word: "underscore",   meaning: "To draw out the weight or meaning of something already there" },
+  { word: "substantiate", meaning: "To back up a claim by bringing forward hard, real backing" },
+  { word: "alleviate",    meaning: "To lift some — though not all — of a weight, ache, or hardship" }
+];
+
+let matchChosen = null, matchDone = 0, matchGot = 0;
+
+function buildMatching() {
+  const lc = document.getElementById("match-left");
+  const rc = document.getElementById("match-right");
+  [...matchPairs.map(p => p.meaning)].sort(() => Math.random()-0.5).forEach(m => {
+    const el = document.createElement("div");
+    el.className = "match-item"; el.textContent = m; el.dataset.meaning = m; el.dataset.side = "right";
+    el.addEventListener("click", () => handleMatch(el));
+    rc.appendChild(el);
+  });
+  matchPairs.map(p => p.word).forEach(w => {
+    const el = document.createElement("div");
+    el.className = "match-item"; el.textContent = w; el.dataset.word = w; el.dataset.side = "left";
+    el.addEventListener("click", () => handleMatch(el));
+    lc.appendChild(el);
+  });
+}
+
+function handleMatch(el) {
+  if (el.classList.contains("matched") || el.classList.contains("used-right")) return;
+  if (!matchChosen) {
+    if (el.dataset.side !== "left") return;
+    matchChosen = el; el.classList.add("chosen"); return;
+  }
+  if (el.dataset.side === "left") {
+    document.querySelectorAll(".match-item").forEach(e => e.classList.remove("chosen"));
+    matchChosen = el; el.classList.add("chosen"); return;
+  }
+  const word = matchChosen.dataset.word;
+  const meaning = el.dataset.meaning;
+  const good = matchPairs.find(p => p.word === word).meaning;
+  if (meaning === good) {
+    matchChosen.classList.remove("chosen"); matchChosen.classList.add("matched");
+    el.classList.add("matched"); matchGot++; matchDone++;
+  } else {
+    matchChosen.classList.add("bad-flash"); el.classList.add("bad-flash");
+    const snap = matchChosen;
+    setTimeout(() => { snap.classList.remove("bad-flash","chosen"); el.classList.remove("bad-flash"); }, 700);
+  }
+  matchChosen = null;
+  if (matchDone === matchPairs.length) {
+    addScore(matchGot);
+    const fb = document.getElementById("match-fb");
+    fb.className = "feedback right show";
+    fb.innerHTML = `All matched! You got <strong>${matchGot} of ${matchPairs.length}</strong> right.`;
+    document.getElementById("match-go-on").classList.add("show");
+    setBar(3, matchPairs.length, matchPairs.length);
+  }
+}
+
+/* ── TASK 4: PUT IT IN ORDER ── */
+const orderItems = [
+  {
+    chunks: ["The write-up","went a long way to bolster","the long-held view","that the band had lost none of their edge"],
+    right: [0,1,2,3],
+    why: "<strong>Bolster</strong>: to prop up or strengthen. The write-up added weight to something people already believed."
+  },
+  {
+    chunks: ["The chairman's reach","had been so thoroughly circumscribed","by the board","that his word carried almost no weight in the room"],
+    right: [0,1,2,3],
+    why: "<strong>Circumscribed</strong>: held within tight walls. The board had drawn such a narrow ring around his power that he could do very little."
+  },
+  {
+    chunks: ["A long stretch of cold silence","between the two lead players","did nothing to abate","the talk of a lasting split"],
+    right: [0,1,2,3],
+    why: "<strong>Abate</strong>: to grow less strong. The silence did not quiet the talk — if anything it fed it."
+  },
+  {
+    chunks: ["Their failure to substantiate","any of the claims","with hard, written backing","left their whole case hollow"],
+    right: [0,1,2,3],
+    why: "<strong>Substantiate</strong>: to back up with solid proof. Without written backing, their words stood on nothing."
+  },
+  {
+    chunks: ["The rework, rather than attenuating","the raw, unguarded feel of the first take,","only seemed to precipitate","a fresh wave of feeling for the old recording"],
+    right: [0,1,2,3],
+    why: "<strong>Attenuate</strong>: to bring down in strength. <strong>Precipitate</strong>: to bring something about sharply and fast. The rework did not dull the old track — it sparked a new rush of love for it."
+  }
+];
+
+function buildOrdering() {
+  const wrap = document.getElementById("order-wrap");
+  orderItems.forEach((item, qi) => {
+    const shuffled = [...item.chunks].sort(() => Math.random()-0.5);
+    const card = document.createElement("div");
+    card.className = "card"; card.id = "ord-card-"+qi;
+    card.innerHTML = `
+      <div class="item-num">Line ${qi+1} of ${orderItems.length}</div>
+      <p style="font-style:italic;color:var(--muted);font-size:13px;margin-bottom:14px;">Drag the chunks into the right order.</p>
+      <ul class="order-list" id="ord-list-${qi}"></ul>
+      <div class="feedback" id="ord-fb-${qi}"></div>
+    `;
+    wrap.appendChild(card);
+    const list = card.querySelector("#ord-list-"+qi);
+    shuffled.forEach((chunk, ci) => list.appendChild(makeOrderItem(chunk, ci, list)));
+  });
+  document.getElementById("order-check").addEventListener("click", checkOrdering);
+}
+
+function makeOrderItem(text, idx, list) {
+  const li = document.createElement("li");
+  li.className = "order-item"; li.draggable = true; li.dataset.text = text;
+  li.innerHTML = `<span class="drag-handle">⠿</span><span class="order-num">${idx+1}</span><span>${text}</span>`;
+  let src = null;
+  li.addEventListener("dragstart", e => { src = li; li.classList.add("dragging"); e.dataTransfer.effectAllowed = "move"; });
+  li.addEventListener("dragend",   () => { li.classList.remove("dragging"); list.querySelectorAll(".order-item").forEach(el => el.classList.remove("drag-over")); });
+  li.addEventListener("dragover",  e => { e.preventDefault(); if (li !== src) li.classList.add("drag-over"); });
+  li.addEventListener("dragleave", () => li.classList.remove("drag-over"));
+  li.addEventListener("drop", e => {
+    e.preventDefault(); li.classList.remove("drag-over");
+    if (src && src !== li) {
+      const els = [...list.querySelectorAll(".order-item")];
+      els.indexOf(src) < els.indexOf(li) ? list.insertBefore(src, li.nextSibling) : list.insertBefore(src, li);
+      list.querySelectorAll(".order-num").forEach((n,i) => n.textContent = i+1);
+    }
+  });
+  return li;
+}
+
+function checkOrdering() {
+  let got = 0;
+  orderItems.forEach((item, qi) => {
+    const list = document.getElementById("ord-list-"+qi);
+    const els  = [...list.querySelectorAll(".order-item")];
+    const userOrder = els.map(el => el.dataset.text);
+    const goodOrder = item.right.map(i => item.chunks[i]);
+    const isRight   = userOrder.join("|") === goodOrder.join("|");
+    const fb = document.getElementById("ord-fb-"+qi);
+    els.forEach(el => el.draggable = false);
+    if (isRight) {
+      els.forEach(el => el.classList.add("right-place"));
+      fb.className = "feedback right show"; fb.innerHTML = "✓ Right order. " + item.why; got++;
+    } else {
+      els.forEach(el => el.classList.add("wrong-place"));
+      fb.className = "feedback wrong show";
+      fb.innerHTML = `✗ The right order was: <strong>${goodOrder.join(" / ")}</strong>. ${item.why}`;
+    }
+  });
+  addScore(got);
+  document.getElementById("order-check").disabled = true;
+  document.getElementById("order-go-on").classList.add("show");
+  setBar(4, orderItems.length, orderItems.length);
+}
+
+/* ── NAV & BAR ── */
+function setBar(task, done, of) {
+  const pct = ((task-1)/4 + done/of/4)*100;
+  document.getElementById("prog-fill").style.width = Math.min(pct,100)+"%";
+  document.getElementById("prog-label").textContent = `Task ${task} of 4`;
+}
+
+function goTo(n) {
+  document.getElementById("task-"+nowOn).classList.remove("active");
+  nowOn = n;
+  if (n <= 4) {
+    document.getElementById("task-"+n).classList.add("active");
+    setBar(n,0,1);
+    window.scrollTo({top:0,behavior:"smooth"});
+  } else { showLastScreen(); }
+}
+
+document.getElementById("mc-go-on").addEventListener("click",    () => goTo(2));
+document.getElementById("fitb-go-on").addEventListener("click",  () => goTo(3));
+document.getElementById("match-go-on").addEventListener("click", () => goTo(4));
+document.getElementById("order-go-on").addEventListener("click", () => goTo(5));
+
+/* ── LAST SCREEN ── */
+function showLastScreen() {
+  document.getElementById("prog-fill").style.width = "100%";
+  document.getElementById("prog-label").textContent = "Done";
+  document.getElementById("last-screen").classList.add("active");
+  document.getElementById("last-num").textContent = score;
+  window.scrollTo({top:0,behavior:"smooth"});
+  const frac = score/TOPS;
+  let heading, note;
+  if (frac >= 0.9) {
+    heading = "Extraordinary.";
+    note = "You hold these words with the sureness of a writer who has long owned them. They are yours now — use them.";
+  } else if (frac >= 0.75) {
+    heading = "Strong work.";
+    note = "You have a firm grip on most of these words. A few still slip — go back, read them again, and they will fall into place.";
+  } else if (frac >= 0.55) {
+    heading = "A good start.";
+    note = "The shape of these words is there. Some of the finer gaps are still open — one more run through will close them.";
+  } else {
+    heading = "Keep at it.";
+    note = "These are hard words at a high level. Run through the lesson again — each time, more will stick.";
+  }
+  document.getElementById("last-heading").textContent = heading;
+  document.getElementById("last-note").textContent = note;
+}
+
+/* ── START AGAIN ── */
+function startAgain() {
+  score = 0; nowOn = 1;
+  matchChosen = null; matchDone = 0; matchGot = 0;
+  document.getElementById("score-out").textContent = "0";
+  ["mc-wrap","fitb-wrap","word-bank","match-left","match-right","order-wrap"].forEach(id => document.getElementById(id).innerHTML = "");
+  ["mc-go-on","fitb-go-on","match-go-on","order-go-on"].forEach(id => document.getElementById(id).classList.remove("show"));
+  document.getElementById("fitb-hand-in").disabled = false;
+  document.getElementById("order-check").disabled  = false;
+  const mfb = document.getElementById("match-fb"); mfb.className = "feedback"; mfb.textContent = "";
+  document.getElementById("last-screen").classList.remove("active");
+  document.getElementById("prog-fill").style.width = "0%";
+  document.getElementById("prog-label").textContent = "Task 1 of 4";
+  for (let i=1;i<=4;i++) document.getElementById("task-"+i).classList.remove("active");
+  document.getElementById("task-1").classList.add("active");
+  init();
+}
+
+function init() { buildMC(); buildFITB(); buildMatching(); buildOrdering(); }
+init();
+</script>
+</body>
+</html>

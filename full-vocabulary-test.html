@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English | Vocabulary Test</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c2a2e;
+    --paper:#f4f2ec;
+    --slate:#3d5a5c;
+    --clay:#b5603f;
+    --steel:#5c7c8a;
+    --line:#d8d3c5;
+    --good:#3f7d52;
+    --bad:#b5453f;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:'Inter',sans-serif; line-height:1.5;}
+  header{background:var(--ink); color:var(--paper); padding:28px 20px 24px; display:flex; align-items:center; gap:16px;}
+  header h1{font-family:'Fraunces',serif; font-size:1.4rem; margin:0; font-weight:600;}
+  header p{margin:2px 0 0; font-size:0.85rem; color:#c8c4b6; letter-spacing:0.02em;}
+  .wrap{max-width:720px; margin:0 auto; padding:24px 20px 80px;}
+  .progress-bar{position:sticky; top:0; z-index:5; height:6px; background:var(--line); margin:0 auto; max-width:720px;}
+  .progress-fill{height:100%; background:var(--clay); width:0%; transition:width .3s ease;}
+  .section-tag{font-family:'Fraunces',serif; font-size:0.78rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--slate); margin-bottom:6px; font-weight:600;}
+  .card{background:#fff; border:1px solid var(--line); border-radius:10px; padding:22px 22px 20px; margin-top:18px;}
+  .prompt{font-size:1.04rem; font-weight:600; margin:0 0 14px;}
+  .opt{display:block; width:100%; text-align:left; background:var(--paper); border:1.5px solid var(--line); border-radius:8px; padding:11px 14px; margin-bottom:9px; font-size:0.96rem; font-family:'Inter',sans-serif; cursor:pointer; color:var(--ink); transition:border-color .15s, background .15s;}
+  .opt:hover:not(:disabled){border-color:var(--steel);}
+  .opt:disabled{cursor:default;}
+  .opt.correct{background:#e7f2ea; border-color:var(--good); color:var(--good); font-weight:600;}
+  .opt.wrong{background:#f7e9e8; border-color:var(--bad); color:var(--bad);}
+  .feedback{margin-top:12px; padding:12px 14px; border-radius:8px; font-size:0.92rem; display:none; border-left:4px solid var(--steel); background:#eef3f2;}
+  .feedback.show{display:block;}
+  .next-btn{margin-top:16px; background:var(--ink); color:#fff; border:none; padding:10px 22px; border-radius:24px; font-size:0.92rem; font-weight:600; cursor:pointer; opacity:0.35; pointer-events:none; transition:opacity .15s; font-family:'Inter',sans-serif;}
+  .next-btn.active{opacity:1; pointer-events:auto;}
+  .next-btn:hover.active{background:var(--slate);}
+  .score-bar{position:fixed; bottom:0; left:0; right:0; background:var(--ink); color:var(--paper); padding:10px 20px; display:flex; justify-content:space-between; align-items:center; font-size:0.85rem; font-family:'Inter',sans-serif; z-index:10;}
+  .score-bar b{color:var(--clay);}
+  .results{text-align:center; padding:30px 20px;}
+  .results h2{font-family:'Fraunces',serif; font-size:1.8rem;}
+  .results .big{font-size:3rem; font-weight:700; color:var(--clay); font-family:'Fraunces',serif;}
+  .reference{background:#fff; border:1px solid var(--line); border-radius:10px; padding:20px 22px; margin-top:24px;}
+  .reference h3{font-family:'Fraunces',serif; margin-top:0; font-size:1.05rem;}
+  .gloss-row{display:grid; grid-template-columns:1fr; gap:0; font-size:0.86rem;}
+  .gloss-item{padding:6px 0; border-bottom:1px solid var(--line);}
+  .gloss-item b{color:var(--clay);}
+  .intro-card{background:#fff; border:1px solid var(--line); border-radius:10px; padding:20px 22px;}
+  .intro-card p{margin:0 0 10px;}
+  .start-btn{background:var(--clay); color:#fff; border:none; padding:12px 26px; border-radius:24px; font-size:1rem; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; margin-top:6px;}
+  .start-btn:hover{background:#9c4f34;}
+  .hidden{display:none;}
+</style>
+</head>
+<body>
+
+<header>
+  <svg width="46" height="46" viewBox="0 0 46 46" xmlns="http://www.w3.org/2000/svg">
+    <rect x="1" y="1" width="44" height="44" rx="9" fill="#b5603f"/>
+    <path d="M13 33V13h16v4.2H17.6v5.2h9.8v4.1h-9.8V33H13z" fill="#f4f2ec"/>
+  </svg>
+  <div>
+    <h1>Vocabulary Test</h1>
+    <p>Forbes English &middot; B2 &middot; Full word list review</p>
+  </div>
+</header>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<div class="wrap">
+
+  <div class="intro-card" id="introCard">
+    <p>This test covers every word on the list: the newer set (<i>cautiously, suspicion, pushy, cope, convince, demand, callback, durability, airtight, pain point, time-consuming, tiles, exceed, actually</i>) plus a focused review of trickier items from before, including words with more than one common meaning.</p>
+    <p>32 questions in three sections, followed by a complete glossary of the full list.</p>
+    <button class="start-btn" id="startBtn">Start the test</button>
+  </div>
+
+  <div id="quizArea"></div>
+
+  <div class="results hidden" id="results">
+    <div class="section-tag">Complete</div>
+    <h2>Test finished</h2>
+    <div class="big" id="finalScore"></div>
+    <p id="finalMsg"></p>
+  </div>
+
+  <div class="reference" id="referenceCard" style="display:none;">
+    <h3>Full glossary</h3>
+    <div class="gloss-row" id="glossRef"></div>
+  </div>
+
+</div>
+
+<div class="score-bar" id="scoreBar" style="display:none;">
+  <span>Question <span id="qNum">1</span> / <span id="qTotal">32</span></span>
+  <span>Score: <b id="scoreNum">0</b></span>
+</div>
+
+<script>
+const questions = [
+  // --- SECTION 1: New vocabulary, meaning -> word ---
+  {section:"New words", prompt:"Which word means 'in a way that deliberately avoids potential problems or dangers'?",
+   options:["cautiously","pushy","cope","actually"], correct:0,
+   explain:"'Cautiously' describes acting carefully to avoid risk — the opposite of rushing in."},
+  {section:"New words", prompt:"Which word means 'a feeling that someone has done something wrong or dishonest'?",
+   options:["suspicion","concern","opinion","demand"], correct:0,
+   explain:"'Suspicion' specifically implies possible wrongdoing, not just general worry — that's what separates it from 'concern'."},
+  {section:"New words", prompt:"Which word means 'excessively or unpleasantly self-assertive or ambitious'?",
+   options:["pushy","persuasive","resilient","arduous"], correct:0,
+   explain:"'Pushy' is negative — someone who pressures others too hard, unlike 'persuasive', which is a compliment."},
+  {section:"New words", prompt:"Which word means 'as the truth or facts of a situation; really'?",
+   options:["actually","actual","current","primarily"], correct:0,
+   explain:"'Actually' is the adverb used to state what's really true, often correcting an assumption."},
+  {section:"New words", prompt:"Which word means '(of a person) deal effectively with something difficult'?",
+   options:["cope","convince","exceed","retrofit"], correct:0,
+   explain:"'Cope' means to manage or handle a difficult situation successfully."},
+  {section:"New words", prompt:"Which word means 'cause someone to believe firmly in the truth of something' (belief, not necessarily action)?",
+   options:["convince","persuade","exaggerate","demand"], correct:0,
+   explain:"'Convince' targets belief specifically. 'Persuade' is closely related but is defined as getting someone to act, a subtle but real distinction."},
+  {section:"New words", prompt:"Which word means 'a need for goods or services to be sold or supplied'?",
+   options:["demand","requirement","shortfall","assumption"], correct:0,
+   explain:"'Demand' describes market need — how much of something buyers want."},
+  {section:"New words", prompt:"Which word describes an invitation to return for a second meeting or interview?",
+   options:["callback","contingency plan","trial","threshold"], correct:0,
+   explain:"A 'callback' is being invited back for a follow-up round, after an initial one went well."},
+  {section:"New words", prompt:"Which word means 'the ability to withstand wear, pressure, or damage'?",
+   options:["durability","firmness","exhaustion","threshold"], correct:0,
+   explain:"'Durability' is specifically about lasting under wear and pressure over time."},
+  {section:"New words", prompt:"Which word means 'not allowing air to escape or pass through'?",
+   options:["airtight","dense","hazardous","homogeneous"], correct:0,
+   explain:"'Airtight' describes a seal with no gaps for air to pass through — a key property for a vapour barrier."},
+  {section:"New words", prompt:"Which phrase describes a specific problem that causes frustration and that a product or service can solve?",
+   options:["pain point","shortfall","concern","threshold"], correct:0,
+   explain:"A 'pain point' is the specific frustration a customer has — the thing a good pitch addresses directly."},
+  {section:"New words", prompt:"Which word means 'takes up a lot of time'?",
+   options:["time-consuming","monotonous","arduous","manageable"], correct:0,
+   explain:"'Time-consuming' is specifically about duration, unlike 'arduous' (effort) or 'monotonous' (repetition)."},
+  {section:"New words", prompt:"Which word describes a thin slab of baked clay, concrete, or similar material, used in overlapping rows to cover a roof?",
+   options:["tiles","carpet","chain","width"], correct:0,
+   explain:"'Tiles' cover roofs (and floors); 'carpet' is a fabric floor covering — a useful contrast."},
+  {section:"New words", prompt:"Which word means 'be greater in number or size than a quantity'?",
+   options:["exceed","exaggerate","reassess","convince"], correct:0,
+   explain:"'Exceed' means to go beyond a limit or expectation — e.g. 'demand exceeded supply'."},
+
+  // --- SECTION 2: Tricky senses, word -> meaning ---
+  {section:"Watch the meaning", prompt:"In 'this report concerns Q3 sales figures', what does 'concerns' mean?",
+   options:["relates to; is about","anxiety; worry","considers again","deals effectively with"], correct:0,
+   explain:"As a verb, 'concerns' means 'relates to' — a different sense from the noun 'concern' (anxiety)."},
+  {section:"Watch the meaning", prompt:"In 'we'll take off 10% for the bulk order', what does 'take off' mean here?",
+   options:["deduct part of an amount","remove clothing","leave the ground","add a component"], correct:0,
+   explain:"In this business context, 'take off' means to deduct or subtract — not its more common meaning of removing clothing or a plane leaving the ground."},
+  {section:"Watch the meaning", prompt:"In 'the fitter stuck the fixing pin through the membrane', what does 'stuck' mean here?",
+   options:["pushed a sharp object into or through something","unable to move","settled a dispute","discovered the position of"], correct:0,
+   explain:"Here 'stuck' is the past tense of 'stick' (to push something sharp through) — not the common adjective meaning 'unable to move'."},
+  {section:"Watch the meaning", prompt:"In 'the two sides compromised on the delivery date', what does 'compromised' mean here?",
+   options:["settled a dispute by mutual concession","put at risk or damaged","exchanged value","considered again"], correct:0,
+   explain:"Here 'compromised' means reaching an agreement through concessions — not its other common sense of being 'put at risk' (e.g. a compromised system)."},
+  {section:"Watch the meaning", prompt:"What does 'width' mean?",
+   options:["how wide something is","how heavy something is","how long something is","how tall something is"], correct:0,
+   explain:"'Width' measures side-to-side distance, distinct from length, height, or weight."},
+  {section:"Watch the meaning", prompt:"What does 'appropriate' mean?",
+   options:["suitable for the occasion","necessary","reasonably priced","trustworthy"], correct:0,
+   explain:"'Appropriate' means fitting or suitable for a specific situation."},
+  {section:"Watch the meaning", prompt:"What does 'opinion' mean?",
+   options:["a view or judgment, not necessarily based on fact","something accepted as true without proof","a measure taken in advance","a deficit of something required"], correct:0,
+   explain:"An 'opinion' is a personal view. That's different from an 'assumption', which is accepted as true without evidence."},
+  {section:"Watch the meaning", prompt:"What does 'current' mean here?",
+   options:["present","existing in fact, contrasted with expectation","for the most part; mainly","able to be heard"], correct:0,
+   explain:"'Current' simply means happening now — different from 'actual', which contrasts reality with expectation."},
+
+  // --- SECTION 3: Complete the sentence ---
+  {section:"Complete the sentence", prompt:"Priya approached the new proposal ___, remembering last year's problems.",
+   options:["cautiously","suspicion","pushy","actually"], correct:0,
+   explain:"'Cautiously' is the adverb needed to modify 'approached' — describing how she acted."},
+  {section:"Complete the sentence", prompt:"The site manager had a ___ that the numbers in the report had been rounded up to look better.",
+   options:["suspicion","concern","opinion","demand"], correct:0,
+   explain:"'Suspicion' fits because the context implies possible dishonesty, not just general worry."},
+  {section:"Complete the sentence", prompt:"The sales rep followed up so many times that Priya found him a bit ___.",
+   options:["pushy","persuasive","resilient","cautious"], correct:0,
+   explain:"'Pushy' captures the negative feeling of being pressured too much — 'persuasive' would be a compliment here, which doesn't fit."},
+  {section:"Complete the sentence", prompt:"The membrane wasn't just marketed as fireproof — it ___ passed every independent test.",
+   options:["actually","actual","current","primarily"], correct:0,
+   explain:"'Actually' is the adverb confirming something is really true, often correcting a doubt."},
+  {section:"Complete the sentence", prompt:"Even under pressure, the installation team managed to ___ with the tight deadline.",
+   options:["cope","convince","exceed","retrofit"], correct:0,
+   explain:"'Cope with' means to handle something difficult successfully."},
+  {section:"Complete the sentence", prompt:"The audit results were enough to ___ Kavanagh that the product was safe.",
+   options:["convince","persuade","exaggerate","demand"], correct:0,
+   explain:"'Convince' fits belief — the audit changed what Kavanagh believed to be true."},
+  {section:"Complete the sentence", prompt:"___ for the new membrane has grown faster than Forbes can supply it.",
+   options:["Demand","Requirement","Shortfall","Assumption"], correct:0,
+   explain:"'Demand' describes market need for a product — exactly the situation described."},
+  {section:"Complete the sentence", prompt:"After the pilot went well, Kavanagh's office invited Alex back for a ___ meeting to discuss the national contract.",
+   options:["callback","contingency plan","trial","threshold"], correct:0,
+   explain:"A 'callback' is being invited back for a follow-up round after an initial meeting succeeded."},
+  {section:"Complete the sentence", prompt:"Buyers cared less about the price than the membrane's ___ under repeated freeze-thaw cycles.",
+   options:["durability","firmness","exhaustion","threshold"], correct:0,
+   explain:"'Durability' is about lasting under repeated wear — exactly what freeze-thaw cycling tests."},
+  {section:"Complete the sentence", prompt:"An ___ seal around the fixing points stops moisture getting in at all.",
+   options:["airtight","dense","hazardous","homogeneous"], correct:0,
+   explain:"'Airtight' describes a seal with no gaps — the property that keeps moisture out."}
+];
+
+const glossary = [
+  ["cautiously","in a way that deliberately avoids potential problems or dangers"],
+  ["suspicion","a feeling that someone has done something wrong or dishonest"],
+  ["pushy","excessively or unpleasantly self-assertive or ambitious"],
+  ["actually","as the truth or facts of a situation; really"],
+  ["cope","(of a person) deal effectively with something difficult"],
+  ["convince","cause someone to believe firmly in the truth of something"],
+  ["demand","a need for goods or services to be sold or supplied"],
+  ["callback","an invitation to return for a second meeting or interview"],
+  ["durability","the ability to withstand wear, pressure, or damage"],
+  ["airtight","not allowing air to escape or pass through"],
+  ["pain point","a specific problem that causes frustration, which a product or service can solve"],
+  ["time-consuming","takes up a lot of time"],
+  ["tiles","a thin slab of baked clay, concrete, etc., used in overlapping rows for covering roofs"],
+  ["exceed","be greater in number or size than a quantity"],
+  ["deserve","do something or have or show qualities worthy of reward or punishment"],
+  ["in parallel","occurring at the same time and having some connection"],
+  ["contingency plan","a plan that can be followed if an original plan is not possible"],
+  ["unintended","not planned or meant"],
+  ["tell","(esp. in poker) an unconscious action thought to betray an attempted deception"],
+  ["trade off","exchange something of value, especially as part of a compromise"],
+  ["shortfall","a deficit of something required or expected"],
+  ["post hoc","after the event"],
+  ["ad hoc","specifically as needed"],
+  ["actual","existing in fact, contrasted with what was intended, expected or believed"],
+  ["current","present"],
+  ["remove","take something away or off from the position occupied"],
+  ["take off","deduct part of an amount"],
+  ["retrofit","add a component to something that didn't have it when manufactured"],
+  ["requirement","something that is necessary"],
+  ["assumption","a thing accepted as true or certain to happen, without proof"],
+  ["take for granted","fail to properly appreciate someone/something through overfamiliarity"],
+  ["stuck","pushed a sharp or pointed object into or through something"],
+  ["competitor","another business that offers a similar product or service"],
+  ["homogeneous","of the same kind; alike"],
+  ["concern","anxiety; worry"],
+  ["concerns","relates to; is about"],
+  ["nightmare","a frightening or unpleasant dream"],
+  ["width","how wide something is"],
+  ["exaggerate","represent something as larger, better or worse than it really is"],
+  ["fire-retardant","a substance or treatment that slows or halts the spread of fire"],
+  ["moisture","water or liquid diffused in small quantity within a solid or on a surface"],
+  ["firmness","the quality of having a solid, almost unyielding surface or structure"],
+  ["delay","a period of time by which something is late or postponed"],
+  ["trial","a test of the performance, qualities or suitability of someone/something"],
+  ["appropriate","suitable for the occasion"],
+  ["persuasive","good at persuading through reasoning or temptation"],
+  ["reassess","consider or assess again, especially factoring in new information"],
+  ["audible","able to be heard"],
+  ["exhaustion","a state of extreme physical or mental fatigue"],
+  ["resilient","able to withstand or recover quickly from difficult conditions"],
+  ["hazardous","risky; dangerous"],
+  ["locate","discover the exact place or position of"],
+  ["provoke","cause a reaction"],
+  ["startle","cause a person or animal to feel sudden shock or alarm"],
+  ["threshold","the intensity that must be exceeded for a reaction to occur"],
+  ["precaution","a measure taken in advance to prevent something unpleasant"],
+  ["reliable","something that can be trusted to work well"],
+  ["primarily","for the most part; mainly"],
+  ["agitated","feeling or appearing troubled or nervous"],
+  ["dense","closely compacted in substance"],
+  ["mouldy","affected by mould"],
+  ["compromised","settled a dispute by mutual concession"],
+  ["chain","a connected flexible series of metal links for fastening or pulling loads"],
+  ["carpet","a floor or stair covering made from thick woven fabric"],
+  ["monotonous","boring and repetitive"],
+  ["arduous","involving strenuous effort; difficult and tiring"],
+  ["manageable","able to be organised or completed without too much difficulty"],
+  ["opinion","a view or judgment formed about something, not necessarily based on fact"],
+  ["persuade","convince someone to do something"],
+  ["affordable","reasonably priced"],
+  ["advert","an advertisement"],
+  ["conduct","lead or guide someone to a place; also, to carry out (e.g. an audit)"]
+];
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+let order = [];
+let current = 0;
+let score = 0;
+
+function buildOrder(){
+  order = questions.map((q,i)=>i);
+}
+
+function renderGlossary(){
+  document.getElementById("glossRef").innerHTML = glossary.map(g=>
+    `<div class="gloss-item"><b>${g[0]}</b> — ${g[1]}</div>`
+  ).join("");
+}
+
+function startQuiz(){
+  document.getElementById("introCard").classList.add("hidden");
+  document.getElementById("scoreBar").style.display = "flex";
+  document.getElementById("qTotal").textContent = questions.length;
+  buildOrder();
+  current = 0;
+  score = 0;
+  renderQuestion();
+}
+
+function updateProgress(){
+  const pct = (current / questions.length) * 100;
+  document.getElementById("progressFill").style.width = pct + "%";
+  document.getElementById("qNum").textContent = current + 1;
+  document.getElementById("scoreNum").textContent = score;
+}
+
+function renderQuestion(){
+  updateProgress();
+  const qArea = document.getElementById("quizArea");
+  if(current >= questions.length){
+    finish();
+    return;
+  }
+  const q = questions[order[current]];
+  const optIndices = shuffle(q.options.map((_,i)=>i));
+
+  qArea.innerHTML = `
+    <div class="card">
+      <div class="section-tag">${q.section}</div>
+      <p class="prompt">${q.prompt}</p>
+      <div id="optsBox"></div>
+      <div class="feedback" id="feedbackBox"></div>
+      <button class="next-btn" id="nextBtn">Next</button>
+    </div>
+  `;
+
+  const optsBox = document.getElementById("optsBox");
+  optIndices.forEach(origIdx=>{
+    const btn = document.createElement("button");
+    btn.className = "opt";
+    btn.textContent = q.options[origIdx];
+    btn.addEventListener("click", ()=>selectAnswer(origIdx, q));
+    optsBox.appendChild(btn);
+  });
+
+  document.getElementById("nextBtn").addEventListener("click", ()=>{
+    current++;
+    renderQuestion();
+  });
+}
+
+function selectAnswer(chosenIdx, q){
+  const buttons = document.querySelectorAll("#optsBox .opt");
+  buttons.forEach(b=> b.disabled = true);
+  buttons.forEach(b=>{
+    if(b.textContent === q.options[q.correct]) b.classList.add("correct");
+  });
+  if(chosenIdx !== q.correct){
+    buttons.forEach(b=>{
+      if(b.textContent === q.options[chosenIdx]) b.classList.add("wrong");
+    });
+  } else {
+    score++;
+    document.getElementById("scoreNum").textContent = score;
+  }
+  const fb = document.getElementById("feedbackBox");
+  fb.textContent = q.explain;
+  fb.classList.add("show");
+  document.getElementById("nextBtn").classList.add("active");
+}
+
+function finish(){
+  document.getElementById("quizArea").innerHTML = "";
+  document.getElementById("scoreBar").style.display = "none";
+  document.getElementById("progressFill").style.width = "100%";
+  const results = document.getElementById("results");
+  results.classList.remove("hidden");
+  document.getElementById("finalScore").textContent = score + " / " + questions.length;
+  let msg = "";
+  const pct = score / questions.length;
+  if(pct === 1) msg = "Perfect score — every word and every tricky double-meaning landed correctly.";
+  else if(pct >= 0.75) msg = "Strong result — check the glossary below for anything you missed.";
+  else msg = "Good first pass — the glossary below covers every word on the list.";
+  document.getElementById("finalMsg").textContent = msg;
+  document.getElementById("referenceCard").style.display = "block";
+}
+
+document.getElementById("startBtn").addEventListener("click", startQuiz);
+renderGlossary();
+</script>
+
+</body>
+</html>

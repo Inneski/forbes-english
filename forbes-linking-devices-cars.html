@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – Linking Devices: The World of Cars</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Barlow+Condensed:wght@400;600;700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest: #1c3d2e;
+    --forest-mid: #254d3a;
+    --forest-light: #2e6048;
+    --ivory: #f5f0e8;
+    --ivory-dark: #ede6d6;
+    --bronze: #b07d3a;
+    --bronze-light: #c99a55;
+    --bronze-pale: #f0e0c0;
+    --text-dark: #1a2e22;
+    --text-mid: #3d5a47;
+    --text-light: #6b8c77;
+    --white: #ffffff;
+    --correct: #2a7a4b;
+    --incorrect: #9b3530;
+    --correct-bg: #e6f4ec;
+    --incorrect-bg: #faecea;
+    --radius: 10px;
+    --shadow: 0 4px 24px rgba(28,61,46,0.13);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--forest);
+    background-image:
+      radial-gradient(ellipse 80% 60% at 50% -10%, #2e6048 0%, transparent 60%),
+      url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='60' height='60' fill='none'/%3E%3Ccircle cx='30' cy='30' r='0.8' fill='%23ffffff' opacity='0.04'/%3E%3C/svg%3E");
+    min-height: 100vh;
+    font-family: 'Source Sans 3', sans-serif;
+    color: var(--text-dark);
+    padding: 0 0 60px;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--forest-mid);
+    border-bottom: 1px solid rgba(176,125,58,0.25);
+    padding: 28px 20px 20px;
+    text-align: center;
+  }
+
+  .logo-svg { display: block; margin: 0 auto 6px; }
+
+  .lesson-meta {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--bronze-light);
+    margin-top: 14px;
+  }
+
+  .lesson-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1.55rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ivory);
+    margin-top: 4px;
+  }
+
+  /* ── SCORE BAR ── */
+  .score-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 680px;
+    margin: 18px auto 0;
+    padding: 10px 18px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(176,125,58,0.2);
+    border-radius: 8px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--bronze-light);
+  }
+  .score-bar span { color: var(--ivory); }
+
+  /* ── MAIN ── */
+  main {
+    max-width: 680px;
+    margin: 30px auto 0;
+    padding: 0 16px;
+  }
+
+  /* ── SECTION TITLE ── */
+  .section-header {
+    margin-bottom: 18px;
+  }
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--bronze-light);
+    margin-bottom: 6px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.45rem;
+    font-weight: 600;
+    color: var(--ivory);
+    line-height: 1.3;
+  }
+  .section-desc {
+    font-size: 0.92rem;
+    color: rgba(245,240,232,0.7);
+    margin-top: 6px;
+    line-height: 1.55;
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--ivory);
+    border-radius: var(--radius);
+    padding: 26px 24px 22px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+  }
+
+  .progress-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .progress-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-light);
+  }
+  .progress-bar-wrap {
+    flex: 1;
+    margin: 0 14px;
+    height: 5px;
+    background: var(--ivory-dark);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--bronze), var(--bronze-light));
+    border-radius: 3px;
+    transition: width 0.4s ease;
+  }
+
+  /* ── QUESTION ── */
+  .question-text {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 400;
+    color: var(--text-dark);
+    line-height: 1.65;
+    margin-bottom: 20px;
+  }
+  .blank {
+    display: inline-block;
+    min-width: 90px;
+    border-bottom: 2px solid var(--bronze);
+    text-align: center;
+    font-weight: 600;
+    color: var(--bronze);
+    padding: 0 4px;
+  }
+
+  /* ── OPTIONS ── */
+  .options { display: flex; flex-direction: column; gap: 9px; }
+
+  .option-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--white);
+    border: 2px solid var(--ivory-dark);
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.96rem;
+    color: var(--text-dark);
+    text-align: left;
+    transition: border-color 0.18s, background 0.18s, transform 0.12s;
+  }
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--bronze);
+    background: var(--bronze-pale);
+    transform: translateY(-1px);
+  }
+  .option-letter {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--ivory-dark);
+    color: var(--text-mid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.18s, color 0.18s;
+  }
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+  }
+  .option-btn.correct .option-letter {
+    background: var(--correct);
+    color: white;
+  }
+  .option-btn.incorrect {
+    border-color: var(--incorrect);
+    background: var(--incorrect-bg);
+  }
+  .option-btn.incorrect .option-letter {
+    background: var(--incorrect);
+    color: white;
+  }
+  .option-btn:disabled { cursor: default; }
+
+  /* ── FEEDBACK ── */
+  .feedback {
+    margin-top: 16px;
+    padding: 13px 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.correct-fb {
+    background: var(--correct-bg);
+    border-left: 4px solid var(--correct);
+    color: #1a4a2e;
+  }
+  .feedback.incorrect-fb {
+    background: var(--incorrect-bg);
+    border-left: 4px solid var(--incorrect);
+    color: #5c1f1c;
+  }
+  .feedback strong { font-weight: 600; }
+
+  /* ── NEXT BUTTON ── */
+  .next-btn {
+    display: none;
+    margin-top: 18px;
+    width: 100%;
+    padding: 13px;
+    background: linear-gradient(135deg, var(--bronze) 0%, var(--bronze-light) 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+  .next-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+  .next-btn.show { display: block; }
+
+  /* ── DRAG AND DROP ── */
+  .drop-zone-wrap {
+    margin-bottom: 18px;
+  }
+  .drop-sentence {
+    font-size: 1rem;
+    color: var(--text-dark);
+    line-height: 2.1;
+    margin-bottom: 10px;
+  }
+  .drop-target {
+    display: inline-block;
+    min-width: 110px;
+    height: 32px;
+    border-bottom: 2px dashed var(--bronze);
+    vertical-align: middle;
+    text-align: center;
+    line-height: 32px;
+    font-weight: 600;
+    color: var(--bronze);
+    border-radius: 4px;
+    background: rgba(176,125,58,0.06);
+    transition: background 0.15s;
+    cursor: pointer;
+  }
+  .drop-target.drag-over {
+    background: var(--bronze-pale);
+    border-color: var(--forest-light);
+  }
+  .drop-target.filled {
+    background: var(--ivory-dark);
+    border-style: solid;
+    color: var(--text-dark);
+    cursor: default;
+  }
+  .drop-target.correct-drop { background: var(--correct-bg); border-color: var(--correct); color: var(--correct); }
+  .drop-target.incorrect-drop { background: var(--incorrect-bg); border-color: var(--incorrect); color: var(--incorrect); }
+
+  .drag-bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+    padding: 14px;
+    background: var(--ivory-dark);
+    border-radius: 8px;
+  }
+  .drag-chip {
+    padding: 7px 14px;
+    background: white;
+    border: 2px solid var(--ivory-dark);
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    cursor: grab;
+    user-select: none;
+    transition: box-shadow 0.15s, transform 0.15s, opacity 0.15s;
+  }
+  .drag-chip:hover { box-shadow: 0 3px 10px rgba(0,0,0,0.12); transform: translateY(-2px); }
+  .drag-chip.used { opacity: 0.35; pointer-events: none; }
+  .drag-chip.dragging { opacity: 0.5; }
+
+  /* ── MATCHING ── */
+  .match-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .match-col { display: flex; flex-direction: column; gap: 8px; }
+  .match-item {
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.92rem;
+    line-height: 1.4;
+  }
+  .match-left {
+    background: var(--forest);
+    color: var(--ivory);
+    font-weight: 600;
+    text-align: center;
+  }
+  .match-right {
+    background: white;
+    border: 2px solid var(--ivory-dark);
+    cursor: pointer;
+    color: var(--text-dark);
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .match-right:hover { border-color: var(--bronze); background: var(--bronze-pale); }
+  .match-right.selected { border-color: var(--bronze); background: var(--bronze-pale); }
+  .match-right.correct-m { border-color: var(--correct); background: var(--correct-bg); color: var(--correct); }
+  .match-right.incorrect-m { border-color: var(--incorrect); background: var(--incorrect-bg); color: var(--incorrect); }
+  .match-pair { display: flex; align-items: stretch; gap: 10px; margin-bottom: 8px; }
+  .match-pair > div { flex: 1; }
+  .match-connector {
+    display: flex;
+    align-items: center;
+    color: var(--text-light);
+    font-size: 1.1rem;
+    padding: 0 2px;
+  }
+
+  /* ── RESULTS SCREEN ── */
+  #results-screen {
+    display: none;
+    text-align: center;
+    padding: 40px 24px;
+  }
+  #results-screen.show { display: block; }
+  .results-score {
+    font-family: 'Playfair Display', serif;
+    font-size: 4.5rem;
+    font-weight: 600;
+    color: var(--ivory);
+    line-height: 1;
+  }
+  .results-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--bronze-light);
+    margin-top: 6px;
+  }
+  .results-msg {
+    font-size: 1.05rem;
+    color: rgba(245,240,232,0.85);
+    margin: 20px auto;
+    max-width: 420px;
+    line-height: 1.6;
+  }
+  .restart-btn {
+    padding: 14px 36px;
+    background: linear-gradient(135deg, var(--bronze), var(--bronze-light));
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: opacity 0.2s;
+  }
+  .restart-btn:hover { opacity: 0.88; }
+
+  /* ── ACTIVITY TABS ── */
+  .activity-nav {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 22px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+  .activity-tab {
+    flex-shrink: 0;
+    padding: 7px 16px;
+    border-radius: 20px;
+    border: 2px solid rgba(176,125,58,0.35);
+    background: transparent;
+    color: rgba(245,240,232,0.65);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: default;
+    transition: background 0.2s, color 0.2s;
+  }
+  .activity-tab.active {
+    background: var(--bronze);
+    border-color: var(--bronze);
+    color: white;
+  }
+  .activity-tab.done {
+    border-color: var(--forest-light);
+    background: rgba(46,96,72,0.35);
+    color: var(--bronze-light);
+  }
+
+  .submit-match-btn {
+    margin-top: 16px;
+    width: 100%;
+    padding: 12px;
+    background: var(--forest);
+    color: var(--ivory);
+    border: none;
+    border-radius: 8px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .submit-match-btn:hover { background: var(--forest-light); }
+  .submit-match-btn:disabled { opacity: 0.45; cursor: default; }
+
+  /* ── REORDER ── */
+  .reorder-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .reorder-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 14px;
+    background: white;
+    border: 2px solid var(--ivory-dark);
+    border-radius: 8px;
+    cursor: grab;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    user-select: none;
+    transition: box-shadow 0.15s, border-color 0.15s;
+  }
+  .reorder-item:active { cursor: grabbing; }
+  .reorder-item.dragging-item { opacity: 0.4; }
+  .reorder-item.drag-over-item { border-color: var(--bronze); background: var(--bronze-pale); }
+  .reorder-handle {
+    color: var(--text-light);
+    font-size: 0.8rem;
+    flex-shrink: 0;
+  }
+  .reorder-item.correct-r { border-color: var(--correct); background: var(--correct-bg); }
+  .reorder-item.incorrect-r { border-color: var(--incorrect); background: var(--incorrect-bg); }
+
+  @media (max-width: 500px) {
+    .card { padding: 20px 16px 18px; }
+    .results-score { font-size: 3.5rem; }
+    .match-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <!-- Forbes English SVG Logo -->
+  <svg class="logo-svg" width="180" height="56" viewBox="0 0 180 56" xmlns="http://www.w3.org/2000/svg">
+    <text x="90" y="24" font-family="'Playfair Display', Georgia, serif" font-size="26" font-weight="400" fill="#f0e0c0" text-anchor="middle" letter-spacing="3">Forbes</text>
+    <rect x="20" y="30" width="140" height="1" fill="#b07d3a"/>
+    <text x="90" y="50" font-family="'Barlow Condensed', Arial Narrow, sans-serif" font-size="16" font-weight="700" fill="#c99a55" text-anchor="middle" letter-spacing="7">ENGLISH</text>
+  </svg>
+  <div class="lesson-meta">B2 Upper-Intermediate &nbsp;·&nbsp; Grammar in Context</div>
+  <div class="lesson-title">Linking Devices: The World of Cars</div>
+
+  <div class="score-bar" style="max-width:680px;margin:18px auto 0;">
+    <div>Score: <span id="score-display">0</span></div>
+    <div>Activity <span id="activity-display">1</span> of 3</div>
+    <div>Total: <span id="total-display">0</span> / <span id="possible-display">15</span></div>
+  </div>
+</header>
+
+<main>
+  <div class="activity-nav">
+    <div class="activity-tab active" id="tab-1">1 · Multiple Choice</div>
+    <div class="activity-tab" id="tab-2">2 · Fill the Gap</div>
+    <div class="activity-tab" id="tab-3">3 · Reorder Sentences</div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       ACTIVITY 1 – MULTIPLE CHOICE
+  ═════════════════════════════════════════════ -->
+  <div id="activity-1">
+    <div class="section-header">
+      <div class="section-label">Activity 1 · Multiple Choice</div>
+      <div class="section-title">Choose the best linking device</div>
+      <div class="section-desc">Select the word or phrase that best completes each sentence about cars and driving.</div>
+    </div>
+    <div id="mc-container"></div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       ACTIVITY 2 – FILL THE GAP (Drag & Drop)
+  ═════════════════════════════════════════════ -->
+  <div id="activity-2" style="display:none;">
+    <div class="section-header">
+      <div class="section-label">Activity 2 · Drag &amp; Drop</div>
+      <div class="section-title">Fill the gap</div>
+      <div class="section-desc">Drag each linking device from the word bank into the correct gap in the sentence.</div>
+    </div>
+    <div id="dd-container"></div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       ACTIVITY 3 – SENTENCE REORDERING
+  ═════════════════════════════════════════════ -->
+  <div id="activity-3" style="display:none;">
+    <div class="section-header">
+      <div class="section-label">Activity 3 · Sentence Reordering</div>
+      <div class="section-title">Put the sentence in order</div>
+      <div class="section-desc">Drag the sentence segments into the correct order to form a logical statement about cars.</div>
+    </div>
+    <div id="ro-container"></div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="results-screen">
+    <div class="results-score" id="final-score-display">0</div>
+    <div class="results-label">Points out of 15</div>
+    <div class="results-msg" id="results-msg"></div>
+    <button class="restart-btn" onclick="restartLesson()">Start Again</button>
+  </div>
+</main>
+
+<script>
+// ══════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════
+
+const mcQuestions = [
+  {
+    q: "Electric vehicles are becoming increasingly popular. <strong>________</strong>, many drivers still feel anxious about running out of battery on long journeys.",
+    opts: [
+      { text: "Furthermore", correct: false },
+      { text: "Nevertheless", correct: true },
+      { text: "Consequently", correct: false },
+      { text: "Similarly", correct: false }
+    ],
+    fb: "<strong>Nevertheless</strong> introduces a contrasting idea — despite growing popularity, range anxiety remains. <em>Furthermore</em> and <em>Similarly</em> add information rather than contrast. <em>Consequently</em> shows result, not contrast."
+  },
+  {
+    q: "The new sports car achieved record-breaking acceleration. <strong>________</strong>, its fuel consumption was significantly higher than the standard model.",
+    opts: [
+      { text: "As a result", correct: false },
+      { text: "In other words", correct: false },
+      { text: "However", correct: true },
+      { text: "Therefore", correct: false }
+    ],
+    fb: "<strong>However</strong> signals contrast between two facts — impressive speed but poor efficiency. <em>As a result</em> and <em>Therefore</em> express consequence; <em>In other words</em> rephrases — none of these fit the logical relationship here."
+  },
+  {
+    q: "The manufacturer invested heavily in battery technology. <strong>________</strong>, the new model can travel over 500 kilometres on a single charge.",
+    opts: [
+      { text: "By contrast", correct: false },
+      { text: "Nonetheless", correct: false },
+      { text: "As a result", correct: true },
+      { text: "For instance", correct: false }
+    ],
+    fb: "<strong>As a result</strong> shows cause and effect — investment in batteries led to greater range. <em>By contrast</em> and <em>Nonetheless</em> suggest contrast; <em>For instance</em> introduces an example, none of which fits the causal relationship."
+  },
+  {
+    q: "Autonomous driving systems must detect pedestrians, cyclists, and road signs. <strong>________</strong>, they must also respond correctly in poor weather conditions.",
+    opts: [
+      { text: "In addition", correct: true },
+      { text: "Although", correct: false },
+      { text: "Since", correct: false },
+      { text: "Despite this", correct: false }
+    ],
+    fb: "<strong>In addition</strong> adds a further requirement to the list — it joins two pieces of related information. <em>Although</em> and <em>Despite this</em> suggest contrast; <em>Since</em> introduces a reason."
+  },
+  {
+    q: "Many classic car enthusiasts prefer mechanical simplicity. <strong>________</strong> modern vehicles offer superior safety and comfort, they argue that newer cars have lost their character.",
+    opts: [
+      { text: "Given that", correct: false },
+      { text: "Even though", correct: true },
+      { text: "Owing to", correct: false },
+      { text: "Provided that", correct: false }
+    ],
+    fb: "<strong>Even though</strong> introduces a concessive clause — the enthusiasts acknowledge modern cars' advantages but still prefer old ones. <em>Given that</em> and <em>Owing to</em> express reason; <em>Provided that</em> is conditional."
+  }
+];
+
+const ddQuestions = [
+  {
+    before: "Petrol prices rose sharply last year.",
+    after: "many commuters switched to cycling or public transport.",
+    answer: "As a result",
+    pool: ["As a result", "In contrast", "Nevertheless", "Despite this", "Similarly"]
+  },
+  {
+    before: "The car passed all safety tests.",
+    after: "some reviewers raised concerns about interior quality.",
+    answer: "However",
+    pool: ["However", "Therefore", "Likewise", "Consequently", "For this reason"]
+  },
+  {
+    before: "The engine produces 400 horsepower.",
+    after: ", it is surprisingly fuel-efficient on motorway journeys.",
+    answer: "Furthermore",
+    pool: ["Furthermore", "Although", "Despite this", "Even so", "Similarly"]
+  },
+  {
+    before: "Urban drivers rarely need four-wheel drive.",
+    after: "models designed for city use often omit this feature.",
+    answer: "For this reason",
+    pool: ["For this reason", "In addition", "By contrast", "Nevertheless", "On the other hand"]
+  },
+  {
+    before: "German manufacturers are well known for engineering precision.",
+    after: ", Japanese brands have built a strong reputation for reliability.",
+    answer: "Similarly",
+    pool: ["Similarly", "However", "As a result", "Owing to", "Even though"]
+  }
+];
+
+// Reorder: each item has segments in correct order; they'll be shuffled before display
+const roQuestions = [
+  {
+    segments: [
+      "Although electric cars have higher upfront costs,",
+      "they tend to be cheaper to run",
+      "in the long term",
+      "due to lower fuel and maintenance expenses."
+    ],
+    fb: "The sentence begins with a concessive clause (<em>Although</em>), followed by the main clause, then a time phrase, and finally a reason clause."
+  },
+  {
+    segments: [
+      "Sales of SUVs have grown steadily;",
+      "however,",
+      "environmental campaigners argue",
+      "that their popularity contributes to higher urban emissions."
+    ],
+    fb: "A semi-colon separates two related clauses, with <em>however</em> introducing the contrasting argument."
+  },
+  {
+    segments: [
+      "Provided that charging infrastructure continues to expand,",
+      "electric vehicles are likely to",
+      "replace petrol cars",
+      "within the next two decades."
+    ],
+    fb: "<em>Provided that</em> introduces a condition. The main clause follows with a prediction about the future."
+  },
+  {
+    segments: [
+      "The test driver completed the circuit in record time.",
+      "As a result,",
+      "the engineering team celebrated",
+      "and immediately began planning further improvements."
+    ],
+    fb: "<em>As a result</em> connects a cause (record time) to its consequence (the team's reaction), followed by a second action joined by <em>and</em>."
+  },
+  {
+    segments: [
+      "Despite rising fuel costs,",
+      "many motorists continue to prefer large-engine vehicles",
+      "because they value performance",
+      "over running economy."
+    ],
+    fb: "<em>Despite</em> introduces a concessive phrase; <em>because</em> then introduces the reason the main clause action takes place."
+  }
+];
+
+// ══════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════
+let totalScore = 0;
+let activityScores = [0, 0, 0];
+let currentActivity = 1;
+let mcCurrentQ = 0;
+let ddCurrentQ = 0;
+let roCurrentQ = 0;
+
+// ══════════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════════
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function updateScoreBar() {
+  document.getElementById('score-display').textContent = totalScore;
+  document.getElementById('activity-display').textContent = currentActivity;
+  document.getElementById('total-display').textContent = totalScore;
+}
+
+function updateTabs() {
+  for (let i = 1; i <= 3; i++) {
+    const t = document.getElementById('tab-' + i);
+    t.classList.remove('active', 'done');
+    if (i < currentActivity) t.classList.add('done');
+    if (i === currentActivity) t.classList.add('active');
+  }
+}
+
+// ══════════════════════════════════════════════
+// ACTIVITY 1 – MULTIPLE CHOICE
+// ══════════════════════════════════════════════
+function buildMC(index) {
+  const container = document.getElementById('mc-container');
+  container.innerHTML = '';
+  if (index >= mcQuestions.length) {
+    showActivity(2);
+    return;
+  }
+  const q = mcQuestions[index];
+  const shuffledOpts = shuffle(q.opts);
+  const letters = ['A', 'B', 'C', 'D'];
+
+  const card = document.createElement('div');
+  card.className = 'card';
+
+  // Progress
+  const prog = document.createElement('div');
+  prog.className = 'progress-row';
+  prog.innerHTML = `
+    <span class="progress-label">Question ${index + 1} of ${mcQuestions.length}</span>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${((index)/mcQuestions.length)*100}%"></div></div>
+    <span class="progress-label">Activity 1</span>`;
+  card.appendChild(prog);
+
+  // Question text
+  const qt = document.createElement('p');
+  qt.className = 'question-text';
+  qt.innerHTML = q.q;
+  card.appendChild(qt);
+
+  // Options
+  const opts = document.createElement('div');
+  opts.className = 'options';
+  shuffledOpts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="option-letter">${letters[i]}</span><span>${opt.text}</span>`;
+    btn.addEventListener('click', () => handleMCAnswer(btn, opt.correct, q.fb, opts, fb, nextBtn));
+    opts.appendChild(btn);
+  });
+  card.appendChild(opts);
+
+  // Feedback
+  const fb = document.createElement('div');
+  fb.className = 'feedback';
+  card.appendChild(fb);
+
+  // Next
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'next-btn';
+  nextBtn.textContent = index < mcQuestions.length - 1 ? 'Next Question →' : 'Go to Activity 2 →';
+  nextBtn.addEventListener('click', () => {
+    mcCurrentQ++;
+    buildMC(mcCurrentQ);
+  });
+  card.appendChild(nextBtn);
+
+  container.appendChild(card);
+}
+
+function handleMCAnswer(btn, correct, fbText, optsDiv, fbDiv, nextBtn) {
+  const allBtns = optsDiv.querySelectorAll('.option-btn');
+  allBtns.forEach(b => {
+    b.disabled = true;
+    const optText = b.querySelector('span:last-child').textContent;
+    const isCorrect = mcQuestions[mcCurrentQ].opts.find(o => o.text === optText)?.correct;
+    if (isCorrect) b.classList.add('correct');
+  });
+  if (correct) {
+    btn.classList.remove('correct');
+    btn.classList.add('correct');
+    fbDiv.className = 'feedback show correct-fb';
+    fbDiv.innerHTML = '✓ Correct! ' + fbText;
+    totalScore++;
+    activityScores[0]++;
+  } else {
+    btn.classList.add('incorrect');
+    fbDiv.className = 'feedback show incorrect-fb';
+    fbDiv.innerHTML = '✗ Not quite. ' + fbText;
+  }
+  updateScoreBar();
+  nextBtn.classList.add('show');
+}
+
+// ══════════════════════════════════════════════
+// ACTIVITY 2 – DRAG & DROP
+// ══════════════════════════════════════════════
+let currentDragChip = null;
+
+function buildDD(index) {
+  const container = document.getElementById('dd-container');
+  container.innerHTML = '';
+  if (index >= ddQuestions.length) {
+    showActivity(3);
+    return;
+  }
+  const q = ddQuestions[index];
+  const shuffledPool = shuffle(q.pool);
+
+  const card = document.createElement('div');
+  card.className = 'card';
+
+  // Progress
+  const prog = document.createElement('div');
+  prog.className = 'progress-row';
+  prog.innerHTML = `
+    <span class="progress-label">Question ${index + 1} of ${ddQuestions.length}</span>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${((index)/ddQuestions.length)*100}%"></div></div>
+    <span class="progress-label">Activity 2</span>`;
+  card.appendChild(prog);
+
+  // Sentence
+  const sent = document.createElement('p');
+  sent.className = 'question-text';
+
+  const dropTarget = document.createElement('span');
+  dropTarget.className = 'drop-target';
+  dropTarget.dataset.answer = q.answer;
+  dropTarget.textContent = '?';
+  let droppedValue = null;
+
+  // Determine whether gap is in middle or at start
+  let sentenceFrag;
+  if (q.before && q.after) {
+    sentenceFrag = document.createDocumentFragment();
+    sentenceFrag.appendChild(document.createTextNode(q.before + ' '));
+    sentenceFrag.appendChild(dropTarget);
+    sentenceFrag.appendChild(document.createTextNode(' ' + q.after));
+  }
+  sent.appendChild(sentenceFrag);
+  card.appendChild(sent);
+
+  // Drag bank
+  const bank = document.createElement('div');
+  bank.className = 'drag-bank';
+  const chips = {};
+  shuffledPool.forEach(word => {
+    const chip = document.createElement('div');
+    chip.className = 'drag-chip';
+    chip.textContent = word;
+    chip.draggable = true;
+    chip.addEventListener('dragstart', e => {
+      currentDragChip = chip;
+      chip.classList.add('dragging');
+      e.dataTransfer.setData('text/plain', word);
+    });
+    chip.addEventListener('dragend', () => chip.classList.remove('dragging'));
+
+    // Touch support
+    chip.addEventListener('touchstart', e => {
+      currentDragChip = chip;
+    }, {passive: true});
+
+    chips[word] = chip;
+    bank.appendChild(chip);
+  });
+  card.appendChild(bank);
+
+  // Drop events
+  dropTarget.addEventListener('dragover', e => {
+    e.preventDefault();
+    if (!dropTarget.classList.contains('filled')) {
+      dropTarget.classList.add('drag-over');
+    }
+  });
+  dropTarget.addEventListener('dragleave', () => dropTarget.classList.remove('drag-over'));
+  dropTarget.addEventListener('drop', e => {
+    e.preventDefault();
+    const word = e.dataTransfer.getData('text/plain');
+    if (!dropTarget.classList.contains('filled')) {
+      fillDrop(dropTarget, word, chips, q.answer, fb, nextBtn);
+    }
+    dropTarget.classList.remove('drag-over');
+  });
+
+  // Click-to-place (after dragging from chip, click target)
+  dropTarget.addEventListener('click', () => {
+    if (currentDragChip && !dropTarget.classList.contains('filled')) {
+      fillDrop(dropTarget, currentDragChip.textContent, chips, q.answer, fb, nextBtn);
+      currentDragChip = null;
+    }
+  });
+
+  shuffledPool.forEach(word => {
+    chips[word].addEventListener('click', () => {
+      if (!dropTarget.classList.contains('filled')) {
+        currentDragChip = chips[word];
+      }
+    });
+  });
+
+  // Feedback
+  const fb = document.createElement('div');
+  fb.className = 'feedback';
+  card.appendChild(fb);
+
+  // Next
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'next-btn';
+  nextBtn.textContent = index < ddQuestions.length - 1 ? 'Next Question →' : 'Go to Activity 3 →';
+  nextBtn.addEventListener('click', () => {
+    ddCurrentQ++;
+    buildDD(ddCurrentQ);
+  });
+  card.appendChild(nextBtn);
+
+  container.appendChild(card);
+}
+
+function fillDrop(target, word, chips, answer, fb, nextBtn) {
+  // Mark chip as used
+  Object.values(chips).forEach(c => {
+    if (c.textContent === word) c.classList.add('used');
+  });
+  target.textContent = word;
+  target.classList.add('filled');
+
+  const correct = word === answer;
+  if (correct) {
+    target.classList.add('correct-drop');
+    fb.className = 'feedback show correct-fb';
+    fb.innerHTML = `✓ Correct! <strong>${answer}</strong> is the right linking device here. It ${getExplanation(answer)}.`;
+    totalScore++;
+    activityScores[1]++;
+  } else {
+    target.classList.add('incorrect-drop');
+    fb.className = 'feedback show incorrect-fb';
+    fb.innerHTML = `✗ Not quite. The correct answer is <strong>${answer}</strong>, which ${getExplanation(answer)}.`;
+  }
+  // Disable all chips
+  Object.values(chips).forEach(c => { c.style.pointerEvents = 'none'; });
+  updateScoreBar();
+  nextBtn.classList.add('show');
+}
+
+function getExplanation(w) {
+  const map = {
+    "As a result": "shows that the second clause is a direct consequence of the first",
+    "However": "introduces a contrast or unexpected information",
+    "Furthermore": "adds another point to support or extend the first idea",
+    "For this reason": "explains that what follows is the logical consequence of what came before",
+    "Similarly": "signals that two ideas are comparable or parallel",
+    "In contrast": "highlights a difference between two situations",
+    "Nevertheless": "shows a contrast despite what was just said",
+    "Despite this": "acknowledges a fact but introduces something that contradicts expectations",
+    "Likewise": "introduces a parallel or comparison",
+    "Consequently": "indicates a result that logically follows from what preceded it",
+    "Even so": "concedes a point but introduces a contrasting consequence",
+    "By contrast": "emphasises a difference between two separate ideas",
+    "On the other hand": "presents an alternative viewpoint or contrasting side",
+    "In addition": "adds further information to what has already been stated",
+    "Owing to": "introduces the cause or reason for something"
+  };
+  return map[w] || "connects the two parts of the sentence logically";
+}
+
+// ══════════════════════════════════════════════
+// ACTIVITY 3 – SENTENCE REORDERING
+// ══════════════════════════════════════════════
+let dragSrcItem = null;
+
+function buildRO(index) {
+  const container = document.getElementById('ro-container');
+  container.innerHTML = '';
+  if (index >= roQuestions.length) {
+    showResults();
+    return;
+  }
+  const q = roQuestions[index];
+  const shuffled = shuffle([...q.segments]);
+
+  const card = document.createElement('div');
+  card.className = 'card';
+
+  // Progress
+  const prog = document.createElement('div');
+  prog.className = 'progress-row';
+  prog.innerHTML = `
+    <span class="progress-label">Question ${index + 1} of ${roQuestions.length}</span>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${((index)/roQuestions.length)*100}%"></div></div>
+    <span class="progress-label">Activity 3</span>`;
+  card.appendChild(prog);
+
+  const instr = document.createElement('p');
+  instr.className = 'question-text';
+  instr.innerHTML = 'Drag the segments into the correct order to form a complete sentence.';
+  card.appendChild(instr);
+
+  const list = document.createElement('ul');
+  list.className = 'reorder-list';
+
+  function makeItem(text) {
+    const li = document.createElement('li');
+    li.className = 'reorder-item';
+    li.draggable = true;
+    li.dataset.text = text;
+    li.innerHTML = `<span class="reorder-handle">⠿</span><span>${text}</span>`;
+
+    li.addEventListener('dragstart', e => {
+      dragSrcItem = li;
+      li.classList.add('dragging-item');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    li.addEventListener('dragend', () => li.classList.remove('dragging-item'));
+    li.addEventListener('dragover', e => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      li.classList.add('drag-over-item');
+    });
+    li.addEventListener('dragleave', () => li.classList.remove('drag-over-item'));
+    li.addEventListener('drop', e => {
+      e.preventDefault();
+      li.classList.remove('drag-over-item');
+      if (dragSrcItem !== li) {
+        const items = [...list.querySelectorAll('li')];
+        const srcIdx = items.indexOf(dragSrcItem);
+        const dstIdx = items.indexOf(li);
+        if (srcIdx < dstIdx) list.insertBefore(dragSrcItem, li.nextSibling);
+        else list.insertBefore(dragSrcItem, li);
+      }
+    });
+    return li;
+  }
+
+  shuffled.forEach(seg => list.appendChild(makeItem(seg)));
+  card.appendChild(list);
+
+  // Submit button
+  const submitBtn = document.createElement('button');
+  submitBtn.className = 'submit-match-btn';
+  submitBtn.textContent = 'Check Order';
+  card.appendChild(submitBtn);
+
+  // Feedback
+  const fb = document.createElement('div');
+  fb.className = 'feedback';
+  card.appendChild(fb);
+
+  // Next
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'next-btn';
+  nextBtn.textContent = index < roQuestions.length - 1 ? 'Next Question →' : 'See Results →';
+  nextBtn.addEventListener('click', () => {
+    roCurrentQ++;
+    buildRO(roCurrentQ);
+  });
+  card.appendChild(nextBtn);
+
+  submitBtn.addEventListener('click', () => {
+    submitBtn.disabled = true;
+    const items = [...list.querySelectorAll('li')];
+    const order = items.map(li => li.dataset.text);
+    const correct = JSON.stringify(order) === JSON.stringify(q.segments);
+
+    items.forEach((li, i) => {
+      li.draggable = false;
+      if (li.dataset.text === q.segments[i]) {
+        li.classList.add('correct-r');
+      } else {
+        li.classList.add('incorrect-r');
+      }
+    });
+
+    if (correct) {
+      fb.className = 'feedback show correct-fb';
+      fb.innerHTML = `✓ Perfect order! ${q.fb}`;
+      totalScore++;
+      activityScores[2]++;
+    } else {
+      fb.className = 'feedback show incorrect-fb';
+      fb.innerHTML = `✗ Not quite right. The correct order was: <em>"${q.segments.join(' ')}"</em><br><br>${q.fb}`;
+    }
+    updateScoreBar();
+    nextBtn.classList.add('show');
+  });
+
+  container.appendChild(card);
+}
+
+// ══════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════
+function showActivity(n) {
+  currentActivity = n;
+  document.getElementById('activity-1').style.display = 'none';
+  document.getElementById('activity-2').style.display = 'none';
+  document.getElementById('activity-3').style.display = 'none';
+  document.getElementById('results-screen').classList.remove('show');
+
+  updateTabs();
+  updateScoreBar();
+
+  if (n === 1) {
+    document.getElementById('activity-1').style.display = '';
+    buildMC(mcCurrentQ);
+  } else if (n === 2) {
+    document.getElementById('activity-2').style.display = '';
+    buildDD(ddCurrentQ);
+  } else if (n === 3) {
+    document.getElementById('activity-3').style.display = '';
+    buildRO(roCurrentQ);
+  }
+}
+
+function showResults() {
+  document.getElementById('activity-1').style.display = 'none';
+  document.getElementById('activity-2').style.display = 'none';
+  document.getElementById('activity-3').style.display = 'none';
+  document.getElementById('results-screen').classList.add('show');
+  document.getElementById('final-score-display').textContent = totalScore;
+  document.getElementById('tab-1').classList.remove('active');
+  document.getElementById('tab-2').classList.remove('active');
+  document.getElementById('tab-3').classList.remove('active');
+  document.getElementById('tab-1').classList.add('done');
+  document.getElementById('tab-2').classList.add('done');
+  document.getElementById('tab-3').classList.add('done');
+
+  let msg = '';
+  if (totalScore >= 13) msg = "Exceptional work! Your command of linking devices is truly impressive — you connected ideas with precision and confidence. Keep it up!";
+  else if (totalScore >= 10) msg = "Excellent result! You have a strong grasp of how to structure arguments and link ideas in English. A little more practice and you'll be flawless.";
+  else if (totalScore >= 7) msg = "Good effort! You're building solid skills with linking devices. Review the questions you missed and notice how the connectors change the logic of each sentence.";
+  else msg = "A solid start! Linking devices take practice — go back through the lesson, pay close attention to the explanations, and try again.";
+
+  document.getElementById('results-msg').textContent = msg;
+}
+
+function restartLesson() {
+  totalScore = 0;
+  activityScores = [0, 0, 0];
+  mcCurrentQ = 0;
+  ddCurrentQ = 0;
+  roCurrentQ = 0;
+  currentActivity = 1;
+  updateScoreBar();
+  showActivity(1);
+}
+
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  buildMC(0);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – The Power of Now: Eckhart Tolle</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:         #1a1f14;
+    --surface:    #222b1a;
+    --card:       #2a3420;
+    --card-light: #2f3c24;
+    --border:     #3d4f2e;
+    --accent:     #8fb050;
+    --accent-dim: #6a8840;
+    --accent-glow:#b8d878;
+    --amber:      #d4a843;
+    --amber-dim:  #a07e2e;
+    --text:       #e8e0d0;
+    --text-muted: #9a9080;
+    --text-dim:   #7a7268;
+    --correct:    #5a9e4a;
+    --wrong:      #b84040;
+    --correct-bg: #1e3018;
+    --wrong-bg:   #301818;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0 0 60px;
+    background-image:
+      radial-gradient(ellipse at 20% 0%, rgba(100,130,60,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 100%, rgba(180,130,40,0.08) 0%, transparent 60%);
+  }
+
+  /* ─── HEADER ─── */
+  .site-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 22px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(8px);
+  }
+
+  .logo-svg { width: 120px; height: auto; }
+
+  .score-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    padding: 8px 18px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--amber);
+    letter-spacing: 0.03em;
+  }
+  .score-pill span { color: var(--text-muted); font-weight: 400; margin-right: 2px; }
+
+  /* ─── HERO BAND ─── */
+  .lesson-hero {
+    padding: 40px 40px 30px;
+    max-width: 820px;
+    margin: 0 auto;
+  }
+  .lesson-tag {
+    display: inline-block;
+    background: var(--accent-dim);
+    color: var(--accent-glow);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 3px;
+    margin-bottom: 14px;
+  }
+  .lesson-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+  .lesson-hero h1 em {
+    color: var(--amber);
+    font-style: italic;
+  }
+  .lesson-hero p {
+    color: var(--text-muted);
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 580px;
+  }
+
+  /* ─── READING PASSAGE ─── */
+  .passage-section {
+    max-width: 820px;
+    margin: 0 auto 30px;
+    padding: 0 40px;
+  }
+  .passage-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .passage-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: linear-gradient(to bottom, var(--amber), var(--accent));
+  }
+  .passage-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--amber);
+    margin-bottom: 16px;
+    letter-spacing: 0.02em;
+  }
+  .passage-card p {
+    font-size: 0.97rem;
+    line-height: 1.75;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+  .passage-card p:last-child { margin-bottom: 0; }
+
+  /* ─── ACTIVITY WRAPPER ─── */
+  .activities {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .activity-block {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .activity-header {
+    background: var(--card-light);
+    padding: 18px 28px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .activity-header h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .activity-header .act-meta {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .activity-body { padding: 24px 28px; }
+
+  /* progress bar inside activity */
+  .progress-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+  .progress-bar-wrap {
+    flex: 1;
+    height: 5px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(to right, var(--accent), var(--amber));
+    border-radius: 3px;
+    transition: width 0.4s ease;
+  }
+  .progress-label {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    min-width: 80px;
+    text-align: right;
+  }
+
+  /* ─── QUESTION ─── */
+  .question-text {
+    font-size: 1.02rem;
+    line-height: 1.6;
+    color: var(--text);
+    margin-bottom: 18px;
+    font-weight: 400;
+  }
+  .question-text strong {
+    color: var(--amber);
+    font-weight: 600;
+  }
+
+  /* ─── MCQ OPTIONS ─── */
+  .options-grid {
+    display: grid;
+    gap: 10px;
+  }
+  .option-btn {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 13px 18px;
+    color: var(--text);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.95rem;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s, transform 0.1s;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--accent-dim);
+    background: var(--card-light);
+    transform: translateX(2px);
+  }
+  .option-btn .opt-letter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--border);
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .option-btn.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+  }
+  .option-btn.correct .opt-letter {
+    background: var(--correct);
+    color: #fff;
+  }
+  .option-btn.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+  }
+  .option-btn.wrong .opt-letter {
+    background: var(--wrong);
+    color: #fff;
+  }
+  .option-btn:disabled { cursor: default; }
+
+  /* ─── FEEDBACK ─── */
+  .feedback-box {
+    margin-top: 14px;
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    display: none;
+  }
+  .feedback-box.show { display: block; }
+  .feedback-box.correct { background: var(--correct-bg); border: 1px solid var(--correct); color: #8dd87a; }
+  .feedback-box.wrong   { background: var(--wrong-bg);   border: 1px solid var(--wrong);   color: #e08080; }
+  .feedback-box .fb-icon { font-weight: 700; margin-right: 6px; }
+
+  /* ─── FILL IN THE BLANK ─── */
+  .fitb-sentence {
+    font-size: 1.02rem;
+    line-height: 1.8;
+    color: var(--text);
+    margin-bottom: 14px;
+  }
+  .fitb-input {
+    display: inline-block;
+    border: none;
+    border-bottom: 2px solid var(--accent-dim);
+    background: transparent;
+    color: var(--amber);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    width: 160px;
+    outline: none;
+    padding: 2px 4px;
+    transition: border-color 0.2s;
+    text-align: center;
+  }
+  .fitb-input:focus { border-color: var(--amber); }
+  .fitb-input.correct { border-color: var(--correct); color: #8dd87a; }
+  .fitb-input.wrong   { border-color: var(--wrong);   color: #e08080; }
+
+  .fitb-check-btn {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 8px 20px;
+    background: var(--card-light);
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-muted);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .fitb-check-btn:hover:not(:disabled) { border-color: var(--accent-dim); color: var(--accent-glow); }
+  .fitb-check-btn:disabled { opacity: 0.5; cursor: default; }
+
+  /* ─── MATCHING ─── */
+  .matching-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 20px;
+  }
+  .match-col { display: flex; flex-direction: column; gap: 8px; }
+  .match-col-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+  .match-item {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 7px;
+    padding: 10px 14px;
+    font-size: 0.92rem;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+  .match-item:hover:not(.disabled) { border-color: var(--accent-dim); background: var(--card-light); }
+  .match-item.selected { border-color: var(--amber); background: rgba(212,168,67,0.08); color: var(--amber); }
+  .match-item.matched-correct { border-color: var(--correct); background: var(--correct-bg); color: #8dd87a; cursor: default; }
+  .match-item.matched-wrong   { border-color: var(--wrong);   background: var(--wrong-bg);   color: #e08080; cursor: default; }
+  .match-item.disabled { opacity: 0.5; cursor: default; }
+
+  .match-submit-btn {
+    margin-top: 16px;
+    padding: 10px 24px;
+    background: var(--accent-dim);
+    border: none;
+    border-radius: 7px;
+    color: #fff;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .match-submit-btn:hover { background: var(--accent); }
+  .match-submit-btn:disabled { opacity: 0.5; cursor: default; }
+
+  /* ─── NEXT BUTTON ─── */
+  .next-btn {
+    margin-top: 20px;
+    padding: 12px 32px;
+    background: linear-gradient(135deg, var(--accent-dim), var(--amber-dim));
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    display: none;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+  .next-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+  .next-btn.visible { display: inline-flex; align-items: center; gap: 8px; }
+
+  /* ─── FINAL SCREEN ─── */
+  #final-screen {
+    display: none;
+    max-width: 820px;
+    margin: 40px auto;
+    padding: 0 40px;
+  }
+  .final-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 50px 40px;
+    text-align: center;
+  }
+  .final-score-ring {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    border: 5px solid var(--amber);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    flex-direction: column;
+    background: var(--surface);
+    box-shadow: 0 0 40px rgba(212,168,67,0.15);
+  }
+  .final-score-ring .big-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.6rem;
+    font-weight: 700;
+    color: var(--amber);
+    line-height: 1;
+  }
+  .final-score-ring .of-total {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+  .final-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+  .final-card p {
+    color: var(--text-muted);
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 440px;
+    margin: 0 auto 30px;
+  }
+  .restart-btn {
+    padding: 13px 36px;
+    background: var(--accent-dim);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .restart-btn:hover { background: var(--accent); }
+
+  /* ─── MISC ─── */
+  hr.section-rule {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 28px 0;
+  }
+
+  @media (max-width: 640px) {
+    .site-header { padding: 16px 20px; }
+    .lesson-hero, .passage-section, .activities { padding-left: 20px; padding-right: 20px; }
+    .lesson-hero h1 { font-size: 1.8rem; }
+    .matching-grid { grid-template-columns: 1fr; }
+    #final-screen { padding: 0 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!--  HEADER                                                   -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<header class="site-header">
+  <!-- Forbes English logo in brand colors -->
+  <svg class="logo-svg" viewBox="0 0 120 52" xmlns="http://www.w3.org/2000/svg">
+    <text x="60" y="22" text-anchor="middle"
+      font-family="'Playfair Display', Georgia, serif"
+      font-size="22" font-weight="700" fill="#8fb050" letter-spacing="0.5">Forbes</text>
+    <rect x="10" y="28" width="100" height="1.2" fill="#3d4f2e"/>
+    <text x="60" y="44" text-anchor="middle"
+      font-family="'Source Sans 3', Arial, sans-serif"
+      font-size="11" font-weight="700" fill="#d4a843" letter-spacing="4">ENGLISH</text>
+  </svg>
+
+  <div class="score-pill">
+    <span>Score:</span>
+    <span id="score-display">0</span>&nbsp;/&nbsp;<span id="total-display">0</span>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!--  LESSON HERO                                              -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div class="lesson-hero">
+  <div class="lesson-tag">B2 · Reading &amp; Language</div>
+  <h1>The Power of <em>Now</em><br>– Eckhart Tolle</h1>
+  <p>Explore the ideas and language of one of the world's most influential spiritual writers. Read the passage, then complete three activities testing comprehension, vocabulary, and grammar.</p>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!--  READING PASSAGE                                          -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div class="passage-section">
+  <div class="passage-card">
+    <h2>Reading Passage — About Eckhart Tolle</h2>
+    <p>Eckhart Tolle was born Ulrich Leonard Tolle in 1948 in Lünen, Germany. By his late twenties, he had suffered from prolonged periods of deep depression and anxiety. Then, at the age of twenty-nine, he underwent what he described as a profound inner transformation, which became the foundation of his later teachings.</p>
+    <p>Tolle's central message is deceptively simple: most human suffering arises not from external circumstances, but from an over-identification with one's own thoughts. He argues that the mind has a tendency to dwell on the past or project itself into the future, thereby missing what he calls "the Now" — the only moment in which life truly exists. In his view, the incessant mental chatter that occupies our attention is the primary obstacle to inner peace.</p>
+    <p>His book <em>The Power of Now</em>, published in 1997, initially attracted little attention. However, after Oprah Winfrey recommended it in 2000, it rose to international prominence and has since sold over ten million copies worldwide. A follow-up work, <em>A New Earth</em>, was similarly endorsed by Winfrey and introduced the concept of the "pain-body" — a semi-autonomous accumulation of emotional pain that, Tolle contends, feeds on negative thinking.</p>
+    <p>Tolle does not align himself with any single religion; rather, he draws on insights from Buddhism, Christianity, and other traditions. Critics have questioned whether his ideas are truly original or represent a skillful synthesis of existing spiritual philosophies. Nonetheless, his influence on popular culture and the wellness industry has been substantial, and he remains one of the best-selling spiritual authors of the twenty-first century.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!--  ACTIVITIES                                               -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div class="activities" id="activities-container">
+
+  <!-- ─────────────── ACTIVITY 1 · MCQ ─────────────── -->
+  <div class="activity-block" id="act1">
+    <div class="activity-header">
+      <h3>Activity 1 — Reading Comprehension</h3>
+      <span class="act-meta">Multiple Choice · 5 questions</span>
+    </div>
+    <div class="activity-body" id="act1-body">
+      <!-- rendered by JS -->
+    </div>
+  </div>
+
+  <!-- ─────────────── ACTIVITY 2 · FILL IN THE BLANK ─────────────── -->
+  <div class="activity-block" id="act2">
+    <div class="activity-header">
+      <h3>Activity 2 — Vocabulary in Context</h3>
+      <span class="act-meta">Fill in the Blank · 5 questions</span>
+    </div>
+    <div class="activity-body" id="act2-body">
+    </div>
+  </div>
+
+  <!-- ─────────────── ACTIVITY 3 · MATCHING ─────────────── -->
+  <div class="activity-block" id="act3">
+    <div class="activity-header">
+      <h3>Activity 3 — Concept Matching</h3>
+      <span class="act-meta">Matching · 5 pairs</span>
+    </div>
+    <div class="activity-body" id="act3-body">
+    </div>
+  </div>
+
+</div><!-- /.activities -->
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!--  FINAL SCREEN                                             -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div id="final-screen">
+  <div class="final-card">
+    <div class="final-score-ring">
+      <div class="big-num" id="final-num">0</div>
+      <div class="of-total" id="final-of">of 15</div>
+    </div>
+    <h2 id="final-heading">Well done!</h2>
+    <p id="final-msg">Keep practising to deepen your understanding.</p>
+    <button class="restart-btn" onclick="restartLesson()">↺ Restart Lesson</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!--  JAVASCRIPT                                               -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<script>
+/* ═══════════════════════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════════════════════ */
+
+const mcqQuestions = [
+  {
+    q: "According to the passage, what was the direct trigger for Eckhart Tolle's inner transformation?",
+    opts: [
+      "Reading extensively about Eastern philosophy and religion",
+      "A long period of depression followed by a sudden shift at age twenty-nine",
+      "A recommendation from a prominent television presenter",
+      "Moving from Germany to North America in search of a new life"
+    ],
+    correct: 1,
+    feedback: "The passage states that after prolonged depression, Tolle underwent a 'profound inner transformation' at the age of twenty-nine. There is no mention of reading or relocation as the direct cause."
+  },
+  {
+    q: "What does Tolle identify as the <strong>main source</strong> of human suffering, according to the passage?",
+    opts: [
+      "Difficult social relationships and conflicts with other people",
+      "A tendency to avoid forming meaningful personal bonds",
+      "Over-identifying with one's own thoughts rather than present experience",
+      "Persistent difficulties in finding adequate financial security"
+    ],
+    correct: 2,
+    feedback: "Tolle argues that suffering comes from 'over-identification with one's own thoughts' — not from external circumstances, relationships, or financial problems."
+  },
+  {
+    q: "How did <em>The Power of Now</em> first achieve widespread international success?",
+    opts: [
+      "It was adopted as a set text on university psychology courses worldwide",
+      "It was translated into multiple languages within its first year of publication",
+      "It received strong critical praise in major literary reviews on publication",
+      "It gained global attention after a prominent media figure publicly endorsed it"
+    ],
+    correct: 3,
+    feedback: "The passage explains that Oprah Winfrey's recommendation in 2000 led to the book's international prominence. Academic adoption, early translation, or critical reviews are not mentioned as the cause."
+  },
+  {
+    q: "What is the 'pain-body', as described in the passage?",
+    opts: [
+      "A set of physical symptoms caused by chronic emotional stress",
+      "A built-up store of emotional pain that sustains itself through negative thinking",
+      "The part of the brain responsible for processing feelings of grief",
+      "A therapeutic technique for releasing deeply held psychological trauma"
+    ],
+    correct: 1,
+    feedback: "The passage describes the pain-body as 'a semi-autonomous accumulation of emotional pain that feeds on negative thinking' — not a physical symptom, brain region, or therapy method."
+  },
+  {
+    q: "Which of the following best reflects how critics have responded to Tolle's work?",
+    opts: [
+      "They have broadly praised his work as a genuinely new spiritual philosophy",
+      "They have completely dismissed his ideas as lacking any spiritual value",
+      "Some have questioned whether his ideas are original or mainly a synthesis of existing thought",
+      "They have argued that his work is incompatible with major world religions"
+    ],
+    correct: 2,
+    feedback: "The passage states that critics have 'questioned whether his ideas are truly original or represent a skillful synthesis of existing spiritual philosophies' — neither full praise nor complete dismissal."
+  }
+];
+
+const fitbQuestions = [
+  {
+    before: "Tolle argues that most people ",
+    after: " their own thoughts, mistaking the voice in their head for who they truly are.",
+    answer: "over-identify with",
+    options: ["over-identify with", "are unaware of", "struggle against", "tend to celebrate"],
+    hint: "This verb phrase from the passage means to be excessively fused with or attached to something."
+  },
+  {
+    before: "His book initially attracted little attention but later rose to international ",
+    after: ", selling millions of copies worldwide.",
+    answer: "prominence",
+    options: ["prominence", "resistance", "criticism", "obscurity"],
+    hint: "'Prominence' means the state of being widely known or important. The other options mean the opposite or something unrelated."
+  },
+  {
+    before: "Tolle does not ",
+    after: " himself with any single religion, drawing instead on several traditions.",
+    answer: "align",
+    options: ["align", "occupy", "associate", "distinguish"],
+    hint: "To 'align oneself with' something means to formally support or identify with it. Check the exact phrasing in the passage."
+  },
+  {
+    before: "The mind tends to ",
+    after: " on the past or project itself into the future, missing the present moment entirely.",
+    answer: "dwell",
+    options: ["dwell", "focus", "reflect", "concentrate"],
+    hint: "'Dwell on' specifically suggests lingering unhelpfully on something. The other options are more neutral or positive."
+  },
+  {
+    before: "Tolle's message is ",
+    after: " simple — on the surface it sounds easy, but its implications run very deep.",
+    answer: "deceptively",
+    options: ["deceptively", "seemingly", "surprisingly", "extremely"],
+    hint: "'Deceptively simple' means something appears simple but is misleading — it is actually more complex or profound than it looks."
+  }
+];
+
+const matchingPairs = [
+  { left: "The Now",             right: "The present moment, which Tolle sees as the only true reality" },
+  { left: "Pain-body",           right: "An accumulation of emotional pain that feeds on negativity" },
+  { left: "Inner transformation",right: "A sudden shift in consciousness Tolle experienced at age twenty-nine" },
+  { left: "Mental chatter",      right: "Incessant thinking that blocks inner peace, according to Tolle" },
+  { left: "Synthesis",           right: "A combination of ideas drawn from multiple existing sources" }
+];
+
+/* ═══════════════════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════════════════ */
+let totalScore = 0;
+let totalAnswered = 0;
+const TOTAL_QUESTIONS = 15;
+
+function updateScoreDisplay() {
+  document.getElementById('score-display').textContent = totalScore;
+  document.getElementById('total-display').textContent = totalAnswered;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ACTIVITY 1 — MCQ
+═══════════════════════════════════════════════════════════ */
+(function buildMCQ() {
+  const body = document.getElementById('act1-body');
+  let currentQ = 0;
+
+  function render() {
+    body.innerHTML = '';
+    const q = mcqQuestions[currentQ];
+
+    // progress
+    const prog = document.createElement('div');
+    prog.className = 'progress-row';
+    prog.innerHTML = `
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" style="width:${(currentQ/mcqQuestions.length)*100}%"></div>
+      </div>
+      <div class="progress-label">Question ${currentQ+1} of ${mcqQuestions.length}</div>
+    `;
+    body.appendChild(prog);
+
+    const qText = document.createElement('p');
+    qText.className = 'question-text';
+    qText.innerHTML = q.q;
+    body.appendChild(qText);
+
+    const grid = document.createElement('div');
+    grid.className = 'options-grid';
+    const letters = ['A','B','C','D'];
+
+    q.opts.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'option-btn';
+      btn.innerHTML = `<span class="opt-letter">${letters[i]}</span>${opt}`;
+      btn.addEventListener('click', () => {
+        grid.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
+        const isCorrect = i === q.correct;
+        if (isCorrect) {
+          btn.classList.add('correct');
+          totalScore++;
+        } else {
+          btn.classList.add('wrong');
+          grid.querySelectorAll('.option-btn')[q.correct].classList.add('correct');
+        }
+        totalAnswered++;
+        updateScoreDisplay();
+
+        const fb = document.createElement('div');
+        fb.className = `feedback-box ${isCorrect ? 'correct' : 'wrong'} show`;
+        fb.innerHTML = `<span class="fb-icon">${isCorrect ? '✓' : '✗'}</span>${q.feedback}`;
+        body.appendChild(fb);
+
+        nextBtn.classList.add('visible');
+      });
+      grid.appendChild(btn);
+    });
+    body.appendChild(grid);
+
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'next-btn';
+    nextBtn.innerHTML = currentQ < mcqQuestions.length - 1 ? 'Next Question →' : 'Finish Activity →';
+    nextBtn.addEventListener('click', () => {
+      currentQ++;
+      if (currentQ < mcqQuestions.length) {
+        render();
+      } else {
+        body.innerHTML = '<p style="color:var(--accent-glow);font-size:1.05rem;padding:10px 0;">✓ Activity complete! Scroll down to continue.</p>';
+        // update progress bar
+        prog && (prog.querySelector('.progress-bar-fill').style.width = '100%');
+      }
+    });
+    body.appendChild(nextBtn);
+  }
+
+  render();
+})();
+
+/* ═══════════════════════════════════════════════════════════
+   ACTIVITY 2 — FILL IN THE BLANK (word bank style)
+═══════════════════════════════════════════════════════════ */
+(function buildFITB() {
+  const body = document.getElementById('act2-body');
+  let currentQ = 0;
+
+  function render() {
+    body.innerHTML = '';
+    const q = fitbQuestions[currentQ];
+
+    const prog = document.createElement('div');
+    prog.className = 'progress-row';
+    prog.innerHTML = `
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" style="width:${(currentQ/fitbQuestions.length)*100}%"></div>
+      </div>
+      <div class="progress-label">Question ${currentQ+1} of ${fitbQuestions.length}</div>
+    `;
+    body.appendChild(prog);
+
+    // Sentence with blank
+    const sent = document.createElement('p');
+    sent.className = 'fitb-sentence';
+    const inputId = 'fitb-inp-' + currentQ;
+    sent.innerHTML = `${q.before} <input class="fitb-input" id="${inputId}" type="text" placeholder="___?___" autocomplete="off" spellcheck="false"> ${q.after}`;
+    body.appendChild(sent);
+
+    // Word bank label
+    const wbLabel = document.createElement('p');
+    wbLabel.style.cssText = 'font-size:0.8rem;color:var(--text-dim);margin-bottom:8px;letter-spacing:0.05em;text-transform:uppercase;';
+    wbLabel.textContent = 'Word bank:';
+    body.appendChild(wbLabel);
+
+    // Shuffled options as clickable chips
+    const chipWrap = document.createElement('div');
+    chipWrap.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;';
+    const shuffled = [...q.options].sort(() => Math.random() - 0.5);
+    shuffled.forEach(opt => {
+      const chip = document.createElement('button');
+      chip.style.cssText = `
+        background:var(--surface);border:1.5px solid var(--border);border-radius:50px;
+        padding:6px 16px;color:var(--text-muted);font-family:'Source Sans 3',sans-serif;
+        font-size:0.88rem;cursor:pointer;transition:all 0.2s;
+      `;
+      chip.textContent = opt;
+      chip.addEventListener('mouseover', () => { chip.style.borderColor='var(--accent-dim)'; chip.style.color='var(--accent-glow)'; });
+      chip.addEventListener('mouseout',  () => { if(!chip.disabled){ chip.style.borderColor='var(--border)'; chip.style.color='var(--text-muted)'; } });
+      chip.addEventListener('click', () => {
+        const inp = document.getElementById(inputId);
+        if (!inp.disabled) inp.value = opt;
+      });
+      chipWrap.appendChild(chip);
+    });
+    body.appendChild(chipWrap);
+
+    // Hint
+    const hint = document.createElement('p');
+    hint.style.cssText = 'font-size:0.84rem;color:var(--text-dim);margin-bottom:14px;font-style:italic;';
+    hint.innerHTML = `<strong style="font-style:normal;color:var(--text-muted)">Hint:</strong> ${q.hint}`;
+    body.appendChild(hint);
+
+    // Check button
+    const checkBtn = document.createElement('button');
+    checkBtn.className = 'fitb-check-btn';
+    checkBtn.textContent = 'Check Answer';
+    body.appendChild(checkBtn);
+
+    const fb = document.createElement('div');
+    fb.className = 'feedback-box';
+    body.appendChild(fb);
+
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'next-btn';
+    nextBtn.innerHTML = currentQ < fitbQuestions.length - 1 ? 'Next Question →' : 'Finish Activity →';
+
+    checkBtn.addEventListener('click', () => {
+      const inp = document.getElementById(inputId);
+      const userVal = inp.value.trim().toLowerCase();
+      const correctVal = q.answer.toLowerCase();
+      const isCorrect = userVal === correctVal;
+
+      inp.disabled = true;
+      inp.classList.add(isCorrect ? 'correct' : 'wrong');
+      checkBtn.disabled = true;
+      chipWrap.querySelectorAll('button').forEach(b => b.disabled = true);
+
+      if (isCorrect) {
+        totalScore++;
+        fb.className = 'feedback-box correct show';
+        fb.innerHTML = `<span class="fb-icon">✓</span>Correct! The answer is "<strong>${q.answer}</strong>". ${q.hint}`;
+      } else {
+        fb.className = 'feedback-box wrong show';
+        fb.innerHTML = `<span class="fb-icon">✗</span>The correct answer is "<strong>${q.answer}</strong>". ${q.hint}`;
+        if (!userVal) { inp.value = q.answer; inp.style.color = '#e08080'; }
+      }
+      totalAnswered++;
+      updateScoreDisplay();
+      nextBtn.classList.add('visible');
+    });
+
+    body.appendChild(nextBtn);
+
+    nextBtn.addEventListener('click', () => {
+      currentQ++;
+      if (currentQ < fitbQuestions.length) {
+        render();
+      } else {
+        body.innerHTML = '<p style="color:var(--accent-glow);font-size:1.05rem;padding:10px 0;">✓ Activity complete! Scroll down to continue.</p>';
+      }
+    });
+  }
+  render();
+})();
+
+/* ═══════════════════════════════════════════════════════════
+   ACTIVITY 3 — MATCHING
+═══════════════════════════════════════════════════════════ */
+(function buildMatching() {
+  const body = document.getElementById('act3-body');
+
+  const intro = document.createElement('p');
+  intro.style.cssText = 'font-size:0.95rem;color:var(--text-muted);margin-bottom:18px;line-height:1.5;';
+  intro.textContent = 'Match each term on the left with its correct description on the right. Click a term, then click a description to pair them.';
+  body.appendChild(intro);
+
+  // shuffle right column
+  const leftItems  = matchingPairs.map(p => p.left);
+  const rightItems = [...matchingPairs.map(p => p.right)].sort(() => Math.random() - 0.5);
+
+  let selectedLeft  = null;
+  let selectedRight = null;
+  let matched = 0;
+  let actScore = 0;
+
+  const grid = document.createElement('div');
+  grid.className = 'matching-grid';
+
+  const leftCol  = document.createElement('div');
+  leftCol.className = 'match-col';
+  leftCol.innerHTML = '<div class="match-col-label">Term</div>';
+
+  const rightCol = document.createElement('div');
+  rightCol.className = 'match-col';
+  rightCol.innerHTML = '<div class="match-col-label">Definition</div>';
+
+  const leftEls  = [];
+  const rightEls = [];
+
+  leftItems.forEach((text, i) => {
+    const el = document.createElement('div');
+    el.className = 'match-item';
+    el.dataset.idx = i;
+    el.dataset.side = 'left';
+    el.textContent = text;
+    el.addEventListener('click', () => handleClick(el, 'left'));
+    leftCol.appendChild(el);
+    leftEls.push(el);
+  });
+
+  rightItems.forEach((text, i) => {
+    const el = document.createElement('div');
+    el.className = 'match-item';
+    el.dataset.val = text;
+    el.dataset.side = 'right';
+    el.textContent = text;
+    el.addEventListener('click', () => handleClick(el, 'right'));
+    rightCol.appendChild(el);
+    rightEls.push(el);
+  });
+
+  grid.appendChild(leftCol);
+  grid.appendChild(rightCol);
+  body.appendChild(grid);
+
+  const fb = document.createElement('div');
+  fb.className = 'feedback-box';
+  body.appendChild(fb);
+
+  function handleClick(el, side) {
+    if (el.classList.contains('matched-correct') || el.classList.contains('matched-wrong')) return;
+
+    if (side === 'left') {
+      leftEls.forEach(e => e.classList.remove('selected'));
+      if (selectedLeft === el) { selectedLeft = null; return; }
+      el.classList.add('selected');
+      selectedLeft = el;
+    } else {
+      rightEls.forEach(e => e.classList.remove('selected'));
+      if (selectedRight === el) { selectedRight = null; return; }
+      el.classList.add('selected');
+      selectedRight = el;
+    }
+
+    if (selectedLeft && selectedRight) {
+      checkPair();
+    }
+  }
+
+  function checkPair() {
+    const leftIdx = parseInt(selectedLeft.dataset.idx);
+    const correctRight = matchingPairs[leftIdx].right;
+    const isCorrect = selectedRight.dataset.val === correctRight;
+
+    selectedLeft.classList.remove('selected');
+    selectedRight.classList.remove('selected');
+
+    if (isCorrect) {
+      selectedLeft.classList.add('matched-correct');
+      selectedRight.classList.add('matched-correct');
+      selectedLeft.classList.add('disabled');
+      selectedRight.classList.add('disabled');
+      actScore++;
+      totalScore++;
+    } else {
+      selectedLeft.classList.add('matched-wrong');
+      selectedRight.classList.add('matched-wrong');
+      setTimeout(() => {
+        selectedLeft.classList.remove('matched-wrong');
+        selectedRight.classList.remove('matched-wrong');
+      }, 800);
+    }
+    totalAnswered++;
+    matched++;
+    updateScoreDisplay();
+
+    selectedLeft = null;
+    selectedRight = null;
+
+    if (matched === matchingPairs.length) {
+      setTimeout(() => {
+        fb.className = `feedback-box ${actScore === matchingPairs.length ? 'correct' : (actScore >= 3 ? 'correct' : 'wrong')} show`;
+        fb.innerHTML = `<span class="fb-icon">${actScore === matchingPairs.length ? '✓' : '✗'}</span>
+          You matched <strong>${actScore} of ${matchingPairs.length}</strong> pairs correctly. 
+          ${actScore === 5 ? 'Perfect score on this activity!' : 'Review the passage to reinforce the concepts you missed.'}`;
+        showFinalAfterDelay();
+      }, 400);
+    }
+  }
+})();
+
+/* ═══════════════════════════════════════════════════════════
+   FINAL SCREEN
+═══════════════════════════════════════════════════════════ */
+function showFinalAfterDelay() {
+  setTimeout(() => {
+    document.getElementById('activities-container').style.display = 'none';
+    const fs = document.getElementById('final-screen');
+    fs.style.display = 'block';
+
+    const pct = totalScore / TOTAL_QUESTIONS;
+    document.getElementById('final-num').textContent = totalScore;
+    document.getElementById('final-of').textContent  = `of ${TOTAL_QUESTIONS}`;
+
+    let heading, msg;
+    if (pct >= 0.87) {
+      heading = 'Outstanding!';
+      msg = "You have an excellent grasp of Eckhart Tolle\u2019s ideas and the vocabulary used to discuss them. Well done!";
+    } else if (pct >= 0.67) {
+      heading = 'Great effort!';
+      msg = 'You have a solid understanding. Re-reading the passage and reviewing any missed items will help you consolidate your knowledge.';
+    } else if (pct >= 0.47) {
+      heading = 'Good start!';
+      msg = "You\u2019re building a foundation. Try reading the passage once more and focus on the key concepts before retrying.";
+    } else {
+      heading = 'Keep going!';
+      msg = 'This is challenging material. Read the passage carefully again, paying attention to the key ideas, and have another try.';
+    }
+
+    document.getElementById('final-heading').textContent = heading;
+    document.getElementById('final-msg').textContent     = msg;
+    fs.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 1200);
+}
+
+function restartLesson() {
+  totalScore = 0;
+  totalAnswered = 0;
+  updateScoreDisplay();
+  document.getElementById('final-screen').style.display = 'none';
+  document.getElementById('activities-container').style.display = 'flex';
+  location.reload();
+}
+</script>
+</body>
+</html>

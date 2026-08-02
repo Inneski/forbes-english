@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – Past Modals in Minecraft</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0f2244;
+    --navy-mid: #1a3560;
+    --navy-light: #2a4d80;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-pale: #f9f2e1;
+    --cream: #fdfaf4;
+    --cream-dark: #f0e8d5;
+    --text-dark: #0f2244;
+    --text-mid: #3a4f72;
+    --text-light: #7a8fa8;
+    --white: #ffffff;
+    --green: #2e7d52;
+    --green-light: #e8f5ee;
+    --red: #b5341a;
+    --red-light: #fdeee9;
+    --shadow: 0 4px 20px rgba(15,34,68,0.10);
+    --radius: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: var(--navy);
+    padding: 28px 0 20px;
+    text-align: center;
+    border-bottom: 3px solid var(--gold);
+  }
+
+  .logo-svg { display: block; margin: 0 auto; }
+
+  .lesson-meta {
+    margin-top: 14px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .meta-pill {
+    background: rgba(201,168,76,0.18);
+    color: var(--gold-light);
+    border: 1px solid rgba(201,168,76,0.35);
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+  }
+
+  /* ── SCORE BAR ── */
+  .score-bar {
+    background: var(--navy-mid);
+    color: var(--gold-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 32px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .score-bar span { display: flex; align-items: center; gap: 6px; }
+  .score-num { color: var(--gold); font-size: 15px; }
+
+  .progress-bar-wrap {
+    flex: 1;
+    min-width: 120px;
+    max-width: 260px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 20px;
+    height: 6px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    background: var(--gold);
+    height: 100%;
+    border-radius: 20px;
+    transition: width 0.4s ease;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .main { max-width: 780px; margin: 0 auto; padding: 36px 20px 60px; }
+
+  /* Activity header */
+  .activity-intro {
+    background: var(--navy);
+    color: var(--white);
+    border-radius: var(--radius) var(--radius) 0 0;
+    padding: 24px 28px 20px;
+    border-left: 5px solid var(--gold);
+  }
+  .activity-intro .act-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .activity-intro h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .activity-intro p { font-size: 14px; color: rgba(255,255,255,0.75); line-height: 1.6; }
+
+  /* Card */
+  .question-card {
+    background: var(--white);
+    border-radius: 0 0 var(--radius) var(--radius);
+    box-shadow: var(--shadow);
+    padding: 28px;
+    border: 1px solid var(--cream-dark);
+    border-top: none;
+    margin-bottom: 28px;
+  }
+
+  .q-counter {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+  }
+
+  .q-text {
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--text-dark);
+    line-height: 1.55;
+    margin-bottom: 22px;
+  }
+
+  .q-text .blank {
+    display: inline-block;
+    border-bottom: 2px solid var(--navy);
+    min-width: 120px;
+    height: 22px;
+    vertical-align: bottom;
+    margin: 0 4px;
+  }
+
+  /* MC Options */
+  .options-grid {
+    display: grid;
+    gap: 10px;
+  }
+
+  .option-btn {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: var(--cream);
+    border: 1.5px solid var(--cream-dark);
+    border-radius: 9px;
+    padding: 13px 16px;
+    cursor: pointer;
+    text-align: left;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: var(--text-dark);
+    transition: border-color 0.2s, background 0.2s;
+    width: 100%;
+  }
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--navy-light);
+    background: var(--gold-pale);
+  }
+  .option-btn:disabled { cursor: default; }
+
+  .opt-letter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    min-width: 26px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: var(--white);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .option-btn.correct { background: var(--green-light); border-color: var(--green); }
+  .option-btn.correct .opt-letter { background: var(--green); }
+  .option-btn.wrong { background: var(--red-light); border-color: var(--red); }
+  .option-btn.wrong .opt-letter { background: var(--red); }
+  .option-btn.dimmed { opacity: 0.45; }
+
+  /* Fill-in input */
+  .fill-input-wrap { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .fill-input {
+    flex: 1;
+    min-width: 180px;
+    border: 1.5px solid var(--cream-dark);
+    border-radius: 8px;
+    padding: 11px 15px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: var(--text-dark);
+    background: var(--cream);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .fill-input:focus { border-color: var(--navy-light); }
+  .fill-input.correct-input { border-color: var(--green); background: var(--green-light); }
+  .fill-input.wrong-input { border-color: var(--red); background: var(--red-light); }
+
+  /* Matching */
+  .matching-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .match-col { display: flex; flex-direction: column; gap: 8px; }
+  .match-item {
+    border: 1.5px solid var(--cream-dark);
+    border-radius: 9px;
+    padding: 11px 14px;
+    font-size: 14px;
+    line-height: 1.4;
+    background: var(--cream);
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+  }
+  .match-item.prompt { font-weight: 500; color: var(--text-dark); }
+  .match-select {
+    width: 100%;
+    border: 1.5px solid var(--cream-dark);
+    border-radius: 9px;
+    padding: 11px 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--text-dark);
+    background: var(--cream);
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%233a4f72' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 32px;
+  }
+  .match-select.correct-sel { border-color: var(--green); background-color: var(--green-light); }
+  .match-select.wrong-sel { border-color: var(--red); background-color: var(--red-light); }
+
+  /* Drag & Drop */
+  .drag-bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 18px;
+    min-height: 44px;
+    padding: 10px;
+    background: var(--cream-dark);
+    border-radius: 9px;
+    border: 1.5px dashed var(--gold);
+  }
+  .drag-chip {
+    background: var(--navy);
+    color: var(--white);
+    border-radius: 6px;
+    padding: 7px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: grab;
+    user-select: none;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+  .drag-chip:active { cursor: grabbing; transform: scale(1.04); }
+  .drag-chip.used { opacity: 0.35; pointer-events: none; }
+
+  .drag-sentence {
+    font-size: 16px;
+    line-height: 2.0;
+    color: var(--text-dark);
+    font-weight: 400;
+    margin-bottom: 8px;
+  }
+  .drop-zone {
+    display: inline-block;
+    min-width: 130px;
+    height: 30px;
+    border-bottom: 2px solid var(--navy);
+    vertical-align: bottom;
+    margin: 0 4px;
+    cursor: pointer;
+    position: relative;
+    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--navy);
+    transition: border-color 0.2s, background 0.2s;
+    border-radius: 4px 4px 0 0;
+    padding: 0 6px;
+    line-height: 30px;
+  }
+  .drop-zone.highlight { background: var(--gold-pale); border-color: var(--gold); }
+  .drop-zone.filled { background: var(--gold-pale); }
+  .drop-zone.correct-zone { background: var(--green-light); border-color: var(--green); color: var(--green); }
+  .drop-zone.wrong-zone { background: var(--red-light); border-color: var(--red); color: var(--red); }
+
+  /* Feedback */
+  .feedback-box {
+    margin-top: 18px;
+    padding: 14px 18px;
+    border-radius: 9px;
+    font-size: 14px;
+    line-height: 1.55;
+    display: none;
+  }
+  .feedback-box.show { display: block; }
+  .feedback-box.correct-fb { background: var(--green-light); border: 1px solid var(--green); color: #1a5235; }
+  .feedback-box.wrong-fb { background: var(--red-light); border: 1px solid var(--red); color: #7a200e; }
+  .fb-label { font-weight: 700; margin-bottom: 4px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* Buttons */
+  .btn-row { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+
+  .btn-primary {
+    background: var(--navy);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    padding: 12px 28px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .btn-primary:hover { background: var(--navy-light); }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-primary:disabled { opacity: 0.4; cursor: default; }
+
+  .btn-gold {
+    background: var(--gold);
+    color: var(--navy);
+    border: none;
+    border-radius: 8px;
+    padding: 12px 28px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: background 0.2s;
+  }
+  .btn-gold:hover { background: var(--gold-light); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-mid);
+    border: 1.5px solid var(--cream-dark);
+    border-radius: 8px;
+    padding: 12px 22px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--navy); color: var(--navy); }
+
+  /* Section divider */
+  .section-gap { margin-top: 44px; }
+
+  /* Final Screen */
+  #final-screen {
+    display: none;
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 48px 36px;
+    text-align: center;
+    border: 1px solid var(--cream-dark);
+  }
+  #final-screen .trophy { font-size: 52px; margin-bottom: 16px; }
+  #final-screen h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    color: var(--navy);
+    margin-bottom: 10px;
+  }
+  #final-screen p { color: var(--text-mid); font-size: 16px; line-height: 1.6; margin-bottom: 6px; }
+  .final-score-big {
+    font-size: 52px;
+    font-weight: 700;
+    color: var(--gold);
+    font-family: 'Playfair Display', serif;
+    margin: 16px 0 8px;
+  }
+  .grade-bar-wrap {
+    max-width: 320px;
+    margin: 0 auto 28px;
+    background: var(--cream-dark);
+    border-radius: 20px;
+    height: 10px;
+    overflow: hidden;
+  }
+  .grade-bar-fill {
+    height: 100%;
+    border-radius: 20px;
+    background: linear-gradient(90deg, var(--gold) 0%, var(--green) 100%);
+    transition: width 1s ease;
+  }
+
+  /* Grammar box */
+  .grammar-ref {
+    background: var(--navy);
+    color: var(--white);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin-bottom: 28px;
+    border-left: 5px solid var(--gold);
+  }
+  .grammar-ref h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--gold-light);
+    margin-bottom: 14px;
+  }
+  .grammar-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .grammar-table th {
+    color: var(--gold);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-align: left;
+    padding: 0 0 8px;
+    border-bottom: 1px solid rgba(201,168,76,0.3);
+  }
+  .grammar-table td {
+    padding: 8px 0;
+    color: rgba(255,255,255,0.85);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    vertical-align: top;
+    line-height: 1.45;
+  }
+  .grammar-table td:first-child { font-weight: 600; color: var(--gold-light); min-width: 160px; padding-right: 12px; }
+
+  /* Responsive */
+  @media (max-width: 580px) {
+    .matching-wrap { grid-template-columns: 1fr; }
+    .score-bar { font-size: 12px; }
+  }
+
+  .hidden { display: none !important; }
+  .activity-block { margin-bottom: 8px; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ HEADER ═══════════════ -->
+<header class="site-header">
+  <svg class="logo-svg" width="220" height="70" viewBox="0 0 220 70" xmlns="http://www.w3.org/2000/svg">
+    <text x="110" y="32" text-anchor="middle"
+      font-family="'Playfair Display', Georgia, serif"
+      font-size="34" font-weight="700" letter-spacing="2"
+      fill="#c9a84c">Forbes</text>
+    <line x1="18" y1="41" x2="202" y2="41" stroke="#c9a84c" stroke-width="1"/>
+    <text x="110" y="60" text-anchor="middle"
+      font-family="'Inter', Arial, sans-serif"
+      font-size="15" font-weight="700" letter-spacing="7"
+      fill="#e8c97a">ENGLISH</text>
+  </svg>
+  <div class="lesson-meta">
+    <span class="meta-pill">Grammar</span>
+    <span class="meta-pill">Past Modals</span>
+    <span class="meta-pill">Level B1</span>
+    <span class="meta-pill">Minecraft Theme</span>
+  </div>
+</header>
+
+<!-- ═══════════════ SCORE BAR ═══════════════ -->
+<div class="score-bar">
+  <span>Score: <span class="score-num" id="score-display">0</span> / <span id="total-display">0</span></span>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+  </div>
+  <span id="progress-label">Activity 1 of 3</span>
+</div>
+
+<!-- ═══════════════ MAIN ═══════════════ -->
+<main class="main">
+
+  <!-- GRAMMAR REFERENCE -->
+  <div class="grammar-ref">
+    <h3>Quick Grammar Guide: Past Modals</h3>
+    <table class="grammar-table">
+      <tr>
+        <th>Form</th>
+        <th>Meaning &amp; Use</th>
+      </tr>
+      <tr>
+        <td>should have + past participle</td>
+        <td>Advice / criticism about the past — "It was a mistake not to do it"</td>
+      </tr>
+      <tr>
+        <td>could have + past participle</td>
+        <td>Past ability / missed opportunity — "It was possible but didn't happen"</td>
+      </tr>
+      <tr>
+        <td>must have + past participle</td>
+        <td>Logical deduction about the past — "I'm almost certain this happened"</td>
+      </tr>
+      <tr>
+        <td>might have + past participle</td>
+        <td>Possibility in the past — "Perhaps this happened, I'm not sure"</td>
+      </tr>
+      <tr>
+        <td>needn't have + past participle</td>
+        <td>Unnecessary action — "You did it, but it wasn't necessary"</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ─────────── ACTIVITY 1: MULTIPLE CHOICE ─────────── -->
+  <div class="activity-block" id="act1">
+    <div class="activity-intro">
+      <div class="act-label">Activity 1 of 3</div>
+      <h2>Multiple Choice: Creepers &amp; Crafting Decisions</h2>
+      <p>Read each Minecraft situation and choose the best past modal. Only one answer is correct. Click to select, then check your answer.</p>
+    </div>
+    <div id="mc-questions"></div>
+  </div>
+
+  <!-- ─────────── ACTIVITY 2: FILL IN THE BLANK ─────────── -->
+  <div class="activity-block section-gap hidden" id="act2">
+    <div class="activity-intro">
+      <div class="act-label">Activity 2 of 3</div>
+      <h2>Fill in the Blank: Complete the Sentences</h2>
+      <p>Type the correct past modal form to complete each sentence. Use the grammar guide above if you need help. Then click <strong>Check</strong>.</p>
+    </div>
+    <div id="fill-questions"></div>
+  </div>
+
+  <!-- ─────────── ACTIVITY 3: MATCHING ─────────── -->
+  <div class="activity-block section-gap hidden" id="act3">
+    <div class="activity-intro">
+      <div class="act-label">Activity 3 of 3</div>
+      <h2>Matching: Meanings &amp; Functions</h2>
+      <p>Match each Minecraft sentence (left) with the correct grammatical meaning (right) using the dropdown menus.</p>
+    </div>
+    <div id="match-questions"></div>
+  </div>
+
+  <!-- FINAL SCREEN -->
+  <div id="final-screen">
+    <div class="trophy">🏆</div>
+    <h2 id="final-title">Lesson Complete!</h2>
+    <div class="final-score-big" id="final-score-big">0/15</div>
+    <div class="grade-bar-wrap"><div class="grade-bar-fill" id="grade-bar" style="width:0%"></div></div>
+    <p id="final-message"></p>
+    <p style="margin-top:18px;font-size:14px;color:var(--text-light);">Keep practising — past modals are one of the most useful grammar points for professional English!</p>
+    <div class="btn-row" style="justify-content:center;margin-top:28px;">
+      <button class="btn-gold" onclick="restartLesson()">Restart Lesson</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+// ══════════════════════════════════════════════
+//  DATA
+// ══════════════════════════════════════════════
+
+const mcQuestions = [
+  {
+    q: "Alex fell into lava and lost all her diamonds. Her friend said: \"You _____ put your diamonds in a chest before going mining in the Nether.\"",
+    options: [
+      { text: "must have put", letter: "A" },
+      { text: "should have put", letter: "B" },
+      { text: "might have put", letter: "C" },
+      { text: "could have put", letter: "D" },
+    ],
+    correct: 1,
+    explanation: "<strong>Should have put</strong> expresses advice or criticism about the past — Alex made a mistake by not storing her diamonds. We use 'should have + past participle' when something was the right thing to do but didn't happen."
+  },
+  {
+    q: "Steve found a hidden underground base. He thought: \"Someone _____ built this — there are torches everywhere and the walls are too smooth to be natural.\"",
+    options: [
+      { text: "needn't have built", letter: "A" },
+      { text: "should have built", letter: "B" },
+      { text: "must have built", letter: "C" },
+      { text: "could have built", letter: "D" },
+    ],
+    correct: 2,
+    explanation: "<strong>Must have built</strong> is used for a logical deduction about the past. The evidence (torches, smooth walls) strongly suggests someone built it — Steve is almost certain. Use 'must have + past participle' when you draw a confident conclusion from evidence."
+  },
+  {
+    q: "The creeper exploded near Mia's house, but luckily it didn't break the walls. She said: \"That explosion _____ destroyed everything — I was very lucky.\"",
+    options: [
+      { text: "might have destroyed", letter: "A" },
+      { text: "should have destroyed", letter: "B" },
+      { text: "must have destroyed", letter: "C" },
+      { text: "could have destroyed", letter: "D" },
+    ],
+    correct: 3,
+    explanation: "<strong>Could have destroyed</strong> refers to a past possibility that did not happen. The creeper had the ability to destroy everything but didn't. Use 'could have + past participle' for missed or avoided possibilities."
+  },
+  {
+    q: "Leo spent three hours collecting wood before realising he was in Creative Mode. His teammate laughed: \"You _____ bothered — you can just spawn anything!\"",
+    options: [
+      { text: "might not have bothered", letter: "A" },
+      { text: "shouldn't have bothered", letter: "B" },
+      { text: "needn't have bothered", letter: "C" },
+      { text: "mustn't have bothered", letter: "D" },
+    ],
+    correct: 2,
+    explanation: "<strong>Needn't have bothered</strong> means the action happened but it was unnecessary. Leo collected wood, but it wasn't needed in Creative Mode. 'Needn't have + past participle' is different from 'shouldn't have', which implies criticism."
+  },
+  {
+    q: "Nobody saw who broke the community bridge overnight. One player suggested: \"It _____ been a griefer — they were online late last night.\"",
+    options: [
+      { text: "could have", letter: "A" },
+      { text: "must have", letter: "B" },
+      { text: "might have", letter: "C" },
+      { text: "should have", letter: "D" },
+    ],
+    correct: 2,
+    explanation: "<strong>Might have been</strong> expresses an uncertain possibility in the past. The speaker doesn't know for sure who broke the bridge — it's just one possibility. Use 'might have + past participle' when you are less than 50% certain about a past event."
+  }
+];
+
+const fillQuestions = [
+  {
+    before: "The Ender Dragon appeared suddenly and destroyed the village. We",
+    after: "prepared better defences before entering The End.",
+    answer: "should have",
+    hint: "Use: should / must / could / might / needn't + have",
+    explanation: "<strong>Should have prepared</strong> — this expresses criticism or regret about the past. The players didn't prepare adequately; it was a mistake. 'Should have + past participle' = the right action that didn't happen."
+  },
+  {
+    before: "Nobody found the buried treasure chest. But Alex had the map! She",
+    after: "found it easily if she had followed the coordinates.",
+    answer: "could have",
+    hint: "Use: should / must / could / might / needn't + have",
+    explanation: "<strong>Could have found</strong> — this refers to a past ability or opportunity that was not used. Alex had the ability (and the map!), but she didn't use it properly. 'Could have + past participle' = it was possible but didn't happen."
+  },
+  {
+    before: "Steve walked back from the mine for 20 minutes. He",
+    after: "walked — he had a horse tied up outside the mine entrance!",
+    answer: "needn't have",
+    hint: "Use: should / must / could / might / needn't + have",
+    explanation: "<strong>Needn't have walked</strong> — he walked, but it was unnecessary because the horse was available. 'Needn't have + past participle' = the action happened but was not required."
+  },
+  {
+    before: "There are footprints all around the stolen chest. The thief",
+    after: "been nearby just a few minutes ago.",
+    answer: "must have",
+    hint: "Use: should / must / could / might / needn't + have",
+    explanation: "<strong>Must have been</strong> — this is a logical deduction based on clear evidence (the footprints). The speaker is very confident about the conclusion. 'Must have + past participle' = almost certain deduction."
+  },
+  {
+    before: "Nobody knows exactly what happened to the lost village. The flood",
+    after: "caused the damage, or perhaps it was an earthquake block event.",
+    answer: "might have",
+    hint: "Use: should / must / could / might / needn't + have",
+    explanation: "<strong>Might have caused</strong> — the speaker is uncertain. It's one possible explanation among others. 'Might have + past participle' = uncertain possibility in the past."
+  }
+];
+
+const matchQuestions = [
+  {
+    sentence: "\"I must have left my pickaxe at the village — I can't find it anywhere.\"",
+    meaning: "A confident logical deduction about a past action",
+    options: ["A confident logical deduction about a past action", "Advice about what the correct past action was", "A past possibility that did not actually happen", "An unnecessary action that was done anyway", "An uncertain guess about a past event"]
+  },
+  {
+    sentence: "\"You should have built the walls higher before the raid started.\"",
+    meaning: "Advice about what the correct past action was",
+    options: ["A confident logical deduction about a past action", "Advice about what the correct past action was", "A past possibility that did not actually happen", "An unnecessary action that was done anyway", "An uncertain guess about a past event"]
+  },
+  {
+    sentence: "\"She needn't have crafted all those arrows — there's a chest full of them.\"",
+    meaning: "An unnecessary action that was done anyway",
+    options: ["A confident logical deduction about a past action", "Advice about what the correct past action was", "A past possibility that did not actually happen", "An unnecessary action that was done anyway", "An uncertain guess about a past event"]
+  },
+  {
+    sentence: "\"That skeleton might have dropped a rare bow — did you check the ground?\"",
+    meaning: "An uncertain guess about a past event",
+    options: ["A confident logical deduction about a past action", "Advice about what the correct past action was", "A past possibility that did not actually happen", "An unnecessary action that was done anyway", "An uncertain guess about a past event"]
+  },
+  {
+    sentence: "\"You could have used the Elytra to cross the canyon instead of walking all the way around.\"",
+    meaning: "A past possibility that did not actually happen",
+    options: ["A confident logical deduction about a past action", "Advice about what the correct past action was", "A past possibility that did not actually happen", "An unnecessary action that was done anyway", "An uncertain guess about a past event"]
+  }
+];
+
+// ══════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════
+let score = 0;
+let totalAnswered = 0;
+const totalQuestions = mcQuestions.length + fillQuestions.length + matchQuestions.length;
+
+function updateScoreBar() {
+  document.getElementById('score-display').textContent = score;
+  document.getElementById('total-display').textContent = totalAnswered;
+  const pct = totalQuestions > 0 ? (totalAnswered / totalQuestions * 100) : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+}
+
+// ══════════════════════════════════════════════
+//  ACTIVITY 1 — MULTIPLE CHOICE
+// ══════════════════════════════════════════════
+let mcState = mcQuestions.map(() => ({ answered: false, correct: false }));
+let mcNextVisible = 0;
+
+function buildMC() {
+  const container = document.getElementById('mc-questions');
+  container.innerHTML = '';
+  mcQuestions.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.id = 'mc-card-' + qi;
+    if (qi > 0) card.classList.add('hidden');
+
+    const counter = `<div class="q-counter">Question ${qi+1} of ${mcQuestions.length}</div>`;
+    const qtext = `<div class="q-text">${q.q}</div>`;
+
+    let opts = '';
+    q.options.forEach((o, oi) => {
+      opts += `<button class="option-btn" id="mc-opt-${qi}-${oi}" onclick="selectMC(${qi},${oi})">
+        <span class="opt-letter">${o.letter}</span>
+        <span>${o.text}</span>
+      </button>`;
+    });
+
+    const fb = `<div class="feedback-box" id="mc-fb-${qi}"></div>`;
+    const btnRow = `<div class="btn-row">
+      <button class="btn-primary" id="mc-check-${qi}" onclick="checkMC(${qi})" disabled>Check Answer</button>
+      <button class="btn-gold hidden" id="mc-next-${qi}" onclick="nextMC(${qi})">${qi < mcQuestions.length-1 ? 'Next Question →' : 'Go to Activity 2 →'}</button>
+    </div>`;
+
+    card.innerHTML = counter + qtext + `<div class="options-grid">${opts}</div>` + fb + btnRow;
+    container.appendChild(card);
+  });
+}
+
+let mcSelected = new Array(mcQuestions.length).fill(null);
+
+function selectMC(qi, oi) {
+  if (mcState[qi].answered) return;
+  mcSelected[qi] = oi;
+  const q = mcQuestions[qi];
+  q.options.forEach((_, i) => {
+    const btn = document.getElementById('mc-opt-' + qi + '-' + i);
+    btn.classList.remove('correct', 'wrong', 'dimmed');
+    if (i === oi) { btn.style.borderColor = 'var(--navy)'; btn.style.background = 'var(--gold-pale)'; }
+    else { btn.style.borderColor = ''; btn.style.background = ''; }
+  });
+  document.getElementById('mc-check-' + qi).disabled = false;
+}
+
+function checkMC(qi) {
+  if (mcState[qi].answered) return;
+  const q = mcQuestions[qi];
+  const sel = mcSelected[qi];
+  mcState[qi].answered = true;
+  const isCorrect = sel === q.correct;
+  if (isCorrect) { score++; mcState[qi].correct = true; }
+  totalAnswered++;
+  updateScoreBar();
+
+  q.options.forEach((_, i) => {
+    const btn = document.getElementById('mc-opt-' + qi + '-' + i);
+    btn.disabled = true;
+    btn.style.borderColor = '';
+    btn.style.background = '';
+    if (i === q.correct) btn.classList.add('correct');
+    else if (i === sel && !isCorrect) btn.classList.add('wrong');
+    else btn.classList.add('dimmed');
+  });
+
+  const fb = document.getElementById('mc-fb-' + qi);
+  fb.className = 'feedback-box show ' + (isCorrect ? 'correct-fb' : 'wrong-fb');
+  fb.innerHTML = `<div class="fb-label">${isCorrect ? '✓ Correct!' : '✗ Not quite'}</div><div>${q.explanation}</div>`;
+
+  document.getElementById('mc-check-' + qi).disabled = true;
+  document.getElementById('mc-next-' + qi).classList.remove('hidden');
+}
+
+function nextMC(qi) {
+  document.getElementById('mc-card-' + qi).classList.add('hidden');
+  if (qi < mcQuestions.length - 1) {
+    document.getElementById('mc-card-' + (qi+1)).classList.remove('hidden');
+  } else {
+    document.getElementById('act2').classList.remove('hidden');
+    document.getElementById('act2').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('progress-label').textContent = 'Activity 2 of 3';
+  }
+}
+
+// ══════════════════════════════════════════════
+//  ACTIVITY 2 — FILL IN THE BLANK
+// ══════════════════════════════════════════════
+let fillState = fillQuestions.map(() => ({ answered: false, correct: false }));
+let fillCurrent = 0;
+
+function buildFill() {
+  const container = document.getElementById('fill-questions');
+  container.innerHTML = '';
+  fillQuestions.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.id = 'fill-card-' + qi;
+    if (qi > 0) card.classList.add('hidden');
+
+    card.innerHTML = `
+      <div class="q-counter">Question ${qi+1} of ${fillQuestions.length}</div>
+      <div class="q-text">
+        ${q.before} <span class="blank"></span> ${q.after}
+      </div>
+      <div class="fill-input-wrap">
+        <input class="fill-input" type="text" id="fill-inp-${qi}" placeholder="${q.hint}"
+          onkeydown="if(event.key==='Enter' && !fillState[${qi}].answered) checkFill(${qi})">
+      </div>
+      <div class="feedback-box" id="fill-fb-${qi}"></div>
+      <div class="btn-row">
+        <button class="btn-primary" id="fill-check-${qi}" onclick="checkFill(${qi})">Check Answer</button>
+        <button class="btn-gold hidden" id="fill-next-${qi}" onclick="nextFill(${qi})">${qi < fillQuestions.length-1 ? 'Next Question →' : 'Go to Activity 3 →'}</button>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function checkFill(qi) {
+  if (fillState[qi].answered) return;
+  const q = fillQuestions[qi];
+  const inp = document.getElementById('fill-inp-' + qi);
+  const val = inp.value.trim().toLowerCase().replace(/\s+/g,' ');
+  fillState[qi].answered = true;
+  const accepted = [q.answer, q.answer + ' been', q.answer + ' have'].map(s => s.toLowerCase());
+  // Flexible: check if value starts with correct answer
+  const isCorrect = val === q.answer || val.startsWith(q.answer);
+  if (isCorrect) { score++; fillState[qi].correct = true; }
+  totalAnswered++;
+  updateScoreBar();
+
+  inp.disabled = true;
+  inp.classList.add(isCorrect ? 'correct-input' : 'wrong-input');
+  if (!isCorrect) inp.value = inp.value + ' → ' + q.answer + ' (+ past participle)';
+
+  const fb = document.getElementById('fill-fb-' + qi);
+  fb.className = 'feedback-box show ' + (isCorrect ? 'correct-fb' : 'wrong-fb');
+  fb.innerHTML = `<div class="fb-label">${isCorrect ? '✓ Correct!' : '✗ Not quite — the answer is: ' + q.answer}</div><div>${q.explanation}</div>`;
+
+  document.getElementById('fill-check-' + qi).disabled = true;
+  document.getElementById('fill-next-' + qi).classList.remove('hidden');
+}
+
+function nextFill(qi) {
+  document.getElementById('fill-card-' + qi).classList.add('hidden');
+  if (qi < fillQuestions.length - 1) {
+    document.getElementById('fill-card-' + (qi+1)).classList.remove('hidden');
+  } else {
+    document.getElementById('act3').classList.remove('hidden');
+    document.getElementById('act3').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('progress-label').textContent = 'Activity 3 of 3';
+  }
+}
+
+// ══════════════════════════════════════════════
+//  ACTIVITY 3 — MATCHING
+// ══════════════════════════════════════════════
+let matchState = matchQuestions.map(() => ({ answered: false, correct: false }));
+let matchCurrent = 0;
+
+function buildMatch() {
+  const container = document.getElementById('match-questions');
+  container.innerHTML = '';
+  matchQuestions.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.id = 'match-card-' + qi;
+    if (qi > 0) card.classList.add('hidden');
+
+    // Build shuffled options
+    const opts = [...q.options];
+    let optHtml = '<option value="">— Select a meaning —</option>';
+    opts.forEach(o => { optHtml += `<option value="${o}">${o}</option>`; });
+
+    card.innerHTML = `
+      <div class="q-counter">Sentence ${qi+1} of ${matchQuestions.length}</div>
+      <div class="matching-wrap">
+        <div class="match-col">
+          <div class="match-item prompt">${q.sentence}</div>
+        </div>
+        <div class="match-col">
+          <select class="match-select" id="match-sel-${qi}" onchange="onMatchChange(${qi})">
+            ${optHtml}
+          </select>
+        </div>
+      </div>
+      <div class="feedback-box" id="match-fb-${qi}"></div>
+      <div class="btn-row">
+        <button class="btn-primary" id="match-check-${qi}" onclick="checkMatch(${qi})" disabled>Check Answer</button>
+        <button class="btn-gold hidden" id="match-next-${qi}" onclick="nextMatch(${qi})">${qi < matchQuestions.length-1 ? 'Next →' : 'See My Results →'}</button>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function onMatchChange(qi) {
+  const sel = document.getElementById('match-sel-' + qi);
+  document.getElementById('match-check-' + qi).disabled = sel.value === '';
+}
+
+function checkMatch(qi) {
+  if (matchState[qi].answered) return;
+  const q = matchQuestions[qi];
+  const sel = document.getElementById('match-sel-' + qi);
+  matchState[qi].answered = true;
+  const isCorrect = sel.value === q.meaning;
+  if (isCorrect) { score++; matchState[qi].correct = true; }
+  totalAnswered++;
+  updateScoreBar();
+
+  sel.disabled = true;
+  sel.classList.add(isCorrect ? 'correct-sel' : 'wrong-sel');
+
+  const meaningExplanations = {
+    "A confident logical deduction about a past action": "<strong>Must have</strong> is used when we are almost certain about something in the past based on evidence or logic.",
+    "Advice about what the correct past action was": "<strong>Should have</strong> expresses that a different past action would have been better — it carries a sense of criticism or regret.",
+    "An unnecessary action that was done anyway": "<strong>Needn't have</strong> means the action was completed but was not necessary — it happened, but didn't need to.",
+    "An uncertain guess about a past event": "<strong>Might have</strong> expresses low-to-medium certainty about a past event — we're not sure if it happened.",
+    "A past possibility that did not actually happen": "<strong>Could have</strong> refers to something that was possible but didn't occur — a missed opportunity or avoided outcome."
+  };
+
+  const fb = document.getElementById('match-fb-' + qi);
+  const correctAnswer = q.meaning;
+  const exp = meaningExplanations[correctAnswer] || '';
+  fb.className = 'feedback-box show ' + (isCorrect ? 'correct-fb' : 'wrong-fb');
+  fb.innerHTML = `<div class="fb-label">${isCorrect ? '✓ Correct!' : '✗ Not quite — the correct meaning is: "' + correctAnswer + '"'}</div><div>${exp}</div>`;
+
+  document.getElementById('match-check-' + qi).disabled = true;
+  document.getElementById('match-next-' + qi).classList.remove('hidden');
+}
+
+function nextMatch(qi) {
+  document.getElementById('match-card-' + qi).classList.add('hidden');
+  if (qi < matchQuestions.length - 1) {
+    document.getElementById('match-card-' + (qi+1)).classList.remove('hidden');
+  } else {
+    showFinal();
+  }
+}
+
+// ══════════════════════════════════════════════
+//  FINAL SCREEN
+// ══════════════════════════════════════════════
+function showFinal() {
+  document.getElementById('final-screen').style.display = 'block';
+  document.getElementById('final-screen').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const pct = Math.round(score / totalQuestions * 100);
+  document.getElementById('final-score-big').textContent = score + ' / ' + totalQuestions;
+  document.getElementById('grade-bar').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = 'Complete!';
+  document.getElementById('progress-fill').style.width = '100%';
+
+  let title, msg;
+  if (pct >= 87) {
+    title = 'Outstanding Work!';
+    msg = 'You have an excellent command of past modals. Your grammar instincts are strong — this is the kind of precision that impresses in professional English.';
+  } else if (pct >= 67) {
+    title = 'Well Done!';
+    msg = 'You understand the key uses of past modals. Review any questions you missed and focus on the difference between <em>must have</em> (deduction) and <em>might have</em> (possibility).';
+  } else if (pct >= 47) {
+    title = 'Good Effort!';
+    msg = 'You\'re building a solid foundation. Focus especially on the difference between <em>should have</em> (criticism) and <em>needn\'t have</em> (unnecessary action) — these are frequently confused.';
+  } else {
+    title = 'Keep Practising!';
+    msg = 'Past modals take time to master. Re-read the grammar guide at the top of the page and try again. Each attempt builds your confidence!';
+  }
+
+  document.getElementById('final-title').textContent = title;
+  document.getElementById('final-message').innerHTML = msg;
+}
+
+function restartLesson() {
+  score = 0;
+  totalAnswered = 0;
+  mcSelected = new Array(mcQuestions.length).fill(null);
+  mcState = mcQuestions.map(() => ({ answered: false, correct: false }));
+  fillState = fillQuestions.map(() => ({ answered: false, correct: false }));
+  matchState = matchQuestions.map(() => ({ answered: false, correct: false }));
+
+  buildMC(); buildFill(); buildMatch();
+  updateScoreBar();
+
+  document.getElementById('act1').classList.remove('hidden');
+  document.getElementById('act2').classList.add('hidden');
+  document.getElementById('act3').classList.add('hidden');
+  document.getElementById('final-screen').style.display = 'none';
+  document.getElementById('progress-label').textContent = 'Activity 1 of 3';
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ══════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════
+buildMC();
+buildFill();
+buildMatch();
+updateScoreBar();
+</script>
+</body>
+</html>

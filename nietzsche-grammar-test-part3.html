@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nietzsche Grammar — Part III: The Final Trial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #080608;
+    --deep: #110d10;
+    --surface: #1a1318;
+    --card: #1f181d;
+    --border: #2e2228;
+    --border-bright: #44323c;
+    --blood: #8b1a1a;
+    --crimson: #c0272d;
+    --ember: #e8503a;
+    --ash: #c8bcc0;
+    --pale: #e8e0e4;
+    --ghost: #f5f0f2;
+    --mid: #8a7880;
+    --dim: #4a3a42;
+    --gold: #c8a060;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--void);
+    background-image:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 80px,
+        rgba(255,255,255,0.012) 80px,
+        rgba(255,255,255,0.012) 81px
+      ),
+      radial-gradient(ellipse 120% 60% at 50% 0%, #1a0808 0%, transparent 70%);
+    min-height: 100vh;
+    font-family: 'Libre Baskerville', 'Georgia', serif;
+    color: var(--pale);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* ── HERO BANNER ─────────────────────────────────── */
+  .hero {
+    width: 100%;
+    max-width: 900px;
+    padding: 70px 60px 0;
+    position: relative;
+    animation: heroIn 1.4s cubic-bezier(0.16,1,0.3,1) forwards;
+    opacity: 0;
+  }
+
+  @keyframes heroIn {
+    from { opacity: 0; transform: translateY(40px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .part-tag {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.45em;
+    color: var(--crimson);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .part-tag::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--blood), transparent);
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 10vw, 7rem);
+    line-height: 0.92;
+    letter-spacing: 0.02em;
+    color: var(--ghost);
+    position: relative;
+  }
+
+  .hero-title .accent {
+    color: var(--crimson);
+    display: block;
+  }
+
+  .hero-title .outline {
+    -webkit-text-stroke: 1px var(--border-bright);
+    color: transparent;
+    display: block;
+    font-size: 85%;
+  }
+
+  .hero-sub {
+    margin-top: 24px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    font-weight: 300;
+    color: var(--mid);
+    letter-spacing: 0.03em;
+    max-width: 520px;
+    line-height: 1.7;
+    border-left: 2px solid var(--blood);
+    padding-left: 18px;
+  }
+
+  /* Decorative diagonal stripe */
+  .hero-deco {
+    position: absolute;
+    right: 60px;
+    top: 0;
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--crimson) 0%, transparent 100%);
+    opacity: 0.4;
+  }
+
+  /* Warning strip */
+  .warning-strip {
+    width: 100%;
+    max-width: 900px;
+    margin-top: 36px;
+    padding: 0 60px;
+    animation: heroIn 1.4s 0.2s cubic-bezier(0.16,1,0.3,1) forwards;
+    opacity: 0;
+  }
+
+  .warning-inner {
+    background: var(--blood);
+    padding: 11px 22px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.82rem;
+    letter-spacing: 0.25em;
+    color: rgba(255,220,220,0.85);
+  }
+  .warning-inner::before {
+    content: '⚠';
+    font-size: 1rem;
+    opacity: 0.8;
+  }
+
+  /* Progress */
+  .progress-wrap {
+    width: 100%;
+    max-width: 900px;
+    padding: 28px 60px 0;
+    animation: heroIn 1.4s 0.3s cubic-bezier(0.16,1,0.3,1) forwards;
+    opacity: 0;
+  }
+
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 7px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    color: var(--dim);
+  }
+
+  .progress-track {
+    height: 2px;
+    background: var(--border);
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--blood), var(--ember));
+    width: 0%;
+    transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* ── MAIN CONTENT ─────────────────────────────────── */
+  .content {
+    width: 100%;
+    max-width: 900px;
+    padding: 40px 60px 80px;
+  }
+
+  /* Section */
+  .section {
+    margin-bottom: 56px;
+    animation: sectionIn 0.7s ease both;
+  }
+  @keyframes sectionIn {
+    from { opacity: 0; transform: translateX(-12px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  .section:nth-child(1) { animation-delay: 0.4s; }
+  .section:nth-child(2) { animation-delay: 0.55s; }
+  .section:nth-child(3) { animation-delay: 0.7s; }
+  .section:nth-child(4) { animation-delay: 0.85s; }
+  .section:nth-child(5) { animation-delay: 1.0s; }
+
+  .section-header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0;
+    margin-bottom: 6px;
+    align-items: stretch;
+  }
+
+  .section-roman {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.5rem;
+    line-height: 1;
+    color: var(--blood);
+    opacity: 0.6;
+    padding-right: 18px;
+    border-right: 2px solid var(--border-bright);
+    margin-right: 18px;
+    display: flex;
+    align-items: center;
+  }
+
+  .section-meta { display: flex; flex-direction: column; justify-content: center; }
+
+  .section-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.35rem;
+    letter-spacing: 0.1em;
+    color: var(--ghost);
+    line-height: 1.1;
+  }
+
+  .section-topic {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--mid);
+    margin-top: 3px;
+  }
+
+  .section-rule {
+    height: 1px;
+    background: linear-gradient(90deg, var(--border-bright), transparent);
+    margin: 12px 0 18px;
+  }
+
+  .section-instruction {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--mid);
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+
+  /* Nietzsche quote */
+  .n-quote {
+    position: relative;
+    padding: 18px 22px 18px 26px;
+    margin: 18px 0 22px;
+    background: var(--surface);
+    border-left: 3px solid var(--crimson);
+  }
+  .n-quote::before {
+    content: '\201C';
+    position: absolute;
+    top: -8px;
+    left: 14px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4rem;
+    color: var(--blood);
+    opacity: 0.4;
+    line-height: 1;
+  }
+  .n-quote p {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--ash);
+    line-height: 1.7;
+    position: relative;
+  }
+  .n-quote cite {
+    display: block;
+    margin-top: 8px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--crimson);
+    font-style: normal;
+    position: relative;
+  }
+
+  /* ── QUESTIONS ─────────────────────────────────── */
+  .question {
+    margin-bottom: 22px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    transition: border-color 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .question::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--border-bright);
+    transition: background 0.3s;
+  }
+  .question:hover::before { background: var(--crimson); }
+  .question:hover { border-color: var(--border-bright); }
+
+  .q-inner { padding: 18px 22px; }
+
+  .q-text {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 0.97rem;
+    color: var(--ash);
+    line-height: 1.75;
+    margin-bottom: 14px;
+  }
+  .q-text em { font-style: italic; color: var(--pale); }
+  .q-text strong {
+    color: var(--ghost);
+    font-weight: 700;
+    border-bottom: 1px solid var(--dim);
+  }
+
+  .blank {
+    display: inline-block;
+    min-width: 95px;
+    border-bottom: 2px solid var(--border-bright);
+    color: var(--ember);
+    font-style: italic;
+    text-align: center;
+    padding: 0 4px;
+  }
+
+  /* Error identification question */
+  .error-sentence {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--pale);
+    line-height: 1.8;
+    margin-bottom: 14px;
+    padding: 14px 18px;
+    background: var(--surface);
+    border: 1px dashed var(--border-bright);
+    letter-spacing: 0.01em;
+  }
+
+  .error-sentence u {
+    text-decoration-color: var(--crimson);
+    text-underline-offset: 4px;
+    cursor: pointer;
+    color: #e8c090;
+    text-decoration-style: wavy;
+  }
+
+  /* Options grid */
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .options.col1 { grid-template-columns: 1fr; }
+
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    cursor: pointer;
+    font-family: 'Libre Baskerville', serif;
+    font-size: 0.88rem;
+    color: var(--ash);
+    text-align: left;
+    width: 100%;
+    line-height: 1.55;
+    transition: all 0.15s;
+    position: relative;
+  }
+
+  .option:hover:not(:disabled) {
+    border-color: var(--crimson);
+    background: rgba(192,39,45,0.08);
+    color: var(--pale);
+  }
+
+  .opt-letter {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    color: var(--dim);
+    min-width: 18px;
+    padding-top: 1px;
+    transition: color 0.15s;
+  }
+  .option:hover:not(:disabled) .opt-letter { color: var(--crimson); }
+
+  .option.correct {
+    border-color: #4a8a5a;
+    background: rgba(40,100,60,0.14);
+    color: #8ecfa0;
+  }
+  .option.correct .opt-letter { color: #6abf80; }
+
+  .option.wrong {
+    border-color: var(--blood);
+    background: rgba(139,26,26,0.14);
+    color: var(--dim);
+    text-decoration: line-through;
+  }
+
+  .option.reveal-correct {
+    border-color: #3a7a4a;
+    background: rgba(30,80,45,0.1);
+    color: #7abf8a;
+    font-style: italic;
+  }
+  .option.reveal-correct .opt-letter { color: #5aaf6a; }
+  .option:disabled { cursor: default; }
+
+  /* Feedback */
+  .feedback {
+    display: none;
+    padding: 12px 22px 14px;
+    border-top: 1px solid var(--border);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--mid);
+    background: var(--deep);
+  }
+  .feedback.visible { display: block; }
+  .feedback.correct-fb {
+    border-left: 3px solid #4a8a5a;
+    color: #7abf8a;
+  }
+  .feedback.wrong-fb {
+    border-left: 3px solid var(--blood);
+    color: #c08080;
+  }
+  .feedback strong { font-style: normal; }
+
+  /* ── SUBMIT ─────────────────────────────────── */
+  .submit-zone {
+    margin-top: 50px;
+    padding-top: 36px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    position: relative;
+  }
+
+  .submit-zone::before {
+    content: 'THE FINAL RECKONING';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--void);
+    padding: 0 18px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    color: var(--blood);
+  }
+
+  .btn-submit {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.3em;
+    background: var(--crimson);
+    color: var(--ghost);
+    border: none;
+    padding: 16px 60px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.2s;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+
+  .btn-submit::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.4s;
+  }
+  .btn-submit:hover { background: var(--blood); }
+  .btn-submit:hover::after { transform: translateX(100%); }
+
+  /* Score panel */
+  .score-panel {
+    display: none;
+    margin-top: 40px;
+    background: var(--surface);
+    border: 1px solid var(--border-bright);
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+    animation: sectionIn 0.6s ease forwards;
+  }
+  .score-panel.visible { display: block; }
+
+  .score-panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--blood), var(--ember), var(--blood));
+  }
+
+  .score-bg-num {
+    position: absolute;
+    right: -10px;
+    bottom: -20px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14rem;
+    color: var(--border);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .score-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.35em;
+    color: var(--crimson);
+    margin-bottom: 10px;
+  }
+
+  .score-display {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5rem;
+    line-height: 1;
+    color: var(--ghost);
+    position: relative;
+  }
+
+  .score-display span {
+    font-size: 2rem;
+    color: var(--mid);
+    vertical-align: super;
+  }
+
+  .score-bar-wrap {
+    margin: 18px 0;
+    height: 4px;
+    background: var(--border);
+    overflow: hidden;
+  }
+  .score-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--blood), var(--ember));
+    transition: width 1s cubic-bezier(0.4,0,0.2,1) 0.3s;
+    width: 0%;
+  }
+
+  .verdict {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: var(--ash);
+    line-height: 1.7;
+    margin-top: 10px;
+    position: relative;
+    border-left: 2px solid var(--crimson);
+    padding-left: 16px;
+  }
+
+  .verdict-source {
+    display: block;
+    margin-top: 8px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    color: var(--blood);
+    font-style: normal;
+  }
+
+  .btn-retry {
+    margin-top: 28px;
+    background: transparent;
+    border: 1px solid var(--border-bright);
+    color: var(--mid);
+    padding: 10px 30px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-retry:hover { border-color: var(--crimson); color: var(--crimson); }
+
+  @media (max-width: 640px) {
+    .hero, .warning-strip, .progress-wrap, .content { padding-left: 24px; padding-right: 24px; }
+    .hero-title { font-size: 3.2rem; }
+    .options { grid-template-columns: 1fr; }
+    .section-roman { font-size: 2.5rem; padding-right: 12px; margin-right: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-deco"></div>
+  <div class="part-tag">Friedrich Nietzsche · Grammar Examination · Part III</div>
+  <h1 class="hero-title">
+    <span>THE</span>
+    <span class="accent">TWILIGHT</span>
+    <span class="outline">OF ERRORS</span>
+  </h1>
+  <p class="hero-sub">
+    Parts I and II were a preparation. This is the examination of the will.
+    Advanced grammar awaits — subjunctive, inversion, ellipsis, nominalisation, aspect.
+    Only the strongest survive.
+  </p>
+</header>
+
+<!-- WARNING -->
+<div class="warning-strip">
+  <div class="warning-inner">
+    Advanced Level — Five Trials — Fifteen Questions — No Mercy
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-meta">
+    <span>PROGRESS</span>
+    <span id="progressCount">0 / 15</span>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<main class="content">
+
+  <!-- ══ SECTION I: Subjunctive ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-roman">I</div>
+      <div class="section-meta">
+        <div class="section-name">The Subjunctive Mood</div>
+        <div class="section-topic">Wishes, demands, hypotheticals — the grammar of the unreal</div>
+      </div>
+    </div>
+    <div class="section-rule"></div>
+    <p class="section-instruction">The subjunctive is rare in modern English but essential in formal and literary writing. German learners often confuse it with the indicative or use modal verbs instead. Choose the correct form.</p>
+
+    <div class="question" data-answer="c">
+      <div class="q-inner">
+        <p class="q-text">Nietzsche insisted that every philosopher <span class="blank">___</span> willing to question the very ground beneath their feet.</p>
+        <div class="options">
+          <button class="option" data-val="a"><span class="opt-letter">A</span> is</button>
+          <button class="option" data-val="b"><span class="opt-letter">B</span> was</button>
+          <button class="option" data-val="c"><span class="opt-letter">C</span> be</button>
+          <button class="option" data-val="d"><span class="opt-letter">D</span> would be</button>
+        </div>
+      </div>
+      <div class="feedback">💡 After verbs of demand, insistence, or recommendation — <em>insist, demand, suggest, require</em> — English uses the <strong>mandative subjunctive</strong>: bare infinitive <strong>"be"</strong>, regardless of person. "He insisted that she <strong>be</strong> present." This does NOT backshift to "was."</div>
+    </div>
+
+    <div class="question" data-answer="b">
+      <div class="q-inner">
+        <p class="q-text">If only Nietzsche <span class="blank">___</span> alive to see how broadly his ideas spread — he would be horrified by some interpretations.</p>
+        <div class="options">
+          <button class="option" data-val="a"><span class="opt-letter">A</span> is</button>
+          <button class="option" data-val="b"><span class="opt-letter">B</span> were</button>
+          <button class="option" data-val="c"><span class="opt-letter">C</span> was</button>
+          <button class="option" data-val="d"><span class="opt-letter">D</span> would be</button>
+        </div>
+      </div>
+      <div class="feedback">💡 <strong>"If only"</strong> triggers the <strong>past subjunctive</strong>. Formally, this is always <strong>"were"</strong> for all persons — not "was" — though "was" is common in informal speech. Compare: <em>"I wish I were taller."</em></div>
+    </div>
+
+    <div class="question" data-answer="d">
+      <div class="q-inner">
+        <p class="q-text">His publisher recommended that the book <span class="blank">___</span> immediately, before public opinion turned against it.</p>
+        <div class="options">
+          <button class="option" data-val="a"><span class="opt-letter">A</span> is published</button>
+          <button class="option" data-val="b"><span class="opt-letter">B</span> was published</button>
+          <button class="option" data-val="c"><span class="opt-letter">C</span> will be published</button>
+          <button class="option" data-val="d"><span class="opt-letter">D</span> be published</button>
+        </div>
+      </div>
+      <div class="feedback">💡 Mandative subjunctive in the passive: <strong>"be published"</strong> — not "is published" or "was published." The subjunctive form is always the base verb, even in passive constructions. American English uses this far more than British English.</div>
+    </div>
+  </div>
+
+  <!-- ══ SECTION II: Inversion & Emphasis ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-roman">II</div>
+      <div class="section-meta">
+        <div class="section-name">Fronting & Inversion</div>
+        <div class="section-topic">Never had grammar been so dramatic — emphasis through word order disruption</div>
+      </div>
+    </div>
+    <div class="section-rule"></div>
+    <p class="section-instruction">Negative adverbials at the beginning of a sentence force subject-auxiliary inversion. This is a literary and formal device — and a common advanced error. Choose the grammatically correct inverted sentence.</p>
+
+    <div class="n-quote">
+      <p>Never have I read a philosopher who wielded language as a weapon so precisely as Nietzsche did.</p>
+      <cite>— A literary admirer (demonstrating inversion)</cite>
+    </div>
+
+    <div class="question" data-answer="b">
+      <div class="q-inner">
+        <p class="q-text">Choose the correctly inverted sentence:</p>
+        <div class="options col1">
+          <button class="option" data-val="a"><span class="opt-letter">A</span> Rarely Nietzsche accepted the philosophical consensus of his day without challenge.</button>
+          <button class="option" data-val="b"><span class="opt-letter">B</span> Rarely did Nietzsche accept the philosophical consensus of his day without challenge.</button>
+          <button class="option" data-val="c"><span class="opt-letter">C</span> Rarely Nietzsche did accept the philosophical consensus of his day without challenge.</button>
+          <button class="option" data-val="d"><span class="opt-letter">D</span> Rarely accepted Nietzsche the philosophical consensus of his day without challenge.</button>
+        </div>
+      </div>
+      <div class="feedback">💡 After negative/restrictive adverbs — <em>rarely, seldom, never, hardly, scarcely, no sooner</em> — at the start of a sentence, <strong>auxiliary + subject</strong> order is required: <strong>"Rarely did he..."</strong> Use "do/did" if there's no other auxiliary.</div>
+    </div>
+
+    <div class="question" data-answer="c">
+      <div class="q-inner">
+        <p class="q-text">Choose the correctly inverted sentence:</p>
+        <div class="options col1">
+          <button class="option" data-val="a"><span class="opt-letter">A</span> Not only Nietzsche rejected Schopenhauer's pessimism, but he also transformed it.</button>
+          <button class="option" data-val="b"><span class="opt-letter">B</span> Not only Nietzsche did reject Schopenhauer's pessimism, but he also transformed it.</button>
+          <button class="option" data-val="c"><span class="opt-letter">C</span> Not only did Nietzsche reject Schopenhauer's pessimism, but he also transformed it.</button>
+          <button class="option" data-val="d"><span class="opt-letter">D</span> Not only rejected Nietzsche Schopenhauer's pessimism, but he also transformed it.</button>
+        </div>
+      </div>
+      <div class="feedback">💡 <strong>"Not only... but also"</strong> requires inversion in the first clause: <strong>"Not only did he reject..."</strong> Note the second clause (<em>but he also</em>) does NOT invert. This is a very common mistake even at advanced levels.</div>
+    </div>
+
+    <div class="question" data-answer="a">
+      <div class="q-inner">
+        <p class="q-text">Choose the correctly inverted sentence:</p>
+        <div class="options col1">
+          <button class="option" data-val="a"><span class="opt-letter">A</span> So radical were Nietzsche's ideas that many publishers initially refused his manuscripts.</button>
+          <button class="option" data-val="b"><span class="opt-letter">B</span> So radical Nietzsche's ideas were that many publishers initially refused his manuscripts.</button>
+          <button class="option" data-val="c"><span class="opt-letter">C</span> So radical his ideas were that many publishers initially refused his manuscripts.</button>
+          <button class="option" data-val="d"><span class="opt-letter">D</span> So Nietzsche's ideas were radical that many publishers initially refused his manuscripts.</button>
+        </div>
+      </div>
+      <div class="feedback">💡 <strong>"So + adjective + verb + subject + that"</strong> — the adjective fronts with "so," followed by inverted auxiliary+subject: <em>"So cold <strong>was</strong> the night..."</em> / <em>"So great <strong>was</strong> his influence..."</em></div>
+    </div>
+  </div>
+
+  <!-- ══ SECTION III: Gerund vs Infinitive ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-roman">III</div>
+      <div class="section-meta">
+        <div class="section-name">Gerunds vs. Infinitives</div>
+        <div class="section-topic">The difference can change the meaning entirely — a treacherous distinction</div>
+      </div>
+    </div>
+    <div class="section-rule"></div>
+    <p class="section-instruction">Some verbs take a gerund (-ing), some take an infinitive (to + verb), and some take both — but with a change in meaning. This is one of the most difficult areas for German learners. Choose carefully.</p>
+
+    <div class="question" data-answer="b">
+      <div class="q-inner">
+        <p class="q-text">Nietzsche stopped <span class="blank">___</span> Wagner's music after their philosophical falling-out in 1878.</p>
+        <div class="options">
+          <button class="option" data-val="a"><span class="opt-letter">A</span> to admire</button>
+          <button class="option" data-val="b"><span class="opt-letter">B</span> admiring</button>
+          <button class="option" data-val="c"><span class="opt-letter">C</span> to admiring</button>
+          <button class="option" data-val="d"><span class="opt-letter">D</span> admire</button>
+        </div>
+      </div>
+      <div class="feedback">💡 <strong>"Stop + gerund"</strong> = cease an activity (<em>he no longer did it</em>). <strong>"Stop + infinitive"</strong> = pause in order to do something else — <em>"He stopped to admire the view"</em> means he paused and looked. Here, Nietzsche permanently ceased admiring Wagner.</div>
+    </div>
+
+    <div class="question" data-answer="a">
+      <div class="q-inner">
+        <p class="q-text">Nietzsche remembered <span class="blank">___</span> Wagner as a young man, and the memory haunted him for life.</p>
+        <div class="options">
+          <button class="option" data-val="a"><span class="opt-letter">A</span> meeting</button>
+          <button class="option" data-val="b"><span class="opt-letter">B</span> to meet</button>
+          <button class="option" data-val="c"><span class="opt-letter">C</span> meet</button>
+          <button class="option" data-val="d"><span class="opt-letter">D</span> having to meet</button>
+        </div>
+      </div>
+      <div class="feedback">💡 <strong>"Remember + gerund"</strong> = recall a past event (<em>he has the memory of it</em>). <strong>"Remember + infinitive"</strong> = not forget to do something in the future (<em>"Remember to lock the door."</em>) Here, he recalls the past event of meeting Wagner.</div>
+    </div>
+
+    <div class="question" data-answer="c">
+      <div class="q-inner">
+        <p class="q-text">Despite his illness, he went on <span class="blank">___</span> prolifically until his mental collapse in 1889.</p>
+        <div class="options">
+          <button class="option" data-val="a"><span class="opt-letter">A</span> write</button>
+          <button class="option" data-val="b"><span class="opt-letter">B</span> to write</button>
+          <button class="option" data-val="c"><span class="opt-letter">C</span> writing</button>
+          <button class="option" data-val="d"><span class="opt-letter">D</span> having written</button>
+        </div>
+      </div>
+      <div class="feedback">💡 <strong>"Go on + gerund"</strong> = continue the same activity. <strong>"Go on + infinitive"</strong> = move on to a new activity (<em>"He finished the chapter, then went on to write a new one."</em>) Here, he continued the same act of writing — so gerund is correct.</div>
+    </div>
+  </div>
+
+  <!-- ══ SECTION IV: Cleft Sentences ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-roman">IV</div>
+      <div class="section-meta">
+        <div class="section-name">Cleft Sentences</div>
+        <div class="section-topic">It is emphasis that the Übermensch demands — splitting for stress</div>
+      </div>
+    </div>
+    <div class="section-rule"></div>
+    <p class="section-instruction">Cleft sentences split a simple sentence into two clauses to emphasise one element. There are two main types: <em>it-clefts</em> ("It was X that...") and <em>wh-clefts</em> ("What he wanted was..."). Choose the correct form.</p>
+
+    <div class="n-quote">
+      <p>What Nietzsche truly sought was not power over others, but mastery over oneself.</p>
+      <cite>— Wh-cleft example (emphasis on "what")</cite>
+    </div>
+
+    <div class="question" data-answer="d">
+      <div class="q-inner">
+        <p class="q-text">Emphasis required on <em>Lou Salomé</em>: Nietzsche fell deeply in love with Lou Salomé in 1882.</p>
+        <div class="options col1">
+          <button class="option" data-val="a"><span class="opt-letter">A</span> It was with Lou Salomé who Nietzsche fell deeply in love in 1882.</button>
+          <button class="option" data-val="b"><span class="opt-letter">B</span> It was Lou Salomé who Nietzsche fell deeply in love in 1882.</button>
+          <button class="option" data-val="c"><span class="opt-letter">C</span> It was Lou Salomé whom fell deeply in love with Nietzsche in 1882.</button>
+          <button class="option" data-val="d"><span class="opt-letter">D</span> It was Lou Salomé with whom Nietzsche fell deeply in love in 1882.</button>
+        </div>
+      </div>
+      <div class="feedback">💡 It-cleft structure: <strong>"It was [X] [relative clause]"</strong>. The preposition "with" must stay with "whom" in formal register: <em>"with whom he fell in love."</em> Option B drops the preposition; option C inverts subject and object; option A uses "who" where "whom" is needed with a stranded preposition.</div>
+    </div>
+
+    <div class="question" data-answer="b">
+      <div class="q-inner">
+        <p class="q-text">Choose the correct wh-cleft that naturally emphasises Nietzsche's true goal:</p>
+        <div class="options col1">
+          <button class="option" data-val="a"><span class="opt-letter">A</span> What did Nietzsche want was to overcome nihilism, not to promote it.</button>
+          <button class="option" data-val="b"><span class="opt-letter">B</span> What Nietzsche wanted was to overcome nihilism, not to promote it.</button>
+          <button class="option" data-val="c"><span class="opt-letter">C</span> That Nietzsche wanted was to overcome nihilism, not to promote it.</button>
+          <button class="option" data-val="d"><span class="opt-letter">D</span> What wanted Nietzsche was to overcome nihilism, not to promote it.</button>
+        </div>
+      </div>
+      <div class="feedback">💡 Wh-cleft structure: <strong>"What + subject + verb + was + [focus element]"</strong>. No inversion after "what." Option A inverts incorrectly (question form). Option C uses "that" — only "what" introduces this cleft type. Option D inverts the subject.</div>
+    </div>
+
+    <div class="question" data-answer="a">
+      <div class="q-inner">
+        <p class="q-text">Emphasis required on <em>in Turin</em>: His mental collapse happened in Turin, not in Basel.</p>
+        <div class="options col1">
+          <button class="option" data-val="a"><span class="opt-letter">A</span> It was in Turin that his mental collapse happened, not in Basel.</button>
+          <button class="option" data-val="b"><span class="opt-letter">B</span> It was in Turin where his mental collapse happened, not in Basel.</button>
+          <button class="option" data-val="c"><span class="opt-letter">C</span> It was in Turin which his mental collapse happened, not in Basel.</button>
+          <button class="option" data-val="d"><span class="opt-letter">D</span> It was in Turin his mental collapse happened, not in Basel.</button>
+        </div>
+      </div>
+      <div class="feedback">💡 In it-clefts, the connector is always <strong>"that"</strong> — regardless of whether the emphasised element is a place, time, person, or thing. <em>Never</em> use "where," "which," or omit it entirely in a formal it-cleft.</div>
+    </div>
+  </div>
+
+  <!-- ══ SECTION V: Error Identification ══ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-roman">V</div>
+      <div class="section-meta">
+        <div class="section-name">Error Identification</div>
+        <div class="section-topic">Locate the single grammatical error in each sentence — the hardest trial</div>
+      </div>
+    </div>
+    <div class="section-rule"></div>
+    <p class="section-instruction">Each sentence below contains exactly one grammatical error. Identify which underlined portion (A, B, C, or D) is incorrect. This is the format of the TOEFL and Cambridge Advanced examinations.</p>
+
+    <div class="question" data-answer="c">
+      <div class="q-inner">
+        <p class="error-sentence">
+          Nietzsche's philosophy, <u>having been misread</u> <strong>(A)</strong> for over a century, continues <u>to provoke</u> <strong>(B)</strong> fierce debate — <u>not only among</u> <strong>(C)</strong> professional philosophers but between <u>artists and writers</u> <strong>(D)</strong> as well.
+        </p>
+        <div class="options">
+          <button class="option" data-val="a"><span class="opt-letter">A</span> having been misread</button>
+          <button class="option" data-val="b"><span class="opt-letter">B</span> to provoke</button>
+          <button class="option" data-val="c"><span class="opt-letter">C</span> not only among… but between</button>
+          <button class="option" data-val="d"><span class="opt-letter">D</span> artists and writers</button>
+        </div>
+      </div>
+      <div class="feedback">💡 The error is in the correlative conjunction: <strong>"not only... but also"</strong> must be paired with the same preposition on both sides. "Among... but between" mixes prepositions incorrectly. Correct: <em>"not only among professional philosophers but also among artists and writers."</em></div>
+    </div>
+
+    <div class="question" data-answer="b">
+      <div class="q-inner">
+        <p class="error-sentence">
+          It is <u>widely accepted</u> <strong>(A)</strong> that Nietzsche, <u>despite to suffer</u> <strong>(B)</strong> from debilitating migraines, managed <u>to produce</u> <strong>(C)</strong> some of the most <u>provocative prose</u> <strong>(D)</strong> in European intellectual history.
+        </p>
+        <div class="options">
+          <button class="option" data-val="a"><span class="opt-letter">A</span> widely accepted</button>
+          <button class="option" data-val="b"><span class="opt-letter">B</span> despite to suffer</button>
+          <button class="option" data-val="c"><span class="opt-letter">C</span> to produce</button>
+          <button class="option" data-val="d"><span class="opt-letter">D</span> provocative prose</button>
+        </div>
+      </div>
+      <div class="feedback">💡 <strong>"Despite"</strong> is a preposition — it must be followed by a <strong>noun phrase or gerund</strong>, never by an infinitive. Correct: <em>"despite suffering from..."</em> or <em>"despite his suffering from..."</em> — never <em>"despite to suffer."</em></div>
+    </div>
+
+    <div class="question" data-answer="d">
+      <div class="q-inner">
+        <p class="error-sentence">
+          Had Nietzsche <u>been able to</u> <strong>(A)</strong> oversee the publication of his collected works, he <u>would certainly have</u> <strong>(B)</strong> rejected the nationalist framing <u>imposed on</u> <strong>(C)</strong> his writings by those <u>who misunderstood</u> <strong>(D)</strong> him most profoundly, most notable his sister Elisabeth.
+        </p>
+        <div class="options">
+          <button class="option" data-val="a"><span class="opt-letter">A</span> been able to</button>
+          <button class="option" data-val="b"><span class="opt-letter">B</span> would certainly have</button>
+          <button class="option" data-val="c"><span class="opt-letter">C</span> imposed on</button>
+          <button class="option" data-val="d"><span class="opt-letter">D</span> most notable his sister</button>
+        </div>
+      </div>
+      <div class="feedback">💡 The error is <strong>"most notable"</strong> — an adjective is used where an adverb is required. The correct form is <strong>"most notably"</strong>, which modifies the clause that follows. Adjectives modify nouns; adverbs modify verbs, adjectives, and clauses.</div>
+    </div>
+  </div>
+
+  <!-- SUBMIT -->
+  <div class="submit-zone">
+    <button class="btn-submit" id="btnSubmit">SUBMIT TO JUDGEMENT</button>
+
+    <div class="score-panel" id="scorePanel">
+      <div class="score-bg-num" id="scoreBgNum">—</div>
+      <div class="score-label">FINAL SCORE · PART III</div>
+      <div class="score-display">
+        <span id="scoreNum">—</span><span> / 15</span>
+      </div>
+      <div class="score-bar-wrap">
+        <div class="score-bar" id="scoreBar"></div>
+      </div>
+      <div class="verdict" id="verdict"></div>
+      <br>
+      <button class="btn-retry" id="btnRetry">↺ &nbsp; FACE THE ABYSS AGAIN</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const questions = document.querySelectorAll('.question[data-answer]');
+  const TOTAL = questions.length;
+  let answered = 0;
+
+  const progressFill = document.getElementById('progressFill');
+  const progressCount = document.getElementById('progressCount');
+
+  function updateProgress() {
+    const pct = (answered / TOTAL) * 100;
+    progressFill.style.width = pct + '%';
+    progressCount.textContent = answered + ' / ' + TOTAL;
+  }
+
+  questions.forEach(q => {
+    const correct = q.dataset.answer;
+    const buttons = q.querySelectorAll('.option');
+    const feedback = q.querySelector('.feedback');
+    let done = false;
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (done) return;
+        done = true;
+        answered++;
+        updateProgress();
+
+        const isCorrect = btn.dataset.val === correct;
+
+        buttons.forEach(b => {
+          b.disabled = true;
+          if (b.dataset.val === correct) {
+            b.classList.add(isCorrect ? 'correct' : 'reveal-correct');
+          }
+        });
+
+        if (!isCorrect) btn.classList.add('wrong');
+        feedback.classList.add('visible', isCorrect ? 'correct-fb' : 'wrong-fb');
+      });
+    });
+  });
+
+  document.getElementById('btnSubmit').addEventListener('click', () => {
+    // Reveal all unanswered
+    questions.forEach(q => {
+      const buttons = q.querySelectorAll('.option');
+      const feedback = q.querySelector('.feedback');
+      buttons.forEach(b => {
+        b.disabled = true;
+        if (b.dataset.val === q.dataset.answer && !b.classList.contains('correct')) {
+          b.classList.add('reveal-correct');
+        }
+      });
+      if (feedback && !feedback.classList.contains('visible')) {
+        feedback.classList.add('visible');
+        feedback.style.borderLeftColor = 'var(--dim)';
+      }
+    });
+
+    // Count score
+    let score = 0;
+    questions.forEach(q => {
+      if (q.querySelector('.option.correct')) score++;
+    });
+
+    const pct = Math.round((score / TOTAL) * 100);
+
+    document.getElementById('scoreNum').textContent = score;
+    document.getElementById('scoreBgNum').textContent = score;
+    progressFill.style.width = '100%';
+    progressCount.textContent = TOTAL + ' / ' + TOTAL;
+
+    const panel = document.getElementById('scorePanel');
+    panel.classList.add('visible');
+
+    setTimeout(() => {
+      document.getElementById('scoreBar').style.width = pct + '%';
+    }, 100);
+
+    const verdicts = [
+      { min: 0,  max: 4,  q: '"One must have chaos within oneself to give birth to a dancing star." You are still chaos. Return and study, Wanderer.',         src: 'Thus Spoke Zarathustra' },
+      { min: 5,  max: 8,  q: '"That which does not kill us makes us stronger." Grammar has tested you. You are not yet strong enough — but you are stronger than before.',  src: 'Twilight of the Idols' },
+      { min: 9,  max: 11, q: '"The secret for harvesting from existence the greatest fruitfulness and the greatest enjoyment is to live dangerously." You are approaching mastery.',         src: 'The Gay Science' },
+      { min: 12, max: 14, q: '"Man must surpass himself." You have surpassed most. One more step and the Übermensch greets you as an equal.',        src: 'Thus Spoke Zarathustra' },
+      { min: 15, max: 15, q: '"I am not a man. I am dynamite." Perfect score. You are also dynamite. Go. Become who you are.',       src: 'Ecce Homo' },
+    ];
+
+    const v = document.getElementById('verdict');
+    for (const { min, max, q, src } of verdicts) {
+      if (score >= min && score <= max) {
+        v.innerHTML = `${q}<span class="verdict-source">— ${src}</span>`;
+        break;
+      }
+    }
+
+    panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+
+  document.getElementById('btnRetry').addEventListener('click', () => location.reload());
+</script>
+</body>
+</html>

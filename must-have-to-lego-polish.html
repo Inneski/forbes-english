@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MUST & HAVE TO — LEGO Grammar Factory 🧱</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --lego-yellow: #FFD700;
+  --lego-red:    #DA291C;
+  --lego-blue:   #006DB7;
+  --lego-green:  #00A650;
+  --lego-orange: #FF6B00;
+  --lego-black:  #1A1A1A;
+  --lego-white:  #FFFFFF;
+  --lego-dk-bg:  #2C2C2C;
+  --stud-col:    rgba(0,0,0,0.12);
+  --bg:          #FFF9E6;
+  --panel:       #FFFFFF;
+  --shadow:      rgba(0,0,0,0.15);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  font-family: 'Nunito', sans-serif;
+  overflow-x: hidden;
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect x='4' y='4' width='16' height='16' rx='3' fill='%23FFD700' stroke='%231A1A1A' stroke-width='2'/%3E%3Ccircle cx='9' cy='9' r='2' fill='%231A1A1A' opacity='.4'/%3E%3Ccircle cx='15' cy='9' r='2' fill='%231A1A1A' opacity='.4'/%3E%3Ccircle cx='9' cy='15' r='2' fill='%231A1A1A' opacity='.4'/%3E%3Ccircle cx='15' cy='15' r='2' fill='%231A1A1A' opacity='.4'/%3E%3C/svg%3E"), auto;
+}
+
+/* ── Stud grid background ── */
+body::before {
+  content:'';
+  position:fixed;inset:0;
+  background-image:
+    radial-gradient(circle, rgba(0,0,0,0.06) 2px, transparent 2px);
+  background-size: 28px 28px;
+  pointer-events:none; z-index:0;
+}
+
+.page {
+  max-width: 940px;
+  margin: 0 auto;
+  padding: 0 16px 100px;
+  position: relative; z-index: 10;
+}
+
+/* ══════════════════════════════
+   BRICK UTILITY MIXIN
+══════════════════════════════ */
+.brick {
+  border-radius: 6px;
+  border: 3px solid rgba(0,0,0,0.2);
+  box-shadow: 0 6px 0 rgba(0,0,0,0.25), 0 8px 16px rgba(0,0,0,0.12);
+  position: relative;
+}
+
+/* Stud on top of brick */
+.stud-row {
+  display: flex; gap: 7px;
+  position: absolute; top: -10px; left: 14px;
+  pointer-events: none;
+}
+.stud {
+  width: 18px; height: 10px;
+  border-radius: 50%;
+  background: inherit;
+  border: 2px solid rgba(0,0,0,0.2);
+  box-shadow: 0 -2px 0 rgba(255,255,255,0.3), 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* ══════════════════════════════
+   HERO
+══════════════════════════════ */
+.hero {
+  background: var(--lego-yellow);
+  padding: 56px 40px 50px;
+  margin-bottom: 44px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 6px solid rgba(0,0,0,0.2);
+  box-shadow: 0 8px 0 rgba(0,0,0,0.2), 0 16px 32px rgba(0,0,0,0.15);
+}
+
+/* Stud pattern on hero */
+.hero::before {
+  content:'';
+  position:absolute; top:-12px; left:0; right:0; height:24px;
+  background-image: radial-gradient(circle, rgba(0,0,0,0.15) 6px, transparent 6px);
+  background-size: 36px 24px;
+  background-position: 18px 12px;
+}
+
+/* Giant ghost brick */
+.hero::after {
+  content: '🧱';
+  position:absolute;
+  right:-20px; bottom:-30px;
+  font-size: 14rem;
+  opacity: 0.07;
+  line-height:1;
+  transform: rotate(-10deg);
+}
+
+.hero-tag {
+  display: inline-block;
+  background: var(--lego-red);
+  color: #fff;
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.78rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 6px 18px;
+  border-radius: 50px;
+  margin-bottom: 18px;
+  border: 2px solid rgba(0,0,0,0.2);
+  box-shadow: 0 3px 0 rgba(0,0,0,0.25);
+  position: relative;
+}
+
+.hero-h1 {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(3.2rem, 10vw, 7.5rem);
+  line-height: 0.9;
+  color: var(--lego-black);
+  letter-spacing: 0.01em;
+  position: relative;
+  text-shadow: 4px 4px 0 rgba(0,0,0,0.12);
+  animation: brickBounce 2.5s ease-in-out infinite;
+}
+@keyframes brickBounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+
+.hero-h1 .must-w { color: var(--lego-red); }
+.hero-h1 .amp-w  { color: rgba(0,0,0,0.3); font-size:0.55em; vertical-align:middle; padding:0 .1em; }
+.hero-h1 .have-w { color: var(--lego-blue); }
+
+.hero-sub {
+  font-size: 1.05rem;
+  color: rgba(0,0,0,0.6);
+  margin-top: 12px;
+  font-weight: 700;
+  position: relative;
+}
+
+.hero-bricks {
+  display: flex; gap: 10px; flex-wrap: wrap;
+  margin-top: 24px; position: relative;
+}
+.hero-brick {
+  background: var(--lego-red);
+  color: #fff;
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 4px;
+  border: 2px solid rgba(0,0,0,0.2);
+  box-shadow: 0 3px 0 rgba(0,0,0,0.25);
+}
+.hero-brick.blue  { background: var(--lego-blue); }
+.hero-brick.green { background: var(--lego-green); }
+
+/* ══════════════════════════════
+   PROGRESS
+══════════════════════════════ */
+.prog-wrap {
+  background: var(--lego-black);
+  border-radius: 12px;
+  padding: 18px 24px;
+  margin-bottom: 40px;
+  border: 3px solid rgba(255,255,255,0.1);
+  box-shadow: 0 6px 0 rgba(0,0,0,0.4), 0 10px 20px rgba(0,0,0,0.2);
+  position: relative;
+}
+/* studs on progress bar */
+.prog-wrap::before {
+  content:'';
+  position:absolute; top:-10px; left:20px;
+  display:block; width:160px; height:20px;
+  background-image: radial-gradient(circle, #444 5px, transparent 5px);
+  background-size: 22px 20px;
+}
+
+.prog-top {
+  display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:10px;
+}
+.prog-label {
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.85rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--lego-yellow);
+}
+.prog-score-text {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.1rem; color: var(--lego-yellow);
+}
+.prog-track {
+  height: 14px; background: #444; border-radius: 10px;
+  overflow: hidden; border: 2px solid #333;
+}
+.prog-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--lego-green), #00D46A);
+  width: 0%; transition: width 0.6s cubic-bezier(.4,0,.2,1);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,166,80,0.6);
+}
+
+/* ══════════════════════════════
+   SECTION HEADERS
+══════════════════════════════ */
+.sec-head {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 24px; margin-top: 8px;
+}
+.sec-brick-num {
+  background: var(--lego-red);
+  color: #fff;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.6rem;
+  width: 52px; height: 52px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 10px;
+  border: 3px solid rgba(0,0,0,0.2);
+  box-shadow: 0 4px 0 rgba(0,0,0,0.3);
+  flex-shrink: 0;
+}
+.sec-text {}
+.sec-eyebrow {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.6rem; letter-spacing: 0.35em;
+  text-transform: uppercase; color: var(--lego-orange);
+  margin-bottom: 2px;
+}
+.sec-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.7rem; letter-spacing: 0.02em;
+  color: var(--lego-black); line-height: 1;
+}
+
+/* ══════════════════════════════
+   INTRO CARD
+══════════════════════════════ */
+.intro-card {
+  background: var(--lego-blue);
+  color: #fff;
+  border-radius: 12px;
+  padding: 26px 30px;
+  margin-bottom: 32px;
+  border: 3px solid rgba(0,0,0,0.2);
+  box-shadow: 0 6px 0 rgba(0,0,0,0.25), 0 10px 24px rgba(0,109,183,0.2);
+  position: relative;
+  overflow: hidden;
+}
+.intro-card::before {
+  content: '';
+  position: absolute; top:-14px; left:0; right:0; height:28px;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.2) 6px, transparent 6px);
+  background-size: 32px 28px; background-position: 16px 14px;
+}
+.intro-card p { font-size: 0.95rem; line-height: 1.85; margin-bottom: 10px; font-weight: 700; }
+.intro-card p:last-child { margin-bottom:0; }
+
+.tip-card {
+  background: var(--lego-yellow);
+  color: var(--lego-black);
+  border-radius: 10px;
+  padding: 14px 18px; margin-top: 14px;
+  border: 2px solid rgba(0,0,0,0.15);
+  box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+  font-size: 0.87rem; font-weight: 700; line-height: 1.75;
+}
+.tip-card strong {
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--lego-red); display: block; margin-bottom: 5px;
+}
+
+/* ══════════════════════════════
+   FOUR FORM CARDS
+══════════════════════════════ */
+.form-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 16px; margin-bottom: 32px;
+}
+@media(max-width:600px){ .form-grid { grid-template-columns: 1fr; } }
+
+.form-card {
+  border-radius: 12px;
+  padding: 26px 22px 22px;
+  position: relative; overflow: hidden;
+  border: 3px solid rgba(0,0,0,0.18);
+  box-shadow: 0 6px 0 rgba(0,0,0,0.22), 0 10px 20px rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.form-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 0 rgba(0,0,0,0.22), 0 14px 28px rgba(0,0,0,0.15);
+}
+
+/* stud row on each card */
+.form-card::before {
+  content: '';
+  position: absolute; top:-12px; left:14px;
+  height: 24px; width: 120px;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.35) 5px, transparent 5px);
+  background-size: 24px 24px;
+  pointer-events: none;
+}
+
+.fc-must-pos { background: var(--lego-red); color: #fff; }
+.fc-must-neg { background: var(--lego-black); color: #fff; }
+.fc-have-pos { background: var(--lego-blue); color: #fff; }
+.fc-have-neg { background: var(--lego-green); color: #fff; }
+
+.fc-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.58rem; letter-spacing: 0.3em;
+  text-transform: uppercase; opacity: 0.65; margin-bottom: 8px;
+}
+.fc-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.5rem; letter-spacing: 0.03em;
+  margin-bottom: 4px; line-height: 1;
+}
+.fc-meaning {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.6rem; letter-spacing: 0.13em;
+  text-transform: uppercase; opacity: 0.7; margin-bottom: 14px;
+}
+
+.formula-block {
+  background: rgba(0,0,0,0.25);
+  border-radius: 6px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.78rem; padding: 8px 12px;
+  color: rgba(255,255,255,0.9); margin-bottom: 14px;
+  border-left: 3px solid rgba(255,255,255,0.4);
+}
+
+.ex-list { list-style: none; }
+.ex-list li {
+  font-size: 0.88rem; font-style: italic;
+  padding: 5px 0 5px 12px;
+  border-left: 3px solid rgba(255,255,255,0.2);
+  margin-bottom: 5px; line-height: 1.5;
+}
+
+.fc-pl {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.66rem; opacity: 0.7;
+  margin-top: 12px; padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,0.15);
+  font-style: normal;
+}
+
+/* ══════════════════════════════
+   DANGER / KEY RULE BLOCK
+══════════════════════════════ */
+.key-block {
+  background: #fff;
+  border-radius: 14px;
+  padding: 30px 28px 24px;
+  margin-bottom: 36px;
+  border: 3px solid var(--lego-orange);
+  box-shadow: 0 6px 0 rgba(255,107,0,0.4), 0 10px 24px rgba(0,0,0,0.1);
+  position: relative;
+}
+.key-block::before {
+  content: '⚠ UWAŻAJ! — KEY RULE';
+  position: absolute; top:-14px; left:20px;
+  background: var(--lego-orange); color: #fff;
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.72rem; letter-spacing: 0.1em;
+  padding: 4px 16px; border-radius: 50px;
+  border: 2px solid rgba(0,0,0,0.15);
+  box-shadow: 0 2px 0 rgba(0,0,0,0.2);
+}
+.key-block h3 {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.25rem; color: var(--lego-black);
+  margin-bottom: 20px; letter-spacing: 0.02em; line-height: 1.3;
+}
+
+.vs-grid {
+  display: grid; grid-template-columns: 1fr 40px 1fr;
+  gap: 12px; align-items: center; margin-bottom: 14px;
+}
+@media(max-width:500px){ .vs-grid { grid-template-columns:1fr; } .vs-mid { display:none; } }
+
+.vs-brick {
+  border-radius: 10px; padding: 16px;
+  font-size: 0.88rem; line-height: 1.7;
+  border: 3px solid rgba(0,0,0,0.15);
+  box-shadow: 0 4px 0 rgba(0,0,0,0.18);
+}
+.vs-red   { background: #fff0f0; border-color: var(--lego-red); border-left: 5px solid var(--lego-red); }
+.vs-green { background: #f0fff5; border-color: var(--lego-green); border-left: 5px solid var(--lego-green); }
+.vs-brick-label {
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.8rem; margin-bottom: 6px; letter-spacing: 0.04em;
+}
+.vbl-red   { color: var(--lego-red); }
+.vbl-green { color: var(--lego-green); }
+.vs-mid {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.8rem; color: var(--lego-orange);
+  text-align: center; line-height: 1;
+}
+
+/* ══════════════════════════════
+   EXERCISE BLOCKS
+══════════════════════════════ */
+.ex-block { margin-bottom: 36px; }
+
+.ex-hdr {
+  border-radius: 10px 10px 0 0;
+  padding: 16px 24px;
+  display: flex; align-items: center; gap: 16px;
+  border: 3px solid rgba(0,0,0,0.18); border-bottom: none;
+  position: relative; overflow: hidden;
+}
+.ex-hdr::before {
+  content:'';position:absolute;inset:0;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.15) 3px, transparent 3px);
+  background-size: 20px 20px; background-position: 10px 10px;
+}
+
+.ex1-hdr { background: var(--lego-red); }
+.ex2-hdr { background: var(--lego-blue); }
+.ex3-hdr { background: var(--lego-green); }
+.ex4-hdr { background: var(--lego-black); }
+
+.ex-hdr-num {
+  font-family: 'Fredoka One', cursive;
+  font-size: 2.8rem; color: rgba(255,255,255,0.25);
+  line-height: 1; position: relative; z-index:1; flex-shrink:0;
+}
+.ex-hdr-info { position: relative; z-index:1; }
+.ex-hdr-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.1rem; letter-spacing: 0.04em;
+  color: #fff; text-transform: uppercase; line-height:1;
+}
+.ex-hdr-sub {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.62rem; letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.65); margin-top: 4px;
+}
+
+.ex-body {
+  background: var(--panel);
+  border: 3px solid rgba(0,0,0,0.12); border-top: none;
+  border-radius: 0 0 10px 10px;
+  padding: 28px 28px 22px;
+  box-shadow: 0 6px 0 rgba(0,0,0,0.12), 0 10px 20px rgba(0,0,0,0.07);
+}
+
+.qn {
+  margin-bottom: 24px; padding-bottom: 24px;
+  border-bottom: 2px dashed #e8e0d0;
+}
+.qn:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+.qn-label {
+  display: inline-block;
+  background: var(--lego-yellow);
+  color: var(--lego-black);
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.72rem; letter-spacing: 0.1em;
+  text-transform: uppercase; padding: 3px 10px;
+  border-radius: 50px; margin-bottom: 10px;
+  border: 2px solid rgba(0,0,0,0.15);
+  box-shadow: 0 2px 0 rgba(0,0,0,0.2);
+}
+.qn-text { font-size: 0.95rem; line-height: 1.8; font-weight: 700; margin-bottom: 6px; color: var(--lego-black); }
+.qn-hint { font-size: 0.78rem; color: #888; font-style: italic; margin-bottom: 8px; }
+
+/* inputs */
+input.fi {
+  background: #fffbe6;
+  border: 2px solid #ddd; border-bottom: 3px solid #ccc;
+  border-radius: 8px;
+  color: var(--lego-red);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.88rem; padding: 5px 10px;
+  width: 162px; outline: none; text-align: center;
+  transition: border-color .2s, box-shadow .2s;
+  font-weight: 700;
+}
+input.fi:focus {
+  border-color: var(--lego-blue);
+  box-shadow: 0 0 0 3px rgba(0,109,183,0.15);
+}
+input.fi.ok  {
+  border-color: var(--lego-green); color: var(--lego-green);
+  background: #f0fff5;
+  box-shadow: 0 0 0 3px rgba(0,166,80,0.15);
+}
+input.fi.err {
+  border-color: var(--lego-red); color: var(--lego-red);
+  background: #fff0f0; animation: sh .3s;
+}
+@keyframes sh { 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+
+/* choices */
+.choices { display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
+.cbtn {
+  background: #f5f0e8; border: 3px solid #ddd;
+  border-radius: 8px;
+  color: var(--lego-black); font-family: 'Nunito', sans-serif;
+  font-size: 0.86rem; font-weight: 700;
+  padding: 9px 16px; cursor: pointer; transition: all .18s;
+  box-shadow: 0 3px 0 #ccc;
+}
+.cbtn:hover:not(:disabled) {
+  border-color: var(--lego-blue); color: var(--lego-blue);
+  background: #eaf4ff; transform: translateY(-2px);
+  box-shadow: 0 5px 0 rgba(0,109,183,0.3);
+}
+.cbtn.ok {
+  border-color: var(--lego-green); color: #fff;
+  background: var(--lego-green);
+  box-shadow: 0 3px 0 rgba(0,100,50,0.4);
+}
+.cbtn.err {
+  border-color: var(--lego-red); color: #fff;
+  background: var(--lego-red); opacity:.6;
+  box-shadow: none;
+}
+
+/* word chips */
+.word-bank { display:flex; flex-wrap:wrap; gap:8px; margin:10px 0; }
+.wchip {
+  background: var(--lego-yellow);
+  color: var(--lego-black);
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.85rem; padding: 6px 14px;
+  border-radius: 6px; cursor: pointer;
+  border: 2px solid rgba(0,0,0,0.2);
+  box-shadow: 0 3px 0 rgba(0,0,0,0.25);
+  transition: all .15s; user-select: none;
+}
+.wchip:hover {
+  background: var(--lego-orange); color:#fff;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 0 rgba(0,0,0,0.2);
+}
+.wchip.used { opacity:.2; cursor:default; pointer-events:none; box-shadow:none; transform:none; }
+
+.sb {
+  min-height: 46px;
+  background: #fffbe6;
+  border: 2px dashed #ccc; border-radius: 8px;
+  padding: 8px 10px;
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.9rem; color: var(--lego-blue);
+  margin: 10px 0; cursor: pointer; letter-spacing: 0.03em;
+}
+.sb .bw {
+  display: inline-block;
+  background: var(--lego-blue); color: #fff;
+  border-radius: 6px; border: 2px solid rgba(0,0,0,0.15);
+  padding: 2px 12px; margin: 2px 4px 2px 0;
+  font-size: 0.85rem; cursor: pointer; transition: all .15s;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.2);
+}
+.sb .bw:hover { background: var(--lego-red); }
+
+/* feedback */
+.fb {
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.82rem; margin-top: 8px; min-height:1.1em;
+  font-weight: 800; letter-spacing: 0.03em;
+}
+.fb.ok  { color: var(--lego-green); }
+.fb.err { color: var(--lego-red); }
+
+/* check button */
+.chk-btn {
+  background: var(--lego-red); border: none;
+  border-radius: 8px; color: #fff;
+  font-family: 'Fredoka One', cursive;
+  font-size: 1rem; letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 11px 28px; cursor: pointer;
+  border: 3px solid rgba(0,0,0,0.15);
+  box-shadow: 0 5px 0 rgba(0,0,0,0.25);
+  transition: all .2s; margin-top: 14px;
+}
+.chk-btn:hover {
+  background: var(--lego-orange); transform: translateY(-2px);
+  box-shadow: 0 7px 0 rgba(0,0,0,0.22);
+}
+.chk-btn:active { transform: translateY(2px); box-shadow: 0 3px 0 rgba(0,0,0,0.25); }
+
+/* ══════════════════════════════
+   FLIP CARDS
+══════════════════════════════ */
+.flip-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:16px 0; }
+@media(max-width:500px){ .flip-grid { grid-template-columns:1fr 1fr; } }
+
+.flip-card { height:140px; perspective:700px; cursor:pointer; }
+.flip-inner {
+  position:relative; width:100%; height:100%;
+  transform-style:preserve-3d; transition:transform .5s;
+}
+.flip-card.flipped .flip-inner { transform:rotateY(180deg); }
+
+.flip-front, .flip-back {
+  position:absolute; inset:0; backface-visibility:hidden;
+  border-radius:10px; padding:14px;
+  display:flex; flex-direction:column;
+  justify-content:center; align-items:center; text-align:center;
+  border: 3px solid rgba(0,0,0,0.15);
+  box-shadow: 0 4px 0 rgba(0,0,0,0.18);
+}
+.flip-front {
+  background: var(--lego-yellow);
+  color: var(--lego-black);
+}
+.flip-back {
+  background: var(--lego-red); color:#fff;
+  transform:rotateY(180deg);
+}
+.ff-tag {
+  font-family:'Share Tech Mono',monospace;
+  font-size:.58rem; letter-spacing:.2em; text-transform:uppercase;
+  opacity:.65; margin-bottom:7px;
+}
+.ff-q { font-size:.88rem; font-weight:800; line-height:1.4; }
+.fb-ans {
+  font-family:'Fredoka One',cursive;
+  font-size:1.05rem; margin-bottom:5px; letter-spacing:.03em;
+}
+.fb-note { font-size:.73rem; opacity:.85; line-height:1.4; font-weight:700; }
+
+/* ══════════════════════════════
+   SCORE PANEL
+══════════════════════════════ */
+.score-panel {
+  background: var(--lego-yellow);
+  border-radius: 16px;
+  padding: 50px 32px;
+  text-align: center;
+  margin-top: 44px; display: none;
+  border: 4px solid rgba(0,0,0,0.15);
+  box-shadow: 0 8px 0 rgba(0,0,0,0.22), 0 16px 40px rgba(0,0,0,0.15);
+  position: relative; overflow: hidden;
+}
+.score-panel::before {
+  content:'';position:absolute;top:-14px;left:0;right:0;height:28px;
+  background-image:radial-gradient(circle,rgba(0,0,0,0.12) 6px,transparent 6px);
+  background-size:32px 28px; background-position:16px 14px;
+}
+.score-big {
+  font-family: 'Fredoka One', cursive;
+  font-size: 7rem; color: var(--lego-red);
+  line-height:1; position:relative;
+  text-shadow: 4px 4px 0 rgba(0,0,0,0.15);
+}
+.score-denom {
+  font-family: 'Share Tech Mono', monospace;
+  font-size:.78rem; letter-spacing:.3em;
+  color:rgba(0,0,0,0.5); text-transform:uppercase;
+  position:relative; margin-top:4px;
+}
+.score-msg {
+  color: var(--lego-black); font-style:italic;
+  font-size:1rem; line-height:1.7; font-weight:700;
+  margin-top:18px; position:relative;
+}
+.again-btn {
+  background: var(--lego-red); color:#fff;
+  border: 3px solid rgba(0,0,0,0.18);
+  border-radius: 8px;
+  font-family:'Fredoka One',cursive; font-size:1rem;
+  letter-spacing:.12em; text-transform:uppercase;
+  padding:12px 32px; cursor:pointer; margin-top:24px;
+  box-shadow: 0 5px 0 rgba(0,0,0,0.25);
+  transition:all .2s; position:relative;
+}
+.again-btn:hover { background: var(--lego-orange); transform:translateY(-2px); }
+
+/* ══════════════════════════════
+   CHEAT SHEET
+══════════════════════════════ */
+.cheat-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 14px; margin-bottom: 16px;
+}
+@media(max-width:600px){ .cheat-grid { grid-template-columns:1fr; } }
+
+.cheat-brick {
+  border-radius: 10px; padding: 16px 18px;
+  border: 3px solid rgba(0,0,0,0.15);
+  box-shadow: 0 5px 0 rgba(0,0,0,0.2);
+  font-size: 0.9rem; line-height: 1.75; font-weight: 700;
+  color: #fff;
+}
+.cb-red   { background: var(--lego-red); }
+.cb-black { background: var(--lego-black); }
+.cb-blue  { background: var(--lego-blue); }
+.cb-green { background: var(--lego-green); }
+
+.cheat-brick .cb-title {
+  font-family:'Fredoka One',cursive;
+  font-size:1.1rem; margin-bottom:5px; letter-spacing:.03em;
+}
+.cheat-brick .cb-pl {
+  font-size:.72rem; opacity:.75; font-style:normal;
+  font-family:'Share Tech Mono',monospace;
+  letter-spacing:.05em; margin-top:8px;
+}
+
+/* divider */
+.lego-div {
+  display:flex; align-items:center; gap:12px;
+  margin:36px 0; opacity:.5;
+}
+.lego-div::before, .lego-div::after {
+  content:''; flex:1; height:3px;
+  background: linear-gradient(90deg,transparent,var(--lego-yellow),transparent);
+  border-radius:2px;
+}
+
+/* highlight helpers */
+.hl-r { color:var(--lego-red); font-weight:800; }
+.hl-b { color:var(--lego-blue); font-weight:800; }
+.hl-g { color:var(--lego-green); font-weight:800; }
+.hl-y { color:var(--lego-orange); font-weight:800; }
+.hl-dark { color:var(--lego-black); font-weight:800; }
+.hl-bad { color:#c0392b; font-weight:800; }
+
+.badge {
+  display:inline-block; background:var(--lego-orange); color:#fff;
+  font-family:'Fredoka One',cursive; font-size:.6rem;
+  letter-spacing:.12em; text-transform:uppercase;
+  padding:3px 9px; border-radius:50px;
+  border:2px solid rgba(0,0,0,0.15); vertical-align:middle; margin-left:6px;
+  box-shadow:0 2px 0 rgba(0,0,0,0.2);
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ HERO ═══════════ -->
+<div class="hero">
+  <div class="hero-tag">🧱 LEGO Grammar Factory — EN / PL</div>
+  <h1 class="hero-h1">
+    <span class="must-w">MUST</span><span class="amp-w"> &amp; </span><br>
+    <span class="have-w">HAVE TO</span>
+  </h1>
+  <p class="hero-sub">Positive &amp; Negative · Build your grammar block by block! 🧱</p>
+  <div class="hero-bricks">
+    <span class="hero-brick">B1 Level</span>
+    <span class="hero-brick blue">4 Exercises</span>
+    <span class="hero-brick green">19 Questions</span>
+    <span class="hero-brick">EN / PL</span>
+  </div>
+</div>
+
+<div class="page">
+
+<!-- PROGRESS -->
+<div class="prog-wrap">
+  <div class="prog-top">
+    <span class="prog-label">🧱 Building Progress</span>
+    <span class="prog-score-text" id="scoreDisplay">0 / 19</span>
+  </div>
+  <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+</div>
+
+<!-- ═══════════ LESSON ═══════════ -->
+<div class="sec-head">
+  <div class="sec-brick-num">01</div>
+  <div class="sec-text">
+    <div class="sec-eyebrow">// Instrukcja — The Lesson</div>
+    <div class="sec-title">THE FOUR KEY BRICKS 🧱</div>
+  </div>
+</div>
+
+<div class="intro-card">
+  <p>Both <strong>MUST</strong> and <strong>HAVE TO</strong> mean <strong>obligation</strong> — something necessary or required. Like a LEGO instruction booklet that tells you which piece goes where! 📖</p>
+  <p>When a LEGO builder <em>personally feels</em> they must finish the castle before dinner — that's MUST. When the instruction manual says you <em>have to</em> use red bricks for this step — that's HAVE TO.</p>
+  <p>But the <span style="color:#FFD700; font-weight:800;">negative forms mean completely different things!</span> This is the most important rule — like mixing up LEGO Technic and Duplo pieces! 😱</p>
+  <div class="tip-card">
+    <strong>💡 WSKAZÓWKA — Key tip for Polish speakers:</strong>
+    <em>Must</em> sounds more like "chcę/muszę" from inside you. <em>Have to</em> sounds more like "trzeba/muszę" from outside rules. Both can often translate as "musieć / trzeba" — but the negative forms are TOTALLY different! Read on! 👇
+  </div>
+</div>
+
+<!-- FOUR FORM CARDS -->
+<div class="form-grid">
+
+  <div class="form-card fc-must-pos">
+    <div class="fc-label">Form A · Positive</div>
+    <div class="fc-title">MUST ✓</div>
+    <div class="fc-meaning">Internal obligation / logical deduction</div>
+    <div class="formula-block">Subject + MUST + base verb</div>
+    <ul class="ex-list">
+      <li>"I <strong>must</strong> finish this LEGO set tonight!" 🏰</li>
+      <li>"That <strong>must</strong> be the rarest LEGO piece ever."</li>
+      <li>"You <strong>must</strong> follow the instructions carefully."</li>
+    </ul>
+    <div class="fc-pl">🇵🇱 = musieć / trzeba (wewnętrzne przekonanie)</div>
+  </div>
+
+  <div class="form-card fc-must-neg">
+    <div class="fc-label">Form B · Negative</div>
+    <div class="fc-title">MUSTN'T 🚫</div>
+    <div class="fc-meaning">Prohibition — it is FORBIDDEN!</div>
+    <div class="formula-block">Subject + MUST NOT + base verb</div>
+    <ul class="ex-list">
+      <li>"You <strong>mustn't</strong> mix up the sorted pieces!" ❌</li>
+      <li>"Children <strong>must not</strong> swallow small LEGO bricks."</li>
+      <li>"You <strong>mustn't</strong> skip steps in the instruction manual."</li>
+    </ul>
+    <div class="fc-pl">🇵🇱 = nie wolno / jest zabronione (Zakaz!)</div>
+  </div>
+
+  <div class="form-card fc-have-pos">
+    <div class="fc-label">Form C · Positive</div>
+    <div class="fc-title">HAVE TO ✓</div>
+    <div class="fc-meaning">External obligation — rules, instructions, others</div>
+    <div class="formula-block">Subject + HAVE TO + base verb</div>
+    <ul class="ex-list">
+      <li>"You <strong>have to</strong> buy the correct set for the instructions." 📦</li>
+      <li>"She <strong>has to</strong> count all the pieces before starting."</li>
+      <li>"We <strong>had to</strong> buy new bricks — some were missing."</li>
+    </ul>
+    <div class="fc-pl">🇵🇱 = musieć / trzeba (zewnętrzna reguła)</div>
+  </div>
+
+  <div class="form-card fc-have-neg">
+    <div class="fc-label">Form D · Negative</div>
+    <div class="fc-title">DON'T HAVE TO ✅</div>
+    <div class="fc-meaning">NO obligation — not necessary, free choice</div>
+    <div class="formula-block">Subject + DON'T/DOESN'T HAVE TO + base verb</div>
+    <ul class="ex-list">
+      <li>"You <strong>don't have to</strong> follow the instructions — build freely!" 😄</li>
+      <li>"She <strong>doesn't have to</strong> sort every colour separately."</li>
+      <li>"We <strong>didn't have to</strong> buy more — we had enough bricks."</li>
+    </ul>
+    <div class="fc-pl">🇵🇱 = nie trzeba / nie musisz (brak obowiązku)</div>
+  </div>
+</div>
+
+<!-- KEY RULE -->
+<div class="key-block">
+  <h3>🚨 The BIGGEST mistake in English — Don't mix these up!</h3>
+
+  <div class="vs-grid">
+    <div class="vs-brick vs-red">
+      <div class="vs-brick-label vbl-red">MUSTN'T = FORBIDDEN 🚫</div>
+      <p>"You <strong>mustn't</strong> step on LEGO bricks."</p>
+      <p style="font-size:.78rem;color:#888;margin-top:6px;">→ It is <em>forbidden</em>. Danger! Ouch! 😫<br>🇵🇱 = <strong>nie wolno</strong> (zabronione)</p>
+    </div>
+    <div class="vs-mid">≠</div>
+    <div class="vs-brick vs-green">
+      <div class="vs-brick-label vbl-green">DON'T HAVE TO = NOT NEEDED ✅</div>
+      <p>"You <strong>don't have to</strong> step on the bricks."</p>
+      <p style="font-size:.78rem;color:#888;margin-top:6px;">→ Not required — it's your choice! 😊<br>🇵🇱 = <strong>nie musisz</strong> (nie jest konieczne)</p>
+    </div>
+  </div>
+
+  <div class="vs-grid">
+    <div class="vs-brick vs-red">
+      <div class="vs-brick-label vbl-red">MUSTN'T break the bricks 🚫</div>
+      <p style="font-style:italic;">"You mustn't break LEGO pieces — they're not replaceable!" → Forbidden! ❌</p>
+    </div>
+    <div class="vs-mid">≠</div>
+    <div class="vs-brick vs-green">
+      <div class="vs-brick-label vbl-green">DON'T HAVE TO use all bricks ✅</div>
+      <p style="font-style:italic;">"You don't have to use every single brick." → Optional! Build what you want. 😄</p>
+    </div>
+  </div>
+
+  <div class="tip-card" style="margin-top:16px;">
+    <strong>🧱 The LEGO Rule — ZAPAMIĘTAJ!</strong>
+    <span class="hl-bad">MUSTN'T</span> = forbidden, prohibited, don't do it → 🇵🇱 <em>nie wolno / jest zabronione</em><br>
+    <span class="hl-g">DON'T HAVE TO</span> = not necessary, optional, your choice → 🇵🇱 <em>nie musisz / nie trzeba</em><br><br>
+    Also: <span class="hl-y">MUST has NO past form!</span> Use <strong>HAD TO</strong> instead.<br>
+    ❌ "Yesterday I must build it." &nbsp;→&nbsp; ✅ "Yesterday I <strong>had to</strong> build it."
+  </div>
+</div>
+
+<!-- FLIP CARDS -->
+<div class="sec-head" style="margin-top:8px;">
+  <div class="sec-brick-num" style="background:var(--lego-blue);">🃏</div>
+  <div class="sec-text">
+    <div class="sec-eyebrow">// Szybki sprawdzian</div>
+    <div class="sec-title">FLIP THE BRICK! 🧱</div>
+  </div>
+</div>
+<p style="font-size:.82rem;color:#888;margin-bottom:14px;font-family:'Share Tech Mono',monospace;letter-spacing:.08em;">👆 Click each brick to reveal the answer — kliknij każdy klocek!</p>
+
+<div class="flip-grid">
+  <div class="flip-card" onclick="this.classList.toggle('flipped')">
+    <div class="flip-inner">
+      <div class="flip-front"><div class="ff-tag">PL → EN</div><div class="ff-q">"<strong>Nie wolno</strong> ci dotykać cudzych klocków."</div></div>
+      <div class="flip-back"><div class="fb-ans">You MUSTN'T touch others' bricks.</div><div class="fb-note">nie wolno = mustn't 🚫</div></div>
+    </div>
+  </div>
+  <div class="flip-card" onclick="this.classList.toggle('flipped')">
+    <div class="flip-inner">
+      <div class="flip-front"><div class="ff-tag">PL → EN</div><div class="ff-q">"<strong>Nie musisz</strong> kupować nowego zestawu."</div></div>
+      <div class="flip-back"><div class="fb-ans">You DON'T HAVE TO buy a new set.</div><div class="fb-note">nie musisz = don't have to ✅</div></div>
+    </div>
+  </div>
+  <div class="flip-card" onclick="this.classList.toggle('flipped')">
+    <div class="flip-inner">
+      <div class="flip-front"><div class="ff-tag">Which form? 🤔</div><div class="ff-q">The LEGO instruction says: always use brick type 3001 in step 4.</div></div>
+      <div class="flip-back"><div class="fb-ans">You HAVE TO use brick 3001.</div><div class="fb-note">External rule = have to 📋</div></div>
+    </div>
+  </div>
+  <div class="flip-card" onclick="this.classList.toggle('flipped')">
+    <div class="flip-inner">
+      <div class="flip-front"><div class="ff-tag">Which form? 🧱</div><div class="ff-q">It's the last piece in the box — nobody forced you to keep it.</div></div>
+      <div class="flip-back"><div class="fb-ans">You DIDN'T HAVE TO keep it.</div><div class="fb-note">Not necessary = don't have to ✅</div></div>
+    </div>
+  </div>
+  <div class="flip-card" onclick="this.classList.toggle('flipped')">
+    <div class="flip-inner">
+      <div class="flip-front"><div class="ff-tag">Internal or external? 💭</div><div class="ff-q">A builder feels a deep personal drive to complete the Eiffel Tower set.</div></div>
+      <div class="flip-back"><div class="fb-ans">She MUST finish the Eiffel Tower!</div><div class="fb-note">Internal conviction = must 💪</div></div>
+    </div>
+  </div>
+  <div class="flip-card" onclick="this.classList.toggle('flipped')">
+    <div class="flip-inner">
+      <div class="flip-front"><div class="ff-tag">3rd person! 👤</div><div class="ff-q">"has to" or "have to" with "he"?</div></div>
+      <div class="flip-back"><div class="fb-ans">HAS TO! (3rd person singular)</div><div class="fb-note">He/She/It → HAS TO 😄</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="lego-div"><span style="font-size:1.2rem;">🧱</span></div>
+
+<!-- ═══════════ EXERCISES ═══════════ -->
+<div class="sec-head">
+  <div class="sec-brick-num" style="background:var(--lego-orange);">02</div>
+  <div class="sec-text">
+    <div class="sec-eyebrow">// Ćwiczenia — Practice Time</div>
+    <div class="sec-title">BUILD YOUR SKILLS! 🏗️</div>
+  </div>
+</div>
+
+<!-- EX 1 -->
+<div class="ex-block">
+  <div class="ex-hdr ex1-hdr">
+    <div class="ex-hdr-num">01</div>
+    <div class="ex-hdr-info">
+      <div class="ex-hdr-title">Fill in the Brick Gap! 📝</div>
+      <div class="ex-hdr-sub">Choose: must · mustn't · have to · has to · don't have to · doesn't have to · had to</div>
+    </div>
+  </div>
+  <div class="ex-body">
+
+    <div class="qn">
+      <div class="qn-label">Question 1 🚫</div>
+      <p class="qn-text">The LEGO safety guide says: children <input class="fi" data-answer="mustn't" placeholder="???"> swallow small bricks — it is extremely dangerous!</p>
+      <p class="qn-hint">💡 Wskazówka: It is forbidden. (zakaz — mustn't)</p>
+      <div class="fb" id="fb-f1"></div>
+    </div>
+
+    <div class="qn">
+      <div class="qn-label">Question 2 📋</div>
+      <p class="qn-text">The instruction manual says: you <input class="fi" data-answer="have to" placeholder="???"> connect the base plate first before adding any other bricks.</p>
+      <p class="qn-hint">💡 Wskazówka: External rule from the manual. (zewnętrzna zasada)</p>
+      <div class="fb" id="fb-f2"></div>
+    </div>
+
+    <div class="qn">
+      <div class="qn-label">Question 3 😊</div>
+      <p class="qn-text">The shop assistant said: "You <input class="fi" data-answer="don't have to" placeholder="???"> follow the instructions — you can build whatever you like!"</p>
+      <p class="qn-hint">💡 Wskazówka: It's optional — not required. (nie jest konieczne)</p>
+      <div class="fb" id="fb-f3"></div>
+    </div>
+
+    <div class="qn">
+      <div class="qn-label">Question 4 💪</div>
+      <p class="qn-text">The young builder thinks: "I <input class="fi" data-answer="must" placeholder="???"> complete the Millennium Falcon before my birthday — I feel it!" 🚀</p>
+      <p class="qn-hint">💡 Wskazówka: Deep personal conviction — from inside. (wewnętrzne przekonanie)</p>
+      <div class="fb" id="fb-f4"></div>
+    </div>
+
+    <div class="qn">
+      <div class="qn-label">Question 5 🌟</div>
+      <p class="qn-text">A master LEGO builder <input class="fi" data-answer="doesn't have to" placeholder="???"> use official sets — she designs her own creations from scratch.</p>
+      <p class="qn-hint">💡 Wskazówka: 3rd person (she), not necessary. (nie musi — 3. osoba)</p>
+      <div class="fb" id="fb-f5"></div>
+    </div>
+
+    <div class="qn">
+      <div class="qn-label">Question 6 ⏮️</div>
+      <p class="qn-text">Last week, we <input class="fi" data-answer="had to" placeholder="???"> go to three shops before finding the right LEGO Technic set!</p>
+      <p class="qn-hint">💡 Wskazówka: Past tense! MUST has no past — use HAD TO. 🇵🇱 (musieliśmy)</p>
+      <div class="fb" id="fb-f6"></div>
+    </div>
+
+    <button class="chk-btn" onclick="checkFill()">🧱 Check Answers!</button>
+  </div>
+</div>
+
+<!-- EX 2 -->
+<div class="ex-block">
+  <div class="ex-hdr ex2-hdr">
+    <div class="ex-hdr-num">02</div>
+    <div class="ex-hdr-info">
+      <div class="ex-hdr-title">Which Brick Fits? 🧠</div>
+      <div class="ex-hdr-sub">Select the correct option — only one chance!</div>
+    </div>
+  </div>
+  <div class="ex-body">
+
+    <div class="qn" id="mc1">
+      <div class="qn-label">Question 1 🧱</div>
+      <p class="qn-text">"You <strong>mustn't</strong> force LEGO bricks together." — What does this mean?</p>
+      <div class="choices">
+        <button class="cbtn" data-c="false" onclick="checkMC(this,'mc1')">It's not necessary to force the bricks.</button>
+        <button class="cbtn" data-c="true"  onclick="checkMC(this,'mc1')">Forcing the bricks is forbidden — it damages them. 🚫</button>
+        <button class="cbtn" data-c="false" onclick="checkMC(this,'mc1')">You probably won't force the bricks.</button>
+      </div>
+      <div class="fb" id="fb-mc1"></div>
+    </div>
+
+    <div class="qn" id="mc2">
+      <div class="qn-label">Question 2 😄</div>
+      <p class="qn-text">"You <strong>don't have to</strong> sort your bricks by colour." — What does this mean?</p>
+      <div class="choices">
+        <button class="cbtn" data-c="false" onclick="checkMC(this,'mc2')">Sorting by colour is not allowed.</button>
+        <button class="cbtn" data-c="true"  onclick="checkMC(this,'mc2')">Sorting is not required — it's your choice. ✅</button>
+        <button class="cbtn" data-c="false" onclick="checkMC(this,'mc2')">You will probably not sort by colour.</button>
+      </div>
+      <div class="fb" id="fb-mc2"></div>
+    </div>
+
+    <div class="qn" id="mc3">
+      <div class="qn-label">Question 3 📖</div>
+      <p class="qn-text">The official LEGO instruction booklet says you need to use baseplate 3811 in step 1. Which fits BEST?</p>
+      <div class="choices">
+        <button class="cbtn" data-c="false" onclick="checkMC(this,'mc3')">You must use the baseplate in step 1.</button>
+        <button class="cbtn" data-c="true"  onclick="checkMC(this,'mc3')">You have to use the baseplate in step 1. 📋</button>
+        <button class="cbtn" data-c="false" onclick="checkMC(this,'mc3')">You mustn't use the baseplate in step 1.</button>
+      </div>
+      <div class="fb" id="fb-mc3"></div>
+    </div>
+
+    <div class="qn" id="mc4">
+      <div class="qn-label">Question 4 💭</div>
+      <p class="qn-text">A LEGO fan has a strong personal dream to build every modular building set. Which fits BEST?</p>
+      <div class="choices">
+        <button class="cbtn" data-c="true"  onclick="checkMC(this,'mc4')">He feels he must build every modular set! 💪</button>
+        <button class="cbtn" data-c="false" onclick="checkMC(this,'mc4')">He feels he has to build every modular set.</button>
+        <button class="cbtn" data-c="false" onclick="checkMC(this,'mc4')">He feels he doesn't have to build every modular set.</button>
+      </div>
+      <div class="fb" id="fb-mc4"></div>
+    </div>
+
+    <div class="qn" id="mc5">
+      <div class="qn-label">Question 5 ✏️</div>
+      <p class="qn-text">Which sentence is grammatically CORRECT?</p>
+      <div class="choices">
+        <button class="cbtn" data-c="false" onclick="checkMC(this,'mc5')">She musts follow the instructions. ❌</button>
+        <button class="cbtn" data-c="false" onclick="checkMC(this,'mc5')">She must to follow the instructions. ❌</button>
+        <button class="cbtn" data-c="true"  onclick="checkMC(this,'mc5')">She must follow the instructions. ✅</button>
+      </div>
+      <div class="fb" id="fb-mc5"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- EX 3: SENTENCE BUILDER -->
+<div class="ex-block">
+  <div class="ex-hdr ex3-hdr">
+    <div class="ex-hdr-num">03</div>
+    <div class="ex-hdr-info">
+      <div class="ex-hdr-title">Assemble the Sentence! 🏗️ <span class="badge">Trudne!</span></div>
+      <div class="ex-hdr-sub">Click bricks in order — click a placed brick to remove it.</div>
+    </div>
+  </div>
+  <div class="ex-body">
+
+    <div class="qn" id="bq1">
+      <div class="qn-label">Question 1 🚫</div>
+      <p class="qn-hint">Make a sentence: "It is forbidden for children to put bricks in their mouth."</p>
+      <div class="word-bank" id="wb1"></div>
+      <div class="sb" id="sb1" onclick="removeWord(event,'sb1','wb1')">
+        <span id="sb1-ph" style="color:#bbb;font-size:.8rem;font-family:'Fredoka One',cursive;">Click bricks above to assemble the sentence... 🧱</span>
+      </div>
+      <button class="chk-btn" onclick="checkBuilder('bq1','sb1',['children','mustn\'t','put','bricks','in','their','mouth'])">🧱 Check!</button>
+      <div class="fb" id="fb-bq1"></div>
+    </div>
+
+    <div class="qn" id="bq2">
+      <div class="qn-label">Question 2 ❓</div>
+      <p class="qn-hint">Make a question: "Is it necessary for her to count all the pieces?"</p>
+      <div class="word-bank" id="wb2"></div>
+      <div class="sb" id="sb2" onclick="removeWord(event,'sb2','wb2')">
+        <span id="sb2-ph" style="color:#bbb;font-size:.8rem;font-family:'Fredoka One',cursive;">Click bricks above to assemble the question... 🧱</span>
+      </div>
+      <button class="chk-btn" onclick="checkBuilder('bq2','sb2',['does','she','have','to','count','all','the','pieces'])">🧱 Check!</button>
+      <div class="fb" id="fb-bq2"></div>
+    </div>
+
+    <div class="qn" id="bq3">
+      <div class="qn-label">Question 3 ⏮️</div>
+      <p class="qn-hint">Make a sentence: "It wasn't necessary for us to buy more bricks." (past)</p>
+      <div class="word-bank" id="wb3"></div>
+      <div class="sb" id="sb3" onclick="removeWord(event,'sb3','wb3')">
+        <span id="sb3-ph" style="color:#bbb;font-size:.8rem;font-family:'Fredoka One',cursive;">Click bricks above to assemble the sentence... 🧱</span>
+      </div>
+      <button class="chk-btn" onclick="checkBuilder('bq3','sb3',['we','didn\'t','have','to','buy','more','bricks'])">🧱 Check!</button>
+      <div class="fb" id="fb-bq3"></div>
+    </div>
+  </div>
+</div>
+
+<!-- EX 4: ERROR CORRECTION -->
+<div class="ex-block">
+  <div class="ex-hdr ex4-hdr">
+    <div class="ex-hdr-num">04</div>
+    <div class="ex-hdr-info">
+      <div class="ex-hdr-title">Find the Wrong Brick! 🔍 <span class="badge">Trudne!</span></div>
+      <div class="ex-hdr-sub">Each sentence has ONE mistake. Type only the corrected word(s).</div>
+    </div>
+  </div>
+  <div class="ex-body">
+
+    <div class="qn">
+      <div class="qn-label">Question 1 ✏️</div>
+      <p class="qn-text">❌ "You <span class="hl-bad">must not to force</span> the bricks together — you will break them."</p>
+      <p class="qn-hint">💡 Type the corrected phrase (replacing "must not to force"):</p>
+      <input class="fi" data-answer="must not force" placeholder="???" style="width:210px;">
+      <div class="fb" id="fb-e1"></div>
+    </div>
+
+    <div class="qn">
+      <div class="qn-label">Question 2 ✏️</div>
+      <p class="qn-text">❌ "Does she <span class="hl-bad">musts</span> follow the instruction booklet?"</p>
+      <p class="qn-hint">💡 Type the correct modal verb to replace "musts":</p>
+      <input class="fi" data-answer="have to" placeholder="???" style="width:150px;">
+      <div class="fb" id="fb-e2"></div>
+    </div>
+
+    <div class="qn">
+      <div class="qn-label">Question 3 ✏️</div>
+      <p class="qn-text">❌ "Last summer, we <span class="hl-bad">must drive</span> to Warsaw to find the limited-edition LEGO set."</p>
+      <p class="qn-hint">💡 Past tense! MUST has no past form — use HAD TO:</p>
+      <input class="fi" data-answer="had to drive" placeholder="???" style="width:180px;">
+      <div class="fb" id="fb-e3"></div>
+    </div>
+
+    <div class="qn">
+      <div class="qn-label">Question 4 ✏️</div>
+      <p class="qn-text">❌ "You <span class="hl-bad">mustn't</span> buy extra bricks — we already have enough, it's completely your choice."</p>
+      <p class="qn-hint">💡 The meaning is "not required / not necessary." Which form is correct?</p>
+      <input class="fi" data-answer="don't have to" placeholder="???" style="width:210px;">
+      <div class="fb" id="fb-e4"></div>
+    </div>
+
+    <button class="chk-btn" onclick="checkErrors()">🧱 Check Mistakes!</button>
+  </div>
+</div>
+
+<!-- ═══════════ SCORE ═══════════ -->
+<div class="score-panel" id="scorePanel">
+  <div style="font-family:'Fredoka One',cursive;font-size:.82rem;letter-spacing:.15em;color:var(--lego-red);margin-bottom:8px;position:relative;text-transform:uppercase;">🧱 Build Complete!</div>
+  <div class="score-big" id="scoreNum">0</div>
+  <div class="score-denom">out of <span id="totalPts">0</span> bricks</div>
+  <div class="score-msg" id="scoreMsg"></div>
+  <br>
+  <button class="again-btn" onclick="location.reload()">🔄 Build Again!</button>
+</div>
+
+<!-- ═══════════ CHEAT SHEET ═══════════ -->
+<div class="lego-div" style="margin-top:50px;"><span style="font-size:1.2rem;">🧱</span></div>
+<div class="sec-head">
+  <div class="sec-brick-num" style="background:var(--lego-green);">03</div>
+  <div class="sec-text">
+    <div class="sec-eyebrow">// Ściągawka — Summary</div>
+    <div class="sec-title">YOUR LEGO GRAMMAR GUIDE 📖</div>
+  </div>
+</div>
+
+<div class="cheat-grid">
+  <div class="cheat-brick cb-red">
+    <div class="cb-title">💪 MUST (positive)</div>
+    Strong personal obligation / logical deduction<br>
+    <em>"I must finish this set tonight!"</em>
+    <div class="cb-pl">🇵🇱 musieć / wewnętrzne przekonanie</div>
+  </div>
+  <div class="cheat-brick cb-black">
+    <div class="cb-title">🚫 MUSTN'T (negative)</div>
+    FORBIDDEN — prohibited, don't do it!<br>
+    <em>"You mustn't swallow small bricks."</em>
+    <div class="cb-pl">🇵🇱 nie wolno / jest zabronione</div>
+  </div>
+  <div class="cheat-brick cb-blue">
+    <div class="cb-title">📋 HAVE TO (positive)</div>
+    External obligation — rules, instructions<br>
+    <em>"You have to use the baseplate first."</em>
+    <div class="cb-pl">🇵🇱 trzeba / zewnętrzna zasada</div>
+  </div>
+  <div class="cheat-brick cb-green">
+    <div class="cb-title">✅ DON'T HAVE TO (negative)</div>
+    NOT necessary — optional, your choice<br>
+    <em>"You don't have to sort by colour."</em>
+    <div class="cb-pl">🇵🇱 nie trzeba / nie jest konieczne</div>
+  </div>
+</div>
+
+<div class="tip-card" style="background:var(--lego-yellow);border:3px solid rgba(0,0,0,0.15);box-shadow:0 5px 0 rgba(0,0,0,0.2);padding:18px 22px;border-radius:12px;">
+  <strong>🧱 THE GOLDEN BRICK RULE — ZŁOTA ZASADA:</strong>
+  "You <em>mustn't</em> force the bricks together." → It will break them. FORBIDDEN! 🚫<br>
+  "You <em>don't have to</em> force them together." → It's optional. Use the right-sized bricks. ✅<br><br>
+  One destroys your LEGO set. The other is just a building tip. 🧱 Know the difference!<br><br>
+  ⏮ And remember: <strong>HAD TO</strong> = past tense of MUST and HAVE TO.<br>
+  ❌ "Yesterday I must build it." &nbsp;→&nbsp; ✅ "Yesterday I <strong>had to</strong> build it." 🇵🇱 (musiałem)
+</div>
+
+<div style="text-align:center;margin-top:44px;opacity:.3;font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:.28em;color:var(--lego-black);">
+  🧱 LEGO GRAMMAR FACTORY ✦ MUST &amp; HAVE TO ✦ B1 ✦ ENGLISH / POLSKI ✦ ZBUDUJ SWÓJ ANGIELSKI! 🧱
+</div>
+
+</div><!-- /page -->
+
+<script>
+// ── Builders data ──
+const bData = {
+  wb1: ["children","mustn't","put","bricks","in","their","mouth","have","do"],
+  wb2: ["does","she","have","to","count","all","the","pieces","must"],
+  wb3: ["we","didn't","have","to","buy","more","bricks","must","has"],
+};
+
+const shuffle = a => [...a].sort(()=>Math.random()-.5);
+
+['wb1','wb2','wb3'].forEach(id=>{
+  const cont=document.getElementById(id);
+  shuffle(bData[id]).forEach(w=>{
+    const c=document.createElement('div');
+    c.className='wchip'; c.textContent=w; c.dataset.w=w;
+    c.onclick=()=>addW(c,id.replace('wb','sb'),id);
+    cont.appendChild(c);
+  });
+});
+
+function addW(chip,sbId,wbId){
+  if(chip.classList.contains('used')) return;
+  chip.classList.add('used');
+  const sb=document.getElementById(sbId);
+  const ph=document.getElementById(sbId+'-ph');
+  if(ph) ph.style.display='none';
+  const s=document.createElement('span');
+  s.className='bw'; s.textContent=chip.dataset.w; s.dataset.w=chip.dataset.w;
+  sb.appendChild(s);
+}
+
+function removeWord(e,sbId,wbId){
+  const s=e.target.closest('.bw'); if(!s) return;
+  const w=s.dataset.w; s.remove();
+  document.querySelectorAll('#'+wbId+' .wchip').forEach(c=>{
+    if(c.dataset.w===w && c.classList.contains('used')) c.classList.remove('used');
+  });
+  const sb=document.getElementById(sbId);
+  const ph=document.getElementById(sbId+'-ph');
+  if(!sb.querySelectorAll('.bw').length && ph) ph.style.display='';
+}
+
+// ── Scoring ──
+let correct=0, answered=0;
+const TOTAL=19;
+
+function tick(ok){
+  answered++; if(ok) correct++;
+  document.getElementById('progFill').style.width=(answered/TOTAL*100)+'%';
+  document.getElementById('scoreDisplay').textContent=correct+' / '+TOTAL;
+  if(answered>=TOTAL) showScore();
+}
+
+// ── Fill in ──
+function checkFill(){
+  document.querySelectorAll('input.fi[data-answer]').forEach((inp,i)=>{
+    if(inp.dataset.checked) return;
+    inp.dataset.checked='1';
+    const ans=inp.value.trim().toLowerCase().replace(/'/g,"'");
+    const exp=inp.dataset.answer.toLowerCase();
+    const fb=document.getElementById('fb-f'+(i+1));
+    inp.disabled=true;
+    const ok=ans===exp||ans===exp.replace(/'/g,"'");
+    inp.classList.add(ok?'ok':'err');
+    if(fb){fb.textContent=ok?'✅ Correct! '+quip():'❌ Answer: '+inp.dataset.answer; fb.className='fb '+(ok?'ok':'err');}
+    tick(ok);
+  });
+}
+
+// ── MC ──
+function checkMC(btn,qId){
+  const q=document.getElementById(qId); if(q.dataset.done) return;
+  q.dataset.done='1';
+  q.querySelectorAll('.cbtn').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fb-'+qId);
+  const ok=btn.dataset.c==='true';
+  btn.classList.add(ok?'ok':'err');
+  if(!ok) q.querySelectorAll('[data-c="true"]').forEach(b=>b.classList.add('ok'));
+  if(fb){fb.textContent=ok?'✅ Brilliant! '+quip():'❌ Look for the green brick!'; fb.className='fb '+(ok?'ok':'err');}
+  tick(ok);
+}
+
+// ── Builder ──
+function checkBuilder(qId,sbId,exp){
+  const q=document.getElementById(qId); if(q.dataset.done) return;
+  q.dataset.done='1';
+  const built=Array.from(document.getElementById(sbId).querySelectorAll('.bw')).map(s=>s.textContent.toLowerCase().replace(/'/g,"'"));
+  const norm=exp.map(w=>w.toLowerCase().replace(/'/g,"'"));
+  const fb=document.getElementById('fb-'+qId);
+  const ok=built.join(' ')===norm.join(' ');
+  if(fb){fb.textContent=ok?'✅ Perfect sentence! '+quip():'❌ Answer: '+exp.join(' '); fb.className='fb '+(ok?'ok':'err');}
+  tick(ok);
+}
+
+// ── Error correction ──
+function checkErrors(){
+  const answers=['must not force','have to','had to drive',"don't have to"];
+  Array.from(document.querySelectorAll('input.fi')).slice(-4).forEach((inp,i)=>{
+    if(inp.dataset.checked) return;
+    inp.dataset.checked='1';
+    const ans=inp.value.trim().toLowerCase().replace(/'/g,"'");
+    const exp=answers[i].toLowerCase().replace(/'/g,"'");
+    const fb=document.getElementById('fb-e'+(i+1));
+    inp.disabled=true;
+    const ok=ans===exp;
+    inp.classList.add(ok?'ok':'err');
+    if(fb){fb.textContent=ok?'✅ Correct! '+quip():'❌ Answer: '+answers[i]; fb.className='fb '+(ok?'ok':'err');}
+    tick(ok);
+  });
+}
+
+function showScore(){
+  const p=document.getElementById('scorePanel');
+  p.style.display='block';
+  document.getElementById('scoreNum').textContent=correct;
+  document.getElementById('totalPts').textContent=TOTAL;
+  const pct=correct/TOTAL*100;
+  let msg;
+  if(pct===100) msg="🧱🏆 Idealnie! Perfect score! You've built the Master Builder Grammar Set! Every brick in place! NIESAMOWITE!";
+  else if(pct>=75) msg="🧱 Świetnie! Great build! A few bricks are in the wrong place — check mustn't vs. don't have to and you'll complete the set!";
+  else if(pct>=50) msg="🧱 Dobra robota! Good start! Some bricks still need sorting — go back over the lesson and try again. Nie poddawaj się!";
+  else msg="🧱 Spróbuj jeszcze raz! Don't give up! Even LEGO Master Builders follow the instructions carefully at first. Read the lesson again — you've got this! 💪";
+  document.getElementById('scoreMsg').textContent=msg;
+  p.scrollIntoView({behavior:'smooth'});
+}
+
+function quip(){
+  const q=["LEGO Master! 🧱","Fantastic build! 🏰","Perfect fit! ✅",
+    "That brick is in exactly the right place! 🎯","Zbudowane idealnie! 🧱",
+    "Master Builder move! ⭐","Swoim klockom możesz być dumny! 🇵🇱",
+    "Click! Perfect connection! 🧱"];
+  return q[Math.floor(Math.random()*q.length)];
+}
+</script>
+</body>
+</html>

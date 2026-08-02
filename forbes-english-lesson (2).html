@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English — Business Conditionals B2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --forest: #1B3A2D;
+  --forest-mid: #254D3C;
+  --forest-light: #2E6B52;
+  --gold: #C9A84C;
+  --gold-light: #E8C97A;
+  --gold-pale: #F5EDD6;
+  --cream: #FAF7F0;
+  --cream-dark: #F0EBE0;
+  --text-dark: #1A2B22;
+  --text-mid: #3D5247;
+  --text-muted: #7A9085;
+  --white: #FFFFFF;
+  --correct: #2E7D52;
+  --correct-bg: #E8F5EE;
+  --wrong: #B5431A;
+  --wrong-bg: #FBF0EC;
+  --border: rgba(27,58,45,0.12);
+  --shadow: 0 4px 24px rgba(27,58,45,0.10);
+  --shadow-lg: 0 12px 48px rgba(27,58,45,0.18);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--text-dark);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* BACKGROUND TEXTURE */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 15% 10%, rgba(201,168,76,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 85% 90%, rgba(27,58,45,0.07) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.page-wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+/* ── HEADER ── */
+header {
+  text-align: center;
+  padding: 2.5rem 0 2rem;
+  animation: fadeDown 0.6s ease both;
+}
+
+.logo-svg-wrap {
+  display: inline-block;
+  margin-bottom: 1.2rem;
+}
+
+.lesson-meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 0.8rem;
+}
+
+.meta-tag {
+  background: var(--forest);
+  color: var(--gold-light);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  padding: 4px 14px;
+  border-radius: 2px;
+}
+
+.meta-tag.outline {
+  background: transparent;
+  border: 1px solid var(--forest);
+  color: var(--forest);
+}
+
+/* ── SCORE BAR ── */
+.score-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--forest);
+  border-radius: 10px;
+  padding: 0.9rem 1.4rem;
+  margin-bottom: 1.8rem;
+  gap: 1.2rem;
+  box-shadow: var(--shadow);
+  animation: fadeDown 0.6s 0.1s ease both;
+}
+
+.score-stat {
+  text-align: center;
+  color: var(--cream);
+}
+.score-stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--gold-light);
+  line-height: 1;
+}
+.score-stat-label {
+  font-size: 10px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.progress-container {
+  flex: 1;
+}
+.progress-track {
+  background: rgba(255,255,255,0.1);
+  border-radius: 99px;
+  height: 5px;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+.progress-fill {
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+}
+.progress-text {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+/* ── ACTIVITY HEADER ── */
+.activity-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1.4rem;
+  animation: fadeDown 0.5s ease both;
+}
+.activity-number {
+  width: 36px; height: 36px;
+  background: var(--gold);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--forest);
+  flex-shrink: 0;
+}
+.activity-type {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.activity-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--forest);
+  line-height: 1.3;
+}
+
+/* ── QUESTION CARD ── */
+.q-card {
+  background: var(--white);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  padding: 1.6rem 1.8rem;
+  margin-bottom: 1.2rem;
+  box-shadow: var(--shadow);
+  animation: slideUp 0.4s ease both;
+}
+
+.q-stem {
+  font-size: 15.5px;
+  color: var(--text-dark);
+  margin-bottom: 1.2rem;
+  line-height: 1.65;
+  font-weight: 400;
+}
+
+.q-stem strong {
+  font-weight: 600;
+  color: var(--forest);
+}
+
+.q-stem .blank {
+  display: inline-block;
+  min-width: 90px;
+  border-bottom: 2px solid var(--gold);
+  text-align: center;
+  font-weight: 600;
+  color: var(--forest);
+  padding: 0 8px;
+}
+
+/* ── OPTIONS (MC) ── */
+.options-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.opt-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  background: var(--cream);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  cursor: pointer;
+  text-align: left;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14.5px;
+  color: var(--text-dark);
+  transition: all 0.18s ease;
+  line-height: 1.4;
+}
+
+.opt-btn:hover:not(:disabled) {
+  border-color: var(--gold);
+  background: var(--gold-pale);
+  transform: translateX(3px);
+}
+
+.opt-letter {
+  width: 24px; height: 24px;
+  background: var(--forest);
+  color: var(--cream);
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+  transition: all 0.18s;
+}
+
+.opt-btn.correct {
+  background: var(--correct-bg);
+  border-color: var(--correct);
+}
+.opt-btn.correct .opt-letter { background: var(--correct); }
+
+.opt-btn.wrong {
+  background: var(--wrong-bg);
+  border-color: var(--wrong);
+}
+.opt-btn.wrong .opt-letter { background: var(--wrong); }
+
+.opt-btn:disabled { cursor: default; transform: none; }
+
+/* ── FILL IN THE BLANK ── */
+.fill-input {
+  border: none;
+  border-bottom: 2.5px solid var(--gold);
+  background: transparent;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--forest);
+  padding: 2px 8px 4px;
+  width: 140px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.fill-input:focus { border-bottom-color: var(--forest); }
+.fill-input.correct-input { border-bottom-color: var(--correct); color: var(--correct); }
+.fill-input.wrong-input { border-bottom-color: var(--wrong); color: var(--wrong); }
+
+/* ── DRAG AND DROP ── */
+.dnd-sentence {
+  font-size: 15.5px;
+  line-height: 2.2;
+  color: var(--text-dark);
+  margin-bottom: 1.2rem;
+}
+
+.drop-zone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+  height: 34px;
+  border: 2px dashed var(--gold);
+  border-radius: 6px;
+  background: var(--gold-pale);
+  vertical-align: middle;
+  margin: 0 4px;
+  padding: 0 10px;
+  cursor: default;
+  font-weight: 600;
+  color: var(--forest);
+  font-size: 14px;
+  transition: all 0.2s;
+}
+.drop-zone.drag-over {
+  background: var(--gold-light);
+  border-color: var(--forest);
+  transform: scale(1.04);
+}
+.drop-zone.filled {
+  border-style: solid;
+  background: var(--forest);
+  color: var(--gold-light);
+}
+.drop-zone.correct-zone {
+  border-color: var(--correct);
+  background: var(--correct-bg);
+  color: var(--correct);
+  border-style: solid;
+}
+.drop-zone.wrong-zone {
+  border-color: var(--wrong);
+  background: var(--wrong-bg);
+  color: var(--wrong);
+  border-style: solid;
+}
+
+.word-pool {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 1rem;
+  padding: 1rem;
+  background: var(--cream-dark);
+  border-radius: 8px;
+  min-height: 54px;
+}
+
+.drag-chip {
+  background: var(--forest);
+  color: var(--gold-light);
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: grab;
+  user-select: none;
+  transition: all 0.15s;
+  border: 1.5px solid transparent;
+}
+.drag-chip:hover { background: var(--forest-light); transform: translateY(-2px); }
+.drag-chip:active { cursor: grabbing; }
+.drag-chip.dragging { opacity: 0.4; }
+.drag-chip.used { opacity: 0.3; pointer-events: none; }
+
+/* ── FEEDBACK ── */
+.feedback {
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-top: 12px;
+  display: none;
+}
+.feedback.show { display: block; animation: slideUp 0.3s ease; }
+.feedback.correct { background: var(--correct-bg); color: #1B5E3B; border-left: 4px solid var(--correct); }
+.feedback.wrong { background: var(--wrong-bg); color: #7A2A0E; border-left: 4px solid var(--wrong); }
+.feedback-icon { font-weight: 700; margin-right: 6px; }
+
+/* ── BUTTONS ── */
+.btn-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 1.2rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  background: var(--forest);
+  color: var(--gold-light);
+  border: none;
+  border-radius: 8px;
+  padding: 11px 26px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+  transition: all 0.18s;
+}
+.btn-primary:hover { background: var(--forest-light); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(27,58,45,0.2); }
+.btn-primary:disabled { background: #c5c9c7; color: #888; cursor: default; transform: none; box-shadow: none; }
+
+.btn-next {
+  background: var(--gold);
+  color: var(--forest);
+  border: none;
+  border-radius: 8px;
+  padding: 11px 26px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: none;
+  transition: all 0.18s;
+}
+.btn-next:hover { background: var(--gold-light); transform: translateY(-1px); }
+.btn-next.show { display: inline-block; animation: fadeIn 0.3s ease; }
+
+/* ── SECTION DIVIDER ── */
+.section-div {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2.5rem 0 1.8rem;
+  animation: fadeIn 0.5s ease both;
+}
+.section-div-line { flex: 1; height: 1px; background: var(--border); }
+.section-div-text {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* ── FINAL SCREEN ── */
+.final-screen {
+  display: none;
+  text-align: center;
+  padding: 3rem 2rem;
+  background: var(--white);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  animation: slideUp 0.5s ease both;
+}
+.final-screen.show { display: block; }
+
+.final-grade {
+  font-family: 'Playfair Display', serif;
+  font-size: 64px;
+  font-weight: 900;
+  color: var(--forest);
+  line-height: 1;
+  margin: 1rem 0 0.4rem;
+}
+.final-grade span { color: var(--gold); }
+.final-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.final-message {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-style: italic;
+  color: var(--forest);
+  margin: 1.5rem 0 0.6rem;
+}
+.final-sub {
+  font-size: 15px;
+  color: var(--text-mid);
+  max-width: 420px;
+  margin: 0 auto 2rem;
+  line-height: 1.7;
+}
+.final-bars {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 1.2rem 0;
+}
+.final-bar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+.final-bar-track {
+  width: 28px;
+  height: 80px;
+  background: var(--cream-dark);
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+.final-bar-fill {
+  width: 100%;
+  background: var(--gold);
+  border-radius: 4px;
+  transition: height 0.8s ease;
+}
+.final-bar-label { font-size: 10px; color: var(--text-muted); font-weight: 500; letter-spacing: 0.3px; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+
+/* ── HIDDEN ── */
+.hidden { display: none !important; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 520px) {
+  .score-bar { flex-wrap: wrap; }
+  .final-grade { font-size: 48px; }
+  .q-card { padding: 1.2rem 1.2rem; }
+}
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo-svg-wrap">
+      <svg width="300" height="88" viewBox="0 0 300 88" xmlns="http://www.w3.org/2000/svg">
+        <text x="4" y="52" font-family="'Playfair Display', Georgia, serif" font-size="54" font-weight="700" fill="#1B3A2D" letter-spacing="-1">Forbes</text>
+        <line x1="4" y1="60" x2="296" y2="60" stroke="#C9A84C" stroke-width="1.5"/>
+        <text x="4" y="83" font-family="'DM Sans', Arial, sans-serif" font-size="27" font-weight="700" fill="#C9A84C" letter-spacing="7">ENGLISH</text>
+      </svg>
+    </div>
+    <div class="lesson-meta">
+      <span class="meta-tag">Level B2</span>
+      <span class="meta-tag outline">Business Conditionals</span>
+      <span class="meta-tag outline">3 Activities · 15 Questions</span>
+    </div>
+  </header>
+
+  <!-- SCORE BAR -->
+  <div class="score-bar">
+    <div class="score-stat">
+      <div class="score-stat-num" id="score-display">0</div>
+      <div class="score-stat-label">Score</div>
+    </div>
+    <div class="progress-container">
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+      <div class="progress-text" id="progress-text">Question 1 of 15</div>
+    </div>
+    <div class="score-stat">
+      <div class="score-stat-num" id="correct-display">0</div>
+      <div class="score-stat-label">Correct</div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════
+       ACTIVITY 1 — MULTIPLE CHOICE
+  ════════════════════════════════════ -->
+  <div id="act1">
+    <div class="activity-header">
+      <div class="activity-number">1</div>
+      <div>
+        <div class="activity-type">Activity One</div>
+        <div class="activity-title">Multiple Choice — Choose the Correct Conditional</div>
+      </div>
+    </div>
+
+    <!-- Q1 -->
+    <div class="q-card" id="q1-card">
+      <div class="q-stem">If the board <strong>approves</strong> the merger, the company ________ its market share significantly.</div>
+      <div class="options-grid">
+        <button class="opt-btn" onclick="checkMC(1, this, false, 'Close — but "will be expanding" is more natural in a conditional result. We use the simple form "will expand" for factual future outcomes.')">
+          <span class="opt-letter">A</span><span>would be expanding</span>
+        </button>
+        <button class="opt-btn" onclick="checkMC(1, this, false, 'This is past simple — it doesn\'t match a real conditional about a future possibility.')">
+          <span class="opt-letter">B</span><span>expanded significantly</span>
+        </button>
+        <button class="opt-btn" onclick="checkMC(1, this, true, 'Correct! This is the First Conditional (real/likely future). If + present simple → will + bare infinitive. The approval is realistic, so we use "will expand".')">
+          <span class="opt-letter">C</span><span>will expand noticeably</span>
+        </button>
+        <button class="opt-btn" onclick="checkMC(1, this, false, 'This uses Second Conditional structure (would + infinitive), which implies the approval is unlikely or hypothetical — contradicting "approves" in the if-clause.')">
+          <span class="opt-letter">D</span><span>would expand substantially</span>
+        </button>
+      </div>
+      <div class="feedback" id="q1-fb"></div>
+      <div class="btn-row">
+        <button class="btn-next show" id="q1-next" onclick="nextQ(1)" style="display:none">Next →</button>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-card hidden" id="q2-card">
+      <div class="q-stem">________ we had invested in that technology earlier, we would not be facing these supply chain issues today.</div>
+      <div class="options-grid">
+        <button class="opt-btn" onclick="checkMC(2, this, false, '"Although" introduces a contrast, not a conditional. It doesn\'t change the meaning of the clause to express regret about a past action.')">
+          <span class="opt-letter">A</span><span>Although</span>
+        </button>
+        <button class="opt-btn" onclick="checkMC(2, this, true, 'Correct! "Had we invested" is an inverted Third Conditional — a formal structure used in business writing. It equals "If we had invested..." and expresses a past regret with present consequence.')">
+          <span class="opt-letter">B</span><span>Had</span>
+        </button>
+        <button class="opt-btn" onclick="checkMC(2, this, false, '"If" is grammatically possible here (If we had invested), but the sentence as written starts with the verb — indicating inversion. Adding "If" would make the sentence ungrammatical in this form.')">
+          <span class="opt-letter">C</span><span>If</span>
+        </button>
+        <button class="opt-btn" onclick="checkMC(2, this, false, '"Provided" introduces a condition but requires "that" and a present tense: "Provided that we invest..." It cannot be used with past perfect here.')">
+          <span class="opt-letter">D</span><span>Provided</span>
+        </button>
+      </div>
+      <div class="feedback" id="q2-fb"></div>
+      <div class="btn-row">
+        <button class="btn-next" id="q2-next" onclick="nextQ(2)" style="display:none">Next →</button>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-card hidden" id="q3-card">
+      <div class="q-stem">If our competitors <strong>were to reduce</strong> their prices by 20%, our sales division ________ a significant response strategy.</div>
+      <div class="options-grid">
+        <button class="opt-btn" onclick="checkMC(3, this, false, 'First Conditional "will need" implies a likely event. But "were to reduce" signals a hypothetical or unlikely scenario, requiring Second Conditional in the result clause.')">
+          <span class="opt-letter">A</span><span>will certainly need</span>
+        </button>
+        <button class="opt-btn" onclick="checkMC(3, this, false, '"Needed" is past simple. It doesn\'t pair correctly with "were to reduce" — a formal hypothetical structure requiring "would + bare infinitive" in the result.')">
+          <span class="opt-letter">B</span><span>certainly needed</span>
+        </button>
+        <button class="opt-btn" onclick="checkMC(3, this, true, 'Correct! "Were to + infinitive" is a formal hypothetical structure. It pairs with "would + bare infinitive" in the result clause. This is a formal Second Conditional variant common in business English.')">
+          <span class="opt-letter">C</span><span>would certainly need</span>
+        </button>
+        <button class="opt-btn" onclick="checkMC(3, this, false, '"Would have needed" forms a Third Conditional result (past unreal), but the if-clause is hypothetical present/future — not past. The tenses don\'t align.')">
+          <span class="opt-letter">D</span><span>would certainly have needed</span>
+        </button>
+      </div>
+      <div class="feedback" id="q3-fb"></div>
+      <div class="btn-row">
+        <button class="btn-next" id="q3-next" onclick="nextQ(3)" style="display:none">Next →</button>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="q-card hidden" id="q4-card">
+      <div class="q-stem">Unless the client ________ by Friday, we will cancel the contract automatically.</div>
+      <div class="options-grid">
+        <button class="opt-btn" onclick="checkMC(4, this, false, '"Would confirm" is Second Conditional structure. "Unless" introduces a real condition here (tied to "will cancel"), so we need present simple — not conditional mood.')">
+          <span class="opt-letter">A</span><span>would confirm payment</span>
+        </button>
+        <button class="opt-btn" onclick="checkMC(4, this, false, '"Had confirmed" is past perfect — used in Third Conditionals. This sentence refers to a future condition, not a past one.')">
+          <span class="opt-letter">B</span><span>had confirmed payment</span>
+        </button>
+        <button class="opt-btn" onclick="checkMC(4, this, true, 'Correct! "Unless" = "if...not". It introduces a real future condition, so we use present simple in the unless-clause and will + infinitive in the result. "Confirms payment" is correct.')">
+          <span class="opt-letter">C</span><span>confirms payment promptly</span>
+        </button>
+        <button class="opt-btn" onclick="checkMC(4, this, false, '"Will confirm" is incorrect in conditional clauses. In English, we don\'t use "will" after "unless/if" in the condition clause — we use present simple.')">
+          <span class="opt-letter">D</span><span>will confirm payment</span>
+        </button>
+      </div>
+      <div class="feedback" id="q4-fb"></div>
+      <div class="btn-row">
+        <button class="btn-next" id="q4-next" onclick="nextQ(4)" style="display:none">Next →</button>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="q-card hidden" id="q5-card">
+      <div class="q-stem">If the CEO <strong>had announced</strong> the restructuring plan last quarter, the board ________ more time to prepare a response.</div>
+      <div class="options-grid">
+        <button class="opt-btn" onclick="checkMC(5, this, true, 'Correct! This is the Third Conditional — past unreal. If + past perfect → would have + past participle. The announcement didn\'t happen, so the board didn\'t get the time. "Would have had" is correct.')">
+          <span class="opt-letter">A</span><span>would have had enough</span>
+        </button>
+        <button class="opt-btn" onclick="checkMC(5, this, false, '"Would have" alone is incomplete — it needs a past participle ("had") to complete the Third Conditional result clause.')">
+          <span class="opt-letter">B</span><span>would have enough time</span>
+        </button>
+        <button class="opt-btn" onclick="checkMC(5, this, false, '"Will have had" is future perfect — not used in Third Conditionals. The Third Conditional result uses "would have + past participle".')">
+          <span class="opt-letter">C</span><span>will have had enough</span>
+        </button>
+        <button class="opt-btn" onclick="checkMC(5, this, false, '"Had had" is past perfect — used in the if-clause, not the result clause. The result of a Third Conditional requires "would have + past participle".')">
+          <span class="opt-letter">D</span><span>had had sufficient time</span>
+        </button>
+      </div>
+      <div class="feedback" id="q5-fb"></div>
+      <div class="btn-row">
+        <button class="btn-next" id="q5-next" onclick="nextQ(5)" style="display:none">Next →</button>
+      </div>
+    </div>
+  </div><!-- /act1 -->
+
+  <!-- ════════════════════════════════════
+       ACTIVITY 2 — FILL IN THE BLANK
+  ════════════════════════════════════ -->
+  <div id="act2" class="hidden">
+    <div class="section-div">
+      <div class="section-div-line"></div>
+      <div class="section-div-text">Activity Two</div>
+      <div class="section-div-line"></div>
+    </div>
+    <div class="activity-header">
+      <div class="activity-number">2</div>
+      <div>
+        <div class="activity-type">Activity Two</div>
+        <div class="activity-title">Fill in the Blank — Complete the Conditional Sentence</div>
+      </div>
+    </div>
+    <p style="font-size:13.5px;color:var(--text-muted);margin-bottom:1.2rem;line-height:1.6;">Type the correct form of the verb in brackets to complete each sentence. Focus on tense and form.</p>
+
+    <!-- Q6 -->
+    <div class="q-card" id="q6-card">
+      <div class="q-stem">
+        Provided that all stakeholders <input class="fill-input" id="q6-in" placeholder="agree" autocomplete="off"> (agree) to the revised terms, the contract will be signed by end of month.
+      </div>
+      <div class="feedback" id="q6-fb"></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="checkFill(6, ['agree', 'agrees'], 'agree / agrees', 'Correct! "Provided that" introduces a real condition — use present simple. Both "agree" (plural subject implied) and "agrees" (singular) are acceptable here.')">Check Answer</button>
+        <button class="btn-next" id="q6-next" onclick="nextQ(6)" style="display:none">Next →</button>
+      </div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="q-card hidden" id="q7-card">
+      <div class="q-stem">
+        If the development team <input class="fill-input" id="q7-in" placeholder="had started" autocomplete="off"> (start) testing earlier, we would not have missed the product launch deadline.
+      </div>
+      <div class="feedback" id="q7-fb"></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="checkFill(7, ['had started'], 'had started', 'Correct! Third Conditional: if + past perfect → would have + past participle. The testing didn\'t start early — this is an imagined past scenario.')">Check Answer</button>
+        <button class="btn-next" id="q7-next" onclick="nextQ(7)" style="display:none">Next →</button>
+      </div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="q-card hidden" id="q8-card">
+      <div class="q-stem">
+        If I <input class="fill-input" id="q8-in" placeholder="were" autocomplete="off"> (be) in your position, I would renegotiate the terms before signing anything.
+      </div>
+      <div class="feedback" id="q8-fb"></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="checkFill(8, ['were', 'was'], 'were (or was)', 'Correct! Second Conditional: if + past simple → would + infinitive. Note that "were" is the formal/subjunctive form preferred in business writing, though "was" is also accepted.')">Check Answer</button>
+        <button class="btn-next" id="q8-next" onclick="nextQ(8)" style="display:none">Next →</button>
+      </div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="q-card hidden" id="q9-card">
+      <div class="q-stem">
+        Should the auditors <input class="fill-input" id="q9-in" placeholder="identify" autocomplete="off"> (identify) any discrepancies, the finance director will be notified immediately.
+      </div>
+      <div class="feedback" id="q9-fb"></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="checkFill(9, ['identify'], 'identify', 'Correct! "Should + subject + base verb" is an inverted First Conditional — a formal structure used in legal and business contexts. It equals "If the auditors identify...".')">Check Answer</button>
+        <button class="btn-next" id="q9-next" onclick="nextQ(9)" style="display:none">Next →</button>
+      </div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="q-card hidden" id="q10-card">
+      <div class="q-stem">
+        The project <input class="fill-input" id="q10-in" placeholder="would have been" autocomplete="off"> (be) completed on time if the supplier had delivered the components as scheduled.
+      </div>
+      <div class="feedback" id="q10-fb"></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="checkFill(10, ['would have been'], 'would have been', 'Correct! Third Conditional result clause: would have + past participle. The supplier didn\'t deliver on time, so the project wasn\'t completed — this imagines an alternative past.')">Check Answer</button>
+        <button class="btn-next" id="q10-next" onclick="nextQ(10)" style="display:none">Next →</button>
+      </div>
+    </div>
+  </div><!-- /act2 -->
+
+  <!-- ════════════════════════════════════
+       ACTIVITY 3 — DRAG AND DROP
+  ════════════════════════════════════ -->
+  <div id="act3" class="hidden">
+    <div class="section-div">
+      <div class="section-div-line"></div>
+      <div class="section-div-text">Activity Three</div>
+      <div class="section-div-line"></div>
+    </div>
+    <div class="activity-header">
+      <div class="activity-number">3</div>
+      <div>
+        <div class="activity-type">Activity Three</div>
+        <div class="activity-title">Drag & Drop — Complete the Business Email Extracts</div>
+      </div>
+    </div>
+    <p style="font-size:13.5px;color:var(--text-muted);margin-bottom:1.2rem;line-height:1.6;">Drag the correct phrase from the word pool into the gap to complete each professional email extract.</p>
+
+    <!-- Q11 -->
+    <div class="q-card" id="q11-card">
+      <div class="q-stem">
+        Dear Mr. Harrington, <br><br>
+        We are writing to confirm that <span class="drop-zone" id="dz-11" ondragover="allowDrop(event)" ondrop="dropWord(event,'dz-11',11)">&nbsp;&nbsp;drop here&nbsp;&nbsp;</span> the new warehouse capacity, your delivery lead times will decrease by approximately 30%.
+      </div>
+      <div class="word-pool" id="pool-11">
+        <span class="drag-chip" draggable="true" data-word="once we expand" ondragstart="dragStart(event,'once we expand','pool-11')" onclick="tapChip(this,'dz-11',11)">once we expand</span>
+        <span class="drag-chip" draggable="true" data-word="if we had expanded" ondragstart="dragStart(event,'if we had expanded','pool-11')" onclick="tapChip(this,'dz-11',11)">if we had expanded</span>
+        <span class="drag-chip" draggable="true" data-word="should we expanding" ondragstart="dragStart(event,'should we expanding','pool-11')" onclick="tapChip(this,'dz-11',11)">should we expanding</span>
+        <span class="drag-chip" draggable="true" data-word="unless we expand" ondragstart="dragStart(event,'unless we expand','pool-11')" onclick="tapChip(this,'dz-11',11)">unless we expand</span>
+      </div>
+      <div class="feedback" id="q11-fb"></div>
+      <div class="btn-row">
+        <button class="btn-next" id="q11-next" onclick="nextQ(11)" style="display:none">Next →</button>
+      </div>
+    </div>
+
+    <!-- Q12 -->
+    <div class="q-card hidden" id="q12-card">
+      <div class="q-stem">
+        Please note that <span class="drop-zone" id="dz-12" ondragover="allowDrop(event)" ondrop="dropWord(event,'dz-12',12)">&nbsp;&nbsp;drop here&nbsp;&nbsp;</span> the invoice by the 15th, a late payment fee of 2% will be automatically applied to your account.
+      </div>
+      <div class="word-pool" id="pool-12">
+        <span class="drag-chip" draggable="true" data-word="you do not settle" ondragstart="dragStart(event,'you do not settle','pool-12')" onclick="tapChip(this,'dz-12',12)">you do not settle</span>
+        <span class="drag-chip" draggable="true" data-word="you would not settle" ondragstart="dragStart(event,'you would not settle','pool-12')" onclick="tapChip(this,'dz-12',12)">you would not settle</span>
+        <span class="drag-chip" draggable="true" data-word="you had not settled" ondragstart="dragStart(event,'you had not settled','pool-12')" onclick="tapChip(this,'dz-12',12)">you had not settled</span>
+        <span class="drag-chip" draggable="true" data-word="you will not settle" ondragstart="dragStart(event,'you will not settle','pool-12')" onclick="tapChip(this,'dz-12',12)">you will not settle</span>
+      </div>
+      <div class="feedback" id="q12-fb"></div>
+      <div class="btn-row">
+        <button class="btn-next" id="q12-next" onclick="nextQ(12)" style="display:none">Next →</button>
+      </div>
+    </div>
+
+    <!-- Q13 -->
+    <div class="q-card hidden" id="q13-card">
+      <div class="q-stem">
+        We would strongly recommend reconsidering the timeline — <span class="drop-zone" id="dz-13" ondragover="allowDrop(event)" ondrop="dropWord(event,'dz-13',13)">&nbsp;&nbsp;drop here&nbsp;&nbsp;</span> at this pace, we risk alienating key stakeholders before the launch.
+      </div>
+      <div class="word-pool" id="pool-13">
+        <span class="drag-chip" draggable="true" data-word="if we continue" ondragstart="dragStart(event,'if we continue','pool-13')" onclick="tapChip(this,'dz-13',13)">if we continue</span>
+        <span class="drag-chip" draggable="true" data-word="if we continued" ondragstart="dragStart(event,'if we continued','pool-13')" onclick="tapChip(this,'dz-13',13)">if we continued</span>
+        <span class="drag-chip" draggable="true" data-word="if we will continue" ondragstart="dragStart(event,'if we will continue','pool-13')" onclick="tapChip(this,'dz-13',13)">if we will continue</span>
+        <span class="drag-chip" draggable="true" data-word="if we had continued" ondragstart="dragStart(event,'if we had continued','pool-13')" onclick="tapChip(this,'dz-13',13)">if we had continued</span>
+      </div>
+      <div class="feedback" id="q13-fb"></div>
+      <div class="btn-row">
+        <button class="btn-next" id="q13-next" onclick="nextQ(13)" style="display:none">Next →</button>
+      </div>
+    </div>
+
+    <!-- Q14 -->
+    <div class="q-card hidden" id="q14-card">
+      <div class="q-stem">
+        <span class="drop-zone" id="dz-14" ondragover="allowDrop(event)" ondrop="dropWord(event,'dz-14',14)">&nbsp;&nbsp;drop here&nbsp;&nbsp;</span> required, our technical team is available to provide a full system demonstration at your offices.
+      </div>
+      <div class="word-pool" id="pool-14">
+        <span class="drag-chip" draggable="true" data-word="Should this be" ondragstart="dragStart(event,'Should this be','pool-14')" onclick="tapChip(this,'dz-14',14)">Should this be</span>
+        <span class="drag-chip" draggable="true" data-word="If this will be" ondragstart="dragStart(event,'If this will be','pool-14')" onclick="tapChip(this,'dz-14',14)">If this will be</span>
+        <span class="drag-chip" draggable="true" data-word="Were this being" ondragstart="dragStart(event,'Were this being','pool-14')" onclick="tapChip(this,'dz-14',14)">Were this being</span>
+        <span class="drag-chip" draggable="true" data-word="Unless this is" ondragstart="dragStart(event,'Unless this is','pool-14')" onclick="tapChip(this,'dz-14',14)">Unless this is</span>
+      </div>
+      <div class="feedback" id="q14-fb"></div>
+      <div class="btn-row">
+        <button class="btn-next" id="q14-next" onclick="nextQ(14)" style="display:none">Next →</button>
+      </div>
+    </div>
+
+    <!-- Q15 -->
+    <div class="q-card hidden" id="q15-card">
+      <div class="q-stem">
+        In retrospect, <span class="drop-zone" id="dz-15" ondragover="allowDrop(event)" ondrop="dropWord(event,'dz-15',15)">&nbsp;&nbsp;drop here&nbsp;&nbsp;</span> the partnership agreement more carefully at the outset, we would not have encountered these contractual disputes.
+      </div>
+      <div class="word-pool" id="pool-15">
+        <span class="drag-chip" draggable="true" data-word="had we reviewed" ondragstart="dragStart(event,'had we reviewed','pool-15')" onclick="tapChip(this,'dz-15',15)">had we reviewed</span>
+        <span class="drag-chip" draggable="true" data-word="have we reviewed" ondragstart="dragStart(event,'have we reviewed','pool-15')" onclick="tapChip(this,'dz-15',15)">have we reviewed</span>
+        <span class="drag-chip" draggable="true" data-word="should we review" ondragstart="dragStart(event,'should we review','pool-15')" onclick="tapChip(this,'dz-15',15)">should we review</span>
+        <span class="drag-chip" draggable="true" data-word="if we would review" ondragstart="dragStart(event,'if we would review','pool-15')" onclick="tapChip(this,'dz-15',15)">if we would review</span>
+      </div>
+      <div class="feedback" id="q15-fb"></div>
+      <div class="btn-row">
+        <button class="btn-next" id="q15-next" onclick="showFinal()" style="display:none">See Results →</button>
+      </div>
+    </div>
+  </div><!-- /act3 -->
+
+  <!-- ════════ FINAL SCREEN ════════ -->
+  <div class="final-screen" id="final-screen">
+    <svg width="220" height="64" viewBox="0 0 220 64" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:1rem;">
+      <text x="2" y="38" font-family="'Playfair Display', Georgia, serif" font-size="40" font-weight="700" fill="#1B3A2D">Forbes</text>
+      <line x1="2" y1="44" x2="218" y2="44" stroke="#C9A84C" stroke-width="1.2"/>
+      <text x="2" y="60" font-family="'DM Sans', Arial, sans-serif" font-size="20" font-weight="700" fill="#C9A84C" letter-spacing="6">ENGLISH</text>
+    </svg>
+    <div class="final-label">Your Final Result</div>
+    <div class="final-grade"><span id="final-correct">0</span><span>/15</span></div>
+    <div class="final-bars" id="final-bars"></div>
+    <div class="final-message" id="final-message">Well done!</div>
+    <div class="final-sub" id="final-sub"></div>
+    <button class="btn-primary" onclick="restart()" style="font-size:15px;padding:13px 32px;">Restart Lesson ↺</button>
+  </div>
+
+</div><!-- /page-wrap -->
+
+<script>
+// ── STATE ──
+let totalQ = 15;
+let currentQ = 1;
+let score = 0;
+let correctCount = 0;
+let answeredQ = {};
+let draggedWord = '';
+let draggedPool = '';
+
+const dndData = {
+  11: { correct: 'once we expand',  explanation: 'Correct! "Once we expand" introduces a real future condition — First Conditional. The delivery time improvement is a realistic future outcome. Note: "unless" would reverse the meaning (negative condition).' },
+  12: { correct: 'you do not settle', explanation: 'Correct! This is a real condition using "if" implied by context. Present simple ("do not settle") is required in the condition clause. "Will not settle" is incorrect after if/unless.' },
+  13: { correct: 'if we continue', explanation: 'Correct! This is a First Conditional — a genuine warning about a real current trend. "If we continue" (present simple) + "risk" (present simple result) is the correct structure.' },
+  14: { correct: 'Should this be', explanation: 'Correct! "Should this be required" is an inverted First Conditional — highly formal, typical in business correspondence. It equals "If this should be required..." and signals polite availability.' },
+  15: { correct: 'had we reviewed', explanation: 'Correct! "Had we reviewed" is an inverted Third Conditional — formal past unreal. It equals "If we had reviewed..." The retrospective context ("In retrospect") confirms this is a past regret.' }
+};
+
+// ── PROGRESS & SCORE ──
+function updateUI() {
+  document.getElementById('score-display').textContent = score;
+  document.getElementById('correct-display').textContent = correctCount;
+  const pct = Math.round((currentQ - 1) / totalQ * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = 'Question ' + Math.min(currentQ, totalQ) + ' of ' + totalQ;
+}
+
+// ── MULTIPLE CHOICE ──
+function checkMC(qNum, btn, isCorrect, explanation) {
+  if (answeredQ[qNum]) return;
+  answeredQ[qNum] = true;
+
+  const card = document.getElementById('q' + qNum + '-card');
+  const allBtns = card.querySelectorAll('.opt-btn');
+  allBtns.forEach(b => b.disabled = true);
+  btn.classList.add(isCorrect ? 'correct' : 'wrong');
+
+  if (isCorrect) {
+    correctCount++;
+    score += 10;
+  } else {
+    allBtns.forEach(b => {
+      if (b.getAttribute('onclick').includes('true')) b.classList.add('correct');
+    });
+  }
+
+  const fb = document.getElementById('q' + qNum + '-fb');
+  fb.className = 'feedback show ' + (isCorrect ? 'correct' : 'wrong');
+  fb.innerHTML = '<span class="feedback-icon">' + (isCorrect ? '✓' : '✗') + '</span>' + explanation;
+
+  document.getElementById('q' + qNum + '-next').style.display = 'inline-block';
+  updateUI();
+}
+
+// ── FILL IN THE BLANK ──
+function checkFill(qNum, acceptedArr, display, explanation) {
+  if (answeredQ[qNum]) return;
+  const input = document.getElementById('q' + qNum + '-in');
+  const val = input.value.trim().toLowerCase();
+  const isCorrect = acceptedArr.some(a => val === a.toLowerCase());
+  answeredQ[qNum] = true;
+  input.disabled = true;
+
+  const fb = document.getElementById('q' + qNum + '-fb');
+  if (isCorrect) {
+    input.classList.add('correct-input');
+    fb.className = 'feedback show correct';
+    fb.innerHTML = '<span class="feedback-icon">✓</span>' + explanation;
+    correctCount++;
+    score += 10;
+  } else {
+    input.classList.add('wrong-input');
+    fb.className = 'feedback show wrong';
+    fb.innerHTML = '<span class="feedback-icon">✗</span>The correct answer is: <strong>' + display + '</strong>. ' + explanation;
+  }
+
+  document.getElementById('q' + qNum + '-next').style.display = 'inline-block';
+  updateUI();
+}
+
+// ── DRAG AND DROP ──
+function dragStart(e, word, poolId) {
+  draggedWord = word;
+  draggedPool = poolId;
+  e.target.classList.add('dragging');
+  setTimeout(() => e.target.classList.remove('dragging'), 0);
+}
+
+function allowDrop(e) {
+  e.preventDefault();
+  e.currentTarget.classList.add('drag-over');
+}
+
+function dropWord(e, dzId, qNum) {
+  e.preventDefault();
+  const dz = document.getElementById(dzId);
+  dz.classList.remove('drag-over');
+  if (answeredQ[qNum]) return;
+
+  // Mark chip as used
+  const pool = document.getElementById(draggedPool);
+  const chips = pool.querySelectorAll('.drag-chip');
+  chips.forEach(c => { if (c.dataset.word === draggedWord) c.classList.add('used'); });
+
+  dz.textContent = draggedWord;
+  dz.classList.add('filled');
+  checkDnD(qNum, dzId, draggedWord);
+}
+
+function tapChip(chip, dzId, qNum) {
+  if (answeredQ[qNum]) return;
+  const word = chip.dataset.word;
+  const dz = document.getElementById(dzId);
+  chip.classList.add('used');
+  dz.textContent = word;
+  dz.classList.add('filled');
+  checkDnD(qNum, dzId, word);
+}
+
+function checkDnD(qNum, dzId, word) {
+  if (answeredQ[qNum]) return;
+  answeredQ[qNum] = true;
+
+  const data = dndData[qNum];
+  const isCorrect = word.toLowerCase() === data.correct.toLowerCase();
+  const dz = document.getElementById(dzId);
+  dz.classList.remove('filled');
+  dz.classList.add(isCorrect ? 'correct-zone' : 'wrong-zone');
+
+  const pool = document.getElementById('pool-' + qNum);
+  pool.querySelectorAll('.drag-chip').forEach(c => c.classList.add('used'));
+
+  const fb = document.getElementById('q' + qNum + '-fb');
+  if (isCorrect) {
+    fb.className = 'feedback show correct';
+    fb.innerHTML = '<span class="feedback-icon">✓</span>' + data.explanation;
+    correctCount++;
+    score += 10;
+  } else {
+    fb.className = 'feedback show wrong';
+    fb.innerHTML = '<span class="feedback-icon">✗</span>The correct answer is: <strong>"' + data.correct + '"</strong>. ' + data.explanation;
+    // Show correct answer
+    const allChips = pool.querySelectorAll('.drag-chip');
+    allChips.forEach(c => { if (c.dataset.word === data.correct) c.classList.remove('used'); });
+  }
+
+  document.getElementById('q' + qNum + '-next').style.display = 'inline-block';
+  updateUI();
+}
+
+// ── NEXT QUESTION ──
+function nextQ(qNum) {
+  const nextNum = qNum + 1;
+  currentQ = nextNum;
+
+  // Hide current, show next
+  document.getElementById('q' + qNum + '-card').classList.add('hidden');
+
+  if (nextNum <= totalQ) {
+    // Show activity section dividers
+    if (nextNum === 6) document.getElementById('act2').classList.remove('hidden');
+    if (nextNum === 11) document.getElementById('act3').classList.remove('hidden');
+
+    const nextCard = document.getElementById('q' + nextNum + '-card');
+    if (nextCard) {
+      nextCard.classList.remove('hidden');
+      nextCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+  updateUI();
+}
+
+// ── FINAL SCREEN ──
+function showFinal() {
+  document.getElementById('q15-card').classList.add('hidden');
+  currentQ = 16;
+  updateUI();
+  document.getElementById('progress-fill').style.width = '100%';
+  document.getElementById('progress-text').textContent = 'Complete!';
+
+  const screen = document.getElementById('final-screen');
+  screen.classList.add('show');
+  screen.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  document.getElementById('final-correct').textContent = correctCount;
+
+  // Activity scores
+  let scores = [0,0,0];
+  for (let i=1;i<=5;i++) if(answeredQ[i] !== undefined) scores[0] += (i <= 5 ? 1 : 0);
+  // Simplified: just show proportional bars
+  const act1Score = [1,2,3,4,5].filter(q => {
+    const fb = document.getElementById('q'+q+'-fb');
+    return fb && fb.classList.contains('correct');
+  }).length;
+  const act2Score = [6,7,8,9,10].filter(q => {
+    const fb = document.getElementById('q'+q+'-fb');
+    return fb && fb.classList.contains('correct');
+  }).length;
+  const act3Score = [11,12,13,14,15].filter(q => {
+    const fb = document.getElementById('q'+q+'-fb');
+    return fb && fb.classList.contains('correct');
+  }).length;
+
+  const barsHtml = [
+    {label:'Activity 1', score: act1Score, max: 5},
+    {label:'Activity 2', score: act2Score, max: 5},
+    {label:'Activity 3', score: act3Score, max: 5},
+  ].map(b => `
+    <div class="final-bar-item">
+      <div class="final-bar-track">
+        <div class="final-bar-fill" style="height:${Math.round(b.score/b.max*100)}%"></div>
+      </div>
+      <div class="final-bar-label">${b.score}/${b.max}</div>
+      <div class="final-bar-label">${b.label.split(' ')[1]}</div>
+    </div>
+  `).join('');
+  document.getElementById('final-bars').innerHTML = barsHtml;
+
+  const pct = correctCount / totalQ;
+  let msg, sub;
+  if (pct >= 0.87) {
+    msg = 'Outstanding performance.';
+    sub = 'Your command of Business Conditionals is exceptional. You are operating at full B2+ level — consider exploring C1 business writing next.';
+  } else if (pct >= 0.67) {
+    msg = 'Strong result — well done.';
+    sub = 'You have a solid grasp of conditionals in professional contexts. Review the questions you found challenging, focusing on formal inverted structures.';
+  } else if (pct >= 0.47) {
+    msg = 'Good effort — keep building.';
+    sub = 'You understand the basics. Focus on Third Conditional and formal inverted forms (Had we..., Should this be...) — these are essential in business writing.';
+  } else {
+    msg = 'A valuable learning experience.';
+    sub = 'Conditionals are complex — even for advanced learners. Review the First, Second, and Third Conditional structures and try the lesson again with confidence.';
+  }
+  document.getElementById('final-message').textContent = msg;
+  document.getElementById('final-sub').textContent = sub;
+}
+
+// ── RESTART ──
+function restart() {
+  score = 0; correctCount = 0; currentQ = 1; answeredQ = {};
+  draggedWord = ''; draggedPool = '';
+
+  document.getElementById('final-screen').classList.remove('show');
+  document.getElementById('act2').classList.add('hidden');
+  document.getElementById('act3').classList.add('hidden');
+
+  for (let i=1;i<=15;i++) {
+    const card = document.getElementById('q'+i+'-card');
+    if (!card) continue;
+    card.classList.toggle('hidden', i !== 1);
+
+    const fb = document.getElementById('q'+i+'-fb');
+    if (fb) { fb.className = 'feedback'; fb.innerHTML = ''; }
+
+    const next = document.getElementById('q'+i+'-next');
+    if (next) next.style.display = 'none';
+
+    const allBtns = card.querySelectorAll('.opt-btn');
+    allBtns.forEach(b => { b.className = 'opt-btn'; b.disabled = false; });
+
+    const fill = document.getElementById('q'+i+'-in');
+    if (fill) { fill.value=''; fill.className='fill-input'; fill.disabled=false; }
+
+    const dz = document.getElementById('dz-'+i);
+    if (dz) {
+      dz.className = 'drop-zone';
+      dz.innerHTML = '&nbsp;&nbsp;drop here&nbsp;&nbsp;';
+    }
+
+    const pool = document.getElementById('pool-'+i);
+    if (pool) pool.querySelectorAll('.drag-chip').forEach(c => c.classList.remove('used'));
+  }
+
+  updateUI();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── INIT ──
+updateUI();
+// Fix drag-over removal
+document.querySelectorAll('.drop-zone').forEach(dz => {
+  dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+});
+</script>
+</body>
+</html>

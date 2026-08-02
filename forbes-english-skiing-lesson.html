@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – Skiing at the Resort | B2 Lesson</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0f1e2e;
+    --navy-mid: #162840;
+    --navy-light: #1e3a57;
+    --ice: #c8dff0;
+    --ice-pale: #e8f3fb;
+    --frost: #f0f7ff;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --crimson: #c0392b;
+    --pine: #2d6a4f;
+    --snow: #ffffff;
+    --text-dark: #0d1a27;
+    --text-mid: #3a556e;
+    --text-light: #7a9ab5;
+    --card-bg: rgba(255,255,255,0.97);
+    --shadow: 0 8px 40px rgba(15,30,46,0.18);
+    --shadow-sm: 0 2px 12px rgba(15,30,46,0.10);
+    --radius: 18px;
+    --radius-sm: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    min-height: 100vh;
+    color: var(--text-dark);
+    overflow-x: hidden;
+  }
+
+  /* ── BACKGROUND SCENE ── */
+  .bg-scene {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .bg-scene svg { width: 100%; height: 100%; }
+
+  /* ── LAYOUT ── */
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 16px 60px;
+  }
+
+  /* ── LOGO ── */
+  .logo-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 28px;
+    animation: fadeDown 0.7s ease both;
+  }
+
+  /* ── SCORE BAR ── */
+  .score-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 760px;
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(200,223,240,0.18);
+    backdrop-filter: blur(12px);
+    border-radius: 50px;
+    padding: 10px 22px;
+    margin-bottom: 22px;
+    animation: fadeDown 0.8s 0.1s ease both;
+  }
+  .score-label { color: var(--ice); font-size: 13px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; }
+  .score-value { color: var(--gold-light); font-size: 16px; font-weight: 700; }
+  .progress-pill {
+    background: rgba(200,223,240,0.15);
+    border-radius: 30px;
+    padding: 4px 14px;
+    color: var(--ice-pale);
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  /* ── SECTION TITLE ── */
+  .section-header {
+    text-align: center;
+    margin-bottom: 24px;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+  .section-tag {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--navy);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-radius: 4px;
+    padding: 3px 10px;
+    margin-bottom: 10px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 4vw, 28px);
+    color: var(--snow);
+    line-height: 1.25;
+  }
+  .section-sub {
+    color: var(--ice);
+    font-size: 14px;
+    margin-top: 6px;
+    opacity: 0.85;
+  }
+
+  /* ── CARD ── */
+  .lesson-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 760px;
+    padding: 36px 40px;
+    animation: fadeUp 0.6s 0.25s ease both;
+    position: relative;
+    overflow: hidden;
+  }
+  .lesson-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--gold), var(--ice), var(--navy-light));
+  }
+  @media(max-width: 600px) {
+    .lesson-card { padding: 24px 18px; }
+  }
+
+  /* ── QUESTION ── */
+  .q-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 8px;
+  }
+  .q-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(16px, 3vw, 20px);
+    color: var(--navy);
+    line-height: 1.45;
+    margin-bottom: 24px;
+  }
+
+  /* ── OPTIONS ── */
+  .options-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    margin-bottom: 24px;
+  }
+  .option-btn {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+    background: var(--frost);
+    border: 2px solid #dce8f4;
+    border-radius: var(--radius-sm);
+    padding: 14px 18px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--text-dark);
+    line-height: 1.4;
+  }
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--navy-light);
+    background: #deeaf8;
+    transform: translateX(3px);
+  }
+  .option-btn:disabled { cursor: default; }
+  .opt-letter {
+    min-width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #c5d9ee;
+    color: var(--navy);
+    font-weight: 700;
+    font-size: 12px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.18s;
+  }
+  .option-btn.selected { border-color: var(--navy-light); background: #cfe0f5; }
+  .option-btn.correct  { border-color: var(--pine); background: #d4eddf; }
+  .option-btn.wrong    { border-color: var(--crimson); background: #fce8e6; }
+  .option-btn.correct .opt-letter  { background: var(--pine); color: #fff; }
+  .option-btn.wrong .opt-letter    { background: var(--crimson); color: #fff; }
+  .option-btn.missed   { border-color: var(--pine); background: #eafbef; opacity: 0.85; }
+
+  /* ── FILL IN BLANK ── */
+  .fitb-sentence {
+    font-size: 17px;
+    color: var(--navy);
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+  .blank-input {
+    border: none;
+    border-bottom: 2.5px solid var(--navy-light);
+    background: transparent;
+    font-size: 16px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--navy);
+    padding: 2px 6px;
+    min-width: 120px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .blank-input:focus { border-color: var(--gold); }
+  .blank-input.correct { border-color: var(--pine); color: var(--pine); }
+  .blank-input.wrong   { border-color: var(--crimson); color: var(--crimson); }
+
+  /* ── WORD BANK ── */
+  .word-bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    padding: 16px;
+    background: var(--frost);
+    border-radius: var(--radius-sm);
+    border: 1.5px dashed #b8d0e8;
+    margin-bottom: 20px;
+  }
+  .word-chip {
+    background: #fff;
+    border: 1.5px solid #c5d9ee;
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--navy);
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .word-chip:hover:not(.used) { background: var(--navy); color: #fff; border-color: var(--navy); }
+  .word-chip.used { opacity: 0.3; cursor: default; }
+  .word-chip.placed { background: var(--navy-light); color: #fff; border-color: var(--navy-light); }
+  .blank-slot {
+    display: inline-block;
+    min-width: 110px;
+    border-bottom: 2.5px solid var(--navy-light);
+    padding: 1px 6px;
+    margin: 0 4px;
+    color: var(--navy-light);
+    cursor: pointer;
+    font-style: italic;
+    font-size: 15px;
+    transition: border-color 0.2s;
+    vertical-align: middle;
+  }
+  .blank-slot.filled { color: var(--navy); font-style: normal; font-weight: 600; border-bottom-style: solid; }
+  .blank-slot.correct { border-color: var(--pine); color: var(--pine); }
+  .blank-slot.wrong   { border-color: var(--crimson); color: var(--crimson); }
+
+  /* ── MATCHING ── */
+  .match-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .match-col { display: flex; flex-direction: column; gap: 10px; }
+  .match-item {
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    border: 2px solid #dce8f4;
+    background: var(--frost);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.18s;
+    min-height: 52px;
+    display: flex; align-items: center;
+  }
+  .match-item:hover:not(.locked) { border-color: var(--navy-light); background: #deeaf8; }
+  .match-item.selected { border-color: var(--gold); background: #fdf5e0; box-shadow: 0 0 0 3px rgba(201,168,76,0.2); }
+  .match-item.matched  { border-color: var(--pine); background: #d4eddf; cursor: default; }
+  .match-item.error    { border-color: var(--crimson); background: #fce8e6; }
+  .match-item.locked   { cursor: default; }
+  .match-left { font-weight: 600; color: var(--navy); }
+  .match-right { color: var(--text-mid); }
+
+  /* ── REORDER ── */
+  .reorder-container { margin-bottom: 20px; }
+  .reorder-zone {
+    min-height: 56px;
+    border: 2px dashed #b8d0e8;
+    border-radius: var(--radius-sm);
+    background: var(--frost);
+    padding: 10px 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .reorder-zone.has-content { border-style: solid; border-color: #c5d9ee; }
+  .reorder-label-sm { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.09em; color: var(--text-light); margin-bottom: 7px; }
+  .reorder-chip {
+    background: #fff;
+    border: 1.5px solid #c5d9ee;
+    border-radius: 6px;
+    padding: 7px 13px;
+    font-size: 14px;
+    cursor: grab;
+    user-select: none;
+    transition: all 0.15s;
+    color: var(--navy);
+    font-weight: 500;
+  }
+  .reorder-chip:hover { background: var(--navy); color: #fff; border-color: var(--navy); box-shadow: var(--shadow-sm); }
+  .reorder-chip.dragging { opacity: 0.4; }
+  .reorder-chip.placed { background: var(--navy-light); color: #fff; border-color: var(--navy-light); cursor: grab; }
+
+  /* ── FEEDBACK ── */
+  .feedback-box {
+    border-radius: var(--radius-sm);
+    padding: 14px 18px;
+    margin-top: 6px;
+    margin-bottom: 18px;
+    font-size: 14px;
+    line-height: 1.55;
+    display: none;
+    animation: popIn 0.3s ease;
+  }
+  .feedback-box.correct { background: #d4eddf; border-left: 4px solid var(--pine); color: #1a4d33; }
+  .feedback-box.wrong   { background: #fce8e6; border-left: 4px solid var(--crimson); color: #7a1a12; }
+  .feedback-box strong { display: block; margin-bottom: 4px; font-size: 15px; }
+  .feedback-box.show { display: block; }
+
+  /* ── BUTTONS ── */
+  .btn-row { display: flex; gap: 12px; justify-content: flex-end; flex-wrap: wrap; }
+  .btn {
+    border: none;
+    border-radius: 50px;
+    padding: 13px 30px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    letter-spacing: 0.02em;
+  }
+  .btn-primary {
+    background: var(--navy);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(15,30,46,0.25);
+  }
+  .btn-primary:hover { background: var(--navy-light); transform: translateY(-2px); }
+  .btn-gold {
+    background: var(--gold);
+    color: var(--navy);
+    box-shadow: 0 4px 16px rgba(201,168,76,0.35);
+  }
+  .btn-gold:hover { background: var(--gold-light); transform: translateY(-2px); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
+
+  /* ── ILLUSTRATION STRIP ── */
+  .illus-strip {
+    width: 100%;
+    max-width: 760px;
+    margin-bottom: 18px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    animation: fadeUp 0.6s 0.15s ease both;
+  }
+
+  /* ── FINISH SCREEN ── */
+  .finish-screen {
+    text-align: center;
+    padding: 20px 0;
+  }
+  .finish-trophy { font-size: 64px; margin-bottom: 16px; animation: bounce 0.6s ease; }
+  .finish-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 30px;
+    color: var(--navy);
+    margin-bottom: 10px;
+  }
+  .finish-score { font-size: 50px; font-weight: 700; color: var(--gold); margin: 10px 0; }
+  .finish-msg { font-size: 16px; color: var(--text-mid); margin-bottom: 28px; max-width: 440px; margin-inline: auto; }
+  .finish-bars { display: flex; gap: 6px; justify-content: center; margin-bottom: 28px; }
+  .finish-bar { height: 8px; width: 36px; border-radius: 4px; background: #dce8f4; transition: background 0.4s; }
+  .finish-bar.lit { background: var(--gold); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeUp   { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes popIn    { from { opacity:0; transform:scale(0.94); } to { opacity:1; transform:scale(1); } }
+  @keyframes bounce   { 0%,100%{transform:translateY(0)} 40%{transform:translateY(-16px)} 70%{transform:translateY(-8px)} }
+  @keyframes snowfall {
+    0% { transform: translateY(-20px) translateX(0); opacity: 0.8; }
+    100% { transform: translateY(100vh) translateX(30px); opacity: 0; }
+  }
+
+  /* ── SNOWFLAKES ── */
+  .snowflake {
+    position: fixed;
+    color: rgba(200,223,240,0.5);
+    font-size: 12px;
+    pointer-events: none;
+    animation: snowfall linear infinite;
+    z-index: 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- Background Mountain Scene -->
+<div class="bg-scene">
+  <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#071421"/>
+        <stop offset="60%" stop-color="#0f2744"/>
+        <stop offset="100%" stop-color="#1a3e6b"/>
+      </linearGradient>
+      <linearGradient id="moonGlow" cx="50%" cy="50%" r="50%" fx="50%" fy="50%" id="moonGlow" gradientUnits="objectBoundingBox">
+        <stop offset="0%" stop-color="#c8dff0" stop-opacity="0.3"/>
+        <stop offset="100%" stop-color="#c8dff0" stop-opacity="0"/>
+      </linearGradient>
+      <radialGradient id="moonHalo" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#dde8f5" stop-opacity="0.18"/>
+        <stop offset="100%" stop-color="#dde8f5" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="snowGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#d4e9f7"/>
+        <stop offset="100%" stop-color="#a8cfe6"/>
+      </linearGradient>
+      <linearGradient id="mtn1" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#e8f2fb"/>
+        <stop offset="40%" stop-color="#b8d4ec"/>
+        <stop offset="100%" stop-color="#4a7ea0"/>
+      </linearGradient>
+      <linearGradient id="mtn2" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#d0e5f5"/>
+        <stop offset="35%" stop-color="#88b8d8"/>
+        <stop offset="100%" stop-color="#2d5e80"/>
+      </linearGradient>
+      <linearGradient id="mtn3" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#1e4060"/>
+        <stop offset="100%" stop-color="#0d2236"/>
+      </linearGradient>
+      <filter id="softBlur"><feGaussianBlur stdDeviation="3"/></filter>
+      <filter id="glow"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    </defs>
+    <!-- Sky -->
+    <rect width="1440" height="900" fill="url(#skyGrad)"/>
+    <!-- Stars -->
+    <g opacity="0.7">
+      <circle cx="120" cy="60" r="1.2" fill="#c8dff0"/><circle cx="340" cy="40" r="0.8" fill="#c8dff0"/>
+      <circle cx="580" cy="90" r="1.4" fill="#fff"/><circle cx="760" cy="30" r="0.9" fill="#c8dff0"/>
+      <circle cx="900" cy="75" r="1.1" fill="#fff"/><circle cx="1050" cy="45" r="0.7" fill="#c8dff0"/>
+      <circle cx="1200" cy="80" r="1.3" fill="#fff"/><circle cx="1320" cy="55" r="0.8" fill="#c8dff0"/>
+      <circle cx="200" cy="110" r="0.7" fill="#c8dff0"/><circle cx="450" cy="130" r="1.0" fill="#fff"/>
+      <circle cx="680" cy="55" r="0.6" fill="#c8dff0"/><circle cx="820" cy="100" r="1.2" fill="#fff"/>
+      <circle cx="980" cy="35" r="0.9" fill="#c8dff0"/><circle cx="1140" cy="115" r="0.7" fill="#fff"/>
+      <circle cx="1380" cy="90" r="1.1" fill="#c8dff0"/><circle cx="60" cy="150" r="0.8" fill="#fff"/>
+    </g>
+    <!-- Moon halo -->
+    <circle cx="1100" cy="120" r="90" fill="url(#moonHalo)"/>
+    <!-- Moon -->
+    <circle cx="1100" cy="120" r="40" fill="#dde8f5" filter="url(#glow)"/>
+    <circle cx="1100" cy="120" r="38" fill="#e8f2fb"/>
+    <circle cx="1115" cy="105" r="30" fill="#dde8f5"/>
+    <!-- Far mountains (blurred) -->
+    <polygon points="0,650 200,280 400,500 650,200 900,450 1100,180 1300,400 1440,300 1440,700 0,700" fill="#1a3e6b" filter="url(#softBlur)" opacity="0.5"/>
+    <!-- Mid mountains -->
+    <polygon points="0,700 180,350 360,520 600,230 820,480 1000,260 1200,440 1440,310 1440,750 0,750" fill="url(#mtn2)"/>
+    <!-- Snow cap overlays on mid -->
+    <polygon points="600,230 560,310 640,310" fill="#e8f4fc" opacity="0.9"/>
+    <polygon points="1000,260 960,340 1040,340" fill="#e8f4fc" opacity="0.85"/>
+    <polygon points="180,350 148,420 212,420" fill="#daeaf7" opacity="0.7"/>
+    <!-- Front mountains -->
+    <polygon points="-50,800 280,440 520,650 720,380 960,580 1200,350 1500,600 1500,900 -50,900" fill="url(#mtn1)"/>
+    <!-- Snow caps front -->
+    <polygon points="720,380 672,480 768,480" fill="#ffffff" opacity="0.95"/>
+    <polygon points="1200,350 1152,460 1248,460" fill="#ffffff" opacity="0.9"/>
+    <polygon points="280,440 244,520 316,520" fill="#f0f8ff" opacity="0.85"/>
+    <!-- Ski slope -->
+    <path d="M680,420 Q780,500 860,600 Q940,700 980,800 L1060,800 Q1010,700 930,600 Q840,490 740,400 Z" fill="rgba(255,255,255,0.35)"/>
+    <!-- Ski lodge silhouette -->
+    <g transform="translate(300,580)">
+      <rect x="0" y="40" width="120" height="70" fill="#0d2236"/>
+      <polygon points="-15,40 60,-20 135,40" fill="#0f2a44"/>
+      <rect x="40" y="70" width="20" height="40" fill="#c9a84c" opacity="0.6"/>
+      <rect x="15" y="55" width="18" height="14" fill="#1a3e6b" rx="2"/>
+      <rect x="85" y="55" width="18" height="14" fill="#1a3e6b" rx="2"/>
+    </g>
+    <!-- Pine trees -->
+    <g opacity="0.85">
+      <g transform="translate(80,680)"><polygon points="18,0 36,60 0,60" fill="#0d2236"/><polygon points="18,20 30,70 6,70" fill="#102a40"/><rect x="14" y="65" width="8" height="20" fill="#071421"/></g>
+      <g transform="translate(115,700)"><polygon points="14,0 28,48 0,48" fill="#0d2236"/><rect x="11" y="43" width="6" height="16" fill="#071421"/></g>
+      <g transform="translate(145,685)"><polygon points="18,0 36,60 0,60" fill="#0d2236"/><rect x="14" y="55" width="8" height="20" fill="#071421"/></g>
+      <g transform="translate(1260,660)"><polygon points="18,0 36,60 0,60" fill="#0d2236"/><rect x="14" y="55" width="8" height="20" fill="#071421"/></g>
+      <g transform="translate(1295,675)"><polygon points="14,0 28,50 0,50" fill="#102a40"/><rect x="11" y="45" width="6" height="16" fill="#071421"/></g>
+      <g transform="translate(1325,658)"><polygon points="18,0 36,62 0,62" fill="#0d2236"/><rect x="14" y="57" width="8" height="20" fill="#071421"/></g>
+    </g>
+    <!-- Ski lift cables -->
+    <line x1="400" y1="500" x2="750" y2="400" stroke="rgba(200,220,240,0.3)" stroke-width="1.5"/>
+    <line x1="750" y1="400" x2="1100" y2="310" stroke="rgba(200,220,240,0.3)" stroke-width="1.5"/>
+    <!-- Ski lift chairs -->
+    <g transform="translate(560,462)" opacity="0.7">
+      <circle cx="0" cy="-3" r="3" fill="#c8dff0"/>
+      <line x1="0" y1="0" x2="-8" y2="10" stroke="#c8dff0" stroke-width="1.5"/>
+      <line x1="0" y1="0" x2="8" y2="10" stroke="#c8dff0" stroke-width="1.5"/>
+      <rect x="-10" y="10" width="20" height="8" rx="3" fill="#c9a84c" opacity="0.8"/>
+    </g>
+    <g transform="translate(870,412)" opacity="0.7">
+      <circle cx="0" cy="-3" r="3" fill="#c8dff0"/>
+      <line x1="0" y1="0" x2="-8" y2="10" stroke="#c8dff0" stroke-width="1.5"/>
+      <line x1="0" y1="0" x2="8" y2="10" stroke="#c8dff0" stroke-width="1.5"/>
+      <rect x="-10" y="10" width="20" height="8" rx="3" fill="#c9a84c" opacity="0.8"/>
+    </g>
+    <!-- Snow foreground -->
+    <ellipse cx="720" cy="880" rx="800" ry="100" fill="rgba(232,243,251,0.12)"/>
+  </svg>
+</div>
+
+<!-- Snowflakes (JS generated) -->
+
+<!-- Page Content -->
+<div class="page-wrap">
+
+  <!-- LOGO -->
+  <div class="logo-wrap">
+    <svg width="220" height="70" viewBox="0 0 220 70" xmlns="http://www.w3.org/2000/svg">
+      <text x="110" y="34" font-family="Georgia, 'Times New Roman', serif" font-size="36" font-weight="400" fill="#c8dff0" text-anchor="middle" letter-spacing="2">Forbes</text>
+      <rect x="20" y="40" width="180" height="1.5" fill="#c9a84c" opacity="0.8"/>
+      <text x="110" y="62" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#e8f3fb" text-anchor="middle" letter-spacing="8">ENGLISH</text>
+    </svg>
+  </div>
+
+  <!-- SCORE BAR -->
+  <div class="score-bar" id="scoreBar">
+    <span class="score-label">Score: <span class="score-value" id="scoreDisplay">0 / 0</span></span>
+    <span class="progress-pill" id="progressDisplay">Starting…</span>
+    <span class="score-label">Activity <span class="score-value" id="activityDisplay">1 / 4</span></span>
+  </div>
+
+  <!-- ILLUSTRATION + SECTION HEADER -->
+  <div class="illus-strip" id="illusStrip">
+    <svg viewBox="0 0 760 160" xmlns="http://www.w3.org/2000/svg" width="100%" height="160">
+      <defs>
+        <linearGradient id="illusGrad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#0f2744"/><stop offset="100%" stop-color="#1e3a57"/>
+        </linearGradient>
+      </defs>
+      <rect width="760" height="160" fill="url(#illusGrad)"/>
+      <!-- mountains -->
+      <polygon points="0,160 120,60 240,120 380,30 520,100 660,50 760,90 760,160" fill="#1a3a5c" opacity="0.8"/>
+      <polygon points="0,160 80,90 180,130 320,60 440,120 580,70 680,110 760,80 760,160" fill="#243f5e" opacity="0.6"/>
+      <!-- snow caps -->
+      <polygon points="320,60 300,95 340,95" fill="#e8f2fb" opacity="0.9"/>
+      <polygon points="580,70 562,105 598,105" fill="#e8f2fb" opacity="0.85"/>
+      <polygon points="120,60 104,90 136,90" fill="#daeaf7" opacity="0.75"/>
+      <!-- ski lift in illus -->
+      <line x1="0" y1="30" x2="760" y2="20" stroke="rgba(200,220,240,0.25)" stroke-width="1.5"/>
+      <g transform="translate(100,28)" opacity="0.6">
+        <circle cx="0" cy="-2" r="2.5" fill="#c8dff0"/>
+        <line x1="0" y1="0" x2="-6" y2="8" stroke="#c8dff0" stroke-width="1.2"/>
+        <line x1="0" y1="0" x2="6" y2="8" stroke="#c8dff0" stroke-width="1.2"/>
+        <rect x="-7" y="8" width="14" height="6" rx="2" fill="#c9a84c" opacity="0.9"/>
+      </g>
+      <g transform="translate(400,22)" opacity="0.6">
+        <circle cx="0" cy="-2" r="2.5" fill="#c8dff0"/>
+        <line x1="0" y1="0" x2="-6" y2="8" stroke="#c8dff0" stroke-width="1.2"/>
+        <line x1="0" y1="0" x2="6" y2="8" stroke="#c8dff0" stroke-width="1.2"/>
+        <rect x="-7" y="8" width="14" height="6" rx="2" fill="#c9a84c" opacity="0.9"/>
+      </g>
+      <!-- text overlay -->
+      <rect x="0" y="0" width="760" height="160" fill="rgba(10,25,40,0.3)"/>
+      <text x="380" y="60" font-family="Georgia, serif" font-size="26" font-weight="700" fill="#e8f2fb" text-anchor="middle" letter-spacing="1.5">Skiing at the Resort</text>
+      <text x="380" y="88" font-family="Arial, sans-serif" font-size="13" fill="#c9a84c" text-anchor="middle" letter-spacing="4" font-weight="600">B2 ENGLISH LESSON</text>
+      <text x="380" y="120" font-family="Arial, sans-serif" font-size="12" fill="rgba(200,223,240,0.7)" text-anchor="middle">Vocabulary · Grammar · Comprehension</text>
+    </svg>
+  </div>
+
+  <!-- SECTION HEADER -->
+  <div class="section-header" id="sectionHeader">
+    <div class="section-tag" id="activityTag">Activity 1 — Multiple Choice</div>
+    <h2 class="section-title" id="activityTitle">Vocabulary & Comprehension</h2>
+    <p class="section-sub" id="activitySub">Choose the best answer for each question about skiing and winter resorts.</p>
+  </div>
+
+  <!-- MAIN CARD -->
+  <div class="lesson-card" id="mainCard"></div>
+
+</div>
+
+<script>
+// ── SNOWFLAKES ──
+(function(){
+  for(let i=0;i<18;i++){
+    const s = document.createElement('div');
+    s.className='snowflake';
+    s.textContent = ['❄','❅','❆'][Math.floor(Math.random()*3)];
+    s.style.cssText = `left:${Math.random()*100}vw;top:${Math.random()*-50}px;font-size:${8+Math.random()*10}px;animation-duration:${6+Math.random()*10}s;animation-delay:${Math.random()*8}s;opacity:${0.3+Math.random()*0.5}`;
+    document.body.appendChild(s);
+  }
+})();
+
+// ── DATA ──
+const activities = [
+  // ── ACTIVITY 1: Multiple Choice ──
+  {
+    type: 'mc',
+    tag: 'Activity 1 — Multiple Choice',
+    title: 'Vocabulary & Comprehension',
+    sub: 'Choose the best answer for each question about skiing and winter resorts.',
+    questions: [
+      {
+        q: 'When a skier says the slope is "mogulled", what does this mean?',
+        opts: [
+          { text: 'The slope is covered with smooth, groomed powder snow', letter: 'A' },
+          { text: 'The run has been closed due to avalanche risk', letter: 'B' },
+          { text: 'The slope has bumps formed by accumulated snow and skier turns', letter: 'C' },
+          { text: 'The trail is marked for beginners only and is very wide', letter: 'D' },
+        ],
+        correct: 2,
+        why: '"Moguls" are rounded bumps that form on a ski slope when many skiers make turns in the same spots, pushing the snow into mounds. A mogulled slope is considered an advanced or expert terrain.'
+      },
+      {
+        q: 'A ski resort\'s "après-ski" culture refers to which of the following?',
+        opts: [
+          { text: 'The technical coaching sessions offered early each morning', letter: 'A' },
+          { text: 'Social activities, dining and entertainment that happen after skiing', letter: 'B' },
+          { text: 'The medical service that attends to injured skiers on the slopes', letter: 'C' },
+          { text: 'The equipment rental procedure done before hitting the slopes', letter: 'D' },
+        ],
+        correct: 1,
+        why: '"Après-ski" is a French term literally meaning "after skiing." It refers to the vibrant social life — bars, restaurants, music and parties — that takes place at the resort once the lifts close for the day.'
+      },
+      {
+        q: 'What is a "black run" at a ski resort?',
+        opts: [
+          { text: 'A run designated for night skiing under artificial lighting', letter: 'A' },
+          { text: 'A beginner route marked to avoid more advanced skiers', letter: 'B' },
+          { text: 'An off-piste area where skiing is strictly prohibited', letter: 'C' },
+          { text: 'A steep, expert-level slope marked with a black diamond symbol', letter: 'D' },
+        ],
+        correct: 3,
+        why: 'On the international difficulty rating system used at ski resorts, a black run (or "black diamond") denotes the steepest and most technically demanding slopes, intended for experienced skiers only.'
+      },
+      {
+        q: 'Which word best describes snow that is "powder"?',
+        opts: [
+          { text: 'Wet, heavy snow that has been compacted by grooming machines', letter: 'A' },
+          { text: 'Light, dry, freshly fallen snow considered ideal for skiing', letter: 'B' },
+          { text: 'Icy, hard-packed snow that forms a dangerous crust on slopes', letter: 'C' },
+          { text: 'Partially melted snow with a slushy, grainy texture underfoot', letter: 'D' },
+        ],
+        correct: 1,
+        why: '"Powder" refers to fresh, light, dry snow with low moisture content. Skiers and snowboarders prize powder conditions because the snow gives a soft, floating sensation and excellent grip.'
+      },
+      {
+        q: 'If a resort announces "the lifts are on hold due to high winds," what will happen?',
+        opts: [
+          { text: 'Lift operators will increase the speed of the cable cars', letter: 'A' },
+          { text: 'Only experienced skiers will be permitted onto the upper runs', letter: 'B' },
+          { text: 'Ski patrols will organise a guided descent for all guests', letter: 'C' },
+          { text: 'The ski lifts will be temporarily stopped until conditions improve', letter: 'D' },
+        ],
+        correct: 3,
+        why: '"On hold" means temporarily suspended. Ski lifts are stopped in high winds because the gondolas or chairlifts can swing dangerously, posing a safety risk to passengers. Operations resume when wind speed drops.'
+      },
+    ]
+  },
+
+  // ── ACTIVITY 2: Fill-in-the-Blank (word bank) ──
+  {
+    type: 'fitb',
+    tag: 'Activity 2 — Fill in the Blank',
+    title: 'Ski Resort Vocabulary in Context',
+    sub: 'Click a word from the bank, then click the gap where it belongs.',
+    questions: [
+      {
+        before: 'Before heading to the mountain, all guests must pick up their lift ',
+        blank: 'pass',
+        after: ', which grants access to the chairlifts and gondolas throughout the day.',
+        why: 'A "lift pass" (also called a "ski pass") is the ticket or card that gives a skier access to the resort\'s lifts. Without it, you cannot use any of the mechanical transport up the mountain.'
+      },
+      {
+        before: 'The ski instructor told the beginners to bend their knees and keep their weight forward to maintain better ',
+        blank: 'balance',
+        after: ' as they descended the gentle nursery slope.',
+        why: '"Balance" is the ability to keep your body stable and controlled. It is a fundamental skill in skiing — without it, controlling your speed and direction on the slope is nearly impossible.'
+      },
+      {
+        before: 'After the heavy overnight snowfall, the resort\'s team of piste-bashers worked overnight to ',
+        blank: 'groom',
+        after: ' the slopes so they were smooth and safe for the morning session.',
+        why: 'To "groom" a slope means to use a machine (called a snowcat or piste-basher) to flatten, compact and smooth the snow, making the surface even and suitable for all ability levels.'
+      },
+      {
+        before: 'She rented a pair of ski boots at the resort shop because hers had broken, and the technician adjusted the ',
+        blank: 'binding',
+        after: ' settings to match her ability level and boot size.',
+        why: '"Bindings" are the mechanisms that attach your ski boots to the skis. They are set to a specific tension so that the boot releases from the ski in a fall, reducing the risk of leg injury.'
+      },
+      {
+        before: 'Visibility on the upper slopes was very poor due to a sudden ',
+        blank: 'whiteout',
+        after: ', making it impossible to see where the sky ended and the snow-covered ground began.',
+        why: 'A "whiteout" is a severe weather condition in snowy environments where blowing or falling snow reduces visibility to near zero, making it extremely dangerous to ski or navigate.'
+      },
+    ],
+    bank: ['balance', 'binding', 'groom', 'pass', 'whiteout', 'slalom', 'mogul', 'altitude']
+  },
+
+  // ── ACTIVITY 3: Matching ──
+  {
+    type: 'matching',
+    tag: 'Activity 3 — Matching',
+    title: 'Ski Terms & Definitions',
+    sub: 'Click a term on the left, then click its matching definition on the right.',
+    pairs: [
+      { term: 'Chairlift', def: 'An open-air seat suspended from a moving cable that carries skiers up the mountain.' },
+      { term: 'Slalom', def: 'A type of ski race in which competitors weave between a series of closely spaced poles.' },
+      { term: 'Off-piste', def: 'Skiing that takes place on ungroomed, unmarked terrain outside the marked runs.' },
+      { term: 'Ski patrol', def: 'A team of trained staff responsible for safety, first aid and avalanche control on the mountain.' },
+      { term: 'Gondola', def: 'An enclosed cabin suspended from a cable, used to transport skiers to higher elevations.' },
+    ]
+  },
+
+  // ── ACTIVITY 4: Sentence Reordering ──
+  {
+    type: 'reorder',
+    tag: 'Activity 4 — Sentence Reorder',
+    title: 'Grammar in Action',
+    sub: 'Drag the word chunks into the correct order to form a grammatically correct sentence.',
+    questions: [
+      {
+        sentence: 'By the time we reached the summit, the snow had already begun to fall heavily.',
+        chunks: ['By the time', 'we reached the summit,', 'the snow', 'had already begun', 'to fall heavily.'],
+        why: 'This sentence uses the Past Perfect ("had already begun") to show that the snow started falling before another past event (reaching the summit). "By the time" signals the sequence of events.'
+      },
+      {
+        sentence: 'The instructor advised us to keep our skis parallel when turning at high speed.',
+        chunks: ['The instructor', 'advised us', 'to keep our skis parallel', 'when turning', 'at high speed.'],
+        why: '"Advised us to + infinitive" is the correct structure after a reporting verb like "advise". The infinitive phrase "to keep our skis parallel" acts as the object of the advice.'
+      },
+      {
+        sentence: 'Despite the icy conditions, she managed to complete the slalom course without falling.',
+        chunks: ['Despite', 'the icy conditions,', 'she managed to', 'complete the slalom course', 'without falling.'],
+        why: '"Despite" is a preposition used to introduce a contrast and must be followed by a noun phrase, not a clause. "Managed to + infinitive" expresses succeeding at a difficult task.'
+      },
+      {
+        sentence: 'If you had worn your goggles, the glare from the snow would not have blinded you.',
+        chunks: ['If you had worn', 'your goggles,', 'the glare from the snow', 'would not have blinded', 'you.'],
+        why: 'This is a Third Conditional sentence (If + Past Perfect, would + have + past participle) used to talk about an imaginary situation in the past and its hypothetical result.'
+      },
+      {
+        sentence: 'The resort was so crowded that the queues for the main chairlift stretched for over an hour.',
+        chunks: ['The resort was', 'so crowded that', 'the queues for', 'the main chairlift', 'stretched for over an hour.'],
+        why: '"So + adjective + that" is a result clause structure expressing a cause and its consequence. It emphasises the degree of crowding by linking it directly to the effect (long queues).'
+      },
+    ]
+  }
+];
+
+// ── STATE ──
+let actIdx = 0;
+let qIdx = 0;
+let score = 0;
+let total = 0;
+let answered = false;
+
+// Matching state
+let matchSelected = { side: null, idx: null };
+let matchPairs = [];
+let matchCompleted = 0;
+
+// Reorder state
+let reorderState = [];
+let reorderAnswered = [];
+
+// FITB state
+let fitbState = [];
+let fitbSelected = null;
+
+function updateScoreBar() {
+  const act = activities[actIdx];
+  document.getElementById('scoreDisplay').textContent = `${score} / ${total}`;
+  document.getElementById('activityDisplay').textContent = `${actIdx+1} / ${activities.length}`;
+
+  if (act.type === 'mc') {
+    document.getElementById('progressDisplay').textContent = `Question ${qIdx+1} of ${act.questions.length}`;
+  } else if (act.type === 'fitb') {
+    document.getElementById('progressDisplay').textContent = `Gap ${qIdx+1} of ${act.questions.length}`;
+  } else if (act.type === 'matching') {
+    document.getElementById('progressDisplay').textContent = `Match ${matchCompleted} of ${act.pairs.length}`;
+  } else if (act.type === 'reorder') {
+    document.getElementById('progressDisplay').textContent = `Sentence ${qIdx+1} of ${act.questions.length}`;
+  }
+}
+
+function setHeader(act) {
+  document.getElementById('activityTag').textContent = act.tag;
+  document.getElementById('activityTitle').textContent = act.title;
+  document.getElementById('activitySub').textContent = act.sub;
+}
+
+// ────────────────────────────────────────────
+// RENDER FUNCTIONS
+// ────────────────────────────────────────────
+
+function renderActivity() {
+  const act = activities[actIdx];
+  setHeader(act);
+  updateScoreBar();
+  if (act.type === 'mc') renderMC();
+  else if (act.type === 'fitb') renderFITB();
+  else if (act.type === 'matching') renderMatching();
+  else if (act.type === 'reorder') renderReorder();
+}
+
+// ── MULTIPLE CHOICE ──
+function renderMC() {
+  const act = activities[actIdx];
+  const q = act.questions[qIdx];
+  answered = false;
+  const card = document.getElementById('mainCard');
+  const letters = ['A','B','C','D'];
+  card.innerHTML = `
+    <div class="q-label">Question ${qIdx+1} of ${act.questions.length}</div>
+    <div class="q-text">${q.q}</div>
+    <div class="options-grid" id="optGrid">
+      ${q.opts.map((o,i)=>`
+        <button class="option-btn" data-idx="${i}" onclick="handleMC(${i})">
+          <span class="opt-letter">${o.letter}</span>
+          <span>${o.text}</span>
+        </button>`).join('')}
+    </div>
+    <div class="feedback-box" id="feedbackBox"></div>
+    <div class="btn-row">
+      <button class="btn btn-gold" id="nextBtn" onclick="nextMC()" style="display:none">Next →</button>
+    </div>
+  `;
+  updateScoreBar();
+}
+
+function handleMC(chosen) {
+  if (answered) return;
+  answered = true;
+  total++;
+  const act = activities[actIdx];
+  const q = act.questions[qIdx];
+  const btns = document.querySelectorAll('.option-btn');
+  btns.forEach(b => b.disabled = true);
+  const isCorrect = chosen === q.correct;
+  if (isCorrect) score++;
+  btns[chosen].classList.add(isCorrect ? 'correct' : 'wrong');
+  if (!isCorrect) btns[q.correct].classList.add('missed');
+  const fb = document.getElementById('feedbackBox');
+  fb.className = `feedback-box ${isCorrect ? 'correct' : 'wrong'} show`;
+  fb.innerHTML = `<strong>${isCorrect ? '✓ Correct!' : '✗ Not quite.'}</strong>${q.why}`;
+  document.getElementById('nextBtn').style.display = 'inline-block';
+  updateScoreBar();
+}
+
+function nextMC() {
+  const act = activities[actIdx];
+  qIdx++;
+  if (qIdx < act.questions.length) renderMC();
+  else { qIdx = 0; actIdx++; if (actIdx < activities.length) renderActivity(); else renderFinish(); }
+}
+
+// ── FILL IN THE BLANK ──
+function renderFITB() {
+  const act = activities[actIdx];
+  fitbState = act.questions.map(() => null);
+  fitbSelected = null;
+  qIdx = 0;
+  renderFITBQuestion();
+}
+
+function renderFITBQuestion() {
+  const act = activities[actIdx];
+  const q = act.questions[qIdx];
+  const card = document.getElementById('mainCard');
+
+  // Shuffle bank each time
+  const bankWords = [...act.bank].sort(() => Math.random()-0.5);
+
+  card.innerHTML = `
+    <div class="q-label">Gap ${qIdx+1} of ${act.questions.length}</div>
+    <div class="q-text" style="margin-bottom:10px">Fill in the missing word.</div>
+    <div class="fitb-sentence" id="fitbSentence">
+      ${q.before}<span class="blank-slot" id="theSlot" onclick="fillSlot()">click to fill</span>${q.after}
+    </div>
+    <div style="margin-bottom:14px;font-size:12px;color:var(--text-light);font-weight:600;text-transform:uppercase;letter-spacing:.08em;">Word Bank — click a word, then click the gap</div>
+    <div class="word-bank" id="wordBank">
+      ${bankWords.map(w=>`<div class="word-chip" data-word="${w}" onclick="selectWord(this)">${w}</div>`).join('')}
+    </div>
+    <div class="feedback-box" id="feedbackBox"></div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="checkBtn" onclick="checkFITB()" disabled>Check Answer</button>
+      <button class="btn btn-gold" id="nextBtn" onclick="nextFITB()" style="display:none">Next →</button>
+    </div>
+  `;
+  updateScoreBar();
+}
+
+let fitbCurrent = null;
+function selectWord(el) {
+  if (el.classList.contains('used')) return;
+  document.querySelectorAll('.word-chip').forEach(c => c.style.outline='');
+  el.style.outline = '2.5px solid var(--gold)';
+  fitbCurrent = el.dataset.word;
+}
+
+function fillSlot() {
+  const slot = document.getElementById('theSlot');
+  if (!fitbCurrent) { slot.style.animation='none'; slot.offsetHeight; return; }
+  slot.textContent = fitbCurrent;
+  slot.classList.add('filled');
+  // mark word as used
+  document.querySelectorAll('.word-chip').forEach(c => {
+    if (c.dataset.word === fitbCurrent) { c.classList.add('placed'); c.style.outline=''; }
+    else c.style.outline='';
+  });
+  fitbCurrent = null;
+  document.getElementById('checkBtn').disabled = false;
+}
+
+function checkFITB() {
+  const act = activities[actIdx];
+  const q = act.questions[qIdx];
+  const slot = document.getElementById('theSlot');
+  const given = slot.textContent.trim().toLowerCase();
+  const correct = q.blank.toLowerCase();
+  const isCorrect = given === correct;
+  total++;
+  if (isCorrect) score++;
+  slot.classList.add(isCorrect ? 'correct' : 'wrong');
+  document.getElementById('checkBtn').disabled = true;
+  const fb = document.getElementById('feedbackBox');
+  fb.className = `feedback-box ${isCorrect ? 'correct' : 'wrong'} show`;
+  fb.innerHTML = `<strong>${isCorrect ? '✓ Correct!' : `✗ The correct word is: "${q.blank}"`}</strong>${q.why}`;
+  document.getElementById('nextBtn').style.display = 'inline-block';
+  updateScoreBar();
+}
+
+function nextFITB() {
+  qIdx++;
+  const act = activities[actIdx];
+  fitbCurrent = null;
+  if (qIdx < act.questions.length) renderFITBQuestion();
+  else { qIdx = 0; actIdx++; if (actIdx < activities.length) renderActivity(); else renderFinish(); }
+}
+
+// ── MATCHING ──
+function renderMatching() {
+  const act = activities[actIdx];
+  matchCompleted = 0;
+  matchSelected = { side: null, idx: null };
+  // Shuffle right side
+  const rightOrder = [...act.pairs.map((_,i)=>i)].sort(()=>Math.random()-0.5);
+  matchPairs = act.pairs.map((p,i) => ({
+    term: p.term, def: p.def,
+    termIdx: i, defIdx: rightOrder.indexOf(i),
+    termMatched: false, defMatched: false
+  }));
+
+  const rightSideItems = rightOrder.map(origIdx => act.pairs[origIdx]);
+
+  document.getElementById('mainCard').innerHTML = `
+    <div class="q-text" style="margin-bottom:20px">Match each ski term on the left with its correct definition on the right. Click a term, then click its definition.</div>
+    <div class="match-grid">
+      <div class="match-col" id="leftCol">
+        ${act.pairs.map((p,i)=>`<div class="match-item match-left" data-side="left" data-idx="${i}" onclick="handleMatch('left',${i})">${p.term}</div>`).join('')}
+      </div>
+      <div class="match-col" id="rightCol">
+        ${rightSideItems.map((p,i)=>`<div class="match-item match-right" data-side="right" data-ridx="${i}" data-orig="${rightOrder[i]}" onclick="handleMatch('right',${i},'${rightOrder[i]}')">${p.def}</div>`).join('')}
+      </div>
+    </div>
+    <div class="feedback-box" id="feedbackBox"></div>
+    <div class="btn-row">
+      <button class="btn btn-gold" id="nextBtn" onclick="nextActivity()" style="display:none">Next Activity →</button>
+    </div>
+  `;
+  updateScoreBar();
+}
+
+let matchLeftSel = null;
+let matchRightSel = null;
+
+function handleMatch(side, idx, origIdx) {
+  const leftItems = document.querySelectorAll('#leftCol .match-item');
+  const rightItems = document.querySelectorAll('#rightCol .match-item');
+
+  if (side === 'left') {
+    if (leftItems[idx].classList.contains('matched')) return;
+    leftItems.forEach(el => el.classList.remove('selected','error'));
+    leftItems[idx].classList.add('selected');
+    matchLeftSel = idx;
+    if (matchRightSel !== null) attemptMatch(leftItems, rightItems);
+  } else {
+    if (rightItems[idx].classList.contains('matched')) return;
+    rightItems.forEach(el => el.classList.remove('selected','error'));
+    rightItems[idx].classList.add('selected');
+    matchRightSel = { visIdx: idx, origIdx: parseInt(origIdx) };
+    if (matchLeftSel !== null) attemptMatch(leftItems, rightItems);
+  }
+}
+
+function attemptMatch(leftItems, rightItems) {
+  const li = matchLeftSel;
+  const ri = matchRightSel.visIdx;
+  const origRight = matchRightSel.origIdx;
+  const isMatch = li === origRight;
+  total++;
+  if (isMatch) {
+    score++;
+    matchCompleted++;
+    leftItems[li].classList.remove('selected');
+    leftItems[li].classList.add('matched','locked');
+    rightItems[ri].classList.remove('selected');
+    rightItems[ri].classList.add('matched','locked');
+    if (matchCompleted === activities[actIdx].pairs.length) {
+      const fb = document.getElementById('feedbackBox');
+      fb.className = 'feedback-box correct show';
+      fb.innerHTML = `<strong>✓ All matched!</strong>Excellent work — you've correctly matched all five ski terms with their definitions.`;
+      document.getElementById('nextBtn').style.display = 'inline-block';
+    }
+  } else {
+    leftItems[li].classList.add('error');
+    rightItems[ri].classList.add('error');
+    setTimeout(() => {
+      leftItems[li].classList.remove('selected','error');
+      rightItems[ri].classList.remove('selected','error');
+    }, 700);
+  }
+  matchLeftSel = null;
+  matchRightSel = null;
+  updateScoreBar();
+}
+
+function nextActivity() {
+  qIdx = 0; actIdx++;
+  if (actIdx < activities.length) renderActivity();
+  else renderFinish();
+}
+
+// ── REORDER ──
+function renderReorder() {
+  const act = activities[actIdx];
+  qIdx = 0;
+  reorderAnswered = act.questions.map(() => false);
+  renderReorderQuestion();
+}
+
+function renderReorderQuestion() {
+  const act = activities[actIdx];
+  const q = act.questions[qIdx];
+  answered = false;
+
+  // Shuffle chunks
+  const shuffled = [...q.chunks].sort(() => Math.random()-0.5);
+  let placed = [];
+  let bankChunks = [...shuffled];
+
+  const card = document.getElementById('mainCard');
+  card.innerHTML = `
+    <div class="q-label">Sentence ${qIdx+1} of ${act.questions.length}</div>
+    <div class="q-text" style="margin-bottom:4px">Arrange the chunks into the correct sentence.</div>
+    <div class="reorder-container">
+      <div class="reorder-label-sm">Your sentence</div>
+      <div class="reorder-zone" id="dropZone"></div>
+      <div class="reorder-label-sm">Word bank</div>
+      <div class="reorder-zone" id="bankZone"></div>
+    </div>
+    <div class="feedback-box" id="feedbackBox"></div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="checkBtn" onclick="checkReorder()" disabled>Check</button>
+      <button class="btn btn-gold" id="nextBtn" onclick="nextReorder()" style="display:none">Next →</button>
+    </div>
+  `;
+
+  const bankZone = document.getElementById('bankZone');
+  const dropZone = document.getElementById('dropZone');
+
+  function render() {
+    bankZone.innerHTML = '';
+    dropZone.innerHTML = '';
+    dropZone.classList.toggle('has-content', placed.length > 0);
+
+    bankChunks.forEach((chunk, i) => {
+      const el = document.createElement('div');
+      el.className = 'reorder-chip';
+      el.textContent = chunk;
+      el.dataset.idx = i;
+      el.addEventListener('click', () => {
+        placed.push(chunk);
+        bankChunks.splice(i,1);
+        document.getElementById('checkBtn').disabled = placed.length === 0;
+        render();
+      });
+      bankZone.appendChild(el);
+    });
+
+    placed.forEach((chunk, i) => {
+      const el = document.createElement('div');
+      el.className = 'reorder-chip placed';
+      el.textContent = chunk;
+      el.addEventListener('click', () => {
+        bankChunks.push(chunk);
+        placed.splice(i,1);
+        document.getElementById('checkBtn').disabled = placed.length === 0;
+        render();
+      });
+      dropZone.appendChild(el);
+    });
+  }
+
+  render();
+  updateScoreBar();
+
+  window._reorderCheck = function() {
+    const q2 = act.questions[qIdx];
+    const userSentence = placed.join(' ');
+    const correctSentence = q2.chunks.join(' ');
+    const isCorrect = userSentence === correctSentence;
+    total++;
+    if (isCorrect) score++;
+    answered = true;
+    document.getElementById('checkBtn').disabled = true;
+    // Disable clicks
+    document.querySelectorAll('.reorder-chip').forEach(el => el.style.pointerEvents='none');
+    const fb = document.getElementById('feedbackBox');
+    fb.className = `feedback-box ${isCorrect ? 'correct' : 'wrong'} show`;
+    if (isCorrect) {
+      fb.innerHTML = `<strong>✓ Perfect order!</strong>${q2.why}`;
+    } else {
+      fb.innerHTML = `<strong>✗ Not quite. The correct sentence is:</strong>"${q2.sentence}"<br><br>${q2.why}`;
+    }
+    document.getElementById('nextBtn').style.display = 'inline-block';
+    updateScoreBar();
+  };
+}
+
+function checkReorder() { window._reorderCheck(); }
+
+function nextReorder() {
+  qIdx++;
+  const act = activities[actIdx];
+  if (qIdx < act.questions.length) renderReorderQuestion();
+  else { qIdx=0; actIdx++; if(actIdx<activities.length) renderActivity(); else renderFinish(); }
+}
+
+// ── FINISH ──
+function renderFinish() {
+  const pct = Math.round(score/total*100);
+  let msg, emoji;
+  if (pct >= 90) { msg = "Outstanding! Your skiing vocabulary and grammar are truly expert-level. Time to hit the slopes!"; emoji = "🏆"; }
+  else if (pct >= 75) { msg = "Well done! You have a strong command of skiing English. A little more practice and you'll be perfect."; emoji = "🥈"; }
+  else if (pct >= 55) { msg = "Good effort! You're making solid progress. Review the areas where you stumbled and try again."; emoji = "⛷️"; }
+  else { msg = "Keep practising! Language learning takes time. Review the vocabulary and give the lesson another go."; emoji = "❄️"; }
+
+  document.getElementById('sectionHeader').style.display='none';
+  document.getElementById('illusStrip').style.display='none';
+
+  const bars = Array.from({length:total},(_,i)=>`<div class="finish-bar ${i<score?'lit':''}"></div>`).join('');
+
+  document.getElementById('mainCard').innerHTML = `
+    <div class="finish-screen">
+      <div class="finish-trophy">${emoji}</div>
+      <div class="finish-title">Lesson Complete!</div>
+      <div class="finish-score">${score}<span style="font-size:24px;color:var(--text-light)"> / ${total}</span></div>
+      <div class="finish-msg">${msg}</div>
+      <div class="finish-bars">${bars}</div>
+      <div class="btn-row" style="justify-content:center">
+        <button class="btn btn-gold" onclick="restartLesson()">↺ Restart Lesson</button>
+      </div>
+    </div>
+  `;
+  document.getElementById('activityTag').textContent = 'Lesson Complete';
+  document.getElementById('activityTitle').textContent = `Score: ${pct}%`;
+  document.getElementById('activitySub').textContent = 'Thank you for completing the Forbes English skiing lesson.';
+  updateScoreBar();
+}
+
+function restartLesson() {
+  actIdx=0; qIdx=0; score=0; total=0; answered=false;
+  matchSelected={side:null,idx:null}; matchPairs=[]; matchCompleted=0;
+  fitbState=[]; fitbCurrent=null; reorderState=[]; reorderAnswered=[];
+  document.getElementById('sectionHeader').style.display='';
+  document.getElementById('illusStrip').style.display='';
+  renderActivity();
+}
+
+// ── INIT ──
+renderActivity();
+</script>
+</body>
+</html>

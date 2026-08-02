@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English — Anatomy of a Sentence (C1)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #101C2C;
+    --ink-soft: #1B2A3D;
+    --ink-softer: #26374C;
+    --paper: #F1E9D8;
+    --paper-dim: #DDD2B7;
+    --vessel: #B3483F;
+    --vessel-dim: #8C3931;
+    --slate: #4C7086;
+    --gold: #C6A253;
+    --good: #5F7A52;
+    --good-dim: #4A5F40;
+    --text-on-paper: #1D2430;
+    --text-muted: #5C6470;
+    --radius: 3px;
+  }
+
+  * { box-sizing: border-box; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: "Public Sans", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(198,162,83,0.07), transparent 40%),
+      radial-gradient(circle at 85% 90%, rgba(76,112,134,0.10), transparent 45%);
+    min-height: 100vh;
+  }
+
+  .app { max-width: 980px; margin: 0 auto; padding: 1.75rem 1.25rem 4rem; }
+
+  /* ---------- Header ---------- */
+  .site-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid rgba(198,162,83,0.35);
+  }
+
+  .brand-block { display: flex; align-items: center; gap: 1rem; flex: 1 1 320px; }
+
+  .logo-svg { flex-shrink: 0; }
+
+  .lesson-meta h1 {
+    font-family: "Fraunces", serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-size: 1.7rem;
+    margin: 0 0 0.15rem;
+    color: var(--paper);
+    letter-spacing: -0.01em;
+  }
+
+  .lesson-meta .subtitle {
+    margin: 0;
+    font-size: 0.92rem;
+    color: var(--paper-dim);
+  }
+
+  .level-tag {
+    display: inline-block;
+    font-family: "Space Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    padding: 0.15rem 0.5rem;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    border-radius: var(--radius);
+    margin-bottom: 0.4rem;
+  }
+
+  .score-panel {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    flex-shrink: 0;
+  }
+
+  .score-box {
+    text-align: right;
+    font-family: "Space Mono", monospace;
+  }
+
+  .score-box .score-label {
+    display: block;
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+  }
+
+  .score-box .score-value {
+    font-size: 1.4rem;
+    color: var(--gold);
+  }
+
+  .score-box .score-value #global-total { color: var(--paper-dim); font-size: 1rem; }
+
+  #results-btn {
+    font-family: "Public Sans", sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    background: transparent;
+    border: 1px solid var(--slate);
+    color: var(--paper);
+    padding: 0.5rem 0.9rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+  #results-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  #results-btn:not(:disabled):hover { background: rgba(76,112,134,0.2); border-color: var(--gold); }
+
+  .progress-track {
+    height: 4px;
+    background: var(--ink-softer);
+    border-radius: 2px;
+    margin: 1rem 0 1.5rem;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--slate), var(--gold));
+    transition: width 0.3s ease;
+  }
+
+  /* ---------- Tabs ---------- */
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .tab-btn {
+    font-family: "Public Sans", sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--paper-dim);
+    background: var(--ink-soft);
+    border: 1px solid var(--ink-softer);
+    padding: 0.55rem 0.9rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .tab-btn:hover { border-color: var(--slate); color: var(--paper); }
+  .tab-btn.active {
+    background: var(--paper);
+    color: var(--ink);
+    border-color: var(--gold);
+  }
+  .tab-btn .tab-badge {
+    font-family: "Space Mono", monospace;
+    font-size: 0.68rem;
+    color: inherit;
+    opacity: 0.65;
+  }
+  .tab-btn.tab-done::before {
+    content: "\2713";
+    color: var(--good);
+    font-weight: 700;
+  }
+  .tab-btn.active.tab-done::before { color: var(--good-dim); }
+  .tab-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+  /* ---------- Panels ---------- */
+  .panel.hidden { display: none; }
+
+  .panel-head {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .panel-head .region-icon { flex-shrink: 0; }
+
+  .panel-head h2 {
+    font-family: "Fraunces", serif;
+    font-weight: 600;
+    font-size: 1.3rem;
+    margin: 0 0 0.2rem;
+    color: var(--paper);
+  }
+
+  .panel-head p {
+    margin: 0;
+    font-size: 0.88rem;
+    color: var(--paper-dim);
+  }
+
+  /* ---------- Matching activity ---------- */
+  .matching {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 1.25rem;
+    align-items: start;
+  }
+
+  @media (max-width: 720px) {
+    .matching { grid-template-columns: 1fr; }
+  }
+
+  .match-col-clues { display: flex; flex-direction: column; gap: 0.6rem; }
+
+  .clue-card {
+    background: var(--paper);
+    color: var(--text-on-paper);
+    border: 1px solid var(--paper-dim);
+    border-radius: var(--radius);
+    padding: 0.75rem 0.9rem;
+    cursor: pointer;
+    position: relative;
+    transition: border-color 0.15s ease, transform 0.15s ease, background 0.15s ease;
+  }
+  .clue-card::before {
+    content: "";
+    position: absolute;
+    top: 4px; left: 4px;
+    width: 6px; height: 6px;
+    border-top: 1px solid var(--gold);
+    border-left: 1px solid var(--gold);
+    opacity: 0.7;
+  }
+  .clue-card::after {
+    content: "";
+    position: absolute;
+    bottom: 4px; right: 4px;
+    width: 6px; height: 6px;
+    border-bottom: 1px solid var(--gold);
+    border-right: 1px solid var(--gold);
+    opacity: 0.7;
+  }
+  .clue-card .clue-text { margin: 0; font-size: 0.93rem; line-height: 1.45; }
+  .clue-card .clue-gloss {
+    margin: 0.4rem 0 0;
+    font-family: "Space Mono", monospace;
+    font-size: 0.76rem;
+    color: var(--slate);
+  }
+  .clue-card .clue-gloss.hidden { display: none; }
+  .clue-card:hover { border-color: var(--slate); }
+  .clue-card:focus-visible { outline: 2px solid var(--slate); outline-offset: 2px; }
+  .clue-card.selected { border-color: var(--gold); background: #FBF6EA; box-shadow: 0 0 0 1px var(--gold); }
+  .clue-card.matched { border-color: var(--good); cursor: default; }
+  .clue-card.matched::before, .clue-card.matched::after { border-color: var(--good); }
+  .clue-card.wrong { border-color: var(--vessel); animation: shake 0.4s ease; }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+  }
+
+  .match-col-words {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-content: flex-start;
+    position: sticky;
+    top: 1rem;
+  }
+  @media (max-width: 720px) { .match-col-words { position: static; } }
+
+  .word-chip {
+    font-family: "Public Sans", sans-serif;
+    font-size: 0.86rem;
+    font-weight: 600;
+    background: var(--ink-soft);
+    color: var(--paper);
+    border: 1px solid var(--slate);
+    border-radius: 999px;
+    padding: 0.45rem 0.95rem;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+  }
+  .word-chip:hover { border-color: var(--gold); }
+  .word-chip:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .word-chip.matched {
+    background: var(--good-dim);
+    border-color: var(--good);
+    color: var(--paper);
+    cursor: default;
+    opacity: 0.85;
+  }
+  .word-chip.wrong { border-color: var(--vessel); background: var(--vessel-dim); animation: shake 0.4s ease; }
+
+  .panel-footer { margin-top: 1.5rem; display: flex; justify-content: flex-end; }
+
+  .next-tab-btn, .round-continue-btn, .finish-btn {
+    font-family: "Public Sans", sans-serif;
+    font-weight: 600;
+    font-size: 0.88rem;
+    background: var(--gold);
+    color: var(--ink);
+    border: none;
+    padding: 0.65rem 1.1rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: background 0.15s ease, opacity 0.15s ease;
+  }
+  .next-tab-btn:disabled, .finish-btn:disabled { opacity: 0.35; cursor: not-allowed; background: var(--paper-dim); }
+  .next-tab-btn:not(:disabled):hover, .round-continue-btn:hover { background: #D8B563; }
+  .next-tab-btn:focus-visible, .round-continue-btn:focus-visible, .finish-btn:focus-visible { outline: 2px solid var(--paper); outline-offset: 2px; }
+
+  /* ---------- Idioms activity ---------- */
+  .idiom-dots { display: flex; gap: 0.35rem; margin-bottom: 1rem; flex-wrap: wrap; }
+  .idiom-dot {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--ink-softer);
+    border: 1px solid var(--slate);
+  }
+  .idiom-dot.dot-current { border-color: var(--gold); }
+  .idiom-dot.dot-correct { background: var(--good); border-color: var(--good); }
+  .idiom-dot.dot-incorrect { background: var(--vessel); border-color: var(--vessel); }
+
+  .idiom-progress {
+    font-family: "Space Mono", monospace;
+    font-size: 0.76rem;
+    color: var(--paper-dim);
+    margin-bottom: 0.6rem;
+  }
+
+  .idiom-sentence {
+    background: var(--paper);
+    color: var(--text-on-paper);
+    border-radius: var(--radius);
+    padding: 1.1rem 1.2rem;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin: 0 0 1.1rem;
+    position: relative;
+  }
+  .idiom-sentence::before {
+    content: "";
+    position: absolute; top: 4px; left: 4px; width: 6px; height: 6px;
+    border-top: 1px solid var(--gold); border-left: 1px solid var(--gold); opacity: 0.7;
+  }
+  .idiom-sentence::after {
+    content: "";
+    position: absolute; bottom: 4px; right: 4px; width: 6px; height: 6px;
+    border-bottom: 1px solid var(--gold); border-right: 1px solid var(--gold); opacity: 0.7;
+  }
+
+  .blank {
+    display: inline-block;
+    color: var(--vessel-dim);
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+  .blank.filled {
+    color: var(--good-dim);
+    text-decoration: underline;
+    text-decoration-color: var(--good);
+    text-underline-offset: 3px;
+  }
+
+  .idiom-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.6rem;
+    margin-bottom: 1.1rem;
+  }
+  @media (max-width: 560px) { .idiom-options { grid-template-columns: 1fr; } }
+
+  .idiom-option {
+    font-family: "Public Sans", sans-serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    background: var(--ink-soft);
+    color: var(--paper);
+    border: 1px solid var(--slate);
+    border-radius: var(--radius);
+    padding: 0.65rem 0.8rem;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .idiom-option:hover:not(:disabled) { border-color: var(--gold); }
+  .idiom-option:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .idiom-option.correct { background: var(--good-dim); border-color: var(--good); }
+  .idiom-option.incorrect { background: var(--vessel-dim); border-color: var(--vessel); }
+  .idiom-option:disabled { cursor: default; }
+
+  .idiom-feedback {
+    background: var(--ink-soft);
+    border-left: 3px solid var(--gold);
+    padding: 0.85rem 1rem;
+    border-radius: var(--radius);
+    margin-bottom: 1.1rem;
+  }
+  .idiom-feedback.hidden { display: none; }
+  .idiom-feedback p { margin: 0 0 0.35rem; font-size: 0.88rem; }
+  .idiom-feedback p:last-child { margin-bottom: 0; }
+  .feedback-head { font-weight: 700; color: var(--gold); }
+  .feedback-meaning { color: var(--paper); }
+  .feedback-de { font-family: "Space Mono", monospace; color: var(--slate); font-size: 0.8rem !important; }
+
+  .next-question-btn {
+    font-family: "Public Sans", sans-serif;
+    font-weight: 600;
+    font-size: 0.88rem;
+    background: var(--gold);
+    color: var(--ink);
+    border: none;
+    padding: 0.6rem 1.05rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+  }
+  .next-question-btn.hidden { display: none; }
+  .next-question-btn:focus-visible { outline: 2px solid var(--paper); outline-offset: 2px; }
+
+  .complete-note {
+    background: var(--ink-soft);
+    border: 1px dashed var(--good);
+    border-radius: var(--radius);
+    padding: 1rem 1.1rem;
+    font-size: 0.92rem;
+    color: var(--paper-dim);
+  }
+  .complete-note.hidden { display: none; }
+
+  .round-indicator {
+    font-family: "Space Mono", monospace;
+    font-size: 0.76rem;
+    color: var(--paper-dim);
+    margin-bottom: 0.8rem;
+  }
+
+  .round-continue-btn { margin-top: 1.25rem; }
+  .round-continue-btn.hidden { display: none; }
+
+  /* ---------- Results overlay ---------- */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(16,28,44,0.88);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    z-index: 50;
+  }
+  .overlay.hidden { display: none; }
+
+  .results-card {
+    background: var(--paper);
+    color: var(--text-on-paper);
+    border-radius: var(--radius);
+    padding: 2rem;
+    max-width: 480px;
+    width: 100%;
+    position: relative;
+    border: 1px solid var(--gold);
+  }
+
+  .results-card h2 {
+    font-family: "Fraunces", serif;
+    font-weight: 600;
+    font-size: 1.6rem;
+    margin: 0 0 0.75rem;
+  }
+
+  #results-score {
+    font-family: "Space Mono", monospace;
+    font-size: 1.7rem;
+    color: var(--vessel-dim);
+    margin: 0 0 0.75rem;
+  }
+
+  #results-message { font-size: 0.95rem; margin: 0 0 1.25rem; color: var(--text-muted); }
+
+  #results-breakdown { list-style: none; margin: 0 0 1.5rem; padding: 0; border-top: 1px solid var(--paper-dim); }
+  .results-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid var(--paper-dim);
+    font-size: 0.9rem;
+  }
+  .results-row-value { font-family: "Space Mono", monospace; color: var(--slate); }
+
+  #restart-btn {
+    font-family: "Public Sans", sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 0.7rem 1.1rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    margin-right: 0.6rem;
+  }
+  #results-close {
+    font-family: "Public Sans", sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--paper-dim);
+    padding: 0.7rem 1.1rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="site-header">
+    <div class="brand-block">
+      <svg class="logo-svg" width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="36" cy="36" r="35" stroke="#C6A253" stroke-width="1" opacity="0.5"/>
+        <text x="36" y="33" text-anchor="middle" font-family="Fraunces, serif" font-size="17" font-weight="600" fill="#F1E9D8">Forbes</text>
+        <line x1="16" y1="40" x2="56" y2="40" stroke="#C6A253" stroke-width="1"/>
+        <text x="36" y="52" text-anchor="middle" font-family="Public Sans, sans-serif" font-size="9" font-weight="700" letter-spacing="2" fill="#C6A253">ENGLISH</text>
+      </svg>
+      <div class="lesson-meta">
+        <span class="level-tag">C1 &middot; VOCABULARY &amp; IDIOM</span>
+        <h1>Anatomy of a Sentence</h1>
+        <p class="subtitle">Body parts, idioms &amp; collocations, with German support (DE)</p>
+      </div>
+    </div>
+    <div class="score-panel">
+      <div class="score-box">
+        <span class="score-label">Score</span>
+        <span class="score-value"><span id="global-score">0</span> / <span id="global-total">61</span></span>
+      </div>
+      <button id="results-btn" type="button" disabled>Results</button>
+    </div>
+  </header>
+
+  <div class="progress-track"><div class="progress-fill" id="global-progress-fill"></div></div>
+
+  <nav class="tabs" id="tab-nav" role="tablist" aria-label="Lesson sections">
+    <button class="tab-btn active" type="button" data-tab="face" role="tab" aria-selected="true">Face &amp; Neck <span class="tab-badge" data-badge="face">0/9</span></button>
+    <button class="tab-btn" type="button" data-tab="torso" role="tab" aria-selected="false">Torso &amp; Organs <span class="tab-badge" data-badge="torso">0/12</span></button>
+    <button class="tab-btn" type="button" data-tab="limbs" role="tab" aria-selected="false">Limbs &amp; Extremities <span class="tab-badge" data-badge="limbs">0/12</span></button>
+    <button class="tab-btn" type="button" data-tab="idioms" role="tab" aria-selected="false">Idioms in Context <span class="tab-badge" data-badge="idioms">0/10</span></button>
+    <button class="tab-btn" type="button" data-tab="actions" role="tab" aria-selected="false">Actions &amp; Purposes <span class="tab-badge" data-badge="actions">0/18</span></button>
+  </nav>
+
+  <main id="panels">
+
+    <section class="panel" data-panel="face">
+      <div class="panel-head">
+        <svg class="region-icon" width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M15 30 C13 24 13 16 22 14 C31 16 31 24 29 30 C27 34 24 36 22 36 C20 36 17 34 15 30 Z" stroke="#B3483F" stroke-width="1.4"/>
+          <path d="M18 18 C19.5 17 21 17 22 17.6" stroke="#B3483F" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M26 18 C24.5 17 23 17 22 17.6" stroke="#B3483F" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="22" y1="20" x2="21" y2="25" stroke="#B3483F" stroke-width="1" stroke-linecap="round"/>
+        </svg>
+        <div>
+          <h2>Face &amp; Neck</h2>
+          <p>Read each description, then click it and click the matching word. A German gloss appears once you match correctly.</p>
+        </div>
+      </div>
+      <div class="matching">
+        <div class="match-col-clues" id="clues-face"></div>
+        <div class="match-col-words" id="words-face"></div>
+      </div>
+      <div class="panel-footer">
+        <button class="next-tab-btn" type="button" data-next-from="face" data-go="torso" disabled>Continue to Torso &amp; Organs &rarr;</button>
+      </div>
+    </section>
+
+    <section class="panel hidden" data-panel="torso">
+      <div class="panel-head">
+        <svg class="region-icon" width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M14 8 L14 30 C14 36 18 40 22 40 C26 40 30 36 30 30 L30 8" stroke="#B3483F" stroke-width="1.4"/>
+          <line x1="16" y1="14" x2="28" y2="14" stroke="#B3483F" stroke-width="1"/>
+          <line x1="15" y1="19" x2="29" y2="19" stroke="#B3483F" stroke-width="1"/>
+          <line x1="15.5" y1="24" x2="28.5" y2="24" stroke="#B3483F" stroke-width="1"/>
+        </svg>
+        <div>
+          <h2>Torso &amp; Organs</h2>
+          <p>Match each anatomical description to the correct word. Twelve items this round.</p>
+        </div>
+      </div>
+      <div class="matching">
+        <div class="match-col-clues" id="clues-torso"></div>
+        <div class="match-col-words" id="words-torso"></div>
+      </div>
+      <div class="panel-footer">
+        <button class="next-tab-btn" type="button" data-next-from="torso" data-go="limbs" disabled>Continue to Limbs &amp; Extremities &rarr;</button>
+      </div>
+    </section>
+
+    <section class="panel hidden" data-panel="limbs">
+      <div class="panel-head">
+        <svg class="region-icon" width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M16 6 L16 22 L11 38" stroke="#B3483F" stroke-width="1.4" fill="none"/>
+          <path d="M28 6 L28 22 L33 38" stroke="#B3483F" stroke-width="1.4" fill="none"/>
+          <circle cx="16" cy="22" r="1.6" fill="#B3483F"/>
+          <circle cx="28" cy="22" r="1.6" fill="#B3483F"/>
+        </svg>
+        <div>
+          <h2>Limbs &amp; Extremities</h2>
+          <p>From elbow to sole — match the description to the word. Twelve items this round.</p>
+        </div>
+      </div>
+      <div class="matching">
+        <div class="match-col-clues" id="clues-limbs"></div>
+        <div class="match-col-words" id="words-limbs"></div>
+      </div>
+      <div class="panel-footer">
+        <button class="next-tab-btn" type="button" data-next-from="limbs" data-go="idioms" disabled>Continue to Idioms &rarr;</button>
+      </div>
+    </section>
+
+    <section class="panel hidden" data-panel="idioms">
+      <div class="panel-head">
+        <svg class="region-icon" width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M8 12 h28 v16 h-16 l-6 6 v-6 h-6 z" stroke="#B3483F" stroke-width="1.4" fill="none"/>
+          <line x1="13" y1="18" x2="30" y2="18" stroke="#B3483F" stroke-width="1"/>
+          <line x1="13" y1="23" x2="24" y2="23" stroke="#B3483F" stroke-width="1"/>
+        </svg>
+        <div>
+          <h2>Idioms in Context</h2>
+          <p>Choose the body-part word that completes each idiom. Feedback explains the idiom's meaning and a German equivalent.</p>
+        </div>
+      </div>
+      <div class="idiom-dots" id="idiom-dots"></div>
+      <div id="idiom-question">
+        <p class="idiom-progress" id="idiom-progress">Question 1 of 10</p>
+        <p class="idiom-sentence" id="idiom-sentence"></p>
+        <div class="idiom-options" id="idiom-options"></div>
+        <div class="idiom-feedback hidden" id="idiom-feedback"></div>
+        <button class="next-question-btn hidden" type="button" id="idiom-next-btn">Next question &rarr;</button>
+      </div>
+      <p class="complete-note hidden" id="idioms-complete-note">All ten idioms complete. Use the tab bar above, or the button below, to continue.</p>
+      <div class="panel-footer">
+        <button class="next-tab-btn" type="button" data-next-from="idioms" data-go="actions" disabled>Continue to Actions &amp; Purposes &rarr;</button>
+      </div>
+    </section>
+
+    <section class="panel hidden" data-panel="actions">
+      <div class="panel-head">
+        <svg class="region-icon" width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M14 30 L14 16 C14 14 17 14 17 16 L17 24" stroke="#B3483F" stroke-width="1.4" fill="none"/>
+          <path d="M17 24 L17 14 C17 12 20 12 20 14 L20 24" stroke="#B3483F" stroke-width="1.4" fill="none"/>
+          <path d="M20 24 L20 15 C20 13 23 13 23 15 L23 24" stroke="#B3483F" stroke-width="1.4" fill="none"/>
+          <path d="M23 24 L23 17 C23 15 26 15 26 17 L26 27" stroke="#B3483F" stroke-width="1.4" fill="none"/>
+          <path d="M14 30 C13 34 15 37 19 37 L24 37 C28 37 29 33 28 29" stroke="#B3483F" stroke-width="1.4" fill="none"/>
+        </svg>
+        <div>
+          <h2>Actions &amp; Purposes</h2>
+          <p>Match each verb to the reason you'd do it. Eighteen verbs across two short rounds.</p>
+        </div>
+      </div>
+      <p class="round-indicator" id="actions-round-indicator">Round 1 of 2</p>
+      <div class="matching">
+        <div class="match-col-clues" id="clues-actions"></div>
+        <div class="match-col-words" id="words-actions"></div>
+      </div>
+      <button class="round-continue-btn hidden" type="button" id="actions-round-continue">Continue to Round 2 of 2 &rarr;</button>
+    </section>
+
+  </main>
+</div>
+
+<div class="overlay hidden" id="results-overlay">
+  <div class="results-card">
+    <h2>Your results</h2>
+    <p id="results-score">0 / 61</p>
+    <p id="results-message"></p>
+    <ul id="results-breakdown"></ul>
+    <button id="restart-btn" type="button">Restart lesson</button>
+    <button id="results-close" type="button">Close</button>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   FORBES ENGLISH — "Anatomy of a Sentence" (C1) — Content Data
+   Body parts, idioms, and verb-purpose collocations
+   ============================================================ */
+
+var FACE_NECK = [
+  { id: "forehead", clue: "The smooth expanse of the face stretching from the eyebrows up to the hairline; furrows here often betray concentration or worry.", de: "die Stirn" },
+  { id: "temple", clue: "The flattened area on each side of the head, just behind the eye, where a pulse can sometimes be felt.", de: "die Schläfe" },
+  { id: "eyebrow", clue: "The arch of short hairs above the eye socket, raised instinctively to signal surprise or scepticism.", de: "die Augenbraue" },
+  { id: "eyelash", clue: "One of the fine curved hairs fringing the eyelid, whose main job is keeping dust and grit out of the eye.", de: "die Wimper" },
+  { id: "nostril", clue: "Either of the paired openings in the nose through which air is drawn in and out.", de: "das Nasenloch" },
+  { id: "lip", clue: "One of the two soft, mobile edges framing the mouth, essential for speech and for sealing it shut.", de: "die Lippe" },
+  { id: "chin", clue: "The prominent point at the front of the lower jaw, just below the mouth.", de: "das Kinn" },
+  { id: "throat", clue: "The internal passage at the front of the neck, shared by the airway and the gullet.", de: "der Rachen / die Kehle" },
+  { id: "neck", clue: "The flexible column of muscle and vertebrae joining the head to the shoulders.", de: "der Hals / der Nacken" }
+];
+
+var TORSO_ORGANS = [
+  { id: "chest", clue: "The front of the torso between the neck and the stomach, sheltering the heart and lungs.", de: "die Brust" },
+  { id: "waist", clue: "The narrowest part of the torso, roughly level with the navel, where a belt typically sits.", de: "die Taille" },
+  { id: "hip", clue: "The wide joint at the side of the pelvis where the thigh bone pivots.", de: "die Hüfte" },
+  { id: "pelvis", clue: "The basin-shaped ring of bone at the base of the spine that anchors the legs to the torso.", de: "das Becken" },
+  { id: "spine", clue: "The flexible column of stacked vertebrae running down the back, sheltering the nerve bundle inside it.", de: "die Wirbelsäule" },
+  { id: "rib", clue: "One of the curved bones arcing from the spine round to the chest, forming a protective cage.", de: "die Rippe" },
+  { id: "stomach", clue: "The muscular sac where swallowed food is churned and broken down before moving on to the intestines.", de: "der Magen" },
+  { id: "lung", clue: "One of a pair of spongy organs that expand and contract to draw oxygen into the bloodstream.", de: "die Lunge" },
+  { id: "liver", clue: "The large organ tucked under the ribs on the right, responsible for filtering the blood and processing what we eat and drink.", de: "die Leber" },
+  { id: "kidney", clue: "One of a pair of bean-shaped organs that filter waste from the blood to produce urine.", de: "die Niere" },
+  { id: "intestines", clue: "The long coiled tube inside the abdomen where the final stages of digestion and nutrient absorption take place.", de: "der Darm" },
+  { id: "veins", clue: "The vessels that carry blood, now low in oxygen, back towards the heart.", de: "die Venen" }
+];
+
+var LIMBS_EXTREMITIES = [
+  { id: "elbow", clue: "The hinge joint midway along the arm, letting the forearm swing up towards the shoulder.", de: "der Ellbogen" },
+  { id: "wrist", clue: "The flexible joint linking the hand to the forearm, allowing it to rotate and bend.", de: "das Handgelenk" },
+  { id: "palm", clue: "The flat, inner surface of the hand, between the wrist and the base of the fingers.", de: "die Handfläche" },
+  { id: "knuckle", clue: "Any of the small joints along a finger, most visible when the hand is clenched into a fist.", de: "der Fingerknöchel" },
+  { id: "thumb", clue: "The short, sturdy digit set apart from the other four, giving the hand its grip.", de: "der Daumen" },
+  { id: "thigh", clue: "The thick upper portion of the leg, running from the hip down to the knee.", de: "der Oberschenkel" },
+  { id: "shin", clue: "The sharp front edge of the lower leg, between the knee and the ankle.", de: "das Schienbein" },
+  { id: "calf", clue: "The muscular back portion of the lower leg, below the knee.", de: "die Wade" },
+  { id: "ankle", clue: "The joint connecting the foot to the leg, either side of which a bone typically protrudes.", de: "der Knöchel / das Fußgelenk" },
+  { id: "sole", clue: "The underside of the foot — the part that meets the ground with every step.", de: "die Fußsohle" },
+  { id: "heel", clue: "The rounded back portion of the foot, beneath the ankle.", de: "die Ferse" },
+  { id: "armpit", clue: "The hollow beneath the shoulder where the arm meets the torso.", de: "die Achselhöhle" }
+];
+
+/* Idioms & Expressions — gap-fill, C1 register, original example sentences.
+   Each item: sentence with a single blank marker "___", the correct word,
+   an explanation of the idiom's meaning, a German equivalent, and three
+   unambiguous distractors (never independently defensible in context). */
+var IDIOMS = [
+  {
+    sentence: "The team's numbers were down for the third quarter running, but their coach kept insisting they keep their ___ up going into the final.",
+    answer: "chin",
+    options: ["chin", "chest", "cheek", "shoulder"],
+    meaning: "\u201CKeep your chin up\u201D means to stay positive and not lose heart during a difficult time.",
+    de: "den Kopf nicht hängen lassen"
+  },
+  {
+    sentence: "Despite pressure from the board, the CEO dug her ___ in and refused to relocate the headquarters.",
+    answer: "heels",
+    options: ["heels", "toes", "elbows", "knees"],
+    meaning: "To \u201Cdig your heels in\u201D is to stubbornly resist pressure to change your mind.",
+    de: "sich stur weigern / auf stur schalten"
+  },
+  {
+    sentence: "I respect his talent, but I can't ___ the way he talks over everyone else in meetings.",
+    answer: "stomach",
+    options: ["stomach", "chin", "cheek", "elbow"],
+    meaning: "If you \u201Ccan't stomach\u201D something, you find it impossible to tolerate or put up with.",
+    de: "etwas nicht ausstehen können"
+  },
+  {
+    sentence: "As a rule of ___, always test a small patch of fabric before applying any stain remover to the whole garment.",
+    answer: "thumb",
+    options: ["thumb", "heel", "toe", "elbow"],
+    meaning: "A \u201Crule of thumb\u201D is a broad, practical guideline based on experience rather than exact science.",
+    de: "die Faustregel"
+  },
+  {
+    sentence: "Junior associates are expected to ___ the line during their probation, however much they may privately disagree with policy.",
+    answer: "toe",
+    options: ["toe", "tow", "heel", "thumb"],
+    meaning: "To \u201Ctoe the line\u201D is to conform to a rule or standard set by others — often confused in writing with \u201Ctow\u201D, which is unrelated.",
+    de: "sich an die Regeln halten / spuren"
+  },
+  {
+    sentence: "He turned up two hours late without any explanation and then asked to borrow money — what an absolute ___!",
+    answer: "cheek",
+    options: ["cheek", "lip", "chin", "elbow"],
+    meaning: "\u201CWhat a cheek!\u201D expresses indignation at someone's impudence or nerve.",
+    de: "was für eine Frechheit!"
+  },
+  {
+    sentence: "He'd been bottling up his frustration with the client for weeks, and getting it off his ___ during the review finally brought him some relief.",
+    answer: "chest",
+    options: ["chest", "stomach", "cheek", "thumb"],
+    meaning: "To \u201Cget something off your chest\u201D is to confess or admit something that has been troubling you.",
+    de: "sich etwas von der Seele reden"
+  },
+  {
+    sentence: "The company claims to prioritise employee wellbeing, but critics argue it's paying mere ___ service while cutting mental-health budgets.",
+    answer: "lip",
+    options: ["lip", "cheek", "chin", "elbow"],
+    meaning: "\u201CLip service\u201D is superficial support or agreement that isn't backed up by real action.",
+    de: "Lippenbekenntnisse ablegen"
+  },
+  {
+    sentence: "From the moment she walked in, he couldn't stop ___ up every candidate who might threaten his promotion.",
+    answer: "eyeing",
+    options: ["eyeing", "winking", "nodding", "blinking"],
+    meaning: "To \u201Ceye someone up\u201D is to look at them closely, often with suspicion, envy, or interest.",
+    de: "jemanden misstrauisch beäugen / mustern"
+  },
+  {
+    sentence: "That antique brass fitting hasn't been polished in decades — you'll need plenty of ___ grease to bring back its shine.",
+    answer: "elbow",
+    options: ["elbow", "thumb", "heel", "cheek"],
+    meaning: "\u201CElbow grease\u201D means hard physical effort, especially in cleaning or manual work.",
+    de: "Muskelkraft / harte Handarbeit"
+  }
+];
+
+/* Verb + body-part collocations — matched to the purpose or reason behind
+   the action (richer, more idiomatic than a simple body-part match). */
+var ACTIONS_ROUND_A = [
+  { id: "tickle", purpose: "to provoke helpless laughter with light, repeated touches", de: "kitzeln" },
+  { id: "nod", purpose: "to signal agreement or greeting without saying a word", de: "nicken" },
+  { id: "thumb", purpose: "to hitch a lift by the roadside, or to flick quickly through the pages of a book", de: "per Anhalter fahren / durchblättern" },
+  { id: "sniff", purpose: "to detect a faint smell, or to react to something with open disdain", de: "schnüffeln / schnauben" },
+  { id: "slap", purpose: "to strike sharply and suddenly, often as punishment or in anger", de: "schlagen (ohrfeigen)" },
+  { id: "clap", purpose: "to applaud, or to summon attention with a sudden burst of noise", de: "klatschen" },
+  { id: "swallow", purpose: "to force down an emotion you'd rather not show, such as pride or anger", de: "schlucken (unterdrücken)" },
+  { id: "stroke", purpose: "to move your hand gently and repeatedly over something, as a gesture of comfort", de: "streicheln" },
+  { id: "smack", purpose: "to hit with a flat, loud impact, sometimes as a rebuke", de: "schlagen / patschen" }
+];
+
+var ACTIONS_ROUND_B = [
+  { id: "spit", purpose: "to eject saliva forcefully, often as a mark of contempt", de: "spucken" },
+  { id: "pinch", purpose: "to squeeze a small piece of skin sharply between finger and thumb, or, informally, to steal something petty", de: "kneifen / zwicken" },
+  { id: "squeeze", purpose: "to press firmly from opposite sides, whether in affection or to fit into a tight space", de: "drücken / quetschen" },
+  { id: "frisk", purpose: "to pat someone down quickly in search of something hidden", de: "abtasten / durchsuchen" },
+  { id: "shove", purpose: "to push roughly and without ceremony, often out of impatience", de: "schubsen / stoßen" },
+  { id: "hug", purpose: "to wrap your arms around someone as a show of warmth or reassurance", de: "umarmen" },
+  { id: "wink", purpose: "to close and open one eye briefly, signalling a private joke or complicity", de: "zwinkern" },
+  { id: "rub", purpose: "to move something back and forth against a surface, easing tension or spreading warmth", de: "reiben" },
+  { id: "nudge", purpose: "to prompt someone gently, whether with a light physical touch or a subtle hint", de: "anstupsen" }
+];
+
+</script>
+<script>
+/* ============================================================
+   FORBES ENGLISH — "Anatomy of a Sentence" (C1) — App Logic
+   ============================================================ */
+(function () {
+  "use strict";
+
+  /* ---------- Utilities ---------- */
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = a[i];
+      a[i] = a[j];
+      a[j] = tmp;
+    }
+    return a;
+  }
+
+  function cap(word) {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  }
+
+  function el(tag, className, text) {
+    var e = document.createElement(tag);
+    if (className) e.className = className;
+    if (text !== undefined) e.textContent = text;
+    return e;
+  }
+
+  /* ---------- Global state ---------- */
+  var TAB_ORDER = ["face", "torso", "limbs", "idioms", "actions"];
+
+  var STATE = {
+    tabs: {
+      face: { total: FACE_NECK.length, attempted: 0, correct: 0, done: false },
+      torso: { total: TORSO_ORGANS.length, attempted: 0, correct: 0, done: false },
+      limbs: { total: LIMBS_EXTREMITIES.length, attempted: 0, correct: 0, done: false },
+      idioms: { total: IDIOMS.length, attempted: 0, correct: 0, done: false },
+      actions: { total: ACTIONS_ROUND_A.length + ACTIONS_ROUND_B.length, attempted: 0, correct: 0, done: false }
+    }
+  };
+  var GRAND_TOTAL = TAB_ORDER.reduce(function (sum, k) { return sum + STATE.tabs[k].total; }, 0);
+
+  /* ---------- Global UI updaters ---------- */
+  function updateGlobalUI() {
+    var score = 0, attempted = 0;
+    TAB_ORDER.forEach(function (k) {
+      score += STATE.tabs[k].correct;
+      attempted += STATE.tabs[k].attempted;
+    });
+    document.getElementById("global-score").textContent = score;
+    document.getElementById("global-total").textContent = GRAND_TOTAL;
+    var pct = GRAND_TOTAL ? Math.round((attempted / GRAND_TOTAL) * 100) : 0;
+    document.getElementById("global-progress-fill").style.width = pct + "%";
+
+    TAB_ORDER.forEach(function (k) {
+      var badge = document.querySelector('[data-badge="' + k + '"]');
+      if (badge) badge.textContent = STATE.tabs[k].attempted + "/" + STATE.tabs[k].total;
+      var btn = document.querySelector('.tab-btn[data-tab="' + k + '"]');
+      if (btn) btn.classList.toggle("tab-done", STATE.tabs[k].done);
+    });
+
+    var resultsBtn = document.getElementById("results-btn");
+    var allDone = TAB_ORDER.every(function (k) { return STATE.tabs[k].done; });
+    if (resultsBtn) resultsBtn.disabled = !allDone;
+    if (allDone) showResults();
+  }
+
+  function markTabDone(tabKey) {
+    STATE.tabs[tabKey].done = true;
+    var nextBtn = document.querySelector('.next-tab-btn[data-next-from="' + tabKey + '"]');
+    if (nextBtn) nextBtn.disabled = false;
+    updateGlobalUI();
+  }
+
+  /* ---------- Tab navigation ---------- */
+  function showTab(tabKey) {
+    TAB_ORDER.forEach(function (k) {
+      var panel = document.querySelector('.panel[data-panel="' + k + '"]');
+      var btn = document.querySelector('.tab-btn[data-tab="' + k + '"]');
+      var active = k === tabKey;
+      panel.classList.toggle("hidden", !active);
+      btn.classList.toggle("active", active);
+      btn.setAttribute("aria-selected", active ? "true" : "false");
+    });
+  }
+
+  function wireTabNav() {
+    document.querySelectorAll(".tab-btn").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        showTab(btn.getAttribute("data-tab"));
+      });
+    });
+    document.querySelectorAll(".next-tab-btn").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        showTab(btn.getAttribute("data-go"));
+      });
+    });
+  }
+
+  /* ---------- Generic matching activity ---------- */
+  function createMatching(cfg) {
+    // cfg: { tabKey, cluesId, wordsId, pairs: [{id, clue, de}], onComplete }
+    // Containers are cloned fresh on every call (stale node swapped out) so
+    // re-rendering the same container id — as happens between the two
+    // Actions rounds — never leaves old listeners stacked on top of new
+    // ones, which previously caused the second round's completion to be
+    // silently swallowed by the first round's leftover handler.
+    var oldCluesEl = document.getElementById(cfg.cluesId);
+    var oldWordsEl = document.getElementById(cfg.wordsId);
+    var cluesEl = oldCluesEl.cloneNode(false);
+    var wordsEl = oldWordsEl.cloneNode(false);
+    oldCluesEl.parentNode.replaceChild(cluesEl, oldCluesEl);
+    oldWordsEl.parentNode.replaceChild(wordsEl, oldWordsEl);
+    var pairs = cfg.pairs;
+    var shuffledWords = shuffle(pairs);
+    var matched = {};
+    var failedOnce = {};
+    var selectedId = null;
+
+    cluesEl.innerHTML = "";
+    wordsEl.innerHTML = "";
+
+    pairs.forEach(function (pair) {
+      var card = el("div", "clue-card");
+      card.setAttribute("data-id", pair.id);
+      card.setAttribute("tabindex", "0");
+      card.setAttribute("role", "button");
+      card.setAttribute("aria-pressed", "false");
+      var text = el("p", "clue-text", pair.clue);
+      var gloss = el("p", "clue-gloss hidden", pair.de);
+      card.appendChild(text);
+      card.appendChild(gloss);
+      cluesEl.appendChild(card);
+    });
+
+    shuffledWords.forEach(function (pair) {
+      var chip = el("button", "word-chip", cap(pair.id));
+      chip.setAttribute("type", "button");
+      chip.setAttribute("data-id", pair.id);
+      wordsEl.appendChild(chip);
+    });
+
+    function clearSelection() {
+      if (selectedId) {
+        var prev = cluesEl.querySelector('.clue-card[data-id="' + selectedId + '"]');
+        if (prev) {
+          prev.classList.remove("selected");
+          prev.setAttribute("aria-pressed", "false");
+        }
+      }
+      selectedId = null;
+    }
+
+    function tryComplete() {
+      var count = Object.keys(matched).length;
+      if (count === pairs.length) {
+        cfg.onComplete();
+      }
+    }
+
+    cluesEl.addEventListener("click", function (evt) {
+      var card = evt.target.closest(".clue-card");
+      if (!card || card.classList.contains("matched")) return;
+      var id = card.getAttribute("data-id");
+      if (selectedId === id) {
+        clearSelection();
+        return;
+      }
+      clearSelection();
+      selectedId = id;
+      card.classList.add("selected");
+      card.setAttribute("aria-pressed", "true");
+    });
+
+    cluesEl.addEventListener("keydown", function (evt) {
+      if (evt.key === "Enter" || evt.key === " ") {
+        var card = evt.target.closest(".clue-card");
+        if (card) {
+          evt.preventDefault();
+          card.click();
+        }
+      }
+    });
+
+    wordsEl.addEventListener("click", function (evt) {
+      var chip = evt.target.closest(".word-chip");
+      if (!chip || chip.classList.contains("matched") || !selectedId) return;
+      var chipId = chip.getAttribute("data-id");
+      var clueCard = cluesEl.querySelector('.clue-card[data-id="' + selectedId + '"]');
+
+      if (chipId === selectedId) {
+        chip.classList.add("matched");
+        clueCard.classList.remove("selected");
+        clueCard.classList.add("matched");
+        clueCard.setAttribute("aria-pressed", "false");
+        var gloss = clueCard.querySelector(".clue-gloss");
+        gloss.classList.remove("hidden");
+        matched[chipId] = true;
+
+        STATE.tabs[cfg.tabKey].attempted++;
+        if (!failedOnce[chipId]) {
+          STATE.tabs[cfg.tabKey].correct++;
+        }
+        selectedId = null;
+        updateGlobalUI();
+        tryComplete();
+      } else {
+        failedOnce[selectedId] = true;
+        chip.classList.add("wrong");
+        clueCard.classList.add("wrong");
+        (function (badChip, badClue) {
+          setTimeout(function () {
+            badChip.classList.remove("wrong");
+            badClue.classList.remove("wrong");
+            badClue.classList.remove("selected");
+          }, 500);
+        })(chip, clueCard);
+        selectedId = null;
+      }
+    });
+  }
+
+  /* ---------- Idioms activity (sequential multiple choice) ---------- */
+  function createIdiomsActivity() {
+    var items = IDIOMS;
+    var idx = 0;
+    var sentenceEl = document.getElementById("idiom-sentence");
+    var optionsEl = document.getElementById("idiom-options");
+    var feedbackEl = document.getElementById("idiom-feedback");
+    var progressEl = document.getElementById("idiom-progress");
+    var nextBtn = document.getElementById("idiom-next-btn");
+    var dotsEl = document.getElementById("idiom-dots");
+    var answered = false;
+
+    items.forEach(function (_, i) {
+      var dot = el("span", "idiom-dot");
+      dot.setAttribute("data-dot", i);
+      dotsEl.appendChild(dot);
+    });
+
+    function renderQuestion() {
+      answered = false;
+      var item = items[idx];
+      progressEl.textContent = "Question " + (idx + 1) + " of " + items.length;
+      var parts = item.sentence.split("___");
+      sentenceEl.innerHTML = "";
+      sentenceEl.appendChild(document.createTextNode(parts[0]));
+      var blank = el("span", "blank", "\u2588\u2588\u2588\u2588\u2588");
+      blank.id = "idiom-blank";
+      sentenceEl.appendChild(blank);
+      sentenceEl.appendChild(document.createTextNode(parts[1]));
+
+      optionsEl.innerHTML = "";
+      var shuffledOpts = shuffle(item.options);
+      shuffledOpts.forEach(function (opt) {
+        var btn = el("button", "idiom-option", cap(opt));
+        btn.setAttribute("type", "button");
+        btn.setAttribute("data-value", opt);
+        optionsEl.appendChild(btn);
+      });
+
+      feedbackEl.classList.add("hidden");
+      feedbackEl.innerHTML = "";
+      nextBtn.classList.add("hidden");
+      nextBtn.textContent = idx === items.length - 1 ? "See tab summary \u2192" : "Next question \u2192";
+
+      document.querySelectorAll(".idiom-dot").forEach(function (dot, i) {
+        dot.classList.toggle("dot-current", i === idx);
+      });
+    }
+
+    optionsEl.addEventListener("click", function (evt) {
+      var btn = evt.target.closest(".idiom-option");
+      if (!btn || answered) return;
+      answered = true;
+      var item = items[idx];
+      var chosen = btn.getAttribute("data-value");
+      var isCorrect = chosen === item.answer;
+
+      document.querySelectorAll(".idiom-option").forEach(function (b) {
+        var v = b.getAttribute("data-value");
+        if (v === item.answer) b.classList.add("correct");
+        else if (v === chosen) b.classList.add("incorrect");
+        b.disabled = true;
+      });
+
+      var blank = document.getElementById("idiom-blank");
+      blank.textContent = item.answer;
+      blank.classList.add("filled");
+
+      feedbackEl.classList.remove("hidden");
+      var head = el("p", "feedback-head", isCorrect ? "Correct." : "Not quite.");
+      var meaning = el("p", "feedback-meaning", item.meaning);
+      var de = el("p", "feedback-de", "DE: " + item.de);
+      feedbackEl.appendChild(head);
+      feedbackEl.appendChild(meaning);
+      feedbackEl.appendChild(de);
+
+      STATE.tabs.idioms.attempted++;
+      if (isCorrect) STATE.tabs.idioms.correct++;
+      updateGlobalUI();
+
+      var dot = document.querySelector('.idiom-dot[data-dot="' + idx + '"]');
+      dot.classList.add(isCorrect ? "dot-correct" : "dot-incorrect");
+
+      nextBtn.classList.remove("hidden");
+    });
+
+    nextBtn.addEventListener("click", function () {
+      idx++;
+      if (idx < items.length) {
+        renderQuestion();
+      } else {
+        markTabDone("idioms");
+        document.getElementById("idiom-question").classList.add("hidden");
+        document.getElementById("idioms-complete-note").classList.remove("hidden");
+      }
+    });
+
+    renderQuestion();
+  }
+
+  /* ---------- Actions activity (two matching rounds) ---------- */
+  function createActionsActivity() {
+    var roundIndicator = document.getElementById("actions-round-indicator");
+    var roundContinueBtn = document.getElementById("actions-round-continue");
+
+    function normalise(list) {
+      return list.map(function (v) {
+        return { id: v.id, clue: v.purpose, de: v.de };
+      });
+    }
+
+    function runRoundA() {
+      roundIndicator.textContent = "Round 1 of 2";
+      roundContinueBtn.classList.add("hidden");
+      createMatching({
+        tabKey: "actions",
+        cluesId: "clues-actions",
+        wordsId: "words-actions",
+        pairs: normalise(ACTIONS_ROUND_A),
+        onComplete: function () {
+          roundContinueBtn.classList.remove("hidden");
+          roundContinueBtn.textContent = "Continue to Round 2 of 2 \u2192";
+          roundContinueBtn.onclick = function () {
+            runRoundB();
+          };
+        }
+      });
+    }
+
+    function runRoundB() {
+      roundIndicator.textContent = "Round 2 of 2";
+      roundContinueBtn.classList.add("hidden");
+      createMatching({
+        tabKey: "actions",
+        cluesId: "clues-actions",
+        wordsId: "words-actions",
+        pairs: normalise(ACTIONS_ROUND_B),
+        onComplete: function () {
+          markTabDone("actions");
+          roundContinueBtn.classList.remove("hidden");
+          roundContinueBtn.textContent = "Tab complete \u2014 view header for your results status";
+          roundContinueBtn.disabled = true;
+        }
+      });
+    }
+
+    runRoundA();
+  }
+
+  /* ---------- Results overlay ---------- */
+  var LABELS = {
+    face: "Face & Neck",
+    torso: "Torso & Organs",
+    limbs: "Limbs & Extremities",
+    idioms: "Idioms in Context",
+    actions: "Actions & Purposes"
+  };
+
+  var resultsShown = false;
+
+  function showResults() {
+    if (resultsShown) return;
+    resultsShown = true;
+    var overlay = document.getElementById("results-overlay");
+    var score = 0;
+    TAB_ORDER.forEach(function (k) { score += STATE.tabs[k].correct; });
+    var pct = Math.round((score / GRAND_TOTAL) * 100);
+
+    document.getElementById("results-score").textContent = score + " / " + GRAND_TOTAL + " (" + pct + "%)";
+
+    var message;
+    if (pct >= 90) message = "Outstanding command of this material \u2014 this vocabulary is firmly yours.";
+    else if (pct >= 75) message = "A strong result. Skim back over the few you missed and it will stick for good.";
+    else if (pct >= 50) message = "A solid foundation. Revisit the sections below with a lower score before moving on.";
+    else message = "Worth a second pass \u2014 work back through each section at your own pace.";
+    document.getElementById("results-message").textContent = message;
+
+    var list = document.getElementById("results-breakdown");
+    list.innerHTML = "";
+    TAB_ORDER.forEach(function (k) {
+      var t = STATE.tabs[k];
+      var li = el("li", "results-row");
+      var name = el("span", "results-row-label", LABELS[k]);
+      var val = el("span", "results-row-value", t.correct + " / " + t.total);
+      li.appendChild(name);
+      li.appendChild(val);
+      list.appendChild(li);
+    });
+
+    overlay.classList.remove("hidden");
+  }
+
+  function wireResultsOverlay() {
+    document.getElementById("results-btn").addEventListener("click", showResults);
+    document.getElementById("results-close").addEventListener("click", function () {
+      document.getElementById("results-overlay").classList.add("hidden");
+    });
+    document.getElementById("restart-btn").addEventListener("click", function () {
+      window.location.reload();
+    });
+  }
+
+  /* ---------- Init ---------- */
+  document.addEventListener("DOMContentLoaded", function () {
+    wireTabNav();
+    wireResultsOverlay();
+
+    createMatching({
+      tabKey: "face",
+      cluesId: "clues-face",
+      wordsId: "words-face",
+      pairs: FACE_NECK,
+      onComplete: function () { markTabDone("face"); }
+    });
+
+    createMatching({
+      tabKey: "torso",
+      cluesId: "clues-torso",
+      wordsId: "words-torso",
+      pairs: TORSO_ORGANS,
+      onComplete: function () { markTabDone("torso"); }
+    });
+
+    createMatching({
+      tabKey: "limbs",
+      cluesId: "clues-limbs",
+      wordsId: "words-limbs",
+      pairs: LIMBS_EXTREMITIES,
+      onComplete: function () { markTabDone("limbs"); }
+    });
+
+    createIdiomsActivity();
+    createActionsActivity();
+
+    updateGlobalUI();
+    showTab("face");
+  });
+})();
+
+</script>
+</body>
+</html>

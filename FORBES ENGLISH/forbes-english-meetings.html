@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – Open Answer Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1e1a14;
+    --ink2: #332c1e;
+    --slate: #6b5e44;
+    --mist: #b0a080;
+    --cream: #faf6ee;
+    --paper: #fffdf8;
+    --amber: #c07820;
+    --amber-light: #e09840;
+    --amber-pale: #fef3d8;
+    --correct: #3d6b3a;
+    --correct-bg: #eaf4e8;
+    --rule: #ddd0b8;
+    --warm-shadow: rgba(30,26,20,0.07);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 20% 0%, rgba(192,120,32,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 85% 100%, rgba(61,107,58,0.06) 0%, transparent 60%);
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--ink);
+    padding: 0 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+    border-bottom: 3px solid var(--amber);
+  }
+  .logo-svg { height: 44px; width: auto; }
+
+  .score-pill {
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 40px; padding: 6px 18px;
+  }
+  .score-pill span { color: rgba(255,255,255,0.5); font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; }
+  .score-pill strong { color: var(--amber-light); font-size: 17px; font-weight: 600; }
+
+  /* PROGRESS */
+  .progress-bar-wrap { background: var(--ink); height: 6px; }
+  .progress-bar-track { background: rgba(255,255,255,0.1); height: 6px; }
+  .progress-bar-fill { background: linear-gradient(90deg, var(--amber), var(--amber-light)); height: 6px; transition: width 0.5s ease; }
+
+  /* HERO */
+  .hero {
+    background: var(--ink2);
+    padding: 2.4rem 2.5rem;
+    display: flex; align-items: center;
+    justify-content: space-between;
+    gap: 2rem; overflow: hidden; position: relative;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: radial-gradient(ellipse at 70% 50%, rgba(192,120,32,0.1) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-text { position: relative; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(192,120,32,0.18); border: 1px solid rgba(224,152,64,0.4);
+    color: var(--amber-light); font-size: 11px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 4px 13px; border-radius: 20px; margin-bottom: 10px;
+  }
+  .hero-text h1 { font-family: 'Playfair Display', serif; font-size: 1.85rem; color: #fff; font-weight: 700; line-height: 1.2; }
+  .hero-text h1 em { color: var(--amber-light); font-style: italic; }
+  .hero-text p { color: var(--mist); font-size: 0.88rem; margin-top: 8px; line-height: 1.6; max-width: 480px; }
+  .hero-illo { flex-shrink: 0; position: relative; }
+
+  /* MAIN */
+  .main { max-width: 780px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+
+  /* QUESTION COUNTER */
+  .q-header {
+    display: flex; align-items: flex-start;
+    justify-content: space-between; gap: 1rem;
+    margin-bottom: 1.6rem;
+  }
+  .q-meta { display: flex; align-items: center; gap: 10px; }
+  .q-num-badge {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: var(--ink); color: var(--amber-light);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .q-type-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--slate); font-weight: 600; }
+  .q-type-title { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: var(--ink); margin-top: 1px; }
+  .q-counter-pill { font-size: 13px; color: var(--slate); background: var(--paper); border: 1px solid var(--rule); border-radius: 20px; padding: 5px 14px; white-space: nowrap; }
+
+  /* SCENARIO CARD */
+  .scenario-card {
+    background: var(--ink2);
+    border-radius: 14px;
+    padding: 1.6rem 1.8rem;
+    margin-bottom: 1.4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .scenario-card::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+    background: linear-gradient(180deg, var(--amber), var(--amber-light));
+  }
+  .scenario-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--mist); font-weight: 600; margin-bottom: 8px; }
+  .scenario-text { color: #e8e0d0; font-size: 0.97rem; line-height: 1.7; }
+  .scenario-text strong { color: var(--amber-light); font-weight: 500; }
+
+  /* PROMPT */
+  .prompt-card {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 14px;
+    padding: 1.6rem 1.8rem;
+    margin-bottom: 1.2rem;
+    box-shadow: 0 2px 14px var(--warm-shadow);
+  }
+  .prompt-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--slate); font-weight: 600; margin-bottom: 10px; }
+  .prompt-text { font-size: 1.08rem; color: var(--ink); line-height: 1.65; font-weight: 400; }
+  .prompt-hint { font-size: 0.83rem; color: var(--mist); margin-top: 10px; font-style: italic; }
+
+  /* ANSWER AREA */
+  .answer-wrap { margin-bottom: 1.2rem; }
+  .answer-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--slate); font-weight: 600; margin-bottom: 8px; }
+
+  textarea {
+    width: 100%;
+    min-height: 110px;
+    padding: 14px 16px;
+    border: 1.5px solid var(--rule);
+    border-radius: 10px;
+    background: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.97rem;
+    color: var(--ink);
+    line-height: 1.65;
+    resize: vertical;
+    transition: border-color 0.18s, box-shadow 0.18s;
+    outline: none;
+  }
+  textarea:focus {
+    border-color: var(--amber);
+    box-shadow: 0 0 0 3px rgba(192,120,32,0.1);
+  }
+  textarea:disabled { background: #faf8f5; color: var(--slate); cursor: default; }
+
+  .char-counter { font-size: 12px; color: var(--mist); text-align: right; margin-top: 5px; }
+  .char-counter.warn { color: var(--amber); }
+
+  /* BUTTONS */
+  .btn-row { display: flex; gap: 12px; justify-content: flex-end; flex-wrap: wrap; margin-top: 0.5rem; }
+  .btn {
+    padding: 12px 26px; border-radius: 9px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem; font-weight: 600;
+    cursor: pointer; border: none;
+    transition: all 0.18s; letter-spacing: 0.02em;
+  }
+  .btn-primary { background: var(--ink); color: #fff; border: 2px solid var(--ink); }
+  .btn-primary:hover:not(:disabled) { background: var(--ink2); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(30,26,20,0.2); }
+  .btn-primary:disabled { opacity: 0.35; cursor: not-allowed; }
+  .btn-amber { background: var(--amber); color: #fff; border: 2px solid var(--amber); }
+  .btn-amber:hover { background: #a86510; border-color: #a86510; transform: translateY(-1px); }
+  .btn-ghost { background: transparent; color: var(--slate); border: 1.5px solid var(--rule); }
+  .btn-ghost:hover { border-color: var(--slate); color: var(--ink); }
+
+  /* AI FEEDBACK */
+  .feedback-wrap {
+    display: none;
+    margin-top: 1.2rem;
+    animation: fadeUp 0.3s ease;
+  }
+  @keyframes fadeUp { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+  .feedback-card {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--rule);
+    background: var(--paper);
+  }
+
+  .feedback-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 18px;
+    background: var(--ink);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .feedback-header-left { display: flex; align-items: center; gap: 10px; }
+  .fb-title { font-size: 13px; font-weight: 600; color: #fff; letter-spacing: 0.02em; }
+
+  .score-badge {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; font-weight: 700;
+    padding: 3px 14px; border-radius: 20px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+  .score-badge.high { color: #7ed890; border-color: rgba(126,216,144,0.4); }
+  .score-badge.mid { color: var(--amber-light); border-color: rgba(224,152,64,0.4); }
+  .score-badge.low { color: #e08080; border-color: rgba(224,128,128,0.4); }
+
+  .feedback-body { padding: 1.4rem 1.6rem; }
+
+  .fb-section { margin-bottom: 1.2rem; }
+  .fb-section:last-child { margin-bottom: 0; }
+  .fb-section-label {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em;
+    font-weight: 600; margin-bottom: 7px; display: flex; align-items: center; gap: 6px;
+  }
+  .fb-section-label.praise { color: var(--correct); }
+  .fb-section-label.improve { color: var(--amber); }
+  .fb-section-label.model { color: var(--slate); }
+  .fb-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .fb-dot.praise { background: var(--correct); }
+  .fb-dot.improve { background: var(--amber); }
+  .fb-dot.model { background: var(--slate); }
+
+  .fb-text { font-size: 0.92rem; color: var(--ink2); line-height: 1.7; }
+  .fb-model-text {
+    font-size: 0.92rem; color: var(--ink);
+    line-height: 1.7;
+    background: var(--amber-pale);
+    border-left: 3px solid var(--amber);
+    border-radius: 0 8px 8px 0;
+    padding: 10px 14px;
+    font-style: italic;
+  }
+
+  /* LOADING STATE */
+  .loading-wrap { display: none; padding: 1.6rem; text-align: center; }
+  .loading-dots { display: inline-flex; gap: 6px; align-items: center; }
+  .loading-dots span {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--amber); opacity: 0.3;
+    animation: pulse 1.2s ease-in-out infinite;
+  }
+  .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes pulse { 0%,100%{opacity:0.3;transform:scale(1)} 50%{opacity:1;transform:scale(1.3)} }
+  .loading-text { font-size: 0.88rem; color: var(--slate); margin-top: 10px; }
+
+  /* ENCOURAGEMENT STRIP */
+  .encourage-strip {
+    background: linear-gradient(135deg, var(--ink2), var(--ink));
+    border: 1px solid rgba(192,120,32,0.3);
+    border-radius: 10px;
+    padding: 12px 18px;
+    margin-bottom: 1.4rem;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .encourage-icon { font-size: 20px; flex-shrink: 0; }
+  .encourage-text { font-size: 0.87rem; color: var(--mist); line-height: 1.5; }
+  .encourage-text strong { color: var(--amber-light); }
+
+  /* FINAL SCREEN */
+  #final-screen { display: none; animation: fadeUp 0.4s ease; }
+  .final-card {
+    background: var(--paper); border: 1px solid var(--rule);
+    border-radius: 16px; padding: 3rem 2rem; text-align: center;
+    box-shadow: 0 4px 30px var(--warm-shadow);
+  }
+  .final-ring {
+    width: 130px; height: 130px; border-radius: 50%;
+    background: var(--ink); border: 4px solid var(--amber);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    margin: 0 auto 1.8rem;
+    box-shadow: 0 0 0 8px rgba(192,120,32,0.08);
+  }
+  .final-ring .big { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 700; color: var(--amber-light); line-height: 1; }
+  .final-ring .denom { font-size: 0.75rem; color: var(--mist); margin-top: 3px; }
+  .final-card h2 { font-family: 'Playfair Display', serif; font-size: 1.7rem; color: var(--ink); margin-bottom: 10px; }
+  .final-card .final-msg { color: var(--slate); font-size: 0.95rem; line-height: 1.7; max-width: 500px; margin: 0 auto 2rem; }
+
+  .scores-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 2rem; }
+  .score-tile { background: var(--cream); border: 1px solid var(--rule); border-radius: 10px; padding: 12px 18px; min-width: 110px; }
+  .score-tile .st-q { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--slate); font-weight: 600; margin-bottom: 4px; }
+  .score-tile .st-v { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--ink); font-weight: 700; }
+
+  .lesson-section { animation: fadeUp 0.32s ease; }
+
+  @media (max-width: 600px) {
+    .header { padding: 0 1.2rem; }
+    .hero { padding: 1.5rem 1.2rem; flex-direction: column; }
+    .hero-illo { display: none; }
+    .main { padding: 1.5rem 1rem 3rem; }
+    .q-header { flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <svg class="logo-svg" viewBox="0 0 160 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <text x="0" y="22" font-family="'Playfair Display', Georgia, serif" font-size="22" font-weight="700" fill="#e09840" letter-spacing="1">Forbes</text>
+    <rect x="0" y="27" width="130" height="1.2" fill="rgba(224,152,64,0.5)"/>
+    <text x="1" y="40" font-family="'DM Sans', Arial, sans-serif" font-size="11" font-weight="600" fill="#b0a080" letter-spacing="5">ENGLISH</text>
+  </svg>
+  <div class="score-pill">
+    <span>Total</span>
+    <strong id="header-score">—</strong>
+  </div>
+</header>
+
+<!-- PROGRESS BAR -->
+<div class="progress-bar-wrap">
+  <div class="progress-bar-track">
+    <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-text">
+    <div class="hero-badge">B2 · Open Practice</div>
+    <h1>Say it in <em>your own words</em></h1>
+    <p>No multiple choice. No word banks. Read the scenario, answer freely, and receive personalised feedback from your AI tutor on every response.</p>
+  </div>
+  <div class="hero-illo">
+    <svg width="190" height="120" viewBox="0 0 190 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- desk -->
+      <ellipse cx="95" cy="105" rx="80" ry="10" fill="rgba(192,120,32,0.07)"/>
+      <!-- open notebook -->
+      <rect x="28" y="42" width="60" height="54" rx="4" fill="#332c1e"/>
+      <rect x="28" y="42" width="30" height="54" rx="4" fill="#2a2418"/>
+      <line x1="58" y1="42" x2="58" y2="96" stroke="#c07820" stroke-width="1" opacity="0.4"/>
+      <!-- writing lines left page -->
+      <rect x="33" y="52" width="20" height="2" rx="1" fill="rgba(255,255,255,0.15)"/>
+      <rect x="33" y="57" width="18" height="2" rx="1" fill="rgba(255,255,255,0.1)"/>
+      <rect x="33" y="62" width="20" height="2" rx="1" fill="rgba(255,255,255,0.12)"/>
+      <rect x="33" y="67" width="14" height="2" rx="1" fill="rgba(255,255,255,0.08)"/>
+      <rect x="33" y="72" width="19" height="2" rx="1" fill="rgba(255,255,255,0.1)"/>
+      <!-- right page — being filled -->
+      <rect x="62" y="52" width="22" height="2" rx="1" fill="#c07820" opacity="0.6"/>
+      <rect x="62" y="57" width="18" height="2" rx="1" fill="#c07820" opacity="0.4"/>
+      <rect x="62" y="62" width="20" height="2" rx="1" fill="#c07820" opacity="0.5"/>
+      <!-- pen -->
+      <line x1="78" y1="68" x2="100" y2="50" stroke="#e09840" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="100" cy="50" r="3.5" fill="#e09840"/>
+      <!-- speech bubble — open / free form -->
+      <rect x="105" y="22" width="68" height="42" rx="10" fill="#332c1e" stroke="#c07820" stroke-width="1.2" opacity="0.9"/>
+      <polygon points="108,56 100,68 120,56" fill="#332c1e"/>
+      <!-- dotted lines suggesting free writing -->
+      <rect x="113" y="31" width="32" height="2" rx="1" fill="#e09840" opacity="0.7"/>
+      <rect x="113" y="37" width="44" height="2" rx="1" fill="rgba(255,255,255,0.2)"/>
+      <rect x="113" y="43" width="36" height="2" rx="1" fill="rgba(255,255,255,0.15)"/>
+      <rect x="113" y="49" width="26" height="2" rx="1" fill="#c07820" opacity="0.35"/>
+      <!-- sparkle dots -->
+      <circle cx="155" cy="18" r="2.5" fill="#e09840" opacity="0.5"/>
+      <circle cx="168" cy="28" r="1.5" fill="#e09840" opacity="0.3"/>
+      <circle cx="160" cy="8" r="1.5" fill="#e09840" opacity="0.4"/>
+    </svg>
+  </div>
+</div>
+
+<main class="main">
+
+  <!-- LESSON SECTION -->
+  <div id="lesson-section" class="lesson-section">
+
+    <div class="encourage-strip" id="encourage-strip">
+      <div class="encourage-icon">✍</div>
+      <div class="encourage-text"><strong>There are no wrong answers here — only better ones.</strong> Write naturally, as you would in a real situation. Your AI tutor will give you honest, constructive feedback after every response.</div>
+    </div>
+
+    <div class="q-header">
+      <div class="q-meta">
+        <div class="q-num-badge" id="q-num">1</div>
+        <div>
+          <div class="q-type-label" id="q-type-label">Situation</div>
+          <div class="q-type-title" id="q-type-title">Loading…</div>
+        </div>
+      </div>
+      <div class="q-counter-pill" id="q-counter">Question 1 of 8</div>
+    </div>
+
+    <div class="scenario-card" id="scenario-card">
+      <div class="scenario-label">Context</div>
+      <div class="scenario-text" id="scenario-text"></div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-label">Your task</div>
+      <div class="prompt-text" id="prompt-text"></div>
+      <div class="prompt-hint" id="prompt-hint"></div>
+    </div>
+
+    <div class="answer-wrap">
+      <div class="answer-label">Your answer</div>
+      <textarea id="answer-input" placeholder="Write your response here…" onkeyup="updateCharCount()" oninput="updateCharCount()"></textarea>
+      <div class="char-counter" id="char-counter">0 characters</div>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading-wrap" id="loading-wrap">
+      <div class="loading-dots"><span></span><span></span><span></span></div>
+      <div class="loading-text" id="loading-text">Your tutor is reading your answer…</div>
+    </div>
+
+    <!-- Feedback -->
+    <div class="feedback-wrap" id="feedback-wrap">
+      <div class="feedback-card">
+        <div class="feedback-header">
+          <div class="feedback-header-left">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#e09840" stroke-width="1.2"/><path d="M8 5v4" stroke="#e09840" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="11.5" r="0.8" fill="#e09840"/></svg>
+            <span class="fb-title">Tutor feedback</span>
+          </div>
+          <div class="score-badge" id="fb-score-badge">—</div>
+        </div>
+        <div class="feedback-body" id="feedback-body"></div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" id="submit-btn" onclick="submitAnswer()" disabled>Submit answer</button>
+      <button class="btn btn-amber" id="next-btn" onclick="nextQuestion()" style="display:none">Next question →</button>
+    </div>
+
+  </div>
+
+  <!-- FINAL SCREEN -->
+  <div id="final-screen">
+    <div class="final-card">
+      <div class="final-ring">
+        <div class="big" id="final-avg">—</div>
+        <div class="denom">avg score</div>
+      </div>
+      <h2 id="final-heading">Lesson complete!</h2>
+      <p class="final-msg" id="final-msg">You have completed all 8 open practice questions.</p>
+      <div class="scores-grid" id="scores-grid"></div>
+      <div class="btn-row" style="justify-content:center; margin-top:0;">
+        <button class="btn btn-amber" onclick="restartLesson()">↺ Start again</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+const questions = [
+  {
+    type: "Client Meeting",
+    title: "Opening a meeting",
+    scenario: "You are meeting a new client, <strong>Sarah Chen</strong>, the procurement director of a mid-sized logistics company. It is the first time you have spoken. You are selling a software product that automates invoicing.",
+    prompt: "How do you open this meeting professionally? Greet Sarah, introduce yourself and your company briefly, and explain the purpose of the meeting.",
+    hint: "Aim for 3–5 sentences. Think about what a client needs to hear first.",
+    category: "speaking"
+  },
+  {
+    type: "Handling Objections",
+    title: "Responding to price pushback",
+    scenario: "You have presented your proposal. The client says: <strong>\"The price is higher than we expected. Our current provider charges significantly less.\"</strong>",
+    prompt: "How do you respond? Acknowledge their concern, then make a case for your value without being defensive or aggressive.",
+    hint: "You don't need to lower the price — but you do need to justify it.",
+    category: "negotiation"
+  },
+  {
+    type: "Email Writing",
+    title: "Following up after no reply",
+    scenario: "You sent a detailed proposal to a client <strong>ten days ago</strong>. You have not heard back. You want to follow up without seeming pushy or impatient.",
+    prompt: "Write the opening two or three sentences of your follow-up email. Include a subject line.",
+    hint: "Give the client the benefit of the doubt. Keep it brief and professional.",
+    category: "writing"
+  },
+  {
+    type: "Difficult Situations",
+    title: "Delivering bad news",
+    scenario: "You need to inform a client that a project will be <strong>delayed by two weeks</strong> due to unexpected technical issues on your side. The client has a strict deadline and is counting on you.",
+    prompt: "How do you deliver this news? Write what you would say or email to the client. Take responsibility and propose a path forward.",
+    hint: "Don't be vague about the delay. Own the problem and offer a solution.",
+    category: "speaking"
+  },
+  {
+    type: "Telephone Skills",
+    title: "Opening a cold call",
+    scenario: "You are calling <strong>Marcus Hoffman</strong>, a potential client you have never spoken to before. He is the head of operations at a manufacturing company. You have 20 seconds before he might hang up.",
+    prompt: "Write your opening 3–4 sentences for this cold call. Introduce yourself, your company, and give him a reason to keep listening.",
+    hint: "Lead with value, not features. Why should he care right now?",
+    category: "speaking"
+  },
+  {
+    type: "Negotiation",
+    title: "Asking for a concession",
+    scenario: "You are in a negotiation and would like the supplier to extend the payment terms from <strong>30 days to 60 days</strong>. You do not want to seem demanding, but this is important for your cash flow.",
+    prompt: "How do you raise this request professionally? Write what you would say.",
+    hint: "Frame it as a request, not a demand. You might offer something in return.",
+    category: "negotiation"
+  },
+  {
+    type: "Client Relationships",
+    title: "Responding to a complaint",
+    scenario: "A long-standing client emails you: <strong>\"We've been very disappointed with the level of service recently. Response times have been slow and we're starting to question whether this partnership is still working for us.\"</strong>",
+    prompt: "Write your reply. Acknowledge the issue, apologise where appropriate, and outline what you will do to improve the situation.",
+    hint: "Do not get defensive. This client is valuable — keep them.",
+    category: "writing"
+  },
+  {
+    type: "Closing a Deal",
+    title: "Asking for the business",
+    scenario: "You have had three productive meetings with a client. They seem interested but have not committed. The conversation has gone well today and you sense the moment is right to <strong>close</strong>.",
+    prompt: "How do you ask for the business? Write what you would say to move from conversation to commitment.",
+    hint: "Be direct but not pushy. Make it easy for them to say yes.",
+    category: "negotiation"
+  }
+];
+
+let currentQ = 0;
+let scores = [];
+let totalScoreSum = 0;
+
+const SYSTEM_PROMPT = `You are an expert business English tutor evaluating a B2-level professional learner's open written or spoken response. Your feedback must be:
+- Warm, encouraging, and specific — never harsh or generic
+- Structured in exactly three parts, each clearly separated
+
+Return ONLY valid JSON in this exact format (no markdown, no extra text):
+{
+  "score": <integer 1-10>,
+  "praise": "<1-2 sentences: what they did well, specifically>",
+  "improve": "<1-2 sentences: one clear, specific improvement with an example of better phrasing>",
+  "model": "<A model answer of 2-4 sentences showing excellent B2+ phrasing for this exact scenario>"
+}
+
+Scoring guide:
+9-10: Near-perfect B2/C1 professional English. Natural, appropriate, well-structured.
+7-8: Good B2. Clear and appropriate with minor issues.
+5-6: Functional but has notable gaps in vocabulary, register, or structure.
+3-4: Attempts the task but struggles with professional register or accuracy.
+1-2: Significant difficulty with the task or very short/unclear response.
+
+If the answer is in a language other than English, give a score of 1 and gently remind them to answer in English.`;
+
+function renderQuestion() {
+  const q = questions[currentQ];
+  document.getElementById('q-num').textContent = currentQ + 1;
+  document.getElementById('q-type-label').textContent = q.type;
+  document.getElementById('q-type-title').textContent = q.title;
+  document.getElementById('q-counter').textContent = 'Question ' + (currentQ+1) + ' of ' + questions.length;
+  document.getElementById('scenario-text').innerHTML = q.scenario;
+  document.getElementById('prompt-text').textContent = q.prompt;
+  document.getElementById('prompt-hint').textContent = q.hint ? '💡 ' + q.hint : '';
+
+  const input = document.getElementById('answer-input');
+  input.value = '';
+  input.disabled = false;
+  input.focus();
+
+  document.getElementById('char-counter').textContent = '0 characters';
+  document.getElementById('char-counter').classList.remove('warn');
+  document.getElementById('submit-btn').disabled = true;
+  document.getElementById('submit-btn').style.display = '';
+  document.getElementById('next-btn').style.display = 'none';
+  document.getElementById('feedback-wrap').style.display = 'none';
+  document.getElementById('loading-wrap').style.display = 'none';
+
+  const pct = (currentQ / questions.length) * 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('header-score').textContent = scores.length > 0 ? (Math.round(totalScoreSum / scores.length * 10) / 10) + '/10' : '—';
+}
+
+function updateCharCount() {
+  const val = document.getElementById('answer-input').value;
+  const n = val.length;
+  const counter = document.getElementById('char-counter');
+  counter.textContent = n + ' character' + (n !== 1 ? 's' : '');
+  counter.classList.toggle('warn', n > 600);
+  document.getElementById('submit-btn').disabled = val.trim().length < 8;
+}
+
+async function submitAnswer() {
+  const answer = document.getElementById('answer-input').value.trim();
+  if (answer.length < 8) return;
+
+  const q = questions[currentQ];
+  document.getElementById('answer-input').disabled = true;
+  document.getElementById('submit-btn').disabled = true;
+  document.getElementById('submit-btn').style.display = 'none';
+  document.getElementById('loading-wrap').style.display = 'block';
+
+  const loadingMessages = [
+    'Your tutor is reading your answer…',
+    'Analysing your phrasing and register…',
+    'Preparing personalised feedback…'
+  ];
+  let lmi = 0;
+  const lmInterval = setInterval(() => {
+    lmi = (lmi + 1) % loadingMessages.length;
+    document.getElementById('loading-text').textContent = loadingMessages[lmi];
+  }, 1800);
+
+  const userMessage = `Scenario: ${q.scenario.replace(/<[^>]*>/g, '')}
+
+Task: ${q.prompt}
+
+Student's answer: "${answer}"
+
+Evaluate this response for a B2 professional English learner.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: SYSTEM_PROMPT,
+        messages: [{ role: 'user', content: userMessage }]
+      })
+    });
+    const data = await res.json();
+    const raw = data.content?.[0]?.text || '{}';
+    let fb;
+    try {
+      fb = JSON.parse(raw.replace(/```json|```/g, '').trim());
+    } catch(e) {
+      fb = { score: 5, praise: "Your answer showed a real attempt at professional communication.", improve: "Try to use more specific business phrases in your response.", model: "I appreciate your time today. Could you share a bit more about your current setup so I can tailor my proposal accordingly?" };
+    }
+    clearInterval(lmInterval);
+    showFeedback(fb);
+    scores.push(fb.score);
+    totalScoreSum += fb.score;
+    document.getElementById('header-score').textContent = (Math.round(totalScoreSum / scores.length * 10) / 10) + '/10';
+  } catch(e) {
+    clearInterval(lmInterval);
+    showFeedback({ score: null, praise: "Your answer was submitted, but feedback could not be loaded right now.", improve: "Please check your connection and try again.", model: "" });
+  }
+
+  document.getElementById('loading-wrap').style.display = 'none';
+}
+
+function showFeedback(fb) {
+  const wrap = document.getElementById('feedback-wrap');
+  const body = document.getElementById('feedback-body');
+  const badge = document.getElementById('fb-score-badge');
+
+  if (fb.score !== null) {
+    badge.textContent = fb.score + '/10';
+    badge.className = 'score-badge ' + (fb.score >= 8 ? 'high' : fb.score >= 5 ? 'mid' : 'low');
+  } else {
+    badge.textContent = '—';
+    badge.className = 'score-badge mid';
+  }
+
+  body.innerHTML = '';
+
+  if (fb.praise) {
+    const s = document.createElement('div');
+    s.className = 'fb-section';
+    s.innerHTML = `<div class="fb-section-label praise"><div class="fb-dot praise"></div>What you did well</div><div class="fb-text">${fb.praise}</div>`;
+    body.appendChild(s);
+  }
+
+  if (fb.improve) {
+    const s = document.createElement('div');
+    s.className = 'fb-section';
+    s.innerHTML = `<div class="fb-section-label improve"><div class="fb-dot improve"></div>One thing to improve</div><div class="fb-text">${fb.improve}</div>`;
+    body.appendChild(s);
+  }
+
+  if (fb.model) {
+    const s = document.createElement('div');
+    s.className = 'fb-section';
+    s.innerHTML = `<div class="fb-section-label model"><div class="fb-dot model"></div>Model answer</div><div class="fb-model-text">${fb.model}</div>`;
+    body.appendChild(s);
+  }
+
+  wrap.style.display = 'block';
+
+  if (currentQ < questions.length - 1) {
+    document.getElementById('next-btn').style.display = '';
+    document.getElementById('next-btn').textContent = 'Next question →';
+  } else {
+    document.getElementById('next-btn').style.display = '';
+    document.getElementById('next-btn').textContent = 'See my results →';
+  }
+
+  wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ >= questions.length) {
+    showFinal();
+  } else {
+    renderQuestion();
+    document.getElementById('lesson-section').scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+function showFinal() {
+  document.getElementById('lesson-section').style.display = 'none';
+  document.getElementById('progress-fill').style.width = '100%';
+
+  const avg = scores.length ? Math.round(totalScoreSum / scores.length * 10) / 10 : 0;
+  document.getElementById('final-avg').textContent = avg;
+  document.getElementById('header-score').textContent = avg + '/10';
+
+  let heading, msg;
+  if (avg >= 8.5) { heading = 'Outstanding!'; msg = 'Your open answers show a strong, confident command of professional English. Your ability to respond naturally across different business situations is excellent — you are well into B2 territory.'; }
+  else if (avg >= 7) { heading = 'Very well done!'; msg = 'You handled most scenarios with clarity and professionalism. Review the model answers for the questions where you scored lower — look at how the phrasing and tone shift the impact of your message.'; }
+  else if (avg >= 5.5) { heading = 'Good effort!'; msg = 'You are developing solid professional English skills. Focus on the feedback for each question — particularly around register (formal vs informal) and specific business collocations that will elevate your responses.'; }
+  else { heading = 'Keep going!'; msg = 'Open-answer practice is challenging, and every attempt builds your fluency. Read back through the model answers and try to notice the structure: acknowledge, explain, propose. That pattern will help in almost every situation.'; }
+
+  document.getElementById('final-heading').textContent = heading;
+  document.getElementById('final-msg').textContent = msg;
+
+  const grid = document.getElementById('scores-grid');
+  grid.innerHTML = '';
+  questions.forEach((q, i) => {
+    const tile = document.createElement('div');
+    tile.className = 'score-tile';
+    const sc = scores[i] !== undefined ? scores[i] + '/10' : '—';
+    tile.innerHTML = `<div class="st-q">Q${i+1} — ${q.type}</div><div class="st-v">${sc}</div>`;
+    grid.appendChild(tile);
+  });
+
+  document.getElementById('final-screen').style.display = 'block';
+  document.getElementById('final-screen').scrollIntoView({ behavior: 'smooth' });
+}
+
+function restartLesson() {
+  currentQ = 0; scores = []; totalScoreSum = 0;
+  document.getElementById('header-score').textContent = '—';
+  document.getElementById('final-screen').style.display = 'none';
+  document.getElementById('lesson-section').style.display = 'block';
+  renderQuestion();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+renderQuestion();
+</script>
+</body>
+</html>

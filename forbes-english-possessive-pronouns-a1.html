@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – My, Your, Her… – A1</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream:    #FDF6EC;
+    --sun:      #F5C842;
+    --sun-deep: #E0A820;
+    --terra:    #C85A2A;
+    --terra-lt: #E87E4E;
+    --sage:     #6B8F6E;
+    --sage-lt:  #A8C5AB;
+    --ink:      #2C1A0E;
+    --card:     #FFFAF2;
+    --border:   #E8D8C0;
+    --correct:  #3A7D44;
+    --wrong:    #B83232;
+    --radius:   14px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse 60% 40% at 10% 5%, #FAE8C840 0%, transparent 60%),
+      radial-gradient(ellipse 50% 50% at 90% 95%, #C85A2A18 0%, transparent 60%);
+  }
+
+  /* ── WRAPPER ── */
+  .page { max-width: 820px; margin: 0 auto; padding: 36px 24px 80px; }
+
+  /* ── LOGO ── */
+  .logo-wrap { text-align: center; margin-bottom: 32px; }
+  .logo-wrap svg { width: 180px; height: auto; }
+
+  /* ── HERO BANNER ── */
+  .hero {
+    background: var(--sun);
+    border-radius: 20px;
+    padding: 32px 36px 0;
+    margin-bottom: 36px;
+    display: flex;
+    align-items: flex-end;
+    gap: 24px;
+    overflow: hidden;
+    position: relative;
+  }
+  .hero-text { flex: 1; padding-bottom: 32px; }
+  .hero-label {
+    font-family: 'Caveat', cursive;
+    font-size: 18px;
+    color: var(--terra);
+    margin-bottom: 6px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    line-height: 1.15;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+  .hero p {
+    font-size: 15px;
+    color: #5C3A1E;
+    line-height: 1.6;
+    max-width: 340px;
+  }
+  .hero-girls { flex-shrink: 0; width: 200px; align-self: flex-end; }
+
+  /* ── SCORE BAR ── */
+  .score-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 22px;
+    margin-bottom: 28px;
+    gap: 16px;
+  }
+  .score-bar .section-label {
+    font-family: 'Caveat', cursive;
+    font-size: 17px;
+    color: var(--terra);
+  }
+  .score-pill {
+    background: var(--sun);
+    border-radius: 50px;
+    padding: 5px 18px;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--ink);
+  }
+  .progress-wrap { flex: 1; max-width: 200px; }
+  .progress-text { font-size: 12px; color: #8A6A4A; margin-bottom: 5px; }
+  .progress-bar {
+    height: 7px;
+    background: var(--border);
+    border-radius: 50px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--terra), var(--sun));
+    border-radius: 50px;
+    transition: width 0.4s ease;
+  }
+
+  /* ── ACTIVITY CARD ── */
+  .activity-card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    padding: 32px;
+    margin-bottom: 24px;
+    display: none;
+    animation: fadeUp 0.35s ease;
+  }
+  .activity-card.active { display: block; }
+  @keyframes fadeUp {
+    from { opacity:0; transform: translateY(14px); }
+    to   { opacity:1; transform: translateY(0); }
+  }
+
+  .activity-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--terra);
+    margin-bottom: 6px;
+  }
+  .q-text {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.5;
+    margin-bottom: 22px;
+    color: var(--ink);
+  }
+  .q-text em {
+    font-style: normal;
+    font-family: 'Caveat', cursive;
+    font-size: 22px;
+    color: var(--terra);
+  }
+
+  /* illustration inside card */
+  .q-illo {
+    float: right;
+    margin: 0 0 12px 20px;
+    width: 130px;
+  }
+  .q-illo svg { width: 100%; height: auto; }
+
+  /* ── MC OPTIONS ── */
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .opt-btn {
+    background: var(--cream);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--ink);
+    cursor: pointer;
+    text-align: left;
+    transition: border-color 0.18s, background 0.18s, transform 0.12s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .opt-btn .letter {
+    width: 26px; height: 26px;
+    background: var(--sun);
+    border-radius: 50%;
+    display: grid; place-items: center;
+    font-size: 12px; font-weight: 700;
+    flex-shrink: 0;
+    color: var(--ink);
+  }
+  .opt-btn:hover:not(:disabled) { border-color: var(--sun-deep); background: #FDF0D5; transform: translateY(-1px); }
+  .opt-btn:disabled { cursor: default; }
+  .opt-btn.correct { border-color: var(--correct); background: #EAF5EC; }
+  .opt-btn.wrong   { border-color: var(--wrong);   background: #FAEAEA; }
+
+  /* ── FEEDBACK BOX ── */
+  .feedback {
+    margin-top: 18px;
+    padding: 14px 18px;
+    border-radius: var(--radius);
+    font-size: 14px;
+    line-height: 1.6;
+    display: none;
+  }
+  .feedback.show { display: block; animation: fadeUp 0.25s ease; }
+  .feedback.correct-fb { background: #EAF5EC; border-left: 4px solid var(--correct); color: #224D29; }
+  .feedback.wrong-fb   { background: #FAEAEA; border-left: 4px solid var(--wrong);   color: #6B1A1A; }
+  .feedback strong { display: block; margin-bottom: 4px; font-size: 15px; }
+
+  /* ── FILL IN THE BLANK ── */
+  .blank-wrap { margin-bottom: 20px; }
+  .blank-sentence {
+    font-size: 19px;
+    font-weight: 500;
+    line-height: 2.1;
+    color: var(--ink);
+  }
+  .blank-input {
+    border: none;
+    border-bottom: 2.5px solid var(--sun-deep);
+    background: transparent;
+    font-family: 'Caveat', cursive;
+    font-size: 22px;
+    color: var(--terra);
+    width: 110px;
+    text-align: center;
+    outline: none;
+    padding: 0 4px;
+    transition: border-color 0.2s;
+  }
+  .blank-input:focus { border-color: var(--terra); }
+  .blank-input.correct-input { border-color: var(--correct); color: var(--correct); }
+  .blank-input.wrong-input   { border-color: var(--wrong);   color: var(--wrong); }
+  .blank-check-btn, .next-btn, .restart-btn {
+    background: var(--terra);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 32px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.18s, transform 0.12s;
+    margin-top: 16px;
+  }
+  .blank-check-btn:hover, .next-btn:hover, .restart-btn:hover { background: var(--terra-lt); transform: translateY(-1px); }
+  .next-btn { background: var(--sage); display: none; margin-top: 20px; }
+  .next-btn.show { display: inline-flex; align-items: center; gap: 8px; animation: fadeUp 0.25s ease; }
+  .next-btn:hover { background: var(--sage-lt); color: var(--ink); }
+
+  /* ── DRAG & DROP ── */
+  .drag-scene { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 16px; }
+  .drag-bank {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    padding: 16px; border: 2px dashed var(--border);
+    border-radius: var(--radius); flex: 1; min-height: 60px;
+    align-content: flex-start;
+  }
+  .drag-sentences { flex: 2; display: flex; flex-direction: column; gap: 14px; }
+  .drag-sentence {
+    font-size: 16px; font-weight: 500; line-height: 2;
+    display: flex; align-items: center; flex-wrap: wrap; gap: 6px;
+  }
+  .drop-zone {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 90px; height: 36px;
+    border: 2.5px dashed var(--sun-deep);
+    border-radius: 8px;
+    background: #FFFDF5;
+    font-family: 'Caveat', cursive;
+    font-size: 20px;
+    color: var(--terra);
+    cursor: pointer;
+    transition: background 0.18s;
+    padding: 0 8px;
+  }
+  .drop-zone.over { background: #FEF3C7; }
+  .drop-zone.correct-dz { border-color: var(--correct); color: var(--correct); background: #EAF5EC; }
+  .drop-zone.wrong-dz   { border-color: var(--wrong);   color: var(--wrong);   background: #FAEAEA; }
+  .drag-chip {
+    background: var(--sun);
+    border-radius: 8px;
+    padding: 7px 14px;
+    font-family: 'Caveat', cursive;
+    font-size: 19px;
+    color: var(--ink);
+    cursor: grab;
+    user-select: none;
+    transition: transform 0.12s, box-shadow 0.12s;
+    touch-action: none;
+  }
+  .drag-chip:active { cursor: grabbing; transform: scale(1.06); box-shadow: 0 4px 14px #0002; }
+  .drag-chip.used { opacity: 0.35; pointer-events: none; }
+
+  /* ── MATCHING ── */
+  .match-wrap { display: flex; gap: 20px; }
+  .match-col { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+  .match-item {
+    padding: 13px 18px;
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.18s, background 0.18s;
+    text-align: center;
+  }
+  .match-item.selected { border-color: var(--terra); background: #FEF3E2; }
+  .match-item.matched-ok { border-color: var(--correct); background: #EAF5EC; cursor: default; }
+  .match-item.matched-fail { border-color: var(--wrong); background: #FAEAEA; }
+  .match-item.reset-flash { animation: flash 0.4s ease; }
+  @keyframes flash { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+  .match-connector { width: 30px; display: flex; flex-direction: column; gap: 10px; align-items: center; justify-content: center; }
+  .match-line { width: 2px; flex: 1; background: var(--border); }
+
+  /* ── RESULTS SCREEN ── */
+  #results-screen {
+    display: none;
+    text-align: center;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 24px;
+    padding: 48px 36px;
+    animation: fadeUp 0.4s ease;
+  }
+  #results-screen h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    margin-bottom: 12px;
+    color: var(--ink);
+  }
+  #results-screen .big-score {
+    font-family: 'Caveat', cursive;
+    font-size: 72px;
+    color: var(--terra);
+    line-height: 1;
+    margin: 16px 0;
+  }
+  #results-screen p { font-size: 16px; color: #5C3A1E; line-height: 1.7; max-width: 380px; margin: 0 auto 28px; }
+  .restart-btn { background: var(--terra); }
+
+  /* ── SECTION DIVIDER ── */
+  .section-intro {
+    background: var(--sun);
+    border-radius: 14px;
+    padding: 18px 24px;
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 16px;
+    display: none;
+  }
+  .section-intro.active { display: flex; animation: fadeUp 0.3s ease; }
+  .section-intro .si-icon { font-size: 32px; }
+  .section-intro h3 { font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 3px; }
+  .section-intro p  { font-size: 13px; color: #5C3A1E; }
+
+  /* misc */
+  .clearfix::after { content:''; display:table; clear:both; }
+  @media (max-width:560px) {
+    .options { grid-template-columns: 1fr; }
+    .hero { flex-direction: column; }
+    .hero-girls { width: 140px; align-self: center; }
+    .match-wrap { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── LOGO ── -->
+  <div class="logo-wrap">
+    <svg viewBox="0 0 200 64" xmlns="http://www.w3.org/2000/svg">
+      <text x="100" y="28" text-anchor="middle"
+        font-family="'Playfair Display', Georgia, serif"
+        font-size="26" font-weight="400" fill="#C85A2A" letter-spacing="2">Forbes</text>
+      <line x1="20" y1="36" x2="180" y2="36" stroke="#E0A820" stroke-width="1.2"/>
+      <text x="100" y="56" text-anchor="middle"
+        font-family="'DM Sans', Arial, sans-serif"
+        font-size="15" font-weight="700" fill="#2C1A0E" letter-spacing="5">ENGLISH</text>
+    </svg>
+  </div>
+
+  <!-- ── HERO ── -->
+  <div class="hero">
+    <div class="hero-text">
+      <div class="hero-label">A1 · Grammar</div>
+      <h1>Mine. Yours.<br>Hers. Ours.</h1>
+      <p>Join Lena and Sophie — two schoolgirls in Hamburg — and practise <strong>independent possessive pronouns</strong>: mine, yours, his, hers, ours, theirs.</p>
+    </div>
+    <div class="hero-girls">
+      <!-- Two schoolgirls SVG illustration -->
+      <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+        <!-- LENA (left, dark hair) -->
+        <!-- body -->
+        <rect x="18" y="110" width="50" height="70" rx="8" fill="#E8A87C"/>
+        <!-- dress -->
+        <rect x="16" y="118" width="54" height="65" rx="6" fill="#5B8DD9"/>
+        <!-- collar -->
+        <polygon points="43,118 50,135 36,135" fill="white" opacity="0.7"/>
+        <!-- arms -->
+        <rect x="6"  y="120" width="14" height="38" rx="7" fill="#E8A87C"/>
+        <rect x="66" y="120" width="14" height="38" rx="7" fill="#E8A87C"/>
+        <!-- legs -->
+        <rect x="24" y="176" width="14" height="30" rx="7" fill="#F0C9A0"/>
+        <rect x="46" y="176" width="14" height="30" rx="7" fill="#F0C9A0"/>
+        <!-- shoes -->
+        <ellipse cx="31" cy="207" rx="10" ry="6" fill="#3A3A3A"/>
+        <ellipse cx="53" cy="207" rx="10" ry="6" fill="#3A3A3A"/>
+        <!-- head -->
+        <circle cx="43" cy="90" r="26" fill="#E8A87C"/>
+        <!-- dark hair -->
+        <ellipse cx="43" cy="70" rx="26" ry="16" fill="#2C1A0E"/>
+        <rect x="17" y="68" width="10" height="28" rx="5" fill="#2C1A0E"/>
+        <rect x="59" y="68" width="10" height="28" rx="5" fill="#2C1A0E"/>
+        <!-- two pigtails -->
+        <ellipse cx="17" cy="80" rx="8" ry="12" fill="#2C1A0E"/>
+        <ellipse cx="69" cy="80" rx="8" ry="12" fill="#2C1A0E"/>
+        <!-- face -->
+        <circle cx="35" cy="92" r="3.5" fill="white"/>
+        <circle cx="51" cy="92" r="3.5" fill="white"/>
+        <circle cx="36" cy="93" r="1.8" fill="#3A2A1A"/>
+        <circle cx="52" cy="93" r="1.8" fill="#3A2A1A"/>
+        <path d="M37 102 Q43 108 49 102" stroke="#C87040" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <!-- book -->
+        <rect x="60" y="140" width="26" height="32" rx="4" fill="#F5C842" transform="rotate(-8,73,156)"/>
+        <line x1="65" y1="143" x2="82" y2="138" stroke="#E0A820" stroke-width="1"/>
+        <!-- name tag -->
+        <text x="24" y="215" font-family="'Caveat',cursive" font-size="13" fill="#C85A2A">Lena</text>
+
+        <!-- SOPHIE (right, red hair) -->
+        <!-- body -->
+        <rect x="128" y="110" width="50" height="70" rx="8" fill="#E8A87C"/>
+        <!-- dress -->
+        <rect x="126" y="118" width="54" height="65" rx="6" fill="#C85A2A"/>
+        <!-- collar -->
+        <polygon points="153,118 160,135 146,135" fill="white" opacity="0.7"/>
+        <!-- arms -->
+        <rect x="116" y="120" width="14" height="38" rx="7" fill="#E8A87C"/>
+        <rect x="176" y="120" width="14" height="38" rx="7" fill="#E8A87C"/>
+        <!-- legs -->
+        <rect x="134" y="176" width="14" height="30" rx="7" fill="#F0C9A0"/>
+        <rect x="156" y="176" width="14" height="30" rx="7" fill="#F0C9A0"/>
+        <!-- shoes -->
+        <ellipse cx="141" cy="207" rx="10" ry="6" fill="#3A3A3A"/>
+        <ellipse cx="163" cy="207" rx="10" ry="6" fill="#3A3A3A"/>
+        <!-- head -->
+        <circle cx="153" cy="90" r="26" fill="#E8A87C"/>
+        <!-- red hair -->
+        <ellipse cx="153" cy="68" rx="27" ry="17" fill="#B84020"/>
+        <rect x="127" y="65" width="10" height="32" rx="5" fill="#B84020"/>
+        <rect x="169" y="65" width="10" height="32" rx="5" fill="#B84020"/>
+        <!-- bun / ponytail -->
+        <circle cx="153" cy="56" r="12" fill="#B84020"/>
+        <circle cx="153" cy="56" r="6" fill="#F5C842"/>
+        <!-- face -->
+        <circle cx="145" cy="92" r="3.5" fill="white"/>
+        <circle cx="161" cy="92" r="3.5" fill="white"/>
+        <circle cx="146" cy="93" r="1.8" fill="#3A2A1A"/>
+        <circle cx="162" cy="93" r="1.8" fill="#3A2A1A"/>
+        <path d="M147 102 Q153 108 159 102" stroke="#C87040" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <!-- pencil case -->
+        <rect x="170" y="148" width="12" height="28" rx="6" fill="#6B8F6E" transform="rotate(15,176,162)"/>
+        <!-- name tag -->
+        <text x="128" y="215" font-family="'Caveat',cursive" font-size="13" fill="#C85A2A">Sophie</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ── SCORE BAR ── -->
+  <div class="score-bar">
+    <span class="section-label" id="section-label">Activity 1 of 3</span>
+    <div class="progress-wrap">
+      <div class="progress-text" id="progress-text">Question 1 of 5</div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div class="score-pill">Score: <span id="score-display">0</span></div>
+  </div>
+
+  <!-- ════════════════════════════════════════════
+       ACTIVITY 1 — MULTIPLE CHOICE (5 questions)
+  ═════════════════════════════════════════════ -->
+  <div class="section-intro" id="intro-1">
+    <span class="si-icon">🎒</span>
+    <div>
+      <h3>Activity 1 – Choose the right word</h3>
+      <p>Read the sentence. Pick the correct possessive pronoun.</p>
+    </div>
+  </div>
+  <div id="mc-activity"></div>
+
+  <!-- ════════════════════════════════════════════
+       ACTIVITY 2 — FILL IN THE BLANK (5 questions)
+  ═════════════════════════════════════════════ -->
+  <div class="section-intro" id="intro-2">
+    <span class="si-icon">✏️</span>
+    <div>
+      <h3>Activity 2 – Type the missing word</h3>
+      <p>Complete each sentence with the correct possessive pronoun.</p>
+    </div>
+  </div>
+  <div id="fitb-activity"></div>
+
+  <!-- ════════════════════════════════════════════
+       ACTIVITY 3 — DRAG & DROP (5 sentences)
+  ═════════════════════════════════════════════ -->
+  <div class="section-intro" id="intro-3">
+    <span class="si-icon">🖐️</span>
+    <div>
+      <h3>Activity 3 – Drag the word</h3>
+      <p>Drag the correct possessive pronoun into each gap.</p>
+    </div>
+  </div>
+  <div id="drag-activity"></div>
+
+  <!-- ── RESULTS SCREEN ── -->
+  <div id="results-screen">
+    <svg viewBox="0 0 120 100" width="120" style="margin-bottom:16px" xmlns="http://www.w3.org/2000/svg">
+      <!-- confetti stars -->
+      <text x="10"  y="30"  font-size="22" fill="#F5C842">★</text>
+      <text x="90"  y="25"  font-size="18" fill="#C85A2A">★</text>
+      <text x="55"  y="15"  font-size="14" fill="#6B8F6E">★</text>
+      <text x="20"  y="75"  font-size="14" fill="#6B8F6E">★</text>
+      <text x="85"  y="80"  font-size="20" fill="#F5C842">★</text>
+      <!-- mini lena & sophie faces -->
+      <circle cx="40" cy="55" r="18" fill="#E8A87C"/>
+      <ellipse cx="40" cy="40" rx="18" ry="12" fill="#2C1A0E"/>
+      <circle cx="34" cy="57" r="2.5" fill="white"/><circle cx="46" cy="57" r="2.5" fill="white"/>
+      <circle cx="34.8" cy="57.8" r="1.2" fill="#3A2A1A"/><circle cx="46.8" cy="57.8" r="1.2" fill="#3A2A1A"/>
+      <path d="M36 65 Q40 70 44 65" stroke="#C87040" stroke-width="1.2" fill="none"/>
+      <circle cx="80" cy="55" r="18" fill="#E8A87C"/>
+      <ellipse cx="80" cy="40" rx="18" ry="12" fill="#B84020"/>
+      <circle cx="80" cy="38" r="9" fill="#B84020"/>
+      <circle cx="74" cy="57" r="2.5" fill="white"/><circle cx="86" cy="57" r="2.5" fill="white"/>
+      <circle cx="74.8" cy="57.8" r="1.2" fill="#3A2A1A"/><circle cx="86.8" cy="57.8" r="1.2" fill="#3A2A1A"/>
+      <path d="M76 65 Q80 70 84 65" stroke="#C87040" stroke-width="1.2" fill="none"/>
+    </svg>
+    <h2>Well done!</h2>
+    <div class="big-score" id="final-score">0/15</div>
+    <p id="result-msg">Keep practising — Lena and Sophie are cheering for you!</p>
+    <button class="restart-btn" onclick="restartAll()">↺ Start Again</button>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+/* ═══════════════════════════════════
+   DATA
+═══════════════════════════════════ */
+
+const MC_QUESTIONS = [
+  {
+    q: "Lena has a red bag. Sophie has a blue bag. The blue bag is _____.",
+    options: shuffle(["hers", "mine", "ours", "yours"]),
+    correct: "hers",
+    explanation: "<strong>Hers</strong> = belonging to her (Sophie). We use independent possessives like hers when there is no noun directly after — we already know what the thing is.",
+    illo: "bag"
+  },
+  {
+    q: "Sophie points to a pencil on the desk and asks: &ldquo;Is this pencil _____?&rdquo; Lena says: &ldquo;Yes! It is _____!&rdquo;",
+    options: shuffle(["mine", "hers", "ours", "theirs"]),
+    correct: "mine",
+    explanation: "<strong>Mine</strong> = belonging to me. Lena is the speaker, so she says mine — not my, because there is no noun after it.",
+    illo: "pencil"
+  },
+  {
+    q: "Lena and Sophie share a locker. The locker is _____.",
+    options: shuffle(["ours", "yours", "theirs", "hers"]),
+    correct: "ours",
+    explanation: "<strong>Ours</strong> = belonging to us. Lena and Sophie are speaking together about something they both share.",
+    illo: "book"
+  },
+  {
+    q: "The teacher has a red pen. Lena asks: &ldquo;Is that pen _____?&rdquo; The teacher says: &ldquo;Yes, it is _____!&rdquo;",
+    options: shuffle(["mine", "hers", "yours", "theirs"]),
+    correct: "mine",
+    explanation: "The teacher is speaking about her own pen, so she says <strong>mine</strong>. The speaker always uses mine, not hers or yours.",
+    illo: "teacher"
+  },
+  {
+    q: "Lena points to two bags on the floor. &ldquo;Those bags belong to the boys. They are _____.&rdquo;",
+    options: shuffle(["theirs", "ours", "yours", "hers"]),
+    correct: "theirs",
+    explanation: "<strong>Theirs</strong> = belonging to them (the boys). We use theirs when talking about something that belongs to a group of people we are not part of.",
+    illo: "bag"
+  }
+];
+
+const FITB_QUESTIONS = [
+  { before:"Sophie has a pink ruler. The pink ruler is ", blank:"hers", after:".", explanation:"<strong>Hers</strong> = belonging to her (Sophie). No noun follows, so we use the independent form." },
+  { before:"Lena says: &ldquo;That sandwich is ", blank:"mine", after:"! Please don't eat it!&rdquo;", explanation:"<strong>Mine</strong> = belonging to me. Lena is the speaker claiming the sandwich." },
+  { before:"Lena and Sophie say: &ldquo;That classroom is ", blank:"ours", after:" — we study there every day.&rdquo;", explanation:"<strong>Ours</strong> = belonging to us. Both girls share the classroom." },
+  { before:"The boys left their coats. Are those coats ", blank:"theirs", after:"?", explanation:"<strong>Theirs</strong> = belonging to them. We refer to the boys without repeating their names." },
+  { before:"Sophie asks Lena: &ldquo;Is this pencil case ", blank:"yours", after:"?&rdquo;", explanation:"<strong>Yours</strong> = belonging to you. Sophie speaks directly to Lena, so she uses yours." }
+];
+
+const DRAG_QUESTIONS = [
+  { before:"Lena finds a book bag. It is not ", blank:"hers", after:" — it belongs to Sophie.", explanation:"<strong>Hers</strong> = belonging to her (Sophie). Independent form, no noun follows." },
+  { before:"Sophie says: &ldquo;This red coat is ", blank:"mine", after:"!&rdquo;", explanation:"<strong>Mine</strong> = belonging to me. Sophie is the speaker." },
+  { before:"The teacher asks: &ldquo;Are these pencils ", blank:"yours", after:"?&rdquo; She looks at Lena.", explanation:"<strong>Yours</strong> = belonging to you. The teacher speaks directly to Lena." },
+  { before:"The two girls share a desk. The desk is ", blank:"theirs", after:".", explanation:"<strong>Theirs</strong> = belonging to them — both girls together." },
+  { before:"Lena and Sophie say: &ldquo;That dog is ", blank:"ours", after:" — we love him!&rdquo;", explanation:"<strong>Ours</strong> = belonging to us. Both girls are speaking." }
+];
+
+/* all chips pool */
+const DRAG_WORDS = ["mine","yours","his","hers","ours","theirs","mine"];
+
+/* ═══════════════════════════════════
+   STATE
+═══════════════════════════════════ */
+let score = 0;
+let totalQuestions = 0;
+let currentActivity = 1;  // 1=MC 2=FITB 3=DRAG
+let currentMC   = 0;
+let currentFITB = 0;
+let currentDrag = 0;
+let dragAnswered = new Array(DRAG_QUESTIONS.length).fill(false);
+let dragCorrect  = new Array(DRAG_QUESTIONS.length).fill(false);
+
+/* ═══════════════════════════════════
+   UTILITIES
+═══════════════════════════════════ */
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i>0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function updateScoreBar() {
+  document.getElementById('score-display').textContent = score;
+  const total = MC_QUESTIONS.length + FITB_QUESTIONS.length + DRAG_QUESTIONS.length;
+  const done  = (currentActivity===1 ? currentMC : currentActivity===2 ? MC_QUESTIONS.length+currentFITB : MC_QUESTIONS.length+FITB_QUESTIONS.length+currentDrag);
+  const pct   = Math.round((done/total)*100);
+  document.getElementById('progress-fill').style.width = pct+'%';
+  document.getElementById('section-label').textContent = `Activity ${currentActivity} of 3`;
+  const qNum = currentActivity===1 ? currentMC+1 : currentActivity===2 ? currentFITB+1 : currentDrag+1;
+  const qTot = currentActivity===1 ? MC_QUESTIONS.length : currentActivity===2 ? FITB_QUESTIONS.length : DRAG_QUESTIONS.length;
+  document.getElementById('progress-text').textContent = `Question ${Math.min(qNum,qTot)} of ${qTot}`;
+}
+
+/* ═══════════════════════════════════
+   ILLUSTRATIONS (mini SVGs by key)
+═══════════════════════════════════ */
+function getIllo(key) {
+  const illos = {
+    bag:`<svg viewBox="0 0 90 80" xmlns="http://www.w3.org/2000/svg">
+      <rect x="10" y="25" width="70" height="50" rx="10" fill="#5B8DD9"/>
+      <rect x="30" y="12" width="30" height="18" rx="6" fill="none" stroke="#5B8DD9" stroke-width="5"/>
+      <rect x="20" y="35" width="50" height="8" rx="4" fill="#4A7CC0"/>
+      <circle cx="45" cy="55" r="6" fill="#F5C842"/>
+    </svg>`,
+    pencil:`<svg viewBox="0 0 90 80" xmlns="http://www.w3.org/2000/svg">
+      <rect x="12" y="20" width="66" height="40" rx="8" fill="#E0A820"/>
+      <polygon points="78,20 90,40 78,60" fill="#C85A2A"/>
+      <rect x="78" y="35" width="8" height="10" fill="#F0C9A0"/>
+      <rect x="12" y="30" width="66" height="4" rx="2" fill="#C87A00" opacity="0.3"/>
+      <rect x="12" y="46" width="66" height="4" rx="2" fill="#C87A00" opacity="0.3"/>
+    </svg>`,
+    cat:`<svg viewBox="0 0 90 80" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="45" cy="55" rx="30" ry="22" fill="#C8A87C"/>
+      <circle cx="45" cy="32" r="20" fill="#C8A87C"/>
+      <polygon points="28,18 22,4 36,14" fill="#C8A87C"/>
+      <polygon points="62,18 68,4 54,14" fill="#C8A87C"/>
+      <circle cx="37" cy="30" r="4" fill="white"/><circle cx="53" cy="30" r="4" fill="white"/>
+      <circle cx="37" cy="30" r="2" fill="#2C1A0E"/><circle cx="53" cy="30" r="2" fill="#2C1A0E"/>
+      <path d="M38 40 Q45 45 52 40" stroke="#A06040" stroke-width="1.5" fill="none"/>
+      <path d="M60 64 Q78 58 85 68" stroke="#C8A87C" stroke-width="4" fill="none" stroke-linecap="round"/>
+    </svg>`,
+    teacher:`<svg viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
+      <rect x="10" y="40" width="70" height="50" rx="8" fill="#6B8F6E"/>
+      <circle cx="45" cy="28" r="20" fill="#E8A87C"/>
+      <ellipse cx="45" cy="12" rx="20" ry="12" fill="#4A3520"/>
+      <circle cx="37" cy="28" r="3" fill="white"/><circle cx="53" cy="28" r="3" fill="white"/>
+      <circle cx="37" cy="28" r="1.4" fill="#3A2A1A"/><circle cx="53" cy="28" r="1.4" fill="#3A2A1A"/>
+      <path d="M38 37 Q45 42 52 37" stroke="#C87040" stroke-width="1.2" fill="none"/>
+      <rect x="54" y="48" width="3" height="28" rx="1" fill="#F5C842"/>
+      <rect x="48" y="46" width="14" height="3" rx="1" fill="#F5C842"/>
+    </svg>`,
+    book:`<svg viewBox="0 0 90 80" xmlns="http://www.w3.org/2000/svg">
+      <rect x="8"  y="12" width="36" height="56" rx="4" fill="#C85A2A"/>
+      <rect x="46" y="12" width="36" height="56" rx="4" fill="#E87E4E"/>
+      <rect x="40" y="10" width="10" height="60" rx="2" fill="#2C1A0E"/>
+      <line x1="16" y1="28" x2="36" y2="28" stroke="white" stroke-width="2" opacity="0.5"/>
+      <line x1="16" y1="36" x2="36" y2="36" stroke="white" stroke-width="2" opacity="0.5"/>
+      <line x1="16" y1="44" x2="36" y2="44" stroke="white" stroke-width="2" opacity="0.5"/>
+      <line x1="54" y1="28" x2="74" y2="28" stroke="white" stroke-width="2" opacity="0.5"/>
+      <line x1="54" y1="36" x2="74" y2="36" stroke="white" stroke-width="2" opacity="0.5"/>
+    </svg>`
+  };
+  return illos[key] || '';
+}
+
+/* ═══════════════════════════════════
+   ACTIVITY 1 – MULTIPLE CHOICE
+═══════════════════════════════════ */
+function renderMC(idx) {
+  updateScoreBar();
+  const container = document.getElementById('mc-activity');
+  const q = MC_QUESTIONS[idx];
+  const letters = ['A','B','C','D'];
+  const illoHTML = q.illo ? `<div class="q-illo">${getIllo(q.illo)}</div>` : '';
+
+  container.innerHTML = `
+    <div class="activity-card active" id="mc-card-${idx}">
+      <div class="activity-title">Multiple Choice</div>
+      <div class="clearfix">
+        ${illoHTML}
+        <div class="q-text">${q.q.replace(/___+/, '<em>_____</em>')}</div>
+      </div>
+      <div class="options" id="mc-opts-${idx}">
+        ${q.options.map((o,i)=>`
+          <button class="opt-btn" onclick="checkMC(${idx},this,'${o}')">
+            <span class="letter">${letters[i]}</span>${o}
+          </button>`).join('')}
+      </div>
+      <div class="feedback" id="mc-fb-${idx}"></div>
+      <button class="next-btn" id="mc-next-${idx}" onclick="advanceMC()">Next →</button>
+    </div>`;
+}
+
+function checkMC(idx, btn, chosen) {
+  const q = MC_QUESTIONS[idx];
+  const correct = q.correct.toLowerCase() === chosen.toLowerCase();
+  if (correct) score++;
+  document.getElementById('score-display').textContent = score;
+
+  // disable all buttons
+  document.querySelectorAll(`#mc-opts-${idx} .opt-btn`).forEach(b => {
+    b.disabled = true;
+    if (b.textContent.trim().replace(/^[A-D]/,'').trim().toLowerCase() === q.correct.toLowerCase()) {
+      b.classList.add('correct');
+    }
+  });
+  if (!correct) btn.classList.add('wrong');
+
+  const fb = document.getElementById(`mc-fb-${idx}`);
+  fb.className = `feedback show ${correct?'correct-fb':'wrong-fb'}`;
+  fb.innerHTML = `<strong>${correct?'✓ Correct!':'✗ Not quite.'}</strong>${q.explanation}`;
+  document.getElementById(`mc-next-${idx}`).classList.add('show');
+}
+
+function advanceMC() {
+  currentMC++;
+  if (currentMC < MC_QUESTIONS.length) {
+    renderMC(currentMC);
+  } else {
+    // switch to FITB
+    currentActivity = 2;
+    document.getElementById('mc-activity').innerHTML = '';
+    document.getElementById('intro-2').classList.add('active');
+    renderFITB(0);
+  }
+}
+
+/* ═══════════════════════════════════
+   ACTIVITY 2 – FILL IN THE BLANK
+═══════════════════════════════════ */
+function renderFITB(idx) {
+  currentFITB = idx;
+  updateScoreBar();
+  const container = document.getElementById('fitb-activity');
+  const q = FITB_QUESTIONS[idx];
+  container.innerHTML = `
+    <div class="activity-card active" id="fitb-card-${idx}">
+      <div class="activity-title">Fill in the Blank</div>
+      <div class="blank-wrap">
+        <div class="blank-sentence">
+          ${q.before}<input type="text" class="blank-input" id="fitb-input-${idx}" placeholder="???"/>${q.after}
+        </div>
+      </div>
+      <button class="blank-check-btn" onclick="checkFITB(${idx})">Check ✓</button>
+      <div class="feedback" id="fitb-fb-${idx}"></div>
+      <button class="next-btn" id="fitb-next-${idx}" onclick="advanceFITB()">Next →</button>
+    </div>`;
+
+  const input = document.getElementById(`fitb-input-${idx}`);
+  input.addEventListener('keydown', e => { if(e.key==='Enter') checkFITB(idx); });
+}
+
+function checkFITB(idx) {
+  const q = FITB_QUESTIONS[idx];
+  const input = document.getElementById(`fitb-input-${idx}`);
+  const val = input.value.trim().toLowerCase();
+  const correct = val === q.blank.toLowerCase();
+  if (correct) score++;
+  document.getElementById('score-display').textContent = score;
+
+  input.disabled = true;
+  input.classList.add(correct ? 'correct-input' : 'wrong-input');
+  if (!correct) input.value = q.blank; // show correct
+
+  const fb = document.getElementById(`fitb-fb-${idx}`);
+  fb.className = `feedback show ${correct?'correct-fb':'wrong-fb'}`;
+  fb.innerHTML = `<strong>${correct?'✓ Correct!':'✗ The answer is: '+q.blank}</strong>${q.explanation}`;
+  document.getElementById(`fitb-next-${idx}`).classList.add('show');
+  document.querySelector(`#fitb-card-${idx} .blank-check-btn`).disabled = true;
+}
+
+function advanceFITB() {
+  currentFITB++;
+  if (currentFITB < FITB_QUESTIONS.length) {
+    renderFITB(currentFITB);
+  } else {
+    currentActivity = 3;
+    document.getElementById('fitb-activity').innerHTML = '';
+    document.getElementById('intro-3').classList.add('active');
+    renderDragAll();
+  }
+}
+
+/* ═══════════════════════════════════
+   ACTIVITY 3 – DRAG & DROP
+═══════════════════════════════════ */
+let dragSelectedChip = null;
+
+function renderDragAll() {
+  currentDrag = 0;
+  updateScoreBar();
+  const container = document.getElementById('drag-activity');
+  dragAnswered = new Array(DRAG_QUESTIONS.length).fill(false);
+  dragCorrect  = new Array(DRAG_QUESTIONS.length).fill(false);
+
+  const chipsHTML = shuffle(DRAG_WORDS).map(w =>
+    `<div class="drag-chip" id="chip-${w}" draggable="true"
+      ondragstart="dragStart(event,'${w}')"
+      onclick="chipClick('${w}')"
+      >${w}</div>`).join('');
+
+  const rowsHTML = DRAG_QUESTIONS.map((q,i) => `
+    <div class="drag-sentence" id="drag-row-${i}">
+      <span>${q.before}</span>
+      <div class="drop-zone" id="dz-${i}"
+        ondragover="event.preventDefault();this.classList.add('over')"
+        ondragleave="this.classList.remove('over')"
+        ondrop="dropOn(event,${i})"
+        onclick="dzClick(${i})"
+        data-answer="${q.blank}">drop here</div>
+      <span>${q.after}</span>
+    </div>`).join('');
+
+  container.innerHTML = `
+    <div class="activity-card active" id="drag-card">
+      <div class="activity-title">Drag &amp; Drop</div>
+      <p style="font-size:14px;color:#8A6A4A;margin-bottom:16px;">Drag (or tap) a word from the yellow chips into each gap. Then press Check.</p>
+      <div class="drag-scene">
+        <div class="drag-bank" id="drag-bank">${chipsHTML}</div>
+        <div class="drag-sentences">${rowsHTML}</div>
+      </div>
+      <div id="drag-feedback-all"></div>
+      <button class="blank-check-btn" id="drag-check-btn" onclick="checkAllDrag()">Check All ✓</button>
+      <button class="next-btn show" id="drag-next-btn" style="display:none" onclick="showResults()">See Results →</button>
+    </div>`;
+}
+
+let dragCurrentWord = null;
+function dragStart(e, word) { dragCurrentWord = word; e.dataTransfer.setData('text/plain', word); }
+
+function dropOn(e, idx) {
+  e.preventDefault();
+  const dz = document.getElementById(`dz-${idx}`);
+  dz.classList.remove('over');
+  if (!dragCurrentWord) return;
+  const prev = dz.getAttribute('data-placed');
+  if (prev) { // return previous chip
+    const prevChip = document.getElementById(`chip-${prev}`);
+    if (prevChip) prevChip.classList.remove('used');
+  }
+  dz.textContent = dragCurrentWord;
+  dz.setAttribute('data-placed', dragCurrentWord);
+  const chip = document.getElementById(`chip-${dragCurrentWord}`);
+  if (chip) chip.classList.add('used');
+  dragCurrentWord = null;
+}
+
+// tap-based fallback
+let tappedChip = null;
+function chipClick(word) {
+  if (tappedChip === word) { tappedChip = null; return; }
+  document.querySelectorAll('.drag-chip').forEach(c=>c.style.outline='');
+  tappedChip = word;
+  const chip = document.getElementById(`chip-${word}`);
+  if (chip) chip.style.outline = '3px solid var(--terra)';
+}
+function dzClick(idx) {
+  if (!tappedChip) return;
+  const dz = document.getElementById(`dz-${idx}`);
+  const prev = dz.getAttribute('data-placed');
+  if (prev) {
+    const prevChip = document.getElementById(`chip-${prev}`);
+    if (prevChip) { prevChip.classList.remove('used'); prevChip.style.outline=''; }
+  }
+  dz.textContent = tappedChip;
+  dz.setAttribute('data-placed', tappedChip);
+  const chip = document.getElementById(`chip-${tappedChip}`);
+  if (chip) { chip.classList.add('used'); chip.style.outline=''; }
+  tappedChip = null;
+}
+
+function checkAllDrag() {
+  let allDone = true;
+  let html = '';
+  DRAG_QUESTIONS.forEach((q,i) => {
+    const dz = document.getElementById(`dz-${i}`);
+    const placed = (dz.getAttribute('data-placed')||'').toLowerCase();
+    const correct = placed === q.blank.toLowerCase();
+    dragAnswered[i] = true;
+    dragCorrect[i]  = correct;
+    if (correct) score++;
+    dz.classList.add(correct?'correct-dz':'wrong-dz');
+    if (!correct) dz.textContent = q.blank;
+    html += `<div style="font-size:13px;margin:6px 0;color:${correct?'var(--correct)':'var(--wrong)'}">
+      ${correct?'✓':'✗'} Sentence ${i+1}: <em>${q.before}<strong>${q.blank}</strong>${q.after}</em> — ${q.explanation}
+    </div>`;
+  });
+  document.getElementById('score-display').textContent = score;
+  const fb = document.getElementById('drag-feedback-all');
+  fb.className = 'feedback show correct-fb';
+  fb.innerHTML = `<strong>Answers checked!</strong>${html}`;
+  document.getElementById('drag-check-btn').disabled = true;
+  document.querySelectorAll('.drag-chip').forEach(c=>c.style.pointerEvents='none');
+  document.getElementById('drag-next-btn').style.display = 'inline-flex';
+}
+
+/* ═══════════════════════════════════
+   RESULTS
+═══════════════════════════════════ */
+function showResults() {
+  document.getElementById('drag-activity').innerHTML = '';
+  document.querySelector('.score-bar').style.display='none';
+  document.getElementById('intro-1').style.display='none';
+  document.getElementById('intro-2').style.display='none';
+  document.getElementById('intro-3').style.display='none';
+
+  const total = MC_QUESTIONS.length + FITB_QUESTIONS.length + DRAG_QUESTIONS.length;
+  const rs = document.getElementById('results-screen');
+  rs.style.display = 'block';
+  document.getElementById('final-score').textContent = `${score}/${total}`;
+  const pct = score/total;
+  let msg;
+  if (pct === 1)      msg = "Perfect score! Lena and Sophie are SO impressed. You know your possessive pronouns perfectly!";
+  else if (pct >= .8) msg = "Excellent work! Almost perfect — Lena says: 'That's really good!'";
+  else if (pct >= .6) msg = "Good job! Sophie says: 'Keep practising — you're getting there!'";
+  else                msg = "Nice try! Review the pronouns and try again — Lena and Sophie believe in you!";
+  document.getElementById('result-msg').textContent = msg;
+}
+
+function restartAll() {
+  score = 0; currentActivity = 1; currentMC = 0; currentFITB = 0; currentDrag = 0;
+  document.getElementById('results-screen').style.display='none';
+  document.querySelector('.score-bar').style.display='flex';
+  document.getElementById('intro-1').style.display='flex';
+  document.getElementById('intro-2').style.display='none';
+  document.getElementById('intro-3').style.display='none';
+  document.getElementById('mc-activity').innerHTML = '';
+  document.getElementById('fitb-activity').innerHTML = '';
+  document.getElementById('drag-activity').innerHTML = '';
+  document.getElementById('score-display').textContent = '0';
+  document.getElementById('progress-fill').style.width='0%';
+  renderMC(0);
+}
+
+/* ═══════════════════════════════════
+   INIT
+═══════════════════════════════════ */
+window.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('intro-1').classList.add('active');
+  renderMC(0);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – Solo Hiking Safety (C1)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest:    #2C3E2D;
+    --trail:     #5C7A4E;
+    --trail-lt:  #7A9A66;
+    --parchment: #C8B89A;
+    --leather:   #8B6F47;
+    --cream:     #F2EDE4;
+    --cream-mid: #E8DFD0;
+    --stone:     #9FA89E;
+    --ink:       #1E2B1F;
+    --red-err:   #8B3A2F;
+    --gold-ok:   #5C7A4E;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--parchment);
+    color: var(--ink);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Topographic contour background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(ellipse 120% 80% at 60% 40%, transparent 38%, rgba(92,122,78,0.07) 38.5%, transparent 39%),
+      radial-gradient(ellipse 120% 80% at 60% 40%, transparent 48%, rgba(92,122,78,0.06) 48.5%, transparent 49%),
+      radial-gradient(ellipse 120% 80% at 60% 40%, transparent 58%, rgba(92,122,78,0.05) 58.5%, transparent 59%),
+      radial-gradient(ellipse 120% 80% at 60% 40%, transparent 68%, rgba(92,122,78,0.04) 68.5%, transparent 69%),
+      radial-gradient(ellipse 130% 90% at 30% 70%, transparent 35%, rgba(139,111,71,0.05) 35.5%, transparent 36%),
+      radial-gradient(ellipse 130% 90% at 30% 70%, transparent 50%, rgba(139,111,71,0.04) 50.5%, transparent 51%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+  }
+
+  /* ── LOGO ── */
+  .logo-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 28px;
+  }
+
+  .logo-svg text { font-family: 'Playfair Display', serif; }
+
+  /* ── HEADER CARD ── */
+  .header-card {
+    background: var(--forest);
+    border-radius: 12px;
+    padding: 32px 36px 28px;
+    color: var(--cream);
+    margin-bottom: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header-card::after {
+    content: '⛰';
+    position: absolute;
+    right: 28px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 72px;
+    opacity: 0.12;
+    pointer-events: none;
+  }
+  .lesson-tag {
+    display: inline-block;
+    background: var(--trail);
+    color: var(--cream);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+  }
+  .header-card h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 8px;
+    color: var(--cream);
+  }
+  .header-card p {
+    font-size: 14px;
+    color: var(--parchment);
+    line-height: 1.6;
+    max-width: 480px;
+  }
+
+  /* ── SCORE BAR ── */
+  .score-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--cream);
+    border: 1.5px solid var(--cream-mid);
+    border-radius: 10px;
+    padding: 14px 22px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .score-bar .label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--stone);
+    font-weight: 600;
+  }
+  .score-bar .value {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--forest);
+  }
+  .score-pill {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .score-pill > div { text-align: center; }
+
+  /* ── ACTIVITY SECTION ── */
+  .activity-section { display: none; }
+  .activity-section.active { display: block; }
+
+  .section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+  .section-num {
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--trail);
+    color: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .section-info h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--forest);
+    margin-bottom: 3px;
+  }
+  .section-info p {
+    font-size: 13px;
+    color: var(--stone);
+    font-style: italic;
+  }
+
+  /* ── QUESTION CARD ── */
+  .q-card {
+    background: var(--cream);
+    border: 1.5px solid var(--cream-mid);
+    border-radius: 10px;
+    padding: 26px 28px;
+    margin-bottom: 18px;
+  }
+  .q-card.hidden { display: none; }
+
+  .q-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .q-num {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--stone);
+    font-weight: 600;
+  }
+  .q-progress {
+    font-size: 11px;
+    color: var(--stone);
+    font-weight: 500;
+  }
+  .q-text {
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--ink);
+    margin-bottom: 18px;
+    font-weight: 400;
+  }
+  .q-text strong {
+    color: var(--forest);
+    font-weight: 600;
+  }
+
+  /* ── MC OPTIONS ── */
+  .options-grid { display: flex; flex-direction: column; gap: 9px; }
+
+  .opt-btn {
+    width: 100%;
+    text-align: left;
+    background: var(--cream-mid);
+    border: 1.5px solid transparent;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    line-height: 1.5;
+  }
+  .opt-btn:hover:not(:disabled) {
+    background: #DDD7CB;
+    border-color: var(--parchment);
+  }
+  .opt-btn.correct {
+    background: #D4E8CC;
+    border-color: var(--trail);
+    color: #1A3A1A;
+  }
+  .opt-btn.wrong {
+    background: #F0D4CF;
+    border-color: var(--red-err);
+    color: #4A1A16;
+  }
+  .opt-btn:disabled { cursor: default; }
+
+  .letter-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+    background: var(--parchment);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--leather);
+    margin-right: 10px;
+    flex-shrink: 0;
+    vertical-align: middle;
+  }
+  .opt-btn.correct .letter-badge { background: var(--trail); color: var(--cream); }
+  .opt-btn.wrong .letter-badge { background: var(--red-err); color: var(--cream); }
+
+  /* ── FEEDBACK ── */
+  .feedback {
+    display: none;
+    margin-top: 14px;
+    padding: 13px 16px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    line-height: 1.55;
+  }
+  .feedback.correct-fb { background: #D4E8CC; color: #1A3A1A; border-left: 4px solid var(--trail); }
+  .feedback.wrong-fb   { background: #F0D4CF; color: #4A1A16; border-left: 4px solid var(--red-err); }
+  .feedback .fb-label  { font-weight: 700; margin-right: 6px; }
+
+  /* ── FILL IN THE BLANK ── */
+  .fitb-sentence {
+    font-size: 15px;
+    line-height: 2.1;
+    margin-bottom: 14px;
+  }
+  .blank-input {
+    display: inline-block;
+    border: none;
+    border-bottom: 2px solid var(--leather);
+    background: transparent;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: var(--forest);
+    padding: 2px 6px;
+    width: 160px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .blank-input:focus { border-color: var(--trail); }
+  .blank-input.correct-input { border-color: var(--trail); background: #D4E8CC; border-radius: 4px 4px 0 0; }
+  .blank-input.wrong-input   { border-color: var(--red-err); background: #F0D4CF; border-radius: 4px 4px 0 0; }
+
+  /* ── MATCHING ── */
+  .match-wrap { display: flex; gap: 16px; flex-wrap: wrap; }
+  .match-col { flex: 1; min-width: 200px; }
+  .match-col h4 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--stone);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .match-item {
+    background: var(--cream-mid);
+    border-radius: 7px;
+    padding: 11px 14px;
+    margin-bottom: 8px;
+    font-size: 13.5px;
+    line-height: 1.45;
+    cursor: default;
+    border: 1.5px solid transparent;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .match-term {
+    font-weight: 600;
+    color: var(--forest);
+  }
+  .match-select {
+    margin-top: 8px;
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1.5px solid var(--parchment);
+    background: var(--cream);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--ink);
+    cursor: pointer;
+    outline: none;
+  }
+  .match-select:focus { border-color: var(--trail); }
+  .match-item.correct-match { background: #D4E8CC; border-color: var(--trail); }
+  .match-item.wrong-match   { background: #F0D4CF; border-color: var(--red-err); }
+
+  /* ── REORDER ── */
+  .reorder-area {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+    min-height: 50px;
+    padding: 10px;
+    border: 2px dashed var(--parchment);
+    border-radius: 8px;
+    align-items: flex-start;
+    align-content: flex-start;
+  }
+  .reorder-area.drop-target {
+    border-color: var(--trail);
+    background: rgba(92,122,78,0.05);
+  }
+  .word-chip {
+    background: var(--forest);
+    color: var(--cream);
+    border-radius: 6px;
+    padding: 8px 13px;
+    font-size: 13.5px;
+    font-weight: 500;
+    cursor: grab;
+    user-select: none;
+    transition: opacity 0.15s, box-shadow 0.15s;
+    line-height: 1;
+  }
+  .word-chip:active { cursor: grabbing; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+  .word-chip.dragging { opacity: 0.4; }
+  .word-chip.chip-correct { background: var(--trail); }
+  .word-chip.chip-wrong   { background: var(--red-err); }
+  .word-bank-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--stone);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .word-bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 12px;
+    background: rgba(0,0,0,0.03);
+    border-radius: 8px;
+    min-height: 46px;
+    margin-bottom: 14px;
+  }
+
+  /* ── BUTTONS ── */
+  .btn-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+  .btn-primary {
+    background: var(--forest);
+    color: var(--cream);
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn-primary:hover { background: var(--trail); }
+  .btn-primary:disabled {
+    background: var(--stone);
+    cursor: not-allowed;
+  }
+  .btn-next {
+    display: none;
+    background: var(--trail);
+    color: var(--cream);
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn-next:hover { background: var(--trail-lt); }
+  .btn-next.visible { display: inline-block; }
+
+  .btn-section-next {
+    display: none;
+    background: var(--forest);
+    color: var(--cream);
+    border: none;
+    border-radius: 8px;
+    padding: 14px 30px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 24px;
+    transition: background 0.15s;
+  }
+  .btn-section-next:hover { background: var(--trail); }
+  .btn-section-next.visible { display: inline-block; }
+
+  /* ── PROGRESS BAR ── */
+  .progress-track {
+    height: 4px;
+    background: var(--cream-mid);
+    border-radius: 2px;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--trail);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  /* ── RESULTS SCREEN ── */
+  #results-screen {
+    display: none;
+    text-align: center;
+    background: var(--cream);
+    border-radius: 14px;
+    padding: 48px 36px;
+  }
+  #results-screen h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    color: var(--forest);
+    margin-bottom: 12px;
+  }
+  .result-score-big {
+    font-family: 'Playfair Display', serif;
+    font-size: 72px;
+    font-weight: 700;
+    color: var(--trail);
+    line-height: 1;
+    margin: 20px 0;
+  }
+  .result-message {
+    font-size: 16px;
+    color: var(--stone);
+    margin-bottom: 30px;
+    line-height: 1.6;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .btn-restart {
+    background: var(--forest);
+    color: var(--cream);
+    border: none;
+    border-radius: 8px;
+    padding: 14px 32px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  /* ── SECTION DIVIDER ── */
+  .section-divider {
+    height: 1px;
+    background: var(--cream-mid);
+    margin: 30px 0;
+  }
+
+  /* Responsive */
+  @media (max-width: 560px) {
+    .header-card { padding: 24px 20px; }
+    .header-card::after { display: none; }
+    .q-card { padding: 20px 18px; }
+    .match-wrap { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- LOGO -->
+  <div class="logo-wrap">
+    <svg class="logo-svg" width="190" height="64" viewBox="0 0 190 64" xmlns="http://www.w3.org/2000/svg">
+      <text x="95" y="28" text-anchor="middle"
+            font-family="'Playfair Display', serif"
+            font-size="30" font-weight="700"
+            letter-spacing="3"
+            fill="#2C3E2D">Forbes</text>
+      <rect x="18" y="36" width="154" height="1.5" fill="#5C7A4E"/>
+      <text x="95" y="55" text-anchor="middle"
+            font-family="'Inter', sans-serif"
+            font-size="13.5" font-weight="700"
+            letter-spacing="7"
+            fill="#5C7A4E">ENGLISH</text>
+    </svg>
+  </div>
+
+  <!-- HEADER -->
+  <div class="header-card">
+    <div class="lesson-tag">C1 · Reading &amp; Language</div>
+    <h1>Solo Hiking Safety:<br>Vocabulary &amp; Critical Thinking</h1>
+    <p>Work through four activities exploring the language of risk, terrain, and outdoor decision-making, drawn from an authentic hiking safety guide.</p>
+  </div>
+
+  <!-- SCORE BAR -->
+  <div class="score-bar">
+    <div class="score-pill">
+      <div><div class="label">Score</div><div class="value" id="score-display">0</div></div>
+      <div><div class="label">Correct</div><div class="value" id="correct-display">0</div></div>
+      <div><div class="label">Activity</div><div class="value" id="section-display">1 / 4</div></div>
+    </div>
+    <div style="font-size:12px;color:var(--stone);font-weight:500;" id="total-progress">Question 0 of 20</div>
+  </div>
+
+  <!-- PROGRESS BAR -->
+  <div class="progress-track">
+    <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       ACTIVITY 1 · MULTIPLE CHOICE · 5 questions
+       Reading comprehension + inference at C1
+  ════════════════════════════════════════════ -->
+  <div class="activity-section active" id="section-1">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <div class="section-info">
+        <h2>Multiple Choice: Comprehension &amp; Inference</h2>
+        <p>Select the best answer for each question. Read carefully — options are deliberately close.</p>
+      </div>
+    </div>
+
+    <!-- Q1 -->
+    <div class="q-card" id="mc-q1">
+      <div class="q-meta"><span class="q-num">Question 1</span><span class="q-progress">1 of 5</span></div>
+      <p class="q-text">According to the text, why should hikers exercise particular caution near livestock in remote areas compared to popular hiking regions like the Alps?</p>
+      <div class="options-grid">
+        <button class="opt-btn" onclick="checkMC(this,'mc-q1','B')"><span class="letter-badge">A</span>Livestock in remote areas tend to be more agitated due to lack of human contact and unfamiliar scents.</button>
+        <button class="opt-btn" onclick="checkMC(this,'mc-q1','B')"><span class="letter-badge">B</span>Guard dogs in remote areas may not have been socialised to tolerate the presence of hikers.</button>
+        <button class="opt-btn" onclick="checkMC(this,'mc-q1','B')"><span class="letter-badge">C</span>The terrain near remote herds is typically more dangerous than on well-maintained alpine routes.</button>
+        <button class="opt-btn" onclick="checkMC(this,'mc-q1','B')"><span class="letter-badge">D</span>Farmers in remote regions are legally obliged to warn hikers about their animals' behaviour.</button>
+      </div>
+      <div class="feedback" id="fb-mc-q1"></div>
+      <div class="btn-row">
+        <button class="btn-next" id="next-mc-q1" onclick="showNextMC('mc-q1','mc-q2','next-mc-q1')">Next →</button>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q-card hidden" id="mc-q2">
+      <div class="q-meta"><span class="q-num">Question 2</span><span class="q-progress">2 of 5</span></div>
+      <p class="q-text">The author recommends trekking poles primarily as protection against wildlife, but also highlights their value because they are <strong>multi-use items</strong>. Which of the following best captures the additional benefits mentioned?</p>
+      <div class="options-grid">
+        <button class="opt-btn" onclick="checkMC(this,'mc-q2','C')"><span class="letter-badge">A</span>They can double as a signalling device and reduce overall pack weight on longer routes.</button>
+        <button class="opt-btn" onclick="checkMC(this,'mc-q2','C')"><span class="letter-badge">B</span>They improve balance on icy ground and can be used to probe for hidden crevasses safely.</button>
+        <button class="opt-btn" onclick="checkMC(this,'mc-q2','C')"><span class="letter-badge">C</span>They can be used in shelter construction and help prevent lower limb injuries from occurring.</button>
+        <button class="opt-btn" onclick="checkMC(this,'mc-q2','C')"><span class="letter-badge">D</span>They support navigation accuracy and help distribute weight evenly across difficult terrain.</button>
+      </div>
+      <div class="feedback" id="fb-mc-q2"></div>
+      <div class="btn-row">
+        <button class="btn-next" id="next-mc-q2" onclick="showNextMC('mc-q2','mc-q3','next-mc-q2')">Next →</button>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q-card hidden" id="mc-q3">
+      <div class="q-meta"><span class="q-num">Question 3</span><span class="q-progress">3 of 5</span></div>
+      <p class="q-text">The author uses hiking fatality statistics to make a broader argument. What is the rhetorical purpose of comparing hiking deaths to road fatalities?</p>
+      <div class="options-grid">
+        <button class="opt-btn" onclick="checkMC(this,'mc-q3','D')"><span class="letter-badge">A</span>To argue that road safety campaigns should adopt the same risk-reduction methods used in hiking.</button>
+        <button class="opt-btn" onclick="checkMC(this,'mc-q3','D')"><span class="letter-badge">B</span>To demonstrate that statistical data from national parks is more reliable than transport records.</button>
+        <button class="opt-btn" onclick="checkMC(this,'mc-q3','D')"><span class="letter-badge">C</span>To show that governments should invest more in hiking infrastructure to reduce accidents further.</button>
+        <button class="opt-btn" onclick="checkMC(this,'mc-q3','D')"><span class="letter-badge">D</span>To reframe a perceived risk by anchoring it against a familiar and widely-accepted danger.</button>
+      </div>
+      <div class="feedback" id="fb-mc-q3"></div>
+      <div class="btn-row">
+        <button class="btn-next" id="next-mc-q3" onclick="showNextMC('mc-q3','mc-q4','next-mc-q3')">Next →</button>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="q-card hidden" id="mc-q4">
+      <div class="q-meta"><span class="q-num">Question 4</span><span class="q-progress">4 of 5</span></div>
+      <p class="q-text">The author's advice about food storage changes depending on altitude. Which statement best reflects this nuance?</p>
+      <div class="options-grid">
+        <button class="opt-btn" onclick="checkMC(this,'mc-q4','A')"><span class="letter-badge">A</span>At high elevations beyond the tree line, the animals typically present pose a lower risk and the precaution may be unnecessary.</button>
+        <button class="opt-btn" onclick="checkMC(this,'mc-q4','A')"><span class="letter-badge">B</span>At high altitude, cold temperatures naturally preserve food and reduce the attractiveness of scents to animals.</button>
+        <button class="opt-btn" onclick="checkMC(this,'mc-q4','A')"><span class="letter-badge">C</span>Above the tree line, there are no trees to hang food from, so the advice becomes physically impractical.</button>
+        <button class="opt-btn" onclick="checkMC(this,'mc-q4','A')"><span class="letter-badge">D</span>At extreme elevation, bears are less active and boar do not venture above a certain altitude threshold.</button>
+      </div>
+      <div class="feedback" id="fb-mc-q4"></div>
+      <div class="btn-row">
+        <button class="btn-next" id="next-mc-q4" onclick="showNextMC('mc-q4','mc-q5','next-mc-q4')">Next →</button>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="q-card hidden" id="mc-q5">
+      <div class="q-meta"><span class="q-num">Question 5</span><span class="q-progress">5 of 5</span></div>
+      <p class="q-text">What is the author's stance on using paper maps and a compass as a navigation backup?</p>
+      <div class="options-grid">
+        <button class="opt-btn" onclick="checkMC(this,'mc-q5','C')"><span class="letter-badge">A</span>Paper maps are superior to GPS devices due to their reliability in areas without satellite coverage.</button>
+        <button class="opt-btn" onclick="checkMC(this,'mc-q5','C')"><span class="letter-badge">B</span>Paper maps are impractical on long-distance trails but indispensable for one-day hikes in forests.</button>
+        <button class="opt-btn" onclick="checkMC(this,'mc-q5','C')"><span class="letter-badge">C</span>Paper maps are a valid alternative but require prior skill acquisition and have practical limitations in precision.</button>
+        <button class="opt-btn" onclick="checkMC(this,'mc-q5','C')"><span class="letter-badge">D</span>Paper maps are obsolete and the author recommends replacing them with digital tools without exception.</button>
+      </div>
+      <div class="feedback" id="fb-mc-q5"></div>
+      <div class="btn-row">
+        <button class="btn-section-next" id="next-section-1" onclick="goToSection(2)">Next Activity →</button>
+      </div>
+    </div>
+  </div><!-- /section-1 -->
+
+
+  <!-- ═══════════════════════════════════════════
+       ACTIVITY 2 · FILL IN THE BLANK · 5 questions
+       Collocations and C1 vocabulary
+  ════════════════════════════════════════════ -->
+  <div class="activity-section" id="section-2">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <div class="section-info">
+        <h2>Fill in the Blank: Collocations &amp; Vocabulary</h2>
+        <p>Complete each sentence with the most appropriate word. Spelling counts.</p>
+      </div>
+    </div>
+
+    <div class="q-card" id="fitb-q1">
+      <div class="q-meta"><span class="q-num">Question 6</span><span class="q-progress">1 of 5</span></div>
+      <div class="fitb-sentence">
+        If you make a sudden movement near an unfamiliar guard dog, you risk
+        <input class="blank-input" id="fitb1-input" placeholder="type here"> it into an aggressive response, even if the animal was otherwise calm.
+      </div>
+      <p style="font-size:12px;color:var(--stone);margin-bottom:10px;">Hint: a verb meaning to cause an animal to react aggressively (past participle in passive form)</p>
+      <div class="feedback" id="fb-fitb1"></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="checkFITB('fitb1-input','fb-fitb1',['provoking','startling'],6,'fitb-q1','fitb-q2','fitb1-next')">Check</button>
+        <button class="btn-next" id="fitb1-next" onclick="showNextFITB('fitb-q1','fitb-q2')">Next →</button>
+      </div>
+    </div>
+
+    <div class="q-card hidden" id="fitb-q2">
+      <div class="q-meta"><span class="q-num">Question 7</span><span class="q-progress">2 of 5</span></div>
+      <div class="fitb-sentence">
+        Navigating by GPS in forest terrain can be imprecise; experienced hikers advise
+        <input class="blank-input" id="fitb2-input" placeholder="type here"> visual reference points — known as landmarks — before attempting complex route changes.
+      </div>
+      <p style="font-size:12px;color:var(--stone);margin-bottom:10px;">Hint: a verb + gerund meaning to confirm the existence of something first</p>
+      <div class="feedback" id="fb-fitb2"></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="checkFITB('fitb2-input','fb-fitb2',['identifying','locating','pinpointing'],7,'fitb-q2','fitb-q3','fitb2-next')">Check</button>
+        <button class="btn-next" id="fitb2-next" onclick="showNextFITB('fitb-q2','fitb-q3')">Next →</button>
+      </div>
+    </div>
+
+    <div class="q-card hidden" id="fitb-q3">
+      <div class="q-meta"><span class="q-num">Question 8</span><span class="q-progress">3 of 5</span></div>
+      <div class="fitb-sentence">
+        After heavy rainfall, many river crossings become
+        <input class="blank-input" id="fitb3-input" placeholder="type here"> due to the sudden rise in water level and current strength, making them extremely hazardous.
+      </div>
+      <p style="font-size:12px;color:var(--stone);margin-bottom:10px;">Hint: adjective used in the source text to describe these crossings</p>
+      <div class="feedback" id="fb-fitb3"></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="checkFITB('fitb3-input','fb-fitb3',['uncrossable','impassable','uncrossable'],8,'fitb-q3','fitb-q4','fitb3-next')">Check</button>
+        <button class="btn-next" id="fitb3-next" onclick="showNextFITB('fitb-q3','fitb-q4')">Next →</button>
+      </div>
+    </div>
+
+    <div class="q-card hidden" id="fitb-q4">
+      <div class="q-meta"><span class="q-num">Question 9</span><span class="q-progress">4 of 5</span></div>
+      <div class="fitb-sentence">
+        A dedicated GPS device from a manufacturer like Garmin is considered more
+        <input class="blank-input" id="fitb4-input" placeholder="type here"> than a smartphone, as it is built to withstand harsher environmental conditions and prolonged outdoor use.
+      </div>
+      <p style="font-size:12px;color:var(--stone);margin-bottom:10px;">Hint: adjective from the text describing durability and resistance to damage</p>
+      <div class="feedback" id="fb-fitb4"></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="checkFITB('fitb4-input','fb-fitb4',['robust','durable','resilient'],9,'fitb-q4','fitb-q5','fitb4-next')">Check</button>
+        <button class="btn-next" id="fitb4-next" onclick="showNextFITB('fitb-q4','fitb-q5')">Next →</button>
+      </div>
+    </div>
+
+    <div class="q-card hidden" id="fitb-q5">
+      <div class="q-meta"><span class="q-num">Question 10</span><span class="q-progress">5 of 5</span></div>
+      <div class="fitb-sentence">
+        In the dry season, hikers must be vigilant about wildfire
+        <input class="blank-input" id="fitb5-input" placeholder="type here"> issued by local authorities, as conditions can deteriorate rapidly and without warning.
+      </div>
+      <p style="font-size:12px;color:var(--stone);margin-bottom:10px;">Hint: a plural noun referring to official warnings or alerts</p>
+      <div class="feedback" id="fb-fitb5"></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="checkFITB('fitb5-input','fb-fitb5',['notices','warnings','alerts'],10,'fitb-q5',null,'fitb5-next')">Check</button>
+        <button class="btn-section-next" id="next-section-2" onclick="goToSection(3)">Next Activity →</button>
+      </div>
+    </div>
+  </div><!-- /section-2 -->
+
+
+  <!-- ═══════════════════════════════════════════
+       ACTIVITY 3 · MATCHING · 5 pairs
+       Definitions to technical/trail vocabulary
+  ════════════════════════════════════════════ -->
+  <div class="activity-section" id="section-3">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <div class="section-info">
+        <h2>Matching: Definitions to Terms</h2>
+        <p>Match each definition to the correct word or phrase. Submit all five, then check your answers.</p>
+      </div>
+    </div>
+
+    <div class="q-card" id="matching-card">
+      <div class="q-meta"><span class="q-num">Questions 11–15</span><span class="q-progress">5 pairs</span></div>
+      <div class="match-wrap" id="match-wrap">
+
+        <div class="match-col">
+          <h4>Definitions</h4>
+
+          <div class="match-item" id="mdef1">
+            <p>"An informal path created by the repeated movement of animals rather than human construction, often indistinguishable from a maintained trail."</p>
+            <select class="match-select" id="msel1">
+              <option value="">— select —</option>
+              <option value="animal track">animal track</option>
+              <option value="dorsif lexion">dorsiflexion</option>
+              <option value="wash">wash</option>
+              <option value="cache">cache</option>
+              <option value="rabbit hole">rabbit hole</option>
+            </select>
+          </div>
+
+          <div class="match-item" id="mdef2">
+            <p>"A low-lying channel or dry riverbed that is prone to sudden flooding during or after heavy rainfall."</p>
+            <select class="match-select" id="msel2">
+              <option value="">— select —</option>
+              <option value="animal track">animal track</option>
+              <option value="dorsif lexion">dorsiflexion</option>
+              <option value="wash">wash</option>
+              <option value="cache">cache</option>
+              <option value="rabbit hole">rabbit hole</option>
+            </select>
+          </div>
+
+          <div class="match-item" id="mdef3">
+            <p>"A stored collection of data — in this context, map tiles saved on a device — accessible without an internet connection."</p>
+            <select class="match-select" id="msel3">
+              <option value="">— select —</option>
+              <option value="animal track">animal track</option>
+              <option value="dorsiflexion">dorsiflexion</option>
+              <option value="wash">wash</option>
+              <option value="cache">cache</option>
+              <option value="rabbit hole">rabbit hole</option>
+            </select>
+          </div>
+
+          <div class="match-item" id="mdef4">
+            <p>"An informal expression for a process of increasingly absorbing online content that takes one far from the original point of interest."</p>
+            <select class="match-select" id="msel4">
+              <option value="">— select —</option>
+              <option value="animal track">animal track</option>
+              <option value="dorsiflexion">dorsiflexion</option>
+              <option value="wash">wash</option>
+              <option value="cache">cache</option>
+              <option value="rabbit hole">rabbit hole</option>
+            </select>
+          </div>
+
+          <div class="match-item" id="mdef5">
+            <p>"The movement of the foot upward toward the shin, essential for ankle flexibility and reducing injury risk on uneven terrain."</p>
+            <select class="match-select" id="msel5">
+              <option value="">— select —</option>
+              <option value="animal track">animal track</option>
+              <option value="dorsiflexion">dorsiflexion</option>
+              <option value="wash">wash</option>
+              <option value="cache">cache</option>
+              <option value="rabbit hole">rabbit hole</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="feedback" id="fb-matching" style="margin-top:14px;"></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="checkMatching()">Check All Answers</button>
+        <button class="btn-section-next" id="next-section-3" onclick="goToSection(4)">Next Activity →</button>
+      </div>
+    </div>
+  </div><!-- /section-3 -->
+
+
+  <!-- ═══════════════════════════════════════════
+       ACTIVITY 4 · REORDER SENTENCES · 5 items
+       Logical sequence / discourse cohesion
+  ════════════════════════════════════════════ -->
+  <div class="activity-section" id="section-4">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <div class="section-info">
+        <h2>Sentence Completion: Word Order</h2>
+        <p>Drag the words into the correct order to complete each sentence. Then submit to check.</p>
+      </div>
+    </div>
+
+    <!-- Reorder Q1 (Q16) -->
+    <div class="q-card" id="ro-q1">
+      <div class="q-meta"><span class="q-num">Question 16</span><span class="q-progress">1 of 5</span></div>
+      <p class="q-text">The hiker's poor judgement was a direct consequence of <em>[complete the clause]</em>:</p>
+      <p class="word-bank-label">Available words:</p>
+      <div class="word-bank" id="bank-ro1">
+        <div class="word-chip" draggable="true" data-word="having" ondragstart="dragStart(event)" onclick="chipClick(event,'bank-ro1','drop-ro1')">having</div>
+        <div class="word-chip" draggable="true" data-word="pushed" ondragstart="dragStart(event)" onclick="chipClick(event,'bank-ro1','drop-ro1')">pushed</div>
+        <div class="word-chip" draggable="true" data-word="exhaustion" ondragstart="dragStart(event)" onclick="chipClick(event,'bank-ro1','drop-ro1')">exhaustion</div>
+        <div class="word-chip" draggable="true" data-word="himself" ondragstart="dragStart(event)" onclick="chipClick(event,'bank-ro1','drop-ro1')">himself</div>
+        <div class="word-chip" draggable="true" data-word="past" ondragstart="dragStart(event)" onclick="chipClick(event,'bank-ro1','drop-ro1')">past</div>
+      </div>
+      <p class="word-bank-label">Your answer:</p>
+      <div class="reorder-area" id="drop-ro1"
+           ondragover="allowDrop(event)"
+           ondrop="dropWord(event,'drop-ro1','bank-ro1')"
+           onclick="dropAreaClick(event,'drop-ro1','bank-ro1')"></div>
+      <div class="feedback" id="fb-ro1"></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="checkReorder('drop-ro1','fb-ro1','having pushed himself past exhaustion',16,'ro-q1','ro-q2','next-ro1')">Check</button>
+        <button class="btn-primary" style="background:var(--leather)" onclick="resetReorder('drop-ro1','bank-ro1')">Reset</button>
+        <button class="btn-next" id="next-ro1" onclick="showNextMC('ro-q1','ro-q2','next-ro1')">Next →</button>
+      </div>
+    </div>
+
+    <!-- Reorder Q2 (Q17) -->
+    <div class="q-card hidden" id="ro-q2">
+      <div class="q-meta"><span class="q-num">Question 17</span><span class="q-progress">2 of 5</span></div>
+      <p class="q-text">Satellite messaging devices allow hikers to <em>[complete the clause]</em>:</p>
+      <p class="word-bank-label">Available words:</p>
+      <div class="word-bank" id="bank-ro2">
+        <div class="word-chip" draggable="true" data-word="even" ondragstart="dragStart(event)" onclick="chipClick(event,'bank-ro2','drop-ro2')">even</div>
+        <div class="word-chip" draggable="true" data-word="communicate" ondragstart="dragStart(event)" onclick="chipClick(event,'bank-ro2','drop-ro2')">communicate</div>
+        <div class="word-chip" draggable="true" data-word="without" ondragstart="dragStart(event)" onclick="chipClick(event,'bank-ro2','drop-ro2')">without</div>
+        <div class="word-chip" draggable="true" data-word="remotely" ondragstart="dragStart(event)" onclick="chipClick(event,'bank-ro2','drop-ro2')">remotely</div>
+        <div class="word-chip" draggable="true" data-word="reception" ondragstart="dragStart(event)" onclick="chipClick(event,'bank-ro2','drop-ro2')">reception</div>
+      </div>
+      <p class="word-bank-label">Your answer:</p>
+      <div class="reorder-area" id="drop-ro2"
+           ondragover="allowDrop(event)"
+           ondrop="dropWord(event,'drop-ro2','bank-ro2')"
+           onclick="dropAreaClick(event,'drop-ro2','bank-ro2')"></div>
+      <div class="feedback" id="fb-ro2"></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="checkReorder('drop-ro2','fb-ro2','communicate remotely even without reception',17,'ro-q2','ro-q3','next-ro2')">Check</button>
+        <button class="btn-primary" style="background:var(--leather)" onclick="resetReorder('drop-ro2','bank-ro2')">Reset</button>
+        <button class="btn-next" id="next-ro2" onclick="showNextMC('ro-q2','ro-q3','next-ro2')">Next →</button>
+      </div>
+    </div>
+
+    <!-- Reorder Q3 (Q18) -->
+    <div class="q-card hidden" id="ro-q3">
+      <div class="q-meta"><span class="q-num">Question 18</span><span class="q-progress">3 of 5</span></div>
+      <p class="q-text">To alert wildlife on overgrown trails, the author suggests that hikers should <em>[complete the clause]</em>:</p>
+      <p class="word-bank-label">Available words:</p>
+      <div class="word-bank" id="bank-ro3">
+        <div class="word-chip" draggable="true" data-word="make" ondragstart="dragStart(event)" onclick="chipClick(event,'bank-ro3','drop-ro3')">make</div>
+        <div class="word-chip" draggable="true" data-word="loud" ondragstart="dragStart(event)" onclick="chipClick(event,'bank-ro3','drop-ro3')">loud</div>
+        <div class="word-chip" draggable="true" data-word="noises" ondragstart="dragStart(event)" onclick="chipClick(event,'bank-ro3','drop-ro3')">noises</div>
+        <div class="word-chip" draggable="true" data-word="periodically" ondragstart="dragStart(event)" onclick="chipClick(event,'bank-ro3','drop-ro3')">periodically</div>
+        <div class="word-chip" draggable="true" data-word="audible" ondragstart="dragStart(event)" onclick="chipClick(event,'bank-ro3','drop-ro3')">audible</div>
+      </div>
+      <p class="word-bank-label">Your answer:</p>
+      <div class="reorder-area" id="drop-ro3"
+           ondragover="allowDrop(event)"
+           ondrop="dropWord(event,'drop-ro3','bank-ro3')"
+           onclick="dropAreaClick(event,'drop-ro3','bank-ro3')"></div>
+      <div class="feedback" id="fb-ro3"></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="checkReorder('drop-ro3','fb-ro3','periodically make loud audible noises',18,'ro-q3','ro-q4','next-ro3')">Check</button>
+        <button class="btn-primary" style="background:var(--leather)" onclick="resetReorder('drop-ro3','bank-ro3')">Reset</button>
+        <button class="btn-next" id="next-ro3" onclick="showNextMC('ro-q3','ro-q4','next-ro3')">Next →</button>
+      </div>
+    </div>
+
+    <!-- Reorder Q4 (Q19) -->
+    <div class="q-card hidden" id="ro-q4">
+      <div class="q-meta"><span class="q-num">Question 19</span><span class="q-progress">4 of 5</span></div>
+      <p class="q-text">The author's near-accident on a Norwegian cliff prompted him to <em>[complete the clause]</em>:</p>
+      <p class="word-bank-label">Available words:</p>
+      <div class="word-bank" id="bank-ro4">
+        <div class="word-chip" draggable="true" data-word="reassess" ondragstart="dragStart(event)" onclick="chipClick(event,'bank-ro4','drop-ro4')">reassess</div>
+        <div class="word-chip" draggable="true" data-word="his" ondragstart="dragStart(event)" onclick="chipClick(event,'bank-ro4','drop-ro4')">his</div>
+        <div class="word-chip" draggable="true" data-word="approach" ondragstart="dragStart(event)" onclick="chipClick(event,'bank-ro4','drop-ro4')">approach</div>
+        <div class="word-chip" draggable="true" data-word="to" ondragstart="dragStart(event)" onclick="chipClick(event,'bank-ro4','drop-ro4')">to</div>
+        <div class="word-chip" draggable="true" data-word="edges" ondragstart="dragStart(event)" onclick="chipClick(event,'bank-ro4','drop-ro4')">edges</div>
+      </div>
+      <p class="word-bank-label">Your answer:</p>
+      <div class="reorder-area" id="drop-ro4"
+           ondragover="allowDrop(event)"
+           ondrop="dropWord(event,'drop-ro4','bank-ro4')"
+           onclick="dropAreaClick(event,'drop-ro4','bank-ro4')"></div>
+      <div class="feedback" id="fb-ro4"></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="checkReorder('drop-ro4','fb-ro4','reassess his approach to edges',19,'ro-q4','ro-q5','next-ro4')">Check</button>
+        <button class="btn-primary" style="background:var(--leather)" onclick="resetReorder('drop-ro4','bank-ro4')">Reset</button>
+        <button class="btn-next" id="next-ro4" onclick="showNextMC('ro-q4','ro-q5','next-ro4')">Next →</button>
+      </div>
+    </div>
+
+    <!-- Reorder Q5 (Q20) -->
+    <div class="q-card hidden" id="ro-q5">
+      <div class="q-meta"><span class="q-num">Question 20</span><span class="q-progress">5 of 5</span></div>
+      <p class="q-text">The author argues that solo hiking is <em>[complete the clause using the comparative statistic given]</em>:</p>
+      <p class="word-bank-label">Available words:</p>
+      <div class="word-bank" id="bank-ro5">
+        <div class="word-chip" draggable="true" data-word="than" ondragstart="dragStart(event)" onclick="chipClick(event,'bank-ro5','drop-ro5')">than</div>
+        <div class="word-chip" draggable="true" data-word="driving" ondragstart="dragStart(event)" onclick="chipClick(event,'bank-ro5','drop-ro5')">driving</div>
+        <div class="word-chip" draggable="true" data-word="times" ondragstart="dragStart(event)" onclick="chipClick(event,'bank-ro5','drop-ro5')">times</div>
+        <div class="word-chip" draggable="true" data-word="647" ondragstart="dragStart(event)" onclick="chipClick(event,'bank-ro5','drop-ro5')">647</div>
+        <div class="word-chip" draggable="true" data-word="safer" ondragstart="dragStart(event)" onclick="chipClick(event,'bank-ro5','drop-ro5')">safer</div>
+      </div>
+      <p class="word-bank-label">Your answer:</p>
+      <div class="reorder-area" id="drop-ro5"
+           ondragover="allowDrop(event)"
+           ondrop="dropWord(event,'drop-ro5','bank-ro5')"
+           onclick="dropAreaClick(event,'drop-ro5','bank-ro5')"></div>
+      <div class="feedback" id="fb-ro5"></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="checkReorder('drop-ro5','fb-ro5','647 times safer than driving',20,'ro-q5',null,'next-ro5')">Check</button>
+        <button class="btn-primary" style="background:var(--leather)" onclick="resetReorder('drop-ro5','bank-ro5')">Reset</button>
+        <button class="btn-section-next" id="next-section-4" onclick="showResults()">See Results →</button>
+      </div>
+    </div>
+  </div><!-- /section-4 -->
+
+
+  <!-- ═══════════════════════════════════════════
+       RESULTS SCREEN
+  ════════════════════════════════════════════ -->
+  <div id="results-screen">
+    <svg width="160" height="54" viewBox="0 0 190 64" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:16px">
+      <text x="95" y="28" text-anchor="middle" font-family="'Playfair Display',serif" font-size="30" font-weight="700" letter-spacing="3" fill="#2C3E2D">Forbes</text>
+      <rect x="18" y="36" width="154" height="1.5" fill="#5C7A4E"/>
+      <text x="95" y="55" text-anchor="middle" font-family="'Inter',sans-serif" font-size="13.5" font-weight="700" letter-spacing="7" fill="#5C7A4E">ENGLISH</text>
+    </svg>
+    <h2>Lesson Complete</h2>
+    <div class="result-score-big" id="result-big">—</div>
+    <div class="result-message" id="result-message">—</div>
+    <button class="btn-restart" onclick="restartLesson()">↺ Restart Lesson</button>
+  </div>
+
+</div><!-- /page-wrap -->
+
+<script>
+// ─── STATE ───────────────────────────────────────────────────────────
+let totalScore = 0;
+let totalCorrect = 0;
+let totalAnswered = 0;
+const TOTAL_Q = 20;
+
+// ─── SCORE UI ────────────────────────────────────────────────────────
+function updateScoreUI() {
+  const pct = Math.round((totalCorrect / TOTAL_Q) * 100);
+  document.getElementById('score-display').textContent = pct + '%';
+  document.getElementById('correct-display').textContent = totalCorrect;
+  document.getElementById('total-progress').textContent =
+    'Question ' + totalAnswered + ' of ' + TOTAL_Q;
+  document.getElementById('progress-fill').style.width =
+    (totalAnswered / TOTAL_Q * 100) + '%';
+}
+
+// ─── SECTION NAV ─────────────────────────────────────────────────────
+function goToSection(n) {
+  document.querySelectorAll('.activity-section').forEach(s => s.classList.remove('active'));
+  const sec = document.getElementById('section-' + n);
+  if (sec) {
+    sec.classList.add('active');
+    sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  document.getElementById('section-display').textContent = n + ' / 4';
+}
+
+// ─── MULTIPLE CHOICE ─────────────────────────────────────────────────
+const mcFeedback = {
+  'mc-q1': {
+    correct: 'B',
+    text: '<span class="fb-label">Correct.</span> The text explains that in popular areas guard dogs are "well trained and friendly to hikers," implying they are accustomed to human presence. In remote areas they can be "very aggressive," suggesting insufficient socialisation — not terrain or legal factors.'
+  },
+  'mc-q2': {
+    correct: 'C',
+    text: '<span class="fb-label">Correct.</span> The author explicitly states trekking poles are multi-use because "you can set up some tents with them" (shelter) and they "greatly reduce the chances of ankle or leg injuries" (injury prevention). Options A, B, and D introduce unsupported claims.'
+  },
+  'mc-q3': {
+    correct: 'D',
+    text: '<span class="fb-label">Correct.</span> By placing hiking deaths (0.017 per 100,000) alongside driving deaths (11 per 100,000), the author gives the reader a familiar benchmark — driving — to recalibrate their perception of a less familiar risk. This is a classic anchoring rhetorical technique.'
+  },
+  'mc-q4': {
+    correct: 'A',
+    text: '<span class="fb-label">Correct.</span> The text states that high above the tree line "you\'ll usually only encounter mountain goats, foxes, and they\'re usually pretty shy." The rationale is the lower threat level from those specific animals, not cold, lack of trees, or bear behaviour.'
+  },
+  'mc-q5': {
+    correct: 'C',
+    text: '<span class="fb-label">Correct.</span> The author acknowledges paper maps as "another alternative" but notes that users "have to learn how to use them" and they "are also hard to navigate by precisely, especially if you\'re hiking in a forest." This is a balanced, qualified endorsement — not rejection or full recommendation.'
+  }
+};
+
+function checkMC(btn, qId, correct) {
+  const card = document.getElementById(qId);
+  if (card.querySelector('.opt-btn[disabled]')) return;
+
+  const allBtns = card.querySelectorAll('.opt-btn');
+  const letters = ['A','B','C','D'];
+  let chosenLetter = null;
+
+  allBtns.forEach((b, i) => {
+    b.disabled = true;
+    if (b === btn) chosenLetter = letters[i];
+    if (letters[i] === correct) b.classList.add('correct');
+  });
+
+  if (chosenLetter !== correct) btn.classList.add('wrong');
+
+  const fb = document.getElementById('fb-' + qId);
+  const data = mcFeedback[qId];
+  const isRight = chosenLetter === correct;
+
+  if (isRight) {
+    totalCorrect++;
+    fb.className = 'feedback correct-fb';
+    fb.innerHTML = data.text;
+  } else {
+    fb.className = 'feedback wrong-fb';
+    fb.innerHTML = '<span class="fb-label">Incorrect.</span> ' +
+      data.text.replace('<span class="fb-label">Correct.</span> ', '');
+  }
+  fb.style.display = 'block';
+  totalAnswered++;
+  updateScoreUI();
+
+  // Show next or section-next
+  const qNums = ['mc-q1','mc-q2','mc-q3','mc-q4','mc-q5'];
+  const idx = qNums.indexOf(qId);
+  if (idx < 4) {
+    const nextBtn = document.getElementById('next-' + qId);
+    if (nextBtn) nextBtn.classList.add('visible');
+  } else {
+    document.getElementById('next-section-1').classList.add('visible');
+  }
+}
+
+function showNextMC(currentId, nextId, btnId) {
+  document.getElementById(currentId).classList.add('hidden');
+  const next = document.getElementById(nextId);
+  if (next) {
+    next.classList.remove('hidden');
+    next.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+// ─── FILL IN THE BLANK ───────────────────────────────────────────────
+const fitbFeedback = {
+  6: {
+    wrong: 'The key collocation here is "provoke" or "startle" — both mean to trigger an aggressive reaction. The sentence requires a gerund (-ing form) following "risk of."',
+    correct: 'Well done. "Provoking" or "startling" are both the natural C1 collocations here. "Risk" is followed by a gerund in English: "the risk of provoking/startling."'
+  },
+  7: {
+    wrong: 'Think about verbs that mean "to confirm the location or existence of something" — typical in navigation and field contexts. "Identifying," "locating," or "pinpointing" all work here.',
+    correct: 'Correct. In navigation and outdoor contexts, "identifying" (or "locating/pinpointing") reference points is the standard collocation before making route decisions.'
+  },
+  8: {
+    wrong: 'The text uses a specific adjective meaning "impossible to cross." "Impassable" or "uncrossable" are both used in this context, often in outdoor and military writing.',
+    correct: 'Correct. "Impassable" and "uncrossable" are both used in the source text and are natural C1 vocabulary for river and terrain conditions after flooding.'
+  },
+  9: {
+    wrong: '"Robust" is the adjective used in the source text itself. It means built to withstand tough conditions — often used of equipment, systems, and processes in professional English.',
+    correct: 'Correct. "Robust" is a high-frequency C1 adjective frequently used in product, engineering, and outdoor contexts to describe durability and reliability.'
+  },
+  10: {
+    wrong: 'The word used in the text is "notices" — an official communication or public warning. "Warnings" and "alerts" are also acceptable synonyms in this context.',
+    correct: 'Correct. "Notices," "warnings," and "alerts" all work here. In formal outdoor safety and official communication contexts, "notices" is especially common (e.g. "wildfire notices," "flood notices").'
+  }
+};
+
+function checkFITB(inputId, fbId, accepted, qNum, currentCard, nextCard, nextBtnId) {
+  const input = document.getElementById(inputId);
+  if (input.disabled) return;
+
+  const val = input.value.trim().toLowerCase();
+  const acceptedNorm = accepted.map(a => a.toLowerCase());
+  const isRight = acceptedNorm.includes(val) || acceptedNorm.some(a => val === a);
+
+  input.disabled = true;
+  const fb = document.getElementById(fbId);
+
+  if (isRight) {
+    totalCorrect++;
+    input.classList.add('correct-input');
+    fb.className = 'feedback correct-fb';
+    fb.innerHTML = '<span class="fb-label">Correct.</span> ' + fitbFeedback[qNum].correct;
+  } else {
+    input.classList.add('wrong-input');
+    fb.className = 'feedback wrong-fb';
+    fb.innerHTML = '<span class="fb-label">Incorrect.</span> ' + fitbFeedback[qNum].wrong +
+      ' <strong>Accepted: ' + accepted.join(' / ') + '</strong>';
+  }
+  fb.style.display = 'block';
+  totalAnswered++;
+  updateScoreUI();
+
+  if (nextCard === null) {
+    document.getElementById('next-section-2').classList.add('visible');
+  } else {
+    const nb = document.getElementById(nextBtnId);
+    if (nb) nb.classList.add('visible');
+  }
+}
+
+function showNextFITB(currentId, nextId) {
+  document.getElementById(currentId).classList.add('hidden');
+  const next = document.getElementById(nextId);
+  if (next) {
+    next.classList.remove('hidden');
+    next.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+// ─── MATCHING ────────────────────────────────────────────────────────
+const matchAnswers = {
+  msel1: 'animal track',
+  msel2: 'wash',
+  msel3: 'cache',
+  msel4: 'rabbit hole',
+  msel5: 'dorsiflexion'
+};
+
+const matchExplanations = {
+  msel1: '"Animal track" — a path made by animals moving repeatedly through an area, often mistaken for a maintained trail.',
+  msel2: '"Wash" — a dry watercourse or arroyo that fills rapidly in storms; the term is common in American Southwest hiking contexts.',
+  msel3: '"Cache" — from French, used in computing and outdoor contexts for stored items accessible without a live connection.',
+  msel4: '"Rabbit hole" — an idiom derived from Alice in Wonderland, now standard in digital culture for obsessive online browsing.',
+  msel5: '"Dorsiflexion" — anatomical term for upward foot movement toward the shin; its opposite is plantarflexion.'
+};
+
+let matchingChecked = false;
+
+function checkMatching() {
+  if (matchingChecked) return;
+  matchingChecked = true;
+
+  let correct = 0;
+  const total = 5;
+  let explanations = '';
+
+  Object.entries(matchAnswers).forEach(([selId, correctVal], idx) => {
+    const sel = document.getElementById(selId);
+    const defEl = document.getElementById('mdef' + (idx + 1));
+    sel.disabled = true;
+    const chosen = sel.value;
+    if (chosen === correctVal) {
+      correct++;
+      defEl.classList.add('correct-match');
+    } else {
+      defEl.classList.add('wrong-match');
+    }
+    explanations += '<p style="margin-bottom:6px"><strong>' + (chosen === correctVal ? '✓' : '✗') + '</strong> ' + matchExplanations[selId] + '</p>';
+  });
+
+  totalCorrect += correct;
+  totalAnswered += total;
+  updateScoreUI();
+
+  const fb = document.getElementById('fb-matching');
+  if (correct === total) {
+    fb.className = 'feedback correct-fb';
+    fb.innerHTML = '<span class="fb-label">All correct!</span> ' + explanations;
+  } else {
+    fb.className = 'feedback wrong-fb';
+    fb.innerHTML = '<span class="fb-label">You scored ' + correct + '/' + total + '.</span><br>' + explanations;
+  }
+  fb.style.display = 'block';
+  document.getElementById('next-section-3').classList.add('visible');
+}
+
+// ─── DRAG & DROP / REORDER ───────────────────────────────────────────
+let draggedChip = null;
+let dragSourceBank = null;
+
+function dragStart(e) {
+  draggedChip = e.target;
+  dragSourceBank = e.target.parentElement.id;
+  e.dataTransfer.setData('text/plain', e.target.dataset.word);
+  setTimeout(() => e.target.classList.add('dragging'), 0);
+}
+
+function allowDrop(e) {
+  e.preventDefault();
+  e.currentTarget.classList.add('drop-target');
+}
+
+function dropWord(e, dropAreaId, bankId) {
+  e.preventDefault();
+  const dropArea = document.getElementById(dropAreaId);
+  dropArea.classList.remove('drop-target');
+  if (!draggedChip) return;
+
+  // Move chip from wherever it is to drop area
+  const clone = draggedChip.cloneNode(true);
+  clone.classList.remove('dragging');
+  clone.draggable = true;
+  clone.ondragstart = dragStart;
+  clone.dataset.bank = bankId;
+  clone.dataset.droparea = dropAreaId;
+  clone.onclick = function(ev) { chipClick(ev, dropAreaId, bankId); };
+
+  dropArea.appendChild(clone);
+  draggedChip.remove();
+  draggedChip = null;
+}
+
+function chipClick(e, fromId, toId) {
+  const chip = e.currentTarget;
+  const target = document.getElementById(toId);
+  if (!target) return;
+
+  const clone = chip.cloneNode(true);
+  clone.draggable = true;
+  clone.ondragstart = dragStart;
+
+  // Toggle direction
+  if (chip.parentElement.id === fromId) {
+    clone.onclick = function(ev) { chipClick(ev, toId, fromId); };
+    clone.dataset.bank = fromId;
+    clone.dataset.droparea = toId;
+    target.appendChild(clone);
+    chip.remove();
+  } else {
+    clone.onclick = function(ev) { chipClick(ev, fromId, toId); };
+    clone.dataset.bank = toId;
+    clone.dataset.droparea = fromId;
+    target.appendChild(clone);
+    chip.remove();
+  }
+}
+
+function dropAreaClick(e, dropAreaId, bankId) {
+  // Only fires on the area itself, not on chips
+}
+
+function resetReorder(dropId, bankId) {
+  const drop = document.getElementById(dropId);
+  const bank = document.getElementById(bankId);
+  Array.from(drop.children).forEach(chip => {
+    chip.draggable = true;
+    chip.ondragstart = dragStart;
+    chip.classList.remove('chip-correct','chip-wrong');
+    chip.onclick = function(ev) { chipClick(ev, bankId, dropId); };
+    bank.appendChild(chip);
+  });
+}
+
+const reorderFeedback = {
+  16: 'The correct clause is "having pushed himself past exhaustion." The structure is "consequence of + perfect gerund" (having + past participle). "Push past exhaustion" is a standard English idiom for overexerting.',
+  17: 'The correct phrase is "communicate remotely even without reception." The adverb "remotely" modifies "communicate," and "even without" concedes the extreme condition — a typical C1 concessive structure.',
+  18: 'The best ordering is "periodically make loud audible noises." The text advises making sounds "every once in a while" — paraphrased as "periodically." "Loud" and "audible" as stacked adjectives is acceptable; "make loud noises periodically" is also natural.',
+  19: 'The correct phrase is "reassess his approach to edges." The text says the experience made him reconsider going near cliff edges — "reassess his approach" captures this with formal C1 vocabulary.',
+  20: 'The exact phrase from the text is "647 times safer than driving." This is a fixed comparative structure: [number] + times + comparative adjective + than + noun/gerund.'
+};
+
+function checkReorder(dropId, fbId, correctPhrase, qNum, currentCard, nextCard, nextBtnId) {
+  const drop = document.getElementById(dropId);
+  if (drop.querySelector('.chip-correct') || drop.querySelector('.chip-wrong')) return;
+
+  const chips = Array.from(drop.children);
+  const given = chips.map(c => c.dataset.word).join(' ');
+
+  // Normalize comparison
+  const givenNorm = given.toLowerCase().replace(/\s+/g, ' ').trim();
+  const correctNorm = correctPhrase.toLowerCase().trim();
+  const isRight = givenNorm === correctNorm;
+
+  chips.forEach(c => {
+    c.classList.add(isRight ? 'chip-correct' : 'chip-wrong');
+    c.draggable = false;
+  });
+
+  const fb = document.getElementById(fbId);
+  if (isRight) {
+    totalCorrect++;
+    fb.className = 'feedback correct-fb';
+    fb.innerHTML = '<span class="fb-label">Correct.</span> ' + reorderFeedback[qNum];
+  } else {
+    fb.className = 'feedback wrong-fb';
+    fb.innerHTML = '<span class="fb-label">Incorrect.</span> ' + reorderFeedback[qNum] +
+      '<br><strong>Correct order: "' + correctPhrase + '"</strong>';
+  }
+  fb.style.display = 'block';
+  totalAnswered++;
+  updateScoreUI();
+
+  if (nextCard === null) {
+    document.getElementById('next-section-4').classList.add('visible');
+  } else {
+    const nb = document.getElementById(nextBtnId);
+    if (nb) nb.classList.add('visible');
+  }
+}
+
+// ─── RESULTS ─────────────────────────────────────────────────────────
+function showResults() {
+  document.querySelectorAll('.activity-section').forEach(s => s.classList.remove('active'));
+  const rs = document.getElementById('results-screen');
+  rs.style.display = 'block';
+
+  const pct = Math.round((totalCorrect / TOTAL_Q) * 100);
+  document.getElementById('result-big').textContent = pct + '%';
+
+  let msg = '';
+  if (pct >= 90) {
+    msg = 'Outstanding work — a clear C1 performance. Your comprehension and vocabulary precision are excellent. The trails are calling.';
+  } else if (pct >= 75) {
+    msg = 'Very strong result. You demonstrate solid C1 reading skills and good command of specialist vocabulary. Review the items you missed and you will be at the summit.';
+  } else if (pct >= 55) {
+    msg = 'A solid attempt. You have a good foundation at this level. Focus on the feedback for incorrect answers — the collocations and inference questions are worth revisiting.';
+  } else {
+    msg = 'This content is demanding — well done for attempting it. Review the feedback carefully: understanding why each answer is correct is the most important part of C1 development.';
+  }
+  document.getElementById('result-message').textContent = msg;
+  rs.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function restartLesson() {
+  location.reload();
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────
+document.addEventListener('dragend', function() {
+  if (draggedChip) draggedChip.classList.remove('dragging');
+  document.querySelectorAll('.reorder-area').forEach(a => a.classList.remove('drop-target'));
+  draggedChip = null;
+});
+
+updateScoreUI();
+</script>
+</body>
+</html>

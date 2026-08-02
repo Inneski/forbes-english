@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – Minecraft Trivia Lesson</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow+Condensed:wght@400;600;700;800&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --rust:    #C4622D;
+  --rust-dk: #9A4520;
+  --rust-lt: #E07A45;
+  --cream:   #F5EFE6;
+  --cream-dk:#EDE4D6;
+  --charcoal:#1E1A17;
+  --char-md: #3A332B;
+  --char-lt: #5C5148;
+  --gold:    #E8A838;
+  --gold-dk: #B87E20;
+  --sage:    #6B8F71;
+  --correct: #3A7D44;
+  --wrong:   #B33030;
+  --border:  rgba(30,26,23,0.15);
+  --shadow:  0 4px 24px rgba(30,26,23,0.12);
+  --shadow-lg:0 8px 48px rgba(30,26,23,0.18);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Lora',Georgia,serif;
+  background:var(--cream);
+  color:var(--charcoal);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ═══ HERO / LOGO MASTHEAD ═══ */
+.masthead{
+  background:var(--cream-dk);
+  border-bottom:3px solid var(--charcoal);
+  padding:48px 40px 36px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.masthead::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(ellipse 60% 80% at 50% -20%, rgba(196,98,45,0.08) 0%, transparent 70%);
+  pointer-events:none;
+}
+/* Decorative corner blocks */
+.masthead::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:6px;
+  background:repeating-linear-gradient(90deg,var(--rust) 0,var(--rust) 12px,var(--gold) 12px,var(--gold) 24px,var(--charcoal) 24px,var(--charcoal) 36px,var(--cream-dk) 36px,var(--cream-dk) 48px);
+}
+
+.logo-svg-wrap{
+  display:inline-block;
+  width:min(680px,90vw);
+}
+
+/* Score strip under masthead */
+.score-strip{
+  background:var(--charcoal);
+  color:var(--cream);
+  padding:10px 40px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:32px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:14px;
+  font-weight:600;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  flex-wrap:wrap;
+}
+.score-strip .score-item{display:flex;align-items:center;gap:8px}
+.score-strip .score-num{
+  font-size:22px;
+  font-weight:800;
+  color:var(--gold);
+  letter-spacing:0;
+}
+.score-divider{width:1px;height:24px;background:rgba(255,255,255,.2)}
+
+/* ═══ MAIN ═══ */
+main{max-width:860px;margin:0 auto;padding:0 20px 80px}
+
+/* ═══ ILLUSTRATION BANDS ═══ */
+.illus-band{
+  width:100vw;
+  margin-left:calc(-50vw + 50%);
+  overflow:hidden;
+  border-top:3px solid var(--charcoal);
+  border-bottom:3px solid var(--charcoal);
+  margin-bottom:0;
+}
+
+/* ═══ ACTIVITY WRAPPER ═══ */
+.activity-section{
+  padding:48px 0 32px;
+  border-bottom:2px solid var(--border);
+}
+.activity-section:last-of-type{border-bottom:none}
+
+.act-eyebrow{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--rust);
+  margin-bottom:8px;
+}
+.act-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(26px,4vw,38px);
+  font-weight:900;
+  color:var(--charcoal);
+  line-height:1.15;
+  margin-bottom:10px;
+}
+.act-instructions{
+  font-family:'Lora',serif;
+  font-size:15px;
+  color:var(--char-lt);
+  line-height:1.7;
+  margin-bottom:28px;
+  max-width:620px;
+}
+
+/* ═══ PROGRESS BAR ═══ */
+.prog-wrap{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.prog-bar{flex:1;height:6px;background:var(--cream-dk);border-radius:0;border:1px solid var(--border);overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--rust),var(--gold));transition:width .4s ease}
+.prog-label{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;color:var(--char-lt);white-space:nowrap;text-transform:uppercase}
+
+/* ═══ QUESTION CARD ═══ */
+.q-card{
+  background:#fff;
+  border:2px solid var(--charcoal);
+  box-shadow:5px 5px 0 var(--charcoal);
+  padding:28px 28px 24px;
+  margin-bottom:16px;
+}
+.q-hint{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:13px;
+  font-weight:600;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--rust);
+  margin-bottom:10px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.q-hint::before{content:'';display:inline-block;width:20px;height:2px;background:var(--rust)}
+.q-text{
+  font-family:'Lora',serif;
+  font-size:17px;
+  line-height:1.65;
+  color:var(--charcoal);
+  margin-bottom:20px;
+  font-weight:500;
+}
+.q-text strong{color:var(--rust);font-weight:700}
+
+/* ═══ MC OPTIONS ═══ */
+.options{display:flex;flex-direction:column;gap:9px}
+.opt-btn{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:13px 16px;
+  background:var(--cream);
+  border:1.5px solid var(--border);
+  cursor:pointer;
+  font-family:'Lora',serif;
+  font-size:15px;
+  color:var(--charcoal);
+  text-align:left;
+  transition:all .15s;
+  line-height:1.5;
+  width:100%;
+}
+.opt-btn:hover:not(:disabled){background:var(--cream-dk);border-color:var(--rust);transform:translateX(3px)}
+.opt-btn .ltr{
+  min-width:28px;height:28px;
+  background:var(--charcoal);
+  color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:13px;font-weight:700;
+  flex-shrink:0;
+  transition:background .15s;
+}
+.opt-btn.selected{background:var(--cream-dk);border-color:var(--rust)}
+.opt-btn.selected .ltr{background:var(--rust)}
+.opt-btn.correct{background:#EBF5EC;border-color:var(--correct);border-width:2px}
+.opt-btn.correct .ltr{background:var(--correct)}
+.opt-btn.incorrect{background:#FDECEC;border-color:var(--wrong);border-width:2px}
+.opt-btn.incorrect .ltr{background:var(--wrong)}
+.opt-btn:disabled{cursor:default;transform:none}
+
+/* ═══ FEEDBACK ═══ */
+.feedback{
+  display:none;
+  margin-top:14px;
+  padding:14px 18px;
+  font-family:'Lora',serif;
+  font-size:14px;
+  line-height:1.65;
+  border-left:4px solid;
+}
+.feedback.show{display:block}
+.feedback.correct-fb{background:#EBF5EC;border-color:var(--correct);color:#1D4D23}
+.feedback.incorrect-fb{background:#FDECEC;border-color:var(--wrong);color:#7A1A1A}
+.fb-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+
+/* ═══ FILL IN BLANK ═══ */
+.blank-input{
+  display:inline-block;
+  background:transparent;
+  border:none;
+  border-bottom:2.5px solid var(--rust);
+  color:var(--charcoal);
+  font-family:'Lora',serif;
+  font-size:15px;
+  font-weight:500;
+  padding:2px 6px;
+  width:180px;
+  outline:none;
+  vertical-align:middle;
+  transition:border-color .2s;
+}
+.blank-input:focus{border-color:var(--gold)}
+.blank-input.correct-input{border-color:var(--correct);color:var(--correct)}
+.blank-input.wrong-input{border-color:var(--wrong);color:var(--wrong)}
+
+/* ═══ DRAG & DROP ═══ */
+.dd-pool-label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--char-lt);margin-bottom:10px;
+}
+.dd-pool{
+  display:flex;flex-wrap:wrap;gap:9px;
+  padding:16px;
+  background:#fff;
+  border:2px dashed var(--border);
+  min-height:58px;
+  margin-bottom:18px;
+}
+.drag-chip{
+  padding:7px 15px;
+  background:var(--charcoal);
+  color:var(--cream);
+  border:none;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:14px;font-weight:600;
+  cursor:grab;
+  user-select:none;
+  transition:all .15s;
+  letter-spacing:.5px;
+}
+.drag-chip:hover{background:var(--rust);transform:translateY(-2px)}
+.drag-chip.dragging{opacity:.35}
+.drag-chip.placed{opacity:.3;cursor:not-allowed}
+.drop-sent{
+  font-family:'Lora',serif;
+  font-size:16px;
+  line-height:2.4;
+  color:var(--charcoal);
+  margin-bottom:10px;
+}
+.drop-zone{
+  display:inline-block;
+  min-width:150px;
+  padding:2px 10px;
+  background:var(--cream-dk);
+  border:2px dashed var(--rust);
+  vertical-align:middle;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:13px;font-weight:600;letter-spacing:1px;
+  color:var(--rust);
+  cursor:pointer;
+  transition:all .15s;
+  min-height:28px;
+}
+.drop-zone.over{background:rgba(196,98,45,.1);border-color:var(--gold);color:var(--gold-dk)}
+.drop-zone.filled{border-style:solid;border-color:var(--charcoal);color:var(--charcoal);background:#fff;font-size:14px;letter-spacing:.3px}
+.drop-zone.correct-dz{border-color:var(--correct);background:#EBF5EC;color:var(--correct)}
+.drop-zone.wrong-dz{border-color:var(--wrong);background:#FDECEC;color:var(--wrong)}
+
+/* ═══ MATCHING ═══ */
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.match-col{display:flex;flex-direction:column;gap:8px}
+.match-col-label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--char-lt);margin-bottom:4px;
+}
+.match-card{
+  padding:12px 14px;
+  background:#fff;
+  border:1.5px solid var(--border);
+  box-shadow:3px 3px 0 var(--border);
+  font-family:'Lora',serif;
+  font-size:14px;line-height:1.45;
+  cursor:pointer;
+  transition:all .15s;
+  color:var(--charcoal);
+}
+.match-card.left-c{border-left:4px solid var(--rust)}
+.match-card.right-c{border-right:4px solid var(--gold);color:var(--char-lt)}
+.match-card.selected{border-color:var(--rust);background:var(--cream-dk);box-shadow:3px 3px 0 var(--rust);color:var(--charcoal)}
+.match-card.matched{border-color:var(--correct);background:#EBF5EC;cursor:default}
+.match-card.wrong-flash{border-color:var(--wrong);background:#FDECEC;animation:shake .3s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.match-tally{
+  text-align:center;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  color:var(--char-lt);margin-top:8px;
+}
+.match-tally span{color:var(--rust)}
+
+/* ═══ ORDERING ═══ */
+.order-list{display:flex;flex-direction:column;gap:8px}
+.order-row{
+  display:flex;align-items:center;gap:12px;
+  padding:13px 15px;
+  background:#fff;
+  border:1.5px solid var(--border);
+  box-shadow:3px 3px 0 var(--border);
+  cursor:grab;
+  font-family:'Lora',serif;
+  font-size:15px;line-height:1.4;
+  user-select:none;
+  color:var(--charcoal);
+  transition:all .15s;
+}
+.order-row:hover{border-color:var(--rust);box-shadow:3px 3px 0 var(--rust)}
+.order-row.dragging-row{opacity:.4}
+.order-handle{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:18px;color:var(--char-lt);
+  flex-shrink:0;letter-spacing:-1px;
+}
+.order-idx{
+  min-width:28px;height:28px;
+  background:var(--charcoal);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:13px;font-weight:700;
+  flex-shrink:0;
+}
+.order-row.correct-row{border-color:var(--correct);background:#EBF5EC}
+.order-row.wrong-row{border-color:var(--wrong);background:#FDECEC}
+
+/* ═══ BUTTONS ═══ */
+.btn-row{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;align-items:center}
+.btn{
+  padding:12px 26px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:14px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  border:2px solid;cursor:pointer;
+  transition:all .15s;
+}
+.btn-primary{background:var(--rust);color:#fff;border-color:var(--rust)}
+.btn-primary:hover{background:var(--rust-dk);border-color:var(--rust-dk);transform:translateY(-1px);box-shadow:0 4px 12px rgba(196,98,45,.35)}
+.btn-secondary{background:transparent;color:var(--char-lt);border-color:var(--border)}
+.btn-secondary:hover{border-color:var(--rust);color:var(--rust)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* ═══ SECTION DIVIDER WITH ILLUSTRATION ═══ */
+.illus-divider{
+  margin:0 0 0 0;
+  width:100vw;
+  margin-left:calc(-50vw + 50%);
+  overflow:hidden;
+  position:relative;
+}
+
+/* ═══ FINAL SCREEN ═══ */
+#final-screen{
+  display:none;
+  padding:56px 40px 64px;
+  text-align:center;
+  background:#fff;
+  border:2px solid var(--charcoal);
+  box-shadow:8px 8px 0 var(--charcoal);
+  margin-top:40px;
+}
+#final-screen.show{display:block}
+.final-ring-wrap{
+  width:140px;height:140px;
+  border-radius:50%;
+  background:conic-gradient(var(--rust) 0%,var(--rust) var(--pct,0%),var(--cream-dk) var(--pct,0%));
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 28px;
+  box-shadow:0 0 0 6px var(--cream-dk),0 0 0 8px var(--charcoal);
+}
+.final-ring-inner{
+  width:108px;height:108px;
+  border-radius:50%;
+  background:var(--cream);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:2px;
+}
+.final-num{font-family:'Playfair Display',serif;font-size:38px;font-weight:900;color:var(--rust);line-height:1}
+.final-denom{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;color:var(--char-lt);text-transform:uppercase}
+.final-title{font-family:'Playfair Display',serif;font-size:32px;font-weight:900;color:var(--charcoal);margin-bottom:12px}
+.final-msg{font-family:'Lora',serif;font-size:16px;color:var(--char-lt);line-height:1.7;max-width:500px;margin:0 auto 32px}
+
+@media(max-width:620px){
+  .masthead{padding:32px 20px 28px}
+  main{padding:0 14px 60px}
+  .match-grid{grid-template-columns:1fr}
+  .q-card{padding:20px 16px 18px}
+  .act-title{font-size:24px}
+  .score-strip{gap:16px;padding:8px 20px}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     MASTHEAD — BIG LOGO, NO STICKY
+═══════════════════════════════════════ -->
+<div class="masthead">
+  <!-- Large decorative Minecraft scene behind logo -->
+  <svg style="position:absolute;bottom:0;left:0;width:100%;height:100%;opacity:.06;pointer-events:none" viewBox="0 0 1200 180" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+    <!-- Blocky landscape silhouette -->
+    <rect x="0"   y="80"  width="80"  height="100" fill="#1E1A17"/>
+    <rect x="80"  y="100" width="80"  height="80"  fill="#1E1A17"/>
+    <rect x="160" y="60"  width="40"  height="120" fill="#1E1A17"/>
+    <rect x="200" y="90"  width="60"  height="90"  fill="#1E1A17"/>
+    <rect x="260" y="110" width="100" height="70"  fill="#1E1A17"/>
+    <rect x="360" y="50"  width="60"  height="130" fill="#1E1A17"/>
+    <rect x="420" y="70"  width="40"  height="110" fill="#1E1A17"/>
+    <rect x="460" y="90"  width="80"  height="90"  fill="#1E1A17"/>
+    <rect x="540" y="60"  width="60"  height="120" fill="#1E1A17"/>
+    <rect x="600" y="100" width="80"  height="80"  fill="#1E1A17"/>
+    <rect x="680" y="70"  width="40"  height="110" fill="#1E1A17"/>
+    <rect x="720" y="50"  width="80"  height="130" fill="#1E1A17"/>
+    <rect x="800" y="80"  width="60"  height="100" fill="#1E1A17"/>
+    <rect x="860" y="100" width="80"  height="80"  fill="#1E1A17"/>
+    <rect x="940" y="60"  width="60"  height="120" fill="#1E1A17"/>
+    <rect x="1000" y="90" width="80"  height="90"  fill="#1E1A17"/>
+    <rect x="1080" y="70" width="60"  height="110" fill="#1E1A17"/>
+    <rect x="1140" y="100" width="60" height="80"  fill="#1E1A17"/>
+    <!-- Stars -->
+    <rect x="100" y="20" width="4" height="4" fill="#1E1A17"/>
+    <rect x="280" y="10" width="4" height="4" fill="#1E1A17"/>
+    <rect x="500" y="15" width="4" height="4" fill="#1E1A17"/>
+    <rect x="750" y="8"  width="4" height="4" fill="#1E1A17"/>
+    <rect x="950" y="18" width="4" height="4" fill="#1E1A17"/>
+  </svg>
+
+  <!-- THE BIG LOGO SVG -->
+  <div class="logo-svg-wrap">
+    <svg viewBox="0 0 680 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+      <!-- "Forbes" in large Playfair-style serif — rendered as SVG text -->
+      <text x="340" y="98"
+        font-family="'Playfair Display', Georgia, serif"
+        font-size="108"
+        font-weight="900"
+        text-anchor="middle"
+        fill="#1E1A17"
+        letter-spacing="-2">Forbes</text>
+      <!-- Thin rule -->
+      <rect x="10" y="108" width="660" height="2" fill="#1E1A17"/>
+      <!-- "ENGLISH" in heavy condensed sans -->
+      <text x="340" y="150"
+        font-family="'Barlow Condensed', Arial Narrow, sans-serif"
+        font-size="48"
+        font-weight="800"
+        text-anchor="middle"
+        fill="#C4622D"
+        letter-spacing="12">ENGLISH</text>
+    </svg>
+  </div>
+
+  <!-- Lesson meta tag -->
+  <div style="margin-top:18px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap">
+    <span style="display:inline-block;padding:5px 16px;background:var(--charcoal);color:var(--cream);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase">MINECRAFT TRIVIA</span>
+    <span style="display:inline-block;padding:5px 16px;background:var(--rust);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase">INTERACTIVE LESSON</span>
+  </div>
+</div>
+
+<!-- Score strip -->
+<div class="score-strip">
+  <div class="score-item">
+    <span>SCORE</span>
+    <span class="score-num" id="total-score">0</span>
+    <span>/ <span id="total-possible">0</span></span>
+  </div>
+  <div class="score-divider"></div>
+  <div class="score-item">
+    <span>COMPLETE EACH ACTIVITY BELOW</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     ILLUSTRATION 1 — OVERWORLD SCENE
+═══════════════════════════════════════ -->
+<div class="illus-divider">
+  <svg viewBox="0 0 1200 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;background:#87CEEB">
+    <!-- Sky gradient suggestion -->
+    <defs>
+      <linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#87CEEB"/>
+        <stop offset="100%" stop-color="#B0DDED"/>
+      </linearGradient>
+    </defs>
+    <rect width="1200" height="220" fill="url(#skyG)"/>
+    <!-- Clouds (pixel-chunky) -->
+    <rect x="80"  y="30" width="120" height="30" rx="0" fill="white" opacity=".9"/>
+    <rect x="60"  y="42" width="60"  height="20" fill="white" opacity=".9"/>
+    <rect x="180" y="42" width="40"  height="20" fill="white" opacity=".9"/>
+    <rect x="420" y="20" width="160" height="30" fill="white" opacity=".9"/>
+    <rect x="400" y="32" width="60"  height="20" fill="white" opacity=".9"/>
+    <rect x="560" y="32" width="40"  height="20" fill="white" opacity=".9"/>
+    <rect x="850" y="35" width="140" height="28" fill="white" opacity=".9"/>
+    <rect x="830" y="47" width="50"  height="18" fill="white" opacity=".9"/>
+    <!-- Sun -->
+    <rect x="1060" y="18" width="48" height="48" fill="#F5C518" opacity=".95"/>
+    <rect x="1080" y="10" width="8"  height="10" fill="#F5C518"/>
+    <rect x="1100" y="28" width="10" height="8"  fill="#F5C518"/>
+    <rect x="1078" y="64" width="8"  height="10" fill="#F5C518"/>
+    <rect x="1050" y="28" width="10" height="8"  fill="#F5C518"/>
+    <!-- Ground — grass layer -->
+    <rect x="0" y="148" width="1200" height="72" fill="#5D9C3A"/>
+    <rect x="0" y="148" width="1200" height="12" fill="#7DC94E"/>
+    <!-- Dirt -->
+    <rect x="0" y="196" width="1200" height="24" fill="#8B6440"/>
+    <!-- Trees (blocky) -->
+    <!-- Tree 1 -->
+    <rect x="120" y="80"  width="16" height="68" fill="#8B5A1A"/>
+    <rect x="88"  y="52"  width="80" height="80" fill="#4A8C30"/>
+    <rect x="80"  y="64"  width="96" height="64" fill="#4A8C30"/>
+    <!-- Tree 2 -->
+    <rect x="320" y="88"  width="16" height="60" fill="#8B5A1A"/>
+    <rect x="292" y="60"  width="72" height="72" fill="#4A8C30"/>
+    <rect x="284" y="72"  width="88" height="56" fill="#4A8C30"/>
+    <!-- Tree 3 -->
+    <rect x="680" y="84"  width="16" height="64" fill="#8B5A1A"/>
+    <rect x="648" y="56"  width="80" height="76" fill="#4A8C30"/>
+    <rect x="640" y="68"  width="96" height="60" fill="#4A8C30"/>
+    <!-- Tree 4 -->
+    <rect x="980" y="80"  width="16" height="68" fill="#8B5A1A"/>
+    <rect x="948" y="52"  width="80" height="80" fill="#4A8C30"/>
+    <rect x="940" y="64"  width="96" height="64" fill="#4A8C30"/>
+    <!-- Creeper (centre-ish) -->
+    <g transform="translate(560,98)">
+      <rect width="40" height="40" fill="#4A7C3F"/>
+      <rect x="6"  y="12" width="12" height="10" fill="#1A0A2E"/>
+      <rect x="22" y="12" width="12" height="10" fill="#1A0A2E"/>
+      <rect x="14" y="24" width="12" height="4"  fill="#1A0A2E"/>
+      <rect x="14" y="28" width="6"  height="8"  fill="#1A0A2E"/>
+      <rect x="20" y="28" width="6"  height="8"  fill="#1A0A2E"/>
+    </g>
+    <!-- Steve -->
+    <g transform="translate(800,86)">
+      <!-- head -->
+      <rect width="32" height="32" fill="#C8956C"/>
+      <rect x="7"  y="9"  width="6"  height="7"  fill="white"/>
+      <rect x="19" y="9"  width="6"  height="7"  fill="white"/>
+      <rect x="9"  y="12" width="3"  height="4"  fill="#3060CC"/>
+      <rect x="20" y="12" width="3"  height="4"  fill="#3060CC"/>
+      <rect x="10" y="22" width="12" height="4"  fill="#8B4513"/>
+      <!-- body -->
+      <rect x="3"  y="32" width="26" height="28" fill="#4040C0"/>
+      <!-- arms -->
+      <rect x="-7" y="32" width="10" height="24" fill="#C8956C"/>
+      <rect x="29" y="32" width="10" height="24" fill="#C8956C"/>
+      <!-- legs -->
+      <rect x="3"  y="60" width="11" height="20" fill="#3030A0"/>
+      <rect x="18" y="60" width="11" height="20" fill="#3030A0"/>
+    </g>
+    <!-- Sheep -->
+    <g transform="translate(200,136)">
+      <rect x="8"  y="0"  width="44" height="36" fill="#E8E8E8"/>
+      <rect x="0"  y="4"  width="60" height="28" fill="#E8E8E8"/>
+      <rect x="12" y="36" width="8"  height="16" fill="#888"/>
+      <rect x="24" y="36" width="8"  height="16" fill="#888"/>
+      <rect x="36" y="36" width="8"  height="16" fill="#888"/>
+      <rect x="0"  y="4"  width="16" height="20" fill="#C8A878"/><!-- head -->
+      <rect x="3"  y="8"  width="4"  height="4"  fill="#333"/><!-- eye -->
+    </g>
+    <!-- Diamond ore block -->
+    <g transform="translate(1100,140)">
+      <rect width="40" height="40" fill="#888888"/>
+      <rect x="4"  y="4"  width="12" height="12" fill="#4DD9E8"/>
+      <rect x="24" y="4"  width="12" height="12" fill="#4DD9E8"/>
+      <rect x="14" y="16" width="12" height="12" fill="#4DD9E8"/>
+      <rect x="4"  y="26" width="12" height="10" fill="#4DD9E8"/>
+      <rect x="24" y="26" width="12" height="10" fill="#4DD9E8"/>
+    </g>
+    <!-- TNT block -->
+    <g transform="translate(430,138)">
+      <rect width="40" height="42" fill="#CC2222"/>
+      <rect x="0"  y="12" width="40" height="18" fill="#E8E8D8"/>
+      <text x="20" y="25" font-family="sans-serif" font-size="9" font-weight="900" text-anchor="middle" fill="#CC2222">TNT</text>
+      <rect x="0"  y="0"  width="40" height="2"  fill="#8B0000"/>
+      <rect x="0"  y="40" width="40" height="2"  fill="#8B0000"/>
+      <!-- Fuse -->
+      <rect x="18" y="-8" width="4" height="10" fill="#888"/>
+      <rect x="20" y="-12" width="4" height="4"  fill="#F5C518"/>
+    </g>
+  </svg>
+</div>
+
+<main>
+
+<!-- ═══ ACTIVITY 1 — MULTIPLE CHOICE ═══ -->
+<div class="activity-section" id="activity-0">
+  <div class="act-eyebrow">Activity 1 of 5 · Multiple Choice</div>
+  <div class="act-title">Do You Know Your Minecraft?</div>
+  <div class="act-instructions">Each question tests a real Minecraft fact — some are surprisingly tricky! Read all four options carefully before selecting your answer. An explanation appears after each choice.</div>
+
+  <div id="mc-container"></div>
+  <div class="btn-row">
+    <button class="btn btn-primary"   id="mc-next-btn"   style="display:none" onclick="mcNext()">Next Question →</button>
+    <button class="btn btn-secondary" id="mc-finish-btn" style="display:none" onclick="mcFinish()">Complete Activity ✓</button>
+  </div>
+</div>
+
+<!-- ═══════════ ILLUSTRATION 2 — UNDERGROUND ═══════════ -->
+<div class="illus-divider">
+  <svg viewBox="0 0 1200 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+    <rect width="1200" height="200" fill="#3A2A1A"/>
+    <!-- Stone blocks grid-like pattern -->
+    <rect x="0"   y="0"   width="1200" height="200" fill="#5A5050"/>
+    <!-- Stone variation patches -->
+    <rect x="0"   y="0"   width="80"  height="40"  fill="#504848"/>
+    <rect x="80"  y="40"  width="80"  height="40"  fill="#504848"/>
+    <rect x="200" y="0"   width="80"  height="40"  fill="#504848"/>
+    <rect x="320" y="40"  width="80"  height="40"  fill="#504848"/>
+    <rect x="480" y="0"   width="80"  height="40"  fill="#504848"/>
+    <rect x="600" y="40"  width="80"  height="40"  fill="#504848"/>
+    <rect x="720" y="0"   width="80"  height="40"  fill="#504848"/>
+    <rect x="880" y="40"  width="80"  height="40"  fill="#504848"/>
+    <rect x="1000" y="0"  width="80"  height="40"  fill="#504848"/>
+    <!-- Cave opening -->
+    <rect x="280" y="0" width="120" height="200" fill="#1A1010"/>
+    <rect x="300" y="0" width="80"  height="200" fill="#1A1010"/>
+    <!-- Ores embedded in stone -->
+    <!-- Coal -->
+    <rect x="40"  y="60" width="20" height="20" fill="#333"/>
+    <rect x="140" y="80" width="20" height="20" fill="#333"/>
+    <rect x="920" y="60" width="20" height="20" fill="#333"/>
+    <!-- Iron -->
+    <rect x="100" y="120" width="20" height="20" fill="#C8A878"/>
+    <rect x="820" y="80"  width="20" height="20" fill="#C8A878"/>
+    <!-- Gold -->
+    <rect x="460" y="130" width="24" height="24" fill="#F5C518"/>
+    <rect x="680" y="90"  width="24" height="24" fill="#F5C518"/>
+    <!-- Diamond -->
+    <rect x="160" y="160" width="24" height="24" fill="#4DD9E8"/>
+    <rect x="760" y="150" width="24" height="24" fill="#4DD9E8"/>
+    <rect x="1080" y="160" width="24" height="24" fill="#4DD9E8"/>
+    <!-- Redstone -->
+    <rect x="560" y="160" width="20" height="20" fill="#CC2222"/>
+    <rect x="380" y="80"  width="20" height="20" fill="#CC2222"/>
+    <!-- Emerald -->
+    <rect x="1000" y="120" width="20" height="20" fill="#3AB059"/>
+    <!-- Lava pool -->
+    <rect x="600" y="140" width="80"  height="60" fill="#E85820"/>
+    <rect x="580" y="155" width="120" height="45" fill="#E85820"/>
+    <rect x="560" y="170" width="160" height="30" fill="#FF6A00"/>
+    <!-- Torch on wall -->
+    <g transform="translate(220,60)">
+      <rect x="4" y="8" width="6" height="24" fill="#8B5A1A"/>
+      <rect x="2" y="2" width="10" height="10" fill="#E85820"/>
+      <rect x="4" y="0" width="6" height="6"  fill="#F5C518"/>
+    </g>
+    <g transform="translate(460,50)">
+      <rect x="4" y="8" width="6" height="24" fill="#8B5A1A"/>
+      <rect x="2" y="2" width="10" height="10" fill="#E85820"/>
+      <rect x="4" y="0" width="6" height="6"  fill="#F5C518"/>
+    </g>
+    <!-- Pickaxe silhouette -->
+    <g transform="translate(900,20)" opacity=".7">
+      <rect x="20" y="0"  width="8"  height="60" fill="#C8A878" transform="rotate(45 24 30)"/>
+      <rect x="0"  y="0"  width="30" height="16" fill="#888" transform="rotate(45 24 30)"/>
+    </g>
+  </svg>
+</div>
+
+<!-- ═══ ACTIVITY 2 — FILL IN THE BLANK ═══ -->
+<div class="activity-section" id="activity-1">
+  <div class="act-eyebrow">Activity 2 of 5 · Fill in the Blank</div>
+  <div class="act-title">Complete the Minecraft Facts</div>
+  <div class="act-instructions">Each sentence describes a real Minecraft mechanic with one word or short phrase missing. A hint tells you what kind of answer to look for. Type your answer carefully — spelling counts!</div>
+
+  <div id="fitb-container"></div>
+  <div class="btn-row">
+    <button class="btn btn-primary"   id="fitb-check-btn" onclick="fitbCheck()">Check Answers</button>
+    <button class="btn btn-secondary" id="fitb-retry-btn" style="display:none" onclick="fitbRetry()">Try Again</button>
+  </div>
+  <div id="fitb-feedback" class="feedback" style="margin-top:16px"></div>
+</div>
+
+<!-- ═══ ILLUSTRATION 3 — NETHER SCENE ═══ -->
+<div class="illus-divider">
+  <svg viewBox="0 0 1200 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+    <rect width="1200" height="200" fill="#3D0808"/>
+    <!-- Netherrack floor/ceiling texture -->
+    <rect x="0" y="160" width="1200" height="40" fill="#6B1A1A"/>
+    <rect x="0" y="0"   width="1200" height="30" fill="#6B1A1A"/>
+    <!-- Glowstone clusters -->
+    <rect x="120" y="0"  width="48" height="24" fill="#F5C518" opacity=".8"/>
+    <rect x="130" y="20" width="28" height="16" fill="#F5C518" opacity=".8"/>
+    <rect x="480" y="0"  width="60" height="28" fill="#F5C518" opacity=".8"/>
+    <rect x="496" y="24" width="28" height="12" fill="#F5C518" opacity=".8"/>
+    <rect x="900" y="0"  width="48" height="22" fill="#F5C518" opacity=".8"/>
+    <rect x="910" y="18" width="28" height="14" fill="#F5C518" opacity=".8"/>
+    <!-- Lava falls -->
+    <rect x="60"  y="0"  width="20" height="200" fill="#E85820" opacity=".7"/>
+    <rect x="300" y="0"  width="16" height="200" fill="#E85820" opacity=".6"/>
+    <rect x="700" y="0"  width="20" height="200" fill="#E85820" opacity=".7"/>
+    <rect x="1100" y="0" width="18" height="200" fill="#E85820" opacity=".6"/>
+    <!-- Lava sea -->
+    <rect x="0"   y="145" width="1200" height="55" fill="#E85820"/>
+    <rect x="0"   y="145" width="1200" height="8"  fill="#FF6A00"/>
+    <!-- Nether Portal -->
+    <g transform="translate(500,25)">
+      <!-- Obsidian frame -->
+      <rect x="0"  y="0"  width="20" height="140" fill="#1A0A2E"/>
+      <rect x="80" y="0"  width="20" height="140" fill="#1A0A2E"/>
+      <rect x="0"  y="0"  width="100" height="20" fill="#1A0A2E"/>
+      <rect x="0"  y="120" width="100" height="20" fill="#1A0A2E"/>
+      <!-- Portal glow -->
+      <rect x="20" y="20" width="60" height="100" fill="#9B30FF" opacity=".7"/>
+      <rect x="24" y="24" width="52" height="92"  fill="#C070FF" opacity=".5"/>
+    </g>
+    <!-- Ghast (simplified) -->
+    <g transform="translate(860,30)">
+      <rect width="60" height="60" fill="white" opacity=".85"/>
+      <rect x="8"  y="20" width="10" height="10" fill="#333"/>
+      <rect x="42" y="20" width="10" height="10" fill="#333"/>
+      <rect x="20" y="36" width="20" height="6"  fill="#333"/>
+      <!-- Tentacles -->
+      <rect x="6"  y="60" width="6" height="24" fill="white" opacity=".7"/>
+      <rect x="16" y="60" width="6" height="30" fill="white" opacity=".7"/>
+      <rect x="27" y="60" width="6" height="20" fill="white" opacity=".7"/>
+      <rect x="38" y="60" width="6" height="28" fill="white" opacity=".7"/>
+      <rect x="48" y="60" width="6" height="22" fill="white" opacity=".7"/>
+    </g>
+    <!-- Blaze -->
+    <g transform="translate(200,50)">
+      <rect x="12" y="0"  width="24" height="24" fill="#F5C518"/>
+      <rect x="6"  y="8"  width="36" height="32" fill="#F5C518"/>
+      <rect x="8"  y="16" width="8"  height="6"  fill="#333"/>
+      <rect x="32" y="16" width="8"  height="6"  fill="#333"/>
+      <!-- Rods -->
+      <rect x="0"  y="10" width="50" height="4"  fill="#F5C518" opacity=".6" transform="rotate(-20 25 12)"/>
+      <rect x="0"  y="30" width="50" height="4"  fill="#F5C518" opacity=".6" transform="rotate(15 25 32)"/>
+    </g>
+  </svg>
+</div>
+
+<!-- ═══ ACTIVITY 3 — DRAG & DROP ═══ -->
+<div class="activity-section" id="activity-2">
+  <div class="act-eyebrow">Activity 3 of 5 · Drag & Drop</div>
+  <div class="act-title">Place the Right Answer</div>
+  <div class="act-instructions">Drag a word or phrase from the word bank into each gap in the sentences. Click a filled gap to return the word to the bank.</div>
+
+  <div id="dd-container"></div>
+  <div class="btn-row">
+    <button class="btn btn-primary"   id="dd-check-btn" onclick="ddCheck()">Check Answers</button>
+    <button class="btn btn-secondary" id="dd-retry-btn" style="display:none" onclick="ddRetry()">Try Again</button>
+  </div>
+  <div id="dd-feedback" class="feedback" style="margin-top:16px"></div>
+</div>
+
+<!-- ═══ ILLUSTRATION 4 — THE END ═══ -->
+<div class="illus-divider">
+  <svg viewBox="0 0 1200 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block">
+    <rect width="1200" height="200" fill="#0D0A1A"/>
+    <!-- Stars -->
+    <rect x="50"  y="15" width="3" height="3" fill="white" opacity=".6"/>
+    <rect x="120" y="40" width="3" height="3" fill="white" opacity=".5"/>
+    <rect x="230" y="10" width="3" height="3" fill="white" opacity=".7"/>
+    <rect x="380" y="30" width="3" height="3" fill="white" opacity=".6"/>
+    <rect x="550" y="12" width="3" height="3" fill="white" opacity=".5"/>
+    <rect x="680" y="35" width="3" height="3" fill="white" opacity=".7"/>
+    <rect x="810" y="8"  width="3" height="3" fill="white" opacity=".6"/>
+    <rect x="960" y="28" width="3" height="3" fill="white" opacity=".5"/>
+    <rect x="1100" y="18" width="3" height="3" fill="white" opacity=".7"/>
+    <!-- End island platform -->
+    <rect x="100" y="150" width="1000" height="50" fill="#2D2540"/>
+    <rect x="80"  y="160" width="1040" height="40" fill="#2D2540"/>
+    <!-- End portal hint -->
+    <rect x="540" y="120" width="120" height="80" fill="#1A1430"/>
+    <rect x="548" y="128" width="104" height="64" fill="#0A0820"/>
+    <!-- Stars in portal -->
+    <rect x="558" y="138" width="4" height="4" fill="#CC00CC" opacity=".8"/>
+    <rect x="578" y="150" width="4" height="4" fill="#CC00CC" opacity=".8"/>
+    <rect x="610" y="140" width="4" height="4" fill="#CC00CC" opacity=".8"/>
+    <rect x="630" y="158" width="4" height="4" fill="#CC00CC" opacity=".8"/>
+    <!-- Ender Dragon (simplified silhouette) -->
+    <g transform="translate(400,30)" fill="#1A0A2E" opacity=".9">
+      <!-- Body -->
+      <rect x="80" y="40" width="80" height="50" rx="0"/>
+      <!-- Head -->
+      <rect x="130" y="20" width="50" height="40"/>
+      <!-- Eye glow -->
+      <rect x="145" y="28" width="8" height="8" fill="#CC00CC"/>
+      <rect x="162" y="28" width="8" height="8" fill="#CC00CC"/>
+      <!-- Neck -->
+      <rect x="120" y="35" width="20" height="20"/>
+      <!-- Wings -->
+      <rect x="10"  y="20" width="80" height="10"/>
+      <rect x="0"   y="28" width="40" height="30"/>
+      <rect x="160" y="20" width="80" height="10"/>
+      <rect x="200" y="28" width="40" height="30"/>
+      <!-- Tail -->
+      <rect x="50" y="60" width="40" height="16"/>
+      <rect x="30" y="70" width="28" height="12"/>
+      <rect x="14" y="78" width="20" height="10"/>
+    </g>
+    <!-- Enderman -->
+    <g transform="translate(900,60)" fill="#1A0A2E" opacity=".85">
+      <rect x="8"  y="0"  width="20" height="20"/>
+      <rect x="10" y="6"  width="6"  height="6"  fill="#CC00CC"/>
+      <rect x="20" y="6"  width="6"  height="6"  fill="#CC00CC"/>
+      <rect x="10" y="20" width="16" height="30"/>
+      <rect x="2"  y="20" width="8"  height="24"/>
+      <rect x="26" y="20" width="8"  height="24"/>
+      <rect x="10" y="50" width="6"  height="24"/>
+      <rect x="20" y="50" width="6"  height="24"/>
+    </g>
+    <!-- Obsidian pillars -->
+    <rect x="160" y="80"  width="24" height="120" fill="#1A0A2E" opacity=".9"/>
+    <rect x="260" y="60"  width="24" height="140" fill="#1A0A2E" opacity=".9"/>
+    <rect x="960" y="70"  width="24" height="130" fill="#1A0A2E" opacity=".9"/>
+    <rect x="1060" y="50" width="24" height="150" fill="#1A0A2E" opacity=".9"/>
+    <!-- Crystals on top -->
+    <rect x="166" y="72"  width="12" height="12" fill="#CC00CC" opacity=".8"/>
+    <rect x="266" y="52"  width="12" height="12" fill="#CC00CC" opacity=".8"/>
+    <rect x="966" y="62"  width="12" height="12" fill="#CC00CC" opacity=".8"/>
+    <rect x="1066" y="42" width="12" height="12" fill="#CC00CC" opacity=".8"/>
+  </svg>
+</div>
+
+<!-- ═══ ACTIVITY 4 — MATCHING ═══ -->
+<div class="activity-section" id="activity-3">
+  <div class="act-eyebrow">Activity 4 of 5 · Matching Pairs</div>
+  <div class="act-title">Match the Minecraft Facts</div>
+  <div class="act-instructions">Click an item on the left, then click its matching fact on the right. Wrong matches flash red. Press "Submit" when you've matched as many as you can.</div>
+
+  <div id="match-container"></div>
+  <div class="btn-row">
+    <button class="btn btn-primary" id="match-submit-btn" onclick="matchSubmit()">Submit Matches</button>
+  </div>
+</div>
+
+<!-- ═══ ILLUSTRATION 5 — VILLAGE SCENE ═══ -->
+<div class="illus-divider">
+  <svg viewBox="0 0 1200 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;background:#87CEEB">
+    <!-- Sky -->
+    <rect width="1200" height="200" fill="#87CEEB"/>
+    <!-- Sunset tint -->
+    <rect x="0" y="100" width="1200" height="100" fill="#E87040" opacity=".25"/>
+    <!-- Ground -->
+    <rect x="0" y="160" width="1200" height="40" fill="#D4BA6E"/><!-- sand path -->
+    <rect x="0" y="152" width="1200" height="10" fill="#C4A850"/>
+    <!-- Houses -->
+    <!-- House 1 -->
+    <rect x="80"  y="80"  width="100" height="80" fill="#C4923F"/>
+    <rect x="80"  y="56"  width="100" height="28" fill="#8B6440"/><!-- roof overhang -->
+    <polygon points="80,80 130,40 180,80" fill="#8B6440"/>
+    <rect x="104" y="108" width="28" height="52" fill="#5A3A1A"/><!-- door -->
+    <rect x="140" y="96"  width="24" height="24" fill="#9ECFE8"/><!-- window -->
+    <!-- House 2 -->
+    <rect x="260" y="90"  width="90"  height="70" fill="#DDD5B0"/>
+    <rect x="260" y="66"  width="90"  height="28" fill="#888"/>
+    <polygon points="260,90 305,52 350,90" fill="#888"/>
+    <rect x="280" y="112" width="24" height="48" fill="#5A3A1A"/>
+    <rect x="316" y="100" width="20" height="20" fill="#9ECFE8"/>
+    <!-- Blacksmith -->
+    <rect x="440" y="76"  width="120" height="84" fill="#888"/>
+    <rect x="440" y="52"  width="120" height="28" fill="#555"/>
+    <polygon points="440,76 500,42 560,76" fill="#555"/>
+    <rect x="460" y="106" width="36" height="54" fill="#5A3A1A"/>
+    <rect x="508" y="92"  width="28" height="28" fill="#9ECFE8"/>
+    <rect x="510" y="94"  width="24" height="24" fill="#E85820" opacity=".5"/><!-- forge glow -->
+    <!-- Well -->
+    <g transform="translate(700,112)">
+      <rect x="0"  y="28" width="60" height="40" fill="#C4923F"/>
+      <rect x="4"  y="32" width="52" height="32" fill="#1A6080"/><!-- water -->
+      <rect x="4"  y="32" width="52" height="6"  fill="#4DB0E0" opacity=".6"/>
+      <rect x="-4" y="0"  width="8"  height="60" fill="#8B6440"/>
+      <rect x="56" y="0"  width="8"  height="60" fill="#8B6440"/>
+      <rect x="-4" y="0"  width="72" height="10" fill="#8B6440"/>
+    </g>
+    <!-- Villager -->
+    <g transform="translate(880,96)">
+      <rect x="8"  y="0"  width="24" height="24" fill="#C8A878"/>
+      <rect x="10" y="8"  width="6"  height="6"  fill="#333"/>
+      <rect x="24" y="8"  width="6"  height="6"  fill="#333"/>
+      <rect x="12" y="16" width="16" height="4"  fill="#8B4513"/>
+      <rect x="4"  y="24" width="32" height="36" fill="#558855"/>
+      <rect x="-4" y="26" width="8"  height="24" fill="#C8A878"/>
+      <rect x="36" y="26" width="8"  height="24" fill="#C8A878"/>
+      <rect x="8"  y="60" width="10" height="16" fill="#7A6030"/>
+      <rect x="22" y="60" width="10" height="16" fill="#7A6030"/>
+      <!-- Nose -->
+      <rect x="16" y="10" width="8" height="8" fill="#C89060"/>
+    </g>
+    <!-- Iron Golem -->
+    <g transform="translate(1020,60)">
+      <rect x="10" y="0"  width="40" height="40" fill="#C8C8C8"/>
+      <rect x="12" y="8"  width="10" height="10" fill="#404040"/>
+      <rect x="38" y="8"  width="10" height="10" fill="#404040"/>
+      <rect x="15" y="26" width="30" height="6"  fill="#888"/>
+      <rect x="4"  y="40" width="52" height="50" fill="#C8C8C8"/>
+      <rect x="-14" y="38" width="18" height="60" fill="#C8C8C8"/>
+      <rect x="56" y="38" width="18" height="60" fill="#C8C8C8"/>
+      <rect x="10" y="90" width="15" height="30" fill="#C8C8C8"/>
+      <rect x="35" y="90" width="15" height="30" fill="#C8C8C8"/>
+    </g>
+    <!-- Wheat farm -->
+    <g transform="translate(130,140)">
+      <rect x="0"  y="0" width="8"  height="20" fill="#7DC94E"/>
+      <rect x="16" y="0" width="8"  height="22" fill="#7DC94E"/>
+      <rect x="32" y="0" width="8"  height="18" fill="#7DC94E"/>
+      <rect x="48" y="0" width="8"  height="24" fill="#7DC94E"/>
+      <rect x="64" y="0" width="8"  height="20" fill="#7DC94E"/>
+      <rect x="80" y="0" width="8"  height="22" fill="#F5C518"/>
+      <rect x="96" y="0" width="8"  height="20" fill="#F5C518"/>
+    </g>
+  </svg>
+</div>
+
+<!-- ═══ ACTIVITY 5 — ORDERING ═══ -->
+<div class="activity-section" id="activity-4">
+  <div class="act-eyebrow">Activity 5 of 5 · Sentence Ordering</div>
+  <div class="act-title">Put the Steps in Order</div>
+  <div class="act-instructions">Drag the steps into the correct order to describe how to defeat the Ender Dragon from the very beginning of a new world. Think about what has to come first!</div>
+
+  <div id="order-container"></div>
+  <div class="btn-row">
+    <button class="btn btn-primary"   id="order-check-btn" onclick="orderCheck()">Check Order</button>
+    <button class="btn btn-secondary" id="order-retry-btn" style="display:none" onclick="orderRetry()">Try Again</button>
+  </div>
+  <div id="order-feedback" class="feedback" style="margin-top:16px"></div>
+</div>
+
+<!-- ═══ FINAL SCREEN ═══ -->
+<div id="final-screen">
+  <div class="final-ring-wrap" id="final-ring">
+    <div class="final-ring-inner">
+      <span class="final-num"   id="final-num">0</span>
+      <span class="final-denom" id="final-denom">/ 0</span>
+    </div>
+  </div>
+  <div class="final-title" id="final-title">Lesson Complete!</div>
+  <p   class="final-msg"   id="final-msg"></p>
+  <button class="btn btn-primary" onclick="restartAll()">↩ Restart Lesson</button>
+</div>
+
+</main>
+
+<script>
+// ════════════════════════════════════════
+//  GLOBAL STATE
+// ════════════════════════════════════════
+let totalScore=0, totalPossible=0;
+const actDone=[false,false,false,false,false];
+
+function addScore(n){totalScore+=n; document.getElementById('total-score').textContent=totalScore;}
+function addPoss(n) {totalPossible+=n; document.getElementById('total-possible').textContent=totalPossible;}
+
+function checkDone(){
+  if(!actDone.every(Boolean))return;
+  setTimeout(()=>{
+    document.querySelectorAll('.activity-section').forEach(a=>a.style.display='none');
+    document.querySelectorAll('.illus-divider').forEach(a=>a.style.display='none');
+    const fs=document.getElementById('final-screen');
+    fs.classList.add('show');
+    const pct=Math.round(totalScore/totalPossible*100);
+    document.getElementById('final-num').textContent=totalScore;
+    document.getElementById('final-denom').textContent='/ '+totalPossible;
+    document.getElementById('final-ring').style.setProperty('--pct',pct+'%');
+    let title,msg;
+    if(pct>=90){title='Outstanding!';msg='You are a true Minecraft expert — and your English is just as sharp. Exceptional performance across all five activities.';}
+    else if(pct>=75){title='Excellent Work!';msg='Very strong performance! You clearly know your Minecraft inside out. A few tricky questions caught you out — review the explanations for anything you missed.';}
+    else if(pct>=55){title='Good Effort!';msg='Solid progress! Some of these Minecraft facts are genuinely surprising. Read through the feedback and try again to push your score higher.';}
+    else{title='Keep Mining!';msg='Every expert started as a beginner! Review the explanations carefully — there are some fascinating Minecraft facts hidden in this lesson. Try again and you will improve.';}
+    document.getElementById('final-title').textContent=title;
+    document.getElementById('final-msg').textContent=msg;
+  },700);
+}
+
+function restartAll(){location.reload();}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+// ════════════════════════════════════════
+//  ACTIVITY 1 — MULTIPLE CHOICE
+// ════════════════════════════════════════
+const mcQs=[
+  {
+    hint:"Think about speed — not toughness or durability.",
+    q:"Which pickaxe has the <strong>fastest mining speed</strong> in Minecraft, even though most players never use it for that?",
+    opts:["The Diamond Pickaxe, due to its superior material quality.","The Netherite Pickaxe, because it upgrades all diamond stats.","The Gold Pickaxe, despite having the lowest durability of all.","The Iron Pickaxe, as a balanced all-round tool for mining."],
+    correct:2,
+    exp:"Gold has the highest mining speed of any pickaxe material — faster even than netherite — but it can only mine up to iron-tier blocks and has very low durability. Most players overlook it because they assume higher-tier materials are always better in every way."
+  },
+  {
+    hint:"Think about what happens when two dimensions meet a bed…",
+    q:"What happens if you try to <strong>sleep in a bed</strong> while in the Nether or the End?",
+    opts:["You skip to the next in-game morning as normal, saving your spawn point.","Nothing happens — beds cannot be placed in those dimensions at all.","The bed explodes violently, dealing significant damage to you and nearby blocks.","You are immediately teleported back to your original spawn point in the Overworld."],
+    correct:2,
+    exp:"Beds explode in the Nether and the End because those dimensions have no concept of a day/night cycle. This explosive property is so powerful that experienced speedrunners deliberately use beds as weapons against the Ender Dragon — dealing massive damage with each explosion."
+  },
+  {
+    hint:"This sneaky creature has an origin story that few players know.",
+    q:"The Creeper was <strong>originally created</strong> as a result of which mistake by Minecraft's creator?",
+    opts:["A failed zombie skin that was accidentally given the wrong AI behaviour code.","A pig model that had its height and width values accidentally swapped around.","An error in the tree-generation code that produced a walking plant mob instead.","A test version of the skeleton that was given the wrong attack animation data."],
+    correct:1,
+    exp:"Notch (Markus Persson) has confirmed that the Creeper was created when he accidentally flipped the height and width values of a pig model — making it stand upright and tall instead of being low and wide. The resulting creature was so unsettling that he kept it in the game and gave it an explosive attack."
+  },
+  {
+    hint:"Think about what cats genuinely dislike in real life, translated into the game.",
+    q:"Which of the following mobs are <strong>scared away</strong> by tamed cats in Minecraft?",
+    opts:["Zombies and Skeletons, who will not approach a player with a cat nearby.","Endermen and Husks, who flee from cats in a 10-block radius around them.","Creepers and Phantoms, who will avoid getting close to a player's tamed cat.","Spiders and Cave Spiders, who detect and run from cats using their web sense."],
+    correct:2,
+    exp:"Cats repel Creepers and Phantoms — Creepers because of the real-world hatred between cats and cats' natural predators, and Phantoms because they are supposedly frightened of cats. This makes tamed cats genuinely useful in survival mode, not just decorative companions."
+  },
+  {
+    hint:"Consider what happens when hostile mobs receive a very rare environmental event.",
+    q:"What do you get when a <strong>lightning bolt</strong> strikes a Creeper during a thunderstorm?",
+    opts:["A Wither Creeper, which generates a harmful wither effect when it explodes near you.","A Charged Creeper, whose explosion radius and damage are roughly doubled in size.","A Storm Creeper, which splits into two smaller creepers when it finally explodes near you.","An Electric Creeper, which can be ridden by the player using a saddle after the strike."],
+    correct:1,
+    exp:"A lightning strike transforms a Creeper into a Charged Creeper — identifiable by a blue electrical aura. Its explosion is approximately twice as powerful as a normal Creeper. This also makes it unique: a mob killed by a Charged Creeper explosion drops its head as a collectible item."
+  },
+  {
+    hint:"This is one of the most counterintuitive inventory tricks in the game.",
+    q:"Why would an experienced player <strong>carry doors</strong> in their inventory while exploring underwater?",
+    opts:["Doors can be placed to create a temporary crafting station anywhere while underwater.","Placing a door underwater creates an air pocket that lets the player breathe temporarily.","Doors deal double damage to Drowned and Guardians when used as a melee weapon.","A door placed on the ocean floor reveals the location of hidden buried treasure chests."],
+    correct:1,
+    exp:"In Minecraft, placing a door in a water column creates an air pocket immediately in front of it, allowing players to refill their breath bar without surfacing. This was a well-known survival trick before dedicated underwater breathing tools like the Turtle Helmet and Conduit were added to the game."
+  },
+];
+
+let mcI=0,mcAnswered=false,mcScore=0;
+const MC_POSS=mcQs.length;
+
+function renderMC(){addPoss(MC_POSS);renderMCQ();}
+
+function renderMCQ(){
+  const q=mcQs[mcI],L=['A','B','C','D'];
+  document.getElementById('mc-container').innerHTML=`
+    <div class="prog-wrap">
+      <div class="prog-bar"><div class="prog-fill" id="mc-prog" style="width:${(mcI/mcQs.length)*100}%"></div></div>
+      <div class="prog-label">Question ${mcI+1} of ${mcQs.length}</div>
+    </div>
+    <div class="q-card">
+      <div class="q-hint">${q.hint}</div>
+      <div class="q-text">${q.q}</div>
+      <div class="options">
+        ${q.opts.map((o,i)=>`
+          <button class="opt-btn" id="mo${i}" onclick="mcSel(${i})">
+            <span class="ltr">${L[i]}</span><span>${o}</span>
+          </button>`).join('')}
+      </div>
+      <div class="feedback" id="mc-fb"></div>
+    </div>`;
+  mcAnswered=false;
+  document.getElementById('mc-next-btn').style.display='none';
+  document.getElementById('mc-finish-btn').style.display='none';
+}
+
+function mcSel(i){
+  if(mcAnswered)return;mcAnswered=true;
+  const q=mcQs[mcI],ok=i===q.correct;
+  if(ok)mcScore++;
+  document.querySelectorAll('.opt-btn').forEach((b,j)=>{
+    b.disabled=true;
+    if(j===q.correct)b.classList.add('correct');
+    else if(j===i&&!ok)b.classList.add('incorrect');
+  });
+  const fb=document.getElementById('mc-fb');
+  fb.classList.add('show',ok?'correct-fb':'incorrect-fb');
+  fb.innerHTML=`<div class="fb-label">${ok?'✓ Correct':'✗ Incorrect'}</div>${q.exp}`;
+  if(mcI<mcQs.length-1)document.getElementById('mc-next-btn').style.display='inline-block';
+  else document.getElementById('mc-finish-btn').style.display='inline-block';
+}
+
+function mcNext(){mcI++;renderMCQ();}
+
+function mcFinish(){
+  addScore(mcScore);actDone[0]=true;
+  document.getElementById('mc-next-btn').style.display='none';
+  document.getElementById('mc-finish-btn').style.display='none';
+  const f=document.getElementById('mc-prog');if(f)f.style.width='100%';
+  const d=document.createElement('div');
+  d.style.cssText='text-align:center;padding:16px;font-family:Barlow Condensed,sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;color:var(--rust);text-transform:uppercase;';
+  d.textContent=`Activity Complete — ${mcScore} / ${MC_POSS} correct`;
+  document.getElementById('mc-container').appendChild(d);
+  checkDone();
+}
+
+// ════════════════════════════════════════
+//  ACTIVITY 2 — FILL IN THE BLANK
+// ════════════════════════════════════════
+const fitbItems=[
+  {
+    hint:"HINT: A specific Y-coordinate (negative number) — changed in the 1.18 update.",
+    before:"After the 1.18 update, the optimal level to mine for diamonds changed from Y=11 to Y=",
+    blank:"-58",after:", because the update significantly deepened the underground world.",
+    alts:["-58","minus 58","y-58","y=-58","y = -58"],
+    exp:"The 1.18 'Caves and Cliffs' update extended the world depth downwards, making Y=-58 the new peak diamond level. Diamond ore becomes more frequent the deeper you go — right up to the bedrock layer. Many veteran players still instinctively dig to Y=11 from old habit."
+  },
+  {
+    hint:"HINT: A specific number — the maximum blocks a piston can push.",
+    before:"A standard piston can push up to ",blank:"12",after:" blocks in one activation — if you add a 13th block, it won't move at all.",
+    alts:["12","twelve"],
+    exp:"The piston push limit of 12 is a fundamental constraint in Redstone engineering. Any contraption involving moving columns, flying machines, or extending bridges must stay within this limit. If the chain of pushable blocks exceeds 12, the piston simply does nothing."
+  },
+  {
+    hint:"HINT: A two-word item name — crafted from Blaze Powder and an Ender Pearl.",
+    before:"Players throw an ",blank:"Eye of Ender",after:" into the air to find the nearest stronghold, which contains the End Portal.",
+    alts:["eye of ender","eyes of ender","ender eye","an eye of ender"],
+    exp:"Eyes of Ender float towards the nearest stronghold when thrown, then either fall to the ground (to be picked up again) or occasionally shatter. You need 12 of them to fill all End Portal frames and open the portal. Finding a stronghold without them is theoretically possible but extremely slow."
+  },
+  {
+    hint:"HINT: A two-word mob name — found exclusively inside Nether Fortresses.",
+    before:"",blank:"Blazes",after:" are the only source of Blaze Rods, which are an essential ingredient for crafting Eyes of Ender.",
+    alts:["blazes","a blaze","blaze","blaze mobs"],
+    exp:"Blazes are hostile flying mobs that spawn in Nether Fortresses. They shoot fireballs and are immune to fire damage. Each killed Blaze drops 0–1 Blaze Rods, which are used to make Blaze Powder — a key ingredient in both Eyes of Ender and brewing potions."
+  },
+  {
+    hint:"HINT: A specific number — the exact number of bookshelves needed for the highest-level enchantments.",
+    before:"You need exactly ",blank:"15",after:" bookshelves surrounding your enchanting table to unlock level 30 enchantments, which is the maximum.",
+    alts:["15","fifteen"],
+    exp:"Bookshelves must be placed one block away from the enchanting table, with nothing blocking the line between them. Each bookshelf increases the maximum enchantment level available. At 15 bookshelves, you unlock the highest possible enchantments, such as Efficiency V or Protection IV."
+  },
+  {
+    hint:"HINT: A common food ingredient — used to tame this specific animal in the game.",
+    before:"To tame a stray cat in Minecraft, you must slowly approach it and feed it raw ",blank:"cod",after:" or raw salmon.",
+    alts:["cod","raw cod","fish","raw fish"],
+    exp:"Cats are found near villages and witch huts. Because they are skittish, you must crouch and move slowly towards them while holding raw fish. Feeding them raw cod or raw salmon tames them over time. Tamed cats bring gifts each morning and scare away both Creepers and Phantoms."
+  },
+];
+
+let fitbChecked=false,fitbScore=0,fitbCommit=false;
+
+function renderFITB(){
+  addPoss(fitbItems.length);
+  document.getElementById('fitb-container').innerHTML=fitbItems.map((it,i)=>`
+    <div class="q-card" style="margin-bottom:14px">
+      <div class="q-hint">${it.hint}</div>
+      <div class="q-text">
+        ${i+1}. ${it.before}<input class="blank-input" id="fi${i}" placeholder="Type here…" autocomplete="off" spellcheck="false">${it.after}
+      </div>
+      <div class="feedback" id="ffb${i}"></div>
+    </div>`).join('');
+}
+
+function fitbCheck(){
+  if(fitbChecked)return;
+  fitbChecked=true;fitbScore=0;
+  fitbItems.forEach((it,i)=>{
+    const inp=document.getElementById(`fi${i}`);
+    const val=inp.value.trim().toLowerCase();
+    const ok=it.alts.some(a=>a.toLowerCase()===val);
+    inp.disabled=true;
+    const fb=document.getElementById(`ffb${i}`);
+    if(ok){inp.classList.add('correct-input');fb.className='feedback show correct-fb';fb.innerHTML=`<div class="fb-label">✓ Correct</div>${it.exp}`;fitbScore++;}
+    else  {inp.classList.add('wrong-input');  fb.className='feedback show incorrect-fb';fb.innerHTML=`<div class="fb-label">✗ Answer: ${it.blank}</div>${it.exp}`;}
+  });
+  if(!fitbCommit){addScore(fitbScore);fitbCommit=true;actDone[1]=true;checkDone();}
+  const mf=document.getElementById('fitb-feedback');
+  mf.className=`feedback show ${fitbScore>=fitbItems.length*.7?'correct-fb':'incorrect-fb'}`;
+  mf.innerHTML=`<div class="fb-label">${fitbScore>=fitbItems.length*.7?'✓':'✗'} Activity Complete</div>You scored ${fitbScore} out of ${fitbItems.length}.`;
+  document.getElementById('fitb-check-btn').disabled=true;
+  document.getElementById('fitb-retry-btn').style.display='inline-block';
+}
+
+function fitbRetry(){
+  fitbItems.forEach((_,i)=>{
+    const inp=document.getElementById(`fi${i}`);inp.disabled=false;inp.value='';
+    inp.classList.remove('correct-input','wrong-input');
+    const fb=document.getElementById(`ffb${i}`);fb.className='feedback';fb.innerHTML='';
+  });
+  fitbChecked=false;
+  document.getElementById('fitb-check-btn').disabled=false;
+  document.getElementById('fitb-feedback').className='feedback';
+  document.getElementById('fitb-retry-btn').style.display='none';
+}
+
+// ════════════════════════════════════════
+//  ACTIVITY 3 — DRAG & DROP
+// ════════════════════════════════════════
+const ddSents=[
+  {before:"You can ride a saddled pig in Minecraft, but to control its direction you must hold a",blank:"carrot on a stick",after:"— otherwise it wanders wherever it chooses.",
+   pool:["carrot on a stick","golden carrot rod","lead with a carrot","fishing rod bait"],
+   exp:"A carrot on a stick is crafted from a fishing rod and a carrot. It attracts the pig and lets you steer it. Each use slowly degrades the item. The same item can also be used to attract pigs without riding them, since they follow the carrot."},
+  {before:"A lightning bolt striking a pig transforms it into a",blank:"zombie piglin",after:", which will then be hostile if attacked but otherwise ignores the player.",
+   pool:["zombie piglin","charged pig mob","nether pig form","undead pig zombie"],
+   exp:"When lightning strikes a pig, it transforms into a Zombie Piglin. Zombie Piglins are neutral in the Overworld — they won't attack unless provoked. If you attack one, however, all nearby Zombie Piglins will become hostile simultaneously, which can be very dangerous."},
+  {before:"Milk, obtained by right-clicking a cow with a bucket, removes all active",blank:"status effects",after:"from the player — including both positive and negative ones.",
+   pool:["status effects","health and hunger","potion buff timers","inventory item slots"],
+   exp:"Drinking milk is the quickest way to cure negative effects like Poison or Wither — but it also removes beneficial ones like Strength or Speed. This double-edged nature requires careful timing, particularly during boss fights or when you've just taken a strength potion before battle."},
+  {before:"The rarest naturally generated biome in Minecraft is the",blank:"Modified Jungle Edge",after:", which can only appear in very specific conditions where a jungle borders a swamp hills biome.",
+   pool:["Modified Jungle Edge","Mushroom Field Shore","Eroded Badlands Plateau","Deep Frozen Ocean"],
+   exp:"The Modified Jungle Edge biome is so rare that many players who have explored millions of blocks have never seen one. It requires an exact biome adjacency — jungle next to swamp hills — which almost never happens in world generation. Even Mushroom Islands, which feel rare, are more common."},
+  {before:"Curing a Zombie Villager requires hitting it with a Splash Potion of Weakness and then feeding it a",blank:"Golden Apple",after:", after which it slowly reverts back into a normal villager.",
+   pool:["Golden Apple","Notch Apple item","Enchanted Glistering Melon","Regular Golden Carrot"],
+   exp:"The curing process takes 2–5 minutes, during which the Zombie Villager shakes and makes conversion sounds. Once cured, it returns as a regular villager — and importantly, it gives heavily discounted trades as a thank-you. Curing multiple villagers is one of the best ways to get cheap items."},
+  {before:"Sand and gravel are gravity-affected blocks, but placing a",blank:"torch",after:"or any other non-solid block directly beneath them will prevent them from falling.",
+   pool:["torch","wooden plank","glass block","redstone dust"],
+   exp:"When a gravity block like sand or gravel has a non-solid block (air-space item) beneath it, the game checks for a solid surface and finds none — but the presence of a non-solid placed block like a torch acts as a 'floor' check. This is used to hold sand in place while building or to create interesting structural tricks."},
+];
+
+let ddDrag=null,ddScore=0,ddChecked=false,ddCommit=false,ddPoss=false;
+
+function renderDD(){
+  if(!ddPoss){addPoss(ddSents.length);ddPoss=true;}
+  const seen=new Set(),pool=[];
+  ddSents.forEach(s=>s.pool.forEach(p=>{if(!seen.has(p)){seen.add(p);pool.push({text:p,id:'dp'+pool.length});}}));
+  shuffle(pool);
+  document.getElementById('dd-container').innerHTML=`
+    <div class="dd-pool-label">Word Bank — drag to gap:</div>
+    <div class="dd-pool" id="dd-pool">
+      ${pool.map(p=>`<div class="drag-chip" id="${p.id}" draggable="true" data-text="${p.text}"
+        ondragstart="ddDS(event)" ondragend="ddDE(event)">${p.text}</div>`).join('')}
+    </div>
+    ${ddSents.map((s,i)=>`
+      <div class="q-card" style="margin-bottom:12px">
+        <div class="drop-sent">
+          ${i+1}. ${s.before}
+          <span class="drop-zone" id="dz${i}"
+            ondragover="dzO(event)" ondragleave="dzL(event)" ondrop="dzD(event,${i})"
+            onclick="dzC(${i})" data-answer="" data-pid="">drop here</span>
+          ${s.after}
+        </div>
+        <div class="feedback" id="dfb${i}"></div>
+      </div>`).join('')}`;
+}
+
+function ddDS(e){ddDrag=e.currentTarget;e.currentTarget.classList.add('dragging');e.dataTransfer.setData('text/plain',e.currentTarget.dataset.text);e.dataTransfer.setData('pid',e.currentTarget.id);}
+function ddDE(e){e.currentTarget.classList.remove('dragging');}
+function dzO(e){e.preventDefault();e.currentTarget.classList.add('over');}
+function dzL(e){e.currentTarget.classList.remove('over');}
+function dzD(e,i){
+  e.preventDefault();if(ddChecked)return;
+  const dz=document.getElementById(`dz${i}`);dz.classList.remove('over');
+  const txt=e.dataTransfer.getData('text/plain'),pid=e.dataTransfer.getData('pid');
+  const pp=dz.dataset.pid;if(pp){const pe=document.getElementById(pp);if(pe)pe.classList.remove('placed');}
+  dz.textContent=txt;dz.dataset.answer=txt;dz.dataset.pid=pid;dz.classList.add('filled');
+  const item=document.getElementById(pid);if(item)item.classList.add('placed');
+}
+function dzC(i){
+  if(ddChecked)return;
+  const dz=document.getElementById(`dz${i}`);const pp=dz.dataset.pid;if(!pp)return;
+  const pe=document.getElementById(pp);if(pe)pe.classList.remove('placed');
+  dz.textContent='drop here';dz.dataset.answer='';dz.dataset.pid='';dz.classList.remove('filled');
+}
+
+function ddCheck(){
+  if(ddChecked)return;ddChecked=true;ddScore=0;
+  ddSents.forEach((s,i)=>{
+    const dz=document.getElementById(`dz${i}`);const ok=dz.dataset.answer===s.blank;
+    if(ok){ddScore++;dz.classList.add('correct-dz');}else dz.classList.add('wrong-dz');
+    const fb=document.getElementById(`dfb${i}`);
+    fb.className=`feedback show ${ok?'correct-fb':'incorrect-fb'}`;
+    fb.innerHTML=`<div class="fb-label">${ok?'✓ Correct':'✗ Answer: '+s.blank}</div>${s.exp}`;
+  });
+  if(!ddCommit){addScore(ddScore);ddCommit=true;actDone[2]=true;checkDone();}
+  const fb=document.getElementById('dd-feedback');
+  fb.className=`feedback show ${ddScore>=ddSents.length*.7?'correct-fb':'incorrect-fb'}`;
+  fb.innerHTML=`<div class="fb-label">Activity Complete</div>You scored ${ddScore} out of ${ddSents.length}.`;
+  document.getElementById('dd-check-btn').disabled=true;
+  document.getElementById('dd-retry-btn').style.display='inline-block';
+}
+
+function ddRetry(){
+  ddChecked=false;ddScore=0;renderDD();
+  document.getElementById('dd-check-btn').disabled=false;
+  document.getElementById('dd-retry-btn').style.display='none';
+  document.getElementById('dd-feedback').className='feedback';
+}
+
+// ════════════════════════════════════════
+//  ACTIVITY 4 — MATCHING
+// ════════════════════════════════════════
+const matchPairs=[
+  {term:"Creeper",         def:"Was created by accident — a pig model with its height and width values swapped."},
+  {term:"Gold Pickaxe",    def:"Mines blocks faster than any other pickaxe, despite having the lowest durability."},
+  {term:"Sponge",          def:"Can only be obtained by defeating an Elder Guardian or found inside Ocean Monuments."},
+  {term:"Phantom",         def:"Only begins spawning once the player has skipped three or more in-game nights of sleep."},
+  {term:"Notch Apple",     def:"Was removed from the crafting table and can now only be found inside certain loot chests."},
+  {term:"Turtle Helmet",   def:"Provides the Water Breathing status effect for 10 seconds when worn by the player."},
+  {term:"Charged Creeper", def:"Created when lightning strikes a normal Creeper — doubles the explosion radius and power."},
+];
+
+let mSel=null,mPairs=0,mScore=0,mDone=false,mCommit=false;
+
+function renderMatch(){
+  addPoss(matchPairs.length);
+  const sd=shuffle([...matchPairs]);
+  document.getElementById('match-container').innerHTML=`
+    <div class="match-grid">
+      <div class="match-col">
+        <div class="match-col-label">Items / Mobs</div>
+        ${matchPairs.map((p,i)=>`<div class="match-card left-c" id="mt${i}" onclick="mTerm(${i})">${p.term}</div>`).join('')}
+      </div>
+      <div class="match-col">
+        <div class="match-col-label">Surprising Facts</div>
+        ${sd.map(p=>{const o=matchPairs.findIndex(x=>x.term===p.term);
+          return`<div class="match-card right-c" id="md${o}" onclick="mDef(${o})">${p.def}</div>`;}).join('')}
+      </div>
+    </div>
+    <div class="match-tally">Matched: <span id="mc2">0</span> / ${matchPairs.length}</div>
+    <div class="feedback" id="mfb" style="margin-top:14px"></div>`;
+}
+
+function mTerm(i){
+  if(mDone)return;const el=document.getElementById(`mt${i}`);if(el.classList.contains('matched'))return;
+  if(mSel&&mSel.side==='term'&&mSel.i===i){el.classList.remove('selected');mSel=null;return;}
+  document.querySelectorAll('.left-c.selected').forEach(e=>e.classList.remove('selected'));
+  if(mSel&&mSel.side==='def'){
+    const de=document.getElementById(`md${mSel.i}`);
+    if(mSel.i===i){el.classList.add('matched');de.classList.add('matched');mPairs++;document.getElementById('mc2').textContent=mPairs;mSel=null;if(mPairs===matchPairs.length)mFinish();}
+    else{el.classList.add('wrong-flash');de.classList.add('wrong-flash');setTimeout(()=>{el.classList.remove('wrong-flash');de.classList.remove('wrong-flash');},400);mSel=null;}
+  }else{el.classList.add('selected');mSel={side:'term',i};}
+}
+
+function mDef(i){
+  if(mDone)return;const el=document.getElementById(`md${i}`);if(el.classList.contains('matched'))return;
+  if(mSel&&mSel.side==='def'&&mSel.i===i){el.classList.remove('selected');mSel=null;return;}
+  document.querySelectorAll('.right-c.selected').forEach(e=>e.classList.remove('selected'));
+  if(mSel&&mSel.side==='term'){
+    const te=document.getElementById(`mt${mSel.i}`);
+    if(mSel.i===i){el.classList.add('matched');te.classList.add('matched');mPairs++;document.getElementById('mc2').textContent=mPairs;mSel=null;if(mPairs===matchPairs.length)mFinish();}
+    else{el.classList.add('wrong-flash');te.classList.add('wrong-flash');setTimeout(()=>{el.classList.remove('wrong-flash');te.classList.remove('wrong-flash');},400);mSel=null;}
+  }else{el.classList.add('selected');mSel={side:'def',i};}
+}
+
+function mFinish(){
+  mDone=true;document.getElementById('match-submit-btn').disabled=true;
+  document.querySelectorAll('.match-card:not(.matched)').forEach(el=>{el.classList.add('wrong-flash');el.style.opacity='.45';});
+  if(!mCommit){mScore=mPairs;addScore(mScore);mCommit=true;actDone[3]=true;checkDone();}
+  const fb=document.getElementById('mfb');
+  fb.className=`feedback show ${mPairs===matchPairs.length?'correct-fb':'incorrect-fb'}`;
+  fb.innerHTML=`<div class="fb-label">${mPairs===matchPairs.length?'✓ All Matched!':'Activity Complete'}</div>You matched ${mPairs} out of ${matchPairs.length} pairs correctly.`;
+}
+
+function matchSubmit(){if(!mDone)mFinish();}
+
+// ════════════════════════════════════════
+//  ACTIVITY 5 — ORDERING
+// ════════════════════════════════════════
+const orderItems=[
+  {id:0,text:"Collect wood, stone, and food to survive the first night and create basic tools."},
+  {id:1,text:"Mine underground to gather iron and eventually diamonds for better armour and tools."},
+  {id:2,text:"Build a Nether Portal out of obsidian and travel to the Nether dimension."},
+  {id:3,text:"Find a Nether Fortress and kill Blazes to collect the Blaze Rods they drop."},
+  {id:4,text:"Kill Endermen to collect Ender Pearls, then combine them with Blaze Powder to craft Eyes of Ender."},
+  {id:5,text:"Throw Eyes of Ender to locate a stronghold underground, then fill all 12 End Portal frames to open the portal."},
+  {id:6,text:"Enter the End, destroy the healing crystals on the obsidian pillars, and defeat the Ender Dragon."},
+];
+const correctOrder=[0,1,2,3,4,5,6];
+
+let oDrag=null,oTarget=null,oChecked=false,oScore=0,oCommit=false,oPoss=false;
+
+function renderOrder(){
+  if(!oPoss){addPoss(orderItems.length);oPoss=true;}
+  const sh=shuffle([...orderItems]);
+  document.getElementById('order-container').innerHTML=`
+    <div class="order-list" id="olist">
+      ${sh.map((it,pos)=>`
+        <div class="order-row" id="oi${it.id}" data-id="${it.id}" draggable="true"
+          ondragstart="oDragStart(event)" ondragend="oDragEnd(event)"
+          ondragover="oDragOver(event)" ondrop="oDrop(event)">
+          <span class="order-handle">⠿</span>
+          <span class="order-idx">${pos+1}</span>
+          <span>${it.text}</span>
+        </div>`).join('')}
+    </div>`;
+}
+
+function oDragStart(e){oDrag=e.currentTarget;e.currentTarget.classList.add('dragging-row');e.dataTransfer.effectAllowed='move';}
+function oDragEnd(e){e.currentTarget.classList.remove('dragging-row');document.querySelectorAll('.order-row').forEach(el=>el.style.borderTop='');oDrag=null;}
+function oDragOver(e){e.preventDefault();if(!oDrag||oDrag===e.currentTarget)return;e.currentTarget.style.borderTop='3px solid var(--rust)';oTarget=e.currentTarget;}
+function oDrop(e){
+  e.preventDefault();if(!oDrag||oDrag===e.currentTarget)return;
+  const list=document.getElementById('olist');list.insertBefore(oDrag,e.currentTarget);
+  list.querySelectorAll('.order-idx').forEach((n,i)=>n.textContent=i+1);
+  e.currentTarget.style.borderTop='';
+}
+
+function orderCheck(){
+  if(oChecked)return;oChecked=true;
+  const items=[...document.getElementById('olist').querySelectorAll('.order-row')];
+  const ids=items.map(el=>parseInt(el.dataset.id));oScore=0;
+  items.forEach((el,i)=>{
+    const ok=ids[i]===correctOrder[i];
+    if(ok){el.classList.add('correct-row');oScore++;}else el.classList.add('wrong-row');
+    el.draggable=false;
+  });
+  if(!oCommit){addScore(oScore);oCommit=true;actDone[4]=true;checkDone();}
+  const fb=document.getElementById('order-feedback');
+  fb.className=`feedback show ${oScore===orderItems.length?'correct-fb':'incorrect-fb'}`;
+  if(oScore===orderItems.length){
+    fb.innerHTML=`<div class="fb-label">✓ Perfect Order!</div>The complete path: survive → mine resources → enter the Nether → collect Blaze Rods → craft Eyes of Ender → find the stronghold → defeat the Ender Dragon.`;
+  }else{
+    fb.innerHTML=`<div class="fb-label">Activity Complete — ${oScore}/${orderItems.length} correct</div>The correct order is: (1) first night survival → (2) mining iron & diamonds → (3) building a Nether Portal → (4) killing Blazes → (5) crafting Eyes of Ender → (6) finding the stronghold → (7) defeating the Ender Dragon.`;
+  }
+  document.getElementById('order-check-btn').disabled=true;
+  document.getElementById('order-retry-btn').style.display='inline-block';
+}
+
+function orderRetry(){
+  oChecked=false;oScore=0;renderOrder();
+  document.getElementById('order-check-btn').disabled=false;
+  document.getElementById('order-retry-btn').style.display='none';
+  document.getElementById('order-feedback').className='feedback';
+}
+
+// ── INIT ──
+renderMC();
+renderFITB();
+renderDD();
+renderMatch();
+renderOrder();
+</script>
+</body>
+</html>

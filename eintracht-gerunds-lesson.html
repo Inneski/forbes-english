@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SGE English — Gerunds as Subjects & Objects</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,300;0,500;0,700;1,300;1,700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black:   #0d0d0d;
+    --dark:    #161616;
+    --panel:   #1e1e1e;
+    --border:  #2e2e2e;
+    --red:     #e2001a;
+    --red-dim: #8b0010;
+    --white:   #f0ece4;
+    --off:     #a09890;
+    --subject-color: #5db8ff;
+    --subject-bg:    rgba(93,184,255,0.12);
+    --object-color:  #4edd8a;
+    --object-bg:     rgba(78,221,138,0.12);
+    --gerund-color:  #ffb347;
+    --gerund-bg:     rgba(255,179,71,0.12);
+    --verb-color:    #e2001a;
+    --verb-bg:       rgba(226,0,26,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
+    line-height: 1.65;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Stadium grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Red diagonal hero stripe */
+  .hero-stripe {
+    position: absolute;
+    top: 0; right: 0;
+    width: 340px; height: 100%;
+    background: var(--red);
+    clip-path: polygon(18% 0, 100% 0, 100% 100%, 0% 100%);
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  /* ——— HEADER ——— */
+  .site-header {
+    position: relative;
+    z-index: 10;
+    padding: 0 48px;
+    overflow: hidden;
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: flex-end;
+    gap: 32px;
+    padding: 48px 0 36px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  .crest {
+    width: 72px;
+    height: 72px;
+    flex-shrink: 0;
+    animation: dropIn 0.7s cubic-bezier(.22,1,.36,1) both;
+  }
+
+  /* SVG crest — black eagle silhouette on red/white */
+  .crest svg { width: 100%; height: 100%; }
+
+  .header-text { animation: slideRight 0.6s ease both 0.1s; }
+
+  .header-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 4px;
+  }
+
+  .header-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 58px;
+    line-height: 0.92;
+    letter-spacing: 1px;
+    color: var(--white);
+  }
+
+  .header-title span { color: var(--red); }
+
+  .header-sub {
+    margin-top: 8px;
+    font-size: 14px;
+    color: var(--off);
+    max-width: 480px;
+    font-weight: 300;
+  }
+
+  .scoreboard {
+    margin-left: auto;
+    text-align: right;
+    animation: slideRight 0.6s ease both 0.2s;
+  }
+
+  .scoreboard-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--off);
+  }
+
+  .scoreboard-score {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    color: var(--red);
+    line-height: 1;
+  }
+
+  /* ——— TABS ——— */
+  .tabs-wrap {
+    position: relative;
+    z-index: 10;
+    padding: 0 48px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 0;
+  }
+
+  .tab-btn {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    padding: 16px 22px;
+    border: none;
+    background: none;
+    color: var(--off);
+    cursor: pointer;
+    transition: all 0.2s;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -1px;
+  }
+
+  .tab-btn:hover { color: var(--white); }
+  .tab-btn.active { color: var(--red); border-bottom-color: var(--red); }
+
+  /* ——— MAIN ——— */
+  .main {
+    position: relative;
+    z-index: 5;
+    padding: 44px 48px 100px;
+    max-width: 960px;
+  }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; animation: fadeUp 0.35s ease; }
+
+  /* ——— LEGEND ——— */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 36px;
+  }
+
+  .leg {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--off);
+  }
+
+  .leg-dot {
+    width: 10px; height: 10px;
+    border-radius: 2px;
+  }
+
+  /* ——— SECTION ——— */
+  .section { margin-bottom: 48px; }
+
+  .section-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 6px;
+  }
+
+  .section h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 34px;
+    letter-spacing: 1px;
+    color: var(--white);
+    margin-bottom: 14px;
+  }
+
+  .section p {
+    font-size: 15px;
+    color: #c8c0b8;
+    margin-bottom: 12px;
+    max-width: 660px;
+  }
+
+  /* ——— SENTENCE CARDS ——— */
+  .sent-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--red);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    transition: border-color 0.2s;
+  }
+
+  .sent-card:hover { border-left-color: var(--white); }
+
+  .sent-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+
+  .tag {
+    display: inline;
+    padding: 1px 7px;
+    border-radius: 3px;
+    font-weight: 700;
+  }
+
+  .t-subject { background: var(--subject-bg); color: var(--subject-color); }
+  .t-object  { background: var(--object-bg);  color: var(--object-color); }
+  .t-gerund  { background: var(--gerund-bg);  color: var(--gerund-color); }
+  .t-verb    { background: var(--verb-bg);     color: var(--verb-color); }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+
+  .chip {
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  .chip-s { background: var(--subject-bg); color: var(--subject-color); }
+  .chip-o { background: var(--object-bg);  color: var(--object-color); }
+  .chip-g { background: var(--gerund-bg);  color: var(--gerund-color); }
+
+  .note {
+    background: rgba(226,0,26,0.07);
+    border-left: 2px solid var(--red-dim);
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #c0b0a0;
+    font-style: italic;
+    border-radius: 0 4px 4px 0;
+    margin-top: 8px;
+  }
+
+  /* ——— TABLE ——— */
+  .gtable {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0 28px;
+    font-size: 14px;
+  }
+
+  .gtable th {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--off);
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--red);
+  }
+
+  .gtable td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    color: #c8c0b8;
+    vertical-align: top;
+  }
+
+  .gtable tr:hover td { background: rgba(255,255,255,0.03); }
+  .de { color: var(--subject-color); }
+  .en { color: var(--object-color); font-weight: 500; }
+  .verb-strong { color: var(--gerund-color); font-weight: 500; }
+
+  /* ——— QUIZ ——— */
+  .q-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 22px 24px;
+    margin-bottom: 16px;
+    transition: transform 0.2s;
+  }
+
+  .q-card:hover { transform: translateX(3px); }
+
+  .q-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: var(--red);
+    margin-bottom: 6px;
+  }
+
+  .q-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 16px;
+    line-height: 1.4;
+  }
+
+  .options { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+
+  .opt-btn {
+    padding: 8px 20px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: var(--dark);
+    color: var(--off);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+
+  .opt-btn:hover:not(:disabled) { border-color: var(--white); color: var(--white); }
+  .opt-btn.correct { background: var(--object-bg); border-color: var(--object-color); color: var(--object-color); font-weight: 700; }
+  .opt-btn.wrong   { background: var(--verb-bg);   border-color: var(--verb-color);   color: var(--verb-color); text-decoration: line-through; }
+  .opt-btn:disabled { cursor: default; }
+
+  .feedback {
+    font-size: 13px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    display: none;
+    margin-top: 6px;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.ok { background: var(--object-bg); color: var(--object-color); }
+  .feedback.no { background: var(--verb-bg);   color: var(--verb-color); }
+
+  /* Score widget */
+  .score-widget {
+    display: none;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--red);
+    border-radius: 6px;
+    padding: 18px 24px;
+    margin-bottom: 24px;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .score-widget.show { display: flex; }
+
+  .score-big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    color: var(--red);
+    line-height: 1;
+  }
+
+  .score-sub {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--off);
+    margin-top: 2px;
+  }
+
+  /* ——— FILL EXERCISE ——— */
+  .fill-sent {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 21px;
+    font-weight: 500;
+    margin-bottom: 18px;
+    color: var(--white);
+    line-height: 1.8;
+  }
+
+  .dz {
+    display: inline-block;
+    min-width: 130px;
+    border-bottom: 2px dashed var(--off);
+    padding: 1px 8px;
+    margin: 0 3px;
+    color: var(--off);
+    font-size: 17px;
+    text-align: center;
+    vertical-align: bottom;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 3px 3px 0 0;
+  }
+
+  .dz:hover { border-color: var(--red); color: var(--red); }
+  .dz.filled { border-style: solid; border-color: var(--gerund-color); color: var(--gerund-color); background: var(--gerund-bg); }
+  .dz.correct-f { border-color: var(--object-color) !important; color: var(--object-color) !important; background: var(--object-bg) !important; }
+  .dz.wrong-f   { border-color: var(--verb-color) !important;   color: var(--verb-color) !important;   background: var(--verb-bg) !important; }
+
+  .word-bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 16px 0 20px;
+  }
+
+  .wchip {
+    padding: 7px 16px;
+    background: var(--dark);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.18s;
+    color: var(--off);
+    user-select: none;
+  }
+
+  .wchip:hover:not(.used) { border-color: var(--gerund-color); color: var(--gerund-color); }
+  .wchip.selected { border-color: var(--red); color: var(--red); background: var(--verb-bg); }
+  .wchip.used { opacity: 0.3; cursor: default; text-decoration: line-through; }
+
+  .check-btn {
+    padding: 11px 30px;
+    background: var(--red);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .check-btn:hover { background: #ff1a2e; transform: translateY(-1px); }
+
+  .fill-feedback {
+    font-size: 13.5px;
+    padding: 10px 14px;
+    border-radius: 4px;
+    margin-top: 12px;
+    display: none;
+  }
+
+  .fill-feedback.show { display: block; }
+  .fill-feedback.ok { background: var(--object-bg); color: var(--object-color); }
+  .fill-feedback.no { background: var(--verb-bg); color: var(--verb-color); }
+
+  /* ——— VERB LIST ——— */
+  .verb-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
+    margin: 16px 0 28px;
+  }
+
+  .verb-tile {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 16px;
+    transition: border-color 0.2s;
+  }
+
+  .verb-tile:hover { border-color: var(--red); }
+  .verb-name { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--white); letter-spacing: 1px; }
+  .verb-ex { font-size: 12px; color: var(--off); margin-top: 3px; font-style: italic; }
+
+  /* ——— ANIMATIONS ——— */
+  @keyframes dropIn {
+    from { opacity: 0; transform: translateY(-24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slideRight {
+    from { opacity: 0; transform: translateX(-20px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ——— SECTION DIVIDER ——— */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 36px 0;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .site-header, .tabs-wrap, .main { padding-left: 20px; padding-right: 20px; }
+    .header-title { font-size: 38px; }
+    .scoreboard { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="site-header">
+  <div class="hero-stripe"></div>
+  <div class="header-inner">
+    <!-- SVG Eagle crest -->
+    <div class="crest">
+      <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="40" cy="40" r="39" fill="#e2001a" stroke="#f0ece4" stroke-width="1.5"/>
+        <!-- Eagle simplified -->
+        <path d="M40 12 C36 16 30 15 26 20 C22 25 24 30 28 32 C24 33 20 36 20 41 C20 46 24 49 28 50 C25 53 24 58 26 62 C30 68 36 67 40 64 C44 67 50 68 54 62 C56 58 55 53 52 50 C56 49 60 46 60 41 C60 36 56 33 52 32 C56 30 58 25 54 20 C50 15 44 16 40 12Z" fill="#1a1a1a"/>
+        <path d="M40 18 C37 21 33 20 30 24 C27 28 29 32 32 33.5 C29 35 26 37.5 26 41 C26 44.5 29 46.5 32 47.5 C30 50 29 54 31 57 C34 62 37.5 61 40 59 C42.5 61 46 62 49 57 C51 54 50 50 48 47.5 C51 46.5 54 44.5 54 41 C54 37.5 51 35 48 33.5 C51 32 53 28 50 24 C47 20 43 21 40 18Z" fill="#e2001a"/>
+        <ellipse cx="40" cy="41" rx="6" ry="8" fill="#1a1a1a"/>
+        <path d="M26 20 L18 14 L22 22 L16 20 L22 28Z" fill="#1a1a1a"/>
+        <path d="M54 20 L62 14 L58 22 L64 20 L58 28Z" fill="#1a1a1a"/>
+        <path d="M38 54 L35 64 L40 60 L45 64 L42 54Z" fill="#1a1a1a"/>
+        <circle cx="36" cy="37" r="2" fill="#f0ece4"/>
+        <circle cx="44" cy="37" r="2" fill="#f0ece4"/>
+      </svg>
+    </div>
+
+    <div class="header-text">
+      <div class="header-eyebrow">Eintracht Frankfurt · English Training</div>
+      <div class="header-title">Gerunds as<br><span>Subjects</span> & Objects</div>
+      <div class="header-sub">A grammar unit for advanced German speakers — all examples from the world of football.</div>
+    </div>
+
+    <div class="scoreboard">
+      <div class="scoreboard-label">Your Score</div>
+      <div class="scoreboard-score" id="main-score">0/6</div>
+      <div class="scoreboard-label" style="margin-top:4px">Quiz Points</div>
+    </div>
+  </div>
+</header>
+
+<!-- Tabs -->
+<nav class="tabs-wrap">
+  <button class="tab-btn active" onclick="showTab('theory', this)">Theory</button>
+  <button class="tab-btn" onclick="showTab('examples', this)">Examples</button>
+  <button class="tab-btn" onclick="showTab('german', this)">DE vs. EN</button>
+  <button class="tab-btn" onclick="showTab('exercises', this)">Exercises</button>
+</nav>
+
+<!-- Main content -->
+<main class="main">
+
+  <!-- ========== THEORY ========== -->
+  <div id="tab-theory" class="tab-panel active">
+
+    <div class="legend">
+      <div class="leg"><div class="leg-dot" style="background:var(--subject-bg);border:1px solid var(--subject-color)"></div>Subject</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--object-bg);border:1px solid var(--object-color)"></div>Object</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--gerund-bg);border:1px solid var(--gerund-color)"></div>Gerund</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--verb-bg);border:1px solid var(--verb-color)"></div>Verb</div>
+    </div>
+
+    <div class="section">
+      <div class="section-eyebrow">What is a gerund?</div>
+      <h2>The -ing form as a noun</h2>
+      <p>A <strong style="color:var(--gerund-color)">gerund</strong> is a verb with <strong>-ing</strong> that works as a <em>noun</em>. It names an activity or concept. Unlike a continuous tense, it is not a verb here — it is a thing.</p>
+      <p>In English you cannot always replace it with <em>zu + Infinitiv</em> as you would in German. The gerund fills that noun slot.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-eyebrow">Role 1 — Subject</div>
+      <h2>Gerund as Subject</h2>
+      <p>When the -ing form is the <em>grammatical subject</em> — what the sentence is about, what comes before the main verb:</p>
+
+      <div class="sent-card">
+        <div class="sent-text">
+          <span class="tag t-gerund t-subject">Pressing high up the pitch</span>
+          &nbsp;<span class="tag t-verb">is</span>
+          &nbsp;Eintracht's style.
+        </div>
+        <div class="chips">
+          <span class="chip chip-s">Subject: "Pressing high up the pitch"</span>
+          <span class="chip chip-g">Gerund phrase</span>
+        </div>
+        <div class="note">What is Eintracht's style? → <em>Pressing high up the pitch.</em> That answers the question, so it's the subject.</div>
+      </div>
+
+      <div class="sent-card">
+        <div class="sent-text">
+          <span class="tag t-gerund t-subject">Winning the Bundesliga</span>
+          &nbsp;<span class="tag t-verb">is</span>
+          &nbsp;the dream of every Frankfurt fan.
+        </div>
+        <div class="chips">
+          <span class="chip chip-s">Subject = gerund phrase</span>
+        </div>
+      </div>
+
+      <div class="sent-card">
+        <div class="sent-text">
+          <span class="tag t-gerund t-subject">Not conceding in the first ten minutes</span>
+          &nbsp;<span class="tag t-verb">matters</span>
+          &nbsp;enormously.
+        </div>
+        <div class="chips">
+          <span class="chip chip-s">Negated gerund phrase as subject</span>
+          <span class="chip chip-g">not + gerund</span>
+        </div>
+        <div class="note">To negate a gerund, put <strong>not</strong> directly before the -ing form: <em>not conceding</em>, <em>not pressing</em>.</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="section">
+      <div class="section-eyebrow">Role 2 — Object</div>
+      <h2>Gerund as Object</h2>
+      <p>When the -ing form is the <em>grammatical object</em> — what the main verb acts on. Many English verbs <strong>only</strong> take a gerund here, never an infinitive.</p>
+
+      <div class="sent-card">
+        <div class="sent-text">
+          The manager
+          &nbsp;<span class="tag t-verb">suggested</span>
+          &nbsp;<span class="tag t-gerund t-object">changing the formation</span>.
+        </div>
+        <div class="chips">
+          <span class="chip chip-o">Object: "changing the formation"</span>
+          <span class="chip chip-g">Gerund phrase</span>
+        </div>
+        <div class="note">❌ <em>suggested to change</em> — wrong in English. Always: <em>suggest + gerund</em>.</div>
+      </div>
+
+      <div class="sent-card">
+        <div class="sent-text">
+          The striker
+          &nbsp;<span class="tag t-verb">kept</span>
+          &nbsp;<span class="tag t-gerund t-object">running in behind the defence</span>.
+        </div>
+        <div class="chips">
+          <span class="chip chip-o">Object: "running in behind"</span>
+        </div>
+      </div>
+
+      <div class="sent-card">
+        <div class="sent-text">
+          The club
+          &nbsp;<span class="tag t-verb">considered</span>
+          &nbsp;<span class="tag t-gerund t-object">signing a new central midfielder</span>.
+        </div>
+        <div class="chips">
+          <span class="chip chip-o">Object of "considered"</span>
+          <span class="chip chip-g">Gerund phrase</span>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="section">
+      <div class="section-eyebrow">Key verbs</div>
+      <h2>Verbs that always take a gerund</h2>
+      <p>Memorise these — they never take an infinitive as their direct object.</p>
+
+      <div class="verb-grid">
+        <div class="verb-tile"><div class="verb-name">enjoy</div><div class="verb-ex">enjoys winning</div></div>
+        <div class="verb-tile"><div class="verb-name">avoid</div><div class="verb-ex">avoid losing the ball</div></div>
+        <div class="verb-tile"><div class="verb-name">consider</div><div class="verb-ex">consider signing</div></div>
+        <div class="verb-tile"><div class="verb-name">finish</div><div class="verb-ex">finished training</div></div>
+        <div class="verb-tile"><div class="verb-name">suggest</div><div class="verb-ex">suggest pressing</div></div>
+        <div class="verb-tile"><div class="verb-name">miss</div><div class="verb-ex">miss playing here</div></div>
+        <div class="verb-tile"><div class="verb-name">deny</div><div class="verb-ex">denied fouling him</div></div>
+        <div class="verb-tile"><div class="verb-name">keep</div><div class="verb-ex">keeps running</div></div>
+        <div class="verb-tile"><div class="verb-name">admit</div><div class="verb-ex">admitted diving</div></div>
+        <div class="verb-tile"><div class="verb-name">practise</div><div class="verb-ex">practise finishing</div></div>
+        <div class="verb-tile"><div class="verb-name">mind</div><div class="verb-ex">mind playing late</div></div>
+        <div class="verb-tile"><div class="verb-name">risk</div><div class="verb-ex">risk conceding</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ========== EXAMPLES ========== -->
+  <div id="tab-examples" class="tab-panel">
+
+    <div class="section">
+      <div class="section-eyebrow">In context — Football examples</div>
+      <h2>Full sentence analysis</h2>
+      <p>Every colour-coded element is annotated. All sentences are from the world of football.</p>
+
+      <div class="sent-card">
+        <div class="sent-text">
+          <span class="tag t-gerund t-subject">Scoring in the Europa League final</span>
+          &nbsp;<span class="tag t-verb">was</span>
+          &nbsp;the highlight of his career.
+        </div>
+        <div class="chips"><span class="chip chip-s">Subject = gerund phrase</span><span class="chip chip-g">"Scoring" = gerund</span></div>
+        <div class="note">Compare German: <span class="de">Das Erzielen eines Tores... war der Höhepunkt...</span> — German nominalises with <em>das Erzielen</em>. English uses the gerund naturally without an article.</div>
+      </div>
+
+      <div class="sent-card">
+        <div class="sent-text">
+          The fans
+          &nbsp;<span class="tag t-verb">enjoyed</span>
+          &nbsp;<span class="tag t-gerund t-object">watching the team defend so well</span>.
+        </div>
+        <div class="chips"><span class="chip chip-o">Object = gerund phrase</span></div>
+        <div class="note">❌ <em>enjoyed to watch</em> — never correct. <em>Enjoy</em> demands a gerund.</div>
+      </div>
+
+      <div class="sent-card">
+        <div class="sent-text">
+          <span class="tag t-gerund t-subject">Playing with only ten men</span>
+          &nbsp;<span class="tag t-verb">forced</span>
+          &nbsp;them to sit deeper.
+        </div>
+        <div class="chips"><span class="chip chip-s">Subject = gerund phrase</span></div>
+        <div class="note">The whole phrase <em>Playing with only ten men</em> is the subject — it includes the gerund + adverbial phrase.</div>
+      </div>
+
+      <div class="sent-card">
+        <div class="sent-text">
+          He
+          &nbsp;<span class="tag t-verb">admitted</span>
+          &nbsp;<span class="tag t-gerund t-object">handling the ball deliberately</span>.
+        </div>
+        <div class="chips"><span class="chip chip-o">Object of "admitted"</span><span class="chip chip-g">gerund + adverb</span></div>
+        <div class="note">German: <em>Er gab zu, den Ball absichtlich mit der Hand gespielt zu haben.</em> — English: simpler gerund phrase, no <em>zu</em>.</div>
+      </div>
+
+      <div class="sent-card">
+        <div class="sent-text">
+          The referee
+          &nbsp;<span class="tag t-verb">stopped</span>
+          &nbsp;<span class="tag t-gerund t-object">playing</span>
+          &nbsp;after the flare landed on the pitch.
+        </div>
+        <div class="chips"><span class="chip chip-o">Object = gerund</span></div>
+        <div class="note"><em>Stopped playing</em> = the match ended. Compare: <em>stopped to look</em> = paused in order to look. The gerund vs infinitive distinction after <em>stop</em> changes meaning entirely.</div>
+      </div>
+
+      <div class="sent-card">
+        <div class="sent-text">
+          <span class="tag t-gerund t-subject">Not pressing the ball carrier</span>
+          &nbsp;<span class="tag t-verb">gave</span>
+          &nbsp;them too much time.
+        </div>
+        <div class="chips"><span class="chip chip-s">Negated gerund phrase as subject</span></div>
+        <div class="note">Negation before the gerund: <em>not pressing</em>, <em>not marking</em>, <em>not tracking</em> — the <em>not</em> always comes first.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========== DE vs EN ========== -->
+  <div id="tab-german" class="tab-panel">
+
+    <div class="section">
+      <div class="section-eyebrow">Kontrastive Grammatik</div>
+      <h2>German infinitive → English gerund</h2>
+      <p>Where you use <strong style="color:var(--subject-color)">zu + Infinitiv</strong> in German, English almost always needs a <strong style="color:var(--gerund-color)">gerund</strong>.</p>
+
+      <table class="gtable">
+        <tr><th>Deutsch</th><th>English</th><th>Role</th></tr>
+        <tr>
+          <td><span class="de">Tore schießen ist das Schönste.</span></td>
+          <td><span class="en">Scoring goals is the best feeling.</span></td>
+          <td>Subject</td>
+        </tr>
+        <tr>
+          <td><span class="de">Er liebt es, Freistöße zu schießen.</span></td>
+          <td><span class="en">He loves taking free kicks.</span></td>
+          <td>Object</td>
+        </tr>
+        <tr>
+          <td><span class="de">Sie vermied es, den Gegner zu foulen.</span></td>
+          <td><span class="en">She avoided fouling the opponent.</span></td>
+          <td>Object</td>
+        </tr>
+        <tr>
+          <td><span class="de">Der Trainer schlug vor, früher zu pressen.</span></td>
+          <td><span class="en">The coach suggested pressing earlier.</span></td>
+          <td>Object</td>
+        </tr>
+        <tr>
+          <td><span class="de">Er bereute, den Elfmeter verschossen zu haben.</span></td>
+          <td><span class="en">He regretted missing the penalty.</span></td>
+          <td>Object</td>
+        </tr>
+        <tr>
+          <td><span class="de">Sie hörten auf, in der zweiten Hälfte zu verteidigen.</span></td>
+          <td><span class="en">They stopped defending in the second half.</span></td>
+          <td>Object</td>
+        </tr>
+      </table>
+      <div class="note">Key insight: German uses <em>es + zu + Infinitiv</em> or a Nominalisierung (<em>das Schießen</em>). English replaces both with a gerund — simpler, but the pattern must be learned.</div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="section">
+      <div class="section-eyebrow">Feine Unterschiede</div>
+      <h2>When the choice changes meaning</h2>
+      <p>Some verbs in English take either a gerund or an infinitive — but the meaning shifts. These are the hardest cases.</p>
+
+      <table class="gtable">
+        <tr><th>With gerund</th><th>With infinitive</th></tr>
+        <tr>
+          <td>The striker <span class="en">stopped shooting</span>.<br><small>He no longer shoots.</small></td>
+          <td>The striker <span class="en">stopped to shoot</span>.<br><small>He paused (e.g. dribbling) in order to shoot.</small></td>
+        </tr>
+        <tr>
+          <td>I <span class="en">remember winning</span> this trophy.<br><small>I recall that moment (past memory).</small></td>
+          <td>I <span class="en">remember to collect</span> my ticket.<br><small>I don't forget to do it (future task).</small></td>
+        </tr>
+        <tr>
+          <td>He <span class="en">tried tackling</span> from behind.<br><small>He experimented with the approach.</small></td>
+          <td>He <span class="en">tried to tackle</span> but missed.<br><small>He made an effort, possibly unsuccessfully.</small></td>
+        </tr>
+        <tr>
+          <td>She <span class="en">regrets missing</span> the match.<br><small>She missed it and is sorry now.</small></td>
+          <td>She <span class="en">regrets to inform</span> you...<br><small>Formal only — fixed expression.</small></td>
+        </tr>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- ========== EXERCISES ========== -->
+  <div id="tab-exercises" class="tab-panel">
+
+    <div class="section">
+      <div class="section-eyebrow">Exercise 1 — Multiple Choice</div>
+      <h2>Choose the correct form</h2>
+      <p>Football sentences — select the right form for each gap. One point per correct answer.</p>
+    </div>
+
+    <div class="score-widget" id="score-widget">
+      <div class="score-big" id="score-big">0</div>
+      <div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;color:var(--white);">out of 6 correct</div>
+        <div class="score-sub">Keep going — the second exercise awaits</div>
+      </div>
+    </div>
+
+    <div id="quiz-wrap">
+
+      <div class="q-card" data-answer="b">
+        <div class="q-num">QUESTION 01</div>
+        <div class="q-text">_______ in the Bundesliga requires incredible physical fitness.</div>
+        <div class="options">
+          <button class="opt-btn" onclick="ans(this,'a')">To play</button>
+          <button class="opt-btn" onclick="ans(this,'b')">Playing</button>
+          <button class="opt-btn" onclick="ans(this,'c')">Play</button>
+        </div>
+        <div class="feedback" id="fb0"><strong>Playing</strong> is the subject of the sentence — gerund needed. "To play" is possible but less natural as a subject in modern English.</div>
+      </div>
+
+      <div class="q-card" data-answer="a">
+        <div class="q-num">QUESTION 02</div>
+        <div class="q-text">Eintracht Frankfurt's fans love _______ in the Deutsche Bank Park.</div>
+        <div class="options">
+          <button class="opt-btn" onclick="ans(this,'a')">singing</button>
+          <button class="opt-btn" onclick="ans(this,'b')">to sing</button>
+          <button class="opt-btn" onclick="ans(this,'c')">sing</button>
+        </div>
+        <div class="feedback" id="fb1"><strong>Love</strong> + gerund. "Love to sing" is also used in American English, but the gerund is the standard form after <em>love</em> in British/European English.</div>
+      </div>
+
+      <div class="q-card" data-answer="b">
+        <div class="q-num">QUESTION 03</div>
+        <div class="q-text">The coach avoided _______ his best players before the cup final.</div>
+        <div class="options">
+          <button class="opt-btn" onclick="ans(this,'a')">to tire</button>
+          <button class="opt-btn" onclick="ans(this,'b')">tiring</button>
+          <button class="opt-btn" onclick="ans(this,'c')">tire</button>
+        </div>
+        <div class="feedback" id="fb2"><strong>Avoid</strong> always takes a gerund. ❌ <em>avoided to tire</em> is ungrammatical.</div>
+      </div>
+
+      <div class="q-card" data-answer="c">
+        <div class="q-num">QUESTION 04</div>
+        <div class="q-text">The midfielder denied _______ the opponent intentionally.</div>
+        <div class="options">
+          <button class="opt-btn" onclick="ans(this,'a')">to elbow</button>
+          <button class="opt-btn" onclick="ans(this,'b')">elbow</button>
+          <button class="opt-btn" onclick="ans(this,'c')">elbowing</button>
+        </div>
+        <div class="feedback" id="fb3"><strong>Deny</strong> + gerund. German: <em>Er bestritt, den Gegner absichtlich mit dem Ellenbogen getroffen zu haben.</em></div>
+      </div>
+
+      <div class="q-card" data-answer="a">
+        <div class="q-num">QUESTION 05</div>
+        <div class="q-text">_______ the transfer window wisely is what separates top clubs from the rest.</div>
+        <div class="options">
+          <button class="opt-btn" onclick="ans(this,'a')">Using</button>
+          <button class="opt-btn" onclick="ans(this,'b')">To use</button>
+          <button class="opt-btn" onclick="ans(this,'c')">Use</button>
+        </div>
+        <div class="feedback" id="fb4"><strong>Using the transfer window wisely</strong> is the subject — a gerund phrase with adverb. The whole phrase functions as a noun.</div>
+      </div>
+
+      <div class="q-card" data-answer="b">
+        <div class="q-num">QUESTION 06</div>
+        <div class="q-text">The referee kept _______ play when the ball went out.</div>
+        <div class="options">
+          <button class="opt-btn" onclick="ans(this,'a')">to stop</button>
+          <button class="opt-btn" onclick="ans(this,'b')">stopping</button>
+          <button class="opt-btn" onclick="ans(this,'c')">stop</button>
+        </div>
+        <div class="feedback" id="fb5"><strong>Keep</strong> always takes a gerund. <em>He kept stopping play</em> = <em>Er unterbrach das Spiel immer wieder.</em></div>
+      </div>
+
+    </div>
+
+    <hr class="divider">
+
+    <div class="section">
+      <div class="section-eyebrow">Exercise 2 — Word Bank</div>
+      <h2>Fill in with gerunds</h2>
+      <p>Click a word, then click a gap to place it. All gaps need a gerund.</p>
+
+      <div class="fill-sent">
+        1. &nbsp;<span class="dz" id="dz0" onclick="place(0)">[ gerund ]</span>
+        &nbsp;the ball short from goal kicks is a key part of modern football.
+      </div>
+      <div class="fill-sent">
+        2. &nbsp;He finally admitted
+        <span class="dz" id="dz1" onclick="place(1)">[ gerund ]</span>
+        &nbsp;the foul deliberately.
+      </div>
+      <div class="fill-sent">
+        3. &nbsp;The team considered
+        <span class="dz" id="dz2" onclick="place(2)">[ gerund ]</span>
+        &nbsp;their defensive shape to cope with the opposition.
+      </div>
+      <div class="fill-sent">
+        4. &nbsp;
+        <span class="dz" id="dz3" onclick="place(3)">[ gerund ]</span>
+        &nbsp;under pressure is a skill you must train every day.
+      </div>
+
+      <div class="word-bank" id="wbank">
+        <div class="wchip" id="wc-playing" onclick="sel('playing')">playing</div>
+        <div class="wchip" id="wc-building" onclick="sel('building')">building</div>
+        <div class="wchip" id="wc-changing" onclick="sel('changing')">changing</div>
+        <div class="wchip" id="wc-committing" onclick="sel('committing')">committing</div>
+        <div class="wchip" id="wc-scoring" onclick="sel('scoring')">scoring</div>
+      </div>
+
+      <button class="check-btn" onclick="checkFill()">Check Answers</button>
+      <div class="fill-feedback" id="ffb"></div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+  // ---- TABS ----
+  function showTab(id, btn) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  // ---- QUIZ ----
+  const scores = {};
+
+  function ans(btn, chosen) {
+    const card = btn.closest('.q-card');
+    if (card.dataset.done) return;
+    card.dataset.done = true;
+    const correct = card.dataset.answer;
+    const idx = [...document.querySelectorAll('.q-card')].indexOf(card);
+    card.querySelectorAll('.opt-btn').forEach(b => b.disabled = true);
+    const fb = document.getElementById('fb'+idx);
+    if (chosen === correct) {
+      btn.classList.add('correct');
+      fb.classList.add('ok','show');
+      scores[idx] = 1;
+    } else {
+      btn.classList.add('wrong');
+      // highlight correct
+      const opts = card.querySelectorAll('.opt-btn');
+      const map = {a:0,b:1,c:2};
+      opts[map[correct]].classList.add('correct');
+      fb.classList.add('no','show');
+      scores[idx] = 0;
+    }
+    updateScore();
+  }
+
+  function updateScore() {
+    const n = Object.values(scores).filter(v=>v).length;
+    document.getElementById('main-score').textContent = n+'/6';
+    document.getElementById('score-big').textContent = n;
+    document.getElementById('score-widget').classList.add('show');
+  }
+
+  // ---- FILL ----
+  const correctFill = ['building','committing','changing','playing'];
+  let chosen = null;
+  const placed = {0:null,1:null,2:null,3:null};
+
+  function sel(word) {
+    document.querySelectorAll('.wchip').forEach(c=>c.classList.remove('selected'));
+    if (chosen === word) { chosen = null; return; }
+    chosen = word;
+    document.getElementById('wc-'+word).classList.add('selected');
+  }
+
+  function place(i) {
+    if (!chosen) return;
+    const dz = document.getElementById('dz'+i);
+    if (placed[i]) document.getElementById('wc-'+placed[i]).classList.remove('used');
+    placed[i] = chosen;
+    dz.textContent = chosen;
+    dz.className = 'dz filled';
+    document.getElementById('wc-'+chosen).classList.add('used');
+    chosen = null;
+    document.querySelectorAll('.wchip').forEach(c=>c.classList.remove('selected'));
+  }
+
+  function checkFill() {
+    let ok = 0;
+    for (let i=0;i<4;i++){
+      const dz = document.getElementById('dz'+i);
+      if (placed[i] === correctFill[i]) { dz.className='dz correct-f'; ok++; }
+      else { dz.className='dz wrong-f'; if(!placed[i]) dz.textContent='?'; }
+    }
+    const fb = document.getElementById('ffb');
+    fb.className = 'fill-feedback show ' + (ok===4?'ok':'no');
+    fb.innerHTML = ok===4
+      ? '⚽ Perfekt! All four gerunds correct. Auf geht\'s SGE!'
+      : `${ok}/4 correct. Hints: Gap 1 → <em>building</em>, Gap 2 → <em>committing</em>, Gap 3 → <em>changing</em>, Gap 4 → <em>playing</em>.`;
+  }
+</script>
+</body>
+</html>

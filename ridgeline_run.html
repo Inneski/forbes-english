@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Ridgeline Run — C1 Mountain Biking Roleplay</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --fe-navy:#12233b; --fe-teal:#0e8a7d; --fe-gold:#d9a441; --fe-red:#c1443a;
+    --bg:#f4f1ea; --card:#ffffff; --ink:#1c2a33; --muted:#5c6b73;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);font-family:'Source Sans 3',sans-serif;color:var(--ink);}
+  header{background:var(--fe-navy);color:#fff;padding:18px 20px;display:flex;align-items:center;gap:14px;}
+  header h1{font-family:'Montserrat',sans-serif;font-size:1.25rem;margin:0;}
+  header p{margin:2px 0 0;font-size:.85rem;color:#c9d4de;}
+  .wrap{max-width:760px;margin:0 auto;padding:22px 16px 60px;}
+  .progress-bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0;}
+  .progress-track{height:8px;background:#dcd6c8;border-radius:5px;overflow:hidden;}
+  .progress-fill{height:100%;background:var(--fe-teal);width:0%;transition:width .4s;}
+  .meter{display:flex;justify-content:space-between;font-size:.8rem;color:var(--muted);margin-top:6px;}
+  .card{background:var(--card);border-radius:14px;padding:22px;margin-top:16px;box-shadow:0 2px 10px rgba(0,0,0,.06);}
+  .scene-title{font-family:'Montserrat',sans-serif;font-weight:800;color:var(--fe-navy);margin-top:0;}
+  .narration{line-height:1.55;font-size:1.02rem;}
+  .choice-btn{display:block;width:100%;text-align:left;background:#fff;border:2px solid #d7d2c4;border-radius:10px;padding:14px 16px;margin-top:10px;font-size:.98rem;cursor:pointer;transition:.15s;font-family:inherit;}
+  .choice-btn:hover{border-color:var(--fe-teal);background:#f0f8f6;}
+  .choice-btn:disabled{opacity:.55;cursor:default;}
+  .choice-btn.correct{border-color:var(--fe-teal);background:#e5f5f1;}
+  .choice-btn.wrong{border-color:var(--fe-red);background:#fbeceb;}
+  .feedback{margin-top:12px;padding:12px 14px;border-radius:10px;font-size:.92rem;line-height:1.45;}
+  .feedback.good{background:#e5f5f1;border-left:4px solid var(--fe-teal);}
+  .feedback.bad{background:#fbeceb;border-left:4px solid var(--fe-red);}
+  .next-btn{margin-top:16px;background:var(--fe-navy);color:#fff;border:none;padding:12px 22px;border-radius:8px;font-size:.95rem;cursor:pointer;font-weight:600;}
+  .next-btn:disabled{background:#a9b3bb;cursor:not-allowed;}
+  .tag{display:inline-block;background:var(--fe-gold);color:#1c2a33;font-size:.72rem;font-weight:700;padding:2px 9px;border-radius:12px;margin-bottom:8px;text-transform:uppercase;letter-spacing:.03em;}
+  .trust-row{display:flex;align-items:center;gap:8px;font-size:.85rem;color:var(--muted);margin-bottom:6px;}
+  .glossary{margin-top:8px;font-size:.88rem;color:var(--muted);}
+  .results h2{color:var(--fe-navy);font-family:'Montserrat',sans-serif;}
+  .score-pill{display:inline-block;background:var(--fe-teal);color:#fff;padding:6px 16px;border-radius:20px;font-weight:700;margin-top:8px;}
+  .logo{width:40px;height:40px;flex-shrink:0;}
+</style>
+</head>
+<body>
+<header>
+  <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="46" fill="#0e8a7d"/>
+    <path d="M25 68 L42 38 L52 55 L60 42 L78 68 Z" fill="#f4f1ea"/>
+    <circle cx="50" cy="30" r="8" fill="#d9a441"/>
+  </svg>
+  <div>
+    <h1>Forbes English</h1>
+    <p>The Ridgeline Run — C1 Roleplay · Mountain Biking</p>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="progress-bar">
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="meter"><span id="sceneLabel">Scene 0 of 7</span><span id="scoreLabel">Trail Confidence: 50%</span></div>
+  </div>
+  <div id="game"></div>
+</div>
+
+<script>
+// ---------- DATA ----------
+const scenes = [
+{
+  id:"intro",
+  title:"Before First Light",
+  narration:"You've flown out to join a guided enduro trip in the Basque foothills. Your guide, Mireia, is going over the day's route at the trailhead. \"There's a nasty off-camber section after the second switchback,\" she warns. \"Had this been dry, I wouldn't think twice about it — but after last night's rain, we'll want to walk that bit.\" How do you respond?",
+  type:"choice",
+  checkpoint:"Third conditional (past unreal condition → past unreal result)",
+  options:[
+    {text:"\"Fair enough. Had I known about the rain, I'd have packed grippier tyres anyway.\"", correct:true, trust:8,
+      feedback:"Nicely formed third conditional: a past unreal condition (had I known) paired with a hypothetical past result (I'd have packed) — both halves reference the past. It also matches Mireia's register."},
+    {text:"\"If it rains yesterday, the trail is dangerous today, so we should walk it.\"", correct:false, trust:-3,
+      feedback:"This mixes tenses incorrectly. A third conditional needs a past-tense condition clause (If it had rained / Had it rained) paired with a past-hypothetical result (would have + past participle) — not present simple in both halves."},
+    {text:"\"I don't care about the rain at all, let's just ride it and see.\"", correct:false, trust:-6,
+      feedback:"Grammatically fine, but tonally reckless for a first exchange with a guide assessing your judgement — and it skips the language point entirely."}
+  ]
+},
+{
+  id:"briefing",
+  title:"Reading the Group",
+  narration:"Mireia briefs the group on trail etiquette. She says: \"Only when you're absolutely certain the trail ahead is clear should you overtake on a blind corner.\" One rider, Tomás, looks confused by the phrasing and asks you to explain what she means.",
+  type:"choice",
+  checkpoint:"Inversion after a negative/restrictive adverbial (Only when...)",
+  options:[
+    {text:"\"It's inversion for emphasis — the auxiliary comes before the subject. It just means: don't overtake unless the corner's clear.\"", correct:true, trust:8,
+      feedback:"Correct. Fronted restrictive phrases like 'Only when', 'Not until', 'Rarely' trigger subject–auxiliary inversion — a classic C1 structure for emphatic, formal register."},
+    {text:"\"It's just a fancy way of saying 'be careful' — the grammar doesn't really matter here.\"", correct:false, trust:-4,
+      feedback:"The meaning's roughly right, but at C1 you're expected to notice and explain the structure, not wave it away — inversion after fronted negatives is a recurring exam and real-world pattern."},
+    {text:"\"She means we should overtake as often as we possibly can on the corners.\"", correct:false, trust:-6,
+      feedback:"This reverses the meaning. 'Only when X should you Y' restricts Y to condition X — the opposite of 'do it often'."}
+  ]
+},
+{
+  id:"climb",
+  title:"The Fire Road Climb",
+  narration:"Forty minutes in, the group is grinding up a long fire-road climb. Your legs are burning. A rider named Sofia pulls alongside and says: \"Honestly, it's the climbs, not the descents, that separate the riders from the tourists on a trip like this.\" You want to agree, emphasising the climbs.",
+  type:"choice",
+  checkpoint:"Cleft sentence (It is... that...) for emphasis",
+  options:[
+    {text:"\"Completely agree — it's the fitness, not the skill, that gets tested hardest up here.\"", correct:true, trust:7,
+      feedback:"Well done — this mirrors Sofia's cleft construction (It is X, not Y, that...) to place emphasis precisely where you want it, a very natural C1 way to agree and build on someone's point."},
+    {text:"\"Yes, fitness gets tested hardest up here, more than the skill does.\"", correct:false, trust:-2,
+      feedback:"Grammatically acceptable, but it drops the cleft structure entirely and loses the parallel emphasis Sofia set up — a missed chance to match register."},
+    {text:"\"I is agree, the climbs is harder than the way down.\"", correct:false, trust:-6,
+      feedback:"Subject-verb agreement errors here ('I is', 'climbs is') would stand out sharply at C1 level."}
+  ]
+},
+{
+  id:"summit",
+  title:"At the Ridge",
+  narration:"At the summit, Mireia points down a narrow singletrack disappearing into the trees. \"That's the technical descent I mentioned — loose over hardpack, with a couple of rock gardens. It's not mandatory. Some groups skip it and take the fire road down instead.\" Tomás looks nervous. You decide how to phrase your own hesitation diplomatically.",
+  type:"choice",
+  checkpoint:"Hedging / softened opinion for diplomatic register",
+  options:[
+    {text:"\"I'd be lying if I said I wasn't intimidated — would anyone mind scouting it on foot first?\"", correct:true, trust:8,
+      feedback:"Excellent hedged, diplomatic phrasing ('I'd be lying if...', 'would anyone mind') — softening admissions of doubt while still proposing a practical solution is a hallmark of C1 tact."},
+    {text:"\"Honestly, this looks too dangerous, and I'd rather not attempt it at all.\"", correct:false, trust:-5,
+      feedback:"Direct and unhedged — this could come across as blunt or uncooperative in a group setting, even if the underlying concern is reasonable."},
+    {text:"\"Rock gardens is no problem for me at all, easy easy, no worries.\"", correct:false, trust:-4,
+      feedback:"Underuses register and grammar entirely (missing verbs, repetition) — not representative of C1 fluency, and overconfident given the context."}
+  ]
+},
+{
+  id:"descent",
+  title:"Loose Over Hardpack",
+  narration:"Whichever way the group chooses, they regroup at the bottom. Mireia debriefs: \"Given how greasy that top section was, you all handled it impressively. Rarely have I seen a group manage the off-camber roots that cleanly.\" She turns to you: \"How would you sum up that descent for the others back at the lodge?\"",
+  type:"choice",
+  checkpoint:"Advanced connector: concession / result (Given that..., despite..., such...that...)",
+  options:[
+    {text:"\"Given how technical it was, and despite the wet roots, it was such a confidence boost that I can't wait for the next one.\"", correct:true, trust:9,
+      feedback:"Great range: 'Given how...', 'despite', and 'such...that' all deployed accurately to link cause, concession, and result — exactly the connector variety examiners look for at C1."},
+    {text:"\"It was wet and pretty technical honestly, but I think we all rode it pretty good.\"", correct:false, trust:-3,
+      feedback:"'Rode good' should be 'rode well' (adverb, not adjective), and the sentence lacks any of the advanced connectors the context invites."},
+    {text:"\"The descent was fine, nothing much else to say about it really.\"", correct:false, trust:-5,
+      feedback:"Accurate but minimal — a C1 speaker is expected to elaborate and connect ideas, not give a flat one-line summary in a debrief moment clearly inviting more detail."}
+  ]
+},
+{
+  id:"vocab",
+  title:"Trailside Terminology",
+  narration:"Back at the van, Mireia quizzes the group on trail vocabulary picked up during the ride, mostly for fun. She asks you to match each term to its meaning.",
+  type:"vocab",
+  checkpoint:"Mountain biking terminology (C1 topic vocabulary)",
+  items:[
+    {word:"berm", def:"a raised, banked turn that lets riders carry speed through a corner"},
+    {word:"off-camber", def:"a section of trail that slopes away from the direction of the turn, reducing grip"},
+    {word:"hardtail", def:"a mountain bike with front suspension only, no rear shock"},
+    {word:"granny gear", def:"the lowest gear ratio, used for very steep, slow climbs"},
+    {word:"bail out", def:"to abandon a line or manoeuvre at the last moment to avoid a crash"},
+    {word:"gnarly", def:"informal term for a trail section that is unusually rough, steep, or technical"}
+  ]
+},
+{
+  id:"ending",
+  title:"Back at the Lodge",
+  narration:"",
+  type:"ending"
+}
+];
+
+// ---------- STATE ----------
+let idx = 0;
+let trust = 50;
+let answered = false;
+
+const game = document.getElementById("game");
+const progressFill = document.getElementById("progressFill");
+const sceneLabel = document.getElementById("sceneLabel");
+const scoreLabel = document.getElementById("scoreLabel");
+
+function updateMeters(){
+  const total = scenes.length - 1;
+  progressFill.style.width = Math.round((idx/total)*100) + "%";
+  sceneLabel.textContent = "Scene " + Math.min(idx+1,total) + " of " + total;
+  trust = Math.max(0, Math.min(100, trust));
+  scoreLabel.textContent = "Trail Confidence: " + trust + "%";
+}
+
+function render(){
+  updateMeters();
+  const s = scenes[idx];
+  if(s.type === "ending"){ renderEnding(); return; }
+
+  let html = `<div class="card"><span class="tag">${s.checkpoint}</span><h2 class="scene-title">${s.title}</h2>`;
+  if(s.narration) html += `<p class="narration">${s.narration}</p>`;
+
+  if(s.type === "choice"){
+    html += `<div id="options">`;
+    s.options.forEach((o,i)=>{
+      html += `<button class="choice-btn" data-i="${i}" onclick="selectOption(${i})">${o.text}</button>`;
+    });
+    html += `</div><div id="feedbackBox"></div>`;
+    html += `<button class="next-btn" id="nextBtn" disabled onclick="nextScene()">Next</button>`;
+  }
+
+  if(s.type === "vocab"){
+    html += `<p class="narration">Click each word, then click its correct definition.</p><div id="vocabArea"></div>`;
+    html += `<button class="next-btn" id="nextBtn" disabled onclick="nextScene()">Next</button>`;
+  }
+
+  html += `</div>`;
+  game.innerHTML = html;
+  answered = false;
+
+  if(s.type === "vocab") renderVocab(s);
+}
+
+function selectOption(i){
+  const s = scenes[idx];
+  if(answered) return;
+  answered = true;
+  const buttons = document.querySelectorAll("#options .choice-btn");
+  buttons.forEach((b,bi)=>{
+    b.disabled = true;
+    if(bi===i) b.classList.add(s.options[i].correct ? "correct" : "wrong");
+    if(s.options[bi].correct && bi!==i) b.classList.add("correct");
+  });
+  trust += s.options[i].trust;
+  updateMeters();
+  const fb = document.getElementById("feedbackBox");
+  fb.innerHTML = `<div class="feedback ${s.options[i].correct?'good':'bad'}">${s.options[i].feedback}</div>`;
+  document.getElementById("nextBtn").disabled = false;
+}
+
+let vocabSelectedWord = null;
+let vocabMatches = {};
+
+function renderVocab(s){
+  const area = document.getElementById("vocabArea");
+  const words = [...s.items].sort(()=>Math.random()-0.5);
+  const defs = [...s.items].sort(()=>Math.random()-0.5);
+  vocabMatches = {};
+  area.innerHTML = `
+    <div style="display:flex;gap:18px;flex-wrap:wrap;margin-top:10px;">
+      <div style="flex:1;min-width:150px;" id="wordCol"></div>
+      <div style="flex:1.6;min-width:220px;" id="defCol"></div>
+    </div>
+    <div class="glossary" id="vocabStatus">Matched 0 of ${s.items.length}</div>
+  `;
+  const wordCol = document.getElementById("wordCol");
+  const defCol = document.getElementById("defCol");
+  words.forEach(w=>{
+    const b = document.createElement("button");
+    b.className = "choice-btn"; b.textContent = w.word; b.dataset.word = w.word;
+    b.onclick = ()=>{ 
+      if(b.classList.contains("correct")) return;
+      document.querySelectorAll("#wordCol .choice-btn").forEach(x=>x.style.borderColor="#d7d2c4");
+      vocabSelectedWord = w.word;
+      b.style.borderColor = "var(--fe-teal)";
+    };
+    wordCol.appendChild(b);
+  });
+  defs.forEach(w=>{
+    const b = document.createElement("button");
+    b.className = "choice-btn"; b.textContent = w.def;
+    b.onclick = ()=>{
+      if(!vocabSelectedWord || b.classList.contains("correct")) return;
+      const correctWord = s.items.find(it=>it.def===w.def).word;
+      if(correctWord === vocabSelectedWord){
+        b.classList.add("correct"); b.disabled = true;
+        const wb = document.querySelector(`#wordCol .choice-btn[data-word="${vocabSelectedWord}"]`);
+        wb.classList.add("correct"); wb.disabled = true;
+        vocabMatches[vocabSelectedWord] = true;
+        vocabSelectedWord = null;
+        const matched = Object.keys(vocabMatches).length;
+        document.getElementById("vocabStatus").textContent = `Matched ${matched} of ${s.items.length}`;
+        trust += 2; updateMeters();
+        if(matched === s.items.length){ document.getElementById("nextBtn").disabled = false; }
+      } else {
+        b.classList.add("wrong");
+        setTimeout(()=>b.classList.remove("wrong"), 500);
+        trust -= 1; updateMeters();
+      }
+    };
+    defCol.appendChild(b);
+  });
+}
+
+function nextScene(){
+  idx++;
+  render();
+}
+
+function renderEnding(){
+  updateMeters();
+  let title, text;
+  if(trust >= 80){
+    title = "Trail Legend";
+    text = "You handled every judgement call with precision — hedging diplomatically, reading the group, and matching Mireia's register at every turn. Back at the lodge, she's already asking if you'll join the advanced trip next season.";
+  } else if(trust >= 55){
+    title = "Solid Trail Companion";
+    text = "You rode competently and communicated well enough to keep the group's trust, even if a few exchanges could have been more precise. Mireia nods approvingly as you load the bikes onto the van.";
+  } else {
+    title = "Room to Improve";
+    text = "The day went fine, but a few blunt or underdeveloped exchanges left Mireia slightly unsure of your judgement. She suggests a few grammar points to revisit before the next trip — starting with third conditionals and inversion.";
+  }
+  game.innerHTML = `
+    <div class="card results">
+      <h2>${title}</h2>
+      <p class="narration">${text}</p>
+      <div class="score-pill">Final Trail Confidence: ${trust}%</div>
+      <p class="glossary" style="margin-top:16px;"><strong>Language points covered:</strong> third conditionals, inversion after negative adverbials, cleft sentences, diplomatic hedging, advanced connectors (given that / despite / such...that), mountain biking vocabulary.</p>
+    </div>
+  `;
+}
+
+render();
+</script>
+</body>
+</html>

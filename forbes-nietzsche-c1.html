@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English | Making a Film About Nietzsche | C1</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e0e12;--surface:#17171f;--card:#1e1e2a;--border:#2d2d3f;
+  --gold:#c9a84c;--gold-lt:#e2c97e;--blue:#3a6b9e;--blue-lt:#5c94d4;
+  --cream:#f0e6cc;--muted:#7a7a99;--text:#ddd8cc;
+  --correct:#3d7a5c;--correct-bg:#1a3328;--wrong:#8a3535;--wrong-bg:#2e1515;
+  --radius:10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.7;min-height:100vh;}
+
+.film-strip{width:100%;height:26px;background:var(--border);display:flex;align-items:center;padding:0 12px;gap:8px;overflow:hidden;}
+.film-holes{display:flex;gap:9px;flex:1}
+.film-holes span{display:block;width:13px;height:13px;border-radius:3px;background:var(--bg);flex-shrink:0}
+
+.wrapper{max-width:860px;margin:0 auto;padding:0 20px 80px;}
+
+.hero{padding:44px 0 32px;text-align:center;}
+.logo-wrap{display:inline-block;margin-bottom:28px;}
+.lesson-meta{display:inline-flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:30px;padding:5px 18px;font-size:13px;color:var(--muted);margin-bottom:20px;}
+.lesson-meta .level{color:var(--gold);font-weight:600;font-family:'DM Mono',monospace;}
+.lesson-title{font-family:'Playfair Display',serif;font-size:clamp(26px,5vw,46px);color:var(--cream);line-height:1.2;margin-bottom:8px;}
+.lesson-title em{color:var(--gold);font-style:italic;}
+.lesson-subtitle{color:var(--muted);font-size:15px;font-weight:300;}
+
+.section{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:34px;margin-bottom:26px;position:relative;overflow:hidden;}
+.section::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--blue));}
+.section-label{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
+.section-title{font-family:'Playfair Display',serif;font-size:21px;color:var(--cream);margin-bottom:18px;}
+
+.disc-list{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.disc-list li{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:8px;padding:13px 17px;font-size:15px;}
+.disc-q-num{font-family:'DM Mono',monospace;font-size:11px;color:var(--gold);display:block;margin-bottom:3px;}
+
+.match-columns{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:580px){.match-columns{grid-template-columns:1fr;}}
+.match-col-title{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;font-family:'DM Mono',monospace;}
+.match-word{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 14px;cursor:pointer;margin-bottom:7px;transition:all .2s;font-weight:500;color:var(--cream);font-size:14px;}
+.match-word:hover{border-color:var(--gold);}
+.match-word.selected{border-color:var(--gold-lt);background:rgba(201,168,76,.12);color:var(--gold-lt);}
+.match-word.matched-correct{border-color:var(--correct);background:var(--correct-bg);color:#8de0b8;cursor:default;}
+.match-word.matched-wrong{border-color:var(--wrong);background:var(--wrong-bg);}
+.match-def{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 14px;cursor:pointer;margin-bottom:7px;transition:all .2s;font-size:13px;color:var(--text);}
+.match-def:hover{border-color:var(--blue-lt);}
+.match-def.matched-correct{border-color:var(--correct);background:var(--correct-bg);color:#8de0b8;cursor:default;}
+.match-def.matched-wrong{border-color:var(--wrong);background:var(--wrong-bg);}
+
+.score-tracker{display:flex;justify-content:space-between;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 17px;margin-bottom:20px;font-size:13px;color:var(--muted);}
+.score-val{font-family:'DM Mono',monospace;font-size:17px;color:var(--gold-lt);font-weight:500;}
+.progress-bar-wrap{background:var(--border);border-radius:20px;height:4px;margin-bottom:22px;overflow:hidden;}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--gold),var(--blue-lt));border-radius:20px;transition:width .4s;}
+
+.question-card{margin-bottom:26px;}
+.q-num{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);display:block;margin-bottom:10px;}
+.q-text{font-size:15px;color:var(--cream);line-height:1.6;margin-bottom:13px;}
+.options{display:flex;flex-direction:column;gap:7px;}
+.opt{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:11px 15px;cursor:pointer;font-size:14px;color:var(--text);transition:all .2s;display:flex;gap:10px;align-items:flex-start;text-align:left;width:100%;font-family:'DM Sans',sans-serif;}
+.opt:hover:not([disabled]){border-color:var(--gold);color:var(--cream);}
+.opt[disabled]{cursor:default;}
+.opt.correct{border-color:var(--correct);background:var(--correct-bg);color:#8de0b8;}
+.opt.wrong{border-color:var(--wrong);background:var(--wrong-bg);color:#e08080;}
+.opt-letter{font-family:'DM Mono',monospace;font-size:11px;color:var(--gold);min-width:16px;padding-top:1px;flex-shrink:0;}
+
+.feedback{margin-top:11px;padding:13px 15px;border-radius:8px;font-size:14px;line-height:1.6;display:none;}
+.feedback.correct{background:var(--correct-bg);border:1px solid var(--correct);color:#a8e8c8;display:block;}
+.feedback.wrong{background:var(--wrong-bg);border:1px solid var(--wrong);color:#e8a8a8;display:block;}
+
+.next-wrap{margin-top:18px;display:none;}
+.next-wrap.show{display:block;}
+
+.error-sentence{font-size:15px;color:var(--cream);background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:13px 16px;margin-bottom:11px;font-style:italic;border-left:3px solid var(--gold);}
+.text-input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:11px 15px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;transition:border-color .2s;}
+.text-input:focus{outline:none;border-color:var(--gold);}
+.text-input.correct{border-color:var(--correct);}
+.text-input.wrong{border-color:var(--wrong);}
+
+.word-bank{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px;}
+.word-chip{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:6px 11px;cursor:pointer;font-size:13px;color:var(--cream);transition:all .2s;user-select:none;}
+.word-chip:hover{border-color:var(--gold);color:var(--gold);}
+.word-chip.used{opacity:.3;cursor:default;pointer-events:none;}
+.answer-slots{min-height:44px;background:var(--surface);border:1px dashed var(--border);border-radius:8px;padding:7px 11px;display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-bottom:9px;}
+.slot-chip{background:rgba(201,168,76,.14);border:1px solid var(--gold);border-radius:6px;padding:5px 11px;font-size:13px;color:var(--gold-lt);cursor:pointer;transition:all .2s;}
+.slot-chip:hover{background:rgba(201,168,76,.25);}
+.slot-ph{font-size:13px;color:var(--muted);font-style:italic;}
+
+.lang-box{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--blue);border-radius:8px;padding:18px;margin:14px 0;}
+.lang-box-title{font-family:'DM Mono',monospace;font-size:11px;color:var(--blue-lt);letter-spacing:2px;text-transform:uppercase;margin-bottom:9px;}
+.lang-box ul{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.lang-box li{font-size:14px;color:var(--text);}
+.lang-box li::before{content:'→';color:var(--blue-lt);margin-right:8px;}
+
+.reading-text{background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--gold);border-radius:8px;padding:22px;margin-bottom:18px;font-size:15px;line-height:1.8;color:var(--text);}
+.reading-text p{margin-bottom:13px;}
+.reading-text p:last-child{margin-bottom:0;}
+
+.btn{display:inline-flex;align-items:center;gap:7px;background:var(--gold);color:#0e0e0e;border:none;border-radius:8px;padding:10px 22px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:14px;cursor:pointer;transition:all .2s;letter-spacing:.3px;}
+.btn:hover{background:var(--gold-lt);transform:translateY(-1px);}
+.btn[disabled]{opacity:.4;cursor:default;transform:none;}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);background:transparent;transform:none;}
+.btn-blue{background:var(--blue);color:#fff;}
+.btn-blue:hover{background:var(--blue-lt);}
+
+.score-screen{text-align:center;padding:28px 16px;}
+.big-score{font-family:'Playfair Display',serif;font-size:60px;color:var(--gold);line-height:1;margin:14px 0;}
+.score-label{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:2px;}
+.score-msg{font-size:15px;color:var(--text);margin:10px 0 22px;line-height:1.6;}
+
+.notice-badge{display:inline-block;background:rgba(201,168,76,.14);border:1px solid var(--gold);color:var(--gold-lt);font-size:11px;font-family:'DM Mono',monospace;padding:2px 8px;border-radius:4px;letter-spacing:1px;text-transform:uppercase;}
+
+.checklist{list-style:none;display:flex;flex-direction:column;gap:7px;margin:12px 0;}
+.checklist li{font-size:14px;color:var(--text);display:flex;gap:8px;align-items:flex-start;}
+.checklist li::before{content:'☐';color:var(--gold);font-size:15px;line-height:1.35;}
+.writing-area{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:13px 15px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.7;min-height:150px;resize:vertical;transition:border-color .2s;margin:11px 0 7px;}
+.writing-area:focus{outline:none;border-color:var(--gold);}
+.wc-hint{font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;}
+
+.scenario-box{background:rgba(58,107,158,.1);border:1px solid var(--blue);border-radius:8px;padding:18px;margin-bottom:14px;}
+.scenario-title{font-size:11px;font-family:'DM Mono',monospace;color:var(--blue-lt);letter-spacing:2px;text-transform:uppercase;margin-bottom:7px;}
+.scenario-text{font-size:15px;color:var(--cream);line-height:1.6;}
+.divider{height:1px;background:var(--border);margin:28px 0;}
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+
+<div class="film-strip">
+  <div class="film-holes">
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+</div>
+
+<div class="wrapper">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="logo-wrap">
+    <svg viewBox="0 0 220 70" width="220" height="70" xmlns="http://www.w3.org/2000/svg">
+      <text x="110" y="30" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="28" font-weight="400" fill="#c9a84c" letter-spacing="3">FORBES</text>
+      <line x1="20" y1="38" x2="200" y2="38" stroke="#c9a84c" stroke-width="0.8" opacity="0.6"/>
+      <text x="110" y="58" text-anchor="middle" font-family="'DM Sans',Arial,sans-serif" font-size="13" font-weight="700" fill="#e2c97e" letter-spacing="8">ENGLISH</text>
+    </svg>
+  </div>
+  <div>
+    <div class="lesson-meta">
+      <span class="level">C1 Advanced</span>
+      <span>&#183;</span>
+      <span>Film Language &amp; Critical Discourse</span>
+      <span>&#183;</span>
+      <span>&#8776; 90 min</span>
+    </div>
+  </div>
+  <h1 class="lesson-title"><em>Thus Spake the Director</em></h1>
+  <p class="lesson-subtitle">Making a Film About Nietzsche &#8212; Language for Pitching, Critique &amp; Philosophical Debate</p>
+
+  <div style="margin-top:26px;border-radius:8px;overflow:hidden;">
+    <svg viewBox="0 0 760 190" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <rect width="760" height="190" fill="#17171f" rx="8"/>
+      <rect x="12" y="18" width="16" height="13" rx="3" fill="#0e0e12"/>
+      <rect x="12" y="42" width="16" height="13" rx="3" fill="#0e0e12"/>
+      <rect x="12" y="66" width="16" height="13" rx="3" fill="#0e0e12"/>
+      <rect x="12" y="90" width="16" height="13" rx="3" fill="#0e0e12"/>
+      <rect x="12" y="114" width="16" height="13" rx="3" fill="#0e0e12"/>
+      <rect x="12" y="138" width="16" height="13" rx="3" fill="#0e0e12"/>
+      <rect x="12" y="162" width="16" height="13" rx="3" fill="#0e0e12"/>
+      <rect x="732" y="18" width="16" height="13" rx="3" fill="#0e0e12"/>
+      <rect x="732" y="42" width="16" height="13" rx="3" fill="#0e0e12"/>
+      <rect x="732" y="66" width="16" height="13" rx="3" fill="#0e0e12"/>
+      <rect x="732" y="90" width="16" height="13" rx="3" fill="#0e0e12"/>
+      <rect x="732" y="114" width="16" height="13" rx="3" fill="#0e0e12"/>
+      <rect x="732" y="138" width="16" height="13" rx="3" fill="#0e0e12"/>
+      <rect x="732" y="162" width="16" height="13" rx="3" fill="#0e0e12"/>
+      <rect x="80" y="55" width="140" height="90" rx="8" fill="#2a2a38" stroke="#c9a84c" stroke-width="1.5"/>
+      <circle cx="150" cy="100" r="34" fill="#17171f" stroke="#c9a84c" stroke-width="1.5"/>
+      <circle cx="150" cy="100" r="23" fill="#0e0e12" stroke="#3a6b9e" stroke-width="1"/>
+      <circle cx="150" cy="100" r="12" fill="#17171f" stroke="#c9a84c" stroke-width=".8"/>
+      <circle cx="150" cy="100" r="5" fill="#c9a84c" opacity=".5"/>
+      <rect x="210" y="60" width="22" height="16" rx="3" fill="#2a2a38" stroke="#c9a84c" stroke-width="1"/>
+      <circle cx="100" cy="57" r="14" fill="#17171f" stroke="#c9a84c" stroke-width="1.2"/>
+      <circle cx="100" cy="57" r="6" fill="#c9a84c" opacity=".4"/>
+      <circle cx="196" cy="57" r="14" fill="#17171f" stroke="#c9a84c" stroke-width="1.2"/>
+      <circle cx="196" cy="57" r="6" fill="#c9a84c" opacity=".4"/>
+      <text x="265" y="75" font-family="Georgia,serif" font-size="11" fill="#c9a84c" opacity=".8" font-style="italic">"Without music, life would be a mistake."</text>
+      <text x="348" y="91" font-family="Georgia,serif" font-size="10" fill="#7a7a99">&#8212; Nietzsche, Twilight of the Idols</text>
+      <line x1="265" y1="105" x2="680" y2="105" stroke="#2d2d3f" stroke-width="1"/>
+      <ellipse cx="440" cy="142" rx="50" ry="24" fill="#17171f" stroke="#3a6b9e" stroke-width="1.5"/>
+      <ellipse cx="440" cy="142" rx="30" ry="15" fill="#0e0e12"/>
+      <circle cx="440" cy="142" r="10" fill="#3a6b9e" opacity=".7"/>
+      <circle cx="440" cy="142" r="4.5" fill="#c9a84c"/>
+      <circle cx="444" cy="138" r="2" fill="#fff" opacity=".4"/>
+      <line x1="413" y1="121" x2="417" y2="126" stroke="#3a6b9e" stroke-width="1"/>
+      <line x1="428" y1="117" x2="430" y2="122" stroke="#3a6b9e" stroke-width="1"/>
+      <line x1="440" y1="116" x2="440" y2="121" stroke="#3a6b9e" stroke-width="1"/>
+      <line x1="452" y1="117" x2="450" y2="122" stroke="#3a6b9e" stroke-width="1"/>
+      <line x1="467" y1="121" x2="463" y2="126" stroke="#3a6b9e" stroke-width="1"/>
+      <text x="520" y="126" font-family="monospace" font-size="9" fill="#7a7a99" letter-spacing="2">PERSPECTIVISM</text>
+      <text x="520" y="144" font-family="monospace" font-size="9" fill="#7a7a99" letter-spacing="2">WILL TO POWER</text>
+      <text x="520" y="162" font-family="monospace" font-size="9" fill="#7a7a99" letter-spacing="2">ETERNAL RETURN</text>
+      <line x1="513" y1="118" x2="513" y2="169" stroke="#2d2d3f" stroke-width="1"/>
+    </svg>
+  </div>
+</div>
+
+<!-- SECTION 1 -->
+<div class="section">
+  <div class="section-label">Section 1 &#183; Warm-Up</div>
+  <h2 class="section-title">Lead-In: The Director's Dilemma</h2>
+  <p style="font-size:14px;color:var(--muted);margin-bottom:18px;">Discuss with a partner or note your thinking. These are professional judgements &#8212; no right answers.</p>
+  <ul class="disc-list">
+    <li><span class="disc-q-num">01</span>You have been offered the Nietzsche project. What is your instinctive genre response &#8212; conventional biopic, essay film, Malick-style meditation, something formally radical? What pulls you in that direction?</li>
+    <li><span class="disc-q-num">02</span>Which period do you focus on: the Basel years and the Wagner friendship, the solitary decade of <em>Thus Spoke Zarathustra</em>, or the Turin collapse of 1889? What does that choice reveal about your interpretation of the man?</li>
+    <li><span class="disc-q-num">03</span>His sister Elisabeth systematically distorted his manuscripts after his breakdown and aligned them with rising nationalism. Is that part of the story you are telling &#8212; or a separate film?</li>
+    <li><span class="disc-q-num">04</span>Nietzsche proclaimed the death of God but wept over a horse being beaten in the street. How do you hold the work and the man together &#8212; and which interests you more?</li>
+    <li><span class="disc-q-num">05</span>Think of a philosopher or intellectual who has been filmed well &#8212; or badly. What made the difference?</li>
+  </ul>
+</div>
+
+<!-- SECTION 2 -->
+<div class="section" id="sec2">
+  <div class="section-label">Section 2 &#183; Language Discovery</div>
+  <h2 class="section-title">Key Language for Pitching &amp; Critique</h2>
+  <p style="font-size:14px;color:var(--muted);margin-bottom:18px;">Match each expression to its meaning. Click a term on the left, then the correct definition on the right.</p>
+  <div class="match-columns">
+    <div>
+      <div class="match-col-title">Expression</div>
+      <div class="match-word" data-id="1" onclick="matchWord(this)">hagiography</div>
+      <div class="match-word" data-id="2" onclick="matchWord(this)">to dramatise</div>
+      <div class="match-word" data-id="3" onclick="matchWord(this)">to misappropriate</div>
+      <div class="match-word" data-id="4" onclick="matchWord(this)">perspectivism</div>
+      <div class="match-word" data-id="5" onclick="matchWord(this)">to grapple with</div>
+      <div class="match-word" data-id="6" onclick="matchWord(this)">aesthetic sensibility</div>
+      <div class="match-word" data-id="7" onclick="matchWord(this)">anachronistic</div>
+      <div class="match-word" data-id="8" onclick="matchWord(this)">to sanitise</div>
+    </div>
+    <div>
+      <div class="match-col-title">Meaning</div>
+      <div class="match-def" data-id="5" onclick="matchDef(this)">to struggle actively and seriously with a difficult problem or idea</div>
+      <div class="match-def" data-id="1" onclick="matchDef(this)">an overly reverent portrait of someone that ignores their flaws</div>
+      <div class="match-def" data-id="7" onclick="matchDef(this)">belonging to the wrong time period; jarring in its historical context</div>
+      <div class="match-def" data-id="3" onclick="matchDef(this)">to take something and use it for a different, often dishonest, purpose</div>
+      <div class="match-def" data-id="6" onclick="matchDef(this)">the capacity to perceive and respond to beauty and artistic quality</div>
+      <div class="match-def" data-id="2" onclick="matchDef(this)">to present events in a vivid, heightened, or theatrical way</div>
+      <div class="match-def" data-id="8" onclick="matchDef(this)">to remove disturbing truths in order to make something more palatable</div>
+      <div class="match-def" data-id="4" onclick="matchDef(this)">the view that all knowledge is shaped by the position of the observer</div>
+    </div>
+  </div>
+  <div id="matchFeedback" style="margin-top:14px;"></div>
+  <div id="matchScore" style="margin-top:8px;font-family:'DM Mono',monospace;font-size:13px;color:var(--muted);"></div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section" id="sec3">
+  <div class="section-label">Section 3 &#183; Controlled Practice 1</div>
+  <h2 class="section-title">Fill in the Blank</h2>
+  <p style="font-size:14px;color:var(--muted);margin-bottom:14px;">Choose the best word or phrase to complete each sentence. <span class="notice-badge">scored</span></p>
+  <div class="score-tracker"><span>Score</span><span class="score-val" id="s3score">0 / 7</span></div>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="s3bar" style="width:0%"></div></div>
+  <div id="s3questions"></div>
+  <div id="s3result" class="hidden">
+    <div class="score-screen">
+      <div class="score-label">SECTION 3 RESULT</div>
+      <div class="big-score" id="s3final"></div>
+      <div class="score-msg" id="s3msg"></div>
+      <button class="btn btn-ghost" onclick="restartSection(3)">Try Again</button>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 4 -->
+<div class="section" id="sec4">
+  <div class="section-label">Section 4 &#183; Controlled Practice 2</div>
+  <h2 class="section-title">Error Correction</h2>
+  <p style="font-size:14px;color:var(--muted);margin-bottom:14px;">Each sentence contains one error. Type the corrected version below. <span class="notice-badge">scored</span></p>
+  <div class="score-tracker"><span>Score</span><span class="score-val" id="s4score">0 / 6</span></div>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="s4bar" style="width:0%"></div></div>
+  <div id="s4questions"></div>
+  <div id="s4result" class="hidden">
+    <div class="score-screen">
+      <div class="score-label">SECTION 4 RESULT</div>
+      <div class="big-score" id="s4final"></div>
+      <div class="score-msg" id="s4msg"></div>
+      <button class="btn btn-ghost" onclick="restartSection(4)">Try Again</button>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 5 -->
+<div class="section" id="sec5">
+  <div class="section-label">Section 5 &#183; Controlled Practice 3</div>
+  <h2 class="section-title">Sentence Reordering</h2>
+  <p style="font-size:14px;color:var(--muted);margin-bottom:14px;">Click chunks in the correct order to build the sentence. Click a placed chunk to remove it. <span class="notice-badge">scored</span></p>
+  <div class="score-tracker"><span>Score</span><span class="score-val" id="s5score">0 / 5</span></div>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="s5bar" style="width:0%"></div></div>
+  <div id="s5questions"></div>
+  <div id="s5result" class="hidden">
+    <div class="score-screen">
+      <div class="score-label">SECTION 5 RESULT</div>
+      <div class="big-score" id="s5final"></div>
+      <div class="score-msg" id="s5msg"></div>
+      <button class="btn btn-ghost" onclick="restartSection(5)">Try Again</button>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 6 -->
+<div class="section">
+  <div class="section-label">Section 6 &#183; Guided Discussion</div>
+  <h2 class="section-title">In the Edit Suite</h2>
+  <p style="font-size:14px;color:var(--muted);margin-bottom:14px;">Discuss these questions. Use at least <strong style="color:var(--gold-lt)">three expressions</strong> from Section 2 in your answers.</p>
+  <div class="lang-box">
+    <div class="lang-box-title">Useful Language</div>
+    <ul>
+      <li>The risk of simply dramatising the collapse without grappling with...</li>
+      <li>Any version that sanitises his relationship with Wagner would...</li>
+      <li>From an aesthetic sensibility standpoint, the film demands...</li>
+      <li>The hagiography trap is hardest to avoid when...</li>
+      <li>A truly perspectivist structure would mean...</li>
+      <li>If we misappropriate the ideas, even unintentionally, the audience...</li>
+      <li>The anachronistic reading of the Übermensch as...</li>
+    </ul>
+  </div>
+  <ul class="disc-list" style="margin-top:14px;">
+    <li><span class="disc-q-num">01</span>How do you dramatise an aphorism? <em>Thus Spoke Zarathustra</em> is lyrical, episodic, non-linear. What cinematic form does that suggest to you &#8212; and what are the traps?</li>
+    <li><span class="disc-q-num">02</span>The Nietzsche-Wagner relationship is the most dramatically rich material in the story. How do you prevent it from becoming a conventional bromance-to-rivalry narrative? What can the form do that the content cannot?</li>
+    <li><span class="disc-q-num">03</span>His philosophy is frequently misread as proto-fascist. How does your film address the misappropriation without becoming a lecture or a defence?</li>
+    <li><span class="disc-q-num">04</span>Some directors &#8212; Jarman, Godard, Pasolini &#8212; embedded philosophical argument into the texture of their films. Is that your approach? Or do the ideas sit in the dialogue and the drama?</li>
+    <li><span class="disc-q-num">05</span>Who do you cast as Nietzsche, and what does that casting decision say about your interpretation of the man?</li>
+  </ul>
+</div>
+
+<!-- SECTION 7 -->
+<div class="section" id="sec7">
+  <div class="section-label">Section 7 &#183; Input Task</div>
+  <h2 class="section-title">Reading: The Impossible Philosopher</h2>
+  <p style="font-size:14px;color:var(--muted);margin-bottom:18px;">Read the extract, then answer the comprehension questions. <span class="notice-badge">scored</span></p>
+  <div class="reading-text">
+    <p>When the German director Werner Herzog was once asked whether he would ever make a film about Friedrich Nietzsche, he reportedly replied: "To dramatise philosophy, you must first decide whether you are serving the ideas or the man. With Nietzsche, the two are almost impossible to separate &#8212; and that, precisely, is the problem." The remark captures a dilemma that has deterred even the most ambitious filmmakers. Nietzsche is not merely a biographical subject; he is a style, a provocation, a way of seeing.</p>
+    <p>A straightforward biopic risks becoming hagiography &#8212; an uncritical celebration of a tormented genius who strode across the Alps composing aphorisms and denouncing God. Yet a film that dwells too insistently on his madness risks something equally distorting: the reduction of a complex thinker to a cautionary tale about intellectual excess. The challenge is to grapple with a man who was simultaneously ahead of his time and catastrophically misunderstood by it.</p>
+    <p>Any honest film must contend with the figure of his sister, Elisabeth Forster-Nietzsche, who systematically misappropriated his work following his collapse in 1889. Her editorial interventions sanitised, distorted, and eventually aligned his philosophy with a nationalism he would have despised. A director who ignores this story sanitises it in a different way &#8212; by pretending that ideas exist in pure form, untouched by the forces that interpret and transmit them.</p>
+    <p>Perhaps the most compelling cinematic approach would be one that embraces perspectivism as a structural principle &#8212; not just a theme. Such a film might deliberately show Nietzsche through multiple incompatible lenses: the tender friend, the ruthless critic, the solitary wanderer, the man dissolving into silence. Not a single truth, but a collision of truths. Not biography, but biography as a philosophical act.</p>
+  </div>
+  <div class="score-tracker"><span>Score</span><span class="score-val" id="s7score">0 / 5</span></div>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="s7bar" style="width:0%"></div></div>
+  <div id="s7questions"></div>
+  <div id="s7result" class="hidden">
+    <div class="score-screen">
+      <div class="score-label">SECTION 7 RESULT</div>
+      <div class="big-score" id="s7final"></div>
+      <div class="score-msg" id="s7msg"></div>
+      <button class="btn btn-ghost" onclick="restartSection(7)">Try Again</button>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 8 -->
+<div class="section" id="sec8">
+  <div class="section-label">Section 8 &#183; Language in Context</div>
+  <h2 class="section-title">Noticing Activity</h2>
+  <p style="font-size:14px;color:var(--muted);margin-bottom:18px;">Look at these phrases from the article. Choose the best explanation for each. <span class="notice-badge">scored</span></p>
+  <div class="score-tracker"><span>Score</span><span class="score-val" id="s8score">0 / 5</span></div>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="s8bar" style="width:0%"></div></div>
+  <div id="s8questions"></div>
+  <div id="s8result" class="hidden">
+    <div class="score-screen">
+      <div class="score-label">SECTION 8 RESULT</div>
+      <div class="big-score" id="s8final"></div>
+      <div class="score-msg" id="s8msg"></div>
+      <button class="btn btn-ghost" onclick="restartSection(8)">Try Again</button>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 9 -->
+<div class="section">
+  <div class="section-label">Section 9 &#183; Deeper Discussion</div>
+  <h2 class="section-title">Going Further</h2>
+  <p style="font-size:14px;color:var(--muted);margin-bottom:18px;">Discuss or reflect on these higher-level questions. Draw on the article and your own professional experience.</p>
+  <ul class="disc-list">
+    <li><span class="disc-q-num">01</span>The article says a conventional biopic risks becoming hagiography. Do you think that is inevitable &#8212; or is hagiography a failure of directorial nerve rather than a structural problem with the genre?</li>
+    <li><span class="disc-q-num">02</span>Herzog's remark implies that serving the ideas and serving the man are in tension. Is that tension unique to philosophical biography, or does it apply to any film about a real person?</li>
+    <li><span class="disc-q-num">03</span>The article proposes perspectivism as a structural principle, not just a theme. Think of films that make their form enact their argument. What makes that work? What are the risks?</li>
+    <li><span class="disc-q-num">04</span>Elisabeth's interventions mean any film about Nietzsche is also, inevitably, about the politics of interpretation. Is that a problem to solve or a subject to explore?</li>
+    <li><span class="disc-q-num">05</span>"Not biography, but biography as a philosophical act." Could that be your elevator pitch? What would it mean for the film you want to make?</li>
+  </ul>
+</div>
+
+<!-- SECTION 10 -->
+<div class="section">
+  <div class="section-label">Section 10 &#183; Final Productive Task</div>
+  <h2 class="section-title">The Pitch &amp; The Statement</h2>
+  <div class="scenario-box">
+    <div class="scenario-title">Speaking Task &#8212; The Pitch</div>
+    <p class="scenario-text">You are pitching your Nietzsche film to a panel of European co-production partners. Two minutes. They have heard three other pitches today. Make yours the one they remember.</p>
+  </div>
+  <div class="lang-box" style="margin-bottom:18px;">
+    <div class="lang-box-title">What to cover</div>
+    <ul>
+      <li>Genre, tone, and structural approach &#8212; and why it is right for this material</li>
+      <li>Which period of his life, and what that choice reveals about your interpretation</li>
+      <li>How you represent the ideas on screen without dramatising them into cliche</li>
+      <li>How you handle Elisabeth and the question of misappropriation</li>
+      <li>Your casting argument</li>
+    </ul>
+  </div>
+  <div class="lang-box" style="margin-bottom:20px;">
+    <div class="lang-box-title">Useful Phrases</div>
+    <ul>
+      <li>Rather than producing a hagiography, the film would...</li>
+      <li>The structural principle is perspectivism itself, meaning...</li>
+      <li>We grapple with Elisabeth's distortions by...</li>
+      <li>The film's aesthetic sensibility draws from...</li>
+      <li>To avoid anything anachronistic in the treatment of the ideas...</li>
+      <li>We dramatise the rupture with Wagner not through dialogue but through...</li>
+    </ul>
+  </div>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:24px;">Success criteria: clear vision, at least three expressions from the lesson used naturally, two key challenges from the article addressed, approximately two minutes.</p>
+  <div class="divider"></div>
+  <h3 style="font-family:'Playfair Display',serif;font-size:18px;color:var(--cream);margin-bottom:10px;">Writing Task &#8212; Director's Statement</h3>
+  <p style="font-size:14px;color:var(--muted);margin-bottom:14px;">Write a director's statement for your Nietzsche film (200&#8211;250 words). Explain your artistic vision, your approach to the material, and the specific challenges you intend to address.</p>
+  <ul class="checklist">
+    <li>I have used at least three vocabulary items from Section 2</li>
+    <li>I have justified my choice of genre or formal approach</li>
+    <li>I have addressed the tension between ideas and biography</li>
+    <li>I have taken a clear position on Elisabeth and the misappropriation problem</li>
+    <li>I have used a confident, formal register appropriate for a professional statement</li>
+    <li>I have checked grammar, word order, and sentence clarity</li>
+  </ul>
+  <textarea class="writing-area" id="writingTask" placeholder="Begin your director's statement here..."></textarea>
+  <div class="wc-hint">Suggested length: 200&#8211;250 words &nbsp;&#183;&nbsp; <span id="wordCount">0</span> words written</div>
+  <div style="margin-top:11px;display:flex;gap:9px;flex-wrap:wrap;">
+    <button class="btn btn-blue" id="copyBtn" onclick="copyWriting()">Copy My Answer</button>
+    <button class="btn btn-ghost" onclick="clearWriting()">Clear</button>
+  </div>
+</div>
+
+</div><!-- /wrapper -->
+
+<div class="film-strip" style="position:fixed;bottom:0;left:0;right:0;z-index:10;">
+  <div class="film-holes">
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+</div>
+
+<script>
+/* ========== MATCHING ========== */
+var selWord = null;
+var matchOk = 0;
+var MATCH_TOTAL = 8;
+
+function matchWord(el) {
+  if (el.classList.contains('matched-correct')) { return; }
+  document.querySelectorAll('.match-word').forEach(function(w) { w.classList.remove('selected'); });
+  selWord = el;
+  el.classList.add('selected');
+}
+
+function matchDef(el) {
+  if (!selWord) { return; }
+  if (el.classList.contains('matched-correct')) { return; }
+  var wid = parseInt(selWord.getAttribute('data-id'), 10);
+  var did = parseInt(el.getAttribute('data-id'), 10);
+  if (wid === did) {
+    selWord.classList.remove('selected');
+    selWord.classList.add('matched-correct');
+    el.classList.add('matched-correct');
+    matchOk++;
+    document.getElementById('matchScore').textContent = 'Matched: ' + matchOk + ' / ' + MATCH_TOTAL;
+    if (matchOk === MATCH_TOTAL) {
+      document.getElementById('matchFeedback').innerHTML =
+        '<div class="feedback correct">All 8 expressions matched correctly. These terms carry the discussions and writing tasks throughout the lesson.</div>';
+    }
+  } else {
+    var sw = selWord;
+    sw.classList.add('matched-wrong');
+    el.classList.add('matched-wrong');
+    setTimeout(function() {
+      sw.classList.remove('matched-wrong');
+      el.classList.remove('matched-wrong');
+    }, 650);
+  }
+  selWord = null;
+}
+
+/* ========== SECTION DATA ========== */
+var SEC = {};
+
+SEC[3] = { type: 'mcq', total: 7, answered: 0, correct: 0, questions: [
+  {
+    q: 'A pitch that refuses to ______ the darker episodes in Nietzsche\'s life will almost certainly come across as evasive.',
+    opts: ['overlook entirely', 'grapple with', 'sanitise quickly', 'misattribute deliberately'],
+    ans: 1,
+    fb: "'Grapple with' means to engage seriously and actively with something difficult. 'Sanitise' means to remove the darkness altogether — grappling means confronting it honestly."
+  },
+  {
+    q: 'The previous adaptation was widely criticised as a ______ — it showed a saintly, suffering genius and nothing more uncomfortable.',
+    opts: ['dramatisation', 'hagiography', 'montage sequence', 'retrospective piece'],
+    ans: 1,
+    fb: "A 'hagiography' is an uncritically reverent portrait. 'Saintly, suffering genius and nothing more' describes exactly this: admiration without critical complexity."
+  },
+  {
+    q: 'Elisabeth ______ her brother\'s unpublished notebooks, editing them to support a political agenda he would have rejected.',
+    opts: ['dramatised carefully', 'misappropriated', 'sanitised lightly', 'curated faithfully'],
+    ans: 1,
+    fb: "'Misappropriated' means to take something and use it for a wrong or dishonest purpose. She repurposed his ideas for nationalism — misappropriation, not editing."
+  },
+  {
+    q: 'The production designer\'s ______ was strongly influenced by German Expressionism — stark angles, heavy shadow.',
+    opts: ['personal hagiography', 'aesthetic sensibility', 'political perspective', 'formal anachronism'],
+    ans: 1,
+    fb: "'Aesthetic sensibility' describes a developed capacity to perceive and make artistic choices about form and beauty. It captures the designer's visual instincts."
+  },
+  {
+    q: 'Showing Nietzsche with a smartphone as a visual joke would be ______ — amusing briefly, but it breaks the world of the film.',
+    opts: ['perspectival above all', 'anachronistic of course', 'hagiographic in effect', 'reductive by design'],
+    ans: 1,
+    fb: "'Anachronistic' means belonging to the wrong time period. The sentence acknowledges a possible comic use but names the formal cost clearly."
+  },
+  {
+    q: 'The documentary failed because it ______ his radicalism — by the end, he seemed like a merely eccentric but harmless figure.',
+    opts: ['grappled with', 'misappropriated', 'sanitised', 'dramatised broadly'],
+    ans: 2,
+    fb: "'Sanitised' means to remove the challenging or disturbing elements. The result — 'eccentric but harmless' — is what happens when you clean up a genuinely radical thinker."
+  },
+  {
+    q: 'Nietzsche\'s ______ holds that there is no God\'s-eye view — every claim to knowledge is conditioned by who makes it and where they stand.',
+    opts: ['nihilism', 'perspectivism', 'determinism', 'existentialism'],
+    ans: 1,
+    fb: "'Perspectivism' is Nietzsche's doctrine that all knowledge is perspectival — no neutral standpoint exists. This is distinct from nihilism, determinism, or existentialism."
+  }
+]};
+
+SEC[4] = { type: 'error', total: 6, answered: 0, correct: 0, questions: [
+  {
+    sentence: 'Any serious director must grapple the question of how to represent abstract ideas on screen.',
+    correct: 'Any serious director must grapple with the question of how to represent abstract ideas on screen.',
+    explanation: "'Grapple' requires the preposition 'with'. It is not transitive on its own — you grapple with something, not grapple something."
+  },
+  {
+    sentence: 'The previous adaptation was nothing more than an hagiography of a man who deserved something more honest.',
+    correct: 'The previous adaptation was nothing more than a hagiography of a man who deserved something more honest.',
+    explanation: "'Hagiography' starts with the consonant sound /h/, so the correct article is 'a', not 'an'. Use 'an' only before vowel sounds."
+  },
+  {
+    sentence: 'Elisabeth misappropriated of his notebooks and used them to support a cause he would have despised.',
+    correct: 'Elisabeth misappropriated his notebooks and used them to support a cause he would have despised.',
+    explanation: "'Misappropriate' is transitive and takes a direct object with no preposition. You misappropriate something, not misappropriate of something."
+  },
+  {
+    sentence: 'The film\'s aesthetic sensibility were shaped by years the director spent studying German Expressionism.',
+    correct: 'The film\'s aesthetic sensibility was shaped by years the director spent studying German Expressionism.',
+    explanation: "'Aesthetic sensibility' is a singular noun phrase. The verb must be 'was'. Do not be misled by the distance between subject and verb."
+  },
+  {
+    sentence: 'It would be highly anachronist to give Nietzsche access to the complete works of Freud.',
+    correct: 'It would be highly anachronistic to give Nietzsche access to the complete works of Freud.',
+    explanation: "The correct adjective is 'anachronistic'. 'Anachronist' is a noun — a person who creates or studies anachronisms — not an adjective."
+  },
+  {
+    sentence: 'The decision to dramatise his breakdown was bold, but the execution felt like it was oversimplified the philosophy.',
+    correct: 'The decision to dramatise his breakdown was bold, but the execution felt like it oversimplified the philosophy.',
+    explanation: "After 'felt like', use a finite clause: 'it oversimplified'. The phrase 'was oversimplified' creates a clumsy passive that is grammatically incorrect here."
+  }
+]};
+
+SEC[5] = { type: 'reorder', total: 5, answered: 0, correct: 0, questions: [
+  {
+    chunks: ['Any honest treatment', 'must grapple with', 'the way his ideas', 'were later misappropriated'],
+    answer: 'Any honest treatment must grapple with the way his ideas were later misappropriated',
+    explanation: "Subject + modal verb phrase + object clause. 'The way his ideas were later misappropriated' is a complex noun clause functioning as the object of 'grapple with'."
+  },
+  {
+    chunks: ['Rather than producing', 'a hagiography,', 'the director chose', 'to dramatise his darkest moments'],
+    answer: 'Rather than producing a hagiography, the director chose to dramatise his darkest moments',
+    explanation: "'Rather than + -ing' opens the sentence as a contrastive phrase, followed by a comma and the main clause. Standard structure for expressing contrast in formal written English."
+  },
+  {
+    chunks: ['Perspectivism holds', 'that there is', 'no view from nowhere,', 'only views from somewhere'],
+    answer: 'Perspectivism holds that there is no view from nowhere, only views from somewhere',
+    explanation: "The verb 'holds' introduces a 'that' complement clause. The second half is an elliptical contrast, standing in for 'there are only views from somewhere'."
+  },
+  {
+    chunks: ['A film', 'with a strong aesthetic sensibility', 'does not merely recreate the past', '-- it interrogates it'],
+    answer: 'A film with a strong aesthetic sensibility does not merely recreate the past -- it interrogates it',
+    explanation: "A noun phrase expanded by a prepositional phrase leads into the main verb. The dash introduces a contrasting, sharpening second clause — common in critical writing."
+  },
+  {
+    chunks: ['Her decision', 'to sanitise the manuscripts', 'shaped the way', 'an entire century read Nietzsche'],
+    answer: 'Her decision to sanitise the manuscripts shaped the way an entire century read Nietzsche',
+    explanation: "Subject = 'Her decision to sanitise the manuscripts'. Verb = 'shaped'. Object = 'the way an entire century read Nietzsche' — a complex noun clause."
+  }
+]};
+
+SEC[7] = { type: 'mcq', total: 5, answered: 0, correct: 0, questions: [
+  {
+    q: "What does Herzog's remark, as cited in the article, identify as the core problem of making a Nietzsche film?",
+    opts: [
+      'That philosophical content is too abstract for the cinematic medium',
+      'That the man and his ideas are so entangled they cannot be meaningfully separated',
+      'That Nietzsche himself distrusted theatre and would have opposed dramatisation',
+      'That there is insufficient biographical documentation for a full-length film'
+    ],
+    ans: 1,
+    fb: "Herzog's remark — 'the two are almost impossible to separate' — names the inseparability of Nietzsche as a person and Nietzsche as a set of ideas. That entanglement is the problem."
+  },
+  {
+    q: 'What, according to the article, is the specific danger of centring the film on his mental collapse?',
+    opts: [
+      'It would expose the production to legal challenges from his surviving estate',
+      'It would make the film too similar to existing biopics of 19th-century composers',
+      'It could reduce a complex thinker to a cautionary tale about intellectual ambition',
+      'It would require fictionalising events for which no primary sources exist'
+    ],
+    ans: 2,
+    fb: "The article warns this risks 'the reduction of a complex thinker to a cautionary tale about intellectual excess' — as distorting, in its way, as hagiography."
+  },
+  {
+    q: "According to the article, what was the consequence of Elisabeth's editorial interventions?",
+    opts: [
+      'She preserved his manuscripts faithfully but omitted the most radical sections',
+      'She aligned his philosophy with a nationalism he would have found abhorrent',
+      'She destroyed the majority of his private correspondence before his death',
+      'She collaborated with Wagner to produce a misleading account of their friendship'
+    ],
+    ans: 1,
+    fb: "The article states she 'sanitised, distorted, and eventually aligned his philosophy with a nationalism he would have despised' — all through deliberate editorial misappropriation."
+  },
+  {
+    q: "What does the phrase 'a view from nowhere' signify in the article's argument?",
+    opts: [
+      'A filmmaking technique that removes the director\'s visible presence from the frame',
+      'A Nietzschean concept synonymous with nihilism and the absence of values',
+      'An impossible, perfectly neutral standpoint — the illusion of pure objectivity',
+      'A documentary approach that refuses to interview any surviving witnesses'
+    ],
+    ans: 2,
+    fb: "The phrase describes the impossible ideal of a standpoint beyond all perspective. Perspectivism holds that no such view exists — all knowledge is conditioned by position."
+  },
+  {
+    q: 'What structural approach does the article ultimately recommend for a Nietzsche film?',
+    opts: [
+      'A linear chronological biopic following him from Rocken to Turin',
+      'A film built around multiple, irreconcilable perspectives as its organising principle',
+      'A documentary using only archival photographs, letters, and voiceover',
+      'A fictional thriller using his collapse as its dramatic spine'
+    ],
+    ans: 1,
+    fb: "The article argues for a film that embraces perspectivism structurally — showing 'multiple incompatible lenses' rather than arriving at a single unified portrait."
+  }
+]};
+
+SEC[8] = { type: 'mcq', total: 5, answered: 0, correct: 0, questions: [
+  {
+    q: 'From the article: "Nietzsche is not merely a biographical subject; he is a style, a provocation, a way of seeing." What does "a way of seeing" mean here?',
+    opts: [
+      'That Nietzsche had distinctive visual preferences that influenced his landscape descriptions',
+      'That engaging with his philosophy restructures how one perceives and interprets the world',
+      'That his writing was highly cinematic and lent itself naturally to visualisation',
+      'That subsequent directors have viewed his life through their own subjective lenses'
+    ],
+    ans: 1,
+    fb: "'A way of seeing' is a philosophical phrase describing a fundamental orientation that shapes how reality is perceived. The article is saying his work changes how you think, not just what you think about."
+  },
+  {
+    q: 'From the article: "A straightforward biopic risks becoming hagiography." What does "straightforward" imply here?',
+    opts: [
+      'Technically simple and therefore inexpensive to produce',
+      'Honest and direct — telling the story without embellishment',
+      'Conventional in form — following genre norms without critical distance',
+      'Politically uncontroversial and therefore more likely to receive funding'
+    ],
+    ans: 2,
+    fb: "In this context 'straightforward' means genre-conventional — following the standard biopic template without questioning it. The implication is that uncritical adherence to form produces uncritical content."
+  },
+  {
+    q: 'From the article: "Her editorial interventions sanitised, distorted, and eventually aligned his philosophy with a nationalism he would have despised." What is the rhetorical effect of listing three verbs?',
+    opts: [
+      'It creates ambiguity about which of the three acts was actually her responsibility',
+      'It traces an escalating sequence of damage — from softening to distortion to political capture',
+      'It suggests all three actions were equally mild and have been overstated by scholars',
+      'It draws a parallel between her methods and those of contemporary political editors'
+    ],
+    ans: 1,
+    fb: "The three verbs form a deliberate escalation: 'sanitised' (removed difficult parts), 'distorted' (changed the meaning), 'aligned with nationalism' (the most damaging outcome). The sequence builds the argument."
+  },
+  {
+    q: 'From the article: "Not biography, but biography as a philosophical act." What is the function of repeating the word "biography"?',
+    opts: [
+      'It creates a paradox — used twice to cancel itself out and argue against biography entirely',
+      'It distinguishes conventional biography from a form that enacts philosophical argument through its structure',
+      'It signals the article is recommending two separate films rather than one',
+      'It is a stylistic error — the writer intended to use two different words'
+    ],
+    ans: 1,
+    fb: "The repetition creates a crucial distinction. The first 'biography' names the conventional genre. The second — 'biography as a philosophical act' — names something transformed: a form that performs argument rather than simply narrating events."
+  },
+  {
+    q: 'From the article: "by pretending that ideas exist in pure form, untouched by the forces that interpret and transmit them." What does this phrase criticise?',
+    opts: [
+      'Directors who refuse to consult academic philosophers before making intellectual biopics',
+      'The assumption that a thinker\'s ideas can be presented without addressing how they have been received and distorted',
+      'Nietzsche\'s own belief that truth exists independently of human interpretation',
+      'The tendency of documentary filmmakers to rely too heavily on written sources'
+    ],
+    ans: 1,
+    fb: "The phrase criticises the fantasy of 'pure' ideas — the pretence that you can show his philosophy without engaging with how it has been interpreted, misread, and politically weaponised. That evasion is itself a distortion."
+  }
+]};
+
+/* ========== RENDER ENGINE ========== */
+function renderSection(id) {
+  var sec = SEC[id];
+  if (!sec) { return; }
+  if (sec.type === 'mcq') { renderMCQ(id); }
+  else if (sec.type === 'error') { renderError(id); }
+  else if (sec.type === 'reorder') { renderReorder(id); }
+}
+
+function renderMCQ(id) {
+  var sec = SEC[id];
+  var container = document.getElementById('s' + id + 'questions');
+  container.innerHTML = '';
+  sec.answered = 0;
+  sec.correct = 0;
+  updateScore(id);
+  var LETTERS = ['A', 'B', 'C', 'D'];
+  sec.questions.forEach(function(q, qi) {
+    var div = document.createElement('div');
+    div.className = 'question-card';
+    div.id = 's' + id + 'q' + qi;
+    var optsHtml = '';
+    q.opts.forEach(function(o, oi) {
+      optsHtml += '<button class="opt" onclick="answerMCQ(' + id + ',' + qi + ',' + oi + ',this)">' +
+        '<span class="opt-letter">' + LETTERS[oi] + '</span><span>' + o + '</span></button>';
+    });
+    var nextBtn = qi < sec.questions.length - 1
+      ? '<button class="btn" onclick="advanceQ(' + id + ',' + qi + ')">Next Question &#8594;</button>'
+      : '<button class="btn" onclick="showResult(' + id + ')">See My Score &#8594;</button>';
+    div.innerHTML =
+      '<span class="q-num">Question ' + (qi + 1) + ' of ' + sec.questions.length + '</span>' +
+      '<div class="q-text">' + q.q + '</div>' +
+      '<div class="options">' + optsHtml + '</div>' +
+      '<div class="feedback" id="s' + id + 'fb' + qi + '"></div>' +
+      '<div class="next-wrap" id="s' + id + 'nw' + qi + '">' + nextBtn + '</div>';
+    if (qi > 0) { div.style.display = 'none'; }
+    container.appendChild(div);
+  });
+}
+
+function answerMCQ(id, qi, oi, btn) {
+  var sec = SEC[id];
+  var q = sec.questions[qi];
+  var opts = document.querySelectorAll('#s' + id + 'q' + qi + ' .opt');
+  opts.forEach(function(o) { o.setAttribute('disabled', 'disabled'); });
+  var fb = document.getElementById('s' + id + 'fb' + qi);
+  if (oi === q.ans) {
+    btn.classList.add('correct');
+    fb.className = 'feedback correct';
+    fb.innerHTML = '<strong>Correct.</strong> ' + q.fb;
+    sec.correct++;
+  } else {
+    btn.classList.add('wrong');
+    opts[q.ans].classList.add('correct');
+    fb.className = 'feedback wrong';
+    fb.innerHTML = '<strong>Not quite.</strong> The correct answer is <em>' + q.opts[q.ans] + '</em>. ' + q.fb;
+  }
+  sec.answered++;
+  updateScore(id);
+  document.getElementById('s' + id + 'nw' + qi).classList.add('show');
+}
+
+function advanceQ(id, qi) {
+  document.getElementById('s' + id + 'q' + qi).style.display = 'none';
+  document.getElementById('s' + id + 'q' + (qi + 1)).style.display = 'block';
+}
+
+function renderError(id) {
+  var sec = SEC[id];
+  var container = document.getElementById('s' + id + 'questions');
+  container.innerHTML = '';
+  sec.answered = 0;
+  sec.correct = 0;
+  updateScore(id);
+  sec.questions.forEach(function(q, qi) {
+    var div = document.createElement('div');
+    div.className = 'question-card';
+    div.id = 's' + id + 'q' + qi;
+    var nextBtn = qi < sec.questions.length - 1
+      ? '<button class="btn" onclick="advanceQ(' + id + ',' + qi + ')">Next Question &#8594;</button>'
+      : '<button class="btn" onclick="showResult(' + id + ')">See My Score &#8594;</button>';
+    div.innerHTML =
+      '<span class="q-num">Question ' + (qi + 1) + ' of ' + sec.questions.length + '</span>' +
+      '<div class="error-sentence">' + q.sentence + '</div>' +
+      '<input class="text-input" type="text" id="s' + id + 'inp' + qi + '" placeholder="Type the corrected sentence..."/>' +
+      '<div style="margin-top:9px;display:flex;gap:7px;flex-wrap:wrap;">' +
+        '<button class="btn" onclick="checkError(' + id + ',' + qi + ')">Check Answer</button>' +
+        '<button class="btn btn-ghost" onclick="showHint(' + id + ',' + qi + ')">Hint</button>' +
+      '</div>' +
+      '<div class="feedback" id="s' + id + 'fb' + qi + '"></div>' +
+      '<div class="next-wrap" id="s' + id + 'nw' + qi + '">' + nextBtn + '</div>';
+    if (qi > 0) { div.style.display = 'none'; }
+    container.appendChild(div);
+  });
+}
+
+function norm(s) {
+  return s.trim().toLowerCase().replace(/['']/g, "'").replace(/\s+/g, ' ');
+}
+
+function checkError(id, qi) {
+  var sec = SEC[id];
+  var q = sec.questions[qi];
+  var inp = document.getElementById('s' + id + 'inp' + qi);
+  if (!inp.value.trim()) { return; }
+  inp.setAttribute('disabled', 'disabled');
+  var fb = document.getElementById('s' + id + 'fb' + qi);
+  if (norm(inp.value) === norm(q.correct)) {
+    inp.classList.add('correct');
+    fb.className = 'feedback correct';
+    fb.innerHTML = '<strong>Correct.</strong> ' + q.explanation;
+    sec.correct++;
+  } else {
+    inp.classList.add('wrong');
+    fb.className = 'feedback wrong';
+    fb.innerHTML = '<strong>Not quite.</strong> Correct sentence: <em>' + q.correct + '</em><br><br>' + q.explanation;
+  }
+  sec.answered++;
+  updateScore(id);
+  document.getElementById('s' + id + 'nw' + qi).classList.add('show');
+}
+
+function showHint(id, qi) {
+  var fb = document.getElementById('s' + id + 'fb' + qi);
+  fb.className = 'feedback wrong';
+  fb.innerHTML = '<strong>Hint:</strong> There is one error in this sentence. Consider: prepositions after verbs, article choice (a/an), subject-verb agreement, or adjective vs. noun forms.';
+}
+
+function renderReorder(id) {
+  var sec = SEC[id];
+  var container = document.getElementById('s' + id + 'questions');
+  container.innerHTML = '';
+  sec.answered = 0;
+  sec.correct = 0;
+  updateScore(id);
+  sec.questions.forEach(function(q, qi) {
+    var shuffled = q.chunks.slice().sort(function() { return Math.random() - 0.5; });
+    var div = document.createElement('div');
+    div.className = 'question-card';
+    div.id = 's' + id + 'q' + qi;
+    var chipsHtml = '';
+    shuffled.forEach(function(c, ci) {
+      var safe = c.replace(/&/g,'&amp;').replace(/"/g,'&quot;');
+      chipsHtml += '<div class="word-chip" id="s' + id + 'chip' + qi + '_' + ci + '" data-text="' + safe + '" onclick="placeChip(' + id + ',' + qi + ',this)">' + c + '</div>';
+    });
+    var nextBtn = qi < sec.questions.length - 1
+      ? '<button class="btn" onclick="advanceQ(' + id + ',' + qi + ')">Next Question &#8594;</button>'
+      : '<button class="btn" onclick="showResult(' + id + ')">See My Score &#8594;</button>';
+    div.innerHTML =
+      '<span class="q-num">Question ' + (qi + 1) + ' of ' + sec.questions.length + '</span>' +
+      '<p style="font-size:14px;color:var(--muted);margin-bottom:9px;">Put these chunks in the correct order:</p>' +
+      '<div class="word-bank" id="s' + id + 'bank' + qi + '">' + chipsHtml + '</div>' +
+      '<div class="answer-slots" id="s' + id + 'slots' + qi + '"><span class="slot-ph" id="s' + id + 'ph' + qi + '">Click chunks above to build the sentence...</span></div>' +
+      '<div style="margin-top:9px;display:flex;gap:7px;flex-wrap:wrap;">' +
+        '<button class="btn" onclick="checkReorder(' + id + ',' + qi + ')">Check Answer</button>' +
+        '<button class="btn btn-ghost" onclick="clearSlots(' + id + ',' + qi + ')">Clear</button>' +
+      '</div>' +
+      '<div class="feedback" id="s' + id + 'fb' + qi + '"></div>' +
+      '<div class="next-wrap" id="s' + id + 'nw' + qi + '">' + nextBtn + '</div>';
+    if (qi > 0) { div.style.display = 'none'; }
+    container.appendChild(div);
+  });
+}
+
+function placeChip(id, qi, chip) {
+  if (chip.classList.contains('used')) { return; }
+  chip.classList.add('used');
+  var slots = document.getElementById('s' + id + 'slots' + qi);
+  var ph = document.getElementById('s' + id + 'ph' + qi);
+  if (ph) { ph.style.display = 'none'; }
+  var sc = document.createElement('div');
+  sc.className = 'slot-chip';
+  sc.textContent = chip.getAttribute('data-text');
+  sc.setAttribute('data-src', chip.id);
+  sc.onclick = function() { returnChip(id, qi, this); };
+  slots.appendChild(sc);
+}
+
+function returnChip(id, qi, sc) {
+  var orig = document.getElementById(sc.getAttribute('data-src'));
+  if (orig) { orig.classList.remove('used'); }
+  sc.remove();
+  var slots = document.getElementById('s' + id + 'slots' + qi);
+  if (slots.querySelectorAll('.slot-chip').length === 0) {
+    var ph = document.getElementById('s' + id + 'ph' + qi);
+    if (ph) { ph.style.display = ''; }
+  }
+}
+
+function clearSlots(id, qi) {
+  var slots = document.getElementById('s' + id + 'slots' + qi);
+  slots.querySelectorAll('.slot-chip').forEach(function(sc) {
+    var orig = document.getElementById(sc.getAttribute('data-src'));
+    if (orig) { orig.classList.remove('used'); }
+    sc.remove();
+  });
+  var ph = document.getElementById('s' + id + 'ph' + qi);
+  if (ph) { ph.style.display = ''; }
+}
+
+function checkReorder(id, qi) {
+  var sec = SEC[id];
+  var q = sec.questions[qi];
+  var slots = document.getElementById('s' + id + 'slots' + qi);
+  var chips = slots.querySelectorAll('.slot-chip');
+  var parts = [];
+  chips.forEach(function(c) { parts.push(c.textContent); });
+  var built = parts.join(' ');
+  var fb = document.getElementById('s' + id + 'fb' + qi);
+  if (norm(built) === norm(q.answer)) {
+    fb.className = 'feedback correct';
+    fb.innerHTML = '<strong>Correct.</strong> ' + q.explanation;
+    sec.correct++;
+  } else {
+    fb.className = 'feedback wrong';
+    fb.innerHTML = '<strong>Not quite.</strong> Correct order: <em>' + q.answer + '</em><br><br>' + q.explanation;
+  }
+  chips.forEach(function(c) { c.onclick = null; });
+  document.querySelectorAll('#s' + id + 'bank' + qi + ' .word-chip').forEach(function(c) { c.onclick = null; });
+  sec.answered++;
+  updateScore(id);
+  document.getElementById('s' + id + 'nw' + qi).classList.add('show');
+}
+
+/* ========== SCORE / RESULT ========== */
+function updateScore(id) {
+  var sec = SEC[id];
+  document.getElementById('s' + id + 'score').textContent = sec.correct + ' / ' + sec.total;
+  var pct = (sec.answered / sec.total) * 100;
+  document.getElementById('s' + id + 'bar').style.width = pct + '%';
+}
+
+function showResult(id) {
+  var sec = SEC[id];
+  document.getElementById('s' + id + 'questions').classList.add('hidden');
+  document.getElementById('s' + id + 'result').classList.remove('hidden');
+  var pct = Math.round((sec.correct / sec.total) * 100);
+  document.getElementById('s' + id + 'final').textContent = sec.correct + '/' + sec.total;
+  var msg = '';
+  if (pct >= 90) { msg = 'Excellent command of the language. Push straight through to the discussion and pitch tasks.'; }
+  else if (pct >= 70) { msg = 'Strong work. A few gaps worth revisiting — then move confidently to the productive tasks.'; }
+  else if (pct >= 50) { msg = 'Good effort on challenging material. Review the feedback, then take on the discussion section.'; }
+  else { msg = 'This is demanding C1 content — review each explanation carefully and try again.'; }
+  document.getElementById('s' + id + 'msg').textContent = msg;
+}
+
+function restartSection(id) {
+  document.getElementById('s' + id + 'result').classList.add('hidden');
+  document.getElementById('s' + id + 'questions').classList.remove('hidden');
+  renderSection(id);
+}
+
+/* ========== WRITING ========== */
+document.addEventListener('DOMContentLoaded', function() {
+  var ta = document.getElementById('writingTask');
+  ta.addEventListener('input', function() {
+    var v = this.value.trim();
+    var count = v === '' ? 0 : v.split(/\s+/).length;
+    document.getElementById('wordCount').textContent = count;
+  });
+  var ids = [3, 4, 5, 7, 8];
+  ids.forEach(function(id) { renderSection(id); });
+});
+
+function copyWriting() {
+  var ta = document.getElementById('writingTask');
+  var btn = document.getElementById('copyBtn');
+  var orig = btn.textContent;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(ta.value).then(function() {
+      btn.textContent = 'Copied';
+      setTimeout(function() { btn.textContent = orig; }, 2000);
+    }).catch(function() {
+      ta.select();
+      document.execCommand('copy');
+      btn.textContent = 'Copied';
+      setTimeout(function() { btn.textContent = orig; }, 2000);
+    });
+  } else {
+    ta.select();
+    document.execCommand('copy');
+    btn.textContent = 'Copied';
+    setTimeout(function() { btn.textContent = orig; }, 2000);
+  }
+}
+
+function clearWriting() {
+  document.getElementById('writingTask').value = '';
+  document.getElementById('wordCount').textContent = '0';
+}
+</script>
+</body>
+</html>

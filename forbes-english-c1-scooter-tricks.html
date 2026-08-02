@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English | Sending It: The Language of Scooter Tricks (C1)</title>
+<style>
+  :root{
+    --scoot-orange:#FF5A1F;
+    --scoot-black:#141414;
+    --scoot-grey:#5c5c5c;
+    --scoot-blue:#1D3557;
+    --bg:#f4f2ee;
+    --card:#ffffff;
+    --correct:#1f8a44;
+    --incorrect:#c62828;
+    --border:#e2ddd4;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Segoe UI', Roboto, -apple-system, sans-serif;
+    background:var(--bg);
+    color:var(--scoot-black);
+    line-height:1.5;
+  }
+  .app{max-width:760px;margin:0 auto;padding:0 18px 60px;}
+
+  /* SCORE BAR - sticky exception per house style */
+  .scorebar{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:var(--scoot-black);
+    color:#fff;
+    padding:10px 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    font-size:14px;
+    font-weight:600;
+  }
+  .scorebar .track{
+    flex:1;
+    height:8px;
+    background:#333;
+    border-radius:6px;
+    margin:0 14px;
+    overflow:hidden;
+  }
+  .scorebar .fill{
+    height:100%;
+    background:var(--scoot-orange);
+    width:0%;
+    transition:width .35s ease;
+  }
+
+  /* LOGO */
+  .logo-wrap{display:flex;justify-content:center;margin:28px 0 6px;}
+  .logo-wrap svg{width:230px;height:auto;}
+
+  .subtitle{
+    text-align:center;
+    color:var(--scoot-grey);
+    font-size:14px;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+    margin-bottom:28px;
+  }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:26px 24px;
+    margin-bottom:22px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.04);
+  }
+
+  h1{font-size:26px;margin:0 0 8px;}
+  h2{font-size:20px;margin:0 0 14px;color:var(--scoot-orange);}
+  h3{font-size:16px;margin:0 0 10px;}
+  p{margin:0 0 14px;}
+
+  .badge{
+    display:inline-block;
+    background:var(--scoot-orange);
+    color:#fff;
+    font-weight:700;
+    font-size:12px;
+    padding:4px 10px;
+    border-radius:20px;
+    margin-bottom:14px;
+    letter-spacing:.4px;
+  }
+
+  .btn{
+    appearance:none;
+    border:none;
+    background:var(--scoot-orange);
+    color:#fff;
+    font-size:15px;
+    font-weight:700;
+    padding:13px 22px;
+    border-radius:10px;
+    cursor:pointer;
+    transition:transform .12s ease, background .2s ease, opacity .2s ease;
+  }
+  .btn:hover:not(:disabled){transform:translateY(-1px);}
+  .btn:disabled{background:#c9c4ba;cursor:not-allowed;opacity:.7;}
+  .btn.secondary{background:var(--scoot-black);}
+  .btn-row{display:flex;justify-content:flex-end;margin-top:18px;}
+
+  .option{
+    display:block;
+    width:100%;
+    text-align:left;
+    background:#fbfaf7;
+    border:2px solid var(--border);
+    border-radius:10px;
+    padding:13px 16px;
+    margin-bottom:10px;
+    font-size:15px;
+    cursor:pointer;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .option:hover:not(.locked){border-color:var(--scoot-orange);}
+  .option.selected{border-color:var(--scoot-orange);background:#fff1ea;}
+  .option.correct{border-color:var(--correct);background:#eaf7ee;}
+  .option.incorrect{border-color:var(--incorrect);background:#fdecec;}
+  .option.locked{cursor:default;}
+
+  .feedback{
+    margin-top:14px;
+    padding:13px 16px;
+    border-radius:10px;
+    font-size:14.5px;
+    display:none;
+  }
+  .feedback.show{display:block;}
+  .feedback.correct-fb{background:#eaf7ee;color:var(--correct);border:1px solid #bfe6cb;}
+  .feedback.incorrect-fb{background:#fdecec;color:var(--incorrect);border:1px solid #f3c4c4;}
+
+  .reading-text{
+    background:#fbfaf7;
+    border-left:4px solid var(--scoot-orange);
+    padding:16px 18px;
+    border-radius:6px;
+    font-size:15px;
+    margin-bottom:18px;
+  }
+
+  .q-count{
+    font-size:13px;
+    color:var(--scoot-grey);
+    font-weight:600;
+    margin-bottom:10px;
+    text-transform:uppercase;
+    letter-spacing:.4px;
+  }
+
+  .discussion-prompt{
+    background:#fbfaf7;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:14px 16px;
+    margin-bottom:12px;
+    font-size:15px;
+  }
+  .discussion-prompt strong{color:var(--scoot-orange);}
+
+  .results-score{
+    text-align:center;
+    font-size:48px;
+    font-weight:800;
+    color:var(--scoot-orange);
+    margin:6px 0;
+  }
+  .results-msg{text-align:center;font-size:16px;color:var(--scoot-grey);margin-bottom:20px;}
+
+  .hidden{display:none !important;}
+
+  .gap{
+    font-weight:700;
+    color:var(--scoot-orange);
+  }
+
+  footer{
+    text-align:center;
+    font-size:12px;
+    color:var(--scoot-grey);
+    margin-top:30px;
+  }
+</style>
+</head>
+<body>
+
+<div class="scorebar">
+  <span id="scoreLabel">Score: 0 / 0</span>
+  <div class="track"><div class="fill" id="progressFill"></div></div>
+  <span id="progressLabel">0%</span>
+</div>
+
+<div class="app">
+
+  <div class="logo-wrap">
+    <svg viewBox="0 0 300 90" xmlns="http://www.w3.org/2000/svg">
+      <text x="150" y="42" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="34" fill="var(--scoot-black)">Forbes</text>
+      <rect x="40" y="52" width="220" height="3" fill="var(--scoot-orange)"/>
+      <text x="150" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="24" letter-spacing="3" fill="var(--scoot-orange)">ENGLISH</text>
+    </svg>
+  </div>
+  <div class="subtitle">Sending It — The Language of Scooter Tricks · Level C1</div>
+
+  <!-- INTRO -->
+  <div class="card" id="screen-intro">
+    <span class="badge">Vocabulary · Reading · Grammar · Speaking</span>
+    <h1>Sending It: The Language of Scooter Tricks</h1>
+    <p>Skate parks are full of a vocabulary all their own — one that's crept into everyday English through video edits, commentary, and rider slang. This lesson pushes you to C1 territory: precise trick terminology, a reading on scooter culture, a grammar focus on inversion for dramatic emphasis, and speaking practice to put it all together.</p>
+    <p><strong>You will complete:</strong> 12 vocabulary questions, a short reading text with 6 comprehension questions, 8 grammar questions on inversion, and 4 speaking prompts.</p>
+    <div class="btn-row"><button class="btn" onclick="goTo('vocab-intro')">Drop In →</button></div>
+  </div>
+
+  <!-- VOCAB INTRO -->
+  <div class="card hidden" id="screen-vocab-intro">
+    <span class="badge">Part 1 · Vocabulary</span>
+    <h2>Trick Terminology</h2>
+    <p>Complete each sentence with the correct word or phrase. This vocabulary is precise — riders distinguish carefully between close terms.</p>
+    <div class="btn-row"><button class="btn" onclick="startSection('vocab')">Begin</button></div>
+  </div>
+
+  <!-- READING INTRO -->
+  <div class="card hidden" id="screen-reading-intro">
+    <span class="badge">Part 2 · Reading</span>
+    <h2>From Pavement to Podium</h2>
+    <div class="reading-text" id="readingText"></div>
+    <div class="btn-row"><button class="btn" onclick="startSection('reading')">Answer the Questions</button></div>
+  </div>
+
+  <!-- GRAMMAR INTRO -->
+  <div class="card hidden" id="screen-grammar-intro">
+    <span class="badge">Part 3 · Grammar Focus</span>
+    <h2>Inversion for Emphasis</h2>
+    <p>At C1 level, fronting a negative or restrictive adverbial and inverting the subject and auxiliary creates dramatic, formal emphasis — a device you'll find in commentary and narrative writing alike.</p>
+    <p>Structure: <em>negative/restrictive adverbial + auxiliary + subject + verb</em> (e.g. "<span class="gap">Never had</span> the crowd seen a trick land so clean.")</p>
+    <p>Choose the correct inverted form to complete each sentence.</p>
+    <div class="btn-row"><button class="btn" onclick="startSection('grammar')">Begin</button></div>
+  </div>
+
+  <!-- DISCUSSION -->
+  <div class="card hidden" id="screen-discussion">
+    <span class="badge">Part 4 · Speaking Practice</span>
+    <h2>Talk It Through</h2>
+    <p>Speak your answers aloud — alone, with a partner, or record yourself. There are no right or wrong answers here.</p>
+    <div class="discussion-prompt"><strong>1.</strong> Have you ever tried an extreme or action sport? Describe the experience, including any fear you had to overcome.</div>
+    <div class="discussion-prompt"><strong>2.</strong> Why do you think risk-taking sports like scootering have become so popular with young people, despite the danger of injury?</div>
+    <div class="discussion-prompt"><strong>3.</strong> Describe a moment — in sport or elsewhere — when you had to fully commit to something with no way to back out. Try using an inverted structure, such as "Not until..." or "Only after...".</div>
+    <div class="discussion-prompt"><strong>4.</strong> Should extreme sports be taught in schools as part of physical education? Argue for or against.</div>
+    <div class="btn-row"><button class="btn" onclick="goTo('results')">See My Results →</button></div>
+  </div>
+
+  <!-- QUESTION SCREEN (shared template) -->
+  <div class="card hidden" id="screen-question">
+    <span class="badge" id="qBadge">Part</span>
+    <div class="q-count" id="qCount">Question 1 of 12</div>
+    <h3 id="qText"></h3>
+    <div id="qOptions"></div>
+    <div class="feedback" id="qFeedback"></div>
+    <div class="btn-row"><button class="btn" id="nextBtn" disabled onclick="nextQuestion()">Next →</button></div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="card hidden" id="screen-results">
+    <span class="badge">Results</span>
+    <h2>Landed Clean!</h2>
+    <div class="results-score" id="finalScore">0 / 26</div>
+    <div class="results-msg" id="finalMsg"></div>
+    <p>You've built specialised vocabulary for describing risk and skill, practised reading for detail, and worked on inversion — a structure that will sharpen your writing and impress in formal and narrative English alike.</p>
+    <div class="btn-row"><button class="btn secondary" onclick="restart()">Restart Lesson</button></div>
+  </div>
+
+  <footer>Forbes English · Interactive Lesson · Level C1</footer>
+</div>
+
+<script>
+/* ---------------- DATA ---------------- */
+
+const readingText = `Twenty years ago, a stunt scooter was little more than a folding toy dismissed as a passing fad. Today, it is the vehicle of a genuine sporting subculture, complete with its own competitions, sponsorships, and even a growing push for Olympic recognition. What changed was not the scooter itself, but the ambition of the riders who refused to treat it as a child's plaything.
+
+Progression in this sport is unusually visible. Riders film every attempt, however unsuccessful, and post the footage online — not to boast, but to document the incremental process by which a trick is broken down, practised in isolation, and eventually stitched into a single fluid motion. A rider might spend weeks drilling the compression and pop of a jump alone before ever attempting the tailwhip that follows it. Only once each element feels automatic does muscle memory take over, freeing the rider to focus on style rather than survival.
+
+Injury, inevitably, looms over the culture. Seasoned riders speak candidly about the mental toll of committing to a trick that has previously gone wrong, describing a kind of controlled fear that must be managed rather than eliminated. Few sports demand such a precise balance between calculated risk and outright recklessness — which may explain why, to outsiders, the line between bravery and foolishness can look remarkably thin.`;
+
+const vocabQuestions = [
+  {q:"To perform a __________, the rider spins the deck a full 360 degrees around the head tube while airborne.",
+   options:["tailwhip","bar spin","grind","compression"], correct:0,
+   fb:"A tailwhip is a trick in which the deck rotates fully around the head tube mid-air."},
+  {q:"During a __________, the handlebars rotate a complete circle while the rider keeps both feet on the deck.",
+   options:["grind","bar spin","bail","session"], correct:1,
+   fb:"A bar spin involves the handlebars, not the deck, spinning around."},
+  {q:"He approached the rail at speed and began to __________ along its edge using the underside of his deck.",
+   options:["grind","commit","session","bail"], correct:0,
+   fb:"To grind is to slide along an edge or ledge using a peg or the deck itself."},
+  {q:"Before launching off the ramp, she added extra __________ to generate more height on the jump.",
+   options:["progression","compression","consistency","commitment"], correct:1,
+   fb:"Compression refers to crouching down to absorb and store energy before a jump."},
+  {q:"Realising the trick was going wrong mid-air, he had no choice but to __________ and jump clear of the scooter.",
+   options:["stick the landing","bail","under-rotate","session"], correct:1,
+   fb:"To bail means to abandon a trick attempt, usually to avoid a worse injury."},
+  {q:"After weeks of near-misses, she finally managed to __________ on her first attempt of the day.",
+   options:["stick the landing","case the ramp","under-rotate","grind"], correct:0,
+   fb:"To 'stick the landing' means to land a trick with total control and no wobble or foot slip."},
+  {q:"The skatepark's __________ is a curved ramp shaped like a quarter of a circle, ideal for building speed.",
+   options:["deck","peg","quarter pipe","fork"], correct:2,
+   fb:"A quarter pipe is a ramp shaped like one quarter of a circular pipe."},
+  {q:"He clipped his __________ on the rail slightly, which threw off his balance mid-grind.",
+   options:["peg","deck","fork","bar"], correct:0,
+   fb:"A peg is a small cylindrical attachment used for balancing and sliding during grinds."},
+  {q:"There's a moment before every big trick where a rider has to fully __________, knowing there's no backing out safely.",
+   options:["commit","session","progress","bail"], correct:0,
+   fb:"To commit (to a trick) means to fully dedicate yourself physically and mentally, despite the risk."},
+  {q:"If a rider doesn't complete a full spin before landing, riders say the trick was __________.",
+   options:["over-rotated","under-rotated","compressed","gnarly"], correct:1,
+   fb:"'Under-rotated' describes a trick where the spin wasn't completed before landing."},
+  {q:"After hundreds of repetitions, the motion becomes automatic — a case of pure __________ taking over.",
+   options:["muscle memory","progression","consistency","compression"], correct:0,
+   fb:"Muscle memory refers to the body's ability to perform a learned motion automatically, without conscious thought."},
+  {q:"The crew decided to __________ the new bowl all afternoon, trying different lines on the same obstacle.",
+   options:["session","commit","bail","grind"], correct:0,
+   fb:"To 'session' a spot means to spend an extended period practising and riding at that specific location."}
+];
+
+const readingQuestions = [
+  {q:"According to the text, what changed to turn the scooter into a genuine sport?",
+   options:["The design of the scooter itself","The ambition and attitude of the riders","New Olympic funding","A change in scooter materials"], correct:1,
+   fb:"The text states it was the ambition of the riders, not the scooter itself, that changed."},
+  {q:"Why do riders film even their unsuccessful attempts?",
+   options:["To sell the footage","To boast about their skills","To document the gradual process of breaking down a trick","To avoid practising in person"], correct:2,
+   fb:"The text explains footage documents the incremental process of learning a trick, not boasting."},
+  {q:"How does a rider typically approach learning a trick like a tailwhip after a jump?",
+   options:["By attempting the whole trick immediately","By drilling the compression and pop separately first","By watching videos only","By avoiding jumps altogether"], correct:1,
+   fb:"The text describes drilling the compression and pop of the jump alone before adding the tailwhip."},
+  {q:"What happens once each element of a trick becomes automatic, according to the text?",
+   options:["The rider stops practising","Muscle memory takes over, freeing the rider to focus on style","The rider needs a new scooter","The trick becomes impossible to repeat"], correct:1,
+   fb:"The text states that once elements are automatic, muscle memory frees the rider to focus on style rather than survival."},
+  {q:"What do seasoned riders say about attempting a trick that previously went wrong?",
+   options:["It becomes easier every time","It carries no mental difficulty","It involves a mental toll and controlled fear","It is impossible to attempt again"], correct:2,
+   fb:"The text describes a mental toll and 'controlled fear that must be managed rather than eliminated'."},
+  {q:"What does the text suggest about how outsiders may view the sport?",
+   options:["They see it as entirely safe","The line between bravery and foolishness can look thin to them","They consider it a poor imitation of skateboarding","They see no risk involved at all"], correct:1,
+   fb:"The text closes by saying the line between bravery and foolishness 'can look remarkably thin' to outsiders."}
+];
+
+const grammarQuestions = [
+  {q:"__________ the crowd seen a trick land so cleanly on the first attempt.",
+   options:["Never had","Never has","Never did","Never was"], correct:0,
+   fb:"Past perfect inversion: 'Never had' + subject + past participle."},
+  {q:"__________ did he realise how much practice the trick would actually require.",
+   options:["Only later","Only after later","Not only later","Only did later"], correct:0,
+   fb:"'Only later' fronted, followed by auxiliary 'did' + subject + base verb, is the correct inverted form."},
+  {q:"__________ circumstances should a beginner attempt that trick without a helmet.",
+   options:["Under no","In no","At no","On no"], correct:0,
+   fb:"'Under no circumstances' is the fixed inverted expression meaning 'never, in any situation'."},
+  {q:"__________ had she landed the jump than the crowd erupted in applause.",
+   options:["No sooner","No later","Not sooner","Hardly sooner"], correct:0,
+   fb:"'No sooner had... than...' is the correct fixed inversion pattern for immediate sequence."},
+  {q:"__________ know how close he had come to a serious injury on that attempt.",
+   options:["Little did he","Little he did","He little did","Did he little"], correct:0,
+   fb:"'Little did he know' is the standard inverted structure meaning he was unaware."},
+  {q:"__________ was the rider allowed back on the ramp once his coach checked the landing was safe.",
+   options:["Only then","Then only","Only was then","Was only then"], correct:0,
+   fb:"'Only then' fronted, followed by inverted auxiliary + subject, correctly emphasises the condition."},
+  {q:"__________ does a rider land a trick this difficult on the very first try.",
+   options:["Rarely","Rare","Rarity","Rarely does"], correct:0,
+   fb:"'Rarely' triggers inversion; the auxiliary 'does' follows it directly: 'Rarely does a rider...'."},
+  {q:"__________ mastered the basic jump, but he went on to invent a trick of his own.",
+   options:["Not only had he","Not only he had","He not only had","Had not only he"], correct:0,
+   fb:"'Not only had he...' correctly fronts the negative expression before the inverted auxiliary and subject."}
+];
+
+/* ---------------- STATE ---------------- */
+let currentQueue = [];
+let currentIndex = 0;
+let currentSectionName = "";
+let score = 0;
+let totalAnswered = 0;
+const TOTAL_QUESTIONS = vocabQuestions.length + readingQuestions.length + grammarQuestions.length;
+
+/* ---------------- UTIL ---------------- */
+function shuffle(array){
+  const arr = array.slice();
+  for(let i = arr.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function goTo(screenKey){
+  document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
+  if(screenKey === 'results'){
+    showResults();
+    document.getElementById('screen-results').classList.remove('hidden');
+  } else {
+    document.getElementById('screen-' + screenKey).classList.remove('hidden');
+  }
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+document.getElementById('readingText').textContent = readingText;
+
+/* ---------------- SECTION FLOW ---------------- */
+function startSection(name){
+  currentSectionName = name;
+  currentIndex = 0;
+  if(name === 'vocab') currentQueue = vocabQuestions;
+  if(name === 'reading') currentQueue = readingQuestions;
+  if(name === 'grammar') currentQueue = grammarQuestions;
+  renderQuestion();
+  goTo('question');
+}
+
+function renderQuestion(){
+  const item = currentQueue[currentIndex];
+  const badgeMap = {vocab:"Part 1 · Vocabulary", reading:"Part 2 · Reading Comprehension", grammar:"Part 3 · Grammar Focus"};
+  document.getElementById('qBadge').textContent = badgeMap[currentSectionName];
+  document.getElementById('qCount').textContent = `Question ${currentIndex + 1} of ${currentQueue.length}`;
+  document.getElementById('qText').textContent = item.q;
+
+  const optsWithIndex = item.options.map((text, idx) => ({text, isCorrect: idx === item.correct}));
+  const shuffled = shuffle(optsWithIndex);
+
+  const optWrap = document.getElementById('qOptions');
+  optWrap.innerHTML = "";
+  shuffled.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    btn.textContent = opt.text;
+    btn.onclick = () => selectOption(btn, opt.isCorrect, item.fb, shuffled);
+    optWrap.appendChild(btn);
+  });
+
+  const fb = document.getElementById('qFeedback');
+  fb.className = 'feedback';
+  fb.textContent = '';
+  document.getElementById('nextBtn').disabled = true;
+  document.getElementById('nextBtn').textContent = (currentIndex === currentQueue.length - 1) ? "Continue →" : "Next →";
+}
+
+function selectOption(btn, isCorrect, explanation, allOptions){
+  const allBtns = document.querySelectorAll('#qOptions .option');
+  if([...allBtns].some(b => b.classList.contains('locked'))) return; // already answered
+
+  allBtns.forEach(b => b.classList.add('locked'));
+  btn.classList.add('selected');
+
+  allBtns.forEach((b, i) => {
+    const optData = allOptions[i];
+    if(optData.isCorrect) b.classList.add('correct');
+    else if(b === btn && !isCorrect) b.classList.add('incorrect');
+  });
+
+  const fb = document.getElementById('qFeedback');
+  fb.classList.add('show');
+  if(isCorrect){
+    score++;
+    fb.classList.add('correct-fb');
+    fb.textContent = "✓ Correct — " + explanation;
+  } else {
+    fb.classList.add('incorrect-fb');
+    fb.textContent = "✗ Not quite — " + explanation;
+  }
+  totalAnswered++;
+  updateScoreBar();
+  document.getElementById('nextBtn').disabled = false;
+}
+
+function nextQuestion(){
+  currentIndex++;
+  if(currentIndex < currentQueue.length){
+    renderQuestion();
+  } else {
+    if(currentSectionName === 'vocab') goTo('reading-intro');
+    else if(currentSectionName === 'reading') goTo('grammar-intro');
+    else if(currentSectionName === 'grammar') goTo('discussion');
+  }
+}
+
+function updateScoreBar(){
+  document.getElementById('scoreLabel').textContent = `Score: ${score} / ${totalAnswered}`;
+  const pct = Math.round((totalAnswered / TOTAL_QUESTIONS) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = pct + '%';
+}
+
+function showResults(){
+  document.getElementById('finalScore').textContent = `${score} / ${TOTAL_QUESTIONS}`;
+  const pct = Math.round((score / TOTAL_QUESTIONS) * 100);
+  let msg = "";
+  if(pct >= 90) msg = "Outstanding! You've nailed this specialised vocabulary and the inversion structures.";
+  else if(pct >= 70) msg = "Great work! You have a strong grasp of the topic — review a few points and you're set.";
+  else if(pct >= 50) msg = "Good effort! A second pass through the vocabulary and grammar sections will help it stick.";
+  else msg = "Keep sessioning! Revisit the sections above — the more you practise, the cleaner your landings will be.";
+  document.getElementById('finalMsg').textContent = msg;
+}
+
+function restart(){
+  score = 0;
+  totalAnswered = 0;
+  updateScoreBar();
+  goTo('intro');
+}
+</script>
+</body>
+</html>

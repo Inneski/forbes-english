@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English | E-commerce Vocabulary (B1)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --fe-navy: #1b2a4a;
+    --fe-teal: #0f9e8e;
+    --fe-teal-dark: #0b7a6d;
+    --fe-red: #e2574c;
+    --fe-cream: #faf7f0;
+    --fe-grey: #6b7280;
+    --fe-border: #e3e0d8;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: var(--fe-cream);
+    color: var(--fe-navy);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 16px 64px;
+  }
+
+  .lesson-card {
+    width: 100%;
+    max-width: 640px;
+    background: #ffffff;
+    border-radius: 18px;
+    border: 1px solid var(--fe-border);
+    box-shadow: 0 12px 32px rgba(27, 42, 74, 0.08);
+    padding: 36px 32px;
+  }
+
+  .logo-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 18px;
+  }
+
+  h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5rem;
+    text-align: center;
+    margin: 0 0 4px;
+    color: var(--fe-navy);
+  }
+
+  .subtitle {
+    text-align: center;
+    color: var(--fe-grey);
+    font-size: 0.95rem;
+    margin: 0 0 28px;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  .intro-text {
+    font-size: 0.98rem;
+    line-height: 1.6;
+    color: #374151;
+    margin-bottom: 24px;
+  }
+
+  .badge {
+    display: inline-block;
+    background: rgba(15, 158, 142, 0.12);
+    color: var(--fe-teal-dark);
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+  }
+
+  .primary-btn {
+    display: block;
+    width: 100%;
+    background: var(--fe-teal);
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    border: none;
+    border-radius: 10px;
+    padding: 14px 20px;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.1s ease;
+  }
+
+  .primary-btn:hover:not(:disabled) {
+    background: var(--fe-teal-dark);
+  }
+
+  .primary-btn:disabled {
+    background: #c7d2d6;
+    cursor: not-allowed;
+  }
+
+  .primary-btn:active:not(:disabled) {
+    transform: scale(0.99);
+  }
+
+  .progress-track {
+    width: 100%;
+    height: 8px;
+    background: #eef0ec;
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--fe-teal);
+    border-radius: 999px;
+    transition: width 0.25s ease;
+  }
+
+  .progress-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+    font-size: 0.85rem;
+    color: var(--fe-grey);
+  }
+
+  #question-sentence {
+    font-size: 1.12rem;
+    line-height: 1.55;
+    margin-bottom: 22px;
+    color: var(--fe-navy);
+    font-weight: 500;
+  }
+
+  #options-list {
+    list-style: none;
+    margin: 0 0 18px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option-btn {
+    width: 100%;
+    text-align: left;
+    background: #ffffff;
+    border: 1.5px solid var(--fe-border);
+    border-radius: 10px;
+    padding: 13px 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.98rem;
+    color: var(--fe-navy);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--fe-teal);
+    background: rgba(15, 158, 142, 0.05);
+  }
+
+  .option-btn:disabled {
+    cursor: default;
+  }
+
+  .option-btn.correct {
+    border-color: var(--fe-teal);
+    background: rgba(15, 158, 142, 0.12);
+    font-weight: 600;
+  }
+
+  .option-btn.incorrect {
+    border-color: var(--fe-red);
+    background: rgba(226, 87, 76, 0.08);
+  }
+
+  .feedback {
+    min-height: 24px;
+    font-size: 0.92rem;
+    margin-bottom: 18px;
+    line-height: 1.5;
+  }
+
+  .feedback-correct {
+    color: var(--fe-teal-dark);
+    font-weight: 600;
+  }
+
+  .feedback-incorrect {
+    color: var(--fe-red);
+    font-weight: 600;
+  }
+
+  #score-text {
+    font-size: 0.85rem;
+    color: var(--fe-grey);
+  }
+
+  .results-score {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.2rem;
+    text-align: center;
+    color: var(--fe-teal-dark);
+    margin: 8px 0 12px;
+  }
+
+  .results-message {
+    text-align: center;
+    color: #374151;
+    font-size: 0.98rem;
+    margin-bottom: 26px;
+  }
+
+  .footer-note {
+    text-align: center;
+    color: #9aa0a6;
+    font-size: 0.78rem;
+    margin-top: 22px;
+  }
+</style>
+</head>
+<body>
+<div class="lesson-card">
+  <div class="logo-wrap">
+    <svg width="180" height="44" viewBox="0 0 180 44" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="6" width="32" height="32" rx="7" fill="#0f9e8e"/>
+      <path d="M10 14H22M10 20H19M10 26H22" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round"/>
+      <text x="40" y="24" font-family="Poppins, sans-serif" font-size="17" font-weight="700" fill="#1b2a4a">Forbes</text>
+      <text x="40" y="38" font-family="Poppins, sans-serif" font-size="13" font-weight="600" fill="#0f9e8e">ENGLISH</text>
+    </svg>
+  </div>
+
+  <div id="start-screen">
+    <div style="text-align:center;">
+      <span class="badge">B1 &middot; Vocabulary</span>
+    </div>
+    <h1>E-commerce Vocabulary</h1>
+    <p class="subtitle">Online shopping words for everyday English</p>
+    <p class="intro-text">
+      Practise 18 essential words and phrases you'll meet when shopping online:
+      checkout, tracking, refunds, discount codes, and more. Read each sentence,
+      choose the correct word, and get instant feedback with an Italian translation.
+    </p>
+    <button id="start-btn" class="primary-btn">Start the quiz</button>
+  </div>
+
+  <div id="quiz-screen" class="hidden">
+    <div class="progress-row">
+      <span id="progress-text">Question 1 of 18</span>
+      <span id="score-text">Score: 0 / 18</span>
+    </div>
+    <div class="progress-track">
+      <div id="progress-bar" class="progress-fill"></div>
+    </div>
+
+    <p id="question-sentence"></p>
+    <ul id="options-list"></ul>
+    <p id="feedback" class="feedback"></p>
+    <button id="next-btn" class="primary-btn" disabled>Next</button>
+  </div>
+
+  <div id="results-screen" class="hidden">
+    <h1>Quiz complete</h1>
+    <p class="results-score" id="final-score">0 / 18</p>
+    <p class="results-message" id="final-message"></p>
+    <button id="restart-btn" class="primary-btn">Try again</button>
+  </div>
+
+  <p class="footer-note">Forbes English &middot; E-commerce Vocabulary &middot; B1</p>
+</div>
+<script>
+const LESSON_DATA = {
+  title: "E-commerce Vocabulary",
+  subtitle: "B1 Vocabulary Assessment",
+  level: "B1",
+  language: "Italian",
+  questions: [
+    {
+      id: "q01",
+      sentence: "I put the shoes and the jacket in my online ___ before I paid.",
+      correct: "basket",
+      translation: "carrello",
+      options: ["basket", "receipt", "warehouse", "invoice"]
+    },
+    {
+      id: "q02",
+      sentence: "Before you pay, you need to go to the ___ page and enter your card details.",
+      correct: "checkout",
+      translation: "pagamento / cassa",
+      options: ["checkout", "wishlist", "catalogue", "subscription"]
+    },
+    {
+      id: "q03",
+      sentence: "The website sent me a ___ number so I could see exactly where my parcel was.",
+      correct: "tracking",
+      translation: "tracciamento",
+      options: ["tracking", "billing", "loyalty", "packaging"]
+    },
+    {
+      id: "q04",
+      sentence: "The jumper didn't fit, so I sent it back using the shop's ___ policy.",
+      correct: "return",
+      translation: "restituzione",
+      options: ["return", "delivery", "discount", "security"]
+    },
+    {
+      id: "q05",
+      sentence: "I always read the ___ from other customers before I buy something expensive.",
+      correct: "reviews",
+      translation: "recensioni",
+      options: ["reviews", "invoices", "warehouses", "subscriptions"]
+    },
+    {
+      id: "q06",
+      sentence: "I typed a ___ code at checkout and got 20% off my order.",
+      correct: "discount",
+      translation: "sconto",
+      options: ["discount", "delivery", "return", "guest"]
+    },
+    {
+      id: "q07",
+      sentence: "You can pay by card, but this shop also accepts other ___ methods, like a digital wallet.",
+      correct: "payment",
+      translation: "pagamento",
+      options: ["payment", "shipping", "loyalty", "storage"]
+    },
+    {
+      id: "q08",
+      sentence: "After I ordered the book, I got an email with my order ___.",
+      correct: "confirmation",
+      translation: "conferma",
+      options: ["confirmation", "warehouse", "refund", "catalogue"]
+    },
+    {
+      id: "q09",
+      sentence: "I wanted to buy the trainers, but they were ___ in my size.",
+      correct: "out of stock",
+      translation: "esaurito",
+      options: ["out of stock", "free shipping", "best seller", "on hold"]
+    },
+    {
+      id: "q10",
+      sentence: "I don't want to create an account, so I'll use ___ checkout instead.",
+      correct: "guest",
+      translation: "ospite",
+      options: ["guest", "loyalty", "secure", "wishlist"]
+    },
+    {
+      id: "q11",
+      sentence: "Orders over €50 get ___ shipping, so I didn't pay anything extra for delivery.",
+      correct: "free",
+      translation: "gratuita",
+      options: ["free", "secure", "express", "tracked"]
+    },
+    {
+      id: "q12",
+      sentence: "The shop uses ___ payment technology, so my card details are protected.",
+      correct: "secure",
+      translation: "sicuro",
+      options: ["secure", "guest", "bulk", "loyal"]
+    },
+    {
+      id: "q13",
+      sentence: "I pay a monthly ___ for the streaming service; it renews automatically.",
+      correct: "subscription",
+      translation: "abbonamento",
+      options: ["subscription", "invoice", "wishlist", "refund"]
+    },
+    {
+      id: "q14",
+      sentence: "I saved the dress to my ___ because I want to buy it next month.",
+      correct: "wishlist",
+      translation: "lista dei desideri",
+      options: ["wishlist", "basket", "receipt", "catalogue"]
+    },
+    {
+      id: "q15",
+      sentence: "Because I shop there so often, I've collected enough ___ points for a free gift.",
+      correct: "loyalty",
+      translation: "fedeltà",
+      options: ["loyalty", "guest", "bulk", "secure"]
+    },
+    {
+      id: "q16",
+      sentence: "This website isn't a normal shop; it's a ___ where lots of different sellers list their products.",
+      correct: "marketplace",
+      translation: "mercato online",
+      options: ["marketplace", "warehouse", "invoice", "subscription"]
+    },
+    {
+      id: "q17",
+      sentence: "The company kept my money for two weeks before they gave me a ___ for the broken item.",
+      correct: "refund",
+      translation: "rimborso",
+      options: ["refund", "discount", "catalogue", "tracking"]
+    },
+    {
+      id: "q18",
+      sentence: "I need the ___ from my order because my company will pay me back for it.",
+      correct: "receipt",
+      translation: "ricevuta",
+      options: ["receipt", "wishlist", "warehouse", "loyalty"]
+    }
+  ]
+};
+
+(function () {
+  "use strict";
+
+  function shuffle(array) {
+    var arr = array.slice();
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = arr[i];
+      arr[i] = arr[j];
+      arr[j] = tmp;
+    }
+    return arr;
+  }
+
+  var state = {
+    order: [],
+    index: 0,
+    score: 0,
+    answered: false,
+    total: 0
+  };
+
+  var els = {};
+
+  function qs(id) {
+    return document.getElementById(id);
+  }
+
+  function init() {
+    els.progressBar = qs("progress-bar");
+    els.progressText = qs("progress-text");
+    els.scoreText = qs("score-text");
+    els.questionSentence = qs("question-sentence");
+    els.optionsList = qs("options-list");
+    els.feedback = qs("feedback");
+    els.nextBtn = qs("next-btn");
+    els.quizScreen = qs("quiz-screen");
+    els.startScreen = qs("start-screen");
+    els.resultsScreen = qs("results-screen");
+    els.startBtn = qs("start-btn");
+    els.restartBtn = qs("restart-btn");
+    els.finalScore = qs("final-score");
+    els.finalMessage = qs("final-message");
+
+    els.startBtn.addEventListener("click", startQuiz);
+    els.restartBtn.addEventListener("click", startQuiz);
+    els.nextBtn.addEventListener("click", nextQuestion);
+  }
+
+  function startQuiz() {
+    state.order = shuffle(LESSON_DATA.questions);
+    state.index = 0;
+    state.score = 0;
+    state.total = state.order.length;
+
+    els.startScreen.classList.add("hidden");
+    els.resultsScreen.classList.add("hidden");
+    els.quizScreen.classList.remove("hidden");
+
+    renderQuestion();
+  }
+
+  function renderQuestion() {
+    state.answered = false;
+    var q = state.order[state.index];
+    var shuffledOptions = shuffle(q.options);
+
+    els.questionSentence.textContent = q.sentence;
+    els.feedback.textContent = "";
+    els.feedback.className = "feedback";
+    els.nextBtn.disabled = true;
+    els.nextBtn.textContent =
+      state.index === state.total - 1 ? "See results" : "Next";
+
+    els.optionsList.innerHTML = "";
+
+    shuffledOptions.forEach(function (option) {
+      var li = document.createElement("li");
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "option-btn";
+      btn.textContent = option;
+      btn.addEventListener("click", function () {
+        selectAnswer(option, btn, q);
+      });
+      li.appendChild(btn);
+      els.optionsList.appendChild(li);
+    });
+
+    updateProgress();
+  }
+
+  function selectAnswer(option, btn, q) {
+    if (state.answered) {
+      return;
+    }
+    state.answered = true;
+
+    var allButtons = els.optionsList.querySelectorAll(".option-btn");
+    allButtons.forEach(function (b) {
+      b.disabled = true;
+      if (b.textContent === q.correct) {
+        b.classList.add("correct");
+      }
+    });
+
+    if (option === q.correct) {
+      state.score++;
+      btn.classList.add("correct");
+      els.feedback.textContent =
+        "Correct! \"" + q.correct + "\" = " + q.translation + " (" + LESSON_DATA.language + ")";
+      els.feedback.className = "feedback feedback-correct";
+    } else {
+      btn.classList.add("incorrect");
+      els.feedback.textContent =
+        "Not quite. The correct word is \"" + q.correct + "\" = " + q.translation + " (" + LESSON_DATA.language + ")";
+      els.feedback.className = "feedback feedback-incorrect";
+    }
+
+    els.scoreText.textContent = "Score: " + state.score + " / " + state.total;
+    els.nextBtn.disabled = false;
+  }
+
+  function nextQuestion() {
+    if (!state.answered) {
+      return;
+    }
+    state.index++;
+    if (state.index >= state.total) {
+      showResults();
+    } else {
+      renderQuestion();
+    }
+  }
+
+  function updateProgress() {
+    var pct = Math.round((state.index / state.total) * 100);
+    els.progressBar.style.width = pct + "%";
+    els.progressText.textContent =
+      "Question " + (state.index + 1) + " of " + state.total;
+  }
+
+  function showResults() {
+    els.quizScreen.classList.add("hidden");
+    els.resultsScreen.classList.remove("hidden");
+
+    var pct = Math.round((state.score / state.total) * 100);
+    els.finalScore.textContent = state.score + " / " + state.total + " (" + pct + "%)";
+
+    var message;
+    if (pct >= 90) {
+      message = "Excellent! You know your online shopping vocabulary very well.";
+    } else if (pct >= 70) {
+      message = "Well done! A strong result on e-commerce vocabulary.";
+    } else if (pct >= 50) {
+      message = "Good effort. Review the words you missed and try again.";
+    } else {
+      message = "Keep practising. Try the quiz again to build your confidence.";
+    }
+    els.finalMessage.textContent = message;
+  }
+
+  document.addEventListener("DOMContentLoaded", init);
+})();
+
+</script>
+</body>
+</html>

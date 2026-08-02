@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buying, Selling & Sharing Online — Forbes English</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #14213D;
+    --navy-light: #1F3059;
+    --blue: #3A86FF;
+    --amber: #F5A623;
+    --paper: #F7F5F0;
+    --paper-dim: #EDEAE2;
+    --ink: #14213D;
+    --ink-soft: #5A6478;
+    --green: #1E8A5B;
+    --red: #C4453C;
+    --border: #DEDAD0;
+    --radius: 14px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.5;
+  }
+
+  #app {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+    min-height: 100vh;
+  }
+
+  h1, h2 { font-family: 'Space Grotesk', sans-serif; margin: 0; }
+
+  /* ── Logo ────────────────────────────────────────── */
+  .fe-logo-serif {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 34px;
+    font-style: italic;
+    fill: var(--navy);
+  }
+  .fe-logo-rule { stroke: var(--amber); stroke-width: 2.5; }
+  .fe-logo-sans {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 3px;
+    fill: var(--blue);
+  }
+
+  /* ── Score bar ───────────────────────────────────── */
+  .score-bar {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 14px 0;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .score-bar-progress { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+  .score-bar-track { height: 6px; background: var(--paper-dim); border-radius: 4px; overflow: hidden; }
+  .score-bar-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--amber)); border-radius: 4px; transition: width .3s ease; }
+  .score-bar-label { font-size: 12px; color: var(--ink-soft); font-family: 'IBM Plex Mono', monospace; }
+  .score-bar-score {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    background: var(--navy);
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 8px;
+    white-space: nowrap;
+  }
+
+  /* ── Intro screen ────────────────────────────────── */
+  .intro-screen { padding-top: 48px; text-align: center; }
+  .intro-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin: 28px 0 10px;
+  }
+  .intro-screen h1 { font-size: 34px; margin-bottom: 14px; }
+  .intro-desc {
+    color: var(--ink-soft);
+    max-width: 520px;
+    margin: 0 auto 32px;
+    font-size: 15px;
+  }
+  .intro-list {
+    display: grid;
+    gap: 10px;
+    text-align: left;
+    max-width: 480px;
+    margin: 0 auto 36px;
+  }
+  .intro-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+  }
+  .intro-num {
+    flex-shrink: 0;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .intro-item div { display: flex; flex-direction: column; gap: 2px; }
+  .intro-item strong { font-size: 14.5px; }
+  .intro-item span { font-size: 12.5px; color: var(--ink-soft); }
+
+  .btn-primary {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 13px 30px;
+    cursor: pointer;
+    transition: transform .12s ease, background .15s ease;
+  }
+  .btn-primary:hover:not(:disabled) { background: var(--navy-light); transform: translateY(-1px); }
+  .btn-primary:disabled { background: #C9C4B8; cursor: not-allowed; }
+
+  /* ── Activity header ─────────────────────────────── */
+  .activity-header { padding: 20px 0 4px; }
+  .activity-header h2 { font-size: 22px; }
+  .activity-header p { color: var(--ink-soft); font-size: 14px; margin: 6px 0 0; }
+
+  /* ── Question card ───────────────────────────────── */
+  .question-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-top: 18px;
+  }
+  .question-count {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-bottom: 14px;
+  }
+  .question-sentence { font-size: 18px; line-height: 1.6; margin: 0 0 22px; }
+  .question-sentence-label { font-size: 13px; color: var(--ink-soft); margin: 0 0 8px; }
+  .wrong-sentence {
+    font-size: 16px;
+    background: #FBF0EE;
+    border-left: 3px solid var(--red);
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin-bottom: 18px;
+  }
+  .blank {
+    display: inline-block;
+    min-width: 60px;
+    border-bottom: 2px solid var(--amber);
+    color: var(--amber);
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .options-stack { grid-template-columns: 1fr; }
+
+  .option-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 14.5px;
+    text-align: left;
+    background: var(--paper);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 13px 16px;
+    cursor: pointer;
+    transition: border-color .12s ease, background .12s ease;
+  }
+  .option-btn:hover:not(:disabled) { border-color: var(--blue); background: #EEF4FF; }
+  .option-btn:disabled { cursor: default; }
+  .option-btn.correct { background: #E9F6EF; border-color: var(--green); color: var(--green); font-weight: 600; }
+  .option-btn.incorrect { background: #FBEDEB; border-color: var(--red); color: var(--red); font-weight: 600; }
+
+  .feedback {
+    font-size: 14px;
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all .2s ease;
+    border-radius: 8px;
+  }
+  .feedback.visible {
+    max-height: 200px;
+    opacity: 1;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+  }
+  .feedback.fb-correct { background: #E9F6EF; color: #1B6E48; }
+  .feedback.fb-incorrect { background: #FBEDEB; color: #A83A33; }
+  .fb-translation { font-style: italic; color: var(--ink-soft); }
+
+  .btn-next { width: 100%; }
+
+  /* ── Match activity ──────────────────────────────── */
+  .match-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 18px;
+  }
+  .match-col { display: flex; flex-direction: column; gap: 8px; }
+  .match-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    background: var(--paper);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 11px 14px;
+    cursor: pointer;
+    text-align: left;
+    transition: all .12s ease;
+  }
+  .match-btn:hover:not(:disabled) { border-color: var(--blue); }
+  .match-btn.selected { border-color: var(--blue); background: #EEF4FF; font-weight: 600; }
+  .match-btn.matched { background: #E9F6EF; border-color: var(--green); color: var(--green); font-weight: 600; opacity: .85; }
+  .match-btn.shake { animation: shake .35s ease; border-color: var(--red); }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+
+  /* ── Results screen ──────────────────────────────── */
+  .results-screen { padding-top: 48px; text-align: center; }
+  .results-band {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin: 28px 0 6px;
+  }
+  .results-screen h1 { font-size: 48px; }
+  .results-pct { color: var(--ink-soft); margin: 4px 0 30px; }
+  .results-breakdown {
+    max-width: 420px;
+    margin: 0 auto 32px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 8px 20px;
+  }
+  .results-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    font-size: 14.5px;
+    border-bottom: 1px solid var(--paper-dim);
+  }
+  .results-row:last-child { border-bottom: none; }
+
+  @media (max-width: 560px) {
+    .options-grid { grid-template-columns: 1fr; }
+    .match-columns { gap: 12px; }
+    .intro-screen h1 { font-size: 27px; }
+    .question-sentence { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const LESSON_DATA = {
+  title: "Buying, Selling & Sharing Online",
+  subtitle: "B2 Vocabulary & Common Mistakes",
+  level: "B2",
+  language: "Italian",
+
+  // ═══════════════════════════════════════════════════════
+  // ACTIVITY 1 — Multiple choice: prepositions & collocations
+  // ═══════════════════════════════════════════════════════
+  mcq: [
+    {
+      id: "mc01",
+      sentence: "This app ___ small sellers to trade without a physical shop.",
+      correct: "permits",
+      note: "permit + object + to (never 'permit for')",
+      options: ["permits", "permits for", "permits to", "is permit"]
+    },
+    {
+      id: "mc02",
+      sentence: "I am responsible ___ the e-commerce platform at work.",
+      correct: "for",
+      note: "responsible for (NON responsible of)",
+      options: ["for", "of", "with", "about"]
+    },
+    {
+      id: "mc03",
+      sentence: "The price ___ the condition of the item and how rare it is.",
+      correct: "depends on",
+      note: "depend on (NON depend of)",
+      options: ["depends on", "depends of", "depends for", "depends about"]
+    },
+    {
+      id: "mc04",
+      sentence: "It's ___ a working DVD player on Amazon these days — nobody sells them any more.",
+      correct: "rare to find",
+      note: "rare to find, NOT 'rare to found' — found is the past tense of 'to find', but here we need the infinitive",
+      options: ["rare to find", "rare to found", "rare finding", "rarely found"]
+    },
+    {
+      id: "mc05",
+      sentence: "There isn't ___ information on the listing about the seller's return policy.",
+      correct: "much",
+      note: "information is uncountable → much, NOT many",
+      options: ["much", "many", "a few", "amount of"]
+    },
+    {
+      id: "mc06",
+      sentence: "How ___ money did you actually spend on that eBay auction in the end?",
+      correct: "much",
+      note: "money is uncountable → much, NOT many",
+      options: ["much", "many", "lot of", "a many"]
+    },
+    {
+      id: "mc07",
+      sentence: "People say there are ___ filters on X than on other platforms, so content is less controlled.",
+      correct: "fewer",
+      note: "filters is countable (plural) → fewer, NOT less",
+      options: ["fewer", "less", "a little", "few of"]
+    },
+    {
+      id: "mc08",
+      sentence: "Can you ___ your laptop charger to the office tomorrow? Mine broke.",
+      correct: "bring",
+      note: "bring (present) vs brought (past) — don't confuse with 'buy/bought'",
+      options: ["bring", "bought", "buy", "brought"]
+    }
+  ],
+
+  // ═══════════════════════════════════════════════════════
+  // ACTIVITY 2 — Click-to-match: vocabulary ↔ Italian
+  // ═══════════════════════════════════════════════════════
+  match: [
+    { id: "m01", term: "a purchase", translation: "un acquisto" },
+    { id: "m02", term: "a sale", translation: "una vendita" },
+    { id: "m03", term: "a salesman", translation: "un venditore" },
+    { id: "m04", term: "attic / loft", translation: "la soffitta" },
+    { id: "m05", term: "terrorist attacks", translation: "gli attentati" },
+    { id: "m06", term: "wholesome", translation: "sano, genuino" },
+    { id: "m07", term: "worldwide", translation: "in tutto il mondo" },
+    { id: "m08", term: "in some cases", translation: "in alcuni casi" }
+  ],
+
+  // ═══════════════════════════════════════════════════════
+  // ACTIVITY 3 — Spot the correct sentence (error correction)
+  // ═══════════════════════════════════════════════════════
+  correction: [
+    {
+      id: "c01",
+      wrong: "The platform permits for anyone to open a shop.",
+      correct: "The platform permits anyone to open a shop.",
+      distractors: ["The platform permits to anyone open a shop.", "The platform is permit anyone to open a shop."],
+      note: "permit + object + infinitive, no preposition"
+    },
+    {
+      id: "c02",
+      wrong: "I am responsible of the returns process.",
+      correct: "I am responsible for the returns process.",
+      distractors: ["I am responsible with the returns process.", "I am responsible on the returns process."],
+      note: "responsible FOR something"
+    },
+    {
+      id: "c03",
+      wrong: "It depends of how much they're willing to pay.",
+      correct: "It depends on how much they're willing to pay.",
+      distractors: ["It depends for how much they're willing to pay.", "It depends about how much they're willing to pay."],
+      note: "depend ON something"
+    },
+    {
+      id: "c04",
+      wrong: "There wasn't many information about the seller.",
+      correct: "There wasn't much information about the seller.",
+      distractors: ["There wasn't a many information about the seller.", "There weren't much information about the seller."],
+      note: "information is uncountable"
+    },
+    {
+      id: "c05",
+      wrong: "How many money did the item sell for in the end?",
+      correct: "How much money did the item sell for in the end?",
+      distractors: ["How many moneys did the item sell for in the end?", "How much moneys did the item sell for in the end?"],
+      note: "money is uncountable"
+    },
+    {
+      id: "c06",
+      wrong: "It's rare to found a mint-condition vinyl at that price.",
+      correct: "It's rare to find a mint-condition vinyl at that price.",
+      distractors: ["It's rare finding a mint-condition vinyl at that price.", "It's rare found a mint-condition vinyl at that price."],
+      note: "to find (infinitive), not to found"
+    },
+    {
+      id: "c07",
+      wrong: "I bought my laptop to the repair shop yesterday.",
+      correct: "I brought my laptop to the repair shop yesterday.",
+      distractors: ["I bring my laptop to the repair shop yesterday.", "I buy my laptop to the repair shop yesterday."],
+      note: "brought = past tense of bring (to carry something with you), not bought (past of buy)"
+    }
+  ],
+
+  // ═══════════════════════════════════════════════════════
+  // ACTIVITY 4 — Fill in the blank: buying, selling & sharing online
+  // ═══════════════════════════════════════════════════════
+  fillblank: [
+    {
+      id: "f01",
+      sentence: "The listing said the second-hand phone was ___ , but the photos still looked fine.",
+      correct: "a bit damaged",
+      translation: "un po' danneggiato",
+      options: ["a bit damaged", "a bit damage", "little damaged", "damage a bit"]
+    },
+    {
+      id: "f02",
+      sentence: "Those trainers are usually €120, but this week they're ___ for €80.",
+      correct: "on sale",
+      translation: "in offerta",
+      options: ["on sale", "for sale", "in sale", "at sale"]
+    },
+    {
+      id: "f03",
+      sentence: "My neighbour's car has a sign in the window — it's ___ , not just parked there.",
+      correct: "for sale",
+      translation: "in vendita",
+      options: ["for sale", "on sale", "on selling", "to sale"]
+    },
+    {
+      id: "f04",
+      sentence: "___ , sellers can offer a full refund even without a receipt.",
+      correct: "In some cases",
+      translation: "in alcuni casi",
+      options: ["In some cases", "In some case", "At some cases", "On some cases"]
+    },
+    {
+      id: "f05",
+      sentence: "This streaming service is useful for football fans who don't have a ___ subscription.",
+      correct: "pay-per-view",
+      translation: "pay-per-view (a pagamento per singolo evento)",
+      options: ["pay-per-view", "pay-for-view", "paid-per-view", "pay-to-view"]
+    },
+    {
+      id: "f06",
+      sentence: "The brand became ___ known after the video went viral online.",
+      correct: "worldwide",
+      translation: "conosciuto in tutto il mondo",
+      options: ["worldwide", "world", "worldly", "world-wide-ly"]
+    },
+    {
+      id: "f07",
+      sentence: "I'm not sure who left the review — ___ it was the buyer, ___ it was the seller.",
+      correct: "maybe / perhaps",
+      translation: "forse... forse...",
+      options: ["maybe / perhaps", "may be / perhaps", "maybe / perhap", "may / perhaps"]
+    }
+  ]
+};
+
+</script>
+<script>
+// ═══════════════════════════════════════════════════════
+// UTILITIES
+// ═══════════════════════════════════════════════════════
+function shuffle(array) {
+  const a = array.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+const state = {
+  activityIndex: 0,
+  score: 0,
+  maxScore: 0,
+  activityScores: [],
+  answered: false
+};
+
+const ACTIVITIES = [
+  { key: "mcq", title: "Prepositions & Collocations", instructions: "Choose the word or phrase that correctly completes each sentence.", type: "mcq" },
+  { key: "match", title: "Vocabulary in Italian", instructions: "Click a term, then click its Italian translation to match them.", type: "match" },
+  { key: "correction", title: "Spot the Correct Sentence", instructions: "One sentence below contains a mistake. Choose the correctly written version.", type: "correction" },
+  { key: "fillblank", title: "Buying, Selling & Sharing Online", instructions: "Choose the word or phrase that correctly completes each sentence.", type: "fillblank" }
+];
+
+const appEl = document.getElementById("app");
+
+// ═══════════════════════════════════════════════════════
+// LOGO
+// ═══════════════════════════════════════════════════════
+function renderLogo(size = "normal") {
+  const h = size === "small" ? 34 : 52;
+  return `
+  <svg class="fe-logo" viewBox="0 0 300 70" style="height:${h}px" xmlns="http://www.w3.org/2000/svg">
+    <text x="0" y="34" class="fe-logo-serif">Forbes</text>
+    <line x1="0" y1="44" x2="300" y2="44" class="fe-logo-rule"/>
+    <text x="0" y="66" class="fe-logo-sans">ENGLISH</text>
+  </svg>`;
+}
+
+// ═══════════════════════════════════════════════════════
+// SCORE BAR
+// ═══════════════════════════════════════════════════════
+function renderScoreBar() {
+  const totalActivities = ACTIVITIES.length;
+  const pct = Math.round((state.activityIndex / totalActivities) * 100);
+  return `
+  <div class="score-bar">
+    ${renderLogo("small")}
+    <div class="score-bar-progress">
+      <div class="score-bar-track"><div class="score-bar-fill" style="width:${pct}%"></div></div>
+      <span class="score-bar-label">Activity ${Math.min(state.activityIndex + 1, totalActivities)} of ${totalActivities}</span>
+    </div>
+    <div class="score-bar-score">${state.score} / ${state.maxScore} pts</div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════════
+// INTRO SCREEN
+// ═══════════════════════════════════════════════════════
+function renderIntro() {
+  state.maxScore = LESSON_DATA.mcq.length + LESSON_DATA.match.length + LESSON_DATA.correction.length + LESSON_DATA.fillblank.length;
+  appEl.innerHTML = `
+    <div class="intro-screen">
+      ${renderLogo()}
+      <div class="intro-tag">${LESSON_DATA.level} &middot; Vocabulary &amp; Common Mistakes &middot; Italian support</div>
+      <h1>${LESSON_DATA.title}</h1>
+      <p class="intro-desc">Four short activities on the English used for buying, selling and sharing things online &mdash; built around real mistakes and near-misses, with Italian glosses where they help.</p>
+      <div class="intro-list">
+        <div class="intro-item"><span class="intro-num">1</span><div><strong>Prepositions &amp; Collocations</strong><span>permit to, responsible for, depend on&hellip;</span></div></div>
+        <div class="intro-item"><span class="intro-num">2</span><div><strong>Vocabulary in Italian</strong><span>acquisto, vendita, soffitta, attentati&hellip;</span></div></div>
+        <div class="intro-item"><span class="intro-num">3</span><div><strong>Spot the Correct Sentence</strong><span>find the version without the mistake</span></div></div>
+        <div class="intro-item"><span class="intro-num">4</span><div><strong>Buying, Selling &amp; Sharing Online</strong><span>for sale / on sale, maybe / perhaps&hellip;</span></div></div>
+      </div>
+      <button class="btn-primary" id="start-btn">Start the lesson</button>
+    </div>`;
+  document.getElementById("start-btn").addEventListener("click", () => {
+    state.activityIndex = 0;
+    renderActivity();
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+// ACTIVITY ROUTER
+// ═══════════════════════════════════════════════════════
+function renderActivity() {
+  const activity = ACTIVITIES[state.activityIndex];
+  if (!activity) { renderResults(); return; }
+  if (activity.type === "mcq") renderMCQActivity(activity, LESSON_DATA.mcq);
+  else if (activity.type === "fillblank") renderMCQActivity(activity, LESSON_DATA.fillblank, true);
+  else if (activity.type === "correction") renderCorrectionActivity(activity);
+  else if (activity.type === "match") renderMatchActivity(activity);
+}
+
+function activityHeader(activity) {
+  return `
+    ${renderScoreBar()}
+    <div class="activity-header">
+      <h2>${activity.title}</h2>
+      <p>${activity.instructions}</p>
+    </div>`;
+}
+
+// ═══════════════════════════════════════════════════════
+// MCQ-STYLE ACTIVITY (used for mcq + fillblank)
+// ═══════════════════════════════════════════════════════
+function renderMCQActivity(activity, items, showTranslation) {
+  const prepared = items.map(item => ({
+    ...item,
+    shuffledOptions: shuffle(item.options)
+  }));
+  let current = 0;
+  let localScore = 0;
+
+  function renderQuestion() {
+    const item = prepared[current];
+    const parts = item.sentence.split("___");
+    const sentenceHtml = parts.length === 2
+      ? `${parts[0]}<span class="blank">___</span>${parts[1]}`
+      : item.sentence;
+
+    appEl.innerHTML = `
+      ${activityHeader(activity)}
+      <div class="question-card">
+        <div class="question-count">Question ${current + 1} of ${prepared.length}</div>
+        <p class="question-sentence">${sentenceHtml}</p>
+        <div class="options-grid" id="options-grid">
+          ${item.shuffledOptions.map((opt, i) => `<button class="option-btn" data-option="${escapeAttr(opt)}" data-idx="${i}">${opt}</button>`).join("")}
+        </div>
+        <div class="feedback" id="feedback"></div>
+        <button class="btn-primary btn-next" id="next-btn" disabled>Next</button>
+      </div>`;
+
+    document.querySelectorAll(".option-btn").forEach(btn => {
+      btn.addEventListener("click", () => handleAnswer(btn, item, showTranslation));
+    });
+    document.getElementById("next-btn").addEventListener("click", () => {
+      current++;
+      if (current < prepared.length) {
+        renderQuestion();
+      } else {
+        state.activityScores[state.activityIndex] = { score: localScore, max: prepared.length };
+        state.activityIndex++;
+        renderActivity();
+      }
+    });
+  }
+
+  function handleAnswer(btn, item, showTranslation) {
+    if (state.answered) return;
+    state.answered = true;
+    const chosen = btn.dataset.option;
+    const isCorrect = chosen === item.correct;
+    document.querySelectorAll(".option-btn").forEach(b => {
+      b.disabled = true;
+      if (b.dataset.option === item.correct) b.classList.add("correct");
+      else if (b === btn) b.classList.add("incorrect");
+    });
+    if (isCorrect) {
+      localScore++;
+      state.score++;
+    }
+    const fb = document.getElementById("feedback");
+    fb.classList.add("visible", isCorrect ? "fb-correct" : "fb-incorrect");
+    const translationHtml = showTranslation && item.translation ? ` <span class="fb-translation">(${item.translation})</span>` : "";
+    fb.innerHTML = isCorrect
+      ? `<strong>Correct.</strong> ${item.note ? item.note : ""}${translationHtml}`
+      : `<strong>Not quite.</strong> The correct answer is "<em>${item.correct}</em>". ${item.note ? item.note : ""}${translationHtml}`;
+    document.getElementById("next-btn").disabled = false;
+    state.answered = false;
+  }
+
+  renderQuestion();
+}
+
+// ═══════════════════════════════════════════════════════
+// CORRECTION ACTIVITY (spot the correctly written sentence)
+// ═══════════════════════════════════════════════════════
+function renderCorrectionActivity(activity) {
+  const prepared = LESSON_DATA.correction.map(item => ({
+    ...item,
+    shuffledOptions: shuffle([item.correct, ...item.distractors])
+  }));
+  let current = 0;
+  let localScore = 0;
+
+  function renderQuestion() {
+    const item = prepared[current];
+    appEl.innerHTML = `
+      ${activityHeader(activity)}
+      <div class="question-card">
+        <div class="question-count">Question ${current + 1} of ${prepared.length}</div>
+        <p class="question-sentence-label">This sentence has a mistake:</p>
+        <p class="question-sentence wrong-sentence">${item.wrong}</p>
+        <p class="question-sentence-label">Which version is correct?</p>
+        <div class="options-grid options-stack" id="options-grid">
+          ${item.shuffledOptions.map((opt, i) => `<button class="option-btn" data-option="${escapeAttr(opt)}" data-idx="${i}">${opt}</button>`).join("")}
+        </div>
+        <div class="feedback" id="feedback"></div>
+        <button class="btn-primary btn-next" id="next-btn" disabled>Next</button>
+      </div>`;
+
+    document.querySelectorAll(".option-btn").forEach(btn => {
+      btn.addEventListener("click", () => handleAnswer(btn, item));
+    });
+    document.getElementById("next-btn").addEventListener("click", () => {
+      current++;
+      if (current < prepared.length) {
+        renderQuestion();
+      } else {
+        state.activityScores[state.activityIndex] = { score: localScore, max: prepared.length };
+        state.activityIndex++;
+        renderActivity();
+      }
+    });
+  }
+
+  function handleAnswer(btn, item) {
+    if (state.answered) return;
+    state.answered = true;
+    const chosen = btn.dataset.option;
+    const isCorrect = chosen === item.correct;
+    document.querySelectorAll(".option-btn").forEach(b => {
+      b.disabled = true;
+      if (b.dataset.option === item.correct) b.classList.add("correct");
+      else if (b === btn) b.classList.add("incorrect");
+    });
+    if (isCorrect) {
+      localScore++;
+      state.score++;
+    }
+    const fb = document.getElementById("feedback");
+    fb.classList.add("visible", isCorrect ? "fb-correct" : "fb-incorrect");
+    fb.innerHTML = isCorrect
+      ? `<strong>Correct.</strong> ${item.note}`
+      : `<strong>Not quite.</strong> ${item.note}`;
+    document.getElementById("next-btn").disabled = false;
+    state.answered = false;
+  }
+
+  renderQuestion();
+}
+
+// ═══════════════════════════════════════════════════════
+// MATCH ACTIVITY (click term, then click translation)
+// ═══════════════════════════════════════════════════════
+function renderMatchActivity(activity) {
+  const items = LESSON_DATA.match;
+  const terms = shuffle(items.map(i => ({ id: i.id, text: i.term })));
+  const translations = shuffle(items.map(i => ({ id: i.id, text: i.translation })));
+  const matchedIds = new Set();
+  let selectedTerm = null;
+  let localScore = 0;
+  const firstTryFail = new Set();
+
+  function render() {
+    appEl.innerHTML = `
+      ${activityHeader(activity)}
+      <div class="question-card">
+        <div class="question-count">${matchedIds.size} of ${items.length} matched</div>
+        <div class="match-columns">
+          <div class="match-col" id="term-col">
+            ${terms.map(t => `<button class="match-btn ${matchedIds.has(t.id) ? "matched" : ""}" data-id="${t.id}" data-col="term" ${matchedIds.has(t.id) ? "disabled" : ""}>${t.text}</button>`).join("")}
+          </div>
+          <div class="match-col" id="trans-col">
+            ${translations.map(t => `<button class="match-btn ${matchedIds.has(t.id) ? "matched" : ""}" data-id="${t.id}" data-col="trans" ${matchedIds.has(t.id) ? "disabled" : ""}>${t.text}</button>`).join("")}
+          </div>
+        </div>
+        <div class="feedback" id="feedback"></div>
+        <button class="btn-primary btn-next" id="next-btn" ${matchedIds.size === items.length ? "" : "disabled"}>Next</button>
+      </div>`;
+
+    document.querySelectorAll(".match-btn[data-col='term']").forEach(btn => {
+      btn.addEventListener("click", () => selectTerm(btn));
+    });
+    document.querySelectorAll(".match-btn[data-col='trans']").forEach(btn => {
+      btn.addEventListener("click", () => selectTranslation(btn));
+    });
+    document.getElementById("next-btn").addEventListener("click", () => {
+      state.activityScores[state.activityIndex] = { score: localScore, max: items.length };
+      state.activityIndex++;
+      renderActivity();
+    });
+  }
+
+  function selectTerm(btn) {
+    document.querySelectorAll(".match-btn[data-col='term']").forEach(b => b.classList.remove("selected"));
+    btn.classList.add("selected");
+    selectedTerm = btn.dataset.id;
+  }
+
+  function selectTranslation(btn) {
+    if (!selectedTerm) return;
+    const id = btn.dataset.id;
+    const fb = document.getElementById("feedback");
+    if (id === selectedTerm) {
+      matchedIds.add(id);
+      if (!firstTryFail.has(id)) {
+        localScore++;
+        state.score++;
+      }
+      fb.className = "feedback visible fb-correct";
+      fb.innerHTML = `<strong>Correct match.</strong>`;
+      selectedTerm = null;
+      setTimeout(render, 450);
+    } else {
+      firstTryFail.add(selectedTerm);
+      fb.className = "feedback visible fb-incorrect";
+      fb.innerHTML = `<strong>Not a match.</strong> Try again.`;
+      btn.classList.add("shake");
+      setTimeout(() => btn.classList.remove("shake"), 400);
+    }
+  }
+
+  render();
+}
+
+// ═══════════════════════════════════════════════════════
+// RESULTS SCREEN
+// ═══════════════════════════════════════════════════════
+function renderResults() {
+  const pct = Math.round((state.score / state.maxScore) * 100);
+  let band = "Keep practising";
+  if (pct >= 90) band = "Excellent";
+  else if (pct >= 75) band = "Very good";
+  else if (pct >= 60) band = "Good effort";
+
+  appEl.innerHTML = `
+    <div class="results-screen">
+      ${renderLogo()}
+      <div class="results-band">${band}</div>
+      <h1>${state.score} / ${state.maxScore}</h1>
+      <p class="results-pct">${pct}% correct</p>
+      <div class="results-breakdown">
+        ${ACTIVITIES.map((a, i) => {
+          const s = state.activityScores[i] || { score: 0, max: 0 };
+          return `<div class="results-row"><span>${a.title}</span><span>${s.score} / ${s.max}</span></div>`;
+        }).join("")}
+      </div>
+      <button class="btn-primary" id="restart-btn">Restart lesson</button>
+    </div>`;
+  document.getElementById("restart-btn").addEventListener("click", () => {
+    state.activityIndex = 0;
+    state.score = 0;
+    state.activityScores = [];
+    renderIntro();
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════
+function escapeAttr(str) {
+  return str.replace(/"/g, "&quot;");
+}
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+renderIntro();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English — Advanced Dinosaur Facts | C1</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Lato:wght@300;400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest: #1a3a2a;
+    --forest-mid: #254d38;
+    --forest-light: #3a7055;
+    --sage: #7aab8e;
+    --sage-pale: #b4d4c1;
+    --parchment: #f5efe3;
+    --parchment-dark: #e8dcc8;
+    --amber: #c8853a;
+    --amber-light: #e8a85a;
+    --bone: #f0e8d5;
+    --text-dark: #1a2820;
+    --text-mid: #3a5040;
+    --white: #ffffff;
+    --shadow: 0 4px 24px rgba(26,58,42,0.13);
+    --shadow-lg: 0 12px 48px rgba(26,58,42,0.18);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    background-color: var(--forest);
+    background-image:
+      radial-gradient(ellipse at 20% 0%, rgba(122,171,142,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 100%, rgba(200,133,58,0.08) 0%, transparent 60%),
+      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%237aab8e' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    min-height: 100vh;
+    padding: 32px 16px 64px;
+    color: var(--text-dark);
+  }
+
+  .page-wrap { max-width: 820px; margin: 0 auto; }
+
+  /* ── LOGO ── */
+  .logo-block {
+    text-align: center;
+    margin-bottom: 36px;
+    animation: fadeDown 0.7s ease both;
+  }
+  .logo-block svg { width: 200px; height: auto; display: inline-block; }
+
+  /* ── LESSON HEADER ── */
+  .lesson-header {
+    background: linear-gradient(135deg, var(--forest-mid) 0%, var(--forest) 100%);
+    border: 1px solid rgba(122,171,142,0.25);
+    border-radius: 16px;
+    padding: 32px 36px;
+    margin-bottom: 28px;
+    position: relative;
+    overflow: hidden;
+    animation: fadeDown 0.7s 0.1s ease both;
+  }
+  .lesson-header::before {
+    content: '🦕';
+    position: absolute; right: 28px; top: 50%; transform: translateY(-50%);
+    font-size: 72px; opacity: 0.12; pointer-events: none;
+  }
+  .lesson-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.85rem; font-weight: 900;
+    color: var(--parchment); line-height: 1.2; margin-bottom: 8px;
+  }
+  .lesson-header p { font-size: 0.95rem; color: var(--sage-pale); font-weight: 300; letter-spacing: 0.03em; }
+  .badge {
+    display: inline-block; background: var(--amber); color: var(--white);
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; padding: 4px 10px; border-radius: 4px; margin-bottom: 12px;
+  }
+
+  /* ── SCORE BAR ── */
+  .score-bar {
+    background: var(--forest-mid);
+    border: 1px solid rgba(122,171,142,0.2);
+    border-radius: 12px; padding: 14px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 24px; animation: fadeDown 0.7s 0.2s ease both;
+  }
+  .score-label { font-size: 0.82rem; color: var(--sage-pale); letter-spacing: 0.05em; text-transform: uppercase; }
+  .score-value { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--amber-light); font-weight: 700; }
+  .activity-tag { font-size: 0.78rem; color: var(--sage); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--parchment); border-radius: 16px;
+    padding: 36px; box-shadow: var(--shadow-lg);
+    animation: fadeUp 0.5s ease both; position: relative;
+  }
+
+  .progress-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+  .progress-label { font-size: 0.8rem; color: var(--text-mid); letter-spacing: 0.06em; text-transform: uppercase; }
+  .progress-bar-wrap { flex: 1; margin: 0 16px; height: 6px; background: var(--parchment-dark); border-radius: 99px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--forest-light), var(--amber)); border-radius: 99px; transition: width 0.5s ease; }
+
+  .question-type-label {
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--forest-light);
+    margin-bottom: 10px; display: block;
+  }
+  .question-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.18rem; color: var(--text-dark);
+    line-height: 1.6; margin-bottom: 26px; font-weight: 400;
+  }
+  .question-text em { font-style: italic; color: var(--forest-mid); }
+
+  /* ── MCQ OPTIONS ── */
+  .options-grid { display: flex; flex-direction: column; gap: 12px; }
+  .option-btn {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 18px; background: var(--white);
+    border: 2px solid var(--parchment-dark); border-radius: 10px;
+    cursor: pointer; font-family: 'Lato', sans-serif;
+    font-size: 0.97rem; color: var(--text-dark);
+    text-align: left; transition: border-color 0.2s, background 0.2s, transform 0.1s;
+    line-height: 1.45; width: 100%;
+  }
+  .option-btn:hover:not(:disabled) { border-color: var(--sage); background: #f0f8f4; transform: translateX(3px); }
+  .option-letter {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--parchment-dark); display: flex; align-items: center; justify-content: center;
+    font-size: 0.82rem; font-weight: 700; flex-shrink: 0;
+    color: var(--forest-mid); transition: background 0.2s, color 0.2s;
+  }
+  .option-btn.correct { border-color: #2e8b57 !important; background: #eaf6ee !important; }
+  .option-btn.correct .option-letter { background: #2e8b57; color: white; }
+  .option-btn.wrong { border-color: #b84040 !important; background: #fdf0f0 !important; }
+  .option-btn.wrong .option-letter { background: #b84040; color: white; }
+  .option-btn.selected-mcq { border-color: var(--amber); background: #fdf5eb; }
+  .option-btn:disabled { cursor: default; }
+
+  /* ── FILL IN THE BLANK ── */
+  .fitb-sentence {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.28rem; line-height: 2.2;
+    color: var(--text-dark); margin-bottom: 20px;
+  }
+  .blank-input {
+    border: none; border-bottom: 2.5px solid var(--amber);
+    background: transparent; font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; color: var(--forest-mid);
+    width: 180px; outline: none; padding: 2px 4px;
+    text-align: center; transition: border-color 0.2s;
+  }
+  .blank-input.correct { border-color: #2e8b57; color: #2e8b57; }
+  .blank-input.wrong { border-color: #b84040; color: #b84040; }
+
+  .word-bank {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    margin-bottom: 24px; padding: 16px;
+    background: var(--white); border-radius: 10px;
+    border: 1px solid var(--parchment-dark);
+  }
+  .word-chip {
+    padding: 7px 16px; background: var(--forest);
+    color: var(--parchment); border-radius: 999px;
+    font-size: 0.9rem; cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    font-weight: 400; letter-spacing: 0.02em; user-select: none;
+  }
+  .word-chip:hover:not(.used) { background: var(--forest-light); transform: translateY(-2px); }
+  .word-chip.used { opacity: 0.35; pointer-events: none; }
+  .word-chip.chip-selected { outline: 2.5px solid var(--amber); background: var(--forest-light); }
+
+  /* ── MATCHING ── */
+  .match-col-header {
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--forest-mid);
+    margin-bottom: 6px; text-align: center;
+  }
+  .match-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; }
+  .match-col { display: flex; flex-direction: column; gap: 10px; }
+  .match-item {
+    padding: 12px 16px; background: var(--white);
+    border: 2px solid var(--parchment-dark); border-radius: 10px;
+    font-size: 0.93rem; color: var(--text-dark);
+    cursor: pointer; text-align: center;
+    transition: border-color 0.2s, background 0.2s;
+    line-height: 1.4; min-height: 54px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .match-item.selected { border-color: var(--amber); background: #fdf5eb; }
+  .match-item.matched { border-color: #2e8b57; background: #eaf6ee; pointer-events: none; cursor: default; }
+  .match-item.wrong-match { border-color: #b84040; background: #fdf0f0; }
+
+  /* ── REORDER ── */
+  .reorder-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+  .reorder-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 13px 16px; background: var(--white);
+    border: 2px solid var(--parchment-dark); border-radius: 10px;
+    cursor: grab; font-size: 0.93rem; color: var(--text-dark);
+    transition: border-color 0.2s, box-shadow 0.2s, opacity 0.2s;
+    user-select: none; line-height: 1.45;
+  }
+  .reorder-item:active { cursor: grabbing; }
+  .reorder-item.dragging { opacity: 0.35; border-style: dashed; }
+  .reorder-item.drag-over { border-color: var(--amber); box-shadow: 0 0 0 3px rgba(200,133,58,0.2); }
+  .reorder-item.correct-order { border-color: #2e8b57; background: #eaf6ee; }
+  .reorder-item.wrong-order { border-color: #b84040; background: #fdf0f0; }
+  .drag-handle { color: var(--sage); font-size: 1.1rem; flex-shrink: 0; }
+
+  /* ── FEEDBACK ── */
+  .feedback-box {
+    margin-top: 20px; padding: 16px 20px; border-radius: 10px;
+    font-size: 0.95rem; line-height: 1.6; display: none;
+    animation: fadeUp 0.3s ease both;
+  }
+  .feedback-box.show { display: block; }
+  .feedback-box.correct-fb { background: #eaf6ee; border-left: 4px solid #2e8b57; color: #1a4a2a; }
+  .feedback-box.wrong-fb { background: #fdf0f0; border-left: 4px solid #b84040; color: #4a1a1a; }
+  .feedback-box.partial-fb { background: #fdf5eb; border-left: 4px solid var(--amber); color: #4a3010; }
+  .feedback-title { font-weight: 700; margin-bottom: 4px; }
+  .feedback-explanation { font-size: 0.88rem; margin-top: 6px; opacity: 0.9; }
+
+  /* ── BUTTONS ── */
+  .btn-row { display: flex; justify-content: flex-end; margin-top: 24px; gap: 12px; }
+  .btn-submit, .btn-next {
+    padding: 13px 32px; border: none; border-radius: 10px;
+    font-family: 'Lato', sans-serif; font-size: 0.95rem;
+    font-weight: 700; cursor: pointer; letter-spacing: 0.04em;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .btn-submit { background: var(--forest); color: var(--parchment); }
+  .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26,58,42,0.3); }
+  .btn-next { background: var(--amber); color: var(--white); display: none; }
+  .btn-next:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(200,133,58,0.4); }
+
+  /* ── ACTIVITY INTRO ── */
+  .activity-intro {
+    background: var(--forest-mid); border-radius: 12px;
+    padding: 20px 24px; margin-bottom: 22px;
+    display: flex; gap: 16px; align-items: flex-start;
+    border-left: 4px solid var(--amber);
+  }
+  .activity-intro-icon { font-size: 1.8rem; flex-shrink: 0; }
+  .activity-intro-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--parchment); font-weight: 700; margin-bottom: 4px; }
+  .activity-intro-desc { font-size: 0.88rem; color: var(--sage-pale); line-height: 1.5; }
+
+  /* ── FINAL SCREEN ── */
+  .final-screen { display: none; text-align: center; padding: 20px 0; }
+  .final-screen.show { display: block; animation: fadeUp 0.6s ease both; }
+  .final-dino { font-size: 80px; margin-bottom: 16px; }
+  .final-score-big { font-family: 'Playfair Display', serif; font-size: 3.5rem; color: var(--forest-mid); font-weight: 900; margin-bottom: 8px; }
+  .final-label { font-size: 1rem; color: var(--text-mid); margin-bottom: 20px; }
+  .final-message {
+    font-family: 'Cormorant Garamond', serif; font-size: 1.35rem;
+    font-style: italic; color: var(--forest-mid);
+    max-width: 480px; margin: 0 auto 32px; line-height: 1.7;
+  }
+  .btn-restart {
+    padding: 14px 40px; background: var(--forest); color: var(--parchment);
+    border: none; border-radius: 10px; font-family: 'Lato', sans-serif;
+    font-size: 1rem; font-weight: 700; cursor: pointer; letter-spacing: 0.04em;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .btn-restart:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26,58,42,0.3); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeDown { from { opacity:0; transform:translateY(-18px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeUp   { from { opacity:0; transform:translateY(18px);  } to { opacity:1; transform:translateY(0); } }
+
+  @media (max-width: 560px) {
+    .card { padding: 20px 16px; }
+    .match-cols { grid-template-columns: 1fr; }
+    .question-text { font-size: 1.05rem; }
+    .lesson-header { padding: 24px 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- LOGO -->
+  <div class="logo-block">
+    <svg viewBox="0 0 220 72" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forbes English">
+      <text x="110" y="33" text-anchor="middle"
+        font-family="'Playfair Display',Georgia,serif"
+        font-size="34" font-weight="900" letter-spacing="3"
+        fill="#b4d4c1">FORBES</text>
+      <rect x="28" y="41" width="164" height="1.5" fill="#7aab8e" opacity="0.65"/>
+      <text x="110" y="61" text-anchor="middle"
+        font-family="'Lato',Arial,sans-serif"
+        font-size="13" font-weight="700" letter-spacing="8"
+        fill="#7aab8e">ENGLISH</text>
+    </svg>
+  </div>
+
+  <!-- HEADER -->
+  <div class="lesson-header">
+    <span class="badge">C1 Advanced</span>
+    <h1>The Hidden World of Dinosaurs</h1>
+    <p>Advanced palaeontology, unusual facts &amp; forgotten science — 3 activities · 15 questions</p>
+  </div>
+
+  <!-- SCORE BAR -->
+  <div class="score-bar">
+    <div>
+      <div class="score-label">Score</div>
+      <div class="score-value" id="scoreDisplay">0 / 0</div>
+    </div>
+    <div id="activityTagDisplay" class="activity-tag">Activity 1 of 3</div>
+  </div>
+
+  <!-- MAIN CARD -->
+  <div class="card" id="mainCard">
+    <div class="progress-row">
+      <span class="progress-label" id="progressLabel">Question 1 of 5</span>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+
+    <div id="activityArea"></div>
+
+    <div class="feedback-box" id="feedbackBox">
+      <div class="feedback-title" id="feedbackTitle"></div>
+      <div class="feedback-explanation" id="feedbackExplanation"></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-submit" id="btnSubmit">Check Answer</button>
+      <button class="btn-next" id="btnNext" onclick="nextQuestion()">Next →</button>
+    </div>
+
+    <div class="final-screen" id="finalScreen">
+      <div class="final-dino" id="finalDino">🦖</div>
+      <div class="final-score-big" id="finalScoreNum"></div>
+      <div class="final-label" id="finalScoreLabel"></div>
+      <div class="final-message" id="finalMessage"></div>
+      <button class="btn-restart" onclick="restartLesson()">Restart Lesson</button>
+    </div>
+  </div>
+
+</div><!-- /page-wrap -->
+
+<script>
+// ═══════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════
+const DATA = {
+  activities: [
+    {
+      type: 'mcq',
+      title: 'Activity 1 — Multiple Choice',
+      icon: '🧠',
+      desc: 'Select the best answer. Read carefully — all distractors are plausible.',
+      questions: [
+        {
+          text: 'Recent palaeontological evidence suggests many theropod dinosaurs possessed protofeathers or full plumage. Which statement most accurately reflects current scientific consensus?',
+          opts: [
+            'Feathers evolved exclusively in avian species after the K-Pg extinction, with no confirmed evidence in non-avian dinosaurs',
+            'Feathers were likely widespread across coelurosaurs and possibly other lineages, serving thermoregulation and display functions',
+            'Only Archaeopteryx is confirmed to have possessed true feathers, as no other fossil has preserved integumentary structures',
+            'Feathered dinosaurs were confined to humid forest ecosystems in East Asia and never migrated to other continents'
+          ],
+          correct: 1,
+          exp: 'Fossils from China\'s Yixian Formation confirm feathers or proto-feathers in numerous coelurosaurs — Sinosauropteryx, Microraptor, Yuanchuavis and others. These discoveries show feathers long predate birds and likely served thermoregulation and display before flight.'
+        },
+        {
+          text: 'The K-Pg extinction event ~66 million years ago wiped out non-avian dinosaurs. What proportion of all Earth\'s species is estimated to have perished during this event?',
+          opts: [
+            'Approximately 25% of all species, with deep-ocean ecosystems left largely unaffected',
+            'Approximately 50% of all species, concentrated primarily in equatorial terrestrial zones',
+            'Approximately 75% of all species, affecting both terrestrial and marine ecosystems globally',
+            'Approximately 95% of all species, representing the single most severe extinction in Earth\'s entire history'
+          ],
+          correct: 2,
+          exp: 'The K-Pg event eliminated roughly 75% of all species, devastating marine invertebrates, mosasaurs, pterosaurs, and non-avian dinosaurs alike. The most severe extinction on record is actually the Permian-Triassic event (~252 Ma), which killed approximately 96% of species.'
+        },
+        {
+          text: 'Research into sauropod physiology suggests which factor most critically enabled their extraordinary body mass — in some species exceeding 70 tonnes?',
+          opts: [
+            'Slow, reptilian metabolic rates paired with continuous feeding across sixteen or more hours daily',
+            'Hollow, air-filled vertebrae connected to an avian-style respiratory system that dramatically reduced skeletal mass',
+            'A dual-pump circulatory system analogous to modern cetaceans, enabling efficient oxygen delivery to extremities',
+            'Specialised fermentation chambers that extracted significantly more energy per kilogram of plant matter than any modern herbivore'
+          ],
+          correct: 1,
+          exp: 'Sauropods possessed pneumatised (air-sac-filled) vertebrae and bones integrated with a bird-like pulmonary system. This reduced skeletal mass by up to 10%, making gigantism biomechanically viable. Their respiratory efficiency also supported the high metabolic demands their enormous bodies required.'
+        },
+        {
+          text: 'Spinosaurus aegyptiacus has been substantially reinterpreted following Moroccan fossil discoveries. Which conclusion do palaeontologists now broadly accept regarding its lifestyle?',
+          opts: [
+            'It was primarily nocturnal, hunting small mammals and lizards exclusively along arid riverbanks after dark',
+            'It was a highly social apex predator that hunted in coordinated groups across open floodplains',
+            'It inhabited open savannah environments and competed directly with large titanosaur sauropods for territory',
+            'It was semi-aquatic with dense bones for buoyancy control and a diet centred primarily on large freshwater fish'
+          ],
+          correct: 3,
+          exp: 'Research led by Nizar Ibrahim revealed Spinosaurus had unusually dense, compact bones (reducing buoyancy), short hind limbs, paddle-like feet, and an elongated snout with pressure-sensitive receptors — all consistent with semi-aquatic life. Its diet was dominated by large lobe-finned fish like Onchopristis.'
+        },
+        {
+          text: 'T. rex underwent explosive growth during adolescence. Studies of fossilised bone growth rings reveal roughly how much mass a juvenile T. rex gained per year at peak growth?',
+          opts: [
+            'Approximately 100–150 kg per year, comparable to the growth rate of large African elephants',
+            'Approximately 300–400 kg per year, the fastest growth rate known among any Mesozoic theropod lineage',
+            'Approximately 600–700 kg per year, the fastest mass accumulation known in any terrestrial vertebrate',
+            'Approximately 900–1,000 kg per year, possible only because of the uniquely oxygen-rich Late Cretaceous atmosphere'
+          ],
+          correct: 2,
+          exp: 'Analysis of bone histology (growth rings) reveals T. rex added roughly 600–700 kg per year during adolescence — the fastest mass accumulation of any known land vertebrate. This strongly implies mesothermy or full endothermy, requiring high metabolic rates to sustain such rapid tissue growth.'
+        }
+      ]
+    },
+    {
+      type: 'fitb',
+      title: 'Activity 2 — Fill in the Blank',
+      icon: '✍️',
+      desc: 'Click a word from the bank below, then click the blank you wish to fill. Each word may only be used once.',
+      questions: [
+        {
+          parts: ['The study of dinosaur footprints, trackways, and other trace fossils is known as ', 'BLANK', ', and it can reveal gait, speed, and even social behaviour from species that left no skeletal remains in a region.'],
+          answer: 'ichnology',
+          bank: ['ichnology', 'osteology', 'palynology', 'taphonomy', 'phylogenetics'],
+          exp: 'Ichnology studies trace fossils — footprints, burrows, tail drags — providing behavioural data that skeletal fossils cannot. Trackways from sites like Paluxy River reveal sauropod herding behaviour and theropod hunting strategies.'
+        },
+        {
+          parts: ['Many hadrosaurs possessed hollow cranial crests that functioned as resonating chambers, producing low-frequency ', 'BLANK', ' communication — possibly audible across vast distances through dense Cretaceous vegetation, much like modern elephants.'],
+          answer: 'infrasound',
+          bank: ['infrasound', 'ultrasound', 'bioluminescence', 'echolocation', 'subsonic'],
+          exp: 'The nasal passages of crested hadrosaurs like Parasaurolophus could amplify sound to frequencies below 20 Hz — infrasound. Modern elephants and blue whales use infrasound for long-range communication across kilometres of terrain or ocean.'
+        },
+        {
+          parts: ['Unlike the warm-blooded or cold-blooded dichotomy, bone isotope analyses suggest many dinosaurs were ', 'BLANK', ' — generating internal heat but at metabolic rates between true ectotherms and full endotherms.'],
+          answer: 'mesothermic',
+          bank: ['mesothermic', 'poikilothermic', 'homeothermic', 'thermoconforming', 'ectothermic'],
+          exp: 'A landmark 2014 study by Grady et al. proposed mesothermy for many dinosaurs — a middle-ground metabolism explaining rapid juvenile growth without the full caloric demands of mammals. This metabolic strategy is also seen today in tuna and some sharks.'
+        },
+        {
+          parts: ['The earliest unambiguous dinosaur fossils — including Eoraptor and Herrerasaurus — date to the ', 'BLANK', ' Age of the Late Triassic, approximately 231–237 million years ago, recovered from Argentina\'s Ischigualasto Formation.'],
+          answer: 'Carnian',
+          bank: ['Carnian', 'Norian', 'Hettangian', 'Callovian', 'Rhaetian'],
+          exp: 'The Ischigualasto Formation preserves Carnian-age sediments (~231–237 Ma) containing some of the oldest confirmed dinosaurs. The Carnian Pluvial Episode — a period of major climate change — may have created the ecological opening that allowed dinosaurs to diversify.'
+        },
+        {
+          parts: ['Palaeontologist Mary ', 'BLANK', ' controversially reported the recovery of possible soft tissue including collagen traces from a 68-million-year-old T. rex femur, challenging assumptions about the long-term survival of organic molecules in fossil bone.'],
+          answer: 'Schweitzer',
+          bank: ['Schweitzer', 'Currie', 'Bakker', 'Novas', 'Sereno'],
+          exp: 'Mary Schweitzer\'s 2005 publication describing what appeared to be intact blood vessels and protein fragments from a T. rex femur sparked intense debate. Subsequent work suggested iron chemistry from haemoglobin may protect organic molecules over geological timescales — a phenomenon still actively researched.'
+        }
+      ]
+    },
+    {
+      type: 'mixed',
+      title: 'Activity 3 — Matching & Reordering',
+      icon: '🔗',
+      desc: 'First, match each dinosaur to its correct description. Then arrange the evolutionary timeline.',
+      matchQ: {
+        text: 'Match each dinosaur or concept to the statement that most accurately characterises it.',
+        pairs: [
+          { L: 'Microraptor gui',           R: 'A four-winged dromaeosaurid thought to use an arboreal gliding strategy' },
+          { L: 'Ankylosaurus magniventris',  R: 'Possessed a tail club dense enough to fracture the bones of large theropods' },
+          { L: 'Epidexipteryx hui',          R: 'The earliest known dinosaur to bear elongated ribbon-like display feathers' },
+          { L: 'Pachycephalosaurus',         R: 'A dome-headed species whose skull withstood intraspecific head-butting forces exceeding 1,000 N' },
+          { L: 'Therizinosaurus cheloniformis', R: 'A theropod lineage that reversed to herbivory, bearing claws over one metre in length' }
+        ],
+        exp: 'Each represents a remarkable evolutionary pathway: Microraptor\'s four-wing gliding, Ankylosaurus\'s weaponised tail club, Epidexipteryx\'s display plumage, Pachycephalosaurus\'s reinforced dome, and Therizinosaurus\'s bizarre herbivorous theropod anatomy all challenge neat categories of dinosaur biology.'
+      },
+      reorderQ: {
+        text: 'Arrange these milestones in dinosaur science into the correct chronological order, from earliest to most recent.',
+        items: [
+          { id: 0, text: 'First true dinosaurs appear — Eoraptor & Herrerasaurus in the Carnian Age of the Late Triassic (~233 Ma)' },
+          { id: 1, text: 'Jurassic diversification: sauropods achieve peak gigantism; Archaeopteryx bridges dinosaurs and birds (~150 Ma)' },
+          { id: 2, text: 'Chicxulub impactor strikes Earth; K-Pg mass extinction eliminates all non-avian dinosaurs (~66 Ma)' },
+          { id: 3, text: 'Megalosaurus formally described by Buckland; Richard Owen coins the term "Dinosauria" (1824–1842)' },
+          { id: 4, text: 'Feathered dinosaur discoveries in China and Mary Schweitzer\'s soft-tissue findings reshape the field (2000s)' }
+        ],
+        correctOrder: [0, 1, 2, 3, 4],
+        exp: 'Dinosaurs first appeared ~233 Ma (Triassic), diversified spectacularly through the Jurassic (~201–145 Ma), were extinguished at the K-Pg boundary (~66 Ma), were formally described in the 1820s–40s, and 21st-century molecular and imaging technology opened entirely new windows into their biology.'
+      }
+    }
+  ]
+};
+
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
+let S = {
+  actIdx: 0,
+  qIdx: 0,
+  totalCorrect: 0,
+  totalAnswered: 0,
+  answered: false,
+  // MCQ
+  mcqSelected: null,
+  // FITB
+  filledWord: null,
+  // Matching
+  matchPhase: true, // true = matching, false = reorder
+  matchLeft: null,
+  matchRight: null,
+  leftMatches: {},    // leftIdx -> rightIdx
+  rightShuffle: [],   // shuffled right indices
+  matchSubmitted: false,
+  // Reorder
+  reorderItems: [],
+  reorderSubmitted: false
+};
+
+// ═══════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════
+const el = id => document.getElementById(id);
+const qs = sel => document.querySelector(sel);
+const qsa = sel => document.querySelectorAll(sel);
+
+function updateScoreBar() {
+  el('scoreDisplay').textContent = S.totalCorrect + ' / ' + S.totalAnswered;
+  el('activityTagDisplay').textContent = 'Activity ' + (S.actIdx + 1) + ' of ' + DATA.activities.length;
+}
+
+function updateProgress(cur, total) {
+  el('progressLabel').textContent = 'Question ' + cur + ' of ' + total;
+  el('progressFill').style.width = (((cur - 1) / total) * 100) + '%';
+}
+
+function showFeedback(cls, title, exp) {
+  const fb = el('feedbackBox');
+  fb.className = 'feedback-box show ' + cls;
+  el('feedbackTitle').textContent = title;
+  el('feedbackExplanation').textContent = exp;
+  el('btnNext').style.display = 'inline-block';
+  el('btnSubmit').style.display = 'none';
+}
+
+function clearFeedback() {
+  el('feedbackBox').className = 'feedback-box';
+  el('feedbackTitle').textContent = '';
+  el('feedbackExplanation').textContent = '';
+  el('btnNext').style.display = 'none';
+  el('btnSubmit').style.display = 'inline-block';
+  el('btnSubmit').textContent = 'Check Answer';
+}
+
+// ═══════════════════════════════════════════
+// MCQ
+// ═══════════════════════════════════════════
+function renderMCQ() {
+  const act = DATA.activities[S.actIdx];
+  const q = act.questions[S.qIdx];
+  const total = act.questions.length;
+  updateProgress(S.qIdx + 1, total);
+
+  const letters = ['A','B','C','D'];
+  const optsHTML = q.opts.map((o, i) =>
+    `<button class="option-btn" id="opt${i}" onclick="clickMCQ(${i})">
+       <span class="option-letter">${letters[i]}</span>${o}
+     </button>`
+  ).join('');
+
+  el('activityArea').innerHTML = `
+    <div class="activity-intro">
+      <div class="activity-intro-icon">${act.icon}</div>
+      <div>
+        <div class="activity-intro-title">${act.title}</div>
+        <div class="activity-intro-desc">${act.desc}</div>
+      </div>
+    </div>
+    <span class="question-type-label">Multiple Choice</span>
+    <div class="question-text">${q.text}</div>
+    <div class="options-grid">${optsHTML}</div>`;
+
+  S.mcqSelected = null;
+  S.answered = false;
+  el('btnSubmit').onclick = submitMCQ;
+  el('btnSubmit').textContent = 'Check Answer';
+}
+
+function clickMCQ(i) {
+  if (S.answered) return;
+  S.mcqSelected = i;
+  qsa('.option-btn').forEach((b, idx) => {
+    b.className = 'option-btn' + (idx === i ? ' selected-mcq' : '');
+  });
+}
+
+function submitMCQ() {
+  if (S.mcqSelected === null) { alert('Please select an answer first.'); return; }
+  S.answered = true;
+  S.totalAnswered++;
+  const q = DATA.activities[S.actIdx].questions[S.qIdx];
+  qsa('.option-btn').forEach(b => b.disabled = true);
+  if (S.mcqSelected === q.correct) {
+    S.totalCorrect++;
+    el('opt' + S.mcqSelected).className = 'option-btn correct';
+    showFeedback('correct-fb', '✓ Correct!', q.exp);
+  } else {
+    el('opt' + S.mcqSelected).className = 'option-btn wrong';
+    el('opt' + q.correct).className = 'option-btn correct';
+    showFeedback('wrong-fb', '✗ Not quite.', q.exp);
+  }
+  updateScoreBar();
+}
+
+// ═══════════════════════════════════════════
+// FITB
+// ═══════════════════════════════════════════
+function renderFITB() {
+  const act = DATA.activities[S.actIdx];
+  const q = act.questions[S.qIdx];
+  const total = act.questions.length;
+  updateProgress(S.qIdx + 1, total);
+
+  const shuffled = [...q.bank].sort(() => Math.random() - 0.5);
+
+  const sentHTML = q.parts[0]
+    + `<input class="blank-input" id="blankInput" placeholder="__________" readonly>`
+    + q.parts[2];
+
+  const bankHTML = shuffled.map(w =>
+    `<span class="word-chip" id="chip_${w}" onclick="clickChip('${w}')">${w}</span>`
+  ).join('');
+
+  el('activityArea').innerHTML = `
+    <div class="activity-intro">
+      <div class="activity-intro-icon">${act.icon}</div>
+      <div>
+        <div class="activity-intro-title">${act.title}</div>
+        <div class="activity-intro-desc">${act.desc}</div>
+      </div>
+    </div>
+    <span class="question-type-label">Fill in the Blank</span>
+    <div class="fitb-sentence">${sentHTML}</div>
+    <div style="font-size:0.78rem;text-transform:uppercase;letter-spacing:0.07em;color:var(--text-mid);margin-bottom:8px;">Word Bank</div>
+    <div class="word-bank">${bankHTML}</div>`;
+
+  S.filledWord = null;
+  S.answered = false;
+  el('btnSubmit').onclick = submitFITB;
+  el('btnSubmit').textContent = 'Check Answer';
+}
+
+function clickChip(word) {
+  if (S.answered) return;
+  // Deselect all
+  qsa('.word-chip').forEach(c => { c.classList.remove('chip-selected'); });
+  // Fill blank with this word
+  const inp = el('blankInput');
+  if (inp) {
+    // If same word clicked again, clear
+    if (S.filledWord === word) {
+      inp.value = '';
+      S.filledWord = null;
+      qsa('.word-chip').forEach(c => c.classList.remove('used'));
+      return;
+    }
+    // Restore previously used chip
+    if (S.filledWord) {
+      const prev = el('chip_' + S.filledWord);
+      if (prev) prev.classList.remove('used');
+    }
+    inp.value = word;
+    S.filledWord = word;
+    el('chip_' + word).classList.add('used');
+  }
+}
+
+function submitFITB() {
+  const inp = el('blankInput');
+  if (!inp || !S.filledWord) { alert('Please select a word from the bank first.'); return; }
+  S.answered = true;
+  S.totalAnswered++;
+  const q = DATA.activities[S.actIdx].questions[S.qIdx];
+  if (S.filledWord.toLowerCase() === q.answer.toLowerCase()) {
+    S.totalCorrect++;
+    inp.className = 'blank-input correct';
+    showFeedback('correct-fb', '✓ Correct!', q.exp);
+  } else {
+    inp.className = 'blank-input wrong';
+    showFeedback('wrong-fb', '✗ Not quite. The correct answer is: ' + q.answer, q.exp);
+  }
+  updateScoreBar();
+}
+
+// ═══════════════════════════════════════════
+// MATCHING
+// ═══════════════════════════════════════════
+function renderMatching() {
+  const act = DATA.activities[S.actIdx];
+  const mq = act.matchQ;
+  updateProgress(1, 2);
+
+  // Shuffle right column
+  S.rightShuffle = mq.pairs.map((_,i)=>i).sort(()=>Math.random()-0.5);
+  S.matchLeft = null; S.matchRight = null;
+  S.leftMatches = {}; S.matchSubmitted = false; S.answered = false;
+
+  const leftCols = mq.pairs.map((p,i)=>
+    `<div class="match-item" id="ML${i}" onclick="clickMatchLeft(${i})">${p.L}</div>`
+  ).join('');
+
+  const rightCols = S.rightShuffle.map((origIdx,dispIdx)=>
+    `<div class="match-item" id="MR${origIdx}" onclick="clickMatchRight(${origIdx})">${mq.pairs[origIdx].R}</div>`
+  ).join('');
+
+  el('activityArea').innerHTML = `
+    <div class="activity-intro">
+      <div class="activity-intro-icon">${act.icon}</div>
+      <div>
+        <div class="activity-intro-title">${act.title} (1/2)</div>
+        <div class="activity-intro-desc">${act.desc}</div>
+      </div>
+    </div>
+    <span class="question-type-label">Matching</span>
+    <div class="question-text">${mq.text}</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 20px;margin-bottom:6px;">
+      <div class="match-col-header">Dinosaur / Concept</div>
+      <div class="match-col-header">Description</div>
+    </div>
+    <div class="match-cols">
+      <div class="match-col" id="matchLeft">${leftCols}</div>
+      <div class="match-col" id="matchRight">${rightCols}</div>
+    </div>
+    <div style="margin-top:10px;font-size:0.82rem;color:var(--text-mid);">Select a term on the left, then its matching description on the right.</div>`;
+
+  el('btnSubmit').onclick = submitMatching;
+  el('btnSubmit').textContent = 'Check Matches';
+}
+
+function clickMatchLeft(i) {
+  if (S.matchSubmitted) return;
+  if (el('ML'+i).classList.contains('matched')) return;
+  // Deselect any other left
+  DATA.activities[S.actIdx].matchQ.pairs.forEach((_,idx) => {
+    const e = el('ML'+idx);
+    if (e && !e.classList.contains('matched')) e.classList.remove('selected');
+  });
+  S.matchLeft = i;
+  el('ML'+i).classList.add('selected');
+  tryPair();
+}
+
+function clickMatchRight(origIdx) {
+  if (S.matchSubmitted) return;
+  if (el('MR'+origIdx).classList.contains('matched')) return;
+  // Deselect any other right
+  DATA.activities[S.actIdx].matchQ.pairs.forEach((_,idx) => {
+    const e = el('MR'+idx);
+    if (e && !e.classList.contains('matched')) e.classList.remove('selected');
+  });
+  S.matchRight = origIdx;
+  el('MR'+origIdx).classList.add('selected');
+  tryPair();
+}
+
+function tryPair() {
+  if (S.matchLeft !== null && S.matchRight !== null) {
+    S.leftMatches[S.matchLeft] = S.matchRight;
+    el('ML'+S.matchLeft).classList.remove('selected');
+    el('MR'+S.matchRight).classList.remove('selected');
+    // Subtle indication that pair is recorded
+    el('ML'+S.matchLeft).style.borderColor = 'var(--sage)';
+    el('MR'+S.matchRight).style.borderColor = 'var(--sage)';
+    S.matchLeft = null; S.matchRight = null;
+  }
+}
+
+function submitMatching() {
+  const mq = DATA.activities[S.actIdx].matchQ;
+  if (Object.keys(S.leftMatches).length < mq.pairs.length) {
+    alert('Please match all ' + mq.pairs.length + ' items before checking.'); return;
+  }
+  S.matchSubmitted = true;
+  S.totalAnswered++;
+  let correct = 0;
+  mq.pairs.forEach((_,i) => {
+    const lEl = el('ML'+i), rEl = el('MR'+i);
+    lEl.style.borderColor = ''; rEl.style.borderColor = '';
+    if (S.leftMatches[i] === i) {
+      correct++;
+      lEl.className = 'match-item matched';
+      rEl.className = 'match-item matched';
+    } else {
+      lEl.className = 'match-item wrong-match';
+      // Show what the correct right was
+      if (rEl) rEl.className = 'match-item matched';
+      // Mark the wrong right selection
+      const wrongRight = S.leftMatches[i];
+      if (wrongRight !== undefined) {
+        const wEl = el('MR'+wrongRight);
+        if (wEl && !wEl.classList.contains('matched')) wEl.className = 'match-item wrong-match';
+      }
+    }
+  });
+  if (correct === mq.pairs.length) {
+    S.totalCorrect++;
+    showFeedback('correct-fb', '✓ All ' + correct + ' pairs correct!', mq.exp);
+  } else {
+    showFeedback(correct >= 3 ? 'partial-fb' : 'wrong-fb',
+      correct + ' of ' + mq.pairs.length + ' pairs correct.', mq.exp);
+  }
+  S.answered = true;
+  updateScoreBar();
+}
+
+// ═══════════════════════════════════════════
+// REORDER (drag-and-drop)
+// ═══════════════════════════════════════════
+let dragIdx = null;
+
+function renderReorder() {
+  const act = DATA.activities[S.actIdx];
+  const rq = act.reorderQ;
+  updateProgress(2, 2);
+
+  S.reorderItems = [...rq.items].sort(()=>Math.random()-0.5);
+  S.reorderSubmitted = false; S.answered = false;
+
+  el('activityArea').innerHTML = `
+    <span class="question-type-label">Reordering</span>
+    <div class="question-text">${rq.text}</div>
+    <div class="reorder-list" id="reorderList">${buildReorderHTML()}</div>
+    <div style="font-size:0.82rem;color:var(--text-mid);">Drag the items into the correct order — earliest first.</div>`;
+
+  el('btnSubmit').onclick = submitReorder;
+  el('btnSubmit').textContent = 'Check Order';
+}
+
+function buildReorderHTML() {
+  return S.reorderItems.map((item, i) =>
+    `<div class="reorder-item" draggable="true" id="ri${i}"
+      ondragstart="onDragStart(event,${i})"
+      ondragover="onDragOver(event,${i})"
+      ondrop="onDrop(event,${i})"
+      ondragleave="onDragLeave(event,${i})">
+      <span class="drag-handle">⠿</span>
+      <span>${item.text}</span>
+    </div>`
+  ).join('');
+}
+
+function refreshReorderList() {
+  el('reorderList').innerHTML = buildReorderHTML();
+}
+
+function onDragStart(e, i) {
+  dragIdx = i;
+  setTimeout(()=>{ const el2 = el('ri'+i); if(el2) el2.classList.add('dragging'); }, 0);
+}
+function onDragOver(e, i) {
+  e.preventDefault();
+  qsa('.reorder-item').forEach(el2=>el2.classList.remove('drag-over'));
+  const t = el('ri'+i); if(t) t.classList.add('drag-over');
+}
+function onDragLeave(e, i) {
+  const t = el('ri'+i); if(t) t.classList.remove('drag-over');
+}
+function onDrop(e, i) {
+  e.preventDefault();
+  qsa('.reorder-item').forEach(el2=>{ el2.classList.remove('drag-over'); el2.classList.remove('dragging'); });
+  if (dragIdx === null || dragIdx === i) { dragIdx = null; return; }
+  const tmp = S.reorderItems[dragIdx];
+  S.reorderItems[dragIdx] = S.reorderItems[i];
+  S.reorderItems[i] = tmp;
+  dragIdx = null;
+  refreshReorderList();
+}
+
+function submitReorder() {
+  if (S.reorderSubmitted) return;
+  const rq = DATA.activities[S.actIdx].reorderQ;
+  S.reorderSubmitted = true;
+  S.totalAnswered++;
+  let allOk = true;
+  const elems = qsa('.reorder-item');
+  S.reorderItems.forEach((item, i) => {
+    const ok = item.id === rq.correctOrder[i];
+    if (!ok) allOk = false;
+    elems[i].classList.add(ok ? 'correct-order' : 'wrong-order');
+    elems[i].draggable = false;
+  });
+  if (allOk) {
+    S.totalCorrect++;
+    showFeedback('correct-fb', '✓ Perfect sequence!', rq.exp);
+  } else {
+    const correctNames = rq.correctOrder.map((id,i)=>(i+1)+'. '+rq.items.find(x=>x.id===id).text.split('—')[0].trim()).join(' → ');
+    showFeedback('wrong-fb', '✗ Incorrect order.', rq.exp);
+  }
+  S.answered = true;
+  updateScoreBar();
+}
+
+// ═══════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════
+function nextQuestion() {
+  clearFeedback();
+  const act = DATA.activities[S.actIdx];
+
+  if (act.type === 'mcq') {
+    if (S.qIdx < act.questions.length - 1) {
+      S.qIdx++;
+      renderMCQ();
+    } else {
+      advanceActivity();
+    }
+  } else if (act.type === 'fitb') {
+    if (S.qIdx < act.questions.length - 1) {
+      S.qIdx++;
+      renderFITB();
+    } else {
+      advanceActivity();
+    }
+  } else if (act.type === 'mixed') {
+    if (S.matchPhase) {
+      S.matchPhase = false;
+      renderReorder();
+    } else {
+      advanceActivity();
+    }
+  }
+}
+
+function advanceActivity() {
+  if (S.actIdx < DATA.activities.length - 1) {
+    S.actIdx++;
+    S.qIdx = 0;
+    S.matchPhase = true;
+    renderCurrent();
+  } else {
+    showFinal();
+  }
+}
+
+function renderCurrent() {
+  const act = DATA.activities[S.actIdx];
+  clearFeedback();
+  if (act.type === 'mcq')    renderMCQ();
+  else if (act.type === 'fitb')  renderFITB();
+  else if (act.type === 'mixed') { S.matchPhase = true; renderMatching(); }
+  updateScoreBar();
+}
+
+// ═══════════════════════════════════════════
+// FINAL
+// ═══════════════════════════════════════════
+function showFinal() {
+  el('activityArea').innerHTML = '';
+  el('feedbackBox').className = 'feedback-box';
+  el('btnSubmit').style.display = 'none';
+  el('btnNext').style.display = 'none';
+  el('progressFill').style.width = '100%';
+  el('progressLabel').textContent = 'Lesson complete!';
+
+  const pct = S.totalAnswered > 0 ? Math.round(S.totalCorrect / S.totalAnswered * 100) : 0;
+  el('finalScoreNum').textContent = S.totalCorrect + ' / ' + S.totalAnswered;
+
+  let grade, msg, dino;
+  if (pct >= 90) {
+    grade = 'Exceptional — ' + pct + '%';
+    msg = '"Palaeontology is not a rearview mirror — it is a window into deep time. You\'ve looked through it with extraordinary clarity."';
+    dino = '🏆';
+  } else if (pct >= 75) {
+    grade = 'Excellent — ' + pct + '%';
+    msg = '"Every fossil tells a story. You\'ve learned to read them well. Return to the questions you missed — therein lies mastery."';
+    dino = '🦖';
+  } else if (pct >= 55) {
+    grade = 'Good effort — ' + pct + '%';
+    msg = '"The greatest scientific discoveries begin with curiosity. Review the explanations, return with fresh eyes, and the fossils will yield their secrets."';
+    dino = '🦕';
+  } else {
+    grade = 'Keep practising — ' + pct + '%';
+    msg = '"Even palaeontologists spend decades in the field before making breakthrough discoveries. Persistence is the most important tool in the kit."';
+    dino = '🥚';
+  }
+
+  el('finalDino').textContent = dino;
+  el('finalScoreLabel').textContent = grade;
+  el('finalMessage').textContent = msg;
+  el('finalScreen').className = 'final-screen show';
+}
+
+function restartLesson() {
+  S = {
+    actIdx: 0, qIdx: 0,
+    totalCorrect: 0, totalAnswered: 0,
+    answered: false, mcqSelected: null,
+    filledWord: null, matchPhase: true,
+    matchLeft: null, matchRight: null,
+    leftMatches: {}, rightShuffle: [],
+    matchSubmitted: false, reorderItems: [], reorderSubmitted: false
+  };
+  el('finalScreen').className = 'final-screen';
+  renderCurrent();
+  updateScoreBar();
+}
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+window.onload = function() {
+  updateScoreBar();
+  renderCurrent();
+};
+</script>
+</body>
+</html>

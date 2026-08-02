@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – Dino-Craft: C1 English Expedition</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #0e1a12;
+    --bg2:       #152019;
+    --bg3:       #1c2b21;
+    --card:      #1e2e23;
+    --card2:     #243529;
+    --border:    #2e4535;
+    --amber:     #e8a020;
+    --amber2:    #f5b840;
+    --amber3:    #c47f10;
+    --cream:     #f2e8d0;
+    --cream2:    #d9ccb0;
+    --moss:      #4a7c59;
+    --moss2:     #3a6047;
+    --dino:      #6fbb7a;
+    --dino2:     #4e9458;
+    --stone:     #8fa88a;
+    --red:       #e05555;
+    --correct:   #4fbc6a;
+    --wrong:     #e05555;
+    --font-head: 'Playfair Display', serif;
+    --font-body: 'Libre Baskerville', serif;
+    --font-ui:   'DM Sans', sans-serif;
+    --r:         10px;
+    --r2:        16px;
+    --shadow:    0 8px 32px rgba(0,0,0,0.4);
+    --glow:      0 0 24px rgba(232,160,32,0.18);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--cream);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-image:
+      radial-gradient(ellipse 80% 60% at 10% 10%, rgba(74,124,89,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 90% 80%, rgba(111,187,122,0.06) 0%, transparent 60%),
+      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234a7c59' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg2); }
+  ::-webkit-scrollbar-thumb { background: var(--moss); border-radius: 3px; }
+
+  /* ── WRAPPER ── */
+  #app {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+  }
+
+  /* ── LOGO ── */
+  .logo-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    animation: fadeDown 0.7s ease both;
+  }
+  .logo-svg { width: 200px; }
+
+  /* ── HEADER SECTION ── */
+  .lesson-header {
+    text-align: center;
+    margin-bottom: 32px;
+    animation: fadeDown 0.7s 0.1s ease both;
+  }
+  .lesson-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--amber3), var(--amber));
+    color: var(--bg);
+    font-family: var(--font-ui);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+  }
+  .lesson-title {
+    font-family: var(--font-head);
+    font-size: clamp(26px, 5vw, 40px);
+    font-weight: 900;
+    color: var(--cream);
+    line-height: 1.15;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 20px rgba(232,160,32,0.2);
+  }
+  .lesson-subtitle {
+    font-family: var(--font-ui);
+    color: var(--stone);
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── HUD ── */
+  .hud {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--r2);
+    padding: 14px 22px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow);
+    animation: fadeUp 0.5s 0.2s ease both;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .hud-score {
+    font-family: var(--font-ui);
+    font-size: 13px;
+    color: var(--stone);
+    font-weight: 400;
+  }
+  .hud-score span {
+    font-family: var(--font-head);
+    font-size: 22px;
+    color: var(--amber);
+    font-weight: 700;
+    display: block;
+    line-height: 1;
+  }
+  .hud-progress-wrap {
+    flex: 1;
+    max-width: 320px;
+    min-width: 160px;
+  }
+  .hud-progress-label {
+    font-family: var(--font-ui);
+    font-size: 12px;
+    color: var(--stone);
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .hud-bar {
+    height: 6px;
+    background: var(--bg2);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .hud-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--moss), var(--dino));
+    border-radius: 3px;
+    transition: width 0.5s cubic-bezier(.4,0,.2,1);
+    box-shadow: 0 0 8px var(--dino2);
+  }
+  .hud-section-badge {
+    font-family: var(--font-ui);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--bg);
+    background: var(--moss);
+    padding: 3px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── SECTION INTRO ── */
+  .section-intro {
+    background: linear-gradient(135deg, var(--card2), var(--card));
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--amber);
+    border-radius: var(--r2);
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    animation: fadeUp 0.5s ease both;
+  }
+  .section-intro-title {
+    font-family: var(--font-head);
+    font-size: 20px;
+    color: var(--amber2);
+    margin-bottom: 6px;
+  }
+  .section-intro-desc {
+    font-family: var(--font-ui);
+    font-size: 13px;
+    color: var(--stone);
+    line-height: 1.6;
+  }
+
+  /* ── QUESTION CARD ── */
+  .q-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--r2);
+    padding: 30px 28px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+    animation: fadeUp 0.4s ease both;
+  }
+  .q-num {
+    font-family: var(--font-ui);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--moss);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+  .q-text {
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--cream);
+    margin-bottom: 24px;
+  }
+  .q-text em {
+    color: var(--amber2);
+    font-style: italic;
+  }
+  .q-text strong {
+    color: var(--dino);
+    font-weight: 700;
+  }
+
+  /* fill blank input */
+  .blank-input {
+    background: var(--bg2);
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    color: var(--cream);
+    font-family: var(--font-body);
+    font-size: 15px;
+    padding: 3px 10px;
+    width: 160px;
+    transition: border-color 0.2s;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .blank-input:focus { outline: none; border-color: var(--amber); }
+  .blank-input.correct { border-color: var(--correct); background: rgba(79,188,106,0.08); }
+  .blank-input.wrong   { border-color: var(--wrong);   background: rgba(224,85,85,0.08); }
+
+  /* ── OPTIONS (MC) ── */
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .opt-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--bg2);
+    border: 2px solid var(--border);
+    border-radius: var(--r);
+    padding: 14px 18px;
+    cursor: pointer;
+    text-align: left;
+    font-family: var(--font-ui);
+    font-size: 14px;
+    color: var(--cream2);
+    transition: border-color 0.18s, background 0.18s, transform 0.12s;
+    position: relative;
+    overflow: hidden;
+  }
+  .opt-btn::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.02));
+    pointer-events: none;
+  }
+  .opt-btn:hover:not(:disabled) {
+    border-color: var(--amber3);
+    background: var(--card2);
+    transform: translateX(3px);
+  }
+  .opt-btn:disabled { cursor: default; }
+  .opt-btn.selected { border-color: var(--amber); background: rgba(232,160,32,0.08); }
+  .opt-btn.correct  { border-color: var(--correct); background: rgba(79,188,106,0.12); color: var(--cream); }
+  .opt-btn.wrong    { border-color: var(--wrong);   background: rgba(224,85,85,0.10);  color: var(--cream); }
+  .opt-letter {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--card);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; flex-shrink: 0;
+    color: var(--stone);
+    transition: background 0.18s, color 0.18s;
+  }
+  .opt-btn.selected .opt-letter { background: var(--amber3); color: var(--bg); border-color: var(--amber); }
+  .opt-btn.correct  .opt-letter { background: var(--correct); color: var(--bg); border-color: var(--correct); }
+  .opt-btn.wrong    .opt-letter { background: var(--wrong);   color: #fff;      border-color: var(--wrong); }
+
+  /* ── DRAG AND DROP ── */
+  .dnd-wrapper { display: flex; flex-direction: column; gap: 18px; }
+  .dnd-label { font-family: var(--font-ui); font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: var(--moss); margin-bottom: 8px; font-weight: 600; }
+  .dnd-bank {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    background: var(--bg2); border: 2px dashed var(--border);
+    border-radius: var(--r); padding: 14px;
+    min-height: 56px;
+  }
+  .dnd-chip {
+    background: var(--card2);
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    padding: 7px 14px;
+    font-family: var(--font-ui);
+    font-size: 13px;
+    color: var(--cream2);
+    cursor: grab;
+    user-select: none;
+    transition: background 0.15s, border-color 0.15s, transform 0.1s, opacity 0.2s;
+  }
+  .dnd-chip:hover { background: var(--moss2); border-color: var(--moss); transform: translateY(-2px); }
+  .dnd-chip.dragging { opacity: 0.4; transform: scale(0.95); }
+  .dnd-chip.placed { cursor: default; background: rgba(79,188,106,0.1); border-color: var(--dino); }
+  .dnd-chip.wrong-placed { background: rgba(224,85,85,0.1); border-color: var(--wrong); }
+  .dnd-slots { display: flex; flex-direction: column; gap: 10px; }
+  .dnd-slot-row {
+    display: flex; align-items: center; gap: 12px;
+    font-family: var(--font-ui); font-size: 14px; color: var(--cream2);
+    flex-wrap: wrap;
+  }
+  .dnd-slot {
+    min-width: 140px; height: 40px;
+    background: var(--bg2);
+    border: 2px dashed var(--border);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    transition: border-color 0.2s, background 0.2s;
+    font-family: var(--font-ui); font-size: 13px; color: var(--stone);
+    padding: 0 10px;
+  }
+  .dnd-slot.over { border-color: var(--amber); background: rgba(232,160,32,0.06); }
+  .dnd-slot.filled { border-style: solid; border-color: var(--dino); color: var(--cream); }
+  .dnd-slot.correct { border-color: var(--correct); background: rgba(79,188,106,0.1); color: var(--dino); }
+  .dnd-slot.wrong   { border-color: var(--wrong);   background: rgba(224,85,85,0.08); color: var(--wrong); }
+
+  /* ── MATCHING ── */
+  .match-wrapper { display: flex; flex-direction: column; gap: 10px; }
+  .match-row { display: flex; gap: 10px; align-items: stretch; }
+  .match-term {
+    flex: 1;
+    background: var(--card2);
+    border: 1.5px solid var(--border);
+    border-radius: var(--r);
+    padding: 12px 16px;
+    font-family: var(--font-ui); font-size: 14px; color: var(--cream);
+  }
+  .match-term em { color: var(--amber2); font-style: italic; }
+  .match-connector { display: flex; align-items: center; color: var(--border); font-size: 18px; }
+  .match-select {
+    flex: 1.2;
+    background: var(--bg2);
+    border: 2px solid var(--border);
+    border-radius: var(--r);
+    padding: 10px 14px;
+    font-family: var(--font-ui); font-size: 13px; color: var(--cream2);
+    appearance: none;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M0 0l6 8 6-8z' fill='%238fa88a'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 32px;
+  }
+  .match-select:focus { outline: none; border-color: var(--amber); }
+  .match-select:disabled { cursor: default; }
+  .match-select.correct { border-color: var(--correct); }
+  .match-select.wrong   { border-color: var(--wrong); }
+
+  /* ── REORDER ── */
+  .reorder-list { display: flex; flex-direction: column; gap: 8px; }
+  .reorder-item {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--bg2);
+    border: 2px solid var(--border);
+    border-radius: var(--r);
+    padding: 12px 16px;
+    cursor: grab;
+    user-select: none;
+    transition: background 0.15s, border-color 0.15s, transform 0.1s;
+    font-family: var(--font-ui); font-size: 14px; color: var(--cream2);
+    position: relative;
+  }
+  .reorder-item:hover { background: var(--card2); border-color: var(--moss); }
+  .reorder-item.drag-over { border-color: var(--amber); background: rgba(232,160,32,0.06); }
+  .reorder-item.correct { border-color: var(--correct); background: rgba(79,188,106,0.1); color: var(--cream); }
+  .reorder-item.wrong   { border-color: var(--wrong);   background: rgba(224,85,85,0.08); }
+  .reorder-handle { color: var(--border); font-size: 16px; cursor: grab; }
+  .reorder-num {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--card); border: 1px solid var(--border);
+    font-size: 11px; font-weight: 700; color: var(--stone);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* ── FEEDBACK ── */
+  .feedback-box {
+    margin-top: 18px;
+    padding: 16px 20px;
+    border-radius: var(--r);
+    font-family: var(--font-ui);
+    font-size: 13.5px;
+    line-height: 1.6;
+    animation: fadeUp 0.3s ease both;
+    display: none;
+  }
+  .feedback-box.show { display: block; }
+  .feedback-box.correct-fb {
+    background: rgba(79,188,106,0.1);
+    border: 1px solid rgba(79,188,106,0.35);
+    color: #a8e6b4;
+  }
+  .feedback-box.wrong-fb {
+    background: rgba(224,85,85,0.08);
+    border: 1px solid rgba(224,85,85,0.3);
+    color: #f0a0a0;
+  }
+  .feedback-box .fb-verdict {
+    font-weight: 700; font-size: 14px; margin-bottom: 4px;
+  }
+  .feedback-box .fb-explain { color: var(--cream2); }
+  .feedback-box.correct-fb .fb-verdict { color: var(--correct); }
+  .feedback-box.wrong-fb   .fb-verdict { color: var(--wrong); }
+
+  /* ── BUTTONS ── */
+  .btn-row { display: flex; gap: 12px; margin-top: 22px; flex-wrap: wrap; }
+  .btn {
+    font-family: var(--font-ui);
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    border-radius: var(--r);
+    padding: 13px 28px;
+    cursor: pointer;
+    transition: transform 0.12s, box-shadow 0.2s, background 0.2s;
+    letter-spacing: 0.3px;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn:active { transform: translateY(0); }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--amber3), var(--amber));
+    color: var(--bg);
+    box-shadow: 0 4px 20px rgba(232,160,32,0.3);
+  }
+  .btn-primary:hover { box-shadow: 0 6px 28px rgba(232,160,32,0.45); }
+  .btn-secondary {
+    background: var(--card2);
+    color: var(--cream2);
+    border: 1.5px solid var(--border);
+  }
+  .btn-submit {
+    background: linear-gradient(135deg, var(--moss2), var(--moss));
+    color: var(--cream);
+    box-shadow: 0 4px 20px rgba(74,124,89,0.25);
+  }
+  .btn-submit:hover { box-shadow: 0 6px 28px rgba(74,124,89,0.4); }
+
+  /* ── FINAL SCREEN ── */
+  #final-screen { display: none; animation: fadeUp 0.6s ease both; }
+  .final-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--r2);
+    padding: 48px 36px;
+    text-align: center;
+    box-shadow: var(--shadow), var(--glow);
+    position: relative;
+    overflow: hidden;
+  }
+  .final-card::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: 50%; transform: translateX(-50%);
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(232,160,32,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .final-dino { font-size: 72px; margin-bottom: 16px; display: block; animation: bounce 0.8s ease; }
+  .final-title { font-family: var(--font-head); font-size: 36px; color: var(--amber2); margin-bottom: 8px; }
+  .final-score-big { font-family: var(--font-head); font-size: 64px; font-weight: 900; color: var(--cream); line-height: 1; margin: 16px 0; }
+  .final-score-big span { color: var(--dino); }
+  .final-msg { font-family: var(--font-ui); font-size: 15px; color: var(--stone); line-height: 1.7; max-width: 480px; margin: 0 auto 32px; }
+  .final-breakdown {
+    display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px;
+  }
+  .final-stat {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r);
+    padding: 14px 22px; text-align: center;
+  }
+  .final-stat-val { font-family: var(--font-head); font-size: 28px; color: var(--amber); display: block; }
+  .final-stat-lbl { font-family: var(--font-ui); font-size: 11px; color: var(--stone); letter-spacing: 1px; text-transform: uppercase; }
+
+  /* ── INTRO SCREEN ── */
+  #intro-screen { animation: fadeUp 0.6s ease both; }
+  .intro-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--r2);
+    padding: 36px 32px;
+    text-align: center;
+    box-shadow: var(--shadow);
+  }
+  .intro-deco { font-size: 64px; margin-bottom: 16px; display: block; }
+  .intro-title { font-family: var(--font-head); font-size: 28px; color: var(--cream); margin-bottom: 14px; }
+  .intro-desc { font-family: var(--font-ui); font-size: 14px; color: var(--stone); line-height: 1.8; max-width: 520px; margin: 0 auto 28px; }
+  .intro-activities {
+    display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px;
+  }
+  .intro-act-chip {
+    background: var(--bg2); border: 1.5px solid var(--border); border-radius: 20px;
+    padding: 6px 16px; font-family: var(--font-ui); font-size: 12px; color: var(--moss);
+    font-weight: 500;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes bounce {
+    0%   { transform: scale(0.6) translateY(20px); opacity: 0; }
+    60%  { transform: scale(1.1) translateY(-8px); opacity: 1; }
+    100% { transform: scale(1)   translateY(0);    opacity: 1; }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.6; }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 560px) {
+    .hud { flex-direction: column; align-items: flex-start; }
+    .match-row { flex-direction: column; }
+    .match-connector { display: none; }
+    .dnd-slot-row { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- LOGO -->
+  <div class="logo-wrap">
+    <svg class="logo-svg" viewBox="0 0 200 64" xmlns="http://www.w3.org/2000/svg">
+      <text x="100" y="26" text-anchor="middle"
+        font-family="'Playfair Display', serif" font-size="28" font-weight="900"
+        fill="#e8a020" letter-spacing="2">FORBES</text>
+      <rect x="20" y="32" width="160" height="1.2" fill="#4a7c59" opacity="0.7"/>
+      <text x="100" y="52" text-anchor="middle"
+        font-family="'DM Sans', sans-serif" font-size="13" font-weight="700"
+        fill="#6fbb7a" letter-spacing="5">ENGLISH</text>
+    </svg>
+  </div>
+
+  <!-- LESSON HEADER -->
+  <div class="lesson-header">
+    <div class="lesson-badge">C1 Advanced · Special Edition</div>
+    <h1 class="lesson-title">Dino-Craft: An English Expedition</h1>
+    <p class="lesson-subtitle">Language in the Age of Dinosaurs &amp; Pixelated Worlds</p>
+  </div>
+
+  <!-- INTRO SCREEN -->
+  <div id="intro-screen">
+    <div class="intro-card">
+      <span class="intro-deco">🦕</span>
+      <h2 class="intro-title">Welcome, Expedition Leader</h2>
+      <p class="intro-desc">
+        You are about to enter a world where prehistoric creatures roam Minecraft's blocky biomes.
+        This C1 lesson challenges your mastery of English through four immersive activities —
+        all themed around dinosaurs, survival, and the art of crafting language.
+      </p>
+      <div class="intro-activities">
+        <span class="intro-act-chip">🧩 Multiple Choice</span>
+        <span class="intro-act-chip">✏️ Fill in the Blank</span>
+        <span class="intro-act-chip">🔀 Drag &amp; Drop</span>
+        <span class="intro-act-chip">🔗 Matching</span>
+        <span class="intro-act-chip">🔢 Sentence Reordering</span>
+      </div>
+      <button class="btn btn-primary" onclick="startLesson()">Begin Expedition →</button>
+    </div>
+  </div>
+
+  <!-- HUD (hidden until started) -->
+  <div class="hud" id="hud" style="display:none">
+    <div class="hud-score">Score<span id="score-display">0</span></div>
+    <div class="hud-progress-wrap">
+      <div class="hud-progress-label">
+        <span id="q-label">Question 1 of 20</span>
+        <span id="pct-label">0%</span>
+      </div>
+      <div class="hud-bar"><div class="hud-bar-fill" id="hud-fill" style="width:0%"></div></div>
+    </div>
+    <div class="hud-section-badge" id="section-badge">Activity 1</div>
+  </div>
+
+  <!-- MAIN LESSON AREA -->
+  <div id="lesson-area" style="display:none"></div>
+
+  <!-- FINAL SCREEN -->
+  <div id="final-screen">
+    <div class="final-card">
+      <span class="final-dino" id="final-emoji">🦕</span>
+      <h2 class="final-title" id="final-title">Expedition Complete!</h2>
+      <div class="final-score-big" id="final-score">0<span>/20</span></div>
+      <p class="final-msg" id="final-msg"></p>
+      <div class="final-breakdown">
+        <div class="final-stat"><span class="final-stat-val" id="stat-correct">0</span><span class="final-stat-lbl">Correct</span></div>
+        <div class="final-stat"><span class="final-stat-val" id="stat-wrong">0</span><span class="final-stat-lbl">Incorrect</span></div>
+        <div class="final-stat"><span class="final-stat-val" id="stat-pct">0%</span><span class="final-stat-lbl">Accuracy</span></div>
+      </div>
+      <button class="btn btn-primary" onclick="restartLesson()">🔄 Restart Expedition</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ══════════════════════════════════════════════
+   LESSON DATA
+══════════════════════════════════════════════ */
+
+const SECTIONS = [
+
+  /* ─── ACTIVITY 1 : MULTIPLE CHOICE ─── */
+  {
+    id: 'mc',
+    title: 'Activity 1 — Multiple Choice',
+    desc: 'Select the best answer for each question. All questions draw on advanced vocabulary, grammar, and contextual reasoning.',
+    questions: [
+      {
+        type: 'mc',
+        text: 'A palaeontologist in a Minecraft museum exhibit says: <em>"The Tyrannosaurus rex _______ an apex predator, capable of exerting bite forces that no other Cretaceous theropod could rival."</em> Which verb form correctly fills the gap to indicate a general past truth?',
+        opts: ['had been constituting', 'was considered', 'has been constituting', 'would have constituted'],
+        correct: 1,
+        explain: '<strong>"Was considered"</strong> is correct. When stating a generally accepted past fact or scientific consensus, the simple past passive is used. "Had been constituting" implies a continuous earlier state, "would have constituted" expresses a hypothetical, and "has been constituting" (present perfect continuous) is inappropriate for a completed historical reality.'
+      },
+      {
+        type: 'mc',
+        text: 'In a Minecraft server's in-game lore book, a player reads: <em>"Had the Chicxulub asteroid not struck Earth, the dinosaurs _______ into countless new species."</em> Which form is grammatically correct?',
+        opts: ['might still evolve', 'might still have evolved', 'will have still evolved', 'may still be evolving'],
+        correct: 1,
+        explain: '<strong>"Might still have evolved"</strong> is correct. This is a third conditional structure expressing an unreal past condition with a hypothetical past result. The auxiliary "might + have + past participle" correctly conveys this counterfactual speculation.'
+      },
+      {
+        type: 'mc',
+        text: 'A Minecraft YouTuber narrates: <em>"The Brachiosaurus\'s long neck is thought to be an evolutionary _______, allowing it to access foliage that shorter-necked herbivores simply couldn\'t reach."</em> Which word best completes this sentence at C1 level?',
+        opts: ['particularity', 'adaptation', 'modification', 'characteristic'],
+        correct: 1,
+        explain: '<strong>"Adaptation"</strong> is the most precise term here. In evolutionary biology, an adaptation is a trait that evolved specifically because it conferred a survival advantage. While "modification" and "characteristic" are plausible, they lack the evolutionary specificity that "adaptation" carries in scientific discourse.'
+      },
+      {
+        type: 'mc',
+        text: 'Choose the sentence that uses a <strong>participle clause</strong> correctly to describe a player\'s action in a dinosaur-themed Minecraft map:',
+        opts: [
+          'Having mined the amber block, the velociraptor was discovered inside it.',
+          'Having mined the amber block, the player discovered a velociraptor inside it.',
+          'After the player mined the amber block, a velociraptor was inside having been discovered.',
+          'Once having mined the amber block, the velociraptor had been discovered by the player.'
+        ],
+        correct: 1,
+        explain: '<strong>Option B</strong> is correct. The participle clause "Having mined the amber block" must refer to the subject of the main clause, which should be the agent performing the action — "the player." Option A incorrectly implies the velociraptor mined the block (dangling participle).'
+      },
+      {
+        type: 'mc',
+        text: '<em>"The sheer _______ of the Argentinosaurus — estimated at over 70 tonnes — made it virtually impervious to attack, rendering most predators incapable of posing any serious threat."</em> Which word best fits?',
+        opts: ['dimension', 'enormity', 'proportions', 'magnitude'],
+        correct: 3,
+        explain: '<strong>"Magnitude"</strong> best conveys the scientific and abstract scale being discussed. "Enormity" in formal usage implies moral gravity (though increasingly used for size), "dimension" and "proportions" are slightly more literal and less emphatic in this context. "Magnitude" fits neatly with the abstract register of the sentence.'
+      },
+    ]
+  },
+
+  /* ─── ACTIVITY 2 : FILL IN THE BLANK ─── */
+  {
+    id: 'fib',
+    title: 'Activity 2 — Fill in the Blank',
+    desc: 'Type the correct word into each blank. Pay close attention to collocation, register, and grammatical precision.',
+    questions: [
+      {
+        type: 'fib',
+        text: 'The Minecraft biome guide explains: <em>"Dinosaurs are widely believed to have been warm-blooded creatures, a theory that has gained considerable _______ in the palaeontological community over the past few decades."</em>',
+        correct: 'traction',
+        alts: [],
+        explain: '<strong>"Traction"</strong> is the correct collocation. The phrase "gain traction" means to become more widely accepted or established, especially in academic or professional discourse. It is a fixed collocation in English at C1 and above.'
+      },
+      {
+        type: 'fib',
+        text: 'A Minecraft server admin writes in the rules: <em>"Any player found to be deliberately _______ the habitats of the dino NPCs will face an immediate ban from the server."</em>',
+        correct: 'disrupting',
+        alts: ['destroying'],
+        explain: '<strong>"Disrupting"</strong> fits best — it implies interference with a functioning system (a habitat). "Destroying" would work grammatically but changes the nuance. "Disrupting habitats" is a standard collocation in environmental and ecological language.'
+      },
+      {
+        type: 'fib',
+        text: '<em>"The Pteranodon, often _______ referred to as a dinosaur, was in fact a flying reptile of the order Pterosauria — technically distinct from the dinosaur clade."</em>',
+        correct: 'erroneously',
+        alts: ['incorrectly', 'mistakenly'],
+        explain: '<strong>"Erroneously"</strong> (or "incorrectly"/"mistakenly") is correct. The adverb modifies "referred to" and signals the inaccuracy of calling the Pteranodon a dinosaur. "Erroneously" is the most formal and precise of the three, fitting a C1 register.'
+      },
+      {
+        type: 'fib',
+        text: 'In a Minecraft crafting guide: <em>"Once you have _______ the dinosaur bones into powder, combine them with redstone dust to craft the ancient revival serum."</em>',
+        correct: 'ground',
+        alts: ['crushed', 'processed'],
+        explain: '<strong>"Ground"</strong> is the past participle of "grind," and "grind bones into powder" is the correct idiomatic collocation. "Crushed" is a plausible alternative; however, grinding specifically implies reducing to a powder through friction, which aligns with the crafting description.'
+      },
+      {
+        type: 'fib',
+        text: '<em>"The discovery of feathered dinosaur fossils in China in the 1990s fundamentally _______ our understanding of the evolutionary link between birds and theropod dinosaurs."</em>',
+        correct: 'transformed',
+        alts: ['reshaped', 'revolutionised', 'revolutionized', 'altered', 'changed'],
+        explain: '<strong>"Transformed"</strong>, "reshaped," or "revolutionised" all work well here — they each convey a radical, comprehensive change in scientific understanding. "Altered" and "changed" are acceptable but weaker, as they don\'t capture the magnitude of the paradigm shift.'
+      },
+    ]
+  },
+
+  /* ─── ACTIVITY 3 : DRAG AND DROP ─── */
+  {
+    id: 'dnd',
+    title: 'Activity 3 — Drag & Drop',
+    desc: 'Drag the correct word or phrase from the word bank and drop it into the appropriate slot to complete each sentence.',
+    questions: [
+      {
+        type: 'dnd',
+        slots: [
+          { before: 'The Minecraft modder claimed that dinosaurs, ', after: ', would have been far more colourful than early palaeontologists had imagined.', answer: 'contrary to popular belief' },
+          { before: 'The velociraptor, ', after: ' a turkey-sized predator, has been greatly exaggerated in size by Hollywood blockbusters.', answer: 'in actual fact' },
+          { before: 'Crafting a saddle for the Stegosaurus proved ', after: ' more complex than any recipe the player had previously attempted.', answer: 'considerably' },
+          { before: 'The ancient ruins biome was, ', after: ', the only place where fossilised dinosaur eggs could spawn in the modpack.', answer: 'by and large' },
+          { before: 'A herd of Triceratops had ', after: ' the valley floor, leaving enormous three-toed impressions in the pixelated soil.', answer: 'traversed' },
+        ],
+        bank: ['contrary to popular belief', 'in actual fact', 'considerably', 'by and large', 'traversed', 'allegedly', 'regardless', 'presumably'],
+        explain: 'Each sentence requires a specific discourse marker or adverb that fits both grammatically and semantically. "Contrary to popular belief" introduces a corrective statement; "in actual fact" signals factual clarification; "considerably" modifies a comparative adjective; "by and large" means "generally/mostly"; "traversed" means "crossed/travelled across."'
+      }
+    ]
+  },
+
+  /* ─── ACTIVITY 4 : MATCHING ─── */
+  {
+    id: 'match',
+    title: 'Activity 4 — Matching',
+    desc: 'Match each dinosaur-related vocabulary item on the left with its correct definition on the right.',
+    questions: [
+      {
+        type: 'match',
+        pairs: [
+          { term: '<em>Palaeontology</em>', def: 'The scientific study of prehistoric life through fossil analysis' },
+          { term: '<em>Apex predator</em>', def: 'A predator that sits at the top of its food chain with no natural enemies' },
+          { term: '<em>Herbivorous</em>', def: 'Relating to an animal that feeds exclusively on plant matter' },
+          { term: '<em>Cretaceous period</em>', def: 'The geological era from approximately 145 to 66 million years ago' },
+          { term: '<em>Bipedal locomotion</em>', def: 'A mode of movement using only two limbs for walking or running' },
+        ],
+        explain: 'These terms form the core scientific vocabulary for discussing dinosaurs at an advanced academic register. Precise definitions distinguish closely related concepts — for example, distinguishing "herbivorous" from "carnivorous" or "omnivorous," and correctly dating the Cretaceous period.'
+      }
+    ]
+  },
+
+  /* ─── ACTIVITY 5 : REORDERING ─── */
+  {
+    id: 'reorder',
+    title: 'Activity 5 — Sentence Reordering',
+    desc: 'Drag the sentence fragments into the correct order to form grammatically accurate, coherent C1-level sentences.',
+    questions: [
+      {
+        type: 'reorder',
+        segments: [
+          ['It was not until', 'the discovery of the Archaeopteryx', 'that scientists began to accept', 'the evolutionary continuum between dinosaurs and modern birds.'],
+          ['The Minecraft modpack, ', 'which had taken three years to develop, ', 'introduced a fully simulated Jurassic ecosystem', 'complete with authentic predator-prey dynamics.'],
+          ['Despite their fearsome reputation, ', 'many large theropods are now believed', 'to have subsisted primarily on carrion', 'rather than actively hunting live prey.'],
+          ['Having spawned in the Cretaceous biome, ', 'the player quickly realised', 'that conventional iron armour offered little protection', 'against a charging Triceratops.'],
+          ['The remarkable preservation of soft tissue', 'in amber-encased specimens', 'has provided palaeontologists with unprecedented insight', 'into the physiology of extinct species.'],
+        ],
+        explain: 'Correct sentence order requires understanding of clause structure, subordination, and discourse flow at C1 level. Each sentence uses advanced constructions including relative clauses, participle clauses, and complex noun phrases.'
+      }
+    ]
+  }
+];
+
+/* ══════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════ */
+let state = {
+  sectionIdx: 0,
+  questionIdx: 0,
+  score: 0,
+  answered: false,
+  totalQ: 0,
+  doneQ: 0,
+  sectionCorrect: 0,
+  // For DND
+  dndPlaced: {},
+  // For match
+  matchAnswers: {},
+  // For reorder
+  reorderOrder: [],
+  reorderDragSrc: null,
+};
+
+function countTotal() {
+  let t = 0;
+  SECTIONS.forEach(sec => {
+    if (sec.questions[0].type === 'mc' || sec.questions[0].type === 'fib') t += sec.questions.length;
+    else if (sec.questions[0].type === 'dnd') t += sec.questions[0].slots.length;
+    else if (sec.questions[0].type === 'match') t += sec.questions[0].pairs.length;
+    else if (sec.questions[0].type === 'reorder') t += sec.questions[0].segments.length;
+  });
+  return t;
+}
+
+/* ══════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════ */
+function startLesson() {
+  state.totalQ = countTotal();
+  state.score = 0;
+  state.doneQ = 0;
+  state.sectionIdx = 0;
+  state.questionIdx = 0;
+  document.getElementById('intro-screen').style.display = 'none';
+  document.getElementById('hud').style.display = 'flex';
+  document.getElementById('lesson-area').style.display = 'block';
+  renderCurrent();
+}
+
+function restartLesson() {
+  document.getElementById('final-screen').style.display = 'none';
+  document.getElementById('intro-screen').style.display = 'block';
+  document.getElementById('hud').style.display = 'none';
+  document.getElementById('lesson-area').style.display = 'none';
+}
+
+/* ══════════════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════════════ */
+function nextQuestion() {
+  const sec = SECTIONS[state.sectionIdx];
+  const q = sec.questions[0];
+  // Advance within multi-q sections
+  if ((q.type === 'mc' || q.type === 'fib')) {
+    if (state.questionIdx < sec.questions.length - 1) {
+      state.questionIdx++;
+      state.answered = false;
+      renderCurrent();
+      return;
+    }
+  }
+  // Advance section
+  if (state.sectionIdx < SECTIONS.length - 1) {
+    state.sectionIdx++;
+    state.questionIdx = 0;
+    state.answered = false;
+    state.dndPlaced = {};
+    state.matchAnswers = {};
+    state.reorderDragSrc = null;
+    renderCurrent();
+  } else {
+    showFinal();
+  }
+}
+
+/* ══════════════════════════════════════════════
+   RENDER
+══════════════════════════════════════════════ */
+function renderCurrent() {
+  const sec = SECTIONS[state.sectionIdx];
+  const q = sec.questions[state.questionIdx] || sec.questions[0];
+  updateHUD(sec);
+
+  const area = document.getElementById('lesson-area');
+  area.innerHTML = '';
+
+  // Section intro (first q of section)
+  if (state.questionIdx === 0) {
+    const intro = document.createElement('div');
+    intro.className = 'section-intro';
+    intro.innerHTML = `<div class="section-intro-title">${sec.title}</div><div class="section-intro-desc">${sec.desc}</div>`;
+    area.appendChild(intro);
+  }
+
+  // Render by type
+  if (q.type === 'mc')      renderMC(area, q, sec);
+  else if (q.type === 'fib') renderFIB(area, q, sec);
+  else if (q.type === 'dnd') renderDND(area, q, sec);
+  else if (q.type === 'match') renderMatch(area, q, sec);
+  else if (q.type === 'reorder') renderReorder(area, q, sec);
+}
+
+function updateHUD(sec) {
+  document.getElementById('score-display').textContent = state.score;
+  const total = state.totalQ;
+  const pct = Math.round((state.doneQ / total) * 100);
+  document.getElementById('q-label').textContent = `Answered: ${state.doneQ} of ${total}`;
+  document.getElementById('pct-label').textContent = `${pct}%`;
+  document.getElementById('hud-fill').style.width = `${pct}%`;
+  document.getElementById('section-badge').textContent = sec.title.split('—')[0].trim();
+}
+
+/* ─── MULTIPLE CHOICE ─── */
+function renderMC(area, q, sec) {
+  const qNum = state.questionIdx + 1;
+  const total = sec.questions.length;
+  const card = document.createElement('div');
+  card.className = 'q-card';
+  card.innerHTML = `
+    <div class="q-num">Question ${qNum} of ${total}</div>
+    <div class="q-text">${q.text}</div>
+    <div class="options" id="opts"></div>
+    <div class="feedback-box" id="fb"></div>
+    <div class="btn-row" id="btn-row"></div>
+  `;
+  area.appendChild(card);
+
+  const letters = ['A','B','C','D'];
+  const optsEl = card.querySelector('#opts');
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.innerHTML = `<span class="opt-letter">${letters[i]}</span><span>${opt}</span>`;
+    btn.onclick = () => submitMC(i, q, optsEl, card);
+    optsEl.appendChild(btn);
+  });
+}
+
+function submitMC(chosen, q, optsEl, card) {
+  if (state.answered) return;
+  state.answered = true;
+  const btns = optsEl.querySelectorAll('.opt-btn');
+  const correct = chosen === q.correct;
+  btns.forEach((b,i) => {
+    b.disabled = true;
+    if (i === q.correct) b.classList.add('correct');
+    else if (i === chosen && !correct) b.classList.add('wrong');
+  });
+  btns[chosen].classList.add('selected');
+  if (correct) state.score++;
+  state.doneQ++;
+  updateHUD(SECTIONS[state.sectionIdx]);
+  showFeedback(card, correct, q.explain);
+  showNextBtn(card);
+}
+
+/* ─── FILL IN THE BLANK ─── */
+function renderFIB(area, q, sec) {
+  const qNum = state.questionIdx + 1;
+  const total = sec.questions.length;
+  const card = document.createElement('div');
+  card.className = 'q-card';
+  // Insert blank
+  const textWithBlank = q.text.replace(/_{3,}/g, '<input class="blank-input" id="blank-inp" autocomplete="off" spellcheck="false" placeholder="your answer…">');
+  card.innerHTML = `
+    <div class="q-num">Question ${qNum} of ${total}</div>
+    <div class="q-text">${textWithBlank}</div>
+    <div class="feedback-box" id="fb"></div>
+    <div class="btn-row" id="btn-row">
+      <button class="btn btn-submit" onclick="submitFIB(this)">Submit Answer</button>
+    </div>
+  `;
+  area.appendChild(card);
+  const inp = card.querySelector('#blank-inp');
+  if (inp) inp.focus();
+}
+
+function submitFIB(btn) {
+  if (state.answered) return;
+  const card = btn.closest('.q-card');
+  const inp = card.querySelector('#blank-inp');
+  if (!inp) return;
+  const val = inp.value.trim().toLowerCase();
+  const q = SECTIONS[state.sectionIdx].questions[state.questionIdx];
+  const acceptables = [q.correct.toLowerCase(), ...(q.alts || []).map(a => a.toLowerCase())];
+  const correct = acceptables.includes(val);
+  inp.disabled = true;
+  inp.classList.add(correct ? 'correct' : 'wrong');
+  if (!correct) {
+    const hint = document.createElement('span');
+    hint.style.cssText = 'font-family:var(--font-ui);font-size:12px;color:var(--correct);margin-left:10px;vertical-align:middle;';
+    hint.textContent = `✓ ${q.correct}`;
+    inp.after(hint);
+  }
+  if (correct) state.score++;
+  state.doneQ++;
+  state.answered = true;
+  updateHUD(SECTIONS[state.sectionIdx]);
+  showFeedback(card, correct, q.explain);
+  btn.remove();
+  showNextBtn(card);
+}
+
+/* ─── DRAG AND DROP ─── */
+function renderDND(area, q, sec) {
+  state.dndPlaced = {};
+  const card = document.createElement('div');
+  card.className = 'q-card';
+  card.innerHTML = `
+    <div class="q-num">Complete all five sentences</div>
+    <div class="q-text" style="margin-bottom:18px">Drag each word or phrase from the bank below into the correct slot.</div>
+    <div class="dnd-wrapper">
+      <div>
+        <div class="dnd-label">Word Bank</div>
+        <div class="dnd-bank" id="dnd-bank"></div>
+      </div>
+      <div>
+        <div class="dnd-label">Sentences</div>
+        <div class="dnd-slots" id="dnd-slots"></div>
+      </div>
+    </div>
+    <div class="feedback-box" id="fb"></div>
+    <div class="btn-row" id="btn-row">
+      <button class="btn btn-submit" onclick="submitDND(this)">Check Answers</button>
+    </div>
+  `;
+  area.appendChild(card);
+
+  // Shuffle bank
+  const bank = [...q.bank].sort(() => Math.random() - 0.5);
+  const bankEl = card.querySelector('#dnd-bank');
+  bank.forEach(word => {
+    const chip = document.createElement('div');
+    chip.className = 'dnd-chip';
+    chip.draggable = true;
+    chip.dataset.word = word;
+    chip.textContent = word;
+    chip.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text/plain', word);
+      chip.classList.add('dragging');
+    });
+    chip.addEventListener('dragend', () => chip.classList.remove('dragging'));
+    bankEl.appendChild(chip);
+  });
+
+  // Slots
+  const slotsEl = card.querySelector('#dnd-slots');
+  q.slots.forEach((slot, i) => {
+    const row = document.createElement('div');
+    row.className = 'dnd-slot-row';
+    row.innerHTML = `<span>${slot.before}</span>
+      <div class="dnd-slot" id="slot-${i}" data-idx="${i}" data-answer="${slot.answer}">drop here</div>
+      <span>${slot.after}</span>`;
+    slotsEl.appendChild(row);
+
+    const slotEl = row.querySelector('.dnd-slot');
+    slotEl.addEventListener('dragover', e => { e.preventDefault(); slotEl.classList.add('over'); });
+    slotEl.addEventListener('dragleave', () => slotEl.classList.remove('over'));
+    slotEl.addEventListener('drop', e => {
+      e.preventDefault();
+      slotEl.classList.remove('over');
+      const word = e.dataTransfer.getData('text/plain');
+      // Return previously placed word to bank if any
+      if (state.dndPlaced[i]) {
+        const old = state.dndPlaced[i];
+        const existing = bankEl.querySelector(`[data-word="${old}"]`);
+        if (existing) existing.style.opacity = '1';
+      }
+      // Hide chip in bank
+      const chip = bankEl.querySelector(`[data-word="${word}"]`);
+      if (chip) chip.style.opacity = '0.25';
+      state.dndPlaced[i] = word;
+      slotEl.textContent = word;
+      slotEl.classList.add('filled');
+    });
+  });
+}
+
+function submitDND(btn) {
+  if (state.answered) return;
+  state.answered = true;
+  const card = btn.closest('.q-card');
+  const q = SECTIONS[state.sectionIdx].questions[0];
+  let correct = 0;
+  // Disable all chips
+  card.querySelectorAll('.dnd-chip').forEach(c => { c.draggable = false; c.style.cursor = 'default'; });
+  q.slots.forEach((slot, i) => {
+    const slotEl = card.querySelector(`#slot-${i}`);
+    const placed = state.dndPlaced[i];
+    if (placed === slot.answer) {
+      slotEl.classList.add('correct');
+      correct++;
+    } else {
+      slotEl.classList.add('wrong');
+      if (!placed) slotEl.textContent = `✓ ${slot.answer}`;
+      else slotEl.textContent += ` (✓ ${slot.answer})`;
+    }
+  });
+  state.score += correct;
+  state.doneQ += q.slots.length;
+  updateHUD(SECTIONS[state.sectionIdx]);
+  showFeedback(card, correct === q.slots.length, q.explain, correct, q.slots.length);
+  btn.remove();
+  showNextBtn(card);
+}
+
+/* ─── MATCHING ─── */
+function renderMatch(area, q, sec) {
+  state.matchAnswers = {};
+  const card = document.createElement('div');
+  card.className = 'q-card';
+
+  // Shuffle definitions for dropdown
+  const defs = q.pairs.map(p => p.def);
+  const shuffledDefs = [...defs].sort(() => Math.random() - 0.5);
+
+  card.innerHTML = `
+    <div class="q-num">Match all five terms</div>
+    <div class="q-text" style="margin-bottom:20px">Match each term on the left to its correct definition using the dropdown menus.</div>
+    <div class="match-wrapper" id="match-wrapper"></div>
+    <div class="feedback-box" id="fb"></div>
+    <div class="btn-row" id="btn-row">
+      <button class="btn btn-submit" onclick="submitMatch(this)">Check Answers</button>
+    </div>
+  `;
+  area.appendChild(card);
+
+  const wrapper = card.querySelector('#match-wrapper');
+  q.pairs.forEach((pair, i) => {
+    const row = document.createElement('div');
+    row.className = 'match-row';
+    const optionsHtml = `<option value="">— select —</option>` +
+      shuffledDefs.map(d => `<option value="${d}">${d}</option>`).join('');
+    row.innerHTML = `
+      <div class="match-term">${pair.term}</div>
+      <div class="match-connector">→</div>
+      <select class="match-select" id="match-sel-${i}" data-idx="${i}">${optionsHtml}</select>
+    `;
+    wrapper.appendChild(row);
+  });
+}
+
+function submitMatch(btn) {
+  if (state.answered) return;
+  state.answered = true;
+  const card = btn.closest('.q-card');
+  const q = SECTIONS[state.sectionIdx].questions[0];
+  let correct = 0;
+  q.pairs.forEach((pair, i) => {
+    const sel = card.querySelector(`#match-sel-${i}`);
+    sel.disabled = true;
+    if (sel.value === pair.def) { sel.classList.add('correct'); correct++; }
+    else { sel.classList.add('wrong'); }
+  });
+  state.score += correct;
+  state.doneQ += q.pairs.length;
+  updateHUD(SECTIONS[state.sectionIdx]);
+  showFeedback(card, correct === q.pairs.length, q.explain, correct, q.pairs.length);
+  btn.remove();
+  showNextBtn(card);
+}
+
+/* ─── REORDERING ─── */
+function renderReorder(area, q, sec) {
+  state.answered = false;
+  const card = document.createElement('div');
+  card.className = 'q-card';
+  card.innerHTML = `
+    <div class="q-num">Reorder all five sentences</div>
+    <div class="q-text" style="margin-bottom:20px">Drag the sentence segments into the correct order for each sentence. Each row represents one sentence.</div>
+    <div id="reorder-sentences"></div>
+    <div class="feedback-box" id="fb"></div>
+    <div class="btn-row" id="btn-row">
+      <button class="btn btn-submit" onclick="submitReorder(this)">Check Order</button>
+    </div>
+  `;
+  area.appendChild(card);
+
+  const container = card.querySelector('#reorder-sentences');
+  q.segments.forEach((segs, si) => {
+    const shuffled = [...segs].sort(() => Math.random() - 0.5);
+    const sentDiv = document.createElement('div');
+    sentDiv.style.marginBottom = '18px';
+    sentDiv.innerHTML = `<div class="dnd-label" style="margin-bottom:6px">Sentence ${si+1}</div>`;
+    const list = document.createElement('div');
+    list.className = 'reorder-list';
+    list.dataset.sentIdx = si;
+
+    shuffled.forEach((seg, idx) => {
+      const item = createReorderItem(seg, idx);
+      list.appendChild(item);
+    });
+
+    attachReorderDND(list);
+    sentDiv.appendChild(list);
+    container.appendChild(sentDiv);
+  });
+}
+
+function createReorderItem(seg, idx) {
+  const item = document.createElement('div');
+  item.className = 'reorder-item';
+  item.draggable = true;
+  item.dataset.text = seg;
+  item.innerHTML = `<span class="reorder-handle">⠿</span><span>${seg}</span>`;
+  return item;
+}
+
+function attachReorderDND(list) {
+  list.addEventListener('dragstart', e => {
+    const item = e.target.closest('.reorder-item');
+    if (!item) return;
+    state.reorderDragSrc = item;
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', item.dataset.text);
+    setTimeout(() => item.style.opacity = '0.4', 0);
+  });
+  list.addEventListener('dragend', e => {
+    const item = e.target.closest('.reorder-item');
+    if (item) item.style.opacity = '1';
+  });
+  list.addEventListener('dragover', e => {
+    e.preventDefault();
+    const over = e.target.closest('.reorder-item');
+    if (!over || over === state.reorderDragSrc) return;
+    list.querySelectorAll('.reorder-item').forEach(i => i.classList.remove('drag-over'));
+    over.classList.add('drag-over');
+  });
+  list.addEventListener('dragleave', () => {
+    list.querySelectorAll('.reorder-item').forEach(i => i.classList.remove('drag-over'));
+  });
+  list.addEventListener('drop', e => {
+    e.preventDefault();
+    list.querySelectorAll('.reorder-item').forEach(i => i.classList.remove('drag-over'));
+    const over = e.target.closest('.reorder-item');
+    if (!over || !state.reorderDragSrc || over === state.reorderDragSrc) return;
+    const items = [...list.querySelectorAll('.reorder-item')];
+    const srcIdx = items.indexOf(state.reorderDragSrc);
+    const dstIdx = items.indexOf(over);
+    if (srcIdx < dstIdx) list.insertBefore(state.reorderDragSrc, over.nextSibling);
+    else list.insertBefore(state.reorderDragSrc, over);
+    state.reorderDragSrc.style.opacity = '1';
+  });
+}
+
+function submitReorder(btn) {
+  if (state.answered) return;
+  state.answered = true;
+  const card = btn.closest('.q-card');
+  const q = SECTIONS[state.sectionIdx].questions[0];
+  let correct = 0;
+  card.querySelectorAll('.reorder-list').forEach((list) => {
+    const si = parseInt(list.dataset.sentIdx, 10);
+    const items = [...list.querySelectorAll('.reorder-item')];
+    const userOrder = items.map(i => i.dataset.text);
+    const isCorrect = JSON.stringify(userOrder) === JSON.stringify(q.segments[si]);
+    items.forEach(i => {
+      i.draggable = false;
+      i.style.cursor = 'default';
+      i.classList.add(isCorrect ? 'correct' : 'wrong');
+    });
+    if (isCorrect) correct++;
+  });
+  state.score += correct;
+  state.doneQ += q.segments.length;
+  updateHUD(SECTIONS[state.sectionIdx]);
+  showFeedback(card, correct === q.segments.length, q.explain, correct, q.segments.length);
+  btn.remove();
+  showNextBtn(card);
+}
+
+/* ══════════════════════════════════════════════
+   SHARED UI
+══════════════════════════════════════════════ */
+function showFeedback(card, correct, explain, got, total) {
+  const fb = card.querySelector('#fb');
+  fb.className = 'feedback-box show ' + (correct ? 'correct-fb' : 'wrong-fb');
+  let verdict = correct ? '✓ Excellent!' : '✗ Not quite.';
+  if (got !== undefined) verdict = `Score: ${got}/${total} — ${correct ? 'Perfect!' : 'See below.'}`;
+  fb.innerHTML = `<div class="fb-verdict">${verdict}</div><div class="fb-explain">${explain}</div>`;
+}
+
+function showNextBtn(card) {
+  const row = card.querySelector('#btn-row');
+  const isLast = state.sectionIdx === SECTIONS.length - 1 && isLastOfSection();
+  const btn = document.createElement('button');
+  btn.className = 'btn btn-primary';
+  btn.textContent = isLast ? 'See Final Score →' : 'Next →';
+  btn.onclick = nextQuestion;
+  row.appendChild(btn);
+}
+
+function isLastOfSection() {
+  const sec = SECTIONS[state.sectionIdx];
+  const q = sec.questions[0];
+  if (q.type === 'mc' || q.type === 'fib') return state.questionIdx === sec.questions.length - 1;
+  return true;
+}
+
+/* ══════════════════════════════════════════════
+   FINAL SCREEN
+══════════════════════════════════════════════ */
+function showFinal() {
+  document.getElementById('lesson-area').style.display = 'none';
+  document.getElementById('hud').style.display = 'none';
+  const final = document.getElementById('final-screen');
+  final.style.display = 'block';
+
+  const total = state.totalQ;
+  const score = state.score;
+  const pct = Math.round((score / total) * 100);
+  const wrong = total - score;
+
+  document.getElementById('final-score').innerHTML = `${score}<span>/${total}</span>`;
+  document.getElementById('stat-correct').textContent = score;
+  document.getElementById('stat-wrong').textContent = wrong;
+  document.getElementById('stat-pct').textContent = `${pct}%`;
+
+  let emoji, title, msg;
+  if (pct >= 90) {
+    emoji = '🦕'; title = 'Master Palaeontologist!';
+    msg = 'Outstanding! You navigated the Cretaceous biome with the precision of a seasoned linguist. Your command of C1 English is truly impressive — keep pushing towards that C2 summit!';
+  } else if (pct >= 75) {
+    emoji = '🦖'; title = 'Skilled Expedition Leader!';
+    msg = 'Excellent work! You clearly have a strong grasp of advanced English. A few fossils are still buried — review your feedback notes and attempt the expedition again to unearth them.';
+  } else if (pct >= 55) {
+    emoji = '🪨'; title = 'Budding Adventurer!';
+    msg = 'A solid effort across demanding territory. C1 requires precision in nuance and collocation — revisit the sections where you lost points, and your language skills will continue to evolve.';
+  } else {
+    emoji = '🥚'; title = 'The Egg Cracks Open...';
+    msg = 'Every great palaeontologist began with a single fossil. Review the explanations in each activity carefully — the language insights they contain will help you grow significantly. Restart and try again!';
+  }
+
+  document.getElementById('final-emoji').textContent = emoji;
+  document.getElementById('final-title').textContent = title;
+  document.getElementById('final-msg').textContent = msg;
+}
+</script>
+</body>
+</html>

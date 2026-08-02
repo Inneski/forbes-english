@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – The Brontë Sisters</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:    #1a1a2e;
+    --deep:   #16213e;
+    --mid:    #0f3460;
+    --accent: #533483;
+    --gold:   #c9a84c;
+    --gold2:  #e8c97e;
+    --cream:  #f8f4ee;
+    --paper:  #fdfaf6;
+    --muted:  #6b6878;
+    --border: #d6cfc4;
+    --correct-bg:#e6f4ea;
+    --correct:#2d7a47;
+    --wrong-bg:#fdecea;
+    --wrong:  #c0392b;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'Inter', system-ui, sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ── Header ── */
+  .site-header {
+    background: var(--deep);
+    padding: 22px 0 16px;
+    text-align: center;
+  }
+  .logo-svg { display: block; margin: 0 auto; }
+
+  /* ── Score bar ── */
+  .score-bar {
+    background: var(--mid);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 28px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: .03em;
+  }
+  .score-bar span { opacity: .85; }
+  .score-pill {
+    background: var(--gold);
+    color: var(--deep);
+    border-radius: 20px;
+    padding: 3px 14px;
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  /* ── Hero illustration strip ── */
+  .hero { background: var(--deep); padding-bottom: 0; overflow: hidden; line-height: 0; }
+
+  /* ── Main layout ── */
+  .container { max-width: 820px; margin: 0 auto; padding: 0 20px 80px; }
+
+  /* ── Section intro ── */
+  .section-intro {
+    text-align: center;
+    padding: 44px 20px 32px;
+  }
+  .section-label {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .section-intro h2 {
+    font-family: var(--serif);
+    font-size: clamp(24px, 4vw, 34px);
+    color: var(--deep);
+    margin-bottom: 12px;
+  }
+  .section-intro p {
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  /* ── Progress ── */
+  .progress-wrap { margin-bottom: 28px; }
+  .progress-text { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+  .progress-bar { height: 4px; background: var(--border); border-radius: 4px; }
+  .progress-fill { height: 4px; background: var(--gold); border-radius: 4px; transition: width .4s; }
+
+  /* ── Activity card ── */
+  .activity-card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px 32px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  /* ── Question text ── */
+  .question-text {
+    font-family: var(--serif);
+    font-size: 18px;
+    color: var(--deep);
+    margin-bottom: 22px;
+    line-height: 1.5;
+  }
+  .question-text em { color: var(--accent); font-style: normal; font-weight: 700; }
+
+  /* ── MC options ── */
+  .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+  .option-btn {
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 13px 18px;
+    text-align: left;
+    font-family: var(--sans);
+    font-size: 14.5px;
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .option-btn:hover:not(:disabled) { border-color: var(--accent); background: #f5f2ff; }
+  .option-letter {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--cream); border: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 600; flex-shrink: 0;
+    color: var(--muted);
+  }
+  .option-btn.correct { background: var(--correct-bg); border-color: var(--correct); }
+  .option-btn.correct .option-letter { background: var(--correct); color: #fff; border-color: var(--correct); }
+  .option-btn.wrong { background: var(--wrong-bg); border-color: var(--wrong); }
+  .option-btn.wrong .option-letter { background: var(--wrong); color: #fff; border-color: var(--wrong); }
+  .option-btn:disabled { cursor: default; }
+
+  /* ── Fill-in-blank ── */
+  .blank-input {
+    border: none; border-bottom: 2px solid var(--accent);
+    background: transparent; font-family: var(--serif);
+    font-size: 16px; color: var(--deep);
+    padding: 4px 8px; min-width: 120px; outline: none;
+    transition: border-color .2s;
+  }
+  .blank-input:focus { border-color: var(--gold); }
+  .blank-input.correct { border-color: var(--correct); color: var(--correct); }
+  .blank-input.wrong { border-color: var(--wrong); color: var(--wrong); }
+  .fib-sentence { font-family: var(--serif); font-size: 17px; color: var(--deep); line-height: 2.2; margin-bottom: 18px; }
+
+  /* ── Drag & drop matching ── */
+  .match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; margin-bottom: 18px; }
+  .match-left { font-family: var(--serif); font-size: 15px; color: var(--deep); padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .drop-zone {
+    min-height: 44px; border: 1.5px dashed var(--border);
+    border-radius: 8px; padding: 8px 12px;
+    display: flex; align-items: center;
+    font-size: 13px; color: var(--muted);
+    transition: background .15s, border-color .15s;
+  }
+  .drop-zone.drag-over { background: #f0ebff; border-color: var(--accent); }
+  .drop-zone.filled { border-style: solid; border-color: var(--accent); color: var(--deep); background: #f8f5ff; }
+  .drop-zone.correct { background: var(--correct-bg); border-color: var(--correct); color: var(--correct); }
+  .drop-zone.wrong { background: var(--wrong-bg); border-color: var(--wrong); color: var(--wrong); }
+  .drag-bank { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+  .drag-chip {
+    background: var(--deep); color: #fff;
+    border-radius: 20px; padding: 7px 16px;
+    font-size: 13px; cursor: grab;
+    user-select: none; transition: opacity .15s, transform .1s;
+  }
+  .drag-chip:active { cursor: grabbing; transform: scale(1.04); }
+  .drag-chip.used { opacity: .3; pointer-events: none; }
+
+  /* ── Reorder ── */
+  .reorder-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+  .reorder-item {
+    background: #fff; border: 1.5px solid var(--border);
+    border-radius: 9px; padding: 11px 16px;
+    display: flex; align-items: center; gap: 12px;
+    cursor: grab; font-size: 14px; color: var(--deep);
+    transition: box-shadow .15s, border-color .15s;
+    user-select: none;
+  }
+  .reorder-item:active { cursor: grabbing; }
+  .reorder-item.dragging { opacity: .5; }
+  .reorder-item.over { border-color: var(--accent); background: #f5f2ff; }
+  .drag-handle { color: var(--muted); font-size: 16px; }
+  .reorder-item.correct { background: var(--correct-bg); border-color: var(--correct); }
+  .reorder-item.wrong { background: var(--wrong-bg); border-color: var(--wrong); }
+
+  /* ── Feedback ── */
+  .feedback-box {
+    border-radius: 9px; padding: 13px 16px;
+    font-size: 13.5px; line-height: 1.55;
+    margin-top: 6px; display: none;
+  }
+  .feedback-box.show { display: block; }
+  .feedback-box.correct { background: var(--correct-bg); color: #1e5c35; border-left: 3px solid var(--correct); }
+  .feedback-box.wrong   { background: var(--wrong-bg);   color: #922b21; border-left: 3px solid var(--wrong); }
+  .feedback-box strong  { display: block; margin-bottom: 4px; font-size: 14px; }
+
+  /* ── Buttons ── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 26px; border-radius: 9px;
+    font-family: var(--sans); font-size: 14px; font-weight: 600;
+    cursor: pointer; border: none; transition: background .15s, transform .1s;
+  }
+  .btn:active { transform: scale(.98); }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #6b44a8; }
+  .btn-secondary { background: var(--deep); color: #fff; }
+  .btn-secondary:hover { background: #0a1a32; }
+  .btn-gold { background: var(--gold); color: var(--deep); }
+  .btn-gold:hover { background: var(--gold2); }
+  .btn-row { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+
+  /* ── Final screen ── */
+  .final-screen {
+    text-align: center; padding: 60px 20px 40px;
+    display: none;
+  }
+  .final-screen.show { display: block; }
+  .final-score-ring {
+    width: 130px; height: 130px; border-radius: 50%;
+    background: var(--deep); color: var(--gold2);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    margin: 0 auto 28px; font-family: var(--serif);
+  }
+  .final-score-ring .big { font-size: 38px; font-weight: 700; line-height: 1; }
+  .final-score-ring .small { font-size: 13px; opacity: .7; margin-top: 2px; }
+  .final-screen h2 { font-family: var(--serif); font-size: 28px; color: var(--deep); margin-bottom: 12px; }
+  .final-screen p { font-size: 15px; color: var(--muted); max-width: 480px; margin: 0 auto 28px; }
+
+  /* ── Activity nav dots ── */
+  .act-nav {
+    display: flex; justify-content: center; gap: 8px; padding: 18px 0 6px;
+  }
+  .act-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--border); transition: background .2s;
+  }
+  .act-dot.active { background: var(--accent); }
+  .act-dot.done   { background: var(--gold); }
+
+  /* ── Activity wrapper visibility ── */
+  .activity { display: none; }
+  .activity.active { display: block; }
+
+  /* ── Illustrations inline ── */
+  .book-illus { float: right; margin: 0 0 12px 20px; }
+  .book-illus-left { float: left; margin: 0 20px 12px 0; }
+  @media (max-width: 560px) {
+    .book-illus, .book-illus-left { float: none; display: block; margin: 0 auto 16px; }
+    .activity-card { padding: 20px 16px; }
+    .match-grid { grid-template-columns: 1fr; }
+  }
+  .clearfix::after { content: ''; display: table; clear: both; }
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header class="site-header">
+  <svg class="logo-svg" width="200" height="58" viewBox="0 0 200 58" xmlns="http://www.w3.org/2000/svg">
+    <text x="100" y="28" text-anchor="middle"
+      font-family="'Playfair Display', Georgia, serif"
+      font-size="30" font-weight="700" letter-spacing="2"
+      fill="#c9a84c">Forbes</text>
+    <line x1="30" y1="35" x2="170" y2="35" stroke="#533483" stroke-width="1"/>
+    <text x="100" y="50" text-anchor="middle"
+      font-family="'Inter', sans-serif"
+      font-size="13" font-weight="600" letter-spacing="5"
+      fill="#e8c97e">ENGLISH</text>
+  </svg>
+</header>
+
+<!-- ══ SCORE BAR ══ -->
+<div class="score-bar">
+  <span>B2 · The Brontë Sisters</span>
+  <span class="score-pill" id="live-score">Score: 0 / 0</span>
+</div>
+
+<!-- ══ HERO SVG ILLUSTRATION ══ -->
+<div class="hero">
+<svg width="100%" viewBox="0 0 820 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+  <rect width="820" height="160" fill="#16213e"/>
+  <!-- Moor landscape -->
+  <ellipse cx="410" cy="200" rx="500" ry="100" fill="#0f1e38"/>
+  <!-- Rolling hills -->
+  <path d="M0 130 Q100 95 180 120 Q260 145 340 100 Q420 55 500 95 Q580 130 660 90 Q740 50 820 110 L820 160 L0 160Z" fill="#0c1a30"/>
+  <path d="M0 145 Q80 125 160 140 Q240 155 330 130 Q420 105 510 135 Q600 160 700 130 Q760 110 820 140 L820 160 L0 160Z" fill="#16213e" opacity=".7"/>
+  <!-- Moon -->
+  <circle cx="680" cy="38" r="22" fill="#c9a84c" opacity=".18"/>
+  <circle cx="680" cy="38" r="16" fill="#c9a84c" opacity=".22"/>
+  <!-- Stars -->
+  <circle cx="60" cy="22" r="1.2" fill="#e8c97e" opacity=".7"/>
+  <circle cx="140" cy="14" r="1" fill="#e8c97e" opacity=".5"/>
+  <circle cx="220" cy="30" r="1.4" fill="#e8c97e" opacity=".6"/>
+  <circle cx="310" cy="10" r="1" fill="#e8c97e" opacity=".5"/>
+  <circle cx="500" cy="18" r="1.2" fill="#e8c97e" opacity=".6"/>
+  <circle cx="570" cy="8" r="1" fill="#e8c97e" opacity=".5"/>
+  <circle cx="750" cy="20" r="1.2" fill="#e8c97e" opacity=".6"/>
+  <!-- Haworth parsonage silhouette -->
+  <rect x="348" y="68" width="124" height="70" fill="#0a152a"/>
+  <rect x="363" y="52" width="34" height="38" fill="#0a152a"/>
+  <rect x="423" y="58" width="30" height="32" fill="#0a152a"/>
+  <!-- Chimneys -->
+  <rect x="370" y="44" width="8" height="16" fill="#091224"/>
+  <rect x="385" y="48" width="7" height="12" fill="#091224"/>
+  <rect x="428" y="50" width="8" height="14" fill="#091224"/>
+  <!-- Windows (glowing warm) -->
+  <rect x="358" y="82" width="14" height="18" rx="2" fill="#c9a84c" opacity=".5"/>
+  <rect x="383" y="82" width="14" height="18" rx="2" fill="#c9a84c" opacity=".35"/>
+  <rect x="408" y="82" width="14" height="18" rx="2" fill="#c9a84c" opacity=".45"/>
+  <rect x="433" y="82" width="14" height="18" rx="2" fill="#c9a84c" opacity=".3"/>
+  <rect x="368" y="60" width="10" height="12" rx="2" fill="#c9a84c" opacity=".4"/>
+  <rect x="427" y="65" width="9" height="10" rx="2" fill="#c9a84c" opacity=".35"/>
+  <!-- Trees -->
+  <ellipse cx="300" cy="118" rx="22" ry="35" fill="#091828"/>
+  <ellipse cx="318" cy="125" rx="16" ry="28" fill="#0a1a2c"/>
+  <ellipse cx="540" cy="112" rx="20" ry="32" fill="#091828"/>
+  <ellipse cx="555" cy="120" rx="14" ry="24" fill="#0a1a2c"/>
+  <!-- Title text overlay -->
+  <text x="410" y="50" text-anchor="middle" font-family="'Playfair Display',serif" font-size="15" font-weight="400" fill="#c9a84c" letter-spacing="1" opacity=".9">The Brontë Sisters</text>
+</svg>
+</div>
+
+<!-- ══ MAIN ══ -->
+<div class="container">
+
+  <!-- Activity navigation dots -->
+  <div class="act-nav" id="act-nav">
+    <div class="act-dot active" id="dot-0"></div>
+    <div class="act-dot" id="dot-1"></div>
+    <div class="act-dot" id="dot-2"></div>
+  </div>
+
+  <!-- ════════════════════════════════════
+       ACTIVITY 1 — Multiple Choice
+  ════════════════════════════════════ -->
+  <div class="activity active" id="act-0">
+    <div class="section-intro">
+      <div class="section-label">Activity 1 of 3</div>
+      <h2>Multiple Choice</h2>
+      <p>Read each question carefully and select the best answer. Five questions on the lives and works of the Brontë sisters.</p>
+    </div>
+    <div id="mc-container"></div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="mc-check" onclick="checkMC()" style="display:none">Check Answers</button>
+      <button class="btn btn-secondary" id="mc-next" onclick="goToActivity(1)" style="display:none">Next Activity →</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════
+       ACTIVITY 2 — Fill in the Blank
+  ════════════════════════════════════ -->
+  <div class="activity" id="act-1">
+    <div class="section-intro">
+      <div class="section-label">Activity 2 of 3</div>
+      <h2>Fill in the Blank</h2>
+      <p>Complete each sentence with the correct word or phrase from the box below. Type carefully — spelling counts!</p>
+    </div>
+    <!-- Word bank -->
+    <div class="activity-card" style="padding:18px 24px;">
+      <div style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;">Word Bank</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;" id="fib-bank"></div>
+    </div>
+    <div id="fib-container"></div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="fib-check" onclick="checkFIB()">Check Answers</button>
+      <button class="btn btn-secondary" id="fib-next" onclick="goToActivity(2)" style="display:none">Next Activity →</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════
+       ACTIVITY 3 — Drag & Match + Reorder
+  ════════════════════════════════════ -->
+  <div class="activity" id="act-2">
+    <div class="section-intro">
+      <div class="section-label">Activity 3 of 3</div>
+      <h2>Match &amp; Reorder</h2>
+      <p>Two tasks: first match each novel to its author, then drag the events into the correct chronological order.</p>
+    </div>
+
+    <!-- MATCHING -->
+    <div class="activity-card clearfix">
+      <svg class="book-illus" width="90" height="110" viewBox="0 0 90 110" xmlns="http://www.w3.org/2000/svg">
+        <rect x="10" y="8" width="60" height="80" rx="4" fill="#533483"/>
+        <rect x="14" y="12" width="52" height="72" rx="3" fill="#6b44a8"/>
+        <rect x="18" y="20" width="34" height="3" rx="1.5" fill="#c9a84c" opacity=".8"/>
+        <rect x="18" y="27" width="26" height="3" rx="1.5" fill="#c9a84c" opacity=".5"/>
+        <rect x="18" y="34" width="30" height="3" rx="1.5" fill="#c9a84c" opacity=".4"/>
+        <rect x="18" y="48" width="36" height="22" rx="2" fill="#c9a84c" opacity=".15"/>
+        <rect x="8" y="8" width="6" height="80" rx="2" fill="#3c2460"/>
+        <rect x="10" y="86" width="60" height="12" rx="4" fill="#1a1a2e" opacity=".2"/>
+      </svg>
+      <div class="section-label" style="margin-bottom:14px;">Match each novel to its author</div>
+      <div class="drag-bank" id="match-bank"></div>
+      <div class="match-grid" id="match-grid"></div>
+      <div class="feedback-box" id="match-feedback"></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="checkMatch()">Check Matching</button>
+      </div>
+    </div>
+
+    <!-- REORDER -->
+    <div class="activity-card clearfix">
+      <svg class="book-illus-left" width="80" height="100" viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg">
+        <rect x="6" y="6" width="54" height="74" rx="4" fill="#c9a84c"/>
+        <rect x="10" y="10" width="46" height="66" rx="3" fill="#e8c97e"/>
+        <rect x="16" y="18" width="28" height="3" rx="1.5" fill="#533483" opacity=".7"/>
+        <rect x="16" y="25" width="20" height="3" rx="1.5" fill="#533483" opacity=".45"/>
+        <rect x="16" y="32" width="24" height="3" rx="1.5" fill="#533483" opacity=".4"/>
+        <rect x="16" y="44" width="30" height="18" rx="2" fill="#533483" opacity=".12"/>
+        <rect x="4" y="6" width="5" height="74" rx="2" fill="#8c6d1a"/>
+      </svg>
+      <div class="section-label" style="margin-bottom:14px;">Drag the events into chronological order</div>
+      <p style="font-size:13.5px;color:var(--muted);margin-bottom:16px;">Drag and drop the events below so they appear from earliest (top) to most recent (bottom).</p>
+      <div class="reorder-list" id="reorder-list"></div>
+      <div class="feedback-box" id="reorder-feedback"></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="checkReorder()">Check Order</button>
+        <button class="btn btn-secondary" id="reorder-next" onclick="showFinal()" style="display:none">See My Results →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════
+       FINAL SCREEN
+  ════════════════════════════════════ -->
+  <div class="final-screen" id="final-screen">
+    <svg width="200" height="90" viewBox="0 0 200 90" xmlns="http://www.w3.org/2000/svg" style="margin:0 auto 10px;display:block">
+      <ellipse cx="100" cy="78" rx="80" ry="14" fill="#533483" opacity=".1"/>
+      <!-- Three books -->
+      <rect x="30" y="20" width="38" height="52" rx="4" fill="#533483"/>
+      <rect x="33" y="24" width="32" height="44" rx="3" fill="#6b44a8"/>
+      <rect x="28" y="20" width="5" height="52" rx="2" fill="#3c2460"/>
+      <rect x="72" y="14" width="40" height="58" rx="4" fill="#c9a84c"/>
+      <rect x="75" y="18" width="34" height="50" rx="3" fill="#e8c97e"/>
+      <rect x="70" y="14" width="5" height="58" rx="2" fill="#8c6d1a"/>
+      <rect x="116" y="24" width="36" height="48" rx="4" fill="#16213e"/>
+      <rect x="119" y="27" width="30" height="42" rx="3" fill="#0f3460"/>
+      <rect x="114" y="24" width="5" height="48" rx="2" fill="#091224"/>
+    </svg>
+    <div class="final-score-ring" id="final-ring">
+      <span class="big" id="final-score-num">0</span>
+      <span class="small" id="final-score-denom">/ 15</span>
+    </div>
+    <h2 id="final-heading">Well done!</h2>
+    <p id="final-message">You've completed the lesson on the Brontë sisters.</p>
+    <button class="btn btn-gold" onclick="restartLesson()">↺ Restart Lesson</button>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+// ═══════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════
+
+const MC_QUESTIONS = [
+  {
+    q: "Under which collective pen name did the three Brontë sisters first publish their poetry in 1846?",
+    options: [
+      { text: "Carmichael, Ellis and Acton Bell", letter: "A" },
+      { text: "Currer, Ellis and Acton Bell", letter: "B" },
+      { text: "Currer, Allen and Edgar Bell", letter: "C" },
+      { text: "Charlotte, Emily and Anne Brontë", letter: "D" },
+    ],
+    correct: 1,
+    explanation: "The sisters adopted male-sounding pen names — Currer (Charlotte), Ellis (Emily) and Acton (Anne) Bell — to avoid the prejudice they feared would greet female authors. The volume was called <em>Poems by Currer, Ellis, and Acton Bell</em>."
+  },
+  {
+    q: "In <em>Jane Eyre</em> by Charlotte Brontë, what secret does Rochester keep hidden at Thornfield Hall?",
+    options: [
+      { text: "A locked collection of priceless artworks stolen from Europe", letter: "A" },
+      { text: "His first wife, Bertha Mason, who is mentally ill and dangerous", letter: "B" },
+      { text: "His illegitimate daughter, whom he refuses to acknowledge", letter: "C" },
+      { text: "A fortune inherited from a crime he committed in his youth", letter: "D" },
+    ],
+    correct: 1,
+    explanation: "Rochester's 'mad wife in the attic' — Bertha Mason — is the central secret of the novel. Her existence makes his proposed marriage to Jane bigamous and illegal, which is revealed dramatically at the altar."
+  },
+  {
+    q: "Which Brontë sister wrote <em>The Tenant of Wildfell Hall</em>, considered one of the earliest feminist novels in English?",
+    options: [
+      { text: "Charlotte Brontë, the eldest of the three sisters", letter: "A" },
+      { text: "Emily Brontë, known for her passionate verse", letter: "B" },
+      { text: "Anne Brontë, the youngest of the three sisters", letter: "C" },
+      { text: "Branwell Brontë, the sisters' troubled brother", letter: "D" },
+    ],
+    correct: 2,
+    explanation: "Anne Brontë wrote <em>The Tenant of Wildfell Hall</em> (1848). It deals frankly with alcoholism, domestic abuse, and a woman's right to leave a destructive marriage — radical themes for the Victorian era."
+  },
+  {
+    q: "The moorland setting of <em>Wuthering Heights</em> reflects the landscape around which Yorkshire village where the Brontës lived?",
+    options: [
+      { text: "Haworth, on the edge of the West Yorkshire moors", letter: "A" },
+      { text: "Thornton, the industrial town near Bradford", letter: "B" },
+      { text: "Skipton, a market town in the Yorkshire Dales", letter: "C" },
+      { text: "Harrogate, a fashionable spa town in North Yorkshire", letter: "D" },
+    ],
+    correct: 0,
+    explanation: "The Brontë family moved to Haworth in 1820, where their father Patrick became curate. The surrounding bleak moorland deeply influenced the sisters' writing, especially Emily's <em>Wuthering Heights</em>."
+  },
+  {
+    q: "What is the name of the childhood fantasy world that Charlotte and Branwell Brontë created and wrote stories about from an early age?",
+    options: [
+      { text: "Gondal, a romantic island kingdom in the Pacific", letter: "A" },
+      { text: "Verdopolis, later renamed Angria, ruled by the Duke of Wellington's sons", letter: "B" },
+      { text: "Glasstown, a city ruled by characters from Charlotte's imagination", letter: "C" },
+      { text: "Stancliffe, an imaginary manor house set in the English countryside", letter: "D" },
+    ],
+    correct: 1,
+    explanation: "Charlotte and Branwell created the fictional world of Glass Town (later Verdopolis, then Angria), while Emily and Anne separately developed Gondal. These childhood sagas were a crucial creative training ground for all the sisters."
+  }
+];
+
+const FIB_DATA = [
+  {
+    sentence: "Emily Brontë's only novel, <em>Wuthering Heights</em>, was published in ______, the year before her death.",
+    answer: "1847",
+    hint: "the year"
+  },
+  {
+    sentence: "The narrator of <em>Wuthering Heights</em> who rents Thrushcross Grange and records Nelly Dean's story is called ______.",
+    answer: "Lockwood",
+    hint: "a surname"
+  },
+  {
+    sentence: "In <em>Jane Eyre</em>, Jane's deeply religious and cruel guardian at Lowood School is Mr ______.",
+    answer: "Brocklehurst",
+    hint: "a surname"
+  },
+  {
+    sentence: "The wild, vengeful protagonist of <em>Wuthering Heights</em>, raised as a foundling by Mr Earnshaw, is named ______.",
+    answer: "Heathcliff",
+    hint: "a character name"
+  },
+  {
+    sentence: "Charlotte Brontë's semi-autobiographical novel set partly in Brussels, dealing with a young teacher abroad, is titled ______.",
+    answer: "Villette",
+    hint: "a novel title"
+  }
+];
+const FIB_BANK_WORDS = ["Lockwood","Heathcliff","Brocklehurst","Villette","1847","Rochester","Gondal","1848"];
+
+const MATCH_DATA = [
+  { novel: "Wuthering Heights", author: "Emily Brontë" },
+  { novel: "Jane Eyre", author: "Charlotte Brontë" },
+  { novel: "The Tenant of Wildfell Hall", author: "Anne Brontë" },
+  { novel: "Agnes Grey", author: "Anne Brontë" },
+  { novel: "Shirley", author: "Charlotte Brontë" },
+];
+
+const REORDER_DATA = [
+  { text: "The Brontë family moves from Thornton to Haworth Parsonage", year: 1820 },
+  { text: "Charlotte, Emily and Anne are sent to Cowan Bridge school", year: 1824 },
+  { text: "The sisters publish Poems by Currer, Ellis and Acton Bell", year: 1846 },
+  { text: "Jane Eyre and Wuthering Heights are published in the same year", year: 1847 },
+  { text: "Emily Brontë dies of tuberculosis, aged thirty", year: 1848 },
+  { text: "Charlotte publishes Shirley under her pen name Currer Bell", year: 1849 },
+];
+
+// ═══════════════════════════════════════
+//  SCORE STATE
+// ═══════════════════════════════════════
+let totalCorrect = 0;
+let totalAnswered = 0;
+let mcAnswered = [];
+let fibChecked = false;
+let matchChecked = false;
+let reorderChecked = false;
+
+function updateScoreBar() {
+  document.getElementById('live-score').textContent = `Score: ${totalCorrect} / ${totalAnswered}`;
+}
+
+// ═══════════════════════════════════════
+//  ACTIVITY NAVIGATION
+// ═══════════════════════════════════════
+function goToActivity(idx) {
+  document.querySelectorAll('.activity').forEach((el,i) => {
+    el.classList.toggle('active', i === idx);
+  });
+  ['dot-0','dot-1','dot-2'].forEach((id,i) => {
+    const d = document.getElementById(id);
+    d.classList.toggle('active', i === idx);
+    if (i < idx) d.classList.add('done');
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ═══════════════════════════════════════
+//  ACTIVITY 1 — MULTIPLE CHOICE
+// ═══════════════════════════════════════
+function buildMC() {
+  const wrap = document.getElementById('mc-container');
+  wrap.innerHTML = '';
+  mcAnswered = new Array(MC_QUESTIONS.length).fill(false);
+
+  MC_QUESTIONS.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'activity-card';
+
+    // Illustration on alternate questions
+    let illus = '';
+    if (qi === 1) {
+      illus = `<svg class="book-illus" width="80" height="96" viewBox="0 0 80 96" xmlns="http://www.w3.org/2000/svg">
+        <rect x="8" y="6" width="52" height="72" rx="4" fill="#533483"/>
+        <rect x="11" y="10" width="46" height="64" rx="3" fill="#6b44a8"/>
+        <rect x="6" y="6" width="5" height="72" rx="2" fill="#3c2460"/>
+        <rect x="16" y="20" width="28" height="3" rx="1.5" fill="#c9a84c" opacity=".8"/>
+        <rect x="16" y="27" width="20" height="3" rx="1.5" fill="#c9a84c" opacity=".5"/>
+        <rect x="16" y="44" width="30" height="20" rx="2" fill="#c9a84c" opacity=".1"/>
+        <text x="34" y="92" text-anchor="middle" font-family="'Playfair Display',serif" font-size="9" fill="#533483" opacity=".7">Jane Eyre</text>
+      </svg>`;
+    } else if (qi === 3) {
+      illus = `<svg class="book-illus" width="80" height="96" viewBox="0 0 80 96" xmlns="http://www.w3.org/2000/svg">
+        <rect x="8" y="6" width="52" height="72" rx="4" fill="#16213e"/>
+        <rect x="11" y="10" width="46" height="64" rx="3" fill="#0f3460"/>
+        <rect x="6" y="6" width="5" height="72" rx="2" fill="#091224"/>
+        <rect x="16" y="20" width="28" height="3" rx="1.5" fill="#c9a84c" opacity=".8"/>
+        <rect x="16" y="27" width="20" height="3" rx="1.5" fill="#c9a84c" opacity=".5"/>
+        <circle cx="34" cy="54" r="12" fill="#c9a84c" opacity=".1"/>
+        <text x="34" y="92" text-anchor="middle" font-family="'Playfair Display',serif" font-size="8.5" fill="#0f3460" opacity=".7">Wuthering Heights</text>
+      </svg>`;
+    }
+
+    card.innerHTML = `
+      <div class="clearfix">
+        ${illus}
+        <div class="progress-wrap">
+          <div class="progress-text">Question ${qi+1} of ${MC_QUESTIONS.length}</div>
+          <div class="progress-bar"><div class="progress-fill" style="width:${((qi)/MC_QUESTIONS.length)*100}%"></div></div>
+        </div>
+        <div class="question-text">${q.q}</div>
+        <div class="options" id="opts-${qi}">
+          ${q.options.map((o,oi) => `
+            <button class="option-btn" id="opt-${qi}-${oi}" onclick="selectMC(${qi},${oi})">
+              <span class="option-letter">${o.letter}</span>
+              ${o.text}
+            </button>
+          `).join('')}
+        </div>
+        <div class="feedback-box" id="mc-fb-${qi}"></div>
+      </div>`;
+    wrap.appendChild(card);
+  });
+
+  // Show check button after any selection
+  document.getElementById('mc-check').style.display = 'none';
+}
+
+function selectMC(qi, oi) {
+  if (mcAnswered[qi]) return;
+
+  const q = MC_QUESTIONS[qi];
+  const allBtns = document.querySelectorAll(`#opts-${qi} .option-btn`);
+  allBtns.forEach(b => b.disabled = true);
+
+  const chosen = document.getElementById(`opt-${qi}-${oi}`);
+  const correct = document.getElementById(`opt-${qi}-${q.correct}`);
+
+  totalAnswered++;
+  if (oi === q.correct) {
+    chosen.classList.add('correct');
+    totalCorrect++;
+  } else {
+    chosen.classList.add('wrong');
+    correct.classList.add('correct');
+  }
+
+  const fb = document.getElementById(`mc-fb-${qi}`);
+  fb.innerHTML = `<strong>${oi === q.correct ? '✓ Correct!' : '✗ Not quite.'}</strong>${q.explanation}`;
+  fb.className = `feedback-box show ${oi === q.correct ? 'correct' : 'wrong'}`;
+
+  mcAnswered[qi] = true;
+  updateScoreBar();
+
+  if (mcAnswered.every(Boolean)) {
+    document.getElementById('mc-next').style.display = 'inline-flex';
+  }
+}
+
+function checkMC() {} // unused but kept for legacy
+
+// ═══════════════════════════════════════
+//  ACTIVITY 2 — FILL IN THE BLANK
+// ═══════════════════════════════════════
+function buildFIB() {
+  // Bank
+  const bank = document.getElementById('fib-bank');
+  bank.innerHTML = FIB_BANK_WORDS.map(w =>
+    `<span style="background:var(--deep);color:#fff;border-radius:20px;padding:5px 14px;font-size:13px;font-family:var(--serif);">${w}</span>`
+  ).join('');
+
+  // Sentences
+  const wrap = document.getElementById('fib-container');
+  wrap.innerHTML = '';
+  FIB_DATA.forEach((item, i) => {
+    const card = document.createElement('div');
+    card.className = 'activity-card';
+    card.innerHTML = `
+      <div class="progress-wrap">
+        <div class="progress-text">Sentence ${i+1} of ${FIB_DATA.length}</div>
+        <div class="progress-bar"><div class="progress-fill" style="width:${(i/FIB_DATA.length)*100}%"></div></div>
+      </div>
+      <div class="fib-sentence">${item.sentence.replace('______',
+        `<input class="blank-input" id="fib-${i}" type="text" placeholder="${item.hint}" autocomplete="off" spellcheck="false"/>`
+      )}</div>
+      <div class="feedback-box" id="fib-fb-${i}"></div>`;
+    wrap.appendChild(card);
+  });
+}
+
+function checkFIB() {
+  if (fibChecked) return;
+  fibChecked = true;
+
+  FIB_DATA.forEach((item, i) => {
+    const inp = document.getElementById(`fib-${i}`);
+    const val = inp.value.trim();
+    const ok = val.toLowerCase() === item.answer.toLowerCase();
+
+    totalAnswered++;
+    if (ok) totalCorrect++;
+
+    inp.disabled = true;
+    inp.classList.add(ok ? 'correct' : 'wrong');
+    if (!ok) inp.value = item.answer;
+
+    const fb = document.getElementById(`fib-fb-${i}`);
+    fb.innerHTML = ok
+      ? `<strong>✓ Correct!</strong>The answer is <strong>${item.answer}</strong>.`
+      : `<strong>✗ The correct answer is: ${item.answer}</strong>You wrote: "${val || '(nothing)'}".`;
+    fb.className = `feedback-box show ${ok ? 'correct' : 'wrong'}`;
+  });
+
+  updateScoreBar();
+  document.getElementById('fib-check').style.display = 'none';
+  document.getElementById('fib-next').style.display = 'inline-flex';
+}
+
+// ═══════════════════════════════════════
+//  ACTIVITY 3a — MATCHING
+// ═══════════════════════════════════════
+let matchState = {};
+
+function buildMatch() {
+  const bank = document.getElementById('match-bank');
+  const grid = document.getElementById('match-grid');
+
+  const authors = [...new Set(MATCH_DATA.map(d => d.author))];
+  const shuffledAuthors = shuffle([...authors, ...authors].slice(0, MATCH_DATA.length));
+  // Actually just shuffle unique authors padded to length
+  const chipAuthors = shuffle(MATCH_DATA.map(d => d.author));
+
+  bank.innerHTML = chipAuthors.map((a,i) =>
+    `<div class="drag-chip" id="chip-${i}" draggable="true"
+      ondragstart="dragStart(event,'${a}',${i})"
+      data-author="${a}">${a}</div>`
+  ).join('');
+
+  grid.innerHTML = '';
+  MATCH_DATA.forEach((item, i) => {
+    matchState[i] = null;
+    const leftDiv = document.createElement('div');
+    leftDiv.className = 'match-left';
+    leftDiv.textContent = item.novel;
+
+    const dropDiv = document.createElement('div');
+    dropDiv.className = 'drop-zone';
+    dropDiv.id = `drop-${i}`;
+    dropDiv.textContent = 'Drop author here';
+    dropDiv.addEventListener('dragover', e => { e.preventDefault(); dropDiv.classList.add('drag-over'); });
+    dropDiv.addEventListener('dragleave', () => dropDiv.classList.remove('drag-over'));
+    dropDiv.addEventListener('drop', e => { e.preventDefault(); handleDrop(e, i); });
+
+    grid.appendChild(leftDiv);
+    grid.appendChild(dropDiv);
+  });
+}
+
+let draggedAuthor = null, draggedChipId = null;
+function dragStart(e, author, chipId) {
+  draggedAuthor = author;
+  draggedChipId = chipId;
+}
+function handleDrop(e, dropIdx) {
+  const dropZone = document.getElementById(`drop-${dropIdx}`);
+  dropZone.classList.remove('drag-over');
+  if (!draggedAuthor) return;
+
+  // Return previous chip if slot was filled
+  if (matchState[dropIdx]) {
+    // find chip with that author and un-use
+    document.querySelectorAll('.drag-chip').forEach(c => {
+      if (c.dataset.author === matchState[dropIdx] && c.classList.contains('used')) {
+        // mark first found as available again
+        c.classList.remove('used');
+      }
+    });
+  }
+
+  matchState[dropIdx] = draggedAuthor;
+  dropZone.textContent = draggedAuthor;
+  dropZone.classList.add('filled');
+
+  document.getElementById(`chip-${draggedChipId}`).classList.add('used');
+  draggedAuthor = null; draggedChipId = null;
+}
+
+function checkMatch() {
+  if (matchChecked) return;
+  matchChecked = true;
+
+  let correct = 0;
+  MATCH_DATA.forEach((item, i) => {
+    const zone = document.getElementById(`drop-${i}`);
+    const ok = matchState[i] === item.author;
+    if (ok) correct++;
+    zone.classList.add(ok ? 'correct' : 'wrong');
+    if (!ok) zone.textContent = `✗ ${item.author}`;
+  });
+
+  totalCorrect += correct;
+  totalAnswered += MATCH_DATA.length;
+  updateScoreBar();
+
+  const fb = document.getElementById('match-feedback');
+  fb.innerHTML = `<strong>${correct === MATCH_DATA.length ? '✓ Perfect matching!' : `${correct} of ${MATCH_DATA.length} correct.`}</strong>
+    Charlotte wrote <em>Jane Eyre</em> and <em>Shirley</em>; Emily wrote <em>Wuthering Heights</em>; Anne wrote <em>Agnes Grey</em> and <em>The Tenant of Wildfell Hall</em>.`;
+  fb.className = `feedback-box show ${correct === MATCH_DATA.length ? 'correct' : 'wrong'}`;
+}
+
+// ═══════════════════════════════════════
+//  ACTIVITY 3b — REORDER
+// ═══════════════════════════════════════
+let reorderItems = [];
+let dragSrcIdx = null;
+
+function buildReorder() {
+  reorderItems = shuffle(REORDER_DATA.map((d,i) => ({ ...d, origIdx: i })));
+  renderReorder();
+}
+
+function renderReorder() {
+  const list = document.getElementById('reorder-list');
+  list.innerHTML = '';
+  reorderItems.forEach((item, idx) => {
+    const div = document.createElement('div');
+    div.className = 'reorder-item';
+    div.draggable = true;
+    div.dataset.idx = idx;
+    div.innerHTML = `<span class="drag-handle">⠿</span><span>${item.text}</span>`;
+    div.addEventListener('dragstart', e => { dragSrcIdx = idx; div.classList.add('dragging'); });
+    div.addEventListener('dragend', () => div.classList.remove('dragging'));
+    div.addEventListener('dragover', e => { e.preventDefault(); div.classList.add('over'); });
+    div.addEventListener('dragleave', () => div.classList.remove('over'));
+    div.addEventListener('drop', e => {
+      e.preventDefault();
+      div.classList.remove('over');
+      if (dragSrcIdx === null || dragSrcIdx === idx) return;
+      const moved = reorderItems.splice(dragSrcIdx, 1)[0];
+      reorderItems.splice(idx, 0, moved);
+      dragSrcIdx = null;
+      renderReorder();
+    });
+    list.appendChild(div);
+  });
+}
+
+function checkReorder() {
+  if (reorderChecked) return;
+  reorderChecked = true;
+
+  const sorted = [...REORDER_DATA].sort((a,b) => a.year - b.year);
+  let correct = 0;
+  const items = document.querySelectorAll('.reorder-item');
+  items.forEach((el, i) => {
+    const ok = reorderItems[i].year === sorted[i].year;
+    if (ok) correct++;
+    el.classList.add(ok ? 'correct' : 'wrong');
+    el.draggable = false;
+  });
+
+  totalCorrect += correct;
+  totalAnswered += REORDER_DATA.length;
+  updateScoreBar();
+
+  const fb = document.getElementById('reorder-feedback');
+  const correctOrder = sorted.map(d => `<li>${d.year}: ${d.text}</li>`).join('');
+  fb.innerHTML = `<strong>${correct === REORDER_DATA.length ? '✓ Perfect order!' : `${correct} of ${REORDER_DATA.length} correct.`}</strong>
+    The correct chronological order was:<ol style="margin:.6em 0 0 1em;line-height:1.8;">${correctOrder}</ol>`;
+  fb.className = `feedback-box show ${correct === REORDER_DATA.length ? 'correct' : 'wrong'}`;
+
+  document.getElementById('reorder-next').style.display = 'inline-flex';
+}
+
+// ═══════════════════════════════════════
+//  FINAL SCREEN
+// ═══════════════════════════════════════
+function showFinal() {
+  document.querySelectorAll('.activity').forEach(el => el.classList.remove('active'));
+  document.getElementById('act-nav').style.display = 'none';
+  const fs = document.getElementById('final-screen');
+  fs.classList.add('show');
+
+  const total = totalAnswered;
+  const pct = total > 0 ? Math.round((totalCorrect/total)*100) : 0;
+  document.getElementById('final-score-num').textContent = totalCorrect;
+  document.getElementById('final-score-denom').textContent = `/ ${total}`;
+
+  let heading, msg;
+  if (pct >= 85) {
+    heading = 'Outstanding work!';
+    msg = `You scored ${totalCorrect} out of ${total} — a remarkable result. Your knowledge of the Brontë sisters is genuinely impressive. Why not explore their novels in the original English?`;
+  } else if (pct >= 65) {
+    heading = 'Well done!';
+    msg = `You scored ${totalCorrect} out of ${total}. A solid performance at B2 level. Revisiting the sections you found tricky will strengthen your understanding further.`;
+  } else if (pct >= 45) {
+    heading = 'Good effort!';
+    msg = `You scored ${totalCorrect} out of ${total}. The Brontës are challenging! Try the lesson again — you'll be surprised how much you pick up the second time.`;
+  } else {
+    heading = 'Keep going!';
+    msg = `You scored ${totalCorrect} out of ${total}. Literature at B2 takes practice. Restart the lesson and use the feedback to guide your answers — you've got this.`;
+  }
+  document.getElementById('final-heading').textContent = heading;
+  document.getElementById('final-message').textContent = msg;
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function restartLesson() {
+  totalCorrect = 0; totalAnswered = 0;
+  mcAnswered = []; fibChecked = false; matchChecked = false; reorderChecked = false;
+  matchState = {};
+  updateScoreBar();
+
+  document.getElementById('final-screen').classList.remove('show');
+  document.getElementById('act-nav').style.display = 'flex';
+  document.getElementById('mc-next').style.display = 'none';
+  document.getElementById('fib-next').style.display = 'none';
+  document.getElementById('fib-check').style.display = 'inline-flex';
+  document.getElementById('reorder-next').style.display = 'none';
+
+  buildMC(); buildFIB(); buildMatch(); buildReorder();
+  goToActivity(0);
+}
+
+// ═══════════════════════════════════════
+//  UTILS
+// ═══════════════════════════════════════
+function shuffle(arr) {
+  for (let i = arr.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]] = [arr[j],arr[i]];
+  }
+  return arr;
+}
+
+// ═══════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════
+buildMC();
+buildFIB();
+buildMatch();
+buildReorder();
+updateScoreBar();
+</script>
+</body>
+</html>

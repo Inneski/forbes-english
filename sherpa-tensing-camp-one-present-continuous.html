@@ -1,0 +1,1194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sherpa Tensing - Camp One: The Ripple (Present Continuous)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#2B0F1D;
+    --ink-soft:#6B4A57;
+    --paper:#FDF7F5;
+    --card:#FFFFFF;
+    --accent:#C2185B;
+    --accent-dark:#7A0F3E;
+    --accent-light:#F6CFE1;
+    --accent-lighter:#FBEAF0;
+    --good:#1E7A4C;
+    --good-bg:#E5F5EC;
+    --bad:#B23A3A;
+    --bad-bg:#FBEAEA;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+  }
+  h1,h2,h3{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    margin:0 0 .4em;
+    color:var(--ink);
+  }
+  .wordmark{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    max-width:1000px;
+    margin:0 auto;
+    padding:28px 24px 0;
+  }
+  .wordmark .brand{
+    font-family:'Fraunces',serif;
+    font-weight:700;
+    font-size:20px;
+    letter-spacing:.02em;
+  }
+  .wordmark .brand span{color:var(--accent);}
+  .wordmark .sub{
+    font-size:13px;
+    color:var(--ink-soft);
+  }
+  .lang-select{
+    font-family:'Inter',sans-serif;
+    font-size:13px;
+    font-weight:600;
+    color:var(--accent-dark);
+    background:var(--accent-lighter);
+    border:1px solid var(--accent-light);
+    border-radius:999px;
+    padding:7px 14px;
+    cursor:pointer;
+  }
+  .wordmark-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .lang-globe-wrap{position:relative;display:inline-block;margin:6px 0 4px;}
+  .hero .lang-globe-wrap{margin-top:10px;}
+  .lang-globe-btn{
+    width:30px;height:30px;padding:0;
+    border-radius:50%;border:1px solid var(--accent-light);background:var(--accent-lighter);
+    font-size:15px;line-height:1;display:inline-flex;align-items:center;justify-content:center;
+    cursor:pointer;transition:background .15s ease, border-color .15s ease;
+  }
+  .lang-globe-btn:hover{border-color:var(--accent);}
+  .lang-globe-btn.active{background:var(--accent);border-color:var(--accent);}
+  .lang-menu{
+    position:absolute;top:36px;left:0;z-index:30;min-width:170px;
+    background:var(--card);border:1px solid var(--accent-light);border-radius:10px;
+    box-shadow:0 10px 28px rgba(43,15,29,0.16);padding:5px;
+  }
+  .lang-menu[hidden]{display:none;}
+  .lang-menu button{
+    display:block;width:100%;text-align:left;background:none;border:none;
+    padding:7px 10px;border-radius:6px;cursor:pointer;
+    font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:var(--ink);
+  }
+  .lang-menu button:hover{background:var(--accent-lighter);}
+  .lang-menu button.selected{color:var(--accent-dark);background:var(--accent-lighter);}
+  h1[data-i18n], .eyebrow[data-i18n], p[data-i18n],
+  h3[data-i18n], .ex[data-i18n], th[data-i18n], li[data-i18n],
+  button[data-i18n], a[data-i18n]{
+    display:flex;flex-wrap:wrap;align-items:baseline;gap:8px;
+  }
+  .i18n-inline{
+    padding-left:8px;border-left:1px solid var(--accent-light);
+    font-size:0.92em;font-style:italic;color:var(--accent-dark);
+  }
+  .ring-hero{width:100%;}
+  .ring-hero-svg{width:100%;height:auto;display:block;}
+  .ring-hero-svg .ring-label{font-family:'Inter',sans-serif;font-weight:700;font-size:15px;fill:var(--accent-dark);paint-order:stroke;stroke:#ffffff;stroke-width:3px;stroke-linejoin:round;}
+  .ring-hero-svg .ring-label-today{fill:#ffffff;stroke:var(--accent-dark);stroke-width:2px;}
+  @media (max-width:720px){ .ring-hero{max-width:280px;margin:0 auto;} }
+  .form-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:16px;
+    margin-top:18px;
+  }
+  .chart-wrap{
+    margin-top:24px;
+    background:var(--card);
+    border:1px solid var(--accent-light);
+    border-radius:var(--radius);
+    padding:18px 20px;
+    overflow-x:auto;
+  }
+  .chart-wrap h3{font-size:15px;margin-bottom:4px;}
+  .chart-note{font-size:13px;color:var(--ink-soft);margin-bottom:14px;}
+  table.conj{
+    width:100%;
+    border-collapse:collapse;
+    font-size:14px;
+    min-width:560px;
+  }
+  table.conj th, table.conj td{
+    text-align:left;
+    padding:9px 12px;
+    border-bottom:1px solid var(--accent-light);
+  }
+  table.conj th{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    color:var(--accent-dark);
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+  }
+  table.conj td.subj{font-weight:600;}
+  table.conj tr:last-child td{border-bottom:none;}
+  main{max-width:1000px;margin:0 auto;padding:0 24px 80px;}
+  .hero{
+    display:grid;
+    grid-template-columns:1.1fr 1fr;
+    gap:32px;
+    align-items:center;
+    padding:40px 0 56px;
+  }
+  .hero .eyebrow{
+    display:inline-block;
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--accent-dark);
+    background:var(--accent-lighter);
+    padding:6px 12px;
+    border-radius:999px;
+    margin-bottom:14px;
+  }
+  .hero h1{font-size:38px;line-height:1.12;}
+  .hero p{color:var(--ink-soft);font-size:16px;max-width:46ch;}
+  .hero img{
+    width:100%;
+    border-radius:50%;
+    display:block;
+    box-shadow:0 18px 40px -18px rgba(122,15,62,.45);
+  }
+  @media (max-width:720px){
+    .hero{grid-template-columns:1fr;}
+  }
+
+  .trail-wrap{position:relative;padding-left:66px;}
+  .trail-wrap::before{
+    content:'';
+    position:absolute;
+    left:23px;
+    top:8px;
+    bottom:8px;
+    width:2px;
+    background:repeating-linear-gradient(to bottom, var(--accent) 0 8px, transparent 8px 18px);
+  }
+  .camp{position:relative;margin-bottom:64px;}
+  .camp .marker{
+    position:absolute;
+    left:-66px;
+    top:0;
+    width:46px;
+    height:46px;
+    border-radius:50%;
+    background:var(--accent);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .camp .marker svg{width:18px;height:18px;}
+  .camp .camp-label{
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--accent-dark);
+    margin-bottom:6px;
+  }
+
+  .rule-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:16px;
+    margin-top:18px;
+  }
+  .rule-card{
+    background:var(--card);
+    border:1px solid var(--accent-light);
+    border-radius:var(--radius);
+    padding:18px 20px;
+  }
+  .rule-card h3{font-size:16px;margin-bottom:8px;}
+  .rule-card p{margin:0 0 8px;font-size:14px;color:var(--ink-soft);}
+  .rule-card .ex{
+    font-size:14px;
+    font-style:italic;
+    color:var(--accent-dark);
+    border-left:2px solid var(--accent);
+    padding-left:10px;
+  }
+
+  .signal-groups{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    margin-top:18px;
+  }
+  .signal-box{
+    background:var(--accent-lighter);
+    border-radius:var(--radius);
+    padding:18px 20px;
+  }
+  .signal-box h3{font-size:15px;}
+  .signal-box ul{margin:8px 0 0;padding-left:18px;font-size:14px;color:var(--ink);}
+  .signal-box li{margin-bottom:4px;}
+  @media (max-width:600px){.signal-groups{grid-template-columns:1fr;}}
+
+  .quiz-card{
+    background:var(--card);
+    border:1px solid var(--accent-light);
+    border-radius:var(--radius);
+    padding:24px 24px 20px;
+  }
+  .progress-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-bottom:10px;
+  }
+  .progress-track{
+    height:6px;
+    background:var(--accent-lighter);
+    border-radius:999px;
+    overflow:hidden;
+    margin-bottom:20px;
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--accent);
+    border-radius:999px;
+    width:12.5%;
+    transition:width .3s ease;
+  }
+  .q-prompt{font-size:17px;margin-bottom:4px;}
+  .q-hint{font-size:13px;color:var(--ink-soft);margin-bottom:16px;font-style:italic;}
+  .options{display:grid;gap:10px;}
+  .opt-btn{
+    text-align:left;
+    padding:12px 16px;
+    border-radius:10px;
+    border:1px solid #E3CBD5;
+    background:#fff;
+    font-family:'Inter',sans-serif;
+    font-size:15px;
+    color:var(--ink);
+    cursor:pointer;
+  }
+  .opt-btn:hover{border-color:var(--accent);}
+  .opt-btn.correct{background:var(--good-bg);border-color:var(--good);color:var(--good);font-weight:600;}
+  .opt-btn.wrong{background:var(--bad-bg);border-color:var(--bad);color:var(--bad);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{
+    margin-top:16px;
+    padding:14px 16px;
+    border-radius:10px;
+    background:var(--accent-lighter);
+    font-size:14px;
+    display:none;
+  }
+  .feedback.show{display:block;}
+  .quiz-footer{
+    display:flex;
+    justify-content:flex-end;
+    margin-top:20px;
+  }
+  .next-btn{
+    background:var(--accent);
+    color:#fff;
+    border:none;
+    padding:11px 22px;
+    border-radius:999px;
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:14px;
+    cursor:pointer;
+  }
+  .next-btn:disabled{background:#E3CBD5;cursor:not-allowed;}
+
+  #results{display:none;text-align:center;padding:12px 0 8px;}
+  #results .score{
+    font-family:'Fraunces',serif;
+    font-size:52px;
+    color:var(--accent);
+    margin:8px 0;
+  }
+  #results p{color:var(--ink-soft);}
+  .retry-btn{
+    margin-top:12px;
+    background:transparent;
+    border:1px solid var(--accent);
+    color:var(--accent-dark);
+    padding:10px 20px;
+    border-radius:999px;
+    font-weight:600;
+    cursor:pointer;
+    font-family:'Inter',sans-serif;
+  }
+  .route-nav{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-top:22px;
+    padding-top:18px;
+    border-top:1px solid var(--accent-light);
+  }
+  .route-nav a{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    text-decoration:none;
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:14px;
+    padding:10px 20px;
+    border-radius:999px;
+  }
+  .route-nav a.next-camp{
+    background:var(--accent);
+    color:#fff;
+  }
+  .route-nav a.base-camp{
+    background:transparent;
+    border:1px solid var(--ink-soft);
+    color:var(--ink-soft);
+  }
+  .route-nav a:hover{opacity:0.88;}
+</style>
+</head>
+<body>
+
+<div class="wordmark">
+  <div class="brand">Sherpa <span>Tensing</span></div>
+  <div class="sub">Forbes English &middot; a route up the tenses</div>
+</div>
+
+<main>
+
+  <section class="hero" id="hero">
+    <div>
+      <span class="eyebrow" data-i18n="eyebrow">Camp one &middot; present continuous</span>
+      <h1 data-i18n="heroTitle">The ripple</h1>
+      <p data-i18n="heroP">Every route starts from where you're standing. This camp is about now &mdash; and everything close enough to now that it's still moving.</p>
+      <div class="lang-globe-wrap" data-globe-section="hero"><button type="button" class="lang-globe-btn" aria-label="Translate this section" aria-haspopup="true" aria-expanded="false">&#127760;</button><div class="lang-menu" hidden></div></div>
+    </div>
+    <div class="ring-hero"><svg class="ring-hero-svg" viewBox="0 0 400 400" role="img" aria-label="Concentric pink rings radiating outward from now at the centre, through today, this week, this month, to this year at the edge">
+      <defs>
+        <radialGradient id="ringHeroGrad" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#7A0F3E"/>
+          <stop offset="16%" stop-color="#C2185B"/>
+          <stop offset="35%" stop-color="#E0568F"/>
+          <stop offset="55%" stop-color="#F3B8CF"/>
+          <stop offset="78%" stop-color="#FBEAF0"/>
+          <stop offset="100%" stop-color="#FFFFFF"/>
+        </radialGradient>
+      </defs>
+      <circle cx="200" cy="200" r="190" fill="url(#ringHeroGrad)"/>
+      <circle cx="200" cy="200" r="12" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.367"/>
+      <circle cx="200" cy="200" r="18" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.356"/>
+      <circle cx="200" cy="200" r="24" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.345"/>
+      <circle cx="200" cy="200" r="30" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.333"/>
+      <circle cx="200" cy="200" r="36" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.322"/>
+      <circle cx="200" cy="200" r="42" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.310"/>
+      <circle cx="200" cy="200" r="48" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.299"/>
+      <circle cx="200" cy="200" r="54" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.288"/>
+      <circle cx="200" cy="200" r="60" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.276"/>
+      <circle cx="200" cy="200" r="66" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.265"/>
+      <circle cx="200" cy="200" r="72" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.254"/>
+      <circle cx="200" cy="200" r="78" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.242"/>
+      <circle cx="200" cy="200" r="84" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.231"/>
+      <circle cx="200" cy="200" r="90" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.219"/>
+      <circle cx="200" cy="200" r="96" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.208"/>
+      <circle cx="200" cy="200" r="102" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.197"/>
+      <circle cx="200" cy="200" r="108" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.185"/>
+      <circle cx="200" cy="200" r="114" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.174"/>
+      <circle cx="200" cy="200" r="120" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.163"/>
+      <circle cx="200" cy="200" r="126" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.151"/>
+      <circle cx="200" cy="200" r="132" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.140"/>
+      <circle cx="200" cy="200" r="138" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.129"/>
+      <circle cx="200" cy="200" r="144" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.117"/>
+      <circle cx="200" cy="200" r="150" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.106"/>
+      <circle cx="200" cy="200" r="156" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.094"/>
+      <circle cx="200" cy="200" r="162" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.083"/>
+      <circle cx="200" cy="200" r="168" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.072"/>
+      <circle cx="200" cy="200" r="174" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.060"/>
+      <circle cx="200" cy="200" r="180" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.049"/>
+      <circle cx="200" cy="200" r="186" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.038"/>
+      <circle cx="200" cy="200" r="28" fill="none" stroke="#ffffff" stroke-width="1.4" opacity="0.55"/>
+      <circle cx="200" cy="200" r="60" fill="none" stroke="#ffffff" stroke-width="1.4" opacity="0.55"/>
+      <circle cx="200" cy="200" r="95" fill="none" stroke="#ffffff" stroke-width="1.4" opacity="0.55"/>
+      <circle cx="200" cy="200" r="135" fill="none" stroke="#ffffff" stroke-width="1.4" opacity="0.55"/>
+      <circle cx="200" cy="200" r="170" fill="none" stroke="#ffffff" stroke-width="1.4" opacity="0.55"/>
+      <text class="ring-label ring-label-today" data-i18n="ringNow" x="200" y="205" text-anchor="middle">now</text>
+      <text class="ring-label ring-label-today" data-i18n="ringToday" x="200" y="156" text-anchor="middle">today</text>
+      <text class="ring-label ring-label-today" data-i18n="ringWeek" x="200" y="121" text-anchor="middle">this week</text>
+      <text class="ring-label" data-i18n="ringMonth" x="200" y="81" text-anchor="middle">this month</text>
+      <text class="ring-label" data-i18n="ringYear" x="200" y="46" text-anchor="middle">this year</text>
+      
+    </svg></div>
+  </section>
+
+  <div class="trail-wrap">
+
+    <div class="camp" id="rules">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 3v18M5 4h11l-3 4 3 4H5"/></svg></div>
+      <div class="camp-label" data-i18n="labelRules">Basecamp briefing</div>
+      <h2 data-i18n="rulesTitle">When to use it</h2>
+      <div class="lang-globe-wrap" data-globe-section="rules"><button type="button" class="lang-globe-btn" aria-label="Translate this section" aria-haspopup="true" aria-expanded="false">&#127760;</button><div class="lang-menu" hidden></div></div>
+      <div class="rule-grid">
+        <div class="rule-card">
+          <h3 data-i18n="rule1h">Happening right now</h3>
+          <p data-i18n="rule1p">Something is in progress at this exact moment.</p>
+          <div class="ex" data-i18n="rule1ex">"I'm watching a film right now."</div>
+        </div>
+        <div class="rule-card">
+          <h3 data-i18n="rule2h">A temporary situation</h3>
+          <p data-i18n="rule2p">True for now, but not permanent &mdash; it's set to change.</p>
+          <div class="ex" data-i18n="rule2ex">"She's staying with her cousins this month."</div>
+        </div>
+        <div class="rule-card">
+          <h3 data-i18n="rule3h">A trend</h3>
+          <p data-i18n="rule3p">Something is changing over a stretch of time.</p>
+          <div class="ex" data-i18n="rule3ex">"House prices are rising rapidly."</div>
+        </div>
+        <div class="rule-card">
+          <h3 data-i18n="rule4h">A fixed future plan</h3>
+          <p data-i18n="rule4p">A personal arrangement already set for a specific time.</p>
+          <div class="ex" data-i18n="rule4ex">"We're meeting the Berlin team tomorrow."</div>
+        </div>
+        <div class="rule-card">
+          <h3 data-i18n="rule5h">Describing a photo</h3>
+          <p data-i18n="rule5p">What's visibly happening in an image, frozen in the moment.</p>
+          <div class="ex" data-i18n="rule5ex">"The children are building a sandcastle."</div>
+        </div>
+        <div class="rule-card">
+          <h3 data-i18n="rule6h">An annoying habit</h3>
+          <p data-i18n="rule6p">A repeated action that irritates the speaker &mdash; always plus continuous.</p>
+          <div class="ex" data-i18n="rule6ex">"He's always borrowing my things!"</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="form">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg></div>
+      <div class="camp-label" data-i18n="labelForm">Building the tense</div>
+      <h2 data-i18n="formTitle">How it's built</h2>
+      <div class="lang-globe-wrap" data-globe-section="form"><button type="button" class="lang-globe-btn" aria-label="Translate this section" aria-haspopup="true" aria-expanded="false">&#127760;</button><div class="lang-menu" hidden></div></div>
+      <div class="form-grid">
+        <div class="rule-card">
+          <h3 data-i18n="form1h">Affirmative</h3>
+          <p data-i18n="form1p">subject + am / is / are + verb-ing</p>
+          <div class="ex" data-i18n="form1ex">"I am reading a great book."</div>
+        </div>
+        <div class="rule-card">
+          <h3 data-i18n="form2h">Negative</h3>
+          <p data-i18n="form2p">subject + am / is / are + not + verb-ing</p>
+          <div class="ex" data-i18n="form2ex">"She isn't listening to me."</div>
+        </div>
+        <div class="rule-card">
+          <h3 data-i18n="form3h">Yes / No questions</h3>
+          <p data-i18n="form3p">Am / Is / Are + subject + verb-ing?</p>
+          <div class="ex" data-i18n="form3ex">"Are you coming to the party?"</div>
+        </div>
+        <div class="rule-card">
+          <h3 data-i18n="form4h">Wh- questions</h3>
+          <p data-i18n="form4p">question word + am / is / are + subject + verb-ing?</p>
+          <div class="ex" data-i18n="form4ex">"What are you doing?"</div>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <h3 data-i18n="chartTitle">Conjugation chart</h3>
+        <p class="chart-note" data-i18n="chartNote">Every person, every form &mdash; using the verb "to work" as the model.</p>
+        <table class="conj">
+          <thead>
+            <tr>
+              <th data-i18n="chartColSubj">Subject</th>
+              <th data-i18n="chartColAff">Affirmative</th>
+              <th data-i18n="chartColNeg">Negative</th>
+              <th data-i18n="chartColQ">Question</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="subj">I</td><td>I am working</td><td>I am not working <em>(I'm not)</em></td><td>Am I working?</td></tr>
+            <tr><td class="subj">You</td><td>You are working</td><td>You are not working <em>(aren't)</em></td><td>Are you working?</td></tr>
+            <tr><td class="subj">He</td><td>He is working</td><td>He is not working <em>(isn't)</em></td><td>Is he working?</td></tr>
+            <tr><td class="subj">She</td><td>She is working</td><td>She is not working <em>(isn't)</em></td><td>Is she working?</td></tr>
+            <tr><td class="subj">It</td><td>It is working</td><td>It is not working <em>(isn't)</em></td><td>Is it working?</td></tr>
+            <tr><td class="subj">We</td><td>We are working</td><td>We are not working <em>(aren't)</em></td><td>Are we working?</td></tr>
+            <tr><td class="subj">They</td><td>They are working</td><td>They are not working <em>(aren't)</em></td><td>Are they working?</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="camp" id="signals">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg></div>
+      <div class="camp-label" data-i18n="labelSignals">Trail markers</div>
+      <h2 data-i18n="signalsTitle">Signal words</h2>
+      <div class="lang-globe-wrap" data-globe-section="signals"><button type="button" class="lang-globe-btn" aria-label="Translate this section" aria-haspopup="true" aria-expanded="false">&#127760;</button><div class="lang-menu" hidden></div></div>
+      <div class="signal-groups">
+        <div class="signal-box">
+          <h3 data-i18n="signal1h">The now cluster</h3>
+          <ul>
+            <li>now / right now</li>
+            <li data-i18n="signal1li2">at the moment</li>
+            <li data-i18n="signal1li3">currently</li>
+            <li data-i18n="signal1li4">as we speak</li>
+            <li data-i18n="signal1li5">today / these days</li>
+          </ul>
+        </div>
+        <div class="signal-box">
+          <h3 data-i18n="signal2h">The widening rings</h3>
+          <ul>
+            <li data-i18n="signal2li0">today</li>
+            <li data-i18n="signal2li1">this week</li>
+            <li data-i18n="signal2li2">this month</li>
+            <li data-i18n="signal2li3">this year</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="quiz">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3l3 7-3 3-3-3 3-7z"/><path d="M12 13v8"/></svg></div>
+      <div class="camp-label" data-i18n="labelQuiz">The climb</div>
+      <h2 data-i18n="quizTitle">Practice</h2>
+      <div class="lang-globe-wrap" data-globe-section="quiz"><button type="button" class="lang-globe-btn" aria-label="Translate this section" aria-haspopup="true" aria-expanded="false">&#127760;</button><div class="lang-menu" hidden></div></div>
+      <div class="quiz-card">
+        <div class="progress-row">
+          <span id="progress-text">Checkpoint 1 of 8</span>
+          <span id="score-text">Score: 0</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+        <div class="q-prompt" id="q-prompt"></div>
+        <div class="q-hint" id="q-hint"></div>
+        <div class="options" id="options"></div>
+        <div class="feedback" id="feedback"></div>
+        <div class="quiz-footer">
+          <button class="next-btn" id="next-btn" disabled data-i18n="nextBtn">Next checkpoint</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="results-camp">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 20l5-14 5 14M8 14h4"/></svg></div>
+      <div class="camp-label" data-i18n="labelResults">Summit log</div>
+      <div class="lang-globe-wrap" data-globe-section="results-camp"><button type="button" class="lang-globe-btn" aria-label="Translate this section" aria-haspopup="true" aria-expanded="false">&#127760;</button><div class="lang-menu" hidden></div></div>
+      <div id="results">
+        <div class="score" id="final-score"></div>
+        <p id="final-message"></p>
+        <button class="retry-btn" id="retry-btn" data-i18n="retryBtn">Climb again</button>
+        <div class="route-nav">
+          <a class="base-camp" href="sherpa-tensing-route-map.html" data-i18n="baseCampBtn">&larr; Return to base camp</a>
+          <a class="next-camp" href="sherpa-tensing-camp-two-present-simple.html" data-i18n="nextCampBtn">Next camp: Present simple &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+var questions = [
+  {
+    prompt: "Look! The dog _____ its tail. (chase)",
+    hint: "Something is happening right now, in front of you.",
+    correct: "is chasing",
+    options: ["is chasing", "chases", "was chasing", "chased"],
+    explain: "\"Look!\" points to something happening right now, so present continuous is needed: is chasing."
+  },
+  {
+    prompt: "She _____ with her cousins this month while her flat is being renovated. (stay)",
+    hint: "This is true for now, but it will change.",
+    correct: "is staying",
+    options: ["is staying", "stays", "stayed", "has stayed"],
+    explain: "\"This month\" signals a temporary situation, not a permanent habit, so we use is staying rather than the simple present."
+  },
+  {
+    prompt: "House prices _____ rapidly across the country right now. (rise)",
+    hint: "This is a trend, changing over time.",
+    correct: "are rising",
+    options: ["are rising", "rise", "rose", "have risen"],
+    explain: "A trend in progress, especially with right now, takes present continuous: are rising."
+  },
+  {
+    prompt: "We _____ the Berlin team tomorrow afternoon. (meet)",
+    hint: "This is a fixed plan already in the diary.",
+    correct: "are meeting",
+    options: ["are meeting", "meets", "was meeting", "have met"],
+    explain: "A specific, already-arranged future plan uses present continuous: are meeting."
+  },
+  {
+    prompt: "I can't come to the phone right now, I _____ dinner. (cook)",
+    hint: "It's happening at this exact moment.",
+    correct: "am cooking",
+    options: ["am cooking", "cook", "cooked", "have cooked"],
+    explain: "\"Right now\" plus an action in progress calls for am cooking."
+  },
+  {
+    prompt: "He's so annoying, he _____ my things without asking! (always / borrow)",
+    hint: "A repeated habit that irritates the speaker.",
+    correct: "is always borrowing",
+    options: ["is always borrowing", "borrows always", "was always borrowing", "has always borrowed"],
+    explain: "Always plus present continuous expresses an irritating, repeated habit: is always borrowing."
+  },
+  {
+    prompt: "The photo shows two children who _____ a sandcastle on the beach. (build)",
+    hint: "This describes what's visibly happening in an image.",
+    correct: "are building",
+    options: ["are building", "build", "built", "have built"],
+    explain: "Describing the action frozen in a picture uses present continuous: are building."
+  },
+  {
+    prompt: "Why _____ you _____ at me like that? Stop it! (stare)",
+    hint: "An action in progress right now that is bothering the speaker.",
+    correct: "are ... staring",
+    options: ["are ... staring", "do ... stare", "did ... stare", "have ... stared"],
+    explain: "An action happening at this moment, especially one the speaker is reacting to, uses present continuous: are you staring."
+  },
+  {
+    prompt: "Shh, be quiet. The baby _____ yet, so don't wake her. (not / sleep)",
+    hint: "Negative form: am/is/are + not + verb-ing.",
+    correct: "isn't sleeping",
+    options: ["isn't sleeping", "doesn't sleep", "wasn't sleeping", "hasn't slept"],
+    explain: "The negative of present continuous is is/am/are + not + verb-ing: isn't sleeping."
+  },
+  {
+    prompt: "Don't worry about the score — we _____ the match, we're actually winning! (not / lose)",
+    hint: "Negative form with we.",
+    correct: "aren't losing",
+    options: ["aren't losing", "don't lose", "weren't losing", "haven't lost"],
+    explain: "With we, the negative present continuous is are + not + verb-ing: aren't losing."
+  },
+  {
+    prompt: "_____ you _____ to me? This is important. (listen)",
+    hint: "Yes/No question form: Am/Is/Are + subject + verb-ing?",
+    correct: "Are ... listening",
+    options: ["Are ... listening", "Do ... listen", "Did ... listen", "Have ... listened"],
+    explain: "Yes/No questions invert the auxiliary and subject: Are you listening?"
+  },
+  {
+    prompt: "What _____ they _____ over there? It looks huge! (build)",
+    hint: "Wh- question form: question word + am/is/are + subject + verb-ing?",
+    correct: "are ... building",
+    options: ["are ... building", "do ... build", "did ... build", "have ... built"],
+    explain: "Wh- questions follow the pattern: question word + are + subject + verb-ing: What are they building?"
+  }
+];
+
+var I18N = {
+  en: {
+    eyebrow: "Camp one &middot; present continuous",
+    heroTitle: "The ripple",
+    heroP: "Every route starts from where you're standing. This camp is about now &mdash; and everything close enough to now that it's still moving.",
+    labelRules: "Basecamp briefing",
+    rulesTitle: "When to use it",
+    rule1h: "Happening right now", rule1p: "Something is in progress at this exact moment.", rule1ex: '"I\'m watching a film right now."',
+    rule2h: "A temporary situation", rule2p: "True for now, but not permanent &mdash; it's set to change.", rule2ex: '"She\'s staying with her cousins this month."',
+    rule3h: "A trend", rule3p: "Something is changing over a stretch of time.", rule3ex: '"House prices are rising rapidly."',
+    rule4h: "A fixed future plan", rule4p: "A personal arrangement already set for a specific time.", rule4ex: '"We\'re meeting the Berlin team tomorrow."',
+    rule5h: "Describing a photo", rule5p: "What's visibly happening in an image, frozen in the moment.", rule5ex: '"The children are building a sandcastle."',
+    rule6h: "An annoying habit", rule6p: "A repeated action that irritates the speaker &mdash; always plus continuous.", rule6ex: '"He\'s always borrowing my things!"',
+    labelForm: "Building the tense",
+    formTitle: "How it's built",
+    form1h: "Affirmative", form1p: "subject + am / is / are + verb-ing", form1ex: '"I am reading a great book."',
+    form2h: "Negative", form2p: "subject + am / is / are + not + verb-ing", form2ex: '"She isn\'t listening to me."',
+    form3h: "Yes / No questions", form3p: "Am / Is / Are + subject + verb-ing?", form3ex: '"Are you coming to the party?"',
+    form4h: "Wh- questions", form4p: "question word + am / is / are + subject + verb-ing?", form4ex: '"What are you doing?"',
+    chartTitle: "Conjugation chart",
+    chartNote: 'Every person, every form &mdash; using the verb "to work" as the model.',
+    chartColSubj: "Subject", chartColAff: "Affirmative", chartColNeg: "Negative", chartColQ: "Question",
+    labelSignals: "Trail markers",
+    signalsTitle: "Signal words",
+    signal1h: "The now cluster", signal1li2: "at the moment", signal1li3: "currently", signal1li4: "as we speak", signal1li5: "today / these days",
+    signal2h: "The widening rings", signal2li0: "today", signal2li1: "this week", signal2li2: "this month", signal2li3: "this year",
+    ringNow: "now", ringToday: "today", ringWeek: "this week", ringMonth: "this month", ringYear: "this year",
+    labelQuiz: "The climb",
+    quizTitle: "Practice",
+    nextBtn: "Next checkpoint",
+    summitBtn: "Reach the summit",
+    checkpointWord: "Checkpoint", ofWord: "of", scoreWord: "Score",
+    labelResults: "Summit log",
+    retryBtn: "Climb again",
+    baseCampBtn: "&larr; Return to base camp",
+    nextCampBtn: "Next camp: Present simple &rarr;",
+    msgPerfect: "Perfect ascent. Camp one is yours.",
+    msgStrong: "Strong climb. A couple of details to tighten before camp two.",
+    msgOk: "Good first attempt. Worth another pass before moving on."
+  },
+  de: {
+    eyebrow: "Camp eins &middot; Present Continuous",
+    heroTitle: "Die Welle",
+    heroP: "Jede Route beginnt dort, wo man gerade steht. In diesem Camp geht es ums Jetzt &mdash; und um alles, was dem Jetzt nahe genug ist, um noch in Bewegung zu sein.",
+    labelRules: "Basislager-Briefing",
+    rulesTitle: "Wann man es benutzt",
+    rule1h: "Passiert gerade jetzt", rule1p: "Etwas geschieht genau in diesem Moment.", rule1ex: '"Ich schaue gerade einen Film."',
+    rule2h: "Eine vor&uuml;bergehende Situation", rule2p: "Momentan wahr, aber nicht dauerhaft &mdash; es wird sich &auml;ndern.", rule2ex: '"Sie wohnt diesen Monat bei ihren Cousins."',
+    rule3h: "Ein Trend", rule3p: "Etwas ver&auml;ndert sich &uuml;ber einen l&auml;ngeren Zeitraum.", rule3ex: '"Die Immobilienpreise steigen rasant."',
+    rule4h: "Ein feststehender Zukunftsplan", rule4p: "Eine pers&ouml;nliche Vereinbarung, die bereits f&uuml;r einen bestimmten Zeitpunkt feststeht.", rule4ex: '"Wir treffen morgen das Berliner Team."',
+    rule5h: "Ein Foto beschreiben", rule5p: "Was auf einem Bild sichtbar gerade passiert, im Moment eingefroren.", rule5ex: '"Die Kinder bauen eine Sandburg."',
+    rule6h: "Eine l&auml;stige Angewohnheit", rule6p: "Eine wiederholte Handlung, die den Sprecher irritiert &mdash; immer mit always plus Continuous.", rule6ex: '"Er leiht sich st&auml;ndig meine Sachen aus!"',
+    labelForm: "Die Zeitform bilden",
+    formTitle: "Wie sie gebildet wird",
+    form1h: "Bejahte Form", form1p: "Subjekt + am / is / are + Verb-ing", form1ex: '"I am reading a great book."',
+    form2h: "Verneinung", form2p: "Subjekt + am / is / are + not + Verb-ing", form2ex: '"She isn\'t listening to me."',
+    form3h: "Ja/Nein-Fragen", form3p: "Am / Is / Are + Subjekt + Verb-ing?", form3ex: '"Are you coming to the party?"',
+    form4h: "W-Fragen", form4p: "Fragewort + am / is / are + Subjekt + Verb-ing?", form4ex: '"What are you doing?"',
+    chartTitle: "Konjugationstabelle",
+    chartNote: 'Jede Person, jede Form &mdash; mit dem Verb "to work" als Modell.',
+    chartColSubj: "Subjekt", chartColAff: "Bejaht", chartColNeg: "Verneint", chartColQ: "Frage",
+    labelSignals: "Wegmarken",
+    signalsTitle: "Signalw&ouml;rter",
+    signal1h: "Der Jetzt-Cluster", signal1li2: "im Moment", signal1li3: "derzeit", signal1li4: "w&auml;hrend wir sprechen", signal1li5: "heute / heutzutage",
+    signal2h: "Die weiteren Ringe", signal2li0: "heute", signal2li1: "diese Woche", signal2li2: "diesen Monat", signal2li3: "dieses Jahr",
+    ringNow: "jetzt", ringToday: "heute", ringWeek: "diese Woche", ringMonth: "diesen Monat", ringYear: "dieses Jahr",
+    labelQuiz: "Der Aufstieg",
+    quizTitle: "&Uuml;bung",
+    nextBtn: "N&auml;chster Kontrollpunkt",
+    summitBtn: "Gipfel erreichen",
+    checkpointWord: "Kontrollpunkt", ofWord: "von", scoreWord: "Punkte",
+    labelResults: "Gipfelbuch",
+    retryBtn: "Noch einmal klettern",
+    baseCampBtn: "&larr; Zur&uuml;ck zum Basislager",
+    nextCampBtn: "N&auml;chstes Camp: Present Simple &rarr;",
+    msgPerfect: "Perfekter Aufstieg. Camp eins geh&ouml;rt dir.",
+    msgStrong: "Starke Kletterleistung. Ein paar Details vor Camp zwei noch feilen.",
+    msgOk: "Guter erster Versuch. Ein weiterer Durchgang lohnt sich, bevor es weitergeht."
+  },
+  it: {
+    eyebrow: "Campo uno &middot; presente progressivo",
+    heroTitle: "L'increspatura",
+    heroP: "Ogni percorso parte da dove ti trovi. Questo campo riguarda l'adesso &mdash; e tutto ci&ograve; che &egrave; abbastanza vicino all'adesso da essere ancora in movimento.",
+    labelRules: "Briefing al campo base",
+    rulesTitle: "Quando usarlo",
+    rule1h: "Sta succedendo proprio ora", rule1p: "Qualcosa &egrave; in corso in questo preciso momento.", rule1ex: '"Sto guardando un film proprio adesso."',
+    rule2h: "Una situazione temporanea", rule2p: "Vero per ora, ma non permanente &mdash; destinato a cambiare.", rule2ex: '"Sta stando dai cugini questo mese."',
+    rule3h: "Una tendenza", rule3p: "Qualcosa sta cambiando in un arco di tempo.", rule3ex: '"I prezzi delle case stanno salendo rapidamente."',
+    rule4h: "Un piano futuro fissato", rule4p: "Un accordo personale gi&agrave; stabilito per un momento preciso.", rule4ex: '"Domani incontriamo il team di Berlino."',
+    rule5h: "Descrivere una foto", rule5p: "Ci&ograve; che accade visibilmente in un'immagine, congelato nell'istante.", rule5ex: '"I bambini stanno costruendo un castello di sabbia."',
+    rule6h: "Un'abitudine fastidiosa", rule6p: "Un'azione ripetuta che infastidisce chi parla &mdash; sempre con always e il progressivo.", rule6ex: '"Prende sempre in prestito le mie cose!"',
+    labelForm: "Costruire il tempo",
+    formTitle: "Come si costruisce",
+    form1h: "Forma affermativa", form1p: "soggetto + am / is / are + verbo-ing", form1ex: '"I am reading a great book."',
+    form2h: "Forma negativa", form2p: "soggetto + am / is / are + not + verbo-ing", form2ex: '"She isn\'t listening to me."',
+    form3h: "Domande s&igrave;/no", form3p: "Am / Is / Are + soggetto + verbo-ing?", form3ex: '"Are you coming to the party?"',
+    form4h: "Domande con wh-", form4p: "parola interrogativa + am / is / are + soggetto + verbo-ing?", form4ex: '"What are you doing?"',
+    chartTitle: "Tabella di coniugazione",
+    chartNote: 'Ogni persona, ogni forma &mdash; con il verbo "to work" come modello.',
+    chartColSubj: "Soggetto", chartColAff: "Affermativa", chartColNeg: "Negativa", chartColQ: "Domanda",
+    labelSignals: "Segnavia",
+    signalsTitle: "Parole segnale",
+    signal1h: "Il gruppo dell'adesso", signal1li2: "al momento", signal1li3: "attualmente", signal1li4: "mentre parliamo", signal1li5: "oggi / di questi tempi",
+    signal2h: "I cerchi pi&ugrave; ampi", signal2li0: "oggi", signal2li1: "questa settimana", signal2li2: "questo mese", signal2li3: "quest'anno",
+    ringNow: "ora", ringToday: "oggi", ringWeek: "questa settimana", ringMonth: "questo mese", ringYear: "quest'anno",
+    labelQuiz: "La scalata",
+    quizTitle: "Esercizio",
+    nextBtn: "Prossimo checkpoint",
+    summitBtn: "Raggiungi la vetta",
+    checkpointWord: "Checkpoint", ofWord: "di", scoreWord: "Punteggio",
+    labelResults: "Diario di vetta",
+    retryBtn: "Scala di nuovo",
+    baseCampBtn: "&larr; Torna al campo base",
+    nextCampBtn: "Prossimo campo: presente semplice &rarr;",
+    msgPerfect: "Scalata perfetta. Il campo uno &egrave; tuo.",
+    msgStrong: "Scalata forte. Qualche dettaglio da rifinire prima del campo due.",
+    msgOk: "Buon primo tentativo. Vale la pena riprovare prima di proseguire."
+  },
+  es: {
+    eyebrow: "Campamento uno &middot; presente continuo",
+    heroTitle: "La onda",
+    heroP: "Toda ruta empieza donde est&aacute;s parado. Este campamento trata sobre el ahora &mdash; y todo lo que est&aacute; lo bastante cerca del ahora como para seguir en movimiento.",
+    labelRules: "Informe del campamento base",
+    rulesTitle: "Cu&aacute;ndo usarlo",
+    rule1h: "Sucediendo ahora mismo", rule1p: "Algo est&aacute; en curso en este preciso momento.", rule1ex: '"Estoy viendo una pel&iacute;cula ahora mismo."',
+    rule2h: "Una situaci&oacute;n temporal", rule2p: "Cierto por ahora, pero no permanente &mdash; est&aacute; a punto de cambiar.", rule2ex: '"Se est&aacute; quedando con sus primos este mes."',
+    rule3h: "Una tendencia", rule3p: "Algo est&aacute; cambiando a lo largo de un periodo.", rule3ex: '"Los precios de la vivienda est&aacute;n subiendo r&aacute;pidamente."',
+    rule4h: "Un plan futuro fijo", rule4p: "Un acuerdo personal ya fijado para un momento concreto.", rule4ex: '"Ma&ntilde;ana nos reunimos con el equipo de Berl&iacute;n."',
+    rule5h: "Describir una foto", rule5p: "Lo que ocurre visiblemente en una imagen, congelado en el instante.", rule5ex: '"Los ni&ntilde;os est&aacute;n construyendo un castillo de arena."',
+    rule6h: "Un h&aacute;bito molesto", rule6p: "Una acci&oacute;n repetida que molesta al hablante &mdash; siempre con always y el continuo.", rule6ex: '"&iexcl;Siempre me toma prestadas mis cosas!"',
+    labelForm: "Construyendo el tiempo verbal",
+    formTitle: "C&oacute;mo se forma",
+    form1h: "Afirmativa", form1p: "sujeto + am / is / are + verbo-ing", form1ex: '"I am reading a great book."',
+    form2h: "Negativa", form2p: "sujeto + am / is / are + not + verbo-ing", form2ex: '"She isn\'t listening to me."',
+    form3h: "Preguntas s&iacute;/no", form3p: "Am / Is / Are + sujeto + verbo-ing?", form3ex: '"Are you coming to the party?"',
+    form4h: "Preguntas con wh-", form4p: "palabra interrogativa + am / is / are + sujeto + verbo-ing?", form4ex: '"What are you doing?"',
+    chartTitle: "Tabla de conjugaci&oacute;n",
+    chartNote: 'Cada persona, cada forma &mdash; usando el verbo "to work" como modelo.',
+    chartColSubj: "Sujeto", chartColAff: "Afirmativa", chartColNeg: "Negativa", chartColQ: "Pregunta",
+    labelSignals: "Se&ntilde;ales del camino",
+    signalsTitle: "Palabras se&ntilde;al",
+    signal1h: "El grupo del ahora", signal1li2: "en este momento", signal1li3: "actualmente", signal1li4: "mientras hablamos", signal1li5: "hoy / hoy en d&iacute;a",
+    signal2h: "Los c&iacute;rculos m&aacute;s amplios", signal2li0: "hoy", signal2li1: "esta semana", signal2li2: "este mes", signal2li3: "este a&ntilde;o",
+    ringNow: "ahora", ringToday: "hoy", ringWeek: "esta semana", ringMonth: "este mes", ringYear: "este a&ntilde;o",
+    labelQuiz: "La ascensi&oacute;n",
+    quizTitle: "Pr&aacute;ctica",
+    nextBtn: "Siguiente punto de control",
+    summitBtn: "Llegar a la cima",
+    checkpointWord: "Punto de control", ofWord: "de", scoreWord: "Puntuaci&oacute;n",
+    labelResults: "Diario de cumbre",
+    retryBtn: "Escalar de nuevo",
+    baseCampBtn: "&larr; Volver al campamento base",
+    nextCampBtn: "Siguiente campamento: presente simple &rarr;",
+    msgPerfect: "Ascensi&oacute;n perfecta. El campamento uno es tuyo.",
+    msgStrong: "Buena escalada. Un par de detalles que pulir antes del campamento dos.",
+    msgOk: "Buen primer intento. Vale la pena otro intento antes de seguir."
+  },
+  pl: {
+    eyebrow: "Obóz pierwszy &middot; czas Present Continuous",
+    heroTitle: "Fala",
+    heroP: "Każda trasa zaczyna się tam, gdzie teraz stoisz. Ten obóz dotyczy teraźniejszości &mdash; i wszystkiego, co jest wystarczająco blisko teraźniejszości, by wciąż się poruszać.",
+    labelRules: "Odprawa w bazie",
+    rulesTitle: "Kiedy go używać",
+    rule1h: "Dzieje się właśnie teraz", rule1p: "Coś trwa w tym dokładnie momencie.", rule1ex: '"Właśnie oglądam film."',
+    rule2h: "Sytuacja tymczasowa", rule2p: "Prawdziwe teraz, ale nie na stałe &mdash; to się zmieni.", rule2ex: '"W tym miesiącu mieszka u kuzynów."',
+    rule3h: "Trend", rule3p: "Coś zmienia się na przestrzeni czasu.", rule3ex: '"Ceny domów gwałtownie rosną."',
+    rule4h: "Ustalony plan na przyszłość", rule4p: "Osobiste ustalenie już zaplanowane na konkretny czas.", rule4ex: '"Jutro spotykamy się z zespołem z Berlina."',
+    rule5h: "Opis zdjęcia", rule5p: "To, co widocznie dzieje się na obrazie, zatrzymane w kadrze.", rule5ex: '"Dzieci budują zamek z piasku."',
+    rule6h: "Irytujący nawyk", rule6p: "Powtarzana czynność, która irytuje mówiącego &mdash; zawsze z always i continuous.", rule6ex: '"On ciągle pożycza moje rzeczy!"',
+    labelForm: "Budowanie czasu",
+    formTitle: "Jak się go tworzy",
+    form1h: "Twierdzenie", form1p: "podmiot + am / is / are + czasownik-ing", form1ex: '"I am reading a great book."',
+    form2h: "Przeczenie", form2p: "podmiot + am / is / are + not + czasownik-ing", form2ex: '"She isn\'t listening to me."',
+    form3h: "Pytania tak/nie", form3p: "Am / Is / Are + podmiot + czasownik-ing?", form3ex: '"Are you coming to the party?"',
+    form4h: "Pytania z wh-", form4p: "słowo pytające + am / is / are + podmiot + czasownik-ing?", form4ex: '"What are you doing?"',
+    chartTitle: "Tabela odmiany",
+    chartNote: 'Każda osoba, każda forma &mdash; na przykładzie czasownika "to work".',
+    chartColSubj: "Podmiot", chartColAff: "Twierdzenie", chartColNeg: "Przeczenie", chartColQ: "Pytanie",
+    labelSignals: "Znaki na szlaku",
+    signalsTitle: "Słowa sygnałowe",
+    signal1h: "Grupa \"teraz\"", signal1li2: "w tej chwili", signal1li3: "obecnie", signal1li4: "w trakcie rozmowy", signal1li5: "dziś / obecnie",
+    signal2h: "Szersze kręgi", signal2li0: "dzisiaj", signal2li1: "w tym tygodniu", signal2li2: "w tym miesiącu", signal2li3: "w tym roku",
+    ringNow: "teraz", ringToday: "dzisiaj", ringWeek: "w tym tygodniu", ringMonth: "w tym miesiącu", ringYear: "w tym roku",
+    labelQuiz: "Wspinaczka",
+    quizTitle: "Ćwiczenie",
+    nextBtn: "Następny punkt kontrolny",
+    summitBtn: "Osiągnij szczyt",
+    checkpointWord: "Punkt kontrolny", ofWord: "z", scoreWord: "Wynik",
+    labelResults: "Dziennik szczytowy",
+    retryBtn: "Wspinaj się ponownie",
+    baseCampBtn: "&larr; Powrót do bazy",
+    nextCampBtn: "Następny obóz: Present Simple &rarr;",
+    msgPerfect: "Idealna wspinaczka. Obóz pierwszy jest twój.",
+    msgStrong: "Mocna wspinaczka. Kilka szczegółów do dopracowania przed obozem drugim.",
+    msgOk: "Dobra pierwsza próba. Warto spróbować jeszcze raz przed dalszą wspinaczką."
+  },
+  zh: {
+    eyebrow: "第一营地 &middot; 现在进行时",
+    heroTitle: "涟漪",
+    heroP: "每条路线都从你现在所站的地方开始。这个营地讲的是当下 &mdash; 以及一切离当下足够近、仍在变化中的事情。",
+    labelRules: "大本营简报",
+    rulesTitle: "何时使用",
+    rule1h: "正在发生", rule1p: "某件事正在此刻进行中。", rule1ex: "“我现在正在看电影。”",
+    rule2h: "临时状况", rule2p: "目前如此，但不是永久的 &mdash; 即将改变。", rule2ex: "“她这个月住在表亲家里。”",
+    rule3h: "一种趋势", rule3p: "某事正在一段时间内发生变化。", rule3ex: "“房价正在迅速上涨。”",
+    rule4h: "已定的未来计划", rule4p: "已经为特定时间安排好的个人计划。", rule4ex: "“我们明天要和柏林团队见面。”",
+    rule5h: "描述照片", rule5p: "图片中明显正在发生、定格于瞬间的动作。", rule5ex: "“孩子们正在堆沙堡。”",
+    rule6h: "令人厌烦的习惯", rule6p: "让说话者感到恼火的重复行为 &mdash; 总是与 always 加进行时连用。", rule6ex: "“他老是借用我的东西！”",
+    labelForm: "构成方式",
+    formTitle: "如何构成",
+    form1h: "肯定式", form1p: "主语 + am / is / are + 动词-ing", form1ex: '"I am reading a great book."',
+    form2h: "否定式", form2p: "主语 + am / is / are + not + 动词-ing", form2ex: '"She isn\'t listening to me."',
+    form3h: "一般疑问句", form3p: "Am / Is / Are + 主语 + 动词-ing？", form3ex: '"Are you coming to the party?"',
+    form4h: "特殊疑问句", form4p: "疑问词 + am / is / are + 主语 + 动词-ing？", form4ex: '"What are you doing?"',
+    chartTitle: "变位表",
+    chartNote: "以动词 “to work” 为例，列出每个人称、每种形式。",
+    chartColSubj: "主语", chartColAff: "肯定式", chartColNeg: "否定式", chartColQ: "疑问式",
+    labelSignals: "路标词",
+    signalsTitle: "信号词",
+    signal1h: "「现在」词群", signal1li2: "此刻", signal1li3: "目前", signal1li4: "此刻说话间", signal1li5: "今天 / 如今",
+    signal2h: "更宽的时间圈", signal2li0: "今天", signal2li1: "这周", signal2li2: "这个月", signal2li3: "今年",
+    ringNow: "现在", ringToday: "今天", ringWeek: "这周", ringMonth: "这个月", ringYear: "今年",
+    labelQuiz: "攀登",
+    quizTitle: "练习",
+    nextBtn: "下一检查点",
+    summitBtn: "登顶",
+    checkpointWord: "检查点", ofWord: "/", scoreWord: "得分",
+    labelResults: "登顶日志",
+    retryBtn: "再次攀登",
+    baseCampBtn: "&larr; 返回大本营",
+    nextCampBtn: "下一营地：一般现在时 &rarr;",
+    msgPerfect: "完美登顶。第一营地属于你了。",
+    msgStrong: "攀登稳健。第二营地前还有几个细节需要打磨。",
+    msgOk: "不错的初次尝试。继续前进前值得再试一次。"
+  },
+  fr: {
+    eyebrow: "Camp un &middot; pr&eacute;sent continu",
+    heroTitle: "L'ondulation",
+    heroP: "Chaque itin&eacute;raire commence l&agrave; o&ugrave; tu te trouves. Ce camp parle du moment pr&eacute;sent &mdash; et de tout ce qui en est assez proche pour &ecirc;tre encore en mouvement.",
+    labelRules: "Briefing au camp de base",
+    rulesTitle: "Quand l'utiliser",
+    rule1h: "Se passe en ce moment", rule1p: "Quelque chose est en cours &agrave; cet instant pr&eacute;cis.", rule1ex: '"Je regarde un film en ce moment."',
+    rule2h: "Une situation temporaire", rule2p: "Vrai pour l'instant, mais pas permanent &mdash; cela va changer.", rule2ex: '"Elle loge chez ses cousins ce mois-ci."',
+    rule3h: "Une tendance", rule3p: "Quelque chose &eacute;volue sur une p&eacute;riode donn&eacute;e.", rule3ex: '"Les prix de l\'immobilier augmentent rapidement."',
+    rule4h: "Un projet futur fix&eacute;", rule4p: "Un arrangement personnel d&eacute;j&agrave; pr&eacute;vu pour un moment pr&eacute;cis.", rule4ex: '"Nous rencontrons l\'&eacute;quipe de Berlin demain."',
+    rule5h: "D&eacute;crire une photo", rule5p: "Ce qui se passe visiblement sur une image, fig&eacute; dans l'instant.", rule5ex: '"Les enfants construisent un ch&acirc;teau de sable."',
+    rule6h: "Une habitude aga&ccedil;ante", rule6p: "Une action r&eacute;p&eacute;t&eacute;e qui irrite le locuteur &mdash; toujours avec always et le continu.", rule6ex: '"Il emprunte toujours mes affaires !"',
+    labelForm: "Construire le temps",
+    formTitle: "Comment il se construit",
+    form1h: "Forme affirmative", form1p: "sujet + am / is / are + verbe-ing", form1ex: '"I am reading a great book."',
+    form2h: "Forme n&eacute;gative", form2p: "sujet + am / is / are + not + verbe-ing", form2ex: '"She isn\'t listening to me."',
+    form3h: "Questions oui/non", form3p: "Am / Is / Are + sujet + verbe-ing ?", form3ex: '"Are you coming to the party?"',
+    form4h: "Questions en wh-", form4p: "mot interrogatif + am / is / are + sujet + verbe-ing ?", form4ex: '"What are you doing?"',
+    chartTitle: "Tableau de conjugaison",
+    chartNote: 'Chaque personne, chaque forme &mdash; avec le verbe "to work" comme mod&egrave;le.',
+    chartColSubj: "Sujet", chartColAff: "Affirmative", chartColNeg: "N&eacute;gative", chartColQ: "Question",
+    labelSignals: "Balises du sentier",
+    signalsTitle: "Mots signaux",
+    signal1h: "Le groupe du pr&eacute;sent", signal1li2: "en ce moment", signal1li3: "actuellement", signal1li4: "pendant que nous parlons", signal1li5: "aujourd'hui / de nos jours",
+    signal2h: "Les cercles plus larges", signal2li0: "aujourd'hui", signal2li1: "cette semaine", signal2li2: "ce mois-ci", signal2li3: "cette ann&eacute;e",
+    ringNow: "maintenant", ringToday: "aujourd'hui", ringWeek: "cette semaine", ringMonth: "ce mois-ci", ringYear: "cette ann&eacute;e",
+    labelQuiz: "L'ascension",
+    quizTitle: "Entra&icirc;nement",
+    nextBtn: "Point de contr&ocirc;le suivant",
+    summitBtn: "Atteindre le sommet",
+    checkpointWord: "Point de contr&ocirc;le", ofWord: "sur", scoreWord: "Score",
+    labelResults: "Journal de sommet",
+    retryBtn: "Grimper &agrave; nouveau",
+    baseCampBtn: "&larr; Retour au camp de base",
+    nextCampBtn: "Camp suivant : pr&eacute;sent simple &rarr;",
+    msgPerfect: "Ascension parfaite. Le camp un est &agrave; toi.",
+    msgStrong: "Belle ascension. Quelques d&eacute;tails &agrave; peaufiner avant le camp deux.",
+    msgOk: "Bon premier essai. Une nouvelle tentative vaut le coup avant de continuer."
+  },
+  ru: {
+    eyebrow: "Лагерь первый &middot; настоящее длительное время",
+    heroTitle: "Рябь",
+    heroP: "Любой маршрут начинается там, где ты сейчас стоишь. Этот лагерь &mdash; про настоящий момент, и про всё, что достаточно близко к нему, чтобы всё ещё двигаться.",
+    labelRules: "Инструктаж на базовом лагере",
+    rulesTitle: "Когда использовать",
+    rule1h: "Происходит прямо сейчас", rule1p: "Что-то происходит именно в этот момент.", rule1ex: "«Я сейчас смотрю фильм»",
+    rule2h: "Временная ситуация", rule2p: "Верно сейчас, но не постоянно &mdash; скоро изменится.", rule2ex: "«Она гостит у кузенов в этом месяце»",
+    rule3h: "Тенденция", rule3p: "Что-то меняется на протяжении отрезка времени.", rule3ex: "«Цены на жильё быстро растут»",
+    rule4h: "Запланированное будущее", rule4p: "Личная договорённость, уже назначенная на конкретное время.", rule4ex: "«Завтра мы встречаемся с командой из Берлина»",
+    rule5h: "Описание фотографии", rule5p: "То, что видимо происходит на изображении, застывшее мгновение.", rule5ex: "«Дети строят замок из песка»",
+    rule6h: "Раздражающая привычка", rule6p: "Повторяющееся действие, которое раздражает говорящего &mdash; всегда с always и continuous.", rule6ex: "«Он вечно берёт мои вещи без спроса!»",
+    labelForm: "Построение времени",
+    formTitle: "Как оно строится",
+    form1h: "Утвердительная форма", form1p: "подлежащее + am / is / are + глагол-ing", form1ex: '"I am reading a great book."',
+    form2h: "Отрицательная форма", form2p: "подлежащее + am / is / are + not + глагол-ing", form2ex: '"She isn\'t listening to me."',
+    form3h: "Общие вопросы", form3p: "Am / Is / Are + подлежащее + глагол-ing?", form3ex: '"Are you coming to the party?"',
+    form4h: "Специальные вопросы", form4p: "вопросительное слово + am / is / are + подлежащее + глагол-ing?", form4ex: '"What are you doing?"',
+    chartTitle: "Таблица спряжения",
+    chartNote: "Каждое лицо, каждая форма &mdash; на примере глагола «to work».",
+    chartColSubj: "Лицо", chartColAff: "Утверждение", chartColNeg: "Отрицание", chartColQ: "Вопрос",
+    labelSignals: "Путевые метки",
+    signalsTitle: "Слова-сигналы",
+    signal1h: "Группа «сейчас»", signal1li2: "в данный момент", signal1li3: "в настоящее время", signal1li4: "прямо сейчас, пока мы говорим", signal1li5: "сегодня / в наши дни",
+    signal2h: "Более широкие круги", signal2li0: "сегодня", signal2li1: "на этой неделе", signal2li2: "в этом месяце", signal2li3: "в этом году",
+    ringNow: "сейчас", ringToday: "сегодня", ringWeek: "на этой неделе", ringMonth: "в этом месяце", ringYear: "в этом году",
+    labelQuiz: "Восхождение",
+    quizTitle: "Практика",
+    nextBtn: "Следующий пункт",
+    summitBtn: "Покорить вершину",
+    checkpointWord: "Пункт", ofWord: "из", scoreWord: "Счёт",
+    labelResults: "Журнал восхождения",
+    retryBtn: "Взойти снова",
+    baseCampBtn: "&larr; Вернуться в базовый лагерь",
+    nextCampBtn: "Следующий лагерь: настоящее простое &rarr;",
+    msgPerfect: "Идеальное восхождение. Лагерь первый твой.",
+    msgStrong: "Сильное восхождение. Пара деталей требует доработки перед вторым лагерем.",
+    msgOk: "Хорошая первая попытка. Стоит попробовать ещё раз перед тем, как двигаться дальше."
+  }
+};
+
+var current = 0;
+var score = 0;
+var answered = false;
+var SECTION_IDS = ["hero", "rules", "form", "signals", "quiz", "results-camp"];
+var sectionLang = {};
+SECTION_IDS.forEach(function(id){ sectionLang[id] = "en"; });
+
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i];
+    a[i] = a[j];
+    a[j] = tmp;
+  }
+  return a;
+}
+
+var order = [];
+
+function renderQuestion(){
+  answered = false;
+  var q = questions[current];
+  var t = I18N[sectionLang.quiz];
+  document.getElementById("progress-text").textContent = t.checkpointWord + " " + (current + 1) + " " + t.ofWord + " " + questions.length;
+  document.getElementById("progress-fill").style.width = (((current) / questions.length) * 100) + "%";
+  document.getElementById("q-prompt").textContent = q.prompt;
+  document.getElementById("q-hint").textContent = q.hint;
+  var feedback = document.getElementById("feedback");
+  feedback.className = "feedback";
+  feedback.textContent = "";
+  var optionsWrap = document.getElementById("options");
+  optionsWrap.innerHTML = "";
+  order = shuffle(q.options);
+  order.forEach(function(opt){
+    var btn = document.createElement("button");
+    btn.className = "opt-btn";
+    btn.type = "button";
+    btn.textContent = opt;
+    btn.addEventListener("click", function(){ selectOption(opt, btn); });
+    optionsWrap.appendChild(btn);
+  });
+  document.getElementById("next-btn").disabled = true;
+  document.getElementById("next-btn").textContent = (current === questions.length - 1) ? t.summitBtn : t.nextBtn;
+}
+
+function selectOption(opt, btn){
+  if (answered) return;
+  answered = true;
+  var q = questions[current];
+  var allBtns = document.querySelectorAll("#options .opt-btn");
+  allBtns.forEach(function(b){
+    b.disabled = true;
+    if (b.textContent === q.correct) b.classList.add("correct");
+  });
+  if (opt !== q.correct) btn.classList.add("wrong");
+  if (opt === q.correct) score++;
+  document.getElementById("score-text").textContent = I18N[sectionLang.quiz].scoreWord + ": " + score;
+  var feedback = document.getElementById("feedback");
+  feedback.textContent = q.explain;
+  feedback.classList.add("show");
+  document.getElementById("next-btn").disabled = false;
+}
+
+document.getElementById("next-btn").addEventListener("click", function(){
+  if (current < questions.length - 1){
+    current++;
+    renderQuestion();
+  } else {
+    document.getElementById("progress-fill").style.width = "100%";
+    document.getElementById("quiz").style.display = "none";
+    document.getElementById("results").style.display = "block";
+    document.getElementById("final-score").textContent = score + " / " + questions.length;
+    var t = I18N[sectionLang["results-camp"]];
+    var msg = "";
+    if (score === questions.length) msg = t.msgPerfect;
+    else if (score >= questions.length - 2) msg = t.msgStrong;
+    else msg = t.msgOk;
+    document.getElementById("final-message").textContent = msg;
+  }
+});
+
+document.getElementById("retry-btn").addEventListener("click", function(){
+  current = 0;
+  score = 0;
+  document.getElementById("score-text").textContent = I18N[sectionLang.quiz].scoreWord + ": 0";
+  document.getElementById("quiz").style.display = "block";
+  document.getElementById("results").style.display = "none";
+  renderQuestion();
+});
+
+var LANGS = [
+  { code: "en", label: "EN &middot; English" },
+  { code: "de", label: "DE &middot; Deutsch" },
+  { code: "it", label: "IT &middot; Italiano" },
+  { code: "es", label: "ES &middot; Espa&ntilde;ol" },
+  { code: "pl", label: "PL &middot; Polski" },
+  { code: "zh", label: "ZH &middot; &#20013;&#25991;" },
+  { code: "fr", label: "FR &middot; Fran&ccedil;ais" },
+  { code: "ru", label: "RU &middot; &#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;" }
+];
+
+function isSvgEl(el){
+  return el.namespaceURI === "http://www.w3.org/2000/svg";
+}
+
+function closeAllMenus(except){
+  document.querySelectorAll(".lang-menu").forEach(function(menu){
+    if (menu !== except) menu.hidden = true;
+  });
+  document.querySelectorAll(".lang-globe-btn").forEach(function(btn){
+    if (!except || btn.nextElementSibling !== except) btn.setAttribute("aria-expanded", "false");
+  });
+}
+
+function buildMenu(wrap){
+  var id = wrap.getAttribute("data-globe-section");
+  var menu = wrap.querySelector(".lang-menu");
+  menu.innerHTML = "";
+  LANGS.forEach(function(l){
+    var opt = document.createElement("button");
+    opt.type = "button";
+    opt.className = "lang-opt" + (sectionLang[id] === l.code ? " selected" : "");
+    opt.innerHTML = l.label;
+    opt.addEventListener("click", function(e){
+      e.stopPropagation();
+      sectionLang[id] = l.code;
+      wrap.querySelectorAll(".lang-opt").forEach(function(o){ o.classList.remove("selected"); });
+      opt.classList.add("selected");
+      wrap.querySelector(".lang-globe-btn").classList.toggle("active", l.code !== "en");
+      refreshSectionTranslation(id);
+      menu.hidden = true;
+      wrap.querySelector(".lang-globe-btn").setAttribute("aria-expanded", "false");
+    });
+    menu.appendChild(opt);
+  });
+}
+
+document.querySelectorAll(".lang-globe-wrap").forEach(function(wrap){
+  buildMenu(wrap);
+  var btn = wrap.querySelector(".lang-globe-btn");
+  var menu = wrap.querySelector(".lang-menu");
+  btn.addEventListener("click", function(e){
+    e.stopPropagation();
+    var willOpen = menu.hidden;
+    closeAllMenus();
+    menu.hidden = !willOpen;
+    btn.setAttribute("aria-expanded", willOpen ? "true" : "false");
+  });
+});
+document.addEventListener("click", function(){ closeAllMenus(); });
+
+function refreshSectionTranslation(sectionId){
+  var container = document.getElementById(sectionId);
+  if (!container) return;
+  var lang = sectionLang[sectionId];
+  var on = lang !== "en";
+  var t = I18N[lang];
+  container.querySelectorAll("[data-i18n]").forEach(function(el){
+    if (isSvgEl(el)) {
+      var svgKey = el.getAttribute("data-i18n");
+      if (t[svgKey] !== undefined) el.textContent = t[svgKey];
+      return;
+    }
+    if (!el.querySelector(":scope > .i18n-en")) {
+      var en = document.createElement("span");
+      en.className = "i18n-en";
+      en.innerHTML = el.innerHTML;
+      el.innerHTML = "";
+      el.appendChild(en);
+    }
+    var existing = el.querySelector(":scope > .i18n-inline");
+    if (existing) existing.remove();
+    if (!on) return;
+    var key = el.getAttribute("data-i18n");
+    if (t[key] === undefined) return;
+    if (t[key] === I18N.en[key]) return;
+    var sub = document.createElement("span");
+    sub.className = "i18n-inline";
+    sub.innerHTML = t[key];
+    el.appendChild(sub);
+  });
+}
+</script>
+
+
+</body>
+</html>

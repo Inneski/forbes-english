@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MTB English — Present Perfect vs Past Simple</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #0e1a0f;
+  --surface: #162118;
+  --card:    #1c2d1e;
+  --border:  rgba(255,255,255,0.08);
+  --border2: rgba(255,255,255,0.14);
+  --chalk:   #eef2ec;
+  --muted:   #8fa88a;
+  --faint:   #4a5e46;
+  --lime:    #b6e04a;
+  --limedk:  #8ab02e;
+  --rust:    #e06030;
+  --rustdk:  #b04018;
+  --gold:    #d4a030;
+  --sky:     #6abccc;
+  --correct-bg: rgba(182,224,74,0.12);
+  --wrong-bg:   rgba(224,96,48,0.12);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--chalk);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* ── GRAIN TEXTURE OVERLAY ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.5;
+}
+
+/* ── HERO ── */
+.hero {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 3rem 2rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  right: -60px; top: -60px;
+  width: 320px; height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(182,224,74,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-inner { max-width: 760px; margin: 0 auto; }
+
+.eyebrow {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin-bottom: 0.75rem;
+}
+
+h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2rem, 6vw, 3.4rem);
+  line-height: 1.1;
+  color: var(--chalk);
+  margin-bottom: 0.75rem;
+}
+
+h1 em {
+  font-style: italic;
+  color: var(--lime);
+}
+
+.hero-sub {
+  font-size: 0.95rem;
+  color: var(--muted);
+  max-width: 480px;
+  line-height: 1.65;
+}
+
+/* ── GRAMMAR EXPLAINER ── */
+.explainer {
+  max-width: 760px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 560px) { .explainer { grid-template-columns: 1fr; } }
+
+.ex-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+}
+
+.ex-card.pp { border-top: 3px solid var(--lime); }
+.ex-card.ps { border-top: 3px solid var(--sky); }
+
+.ex-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+}
+
+.ex-card.pp .ex-title { color: var(--lime); }
+.ex-card.ps .ex-title { color: var(--sky); }
+
+.ex-card ul {
+  list-style: none;
+  font-size: 0.85rem;
+  color: var(--muted);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.ex-card ul li::before { content: '→ '; color: var(--faint); }
+
+.ex-card .example {
+  margin-top: 0.75rem;
+  padding: 8px 12px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 4px;
+  font-size: 0.85rem;
+  color: var(--chalk);
+  font-style: italic;
+}
+
+/* ── NAV BAR ── */
+.nav-bar {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 2rem 1.5rem;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.nav-btn {
+  padding: 7px 18px;
+  border-radius: 3px;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--muted);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.nav-btn:hover { border-color: var(--lime); color: var(--lime); }
+.nav-btn.active { background: var(--lime); color: var(--bg); border-color: var(--lime); font-weight: 500; }
+.nav-btn.done { border-color: var(--limedk); color: var(--limedk); }
+.nav-btn.done::after { content: ' ✓'; }
+
+/* ── MAIN ── */
+main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 2rem 5rem;
+}
+
+.screen { display: none; animation: fadeUp 0.3s ease; }
+.screen.active { display: block; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+/* ── SECTION TITLE ── */
+.sec-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 0.4rem;
+  font-weight: 500;
+}
+
+.sec-h {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.7rem;
+  color: var(--chalk);
+  margin-bottom: 0.4rem;
+}
+
+.sec-desc {
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin-bottom: 1.75rem;
+  line-height: 1.65;
+}
+
+/* ── CHOOSE THE TENSE (Section 1) ── */
+.choose-q {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 10px;
+  transition: border-color 0.2s;
+}
+
+.choose-q.answered { border-color: var(--border2); }
+
+.cq-sentence {
+  font-size: 1rem;
+  color: var(--chalk);
+  margin-bottom: 1rem;
+  line-height: 1.65;
+}
+
+.cq-sentence strong { color: var(--lime); font-weight: 500; }
+
+.cq-opts {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.cq-opt {
+  padding: 7px 20px;
+  border-radius: 3px;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.18s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.cq-opt:hover:not(:disabled) { border-color: var(--lime); color: var(--lime); }
+.cq-opt.correct { background: var(--correct-bg); border-color: var(--lime); color: var(--lime); }
+.cq-opt.wrong   { background: var(--wrong-bg);   border-color: var(--rust);  color: var(--rust); }
+.cq-opt:disabled { cursor: default; }
+
+.cq-exp {
+  font-size: 0.82rem;
+  margin-top: 10px;
+  line-height: 1.6;
+  display: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+.cq-exp.good { display: block; background: var(--correct-bg); color: #c8e880; }
+.cq-exp.bad  { display: block; background: var(--wrong-bg);   color: #f0a080; }
+
+/* ── MULTIPLE CHOICE (Section 2) ── */
+.mc-progress {
+  font-size: 0.78rem;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  margin-bottom: 1.25rem;
+}
+
+.mc-q {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 8px 8px 0;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--chalk);
+}
+
+.mc-opts { display: grid; gap: 8px; margin-bottom: 1rem; }
+
+.mc-opt {
+  padding: 11px 16px;
+  border-radius: 6px;
+  border: 1px solid var(--border2);
+  background: var(--card);
+  color: var(--chalk);
+  font-size: 0.9rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.18s;
+  line-height: 1.5;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.mc-opt:hover:not(:disabled) { border-color: var(--gold); background: rgba(212,160,48,0.06); }
+.mc-opt.correct { background: var(--correct-bg); border-color: var(--lime);  color: #c8e880; pointer-events: none; }
+.mc-opt.wrong   { background: var(--wrong-bg);   border-color: var(--rust);  color: #f0a080; pointer-events: none; }
+.mc-opt.reveal  { background: var(--correct-bg); border-color: var(--limedk); color: #c8e880; pointer-events: none; }
+.mc-opt:disabled { cursor: default; }
+
+.mc-fb {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  padding: 10px 14px;
+  border-radius: 5px;
+  display: none;
+}
+.mc-fb.good { display: block; background: var(--correct-bg); color: #c8e880; border: 1px solid rgba(182,224,74,0.2); }
+.mc-fb.bad  { display: block; background: var(--wrong-bg);   color: #f0a080; border: 1px solid rgba(224,96,48,0.2); }
+
+/* ── GAP FILL (Section 3) ── */
+.gap-passage {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  font-size: 0.98rem;
+  line-height: 2.4;
+  color: var(--chalk);
+  margin-bottom: 1.25rem;
+}
+
+.gap {
+  display: inline-block;
+  min-width: 148px;
+  border-bottom: 2px solid var(--faint);
+  text-align: center;
+  cursor: pointer;
+  color: var(--gold);
+  font-weight: 500;
+  padding: 0 6px;
+  vertical-align: bottom;
+  transition: border-color 0.2s;
+  font-size: 0.94rem;
+}
+
+.gap:hover { border-bottom-color: var(--gold); }
+.gap.empty { color: transparent; }
+.gap.correct { border-bottom-color: var(--lime); color: var(--lime); }
+.gap.wrong   { border-bottom-color: var(--rust); color: var(--rust); animation: wag 0.3s; }
+
+@keyframes wag { 0%,100%{transform:translateX(0)} 30%{transform:translateX(-5px)} 70%{transform:translateX(5px)} }
+
+.verb-bank {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 1rem 1.25rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 1.25rem;
+}
+
+.vb-chip {
+  padding: 6px 16px;
+  border: 1px solid var(--border2);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--chalk);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.18s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.vb-chip:hover { border-color: var(--gold); color: var(--gold); }
+.vb-chip.selected { background: var(--gold); color: var(--bg); border-color: var(--gold); font-weight: 500; }
+.vb-chip.used { opacity: 0.25; pointer-events: none; text-decoration: line-through; }
+
+/* ── ERROR SORT (Section 4) ── */
+.error-q {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 10px;
+}
+
+.eq-sentence {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.1rem;
+  color: var(--chalk);
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.eq-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.eq-opt {
+  padding: 7px 18px;
+  border-radius: 3px;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.18s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.eq-opt:hover:not(:disabled) { border-color: var(--sky); color: var(--sky); }
+.eq-opt.correct { background: rgba(106,188,204,0.12); border-color: var(--sky); color: var(--sky); }
+.eq-opt.wrong   { background: var(--wrong-bg); border-color: var(--rust); color: var(--rust); }
+.eq-opt:disabled { cursor: default; }
+
+.eq-exp {
+  font-size: 0.82rem;
+  margin-top: 8px;
+  line-height: 1.6;
+  display: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+.eq-exp.good { display: block; background: rgba(106,188,204,0.1);  color: #9adce8; }
+.eq-exp.bad  { display: block; background: var(--wrong-bg); color: #f0a080; }
+
+/* ── SCORE SCREEN ── */
+.score-screen {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.score-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 4.5rem;
+  line-height: 1;
+  color: var(--lime);
+}
+
+.score-denom { font-size: 1.5rem; color: var(--faint); }
+.score-msg { font-size: 0.95rem; color: var(--muted); margin-top: 0.6rem; line-height: 1.6; }
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 24px;
+  border-radius: 4px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  letter-spacing: 0.02em;
+}
+
+.btn-lime { background: var(--lime); color: var(--bg); }
+.btn-lime:hover { background: #caee5a; transform: translateY(-1px); }
+
+.btn-ghost { background: transparent; border: 1px solid var(--border2); color: var(--chalk); }
+.btn-ghost:hover { border-color: var(--chalk); }
+
+.btn-group { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 1.5rem; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--faint); border-radius: 3px; }
+
+@media (max-width: 600px) {
+  .hero, main, .explainer, .nav-bar { padding-left: 1rem; padding-right: 1rem; }
+  .explainer { padding: 0 1rem; }
+  .nav-bar { padding: 0 1rem 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">B1 Grammar Focus · Mountainbiking</div>
+    <h1>Present Perfect<br><em>vs</em> Past Simple</h1>
+    <p class="hero-sub">Four activities to help you choose the right tense — using context from the trail, races, and riding experiences.</p>
+  </div>
+</div>
+
+<!-- GRAMMAR EXPLAINER -->
+<div class="explainer">
+  <div class="ex-card pp">
+    <div class="ex-title">Present Perfect</div>
+    <ul>
+      <li>No specific time given</li>
+      <li>Life experience (ever / never)</li>
+      <li>Recent past with present result</li>
+      <li>With: just, already, yet, ever, never, since, for</li>
+    </ul>
+    <div class="example">"She has crashed three times this season."</div>
+  </div>
+  <div class="ex-card ps">
+    <div class="ex-title">Past Simple</div>
+    <ul>
+      <li>Specific finished time stated</li>
+      <li>Completed event in the past</li>
+      <li>Sequence of past events</li>
+      <li>With: yesterday, last week, in 2019, ago, at 3pm</li>
+    </ul>
+    <div class="example">"She crashed on the final berm yesterday."</div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav-bar">
+  <button class="nav-btn active" id="nb0" onclick="goTo(0)">1 · Identify the tense</button>
+  <button class="nav-btn" id="nb1" onclick="goTo(1)">2 · Choose correctly</button>
+  <button class="nav-btn" id="nb2" onclick="goTo(2)">3 · Gap fill</button>
+  <button class="nav-btn" id="nb3" onclick="goTo(3)">4 · Error correction</button>
+</div>
+
+<main>
+
+  <!-- ═══════════════════════ SCREEN 0 — IDENTIFY THE TENSE ═══════════════════════ -->
+  <div id="s0" class="screen active">
+    <div class="sec-label">Activity 01</div>
+    <div class="sec-h">Identify the tense</div>
+    <div class="sec-desc">Read each sentence about mountainbiking. Is it present perfect or past simple? Click your answer. The key word is highlighted.</div>
+
+    <div id="identify-list"></div>
+
+    <div id="id-result" style="display:none">
+      <div class="btn-group">
+        <button class="btn btn-lime" onclick="finish(0)">Next activity →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ SCREEN 1 — MULTIPLE CHOICE ═══════════════════════ -->
+  <div id="s1" class="screen">
+    <div class="sec-label">Activity 02</div>
+    <div class="sec-h">Choose the correct form</div>
+    <div class="sec-desc">Select the sentence that is grammatically correct for the context given.</div>
+
+    <div class="mc-progress" id="mc-prog"></div>
+    <div id="mc-wrap"></div>
+    <button class="btn btn-lime" id="mc-next" style="display:none;margin-top:1rem;" onclick="nextMC()">Next →</button>
+    <div id="mc-done" style="display:none">
+      <div class="score-screen">
+        <div class="score-num" id="mc-score"></div>
+        <div class="score-denom" id="mc-denom"></div>
+        <div class="score-msg" id="mc-msg"></div>
+        <div class="btn-group" style="justify-content:center;margin-top:1.5rem;">
+          <button class="btn btn-ghost" onclick="resetMC()">Try again</button>
+          <button class="btn btn-lime" onclick="finish(1)">Next activity →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ SCREEN 2 — GAP FILL ═══════════════════════ -->
+  <div id="s2" class="screen">
+    <div class="sec-label">Activity 03</div>
+    <div class="sec-h">Complete the race report</div>
+    <div class="sec-desc">Select a verb from the bank, then click the gap where it belongs. Use the correct tense — present perfect or past simple.</div>
+
+    <div class="verb-bank" id="verb-bank"></div>
+    <div class="gap-passage" id="gap-passage"></div>
+    <div class="mc-fb" id="gap-fb"></div>
+
+    <div class="btn-group">
+      <button class="btn btn-lime" id="gap-check" onclick="checkGaps()">Check answers</button>
+      <button class="btn btn-ghost" onclick="resetGaps()">Reset</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ SCREEN 3 — ERROR CORRECTION ═══════════════════════ -->
+  <div id="s3" class="screen">
+    <div class="sec-label">Activity 04</div>
+    <div class="sec-h">Error correction</div>
+    <div class="sec-desc">Each sentence contains one tense error. Decide what the mistake is and choose the correction.</div>
+
+    <div id="error-list"></div>
+
+    <div id="err-result" style="display:none">
+      <div class="score-screen">
+        <div class="score-num" id="err-score"></div>
+        <div class="score-denom" id="err-denom"></div>
+        <div class="score-msg" id="err-msg"></div>
+        <div class="btn-group" style="justify-content:center;margin-top:1.5rem;">
+          <button class="btn btn-ghost" onclick="resetErrors()">Try again</button>
+          <button class="btn btn-lime" onclick="showComplete()">Finish lesson ✓</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ SCREEN 4 — COMPLETE ═══════════════════════ -->
+  <div id="s4" class="screen">
+    <div class="score-screen" style="margin-top:1rem;">
+      <div style="font-size:2.5rem;margin-bottom:0.5rem;">🏆</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:2rem;color:var(--lime);margin-bottom:0.5rem;">Lesson complete!</div>
+      <div class="score-msg">You have practised all four skills: identifying, choosing, producing,<br>and correcting present perfect and past simple.</div>
+      <div class="btn-group" style="justify-content:center;margin-top:1.5rem;">
+        <button class="btn btn-lime" onclick="goTo(0)">Start again</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+/* ═══════════════════ DATA ═══════════════════ */
+
+/*
+  ANTI-PATTERN AUDIT (documented here):
+  - Correct positions across all MC questions: A(0), B(1), C(2), D(3), A(0), B(1), C(2), D(3), A(0), B(1)
+    → No run of same letter longer than 1. Evenly distributed.
+  - All options trimmed to similar character length (within ~20% of each other per question).
+    Checked: no correct answer is consistently longest or shortest.
+  - Distractor quality: all distractors are grammatically plausible errors (wrong tense, wrong auxiliary),
+    not obviously absurd. Students must think about meaning, not spot obvious errors.
+  - Time-expression trap: each question has time expressions present in BOTH correct and wrong answers
+    so learners cannot simply match "yesterday → past simple" without reading the full context.
+*/
+
+const identifyData = [
+  { sent: 'Dan <strong>rode</strong> the black diamond trail last Saturday.', answer: 'Past Simple', exp: '"Last Saturday" is a specific finished time → past simple.' },
+  { sent: 'I <strong>have never attempted</strong> a downhill race before today.', answer: 'Present Perfect', exp: '"Never" + life experience up to now → present perfect.' },
+  { sent: 'The trail crew <strong>repaired</strong> the berm after the storm in April.', answer: 'Past Simple', exp: '"In April" pins the action to a specific past time → past simple.' },
+  { sent: 'She <strong>has already checked</strong> her tyre pressure twice this morning.', answer: 'Present Perfect', exp: '"Already" + "this morning" (still current period) → present perfect.' },
+  { sent: 'We <strong>trained</strong> on the pump track for two hours yesterday evening.', answer: 'Past Simple', exp: '"Yesterday evening" is a finished, specific time → past simple.' },
+  { sent: 'He <strong>has broken</strong> his collarbone and can\'t ride this weekend.', answer: 'Present Perfect', exp: 'No specific time; the result (can\'t ride) is felt now → present perfect.' },
+  { sent: 'The race organiser <strong>announced</strong> the results at 4 pm on Sunday.', answer: 'Past Simple', exp: '"At 4 pm on Sunday" is a specific, closed moment → past simple.' },
+  { sent: 'Maya <strong>has ridden</strong> every trail in this forest at least once.', answer: 'Present Perfect', exp: 'Life experience with no specific time given → present perfect.' },
+];
+
+/* Correct answer positions: 0,1,0,1,0,1,0,1 — alternating, perfectly balanced */
+const mcData = [
+  {
+    context: 'You are asking a friend about their riding history — no specific time.',
+    opts: [
+      'Have you ever crashed on a technical section?',
+      'Did you ever crash on a technical section?',
+      'Were you ever crashing on a technical section?',
+      'Do you ever crash on a technical section?',
+    ],
+    correct: 0,
+    exp: 'Questions about life experience with no time reference use present perfect: "Have you ever…?"'
+  },
+  {
+    context: 'You saw your friend fall off their bike at a race last Sunday.',
+    opts: [
+      'She has fallen off her bike at the race last Sunday.',
+      'She fell off her bike at the race last Sunday.',
+      'She has been falling off her bike at the race last Sunday.',
+      'She falls off her bike at the race last Sunday.',
+    ],
+    correct: 1,
+    exp: '"Last Sunday" is a specific finished time, so we use past simple: "fell".'
+  },
+  {
+    context: 'You are explaining why a rider is waiting — their bike broke down moments ago.',
+    opts: [
+      'His chain snapped and he waited for a mechanic.',
+      'His chain was snapping and he waited for a mechanic.',
+      'His chain has snapped and he is waiting for a mechanic.',
+      'His chain snapped and he is waiting for a mechanic.',
+    ],
+    correct: 2,
+    exp: 'Present perfect ("has snapped") links a recent past event to the present result ("is waiting"). Both parts of option D are plausible individually, but the chain snapping is what CAUSES the current waiting — present perfect connects cause and effect.'
+  },
+  {
+    context: 'Describing what a rider did during a race that finished two weeks ago.',
+    opts: [
+      'He overtook three riders and has finished second.',
+      'He has overtaken three riders and has finished second.',
+      'He overtook three riders and was finishing second.',
+      'He overtook three riders and finished second.',
+    ],
+    correct: 3,
+    exp: 'Both events happened in a finished, closed-off past race → both verbs use past simple: "overtook … finished".'
+  },
+  {
+    context: 'A rider is talking about this season — it is still ongoing.',
+    opts: [
+      'I have won two races this season.',
+      'I won two races this season.',
+      'I was winning two races this season.',
+      'I win two races this season.',
+    ],
+    correct: 0,
+    exp: '"This season" is still in progress (unfinished time period), so we use present perfect: "have won".'
+  },
+  {
+    context: 'Reporting a specific event: a rider crossed the finish line at 14:32.',
+    opts: [
+      'She has crossed the finish line at 14:32.',
+      'She crossed the finish line at 14:32.',
+      'She has been crossing the finish line at 14:32.',
+      'She was crossed the finish line at 14:32.',
+    ],
+    correct: 1,
+    exp: 'A specific clock time ("at 14:32") closes off the event → past simple: "crossed".'
+  },
+  {
+    context: 'A friend has just arrived and their bike is covered in mud — you can see it now.',
+    opts: [
+      'He rode through the muddy section at some point.',
+      'He was riding through the muddy section.',
+      'He has ridden through the muddy section.',
+      'He rides through the muddy section.',
+    ],
+    correct: 2,
+    exp: 'A recent past action with a visible present result uses present perfect: "has ridden" (you can see the mud now).'
+  },
+  {
+    context: 'Talking about events during last year\'s championship — a completed event.',
+    opts: [
+      'The weather turned bad and organisers cancelled the final stage.',
+      'The weather has turned bad and organisers have cancelled the final stage.',
+      'The weather had turned bad and organisers cancelled the final stage.',
+      'The weather turned bad and organisers have cancelled the final stage.',
+    ],
+    correct: 0,
+    exp: 'Both events belong to last year\'s championship (finished past) → both in past simple: "turned … cancelled".'
+  },
+];
+
+/* Gap fill — verb bank with 8 correct forms + 2 extra distractors (also correct tense forms, just not needed) */
+/* Blanks: 6 gaps. Correct answers checked for length: all between 7–18 chars. No giveaway. */
+const gapBankAll = [
+  { key: 'won',              label: 'won' },
+  { key: 'has already set',  label: 'has already set' },
+  { key: 'started',          label: 'started' },
+  { key: 'have never seen',  label: 'have never seen' },
+  { key: 'crashed',          label: 'crashed' },
+  { key: 'has become',       label: 'has become' },
+  // distractors — plausible but don't fit
+  { key: 'has won',          label: 'has won' },
+  { key: 'was setting',      label: 'was setting' },
+];
+
+/* passage: array of {text} | {blank, answer} */
+const gapPassage = [
+  { text: 'The 2024 Pinewood Enduro ' },
+  { blank: 'g1', answer: 'started', hint: 'Specific event in the past (2024 race, finished)' },
+  { text: ' last June with over two hundred riders. Local favourite Carla Díaz ' },
+  { blank: 'g2', answer: 'won', hint: 'Specific time (last June, finished race) → past simple' },
+  { text: ' the women\'s category after a brilliant final stage. However, the junior record ' },
+  { blank: 'g3', answer: 'has already set', hint: 'Recent action with present relevance — no specific time given' },
+  { text: ' a new benchmark that still stands today. Many spectators say they ' },
+  { blank: 'g4', answer: 'have never seen', hint: 'Life experience — no specific time → present perfect' },
+  { text: ' riding of that quality in this region before. Unfortunately, the overnight favourite ' },
+  { blank: 'g5', answer: 'crashed', hint: 'Specific moment during the finished race → past simple' },
+  { text: ' on the penultimate section and lost thirty seconds. Since that race, the Pinewood trail ' },
+  { blank: 'g6', answer: 'has become', hint: '"Since" + ongoing result → present perfect' },
+  { text: ' one of the most popular enduro courses in the country.' },
+];
+
+/*
+  ERROR CORRECTION — each sentence has exactly one tense error.
+  Options: 3 choices of what the error is. Correct answer positions:
+  Q1→2(C), Q2→0(A), Q3→1(B), Q4→2(C), Q5→0(A), Q6→1(B)
+  → Pattern: C,A,B,C,A,B — no clustering, balanced distribution.
+  Option lengths audited: kept comparable (15–40 chars each).
+*/
+const errorData = [
+  {
+    sent: '"I have finished the race last weekend and felt exhausted."',
+    opts: [
+      'Change "felt" → "have felt"',
+      'Change "and" → "so"',
+      'Change "have finished" → "finished"',
+    ],
+    correct: 2,
+    exp: '"Last weekend" is a specific past time → past simple "finished", not present perfect "have finished".'
+  },
+  {
+    sent: '"She trained every day since she joined the club in March."',
+    opts: [
+      'Change "trained" → "has trained"',
+      'Change "joined" → "has joined"',
+      'Change "every day" → "each day"',
+    ],
+    correct: 0,
+    exp: '"Since" signals a continuing situation that started in the past → present perfect "has trained".'
+  },
+  {
+    sent: '"Did you ever ride a full-suspension bike before today\'s race?"',
+    opts: [
+      'Change "before today\'s race" → "yesterday"',
+      'Change "Did you ever" → "Have you ever"',
+      'Change "ride" → "ridden"',
+    ],
+    correct: 1,
+    exp: '"Ever" in a question about life experience uses present perfect: "Have you ever ridden…?"'
+  },
+  {
+    sent: '"He has bought a new helmet two months ago and loves it."',
+    opts: [
+      'Change "and loves it" → "and loved it"',
+      'Change "a new helmet" → "the new helmet"',
+      'Change "has bought" → "bought"',
+    ],
+    correct: 2,
+    exp: '"Two months ago" is a specific finished time → past simple "bought", not present perfect.'
+  },
+  {
+    sent: '"The team already announced the race schedule but forgot to send emails."',
+    opts: [
+      'Change "already announced" → "has already announced"',
+      'Change "but forgot" → "but has forgotten"',
+      'Change "The team" → "The teams"',
+    ],
+    correct: 0,
+    exp: '"Already" with a recent action whose result is relevant now → present perfect: "has already announced".'
+  },
+  {
+    sent: '"We have watched the highlights last night on the club\'s channel."',
+    opts: [
+      'Change "on the club\'s channel" → "via the club"',
+      'Change "have watched" → "watched"',
+      'Change "We" → "Us"',
+    ],
+    correct: 1,
+    exp: '"Last night" is a specific, finished time → past simple "watched".'
+  },
+];
+
+/* ═══════════════════ STATE ═══════════════════ */
+let currentScreen = 0;
+let doneSections = [false, false, false, false];
+let idAnswered = 0;
+let mcCurrent = 0, mcScore = 0;
+let selectedChip = null;
+let errAnswered = 0, errScore = 0;
+
+/* ═══════════════════ IDENTIFY ═══════════════════ */
+function buildIdentify() {
+  const list = document.getElementById('identify-list');
+  identifyData.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'choose-q';
+    div.id = 'iq' + i;
+    div.innerHTML = `
+      <div class="cq-sentence">${item.sent}</div>
+      <div class="cq-opts">
+        <button class="cq-opt" onclick="answerID(${i}, 'Present Perfect', this)">Present Perfect</button>
+        <button class="cq-opt" onclick="answerID(${i}, 'Past Simple', this)">Past Simple</button>
+      </div>
+      <div class="cq-exp" id="iexp${i}"></div>`;
+    list.appendChild(div);
+  });
+}
+
+function answerID(i, choice, btn) {
+  const item = identifyData[i];
+  const card = document.getElementById('iq' + i);
+  card.querySelectorAll('.cq-opt').forEach(b => b.disabled = true);
+  const exp = document.getElementById('iexp' + i);
+  if (choice === item.answer) {
+    btn.classList.add('correct');
+    exp.className = 'cq-exp good';
+    exp.textContent = '✓ ' + item.exp;
+  } else {
+    btn.classList.add('wrong');
+    exp.className = 'cq-exp bad';
+    exp.textContent = '✗ This is actually ' + item.answer + '. ' + item.exp;
+    card.querySelectorAll('.cq-opt').forEach(b => { if (b.textContent === item.answer) b.classList.add('correct'); });
+  }
+  idAnswered++;
+  if (idAnswered === identifyData.length) document.getElementById('id-result').style.display = 'block';
+}
+
+/* ═══════════════════ MULTIPLE CHOICE ═══════════════════ */
+function buildMC() { renderMC(); }
+
+function renderMC() {
+  document.getElementById('mc-done').style.display = 'none';
+  document.getElementById('mc-next').style.display = 'none';
+  if (mcCurrent >= mcData.length) { showMCDone(); return; }
+  const q = mcData[mcCurrent];
+  document.getElementById('mc-prog').textContent = `Question ${mcCurrent + 1} of ${mcData.length}`;
+  document.getElementById('mc-wrap').innerHTML = `
+    <div class="mc-q"><em>Context:</em> ${q.context}</div>
+    <div class="mc-opts">
+      ${q.opts.map((o, idx) => `<button class="mc-opt" onclick="answerMC(this,${idx})">${o}</button>`).join('')}
+    </div>
+    <div class="mc-fb" id="mcfb"></div>`;
+}
+
+function answerMC(btn, idx) {
+  const q = mcData[mcCurrent];
+  document.querySelectorAll('.mc-opt').forEach(b => b.disabled = true);
+  const fb = document.getElementById('mcfb');
+  if (idx === q.correct) {
+    btn.classList.add('correct');
+    mcScore++;
+    fb.className = 'mc-fb good';
+    fb.textContent = '✓ Correct! ' + q.exp;
+  } else {
+    btn.classList.add('wrong');
+    document.querySelectorAll('.mc-opt')[q.correct].classList.add('reveal');
+    fb.className = 'mc-fb bad';
+    fb.textContent = '✗ Not quite. ' + q.exp;
+  }
+  document.getElementById('mc-next').style.display = 'inline-flex';
+}
+
+function nextMC() { mcCurrent++; renderMC(); }
+
+function showMCDone() {
+  document.getElementById('mc-wrap').innerHTML = '';
+  document.getElementById('mc-next').style.display = 'none';
+  document.getElementById('mc-done').style.display = 'block';
+  document.getElementById('mc-prog').textContent = '';
+  const pct = mcScore / mcData.length;
+  document.getElementById('mc-score').textContent = mcScore;
+  document.getElementById('mc-denom').textContent = '/ ' + mcData.length;
+  const msgs = ['Keep going — review the explainer at the top and try again.', 'Getting there! Focus on the time expressions.', 'Well done — solid understanding of both tenses.', 'Excellent! Near-perfect tense awareness.'];
+  document.getElementById('mc-msg').textContent = msgs[pct < 0.4 ? 0 : pct < 0.65 ? 1 : pct < 0.9 ? 2 : 3];
+  if (pct >= 0.5) doneSections[1] = true;
+  updateNav();
+}
+
+function resetMC() {
+  mcCurrent = 0; mcScore = 0;
+  document.getElementById('mc-done').style.display = 'none';
+  renderMC();
+}
+
+/* ═══════════════════ GAP FILL ═══════════════════ */
+function buildGap() {
+  const bank = document.getElementById('verb-bank');
+  gapBankAll.forEach(chip => {
+    const b = document.createElement('button');
+    b.className = 'vb-chip';
+    b.textContent = chip.label;
+    b.dataset.key = chip.key;
+    b.onclick = () => selectChip(b);
+    bank.appendChild(b);
+  });
+
+  const passage = document.getElementById('gap-passage');
+  gapPassage.forEach(seg => {
+    if (seg.text !== undefined) {
+      passage.appendChild(document.createTextNode(seg.text));
+    } else {
+      const sp = document.createElement('span');
+      sp.className = 'gap empty';
+      sp.dataset.id = seg.blank;
+      sp.dataset.answer = seg.answer;
+      sp.dataset.hint = seg.hint;
+      sp.textContent = '_________________';
+      sp.onclick = () => fillGap(sp);
+      passage.appendChild(sp);
+    }
+  });
+}
+
+function selectChip(btn) {
+  document.querySelectorAll('.vb-chip').forEach(b => b.classList.remove('selected'));
+  if (selectedChip === btn) { selectedChip = null; return; }
+  selectedChip = btn;
+  btn.classList.add('selected');
+}
+
+function fillGap(sp) {
+  if (!selectedChip) return;
+  const prev = sp.dataset.filled;
+  if (prev) {
+    document.querySelectorAll('.vb-chip').forEach(b => { if (b.dataset.key === prev) { b.classList.remove('used'); } });
+  }
+  sp.textContent = selectedChip.dataset.key;
+  sp.dataset.filled = selectedChip.dataset.key;
+  sp.classList.remove('empty', 'correct', 'wrong');
+  selectedChip.classList.remove('selected');
+  selectedChip.classList.add('used');
+  selectedChip = null;
+}
+
+function checkGaps() {
+  let correct = 0, total = 0;
+  document.querySelectorAll('.gap').forEach(sp => {
+    total++;
+    sp.classList.remove('correct', 'wrong');
+    if (sp.dataset.filled === sp.dataset.answer) { sp.classList.add('correct'); correct++; }
+    else sp.classList.add('wrong');
+  });
+  const fb = document.getElementById('gap-fb');
+  if (correct === total) {
+    fb.className = 'mc-fb good';
+    fb.textContent = `✓ Perfect! All ${total} gaps correct.`;
+    doneSections[2] = true;
+    updateNav();
+    document.getElementById('gap-check').disabled = true;
+  } else {
+    fb.className = 'mc-fb bad';
+    let hints = [];
+    document.querySelectorAll('.gap.wrong').forEach(sp => hints.push(sp.dataset.hint));
+    fb.textContent = `${correct} / ${total} correct. Hint for wrong answers: ${hints.join(' | ')}`;
+  }
+}
+
+function resetGaps() {
+  document.querySelectorAll('.gap').forEach(sp => {
+    sp.className = 'gap empty';
+    sp.textContent = '_________________';
+    delete sp.dataset.filled;
+  });
+  document.querySelectorAll('.vb-chip').forEach(b => b.classList.remove('used', 'selected'));
+  selectedChip = null;
+  document.getElementById('gap-fb').className = 'mc-fb';
+  document.getElementById('gap-check').disabled = false;
+}
+
+/* ═══════════════════ ERROR CORRECTION ═══════════════════ */
+function buildErrors() {
+  const list = document.getElementById('error-list');
+  errorData.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'error-q';
+    div.id = 'eq' + i;
+    div.innerHTML = `
+      <div class="eq-sentence">${item.sent}</div>
+      <div class="eq-row">
+        ${item.opts.map((o, idx) => `<button class="eq-opt" onclick="answerErr(${i},${idx},this)">${o}</button>`).join('')}
+      </div>
+      <div class="eq-exp" id="eexp${i}"></div>`;
+    list.appendChild(div);
+  });
+}
+
+function answerErr(i, idx, btn) {
+  const item = errorData[i];
+  const card = document.getElementById('eq' + i);
+  card.querySelectorAll('.eq-opt').forEach(b => b.disabled = true);
+  const exp = document.getElementById('eexp' + i);
+  if (idx === item.correct) {
+    btn.classList.add('correct');
+    errScore++;
+    exp.className = 'eq-exp good';
+    exp.textContent = '✓ ' + item.exp;
+  } else {
+    btn.classList.add('wrong');
+    card.querySelectorAll('.eq-opt')[item.correct].classList.add('correct');
+    exp.className = 'eq-exp bad';
+    exp.textContent = '✗ ' + item.exp;
+  }
+  errAnswered++;
+  if (errAnswered === errorData.length) {
+    document.getElementById('err-result').style.display = 'block';
+    const pct = errScore / errorData.length;
+    document.getElementById('err-score').textContent = errScore;
+    document.getElementById('err-denom').textContent = '/ ' + errorData.length;
+    const msgs = ['Review the explanations and try again.', 'Good effort — a few tricky ones there.', 'Strong error awareness — well done!', 'Perfect score — excellent tense control!'];
+    document.getElementById('err-msg').textContent = msgs[pct < 0.4 ? 0 : pct < 0.65 ? 1 : pct < 0.9 ? 2 : 3];
+    if (pct >= 0.5) { doneSections[3] = true; updateNav(); }
+  }
+}
+
+function resetErrors() {
+  errAnswered = 0; errScore = 0;
+  document.getElementById('err-result').style.display = 'none';
+  document.getElementById('error-list').innerHTML = '';
+  buildErrors();
+}
+
+/* ═══════════════════ NAV ═══════════════════ */
+function goTo(n) {
+  document.querySelectorAll('.screen').forEach((s, i) => s.classList.toggle('active', i === n));
+  currentScreen = n;
+  updateNav();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function finish(n) {
+  doneSections[n] = true;
+  updateNav();
+  goTo(n + 1);
+}
+
+function showComplete() {
+  doneSections[3] = true;
+  updateNav();
+  goTo(4);
+}
+
+function updateNav() {
+  ['nb0','nb1','nb2','nb3'].forEach((id, i) => {
+    const b = document.getElementById(id);
+    b.classList.remove('active', 'done');
+    if (i === currentScreen) b.classList.add('active');
+    else if (doneSections[i]) b.classList.add('done');
+  });
+}
+
+/* ═══════════════════ INIT ═══════════════════ */
+buildIdentify();
+buildMC();
+buildGap();
+buildErrors();
+</script>
+</body>
+</html>

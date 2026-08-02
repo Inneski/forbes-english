@@ -1,0 +1,1824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English — Stranger Things B1</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050a0f;
+    --surface: #0d1a26;
+    --surface2: #122030;
+    --red: #e8001c;
+    --red-dim: #7a000f;
+    --amber: #ff9900;
+    --amber-dim: #7a4800;
+    --cyan: #00d4ff;
+    --cyan-dim: #004a5a;
+    --green: #00ff88;
+    --green-dim: #004422;
+    --white: #e8e8dc;
+    --grey: #8899aa;
+    --border: #1e3344;
+    --font-title: 'Bebas Neue', sans-serif;
+    --font-mono: 'Share Tech Mono', monospace;
+    --font-body: 'Crimson Pro', Georgia, serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* CRT scanline overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.07) 2px,
+      rgba(0,0,0,0.07) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: var(--surface);
+    border-bottom: 2px solid var(--red);
+    padding: 18px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    box-shadow: 0 0 30px rgba(232,0,28,0.25);
+  }
+
+  .logo-wrap {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+  }
+
+  .logo-forbes {
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--white);
+  }
+
+  .logo-rule {
+    height: 1px;
+    background: var(--grey);
+    margin: 3px 0;
+  }
+
+  .logo-english {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.28em;
+    color: var(--grey);
+  }
+
+  .header-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+  }
+
+  .badge-level {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--cyan);
+    letter-spacing: 0.15em;
+  }
+
+  .badge-topic {
+    font-family: var(--font-title);
+    font-size: 22px;
+    letter-spacing: 0.06em;
+    color: var(--red);
+    text-shadow: 0 0 12px rgba(232,0,28,0.6);
+  }
+
+  /* ── SCORE BAR ── */
+  .score-bar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 24px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--grey);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .score-display {
+    color: var(--green);
+    font-size: 16px;
+    text-shadow: 0 0 8px rgba(0,255,136,0.5);
+  }
+
+  /* ── MAIN ── */
+  main { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  /* ── SECTION TITLES ── */
+  .section-heading {
+    font-family: var(--font-title);
+    font-size: 36px;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+    position: relative;
+    display: inline-block;
+  }
+
+  .section-heading::after {
+    content: '';
+    display: block;
+    height: 2px;
+    background: currentColor;
+    margin-top: 4px;
+    opacity: 0.4;
+  }
+
+  .section-intro {
+    color: var(--grey);
+    font-size: 15px;
+    font-family: var(--font-mono);
+    margin-bottom: 28px;
+    letter-spacing: 0.05em;
+  }
+
+  .section-block {
+    margin-bottom: 60px;
+  }
+
+  /* ── ACTIVITY LABEL ── */
+  .activity-label {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    padding: 3px 10px;
+    border: 1px solid;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+
+  .label-red { color: var(--red); border-color: var(--red-dim); background: rgba(232,0,28,0.07); }
+  .label-cyan { color: var(--cyan); border-color: var(--cyan-dim); background: rgba(0,212,255,0.07); }
+  .label-amber { color: var(--amber); border-color: var(--amber-dim); background: rgba(255,153,0,0.07); }
+  .label-green { color: var(--green); border-color: var(--green-dim); background: rgba(0,255,136,0.07); }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 24px 28px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+  }
+
+  .card-red::before { background: var(--red); box-shadow: 0 0 10px var(--red); }
+  .card-cyan::before { background: var(--cyan); box-shadow: 0 0 10px var(--cyan); }
+  .card-amber::before { background: var(--amber); box-shadow: 0 0 10px var(--amber); }
+  .card-green::before { background: var(--green); box-shadow: 0 0 10px var(--green); }
+
+  /* ── PRONUNCIATION TABLE ── */
+  .pron-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  @media (max-width: 600px) { .pron-grid { grid-template-columns: 1fr; } }
+
+  .pron-item {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+  }
+
+  .pron-item:hover { border-color: var(--red-dim); background: #162030; }
+  .pron-item.selected { border-color: var(--red); background: rgba(232,0,28,0.1); }
+
+  .pron-word {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--white);
+    flex: 1;
+  }
+
+  .pron-ipa {
+    font-size: 13px;
+    color: var(--grey);
+    font-style: italic;
+    display: none;
+  }
+
+  .pron-item.revealed .pron-ipa { display: block; }
+
+  .pron-reveal-hint {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--red-dim);
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    letter-spacing: 0.1em;
+  }
+
+  .pron-item.selected .pron-reveal-hint { display: none; }
+
+  /* stress highlight */
+  .stress { color: var(--red); font-weight: bold; text-decoration: underline; text-decoration-style: dotted; }
+
+  /* ── QUOTE BOXES ── */
+  .quote-block {
+    background: var(--surface2);
+    border-left: 3px solid var(--amber);
+    padding: 14px 20px;
+    margin: 10px 0;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .quote-label {
+    font-size: 11px;
+    color: var(--amber);
+    letter-spacing: 0.15em;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  .correct { color: var(--green); }
+  .wrong { color: var(--red); text-decoration: line-through; }
+  .note { color: var(--grey); font-size: 12px; font-style: italic; }
+
+  /* ── QUIZ QUESTIONS ── */
+  .question-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 20px 24px;
+    margin-bottom: 14px;
+  }
+
+  .question-text {
+    font-size: 16px;
+    margin-bottom: 14px;
+    line-height: 1.5;
+    color: var(--white);
+  }
+
+  .question-number {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--red);
+    margin-bottom: 6px;
+    letter-spacing: 0.1em;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .option-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 15px;
+    padding: 10px 16px;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: border-color 0.15s, background 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .option-btn:hover:not(:disabled) { border-color: var(--red-dim); background: #162030; }
+  .option-btn.correct-ans { border-color: var(--green); background: rgba(0,255,136,0.08); color: var(--green); }
+  .option-btn.wrong-ans { border-color: var(--red); background: rgba(232,0,28,0.08); color: var(--red); }
+  .option-btn:disabled { cursor: default; }
+
+  .option-letter {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--grey);
+    min-width: 20px;
+  }
+
+  .feedback-text {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    margin-top: 10px;
+    padding: 8px 12px;
+    border-radius: 2px;
+    display: none;
+    line-height: 1.5;
+  }
+
+  .feedback-text.show { display: block; }
+  .feedback-correct { background: rgba(0,255,136,0.08); border: 1px solid var(--green-dim); color: var(--green); }
+  .feedback-wrong { background: rgba(232,0,28,0.08); border: 1px solid var(--red-dim); color: #ff6677; }
+
+  /* ── NEXT BUTTON ── */
+  .next-btn {
+    display: none;
+    margin-top: 24px;
+    background: transparent;
+    border: 1px solid var(--red);
+    color: var(--red);
+    font-family: var(--font-title);
+    font-size: 22px;
+    letter-spacing: 0.12em;
+    padding: 10px 32px;
+    cursor: pointer;
+    text-shadow: 0 0 10px rgba(232,0,28,0.5);
+    box-shadow: 0 0 15px rgba(232,0,28,0.15);
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .next-btn:hover { background: var(--red); color: #fff; }
+  .next-btn.visible { display: inline-block; }
+
+  /* ── FILL-IN-BLANK ── */
+  .fill-input {
+    background: var(--surface2);
+    border: none;
+    border-bottom: 2px solid var(--red-dim);
+    color: var(--cyan);
+    font-family: var(--font-mono);
+    font-size: 15px;
+    padding: 3px 8px;
+    width: 180px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .fill-input:focus { border-color: var(--red); }
+  .fill-input.correct-fill { border-color: var(--green); color: var(--green); }
+  .fill-input.wrong-fill { border-color: var(--red); color: var(--red); }
+
+  .submit-fill-btn {
+    background: transparent;
+    border: 1px solid var(--cyan-dim);
+    color: var(--cyan);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    padding: 4px 14px;
+    cursor: pointer;
+    letter-spacing: 0.1em;
+    transition: background 0.2s;
+    margin-left: 8px;
+  }
+
+  .submit-fill-btn:hover { background: rgba(0,212,255,0.1); }
+
+  /* ── MATCH ACTIVITY ── */
+  .match-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .match-col-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--grey);
+    letter-spacing: 0.15em;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .match-item {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 10px 14px;
+    font-size: 14px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  .match-item:hover { border-color: var(--red-dim); }
+  .match-item.selected-match { border-color: var(--amber); background: rgba(255,153,0,0.1); }
+  .match-item.matched-correct { border-color: var(--green); background: rgba(0,255,136,0.08); color: var(--green); pointer-events: none; }
+  .match-item.matched-wrong { border-color: var(--red); background: rgba(232,0,28,0.08); animation: shake 0.3s; }
+
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+  }
+
+  /* ── VOCAB DEFINITION QUIZ ── */
+  .vocab-word-display {
+    font-family: var(--font-title);
+    font-size: 42px;
+    color: var(--red);
+    text-shadow: 0 0 20px rgba(232,0,28,0.5);
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── RESULTS SCREEN ── */
+  .results-screen {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+  }
+
+  .results-screen.show { display: block; }
+
+  .results-title {
+    font-family: var(--font-title);
+    font-size: 64px;
+    letter-spacing: 0.1em;
+    color: var(--red);
+    text-shadow: 0 0 30px rgba(232,0,28,0.7);
+    margin-bottom: 16px;
+  }
+
+  .results-score {
+    font-family: var(--font-mono);
+    font-size: 22px;
+    color: var(--green);
+    margin-bottom: 32px;
+  }
+
+  .results-msg {
+    font-size: 20px;
+    color: var(--white);
+    max-width: 500px;
+    margin: 0 auto 40px;
+  }
+
+  .restart-btn {
+    background: transparent;
+    border: 1px solid var(--red);
+    color: var(--red);
+    font-family: var(--font-title);
+    font-size: 28px;
+    letter-spacing: 0.15em;
+    padding: 14px 48px;
+    cursor: pointer;
+    text-shadow: 0 0 10px rgba(232,0,28,0.4);
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .restart-btn:hover { background: var(--red); color: #fff; }
+
+  /* ── FLICKER ANIM ── */
+  @keyframes flicker {
+    0%, 95%, 100% { opacity: 1; }
+    96% { opacity: 0.7; }
+    97% { opacity: 1; }
+    98% { opacity: 0.5; }
+    99% { opacity: 0.9; }
+  }
+
+  .flicker { animation: flicker 8s infinite; }
+
+  /* ── DIVIDER ── */
+  .neon-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--red), transparent);
+    margin: 50px 0;
+    opacity: 0.4;
+  }
+
+  /* ── UPSIDE DOWN DECORATION ── */
+  .upside-down-bar {
+    background: linear-gradient(90deg, var(--red-dim), var(--red), var(--red-dim));
+    padding: 6px 0;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 40px;
+  }
+
+  /* teacher note style */
+  .teacher-note {
+    background: rgba(255,153,0,0.06);
+    border: 1px solid var(--amber-dim);
+    border-left: 3px solid var(--amber);
+    padding: 12px 18px;
+    margin: 12px 0;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--amber);
+    line-height: 1.6;
+  }
+
+  /* hidden sections */
+  .lesson-section { display: none; }
+  .lesson-section.active { display: block; }
+
+  /* progress dots */
+  .progress-dots {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 32px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+    border: 1px solid var(--border);
+    transition: background 0.3s;
+  }
+
+  .dot.done { background: var(--green); border-color: var(--green); box-shadow: 0 0 6px var(--green); }
+  .dot.active { background: var(--red); border-color: var(--red); box-shadow: 0 0 8px var(--red); }
+
+  .section-title-big {
+    font-family: var(--font-title);
+    font-size: 52px;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .section-subtitle {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--grey);
+    letter-spacing: 0.12em;
+    margin-bottom: 32px;
+  }
+
+  .tense-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 2px 8px;
+    letter-spacing: 0.1em;
+    margin: 2px 4px 2px 0;
+  }
+
+  .tag-present { background: rgba(0,120,255,0.15); border: 1px solid #004aaa; color: #4488ff; }
+  .tag-past { background: rgba(180,120,60,0.15); border: 1px solid #7a5020; color: #cc8844; }
+  .tag-perfect { background: rgba(100,0,200,0.15); border: 1px solid #5500aa; color: #aa66ff; }
+
+  /* word-bank drag */
+  .word-bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 14px;
+    background: var(--surface2);
+    border: 1px dashed var(--border);
+    border-radius: 2px;
+    margin-bottom: 14px;
+    min-height: 50px;
+  }
+
+  .wb-chip {
+    background: var(--surface);
+    border: 1px solid var(--red-dim);
+    color: var(--white);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    padding: 5px 12px;
+    border-radius: 2px;
+    cursor: pointer;
+    user-select: none;
+    transition: border-color 0.15s, opacity 0.15s;
+  }
+
+  .wb-chip:hover { border-color: var(--red); }
+  .wb-chip.used { opacity: 0.3; pointer-events: none; }
+
+  .sentence-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 10px 0;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--grey);
+  }
+
+  .blank-slot {
+    display: inline-block;
+    border-bottom: 2px solid var(--red-dim);
+    min-width: 160px;
+    height: 26px;
+    padding: 2px 8px;
+    color: var(--cyan);
+    cursor: pointer;
+    transition: border-color 0.15s;
+    vertical-align: middle;
+  }
+
+  .blank-slot:hover { border-color: var(--red); }
+  .blank-slot.filled { border-color: var(--amber); }
+  .blank-slot.slot-correct { border-color: var(--green); color: var(--green); }
+  .blank-slot.slot-wrong { border-color: var(--red); color: var(--red); }
+
+  .check-sentence-btn {
+    background: transparent;
+    border: 1px solid var(--red-dim);
+    color: var(--red);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    padding: 6px 16px;
+    cursor: pointer;
+    letter-spacing: 0.1em;
+    transition: background 0.15s;
+    margin-top: 12px;
+  }
+
+  .check-sentence-btn:hover { background: rgba(232,0,28,0.1); }
+
+  /* ── UpsideDown creatures deco SVG ── */
+  .deco-vine {
+    color: var(--red-dim);
+    font-size: 22px;
+    opacity: 0.3;
+    letter-spacing: 8px;
+    text-align: center;
+    margin: 8px 0;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="site-header flicker">
+  <div class="logo-wrap">
+    <span class="logo-forbes">Forbes</span>
+    <div class="logo-rule"></div>
+    <span class="logo-english">English</span>
+  </div>
+  <div class="header-badge">
+    <span class="badge-level">LEVEL B1 · GERMAN LEARNER</span>
+    <span class="badge-topic">Stranger Things</span>
+  </div>
+</header>
+
+<!-- ── SCORE BAR ── -->
+<div class="score-bar">
+  <span>TOTAL SCORE</span>
+  <span class="score-display" id="globalScore">0 / 0</span>
+</div>
+
+<!-- ── UPSIDE DOWN BAR ── -->
+<div class="upside-down-bar">✦ &nbsp; THE UPSIDE DOWN &nbsp; ✦ &nbsp; HAWKINS 1983 &nbsp; ✦ &nbsp; ENTER IF YOU DARE &nbsp; ✦</div>
+
+<main>
+
+<!-- ── PROGRESS ── -->
+<div class="progress-dots" id="progressDots">
+  <div class="dot active" id="dot0"></div>
+  <div class="dot" id="dot1"></div>
+  <div class="dot" id="dot2"></div>
+  <div class="dot" id="dot3"></div>
+  <div class="dot" id="dot4"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 0 — PRONUNCIATION
+═══════════════════════════════════════════ -->
+<section class="lesson-section active" id="sec0">
+  <div class="section-block">
+    <div class="section-title-big" style="color:var(--red); text-shadow: 0 0 20px rgba(232,0,28,0.5);">PRONUNCIATION</div>
+    <div class="section-subtitle">TAP EACH WORD TO REVEAL THE STRESSED SYLLABLE &amp; SOUND</div>
+
+    <div class="activity-label label-red">Activity 1 of 3 — Tap to reveal</div>
+
+    <div class="pron-grid" id="pronGrid">
+      <!-- Filled by JS -->
+    </div>
+
+    <div style="margin-top: 20px;">
+      <button class="next-btn visible" onclick="revealAllPron(); this.style.display='none'; document.getElementById('pronQuizBlock').style.display='block';">
+        CHECK THEM ALL →
+      </button>
+    </div>
+
+    <div id="pronQuizBlock" style="display:none; margin-top:32px;">
+      <div class="neon-divider"></div>
+      <div class="activity-label label-red">Activity 2 of 3 — Odd one out: stress</div>
+      <p style="font-size:15px; color:var(--grey); font-family:var(--font-mono); margin-bottom:18px;">Which word in each group has the stress on a DIFFERENT syllable? Click it.</p>
+
+      <div id="stressQuiz"></div>
+
+      <button class="next-btn" id="sec0NextBtn" onclick="goToSection(1)">NEXT: GRAMMAR →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 1 — GRAMMAR: TENSES + COMMON ERRORS
+═══════════════════════════════════════════ -->
+<section class="lesson-section" id="sec1">
+  <div class="section-block">
+    <div class="section-title-big" style="color:var(--cyan); text-shadow: 0 0 18px rgba(0,212,255,0.5);">GRAMMAR</div>
+    <div class="section-subtitle">TENSES · VERB PATTERNS · GERMAN TRAPS</div>
+
+    <!-- REFERENCE BOXES -->
+    <div class="activity-label label-cyan">Reference — Study these</div>
+
+    <div class="card card-cyan">
+      <div class="quote-label">PRESENT SIMPLE <span class="tense-tag tag-present">PRESENT SIMPLE</span> — facts that are always true</div>
+      <div class="quote-block">
+        <span class="correct">✔ My cat <strong>jumps</strong> onto the door handle and <strong>opens</strong> the door.</span><br>
+        <span class="note">→ This is a fact / a habit. It happens regularly.</span>
+      </div>
+    </div>
+
+    <div class="card card-amber">
+      <div class="quote-label">PAST SIMPLE <span class="tense-tag tag-past">PAST SIMPLE</span> — a finished action</div>
+      <div class="quote-block">
+        <span class="correct">✔ He <strong>learned</strong> it by watching what we do.</span><br>
+        <span class="note">→ The learning happened once in the past. It is finished.</span>
+      </div>
+    </div>
+
+    <div class="card card-red" style="margin-top:20px;">
+      <div class="quote-label">PRESENT PERFECT vs. PAST SIMPLE <span class="tense-tag tag-perfect">PRESENT PERFECT</span></div>
+      <div class="quote-block">
+        <span class="correct">✔ I <strong>have never seen</strong> the film V.</span>
+        &nbsp; <span style="color:var(--grey);font-size:12px;">← experience up to now</span><br>
+        <span class="wrong">✗ I didn't see the film V.</span>
+        <span class="note"> ← only correct if you specify a time: "I didn't see it yesterday."</span><br><br>
+        <span class="correct">✔ We <strong>haven't spoken</strong> since our last argument.</span><br>
+        <span class="wrong">✗ We don't spoke since our last argument.</span>
+        <span class="note"> ← NICHT auf Deutsch übersetzen!</span>
+      </div>
+    </div>
+
+    <div class="neon-divider"></div>
+
+    <div class="activity-label label-amber">German Traps ⚡ — Don't translate directly!</div>
+
+    <div class="card card-amber">
+      <div class="quote-label">DO homework — NICHT "make"</div>
+      <div class="quote-block">
+        <span class="correct">✔ We have to <strong>do</strong> our homework, otherwise we'll be in trouble.</span><br>
+        <span class="wrong">✗ We have to make our homework.</span>
+      </div>
+    </div>
+
+    <div class="card card-amber">
+      <div class="quote-label">GET a message — NICHT "become"</div>
+      <div class="quote-block">
+        <span class="correct">✔ I <strong>got</strong> a message from Will last night.</span><br>
+        <span class="wrong">✗ I became a message from Will.</span>
+      </div>
+    </div>
+
+    <div class="card card-amber">
+      <div class="quote-label">STUDY / LEARN — NICHT "lernen" directly</div>
+      <div class="quote-block">
+        <span class="correct">✔ I had to <strong>study</strong> for the test.</span><br>
+        <span class="wrong">✗ I had to learn for the test.</span><br><br>
+        <span class="correct">✔ If I don't <strong>study</strong>, I will get a bad grade.</span><br>
+        <span class="correct">✔ I will have to <strong>study</strong> hard to get a good grade.</span>
+      </div>
+    </div>
+
+    <div class="card card-cyan">
+      <div class="quote-label">VERB PATTERNS — to rely on / to be good at</div>
+      <div class="quote-block">
+        <span class="correct">✔ Eleven can <strong>rely on</strong> her friends.</span>
+        <span class="note"> [rely on + somebody]</span><br>
+        <span class="correct">✔ Dustin is <strong>good at</strong> science.</span>
+        <span class="note"> [be good at + noun / -ing]</span><br>
+        <span class="correct">✔ Mike is <strong>good at</strong> making plans.</span>
+      </div>
+    </div>
+
+    <div class="neon-divider"></div>
+
+    <!-- GRAMMAR QUIZ -->
+    <div class="activity-label label-cyan">Activity 1 of 3 — Choose the correct form</div>
+    <div id="grammarQuiz1"></div>
+
+    <div class="neon-divider" style="margin:20px 0;"></div>
+
+    <div class="activity-label label-amber">Activity 2 of 3 — Fix the German mistake</div>
+    <p style="font-family:var(--font-mono);font-size:13px;color:var(--grey);margin-bottom:14px;">Each sentence has a typical German-speaker error. Choose the correct version.</p>
+    <div id="grammarQuiz2"></div>
+
+    <button class="next-btn" id="sec1NextBtn" onclick="goToSection(2)">NEXT: VOCABULARY →</button>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 2 — VOCABULARY
+═══════════════════════════════════════════ -->
+<section class="lesson-section" id="sec2">
+  <div class="section-block">
+    <div class="section-title-big" style="color:var(--green); text-shadow: 0 0 18px rgba(0,255,136,0.4);">VOCABULARY</div>
+    <div class="section-subtitle">NEW WORDS FROM THE UPSIDE DOWN</div>
+
+    <div class="activity-label label-green">Activity 1 of 3 — Match word to definition</div>
+    <p style="font-family:var(--font-mono);font-size:13px;color:var(--grey);margin-bottom:18px;">Click a word on the left, then click the correct definition on the right.</p>
+
+    <div id="matchActivity"></div>
+
+    <div class="neon-divider"></div>
+
+    <div class="activity-label label-green">Activity 2 of 3 — Choose the correct word</div>
+    <div id="vocabQuiz2"></div>
+
+    <div class="neon-divider"></div>
+
+    <div class="activity-label label-green">Activity 3 of 3 — Fill in the blank</div>
+    <p style="font-family:var(--font-mono);font-size:13px;color:var(--grey);margin-bottom:14px;">Use the word bank to complete each sentence. Click a word, then click the blank.</p>
+    <div id="fillBlankActivity"></div>
+
+    <button class="next-btn" id="sec2NextBtn" onclick="goToSection(3)">NEXT: READING →</button>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 3 — READING + COMPREHENSION
+═══════════════════════════════════════════ -->
+<section class="lesson-section" id="sec3">
+  <div class="section-block">
+    <div class="section-title-big" style="color:var(--amber); text-shadow: 0 0 18px rgba(255,153,0,0.4);">READING</div>
+    <div class="section-subtitle">THE WORLD OF STRANGER THINGS</div>
+
+    <div class="activity-label label-amber">Read — then answer the questions below</div>
+
+    <div class="card card-amber" style="padding:28px 32px;">
+      <p style="font-size:16px; line-height:1.85; color:var(--white);">
+        <em>Stranger Things</em> is a popular American science fiction horror series set in the fictional town of Hawkins, Indiana, during the 1980s. It was created by Matt and Ross Duffer, known as the Duffer Brothers, and first appeared on Netflix in 2016. The show <strong>relies on</strong> nostalgia for 1980s popular culture, from the music to the fashion and even the fonts used in its title sequence.
+      </p>
+      <br>
+      <p style="font-size:16px; line-height:1.85; color:var(--white);">
+        The story begins when a boy named Will Byers <strong>goes missing</strong> in Hawkins. His friends — Mike, Dustin, and Lucas — set out to find him. During their search, they encounter a strange girl who <strong>has escaped</strong> from a secret government laboratory. She is known only as Eleven. She <strong>was taught</strong> to use her powerful psychokinetic abilities by scientists in the laboratory, who treated her as a test subject rather than a human being.
+      </p>
+      <br>
+      <p style="font-size:16px; line-height:1.85; color:var(--white);">
+        The laboratory is connected to a dark, terrifying parallel dimension called the Upside Down. In this world, <strong>certain</strong> creatures — particularly a monster called the Demogorgon — pose a <strong>severe</strong> danger to anyone they encounter. Eleven <strong>avoided</strong> capture for years and eventually formed a bond with the group of friends, learning to trust and <strong>rely on</strong> them. The series explores themes of friendship, courage, the <strong>stigma</strong> around being different, and the <strong>dangers</strong> of government secrecy.
+      </p>
+    </div>
+
+    <div class="neon-divider"></div>
+
+    <div class="activity-label label-amber">Comprehension — 5 questions</div>
+    <div id="readingQuiz"></div>
+
+    <div class="neon-divider"></div>
+
+    <div class="activity-label label-amber">Vocabulary in context — 5 questions</div>
+    <p style="font-family:var(--font-mono);font-size:13px;color:var(--grey);margin-bottom:14px;">Find the bold words in the text. What do they mean?</p>
+    <div id="vocabContextQuiz"></div>
+
+    <button class="next-btn" id="sec3NextBtn" onclick="goToSection(4)">NEXT: ERROR CORRECTION →</button>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 4 — ERROR CORRECTION CHALLENGE
+═══════════════════════════════════════════ -->
+<section class="lesson-section" id="sec4">
+  <div class="section-block">
+    <div class="section-title-big" style="color:var(--red); text-shadow: 0 0 22px rgba(232,0,28,0.6);">SPOT THE MISTAKE</div>
+    <div class="section-subtitle">FIND THE ERROR BEFORE THE DEMOGORGON FINDS YOU</div>
+
+    <div class="activity-label label-red">Activity — Each sentence has ONE error. Find it.</div>
+    <p style="font-family:var(--font-mono);font-size:13px;color:var(--grey);margin-bottom:18px;">Choose the corrected version from the options.</p>
+
+    <div id="errorQuiz"></div>
+
+    <div class="next-btn visible" id="sec4FinishBtn" style="display:none;" onclick="showResults()">
+      SEE FINAL SCORE →
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     RESULTS
+═══════════════════════════════════════════ -->
+<div class="results-screen" id="resultsScreen">
+  <div class="results-title flicker">MISSION COMPLETE</div>
+  <div class="deco-vine">〰〰〰〰〰〰〰〰〰〰</div>
+  <div class="results-score" id="finalScore"></div>
+  <div class="results-msg" id="finalMsg"></div>
+  <br><br>
+  <button class="restart-btn" onclick="restartLesson()">↺ RESTART LESSON</button>
+</div>
+
+</main>
+
+<script>
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+let totalCorrect = 0;
+let totalQuestions = 0;
+let currentSection = 0;
+const TOTAL_SECTIONS = 5;
+
+// Section question counters (to gate Next button)
+const sectionAnswered = { 0:0, 1:0, 2:0, 3:0, 4:0 };
+const sectionRequired = { 0:3, 1:10, 2:13, 3:10, 4:6 };
+
+function addScore(correct) {
+  if (correct) totalCorrect++;
+  totalQuestions++;
+  document.getElementById('globalScore').textContent = totalCorrect + ' / ' + totalQuestions;
+}
+
+function checkSectionGate(secIdx) {
+  sectionAnswered[secIdx]++;
+  const needed = sectionRequired[secIdx];
+  if (sectionAnswered[secIdx] >= needed) {
+    const btn = document.getElementById('sec' + secIdx + 'NextBtn');
+    if (btn) btn.classList.add('visible');
+    if (secIdx === 4) {
+      const finBtn = document.getElementById('sec4FinishBtn');
+      if (finBtn) finBtn.style.display = 'inline-block';
+    }
+  }
+}
+
+function goToSection(idx) {
+  document.getElementById('sec' + currentSection).classList.remove('active');
+  document.getElementById('dot' + currentSection).classList.remove('active');
+  document.getElementById('dot' + currentSection).classList.add('done');
+  currentSection = idx;
+  if (idx < TOTAL_SECTIONS) {
+    document.getElementById('sec' + idx).classList.add('active');
+    document.getElementById('dot' + idx).classList.add('active');
+  }
+  window.scrollTo(0, 0);
+}
+
+function showResults() {
+  document.getElementById('sec4').classList.remove('active');
+  document.getElementById('dot4').classList.remove('active');
+  document.getElementById('dot4').classList.add('done');
+  document.getElementById('resultsScreen').classList.add('show');
+  const pct = Math.round((totalCorrect / totalQuestions) * 100);
+  document.getElementById('finalScore').textContent = totalCorrect + ' correct out of ' + totalQuestions + ' (' + pct + '%)';
+  let msg;
+  if (pct >= 90) msg = 'Excellent! You belong in the lab — as the scientist, not the subject.';
+  else if (pct >= 70) msg = 'Good work! The Demogorgon is impressed. Almost.';
+  else if (pct >= 50) msg = 'Not bad, but the Upside Down has more challenges for you. Try again!';
+  else msg = 'Eleven says: practice more. She believes in you.';
+  document.getElementById('finalMsg').textContent = msg;
+  window.scrollTo(0, 0);
+}
+
+function restartLesson() {
+  location.reload();
+}
+
+// ══════════════════════════════════════════
+// HELPER: build MCQ question
+// ══════════════════════════════════════════
+let qCounter = 0;
+
+function buildMCQ(container, questionText, options, correctIdx, feedbackTexts, secIdx, numberLabel) {
+  qCounter++;
+  const qId = 'q' + qCounter;
+  const div = document.createElement('div');
+  div.className = 'question-block';
+  div.id = qId;
+
+  const num = document.createElement('div');
+  num.className = 'question-number';
+  num.textContent = (numberLabel || 'QUESTION') + ' ' + qCounter;
+  div.appendChild(num);
+
+  const qt = document.createElement('div');
+  qt.className = 'question-text';
+  qt.innerHTML = questionText;
+  div.appendChild(qt);
+
+  const opts = document.createElement('div');
+  opts.className = 'options';
+
+  const letters = ['A', 'B', 'C', 'D'];
+  let answered = false;
+
+  options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = '<span class="option-letter">' + letters[i] + '</span>' + opt;
+    btn.onclick = function() {
+      if (answered) return;
+      answered = true;
+      const correct = (i === correctIdx);
+      addScore(correct);
+      checkSectionGate(secIdx);
+      // Colour all
+      opts.querySelectorAll('.option-btn').forEach((b, bi) => {
+        b.disabled = true;
+        if (bi === correctIdx) b.classList.add('correct-ans');
+        else if (bi === i && !correct) b.classList.add('wrong-ans');
+      });
+      // Feedback
+      const fb = div.querySelector('.feedback-text');
+      fb.classList.add('show');
+      if (correct) {
+        fb.classList.add('feedback-correct');
+        fb.textContent = '✔ ' + (feedbackTexts[i] || 'Correct!');
+      } else {
+        fb.classList.add('feedback-wrong');
+        fb.textContent = '✗ ' + (feedbackTexts[i] || 'Not quite. The correct answer is ' + letters[correctIdx] + '.');
+      }
+    };
+    opts.appendChild(btn);
+  });
+
+  div.appendChild(opts);
+
+  const fb = document.createElement('div');
+  fb.className = 'feedback-text';
+  div.appendChild(fb);
+
+  container.appendChild(div);
+}
+
+// ══════════════════════════════════════════
+// SECTION 0 — PRONUNCIATION
+// ══════════════════════════════════════════
+const pronWords = [
+  { word: 'universal', ipa: '/ˌjuːnɪˈvɜːsəl/', stress: 'u·ni·VER·sal', note: 'Stress on 3rd syllable' },
+  { word: 'laughter', ipa: '/ˈlɑːftə/', stress: 'LAUGH·ter', note: 'The ‹gh› is silent — like "after"' },
+  { word: 'the 1800s', ipa: '/ðə ˌeɪˈtiːn ˈhʌndrədz/', stress: 'the EIGHT·een HUN·dreds', note: '"The eighteen hundreds"' },
+  { word: 'particular', ipa: '/pəˈtɪkjʊlə/', stress: 'par·TIC·u·lar', note: 'Stress on 2nd syllable; 4 syllables' },
+  { word: 'genre', ipa: '/ˈʒɒnrə/', stress: 'GENRE', note: '‹g› = soft French /ʒ/ like "measure"' },
+  { word: "the audience's", ipa: '/ðə ˈɔːdiənsɪz/', stress: 'the AU·di·ence·iz', note: '3 syllables + possessive /ɪz/' },
+  { word: 'necessity', ipa: '/nɪˈsɛsɪti/', stress: 'ne·CES·si·ty', note: 'Stress on 2nd syllable' },
+  { word: 'threaten', ipa: '/ˈθrɛtn/', stress: 'THREA·ten', note: '‹thr› requires teeth + lip + air' },
+  { word: 'dangers', ipa: '/ˈdeɪndʒəz/', stress: 'DAN·gers', note: 'Soft ‹g› = /dʒ/' },
+  { word: 'frightened', ipa: '/ˈfraɪtnd/', stress: 'FRIGHT·ened', note: '‹gh› is silent; 2 syllables' },
+  { word: 'siren', ipa: '/ˈsaɪrən/', stress: 'SI·ren', note: 'Stress on 1st syllable; long /aɪ/' },
+  { word: 'tragedies', ipa: '/ˈtrædʒɪdiz/', stress: 'TRAG·e·dies', note: '3 syllables; ‹g› = /dʒ/' },
+  { word: 'statue', ipa: '/ˈstætʃuː/', stress: 'STAT·ue', note: '‹t› + ‹u› = /tʃ/ — like "statue"' },
+  { word: 'march', ipa: '/mɑːtʃ/', stress: 'MARCH', note: '‹ch› = /tʃ/; long /ɑː/' },
+  { word: 'parades', ipa: '/pəˈreɪdz/', stress: 'pa·RADES', note: 'Stress on 2nd syllable; final /dz/' },
+  { word: 'Christianity', ipa: '/ˌkrɪstiˈænɪti/', stress: 'Chris·ti·AN·i·ty', note: '5 syllables; stress on 3rd' },
+  { word: 'search', ipa: '/sɜːtʃ/', stress: 'SEARCH', note: '‹ea› = /ɜː/ like "bird"' },
+  { word: 'lucky', ipa: '/ˈlʌki/', stress: 'LU·cky', note: '‹u› = short /ʌ/ like "cup"' },
+  { word: 'bagpipes', ipa: '/ˈbægpaɪps/', stress: 'BAG·pipes', note: 'Stress on 1st syllable; /paɪps/' },
+  { word: 'rapport', ipa: '/ræˈpɔː/', stress: 'rap·PORT', note: 'Final ‹t› is silent; French origin' },
+  { word: 'though', ipa: '/ðəʊ/', stress: 'THOUGH', note: '‹gh› silent; rhymes with "go"' },
+  { word: 'obvious', ipa: '/ˈɒbviəs/', stress: 'OB·vi·ous', note: '3 syllables; stress on 1st' },
+  { word: 'subtle', ipa: '/ˈsʌtl/', stress: 'SU·tle', note: 'The ‹b› is completely silent!' },
+  { word: 'thoughts', ipa: '/θɔːts/', stress: 'THOUGHTS', note: '‹th› = /θ/; ‹gh› silent; rhymes with "forts"' },
+  { word: 'taught', ipa: '/tɔːt/', stress: 'TAUGHT', note: 'Same sound as "thought" — /tɔːt/' },
+  { word: 'gestures', ipa: '/ˈdʒɛstʃəz/', stress: 'GES·tures', note: '‹g› = /dʒ/; ‹t›+‹u› = /tʃ/' },
+  { word: 'rather', ipa: '/ˈrɑːðə/', stress: 'RA·ther', note: '‹th› = soft /ð/ like "the"' },
+];
+
+function buildPronGrid() {
+  const grid = document.getElementById('pronGrid');
+  pronWords.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'pron-item';
+    div.setAttribute('data-index', i);
+    div.innerHTML = `
+      <div style="flex:1">
+        <div class="pron-word">${item.word}</div>
+        <div class="pron-ipa">${item.ipa}</div>
+        <div class="pron-ipa" style="color:var(--cyan);font-style:normal;font-size:12px;">${item.note}</div>
+      </div>
+      <span class="pron-reveal-hint">tap</span>
+    `;
+    div.onclick = function() {
+      div.classList.toggle('selected');
+      div.classList.toggle('revealed');
+    };
+    grid.appendChild(div);
+  });
+}
+
+function revealAllPron() {
+  document.querySelectorAll('.pron-item').forEach(el => {
+    el.classList.add('selected', 'revealed');
+  });
+  buildStressQuiz();
+}
+
+// Stress quiz — groups of 3, pick the odd stress pattern
+const stressGroups = [
+  {
+    q: 'Which word is stressed on a DIFFERENT syllable to the others?',
+    words: ['uni<strong>ver</strong>sal', '<strong>trau</strong>ma', 'par<strong>tic</strong>ular'],
+    labels: ['universal', 'trauma', 'particular'],
+    // universal = 3rd, trauma = 1st, particular = 2nd — all different! Ask different stress POSITION:
+    // Actually: universal=3rd, particular=2nd, trauma=1st → trauma is ONLY 2-syllable word, different pattern
+    correct: 1,
+    feedback: '"Trauma" has only 2 syllables and is stressed on the 1st. The others are longer words with later stress.'
+  },
+  {
+    q: 'Which word has a SILENT letter that changes how it sounds?',
+    words: ['subtle', 'lucky', 'march'],
+    labels: ['subtle (the B is silent)', 'lucky (no silent letters)', 'march (no silent letters)'],
+    correct: 0,
+    feedback: '"Subtle" — the ‹b› is completely silent: /ˈsʌtl/. "Lucky" and "march" are pronounced as written.'
+  },
+  {
+    q: 'Which word rhymes with "GO"?',
+    words: ['thought', 'though', 'through'],
+    labels: ['thought /θɔːt/', 'though /ðəʊ/', 'through /θruː/'],
+    correct: 1,
+    feedback: '"Though" = /ðəʊ/ — rhymes with "go". "Thought" = /θɔːt/ (like "fort"). "Through" = /θruː/ (like "true").'
+  },
+];
+
+function buildStressQuiz() {
+  const container = document.getElementById('stressQuiz');
+  container.innerHTML = '';
+  stressGroups.forEach((g, gi) => {
+    const div = document.createElement('div');
+    div.className = 'question-block';
+    div.innerHTML = `<div class="question-number">STRESS QUESTION ${gi+1}</div><div class="question-text">${g.q}</div>`;
+    const opts = document.createElement('div');
+    opts.className = 'options';
+    const letters = ['A','B','C'];
+    let answered = false;
+    g.labels.forEach((lbl, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'option-btn';
+      btn.innerHTML = `<span class="option-letter">${letters[i]}</span>${lbl}`;
+      btn.onclick = function() {
+        if (answered) return;
+        answered = true;
+        const correct = (i === g.correct);
+        addScore(correct);
+        checkSectionGate(0);
+        opts.querySelectorAll('.option-btn').forEach((b,bi) => {
+          b.disabled = true;
+          if (bi === g.correct) b.classList.add('correct-ans');
+          else if (bi === i && !correct) b.classList.add('wrong-ans');
+        });
+        const fb = div.querySelector('.feedback-text');
+        fb.classList.add('show');
+        fb.classList.add(correct ? 'feedback-correct' : 'feedback-wrong');
+        fb.textContent = (correct ? '✔ ' : '✗ ') + g.feedback;
+      };
+      opts.appendChild(btn);
+    });
+    div.appendChild(opts);
+    const fb = document.createElement('div');
+    fb.className = 'feedback-text';
+    div.appendChild(fb);
+    container.appendChild(div);
+  });
+}
+
+// ══════════════════════════════════════════
+// SECTION 1 — GRAMMAR
+// ══════════════════════════════════════════
+const grammarQ1 = [
+  {
+    q: 'Which sentence uses the correct tense?',
+    opts: [
+      'Eleven <em>doesn\'t saw</em> the monster yet.',
+      'Eleven <em>has never seen</em> a monster like the Demogorgon.',
+      'Eleven <em>saw</em> the monster since her escape.',
+      'Eleven <em>is seeing</em> monsters all her life.',
+    ],
+    correct: 1,
+    fb: [
+      'Wrong. "Doesn\'t saw" mixes present and past — not possible.',
+      'Correct! "Has never seen" = present perfect — an experience up to now. No specific time = perfect.',
+      'Wrong. "Since" requires the present perfect: "has seen" or "hasn\'t seen since…"',
+      'Wrong. "Is seeing" is present continuous — for something happening right now, not a life experience.',
+    ]
+  },
+  {
+    q: 'My cat _____ onto the door handle every morning.',
+    opts: ['jumped', 'is jumping', 'jumps', 'has jumped'],
+    correct: 2,
+    fb: [
+      'Wrong. Past simple = one finished event. This is a habit.',
+      'Wrong. Continuous = happening right now in this moment.',
+      'Correct! Present simple = a regular habit / fact about the cat.',
+      'Possible but not the best here. Present simple is better for a stated daily habit.',
+    ]
+  },
+  {
+    q: 'He _____ it by watching what we do. (Finished action in the past)',
+    opts: ['learns', 'has learned', 'learned', 'is learning'],
+    correct: 2,
+    fb: [
+      'Wrong. Present simple = habit/fact, not a past event.',
+      'Wrong. Present perfect is possible, but the context "by watching what we do" makes it a specific, completed past action.',
+      'Correct! Past simple = one finished action in the past.',
+      'Wrong. Continuous = an action in progress right now.',
+    ]
+  },
+  {
+    q: 'We _____ since our last argument. (They argued in the past; they still don\'t speak now.)',
+    opts: ["don't speak", "haven't spoken", "didn't speak", "aren't speaking"],
+    correct: 1,
+    fb: [
+      'Wrong. This is a typical German-speaker error! "Seit" in German uses present, but in English we need present perfect.',
+      'Correct! "Since + present perfect" — an action that started in the past and continues to now.',
+      'Wrong. Past simple without "since" only works with a specific time: "We didn\'t speak on Monday."',
+      'Wrong. Continuous = a temporary action right now.',
+    ]
+  },
+  {
+    q: 'Dustin is really _____ fixing electronics.',
+    opts: ['good at', 'good in', 'good for', 'good with'],
+    correct: 0,
+    fb: [
+      'Correct! "Good at + noun/verb-ing" is the fixed phrase.',
+      'Wrong. "Good in" is not used for skills in English.',
+      'Wrong. "Good for" means beneficial/useful, e.g. "vegetables are good for you".',
+      '"Good with" is possible in some contexts ("good with people") but not the standard fixed phrase for a skill.',
+    ]
+  },
+];
+
+const grammarQ2 = [
+  {
+    q: '"Ich mache meine Hausaufgaben." → Which is correct in English?',
+    opts: [
+      'I make my homework every evening.',
+      'I do my homework every evening.',
+      'I am making my homework every evening.',
+    ],
+    correct: 1,
+    fb: [
+      'Wrong. "Make homework" is a direct translation from German/Italian — but in English it is always DO homework.',
+      'Correct! In English: DO homework, DO sport, DO a task, DO your best.',
+      'Wrong. Continuous is wrong here (habit), and "making" is the wrong verb.',
+    ]
+  },
+  {
+    q: '"Ich bekomme eine Nachricht." → Choose the correct English sentence.',
+    opts: [
+      'I become a message from Mike.',
+      'I get a message from Mike.',
+      'I receive becoming a message from Mike.',
+    ],
+    correct: 1,
+    fb: [
+      'Wrong! "Become" = to transform into something (e.g. "he became a teacher"). Never use "become" to mean "receive".',
+      'Correct! "Get a message" or "receive a message" — both work. "Get" is more common in spoken English.',
+      'Wrong. This makes no grammatical sense.',
+    ]
+  },
+  {
+    q: '"Ich muss für die Prüfung lernen." → Which is correct?',
+    opts: [
+      'I must learn for the test.',
+      'I have to study for the test.',
+      'I need to learn for the test.',
+    ],
+    correct: 1,
+    fb: [
+      'Wrong. "Learn for a test" sounds odd in English. "Lernen" here means "to study/revise", not to acquire new knowledge.',
+      'Correct! "Study for a test" or "revise for a test" — this is the natural English phrase.',
+      'Wrong for the same reason — "learn for" is not natural English.',
+    ]
+  },
+  {
+    q: 'Choose the sentence with the CORRECT word order and tense.',
+    opts: [
+      'If I don\'t study, I will get a bad grade.',
+      'If I will not study, I get a bad grade.',
+      'If I don\'t study, I get a bad grade last time.',
+    ],
+    correct: 0,
+    fb: [
+      'Correct! If + present simple → future simple. This is the real conditional (Type 1).',
+      'Wrong. Never use "will" after "if" in a Type 1 conditional.',
+      'Wrong. "Last time" is past — it conflicts with a future conditional.',
+    ]
+  },
+  {
+    q: 'Choose the sentence where "rely on" is used correctly.',
+    opts: [
+      'Mike relies in his friends when he\'s in danger.',
+      'Mike relies on his friends when he\'s in danger.',
+      'Mike relies with his friends in danger.',
+    ],
+    correct: 1,
+    fb: [
+      'Wrong. The preposition is "on", not "in".',
+      'Correct! "Rely on somebody" — always "on".',
+      'Wrong. "Rely with" is not possible.',
+    ]
+  },
+];
+
+function buildGrammarQuizzes() {
+  const c1 = document.getElementById('grammarQuiz1');
+  grammarQ1.forEach((q, i) => {
+    buildMCQ(c1, q.q, q.opts, q.correct, q.fb, 1, 'Q');
+  });
+
+  const c2 = document.getElementById('grammarQuiz2');
+  grammarQ2.forEach((q, i) => {
+    buildMCQ(c2, q.q, q.opts, q.correct, q.fb, 1, 'Q');
+  });
+}
+
+// ══════════════════════════════════════════
+// SECTION 2 — VOCABULARY
+// ══════════════════════════════════════════
+const vocabPairs = [
+  { word: 'stigma', def: 'a mark of disgrace linked to a person or situation' },
+  { word: 'avoid', def: 'to keep away from something or stop yourself doing it' },
+  { word: 'crucial', def: 'extremely important, especially for success or failure' },
+  { word: 'severe', def: 'very great or intense — used for something bad' },
+  { word: 'rely on', def: 'to depend on somebody with full trust' },
+  { word: 'gesture', def: 'a movement of the hand or body to express something' },
+];
+
+function buildMatchActivity() {
+  const container = document.getElementById('matchActivity');
+  const words = [...vocabPairs];
+  const defs = [...vocabPairs].sort(() => Math.random() - 0.5);
+
+  const grid = document.createElement('div');
+  grid.className = 'match-grid';
+
+  const colW = document.createElement('div');
+  colW.innerHTML = '<div class="match-col-label">Words</div>';
+  const colD = document.createElement('div');
+  colD.innerHTML = '<div class="match-col-label">Definitions</div>';
+
+  let selectedWord = null;
+  let matchedCount = 0;
+
+  words.forEach((item, i) => {
+    const el = document.createElement('div');
+    el.className = 'match-item';
+    el.textContent = item.word;
+    el.dataset.word = item.word;
+    el.onclick = function() {
+      if (el.classList.contains('matched-correct')) return;
+      document.querySelectorAll('.match-item[data-word]').forEach(e => e.classList.remove('selected-match'));
+      el.classList.add('selected-match');
+      selectedWord = item.word;
+    };
+    colW.appendChild(el);
+  });
+
+  defs.forEach((item, i) => {
+    const el = document.createElement('div');
+    el.className = 'match-item';
+    el.textContent = item.def;
+    el.dataset.def = item.word; // which word this def belongs to
+    el.onclick = function() {
+      if (!selectedWord) return;
+      if (el.classList.contains('matched-correct')) return;
+      const correct = (el.dataset.def === selectedWord);
+      if (correct) {
+        el.classList.add('matched-correct');
+        // find and lock the word side
+        document.querySelectorAll('[data-word="' + selectedWord + '"]').forEach(e => {
+          e.classList.add('matched-correct');
+          e.classList.remove('selected-match');
+        });
+        matchedCount++;
+        addScore(true);
+        checkSectionGate(2);
+      } else {
+        el.classList.add('matched-wrong');
+        addScore(false);
+        checkSectionGate(2);
+        setTimeout(() => el.classList.remove('matched-wrong'), 400);
+        document.querySelectorAll('[data-word]').forEach(e => e.classList.remove('selected-match'));
+      }
+      selectedWord = null;
+    };
+    colD.appendChild(el);
+  });
+
+  grid.appendChild(colW);
+  grid.appendChild(colD);
+  container.appendChild(grid);
+
+  const note = document.createElement('p');
+  note.style.cssText = 'font-family:var(--font-mono);font-size:12px;color:var(--grey);margin-top:10px;';
+  note.textContent = 'Tap a word → tap its definition.';
+  container.appendChild(note);
+}
+
+const vocabQ2 = [
+  {
+    q: 'Will suddenly _____ in a library at the Upside Down.',
+    opts: ['appeared', 'gesture', 'avoided', 'recognized'],
+    correct: 0,
+    fb: [
+      'Correct! "Appeared" = came into sight suddenly.',
+      'Wrong. "Gesture" is a noun/verb for hand movements.',
+      'Wrong. "Avoided" = kept away from something.',
+      'Wrong. "Recognized" = knew again from before.',
+    ]
+  },
+  {
+    q: 'The government tried to keep the laboratory a secret — they were _____ open about it.',
+    opts: ['certainly', 'openly', 'never openly', 'severe'],
+    correct: 2,
+    fb: [
+      'Wrong. "Certainly" means definitely/surely.',
+      'Possible but incomplete here. "Never openly" correctly captures the hidden nature.',
+      'Correct! "Never openly" — they never communicated honestly or in public.',
+      'Wrong. "Severe" is an adjective, not an adverb.',
+    ]
+  },
+  {
+    q: 'The Demogorgon posed _____ dangers to the people of Hawkins.',
+    opts: ['severe', 'crucial', 'certain', 'obvious'],
+    correct: 0,
+    fb: [
+      'Correct! "Severe dangers" = very serious, intense dangers.',
+      'Wrong. "Crucial" means decisive/critical to an outcome.',
+      'Wrong. "Certain dangers" would mean "specific but unnamed dangers".',
+      'Wrong. "Obvious dangers" would mean easy to see/understand.',
+    ]
+  },
+  {
+    q: 'Finding Will was _____ — without him, everything would fall apart.',
+    opts: ['frightened', 'crucial', 'abandoned', 'rugged'],
+    correct: 1,
+    fb: [
+      'Wrong. "Frightened" means scared.',
+      'Correct! "Crucial" = critically important to the outcome.',
+      'Wrong. "Abandoned" = left behind, deserted.',
+      'Wrong. "Rugged" = rough and uneven (used for terrain).',
+    ]
+  },
+  {
+    q: 'There is still a lot of _____ around mental health — people are afraid to talk about it.',
+    opts: ['heritage', 'stigma', 'foreboding', 'splendor'],
+    correct: 1,
+    fb: [
+      'Wrong. "Heritage" = things inherited from the past, culture.',
+      'Correct! "Stigma" = a mark of social disgrace; shame attached to something.',
+      'Wrong. "Foreboding" = a feeling that something bad is about to happen.',
+      'Wrong. "Splendor" = magnificent beauty.',
+    ]
+  },
+  {
+    q: 'The town seemed _____ — as if everyone had left without warning.',
+    opts: ['abandoned', 'separable', 'sensible', 'ancient'],
+    correct: 0,
+    fb: [
+      'Correct! "Abandoned" = deserted, left behind.',
+      'Wrong. "Separable" = can be separated.',
+      'Wrong. "Sensible" = showing good sense.',
+      'Wrong. "Ancient" = very old.',
+    ]
+  },
+];
+
+function buildVocabQuiz2() {
+  const c = document.getElementById('vocabQuiz2');
+  vocabQ2.forEach(q => buildMCQ(c, q.q, q.opts, q.correct, q.fb, 2, 'Q'));
+}
+
+// Fill-in-blank for vocab
+const fillSentences = [
+  { before: 'She didn\'t say anything — she just made a small', blank: 'gesture', after: 'with her hand.', words: ['gesture', 'stigma', 'foreboding', 'agenda', 'splendor'] },
+  { before: 'I', blank: 'rely on', after: 'my best friend when things get difficult.', words: ['rely on', 'avoid', 'tackle', 'separate', 'manage'] },
+];
+
+let selectedChip = null;
+
+function buildFillBlanks() {
+  const container = document.getElementById('fillBlankActivity');
+
+  fillSentences.forEach((s, si) => {
+    // word bank
+    const bankDiv = document.createElement('div');
+    bankDiv.className = 'word-bank';
+    bankDiv.id = 'wb_' + si;
+
+    s.words.sort(() => Math.random() - 0.5).forEach(w => {
+      const chip = document.createElement('div');
+      chip.className = 'wb-chip';
+      chip.textContent = w;
+      chip.dataset.word = w;
+      chip.dataset.bank = si;
+      chip.onclick = function() {
+        document.querySelectorAll('.wb-chip').forEach(c => c.style.outline = '');
+        chip.style.outline = '2px solid var(--red)';
+        selectedChip = { word: w, el: chip, bank: si };
+      };
+      bankDiv.appendChild(chip);
+    });
+
+    container.appendChild(bankDiv);
+
+    const rowDiv = document.createElement('div');
+    rowDiv.className = 'sentence-row';
+    rowDiv.innerHTML = s.before + ' ';
+
+    const slot = document.createElement('span');
+    slot.className = 'blank-slot';
+    slot.textContent = '_____';
+    slot.id = 'slot_' + si;
+    slot.dataset.correct = s.blank;
+    slot.onclick = function() {
+      if (!selectedChip || selectedChip.bank !== si) return;
+      const correct = selectedChip.word === s.blank;
+      slot.textContent = selectedChip.word;
+      slot.classList.remove('filled');
+      slot.classList.add(correct ? 'slot-correct' : 'slot-wrong');
+      slot.style.pointerEvents = 'none';
+      selectedChip.el.style.outline = '';
+      if (correct) selectedChip.el.classList.add('used');
+      addScore(correct);
+      checkSectionGate(2);
+      selectedChip = null;
+      if (!correct) {
+        setTimeout(() => {
+          slot.textContent = '_____';
+          slot.classList.remove('slot-wrong');
+          slot.classList.add('filled');
+          slot.style.pointerEvents = 'auto';
+        }, 1200);
+      }
+    };
+
+    rowDiv.appendChild(slot);
+    rowDiv.innerHTML += ' ';
+    const afterSpan = document.createElement('span');
+    afterSpan.textContent = ' ' + s.after;
+    rowDiv.appendChild(afterSpan);
+
+    container.appendChild(rowDiv);
+    const br = document.createElement('div');
+    br.style.height = '18px';
+    container.appendChild(br);
+  });
+}
+
+// ══════════════════════════════════════════
+// SECTION 3 — READING
+// ══════════════════════════════════════════
+const readingQ = [
+  {
+    q: 'When is Stranger Things set?',
+    opts: ['The 1970s', 'The 1980s', 'The 1990s', 'The 2000s'],
+    correct: 1,
+    fb: ['Wrong.','Correct! Hawkins, Indiana, in the 1980s.','Wrong.','Wrong.']
+  },
+  {
+    q: 'Who are the Duffer Brothers?',
+    opts: ['The main characters', 'The creators of the show', 'Scientists in the laboratory', 'Will\'s brothers'],
+    correct: 1,
+    fb: ['Wrong.','Correct! Matt and Ross Duffer created the series.','Wrong.','Wrong.']
+  },
+  {
+    q: 'Why is Eleven so powerful?',
+    opts: [
+      'She trained with the military.',
+      'She was taught to use her psychokinetic abilities in a laboratory.',
+      'She absorbed energy from the Upside Down.',
+      'She was born in Hawkins.',
+    ],
+    correct: 1,
+    fb: ['Wrong.','Correct! Scientists in the lab taught her to use her abilities.','Wrong — the text doesn\'t say this.','Wrong.']
+  },
+  {
+    q: 'What is the Upside Down?',
+    opts: [
+      'A secret government lab',
+      'A dark parallel dimension connected to the lab',
+      'A underground bunker under Hawkins',
+      'An abandoned school',
+    ],
+    correct: 1,
+    fb: ['Wrong — that\'s the laboratory.','Correct! It\'s a parallel dimension.','Wrong.','Wrong.']
+  },
+  {
+    q: 'Which theme is NOT mentioned in the text?',
+    opts: ['Friendship', 'Government secrecy', 'Time travel', 'Courage'],
+    correct: 2,
+    fb: ['Mentioned.','Mentioned.','Correct — time travel is NOT in the text.','Mentioned.']
+  },
+];
+
+const vocabContextQ = [
+  {
+    q: 'In the text: "The show <em>relies on</em> nostalgia…" — what does "rely on" mean here?',
+    opts: [
+      'to avoid something',
+      'to depend on something as important',
+      'to produce something',
+      'to forget something',
+    ],
+    correct: 1,
+    fb: ['Wrong.','Correct! "Rely on" = depend on, use as a foundation.','Wrong.','Wrong.']
+  },
+  {
+    q: '"She was <em>taught</em> to use her abilities." — What does "taught" mean?',
+    opts: [
+      'past tense of "think"',
+      'past tense of "touch"',
+      'past tense of "teach" (= show someone how to do something)',
+      'past tense of "talk"',
+    ],
+    correct: 2,
+    fb: ['Wrong — "thought" is past of "think".','Wrong — "touched" is past of "touch".','Correct! Teach → taught (irregular).','Wrong — "talked" is past of "talk".']
+  },
+  {
+    q: '"<em>Certain</em> creatures pose a danger." — What does "certain" mean here?',
+    opts: [
+      'definitely / for sure',
+      'specific ones (not named exactly)',
+      'safe / not dangerous',
+      'ancient',
+    ],
+    correct: 1,
+    fb: ['Wrong — "certain" CAN mean "definitely" but not here.','Correct! Here "certain" = specific but not explicitly named.','Wrong.','Wrong.']
+  },
+  {
+    q: '"The Demogorgon poses a <em>severe</em> danger." — What does "severe" mean?',
+    opts: ['mild / small', 'very great / intense', 'sudden', 'obvious'],
+    correct: 1,
+    fb: ['Wrong — opposite meaning.','Correct! Severe = very serious, intense.','Wrong.','Wrong.']
+  },
+  {
+    q: '"Eleven <em>avoided</em> capture." — What does "avoided" mean?',
+    opts: [
+      'tried to get caught',
+      'managed to keep away from being caught',
+      'accepted capture',
+      'was happy about being caught',
+    ],
+    correct: 1,
+    fb: ['Wrong.','Correct! Avoid = to keep away from something.','Wrong.','Wrong.']
+  },
+];
+
+function buildReadingQuizzes() {
+  const r = document.getElementById('readingQuiz');
+  readingQ.forEach(q => buildMCQ(r, q.q, q.opts, q.correct, q.fb, 3, 'Q'));
+
+  const v = document.getElementById('vocabContextQuiz');
+  vocabContextQ.forEach(q => buildMCQ(v, q.q, q.opts, q.correct, q.fb, 3, 'Q'));
+}
+
+// ══════════════════════════════════════════
+// SECTION 4 — ERROR CORRECTION
+// ══════════════════════════════════════════
+const errorQ = [
+  {
+    q: '"We don\'t spoke since Monday." — Find the error and choose the correct version.',
+    opts: [
+      'We don\'t speak since Monday.',
+      'We haven\'t spoken since Monday.',
+      'We didn\'t speak since Monday.',
+    ],
+    correct: 1,
+    fb: [
+      'Better, but wrong tense. "Since" requires present perfect.',
+      'Correct! "Haven\'t spoken since Monday" — present perfect with "since".',
+      'Wrong. Past simple + "since" doesn\'t work without a specific completed context.',
+    ]
+  },
+  {
+    q: '"I must learn for the history test tomorrow." — Choose the natural English version.',
+    opts: [
+      'I must study for the history test tomorrow.',
+      'I must learn the history test tomorrow.',
+      'I must be learning for the history test tomorrow.',
+    ],
+    correct: 0,
+    fb: [
+      'Correct! "Study for a test" — the correct collocation.',
+      'Wrong. "Learn the test" makes no sense.',
+      'Wrong. Present continuous is not used with "must" for plans.',
+    ]
+  },
+  {
+    q: '"If I will not practice, I get a bad grade." — Choose the correct version.',
+    opts: [
+      'If I won\'t practice, I will get a bad grade.',
+      'If I don\'t practice, I will get a bad grade.',
+      'If I am not practicing, I will get a bad grade.',
+    ],
+    correct: 1,
+    fb: [
+      'Wrong. Never use "will" in the if-clause in a Type 1 conditional.',
+      'Correct! If + present simple → will + infinitive.',
+      'Wrong. Present continuous possible but unusual for a general condition.',
+    ]
+  },
+  {
+    q: '"She is good in playing the guitar." — Choose the correct version.',
+    opts: [
+      'She is good at playing the guitar.',
+      'She is good for playing the guitar.',
+      'She is good with playing the guitar.',
+    ],
+    correct: 0,
+    fb: [
+      'Correct! "Good at + -ing" — the fixed preposition is "at".',
+      'Wrong. "Good for" = beneficial. E.g. "running is good for your health".',
+      'Wrong. "Good with" = skilled with people/tools in general.',
+    ]
+  },
+  {
+    q: '"I become a text message from Eleven." — Choose the correct version.',
+    opts: [
+      'I became to a text message from Eleven.',
+      'I got a text message from Eleven.',
+      'I was becoming a text message from Eleven.',
+    ],
+    correct: 1,
+    fb: [
+      'Wrong. "Become to" is not possible in English.',
+      'Correct! "Get a message" or "receive a message" — never "become".',
+      'Wrong. "Was becoming" is continuous past — and still the wrong verb.',
+    ]
+  },
+  {
+    q: '"Eleven can rely in Mike." — Choose the correct version.',
+    opts: [
+      'Eleven can rely with Mike.',
+      'Eleven can rely for Mike.',
+      'Eleven can rely on Mike.',
+    ],
+    correct: 2,
+    fb: [
+      'Wrong. "Rely with" is not possible.',
+      'Wrong. "Rely for" is not possible.',
+      'Correct! "Rely on + somebody" — always "on".',
+    ]
+  },
+];
+
+function buildErrorQuiz() {
+  const c = document.getElementById('errorQuiz');
+  errorQ.forEach(q => buildMCQ(c, q.q, q.opts, q.correct, q.fb, 4, 'Q'));
+}
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+window.addEventListener('DOMContentLoaded', function() {
+  buildPronGrid();
+  buildGrammarQuizzes();
+  buildMatchActivity();
+  buildVocabQuiz2();
+  buildFillBlanks();
+  buildReadingQuizzes();
+  buildErrorQuiz();
+});
+</script>
+</body>
+</html>

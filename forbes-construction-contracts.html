@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – Construction Contracts</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #181c27;
+    --card: #1e2333;
+    --border: #2a3045;
+    --accent: #e8a830;
+    --accent-dim: rgba(232,168,48,0.15);
+    --accent-hover: #f0bc4a;
+    --text: #e8eaf0;
+    --muted: #7a829e;
+    --correct: #3db88a;
+    --correct-bg: rgba(61,184,138,0.12);
+    --wrong: #e05c5c;
+    --wrong-bg: rgba(224,92,92,0.12);
+    --radius: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+
+  /* ─── HEADER ─────────────────────────────────── */
+  .header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 24px 20px;
+    text-align: center;
+    position: relative;
+  }
+
+  .logo-svg { display: block; margin: 0 auto 6px; }
+
+  .lesson-tag {
+    display: inline-block;
+    background: var(--accent-dim);
+    border: 1px solid rgba(232,168,48,0.3);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-top: 10px;
+  }
+
+  /* ─── SCORE BAR ───────────────────────────────── */
+  .score-bar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .score-pill {
+    background: var(--accent-dim);
+    border: 1px solid rgba(232,168,48,0.3);
+    color: var(--accent);
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  .progress-wrap {
+    flex: 1;
+    margin: 0 20px;
+  }
+
+  .progress-label {
+    color: var(--muted);
+    font-size: 12px;
+    margin-bottom: 5px;
+    text-align: center;
+  }
+
+  .progress-bar {
+    background: var(--border);
+    border-radius: 4px;
+    height: 4px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    background: var(--accent);
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* ─── MAIN LAYOUT ─────────────────────────────── */
+  .main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 32px 20px 0;
+  }
+
+  /* ─── ACTIVITY HEADER ─────────────────────────── */
+  .activity-header {
+    margin-bottom: 28px;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .activity-num {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .activity-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.25;
+    margin-bottom: 8px;
+  }
+
+  .activity-subtitle {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ─── ILLUSTRATION ────────────────────────────── */
+  .illustration-wrap {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeUp 0.5s 0.05s ease both;
+  }
+
+  /* ─── QUESTION CARD ───────────────────────────── */
+  .question-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-bottom: 20px;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .q-counter {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  .q-text {
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.6;
+    color: var(--text);
+    margin-bottom: 24px;
+  }
+
+  .q-text em {
+    color: var(--accent);
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  /* ─── ANSWER OPTIONS ─────────────────────────── */
+  .options { display: flex; flex-direction: column; gap: 10px; }
+
+  .option {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 9px;
+    padding: 14px 18px;
+    cursor: pointer;
+    font-size: 15px;
+    color: var(--text);
+    transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    line-height: 1.5;
+    text-align: left;
+  }
+
+  .option:hover:not(.disabled) {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+    transform: translateX(3px);
+  }
+
+  .option.selected {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+  }
+
+  .option.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+  }
+
+  .option.wrong {
+    border-color: var(--wrong);
+    background: var(--wrong-bg);
+  }
+
+  .option.disabled { cursor: default; }
+
+  .opt-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    background: var(--border);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    flex-shrink: 0;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .option.selected .opt-label { background: var(--accent); color: #0f1117; }
+  .option.correct .opt-label { background: var(--correct); color: #fff; }
+  .option.wrong .opt-label { background: var(--wrong); color: #fff; }
+
+  /* ─── FEEDBACK ────────────────────────────────── */
+  .feedback {
+    border-radius: 9px;
+    padding: 16px 18px;
+    margin-top: 16px;
+    font-size: 14px;
+    line-height: 1.6;
+    display: none;
+  }
+
+  .feedback.show { display: block; animation: fadeUp 0.3s ease; }
+  .feedback.correct-fb { background: var(--correct-bg); border: 1px solid rgba(61,184,138,0.3); color: #6ee7b7; }
+  .feedback.wrong-fb { background: var(--wrong-bg); border: 1px solid rgba(224,92,92,0.3); color: #fca5a5; }
+
+  .feedback strong { display: block; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 4px; }
+
+  /* ─── FILL IN THE BLANK ───────────────────────── */
+  .blank-input {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 15px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+
+  .blank-input:focus { border-color: var(--accent); }
+  .blank-input.correct { border-color: var(--correct); background: var(--correct-bg); }
+  .blank-input.wrong { border-color: var(--wrong); background: var(--wrong-bg); }
+
+  .word-bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .word-chip {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .word-chip:hover { border-color: var(--accent); background: var(--accent-dim); color: var(--accent); }
+  .word-chip.used { opacity: 0.35; pointer-events: none; }
+
+  .fitb-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+
+  .fitb-sentence {
+    font-size: 15px;
+    line-height: 1.6;
+    flex: 1;
+    min-width: 200px;
+  }
+
+  /* ─── MATCHING ────────────────────────────────── */
+  .matching-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .match-col { display: flex; flex-direction: column; gap: 8px; }
+
+  .match-term {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 9px;
+    padding: 14px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    min-height: 54px;
+    display: flex;
+    align-items: center;
+  }
+
+  .match-select {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 9px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s;
+    min-height: 54px;
+    -webkit-appearance: none;
+  }
+
+  .match-select:focus { border-color: var(--accent); }
+  .match-select.correct { border-color: var(--correct); background: var(--correct-bg); }
+  .match-select.wrong { border-color: var(--wrong); background: var(--wrong-bg); }
+
+  /* ─── BUTTONS ─────────────────────────────────── */
+  .btn-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    background: var(--accent);
+    color: #0f1117;
+    border: none;
+    border-radius: 9px;
+    padding: 14px 28px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    letter-spacing: 0.2px;
+  }
+
+  .btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+  .btn.secondary {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    color: var(--text);
+  }
+  .btn.secondary:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+
+  .btn[style*="display: none"], .btn.hidden { display: none !important; }
+
+  /* ─── FINAL SCREEN ────────────────────────────── */
+  .final-screen {
+    text-align: center;
+    padding: 40px 24px;
+    animation: fadeUp 0.6s ease;
+  }
+
+  .final-icon {
+    font-size: 56px;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .final-score-big {
+    font-family: 'Playfair Display', serif;
+    font-size: 64px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .final-label {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+
+  .final-message {
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1.6;
+    max-width: 480px;
+    margin: 0 auto 32px;
+    font-family: 'Playfair Display', serif;
+  }
+
+  /* ─── DIVIDER ─────────────────────────────────── */
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 36px 0;
+  }
+
+  /* ─── ANIMATIONS ──────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── DRAG & DROP ─────────────────────────────── */
+  .drag-container { display: flex; flex-direction: column; gap: 24px; }
+
+  .drag-bank-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .drag-bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 44px;
+    background: var(--surface);
+    border: 1.5px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 12px;
+  }
+
+  .drag-chip {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: grab;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    transition: border-color 0.2s, background 0.2s, transform 0.15s, opacity 0.2s;
+    user-select: none;
+  }
+
+  .drag-chip:hover { border-color: var(--accent); background: var(--accent-dim); transform: scale(1.03); }
+  .drag-chip.dragging { opacity: 0.4; transform: scale(0.96); }
+  .drag-chip.placed { opacity: 0.35; pointer-events: none; }
+
+  .drop-targets { display: flex; flex-direction: column; gap: 12px; }
+
+  .drop-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 14px 16px;
+  }
+
+  .drop-sentence {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text);
+    flex: 1;
+  }
+
+  .drop-zone {
+    background: var(--surface);
+    border: 1.5px dashed var(--border);
+    border-radius: 8px;
+    padding: 8px 16px;
+    min-width: 140px;
+    min-height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .drop-zone.over { border-color: var(--accent); background: var(--accent-dim); }
+  .drop-zone.filled { border-style: solid; border-color: var(--border); color: var(--text); cursor: pointer; }
+  .drop-zone.filled:hover { border-color: var(--wrong); }
+  .drop-zone.correct { border-color: var(--correct); background: var(--correct-bg); color: var(--correct); }
+  .drop-zone.wrong { border-color: var(--wrong); background: var(--wrong-bg); color: var(--wrong); }
+
+  select option { background: #1e2333; color: #e8eaf0; }
+
+  @media (max-width: 600px) {
+    .matching-grid { grid-template-columns: 1fr; }
+    .activity-title { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <svg class="logo-svg" width="200" height="62" viewBox="0 0 200 62" xmlns="http://www.w3.org/2000/svg">
+    <text x="100" y="30" text-anchor="middle"
+          font-family="'Playfair Display', Georgia, serif"
+          font-size="28" font-weight="700" fill="#e8a830" letter-spacing="5">FORBES</text>
+    <line x1="20" y1="38" x2="180" y2="38" stroke="#e8a830" stroke-width="0.8" opacity="0.5"/>
+    <text x="100" y="56" text-anchor="middle"
+          font-family="'DM Sans', Arial, sans-serif"
+          font-size="13" font-weight="600" fill="#c49020" letter-spacing="8">ENGLISH</text>
+  </svg>
+  <div class="lesson-tag">Construction Contracts · B2</div>
+</div>
+
+<!-- SCORE BAR -->
+<div class="score-bar" id="scoreBar">
+  <div class="score-pill">Score: <span id="scoreDisplay">0</span></div>
+  <div class="progress-wrap">
+    <div class="progress-label" id="progressLabel">Activity 1 of 3</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  </div>
+  <div style="color: var(--muted); font-size: 13px;" id="qCounterGlobal">Q 0 / 17</div>
+</div>
+
+<!-- MAIN -->
+<div class="main" id="mainContent"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════
+
+const activities = [
+
+  // ─── ACTIVITY 1: MULTIPLE CHOICE ──────────────────────
+  {
+    type: 'mc',
+    title: 'Contract Concepts',
+    subtitle: 'Select the best answer for each question about construction contract language.',
+    illustrationFn: drawBuildingIllustration,
+    questions: [
+      {
+        text: 'A contractor signs a <em>lump-sum contract</em> for a new office building. What does this mean for the client?',
+        options: [
+          { label: 'A', text: 'The client pays all project costs plus an agreed management fee.' },
+          { label: 'B', text: 'The client pays a single fixed price, regardless of the contractor\'s actual costs.' },
+          { label: 'C', text: 'The client and contractor share all financial risks and savings equally.' },
+          { label: 'D', text: 'The client pays the contractor only after the building is fully inspected.' }
+        ],
+        correct: 1,
+        explanation: 'A lump-sum contract fixes the total price upfront. The client knows their exact financial commitment, and any cost overruns are the contractor\'s responsibility — not the client\'s.'
+      },
+      {
+        text: 'A project agreement states that the contractor will receive a <em>performance bonus</em> if the building is completed two weeks ahead of schedule. This is an example of:',
+        options: [
+          { label: 'A', text: 'A penalty clause designed to punish poor performance.' },
+          { label: 'B', text: 'A cost-plus fee added to reimburse contractor expenses.' },
+          { label: 'C', text: 'A financial incentive to motivate early delivery.' },
+          { label: 'D', text: 'A change order modifying the original scope of work.' }
+        ],
+        correct: 2,
+        explanation: 'A performance bonus is a positive incentive — it rewards contractors for exceeding targets. This is different from a penalty clause, which punishes underperformance.'
+      },
+      {
+        text: 'In a <em>target cost contract</em>, the project comes in €2M under budget. How are the savings typically handled?',
+        options: [
+          { label: 'A', text: 'The client retains all savings, as they were funding the project.' },
+          { label: 'B', text: 'The contractor keeps all savings as reward for efficiency.' },
+          { label: 'C', text: 'The savings are shared between client and contractor according to an agreed formula.' },
+          { label: 'D', text: 'Savings are reinvested into additional project features automatically.' }
+        ],
+        correct: 2,
+        explanation: 'Target cost contracts use a "pain/gain" mechanism — savings and overruns are shared according to a pre-agreed ratio. This aligns the financial interests of both parties.'
+      },
+      {
+        text: 'Which contract type carries the <em>greatest financial risk</em> for the client?',
+        options: [
+          { label: 'A', text: 'A lump-sum contract with detailed specifications.' },
+          { label: 'B', text: 'A cost-plus contract with no upper cost limit.' },
+          { label: 'C', text: 'A target cost contract with shared savings incentives.' },
+          { label: 'D', text: 'An incentive-based contract with performance milestones.' }
+        ],
+        correct: 1,
+        explanation: 'In a cost-plus contract without a cap, the client reimburses all costs plus a fee — there is no financial ceiling. If costs escalate, the client absorbs the full impact.'
+      },
+      {
+        text: 'A client issues a formal request to add a rooftop terrace to an office block that is already under construction. In contract terminology, this is called a:',
+        options: [
+          { label: 'A', text: 'Value engineering proposal for scope optimisation.' },
+          { label: 'B', text: 'Procurement strategy revision to reflect new priorities.' },
+          { label: 'C', text: 'Performance milestone requiring an updated timeline.' },
+          { label: 'D', text: 'Change order modifying the agreed scope of work.' }
+        ],
+        correct: 3,
+        explanation: 'A change order (or variation order) is a formal document that modifies the original contract — adjusting scope, cost, and/or timeline. They are common in large construction projects.'
+      },
+      {
+        text: '<em>Value engineering</em> in a construction context refers to:',
+        options: [
+          { label: 'A', text: 'A method of calculating the contractor\'s profit margin on materials.' },
+          { label: 'B', text: 'A systematic review that improves project value by optimising design or materials without reducing quality.' },
+          { label: 'C', text: 'A penalty clause triggered when the contractor uses inferior materials.' },
+          { label: 'D', text: 'A procurement process for selecting the most affordable contractor.' }
+        ],
+        correct: 1,
+        explanation: 'Value engineering analyses a project to find ways to achieve the same function at lower cost or better performance at the same cost — without compromising the design intent.'
+      },
+    ]
+  },
+
+  // ─── ACTIVITY 2: DRAG & DROP ───────────────────────────
+  {
+    type: 'drag',
+    title: 'Risk Allocation',
+    subtitle: 'Drag the correct contract term to complete each sentence about risk and incentive structures.',
+    illustrationFn: drawContractIllustration,
+    items: [
+      {
+        sentence: 'The decision about which party bears the cost of unforeseen ground conditions is a matter of ___.',
+        answer: 'risk allocation',
+        hint: 'Distribution of financial responsibility between parties'
+      },
+      {
+        sentence: 'The client chose a ___ contract, paying the contractor\'s verified invoices plus a 12% management fee.',
+        answer: 'cost-plus',
+        hint: 'Client covers actual costs plus an agreed fee'
+      },
+      {
+        sentence: 'To encourage the contractor to finish the motorway extension early, the government included a ___ of €50,000 per week saved.',
+        answer: 'performance bonus',
+        hint: 'Extra payment for exceeding agreed targets'
+      },
+      {
+        sentence: 'After reviewing the structural drawings, the engineering team submitted a ___ proposal to replace steel beams with a lighter composite material.',
+        answer: 'value engineering',
+        hint: 'Achieving the same function at lower cost or better efficiency'
+      },
+      {
+        sentence: 'The contract stipulated ___ of €20,000 for each day the station remained incomplete beyond the agreed handover date.',
+        answer: 'penalty clauses',
+        hint: 'Financial consequences written into the contract for failure to meet targets'
+      },
+      {
+        sentence: 'Before inviting tenders, the client\'s team developed a detailed ___ to determine whether to use a public-private partnership or a traditional procurement route.',
+        answer: 'procurement strategy',
+        hint: 'Planned approach to selecting and engaging contractors'
+      },
+    ],
+    bank: ['risk allocation', 'cost-plus', 'performance bonus', 'value engineering', 'penalty clauses', 'procurement strategy']
+  },
+
+  // ─── ACTIVITY 3: MATCHING ──────────────────────────────
+  {
+    type: 'match',
+    title: 'Terms in Context',
+    subtitle: 'Match each contract term on the left to its correct definition on the right.',
+    illustrationFn: drawHandshakeIllustration,
+    pairs: [
+      { term: 'Lump-sum contract', def: 'A single fixed price agreed before work begins' },
+      { term: 'Target cost contract', def: 'A model where cost savings and overruns are shared between client and contractor' },
+      { term: 'Change order', def: 'A formal instruction to modify the agreed scope, cost or schedule' },
+      { term: 'Risk allocation', def: 'The process of assigning financial responsibility for uncertainties to each party' },
+      { term: 'Procurement strategy', def: 'A planned approach for selecting and contracting a project supplier' },
+      { term: 'Value engineering', def: 'A systematic method to improve project value without reducing quality' },
+    ]
+  }
+];
+
+// ═══════════════════════════════════════════════════════
+// SVG ILLUSTRATIONS
+// ═══════════════════════════════════════════════════════
+
+function drawBuildingIllustration(container) {
+  container.innerHTML = `
+  <svg width="320" height="140" viewBox="0 0 320 140" xmlns="http://www.w3.org/2000/svg">
+    <!-- Sky gradient -->
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#1a2540"/>
+        <stop offset="100%" stop-color="#0f1117"/>
+      </linearGradient>
+    </defs>
+    <rect width="320" height="140" fill="url(#sky)" rx="8"/>
+    <!-- Ground -->
+    <rect x="0" y="118" width="320" height="22" fill="#141824" rx="0"/>
+    <!-- Building 1 (tall) -->
+    <rect x="40" y="30" width="50" height="90" fill="#1e2a45" rx="3"/>
+    <rect x="42" y="32" width="46" height="86" fill="#1e2a45"/>
+    <!-- Windows building 1 -->
+    <rect x="48" y="38" width="10" height="8" fill="#e8a830" opacity="0.7" rx="1"/>
+    <rect x="63" y="38" width="10" height="8" fill="#e8a830" opacity="0.4" rx="1"/>
+    <rect x="78" y="38" width="8" height="8" fill="#e8a830" opacity="0.6" rx="1"/>
+    <rect x="48" y="52" width="10" height="8" fill="#e8a830" opacity="0.5" rx="1"/>
+    <rect x="63" y="52" width="10" height="8" fill="#c49020" opacity="0.8" rx="1"/>
+    <rect x="78" y="52" width="8" height="8" fill="#e8a830" opacity="0.3" rx="1"/>
+    <rect x="48" y="66" width="10" height="8" fill="#e8a830" opacity="0.9" rx="1"/>
+    <rect x="63" y="66" width="10" height="8" fill="#e8a830" opacity="0.4" rx="1"/>
+    <rect x="78" y="66" width="8" height="8" fill="#e8a830" opacity="0.7" rx="1"/>
+    <rect x="48" y="80" width="10" height="8" fill="#e8a830" opacity="0.3" rx="1"/>
+    <rect x="63" y="80" width="10" height="8" fill="#e8a830" opacity="0.6" rx="1"/>
+    <rect x="48" y="94" width="10" height="8" fill="#e8a830" opacity="0.5" rx="1"/>
+    <rect x="63" y="94" width="10" height="8" fill="#e8a830" opacity="0.8" rx="1"/>
+    <!-- Building 2 (medium) -->
+    <rect x="100" y="55" width="42" height="65" fill="#19253d" rx="3"/>
+    <rect x="106" y="60" width="8" height="7" fill="#e8a830" opacity="0.6" rx="1"/>
+    <rect x="118" y="60" width="8" height="7" fill="#e8a830" opacity="0.4" rx="1"/>
+    <rect x="130" y="60" width="8" height="7" fill="#e8a830" opacity="0.7" rx="1"/>
+    <rect x="106" y="72" width="8" height="7" fill="#e8a830" opacity="0.5" rx="1"/>
+    <rect x="118" y="72" width="8" height="7" fill="#e8a830" opacity="0.9" rx="1"/>
+    <rect x="130" y="72" width="8" height="7" fill="#e8a830" opacity="0.3" rx="1"/>
+    <rect x="106" y="84" width="8" height="7" fill="#e8a830" opacity="0.7" rx="1"/>
+    <rect x="118" y="84" width="8" height="7" fill="#e8a830" opacity="0.5" rx="1"/>
+    <rect x="130" y="84" width="8" height="7" fill="#e8a830" opacity="0.8" rx="1"/>
+    <rect x="106" y="96" width="8" height="7" fill="#e8a830" opacity="0.4" rx="1"/>
+    <rect x="118" y="96" width="8" height="7" fill="#e8a830" opacity="0.6" rx="1"/>
+    <!-- Crane -->
+    <rect x="160" y="20" width="4" height="100" fill="#2d3a5c" rx="2"/>
+    <rect x="164" y="20" width="60" height="3" fill="#2d3a5c" rx="2"/>
+    <rect x="155" y="20" width="10" height="3" fill="#2d3a5c" rx="1"/>
+    <line x1="164" y1="23" x2="196" y2="60" stroke="#e8a830" stroke-width="0.8" opacity="0.5"/>
+    <rect x="190" y="58" width="14" height="12" fill="#1e2333" stroke="#e8a830" stroke-width="0.8" rx="2"/>
+    <!-- Building 3 (right) -->
+    <rect x="230" y="45" width="54" height="75" fill="#1e2a45" rx="3"/>
+    <rect x="236" y="50" width="8" height="7" fill="#e8a830" opacity="0.5" rx="1"/>
+    <rect x="249" y="50" width="8" height="7" fill="#e8a830" opacity="0.8" rx="1"/>
+    <rect x="262" y="50" width="8" height="7" fill="#e8a830" opacity="0.3" rx="1"/>
+    <rect x="275" y="50" width="6" height="7" fill="#e8a830" opacity="0.6" rx="1"/>
+    <rect x="236" y="62" width="8" height="7" fill="#e8a830" opacity="0.9" rx="1"/>
+    <rect x="249" y="62" width="8" height="7" fill="#e8a830" opacity="0.4" rx="1"/>
+    <rect x="262" y="62" width="8" height="7" fill="#e8a830" opacity="0.7" rx="1"/>
+    <rect x="275" y="62" width="6" height="7" fill="#e8a830" opacity="0.5" rx="1"/>
+    <rect x="236" y="74" width="8" height="7" fill="#e8a830" opacity="0.6" rx="1"/>
+    <rect x="249" y="74" width="8" height="7" fill="#e8a830" opacity="0.3" rx="1"/>
+    <rect x="262" y="74" width="8" height="7" fill="#e8a830" opacity="0.8" rx="1"/>
+    <rect x="236" y="86" width="8" height="7" fill="#e8a830" opacity="0.4" rx="1"/>
+    <rect x="249" y="86" width="8" height="7" fill="#e8a830" opacity="0.7" rx="1"/>
+    <rect x="262" y="86" width="8" height="7" fill="#e8a830" opacity="0.5" rx="1"/>
+    <!-- Stars -->
+    <circle cx="25" cy="20" r="1" fill="#e8a830" opacity="0.6"/>
+    <circle cx="200" cy="12" r="1" fill="#e8a830" opacity="0.4"/>
+    <circle cx="310" cy="18" r="0.8" fill="#e8a830" opacity="0.7"/>
+    <circle cx="14" cy="38" r="0.8" fill="#e8a830" opacity="0.5"/>
+    <circle cx="215" cy="30" r="0.7" fill="#e8a830" opacity="0.4"/>
+  </svg>`;
+}
+
+function drawContractIllustration(container) {
+  container.innerHTML = `
+  <svg width="300" height="130" viewBox="0 0 300 130" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="docGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#1e2a45"/>
+        <stop offset="100%" stop-color="#141824"/>
+      </linearGradient>
+    </defs>
+    <!-- Document background -->
+    <rect x="50" y="10" width="200" height="115" fill="url(#docGrad)" rx="8" stroke="#2a3045" stroke-width="1.5"/>
+    <!-- Header area -->
+    <rect x="50" y="10" width="200" height="28" fill="#1e2a45" rx="8"/>
+    <rect x="50" y="30" width="200" height="8" fill="#1e2a45"/>
+    <!-- Title lines -->
+    <rect x="90" y="18" width="120" height="5" fill="#e8a830" opacity="0.7" rx="2"/>
+    <rect x="110" y="26" width="80" height="3" fill="#e8a830" opacity="0.3" rx="2"/>
+    <!-- Clause lines -->
+    <rect x="65" y="46" width="170" height="3" fill="#2a3a5c" rx="2"/>
+    <rect x="65" y="54" width="140" height="3" fill="#2a3a5c" rx="2"/>
+    <rect x="65" y="62" width="155" height="3" fill="#2a3a5c" rx="2"/>
+    <rect x="65" y="70" width="120" height="3" fill="#2a3a5c" rx="2"/>
+    <!-- Section divider -->
+    <line x1="65" y1="80" x2="235" y2="80" stroke="#e8a830" stroke-width="0.8" opacity="0.3"/>
+    <!-- More lines -->
+    <rect x="65" y="87" width="160" height="3" fill="#2a3a5c" rx="2"/>
+    <rect x="65" y="95" width="130" height="3" fill="#2a3a5c" rx="2"/>
+    <!-- Signature area -->
+    <rect x="65" y="108" width="70" height="10" fill="#1a2540" rx="3" stroke="#e8a830" stroke-width="0.8" opacity="0.5"/>
+    <rect x="165" y="108" width="70" height="10" fill="#1a2540" rx="3" stroke="#e8a830" stroke-width="0.8" opacity="0.5"/>
+    <!-- Stamp circle -->
+    <circle cx="248" cy="68" r="22" fill="none" stroke="#e8a830" stroke-width="1.5" opacity="0.4"/>
+    <circle cx="248" cy="68" r="16" fill="none" stroke="#e8a830" stroke-width="0.8" opacity="0.3"/>
+    <text x="248" y="72" text-anchor="middle" font-family="'DM Sans'" font-size="7" fill="#e8a830" opacity="0.6" font-weight="600">APPROVED</text>
+    <!-- Corner fold -->
+    <polygon points="230,10 250,10 250,28" fill="#141824"/>
+    <polygon points="230,10 250,28 230,28" fill="#2a3a5c" opacity="0.5"/>
+  </svg>`;
+}
+
+function drawHandshakeIllustration(container) {
+  container.innerHTML = `
+  <svg width="300" height="130" viewBox="0 0 300 130" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#141824"/>
+        <stop offset="100%" stop-color="#0f1117"/>
+      </linearGradient>
+    </defs>
+    <rect width="300" height="130" fill="url(#bgGrad)" rx="8"/>
+    <!-- Left arm -->
+    <path d="M 30 90 Q 60 75 100 80 L 148 78" stroke="#c49020" stroke-width="12" fill="none" stroke-linecap="round"/>
+    <!-- Right arm -->
+    <path d="M 270 90 Q 240 75 200 80 L 152 78" stroke="#2d5a9e" stroke-width="12" fill="none" stroke-linecap="round"/>
+    <!-- Handshake join -->
+    <ellipse cx="150" cy="78" rx="22" ry="16" fill="#e8a830" opacity="0.9"/>
+    <ellipse cx="150" cy="78" rx="15" ry="10" fill="#c49020"/>
+    <!-- Glow -->
+    <ellipse cx="150" cy="78" rx="30" ry="22" fill="#e8a830" opacity="0.06"/>
+    <!-- Left dots (client) -->
+    <text x="55" y="55" text-anchor="middle" font-family="'DM Sans'" font-size="9" fill="#e8a830" opacity="0.7" font-weight="600">CLIENT</text>
+    <text x="245" y="55" text-anchor="middle" font-family="'DM Sans'" font-size="9" fill="#6a8fd8" opacity="0.7" font-weight="600">CONTRACTOR</text>
+    <!-- Connecting lines suggesting agreement -->
+    <line x1="90" y1="105" x2="210" y2="105" stroke="#e8a830" stroke-width="0.8" opacity="0.2" stroke-dasharray="4,4"/>
+    <text x="150" y="120" text-anchor="middle" font-family="'DM Sans'" font-size="8" fill="#7a829e" opacity="0.8">MUTUAL AGREEMENT</text>
+    <!-- sparkles -->
+    <text x="150" y="38" text-anchor="middle" font-size="14" fill="#e8a830" opacity="0.6">✦</text>
+    <text x="120" y="50" text-anchor="middle" font-size="8" fill="#e8a830" opacity="0.4">✦</text>
+    <text x="180" y="50" text-anchor="middle" font-size="8" fill="#e8a830" opacity="0.4">✦</text>
+  </svg>`;
+}
+
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
+
+let totalQuestions = 0;
+activities.forEach(a => {
+  if (a.type === 'mc') totalQuestions += a.questions.length;
+  else if (a.type === 'drag') totalQuestions += a.items.length;
+  else if (a.type === 'match') totalQuestions += a.pairs.length;
+});
+
+let score = 0;
+let answeredCount = 0;
+let currentActivity = 0;
+
+// ─── MC state
+let mcCurrentQ = 0;
+let mcAnswered = false;
+
+// ─── Drag state
+let dragPlaced = {};
+let dragAnswered = false;
+let draggingChip = null;
+
+// ─── Match state
+let matchAnswered = false;
+
+// ═══════════════════════════════════════════════════════
+// RENDER ROUTER
+// ═══════════════════════════════════════════════════════
+
+function updateScoreBar() {
+  document.getElementById('scoreDisplay').textContent = score;
+  document.getElementById('progressLabel').textContent = `Activity ${currentActivity + 1} of ${activities.length}`;
+  const pct = (answeredCount / totalQuestions) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('qCounterGlobal').textContent = `Q ${answeredCount} / ${totalQuestions}`;
+}
+
+function render() {
+  updateScoreBar();
+  const main = document.getElementById('mainContent');
+  main.innerHTML = '';
+  if (currentActivity >= activities.length) {
+    renderFinal(main);
+    return;
+  }
+  const act = activities[currentActivity];
+  if (act.type === 'mc') renderMC(main, act);
+  else if (act.type === 'drag') renderDrag(main, act);
+  else if (act.type === 'match') renderMatch(main, act);
+}
+
+// ═══════════════════════════════════════════════════════
+// ACTIVITY 1 – MULTIPLE CHOICE
+// ═══════════════════════════════════════════════════════
+
+function renderMC(container, act) {
+  mcAnswered = false;
+
+  const q = act.questions[mcCurrentQ];
+  const totalInAct = act.questions.length;
+
+  // Header (only on first question)
+  if (mcCurrentQ === 0) {
+    const hdr = document.createElement('div');
+    hdr.className = 'activity-header';
+    hdr.innerHTML = `
+      <div class="activity-num">Activity 1 — Multiple Choice</div>
+      <div class="activity-title">${act.title}</div>
+      <div class="activity-subtitle">${act.subtitle}</div>`;
+    container.appendChild(hdr);
+
+    const illus = document.createElement('div');
+    illus.className = 'illustration-wrap';
+    act.illustrationFn(illus);
+    container.appendChild(illus);
+  } else {
+    const mini = document.createElement('div');
+    mini.className = 'activity-header';
+    mini.innerHTML = `<div class="activity-num">Activity 1 — Multiple Choice · ${act.title}</div>`;
+    container.appendChild(mini);
+  }
+
+  const card = document.createElement('div');
+  card.className = 'question-card';
+  card.innerHTML = `
+    <div class="q-counter">Question ${mcCurrentQ + 1} of ${totalInAct}</div>
+    <div class="q-text">${q.text}</div>
+    <div class="options" id="optionsWrap"></div>
+    <div class="feedback" id="feedback"></div>`;
+  container.appendChild(card);
+
+  const optWrap = card.querySelector('#optionsWrap');
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('div');
+    btn.className = 'option';
+    btn.innerHTML = `<span class="opt-label">${opt.label}</span><span>${opt.text}</span>`;
+    btn.addEventListener('click', () => selectMC(i, q, optWrap, card));
+    optWrap.appendChild(btn);
+  });
+
+  const btnRow = document.createElement('div');
+  btnRow.className = 'btn-row';
+  btnRow.innerHTML = `<button class="btn" id="nextBtn" style="display:none" onclick="nextMC(${JSON.stringify(act.questions.length)})">Next Question →</button>`;
+  container.appendChild(btnRow);
+}
+
+function selectMC(idx, q, optWrap, card) {
+  if (mcAnswered) return;
+  mcAnswered = true;
+  answeredCount++;
+
+  const opts = optWrap.querySelectorAll('.option');
+  opts.forEach((o, i) => {
+    o.classList.add('disabled');
+    if (i === q.correct) o.classList.add('correct');
+    else if (i === idx) o.classList.add('wrong');
+  });
+
+  const isCorrect = idx === q.correct;
+  if (isCorrect) score++;
+
+  const fb = card.querySelector('#feedback');
+  fb.className = `feedback ${isCorrect ? 'correct-fb' : 'wrong-fb'} show`;
+  fb.innerHTML = `<strong>${isCorrect ? '✓ Correct' : '✗ Not quite'}</strong>${q.explanation}`;
+
+  document.getElementById('nextBtn').style.display = 'block';
+  updateScoreBar();
+}
+
+function nextMC(total) {
+  mcCurrentQ++;
+  if (mcCurrentQ >= total) {
+    currentActivity++;
+    mcCurrentQ = 0;
+  }
+  render();
+}
+
+// ═══════════════════════════════════════════════════════
+// ACTIVITY 2 – DRAG & DROP
+// ═══════════════════════════════════════════════════════
+
+function renderDrag(container, act) {
+  dragPlaced = {};
+  dragAnswered = false;
+
+  const hdr = document.createElement('div');
+  hdr.className = 'activity-header';
+  hdr.innerHTML = `
+    <div class="activity-num">Activity 2 — Drag & Drop</div>
+    <div class="activity-title">${act.title}</div>
+    <div class="activity-subtitle">${act.subtitle}</div>`;
+  container.appendChild(hdr);
+
+  const illus = document.createElement('div');
+  illus.className = 'illustration-wrap';
+  act.illustrationFn(illus);
+  container.appendChild(illus);
+
+  const card = document.createElement('div');
+  card.className = 'question-card';
+
+  // Word bank
+  const bankLabel = document.createElement('div');
+  bankLabel.className = 'drag-bank-label';
+  bankLabel.textContent = 'Word Bank — Drag a term to the correct sentence';
+  card.appendChild(bankLabel);
+
+  const bank = document.createElement('div');
+  bank.className = 'drag-bank';
+  bank.id = 'dragBank';
+
+  // Shuffle bank
+  const shuffled = [...act.bank].sort(() => Math.random() - 0.5);
+  shuffled.forEach(word => {
+    const chip = createDragChip(word);
+    bank.appendChild(chip);
+  });
+  card.appendChild(bank);
+
+  // Drop targets
+  const targets = document.createElement('div');
+  targets.className = 'drop-targets';
+  targets.style.marginTop = '20px';
+
+  act.items.forEach((item, i) => {
+    const row = document.createElement('div');
+    row.className = 'drop-row';
+    row.innerHTML = `
+      <div class="drop-sentence">${item.sentence.replace('___', '<span style="color:var(--accent);font-weight:600">___</span>')}</div>
+      <div class="drop-zone" id="drop-${i}" data-index="${i}" data-answer="${item.answer}">Drop here</div>`;
+    targets.appendChild(row);
+  });
+  card.appendChild(targets);
+
+  const btnRow = document.createElement('div');
+  btnRow.className = 'btn-row';
+  btnRow.innerHTML = `
+    <button class="btn" id="checkDragBtn" onclick="checkDrag(${act.items.length})">Check Answers</button>
+    <div class="feedback" id="dragFeedback" style="margin-top:0; display:none; flex:1"></div>`;
+  card.appendChild(btnRow);
+
+  container.appendChild(card);
+
+  // Set up drop zones
+  act.items.forEach((_, i) => {
+    const dz = document.getElementById(`drop-${i}`);
+    setupDropZone(dz);
+  });
+
+  // Set up drag chips
+  card.querySelectorAll('.drag-chip').forEach(chip => setupDragChip(chip));
+}
+
+function createDragChip(word) {
+  const chip = document.createElement('div');
+  chip.className = 'drag-chip';
+  chip.textContent = word;
+  chip.draggable = true;
+  chip.dataset.word = word;
+  return chip;
+}
+
+function setupDragChip(chip) {
+  chip.addEventListener('dragstart', e => {
+    draggingChip = chip;
+    chip.classList.add('dragging');
+    e.dataTransfer.setData('text/plain', chip.dataset.word);
+  });
+  chip.addEventListener('dragend', () => {
+    chip.classList.remove('dragging');
+    draggingChip = null;
+  });
+}
+
+function setupDropZone(dz) {
+  dz.addEventListener('dragover', e => {
+    e.preventDefault();
+    dz.classList.add('over');
+  });
+  dz.addEventListener('dragleave', () => dz.classList.remove('over'));
+  dz.addEventListener('drop', e => {
+    e.preventDefault();
+    dz.classList.remove('over');
+    const word = e.dataTransfer.getData('text/plain');
+    placeInDropZone(dz, word);
+  });
+  // Click to remove
+  dz.addEventListener('click', () => {
+    if (dz.classList.contains('filled') && !dragAnswered) {
+      const word = dz.dataset.placed;
+      delete dragPlaced[dz.dataset.index];
+      // Restore chip
+      const chip = document.querySelector(`[data-word="${word}"].drag-chip`);
+      if (chip) chip.classList.remove('placed');
+      dz.textContent = 'Drop here';
+      dz.className = 'drop-zone';
+      delete dz.dataset.placed;
+    }
+  });
+}
+
+function placeInDropZone(dz, word) {
+  if (dragAnswered) return;
+  const idx = dz.dataset.index;
+
+  // If something was already here, return it
+  if (dz.dataset.placed) {
+    const old = dz.dataset.placed;
+    const oldChip = document.querySelector(`[data-word="${old}"].drag-chip`);
+    if (oldChip) oldChip.classList.remove('placed');
+    delete dragPlaced[idx];
+  }
+
+  // Mark chip as placed
+  const chip = document.querySelector(`[data-word="${word}"].drag-chip`);
+  if (chip) chip.classList.add('placed');
+
+  dz.textContent = word;
+  dz.className = 'drop-zone filled';
+  dz.dataset.placed = word;
+  dragPlaced[idx] = word;
+}
+
+function checkDrag(total) {
+  if (dragAnswered) return;
+  dragAnswered = true;
+
+  const act = activities[currentActivity];
+  let correct = 0;
+
+  for (let i = 0; i < total; i++) {
+    const dz = document.getElementById(`drop-${i}`);
+    const expected = act.items[i].answer;
+    const placed = dragPlaced[i] || '';
+    if (placed === expected) {
+      correct++;
+      score++;
+      dz.classList.add('correct');
+    } else {
+      dz.classList.add('wrong');
+      dz.title = `Answer: ${expected}`;
+    }
+  }
+
+  answeredCount += total;
+  updateScoreBar();
+
+  const fb = document.getElementById('dragFeedback');
+  fb.style.display = 'block';
+  fb.className = `feedback ${correct === total ? 'correct-fb' : correct > total / 2 ? 'correct-fb' : 'wrong-fb'} show`;
+  fb.style.marginTop = '16px';
+  fb.innerHTML = `<strong>${correct}/${total} correct</strong>
+    ${correct === total ? 'Excellent — all terms placed correctly!' :
+      correct > total / 2 ? 'Good effort. Red zones show the correct terms — review those.' :
+      'Keep practising — red zones show where to review. The correct terms are: ' + act.items.map((it, i) => dragPlaced[i] !== it.answer ? `<em>${it.answer}</em>` : '').filter(Boolean).join(', ')}`;
+
+  // Show correct answers in wrong zones
+  for (let i = 0; i < total; i++) {
+    const dz = document.getElementById(`drop-${i}`);
+    if (dz.classList.contains('wrong')) {
+      dz.textContent = act.items[i].answer;
+    }
+  }
+
+  // Replace check button with next
+  document.getElementById('checkDragBtn').outerHTML = `<button class="btn" onclick="nextActivity()">Next Activity →</button>`;
+}
+
+function nextActivity() {
+  currentActivity++;
+  render();
+}
+
+// ═══════════════════════════════════════════════════════
+// ACTIVITY 3 – MATCHING
+// ═══════════════════════════════════════════════════════
+
+function renderMatch(container, act) {
+  matchAnswered = false;
+
+  const hdr = document.createElement('div');
+  hdr.className = 'activity-header';
+  hdr.innerHTML = `
+    <div class="activity-num">Activity 3 — Matching</div>
+    <div class="activity-title">${act.title}</div>
+    <div class="activity-subtitle">${act.subtitle}</div>`;
+  container.appendChild(hdr);
+
+  const illus = document.createElement('div');
+  illus.className = 'illustration-wrap';
+  act.illustrationFn(illus);
+  container.appendChild(illus);
+
+  const card = document.createElement('div');
+  card.className = 'question-card';
+
+  // Shuffle definitions for dropdown options
+  const defs = act.pairs.map(p => p.def);
+  const shuffledDefs = [...defs].sort(() => Math.random() - 0.5);
+
+  const grid = document.createElement('div');
+  grid.className = 'matching-grid';
+
+  const leftCol = document.createElement('div');
+  leftCol.className = 'match-col';
+  const rightCol = document.createElement('div');
+  rightCol.className = 'match-col';
+
+  act.pairs.forEach((pair, i) => {
+    const term = document.createElement('div');
+    term.className = 'match-term';
+    term.textContent = pair.term;
+    leftCol.appendChild(term);
+
+    const sel = document.createElement('select');
+    sel.className = 'match-select';
+    sel.id = `match-${i}`;
+    sel.innerHTML = `<option value="">— Select a definition —</option>` +
+      shuffledDefs.map(d => `<option value="${d}">${d}</option>`).join('');
+    rightCol.appendChild(sel);
+  });
+
+  grid.appendChild(leftCol);
+  grid.appendChild(rightCol);
+  card.appendChild(grid);
+
+  const fb = document.createElement('div');
+  fb.className = 'feedback';
+  fb.id = 'matchFeedback';
+  card.appendChild(fb);
+
+  const btnRow = document.createElement('div');
+  btnRow.className = 'btn-row';
+  btnRow.innerHTML = `<button class="btn" id="checkMatchBtn" onclick="checkMatch(${act.pairs.length})">Check Answers</button>`;
+  card.appendChild(btnRow);
+
+  container.appendChild(card);
+}
+
+function checkMatch(total) {
+  if (matchAnswered) return;
+  matchAnswered = true;
+
+  const act = activities[currentActivity];
+  let correct = 0;
+
+  for (let i = 0; i < total; i++) {
+    const sel = document.getElementById(`match-${i}`);
+    const expected = act.pairs[i].def;
+    if (sel.value === expected) {
+      correct++;
+      score++;
+      sel.classList.add('correct');
+    } else {
+      sel.classList.add('wrong');
+    }
+    sel.disabled = true;
+  }
+
+  answeredCount += total;
+  updateScoreBar();
+
+  const fb = document.getElementById('matchFeedback');
+  fb.className = `feedback ${correct >= total * 0.8 ? 'correct-fb' : 'wrong-fb'} show`;
+  fb.innerHTML = `<strong>${correct}/${total} correct</strong>
+    ${correct === total ? 'Perfect matching — excellent vocabulary knowledge!' :
+      correct >= Math.ceil(total / 2) ? 'Well done — review any highlighted terms.' :
+      'Keep reviewing the terminology — check the correct definitions above.'}`;
+
+  document.getElementById('checkMatchBtn').outerHTML = `<button class="btn" onclick="nextActivity()">See Results →</button>`;
+}
+
+// ═══════════════════════════════════════════════════════
+// FINAL SCREEN
+// ═══════════════════════════════════════════════════════
+
+function renderFinal(container) {
+  const pct = Math.round((score / totalQuestions) * 100);
+  let icon = '🏗️', msg = '';
+  if (pct >= 85) { icon = '🏆'; msg = "Outstanding performance. You're thinking and speaking like a contract specialist."; }
+  else if (pct >= 65) { icon = '📋'; msg = "Strong result. A little revision on the technical terms and you'll be fully conference-ready."; }
+  else { icon = '📐'; msg = "A solid start. These contract concepts take time to master — review the terms and try again."; }
+
+  container.innerHTML = `
+    <div class="final-screen">
+      <span class="final-icon">${icon}</span>
+      <div class="final-score-big">${pct}%</div>
+      <div class="final-label">${score} of ${totalQuestions} correct</div>
+      <div class="final-message">${msg}</div>
+      <div class="btn-row" style="justify-content:center">
+        <button class="btn" onclick="restartLesson()">↺ Try Again</button>
+        <button class="btn secondary" onclick="showReview()">Review Key Terms</button>
+      </div>
+      <div id="reviewPanel" style="display:none; margin-top:32px; text-align:left;"></div>
+    </div>`;
+}
+
+function showReview() {
+  const panel = document.getElementById('reviewPanel');
+  if (panel.style.display === 'none') {
+    panel.style.display = 'block';
+    panel.innerHTML = `
+      <hr class="section-divider">
+      <div style="font-family:'Playfair Display',serif; font-size:20px; font-weight:700; margin-bottom:20px;">Key Contract Terms</div>
+      <div style="display:grid; gap:12px;">
+        ${[
+          ['Lump-sum contract', 'A single fixed price agreed before work begins; cost overruns are the contractor\'s responsibility.'],
+          ['Cost-plus contract', 'Client pays all verified costs plus an agreed fee or percentage; financial risk sits with the client.'],
+          ['Target cost contract', 'Savings and overruns are shared between client and contractor via a pre-agreed \'pain/gain\' formula.'],
+          ['Performance bonus', 'A financial incentive paid to the contractor for exceeding agreed targets (time, quality, cost).'],
+          ['Penalty clauses', 'Contract provisions that impose financial penalties for failure to meet specified obligations.'],
+          ['Risk allocation', 'The process of deciding which party is financially responsible for specific project uncertainties.'],
+          ['Value engineering', 'A systematic review to achieve equivalent function at lower cost or better performance at equivalent cost.'],
+          ['Change order', 'A formal contractual instruction to modify the agreed scope, price, or schedule.'],
+          ['Procurement strategy', 'A planned approach to selecting contractors and structuring the commercial relationship.'],
+        ].map(([term, def]) => `
+          <div style="background:var(--card); border:1px solid var(--border); border-radius:9px; padding:16px 18px;">
+            <div style="font-weight:600; color:var(--accent); font-size:14px; margin-bottom:6px;">${term}</div>
+            <div style="font-size:14px; color:var(--muted); line-height:1.6;">${def}</div>
+          </div>`).join('')}
+      </div>`;
+  } else {
+    panel.style.display = 'none';
+  }
+}
+
+function restartLesson() {
+  score = 0;
+  answeredCount = 0;
+  currentActivity = 0;
+  mcCurrentQ = 0;
+  dragPlaced = {};
+  dragAnswered = false;
+  matchAnswered = false;
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ═══════════════════════════════════════════════════════
+// BOOT
+// ═══════════════════════════════════════════════════════
+render();
+</script>
+</body>
+</html>

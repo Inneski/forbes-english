@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Make v Do — Forbes English</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #faf7f2;
+    --ink: #1f2430;
+    --ink-soft: #565c6b;
+    --make: #146b5c;
+    --make-soft: #d9ece7;
+    --make-deep: #0c463c;
+    --do: #3c4a9e;
+    --do-soft: #e1e4f7;
+    --do-deep: #262f6b;
+    --line: #e4ded3;
+    --wrong: #b3432f;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+  }
+
+  .app { max-width: 720px; margin: 0 auto; padding: 0 20px 60px; }
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    background: var(--paper);
+    padding: 16px 0 12px;
+    border-bottom: 1px solid var(--line);
+    z-index: 10;
+  }
+
+  .topbar-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .brand-block { display: flex; align-items: center; gap: 10px; }
+
+  .logo-mark { width: 38px; height: 38px; flex-shrink: 0; }
+
+  .brand-text { display: flex; flex-direction: column; line-height: 1.15; }
+
+  #brandName { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+
+  #lessonTitle { font-family: 'Fraunces', serif; font-weight: 700; font-size: 22px; }
+
+  .topbar-controls { display: flex; align-items: center; gap: 10px; }
+
+  #langBtn {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    border-radius: 20px;
+    padding: 7px 14px;
+    cursor: pointer;
+  }
+
+  .score-chip {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    background: var(--make-soft);
+    color: var(--make-deep);
+    border-radius: 20px;
+    padding: 7px 14px;
+    white-space: nowrap;
+  }
+
+  .progress-track {
+    margin-top: 12px;
+    height: 6px;
+    border-radius: 4px;
+    background: var(--line);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--make), var(--do));
+    transition: width 0.35s ease;
+  }
+
+  #progressLabel {
+    display: block;
+    text-align: right;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+  }
+
+  main { padding-top: 28px; }
+
+  .card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 32px 28px;
+    animation: rise 0.35s ease;
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .subtitle { color: var(--ink-soft); font-size: 15px; margin-top: 0; }
+
+  .intro h2 { font-family: 'Fraunces', serif; font-size: 19px; margin-bottom: 14px; }
+
+  .rule-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+  .rule-row p { margin: 0; font-size: 15px; line-height: 1.5; }
+
+  .pill {
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .pill.make { background: var(--make-soft); color: var(--make-deep); }
+  .pill.do { background: var(--do-soft); color: var(--do-deep); }
+
+  .rule-warning {
+    font-size: 14px;
+    color: var(--ink-soft);
+    background: #fbf3ec;
+    border-left: 3px solid #c98a4b;
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin: 18px 0 22px;
+  }
+
+  .btn.primary {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    background: var(--ink);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 13px 22px;
+    cursor: pointer;
+    width: 100%;
+  }
+  .btn.primary:hover { background: #000; }
+
+  .q-sentence {
+    font-family: 'Fraunces', serif;
+    font-size: 21px;
+    line-height: 1.5;
+    margin-bottom: 26px;
+  }
+
+  .gap {
+    display: inline-block;
+    border-bottom: 2px dashed var(--ink-soft);
+    padding: 0 6px;
+  }
+
+  .q-prompt { color: var(--ink-soft); font-size: 14px; margin-bottom: 14px; }
+
+  .options {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+  .options.stacked { flex-direction: column; }
+
+  .opt-btn {
+    flex: 1;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 16px;
+    border-radius: 12px;
+    border: 2px solid var(--line);
+    background: #fff;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    text-align: center;
+  }
+  .opt-btn.make:hover:not(:disabled) { border-color: var(--make); }
+  .opt-btn.do:hover:not(:disabled) { border-color: var(--do); }
+  .opt-btn.pv:hover:not(:disabled) { border-color: var(--do); }
+  .opt-btn:disabled { cursor: default; }
+
+  .opt-btn.correct { background: var(--make-soft); border-color: var(--make); color: var(--make-deep); }
+  .opt-btn.wrong { background: #fbe8e4; border-color: var(--wrong); color: var(--wrong); }
+
+  .feedback {
+    margin-top: 20px;
+    padding: 16px 18px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 14.5px;
+    line-height: 1.5;
+  }
+  .feedback.good { background: var(--make-soft); color: var(--make-deep); }
+  .feedback.bad { background: #fbe8e4; color: var(--wrong); }
+  .feedback strong { font-family: 'Fraunces', serif; font-size: 16px; }
+  .feedback em { font-style: normal; color: var(--ink-soft); font-size: 13.5px; }
+
+  #nextBtn, #sortNextBtn { margin-top: 22px; }
+
+  .sort-card h2 { font-family: 'Fraunces', serif; font-size: 19px; margin-top: 0; }
+  .sort-help { color: var(--ink-soft); font-size: 14px; margin-top: -6px; }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 20px 0 26px;
+  }
+
+  .chip {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 10px 16px;
+    border-radius: 20px;
+    border: 2px solid var(--line);
+    background: #fff;
+    cursor: pointer;
+  }
+  .chip.selected { border-color: var(--ink); background: #f1efe9; }
+  .chip.locked { cursor: default; }
+  .chip.locked.correct { background: var(--make-soft); border-color: var(--make); color: var(--make-deep); }
+  .chip.locked.wrong { background: #fbe8e4; border-color: var(--wrong); color: var(--wrong); }
+
+  .buckets { display: flex; gap: 12px; }
+
+  .bucket {
+    flex: 1;
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 18px;
+    border-radius: 14px;
+    border: 2px dashed var(--line);
+    background: #fff;
+    cursor: pointer;
+  }
+  .bucket.make { color: var(--make-deep); }
+  .bucket.make:hover { border-color: var(--make); background: var(--make-soft); }
+  .bucket.do { color: var(--do-deep); }
+  .bucket.do:hover { border-color: var(--do); background: var(--do-soft); }
+
+  .results { text-align: center; }
+  .results h2 { font-family: 'Fraunces', serif; font-size: 22px; }
+  .score-circle {
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    font-size: 30px;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    border: 4px solid var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 18px auto;
+    background: linear-gradient(135deg, var(--make-soft), var(--do-soft));
+  }
+  .tier-msg { font-size: 15px; color: var(--ink-soft); margin-bottom: 20px; }
+  .review-list { text-align: left; font-size: 14px; color: var(--ink-soft); padding-left: 20px; margin-bottom: 24px; }
+  .review-list li { margin-bottom: 6px; }
+
+  @media (max-width: 480px) {
+    .card { padding: 24px 18px; }
+    .q-sentence { font-size: 18px; }
+    .buckets { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="topbar-row">
+        <div class="brand-block">
+          <svg class="logo-mark" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="1" width="46" height="46" rx="12" fill="#fff" stroke="#e4ded3" stroke-width="2"/>
+            <path d="M24 4 L24 44" stroke="#e4ded3" stroke-width="1.5"/>
+            <path d="M8 32 L14 16 L20 32 M9.5 26 H18.5" stroke="#146b5c" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M28 16 H40 M28 24 H37 M28 32 H40" stroke="#3c4a9e" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+          </svg>
+          <div class="brand-text">
+            <span id="brandName">Forbes English</span>
+            <span id="lessonTitle">Make v Do</span>
+          </div>
+        </div>
+        <div class="topbar-controls">
+          <span class="score-chip"><span id="scoreVal">0 / 24</span></span>
+          <button id="langBtn" type="button">DE</button>
+        </div>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      <span id="progressLabel">0 / 24</span>
+    </header>
+    <main id="screen"></main>
+  </div>
+
+<script>
+// ===== Make v Do — data =====
+
+const UI = {
+  en: {
+    brand: "Forbes English",
+    title: "Make v Do",
+    subtitle: "Fixed collocations you have to learn — plus the general rules that help",
+    langLabel: "DE",
+    startBtn: "Start the test",
+    next: "Next",
+    check: "Check",
+    finish: "See results",
+    retry: "Try again",
+    score: "Score",
+    question: "Question",
+    of: "of",
+    correct: "Correct!",
+    incorrect: "Not quite.",
+    sortTitle: "Sort each expression into MAKE or DO",
+    sortHelp: "Click an expression, then click MAKE or DO to sort it.",
+    resultsTitle: "Your results",
+    resultsGood: "Strong grasp of make v do.",
+    resultsMid: "Good start — a few collocations still to fix in memory.",
+    resultsLow: "Worth another pass — these are best learned as fixed chunks.",
+    reviewTitle: "Items to review",
+    introRules: "The rules",
+    ruleMake: "MAKE — creating or producing something. The result is usually new or different.",
+    ruleDo: "DO — an activity, job or task. The focus is the activity, not a new result.",
+    ruleFixed: "Careful: many expressions are fixed and don't follow the rule exactly — e.g. do your best, not make your best.",
+    pvHeading: "Phrasal verbs with make and do",
+    pvSubtitle: "These go a step further than the basic rule — each one has its own fixed meaning to learn.",
+    pvStart: "Start this section",
+  },
+  de: {
+    brand: "Forbes English",
+    title: "Make v Do",
+    subtitle: "Feste Kombinationen, die man einfach lernen muss — plus die allgemeinen Regeln, die helfen",
+    langLabel: "EN",
+    startBtn: "Test starten",
+    next: "Weiter",
+    check: "Prüfen",
+    finish: "Ergebnisse ansehen",
+    retry: "Nochmal versuchen",
+    score: "Punkte",
+    question: "Frage",
+    of: "von",
+    correct: "Richtig!",
+    incorrect: "Nicht ganz.",
+    sortTitle: "Sortiere jeden Ausdruck zu MAKE oder DO",
+    sortHelp: "Klicke einen Ausdruck an, dann klicke MAKE oder DO, um ihn zu sortieren.",
+    resultsTitle: "Deine Ergebnisse",
+    resultsGood: "Sehr gutes Verständnis von make v do.",
+    resultsMid: "Guter Anfang — ein paar Kombinationen musst du noch festigen.",
+    resultsLow: "Lohnt sich zu wiederholen — diese Ausdrücke lernt man am besten als feste Einheiten.",
+    reviewTitle: "Zum Wiederholen",
+    introRules: "Die Regeln",
+    ruleMake: "MAKE — etwas erschaffen oder herstellen. Das Ergebnis ist meist neu oder anders.",
+    ruleDo: "DO — eine Tätigkeit, Arbeit oder Aufgabe. Der Fokus liegt auf der Tätigkeit, nicht auf einem neuen Ergebnis.",
+    ruleFixed: "Achtung: Viele Ausdrücke sind feststehend und folgen der Regel nicht genau — z. B. do your best, nicht make your best.",
+    pvHeading: "Phrasal Verbs mit make und do",
+    pvSubtitle: "Diese gehen über die Grundregel hinaus — jeder hat seine eigene feste Bedeutung, die man lernen muss.",
+    pvStart: "Diesen Abschnitt starten",
+  }
+};
+
+const BLANK_ITEMS = [
+  {
+    id: "b1",
+    sentence: "I need to ___ a decision about my job.",
+    answer: "make",
+    en: "Use make: a decision is a new result you produce.",
+    de: "Benutze make: eine Entscheidung ist ein neues Ergebnis, das du erzeugst."
+  },
+  {
+    id: "b2",
+    sentence: "Can you help me ___ my homework?",
+    answer: "do",
+    en: "Use do: homework is an activity or task, not a new object.",
+    de: "Benutze do: Hausaufgaben sind eine Tätigkeit, kein neues Objekt."
+  },
+  {
+    id: "b3",
+    sentence: "She wants to ___ a cake for the party.",
+    answer: "make",
+    en: "Use make: a cake is something new that didn't exist before.",
+    de: "Benutze make: ein Kuchen ist etwas Neues, das vorher nicht existierte."
+  },
+  {
+    id: "b4",
+    sentence: "He always tries to ___ his best in exams.",
+    answer: "do",
+    en: "Fixed expression: do your best. It doesn't follow the general rule — just learn it.",
+    de: "Feste Wendung: do your best. Sie folgt nicht der allgemeinen Regel — einfach auswendig lernen."
+  },
+  {
+    id: "b5",
+    sentence: "They always ___ a lot of noise at parties.",
+    answer: "make",
+    en: "Use make: noise is produced, a result of an action.",
+    de: "Benutze make: Lärm wird erzeugt, ein Ergebnis einer Handlung."
+  },
+  {
+    id: "b6",
+    sentence: "We need to ___ some research before the meeting.",
+    answer: "do",
+    en: "Use do: research is an activity you carry out.",
+    de: "Benutze do: Forschung ist eine Tätigkeit, die man ausführt."
+  },
+  {
+    id: "b7",
+    sentence: "I don't want to ___ another mistake.",
+    answer: "make",
+    en: "Fixed expression: make a mistake. The mistake is treated as something produced.",
+    de: "Feste Wendung: make a mistake. Der Fehler wird als etwas Erzeugtes behandelt."
+  },
+  {
+    id: "b8",
+    sentence: "Let's ___ a plan for the weekend.",
+    answer: "make",
+    en: "Use make: a plan is something new you create.",
+    de: "Benutze make: ein Plan ist etwas Neues, das du erstellst."
+  },
+  {
+    id: "b9",
+    sentence: "Could you ___ the washing-up, please?",
+    answer: "do",
+    en: "Use do: the washing-up is a household task, not a new product.",
+    de: "Benutze do: Abwasch ist eine Hausarbeit, kein neues Produkt."
+  },
+  {
+    id: "b10",
+    sentence: "We always ___ progress when we plan carefully.",
+    answer: "make",
+    en: "Use make: progress is treated as a result being produced.",
+    de: "Benutze make: Fortschritt wird als ein Ergebnis behandelt, das erzeugt wird."
+  }
+];
+
+const CHOICE_ITEMS = [
+  {
+    id: "c1",
+    options: ["do business", "make business"],
+    answer: "do business",
+    en: "Fixed expression: do business. Business is treated as an activity you carry out.",
+    de: "Feste Wendung: do business. Geschäfte werden als eine Tätigkeit behandelt."
+  },
+  {
+    id: "c2",
+    options: ["make a mistake", "do a mistake"],
+    answer: "make a mistake",
+    en: "Fixed expression: make a mistake, even though a mistake isn't really 'produced' on purpose.",
+    de: "Feste Wendung: make a mistake, obwohl ein Fehler nicht wirklich absichtlich 'hergestellt' wird."
+  },
+  {
+    id: "c3",
+    options: ["do the shopping", "make the shopping"],
+    answer: "do the shopping",
+    en: "Fixed expression: do the shopping. Shopping is an activity/task.",
+    de: "Feste Wendung: do the shopping. Einkaufen ist eine Tätigkeit/Aufgabe."
+  },
+  {
+    id: "c4",
+    options: ["make money", "do money"],
+    answer: "make money",
+    en: "Use make: money is a result you produce, e.g. through work or investment.",
+    de: "Benutze make: Geld ist ein Ergebnis, das man erzeugt, z. B. durch Arbeit oder Investition."
+  },
+  {
+    id: "c5",
+    options: ["do exercise", "make exercise"],
+    answer: "do exercise",
+    en: "Fixed expression: do exercise. Exercise is a physical activity.",
+    de: "Feste Wendung: do exercise. Sport/Bewegung ist eine körperliche Tätigkeit."
+  },
+  {
+    id: "c6",
+    options: ["make a noise", "do a noise"],
+    answer: "make a noise",
+    en: "Use make: a noise is something produced by an action.",
+    de: "Benutze make: ein Geräusch wird durch eine Handlung erzeugt."
+  }
+];
+
+const SORT_ITEMS = [
+  { id: "s1", phrase: "a plan", answer: "make" },
+  { id: "s2", phrase: "homework", answer: "do" },
+  { id: "s3", phrase: "a decision", answer: "make" },
+  { id: "s4", phrase: "research", answer: "do" },
+  { id: "s5", phrase: "a cake", answer: "make" },
+  { id: "s6", phrase: "business", answer: "do" },
+  { id: "s7", phrase: "money", answer: "make" },
+  { id: "s8", phrase: "the washing-up", answer: "do" }
+];
+
+const PV_ITEMS = [
+  {
+    id: "pv1",
+    sentence: "The raccoon knocked over the bin and ___ half our sandwiches.",
+    options: ["made off with", "made up for", "did away with", "did without"],
+    answer: "made off with",
+    en: "Make off with sth means to steal something and leave quickly with it.",
+    de: "Make off with etwas bedeutet, etwas zu stehlen und schnell damit zu verschwinden."
+  },
+  {
+    id: "pv2",
+    sentence: "He was late again, so he bought coffee for the whole team to ___ it.",
+    options: ["make up for", "make of", "make off with", "do up"],
+    answer: "make up for",
+    en: "Make up for sth means to compensate for something bad or missing.",
+    de: "Make up for etwas bedeutet, etwas Schlechtes oder Fehlendes auszugleichen."
+  },
+  {
+    id: "pv3",
+    sentence: "I really don't know what to ___ this cryptic email from the landlord.",
+    options: ["make of", "make up", "do without", "do up"],
+    answer: "make of",
+    en: "Make of sb/sth means to have an opinion or interpretation of them.",
+    de: "Make of jmdn./etwas bedeutet, eine Meinung oder Interpretation davon zu haben."
+  },
+  {
+    id: "pv4",
+    sentence: "The child ___ an elaborate story about a dragon eating his homework.",
+    options: ["made up", "made off with", "did up", "did away with"],
+    answer: "made up",
+    en: "Make sth up means to invent something that isn't true.",
+    de: "Make sth up bedeutet, etwas zu erfinden, das nicht wahr ist."
+  },
+  {
+    id: "pv5",
+    sentence: "The council decided to ___ the outdated parking permits altogether.",
+    options: ["do away with", "do without", "make of", "make up for"],
+    answer: "do away with",
+    en: "Do away with sth means to abolish or get rid of it completely.",
+    de: "Do away with etwas bedeutet, es abzuschaffen oder vollständig loszuwerden."
+  },
+  {
+    id: "pv6",
+    sentence: "During the power cut, the whole street had to ___ hot water for two days.",
+    options: ["do without", "do away with", "make up for", "do up"],
+    answer: "do without",
+    en: "Do without sth means to manage even though you don't have it.",
+    de: "Do without etwas bedeutet, auch ohne es zurechtzukommen."
+  },
+  {
+    id: "pv7",
+    sentence: "After the long flight, she said she ___ a good night's sleep.",
+    options: ["could do with", "could make up for", "could do away with", "could make off with"],
+    answer: "could do with",
+    en: "Could do with sth means you want or need it.",
+    de: "Could do with etwas bedeutet, dass man es möchte oder braucht."
+  },
+  {
+    id: "pv8",
+    sentence: "They spent the whole summer ___ the old barn before turning it into a studio.",
+    options: ["doing up", "making up", "doing away with", "making off with"],
+    answer: "doing up",
+    en: "Do sth up means to renovate or repair it.",
+    de: "Do sth up bedeutet, etwas zu renovieren oder zu reparieren."
+  }
+];
+
+// ===== Make v Do — logic =====
+
+let lang = "en";
+let score = 0;
+let answeredCount = 0;
+let totalItems = BLANK_ITEMS.length + CHOICE_ITEMS.length + PV_ITEMS.length + SORT_ITEMS.length;
+let missed = [];
+
+function fisherYates(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+const questionScreens = fisherYates(
+  BLANK_ITEMS.map(it => ({ kind: "blank", item: it }))
+    .concat(CHOICE_ITEMS.map(it => ({ kind: "choice", item: it })))
+);
+const pvScreens = fisherYates(PV_ITEMS.map(it => ({ kind: "pv", item: it })));
+const sortScreen = { kind: "sort", items: fisherYates(SORT_ITEMS) };
+
+let screenIndex = -1;
+const screens = ["intro", ...questionScreens, "pv-intro", ...pvScreens, sortScreen, "results"];
+
+const root = document.getElementById("screen");
+const scoreEl = document.getElementById("scoreVal");
+const progressFill = document.getElementById("progressFill");
+const progressLabel = document.getElementById("progressLabel");
+const langBtn = document.getElementById("langBtn");
+
+function t(key) {
+  return UI[lang][key];
+}
+
+function updateChrome() {
+  document.getElementById("brandName").textContent = t("brand");
+  document.getElementById("lessonTitle").textContent = t("title");
+  langBtn.textContent = t("langLabel");
+  scoreEl.textContent = score + " / " + totalItems;
+  const stepsDone = Math.max(0, Math.min(answeredCount, totalItems));
+  progressFill.style.width = (totalItems ? (stepsDone / totalItems) * 100 : 0) + "%";
+  progressLabel.textContent = stepsDone + " / " + totalItems;
+}
+
+function renderIntro() {
+  root.innerHTML = `
+    <div class="card intro">
+      <p class="subtitle">${t("subtitle")}</p>
+      <h2>${t("introRules")}</h2>
+      <div class="rule-row"><span class="pill make">MAKE</span><p>${t("ruleMake")}</p></div>
+      <div class="rule-row"><span class="pill do">DO</span><p>${t("ruleDo")}</p></div>
+      <p class="rule-warning">${t("ruleFixed")}</p>
+      <button class="btn primary" id="startBtn">${t("startBtn")}</button>
+    </div>
+  `;
+  document.getElementById("startBtn").addEventListener("click", () => goTo(screenIndex + 1));
+}
+
+function renderPvIntro() {
+  root.innerHTML = `
+    <div class="card intro">
+      <h2>${t("pvHeading")}</h2>
+      <p class="subtitle">${t("pvSubtitle")}</p>
+      <button class="btn primary" id="pvStartBtn">${t("pvStart")}</button>
+    </div>
+  `;
+  document.getElementById("pvStartBtn").addEventListener("click", () => goTo(screenIndex + 1));
+}
+
+function renderBlank(item) {
+  const opts = fisherYates(["make", "do"]);
+  root.innerHTML = `
+    <div class="card">
+      <div class="q-sentence">${item.sentence.replace("___", '<span class="gap">___</span>')}</div>
+      <div class="options" id="optionsRow"></div>
+      <div class="feedback" id="feedback" hidden></div>
+      <button class="btn primary" id="nextBtn" hidden>${t("next")}</button>
+    </div>
+  `;
+  const optionsRow = document.getElementById("optionsRow");
+  opts.forEach(word => {
+    const b = document.createElement("button");
+    b.className = "opt-btn " + word;
+    b.textContent = word.toUpperCase();
+    b.addEventListener("click", () => handleBlankAnswer(item, word, b, optionsRow));
+    optionsRow.appendChild(b);
+  });
+}
+
+function handleBlankAnswer(item, chosen, btnEl, row) {
+  Array.from(row.children).forEach(c => (c.disabled = true));
+  const isCorrect = chosen === item.answer;
+  markResult(isCorrect, btnEl, row, item.answer);
+  showFeedback(isCorrect, item.en, item.de, item.sentence.replace("___", item.answer.toUpperCase()));
+  recordAnswer(isCorrect, item.sentence.replace("___", "___ (" + item.answer + ")"));
+}
+
+function renderChoice(item) {
+  const opts = fisherYates(item.options);
+  root.innerHTML = `
+    <div class="card">
+      <p class="q-prompt">${t("check")}:</p>
+      <div class="options stacked" id="optionsRow"></div>
+      <div class="feedback" id="feedback" hidden></div>
+      <button class="btn primary" id="nextBtn" hidden>${t("next")}</button>
+    </div>
+  `;
+  const optionsRow = document.getElementById("optionsRow");
+  opts.forEach(phrase => {
+    const b = document.createElement("button");
+    b.className = "opt-btn phrase " + (phrase.startsWith("make") ? "make" : "do");
+    b.textContent = phrase;
+    b.addEventListener("click", () => handleChoiceAnswer(item, phrase, b, optionsRow));
+    optionsRow.appendChild(b);
+  });
+}
+
+function handleChoiceAnswer(item, chosen, btnEl, row) {
+  Array.from(row.children).forEach(c => (c.disabled = true));
+  const isCorrect = chosen === item.answer;
+  markResult(isCorrect, btnEl, row, item.answer, true);
+  showFeedback(isCorrect, item.en, item.de);
+  recordAnswer(isCorrect, item.answer);
+}
+
+function renderPv(item) {
+  const opts = fisherYates(item.options);
+  root.innerHTML = `
+    <div class="card">
+      <div class="q-sentence pv-sentence">${item.sentence.replace("___", '<span class="gap">___</span>')}</div>
+      <div class="options stacked" id="optionsRow"></div>
+      <div class="feedback" id="feedback" hidden></div>
+      <button class="btn primary" id="nextBtn" hidden>${t("next")}</button>
+    </div>
+  `;
+  const optionsRow = document.getElementById("optionsRow");
+  opts.forEach(phrase => {
+    const b = document.createElement("button");
+    b.className = "opt-btn phrase pv";
+    b.textContent = phrase;
+    b.addEventListener("click", () => handlePvAnswer(item, phrase, b, optionsRow));
+    optionsRow.appendChild(b);
+  });
+}
+
+function handlePvAnswer(item, chosen, btnEl, row) {
+  Array.from(row.children).forEach(c => (c.disabled = true));
+  const isCorrect = chosen === item.answer;
+  markResult(isCorrect, btnEl, row, item.answer, true);
+  showFeedback(isCorrect, item.en, item.de, item.sentence.replace("___", item.answer.toUpperCase()));
+  recordAnswer(isCorrect, item.sentence.replace("___", "___ (" + item.answer + ")"));
+}
+
+function markResult(isCorrect, btnEl, row, correctValue, isPhrase) {
+  btnEl.classList.add(isCorrect ? "correct" : "wrong");
+  if (!isCorrect) {
+    Array.from(row.children).forEach(c => {
+      const val = isPhrase ? c.textContent : c.textContent.toLowerCase();
+      if (val === correctValue) c.classList.add("correct");
+    });
+  }
+}
+
+function showFeedback(isCorrect, enText, deText, extra) {
+  const fb = document.getElementById("feedback");
+  fb.hidden = false;
+  fb.className = "feedback " + (isCorrect ? "good" : "bad");
+  const headline = isCorrect ? t("correct") : t("incorrect");
+  const explanation = lang === "en" ? enText : deText;
+  fb.innerHTML = `<strong>${headline}</strong><span>${explanation}</span>${extra ? `<em>${extra}</em>` : ""}`;
+  const nextBtn = document.getElementById("nextBtn");
+  nextBtn.hidden = false;
+  nextBtn.onclick = () => goTo(screenIndex + 1);
+}
+
+function recordAnswer(isCorrect, label) {
+  answeredCount++;
+  if (isCorrect) score++;
+  else missed.push(label);
+  updateChrome();
+}
+
+function renderSort(screenData) {
+  root.innerHTML = `
+    <div class="card sort-card">
+      <h2>${t("sortTitle")}</h2>
+      <p class="sort-help">${t("sortHelp")}</p>
+      <div class="chips" id="chips"></div>
+      <div class="buckets">
+        <button class="bucket make" id="bucketMake">MAKE</button>
+        <button class="bucket do" id="bucketDo">DO</button>
+      </div>
+      <button class="btn primary" id="sortNextBtn" hidden>${t("next")}</button>
+    </div>
+  `;
+  const chipsEl = document.getElementById("chips");
+  let selected = null;
+  let doneCount = 0;
+
+  screenData.items.forEach(it => {
+    const chip = document.createElement("button");
+    chip.className = "chip";
+    chip.textContent = it.phrase;
+    chip.dataset.id = it.id;
+    chip.addEventListener("click", () => {
+      if (chip.classList.contains("locked")) return;
+      Array.from(chipsEl.children).forEach(c => c.classList.remove("selected"));
+      chip.classList.add("selected");
+      selected = { chip, data: it };
+    });
+    chipsEl.appendChild(chip);
+  });
+
+  function assign(bucketAnswer) {
+    if (!selected) return;
+    const { chip, data } = selected;
+    const isCorrect = bucketAnswer === data.answer;
+    chip.classList.remove("selected");
+    chip.classList.add("locked", isCorrect ? "correct" : "wrong", bucketAnswer);
+    if (!isCorrect) {
+      chip.title = lang === "en"
+        ? `Correct: ${data.answer.toUpperCase()}`
+        : `Richtig: ${data.answer.toUpperCase()}`;
+    }
+    recordAnswer(isCorrect, data.phrase + " → " + data.answer);
+    selected = null;
+    doneCount++;
+    if (doneCount === screenData.items.length) {
+      const nextBtn = document.getElementById("sortNextBtn");
+      nextBtn.hidden = false;
+      nextBtn.onclick = () => goTo(screenIndex + 1);
+    }
+  }
+
+  document.getElementById("bucketMake").addEventListener("click", () => assign("make"));
+  document.getElementById("bucketDo").addEventListener("click", () => assign("do"));
+}
+
+function renderResults() {
+  const pct = totalItems ? Math.round((score / totalItems) * 100) : 0;
+  let tier = "resultsLow";
+  if (pct >= 85) tier = "resultsGood";
+  else if (pct >= 60) tier = "resultsMid";
+
+  root.innerHTML = `
+    <div class="card results">
+      <h2>${t("resultsTitle")}</h2>
+      <div class="score-circle">${score}/${totalItems}</div>
+      <p class="tier-msg">${t(tier)}</p>
+      ${missed.length ? `
+        <h3>${t("reviewTitle")}</h3>
+        <ul class="review-list">${missed.map(m => `<li>${m}</li>`).join("")}</ul>
+      ` : ""}
+      <button class="btn primary" id="retryBtn">${t("retry")}</button>
+    </div>
+  `;
+  document.getElementById("retryBtn").addEventListener("click", () => window.location.reload());
+}
+
+function goTo(index) {
+  screenIndex = index;
+  const s = screens[index];
+  if (s === "intro") renderIntro();
+  else if (s === "pv-intro") renderPvIntro();
+  else if (s === "results") renderResults();
+  else if (s.kind === "blank") renderBlank(s.item);
+  else if (s.kind === "choice") renderChoice(s.item);
+  else if (s.kind === "pv") renderPv(s.item);
+  else if (s.kind === "sort") renderSort(s);
+  updateChrome();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+langBtn.addEventListener("click", () => {
+  lang = lang === "en" ? "de" : "en";
+  goTo(screenIndex);
+});
+
+goTo(0);
+</script>
+</body>
+</html>

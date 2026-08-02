@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English | The FireShield Pitch — Part 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c2a2e;
+    --paper:#f4f2ec;
+    --slate:#3d5a5c;
+    --clay:#b5603f;
+    --steel:#5c7c8a;
+    --line:#d8d3c5;
+    --good:#3f7d52;
+    --bad:#b5453f;
+    --trust:#c9a15a;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:'Inter',sans-serif; line-height:1.55;}
+  header{background:var(--ink); color:var(--paper); padding:26px 20px 22px; display:flex; align-items:center; gap:16px;}
+  header h1{font-family:'Fraunces',serif; font-size:1.3rem; margin:0; font-weight:600;}
+  header p{margin:2px 0 0; font-size:0.83rem; color:#c8c4b6; letter-spacing:0.02em;}
+  .wrap{max-width:680px; margin:0 auto; padding:22px 20px 70px;}
+  .trust-wrap{position:sticky; top:0; z-index:5; background:var(--paper); padding:10px 20px 6px; border-bottom:1px solid var(--line);}
+  .trust-label{display:flex; justify-content:space-between; font-size:0.75rem; color:var(--slate); font-weight:600; letter-spacing:0.03em; text-transform:uppercase; max-width:640px; margin:0 auto 4px;}
+  .trust-track{max-width:640px; margin:0 auto; height:7px; background:var(--line); border-radius:6px; overflow:hidden;}
+  .trust-fill{height:100%; background:var(--trust); width:50%; transition:width .4s ease;}
+  .card{background:#fff; border:1px solid var(--line); border-radius:10px; padding:22px; margin-top:18px;}
+  .tag{font-family:'Fraunces',serif; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--slate); margin-bottom:8px; font-weight:600;}
+  .narrative{font-size:1rem; margin:0 0 16px;}
+  .narrative i{color:var(--clay);}
+  .choice-btn, .opt{
+    display:block; width:100%; text-align:left; background:var(--paper);
+    border:1.5px solid var(--line); border-radius:8px; padding:12px 14px;
+    margin-bottom:10px; font-size:0.96rem; font-family:'Inter',sans-serif;
+    cursor:pointer; color:var(--ink); transition:border-color .15s, background .15s;
+  }
+  .choice-btn:hover, .opt:hover:not(:disabled){border-color:var(--steel);}
+  .opt:disabled{cursor:default;}
+  .opt.correct{background:#e7f2ea; border-color:var(--good); color:var(--good); font-weight:600;}
+  .opt.wrong{background:#f7e9e8; border-color:var(--bad); color:var(--bad);}
+  .feedback{margin-top:12px; padding:12px 14px; border-radius:8px; font-size:0.92rem; display:none; border-left:4px solid var(--steel); background:#eef3f2;}
+  .feedback.show{display:block;}
+  .next-btn{margin-top:16px; background:var(--ink); color:#fff; border:none; padding:10px 22px; border-radius:24px; font-size:0.92rem; font-weight:600; cursor:pointer; opacity:0.35; pointer-events:none; transition:opacity .15s; font-family:'Inter',sans-serif;}
+  .next-btn.active{opacity:1; pointer-events:auto;}
+  .next-btn:hover.active{background:var(--slate);}
+  .ending-card{text-align:center;}
+  .ending-card .tag{color:var(--clay);}
+  .ending-card h2{font-family:'Fraunces',serif; font-size:1.5rem; margin:6px 0 12px;}
+  .ending-card p{font-size:0.98rem; text-align:left;}
+  .restart-btn{background:var(--clay); color:#fff; border:none; padding:11px 24px; border-radius:24px; font-size:0.95rem; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; margin-top:14px;}
+  .restart-btn:hover{background:#9c4f34;}
+  .intro-card p{margin:0 0 10px;}
+  .hidden{display:none;}
+</style>
+</head>
+<body>
+
+<header>
+  <svg width="46" height="46" viewBox="0 0 46 46" xmlns="http://www.w3.org/2000/svg">
+    <rect x="1" y="1" width="44" height="44" rx="9" fill="#b5603f"/>
+    <path d="M13 33V13h16v4.2H17.6v5.2h9.8v4.1h-9.8V33H13z" fill="#f4f2ec"/>
+  </svg>
+  <div>
+    <h1>The FireShield Pitch — Part 3</h1>
+    <p>Forbes English &middot; B2 &middot; Branching sales roleplay</p>
+  </div>
+</header>
+
+<div class="trust-wrap hidden" id="trustWrap">
+  <div class="trust-label"><span>Room's trust</span><span id="trustNum">50</span></div>
+  <div class="trust-track"><div class="trust-fill" id="trustFill"></div></div>
+</div>
+
+<div class="wrap">
+
+  <div class="intro-card card" id="introCard">
+    <div class="tag">Briefing</div>
+    <p>Meridian's parent company, the Halloran Group, wants to expand FireShield HX into a new Dublin development. You've been asked to present the product's safety record at a regional construction conference to win over <b>Kavanagh Building Supplies</b>, the distributor who could carry it right across Ireland. A trade journalist is in the room, and she already knows about the mould story from six months ago.</p>
+    <p>How did the framework deal in Leeds go?</p>
+    <div id="recapBox"></div>
+  </div>
+
+  <div id="gameArea"></div>
+
+</div>
+
+<script>
+let trust = 50;
+let current = "s1";
+
+const recap = [
+  {label:"Five-Site Framework Signed — Forbes became the preferred regional supplier", trust:90},
+  {label:"Pilot Site Approved — the wider rollout is still pending", trust:65},
+  {label:"One Site, No Framework — the bigger deal never materialised", trust:45},
+  {label:"Deal Off the Table — Meridian went with someone else entirely", trust:15}
+];
+
+const scenes = {
+
+  s1: {
+    type: "story",
+    tag: "Scene 1 — The Conference",
+    narrative: "You're on stage in front of fifty construction buyers, with Kavanagh's rep in the front row. How do you open?",
+    choices: [
+      {label:"Open with the independent audit results and safety data", next:"cp_data", trust:5},
+      {label:"Open with Priya's story from Meridian, told in her own words", next:"cp_story", trust:10},
+      {label:"Address the mould story from six months ago directly, before anyone can ask", next:"cp_headon", trust:8}
+    ]
+  },
+
+  cp_data: {
+    type: "checkpoint",
+    tag: "Checkpoint — Vocabulary",
+    narrative: "You lead with numbers: fire ratings, permeability figures, third-party sign-off. Heads nod, but nobody looks moved yet.",
+    question: "Which word fits: 'The safety audit was ___ by an independent inspector, not by us.'",
+    options: ["conducted","persuaded","provoked","located"],
+    correct: 0,
+    explain: "'Conduct' here means to carry out or organise — an audit is 'conducted', giving the results independent credibility.",
+    trustOnCorrect: 10,
+    next: "midpoint"
+  },
+
+  cp_story: {
+    type: "checkpoint",
+    tag: "Checkpoint — Vocabulary",
+    narrative: "You tell the room about Priya's original hesitation, the trial wing, the way the relationship grew. A few buyers lean forward.",
+    question: "Which word means 'convince someone to do something', which is exactly what a good story does better than a spreadsheet?",
+    options: ["persuade","provoke","startle","reassess"],
+    correct: 0,
+    explain: "'Persuade' is convincing someone through reasoning, emotion, or evidence — a well-told customer story does this more naturally than raw data.",
+    trustOnCorrect: 10,
+    next: "midpoint"
+  },
+
+  cp_headon: {
+    type: "checkpoint",
+    tag: "Checkpoint — Vocabulary",
+    narrative: "'Some of you will have heard about an incident at one of our sites,' you say. 'Let's talk about it before you ask.' The room goes quiet, then attentive.",
+    question: "Which word fits: 'A membrane installed incorrectly can become ___ over time — ours passed every follow-up inspection.'",
+    options: ["hazardous","affordable","monotonous","homogeneous"],
+    correct: 0,
+    explain: "'Hazardous' means risky or dangerous — naming the real risk honestly, then showing it didn't apply, is what earns credibility here.",
+    trustOnCorrect: 10,
+    next: "midpoint"
+  },
+
+  midpoint: {
+    type: "checkpoint",
+    tag: "Checkpoint — Vocabulary",
+    narrative: "In the Q&A, a journalist stands up: 'Isn't it true a Forbes membrane failed just six months ago?' The room goes quiet, every eye on you.",
+    question: "Which word describes what her question is really trying to do?",
+    options: ["provoke","persuade","reassess","conduct"],
+    correct: 0,
+    explain: "'Provoke' means to deliberately cause a reaction — she's testing whether you'll get flustered on stage, not just asking for facts.",
+    trustOnCorrect: 5,
+    next: "objection"
+  },
+
+  objection: {
+    type: "story",
+    tag: "Scene 2 — The Distributor",
+    narrative: "After the talk, Kavanagh's rep finds you by the coffee stand. 'Honestly, your product looks the same as everything else on the market, and it's a lot cheaper to go with our current supplier.' How do you respond?",
+    choices: [
+      {label:"Offer a five-year performance guarantee at a small additional cost", next:"cp_guarantee", trust:10},
+      {label:"Match the competitor's price to win the listing", next:"cp_afford", trust:-5},
+      {label:"Tell her your product has never failed, anywhere, ever", next:"end_bad3", trust:-30}
+    ]
+  },
+
+  cp_guarantee: {
+    type: "checkpoint",
+    tag: "Checkpoint — Vocabulary",
+    narrative: "'A written guarantee, backed by the audit you saw today,' you say. 'No extra risk on your side.' She's listening properly now.",
+    question: "Which word describes a measure taken in advance to prevent something unpleasant from happening — which is exactly what a guarantee is, for her?",
+    options: ["precaution","requirement","assumption","trade off"],
+    correct: 0,
+    explain: "A 'precaution' is something arranged in advance to prevent a problem — the guarantee protects her against exactly the risk she's worried about.",
+    trustOnCorrect: 10,
+    next: "close3"
+  },
+
+  cp_afford: {
+    type: "checkpoint",
+    tag: "Checkpoint — Vocabulary",
+    narrative: "You agree to match the competitor's number. It makes the listing easier to justify internally, but you already know what it does to your margin.",
+    question: "Matching the price makes the offer more ___, at the cost of your margin.",
+    options: ["affordable","reliable","persuasive","manageable"],
+    correct: 0,
+    explain: "'Affordable' means reasonably priced — you've made the offer cheaper for her, but that's a different lever from proving the product's worth.",
+    trustOnCorrect: 0,
+    next: "close3"
+  },
+
+  close3: {
+    type: "checkpoint",
+    tag: "Checkpoint — Vocabulary",
+    narrative: "You send Kavanagh a follow-up proposal for national distribution across Ireland — confident, not pushy.",
+    question: "Which word describes something that can be trusted to work well, which is the entire pitch in one word?",
+    options: ["reliable","exaggerated","monotonous","agitated"],
+    correct: 0,
+    explain: "'Reliable' means dependable — after a public Q&A about a past failure, this is the single word the whole proposal needs to earn.",
+    trustOnCorrect: 10,
+    next: (t)=> t >= 90 ? "end_great3" : (t >= 65 ? "end_good3" : "end_ok3")
+  },
+
+  end_great3: {
+    type: "ending",
+    tag: "Ending — National Distribution Signed",
+    title: "Kavanagh commits to carrying FireShield HX right across Ireland.",
+    description: "The trade press runs a follow-up piece — not about the mould story, but about how Forbes handled it. Within a year, FireShield HX is the reference case other suppliers get compared against."
+  },
+
+  end_good3: {
+    type: "ending",
+    tag: "Ending — Regional Trial Distribution",
+    title: "Kavanagh agrees to carry the product across the Dublin region only.",
+    description: "Six months of sales data will decide whether it goes national. It's a real foothold in a new market, but the bigger win is still conditional."
+  },
+
+  end_ok3: {
+    type: "ending",
+    tag: "Ending — A Small Pilot Order",
+    title: "Kavanagh places a modest first order.",
+    description: "The competitor's product stays on the shelves alongside yours. You're in the market, but you haven't won it — the next order is far from guaranteed."
+  },
+
+  end_bad3: {
+    type: "ending",
+    tag: "Ending — Story Confirmed",
+    title: "'Never failed, anywhere, ever?' the journalist repeats, pen already moving.",
+    description: "The trade press runs a story questioning Forbes' honesty rather than its product. Kavanagh's rep stops returning your calls, and the Dublin expansion is quietly shelved."
+  }
+};
+
+function clampTrust(){
+  trust = Math.max(0, Math.min(100, trust));
+}
+
+function updateTrustBar(){
+  document.getElementById("trustFill").style.width = trust + "%";
+  document.getElementById("trustNum").textContent = trust;
+}
+
+function startGame(initialTrust){
+  document.getElementById("introCard").classList.add("hidden");
+  document.getElementById("trustWrap").classList.remove("hidden");
+  trust = initialTrust;
+  current = "s1";
+  updateTrustBar();
+  render();
+}
+
+function buildRecap(){
+  const box = document.getElementById("recapBox");
+  recap.forEach(r=>{
+    const btn = document.createElement("button");
+    btn.className = "choice-btn";
+    btn.textContent = r.label;
+    btn.addEventListener("click", ()=> startGame(r.trust));
+    box.appendChild(btn);
+  });
+}
+
+function render(){
+  const scene = scenes[current];
+  const area = document.getElementById("gameArea");
+
+  if(scene.type === "story"){
+    area.innerHTML = `
+      <div class="card">
+        <div class="tag">${scene.tag}</div>
+        <p class="narrative">${scene.narrative}</p>
+        <div id="choiceBox"></div>
+      </div>`;
+    const box = document.getElementById("choiceBox");
+    scene.choices.forEach(c=>{
+      const btn = document.createElement("button");
+      btn.className = "choice-btn";
+      btn.textContent = c.label;
+      btn.addEventListener("click", ()=>{
+        trust += c.trust; clampTrust(); updateTrustBar();
+        current = c.next;
+        render();
+      });
+      box.appendChild(btn);
+    });
+  }
+
+  else if(scene.type === "checkpoint"){
+    area.innerHTML = `
+      <div class="card">
+        <div class="tag">${scene.tag}</div>
+        <p class="narrative">${scene.narrative}</p>
+        <p class="narrative"><b>${scene.question}</b></p>
+        <div id="optsBox"></div>
+        <div class="feedback" id="feedbackBox"></div>
+        <button class="next-btn" id="nextBtn">Continue</button>
+      </div>`;
+    const optsBox = document.getElementById("optsBox");
+    scene.options.forEach((opt, idx)=>{
+      const btn = document.createElement("button");
+      btn.className = "opt";
+      btn.textContent = opt;
+      btn.addEventListener("click", ()=>{
+        if(idx === scene.correct){
+          document.querySelectorAll("#optsBox .opt").forEach(b=>b.disabled=true);
+          btn.classList.add("correct");
+          trust += scene.trustOnCorrect; clampTrust(); updateTrustBar();
+          const fb = document.getElementById("feedbackBox");
+          fb.textContent = scene.explain;
+          fb.classList.add("show");
+          const nextBtn = document.getElementById("nextBtn");
+          nextBtn.classList.add("active");
+          nextBtn.addEventListener("click", ()=>{
+            current = typeof scene.next === "function" ? scene.next(trust) : scene.next;
+            render();
+          });
+        } else {
+          btn.classList.add("wrong");
+          btn.disabled = true;
+        }
+      });
+      optsBox.appendChild(btn);
+    });
+  }
+
+  else if(scene.type === "ending"){
+    document.getElementById("trustWrap").classList.add("hidden");
+    area.innerHTML = `
+      <div class="card ending-card">
+        <div class="tag">${scene.tag}</div>
+        <h2>${scene.title}</h2>
+        <p>${scene.description}</p>
+        <button class="restart-btn" id="restartBtn">Play again</button>
+      </div>`;
+    document.getElementById("restartBtn").addEventListener("click", ()=>{
+      document.getElementById("introCard").classList.remove("hidden");
+      area.innerHTML = "";
+    });
+  }
+}
+
+buildRecap();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – LEGO Prepositions & Phrasal Verbs</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --lego-red: #DA291C;
+    --lego-red-dark: #A01A10;
+    --lego-yellow: #FFD700;
+    --lego-yellow-dark: #C8A800;
+    --lego-blue: #006DB7;
+    --lego-blue-dark: #00336F;
+    --lego-green: #00A650;
+    --lego-green-dark: #006030;
+    --lego-orange: #F47B20;
+    --lego-orange-dark: #C05A00;
+    --lego-black: #1C1C1B;
+    --bg: #FFF8E7;
+    --card: #FFFFFF;
+    --text: #1C1C1B;
+    --text-mid: #4A4A48;
+    --text-light: #888880;
+    --border: #DDD8C8;
+    --border-bottom: #C8C0A8;
+    --shadow: rgba(0,0,51,0.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+  body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(circle at 10% 15%,rgba(218,41,28,0.07) 0%,transparent 45%),radial-gradient(circle at 90% 85%,rgba(0,109,183,0.07) 0%,transparent 45%),radial-gradient(circle at 50% 50%,rgba(255,215,0,0.04) 0%,transparent 60%);pointer-events:none;z-index:0;}
+
+  /* HEADER */
+  header{background:var(--lego-yellow);border-bottom:4px solid var(--lego-yellow-dark);padding:0 36px;position:sticky;top:0;z-index:100;display:flex;align-items:stretch;justify-content:space-between;box-shadow:0 4px 16px rgba(0,0,51,0.18);}
+  .header-left{display:flex;align-items:center;gap:20px;padding:14px 0;}
+  #score-board{display:flex;align-items:center;gap:10px;font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;color:var(--lego-blue-dark);}
+  .score-pill{background:var(--lego-red);color:#fff;padding:7px 20px;border-radius:6px;font-weight:900;font-size:15px;min-width:80px;text-align:center;border-bottom:3px solid var(--lego-red-dark);letter-spacing:0.5px;font-family:'Nunito',sans-serif;}
+
+  /* PROGRESS */
+  .progress-wrap{padding:16px 36px 0;max-width:920px;margin:0 auto;position:relative;z-index:1;}
+  .progress-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--text-light);margin-bottom:6px;font-weight:700;text-transform:uppercase;letter-spacing:1px;font-family:'Nunito',sans-serif;}
+  .progress-bar{height:10px;background:#DDD8C8;border-radius:5px;overflow:hidden;border-bottom:2px solid #C8C0A8;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--lego-red) 0%,var(--lego-orange) 100%);border-radius:5px 0 0 5px;transition:width 0.5s cubic-bezier(.4,0,.2,1);}
+
+  /* MAIN */
+  main{max-width:920px;margin:0 auto;padding:28px 36px 70px;position:relative;z-index:1;}
+
+  /* TABS */
+  .activity-tabs{display:flex;gap:6px;margin-bottom:26px;overflow-x:auto;padding-bottom:4px;}
+  .tab-btn{background:var(--card);border:2px solid var(--border);border-bottom:4px solid var(--border-bottom);border-radius:8px;padding:8px 16px;font-size:13px;font-weight:800;color:var(--text-light);cursor:pointer;white-space:nowrap;transition:all 0.16s;font-family:'Nunito',sans-serif;}
+  .tab-btn:hover{border-color:var(--lego-blue);color:var(--lego-blue);}
+  .tab-btn.active{background:var(--lego-blue);border-color:var(--lego-blue-dark);border-bottom-color:var(--lego-blue-dark);color:#fff;}
+  .tab-btn.completed{border-color:var(--lego-green);color:var(--lego-green);}
+  .tab-btn.completed.active{background:var(--lego-green);border-color:var(--lego-green-dark);border-bottom-color:var(--lego-green-dark);color:#fff;}
+
+  /* ACTIVITY HEADER */
+  .activity-header{display:flex;align-items:flex-start;gap:24px;margin-bottom:24px;background:var(--card);border:2px solid var(--border);border-bottom:4px solid var(--border-bottom);border-radius:14px;padding:24px 28px;overflow:hidden;}
+  .act-illustration{flex-shrink:0;}
+  .act-text{flex:1;}
+  .activity-tag{display:inline-block;background:var(--lego-yellow);color:var(--lego-blue-dark);font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase;padding:3px 12px;border-radius:4px;border-bottom:2px solid var(--lego-yellow-dark);margin-bottom:10px;font-family:'Nunito',sans-serif;}
+  .activity-title{font-family:'Nunito',sans-serif;font-size:24px;font-weight:900;color:var(--text);margin-bottom:6px;line-height:1.2;letter-spacing:-0.3px;}
+  .activity-subtitle{font-size:14px;color:var(--text-mid);line-height:1.55;}
+
+  /* LEGO CARD */
+  .lego-card{background:var(--card);border:2px solid var(--border);border-bottom:5px solid var(--border-bottom);border-radius:14px;overflow:hidden;margin-bottom:20px;animation:popIn 0.35s cubic-bezier(.34,1.56,.64,1);box-shadow:0 4px 20px var(--shadow);}
+  @keyframes popIn{from{opacity:0;transform:scale(0.96) translateY(12px);}to{opacity:1;transform:scale(1) translateY(0);}}
+  .card-stud-strip{height:14px;display:flex;align-items:flex-end;position:relative;overflow:visible;}
+  .card-body{padding:28px 32px 24px;}
+
+  /* QUESTION */
+  .q-label{font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(--text-light);margin-bottom:12px;font-family:'Nunito',sans-serif;}
+  .q-text{font-size:19px;font-weight:700;line-height:1.5;color:var(--text);margin-bottom:26px;font-family:'Nunito',sans-serif;}
+
+  /* MULTIPLE CHOICE */
+  .options-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .option-btn{background:var(--bg);border:2px solid var(--border);border-bottom:4px solid var(--border-bottom);border-radius:10px;padding:12px 16px;text-align:left;cursor:pointer;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;color:var(--text);transition:all 0.15s;display:flex;align-items:flex-start;gap:12px;line-height:1.4;}
+  .option-btn:hover:not(:disabled){border-color:var(--lego-blue);border-bottom-color:var(--lego-blue-dark);background:#EBF4FF;transform:translateY(-2px);}
+  .option-btn:active:not(:disabled){transform:translateY(1px);border-bottom-width:2px;}
+  .opt-letter{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;min-width:30px;border-radius:6px;background:var(--border);color:var(--text-mid);font-weight:900;font-size:13px;border-bottom:2px solid var(--border-bottom);transition:all 0.15s;}
+  .option-btn:hover:not(:disabled) .opt-letter{background:var(--lego-blue);color:#fff;border-bottom-color:var(--lego-blue-dark);}
+  .option-btn.correct{border-color:var(--lego-green);border-bottom-color:var(--lego-green-dark);background:#E8F8EF;}
+  .option-btn.correct .opt-letter{background:var(--lego-green);color:#fff;border-bottom-color:var(--lego-green-dark);}
+  .option-btn.wrong{border-color:var(--lego-red);border-bottom-color:var(--lego-red-dark);background:#FDECEA;}
+  .option-btn.wrong .opt-letter{background:var(--lego-red);color:#fff;border-bottom-color:var(--lego-red-dark);}
+  .option-btn:disabled{cursor:not-allowed;}
+
+  /* FEEDBACK */
+  .feedback-box{border-radius:10px;padding:14px 18px;font-size:14px;line-height:1.6;margin-top:18px;display:none;font-family:'Nunito Sans',sans-serif;animation:fadeIn 0.3s ease;font-weight:600;}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  .feedback-box.show{display:block;}
+  .feedback-box.fb-correct{background:#E8F8EF;border:2px solid var(--lego-green);border-bottom:4px solid var(--lego-green-dark);color:#004020;}
+  .feedback-box.fb-wrong{background:#FDECEA;border:2px solid var(--lego-red);border-bottom:4px solid var(--lego-red-dark);color:#5A0A08;}
+  .feedback-box.fb-partial{background:#FFF3D0;border:2px solid var(--lego-orange);border-bottom:4px solid var(--lego-orange-dark);color:#5A3000;}
+  .feedback-title{font-weight:900;font-size:15px;margin-bottom:5px;font-family:'Nunito',sans-serif;}
+
+  /* FILL IN BLANK */
+  .fitb-wrap{display:flex;flex-direction:column;gap:12px;}
+  .fitb-item{display:flex;align-items:center;flex-wrap:wrap;gap:8px;background:var(--bg);border:2px solid var(--border);border-bottom:4px solid var(--border-bottom);border-radius:10px;padding:12px 16px;font-size:15px;font-weight:700;transition:border-color 0.15s;font-family:'Nunito',sans-serif;}
+  .fitb-item:focus-within{border-color:var(--lego-blue);border-bottom-color:var(--lego-blue-dark);background:#EBF4FF;}
+  .fitb-item.fitb-correct{border-color:var(--lego-green);border-bottom-color:var(--lego-green-dark);background:#E8F8EF;}
+  .fitb-item.fitb-wrong{border-color:var(--lego-red);border-bottom-color:var(--lego-red-dark);background:#FDECEA;}
+  .fitb-num{font-size:12px;font-weight:900;color:var(--text-light);min-width:22px;font-family:'Nunito',sans-serif;}
+  .fitb-input{border:none;border-bottom:3px solid var(--lego-red);background:transparent;font-family:'Nunito',sans-serif;font-size:15px;font-weight:900;color:var(--lego-red);outline:none;width:150px;text-align:center;padding:2px 4px;}
+  .fitb-input:disabled{color:var(--text);border-color:var(--border);}
+  .fitb-fb{font-size:13px;color:var(--text-light);margin-top:4px;margin-left:30px;font-weight:700;}
+  .fitb-fb.fc{color:var(--lego-green);}
+  .fitb-fb.fw{color:var(--lego-red);}
+  .word-bank-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;padding:14px;background:var(--lego-yellow);border-radius:10px;border-bottom:4px solid var(--lego-yellow-dark);}
+  .wb-chip{background:var(--lego-blue);color:#fff;border-radius:6px;padding:5px 13px;font-size:13px;font-weight:800;border-bottom:3px solid var(--lego-blue-dark);font-family:'Nunito',sans-serif;}
+
+  /* MATCHING */
+  .match-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .match-col-title{font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(--text-light);margin-bottom:10px;font-family:'Nunito',sans-serif;}
+  .match-list{display:flex;flex-direction:column;gap:8px;}
+  .draggable-item{background:var(--lego-red);color:#fff;border-radius:8px;padding:10px 16px;font-size:14px;font-weight:800;cursor:grab;user-select:none;border-bottom:4px solid var(--lego-red-dark);font-family:'Nunito',sans-serif;transition:all 0.15s;}
+  .draggable-item:active{cursor:grabbing;transform:scale(1.04) rotate(-1deg);}
+  .draggable-item.dragging{opacity:0.4;}
+  .draggable-item.matched{background:var(--lego-green);border-bottom-color:var(--lego-green-dark);cursor:default;}
+  .drop-target{background:var(--bg);border:2.5px dashed var(--border);border-radius:8px;padding:10px 14px;font-size:13px;font-weight:700;color:var(--text-light);min-height:50px;transition:all 0.15s;font-family:'Nunito',sans-serif;}
+  .drop-target.drag-over{border-color:var(--lego-orange);background:#FFF3D0;}
+  .drop-target.filled{border-style:solid;border-color:var(--lego-green);background:#E8F8EF;}
+  .drop-target.match-correct{border-color:var(--lego-green);background:#E8F8EF;}
+  .drop-target.match-wrong{border-color:var(--lego-red);background:#FDECEA;}
+  .drop-target .def-text{color:var(--text);line-height:1.4;}
+  .drop-target .dropped-lbl{font-weight:900;font-size:14px;color:var(--lego-green);margin-bottom:3px;font-family:'Nunito',sans-serif;}
+
+  /* REORDER */
+  .ro-drop-area{display:flex;flex-wrap:wrap;gap:8px;padding:14px;background:var(--bg);border:2.5px dashed var(--border);border-radius:10px;min-height:56px;margin-bottom:12px;transition:border-color 0.15s;}
+  .ro-drop-area.drag-over{border-color:var(--lego-orange);background:#FFF3D0;}
+  .ro-bank{display:flex;flex-wrap:wrap;gap:8px;padding:14px;background:#E8E4D9;border-radius:10px;border:2px solid var(--border);border-bottom:4px solid var(--border-bottom);min-height:56px;}
+  .ro-zone-label{font-size:11px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-light);margin-bottom:6px;font-family:'Nunito',sans-serif;}
+  .word-chip{background:var(--lego-blue);color:#fff;border-radius:7px;padding:7px 15px;font-size:14px;font-weight:800;cursor:grab;user-select:none;border-bottom:3px solid var(--lego-blue-dark);font-family:'Nunito',sans-serif;transition:all 0.15s;}
+  .word-chip:active{cursor:grabbing;transform:scale(1.06) rotate(1deg);}
+  .word-chip.in-answer{background:var(--lego-orange);border-bottom-color:var(--lego-orange-dark);}
+  .word-chip.chip-correct{background:var(--lego-green);border-bottom-color:var(--lego-green-dark);}
+  .word-chip.chip-wrong{background:var(--lego-red);border-bottom-color:var(--lego-red-dark);}
+
+  /* BUTTONS */
+  .btn-row{display:flex;justify-content:flex-end;gap:10px;margin-top:20px;}
+  .btn-primary{background:var(--lego-red);color:#fff;border:none;border-radius:9px;padding:12px 28px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:900;cursor:pointer;transition:all 0.15s;letter-spacing:0.3px;border-bottom:4px solid var(--lego-red-dark);}
+  .btn-primary:hover{background:#C02018;transform:translateY(-2px);}
+  .btn-primary:active{transform:translateY(2px);border-bottom-width:2px;}
+  .btn-primary:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+  .btn-primary.hidden{display:none;}
+  .btn-secondary{background:var(--card);color:var(--lego-blue);border:2px solid var(--lego-blue);border-bottom:4px solid var(--lego-blue-dark);border-radius:9px;padding:10px 22px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:900;cursor:pointer;transition:all 0.15s;}
+  .btn-secondary:hover{background:var(--lego-blue);color:#fff;}
+
+  /* FINAL */
+  #final-screen{display:none;text-align:center;padding:48px 32px 60px;}
+  #final-screen.show{display:block;animation:popIn 0.5s ease;}
+  .final-title{font-family:'Nunito',sans-serif;font-size:36px;font-weight:900;color:var(--text);margin-bottom:10px;}
+  .final-score-display{font-size:72px;font-weight:900;font-family:'Nunito',sans-serif;color:var(--lego-red);line-height:1;margin:16px 0 4px;}
+  .final-message{font-size:16px;color:var(--text-mid);max-width:500px;margin:20px auto 36px;line-height:1.6;font-weight:600;}
+  .final-breakdown{display:flex;justify-content:center;gap:16px;margin-bottom:36px;flex-wrap:wrap;}
+  .breakdown-pill{background:var(--card);border:2px solid var(--border);border-bottom:4px solid var(--border-bottom);border-radius:12px;padding:12px 22px;text-align:center;min-width:110px;}
+  .bp-num{font-family:'Nunito',sans-serif;font-size:28px;font-weight:900;color:var(--lego-red);}
+  .bp-label{font-size:11px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-top:2px;}
+
+  @media(max-width:640px){
+    header{padding:0 16px;}
+    main{padding:16px 14px 50px;}
+    .progress-wrap{padding:10px 14px 0;}
+    .options-grid{grid-template-columns:1fr;}
+    .match-grid{grid-template-columns:1fr;}
+    .card-body{padding:20px 16px 16px;}
+    .q-text{font-size:16px;}
+    .activity-header{flex-direction:column;}
+    .activity-title{font-size:20px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <svg width="200" height="56" viewBox="0 0 200 56" xmlns="http://www.w3.org/2000/svg">
+      <text x="100" y="30" text-anchor="middle" font-family="'Playfair Display',Georgia,serif" font-size="28" font-weight="700" letter-spacing="3" fill="#00336F">FORBES</text>
+      <rect x="16" y="37" width="168" height="1.5" fill="#00336F" opacity="0.4"/>
+      <text x="100" y="52" text-anchor="middle" font-family="'Nunito',Arial,sans-serif" font-size="13" font-weight="900" letter-spacing="7" fill="#1C1C1B">ENGLISH</text>
+    </svg>
+    <!-- LEGO brick pair decoration -->
+    <svg width="52" height="40" viewBox="0 0 52 40" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="12" width="24" height="16" rx="2" fill="#DA291C"/>
+      <ellipse cx="7" cy="12" rx="4" ry="2.5" fill="#E84030" stroke="#A01A10" stroke-width="0.7"/>
+      <ellipse cx="17" cy="12" rx="4" ry="2.5" fill="#E84030" stroke="#A01A10" stroke-width="0.7"/>
+      <ellipse cx="7" cy="9.5" rx="4" ry="2.5" fill="#F05040" stroke="#A01A10" stroke-width="0.7"/>
+      <ellipse cx="17" cy="9.5" rx="4" ry="2.5" fill="#F05040" stroke="#A01A10" stroke-width="0.7"/>
+      <rect x="4" y="25" width="16" height="3" rx="1.5" fill="#A01A10"/>
+      <rect x="28" y="6" width="24" height="16" rx="2" fill="#006DB7"/>
+      <ellipse cx="35" cy="6" rx="4" ry="2.5" fill="#1880C8" stroke="#00336F" stroke-width="0.7"/>
+      <ellipse cx="45" cy="6" rx="4" ry="2.5" fill="#1880C8" stroke="#00336F" stroke-width="0.7"/>
+      <ellipse cx="35" cy="3.5" rx="4" ry="2.5" fill="#2090D8" stroke="#00336F" stroke-width="0.7"/>
+      <ellipse cx="45" cy="3.5" rx="4" ry="2.5" fill="#2090D8" stroke="#00336F" stroke-width="0.7"/>
+      <rect x="32" y="19" width="16" height="3" rx="1.5" fill="#00336F"/>
+    </svg>
+  </div>
+  <div id="score-board">
+    <span style="font-weight:700;font-size:13px;color:var(--lego-blue-dark);">Score</span>
+    <div class="score-pill" id="total-score">0 / 0</div>
+  </div>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-meta">
+    <span id="progress-label">Activity 1 of 4</span>
+    <span id="question-label">–</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+</div>
+
+<main>
+  <div class="activity-tabs" id="activity-tabs">
+    <button class="tab-btn active" onclick="goToActivity(0)">1 · Multiple Choice</button>
+    <button class="tab-btn" onclick="goToActivity(1)">2 · Fill in the Blank</button>
+    <button class="tab-btn" onclick="goToActivity(2)">3 · Drag &amp; Match</button>
+    <button class="tab-btn" onclick="goToActivity(3)">4 · Sentence Reorder</button>
+  </div>
+  <div id="activities-wrap"></div>
+  <div id="final-screen">
+    <div id="final-trophy-svg" style="display:flex;justify-content:center;margin-bottom:24px;"></div>
+    <div class="final-title" id="final-title">Lesson Complete!</div>
+    <div class="final-score-display" id="final-score-num">–</div>
+    <p style="font-size:13px;color:var(--text-light);margin-bottom:4px;font-weight:700;text-transform:uppercase;letter-spacing:1px;">Your Final Score</p>
+    <div class="final-breakdown" id="final-breakdown"></div>
+    <p class="final-message" id="final-msg"></p>
+    <button class="btn-primary" onclick="restartAll()">🔄 &nbsp;Build Again</button>
+  </div>
+</main>
+
+<script>
+// ── LEGO ILLUSTRATIONS (SVG strings) ────────────────────────────────────────
+
+const SVG = {
+
+mc: `<svg width="108" height="88" viewBox="0 0 108 88" xmlns="http://www.w3.org/2000/svg">
+  <!-- Green base plate -->
+  <rect x="4" y="72" width="100" height="12" rx="2" fill="#00A650" stroke="#006030" stroke-width="0.8"/>
+  ${[12,20,28,36,44,52,60,68,76,84,92].map(x=>`<ellipse cx="${x}" cy="72" rx="3.5" ry="2" fill="#00B860" stroke="#006030" stroke-width="0.5"/>`).join('')}
+  <!-- Minifig body (yellow) -->
+  <rect x="26" y="44" width="16" height="18" rx="2" fill="#FFD700" stroke="#C8A800" stroke-width="0.8"/>
+  <!-- Minifig head -->
+  <rect x="28" y="30" width="13" height="13" rx="3" fill="#FFD700" stroke="#C8A800" stroke-width="0.8"/>
+  <!-- Eyes -->
+  <circle cx="32.5" cy="35.5" r="1.2" fill="#1C1C1B"/>
+  <circle cx="37.5" cy="35.5" r="1.2" fill="#1C1C1B"/>
+  <!-- Smile -->
+  <path d="M32 39 Q34.5 41 38 39" stroke="#1C1C1B" stroke-width="0.9" fill="none" stroke-linecap="round"/>
+  <!-- Legs -->
+  <rect x="26" y="62" width="7" height="10" rx="2" fill="#006DB7"/>
+  <rect x="35" y="62" width="7" height="10" rx="2" fill="#006DB7"/>
+  <!-- Arm pointing right -->
+  <rect x="42" y="47" width="13" height="5" rx="2.5" fill="#FFD700" stroke="#C8A800" stroke-width="0.7"/>
+  <!-- Sign post -->
+  <rect x="60" y="28" width="3" height="44" fill="#888" rx="1"/>
+  <!-- Sign A - red -->
+  <rect x="63" y="28" width="36" height="16" rx="3" fill="#DA291C"/>
+  <rect x="63" y="28" width="36" height="16" rx="3" fill="none" stroke="#A01A10" stroke-width="0.8"/>
+  <text x="81" y="40" text-anchor="middle" font-family="Nunito,sans-serif" font-size="9" font-weight="900" fill="#fff">Option A</text>
+  <!-- Sign B - blue -->
+  <rect x="63" y="48" width="36" height="16" rx="3" fill="#006DB7"/>
+  <rect x="63" y="48" width="36" height="16" rx="3" fill="none" stroke="#00336F" stroke-width="0.8"/>
+  <text x="81" y="60" text-anchor="middle" font-family="Nunito,sans-serif" font-size="9" font-weight="900" fill="#fff">Option B</text>
+</svg>`,
+
+fitb: `<svg width="108" height="88" viewBox="0 0 108 88" xmlns="http://www.w3.org/2000/svg">
+  <!-- Red brick row bottom -->
+  <rect x="4" y="60" width="30" height="18" rx="2" fill="#DA291C" stroke="#A01A10" stroke-width="0.8"/>
+  <rect x="38" y="60" width="30" height="18" rx="2" fill="#DA291C" stroke="#A01A10" stroke-width="0.8"/>
+  <rect x="72" y="60" width="30" height="18" rx="2" fill="#DA291C" stroke="#A01A10" stroke-width="0.8"/>
+  ${[14,22].map(x=>`<ellipse cx="${x}" cy="60" rx="4" ry="2.5" fill="#E84030" stroke="#A01A10" stroke-width="0.5"/>`).join('')}
+  ${[48,56].map(x=>`<ellipse cx="${x}" cy="60" rx="4" ry="2.5" fill="#E84030" stroke="#A01A10" stroke-width="0.5"/>`).join('')}
+  ${[82,90].map(x=>`<ellipse cx="${x}" cy="60" rx="4" ry="2.5" fill="#E84030" stroke="#A01A10" stroke-width="0.5"/>`).join('')}
+  <!-- Blue brick middle left -->
+  <rect x="4" y="40" width="46" height="18" rx="2" fill="#006DB7" stroke="#00336F" stroke-width="0.8"/>
+  ${[16,28,38].map(x=>`<ellipse cx="${x}" cy="40" rx="4" ry="2.5" fill="#1880C8" stroke="#00336F" stroke-width="0.5"/>`).join('')}
+  <!-- BLANK brick (dashed) -->
+  <rect x="54" y="40" width="50" height="18" rx="2" fill="#FFF8E7" stroke="#DA291C" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="79" y="53" text-anchor="middle" font-family="Nunito,sans-serif" font-size="11" font-weight="900" fill="#DA291C">_ _ _</text>
+  <!-- Yellow brick top -->
+  <rect x="4" y="20" width="36" height="18" rx="2" fill="#FFD700" stroke="#C8A800" stroke-width="0.8"/>
+  ${[16,28].map(x=>`<ellipse cx="${x}" cy="20" rx="4" ry="2.5" fill="#FFE030" stroke="#C8A800" stroke-width="0.5"/>`).join('')}
+  <!-- Pencil icon -->
+  <rect x="76" y="14" width="6" height="22" rx="1" fill="#F47B20" transform="rotate(45 79 25)"/>
+  <polygon points="83,30 89,36 83,36" fill="#1C1C1B" transform="rotate(45 86 33)"/>
+  <rect x="76" y="14" width="6" height="4" rx="1" fill="#FFD700" transform="rotate(45 79 16)"/>
+</svg>`,
+
+match: `<svg width="108" height="88" viewBox="0 0 108 88" xmlns="http://www.w3.org/2000/svg">
+  <!-- Left column bricks -->
+  <rect x="4" y="12" width="36" height="16" rx="2" fill="#DA291C" stroke="#A01A10" stroke-width="0.8"/>
+  <rect x="4" y="34" width="36" height="16" rx="2" fill="#FFD700" stroke="#C8A800" stroke-width="0.8"/>
+  <rect x="4" y="56" width="36" height="16" rx="2" fill="#006DB7" stroke="#00336F" stroke-width="0.8"/>
+  ${[14,24].map(x=>`<ellipse cx="${x}" cy="12" rx="4" ry="2.2" fill="#E84030" stroke="#A01A10" stroke-width="0.5"/>`).join('')}
+  ${[14,24].map(x=>`<ellipse cx="${x}" cy="34" rx="4" ry="2.2" fill="#FFE030" stroke="#C8A800" stroke-width="0.5"/>`).join('')}
+  ${[14,24].map(x=>`<ellipse cx="${x}" cy="56" rx="4" ry="2.2" fill="#1880C8" stroke="#00336F" stroke-width="0.5"/>`).join('')}
+  <!-- Right column bricks -->
+  <rect x="68" y="22" width="36" height="16" rx="2" fill="#FFD700" stroke="#C8A800" stroke-width="0.8"/>
+  <rect x="68" y="44" width="36" height="16" rx="2" fill="#DA291C" stroke="#A01A10" stroke-width="0.8"/>
+  <rect x="68" y="66" width="36" height="16" rx="2" fill="#006DB7" stroke="#00336F" stroke-width="0.8"/>
+  ${[78,88].map(x=>`<ellipse cx="${x}" cy="22" rx="4" ry="2.2" fill="#FFE030" stroke="#C8A800" stroke-width="0.5"/>`).join('')}
+  ${[78,88].map(x=>`<ellipse cx="${x}" cy="44" rx="4" ry="2.2" fill="#E84030" stroke="#A01A10" stroke-width="0.5"/>`).join('')}
+  ${[78,88].map(x=>`<ellipse cx="${x}" cy="66" rx="4" ry="2.2" fill="#1880C8" stroke="#00336F" stroke-width="0.5"/>`).join('')}
+  <!-- Connector lines -->
+  <path d="M40 20 C54 20 54 30 68 30" stroke="#00A650" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M40 42 C54 42 54 52 68 52" stroke="#F47B20" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <!-- Connector dots -->
+  <circle cx="40" cy="20" r="3" fill="#00A650"/>
+  <circle cx="68" cy="30" r="3" fill="#00A650"/>
+  <circle cx="40" cy="42" r="3" fill="#F47B20"/>
+  <circle cx="68" cy="52" r="3" fill="#F47B20"/>
+  <!-- Unmatched ? -->
+  <text x="54" y="76" text-anchor="middle" font-family="Nunito,sans-serif" font-size="18" font-weight="900" fill="#DA291C">?</text>
+</svg>`,
+
+reorder: `<svg width="108" height="88" viewBox="0 0 108 88" xmlns="http://www.w3.org/2000/svg">
+  <defs><marker id="aro" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#DA291C" stroke-width="2" stroke-linecap="round"/></marker></defs>
+  <!-- Word bank chips (scattered) -->
+  <rect x="2" y="6" width="30" height="17" rx="4" fill="#006DB7" stroke="#00336F" stroke-width="0.8"/>
+  <text x="17" y="18.5" text-anchor="middle" font-family="Nunito,sans-serif" font-size="9" font-weight="900" fill="#fff">The</text>
+  <rect x="36" y="2" width="38" height="17" rx="4" fill="#006DB7" stroke="#00336F" stroke-width="0.8"/>
+  <text x="55" y="14.5" text-anchor="middle" font-family="Nunito,sans-serif" font-size="9" font-weight="900" fill="#fff">builder</text>
+  <rect x="78" y="8" width="28" height="17" rx="4" fill="#006DB7" stroke="#00336F" stroke-width="0.8"/>
+  <text x="92" y="20.5" text-anchor="middle" font-family="Nunito,sans-serif" font-size="9" font-weight="900" fill="#fff">put</text>
+  <!-- Arrow -->
+  <path d="M54 28 L54 42" stroke="#DA291C" stroke-width="2.5" stroke-linecap="round" marker-end="url(#aro)"/>
+  <!-- Ordered sentence box -->
+  <rect x="2" y="44" width="104" height="24" rx="5" fill="#FFF8E7" stroke="#DA291C" stroke-width="2"/>
+  <rect x="5" y="48" width="28" height="14" rx="3" fill="#F47B20" stroke="#C05A00" stroke-width="0.8"/>
+  <text x="19" y="58.5" text-anchor="middle" font-family="Nunito,sans-serif" font-size="8.5" font-weight="900" fill="#fff">The</text>
+  <rect x="36" y="48" width="36" height="14" rx="3" fill="#F47B20" stroke="#C05A00" stroke-width="0.8"/>
+  <text x="54" y="58.5" text-anchor="middle" font-family="Nunito,sans-serif" font-size="8.5" font-weight="900" fill="#fff">builder</text>
+  <rect x="75" y="48" width="28" height="14" rx="3" fill="#F47B20" stroke="#C05A00" stroke-width="0.8"/>
+  <text x="89" y="58.5" text-anchor="middle" font-family="Nunito,sans-serif" font-size="8.5" font-weight="900" fill="#fff">put</text>
+  <!-- Green checkmark circle -->
+  <circle cx="54" cy="76" r="10" fill="#00A650"/>
+  <path d="M48 76 L52 81 L61 70" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>`,
+
+};
+
+function getTrophySVG(pct) {
+  const c = pct>=90?'#FFD700':pct>=75?'#F47B20':pct>=55?'#006DB7':'#888';
+  const s = pct>=90?'#C8A800':pct>=75?'#C05A00':pct>=55?'#00336F':'#555';
+  return `<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+    <rect x="38" y="90" width="44" height="10" rx="4" fill="${c}" stroke="${s}" stroke-width="1.5"/>
+    <rect x="28" y="98" width="64" height="8" rx="4" fill="${c}" stroke="${s}" stroke-width="1.5"/>
+    <rect x="50" y="70" width="20" height="22" rx="2" fill="${c}" stroke="${s}" stroke-width="1.5"/>
+    <path d="M22 16 Q22 72 60 72 Q98 72 98 16 Z" fill="${c}" stroke="${s}" stroke-width="1.5"/>
+    <path d="M32 26 Q32 56 46 64" stroke="rgba(255,255,255,0.5)" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <path d="M22 26 Q8 26 8 44 Q8 60 22 60" stroke="${s}" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M98 26 Q112 26 112 44 Q112 60 98 60" stroke="${s}" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <ellipse cx="44" cy="16" rx="7" ry="3.5" fill="${s}" opacity="0.45"/>
+    <ellipse cx="60" cy="13" rx="7" ry="3.5" fill="${s}" opacity="0.45"/>
+    <ellipse cx="76" cy="16" rx="7" ry="3.5" fill="${s}" opacity="0.45"/>
+  </svg>`;
+}
+
+// ── CARD STUD STRIP ─────────────────────────────────────────────────────────
+function studStrip(color) {
+  const studs = Array.from({length:14},(_,i)=>`
+    <ellipse cx="${i*9+10}" cy="7" rx="4.5" ry="2.5" fill="${lighten(color)}" stroke="${darken(color)}" stroke-width="0.6"/>
+    <ellipse cx="${i*9+10}" cy="5" rx="4.5" ry="2.5" fill="${color}" stroke="${darken(color)}" stroke-width="0.6"/>
+  `).join('');
+  return `<svg width="100%" height="14" style="display:block;overflow:visible;" viewBox="0 0 130 14" preserveAspectRatio="xMidYMid meet">
+    <rect x="0" y="7" width="130" height="7" fill="${color}"/>
+    ${studs}
+  </svg>`;
+}
+
+const LIGHT = {'#DA291C':'#E84030','#006DB7':'#1880C8','#F47B20':'#FF9040','#00A650':'#00C060','#FFD700':'#FFE840'};
+const DARK  = {'#DA291C':'#A01A10','#006DB7':'#00336F','#F47B20':'#C05A00','#00A650':'#006030','#FFD700':'#C8A800'};
+function lighten(c){ return LIGHT[c]||c; }
+function darken(c){ return DARK[c]||c; }
+
+function makeCard(color, body) {
+  return `<div class="lego-card">
+    <div style="line-height:0">${studStrip(color)}</div>
+    <div class="card-body">${body}</div>
+  </div>`;
+}
+
+// ── DATA ─────────────────────────────────────────────────────────────────────
+const activities = [
+  { id:'mc', type:'multiple-choice', tag:'Activity 1', title:'Multiple Choice', color:'#DA291C',
+    subtitle:'Choose the correct preposition or phrasal verb to complete each LEGO-themed sentence.',
+    questions:[
+      { text:'The instruction booklet shows that the blue brick should go _____ the red one to create the base of the tower.',
+        options:['on top of','in spite of','in front of','by means of'], correct:0,
+        explanation:'"On top of" indicates the blue brick sits directly above and in contact with the red one — core spatial vocabulary in any LEGO manual.' },
+      { text:'Maya spent three hours trying to figure _____ how to assemble the Millennium Falcon without the manual.',
+        options:['out','off','over','into'], correct:0,
+        explanation:'"Figure out" means to understand or solve something. "Figure off" and "figure over" do not exist; "figure into" has an unrelated meaning.' },
+      { text:'The rare yellow minifigure was hidden _____ a large pile of loose bricks at the bottom of the box.',
+        options:['across from','alongside','underneath','out of reach'], correct:2,
+        explanation:'"Underneath" means directly below something and buried by it. The other options show proximity or distance but not the sense of being covered.' },
+      { text:'After the model collapsed, Tom had to start _____ from scratch, sorting all the bricks by colour first.',
+        options:['through again','back over','all over','right away'], correct:2,
+        explanation:'"Start all over" means to begin the whole process again from the very beginning — exactly what Tom had to do after the collapse.' },
+      { text:'The new LEGO Technic car is made _____ more than 2,000 individual pieces.',
+        options:['up of','out with','off from','down into'], correct:0,
+        explanation:'"Made up of" is the correct phrasal verb meaning composed or consisting of. It describes what a set contains — perfect for LEGO descriptions.' },
+      { text:'The children were so excited about the new set that they stayed _____ the whole night to build it.',
+        options:['on past all','out for all','off with all','up all'], correct:3,
+        explanation:'"Stay up all (night)" means to remain awake. It is a very common English idiom for not sleeping through the night.' },
+    ]
+  },
+  { id:'fitb', type:'fill-blank', tag:'Activity 2', title:'Fill in the Blank', color:'#006DB7',
+    subtitle:'Type the correct preposition or phrasal verb. Use the Word Bank for help.',
+    wordBank:['put together','ran out of','According to','Apart from','in between','came across','look forward to'],
+    questions:[
+      { before:'It took the whole family two days to', answer:'put together', after:'the enormous LEGO Hogwarts Castle.',
+        explanation:'"Put together" means to assemble something piece by piece — the most natural phrasal verb for building a LEGO model.' },
+      { before:'We', answer:'ran out of', after:'red bricks halfway through the project and had to order more online.',
+        explanation:'"Run out of" means to have no remaining supply. It captures that frustrating mid-build moment perfectly.' },
+      { before:'', answer:'According to', after:'the manual, Step 14 requires three different sizes of flat plate.',
+        explanation:'"According to" introduces a source of information — as stated or shown in the instruction booklet.' },
+      { before:'', answer:'Apart from', after:'the missing window piece, the LEGO house looked completely realistic.',
+        explanation:'"Apart from" means except for. It introduces the one exception to an otherwise satisfying situation.' },
+      { before:'She dropped a tiny axle piece and it rolled', answer:'in between', after:'the sofa cushions, never to be found again.',
+        explanation:'"In between" describes a position in the space separating two things — exactly where small LEGO pieces always disappear!' },
+    ]
+  },
+  { id:'match', type:'matching', tag:'Activity 3', title:'Drag & Match', color:'#F47B20',
+    subtitle:'Drag each phrasal verb from the left to its correct meaning on the right.',
+    pairs:[
+      { term:'take apart', definition:'to disassemble something into its separate components' },
+      { term:'carry on with', definition:'to continue doing an activity without stopping' },
+      { term:'set aside', definition:'to keep something separately for a specific purpose' },
+      { term:'work out', definition:'to calculate or find the solution to a problem' },
+      { term:'hand down', definition:'to pass something to a younger generation as a gift' },
+    ]
+  },
+  { id:'reorder', type:'reorder', tag:'Activity 4', title:'Sentence Reorder', color:'#00A650',
+    subtitle:'Tap the word tiles to place them in the correct order and build a proper sentence.',
+    questions:[
+      { words:['She','carefully','sorted','through','the','bricks','looking','for','the','right','piece'],
+        answer:'She carefully sorted through the bricks looking for the right piece',
+        explanation:'"Sort through" means to examine a collection systematically to find something specific.' },
+      { words:['The','designer','came','up','with','an','entirely','new','concept','for','the','set'],
+        answer:'The designer came up with an entirely new concept for the set',
+        explanation:'"Come up with" means to think of or invent an idea — widely used in creative and professional contexts.' },
+      { words:['He','was','so','proud','of','the','castle','he','had','built','from','scratch'],
+        answer:'He was so proud of the castle he had built from scratch',
+        explanation:'"From scratch" means starting with nothing pre-made. "From" introduces the origin point of the action.' },
+      { words:['The','missing','manual','meant','they','had','to','get','by','without','instructions'],
+        answer:'The missing manual meant they had to get by without instructions',
+        explanation:'"Get by" means to manage or cope despite difficulty. "Without" shows the absence of support.' },
+      { words:['Luckily','the','broken','hinge','piece','could','be','swapped','out','for','a','spare'],
+        answer:'Luckily the broken hinge piece could be swapped out for a spare',
+        explanation:'"Swap out" means to replace one thing with another. "For" introduces the replacement in this phrasal structure.' },
+    ]
+  },
+];
+
+// ── STATE ────────────────────────────────────────────────────────────────────
+let S = {};
+
+function init() {
+  S = {
+    cur:0, scores:[0,0,0,0], totals:[0,0,0,0],
+    mcIdx:0, mcDone:false, mcShuffled:{},
+    fitbDone:false,
+    matchDone:false, matchDropped:{},
+    roIdx:0, roDone:false,
+    roStates: activities[3].questions.map(q=>({ bank:shuffle([...q.words]), answer:[] })),
+  };
+  activities.forEach((a,i)=>{
+    S.totals[i] = a.type==='matching' ? a.pairs.length : (a.questions||[]).length;
+  });
+  document.getElementById('final-screen').classList.remove('show');
+  document.getElementById('activities-wrap').style.display='block';
+  render(); updateScore(); updateProgress();
+}
+
+function shuffle(arr){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; }
+
+function updateScore(){
+  const t=S.scores.reduce((a,b)=>a+b,0), m=S.totals.reduce((a,b)=>a+b,0);
+  document.getElementById('total-score').textContent=`${t} / ${m}`;
+}
+
+function updateProgress(){
+  const act=activities[S.cur]; let qLbl='', pct=0;
+  if(act.type==='multiple-choice'){ qLbl=`Q ${Math.min(S.mcIdx+1,act.questions.length)} of ${act.questions.length}`; pct=(S.mcIdx/act.questions.length)*100; }
+  else if(act.type==='fill-blank'){ qLbl=`${act.questions.length} blanks`; pct=S.fitbDone?100:0; }
+  else if(act.type==='matching'){ const f=Object.keys(S.matchDropped).length; qLbl=`${f} of ${act.pairs.length} matched`; pct=(f/act.pairs.length)*100; }
+  else if(act.type==='reorder'){ qLbl=`Sentence ${Math.min(S.roIdx+1,act.questions.length)} of ${act.questions.length}`; pct=(S.roIdx/act.questions.length)*100; }
+  document.getElementById('progress-label').textContent=`Activity ${S.cur+1} of ${activities.length}`;
+  document.getElementById('question-label').textContent=qLbl;
+  document.getElementById('progress-fill').style.width=pct+'%';
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>{ b.className='tab-btn'; if(i===S.cur) b.classList.add('active'); if(i<S.cur) b.classList.add('completed'); });
+}
+
+// ── RENDER ROUTER ─────────────────────────────────────────────────────────────
+function render(){
+  const act=activities[S.cur]; const W=document.getElementById('activities-wrap');
+  if(act.type==='multiple-choice') rMC(act,W);
+  else if(act.type==='fill-blank') rFITB(act,W);
+  else if(act.type==='matching') rMatch(act,W);
+  else if(act.type==='reorder') rReorder(act,W);
+}
+
+function header(act){ return `<div class="activity-header"><div class="act-illustration">${SVG[act.id]}</div><div class="act-text"><div class="activity-tag">${act.tag}</div><div class="activity-title">${act.title}</div><div class="activity-subtitle">${act.subtitle}</div></div></div>`; }
+
+// ── MULTIPLE CHOICE ───────────────────────────────────────────────────────────
+// Shuffled option order is generated once per question and stored in S.mcShuffled
+function rMC(act,W){
+  if(S.mcIdx>=act.questions.length){ advance(); return; }
+  const q=act.questions[S.mcIdx]; S.mcDone=false;
+  // Build a shuffled index map for this question if not already done
+  if(!S.mcShuffled[S.mcIdx]){
+    const order=shuffle(q.options.map((_,i)=>i));
+    S.mcShuffled[S.mcIdx]={ order, newCorrect: order.indexOf(q.correct) };
+  }
+  const {order, newCorrect}=S.mcShuffled[S.mcIdx];
+  const letters=['A','B','C','D'];
+  const opts=order.map((origIdx,pos)=>`<button class="option-btn" id="opt-${pos}" onclick="selMC(${pos})"><span class="opt-letter">${letters[pos]}</span><span>${q.options[origIdx]}</span></button>`).join('');
+  W.innerHTML=header(act)+makeCard(act.color,`
+    <div class="q-label">Question ${S.mcIdx+1} of ${act.questions.length}</div>
+    <p class="q-text">${q.text}</p>
+    <div class="options-grid">${opts}</div>
+    <div class="feedback-box" id="mc-fb"></div>
+  `)+`<div class="btn-row"><button class="btn-primary hidden" id="mc-nxt" onclick="nxtMC()">${S.mcIdx+1<act.questions.length?'Next Question →':'Finish Activity →'}</button></div>`;
+  updateProgress();
+}
+
+function selMC(idx){
+  if(S.mcDone) return; S.mcDone=true;
+  const q=activities[S.cur].questions[S.mcIdx];
+  const {newCorrect}=S.mcShuffled[S.mcIdx];
+  const ok=idx===newCorrect;
+  if(ok){ S.scores[S.cur]++; updateScore(); }
+  document.querySelectorAll('.option-btn').forEach((b,i)=>{ b.disabled=true; if(i===newCorrect) b.classList.add('correct'); if(i===idx&&!ok) b.classList.add('wrong'); });
+  const fb=document.getElementById('mc-fb');
+  fb.className=`feedback-box show ${ok?'fb-correct':'fb-wrong'}`;
+  fb.innerHTML=`<div class="feedback-title">${ok?'✅ Correct!':'❌ The answer is: '+q.options[q.correct]}</div><div>${q.explanation}</div>`;
+  document.getElementById('mc-nxt').classList.remove('hidden');
+  updateProgress();
+}
+function nxtMC(){ S.mcIdx++; if(S.mcIdx>=activities[S.cur].questions.length) advance(); else render(); }
+
+// ── FILL IN BLANK ─────────────────────────────────────────────────────────────
+function rFITB(act,W){
+  const wb=act.wordBank.map(w=>`<span class="wb-chip">${w}</span>`).join('');
+  const items=act.questions.map((q,i)=>`
+    <div class="fitb-item" id="fitb-${i}"><span class="fitb-num">${i+1}.</span>
+    <span style="font-weight:700">${q.before?q.before+'&nbsp;':''}<input class="fitb-input" id="fi-${i}" type="text" placeholder="…" autocomplete="off" spellcheck="false">&nbsp;${q.after}</span></div>
+    <div class="fitb-fb" id="fb-${i}"></div>`).join('');
+  W.innerHTML=header(act)+makeCard(act.color,`
+    <div class="q-label">Word Bank</div>
+    <div class="word-bank-wrap">${wb}</div>
+    <div class="fitb-wrap">${items}</div>
+    <div class="feedback-box" id="fitb-ov"></div>
+  `)+`<div class="btn-row"><button class="btn-primary" id="fitb-chk" onclick="subFITB()">Check Answers</button><button class="btn-primary hidden" id="fitb-nxt" onclick="advance()">Finish Activity →</button></div>`;
+  S.fitbDone=false; updateProgress();
+}
+
+function norm(s){ return s.trim().toLowerCase().replace(/\s+/g,' '); }
+
+function subFITB(){
+  if(S.fitbDone) return; S.fitbDone=true;
+  const act=activities[S.cur]; let correct=0;
+  act.questions.forEach((q,i)=>{
+    const inp=document.getElementById(`fi-${i}`); const ok=norm(inp.value)===norm(q.answer); if(ok) correct++;
+    inp.disabled=true;
+    document.getElementById(`fitb-${i}`).classList.add(ok?'fitb-correct':'fitb-wrong');
+    const fb=document.getElementById(`fb-${i}`);
+    if(ok){ fb.textContent='✅ Correct! — '+q.explanation; fb.className='fitb-fb fc'; }
+    else{ fb.innerHTML=`❌ Answer: <strong>${q.answer}</strong> — ${q.explanation}`; fb.className='fitb-fb fw'; inp.value=q.answer; }
+  });
+  S.scores[S.cur]=correct; updateScore();
+  const ov=document.getElementById('fitb-ov');
+  ov.className=`feedback-box show ${correct===act.questions.length?'fb-correct':correct>2?'fb-partial':'fb-wrong'}`;
+  ov.innerHTML=`<strong>You got ${correct} of ${act.questions.length} correct.</strong>`;
+  document.getElementById('fitb-chk').classList.add('hidden');
+  document.getElementById('fitb-nxt').classList.remove('hidden');
+  updateProgress();
+}
+
+// ── MATCHING ──────────────────────────────────────────────────────────────────
+function rMatch(act,W){
+  S.matchDropped={}; S.matchDone=false;
+  const sT=shuffle(act.pairs.map((_,i)=>i)); const sD=shuffle(act.pairs.map((_,i)=>i));
+  const terms=sT.map(i=>`<div class="draggable-item" id="drag-${i}" draggable="true" ondragstart="mdStart(event,${i})" ondragend="mdEnd(event)">${act.pairs[i].term}</div>`).join('');
+  const defs=sD.map(i=>`<div class="drop-target" id="drop-${i}" ondragover="mdOver(event)" ondragleave="mdLeave(event)" ondrop="mdDrop(event,${i})"><div class="dropped-lbl" id="dlbl-${i}" style="display:none"></div><div class="def-text">${act.pairs[i].definition}</div></div>`).join('');
+  W.innerHTML=header(act)+makeCard(act.color,`
+    <div class="match-grid">
+      <div><div class="match-col-title">Phrasal Verbs</div><div class="match-list">${terms}</div></div>
+      <div><div class="match-col-title">Meanings</div><div class="match-list">${defs}</div></div>
+    </div>
+    <div class="feedback-box" id="match-fb"></div>
+  `)+`<div class="btn-row"><button class="btn-primary" id="match-chk" onclick="chkMatch()" disabled>Check Matches</button><button class="btn-primary hidden" id="match-nxt" onclick="advance()">Finish Activity →</button></div>`;
+  updateProgress();
+}
+
+let mdItem=null;
+function mdStart(e,idx){ mdItem=idx; setTimeout(()=>{ const el=document.getElementById(`drag-${idx}`); if(el) el.classList.add('dragging'); },0); e.dataTransfer.setData('text',idx); }
+function mdEnd(e){ if(mdItem!==null){ const el=document.getElementById(`drag-${mdItem}`); if(el) el.classList.remove('dragging'); } mdItem=null; }
+function mdOver(e){ e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
+function mdLeave(e){ e.currentTarget.classList.remove('drag-over'); }
+function mdDrop(e,di){
+  e.preventDefault(); e.currentTarget.classList.remove('drag-over');
+  if(mdItem===null||S.matchDone) return;
+  Object.entries(S.matchDropped).forEach(([d,t])=>{ if(parseInt(t)===mdItem){ delete S.matchDropped[d]; const pd=document.getElementById(`drop-${d}`); if(pd) pd.classList.remove('filled'); document.getElementById(`dlbl-${d}`).style.display='none'; } });
+  S.matchDropped[di]=mdItem;
+  const dt=document.getElementById(`drop-${di}`); dt.classList.add('filled');
+  const lbl=document.getElementById(`dlbl-${di}`); lbl.textContent=activities[S.cur].pairs[mdItem].term; lbl.style.display='block';
+  document.getElementById(`drag-${mdItem}`).classList.add('matched');
+  document.getElementById('match-chk').disabled=Object.keys(S.matchDropped).length<activities[S.cur].pairs.length;
+  updateProgress();
+}
+function chkMatch(){
+  if(S.matchDone) return; S.matchDone=true;
+  const act=activities[S.cur]; let correct=0;
+  act.pairs.forEach((_,di)=>{ const ti=S.matchDropped[di]; const ok=parseInt(ti)===di; if(ok) correct++; const dt=document.getElementById(`drop-${di}`); dt.classList.remove('filled'); dt.classList.add(ok?'match-correct':'match-wrong'); });
+  S.scores[S.cur]=correct; updateScore();
+  const fb=document.getElementById('match-fb');
+  fb.className=`feedback-box show ${correct===act.pairs.length?'fb-correct':correct>=3?'fb-partial':'fb-wrong'}`;
+  fb.innerHTML=`<strong>You matched ${correct} of ${act.pairs.length} correctly.</strong>${correct<act.pairs.length?' Incorrect matches are shown in red — check the definitions again.':' Outstanding — all correct! 🎉'}`;
+  document.getElementById('match-chk').classList.add('hidden');
+  document.getElementById('match-nxt').classList.remove('hidden');
+  document.querySelectorAll('.draggable-item').forEach(el=>el.setAttribute('draggable','false'));
+  updateProgress();
+}
+
+// ── REORDER ───────────────────────────────────────────────────────────────────
+function rReorder(act,W){
+  if(S.roIdx>=act.questions.length){ advance(); return; }
+  const ss=S.roStates[S.roIdx]; S.roDone=false;
+  const bChips=ss.bank.map((w,i)=>`<div class="word-chip" id="cb-${i}" draggable="true" ondragstart="rStart(event,'b',${i})" ondragend="rEnd()" onclick="rClickB(${i})">${w}</div>`).join('');
+  const aChips=ss.answer.map((w,i)=>`<div class="word-chip in-answer" id="ca-${i}" draggable="true" ondragstart="rStart(event,'a',${i})" ondragend="rEnd()" onclick="rClickA(${i})">${w}</div>`).join('');
+  W.innerHTML=header(act)+makeCard(act.color,`
+    <div class="q-label">Sentence ${S.roIdx+1} of ${act.questions.length}</div>
+    <div class="ro-zone-label">Your Sentence:</div>
+    <div class="ro-drop-area" id="ro-ans" ondragover="rOvrA(event)" ondragleave="rLv(event)" ondrop="rDropA(event)">
+      ${aChips||'<span style="color:var(--text-light);font-weight:700;font-size:14px;align-self:center;">Tap words below to build your sentence…</span>'}
+    </div>
+    <div class="ro-zone-label">Word Bank:</div>
+    <div class="ro-bank" id="ro-bank" ondragover="rOvrB(event)" ondragleave="rLv(event)" ondrop="rDropB(event)">
+      ${bChips||'<span style="color:var(--text-light);font-weight:700;font-size:14px;">All words placed!</span>'}
+    </div>
+    <div class="feedback-box" id="ro-fb"></div>
+  `)+`<div class="btn-row"><button class="btn-secondary" onclick="rClear()">↺ Clear</button><button class="btn-primary" id="ro-chk" onclick="rCheck()" ${ss.answer.length===0?'disabled':''}>Check Answer</button><button class="btn-primary hidden" id="ro-nxt" onclick="rNxt()">${S.roIdx+1<act.questions.length?'Next Sentence →':'Finish Activity →'}</button></div>`;
+  updateProgress();
+}
+
+let rSrc=null;
+function rStart(e,z,i){ rSrc={z,i}; e.dataTransfer.setData('text',JSON.stringify({z,i})); }
+function rEnd(){ rSrc=null; }
+function rOvrA(e){ e.preventDefault(); document.getElementById('ro-ans').classList.add('drag-over'); }
+function rOvrB(e){ e.preventDefault(); document.getElementById('ro-bank').classList.add('drag-over'); }
+function rLv(e){ e.currentTarget.classList.remove('drag-over'); }
+function rDropA(e){ e.preventDefault(); document.getElementById('ro-ans').classList.remove('drag-over'); if(!rSrc) return; const ss=S.roStates[S.roIdx]; if(rSrc.z==='b'){ ss.answer.push(ss.bank.splice(rSrc.i,1)[0]); } render(); }
+function rDropB(e){ e.preventDefault(); document.getElementById('ro-bank').classList.remove('drag-over'); if(!rSrc) return; const ss=S.roStates[S.roIdx]; if(rSrc.z==='a'){ ss.bank.push(ss.answer.splice(rSrc.i,1)[0]); } render(); }
+function rClickB(i){ const ss=S.roStates[S.roIdx]; ss.answer.push(ss.bank.splice(i,1)[0]); render(); }
+function rClickA(i){ const ss=S.roStates[S.roIdx]; ss.bank.push(ss.answer.splice(i,1)[0]); render(); }
+function rClear(){ const ss=S.roStates[S.roIdx]; ss.bank=[...ss.bank,...ss.answer]; ss.answer=[]; render(); }
+function rCheck(){
+  if(S.roDone) return; S.roDone=true;
+  const act=activities[S.cur]; const q=act.questions[S.roIdx]; const ss=S.roStates[S.roIdx];
+  const ok=norm(ss.answer.join(' '))===norm(q.answer);
+  if(ok){ S.scores[S.cur]++; updateScore(); }
+  const fb=document.getElementById('ro-fb');
+  fb.className=`feedback-box show ${ok?'fb-correct':'fb-wrong'}`;
+  fb.innerHTML=ok?`<div class="feedback-title">✅ Perfect sentence!</div>${q.explanation}`:`<div class="feedback-title">❌ Not quite.</div>Correct: <em>${q.answer}</em><br>${q.explanation}`;
+  document.getElementById('ro-chk').classList.add('hidden');
+  document.getElementById('ro-nxt').classList.remove('hidden');
+  updateProgress();
+}
+function rNxt(){ S.roIdx++; S.roDone=false; if(S.roIdx>=activities[S.cur].questions.length) advance(); else render(); }
+
+// ── NAV ───────────────────────────────────────────────────────────────────────
+function advance(){ if(S.cur>=activities.length-1) showFinal(); else { S.cur++; S.mcIdx=0; S.mcDone=false; S.mcShuffled={}; S.fitbDone=false; S.matchDone=false; S.roIdx=0; S.roDone=false; render(); updateProgress(); } }
+function goToActivity(i){ S.cur=i; render(); updateProgress(); }
+
+// ── FINAL SCREEN ───────────────────────────────────────────────────────────────
+function showFinal(){
+  document.getElementById('activities-wrap').style.display='none';
+  const fs=document.getElementById('final-screen'); fs.classList.add('show');
+  const t=S.scores.reduce((a,b)=>a+b,0), m=S.totals.reduce((a,b)=>a+b,0), pct=Math.round((t/m)*100);
+  document.getElementById('final-score-num').textContent=`${t} / ${m}`;
+  document.getElementById('progress-fill').style.width='100%';
+  document.getElementById('final-trophy-svg').innerHTML=getTrophySVG(pct);
+  let title='Lesson Complete!', msg='';
+  if(pct>=90){ title='🏆 Master Builder!'; msg='Extraordinary work! Your command of English prepositions and phrasal verbs is truly impressive. Keep building on this strong foundation!'; }
+  else if(pct>=75){ title='🥇 Skilled Builder!'; msg='Great job! You have a solid understanding of these structures. Review any incorrect answers and you will reach master level in no time.'; }
+  else if(pct>=55){ title='🔨 Good Progress!'; msg='You are building your skills well. Focus on the phrasal verbs that tripped you up — a second run-through will make them stick!'; }
+  else{ title='🧩 Keep Building!'; msg='Like LEGO, English takes patience and practice. Read the explanations carefully and try again — you will improve!'; }
+  document.getElementById('final-title').textContent=title;
+  document.getElementById('final-msg').textContent=msg;
+  document.getElementById('final-breakdown').innerHTML=S.scores.map((s,i)=>`<div class="breakdown-pill"><div class="bp-num">${s}/${S.totals[i]}</div><div class="bp-label">Activity ${i+1}</div></div>`).join('');
+}
+function restartAll(){ document.getElementById('final-screen').classList.remove('show'); document.getElementById('activities-wrap').style.display='block'; init(); }
+
+// GO
+init();
+</script>
+</body>
+</html>

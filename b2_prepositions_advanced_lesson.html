@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English | Advanced Prepositions (B2)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --fe-navy:#1c2b4a;
+    --fe-teal:#1f8a86;
+    --fe-orange:#e0703a;
+    --fe-purple:#6c5ce0;
+    --fe-green:#3a9c5f;
+    --fe-cream:#f7f3ec;
+    --fe-paper:#ffffff;
+    --fe-ink:#20242b;
+    --fe-muted:#6b7280;
+    --fe-error:#c0392b;
+    --fe-border:#e3ded3;
+    --fe-es:#b5651d;
+    --cat-color: var(--fe-teal);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Inter',sans-serif;
+    background:var(--fe-cream);
+    color:var(--fe-ink);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  h1,h2,h3{font-family:'Fraunces',serif;}
+  .app{width:100%;max-width:760px;padding:20px 18px 60px;}
+  header.top{display:flex;align-items:center;gap:14px;padding:14px 0 8px;}
+  .logo{width:46px;height:46px;flex-shrink:0;}
+  .brand-text{line-height:1.15;}
+  .brand-text .name{font-family:'Fraunces',serif;font-weight:700;font-size:1.15rem;color:var(--fe-navy);}
+  .brand-text .tag{font-size:0.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--fe-muted);}
+
+  .scorebar{
+    position:sticky;top:0;z-index:20;
+    background:rgba(247,243,236,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--fe-border);
+    padding:10px 0 12px;
+    margin-bottom:18px;
+  }
+  .progress-track{height:8px;width:100%;background:#e8e3d6;border-radius:6px;overflow:hidden;}
+  .progress-fill{height:100%;width:0%;background:var(--cat-color);transition:width .4s ease;}
+  .meta-row{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:0.82rem;color:var(--fe-muted);}
+  .score-pill{background:var(--fe-navy);color:#fff;padding:3px 11px;border-radius:999px;font-weight:600;font-size:0.78rem;}
+
+  .card{
+    background:var(--fe-paper);
+    border:1px solid var(--fe-border);
+    border-radius:16px;
+    padding:26px 24px;
+    box-shadow:0 2px 10px rgba(28,43,74,0.05);
+    margin-bottom:20px;
+  }
+
+  .section-badge{
+    display:inline-block;font-size:0.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--cat-color);
+    background:color-mix(in srgb, var(--cat-color) 12%, white);
+    padding:4px 10px;border-radius:999px;margin-bottom:12px;
+  }
+
+  .intro-card h2{margin-top:0;color:var(--fe-navy);}
+  .intro-card p{line-height:1.55;color:#3a3f4a;}
+  .lesson-map{list-style:none;padding:0;margin:18px 0 0;display:grid;gap:8px;}
+  .lesson-map li{display:flex;gap:10px;align-items:center;font-size:0.92rem;padding:8px 10px;border-radius:10px;background:var(--fe-cream);}
+  .lesson-map .dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+
+  .btn{
+    font-family:'Inter',sans-serif;font-weight:600;font-size:0.95rem;
+    padding:11px 22px;border-radius:10px;border:none;cursor:pointer;
+    transition:transform .12s ease, opacity .12s ease;
+  }
+  .btn-primary{background:var(--fe-navy);color:#fff;}
+  .btn-primary:hover{transform:translateY(-1px);}
+  .btn-primary:disabled{background:#c9cdd6;cursor:not-allowed;transform:none;}
+  .btn-ghost{background:transparent;color:var(--fe-navy);border:1px solid var(--fe-navy);}
+  .btn-es{
+    background:transparent;
+    color:var(--fe-es);
+    border:1.5px solid var(--fe-es);
+    font-size:0.82rem;
+    padding:6px 13px;
+    border-radius:999px;
+  }
+  .btn-es:hover{background:color-mix(in srgb, var(--fe-es) 10%, white);}
+
+  .q-prompt{font-size:1.08rem;line-height:1.6;margin-bottom:14px;color:var(--fe-ink);}
+  .q-prompt .gap{display:inline-block;min-width:70px;border-bottom:2px solid var(--fe-navy);text-align:center;font-weight:700;color:var(--fe-navy);}
+
+  .es-row{margin-bottom:16px;}
+  .es-note{
+    display:none;
+    margin-top:9px;
+    padding:10px 13px;
+    background:#fbf1e6;
+    border:1px solid #ecd3ad;
+    border-radius:10px;
+    font-size:0.86rem;
+    color:#7a4a12;
+    line-height:1.5;
+  }
+  .es-note.show{display:block;}
+
+  .options{display:grid;gap:10px;margin-bottom:6px;}
+  .option{
+    text-align:left;background:var(--fe-cream);border:1.5px solid var(--fe-border);
+    border-radius:12px;padding:12px 16px;font-size:0.98rem;font-family:'Inter',sans-serif;
+    cursor:pointer;transition:border-color .12s ease, background .12s ease;
+  }
+  .option:hover:not(:disabled){border-color:var(--cat-color);}
+  .option:disabled{cursor:default;}
+  .option.correct{background:#e6f4ea;border-color:var(--fe-green);color:#1f5c34;font-weight:600;}
+  .option.incorrect{background:#fbeceb;border-color:var(--fe-error);color:#8a2c22;font-weight:600;}
+  .option.dim{opacity:0.55;}
+
+  .feedback{margin-top:14px;padding:13px 15px;border-radius:10px;font-size:0.92rem;line-height:1.5;display:none;}
+  .feedback.show{display:block;}
+  .feedback.right{background:#e6f4ea;color:#1f5c34;border:1px solid #bfe2ca;}
+  .feedback.wrong{background:#fbeceb;color:#8a2c22;border:1px solid #f1c6c0;}
+
+  .nav-row{display:flex;justify-content:flex-end;margin-top:18px;gap:10px;align-items:center;}
+  .nav-row.split{justify-content:space-between;}
+
+  .results-card{text-align:center;}
+  .results-score{font-family:'Fraunces',serif;font-size:3rem;color:var(--fe-navy);margin:6px 0;}
+  .results-msg{color:#3a3f4a;line-height:1.55;margin-bottom:20px;}
+  .breakdown{display:grid;gap:8px;text-align:left;margin:20px 0;}
+  .breakdown-row{display:flex;justify-content:space-between;padding:9px 12px;background:var(--fe-cream);border-radius:10px;font-size:0.9rem;}
+
+  .hidden{display:none !important;}
+
+  footer.foot{margin-top:26px;text-align:center;color:var(--fe-muted);font-size:0.78rem;}
+
+  @media (max-width:480px){
+    .card{padding:20px 16px;}
+    .results-score{font-size:2.3rem;}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="top">
+    <svg class="logo" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="32" cy="32" r="30" fill="none" stroke="var(--fe-navy)" stroke-width="3"/>
+      <path d="M20 42 L20 22 L40 22" fill="none" stroke="var(--cat-color)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M20 32 L34 32" fill="none" stroke="var(--cat-color)" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="44" cy="42" r="4" fill="var(--fe-orange)"/>
+    </svg>
+    <div class="brand-text">
+      <div class="name">Forbes English</div>
+      <div class="tag">Lesson &middot; B2 &middot; Advanced Prepositions</div>
+    </div>
+  </header>
+
+  <div class="scorebar">
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="meta-row">
+      <span id="stepLabel">Getting started</span>
+      <span class="score-pill">Score: <span id="scoreVal">0</span>/<span id="scoreMax">0</span></span>
+    </div>
+  </div>
+
+  <main id="main"></main>
+
+  <footer class="foot">Forbes English &middot; Advanced Prepositions &middot; B2 &middot; Con apoyo en espanol</footer>
+</div>
+
+<script>
+(function(){
+
+  // ---------- DATA ----------
+  var SECTIONS = [
+    {
+      id:"purpose",
+      title:"Part 1: Purpose - for + noun/gerund vs to + infinitive",
+      color:"var(--fe-teal)",
+      intro:"At B2 you need to choose confidently between \"for\" and \"to\" when explaining why something is done or exists.",
+      questions:[
+        {before:"These boots were made", after:"walking, according to the old song.", options:["for","to","in","at"], correct:"for", explanation:"We use \"for\" before a gerund (-ing form) or noun to explain the purpose or function of something.", es:"Esta estructura expresa el proposito de un objeto, similar a \"para\" + infinitivo/gerundio en espanol."},
+        {before:"I go to the gym every morning", after:"get fit before work.", options:["for","to","in","at"], correct:"to", explanation:"We use \"to\" + infinitive to explain why someone does an action.", es:"Aqui se expresa el motivo de una accion, tambien equivale a \"para\" + infinitivo en espanol."},
+        {before:"She opened a separate account", after:"paying university fees.", options:["for","to","with","in"], correct:"for", explanation:"\"For\" + gerund/noun explains the intended use of the account.", es:"El sustantivo indica el proposito de la cuenta, como \"para pagar\" en espanol."},
+        {before:"He works two jobs", after:"support his family back home.", options:["for","to","with","by"], correct:"to", explanation:"\"To\" + infinitive introduces the reason behind the action of working two jobs.", es:"Introduce el motivo de trabajar dos empleos, como \"para + infinitivo\" en espanol."},
+        {before:"This attachment is designed", after:"trimming hedges quickly.", options:["for","to","with","at"], correct:"for", explanation:"\"For\" + gerund describes what a tool or device is used for.", es:"Describe el uso de una herramienta, como \"para + infinitivo\" en espanol."},
+        {before:"They arrived two hours early", after:"get good seats at the front.", options:["for","to","with","by"], correct:"to", explanation:"\"To\" + infinitive gives the purpose of arriving early.", es:"Explica por que llegaron temprano, como \"para + infinitivo\" en espanol."},
+        {before:"I bought this cream specifically", after:"reducing fine lines.", options:["for","to","with","in"], correct:"for", explanation:"\"For\" + gerund explains the specific purpose of a product.", es:"Expresa el fin especifico de un producto, como \"para + infinitivo\" en espanol."}
+      ]
+    },
+    {
+      id:"idiomatic",
+      title:"Part 2: Fixed Idiomatic Phrases",
+      color:"var(--fe-orange)",
+      intro:"These prepositional phrases are fixed expressions used often in spoken and written English. The whole phrase must be learned together.",
+      questions:[
+        {before:"Whether the picnic goes ahead depends", after:"the weather forecast.", options:["on","of","for","at"], correct:"on", explanation:"\"Depend on\" is a fixed expression - it is never followed by any other preposition.", es:"Significa depender de algo, como el clima que decide si el plan se realiza."},
+        {before:"In terms", after:"salary, this offer is far better than my last job.", options:["of","for","with","in"], correct:"of", explanation:"\"In terms of\" introduces the specific aspect you are talking about.", es:"Significa en cuanto a o en terminos de, para especificar un aspecto concreto."},
+        {before:"I would like to say a few words", after:"behalf of the whole team.", options:["on","in","for","at"], correct:"on", explanation:"\"On behalf of\" means acting or speaking as a representative of others.", es:"Significa en nombre de o de parte de, al representar a otros."},
+        {before:"", after:"spite of the heavy rain, the match continued as planned.", options:["In","On","At","For"], correct:"In", explanation:"\"In spite of\" introduces a contrast, similar in meaning to \"despite\".", es:"Significa a pesar de, para introducir un contraste."},
+        {before:"After months of losses, the company is now", after:"the verge of bankruptcy.", options:["on","in","at","of"], correct:"on", explanation:"\"On the verge of\" means very close to something happening.", es:"Significa a punto de, muy cerca de que algo suceda."},
+        {before:"He got the promotion", after:"the expense of a colleague who had worked there longer.", options:["at","on","for","with"], correct:"at", explanation:"\"At the expense of\" means causing harm or disadvantage to someone or something else.", es:"Significa a costa de, causando perjuicio a otra persona."},
+        {before:"They stayed together for years", after:"the sake of their children.", options:["for","of","on","at"], correct:"for", explanation:"\"For the sake of\" means in order to help or please someone, or for a particular reason.", es:"Significa por el bien de, por una razon o para ayudar a alguien."}
+      ]
+    },
+    {
+      id:"dependent",
+      title:"Part 3: Advanced Verb & Adjective + Preposition",
+      color:"var(--fe-purple)",
+      intro:"Beyond the basics, B2 learners need a wider range of fixed verb and adjective + preposition pairs, often used in formal or professional English.",
+      questions:[
+        {before:"The manager accused the intern", after:"leaking the confidential report.", options:["of","for","with","about"], correct:"of", explanation:"\"Accuse someone of something\" is the standard fixed pattern.", es:"Significa acusar a alguien de algo, atribuyendole una falta."},
+        {before:"You can't blame the whole team", after:"one person's mistake.", options:["for","of","with","on"], correct:"for", explanation:"\"Blame someone for something\" is the fixed pattern used to assign responsibility.", es:"Significa culpar a alguien por algo, atribuyendo responsabilidad."},
+        {before:"After three attempts, she finally succeeded", after:"passing her driving test.", options:["in","at","on","with"], correct:"in", explanation:"\"Succeed in doing something\" is the fixed pattern, always followed by a gerund.", es:"Significa lograr algo o tener exito haciendo algo."},
+        {before:"The heavy snowfall prevented the plane", after:"taking off on time.", options:["from","of","for","with"], correct:"from", explanation:"\"Prevent someone/something from doing something\" is the fixed pattern.", es:"Significa impedir que alguien haga algo."},
+        {before:"Everyone congratulated her", after:"her well-deserved promotion.", options:["on","for","of","about"], correct:"on", explanation:"\"Congratulate someone on something\" is the fixed pattern.", es:"Significa felicitar a alguien por algo."},
+        {before:"This particular law firm specialises", after:"corporate mergers and acquisitions.", options:["in","on","at","with"], correct:"in", explanation:"\"Specialise in something\" describes a professional focus or expertise.", es:"Significa especializarse en un area concreta."},
+        {before:"The advisory committee consists", after:"five independent experts.", options:["of","in","with","from"], correct:"of", explanation:"\"Consist of\" is used to describe what something is made up of.", es:"Significa estar compuesto por o consistir en."}
+      ]
+    },
+    {
+      id:"phrasal",
+      title:"Part 4: Prepositional Phrasal Verbs",
+      color:"var(--fe-green)",
+      intro:"These multi-word verbs are extremely common in natural spoken English. The preposition is fixed and changes the whole meaning of the verb.",
+      questions:[
+        {before:"She has always looked up", after:"her older sister as a role model.", options:["to","at","on","for"], correct:"to", explanation:"\"Look up to someone\" means to admire and respect them.", es:"Significa admirar a alguien como modelo a seguir."},
+        {before:"Honestly, I don't know how she puts up", after:"her noisy neighbours every night.", options:["with","for","at","on"], correct:"with", explanation:"\"Put up with something\" means to tolerate something unpleasant without complaining.", es:"Significa aguantar o soportar algo molesto."},
+        {before:"He never seems to get away", after:"anything at school, unlike his classmates.", options:["with","for","on","at"], correct:"with", explanation:"\"Get away with something\" means to avoid punishment or consequences for a wrongdoing.", es:"Significa salirse con la suya sin recibir castigo."},
+        {before:"We really need to come up", after:"a better solution before Friday.", options:["with","for","on","at"], correct:"with", explanation:"\"Come up with something\" means to think of or produce an idea or plan.", es:"Significa idear o proponer una solucion."},
+        {before:"He has a habit of looking down", after:"people who did not go to university.", options:["on","at","for","with"], correct:"on", explanation:"\"Look down on someone\" means to consider yourself better than them.", es:"Significa menospreciar a alguien, sintiendose superior."},
+        {before:"It takes courage to stand up", after:"what you believe in, even under pressure.", options:["for","with","on","at"], correct:"for", explanation:"\"Stand up for something\" means to defend or support a belief or principle.", es:"Significa defender una idea o principio."},
+        {before:"My doctor has advised me to cut down", after:"sugar and processed food.", options:["on","of","for","with"], correct:"on", explanation:"\"Cut down on something\" means to reduce the amount of something you consume or do.", es:"Significa reducir el consumo de algo."}
+      ]
+    }
+  ];
+
+  // ---------- STATE ----------
+  var state = { flatQuestions: [], score: 0, answered: false };
+
+  SECTIONS.forEach(function(sec){
+    sec.questions.forEach(function(q){
+      state.flatQuestions.push({sectionId: sec.id, sectionTitle: sec.title, color: sec.color, q: q});
+    });
+  });
+
+  var totalSteps = state.flatQuestions.length + SECTIONS.length + 2;
+  var stepsDone = 0;
+
+  document.getElementById("scoreMax").textContent = state.flatQuestions.length;
+
+  function shuffle(arr){
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  function setCatColor(color){ document.documentElement.style.setProperty("--cat-color", color); }
+
+  function updateProgress(label){
+    stepsDone++;
+    var pct = Math.min(100, Math.round((stepsDone / totalSteps) * 100));
+    document.getElementById("progressFill").style.width = pct + "%";
+    document.getElementById("stepLabel").textContent = label;
+  }
+
+  function updateScoreDisplay(){ document.getElementById("scoreVal").textContent = state.score; }
+
+  var main = document.getElementById("main");
+
+  function renderWelcome(){
+    setCatColor("var(--fe-teal)");
+    updateProgress("Welcome");
+    main.innerHTML =
+      '<section class="card intro-card">' +
+        '<span class="section-badge">B2 Lesson</span>' +
+        '<h2>Advanced Prepositions in Context</h2>' +
+        '<p>This lesson goes beyond basic place and time prepositions into the patterns B2 learners need for natural, fluent English: purpose structures, fixed idiomatic phrases, advanced dependent prepositions, and prepositional phrasal verbs. Spanish notes are available for extra support - tap the "ES" button next to any question.</p>' +
+        '<ul class="lesson-map">' +
+          '<li><span class="dot" style="background:var(--fe-teal)"></span> Part 1 &middot; Purpose: for vs to</li>' +
+          '<li><span class="dot" style="background:var(--fe-orange)"></span> Part 2 &middot; Fixed Idiomatic Phrases</li>' +
+          '<li><span class="dot" style="background:var(--fe-purple)"></span> Part 3 &middot; Advanced Dependent Prepositions</li>' +
+          '<li><span class="dot" style="background:var(--fe-green)"></span> Part 4 &middot; Prepositional Phrasal Verbs</li>' +
+        '</ul>' +
+        '<div class="nav-row"><button class="btn btn-primary" id="startBtn">Start Lesson</button></div>' +
+      '</section>';
+    document.getElementById("startBtn").addEventListener("click", goToNext);
+  }
+
+  function renderSectionIntro(sectionIndex){
+    var sec = SECTIONS[sectionIndex];
+    setCatColor(sec.color);
+    updateProgress(sec.title);
+    main.innerHTML =
+      '<section class="card">' +
+        '<span class="section-badge">' + sec.title + '</span>' +
+        '<h2 style="margin-top:0;color:var(--fe-navy);">' + sec.title + '</h2>' +
+        '<p style="line-height:1.55;color:#3a3f4a;">' + sec.intro + '</p>' +
+        '<div class="nav-row"><button class="btn btn-primary" id="continueBtn">Begin Practice</button></div>' +
+      '</section>';
+    document.getElementById("continueBtn").addEventListener("click", goToNext);
+  }
+
+  function renderQuestion(flatIndex){
+    var item = state.flatQuestions[flatIndex];
+    var q = item.q;
+    setCatColor(item.color);
+    updateProgress(item.sectionTitle + " - Question");
+    state.answered = false;
+
+    var shuffledOptions = shuffle(q.options);
+
+    var promptHtml = (q.before ? q.before + ' ' : '') + '<span class="gap">______</span>' + (q.after ? ' ' + q.after : '');
+
+    var html = '<section class="card">';
+    html += '<span class="section-badge">' + item.sectionTitle + '</span>';
+    html += '<div class="q-prompt">' + promptHtml + '</div>';
+    html += '<div class="es-row">';
+    html += '<button class="btn btn-es" id="esToggle" type="button">ES &middot; Ayuda en espanol</button>';
+    html += '<div class="es-note" id="esNote">' + escapeHtml(q.es) + '</div>';
+    html += '</div>';
+    html += '<div class="options" id="optionsWrap">';
+    shuffledOptions.forEach(function(opt, i){
+      html += '<button class="option" data-value="' + escapeAttr(opt) + '" data-index="' + i + '">' + escapeHtml(opt) + '</button>';
+    });
+    html += '</div>';
+    html += '<div class="feedback" id="feedbackBox"></div>';
+    html += '<div class="nav-row"><button class="btn btn-primary" id="nextBtn" disabled>Next</button></div>';
+    html += '</section>';
+
+    main.innerHTML = html;
+
+    document.getElementById("esToggle").addEventListener("click", function(){
+      document.getElementById("esNote").classList.toggle("show");
+    });
+
+    var optionButtons = main.querySelectorAll(".option");
+    optionButtons.forEach(function(btn){
+      btn.addEventListener("click", function(){
+        if (state.answered) return;
+        state.answered = true;
+        var chosen = btn.getAttribute("data-value");
+        var isCorrect = (chosen === q.correct);
+
+        optionButtons.forEach(function(b){
+          b.disabled = true;
+          var v = b.getAttribute("data-value");
+          if (v === q.correct){ b.classList.add("correct"); }
+          else if (v === chosen && !isCorrect){ b.classList.add("incorrect"); }
+          else { b.classList.add("dim"); }
+        });
+
+        var fb = document.getElementById("feedbackBox");
+        fb.classList.add("show");
+        if (isCorrect){
+          state.score++;
+          updateScoreDisplay();
+          fb.classList.add("right");
+          fb.textContent = "Correct! " + q.explanation;
+        } else {
+          fb.classList.add("wrong");
+          fb.textContent = "Not quite. The correct answer is \"" + q.correct + "\". " + q.explanation;
+        }
+
+        item.gotCorrect = isCorrect;
+        document.getElementById("nextBtn").disabled = false;
+      });
+    });
+
+    document.getElementById("nextBtn").addEventListener("click", goToNext);
+  }
+
+  function renderResults(){
+    setCatColor("var(--fe-navy)");
+    updateProgress("Results");
+    var total = state.flatQuestions.length;
+    var pct = Math.round((state.score / total) * 100);
+    var msg;
+    if (pct >= 85){
+      msg = "Excellent command of advanced preposition patterns - purpose structures, fixed idioms, dependent prepositions, and phrasal verbs. This is confident B2/C1 usage.";
+    } else if (pct >= 65){
+      msg = "Solid progress. Go back over any section where you lost points, especially the fixed idiomatic phrases - they simply need to be memorised as whole chunks.";
+    } else {
+      msg = "Good effort - these advanced patterns take repeated exposure. Review the explanations and Spanish notes, then try the lesson again in a few days.";
+    }
+
+    var breakdown = "";
+    SECTIONS.forEach(function(sec){
+      var secScore = 0;
+      var secTotal = sec.questions.length;
+      state.flatQuestions.forEach(function(item){
+        if (item.sectionId === sec.id && item.gotCorrect) secScore++;
+      });
+      breakdown += '<div class="breakdown-row"><span>' + sec.title + '</span><span>' + secScore + ' / ' + secTotal + '</span></div>';
+    });
+
+    main.innerHTML =
+      '<section class="card results-card">' +
+        '<span class="section-badge">Lesson Complete</span>' +
+        '<h2 style="color:var(--fe-navy);margin-bottom:0;">Your Results</h2>' +
+        '<div class="results-score">' + state.score + ' / ' + total + '</div>' +
+        '<p class="results-msg">' + msg + '</p>' +
+        '<div class="breakdown">' + breakdown + '</div>' +
+        '<div class="nav-row" style="justify-content:center;gap:12px;">' +
+          '<button class="btn btn-ghost" id="restartBtn">Restart Lesson</button>' +
+        '</div>' +
+      '</section>';
+
+    document.getElementById("restartBtn").addEventListener("click", function(){ location.reload(); });
+  }
+
+  var sequence = [];
+  sequence.push({type:"welcome"});
+  var flatCursor = 0;
+  SECTIONS.forEach(function(sec, sIdx){
+    sequence.push({type:"sectionIntro", sectionIndex: sIdx});
+    sec.questions.forEach(function(){
+      sequence.push({type:"question", flatIndex: flatCursor});
+      flatCursor++;
+    });
+  });
+  sequence.push({type:"results"});
+
+  var cursor = -1;
+
+  function goToNext(){
+    cursor++;
+    if (cursor >= sequence.length) return;
+    var step = sequence[cursor];
+    if (step.type === "welcome") renderWelcome();
+    else if (step.type === "sectionIntro") renderSectionIntro(step.sectionIndex);
+    else if (step.type === "question") renderQuestion(step.flatIndex);
+    else if (step.type === "results") renderResults();
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+
+  function escapeHtml(str){
+    return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+  function escapeAttr(str){ return escapeHtml(str).replace(/"/g, "&quot;"); }
+
+  goToNext();
+
+})();
+</script>
+</body>
+</html>

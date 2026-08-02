@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Federal Agency for Nature Conservation — Vocabulary Assessment, Part 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest: #1F4D3B;
+    --forest-light: #2E6B52;
+    --forest-pale: #E4ECE6;
+    --gold: #C9A227;
+    --gold-light: #E0BE5C;
+    --cream: #F5F1E6;
+    --cream-dark: #EBE3CD;
+    --ink: #1B2A22;
+    --ink-light: #52655B;
+    --correct: #3C8C63;
+    --incorrect: #B3432B;
+    --border: #D8CFB4;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.55;
+    min-height: 100vh;
+    padding-bottom: 80px;
+  }
+
+  .header {
+    background: var(--forest);
+    color: var(--cream);
+    padding: 28px 24px 24px;
+    border-bottom: 4px solid var(--gold);
+  }
+
+  .header-inner {
+    max-width: 760px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .logo-svg { flex-shrink: 0; }
+
+  .header-text-wrap { flex: 1; }
+
+  .agency-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 4px;
+  }
+
+  .agency-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 1.2;
+    letter-spacing: -0.3px;
+  }
+
+  .header-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    padding: 4px 10px;
+    border-radius: 3px;
+  }
+
+  .badge-level {
+    background: var(--gold);
+    color: var(--forest);
+  }
+
+  .badge-part {
+    background: rgba(245,241,230,0.12);
+    color: var(--cream);
+    border: 1px solid rgba(245,241,230,0.3);
+  }
+
+  .progress-wrap {
+    max-width: 760px;
+    margin: 20px auto 0;
+    padding: 0 24px;
+  }
+
+  .progress-track {
+    width: 100%;
+    height: 8px;
+    background: var(--cream-dark);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--forest-light), var(--gold));
+    transition: width 0.4s ease;
+  }
+
+  .progress-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-light);
+    margin-top: 6px;
+  }
+
+  .container {
+    max-width: 760px;
+    margin: 28px auto 0;
+    padding: 0 24px;
+  }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  .card {
+    background: #FFFDF7;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px;
+    box-shadow: 0 2px 10px rgba(31,77,59,0.06);
+  }
+
+  .intro-scenario {
+    font-size: 15.5px;
+    color: var(--ink);
+  }
+
+  .intro-scenario p { margin-bottom: 14px; }
+  .intro-scenario p:last-child { margin-bottom: 0; }
+
+  .sec-heading {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 21px;
+    color: var(--forest);
+    margin-bottom: 4px;
+  }
+
+  .sec-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-light);
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  .q-counter {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--gold);
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .prompt-sentence {
+    font-size: 17px;
+    color: var(--ink);
+    margin-bottom: 14px;
+    line-height: 1.6;
+  }
+
+  .prompt-question {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--forest);
+    margin-bottom: 18px;
+  }
+
+  .hint {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--ink-light);
+    background: var(--forest-pale);
+    border-left: 3px solid var(--forest-light);
+    padding: 10px 14px;
+    border-radius: 4px;
+    margin-bottom: 18px;
+  }
+
+  .options-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option-btn {
+    text-align: left;
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 13px 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14.5px;
+    color: var(--ink);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--forest-light);
+    background: var(--forest-pale);
+  }
+
+  .option-btn:disabled { cursor: default; }
+
+  .opt-correct {
+    border-color: var(--correct) !important;
+    background: rgba(60,140,99,0.12) !important;
+    font-weight: 600;
+  }
+
+  .opt-incorrect {
+    border-color: var(--incorrect) !important;
+    background: rgba(179,67,43,0.1) !important;
+  }
+
+  .input-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+
+  .fib-input {
+    flex: 1;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: var(--ink);
+    background: #fff;
+  }
+
+  .fib-input:focus { outline: none; border-color: var(--forest-light); }
+
+  .input-correct { border-color: var(--correct) !important; background: rgba(60,140,99,0.08); }
+  .input-incorrect { border-color: var(--incorrect) !important; background: rgba(179,67,43,0.06); }
+
+  .check-btn {
+    background: var(--forest);
+    color: var(--cream);
+    border: none;
+    border-radius: 8px;
+    padding: 0 22px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 14.5px;
+    cursor: pointer;
+  }
+
+  .check-btn:disabled { opacity: 0.5; cursor: default; }
+
+  .feedback {
+    display: none;
+    margin-top: 18px;
+    padding: 14px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .feedback.visible { display: block; }
+
+  .feedback-correct {
+    background: rgba(60,140,99,0.1);
+    border-left: 3px solid var(--correct);
+    color: var(--ink);
+  }
+
+  .feedback-incorrect {
+    background: rgba(179,67,43,0.08);
+    border-left: 3px solid var(--incorrect);
+    color: var(--ink);
+  }
+
+  .next-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 22px;
+  }
+
+  .next-btn {
+    background: var(--gold);
+    color: var(--forest);
+    border: none;
+    border-radius: 8px;
+    padding: 12px 26px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 14.5px;
+    cursor: pointer;
+  }
+
+  .next-btn:disabled { opacity: 0.4; cursor: default; }
+
+  .start-btn {
+    background: var(--forest);
+    color: var(--cream);
+    border: none;
+    border-radius: 8px;
+    padding: 13px 28px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+
+  .match-grid-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .match-col-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 10px;
+  }
+
+  .match-col {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .match-tile {
+    text-align: left;
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 7px;
+    padding: 10px 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13.5px;
+    color: var(--ink);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .match-word { font-weight: 600; color: var(--forest); }
+
+  .match-tile:hover:not(.match-locked) { border-color: var(--forest-light); }
+
+  .match-selected {
+    border-color: var(--gold) !important;
+    background: rgba(201,162,39,0.12) !important;
+  }
+
+  .match-locked {
+    border-color: var(--correct) !important;
+    background: rgba(60,140,99,0.1) !important;
+    opacity: 0.6;
+    cursor: default;
+  }
+
+  .match-wrong {
+    border-color: var(--incorrect) !important;
+    background: rgba(179,67,43,0.1) !important;
+  }
+
+  #s3-counter {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-light);
+    margin-top: 18px;
+    text-align: center;
+  }
+
+  #s3-continue-btn {
+    display: none;
+    margin: 18px auto 0;
+  }
+
+  .results-card {
+    text-align: center;
+  }
+
+  .results-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--forest);
+    margin-bottom: 6px;
+  }
+
+  .results-total {
+    font-family: 'Fraunces', serif;
+    font-size: 46px;
+    font-weight: 900;
+    color: var(--gold);
+    margin: 18px 0 2px;
+  }
+
+  .results-pct {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    color: var(--ink-light);
+    margin-bottom: 24px;
+  }
+
+  .results-breakdown {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+
+  .rb-item {
+    flex: 1;
+    background: var(--forest-pale);
+    border-radius: 8px;
+    padding: 14px 8px;
+  }
+
+  .rb-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--ink-light);
+    margin-bottom: 6px;
+  }
+
+  .rb-score {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 19px;
+    color: var(--forest);
+  }
+
+  .results-message {
+    font-size: 15px;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+
+  .part-note {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    color: var(--ink-light);
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+  }
+
+  footer {
+    max-width: 760px;
+    margin: 40px auto 0;
+    padding: 0 24px;
+    text-align: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-light);
+    letter-spacing: 0.5px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <svg class="logo-svg" width="46" height="46" viewBox="0 0 46 46" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="23" cy="23" r="22" fill="none" stroke="#C9A227" stroke-width="1.5"/>
+      <path d="M23 8 C14 14, 14 24, 23 38 C32 24, 32 14, 23 8 Z" fill="#2E6B52" opacity="0.9"/>
+      <path d="M23 8 L23 38" stroke="#C9A227" stroke-width="1.2"/>
+      <path d="M23 16 C19 17, 17 20, 17 23" stroke="#E0BE5C" stroke-width="1" fill="none"/>
+      <path d="M23 24 C27 25, 29 28, 29 31" stroke="#E0BE5C" stroke-width="1" fill="none"/>
+    </svg>
+    <div class="header-text-wrap">
+      <div class="agency-label">Forbes English &middot; Professional Vocabulary Series</div>
+      <div class="agency-title">Federal Agency for Nature Conservation</div>
+      <div class="header-meta">
+        <span class="badge badge-level">C1</span>
+        <span class="badge badge-part">Vocabulary Assessment &middot; Part 1 of 2</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="progress-label" id="progress-label">Question 1 of 50</div>
+</div>
+
+<div class="container">
+
+  <div class="section active" id="intro-screen">
+    <div class="card">
+      <div class="sec-heading">Before you begin</div>
+      <div class="sec-sub">ONBOARDING BRIEFING &middot; ELENA VOSS, FIELD OFFICER</div>
+      <div class="intro-scenario">
+        <p>It is Elena Voss's first week as a field officer at the Federal Agency for Nature Conservation. Between site visits, staff briefings, and the odd piece of office gossip, she is finding that her new job runs on a very particular vocabulary &mdash; some of it formal and legal, some of it just the everyday language of a busy workplace.</p>
+        <p>This assessment follows Elena through her first weeks at the agency, testing 50 words and phrases across three activities: <strong>definitions in context</strong>, <strong>fill in the blank</strong>, and <strong>matching</strong>. Read each scenario carefully &mdash; context is everything at C1 level.</p>
+        <p>Part 2 continues the story with another 50 items.</p>
+      </div>
+      <button class="start-btn" id="start-btn">Begin Assessment</button>
+    </div>
+  </div>
+
+  <div class="section" id="section-1">
+    <div class="card">
+      <div class="sec-heading">Section 1 &middot; Definitions in Context</div>
+      <div class="sec-sub">CHOOSE THE MEANING THAT FITS THE SENTENCE</div>
+      <div id="section1-body"></div>
+      <div class="next-row"><button class="next-btn" id="s1-next-btn" disabled>Next &rarr;</button></div>
+    </div>
+  </div>
+
+  <div class="section" id="section-2">
+    <div class="card">
+      <div class="sec-heading">Section 2 &middot; Complete the Briefing</div>
+      <div class="sec-sub">TYPE THE MISSING WORD OR PHRASE</div>
+      <div id="section2-body"></div>
+      <div class="next-row"><button class="next-btn" id="s2-next-btn" disabled>Next &rarr;</button></div>
+    </div>
+  </div>
+
+  <div class="section" id="section-3">
+    <div class="card">
+      <div class="sec-heading">Section 3 &middot; Match the Terms</div>
+      <div class="sec-sub">CLICK A WORD, THEN CLICK ITS DEFINITION</div>
+      <div class="match-grid-wrap">
+        <div class="match-col">
+          <div class="match-col-label">Word</div>
+          <div class="match-col" id="s3-words"></div>
+        </div>
+        <div class="match-col">
+          <div class="match-col-label">Definition</div>
+          <div class="match-col" id="s3-defs"></div>
+        </div>
+      </div>
+      <div id="s3-counter">Matched 0 of 16</div>
+      <div style="text-align:center;">
+        <button class="next-btn" id="s3-continue-btn">See Results &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="results-screen">
+    <div class="card results-card">
+      <div class="sec-heading" style="text-align:center;">Assessment Complete</div>
+      <div class="results-title">Part 1 &middot; Federal Agency for Nature Conservation</div>
+      <div class="results-total" id="res-total">0 / 50</div>
+      <div class="results-pct" id="res-pct">0%</div>
+      <div class="results-breakdown">
+        <div class="rb-item">
+          <div class="rb-label">Definitions</div>
+          <div class="rb-score" id="res-s1">0 / 17</div>
+        </div>
+        <div class="rb-item">
+          <div class="rb-label">Fill-in</div>
+          <div class="rb-score" id="res-s2">0 / 17</div>
+        </div>
+        <div class="rb-item">
+          <div class="rb-label">Matching</div>
+          <div class="rb-score" id="res-s3">0 / 16</div>
+        </div>
+      </div>
+      <div class="results-message" id="res-message"></div>
+      <div class="part-note">Continue to Part 2 for the remaining 50 items in this vocabulary series.</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>FORBES ENGLISH &middot; C1 PROFESSIONAL VOCABULARY &middot; FEDERAL AGENCY FOR NATURE CONSERVATION, PART 1 OF 2</footer>
+
+<script>
+const section1Questions = [
+  {
+    id: "s1q1",
+    word: "report",
+    sentence: "A report is circulating among the field staff that the reserve's funding will be halved next year, though nothing has come from Head Office.",
+    question: "What does \"report\" mean in this sentence?",
+    options: [
+      "A piece of information that is unsupported by firm evidence and may or may not be true",
+      "To give a spoken or written account of something one has observed or investigated",
+      "A formal written record submitted at the end of a project",
+      "A loud sound made by an explosion or gunshot"
+    ],
+    correct: 0,
+    explanation: "Here \"report\" is an unconfirmed rumour circulating among staff — nobody has verified it. Compare this with the verb sense (\"to report a sighting\"), which means something quite different."
+  },
+  {
+    id: "s1q2",
+    word: "report",
+    sentence: "Elena is required to report any sightings of the protected marsh harrier directly to Director Bergmann within twenty-four hours.",
+    question: "What does \"report\" mean in this sentence?",
+    options: [
+      "To give a spoken or written account of something one has observed, heard, done, or investigated",
+      "A piece of information that is unsupported by firm evidence",
+      "To formally accuse someone of wrongdoing to an authority",
+      "To submit an expense claim for reimbursement"
+    ],
+    correct: 0,
+    explanation: "Here \"report\" is a verb meaning to inform someone officially of what you've observed — quite different from the noun sense meaning an unverified rumour."
+  },
+  {
+    id: "s1q3",
+    word: "critic",
+    sentence: "One vocal critic on the town council called the wetland restoration project a waste of taxpayer money before it had even begun.",
+    question: "What does \"critic\" mean in this sentence?",
+    options: [
+      "A person who expresses an unfavourable opinion of something",
+      "A person who judges the merits of literary, artistic, or musical works professionally",
+      "A person who examines the accuracy of financial records",
+      "A person who gives evidence in a legal case"
+    ],
+    correct: 0,
+    explanation: "This councillor is simply voicing disapproval — not professionally reviewing art or literature, which is the other sense of \"critic.\""
+  },
+  {
+    id: "s1q4",
+    word: "critic",
+    sentence: "Before joining the agency, Tomas worked as a critic for a nature-writing magazine, reviewing books on rewilding and conservation.",
+    question: "What does \"critic\" mean in this sentence?",
+    options: [
+      "A person who judges the merits of literary, artistic, or musical works, especially professionally",
+      "A person who expresses an unfavourable opinion of something",
+      "A person who edits manuscripts before publication",
+      "A person who reports breaking news for a newspaper"
+    ],
+    correct: 0,
+    explanation: "Tomas's job was professional reviewing, not simply disapproving of something — that's the more general sense of \"critic\"."
+  },
+  {
+    id: "s1q5",
+    word: "decay",
+    sentence: "Fallen branches left on the forest floor decay slowly, returning nutrients to the soil over several years.",
+    question: "What does \"decay\" mean in this sentence?",
+    options: [
+      "(of organic matter) rot or decompose through the action of bacteria and fungi",
+      "The state or process of rotting or decomposition",
+      "To grow rapidly and spread across a wide area",
+      "To lose colour gradually when exposed to sunlight"
+    ],
+    correct: 0,
+    explanation: "Used here as a verb describing what the branches do over time. The noun sense (\"visible decay\") describes the state itself, not the action."
+  },
+  {
+    id: "s1q6",
+    word: "decay",
+    sentence: "Inspectors noted visible decay in the old hide's wooden supports and recommended it be rebuilt before winter.",
+    question: "What does \"decay\" mean in this sentence?",
+    options: [
+      "The state or process of rotting or decomposition",
+      "(of organic matter) rot or decompose through the action of bacteria and fungi",
+      "A sudden structural collapse caused by flooding",
+      "The natural weathering of stone caused by wind"
+    ],
+    correct: 0,
+    explanation: "Here \"decay\" is a noun naming the condition the inspectors observed, not the verb describing an ongoing action."
+  },
+  {
+    id: "s1q7",
+    word: "reconcile",
+    sentence: "The final report tries to reconcile the ecologists' survey data with the much lower figures submitted by the landowner.",
+    question: "What does \"reconcile\" mean in this sentence?",
+    options: [
+      "Find a way in which opposing perspectives can be understood and incorporated",
+      "Restore friendly relations between two people",
+      "Check a document for spelling and grammar errors",
+      "Translate a technical report into plain language"
+    ],
+    correct: 0,
+    explanation: "This is about making two conflicting sets of data fit together, not about repairing a personal relationship."
+  },
+  {
+    id: "s1q8",
+    word: "reconcile",
+    sentence: "After weeks of tension over the badger cull, Bergmann finally reconciled with the local farmers' union at a community meeting.",
+    question: "What does \"reconcile\" mean in this sentence?",
+    options: [
+      "Restore friendly relations between people or groups",
+      "Find a way in which opposing perspectives can be understood and incorporated",
+      "Formally apologise in writing for a mistake",
+      "Reach a compromise on a financial dispute"
+    ],
+    correct: 0,
+    explanation: "Here the tension was personal and relational — this is about mending a relationship, not reconciling conflicting data."
+  },
+  {
+    id: "s1q9",
+    word: "dwell",
+    sentence: "Otters once dwelled along this stretch of river before the water quality declined in the 1980s.",
+    question: "What does \"dwelled\" mean in this sentence?",
+    options: [
+      "Lived in or at a specified place",
+      "Thought, spoke, or wrote at length about something, especially something unhappy",
+      "Migrated seasonally between two habitats",
+      "Built a temporary nest or shelter"
+    ],
+    correct: 0,
+    explanation: "This is the plain sense of \"dwell\" — to live somewhere. It's easy to confuse with the phrasal verb \"dwell on\", which means something quite different."
+  },
+  {
+    id: "s1q10",
+    word: "dwell on",
+    sentence: "Bergmann told Elena not to dwell on the failed grant application and to focus instead on next month's survey.",
+    question: "What does \"dwell on\" mean in this sentence?",
+    options: [
+      "Think, speak, or write at length about a subject, especially one that causes unhappiness",
+      "Live in or at a specified place",
+      "Double-check a piece of work several times before submitting it",
+      "Postpone a task until a better opportunity arises"
+    ],
+    correct: 0,
+    explanation: "\"Dwell on\" is about mentally lingering on something upsetting — completely different from \"dwell\" meaning \"to live somewhere\"."
+  },
+  {
+    id: "s1q11",
+    word: "outset",
+    sentence: "From the outset, the reserve's managers made clear that public access would be limited during the breeding season.",
+    question: "What does \"outset\" mean in this sentence?",
+    options: [
+      "The start or beginning of something",
+      "The final stage of a long-running project",
+      "A formal announcement made to the press",
+      "An unexpected complication that delays progress"
+    ],
+    correct: 0,
+    explanation: "\"From the outset\" is a fixed phrase meaning \"from the very beginning\"."
+  },
+  {
+    id: "s1q12",
+    word: "humble",
+    sentence: "Despite decades of research into peatland restoration, Dr. Reyes remained remarkably humble about her own contribution to the field.",
+    question: "What does \"humble\" mean in this sentence?",
+    options: [
+      "Having or showing a modest, low estimate of one's own importance",
+      "Asserting one's will over others in an arrogant way",
+      "Reluctant to share credit with junior colleagues",
+      "Uncertain or hesitant when speaking in public"
+    ],
+    correct: 0,
+    explanation: "\"Humble\" describes someone who doesn't overstate their own importance — the near-opposite of \"domineering\"."
+  },
+  {
+    id: "s1q13",
+    word: "hunch",
+    sentence: "Priya had a hunch that the missing otter tracks led toward the old mill, and she turned out to be right.",
+    question: "What does \"hunch\" mean in this sentence?",
+    options: [
+      "A feeling or guess based on intuition rather than known facts",
+      "A documented conclusion supported by field evidence",
+      "A formal hypothesis tested through a controlled experiment",
+      "A piece of advice offered by a senior colleague"
+    ],
+    correct: 0,
+    explanation: "A \"hunch\" is an instinctive guess, not something backed by evidence — that's precisely why Priya \"turned out to be right\" is worth remarking on."
+  },
+  {
+    id: "s1q14",
+    word: "curious",
+    sentence: "The interns were curious about why the agency had chosen this particular floodplain for reintroducing beavers.",
+    question: "What does \"curious\" mean in this sentence?",
+    options: [
+      "Eager to know or learn something",
+      "Suspicious that something is being deliberately hidden",
+      "Unconvinced by an official explanation",
+      "Reluctant to ask questions during a briefing"
+    ],
+    correct: 0,
+    explanation: "\"Curious\" here simply expresses genuine interest in learning the reason, not suspicion or doubt."
+  },
+  {
+    id: "s1q15",
+    word: "uninterrupted",
+    sentence: "The new wildlife corridor gives roe deer uninterrupted access between the two forest blocks for the first time in decades.",
+    question: "What does \"uninterrupted\" mean in this sentence?",
+    options: [
+      "Without a break in continuity",
+      "Closely monitored by rangers at all times",
+      "Legally protected under national conservation law",
+      "Open only during specific months of the year"
+    ],
+    correct: 0,
+    explanation: "The corridor lets deer move continuously between the two forest blocks with no gaps or barriers."
+  },
+  {
+    id: "s1q16",
+    word: "prevalent",
+    sentence: "Illegal snaring is far more prevalent in this region than the agency's official figures suggest.",
+    question: "What does \"prevalent\" mean in this sentence?",
+    options: [
+      "Widespread in a particular area or at a particular time",
+      "Completely eliminated through years of enforcement",
+      "Difficult to detect using current surveying methods",
+      "Limited to a single, well-documented location"
+    ],
+    correct: 0,
+    explanation: "\"Prevalent\" describes how common or widespread something is — here, the practice is more common than the figures show."
+  },
+  {
+    id: "s1q17",
+    word: "rampant",
+    sentence: "Invasive Japanese knotweed had grown rampant along the riverbank, choking out native reeds and sedges.",
+    question: "What does \"rampant\" mean in this sentence?",
+    options: [
+      "(especially of something unwelcome) flourishing or spreading unchecked",
+      "Slow to establish itself in a new environment",
+      "Confined to a small, easily managed patch",
+      "Dependent on a specific soil type to survive"
+    ],
+    correct: 0,
+    explanation: "\"Rampant\" describes something spreading out of control — here, the knotweed overwhelming native plants."
+  }
+];
+const section2Questions = [
+  {
+    id: "s2q1",
+    sentence: "Elena's field jacket, freshly ___ after a tear from barbed wire, kept her warm during the dawn survey.",
+    answer: "sewn",
+    hint: "Past participle of \"sew\" — joined fabric using a needle and thread.",
+    explanation: "\"Sewn\" is the past participle of \"sew\", meaning joined or repaired using needle and thread."
+  },
+  {
+    id: "s2q2",
+    sentence: "A small ___ gathered at the visitor centre to watch the release of the rehabilitated red kites.",
+    answer: "crowd",
+    hint: "A large, informally gathered number of people.",
+    explanation: "\"Crowd\" describes a large group of people gathered together, often without much organisation."
+  },
+  {
+    id: "s2q3",
+    sentence: "On the drive back from the coast, Tomas played an old ___ album, all reverb and blurred guitars, and nobody said a word for an hour.",
+    answer: "shoegazing",
+    hint: "A style of rock music where instruments and vocals blur together.",
+    explanation: "\"Shoegazing\" (or \"shoegaze\") is a genre of rock music known for its wall of blurred, reverb-heavy sound."
+  },
+  {
+    id: "s2q4",
+    sentence: "The agency hired a ___ to rebuild the database that tracks protected-species sightings across the region.",
+    answer: "programmer",
+    hint: "Someone who writes computer programs.",
+    explanation: "\"Programmer\" refers to a person who writes computer software."
+  },
+  {
+    id: "s2q5",
+    sentence: "Funding for the reserve ultimately comes from the ___ responsible for environment and agriculture.",
+    answer: "ministry",
+    hint: "A government department headed by a minister.",
+    explanation: "\"Ministry\" is a government department, typically headed by a minister of state."
+  },
+  {
+    id: "s2q6",
+    sentence: "Local schools receive a ___ on entry fees when they book a guided tour of the wetlands.",
+    answer: "discount",
+    hint: "A reduction in price.",
+    explanation: "\"Discount\" means a reduction in the usual price."
+  },
+  {
+    id: "s2q7",
+    sentence: "Dr. Reyes's ___ to the peatland restoration project was recognised with a national conservation award.",
+    answer: "contribution",
+    hint: "Help given toward achieving something, alongside others.",
+    explanation: "\"Contribution\" refers to the help someone provides toward a shared goal."
+  },
+  {
+    id: "s2q8",
+    sentence: "An independent ___ visits the site every spring to check that the grazing plan is being followed correctly.",
+    answer: "assessor",
+    hint: "A person who evaluates the quality of something.",
+    explanation: "\"Assessor\" is someone whose job is to evaluate or judge the quality of something."
+  },
+  {
+    id: "s2q9",
+    sentence: "A deer froze in the beam of the truck's ___ before darting back into the trees.",
+    answer: "headlight",
+    hint: "A powerful light at the front of a vehicle.",
+    explanation: "\"Headlight\" is the powerful light at the front of a vehicle."
+  },
+  {
+    id: "s2q10",
+    sentence: "The gala to launch the new nature documentary drew more ___ than genuine conservationists, according to Tomas.",
+    answer: "glitterati",
+    hint: "The fashionable set of people in show business or glamorous circles.",
+    explanation: "\"Glitterati\" refers to fashionable, glamorous people, often from show business."
+  },
+  {
+    id: "s2q11",
+    sentence: "Everything seemed ___ on the survey until the boat's engine cut out halfway across the lake.",
+    answer: "hunky-dory",
+    hint: "Informal — fine, going well.",
+    explanation: "\"Hunky-dory\" is an informal way of saying that everything is fine or going well."
+  },
+  {
+    id: "s2q12",
+    sentence: "A pair of peregrine falcons has come to ___ the old quarry cliff face every spring since 2019.",
+    answer: "occupy",
+    hint: "To reside or have one's place in a location.",
+    explanation: "\"Occupy\" means to reside in or take up a particular place."
+  },
+  {
+    id: "s2q13",
+    sentence: "The ___ in the staff room died down the moment Director Bergmann walked in with the budget figures.",
+    answer: "chatter",
+    hint: "Incessant, trivial talk.",
+    explanation: "\"Chatter\" describes light, trivial, continuous talk."
+  },
+  {
+    id: "s2q14",
+    sentence: "The visitor centre's new ___ panels explain how the reedbeds filter pollutants from the river.",
+    answer: "interpretation",
+    hint: "The action of explaining the meaning of something to visitors.",
+    explanation: "\"Interpretation\" panels are a standard feature at nature sites, explaining what visitors are looking at."
+  },
+  {
+    id: "s2q15",
+    sentence: "The new field officer walked in with a ___ that made the older rangers doubt he'd last a week outdoors.",
+    answer: "swagger",
+    hint: "A confident, typically arrogant way of walking or behaving.",
+    explanation: "\"Swagger\" describes a confident, somewhat arrogant manner or way of walking."
+  },
+  {
+    id: "s2q16",
+    sentence: "The agency contracted a private ___ to remove the invasive rhododendron from the eastern slope.",
+    answer: "company",
+    hint: "A number of individuals gathered for a particular purpose, such as a business.",
+    explanation: "\"Company\" here refers to a business organisation hired to do the work."
+  },
+  {
+    id: "s2q17",
+    sentence: "The canteen's coffee was a kind of ___ brew made from roasted chicory, since the real thing hadn't been delivered.",
+    answer: "ersatz",
+    hint: "Made or used as an inferior substitute for something else.",
+    explanation: "\"Ersatz\" describes an inferior substitute standing in for the real thing."
+  }
+];
+const section3Pairs = [
+  { id: "s3p1", word: "domineering", definition: "Behaving in an arrogant, controlling way toward others" },
+  { id: "s3p2", word: "detour", definition: "A longer, roundabout route taken to avoid something or visit somewhere extra" },
+  { id: "s3p3", word: "receipt", definition: "A slip of paper proving that a payment was made" },
+  { id: "s3p4", word: "chapter", definition: "A numbered or titled section of a book" },
+  { id: "s3p5", word: "encyclopedia", definition: "A reference work covering many subjects, usually arranged alphabetically" },
+  { id: "s3p6", word: "showdown", definition: "A final confrontation meant to settle a dispute" },
+  { id: "s3p7", word: "insufficient", definition: "Not enough for what is needed" },
+  { id: "s3p8", word: "quick on the draw", definition: "Extremely fast to react or respond" },
+  { id: "s3p9", word: "shoot from the hip", definition: "To speak or act without thinking things through first" },
+  { id: "s3p10", word: "accompany", definition: "To go somewhere together with someone" },
+  { id: "s3p11", word: "skirting", definition: "A narrow board running along the bottom of an interior wall" },
+  { id: "s3p12", word: "decent", definition: "Reasonably good or acceptable" },
+  { id: "s3p13", word: "parking lot", definition: "An outdoor area where vehicles are left temporarily" },
+  { id: "s3p14", word: "civil war", definition: "A war fought between citizens of the same country" },
+  { id: "s3p15", word: "fall apart", definition: "To break down or disintegrate" },
+  { id: "s3p16", word: "laundry", definition: "Clothes or linens that need washing, or have just been washed" }
+];
+// ---------- Utilities ----------
+function shuffle(array) {
+  const arr = array.slice();
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+// ---------- State ----------
+var state = {
+  s1: shuffle(section1Questions).map(q => {
+    const optOrder = shuffle(q.options.map((opt, idx) => ({ opt, idx })));
+    return {
+      ...q,
+      shuffledOptions: optOrder.map(o => o.opt),
+      shuffledCorrectIndex: optOrder.findIndex(o => o.idx === q.correct),
+      answered: false,
+      correctOnAttempt: false
+    };
+  }),
+  s2: shuffle(section2Questions).map(q => ({ ...q, answered: false, correctOnAttempt: false })),
+  s3pairs: section3Pairs,
+  s1Index: 0,
+  s2Index: 0,
+  s1Score: 0,
+  s2Score: 0,
+  s3Score: 0,
+  s3Matched: 0,
+  currentSection: 1,
+  s3Selection: { word: null, def: null }
+};
+
+var TOTAL_QUESTIONS = section1Questions.length + section2Questions.length + section3Pairs.length;
+
+// ---------- Progress ----------
+function answeredSoFar() {
+  const s1Done = state.s1.filter(q => q.answered).length;
+  const s2Done = state.s2.filter(q => q.answered).length;
+  return s1Done + s2Done + state.s3Matched;
+}
+
+function updateProgress() {
+  const done = answeredSoFar();
+  const pct = Math.round((done / TOTAL_QUESTIONS) * 100);
+  document.getElementById("progress-fill").style.width = pct + "%";
+  document.getElementById("progress-label").textContent =
+    "Question " + Math.min(done + 1, TOTAL_QUESTIONS) + " of " + TOTAL_QUESTIONS;
+}
+
+// ---------- Section 1: MCQ ----------
+function renderS1() {
+  const q = state.s1[state.s1Index];
+  const container = document.getElementById("section1-body");
+  container.innerHTML = "";
+
+  const secLabel = document.createElement("div");
+  secLabel.className = "q-counter";
+  secLabel.textContent = "Item " + (state.s1Index + 1) + " of " + state.s1.length;
+  container.appendChild(secLabel);
+
+  const sentEl = document.createElement("p");
+  sentEl.className = "prompt-sentence";
+  sentEl.textContent = q.sentence;
+  container.appendChild(sentEl);
+
+  const qEl = document.createElement("p");
+  qEl.className = "prompt-question";
+  qEl.textContent = q.question;
+  container.appendChild(qEl);
+
+  const optsWrap = document.createElement("div");
+  optsWrap.className = "options-wrap";
+
+  q.shuffledOptions.forEach((optText, i) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "option-btn";
+    btn.textContent = optText;
+    btn.addEventListener("click", () => handleS1Answer(i, btn, optsWrap));
+    optsWrap.appendChild(btn);
+  });
+
+  container.appendChild(optsWrap);
+
+  const feedback = document.createElement("div");
+  feedback.className = "feedback";
+  feedback.id = "s1-feedback";
+  container.appendChild(feedback);
+
+  const nextBtn = document.getElementById("s1-next-btn");
+  nextBtn.disabled = true;
+}
+
+function handleS1Answer(chosenIndex, btnEl, optsWrap) {
+  const q = state.s1[state.s1Index];
+  if (q.answered) return;
+  q.answered = true;
+
+  const allBtns = optsWrap.querySelectorAll(".option-btn");
+  allBtns.forEach(b => (b.disabled = true));
+
+  const isCorrect = chosenIndex === q.shuffledCorrectIndex;
+  q.correctOnAttempt = isCorrect;
+  if (isCorrect) {
+    state.s1Score++;
+    btnEl.classList.add("opt-correct");
+  } else {
+    btnEl.classList.add("opt-incorrect");
+    allBtns[q.shuffledCorrectIndex].classList.add("opt-correct");
+  }
+
+  const feedback = document.getElementById("s1-feedback");
+  feedback.classList.add("visible");
+  feedback.classList.add(isCorrect ? "feedback-correct" : "feedback-incorrect");
+  feedback.innerHTML =
+    "<strong>" + (isCorrect ? "Correct. " : "Not quite. ") + "</strong>" + q.explanation;
+
+  document.getElementById("s1-next-btn").disabled = false;
+  updateProgress();
+}
+
+function goToNextS1() {
+  if (state.s1Index < state.s1.length - 1) {
+    state.s1Index++;
+    renderS1();
+  } else {
+    switchSection(2);
+  }
+}
+
+// ---------- Section 2: Fill in the Blank ----------
+function renderS2() {
+  const q = state.s2[state.s2Index];
+  const container = document.getElementById("section2-body");
+  container.innerHTML = "";
+
+  const secLabel = document.createElement("div");
+  secLabel.className = "q-counter";
+  secLabel.textContent = "Item " + (state.s2Index + 1) + " of " + state.s2.length;
+  container.appendChild(secLabel);
+
+  const sentEl = document.createElement("p");
+  sentEl.className = "prompt-sentence";
+  sentEl.textContent = q.sentence;
+  container.appendChild(sentEl);
+
+  const hintEl = document.createElement("p");
+  hintEl.className = "hint";
+  hintEl.textContent = "Hint: " + q.hint;
+  container.appendChild(hintEl);
+
+  const inputRow = document.createElement("div");
+  inputRow.className = "input-row";
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.className = "fib-input";
+  input.id = "s2-input";
+  input.autocomplete = "off";
+  input.spellcheck = false;
+
+  const checkBtn = document.createElement("button");
+  checkBtn.type = "button";
+  checkBtn.className = "check-btn";
+  checkBtn.textContent = "Check";
+  checkBtn.addEventListener("click", () => handleS2Answer());
+
+  input.addEventListener("keydown", e => {
+    if (e.key === "Enter") handleS2Answer();
+  });
+
+  inputRow.appendChild(input);
+  inputRow.appendChild(checkBtn);
+  container.appendChild(inputRow);
+
+  const feedback = document.createElement("div");
+  feedback.className = "feedback";
+  feedback.id = "s2-feedback";
+  container.appendChild(feedback);
+
+  document.getElementById("s2-next-btn").disabled = true;
+  input.focus();
+}
+
+function normalizeAnswer(str) {
+  return str.trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+function handleS2Answer() {
+  const q = state.s2[state.s2Index];
+  if (q.answered) return;
+  const input = document.getElementById("s2-input");
+  const userVal = normalizeAnswer(input.value);
+  if (userVal.length === 0) return;
+
+  q.answered = true;
+  input.disabled = true;
+  document.querySelector("#section2-body .check-btn").disabled = true;
+
+  const isCorrect = userVal === normalizeAnswer(q.answer);
+  q.correctOnAttempt = isCorrect;
+  if (isCorrect) {
+    state.s2Score++;
+    input.classList.add("input-correct");
+  } else {
+    input.classList.add("input-incorrect");
+  }
+
+  const feedback = document.getElementById("s2-feedback");
+  feedback.classList.add("visible");
+  feedback.classList.add(isCorrect ? "feedback-correct" : "feedback-incorrect");
+  feedback.innerHTML =
+    "<strong>" +
+    (isCorrect ? "Correct. " : "Not quite \u2014 the answer was \"" + q.answer + "\". ") +
+    "</strong>" +
+    q.explanation;
+
+  document.getElementById("s2-next-btn").disabled = false;
+  updateProgress();
+}
+
+function goToNextS2() {
+  if (state.s2Index < state.s2.length - 1) {
+    state.s2Index++;
+    renderS2();
+  } else {
+    switchSection(3);
+  }
+}
+
+// ---------- Section 3: Matching ----------
+function renderS3() {
+  const wordsWrap = document.getElementById("s3-words");
+  const defsWrap = document.getElementById("s3-defs");
+  wordsWrap.innerHTML = "";
+  defsWrap.innerHTML = "";
+
+  const shuffledWords = shuffle(state.s3pairs);
+  const shuffledDefs = shuffle(state.s3pairs);
+
+  shuffledWords.forEach(pair => {
+    const tile = document.createElement("button");
+    tile.type = "button";
+    tile.className = "match-tile match-word";
+    tile.textContent = pair.word;
+    tile.dataset.id = pair.id;
+    tile.addEventListener("click", () => selectMatchTile(tile, "word", pair.id));
+    wordsWrap.appendChild(tile);
+  });
+
+  shuffledDefs.forEach(pair => {
+    const tile = document.createElement("button");
+    tile.type = "button";
+    tile.className = "match-tile match-def";
+    tile.textContent = pair.definition;
+    tile.dataset.id = pair.id;
+    tile.addEventListener("click", () => selectMatchTile(tile, "def", pair.id));
+    defsWrap.appendChild(tile);
+  });
+
+  document.getElementById("s3-counter").textContent =
+    "Matched " + state.s3Matched + " of " + state.s3pairs.length;
+  document.getElementById("s3-continue-btn").style.display = "none";
+}
+
+function selectMatchTile(tileEl, kind, id) {
+  if (tileEl.classList.contains("match-locked")) return;
+
+  if (kind === "word") {
+    document.querySelectorAll(".match-word").forEach(t => t.classList.remove("match-selected"));
+    tileEl.classList.add("match-selected");
+    state.s3Selection.word = { id, el: tileEl };
+  } else {
+    document.querySelectorAll(".match-def").forEach(t => t.classList.remove("match-selected"));
+    tileEl.classList.add("match-selected");
+    state.s3Selection.def = { id, el: tileEl };
+  }
+
+  const sel = state.s3Selection;
+  if (sel.word && sel.def) {
+    const isMatch = sel.word.id === sel.def.id;
+    if (isMatch) {
+      sel.word.el.classList.remove("match-selected");
+      sel.def.el.classList.remove("match-selected");
+      sel.word.el.classList.add("match-locked");
+      sel.def.el.classList.add("match-locked");
+      state.s3Matched++;
+      state.s3Score++;
+      document.getElementById("s3-counter").textContent =
+        "Matched " + state.s3Matched + " of " + state.s3pairs.length;
+      updateProgress();
+      if (state.s3Matched === state.s3pairs.length) {
+        document.getElementById("s3-continue-btn").style.display = "inline-block";
+      }
+    } else {
+      sel.word.el.classList.add("match-wrong");
+      sel.def.el.classList.add("match-wrong");
+      setTimeout(() => {
+        sel.word.el.classList.remove("match-selected", "match-wrong");
+        sel.def.el.classList.remove("match-selected", "match-wrong");
+      }, 550);
+    }
+    state.s3Selection = { word: null, def: null };
+  }
+}
+
+// ---------- Section switching ----------
+function switchSection(n) {
+  document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+  state.currentSection = n;
+  if (n === 1) {
+    document.getElementById("section-1").classList.add("active");
+    renderS1();
+  } else if (n === 2) {
+    document.getElementById("section-2").classList.add("active");
+    renderS2();
+  } else if (n === 3) {
+    document.getElementById("section-3").classList.add("active");
+    renderS3();
+  } else if (n === 4) {
+    showResults();
+  }
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// ---------- Results ----------
+function showResults() {
+  document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+  document.getElementById("results-screen").classList.add("active");
+
+  const total = state.s1Score + state.s2Score + state.s3Score;
+  const pct = Math.round((total / TOTAL_QUESTIONS) * 100);
+
+  document.getElementById("res-total").textContent = total + " / " + TOTAL_QUESTIONS;
+  document.getElementById("res-pct").textContent = pct + "%";
+  document.getElementById("res-s1").textContent = state.s1Score + " / " + state.s1.length;
+  document.getElementById("res-s2").textContent = state.s2Score + " / " + state.s2.length;
+  document.getElementById("res-s3").textContent = state.s3Score + " / " + state.s3pairs.length;
+
+  let msg;
+  if (pct >= 90) {
+    msg = "Outstanding. This is C1-level command of the vocabulary \u2014 ready for the field.";
+  } else if (pct >= 75) {
+    msg = "Strong result. A quick review of the missed items and you're fully briefed.";
+  } else if (pct >= 60) {
+    msg = "Solid foundation. Revisit the sections with lower scores before moving to Part 2.";
+  } else {
+    msg = "This vocabulary needs more time. Go back through the explanations and try again before Part 2.";
+  }
+  document.getElementById("res-message").textContent = msg;
+
+  document.getElementById("progress-fill").style.width = "100%";
+  document.getElementById("progress-label").textContent = "Assessment complete";
+}
+
+// ---------- Init ----------
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("start-btn").addEventListener("click", () => {
+    document.getElementById("intro-screen").classList.remove("active");
+    switchSection(1);
+  });
+  document.getElementById("s1-next-btn").addEventListener("click", goToNextS1);
+  document.getElementById("s2-next-btn").addEventListener("click", goToNextS2);
+  document.getElementById("s3-continue-btn").addEventListener("click", () => switchSection(4));
+  updateProgress();
+});
+</script>
+</body>
+</html>

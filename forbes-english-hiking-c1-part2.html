@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – Solo Hiking Safety Part 2 (C1)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest:    #2C3E2D;
+    --trail:     #5C7A4E;
+    --trail-lt:  #7A9A66;
+    --parchment: #C8B89A;
+    --leather:   #8B6F47;
+    --cream:     #F2EDE4;
+    --cream-mid: #E8DFD0;
+    --stone:     #9FA89E;
+    --ink:       #1E2B1F;
+    --red-err:   #8B3A2F;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--parchment);
+    color: var(--ink);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(ellipse 120% 80% at 40% 60%, transparent 38%, rgba(92,122,78,0.07) 38.5%, transparent 39%),
+      radial-gradient(ellipse 120% 80% at 40% 60%, transparent 50%, rgba(92,122,78,0.06) 50.5%, transparent 51%),
+      radial-gradient(ellipse 120% 80% at 40% 60%, transparent 62%, rgba(92,122,78,0.05) 62.5%, transparent 63%),
+      radial-gradient(ellipse 130% 90% at 70% 30%, transparent 40%, rgba(139,111,71,0.05) 40.5%, transparent 41%),
+      radial-gradient(ellipse 130% 90% at 70% 30%, transparent 55%, rgba(139,111,71,0.04) 55.5%, transparent 56%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+  }
+
+  /* ── LOGO ── */
+  .logo-wrap { display: flex; justify-content: center; margin-bottom: 28px; }
+
+  /* ── HEADER CARD ── */
+  .header-card {
+    background: var(--forest);
+    border-radius: 12px;
+    padding: 32px 36px 28px;
+    color: var(--cream);
+    margin-bottom: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header-card::after {
+    content: '🧭';
+    position: absolute;
+    right: 28px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 72px;
+    opacity: 0.13;
+    pointer-events: none;
+  }
+  .lesson-tag {
+    display: inline-block;
+    background: var(--trail);
+    color: var(--cream);
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 4px;
+    margin-bottom: 12px;
+  }
+  .header-card h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px; font-weight: 700;
+    line-height: 1.25; margin-bottom: 8px; color: var(--cream);
+  }
+  .header-card p { font-size: 14px; color: var(--parchment); line-height: 1.6; max-width: 500px; }
+
+  /* ── SCORE BAR ── */
+  .score-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--cream); border: 1.5px solid var(--cream-mid);
+    border-radius: 10px; padding: 14px 22px; margin-bottom: 24px;
+    flex-wrap: wrap; gap: 10px;
+  }
+  .score-bar .label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--stone); font-weight: 600; }
+  .score-bar .value { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--forest); }
+  .score-pill { display: flex; align-items: center; gap: 18px; }
+  .score-pill > div { text-align: center; }
+
+  /* ── PROGRESS ── */
+  .progress-track { height: 4px; background: var(--cream-mid); border-radius: 2px; margin-bottom: 24px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--trail); border-radius: 2px; transition: width 0.4s ease; }
+
+  /* ── ACTIVITY SECTION ── */
+  .activity-section { display: none; }
+  .activity-section.active { display: block; }
+
+  .section-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 22px; }
+  .section-num {
+    flex-shrink: 0; width: 42px; height: 42px; border-radius: 50%;
+    background: var(--trail); color: var(--cream);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700;
+  }
+  .section-info h2 { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; color: var(--forest); margin-bottom: 3px; }
+  .section-info p { font-size: 13px; color: var(--stone); font-style: italic; }
+
+  /* ── Q CARD ── */
+  .q-card {
+    background: var(--cream); border: 1.5px solid var(--cream-mid);
+    border-radius: 10px; padding: 26px 28px; margin-bottom: 18px;
+  }
+  .q-card.hidden { display: none; }
+  .q-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .q-num { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--stone); font-weight: 600; }
+  .q-progress { font-size: 11px; color: var(--stone); font-weight: 500; }
+  .q-text { font-size: 15px; line-height: 1.65; color: var(--ink); margin-bottom: 18px; }
+  .q-text strong { color: var(--forest); font-weight: 600; }
+
+  /* ── ERROR CORRECTION ── */
+  .sentence-display {
+    background: var(--cream-mid); border-radius: 8px; padding: 16px 20px;
+    font-size: 15px; line-height: 1.7; margin-bottom: 16px; color: var(--ink);
+    border-left: 4px solid var(--leather);
+  }
+  .err-options { display: flex; flex-direction: column; gap: 9px; }
+  .err-btn {
+    width: 100%; text-align: left;
+    background: var(--cream-mid); border: 1.5px solid transparent;
+    border-radius: 8px; padding: 11px 16px;
+    font-family: 'Inter', sans-serif; font-size: 14px;
+    color: var(--ink); cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    display: flex; align-items: flex-start; gap: 10px;
+    line-height: 1.5;
+  }
+  .err-btn:hover:not(:disabled) { background: #DDD7CB; border-color: var(--parchment); }
+  .err-btn.correct { background: #D4E8CC; border-color: var(--trail); color: #1A3A1A; }
+  .err-btn.wrong   { background: #F0D4CF; border-color: var(--red-err); color: #4A1A16; }
+  .err-btn:disabled { cursor: default; }
+  .err-label {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px; border-radius: 4px;
+    background: var(--parchment); font-size: 11px; font-weight: 700;
+    color: var(--leather); flex-shrink: 0; margin-top: 1px;
+  }
+  .err-btn.correct .err-label { background: var(--trail); color: var(--cream); }
+  .err-btn.wrong .err-label   { background: var(--red-err); color: var(--cream); }
+
+  /* ── TRUE / FALSE + EVIDENCE ── */
+  .tf-row { display: flex; gap: 10px; margin-bottom: 16px; }
+  .tf-btn {
+    flex: 1; padding: 12px; border-radius: 8px; border: 1.5px solid transparent;
+    background: var(--cream-mid); font-family: 'Inter', sans-serif;
+    font-size: 14px; font-weight: 600; cursor: pointer;
+    transition: background 0.15s, border-color 0.15s; color: var(--ink);
+  }
+  .tf-btn:hover:not(:disabled) { background: #DDD7CB; }
+  .tf-btn.correct { background: #D4E8CC; border-color: var(--trail); color: #1A3A1A; }
+  .tf-btn.wrong   { background: #F0D4CF; border-color: var(--red-err); color: #4A1A16; }
+  .tf-btn:disabled { cursor: default; }
+
+  .evidence-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--stone); margin-bottom: 8px; }
+  .ev-options { display: flex; flex-direction: column; gap: 7px; }
+  .ev-btn {
+    width: 100%; text-align: left; background: var(--cream-mid);
+    border: 1.5px solid transparent; border-radius: 7px;
+    padding: 10px 14px; font-family: 'Inter', sans-serif;
+    font-size: 13px; color: var(--ink); cursor: pointer;
+    transition: background 0.15s; line-height: 1.5; font-style: italic;
+  }
+  .ev-btn:hover:not(:disabled) { background: #DDD7CB; }
+  .ev-btn.ev-correct { background: #D4E8CC; border-color: var(--trail); color: #1A3A1A; font-style: normal; }
+  .ev-btn.ev-wrong   { background: #F0D4CF; border-color: var(--red-err); color: #4A1A16; }
+  .ev-btn:disabled { cursor: default; }
+
+  /* ── GAP FILL WITH WORD BANK ── */
+  .word-bank-pool {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    padding: 14px; background: rgba(44,62,45,0.06);
+    border-radius: 8px; margin-bottom: 18px; min-height: 48px;
+  }
+  .pool-chip {
+    background: var(--forest); color: var(--cream);
+    border-radius: 6px; padding: 7px 13px;
+    font-size: 13.5px; font-weight: 500; cursor: pointer;
+    user-select: none; transition: opacity 0.15s, background 0.15s;
+    line-height: 1;
+  }
+  .pool-chip.used { opacity: 0.28; cursor: default; pointer-events: none; }
+  .gf-sentence {
+    font-size: 15px; line-height: 2.3; margin-bottom: 6px;
+  }
+  .gf-blank {
+    display: inline-block; min-width: 110px;
+    border-bottom: 2px solid var(--leather);
+    padding: 0 6px 2px; margin: 0 3px;
+    font-weight: 600; color: var(--forest);
+    cursor: pointer; position: relative;
+    transition: border-color 0.15s; text-align: center;
+    font-size: 14px; vertical-align: baseline;
+  }
+  .gf-blank:empty::before { content: attr(data-hint); color: var(--stone); font-weight: 400; font-size: 13px; }
+  .gf-blank.filled { border-color: var(--trail-lt); }
+  .gf-blank.blank-correct { border-color: var(--trail); background: #D4E8CC; border-radius: 4px 4px 0 0; }
+  .gf-blank.blank-wrong   { border-color: var(--red-err); background: #F0D4CF; border-radius: 4px 4px 0 0; }
+
+  /* ── DISCOURSE ORDERING ── */
+  .order-instructions { font-size: 13px; color: var(--stone); font-style: italic; margin-bottom: 14px; }
+  .sortable-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+  .sort-item {
+    background: var(--cream-mid); border-radius: 8px;
+    padding: 13px 16px; font-size: 14px; line-height: 1.55;
+    cursor: grab; border: 1.5px solid transparent;
+    display: flex; align-items: flex-start; gap: 12px;
+    transition: box-shadow 0.15s, border-color 0.15s;
+  }
+  .sort-item:active { cursor: grabbing; }
+  .sort-item.drag-over { border-color: var(--trail); background: rgba(92,122,78,0.08); }
+  .sort-item.sort-correct { background: #D4E8CC; border-color: var(--trail); }
+  .sort-item.sort-wrong   { background: #F0D4CF; border-color: var(--red-err); }
+  .sort-handle {
+    color: var(--stone); font-size: 16px; flex-shrink: 0;
+    margin-top: 1px; user-select: none;
+  }
+  .sort-index {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--parchment); font-size: 12px; font-weight: 700;
+    color: var(--leather); flex-shrink: 0;
+  }
+  .sort-item.sort-correct .sort-index { background: var(--trail); color: var(--cream); }
+  .sort-item.sort-wrong   .sort-index { background: var(--red-err); color: var(--cream); }
+
+  /* ── FEEDBACK ── */
+  .feedback {
+    display: none; margin-top: 14px;
+    padding: 13px 16px; border-radius: 8px;
+    font-size: 13.5px; line-height: 1.55;
+  }
+  .feedback.correct-fb { background: #D4E8CC; color: #1A3A1A; border-left: 4px solid var(--trail); }
+  .feedback.wrong-fb   { background: #F0D4CF; color: #4A1A16; border-left: 4px solid var(--red-err); }
+  .feedback .fb-label  { font-weight: 700; margin-right: 6px; }
+
+  /* ── BUTTONS ── */
+  .btn-row { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--forest); color: var(--cream);
+    border: none; border-radius: 8px; padding: 12px 24px;
+    font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600;
+    cursor: pointer; transition: background 0.15s;
+  }
+  .btn-primary:hover { background: var(--trail); }
+  .btn-primary:disabled { background: var(--stone); cursor: not-allowed; }
+  .btn-secondary {
+    background: var(--leather); color: var(--cream);
+    border: none; border-radius: 8px; padding: 12px 20px;
+    font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600;
+    cursor: pointer; transition: background 0.15s;
+  }
+  .btn-secondary:hover { background: #A07B55; }
+  .btn-next {
+    display: none; background: var(--trail); color: var(--cream);
+    border: none; border-radius: 8px; padding: 12px 24px;
+    font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600;
+    cursor: pointer; transition: background 0.15s;
+  }
+  .btn-next:hover { background: var(--trail-lt); }
+  .btn-next.visible { display: inline-block; }
+  .btn-section-next {
+    display: none; background: var(--forest); color: var(--cream);
+    border: none; border-radius: 8px; padding: 14px 30px;
+    font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 600;
+    cursor: pointer; margin-top: 24px; transition: background 0.15s;
+  }
+  .btn-section-next:hover { background: var(--trail); }
+  .btn-section-next.visible { display: inline-block; }
+
+  /* ── RESULTS ── */
+  #results-screen {
+    display: none; text-align: center;
+    background: var(--cream); border-radius: 14px; padding: 48px 36px;
+  }
+  #results-screen h2 { font-family: 'Playfair Display', serif; font-size: 32px; color: var(--forest); margin-bottom: 12px; }
+  .result-score-big { font-family: 'Playfair Display', serif; font-size: 72px; font-weight: 700; color: var(--trail); line-height: 1; margin: 20px 0; }
+  .result-message { font-size: 16px; color: var(--stone); margin-bottom: 30px; line-height: 1.6; max-width: 420px; margin-left: auto; margin-right: auto; }
+  .btn-restart { background: var(--forest); color: var(--cream); border: none; border-radius: 8px; padding: 14px 32px; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; }
+
+  @media (max-width: 560px) {
+    .header-card { padding: 24px 20px; }
+    .header-card::after { display: none; }
+    .q-card { padding: 20px 18px; }
+    .tf-row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- LOGO -->
+  <div class="logo-wrap">
+    <svg width="190" height="64" viewBox="0 0 190 64" xmlns="http://www.w3.org/2000/svg">
+      <text x="95" y="28" text-anchor="middle" font-family="'Playfair Display',serif" font-size="30" font-weight="700" letter-spacing="3" fill="#2C3E2D">Forbes</text>
+      <rect x="18" y="36" width="154" height="1.5" fill="#5C7A4E"/>
+      <text x="95" y="55" text-anchor="middle" font-family="'Inter',sans-serif" font-size="13.5" font-weight="700" letter-spacing="7" fill="#5C7A4E">ENGLISH</text>
+    </svg>
+  </div>
+
+  <!-- HEADER -->
+  <div class="header-card">
+    <div class="lesson-tag">C1 · Part 2 · Language in Use</div>
+    <h1>Solo Hiking Safety:<br>Error Correction, Evidence &amp; Discourse</h1>
+    <p>Four new activity types based on the same authentic hiking safety source text. Build on the vocabulary and comprehension from Part 1.</p>
+  </div>
+
+  <!-- SCORE BAR -->
+  <div class="score-bar">
+    <div class="score-pill">
+      <div><div class="label">Score</div><div class="value" id="score-display">0%</div></div>
+      <div><div class="label">Correct</div><div class="value" id="correct-display">0</div></div>
+      <div><div class="label">Activity</div><div class="value" id="section-display">1 / 4</div></div>
+    </div>
+    <div style="font-size:12px;color:var(--stone);font-weight:500;" id="total-progress">Question 0 of 20</div>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+
+
+  <!-- ═══════════════════════════════════════════
+       ACTIVITY 1 · ERROR CORRECTION (5 questions)
+       Identify the lexical or grammatical error in a sentence
+  ════════════════════════════════════════════ -->
+  <div class="activity-section active" id="section-1">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <div class="section-info">
+        <h2>Error Correction</h2>
+        <p>Each sentence contains one error — a wrong word or a misused collocation. Identify the correct version.</p>
+      </div>
+    </div>
+
+    <!-- EC Q1 -->
+    <div class="q-card" id="ec-q1">
+      <div class="q-meta"><span class="q-num">Question 1</span><span class="q-progress">1 of 5</span></div>
+      <div class="sentence-display">"If you see a guard dog, slowly <strong>back off</strong>, avoiding sudden movements, and go around the herd from a distance."</div>
+      <p class="q-text">One phrase is used incorrectly. Choose the version that corrects it:</p>
+      <div class="err-options">
+        <button class="err-btn" onclick="checkEC(this,'ec-q1','C')"><span class="err-label">A</span>Replace <em>back off</em> with <em>pull back</em> — meaning to withdraw from a confrontational situation.</button>
+        <button class="err-btn" onclick="checkEC(this,'ec-q1','C')"><span class="err-label">B</span>Replace <em>back off</em> with <em>draw away</em> — a formal register equivalent used in wildlife encounters.</button>
+        <button class="err-btn" onclick="checkEC(this,'ec-q1','C')"><span class="err-label">C</span>Replace <em>back off</em> with <em>back away</em> — meaning to move backwards while facing the threat.</button>
+        <button class="err-btn" onclick="checkEC(this,'ec-q1','C')"><span class="err-label">D</span>Replace <em>back off</em> with <em>stand down</em> — the standard term for retreating without provoking an animal.</button>
+      </div>
+      <div class="feedback" id="fb-ec1"></div>
+      <div class="btn-row">
+        <button class="btn-next" id="next-ec1" onclick="revealNext('ec-q1','ec-q2')">Next →</button>
+      </div>
+    </div>
+
+    <!-- EC Q2 -->
+    <div class="q-card hidden" id="ec-q2">
+      <div class="q-meta"><span class="q-num">Question 2</span><span class="q-progress">2 of 5</span></div>
+      <div class="sentence-display">"You should always carry a power bank in case your phone <strong>loses out</strong> of charge while navigating on remote trails."</div>
+      <p class="q-text">One phrase is used incorrectly. Choose the version that corrects it:</p>
+      <div class="err-options">
+        <button class="err-btn" onclick="checkEC(this,'ec-q2','A')"><span class="err-label">A</span>Replace <em>loses out</em> with <em>runs out</em> — the standard phrasal verb for a resource being fully depleted.</button>
+        <button class="err-btn" onclick="checkEC(this,'ec-q2','A')"><span class="err-label">B</span>Replace <em>loses out</em> with <em>dies out</em> — a natural alternative when referring to battery life ending.</button>
+        <button class="err-btn" onclick="checkEC(this,'ec-q2','A')"><span class="err-label">C</span>Replace <em>loses out</em> with <em>burns out</em> — a common expression for electrical devices failing from overuse.</button>
+        <button class="err-btn" onclick="checkEC(this,'ec-q2','A')"><span class="err-label">D</span>Replace <em>loses out</em> with <em>fades out</em> — the technically precise term for gradual battery depletion.</button>
+      </div>
+      <div class="feedback" id="fb-ec2"></div>
+      <div class="btn-row">
+        <button class="btn-next" id="next-ec2" onclick="revealNext('ec-q2','ec-q3')">Next →</button>
+      </div>
+    </div>
+
+    <!-- EC Q3 -->
+    <div class="q-card hidden" id="ec-q3">
+      <div class="q-meta"><span class="q-num">Question 3</span><span class="q-progress">3 of 5</span></div>
+      <div class="sentence-display">"Trekking poles are a <strong>multi-task</strong> item — they protect you, support tent construction, and reduce ankle injury risk."</div>
+      <p class="q-text">One word is used incorrectly. Choose the version that corrects it:</p>
+      <div class="err-options">
+        <button class="err-btn" onclick="checkEC(this,'ec-q3','B')"><span class="err-label">A</span>Replace <em>multi-task</em> with <em>multipurpose</em> — used specifically to describe tools that perform separate tasks simultaneously.</button>
+        <button class="err-btn" onclick="checkEC(this,'ec-q3','B')"><span class="err-label">B</span>Replace <em>multi-task</em> with <em>multi-use</em> — the exact collocation from the source text describing items with several practical applications.</button>
+        <button class="err-btn" onclick="checkEC(this,'ec-q3','B')"><span class="err-label">C</span>Replace <em>multi-task</em> with <em>multiform</em> — an adjective indicating an object that takes several physical forms depending on use.</button>
+        <button class="err-btn" onclick="checkEC(this,'ec-q3','B')"><span class="err-label">D</span>Replace <em>multi-task</em> with <em>versatile</em> — which broadly describes any item adaptable to multiple circumstances.</button>
+      </div>
+      <div class="feedback" id="fb-ec3"></div>
+      <div class="btn-row">
+        <button class="btn-next" id="next-ec3" onclick="revealNext('ec-q3','ec-q4')">Next →</button>
+      </div>
+    </div>
+
+    <!-- EC Q4 -->
+    <div class="q-card hidden" id="ec-q4">
+      <div class="q-meta"><span class="q-num">Question 4</span><span class="q-progress">4 of 5</span></div>
+      <div class="sentence-display">"Do not set up your tent near water sources or on animal tracks, and avoid areas that look like they might <strong>drain</strong> if a heavy rainstorm kicks in."</div>
+      <p class="q-text">One word is used incorrectly. Choose the version that corrects it:</p>
+      <div class="err-options">
+        <button class="err-btn" onclick="checkEC(this,'ec-q4','D')"><span class="err-label">A</span>Replace <em>drain</em> with <em>overflow</em> — the standard hydrological term for water exceeding a channel's capacity.</button>
+        <button class="err-btn" onclick="checkEC(this,'ec-q4','D')"><span class="err-label">B</span>Replace <em>drain</em> with <em>submerge</em> — the precise geological term for ground becoming waterlogged under intense rainfall.</button>
+        <button class="err-btn" onclick="checkEC(this,'ec-q4','D')"><span class="err-label">C</span>Replace <em>drain</em> with <em>erode</em> — the correct term for fast-moving water breaking down unstable terrain at risk of collapse.</button>
+        <button class="err-btn" onclick="checkEC(this,'ec-q4','D')"><span class="err-label">D</span>Replace <em>drain</em> with <em>flood</em> — the word used in the source text and the natural collocate of "area" in this context.</button>
+      </div>
+      <div class="feedback" id="fb-ec4"></div>
+      <div class="btn-row">
+        <button class="btn-next" id="next-ec4" onclick="revealNext('ec-q4','ec-q5')">Next →</button>
+      </div>
+    </div>
+
+    <!-- EC Q5 -->
+    <div class="q-card hidden" id="ec-q5">
+      <div class="q-meta"><span class="q-num">Question 5</span><span class="q-progress">5 of 5</span></div>
+      <div class="sentence-display">"Even if you do not live in bear country, you should never leave food or items with a strong smell inside your tent — <strong>hang</strong> them in a dry sack at least 50 kilometres from camp."</div>
+      <p class="q-text">One factual detail has been altered. Choose the version that corrects it:</p>
+      <div class="err-options">
+        <button class="err-btn" onclick="checkEC(this,'ec-q5','C')"><span class="err-label">A</span>Replace <em>50 kilometres</em> with <em>50 yards</em> — the unit used in the original text, equivalent to about half a football pitch.</button>
+        <button class="err-btn" onclick="checkEC(this,'ec-q5','C')"><span class="err-label">B</span>Replace <em>50 kilometres</em> with <em>500 metres</em> — the standard bear-safe food storage distance recommended by most wildlife authorities.</button>
+        <button class="err-btn" onclick="checkEC(this,'ec-q5','C')"><span class="err-label">C</span>Replace <em>50 kilometres</em> with <em>50 metres</em> — the exact distance specified in the source text for hanging scented items from camp.</button>
+        <button class="err-btn" onclick="checkEC(this,'ec-q5','C')"><span class="err-label">D</span>Replace <em>50 kilometres</em> with <em>50 feet</em> — the imperial measurement commonly given in North American hiking guides for this purpose.</button>
+      </div>
+      <div class="feedback" id="fb-ec5"></div>
+      <div class="btn-row">
+        <button class="btn-section-next" id="next-section-1" onclick="goToSection(2)">Next Activity →</button>
+      </div>
+    </div>
+  </div><!-- /section-1 -->
+
+
+  <!-- ═══════════════════════════════════════════
+       ACTIVITY 2 · TRUE / FALSE + EVIDENCE (5 questions)
+       Decide if the statement is true or false, then select the supporting sentence
+  ════════════════════════════════════════════ -->
+  <div class="activity-section" id="section-2">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <div class="section-info">
+        <h2>True or False? — Then Find the Evidence</h2>
+        <p>First decide if the statement is true or false. Then select the sentence from the text that best supports your answer.</p>
+      </div>
+    </div>
+
+    <!-- TF Q1 -->
+    <div class="q-card" id="tf-q1">
+      <div class="q-meta"><span class="q-num">Question 6</span><span class="q-progress">1 of 5</span></div>
+      <p class="q-text"><strong>Statement:</strong> The author argues that hiking is a genuinely dangerous activity that most people underestimate.</p>
+      <div class="tf-row">
+        <button class="tf-btn" id="tf1-true" onclick="checkTF('tf-q1','true','false','fb-tf1','ev-tf1',6,'next-tf1')">True</button>
+        <button class="tf-btn" id="tf1-false" onclick="checkTF('tf-q1','false','false','fb-tf1','ev-tf1',6,'next-tf1')">False</button>
+      </div>
+      <div id="ev-tf1" style="display:none">
+        <p class="evidence-label">Select the sentence that best supports your answer:</p>
+        <div class="ev-options">
+          <button class="ev-btn" id="evb-tf1-A" onclick="checkEvidence('tf-q1','evb-tf1-A','evb-tf1-C','fb-tf1',6,'next-tf1')">A. "You shouldn't be wary of just wild animals."</button>
+          <button class="ev-btn" id="evb-tf1-B" onclick="checkEvidence('tf-q1','evb-tf1-B','evb-tf1-C','fb-tf1',6,'next-tf1')">B. "Here are some hard facts... only 56 people died from hiking related deaths."</button>
+          <button class="ev-btn" id="evb-tf1-C" onclick="checkEvidence('tf-q1','evb-tf1-C','evb-tf1-C','fb-tf1',6,'next-tf1')">C. "Hiking is 647 times safer than driving a car. So, do yourself a favour and do not watch videos like that."</button>
+          <button class="ev-btn" id="evb-tf1-D" onclick="checkEvidence('tf-q1','evb-tf1-D','evb-tf1-C','fb-tf1',6,'next-tf1')">D. "When a lot of people start solo hiking, they usually want to have something to protect themselves with."</button>
+        </div>
+      </div>
+      <div class="feedback" id="fb-tf1"></div>
+      <div class="btn-row">
+        <button class="btn-next" id="next-tf1" onclick="revealNext('tf-q1','tf-q2')">Next →</button>
+      </div>
+    </div>
+
+    <!-- TF Q2 -->
+    <div class="q-card hidden" id="tf-q2">
+      <div class="q-meta"><span class="q-num">Question 7</span><span class="q-progress">2 of 5</span></div>
+      <p class="q-text"><strong>Statement:</strong> According to the author, bear spray is recommended as a superior alternative to trekking poles for protection.</p>
+      <div class="tf-row">
+        <button class="tf-btn" id="tf2-true" onclick="checkTF('tf-q2','true','false','fb-tf2','ev-tf2',7,'next-tf2')">True</button>
+        <button class="tf-btn" id="tf2-false" onclick="checkTF('tf-q2','false','false','fb-tf2','ev-tf2',7,'next-tf2')">False</button>
+      </div>
+      <div id="ev-tf2" style="display:none">
+        <p class="evidence-label">Select the sentence that best supports your answer:</p>
+        <div class="ev-options">
+          <button class="ev-btn" id="evb-tf2-A" onclick="checkEvidence('tf-q2','evb-tf2-A','evb-tf2-B','fb-tf2',7,'next-tf2')">A. "Trekking poles are also a multi-use item, which is really good for hiking."</button>
+          <button class="ev-btn" id="evb-tf2-B" onclick="checkEvidence('tf-q2','evb-tf2-B','evb-tf2-B','fb-tf2',7,'next-tf2')">B. "I usually recommend bringing trekking poles… they're one of the best tools to protect yourself with, aside from bear spray, of course."</button>
+          <button class="ev-btn" id="evb-tf2-C" onclick="checkEvidence('tf-q2','evb-tf2-C','evb-tf2-B','fb-tf2',7,'next-tf2')">C. "Bear spray is the single most effective deterrent available to solo hikers in all terrain types."</button>
+          <button class="ev-btn" id="evb-tf2-D" onclick="checkEvidence('tf-q2','evb-tf2-D','evb-tf2-B','fb-tf2',7,'next-tf2')">D. "In my opinion, they're one of the best tools to protect yourself with, alongside a solid pair of boots."</button>
+        </div>
+      </div>
+      <div class="feedback" id="fb-tf2"></div>
+      <div class="btn-row">
+        <button class="btn-next" id="next-tf2" onclick="revealNext('tf-q2','tf-q3')">Next →</button>
+      </div>
+    </div>
+
+    <!-- TF Q3 -->
+    <div class="q-card hidden" id="tf-q3">
+      <div class="q-meta"><span class="q-num">Question 8</span><span class="q-progress">3 of 5</span></div>
+      <p class="q-text"><strong>Statement:</strong> The author states that shortcuts visible on a phone map are unreliable and should almost always be avoided in mountain terrain.</p>
+      <div class="tf-row">
+        <button class="tf-btn" id="tf3-true" onclick="checkTF('tf-q3','true','true','fb-tf3','ev-tf3',8,'next-tf3')">True</button>
+        <button class="tf-btn" id="tf3-false" onclick="checkTF('tf-q3','false','true','fb-tf3','ev-tf3',8,'next-tf3')">False</button>
+      </div>
+      <div id="ev-tf3" style="display:none">
+        <p class="evidence-label">Select the sentence that best supports your answer:</p>
+        <div class="ev-options">
+          <button class="ev-btn" id="evb-tf3-A" onclick="checkEvidence('tf-q3','evb-tf3-A','evb-tf3-C','fb-tf3',8,'next-tf3')">A. "If you see on your phone that you could take a shortcut, but the map shows that there isn't a trail there, take it anyway — maps are often outdated."</button>
+          <button class="ev-btn" id="evb-tf3-B" onclick="checkEvidence('tf-q3','evb-tf3-B','evb-tf3-C','fb-tf3',8,'next-tf3')">B. "If you see on your phone that you could take a shortcut, always check the elevation profile before deciding whether it is worth attempting."</button>
+          <button class="ev-btn" id="evb-tf3-C" onclick="checkEvidence('tf-q3','evb-tf3-C','evb-tf3-C','fb-tf3',8,'next-tf3')">C. "Eight times out of 10, whenever I take a shortcut in the mountains, I end up regretting it… only take it if you can clearly see the whole path."</button>
+          <button class="ev-btn" id="evb-tf3-D" onclick="checkEvidence('tf-q3','evb-tf3-D','evb-tf3-C','fb-tf3',8,'next-tf3')">D. "Most shortcuts shown on popular apps have been verified by community trail data and are generally safe to follow in good weather."</button>
+        </div>
+      </div>
+      <div class="feedback" id="fb-tf3"></div>
+      <div class="btn-row">
+        <button class="btn-next" id="next-tf3" onclick="revealNext('tf-q3','tf-q4')">Next →</button>
+      </div>
+    </div>
+
+    <!-- TF Q4 -->
+    <div class="q-card hidden" id="tf-q4">
+      <div class="q-meta"><span class="q-num">Question 9</span><span class="q-progress">4 of 5</span></div>
+      <p class="q-text"><strong>Statement:</strong> The author claims to have scientific proof that trusting one's instincts prevents accidents.</p>
+      <div class="tf-row">
+        <button class="tf-btn" id="tf4-true" onclick="checkTF('tf-q4','true','false','fb-tf4','ev-tf4',9,'next-tf4')">True</button>
+        <button class="tf-btn" id="tf4-false" onclick="checkTF('tf-q4','false','false','fb-tf4','ev-tf4',9,'next-tf4')">False</button>
+      </div>
+      <div id="ev-tf4" style="display:none">
+        <p class="evidence-label">Select the sentence that best supports your answer:</p>
+        <div class="ev-options">
+          <button class="ev-btn" id="evb-tf4-A" onclick="checkEvidence('tf-q4','evb-tf4-A','evb-tf4-D','fb-tf4',9,'next-tf4')">A. "There is considerable peer-reviewed research supporting the role of instinct in outdoor risk perception."</button>
+          <button class="ev-btn" id="evb-tf4-B" onclick="checkEvidence('tf-q4','evb-tf4-B','evb-tf4-D','fb-tf4',9,'next-tf4')">B. "We're all animals… I think that you subconsciously can [sense danger] as well, which is well-documented in survival literature."</button>
+          <button class="ev-btn" id="evb-tf4-C" onclick="checkEvidence('tf-q4','evb-tf4-C','evb-tf4-D','fb-tf4',9,'next-tf4')">C. "Trust your instincts — statistically, hikers who followed their gut reported 40% fewer close-call incidents than those who did not."</button>
+          <button class="ev-btn" id="evb-tf4-D" onclick="checkEvidence('tf-q4','evb-tf4-D','evb-tf4-D','fb-tf4',9,'next-tf4')">D. "Of course, I don't have any actual proof to back this up, but there are a lot of stories from other people who have trusted their gut."</button>
+        </div>
+      </div>
+      <div class="feedback" id="fb-tf4"></div>
+      <div class="btn-row">
+        <button class="btn-next" id="next-tf4" onclick="revealNext('tf-q4','tf-q5')">Next →</button>
+      </div>
+    </div>
+
+    <!-- TF Q5 -->
+    <div class="q-card hidden" id="tf-q5">
+      <div class="q-meta"><span class="q-num">Question 10</span><span class="q-progress">5 of 5</span></div>
+      <p class="q-text"><strong>Statement:</strong> The author advises solo hikers to stop and rest before reaching their planned campsite if they feel too fatigued.</p>
+      <div class="tf-row">
+        <button class="tf-btn" id="tf5-true" onclick="checkTF('tf-q5','true','true','fb-tf5','ev-tf5',10,'next-tf5')">True</button>
+        <button class="tf-btn" id="tf5-false" onclick="checkTF('tf-q5','false','true','fb-tf5','ev-tf5',10,'next-tf5')">False</button>
+      </div>
+      <div id="ev-tf5" style="display:none">
+        <p class="evidence-label">Select the sentence that best supports your answer:</p>
+        <div class="ev-options">
+          <button class="ev-btn" id="evb-tf5-A" onclick="checkEvidence('tf-q5','evb-tf5-A','evb-tf5-C','fb-tf5',10,'next-tf5')">A. "Make it a habit to always continue hiking even when tired, as stopping too early leads to poor time management."</button>
+          <button class="ev-btn" id="evb-tf5-B" onclick="checkEvidence('tf-q5','evb-tf5-B','evb-tf5-C','fb-tf5',10,'next-tf5')">B. "Rest only when you have reached your planned campsite — stopping mid-route increases the risk of getting caught in the dark."</button>
+          <button class="ev-btn" id="evb-tf5-C" onclick="checkEvidence('tf-q5','evb-tf5-C','evb-tf5-C','fb-tf5',10,'next-tf5')">C. "Even if you haven't reached your desired campsite, it's always a better idea to have a small pause… and possibly even hike a bit back to set up the tent."</button>
+          <button class="ev-btn" id="evb-tf5-D" onclick="checkEvidence('tf-q5','evb-tf5-D','evb-tf5-C','fb-tf5',10,'next-tf5')">D. "That's when you start to have poor judgment, so push through the final kilometres to ensure you reach shelter before dark."</button>
+        </div>
+      </div>
+      <div class="feedback" id="fb-tf5"></div>
+      <div class="btn-row">
+        <button class="btn-section-next" id="next-section-2" onclick="goToSection(3)">Next Activity →</button>
+      </div>
+    </div>
+  </div><!-- /section-2 -->
+
+
+  <!-- ═══════════════════════════════════════════
+       ACTIVITY 3 · GAP FILL WITH WORD BANK (5 sentences)
+       Click a word from the bank to fill the blank
+  ════════════════════════════════════════════ -->
+  <div class="activity-section" id="section-3">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <div class="section-info">
+        <h2>Word Bank Gap Fill</h2>
+        <p>Click a word from the bank to place it in a blank. Click a filled blank to return the word to the bank. Submit each sentence when ready.</p>
+      </div>
+    </div>
+
+    <!-- GF Q1 -->
+    <div class="q-card" id="gf-q1">
+      <div class="q-meta"><span class="q-num">Question 11</span><span class="q-progress">1 of 5</span></div>
+      <div class="word-bank-pool" id="pool-gf1">
+        <div class="pool-chip" data-word="wary" onclick="placeWord('pool-gf1','blank-gf1a',this)">wary</div>
+        <div class="pool-chip" data-word="alert" onclick="placeWord('pool-gf1','blank-gf1a',this)">alert</div>
+        <div class="pool-chip" data-word="startled" onclick="placeWord('pool-gf1','blank-gf1a',this)">startled</div>
+        <div class="pool-chip" data-word="cautious" onclick="placeWord('pool-gf1','blank-gf1a',this)">cautious</div>
+      </div>
+      <div class="gf-sentence">
+        You should be
+        <span class="gf-blank" id="blank-gf1a" data-hint="click a word" onclick="returnWord('pool-gf1','blank-gf1a')"></span>
+        of more than just wild animals when hiking in unfamiliar areas.
+      </div>
+      <div class="feedback" id="fb-gf1"></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="checkGapFill('gf-q1',{'blank-gf1a':'wary'},'fb-gf1',11,'gf-q2','next-gf1',{'blank-gf1a':'pool-gf1'})">Check</button>
+        <button class="btn-next" id="next-gf1" onclick="revealNext('gf-q1','gf-q2')">Next →</button>
+      </div>
+    </div>
+
+    <!-- GF Q2 -->
+    <div class="q-card hidden" id="gf-q2">
+      <div class="q-meta"><span class="q-num">Question 12</span><span class="q-progress">2 of 5</span></div>
+      <div class="word-bank-pool" id="pool-gf2">
+        <div class="pool-chip" data-word="dedicated" onclick="placeWord('pool-gf2','blank-gf2a',this)">dedicated</div>
+        <div class="pool-chip" data-word="satellite" onclick="placeWord('pool-gf2','blank-gf2b',this)">satellite</div>
+        <div class="pool-chip" data-word="offline" onclick="placeWord('pool-gf2','blank-gf2c',this)">offline</div>
+        <div class="pool-chip" data-word="emergency" onclick="placeWord('pool-gf2','blank-gf2b',this)">emergency</div>
+        <div class="pool-chip" data-word="portable" onclick="placeWord('pool-gf2','blank-gf2a',this)">portable</div>
+        <div class="pool-chip" data-word="cached" onclick="placeWord('pool-gf2','blank-gf2c',this)">cached</div>
+      </div>
+      <div class="gf-sentence">
+        A <span class="gf-blank" id="blank-gf2a" data-hint="adjective" onclick="returnWord('pool-gf2','blank-gf2a')"></span>
+        GPS device is preferable to a phone because it comes with a built-in
+        <span class="gf-blank" id="blank-gf2b" data-hint="adjective" onclick="returnWord('pool-gf2','blank-gf2b')"></span>
+        SOS function and stores maps for
+        <span class="gf-blank" id="blank-gf2c" data-hint="adverb/adj" onclick="returnWord('pool-gf2','blank-gf2c')"></span>
+        use.
+      </div>
+      <div class="feedback" id="fb-gf2"></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="checkGapFill('gf-q2',{'blank-gf2a':'dedicated','blank-gf2b':'satellite','blank-gf2c':'offline'},'fb-gf2',12,'gf-q3','next-gf2',{'blank-gf2a':'pool-gf2','blank-gf2b':'pool-gf2','blank-gf2c':'pool-gf2'})">Check</button>
+        <button class="btn-next" id="next-gf2" onclick="revealNext('gf-q2','gf-q3')">Next →</button>
+      </div>
+    </div>
+
+    <!-- GF Q3 -->
+    <div class="q-card hidden" id="gf-q3">
+      <div class="q-meta"><span class="q-num">Question 13</span><span class="q-progress">3 of 5</span></div>
+      <div class="word-bank-pool" id="pool-gf3">
+        <div class="pool-chip" data-word="aggressively" onclick="placeWord('pool-gf3','blank-gf3a',this)">aggressively</div>
+        <div class="pool-chip" data-word="startling" onclick="placeWord('pool-gf3','blank-gf3b',this)">startling</div>
+        <div class="pool-chip" data-word="clap" onclick="placeWord('pool-gf3','blank-gf3c',this)">clap</div>
+        <div class="pool-chip" data-word="scare" onclick="placeWord('pool-gf3','blank-gf3c',this)">scare</div>
+        <div class="pool-chip" data-word="loudly" onclick="placeWord('pool-gf3','blank-gf3a',this)">loudly</div>
+        <div class="pool-chip" data-word="disturbing" onclick="placeWord('pool-gf3','blank-gf3b',this)">disturbing</div>
+      </div>
+      <div class="gf-sentence">
+        Large animals may act
+        <span class="gf-blank" id="blank-gf3a" data-hint="adverb" onclick="returnWord('pool-gf3','blank-gf3a')"></span>
+        when you approach them suddenly — avoid
+        <span class="gf-blank" id="blank-gf3b" data-hint="v+ing" onclick="returnWord('pool-gf3','blank-gf3b')"></span>
+        them by making loud noises to
+        <span class="gf-blank" id="blank-gf3c" data-hint="verb" onclick="returnWord('pool-gf3','blank-gf3c')"></span>
+        them off before you reach their location.
+      </div>
+      <div class="feedback" id="fb-gf3"></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="checkGapFill('gf-q3',{'blank-gf3a':'aggressively','blank-gf3b':'startling','blank-gf3c':'scare'},'fb-gf3',13,'gf-q4','next-gf3',{'blank-gf3a':'pool-gf3','blank-gf3b':'pool-gf3','blank-gf3c':'pool-gf3'})">Check</button>
+        <button class="btn-next" id="next-gf3" onclick="revealNext('gf-q3','gf-q4')">Next →</button>
+      </div>
+    </div>
+
+    <!-- GF Q4 -->
+    <div class="q-card hidden" id="gf-q4">
+      <div class="q-meta"><span class="q-num">Question 14</span><span class="q-progress">4 of 5</span></div>
+      <div class="word-bank-pool" id="pool-gf4">
+        <div class="pool-chip" data-word="lightning" onclick="placeWord('pool-gf4','blank-gf4a',this)">lightning</div>
+        <div class="pool-chip" data-word="conditions" onclick="placeWord('pool-gf4','blank-gf4b',this)">conditions</div>
+        <div class="pool-chip" data-word="thunderstorm" onclick="placeWord('pool-gf4','blank-gf4a',this)">thunderstorm</div>
+        <div class="pool-chip" data-word="sources" onclick="placeWord('pool-gf4','blank-gf4b',this)">sources</div>
+        <div class="pool-chip" data-word="forecast" onclick="placeWord('pool-gf4','blank-gf4c',this)">forecast</div>
+        <div class="pool-chip" data-word="drought" onclick="placeWord('pool-gf4','blank-gf4c',this)">drought</div>
+      </div>
+      <div class="gf-sentence">
+        Stay below the tree line in a
+        <span class="gf-blank" id="blank-gf4a" data-hint="noun" onclick="returnWord('pool-gf4','blank-gf4a')"></span>
+        and always check the weather
+        <span class="gf-blank" id="blank-gf4c" data-hint="noun" onclick="returnWord('pool-gf4','blank-gf4c')"></span>
+        to understand upcoming trail
+        <span class="gf-blank" id="blank-gf4b" data-hint="noun" onclick="returnWord('pool-gf4','blank-gf4b')"></span>.
+      </div>
+      <div class="feedback" id="fb-gf4"></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="checkGapFill('gf-q4',{'blank-gf4a':'thunderstorm','blank-gf4b':'conditions','blank-gf4c':'forecast'},'fb-gf4',14,'gf-q5','next-gf4',{'blank-gf4a':'pool-gf4','blank-gf4b':'pool-gf4','blank-gf4c':'pool-gf4'})">Check</button>
+        <button class="btn-next" id="next-gf4" onclick="revealNext('gf-q4','gf-q5')">Next →</button>
+      </div>
+    </div>
+
+    <!-- GF Q5 -->
+    <div class="q-card hidden" id="gf-q5">
+      <div class="q-meta"><span class="q-num">Question 15</span><span class="q-progress">5 of 5</span></div>
+      <div class="word-bank-pool" id="pool-gf5">
+        <div class="pool-chip" data-word="mobility" onclick="placeWord('pool-gf5','blank-gf5a',this)">mobility</div>
+        <div class="pool-chip" data-word="develop" onclick="placeWord('pool-gf5','blank-gf5b',this)">develop</div>
+        <div class="pool-chip" data-word="flexibility" onclick="placeWord('pool-gf5','blank-gf5a',this)">flexibility</div>
+        <div class="pool-chip" data-word="create" onclick="placeWord('pool-gf5','blank-gf5b',this)">create</div>
+        <div class="pool-chip" data-word="ankle" onclick="placeWord('pool-gf5','blank-gf5c',this)">ankle</div>
+        <div class="pool-chip" data-word="balance" onclick="placeWord('pool-gf5','blank-gf5c',this)">balance</div>
+      </div>
+      <div class="gf-sentence">
+        To increase the
+        <span class="gf-blank" id="blank-gf5a" data-hint="noun" onclick="returnWord('pool-gf5','blank-gf5a')"></span>
+        range of your
+        <span class="gf-blank" id="blank-gf5c" data-hint="noun" onclick="returnWord('pool-gf5','blank-gf5c')"></span>,
+        you should
+        <span class="gf-blank" id="blank-gf5b" data-hint="verb" onclick="returnWord('pool-gf5','blank-gf5b')"></span>
+        a consistent stretching routine using dorsiflexion and pronation exercises.
+      </div>
+      <div class="feedback" id="fb-gf5"></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="checkGapFill('gf-q5',{'blank-gf5a':'mobility','blank-gf5b':'develop','blank-gf5c':'ankle'},'fb-gf5',15,null,'next-gf5',{'blank-gf5a':'pool-gf5','blank-gf5b':'pool-gf5','blank-gf5c':'pool-gf5'})">Check</button>
+        <button class="btn-section-next" id="next-section-3" onclick="goToSection(4)">Next Activity →</button>
+      </div>
+    </div>
+  </div><!-- /section-3 -->
+
+
+  <!-- ═══════════════════════════════════════════
+       ACTIVITY 4 · DISCOURSE ORDERING (5 passages)
+       Drag sentences into the correct logical sequence
+  ════════════════════════════════════════════ -->
+  <div class="activity-section" id="section-4">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <div class="section-info">
+        <h2>Discourse Ordering</h2>
+        <p>The sentences in each passage have been jumbled. Drag them into the correct logical order, then check your answer.</p>
+      </div>
+    </div>
+
+    <!-- DO Q1 (Q16) -->
+    <div class="q-card" id="do-q1">
+      <div class="q-meta"><span class="q-num">Question 16</span><span class="q-progress">1 of 5</span></div>
+      <p class="q-text">These sentences form a coherent piece of advice. Put them in the correct order:</p>
+      <div class="sortable-list" id="sort-do1">
+        <div class="sort-item" draggable="true" data-order="3" ondragstart="sortDragStart(event)" ondragover="sortDragOver(event)" ondrop="sortDrop(event)" ondragleave="sortDragLeave(event)">
+          <span class="sort-handle">⠿</span><span class="sort-index">?</span>
+          <span>"That way, he probably won't feel threatened and will be less likely to behave aggressively towards you."</span>
+        </div>
+        <div class="sort-item" draggable="true" data-order="1" ondragstart="sortDragStart(event)" ondragover="sortDragOver(event)" ondrop="sortDrop(event)" ondragleave="sortDragLeave(event)">
+          <span class="sort-handle">⠿</span><span class="sort-index">?</span>
+          <span>"If you see a guard dog, always stop and judge the situation first before approaching."</span>
+        </div>
+        <div class="sort-item" draggable="true" data-order="2" ondragstart="sortDragStart(event)" ondragover="sortDragOver(event)" ondrop="sortDrop(event)" ondragleave="sortDragLeave(event)">
+          <span class="sort-handle">⠿</span><span class="sort-index">?</span>
+          <span>"If he is aggressive, slowly back away with no sudden movements and go around the herd from a distance."</span>
+        </div>
+      </div>
+      <div class="feedback" id="fb-do1"></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="checkOrder('sort-do1','fb-do1',16,'do-q1','do-q2','next-do1')">Check Order</button>
+        <button class="btn-next" id="next-do1" onclick="revealNext('do-q1','do-q2')">Next →</button>
+      </div>
+    </div>
+
+    <!-- DO Q2 (Q17) -->
+    <div class="q-card hidden" id="do-q2">
+      <div class="q-meta"><span class="q-num">Question 17</span><span class="q-progress">2 of 5</span></div>
+      <p class="q-text">These sentences form a coherent piece of advice. Put them in the correct order:</p>
+      <div class="sortable-list" id="sort-do2">
+        <div class="sort-item" draggable="true" data-order="2" ondragstart="sortDragStart(event)" ondragover="sortDragOver(event)" ondrop="sortDrop(event)" ondragleave="sortDragLeave(event)">
+          <span class="sort-handle">⠿</span><span class="sort-index">?</span>
+          <span>"You should update them every day, and if they don't hear from you for a day or two, they get in touch with a rescue team."</span>
+        </div>
+        <div class="sort-item" draggable="true" data-order="3" ondragstart="sortDragStart(event)" ondragover="sortDragOver(event)" ondrop="sortDrop(event)" ondragleave="sortDragLeave(event)">
+          <span class="sort-handle">⠿</span><span class="sort-index">?</span>
+          <span>"This is especially important in remote areas where mobile coverage is non-existent and help cannot reach you quickly."</span>
+        </div>
+        <div class="sort-item" draggable="true" data-order="1" ondragstart="sortDragStart(event)" ondragover="sortDragOver(event)" ondrop="sortDrop(event)" ondragleave="sortDragLeave(event)">
+          <span class="sort-handle">⠿</span><span class="sort-index">?</span>
+          <span>"Find someone who can alert the authorities in case you go missing."</span>
+        </div>
+      </div>
+      <div class="feedback" id="fb-do2"></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="checkOrder('sort-do2','fb-do2',17,'do-q2','do-q3','next-do2')">Check Order</button>
+        <button class="btn-next" id="next-do2" onclick="revealNext('do-q2','do-q3')">Next →</button>
+      </div>
+    </div>
+
+    <!-- DO Q3 (Q18) -->
+    <div class="q-card hidden" id="do-q3">
+      <div class="q-meta"><span class="q-num">Question 18</span><span class="q-progress">3 of 5</span></div>
+      <p class="q-text">These sentences form a coherent piece of advice. Put them in the correct order:</p>
+      <div class="sortable-list" id="sort-do3">
+        <div class="sort-item" draggable="true" data-order="1" ondragstart="sortDragStart(event)" ondragover="sortDragOver(event)" ondrop="sortDrop(event)" ondragleave="sortDragLeave(event)">
+          <span class="sort-handle">⠿</span><span class="sort-index">?</span>
+          <span>"Most people that go hiking are good people, so you don't need to worry about other hikers."</span>
+        </div>
+        <div class="sort-item" draggable="true" data-order="3" ondragstart="sortDragStart(event)" ondragover="sortDragOver(event)" ondrop="sortDrop(event)" ondragleave="sortDragLeave(event)">
+          <span class="sort-handle">⠿</span><span class="sort-index">?</span>
+          <span>"For extra security, set up your camp out of sight — not near roads or houses — so that nobody will see you there."</span>
+        </div>
+        <div class="sort-item" draggable="true" data-order="2" ondragstart="sortDragStart(event)" ondragover="sortDragOver(event)" ondrop="sortDrop(event)" ondragleave="sortDragLeave(event)">
+          <span class="sort-handle">⠿</span><span class="sort-index">?</span>
+          <span>"However, when camping on public campgrounds, you are sharing space with others, which can occasionally feel uncomfortable."</span>
+        </div>
+      </div>
+      <div class="feedback" id="fb-do3"></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="checkOrder('sort-do3','fb-do3',18,'do-q3','do-q4','next-do3')">Check Order</button>
+        <button class="btn-next" id="next-do3" onclick="revealNext('do-q3','do-q4')">Next →</button>
+      </div>
+    </div>
+
+    <!-- DO Q4 (Q19) -->
+    <div class="q-card hidden" id="do-q4">
+      <div class="q-meta"><span class="q-num">Question 19</span><span class="q-progress">4 of 5</span></div>
+      <p class="q-text">These sentences form a coherent argument. Put them in the correct order:</p>
+      <div class="sortable-list" id="sort-do4">
+        <div class="sort-item" draggable="true" data-order="3" ondragstart="sortDragStart(event)" ondragover="sortDragOver(event)" ondrop="sortDrop(event)" ondragleave="sortDragLeave(event)">
+          <span class="sort-handle">⠿</span><span class="sort-index">?</span>
+          <span>"Therefore, do not rely only on food that needs to be cooked, and always carry at least one extra day of food in case of emergency."</span>
+        </div>
+        <div class="sort-item" draggable="true" data-order="1" ondragstart="sortDragStart(event)" ondragover="sortDragOver(event)" ondrop="sortDrop(event)" ondragleave="sortDragLeave(event)">
+          <span class="sort-handle">⠿</span><span class="sort-index">?</span>
+          <span>"Gas-powered camping stoves typically stop functioning when temperatures fall below freezing."</span>
+        </div>
+        <div class="sort-item" draggable="true" data-order="2" ondragstart="sortDragStart(event)" ondragover="sortDragOver(event)" ondrop="sortDrop(event)" ondragleave="sortDragLeave(event)">
+          <span class="sort-handle">⠿</span><span class="sort-index">?</span>
+          <span>"Your stove may also become damaged on the trail, leaving you without any means to heat your food."</span>
+        </div>
+      </div>
+      <div class="feedback" id="fb-do4"></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="checkOrder('sort-do4','fb-do4',19,'do-q4','do-q5','next-do4')">Check Order</button>
+        <button class="btn-next" id="next-do4" onclick="revealNext('do-q4','do-q5')">Next →</button>
+      </div>
+    </div>
+
+    <!-- DO Q5 (Q20) -->
+    <div class="q-card hidden" id="do-q5">
+      <div class="q-meta"><span class="q-num">Question 20</span><span class="q-progress">5 of 5</span></div>
+      <p class="q-text">These sentences form a coherent argument. Put them in the correct order:</p>
+      <div class="sortable-list" id="sort-do5">
+        <div class="sort-item" draggable="true" data-order="2" ondragstart="sortDragStart(event)" ondragover="sortDragOver(event)" ondrop="sortDrop(event)" ondragleave="sortDragLeave(event)">
+          <span class="sort-handle">⠿</span><span class="sort-index">?</span>
+          <span>"If dogs can sense that something dangerous is about to happen, I believe you can subconsciously do the same."</span>
+        </div>
+        <div class="sort-item" draggable="true" data-order="3" ondragstart="sortDragStart(event)" ondragover="sortDragOver(event)" ondrop="sortDrop(event)" ondragleave="sortDragLeave(event)">
+          <span class="sort-handle">⠿</span><span class="sort-index">?</span>
+          <span>"So if your gut tells you not to camp somewhere or not to hike a particular trail, I would advise you to follow it."</span>
+        </div>
+        <div class="sort-item" draggable="true" data-order="1" ondragstart="sortDragStart(event)" ondragover="sortDragOver(event)" ondrop="sortDrop(event)" ondragleave="sortDragLeave(event)">
+          <span class="sort-handle">⠿</span><span class="sort-index">?</span>
+          <span>"We're all animals — our instincts developed over millennia of exposure to genuine danger."</span>
+        </div>
+      </div>
+      <div class="feedback" id="fb-do5"></div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="checkOrder('sort-do5','fb-do5',20,'do-q5',null,'next-do5')">Check Order</button>
+        <button class="btn-section-next" id="next-section-4" onclick="showResults()">See Results →</button>
+      </div>
+    </div>
+  </div><!-- /section-4 -->
+
+
+  <!-- RESULTS -->
+  <div id="results-screen">
+    <svg width="160" height="54" viewBox="0 0 190 64" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:16px">
+      <text x="95" y="28" text-anchor="middle" font-family="'Playfair Display',serif" font-size="30" font-weight="700" letter-spacing="3" fill="#2C3E2D">Forbes</text>
+      <rect x="18" y="36" width="154" height="1.5" fill="#5C7A4E"/>
+      <text x="95" y="55" text-anchor="middle" font-family="'Inter',sans-serif" font-size="13.5" font-weight="700" letter-spacing="7" fill="#5C7A4E">ENGLISH</text>
+    </svg>
+    <h2>Part 2 Complete</h2>
+    <div class="result-score-big" id="result-big">—</div>
+    <div class="result-message" id="result-message">—</div>
+    <button class="btn-restart" onclick="location.reload()">↺ Restart Part 2</button>
+  </div>
+
+</div><!-- /page-wrap -->
+
+<script>
+// ─── STATE ───────────────────────────────────────────────────────────
+let totalCorrect = 0;
+let totalAnswered = 0;
+const TOTAL_Q = 20;
+
+function updateUI() {
+  const pct = Math.round((totalCorrect / TOTAL_Q) * 100);
+  document.getElementById('score-display').textContent = pct + '%';
+  document.getElementById('correct-display').textContent = totalCorrect;
+  document.getElementById('total-progress').textContent = 'Question ' + totalAnswered + ' of ' + TOTAL_Q;
+  document.getElementById('progress-fill').style.width = (totalAnswered / TOTAL_Q * 100) + '%';
+}
+
+function goToSection(n) {
+  document.querySelectorAll('.activity-section').forEach(s => s.classList.remove('active'));
+  const sec = document.getElementById('section-' + n);
+  if (sec) { sec.classList.add('active'); sec.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  document.getElementById('section-display').textContent = n + ' / 4';
+}
+
+function revealNext(currentId, nextId) {
+  document.getElementById(currentId).classList.add('hidden');
+  const next = document.getElementById(nextId);
+  if (next) { next.classList.remove('hidden'); next.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+}
+
+// ─── ERROR CORRECTION ────────────────────────────────────────────────
+const ecData = {
+  'ec-q1': {
+    correct: 'C',
+    fb: 'The source text uses "back away" — the standard phrasal verb meaning to retreat while facing a threat. "Back off" means to stop threatening someone or to withdraw pressure, which is semantically different. "Pull back," "draw away," and "stand down" are either imprecise or non-standard in this context.'
+  },
+  'ec-q2': {
+    correct: 'A',
+    fb: '"Run out of charge" is the correct, fixed collocation for a battery being depleted. "Runs out" collocates with countable resources (charge, battery, time, gas). "Loses out" means to fail to gain an advantage. "Dies out" is used for populations, trends, or species becoming extinct. "Burns out" refers to overheating or exhaustion.'
+  },
+  'ec-q3': {
+    correct: 'B',
+    fb: 'The source text specifically uses "multi-use item" — this is a precise compound noun in outdoor equipment vocabulary. "Multipurpose" and "versatile" are near-synonyms but not the author\'s wording. "Multiform" is not a standard English compound in this context. Lexical precision at C1 requires knowing exact collocations, not just approximate synonyms.'
+  },
+  'ec-q4': {
+    correct: 'D',
+    fb: '"Flood" is the word used in the original text: "areas that look like they might flood." As a verb meaning "to become covered with water," flood is the natural collocate here. "Overflow" is intransitive and refers to water exceeding a vessel. "Submerge" typically requires an agent. "Erode" refers to material being worn away, not flooding.'
+  },
+  'ec-q5': {
+    correct: 'C',
+    fb: 'The source text states "at least 50 m away from my tent" — metres, not kilometres (which would be 50,000 metres). This is a factual accuracy question requiring careful reading of the original. The "50 metres" detail is specific and consistent with standard wildlife-safe food storage distances in European hiking contexts.'
+  }
+};
+
+function checkEC(btn, qId, correct) {
+  const card = document.getElementById(qId);
+  if (card.querySelector('.err-btn[disabled]')) return;
+  const allBtns = card.querySelectorAll('.err-btn');
+  const letters = ['A','B','C','D'];
+  let chosen = null;
+  allBtns.forEach((b, i) => {
+    b.disabled = true;
+    if (b === btn) chosen = letters[i];
+    if (letters[i] === correct) b.classList.add('correct');
+  });
+  if (chosen !== correct) btn.classList.add('wrong');
+
+  const isRight = chosen === correct;
+  if (isRight) totalCorrect++;
+  totalAnswered++;
+  updateUI();
+
+  const fb = document.getElementById('fb-' + qId.replace('-q','') + (qId.slice(-1)));
+  // build fb id from qId
+  const fbId = 'fb-ec' + qId.replace('ec-q','');
+  const fbEl = document.getElementById(fbId);
+  fbEl.className = 'feedback ' + (isRight ? 'correct-fb' : 'wrong-fb');
+  fbEl.innerHTML = '<span class="fb-label">' + (isRight ? 'Correct.' : 'Incorrect.') + '</span> ' + ecData[qId].fb;
+  fbEl.style.display = 'block';
+
+  const qNums = ['ec-q1','ec-q2','ec-q3','ec-q4','ec-q5'];
+  const idx = qNums.indexOf(qId);
+  if (idx < 4) {
+    document.getElementById('next-ec' + (idx+1)).classList.add('visible');
+  } else {
+    document.getElementById('next-section-1').classList.add('visible');
+  }
+}
+
+// ─── TRUE / FALSE + EVIDENCE ─────────────────────────────────────────
+const tfFeedback = {
+  6: {
+    tfExplain: 'False. The author explicitly argues the opposite — that hiking is actually very safe, using statistics to prove it.',
+    evExplain: 'The direct statement "hiking is 647 times safer than driving a car" followed by the instruction not to watch scary videos demonstrates the author\'s argument that hiking\'s danger is overstated, not underestimated.'
+  },
+  7: {
+    tfExplain: 'False. The author recommends trekking poles as one of the best tools, mentioning bear spray only parenthetically as another option ("aside from bear spray, of course"). The two are presented as alternatives, not ranked.',
+    evExplain: 'Option B contains the exact parenthetical structure — "aside from bear spray, of course" — which places bear spray as a secondary reference, not a superior recommendation. Options C and D are fabricated or misquote the source.'
+  },
+  8: {
+    tfExplain: 'True. The author uses the statistic "eight times out of 10" and adds the qualifier "only take it if you can clearly see the whole path," making avoidance the strong default.',
+    evExplain: 'Option C directly reflects the "eight times out of 10" rule and the conditional escape clause. Options A, B, and D either invert the advice or are fabricated.'
+  },
+  9: {
+    tfExplain: 'False. The author explicitly states "I don\'t have any actual proof to back this up." The advice is based on anecdote and personal belief, not evidence.',
+    evExplain: 'Option D contains the author\'s own admission — "I don\'t have any actual proof" — which directly refutes the statement. Options A, B, and C falsely introduce scientific or statistical backing not present in the text.'
+  },
+  10: {
+    tfExplain: 'True. The author advises stopping before reaching the planned campsite if fatigued, and even hiking back slightly to find a better spot.',
+    evExplain: 'Option C contains the key phrase "even if you haven\'t reached your desired campsite" and the suggestion to "hike a bit back" — both details confirm the statement is true.'
+  }
+};
+
+let tfState = {};
+
+function checkTF(qId, chosen, correct, fbId, evAreaId, qNum, nextBtnId) {
+  if (tfState[qId + '_tf']) return;
+  tfState[qId + '_tf'] = true;
+
+  const trueBtn = document.getElementById(qId.replace('-q','-').replace('tf-','tf') + '-true');
+  const falseBtn = document.getElementById(qId.replace('-q','-').replace('tf-','tf') + '-false');
+  // simpler: get all tf-btns in card
+  const card = document.getElementById(qId);
+  const tfBtns = card.querySelectorAll('.tf-btn');
+  tfBtns.forEach(b => { b.disabled = true; });
+
+  const isRight = chosen === correct;
+
+  // Show evidence area regardless of TF correctness
+  document.getElementById(evAreaId).style.display = 'block';
+  card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function checkEvidence(qId, chosenBtnId, correctBtnId, fbId, qNum, nextBtnId) {
+  if (tfState[qId + '_ev']) return;
+  tfState[qId + '_ev'] = true;
+
+  const card = document.getElementById(qId);
+  const evBtns = card.querySelectorAll('.ev-btn');
+  evBtns.forEach(b => { b.disabled = true; });
+
+  const chosenBtn = document.getElementById(chosenBtnId);
+  const correctBtn = document.getElementById(correctBtnId);
+  correctBtn.classList.add('ev-correct');
+  if (chosenBtnId !== correctBtnId) chosenBtn.classList.add('ev-wrong');
+
+  // Score: 1 point for correct TF already tracked? No — we track combined here.
+  // TF was conceptual step, evidence selection is the scored item (combined with TF direction)
+  const tfCorrect = !tfState[qId + '_tfWrong'];
+  const evCorrect = chosenBtnId === correctBtnId;
+  const totalPointsForQ = (tfCorrect ? 0.5 : 0) + (evCorrect ? 0.5 : 0);
+  // We award full point only if both correct; partial not supported in integer scoring, so:
+  // Award 1 if both correct, 0 otherwise
+  const bothCorrect = tfCorrect && evCorrect;
+  if (bothCorrect) totalCorrect++;
+  totalAnswered++;
+  updateUI();
+
+  const fb = document.getElementById(fbId);
+  fb.className = 'feedback ' + (bothCorrect ? 'correct-fb' : 'wrong-fb');
+  fb.innerHTML = '<span class="fb-label">' + (bothCorrect ? 'Correct.' : 'Incorrect.') + '</span> ' +
+    tfFeedback[qNum].tfExplain + ' ' + tfFeedback[qNum].evExplain;
+  fb.style.display = 'block';
+
+  const nb = document.getElementById(nextBtnId);
+  if (nb) nb.classList.add('visible');
+
+  // Show section-next after Q10
+  if (qNum === 10) document.getElementById('next-section-2').classList.add('visible');
+}
+
+// Override: track TF choice before evidence
+const _origCheckTF = checkTF;
+window.checkTF = function(qId, chosen, correct, fbId, evAreaId, qNum, nextBtnId) {
+  if (tfState[qId + '_tf']) return;
+  tfState[qId + '_tf'] = true;
+  if (chosen !== correct) tfState[qId + '_tfWrong'] = true;
+
+  const card = document.getElementById(qId);
+  const tfBtns = card.querySelectorAll('.tf-btn');
+  tfBtns.forEach(b => { b.disabled = true; });
+
+  // Visual feedback on TF button
+  tfBtns.forEach(b => {
+    if (b.textContent.trim().toLowerCase() === correct) b.classList.add('correct');
+    if (b.textContent.trim().toLowerCase() === chosen && chosen !== correct) b.classList.add('wrong');
+  });
+
+  document.getElementById(evAreaId).style.display = 'block';
+  document.getElementById(evAreaId).scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+};
+
+// ─── GAP FILL WITH WORD BANK ─────────────────────────────────────────
+let selectedChip = null;
+let selectedBlank = null;
+let blankContents = {};
+
+function placeWord(poolId, blankId, chip) {
+  if (chip.classList.contains('used')) return;
+  const blank = document.getElementById(blankId);
+  if (blank.classList.contains('blank-correct') || blank.classList.contains('blank-wrong')) return;
+
+  // If blank already has a word, return it first
+  if (blankContents[blankId]) {
+    const oldWord = blankContents[blankId];
+    // Unuse the old chip in pool
+    const pool = document.getElementById(poolId);
+    pool.querySelectorAll('.pool-chip').forEach(c => {
+      if (c.dataset.word === oldWord) c.classList.remove('used');
+    });
+  }
+
+  chip.classList.add('used');
+  blank.textContent = chip.dataset.word;
+  blank.classList.add('filled');
+  blankContents[blankId] = chip.dataset.word;
+}
+
+function returnWord(poolId, blankId) {
+  const blank = document.getElementById(blankId);
+  if (blank.classList.contains('blank-correct') || blank.classList.contains('blank-wrong')) return;
+  const word = blankContents[blankId];
+  if (!word) return;
+
+  const pool = document.getElementById(poolId);
+  pool.querySelectorAll('.pool-chip').forEach(c => {
+    if (c.dataset.word === word) c.classList.remove('used');
+  });
+
+  blank.textContent = '';
+  blank.classList.remove('filled');
+  delete blankContents[blankId];
+}
+
+const gfFeedback = {
+  11: {
+    correct: 'The word "wary" (adjective meaning cautiously alert to danger) directly mirrors the source text: "You shouldn\'t be wary of just wild animals." It collocates with "of" and implies vigilant caution without implying current fear.',
+    wrong: 'The correct word is "wary." While "alert" and "cautious" are close in meaning, "wary" is the exact lexical choice in the source text and the strongest collocate with "of" in this safety-warning register.'
+  },
+  12: {
+    correct: '"Dedicated GPS device," "satellite SOS function," and "offline use" are all precise collocations from the source text and standard GPS device vocabulary. Each word is anchored to a specific technical concept.',
+    wrong: 'Check: "dedicated" (purpose-built) for the GPS, "satellite" (signal-based) for the SOS function, and "offline" (without internet) for map use. "Portable" and "emergency" create grammatically plausible but semantically imprecise combinations.'
+  },
+  13: {
+    correct: '"Act aggressively" — "startling them" — "scare them off" are three precise collocations. "Aggressively" modifies "act"; "startling" is the gerund of the verb for surprising an animal; "scare off" is the exact phrasal verb for driving away wildlife.',
+    wrong: 'The correct sequence is "aggressively / startling / scare." "Loudly" is an adverb but doesn\'t collocate with "act" in this context. "Disturbing" shifts the meaning (to disturb = to disrupt, not startle). "Create" doesn\'t collocate with "off" in this context.'
+  },
+  14: {
+    correct: '"Stay below the tree line in a thunderstorm" and "check the weather forecast to understand upcoming trail conditions" are both direct paraphrases from the source text, using the precise technical vocabulary of outdoor safety writing.',
+    wrong: 'Correct answers: "thunderstorm" (not lightning — lightning is a component of a thunderstorm, not the weather event itself), "forecast" (the noun for a weather prediction), and "conditions" (the standard collocation for trail state). "Drought" and "sources" create grammatically plausible but semantically wrong combinations.'
+  },
+  15: {
+    correct: '"Increase the mobility range of your ankles" and "develop a consistent stretching routine" are both grounded in the source text\'s ankle-preparation advice. "Mobility range" is the precise physiotherapy collocation; "develop" is the standard collocate for building a habit or routine.',
+    wrong: 'Correct: "mobility" (not flexibility — mobility refers to active range of motion; flexibility to passive stretch), "ankle" (the joint discussed throughout the injury section), and "develop" (not "create" — one develops a routine as an ongoing process; "create" implies a one-time action).'
+  }
+};
+
+function checkGapFill(cardId, correctMap, fbId, qNum, nextCardId, nextBtnId, poolMap) {
+  const card = document.getElementById(cardId);
+  // Check if already submitted
+  if (card.querySelector('.blank-correct') || card.querySelector('.blank-wrong')) return;
+
+  let allFilled = true;
+  Object.keys(correctMap).forEach(blankId => {
+    if (!blankContents[blankId]) allFilled = false;
+  });
+  if (!allFilled) {
+    const fb = document.getElementById(fbId);
+    fb.className = 'feedback wrong-fb';
+    fb.innerHTML = '<span class="fb-label">Incomplete.</span> Please fill all blanks before checking.';
+    fb.style.display = 'block';
+    return;
+  }
+
+  let correct = 0;
+  const total = Object.keys(correctMap).length;
+  Object.entries(correctMap).forEach(([blankId, correctWord]) => {
+    const blank = document.getElementById(blankId);
+    const given = (blankContents[blankId] || '').toLowerCase();
+    if (given === correctWord.toLowerCase()) {
+      correct++;
+      blank.classList.add('blank-correct');
+    } else {
+      blank.classList.add('blank-wrong');
+      blank.textContent = (blankContents[blankId] || '?') + ' → ' + correctWord;
+    }
+    blank.style.pointerEvents = 'none';
+  });
+
+  const isAllCorrect = correct === total;
+  if (isAllCorrect) totalCorrect++;
+  totalAnswered++;
+  updateUI();
+
+  const fb = document.getElementById(fbId);
+  fb.className = 'feedback ' + (isAllCorrect ? 'correct-fb' : 'wrong-fb');
+  fb.innerHTML = '<span class="fb-label">' + (isAllCorrect ? 'All correct!' : correct + '/' + total + ' correct.') + '</span> ' + (isAllCorrect ? gfFeedback[qNum].correct : gfFeedback[qNum].wrong);
+  fb.style.display = 'block';
+
+  if (nextCardId === null) {
+    document.getElementById('next-section-3').classList.add('visible');
+  } else {
+    document.getElementById(nextBtnId).classList.add('visible');
+  }
+}
+
+// ─── DISCOURSE ORDERING ──────────────────────────────────────────────
+let sortDragEl = null;
+
+function sortDragStart(e) {
+  sortDragEl = e.currentTarget;
+  e.dataTransfer.effectAllowed = 'move';
+  setTimeout(() => sortDragEl.style.opacity = '0.4', 0);
+}
+
+function sortDragOver(e) {
+  e.preventDefault();
+  e.currentTarget.classList.add('drag-over');
+}
+
+function sortDragLeave(e) {
+  e.currentTarget.classList.remove('drag-over');
+}
+
+function sortDrop(e) {
+  e.preventDefault();
+  const target = e.currentTarget;
+  target.classList.remove('drag-over');
+  if (!sortDragEl || sortDragEl === target) return;
+
+  const list = target.parentElement;
+  const items = Array.from(list.children);
+  const fromIdx = items.indexOf(sortDragEl);
+  const toIdx = items.indexOf(target);
+
+  if (fromIdx < toIdx) {
+    list.insertBefore(sortDragEl, target.nextSibling);
+  } else {
+    list.insertBefore(sortDragEl, target);
+  }
+  sortDragEl.style.opacity = '1';
+  sortDragEl = null;
+
+  // Update displayed indices
+  Array.from(list.children).forEach((item, i) => {
+    item.querySelector('.sort-index').textContent = i + 1;
+  });
+}
+
+document.addEventListener('dragend', () => {
+  if (sortDragEl) { sortDragEl.style.opacity = '1'; sortDragEl = null; }
+});
+
+const doFeedback = {
+  16: 'The correct order is: (1) Stop and assess the dog\'s behaviour, (2) If aggressive, back away and circle wide, (3) By doing so, you reduce the threat response. This is a classic problem → response → outcome structure.',
+  17: 'The correct order is: (1) Find a contact to alert, (2) Explain the daily check-in system, (3) Note why this matters most in remote areas. The logic moves from general instruction → specific mechanism → justification.',
+  18: 'The correct order is: (1) General reassurance about other hikers, (2) Concession — but public campgrounds can feel uncomfortable, (3) Specific solution (wild camping). The discourse moves from reassurance → complication → remedy, using "however" as the pivot.',
+  19: 'The correct order is: (1) Stoves fail in freezing conditions, (2) Stoves can also be physically damaged, (3) Therefore carry ready-to-eat backup food. Two parallel problems precede the logical conclusion, signalled by "therefore."',
+  20: 'The correct order is: (1) We are animals with instincts, (2) If dogs can sense danger, so can we, (3) Therefore follow your gut. This is a classic analogical argument: premise → analogy → conclusion.'
+};
+
+function checkOrder(listId, fbId, qNum, currentCard, nextCard, nextBtnId) {
+  const list = document.getElementById(listId);
+  if (list.querySelector('.sort-correct') || list.querySelector('.sort-wrong')) return;
+
+  const items = Array.from(list.children);
+  let allCorrect = true;
+  items.forEach((item, i) => {
+    const expected = parseInt(item.dataset.order);
+    const position = i + 1;
+    item.querySelector('.sort-index').textContent = position;
+    if (position === expected) {
+      item.classList.add('sort-correct');
+    } else {
+      item.classList.add('sort-wrong');
+      allCorrect = false;
+    }
+    item.draggable = false;
+  });
+
+  if (allCorrect) totalCorrect++;
+  totalAnswered++;
+  updateUI();
+
+  const fb = document.getElementById(fbId);
+  fb.className = 'feedback ' + (allCorrect ? 'correct-fb' : 'wrong-fb');
+  fb.innerHTML = '<span class="fb-label">' + (allCorrect ? 'Correct order!' : 'Not quite.') + '</span> ' + doFeedback[qNum];
+  fb.style.display = 'block';
+
+  if (nextCard === null) {
+    document.getElementById('next-section-4').classList.add('visible');
+  } else {
+    document.getElementById(nextBtnId).classList.add('visible');
+  }
+}
+
+// ─── RESULTS ─────────────────────────────────────────────────────────
+function showResults() {
+  document.querySelectorAll('.activity-section').forEach(s => s.classList.remove('active'));
+  const rs = document.getElementById('results-screen');
+  rs.style.display = 'block';
+  const pct = Math.round((totalCorrect / TOTAL_Q) * 100);
+  document.getElementById('result-big').textContent = pct + '%';
+  let msg = '';
+  if (pct >= 90) {
+    msg = 'Exceptional. Your command of C1 error detection, discourse structure, and lexical precision is impressive. The trail to C2 is open.';
+  } else if (pct >= 75) {
+    msg = 'Strong work across the board. You handle complex grammar and vocabulary well at this level — revisit the ordering and evidence activities for the remaining gaps.';
+  } else if (pct >= 55) {
+    msg = 'A solid effort. The True/False with evidence and discourse ordering are genuinely challenging — focus on the explanatory feedback for each item you missed.';
+  } else {
+    msg = 'This is demanding C1 content — keep going. Review every piece of feedback carefully; the explanations are where the real learning happens at this level.';
+  }
+  document.getElementById('result-message').textContent = msg;
+  rs.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────
+// Update sort indices on load for discourse ordering
+document.querySelectorAll('.sortable-list').forEach(list => {
+  Array.from(list.children).forEach((item, i) => {
+    item.querySelector('.sort-index').textContent = i + 1;
+  });
+});
+
+updateUI();
+</script>
+</body>
+</html>

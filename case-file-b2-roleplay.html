@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case File: The Silver Pines Mystery | Forbes English</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c2230;
+    --ink-soft:#3a4256;
+    --paper:#f4efe4;
+    --paper-2:#ece4d3;
+    --accent:#8c1f28;
+    --accent-2:#c8a24a;
+    --evidence:#2f5d50;
+    --line:#d8cdb0;
+    --good:#2f7d4f;
+    --bad:#a4302a;
+    --shadow:0 10px 30px rgba(28,34,48,0.18);
+
+    --tense-present-simple:#3b6fd6;
+    --tense-past-simple:#b98d4f;
+    --tense-present-cont:#e0507a;
+    --tense-modal:#6a4fa3;
+    --tense-passive:#2f5d50;
+    --tense-reported:#a4302a;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Inter',sans-serif;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(140,31,40,0.06), transparent 45%),
+      radial-gradient(circle at 85% 90%, rgba(47,93,80,0.08), transparent 45%),
+      var(--paper);
+    color:var(--ink);
+    min-height:100vh;
+    padding:0 0 60px 0;
+  }
+
+  .wrap{max-width:760px;margin:0 auto;padding:0 20px;}
+
+  header.top{
+    padding:28px 20px 18px 20px;
+    border-bottom:3px solid var(--ink);
+    background:var(--paper-2);
+  }
+  .brandrow{display:flex;align-items:center;justify-content:space-between;max-width:760px;margin:0 auto;}
+  .brand{display:flex;align-items:center;gap:10px;}
+  .brand-name{font-weight:800;letter-spacing:0.02em;font-size:15px;color:var(--ink);}
+  .brand-name span{color:var(--accent);}
+  .level-badge{
+    font-family:'Special Elite',cursive;
+    font-size:12px;
+    border:2px solid var(--ink);
+    padding:4px 10px;
+    border-radius:3px;
+    background:var(--accent-2);
+    color:var(--ink);
+  }
+
+  .titleblock{max-width:760px;margin:22px auto 0 auto;padding:0 20px;}
+  h1{
+    font-family:'Special Elite',cursive;
+    font-size:clamp(26px,5vw,38px);
+    margin:0 0 6px 0;
+    color:var(--ink);
+    letter-spacing:0.01em;
+  }
+  .subtitle{color:var(--ink-soft);font-size:15px;margin:0 0 18px 0;line-height:1.5;}
+
+  .progress-shell{
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:var(--paper);
+    padding:10px 0 6px 0;
+  }
+  .progress-track{
+    max-width:760px;margin:0 auto;padding:0 20px;
+  }
+  .progress-bar-bg{
+    height:8px;background:var(--paper-2);border:1px solid var(--line);border-radius:6px;overflow:hidden;
+  }
+  .progress-bar-fill{
+    height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--evidence));transition:width .4s ease;
+  }
+  .progress-label{font-size:12px;color:var(--ink-soft);margin-top:5px;display:flex;justify-content:space-between;}
+
+  .card{
+    background:#fffdf7;
+    border:1px solid var(--line);
+    border-radius:10px;
+    box-shadow:var(--shadow);
+    margin:20px auto 0 auto;
+    max-width:760px;
+    overflow:hidden;
+  }
+
+  .scene{
+    padding:22px 24px 18px 24px;
+    border-bottom:2px dashed var(--line);
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(28,34,48,0.02) 28px);
+  }
+  .scene-tag{
+    font-family:'Special Elite',cursive;
+    font-size:12px;
+    color:var(--accent);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    margin-bottom:6px;
+  }
+  .scene-title{
+    font-family:'Special Elite',cursive;
+    font-size:19px;
+    margin:0 0 10px 0;
+    color:var(--ink);
+  }
+  .scene-text{font-size:15.5px;line-height:1.65;color:var(--ink);}
+  .scene-text em{color:var(--ink-soft);}
+
+  .qblock{padding:20px 24px 24px 24px;}
+  .qtag{
+    display:inline-block;
+    font-size:11px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    padding:3px 9px;
+    border-radius:20px;
+    margin-bottom:12px;
+    color:#fff;
+  }
+  .qtext{font-size:16px;font-weight:600;margin:0 0 16px 0;line-height:1.5;}
+
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .opt{
+    text-align:left;
+    padding:12px 14px;
+    border:2px solid var(--line);
+    border-radius:8px;
+    background:#fff;
+    cursor:pointer;
+    font-size:15px;
+    font-family:'Inter',sans-serif;
+    color:var(--ink);
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .opt:hover:not(:disabled){border-color:var(--ink-soft);}
+  .opt:disabled{cursor:default;}
+  .opt.correct{border-color:var(--good);background:#eaf5ee;}
+  .opt.incorrect{border-color:var(--bad);background:#faeceb;}
+  .opt.dim{opacity:0.55;}
+
+  .feedback{
+    margin-top:14px;
+    padding:13px 15px;
+    border-radius:8px;
+    font-size:14.5px;
+    line-height:1.55;
+    display:none;
+  }
+  .feedback.show{display:block;}
+  .feedback.good{background:#eaf5ee;border:1px solid var(--good);color:#1e5236;}
+  .feedback.bad{background:#faeceb;border:1px solid var(--bad);color:#7a2521;}
+  .feedback strong{display:block;margin-bottom:3px;font-family:'Special Elite',cursive;font-size:13px;letter-spacing:0.03em;}
+
+  .nextrow{margin-top:18px;display:flex;justify-content:flex-end;}
+  .btn{
+    font-family:'Inter',sans-serif;
+    font-weight:700;
+    font-size:14.5px;
+    padding:11px 22px;
+    border-radius:8px;
+    border:2px solid var(--ink);
+    background:var(--ink);
+    color:#fff;
+    cursor:pointer;
+  }
+  .btn:disabled{opacity:0.35;cursor:not-allowed;}
+  .btn:hover:not(:disabled){background:var(--accent);border-color:var(--accent);}
+  .btn.secondary{background:#fff;color:var(--ink);}
+  .btn.secondary:hover:not(:disabled){background:var(--paper-2);}
+
+  .scorebar{
+    position:fixed;
+    bottom:0;left:0;right:0;
+    background:var(--ink);
+    color:#fff;
+    padding:10px 20px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:18px;
+    font-size:13.5px;
+    z-index:30;
+    box-shadow:0 -6px 18px rgba(0,0,0,0.2);
+  }
+  .scorebar .sb-item{display:flex;align-items:center;gap:6px;}
+  .scorebar .sb-dot{width:8px;height:8px;border-radius:50%;background:var(--accent-2);}
+
+  .results{
+    background:#fffdf7;
+    border:1px solid var(--line);
+    border-radius:10px;
+    box-shadow:var(--shadow);
+    max-width:760px;
+    margin:20px auto 0 auto;
+    padding:30px 26px;
+    text-align:center;
+  }
+  .results h2{font-family:'Special Elite',cursive;font-size:24px;margin:0 0 8px 0;}
+  .results .rank{
+    font-family:'Special Elite',cursive;
+    font-size:15px;
+    color:var(--accent);
+    margin:0 0 18px 0;
+  }
+  .results .scoreline{font-size:40px;font-weight:800;margin:6px 0 4px 0;color:var(--ink);}
+  .results p.desc{color:var(--ink-soft);font-size:15px;line-height:1.6;max-width:560px;margin:14px auto 22px auto;}
+  .results .btn{margin-top:6px;}
+
+  .hidden{display:none;}
+
+  @media (max-width:600px){
+    .scene, .qblock{padding-left:18px;padding-right:18px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brandrow">
+    <div class="brand">
+      <svg width="30" height="30" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="20" cy="20" r="18" stroke="#8c1f28" stroke-width="2.5" fill="#f4efe4"/>
+        <path d="M13 26 L13 14 L20 14 Q24 14 24 18 Q24 22 20 22 L15 22" stroke="#1c2230" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="20" y1="22" x2="27" y2="26" stroke="#2f5d50" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <div class="brand-name">FORBES <span>ENGLISH</span></div>
+    </div>
+    <div class="level-badge">B2 · ROLEPLAY CASE FILE</div>
+  </div>
+</header>
+
+<div class="titleblock">
+  <h1>Case File: The Silver Pines Mystery</h1>
+  <p class="subtitle">You are the new deputy assigned to Special Agent Dale Cooper. He talks to his tape recorder, drinks a suspicious amount of coffee, and notices things nobody else does. Help him solve the case — but every clue comes with a language checkpoint. Answer correctly to keep the investigation moving.</p>
+</div>
+
+<div class="progress-shell">
+  <div class="progress-track">
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+    <div class="progress-label"><span id="progressText">Scene 1 of 10</span><span id="progressPct">0%</span></div>
+  </div>
+</div>
+
+<div id="gameArea"></div>
+<div id="resultsArea" class="hidden"></div>
+
+<div class="scorebar" id="scorebar">
+  <div class="sb-item"><span class="sb-dot"></span> Case progress: <strong id="sbScene">1</strong>/10</div>
+  <div class="sb-item">Correct: <strong id="sbScore">0</strong></div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  function shuffle(arr){
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  var TAG_COLORS = {
+    "Vocabulary": "#8c1f28",
+    "Reported Speech": "var(--tense-reported)",
+    "Modals of Deduction": "var(--tense-modal)",
+    "Relative Clauses": "#3b6fd6",
+    "Passive Voice": "var(--tense-passive)",
+    "Phrasal Verbs": "#b98d4f",
+    "Conditionals": "#6a4fa3",
+    "Linking Devices": "#2f5d50",
+    "Idioms": "#a4302a",
+    "Collocations": "#8c1f28"
+  };
+
+  var scenes = [
+    {
+      tag: "Scene 1 — Arrival",
+      title: "The Road Into Silver Pines",
+      text: "The fog does not lift until you are already inside it. Agent Cooper parks the car outside a diner with a flickering sign and switches on his tape recorder. \"Diane,\" he says quietly, \"eleven fourteen a.m., entering the town of Silver Pines. The air smells of pine and something I cannot yet name.\" He turns to you. \"First rule of good detective work,\" he says, holding up a paper cup, \"never trust a town whose coffee is worse than its secrets.\"",
+      qtag: "Vocabulary",
+      question: "Choose the best word to complete Cooper's note: \"There is something ______ about this town — quiet, but not peaceful.\"",
+      options: [
+        {text:"eerie", correct:true},
+        {text:"delighted", correct:false},
+        {text:"convenient", correct:false},
+        {text:"talkative", correct:false}
+      ],
+      explanation: "\"Eerie\" means strange and slightly frightening in a way that makes you uneasy — perfect for a quiet town that feels wrong. \"Delighted\" describes a person's happy feeling, \"convenient\" means useful or easy, and \"talkative\" describes someone who talks a lot — none of these fit a description of atmosphere."
+    },
+    {
+      tag: "Scene 2 — The Sheriff's Statement",
+      title: "Inside the Sheriff's Office",
+      text: "The local sheriff leans back in his chair. \"Three people have gone missing near the old sawmill since March,\" he tells Cooper directly. \"We searched the woods twice and found nothing.\" Cooper writes the statement down for the case file, but he needs it in reported form.",
+      qtag: "Reported Speech",
+      question: "Complete the case file: The sheriff told Cooper that three people ______ missing near the old sawmill since March.",
+      options: [
+        {text:"had gone", correct:true},
+        {text:"have gone", correct:false},
+        {text:"are going", correct:false},
+        {text:"will go", correct:false}
+      ],
+      explanation: "When direct speech uses the present perfect (\"have gone\"), reported speech usually shifts it back one tense to the past perfect (\"had gone\") — this is the standard backshift rule for reporting past-related statements."
+    },
+    {
+      tag: "Scene 3 — The Sawmill",
+      title: "Footprints in the Sawdust",
+      text: "Cooper crouches beside a set of boot prints near the sawmill entrance, pressing sawdust between his fingers. \"Look at the depth of this print,\" he murmurs, more to himself than to you. \"Whoever made this was carrying something heavy.\"",
+      qtag: "Modals of Deduction",
+      question: "Cooper says: \"The print is very deep on one side. The person ______ something heavy.\" Choose the best modal for a confident deduction from evidence.",
+      options: [
+        {text:"must have been carrying", correct:true},
+        {text:"can have carried", correct:false},
+        {text:"should carry", correct:false},
+        {text:"might carrying", correct:false}
+      ],
+      explanation: "\"Must have + past participle\" expresses a confident, logical conclusion about the past based on evidence — exactly what a deep, uneven footprint suggests. \"Can have\" is not a standard structure, \"should carry\" expresses obligation or advice (not deduction), and \"might carrying\" is grammatically broken — modals are always followed by the base form or \"have + past participle,\" never \"-ing.\""
+    },
+    {
+      tag: "Scene 4 — A Face at the Window",
+      title: "The Woman Who Watched",
+      text: "As you leave the sawmill, Cooper notices a curtain move in a house across the road. \"There,\" he says, nodding toward the window. \"Someone has been watching us since we arrived.\" Later, filling out his notes, he needs to describe her precisely.",
+      qtag: "Relative Clauses",
+      question: "Complete Cooper's note: \"The woman ______ was standing at the window disappeared as soon as I looked back.\"",
+      options: [
+        {text:"who", correct:true},
+        {text:"which", correct:false},
+        {text:"whose", correct:false},
+        {text:"where", correct:false}
+      ],
+      explanation: "\"Who\" is the correct relative pronoun for describing a person as the subject of the relative clause. \"Which\" is used for things, \"whose\" shows possession, and \"where\" refers to a place — none of these correctly introduce a clause identifying a person."
+    },
+    {
+      tag: "Scene 5 — The Evidence Bag",
+      title: "A Torn Piece of Fabric",
+      text: "Back at the office, Cooper lays a small evidence bag on the table: a scrap of red fabric caught on a nail near the sawmill fence. \"This wasn't here last week,\" he says. \"Someone came through that fence recently, and not carefully.\"",
+      qtag: "Passive Voice",
+      question: "Choose the best sentence for the report: \"A piece of red fabric ______ on the fence near the sawmill.\"",
+      options: [
+        {text:"was found", correct:true},
+        {text:"found", correct:false},
+        {text:"has finding", correct:false},
+        {text:"is found by", correct:false}
+      ],
+      explanation: "Since the fabric receives the action (nobody named actually did the finding in this sentence), the passive form \"was found\" is correct. \"Found\" alone is active and needs a subject performing the action, \"has finding\" is not a real verb form, and \"is found by\" wrongly mixes present tense with a past event and requires an agent that isn't given."
+    },
+    {
+      tag: "Scene 6 — Chasing a Lead",
+      title: "The Man Who Ran",
+      text: "A figure bolts from behind the mill the moment Cooper's flashlight sweeps past. \"Wait!\" Cooper shouts, breaking into a run. By the time you both reach the tree line, the man is gone. Cooper stands still, catching his breath, thinking aloud about the case.",
+      qtag: "Phrasal Verbs",
+      question: "Cooper says: \"Whoever that was, he knows this town well enough to ______ us completely.\"",
+      options: [
+        {text:"get away from", correct:true},
+        {text:"look up to", correct:false},
+        {text:"put up with", correct:false},
+        {text:"come across", correct:false}
+      ],
+      explanation: "\"Get away from\" means to escape from someone or something, which fits a man successfully evading pursuit. \"Look up to\" means to admire someone, \"put up with\" means to tolerate something unpleasant, and \"come across\" means to find something by chance — none describe escaping."
+    },
+    {
+      tag: "Scene 7 — What Might Have Happened",
+      title: "Cooper's Theory",
+      text: "That night, over a slice of pie he insists is \"a genuine reason to visit this town,\" Cooper lays out a theory. \"If the sawmill hadn't closed down last year,\" he says, \"none of this would be happening now. Someone is using the empty building for something.\"",
+      qtag: "Conditionals",
+      question: "Which sentence correctly continues Cooper's reasoning about the closed sawmill?",
+      options: [
+        {text:"If the sawmill hadn't closed, people wouldn't be disappearing.", correct:true},
+        {text:"If the sawmill didn't close, people won't disappear.", correct:false},
+        {text:"If the sawmill will close, people would disappear.", correct:false},
+        {text:"If the sawmill closes, people disappearing.", correct:false}
+      ],
+      explanation: "This is a third conditional idea about an unreal past condition (the sawmill did close) with a present-relevant hypothetical result, correctly formed as \"If + past perfect, ... would + base verb.\" The other options mix tenses incorrectly — conditionals never combine \"will\" with \"if,\" and the verb forms must match the conditional type consistently."
+    },
+    {
+      tag: "Scene 8 — Piecing It Together",
+      title: "Connecting the Clues",
+      text: "Cooper spreads photographs, fabric samples, and hand-drawn maps across the table. \"The footprints point toward the mill. The fabric is the same red as the curtain we saw. None of this proves anything on its own,\" he admits, \"but together, it tells a story.\"",
+      qtag: "Linking Devices",
+      question: "Complete Cooper's summary: \"______ we don't have a witness yet, the evidence all points to the same building.\"",
+      options: [
+        {text:"Although", correct:true},
+        {text:"Because", correct:false},
+        {text:"So that", correct:false},
+        {text:"In addition", correct:false}
+      ],
+      explanation: "\"Although\" introduces a contrast between two ideas — lacking a witness versus still having strong evidence — which matches Cooper's meaning here. \"Because\" would wrongly suggest the missing witness is the reason for the evidence, \"so that\" expresses purpose, and \"in addition\" simply adds information rather than contrasting it."
+    },
+    {
+      tag: "Scene 9 — A False Lead",
+      title: "The Red Fabric Explained",
+      text: "The next morning, the fabric turns out to belong to a hunter's jacket, torn on the same fence weeks earlier for an entirely unrelated reason. Cooper sighs and crosses a line off his notebook. \"Every case has a few of these,\" he says.",
+      qtag: "Idioms",
+      question: "Which idiom best describes what the red fabric turned out to be?",
+      options: [
+        {text:"a red herring", correct:true},
+        {text:"the tip of the iceberg", correct:false},
+        {text:"a piece of cake", correct:false},
+        {text:"back to square one", correct:false}
+      ],
+      explanation: "\"A red herring\" means a clue or piece of information that is misleading or irrelevant to the real investigation — exactly what the fabric turned out to be. \"The tip of the iceberg\" means a small visible part of a much bigger problem, \"a piece of cake\" means something very easy, and \"back to square one\" means starting over from the beginning — none match a false clue."
+    },
+    {
+      tag: "Scene 10 — Case Closed",
+      title: "The Real Culprit",
+      text: "By evening, the true story surfaces: a former mill worker had been secretly living in the building's basement since losing his job, startling anyone who came near out of fear of being reported. No crime, only a frightened, desperate man. Cooper closes his notebook. \"Diane,\" he says into the recorder, \"remind me to send the diner owner a thank-you note. Best pie in three states.\"",
+      qtag: "Vocabulary",
+      question: "Choose the best word for Cooper's final note: \"The case is now officially ______, Diane.\"",
+      options: [
+        {text:"closed", correct:true},
+        {text:"opened", correct:false},
+        {text:"missing", correct:false},
+        {text:"delayed", correct:false}
+      ],
+      explanation: "\"Closed\" is the standard collocation for a finished investigation (\"the case is closed\"). \"Opened\" would mean the opposite, \"missing\" describes a person or object that cannot be found, and \"delayed\" means postponed — none fit the idea of a completed case."
+    }
+  ];
+
+  var current = 0;
+  var score = 0;
+  var answered = false;
+
+  var gameArea = document.getElementById('gameArea');
+  var resultsArea = document.getElementById('resultsArea');
+  var progressFill = document.getElementById('progressFill');
+  var progressText = document.getElementById('progressText');
+  var progressPct = document.getElementById('progressPct');
+  var sbScene = document.getElementById('sbScene');
+  var sbScore = document.getElementById('sbScore');
+
+  function updateProgress(){
+    var pct = Math.round((current / scenes.length) * 100);
+    progressFill.style.width = pct + "%";
+    progressText.textContent = "Scene " + (current + 1) + " of " + scenes.length;
+    progressPct.textContent = pct + "%";
+    sbScene.textContent = (current + 1);
+    sbScore.textContent = score;
+  }
+
+  function renderScene(){
+    answered = false;
+    var s = scenes[current];
+    var opts = shuffle(s.options);
+
+    var color = TAG_COLORS[s.qtag] || "#8c1f28";
+
+    var html = '';
+    html += '<div class="card">';
+    html += '  <div class="scene">';
+    html += '    <div class="scene-tag">' + s.tag + '</div>';
+    html += '    <h2 class="scene-title">' + s.title + '</h2>';
+    html += '    <p class="scene-text">' + s.text + '</p>';
+    html += '  </div>';
+    html += '  <div class="qblock">';
+    html += '    <span class="qtag" style="background:' + color + '">' + s.qtag + '</span>';
+    html += '    <p class="qtext">' + s.question + '</p>';
+    html += '    <div class="options" id="optionsWrap"></div>';
+    html += '    <div class="feedback" id="feedbackBox"></div>';
+    html += '    <div class="nextrow"><button class="btn" id="nextBtn" disabled>' + (current === scenes.length - 1 ? "See results" : "Next scene") + '</button></div>';
+    html += '  </div>';
+    html += '</div>';
+
+    gameArea.innerHTML = html;
+
+    var wrap = document.getElementById('optionsWrap');
+    opts.forEach(function(opt){
+      var btn = document.createElement('button');
+      btn.className = 'opt';
+      btn.textContent = opt.text;
+      btn.addEventListener('click', function(){
+        handleAnswer(opt, wrap);
+      });
+      wrap.appendChild(btn);
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', goNext);
+    updateProgress();
+  }
+
+  function handleAnswer(chosen, wrap){
+    if (answered) return;
+    answered = true;
+
+    var s = scenes[current];
+    var buttons = wrap.querySelectorAll('.opt');
+    buttons.forEach(function(btn){
+      btn.disabled = true;
+      var label = btn.textContent;
+      var matchOption = s.options.filter(function(o){ return o.text === label; })[0];
+      if (matchOption.correct){
+        btn.classList.add('correct');
+      } else if (label === chosen.text){
+        btn.classList.add('incorrect');
+      } else {
+        btn.classList.add('dim');
+      }
+    });
+
+    var fb = document.getElementById('feedbackBox');
+    if (chosen.correct){
+      score++;
+      fb.className = 'feedback show good';
+      fb.innerHTML = '<strong>Correct</strong>' + s.explanation;
+    } else {
+      fb.className = 'feedback show bad';
+      fb.innerHTML = '<strong>Not quite</strong>' + s.explanation;
+    }
+
+    document.getElementById('nextBtn').disabled = false;
+    updateProgress();
+  }
+
+  function goNext(){
+    if (!answered) return;
+    current++;
+    if (current >= scenes.length){
+      showResults();
+    } else {
+      renderScene();
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+  }
+
+  function showResults(){
+    gameArea.classList.add('hidden');
+    document.getElementById('scorebar').classList.add('hidden');
+    document.querySelector('.progress-shell').classList.add('hidden');
+
+    var pct = Math.round((score / scenes.length) * 100);
+    var rank, desc;
+    if (score === scenes.length){
+      rank = "Special Agent — Full Honours";
+      desc = "Flawless case work. Cooper radios it in: every clue read correctly, every checkpoint cleared. Silver Pines owes you a slice of pie.";
+    } else if (score >= scenes.length - 2){
+      rank = "Field-Ready Deputy";
+      desc = "Sharp instincts and solid language control. A couple of details slipped past you, but the case closed on your evidence.";
+    } else if (score >= scenes.length / 2){
+      rank = "Rookie on the Case";
+      desc = "You followed the trail, though a few grammar points need another look before your next assignment. Review the explanations above and try again.";
+    } else {
+      rank = "Needs More Coffee";
+      desc = "The case is closed, but several checkpoints tripped you up. Go back through the explanations — Cooper believes in second chances, and so do we.";
+    }
+
+    var html = '';
+    html += '<div class="results">';
+    html += '  <h2>Case File Complete</h2>';
+    html += '  <p class="rank">' + rank + '</p>';
+    html += '  <div class="scoreline">' + score + ' / ' + scenes.length + '</div>';
+    html += '  <p class="desc">' + desc + ' You answered ' + pct + '% of the checkpoints correctly across vocabulary, reported speech, modals of deduction, relative clauses, passive voice, phrasal verbs, conditionals, linking devices, and idioms.</p>';
+    html += '  <button class="btn secondary" id="restartBtn">Reopen the case</button>';
+    html += '</div>';
+
+    resultsArea.innerHTML = html;
+    resultsArea.classList.remove('hidden');
+    document.getElementById('restartBtn').addEventListener('click', restart);
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function restart(){
+    current = 0;
+    score = 0;
+    resultsArea.classList.add('hidden');
+    gameArea.classList.remove('hidden');
+    document.getElementById('scorebar').classList.remove('hidden');
+    document.querySelector('.progress-shell').classList.remove('hidden');
+    renderScene();
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  renderScene();
+})();
+</script>
+
+</body>
+</html>

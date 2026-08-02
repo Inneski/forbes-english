@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English | The FireShield Pitch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c2a2e;
+    --paper:#f4f2ec;
+    --slate:#3d5a5c;
+    --clay:#b5603f;
+    --steel:#5c7c8a;
+    --line:#d8d3c5;
+    --good:#3f7d52;
+    --bad:#b5453f;
+    --trust:#c9a15a;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:'Inter',sans-serif; line-height:1.55;}
+  header{background:var(--ink); color:var(--paper); padding:26px 20px 22px; display:flex; align-items:center; gap:16px;}
+  header h1{font-family:'Fraunces',serif; font-size:1.35rem; margin:0; font-weight:600;}
+  header p{margin:2px 0 0; font-size:0.83rem; color:#c8c4b6; letter-spacing:0.02em;}
+  .wrap{max-width:680px; margin:0 auto; padding:22px 20px 70px;}
+  .trust-wrap{position:sticky; top:0; z-index:5; background:var(--paper); padding:10px 20px 6px; border-bottom:1px solid var(--line);}
+  .trust-label{display:flex; justify-content:space-between; font-size:0.75rem; color:var(--slate); font-weight:600; letter-spacing:0.03em; text-transform:uppercase; max-width:640px; margin:0 auto 4px;}
+  .trust-track{max-width:640px; margin:0 auto; height:7px; background:var(--line); border-radius:6px; overflow:hidden;}
+  .trust-fill{height:100%; background:var(--trust); width:50%; transition:width .4s ease;}
+  .card{background:#fff; border:1px solid var(--line); border-radius:10px; padding:22px; margin-top:18px;}
+  .tag{font-family:'Fraunces',serif; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--slate); margin-bottom:8px; font-weight:600;}
+  .narrative{font-size:1rem; margin:0 0 16px;}
+  .narrative i{color:var(--clay);}
+  .choice-btn, .opt{
+    display:block; width:100%; text-align:left; background:var(--paper);
+    border:1.5px solid var(--line); border-radius:8px; padding:12px 14px;
+    margin-bottom:10px; font-size:0.96rem; font-family:'Inter',sans-serif;
+    cursor:pointer; color:var(--ink); transition:border-color .15s, background .15s;
+  }
+  .choice-btn:hover, .opt:hover:not(:disabled){border-color:var(--steel);}
+  .opt:disabled{cursor:default;}
+  .opt.correct{background:#e7f2ea; border-color:var(--good); color:var(--good); font-weight:600;}
+  .opt.wrong{background:#f7e9e8; border-color:var(--bad); color:var(--bad);}
+  .feedback{margin-top:12px; padding:12px 14px; border-radius:8px; font-size:0.92rem; display:none; border-left:4px solid var(--steel); background:#eef3f2;}
+  .feedback.show{display:block;}
+  .next-btn{margin-top:16px; background:var(--ink); color:#fff; border:none; padding:10px 22px; border-radius:24px; font-size:0.92rem; font-weight:600; cursor:pointer; opacity:0.35; pointer-events:none; transition:opacity .15s; font-family:'Inter',sans-serif;}
+  .next-btn.active{opacity:1; pointer-events:auto;}
+  .next-btn:hover.active{background:var(--slate);}
+  .ending-card{text-align:center;}
+  .ending-card .tag{color:var(--clay);}
+  .ending-card h2{font-family:'Fraunces',serif; font-size:1.6rem; margin:6px 0 12px;}
+  .ending-card p{font-size:0.98rem; text-align:left;}
+  .restart-btn{background:var(--clay); color:#fff; border:none; padding:11px 24px; border-radius:24px; font-size:0.95rem; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; margin-top:14px;}
+  .restart-btn:hover{background:#9c4f34;}
+  .intro-card p{margin:0 0 10px;}
+  .start-btn{background:var(--clay); color:#fff; border:none; padding:12px 26px; border-radius:24px; font-size:1rem; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; margin-top:6px;}
+  .start-btn:hover{background:#9c4f34;}
+  .hidden{display:none;}
+</style>
+</head>
+<body>
+
+<header>
+  <svg width="46" height="46" viewBox="0 0 46 46" xmlns="http://www.w3.org/2000/svg">
+    <rect x="1" y="1" width="44" height="44" rx="9" fill="#b5603f"/>
+    <path d="M13 33V13h16v4.2H17.6v5.2h9.8v4.1h-9.8V33H13z" fill="#f4f2ec"/>
+  </svg>
+  <div>
+    <h1>The FireShield Pitch</h1>
+    <p>Forbes English &middot; B2 &middot; Branching sales roleplay</p>
+  </div>
+</header>
+
+<div class="trust-wrap hidden" id="trustWrap">
+  <div class="trust-label"><span>Priya's trust</span><span id="trustNum">50</span></div>
+  <div class="trust-track"><div class="trust-fill" id="trustFill"></div></div>
+</div>
+
+<div class="wrap">
+
+  <div class="intro-card card" id="introCard">
+    <div class="tag">Briefing</div>
+    <p>You're Alex Rowntree, a sales rep for Forbes Membranes. Today you're pitching <b>FireShield HX</b>, a new fire-retardant vapour barrier, to Priya Shah, site manager at Meridian Construction in Manchester. Her last supplier let her down badly. What you say — and how you say it — will decide how this goes.</p>
+    <p>Every choice branches the story. Along the way you'll hit language checkpoints: get the word or grammar right to carry on. There are four possible endings.</p>
+    <button class="start-btn" id="startBtn">Walk into the site office</button>
+  </div>
+
+  <div id="gameArea"></div>
+
+</div>
+
+<script>
+let trust = 50;
+let current = "start";
+
+const scenes = {
+
+  start: {
+    type: "story",
+    tag: "Scene 1 — The Opening",
+    narrative: "You've driven up to Meridian Construction's site office. Priya Shah greets you with a firm handshake and the look of someone who's heard enough sales pitches to last a lifetime. Her last supplier caused a <i>shortfall</i> that cost her three weeks of work. You have twenty minutes. How do you open?",
+    choices: [
+      {label:"Lead with the technical specifications and test data", next:"cp_tech", trust:0},
+      {label:"Ask about the problems she's had with suppliers before", next:"cp_consult", trust:10},
+      {label:"Open with a 15% discount if she signs today", next:"midpoint", trust:-10}
+    ]
+  },
+
+  cp_tech: {
+    type: "checkpoint",
+    tag: "Checkpoint — Preposition + -ing",
+    narrative: "You open your laptop and start talking through fire ratings and moisture permeability figures. Priya cuts in: 'Before I look at numbers — has this actually been tested on a live site, or just in a lab?'",
+    question: "Which sentence is correct?",
+    options: ["We made a full test on three sites last year.","We did a full test on three sites last year.","We are making a full test on three sites last year."],
+    correct: 1,
+    explain: "'Do a test' is the natural collocation — 'make a test' is a common but incorrect translation, and the finished action needs Past Simple.",
+    trustOnCorrect: 10,
+    next: "midpoint"
+  },
+
+  cp_consult: {
+    type: "checkpoint",
+    tag: "Checkpoint — Past Continuous",
+    narrative: "Priya's shoulders drop slightly. 'Our last supplier promised weekly deliveries. For two months ___ fine — then the shipments just stopped and we lost three weeks of work.'",
+    question: "Which fits the gap?",
+    options: ["we were coping","we coped","we have been coping"],
+    correct: 0,
+    explain: "Past Continuous ('we were coping') sets the ongoing background situation that the Past Simple event ('the shipments stopped') interrupted.",
+    trustOnCorrect: 10,
+    next: "midpoint"
+  },
+
+  midpoint: {
+    type: "checkpoint",
+    tag: "Checkpoint — Vocabulary",
+    narrative: "Priya leans back. 'Here's my real problem — I've got a ___ of about 400 square metres between what my current supplier can deliver this month and what the schedule needs. Your competitor, Northline, is offering something similar for 8% less. Convince me why I should pick you.'",
+    question: "Which word fits the gap?",
+    options: ["shortfall","trade off","contingency plan","threshold"],
+    correct: 0,
+    explain: "'Shortfall' names exactly this — the gap between what's needed and what's actually available.",
+    trustOnCorrect: 0,
+    next: "objection"
+  },
+
+  objection: {
+    type: "story",
+    tag: "Scene 2 — The Objection",
+    narrative: "Priya is waiting for your answer. You have a decision to make.",
+    choices: [
+      {label:"Offer a small trial installation on one wing before she commits to the full order", next:"cp_trial", trust:5},
+      {label:"Match Northline's price on the spot", next:"cp_match", trust:-5},
+      {label:"Tell her FireShield HX has a fire rating well beyond what it's actually certified for", next:"end_bad", trust:-30}
+    ]
+  },
+
+  cp_trial: {
+    type: "checkpoint",
+    tag: "Checkpoint — Vocabulary",
+    narrative: "'A trial run on one wing, fully documented, before you commit to the rest — no risk to your schedule if it doesn't perform.' Priya raises an eyebrow, interested.",
+    question: "Which word best describes what you've just proposed?",
+    options: ["a trial","a post hoc","an assumption","a competitor"],
+    correct: 0,
+    explain: "A 'trial' is a small-scale test of performance or suitability before full commitment — exactly what you've offered.",
+    trustOnCorrect: 10,
+    next: "cp_close"
+  },
+
+  cp_match: {
+    type: "checkpoint",
+    tag: "Checkpoint — Vocabulary",
+    narrative: "You agree to match Northline's price. Your regional manager will not be pleased, but Priya nods slowly.",
+    question: "Matching the price on the spot is really a ___ between margin and winning the contract.",
+    options: ["trade off","shortfall","precaution","requirement"],
+    correct: 0,
+    explain: "A 'trade-off' is exchanging one thing of value (margin) for another (the contract) — exactly what's happening here.",
+    trustOnCorrect: 0,
+    next: "end_ok"
+  },
+
+  cp_close: {
+    type: "checkpoint",
+    tag: "Checkpoint — Vocabulary",
+    narrative: "The trial goes well. Before you leave, you draft a short follow-up email confirming next steps — convincing, without sounding pushy.",
+    question: "Which word describes writing convincingly, using reasoning rather than pressure?",
+    options: ["persuasive","exaggerated","arduous","compromised"],
+    correct: 0,
+    explain: "'Persuasive' means effective at convincing through reasoning — the register you want here, as opposed to exaggerating or pressuring.",
+    trustOnCorrect: 10,
+    next: (t)=> t >= 75 ? "end_great" : "end_good"
+  },
+
+  end_great: {
+    type: "ending",
+    tag: "Ending — Full Contract, Full Trust",
+    title: "The trial wing performs exactly as promised.",
+    description: "Priya signs Meridian's entire tower order and tells two other site managers to call you directly. FireShield HX becomes the standard spec on three more of her company's sites this year."
+  },
+
+  end_good: {
+    type: "ending",
+    tag: "Ending — Contract Signed, Cautiously",
+    title: "The trial wing does the job.",
+    description: "Priya signs the order for the tower, but she stays polite and reserved rather than warm. You'll need to earn the next contract from scratch."
+  },
+
+  end_ok: {
+    type: "ending",
+    tag: "Ending — A Thin Margin",
+    title: "Priya signs, relieved to have matched the competitor's price.",
+    description: "The order goes through, but your margin is razor-thin, and Priya still mentions Northline every time you call."
+  },
+
+  end_bad: {
+    type: "ending",
+    tag: "Ending — Contract Cancelled",
+    title: "Three weeks into installation, Meridian's own fire safety consultant flags the discrepancy.",
+    description: "The certification doesn't match what you claimed. The contract is cancelled on the spot, and word travels fast around the Manchester construction scene."
+  }
+};
+
+function clampTrust(){
+  trust = Math.max(0, Math.min(100, trust));
+}
+
+function updateTrustBar(){
+  document.getElementById("trustFill").style.width = trust + "%";
+  document.getElementById("trustNum").textContent = trust;
+}
+
+function startGame(){
+  document.getElementById("introCard").classList.add("hidden");
+  document.getElementById("trustWrap").classList.remove("hidden");
+  trust = 50;
+  current = "start";
+  updateTrustBar();
+  render();
+}
+
+function render(){
+  const scene = scenes[current];
+  const area = document.getElementById("gameArea");
+
+  if(scene.type === "story"){
+    area.innerHTML = `
+      <div class="card">
+        <div class="tag">${scene.tag}</div>
+        <p class="narrative">${scene.narrative}</p>
+        <div id="choiceBox"></div>
+      </div>`;
+    const box = document.getElementById("choiceBox");
+    scene.choices.forEach(c=>{
+      const btn = document.createElement("button");
+      btn.className = "choice-btn";
+      btn.textContent = c.label;
+      btn.addEventListener("click", ()=>{
+        trust += c.trust; clampTrust(); updateTrustBar();
+        current = c.next;
+        render();
+      });
+      box.appendChild(btn);
+    });
+  }
+
+  else if(scene.type === "checkpoint"){
+    area.innerHTML = `
+      <div class="card">
+        <div class="tag">${scene.tag}</div>
+        <p class="narrative">${scene.narrative}</p>
+        <p class="narrative"><b>${scene.question}</b></p>
+        <div id="optsBox"></div>
+        <div class="feedback" id="feedbackBox"></div>
+        <button class="next-btn" id="nextBtn">Continue</button>
+      </div>`;
+    const optsBox = document.getElementById("optsBox");
+    scene.options.forEach((opt, idx)=>{
+      const btn = document.createElement("button");
+      btn.className = "opt";
+      btn.textContent = opt;
+      btn.addEventListener("click", ()=>{
+        if(idx === scene.correct){
+          document.querySelectorAll("#optsBox .opt").forEach(b=>b.disabled=true);
+          btn.classList.add("correct");
+          trust += scene.trustOnCorrect; clampTrust(); updateTrustBar();
+          const fb = document.getElementById("feedbackBox");
+          fb.textContent = scene.explain;
+          fb.classList.add("show");
+          const nextBtn = document.getElementById("nextBtn");
+          nextBtn.classList.add("active");
+          nextBtn.addEventListener("click", ()=>{
+            current = typeof scene.next === "function" ? scene.next(trust) : scene.next;
+            render();
+          });
+        } else {
+          btn.classList.add("wrong");
+          btn.disabled = true;
+        }
+      });
+      optsBox.appendChild(btn);
+    });
+  }
+
+  else if(scene.type === "ending"){
+    document.getElementById("trustWrap").classList.add("hidden");
+    area.innerHTML = `
+      <div class="card ending-card">
+        <div class="tag">${scene.tag}</div>
+        <h2>${scene.title}</h2>
+        <p>${scene.description}</p>
+        <button class="restart-btn" id="restartBtn">Play again</button>
+      </div>`;
+    document.getElementById("restartBtn").addEventListener("click", ()=>{
+      document.getElementById("introCard").classList.remove("hidden");
+      area.innerHTML = "";
+    });
+  }
+}
+
+document.getElementById("startBtn").addEventListener("click", startGame);
+</script>
+
+</body>
+</html>

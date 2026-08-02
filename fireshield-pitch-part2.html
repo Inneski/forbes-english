@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English | The FireShield Pitch — Part 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c2a2e;
+    --paper:#f4f2ec;
+    --slate:#3d5a5c;
+    --clay:#b5603f;
+    --steel:#5c7c8a;
+    --line:#d8d3c5;
+    --good:#3f7d52;
+    --bad:#b5453f;
+    --trust:#c9a15a;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:'Inter',sans-serif; line-height:1.55;}
+  header{background:var(--ink); color:var(--paper); padding:26px 20px 22px; display:flex; align-items:center; gap:16px;}
+  header h1{font-family:'Fraunces',serif; font-size:1.3rem; margin:0; font-weight:600;}
+  header p{margin:2px 0 0; font-size:0.83rem; color:#c8c4b6; letter-spacing:0.02em;}
+  .wrap{max-width:680px; margin:0 auto; padding:22px 20px 70px;}
+  .trust-wrap{position:sticky; top:0; z-index:5; background:var(--paper); padding:10px 20px 6px; border-bottom:1px solid var(--line);}
+  .trust-label{display:flex; justify-content:space-between; font-size:0.75rem; color:var(--slate); font-weight:600; letter-spacing:0.03em; text-transform:uppercase; max-width:640px; margin:0 auto 4px;}
+  .trust-track{max-width:640px; margin:0 auto; height:7px; background:var(--line); border-radius:6px; overflow:hidden;}
+  .trust-fill{height:100%; background:var(--trust); width:50%; transition:width .4s ease;}
+  .card{background:#fff; border:1px solid var(--line); border-radius:10px; padding:22px; margin-top:18px;}
+  .tag{font-family:'Fraunces',serif; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--slate); margin-bottom:8px; font-weight:600;}
+  .narrative{font-size:1rem; margin:0 0 16px;}
+  .narrative i{color:var(--clay);}
+  .choice-btn, .opt{
+    display:block; width:100%; text-align:left; background:var(--paper);
+    border:1.5px solid var(--line); border-radius:8px; padding:12px 14px;
+    margin-bottom:10px; font-size:0.96rem; font-family:'Inter',sans-serif;
+    cursor:pointer; color:var(--ink); transition:border-color .15s, background .15s;
+  }
+  .choice-btn:hover, .opt:hover:not(:disabled){border-color:var(--steel);}
+  .opt:disabled{cursor:default;}
+  .opt.correct{background:#e7f2ea; border-color:var(--good); color:var(--good); font-weight:600;}
+  .opt.wrong{background:#f7e9e8; border-color:var(--bad); color:var(--bad);}
+  .feedback{margin-top:12px; padding:12px 14px; border-radius:8px; font-size:0.92rem; display:none; border-left:4px solid var(--steel); background:#eef3f2;}
+  .feedback.show{display:block;}
+  .next-btn{margin-top:16px; background:var(--ink); color:#fff; border:none; padding:10px 22px; border-radius:24px; font-size:0.92rem; font-weight:600; cursor:pointer; opacity:0.35; pointer-events:none; transition:opacity .15s; font-family:'Inter',sans-serif;}
+  .next-btn.active{opacity:1; pointer-events:auto;}
+  .next-btn:hover.active{background:var(--slate);}
+  .ending-card{text-align:center;}
+  .ending-card .tag{color:var(--clay);}
+  .ending-card h2{font-family:'Fraunces',serif; font-size:1.5rem; margin:6px 0 12px;}
+  .ending-card p{font-size:0.98rem; text-align:left;}
+  .restart-btn{background:var(--clay); color:#fff; border:none; padding:11px 24px; border-radius:24px; font-size:0.95rem; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; margin-top:14px;}
+  .restart-btn:hover{background:#9c4f34;}
+  .intro-card p{margin:0 0 10px;}
+  .hidden{display:none;}
+</style>
+</head>
+<body>
+
+<header>
+  <svg width="46" height="46" viewBox="0 0 46 46" xmlns="http://www.w3.org/2000/svg">
+    <rect x="1" y="1" width="44" height="44" rx="9" fill="#b5603f"/>
+    <path d="M13 33V13h16v4.2H17.6v5.2h9.8v4.1h-9.8V33H13z" fill="#f4f2ec"/>
+  </svg>
+  <div>
+    <h1>The FireShield Pitch — Part 2</h1>
+    <p>Forbes English &middot; B2 &middot; Branching sales roleplay</p>
+  </div>
+</header>
+
+<div class="trust-wrap hidden" id="trustWrap">
+  <div class="trust-label"><span>Priya's trust</span><span id="trustNum">50</span></div>
+  <div class="trust-track"><div class="trust-fill" id="trustFill"></div></div>
+</div>
+
+<div class="wrap">
+
+  <div class="intro-card card" id="introCard">
+    <div class="tag">Briefing</div>
+    <p>Six months on. You're Alex Rowntree again, and Meridian Construction wants to talk about a much bigger deal — a framework agreement across five new sites. But a rival's membrane just failed on a nearby job, and every supplier is under suspicion.</p>
+    <p>Where did your last pitch to Priya end up?</p>
+    <div id="recapBox"></div>
+  </div>
+
+  <div id="gameArea"></div>
+
+</div>
+
+<script>
+let trust = 50;
+let current = "s1";
+
+const recap = [
+  {label:"Full Contract, Full Trust — she's become a champion for your product", trust:85},
+  {label:"Contract Signed, Cautiously — she stayed polite but reserved", trust:60},
+  {label:"A Thin Margin — she signed, but still brings up your competitor", trust:45},
+  {label:"Contract Cancelled — the relationship never recovered", trust:15}
+];
+
+const scenes = {
+
+  s1: {
+    type: "story",
+    tag: "Scene 1 — The New Ask",
+    narrative: "Meridian's regional director wants a framework agreement covering five new sites in Leeds — ten times the size of the original order. But a rival's membrane failed on a nearby site last month: mould appeared behind the cladding, and now every supplier, including Forbes, is under suspicion. Priya calls you: 'Before anyone signs anything, I need to know FireShield HX won't do the same thing.' How do you respond?",
+    choices: [
+      {label:"Offer to walk the failed site with her and compare installation methods", next:"cp_a", trust:10},
+      {label:"Send a written assurance that your product is completely safe", next:"cp_b", trust:-10},
+      {label:"Suggest bringing in an independent third-party auditor", next:"cp_c", trust:5}
+    ]
+  },
+
+  cp_a: {
+    type: "checkpoint",
+    tag: "Checkpoint — Vocabulary",
+    narrative: "You and Priya inspect the failed site together. The membrane itself looks intact, but the fixing points show damp staining.",
+    question: "Which word describes water present in small quantity within a material or on a surface?",
+    options: ["moisture","threshold","firmness","precaution"],
+    correct: 0,
+    explain: "'Moisture' is water diffused in small quantity within a solid or condensed on a surface — exactly what's staining the fixing points.",
+    trustOnCorrect: 10,
+    next: "midpoint"
+  },
+
+  cp_b: {
+    type: "checkpoint",
+    tag: "Checkpoint — Vocabulary",
+    narrative: "Your email lands — all confidence, no evidence. Priya replies within the hour: 'That's not really an answer.'",
+    question: "Priya felt your email offered reassurance with no evidence. Which word describes that?",
+    options: ["an assumption","a precaution","a requirement","a trade off"],
+    correct: 0,
+    explain: "An 'assumption' is something accepted as true without proof — exactly what an unsupported reassurance amounts to.",
+    trustOnCorrect: 0,
+    next: "midpoint"
+  },
+
+  cp_c: {
+    type: "checkpoint",
+    tag: "Checkpoint — Vocabulary",
+    narrative: "Priya likes the idea of independent verification, but wants to know it won't drag on for months.",
+    question: "Which word describes something arranged for a specific purpose, as needed, without a long-term structure?",
+    options: ["ad hoc","post hoc","homogeneous","dense"],
+    correct: 0,
+    explain: "'Ad hoc' describes something set up for a specific purpose as it's needed, rather than as a permanent structure.",
+    trustOnCorrect: 5,
+    next: "midpoint"
+  },
+
+  midpoint: {
+    type: "checkpoint",
+    tag: "Checkpoint — Vocabulary",
+    narrative: "The audit confirms it: the rival's failure was caused by poor installation trapping moisture behind the membrane, not a flaw in the material itself. Still, the regional director is nervous about signing a five-site agreement while that story is circulating.",
+    question: "Which word means 'able to withstand or recover quickly from difficult conditions' — exactly what you need your reputation to be right now?",
+    options: ["resilient","hazardous","monotonous","agitated"],
+    correct: 0,
+    explain: "'Resilient' describes the ability to bounce back from damage or difficulty — the quality your reputation needs here.",
+    trustOnCorrect: 0,
+    next: "objection"
+  },
+
+  objection: {
+    type: "story",
+    tag: "Scene 2 — The Framework",
+    narrative: "The director puts a number on the table: a five-site framework, but only if you can guarantee installation quality, not just material quality. What do you offer?",
+    choices: [
+      {label:"Propose a phased rollout — one site first, as a monitored pilot, before the rest", next:"cp_trial2", trust:10},
+      {label:"Offer to cover the retrofit cost on the failed site yourself, as goodwill, even though it wasn't your product", next:"cp_goodwill", trust:5},
+      {label:"Push back and say installation quality isn't Forbes' responsibility", next:"end_bad2", trust:-30}
+    ]
+  },
+
+  cp_trial2: {
+    type: "checkpoint",
+    tag: "Checkpoint — Vocabulary",
+    narrative: "'One site, fully monitored, before the rest' — the director likes that it limits their risk without questioning your product.",
+    question: "Which word means 'something that is necessary'?",
+    options: ["requirement","assumption","threshold","shortfall"],
+    correct: 0,
+    explain: "A 'requirement' is a condition that must be met — here, the monitoring the director insists on.",
+    trustOnCorrect: 10,
+    next: "close2"
+  },
+
+  cp_goodwill: {
+    type: "checkpoint",
+    tag: "Checkpoint — Vocabulary",
+    narrative: "You offer to help cover the retrofit cost on the failed site, even though it wasn't your product that failed. It's a costly gesture, but it buys goodwill.",
+    question: "Covering a cost you didn't strictly owe, to preserve the relationship, is essentially a ___.",
+    options: ["trade off","requirement","precaution","shortfall"],
+    correct: 0,
+    explain: "A 'trade-off' is exchanging one thing of value (the cost) for another (the relationship) — exactly what this gesture is.",
+    trustOnCorrect: 5,
+    next: "close2"
+  },
+
+  close2: {
+    type: "checkpoint",
+    tag: "Checkpoint — Vocabulary",
+    narrative: "You draft the final proposal for the five-site framework. You want it to sound confident and trustworthy without overselling.",
+    question: "Which word describes something that can be trusted to work well?",
+    options: ["reliable","persuasive","affordable","manageable"],
+    correct: 0,
+    explain: "'Reliable' means dependable — exactly the tone you want the final proposal to carry.",
+    trustOnCorrect: 10,
+    next: (t)=> t >= 85 ? "end_great2" : (t >= 60 ? "end_good2" : "end_ok2")
+  },
+
+  end_great2: {
+    type: "ending",
+    tag: "Ending — Five-Site Framework Signed",
+    title: "The regional director signs the full framework.",
+    description: "Priya becomes the go-to reference for Forbes Membranes across the North West. FireShield HX becomes the preferred spec for Meridian's entire regional pipeline, and Priya's name opens doors you haven't even knocked on yet."
+  },
+
+  end_good2: {
+    type: "ending",
+    tag: "Ending — Pilot Site Approved",
+    title: "The director agrees to the monitored pilot site.",
+    description: "The rest of the framework stays pending the results. It's real progress, and Priya is on your side — but the big number on the table is still six months away, if the pilot goes well."
+  },
+
+  end_ok2: {
+    type: "ending",
+    tag: "Ending — One Site, No Framework",
+    title: "The director signs only the original, already-disputed site.",
+    description: "The wider framework is shelved for now. Priya privately tells you she pushed for more, but trust from the earlier deal hadn't recovered enough to carry a bigger ask."
+  },
+
+  end_bad2: {
+    type: "ending",
+    tag: "Ending — Deal Off the Table",
+    title: "'That's not the answer I needed to hear.'",
+    description: "The director ends the call within a minute of you deflecting responsibility. Meridian issues a tender for all five sites the following week — Forbes isn't on the list of invited suppliers."
+  }
+};
+
+function clampTrust(){
+  trust = Math.max(0, Math.min(100, trust));
+}
+
+function updateTrustBar(){
+  document.getElementById("trustFill").style.width = trust + "%";
+  document.getElementById("trustNum").textContent = trust;
+}
+
+function startGame(initialTrust){
+  document.getElementById("introCard").classList.add("hidden");
+  document.getElementById("trustWrap").classList.remove("hidden");
+  trust = initialTrust;
+  current = "s1";
+  updateTrustBar();
+  render();
+}
+
+function buildRecap(){
+  const box = document.getElementById("recapBox");
+  recap.forEach(r=>{
+    const btn = document.createElement("button");
+    btn.className = "choice-btn";
+    btn.textContent = r.label;
+    btn.addEventListener("click", ()=> startGame(r.trust));
+    box.appendChild(btn);
+  });
+}
+
+function render(){
+  const scene = scenes[current];
+  const area = document.getElementById("gameArea");
+
+  if(scene.type === "story"){
+    area.innerHTML = `
+      <div class="card">
+        <div class="tag">${scene.tag}</div>
+        <p class="narrative">${scene.narrative}</p>
+        <div id="choiceBox"></div>
+      </div>`;
+    const box = document.getElementById("choiceBox");
+    scene.choices.forEach(c=>{
+      const btn = document.createElement("button");
+      btn.className = "choice-btn";
+      btn.textContent = c.label;
+      btn.addEventListener("click", ()=>{
+        trust += c.trust; clampTrust(); updateTrustBar();
+        current = c.next;
+        render();
+      });
+      box.appendChild(btn);
+    });
+  }
+
+  else if(scene.type === "checkpoint"){
+    area.innerHTML = `
+      <div class="card">
+        <div class="tag">${scene.tag}</div>
+        <p class="narrative">${scene.narrative}</p>
+        <p class="narrative"><b>${scene.question}</b></p>
+        <div id="optsBox"></div>
+        <div class="feedback" id="feedbackBox"></div>
+        <button class="next-btn" id="nextBtn">Continue</button>
+      </div>`;
+    const optsBox = document.getElementById("optsBox");
+    scene.options.forEach((opt, idx)=>{
+      const btn = document.createElement("button");
+      btn.className = "opt";
+      btn.textContent = opt;
+      btn.addEventListener("click", ()=>{
+        if(idx === scene.correct){
+          document.querySelectorAll("#optsBox .opt").forEach(b=>b.disabled=true);
+          btn.classList.add("correct");
+          trust += scene.trustOnCorrect; clampTrust(); updateTrustBar();
+          const fb = document.getElementById("feedbackBox");
+          fb.textContent = scene.explain;
+          fb.classList.add("show");
+          const nextBtn = document.getElementById("nextBtn");
+          nextBtn.classList.add("active");
+          nextBtn.addEventListener("click", ()=>{
+            current = typeof scene.next === "function" ? scene.next(trust) : scene.next;
+            render();
+          });
+        } else {
+          btn.classList.add("wrong");
+          btn.disabled = true;
+        }
+      });
+      optsBox.appendChild(btn);
+    });
+  }
+
+  else if(scene.type === "ending"){
+    document.getElementById("trustWrap").classList.add("hidden");
+    area.innerHTML = `
+      <div class="card ending-card">
+        <div class="tag">${scene.tag}</div>
+        <h2>${scene.title}</h2>
+        <p>${scene.description}</p>
+        <button class="restart-btn" id="restartBtn">Play again</button>
+      </div>`;
+    document.getElementById("restartBtn").addEventListener("click", ()=>{
+      document.getElementById("introCard").classList.remove("hidden");
+      area.innerHTML = "";
+    });
+  }
+}
+
+buildRecap();
+</script>
+
+</body>
+</html>

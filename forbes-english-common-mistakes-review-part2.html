@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English | Common Mistakes Review - Part 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1c2b45;
+    --indigo: #3d4f8c;
+    --gold: #c9a24b;
+    --cream: #faf7f0;
+    --ink: #23262f;
+    --green: #2e7d5b;
+    --red: #b8433c;
+    --border: #e2ddd0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(180deg, var(--cream) 0%, #f2ede0 100%);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px 60px;
+  }
+
+  .logo-wrap {
+    margin-bottom: 18px;
+  }
+
+  .header {
+    text-align: center;
+    max-width: 640px;
+    margin-bottom: 20px;
+  }
+
+  .header h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+
+  .header p {
+    font-size: 15px;
+    color: var(--indigo);
+    font-weight: 500;
+  }
+
+  .score-bar {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    max-width: 640px;
+    background: var(--cream);
+    padding: 8px 4px 14px;
+    z-index: 5;
+  }
+
+  .progress-track {
+    width: 100%;
+    height: 8px;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--indigo), var(--gold));
+    transition: width 0.35s ease;
+  }
+
+  .meta-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--indigo);
+    font-weight: 600;
+  }
+
+  .card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 26px;
+    width: 100%;
+    max-width: 640px;
+    box-shadow: 0 8px 24px rgba(28, 43, 69, 0.08);
+  }
+
+  #lesson-screen {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 640px;
+    align-items: center;
+  }
+
+  .prompt-text {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1.5;
+    margin-bottom: 8px;
+    white-space: pre-line;
+  }
+
+  .support-text {
+    font-size: 13px;
+    color: var(--gold);
+    font-style: italic;
+    margin-bottom: 20px;
+  }
+
+  .options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .option-btn {
+    text-align: left;
+    padding: 14px 16px;
+    border: 1.5px solid var(--border);
+    background: var(--cream);
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: var(--ink);
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease, transform 0.1s ease;
+  }
+
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--indigo);
+    background: #fff;
+    transform: translateY(-1px);
+  }
+
+  .option-btn:disabled {
+    cursor: default;
+  }
+
+  .option-btn.correct {
+    border-color: var(--green);
+    background: #e7f3ec;
+    color: #205c40;
+    font-weight: 600;
+  }
+
+  .option-btn.incorrect {
+    border-color: var(--red);
+    background: #fbeceb;
+    color: #8a2f29;
+    font-weight: 600;
+  }
+
+  .feedback-box {
+    display: none;
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+
+  .feedback-correct {
+    background: #e7f3ec;
+    border: 1px solid var(--green);
+    color: #205c40;
+  }
+
+  .feedback-incorrect {
+    background: #fbeceb;
+    border: 1px solid var(--red);
+    color: #8a2f29;
+  }
+
+  .next-btn {
+    align-self: flex-end;
+    padding: 12px 26px;
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, opacity 0.2s ease;
+  }
+
+  .next-btn:disabled {
+    background: #b7bdcb;
+    cursor: not-allowed;
+  }
+
+  .next-btn:not(:disabled):hover {
+    background: var(--indigo);
+  }
+
+  #results-screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 640px;
+    text-align: center;
+    padding: 40px 26px;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(28, 43, 69, 0.08);
+  }
+
+  #results-screen h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    color: var(--navy);
+    margin-bottom: 12px;
+  }
+
+  #final-score {
+    font-size: 44px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+
+  #results-message {
+    font-size: 15px;
+    color: var(--indigo);
+    margin-bottom: 26px;
+    max-width: 440px;
+  }
+
+  .restart-btn {
+    padding: 12px 30px;
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .restart-btn:hover {
+    background: var(--indigo);
+  }
+
+  @media (max-width: 480px) {
+    .card, #lesson-screen, .score-bar, #results-screen { max-width: 100%; }
+    .prompt-text { font-size: 16.5px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="logo-wrap">
+  <svg width="220" height="52" viewBox="0 0 220 52" xmlns="http://www.w3.org/2000/svg">
+    <rect x="1" y="1" width="50" height="50" rx="10" fill="#1c2b45"/>
+    <text x="26" y="35" font-family="Fraunces, serif" font-size="26" font-weight="700" fill="#c9a24b" text-anchor="middle">F</text>
+    <text x="62" y="34" font-family="Inter, sans-serif" font-size="21" font-weight="700" fill="#1c2b45">Forbes English</text>
+  </svg>
+</div>
+
+<div class="header">
+  <h1>Common Mistakes Review - Part 2</h1>
+  <p>Falsos amigos y preposiciones &middot; Spanish support</p>
+</div>
+
+<div class="score-bar">
+  <div class="progress-track">
+    <div class="progress-fill" id="progress-fill"></div>
+  </div>
+  <div class="meta-row">
+    <span id="q-number">1 / 14</span>
+    <span>Score: <span id="score-display">0</span> / <span id="total-count">14</span></span>
+  </div>
+</div>
+
+<div id="lesson-screen">
+  <div class="card">
+    <div class="prompt-text" id="prompt-text"></div>
+    <div class="support-text" id="support-text"></div>
+    <div class="options-container" id="options-container"></div>
+    <div class="feedback-box" id="feedback-box"></div>
+    <button class="next-btn" id="next-btn" disabled onclick="nextQuestion()">Next</button>
+  </div>
+</div>
+
+<div id="results-screen">
+  <h2>Lesson Complete</h2>
+  <div id="final-score">0 / 14</div>
+  <p id="results-message"></p>
+  <button class="restart-btn" onclick="restartLesson()">Try Again</button>
+</div>
+
+<script>
+const LESSON_DATA = {
+  title: "Common Mistakes Review - Part 2",
+  subtitle: "Falsos amigos y preposiciones",
+  questions: [
+    {
+      id: "q1",
+      prompt: "\"Actually, I'm not free tonight.\" Here, \"actually\" means...",
+      support: "ES: \"actually\" NO significa \"actualmente\".",
+      options: ["actualmente", "en realidad", "ahora mismo", "en este momento"],
+      correctIndex: 1,
+      explanation: "\"Actually\" is a false friend: it means \"en realidad\" (in fact), not \"actualmente\" (currently). ES: \"actually\" = en realidad."
+    },
+    {
+      id: "q2",
+      prompt: "I felt very _____ when I forgot her name in front of everyone.",
+      support: "ES: \"embarazada\" en ingles NO es \"embarrassed\".",
+      options: ["pregnant", "embarrassed", "nervous", "ashamed of"],
+      correctIndex: 1,
+      explanation: "\"Embarrassed\" means \"avergonzado\". The Spanish word \"embarazada\" is a false friend and actually means \"pregnant\" in English. ES: embarrassed = avergonzado, no embarazada."
+    },
+    {
+      id: "q3",
+      prompt: "I need to _____ the meeting tomorrow morning.",
+      support: "ES: \"asistir a\" = to attend.",
+      options: ["assist", "attend", "attend to", "wait for"],
+      correctIndex: 1,
+      explanation: "\"To attend\" means \"asistir a\" (to be present at). \"To assist\" is a false friend meaning \"to help\". ES: attend = asistir, assist = ayudar."
+    },
+    {
+      id: "q4",
+      prompt: "Suddenly I _____ I had left my keys at home.",
+      support: "ES: darse cuenta = to realize.",
+      options: ["remembered", "realized", "recalled", "remind"],
+      correctIndex: 1,
+      explanation: "\"To realize\" means \"darse cuenta de algo\". \"To remember\" means \"recordar algo que ya se sabia\", which is a different meaning here. ES: realize = darse cuenta."
+    },
+    {
+      id: "q5",
+      prompt: "She is married _____ a doctor.",
+      support: "ES: married TO someone, no \"married with\".",
+      options: ["with", "to", "for", "by"],
+      correctIndex: 1,
+      explanation: "The correct preposition is \"married to somebody\", not \"married with\". ES: casada CON alguien = married TO somebody."
+    },
+    {
+      id: "q6",
+      prompt: "I'm really _____ in history.",
+      support: "ES: interested IN, no \"interested on\".",
+      options: ["interested on", "interested in", "interested for", "interested at"],
+      correctIndex: 1,
+      explanation: "The fixed preposition after \"interested\" is \"in\". ES: interesado EN algo = interested IN something."
+    },
+    {
+      id: "q7",
+      prompt: "He's very _____ at maths.",
+      support: "ES: good AT a subject/skill.",
+      options: ["good in", "good at", "good on", "good for"],
+      correctIndex: 1,
+      explanation: "We say \"good at\" a subject or skill, not \"good in\". ES: bueno EN algo (habilidad) = good AT something."
+    },
+    {
+      id: "q8",
+      prompt: "Choose the correct sentence.",
+      support: "ES: \"do\" para tareas generales, \"make\" para crear/errores.",
+      options: [
+        "I do my homework and make a mistake.",
+        "I make my homework and do a mistake.",
+        "I make my homework and make a mistake.",
+        "I do my homework and do a mistake."
+      ],
+      correctIndex: 0,
+      explanation: "We \"do homework\" but \"make a mistake\". ES: do homework (hacer tarea), make a mistake (cometer un error)."
+    },
+    {
+      id: "q9",
+      prompt: "PRONUNCIATION: which letter is silent in the word \"island\"?",
+      support: "ES: \"island\" tiene una letra muda.",
+      options: ["i", "s", "l", "d"],
+      correctIndex: 1,
+      explanation: "The \"s\" in \"island\" is silent: it is pronounced /ˈaɪlənd/. ES: la \"s\" no se pronuncia en \"island\"."
+    },
+    {
+      id: "q10",
+      prompt: "Can you _____ me some money? I'll pay you back on Friday.",
+      support: "ES: lend = prestar (tu me prestas a mi).",
+      options: ["borrow", "lend", "loan me from", "rent"],
+      correctIndex: 1,
+      explanation: "\"Lend\" means to give something temporarily (the speaker receives). \"Borrow\" means to take/receive, so the subject would need to change. ES: lend = prestar, borrow = pedir prestado."
+    },
+    {
+      id: "q11",
+      prompt: "Choose the correct sentence.",
+      support: "ES: \"agree\" ya es un verbo completo, no necesita \"am\".",
+      options: ["I am agree.", "I agree.", "I am agreeing with.", "I do agreeing."],
+      correctIndex: 1,
+      explanation: "\"Agree\" is a full verb in English, so we simply say \"I agree\", never \"I am agree\". ES: estoy de acuerdo = I agree (sin \"am\")."
+    },
+    {
+      id: "q12",
+      prompt: "She's a very _____ person; she never overreacts and always thinks things through.",
+      support: "ES: \"sensible\" en ingles significa \"sensato\", no \"sensible\" emocionalmente.",
+      options: ["sensitive", "sensible", "sensory", "senseless"],
+      correctIndex: 1,
+      explanation: "\"Sensible\" in English means \"sensato\" (showing good judgement). The Spanish word \"sensible\" is a false friend and translates to \"sensitive\" in English. ES: sensible (ES) = sensitive (EN); sensible (EN) = sensato."
+    },
+    {
+      id: "q13",
+      prompt: "I am _____ working on a new project, so I can't take on anything else right now.",
+      support: "ES: en este momento = currently, no \"actually\".",
+      options: ["actually", "currently", "eventually", "nowadays"],
+      correctIndex: 1,
+      explanation: "\"Currently\" means \"actualmente\" / \"en este momento\". \"Actually\" is a false friend meaning \"en realidad\". ES: currently = actualmente."
+    },
+    {
+      id: "q14",
+      prompt: "I look forward to _____ from you soon.",
+      support: "ES: look forward to + gerundio (-ing).",
+      options: ["hear", "hearing", "heard", "to hear"],
+      correctIndex: 1,
+      explanation: "\"Look forward to\" is followed by a gerund (-ing form), not the base infinitive. ES: look forward to + verbo-ing."
+    }
+  ]
+};
+
+function shuffle(array) {
+  const arr = array.slice();
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+  }
+  return arr;
+}
+
+let state = { order: [], current: 0, score: 0, answered: false, selectedIndex: null };
+
+function initLesson() {
+  state.order = shuffle(LESSON_DATA.questions.map(function (q, i) { return i; }));
+  state.current = 0;
+  state.score = 0;
+  document.getElementById('total-count').textContent = LESSON_DATA.questions.length;
+  document.getElementById('score-display').textContent = 0;
+  renderQuestion();
+}
+
+function getCurrentQuestion() {
+  const idx = state.order[state.current];
+  return LESSON_DATA.questions[idx];
+}
+
+function renderQuestion() {
+  state.answered = false;
+  state.selectedIndex = null;
+  state.hasErred = false;
+
+  const q = getCurrentQuestion();
+  const total = LESSON_DATA.questions.length;
+
+  document.getElementById('q-number').textContent = (state.current + 1) + ' / ' + total;
+  document.getElementById('progress-fill').style.width = (state.current / total * 100) + '%';
+  document.getElementById('prompt-text').textContent = q.prompt;
+  document.getElementById('support-text').textContent = q.support;
+  document.getElementById('feedback-box').style.display = 'none';
+  document.getElementById('feedback-box').className = 'feedback-box';
+  document.getElementById('next-btn').disabled = true;
+
+  const optOrder = shuffle(q.options.map(function (opt, i) { return i; }));
+  const optionsContainer = document.getElementById('options-container');
+  optionsContainer.innerHTML = '';
+
+  optOrder.forEach(function (origIndex) {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = q.options[origIndex];
+    btn.setAttribute('data-orig-index', origIndex);
+    btn.onclick = function () { selectOption(origIndex, btn); };
+    optionsContainer.appendChild(btn);
+  });
+}
+
+function selectOption(origIndex, btnEl) {
+  if (state.answered) return;
+
+  const q = getCurrentQuestion();
+  const isCorrect = origIndex === q.correctIndex;
+  const feedbackBox = document.getElementById('feedback-box');
+
+  if (isCorrect) {
+    state.answered = true;
+    if (!state.hasErred) {
+      state.score++;
+      document.getElementById('score-display').textContent = state.score;
+    }
+    btnEl.classList.add('correct');
+    document.querySelectorAll('.option-btn').forEach(function (b) { b.disabled = true; });
+
+    feedbackBox.style.display = 'block';
+    feedbackBox.className = 'feedback-box feedback-correct';
+    feedbackBox.textContent = 'Correct! ' + q.explanation;
+
+    document.getElementById('next-btn').disabled = false;
+  } else {
+    state.hasErred = true;
+    btnEl.classList.add('incorrect');
+    btnEl.disabled = true;
+
+    feedbackBox.style.display = 'block';
+    feedbackBox.className = 'feedback-box feedback-incorrect';
+    feedbackBox.textContent = 'Not quite, try again. ES: Intenta de nuevo.';
+  }
+}
+
+function nextQuestion() {
+  const total = LESSON_DATA.questions.length;
+  if (state.current < total - 1) {
+    state.current++;
+    renderQuestion();
+  } else {
+    showResults();
+  }
+}
+
+function showResults() {
+  const total = LESSON_DATA.questions.length;
+  document.getElementById('progress-fill').style.width = '100%';
+  document.getElementById('lesson-screen').style.display = 'none';
+  document.getElementById('results-screen').style.display = 'flex';
+  document.getElementById('final-score').textContent = state.score + ' / ' + total;
+
+  const pct = Math.round((state.score / total) * 100);
+  let message = '';
+  if (pct >= 90) message = 'Excellent work! You have a strong grasp of these points.';
+  else if (pct >= 70) message = 'Good job! A little more practice and these will stick.';
+  else if (pct >= 50) message = 'Solid effort. Review the explanations and try again.';
+  else message = 'Keep practicing. Review each explanation carefully and try again.';
+  document.getElementById('results-message').textContent = message;
+}
+
+function restartLesson() {
+  document.getElementById('results-screen').style.display = 'none';
+  document.getElementById('lesson-screen').style.display = 'flex';
+  initLesson();
+}
+
+window.onload = initLesson;
+</script>
+
+</body>
+</html>

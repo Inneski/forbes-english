@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English | Present Perfect with Lego</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #14181f;
+    --bg-soft: #1b212b;
+    --card: #20272f;
+    --card-raised: #262e38;
+    --stud: #2c3540;
+    --ink: #eef1f4;
+    --ink-dim: #aab4c2;
+    --ink-faint: #6f7a89;
+    --rule: #323c48;
+
+    --brick-red: #d4322a;
+    --brick-red-deep: #a8231c;
+    --brick-yellow: #f0b429;
+    --brick-yellow-deep: #c4900f;
+    --brick-blue: #1f6fb2;
+    --brick-blue-deep: #154f82;
+    --brick-green: #2f9c5a;
+
+    --simple: #2bb0a3;       /* Present Perfect Simple - teal, per house style */
+    --simple-soft: rgba(43,176,163,0.16);
+    --continuous: #74d9cd;   /* Present Perfect Continuous - lighter teal */
+    --continuous-soft: rgba(116,217,205,0.16);
+
+    --correct: #2f9c5a;
+    --correct-soft: rgba(47,156,90,0.16);
+    --wrong: #d4322a;
+    --wrong-soft: rgba(212,50,42,0.16);
+
+    --radius: 18px;
+    --radius-sm: 10px;
+    --shadow: 0 18px 40px rgba(0,0,0,0.35);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background: var(--bg);
+    background-image:
+      radial-gradient(circle at 18% 8%, rgba(212,50,42,0.07), transparent 40%),
+      radial-gradient(circle at 85% 18%, rgba(31,111,178,0.08), transparent 38%),
+      radial-gradient(circle at 50% 95%, rgba(240,180,41,0.05), transparent 45%);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    min-height: 100vh;
+    line-height: 1.5;
+    padding: 36px 18px 80px;
+  }
+
+  .wrap{
+    max-width: 880px;
+    margin: 0 auto;
+  }
+
+  /* ============ LOGO ============ */
+  .logo-row{
+    display:flex;
+    justify-content:center;
+    margin-bottom: 30px;
+  }
+  .logo-row svg{ width: 230px; height: auto; }
+
+  /* ============ HERO / INTRO ============ */
+  .hero{
+    background: linear-gradient(165deg, var(--card) 0%, var(--bg-soft) 100%);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    padding: 34px 30px 28px;
+    margin-bottom: 26px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute;
+    top:-40px; right:-40px;
+    width:180px; height:180px;
+    background: radial-gradient(circle, rgba(212,50,42,0.18), transparent 70%);
+    border-radius:50%;
+  }
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:0.09em;
+    text-transform:uppercase;
+    color: var(--brick-yellow);
+    background: rgba(240,180,41,0.1);
+    border: 1px solid rgba(240,180,41,0.3);
+    padding: 5px 12px;
+    border-radius: 999px;
+    margin-bottom: 16px;
+  }
+  h1.title{
+    font-family:'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(28px, 4.4vw, 38px);
+    margin: 0 0 10px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .hero p.lede{
+    color: var(--ink-dim);
+    font-size: 16px;
+    max-width: 600px;
+    margin: 0 0 20px;
+  }
+  .meta-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap: 10px;
+  }
+  .meta-chip{
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: var(--stud);
+    color: var(--ink-dim);
+    border: 1px solid var(--rule);
+  }
+
+  /* tense legend, color coded per house style */
+  .legend{
+    display:flex;
+    gap: 14px;
+    margin-top: 22px;
+    flex-wrap: wrap;
+  }
+  .legend-item{
+    display:flex;
+    align-items:center;
+    gap: 9px;
+    background: var(--bg-soft);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    flex: 1 1 250px;
+  }
+  .legend-swatch{
+    width: 14px; height:14px;
+    border-radius: 4px;
+    flex-shrink:0;
+  }
+  .legend-text{ font-size: 13.5px; }
+  .legend-text strong{ display:block; font-size: 14px; }
+  .legend-text span{ color: var(--ink-faint); font-size: 12.5px; }
+
+  /* ============ PROGRESS + SCORE BAR ============ */
+  .status-bar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap: 16px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+  }
+  .progress-wrap{
+    flex: 1 1 260px;
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 4px;
+    display:flex;
+    align-items:center;
+    gap: 10px;
+  }
+  .progress-track{
+    flex:1;
+    height: 9px;
+    background: var(--stud);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .progress-fill{
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--brick-yellow), var(--brick-red));
+    border-radius: 999px;
+    transition: width 0.4s ease;
+  }
+  .progress-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    color: var(--ink-dim);
+    padding-right: 8px;
+    white-space: nowrap;
+  }
+  .score-pill{
+    display:flex;
+    align-items:center;
+    gap: 8px;
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 9px 18px;
+    font-weight: 700;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+  .score-pill .stud{
+    width:16px; height:16px;
+    background: var(--brick-yellow);
+    border-radius: 50%;
+    box-shadow: inset 0 -2px 3px rgba(0,0,0,0.25), 0 1px 2px rgba(0,0,0,0.3);
+  }
+
+  /* ============ SECTION HEADERS ============ */
+  .section-block{ margin-bottom: 38px; }
+  .section-head{
+    display:flex;
+    align-items:flex-start;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+  .section-icon{
+    width: 42px; height:42px;
+    border-radius: 11px;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .section-head h2{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size: 22px;
+    margin: 0 0 4px;
+  }
+  .section-head p{
+    margin:0;
+    color: var(--ink-faint);
+    font-size: 14px;
+  }
+
+  /* ============ QUESTION CARD ============ */
+  .qcard{
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    padding: 26px 26px 22px;
+    margin-bottom: 18px;
+    box-shadow: var(--shadow);
+    display:none;
+  }
+  .qcard.active{ display:block; }
+  .qnum{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-faint);
+    letter-spacing: 0.06em;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+  .qtext{
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    line-height: 1.55;
+  }
+  .qtext .blank-marker{
+    display:inline-block;
+    min-width: 90px;
+    border-bottom: 2px dashed var(--ink-faint);
+    margin: 0 2px;
+  }
+  .pl-gloss{
+    font-style: italic;
+    color: var(--ink-faint);
+    font-weight: 400;
+    font-size: 14px;
+  }
+
+  /* multiple choice options */
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap: 10px;
+  }
+  .option{
+    background: var(--bg-soft);
+    border: 1.5px solid var(--rule);
+    border-radius: var(--radius-sm);
+    padding: 13px 16px;
+    cursor: pointer;
+    display:flex;
+    align-items:center;
+    gap: 12px;
+    font-size: 15px;
+    transition: border-color 0.15s ease, transform 0.1s ease;
+  }
+  .option:hover{ border-color: var(--brick-yellow); }
+  .option .opt-key{
+    width: 26px; height:26px;
+    border-radius: 7px;
+    background: var(--stud);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    font-weight:700;
+    color: var(--ink-dim);
+    flex-shrink:0;
+  }
+  .option.selected{
+    border-color: var(--brick-blue);
+    background: rgba(31,111,178,0.12);
+  }
+  .option.locked{ cursor: default; }
+  .option.correct-reveal{
+    border-color: var(--correct);
+    background: var(--correct-soft);
+  }
+  .option.wrong-reveal{
+    border-color: var(--wrong);
+    background: var(--wrong-soft);
+  }
+  .option.locked:not(.correct-reveal):not(.wrong-reveal){ opacity: 0.55; }
+
+  /* fill in blank input */
+  .fib-row{
+    display:flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items:center;
+  }
+  .fib-input{
+    flex: 1 1 220px;
+    background: var(--bg-soft);
+    border: 1.5px solid var(--rule);
+    border-radius: var(--radius-sm);
+    padding: 13px 16px;
+    color: var(--ink);
+    font-size: 15px;
+    font-family: 'Inter', sans-serif;
+  }
+  .fib-input:focus{ outline:none; border-color: var(--brick-blue); }
+  .fib-input.correct-reveal{ border-color: var(--correct); background: var(--correct-soft); }
+  .fib-input.wrong-reveal{ border-color: var(--wrong); background: var(--wrong-soft); }
+  .check-btn{
+    background: var(--brick-blue);
+    color: #fff;
+    border:none;
+    border-radius: var(--radius-sm);
+    padding: 13px 22px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    flex-shrink:0;
+  }
+  .check-btn:disabled{ opacity:0.45; cursor:default; }
+
+  /* reordering */
+  .reorder-bank, .reorder-target{
+    display:flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 52px;
+    padding: 10px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 12px;
+  }
+  .reorder-bank{
+    background: var(--bg-soft);
+    border: 1.5px dashed var(--rule);
+  }
+  .reorder-target{
+    background: rgba(31,111,178,0.06);
+    border: 1.5px solid var(--rule);
+  }
+  .word-chip{
+    background: var(--brick-yellow);
+    color: #1a1300;
+    font-weight: 700;
+    font-size: 14.5px;
+    padding: 9px 14px;
+    border-radius: 8px;
+    cursor: grab;
+    user-select:none;
+    box-shadow: 0 2px 0 rgba(0,0,0,0.18);
+    transition: transform 0.1s ease, opacity 0.15s ease;
+  }
+  .word-chip:active{ cursor: grabbing; }
+  .word-chip.placed{ background: var(--brick-blue); color:#fff; }
+  .word-chip.dragging{ opacity: 0.4; }
+  .reorder-target.correct-reveal{ border-color: var(--correct); background: var(--correct-soft); }
+  .reorder-target.wrong-reveal{ border-color: var(--wrong); background: var(--wrong-soft); }
+  .target-placeholder{
+    color: var(--ink-faint);
+    font-size: 13px;
+    font-style: italic;
+    padding: 9px 4px;
+  }
+
+  /* matching */
+  .match-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+  }
+  @media (max-width: 560px){ .match-grid{ grid-template-columns: 1fr; } }
+  .match-col-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--ink-faint);
+    margin-bottom: 8px;
+  }
+  .match-item{
+    background: var(--bg-soft);
+    border: 1.5px solid var(--rule);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    font-size: 14.5px;
+    transition: border-color 0.15s ease;
+  }
+  .match-item.left.picked{ border-color: var(--brick-blue); background: rgba(31,111,178,0.14); }
+  .match-item.right{ }
+  .match-item.right.used{ opacity: 0.4; cursor: default; }
+  .match-item.right.linked-correct{ border-color: var(--correct); background: var(--correct-soft); }
+  .match-item.right.linked-wrong{ border-color: var(--wrong); background: var(--wrong-soft); }
+  .match-item.left.solved-correct{ border-color: var(--correct); background: var(--correct-soft); }
+  .match-item.left.solved-wrong{ border-color: var(--wrong); background: var(--wrong-soft); }
+  .match-tag{
+    display:inline-block;
+    font-family:'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--brick-yellow);
+    margin-right: 6px;
+  }
+
+  /* feedback panel */
+  .feedback{
+    margin-top: 18px;
+    padding: 16px 18px;
+    border-radius: var(--radius-sm);
+    font-size: 14.5px;
+    line-height: 1.6;
+    display:none;
+  }
+  .feedback.show{ display:block; }
+  .feedback.correct{ background: var(--correct-soft); border: 1px solid rgba(47,156,90,0.4); }
+  .feedback.incorrect{ background: var(--wrong-soft); border: 1px solid rgba(212,50,42,0.4); }
+  .feedback-head{
+    font-weight: 700;
+    margin-bottom: 6px;
+    display:flex;
+    align-items:center;
+    gap: 8px;
+  }
+  .feedback-head.correct-text{ color: var(--correct); }
+  .feedback-head.incorrect-text{ color: var(--wrong); }
+  .feedback .tense-tag{
+    display:inline-block;
+    font-family:'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    margin-left: 4px;
+  }
+  .tense-tag.simple{ background: var(--simple-soft); color: var(--simple); }
+  .tense-tag.continuous{ background: var(--continuous-soft); color: var(--continuous); }
+
+  /* next / submit buttons */
+  .controls-row{
+    display:flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 18px;
+  }
+  .btn{
+    border:none;
+    border-radius: var(--radius-sm);
+    padding: 12px 24px;
+    font-weight: 700;
+    font-size: 14.5px;
+    cursor: pointer;
+    font-family:'Inter', sans-serif;
+  }
+  .btn-primary{
+    background: var(--brick-red);
+    color: #fff;
+  }
+  .btn-primary:hover{ background: var(--brick-red-deep); }
+  .btn-next{
+    background: var(--brick-yellow);
+    color: #1a1300;
+    display:none;
+  }
+  .btn-next.show{ display:inline-block; }
+
+  /* illustrations */
+  .illustration{
+    display:flex;
+    justify-content:center;
+    margin: -6px 0 24px;
+  }
+  .illustration svg{ width: 100%; max-width: 460px; height:auto; }
+
+  /* final screen */
+  .final-screen{
+    display:none;
+    text-align:center;
+    background: linear-gradient(165deg, var(--card) 0%, var(--bg-soft) 100%);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    padding: 50px 30px 44px;
+    box-shadow: var(--shadow);
+  }
+  .final-screen.show{ display:block; }
+  .final-screen h2{
+    font-family:'Fraunces', serif;
+    font-size: 30px;
+    margin: 18px 0 8px;
+  }
+  .final-score{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 46px;
+    font-weight: 700;
+    color: var(--brick-yellow);
+    margin: 6px 0 14px;
+  }
+  .final-msg{
+    color: var(--ink-dim);
+    max-width: 440px;
+    margin: 0 auto 26px;
+    font-size: 15px;
+  }
+  .restart-btn{
+    background: var(--brick-blue);
+    color:#fff;
+    border:none;
+    border-radius: var(--radius-sm);
+    padding: 14px 30px;
+    font-weight: 700;
+    font-size: 15px;
+    cursor:pointer;
+  }
+  .restart-btn:hover{ background: var(--brick-blue-deep); }
+
+  .lesson-body{ display:block; }
+  .lesson-body.hidden{ display:none; }
+
+  footer.credit{
+    text-align:center;
+    color: var(--ink-faint);
+    font-size: 12.5px;
+    margin-top: 36px;
+  }
+
+  @media (max-width: 540px){
+    .qcard{ padding: 20px 18px 18px; }
+    .hero{ padding: 26px 20px 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="logo-row">
+    <svg viewBox="0 0 320 110" xmlns="http://www.w3.org/2000/svg">
+      <text x="160" y="48" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="42" font-style="italic" font-weight="500" fill="#f0b429">Forbes</text>
+      <line x1="40" y1="64" x2="280" y2="64" stroke="#74d9cd" stroke-width="1.5"/>
+      <text x="160" y="96" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="800" letter-spacing="4" fill="#eef1f4">ENGLISH</text>
+    </svg>
+  </div>
+
+  <div id="lessonBody" class="lesson-body">
+
+    <div class="hero">
+      <div class="eyebrow">● B1 &nbsp;·&nbsp; Grammar in focus</div>
+      <h1 class="title">Present Perfect, brick by brick</h1>
+      <p class="lede">Build your understanding of the Present Perfect Simple and Continuous with a Lego-themed lesson — from finished sets to long building sessions. Polish glosses included where useful.</p>
+      <div class="meta-row">
+        <div class="meta-chip">4 activities</div>
+        <div class="meta-chip">26 questions</div>
+        <div class="meta-chip">~18 minutes</div>
+      </div>
+      <div class="legend">
+        <div class="legend-item">
+          <div class="legend-swatch" style="background:var(--simple);"></div>
+          <div class="legend-text"><strong>Present Perfect Simple</strong><span>have/has + past participle — completed action, result, life experience</span></div>
+        </div>
+        <div class="legend-item">
+          <div class="legend-swatch" style="background:var(--continuous);"></div>
+          <div class="legend-text"><strong>Present Perfect Continuous</strong><span>have/has been + -ing — duration, ongoing or recent activity</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="status-bar">
+      <div class="progress-wrap">
+        <span class="progress-label" id="progressLabel">Question 1 of 20</span>
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      </div>
+      <div class="score-pill"><div class="stud"></div><span id="scoreLabel">Score: 0 / 26</span></div>
+    </div>
+
+    <!-- ACTIVITIES INJECTED HERE -->
+
+      <!-- ============ ACTIVITY 1: MULTIPLE CHOICE ============ -->
+      <div class="section-block" id="section-mc">
+        <div class="section-head">
+          <div class="section-icon" style="background:rgba(43,176,163,0.16);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="7" height="7" rx="1.5" fill="#2bb0a3"/><rect x="13" y="4" width="7" height="7" rx="1.5" fill="#74d9cd"/><rect x="4" y="13" width="7" height="7" rx="1.5" fill="#74d9cd"/><rect x="13" y="13" width="7" height="7" rx="1.5" fill="#2bb0a3"/></svg>
+          </div>
+          <div>
+            <h2>Activity 1 — Choose the correct form</h2>
+            <p>Simple or Continuous? Pick the option that fits each Lego scene.</p>
+          </div>
+        </div>
+
+        <div class="illustration">
+          <svg viewBox="0 0 460 160" xmlns="http://www.w3.org/2000/svg">
+            <rect x="20" y="90" width="420" height="50" rx="6" fill="#20272f" stroke="#323c48"/>
+            <g>
+              <rect x="60" y="60" width="50" height="34" rx="4" fill="#d4322a"/>
+              <circle cx="72" cy="52" r="8" fill="#d4322a"/><circle cx="98" cy="52" r="8" fill="#d4322a"/>
+            </g>
+            <g>
+              <rect x="150" y="40" width="50" height="54" rx="4" fill="#1f6fb2"/>
+              <circle cx="162" cy="32" r="8" fill="#1f6fb2"/><circle cx="188" cy="32" r="8" fill="#1f6fb2"/>
+            </g>
+            <g>
+              <rect x="240" y="70" width="50" height="24" rx="4" fill="#f0b429"/>
+              <circle cx="252" cy="62" r="8" fill="#f0b429"/><circle cx="278" cy="62" r="8" fill="#f0b429"/>
+            </g>
+            <g>
+              <rect x="330" y="50" width="50" height="44" rx="4" fill="#2f9c5a"/>
+              <circle cx="342" cy="42" r="8" fill="#2f9c5a"/><circle cx="368" cy="42" r="8" fill="#2f9c5a"/>
+            </g>
+            <rect x="20" y="140" width="420" height="6" rx="3" fill="#14181f"/>
+          </svg>
+        </div>
+
+        <div id="mcMount"></div>
+      </div>
+
+      <!-- ============ ACTIVITY 2: FILL IN THE BLANK ============ -->
+      <div class="section-block" id="section-fib">
+        <div class="section-head">
+          <div class="section-icon" style="background:rgba(212,50,42,0.16);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 18h16M4 18c0-7 4-13 8-13s8 6 8 13" stroke="#d4322a" stroke-width="2" fill="none"/></svg>
+          </div>
+          <div>
+            <h2>Activity 2 — Complete the sentence</h2>
+            <p>Type the missing verb form. Check your spelling carefully.</p>
+          </div>
+        </div>
+
+        <div class="illustration">
+          <svg viewBox="0 0 460 150" xmlns="http://www.w3.org/2000/svg">
+            <rect x="40" y="20" width="100" height="100" rx="8" fill="#20272f" stroke="#323c48"/>
+            <text x="90" y="75" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="40" fill="#6f7a89">?</text>
+            <path d="M150 70 H 220" stroke="#f0b429" stroke-width="3" marker-end="url(#arrow1)"/>
+            <defs><marker id="arrow1" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#f0b429"/></marker></defs>
+            <rect x="240" y="20" width="180" height="100" rx="8" fill="#20272f" stroke="#323c48"/>
+            <rect x="260" y="40" width="50" height="34" rx="4" fill="#1f6fb2"/>
+            <rect x="320" y="50" width="50" height="24" rx="4" fill="#d4322a"/>
+            <rect x="280" y="80" width="100" height="22" rx="4" fill="#2f9c5a"/>
+          </svg>
+        </div>
+
+        <div id="fibMount"></div>
+      </div>
+
+      <!-- ============ ACTIVITY 3: REORDERING ============ -->
+      <div class="section-block" id="section-reorder">
+        <div class="section-head">
+          <div class="section-icon" style="background:rgba(240,180,41,0.16);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="6" height="6" rx="1" fill="#f0b429"/><rect x="10" y="5" width="6" height="6" rx="1" fill="#f0b429"/><rect x="17" y="5" width="4" height="6" rx="1" fill="#f0b429"/></svg>
+          </div>
+          <div>
+            <h2>Activity 3 — Rebuild the sentence</h2>
+            <p>Drag the bricks into the correct order to form a complete sentence.</p>
+          </div>
+        </div>
+
+        <div class="illustration">
+          <svg viewBox="0 0 460 140" xmlns="http://www.w3.org/2000/svg">
+            <rect x="30" y="30" width="60" height="30" rx="4" fill="#f0b429" transform="rotate(-8 60 45)"/>
+            <rect x="110" y="55" width="60" height="30" rx="4" fill="#d4322a" transform="rotate(5 140 70)"/>
+            <rect x="190" y="25" width="60" height="30" rx="4" fill="#1f6fb2" transform="rotate(-3 220 40)"/>
+            <rect x="270" y="60" width="60" height="30" rx="4" fill="#2f9c5a" transform="rotate(7 300 75)"/>
+            <rect x="350" y="35" width="60" height="30" rx="4" fill="#f0b429" transform="rotate(-6 380 50)"/>
+            <path d="M40 110 H 420" stroke="#323c48" stroke-width="2" stroke-dasharray="6 6"/>
+          </svg>
+        </div>
+
+        <div id="reorderMount"></div>
+      </div>
+
+      <!-- ============ ACTIVITY 4: MATCHING ============ -->
+      <div class="section-block" id="section-match">
+        <div class="section-head">
+          <div class="section-icon" style="background:rgba(116,217,205,0.18);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="6" cy="7" r="3" fill="#74d9cd"/><circle cx="18" cy="17" r="3" fill="#74d9cd"/><path d="M8 9 L16 15" stroke="#74d9cd" stroke-width="2"/></svg>
+          </div>
+          <div>
+            <h2>Activity 4 — Match the time clue to the tense</h2>
+            <p>Time expressions signal which Present Perfect form to use. Match each clue (with its Polish translation) to the correct tense.</p>
+          </div>
+        </div>
+
+        <div class="illustration">
+          <svg viewBox="0 0 460 130" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="100" cy="65" r="42" fill="none" stroke="#2bb0a3" stroke-width="3"/>
+            <text x="100" y="60" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" fill="#2bb0a3">SIMPLE</text>
+            <text x="100" y="78" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="20" fill="#2bb0a3">✓</text>
+            <circle cx="360" cy="65" r="42" fill="none" stroke="#74d9cd" stroke-width="3"/>
+            <text x="360" y="58" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#74d9cd">CONTINUOUS</text>
+            <text x="360" y="78" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="20" fill="#74d9cd">⟳</text>
+            <path d="M150 65 H 310" stroke="#323c48" stroke-width="2" stroke-dasharray="4 6"/>
+          </svg>
+        </div>
+
+        <div id="matchMount"></div>
+      </div>
+
+
+  </div>
+
+  <div id="finalScreen" class="final-screen">
+    <svg width="64" height="64" viewBox="0 0 64 64" style="margin:0 auto;">
+      <rect x="14" y="26" width="36" height="24" rx="3" fill="#1f6fb2"/>
+      <circle cx="22" cy="20" r="6" fill="#1f6fb2"/>
+      <circle cx="42" cy="20" r="6" fill="#1f6fb2"/>
+      <circle cx="32" cy="20" r="6" fill="#1f6fb2"/>
+    </svg>
+    <h2>Set complete!</h2>
+    <div class="final-score" id="finalScoreText">0 / 26</div>
+    <p class="final-msg" id="finalMsg">Nice building. Review the tense colours above and try again to lock the pattern in.</p>
+    <button class="restart-btn" id="restartBtn">Rebuild from scratch</button>
+  </div>
+
+  <footer class="credit">Forbes English — Present Perfect with Lego — B1</footer>
+</div>
+
+<script>
+console.log('script start');
+
+/* =====================================================
+   QUESTION DATA
+   ===================================================== */
+
+// ---------- ACTIVITY 1: MULTIPLE CHOICE ----------
+const mcQuestions = [
+  {
+    text: "My nephew __________ this Lego castle three times this week — he loves rebuilding it.",
+    options: [
+      { key: "has been building", correct: false },
+      { key: "has built it", correct: true },
+      { key: "is building it", correct: false },
+      { key: "built it now", correct: false }
+    ],
+    tense: "simple",
+    explanation: "Use Present Perfect Simple (has built) because we count completed repetitions — 'three times' — not the ongoing activity itself."
+  },
+  {
+    text: "Look at the table — pieces everywhere! She __________ all afternoon.",
+    options: [
+      { key: "has sorted them", correct: false },
+      { key: "sorted them now", correct: false },
+      { key: "has been sorting", correct: true },
+      { key: "sorts them here", correct: false }
+    ],
+    tense: "continuous",
+    explanation: "Present Perfect Continuous (has been sorting) explains the visible mess now — it stresses the ongoing activity and its duration, not a finished result."
+  },
+  {
+    text: "We __________ the new Falcon set yet — it only arrived this morning.",
+    options: [
+      { key: "haven't opened", correct: true },
+      { key: "didn't open it", correct: false },
+      { key: "haven't been open", correct: false },
+      { key: "don't open it", correct: false }
+    ],
+    tense: "simple",
+    explanation: "'Yet' with a negative signals Present Perfect Simple (haven't opened) for an action expected but not completed."
+  },
+  {
+    text: "Marek __________ Lego sets since he was six years old.",
+    options: [
+      { key: "is collecting", correct: false },
+      { key: "collected them", correct: false },
+      { key: "always collects", correct: false },
+      { key: "has been collecting", correct: true }
+    ],
+    tense: "continuous",
+    explanation: "'Since' plus a long, unfinished period calls for Present Perfect Continuous (has been collecting) to highlight the duration of the habit."
+  },
+  {
+    text: "How many minifigures __________ in your whole collection?",
+    options: [
+      { key: "have you got", correct: true },
+      { key: "are you having", correct: false },
+      { key: "do you having", correct: false },
+      { key: "did you have", correct: false }
+    ],
+    tense: "simple",
+    explanation: "'Have' as a state verb (possession) doesn't normally take the continuous form, so Present Perfect Simple (have you got) is correct here."
+  },
+  {
+    text: "The instructions __________ confusing, and I still can't find step 12.",
+    options: [
+      { key: "have being so", correct: false },
+      { key: "have been", correct: true },
+      { key: "are being now", correct: false },
+      { key: "were being so", correct: false }
+    ],
+    tense: "simple",
+    explanation: "A state (the instructions being confusing) that continues up to now uses Present Perfect Simple with 'been' — not a continuous form, since 'be' is a state verb."
+  },
+  {
+    text: "My hands hurt because I __________ tiny pieces for the last hour.",
+    options: [
+      { key: "have sorted out", correct: false },
+      { key: "have been sorting", correct: true },
+      { key: "sort them now", correct: false },
+      { key: "sorted them up", correct: false }
+    ],
+    tense: "continuous",
+    explanation: "The physical result (hurting hands) is explained by recent, continuous activity — 'for the last hour' confirms Present Perfect Continuous."
+  }
+];
+
+// ---------- ACTIVITY 2: FILL IN THE BLANK ----------
+const fibQuestions = [
+  {
+    text: "I _____ (finish) the Eiffel Tower set already, so we can start the next box tonight.",
+    answers: ["have finished", "'ve finished"],
+    tense: "simple",
+    explanation: "'Already' with a completed task signals Present Perfect Simple: have/has + past participle (have finished)."
+  },
+  {
+    text: "She _____ (work) on that Technic crane for two days — it's an enormous build.",
+    answers: ["has been working"],
+    tense: "continuous",
+    explanation: "'For two days' measures duration of an ongoing task, so Present Perfect Continuous is needed: has been working."
+  },
+  {
+    text: "They _____ (not find) the missing wheel piece yet, even after checking every box.",
+    answers: ["haven't found", "have not found"],
+    tense: "simple",
+    explanation: "'Yet' in a negative sentence about a single expected outcome takes Present Perfect Simple: haven't found."
+  },
+  {
+    text: "We _____ (build) Lego sets together every weekend since 2019.",
+    answers: ["have been building"],
+    tense: "continuous",
+    explanation: "A repeated habit stretching from a point in the past ('since 2019') to now is expressed with Present Perfect Continuous: have been building."
+  },
+  {
+    text: "This is the third time he _____ (drop) that minifigure on the floor today!",
+    answers: ["has dropped"],
+    tense: "simple",
+    explanation: "Counting repeated single events ('the third time') uses Present Perfect Simple: has dropped, not the continuous form."
+  },
+  {
+    text: "My eyes are tired because I _____ (read) the instruction booklet under poor light for ages.",
+    answers: ["have been reading"],
+    tense: "continuous",
+    explanation: "A present result (tired eyes) caused by an ongoing recent activity calls for Present Perfect Continuous: have been reading."
+  },
+  {
+    text: "Our team _____ (complete) all twelve modular buildings in the city collection.",
+    answers: ["has completed"],
+    tense: "simple",
+    explanation: "A finished total achievement with a clear result uses Present Perfect Simple: has completed."
+  }
+];
+
+// ---------- ACTIVITY 3: REORDERING ----------
+const reorderQuestions = [
+  {
+    words: ["She", "has", "designed", "her", "own", "spaceship", "model"],
+    answer: "She has designed her own spaceship model",
+    tense: "simple",
+    explanation: "A single completed achievement with a clear result takes Present Perfect Simple: has designed."
+  },
+  {
+    words: ["He", "has", "been", "painting", "bricks", "all", "morning"],
+    answer: "He has been painting bricks all morning",
+    tense: "continuous",
+    explanation: "'All morning' stresses duration of an ongoing activity, so Present Perfect Continuous fits: has been painting."
+  },
+  {
+    words: ["We", "have", "never", "seen", "such", "a", "huge", "set"],
+    answer: "We have never seen such a huge set",
+    tense: "simple",
+    explanation: "'Never' describing life experience up to now is a classic Present Perfect Simple use: have never seen."
+  },
+  {
+    words: ["The", "twins", "have", "been", "arguing", "about", "the", "instructions"],
+    answer: "The twins have been arguing about the instructions",
+    tense: "continuous",
+    explanation: "An ongoing, possibly unfinished activity (arguing) is expressed with Present Perfect Continuous: have been arguing."
+  },
+  {
+    words: ["I", "have", "already", "sorted", "the", "blue", "pieces"],
+    answer: "I have already sorted the blue pieces",
+    tense: "simple",
+    explanation: "'Already' marks a completed action with a present result, so Present Perfect Simple is correct: have sorted."
+  },
+  {
+    words: ["She", "has", "been", "waiting", "for", "the", "new", "set", "for", "months"],
+    answer: "She has been waiting for the new set for months",
+    tense: "continuous",
+    explanation: "'For months' measures the length of an unfinished wait, calling for Present Perfect Continuous: has been waiting."
+  }
+];
+
+// ---------- ACTIVITY 4: MATCHING ----------
+// left = time expression (with Polish gloss), right = tense
+const matchPairs = [
+  { left: "just / właśnie", right: "simple", explanation: "'Just' refers to a very recently completed single action — Present Perfect Simple." },
+  { left: "for the last few hours / przez ostatnie kilka godzin", right: "continuous", explanation: "A measured recent duration signals Present Perfect Continuous." },
+  { left: "ever / kiedykolwiek", right: "simple", explanation: "'Ever' asks about life experience as a whole — Present Perfect Simple." },
+  { left: "all day / cały dzień", right: "continuous", explanation: "'All day' emphasises the ongoing span of an activity — Present Perfect Continuous." },
+  { left: "how many times / ile razy", right: "simple", explanation: "Counting repetitions of a completed action uses Present Perfect Simple." },
+  { left: "lately / ostatnio", right: "continuous", explanation: "'Lately' often points to a recent, possibly unfinished pattern of activity — Present Perfect Continuous." }
+];
+
+/* =====================================================
+   SHARED STATE
+   ===================================================== */
+let totalScore = 0;
+const TOTAL_QUESTIONS = mcQuestions.length + fibQuestions.length + reorderQuestions.length + matchPairs.length;
+let answeredCount = 0;
+
+function updateProgress(){
+  const pct = Math.min(100, Math.round((answeredCount / TOTAL_QUESTIONS) * 100));
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = 'Question ' + Math.min(answeredCount+1, TOTAL_QUESTIONS) + ' of ' + TOTAL_QUESTIONS;
+  document.getElementById('scoreLabel').textContent = 'Score: ' + totalScore + ' / ' + TOTAL_QUESTIONS;
+}
+
+function tenseTag(tense){
+  const label = tense === 'simple' ? 'Present Perfect Simple' : 'Present Perfect Continuous';
+  const cls = tense === 'simple' ? 'simple' : 'continuous';
+  return '<span class="tense-tag ' + cls + '">' + label + '</span>';
+}
+
+function shuffleArray(arr){
+  const a = arr.slice();
+  for(let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i+1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function markAnswered(){
+  answeredCount++;
+  updateProgress();
+}
+
+/* =====================================================
+   ACTIVITY 1 — MULTIPLE CHOICE
+   ===================================================== */
+function renderMC(){
+  const mount = document.getElementById('mcMount');
+  mcQuestions.forEach((q, qi) => {
+    const shuffled = shuffleArray(q.options.map((o, origIdx) => ({...o, origIdx})));
+    const card = document.createElement('div');
+    card.className = 'qcard' + (qi === 0 ? ' active' : '');
+    card.id = 'mc-card-' + qi;
+
+    const optHtml = shuffled.map((opt, i) => {
+      const letter = String.fromCharCode(65 + i);
+      return '<div class="option" data-correct="' + opt.correct + '" data-letter="' + letter + '">' +
+             '<span class="opt-key">' + letter + '</span><span>' + opt.key + '</span></div>';
+    }).join('');
+
+    card.innerHTML =
+      '<div class="qnum">Question ' + (qi+1) + ' of ' + mcQuestions.length + ' — Multiple choice</div>' +
+      '<div class="qtext">' + q.text + '</div>' +
+      '<div class="options">' + optHtml + '</div>' +
+      '<div class="feedback" id="mc-feedback-' + qi + '"></div>' +
+      '<div class="controls-row"><button class="btn btn-next" id="mc-next-' + qi + '">Next →</button></div>';
+
+    mount.appendChild(card);
+
+    const options = card.querySelectorAll('.option');
+    let locked = false;
+    options.forEach(optEl => {
+      optEl.addEventListener('click', () => {
+        if(locked) return;
+        locked = true;
+        const isCorrect = optEl.dataset.correct === 'true';
+        options.forEach(o => {
+          o.classList.add('locked');
+          if(o.dataset.correct === 'true'){ o.classList.add('correct-reveal'); }
+          else if(o === optEl){ o.classList.add('wrong-reveal'); }
+        });
+        const fb = document.getElementById('mc-feedback-' + qi);
+        fb.classList.add('show', isCorrect ? 'correct' : 'incorrect');
+        fb.innerHTML = '<div class="feedback-head ' + (isCorrect ? 'correct-text' : 'incorrect-text') + '">' +
+          (isCorrect ? 'Correct!' : 'Not quite.') + tenseTag(q.tense) + '</div>' +
+          '<div>' + q.explanation + '</div>';
+        if(isCorrect) totalScore++;
+        markAnswered();
+        const nextBtn = document.getElementById('mc-next-' + qi);
+        nextBtn.classList.add('show');
+        nextBtn.addEventListener('click', () => {
+          card.classList.remove('active');
+          if(qi + 1 < mcQuestions.length){
+            document.getElementById('mc-card-' + (qi+1)).classList.add('active');
+          } else {
+            document.getElementById('section-fib').scrollIntoView({behavior:'smooth', block:'start'});
+          }
+        }, { once: true });
+      });
+    });
+  });
+}
+
+/* =====================================================
+   ACTIVITY 2 — FILL IN THE BLANK
+   ===================================================== */
+function normalize(str){
+  return str.toLowerCase().trim().replace(/\s+/g, ' ').replace(/['']/g, "'");
+}
+
+function renderFIB(){
+  const mount = document.getElementById('fibMount');
+  fibQuestions.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'qcard' + (qi === 0 ? ' active' : '');
+    card.id = 'fib-card-' + qi;
+
+    card.innerHTML =
+      '<div class="qnum">Question ' + (qi+1) + ' of ' + fibQuestions.length + ' — Fill in the blank</div>' +
+      '<div class="qtext">' + q.text + '</div>' +
+      '<div class="fib-row">' +
+        '<input type="text" class="fib-input" id="fib-input-' + qi + '" placeholder="Type the verb form...">' +
+        '<button class="check-btn" id="fib-check-' + qi + '">Check</button>' +
+      '</div>' +
+      '<div class="feedback" id="fib-feedback-' + qi + '"></div>' +
+      '<div class="controls-row"><button class="btn btn-next" id="fib-next-' + qi + '">Next →</button></div>';
+
+    mount.appendChild(card);
+
+    const input = document.getElementById('fib-input-' + qi);
+    const checkBtn = document.getElementById('fib-check-' + qi);
+    let locked = false;
+
+    function submit(){
+      if(locked || input.value.trim() === '') return;
+      locked = true;
+      const userVal = normalize(input.value);
+      const isCorrect = q.answers.some(a => normalize(a) === userVal);
+      input.classList.add(isCorrect ? 'correct-reveal' : 'wrong-reveal');
+      input.disabled = true;
+      checkBtn.disabled = true;
+      const fb = document.getElementById('fib-feedback-' + qi);
+      fb.classList.add('show', isCorrect ? 'correct' : 'incorrect');
+      fb.innerHTML = '<div class="feedback-head ' + (isCorrect ? 'correct-text' : 'incorrect-text') + '">' +
+        (isCorrect ? 'Correct!' : ('Correct answer: ' + q.answers[0])) + tenseTag(q.tense) + '</div>' +
+        '<div>' + q.explanation + '</div>';
+      if(isCorrect) totalScore++;
+      markAnswered();
+      const nextBtn = document.getElementById('fib-next-' + qi);
+      nextBtn.classList.add('show');
+      nextBtn.addEventListener('click', () => {
+        card.classList.remove('active');
+        if(qi + 1 < fibQuestions.length){
+          document.getElementById('fib-card-' + (qi+1)).classList.add('active');
+        } else {
+          document.getElementById('section-reorder').scrollIntoView({behavior:'smooth', block:'start'});
+        }
+      }, { once: true });
+    }
+
+    checkBtn.addEventListener('click', submit);
+    input.addEventListener('keydown', e => { if(e.key === 'Enter') submit(); });
+  });
+}
+
+/* =====================================================
+   ACTIVITY 3 — REORDERING (drag and drop)
+   ===================================================== */
+function renderReorder(){
+  const mount = document.getElementById('reorderMount');
+  reorderQuestions.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'qcard' + (qi === 0 ? ' active' : '');
+    card.id = 'reorder-card-' + qi;
+
+    const shuffledWords = shuffleArray(q.words.map((w, idx) => ({ word: w, id: 'w'+qi+'-'+idx })));
+
+    card.innerHTML =
+      '<div class="qnum">Question ' + (qi+1) + ' of ' + reorderQuestions.length + ' — Rebuild the sentence</div>' +
+      '<div class="qtext">Drag the bricks below into the correct order.</div>' +
+      '<div class="reorder-target" id="reorder-target-' + qi + '"><span class="target-placeholder">Drop words here, in order</span></div>' +
+      '<div class="reorder-bank" id="reorder-bank-' + qi + '"></div>' +
+      '<div class="controls-row">' +
+        '<button class="btn btn-primary" id="reorder-check-' + qi + '">Check order</button>' +
+        '<button class="btn btn-next" id="reorder-next-' + qi + '">Next →</button>' +
+      '</div>' +
+      '<div class="feedback" id="reorder-feedback-' + qi + '"></div>';
+
+    mount.appendChild(card);
+
+    const bank = document.getElementById('reorder-bank-' + qi);
+    const target = document.getElementById('reorder-target-' + qi);
+
+    shuffledWords.forEach(w => {
+      const chip = document.createElement('div');
+      chip.className = 'word-chip';
+      chip.textContent = w.word;
+      chip.draggable = true;
+      chip.dataset.word = w.word;
+      chip.dataset.id = w.id;
+      bank.appendChild(chip);
+    });
+
+    let dragged = null;
+    let locked = false;
+
+    function attachDragHandlers(chip){
+      chip.addEventListener('dragstart', e => {
+        if(locked) { e.preventDefault(); return; }
+        dragged = chip;
+        chip.classList.add('dragging');
+      });
+      chip.addEventListener('dragend', () => { chip.classList.remove('dragging'); });
+      chip.addEventListener('click', () => {
+        if(locked) return;
+        // tap-to-move fallback for touch devices
+        if(chip.parentElement === bank){
+          target.querySelector('.target-placeholder')?.remove();
+          target.appendChild(chip);
+          chip.classList.add('placed');
+        } else {
+          bank.appendChild(chip);
+          chip.classList.remove('placed');
+          if(target.children.length === 0){
+            target.innerHTML = '<span class="target-placeholder">Drop words here, in order</span>';
+          }
+        }
+      });
+    }
+
+    bank.querySelectorAll('.word-chip').forEach(attachDragHandlers);
+
+    [bank, target].forEach(zone => {
+      zone.addEventListener('dragover', e => { e.preventDefault(); });
+      zone.addEventListener('drop', e => {
+        e.preventDefault();
+        if(!dragged || locked) return;
+        zone.querySelector('.target-placeholder')?.remove();
+        zone.appendChild(dragged);
+        if(zone === target){ dragged.classList.add('placed'); }
+        else { dragged.classList.remove('placed'); }
+        if(target.children.length === 0){
+          target.innerHTML = '<span class="target-placeholder">Drop words here, in order</span>';
+        }
+      });
+    });
+
+    document.getElementById('reorder-check-' + qi).addEventListener('click', () => {
+      if(locked) return;
+      const placed = Array.from(target.querySelectorAll('.word-chip')).map(c => c.dataset.word);
+      if(placed.length !== q.words.length){
+        const fb = document.getElementById('reorder-feedback-' + qi);
+        fb.classList.add('show', 'incorrect');
+        fb.innerHTML = '<div class="feedback-head incorrect-text">Not finished yet</div><div>Place all the bricks in the sentence area before checking.</div>';
+        return;
+      }
+      locked = true;
+      const userSentence = placed.join(' ');
+      const isCorrect = userSentence === q.answer;
+      target.classList.add(isCorrect ? 'correct-reveal' : 'wrong-reveal');
+      const fb = document.getElementById('reorder-feedback-' + qi);
+      fb.classList.add('show', isCorrect ? 'correct' : 'incorrect');
+      fb.innerHTML = '<div class="feedback-head ' + (isCorrect ? 'correct-text' : 'incorrect-text') + '">' +
+        (isCorrect ? 'Correct!' : ('Correct order: ' + q.answer)) + tenseTag(q.tense) + '</div>' +
+        '<div>' + q.explanation + '</div>';
+      if(isCorrect) totalScore++;
+      markAnswered();
+      document.getElementById('reorder-check-' + qi).disabled = true;
+      const nextBtn = document.getElementById('reorder-next-' + qi);
+      nextBtn.classList.add('show');
+      nextBtn.addEventListener('click', () => {
+        card.classList.remove('active');
+        if(qi + 1 < reorderQuestions.length){
+          document.getElementById('reorder-card-' + (qi+1)).classList.add('active');
+        } else {
+          document.getElementById('section-match').scrollIntoView({behavior:'smooth', block:'start'});
+        }
+      }, { once: true });
+    });
+  });
+}
+
+/* =====================================================
+   ACTIVITY 4 — MATCHING
+   ===================================================== */
+function renderMatch(){
+  const mount = document.getElementById('matchMount');
+  const card = document.createElement('div');
+  card.className = 'qcard active';
+  card.id = 'match-card-0';
+
+  const leftItems = shuffleArray(matchPairs.map((p, idx) => ({ ...p, idx })));
+  const rightOptionsBase = [
+    { id: 'simple', label: 'Present Perfect Simple' },
+    { id: 'continuous', label: 'Present Perfect Continuous' }
+  ];
+
+  const leftHtml = leftItems.map((p, i) =>
+    '<div class="match-item left" data-idx="' + p.idx + '" id="match-left-' + i + '">' + p.left + '</div>'
+  ).join('');
+
+  card.innerHTML =
+    '<div class="qnum">Matching — ' + matchPairs.length + ' items</div>' +
+    '<div class="qtext">Tap a time expression on the left, then tap the matching tense on the right.</div>' +
+    '<div class="match-grid">' +
+      '<div><div class="match-col-label">Time expression</div>' + leftHtml + '</div>' +
+      '<div><div class="match-col-label">Tense</div>' +
+        '<div class="match-item right" data-id="simple" id="match-right-simple">Present Perfect Simple</div>' +
+        '<div class="match-item right" data-id="continuous" id="match-right-continuous">Present Perfect Continuous</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="feedback" id="match-feedback-0"></div>' +
+    '<div class="controls-row"><button class="btn btn-next" id="match-next-0">Finish lesson →</button></div>';
+
+  mount.appendChild(card);
+
+  let selectedLeft = null;
+  let solvedCount = 0;
+  let matchScore = 0;
+  const leftEls = card.querySelectorAll('.match-item.left');
+  const rightSimple = document.getElementById('match-right-simple');
+  const rightContinuous = document.getElementById('match-right-continuous');
+
+  leftEls.forEach(el => {
+    el.addEventListener('click', () => {
+      if(el.classList.contains('solved-correct') || el.classList.contains('solved-wrong')) return;
+      leftEls.forEach(l => l.classList.remove('picked'));
+      el.classList.add('picked');
+      selectedLeft = el;
+    });
+  });
+
+  function handleRightClick(rightEl, rightId){
+    if(!selectedLeft) return;
+    const idx = parseInt(selectedLeft.dataset.idx, 10);
+    const pair = matchPairs[idx];
+    const isCorrect = pair.right === rightId;
+
+    selectedLeft.classList.remove('picked');
+    selectedLeft.classList.add(isCorrect ? 'solved-correct' : 'solved-wrong');
+    selectedLeft.style.pointerEvents = 'none';
+
+    const fb = document.getElementById('match-feedback-0');
+    fb.classList.add('show', isCorrect ? 'correct' : 'incorrect');
+    fb.innerHTML = '<div class="feedback-head ' + (isCorrect ? 'correct-text' : 'incorrect-text') + '">' +
+      (isCorrect ? 'Correct!' : ('Actually: ' + pair.left.split(' / ')[0] + ' → ' + (pair.right === 'simple' ? 'Present Perfect Simple' : 'Present Perfect Continuous'))) + '</div>' +
+      '<div>' + pair.explanation + '</div>';
+
+    if(isCorrect){ matchScore++; totalScore++; }
+    markAnswered();
+    solvedCount++;
+    selectedLeft = null;
+
+    if(solvedCount === matchPairs.length){
+      document.getElementById('match-next-0').classList.add('show');
+    }
+  }
+
+  rightSimple.addEventListener('click', () => handleRightClick(rightSimple, 'simple'));
+  rightContinuous.addEventListener('click', () => handleRightClick(rightContinuous, 'continuous'));
+
+  document.getElementById('match-next-0').addEventListener('click', showFinalScreen);
+}
+
+/* =====================================================
+   FINAL SCREEN
+   ===================================================== */
+function showFinalScreen(){
+  document.getElementById('lessonBody').classList.add('hidden');
+  const finalScreen = document.getElementById('finalScreen');
+  finalScreen.classList.add('show');
+  document.getElementById('finalScoreText').textContent = totalScore + ' / ' + TOTAL_QUESTIONS;
+  const pct = totalScore / TOTAL_QUESTIONS;
+  let msg;
+  if(pct >= 0.9) msg = "Outstanding! You've mastered the Simple vs Continuous distinction — solid as a Lego baseplate.";
+  else if(pct >= 0.7) msg = "Great work! You've got a strong grip on these tenses. Review any missed items and you're set.";
+  else if(pct >= 0.5) msg = "Good progress. Revisit the colour-coded tense guide above and try the trickier questions again.";
+  else msg = "This is a tricky area of grammar — even advanced learners mix these up. Go through the explanations again and rebuild your understanding piece by piece.";
+  document.getElementById('finalMsg').textContent = msg;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.getElementById('restartBtn').addEventListener('click', () => {
+  location.reload();
+});
+
+/* =====================================================
+   INIT
+   ===================================================== */
+renderMC();
+renderFIB();
+renderReorder();
+renderMatch();
+updateProgress();
+
+</script>
+</body>
+</html>

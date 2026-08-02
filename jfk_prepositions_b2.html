@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – JFK & Prepositions Part 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #0e1118;
+    --surface:   #141720;
+    --card:      #1b2030;
+    --navy:      #1e2d4a;
+    --blue:      #4a7fb5;
+    --blue-lt:   #7aafd4;
+    --amber:     #d4942a;
+    --amber-lt:  #e8b85a;
+    --cream:     #eae6de;
+    --muted:     #7a8498;
+    --correct:   #5aad8e;
+    --wrong:     #c96060;
+    --border:    rgba(74,127,181,0.18);
+    --radius:    14px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--cream);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 16px 60px;
+  }
+
+  /* grain */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+    background-size: 180px;
+    pointer-events: none;
+    z-index: 0;
+    opacity: .6;
+  }
+
+  /* scanline effect – subtle */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(0,0,0,0.04) 3px,
+      rgba(0,0,0,0.04) 4px
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  header, .hero, .activity-wrapper, #final-screen { position: relative; z-index: 1; }
+
+  /* ── HEADER ── */
+  header {
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 0 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 32px;
+  }
+
+  .score-pill {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 8px 20px;
+    font-size: 13px;
+    color: var(--blue-lt);
+    font-weight: 500;
+    letter-spacing: .04em;
+    white-space: nowrap;
+  }
+  .score-pill span { color: var(--cream); font-weight: 700; }
+
+  /* ── HERO ── */
+  .hero {
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    gap: 36px;
+    align-items: flex-end;
+    margin-bottom: 40px;
+  }
+
+  .hero-text { flex: 1; }
+  .lesson-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--amber);
+    border: 1px solid var(--amber);
+    border-radius: 4px;
+    padding: 3px 10px;
+    margin-bottom: 14px;
+  }
+  .part-badge {
+    background: rgba(212,148,42,0.15);
+    border: 1px solid rgba(212,148,42,0.4);
+    border-radius: 4px;
+    padding: 2px 7px;
+    font-size: 10px;
+    color: var(--amber-lt);
+    margin-left: 4px;
+  }
+
+  .hero-text h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 5vw, 44px);
+    line-height: 1.15;
+    color: var(--cream);
+    margin-bottom: 14px;
+  }
+  .hero-text h1 em {
+    font-style: italic;
+    color: var(--blue-lt);
+  }
+  .hero-text p {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.65;
+    max-width: 420px;
+  }
+
+  /* ── ILLUSTRATION ── */
+  .illustration svg {
+    width: clamp(130px, 22vw, 210px);
+    height: auto;
+    filter: drop-shadow(0 8px 40px rgba(74,127,181,0.2));
+  }
+
+  /* ── ACTIVITY ── */
+  .activity { display: none; }
+  .activity.active { display: block; animation: fadeUp .4s ease; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .activity-header { margin-bottom: 24px; }
+  .activity-label {
+    font-size: 11px; font-weight: 600; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--blue); margin-bottom: 8px;
+  }
+  .activity-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; color: var(--cream); margin-bottom: 6px;
+  }
+  .activity-instructions { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+  .progress-bar-wrap {
+    width: 100%; height: 3px;
+    background: var(--card);
+    border-radius: 999px;
+    margin-bottom: 28px; overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--blue), var(--blue-lt));
+    border-radius: 999px;
+    transition: width .4s ease;
+  }
+
+  /* ── QUESTION CARD ── */
+  .question-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+  .question-counter { font-size: 12px; color: var(--muted); font-weight: 500; letter-spacing: .06em; margin-bottom: 12px; }
+  .question-text { font-size: 16px; line-height: 1.7; color: var(--cream); margin-bottom: 22px; font-weight: 400; }
+
+  /* ── MC OPTIONS ── */
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option-btn {
+    background: var(--surface);
+    border: 1.5px solid rgba(74,127,181,0.15);
+    border-radius: 10px;
+    padding: 13px 18px;
+    text-align: left;
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    cursor: pointer;
+    transition: border-color .2s, background .2s, transform .1s;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .option-btn:hover:not(:disabled) { border-color: var(--blue); background: var(--card); transform: translateX(3px); }
+  .option-btn:disabled { cursor: default; }
+  .option-btn .opt-label {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: rgba(74,127,181,0.1);
+    border: 1.5px solid rgba(74,127,181,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: var(--blue);
+    flex-shrink: 0;
+  }
+  .option-btn.correct { border-color: var(--correct); background: rgba(90,173,142,0.1); }
+  .option-btn.correct .opt-label { background: var(--correct); border-color: var(--correct); color: #fff; }
+  .option-btn.wrong { border-color: var(--wrong); background: rgba(201,96,96,0.08); }
+  .option-btn.wrong .opt-label { background: var(--wrong); border-color: var(--wrong); color: #fff; }
+
+  /* ── FEEDBACK ── */
+  .feedback-box {
+    display: none;
+    background: var(--surface);
+    border-left: 3px solid var(--blue);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    margin-top: 16px;
+    font-size: 14px; line-height: 1.65; color: var(--muted);
+  }
+  .feedback-box.show { display: block; animation: fadeUp .3s ease; }
+  .feedback-box strong { color: var(--cream); }
+  .feedback-correct { color: var(--correct) !important; font-weight: 600; }
+  .feedback-wrong { color: var(--wrong) !important; font-weight: 600; }
+
+  /* ── DROPDOWN ── */
+  .fitb-select {
+    background: var(--surface);
+    border: 1.5px solid rgba(74,127,181,0.35);
+    border-radius: 8px;
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    padding: 6px 12px;
+    cursor: pointer;
+    outline: none;
+    transition: border-color .2s;
+  }
+  .fitb-select:focus { border-color: var(--blue); }
+  .fitb-select option { background: var(--card); }
+
+  .fitb-submit {
+    background: transparent;
+    border: 1.5px solid var(--blue);
+    color: var(--blue-lt);
+    border-radius: 8px;
+    padding: 9px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px; font-weight: 600;
+    cursor: pointer; margin-top: 18px;
+    transition: background .2s, color .2s;
+  }
+  .fitb-submit:hover:not(:disabled) { background: var(--blue); color: #fff; }
+  .fitb-submit:disabled { opacity: .35; cursor: default; }
+
+  /* ── REORDERING ── */
+  .reorder-target {
+    min-height: 52px;
+    background: var(--surface);
+    border: 2px dashed rgba(74,127,181,0.3);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+  .reorder-target.drag-over {
+    border-color: var(--blue);
+    background: rgba(74,127,181,0.06);
+  }
+
+  .word-chip {
+    background: var(--navy);
+    border: 1.5px solid rgba(74,127,181,0.3);
+    border-radius: 8px;
+    padding: 7px 14px;
+    font-size: 14px;
+    color: var(--blue-lt);
+    cursor: grab;
+    user-select: none;
+    font-weight: 500;
+    transition: border-color .2s, opacity .2s, transform .1s;
+    white-space: nowrap;
+  }
+  .word-chip:hover { border-color: var(--blue); transform: translateY(-1px); }
+  .word-chip.placed { background: rgba(74,127,181,0.12); border-color: var(--blue); color: var(--cream); }
+  .word-chip.ro-correct { border-color: var(--correct); color: var(--correct); background: rgba(90,173,142,0.08); }
+  .word-chip.ro-wrong { border-color: var(--wrong); color: var(--wrong); background: rgba(201,96,96,0.08); }
+
+  .reorder-pool {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;
+  }
+
+  .reorder-check {
+    background: transparent;
+    border: 1.5px solid var(--blue);
+    color: var(--blue-lt);
+    border-radius: 8px;
+    padding: 9px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px; font-weight: 600;
+    cursor: pointer; margin-top: 4px;
+    transition: background .2s, color .2s;
+  }
+  .reorder-check:hover:not(:disabled) { background: var(--blue); color: #fff; }
+  .reorder-check:disabled { opacity: .35; cursor: default; }
+
+  /* ── NEXT ── */
+  .btn-next {
+    display: none;
+    margin-top: 24px;
+    background: linear-gradient(135deg, var(--blue), var(--blue-lt));
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    padding: 13px 36px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px; font-weight: 700;
+    cursor: pointer; letter-spacing: .03em;
+    transition: opacity .2s, transform .1s;
+  }
+  .btn-next:hover { opacity: .9; transform: translateY(-1px); }
+  .btn-next.show { display: inline-flex; align-items: center; gap: 8px; }
+
+  /* ── FINAL ── */
+  #final-screen { display: none; text-align: center; padding: 60px 20px; animation: fadeUp .5s ease; }
+  #final-screen.show { display: block; }
+  .final-star { font-size: 52px; margin-bottom: 16px; filter: drop-shadow(0 4px 16px rgba(74,127,181,0.5)); }
+  .final-score { font-family: 'Playfair Display', serif; font-size: 72px; color: var(--blue-lt); font-weight: 700; margin-bottom: 8px; line-height: 1; }
+  .final-label { font-size: 15px; color: var(--muted); margin-bottom: 24px; }
+  .final-msg { font-family: 'Playfair Display', serif; font-size: 21px; color: var(--cream); font-style: italic; margin-bottom: 36px; line-height: 1.55; max-width: 480px; margin-left: auto; margin-right: auto; }
+  .btn-restart { background: transparent; border: 2px solid var(--blue); color: var(--blue-lt); border-radius: 999px; padding: 13px 40px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; transition: background .2s, color .2s; }
+  .btn-restart:hover { background: var(--blue); color: #fff; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <svg width="162" height="52" viewBox="0 0 162 52" xmlns="http://www.w3.org/2000/svg">
+      <text x="2" y="24" font-family="'Playfair Display', Georgia, serif" font-size="22" font-weight="400" fill="#4a7fb5" letter-spacing="1">Forbes</text>
+      <rect x="2" y="30" width="158" height="1" fill="rgba(74,127,181,0.4)"/>
+      <text x="2" y="47" font-family="'DM Sans', Arial, sans-serif" font-size="13" font-weight="700" fill="#eae6de" letter-spacing="5">ENGLISH</text>
+    </svg>
+  </div>
+  <div class="score-pill">Score: <span id="score-display">0</span> / <span id="total-display">15</span></div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-text">
+    <div class="lesson-tag">B2 · Prepositions <span class="part-badge">PART 2</span></div>
+    <h1>Who Killed<br><em>JFK?</em></h1>
+    <p>Master advanced prepositions of place, time, movement, and cause through one of history's most debated conspiracies — the assassination of John F. Kennedy.</p>
+  </div>
+  <div class="illustration">
+    <!-- SVG illustration: JFK silhouette, presidential + conspiratorial theme -->
+    <svg viewBox="0 0 200 290" xmlns="http://www.w3.org/2000/svg" width="200" height="290">
+      <defs>
+        <radialGradient id="blueglow" cx="50%" cy="35%" r="55%">
+          <stop offset="0%" stop-color="#4a7fb5" stop-opacity=".25"/>
+          <stop offset="100%" stop-color="#0e1118" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="suitskin" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#c8a87a"/>
+          <stop offset="100%" stop-color="#a07840"/>
+        </linearGradient>
+        <linearGradient id="suit" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#22304a"/>
+          <stop offset="100%" stop-color="#111820"/>
+        </linearGradient>
+        <linearGradient id="skytop" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#0e1a2e"/>
+          <stop offset="100%" stop-color="#1b2a44"/>
+        </linearGradient>
+        <filter id="blur2">
+          <feGaussianBlur stdDeviation="2"/>
+        </filter>
+      </defs>
+      <!-- background glow -->
+      <ellipse cx="100" cy="130" rx="92" ry="120" fill="url(#blueglow)"/>
+      <!-- city skyline silhouette (Dallas) -->
+      <rect x="0" y="210" width="200" height="80" fill="#0a0f18"/>
+      <rect x="10" y="185" width="18" height="25" fill="#0d1520"/>
+      <rect x="14" y="180" width="10" height="8" fill="#0d1520"/>
+      <rect x="35" y="195" width="22" height="20" fill="#0d1520"/>
+      <rect x="40" y="190" width="12" height="8" fill="#0d1520"/>
+      <rect x="62" y="178" width="28" height="37" fill="#111d2e"/>
+      <rect x="68" y="170" width="16" height="12" fill="#111d2e"/>
+      <rect x="72" y="165" width="8" height="8" rx="2" fill="#111d2e"/>
+      <!-- antenna -->
+      <line x1="76" y1="165" x2="76" y2="150" stroke="#0d1520" stroke-width="1.5"/>
+      <rect x="96" y="188" width="20" height="27" fill="#0d1520"/>
+      <rect x="120" y="192" width="16" height="23" fill="#0d1520"/>
+      <rect x="140" y="180" width="25" height="35" fill="#111d2e"/>
+      <rect x="146" y="172" width="13" height="12" fill="#111d2e"/>
+      <rect x="170" y="198" width="18" height="17" fill="#0d1520"/>
+      <!-- building windows glowing -->
+      <rect x="64" y="182" width="4" height="3" rx="0.5" fill="#d4942a" opacity=".6"/>
+      <rect x="72" y="182" width="4" height="3" rx="0.5" fill="#4a7fb5" opacity=".5"/>
+      <rect x="80" y="182" width="4" height="3" rx="0.5" fill="#d4942a" opacity=".4"/>
+      <rect x="64" y="190" width="4" height="3" rx="0.5" fill="#4a7fb5" opacity=".5"/>
+      <rect x="72" y="190" width="4" height="3" rx="0.5" fill="#d4942a" opacity=".3"/>
+      <rect x="143" y="184" width="3" height="3" rx="0.5" fill="#4a7fb5" opacity=".5"/>
+      <rect x="150" y="184" width="3" height="3" rx="0.5" fill="#d4942a" opacity=".4"/>
+      <rect x="143" y="192" width="3" height="3" rx="0.5" fill="#d4942a" opacity=".5"/>
+      <!-- road / motorcade hint -->
+      <rect x="0" y="230" width="200" height="60" fill="#0a0d14"/>
+      <line x1="0" y1="258" x2="200" y2="258" stroke="#d4942a" stroke-width="1" stroke-dasharray="12,8" opacity=".4"/>
+      <!-- car silhouette -->
+      <rect x="50" y="240" width="100" height="20" rx="6" fill="#1a2438"/>
+      <rect x="65" y="228" width="68" height="18" rx="8" fill="#1e2d46"/>
+      <circle cx="70" cy="262" r="9" fill="#111820" stroke="#2a3a54" stroke-width="2"/>
+      <circle cx="130" cy="262" r="9" fill="#111820" stroke="#2a3a54" stroke-width="2"/>
+      <circle cx="70" cy="262" r="4" fill="#1e2d46"/>
+      <circle cx="130" cy="262" r="4" fill="#1e2d46"/>
+      <!-- figure in car: JFK wave -->
+      <circle cx="100" cy="236" r="7" fill="url(#suitskin)"/>
+      <path d="M86 252 Q90 242 100 240 Q110 242 114 252 L118 275 L82 275 Z" fill="url(#suit)"/>
+      <!-- arm wave -->
+      <path d="M86 245 Q78 232 82 224" fill="none" stroke="url(#suitskin)" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="82" cy="223" r="4" fill="url(#suitskin)"/>
+      <!-- hair -->
+      <path d="M93 230 Q100 223 107 230 Q103 228 100 229 Q97 228 93 230 Z" fill="#8a6020"/>
+      <!-- American flag pin -->
+      <rect x="105" y="246" width="5" height="3" rx=".5" fill="#c94040"/>
+      <rect x="105" y="249" width="5" height="1" fill="#fff" opacity=".8"/>
+      <rect x="105" y="250" width="5" height="2" fill="#2244aa"/>
+      <!-- crosshair overlay — conspiratorial motif -->
+      <g opacity=".18">
+        <circle cx="100" cy="100" r="45" fill="none" stroke="#c96060" stroke-width="1"/>
+        <circle cx="100" cy="100" r="30" fill="none" stroke="#c96060" stroke-width=".8"/>
+        <line x1="55" y1="100" x2="145" y2="100" stroke="#c96060" stroke-width=".8"/>
+        <line x1="100" y1="55" x2="100" y2="145" stroke="#c96060" stroke-width=".8"/>
+        <line x1="69" y1="69" x2="131" y2="131" stroke="#c96060" stroke-width=".5" stroke-dasharray="4,3"/>
+        <line x1="131" y1="69" x2="69" y2="131" stroke="#c96060" stroke-width=".5" stroke-dasharray="4,3"/>
+      </g>
+      <!-- question marks decorative -->
+      <text x="16" y="165" font-size="22" fill="#4a7fb5" opacity=".18" font-family="Georgia, serif">?</text>
+      <text x="170" y="175" font-size="18" fill="#d4942a" opacity=".2" font-family="Georgia, serif">?</text>
+      <text x="8" y="110" font-size="14" fill="#4a7fb5" opacity=".15" font-family="Georgia, serif">?</text>
+      <!-- TOP STAR -->
+      <text x="90" y="26" font-size="18" fill="#4a7fb5" opacity=".4">★</text>
+      <!-- document / classified stamp hint -->
+      <rect x="148" y="42" width="40" height="52" rx="3" fill="#111d2e" stroke="rgba(74,127,181,0.3)" stroke-width="1"/>
+      <line x1="152" y1="52" x2="184" y2="52" stroke="rgba(74,127,181,0.3)" stroke-width="1"/>
+      <line x1="152" y1="58" x2="184" y2="58" stroke="rgba(74,127,181,0.2)" stroke-width="1"/>
+      <line x1="152" y1="64" x2="178" y2="64" stroke="rgba(74,127,181,0.2)" stroke-width="1"/>
+      <line x1="152" y1="70" x2="184" y2="70" stroke="rgba(74,127,181,0.15)" stroke-width="1"/>
+      <line x1="152" y1="76" x2="172" y2="76" stroke="rgba(74,127,181,0.15)" stroke-width="1"/>
+      <rect x="150" y="80" width="38" height="10" rx="2" fill="rgba(201,96,96,0.2)" stroke="rgba(201,96,96,0.5)" stroke-width="1"/>
+      <text x="153" y="89" font-size="7" fill="#c96060" font-family="'DM Sans', sans-serif" font-weight="700" letter-spacing="1">CLASSIFIED</text>
+    </svg>
+  </div>
+</div>
+
+<!-- ACTIVITY WRAPPER -->
+<div class="activity-wrapper" id="activity-wrapper">
+
+  <!-- ACT 1: Multiple Choice -->
+  <div class="activity active" id="act1">
+    <div class="activity-header">
+      <div class="activity-label">Activity 1 of 3</div>
+      <div class="activity-title">Multiple Choice</div>
+      <div class="activity-instructions">Choose the correct preposition or prepositional phrase. At B2 level, pay attention to subtle differences in meaning between similar options.</div>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="pb1" style="width:0%"></div></div>
+    <div id="mc-container"></div>
+    <div style="display:flex;justify-content:flex-end">
+      <button class="btn-next" id="mc-next">Next question →</button>
+    </div>
+  </div>
+
+  <!-- ACT 2: Fill in the Blank -->
+  <div class="activity" id="act2">
+    <div class="activity-header">
+      <div class="activity-label">Activity 2 of 3</div>
+      <div class="activity-title">Fill in the Blank</div>
+      <div class="activity-instructions">Select the correct preposition from the dropdown to complete each sentence. These questions focus on fixed expressions and advanced collocations.</div>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="pb2" style="width:0%"></div></div>
+    <div id="fitb-container"></div>
+    <div style="display:flex;justify-content:flex-end">
+      <button class="btn-next" id="fitb-next">Next question →</button>
+    </div>
+  </div>
+
+  <!-- ACT 3: Sentence Reordering -->
+  <div class="activity" id="act3">
+    <div class="activity-header">
+      <div class="activity-label">Activity 3 of 3</div>
+      <div class="activity-title">Sentence Reordering</div>
+      <div class="activity-instructions">Drag the word chunks into the correct order to form a grammatically accurate sentence. The prepositional phrase is highlighted — make sure it is in the right place.</div>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="pb3" style="width:0%"></div></div>
+    <div id="reorder-container"></div>
+    <div style="display:flex;justify-content:flex-end">
+      <button class="btn-next" id="reorder-next">Next question →</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- FINAL -->
+<div id="final-screen">
+  <div class="final-star">★</div>
+  <div class="final-score" id="final-score">0</div>
+  <div class="final-label">out of 15</div>
+  <div class="final-msg" id="final-msg"></div>
+  <button class="btn-restart" onclick="restartAll()">Start again</button>
+</div>
+
+<script>
+/* ══════════════════════════════════════
+   DATA
+══════════════════════════════════════ */
+
+const mcQuestions = [
+  {
+    q: "Kennedy was assassinated ___ Dealey Plaza in Dallas, Texas, on 22 November 1963.",
+    opts: ["inside", "within", "in", "around"],
+    correct: 2,
+    exp: "<strong>In</strong> is the standard preposition for named public spaces, squares, and plazas. 'Inside' implies an enclosed interior; 'within' is more formal and suggests boundaries; 'around' suggests movement."
+  },
+  {
+    q: "The Warren Commission concluded that Lee Harvey Oswald acted ___ his own, without co-conspirators.",
+    opts: ["on", "by", "for", "in"],
+    correct: 0,
+    exp: "<strong>On his own</strong> is a fixed expression meaning independently or alone. 'By himself' is also correct, but 'by his own' is not standard. 'On your own' is the natural collocation."
+  },
+  {
+    q: "The presidential motorcade was travelling ___ Elm Street when the shots were fired.",
+    opts: ["along", "across", "through", "over"],
+    correct: 0,
+    exp: "<strong>Along</strong> describes movement following the length of a road or path. 'Across' implies going from one side to the other. 'Through' implies passing inside something enclosed."
+  },
+  {
+    q: "Many documents relating to the assassination were kept ___ the public for decades.",
+    opts: ["away from", "hidden from", "from", "out of reach of"],
+    correct: 2,
+    exp: "<strong>Kept from</strong> means deliberately withheld or concealed. It is a common formal collocation: 'to keep something from someone'. The others are also possible in informal use, but 'from' is the most precise prepositional answer."
+  },
+  {
+    q: "The CIA has been ___ suspicion ever since declassified files suggested prior knowledge of Oswald.",
+    opts: ["below", "beneath", "under", "within"],
+    correct: 2,
+    exp: "<strong>Under suspicion</strong> is a fixed collocation meaning being considered a possible suspect. Other prepositions do not collocate naturally with 'suspicion' in this context."
+  }
+];
+
+const fitbQuestions = [
+  {
+    before: "Oswald was shot dead",
+    after: "a Dallas nightclub owner named Jack Ruby just two days after the assassination.",
+    opts: ["from", "by", "with", "through"],
+    correct: 1,
+    exp: "<strong>By</strong> is used in passive or quasi-passive constructions to introduce the agent — the person performing the action. 'Shot by someone' is the standard structure."
+  },
+  {
+    before: "Kennedy was the fourth US president to die",
+    after: "office, following Lincoln, Garfield, and McKinley.",
+    opts: ["in", "while in", "during", "within"],
+    correct: 0,
+    exp: "<strong>In office</strong> is the fixed expression for the period when a politician holds their post. 'Die in office' means to die while serving as president."
+  },
+  {
+    before: "The 'magic bullet' theory claims that a single bullet passed",
+    after: "both Kennedy and Governor Connally.",
+    opts: ["between", "across", "through", "via"],
+    correct: 2,
+    exp: "<strong>Through</strong> describes movement entering and exiting a solid object or body. 'Pass through something' is the precise phrasal verb here."
+  },
+  {
+    before: "The grassy knoll — a small hill to the right of the motorcade — has been",
+    after: "intense scrutiny for over sixty years.",
+    opts: ["below", "under", "beneath", "within"],
+    correct: 1,
+    exp: "<strong>Under scrutiny</strong> is a fixed collocation. Like 'under suspicion' and 'under investigation', 'under' is used with nouns that describe examination or pressure."
+  },
+  {
+    before: "Some theorists argue that evidence was tampered",
+    after: "before it could be properly examined by independent investigators.",
+    opts: ["on", "at", "with", "by"],
+    correct: 2,
+    exp: "<strong>Tampered with</strong> is a fixed phrasal verb meaning illegally or secretly interfered with. The preposition 'with' is inseparable from this verb."
+  }
+];
+
+// Reordering: each item is an array of chunks in correct order, one chunk is the preposition phrase (marked pp:true)
+const reorderQuestions = [
+  {
+    chunks: ["Kennedy", "gave his final speech", "at the Hotel Texas", "in Fort Worth", "on the morning of his death"],
+    prep_indices: [2,3,4],
+    exp: "The sentence follows the pattern: Subject → Verb phrase → Place → More specific place → Time. In English, time expressions typically come last in this type of sentence."
+  },
+  {
+    chunks: ["The Warren Commission", "was established", "within weeks", "of the assassination", "to investigate the events"],
+    prep_indices: [2,3],
+    exp: "<strong>Within weeks of</strong> is a two-part prepositional phrase. 'Within' indicates the time limit; 'of' links it to the event. The infinitive phrase 'to investigate' comes last as it expresses purpose."
+  },
+  {
+    chunks: ["Protesters", "gathered", "outside the Warren Commission building", "throughout the inquiry", "demanding a full re-examination"],
+    prep_indices: [2,3],
+    exp: "'Outside' (place) comes before 'throughout' (time). The participle phrase 'demanding...' comes last as it describes simultaneous action."
+  },
+  {
+    chunks: ["A recording device", "was found", "beneath the dashboard", "of the presidential limousine", "after the car was examined"],
+    prep_indices: [2,3,4],
+    exp: "<strong>Beneath</strong> (specific place) → 'of' (possession) → 'after' (time/sequence). The prepositional phrases build from specific location to context."
+  },
+  {
+    chunks: ["The case files", "were transferred", "from the National Archives", "to a secure location", "prior to their planned release"],
+    prep_indices: [2,3,4],
+    exp: "'From...to' expresses movement between two points. 'Prior to' (meaning before) introduces the time clause and comes last."
+  }
+];
+
+/* ══════════════════════════════════════
+   STATE
+══════════════════════════════════════ */
+let score = 0, mcIdx = 0, fitbIdx = 0, roIdx = 0;
+const TOTAL = 15;
+const LABELS = ['A','B','C','D'];
+
+function updateScore(){ document.getElementById('score-display').textContent = score; }
+
+/* ══════════════════════════════════════
+   ACT 1 – MULTIPLE CHOICE
+══════════════════════════════════════ */
+function renderMC(){
+  const q = mcQuestions[mcIdx];
+  document.getElementById('pb1').style.width = (mcIdx/mcQuestions.length*100)+'%';
+  document.getElementById('mc-next').classList.remove('show');
+  document.getElementById('mc-container').innerHTML = `
+    <div class="question-card">
+      <div class="question-counter">Question ${mcIdx+1} of ${mcQuestions.length}</div>
+      <div class="question-text">${q.q}</div>
+      <div class="options">
+        ${q.opts.map((o,i)=>`<button class="option-btn" onclick="answerMC(${i})" id="mc-opt-${i}">
+          <span class="opt-label">${LABELS[i]}</span>${o}</button>`).join('')}
+      </div>
+      <div class="feedback-box" id="mc-fb"></div>
+    </div>`;
+}
+
+function answerMC(chosen){
+  const q = mcQuestions[mcIdx];
+  document.querySelectorAll('.option-btn').forEach(b=>b.disabled=true);
+  if(chosen===q.correct){
+    score++; updateScore();
+    document.getElementById(`mc-opt-${chosen}`).classList.add('correct');
+    showFb('mc-fb',`<span class="feedback-correct">✓ Correct!</span> ${q.exp}`);
+  } else {
+    document.getElementById(`mc-opt-${chosen}`).classList.add('wrong');
+    document.getElementById(`mc-opt-${q.correct}`).classList.add('correct');
+    showFb('mc-fb',`<span class="feedback-wrong">✗ Not quite.</span> The answer is <strong>${q.opts[q.correct]}</strong>. ${q.exp}`);
+  }
+  document.getElementById('pb1').style.width = ((mcIdx+1)/mcQuestions.length*100)+'%';
+  document.getElementById('mc-next').classList.add('show');
+}
+
+document.getElementById('mc-next').addEventListener('click',()=>{
+  mcIdx++;
+  if(mcIdx<mcQuestions.length) renderMC();
+  else { switchAct('act1','act2'); renderFITB(); }
+});
+
+/* ══════════════════════════════════════
+   ACT 2 – FILL IN THE BLANK
+══════════════════════════════════════ */
+function renderFITB(){
+  const q = fitbQuestions[fitbIdx];
+  document.getElementById('pb2').style.width = (fitbIdx/fitbQuestions.length*100)+'%';
+  document.getElementById('fitb-next').classList.remove('show');
+  const sel = `<select class="fitb-select" id="fitb-sel">
+    <option value="">— choose —</option>
+    ${q.opts.map((o,i)=>`<option value="${i}">${o}</option>`).join('')}
+  </select>`;
+  document.getElementById('fitb-container').innerHTML = `
+    <div class="question-card">
+      <div class="question-counter">Question ${fitbIdx+1} of ${fitbQuestions.length}</div>
+      <div class="question-text">${q.before} ${sel} ${q.after}</div>
+      <button class="fitb-submit" id="fitb-btn" onclick="answerFITB()">Check answer</button>
+      <div class="feedback-box" id="fitb-fb"></div>
+    </div>`;
+}
+
+function answerFITB(){
+  const q = fitbQuestions[fitbIdx];
+  const sel = document.getElementById('fitb-sel');
+  if(!sel.value) return;
+  const chosen = parseInt(sel.value);
+  sel.disabled = true;
+  document.getElementById('fitb-btn').disabled = true;
+  if(chosen===q.correct){
+    score++; updateScore();
+    showFb('fitb-fb',`<span class="feedback-correct">✓ Correct!</span> ${q.exp}`);
+  } else {
+    showFb('fitb-fb',`<span class="feedback-wrong">✗ Not quite.</span> The answer is <strong>${q.opts[q.correct]}</strong>. ${q.exp}`);
+  }
+  document.getElementById('pb2').style.width = ((fitbIdx+1)/fitbQuestions.length*100)+'%';
+  document.getElementById('fitb-next').classList.add('show');
+}
+
+document.getElementById('fitb-next').addEventListener('click',()=>{
+  fitbIdx++;
+  if(fitbIdx<fitbQuestions.length) renderFITB();
+  else { switchAct('act2','act3'); renderReorder(); }
+});
+
+/* ══════════════════════════════════════
+   ACT 3 – SENTENCE REORDERING
+══════════════════════════════════════ */
+let roPlaced = [];   // chunks in the target zone, in order
+let roAvailable = []; // indices still in pool
+
+function renderReorder(){
+  const q = reorderQuestions[roIdx];
+  document.getElementById('pb3').style.width = (roIdx/reorderQuestions.length*100)+'%';
+  document.getElementById('reorder-next').classList.remove('show');
+  roPlaced = [];
+  // shuffle for pool
+  const shuffled = q.chunks.map((c,i)=>({c,i})).sort(()=>Math.random()-.5);
+  roAvailable = shuffled.map(x=>x.i);
+
+  document.getElementById('reorder-container').innerHTML = `
+    <div class="question-card">
+      <div class="question-counter">Question ${roIdx+1} of ${reorderQuestions.length}</div>
+      <div class="question-text" style="margin-bottom:12px">Rearrange these chunks into the correct sentence:</div>
+      <div class="reorder-target" id="ro-target"><span style="color:var(--muted);font-size:13px;font-style:italic">Drop chunks here…</span></div>
+      <div class="reorder-pool" id="ro-pool">
+        ${shuffled.map(({c,i})=>`<div class="word-chip" id="chip-${i}" draggable="true"
+          data-idx="${i}">${c}</div>`).join('')}
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="reorder-check" id="ro-check-btn" onclick="checkReorder()">Check sentence</button>
+        <button class="reorder-check" id="ro-reset-btn" onclick="resetReorder()" style="border-color:var(--muted);color:var(--muted)">Reset</button>
+      </div>
+      <div class="feedback-box" id="ro-fb"></div>
+    </div>`;
+
+  bindReorderDrag();
+}
+
+function bindReorderDrag(){
+  const q = reorderQuestions[roIdx];
+  const target = document.getElementById('ro-target');
+
+  document.querySelectorAll('.word-chip').forEach(chip=>{
+    chip.addEventListener('dragstart',e=>{
+      e.dataTransfer.setData('idx', chip.dataset.idx);
+      e.dataTransfer.setData('from', chip.parentElement.id);
+      setTimeout(()=>chip.style.opacity='.4',0);
+    });
+    chip.addEventListener('dragend',()=>chip.style.opacity='');
+    chip.addEventListener('click',()=>{
+      // click to move
+      const idx = parseInt(chip.dataset.idx);
+      const inPool = chip.parentElement.id==='ro-pool';
+      if(inPool){ moveToTarget(idx); }
+      else { moveToPool(idx); }
+    });
+    // touch
+    chip.addEventListener('touchstart',tStart,{passive:true});
+    chip.addEventListener('touchend',tEnd);
+  });
+
+  target.addEventListener('dragover',e=>{ e.preventDefault(); target.classList.add('drag-over'); });
+  target.addEventListener('dragleave',()=>target.classList.remove('drag-over'));
+  target.addEventListener('drop',e=>{
+    e.preventDefault(); target.classList.remove('drag-over');
+    const idx = parseInt(e.dataTransfer.getData('idx'));
+    const from = e.dataTransfer.getData('from');
+    if(from==='ro-pool') moveToTarget(idx);
+  });
+
+  // pool drop — to remove from target
+  const pool = document.getElementById('ro-pool');
+  pool.addEventListener('dragover',e=>e.preventDefault());
+  pool.addEventListener('drop',e=>{
+    e.preventDefault();
+    const idx = parseInt(e.dataTransfer.getData('idx'));
+    const from = e.dataTransfer.getData('from');
+    if(from==='ro-target') moveToPool(idx);
+  });
+}
+
+function moveToTarget(idx){
+  if(roPlaced.includes(idx)) return;
+  roPlaced.push(idx);
+  refreshReorderUI();
+}
+function moveToPool(idx){
+  roPlaced = roPlaced.filter(i=>i!==idx);
+  refreshReorderUI();
+}
+
+function refreshReorderUI(){
+  const q = reorderQuestions[roIdx];
+  const target = document.getElementById('ro-target');
+  const pool = document.getElementById('ro-pool');
+
+  if(roPlaced.length===0){
+    target.innerHTML = `<span style="color:var(--muted);font-size:13px;font-style:italic">Drop chunks here…</span>`;
+  } else {
+    target.innerHTML = roPlaced.map(i=>`
+      <div class="word-chip placed" id="chip-${i}" draggable="true" data-idx="${i}">${q.chunks[i]}</div>`).join('');
+  }
+  const inPool = q.chunks.map((_,i)=>i).filter(i=>!roPlaced.includes(i));
+  pool.innerHTML = inPool.map(i=>`
+    <div class="word-chip" id="chip-${i}" draggable="true" data-idx="${i}">${q.chunks[i]}</div>`).join('');
+
+  bindReorderDrag();
+}
+
+function resetReorder(){
+  roPlaced = [];
+  refreshReorderUI();
+  const fb = document.getElementById('ro-fb');
+  if(fb){ fb.classList.remove('show'); fb.innerHTML=''; }
+  document.getElementById('reorder-next').classList.remove('show');
+  document.getElementById('ro-check-btn').disabled = false;
+  document.getElementById('ro-reset-btn').disabled = false;
+}
+
+function checkReorder(){
+  const q = reorderQuestions[roIdx];
+  if(roPlaced.length !== q.chunks.length){
+    showFb('ro-fb',`<span class="feedback-wrong">Please place all ${q.chunks.length} chunks before checking.</span>`);
+    return;
+  }
+  const correct = q.chunks.map((_,i)=>i);
+  const isCorrect = roPlaced.every((v,i)=>v===correct[i]);
+
+  // highlight chips
+  document.querySelectorAll('#ro-target .word-chip').forEach((chip,i)=>{
+    chip.draggable = false;
+    chip.style.cursor = 'default';
+    if(roPlaced[i]===correct[i]) chip.classList.add('ro-correct');
+    else chip.classList.add('ro-wrong');
+  });
+  document.querySelectorAll('#ro-pool .word-chip').forEach(c=>{c.draggable=false;c.style.cursor='default';});
+  document.getElementById('ro-check-btn').disabled = true;
+  document.getElementById('ro-reset-btn').disabled = true;
+
+  if(isCorrect){
+    score++; updateScore();
+    showFb('ro-fb',`<span class="feedback-correct">✓ Correct!</span> ${q.exp}`);
+  } else {
+    const correctSentence = q.chunks.join(' ');
+    showFb('ro-fb',`<span class="feedback-wrong">✗ Not quite.</span> The correct order is: <strong>${correctSentence}</strong>. ${q.exp}`);
+  }
+  document.getElementById('pb3').style.width = ((roIdx+1)/reorderQuestions.length*100)+'%';
+  document.getElementById('reorder-next').classList.add('show');
+}
+
+document.getElementById('reorder-next').addEventListener('click',()=>{
+  roIdx++;
+  if(roIdx<reorderQuestions.length) renderReorder();
+  else showFinalScreen();
+});
+
+// Touch helpers for reordering
+let tChip=null;
+function tStart(e){ tChip=e.currentTarget; }
+function tEnd(e){
+  if(!tChip) return;
+  const idx = parseInt(tChip.dataset.idx);
+  const inPool = tChip.parentElement.id==='ro-pool';
+  if(inPool) moveToTarget(idx);
+  else moveToPool(idx);
+  tChip=null;
+}
+
+/* ══════════════════════════════════════
+   HELPERS
+══════════════════════════════════════ */
+function showFb(id, html){
+  const el = document.getElementById(id);
+  el.innerHTML = html; el.classList.add('show');
+}
+
+function switchAct(from, to){
+  document.getElementById(from).classList.remove('active');
+  document.getElementById(to).classList.add('active');
+}
+
+function showFinalScreen(){
+  document.getElementById('activity-wrapper').style.display='none';
+  const fs = document.getElementById('final-screen');
+  fs.classList.add('show');
+  document.getElementById('final-score').textContent = score;
+  const pct = score/TOTAL;
+  let msg;
+  if(pct>=0.9) msg="Exceptional. You've cracked the case — your command of English prepositions is classified as top secret.";
+  else if(pct>=0.7) msg="Impressive work, Agent. A few details escaped you, but your instincts are sharp. Review and return.";
+  else if(pct>=0.5) msg="A solid investigation. The truth is out there — and so is a stronger grasp of prepositions. Keep digging.";
+  else msg="The conspiracy runs deeper than expected. Revisit the evidence, review your prepositions, and try again.";
+  document.getElementById('final-msg').textContent = msg;
+}
+
+function restartAll(){
+  score=0; mcIdx=0; fitbIdx=0; roIdx=0; roPlaced=[];
+  updateScore();
+  document.getElementById('final-screen').classList.remove('show');
+  document.getElementById('activity-wrapper').style.display='';
+  ['act1','act2','act3'].forEach(id=>document.getElementById(id).classList.remove('active'));
+  document.getElementById('act1').classList.add('active');
+  renderMC();
+}
+
+/* INIT */
+renderMC();
+</script>
+</body>
+</html>

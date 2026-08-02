@@ -1,0 +1,1867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – Tech Interview Masterclass | C1</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   ROOT & RESET
+═══════════════════════════════════════════ */
+:root {
+  --teal:        #0e3d3a;
+  --teal-mid:    #1a5e58;
+  --teal-light:  #2d8a80;
+  --teal-pale:   #e6f0ef;
+  --amber:       #c8781a;
+  --amber-light: #e8a44a;
+  --amber-pale:  #fdf3e6;
+  --rust:        #9b3a1e;
+  --rust-pale:   #fbeee9;
+  --cream:       #fdf6ec;
+  --cream-dark:  #f0e8d8;
+  --ink:         #1a1a18;
+  --ink-mid:     #3d3d38;
+  --ink-light:   #7a7a70;
+  --rule:        #d4cfc4;
+  --correct:     #1a7a4a;
+  --correct-bg:  #e8f5ee;
+  --wrong:       #9b2a1e;
+  --wrong-bg:    #fbeae8;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--teal);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ═══════════════════════════════════════════
+   COVER / HERO
+═══════════════════════════════════════════ */
+#cover {
+  min-height: 100vh;
+  background: var(--teal);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 60px 24px;
+}
+
+/* Background texture */
+#cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 15% 85%, rgba(200,120,26,0.15) 0%, transparent 50%),
+    radial-gradient(circle at 85% 20%, rgba(45,138,128,0.2) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Dot grid */
+#cover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+}
+
+.cover-inner {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 780px;
+}
+
+.cover-logo { margin-bottom: 48px; }
+
+.cover-eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.cover-pill {
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.cp-amber { background: var(--amber); color: #fff; }
+.cp-outline { border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.6); }
+
+.cover-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 700;
+  line-height: 0.9;
+  color: var(--cream);
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+}
+.cover-title span { color: var(--amber-light); display: block; }
+
+.cover-sub {
+  font-size: 16px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 48px;
+  letter-spacing: 0.02em;
+}
+
+/* Activity pills row */
+.cover-acts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 48px;
+}
+.act-pill {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.7);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.act-pill-num {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--amber);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.start-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--amber);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 16px 36px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 24px rgba(200,120,26,0.4);
+}
+.start-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(200,120,26,0.5); }
+.start-btn:active { transform: translateY(0); }
+
+/* Decorative big letter */
+.cover-deco {
+  position: absolute;
+  right: -40px; bottom: -60px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 320px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.025);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1;
+}
+
+/* ═══════════════════════════════════════════
+   STICKY SCORE BAR
+═══════════════════════════════════════════ */
+#scorebar {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: var(--teal);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 28px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+#scorebar.visible { display: flex; }
+
+.sb-logo { opacity: 0.7; }
+
+.sb-center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 480px;
+}
+.sb-activity {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  white-space: nowrap;
+}
+.sb-progress-wrap {
+  flex: 1;
+  height: 4px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.sb-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--amber), var(--amber-light));
+  border-radius: 4px;
+  transition: width 0.5s cubic-bezier(.4,0,.2,1);
+  width: 0%;
+}
+.sb-prog-text {
+  font-size: 11px;
+  color: rgba(255,255,255,0.35);
+  white-space: nowrap;
+}
+.sb-score {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--amber-light);
+  white-space: nowrap;
+}
+
+/* ═══════════════════════════════════════════
+   LESSON BODY
+═══════════════════════════════════════════ */
+#lesson { display: none; background: var(--cream); }
+#lesson.visible { display: block; }
+
+/* ═══════════════════════════════════════════
+   ACTIVITY SECTION
+═══════════════════════════════════════════ */
+.activity-section {
+  display: none;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 48px 28px 80px;
+  animation: fadeUp 0.45s ease both;
+}
+.activity-section.active { display: block; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Section intro band */
+.act-intro {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  margin-bottom: 40px;
+  padding-bottom: 28px;
+  border-bottom: 2px solid var(--cream-dark);
+}
+.act-intro-num {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: var(--teal);
+  color: var(--cream);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.act-intro-num.amber { background: var(--amber); }
+.act-intro-num.rust  { background: var(--rust); }
+.act-intro-num.teal4 { background: var(--teal-mid); }
+
+.act-intro-text {}
+.act-intro-tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--teal-light);
+  margin-bottom: 4px;
+}
+.act-intro-tag.amber { color: var(--amber); }
+.act-intro-tag.rust  { color: var(--rust); }
+.act-intro-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--teal);
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+.act-intro-title.amber { color: var(--amber); }
+.act-intro-title.rust  { color: var(--rust); }
+.act-intro-desc {
+  font-size: 14px;
+  color: var(--ink-mid);
+  line-height: 1.6;
+  max-width: 620px;
+}
+
+/* Instruction box */
+.instr-box {
+  background: var(--teal);
+  color: var(--cream);
+  border-radius: 10px;
+  padding: 14px 20px;
+  font-size: 14px;
+  line-height: 1.55;
+  margin-bottom: 28px;
+}
+.instr-box strong { color: var(--amber-light); }
+.instr-box.amber { background: var(--amber); }
+.instr-box.amber strong { color: #fff; font-weight: 700; }
+.instr-box.rust  { background: var(--rust); }
+
+/* ═══════════════════════════════════════════
+   QUESTION CARD
+═══════════════════════════════════════════ */
+.q-card {
+  background: #fff;
+  border: 1.5px solid var(--rule);
+  border-radius: 14px;
+  padding: 24px 28px;
+  margin-bottom: 20px;
+  transition: border-color 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.q-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  background: var(--rule);
+  border-radius: 4px 0 0 4px;
+  transition: background 0.3s;
+}
+.q-card.answered-correct::before { background: var(--correct); }
+.q-card.answered-wrong::before   { background: var(--wrong); }
+
+.q-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.q-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+}
+.q-status-icon {
+  font-size: 16px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.q-card.answered-correct .q-status-icon { opacity: 1; }
+.q-card.answered-wrong   .q-status-icon { opacity: 1; }
+
+.q-stem {
+  font-size: 15px;
+  color: var(--ink);
+  line-height: 1.6;
+  margin-bottom: 18px;
+  font-weight: 400;
+}
+.q-stem strong { color: var(--teal-mid); font-weight: 600; }
+.q-stem em { font-style: italic; color: var(--ink-mid); }
+
+/* ═══════════════════════════════════════════
+   MULTIPLE CHOICE OPTIONS
+═══════════════════════════════════════════ */
+.mc-opts { display: flex; flex-direction: column; gap: 8px; }
+
+.mc-opt {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 1.5px solid var(--rule);
+  border-radius: 9px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, transform 0.12s;
+  background: #fff;
+  font-size: 14px;
+  color: var(--ink-mid);
+  line-height: 1.45;
+  text-align: left;
+  width: 100%;
+  font-family: 'DM Sans', sans-serif;
+}
+.mc-opt:hover:not(:disabled) {
+  border-color: var(--teal-light);
+  background: var(--teal-pale);
+  transform: translateX(4px);
+}
+.mc-opt:disabled { cursor: default; transform: none !important; }
+
+.mc-opt-ltr {
+  width: 26px; height: 26px;
+  border-radius: 6px;
+  border: 1.5px solid var(--rule);
+  background: var(--cream-dark);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-light);
+  flex-shrink: 0;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.mc-opt.correct-pick { border-color: var(--correct) !important; background: var(--correct-bg) !important; color: var(--correct) !important; }
+.mc-opt.correct-pick .mc-opt-ltr { background: var(--correct); border-color: var(--correct); color: #fff; }
+.mc-opt.wrong-pick   { border-color: var(--wrong)   !important; background: var(--wrong-bg)   !important; color: var(--wrong)   !important; }
+.mc-opt.wrong-pick   .mc-opt-ltr { background: var(--wrong);   border-color: var(--wrong);   color: #fff; }
+.mc-opt.show-correct { border-color: var(--correct) !important; background: rgba(26,122,74,0.04) !important; }
+.mc-opt.show-correct .mc-opt-ltr { border-color: var(--correct); color: var(--correct); }
+
+/* ═══════════════════════════════════════════
+   FEEDBACK BOX
+═══════════════════════════════════════════ */
+.feedback {
+  margin-top: 14px;
+  padding: 14px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.55;
+  display: none;
+  animation: feedIn 0.3s ease both;
+}
+@keyframes feedIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.feedback.correct { background: var(--correct-bg); border: 1px solid rgba(26,122,74,0.2); }
+.feedback.wrong   { background: var(--wrong-bg);   border: 1px solid rgba(155,42,30,0.2); }
+.feedback .fb-title { font-weight: 700; margin-bottom: 4px; }
+.feedback.correct .fb-title { color: var(--correct); }
+.feedback.wrong   .fb-title { color: var(--wrong); }
+.feedback .fb-body { color: var(--ink-mid); }
+
+/* ═══════════════════════════════════════════
+   FILL IN THE BLANK
+═══════════════════════════════════════════ */
+.word-bank {
+  background: var(--teal);
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+}
+.wb-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 10px;
+}
+.wb-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.wb-chip {
+  background: rgba(255,255,255,0.09);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 6px;
+  padding: 5px 13px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--amber-light);
+  transition: opacity 0.3s;
+}
+.wb-chip.used { opacity: 0.3; text-decoration: line-through; }
+
+.fitb-input {
+  border: none;
+  border-bottom: 2px solid var(--teal);
+  background: transparent;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--ink);
+  width: 130px;
+  padding: 2px 4px;
+  outline: none;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+.fitb-input:focus { border-color: var(--amber); }
+.fitb-input.correct { border-color: var(--correct); color: var(--correct); }
+.fitb-input.wrong   { border-color: var(--wrong);   color: var(--wrong); }
+.fitb-input:disabled { background: transparent; }
+
+/* ═══════════════════════════════════════════
+   DRAG & DROP REORDER
+═══════════════════════════════════════════ */
+.drag-list { display: flex; flex-direction: column; gap: 8px; }
+
+.drag-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 18px;
+  background: #fff;
+  border: 1.5px solid var(--rule);
+  border-radius: 10px;
+  cursor: grab;
+  user-select: none;
+  transition: border-color 0.15s, box-shadow 0.15s, opacity 0.15s, transform 0.15s;
+  font-size: 14px;
+  color: var(--ink);
+  line-height: 1.45;
+}
+.drag-item:active { cursor: grabbing; }
+.drag-item.dragging { opacity: 0.35; }
+.drag-item.drag-over { border-color: var(--teal-light); box-shadow: 0 0 0 3px rgba(45,138,128,0.15); transform: scale(1.01); }
+.drag-item.correct-order { border-color: var(--correct); background: var(--correct-bg); }
+.drag-item.wrong-order   { border-color: var(--wrong);   background: var(--wrong-bg); }
+
+.drag-handle {
+  color: var(--rule);
+  font-size: 16px;
+  flex-shrink: 0;
+  line-height: 1.5;
+  letter-spacing: -0.1em;
+  cursor: grab;
+  transition: color 0.15s;
+}
+.drag-item:hover .drag-handle { color: var(--teal-light); }
+
+.drag-pos {
+  width: 28px; height: 28px;
+  border-radius: 7px;
+  background: var(--cream-dark);
+  border: 1.5px solid var(--rule);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-light);
+  flex-shrink: 0;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.drag-item.correct-order .drag-pos { background: var(--correct); border-color: var(--correct); color: #fff; }
+.drag-item.wrong-order   .drag-pos { background: var(--wrong);   border-color: var(--wrong);   color: #fff; }
+
+/* ═══════════════════════════════════════════
+   MATCHING
+═══════════════════════════════════════════ */
+.matching-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.match-col-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.match-col-label.teal { color: var(--teal-light); }
+.match-col-label.rust { color: var(--rust); }
+
+.match-term-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  background: var(--teal-pale);
+  border: 1.5px solid rgba(14,61,58,0.15);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+.match-term-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--teal);
+  min-width: 18px;
+}
+.match-term-word { font-weight: 600; color: var(--teal-mid); }
+
+.match-sel-wrap { position: relative; margin-bottom: 8px; }
+.match-select {
+  width: 100%;
+  padding: 11px 32px 11px 14px;
+  background: #fff;
+  border: 1.5px solid var(--rule);
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  color: var(--ink);
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s;
+  line-height: 1.45;
+}
+.match-select:focus { border-color: var(--teal-light); }
+.match-select.correct { border-color: var(--correct); background: var(--correct-bg); color: var(--correct); }
+.match-select.wrong   { border-color: var(--wrong);   background: var(--wrong-bg);   color: var(--wrong); }
+.match-sel-wrap::after {
+  content: '▾';
+  position: absolute;
+  right: 12px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--ink-light);
+  pointer-events: none;
+  font-size: 11px;
+}
+
+/* ═══════════════════════════════════════════
+   SENTENCE TRANSFORMATION
+═══════════════════════════════════════════ */
+.transform-card {
+  background: #fff;
+  border: 1.5px solid var(--rule);
+  border-left: 4px solid var(--teal);
+  border-radius: 0 12px 12px 0;
+  padding: 18px 22px;
+  margin-bottom: 16px;
+  transition: border-left-color 0.3s;
+}
+.transform-card.amber { border-left-color: var(--amber); }
+.transform-card.answered-correct { border-left-color: var(--correct); }
+.transform-card.answered-wrong   { border-left-color: var(--wrong); }
+
+.tc-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--teal);
+  margin-bottom: 4px;
+}
+.tc-num.amber { color: var(--amber); }
+.tc-src {
+  font-size: 14px;
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+.tc-key-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 8px;
+}
+.tc-key-label::before {
+  content: '';
+  width: 8px; height: 8px;
+  background: var(--amber);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.tc-input {
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid var(--teal-light);
+  background: transparent;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--ink);
+  padding: 6px 4px;
+  outline: none;
+  transition: border-color 0.2s;
+  line-height: 1.5;
+}
+.tc-input:focus { border-color: var(--amber); }
+.tc-input.correct { border-color: var(--correct); color: var(--correct); }
+.tc-input.wrong   { border-color: var(--wrong);   color: var(--wrong); }
+.tc-input:disabled { background: transparent; }
+
+/* Writing area */
+.writing-area {
+  background: #fff;
+  border: 1.5px solid var(--rule);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+}
+.writing-prompt {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-style: italic;
+  color: var(--rust);
+  line-height: 1.5;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--rule);
+}
+.writing-textarea {
+  width: 100%;
+  min-height: 140px;
+  border: none;
+  outline: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--ink);
+  line-height: 2;
+  resize: vertical;
+  background: transparent;
+  background-image: repeating-linear-gradient(transparent, transparent 27px, var(--rule) 27px, var(--rule) 28px);
+  background-size: 100% 28px;
+  padding: 0 4px;
+}
+
+/* ═══════════════════════════════════════════
+   BUTTONS
+═══════════════════════════════════════════ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 9px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+  border: none;
+  letter-spacing: 0.02em;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(0); }
+
+.btn-teal {
+  background: var(--teal);
+  color: var(--cream);
+  box-shadow: 0 3px 14px rgba(14,61,58,0.25);
+}
+.btn-teal:hover { box-shadow: 0 6px 20px rgba(14,61,58,0.35); }
+
+.btn-amber {
+  background: var(--amber);
+  color: #fff;
+  box-shadow: 0 3px 14px rgba(200,120,26,0.3);
+}
+.btn-amber:hover { box-shadow: 0 6px 20px rgba(200,120,26,0.4); }
+
+.btn-rust {
+  background: var(--rust);
+  color: #fff;
+  box-shadow: 0 3px 14px rgba(155,58,30,0.25);
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1.5px solid var(--rule);
+  color: var(--ink-mid);
+}
+
+.btn:disabled { opacity: 0.4; cursor: default; transform: none !important; }
+
+.act-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--cream-dark);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.act-footer-score {
+  font-size: 13px;
+  color: var(--ink-light);
+}
+.act-footer-score strong { color: var(--teal); font-weight: 700; }
+
+/* ═══════════════════════════════════════════
+   NAV TABS
+═══════════════════════════════════════════ */
+.act-nav {
+  background: var(--teal);
+  padding: 0 28px;
+  display: none;
+  gap: 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  overflow-x: auto;
+}
+.act-nav.visible { display: flex; }
+.act-nav::-webkit-scrollbar { display: none; }
+
+.nav-tab {
+  padding: 14px 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgba(255,255,255,0.4);
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  font-family: 'DM Sans', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.nav-tab:hover { color: rgba(255,255,255,0.7); }
+.nav-tab.active { color: var(--amber-light); border-bottom-color: var(--amber); }
+.nav-tab.done { color: rgba(255,255,255,0.55); }
+.nav-tab-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1.5px solid rgba(255,255,255,0.2);
+  transition: background 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+}
+.nav-tab.active .nav-tab-dot { background: var(--amber); border-color: var(--amber); }
+.nav-tab.done   .nav-tab-dot { background: var(--correct); border-color: var(--correct); }
+
+/* ═══════════════════════════════════════════
+   RESULTS
+═══════════════════════════════════════════ */
+#results {
+  display: none;
+  background: var(--teal);
+  min-height: 100vh;
+  padding: 80px 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+#results.visible { display: block; }
+#results::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 20% 80%, rgba(200,120,26,0.15) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(45,138,128,0.2) 0%, transparent 50%);
+  pointer-events: none;
+}
+#results::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+}
+
+.results-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.results-logo { margin-bottom: 48px; }
+.results-pct {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 110px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--cream);
+  margin-bottom: 8px;
+  letter-spacing: -0.03em;
+}
+.results-pct span { color: var(--amber-light); }
+
+.results-tier {
+  display: inline-block;
+  padding: 7px 20px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.tier-gold   { background: rgba(200,120,26,0.2); border: 1px solid rgba(200,120,26,0.5); color: var(--amber-light); }
+.tier-silver { background: rgba(45,138,128,0.15); border: 1px solid rgba(45,138,128,0.4); color: #7eddd4; }
+.tier-bronze { background: rgba(155,58,30,0.15); border: 1px solid rgba(155,58,30,0.4); color: #f4a07a; }
+
+.results-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 38px;
+  font-weight: 600;
+  color: var(--cream);
+  margin-bottom: 14px;
+}
+.results-msg {
+  font-size: 16px;
+  color: rgba(255,255,255,0.55);
+  max-width: 480px;
+  margin: 0 auto 40px;
+  line-height: 1.65;
+}
+
+.results-breakdown {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 40px;
+}
+.rb-item {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 16px 20px;
+  text-align: left;
+}
+.rb-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 6px; }
+.rb-val { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 700; color: var(--cream); line-height: 1; }
+.rb-sub { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+
+.results-bar-wrap {
+  height: 6px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 40px;
+}
+.results-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--amber), var(--amber-light));
+  border-radius: 6px;
+  transition: width 1s cubic-bezier(.4,0,.2,1) 0.3s;
+  width: 0%;
+}
+
+/* ═══════════════════════════════════════════
+   UTILITIES
+═══════════════════════════════════════════ */
+.mt-4  { margin-top: 16px; }
+.mt-6  { margin-top: 24px; }
+.mt-8  { margin-top: 32px; }
+.cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 600px) {
+  .cols-2 { grid-template-columns: 1fr; }
+  .matching-grid { grid-template-columns: 1fr; }
+  .results-breakdown { grid-template-columns: 1fr; }
+  .act-intro { flex-direction: column; gap: 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════
+     COVER
+════════════════════════════════════════ -->
+<section id="cover">
+  <div class="cover-deco">C1</div>
+  <div class="cover-inner">
+    <div class="cover-logo">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 68" width="200" aria-label="Forbes English">
+        <text x="120" y="30" text-anchor="middle" font-family="'Cormorant Garamond',Georgia,serif" font-size="34" font-weight="600" letter-spacing="5" fill="#fdf6ec">FORBES</text>
+        <rect x="12" y="38" width="216" height="1" fill="rgba(253,246,236,0.2)"/>
+        <text x="120" y="57" text-anchor="middle" font-family="'DM Sans',Arial,sans-serif" font-size="11" font-weight="700" letter-spacing="9" fill="rgba(253,246,236,0.45)">ENGLISH</text>
+      </svg>
+    </div>
+
+    <div class="cover-eyebrow">
+      <span class="cover-pill cp-amber">C1 Advanced</span>
+      <span class="cover-pill cp-outline">4 Activities · 22 Questions</span>
+    </div>
+
+    <div class="cover-title">
+      The Tech<br>Interview
+      <span>Masterclass</span>
+    </div>
+    <div class="cover-sub">Language &amp; strategy for software engineering interviews</div>
+
+    <div class="cover-acts">
+      <div class="act-pill"><div class="act-pill-num">1</div>Multiple Choice · Talking Through Your Thinking</div>
+      <div class="act-pill"><div class="act-pill-num" style="background:var(--amber);">2</div>Fill in the Blank · Technical Vocabulary</div>
+      <div class="act-pill"><div class="act-pill-num" style="background:var(--teal-mid);">3</div>Reorder + Matching · Interview Strategy</div>
+      <div class="act-pill"><div class="act-pill-num" style="background:var(--rust);">4</div>Sentence Transformation · Grammar Precision</div>
+    </div>
+
+    <button class="start-btn" onclick="startLesson()">
+      Begin Lesson
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     SCORE BAR
+════════════════════════════════════════ -->
+<div id="scorebar">
+  <div class="sb-logo">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 44" width="110">
+      <text x="80" y="19" text-anchor="middle" font-family="'Cormorant Garamond',Georgia,serif" font-size="20" font-weight="600" letter-spacing="3.5" fill="#fdf6ec">FORBES</text>
+      <rect x="8" y="24" width="144" height="0.8" fill="rgba(253,246,236,0.2)"/>
+      <text x="80" y="38" text-anchor="middle" font-family="'DM Sans',Arial,sans-serif" font-size="7.5" font-weight="700" letter-spacing="6" fill="rgba(253,246,236,0.4)">ENGLISH</text>
+    </svg>
+  </div>
+  <div class="sb-center">
+    <span class="sb-activity" id="sb-act-label">Activity 1</span>
+    <div class="sb-progress-wrap"><div class="sb-progress-fill" id="sb-prog-fill"></div></div>
+    <span class="sb-prog-text" id="sb-prog-text">0 / 22</span>
+  </div>
+  <div class="sb-score" id="sb-score">0 pts</div>
+</div>
+
+<!-- ════════════════════════════════════════
+     NAV TABS
+════════════════════════════════════════ -->
+<nav class="act-nav" id="act-nav">
+  <button class="nav-tab active" id="tab-1" onclick="goToActivity(1)">
+    <span class="nav-tab-dot"></span> 1 · Multiple Choice
+  </button>
+  <button class="nav-tab" id="tab-2" onclick="goToActivity(2)">
+    <span class="nav-tab-dot"></span> 2 · Fill in the Blank
+  </button>
+  <button class="nav-tab" id="tab-3" onclick="goToActivity(3)">
+    <span class="nav-tab-dot"></span> 3 · Reorder &amp; Match
+  </button>
+  <button class="nav-tab" id="tab-4" onclick="goToActivity(4)">
+    <span class="nav-tab-dot"></span> 4 · Transformation
+  </button>
+</nav>
+
+<!-- ════════════════════════════════════════
+     LESSON BODY
+════════════════════════════════════════ -->
+<div id="lesson">
+
+<!-- ──────────────────────────────────────
+     ACTIVITY 1 — MULTIPLE CHOICE
+────────────────────────────────────── -->
+<section class="activity-section active" id="act1">
+  <div class="act-intro">
+    <div class="act-intro-num">1</div>
+    <div class="act-intro-text">
+      <div class="act-intro-tag">Activity 1 · Multiple Choice</div>
+      <div class="act-intro-title">Talking Through Your Thinking</div>
+      <div class="act-intro-desc">At C1 level, interviewers assess not just what you know, but <em>how</em> you communicate under pressure. Choose the response that best demonstrates professional register and structured thinking.</div>
+    </div>
+  </div>
+
+  <div class="instr-box"><strong>Instructions:</strong> Choose the best answer (A–D) for each question. Read all options carefully — distractors are designed to be plausible. Feedback will explain <em>why</em> the correct answer works best.</div>
+
+  <!-- Q1 -->
+  <div class="q-card" id="mc1-card">
+    <div class="q-card-header">
+      <span class="q-label">Question 1 of 5</span>
+      <span class="q-status-icon" id="mc1-icon">✓</span>
+    </div>
+    <div class="q-stem">The interviewer asks you to explain your approach <em>before</em> you start coding. Which opening best demonstrates C1 professional register?</div>
+    <div class="mc-opts" id="mc1-opts">
+      <button class="mc-opt" onclick="checkMC(1,this,'B')"><span class="mc-opt-ltr">A</span>I'll just start writing the code and explain my thinking as I go along.</button>
+      <button class="mc-opt" onclick="checkMC(1,this,'B')"><span class="mc-opt-ltr">B</span>Before diving into the implementation, let me walk you through my initial reasoning.</button>
+      <button class="mc-opt" onclick="checkMC(1,this,'B')"><span class="mc-opt-ltr">C</span>Can I have a few minutes to think about this quietly by myself first?</button>
+      <button class="mc-opt" onclick="checkMC(1,this,'B')"><span class="mc-opt-ltr">D</span>I already know the answer, so I'll go ahead and code it up directly.</button>
+    </div>
+    <div class="feedback" id="mc1-fb">
+      <div class="fb-title"></div><div class="fb-body"></div>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="q-card" id="mc2-card">
+    <div class="q-card-header"><span class="q-label">Question 2 of 5</span><span class="q-status-icon" id="mc2-icon">✓</span></div>
+    <div class="q-stem">You realise mid-solution that your original approach has a flaw. Which phrase signals this to the interviewer most professionally?</div>
+    <div class="mc-opts" id="mc2-opts">
+      <button class="mc-opt" onclick="checkMC(2,this,'C')"><span class="mc-opt-ltr">A</span>Wait, I think I got confused — let me go back to the beginning and start over.</button>
+      <button class="mc-opt" onclick="checkMC(2,this,'C')"><span class="mc-opt-ltr">B</span>Sorry, I don't think I fully understood the problem correctly after all.</button>
+      <button class="mc-opt" onclick="checkMC(2,this,'C')"><span class="mc-opt-ltr">C</span>Actually, on reflection, I notice a potential edge case that invalidates this approach.</button>
+      <button class="mc-opt" onclick="checkMC(2,this,'C')"><span class="mc-opt-ltr">D</span>This is getting complicated — could you give me a small hint about where to go next?</button>
+    </div>
+    <div class="feedback" id="mc2-fb"><div class="fb-title"></div><div class="fb-body"></div></div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="q-card" id="mc3-card">
+    <div class="q-card-header"><span class="q-label">Question 3 of 5</span><span class="q-status-icon" id="mc3-icon">✓</span></div>
+    <div class="q-stem">The interviewer asks about the time complexity of your algorithm. Which response demonstrates the highest level of technical communication?</div>
+    <div class="mc-opts" id="mc3-opts">
+      <button class="mc-opt" onclick="checkMC(3,this,'A')"><span class="mc-opt-ltr">A</span>This runs in O(n log n) due to the sorting step, which dominates the overall complexity.</button>
+      <button class="mc-opt" onclick="checkMC(3,this,'A')"><span class="mc-opt-ltr">B</span>It's pretty fast — probably log n or something along those lines for most inputs.</button>
+      <button class="mc-opt" onclick="checkMC(3,this,'A')"><span class="mc-opt-ltr">C</span>The complexity is n log n, which I calculated based on the Big O chart I memorised.</button>
+      <button class="mc-opt" onclick="checkMC(3,this,'A')"><span class="mc-opt-ltr">D</span>I'm not entirely certain, but the worst case is somewhere around quadratic time.</button>
+    </div>
+    <div class="feedback" id="mc3-fb"><div class="fb-title"></div><div class="fb-body"></div></div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="q-card" id="mc4-card">
+    <div class="q-card-header"><span class="q-label">Question 4 of 5</span><span class="q-status-icon" id="mc4-icon">✓</span></div>
+    <div class="q-stem">You are asked about a technical topic you haven't worked with directly. How do you handle this most effectively?</div>
+    <div class="mc-opts" id="mc4-opts">
+      <button class="mc-opt" onclick="checkMC(4,this,'D')"><span class="mc-opt-ltr">A</span>I'd rather skip that one — it's not something I've used in my current position.</button>
+      <button class="mc-opt" onclick="checkMC(4,this,'D')"><span class="mc-opt-ltr">B</span>I know everything about this topic — let me give you a full explanation right now.</button>
+      <button class="mc-opt" onclick="checkMC(4,this,'D')"><span class="mc-opt-ltr">C</span>I haven't used that, but I've read about it online so I can give you my best guess.</button>
+      <button class="mc-opt" onclick="checkMC(4,this,'D')"><span class="mc-opt-ltr">D</span>I haven't used that directly, but I know the underlying principles — could I reason through it?</button>
+    </div>
+    <div class="feedback" id="mc4-fb"><div class="fb-title"></div><div class="fb-body"></div></div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="q-card" id="mc5-card">
+    <div class="q-card-header"><span class="q-label">Question 5 of 5</span><span class="q-status-icon" id="mc5-icon">✓</span></div>
+    <div class="q-stem">The interviewer asks: <strong>"What trade-offs did you consider?"</strong> Which answer best demonstrates C1-level critical thinking?</div>
+    <div class="mc-opts" id="mc5-opts">
+      <button class="mc-opt" onclick="checkMC(5,this,'B')"><span class="mc-opt-ltr">A</span>I mainly focused on getting something that works — trade-offs can be addressed later on.</button>
+      <button class="mc-opt" onclick="checkMC(5,this,'B')"><span class="mc-opt-ltr">B</span>I weighed readability against raw performance, ultimately prioritising maintainability at this scale.</button>
+      <button class="mc-opt" onclick="checkMC(5,this,'B')"><span class="mc-opt-ltr">C</span>I went with the first solution that came to mind because it seemed like the best option.</button>
+      <button class="mc-opt" onclick="checkMC(5,this,'B')"><span class="mc-opt-ltr">D</span>I thought of a few alternatives but decided my initial approach was good enough overall.</button>
+    </div>
+    <div class="feedback" id="mc5-fb"><div class="fb-title"></div><div class="fb-body"></div></div>
+  </div>
+
+  <div class="act-footer">
+    <div class="act-footer-score">Activity 1 score: <strong id="mc-score-display">0 / 5</strong></div>
+    <button class="btn btn-teal" id="act1-next" style="display:none" onclick="goToActivity(2)">
+      Next Activity
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 3l4 4-4 4" stroke="#fdf6ec" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────
+     ACTIVITY 2 — FILL IN THE BLANK
+────────────────────────────────────── -->
+<section class="activity-section" id="act2">
+  <div class="act-intro">
+    <div class="act-intro-num amber">2</div>
+    <div class="act-intro-text">
+      <div class="act-intro-tag amber">Activity 2 · Fill in the Blank</div>
+      <div class="act-intro-title amber">Technical Vocabulary in Context</div>
+      <div class="act-intro-desc">These are the words that distinguish a confident technical communicator from an average candidate. Each word fits precisely into one gap — don't guess, reason from context.</div>
+    </div>
+  </div>
+
+  <div class="instr-box amber"><strong>Instructions:</strong> Complete each sentence with a word from the word bank. Each word is used <strong>once only</strong>. Two words are distractors. Type your answer in the box and click Check to see feedback.</div>
+
+  <div class="word-bank">
+    <div class="wb-label">Word Bank</div>
+    <div class="wb-chips">
+      <span class="wb-chip" id="chip-refactor">refactor</span>
+      <span class="wb-chip" id="chip-scalable">scalable</span>
+      <span class="wb-chip" id="chip-latency">latency</span>
+      <span class="wb-chip" id="chip-leverage">leverage</span>
+      <span class="wb-chip" id="chip-decouple">decouple</span>
+      <span class="wb-chip" id="chip-robust">robust</span>
+      <span class="wb-chip" id="chip-iterate">iterate</span>
+      <span class="wb-chip" id="chip-deprecate">deprecate</span>
+      <span class="wb-chip" id="chip-propagate">propagate</span>
+    </div>
+  </div>
+
+  <!-- FITB Q1 -->
+  <div class="q-card" id="fitb1-card">
+    <div class="q-card-header"><span class="q-label">Question 1 of 8</span><span class="q-status-icon" id="fitb1-icon">✓</span></div>
+    <div class="q-stem">Given more time, I would <input class="fitb-input" id="fitb-1" data-answer="refactor" placeholder="…"> the authentication module to remove those duplicated code paths and improve overall clarity.</div>
+    <div class="feedback" id="fitb1-fb"><div class="fb-title"></div><div class="fb-body"></div></div>
+  </div>
+
+  <!-- FITB Q2 -->
+  <div class="q-card" id="fitb2-card">
+    <div class="q-card-header"><span class="q-label">Question 2 of 8</span><span class="q-status-icon" id="fitb2-icon">✓</span></div>
+    <div class="q-stem">This microservice architecture is designed to be highly <input class="fitb-input" id="fitb-2" data-answer="scalable" placeholder="…">, so it can handle ten times the current load without fundamental restructuring.</div>
+    <div class="feedback" id="fitb2-fb"><div class="fb-title"></div><div class="fb-body"></div></div>
+  </div>
+
+  <!-- FITB Q3 -->
+  <div class="q-card" id="fitb3-card">
+    <div class="q-card-header"><span class="q-label">Question 3 of 8</span><span class="q-status-icon" id="fitb3-icon">✓</span></div>
+    <div class="q-stem">The main bottleneck we identified was network <input class="fitb-input" id="fitb-3" data-answer="latency" placeholder="…">, which was adding nearly 200 milliseconds to each API response.</div>
+    <div class="feedback" id="fitb3-fb"><div class="fb-title"></div><div class="fb-body"></div></div>
+  </div>
+
+  <!-- FITB Q4 -->
+  <div class="q-card" id="fitb4-card">
+    <div class="q-card-header"><span class="q-label">Question 4 of 8</span><span class="q-status-icon" id="fitb4-icon">✓</span></div>
+    <div class="q-stem">Rather than rebuilding from scratch, I proposed we <input class="fitb-input" id="fitb-4" data-answer="leverage" placeholder="…"> the existing caching infrastructure and extend it to meet the new requirements.</div>
+    <div class="feedback" id="fitb4-fb"><div class="fb-title"></div><div class="fb-body"></div></div>
+  </div>
+
+  <!-- FITB Q5 -->
+  <div class="q-card" id="fitb5-card">
+    <div class="q-card-header"><span class="q-label">Question 5 of 8</span><span class="q-status-icon" id="fitb5-icon">✓</span></div>
+    <div class="q-stem">A key design goal was to <input class="fitb-input" id="fitb-5" data-answer="decouple" placeholder="…"> the payment service from the order management system so both could be deployed independently.</div>
+    <div class="feedback" id="fitb5-fb"><div class="fb-title"></div><div class="fb-body"></div></div>
+  </div>
+
+  <!-- FITB Q6 -->
+  <div class="q-card" id="fitb6-card">
+    <div class="q-card-header"><span class="q-label">Question 6 of 8</span><span class="q-status-icon" id="fitb6-icon">✓</span></div>
+    <div class="q-stem">We plan to <input class="fitb-input" id="fitb-6" data-answer="deprecate" placeholder="…"> the legacy REST endpoints once the new GraphQL layer has been validated in production over a two-week period.</div>
+    <div class="feedback" id="fitb6-fb"><div class="fb-title"></div><div class="fb-body"></div></div>
+  </div>
+
+  <!-- FITB Q7 -->
+  <div class="q-card" id="fitb7-card">
+    <div class="q-card-header"><span class="q-label">Question 7 of 8</span><span class="q-status-icon" id="fitb7-icon">✓</span></div>
+    <div class="q-stem">The monitoring system we built is particularly <input class="fitb-input" id="fitb-7" data-answer="robust" placeholder="…"> — it handles node failures, network partitions, and malformed inputs without crashing.</div>
+    <div class="feedback" id="fitb7-fb"><div class="fb-title"></div><div class="fb-body"></div></div>
+  </div>
+
+  <!-- FITB Q8 -->
+  <div class="q-card" id="fitb8-card">
+    <div class="q-card-header"><span class="q-label">Question 8 of 8</span><span class="q-status-icon" id="fitb8-icon">✓</span></div>
+    <div class="q-stem">Rather than delivering a complete solution upfront, we chose to <input class="fitb-input" id="fitb-8" data-answer="iterate" placeholder="…"> rapidly, releasing a minimal working version each sprint and refining based on user feedback.</div>
+    <div class="feedback" id="fitb8-fb"><div class="fb-title"></div><div class="fb-body"></div></div>
+  </div>
+
+  <div class="act-footer">
+    <div class="act-footer-score">Activity 2 score: <strong id="fitb-score-display">0 / 8</strong></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn btn-ghost" onclick="checkAllFITB()">Check All</button>
+      <button class="btn btn-amber" id="act2-next" style="display:none" onclick="goToActivity(3)">
+        Next Activity
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 3l4 4-4 4" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────
+     ACTIVITY 3 — REORDER + MATCHING
+────────────────────────────────────── -->
+<section class="activity-section" id="act3">
+  <div class="act-intro">
+    <div class="act-intro-num teal4">3</div>
+    <div class="act-intro-text">
+      <div class="act-intro-tag">Activity 3 · Reorder &amp; Match</div>
+      <div class="act-intro-title">Interview Response Strategy</div>
+      <div class="act-intro-desc">Understanding the <em>sequence</em> of a strong interview answer is as important as the language itself. Drag the steps into the right order, then match the technical terms to their definitions.</div>
+    </div>
+  </div>
+
+  <div class="instr-box"><strong>Part A — Reorder:</strong> Drag the steps into the most logical and professionally effective order for each scenario. Think like a senior engineer.</div>
+
+  <!-- Reorder Scenario A -->
+  <div class="q-card" id="drag1-card">
+    <div class="q-card-header"><span class="q-label">Scenario A — System Design Question</span><span class="q-status-icon" id="drag1-icon">✓</span></div>
+    <div class="q-stem" style="margin-bottom:14px;">Number these steps 1–5 in the order a senior engineer would follow when answering a system design interview question.</div>
+    <div class="drag-list" id="drag1" data-correct="4,1,3,2,5">
+      <div class="drag-item" draggable="true" data-val="4"><span class="drag-handle">⠿⠿</span><span class="drag-pos">?</span><span>Explore trade-offs between different architectural approaches before committing to a direction.</span></div>
+      <div class="drag-item" draggable="true" data-val="1"><span class="drag-handle">⠿⠿</span><span class="drag-pos">?</span><span>Ask clarifying questions to establish constraints, scale requirements, and success metrics.</span></div>
+      <div class="drag-item" draggable="true" data-val="3"><span class="drag-handle">⠿⠿</span><span class="drag-pos">?</span><span>Sketch a high-level diagram to visualise the main components and data flow.</span></div>
+      <div class="drag-item" draggable="true" data-val="2"><span class="drag-handle">⠿⠿</span><span class="drag-pos">?</span><span>Define the core entities and relationships that the system must model.</span></div>
+      <div class="drag-item" draggable="true" data-val="5"><span class="drag-handle">⠿⠿</span><span class="drag-pos">?</span><span>Deep-dive into one specific component and explain its internal design in detail.</span></div>
+    </div>
+    <div class="feedback" id="drag1-fb"><div class="fb-title"></div><div class="fb-body"></div></div>
+  </div>
+
+  <!-- Reorder Scenario B -->
+  <div class="q-card" id="drag2-card">
+    <div class="q-card-header"><span class="q-label">Scenario B — Production Incident Debug</span><span class="q-status-icon" id="drag2-icon">✓</span></div>
+    <div class="q-stem" style="margin-bottom:14px;">Order the steps for how you would approach a critical production bug in an interview answer.</div>
+    <div class="drag-list" id="drag2" data-correct="1,3,5,2,4">
+      <div class="drag-item" draggable="true" data-val="1"><span class="drag-handle">⠿⠿</span><span class="drag-pos">?</span><span>Immediately assess scope and customer impact to prioritise the incident correctly.</span></div>
+      <div class="drag-item" draggable="true" data-val="3"><span class="drag-handle">⠿⠿</span><span class="drag-pos">?</span><span>Reproduce the issue in a controlled environment using logs and error traces.</span></div>
+      <div class="drag-item" draggable="true" data-val="5"><span class="drag-handle">⠿⠿</span><span class="drag-pos">?</span><span>Isolate the root cause by forming hypotheses and testing them systematically.</span></div>
+      <div class="drag-item" draggable="true" data-val="2"><span class="drag-handle">⠿⠿</span><span class="drag-pos">?</span><span>Implement a targeted fix and deploy it to staging for verification.</span></div>
+      <div class="drag-item" draggable="true" data-val="4"><span class="drag-handle">⠿⠿</span><span class="drag-pos">?</span><span>Conduct a post-mortem to document root causes and prevent recurrence.</span></div>
+    </div>
+    <div class="feedback" id="drag2-fb"><div class="fb-title"></div><div class="fb-body"></div></div>
+  </div>
+
+  <div style="display:flex;justify-content:flex-end;margin-bottom:32px;">
+    <button class="btn btn-teal" onclick="checkAllDrag()">Check Order</button>
+  </div>
+
+  <!-- MATCHING -->
+  <div class="instr-box mt-4"><strong>Part B — Matching:</strong> Match each technical term to its correct definition using the dropdown. These are words you need to be able to use and explain in a senior engineering interview.</div>
+
+  <div class="matching-grid">
+    <div>
+      <div class="match-col-label teal">Terms</div>
+      <div class="match-term-item"><span class="match-term-num">1</span><span class="match-term-word">throughput</span></div>
+      <div class="match-term-item"><span class="match-term-num">2</span><span class="match-term-word">idempotent</span></div>
+      <div class="match-term-item"><span class="match-term-num">3</span><span class="match-term-word">abstraction</span></div>
+      <div class="match-term-item"><span class="match-term-num">4</span><span class="match-term-word">bottleneck</span></div>
+      <div class="match-term-item"><span class="match-term-num">5</span><span class="match-term-word">race condition</span></div>
+      <div class="match-term-item"><span class="match-term-num">6</span><span class="match-term-word">coupling</span></div>
+    </div>
+    <div>
+      <div class="match-col-label rust">Select Definition</div>
+      <div class="match-sel-wrap"><select class="match-select" id="match-1" data-answer="D"><option value="">— choose —</option><option value="A">A. A flaw where outcome depends on unpredictable timing between concurrent operations.</option><option value="B">B. The degree of interdependence between software modules.</option><option value="C">C. A component or stage that limits the overall performance of a system.</option><option value="D">D. The volume of data or operations processed per unit of time.</option><option value="E">E. Hiding complex implementation behind a simpler, cleaner interface.</option><option value="F">F. An operation producing the same result whether called once or many times.</option></select></div>
+      <div class="match-sel-wrap"><select class="match-select" id="match-2" data-answer="F"><option value="">— choose —</option><option value="A">A. A flaw where outcome depends on unpredictable timing between concurrent operations.</option><option value="B">B. The degree of interdependence between software modules.</option><option value="C">C. A component or stage that limits the overall performance of a system.</option><option value="D">D. The volume of data or operations processed per unit of time.</option><option value="E">E. Hiding complex implementation behind a simpler, cleaner interface.</option><option value="F">F. An operation producing the same result whether called once or many times.</option></select></div>
+      <div class="match-sel-wrap"><select class="match-select" id="match-3" data-answer="E"><option value="">— choose —</option><option value="A">A. A flaw where outcome depends on unpredictable timing between concurrent operations.</option><option value="B">B. The degree of interdependence between software modules.</option><option value="C">C. A component or stage that limits the overall performance of a system.</option><option value="D">D. The volume of data or operations processed per unit of time.</option><option value="E">E. Hiding complex implementation behind a simpler, cleaner interface.</option><option value="F">F. An operation producing the same result whether called once or many times.</option></select></div>
+      <div class="match-sel-wrap"><select class="match-select" id="match-4" data-answer="C"><option value="">— choose —</option><option value="A">A. A flaw where outcome depends on unpredictable timing between concurrent operations.</option><option value="B">B. The degree of interdependence between software modules.</option><option value="C">C. A component or stage that limits the overall performance of a system.</option><option value="D">D. The volume of data or operations processed per unit of time.</option><option value="E">E. Hiding complex implementation behind a simpler, cleaner interface.</option><option value="F">F. An operation producing the same result whether called once or many times.</option></select></div>
+      <div class="match-sel-wrap"><select class="match-select" id="match-5" data-answer="A"><option value="">— choose —</option><option value="A">A. A flaw where outcome depends on unpredictable timing between concurrent operations.</option><option value="B">B. The degree of interdependence between software modules.</option><option value="C">C. A component or stage that limits the overall performance of a system.</option><option value="D">D. The volume of data or operations processed per unit of time.</option><option value="E">E. Hiding complex implementation behind a simpler, cleaner interface.</option><option value="F">F. An operation producing the same result whether called once or many times.</option></select></div>
+      <div class="match-sel-wrap"><select class="match-select" id="match-6" data-answer="B"><option value="">— choose —</option><option value="A">A. A flaw where outcome depends on unpredictable timing between concurrent operations.</option><option value="B">B. The degree of interdependence between software modules.</option><option value="C">C. A component or stage that limits the overall performance of a system.</option><option value="D">D. The volume of data or operations processed per unit of time.</option><option value="E">E. Hiding complex implementation behind a simpler, cleaner interface.</option><option value="F">F. An operation producing the same result whether called once or many times.</option></select></div>
+    </div>
+  </div>
+
+  <div class="act-footer">
+    <div class="act-footer-score">Activity 3 score: <strong id="act3-score-display">0 / 8</strong></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn btn-ghost" onclick="checkAllMatch()">Check Matching</button>
+      <button class="btn btn-teal" id="act3-next" style="display:none" onclick="goToActivity(4)">
+        Next Activity
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 3l4 4-4 4" stroke="#fdf6ec" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────
+     ACTIVITY 4 — TRANSFORMATION + WRITING
+────────────────────────────────────── -->
+<section class="activity-section" id="act4">
+  <div class="act-intro">
+    <div class="act-intro-num rust">4</div>
+    <div class="act-intro-text">
+      <div class="act-intro-tag rust">Activity 4 · Sentence Transformation &amp; Writing</div>
+      <div class="act-intro-title rust">Reframing &amp; Extended Response</div>
+      <div class="act-intro-desc">C1 candidates are expected to manipulate complex grammar structures fluently. Transform each sentence, then practise writing an extended interview response using the language from this lesson.</div>
+    </div>
+  </div>
+
+  <div class="instr-box rust"><strong>Part A — Transformation:</strong> Rewrite each sentence using the word given in capitals, without changing the meaning. Use <strong>3–7 words</strong> for the gap. Type your answer and click Check.</div>
+
+  <!-- T1 -->
+  <div class="transform-card" id="tc1">
+    <div class="tc-num">1.</div>
+    <div class="tc-src">"We haven't finalised the architecture yet."</div>
+    <div class="tc-key-label">FINALISED</div>
+    <div class="q-stem">The architecture <input class="tc-input" id="tc-1" data-answer="has not been finalised" data-alts="hasn't been finalised|has not yet been finalised|hasn't yet been finalised" placeholder="type your answer here…"> yet.</div>
+    <div class="feedback" id="tc1-fb"><div class="fb-title"></div><div class="fb-body"></div></div>
+  </div>
+
+  <!-- T2 -->
+  <div class="transform-card amber" id="tc2">
+    <div class="tc-num amber">2.</div>
+    <div class="tc-src">"I chose a hash map instead of an array because it's faster for lookups."</div>
+    <div class="tc-key-label">OWING</div>
+    <div class="q-stem">I opted for a hash map <input class="tc-input" id="tc-2" data-answer="owing to its superior lookup performance" data-alts="owing to the superior lookup performance|owing to faster lookup performance|owing to its faster lookup performance" placeholder="type your answer here…"> over an array.</div>
+    <div class="feedback" id="tc2-fb"><div class="fb-title"></div><div class="fb-body"></div></div>
+  </div>
+
+  <!-- T3 -->
+  <div class="transform-card" id="tc3">
+    <div class="tc-num">3.</div>
+    <div class="tc-src">"We should implement caching. It would reduce latency significantly."</div>
+    <div class="tc-key-label">RESULT</div>
+    <div class="q-stem">Implementing caching <input class="tc-input" id="tc-3" data-answer="would result in a significant reduction in" data-alts="would result in significantly reducing|could result in a significant reduction in|would result in reducing" placeholder="type your answer here…"> latency.</div>
+    <div class="feedback" id="tc3-fb"><div class="fb-title"></div><div class="fb-body"></div></div>
+  </div>
+
+  <!-- T4 -->
+  <div class="transform-card amber" id="tc4">
+    <div class="tc-num amber">4.</div>
+    <div class="tc-src">"The team tested the system thoroughly, so the deployment was smooth."</div>
+    <div class="tc-key-label">HAVING</div>
+    <div class="q-stem"><input class="tc-input" id="tc-4" data-answer="having tested the system thoroughly" data-alts="having thoroughly tested the system" placeholder="type your answer here…">, the deployment went smoothly.</div>
+    <div class="feedback" id="tc4-fb"><div class="fb-title"></div><div class="fb-body"></div></div>
+  </div>
+
+  <!-- T5 -->
+  <div class="transform-card" id="tc5">
+    <div class="tc-num">5.</div>
+    <div class="tc-src">"I'm not certain, but I think the problem could be a memory leak."</div>
+    <div class="tc-key-label">MIGHT</div>
+    <div class="q-stem">The problem <input class="tc-input" id="tc-5" data-answer="might be a memory leak" data-alts="might well be a memory leak|might possibly be a memory leak" placeholder="type your answer here…">, though I would need to verify this.</div>
+    <div class="feedback" id="tc5-fb"><div class="fb-title"></div><div class="fb-body"></div></div>
+  </div>
+
+  <div style="display:flex;justify-content:flex-end;margin:20px 0 32px;">
+    <button class="btn btn-rust" onclick="checkAllTC()">Check Transformations</button>
+  </div>
+
+  <!-- PART B: FREE WRITING -->
+  <div class="instr-box rust"><strong>Part B — Extended Response:</strong> Write 5–8 sentences as if you were answering this question in a real interview. Use vocabulary and structures from the lesson where appropriate. There is no automatic scoring — this is for your own practice.</div>
+
+  <div class="writing-area">
+    <div class="writing-prompt">"Tell me about a time when you identified a significant technical problem in a system you were working on. What was your approach, and what did you learn?"</div>
+    <textarea class="writing-textarea" placeholder="Write your response here… (aim for 5–8 sentences, approx. 120–180 words)"></textarea>
+  </div>
+
+  <div class="act-footer">
+    <div class="act-footer-score">Activity 4 score: <strong id="tc-score-display">0 / 5</strong></div>
+    <button class="btn btn-rust" id="act4-next" style="display:none" onclick="showResults()">
+      See Final Results
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 3l4 4-4 4" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</section>
+
+</div><!-- /lesson -->
+
+<!-- ════════════════════════════════════════
+     RESULTS
+════════════════════════════════════════ -->
+<div id="results">
+  <div class="results-inner">
+    <div class="results-logo">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 68" width="160">
+        <text x="120" y="30" text-anchor="middle" font-family="'Cormorant Garamond',Georgia,serif" font-size="34" font-weight="600" letter-spacing="5" fill="#fdf6ec">FORBES</text>
+        <rect x="12" y="38" width="216" height="1" fill="rgba(253,246,236,0.2)"/>
+        <text x="120" y="57" text-anchor="middle" font-family="'DM Sans',Arial,sans-serif" font-size="11" font-weight="700" letter-spacing="9" fill="rgba(253,246,236,0.4)">ENGLISH</text>
+      </svg>
+    </div>
+    <div class="results-pct"><span id="r-pct">—</span><span style="font-size:48px; color:rgba(253,246,236,0.4);">%</span></div>
+    <div id="r-tier"></div>
+    <div class="results-title" id="r-title"></div>
+    <div class="results-msg" id="r-msg"></div>
+    <div class="results-bar-wrap"><div class="results-bar-fill" id="r-bar"></div></div>
+    <div class="results-breakdown">
+      <div class="rb-item">
+        <div class="rb-label">Activity 1 · MC</div>
+        <div class="rb-val" id="r-act1">—</div>
+        <div class="rb-sub">out of 5</div>
+      </div>
+      <div class="rb-item">
+        <div class="rb-label">Activity 2 · Vocabulary</div>
+        <div class="rb-val" id="r-act2">—</div>
+        <div class="rb-sub">out of 8</div>
+      </div>
+      <div class="rb-item">
+        <div class="rb-label">Activity 3 · Strategy</div>
+        <div class="rb-val" id="r-act3">—</div>
+        <div class="rb-sub">out of 8</div>
+      </div>
+      <div class="rb-item">
+        <div class="rb-label">Activity 4 · Grammar</div>
+        <div class="rb-val" id="r-act4">—</div>
+        <div class="rb-sub">out of 5</div>
+      </div>
+    </div>
+    <button class="btn btn-amber" style="font-size:15px;padding:14px 32px;" onclick="location.reload()">
+      ↺ &nbsp;Restart Lesson
+    </button>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
+const scores = { mc: 0, fitb: 0, drag: 0, match: 0, tc: 0 };
+const answered = { mc: {}, fitb: {}, drag: {}, match: false, tc: {} };
+let currentAct = 1;
+const TOTALS = { mc: 5, fitb: 8, drag: 2, match: 6, tc: 5 };
+const GRAND_TOTAL = 26; // drag=2, match=6, mc=5, fitb=8, tc=5
+
+// ═══════════════════════════════════════════
+// BOOT
+// ═══════════════════════════════════════════
+function startLesson() {
+  document.getElementById('cover').style.display = 'none';
+  document.getElementById('scorebar').classList.add('visible');
+  document.getElementById('act-nav').classList.add('visible');
+  document.getElementById('lesson').classList.add('visible');
+  initAllDrag();
+  updateScorebar();
+  window.scrollTo(0, 0);
+}
+
+// ═══════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════
+function goToActivity(n) {
+  document.querySelectorAll('.activity-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('act' + n).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach((t, i) => {
+    t.classList.remove('active');
+    if (i + 1 === n) t.classList.add('active');
+  });
+  currentAct = n;
+  updateScorebar();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateScorebar() {
+  const labels = ['Activity 1 · Multiple Choice', 'Activity 2 · Fill in the Blank', 'Activity 3 · Reorder & Match', 'Activity 4 · Transformation'];
+  document.getElementById('sb-act-label').textContent = labels[currentAct - 1] || '';
+
+  const total = grandTotal();
+  const pct = Math.round((total / GRAND_TOTAL) * 100);
+  document.getElementById('sb-prog-fill').style.width = pct + '%';
+  document.getElementById('sb-prog-text').textContent = total + ' / ' + GRAND_TOTAL + ' pts';
+  document.getElementById('sb-score').textContent = total + ' pts';
+
+  // Update activity score displays
+  document.getElementById('mc-score-display').textContent = scores.mc + ' / 5';
+  document.getElementById('fitb-score-display').textContent = scores.fitb + ' / 8';
+  document.getElementById('act3-score-display').textContent = (scores.drag + scores.match) + ' / 8';
+  document.getElementById('tc-score-display').textContent = scores.tc + ' / 5';
+}
+
+function grandTotal() {
+  return scores.mc + scores.fitb + scores.drag + scores.match + scores.tc;
+}
+
+// Mark nav tab as done
+function markTabDone(n) {
+  const tab = document.getElementById('tab-' + n);
+  if (tab) tab.classList.add('done');
+}
+
+// ═══════════════════════════════════════════
+// ACTIVITY 1 — MULTIPLE CHOICE
+// ═══════════════════════════════════════════
+const MC_FB = {
+  1: { c: 'Correct! "Before diving into the implementation, let me walk you through my initial reasoning" signals structured thinking and planning — the hallmark of senior engineers who communicate their process, not just their code.', w: 'Option B is correct. This phrase opens a structured explanation and signals to the interviewer that you plan before you code — a key differentiator at C1 level.' },
+  2: { c: 'Correct! "On reflection, I notice a potential edge case that invalidates this approach" reframes what could look like a mistake as analytical insight. The phrase "on reflection" shows metacognitive awareness.', w: 'Option C is correct. Sophisticated language turns a mistake into a demonstration of critical thinking. Contrast with the apologetic or help-seeking language of the other options.' },
+  3: { c: 'Correct! Option A gives the precise notation, identifies the specific cause (the sorting step), and explains why it dominates. This combines precision with reasoning — exactly what technical interviewers expect.', w: 'Option A is correct. It states the complexity, identifies the cause, and explains the dominance relationship. Vague phrases like "pretty fast" or "somewhere around" signal a lack of rigour.' },
+  4: { c: 'Correct! Acknowledging the gap honestly while demonstrating foundational knowledge and offering to reason through it shows intellectual honesty, confidence, and collaborative spirit — all valued at senior level.', w: 'Option D is correct. Refusing to engage, overclaiming knowledge, or guessing without context all signal poor communication skills. The best answer bridges your existing knowledge to the unfamiliar topic.' },
+  5: { c: 'Correct! Option B articulates a genuine design decision (readability vs. performance), names the deciding factor (expected scale), and shows that the choice was principled — not arbitrary.', w: 'Option B is correct. Mentioning trade-offs by name and explaining the deciding factor shows engineering maturity. Simply choosing the first idea or saying it "seemed fine" is vague and unconvincing.' }
+};
+
+function checkMC(n, btn, correct) {
+  if (answered.mc[n]) return;
+  answered.mc[n] = true;
+
+  const opts = document.querySelectorAll('#mc' + n + '-opts .mc-opt');
+  const letters = ['A','B','C','D'];
+  const chosen = letters[Array.from(opts).indexOf(btn)];
+  const isCorrect = chosen === correct;
+
+  if (isCorrect) scores.mc++;
+  opts.forEach((o, i) => {
+    o.disabled = true;
+    if (letters[i] === correct) o.classList.add('show-correct');
+  });
+  if (!isCorrect) btn.classList.add('wrong-pick');
+  else btn.classList.add('correct-pick');
+
+  const card = document.getElementById('mc' + n + '-card');
+  card.classList.add(isCorrect ? 'answered-correct' : 'answered-wrong');
+  const icon = document.getElementById('mc' + n + '-icon');
+  icon.textContent = isCorrect ? '✓' : '✗';
+  icon.style.color = isCorrect ? 'var(--correct)' : 'var(--wrong)';
+
+  const fb = document.getElementById('mc' + n + '-fb');
+  fb.className = 'feedback ' + (isCorrect ? 'correct' : 'wrong');
+  fb.querySelector('.fb-title').textContent = isCorrect ? '✓ Correct' : '✗ Not quite';
+  fb.querySelector('.fb-body').textContent = isCorrect ? MC_FB[n].c : MC_FB[n].w;
+  fb.style.display = 'block';
+
+  updateScorebar();
+
+  if (Object.keys(answered.mc).length === TOTALS.mc) {
+    document.getElementById('act1-next').style.display = 'inline-flex';
+    markTabDone(1);
+  }
+}
+
+// ═══════════════════════════════════════════
+// ACTIVITY 2 — FILL IN THE BLANK
+// ═══════════════════════════════════════════
+const FITB_FB = {
+  1: '"Refactor" means restructuring existing code without changing its external behaviour — essential for discussing code quality, technical debt, and maintainability.',
+  2: '"Scalable" describes a system designed to handle increasing load without fundamental redesign. Always consider scale when discussing architecture choices.',
+  3: '"Latency" is the delay between a request and its response — distinct from throughput (volume per unit time). Both are key performance metrics in system design.',
+  4: '"Leverage" means to use something strategically to gain an advantage — here, making use of existing infrastructure rather than rebuilding. A sophisticated, high-register verb.',
+  5: '"Decouple" means to reduce dependencies between components so they can change independently. The opposite — tight coupling — is a common design flaw to identify.',
+  6: '"Deprecate" means to mark something as obsolete and scheduled for removal — distinct from simply deleting it. Used when phasing out APIs or features gradually.',
+  7: '"Robust" describes a system that performs reliably under a wide variety of conditions, including unexpected ones like failures or malformed input.',
+  8: '"Iterate" means to develop in repeated cycles, refining with each pass based on feedback. Central to Agile methodology and lean development thinking.'
+};
+
+function checkSingleFITB(i) {
+  if (answered.fitb[i]) return;
+  const inp = document.getElementById('fitb-' + i);
+  const val = inp.value.trim().toLowerCase();
+  const correct = inp.dataset.answer;
+  const isCorrect = val === correct;
+  answered.fitb[i] = true;
+  if (isCorrect) scores.fitb++;
+
+  inp.classList.add(isCorrect ? 'correct' : 'wrong');
+  inp.disabled = true;
+  if (!isCorrect) inp.value = correct; // show correct answer
+
+  const card = document.getElementById('fitb' + i + '-card');
+  card.classList.add(isCorrect ? 'answered-correct' : 'answered-wrong');
+  const icon = document.getElementById('fitb' + i + '-icon');
+  icon.textContent = isCorrect ? '✓' : '✗';
+  icon.style.color = isCorrect ? 'var(--correct)' : 'var(--wrong)';
+
+  const fb = document.getElementById('fitb' + i + '-fb');
+  fb.className = 'feedback ' + (isCorrect ? 'correct' : 'wrong');
+  fb.querySelector('.fb-title').textContent = isCorrect ? `✓ Correct — "${correct}"` : `✗ The answer is "${correct}"`;
+  fb.querySelector('.fb-body').textContent = FITB_FB[i];
+  fb.style.display = 'block';
+
+  const chip = document.getElementById('chip-' + correct);
+  if (chip) chip.classList.add('used');
+}
+
+function checkAllFITB() {
+  for (let i = 1; i <= TOTALS.fitb; i++) checkSingleFITB(i);
+  updateScorebar();
+  document.getElementById('act2-next').style.display = 'inline-flex';
+  markTabDone(2);
+}
+
+// Allow pressing Enter on FITB inputs
+document.querySelectorAll('.fitb-input').forEach((inp, idx) => {
+  inp.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { checkSingleFITB(idx + 1); updateScorebar(); }
+  });
+});
+
+// ═══════════════════════════════════════════
+// ACTIVITY 3A — DRAG & DROP
+// ═══════════════════════════════════════════
+let dragSrc = null;
+
+function initAllDrag() {
+  ['drag1','drag2'].forEach(id => {
+    const container = document.getElementById(id);
+    if (!container) return;
+    // Shuffle items initially
+    const items = [...container.querySelectorAll('.drag-item')];
+    for (let i = items.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      container.insertBefore(items[j], items[i]);
+    }
+    updateDragPos(container);
+    bindDrag(container);
+  });
+}
+
+function bindDrag(container) {
+  container.querySelectorAll('.drag-item').forEach(item => {
+    item.addEventListener('dragstart', e => {
+      dragSrc = item;
+      setTimeout(() => item.classList.add('dragging'), 0);
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    item.addEventListener('dragend', () => {
+      item.classList.remove('dragging','drag-over');
+      dragSrc = null;
+      updateDragPos(container);
+    });
+    item.addEventListener('dragover', e => {
+      e.preventDefault();
+      if (item !== dragSrc) item.classList.add('drag-over');
+    });
+    item.addEventListener('dragleave', () => item.classList.remove('drag-over'));
+    item.addEventListener('drop', e => {
+      e.preventDefault();
+      item.classList.remove('drag-over');
+      if (dragSrc && dragSrc !== item) {
+        const all = [...container.querySelectorAll('.drag-item')];
+        const si = all.indexOf(dragSrc), ti = all.indexOf(item);
+        if (si < ti) container.insertBefore(dragSrc, item.nextSibling);
+        else container.insertBefore(dragSrc, item);
+      }
+    });
+  });
+}
+
+function updateDragPos(container) {
+  container.querySelectorAll('.drag-item').forEach((item, i) => {
+    item.querySelector('.drag-pos').textContent = i + 1;
+  });
+}
+
+function checkAllDrag() {
+  let newScore = 0;
+  ['drag1','drag2'].forEach((id, di) => {
+    if (answered.drag[id]) return;
+    answered.drag[id] = true;
+
+    const container = document.getElementById(id);
+    const items = [...container.querySelectorAll('.drag-item')];
+    const correct = container.dataset.correct.split(',');
+    const current = items.map(i => i.dataset.val);
+    const isCorrect = JSON.stringify(current) === JSON.stringify(correct);
+
+    if (isCorrect) { scores.drag++; newScore++; }
+
+    items.forEach(item => {
+      item.draggable = false;
+      const pos = correct.indexOf(item.dataset.val);
+      const curPos = current.indexOf(item.dataset.val);
+      item.classList.add(pos === curPos ? 'correct-order' : 'wrong-order');
+    });
+
+    if (!isCorrect) {
+      // Reorder to show correct sequence
+      const sorted = [...items].sort((a, b) => correct.indexOf(a.dataset.val) - correct.indexOf(b.dataset.val));
+      sorted.forEach(item => container.appendChild(item));
+      sorted.forEach((item, i) => item.querySelector('.drag-pos').textContent = i + 1);
+    }
+
+    const card = document.getElementById(id + '-card');
+    card.classList.add(isCorrect ? 'answered-correct' : 'answered-wrong');
+    const icon = document.getElementById(id + '-icon');
+    icon.textContent = isCorrect ? '✓' : '✗';
+    icon.style.color = isCorrect ? 'var(--correct)' : 'var(--wrong)';
+
+    const fb = document.getElementById(id + '-fb');
+    fb.className = 'feedback ' + (isCorrect ? 'correct' : 'wrong');
+    const fbTexts = {
+      drag1: { c: 'Perfect order! Clarify → Define entities → Sketch diagram → Explore trade-offs → Deep-dive. This mirrors how seasoned engineers structure design discussions naturally.', w: 'Correct order: (1) Ask clarifying questions → (2) Define core entities → (3) Sketch high-level diagram → (4) Explore trade-offs → (5) Deep-dive into one component. Clarification always comes first.' },
+      drag2: { c: 'Excellent! Assess impact → Reproduce → Isolate root cause → Fix & verify → Post-mortem. Prioritising business impact before diving into debugging is a key mark of engineering seniority.', w: 'Correct order: (1) Assess impact → (2) Reproduce issue → (3) Isolate root cause → (4) Fix & verify → (5) Post-mortem. Always assess the business impact before the technical investigation.' }
+    };
+    fb.querySelector('.fb-title').textContent = isCorrect ? '✓ Correct order!' : '✗ See the corrected order above';
+    fb.querySelector('.fb-body').textContent = isCorrect ? fbTexts[id].c : fbTexts[id].w;
+    fb.style.display = 'block';
+  });
+  updateScorebar();
+}
+
+// ═══════════════════════════════════════════
+// ACTIVITY 3B — MATCHING
+// ═══════════════════════════════════════════
+function checkAllMatch() {
+  if (answered.match) return;
+  answered.match = true;
+  let correct = 0;
+  for (let i = 1; i <= 6; i++) {
+    const sel = document.getElementById('match-' + i);
+    const isCorrect = sel.value === sel.dataset.answer;
+    if (isCorrect) correct++;
+    sel.classList.add(isCorrect ? 'correct' : 'wrong');
+    sel.disabled = true;
+    if (!isCorrect) {
+      // show correct option text
+      const correctOpt = sel.querySelector('option[value="' + sel.dataset.answer + '"]');
+      if (correctOpt) sel.title = 'Correct: ' + sel.dataset.answer;
+    }
+  }
+  scores.match = correct;
+  updateScorebar();
+
+  // Show next only when both drag and match are done
+  const allDragDone = Object.keys(answered.drag).length === 2;
+  if (allDragDone) {
+    document.getElementById('act3-next').style.display = 'inline-flex';
+    markTabDone(3);
+  } else {
+    // Show next anyway since match is done — drag will still need check
+    document.getElementById('act3-next').style.display = 'inline-flex';
+    markTabDone(3);
+  }
+}
+
+// ═══════════════════════════════════════════
+// ACTIVITY 4 — TRANSFORMATION
+// ═══════════════════════════════════════════
+const TC_FB = {
+  1: { hint: 'This uses the passive voice of the present perfect: subject + has/have + been + past participle.' },
+  2: { hint: '"Owing to" is a formal preposition meaning "because of". It is followed by a noun phrase, not a clause.' },
+  3: { hint: '"Result in" means "to cause as an outcome". It is followed by a noun or gerund: "result in a reduction" or "result in reducing".' },
+  4: { hint: 'The perfect participle clause ("Having + past participle") expresses an action completed before the main clause. It is a formal, concise C1 structure.' },
+  5: { hint: '"Might" is a modal verb expressing possibility. It is followed directly by a bare infinitive with no change in meaning.' }
+};
+
+function checkSingleTC(i) {
+  if (answered.tc[i]) return;
+  answered.tc[i] = true;
+
+  const inp = document.getElementById('tc-' + i);
+  const val = inp.value.trim().toLowerCase().replace(/[.!?]$/, '');
+  const main = inp.dataset.answer.toLowerCase();
+  const alts = inp.dataset.alts ? inp.dataset.alts.toLowerCase().split('|') : [];
+  const allAccepted = [main, ...alts];
+  const isCorrect = allAccepted.some(a => val === a.trim());
+
+  if (isCorrect) scores.tc++;
+  inp.classList.add(isCorrect ? 'correct' : 'wrong');
+  inp.disabled = true;
+  if (!isCorrect) inp.value = inp.dataset.answer;
+
+  const card = document.getElementById('tc' + i);
+  card.classList.add(isCorrect ? 'answered-correct' : 'answered-wrong');
+
+  const fb = document.getElementById('tc' + i + '-fb');
+  fb.className = 'feedback ' + (isCorrect ? 'correct' : 'wrong');
+  fb.querySelector('.fb-title').textContent = isCorrect ? '✓ Correct' : `✗ Sample answer: "${inp.dataset.answer}"`;
+  fb.querySelector('.fb-body').textContent = TC_FB[i].hint;
+  fb.style.display = 'block';
+}
+
+function checkAllTC() {
+  for (let i = 1; i <= TOTALS.tc; i++) checkSingleTC(i);
+  updateScorebar();
+  document.getElementById('act4-next').style.display = 'inline-flex';
+  markTabDone(4);
+}
+
+// Allow Enter on transformation inputs
+document.querySelectorAll('.tc-input').forEach((inp, idx) => {
+  inp.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { checkSingleTC(idx + 1); updateScorebar(); }
+  });
+});
+
+// ═══════════════════════════════════════════
+// RESULTS
+// ═══════════════════════════════════════════
+function showResults() {
+  document.getElementById('lesson').style.display = 'none';
+  document.getElementById('act-nav').style.display = 'none';
+  document.getElementById('scorebar').style.display = 'none';
+  document.getElementById('results').classList.add('visible');
+
+  const total = grandTotal();
+  const pct = Math.round((total / GRAND_TOTAL) * 100);
+
+  document.getElementById('r-pct').textContent = pct;
+  document.getElementById('r-act1').textContent = scores.mc + ' / 5';
+  document.getElementById('r-act2').textContent = scores.fitb + ' / 8';
+  document.getElementById('r-act3').textContent = (scores.drag + scores.match) + ' / 8';
+  document.getElementById('r-act4').textContent = scores.tc + ' / 5';
+
+  let tier, title, msg;
+  if (pct >= 80) {
+    tier = '<span class="results-tier tier-gold">★ Interview Ready</span>';
+    title = 'Outstanding performance';
+    msg = `You scored ${total} out of ${GRAND_TOTAL}. Your language choices, technical precision, and strategic awareness are at a genuine C1 level. You're ready to walk into a technical interview and communicate with real confidence.`;
+  } else if (pct >= 55) {
+    tier = '<span class="results-tier tier-silver">◈ Strong Foundation</span>';
+    title = 'Solid result';
+    msg = `You scored ${total} out of ${GRAND_TOTAL}. You have a strong grasp of technical interview language. Review the feedback on questions you missed — those are exactly the gaps that coaching sessions can close.`;
+  } else {
+    tier = '<span class="results-tier tier-bronze">◇ Keep Practising</span>';
+    title = 'Room to grow';
+    msg = `You scored ${total} out of ${GRAND_TOTAL}. Review each activity's feedback carefully — the vocabulary and structures here become natural with deliberate, repeated practice. Try the lesson again.`;
+  }
+
+  document.getElementById('r-tier').innerHTML = tier;
+  document.getElementById('r-title').textContent = title;
+  document.getElementById('r-msg').textContent = msg;
+
+  setTimeout(() => {
+    document.getElementById('r-bar').style.width = pct + '%';
+  }, 100);
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

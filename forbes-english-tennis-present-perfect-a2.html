@@ -1,0 +1,1975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – Present Perfect | Tennis Club</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --clay:       #C1613A;
+    --clay-light: #D4804F;
+    --clay-dark:  #9E4A28;
+    --court:      #E8D5B0;
+    --court-dark: #D4BC90;
+    --ivy:        #2D5016;
+    --ivy-mid:    #3D6B20;
+    --ivory:      #FAF6EE;
+    --cream:      #F3ECD8;
+    --chalk:      #FFFFFF;
+    --ink:        #1C1C1A;
+    --muted:      #7A6E5F;
+    --line:       rgba(193,97,58,0.25);
+    --shadow:     rgba(28,28,26,0.12);
+    --radius:     12px;
+    --radius-lg:  20px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: var(--ivory);
+    color: var(--ink);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* === BACKGROUND TEXTURE === */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(193,97,58,0.04) 59px, rgba(193,97,58,0.04) 60px),
+      repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(193,97,58,0.04) 59px, rgba(193,97,58,0.04) 60px);
+    pointer-events: none; z-index: 0;
+  }
+
+  .page-wrap {
+    position: relative; z-index: 1;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* === LOGO === */
+  .logo-wrap {
+    text-align: center;
+    margin-bottom: 36px;
+    animation: fadeDown 0.6s ease both;
+  }
+
+  /* === HEADER BAND === */
+  .lesson-header {
+    background: var(--clay);
+    border-radius: var(--radius-lg);
+    padding: 36px 40px 32px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+    animation: fadeDown 0.7s ease both 0.1s;
+    box-shadow: 0 8px 32px rgba(193,97,58,0.3);
+  }
+  .lesson-header::before {
+    content: '';
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  .lesson-header::after {
+    content: '';
+    position: absolute;
+    right: 40px; bottom: -80px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .lesson-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    color: var(--ivory);
+    margin-bottom: 8px;
+    position: relative; z-index: 1;
+  }
+  .lesson-header p {
+    color: rgba(250,246,238,0.8);
+    font-size: 0.95rem;
+    font-weight: 300;
+    position: relative; z-index: 1;
+  }
+  .badges {
+    display: flex; gap: 10px; flex-wrap: wrap;
+    margin-top: 16px;
+    position: relative; z-index: 1;
+  }
+  .badge {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: var(--ivory);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* === SCORE BAR === */
+  .scorebar {
+    display: flex; align-items: center; gap: 16px;
+    background: var(--cream);
+    border: 1px solid var(--court-dark);
+    border-radius: var(--radius);
+    padding: 14px 22px;
+    margin-bottom: 28px;
+    animation: fadeDown 0.7s ease both 0.2s;
+  }
+  .score-label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 600; }
+  .score-val { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--clay); font-weight: 700; }
+  .score-sep { width: 1px; height: 32px; background: var(--court-dark); }
+  .progress-text { font-size: 0.85rem; color: var(--muted); margin-left: auto; font-weight: 500; }
+  .progress-bar-wrap { flex: 1; height: 6px; background: var(--court-dark); border-radius: 4px; overflow: hidden; min-width: 80px; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--clay), var(--clay-light)); border-radius: 4px; transition: width 0.5s ease; }
+
+  /* === SECTION TITLE === */
+  .section-title {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 22px;
+  }
+  .section-title h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    color: var(--ivy);
+  }
+  .section-num {
+    width: 36px; height: 36px;
+    background: var(--ivy);
+    color: var(--ivory);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .section-subtitle {
+    font-size: 0.88rem;
+    color: var(--muted);
+    margin-bottom: 24px;
+    line-height: 1.6;
+    padding-left: 50px;
+    margin-top: -12px;
+  }
+
+  /* === ILLUSTRATION === */
+  .illustration-wrap {
+    margin-bottom: 28px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 4px 20px var(--shadow);
+  }
+
+  /* === CARD === */
+  .card {
+    background: var(--chalk);
+    border: 1px solid rgba(193,97,58,0.15);
+    border-radius: var(--radius-lg);
+    padding: 28px 30px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 12px var(--shadow);
+    animation: fadeUp 0.5s ease both;
+  }
+  .q-text {
+    font-size: 1.05rem;
+    font-weight: 500;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    color: var(--ink);
+  }
+  .q-text em { font-style: italic; color: var(--muted); }
+
+  /* === OPTIONS === */
+  .options { display: grid; gap: 10px; }
+  .option-btn {
+    display: flex; align-items: center; gap: 12px;
+    width: 100%; text-align: left;
+    background: var(--cream);
+    border: 2px solid var(--court-dark);
+    border-radius: var(--radius);
+    padding: 13px 18px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    color: var(--ink);
+    transition: border-color 0.18s, background 0.18s, transform 0.12s;
+    font-weight: 400;
+  }
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--clay);
+    background: #FDF0E8;
+    transform: translateX(3px);
+  }
+  .option-btn .opt-letter {
+    width: 26px; height: 26px;
+    border-radius: 6px;
+    background: var(--court-dark);
+    color: var(--ink);
+    font-size: 0.78rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.18s, color 0.18s;
+  }
+  .option-btn:hover:not(:disabled) .opt-letter { background: var(--clay); color: white; }
+  .option-btn:disabled { cursor: default; transform: none; }
+  .option-btn.correct { background: #EAF4E2; border-color: #3D8C1A; }
+  .option-btn.correct .opt-letter { background: #3D8C1A; color: white; }
+  .option-btn.wrong { background: #FDE8E3; border-color: #C0392B; }
+  .option-btn.wrong .opt-letter { background: #C0392B; color: white; }
+  .option-btn.reveal-correct { background: #EAF4E2; border-color: #3D8C1A; }
+  .option-btn.reveal-correct .opt-letter { background: #3D8C1A; color: white; }
+
+  /* === FEEDBACK === */
+  .feedback-box {
+    margin-top: 16px;
+    padding: 14px 18px;
+    border-radius: var(--radius);
+    font-size: 0.9rem;
+    line-height: 1.55;
+    display: none;
+  }
+  .feedback-box.show { display: block; animation: fadeUp 0.3s ease; }
+  .feedback-box.ok { background: #EAF4E2; border-left: 4px solid #3D8C1A; color: #1E5C0C; }
+  .feedback-box.bad { background: #FDE8E3; border-left: 4px solid #C0392B; color: #8B1A1A; }
+  .feedback-box strong { display: block; margin-bottom: 4px; font-size: 0.95rem; }
+
+  /* === FILL IN THE BLANK === */
+  .blank-sentence {
+    font-size: 1.05rem;
+    line-height: 2;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+  .blank-input {
+    border: none;
+    border-bottom: 2px solid var(--clay);
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    color: var(--ink);
+    padding: 2px 6px;
+    width: 140px;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.18s;
+  }
+  .blank-input:focus { border-bottom-color: var(--ivy); }
+  .blank-input.correct-input { border-bottom-color: #3D8C1A; color: #1E5C0C; }
+  .blank-input.wrong-input { border-bottom-color: #C0392B; color: #8B1A1A; }
+  .word-bank {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-bottom: 18px;
+  }
+  .bank-word {
+    background: var(--cream);
+    border: 1.5px solid var(--court-dark);
+    border-radius: 6px;
+    padding: 5px 14px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--ink);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    user-select: none;
+  }
+  .bank-word:hover { background: #FDF0E8; border-color: var(--clay); }
+  .bank-word.used { opacity: 0.4; pointer-events: none; text-decoration: line-through; }
+
+  /* === DRAG & DROP MATCHING === */
+  .match-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 24px;
+    margin-bottom: 10px;
+  }
+  .match-col-label {
+    font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.07em;
+    color: var(--muted); font-weight: 700; margin-bottom: 10px;
+  }
+  .match-left-item {
+    background: var(--cream);
+    border: 1.5px solid var(--court-dark);
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  .match-drop-zone {
+    background: var(--cream);
+    border: 2px dashed var(--court-dark);
+    border-radius: var(--radius);
+    padding: 11px 16px;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    min-height: 44px;
+    display: flex; align-items: center;
+    cursor: pointer;
+    transition: border-color 0.18s, background 0.18s;
+    position: relative;
+    color: var(--muted);
+  }
+  .match-drop-zone.filled { color: var(--ink); background: #FDF5EC; border-color: var(--clay); border-style: solid; }
+  .match-drop-zone.correct-drop { background: #EAF4E2; border-color: #3D8C1A; border-style: solid; color: #1E5C0C; }
+  .match-drop-zone.wrong-drop { background: #FDE8E3; border-color: #C0392B; border-style: solid; color: #8B1A1A; }
+  .draggable-pool {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-bottom: 10px;
+  }
+  .draggable-chip {
+    background: var(--clay);
+    color: white;
+    border-radius: 8px;
+    padding: 7px 16px;
+    font-size: 0.88rem; font-weight: 600;
+    cursor: grab;
+    user-select: none;
+    transition: opacity 0.2s, transform 0.15s;
+    border: 2px solid var(--clay-dark);
+  }
+  .draggable-chip:hover { transform: scale(1.04); }
+  .draggable-chip.dragging { opacity: 0.4; }
+  .draggable-chip.placed { display: none; }
+
+  /* === REORDER === */
+  .reorder-sentence {
+    font-size: 0.95rem; color: var(--muted);
+    margin-bottom: 12px; line-height: 1.5;
+  }
+  .reorder-drop-area {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    min-height: 50px;
+    border: 2px dashed var(--court-dark);
+    border-radius: var(--radius);
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    transition: border-color 0.18s, background 0.18s;
+  }
+  .reorder-drop-area.drag-over { border-color: var(--clay); background: #FDF5EC; }
+  .reorder-chip {
+    background: var(--ivy);
+    color: white;
+    border-radius: 8px;
+    padding: 7px 14px;
+    font-size: 0.88rem; font-weight: 500;
+    cursor: grab;
+    user-select: none;
+    transition: transform 0.12s;
+    border: 2px solid var(--ivy-mid);
+  }
+  .reorder-chip:hover { transform: scale(1.05); }
+  .word-pool {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    padding: 12px;
+    background: var(--cream);
+    border-radius: var(--radius);
+    min-height: 50px;
+    margin-bottom: 14px;
+  }
+  .word-pool.drag-over { background: #FDF0E8; }
+  .reorder-feedback-correct { color: #1E5C0C; background: #EAF4E2; }
+  .reorder-feedback-wrong { color: #8B1A1A; background: #FDE8E3; }
+
+  /* === BUTTONS === */
+  .btn-primary {
+    background: var(--clay);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    padding: 13px 32px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem; font-weight: 600;
+    cursor: pointer;
+    transition: background 0.18s, transform 0.12s;
+    letter-spacing: 0.02em;
+  }
+  .btn-primary:hover { background: var(--clay-dark); transform: translateY(-1px); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--clay);
+    border: 2px solid var(--clay);
+    border-radius: var(--radius);
+    padding: 11px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem; font-weight: 600;
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s;
+  }
+  .btn-secondary:hover { background: var(--clay); color: white; }
+  .btn-wrap { margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+
+  /* === ACTIVITY WRAP === */
+  .activity-section {
+    margin-bottom: 48px;
+    animation: fadeUp 0.5s ease both;
+  }
+  .activity-divider {
+    display: flex; align-items: center; gap: 16px;
+    margin: 40px 0 30px;
+  }
+  .activity-divider-line { flex: 1; height: 1px; background: var(--line); }
+  .activity-divider-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--clay); }
+
+  /* === RESULTS SCREEN === */
+  #results-screen {
+    display: none;
+    text-align: center;
+    padding: 60px 40px;
+    background: var(--chalk);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 32px var(--shadow);
+    animation: fadeUp 0.6s ease both;
+  }
+  #results-screen h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--clay);
+    margin-bottom: 12px;
+  }
+  #results-screen .final-score {
+    font-size: 3.5rem;
+    font-family: 'Playfair Display', serif;
+    color: var(--ivy);
+    font-weight: 700;
+    margin: 20px 0;
+  }
+  #results-screen p { color: var(--muted); font-size: 1rem; line-height: 1.7; max-width: 480px; margin: 0 auto 28px; }
+
+  /* === ANIMATIONS === */
+  @keyframes fadeDown { from { opacity:0; transform:translateY(-16px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+
+  /* === RESPONSIVE === */
+  @media(max-width:600px) {
+    .match-grid { grid-template-columns: 1fr; }
+    .card { padding: 20px 18px; }
+    .lesson-header { padding: 26px 22px; }
+    .scorebar { flex-wrap: wrap; }
+  }
+
+  /* === HOUSE RULES PANEL === */
+  .rules-panel {
+    background: var(--cream);
+    border: 1px solid var(--court-dark);
+    border-radius: var(--radius-lg);
+    padding: 24px 28px;
+    margin-bottom: 32px;
+    animation: fadeUp 0.6s ease both 0.25s;
+  }
+  .rules-panel h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--ivy);
+    font-size: 1.1rem;
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .rules-panel ul { list-style: none; display: grid; gap: 7px; }
+  .rules-panel li {
+    font-size: 0.88rem;
+    color: var(--ink);
+    padding-left: 18px;
+    position: relative;
+    line-height: 1.55;
+  }
+  .rules-panel li::before {
+    content: '◆';
+    position: absolute; left: 0;
+    color: var(--clay);
+    font-size: 0.5rem;
+    top: 5px;
+  }
+  .rules-link {
+    display: inline-block;
+    margin-top: 14px;
+    color: var(--clay);
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px solid var(--clay);
+    transition: opacity 0.2s;
+  }
+  .rules-link:hover { opacity: 0.7; }
+  .intro-text {
+    font-size: 0.95rem;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 28px;
+    animation: fadeUp 0.5s ease both 0.2s;
+  }
+
+  /* === GRAMMAR EXPLANATION PANEL === */
+  .grammar-panel {
+    background: var(--chalk);
+    border: 2px solid var(--clay);
+    border-radius: var(--radius-lg);
+    margin-bottom: 36px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px var(--shadow);
+    animation: fadeUp 0.6s ease both 0.15s;
+  }
+  .grammar-panel-header {
+    background: var(--clay);
+    padding: 18px 28px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .grammar-panel-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    color: var(--ivory);
+    font-weight: 700;
+  }
+  .grammar-panel-header .de-tag {
+    background: rgba(255,255,255,0.2);
+    color: var(--ivory);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+  .grammar-body { padding: 28px 30px; }
+  .grammar-intro {
+    font-size: 0.95rem; line-height: 1.7; color: var(--ink);
+    margin-bottom: 22px;
+    padding: 14px 18px;
+    background: var(--cream);
+    border-radius: var(--radius);
+    border-left: 4px solid var(--clay);
+  }
+  .grammar-intro .de { color: var(--ivy); font-style: italic; font-weight: 500; }
+  .grammar-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 22px;
+  }
+  @media(max-width:600px) { .grammar-grid { grid-template-columns: 1fr; } }
+  .grammar-card {
+    background: var(--cream);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    border: 1px solid var(--court-dark);
+  }
+  .grammar-card h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    color: var(--clay);
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--court-dark);
+  }
+  .grammar-formula {
+    background: var(--ivy);
+    color: var(--ivory);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    letter-spacing: 0.02em;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .grammar-formula span { color: #A8D080; }
+  .grammar-example {
+    font-size: 0.88rem;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+  .grammar-example .en { font-style: italic; color: var(--clay-dark); display: block; margin-bottom: 2px; }
+  .grammar-example .de { color: var(--ivy); display: block; font-size: 0.83rem; }
+  .grammar-uses {
+    margin-bottom: 20px;
+  }
+  .grammar-uses h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--ivy);
+    margin-bottom: 12px;
+  }
+  .use-row {
+    display: flex; gap: 10px; align-items: flex-start;
+    margin-bottom: 12px;
+    padding: 12px 16px;
+    background: var(--cream);
+    border-radius: var(--radius);
+    border-left: 3px solid var(--clay-light);
+  }
+  .use-icon {
+    font-size: 1.2rem; flex-shrink: 0; margin-top: 1px;
+  }
+  .use-text { font-size: 0.88rem; line-height: 1.6; color: var(--ink); }
+  .use-text strong { color: var(--clay-dark); display: block; margin-bottom: 2px; }
+  .use-text .de { color: var(--ivy); font-style: italic; font-size: 0.83rem; }
+  .irreg-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.87rem;
+    margin-bottom: 8px;
+  }
+  .irreg-table th {
+    background: var(--ivy);
+    color: var(--ivory);
+    padding: 8px 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .irreg-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--court-dark);
+    color: var(--ink);
+  }
+  .irreg-table tr:nth-child(even) td { background: var(--cream); }
+  .irreg-table td:first-child { font-style: italic; color: var(--muted); }
+  .irreg-table td:nth-child(2) { font-weight: 600; color: var(--clay-dark); }
+  .grammar-adverbs {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-top: 6px;
+  }
+  .adverb-chip {
+    background: var(--clay);
+    color: white;
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 0.82rem;
+    font-weight: 600;
+  }
+  .adverb-chip .de-sub {
+    font-size: 0.72rem;
+    opacity: 0.82;
+    font-weight: 400;
+    font-style: italic;
+    display: block;
+    text-align: center;
+    margin-top: 1px;
+  }
+  .warning-box {
+    background: #FFF5E6;
+    border: 1.5px solid #E8A030;
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    margin-top: 16px;
+    color: #7A4800;
+  }
+  .warning-box strong { color: #C07000; display: block; margin-bottom: 4px; }
+
+  /* === ERROR CORRECTION === */
+  .error-sentence {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--ink);
+    margin-bottom: 14px;
+    padding: 12px 16px;
+    background: var(--cream);
+    border-radius: var(--radius);
+    border-left: 3px solid #C0392B;
+  }
+  .error-word { color: #C0392B; text-decoration: underline dotted; font-weight: 600; }
+
+  /* === TRANSLATION MATCH === */
+  .trans-match-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 20px;
+    margin-bottom: 14px;
+  }
+  @media(max-width:560px) { .trans-match-grid { grid-template-columns: 1fr; } }
+  .trans-en-item {
+    background: var(--cream);
+    border: 1.5px solid var(--court-dark);
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .trans-de-select {
+    width: 100%;
+    background: var(--cream);
+    border: 2px solid var(--court-dark);
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    color: var(--ink);
+    cursor: pointer;
+    transition: border-color 0.18s;
+    appearance: auto;
+  }
+  .trans-de-select:focus { outline: none; border-color: var(--clay); }
+  .trans-de-select.correct-sel { border-color: #3D8C1A; background: #EAF4E2; color: #1E5C0C; }
+  .trans-de-select.wrong-sel { border-color: #C0392B; background: #FDE8E3; color: #8B1A1A; }
+  .trans-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 700; margin-bottom: 6px; }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- LOGO -->
+  <div class="logo-wrap">
+    <svg width="220" height="70" viewBox="0 0 220 70" xmlns="http://www.w3.org/2000/svg">
+      <text x="110" y="32" font-family="Georgia, 'Times New Roman', serif" font-size="30" font-weight="400" fill="#C1613A" text-anchor="middle" letter-spacing="2">Forbes</text>
+      <rect x="30" y="40" width="160" height="1.5" fill="#C1613A" opacity="0.5"/>
+      <text x="110" y="60" font-family="Arial Black, Arial, sans-serif" font-size="15" font-weight="900" fill="#2D5016" text-anchor="middle" letter-spacing="5">ENGLISH</text>
+    </svg>
+  </div>
+
+  <!-- LESSON HEADER -->
+  <div class="lesson-header">
+    <h1>Have You Played Here Before?</h1>
+    <p>Using the Present Perfect in a Tennis Club Context</p>
+    <div class="badges">
+      <span class="badge">A2 Elementary</span>
+      <span class="badge">Grammar</span>
+      <span class="badge">Present Perfect</span>
+      <span class="badge">Tennis Point Vienna</span>
+    </div>
+  </div>
+
+  <!-- SCORE BAR -->
+  <div class="scorebar" id="scorebar">
+    <div>
+      <div class="score-label">Score</div>
+      <div class="score-val" id="score-display">0</div>
+    </div>
+    <div class="score-sep"></div>
+    <div>
+      <div class="score-label">Correct</div>
+      <div class="score-val" id="correct-display">0 / 0</div>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+    <div class="progress-text" id="progress-text">0 of 20 done</div>
+  </div>
+
+  <!-- INTRO TEXT -->
+  <p class="intro-text">
+    Welcome to Tennis Point Vienna! In this lesson, you'll practise the <strong>Present Perfect</strong> tense —
+    used to talk about experiences and things that happened at some point in your life.
+    Read the club's house rules and complete all three activities.
+  </p>
+
+  <!-- HOUSE RULES PANEL -->
+  <div class="rules-panel">
+    <h3>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" stroke="#2D5016" stroke-width="2"/><path d="M12 7v5l3 3" stroke="#2D5016" stroke-width="2" stroke-linecap="round"/></svg>
+      Tennis Point Vienna — Key House Rules
+    </h3>
+    <ul>
+      <li>Check in at reception before your game — even if you have already paid online.</li>
+      <li>Arrive at the court no earlier than 3 minutes before your session.</li>
+      <li>Only wear clean, designated sports shoes — changed in the changing room.</li>
+      <li>Cancellation is free if you cancel at least 48 hours in advance.</li>
+      <li>No glass bottles, no smoking, no alcohol inside the facility.</li>
+      <li>Dogs are not permitted in the sports halls.</li>
+    </ul>
+    <a class="rules-link" href="https://reservierung.tennispoint.at/reservierung" target="_blank">→ Book a Court at Tennis Point Vienna</a>
+  </div>
+
+  <!-- GRAMMAR EXPLANATION PANEL -->
+  <div class="grammar-panel">
+    <div class="grammar-panel-header">
+      <h2>Grammar Reference: The Present Perfect</h2>
+      <span class="de-tag">Deutsch</span>
+    </div>
+    <div class="grammar-body">
+
+      <div class="grammar-intro">
+        The <strong>Present Perfect</strong> connects the past to the present moment. We use it for experiences, recent actions, and situations that are still relevant now.<br>
+        <span class="de">Auf Deutsch: Das Present Perfect verbindet die Vergangenheit mit dem jetzigen Moment — es entspricht oft dem <em>Perfekt</em> auf Deutsch (z.B. &ldquo;Ich habe gespielt&rdquo;).</span>
+      </div>
+
+      <div class="grammar-grid">
+        <div class="grammar-card">
+          <h4>✅ Positive (Affirmativ)</h4>
+          <div class="grammar-formula">Subject + <span>have / has</span> + past participle</div>
+          <div class="grammar-example">
+            <span class="en">I have booked a court online.</span>
+            <span class="de">Ich habe einen Platz online gebucht.</span>
+            <span class="en" style="margin-top:8px;display:block;">She has checked in at reception.</span>
+            <span class="de">Sie hat sich an der Rezeption eingecheckt.</span>
+          </div>
+        </div>
+        <div class="grammar-card">
+          <h4>❌ Negative (Negativ)</h4>
+          <div class="grammar-formula">Subject + <span>have not / has not</span> + past participle</div>
+          <div class="grammar-example">
+            <span class="en">I haven&apos;t played badminton before.</span>
+            <span class="de">Ich habe noch nie Badminton gespielt.</span>
+            <span class="en" style="margin-top:8px;display:block;">He hasn&apos;t arrived yet.</span>
+            <span class="de">Er ist noch nicht angekommen.</span>
+          </div>
+        </div>
+        <div class="grammar-card">
+          <h4>❓ Question (Frage)</h4>
+          <div class="grammar-formula"><span>Have / Has</span> + subject + past participle?</div>
+          <div class="grammar-example">
+            <span class="en">Have you ever played here before?</span>
+            <span class="de">Hast du schon einmal hier gespielt?</span>
+            <span class="en" style="margin-top:8px;display:block;">Has she paid online?</span>
+            <span class="de">Hat sie online bezahlt?</span>
+          </div>
+        </div>
+        <div class="grammar-card">
+          <h4>📌 have vs. has</h4>
+          <div class="grammar-formula"><span>have</span>: I, you, we, they &nbsp;|&nbsp; <span>has</span>: he, she, it</div>
+          <div class="grammar-example">
+            <span class="en">We <strong>have</strong> cancelled our session.</span>
+            <span class="de">Wir haben unsere Einheit storniert.</span>
+            <span class="en" style="margin-top:8px;display:block;">The club <strong>has</strong> opened a new court.</span>
+            <span class="de">Der Club hat einen neuen Platz er&ouml;ffnet.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grammar-uses">
+        <h4>When do we use the Present Perfect? / Wann benutzen wir es?</h4>
+        <div class="use-row">
+          <div class="use-icon">🌍</div>
+          <div class="use-text">
+            <strong>Life experiences (Lebenserfahrungen)</strong>
+            <em>&ldquo;I have played tennis in Vienna.&rdquo; — Ich habe in Wien Tennis gespielt.</em>
+            <span class="de">We don&apos;t say when — just that it happened at some point in life.</span>
+          </div>
+        </div>
+        <div class="use-row">
+          <div class="use-icon">⚡</div>
+          <div class="use-text">
+            <strong>Recent actions (K&uuml;rzlich passiert)</strong>
+            <em>&ldquo;I have just checked in.&rdquo; — Ich habe mich gerade eingecheckt.</em>
+            <span class="de">The action is finished but the result is still relevant right now.</span>
+          </div>
+        </div>
+        <div class="use-row">
+          <div class="use-icon">🔁</div>
+          <div class="use-text">
+            <strong>How many times (Wie oft)</strong>
+            <em>&ldquo;She has played here three times.&rdquo; — Sie hat hier dreimal gespielt.</em>
+            <span class="de">We use it to count repeated experiences up to now.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grammar-uses">
+        <h4>Key adverbs — Schlu&szlig;w&ouml;rter</h4>
+        <div class="grammar-adverbs">
+          <div class="adverb-chip">already<span class="de-sub">schon</span></div>
+          <div class="adverb-chip">yet<span class="de-sub">noch (nicht)</span></div>
+          <div class="adverb-chip">just<span class="de-sub">gerade</span></div>
+          <div class="adverb-chip">ever<span class="de-sub">jemals</span></div>
+          <div class="adverb-chip">never<span class="de-sub">noch nie</span></div>
+          <div class="adverb-chip">before<span class="de-sub">vorher</span></div>
+          <div class="adverb-chip">recently<span class="de-sub">k&uuml;rzlich</span></div>
+          <div class="adverb-chip">so far<span class="de-sub">bisher</span></div>
+        </div>
+      </div>
+
+      <div class="grammar-uses" style="margin-bottom:0">
+        <h4>Irregular past participles you need — Unregelm&auml;&szlig;ige Partizipien</h4>
+        <table class="irreg-table">
+          <tr><th>Infinitive</th><th>Past Participle</th><th>Deutsch</th><th>Example</th></tr>
+          <tr><td>play</td><td>played</td><td>gespielt</td><td>Have you played squash?</td></tr>
+          <tr><td>book</td><td>booked</td><td>gebucht</td><td>She has booked court 3.</td></tr>
+          <tr><td>pay</td><td>paid</td><td>bezahlt</td><td>I have already paid online.</td></tr>
+          <tr><td>forget</td><td>forgotten</td><td>vergessen</td><td>He has forgotten his shoes.</td></tr>
+          <tr><td>break</td><td>broken</td><td>gebrochen</td><td>They have broken a rule.</td></tr>
+          <tr><td>wear</td><td>worn</td><td>getragen</td><td>She has worn the wrong shoes.</td></tr>
+          <tr><td>cancel</td><td>cancelled</td><td>storniert</td><td>We have cancelled the booking.</td></tr>
+          <tr><td>check (in)</td><td>checked (in)</td><td>eingecheckt</td><td>Have you checked in yet?</td></tr>
+        </table>
+      </div>
+
+      <div class="warning-box">
+        <strong>⚠️ Achtung! Present Perfect vs. Past Simple</strong>
+        Use the <em>Past Simple</em> when you say <em>when</em> something happened: &ldquo;I played tennis <strong>yesterday</strong>.&rdquo;<br>
+        Use the <em>Present Perfect</em> when you don&apos;t say when, or when the time is not finished: &ldquo;I <strong>have</strong> played tennis here.&rdquo;<br>
+        <span style="font-size:0.83rem;opacity:0.85;">Benutze das Past Simple, wenn du sagst, <em>wann</em> etwas passiert ist. Benutze das Present Perfect, wenn der Zeitpunkt nicht wichtig ist oder die Zeit noch nicht beendet ist.</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ILLUSTRATION 1 -->
+  <div class="illustration-wrap" style="margin-bottom:32px;">
+    <svg viewBox="0 0 820 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
+      <defs>
+        <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#D4BC90"/>
+          <stop offset="100%" stop-color="#E8D5B0"/>
+        </linearGradient>
+      </defs>
+      <!-- Sky/background -->
+      <rect width="820" height="220" fill="url(#skyGrad)"/>
+      <!-- Court surface -->
+      <rect x="0" y="130" width="820" height="90" fill="#C1613A" opacity="0.7"/>
+      <!-- Court lines -->
+      <rect x="100" y="130" width="620" height="90" fill="none" stroke="white" stroke-width="2.5" opacity="0.6"/>
+      <line x1="410" y1="130" x2="410" y2="220" stroke="white" stroke-width="2" opacity="0.5"/>
+      <line x1="100" y1="175" x2="720" y2="175" stroke="white" stroke-width="1.5" opacity="0.4"/>
+      <!-- Net posts -->
+      <rect x="406" y="115" width="8" height="60" fill="#555" rx="2"/>
+      <rect x="395" y="143" width="30" height="3" fill="#888" rx="1"/>
+      <!-- Net mesh hint -->
+      <line x1="395" y1="145" x2="425" y2="145" stroke="#aaa" stroke-width="1"/>
+      <line x1="400" y1="143" x2="400" y2="155" stroke="#aaa" stroke-width="0.8"/>
+      <line x1="407" y1="143" x2="407" y2="155" stroke="#aaa" stroke-width="0.8"/>
+      <line x1="414" y1="143" x2="414" y2="155" stroke="#aaa" stroke-width="0.8"/>
+      <line x1="421" y1="143" x2="421" y2="155" stroke="#aaa" stroke-width="0.8"/>
+      <!-- Player 1 (left) -->
+      <circle cx="220" cy="118" r="18" fill="#FAF6EE"/>
+      <circle cx="220" cy="105" r="11" fill="#D4804F"/>
+      <rect x="210" y="118" width="20" height="28" rx="4" fill="#2D5016"/>
+      <line x1="220" y1="146" x2="213" y2="168" stroke="#2D5016" stroke-width="3"/>
+      <line x1="220" y1="146" x2="227" y2="168" stroke="#2D5016" stroke-width="3"/>
+      <!-- Racket -->
+      <ellipse cx="238" cy="113" rx="9" ry="12" fill="none" stroke="#C1613A" stroke-width="2.5"/>
+      <line x1="238" y1="125" x2="228" y2="135" stroke="#888" stroke-width="2"/>
+      <!-- Player 2 (right) -->
+      <circle cx="600" cy="118" r="18" fill="#FAF6EE"/>
+      <circle cx="600" cy="105" r="11" fill="#9E4A28"/>
+      <rect x="590" y="118" width="20" height="28" rx="4" fill="#3D6B20"/>
+      <line x1="600" y1="146" x2="593" y2="168" stroke="#3D6B20" stroke-width="3"/>
+      <line x1="600" y1="146" x2="607" y2="168" stroke="#3D6B20" stroke-width="3"/>
+      <!-- Racket 2 -->
+      <ellipse cx="582" cy="113" rx="9" ry="12" fill="none" stroke="#C1613A" stroke-width="2.5"/>
+      <line cx="582" cy="125" x1="582" y1="125" x2="592" y2="135" stroke="#888" stroke-width="2"/>
+      <!-- Ball in air -->
+      <circle cx="410" cy="98" r="7" fill="#C8E840" opacity="0.95"/>
+      <!-- Scoreboard -->
+      <rect x="320" y="20" width="180" height="72" rx="8" fill="#1C1C1A" opacity="0.85"/>
+      <text x="410" y="43" font-family="Arial, sans-serif" font-size="11" fill="#C1613A" text-anchor="middle" font-weight="700" letter-spacing="1">TENNIS POINT VIENNA</text>
+      <line x1="330" y1="50" x2="490" y2="50" stroke="#555" stroke-width="1"/>
+      <text x="370" y="65" font-family="Arial, sans-serif" font-size="18" fill="white" text-anchor="middle" font-weight="700">40</text>
+      <text x="450" y="65" font-family="Arial, sans-serif" font-size="18" fill="white" text-anchor="middle" font-weight="700">30</text>
+      <text x="410" y="65" font-family="Arial, sans-serif" font-size="18" fill="#C1613A" text-anchor="middle">-</text>
+      <text x="370" y="82" font-family="Arial, sans-serif" font-size="9" fill="#888" text-anchor="middle">YOU</text>
+      <text x="450" y="82" font-family="Arial, sans-serif" font-size="9" fill="#888" text-anchor="middle">PARTNER</text>
+      <!-- Reception desk (right side) -->
+      <rect x="680" y="75" width="100" height="55" rx="4" fill="#9E4A28" opacity="0.5"/>
+      <rect x="670" y="110" width="120" height="12" rx="3" fill="#9E4A28" opacity="0.7"/>
+      <text x="730" y="104" font-family="Arial, sans-serif" font-size="9" fill="white" text-anchor="middle" font-weight="700">RECEPTION</text>
+      <!-- Ivy on wall -->
+      <ellipse cx="40" cy="90" rx="30" ry="40" fill="#2D5016" opacity="0.35"/>
+      <ellipse cx="70" cy="75" rx="25" ry="35" fill="#3D6B20" opacity="0.3"/>
+    </svg>
+  </div>
+
+  <!-- ================================================ -->
+  <!-- ACTIVITY 1: MULTIPLE CHOICE -->
+  <!-- ================================================ -->
+  <div class="activity-section" id="act1">
+    <div class="section-title">
+      <div class="section-num">1</div>
+      <h2>Multiple Choice</h2>
+    </div>
+    <p class="section-subtitle">Choose the correct answer. Think carefully about the Present Perfect form!</p>
+
+    <div id="mc-questions"></div>
+    <div class="btn-wrap">
+      <button class="btn-primary" id="mc-next-btn" style="display:none" onclick="startActivity2()">Next Activity →</button>
+    </div>
+  </div>
+
+  <div class="activity-divider">
+    <div class="activity-divider-line"></div>
+    <div class="activity-divider-dot"></div>
+    <div class="activity-divider-line"></div>
+  </div>
+
+  <!-- ================================================ -->
+  <!-- ACTIVITY 2: FILL IN THE BLANK -->
+  <!-- ================================================ -->
+  <div class="activity-section" id="act2" style="display:none">
+    <div class="section-title">
+      <div class="section-num">2</div>
+      <h2>Complete the Sentences</h2>
+    </div>
+    <p class="section-subtitle">Click a word from the word bank to fill each gap. Use the Present Perfect correctly.</p>
+
+    <!-- ILLUSTRATION 2 -->
+    <svg viewBox="0 0 820 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;margin-bottom:24px;border-radius:12px;">
+      <rect width="820" height="160" fill="#E8D5B0"/>
+      <!-- Changing room scene -->
+      <rect x="0" y="0" width="820" height="160" fill="#F3ECD8"/>
+      <!-- Lockers -->
+      <rect x="40" y="20" width="50" height="120" rx="4" fill="#9E4A28" opacity="0.4"/>
+      <rect x="96" y="20" width="50" height="120" rx="4" fill="#9E4A28" opacity="0.35"/>
+      <rect x="152" y="20" width="50" height="120" rx="4" fill="#9E4A28" opacity="0.3"/>
+      <circle cx="65" cy="80" r="4" fill="#C8A060"/>
+      <circle cx="121" cy="80" r="4" fill="#C8A060"/>
+      <circle cx="177" cy="80" r="4" fill="#C8A060"/>
+      <!-- Shoe area -->
+      <rect x="260" y="110" width="120" height="8" rx="2" fill="#C1613A" opacity="0.5"/>
+      <!-- Tennis shoes (pair) -->
+      <ellipse cx="290" cy="107" rx="20" ry="8" fill="white" stroke="#C1613A" stroke-width="1.5"/>
+      <ellipse cx="330" cy="107" rx="20" ry="8" fill="white" stroke="#C1613A" stroke-width="1.5"/>
+      <!-- Person changing shoes -->
+      <circle cx="310" cy="58" r="14" fill="#D4804F"/>
+      <rect x="300" y="72" width="20" height="30" rx="3" fill="#2D5016"/>
+      <!-- Sign -->
+      <rect x="450" y="30" width="220" height="80" rx="8" fill="white" opacity="0.85" stroke="#C1613A" stroke-width="1.5"/>
+      <text x="560" y="60" font-family="Georgia, serif" font-size="13" fill="#C1613A" text-anchor="middle" font-weight="700">HOUSE RULE</text>
+      <text x="560" y="78" font-family="Arial, sans-serif" font-size="10" fill="#555" text-anchor="middle">Change your shoes in</text>
+      <text x="560" y="93" font-family="Arial, sans-serif" font-size="10" fill="#555" text-anchor="middle">the changing room first!</text>
+      <!-- Arrow -->
+      <path d="M 420 70 L 450 70" stroke="#C1613A" stroke-width="2" marker-end="url(#arr)" fill="none"/>
+    </svg>
+
+    <div id="fitb-questions"></div>
+    <div class="btn-wrap">
+      <button class="btn-primary" id="fitb-submit-btn" onclick="submitFITB()">Check Answers</button>
+      <button class="btn-primary" id="fitb-next-btn" style="display:none" onclick="startActivity3()">Next Activity →</button>
+    </div>
+  </div>
+
+  <div class="activity-divider" id="div2" style="display:none">
+    <div class="activity-divider-line"></div>
+    <div class="activity-divider-dot"></div>
+    <div class="activity-divider-line"></div>
+  </div>
+
+  <!-- ================================================ -->
+  <!-- ACTIVITY 3: SENTENCE REORDERING -->
+  <!-- ================================================ -->
+  <div class="activity-section" id="act3" style="display:none">
+    <div class="section-title">
+      <div class="section-num">3</div>
+      <h2>Build the Sentence</h2>
+    </div>
+    <p class="section-subtitle">Drag the word tiles into the correct order to make a Present Perfect sentence. The punctuation tile goes last.</p>
+
+    <!-- ILLUSTRATION 3 -->
+    <svg viewBox="0 0 820 150" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;margin-bottom:24px;border-radius:12px;">
+      <rect width="820" height="150" fill="#E8D5B0"/>
+      <!-- Court top-down view -->
+      <rect x="60" y="20" width="700" height="110" rx="4" fill="#C1613A" opacity="0.55"/>
+      <rect x="60" y="20" width="700" height="110" fill="none" stroke="white" stroke-width="2.5" opacity="0.6"/>
+      <line x1="410" y1="20" x2="410" y2="130" stroke="white" stroke-width="2" opacity="0.5"/>
+      <line x1="60" y1="75" x2="760" y2="75" stroke="white" stroke-width="1.5" opacity="0.4"/>
+      <rect x="200" y="20" width="420" height="110" fill="none" stroke="white" stroke-width="1.5" opacity="0.35"/>
+      <!-- Net -->
+      <rect x="400" y="18" width="20" height="114" fill="white" opacity="0.25" rx="2"/>
+      <!-- Players top-down -->
+      <circle cx="200" cy="95" r="12" fill="#2D5016"/>
+      <circle cx="620" cy="55" r="12" fill="#9E4A28"/>
+      <!-- Ball -->
+      <circle cx="410" cy="75" r="6" fill="#C8E840"/>
+      <!-- Score labels -->
+      <text x="200" y="125" font-family="Arial,sans-serif" font-size="10" fill="white" text-anchor="middle" opacity="0.7">Player 1</text>
+      <text x="620" y="35" font-family="Arial,sans-serif" font-size="10" fill="white" text-anchor="middle" opacity="0.7">Player 2</text>
+    </svg>
+
+    <div id="reorder-questions"></div>
+    <div class="btn-wrap">
+      <button class="btn-primary" id="reorder-submit-btn" onclick="submitReorder()">Check Answers</button>
+      <button class="btn-primary" id="reorder-next-btn" style="display:none" onclick="startActivity4()">Next Activity →</button>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="act4" style="display:none" class="activity-section">
+    <div class="activity-divider">
+      <div class="activity-divider-line"></div>
+      <div class="activity-divider-dot"></div>
+      <div class="activity-divider-line"></div>
+    </div>
+    <div class="section-title">
+      <div class="section-num">4</div>
+      <h2>Error Correction</h2>
+    </div>
+    <p class="section-subtitle">Each sentence has one mistake. Choose the correct version from the options below. The underlined word is wrong.</p>
+    <div id="ec-questions"></div>
+    <div class="btn-wrap">
+      <button class="btn-primary" id="ec-next-btn" style="display:none" onclick="startActivity5()">Next Activity →</button>
+    </div>
+  </div>
+
+  <div id="act5" style="display:none" class="activity-section">
+    <div class="activity-divider">
+      <div class="activity-divider-line"></div>
+      <div class="activity-divider-dot"></div>
+      <div class="activity-divider-line"></div>
+    </div>
+    <div class="section-title">
+      <div class="section-num">5</div>
+      <h2>Yes / No Questions</h2>
+    </div>
+    <p class="section-subtitle">Read each situation and choose the correct Present Perfect Yes/No question to ask.</p>
+
+    <!-- Act 5 illustration -->
+    <svg viewBox="0 0 820 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;margin-bottom:24px;border-radius:12px;">
+      <rect width="820" height="140" fill="#F3ECD8"/>
+      <!-- Reception desk -->
+      <rect x="300" y="30" width="220" height="80" rx="8" fill="#C1613A" opacity="0.25"/>
+      <rect x="280" y="88" width="260" height="14" rx="4" fill="#9E4A28" opacity="0.4"/>
+      <text x="410" y="72" font-family="Georgia,serif" font-size="13" fill="#9E4A28" text-anchor="middle" font-weight="700">RECEPTION</text>
+      <!-- Receptionist -->
+      <circle cx="410" cy="42" r="14" fill="#D4804F"/>
+      <rect x="400" y="56" width="20" height="26" rx="3" fill="#2D5016"/>
+      <!-- Player left -->
+      <circle cx="230" cy="60" r="14" fill="#C1613A" opacity="0.7"/>
+      <rect x="220" y="74" width="20" height="26" rx="3" fill="#3D6B20"/>
+      <!-- Racket bag -->
+      <rect x="196" y="76" width="12" height="28" rx="4" fill="#9E4A28" opacity="0.6"/>
+      <!-- Speech bubble -->
+      <rect x="248" y="38" width="130" height="36" rx="8" fill="white" stroke="#C1613A" stroke-width="1.5"/>
+      <polygon points="248,58 238,64 252,68" fill="white" stroke="#C1613A" stroke-width="1"/>
+      <text x="313" y="58" font-family="Arial,sans-serif" font-size="10" fill="#9E4A28" text-anchor="middle">Have you checked</text>
+      <text x="313" y="70" font-family="Arial,sans-serif" font-size="10" fill="#9E4A28" text-anchor="middle">in yet?</text>
+      <!-- Player right -->
+      <circle cx="590" cy="60" r="14" fill="#9E4A28" opacity="0.7"/>
+      <rect x="580" y="74" width="20" height="26" rx="3" fill="#2D5016"/>
+      <!-- Speech bubble right -->
+      <rect x="442" y="38" width="130" height="36" rx="8" fill="white" stroke="#2D5016" stroke-width="1.5"/>
+      <polygon points="572,58 582,64 568,68" fill="white" stroke="#2D5016" stroke-width="1"/>
+      <text x="507" y="58" font-family="Arial,sans-serif" font-size="10" fill="#2D5016" text-anchor="middle">Have you ever</text>
+      <text x="507" y="70" font-family="Arial,sans-serif" font-size="10" fill="#2D5016" text-anchor="middle">played squash?</text>
+    </svg>
+
+    <div id="yesno-questions"></div>
+    <div class="btn-wrap">
+      <button class="btn-primary" id="yesno-next-btn" style="display:none" onclick="startActivity6()">Next Activity →</button>
+    </div>
+  </div>
+
+  <div id="act6" style="display:none" class="activity-section">
+    <div class="activity-divider">
+      <div class="activity-divider-line"></div>
+      <div class="activity-divider-dot"></div>
+      <div class="activity-divider-line"></div>
+    </div>
+    <div class="section-title">
+      <div class="section-num">6</div>
+      <h2>Deutsch &harr; English</h2>
+    </div>
+    <p class="section-subtitle">Match each German sentence to the correct English Present Perfect translation. Use the dropdown menus.</p>
+
+    <!-- Act 6 illustration -->
+    <svg viewBox="0 0 820 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;margin-bottom:24px;border-radius:12px;">
+      <rect width="820" height="120" fill="#E8D5B0"/>
+      <!-- Austrian flag stripe hint -->
+      <rect x="0" y="0" width="820" height="40" fill="#C0392B" opacity="0.18"/>
+      <rect x="0" y="40" width="820" height="40" fill="#FAF6EE" opacity="0.5"/>
+      <rect x="0" y="80" width="820" height="40" fill="#C0392B" opacity="0.18"/>
+      <!-- DE flag -->
+      <rect x="60" y="30" width="60" height="60" rx="4" fill="white" stroke="#ccc" stroke-width="1"/>
+      <rect x="60" y="30" width="60" height="20" rx="2" fill="#1C1C1A"/>
+      <rect x="60" y="50" width="60" height="20" fill="#C0392B"/>
+      <rect x="60" y="70" width="60" height="20" rx="2" fill="#F5D000"/>
+      <!-- Arrow -->
+      <text x="155" y="68" font-family="Arial,sans-serif" font-size="28" fill="#C1613A" opacity="0.7">&#8646;</text>
+      <!-- GB flag simplified -->
+      <rect x="200" y="30" width="60" height="60" rx="4" fill="#012169"/>
+      <line x1="200" y1="30" x2="260" y2="90" stroke="white" stroke-width="6"/>
+      <line x1="260" y1="30" x2="200" y2="90" stroke="white" stroke-width="6"/>
+      <rect x="225" y="30" width="10" height="60" fill="white"/>
+      <rect x="200" y="55" width="60" height="10" fill="white"/>
+      <rect x="227" y="30" width="6" height="60" fill="#C00"/>
+      <rect x="200" y="57" width="60" height="6" fill="#C00"/>
+      <!-- Title text -->
+      <text x="360" y="52" font-family="Georgia,serif" font-size="18" fill="#9E4A28" font-weight="700">Deutsch</text>
+      <text x="360" y="74" font-family="Arial,sans-serif" font-size="11" fill="#7A6E5F">Match the German sentence to its English Present Perfect equivalent</text>
+      <text x="680" y="52" font-family="Georgia,serif" font-size="18" fill="#2D5016" font-weight="700">English</text>
+    </svg>
+
+    <div id="trans-questions"></div>
+    <div class="btn-wrap">
+      <button class="btn-primary" id="trans-submit-btn" onclick="submitTrans()">Check Answers</button>
+      <button class="btn-primary" id="trans-next-btn" style="display:none" onclick="showResults()">See My Results →</button>
+    </div>
+  </div>
+
+  <div id="results-screen">
+    <svg viewBox="0 0 80 80" width="80" height="80" style="margin-bottom:16px;">
+      <circle cx="40" cy="40" r="38" fill="#EAF4E2" stroke="#3D8C1A" stroke-width="2"/>
+      <text x="40" y="50" font-size="32" text-anchor="middle">🎾</text>
+    </svg>
+    <h2>Well played!</h2>
+    <div class="final-score" id="final-score-display">0 / 40</div>
+    <p id="result-message">Great effort today at Tennis Point Vienna. Keep practising the Present Perfect!</p>
+    <button class="btn-primary" onclick="restartLesson()">Play Again</button>
+  </div>
+
+</div><!-- /page-wrap -->
+
+<script>
+// ============================================================
+// STATE
+// ============================================================
+let totalQuestions = 40;
+let answered = 0;
+let correct = 0;
+
+function updateScore(isCorrect) {
+  answered++;
+  if (isCorrect) correct++;
+  document.getElementById('score-display').textContent = correct * 5;
+  document.getElementById('correct-display').textContent = `${correct} / ${answered}`;
+  document.getElementById('progress-text').textContent = `${answered} of ${totalQuestions} done`;  document.getElementById('progress-fill').style.width = `${(answered/totalQuestions)*100}%`;
+}
+
+// ============================================================
+// ACTIVITY 1: MULTIPLE CHOICE (7 questions)
+// ============================================================
+const mcData = [
+  {
+    q: "Welcome to Tennis Point Vienna! Look at this message: <em>&ldquo;We ______ your court booking.&rdquo;</em><br>Which is correct?",
+    options: ["have confirmed", "has confirmed", "are confirming", "confirmed it now"],
+    correct: 0,
+    explanation: "<strong>Correct: have confirmed.</strong> We use <em>have</em> + past participle for Present Perfect with <em>we</em>. 'Has confirmed' is for he/she/it. The others are wrong forms."
+  },
+  {
+    q: "The receptionist says: <em>&ldquo;Have you ______ here before?&rdquo;</em> What is the missing word?",
+    options: ["playing", "plays", "to play", "played"],
+    correct: 3,
+    explanation: "<strong>Correct: played.</strong> In questions with the Present Perfect, we use <em>Have/Has + subject + past participle.</em> 'Played' is the past participle of 'play'."
+  },
+  {
+    q: "A club member explains: <em>&ldquo;I ______ already paid for my court online.&rdquo;</em>",
+    options: ["am", "was", "have", "had"],
+    correct: 2,
+    explanation: "<strong>Correct: have.</strong> With <em>already</em>, we use the Present Perfect: <em>have + already + past participle.</em> The house rules even use this exact sentence!"
+  },
+  {
+    q: "Which sentence uses the Present Perfect correctly to talk about an experience?",
+    options: ["I never played squash once.", "I have never played squash before.", "I don't played squash before.", "I was never playing squash."],
+    correct: 1,
+    explanation: "<strong>Correct: I have never played squash before.</strong> We use <em>have + never + past participle</em> to talk about a life experience we haven't had."
+  },
+  {
+    q: "The receptionist tells a new member: <em>&ldquo;The coach ______ your court booking yet.&rdquo;</em>",
+    options: ["hasn't confirmed", "haven't confirmed", "didn't confirming", "not has confirmed"],
+    correct: 0,
+    explanation: "<strong>Correct: hasn't confirmed.</strong> With <em>he/she/it</em>, the negative Present Perfect is <em>has + not (hasn't) + past participle</em>."
+  },
+  {
+    q: "A player asks: <em>&ldquo;______ you ever forgotten your sports shoes?&rdquo;</em>",
+    options: ["Did", "Are", "Have", "Was"],
+    correct: 2,
+    explanation: "<strong>Correct: Have.</strong> Present Perfect questions about life experiences start with <em>Have/Has</em>. 'Did' is for Past Simple questions."
+  },
+  {
+    q: "Read the house rule: <em>&ldquo;Please check in at reception before the start — even if you ______ already paid online.&rdquo;</em>",
+    options: ["has", "are", "have", "will"],
+    correct: 2,
+    explanation: "<strong>Correct: have.</strong> The house rules at Tennis Point Vienna use this exact phrase! <em>Have + already + past participle</em> shows a completed action with present relevance."
+  }
+];
+
+// Shuffle options keeping track of correct answer
+function shuffleOptions(item) {
+  let opts = item.options.map((o,i) => ({text:o, isCorrect: i === item.correct}));
+  for (let i = opts.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i+1));
+    [opts[i],opts[j]] = [opts[j],opts[i]];
+  }
+  return opts;
+}
+
+let mcAnswered = new Array(mcData.length).fill(false);
+
+function renderMC() {
+  const container = document.getElementById('mc-questions');
+  container.innerHTML = '';
+  mcData.forEach((item, qi) => {
+    const shuffled = shuffleOptions(item);
+    const letters = ['A','B','C','D'];
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.animationDelay = (qi * 0.08) + 's';
+    card.innerHTML = `
+      <div class="q-text"><span style="color:var(--clay);font-weight:700;margin-right:8px;">Q${qi+1}.</span>${item.q}</div>
+      <div class="options" id="mc-opts-${qi}">
+        ${shuffled.map((o,i) => `
+          <button class="option-btn" onclick="selectMC(${qi}, this, ${o.isCorrect})"
+            data-iscorrect="${o.isCorrect}">
+            <span class="opt-letter">${letters[i]}</span>
+            <span>${o.text}</span>
+          </button>`).join('')}
+      </div>
+      <div class="feedback-box" id="mc-fb-${qi}">
+        ${item.explanation}
+      </div>`;
+    container.appendChild(card);
+  });
+}
+
+function selectMC(qi, btn, isCorrect) {
+  if (mcAnswered[qi]) return;
+  mcAnswered[qi] = true;
+  // Disable all in this q
+  const opts = document.querySelectorAll(`#mc-opts-${qi} .option-btn`);
+  opts.forEach(b => {
+    b.disabled = true;
+    if (b.dataset.iscorrect === 'true') b.classList.add('reveal-correct');
+  });
+  btn.classList.remove('reveal-correct');
+  btn.classList.add(isCorrect ? 'correct' : 'wrong');
+  const fb = document.getElementById(`mc-fb-${qi}`);
+  fb.classList.add('show', isCorrect ? 'ok' : 'bad');
+  updateScore(isCorrect);
+  checkMCDone();
+}
+
+function checkMCDone() {
+  if (mcAnswered.every(Boolean)) {
+    document.getElementById('mc-next-btn').style.display = 'inline-block';
+  }
+}
+
+// ============================================================
+// ACTIVITY 2: FILL IN THE BLANK (7 questions, word bank)
+// ============================================================
+const fitbData = [
+  {
+    before: "I", after: "never used the squash courts before.",
+    answer: "have",
+    wordBank: ["have", "has", "am", "was"]
+  },
+  {
+    before: "My friend", after: "already booked a court for Saturday.",
+    answer: "has",
+    wordBank: ["have", "has", "had", "is"]
+  },
+  {
+    before: "We have", after: "our shoes in the changing room.",
+    answer: "changed",
+    wordBank: ["change", "changed", "changing", "changes"]
+  },
+  {
+    before: "Have you", after: "in at reception yet? You must check in before playing.",
+    answer: "checked",
+    wordBank: ["check", "checked", "checking", "checks"]
+  },
+  {
+    before: "She has", after: "at Tennis Point Vienna for two years.",
+    answer: "played",
+    wordBank: ["play", "plays", "playing", "played"]
+  },
+  {
+    before: "I", after: "just checked in at reception.",
+    answer: "have",
+    wordBank: ["have", "has", "had", "am"]
+  },
+  {
+    before: "They have", after: "the house rules to all the new members.",
+    answer: "explained",
+    wordBank: ["explain", "explained", "explains", "explaining"]
+  }
+];
+
+// Build per-question word banks (shuffled)
+let fitbWordBanks = [];
+let fitbChosen = new Array(fitbData.length).fill(null);
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i>0; i--) { const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+
+function renderFITB() {
+  const container = document.getElementById('fitb-questions');
+  container.innerHTML = '';
+  fitbWordBanks = fitbData.map(d => shuffle(d.wordBank));
+  fitbData.forEach((item, qi) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.animationDelay = (qi * 0.07) + 's';
+    card.innerHTML = `
+      <div class="q-text" style="margin-bottom:10px;">
+        <span style="color:var(--clay);font-weight:700;margin-right:8px;">Q${qi+1}.</span>
+        Complete the sentence:
+      </div>
+      <div class="blank-sentence" id="fitb-sent-${qi}">
+        ${item.before} <input type="text" class="blank-input" id="fitb-input-${qi}" readonly placeholder="___" value="">  ${item.after}
+      </div>
+      <div class="word-bank" id="fitb-bank-${qi}">
+        ${fitbWordBanks[qi].map(w => `<span class="bank-word" onclick="selectFITBWord(${qi}, this, '${w}')">${w}</span>`).join('')}
+      </div>
+      <div class="feedback-box" id="fitb-fb-${qi}"></div>`;
+    container.appendChild(card);
+  });
+}
+
+function selectFITBWord(qi, el, word) {
+  if (document.getElementById(`fitb-input-${qi}`).disabled) return;
+  // Un-use previous if any
+  const prev = fitbChosen[qi];
+  if (prev !== null) {
+    document.querySelectorAll(`#fitb-bank-${qi} .bank-word`).forEach(b => {
+      if (b.textContent === prev) b.classList.remove('used');
+    });
+  }
+  fitbChosen[qi] = word;
+  document.getElementById(`fitb-input-${qi}`).value = word;
+  document.querySelectorAll(`#fitb-bank-${qi} .bank-word`).forEach(b => b.classList.remove('used'));
+  el.classList.add('used');
+}
+
+function submitFITB() {
+  let allFilled = true;
+  fitbData.forEach((item, qi) => {
+    if (!fitbChosen[qi]) { allFilled = false; return; }
+  });
+  if (!allFilled) { alert('Please fill in all blanks before checking!'); return; }
+
+  fitbData.forEach((item, qi) => {
+    const input = document.getElementById(`fitb-input-${qi}`);
+    const fb = document.getElementById(`fitb-fb-${qi}`);
+    const isCorrect = fitbChosen[qi].toLowerCase() === item.answer.toLowerCase();
+    input.disabled = true;
+    input.classList.add(isCorrect ? 'correct-input' : 'wrong-input');
+    document.querySelectorAll(`#fitb-bank-${qi} .bank-word`).forEach(b => b.style.pointerEvents='none');
+    fb.innerHTML = isCorrect
+      ? `<strong>✓ Correct!</strong> <em>${item.before} <strong>${item.answer}</strong> ${item.after}</em>`
+      : `<strong>✗ The answer is "${item.answer}".</strong> The correct sentence: <em>${item.before} <strong>${item.answer}</strong> ${item.after}</em>`;
+    fb.classList.add('show', isCorrect ? 'ok' : 'bad');
+    updateScore(isCorrect);
+  });
+  document.getElementById('fitb-submit-btn').style.display = 'none';
+  document.getElementById('fitb-next-btn').style.display = 'inline-block';
+}
+
+// ============================================================
+// ACTIVITY 3: SENTENCE REORDERING (6 questions)
+// ============================================================
+const reorderData = [
+  {
+    prompt: "The receptionist checks you in.",
+    words: ["The", "receptionist", "has", "already", "checked", "you", "in", "."],
+    answer: ["The", "receptionist", "has", "already", "checked", "you", "in", "."]
+  },
+  {
+    prompt: "You break the shoe rule.",
+    words: ["You", "have", "broken", "the", "shoe", "rule", "."],
+    answer: ["You", "have", "broken", "the", "shoe", "rule", "."]
+  },
+  {
+    prompt: "He never plays badminton.",
+    words: ["He", "has", "never", "played", "badminton", "."],
+    answer: ["He", "has", "never", "played", "badminton", "."]
+  },
+  {
+    prompt: "We book the court online.",
+    words: ["We", "have", "booked", "the", "court", "online", "."],
+    answer: ["We", "have", "booked", "the", "court", "online", "."]
+  },
+  {
+    prompt: "She locks her bicycle.",
+    words: ["She", "has", "locked", "her", "bicycle", "."],
+    answer: ["She", "has", "locked", "her", "bicycle", "."]
+  },
+  {
+    prompt: "They cancel their session.",
+    words: ["They", "have", "cancelled", "their", "session", "."],
+    answer: ["They", "have", "cancelled", "their", "session", "."]
+  }
+];
+
+let reorderState = []; // array of arrays of words currently in drop zone
+let reorderAnswered = new Array(reorderData.length).fill(false);
+
+function renderReorder() {
+  const container = document.getElementById('reorder-questions');
+  container.innerHTML = '';
+  reorderState = reorderData.map(d => []);
+
+  reorderData.forEach((item, qi) => {
+    const shuffledWords = shuffle(item.words);
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.animationDelay = (qi * 0.07) + 's';
+    card.innerHTML = `
+      <div class="q-text" style="margin-bottom:8px;">
+        <span style="color:var(--clay);font-weight:700;margin-right:8px;">Q${qi+1}.</span>
+        Build the Present Perfect version: <em>"${item.prompt}"</em>
+      </div>
+      <div class="reorder-drop-area" id="ro-drop-${qi}" ondragover="roDragOver(event, ${qi})" ondrop="roDrop(event, ${qi})" ondragleave="roDragLeave(event, ${qi})">
+        <span class="ro-placeholder" style="color:var(--muted);font-size:0.85rem;">← drag words here</span>
+      </div>
+      <div class="word-pool" id="ro-pool-${qi}">
+        ${shuffledWords.map(w => `<span class="reorder-chip" draggable="true" ondragstart="roChipDragStart(event, ${qi}, this)" data-word="${w}" data-src="pool">${w}</span>`).join('')}
+      </div>
+      <div class="feedback-box" id="ro-fb-${qi}"></div>`;
+    container.appendChild(card);
+  });
+}
+
+let dragSrcQi = null;
+let dragSrcEl = null;
+let dragSrcZone = null; // 'pool' or 'drop'
+
+function roChipDragStart(e, qi, el) {
+  dragSrcQi = qi;
+  dragSrcEl = el;
+  dragSrcZone = el.dataset.src;
+  el.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', el.dataset.word);
+}
+
+function roDragOver(e, qi) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  document.getElementById(`ro-drop-${qi}`).classList.add('drag-over');
+}
+
+function roDragLeave(e, qi) {
+  document.getElementById(`ro-drop-${qi}`).classList.remove('drag-over');
+}
+
+function roDrop(e, qi) {
+  e.preventDefault();
+  document.getElementById(`ro-drop-${qi}`).classList.remove('drag-over');
+  if (reorderAnswered[qi]) return;
+  if (dragSrcQi !== qi) return;
+  const word = e.dataTransfer.getData('text/plain');
+  if (dragSrcEl) dragSrcEl.classList.remove('dragging');
+  // Move chip to drop zone
+  if (dragSrcZone === 'pool') {
+    dragSrcEl.dataset.src = 'drop';
+    reorderState[qi].push(word);
+    const dropZone = document.getElementById(`ro-drop-${qi}`);
+    // Remove placeholder
+    const ph = dropZone.querySelector('.ro-placeholder');
+    if (ph) ph.remove();
+    // Move chip
+    dropZone.appendChild(dragSrcEl);
+    // Add return-to-pool on double click
+    dragSrcEl.ondblclick = () => roReturnToPool(qi, dragSrcEl);
+    dragSrcEl.ondragstart = (ev) => roChipDragStart(ev, qi, dragSrcEl);
+  } else {
+    // reorder within drop zone — just move to end
+    const dropZone = document.getElementById(`ro-drop-${qi}`);
+    dropZone.appendChild(dragSrcEl);
+    // update reorderState
+    const idx = reorderState[qi].indexOf(word);
+    if (idx !== -1) reorderState[qi].splice(idx,1);
+    reorderState[qi].push(word);
+  }
+}
+
+// Make pool also a drag target (to return chips)
+document.addEventListener('DOMContentLoaded', () => {
+  // pool drag-over/drop attached in renderReorder via inline events
+});
+
+function roReturnToPool(qi, el) {
+  if (reorderAnswered[qi]) return;
+  const word = el.dataset.word;
+  const pool = document.getElementById(`ro-pool-${qi}`);
+  el.dataset.src = 'pool';
+  pool.appendChild(el);
+  el.ondblclick = null;
+  const idx = reorderState[qi].indexOf(word);
+  if (idx !== -1) reorderState[qi].splice(idx, 1);
+  // Restore placeholder if drop zone empty
+  const dropZone = document.getElementById(`ro-drop-${qi}`);
+  if (dropZone.querySelectorAll('.reorder-chip').length === 0) {
+    dropZone.innerHTML = '<span class="ro-placeholder" style="color:var(--muted);font-size:0.85rem;">← drag words here</span>';
+  }
+}
+
+function submitReorder() {
+  let allFilled = true;
+  reorderData.forEach((item, qi) => {
+    const dropZone = document.getElementById(`ro-drop-${qi}`);
+    const chips = [...dropZone.querySelectorAll('.reorder-chip')];
+    if (chips.length === 0) { allFilled = false; }
+  });
+  if (!allFilled) { alert('Please build all sentences before checking!'); return; }
+
+  reorderData.forEach((item, qi) => {
+    const dropZone = document.getElementById(`ro-drop-${qi}`);
+    const chips = [...dropZone.querySelectorAll('.reorder-chip')];
+    const built = chips.map(c => c.dataset.word);
+    const isCorrect = JSON.stringify(built) === JSON.stringify(item.answer);
+    reorderAnswered[qi] = true;
+    chips.forEach(c => { c.style.cursor='default'; c.draggable=false; c.ondblclick=null; });
+    document.getElementById(`ro-pool-${qi}`).querySelectorAll('.reorder-chip').forEach(c => {c.draggable=false; c.style.cursor='default';});
+    const fb = document.getElementById(`ro-fb-${qi}`);
+    fb.innerHTML = isCorrect
+      ? `<strong>✓ Perfect!</strong> <em>${item.answer.join(' ')}</em>`
+      : `<strong>✗ Not quite.</strong> The correct order is: <em>${item.answer.join(' ')}</em>`;
+    fb.classList.add('show', isCorrect ? 'ok' : 'bad');
+    updateScore(isCorrect);
+  });
+  document.getElementById('reorder-submit-btn').style.display = 'none';
+  document.getElementById('reorder-next-btn').style.display = 'inline-block';
+}
+
+// ============================================================
+// ACTIVITY 4: ERROR CORRECTION (7 questions)
+// ============================================================
+const ecData = [
+  {
+    sentence: 'She <span class="error-word">have</span> played badminton before.',
+    options: ["She has played badminton before.", "She is played badminton before.", "She was played badminton before.", "She playing badminton before."],
+    correct: 0,
+    explanation: "<strong>Correct: She has played.</strong> With he/she/it, we always use <em>has</em>, not <em>have</em>. Auf Deutsch: Sie hat Badminton gespielt."
+  },
+  {
+    sentence: 'I have <span class="error-word">forgot</span> my sports shoes at home.',
+    options: ["I have forgetting my sports shoes.", "I has forgotten my sports shoes.", "I have forgotten my sports shoes.", "I have forget my sports shoes."],
+    correct: 2,
+    explanation: "<strong>Correct: I have forgotten.</strong> The past participle of <em>forget</em> is <em>forgotten</em>, not <em>forgot</em> (that is Past Simple). Auf Deutsch: Ich habe meine Sportschuhe vergessen."
+  },
+  {
+    sentence: 'Have you <span class="error-word">ever visit</span> Tennis Point Vienna?',
+    options: ["Have you ever visits Tennis Point Vienna?", "Have you ever visited Tennis Point Vienna?", "Have you ever visiting Tennis Point Vienna?", "Have you ever to visit Tennis Point Vienna?"],
+    correct: 1,
+    explanation: "<strong>Correct: Have you ever visited?</strong> In questions, we use Have/Has + subject + <em>past participle</em>. The past participle of <em>visit</em> is <em>visited</em>."
+  },
+  {
+    sentence: 'We have <span class="error-word">cancelling</span> our court booking.',
+    options: ["We have cancelled our court booking.", "We have to cancel our court booking.", "We has cancelled our court booking.", "We have cancelld our court booking."],
+    correct: 0,
+    explanation: "<strong>Correct: We have cancelled.</strong> After <em>have</em>, always use the past participle (-ed form), never the -ing form. Auf Deutsch: Wir haben unsere Buchung storniert."
+  },
+  {
+    sentence: 'He <span class="error-word">has never wore</span> the correct shoes.',
+    options: ["He has never wearing the correct shoes.", "He has never worn the correct shoes.", "He never has worn the correct shoes.", "He have never worn the correct shoes."],
+    correct: 1,
+    explanation: "<strong>Correct: He has never worn.</strong> The past participle of <em>wear</em> is <em>worn</em>. Auf Deutsch: Er hat nie die richtigen Schuhe getragen."
+  },
+  {
+    sentence: 'Has the coach <span class="error-word">arrive</span> yet?',
+    options: ["Has the coach arriving yet?", "Has the coach to arrive yet?", "Has the coach arrived yet?", "Have the coach arrived yet?"],
+    correct: 2,
+    explanation: "<strong>Correct: Has the coach arrived?</strong> Past participle of <em>arrive</em> is <em>arrived</em>. We use <em>has</em> because the subject is singular. Note: <em>yet</em> goes at the end of the question."
+  },
+  {
+    sentence: 'They <span class="error-word">didn&apos;t have paid</span> for the court online.',
+    options: ["They haven&apos;t paid for the court online.", "They hasn&apos;t paid for the court online.", "They didn&apos;t paid for the court online.", "They have not pay for the court online."],
+    correct: 0,
+    explanation: "<strong>Correct: They haven&apos;t paid.</strong> Negative Present Perfect: <em>have/has + not + past participle</em>. Never use <em>did</em> with the Present Perfect. Auf Deutsch: Sie haben online nicht bezahlt."
+  }
+];
+
+let ecAnswered = new Array(ecData.length).fill(false);
+
+function renderEC() {
+  const container = document.getElementById('ec-questions');
+  container.innerHTML = '';
+  ecAnswered = new Array(ecData.length).fill(false);
+  ecData.forEach((item, qi) => {
+    const shuffled = shuffleOptions({ options: item.options, correct: item.correct });
+    const letters = ['A','B','C','D'];
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.animationDelay = (qi * 0.07) + 's';
+    card.innerHTML = `
+      <div class="q-text" style="margin-bottom:14px;">
+        <span style="color:var(--clay);font-weight:700;margin-right:8px;">Q${qi+1}.</span>
+        Find and correct the mistake:
+      </div>
+      <div class="error-sentence">${item.sentence}</div>
+      <div class="options" id="ec-opts-${qi}">
+        ${shuffled.map((o,i) => `
+          <button class="option-btn" onclick="selectEC(${qi}, this, ${o.isCorrect})" data-iscorrect="${o.isCorrect}">
+            <span class="opt-letter">${letters[i]}</span>
+            <span>${o.text}</span>
+          </button>`).join('')}
+      </div>
+      <div class="feedback-box" id="ec-fb-${qi}">${item.explanation}</div>`;
+    container.appendChild(card);
+  });
+}
+
+function selectEC(qi, btn, isCorrect) {
+  if (ecAnswered[qi]) return;
+  ecAnswered[qi] = true;
+  document.querySelectorAll(`#ec-opts-${qi} .option-btn`).forEach(b => {
+    b.disabled = true;
+    if (b.dataset.iscorrect === 'true') b.classList.add('reveal-correct');
+  });
+  btn.classList.remove('reveal-correct');
+  btn.classList.add(isCorrect ? 'correct' : 'wrong');
+  document.getElementById(`ec-fb-${qi}`).classList.add('show', isCorrect ? 'ok' : 'bad');
+  updateScore(isCorrect);
+  if (ecAnswered.every(Boolean)) document.getElementById('ec-next-btn').style.display = 'inline-block';
+}
+
+// ============================================================
+// ACTIVITY 5: YES/NO QUESTIONS (6 questions)
+// ============================================================
+const yesnoData = [
+  {
+    situation: "You want to know if your friend has ever played squash.",
+    options: ["Did your friend ever play squash?", "Has your friend ever played squash?", "Have your friend ever played squash?", "Is your friend ever playing squash?"],
+    correct: 1,
+    explanation: "<strong>Correct: Has your friend ever played squash?</strong> Your friend = he/she, so use <em>has</em>. Use <em>ever</em> for life experience questions. Auf Deutsch: Hat dein Freund jemals Squash gespielt?"
+  },
+  {
+    situation: "You want to know if the receptionist has checked your booking.",
+    options: ["Did the receptionist checked your booking?", "Have the receptionist checked your booking?", "Has the receptionist checked your booking?", "Is the receptionist checking your booking?"],
+    correct: 2,
+    explanation: "<strong>Correct: Has the receptionist checked your booking?</strong> The receptionist = he/she/it, so use <em>has</em>. Past participle: <em>checked</em>."
+  },
+  {
+    situation: "You want to know if your tennis partner has arrived yet.",
+    options: ["Has your tennis partner arrived yet?", "Have your tennis partner arrived yet?", "Did your tennis partner arrive yet?", "Is your tennis partner arrived yet?"],
+    correct: 0,
+    explanation: "<strong>Correct: Has your tennis partner arrived yet?</strong> Use <em>yet</em> at the end for expected events. Use <em>has</em> for he/she/it. Auf Deutsch: Ist dein Tennispartner schon angekommen?"
+  },
+  {
+    situation: "You want to know if the other players have paid online.",
+    options: ["Did the other players paid online?", "Has the other players paid online?", "Have the other players paid online?", "Are the other players paid online?"],
+    correct: 2,
+    explanation: "<strong>Correct: Have the other players paid online?</strong> The other players = they (plural), so use <em>have</em>. Past participle of <em>pay</em> is <em>paid</em>."
+  },
+  {
+    situation: "You want to know if your colleague has ever forgotten her shoes.",
+    options: ["Did your colleague ever forgot her shoes?", "Has your colleague ever forgotten her shoes?", "Have your colleague ever forgot her shoes?", "Was your colleague ever forgetting her shoes?"],
+    correct: 1,
+    explanation: "<strong>Correct: Has your colleague ever forgotten her shoes?</strong> Your colleague = she, so use <em>has</em>. Past participle of <em>forget</em> is <em>forgotten</em>. Auf Deutsch: Hat deine Kollegin jemals ihre Schuhe vergessen?"
+  },
+  {
+    situation: "You want to know if the club has cancelled the session.",
+    options: ["Have the club cancelled the session?", "Did the club cancel the session already?", "Has the club cancelled the session?", "Is the club cancelling the session?"],
+    correct: 2,
+    explanation: "<strong>Correct: Has the club cancelled the session?</strong> The club = it (singular), so use <em>has</em>. Auf Deutsch: Hat der Club die Einheit storniert?"
+  }
+];
+
+let yesnoAnswered = new Array(yesnoData.length).fill(false);
+
+function renderYesNo() {
+  const container = document.getElementById('yesno-questions');
+  container.innerHTML = '';
+  yesnoAnswered = new Array(yesnoData.length).fill(false);
+  yesnoData.forEach((item, qi) => {
+    const shuffled = shuffleOptions({ options: item.options, correct: item.correct });
+    const letters = ['A','B','C','D'];
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.animationDelay = (qi * 0.07) + 's';
+    card.innerHTML = `
+      <div class="q-text" style="margin-bottom:14px;">
+        <span style="color:var(--clay);font-weight:700;margin-right:8px;">Q${qi+1}.</span>
+        <em>${item.situation}</em>
+      </div>
+      <p style="font-size:0.85rem;color:var(--muted);margin-bottom:14px;">Which question is correct?</p>
+      <div class="options" id="yn-opts-${qi}">
+        ${shuffled.map((o,i) => `
+          <button class="option-btn" onclick="selectYN(${qi}, this, ${o.isCorrect})" data-iscorrect="${o.isCorrect}">
+            <span class="opt-letter">${letters[i]}</span>
+            <span>${o.text}</span>
+          </button>`).join('')}
+      </div>
+      <div class="feedback-box" id="yn-fb-${qi}">${item.explanation}</div>`;
+    container.appendChild(card);
+  });
+}
+
+function selectYN(qi, btn, isCorrect) {
+  if (yesnoAnswered[qi]) return;
+  yesnoAnswered[qi] = true;
+  document.querySelectorAll(`#yn-opts-${qi} .option-btn`).forEach(b => {
+    b.disabled = true;
+    if (b.dataset.iscorrect === 'true') b.classList.add('reveal-correct');
+  });
+  btn.classList.remove('reveal-correct');
+  btn.classList.add(isCorrect ? 'correct' : 'wrong');
+  document.getElementById(`yn-fb-${qi}`).classList.add('show', isCorrect ? 'ok' : 'bad');
+  updateScore(isCorrect);
+  if (yesnoAnswered.every(Boolean)) document.getElementById('yesno-next-btn').style.display = 'inline-block';
+}
+
+// ============================================================
+// ACTIVITY 6: GERMAN-ENGLISH TRANSLATION MATCH (7 questions)
+// ============================================================
+const transData = [
+  {
+    de: "Ich habe mich an der Rezeption eingecheckt.",
+    en: "I have checked in at reception.",
+    options: ["I checked in at reception yesterday.", "I have checked in at reception.", "I am checking in at reception now.", "I had checked in at the reception."]
+  },
+  {
+    de: "Sie hat noch nie Squash gespielt.",
+    en: "She has never played squash.",
+    options: ["She never plays squash.", "She did not ever play squash.", "She has never played squash.", "She has not play squash ever."]
+  },
+  {
+    de: "Haben Sie schon online bezahlt?",
+    en: "Have you already paid online?",
+    options: ["Did you already pay online?", "Are you paying online already?", "Have you already paid online?", "Has you already paid online?"]
+  },
+  {
+    de: "Er hat seine Sportschuhe vergessen.",
+    en: "He has forgotten his sports shoes.",
+    options: ["He forgot his sports shoes.", "He has forget his sports shoes.", "He has forgotten his sports shoes.", "He have forgotten his sports shoes."]
+  },
+  {
+    de: "Wir haben den Platz dreimal gebucht.",
+    en: "We have booked the court three times.",
+    options: ["We booked the court three times.", "We have booked the court three times.", "We has booked the court three times.", "We have book the court three times."]
+  },
+  {
+    de: "Hast du die Hausregeln gelesen?",
+    en: "Have you read the house rules?",
+    options: ["Did you read the house rules?", "Have you read the house rules?", "Has you read the house rules?", "Have you readed the house rules?"]
+  },
+  {
+    de: "Die Mannschaft hat noch nicht abgesagt.",
+    en: "The team has not cancelled yet.",
+    options: ["The team didn&apos;t cancel yet.", "The team hasn&apos;t cancelled yet.", "The team have not cancelled yet.", "The team has not cancelled yet."]
+  }
+];
+
+let transChosen = new Array(transData.length).fill(null);
+
+function renderTrans() {
+  const container = document.getElementById('trans-questions');
+  container.innerHTML = '';
+  transChosen = new Array(transData.length).fill(null);
+  transData.forEach((item, qi) => {
+    const shuffledOpts = shuffle(item.options);
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.animationDelay = (qi * 0.07) + 's';
+    card.innerHTML = `
+      <div class="q-text" style="margin-bottom:14px;">
+        <span style="color:var(--clay);font-weight:700;margin-right:8px;">Q${qi+1}.</span>
+        Translate into English — &Uuml;bersetze ins Englische:
+      </div>
+      <div class="trans-match-grid">
+        <div>
+          <div class="trans-label">Deutsch &#x1F1E9;&#x1F1EA;</div>
+          <div class="trans-en-item" style="background:var(--cream);border-color:#9E4A28;color:#9E4A28;font-style:italic;">${item.de}</div>
+        </div>
+        <div>
+          <div class="trans-label">English &#x1F1EC;&#x1F1E7;</div>
+          <select class="trans-de-select" id="trans-sel-${qi}" onchange="transSelect(${qi}, this.value)">
+            <option value="">choose translation / W&auml;hle die &Uuml;bersetzung</option>
+            ${shuffledOpts.map(o => `<option value="${o}">${o}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+      <div class="feedback-box" id="trans-fb-${qi}"></div>`;
+    container.appendChild(card);
+  });
+}
+
+function transSelect(qi, val) {
+  transChosen[qi] = val;
+}
+
+function submitTrans() {
+  if (transChosen.some(v => !v)) { alert('Please select a translation for every sentence! / Bitte w&auml;hle f&uuml;r jeden Satz eine &Uuml;bersetzung!'); return; }
+  transData.forEach((item, qi) => {
+    const sel = document.getElementById(`trans-sel-${qi}`);
+    sel.disabled = true;
+    const isCorrect = transChosen[qi] === item.en;
+    sel.classList.add(isCorrect ? 'correct-sel' : 'wrong-sel');
+    const fb = document.getElementById(`trans-fb-${qi}`);
+    fb.innerHTML = isCorrect
+      ? `<strong>&#10003; Richtig! / Correct!</strong> <em>${item.en}</em>`
+      : `<strong>&#10007; Falsch. The correct translation is: / Die richtige &Uuml;bersetzung ist:</strong> <em>${item.en}</em>`;
+    fb.classList.add('show', isCorrect ? 'ok' : 'bad');
+    updateScore(isCorrect);
+  });
+  document.getElementById('trans-submit-btn').style.display = 'none';
+  document.getElementById('trans-next-btn').style.display = 'inline-block';
+}
+
+// ============================================================
+// FLOW
+// ============================================================
+function startActivity2() {
+  document.getElementById('act2').style.display = 'block';
+  document.getElementById('div2').style.display = 'flex';
+  renderFITB();
+  document.getElementById('act2').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function startActivity3() {
+  document.getElementById('act3').style.display = 'block';
+  renderReorder();
+  document.getElementById('act3').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function startActivity4() {
+  document.getElementById('act4').style.display = 'block';
+  renderEC();
+  document.getElementById('act4').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function startActivity5() {
+  document.getElementById('act5').style.display = 'block';
+  renderYesNo();
+  document.getElementById('act5').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function startActivity6() {
+  document.getElementById('act6').style.display = 'block';
+  renderTrans();
+  document.getElementById('act6').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function showResults() {
+  const pct = Math.round((correct/totalQuestions)*100);
+  let msg;
+  if (pct >= 90) msg = "Outstanding! You have mastered the Present Perfect. Ausgezeichnet! Time to celebrate on court!";
+  else if (pct >= 70) msg = "Sehr gut! Great effort — you have a solid grip on the Present Perfect. A little more practice and you will ace it!";
+  else if (pct >= 50) msg = "Good start! Guter Anfang! Keep reviewing the Present Perfect forms — you are getting there!";
+  else msg = "The Present Perfect can be tricky! Das Present Perfect ist manchmal schwierig. Review the grammar panel and try again!";
+  document.getElementById('final-score-display').textContent = `${correct} / ${totalQuestions}`;
+  document.getElementById('result-message').textContent = msg;
+  document.getElementById('results-screen').style.display = 'block';
+  document.getElementById('results-screen').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function restartLesson() {
+  answered = 0; correct = 0;
+  document.getElementById('score-display').textContent = '0';
+  document.getElementById('correct-display').textContent = '0 / 0';
+  document.getElementById('progress-text').textContent = '0 of 40 done';
+  document.getElementById('progress-fill').style.width = '0%';
+  document.getElementById('results-screen').style.display = 'none';
+  ['act2','act3','act4','act5','act6'].forEach(id => document.getElementById(id).style.display = 'none');
+  document.getElementById('div2').style.display = 'none';
+  mcAnswered.fill(false);
+  reorderAnswered.fill(false);
+  fitbChosen.fill(null);
+  ecAnswered.fill(false);
+  yesnoAnswered.fill(false);
+  transChosen.fill(null);
+  document.getElementById('mc-next-btn').style.display = 'none';
+  document.getElementById('fitb-submit-btn').style.display = 'inline-block';
+  document.getElementById('fitb-next-btn').style.display = 'none';
+  document.getElementById('reorder-submit-btn').style.display = 'inline-block';
+  document.getElementById('reorder-next-btn').style.display = 'none';
+  document.getElementById('ec-next-btn').style.display = 'none';
+  document.getElementById('yesno-next-btn').style.display = 'none';
+  document.getElementById('trans-submit-btn').style.display = 'inline-block';
+  document.getElementById('trans-next-btn').style.display = 'none';
+  renderMC();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ============================================================
+// INIT
+// ============================================================
+renderMC();
+</script>
+</body>
+</html>

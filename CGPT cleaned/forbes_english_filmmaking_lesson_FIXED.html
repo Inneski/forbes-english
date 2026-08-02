@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – Filmmaking in English · B2</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #1a1208;
+    --surface:   #251c0e;
+    --card:      #2e2210;
+    --border:    #4a3820;
+    --amber:     #e8a435;
+    --amber-dim: #b07c1c;
+    --cream:     #f5ead4;
+    --muted:     #9e8860;
+    --text:      #f0e0c0;
+    --success:   #6db97a;
+    --error:     #d96b5a;
+    --radius:    12px;
+    --font-serif: 'Playfair Display', Georgia, serif;
+    --font-sans:  'DM Sans', sans-serif;
+    --font-mono:  'DM Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(232,164,53,0.12) 0%, transparent 60%),
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(74,56,32,0.15) 39px, rgba(74,56,32,0.15) 40px);
+  }
+
+  /* ─── FILM STRIP TOP DECORATION ─── */
+  .film-strip {
+    height: 28px;
+    background: var(--amber);
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow: hidden;
+    position: relative;
+  }
+  .film-strip::before, .film-strip::after {
+    content: '';
+    position: absolute;
+    top: 4px; bottom: 4px;
+    width: 100%;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent 0px, transparent 12px,
+      var(--bg) 12px, var(--bg) 20px
+    );
+  }
+  .film-strip-label {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: var(--bg);
+    text-transform: uppercase;
+    z-index: 1;
+    background: var(--amber);
+    padding: 0 12px;
+  }
+
+  /* ─── WRAPPER ─── */
+  .wrapper {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+  }
+
+  /* ─── LOGO ─── */
+  .logo-block {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+  .logo-block svg { width: 200px; height: auto; }
+
+  /* ─── LESSON HEADER ─── */
+  .lesson-meta {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--amber);
+    border: 1px solid var(--amber-dim);
+    border-radius: 20px;
+    padding: 4px 14px;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+  .lesson-title {
+    font-family: var(--font-serif);
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 700;
+    color: var(--cream);
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .lesson-subtitle {
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-weight: 300;
+  }
+
+  /* ─── PROGRESS BAR ─── */
+  .progress-bar-wrap {
+    background: var(--surface);
+    border-radius: 20px;
+    height: 6px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--amber-dim), var(--amber));
+    border-radius: 20px;
+    transition: width 0.5s cubic-bezier(.4,0,.2,1);
+  }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    margin-bottom: 28px;
+  }
+
+  /* ─── SCORE PILL ─── */
+  .score-pill {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+  }
+  .score-pill span {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--amber);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 5px 16px;
+  }
+
+  /* ─── SECTION HEADER ─── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 6px;
+  }
+  .section-num {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--amber);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .section-rule {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .section-title {
+    font-family: var(--font-serif);
+    font-size: 1.35rem;
+    color: var(--cream);
+    margin-bottom: 4px;
+  }
+  .section-desc {
+    font-size: 0.88rem;
+    color: var(--muted);
+    margin-bottom: 26px;
+    font-style: italic;
+  }
+
+  /* ─── CARD ─── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 26px 28px;
+    margin-bottom: 18px;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+  .card.correct  { border-color: var(--success); }
+  .card.wrong    { border-color: var(--error); }
+
+  .question-text {
+    font-size: 1.02rem;
+    line-height: 1.65;
+    color: var(--cream);
+    margin-bottom: 20px;
+  }
+  .question-text strong {
+    color: var(--amber);
+    font-weight: 600;
+  }
+
+  /* ─── OPTIONS ─── */
+  .options { display: grid; gap: 10px; }
+  .option-btn {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 0.93rem;
+    cursor: pointer;
+    text-align: left;
+    transition: border-color 0.18s, background 0.18s, transform 0.1s;
+    line-height: 1.45;
+  }
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--amber-dim);
+    background: rgba(232,164,53,0.07);
+    transform: translateX(2px);
+  }
+  .option-btn:disabled { cursor: default; }
+  .option-btn.selected { border-color: var(--amber); background: rgba(232,164,53,0.1); }
+  .option-btn.correct-ans { border-color: var(--success); background: rgba(109,185,122,0.12); color: var(--success); }
+  .option-btn.wrong-ans   { border-color: var(--error);   background: rgba(217,107,90,0.12); color: var(--error); }
+
+  .option-letter {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
+    border-radius: 50%;
+    background: var(--border);
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    margin-right: 10px;
+    flex-shrink: 0;
+    transition: background 0.18s, color 0.18s;
+  }
+  .option-btn.correct-ans .option-letter { background: var(--success); color: var(--bg); }
+  .option-btn.wrong-ans   .option-letter { background: var(--error);   color: #fff; }
+  .option-btn.selected:not(.correct-ans):not(.wrong-ans) .option-letter { background: var(--amber); color: var(--bg); }
+
+  /* ─── FEEDBACK ─── */
+  .feedback {
+    margin-top: 16px;
+    padding: 14px 16px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    display: none;
+  }
+  .feedback.show { display: block; animation: fadeSlide 0.3s ease; }
+  .feedback.correct { background: rgba(109,185,122,0.1); border-left: 3px solid var(--success); color: #aad9b0; }
+  .feedback.wrong   { background: rgba(217,107,90,0.1);  border-left: 3px solid var(--error);   color: #e09a8d; }
+  .feedback-label { font-weight: 600; margin-bottom: 4px; }
+
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── FILL IN THE BLANK ─── */
+  .blank-input {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    padding: 7px 12px;
+    color: var(--cream);
+    font-family: var(--font-sans);
+    font-size: 0.93rem;
+    min-width: 140px;
+    transition: border-color 0.18s;
+    outline: none;
+  }
+  .blank-input:focus { border-color: var(--amber-dim); }
+  .blank-input.correct-field { border-color: var(--success); color: var(--success); }
+  .blank-input.wrong-field   { border-color: var(--error);   color: var(--error);   }
+
+  .submit-blank {
+    background: var(--amber);
+    color: var(--bg);
+    border: none;
+    border-radius: 7px;
+    padding: 8px 18px;
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background 0.18s, transform 0.1s;
+  }
+  .submit-blank:hover:not(:disabled) { background: var(--cream); transform: translateY(-1px); }
+  .submit-blank:disabled { background: var(--border); color: var(--muted); cursor: default; }
+
+  /* ─── DRAG & DROP ─── */
+  .drag-container { display: flex; flex-direction: column; gap: 10px; }
+  .drag-pool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 48px;
+    padding: 12px;
+    background: var(--surface);
+    border: 1.5px dashed var(--border);
+    border-radius: 8px;
+    margin-bottom: 16px;
+    transition: border-color 0.2s;
+  }
+  .drag-pool.over { border-color: var(--amber); }
+  .drag-chip {
+    background: var(--border);
+    color: var(--cream);
+    border: 1px solid var(--amber-dim);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 0.88rem;
+    cursor: grab;
+    user-select: none;
+    transition: background 0.18s, transform 0.1s, opacity 0.18s;
+  }
+  .drag-chip:active { cursor: grabbing; transform: scale(1.04); }
+  .drag-chip.dragging { opacity: 0.4; }
+
+  .drop-zone-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .drop-zone-label {
+    font-size: 0.85rem;
+    color: var(--muted);
+    min-width: 28px;
+    font-family: var(--font-mono);
+  }
+  .drop-zone {
+    flex: 1;
+    min-height: 40px;
+    background: var(--surface);
+    border: 1.5px dashed var(--border);
+    border-radius: 7px;
+    padding: 6px 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    transition: border-color 0.2s, background 0.2s;
+    min-width: 160px;
+  }
+  .drop-zone.over { border-color: var(--amber); background: rgba(232,164,53,0.05); }
+  .drop-zone.correct-zone { border-color: var(--success); border-style: solid; }
+  .drop-zone.wrong-zone   { border-color: var(--error);   border-style: solid; }
+  .drop-zone-hint {
+    font-size: 0.78rem;
+    color: var(--border);
+    font-style: italic;
+    pointer-events: none;
+  }
+
+  /* ─── MATCHING ─── */
+  .match-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .match-col { display: flex; flex-direction: column; gap: 8px; }
+  .match-item {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 11px 14px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    position: relative;
+    transition: border-color 0.18s;
+  }
+  .match-term { color: var(--amber); font-weight: 500; }
+  .match-def  { color: var(--text); }
+  .match-select {
+    margin-top: 8px;
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    padding: 6px 10px;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.18s;
+  }
+  .match-select:focus { border-color: var(--amber-dim); }
+  .match-item.correct-match { border-color: var(--success); }
+  .match-item.wrong-match   { border-color: var(--error); }
+  .match-result { font-size: 0.78rem; margin-top: 4px; font-style: italic; }
+  .match-result.ok { color: var(--success); }
+  .match-result.bad{ color: var(--error); }
+
+  /* ─── BUTTONS ─── */
+  .btn-row { display: flex; justify-content: flex-end; margin-top: 24px; gap: 12px; }
+  .btn-next {
+    background: var(--amber);
+    color: var(--bg);
+    border: none;
+    border-radius: 8px;
+    padding: 11px 28px;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: none;
+    transition: background 0.18s, transform 0.1s, box-shadow 0.18s;
+    box-shadow: 0 4px 20px rgba(232,164,53,0.25);
+  }
+  .btn-next.show { display: block; animation: fadeSlide 0.3s ease; }
+  .btn-next:hover { background: var(--cream); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(232,164,53,0.35); }
+
+  .btn-submit-section {
+    background: transparent;
+    color: var(--amber);
+    border: 1.5px solid var(--amber-dim);
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-family: var(--font-sans);
+    font-size: 0.93rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.18s, transform 0.1s;
+  }
+  .btn-submit-section:hover:not(:disabled) { background: rgba(232,164,53,0.08); transform: translateY(-1px); }
+  .btn-submit-section:disabled { opacity: 0.35; cursor: default; }
+
+  /* ─── FINAL SCREEN ─── */
+  #final-screen {
+    display: none;
+    text-align: center;
+    padding: 50px 20px;
+    animation: fadeSlide 0.5s ease;
+  }
+  .clapperboard {
+    font-size: 4rem;
+    margin-bottom: 16px;
+  }
+  .final-title {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    color: var(--amber);
+    margin-bottom: 10px;
+  }
+  .final-score-big {
+    font-family: var(--font-mono);
+    font-size: 3.5rem;
+    color: var(--cream);
+    margin: 20px 0;
+    line-height: 1;
+  }
+  .final-score-big span { color: var(--muted); font-size: 1.8rem; }
+  .final-message {
+    color: var(--muted);
+    font-size: 1rem;
+    max-width: 420px;
+    margin: 0 auto 30px;
+    line-height: 1.6;
+  }
+  .btn-restart {
+    background: var(--amber);
+    color: var(--bg);
+    border: none;
+    border-radius: 8px;
+    padding: 13px 36px;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.18s, transform 0.1s;
+    box-shadow: 0 4px 20px rgba(232,164,53,0.3);
+  }
+  .btn-restart:hover { background: var(--cream); transform: translateY(-2px); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 540px) {
+    .match-grid { grid-template-columns: 1fr; }
+    .card { padding: 18px 16px; }
+  }
+
+  /* ─── ACTIVITY WRAPPER (hidden until active) ─── */
+  .activity { display: none; }
+  .activity.active { display: block; animation: fadeSlide 0.35s ease; }
+
+  /* ─── ORDERING ─── */
+  .order-list { display: flex; flex-direction: column; gap: 8px; }
+  .order-item {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 11px 16px;
+    color: var(--text);
+    font-size: 0.92rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: grab;
+    user-select: none;
+    transition: border-color 0.18s, background 0.18s;
+  }
+  .order-item:active { cursor: grabbing; }
+  .order-item.over { border-color: var(--amber); background: rgba(232,164,53,0.06); }
+  .order-item.dragging { opacity: 0.4; }
+  .order-handle { color: var(--muted); font-size: 0.8rem; font-family: var(--font-mono); }
+  .order-pos {
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    border-radius: 50%;
+    background: var(--border);
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="film-strip"><span class="film-strip-label">Forbes English · B2 · Filmmaking</span></div>
+
+<div class="wrapper">
+
+  <!-- LOGO -->
+  <div class="logo-block">
+    <svg viewBox="0 0 220 70" xmlns="http://www.w3.org/2000/svg">
+      <text x="110" y="36" text-anchor="middle"
+        font-family="'Playfair Display', Georgia, serif"
+        font-size="38" font-weight="700" fill="#e8a435"
+        letter-spacing="-1">Forbes</text>
+      <rect x="20" y="44" width="180" height="1.5" fill="#4a3820"/>
+      <text x="110" y="62" text-anchor="middle"
+        font-family="'DM Sans', sans-serif"
+        font-size="14.5" font-weight="700" fill="#b07c1c"
+        letter-spacing="5">ENGLISH</text>
+    </svg>
+  </div>
+
+  <!-- LESSON HEADER -->
+  <div class="lesson-meta">
+    <div class="badge">B2 · Filmmaking</div>
+    <h1 class="lesson-title">Lights, Camera, Language!</h1>
+    <p class="lesson-subtitle">Master the language of cinema — vocabulary, concepts &amp; communication</p>
+  </div>
+
+  <!-- SCORE + PROGRESS -->
+  <div class="score-pill"><span>Score: <span id="score-display">0</span> / <span id="total-display">20</span></span></div>
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-fill" style="width:0%"></div></div>
+  <div class="progress-label">
+    <span id="progress-text">Activity 1 of 4</span>
+    <span id="progress-pct">0%</span>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- ACTIVITY 1: MULTIPLE CHOICE -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="activity active" id="act-1">
+    <div class="section-header">
+      <span class="section-num">01 / 04</span>
+      <div class="section-rule"></div>
+    </div>
+    <h2 class="section-title">Multiple Choice</h2>
+    <p class="section-desc">Choose the best answer for each question about filmmaking vocabulary and concepts.</p>
+
+    <!-- Q1 -->
+    <div class="card" id="mc-card-1">
+      <p class="question-text"><strong>Question 1 of 5</strong><br>In filmmaking, what does the term <em>"mise-en-scène"</em> refer to?</p>
+      <div class="options" id="mc-opts-1">
+        <button class="option-btn" data-q="mc1" data-val="A" onclick="selectMC(this,'mc1','C')"><span class="option-letter">A</span>The process of editing footage together after filming is complete</button>
+        <button class="option-btn" data-q="mc1" data-val="B" onclick="selectMC(this,'mc1','C')"><span class="option-letter">B</span>The way dialogue is recorded and mixed with background sound</button>
+        <button class="option-btn" data-q="mc1" data-val="C" onclick="selectMC(this,'mc1','C')"><span class="option-letter">C</span>Everything visible in a frame: set, lighting, actors, and composition</button>
+        <button class="option-btn" data-q="mc1" data-val="D" onclick="selectMC(this,'mc1','C')"><span class="option-letter">D</span>The written plan a director uses to describe each scene in advance</button>
+      </div>
+      <div class="feedback" id="fb-mc1"></div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="card" id="mc-card-2">
+      <p class="question-text"><strong>Question 2 of 5</strong><br>A <em>"dolly shot"</em> is a type of camera movement where the camera:</p>
+      <div class="options" id="mc-opts-2">
+        <button class="option-btn" data-q="mc2" data-val="A" onclick="selectMC(this,'mc2','B')"><span class="option-letter">A</span>Rotates horizontally from a fixed position on a tripod</button>
+        <button class="option-btn" data-q="mc2" data-val="B" onclick="selectMC(this,'mc2','B')"><span class="option-letter">B</span>Moves physically through the scene on a wheeled platform</button>
+        <button class="option-btn" data-q="mc2" data-val="C" onclick="selectMC(this,'mc2','B')"><span class="option-letter">C</span>Tilts vertically upward or downward on a fixed axis point</button>
+        <button class="option-btn" data-q="mc2" data-val="D" onclick="selectMC(this,'mc2','B')"><span class="option-letter">D</span>Zooms in optically without the camera body moving at all</button>
+      </div>
+      <div class="feedback" id="fb-mc2"></div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="card" id="mc-card-3">
+      <p class="question-text"><strong>Question 3 of 5</strong><br>When a director yells <em>"Cut!"</em> on set, what does the crew understand this to mean?</p>
+      <div class="options" id="mc-opts-3">
+        <button class="option-btn" data-q="mc3" data-val="A" onclick="selectMC(this,'mc3','D')"><span class="option-letter">A</span>The scene has been approved and requires no further shooting</button>
+        <button class="option-btn" data-q="mc3" data-val="B" onclick="selectMC(this,'mc3','D')"><span class="option-letter">B</span>All actors should pause and wait for a new set of instructions</button>
+        <button class="option-btn" data-q="mc3" data-val="C" onclick="selectMC(this,'mc3','D')"><span class="option-letter">C</span>The camera operator should zoom out to a wider angle shot</button>
+        <button class="option-btn" data-q="mc3" data-val="D" onclick="selectMC(this,'mc3','D')"><span class="option-letter">D</span>Stop filming immediately — the camera and sound should stop</button>
+      </div>
+      <div class="feedback" id="fb-mc3"></div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="card" id="mc-card-4">
+      <p class="question-text"><strong>Question 4 of 5</strong><br>What is a <em>"storyboard"</em> used for in pre-production?</p>
+      <div class="options" id="mc-opts-4">
+        <button class="option-btn" data-q="mc4" data-val="A" onclick="selectMC(this,'mc4','A')"><span class="option-letter">A</span>Visually planning each shot using drawings or images in sequence</button>
+        <button class="option-btn" data-q="mc4" data-val="B" onclick="selectMC(this,'mc4','A')"><span class="option-letter">B</span>Recording rough audio tracks before the main filming starts</button>
+        <button class="option-btn" data-q="mc4" data-val="C" onclick="selectMC(this,'mc4','A')"><span class="option-letter">C</span>Listing all the props and costumes needed for each character</button>
+        <button class="option-btn" data-q="mc4" data-val="D" onclick="selectMC(this,'mc4','A')"><span class="option-letter">D</span>Calculating the total budget for a film before production begins</button>
+      </div>
+      <div class="feedback" id="fb-mc4"></div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="card" id="mc-card-5">
+      <p class="question-text"><strong>Question 5 of 5</strong><br>In film terminology, <em>"diegetic sound"</em> means:</p>
+      <div class="options" id="mc-opts-5">
+        <button class="option-btn" data-q="mc5" data-val="A" onclick="selectMC(this,'mc5','C')"><span class="option-letter">A</span>Music added in post-production that the audience hears but characters do not</button>
+        <button class="option-btn" data-q="mc5" data-val="B" onclick="selectMC(this,'mc5','C')"><span class="option-letter">B</span>Sound effects recorded separately and mixed into the final audio</button>
+        <button class="option-btn" data-q="mc5" data-val="C" onclick="selectMC(this,'mc5','C')"><span class="option-letter">C</span>Sound that exists in the story world and can be heard by the characters</button>
+        <button class="option-btn" data-q="mc5" data-val="D" onclick="selectMC(this,'mc5','C')"><span class="option-letter">D</span>Narration spoken over a scene by a voice outside the story</button>
+      </div>
+      <div class="feedback" id="fb-mc5"></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-next" id="next-1" onclick="goToActivity(2)">Next Activity →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- ACTIVITY 2: FILL IN THE BLANK -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="activity" id="act-2">
+    <div class="section-header">
+      <span class="section-num">02 / 04</span>
+      <div class="section-rule"></div>
+    </div>
+    <h2 class="section-title">Fill in the Blank</h2>
+    <p class="section-desc">Complete each sentence with the correct filmmaking term. Type your answer and click Check.</p>
+
+    <!-- FIB cards generated by JS -->
+    <div id="fib-container"></div>
+
+    <div class="btn-row">
+      <button class="btn-next" id="next-2" onclick="goToActivity(3)">Next Activity →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- ACTIVITY 3: DRAG & DROP MATCHING -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="activity" id="act-3">
+    <div class="section-header">
+      <span class="section-num">03 / 04</span>
+      <div class="section-rule"></div>
+    </div>
+    <h2 class="section-title">Drag &amp; Drop</h2>
+    <p class="section-desc">Drag each filmmaking term from the word bank into the correct definition box below.</p>
+
+    <div id="drag-container"></div>
+
+    <div class="btn-row">
+      <button class="btn-submit-section" id="submit-drag" onclick="submitDrag()">Check Answers</button>
+      <button class="btn-next" id="next-3" onclick="goToActivity(4)">Next Activity →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- ACTIVITY 4: SENTENCE REORDERING -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div class="activity" id="act-4">
+    <div class="section-header">
+      <span class="section-num">04 / 04</span>
+      <div class="section-rule"></div>
+    </div>
+    <h2 class="section-title">Sentence Reordering</h2>
+    <p class="section-desc">Drag the sentences into the correct order to describe the stages of making a short film.</p>
+
+    <div id="order-container"></div>
+
+    <div class="btn-row">
+      <button class="btn-submit-section" id="submit-order" onclick="submitOrder()">Check Order</button>
+      <button class="btn-next" id="next-4" onclick="showFinal()">See Results →</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ -->
+  <!-- FINAL SCREEN -->
+  <!-- ═══════════════════════════════════════════════ -->
+  <div id="final-screen">
+    <div class="clapperboard">🎬</div>
+    <h2 class="final-title">That's a Wrap!</h2>
+    <div class="final-score-big" id="final-score-big">0 <span>/ 20</span></div>
+    <p class="final-message" id="final-message"></p>
+    <button class="btn-restart" onclick="restartLesson()">Shoot Again ↺</button>
+  </div>
+
+</div><!-- /wrapper -->
+
+<script>
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+let score = 0;
+let answered = { mc: {}, fib: {}, drag: false, order: false };
+const TOTAL = 20;
+
+// MC feedbacks
+const mcFeedback = {
+  mc1: { correct: 'C', text: '"Mise-en-scène" is a French term meaning "placing on stage." It refers to everything the camera sees in the frame — the set design, lighting, costumes, and how actors are positioned.' },
+  mc2: { correct: 'B', text: 'A dolly shot involves the entire camera moving through space on a wheeled dolly or track, creating a smooth follow or approach motion very different from a static zoom.' },
+  mc3: { correct: 'D', text: '"Cut!" is the director\'s command to stop filming. The opposite command, "Action!", tells everyone to begin the scene. These are the two most essential words on any film set.' },
+  mc4: { correct: 'A', text: 'A storyboard is a sequence of drawn panels (like a comic strip) showing how each shot will look. It helps the director, cinematographer, and crew plan the film visually before a single frame is shot.' },
+  mc5: { correct: 'C', text: 'Diegetic sound exists inside the story world — characters can hear it too (for example, a radio playing or footsteps). Non-diegetic sound, like a film score, is heard only by the audience.' },
+};
+
+// ═══════════════════════════════════════════════
+// MULTIPLE CHOICE
+// ═══════════════════════════════════════════════
+let mcAnswered = 0;
+const MC_COUNT = 5;
+
+function selectMC(btn, qId, correct) {
+  if (answered.mc[qId]) return;
+  answered.mc[qId] = true;
+  mcAnswered++;
+
+  const allBtns = document.querySelectorAll(`[data-q="${qId}"]`);
+  allBtns.forEach(b => {
+    b.disabled = true;
+    if (b.dataset.val === correct) b.classList.add('correct-ans');
+  });
+
+  const fb = document.getElementById(`fb-${qId}`);
+  if (btn.dataset.val === correct) {
+    score++;
+    btn.classList.add('correct-ans');
+    fb.className = 'feedback correct show';
+    fb.innerHTML = `<div class="feedback-label">✓ Correct!</div>${mcFeedback[qId].text}`;
+  } else {
+    btn.classList.add('wrong-ans');
+    fb.className = 'feedback wrong show';
+    fb.innerHTML = `<div class="feedback-label">✗ Not quite</div>${mcFeedback[qId].text}`;
+  }
+
+  updateScore();
+  if (mcAnswered === MC_COUNT) {
+    document.getElementById('next-1').classList.add('show');
+  }
+}
+
+// ═══════════════════════════════════════════════
+// FILL IN THE BLANK
+// ═══════════════════════════════════════════════
+const fibData = [
+  {
+    sentence: 'The director asked the DP to use a <em>wide-angle lens</em> so the camera could capture the entire classroom in a single ___________.',
+    blank: 'shot',
+    hint: 'What do you call a single recorded piece of film?',
+    alts: [],
+    explanation: '"Shot" is the correct term for a single continuous piece of recorded film. A "take" is one attempt at filming a shot; a "scene" covers a larger dramatic unit.'
+  },
+  {
+    sentence: 'After all the footage was recorded, the editor began the ___________ process to put the scenes in the right order.',
+    blank: 'editing',
+    hint: 'This post-production stage assembles raw footage.',
+    alts: [],
+    explanation: '"Editing" (also called "cutting") is the post-production process of selecting, arranging, and joining shots to tell the story effectively.'
+  },
+  {
+    sentence: 'A ___________ is placed in front of the camera at the beginning of each take to help the editor synchronise the picture and sound.',
+    blank: 'clapperboard',
+    hint: 'It makes a sharp clapping sound and shows the scene number.',
+    alts: ['clapper','slate'],
+    explanation: 'A "clapperboard" (also "slate" or "clapper") records scene and take information and produces a sharp visual/audio signal that editors use to sync sound and picture.'
+  },
+  {
+    sentence: 'The young filmmaker chose a low camera ___________ to make the protagonist look powerful and dominant on screen.',
+    blank: 'angle',
+    hint: 'The direction from which a camera films a subject.',
+    alts: ['perspective'],
+    explanation: 'Camera "angle" describes the position of the camera relative to the subject. A low angle looks up at the subject, making them appear larger and more imposing.'
+  },
+  {
+    sentence: 'The ___________ is responsible for managing the cast\'s schedule, booking locations, and keeping the production on budget.',
+    blank: 'producer',
+    hint: 'This person oversees the practical and financial side of filmmaking.',
+    alts: [],
+    explanation: 'The "producer" handles all logistical and financial aspects of a film, from pre-production planning to post-production delivery, while the director focuses on the creative vision.'
+  },
+];
+
+let fibAnswered = 0;
+
+function buildFIB() {
+  const container = document.getElementById('fib-container');
+  fibData.forEach((q, i) => {
+    const n = i + 1;
+    container.innerHTML += `
+      <div class="card" id="fib-card-${n}">
+        <p class="question-text"><strong>Question ${n} of 5</strong><br>${q.sentence}</p>
+        <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:6px;">
+          <input class="blank-input" id="fib-input-${n}" placeholder="Type your answer…" autocomplete="off" autocorrect="off" spellcheck="false"/>
+          <button class="submit-blank" onclick="checkFIB(${n})">Check</button>
+        </div>
+        <div class="feedback" id="fb-fib-${n}"></div>
+      </div>`;
+  });
+  // Enter key
+  fibData.forEach((_, i) => {
+    const inp = document.getElementById(`fib-input-${i+1}`);
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') checkFIB(i+1); });
+  });
+}
+
+function checkFIB(n) {
+  if (answered.fib[n]) return;
+  const q = fibData[n-1];
+  const input = document.getElementById(`fib-input-${n}`);
+  const val = input.value.trim().toLowerCase().replace(/[^a-z]/g,'');
+  const accepted = [q.blank, ...q.alts].map(a => a.toLowerCase().replace(/[^a-z]/g,''));
+  const correct = accepted.includes(val);
+
+  answered.fib[n] = true;
+  fibAnswered++;
+  input.disabled = true;
+  input.classList.add(correct ? 'correct-field' : 'wrong-field');
+
+  const fb = document.getElementById(`fb-fib-${n}`);
+  if (correct) {
+    score++;
+    fb.className = 'feedback correct show';
+    fb.innerHTML = `<div class="feedback-label">✓ Correct!</div>${q.explanation}`;
+  } else {
+    fb.className = 'feedback wrong show';
+    fb.innerHTML = `<div class="feedback-label">✗ The answer is: <em>"${q.blank}"</em></div>${q.explanation}`;
+    input.value = q.blank;
+  }
+
+  // Disable submit button
+  input.nextElementSibling.disabled = true;
+  updateScore();
+
+  if (fibAnswered === fibData.length) {
+    document.getElementById('next-2').classList.add('show');
+  }
+}
+
+// ═══════════════════════════════════════════════
+// DRAG & DROP
+// ═══════════════════════════════════════════════
+const dragData = [
+  { term: 'cinematographer', def: 'The crew member responsible for the film’s visual look, including lighting, framing, lenses, and camera style' },
+  { term: 'screenplay', def: 'The written document containing all dialogue, action lines, and scene descriptions for a film' },
+  { term: 'close-up', def: 'A shot framing the subject tightly, often showing only the face, to convey emotion or detail' },
+  { term: 'continuity', def: 'Keeping details consistent between different shots so the film makes visual sense when edited together' },
+  { term: 'soundtrack', def: 'The complete audio component of a film, including music, dialogue, and sound effects' },
+];
+
+let dragState = {}; // zoneId → term placed there
+let currentDrag = null;
+
+function buildDrag() {
+  const container = document.getElementById('drag-container');
+
+  // Shuffle chips
+  const shuffled = [...dragData].sort(() => Math.random() - 0.5);
+
+  let poolHTML = '<div class="drag-pool" id="drag-pool">';
+  shuffled.forEach(d => {
+    poolHTML += `<div class="drag-chip" draggable="true" id="chip-${d.term}" data-term="${d.term}">${d.term}</div>`;
+  });
+  poolHTML += '</div><div class="drag-container">';
+
+  dragData.forEach((d, i) => {
+    poolHTML += `
+      <div class="drop-zone-row">
+        <span class="drop-zone-label">${i+1}.</span>
+        <div class="drop-zone" id="zone-${d.term}" data-term="${d.term}">
+          <span class="drop-zone-hint">Drop term here</span>
+        </div>
+        <div style="flex:2;font-size:0.88rem;color:var(--muted);line-height:1.45;padding-left:4px;">${d.def}</div>
+      </div>`;
+    dragState[`zone-${d.term}`] = null;
+  });
+  poolHTML += '</div>';
+
+  container.innerHTML = poolHTML;
+
+  // Attach drag events to chips and zones
+  attachDragEvents();
+}
+
+function attachDragEvents() {
+  document.querySelectorAll('.drag-chip').forEach(chip => {
+    chip.addEventListener('dragstart', e => {
+      currentDrag = chip;
+      chip.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    chip.addEventListener('dragend', () => {
+      chip.classList.remove('dragging');
+      currentDrag = null;
+    });
+  });
+
+  const pool = document.getElementById('drag-pool');
+
+  function restoreDropHintIfEmpty(dropZone) {
+    if (
+      dropZone &&
+      dropZone.classList &&
+      dropZone.classList.contains('drop-zone') &&
+      !dropZone.querySelector('.drag-chip')
+    ) {
+      dropZone.innerHTML = '<span class="drop-zone-hint">Drop term here</span>';
+    }
+  }
+
+  [pool, ...document.querySelectorAll('.drop-zone')].forEach(zone => {
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('over'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('over'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.classList.remove('over');
+      if (!currentDrag) return;
+
+      const term = currentDrag.dataset.term;
+      const oldParent = currentDrag.parentElement;
+
+      // Clear the saved answer from the chip's previous drop zone, if it had one.
+      if (oldParent && oldParent.classList && oldParent.classList.contains('drop-zone')) {
+        dragState[oldParent.id] = null;
+      }
+
+      if (zone.classList.contains('drop-zone')) {
+        // If this zone already has a chip, send it back to the word bank and clear its old state.
+        const existing = zone.querySelector('.drag-chip');
+        if (existing && existing !== currentDrag) {
+          pool.appendChild(existing);
+        }
+
+        const hint = zone.querySelector('.drop-zone-hint');
+        if (hint) hint.remove();
+
+        zone.appendChild(currentDrag);
+        dragState[zone.id] = term;
+        restoreDropHintIfEmpty(oldParent);
+      } else if (zone === pool) {
+        pool.appendChild(currentDrag);
+        restoreDropHintIfEmpty(oldParent);
+      }
+    });
+  });
+}
+
+function submitDrag() {
+  if (answered.drag) return;
+  answered.drag = true;
+  document.getElementById('submit-drag').disabled = true;
+
+  let pts = 0;
+  dragData.forEach(d => {
+    const zone = document.getElementById(`zone-${d.term}`);
+    const placed = dragState[`zone-${d.term}`];
+    if (placed === d.term) {
+      zone.classList.add('correct-zone');
+      pts++;
+    } else {
+      zone.classList.add('wrong-zone');
+    }
+  });
+
+  // Disable all chips
+  document.querySelectorAll('.drag-chip').forEach(c => { c.draggable = false; c.style.cursor = 'default'; });
+
+  score += pts;
+  updateScore();
+
+  const fb = document.createElement('div');
+  fb.className = `feedback ${pts >= 4 ? 'correct' : 'wrong'} show`;
+  fb.innerHTML = `<div class="feedback-label">${pts === 5 ? '✓ Perfect!' : pts >= 3 ? '✓ Good work!' : '✗ Keep practising'}</div>
+    You matched <strong>${pts} out of 5</strong> correctly. Each term highlighted in green was correctly placed. Review any terms marked in red.`;
+  document.getElementById('drag-container').appendChild(fb);
+
+  document.getElementById('next-3').classList.add('show');
+}
+
+// ═══════════════════════════════════════════════
+// SENTENCE REORDERING
+// ═══════════════════════════════════════════════
+const orderSentences = [
+  { id: 'ord-A', text: 'The writer develops the initial idea into a full screenplay with dialogue and scene descriptions.' },
+  { id: 'ord-B', text: 'The director and producer plan the shoot by creating a storyboard and scheduling each filming day.' },
+  { id: 'ord-C', text: 'The crew sets up lights, cameras, and sound equipment on location or on set.' },
+  { id: 'ord-D', text: 'Actors perform the scenes while the camera rolls and the sound recordist captures the audio.' },
+  { id: 'ord-E', text: 'The editor assembles all the footage into a rough cut, then refines it into the final film.' },
+];
+
+const correctOrder = ['ord-A','ord-B','ord-C','ord-D','ord-E'];
+let dragSentence = null;
+
+function buildOrder() {
+  const container = document.getElementById('order-container');
+  const shuffled = [...orderSentences].sort(() => Math.random() - 0.5);
+
+  const list = document.createElement('div');
+  list.className = 'order-list';
+  list.id = 'order-list';
+
+  shuffled.forEach((s, i) => {
+    const item = document.createElement('div');
+    item.className = 'order-item';
+    item.draggable = true;
+    item.dataset.id = s.id;
+    item.innerHTML = `<span class="order-handle">⠿⠿</span><span class="order-pos">${i+1}</span><span>${s.text}</span>`;
+    list.appendChild(item);
+  });
+
+  container.appendChild(list);
+  attachOrderEvents();
+}
+
+function updateOrderNums() {
+  document.querySelectorAll('#order-list .order-item').forEach((item, i) => {
+    item.querySelector('.order-pos').textContent = i + 1;
+  });
+}
+
+function attachOrderEvents() {
+  const list = document.getElementById('order-list');
+
+  list.addEventListener('dragstart', e => {
+    dragSentence = e.target.closest('.order-item');
+    if (dragSentence) dragSentence.classList.add('dragging');
+  });
+  list.addEventListener('dragend', () => {
+    if (dragSentence) dragSentence.classList.remove('dragging');
+    dragSentence = null;
+    updateOrderNums();
+  });
+  list.addEventListener('dragover', e => {
+    e.preventDefault();
+    const target = e.target.closest('.order-item');
+    if (!target || target === dragSentence) return;
+    const rect = target.getBoundingClientRect();
+    const midY = rect.top + rect.height / 2;
+    if (e.clientY < midY) { list.insertBefore(dragSentence, target); }
+    else { list.insertBefore(dragSentence, target.nextSibling); }
+    updateOrderNums();
+  });
+
+  // Touch support
+  let touchItem = null;
+  list.addEventListener('touchstart', e => {
+    touchItem = e.target.closest('.order-item');
+    if (!touchItem) return;
+    touchItem.classList.add('dragging');
+  }, {passive:true});
+  list.addEventListener('touchmove', e => {
+    if (!touchItem) return;
+    e.preventDefault();
+    const touch = e.touches[0];
+    const el = document.elementFromPoint(touch.clientX, touch.clientY);
+    const target = el && el.closest('.order-item');
+    if (target && target !== touchItem) {
+      const rect = target.getBoundingClientRect();
+      if (touch.clientY < rect.top + rect.height/2) list.insertBefore(touchItem, target);
+      else list.insertBefore(touchItem, target.nextSibling);
+      updateOrderNums();
+    }
+  }, {passive:false});
+  list.addEventListener('touchend', () => {
+    if (touchItem) touchItem.classList.remove('dragging');
+    touchItem = null;
+    updateOrderNums();
+  });
+}
+
+function submitOrder() {
+  if (answered.order) return;
+  answered.order = true;
+  document.getElementById('submit-order').disabled = true;
+
+  const items = [...document.querySelectorAll('#order-list .order-item')];
+  const userOrder = items.map(i => i.dataset.id);
+  let pts = 0;
+  items.forEach((item, i) => {
+    const correct = userOrder[i] === correctOrder[i];
+    item.style.borderColor = correct ? 'var(--success)' : 'var(--error)';
+    if (correct) pts++;
+  });
+
+  score += pts;
+  updateScore();
+
+  const fb = document.createElement('div');
+  fb.className = `feedback ${pts >= 4 ? 'correct' : 'wrong'} show`;
+  fb.innerHTML = `<div class="feedback-label">${pts === 5 ? '✓ Perfect order!' : pts >= 3 ? '✓ Almost there!' : '✗ Not quite'}</div>
+    <strong>${pts} of 5 sentences</strong> were in the correct position. The correct order reflects the standard filmmaking workflow: writing → planning → setup → filming → editing.`;
+  document.getElementById('order-container').appendChild(fb);
+
+  document.getElementById('next-4').classList.add('show');
+}
+
+// ═══════════════════════════════════════════════
+// NAVIGATION & SCORE
+// ═══════════════════════════════════════════════
+let currentActivity = 1;
+
+function goToActivity(n) {
+  document.getElementById(`act-${currentActivity}`).classList.remove('active');
+  currentActivity = n;
+  document.getElementById(`act-${n}`).classList.add('active');
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showFinal() {
+  document.getElementById(`act-4`).classList.remove('active');
+  document.getElementById('final-screen').style.display = 'block';
+
+  document.getElementById('final-score-big').innerHTML = `${score} <span>/ ${TOTAL}</span>`;
+  const pct = Math.round(score / TOTAL * 100);
+
+  let msg = '';
+  if (pct >= 90) msg = 'Outstanding! You have an excellent command of filmmaking vocabulary in English. You\'re ready for the director\'s chair — and the English to go with it! 🌟';
+  else if (pct >= 70) msg = 'Great work! You\'ve mastered most of the key filmmaking vocabulary. Keep exploring the language of cinema — it will make your communication on set even sharper.';
+  else if (pct >= 50) msg = 'Solid effort! Filmmaking is a craft, and so is language learning. Review the sections you found tricky and try again — every great director started somewhere.';
+  else msg = 'Every film starts with a first draft. Don\'t worry — review the vocabulary from each activity and have another go. Lights, camera, try again! 🎬';
+
+  document.getElementById('final-message').textContent = msg;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateScore() {
+  document.getElementById('score-display').textContent = score;
+  updateProgress();
+}
+
+function updateProgress() {
+  // Rough progress based on activities completed and questions answered
+  let done = 0;
+  if (currentActivity > 1) done += 5; // mc done
+  if (currentActivity > 2) done += 5; // fib done
+  if (currentActivity > 3) done += 5; // drag done
+  if (currentActivity === 1) done = Object.keys(answered.mc).length;
+  else if (currentActivity === 2) { done = 5 + Object.keys(answered.fib).length; }
+  else if (currentActivity === 3) { done = 10 + (answered.drag ? 5 : 0); }
+  else if (currentActivity === 4) { done = 15 + (answered.order ? 5 : 0); }
+
+  const pct = Math.round(done / TOTAL * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-pct').textContent = pct + '%';
+  document.getElementById('progress-text').textContent = `Activity ${currentActivity} of 4`;
+}
+
+function restartLesson() {
+  score = 0;
+  answered = { mc: {}, fib: {}, drag: false, order: false };
+  mcAnswered = 0;
+  fibAnswered = 0;
+  dragState = {};
+  currentActivity = 1;
+
+  // Reset UI
+  document.getElementById('final-screen').style.display = 'none';
+  document.getElementById('fib-container').innerHTML = '';
+  document.getElementById('drag-container').innerHTML = '';
+  document.getElementById('order-container').innerHTML = '';
+
+  // Reset MC
+  document.querySelectorAll('.option-btn').forEach(b => {
+    b.disabled = false;
+    b.classList.remove('correct-ans','wrong-ans','selected');
+  });
+  document.querySelectorAll('.feedback').forEach(f => f.classList.remove('show'));
+  document.querySelectorAll('.btn-next').forEach(b => b.classList.remove('show'));
+
+  document.getElementById('score-display').textContent = '0';
+  updateProgress();
+
+  document.querySelectorAll('.activity').forEach(a => a.classList.remove('active'));
+  document.getElementById('act-1').classList.add('active');
+
+  buildFIB();
+  buildDrag();
+  buildOrder();
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('total-display').textContent = TOTAL;
+  buildFIB();
+  buildDrag();
+  buildOrder();
+  updateProgress();
+});
+</script>
+</body>
+</html>

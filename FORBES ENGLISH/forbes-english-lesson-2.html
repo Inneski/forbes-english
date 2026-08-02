@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forbes English – The Design Pitch</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inconsolata:wght@300;400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:       #0B0E17;
+  --deep:      #111827;
+  --panel:     #161D2E;
+  --card:      #1C2438;
+  --border:    #2A3450;
+  --border-hi: #3D4F72;
+  --mint:      #3DFFC0;
+  --mint-dim:  #1FAF80;
+  --mint-glow: rgba(61,255,192,0.12);
+  --amber:     #FFB347;
+  --amber-dim: #CC8A28;
+  --slate:     #8899BB;
+  --pale:      #C8D4EE;
+  --white:     #EEF2FF;
+  --correct:   #3DFFC0;
+  --correct-bg:#0D2B22;
+  --wrong:     #FF6B6B;
+  --wrong-bg:  #2B0E0E;
+  --grid-line: rgba(61,255,192,0.04);
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+
+body {
+  font-family:'Inconsolata',monospace;
+  background-color:var(--ink);
+  color:var(--pale);
+  min-height:100vh;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 48px 48px;
+  background-attachment: fixed;
+}
+
+/* ── HEADER ── */
+.hdr {
+  background: rgba(11,14,23,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+.hdr-inner {
+  max-width: 940px;
+  margin: 0 auto;
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ── LOGO ── */
+.logo-svg { width: 168px; height: auto; }
+
+.score-pill {
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+  background: var(--mint);
+  padding: 6px 18px;
+  border-radius: 4px;
+  min-width: 110px;
+  text-align: center;
+}
+
+/* ── WRAP ── */
+.wrap {
+  max-width: 940px;
+  margin: 0 auto;
+  padding: 48px 28px 100px;
+}
+
+/* ── HERO ── */
+.hero {
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 48px 44px;
+  margin-bottom: 44px;
+  background: var(--panel);
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content:'';
+  position:absolute;
+  top:-80px; right:-80px;
+  width:300px; height:300px;
+  border-radius:50%;
+  background: radial-gradient(circle, rgba(61,255,192,0.08) 0%, transparent 70%);
+  pointer-events:none;
+}
+.hero-eyebrow {
+  font-family:'Syne',sans-serif;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+  color:var(--mint);
+  margin-bottom:18px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.hero-eyebrow::before {
+  content:'';
+  display:block;
+  width:28px;
+  height:1px;
+  background:var(--mint);
+}
+.hero-title {
+  font-family:'Libre Baskerville',serif;
+  font-size:38px;
+  font-weight:700;
+  color:var(--white);
+  line-height:1.18;
+  margin-bottom:16px;
+  letter-spacing:-0.01em;
+}
+.hero-title em { color:var(--mint); font-style:italic; }
+.hero-sub {
+  font-size:14px;
+  line-height:1.8;
+  color:var(--slate);
+  max-width:580px;
+  margin-bottom:28px;
+}
+.meta-row { display:flex; gap:14px; flex-wrap:wrap; }
+.meta-tag {
+  font-family:'Syne',sans-serif;
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  border:1px solid var(--border-hi);
+  color:var(--slate);
+  padding:5px 12px;
+  border-radius:2px;
+}
+.meta-tag b { color:var(--mint); font-weight:600; }
+
+/* ── ACTIVITY TABS ── */
+.tabs {
+  display:flex;
+  gap:0;
+  margin-bottom:40px;
+  border:1px solid var(--border);
+  border-radius:3px;
+  overflow:hidden;
+}
+.tab-btn {
+  flex:1;
+  padding:12px 8px;
+  background:var(--panel);
+  border:none;
+  border-right:1px solid var(--border);
+  font-family:'Syne',sans-serif;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--slate);
+  cursor:default;
+  transition:all 0.2s;
+  text-align:center;
+}
+.tab-btn:last-child { border-right:none; }
+.tab-btn.active { background:var(--mint); color:var(--ink); }
+.tab-btn.done { color:var(--mint); border-bottom:2px solid var(--mint); }
+
+/* ── SECTION HEADER ── */
+.sec-hdr { margin-bottom:28px; }
+.sec-num {
+  font-family:'Syne',sans-serif;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:var(--mint);
+  margin-bottom:6px;
+}
+.sec-title {
+  font-family:'Libre Baskerville',serif;
+  font-size:24px;
+  color:var(--white);
+  margin-bottom:10px;
+}
+.sec-instr {
+  font-size:13px;
+  line-height:1.7;
+  color:var(--slate);
+  background:var(--panel);
+  border-left:3px solid var(--amber);
+  padding:10px 16px;
+  border-radius:0 4px 4px 0;
+}
+
+/* ── PROGRESS ── */
+.prog-wrap { margin-bottom:28px; }
+.prog-meta {
+  display:flex;
+  justify-content:space-between;
+  font-family:'Syne',sans-serif;
+  font-size:11px;
+  font-weight:600;
+  color:var(--slate);
+  letter-spacing:0.06em;
+  margin-bottom:8px;
+}
+.prog-track {
+  height:3px;
+  background:var(--border);
+  border-radius:10px;
+  overflow:hidden;
+}
+.prog-fill {
+  height:100%;
+  background: linear-gradient(90deg, var(--mint), var(--amber));
+  transition:width 0.45s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ── QUESTION CARD ── */
+.q-card {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:4px;
+  padding:32px;
+  margin-bottom:18px;
+  animation:fadeUp 0.3s ease;
+}
+@keyframes fadeUp {
+  from{opacity:0;transform:translateY(8px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.q-context {
+  font-size:13px;
+  color:var(--slate);
+  line-height:1.8;
+  background:var(--panel);
+  border-left:3px solid var(--mint-dim);
+  padding:12px 16px;
+  border-radius:0 4px 4px 0;
+  margin-bottom:20px;
+  font-style:italic;
+}
+.q-text {
+  font-family:'Libre Baskerville',serif;
+  font-size:17px;
+  color:var(--white);
+  line-height:1.6;
+  margin-bottom:24px;
+}
+
+/* ── CHOICES ── */
+.choices { display:flex; flex-direction:column; gap:9px; }
+.choice {
+  display:flex;
+  align-items:flex-start;
+  gap:14px;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:4px;
+  padding:13px 16px;
+  cursor:pointer;
+  transition:all 0.16s;
+  text-align:left;
+  font-family:'Inconsolata',monospace;
+  font-size:14px;
+  color:var(--pale);
+  line-height:1.55;
+  width:100%;
+}
+.choice:hover:not(:disabled){
+  border-color:var(--mint-dim);
+  background:rgba(61,255,192,0.04);
+  transform:translateX(3px);
+}
+.ch-lbl {
+  font-family:'Syne',sans-serif;
+  font-size:10px;
+  font-weight:800;
+  width:20px;
+  height:20px;
+  border-radius:2px;
+  background:var(--border);
+  color:var(--mint);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  letter-spacing:0;
+  margin-top:1px;
+}
+.choice:disabled{cursor:default;}
+.choice.correct{ border-color:var(--correct); background:var(--correct-bg); color:var(--correct);}
+.choice.correct .ch-lbl{ background:var(--correct); color:var(--ink);}
+.choice.wrong{ border-color:var(--wrong); background:var(--wrong-bg); color:var(--wrong);}
+.choice.wrong .ch-lbl{ background:var(--wrong); color:#fff;}
+
+/* ── FEEDBACK ── */
+.fb {
+  display:none;
+  border-radius:4px;
+  padding:14px 18px;
+  margin-top:14px;
+  font-size:13px;
+  line-height:1.7;
+  animation:fadeUp 0.22s ease;
+}
+.fb.ok{ background:var(--correct-bg); border:1px solid var(--correct); color:var(--correct);}
+.fb.no{ background:var(--wrong-bg); border:1px solid var(--wrong); color:#FF9A9A;}
+.fb-head{ font-family:'Syne',sans-serif; font-weight:700; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:4px; }
+.fb.ok .fb-head{ color:var(--correct); }
+.fb.no .fb-head{ color:var(--wrong); }
+
+/* ── BUTTONS ── */
+.btn {
+  font-family:'Syne',sans-serif;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  border:none;
+  border-radius:3px;
+  padding:12px 26px;
+  cursor:pointer;
+  transition:all 0.18s;
+}
+.btn-mint{ background:var(--mint); color:var(--ink);}
+.btn-mint:hover{ background:#5FFFD0; transform:translateY(-1px); box-shadow:0 4px 20px rgba(61,255,192,0.25);}
+.btn-mint:disabled{ opacity:0.3; cursor:default; transform:none; box-shadow:none;}
+.btn-ghost{ background:transparent; border:1px solid var(--border-hi); color:var(--slate);}
+.btn-ghost:hover{ border-color:var(--mint); color:var(--mint);}
+.btn-row{ display:flex; gap:12px; align-items:center; margin-top:24px; flex-wrap:wrap;}
+
+/* ── MATCHING ── */
+.match-wrap{ display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+@media(max-width:580px){.match-wrap{grid-template-columns:1fr;}}
+.match-col-lbl{
+  font-family:'Syne',sans-serif;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  color:var(--mint);
+  margin-bottom:10px;
+  padding-bottom:8px;
+  border-bottom:1px solid var(--border);
+}
+.match-item {
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:4px;
+  padding:12px 16px;
+  margin-bottom:8px;
+  font-size:13px;
+  color:var(--pale);
+  cursor:pointer;
+  transition:all 0.16s;
+  line-height:1.5;
+  min-height:46px;
+  display:flex;
+  align-items:center;
+}
+.match-item:hover:not(.locked){border-color:var(--mint-dim); background:rgba(61,255,192,0.04);}
+.match-item.selected{border-color:var(--mint); background:var(--mint-glow); color:var(--mint); box-shadow:0 0 0 2px rgba(61,255,192,0.2);}
+.match-item.ok{border-color:var(--correct); background:var(--correct-bg); color:var(--correct);}
+.match-item.no{border-color:var(--wrong); background:var(--wrong-bg); color:var(--wrong);}
+.match-item.locked{cursor:default;}
+
+/* ── DRAG DROP ── */
+.dd-pool {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  padding:16px;
+  background:var(--panel);
+  border:1px dashed var(--border-hi);
+  border-radius:4px;
+  min-height:54px;
+  margin-bottom:24px;
+}
+.dd-chip {
+  font-family:'Syne',sans-serif;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:0.05em;
+  background:var(--card);
+  border:1px solid var(--border-hi);
+  border-radius:3px;
+  padding:7px 14px;
+  cursor:grab;
+  color:var(--pale);
+  transition:all 0.14s;
+  user-select:none;
+}
+.dd-chip:hover{border-color:var(--mint); color:var(--mint);}
+.dd-chip.dragging-src{opacity:0.3;}
+.dd-zone-row{display:flex; align-items:center; gap:14px; margin-bottom:12px;}
+.dd-zone-label{
+  font-size:13px;
+  color:var(--pale);
+  flex:1;
+  line-height:1.55;
+  font-family:'Inconsolata',monospace;
+}
+.dd-zone {
+  min-width:170px;
+  min-height:38px;
+  border:1px dashed var(--border-hi);
+  border-radius:4px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  color:var(--slate);
+  padding:6px 12px;
+  background:var(--panel);
+  transition:all 0.14s;
+  font-family:'Syne',sans-serif;
+  font-weight:600;
+  letter-spacing:0.05em;
+}
+.dd-zone.over{border-color:var(--mint); background:var(--mint-glow);}
+.dd-zone.filled{border-style:solid; color:var(--white);}
+.dd-zone.zone-ok{border-color:var(--correct); background:var(--correct-bg); color:var(--correct);}
+.dd-zone.zone-no{border-color:var(--wrong); background:var(--wrong-bg); color:var(--wrong);}
+
+/* ── WORD SORT ── */
+.sort-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; margin-bottom:20px;}
+.sort-cat{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:4px;
+  padding:16px;
+  min-height:120px;
+}
+.sort-cat-title{
+  font-family:'Syne',sans-serif;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--amber);
+  margin-bottom:12px;
+  padding-bottom:8px;
+  border-bottom:1px solid var(--border);
+}
+.sort-cat.over{border-color:var(--amber); background:rgba(255,179,71,0.05);}
+.sort-chip {
+  font-size:12px;
+  font-family:'Syne',sans-serif;
+  font-weight:600;
+  background:var(--card);
+  border:1px solid var(--border-hi);
+  border-radius:3px;
+  padding:6px 12px;
+  margin-bottom:6px;
+  cursor:grab;
+  display:inline-block;
+  margin-right:6px;
+  color:var(--pale);
+  transition:all 0.14s;
+}
+.sort-chip:hover{border-color:var(--amber); color:var(--amber);}
+.sort-chip.dragging-src{opacity:0.3;}
+.sort-pool-wrap{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  padding:14px;
+  background:var(--panel);
+  border:1px dashed var(--border-hi);
+  border-radius:4px;
+  min-height:50px;
+  margin-bottom:20px;
+}
+
+/* ── REORDER ── */
+.ro-list{display:flex; flex-direction:column; gap:8px;}
+.ro-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:4px;
+  padding:13px 16px;
+  cursor:grab;
+  transition:all 0.14s;
+  font-size:13px;
+  color:var(--pale);
+  line-height:1.5;
+}
+.ro-item:hover{border-color:var(--border-hi);}
+.ro-item.over-item{border-color:var(--mint); border-style:dashed;}
+.ro-item.ro-ok{border-color:var(--correct); background:var(--correct-bg); color:var(--correct);}
+.ro-item.ro-no{border-color:var(--wrong); background:var(--wrong-bg); color:var(--wrong);}
+.ro-handle{color:var(--border-hi); font-size:17px; flex-shrink:0;}
+
+/* ── FINAL ── */
+#final-screen{
+  display:none;
+  animation:fadeUp 0.4s ease;
+}
+.final-card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:4px;
+  padding:60px 40px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.final-card::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(61,255,192,0.07) 0%, transparent 60%);
+}
+.final-ring{
+  width:150px;height:150px;
+  border-radius:50%;
+  border:3px solid var(--mint);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  margin:0 auto 32px;
+  position:relative;
+  box-shadow:0 0 48px rgba(61,255,192,0.2), inset 0 0 30px rgba(61,255,192,0.05);
+}
+.final-num{font-family:'Syne',sans-serif;font-size:52px;font-weight:800;color:var(--mint);line-height:1;}
+.final-of{font-size:12px;color:var(--slate);letter-spacing:0.1em;}
+.final-title{font-family:'Libre Baskerville',serif;font-size:30px;color:var(--white);margin-bottom:12px;}
+.final-msg{font-size:14px;line-height:1.8;color:var(--slate);max-width:500px;margin:0 auto 36px;}
+.final-breakdown{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-bottom:40px;}
+.bd-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:4px;
+  padding:18px 28px;
+  min-width:110px;
+}
+.bd-lbl{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--slate);margin-bottom:4px;}
+.bd-val{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;color:var(--mint);}
+
+/* ── ACTIVITY SECTIONS ── */
+.act-sec{display:none;}
+.act-sec.active{display:block;}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--ink);}
+::-webkit-scrollbar-thumb{background:var(--border-hi);border-radius:10px;}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-inner">
+    <svg class="logo-svg" viewBox="0 0 200 64" xmlns="http://www.w3.org/2000/svg">
+      <text x="100" y="30" font-family="Georgia,'Times New Roman',serif" font-size="30" font-weight="700" fill="#3DFFC0" text-anchor="middle" letter-spacing="1">Forbes</text>
+      <line x1="10" y1="38" x2="190" y2="38" stroke="#2A3450" stroke-width="1.2"/>
+      <text x="100" y="56" font-family="'Arial Black','Arial',sans-serif" font-size="14" font-weight="900" fill="#8899BB" text-anchor="middle" letter-spacing="6">ENGLISH</text>
+    </svg>
+    <div class="score-pill" id="score-pill">0 / 0</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">B2 · Professional Communication</div>
+    <h1 class="hero-title">The Design Pitch:<br><em>Language, Narrative &amp; Persuasion</em></h1>
+    <p class="hero-sub">
+      Learn how designers, architects, and creative directors communicate their ideas. This lesson focuses on the vocabulary and structures used when pitching a concept, building a narrative, and articulating a design vision to clients and collaborators.
+    </p>
+    <div class="meta-row">
+      <div class="meta-tag">Level <b>B2</b></div>
+      <div class="meta-tag">Activities <b>3</b></div>
+      <div class="meta-tag">Questions <b>17</b></div>
+      <div class="meta-tag">Topic <b>Design Pitches</b></div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tab-btn active" id="tab-1">01 · Multiple Choice</div>
+    <div class="tab-btn" id="tab-2">02 · Word Sorting</div>
+    <div class="tab-btn" id="tab-3">03 · Complete the Pitch</div>
+  </div>
+
+  <!-- ══════════════════════════════ -->
+  <!-- ACTIVITY 1 · MULTIPLE CHOICE  -->
+  <!-- ══════════════════════════════ -->
+  <div class="act-sec active" id="activity-1">
+    <div class="sec-hdr">
+      <div class="sec-num">Activity 1 of 3</div>
+      <h2 class="sec-title">Pitch Language &amp; Vocabulary in Context</h2>
+      <div class="sec-instr">
+        Each question presents a scenario from a design pitch or creative presentation. Choose the most appropriate word or phrase. After answering, you will receive an explanation.
+      </div>
+    </div>
+
+    <div class="prog-wrap">
+      <div class="prog-meta">
+        <span id="a1-prog-txt">Question 1 of 7</span>
+        <span id="a1-score-txt">0 correct</span>
+      </div>
+      <div class="prog-track"><div class="prog-fill" id="a1-bar" style="width:0%"></div></div>
+    </div>
+
+    <div id="a1-container"></div>
+
+    <div class="btn-row">
+      <button class="btn btn-mint" id="a1-next" style="display:none" onclick="a1Next()">Next Question →</button>
+      <button class="btn btn-mint" id="a1-end" style="display:none" onclick="goTo(2)">Next Activity →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════ -->
+  <!-- ACTIVITY 2 · WORD SORTING     -->
+  <!-- ══════════════════════════════ -->
+  <div class="act-sec" id="activity-2">
+    <div class="sec-hdr">
+      <div class="sec-num">Activity 2 of 3</div>
+      <h2 class="sec-title">Sort the Pitch Vocabulary</h2>
+      <div class="sec-instr">
+        Drag each word or phrase into the correct category: <strong style="color:var(--amber)">Starting a Narrative</strong>, <strong style="color:var(--amber)">Describing a Concept</strong>, or <strong style="color:var(--amber)">Responding to Feedback</strong>. Each item belongs to only one category.
+      </div>
+    </div>
+
+    <div class="prog-wrap">
+      <div class="prog-meta">
+        <span id="a2-prog-txt">0 of 10 sorted</span>
+        <span id="a2-score-txt"></span>
+      </div>
+      <div class="prog-track"><div class="prog-fill" id="a2-bar" style="width:0%"></div></div>
+    </div>
+
+    <div id="a2-container"></div>
+
+    <div class="btn-row">
+      <button class="btn btn-mint" id="a2-check" onclick="checkSort()" disabled>Check Answers</button>
+      <button class="btn btn-mint" id="a2-end" style="display:none" onclick="goTo(3)">Next Activity →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════ -->
+  <!-- ACTIVITY 3 · COMPLETE PITCH   -->
+  <!-- ══════════════════════════════ -->
+  <div class="act-sec" id="activity-3">
+    <div class="sec-hdr">
+      <div class="sec-num">Activity 3 of 3</div>
+      <h2 class="sec-title">Complete the Design Pitch</h2>
+      <div class="sec-instr">
+        A designer is presenting a concept for a new community library. Read each sentence from the pitch and drag the correct phrase into the gap. The missing phrases are in the pool above each sentence.
+      </div>
+    </div>
+
+    <div class="prog-wrap">
+      <div class="prog-meta">
+        <span id="a3-prog-txt">Sentence 1 of 5</span>
+        <span id="a3-score-txt">0 correct</span>
+      </div>
+      <div class="prog-track"><div class="prog-fill" id="a3-bar" style="width:0%"></div></div>
+    </div>
+
+    <div id="a3-container"></div>
+
+    <div class="btn-row">
+      <button class="btn btn-mint" id="a3-next" style="display:none" onclick="a3Next()">Next Sentence →</button>
+      <button class="btn btn-mint" id="a3-end" style="display:none" onclick="showFinal()">See My Results →</button>
+    </div>
+  </div>
+
+  <!-- FINAL -->
+  <div id="final-screen">
+    <div class="final-card">
+      <div class="final-ring">
+        <div class="final-num" id="f-num">0</div>
+        <div class="final-of" id="f-of">OUT OF 17</div>
+      </div>
+      <h2 class="final-title" id="f-title">Well done!</h2>
+      <p class="final-msg" id="f-msg"></p>
+      <div class="final-breakdown">
+        <div class="bd-card"><div class="bd-lbl">Activity 1</div><div class="bd-val" id="bd1">—</div></div>
+        <div class="bd-card"><div class="bd-lbl">Activity 2</div><div class="bd-val" id="bd2">—</div></div>
+        <div class="bd-card"><div class="bd-lbl">Activity 3</div><div class="bd-val" id="bd3">—</div></div>
+      </div>
+      <button class="btn btn-mint" onclick="restart()">↺ Restart Lesson</button>
+    </div>
+  </div>
+
+</div><!-- /wrap -->
+
+<script>
+// ══════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════
+
+/* ACTIVITY 1 — 7 multiple choice questions */
+const mcQ = [
+  {
+    context: "A junior designer is presenting her concept for a cultural centre to a panel of clients. She wants to open with a strong statement about the idea's origin.",
+    question: "Which phrase would most effectively open a design narrative?",
+    choices:[
+      {l:"A", t:"This project is basically about making a building near the waterfront."},
+      {l:"B", t:"The concept grew out of a tension between public accessibility and private contemplation."},
+      {l:"C", t:"We decided to use concrete because it was suggested by the structural engineer."},
+      {l:"D", t:"The brief asked for a 2,000 sq metre building with flexible seating arrangements."}
+    ],
+    correct:1,
+    expl:"Option B uses 'grew out of' — a phrase that suggests organic, conceptual development — and frames the idea around a compelling tension, which immediately gives the narrative depth and purpose. Design pitches should open with an idea, not a specification or a technical decision."
+  },
+  {
+    context: "A designer is explaining why the spatial layout of her proposal is unconventional. She wants to justify her reasoning without sounding defensive.",
+    question: "Which phrase introduces a design decision in the most confident and professional way?",
+    choices:[
+      {l:"A", t:"We tried to do something different because the usual approach seemed a bit boring to us."},
+      {l:"B", t:"The client didn't specify this, but we thought it might be worth considering."},
+      {l:"C", t:"Rather than defaulting to a conventional corridor typology, we organised the spaces around a central void."},
+      {l:"D", t:"As you can see, we moved things around a bit to make it more interesting and modern."}
+    ],
+    correct:2,
+    expl:"Option C is professional and precise. 'Rather than defaulting to' signals a deliberate, informed choice — it shows the designer is aware of convention and has consciously departed from it. This is a key structure in design presentations: acknowledge the norm, then explain your departure from it."
+  },
+  {
+    context: "During a pitch, a client interrupts and says: 'I'm not sure this fits our brand identity.' The designer needs to respond constructively.",
+    question: "Which response best demonstrates professional communication and keeps the conversation productive?",
+    choices:[
+      {l:"A", t:"That's a valid concern. Could you help me understand which elements feel misaligned? That would allow us to refine the direction together."},
+      {l:"B", t:"We actually think it does fit your brand — the moodboard we showed earlier makes that quite clear."},
+      {l:"C", t:"Brand identity is quite subjective, so it's hard to say definitively whether it fits or not."},
+      {l:"D", t:"We can change anything you want — just let us know what you'd prefer and we'll adjust the whole concept."}
+    ],
+    correct:0,
+    expl:"Option A uses active listening ('valid concern'), asks a clarifying question, and proposes collaboration ('refine the direction together'). It is neither defensive (B) nor evasive (C) nor submissive (D). In professional contexts, inviting dialogue is a sign of confidence, not weakness."
+  },
+  {
+    context: "A designer needs to explain an abstract concept — the idea that a building should 'dissolve' into its landscape rather than impose upon it.",
+    question: "Which sentence most clearly articulates this design intention to a non-specialist client?",
+    choices:[
+      {l:"A", t:"We are using low-carbon materials to reduce the environmental footprint of the structure."},
+      {l:"B", t:"The building is designed to feel as though it has always been part of the site — its edges blur into the terrain rather than making a hard boundary."},
+      {l:"C", t:"The roof will be green and the exterior cladding will be in natural tones chosen from a palette."},
+      {l:"D", t:"We have referenced several precedents from Scandinavian landscape architecture to inform our approach."}
+    ],
+    correct:1,
+    expl:"Option B translates an abstract architectural concept ('dissolving') into visceral, accessible language ('feel as though it has always been there', 'edges blur'). Good design communication makes poetic ideas tangible without being vague or overly technical."
+  },
+  {
+    context: "At the end of a pitch, the designer wants to invite questions and signal that the proposal is still open to iteration.",
+    question: "Which closing statement best balances confidence in the idea with openness to dialogue?",
+    choices:[
+      {l:"A", t:"This is our final proposal and we're confident it fully meets the brief as stated."},
+      {l:"B", t:"We're honestly not sure this is the right direction yet — we'd love your thoughts before we go any further."},
+      {l:"C", t:"We're presenting this as a strong direction rather than a fixed solution — we'd welcome your reactions and look forward to developing it with you."},
+      {l:"D", t:"Please take your time to review the drawings and we will follow up by email next week."}
+    ],
+    correct:2,
+    expl:"Option C is precise about the proposal's status ('strong direction, not fixed solution'), which is honest and collaborative. It uses 'welcome your reactions' (confident but open) and 'developing it with you' (partnership language). A and B are either too closed or too uncertain; D defers without engaging."
+  },
+  {
+    context: "A designer is explaining the narrative thread that connects all the design decisions in a residential project.",
+    question: "What does the term 'design narrative' most accurately mean in a professional context?",
+    choices:[
+      {l:"A", t:"The chronological story of the construction process from planning to completion"},
+      {l:"B", t:"The written description included in planning permission applications"},
+      {l:"C", t:"A coherent story or framework of ideas that gives meaning to each design decision"},
+      {l:"D", t:"The marketing text used to describe a project in press releases and social media"}
+    ],
+    correct:2,
+    expl:"A 'design narrative' is the conceptual thread that connects and justifies each decision within a project. It is not a literal story (A), a legal document (B), or marketing copy (D) — though elements of it may appear in all three. It is the 'why' that gives the work coherence and purpose."
+  },
+  {
+    context: "A product designer tells her team: 'We need to foreground the material qualities of the object in the presentation — the tactility is central to the concept.'",
+    question: "What does 'foreground' mean in this sentence?",
+    choices:[
+      {l:"A", t:"To position the object at the front of the display table during the presentation"},
+      {l:"B", t:"To emphasise or make something the most prominent aspect of the presentation"},
+      {l:"C", t:"To photograph the object against a simple neutral background"},
+      {l:"D", t:"To conduct research on the materials before beginning the design process"}
+    ],
+    correct:1,
+    expl:"'To foreground' is a verb borrowed from visual arts theory meaning to bring something to prominence — to make it central and unavoidable in the viewer's or listener's attention. It is widely used in design, cultural theory, and academic writing as a verb: 'to foreground an idea / quality / tension'."
+  }
+];
+
+/* ACTIVITY 2 — Word Sorting */
+const sortData = {
+  categories: ["Starting a Narrative", "Describing a Concept", "Responding to Feedback"],
+  items: [
+    {text:"The concept stems from…",    cat:0},
+    {text:"What we set out to explore…", cat:0},
+    {text:"At the heart of this proposal…", cat:0},
+    {text:"The driving idea was…",       cat:0},
+    {text:"rooted in contrast",          cat:1},
+    {text:"a spatial tension between",   cat:1},
+    {text:"conceptually driven by",      cat:1},
+    {text:"an honest expression of",     cat:1},
+    {text:"That's a useful point —",     cat:2},
+    {text:"We can absolutely revisit…",  cat:2},
+    {text:"Could you say more about…",   cat:2},
+    {text:"That feedback helps us refine…", cat:2},
+  ]
+};
+let sortPlaced = {}; // itemText -> catIdx placed in
+let sortDragItem = null;
+
+/* ACTIVITY 3 — Complete the Pitch (5 drag-drop sentences) */
+const pitchQ = [
+  {
+    before:"The idea for this library",
+    zone:"_____",
+    after:"the community's need for a space that feels both intimate and open to the public.",
+    correct:"grew directly out of",
+    distractors:["was strongly inspired beyond","derived its basis from having","was conceptually founded upon"],
+    expl:"'Grew directly out of' is a natural and professional phrase used to explain that an idea had its origin in a specific observation or need. It implies organic, necessity-driven design rather than arbitrary choice."
+  },
+  {
+    before:"Rather than separating reading areas from gathering spaces,",
+    zone:"_____",
+    after:"them through a series of layered thresholds that the user can read and navigate intuitively.",
+    correct:"we chose to connect",
+    distractors:["we decided on linking","our solution combines","we have integrated together"],
+    expl:"'We chose to connect' is clean, active, and decisive. It introduces a deliberate design decision using a strong verb. The phrase 'chose to' signals intentionality — a key quality in design presentations."
+  },
+  {
+    before:"The materiality of the building",
+    zone:"_____",
+    after:"the surrounding landscape: raw timber and rammed earth echo the textures of the site itself.",
+    correct:"is in direct dialogue with",
+    distractors:["has been influenced from","takes its reference points in","relates directly towards"},
+    expl:"'In dialogue with' is precise architectural language suggesting a two-way, responsive relationship between the building and its context. It avoids one-directional words like 'influenced by' and implies that the site itself informed the material choices."
+  },
+  {
+    before:"We understand your concern about budget — and",
+    zone:"_____",
+    after:"those constraints as opportunities to simplify and intensify the concept, not dilute it.",
+    correct:"we would like to reframe",
+    distractors:["our intention would be treating","we are proposing to handle","we could consider approaching"],
+    expl:"'Reframe' is a powerful word in professional communication — it means to present a problem in a new light. Saying you'd like to reframe constraints as opportunities shows positive, solution-oriented thinking without dismissing the client's concern."
+  },
+  {
+    before:"Ultimately, what we are proposing is not simply a building —",
+    zone:"_____",
+    after:"a civic gesture: a space that expresses the community's belief in the value of shared knowledge.",
+    correct:"it is an attempt to make",
+    distractors:["but rather we are creating","what this represents being","instead this is about making"],
+    expl:"'An attempt to make' is honest and ambitious at once — it acknowledges the project's aspirational quality without overpromising. It also introduces the idea as a 'gesture', elevating the project from a functional brief to a meaningful civic act."
+  }
+];
+let pitchCurrent = 0;
+let pitchScore = 0;
+let ddDragSrc = null;
+
+// ══════════════════════════════════════════
+// GLOBAL STATE
+// ══════════════════════════════════════════
+let a1Cur = 0, a1Score = 0;
+let a2Score = 0;
+let scores = {1:0, 2:0, 3:0};
+
+function updateBadge(){
+  const tot = scores[1]+scores[2]+scores[3];
+  const poss = 17;
+  document.getElementById('score-pill').textContent = `${tot} / ${poss}`;
+}
+
+// ══════════════════════════════════════════
+// ACTIVITY 1
+// ══════════════════════════════════════════
+function renderMC(idx){
+  const q = mcQ[idx];
+  const tot = mcQ.length;
+  document.getElementById('a1-prog-txt').textContent = `Question ${idx+1} of ${tot}`;
+  document.getElementById('a1-score-txt').textContent = `${a1Score} correct`;
+  document.getElementById('a1-bar').style.width = `${(idx/tot)*100}%`;
+  document.getElementById('a1-next').style.display='none';
+  document.getElementById('a1-end').style.display='none';
+
+  let html = `<div class="q-card">`;
+  if(q.context) html+=`<div class="q-context">${q.context}</div>`;
+  html+=`<div class="q-text">${q.question}</div><div class="choices">`;
+  q.choices.forEach((c,i)=>{
+    html+=`<button class="choice" id="ch${i}" onclick="pickMC(${i},${q.correct},${idx})">
+      <span class="ch-lbl">${c.l}</span><span>${c.t}</span></button>`;
+  });
+  html+=`</div><div class="fb" id="a1fb"></div></div>`;
+  document.getElementById('a1-container').innerHTML = html;
+}
+
+function pickMC(chosen, correct, idx){
+  document.querySelectorAll('.choice').forEach(b=>b.disabled=true);
+  document.getElementById('ch'+chosen).classList.add(chosen===correct?'correct':'wrong');
+  if(chosen!==correct) document.getElementById('ch'+correct).classList.add('correct');
+
+  const ok = chosen===correct;
+  if(ok) a1Score++;
+  scores[1]=a1Score;
+  updateBadge();
+
+  const fb = document.getElementById('a1fb');
+  fb.className = `fb ${ok?'ok':'no'}`;
+  fb.style.display='block';
+  fb.innerHTML=`<div class="fb-head">${ok?'Correct':'Incorrect'}</div>${mcQ[idx].expl}`;
+
+  document.getElementById('a1-prog-txt').textContent = `Question ${idx+1} of ${mcQ.length}`;
+  document.getElementById('a1-score-txt').textContent = `${a1Score} correct`;
+
+  const isLast = idx===mcQ.length-1;
+  document.getElementById(isLast?'a1-end':'a1-next').style.display='inline-block';
+}
+
+function a1Next(){
+  a1Cur++;
+  renderMC(a1Cur);
+}
+
+// ══════════════════════════════════════════
+// ACTIVITY 2 — WORD SORT (drag & drop)
+// ══════════════════════════════════════════
+function renderSort(){
+  sortPlaced = {};
+  const shuffled = [...sortData.items].sort(()=>Math.random()-0.5);
+
+  let pool = `<div class="sort-pool-wrap" id="sort-pool" ondragover="sortPoolOver(event)" ondrop="sortPoolDrop(event)">`;
+  shuffled.forEach(item=>{
+    pool+=`<span class="sort-chip" draggable="true" id="sc-${CSS.escape(item.text)}" data-text="${item.text}" ondragstart="sortDragStart(event,'${item.text.replace(/'/g,"\\'")}')">
+      ${item.text}</span>`;
+  });
+  pool+=`</div>`;
+
+  let cats = `<div class="sort-grid">`;
+  sortData.categories.forEach((cat,ci)=>{
+    cats+=`<div class="sort-cat" id="scat-${ci}" ondragover="sortCatOver(event,${ci})" ondrop="sortCatDrop(event,${ci})" ondragleave="sortCatLeave(${ci})">
+      <div class="sort-cat-title">${cat}</div>
+      <div class="sort-cat-items" id="scatitems-${ci}"></div>
+    </div>`;
+  });
+  cats+=`</div>`;
+
+  let fbarea = `<div class="fb" id="a2fb" style="margin-bottom:16px"></div>`;
+  document.getElementById('a2-container').innerHTML = pool+cats+fbarea;
+  updateSortProgress();
+}
+
+function sortDragStart(e, text){
+  sortDragItem = text;
+  setTimeout(()=>{
+    const el = document.querySelector(`[data-text="${text}"]`);
+    if(el) el.classList.add('dragging-src');
+  },0);
+}
+
+function sortCatOver(e,ci){
+  e.preventDefault();
+  document.getElementById('scat-'+ci).classList.add('over');
+}
+function sortCatLeave(ci){
+  document.getElementById('scat-'+ci).classList.remove('over');
+}
+function sortCatDrop(e,ci){
+  e.preventDefault();
+  document.getElementById('scat-'+ci).classList.remove('over');
+  if(!sortDragItem) return;
+  moveChipToCat(sortDragItem, ci);
+  sortDragItem=null;
+}
+function sortPoolOver(e){ e.preventDefault(); }
+function sortPoolDrop(e){
+  e.preventDefault();
+  if(!sortDragItem) return;
+  // move back to pool
+  const existing = document.querySelector(`[data-text="${sortDragItem}"]`);
+  if(existing) existing.remove();
+  if(sortPlaced[sortDragItem]!==undefined) delete sortPlaced[sortDragItem];
+  const pool = document.getElementById('sort-pool');
+  const chip = makeChip(sortDragItem);
+  pool.appendChild(chip);
+  sortDragItem=null;
+  updateSortProgress();
+}
+
+function moveChipToCat(text, ci){
+  // remove from wherever it is
+  const old = document.querySelector(`[data-text="${text}"]`);
+  if(old) old.remove();
+  // remove old placement record
+  delete sortPlaced[text];
+  // add to new category
+  const catItems = document.getElementById('scatitems-'+ci);
+  const chip = makeChip(text);
+  catItems.appendChild(chip);
+  sortPlaced[text] = ci;
+  updateSortProgress();
+}
+
+function makeChip(text){
+  const s = document.createElement('span');
+  s.className='sort-chip';
+  s.draggable=true;
+  s.dataset.text=text;
+  s.textContent=text;
+  s.addEventListener('dragstart', e=>sortDragStart(e, text));
+  return s;
+}
+
+function updateSortProgress(){
+  const placed = Object.keys(sortPlaced).length;
+  const total = sortData.items.length;
+  document.getElementById('a2-prog-txt').textContent = `${placed} of ${total} sorted`;
+  document.getElementById('a2-bar').style.width = `${(placed/total)*100}%`;
+  document.getElementById('a2-check').disabled = placed < total;
+}
+
+function checkSort(){
+  let correct=0;
+  sortData.items.forEach(item=>{
+    const placed = sortPlaced[item.text];
+    const chips = document.querySelectorAll(`[data-text="${item.text}"]`);
+    chips.forEach(chip=>{
+      chip.draggable=false;
+      if(placed===item.cat){
+        correct++;
+        chip.style.borderColor='var(--correct)';
+        chip.style.color='var(--correct)';
+      } else {
+        chip.style.borderColor='var(--wrong)';
+        chip.style.color='var(--wrong)';
+        chip.title=`This belongs in: "${sortData.categories[item.cat]}"`;
+      }
+    });
+  });
+  a2Score=correct;
+  scores[2]=a2Score;
+  updateBadge();
+  document.getElementById('a2-score-txt').textContent=`${correct} / ${sortData.items.length} correct`;
+  document.getElementById('a2-bar').style.width='100%';
+
+  const fb = document.getElementById('a2fb');
+  fb.className = `fb ${correct>=8?'ok':'no'}`;
+  fb.style.display='block';
+  fb.innerHTML=`<div class="fb-head">${correct>=8?'Great work!':'Keep practising!'}</div>
+    You got <strong>${correct} out of ${sortData.items.length}</strong> correct. Items marked in red belong to a different category — hover over them to see the correct one. Review the categories to strengthen your pitch vocabulary.`;
+
+  document.getElementById('a2-check').style.display='none';
+  document.getElementById('a2-end').style.display='inline-block';
+}
+
+// ══════════════════════════════════════════
+// ACTIVITY 3 — DRAG & DROP PITCH COMPLETION
+// ══════════════════════════════════════════
+function renderPitch(idx){
+  const q = pitchQ[idx];
+  const tot = pitchQ.length;
+  document.getElementById('a3-prog-txt').textContent=`Sentence ${idx+1} of ${tot}`;
+  document.getElementById('a3-score-txt').textContent=`${pitchScore} correct`;
+  document.getElementById('a3-bar').style.width=`${(idx/tot)*100}%`;
+  document.getElementById('a3-next').style.display='none';
+  document.getElementById('a3-end').style.display='none';
+
+  const allOpts = [q.correct, ...q.distractors].sort(()=>Math.random()-0.5);
+  ddDragSrc = null;
+
+  let pool=`<div class="dd-pool" id="dd-pool">`;
+  allOpts.forEach(opt=>{
+    pool+=`<div class="dd-chip" draggable="true" data-val="${opt}" ondragstart="ddStart(event,'${opt.replace(/'/g,"\\'")}')">
+      ${opt}</div>`;
+  });
+  pool+=`</div>`;
+
+  let sentence=`<div class="q-card">
+    <div class="q-text" style="margin-bottom:20px">Drag the correct phrase into the gap:</div>
+    <div style="font-size:15px; line-height:2; color:var(--pale); font-family:'Inconsolata',monospace;">
+      ${q.before}
+      <span class="dd-zone" id="dd-zone" ondragover="ddOver(event)" ondrop="ddDrop(event,'${q.correct.replace(/'/g,"\\'")}',${idx})" ondragleave="ddLeave()">
+        drop here
+      </span>
+      ${q.after}
+    </div>
+    <div class="fb" id="a3fb"></div>
+  </div>`;
+
+  document.getElementById('a3-container').innerHTML = pool+sentence;
+}
+
+function ddStart(e, val){
+  ddDragSrc=val;
+  e.currentTarget.classList.add('dragging-src');
+}
+function ddOver(e){ e.preventDefault(); document.getElementById('dd-zone').classList.add('over'); }
+function ddLeave(){ document.getElementById('dd-zone').classList.remove('over'); }
+function ddDrop(e, correct, idx){
+  e.preventDefault();
+  const zone = document.getElementById('dd-zone');
+  zone.classList.remove('over');
+  if(!ddDragSrc) return;
+
+  zone.textContent = ddDragSrc;
+  zone.classList.add('filled');
+  document.querySelectorAll('.dd-chip').forEach(c=>c.draggable=false);
+
+  const ok = ddDragSrc===correct;
+  zone.classList.add(ok?'zone-ok':'zone-no');
+  if(ok) pitchScore++;
+  scores[3]=pitchScore;
+  updateBadge();
+
+  const fb = document.getElementById('a3fb');
+  fb.className=`fb ${ok?'ok':'no'}`;
+  fb.style.display='block';
+  fb.innerHTML=`<div class="fb-head">${ok?'Correct!':'Not quite.'}</div>
+    ${!ok?`<strong>The correct phrase is:</strong> "<em>${correct}</em>"<br>`:''} 
+    ${pitchQ[idx].expl}`;
+
+  document.getElementById('a3-score-txt').textContent=`${pitchScore} correct`;
+  const isLast = idx===pitchQ.length-1;
+  document.getElementById(isLast?'a3-end':'a3-next').style.display='inline-block';
+  if(isLast){ document.getElementById('a3-bar').style.width='100%'; }
+}
+
+function a3Next(){
+  pitchCurrent++;
+  renderPitch(pitchCurrent);
+}
+
+// ══════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════
+function goTo(act){
+  [1,2,3].forEach(n=>{
+    document.getElementById('activity-'+n).classList.remove('active');
+  });
+  document.getElementById('activity-'+act).classList.add('active');
+
+  const prev = act-1;
+  if(prev>=1){ document.getElementById('tab-'+prev).classList.remove('active'); document.getElementById('tab-'+prev).classList.add('done'); }
+  document.getElementById('tab-'+act).classList.add('active');
+  document.getElementById('tab-'+act).classList.remove('done');
+
+  if(act===2) renderSort();
+  if(act===3){ pitchCurrent=0; pitchScore=0; renderPitch(0); }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function showFinal(){
+  document.getElementById('activity-3').classList.remove('active');
+  document.getElementById('tab-3').classList.remove('active');
+  document.getElementById('tab-3').classList.add('done');
+
+  const tot = scores[1]+scores[2]+scores[3];
+  const max = 17; // 7 + 10 + 5 — but sort max is 12, pitch is 5, mc is 7 = 24... recalculate
+  // MC=7, Sort=12, Pitch=5 = 24 total
+  const realMax = 24;
+  document.getElementById('f-num').textContent = tot;
+  document.getElementById('f-of').textContent = `OUT OF ${realMax}`;
+  document.getElementById('bd1').textContent = `${scores[1]}/7`;
+  document.getElementById('bd2').textContent = `${scores[2]}/12`;
+  document.getElementById('bd3').textContent = `${scores[3]}/5`;
+
+  const pct = tot/realMax;
+  let title, msg;
+  if(pct>=0.88){ title="Outstanding pitch!"; msg="You have an excellent command of professional design communication language. You can clearly articulate concepts, navigate client feedback, and tell compelling design stories. You're ready for the boardroom."; }
+  else if(pct>=0.7){ title="Strong performance!"; msg="You have a solid grasp of how designers communicate their ideas in pitch settings. Review any phrases you missed and try using them in your own presentations — active use is the fastest route to fluency."; }
+  else if(pct>=0.5){ title="Good foundations!"; msg="You're building your pitch vocabulary well. Focus on the vocabulary for describing concepts and responding to feedback — these tend to require the most practice. Re-read the explanations carefully."; }
+  else { title="Keep at it!"; msg="Design pitch language takes time to absorb. Go back over the activities, read the explanations, and try to use some of these phrases in your next creative conversation. Every attempt builds confidence."; }
+
+  document.getElementById('f-title').textContent=title;
+  document.getElementById('f-msg').textContent=msg;
+  document.getElementById('score-pill').textContent=`${tot} / ${realMax}`;
+  document.getElementById('final-screen').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function restart(){
+  a1Cur=0; a1Score=0; a2Score=0; pitchScore=0; pitchCurrent=0;
+  scores={1:0,2:0,3:0};
+  sortPlaced={}; sortDragItem=null; ddDragSrc=null;
+
+  document.getElementById('final-screen').style.display='none';
+  [1,2,3].forEach(n=>{
+    document.getElementById('activity-'+n).classList.remove('active');
+    document.getElementById('tab-'+n).classList.remove('active','done');
+  });
+  document.getElementById('activity-1').classList.add('active');
+  document.getElementById('tab-1').classList.add('active');
+  renderMC(0);
+  updateBadge();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+renderMC(0);
+updateBadge();
+
+// Fix score display for correct max
+document.getElementById('score-pill').textContent = '0 / 24';
+</script>
+</body>
+</html>

@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taekwondo English – Grammar Dojo!</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky:    #e8f4fd;
+    --yellow: #ffd93d;
+    --orange: #ff6b35;
+    --red:    #e63946;
+    --blue:   #4ecdc4;
+    --green:  #6bcb77;
+    --purple: #c77dff;
+    --white:  #ffffff;
+    --ink:    #2d2d2d;
+    --soft:   #f9f5ef;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--sky);
+    color: var(--ink);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── confetti dots bg ── */
+  body::before {
+    content:'';
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image:
+      radial-gradient(circle, #ffd93d55 2px, transparent 2px),
+      radial-gradient(circle, #ff6b3544 2px, transparent 2px),
+      radial-gradient(circle, #4ecdc455 2px, transparent 2px),
+      radial-gradient(circle, #6bcb7744 2px, transparent 2px);
+    background-size: 60px 60px, 80px 80px, 70px 70px, 90px 90px;
+    background-position: 0 0, 30px 40px, 15px 60px, 50px 10px;
+  }
+
+  .page { position:relative; z-index:1; max-width:860px; margin:0 auto; padding:1.5rem; }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--white);
+    border-radius: 24px;
+    padding: 2rem 2rem 1.4rem;
+    text-align: center;
+    box-shadow: 0 6px 0 #dde8f0, 0 12px 30px rgba(0,0,0,0.07);
+    margin-bottom: 1.6rem;
+    animation: popIn 0.6s cubic-bezier(0.34,1.56,0.64,1) both;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .belt-row {
+    display:flex; justify-content:center; gap:5px; margin-bottom:1.2rem;
+  }
+  .belt {
+    height:10px; border-radius:5px;
+    animation: slideW 0.5s ease both;
+  }
+  .belt:nth-child(1){width:30px;background:#ddd;animation-delay:.0s}
+  .belt:nth-child(2){width:45px;background:#f5a623;animation-delay:.05s}
+  .belt:nth-child(3){width:45px;background:#27ae60;animation-delay:.1s}
+  .belt:nth-child(4){width:45px;background:#3498db;animation-delay:.15s}
+  .belt:nth-child(5){width:60px;background:var(--red);animation-delay:.2s}
+  .belt:nth-child(6){width:60px;background:#222;animation-delay:.25s;border:2px solid var(--yellow)}
+  .belt:nth-child(7){width:60px;background:var(--red);animation-delay:.3s}
+  .belt:nth-child(8){width:45px;background:#3498db;animation-delay:.35s}
+  .belt:nth-child(9){width:45px;background:#27ae60;animation-delay:.4s}
+  .belt:nth-child(10){width:45px;background:#f5a623;animation-delay:.45s}
+  .belt:nth-child(11){width:30px;background:#ddd;animation-delay:.5s}
+
+  header h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(2rem, 6vw, 3.2rem);
+    line-height: 1.1;
+    color: var(--red);
+    letter-spacing: 0.02em;
+  }
+  header h1 span { color: var(--orange); }
+
+  header .sub {
+    margin-top: 0.4rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #777;
+  }
+  header .sub em { color: var(--blue); font-style: normal; }
+
+  .mascot {
+    font-size: 3.5rem;
+    margin-bottom: 0.4rem;
+    display: block;
+    animation: bounce 2s ease-in-out infinite;
+  }
+
+  /* ── GRAMMAR CARDS ── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.4rem;
+  }
+  @media(max-width:580px){ .cards-grid{ grid-template-columns:1fr; } }
+
+  .grammar-card {
+    background: var(--white);
+    border-radius: 18px;
+    padding: 1.3rem 1.4rem;
+    box-shadow: 0 5px 0 #dde8f0, 0 8px 20px rgba(0,0,0,0.06);
+    animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+    border-top: 5px solid var(--red);
+  }
+  .grammar-card:nth-child(2){ border-top-color: var(--blue); animation-delay:.1s; }
+  .grammar-card:nth-child(3){ border-top-color: var(--green); animation-delay:.2s; }
+
+  .card-emoji { font-size:2rem; margin-bottom:.4rem; display:block; }
+  .card-title {
+    font-family:'Fredoka One',cursive;
+    font-size:1.25rem;
+    color: var(--ink);
+    margin-bottom:.6rem;
+  }
+  .card-title span { color: var(--red); }
+
+  .formula-box {
+    background: #fff8ee;
+    border:2px dashed #ffd93d;
+    border-radius:10px;
+    padding:.6rem .9rem;
+    font-size:.9rem;
+    font-weight:700;
+    line-height:1.7;
+    margin-bottom:.7rem;
+  }
+  .grammar-card:nth-child(2) .formula-box { background:#eefbfb; border-color: var(--blue); }
+  .grammar-card:nth-child(3) .formula-box { background:#eefbee; border-color: var(--green); }
+
+  .f-key { color: var(--red); }
+  .f-blue { color: #0077aa; }
+  .f-green { color: #1a7a1a; }
+
+  .card-note {
+    font-size:.82rem;
+    color:#777;
+    line-height:1.5;
+  }
+  .card-note strong { color: var(--ink); }
+
+  /* ── SECTION HEADERS ── */
+  .section-head {
+    display:flex; align-items:center; gap:.8rem;
+    margin: 1.6rem 0 .8rem;
+    animation: fadeSlide .5s ease both;
+  }
+  .section-head .sh-icon {
+    font-size:1.6rem;
+    background: var(--white);
+    border-radius:12px;
+    padding:.3rem .5rem;
+    box-shadow: 0 3px 0 #dde8f0;
+  }
+  .section-head h2 {
+    font-family:'Fredoka One',cursive;
+    font-size:1.4rem;
+    color: var(--ink);
+  }
+  .section-head h2 span { color: var(--orange); }
+  .section-head .de-label {
+    margin-left:auto;
+    font-size:.72rem;
+    font-weight:800;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+    color:#bbb;
+  }
+
+  /* ── SENTENCE CARDS ── */
+  .sentence-list { display:flex; flex-direction:column; gap:.7rem; margin-bottom:.5rem; }
+
+  .s-card {
+    background: var(--white);
+    border-radius:14px;
+    padding:1rem 1.2rem;
+    display:grid;
+    grid-template-columns: 2.2rem 1fr auto;
+    align-items:start;
+    gap:.8rem;
+    box-shadow: 0 4px 0 #dde8f0, 0 6px 16px rgba(0,0,0,0.05);
+    transition: transform .15s ease, box-shadow .15s ease;
+    animation: fadeSlide .4s ease both;
+  }
+  .s-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #dde8f0, 0 10px 22px rgba(0,0,0,0.08);
+  }
+
+  .s-num {
+    width:2rem; height:2rem;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:.8rem;
+    flex-shrink:0;
+    margin-top:.15rem;
+  }
+  .s-num.regret  { background:#ffeaea; color:var(--red); }
+  .s-num.must    { background:#e8f7ff; color:#0077aa; }
+  .s-num.haveto  { background:#eefbee; color:#1a7a1a; }
+  .s-num.compare { background:#fff3e8; color:var(--orange); }
+
+  .s-text { line-height:1.5; }
+  .s-en {
+    font-size:1rem;
+    font-weight:700;
+    color: var(--ink);
+    margin-bottom:.25rem;
+  }
+  .s-en .kw-regret  { color:var(--red); }
+  .s-en .kw-must    { color:#0077aa; }
+  .s-en .kw-haveto  { color:#1a7a1a; }
+  .s-en .kw-compare { color:var(--orange); }
+  .s-de {
+    font-size:.82rem;
+    color:#999;
+    font-style: italic;
+    font-weight:600;
+  }
+
+  .s-tag {
+    display:inline-block;
+    font-size:.6rem;
+    font-weight:800;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    padding:.2rem .55rem;
+    border-radius:20px;
+    white-space:nowrap;
+    flex-shrink:0;
+    margin-top:.2rem;
+  }
+  .tag-defense { background:#e8f0ff; color:#3a6ad4; }
+  .tag-attack  { background:#ffebeb; color:#c0392b; }
+  .tag-mental  { background:#fff5e0; color:#c97a00; }
+  .tag-timing  { background:#eee8ff; color:#7b47c1; }
+  .tag-footwork{ background:#e5fbee; color:#1e8a40; }
+  .tag-rule    { background:#e8f7ff; color:#0077aa; }
+  .tag-compare { background:#fff3e5; color:#d4600a; }
+
+  /* ── COMPARE TABLE ── */
+  .compare-box {
+    background: var(--white);
+    border-radius:18px;
+    padding:1.4rem;
+    box-shadow: 0 5px 0 #dde8f0, 0 8px 20px rgba(0,0,0,0.06);
+    margin-bottom:1.4rem;
+    animation: popIn .5s cubic-bezier(0.34,1.56,0.64,1) both .15s;
+  }
+  .compare-box h3 {
+    font-family:'Fredoka One',cursive;
+    font-size:1.1rem;
+    margin-bottom:1rem;
+    color:var(--ink);
+  }
+  .compare-box h3 span { color:var(--orange); }
+
+  .cmp-grid {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:.8rem;
+  }
+  @media(max-width:480px){ .cmp-grid{grid-template-columns:1fr;} }
+
+  .cmp-col {
+    border-radius:12px;
+    padding:1rem;
+  }
+  .cmp-col.must-col  { background:#eaf6ff; border:2px solid #a8d8f0; }
+  .cmp-col.haveto-col{ background:#eefbee; border:2px solid #a3ddb0; }
+
+  .cmp-col h4 {
+    font-family:'Fredoka One',cursive;
+    font-size:1.1rem;
+    margin-bottom:.5rem;
+  }
+  .cmp-col.must-col  h4 { color:#0077aa; }
+  .cmp-col.haveto-col h4 { color:#1a7a1a; }
+
+  .cmp-col ul {
+    list-style:none;
+    font-size:.85rem;
+    font-weight:600;
+    line-height:1.7;
+    color:#444;
+  }
+  .cmp-col ul li::before { content:'✓ '; }
+  .cmp-col.must-col  ul li::before { color:#0077aa; }
+  .cmp-col.haveto-col ul li::before { color:#1a7a1a; }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align:center;
+    padding:1.5rem 0 2rem;
+    font-size:.8rem;
+    font-weight:700;
+    color:#bbb;
+    letter-spacing:.1em;
+  }
+  footer span { color:var(--orange); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes popIn {
+    from { opacity:0; transform:scale(.85) translateY(10px); }
+    to   { opacity:1; transform:scale(1) translateY(0); }
+  }
+  @keyframes fadeSlide {
+    from { opacity:0; transform:translateY(12px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  @keyframes bounce {
+    0%,100%{ transform:translateY(0); }
+    50%    { transform:translateY(-8px); }
+  }
+  @keyframes slideW {
+    from { transform:scaleX(0); opacity:0; }
+    to   { transform:scaleX(1); opacity:1; }
+  }
+
+  /* stagger s-cards */
+  .sentence-list .s-card:nth-child(1){animation-delay:.05s}
+  .sentence-list .s-card:nth-child(2){animation-delay:.10s}
+  .sentence-list .s-card:nth-child(3){animation-delay:.15s}
+  .sentence-list .s-card:nth-child(4){animation-delay:.20s}
+  .sentence-list .s-card:nth-child(5){animation-delay:.25s}
+  .sentence-list .s-card:nth-child(6){animation-delay:.30s}
+  .sentence-list .s-card:nth-child(7){animation-delay:.35s}
+  .sentence-list .s-card:nth-child(8){animation-delay:.40s}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HEADER -->
+<header>
+  <span class="mascot">🥋</span>
+  <div class="belt-row">
+    <div class="belt"></div><div class="belt"></div><div class="belt"></div>
+    <div class="belt"></div><div class="belt"></div><div class="belt"></div>
+    <div class="belt"></div><div class="belt"></div><div class="belt"></div>
+    <div class="belt"></div><div class="belt"></div>
+  </div>
+  <h1>Grammar <span>Dojo!</span> 🥊</h1>
+  <p class="sub">Taekwondo English — <em>3 super moves for your English brain!</em></p>
+</header>
+
+<!-- GRAMMAR CARDS -->
+<div class="cards-grid">
+
+  <div class="grammar-card">
+    <span class="card-emoji">😬</span>
+    <div class="card-title"><span>Should have</span> — Vergangene Bedauern</div>
+    <div class="formula-box">
+      I / He / She / We<br>
+      + <span class="f-key">should have</span> + verb (-ed / 3rd form)<br>
+      <em style="color:#aaa;font-size:.8rem">= Ich hätte … sollen</em>
+    </div>
+    <div class="card-note">Use this when you <strong>wish you did something differently</strong> in the past. Oops! 😅</div>
+  </div>
+
+  <div class="grammar-card">
+    <span class="card-emoji">💪</span>
+    <div class="card-title"><span style="color:#0077aa">Must</span> — Innere Pflicht</div>
+    <div class="formula-box">
+      I / He / She / We<br>
+      + <span class="f-blue">must</span> + verb (base form)<br>
+      <em style="color:#aaa;font-size:.8rem">= Ich muss … (eigener Wunsch)</em>
+    </div>
+    <div class="card-note">Use <strong>must</strong> when <em>you yourself</em> feel it's necessary — it comes from inside! 🧠</div>
+  </div>
+
+  <div class="grammar-card" style="grid-column:1/-1;border-top-color:var(--green)">
+    <span class="card-emoji">📋</span>
+    <div class="card-title"><span style="color:#1a7a1a">Have to</span> — Äußere Pflicht</div>
+    <div class="formula-box">
+      I / We / They &nbsp;<span class="f-green">have to</span> + verb<br>
+      He / She &nbsp;<span class="f-green">has to</span> + verb<br>
+      <em style="color:#aaa;font-size:.8rem">= Ich muss … (von außen, Regel/Person)</em>
+    </div>
+    <div class="card-note">Use <strong>have to</strong> when a <em>rule, teacher, or coach</em> makes it necessary — it comes from outside! 🏫</div>
+  </div>
+
+</div>
+
+<!-- MUST vs HAVE TO COMPARE -->
+<div class="compare-box">
+  <h3>⚡ <span>Must</span> vs Have to — Quick Cheat Sheet!</h3>
+  <div class="cmp-grid">
+    <div class="cmp-col must-col">
+      <h4>💙 MUST</h4>
+      <ul>
+        <li>Kommt von <em>dir</em> selbst</li>
+        <li>Dein eigener Wille / Gefühl</li>
+        <li>"I must train harder." (Ich will es!)</li>
+        <li>Kein must in der Vergangenheit → use <em>had to</em></li>
+      </ul>
+    </div>
+    <div class="cmp-col haveto-col">
+      <h4>💚 HAVE TO</h4>
+      <ul>
+        <li>Kommt von <em>außen</em> (Regeln, andere)</li>
+        <li>Pflicht durch Coach, Schule, Regeln</li>
+        <li>"I have to bow." (Regel im Dojo!)</li>
+        <li>Vergangenheit → <em>had to</em> (beide!)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 1: SHOULD HAVE -->
+<div class="section-head">
+  <div class="sh-icon">😬</div>
+  <h2>Should Have — <span>Oops Moments!</span></h2>
+  <span class="de-label">hätte … sollen</span>
+</div>
+
+<div class="sentence-list">
+  <div class="s-card">
+    <div class="s-num regret">1</div>
+    <div class="s-text">
+      <div class="s-en">I <span class="kw-regret">should have kept</span> my guard up! 🙈</div>
+      <div class="s-de">Ich hätte meine Deckung oben halten sollen.</div>
+    </div>
+    <span class="s-tag tag-defense">Defense</span>
+  </div>
+  <div class="s-card">
+    <div class="s-num regret">2</div>
+    <div class="s-text">
+      <div class="s-en">I <span class="kw-regret">should have kicked</span> earlier! ⏰</div>
+      <div class="s-de">Ich hätte den Kick früher machen sollen.</div>
+    </div>
+    <span class="s-tag tag-timing">Timing</span>
+  </div>
+  <div class="s-card">
+    <div class="s-num regret">3</div>
+    <div class="s-text">
+      <div class="s-en">I <span class="kw-regret">should have stayed</span> calmer. 😤</div>
+      <div class="s-de">Ich hätte ruhiger bleiben sollen.</div>
+    </div>
+    <span class="s-tag tag-mental">Mental</span>
+  </div>
+  <div class="s-card">
+    <div class="s-num regret">4</div>
+    <div class="s-text">
+      <div class="s-en">I <span class="kw-regret">should have moved</span> my feet faster! 💨</div>
+      <div class="s-de">Ich hätte meine Füße schneller bewegen sollen.</div>
+    </div>
+    <span class="s-tag tag-footwork">Footwork</span>
+  </div>
+  <div class="s-card">
+    <div class="s-num regret">5</div>
+    <div class="s-text">
+      <div class="s-en">I <span class="kw-regret">should not have jumped</span> — too risky! 😬</div>
+      <div class="s-de">Ich hätte nicht springen sollen — zu riskant!</div>
+    </div>
+    <span class="s-tag tag-attack">Attack</span>
+  </div>
+  <div class="s-card">
+    <div class="s-num regret">6</div>
+    <div class="s-text">
+      <div class="s-en">We <span class="kw-regret">should have practised</span> more sparring. 🤼</div>
+      <div class="s-de">Wir hätten mehr Sparring üben sollen.</div>
+    </div>
+    <span class="s-tag tag-mental">Mental</span>
+  </div>
+</div>
+
+<!-- SECTION 2: MUST -->
+<div class="section-head" style="animation-delay:.1s">
+  <div class="sh-icon">💪</div>
+  <h2>Must — <span>From the Heart!</span></h2>
+  <span class="de-label">muss (eigener Wille)</span>
+</div>
+
+<div class="sentence-list">
+  <div class="s-card">
+    <div class="s-num must">1</div>
+    <div class="s-text">
+      <div class="s-en">I <span class="kw-must">must train</span> harder every day! 🏋️</div>
+      <div class="s-de">Ich muss jeden Tag härter trainieren!</div>
+    </div>
+    <span class="s-tag tag-rule">Must</span>
+  </div>
+  <div class="s-card">
+    <div class="s-num must">2</div>
+    <div class="s-text">
+      <div class="s-en">I <span class="kw-must">must focus</span> better in competitions. 🎯</div>
+      <div class="s-de">Ich muss mich bei Wettkämpfen besser konzentrieren.</div>
+    </div>
+    <span class="s-tag tag-rule">Must</span>
+  </div>
+  <div class="s-card">
+    <div class="s-num must">3</div>
+    <div class="s-text">
+      <div class="s-en">She <span class="kw-must">must practise</span> her roundhouse kick. 🦵</div>
+      <div class="s-de">Sie muss ihren Roundhouse-Kick üben.</div>
+    </div>
+    <span class="s-tag tag-attack">Attack</span>
+  </div>
+  <div class="s-card">
+    <div class="s-num must">4</div>
+    <div class="s-text">
+      <div class="s-en">We <span class="kw-must">must not give up</span> — fighting! ✊</div>
+      <div class="s-de">Wir dürfen nicht aufgeben — kämpft weiter!</div>
+    </div>
+    <span class="s-tag tag-mental">Mental</span>
+  </div>
+</div>
+
+<!-- SECTION 3: HAVE TO -->
+<div class="section-head" style="animation-delay:.2s">
+  <div class="sh-icon">📋</div>
+  <h2>Have to — <span>Dojo Rules!</span></h2>
+  <span class="de-label">muss (Regel / Coach)</span>
+</div>
+
+<div class="sentence-list">
+  <div class="s-card">
+    <div class="s-num haveto">1</div>
+    <div class="s-text">
+      <div class="s-en">We <span class="kw-haveto">have to bow</span> when we enter the dojo. 🙇</div>
+      <div class="s-de">Wir müssen uns verbeugen, wenn wir das Dojo betreten.</div>
+    </div>
+    <span class="s-tag tag-rule" style="background:#eefbee;color:#1a7a1a">Have to</span>
+  </div>
+  <div class="s-card">
+    <div class="s-num haveto">2</div>
+    <div class="s-text">
+      <div class="s-en">He <span class="kw-haveto">has to wear</span> a white dobok. 👕</div>
+      <div class="s-de">Er muss einen weißen Dobok tragen.</div>
+    </div>
+    <span class="s-tag tag-rule" style="background:#eefbee;color:#1a7a1a">Have to</span>
+  </div>
+  <div class="s-card">
+    <div class="s-num haveto">3</div>
+    <div class="s-text">
+      <div class="s-en">She <span class="kw-haveto">has to listen</span> to the coach. 👂</div>
+      <div class="s-de">Sie muss auf den Coach hören.</div>
+    </div>
+    <span class="s-tag tag-rule" style="background:#eefbee;color:#1a7a1a">Have to</span>
+  </div>
+  <div class="s-card">
+    <div class="s-num haveto">4</div>
+    <div class="s-text">
+      <div class="s-en">I <span class="kw-haveto">had to do</span> 50 push-ups after training! 😵</div>
+      <div class="s-de">Ich musste nach dem Training 50 Liegestütze machen!</div>
+    </div>
+    <span class="s-tag tag-rule" style="background:#eefbee;color:#1a7a1a">Had to</span>
+  </div>
+  <div class="s-card">
+    <div class="s-num haveto">5</div>
+    <div class="s-text">
+      <div class="s-en">We <span class="kw-haveto">don't have to fight</span> today — just patterns! 🤩</div>
+      <div class="s-de">Wir müssen heute nicht kämpfen — nur Formen!</div>
+    </div>
+    <span class="s-tag tag-rule" style="background:#eefbee;color:#1a7a1a">Have to</span>
+  </div>
+</div>
+
+<footer>🥋 Grammar Dojo &nbsp;<span>·</span>&nbsp; Should have &nbsp;<span>·</span>&nbsp; Must &nbsp;<span>·</span>&nbsp; Have to &nbsp;🏆</footer>
+</div>
+</body>
+</html>
