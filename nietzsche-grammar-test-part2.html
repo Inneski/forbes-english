@@ -8,27 +8,32 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=IM+Fell+English:ital@0;1&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #0e1218;
-    --paper: #e8edf5;
-    --paper2: #d8e0f0;
-    --silver: #8a9ab8;
-    --blue: #2a3a6b;
-    --blue-light: #4a5f9e;
-    --red: #7a2030;
-    --shadow: rgba(5,8,20,0.5);
-    --mid: #5a6888;
-    --faint: #b0bcd8;
-    --gold: #c8a84a;
+    --ink: #f0d8c8;
+    --paper: #14282c;
+    --paper2: #0e1e20;
+    --silver: #a8988a;
+    --blue: #dc7864;
+    --blue-light: #f0a088;
+    --red: #a85040;
+    --shadow: rgba(4,10,10,0.5);
+    --mid: #9a8a7a;
+    --faint: #3a5450;
+    --gold: #dc7864;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    background: #060810;
+    background: #0a1614;
     background-image:
-      radial-gradient(ellipse at 10% 10%, #0d1228 0%, transparent 55%),
-      radial-gradient(ellipse at 90% 90%, #100818 0%, transparent 55%),
-      radial-gradient(ellipse at 50% 50%, #080c1a 0%, transparent 80%);
+      radial-gradient(ellipse at 10% 10%, #14201c 0%, transparent 55%),
+      radial-gradient(ellipse at 90% 90%, #1a1410 0%, transparent 55%),
+      radial-gradient(ellipse at 50% 50%, #0c1614 0%, transparent 80%),
+      url('Nietzsche/img4-pattern.jpg');
+    background-size: auto, auto, auto, cover;
+    background-position: center, center, center, center top;
+    background-attachment: scroll, scroll, scroll, fixed;
+    background-repeat: no-repeat;
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -469,6 +474,10 @@
     <span class="ornament">✦ &nbsp; · &nbsp; ✦ &nbsp; · &nbsp; ✦</span>
   </header>
 
+  <div style="margin:0 0 24px;border-radius:10px;overflow:hidden;border:1px solid var(--faint);box-shadow:0 10px 30px rgba(0,0,0,.4);">
+    <img src="Nietzsche/img4-hero.jpg" alt="Stylised profile illustration of Nietzsche" style="width:100%;height:auto;display:block;">
+  </div>
+
   <p class="intro">
     You have survived the first abyss. Now the abyss looks back with new questions.<br>
     Modal verbs, reported speech, relative clauses, comparatives — and word order await.
@@ -709,7 +718,38 @@
     </div>
   </div>
 
+  <div class="fw-section" style="margin-top:40px;padding-top:32px;border-top:1px solid var(--faint);">
+    <div class="eyebrow" style="margin-bottom:6px;">One Final Task</div>
+    <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:22px;color:var(--ink);margin-bottom:10px;">Speak Your Mind</h2>
+    <p style="color:var(--mid);font-size:14px;line-height:1.6;margin-bottom:18px;max-width:60ch;">Set a timer for two minutes. Speak aloud (or write, if you prefer) about a belief you hold strongly and why — try to use at least one modal verb, one relative clause, and one comparative as you explain your thinking.</p>
+    <textarea id="fwText" placeholder="Notes, or your written answer, go here..." style="width:100%;min-height:130px;background:var(--paper2);border:1px solid var(--faint);border-radius:8px;color:var(--ink);font-family:'Crimson Text',Georgia,serif;font-size:15px;line-height:1.6;padding:16px;resize:vertical;outline:none;"></textarea>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;flex-wrap:wrap;gap:8px;">
+      <span id="fwCount" style="font-size:13px;color:var(--mid);">0 words</span>
+    </div>
+    <div style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;">
+      <button onclick="downloadFW()" style="background:linear-gradient(135deg,var(--gold),var(--blue-light));color:#0e1218;border:none;border-radius:999px;padding:10px 24px;font-weight:700;font-size:13.5px;cursor:pointer;font-family:'Crimson Text',Georgia,serif;">⬇ Download my notes</button>
+    </div>
+  </div>
+
 </div>
+<script>
+document.getElementById('fwText').addEventListener('input', function(){
+  var v = this.value.trim();
+  var count = v === '' ? 0 : v.split(/\s+/).length;
+  document.getElementById('fwCount').textContent = count + ' word' + (count===1?'':'s');
+});
+function downloadFW(){
+  var text = document.getElementById('fwText').value.trim();
+  if(!text){ alert('Write something first!'); return; }
+  var content = 'Forbes English — The Grammar of Power\nSpeak Your Mind\n\n' + text + '\n';
+  var blob = new Blob([content], {type:'text/plain'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = 'nietzsche-speaking-notes.txt';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+</script>
 
 <script>
   const questions = document.querySelectorAll('.question[data-type="mc"]');
