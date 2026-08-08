@@ -8,21 +8,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
   :root {
-    --void: #080608;
-    --deep: #110d10;
-    --surface: #1a1318;
-    --card: #1f181d;
-    --border: #2e2228;
-    --border-bright: #44323c;
-    --blood: #8b1a1a;
-    --crimson: #c0272d;
-    --ember: #e8503a;
-    --ash: #c8bcc0;
-    --pale: #e8e0e4;
-    --ghost: #f5f0f2;
-    --mid: #8a7880;
-    --dim: #4a3a42;
-    --gold: #c8a060;
+    --void: #0c1416;
+    --deep: #141e20;
+    --surface: #1c2c2e;
+    --card: #22322e;
+    --border: #34443e;
+    --border-bright: #4a5c50;
+    --blood: #a85040;
+    --crimson: #dc7864;
+    --ember: #f0a888;
+    --ash: #c8b8a8;
+    --pale: #e8d8c0;
+    --ghost: #f5ecd8;
+    --mid: #9a8a7a;
+    --dim: #4a3c34;
+    --gold: #dc9860;
   }
 
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -39,7 +39,12 @@
         rgba(255,255,255,0.012) 80px,
         rgba(255,255,255,0.012) 81px
       ),
-      radial-gradient(ellipse 120% 60% at 50% 0%, #1a0808 0%, transparent 70%);
+      radial-gradient(ellipse 120% 60% at 50% 0%, #1c2422 0%, transparent 70%),
+      url('Nietzsche/img6-pattern.jpg');
+    background-size: auto, auto, cover;
+    background-position: center, center, center top;
+    background-attachment: scroll, scroll, fixed;
+    background-repeat: no-repeat;
     min-height: 100vh;
     font-family: 'Libre Baskerville', 'Georgia', serif;
     color: var(--pale);
@@ -632,6 +637,10 @@
   </p>
 </header>
 
+<div style="max-width:760px;margin:0 auto 32px;border-radius:10px;overflow:hidden;border:1px solid var(--border-bright);box-shadow:0 14px 40px rgba(0,0,0,.5);">
+  <img src="Nietzsche/img6-hero.jpg" alt="Stylised silhouette illustration of Nietzsche at sunset" style="width:100%;height:auto;display:block;">
+</div>
+
 <!-- WARNING -->
 <div class="warning-strip">
   <div class="warning-inner">
@@ -948,7 +957,39 @@
     </div>
   </div>
 
+  <div class="fw-section" style="max-width:760px;margin:40px auto 0;padding-top:32px;border-top:1px solid var(--border-bright);">
+    <div class="part-tag" style="margin-bottom:6px;">One Final Task</div>
+    <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:700;font-size:24px;color:var(--ghost);margin-bottom:10px;">Face Your Own Twilight</h2>
+    <p style="color:var(--mid);font-size:14px;line-height:1.6;margin-bottom:18px;max-width:60ch;">Nietzsche wrote about confronting hard truths rather than comfortable illusions. Write a short paragraph (60-100 words) about a belief or habit you have questioned or abandoned, using at least one example of inversion, ellipsis, or the subjunctive from this lesson.</p>
+    <textarea id="fwText" placeholder="Begin here..." style="width:100%;min-height:130px;background:var(--card);border:1px solid var(--border-bright);border-radius:8px;color:var(--ghost);font-family:'Libre Baskerville',Georgia,serif;font-size:15px;line-height:1.6;padding:16px;resize:vertical;outline:none;"></textarea>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;flex-wrap:wrap;gap:8px;">
+      <span id="fwCount" style="font-size:13px;color:var(--mid);">0 words</span>
+    </div>
+    <div style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;">
+      <button onclick="downloadFW()" style="background:linear-gradient(135deg,var(--gold),var(--ember));color:#0c1416;border:none;border-radius:999px;padding:10px 24px;font-weight:700;font-size:13.5px;cursor:pointer;font-family:'Libre Baskerville',Georgia,serif;">⬇ Download my writing</button>
+    </div>
+  </div>
+
 </main>
+
+<script>
+document.getElementById('fwText').addEventListener('input', function(){
+  var v = this.value.trim();
+  var count = v === '' ? 0 : v.split(/\s+/).length;
+  document.getElementById('fwCount').textContent = count + ' word' + (count===1?'':'s');
+});
+function downloadFW(){
+  var text = document.getElementById('fwText').value.trim();
+  if(!text){ alert('Write something first!'); return; }
+  var content = 'Forbes English — The Twilight of Errors\nFace Your Own Twilight\n\n' + text + '\n';
+  var blob = new Blob([content], {type:'text/plain'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = 'nietzsche-twilight-writing.txt';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+</script>
 
 <script>
   const questions = document.querySelectorAll('.question[data-answer]');
