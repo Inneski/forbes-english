@@ -51,10 +51,10 @@
   .fe-logo-sub {
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 800;
-    letter-spacing: 3.5px;
     font-size: 0.72rem;
     color: var(--gold-bright);
     margin-top: 4px;
+    white-space: nowrap;
   }
   .nav-links { display: flex; gap: 10px; }
   .nav-pill {
@@ -343,7 +343,7 @@
 <header>
   <div class="header-inner">
     <a href="index.html" class="fe-logo-lockup" aria-label="Forbes English">
-      <svg class="fe-logo-svg" viewBox="670 345 1530 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forbes">
+      <svg class="fe-logo-svg" id="fe-logo-svg" viewBox="670 345 1530 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forbes">
       <g transform="translate(0,1504) scale(0.1,-0.1)" fill="currentColor" stroke="none">
       <path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47
       l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21
@@ -403,7 +403,7 @@
       -33 22 -42 21 -9 0 -199 -27 -422 -60z"/>
       </g>
       </svg>
-      <span class="fe-logo-sub">ENGLISH</span>
+      <span class="fe-logo-sub" id="fe-logo-sub">ENGLISH</span>
     </a>
     <div class="nav-links">
       <a class="nav-pill" href="index.html">Front Page</a>
@@ -446,6 +446,22 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="sb-client.js"></script>
 <script>
+function matchLogoSubWidth() {
+  var svg = document.getElementById('fe-logo-svg');
+  var sub = document.getElementById('fe-logo-sub');
+  if (!svg || !sub) return;
+  sub.style.letterSpacing = '0px';
+  var targetWidth = svg.getBoundingClientRect().width;
+  var naturalWidth = sub.getBoundingClientRect().width;
+  var chars = sub.textContent.length;
+  if (chars > 1 && naturalWidth > 0 && targetWidth > naturalWidth) {
+    var extra = (targetWidth - naturalWidth) / (chars - 1);
+    sub.style.letterSpacing = extra + 'px';
+  }
+}
+window.addEventListener('load', matchLogoSubWidth);
+window.addEventListener('resize', matchLogoSubWidth);
+
 (async function init() {
 const LESSONS = await sbGetLessons();
 

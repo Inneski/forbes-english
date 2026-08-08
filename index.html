@@ -63,11 +63,10 @@
     display: block;
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 800;
-    letter-spacing: 0.42em;
     font-size: clamp(0.6rem, 1vw, 0.74rem);
     color: var(--green-mid);
     margin-top: 5px;
-    text-indent: 0.42em;
+    white-space: nowrap;
   }
   .masthead-meta {
     font-family: 'Barlow Condensed', sans-serif;
@@ -309,7 +308,7 @@ body { display: flex; flex-direction: column; }
 
   <header class="masthead">
     <a href="library.html" class="fe-logo-lockup" aria-label="Forbes English — home">
-      <svg class="fe-logo-svg" viewBox="670 345 1530 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forbes">
+      <svg class="fe-logo-svg" id="fe-logo-svg" viewBox="670 345 1530 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forbes">
       <g transform="translate(0,1504) scale(0.1,-0.1)" fill="currentColor" stroke="none">
       <path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47
       l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21
@@ -369,7 +368,7 @@ body { display: flex; flex-direction: column; }
       -33 22 -42 21 -9 0 -199 -27 -422 -60z"/>
       </g>
       </svg>
-      <span class="fe-logo-sub">ENGLISH</span>
+      <span class="fe-logo-sub" id="fe-logo-sub">ENGLISH</span>
     </a>
     <div class="masthead-meta">Interactive ESL materials<br>A1 &ndash; C2 &middot; classroom ready</div>
   </header>
@@ -424,5 +423,22 @@ body { display: flex; flex-direction: column; }
   </nav>
 
 </div>
+<script>
+function matchLogoSubWidth() {
+  var svg = document.getElementById('fe-logo-svg');
+  var sub = document.getElementById('fe-logo-sub');
+  if (!svg || !sub) return;
+  sub.style.letterSpacing = '0px';
+  var targetWidth = svg.getBoundingClientRect().width;
+  var naturalWidth = sub.getBoundingClientRect().width;
+  var chars = sub.textContent.length;
+  if (chars > 1 && naturalWidth > 0 && targetWidth > naturalWidth) {
+    var extra = (targetWidth - naturalWidth) / (chars - 1);
+    sub.style.letterSpacing = extra + 'px';
+  }
+}
+window.addEventListener('load', matchLogoSubWidth);
+window.addEventListener('resize', matchLogoSubWidth);
+</script>
 </body>
 </html>
