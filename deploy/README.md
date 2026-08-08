@@ -12,7 +12,7 @@ At this point the site is **live** on your domain. Steps 4–6 add the subscript
 5. [`05-stripe-setup.md`](05-stripe-setup.md) — subscription product + webhook
 6. [`06-environment-variables.md`](06-environment-variables.md) — wire the two together
 
-The actual server-side code for checkout + webhook already exists in [`functions/api/`](../functions/api/) at the repo root — Cloudflare Pages picks these up automatically once deployed, no extra setup beyond the environment variables in step 6.
+The actual server-side code for checkout + webhook already exists in [`src/index.js`](../src/index.js) at the repo root — it's a Cloudflare Worker script that handles `/api/create-checkout-session` and `/api/stripe-webhook` directly and falls through to static file serving for everything else. No extra setup beyond the environment variables in step 6.
 
 What's *not* done yet, on purpose — these need your input on UX before I build them:
 - The actual login/signup UI on the site

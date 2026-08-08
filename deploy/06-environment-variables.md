@@ -1,6 +1,6 @@
 # Step 6 — Wire the environment variables
 
-The two functions in `functions/api/` need secrets to talk to Stripe and Supabase. These get set in Cloudflare, never committed to the repo.
+The Worker script needs secrets to talk to Stripe and Supabase. These get set in Cloudflare, never committed to the repo.
 
 ## In Cloudflare Pages
 

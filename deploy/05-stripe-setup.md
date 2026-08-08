@@ -31,6 +31,6 @@ This is how Stripe tells your site "this person just paid" / "this person's subs
 
 ## What's already scaffolded
 
-`functions/api/create-checkout-session.js` and `functions/api/stripe-webhook.js` in this repo are ready-to-configure Cloudflare Pages Functions implementing this flow — see `deploy/06-environment-variables.md` for wiring them up with your actual keys.
+`src/index.js` in this repo is the ready-to-configure Cloudflare Worker script implementing this flow — see `deploy/06-environment-variables.md` for wiring it up with your actual keys.
 
 Tell me once you have: the Price ID, the two Stripe keys, and the webhook signing secret, and we'll finish the wiring.
