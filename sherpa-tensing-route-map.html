@@ -40,6 +40,7 @@
   .camp-dot.lit .dot-label,
   .camp-dot.live .dot-label{opacity:1;}
   .camp-dot .dot-fill{transition:fill .15s ease;}
+  .route-seg{transition:stroke .3s ease;}
   .descent-map .dot-label{
     fill:#F3EEE7;paint-order:stroke;stroke:#172731;stroke-width:3px;stroke-linejoin:round;
   }
@@ -50,14 +51,23 @@
   .zones{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px;}
   .zone-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:18px 20px;}
   .zone-card h3{font-size:15px;margin-bottom:4px;}
-  .zone-card .zone-sub{font-size:12px;color:var(--ink-soft);margin-bottom:10px;}
-  .zone-card ol{margin:0;padding:0;list-style:none;font-size:14px;}
-  .zone-card li{margin-bottom:6px;display:flex;align-items:center;gap:9px;}
-  .zone-card .tense-bar{width:5px;height:16px;border-radius:3px;flex:none;}
-  .zone-card .tense-num{color:var(--ink-soft);font-size:12px;font-variant-numeric:tabular-nums;width:1.4em;flex:none;}
-  .zone-card a{color:var(--ink);text-decoration:none;}
-  .zone-card a:hover{color:var(--accent-dark);}
-  .zone-card li.soon a{color:var(--ink-soft);}
+  .zone-card .zone-sub{font-size:12px;color:var(--ink-soft);margin-bottom:14px;}
+  .zone-card ol{margin:0;padding:0;list-style:none;font-size:14px;display:flex;flex-direction:column;gap:8px;}
+  .camp-row{
+    display:flex;align-items:center;gap:12px;
+    padding:12px 16px;border-radius:10px;
+    text-decoration:none;
+    min-height:48px;
+    transition:transform .12s ease,box-shadow .12s ease;
+  }
+  .camp-row:hover{transform:translateX(2px);box-shadow:0 3px 10px rgba(0,0,0,.15);}
+  .camp-row .camp-num{
+    font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;
+    opacity:.75;flex:none;width:1.6em;
+  }
+  .camp-row .camp-name{font-weight:600;font-size:14.5px;flex:1;}
+  li.soon .camp-row{opacity:.45;cursor:default;}
+  li.soon .camp-row:hover{transform:none;box-shadow:none;}
   @media (max-width:760px){.zones{grid-template-columns:1fr;}}
 </style>
 </head>
@@ -301,68 +311,79 @@
       <div class="map-sub">active voice &middot; base camp to summit</div>
       <svg viewBox="0 0 800 620" role="img" aria-label="A layered mountain silhouette with thirteen dim markers along a path from base to peak, representing the thirteen tenses in active voice; click a marker to reveal it">
         <use href="#epic-day-v2"/>
-        <path d="M400,560 L217,521 L567,482 L250,443 L533,404 L283,365 L500,326 L317,287 L467,248 L350,209 L433,170 L383,131 L400,90" fill="none" stroke="#3D4F5E" stroke-width="1.5" stroke-linecap="round"/>
+        <path id="asc-seg-2" class="route-seg" data-color="#16345C" stroke="#16345C" stroke-width="6" stroke-linecap="round" fill="none" d="M400,560 L217,521"/>
+<path id="asc-seg-3" class="route-seg" data-color="#B08968" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M217,521 L567,482"/>
+<path id="asc-seg-4" class="route-seg" data-color="#0F6E56" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M567,482 L250,443"/>
+<path id="asc-seg-5" class="route-seg" data-color="#639922" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M250,443 L533,404"/>
+<path id="asc-seg-6" class="route-seg" data-color="#FFD400" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M533,404 L283,365"/>
+<path id="asc-seg-7" class="route-seg" data-color="#E8632A" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M283,365 L500,326"/>
+<path id="asc-seg-8" class="route-seg" data-color="#2FA6A1" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M500,326 L317,287"/>
+<path id="asc-seg-9" class="route-seg" data-color="#F0A500" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M317,287 L467,248"/>
+<path id="asc-seg-10" class="route-seg" data-color="#6E0B24" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M467,248 L350,209"/>
+<path id="asc-seg-11" class="route-seg" data-color="#4B1A7A" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M350,209 L433,170"/>
+<path id="asc-seg-12" class="route-seg" data-color="#454545" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M433,170 L383,131"/>
+<path id="asc-seg-13" class="route-seg" data-color="#B0B0B0" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M383,131 L400,90"/>
         <g class="camp-dot live" data-color="#C2185B" data-href="sherpa-tensing-camp-one-present-continuous.html">
   <circle class="dot-fill" cx="400" cy="560" r="11" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
   <g transform="translate(400,560)"><g stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round" fill="none"><path d="M-6,-2 q2.5,-3.5 5,0 q2.5,3.5 5,0"/><path d="M-6,3 q2.5,-3.5 5,0 q2.5,3.5 5,0"/></g></g>
   <text class="dot-label" x="418" y="560" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Present continuous</text>
 </g>
-<g class="camp-dot live" data-color="#16345C" data-href="sherpa-tensing-camp-two-present-simple.html">
+<g class="camp-dot live" data-color="#16345C" data-href="sherpa-tensing-camp-two-present-simple.html" data-seg="asc-seg-2">
   <circle class="dot-fill" cx="217" cy="521" r="11" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
   <g transform="translate(217,521)"><path d="M-3,-6 v12 M-3,-6 l6,3 l-6,3" fill="none" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></g>
   <text class="dot-label" x="199" y="521" text-anchor="end" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Present simple</text>
 </g>
-<g class="camp-dot" data-color="#B08968" >
+<g class="camp-dot" data-color="#B08968" data-seg="asc-seg-3">
   <circle class="dot-fill" cx="567" cy="482" r="11" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
   <g transform="translate(567,482)"><path d="M-3,-6 v12 M-3,-6 l6,3 l-6,3" fill="none" stroke="#B08968" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></g>
   <text class="dot-label" x="585" y="482" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Past simple</text>
 </g>
-<g class="camp-dot" data-color="#0F6E56" >
+<g class="camp-dot" data-color="#0F6E56" data-seg="asc-seg-4">
   <circle class="dot-fill" cx="250" cy="443" r="11" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
   <g transform="translate(250,443)"><path d="M-6,3 A6,6 0 0 1 6,3" fill="none" stroke="#0F6E56" stroke-width="1.4" stroke-linecap="round"/></g>
   <text class="dot-label" x="232" y="443" text-anchor="end" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Present perfect</text>
 </g>
-<g class="camp-dot" data-color="#639922" >
+<g class="camp-dot" data-color="#639922" data-seg="asc-seg-5">
   <circle class="dot-fill" cx="533" cy="404" r="11" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
   <g transform="translate(533,404)"><g stroke="#639922" stroke-width="1.4" stroke-linecap="round" fill="none"><circle r="6"/><path d="M0,-2.5 L0,0 L2.5,1.5"/></g></g>
   <text class="dot-label" x="551" y="404" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Going to</text>
 </g>
-<g class="camp-dot" data-color="#FFD400" >
+<g class="camp-dot" data-color="#FFD400" data-seg="asc-seg-6">
   <circle class="dot-fill" cx="283" cy="365" r="11" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
   <g transform="translate(283,365)"><g stroke="#FFD400" stroke-width="1.4" stroke-linecap="round" fill="none"><path d="M-6,-2 q2.5,-3.5 5,0 q2.5,3.5 5,0"/><path d="M-6,3 q2.5,-3.5 5,0 q2.5,3.5 5,0"/></g></g>
   <text class="dot-label" x="265" y="365" text-anchor="end" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Past continuous</text>
 </g>
-<g class="camp-dot" data-color="#E8632A" >
+<g class="camp-dot" data-color="#E8632A" data-seg="asc-seg-7">
   <circle class="dot-fill" cx="500" cy="326" r="11" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
   <g transform="translate(500,326)"><path d="M-3,-6 v12 M-3,-6 l6,3 l-6,3" fill="none" stroke="#E8632A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></g>
   <text class="dot-label" x="518" y="326" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Future simple</text>
 </g>
-<g class="camp-dot" data-color="#2FA6A1" >
+<g class="camp-dot" data-color="#2FA6A1" data-seg="asc-seg-8">
   <circle class="dot-fill" cx="317" cy="287" r="11" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
   <g transform="translate(317,287)"><g stroke="#2FA6A1" stroke-width="1.3" stroke-linecap="round" fill="none"><path d="M-6,1 A6,6 0 0 1 6,1"/><path d="M-3,5 q1.5,-1.8 3,0 q1.5,1.8 3,0"/></g></g>
   <text class="dot-label" x="299" y="287" text-anchor="end" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Present perfect continuous</text>
 </g>
-<g class="camp-dot" data-color="#F0A500" >
+<g class="camp-dot" data-color="#F0A500" data-seg="asc-seg-9">
   <circle class="dot-fill" cx="467" cy="248" r="11" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
   <g transform="translate(467,248)"><g stroke="#F0A500" stroke-width="1.4" stroke-linecap="round" fill="none"><path d="M-6,-2 q2.5,-3.5 5,0 q2.5,3.5 5,0"/><path d="M-6,3 q2.5,-3.5 5,0 q2.5,3.5 5,0"/></g></g>
   <text class="dot-label" x="485" y="248" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Future continuous</text>
 </g>
-<g class="camp-dot" data-color="#6E0B24" >
+<g class="camp-dot" data-color="#6E0B24" data-seg="asc-seg-10">
   <circle class="dot-fill" cx="350" cy="209" r="11" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
   <g transform="translate(350,209)"><path d="M-6,3 A6,6 0 0 1 6,3" fill="none" stroke="#6E0B24" stroke-width="1.4" stroke-linecap="round"/></g>
   <text class="dot-label" x="332" y="209" text-anchor="end" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Past perfect</text>
 </g>
-<g class="camp-dot" data-color="#4B1A7A" >
+<g class="camp-dot" data-color="#4B1A7A" data-seg="asc-seg-11">
   <circle class="dot-fill" cx="433" cy="170" r="11" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
   <g transform="translate(433,170)"><g stroke="#4B1A7A" stroke-width="1.3" stroke-linecap="round" fill="none"><path d="M-6,1 A6,6 0 0 1 6,1"/><path d="M-3,5 q1.5,-1.8 3,0 q1.5,1.8 3,0"/></g></g>
   <text class="dot-label" x="451" y="170" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Past perfect continuous</text>
 </g>
-<g class="camp-dot" data-color="#454545" >
+<g class="camp-dot" data-color="#454545" data-seg="asc-seg-12">
   <circle class="dot-fill" cx="383" cy="131" r="11" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
   <g transform="translate(383,131)"><path d="M-6,3 A6,6 0 0 1 6,3" fill="none" stroke="#454545" stroke-width="1.4" stroke-linecap="round"/></g>
   <text class="dot-label" x="365" y="131" text-anchor="end" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Future perfect</text>
 </g>
-<g class="camp-dot" data-color="#B0B0B0" >
+<g class="camp-dot" data-color="#B0B0B0" data-seg="asc-seg-13">
   <circle class="dot-fill" cx="400" cy="90" r="11" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
   <g transform="translate(400,90)"><g stroke="#B0B0B0" stroke-width="1.3" stroke-linecap="round" fill="none"><path d="M-6,1 A6,6 0 0 1 6,1"/><path d="M-3,5 q1.5,-1.8 3,0 q1.5,1.8 3,0"/></g></g>
   <text class="dot-label" x="418" y="90" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Future perfect continuous</text>
@@ -375,68 +396,79 @@
       <div class="map-sub">passive voice &middot; summit to ground</div>
       <svg class="descent-map" viewBox="0 0 800 620" role="img" aria-label="A rugged mountain at night with thirteen dim diamond markers along a path from peak to base, representing the same thirteen tenses in passive voice; click a marker to reveal it">
         <use href="#epic-night-v2"/>
-        <path d="M400,90 L417,131 L367,170 L450,209 L333,248 L483,287 L300,326 L517,365 L267,404 L550,443 L233,482 L583,521 L400,560" fill="none" stroke="#D1DBD9" stroke-width="1.5" stroke-linecap="round" opacity=".8"/>
+        <path id="desc-seg-2" class="route-seg" data-color="#454545" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M400,90 L417,131"/>
+<path id="desc-seg-3" class="route-seg" data-color="#4B1A7A" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M417,131 L367,170"/>
+<path id="desc-seg-4" class="route-seg" data-color="#6E0B24" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M367,170 L450,209"/>
+<path id="desc-seg-5" class="route-seg" data-color="#F0A500" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M450,209 L333,248"/>
+<path id="desc-seg-6" class="route-seg" data-color="#2FA6A1" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M333,248 L483,287"/>
+<path id="desc-seg-7" class="route-seg" data-color="#E8632A" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M483,287 L300,326"/>
+<path id="desc-seg-8" class="route-seg" data-color="#FFD400" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M300,326 L517,365"/>
+<path id="desc-seg-9" class="route-seg" data-color="#639922" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M517,365 L267,404"/>
+<path id="desc-seg-10" class="route-seg" data-color="#0F6E56" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M267,404 L550,443"/>
+<path id="desc-seg-11" class="route-seg" data-color="#B08968" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M550,443 L233,482"/>
+<path id="desc-seg-12" class="route-seg" data-color="#16345C" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M233,482 L583,521"/>
+<path id="desc-seg-13" class="route-seg" data-color="#C2185B" stroke="#C9C6C2" stroke-width="6" stroke-linecap="round" fill="none" d="M583,521 L400,560"/>
         <g class="camp-dot" data-color="#B0B0B0" >
   <polygon class="dot-fill" points="400,78 412,90 400,102 388,90" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
   <g transform="translate(400,90)"><g stroke="#B0B0B0" stroke-width="1.3" stroke-linecap="round" fill="none"><path d="M-6,1 A6,6 0 0 1 6,1"/><path d="M-3,5 q1.5,-1.8 3,0 q1.5,1.8 3,0"/></g></g>
   <text class="dot-label" x="418" y="90" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Future perfect continuous passive</text>
 </g>
-<g class="camp-dot" data-color="#454545" >
+<g class="camp-dot" data-color="#454545" data-seg="desc-seg-2">
   <polygon class="dot-fill" points="417,119 429,131 417,143 405,131" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
   <g transform="translate(417,131)"><path d="M-6,3 A6,6 0 0 1 6,3" fill="none" stroke="#454545" stroke-width="1.4" stroke-linecap="round"/></g>
   <text class="dot-label" x="435" y="131" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Future perfect passive</text>
 </g>
-<g class="camp-dot" data-color="#4B1A7A" >
+<g class="camp-dot" data-color="#4B1A7A" data-seg="desc-seg-3">
   <polygon class="dot-fill" points="367,158 379,170 367,182 355,170" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
   <g transform="translate(367,170)"><g stroke="#4B1A7A" stroke-width="1.3" stroke-linecap="round" fill="none"><path d="M-6,1 A6,6 0 0 1 6,1"/><path d="M-3,5 q1.5,-1.8 3,0 q1.5,1.8 3,0"/></g></g>
   <text class="dot-label" x="349" y="170" text-anchor="end" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Past perfect continuous passive</text>
 </g>
-<g class="camp-dot" data-color="#6E0B24" >
+<g class="camp-dot" data-color="#6E0B24" data-seg="desc-seg-4">
   <polygon class="dot-fill" points="450,197 462,209 450,221 438,209" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
   <g transform="translate(450,209)"><path d="M-6,3 A6,6 0 0 1 6,3" fill="none" stroke="#6E0B24" stroke-width="1.4" stroke-linecap="round"/></g>
   <text class="dot-label" x="468" y="209" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Past perfect passive</text>
 </g>
-<g class="camp-dot" data-color="#F0A500" >
+<g class="camp-dot" data-color="#F0A500" data-seg="desc-seg-5">
   <polygon class="dot-fill" points="333,236 345,248 333,260 321,248" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
   <g transform="translate(333,248)"><g stroke="#F0A500" stroke-width="1.4" stroke-linecap="round" fill="none"><path d="M-6,-2 q2.5,-3.5 5,0 q2.5,3.5 5,0"/><path d="M-6,3 q2.5,-3.5 5,0 q2.5,3.5 5,0"/></g></g>
   <text class="dot-label" x="315" y="248" text-anchor="end" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Future continuous passive</text>
 </g>
-<g class="camp-dot" data-color="#2FA6A1" >
+<g class="camp-dot" data-color="#2FA6A1" data-seg="desc-seg-6">
   <polygon class="dot-fill" points="483,275 495,287 483,299 471,287" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
   <g transform="translate(483,287)"><g stroke="#2FA6A1" stroke-width="1.3" stroke-linecap="round" fill="none"><path d="M-6,1 A6,6 0 0 1 6,1"/><path d="M-3,5 q1.5,-1.8 3,0 q1.5,1.8 3,0"/></g></g>
   <text class="dot-label" x="501" y="287" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Present perfect continuous passive</text>
 </g>
-<g class="camp-dot" data-color="#E8632A" >
+<g class="camp-dot" data-color="#E8632A" data-seg="desc-seg-7">
   <polygon class="dot-fill" points="300,314 312,326 300,338 288,326" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
   <g transform="translate(300,326)"><path d="M-3,-6 v12 M-3,-6 l6,3 l-6,3" fill="none" stroke="#E8632A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></g>
   <text class="dot-label" x="282" y="326" text-anchor="end" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Future simple passive</text>
 </g>
-<g class="camp-dot" data-color="#FFD400" >
+<g class="camp-dot" data-color="#FFD400" data-seg="desc-seg-8">
   <polygon class="dot-fill" points="517,353 529,365 517,377 505,365" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
   <g transform="translate(517,365)"><g stroke="#FFD400" stroke-width="1.4" stroke-linecap="round" fill="none"><path d="M-6,-2 q2.5,-3.5 5,0 q2.5,3.5 5,0"/><path d="M-6,3 q2.5,-3.5 5,0 q2.5,3.5 5,0"/></g></g>
   <text class="dot-label" x="535" y="365" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Past continuous passive</text>
 </g>
-<g class="camp-dot" data-color="#639922" >
+<g class="camp-dot" data-color="#639922" data-seg="desc-seg-9">
   <polygon class="dot-fill" points="267,392 279,404 267,416 255,404" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
   <g transform="translate(267,404)"><g stroke="#639922" stroke-width="1.4" stroke-linecap="round" fill="none"><circle r="6"/><path d="M0,-2.5 L0,0 L2.5,1.5"/></g></g>
   <text class="dot-label" x="249" y="404" text-anchor="end" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Going to passive</text>
 </g>
-<g class="camp-dot" data-color="#0F6E56" >
+<g class="camp-dot" data-color="#0F6E56" data-seg="desc-seg-10">
   <polygon class="dot-fill" points="550,431 562,443 550,455 538,443" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
   <g transform="translate(550,443)"><path d="M-6,3 A6,6 0 0 1 6,3" fill="none" stroke="#0F6E56" stroke-width="1.4" stroke-linecap="round"/></g>
   <text class="dot-label" x="568" y="443" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Present perfect passive</text>
 </g>
-<g class="camp-dot" data-color="#B08968" >
+<g class="camp-dot" data-color="#B08968" data-seg="desc-seg-11">
   <polygon class="dot-fill" points="233,470 245,482 233,494 221,482" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
   <g transform="translate(233,482)"><path d="M-3,-6 v12 M-3,-6 l6,3 l-6,3" fill="none" stroke="#B08968" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></g>
   <text class="dot-label" x="215" y="482" text-anchor="end" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Past simple passive</text>
 </g>
-<g class="camp-dot" data-color="#16345C" >
+<g class="camp-dot" data-color="#16345C" data-seg="desc-seg-12">
   <polygon class="dot-fill" points="583,509 595,521 583,533 571,521" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
   <g transform="translate(583,521)"><path d="M-3,-6 v12 M-3,-6 l6,3 l-6,3" fill="none" stroke="#16345C" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></g>
   <text class="dot-label" x="601" y="521" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Present simple passive</text>
 </g>
-<g class="camp-dot" data-color="#C2185B" >
+<g class="camp-dot" data-color="#C2185B" data-seg="desc-seg-13">
   <polygon class="dot-fill" points="400,548 412,560 400,572 388,560" fill="#C9C6C2" stroke="#FFFFFF" stroke-width="2"/>
   <g transform="translate(400,560)"><g stroke="#C2185B" stroke-width="1.4" stroke-linecap="round" fill="none"><path d="M-6,-2 q2.5,-3.5 5,0 q2.5,3.5 5,0"/><path d="M-6,3 q2.5,-3.5 5,0 q2.5,3.5 5,0"/></g></g>
   <text class="dot-label" x="418" y="560" text-anchor="start" dominant-baseline="central" font-size="13" font-family="Inter, sans-serif" fill="#2B0F1D">Present continuous passive</text>
@@ -456,31 +488,31 @@
       <h3>Foundation camps</h3>
       <div class="zone-sub">reach for these daily</div>
       <ol>
-        <li><span class="tense-num">1.</span><span class="tense-bar" style="background:#C2185B;"></span><a href="sherpa-tensing-camp-one-present-continuous.html">Present continuous</a></li>
-        <li><span class="tense-num">2.</span><span class="tense-bar" style="background:#16345C;"></span><a href="sherpa-tensing-camp-two-present-simple.html">Present simple</a></li>
-        <li class="soon"><span class="tense-num">3.</span><span class="tense-bar" style="background:#B08968;"></span><a href="#">Past simple</a></li>
-        <li class="soon"><span class="tense-num">4.</span><span class="tense-bar" style="background:#0F6E56;"></span><a href="#">Present perfect</a></li>
-        <li class="soon"><span class="tense-num">5.</span><span class="tense-bar" style="background:#639922;"></span><a href="#">Going to</a></li>
+        <li><a class="camp-row" href="sherpa-tensing-camp-one-present-continuous.html" style="background:#C2185B;color:#FFFFFF;"><span class="camp-num">1</span><span class="camp-name">Present continuous</span></a></li>
+        <li><a class="camp-row" href="sherpa-tensing-camp-two-present-simple.html" style="background:#16345C;color:#FFFFFF;"><span class="camp-num">2</span><span class="camp-name">Present simple</span></a></li>
+        <li class="soon"><a class="camp-row" href="#" style="background:#B08968;color:#FFFFFF;"><span class="camp-num">3</span><span class="camp-name">Past simple</span></a></li>
+        <li class="soon"><a class="camp-row" href="#" style="background:#0F6E56;color:#FFFFFF;"><span class="camp-num">4</span><span class="camp-name">Present perfect</span></a></li>
+        <li class="soon"><a class="camp-row" href="#" style="background:#639922;color:#FFFFFF;"><span class="camp-num">5</span><span class="camp-name">Going to</span></a></li>
       </ol>
     </div>
     <div class="zone-card">
       <h3>The ridge</h3>
       <div class="zone-sub">common, but need more care</div>
       <ol>
-        <li class="soon"><span class="tense-num">6.</span><span class="tense-bar" style="background:#FFD400;"></span><a href="#">Past continuous</a></li>
-        <li class="soon"><span class="tense-num">7.</span><span class="tense-bar" style="background:#E8632A;"></span><a href="#">Future simple</a></li>
-        <li class="soon"><span class="tense-num">8.</span><span class="tense-bar" style="background:#2FA6A1;"></span><a href="#">Present perfect continuous</a></li>
-        <li class="soon"><span class="tense-num">9.</span><span class="tense-bar" style="background:#F0A500;"></span><a href="#">Future continuous</a></li>
+        <li class="soon"><a class="camp-row" href="#" style="background:#FFD400;color:#1A1206;"><span class="camp-num">6</span><span class="camp-name">Past continuous</span></a></li>
+        <li class="soon"><a class="camp-row" href="#" style="background:#E8632A;color:#FFFFFF;"><span class="camp-num">7</span><span class="camp-name">Future simple</span></a></li>
+        <li class="soon"><a class="camp-row" href="#" style="background:#2FA6A1;color:#FFFFFF;"><span class="camp-num">8</span><span class="camp-name">Present perfect continuous</span></a></li>
+        <li class="soon"><a class="camp-row" href="#" style="background:#F0A500;color:#1A1206;"><span class="camp-num">9</span><span class="camp-name">Future continuous</span></a></li>
       </ol>
     </div>
     <div class="zone-card">
       <h3>Summit push</h3>
       <div class="zone-sub">rare, mostly written English</div>
       <ol>
-        <li class="soon"><span class="tense-num">10.</span><span class="tense-bar" style="background:#6E0B24;"></span><a href="#">Past perfect</a></li>
-        <li class="soon"><span class="tense-num">11.</span><span class="tense-bar" style="background:#4B1A7A;"></span><a href="#">Past perfect continuous</a></li>
-        <li class="soon"><span class="tense-num">12.</span><span class="tense-bar" style="background:#454545;"></span><a href="#">Future perfect</a></li>
-        <li class="soon"><span class="tense-num">13.</span><span class="tense-bar" style="background:#B0B0B0;"></span><a href="#">Future perfect continuous</a></li>
+        <li class="soon"><a class="camp-row" href="#" style="background:#6E0B24;color:#FFFFFF;"><span class="camp-num">10</span><span class="camp-name">Past perfect</span></a></li>
+        <li class="soon"><a class="camp-row" href="#" style="background:#4B1A7A;color:#FFFFFF;"><span class="camp-num">11</span><span class="camp-name">Past perfect continuous</span></a></li>
+        <li class="soon"><a class="camp-row" href="#" style="background:#454545;color:#FFFFFF;"><span class="camp-num">12</span><span class="camp-name">Future perfect</span></a></li>
+        <li class="soon"><a class="camp-row" href="#" style="background:#B0B0B0;color:#1A1206;"><span class="camp-num">13</span><span class="camp-name">Future perfect continuous</span></a></li>
       </ol>
     </div>
   </div>
@@ -491,13 +523,17 @@ document.querySelectorAll(".camp-dot").forEach(function(g){
   var color = g.getAttribute("data-color");
   var href = g.getAttribute("data-href");
   var fillEl = g.querySelector(".dot-fill");
+  var segId = g.getAttribute("data-seg");
+  var segEl = segId ? document.getElementById(segId) : null;
   if (href){
     fillEl.setAttribute("fill", color);
+    if (segEl) segEl.setAttribute("stroke", color);
     g.addEventListener("click", function(){ window.location.href = href; });
   } else {
     g.addEventListener("click", function(){
       var lit = g.classList.toggle("lit");
       fillEl.setAttribute("fill", lit ? color : "#C9C6C2");
+      if (segEl) segEl.setAttribute("stroke", lit ? color : "#C9C6C2");
     });
   }
 });
