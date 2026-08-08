@@ -8,18 +8,18 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&family=Newsreader:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --page:    #f8f5ef;
-    --page2:   #f0ece2;
-    --ink:     #141210;
-    --forest:  #1e3a2f;
-    --teal:    #2c5f4a;
-    --sage:    #4a7c65;
-    --moss:    #7aaa8a;
-    --pale-g:  #d4e8dc;
-    --rule:    #c8c0b0;
-    --rule2:   #e0d8cc;
-    --mid:     #6a6258;
-    --dim:     #9a9288;
+    --page:    #f5ede0;
+    --page2:   #ede0c8;
+    --ink:     #1e1410;
+    --forest:  #8a3018;
+    --teal:    #b8502c;
+    --sage:    #dc7848;
+    --moss:    #e8a878;
+    --pale-g:  #f0d8b8;
+    --rule:    #c8b8a0;
+    --rule2:   #e0d0b8;
+    --mid:     #6a5a48;
+    --dim:     #9a8a78;
     --red:     #8a2820;
     --red-lt:  #c05848;
     --correct: #1e5a34;
@@ -32,8 +32,12 @@
   html { scroll-behavior: smooth; }
 
   body {
-    background: #e8e2d6;
-    background-image: linear-gradient(160deg, #ece8de 0%, #ddd8cc 100%);
+    background: #ece0d0;
+    background-image: linear-gradient(160deg, #f0e6d4 0%, #e0d0b8 100%), url('Nietzsche/img3-pattern.jpg');
+    background-size: auto, cover;
+    background-position: center, center top;
+    background-attachment: scroll, fixed;
+    background-repeat: no-repeat;
     min-height: 100vh;
     font-family: 'Newsreader', Georgia, serif;
     color: var(--ink);
@@ -770,6 +774,12 @@
   </div>
 </div>
 
+<div style="max-width:900px;margin:0 auto 28px;padding:0 20px;">
+  <div style="border-radius:10px;overflow:hidden;border:1px solid var(--rule);box-shadow:0 14px 40px rgba(0,0,0,.25);">
+    <img src="Nietzsche/img3-hero.jpg" alt="Stylised illustration of Nietzsche holding a camera" style="width:100%;height:auto;display:block;">
+  </div>
+</div>
+
 <!-- INTRO -->
 <div class="intro-panel">
   <div class="intro-inner">
@@ -1144,6 +1154,40 @@
     </div>
   </div>
 </div>
+
+<div class="submit-wrap" style="padding-top:0;">
+  <div class="submit-inner" style="border-top:1px solid var(--rule);padding-top:32px;margin-top:8px;">
+    <div class="submit-heading" style="text-align:left;">One Final Task</div>
+    <h2 style="font-family:'Newsreader',Georgia,serif;font-size:24px;color:var(--ink);margin:6px 0 10px;">Write the Festival Blurb</h2>
+    <p class="submit-sub" style="text-align:left;max-width:60ch;">Write a 60-100 word festival programme description for the fictional Nietzsche biopic used throughout this lesson, using at least five vocabulary items from today's examination.</p>
+    <textarea id="fwText" placeholder="Begin here..." style="width:100%;min-height:130px;background:var(--page2);border:1px solid var(--rule);border-radius:8px;color:var(--ink);font-family:'Newsreader',Georgia,serif;font-size:15px;line-height:1.6;padding:16px;resize:vertical;outline:none;margin-top:14px;"></textarea>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;flex-wrap:wrap;gap:8px;">
+      <span id="fwCount" style="font-size:13px;color:var(--mid);">0 words</span>
+    </div>
+    <div style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;">
+      <button onclick="downloadFW()" style="background:linear-gradient(135deg,var(--teal),var(--sage));color:#f5ede0;border:none;border-radius:999px;padding:10px 24px;font-weight:700;font-size:13.5px;cursor:pointer;font-family:'Newsreader',Georgia,serif;">⬇ Download my blurb</button>
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('fwText').addEventListener('input', function(){
+  var v = this.value.trim();
+  var count = v === '' ? 0 : v.split(/\s+/).length;
+  document.getElementById('fwCount').textContent = count + ' word' + (count===1?'':'s');
+});
+function downloadFW(){
+  var text = document.getElementById('fwText').value.trim();
+  if(!text){ alert('Write something first!'); return; }
+  var content = 'Forbes English — The Language of Cinema\nWrite the Festival Blurb\n\n' + text + '\n';
+  var blob = new Blob([content], {type:'text/plain'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = 'nietzsche-festival-blurb.txt';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+</script>
 
 <script>
   const questions = document.querySelectorAll('.question[data-answer]');
