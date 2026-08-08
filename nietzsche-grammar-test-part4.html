@@ -8,18 +8,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Josefin+Sans:ital,wght@0,100;0,300;0,400;0,600;0,700;1,300&family=IM+Fell+DW+Pica:ital@0;1&display=swap" rel="stylesheet">
 <style>
   :root {
-    --black:     #0a0905;
-    --dark:      #120f08;
-    --card:      #1c1710;
-    --card2:     #231d13;
-    --border:    #3a3020;
-    --border2:   #5a4a28;
-    --amber:     #d4922a;
-    --gold:      #f0c060;
-    --cream:     #f5eed8;
-    --warm:      #e8d8a0;
-    --mid:       #8a7848;
-    --dim:       #4a3e22;
+    --black:     #0a0906;
+    --dark:      #14100a;
+    --card:      #1e1712;
+    --card2:     #251c15;
+    --border:    #3a2c20;
+    --border2:   #5a4030;
+    --amber:     #dc8058;
+    --gold:      #f0a878;
+    --cream:     #f5e6d0;
+    --warm:      #e8c8a0;
+    --mid:       #9a7c60;
+    --dim:       #4a3826;
     --spotlight: rgba(240,192,96,0.06);
     --green:     #3a7a3a;
     --green-lt:  #6abf6a;
@@ -36,7 +36,12 @@
       /* film grain */
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23g)' opacity='0.07'/%3E%3C/svg%3E"),
       /* spotlight */
-      radial-gradient(ellipse 70% 55% at 50% -5%, #2a2010 0%, transparent 65%);
+      radial-gradient(ellipse 70% 55% at 50% -5%, #2e2016 0%, transparent 65%),
+      url('Nietzsche/img5-pattern.jpg');
+    background-size: auto, auto, cover;
+    background-position: center, center, center top;
+    background-attachment: scroll, scroll, fixed;
+    background-repeat: no-repeat;
     min-height: 100vh;
     font-family: 'IM Fell DW Pica', Georgia, serif;
     color: var(--warm);
@@ -688,6 +693,10 @@
   </div>
 </div>
 
+<div style="max-width:740px;margin:0 auto 28px;border-radius:10px;overflow:hidden;border:1px solid var(--border2);box-shadow:0 14px 40px rgba(0,0,0,.5);">
+  <img src="Nietzsche/img5-hero.jpg" alt="Stylised close-up illustration of Nietzsche" style="width:100%;height:auto;display:block;">
+</div>
+
 <!-- TAGLINE -->
 <div class="tagline-wrap">
   <p class="tagline">
@@ -1031,7 +1040,39 @@
     </div>
   </div>
 
+  <div class="fw-section" style="max-width:740px;margin:40px auto 0;padding-top:32px;border-top:1px solid var(--border2);">
+    <div class="verdict-scene" style="margin-bottom:6px;">One Final Task</div>
+    <h2 style="font-family:'IM Fell DW Pica',Georgia,serif;font-size:24px;color:var(--cream);margin-bottom:10px;">Pitch the Scene</h2>
+    <p style="color:var(--mid);font-size:14px;line-height:1.6;margin-bottom:18px;max-width:60ch;">Imagine you are pitching one scene from this film to a producer. Write 60-100 words describing the scene, using at least four of this lesson's film-production vocabulary words.</p>
+    <textarea id="fwText" placeholder="Begin here..." style="width:100%;min-height:130px;background:var(--card);border:1px solid var(--border2);border-radius:8px;color:var(--cream);font-family:'IM Fell DW Pica',Georgia,serif;font-size:15px;line-height:1.6;padding:16px;resize:vertical;outline:none;"></textarea>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;flex-wrap:wrap;gap:8px;">
+      <span id="fwCount" style="font-size:13px;color:var(--mid);">0 words</span>
+    </div>
+    <div style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;">
+      <button onclick="downloadFW()" style="background:linear-gradient(135deg,var(--amber),var(--gold));color:#14100a;border:none;border-radius:999px;padding:10px 24px;font-weight:700;font-size:13.5px;cursor:pointer;font-family:'IM Fell DW Pica',Georgia,serif;">⬇ Download my pitch</button>
+    </div>
+  </div>
+
 </main>
+
+<script>
+document.getElementById('fwText').addEventListener('input', function(){
+  var v = this.value.trim();
+  var count = v === '' ? 0 : v.split(/\s+/).length;
+  document.getElementById('fwCount').textContent = count + ' word' + (count===1?'':'s');
+});
+function downloadFW(){
+  var text = document.getElementById('fwText').value.trim();
+  if(!text){ alert('Write something first!'); return; }
+  var content = 'Forbes English — Nietzsche Vocabulary Part IV\nPitch the Scene\n\n' + text + '\n';
+  var blob = new Blob([content], {type:'text/plain'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = 'nietzsche-scene-pitch.txt';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+</script>
 
 <script>
   const questions = document.querySelectorAll('.question[data-answer]');
