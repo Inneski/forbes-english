@@ -182,7 +182,7 @@
         <span class="status-label">Renews / expires</span>
         <span class="status-value" id="sub-period">&mdash;</span>
       </div>
-      <button class="btn btn-gold" id="subscribe-btn" hidden>Subscribe to Forbes English Pro</button>
+      <button class="btn btn-gold" id="subscribe-btn" hidden onclick="window.location.href='pricing.html'">View plans &amp; subscribe</button>
       <button class="btn btn-primary" id="logout-btn" style="margin-top:10px;background:transparent;color:var(--green-deep);border:1.5px solid var(--border);">Log out</button>
     </div>
   </section>
@@ -249,6 +249,11 @@ authForm.addEventListener("submit", async (e) => {
     showError("Check your email to confirm your account, then log in.");
     return;
   }
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("redirect") === "pricing") {
+    window.location.href = "pricing.html";
+    return;
+  }
   await renderAccount();
 });
 
@@ -257,24 +262,8 @@ document.getElementById("logout-btn").addEventListener("click", async () => {
   location.reload();
 });
 
-document.getElementById("subscribe-btn").addEventListener("click", async (e) => {
-  e.target.disabled = true;
-  e.target.textContent = "Redirecting to checkout…";
-  const user = await sbGetUser();
-  const res = await fetch("/api/create-checkout-session", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ userId: user.id, userEmail: user.email }),
-  });
-  const data = await res.json();
-  if (data.url) {
-    window.location.href = data.url;
-  } else {
-    e.target.disabled = false;
-    e.target.textContent = "Subscribe to Forbes English Pro";
-    alert("Something went wrong starting checkout. Please try again.");
-  }
-});
+// Subscribe button now just links to pricing.html (see markup above),
+// where the visitor picks a plan before checkout begins.
 
 async function renderAccount() {
   const user = await sbGetUser();
