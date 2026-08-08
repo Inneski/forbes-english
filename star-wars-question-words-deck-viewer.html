@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Star Wars — Question Words (EN-DE) | Slide Deck</title>
+<title>Star Wars — Question Words (9 languages) | Slide Deck</title>
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%;overflow:hidden;background:#0f1a13;}
@@ -18,27 +18,78 @@
     background:#1b3a28;
     border-bottom:1px solid rgba(255,255,255,.08);
     flex-shrink:0;
+    gap:14px;
+    flex-wrap:wrap;
   }
   header h1{font-size:0.95rem;font-weight:700;letter-spacing:.02em;}
   header h1 span{color:#e8c04a;font-weight:400;opacity:.85;margin-left:8px;}
   .back-link{
     color:#cfe9d8;text-decoration:none;font-size:0.82rem;font-weight:600;
     padding:6px 14px;border:1px solid rgba(255,255,255,.25);border-radius:999px;
+    flex-shrink:0;
   }
   .back-link:hover{background:rgba(255,255,255,.08);}
+  .lang-picker{
+    display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+  }
+  .lang-label{font-size:0.68rem;color:#9db8a8;text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-right:2px;}
+  .lang-btn{
+    font-size:0.72rem;font-weight:700;letter-spacing:.02em;
+    color:#cfe9d8;background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.16);
+    padding:5px 10px;border-radius:999px;cursor:pointer;
+    transition:background .15s,border-color .15s,color .15s;
+  }
+  .lang-btn:hover{background:rgba(255,255,255,.14);}
+  .lang-btn.active{background:#e8c04a;color:#1b3a28;border-color:#e8c04a;}
   .stage{
     flex:1;display:flex;align-items:center;justify-content:center;
     position:relative;overflow:hidden;padding:16px;
   }
   .slide-wrap{
+    position:relative;
     max-width:100%;max-height:100%;
+    aspect-ratio:2000/1125;
     display:flex;align-items:center;justify-content:center;
+    height:calc(100vh - 130px);
   }
   .slide-wrap img{
-    max-width:100%;max-height:calc(100vh - 130px);
+    width:100%;height:100%;
+    object-fit:contain;
     border-radius:6px;
     box-shadow:0 10px 40px rgba(0,0,0,.5);
     display:block;
+  }
+  .overlay-box{
+    position:absolute;
+    display:flex;align-items:center;
+    background:rgba(7,31,40,.72);
+    border-radius:4px;
+    padding:0 3%;
+    pointer-events:none;
+  }
+  .overlay-box span{
+    font-family:'Courier New',monospace;
+    font-weight:700;
+    color:#fff0d0;
+    line-height:1.25;
+    font-size:clamp(0.62rem, 1.6vw, 1.15rem);
+  }
+  .overlay-box[dir="rtl"] span{ text-align:right; width:100%; }
+  .key-overlay{
+    position:absolute;
+    display:flex;align-items:center;justify-content:flex-end;
+    pointer-events:none;
+  }
+  .key-overlay span{
+    font-family:'Courier New',monospace;
+    font-weight:700;
+    color:#e8c04a;
+    font-size:clamp(0.55rem, 1.35vw, 1rem);
+    background:rgba(7,31,40,.85);
+    padding:2px 8px;
+    border-radius:4px;
+    white-space:nowrap;
   }
   .nav-arrow{
     position:absolute;top:50%;transform:translateY(-50%);
@@ -48,6 +99,7 @@
     color:#fff;font-size:1.4rem;
     display:flex;align-items:center;justify-content:center;
     cursor:pointer;transition:background .15s;
+    z-index:5;
   }
   .nav-arrow:hover{background:rgba(255,255,255,.2);}
   .nav-arrow.prev{left:16px;}
@@ -71,25 +123,32 @@
     box-shadow:0 3px 10px rgba(47,174,92,.4);
   }
   .download-btn:hover{background:#38c96a;}
+  @media (max-width:760px){
+    .lang-label{display:none;}
+    header{padding:8px 12px;}
+  }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Star Wars <span>Question Words (EN&ndash;DE)</span></h1>
+  <h1>Star Wars <span>Question Words</span></h1>
+  <div class="lang-picker" id="langPicker">
+    <span class="lang-label">Translate:</span>
+  </div>
   <a class="back-link" href="index.html">← Back to catalog</a>
 </header>
 
 <div class="stage">
   <button class="nav-arrow prev" id="prevBtn" aria-label="Previous slide">‹</button>
-  <div class="slide-wrap">
+  <div class="slide-wrap" id="slideWrap">
     <img id="slideImg" src="star-wars-question-words-slides/slide-01.jpg" alt="Slide 1">
   </div>
   <button class="nav-arrow next" id="nextBtn" aria-label="Next slide">›</button>
 </div>
 
 <footer>
-  <span class="counter" id="counter">1 / 10</span>
+  <span class="counter" id="counter">1 / 11</span>
   <div class="dots" id="dots"></div>
   <a class="download-btn" href="https://raw.githubusercontent.com/Inneski/forbes-english/main/star-wars-question-phrases-en-de-courier-v5-cover-refined.pptx" download>⬇ Download .pptx</a>
 </footer>
@@ -97,12 +156,49 @@
 <script>
 const TOTAL = 11;
 let idx = 0;
+let currentLang = null; // null = no translation overlay shown
+
+const LANGS = [
+  { code: 'fr', label: 'FR' },
+  { code: 'de', label: 'DE' },
+  { code: 'ru', label: 'RU' },
+  { code: 'ar', label: 'AR' },
+  { code: 'zh', label: 'ZH' },
+  { code: 'ja', label: 'JA' },
+  { code: 'it', label: 'IT' },
+  { code: 'es', label: 'ES' }
+];
+const RTL_LANGS = ["ar"];
+
+// slide caption translations, keyed by display-slide-index (1-9 = the nine topic slides)
+const TRANSLATIONS = {"1": {"fr": "Où les chasseurs TIE volent-ils ?", "de": "Wohin fliegen die TIE-Jäger?", "ru": "Куда летят истребители TIE?", "ar": "إلى أين تطير مقاتلات TIE؟", "zh": "TIE战机要飞往哪里?", "ja": "TIEファイターはどこへ飛んでいますか?", "it": "Dove stanno volando i caccia TIE?", "es": "¿Adónde vuelan los cazas TIE?"}, "2": {"fr": "Qui est le père de Luke ?", "de": "Wer ist Lukes Vater?", "ru": "Кто отец Люка?", "ar": "من هو والد لوك؟", "zh": "卢克的父亲是谁?", "ja": "ルークの父親は誰ですか?", "it": "Chi è il padre di Luke?", "es": "¿Quién es el padre de Luke?"}, "3": {"fr": "Combien y a-t-il d'AT-AT ?", "de": "Wie viele AT-ATs gibt es?", "ru": "Сколько там шагоходов AT-AT?", "ar": "كم عدد آليات AT-AT الموجودة؟", "zh": "有多少台AT-AT?", "ja": "AT-ATは何機いますか?", "it": "Quanti AT-AT ci sono?", "es": "¿Cuántos AT-AT hay?"}, "4": {"fr": "De quelle couleur sont leurs sabres laser ?", "de": "Welche Farbe haben ihre Lichtschwerter?", "ru": "Какого цвета их световые мечи?", "ar": "ما هو لون سيوفهم الضوئية؟", "zh": "他们的光剑是什么颜色?", "ja": "彼らのライトセーバーは何色ですか?", "it": "Di che colore sono le loro spade laser?", "es": "¿De qué color son sus sables de luz?"}, "5": {"fr": "Quand vas-tu payer Jabba ?", "de": "Wann wirst du Jabba bezahlen?", "ru": "Когда ты заплатишь Джаббе?", "ar": "متى ستدفع لجابا؟", "zh": "你什么时候付钱给贾巴?", "ja": "いつジャバに支払いますか?", "it": "Quando pagherai Jabba?", "es": "¿Cuándo le vas a pagar a Jabba?"}, "6": {"fr": "Pourquoi Luke s'entraîne-t-il avec Yoda ?", "de": "Warum trainiert Luke mit Yoda?", "ru": "Почему Люк тренируется с Йодой?", "ar": "لماذا يتدرب لوك مع يودا؟", "zh": "卢克为什么要跟尤达训练?", "ja": "なぜルークはヨーダと修行しているのですか?", "it": "Perché Luke si allena con Yoda?", "es": "¿Por qué Luke entrena con Yoda?"}, "7": {"fr": "Combien Jabba demande-t-il pour libérer Han Solo ?", "de": "Wie viel will Jabba für Han Solos Freilassung?", "ru": "Сколько Джабба хочет за освобождение Хана Соло?", "ar": "كم يريد جابا مقابل إطلاق سراح هان سولو؟", "zh": "贾巴要多少钱才肯释放韩·索罗?", "ja": "ジャバはハン・ソロの解放にいくら要求していますか?", "it": "Quanto vuole Jabba per liberare Han Solo?", "es": "¿Cuánto quiere Jabba por liberar a Han Solo?"}, "8": {"fr": "Quel type d'armes les Stormtroopers tiennent-ils ?", "de": "Was für Waffen tragen die Sturmtruppen?", "ru": "Какое оружие держат штурмовики?", "ar": "ما نوع الأسلحة التي يحملها جنود العاصفة؟", "zh": "冲锋队拿着什么样的武器?", "ja": "ストームトルーパーはどんな武器を持っていますか?", "it": "Che tipo di armi impugnano gli Stormtrooper?", "es": "¿Qué tipo de armas llevan los soldados de asalto?"}, "9": {"fr": "Sur quelle planète es-tu ?", "de": "Auf welchem Planeten bist du?", "ru": "На какой ты планете?", "ar": "في أي كوكب أنت؟", "zh": "你在哪个星球上?", "ja": "あなたはどの惑星にいますか?", "it": "Su quale pianeta ti trovi?", "es": "¿En qué planeta estás?"}};
+const BOX_POSITIONS = {"1": {"left": 31.69, "top": 85.7, "width": 41.25, "height": 8.89}, "2": {"left": 50.59, "top": 85.7, "width": 36.25, "height": 8.89}, "3": {"left": 64.85, "top": 82.63, "width": 32.88, "height": 8.89}, "4": {"left": 54.14, "top": 83.6, "width": 43.75, "height": 8.89}, "5": {"left": 30.01, "top": 86.83, "width": 38.91, "height": 8.89}, "6": {"left": 4.02, "top": 88.93, "width": 39.53, "height": 8.89}, "7": {"left": 53.04, "top": 81.25, "width": 46.72, "height": 9.44}, "8": {"left": 52.36, "top": 84.65, "width": 45.0, "height": 8.89}, "9": {"left": 31.69, "top": 85.7, "width": 41.25, "height": 8.89}};
+
+// KEY slide (display index 10) short-word translations
+const KEY_TRANSLATIONS = {"where": {"fr": "OÙ", "de": "WOHIN", "ru": "КУДА", "ar": "إلى أين", "zh": "哪里", "ja": "どこへ", "it": "DOVE", "es": "ADÓNDE"}, "who": {"fr": "QUI", "de": "WER", "ru": "КТО", "ar": "من", "zh": "谁", "ja": "誰", "it": "CHI", "es": "QUIÉN"}, "howmany": {"fr": "COMBIEN", "de": "WIE VIELE", "ru": "СКОЛЬКО", "ar": "كم", "zh": "多少", "ja": "いくつ", "it": "QUANTI", "es": "CUÁNTOS"}, "whatcolor": {"fr": "QUELLE COULEUR", "de": "WELCHE FARBE", "ru": "КАКОЙ ЦВЕТ", "ar": "أي لون", "zh": "什么颜色", "ja": "何色", "it": "CHE COLORE", "es": "QUÉ COLOR"}, "which": {"fr": "LEQUEL", "de": "WELCHE", "ru": "КАКОЙ", "ar": "أي", "zh": "哪个", "ja": "どれ", "it": "QUALE", "es": "CUÁL"}, "when": {"fr": "QUAND", "de": "WANN", "ru": "КОГДА", "ar": "متى", "zh": "什么时候", "ja": "いつ", "it": "QUANDO", "es": "CUÁNDO"}, "why": {"fr": "POURQUOI", "de": "WARUM", "ru": "ПОЧЕМУ", "ar": "لماذا", "zh": "为什么", "ja": "なぜ", "it": "PERCHÉ", "es": "POR QUÉ"}, "howmuch": {"fr": "COMBIEN", "de": "WIE VIEL", "ru": "СКОЛЬКО", "ar": "كم", "zh": "多少钱", "ja": "いくら", "it": "QUANTO", "es": "CUÁNTO"}, "whatkindof": {"fr": "QUEL TYPE DE", "de": "WAS FÜR", "ru": "КАКОЙ ВИД", "ar": "أي نوع من", "zh": "什么样的", "ja": "どんな種類の", "it": "CHE TIPO DI", "es": "QUÉ TIPO DE"}};
+const KEY_POSITIONS = {"where": {"left": 4.69, "top": 25.56, "width": 43.75, "height": 5.28}, "who": {"left": 4.69, "top": 42.22, "width": 43.75, "height": 5.28}, "howmany": {"left": 4.69, "top": 58.89, "width": 43.75, "height": 5.28}, "whatcolor": {"left": 4.69, "top": 75.56, "width": 43.75, "height": 5.28}, "which": {"left": 52.36, "top": 25.56, "width": 43.75, "height": 4.22}, "when": {"left": 52.36, "top": 38.89, "width": 43.75, "height": 4.22}, "why": {"left": 52.36, "top": 52.22, "width": 43.75, "height": 4.22}, "howmuch": {"left": 52.36, "top": 65.56, "width": 43.75, "height": 4.22}, "whatkindof": {"left": 52.36, "top": 78.89, "width": 43.75, "height": 4.22}};
+const KEY_ROW_ORDER = ['where','who','howmany','whatcolor','which','when','why','howmuch','whatkindof'];
 
 const img = document.getElementById('slideImg');
+const slideWrap = document.getElementById('slideWrap');
 const counter = document.getElementById('counter');
 const dotsEl = document.getElementById('dots');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
+const langPicker = document.getElementById('langPicker');
+
+LANGS.forEach(l => {
+  const b = document.createElement('button');
+  b.className = 'lang-btn';
+  b.textContent = l.label;
+  b.addEventListener('click', () => {
+    currentLang = (currentLang === l.code) ? null : l.code;
+    document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+    if (currentLang) b.classList.add('active');
+    renderOverlay();
+  });
+  langPicker.appendChild(b);
+});
 
 for (let i = 0; i < TOTAL; i++) {
   const d = document.createElement('div');
@@ -112,6 +208,52 @@ for (let i = 0; i < TOTAL; i++) {
 }
 const dots = dotsEl.querySelectorAll('.dot');
 
+function clearOverlays() {
+  slideWrap.querySelectorAll('.overlay-box, .key-overlay').forEach(el => el.remove());
+}
+
+function renderOverlay() {
+  clearOverlays();
+  if (!currentLang) return;
+
+  const topicSlideIndex = idx; // idx 1-9 correspond to topic slides 1-9
+  if (topicSlideIndex >= 1 && topicSlideIndex <= 9) {
+    const text = (TRANSLATIONS[topicSlideIndex] || {})[currentLang];
+    const pos = BOX_POSITIONS[topicSlideIndex];
+    if (text && pos) {
+      const box = document.createElement('div');
+      box.className = 'overlay-box';
+      box.style.left = pos.left + '%';
+      box.style.top = pos.top + '%';
+      box.style.width = pos.width + '%';
+      box.style.height = pos.height + '%';
+      if (RTL_LANGS.includes(currentLang)) box.setAttribute('dir', 'rtl');
+      const span = document.createElement('span');
+      span.textContent = text;
+      box.appendChild(span);
+      slideWrap.appendChild(box);
+    }
+  } else if (idx === 10) {
+    // KEY slide: one small badge per row
+    KEY_ROW_ORDER.forEach(key => {
+      const text = (KEY_TRANSLATIONS[key] || {})[currentLang];
+      const pos = KEY_POSITIONS[key];
+      if (!text || !pos) return;
+      const box = document.createElement('div');
+      box.className = 'key-overlay';
+      box.style.left = pos.left + '%';
+      box.style.top = pos.top + '%';
+      box.style.width = pos.width + '%';
+      box.style.height = pos.height + '%';
+      if (RTL_LANGS.includes(currentLang)) box.setAttribute('dir', 'rtl');
+      const span = document.createElement('span');
+      span.textContent = text;
+      box.appendChild(span);
+      slideWrap.appendChild(box);
+    });
+  }
+}
+
 function render() {
   const n = String(idx + 1).padStart(2, '0');
   img.src = `star-wars-question-words-slides/slide-${n}.jpg`;
@@ -120,6 +262,7 @@ function render() {
   dots.forEach((d, i) => d.classList.toggle('active', i === idx));
   prevBtn.disabled = idx === 0;
   nextBtn.disabled = idx === TOTAL - 1;
+  renderOverlay();
 }
 function goTo(i) {
   idx = Math.max(0, Math.min(TOTAL - 1, i));
@@ -131,6 +274,8 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowLeft') goTo(idx - 1);
   if (e.key === 'ArrowRight') goTo(idx + 1);
 });
+
+img.addEventListener('load', renderOverlay);
 
 render();
 </script>
