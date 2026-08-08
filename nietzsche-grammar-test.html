@@ -8,24 +8,29 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=IM+Fell+English:ital@0;1&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #1a1410;
-    --parchment: #f5edd6;
-    --aged: #e8d9b5;
-    --gold: #b8962e;
-    --gold-light: #d4af5a;
-    --rust: #8b3a2a;
-    --shadow: rgba(10,5,0,0.4);
-    --mid: #6b5c42;
-    --faint: #c9b98a;
+    --ink: #f0dcc8;
+    --parchment: #14232e;
+    --aged: #1c3140;
+    --gold: #dc8c78;
+    --gold-light: #f0ac94;
+    --rust: #a8503a;
+    --shadow: rgba(4,8,16,0.5);
+    --mid: #8a9ab0;
+    --faint: #4a6478;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    background-color: #0f0c08;
+    background-color: #0a1218;
     background-image:
-      radial-gradient(ellipse at 20% 0%, #1e1508 0%, transparent 60%),
-      radial-gradient(ellipse at 80% 100%, #1a1005 0%, transparent 60%);
+      radial-gradient(ellipse at 20% 0%, #14283c 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 100%, #0f2030 0%, transparent 60%),
+      url('Nietzsche/img2-pattern.jpg');
+    background-size: auto, auto, cover;
+    background-position: center, center, center top;
+    background-attachment: scroll, scroll, fixed;
+    background-repeat: no-repeat;
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -40,7 +45,7 @@
     background: var(--parchment);
     background-image:
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E"),
-      linear-gradient(160deg, #fdf4dc 0%, #f0e2bc 40%, #e8d5a8 100%);
+      linear-gradient(160deg, #1c3040 0%, #182a38 40%, #142330 100%);
     box-shadow:
       0 0 0 1px var(--faint),
       0 0 60px rgba(0,0,0,0.9),
@@ -450,6 +455,10 @@
     <span class="ornament">❧ &nbsp; ✦ &nbsp; ❧</span>
   </header>
 
+  <div style="margin:0 0 24px;border-radius:10px;overflow:hidden;border:1px solid var(--faint);box-shadow:0 10px 30px rgba(0,0,0,.4);">
+    <img src="Nietzsche/img2-hero.jpg" alt="Stylised close-up illustration of Nietzsche" style="width:100%;height:auto;display:block;">
+  </div>
+
   <p class="intro">
     You stand at the crossroads of language and philosophy. Each question below draws from the writings of Friedrich Nietzsche. Conquer grammar — or grammar conquers you.
   </p>
@@ -667,7 +676,39 @@
     </div>
   </div>
 
+  <div class="fw-section" style="margin-top:40px;padding-top:32px;border-top:1px solid var(--faint);">
+    <div class="eyebrow" style="margin-bottom:6px;">One Final Task</div>
+    <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:22px;color:var(--ink);margin-bottom:10px;">Write Your Own Aphorism</h2>
+    <p style="color:var(--mid);font-size:14px;line-height:1.6;margin-bottom:18px;max-width:60ch;">Nietzsche wrote in short, striking aphorisms rather than long arguments. Write two or three sentences of your own on a subject that matters to you — a short, memorable statement in his style. Aim for 40-80 words.</p>
+    <textarea id="fwText" placeholder="Begin here..." style="width:100%;min-height:130px;background:var(--aged);border:1px solid var(--faint);border-radius:8px;color:var(--ink);font-family:'Crimson Text',Georgia,serif;font-size:15px;line-height:1.6;padding:16px;resize:vertical;outline:none;"></textarea>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;flex-wrap:wrap;gap:8px;">
+      <span id="fwCount" style="font-size:13px;color:var(--mid);">0 words</span>
+    </div>
+    <div style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;">
+      <button onclick="downloadFW()" style="background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#14232e;border:none;border-radius:999px;padding:10px 24px;font-weight:700;font-size:13.5px;cursor:pointer;font-family:'Crimson Text',Georgia,serif;">⬇ Download my writing</button>
+    </div>
+  </div>
+
 </div>
+
+<script>
+document.getElementById('fwText').addEventListener('input', function(){
+  var v = this.value.trim();
+  var count = v === '' ? 0 : v.split(/\s+/).length;
+  document.getElementById('fwCount').textContent = count + ' word' + (count===1?'':'s');
+});
+function downloadFW(){
+  var text = document.getElementById('fwText').value.trim();
+  if(!text){ alert('Write something first!'); return; }
+  var content = 'Forbes English — Thus Spoke Grammar\nWrite Your Own Aphorism\n\n' + text + '\n';
+  var blob = new Blob([content], {type:'text/plain'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = 'nietzsche-aphorism.txt';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+</script>
 
 <script>
   const TOTAL = document.querySelectorAll('.question[data-type="mc"]').length;
