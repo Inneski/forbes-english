@@ -5,9 +5,20 @@
 //
 // Required environment variables (set in Cloudflare Pages → Settings →
 // Environment variables — see deploy/06-environment-variables.md):
-//   STRIPE_SECRET_KEY   e.g. sk_test_...
-//   STRIPE_PRICE_ID     e.g. price_1AbC...
-//   SITE_URL            e.g. https://forbesenglish.com
+//   STRIPE_SECRET_KEY          e.g. sk_test_...
+//   STRIPE_PRICE_ID_MONTHLY    e.g. price_1AbC...
+//   STRIPE_PRICE_ID_SEMIANNUAL e.g. price_1DeF...
+//   STRIPE_PRICE_ID_ANNUAL     e.g. price_1GhI...
+//   SITE_URL                   e.g. https://forbesenglish.com
+//
+// Expected request body:
+//   { "userId": "...", "userEmail": "...", "plan": "monthly" | "semiannual" | "annual" }
+
+const PLAN_ENV_KEYS = {
+  monthly: "STRIPE_PRICE_ID_MONTHLY",
+  semiannual: "STRIPE_PRICE_ID_SEMIANNUAL",
+  annual: "STRIPE_PRICE_ID_ANNUAL",
+};
 
 export async function onRequestPost(context) {
   const { request, env } = context;
@@ -19,17 +30,36 @@ export async function onRequestPost(context) {
     return new Response(JSON.stringify({ error: "Invalid JSON body" }), { status: 400 });
   }
 
-  const { userId, userEmail } = body;
+  const { userId, userEmail, plan } = body;
   if (!userId || !userEmail) {
     return new Response(JSON.stringify({ error: "userId and userEmail are required" }), { status: 400 });
   }
 
+  const envKey = PLAN_ENV_KEYS[plan];
+  if (!envKey) {
+    return new Response(
+      JSON.stringify({ error: `plan must be one of: ${Object.keys(PLAN_ENV_KEYS).join(", ")}` }),
+      { status: 400 }
+    );
+  }
+
+  const priceId = env[envKey];
+  if (!priceId) {
+    return new Response(
+      JSON.stringify({ error: `Server is missing the ${envKey} environment variable` }),
+      { status: 500 }
+    );
+  }
+
   const params = new URLSearchParams({
     mode: "subscription",
-    "line_items[0][price]": env.STRIPE_PRICE_ID,
+    "line_items[0][price]": priceId,
     "line_items[0][quantity]": "1",
     customer_email: userEmail,
     "metadata[supabase_user_id]": userId,
+    "metadata[plan]": plan,
+    "subscription_data[metadata][supabase_user_id]": userId,
+    "subscription_data[metadata][plan]": plan,
     success_url: `${env.SITE_URL}/account.html?checkout=success`,
     cancel_url: `${env.SITE_URL}/account.html?checkout=cancelled`,
   });

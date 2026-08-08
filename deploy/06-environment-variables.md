@@ -9,11 +9,15 @@ Your Pages project → **Settings** → **Environment variables** → add each o
 | Variable | Value | Where it came from |
 |---|---|---|
 | `STRIPE_SECRET_KEY` | `sk_test_...` | Stripe → Developers → API keys |
-| `STRIPE_PRICE_ID` | `price_...` | Stripe → the product you created |
+| `STRIPE_PRICE_ID_MONTHLY` | `price_...` | Stripe → Forbes English Pro → the monthly price |
+| `STRIPE_PRICE_ID_SEMIANNUAL` | `price_...` | Stripe → Forbes English Pro → the six-month price |
+| `STRIPE_PRICE_ID_ANNUAL` | `price_...` | Stripe → Forbes English Pro → the annual price |
 | `STRIPE_WEBHOOK_SECRET` | `whsec_...` | Stripe → Developers → Webhooks → your endpoint |
 | `SITE_URL` | `https://forbesenglish.com` | — |
 | `SUPABASE_URL` | `https://xxxxx.supabase.co` | Supabase → Settings → API |
 | `SUPABASE_SERVICE_ROLE_KEY` | `eyJ...` (long string) | Supabase → Settings → API — ⚠️ the **service_role** key, not anon |
+
+The checkout function expects the browser to tell it which plan the visitor picked (`"monthly"`, `"semiannual"`, or `"annual"`) — that comes from whichever pricing button they click on the site, once the Subscribe UI is wired up.
 
 After saving, **redeploy** the Pages project (Deployments tab → ⋯ on the latest → Retry deployment) so the functions pick up the new variables.
 

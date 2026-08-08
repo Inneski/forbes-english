@@ -26,20 +26,24 @@ export async function onRequestPost(context) {
     case "checkout.session.completed": {
       const session = event.data.object;
       const userId = session.metadata?.supabase_user_id;
+      const plan = session.metadata?.plan;
       if (userId) {
         await updateProfile(env, userId, {
           stripe_customer_id: session.customer,
           stripe_subscription_id: session.subscription,
           subscription_status: "active",
+          ...(plan ? { plan } : {}),
         });
       }
       break;
     }
     case "customer.subscription.updated": {
       const sub = event.data.object;
+      const plan = sub.metadata?.plan;
       await updateProfileByCustomer(env, sub.customer, {
         subscription_status: sub.status,
         current_period_end: new Date(sub.current_period_end * 1000).toISOString(),
+        ...(plan ? { plan } : {}),
       });
       break;
     }
