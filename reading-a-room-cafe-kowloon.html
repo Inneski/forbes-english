@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reading a Room: Cafe Kowloon | Forbes English</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --charcoal:#1c1815;
+    --charcoal-deep:#121010;
+    --surface:#241f1a;
+    --card:#2c2620;
+    --border:#3d352b;
+    --wood:#a8794f;
+    --wood-lt:#c99a6c;
+    --cherry:#c23a3a;
+    --cherry-dark:#8f2424;
+    --jade:#3a8f5c;
+    --jade-lt:#5cb47e;
+    --slate:#7a9ca0;
+    --cream:#f0e6d4;
+    --muted:#a89880;
+    --correct:#3a8f5c;
+    --correct-bg:rgba(58,143,92,0.12);
+    --wrong:#c23a3a;
+    --wrong-bg:rgba(194,58,58,0.12);
+    --radius:14px;
+    --font-serif:'Fraunces',Georgia,serif;
+    --font-body:'Inter',-apple-system,sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--charcoal) url('CafeKowloon/kowloon-bg-pattern.jpg') center top / cover no-repeat fixed;
+    color:var(--cream);
+    font-family:var(--font-body);
+    line-height:1.65;
+    min-height:100vh;
+  }
+  a{color:var(--wood-lt);}
+
+  /* ============ HERO ============ */
+  .hero-banner{position:relative;width:100%;height:min(56vh,440px);min-height:260px;overflow:hidden;}
+  .hero-banner img{display:block;width:100%;height:100%;object-fit:cover;}
+  .hero-banner::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(18,16,16,0.1) 0%, rgba(18,16,16,0.4) 55%, var(--charcoal) 100%);
+  }
+  .hero-wordmark{position:absolute;top:18px;left:0;right:0;text-align:center;z-index:2;}
+  .fe-logo{width:120px;max-width:38%;height:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,.5));}
+  .hero-text{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:0 20px 26px;text-align:center;}
+  .eyebrow{
+    display:inline-block;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--jade-lt);background:rgba(58,143,92,0.18);border:1px solid var(--jade);
+    padding:5px 14px;border-radius:100px;margin-bottom:14px;
+  }
+  .hero-title{
+    font-family:var(--font-serif);font-weight:700;font-size:clamp(28px,5.2vw,46px);
+    color:var(--cream);text-shadow:0 2px 14px rgba(0,0,0,.6);margin-bottom:8px;
+  }
+  .hero-title em{font-style:italic;color:var(--cherry-dark);color:#e0645f;}
+  .hero-sub{color:var(--cream);opacity:.85;font-size:15px;text-shadow:0 2px 8px rgba(0,0,0,.6);}
+
+  /* ============ MAIN COLUMN ============ */
+  main{max-width:700px;margin:0 auto;padding:36px 20px 70px;}
+
+  .screen{display:none;}
+  .screen.active{display:block;animation:fadeIn .3s ease;}
+  @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+  h2{font-family:var(--font-serif);font-weight:700;font-size:24px;color:var(--cream);margin-bottom:6px;}
+  .screen-sub{color:var(--muted);font-size:13.5px;margin-bottom:22px;}
+
+  /* ============ CARD ============ */
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px 24px 26px;position:relative;}
+
+  /* ============ WELCOME ============ */
+  .brief-list{list-style:none;margin:16px 0 20px;display:grid;gap:9px;}
+  .brief-list li{
+    display:flex;gap:11px;align-items:flex-start;font-size:14px;color:var(--muted);
+    background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 13px;
+  }
+  .brief-list li strong{color:var(--cream);font-weight:600;}
+  .word-chip-row{display:flex;flex-wrap:wrap;gap:7px;margin:18px 0 4px;}
+  .word-chip{
+    font-family:var(--font-serif);font-weight:600;font-size:13px;color:var(--wood-lt);
+    background:rgba(168,121,79,0.12);border:1px solid var(--wood);border-radius:100px;padding:5px 13px;
+  }
+
+  /* ============ BUTTONS ============ */
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    font-family:var(--font-body);font-weight:700;font-size:15.5px;letter-spacing:.2px;
+    padding:12px 28px;border-radius:10px;border:none;cursor:pointer;
+    transition:transform .15s ease,box-shadow .15s ease,background .15s ease;
+  }
+  .btn-primary{background:var(--cherry);color:#fff;box-shadow:0 3px 0 var(--cherry-dark);}
+  .btn-primary:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 0 var(--cherry-dark);}
+  .btn-primary:active:not(:disabled){transform:translateY(2px);box-shadow:0 1px 0 var(--cherry-dark);}
+  .btn-primary:disabled{opacity:.35;cursor:not-allowed;}
+  .btn-ghost{background:transparent;border:1.5px solid var(--wood);color:var(--wood-lt);}
+  .btn-ghost:hover{background:rgba(168,121,79,0.1);}
+  .btn-row{display:flex;justify-content:center;gap:12px;margin-top:22px;flex-wrap:wrap;}
+
+  /* ============ STATUS / PROGRESS (sticky, per house style exception) ============ */
+  .status-bar{
+    position:sticky;top:0;z-index:5;background:var(--charcoal);
+    display:flex;align-items:center;gap:16px;padding:14px 0 12px;margin-bottom:20px;
+    border-bottom:1px solid var(--border);flex-wrap:wrap;
+  }
+  .score-chip{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:100px;padding:6px 16px;flex:none;}
+  .score-chip .label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+  .score-chip .value{font-weight:700;color:var(--jade-lt);font-size:14px;}
+  .progress-wrap{flex:1 1 160px;min-width:140px;}
+  .progress-label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;}
+  .progress-track{height:7px;border-radius:100px;background:var(--card);border:1px solid var(--border);overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--jade),var(--jade-lt));border-radius:100px;transition:width .35s ease;}
+
+  /* ============ CCQ CARD ============ */
+  .ccq-word{
+    display:inline-block;font-family:var(--font-serif);font-weight:700;font-size:20px;color:var(--wood-lt);
+    background:rgba(168,121,79,0.12);border-radius:8px;padding:3px 12px;margin-bottom:14px;
+  }
+  .ccq-context{font-size:14.5px;color:var(--muted);font-style:italic;margin-bottom:16px;line-height:1.6;}
+  .ccq-question{font-size:16.5px;color:var(--cream);margin-bottom:18px;line-height:1.6;}
+  .options{display:grid;gap:9px;}
+  .option-btn{
+    text-align:left;background:var(--card);border:1px solid var(--border);color:var(--cream);
+    border-radius:10px;padding:13px 16px;font-size:14.5px;font-weight:500;cursor:pointer;
+    transition:background .15s ease,border-color .15s ease;position:relative;
+  }
+  .option-btn:hover:not(:disabled){background:#362e25;border-color:var(--muted);}
+  .option-btn:disabled{cursor:default;}
+  .option-btn.correct{background:var(--correct-bg);border-color:var(--jade);}
+  .option-btn.incorrect{background:var(--wrong-bg);border-color:var(--cherry);}
+  .feedback{display:none;margin-top:16px;padding:14px 16px;border-radius:10px;font-size:14px;line-height:1.6;border-left:4px solid var(--border);}
+  .feedback-correct{background:var(--correct-bg);border-left-color:var(--jade);}
+  .feedback-incorrect{background:var(--wrong-bg);border-left-color:var(--cherry);}
+  .feedback strong{display:block;margin-bottom:4px;font-family:var(--font-serif);font-size:15px;}
+
+  /* ============ READING PASSAGE ============ */
+  .reading-text p{font-size:15px;color:var(--cream);margin-bottom:14px;line-height:1.75;}
+  .reading-text strong.target{color:var(--wood-lt);font-weight:700;}
+  .source-note{font-size:12px;color:var(--muted);margin-top:18px;padding-top:14px;border-top:1px solid var(--border);}
+  .source-note a{color:var(--muted);text-decoration:underline;}
+
+  /* ============ INLINE IMAGE ============ */
+  .inline-img{width:100%;border-radius:12px;margin:0 0 20px;border:1px solid var(--border);box-shadow:0 10px 28px rgba(0,0,0,.3);display:block;}
+
+  /* ============ RESULTS ============ */
+  .results-card{text-align:center;}
+  .results-score{font-family:var(--font-serif);font-weight:900;font-size:46px;color:var(--jade-lt);margin:6px 0 0;}
+  .results-pct{font-size:13px;color:var(--muted);margin-bottom:14px;letter-spacing:.05em;}
+  .results-message{font-size:15px;color:var(--cream);margin-bottom:22px;max-width:440px;margin-left:auto;margin-right:auto;}
+
+  /* ============ FREE WRITE ============ */
+  .fw-textarea{
+    width:100%;min-height:150px;background:var(--card);border:1.5px solid var(--border);border-radius:10px;
+    color:var(--cream);font-family:var(--font-body);font-size:15px;line-height:1.6;padding:16px;resize:vertical;outline:none;
+  }
+  .fw-textarea:focus{border-color:var(--wood);}
+  .fw-meta{display:flex;justify-content:space-between;align-items:center;margin-top:8px;flex-wrap:wrap;gap:8px;}
+  .fw-word-count{font-size:13px;color:var(--muted);}
+  .fw-word-count.ok{color:var(--jade-lt);}
+  .fw-model{
+    display:none;background:var(--card);border-left:3px solid var(--wood);border-radius:0 8px 8px 0;
+    padding:16px 18px;margin-top:16px;font-size:14px;line-height:1.7;color:var(--muted);font-style:italic;
+  }
+  .fw-model.show{display:block;}
+  .fw-model-label{font-style:normal;font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:11px;color:var(--wood-lt);margin-bottom:8px;display:block;}
+
+  footer.lesson-footer{text-align:center;margin-top:26px;color:var(--muted);font-size:12px;letter-spacing:.02em;}
+
+  @media (max-width:600px){
+    main{padding:28px 16px 60px;}
+    .card{padding:20px 18px 22px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero-banner">
+  <img src="CafeKowloon/kowloon-hero.jpg" alt="Interior of Cafe Kowloon restaurant, a Cantonese cafe in east London, showing the bar counter under pendant lights">
+  <div class="hero-wordmark">
+    <svg class="fe-logo" viewBox="0 0 220 70" xmlns="http://www.w3.org/2000/svg">
+      <text x="110" y="30" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="24" font-weight="400" fill="#c23a3a" letter-spacing="3">FORBES</text>
+      <line x1="20" y1="38" x2="200" y2="38" stroke="#c23a3a" stroke-width="0.8" opacity="0.6"/>
+      <text x="110" y="56" text-anchor="middle" font-family="'Inter',Arial,sans-serif" font-size="12" font-weight="700" fill="#f0e6d4" letter-spacing="7">ENGLISH</text>
+    </svg>
+  </div>
+  <div class="hero-text">
+    <span class="eyebrow">C1&ndash;C2 &middot; Reading &amp; Vocabulary in Context</span>
+    <h1 class="hero-title">Reading a <em>Room</em></h1>
+    <p class="hero-sub">The design language of Cafe Kowloon, London</p>
+  </div>
+</div>
+
+<main>
+
+  <!-- ================= WELCOME ================= -->
+  <section class="screen active" id="screen-welcome">
+    <div class="card">
+      <h2>Before You Start</h2>
+      <p class="screen-sub">A short reading, ten words, and a room worth noticing.</p>
+      <p style="font-size:14.5px;color:var(--cream);">This lesson uses a piece of restaurant design writing to teach ten advanced descriptive words &mdash; the kind used in architecture and design journalism to talk about mood, material, and colour. You'll read a short passage, then work through nine concept-checking questions that test whether you really understand each word, not just its dictionary definition.</p>
+      <div class="word-chip-row">
+        <span class="word-chip">utilitarian</span><span class="word-chip">pastiche</span><span class="word-chip">atmospheric</span>
+        <span class="word-chip">cinematic</span><span class="word-chip">lo-fi</span><span class="word-chip">glossy</span>
+        <span class="word-chip">tactile</span><span class="word-chip">grounded</span><span class="word-chip">saturated</span><span class="word-chip">ambient</span>
+      </div>
+      <p style="font-size:13px;color:var(--muted);margin-top:16px;">Nine scored questions, plus a short closing writing task &mdash; no fixed right answer, just your own description of a space.</p>
+    </div>
+    <div class="btn-row"><button type="button" class="btn btn-primary" id="btn-start">Start Reading</button></div>
+  </section>
+
+  <!-- ================= READING ================= -->
+  <section class="screen" id="screen-reading">
+    <h2>The Room</h2>
+    <p class="screen-sub">Read once for the story, then look out for the bold words &mdash; you'll be tested on them next.</p>
+    <div class="card reading-text">
+      <p>Cafe Kowloon sits inside a railway arch in London Fields, east London, and it leads a kind of double life. During the day the room operates as Wonton Charlie's, a fast noodle counter for people passing through; once evening comes, the same space slows down and becomes the fuller Cafe Kowloon experience &mdash; two different rhythms of Hong Kong food culture sharing one address.</p>
+      <p>The interior design studio behind the project, Daytrip, was careful about what kind of homage this would be. Rather than reproducing a <strong class="target">pastiche</strong> &mdash; a version that simply copies an existing style piece by piece &mdash; the team treated the old cha chaan teng tea-restaurant tradition as a starting point to build something new from, filtered through their own London perspective. The arch's raw, <strong class="target">utilitarian</strong> shell stayed largely untouched: corrugated metal still runs across the walls and ceiling, doing the same practical job it always did.</p>
+      <p>Everything else gets layered on top of that industrial base. Brown mosaic tiles with a wet-look shine sit alongside timber panelling and a stretch of bright green fibreglass grating suspended overhead. Above the open kitchen, a stainless steel counter and a row of barstools with red seats occupy a slightly raised platform, putting the cooking on display rather than hiding it. In the main dining room, curved cherry-wood seating booths &mdash; finished in a warm, deliberately weathered leather for a rougher, more <strong class="target">tactile</strong> feel under the hand &mdash; wrap around <strong class="target">glossy</strong> red tabletops fitted with spinning lazy susans, each one catching light and throwing it back across the room.</p>
+      <p>Once the sun goes down, a neon sign takes over the green grating behind the bar, and softer, warmer lamps fill in underneath it so the mood stays <strong class="target">ambient</strong> rather than harsh &mdash; even the bathrooms keep the theme going, lit entirely in red. The whole effect aims for something <strong class="target">atmospheric</strong>, even a little <strong class="target">cinematic</strong>: less a dining room built purely for function, more a set dressed for a specific scene. Nothing here is allowed to look too new or too perfect &mdash; finishes stay <strong class="target">lo-fi</strong> on purpose, reflective in places but never fully polished.</p>
+      <p>Colour is really doing the heavy lifting in how the space reads. Keep the background <strong class="target">grounded</strong> &mdash; muted browns, neutral tones, natural wood &mdash; and the jade green and cherry red have somewhere to land with real force: <strong class="target">saturated</strong>, sudden, and concentrated at doorways, shelving edges, and tabletops, rather than spread evenly through the room. Calm everywhere first, then one sharp hit of colour exactly where your eye is meant to stop.</p>
+    </div>
+    <div class="source-note">Based on reporting by Rheanna Hopkins, <a href="https://www.dezeen.com" target="_blank" rel="noopener">Dezeen</a>, on Cafe Kowloon by Daytrip and 6 of 1. Paraphrased for classroom use.</div>
+    <div class="btn-row"><button type="button" class="btn btn-primary" id="btn-to-ccq">Start the Questions</button></div>
+  </section>
+
+  <!-- ================= CCQ ACTIVITY ================= -->
+  <section class="screen" id="screen-ccq">
+    <div class="status-bar">
+      <div class="score-chip"><span class="label">Score</span>&nbsp;<span class="value" id="score-value">0 / 9</span></div>
+      <div class="progress-wrap">
+        <span class="progress-label" id="ccq-progress-label">Question 1 of 9</span>
+        <div class="progress-track"><div class="progress-fill" id="ccq-progress-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <span class="ccq-word" id="ccq-word"></span>
+      <p class="ccq-context" id="ccq-context"></p>
+      <p class="ccq-question" id="ccq-question"></p>
+      <div class="options" id="ccq-options"></div>
+      <div class="feedback" id="ccq-feedback"></div>
+    </div>
+    <div class="btn-row"><button type="button" class="btn btn-primary" id="ccq-next" hidden>Next Question</button></div>
+  </section>
+
+  <!-- ================= RESULTS ================= -->
+  <section class="screen" id="screen-results">
+    <div class="card results-card">
+      <p class="results-score" id="results-score">0 / 9</p>
+      <p class="results-pct" id="results-pct">0%</p>
+      <p class="results-message" id="results-message"></p>
+      <button type="button" class="btn btn-ghost" id="btn-to-writing">Continue to Writing Task</button>
+    </div>
+  </section>
+
+  <!-- ================= FREE WRITING ================= -->
+  <section class="screen" id="screen-writing">
+    <h2>Describe a Room You Know</h2>
+    <p class="screen-sub">No fixed answer here &mdash; just your own description.</p>
+    <img class="inline-img" src="CafeKowloon/kowloon-hero.jpg" alt="Interior of Cafe Kowloon restaurant">
+    <div class="card">
+      <p style="font-size:14.5px;color:var(--cream);margin-bottom:16px;">Think of a room you know well &mdash; a cafe, a friend's kitchen, your own bedroom. Write a short description (100&ndash;150 words) using at least five of today's ten target words. Try to show, not just tell: instead of "the room felt atmospheric," describe what actually makes it feel that way.</p>
+      <textarea class="fw-textarea" id="fw-textarea" placeholder="Start writing here..."></textarea>
+      <div class="fw-meta"><span class="fw-word-count" id="fw-word-count">0 words</span></div>
+      <div class="btn-row" style="margin-top:18px;">
+        <button type="button" class="btn btn-ghost" id="fw-model-btn">Show model paragraph</button>
+        <button type="button" class="btn btn-primary" id="fw-download-btn">&#8681; Download my writing</button>
+      </div>
+      <div class="fw-model" id="fw-model">
+        <span class="fw-model-label">Model paragraph</span>
+        My grandmother's kitchen was never glossy or designed to impress &mdash; it was purely utilitarian, built for cooking rather than showing off. But it always felt strangely atmospheric: the low, ambient light from one lamp in the corner, the tactile roughness of the wooden table worn smooth in patches, the grounded, quiet colours of old paint and copper pans. Nothing in it was saturated or loud. It was never trying to be cinematic. It just was what it was, and that was exactly why it felt like home.
+      </div>
+    </div>
+    <div class="btn-row"><button type="button" class="btn btn-ghost" id="btn-restart">Restart the Lesson</button></div>
+    <footer class="lesson-footer">Forbes English &middot; Reading a Room: Cafe Kowloon &middot; C1&ndash;C2</footer>
+  </section>
+
+</main>
+
+<script>
+"use strict";
+
+/* ================= DATA ================= */
+
+var ccqItems = [
+  {
+    word: "utilitarian",
+    context: "\"...pale corrugated surfaces line the walls and ceilings...\" &mdash; the raw industrial shell of the old railway arch.",
+    question: "If a surface is described as \u201cutilitarian,\u201d was it chosen mainly to look beautiful, or because it is practical and functional?",
+    options: ["Chosen to look beautiful and decorative", "Chosen because it is practical and functional"],
+    correctIndex: 1,
+    explanation: "\u201cUtilitarian\u201d describes something designed for use and function rather than for decoration. The corrugated metal was already there, doing its job as part of the arch, before the designers built around it."
+  },
+  {
+    word: "pastiche",
+    context: "\"We were not interested in pastiche,\" the designer said, \"but in capturing the spirit... and reinterpreting it.\"",
+    question: "Were the designers trying to build a direct copy of a traditional Hong Kong cafe, or their own new interpretation of that world?",
+    options: ["A direct copy of an existing style", "Their own new interpretation, not a copy"],
+    correctIndex: 1,
+    explanation: "A \u201cpastiche\u201d is an imitation that directly copies an existing style. By saying they avoided pastiche, the designers mean they built something original that was only inspired by the original culture, not a replica of it."
+  },
+  {
+    word: "atmospheric",
+    context: "The brief called for a space that felt \"intimate, atmospheric, and slightly cinematic.\"",
+    question: "Would an \u201catmospheric\u201d room feel empty and characterless, or full of mood and feeling?",
+    options: ["Empty and characterless", "Full of mood and feeling"],
+    correctIndex: 1,
+    explanation: "\u201cAtmospheric\u201d describes somewhere with a strong, distinctive mood \u2014 usually created by lighting, sound, and texture together, not by any single object."
+  },
+  {
+    word: "cinematic",
+    context: "The same brief asked for a space that felt \"slightly cinematic.\"",
+    question: "Would you use \u201ccinematic\u201d to describe a plain, forgettable waiting room, or a space that feels dramatic, like a scene from a film?",
+    options: ["A plain, forgettable waiting room", "A space that feels dramatic, like a film scene"],
+    correctIndex: 1,
+    explanation: "\u201cCinematic\u201d compares something to film \u2014 usually meaning it feels dramatic, visually composed, or staged, the way a director might light a scene."
+  },
+  {
+    word: "lo-fi",
+    context: "Daytrip wanted to \"embrace a lo-fi materiality and sense of street life.\"",
+    question: "Does \u201clo-fi\u201d suggest materials that are hi-tech, seamless, and highly polished, or ones that are simple, raw, and a little imperfect?",
+    options: ["Hi-tech, seamless, and highly polished", "Simple, raw, and a little imperfect"],
+    correctIndex: 1,
+    explanation: "\u201cLo-fi\u201d (from \u201clow fidelity\u201d) describes something deliberately simple, rough, or unpolished \u2014 the opposite of a slick, over-produced finish."
+  },
+  {
+    word: "glossy",
+    context: "\"Glossy red tables with built-in lazy Susans catch and reflect light...\"",
+    question: "Would a \u201cglossy\u201d surface be dull and matte, or shiny and reflective?",
+    options: ["Dull and matte", "Shiny and reflective"],
+    correctIndex: 1,
+    explanation: "\u201cGlossy\u201d means shiny and light-reflecting \u2014 the opposite of a matte finish, which absorbs light and looks flat."
+  },
+  {
+    word: "tactile",
+    context: "The leather banquettes were designed \"to create a more tactile, human layer.\"",
+    question: "Is \u201ctactile\u201d mostly about how something looks, or about how it feels when you touch it?",
+    options: ["Mostly about how it looks", "About how it feels to the touch"],
+    correctIndex: 1,
+    explanation: "\u201cTactile\u201d relates to the sense of touch \u2014 texture, softness, warmth \u2014 rather than pure visual appearance."
+  },
+  {
+    word: "grounded / saturated",
+    context: "\"The base palette is relatively grounded... contrasted with vivid jade green and cherry red... saturated highlights.\"",
+    question: "Which word describes the calm, neutral brown-and-timber background, and which describes the intense, vivid pops of green and red?",
+    options: ["Grounded = calm background, saturated = intense colour pops", "Grounded = intense colour pops, saturated = calm background"],
+    correctIndex: 0,
+    explanation: "\u201cGrounded\u201d means calm, stable, and understated \u2014 here, the neutral browns and timber. \u201cSaturated\u201d means a colour is at full intensity, with no dullness \u2014 here, the vivid jade green and cherry red."
+  },
+  {
+    word: "ambient",
+    context: "\"The neon glow is layered with softer, warmer lighting designed to create an intimate and ambient atmosphere.\"",
+    question: "Is \u201cambient\u201d lighting a single bright spotlight pointed at one object, or a soft, surrounding light that fills the whole space?",
+    options: ["A single bright spotlight on one object", "Soft, surrounding light that fills the space"],
+    correctIndex: 1,
+    explanation: "\u201cAmbient\u201d describes something that surrounds and fills an environment gently, rather than a sharp, focused source \u2014 ambient light sets an overall mood rather than highlighting one spot."
+  }
+];
+
+/* ================= STATE ================= */
+
+var TOTAL = ccqItems.length;
+var state = { index: 0, score: 0, answered: false, correctFlags: [] };
+
+function el(id){ return document.getElementById(id); }
+
+function showScreen(name){
+  document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("active"); });
+  el("screen-" + name).classList.add("active");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+
+function updateScore(){
+  el("score-value").textContent = state.score + " / " + TOTAL;
+}
+
+function renderCCQ(){
+  var item = ccqItems[state.index];
+  state.answered = false;
+
+  el("ccq-word").textContent = item.word;
+  el("ccq-context").innerHTML = item.context;
+  el("ccq-question").textContent = item.question;
+
+  var order = shuffle([0, 1]);
+  var optionsEl = el("ccq-options");
+  optionsEl.innerHTML = "";
+  order.forEach(function(origIdx){
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "option-btn";
+    btn.textContent = item.options[origIdx];
+    btn.addEventListener("click", function(){ handleAnswer(origIdx, btn); });
+    optionsEl.appendChild(btn);
+  });
+
+  el("ccq-feedback").style.display = "none";
+  el("ccq-feedback").innerHTML = "";
+  el("ccq-next").hidden = true;
+
+  el("ccq-progress-label").textContent = "Question " + (state.index + 1) + " of " + TOTAL;
+  el("ccq-progress-fill").style.width = (state.index / TOTAL * 100) + "%";
+}
+
+function handleAnswer(chosenIdx, btnEl){
+  if (state.answered) return;
+  state.answered = true;
+
+  var item = ccqItems[state.index];
+  var isCorrect = (chosenIdx === item.correctIndex);
+  var allBtns = el("ccq-options").querySelectorAll(".option-btn");
+  allBtns.forEach(function(b){ b.disabled = true; });
+
+  if (isCorrect){
+    btnEl.classList.add("correct");
+    state.score++;
+    state.correctFlags[state.index] = true;
+  } else {
+    btnEl.classList.add("incorrect");
+    allBtns.forEach(function(b){
+      if (b.textContent === item.options[item.correctIndex]) b.classList.add("correct");
+    });
+    state.correctFlags[state.index] = false;
+  }
+
+  var fb = el("ccq-feedback");
+  fb.style.display = "block";
+  fb.className = "feedback " + (isCorrect ? "feedback-correct" : "feedback-incorrect");
+  fb.innerHTML = "<strong>" + (isCorrect ? "Correct." : "Not quite.") + "</strong>" + item.explanation;
+
+  updateScore();
+  el("ccq-progress-fill").style.width = ((state.index + 1) / TOTAL * 100) + "%";
+  el("ccq-next").hidden = false;
+}
+
+function goNext(){
+  state.index++;
+  if (state.index >= TOTAL){
+    showResults();
+  } else {
+    renderCCQ();
+    showScreen("ccq");
+  }
+}
+
+function showResults(){
+  var pct = Math.round((state.score / TOTAL) * 100);
+  el("results-score").textContent = state.score + " / " + TOTAL;
+  el("results-pct").textContent = pct + "%";
+  var msg;
+  if (pct >= 90){ msg = "Excellent. You've got a sharp, working sense of all ten words \u2014 ready to use them in your own writing."; }
+  else if (pct >= 70){ msg = "Strong work. A word or two might still need review, but your instincts here are good."; }
+  else if (pct >= 45){ msg = "A solid start on some tricky, nuanced vocabulary. Worth rereading the passage once more."; }
+  else { msg = "These are genuinely difficult words to pin down \u2014 reread the passage, then try again."; }
+  el("results-message").textContent = msg;
+  showScreen("results");
+}
+
+/* ================= FREE WRITING ================= */
+
+var fwTextarea = el("fw-textarea");
+fwTextarea.addEventListener("input", function(){
+  var v = this.value.trim();
+  var count = v === "" ? 0 : v.split(/\s+/).length;
+  var countEl = el("fw-word-count");
+  countEl.textContent = count + " word" + (count === 1 ? "" : "s");
+  countEl.classList.toggle("ok", count >= 100);
+});
+
+el("fw-model-btn").addEventListener("click", function(){
+  var model = el("fw-model");
+  model.classList.toggle("show");
+  this.textContent = model.classList.contains("show") ? "Hide model paragraph" : "Show model paragraph";
+});
+
+el("fw-download-btn").addEventListener("click", function(){
+  var text = fwTextarea.value.trim();
+  if (!text){ alert("Write something first!"); return; }
+  var content = "Forbes English \u2014 Reading a Room: Cafe Kowloon\nDescribe a Room You Know\n\n" + text + "\n";
+  var blob = new Blob([content], { type: "text/plain" });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement("a");
+  a.href = url; a.download = "cafe-kowloon-room-description.txt";
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+
+/* ================= INIT ================= */
+
+el("btn-start").addEventListener("click", function(){ showScreen("reading"); });
+el("btn-to-ccq").addEventListener("click", function(){ renderCCQ(); showScreen("ccq"); });
+el("ccq-next").addEventListener("click", goNext);
+el("btn-to-writing").addEventListener("click", function(){ showScreen("writing"); });
+el("btn-restart").addEventListener("click", function(){
+  state = { index: 0, score: 0, answered: false, correctFlags: [] };
+  updateScore();
+  fwTextarea.value = "";
+  el("fw-word-count").textContent = "0 words";
+  el("fw-word-count").classList.remove("ok");
+  el("fw-model").classList.remove("show");
+  el("fw-model-btn").textContent = "Show model paragraph";
+  showScreen("welcome");
+});
+
+updateScore();
+</script>
+</body>
+</html>
