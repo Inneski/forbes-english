@@ -676,24 +676,24 @@ main {
 
   <!-- ═══════════════════════ SCREEN 0 — IDENTIFY THE TENSE ═══════════════════════ -->
   <div id="s0" class="screen active">
-    <div class="sec-label">Activity 01</div>
-    <div class="sec-h">Identify the tense</div>
-    <div class="sec-desc">Read each sentence about mountainbiking. Is it present perfect or past simple? Click your answer. The key word is highlighted.</div>
+    <div class="sec-label" id="act1Label">Activity 01</div>
+    <div class="sec-h" id="act1Heading">Identify the tense</div>
+    <div class="sec-desc" id="act1Intro">Read each sentence about mountainbiking. Is it present perfect or past simple? Click your answer. The key word is highlighted.</div>
 
     <div id="identify-list"></div>
 
     <div id="id-result" style="display:none">
       <div class="btn-group">
-        <button class="btn btn-lime" onclick="finish(0)">Next activity →</button>
+        <button class="btn btn-lime" id="id-next-btn" onclick="finish(0)">Next activity →</button>
       </div>
     </div>
   </div>
 
   <!-- ═══════════════════════ SCREEN 1 — MULTIPLE CHOICE ═══════════════════════ -->
   <div id="s1" class="screen">
-    <div class="sec-label">Activity 02</div>
-    <div class="sec-h">Choose the correct form</div>
-    <div class="sec-desc">Select the sentence that is grammatically correct for the context given.</div>
+    <div class="sec-label" id="act2Label">Activity 02</div>
+    <div class="sec-h" id="act2Heading">Choose the correct form</div>
+    <div class="sec-desc" id="act2Intro">Select the sentence that is grammatically correct for the context given.</div>
 
     <div class="mc-progress" id="mc-prog"></div>
     <div id="mc-wrap"></div>
@@ -704,8 +704,8 @@ main {
         <div class="score-denom" id="mc-denom"></div>
         <div class="score-msg" id="mc-msg"></div>
         <div class="btn-group" style="justify-content:center;margin-top:1.5rem;">
-          <button class="btn btn-ghost" onclick="resetMC()">Try again</button>
-          <button class="btn btn-lime" onclick="finish(1)">Next activity →</button>
+          <button class="btn btn-ghost" id="mc-tryagain-btn" onclick="resetMC()">Try again</button>
+          <button class="btn btn-lime" id="mc-nextact-btn" onclick="finish(1)">Next activity →</button>
         </div>
       </div>
     </div>
@@ -713,9 +713,9 @@ main {
 
   <!-- ═══════════════════════ SCREEN 2 — GAP FILL ═══════════════════════ -->
   <div id="s2" class="screen">
-    <div class="sec-label">Activity 03</div>
-    <div class="sec-h">Complete the race report</div>
-    <div class="sec-desc">Select a verb from the bank, then click the gap where it belongs. Use the correct tense — present perfect or past simple.</div>
+    <div class="sec-label" id="act3Label">Activity 03</div>
+    <div class="sec-h" id="act3Heading">Complete the race report</div>
+    <div class="sec-desc" id="act3Intro">Select a verb from the bank, then click the gap where it belongs. Use the correct tense — present perfect or past simple.</div>
 
     <div class="verb-bank" id="verb-bank"></div>
     <div class="gap-passage" id="gap-passage"></div>
@@ -723,15 +723,15 @@ main {
 
     <div class="btn-group">
       <button class="btn btn-lime" id="gap-check" onclick="checkGaps()">Check answers</button>
-      <button class="btn btn-ghost" onclick="resetGaps()">Reset</button>
+      <button class="btn btn-ghost" id="gap-reset-btn" onclick="resetGaps()">Reset</button>
     </div>
   </div>
 
   <!-- ═══════════════════════ SCREEN 3 — ERROR CORRECTION ═══════════════════════ -->
   <div id="s3" class="screen">
-    <div class="sec-label">Activity 04</div>
-    <div class="sec-h">Error correction</div>
-    <div class="sec-desc">Each sentence contains one tense error. Decide what the mistake is and choose the correction.</div>
+    <div class="sec-label" id="act4Label">Activity 04</div>
+    <div class="sec-h" id="act4Heading">Error correction</div>
+    <div class="sec-desc" id="act4Intro">Each sentence contains one tense error. Decide what the mistake is and choose the correction.</div>
 
     <div id="error-list"></div>
 
@@ -741,8 +741,8 @@ main {
         <div class="score-denom" id="err-denom"></div>
         <div class="score-msg" id="err-msg"></div>
         <div class="btn-group" style="justify-content:center;margin-top:1.5rem;">
-          <button class="btn btn-ghost" onclick="resetErrors()">Try again</button>
-          <button class="btn btn-lime" onclick="showComplete()">Finish lesson ✓</button>
+          <button class="btn btn-ghost" id="err-tryagain-btn" onclick="resetErrors()">Try again</button>
+          <button class="btn btn-lime" id="err-finish-btn" onclick="showComplete()">Finish lesson ✓</button>
         </div>
       </div>
     </div>
@@ -752,10 +752,10 @@ main {
   <div id="s4" class="screen">
     <div class="score-screen" style="margin-top:1rem;">
       <div style="font-size:2.5rem;margin-bottom:0.5rem;">🏆</div>
-      <div style="font-family:'DM Serif Display',serif;font-size:2rem;color:var(--lime);margin-bottom:0.5rem;">Lesson complete!</div>
-      <div class="score-msg">You have practised all four skills: identifying, choosing, producing,<br>and correcting present perfect and past simple.</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:2rem;color:var(--lime);margin-bottom:0.5rem;" id="completeHeading">Lesson complete!</div>
+      <div class="score-msg" id="completeMsg">You have practised all four skills: identifying, choosing, producing,<br>and correcting present perfect and past simple.</div>
       <div class="btn-group" style="justify-content:center;margin-top:1.5rem;">
-        <button class="btn btn-lime" onclick="goTo(0)">Start again</button>
+        <button class="btn btn-lime" id="completeRestartBtn" onclick="goTo(0)">Start again</button>
       </div>
     </div>
   </div>
@@ -786,16 +786,182 @@ const UI_I18N = {
     coverBadge: 'B1 · Mountainbiking',
     coverTitle: '<span class="tc-pp">Present Perfect</span><br><em>vs</em> <span class="tc-ps">Past Simple</span>',
     coverSubtitle: 'Four activities to help you choose the right tense — using context from the trail, races, and riding experiences.',
-    start: 'Start →'
+    start: 'Start →',
+
+    /* nav bar */
+    navLabel0: '1 · Identify the tense',
+    navLabel1: '2 · Choose correctly',
+    navLabel2: '3 · Gap fill',
+    navLabel3: '4 · Error correction',
+
+    /* activity 1 — identify the tense */
+    act1Label: 'Activity 01',
+    act1Heading: 'Identify the tense',
+    act1Intro: 'Read each sentence about mountainbiking. Is it present perfect or past simple? Click your answer. The key word is highlighted.',
+    idCorrectPrefix: '✓ Correct.',
+    idWrongPrefix: (answer) => `✗ This is actually ${answer}.`,
+
+    /* activity 2 — multiple choice */
+    act2Label: 'Activity 02',
+    act2Heading: 'Choose the correct form',
+    act2Intro: 'Select the sentence that is grammatically correct for the context given.',
+    contextLabel: 'Context:',
+    mcNextLabel: 'Next →',
+    mcCorrectPrefix: '✓ Correct!',
+    mcWrongPrefix: '✗ Not quite.',
+    questionCounter: (n, total) => `Question ${n} of ${total}`,
+    mcMsg0: 'Keep going — review the explainer at the top and try again.',
+    mcMsg1: 'Getting there! Focus on the time expressions.',
+    mcMsg2: 'Well done — solid understanding of both tenses.',
+    mcMsg3: 'Excellent! Near-perfect tense awareness.',
+
+    /* activity 3 — gap fill */
+    act3Label: 'Activity 03',
+    act3Heading: 'Complete the race report',
+    act3Intro: 'Select a verb from the bank, then click the gap where it belongs. Use the correct tense — present perfect or past simple.',
+    gapCheckLabel: 'Check answers',
+    gapResetLabel: 'Reset',
+    gapAllCorrect: (total) => `✓ Perfect! All ${total} gaps correct.`,
+    gapPartial: (correct, total) => `${correct} / ${total} correct. Hint for wrong answers: `,
+
+    /* activity 4 — error correction */
+    act4Label: 'Activity 04',
+    act4Heading: 'Error correction',
+    act4Intro: 'Each sentence contains one tense error. Decide what the mistake is and choose the correction.',
+    errCorrectPrefix: '✓ Correct.',
+    errWrongPrefix: '✗ Incorrect.',
+    errMsg0: 'Review the explanations and try again.',
+    errMsg1: 'Good effort — a few tricky ones there.',
+    errMsg2: 'Strong error awareness — well done!',
+    errMsg3: 'Perfect score — excellent tense control!',
+
+    /* shared buttons */
+    nextActivity: 'Next activity →',
+    tryAgainBtn: 'Try again',
+    finishLessonBtn: 'Finish lesson ✓',
+
+    /* final screen */
+    completeHeading: 'Lesson complete!',
+    completeMsg: 'You have practised all four skills: identifying, choosing, producing,<br>and correcting present perfect and past simple.',
+    completeRestartLabel: 'Start again'
   },
   de: {
     lessonTag: 'Present Perfect vs. Simple Past · B1',
     coverBadge: 'B1 · Mountainbiken',
     coverTitle: '<span class="tc-pp">Present Perfect</span><br><em>vs.</em> <span class="tc-ps">Simple Past</span>',
     coverSubtitle: 'Vier Übungen, mit denen Sie die richtige Zeitform wählen lernen – anhand von Kontexten rund um Trails, Rennen und Fahrerfahrungen.',
-    start: 'Start →'
+    start: 'Start →',
+
+    /* nav bar */
+    navLabel0: '1 · Zeitform erkennen',
+    navLabel1: '2 · Richtig wählen',
+    navLabel2: '3 · Lückentext',
+    navLabel3: '4 · Fehlerkorrektur',
+
+    /* activity 1 — identify the tense */
+    act1Label: 'Übung 01',
+    act1Heading: 'Die Zeitform erkennen',
+    act1Intro: 'Lesen Sie jeden Satz über Mountainbiken. Handelt es sich um Present Perfect oder Simple Past? Klicken Sie auf Ihre Antwort. Das Schlüsselwort ist hervorgehoben.',
+    idCorrectPrefix: '✓ Richtig.',
+    idWrongPrefix: (answer) => `✗ Richtig ist eigentlich ${answer}.`,
+
+    /* activity 2 — multiple choice */
+    act2Label: 'Übung 02',
+    act2Heading: 'Die richtige Form wählen',
+    act2Intro: 'Wählen Sie den Satz, der im gegebenen Kontext grammatikalisch korrekt ist.',
+    contextLabel: 'Kontext:',
+    mcNextLabel: 'Weiter →',
+    mcCorrectPrefix: '✓ Richtig!',
+    mcWrongPrefix: '✗ Nicht ganz.',
+    questionCounter: (n, total) => `Frage ${n} von ${total}`,
+    mcMsg0: 'Bleiben Sie dran – wiederholen Sie die Erklärung oben und versuchen Sie es noch einmal.',
+    mcMsg1: 'Sie sind auf dem richtigen Weg! Achten Sie besonders auf die Zeitangaben.',
+    mcMsg2: 'Gut gemacht – solides Verständnis beider Zeitformen.',
+    mcMsg3: 'Ausgezeichnet! Nahezu perfektes Gespür für die richtige Zeitform.',
+
+    /* activity 3 — gap fill */
+    act3Label: 'Übung 03',
+    act3Heading: 'Den Rennbericht vervollständigen',
+    act3Intro: 'Wählen Sie ein Verb aus der Wortliste und klicken Sie dann auf die passende Lücke. Verwenden Sie die richtige Zeitform – Present Perfect oder Simple Past.',
+    gapCheckLabel: 'Antworten prüfen',
+    gapResetLabel: 'Zurücksetzen',
+    gapAllCorrect: (total) => `✓ Perfekt! Alle ${total} Lücken richtig.`,
+    gapPartial: (correct, total) => `${correct} / ${total} richtig. Hinweis zu den falschen Antworten: `,
+
+    /* activity 4 — error correction */
+    act4Label: 'Übung 04',
+    act4Heading: 'Fehlerkorrektur',
+    act4Intro: 'Jeder Satz enthält einen Zeitformfehler. Entscheiden Sie, worin der Fehler besteht, und wählen Sie die richtige Korrektur.',
+    errCorrectPrefix: '✓ Richtig.',
+    errWrongPrefix: '✗ Falsch.',
+    errMsg0: 'Wiederholen Sie die Erklärungen und versuchen Sie es noch einmal.',
+    errMsg1: 'Guter Versuch – ein paar knifflige waren dabei.',
+    errMsg2: 'Starkes Gespür für Fehler – gut gemacht!',
+    errMsg3: 'Punktzahl perfekt – ausgezeichnete Beherrschung der Zeitformen!',
+
+    /* shared buttons */
+    nextActivity: 'Nächste Übung →',
+    tryAgainBtn: 'Nochmal versuchen',
+    finishLessonBtn: 'Lektion beenden ✓',
+
+    /* final screen */
+    completeHeading: 'Lektion abgeschlossen!',
+    completeMsg: 'Sie haben alle vier Fertigkeiten geübt: erkennen, wählen, anwenden<br>und korrigieren von Present Perfect und Simple Past.',
+    completeRestartLabel: 'Neu starten'
   }
 };
+
+function applyStaticText(t) {
+  const setText = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  const setHtml = (id, val) => { const el = document.getElementById(id); if (el) el.innerHTML = val; };
+
+  /* nav bar */
+  setText('nb0', t.navLabel0);
+  setText('nb1', t.navLabel1);
+  setText('nb2', t.navLabel2);
+  setText('nb3', t.navLabel3);
+
+  /* activity 1 */
+  setText('act1Label', t.act1Label);
+  setHtml('act1Heading', t.act1Heading);
+  setText('act1Intro', t.act1Intro);
+  setText('id-next-btn', t.nextActivity);
+
+  /* activity 2 */
+  setText('act2Label', t.act2Label);
+  setHtml('act2Heading', t.act2Heading);
+  setText('act2Intro', t.act2Intro);
+  setText('mc-next', t.mcNextLabel);
+  setText('mc-tryagain-btn', t.tryAgainBtn);
+  setText('mc-nextact-btn', t.nextActivity);
+
+  /* activity 3 */
+  setText('act3Label', t.act3Label);
+  setHtml('act3Heading', t.act3Heading);
+  setText('act3Intro', t.act3Intro);
+  setText('gap-check', t.gapCheckLabel);
+  setText('gap-reset-btn', t.gapResetLabel);
+
+  /* activity 4 */
+  setText('act4Label', t.act4Label);
+  setHtml('act4Heading', t.act4Heading);
+  setText('act4Intro', t.act4Intro);
+  setText('err-tryagain-btn', t.tryAgainBtn);
+  setText('err-finish-btn', t.finishLessonBtn);
+
+  /* final screen */
+  setText('completeHeading', t.completeHeading);
+  setHtml('completeMsg', t.completeMsg);
+  setText('completeRestartBtn', t.completeRestartLabel);
+
+  /* live counter, if question is currently on screen */
+  const progEl = document.getElementById('mc-prog');
+  if (progEl && progEl.textContent && typeof mcCurrent === 'number' && mcCurrent < mcData.length) {
+    progEl.textContent = t.questionCounter(mcCurrent + 1, mcData.length);
+  }
+  const mcContextEm = document.querySelector('#mc-wrap .mc-q em');
+  if (mcContextEm) mcContextEm.textContent = t.contextLabel;
+}
 
 function setLang(code) {
   currentLang = UI_I18N[code] ? code : 'en';
@@ -812,6 +978,7 @@ function setLang(code) {
   if (startBtn) startBtn.textContent = t.start;
   const langSelect = document.getElementById('langSelect');
   if (langSelect) langSelect.value = currentLang;
+  applyStaticText(t);
 }
 
 function initLangSwitch() {
@@ -1066,6 +1233,7 @@ function buildIdentify() {
 }
 
 function answerID(i, choice, btn) {
+  const t = UI_I18N[currentLang];
   const item = identifyData[i];
   const card = document.getElementById('iq' + i);
   card.querySelectorAll('.cq-opt').forEach(b => b.disabled = true);
@@ -1073,11 +1241,11 @@ function answerID(i, choice, btn) {
   if (choice === item.answer) {
     btn.classList.add('correct');
     exp.className = 'cq-exp good';
-    exp.textContent = '✓ ' + item.exp;
+    exp.textContent = t.idCorrectPrefix + ' ' + item.exp;
   } else {
     btn.classList.add('wrong');
     exp.className = 'cq-exp bad';
-    exp.textContent = '✗ This is actually ' + item.answer + '. ' + item.exp;
+    exp.textContent = t.idWrongPrefix(item.answer) + ' ' + item.exp;
     card.querySelectorAll('.cq-opt').forEach(b => { if (b.textContent === item.answer) b.classList.add('correct'); });
   }
   idAnswered++;
@@ -1088,20 +1256,23 @@ function answerID(i, choice, btn) {
 function buildMC() { renderMC(); }
 
 function renderMC() {
+  const t = UI_I18N[currentLang];
   document.getElementById('mc-done').style.display = 'none';
   document.getElementById('mc-next').style.display = 'none';
   if (mcCurrent >= mcData.length) { showMCDone(); return; }
   const q = mcData[mcCurrent];
-  document.getElementById('mc-prog').textContent = `Question ${mcCurrent + 1} of ${mcData.length}`;
+  document.getElementById('mc-prog').textContent = t.questionCounter(mcCurrent + 1, mcData.length);
   document.getElementById('mc-wrap').innerHTML = `
-    <div class="mc-q"><em>Context:</em> ${q.context}</div>
+    <div class="mc-q"><em>${t.contextLabel}</em> ${q.context}</div>
     <div class="mc-opts">
       ${q.opts.map((o, idx) => `<button class="mc-opt" onclick="answerMC(this,${idx})">${o}</button>`).join('')}
     </div>
     <div class="mc-fb" id="mcfb"></div>`;
+  document.getElementById('mc-next').textContent = t.mcNextLabel;
 }
 
 function answerMC(btn, idx) {
+  const t = UI_I18N[currentLang];
   const q = mcData[mcCurrent];
   document.querySelectorAll('.mc-opt').forEach(b => b.disabled = true);
   const fb = document.getElementById('mcfb');
@@ -1109,12 +1280,12 @@ function answerMC(btn, idx) {
     btn.classList.add('correct');
     mcScore++;
     fb.className = 'mc-fb good';
-    fb.textContent = '✓ Correct! ' + q.exp;
+    fb.textContent = t.mcCorrectPrefix + ' ' + q.exp;
   } else {
     btn.classList.add('wrong');
     document.querySelectorAll('.mc-opt')[q.correct].classList.add('reveal');
     fb.className = 'mc-fb bad';
-    fb.textContent = '✗ Not quite. ' + q.exp;
+    fb.textContent = t.mcWrongPrefix + ' ' + q.exp;
   }
   document.getElementById('mc-next').style.display = 'inline-flex';
 }
@@ -1122,6 +1293,7 @@ function answerMC(btn, idx) {
 function nextMC() { mcCurrent++; renderMC(); }
 
 function showMCDone() {
+  const t = UI_I18N[currentLang];
   document.getElementById('mc-wrap').innerHTML = '';
   document.getElementById('mc-next').style.display = 'none';
   document.getElementById('mc-done').style.display = 'block';
@@ -1129,7 +1301,7 @@ function showMCDone() {
   const pct = mcScore / mcData.length;
   document.getElementById('mc-score').textContent = mcScore;
   document.getElementById('mc-denom').textContent = '/ ' + mcData.length;
-  const msgs = ['Keep going — review the explainer at the top and try again.', 'Getting there! Focus on the time expressions.', 'Well done — solid understanding of both tenses.', 'Excellent! Near-perfect tense awareness.'];
+  const msgs = [t.mcMsg0, t.mcMsg1, t.mcMsg2, t.mcMsg3];
   document.getElementById('mc-msg').textContent = msgs[pct < 0.4 ? 0 : pct < 0.65 ? 1 : pct < 0.9 ? 2 : 3];
   if (pct >= 0.5) doneSections[1] = true;
   updateNav();
@@ -1192,6 +1364,7 @@ function fillGap(sp) {
 }
 
 function checkGaps() {
+  const t = UI_I18N[currentLang];
   let correct = 0, total = 0;
   document.querySelectorAll('.gap').forEach(sp => {
     total++;
@@ -1202,7 +1375,7 @@ function checkGaps() {
   const fb = document.getElementById('gap-fb');
   if (correct === total) {
     fb.className = 'mc-fb good';
-    fb.textContent = `✓ Perfect! All ${total} gaps correct.`;
+    fb.textContent = t.gapAllCorrect(total);
     doneSections[2] = true;
     updateNav();
     document.getElementById('gap-check').disabled = true;
@@ -1210,7 +1383,7 @@ function checkGaps() {
     fb.className = 'mc-fb bad';
     let hints = [];
     document.querySelectorAll('.gap.wrong').forEach(sp => hints.push(sp.dataset.hint));
-    fb.textContent = `${correct} / ${total} correct. Hint for wrong answers: ${hints.join(' | ')}`;
+    fb.textContent = t.gapPartial(correct, total) + hints.join(' | ');
   }
 }
 
@@ -1244,6 +1417,7 @@ function buildErrors() {
 }
 
 function answerErr(i, idx, btn) {
+  const t = UI_I18N[currentLang];
   const item = errorData[i];
   const card = document.getElementById('eq' + i);
   card.querySelectorAll('.eq-opt').forEach(b => b.disabled = true);
@@ -1252,12 +1426,12 @@ function answerErr(i, idx, btn) {
     btn.classList.add('correct');
     errScore++;
     exp.className = 'eq-exp good';
-    exp.textContent = '✓ ' + item.exp;
+    exp.textContent = t.errCorrectPrefix + ' ' + item.exp;
   } else {
     btn.classList.add('wrong');
     card.querySelectorAll('.eq-opt')[item.correct].classList.add('correct');
     exp.className = 'eq-exp bad';
-    exp.textContent = '✗ ' + item.exp;
+    exp.textContent = t.errWrongPrefix + ' ' + item.exp;
   }
   errAnswered++;
   if (errAnswered === errorData.length) {
@@ -1265,7 +1439,7 @@ function answerErr(i, idx, btn) {
     const pct = errScore / errorData.length;
     document.getElementById('err-score').textContent = errScore;
     document.getElementById('err-denom').textContent = '/ ' + errorData.length;
-    const msgs = ['Review the explanations and try again.', 'Good effort — a few tricky ones there.', 'Strong error awareness — well done!', 'Perfect score — excellent tense control!'];
+    const msgs = [t.errMsg0, t.errMsg1, t.errMsg2, t.errMsg3];
     document.getElementById('err-msg').textContent = msgs[pct < 0.4 ? 0 : pct < 0.65 ? 1 : pct < 0.9 ? 2 : 3];
     if (pct >= 0.5) { doneSections[3] = true; updateNav(); }
   }
