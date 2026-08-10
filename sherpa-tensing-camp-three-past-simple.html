@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sherpa Tensing - Camp Three: The Camp Behind You (Past Simple)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#2B1B12;
+    --ink-soft:#6B5644;
+    --paper:#FBF6F0;
+    --card:#FFFFFF;
+    --accent:#B08968;
+    --accent-dark:#7A5A3E;
+    --accent-light:#E8D9C7;
+    --accent-lighter:#F5EDE3;
+    --good:#1E7A4C;
+    --good-bg:#E5F5EC;
+    --bad:#B23A3A;
+    --bad-bg:#FBEAEA;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;}
+  h1,h2,h3{font-family:'Fraunces',serif;font-weight:600;margin:0 0 .4em;color:var(--ink);}
+  .wordmark{display:flex;align-items:center;justify-content:space-between;max-width:1000px;margin:0 auto;padding:28px 24px 0;}
+  .wordmark .brand{font-family:'Fraunces',serif;font-weight:700;font-size:20px;letter-spacing:.02em;}
+  .wordmark .brand span{color:var(--accent);}
+  .wordmark .sub{font-size:13px;color:var(--ink-soft);}
+
+  .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px;}
+  .chart-wrap{margin-top:24px;background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:18px 20px;overflow-x:auto;}
+  .chart-wrap h3{font-size:15px;margin-bottom:4px;}
+  .chart-wrap + .chart-wrap{margin-top:16px;}
+  .chart-note{font-size:13px;color:var(--ink-soft);margin-bottom:14px;}
+  table.conj{width:100%;border-collapse:collapse;font-size:14px;min-width:520px;}
+  table.conj th, table.conj td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--accent-light);}
+  table.conj th{font-family:'Fraunces',serif;font-weight:600;color:var(--accent-dark);font-size:13px;text-transform:uppercase;letter-spacing:.03em;}
+  table.conj td.subj{font-weight:600;}
+  table.conj tr:last-child td{border-bottom:none;}
+  main{max-width:1000px;margin:0 auto;padding:0 24px 80px;}
+  .hero{display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:center;padding:40px 0 56px;}
+  .hero .eyebrow{
+    display:inline-block;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--accent-dark);background:var(--accent-lighter);padding:6px 12px;border-radius:999px;margin-bottom:14px;
+  }
+  .hero h1{font-size:38px;line-height:1.12;}
+  .hero p{color:var(--ink-soft);font-size:16px;max-width:46ch;}
+  .hero-diagram{width:100%;display:block;filter:drop-shadow(0 18px 40px -18px rgba(43,27,18,.45));}
+  @media (max-width:720px){.hero{grid-template-columns:1fr;}}
+
+  .trail-wrap{position:relative;padding-left:66px;}
+  .trail-wrap::before{
+    content:'';position:absolute;left:23px;top:8px;bottom:8px;width:2px;
+    background:repeating-linear-gradient(to bottom, var(--accent) 0 8px, transparent 8px 18px);
+  }
+  .camp{position:relative;margin-bottom:64px;}
+  .camp .marker{position:absolute;left:-66px;top:0;width:46px;height:46px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;}
+  .camp .marker svg{width:18px;height:18px;}
+  .camp .camp-label{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-dark);margin-bottom:6px;}
+
+  .rule-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px;}
+  .rule-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:18px 20px;}
+  .rule-card h3{font-size:16px;margin-bottom:8px;}
+  .rule-card p{margin:0 0 8px;font-size:14px;color:var(--ink-soft);}
+  .rule-card .ex{font-size:14px;font-style:italic;color:var(--accent-dark);border-left:2px solid var(--accent);padding-left:10px;}
+
+  .signal-groups{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px;}
+  .signal-box{background:var(--accent-lighter);border-radius:var(--radius);padding:18px 20px;}
+  .signal-box h3{font-size:15px;}
+  .signal-box ul{margin:8px 0 0;padding-left:18px;font-size:14px;color:var(--ink);}
+  .signal-box li{margin-bottom:4px;}
+  @media (max-width:600px){.signal-groups{grid-template-columns:1fr;}}
+
+  /* ── PAST vs NOW DIAGRAM CAMP ── */
+  .diagram-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:26px 26px 22px;}
+  .diagram-intro{font-size:14px;color:var(--ink-soft);margin-bottom:18px;max-width:60ch;}
+  .diagram-stage{width:100%;background:var(--paper);border:1px solid var(--accent-light);border-radius:var(--radius);padding:12px;}
+  .diagram-stage svg{width:100%;height:auto;display:block;}
+  .diagram-shape{cursor:pointer;transition:filter .15s ease;}
+  .diagram-shape:hover{filter:brightness(1.06);}
+  .diagram-caption{font-family:'Inter',sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;}
+  .diagram-panels{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px;}
+  .diagram-panel{border-radius:12px;padding:16px 18px;border:1px solid var(--accent-light);background:var(--accent-lighter);}
+  .diagram-panel.is-now{background:#EAF1F6;border-color:#C9DCE6;}
+  .diagram-panel h4{margin:0 0 8px;font-family:'Fraunces',serif;font-size:14px;letter-spacing:.03em;text-transform:uppercase;color:var(--accent-dark);}
+  .diagram-panel.is-now h4{color:#3E6A85;}
+  .diagram-panel ul{margin:0;padding-left:18px;font-size:14px;}
+  .diagram-panel li{margin-bottom:5px;}
+  .diagram-panel li em{font-style:normal;font-weight:600;}
+  @media (max-width:600px){.diagram-panels{grid-template-columns:1fr;}}
+
+  .quiz-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:24px 24px 20px;}
+  .progress-row{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--ink-soft);margin-bottom:10px;}
+  .progress-track{height:6px;background:var(--accent-lighter);border-radius:999px;overflow:hidden;margin-bottom:20px;}
+  .progress-fill{height:100%;background:var(--accent);border-radius:999px;width:0%;transition:width .3s ease;}
+  .q-prompt{font-size:17px;margin-bottom:4px;}
+  .q-hint{font-size:13px;color:var(--ink-soft);margin-bottom:16px;font-style:italic;}
+  .options{display:grid;gap:10px;}
+  .opt-btn{text-align:left;padding:12px 16px;border-radius:10px;border:1px solid var(--accent-light);background:#fff;font-family:'Inter',sans-serif;font-size:15px;color:var(--ink);cursor:pointer;}
+  .opt-btn:hover{border-color:var(--accent);}
+  .opt-btn.correct{background:var(--good-bg);border-color:var(--good);color:var(--good);font-weight:600;}
+  .opt-btn.wrong{background:var(--bad-bg);border-color:var(--bad);color:var(--bad);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:16px;padding:14px 16px;border-radius:10px;background:var(--accent-lighter);font-size:14px;display:none;}
+  .feedback.show{display:block;}
+  .quiz-footer{display:flex;justify-content:flex-end;margin-top:20px;}
+  .next-btn{background:var(--accent);color:#fff;border:none;padding:11px 22px;border-radius:999px;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;cursor:pointer;}
+  .next-btn:disabled{background:var(--accent-light);cursor:not-allowed;}
+
+  #results{display:none;text-align:center;padding:12px 0 8px;}
+  #results .score{font-family:'Fraunces',serif;font-size:52px;color:var(--accent);margin:8px 0;}
+  #results p{color:var(--ink-soft);}
+  .retry-btn{margin-top:12px;background:transparent;border:1px solid var(--accent);color:var(--accent-dark);padding:10px 20px;border-radius:999px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
+  .route-nav{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:22px;padding-top:18px;border-top:1px solid var(--accent-light);}
+  .route-nav a{display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;padding:10px 20px;border-radius:999px;}
+  .route-nav a.next-camp{background:var(--accent);color:#fff;}
+  .route-nav a.base-camp{background:transparent;border:1px solid var(--ink-soft);color:var(--ink-soft);}
+  .route-nav a:hover{opacity:0.88;}
+</style>
+</head>
+<body>
+
+<div class="wordmark">
+  <div class="brand">Sherpa <span>Tensing</span></div>
+  <div class="sub">Forbes English &middot; a route up the tenses</div>
+</div>
+
+<main>
+
+  <section class="hero" id="hero">
+    <div>
+      <span class="eyebrow">Camp three &middot; past simple</span>
+      <h1>The camp behind you</h1>
+      <p>Camp two was the bedrock &mdash; solid ground, always true. Camp three is the ground you've already crossed. Past simple describes finished actions: tents struck, terrain covered, a chapter closed off from where you're standing now.</p>
+    </div>
+    <svg class="hero-diagram" viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A brown block labelled past simple on the left, with a torn right edge and a cut corner, and a blue block with a coral border labelled now on the right">
+      <defs>
+        <filter id="grain3" x="-20%" y="-20%" width="140%" height="140%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" result="noise"/>
+          <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.05 0"/>
+        </filter>
+      </defs>
+      <rect x="0" y="0" width="640" height="320" fill="var(--paper)"/>
+      <!-- shadow -->
+      <path d="M28,66 L246,66 L272,86 L250,116 L280,144 L252,172 L282,200 L252,228 L278,254 L246,278 L120,278 L28,224 Z" fill="#1c130c" opacity="0.9" transform="translate(7,7)"/>
+      <!-- past simple block -->
+      <path d="M28,66 L246,66 L272,86 L250,116 L280,144 L252,172 L282,200 L252,228 L278,254 L246,278 L120,278 L28,224 Z" fill="#4A3B33"/>
+      <path d="M28,66 L246,66 L272,86 L250,116 L280,144 L252,172 L282,200 L252,228 L278,254 L246,278 L120,278 L28,224 Z" fill="url(#nope)" filter="url(#grain3)" opacity="0.5"/>
+      <text x="153" y="305" text-anchor="middle" class="diagram-caption" fill="#4A3B33">PAST SIMPLE</text>
+      <!-- now block -->
+      <rect x="470" y="46" width="130" height="234" fill="#D98A72"/>
+      <rect x="497" y="73" width="76" height="180" fill="#5C7690"/>
+      <text x="535" y="305" text-anchor="middle" class="diagram-caption" fill="#3E6A85">NOW</text>
+    </svg>
+  </section>
+
+  <div class="trail-wrap">
+
+    <div class="camp" id="rules">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 3v18M5 4h11l-3 4 3 4H5"/></svg></div>
+      <div class="camp-label">Basecamp briefing</div>
+      <h2>When to use it</h2>
+      <div class="rule-grid">
+        <div class="rule-card">
+          <h3>A completed action</h3>
+          <p>One finished event at a specific point in the past.</p>
+          <div class="ex">"I finished the report yesterday afternoon."</div>
+        </div>
+        <div class="rule-card">
+          <h3>A past habit or routine</h3>
+          <p>Something you regularly did, but no longer do.</p>
+          <div class="ex">"We climbed every weekend when we lived in the Alps."</div>
+        </div>
+        <div class="rule-card">
+          <h3>A sequence of events</h3>
+          <p>Telling a story: one thing happened, then the next.</p>
+          <div class="ex">"She packed her bag, closed the door, and left."</div>
+        </div>
+        <div class="rule-card">
+          <h3>A historical fact</h3>
+          <p>Something true for a period that has since ended.</p>
+          <div class="ex">"The Ottoman Empire lasted six centuries."</div>
+        </div>
+        <div class="rule-card">
+          <h3>A past state or feeling</h3>
+          <p>A condition or opinion that no longer applies.</p>
+          <div class="ex">"I didn't like coffee when I was a child."</div>
+        </div>
+        <div class="rule-card">
+          <h3>A specific past moment</h3>
+          <p>Anchored to a stated or clearly implied time.</p>
+          <div class="ex">"They arrived at 6pm last night."</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="form">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg></div>
+      <div class="camp-label">Building the tense</div>
+      <h2>How it's built</h2>
+      <div class="form-grid">
+        <div class="rule-card">
+          <h3>Affirmative</h3>
+          <p>subject + past form (regular: base + -ed &middot; irregular: its own form)</p>
+          <div class="ex">"She worked late." &middot; "She went home."</div>
+        </div>
+        <div class="rule-card">
+          <h3>Negative</h3>
+          <p>subject + did not (didn't) + base verb</p>
+          <div class="ex">"They didn't finish on time."</div>
+        </div>
+        <div class="rule-card">
+          <h3>Yes / No questions</h3>
+          <p>Did + subject + base verb?</p>
+          <div class="ex">"Did you call her?"</div>
+        </div>
+        <div class="rule-card">
+          <h3>Wh- questions</h3>
+          <p>question word + did + subject + base verb?</p>
+          <div class="ex">"Where did you go?"</div>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <h3>Conjugation chart</h3>
+        <p class="chart-note">The regular pattern doesn't change by person &mdash; using the verb "to work" as the model. Irregular verbs (go &rarr; went, see &rarr; saw, have &rarr; had) have to be learned individually.</p>
+        <table class="conj">
+          <thead>
+            <tr><th>Subject</th><th>Affirmative</th><th>Negative</th><th>Question</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="subj">I</td><td>I worked</td><td>I did not work <em>(didn't)</em></td><td>Did I work?</td></tr>
+            <tr><td class="subj">You</td><td>You worked</td><td>You did not work <em>(didn't)</em></td><td>Did you work?</td></tr>
+            <tr><td class="subj">He</td><td>He worked</td><td>He did not work <em>(didn't)</em></td><td>Did he work?</td></tr>
+            <tr><td class="subj">She</td><td>She worked</td><td>She did not work <em>(didn't)</em></td><td>Did she work?</td></tr>
+            <tr><td class="subj">It</td><td>It worked</td><td>It did not work <em>(didn't)</em></td><td>Did it work?</td></tr>
+            <tr><td class="subj">We</td><td>We worked</td><td>We did not work <em>(didn't)</em></td><td>Did we work?</td></tr>
+            <tr><td class="subj">They</td><td>They worked</td><td>They did not work <em>(didn't)</em></td><td>Did they work?</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="chart-wrap">
+        <h3>The verb "to be" in the past</h3>
+        <p class="chart-note">The one verb that doesn't use did &mdash; it conjugates directly, with only two forms.</p>
+        <table class="conj">
+          <thead>
+            <tr><th>Subject</th><th>Affirmative</th><th>Negative</th><th>Question</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="subj">I</td><td>I was</td><td>I was not <em>(wasn't)</em></td><td>Was I?</td></tr>
+            <tr><td class="subj">You</td><td>You were</td><td>You were not <em>(weren't)</em></td><td>Were you?</td></tr>
+            <tr><td class="subj">He / She / It</td><td>He was</td><td>He was not <em>(wasn't)</em></td><td>Was he?</td></tr>
+            <tr><td class="subj">We</td><td>We were</td><td>We were not <em>(weren't)</em></td><td>Were we?</td></tr>
+            <tr><td class="subj">They</td><td>They were</td><td>They were not <em>(weren't)</em></td><td>Were they?</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="camp" id="signals">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg></div>
+      <div class="camp-label">Trail markers</div>
+      <h2>Signal words</h2>
+      <div class="signal-groups">
+        <div class="signal-box">
+          <h3>Finished time markers</h3>
+          <ul>
+            <li>yesterday / yesterday morning</li>
+            <li>last night / week / month / year</li>
+            <li>two days ago / a year ago</li>
+            <li>in 1990 / in the 1800s</li>
+            <li>when I was a child</li>
+            <li>once upon a time</li>
+          </ul>
+        </div>
+        <div class="signal-box">
+          <h3>Sequencing a story</h3>
+          <ul>
+            <li>first, first of all</li>
+            <li>then, next, after that</li>
+            <li>eventually, finally</li>
+            <li>suddenly, immediately</li>
+            <li>at last, in the end</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="past-now">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="4" width="8" height="16"/><rect x="13" y="4" width="8" height="16"/></svg></div>
+      <div class="camp-label">Interactive</div>
+      <h2>Past vs. now</h2>
+      <div class="diagram-card">
+        <p class="diagram-intro">The past is closed and complete &mdash; solid, torn off from everything after it. Now stands apart, framed in its own colour, untouched by what came before. Click each block to see it in a sentence.</p>
+        <div class="diagram-stage">
+          <svg viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: a brown block labelled past simple and a blue block with a coral border labelled now">
+            <rect x="0" y="0" width="640" height="320" fill="var(--paper)"/>
+            <path d="M35,73 L253,73 L279,93 L257,123 L287,151 L259,179 L289,207 L259,235 L285,261 L253,285 L127,285 L35,231 Z" fill="#1c130c" opacity="0.9" transform="translate(7,7)"/>
+            <g class="diagram-shape" id="shape-past" tabindex="0" role="button" aria-pressed="true" aria-label="Show past simple examples">
+              <path d="M35,73 L253,73 L279,93 L257,123 L287,151 L259,179 L289,207 L259,235 L285,261 L253,285 L127,285 L35,231 Z" fill="#4A3B33"/>
+            </g>
+            <text x="160" y="312" text-anchor="middle" class="diagram-caption" fill="#4A3B33">PAST SIMPLE</text>
+            <g class="diagram-shape" id="shape-now" tabindex="0" role="button" aria-pressed="false" aria-label="Show present examples">
+              <rect x="470" y="53" width="130" height="234" fill="#D98A72"/>
+              <rect x="497" y="80" width="76" height="180" fill="#5C7690"/>
+            </g>
+            <text x="535" y="312" text-anchor="middle" class="diagram-caption" fill="#3E6A85">NOW</text>
+          </svg>
+        </div>
+        <div class="diagram-panels">
+          <div class="diagram-panel" id="panel-past">
+            <h4>Past simple &mdash; closed</h4>
+            <ul id="panel-past-list"></ul>
+          </div>
+          <div class="diagram-panel is-now" id="panel-now">
+            <h4>Now &mdash; open</h4>
+            <ul id="panel-now-list"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="quiz">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3l3 7-3 3-3-3 3-7z"/><path d="M12 13v8"/></svg></div>
+      <div class="camp-label">The climb</div>
+      <h2>Practice</h2>
+      <div class="quiz-card">
+        <div class="progress-row">
+          <span id="progress-text">Checkpoint 1 of 14</span>
+          <span id="score-text">Score: 0</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+        <div class="q-prompt" id="q-prompt"></div>
+        <div class="q-hint" id="q-hint"></div>
+        <div class="options" id="options"></div>
+        <div class="feedback" id="feedback"></div>
+        <div class="quiz-footer">
+          <button class="next-btn" id="next-btn" disabled>Next checkpoint</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="results-camp">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 20l5-14 5 14M8 14h4"/></svg></div>
+      <div class="camp-label">Summit log</div>
+      <div id="results">
+        <div class="score" id="final-score"></div>
+        <p id="final-message"></p>
+        <button class="retry-btn" id="retry-btn">Climb again</button>
+        <div class="route-nav">
+          <a class="base-camp" href="sherpa-tensing-route-map.html">&larr; Return to base camp</a>
+          <a class="next-camp" href="sherpa-tensing-route-map.html">Choose your next camp &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+// ── PAST vs NOW diagram interactivity ──
+var pastExamples = [
+  "I <em>finished</em> the report yesterday.",
+  "She <em>worked</em> here for six years.",
+  "We <em>went</em> to Lisbon last spring."
+];
+var nowExamples = [
+  "I <em>am finishing</em> the report right now.",
+  "She <em>works</em> here.",
+  "We <em>are</em> in Lisbon this week."
+];
+
+function renderList(id, items){
+  var ul = document.getElementById(id);
+  ul.innerHTML = "";
+  items.forEach(function(txt){
+    var li = document.createElement("li");
+    li.innerHTML = txt;
+    ul.appendChild(li);
+  });
+}
+renderList("panel-past-list", pastExamples);
+renderList("panel-now-list", nowExamples);
+
+function pulseShape(el){
+  el.style.transformOrigin = "center";
+  el.animate(
+    [{ filter: "brightness(1)" }, { filter: "brightness(1.15)" }, { filter: "brightness(1)" }],
+    { duration: 380, easing: "ease-out" }
+  );
+}
+["shape-past", "shape-now"].forEach(function(id){
+  var el = document.getElementById(id);
+  var activate = function(){
+    pulseShape(el);
+    var panelId = id === "shape-past" ? "panel-past" : "panel-now";
+    document.querySelectorAll(".diagram-panel").forEach(function(p){ p.style.outline = "none"; });
+    document.getElementById(panelId).style.outline = "2px solid " + (id === "shape-past" ? "#B08968" : "#5C7690");
+  };
+  el.addEventListener("click", activate);
+  el.addEventListener("keydown", function(e){ if (e.key === "Enter" || e.key === " "){ e.preventDefault(); activate(); } });
+});
+
+// ── QUIZ ──
+var questions = [
+  {
+    prompt: "I _____ the report before lunch. (finish)",
+    hint: "A regular verb, one completed action.",
+    correct: "finished",
+    options: ["finished", "finish", "finishing", "have finished"],
+    explain: "A single completed past action takes the regular past simple ending -ed: finished."
+  },
+  {
+    prompt: "She _____ to Berlin last summer. (go)",
+    hint: "Irregular verb &mdash; not \"goed\".",
+    correct: "went",
+    options: ["went", "goed", "gone", "going"],
+    explain: "Go is irregular: go &rarr; went. \"Goed\" doesn't exist, and \"gone\" is a past participle, used with have."
+  },
+  {
+    prompt: "We _____ a wonderful time at the festival. (have)",
+    hint: "Another irregular verb.",
+    correct: "had",
+    options: ["had", "haved", "have", "having"],
+    explain: "Have is irregular in the past: have &rarr; had."
+  },
+  {
+    prompt: "He _____ the deadline. (not / meet)",
+    hint: "Negative form: did + not + base verb.",
+    correct: "didn't meet",
+    options: ["didn't meet", "not met", "didn't met", "doesn't meet"],
+    explain: "The negative past simple is subject + didn't + base verb: didn't meet. The main verb stays in its base form &mdash; \"didn't met\" is a common error."
+  },
+  {
+    prompt: "She _____ the message before she left. (not / receive)",
+    hint: "Same negative pattern.",
+    correct: "didn't receive",
+    options: ["didn't receive", "didn't received", "not received", "hasn't received"],
+    explain: "didn't + base verb: didn't receive, never didn't + past form."
+  },
+  {
+    prompt: "_____ you _____ the news this morning? (hear)",
+    hint: "Yes/No question: Did + subject + base verb?",
+    correct: "Did ... hear",
+    options: ["Did ... hear", "Did ... heard", "Have ... heard", "Was ... hearing"],
+    explain: "Yes/No questions in past simple use Did + subject + base verb: Did you hear?"
+  },
+  {
+    prompt: "Where _____ you _____ your holiday last year? (spend)",
+    hint: "Wh- question: question word + did + subject + base verb?",
+    correct: "did ... spend",
+    options: ["did ... spend", "did ... spent", "have ... spent", "were ... spending"],
+    explain: "Wh- questions follow question word + did + subject + base verb: Where did you spend?"
+  },
+  {
+    prompt: "It _____ raining heavily when we left the house. (be)",
+    hint: "The verb \"to be\" in the past &mdash; singular subject.",
+    correct: "was",
+    options: ["was", "were", "is", "did"],
+    explain: "\"It\" is singular, so the past of be is was."
+  },
+  {
+    prompt: "They _____ ready when the taxi arrived. (not / be)",
+    hint: "Negative \"to be\" &mdash; plural subject.",
+    correct: "weren't",
+    options: ["weren't", "wasn't", "didn't be", "aren't"],
+    explain: "\"They\" is plural, so the negative past of be is weren't. \"Didn't be\" is never correct &mdash; be doesn't use did."
+  },
+  {
+    prompt: "_____ you at the meeting yesterday? (be)",
+    hint: "A question with \"to be\" doesn't need did.",
+    correct: "Were",
+    options: ["Were", "Did", "Was", "Are"],
+    explain: "Questions with be invert the subject and verb directly: Were you...? No did is needed."
+  },
+  {
+    prompt: "The car _____ suddenly at the junction. (stop)",
+    hint: "Spelling rule: short vowel + single consonant doubles.",
+    correct: "stopped",
+    options: ["stopped", "stoped", "stopt", "stopping"],
+    explain: "One-syllable verbs ending consonant-vowel-consonant double the final letter before -ed: stop &rarr; stopped."
+  },
+  {
+    prompt: "He _____ hard and passed the exam. (study)",
+    hint: "Spelling rule: consonant + y changes to i before -ed.",
+    correct: "studied",
+    options: ["studied", "studyed", "studies", "studying"],
+    explain: "A consonant before final y changes y to i before -ed: study &rarr; studied."
+  },
+  {
+    prompt: "I _____ that film last week. (see)",
+    hint: "Irregular verb.",
+    correct: "saw",
+    options: ["saw", "seen", "seed", "seeing"],
+    explain: "See is irregular: see &rarr; saw. \"Seen\" is the past participle, used with have, not alone."
+  },
+  {
+    prompt: "We arrived at the airport, checked in, and then _____ through security. (go)",
+    hint: "Third step in a sequence of past events.",
+    correct: "went",
+    options: ["went", "go", "gone", "going"],
+    explain: "A sequence of finished actions in a story all stay in past simple: arrived, checked in, went."
+  }
+];
+
+var current = 0;
+var score = 0;
+var answered = false;
+var order = [];
+
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+
+function renderQuestion(){
+  answered = false;
+  var q = questions[current];
+  document.getElementById("progress-text").textContent = "Checkpoint " + (current + 1) + " of " + questions.length;
+  document.getElementById("progress-fill").style.width = ((current / questions.length) * 100) + "%";
+  document.getElementById("q-prompt").textContent = q.prompt;
+  document.getElementById("q-hint").textContent = q.hint;
+  var feedback = document.getElementById("feedback");
+  feedback.className = "feedback";
+  feedback.textContent = "";
+  var optionsWrap = document.getElementById("options");
+  optionsWrap.innerHTML = "";
+  order = shuffle(q.options);
+  order.forEach(function(opt){
+    var btn = document.createElement("button");
+    btn.className = "opt-btn";
+    btn.type = "button";
+    btn.textContent = opt;
+    btn.addEventListener("click", function(){ selectOption(opt, btn); });
+    optionsWrap.appendChild(btn);
+  });
+  document.getElementById("next-btn").disabled = true;
+  document.getElementById("next-btn").textContent = (current === questions.length - 1) ? "Reach the summit" : "Next checkpoint";
+}
+
+function selectOption(opt, btn){
+  if (answered) return;
+  answered = true;
+  var q = questions[current];
+  var allBtns = document.querySelectorAll("#options .opt-btn");
+  allBtns.forEach(function(b){
+    b.disabled = true;
+    if (b.textContent === q.correct) b.classList.add("correct");
+  });
+  if (opt !== q.correct) btn.classList.add("wrong");
+  if (opt === q.correct) score++;
+  document.getElementById("score-text").textContent = "Score: " + score;
+  var feedback = document.getElementById("feedback");
+  feedback.textContent = q.explain;
+  feedback.classList.add("show");
+  document.getElementById("next-btn").disabled = false;
+}
+
+document.getElementById("next-btn").addEventListener("click", function(){
+  if (current < questions.length - 1){
+    current++;
+    renderQuestion();
+  } else {
+    document.getElementById("progress-fill").style.width = "100%";
+    document.getElementById("quiz").style.display = "none";
+    document.getElementById("results").style.display = "block";
+    document.getElementById("final-score").textContent = score + " / " + questions.length;
+    var msg = "";
+    if (score === questions.length) msg = "Camp struck. Every step behind you accounted for.";
+    else if (score >= questions.length - 2) msg = "Solid progress. A couple of loose stones to check before camp four.";
+    else msg = "Good first attempt. Worth another pass before moving on.";
+    document.getElementById("final-message").textContent = msg;
+  }
+});
+
+document.getElementById("retry-btn").addEventListener("click", function(){
+  current = 0;
+  score = 0;
+  document.getElementById("score-text").textContent = "Score: 0";
+  document.getElementById("quiz").style.display = "block";
+  document.getElementById("results").style.display = "none";
+  renderQuestion();
+});
+
+renderQuestion();
+</script>
+
+</body>
+</html>
