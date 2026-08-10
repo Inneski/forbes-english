@@ -554,7 +554,7 @@
   <div class="score-bar" id="scoreBar" style="display:none">
     <span class="score-label"><span id="scoreLabel">Score:</span> <span class="score-value" id="scoreDisplay">0 / 0</span></span>
     <span class="progress-pill" id="progressDisplay">Starting…</span>
-    <span class="score-label">Activity <span class="score-value" id="activityDisplay">1 / 4</span></span>
+    <span class="score-label"><span id="activityLabel">Activity</span> <span class="score-value" id="activityDisplay">1 / 4</span></span>
   </div>
 
   <!-- SECTION HEADER -->
@@ -604,7 +604,49 @@ const UI_I18N = {
     coverSubtitle: 'Learn essential ski-resort vocabulary and practise grammar through multiple choice, fill-in-the-blank, matching and sentence reordering · 20 questions · 4 activity types',
     start: 'Start →',
     scoreLabel: 'Score:',
-    restart: '↺ Restart Lesson'
+    restart: '↺ Restart Lesson',
+    activityLabel: 'Activity',
+    act1Tag: 'Activity 1 — Multiple Choice',
+    act1Title: 'Vocabulary & Comprehension',
+    act1Sub: 'Choose the best answer for each question about skiing and winter resorts.',
+    act2Tag: 'Activity 2 — Fill in the Blank',
+    act2Title: 'Ski Resort Vocabulary in Context',
+    act2Sub: 'Click a word from the bank, then click the gap where it belongs.',
+    act3Tag: 'Activity 3 — Matching',
+    act3Title: 'Ski Terms & Definitions',
+    act3Sub: 'Click a term on the left, then click its matching definition on the right.',
+    act4Tag: 'Activity 4 — Sentence Reorder',
+    act4Title: 'Grammar in Action',
+    act4Sub: 'Drag the word chunks into the correct order to form a grammatically correct sentence.',
+    questionCounter: (n, total) => `Question ${n} of ${total}`,
+    gapCounter: (n, total) => `Gap ${n} of ${total}`,
+    matchCounter: (n, total) => `Match ${n} of ${total}`,
+    sentenceCounter: (n, total) => `Sentence ${n} of ${total}`,
+    next: 'Next →',
+    nextActivity: 'Next Activity →',
+    checkAnswer: 'Check Answer',
+    check: 'Check',
+    fillMissingWord: 'Fill in the missing word.',
+    wordBankInstructions: 'Word Bank — click a word, then click the gap',
+    clickToFill: 'click to fill',
+    correctPrefix: '✓ Correct!',
+    incorrectPrefix: '✗ Not quite.',
+    answerIs: (word) => `✗ The correct word is: "${word}"`,
+    matchInstructions: 'Match each ski term on the left with its correct definition on the right. Click a term, then click its definition.',
+    matchAllCorrect: (n) => `<strong>✓ All matched!</strong>Excellent work — you've correctly matched all ${n} ski terms with their definitions.`,
+    arrangeChunks: 'Arrange the chunks into the correct sentence.',
+    yourSentence: 'Your sentence',
+    wordBank: 'Word bank',
+    perfectOrder: '✓ Perfect order!',
+    notQuitePrefix: '✗ Not quite. The correct sentence is:',
+    lessonCompleteTag: 'Lesson Complete',
+    lessonCompleteTitle: 'Lesson Complete!',
+    scorePercent: (pct) => `Score: ${pct}%`,
+    thanksMessage: 'Thank you for completing the Forbes English skiing lesson.',
+    finalOutstandingMsg: "Outstanding! Your skiing vocabulary and grammar are truly expert-level. Time to hit the slopes!",
+    finalStrongMsg: "Well done! You have a strong command of skiing English. A little more practice and you'll be perfect.",
+    finalGoodMsg: "Good effort! You're making solid progress. Review the areas where you stumbled and try again.",
+    finalKeepMsg: "Keep practising! Language learning takes time. Review the vocabulary and give the lesson another go."
   },
   de: {
     lessonTag: 'Skifahren im Resort · B2',
@@ -613,9 +655,64 @@ const UI_I18N = {
     coverSubtitle: 'Lernen Sie wichtigen Wortschatz für Skigebiete und üben Sie Grammatik mit Multiple-Choice-Fragen, Lückentexten, Zuordnungsübungen und Satzumstellungen · 20 Fragen · 4 Übungstypen',
     start: 'Start →',
     scoreLabel: 'Punkte:',
-    restart: '↺ Neu starten'
+    restart: '↺ Neu starten',
+    activityLabel: 'Übung',
+    act1Tag: 'Übung 1 — Multiple Choice',
+    act1Title: 'Wortschatz & Verständnis',
+    act1Sub: 'Wählen Sie die beste Antwort für jede Frage zum Thema Skifahren und Skigebiete.',
+    act2Tag: 'Übung 2 — Lückentext',
+    act2Title: 'Skigebiet-Wortschatz im Kontext',
+    act2Sub: 'Klicken Sie auf ein Wort aus der Wortliste und dann auf die passende Lücke.',
+    act3Tag: 'Übung 3 — Zuordnung',
+    act3Title: 'Ski-Begriffe & Definitionen',
+    act3Sub: 'Klicken Sie auf einen Begriff links und dann auf die passende Definition rechts.',
+    act4Tag: 'Übung 4 — Satz umstellen',
+    act4Title: 'Grammatik in der Praxis',
+    act4Sub: 'Ziehen Sie die Wortgruppen in die richtige Reihenfolge, um einen grammatisch korrekten Satz zu bilden.',
+    questionCounter: (n, total) => `Frage ${n} von ${total}`,
+    gapCounter: (n, total) => `Lücke ${n} von ${total}`,
+    matchCounter: (n, total) => `Zuordnung ${n} von ${total}`,
+    sentenceCounter: (n, total) => `Satz ${n} von ${total}`,
+    next: 'Weiter →',
+    nextActivity: 'Nächste Übung →',
+    checkAnswer: 'Antwort prüfen',
+    check: 'Prüfen',
+    fillMissingWord: 'Setzen Sie das fehlende Wort ein.',
+    wordBankInstructions: 'Wortliste — klicken Sie auf ein Wort und dann auf die Lücke',
+    clickToFill: 'zum Ausfüllen klicken',
+    correctPrefix: '✓ Richtig!',
+    incorrectPrefix: '✗ Nicht ganz.',
+    answerIs: (word) => `✗ Das richtige Wort lautet: „${word}"`,
+    matchInstructions: 'Ordnen Sie jeden Ski-Begriff links der passenden Definition rechts zu. Klicken Sie auf einen Begriff und dann auf seine Definition.',
+    matchAllCorrect: (n) => `<strong>✓ Alle zugeordnet!</strong>Ausgezeichnete Arbeit — Sie haben alle ${n} Ski-Begriffe korrekt ihren Definitionen zugeordnet.`,
+    arrangeChunks: 'Bringen Sie die Wortgruppen in die richtige Reihenfolge.',
+    yourSentence: 'Ihr Satz',
+    wordBank: 'Wortliste',
+    perfectOrder: '✓ Perfekte Reihenfolge!',
+    notQuitePrefix: '✗ Nicht ganz richtig. Der richtige Satz lautet:',
+    lessonCompleteTag: 'Lektion abgeschlossen',
+    lessonCompleteTitle: 'Lektion abgeschlossen!',
+    scorePercent: (pct) => `Punktzahl: ${pct}%`,
+    thanksMessage: 'Vielen Dank, dass Sie die Forbes-English-Ski-Lektion abgeschlossen haben.',
+    finalOutstandingMsg: "Hervorragend! Ihr Ski-Wortschatz und Ihre Grammatik sind auf echtem Expertenniveau. Zeit, auf die Piste zu gehen!",
+    finalStrongMsg: "Gut gemacht! Sie beherrschen das Ski-Englisch sehr sicher. Mit ein wenig mehr Übung wird es perfekt.",
+    finalGoodMsg: "Guter Ansatz! Sie machen solide Fortschritte. Wiederholen Sie die Bereiche, in denen es noch gehakt hat, und versuchen Sie es erneut.",
+    finalKeepMsg: "Bleiben Sie dran! Sprachenlernen braucht Zeit. Wiederholen Sie den Wortschatz und versuchen Sie die Lektion noch einmal."
   }
 };
+
+function applyStaticText(t) {
+  const activityLabel = document.getElementById('activityLabel');
+  if (activityLabel) activityLabel.textContent = t.activityLabel;
+  // Re-derive the section header and progress-bar text for whatever
+  // activity/screen is currently in progress (if the lesson has started).
+  if (typeof actIdx === 'number' && actIdx < activities.length) {
+    setHeader();
+    updateScoreBar();
+  } else if (typeof actIdx === 'number') {
+    updateScoreBar();
+  }
+}
 
 function setLang(code) {
   currentLang = UI_I18N[code] ? code : 'en';
@@ -630,6 +727,7 @@ function setLang(code) {
   if (scoreLabel) scoreLabel.textContent = t.scoreLabel;
   const langSelect = document.getElementById('langSelect');
   if (langSelect) langSelect.value = currentLang;
+  applyStaticText(t);
 }
 
 function initLangSwitch() {
@@ -818,25 +916,30 @@ let fitbState = [];
 let fitbSelected = null;
 
 function updateScoreBar() {
-  const act = activities[actIdx];
+  const t = UI_I18N[currentLang];
   document.getElementById('scoreDisplay').textContent = `${score} / ${total}`;
-  document.getElementById('activityDisplay').textContent = `${actIdx+1} / ${activities.length}`;
+  document.getElementById('activityDisplay').textContent = `${Math.min(actIdx+1, activities.length)} / ${activities.length}`;
+
+  const act = activities[actIdx];
+  if (!act) return;
 
   if (act.type === 'mc') {
-    document.getElementById('progressDisplay').textContent = `Question ${qIdx+1} of ${act.questions.length}`;
+    document.getElementById('progressDisplay').textContent = t.questionCounter(qIdx+1, act.questions.length);
   } else if (act.type === 'fitb') {
-    document.getElementById('progressDisplay').textContent = `Gap ${qIdx+1} of ${act.questions.length}`;
+    document.getElementById('progressDisplay').textContent = t.gapCounter(qIdx+1, act.questions.length);
   } else if (act.type === 'matching') {
-    document.getElementById('progressDisplay').textContent = `Match ${matchCompleted} of ${act.pairs.length}`;
+    document.getElementById('progressDisplay').textContent = t.matchCounter(matchCompleted, act.pairs.length);
   } else if (act.type === 'reorder') {
-    document.getElementById('progressDisplay').textContent = `Sentence ${qIdx+1} of ${act.questions.length}`;
+    document.getElementById('progressDisplay').textContent = t.sentenceCounter(qIdx+1, act.questions.length);
   }
 }
 
-function setHeader(act) {
-  document.getElementById('activityTag').textContent = act.tag;
-  document.getElementById('activityTitle').textContent = act.title;
-  document.getElementById('activitySub').textContent = act.sub;
+function setHeader() {
+  const t = UI_I18N[currentLang];
+  const n = actIdx + 1;
+  document.getElementById('activityTag').textContent = t[`act${n}Tag`];
+  document.getElementById('activityTitle').textContent = t[`act${n}Title`];
+  document.getElementById('activitySub').textContent = t[`act${n}Sub`];
 }
 
 // ────────────────────────────────────────────
@@ -845,7 +948,7 @@ function setHeader(act) {
 
 function renderActivity() {
   const act = activities[actIdx];
-  setHeader(act);
+  setHeader();
   updateScoreBar();
   if (act.type === 'mc') renderMC();
   else if (act.type === 'fitb') renderFITB();
@@ -857,11 +960,12 @@ function renderActivity() {
 function renderMC() {
   const act = activities[actIdx];
   const q = act.questions[qIdx];
+  const t = UI_I18N[currentLang];
   answered = false;
   const card = document.getElementById('mainCard');
   const letters = ['A','B','C','D'];
   card.innerHTML = `
-    <div class="q-label">Question ${qIdx+1} of ${act.questions.length}</div>
+    <div class="q-label">${t.questionCounter(qIdx+1, act.questions.length)}</div>
     <div class="q-text">${q.q}</div>
     <div class="options-grid" id="optGrid">
       ${q.opts.map((o,i)=>`
@@ -872,7 +976,7 @@ function renderMC() {
     </div>
     <div class="feedback-box" id="feedbackBox"></div>
     <div class="btn-row">
-      <button class="btn btn-gold" id="nextBtn" onclick="nextMC()" style="display:none">Next →</button>
+      <button class="btn btn-gold" id="nextBtn" onclick="nextMC()" style="display:none">${t.next}</button>
     </div>
   `;
   updateScoreBar();
@@ -884,6 +988,7 @@ function handleMC(chosen) {
   total++;
   const act = activities[actIdx];
   const q = act.questions[qIdx];
+  const t = UI_I18N[currentLang];
   const btns = document.querySelectorAll('.option-btn');
   btns.forEach(b => b.disabled = true);
   const isCorrect = chosen === q.correct;
@@ -892,7 +997,7 @@ function handleMC(chosen) {
   if (!isCorrect) btns[q.correct].classList.add('missed');
   const fb = document.getElementById('feedbackBox');
   fb.className = `feedback-box ${isCorrect ? 'correct' : 'wrong'} show`;
-  fb.innerHTML = `<strong>${isCorrect ? '✓ Correct!' : '✗ Not quite.'}</strong>${q.why}`;
+  fb.innerHTML = `<strong>${isCorrect ? t.correctPrefix : t.incorrectPrefix}</strong>${q.why}`;
   document.getElementById('nextBtn').style.display = 'inline-block';
   updateScoreBar();
 }
@@ -917,24 +1022,25 @@ function renderFITBQuestion() {
   const act = activities[actIdx];
   const q = act.questions[qIdx];
   const card = document.getElementById('mainCard');
+  const t = UI_I18N[currentLang];
 
   // Shuffle bank each time
   const bankWords = [...act.bank].sort(() => Math.random()-0.5);
 
   card.innerHTML = `
-    <div class="q-label">Gap ${qIdx+1} of ${act.questions.length}</div>
-    <div class="q-text" style="margin-bottom:10px">Fill in the missing word.</div>
+    <div class="q-label">${t.gapCounter(qIdx+1, act.questions.length)}</div>
+    <div class="q-text" style="margin-bottom:10px">${t.fillMissingWord}</div>
     <div class="fitb-sentence" id="fitbSentence">
-      ${q.before}<span class="blank-slot" id="theSlot" onclick="fillSlot()">click to fill</span>${q.after}
+      ${q.before}<span class="blank-slot" id="theSlot" onclick="fillSlot()">${t.clickToFill}</span>${q.after}
     </div>
-    <div style="margin-bottom:14px;font-size:12px;color:var(--text-light);font-weight:600;text-transform:uppercase;letter-spacing:.08em;">Word Bank — click a word, then click the gap</div>
+    <div style="margin-bottom:14px;font-size:12px;color:var(--text-light);font-weight:600;text-transform:uppercase;letter-spacing:.08em;">${t.wordBankInstructions}</div>
     <div class="word-bank" id="wordBank">
       ${bankWords.map(w=>`<div class="word-chip" data-word="${w}" onclick="selectWord(this)">${w}</div>`).join('')}
     </div>
     <div class="feedback-box" id="feedbackBox"></div>
     <div class="btn-row">
-      <button class="btn btn-primary" id="checkBtn" onclick="checkFITB()" disabled>Check Answer</button>
-      <button class="btn btn-gold" id="nextBtn" onclick="nextFITB()" style="display:none">Next →</button>
+      <button class="btn btn-primary" id="checkBtn" onclick="checkFITB()" disabled>${t.checkAnswer}</button>
+      <button class="btn btn-gold" id="nextBtn" onclick="nextFITB()" style="display:none">${t.next}</button>
     </div>
   `;
   updateScoreBar();
@@ -973,9 +1079,10 @@ function checkFITB() {
   if (isCorrect) score++;
   slot.classList.add(isCorrect ? 'correct' : 'wrong');
   document.getElementById('checkBtn').disabled = true;
+  const t = UI_I18N[currentLang];
   const fb = document.getElementById('feedbackBox');
   fb.className = `feedback-box ${isCorrect ? 'correct' : 'wrong'} show`;
-  fb.innerHTML = `<strong>${isCorrect ? '✓ Correct!' : `✗ The correct word is: "${q.blank}"`}</strong>${q.why}`;
+  fb.innerHTML = `<strong>${isCorrect ? t.correctPrefix : t.answerIs(q.blank)}</strong>${q.why}`;
   document.getElementById('nextBtn').style.display = 'inline-block';
   updateScoreBar();
 }
@@ -1002,9 +1109,10 @@ function renderMatching() {
   }));
 
   const rightSideItems = rightOrder.map(origIdx => act.pairs[origIdx]);
+  const t = UI_I18N[currentLang];
 
   document.getElementById('mainCard').innerHTML = `
-    <div class="q-text" style="margin-bottom:20px">Match each ski term on the left with its correct definition on the right. Click a term, then click its definition.</div>
+    <div class="q-text" style="margin-bottom:20px">${t.matchInstructions}</div>
     <div class="match-grid">
       <div class="match-col" id="leftCol">
         ${act.pairs.map((p,i)=>`<div class="match-item match-left" data-side="left" data-idx="${i}" onclick="handleMatch('left',${i})">${p.term}</div>`).join('')}
@@ -1015,7 +1123,7 @@ function renderMatching() {
     </div>
     <div class="feedback-box" id="feedbackBox"></div>
     <div class="btn-row">
-      <button class="btn btn-gold" id="nextBtn" onclick="nextActivity()" style="display:none">Next Activity →</button>
+      <button class="btn btn-gold" id="nextBtn" onclick="nextActivity()" style="display:none">${t.nextActivity}</button>
     </div>
   `;
   updateScoreBar();
@@ -1057,9 +1165,10 @@ function attemptMatch(leftItems, rightItems) {
     rightItems[ri].classList.remove('selected');
     rightItems[ri].classList.add('matched','locked');
     if (matchCompleted === activities[actIdx].pairs.length) {
+      const t = UI_I18N[currentLang];
       const fb = document.getElementById('feedbackBox');
       fb.className = 'feedback-box correct show';
-      fb.innerHTML = `<strong>✓ All matched!</strong>Excellent work — you've correctly matched all five ski terms with their definitions.`;
+      fb.innerHTML = t.matchAllCorrect(activities[actIdx].pairs.length);
       document.getElementById('nextBtn').style.display = 'inline-block';
     }
   } else {
@@ -1100,19 +1209,20 @@ function renderReorderQuestion() {
   let bankChunks = [...shuffled];
 
   const card = document.getElementById('mainCard');
+  const t = UI_I18N[currentLang];
   card.innerHTML = `
-    <div class="q-label">Sentence ${qIdx+1} of ${act.questions.length}</div>
-    <div class="q-text" style="margin-bottom:4px">Arrange the chunks into the correct sentence.</div>
+    <div class="q-label">${t.sentenceCounter(qIdx+1, act.questions.length)}</div>
+    <div class="q-text" style="margin-bottom:4px">${t.arrangeChunks}</div>
     <div class="reorder-container">
-      <div class="reorder-label-sm">Your sentence</div>
+      <div class="reorder-label-sm">${t.yourSentence}</div>
       <div class="reorder-zone" id="dropZone"></div>
-      <div class="reorder-label-sm">Word bank</div>
+      <div class="reorder-label-sm">${t.wordBank}</div>
       <div class="reorder-zone" id="bankZone"></div>
     </div>
     <div class="feedback-box" id="feedbackBox"></div>
     <div class="btn-row">
-      <button class="btn btn-primary" id="checkBtn" onclick="checkReorder()" disabled>Check</button>
-      <button class="btn btn-gold" id="nextBtn" onclick="nextReorder()" style="display:none">Next →</button>
+      <button class="btn btn-primary" id="checkBtn" onclick="checkReorder()" disabled>${t.check}</button>
+      <button class="btn btn-gold" id="nextBtn" onclick="nextReorder()" style="display:none">${t.next}</button>
     </div>
   `;
 
@@ -1166,12 +1276,13 @@ function renderReorderQuestion() {
     document.getElementById('checkBtn').disabled = true;
     // Disable clicks
     document.querySelectorAll('.reorder-chip').forEach(el => el.style.pointerEvents='none');
+    const t = UI_I18N[currentLang];
     const fb = document.getElementById('feedbackBox');
     fb.className = `feedback-box ${isCorrect ? 'correct' : 'wrong'} show`;
     if (isCorrect) {
-      fb.innerHTML = `<strong>✓ Perfect order!</strong>${q2.why}`;
+      fb.innerHTML = `<strong>${t.perfectOrder}</strong>${q2.why}`;
     } else {
-      fb.innerHTML = `<strong>✗ Not quite. The correct sentence is:</strong>"${q2.sentence}"<br><br>${q2.why}`;
+      fb.innerHTML = `<strong>${t.notQuitePrefix}</strong>"${q2.sentence}"<br><br>${q2.why}`;
     }
     document.getElementById('nextBtn').style.display = 'inline-block';
     updateScoreBar();
@@ -1190,11 +1301,12 @@ function nextReorder() {
 // ── FINISH ──
 function renderFinish() {
   const pct = Math.round(score/total*100);
+  const t = UI_I18N[currentLang];
   let msg, emoji;
-  if (pct >= 90) { msg = "Outstanding! Your skiing vocabulary and grammar are truly expert-level. Time to hit the slopes!"; emoji = "🏆"; }
-  else if (pct >= 75) { msg = "Well done! You have a strong command of skiing English. A little more practice and you'll be perfect."; emoji = "🥈"; }
-  else if (pct >= 55) { msg = "Good effort! You're making solid progress. Review the areas where you stumbled and try again."; emoji = "⛷️"; }
-  else { msg = "Keep practising! Language learning takes time. Review the vocabulary and give the lesson another go."; emoji = "❄️"; }
+  if (pct >= 90) { msg = t.finalOutstandingMsg; emoji = "🏆"; }
+  else if (pct >= 75) { msg = t.finalStrongMsg; emoji = "🥈"; }
+  else if (pct >= 55) { msg = t.finalGoodMsg; emoji = "⛷️"; }
+  else { msg = t.finalKeepMsg; emoji = "❄️"; }
 
   document.getElementById('sectionHeader').style.display='none';
 
@@ -1203,18 +1315,18 @@ function renderFinish() {
   document.getElementById('mainCard').innerHTML = `
     <div class="finish-screen">
       <div class="finish-trophy">${emoji}</div>
-      <div class="finish-title">Lesson Complete!</div>
+      <div class="finish-title">${t.lessonCompleteTitle}</div>
       <div class="finish-score">${score}<span style="font-size:24px;color:var(--text-light)"> / ${total}</span></div>
       <div class="finish-msg">${msg}</div>
       <div class="finish-bars">${bars}</div>
       <div class="btn-row" style="justify-content:center">
-        <button class="btn btn-gold" onclick="restartLesson()">${UI_I18N[currentLang].restart}</button>
+        <button class="btn btn-gold" onclick="restartLesson()">${t.restart}</button>
       </div>
     </div>
   `;
-  document.getElementById('activityTag').textContent = 'Lesson Complete';
-  document.getElementById('activityTitle').textContent = `Score: ${pct}%`;
-  document.getElementById('activitySub').textContent = 'Thank you for completing the Forbes English skiing lesson.';
+  document.getElementById('activityTag').textContent = t.lessonCompleteTag;
+  document.getElementById('activityTitle').textContent = t.scorePercent(pct);
+  document.getElementById('activitySub').textContent = t.thanksMessage;
   updateScoreBar();
 }
 
