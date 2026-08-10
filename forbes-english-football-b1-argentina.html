@@ -136,12 +136,6 @@
     padding:16px 4px 8px 4px;
   }
 
-  .intro-illustration{
-    width:150px;
-    height:110px;
-    margin:0 auto 18px auto;
-  }
-
   .hero-wrap{
     margin:-16px -24px 18px -24px;
   }
@@ -248,21 +242,20 @@
   }
 
   /* Question screen */
-  .q-illustration{
-    width:88px;
-    height:88px;
-    margin:0 auto 16px auto;
-    background:var(--arg-blue-light);
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:16px;
+  .q-photo-wrap{
+    margin:0 0 18px 0;
   }
 
-  .q-illustration svg{
+  .q-photo-frame{
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 4px 18px rgba(30,76,115,0.14);
+  }
+
+  .q-photo-frame img{
     width:100%;
-    height:100%;
+    height:auto;
+    display:block;
   }
 
   .q-counter{
@@ -412,10 +405,21 @@
     padding:30px 4px;
   }
 
-  .results .trophy{
-    width:90px;
-    height:90px;
-    margin:0 auto 18px auto;
+  .results-photo-wrap{
+    max-width:340px;
+    margin:0 auto 22px auto;
+  }
+
+  .results-photo-frame{
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 4px 18px rgba(30,76,115,0.14);
+  }
+
+  .results-photo-frame img{
+    width:100%;
+    height:auto;
+    display:block;
   }
 
   .results h2{
@@ -510,21 +514,6 @@
         </div>
         <p class="hero-cap">Match day in Argentina — the vocabulary you need to follow every kick, call and celebration.</p>
       </div>
-      <svg class="intro-illustration" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
-        <ellipse cx="100" cy="135" rx="90" ry="10" fill="#EAF4FC"/>
-        <rect x="20" y="30" width="160" height="90" rx="6" fill="#5BA3D9"/>
-        <rect x="20" y="30" width="160" height="30" fill="#FFFFFF"/>
-        <rect x="20" y="90" width="160" height="30" fill="#FFFFFF"/>
-        <circle cx="100" cy="75" r="16" fill="#F6B40E"/>
-        <g stroke="#2E6A9E" stroke-width="1.4">
-          <line x1="100" y1="59" x2="100" y2="91"/>
-          <line x1="84" y1="75" x2="116" y2="75"/>
-          <line x1="88.3" y1="63.3" x2="111.7" y2="86.7"/>
-          <line x1="111.7" y1="63.3" x2="88.3" y2="86.7"/>
-        </g>
-        <circle cx="150" cy="45" r="11" fill="#FFFFFF" stroke="#2E6A9E" stroke-width="1.5"/>
-        <path d="M150 36 L153 42 L159.5 43 L154.8 47.6 L156 54 L150 51 L144 54 L145.2 47.6 L140.5 43 L147 42 Z" fill="#2E6A9E"/>
-      </svg>
       <span class="badge">B1 &middot; INTERMEDIATE</span>
       <h1>Football English</h1>
       <p>Learn the essential English vocabulary you need to talk about football like a real fan: positions, fouls, set pieces and match commentary. Read each sentence carefully and choose the word that fits best.</p>
@@ -553,7 +542,9 @@
 
     <!-- QUESTION SCREEN -->
     <section id="questionScreen" class="hidden">
-      <div class="q-illustration" id="qIllustration"></div>
+      <div class="q-photo-wrap">
+        <div class="q-photo-frame"><img id="qPhotoImg" src="" alt=""></div>
+      </div>
       <div class="q-counter" id="qCounter">Question 1 of 14</div>
       <p class="q-sentence" id="qSentence"></p>
       <div class="options" id="optionsWrap"></div>
@@ -569,14 +560,9 @@
 
     <!-- RESULTS SCREEN -->
     <section id="resultsScreen" class="hidden results">
-      <svg class="trophy" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-        <path d="M20 8 H44 V22 C44 30 38 36 32 36 C26 36 20 30 20 22 Z" fill="#F6B40E"/>
-        <rect x="28" y="36" width="8" height="10" fill="#F6B40E"/>
-        <rect x="20" y="46" width="24" height="6" rx="2" fill="#2E6A9E"/>
-        <path d="M20 12 H10 C10 20 14 26 20 27" fill="none" stroke="#F6B40E" stroke-width="3"/>
-        <path d="M44 12 H54 C54 20 50 26 44 27" fill="none" stroke="#F6B40E" stroke-width="3"/>
-        <circle cx="32" cy="20" r="6" fill="#FFFFFF" opacity="0.6"/>
-      </svg>
+      <div class="results-photo-wrap">
+        <div class="results-photo-frame"><img src="Football/argentina-scene-3.jpg" alt="An Argentina number 10 player standing before the ball at sunset, facing a giant setting sun"></div>
+      </div>
       <h2>Full Time!</h2>
       <div class="score-big" id="finalScore">0 / 14</div>
       <p class="summary" id="finalSummary">Great effort on your football vocabulary.</p>
@@ -592,27 +578,9 @@
 (function(){
   "use strict";
 
-  var icons = {
-    referee:"<svg viewBox=\"0 0 64 64\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"32\" cy=\"32\" r=\"30\" fill=\"none\"/><rect x=\"14\" y=\"26\" width=\"24\" height=\"14\" rx=\"7\" fill=\"none\" stroke=\"#2E6A9E\" stroke-width=\"3\"/><circle cx=\"38\" cy=\"33\" r=\"3\" fill=\"#2E6A9E\"/><path d=\"M38 26 L50 20\" stroke=\"#2E6A9E\" stroke-width=\"3\" stroke-linecap=\"round\" fill=\"none\"/><circle cx=\"51\" cy=\"18\" r=\"4\" fill=\"none\" stroke=\"#F6B40E\" stroke-width=\"3\"/></svg>",
-    goal:"<svg viewBox=\"0 0 64 64\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M10 14 H54 V22 M10 14 V50 M54 22 V50\" fill=\"none\" stroke=\"#2E6A9E\" stroke-width=\"3\"/><path d=\"M10 22 H54 M18 14 V50 M26 14 V50 M34 14 V50 M42 14 V50\" stroke=\"#5BA3D9\" stroke-width=\"1.2\" opacity=\"0.6\"/><circle cx=\"40\" cy=\"38\" r=\"8\" fill=\"#F6B40E\"/><path d=\"M40 32 L43 36 L40 40 L37 36 Z\" fill=\"#2E6A9E\"/></svg>",
-    foul:"<svg viewBox=\"0 0 64 64\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"32\" cy=\"32\" r=\"26\" fill=\"none\" stroke=\"#D64545\" stroke-width=\"3\"/><line x1=\"32\" y1=\"18\" x2=\"32\" y2=\"36\" stroke=\"#D64545\" stroke-width=\"4\" stroke-linecap=\"round\"/><circle cx=\"32\" cy=\"44\" r=\"2.6\" fill=\"#D64545\"/></svg>",
-    redcard:"<svg viewBox=\"0 0 64 64\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"20\" y=\"10\" width=\"24\" height=\"34\" rx=\"3\" fill=\"#D64545\" transform=\"rotate(8 32 27)\"/><circle cx=\"32\" cy=\"48\" r=\"12\" fill=\"none\" stroke=\"#2E6A9E\" stroke-width=\"2.4\"/><path d=\"M27 48 L31 52 L38 44\" fill=\"none\" stroke=\"#2E6A9E\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
-    offside:"<svg viewBox=\"0 0 64 64\" xmlns=\"http://www.w3.org/2000/svg\"><line x1=\"14\" y1=\"12\" x2=\"14\" y2=\"52\" stroke=\"#2E6A9E\" stroke-width=\"3\"/><path d=\"M14 14 L34 20 L14 26 Z\" fill=\"#F6B40E\"/><line x1=\"6\" y1=\"52\" x2=\"58\" y2=\"52\" stroke=\"#5BA3D9\" stroke-width=\"3\" stroke-dasharray=\"5 4\"/><circle cx=\"46\" cy=\"36\" r=\"7\" fill=\"#2E6A9E\"/></svg>",
-    striker:"<svg viewBox=\"0 0 64 64\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"32\" cy=\"32\" r=\"14\" fill=\"none\" stroke=\"#2E6A9E\" stroke-width=\"2.5\"/><path d=\"M32 20 L35 27 L42 28 L37 33 L38.5 40 L32 36.5 L25.5 40 L27 33 L22 28 L29 27 Z\" fill=\"#F6B40E\"/></svg>",
-    goalkeeper:"<svg viewBox=\"0 0 64 64\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"22\" cy=\"26\" r=\"9\" fill=\"none\" stroke=\"#2E6A9E\" stroke-width=\"3\"/><circle cx=\"42\" cy=\"26\" r=\"9\" fill=\"none\" stroke=\"#2E6A9E\" stroke-width=\"3\"/><path d=\"M22 35 C22 44 42 44 42 35\" fill=\"none\" stroke=\"#5BA3D9\" stroke-width=\"3\" stroke-linecap=\"round\"/><circle cx=\"22\" cy=\"26\" r=\"2.4\" fill=\"#F6B40E\"/><circle cx=\"42\" cy=\"26\" r=\"2.4\" fill=\"#F6B40E\"/></svg>",
-    goalkick:"<svg viewBox=\"0 0 64 64\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M10 50 H54\" stroke=\"#2E6A9E\" stroke-width=\"3\"/><circle cx=\"18\" cy=\"42\" r=\"7\" fill=\"#F6B40E\"/><path d=\"M25 40 C34 30 44 26 54 22\" fill=\"none\" stroke=\"#5BA3D9\" stroke-width=\"3\" stroke-dasharray=\"4 4\" stroke-linecap=\"round\"/><path d=\"M50 18 L56 22 L50 26\" fill=\"none\" stroke=\"#2E6A9E\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
-    throwin:"<svg viewBox=\"0 0 64 64\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"32\" cy=\"20\" r=\"8\" fill=\"#F6B40E\"/><path d=\"M14 46 C18 34 24 30 32 30 C40 30 46 34 50 46\" fill=\"none\" stroke=\"#2E6A9E\" stroke-width=\"3\" stroke-linecap=\"round\"/><line x1=\"14\" y1=\"46\" x2=\"14\" y2=\"38\" stroke=\"#5BA3D9\" stroke-width=\"3\" stroke-linecap=\"round\"/><line x1=\"50\" y1=\"46\" x2=\"50\" y2=\"38\" stroke=\"#5BA3D9\" stroke-width=\"3\" stroke-linecap=\"round\"/></svg>",
-    dribble:"<svg viewBox=\"0 0 64 64\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"44\" cy=\"36\" r=\"8\" fill=\"#F6B40E\"/><path d=\"M8 40 C16 40 18 30 26 30 C34 30 36 40 44 40\" fill=\"none\" stroke=\"#2E6A9E\" stroke-width=\"2.5\" stroke-dasharray=\"1 6\" stroke-linecap=\"round\"/><path d=\"M12 46 L20 40 M28 46 L36 40\" stroke=\"#5BA3D9\" stroke-width=\"3\" stroke-linecap=\"round\"/></svg>",
-    cleansheet:"<svg viewBox=\"0 0 64 64\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M32 8 L52 16 V32 C52 44 42 52 32 56 C22 52 12 44 12 32 V16 Z\" fill=\"#2E6A9E\"/><text x=\"32\" y=\"38\" font-family=\"Montserrat, sans-serif\" font-size=\"20\" font-weight=\"800\" fill=\"#F6B40E\" text-anchor=\"middle\">0</text></svg>",
-    extratime:"<svg viewBox=\"0 0 64 64\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"32\" cy=\"34\" r=\"22\" fill=\"none\" stroke=\"#2E6A9E\" stroke-width=\"3\"/><line x1=\"32\" y1=\"34\" x2=\"32\" y2=\"20\" stroke=\"#2E6A9E\" stroke-width=\"3\" stroke-linecap=\"round\"/><line x1=\"32\" y1=\"34\" x2=\"42\" y2=\"38\" stroke=\"#F6B40E\" stroke-width=\"3\" stroke-linecap=\"round\"/><line x1=\"24\" y1=\"10\" x2=\"30\" y2=\"14\" stroke=\"#5BA3D9\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><line x1=\"40\" y1=\"10\" x2=\"34\" y2=\"14\" stroke=\"#5BA3D9\" stroke-width=\"2.5\" stroke-linecap=\"round\"/></svg>",
-    substitution:"<svg viewBox=\"0 0 64 64\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M14 24 H42 M42 24 L34 16 M42 24 L34 32\" fill=\"none\" stroke=\"#2E6A9E\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M50 42 H22 M22 42 L30 34 M22 42 L30 50\" fill=\"none\" stroke=\"#F6B40E\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
-    owngoal:"<svg viewBox=\"0 0 64 64\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M10 14 V50 M10 14 H30 M10 50 H30\" fill=\"none\" stroke=\"#2E6A9E\" stroke-width=\"3\"/><path d=\"M10 22 H30 M10 30 H30 M10 38 H30\" stroke=\"#5BA3D9\" stroke-width=\"1\" opacity=\"0.6\"/><circle cx=\"20\" cy=\"32\" r=\"7\" fill=\"#D64545\"/><path d=\"M44 32 L27 32\" stroke=\"#D64545\" stroke-width=\"2.5\" stroke-dasharray=\"3 3\" marker-end=\"url(#arrowhead)\"/><defs><marker id=\"arrowhead\" markerWidth=\"6\" markerHeight=\"6\" refX=\"4\" refY=\"3\" orient=\"auto\"><path d=\"M0 0 L6 3 L0 6 Z\" fill=\"#D64545\"/></marker></defs></svg>"
-  };
-
   var questions = [
     {
       id:1,
-      icon:"referee",
       sentence:"The ___ blew the whistle to stop the match after a dangerous tackle.",
       options:["referee","striker","substitute","captain"],
       correct:"referee",
@@ -621,7 +589,6 @@
     },
     {
       id:2,
-      icon:"goal",
       sentence:"She scored a fantastic ___ from outside the penalty area.",
       options:["goal","corner","offside","foul"],
       correct:"goal",
@@ -630,7 +597,6 @@
     },
     {
       id:3,
-      icon:"foul",
       sentence:"The defender committed a ___ inside the box and gave away a penalty.",
       options:["foul","pass","save","cross"],
       correct:"foul",
@@ -639,7 +605,6 @@
     },
     {
       id:4,
-      icon:"redcard",
       sentence:"The player received a ___ for a reckless tackle and was sent off immediately.",
       options:["red card","yellow card","throw-in","clean sheet"],
       correct:"red card",
@@ -648,7 +613,6 @@
     },
     {
       id:5,
-      icon:"offside",
       sentence:"The linesman raised his flag because the striker was in an ___ position.",
       options:["offside","onside","corner","save"],
       correct:"offside",
@@ -657,7 +621,6 @@
     },
     {
       id:6,
-      icon:"striker",
       sentence:"The ___ is the forward whose main job is to score goals close to the opponent's goal.",
       options:["striker","goalkeeper","midfielder","referee"],
       correct:"striker",
@@ -666,7 +629,6 @@
     },
     {
       id:7,
-      icon:"goalkeeper",
       sentence:"The ___ dived to his left and saved the penalty kick.",
       options:["goalkeeper","winger","defender","coach"],
       correct:"goalkeeper",
@@ -675,7 +637,6 @@
     },
     {
       id:8,
-      icon:"goalkick",
       sentence:"When the attacker's shot went out over the goal line, the defending team took a ___.",
       options:["goal kick","corner","throw-in","penalty"],
       correct:"goal kick",
@@ -684,7 +645,6 @@
     },
     {
       id:9,
-      icon:"throwin",
       sentence:"The ball rolled out over the touchline, so the away team took a ___ to restart play.",
       options:["throw-in","corner","kick-off","free kick"],
       correct:"throw-in",
@@ -693,7 +653,6 @@
     },
     {
       id:10,
-      icon:"dribble",
       sentence:"The winger managed to ___ past two defenders before crossing the ball into the box.",
       options:["dribble","tackle","save","block"],
       correct:"dribble",
@@ -702,7 +661,6 @@
     },
     {
       id:11,
-      icon:"cleansheet",
       sentence:"The goalkeeper kept a ___, which means the opposing team failed to score all game.",
       options:["clean sheet","own goal","hat-trick","red card"],
       correct:"clean sheet",
@@ -711,7 +669,6 @@
     },
     {
       id:12,
-      icon:"extratime",
       sentence:"Because the score was level after ninety minutes, the teams played ___ to find a winner.",
       options:["extra time","half-time","injury time","kick-off"],
       correct:"extra time",
@@ -720,7 +677,6 @@
     },
     {
       id:13,
-      icon:"substitution",
       sentence:"With ten minutes left, the coach made a ___ to bring on a faster player.",
       options:["substitution","formation","possession","counterattack"],
       correct:"substitution",
@@ -729,13 +685,19 @@
     },
     {
       id:14,
-      icon:"owngoal",
       sentence:"It was a costly mistake when the defender accidentally scored an ___ under pressure.",
       options:["own goal","equaliser","winner","hat-trick"],
       correct:"own goal",
       explanation:"An own goal happens when a player accidentally puts the ball into their own team's goal, which counts as a goal for the opposing team.",
       es:"Own goal = gol en propia puerta"
     }
+  ];
+
+  var images = [
+    {src:"Football/argentina-scene-0.jpg", alt:"An Argentina player mid-run, chasing the ball across the pitch"},
+    {src:"Football/argentina-scene-1.jpg", alt:"A wide view of a floodlit football stadium with both teams lined up"},
+    {src:"Football/argentina-scene-2.jpg", alt:"Close-up of players' legs and boots lined up before kick-off"},
+    {src:"Football/argentina-scene-3.jpg", alt:"An Argentina number 10 player standing before the ball at sunset"}
   ];
 
   var order = [];
@@ -755,7 +717,7 @@
   var restartBtn = document.getElementById("restartBtn");
   var qCounter = document.getElementById("qCounter");
   var qSentence = document.getElementById("qSentence");
-  var qIllustration = document.getElementById("qIllustration");
+  var qPhotoImg = document.getElementById("qPhotoImg");
   var optionsWrap = document.getElementById("optionsWrap");
   var feedbackBox = document.getElementById("feedbackBox");
   var fbTitle = document.getElementById("fbTitle");
@@ -806,7 +768,9 @@
     var q = order[current];
     qCounter.textContent = "Question " + (current + 1) + " of " + order.length;
     qSentence.innerHTML = q.sentence.replace("___", "<span class=\"blank\">&nbsp;</span>");
-    qIllustration.innerHTML = icons[q.icon];
+    var qImg = images[(q.id - 1) % images.length];
+    qPhotoImg.src = qImg.src;
+    qPhotoImg.alt = qImg.alt;
     updateProgress();
 
     optionsWrap.innerHTML = "";
