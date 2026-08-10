@@ -749,10 +749,10 @@
 
 <!-- Tabs -->
 <nav class="tabs-wrap">
-  <button class="tab-btn active" onclick="showTab('theory', this)">Theory</button>
-  <button class="tab-btn" onclick="showTab('examples', this)">Examples</button>
-  <button class="tab-btn" onclick="showTab('german', this)">DE vs. EN</button>
-  <button class="tab-btn" onclick="showTab('exercises', this)">Exercises</button>
+  <button class="tab-btn active" id="tabTheoryBtn" onclick="showTab('theory', this)">Theory</button>
+  <button class="tab-btn" id="tabExamplesBtn" onclick="showTab('examples', this)">Examples</button>
+  <button class="tab-btn" id="tabGermanBtn" onclick="showTab('german', this)">DE vs. EN</button>
+  <button class="tab-btn" id="tabExercisesBtn" onclick="showTab('exercises', this)">Exercises</button>
 </nav>
 
 <!-- Main content -->
@@ -1037,23 +1037,23 @@
   <div id="tab-exercises" class="tab-panel">
 
     <div class="section">
-      <div class="section-eyebrow">Exercise 1 — Multiple Choice</div>
-      <h2>Choose the correct form</h2>
-      <p>Football sentences — select the right form for each gap. One point per correct answer.</p>
+      <div class="section-eyebrow" id="ex1Eyebrow">Exercise 1 — Multiple Choice</div>
+      <h2 id="ex1Heading">Choose the correct form</h2>
+      <p id="ex1Intro">Football sentences — select the right form for each gap. One point per correct answer.</p>
     </div>
 
     <div class="score-widget" id="score-widget">
       <div class="score-big" id="score-big">0</div>
       <div>
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;color:var(--white);">out of 6 correct</div>
-        <div class="score-sub">Keep going — the second exercise awaits</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;color:var(--white);" id="scoreOutOf">out of 6 correct</div>
+        <div class="score-sub" id="scoreEncourage">Keep going — the second exercise awaits</div>
       </div>
     </div>
 
     <div id="quiz-wrap">
 
       <div class="q-card" data-answer="b">
-        <div class="q-num">QUESTION 01</div>
+        <div class="q-num" id="qNum0">QUESTION 01</div>
         <div class="q-text">_______ in the Bundesliga requires incredible physical fitness.</div>
         <div class="options">
           <button class="opt-btn" onclick="ans(this,'a')">To play</button>
@@ -1064,7 +1064,7 @@
       </div>
 
       <div class="q-card" data-answer="a">
-        <div class="q-num">QUESTION 02</div>
+        <div class="q-num" id="qNum1">QUESTION 02</div>
         <div class="q-text">Eintracht Frankfurt's fans love _______ in the Deutsche Bank Park.</div>
         <div class="options">
           <button class="opt-btn" onclick="ans(this,'a')">singing</button>
@@ -1075,7 +1075,7 @@
       </div>
 
       <div class="q-card" data-answer="b">
-        <div class="q-num">QUESTION 03</div>
+        <div class="q-num" id="qNum2">QUESTION 03</div>
         <div class="q-text">The coach avoided _______ his best players before the cup final.</div>
         <div class="options">
           <button class="opt-btn" onclick="ans(this,'a')">to tire</button>
@@ -1086,7 +1086,7 @@
       </div>
 
       <div class="q-card" data-answer="c">
-        <div class="q-num">QUESTION 04</div>
+        <div class="q-num" id="qNum3">QUESTION 04</div>
         <div class="q-text">The midfielder denied _______ the opponent intentionally.</div>
         <div class="options">
           <button class="opt-btn" onclick="ans(this,'a')">to elbow</button>
@@ -1097,7 +1097,7 @@
       </div>
 
       <div class="q-card" data-answer="a">
-        <div class="q-num">QUESTION 05</div>
+        <div class="q-num" id="qNum4">QUESTION 05</div>
         <div class="q-text">_______ the transfer window wisely is what separates top clubs from the rest.</div>
         <div class="options">
           <button class="opt-btn" onclick="ans(this,'a')">Using</button>
@@ -1108,7 +1108,7 @@
       </div>
 
       <div class="q-card" data-answer="b">
-        <div class="q-num">QUESTION 06</div>
+        <div class="q-num" id="qNum5">QUESTION 06</div>
         <div class="q-text">The referee kept _______ play when the ball went out.</div>
         <div class="options">
           <button class="opt-btn" onclick="ans(this,'a')">to stop</button>
@@ -1123,9 +1123,9 @@
     <hr class="divider">
 
     <div class="section">
-      <div class="section-eyebrow">Exercise 2 — Word Bank</div>
-      <h2>Fill in with gerunds</h2>
-      <p>Click a word, then click a gap to place it. All gaps need a gerund.</p>
+      <div class="section-eyebrow" id="ex2Eyebrow">Exercise 2 — Word Bank</div>
+      <h2 id="ex2Heading">Fill in with gerunds</h2>
+      <p id="ex2Intro">Click a word, then click a gap to place it. All gaps need a gerund.</p>
 
       <div class="fill-sent">
         1. &nbsp;<span class="dz" id="dz0" onclick="place(0)">[ gerund ]</span>
@@ -1155,7 +1155,7 @@
         <div class="wchip" id="wc-scoring" onclick="sel('scoring')">scoring</div>
       </div>
 
-      <button class="check-btn" onclick="checkFill()">Check Answers</button>
+      <button class="check-btn" id="checkFillBtn" onclick="checkFill()">Check Answers</button>
       <div class="fill-feedback" id="ffb"></div>
     </div>
 
@@ -1191,7 +1191,26 @@
       coverSubtitle: 'A grammar unit for advanced German speakers — all examples from the world of football · 6 quiz questions · 2 exercises',
       start: 'Start →',
       scoreboardLabel1: 'Your Score',
-      scoreboardLabel2: 'Quiz Points'
+      scoreboardLabel2: 'Quiz Points',
+      tabTheory: 'Theory',
+      tabExamples: 'Examples',
+      tabGerman: 'DE vs. EN',
+      tabExercises: 'Exercises',
+      ex1Eyebrow: 'Exercise 1 — Multiple Choice',
+      ex1Heading: 'Choose the correct form',
+      ex1Intro: 'Football sentences — select the right form for each gap. One point per correct answer.',
+      scoreOutOf: (n) => `out of ${n} correct`,
+      scoreEncourage: 'Keep going — the second exercise awaits',
+      questionLabel: (n) => `QUESTION ${String(n).padStart(2, '0')}`,
+      correctPrefix: '✓ Correct.',
+      incorrectPrefix: '✗ Not quite.',
+      ex2Eyebrow: 'Exercise 2 — Word Bank',
+      ex2Heading: 'Fill in with gerunds',
+      ex2Intro: 'Click a word, then click a gap to place it. All gaps need a gerund.',
+      gerundPlaceholder: '[ gerund ]',
+      checkAnswers: 'Check Answers',
+      fillAllCorrect: '⚽ Perfect! All four gerunds correct. Auf geht\'s SGE!',
+      fillPartial: (ok) => `${ok}/4 correct. Hints: Gap 1 → <em>building</em>, Gap 2 → <em>committing</em>, Gap 3 → <em>changing</em>, Gap 4 → <em>playing</em>.`
     },
     de: {
       headerEyebrow: 'Eintracht Frankfurt · Englischtraining',
@@ -1202,7 +1221,26 @@
       coverSubtitle: 'Eine Grammatikeinheit für fortgeschrittene deutsche Sprecher — alle Beispiele aus der Welt des Fußballs · 6 Quizfragen · 2 Übungen',
       start: 'Start →',
       scoreboardLabel1: 'Deine Punktzahl',
-      scoreboardLabel2: 'Quizpunkte'
+      scoreboardLabel2: 'Quizpunkte',
+      tabTheory: 'Theorie',
+      tabExamples: 'Beispiele',
+      tabGerman: 'DE vs. EN',
+      tabExercises: 'Übungen',
+      ex1Eyebrow: 'Übung 1 — Multiple Choice',
+      ex1Heading: 'Wähle die richtige Form',
+      ex1Intro: 'Fußballsätze — wähle für jede Lücke die richtige Form. Ein Punkt pro richtiger Antwort.',
+      scoreOutOf: (n) => `von ${n} richtig`,
+      scoreEncourage: 'Weiter so — die zweite Übung wartet schon',
+      questionLabel: (n) => `FRAGE ${String(n).padStart(2, '0')}`,
+      correctPrefix: '✓ Richtig.',
+      incorrectPrefix: '✗ Leider nicht.',
+      ex2Eyebrow: 'Übung 2 — Wortliste',
+      ex2Heading: 'Gerundien einsetzen',
+      ex2Intro: 'Klicke auf ein Wort und dann auf eine Lücke, um es einzusetzen. In jede Lücke gehört ein Gerundium.',
+      gerundPlaceholder: '[ Gerundium ]',
+      checkAnswers: 'Antworten prüfen',
+      fillAllCorrect: '⚽ Perfekt! Alle vier Gerundien richtig. Auf geht\'s SGE!',
+      fillPartial: (ok) => `${ok}/4 richtig. Tipps: Lücke 1 → <em>building</em>, Lücke 2 → <em>committing</em>, Lücke 3 → <em>changing</em>, Lücke 4 → <em>playing</em>.`
     }
   };
 
@@ -1227,6 +1265,47 @@
 
     const langSelect = document.getElementById('langSelect');
     if (langSelect) langSelect.value = currentLang;
+
+    applyStaticText(t);
+  }
+
+  function applyStaticText(t) {
+    const setText = (id, val) => { const el = document.getElementById(id); if (el && val !== undefined) el.textContent = val; };
+
+    setText('tabTheoryBtn', t.tabTheory);
+    setText('tabExamplesBtn', t.tabExamples);
+    setText('tabGermanBtn', t.tabGerman);
+    setText('tabExercisesBtn', t.tabExercises);
+
+    setText('ex1Eyebrow', t.ex1Eyebrow);
+    setText('ex1Heading', t.ex1Heading);
+    setText('ex1Intro', t.ex1Intro);
+    setText('scoreOutOf', t.scoreOutOf(6));
+    setText('scoreEncourage', t.scoreEncourage);
+
+    for (let i = 0; i < 6; i++) setText('qNum' + i, t.questionLabel(i + 1));
+
+    setText('ex2Eyebrow', t.ex2Eyebrow);
+    setText('ex2Heading', t.ex2Heading);
+    setText('ex2Intro', t.ex2Intro);
+    setText('checkFillBtn', t.checkAnswers);
+
+    // Word-bank gaps: only touch dropzones still showing the placeholder
+    // (unfilled, and not yet checked) — filled/checked ones show real content.
+    if (typeof placed !== 'undefined' && typeof fillChecked !== 'undefined') {
+      for (let i = 0; i < 4; i++) {
+        const dz = document.getElementById('dz' + i);
+        if (dz && !placed[i] && !fillChecked) dz.textContent = t.gerundPlaceholder;
+      }
+      if (fillChecked) renderFillFeedback();
+    }
+
+    // Multiple-choice feedback already shown re-renders with the
+    // correct/incorrect prefix in the new language; explanation text
+    // (lesson content) stays in English.
+    if (typeof scores !== 'undefined' && typeof mcExplanations !== 'undefined') {
+      refreshAnsweredFeedback(t);
+    }
   }
 
   function initLangSwitch() {
@@ -1253,6 +1332,24 @@
   // ---- QUIZ ----
   const scores = {};
 
+  // Capture each question's original (English) explanation once at load,
+  // before any language switch touches the feedback text. Only the
+  // correct/incorrect prefix in front of it is translated at runtime.
+  const mcExplanations = [0,1,2,3,4,5].map(i => {
+    const el = document.getElementById('fb'+i);
+    return el ? el.innerHTML : '';
+  });
+
+  function refreshAnsweredFeedback(t) {
+    Object.keys(scores).forEach(idxStr => {
+      const idx = parseInt(idxStr, 10);
+      const fb = document.getElementById('fb'+idx);
+      if (!fb) return;
+      const prefix = scores[idx] ? t.correctPrefix : t.incorrectPrefix;
+      fb.innerHTML = `<strong>${prefix}</strong> ${mcExplanations[idx]}`;
+    });
+  }
+
   function ans(btn, chosen) {
     const card = btn.closest('.q-card');
     if (card.dataset.done) return;
@@ -1261,9 +1358,11 @@
     const idx = [...document.querySelectorAll('.q-card')].indexOf(card);
     card.querySelectorAll('.opt-btn').forEach(b => b.disabled = true);
     const fb = document.getElementById('fb'+idx);
+    const t = UI_I18N[currentLang];
     if (chosen === correct) {
       btn.classList.add('correct');
       fb.classList.add('ok','show');
+      fb.innerHTML = `<strong>${t.correctPrefix}</strong> ${mcExplanations[idx]}`;
       scores[idx] = 1;
     } else {
       btn.classList.add('wrong');
@@ -1272,6 +1371,7 @@
       const map = {a:0,b:1,c:2};
       opts[map[correct]].classList.add('correct');
       fb.classList.add('no','show');
+      fb.innerHTML = `<strong>${t.incorrectPrefix}</strong> ${mcExplanations[idx]}`;
       scores[idx] = 0;
     }
     updateScore();
@@ -1288,6 +1388,8 @@
   const correctFill = ['building','committing','changing','playing'];
   let chosen = null;
   const placed = {0:null,1:null,2:null,3:null};
+  let fillChecked = false;
+  let fillOkCount = 0;
 
   function sel(word) {
     document.querySelectorAll('.wchip').forEach(c=>c.classList.remove('selected'));
@@ -1315,11 +1417,16 @@
       if (placed[i] === correctFill[i]) { dz.className='dz correct-f'; ok++; }
       else { dz.className='dz wrong-f'; if(!placed[i]) dz.textContent='?'; }
     }
+    fillChecked = true;
+    fillOkCount = ok;
+    renderFillFeedback();
+  }
+
+  function renderFillFeedback() {
+    const t = UI_I18N[currentLang];
     const fb = document.getElementById('ffb');
-    fb.className = 'fill-feedback show ' + (ok===4?'ok':'no');
-    fb.innerHTML = ok===4
-      ? '⚽ Perfekt! All four gerunds correct. Auf geht\'s SGE!'
-      : `${ok}/4 correct. Hints: Gap 1 → <em>building</em>, Gap 2 → <em>committing</em>, Gap 3 → <em>changing</em>, Gap 4 → <em>playing</em>.`;
+    fb.className = 'fill-feedback show ' + (fillOkCount===4?'ok':'no');
+    fb.innerHTML = fillOkCount===4 ? t.fillAllCorrect : t.fillPartial(fillOkCount);
   }
 
   // ═══════════════════════════════════════════════════════
