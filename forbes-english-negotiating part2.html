@@ -62,6 +62,20 @@
   .score-pill span { color: rgba(255,255,255,0.55); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
   .score-pill strong { color: var(--gold-light); font-size: 18px; font-weight: 600; }
 
+  .header-right { display: flex; align-items: center; gap: 16px; }
+  .lang-switch select {
+    background: var(--ink2);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.75);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 10px;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  .lang-switch select:focus { outline: none; border-color: var(--gold); color: #fff; }
+
   .hero {
     background: var(--ink2);
     padding: 2.2rem 2.5rem;
@@ -224,9 +238,14 @@
       <text x="100" y="56" text-anchor="middle" font-family="'DM Sans', Arial, sans-serif" font-size="20.80" font-weight="600" fill="#9fb0c9" letter-spacing="8">ENGLISH</text>
     </svg>
   </div>
-  <div class="score-pill">
-    <span>Score</span>
-    <strong id="header-score">0 / 0</strong>
+  <div class="header-right">
+    <div class="lang-switch">
+      <select id="langSelect" onchange="setLang(this.value)"></select>
+    </div>
+    <div class="score-pill">
+      <span id="scoreLabel">Score</span>
+      <strong id="header-score">0 / 0</strong>
+    </div>
   </div>
 </header>
 
@@ -238,13 +257,13 @@
   <div class="cover-hero">
     <img src="negotiating/boardroom-meeting.jpg" alt="A boardroom negotiation seen from behind a row of executives at a long table, silhouetted against tall windows showing a coral-tinted city skyline with a smoking factory chimney">
     <div class="cover-hero-overlay">
-      <div class="badge">B2 · Part 2 of 3</div>
-      <h1>Negotiations &amp; <em>Handling Objections</em></h1>
-      <p>Respond to pushback, negotiate terms, and keep deals moving · 15 questions · 3 activity types</p>
+      <div class="badge" id="coverBadge">B2 · Part 2 of 3</div>
+      <h1 id="coverTitle">Negotiations &amp; <em>Handling Objections</em></h1>
+      <p id="coverSubtitle">Respond to pushback, negotiate terms, and keep deals moving · 15 questions · 3 activity types</p>
     </div>
   </div>
   <div class="cover-start-wrap">
-    <button class="btn btn-primary" onclick="startLesson()">Start &rarr;</button>
+    <button class="btn btn-primary" id="startBtn" onclick="startLesson()">Start &rarr;</button>
   </div>
 </div>
 
@@ -264,8 +283,8 @@
           <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="9" stroke="#ef8f83" stroke-width="1.5"/><circle cx="11" cy="11" r="4" fill="#ef8f83"/></svg>
         </div>
         <div>
-          <div class="activity-label">Activity 1 of 3</div>
-          <div class="activity-title">Multiple Choice</div>
+          <div class="activity-label" id="act1Label">Activity 1 of 3</div>
+          <div class="activity-title" id="act1Heading">Multiple Choice</div>
         </div>
       </div>
       <div class="q-counter" id="mc-counter">Question 1 of 5</div>
@@ -286,8 +305,8 @@
           <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3" y="7" width="16" height="3" rx="1.5" fill="#ef8f83"/><rect x="3" y="12" width="10" height="3" rx="1.5" fill="#ef8f83" opacity="0.5"/><rect x="3" y="2" width="16" height="3" rx="1.5" fill="#ef8f83" opacity="0.3"/><rect x="15" y="14" width="4" height="6" rx="1" fill="#da3158"/></svg>
         </div>
         <div>
-          <div class="activity-label">Activity 2 of 3</div>
-          <div class="activity-title">Fill in the Blank</div>
+          <div class="activity-label" id="act2Label">Activity 2 of 3</div>
+          <div class="activity-title" id="act2Heading">Fill in the Blank</div>
         </div>
       </div>
       <div class="q-counter" id="fib-counter">Question 1 of 5</div>
@@ -308,14 +327,14 @@
           <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="4" width="8" height="5" rx="2" fill="#ef8f83"/><rect x="12" y="4" width="8" height="5" rx="2" fill="#da3158"/><rect x="2" y="13" width="8" height="5" rx="2" fill="#ef8f83" opacity="0.5"/><rect x="12" y="13" width="8" height="5" rx="2" fill="#da3158" opacity="0.6"/><line x1="10" y1="6.5" x2="12" y2="6.5" stroke="#ef8f83" stroke-width="1.5"/><line x1="10" y1="15.5" x2="12" y2="15.5" stroke="#da3158" stroke-width="1.5"/></svg>
         </div>
         <div>
-          <div class="activity-label">Activity 3 of 3</div>
-          <div class="activity-title">Match the Expression</div>
+          <div class="activity-label" id="act3Label">Activity 3 of 3</div>
+          <div class="activity-title" id="act3Heading">Match the Expression</div>
         </div>
       </div>
       <div class="q-counter" id="match-counter">0 of 5 matched</div>
     </div>
 
-    <p style="font-size:0.88rem; color:var(--slate); margin-bottom:1rem;">Click a phrase on the left, then click its matching meaning on the right.</p>
+    <p style="font-size:0.88rem; color:var(--slate); margin-bottom:1rem;" id="matchIntro">Click a phrase on the left, then click its matching meaning on the right.</p>
     <div id="match-area"></div>
     <div id="match-feedback" class="feedback-box" style="margin-top:1rem;"></div>
     <div class="btn-row">
@@ -333,18 +352,171 @@
       <h2 id="final-heading">Well done!</h2>
       <p id="final-message">Keep practising to build fluency in professional situations.</p>
       <div class="breakdown">
-        <div class="breakdown-item"><div class="bi-label">Activity 1</div><div class="bi-val" id="score-act1">—</div></div>
-        <div class="breakdown-item"><div class="bi-label">Activity 2</div><div class="bi-val" id="score-act2">—</div></div>
-        <div class="breakdown-item"><div class="bi-label">Activity 3</div><div class="bi-val" id="score-act3">—</div></div>
+        <div class="breakdown-item"><div class="bi-label" id="bdLabel1">Activity 1</div><div class="bi-val" id="score-act1">—</div></div>
+        <div class="breakdown-item"><div class="bi-label" id="bdLabel2">Activity 2</div><div class="bi-val" id="score-act2">—</div></div>
+        <div class="breakdown-item"><div class="bi-label" id="bdLabel3">Activity 3</div><div class="bi-val" id="score-act3">—</div></div>
       </div>
       <div class="btn-row" style="justify-content:center">
-        <button class="btn btn-gold" onclick="restartLesson()">↺ Restart lesson</button>
+        <button class="btn btn-gold" id="restartBtn" onclick="restartLesson()">↺ Restart lesson</button>
       </div>
     </div>
   </div>
 </main>
 
 <script>
+// ═══════════════════════════════════════════════════════
+// LANGUAGE SUPPORT SCAFFOLD
+// Chrome (UI) strings are translated; question content stays in
+// English on purpose — this is an English-learning site.
+// ═══════════════════════════════════════════════════════
+
+const LANGS = [
+  { code: 'en', label: 'English' },
+  { code: 'de', label: 'Deutsch' }
+];
+
+let currentLang = 'en';
+
+const UI_I18N = {
+  en: {
+    coverBadge: 'B2 · Part 2 of 3',
+    coverTitle: 'Negotiations &amp; <em>Handling Objections</em>',
+    coverSubtitle: 'Respond to pushback, negotiate terms, and keep deals moving · 15 questions · 3 activity types',
+    start: 'Start →',
+    scoreLabel: 'Score',
+    tryAgain: '↺ Restart lesson',
+    act1Label: 'Activity 1 of 3',
+    act1Heading: 'Multiple Choice',
+    act2Label: 'Activity 2 of 3',
+    act2Heading: 'Fill in the Blank',
+    act3Label: 'Activity 3 of 3',
+    act3Heading: 'Match the Expression',
+    matchIntro: 'Click a phrase on the left, then click its matching meaning on the right.',
+    checkAnswer: 'Check answer',
+    checkAnswers: 'Check answers',
+    nextButton: 'Next →',
+    seeResults: 'See my results →',
+    questionCounter: (n, total) => `Question ${n} of ${total}`,
+    matchCounter: (n, total) => `${n} of ${total} matched`,
+    fibChooseWord: 'Choose the correct word for the blank:',
+    termLabel: 'Term',
+    meaningLabel: 'Meaning',
+    correctPrefix: 'Correct!',
+    incorrectPrefix: 'Not quite.',
+    answerIs: (word) => `The correct answer is: <strong>${word}</strong>`,
+    bdLabel1: 'Activity 1',
+    bdLabel2: 'Activity 2',
+    bdLabel3: 'Activity 3',
+    outOf: (n) => `out of ${n}`,
+    finalOutstandingHeading: 'Outstanding work!',
+    finalOutstandingMsg: 'You have excellent command of negotiation English. Your ability to handle objections and make conditional offers is at C1 level. Well done.',
+    finalStrongHeading: 'Well done!',
+    finalStrongMsg: 'You have a strong grasp of negotiation language. Review the conditional offer structure ("if you could... we would be willing to...") to sharpen your edge.',
+    finalGoodHeading: 'Good effort!',
+    finalGoodMsg: 'Negotiation language is challenging. Focus on fixed phrases like "bring to the table", "budge on", and the conditional exchange structure — these recur constantly in business English.',
+    finalKeepHeading: 'Keep practising!',
+    finalKeepMsg: 'These are advanced scenarios. Re-read each explanation carefully and try again — the language patterns will become more familiar with each attempt.'
+  },
+  de: {
+    coverBadge: 'B2 · Teil 2 von 3',
+    coverTitle: 'Verhandlungen &amp; <em>Einwände behandeln</em>',
+    coverSubtitle: 'Reagieren Sie auf Einwände, verhandeln Sie Konditionen und halten Sie Geschäfte am Laufen · 15 Fragen · 3 Übungstypen',
+    start: 'Start →',
+    scoreLabel: 'Punkte',
+    tryAgain: '↺ Lektion neu starten',
+    act1Label: 'Übung 1 von 3',
+    act1Heading: 'Multiple Choice',
+    act2Label: 'Übung 2 von 3',
+    act2Heading: 'Lückentext',
+    act3Label: 'Übung 3 von 3',
+    act3Heading: 'Ausdrücke zuordnen',
+    matchIntro: 'Klicken Sie auf einen Ausdruck links und dann auf die passende Bedeutung rechts.',
+    checkAnswer: 'Antwort prüfen',
+    checkAnswers: 'Antworten prüfen',
+    nextButton: 'Weiter →',
+    seeResults: 'Meine Ergebnisse ansehen →',
+    questionCounter: (n, total) => `Frage ${n} von ${total}`,
+    matchCounter: (n, total) => `${n} von ${total} zugeordnet`,
+    fibChooseWord: 'Wählen Sie das richtige Wort für die Lücke:',
+    termLabel: 'Ausdruck',
+    meaningLabel: 'Bedeutung',
+    correctPrefix: 'Richtig!',
+    incorrectPrefix: 'Nicht ganz.',
+    answerIs: (word) => `Die richtige Antwort ist: <strong>${word}</strong>`,
+    bdLabel1: 'Übung 1',
+    bdLabel2: 'Übung 2',
+    bdLabel3: 'Übung 3',
+    outOf: (n) => `von ${n}`,
+    finalOutstandingHeading: 'Hervorragende Leistung!',
+    finalOutstandingMsg: 'Sie beherrschen die Verhandlungssprache ausgezeichnet. Ihre Fähigkeit, Einwände zu behandeln und bedingte Angebote zu formulieren, liegt auf C1-Niveau. Sehr gut gemacht.',
+    finalStrongHeading: 'Gut gemacht!',
+    finalStrongMsg: 'Sie haben ein solides Verständnis der Verhandlungssprache. Wiederholen Sie die Struktur für bedingte Angebote („if you could... we would be willing to...“), um noch sicherer zu werden.',
+    finalGoodHeading: 'Guter Ansatz!',
+    finalGoodMsg: 'Verhandlungssprache ist anspruchsvoll. Konzentrieren Sie sich auf feste Wendungen wie „bring to the table", „budge on" und die bedingte Austauschstruktur — diese kommen im Business-Englisch ständig vor.',
+    finalKeepHeading: 'Bleiben Sie dran!',
+    finalKeepMsg: 'Das sind fortgeschrittene Szenarien. Lesen Sie jede Erklärung noch einmal aufmerksam durch und versuchen Sie es erneut — die Sprachmuster werden mit jedem Versuch vertrauter.'
+  }
+};
+
+function applyStaticText(t) {
+  const setText = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  const setHtml = (id, val) => { const el = document.getElementById(id); if (el) el.innerHTML = val; };
+  setText('act1Label', t.act1Label);
+  setText('act1Heading', t.act1Heading);
+  setText('act2Label', t.act2Label);
+  setText('act2Heading', t.act2Heading);
+  setText('act3Label', t.act3Label);
+  setText('act3Heading', t.act3Heading);
+  setText('matchIntro', t.matchIntro);
+  setText('mc-check-btn', t.checkAnswer);
+  setText('mc-next-btn', t.nextButton);
+  setText('fib-check-btn', t.checkAnswers);
+  setText('fib-next-btn', t.nextButton);
+  setText('match-finish-btn', t.seeResults);
+  setText('bdLabel1', t.bdLabel1);
+  setText('bdLabel2', t.bdLabel2);
+  setText('bdLabel3', t.bdLabel3);
+  // Live counters, if a lesson is in progress
+  const mcCounterEl = document.getElementById('mc-counter');
+  if (mcCounterEl && typeof mcIndex === 'number') mcCounterEl.textContent = t.questionCounter(Math.min(mcIndex + 1, mcQuestions.length), mcQuestions.length);
+  const fibCounterEl = document.getElementById('fib-counter');
+  if (fibCounterEl && typeof fibIndex === 'number') fibCounterEl.textContent = t.questionCounter(Math.min(fibIndex + 1, fibQuestions.length), fibQuestions.length);
+  const matchCounterEl = document.getElementById('match-counter');
+  if (matchCounterEl && typeof matchedCount === 'number') matchCounterEl.textContent = t.matchCounter(matchedCount, matchPairs.length);
+  // Re-translate the FIB "choose the correct word" prompt if currently rendered
+  const fibPrompt = document.querySelector('#fib-question-area .q-stem');
+  if (fibPrompt) fibPrompt.textContent = t.fibChooseWord;
+  // Re-translate the match column labels if currently rendered
+  const matchColLabels = document.querySelectorAll('#match-area .match-col-label');
+  if (matchColLabels.length === 2) {
+    matchColLabels[0].textContent = t.termLabel;
+    matchColLabels[1].textContent = t.meaningLabel;
+  }
+}
+
+function setLang(code) {
+  currentLang = UI_I18N[code] ? code : 'en';
+  const t = UI_I18N[currentLang];
+  document.getElementById('coverBadge').textContent = t.coverBadge;
+  document.getElementById('coverTitle').innerHTML = t.coverTitle;
+  document.getElementById('coverSubtitle').textContent = t.coverSubtitle;
+  const startBtn = document.getElementById('startBtn');
+  if (startBtn) startBtn.textContent = t.start;
+  const scoreLabel = document.getElementById('scoreLabel');
+  if (scoreLabel) scoreLabel.textContent = t.scoreLabel;
+  const restartBtn = document.getElementById('restartBtn');
+  if (restartBtn) restartBtn.textContent = t.tryAgain;
+  const langSelect = document.getElementById('langSelect');
+  if (langSelect) langSelect.value = currentLang;
+  applyStaticText(t);
+}
+
+function initLangSwitch() {
+  const sel = document.getElementById('langSelect');
+  sel.innerHTML = LANGS.map(l => `<option value="${l.code}">${l.label}</option>`).join('');
+  sel.value = currentLang;
+}
+
 const mcQuestions = [
   {
     stem: `A client says: "Your price is too high compared to your competitors." What is the most effective response?`,
@@ -468,7 +640,7 @@ function updateProgress() {
 // MC
 function renderMC() {
   const q = mcQuestions[mcIndex];
-  document.getElementById('mc-counter').textContent = 'Question ' + (mcIndex+1) + ' of ' + mcQuestions.length;
+  document.getElementById('mc-counter').textContent = UI_I18N[currentLang].questionCounter(mcIndex+1, mcQuestions.length);
   const area = document.getElementById('mc-question-area');
   area.innerHTML = `<div class="q-card"><div class="q-stem">${q.stem}</div><div class="options" id="mc-options">${q.options.map((o,i) => `<div class="option" id="mc-opt-${i}" onclick="selectMC(${i})"><div class="opt-letter">${o.letter}</div><span>${o.text}</span></div>`).join('')}</div><div class="feedback-box" id="mc-feedback"></div></div>`;
   document.getElementById('mc-check-btn').disabled = true;
@@ -489,16 +661,17 @@ function checkMC() {
   document.querySelectorAll('[id^=mc-opt-]').forEach(el => el.classList.add('disabled'));
   const fb = document.getElementById('mc-feedback');
   fb.style.display = 'block';
+  const t = UI_I18N[currentLang];
   if (sel === q.correct) {
     document.getElementById('mc-opt-'+sel).classList.add('correct');
     fb.className = 'feedback-box correct';
-    fb.innerHTML = `<div class="fb-icon">Correct!</div><div class="fb-explain">${q.explanation}</div>`;
+    fb.innerHTML = `<div class="fb-icon">${t.correctPrefix}</div><div class="fb-explain">${q.explanation}</div>`;
     mcScore++; totalScore++;
   } else {
     document.getElementById('mc-opt-'+sel).classList.add('incorrect');
     document.getElementById('mc-opt-'+q.correct).classList.add('correct');
     fb.className = 'feedback-box incorrect';
-    fb.innerHTML = `<div class="fb-icon">Not quite.</div><div class="fb-explain">${q.explanation}</div>`;
+    fb.innerHTML = `<div class="fb-icon">${t.incorrectPrefix}</div><div class="fb-explain">${q.explanation}</div>`;
   }
   document.getElementById('mc-check-btn').style.display = 'none';
   document.getElementById('mc-next-btn').style.display = '';
@@ -519,10 +692,11 @@ function nextMC() {
 function renderFIB() {
   fibChecked = false;
   const q = fibQuestions[fibIndex];
-  document.getElementById('fib-counter').textContent = 'Question ' + (fibIndex+1) + ' of ' + fibQuestions.length;
+  const t = UI_I18N[currentLang];
+  document.getElementById('fib-counter').textContent = t.questionCounter(fibIndex+1, fibQuestions.length);
   const shuffled = [...q.wordBank].sort(() => Math.random() - 0.5);
   const area = document.getElementById('fib-question-area');
-  area.innerHTML = `<div class="q-card"><div class="q-stem" style="margin-bottom:1rem;">Choose the correct word for the blank:</div><div class="word-bank" id="fib-bank">${shuffled.map(w => `<div class="word-chip" id="chip-${w.replace(/\s/g,'_')}" onclick="selectFIBWord('${w}')">${w}</div>`).join('')}</div><div class="blank-sentence" id="fib-sentence"></div><div class="feedback-box" id="fib-feedback"></div></div>`;
+  area.innerHTML = `<div class="q-card"><div class="q-stem" style="margin-bottom:1rem;">${t.fibChooseWord}</div><div class="word-bank" id="fib-bank">${shuffled.map(w => `<div class="word-chip" id="chip-${w.replace(/\s/g,'_')}" onclick="selectFIBWord('${w}')">${w}</div>`).join('')}</div><div class="blank-sentence" id="fib-sentence"></div><div class="feedback-box" id="fib-feedback"></div></div>`;
   document.getElementById('fib-check-btn').style.display = '';
   document.getElementById('fib-next-btn').style.display = 'none';
   window._fibSelected = null;
@@ -554,13 +728,14 @@ function checkFIB() {
   const isCorrect = sel === q.correct;
   const color = isCorrect ? 'var(--correct)' : 'var(--wrong)';
   document.getElementById('fib-sentence').innerHTML = parts[0] + `<span style="display:inline-block;min-width:120px;border-bottom:2.5px solid ${color};padding:2px 8px;font-weight:600;color:${color};">${sel}</span>` + (parts[1]||'');
+  const t = UI_I18N[currentLang];
   if (isCorrect) {
     fb.className = 'feedback-box correct';
-    fb.innerHTML = `<div class="fb-icon">Correct!</div><div class="fb-explain">${q.explanation}</div>`;
+    fb.innerHTML = `<div class="fb-icon">${t.correctPrefix}</div><div class="fb-explain">${q.explanation}</div>`;
     fibScore++; totalScore++;
   } else {
     fb.className = 'feedback-box incorrect';
-    fb.innerHTML = `<div class="fb-icon">The correct answer is: <strong>${q.correct}</strong></div><div class="fb-explain">${q.explanation}</div>`;
+    fb.innerHTML = `<div class="fb-icon">${t.answerIs(q.correct)}</div><div class="fb-explain">${q.explanation}</div>`;
   }
   document.getElementById('fib-check-btn').style.display = 'none';
   document.getElementById('fib-next-btn').style.display = '';
@@ -579,11 +754,12 @@ function nextFIB() {
 
 // MATCH
 function renderMatch() {
+  const t = UI_I18N[currentLang];
   const shuffledMeanings = [...matchPairs].sort(() => Math.random() - 0.5);
   const area = document.getElementById('match-area');
-  area.innerHTML = `<div class="match-grid"><div class="match-col"><div class="match-col-label">Term</div>${matchPairs.map((p,i) => `<div class="match-item phrase-item" id="phrase-${i}" onclick="selectPhrase(${i})">${p.phrase}</div>`).join('')}</div><div class="match-col"><div class="match-col-label">Meaning</div>${shuffledMeanings.map((p,i) => `<div class="match-item meaning-item" id="meaning-${i}" data-meaning="${p.meaning}" onclick="selectMeaning(${i})">${p.meaning}</div>`).join('')}</div></div>`;
+  area.innerHTML = `<div class="match-grid"><div class="match-col"><div class="match-col-label">${t.termLabel}</div>${matchPairs.map((p,i) => `<div class="match-item phrase-item" id="phrase-${i}" onclick="selectPhrase(${i})">${p.phrase}</div>`).join('')}</div><div class="match-col"><div class="match-col-label">${t.meaningLabel}</div>${shuffledMeanings.map((p,i) => `<div class="match-item meaning-item" id="meaning-${i}" data-meaning="${p.meaning}" onclick="selectMeaning(${i})">${p.meaning}</div>`).join('')}</div></div>`;
   matchPhraseSelected = null; matchedCount = 0; matchCorrectCount = 0; matchLocked = false;
-  document.getElementById('match-counter').textContent = '0 of 5 matched';
+  document.getElementById('match-counter').textContent = t.matchCounter(0, matchPairs.length);
 }
 function selectPhrase(i) {
   if (matchLocked) return;
@@ -601,7 +777,7 @@ function selectMeaning(i) {
     phraseEl.classList.add('matched'); meaningEl.classList.add('matched'); phraseEl.classList.remove('active');
     matchedCount++; matchCorrectCount++; matchScore++; totalScore++;
     matchPhraseSelected = null;
-    document.getElementById('match-counter').textContent = matchedCount + ' of 5 matched';
+    document.getElementById('match-counter').textContent = UI_I18N[currentLang].matchCounter(matchedCount, matchPairs.length);
     updateHeader(); updateProgress();
     if (matchedCount === matchPairs.length) setTimeout(() => { document.getElementById('match-finish-btn').style.display = ''; }, 400);
   } else {
@@ -619,17 +795,18 @@ function finishMatch() {
 function showFinal() {
   document.getElementById('progress-fill').style.width = '100%';
   document.getElementById('final-score-num').textContent = totalScore;
-  document.getElementById('final-denom').textContent = 'out of ' + totalMax;
+  document.getElementById('final-denom').textContent = UI_I18N[currentLang].outOf(totalMax);
   document.getElementById('header-score').textContent = totalScore + ' / ' + totalMax;
   document.getElementById('score-act1').textContent = actScores[0] || '—';
   document.getElementById('score-act2').textContent = actScores[1] || '—';
   document.getElementById('score-act3').textContent = actScores[2] || '—';
   const pct = totalScore / totalMax;
+  const t = UI_I18N[currentLang];
   let heading, msg;
-  if (pct >= 0.9) { heading = 'Outstanding work!'; msg = 'You have excellent command of negotiation English. Your ability to handle objections and make conditional offers is at C1 level. Well done.'; }
-  else if (pct >= 0.7) { heading = 'Well done!'; msg = 'You have a strong grasp of negotiation language. Review the conditional offer structure ("if you could... we would be willing to...") to sharpen your edge.'; }
-  else if (pct >= 0.5) { heading = 'Good effort!'; msg = 'Negotiation language is challenging. Focus on fixed phrases like "bring to the table", "budge on", and the conditional exchange structure — these recur constantly in business English.'; }
-  else { heading = 'Keep practising!'; msg = 'These are advanced scenarios. Re-read each explanation carefully and try again — the language patterns will become more familiar with each attempt.'; }
+  if (pct >= 0.9) { heading = t.finalOutstandingHeading; msg = t.finalOutstandingMsg; }
+  else if (pct >= 0.7) { heading = t.finalStrongHeading; msg = t.finalStrongMsg; }
+  else if (pct >= 0.5) { heading = t.finalGoodHeading; msg = t.finalGoodMsg; }
+  else { heading = t.finalKeepHeading; msg = t.finalKeepMsg; }
   document.getElementById('final-heading').textContent = heading;
   document.getElementById('final-message').textContent = msg;
   document.getElementById('final-screen').style.display = 'block';
@@ -657,6 +834,8 @@ function startLesson() {
   renderMC();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+initLangSwitch();
 </script>
 </body>
 </html>
