@@ -36,8 +36,43 @@
     color: var(--text);
     min-height: 100vh;
     background-image:
-      radial-gradient(circle at 10% 10%, rgba(200,57,43,0.06) 0%, transparent 50%),
-      radial-gradient(circle at 90% 90%, rgba(245,197,24,0.08) 0%, transparent 50%);
+      linear-gradient(180deg, rgba(245,240,232,0.90) 0%, rgba(245,240,232,0.96) 45%, var(--cream) 100%),
+      url('lego/lego-b2-cube-1.jpg');
+    background-size: auto, cover;
+    background-position: top, center 25%;
+    background-repeat: no-repeat, no-repeat;
+    background-attachment: scroll, fixed;
+  }
+
+  /* ── START SCREEN ── */
+  #screen-start {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+    animation: fadeUp 0.5s ease both;
+  }
+  .start-hero {
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    margin: 40px 0 32px;
+  }
+  .start-hero img { width: 100%; height: auto; display: block; }
+  .start-content { text-align: center; }
+  .start-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    color: var(--charcoal);
+    margin-bottom: 16px;
+    line-height: 1.15;
+  }
+  .start-intro {
+    font-size: 16px;
+    color: var(--subtext);
+    font-weight: 300;
+    line-height: 1.7;
+    max-width: 560px;
+    margin: 0 auto 32px;
   }
 
   /* ── HEADER ── */
@@ -434,17 +469,30 @@
 </header>
 
 <!-- ══════════ SCORE BAR ══════════ -->
-<div class="score-bar">
+<div class="score-bar hidden" id="score-bar">
   <span>Score: <span class="score-pill" id="score-display">0</span></span>
   <span class="progress-text" id="progress-display">Activity 1 of 3</span>
   <span class="activity-label" id="activity-label">Multiple Choice</span>
+</div>
+
+<!-- ══════════ START SCREEN ══════════ -->
+<div id="screen-start">
+  <div class="start-hero">
+    <img src="lego/lego-car-lineup.jpg" alt="A lineup of colourful Lego cars and trucks queued nose-to-tail on a highway, backed by tall checkered Lego-brick skyscrapers">
+  </div>
+  <div class="start-content">
+    <span class="section-tag">B2 Upper-Intermediate</span>
+    <h1 class="start-title">Lego Car Building</h1>
+    <p class="start-intro">Three activities, fifteen points. Work through the vocabulary of design, engineering and the build process — one question at a time.</p>
+    <button class="btn-primary" onclick="startLesson()">Start Lesson →</button>
+  </div>
 </div>
 
 <!-- ══════════ MAIN ══════════ -->
 <main id="main-content">
 
   <!-- ── SECTION 1: Multiple Choice ── -->
-  <div id="section-1">
+  <div id="section-1" class="hidden">
     <div class="section-intro">
       <span class="section-tag">Activity 1 – Multiple Choice</span>
       <h2>Vocabulary in Context</h2>
@@ -642,35 +690,50 @@
       <div class="question-num">Question 1 of 5</div>
       <div class="blank-sentence">Before producing the final set, the engineers built a <input class="blank-input" id="fitb-1" placeholder="______"> to test whether all the pieces worked together as intended.</div>
       <div class="feedback-box" id="fb-fitb-1"></div>
+      <div class="btn-row">
+        <button class="btn-secondary" id="fitb-check-1" onclick="checkFITBSingle(1)">Check Answer</button>
+        <button class="btn-primary hidden" id="fitb-next-1" onclick="nextFITB(2)">Next Question →</button>
+      </div>
     </div>
 
-    <div class="question-card" id="fitb-q2">
+    <div class="question-card hidden" id="fitb-q2">
       <div class="question-num">Question 2 of 5</div>
       <div class="blank-sentence">The chassis used a <input class="blank-input" id="fitb-2" placeholder="______"> design, meaning each section could be built and replaced independently without affecting the rest of the model.</div>
       <div class="feedback-box" id="fb-fitb-2"></div>
+      <div class="btn-row">
+        <button class="btn-secondary" id="fitb-check-2" onclick="checkFITBSingle(2)">Check Answer</button>
+        <button class="btn-primary hidden" id="fitb-next-2" onclick="nextFITB(3)">Next Question →</button>
+      </div>
     </div>
 
-    <div class="question-card" id="fitb-q3">
+    <div class="question-card hidden" id="fitb-q3">
       <div class="question-num">Question 3 of 5</div>
       <div class="blank-sentence">She checked the <input class="blank-input" id="fitb-3" placeholder="______"> carefully before starting the build, noting every step, measurement, and part number in the diagram.</div>
       <div class="feedback-box" id="fb-fitb-3"></div>
+      <div class="btn-row">
+        <button class="btn-secondary" id="fitb-check-3" onclick="checkFITBSingle(3)">Check Answer</button>
+        <button class="btn-primary hidden" id="fitb-next-3" onclick="nextFITB(4)">Next Question →</button>
+      </div>
     </div>
 
-    <div class="question-card" id="fitb-q4">
+    <div class="question-card hidden" id="fitb-q4">
       <div class="question-num">Question 4 of 5</div>
       <div class="blank-sentence">The central beam was a <input class="blank-input" id="fitb-4" placeholder="______"> element — without it, the entire frame would collapse under the weight of the other components.</div>
       <div class="feedback-box" id="fb-fitb-4"></div>
+      <div class="btn-row">
+        <button class="btn-secondary" id="fitb-check-4" onclick="checkFITBSingle(4)">Check Answer</button>
+        <button class="btn-primary hidden" id="fitb-next-4" onclick="nextFITB(5)">Next Question →</button>
+      </div>
     </div>
 
-    <div class="question-card" id="fitb-q5">
+    <div class="question-card hidden" id="fitb-q5">
       <div class="question-num">Question 5 of 5</div>
       <div class="blank-sentence">Designers use an <input class="blank-input" id="fitb-5" placeholder="______"> process, refining the model through repeated testing and adjustment cycles before approving the final version.</div>
       <div class="feedback-box" id="fb-fitb-5"></div>
-    </div>
-
-    <div class="btn-row">
-      <button class="btn-secondary" onclick="checkFITB()">Check Answers</button>
-      <button class="btn-primary hidden" id="fitb-next-btn" onclick="showSection(3)">Next Activity →</button>
+      <div class="btn-row">
+        <button class="btn-secondary" id="fitb-check-5" onclick="checkFITBSingle(5)">Check Answer</button>
+        <button class="btn-primary hidden" id="fitb-next-btn" onclick="showSection(3)">Next Activity →</button>
+      </div>
     </div>
   </div>
 
@@ -735,30 +798,55 @@
       </div>
     </div>
 
-    <!-- Drop sentences -->
-    <div class="question-card">
-      <div class="drag-sentence-wrap" id="dd-s1">
-        <div class="drag-sentence">1. Always <span class="drop-zone" data-answer="lay out" ondragover="allowDrop(event)" ondrop="dropChip(event, this)" onclick="zoneClick(this)"><span class="drop-placeholder">drop here</span></span> all the pieces before you start building so that you can spot missing parts immediately.</div>
+    <!-- Drop sentences — one at a time -->
+    <div class="question-card" id="dd-s1">
+      <div class="question-num">Question 1 of 5</div>
+      <div class="drag-sentence">Always <span class="drop-zone" data-answer="lay out" ondragover="allowDrop(event)" ondrop="dropChip(event, this)" onclick="zoneClick(this)"><span class="drop-placeholder">drop here</span></span> all the pieces before you start building so that you can spot missing parts immediately.</div>
+      <div class="feedback-box" id="fb-dd-1"></div>
+      <div class="btn-row">
+        <button class="btn-secondary" id="dd-check-1" onclick="checkDDSingle(1)">Check Answer</button>
+        <button class="btn-primary hidden" id="dd-next-1" onclick="nextDD(2)">Next Question →</button>
       </div>
-      <div class="drag-sentence-wrap" id="dd-s2">
-        <div class="drag-sentence">2. When a wheel doesn't fit properly, you should <span class="drop-zone" data-answer="troubleshoot" ondragover="allowDrop(event)" ondrop="dropChip(event, this)" onclick="zoneClick(this)"><span class="drop-placeholder">drop here</span></span> the problem by checking the axle alignment first.</div>
-      </div>
-      <div class="drag-sentence-wrap" id="dd-s3">
-        <div class="drag-sentence">3. The bricks are designed to <span class="drop-zone" data-answer="snap into" ondragover="allowDrop(event)" ondrop="dropChip(event, this)" onclick="zoneClick(this)"><span class="drop-placeholder">drop here</span></span> place with a satisfying click, confirming a secure connection.</div>
-      </div>
-      <div class="drag-sentence-wrap" id="dd-s4">
-        <div class="drag-sentence">4. Experienced builders always <span class="drop-zone" data-answer="cross-reference" ondragover="allowDrop(event)" ondrop="dropChip(event, this)" onclick="zoneClick(this)"><span class="drop-placeholder">drop here</span></span> the diagram with the parts list to avoid assembly errors.</div>
-      </div>
-      <div class="drag-sentence-wrap" id="dd-s5">
-        <div class="drag-sentence">5. Once the basic structure was complete, she began to <span class="drop-zone" data-answer="fine-tune" ondragover="allowDrop(event)" ondrop="dropChip(event, this)" onclick="zoneClick(this)"><span class="drop-placeholder">drop here</span></span> the steering mechanism for smoother movement.</div>
-      </div>
-
-      <div class="feedback-box" id="fb-dd"></div>
     </div>
 
-    <div class="btn-row">
-      <button class="btn-secondary" onclick="checkDragDrop()">Check Answers</button>
-      <button class="btn-primary hidden" id="dd-next-btn" onclick="showFinal()">See My Results →</button>
+    <div class="question-card hidden" id="dd-s2">
+      <div class="question-num">Question 2 of 5</div>
+      <div class="drag-sentence">When a wheel doesn't fit properly, you should <span class="drop-zone" data-answer="troubleshoot" ondragover="allowDrop(event)" ondrop="dropChip(event, this)" onclick="zoneClick(this)"><span class="drop-placeholder">drop here</span></span> the problem by checking the axle alignment first.</div>
+      <div class="feedback-box" id="fb-dd-2"></div>
+      <div class="btn-row">
+        <button class="btn-secondary" id="dd-check-2" onclick="checkDDSingle(2)">Check Answer</button>
+        <button class="btn-primary hidden" id="dd-next-2" onclick="nextDD(3)">Next Question →</button>
+      </div>
+    </div>
+
+    <div class="question-card hidden" id="dd-s3">
+      <div class="question-num">Question 3 of 5</div>
+      <div class="drag-sentence">The bricks are designed to <span class="drop-zone" data-answer="snap into" ondragover="allowDrop(event)" ondrop="dropChip(event, this)" onclick="zoneClick(this)"><span class="drop-placeholder">drop here</span></span> place with a satisfying click, confirming a secure connection.</div>
+      <div class="feedback-box" id="fb-dd-3"></div>
+      <div class="btn-row">
+        <button class="btn-secondary" id="dd-check-3" onclick="checkDDSingle(3)">Check Answer</button>
+        <button class="btn-primary hidden" id="dd-next-3" onclick="nextDD(4)">Next Question →</button>
+      </div>
+    </div>
+
+    <div class="question-card hidden" id="dd-s4">
+      <div class="question-num">Question 4 of 5</div>
+      <div class="drag-sentence">Experienced builders always <span class="drop-zone" data-answer="cross-reference" ondragover="allowDrop(event)" ondrop="dropChip(event, this)" onclick="zoneClick(this)"><span class="drop-placeholder">drop here</span></span> the diagram with the parts list to avoid assembly errors.</div>
+      <div class="feedback-box" id="fb-dd-4"></div>
+      <div class="btn-row">
+        <button class="btn-secondary" id="dd-check-4" onclick="checkDDSingle(4)">Check Answer</button>
+        <button class="btn-primary hidden" id="dd-next-4" onclick="nextDD(5)">Next Question →</button>
+      </div>
+    </div>
+
+    <div class="question-card hidden" id="dd-s5">
+      <div class="question-num">Question 5 of 5</div>
+      <div class="drag-sentence">Once the basic structure was complete, she began to <span class="drop-zone" data-answer="fine-tune" ondragover="allowDrop(event)" ondrop="dropChip(event, this)" onclick="zoneClick(this)"><span class="drop-placeholder">drop here</span></span> the steering mechanism for smoother movement.</div>
+      <div class="feedback-box" id="fb-dd-5"></div>
+      <div class="btn-row">
+        <button class="btn-secondary" id="dd-check-5" onclick="checkDDSingle(5)">Check Answer</button>
+        <button class="btn-primary hidden" id="dd-next-btn" onclick="showFinal()">See My Results →</button>
+      </div>
     </div>
   </div>
 
@@ -824,6 +912,8 @@
 let totalScore = 0;
 let mcAnswered = 0;
 let currentMCQ = 1;
+let currentFITB = 1;
+let currentDD = 1;
 let fitbDone = false;
 let ddDone = false;
 
@@ -869,6 +959,14 @@ const DD_ANSWERS = {
 // ══════════════════════════════════════════════
 // NAVIGATION
 // ══════════════════════════════════════════════
+function startLesson() {
+  document.getElementById('screen-start').classList.add('hidden');
+  document.getElementById('score-bar').classList.remove('hidden');
+  document.getElementById('section-1').classList.remove('hidden');
+  updateProgressBar(1);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 function showSection(n) {
   [1,2,3].forEach(i => {
     document.getElementById('section-' + i).classList.add('hidden');
@@ -938,37 +1036,39 @@ function handleMC(btn, qId, isCorrect) {
 }
 
 // ══════════════════════════════════════════════
-// ACTIVITY 2 — FILL IN THE BLANK
+// ACTIVITY 2 — FILL IN THE BLANK (one at a time)
 // ══════════════════════════════════════════════
-function checkFITB() {
-  if (fitbDone) return;
-  fitbDone = true;
+function checkFITBSingle(n) {
+  const id = 'fitb-' + n;
+  const inp = document.getElementById(id);
+  const data = FITB_ANSWERS[id];
+  const val = inp.value.trim().toLowerCase();
+  const correct = val === data.answer.toLowerCase();
 
-  let allCorrect = true;
-  Object.keys(FITB_ANSWERS).forEach(id => {
-    const inp = document.getElementById(id);
-    const data = FITB_ANSWERS[id];
-    const val = inp.value.trim().toLowerCase();
-    const correct = val === data.answer.toLowerCase();
+  const fb = document.getElementById('fb-' + id);
+  fb.innerHTML = data.feedback;
+  inp.disabled = true;
 
-    const fb = document.getElementById('fb-' + id);
-    fb.innerHTML = data.feedback;
-    inp.disabled = true;
+  if (correct) {
+    inp.classList.add('correct-input');
+    fb.className = 'feedback-box show correct-fb';
+    addScore(1);
+  } else {
+    inp.classList.add('incorrect-input');
+    fb.innerHTML += '<br><em>Your answer: "' + (inp.value.trim() || '(blank)') + '"</em>';
+    fb.className = 'feedback-box show incorrect-fb';
+  }
 
-    if (correct) {
-      inp.classList.add('correct-input');
-      fb.className = 'feedback-box show correct-fb';
-      addScore(1);
-    } else {
-      inp.classList.add('incorrect-input');
-      fb.innerHTML += '<br><em>Your answer: "' + (inp.value.trim() || '(blank)') + '"</em>';
-      fb.className = 'feedback-box show incorrect-fb';
-      allCorrect = false;
-    }
-  });
+  document.getElementById('fitb-check-' + n).classList.add('hidden');
+  const nextBtn = document.getElementById(n === 5 ? 'fitb-next-btn' : 'fitb-next-' + n);
+  nextBtn.classList.remove('hidden');
+}
 
-  document.querySelector('#section-2 .btn-secondary').disabled = true;
-  document.getElementById('fitb-next-btn').classList.remove('hidden');
+function nextFITB(n) {
+  document.getElementById('fitb-q' + (n - 1)).classList.add('hidden');
+  document.getElementById('fitb-q' + n).classList.remove('hidden');
+  currentFITB = n;
+  document.getElementById('fitb-q' + n).scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // ══════════════════════════════════════════════
@@ -1047,37 +1147,37 @@ function returnChip(droppedSpan, chipId) {
   }
 }
 
-function checkDragDrop() {
-  if (ddDone) return;
-  ddDone = true;
+function checkDDSingle(n) {
+  const card = document.getElementById('dd-s' + n);
+  const zone = card.querySelector('.drop-zone');
+  const dropped = zone.querySelector('.dropped-chip');
+  const userWord = dropped ? dropped.dataset.word : '';
+  const data = DD_ANSWERS[n - 1];
+  const isRight = userWord === data.answer;
 
-  const zones = document.querySelectorAll('#section-3 .drop-zone');
-  let feedbackLines = [];
-  let correct = 0;
+  if (isRight) {
+    addScore(1);
+    if (dropped) dropped.style.background = 'var(--correct)';
+  } else if (dropped) {
+    dropped.style.background = 'var(--incorrect)';
+  }
 
-  zones.forEach((zone, i) => {
-    const dropped = zone.querySelector('.dropped-chip');
-    const userWord = dropped ? dropped.dataset.word : '';
-    const correctWord = DD_ANSWERS[i].answer;
-    const isRight = userWord === correctWord;
+  const fb = document.getElementById('fb-dd-' + n);
+  fb.innerHTML = (isRight ? '<strong>✓ Correct!</strong> ' : '<strong>✗ Not quite.</strong> ') + data.feedback + (isRight ? '' : ' <em>(You wrote: "' + (userWord || 'nothing') + '")</em>');
+  fb.className = 'feedback-box show ' + (isRight ? 'correct-fb' : 'incorrect-fb');
 
-    if (isRight) {
-      correct++;
-      addScore(1);
-      if (dropped) dropped.style.background = 'var(--correct)';
-    } else {
-      if (dropped) dropped.style.background = 'var(--incorrect)';
-    }
+  zone.style.pointerEvents = 'none';
 
-    feedbackLines.push('<p style="margin-bottom:8px"><strong>' + (isRight ? '✓' : '✗') + ' Gap ' + (i+1) + ':</strong> ' + DD_ANSWERS[i].feedback + (isRight ? '' : ' <em>(You wrote: "' + (userWord || 'nothing') + '")</em>') + '</p>');
-  });
+  document.getElementById('dd-check-' + n).classList.add('hidden');
+  const nextBtn = document.getElementById(n === 5 ? 'dd-next-btn' : 'dd-next-' + n);
+  nextBtn.classList.remove('hidden');
+}
 
-  const fb = document.getElementById('fb-dd');
-  fb.innerHTML = feedbackLines.join('');
-  fb.className = 'feedback-box show ' + (correct === 5 ? 'correct-fb' : 'incorrect-fb');
-
-  document.querySelector('#section-3 .btn-secondary').disabled = true;
-  document.getElementById('dd-next-btn').classList.remove('hidden');
+function nextDD(n) {
+  document.getElementById('dd-s' + (n - 1)).classList.add('hidden');
+  document.getElementById('dd-s' + n).classList.remove('hidden');
+  currentDD = n;
+  document.getElementById('dd-s' + n).scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // ══════════════════════════════════════════════
