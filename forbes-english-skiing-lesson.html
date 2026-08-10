@@ -38,14 +38,22 @@
     overflow-x: hidden;
   }
 
-  /* ── BACKGROUND SCENE ── */
-  .bg-scene {
+  /* ── BACKGROUND PHOTO ── */
+  .bg-photo {
     position: fixed;
     inset: 0;
     z-index: 0;
     overflow: hidden;
   }
-  .bg-scene svg { width: 100%; height: 100%; }
+  .bg-photo img {
+    width: 100%; height: 100%; object-fit: cover; object-position: center 35%;
+    opacity: 0.14; filter: saturate(0.8);
+  }
+  .bg-photo::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, var(--navy) 0%, rgba(15,30,46,0.35) 35%, var(--navy) 100%);
+  }
 
   /* ── LAYOUT ── */
   .page-wrap {
@@ -390,17 +398,6 @@
   .btn-gold:hover { background: var(--gold-light); transform: translateY(-2px); }
   .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
 
-  /* ── ILLUSTRATION STRIP ── */
-  .illus-strip {
-    width: 100%;
-    max-width: 760px;
-    margin-bottom: 18px;
-    border-radius: var(--radius);
-    overflow: hidden;
-    box-shadow: var(--shadow);
-    animation: fadeUp 0.6s 0.15s ease both;
-  }
-
   /* ── FINISH SCREEN ── */
   .finish-screen {
     text-align: center;
@@ -442,116 +439,7 @@
 </head>
 <body>
 
-<!-- Background Mountain Scene -->
-<div class="bg-scene">
-  <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#071421"/>
-        <stop offset="60%" stop-color="#0f2744"/>
-        <stop offset="100%" stop-color="#1a3e6b"/>
-      </linearGradient>
-      <linearGradient id="moonGlow" cx="50%" cy="50%" r="50%" fx="50%" fy="50%" id="moonGlow" gradientUnits="objectBoundingBox">
-        <stop offset="0%" stop-color="#c8dff0" stop-opacity="0.3"/>
-        <stop offset="100%" stop-color="#c8dff0" stop-opacity="0"/>
-      </linearGradient>
-      <radialGradient id="moonHalo" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#dde8f5" stop-opacity="0.18"/>
-        <stop offset="100%" stop-color="#dde8f5" stop-opacity="0"/>
-      </radialGradient>
-      <linearGradient id="snowGrad" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#d4e9f7"/>
-        <stop offset="100%" stop-color="#a8cfe6"/>
-      </linearGradient>
-      <linearGradient id="mtn1" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#e8f2fb"/>
-        <stop offset="40%" stop-color="#b8d4ec"/>
-        <stop offset="100%" stop-color="#4a7ea0"/>
-      </linearGradient>
-      <linearGradient id="mtn2" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#d0e5f5"/>
-        <stop offset="35%" stop-color="#88b8d8"/>
-        <stop offset="100%" stop-color="#2d5e80"/>
-      </linearGradient>
-      <linearGradient id="mtn3" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#1e4060"/>
-        <stop offset="100%" stop-color="#0d2236"/>
-      </linearGradient>
-      <filter id="softBlur"><feGaussianBlur stdDeviation="3"/></filter>
-      <filter id="glow"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-    </defs>
-    <!-- Sky -->
-    <rect width="1440" height="900" fill="url(#skyGrad)"/>
-    <!-- Stars -->
-    <g opacity="0.7">
-      <circle cx="120" cy="60" r="1.2" fill="#c8dff0"/><circle cx="340" cy="40" r="0.8" fill="#c8dff0"/>
-      <circle cx="580" cy="90" r="1.4" fill="#fff"/><circle cx="760" cy="30" r="0.9" fill="#c8dff0"/>
-      <circle cx="900" cy="75" r="1.1" fill="#fff"/><circle cx="1050" cy="45" r="0.7" fill="#c8dff0"/>
-      <circle cx="1200" cy="80" r="1.3" fill="#fff"/><circle cx="1320" cy="55" r="0.8" fill="#c8dff0"/>
-      <circle cx="200" cy="110" r="0.7" fill="#c8dff0"/><circle cx="450" cy="130" r="1.0" fill="#fff"/>
-      <circle cx="680" cy="55" r="0.6" fill="#c8dff0"/><circle cx="820" cy="100" r="1.2" fill="#fff"/>
-      <circle cx="980" cy="35" r="0.9" fill="#c8dff0"/><circle cx="1140" cy="115" r="0.7" fill="#fff"/>
-      <circle cx="1380" cy="90" r="1.1" fill="#c8dff0"/><circle cx="60" cy="150" r="0.8" fill="#fff"/>
-    </g>
-    <!-- Moon halo -->
-    <circle cx="1100" cy="120" r="90" fill="url(#moonHalo)"/>
-    <!-- Moon -->
-    <circle cx="1100" cy="120" r="40" fill="#dde8f5" filter="url(#glow)"/>
-    <circle cx="1100" cy="120" r="38" fill="#e8f2fb"/>
-    <circle cx="1115" cy="105" r="30" fill="#dde8f5"/>
-    <!-- Far mountains (blurred) -->
-    <polygon points="0,650 200,280 400,500 650,200 900,450 1100,180 1300,400 1440,300 1440,700 0,700" fill="#1a3e6b" filter="url(#softBlur)" opacity="0.5"/>
-    <!-- Mid mountains -->
-    <polygon points="0,700 180,350 360,520 600,230 820,480 1000,260 1200,440 1440,310 1440,750 0,750" fill="url(#mtn2)"/>
-    <!-- Snow cap overlays on mid -->
-    <polygon points="600,230 560,310 640,310" fill="#e8f4fc" opacity="0.9"/>
-    <polygon points="1000,260 960,340 1040,340" fill="#e8f4fc" opacity="0.85"/>
-    <polygon points="180,350 148,420 212,420" fill="#daeaf7" opacity="0.7"/>
-    <!-- Front mountains -->
-    <polygon points="-50,800 280,440 520,650 720,380 960,580 1200,350 1500,600 1500,900 -50,900" fill="url(#mtn1)"/>
-    <!-- Snow caps front -->
-    <polygon points="720,380 672,480 768,480" fill="#ffffff" opacity="0.95"/>
-    <polygon points="1200,350 1152,460 1248,460" fill="#ffffff" opacity="0.9"/>
-    <polygon points="280,440 244,520 316,520" fill="#f0f8ff" opacity="0.85"/>
-    <!-- Ski slope -->
-    <path d="M680,420 Q780,500 860,600 Q940,700 980,800 L1060,800 Q1010,700 930,600 Q840,490 740,400 Z" fill="rgba(255,255,255,0.35)"/>
-    <!-- Ski lodge silhouette -->
-    <g transform="translate(300,580)">
-      <rect x="0" y="40" width="120" height="70" fill="#0d2236"/>
-      <polygon points="-15,40 60,-20 135,40" fill="#0f2a44"/>
-      <rect x="40" y="70" width="20" height="40" fill="#c9a84c" opacity="0.6"/>
-      <rect x="15" y="55" width="18" height="14" fill="#1a3e6b" rx="2"/>
-      <rect x="85" y="55" width="18" height="14" fill="#1a3e6b" rx="2"/>
-    </g>
-    <!-- Pine trees -->
-    <g opacity="0.85">
-      <g transform="translate(80,680)"><polygon points="18,0 36,60 0,60" fill="#0d2236"/><polygon points="18,20 30,70 6,70" fill="#102a40"/><rect x="14" y="65" width="8" height="20" fill="#071421"/></g>
-      <g transform="translate(115,700)"><polygon points="14,0 28,48 0,48" fill="#0d2236"/><rect x="11" y="43" width="6" height="16" fill="#071421"/></g>
-      <g transform="translate(145,685)"><polygon points="18,0 36,60 0,60" fill="#0d2236"/><rect x="14" y="55" width="8" height="20" fill="#071421"/></g>
-      <g transform="translate(1260,660)"><polygon points="18,0 36,60 0,60" fill="#0d2236"/><rect x="14" y="55" width="8" height="20" fill="#071421"/></g>
-      <g transform="translate(1295,675)"><polygon points="14,0 28,50 0,50" fill="#102a40"/><rect x="11" y="45" width="6" height="16" fill="#071421"/></g>
-      <g transform="translate(1325,658)"><polygon points="18,0 36,62 0,62" fill="#0d2236"/><rect x="14" y="57" width="8" height="20" fill="#071421"/></g>
-    </g>
-    <!-- Ski lift cables -->
-    <line x1="400" y1="500" x2="750" y2="400" stroke="rgba(200,220,240,0.3)" stroke-width="1.5"/>
-    <line x1="750" y1="400" x2="1100" y2="310" stroke="rgba(200,220,240,0.3)" stroke-width="1.5"/>
-    <!-- Ski lift chairs -->
-    <g transform="translate(560,462)" opacity="0.7">
-      <circle cx="0" cy="-3" r="3" fill="#c8dff0"/>
-      <line x1="0" y1="0" x2="-8" y2="10" stroke="#c8dff0" stroke-width="1.5"/>
-      <line x1="0" y1="0" x2="8" y2="10" stroke="#c8dff0" stroke-width="1.5"/>
-      <rect x="-10" y="10" width="20" height="8" rx="3" fill="#c9a84c" opacity="0.8"/>
-    </g>
-    <g transform="translate(870,412)" opacity="0.7">
-      <circle cx="0" cy="-3" r="3" fill="#c8dff0"/>
-      <line x1="0" y1="0" x2="-8" y2="10" stroke="#c8dff0" stroke-width="1.5"/>
-      <line x1="0" y1="0" x2="8" y2="10" stroke="#c8dff0" stroke-width="1.5"/>
-      <rect x="-10" y="10" width="20" height="8" rx="3" fill="#c9a84c" opacity="0.8"/>
-    </g>
-    <!-- Snow foreground -->
-    <ellipse cx="720" cy="880" rx="800" ry="100" fill="rgba(232,243,251,0.12)"/>
-  </svg>
-</div>
+<div class="bg-photo"><img src="Skiing/downhill-cliff-jump.jpg" alt=""></div>
 
 <!-- Snowflakes (JS generated) -->
 
@@ -575,44 +463,6 @@
     <span class="score-label">Score: <span class="score-value" id="scoreDisplay">0 / 0</span></span>
     <span class="progress-pill" id="progressDisplay">Starting…</span>
     <span class="score-label">Activity <span class="score-value" id="activityDisplay">1 / 4</span></span>
-  </div>
-
-  <!-- ILLUSTRATION + SECTION HEADER -->
-  <div class="illus-strip" id="illusStrip">
-    <svg viewBox="0 0 760 160" xmlns="http://www.w3.org/2000/svg" width="100%" height="160">
-      <defs>
-        <linearGradient id="illusGrad" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stop-color="#0f2744"/><stop offset="100%" stop-color="#1e3a57"/>
-        </linearGradient>
-      </defs>
-      <rect width="760" height="160" fill="url(#illusGrad)"/>
-      <!-- mountains -->
-      <polygon points="0,160 120,60 240,120 380,30 520,100 660,50 760,90 760,160" fill="#1a3a5c" opacity="0.8"/>
-      <polygon points="0,160 80,90 180,130 320,60 440,120 580,70 680,110 760,80 760,160" fill="#243f5e" opacity="0.6"/>
-      <!-- snow caps -->
-      <polygon points="320,60 300,95 340,95" fill="#e8f2fb" opacity="0.9"/>
-      <polygon points="580,70 562,105 598,105" fill="#e8f2fb" opacity="0.85"/>
-      <polygon points="120,60 104,90 136,90" fill="#daeaf7" opacity="0.75"/>
-      <!-- ski lift in illus -->
-      <line x1="0" y1="30" x2="760" y2="20" stroke="rgba(200,220,240,0.25)" stroke-width="1.5"/>
-      <g transform="translate(100,28)" opacity="0.6">
-        <circle cx="0" cy="-2" r="2.5" fill="#c8dff0"/>
-        <line x1="0" y1="0" x2="-6" y2="8" stroke="#c8dff0" stroke-width="1.2"/>
-        <line x1="0" y1="0" x2="6" y2="8" stroke="#c8dff0" stroke-width="1.2"/>
-        <rect x="-7" y="8" width="14" height="6" rx="2" fill="#c9a84c" opacity="0.9"/>
-      </g>
-      <g transform="translate(400,22)" opacity="0.6">
-        <circle cx="0" cy="-2" r="2.5" fill="#c8dff0"/>
-        <line x1="0" y1="0" x2="-6" y2="8" stroke="#c8dff0" stroke-width="1.2"/>
-        <line x1="0" y1="0" x2="6" y2="8" stroke="#c8dff0" stroke-width="1.2"/>
-        <rect x="-7" y="8" width="14" height="6" rx="2" fill="#c9a84c" opacity="0.9"/>
-      </g>
-      <!-- text overlay -->
-      <rect x="0" y="0" width="760" height="160" fill="rgba(10,25,40,0.3)"/>
-      <text x="380" y="60" font-family="Georgia, serif" font-size="26" font-weight="700" fill="#e8f2fb" text-anchor="middle" letter-spacing="1.5">Skiing at the Resort</text>
-      <text x="380" y="88" font-family="Arial, sans-serif" font-size="13" fill="#c9a84c" text-anchor="middle" letter-spacing="4" font-weight="600">B2 ENGLISH LESSON</text>
-      <text x="380" y="120" font-family="Arial, sans-serif" font-size="12" fill="rgba(200,223,240,0.7)" text-anchor="middle">Vocabulary · Grammar · Comprehension</text>
-    </svg>
   </div>
 
   <!-- SECTION HEADER -->
@@ -1198,7 +1048,6 @@ function renderFinish() {
   else { msg = "Keep practising! Language learning takes time. Review the vocabulary and give the lesson another go."; emoji = "❄️"; }
 
   document.getElementById('sectionHeader').style.display='none';
-  document.getElementById('illusStrip').style.display='none';
 
   const bars = Array.from({length:total},(_,i)=>`<div class="finish-bar ${i<score?'lit':''}"></div>`).join('');
 
@@ -1225,7 +1074,6 @@ function restartLesson() {
   matchSelected={side:null,idx:null}; matchPairs=[]; matchCompleted=0;
   fitbState=[]; fitbCurrent=null; reorderState=[]; reorderAnswered=[];
   document.getElementById('sectionHeader').style.display='';
-  document.getElementById('illusStrip').style.display='';
   renderActivity();
 }
 
