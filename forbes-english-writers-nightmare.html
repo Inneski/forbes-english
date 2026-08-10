@@ -15,17 +15,26 @@
     --correct-bg: #EAF3DE; --correct-text: #27500A; --correct-border: #639922;
     --wrong-bg: #FCEBEB; --wrong-text: #501313; --wrong-border: #A32D2D;
     --warn-bg: #FAEEDA; --warn-text: #633806; --warn-border: #BA7517;
+    --card-bg: rgba(255, 255, 255, 0.82);
   }
   html { scroll-behavior: smooth; }
   body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; line-height: 1.7; }
+
+  /* ── PERSISTENT BACKGROUND PHOTO ── */
+  .bg-photo { position: fixed; inset: 0; z-index: -2; overflow: hidden; }
+  .bg-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 45%; opacity: 0.4; filter: saturate(0.85); }
+  .bg-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, var(--cream) 0%, rgba(44,44,42,0.12) 40%, var(--cream) 100%); }
+
+  /* ── HERO BACKDROP IMAGE ── */
+  .hero-bg { position: absolute; inset: 0; z-index: 0; }
+  .hero-bg img { width: 100%; height: 100%; object-fit: cover; object-position: center 40%; opacity: 0.4; filter: saturate(0.9); }
+  .hero-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(120deg, rgba(44,44,42,0.94) 0%, rgba(44,44,42,0.8) 45%, rgba(44,44,42,0.55) 100%); }
+  .logo-svg { flex-shrink: 0; display: block; }
 
   /* ── HEADER ── */
   .header { background: var(--ink); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 20px rgba(0,0,0,0.35); }
   .header-inner { max-width: 960px; margin: 0 auto; padding: 1.1rem 2rem; display: flex; align-items: center; justify-content: space-between; }
   .logo { display: flex; align-items: center; gap: 0.6rem; }
-  .logo-forbes { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 900; color: #fff; line-height: 1; letter-spacing: -1px; }
-  .logo-divider { width: 1px; height: 2rem; background: var(--gold); opacity: 0.5; }
-  .logo-english { font-size: 1.200rem; font-weight: 500; color: var(--gold-light); letter-spacing: 0.3em; text-transform: uppercase; }
   .header-rule { height: 3px; background: linear-gradient(90deg, var(--gold-dark), var(--gold-light), var(--gold-dark)); }
   .nav-steps { display: flex; gap: 0.25rem; }
   .nav-step { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.35); padding: 4px 10px; border-radius: 2px; text-decoration: none; transition: color 0.2s, background 0.2s; }
@@ -76,7 +85,7 @@
   .video-note::before { content: ''; display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
 
   /* ── STORY PASSAGE ── */
-  .passage-wrap { background: var(--white); border: 1px solid rgba(186,117,23,0.18); border-radius: 8px; padding: 2rem 2.25rem; position: relative; }
+  .passage-wrap { background: var(--card-bg); border: 1px solid rgba(186,117,23,0.18); border-radius: 8px; padding: 2rem 2.25rem; position: relative; }
   .passage-wrap::before { content: '\201C'; font-family: 'Playfair Display', serif; font-size: 6rem; color: var(--gold); opacity: 0.12; position: absolute; top: -0.5rem; left: 1.25rem; line-height: 1; pointer-events: none; }
   .passage-text { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-style: italic; line-height: 1.85; color: var(--ink-mid); position: relative; }
   .passage-text strong { font-style: normal; font-weight: 700; color: var(--gold-dark); background: rgba(186,117,23,0.08); padding: 0 3px; border-radius: 2px; }
@@ -86,7 +95,7 @@
   /* ── VOCAB ── */
   .vocab-intro { font-size: 0.875rem; color: var(--ink-light); margin-bottom: 1.25rem; }
   .vocab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 0.875rem; }
-  .vocab-card { background: var(--white); border: 1px solid rgba(186,117,23,0.2); border-radius: 5px; padding: 1rem 1.1rem; cursor: pointer; transition: border-color 0.2s, transform 0.18s, box-shadow 0.18s; position: relative; overflow: hidden; }
+  .vocab-card { background: var(--card-bg); border: 1px solid rgba(186,117,23,0.2); border-radius: 5px; padding: 1rem 1.1rem; cursor: pointer; transition: border-color 0.2s, transform 0.18s, box-shadow 0.18s; position: relative; overflow: hidden; }
   .vocab-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--gold-dark), var(--gold-light)); transform: scaleX(0); transform-origin: left; transition: transform 0.25s; }
   .vocab-card:hover { border-color: var(--gold); transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.07); }
   .vocab-card:hover::after { transform: scaleX(1); }
@@ -102,7 +111,7 @@
 
   /* ── GRAMMAR ── */
   .grammar-intro { font-size: 0.875rem; color: var(--ink-light); margin-bottom: 1.5rem; }
-  .grammar-block { background: var(--white); border: 1px solid rgba(0,0,0,0.07); border-radius: 6px; padding: 1.5rem; margin-bottom: 1.25rem; }
+  .grammar-block { background: var(--card-bg); border: 1px solid rgba(0,0,0,0.07); border-radius: 6px; padding: 1.5rem; margin-bottom: 1.25rem; }
   .grammar-block + .grammar-block { margin-top: 0; }
   .grammar-rule-label { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 0.6rem; }
   .grammar-rule-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--ink); margin-bottom: 0.75rem; }
@@ -128,13 +137,13 @@
   /* ── PRONUNCIATION ── */
   .pron-intro { font-size: 0.875rem; color: var(--ink-light); margin-bottom: 1.25rem; }
   .pron-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem; }
-  .pron-card { background: var(--white); border: 1px solid rgba(186,117,23,0.18); border-radius: 5px; padding: 0.9rem 1rem; cursor: pointer; transition: border-color 0.18s, transform 0.18s, box-shadow 0.18s; }
+  .pron-card { background: var(--card-bg); border: 1px solid rgba(186,117,23,0.18); border-radius: 5px; padding: 0.9rem 1rem; cursor: pointer; transition: border-color 0.18s, transform 0.18s, box-shadow 0.18s; }
   .pron-card:hover, .pron-card.active { border-color: var(--gold); transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,0.07); }
   .pron-card.active { background: rgba(186,117,23,0.04); }
   .pron-word  { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
   .pron-ipa   { font-size: 0.8rem; color: var(--gold-dark); letter-spacing: 0.03em; }
   .pron-stress{ font-size: 0.72rem; color: var(--ink-light); margin-top: 3px; }
-  .pron-detail { background: var(--white); border: 1px solid rgba(186,117,23,0.2); border-radius: 6px; padding: 1.25rem 1.5rem; display: none; }
+  .pron-detail { background: var(--card-bg); border: 1px solid rgba(186,117,23,0.2); border-radius: 6px; padding: 1.25rem 1.5rem; display: none; }
   .pron-detail.show { display: block; }
   .pron-detail-word { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
   .pron-detail-ipa  { font-size: 1rem; color: var(--gold-dark); margin-bottom: 0.85rem; }
@@ -144,7 +153,7 @@
 
   /* ── QUIZ ── */
   .quiz-intro { font-size: 0.875rem; color: var(--ink-light); margin-bottom: 1.5rem; }
-  .quiz-card { background: var(--white); border: 1px solid rgba(0,0,0,0.08); border-radius: 5px; padding: 1.5rem; margin-bottom: 1.25rem; }
+  .quiz-card { background: var(--card-bg); border: 1px solid rgba(0,0,0,0.08); border-radius: 5px; padding: 1.5rem; margin-bottom: 1.25rem; }
   .quiz-q { font-size: 0.95rem; font-weight: 500; color: var(--ink); line-height: 1.6; margin-bottom: 1rem; display: flex; align-items: flex-start; gap: 0.6rem; }
   .qnum { display: inline-flex; align-items: center; justify-content: center; background: var(--ink); color: var(--gold-light); font-family: 'Playfair Display', serif; font-size: 0.85rem; width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0; margin-top: 1px; font-weight: 700; }
   .quiz-options { display: flex; flex-direction: column; gap: 0.5rem; }
@@ -175,7 +184,7 @@
 
   /* ── DISCUSSION ── */
   .discussion-intro { font-size: 0.875rem; color: var(--ink-light); margin-bottom: 1.25rem; }
-  .disc-item { display: flex; gap: 1.25rem; margin-bottom: 1.25rem; background: var(--white); border-radius: 5px; border: 1px solid rgba(186,117,23,0.15); padding: 1.25rem 1.5rem; transition: border-color 0.2s; }
+  .disc-item { display: flex; gap: 1.25rem; margin-bottom: 1.25rem; background: var(--card-bg); border-radius: 5px; border: 1px solid rgba(186,117,23,0.15); padding: 1.25rem 1.5rem; transition: border-color 0.2s; }
   .disc-item:hover { border-color: rgba(186,117,23,0.4); }
   .disc-num { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; color: var(--gold); opacity: 0.4; line-height: 1; min-width: 2rem; margin-top: 2px; }
   .disc-type { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-dark); margin-bottom: 5px; }
@@ -202,18 +211,15 @@
 </head>
 <body>
 
+<div class="bg-photo"><img src="WritersNightmare/writers-block-typewriter.jpg" alt=""></div>
+
 <header class="header">
   <div class="header-inner">
     <div class="logo">
-      <svg width="34" height="34" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M18 28 C18 28 8 25 6 12 L6 8 C6 8 12 9 18 14 L18 28Z" fill="#BA7517" opacity="0.9"/>
-        <path d="M18 28 C18 28 28 25 30 12 L30 8 C30 8 24 9 18 14 L18 28Z" fill="#EF9F27" opacity="0.75"/>
-        <line x1="18" y1="14" x2="18" y2="28" stroke="#633806" stroke-width="1" opacity="0.6"/>
-        <path d="M26 6 L30 2 L31 5 L28 8 Z" fill="#EF9F27"/>
-        <line x1="26" y1="6" x2="21" y2="11" stroke="#BA7517" stroke-width="1.5" stroke-linecap="round"/>
+      <svg class="logo-svg" viewBox="0 0 200 62" width="200" height="62" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forbes English logo">
+        <g transform="translate(73.03,7.07) scale(0.033230)"><g transform="translate(0,1504) scale(0.1,-0.1)" fill="#F1EFE8" stroke="none"><path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47 l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21 -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9 -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58 105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141 144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392 -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31 c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55 -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0 -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226 144 331 156 51 6 127 -4 183 -25z"/><path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95 -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72 -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0 -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18 108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553 -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70 -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3 469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38 -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/><path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73 -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939 -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1 205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247 -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22 -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24 -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449 121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/><path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611 -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538 -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77 144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430 -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67 347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580 -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132 -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87 66 245 85 341 40z"/><path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140 -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134 -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287 -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101 -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107 173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392 207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599 281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241 111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2 347 -112 40 c-318 112 -594 149 -892 121z"/><path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149 l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801 -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6 -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294 -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12 -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29 -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55 -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12 -33 22 -42 21 -9 0 -199 -27 -422 -60z"/></g></g>
+        <text x="100" y="56" text-anchor="middle" font-family="'DM Sans', Arial, sans-serif" font-size="20.80" font-weight="600" fill="#EF9F27" letter-spacing="8">ENGLISH</text>
       </svg>
-      <svg class="logo-forbes-vec" viewBox="0 0 2760 1504" style="width:167px;height:auto;display:block;color:#fff;" xmlns="http://www.w3.org/2000/svg"><g transform="translate(0,1504) scale(0.1,-0.1)" fill="currentColor" stroke="none"><path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47 l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21 -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9 -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58 105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141 144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392 -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31 c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55 -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0 -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226 144 331 156 51 6 127 -4 183 -25z"/><path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95 -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72 -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0 -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18 108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553 -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70 -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3 469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38 -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/><path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73 -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939 -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1 205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247 -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22 -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24 -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449 121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/><path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611 -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538 -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77 144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430 -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67 347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580 -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132 -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87 66 245 85 341 40z"/><path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140 -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134 -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287 -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101 -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107 173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392 207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599 281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241 111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2 347 -112 40 c-318 112 -594 149 -892 121z"/><path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149 l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801 -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6 -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294 -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12 -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29 -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55 -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12 -33 22 -42 21 -9 0 -199 -27 -422 -60z"/></g></svg>
-      <div class="logo-english">English</div>
     </div>
     <nav class="nav-steps">
       <a href="#read"   class="nav-step">Read</a>
@@ -228,6 +234,7 @@
 </header>
 
 <section class="hero">
+  <div class="hero-bg"><img src="WritersNightmare/writers-block-typewriter.jpg" alt=""></div>
   <div class="hero-inner">
     <div class="hero-meta">
       <span class="badge badge-gold">B2 — Upper Intermediate</span>
