@@ -7,19 +7,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg:      #0e1a12; --bg2: #152019; --card: #1e2e23; --card2: #243529;
-    --border:  #2e4535; --amber: #e8a020; --amber2: #f5b840; --amber3: #c47f10;
-    --cream:   #f2e8d0; --cream2: #d9ccb0; --moss: #4a7c59; --moss2: #3a6047;
-    --dino:    #6fbb7a; --dino2: #4e9458; --stone: #8fa88a;
+    --bg:      #051620; --bg2: #082332; --card: #0E3648; --card2: #144558;
+    --border:  #1F5C74; --amber: #42B4CA; --amber2: #6ECBDD; --amber3: #2E8FA3;
+    --cream:   #E8F6F8; --cream2: #B8DEE5; --moss: #3A8F87; --moss2: #2A6A63;
+    --dino:    #7FD4C4; --dino2: #5AB0A0; --stone: #6B96A3;
     --correct: #4fbc6a; --wrong: #e05555;
     --font-head:'Playfair Display',serif; --font-body:'Libre Baskerville',serif; --font-ui:'DM Sans',sans-serif;
     --r:10px; --r2:16px; --shadow:0 8px 32px rgba(0,0,0,0.4); --glow:0 0 24px rgba(232,160,32,0.18);
   }
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--bg);color:var(--cream);font-family:var(--font-body);min-height:100vh;overflow-x:hidden;
-    background-image:radial-gradient(ellipse 80% 60% at 10% 10%,rgba(74,124,89,.08) 0%,transparent 60%),
-    radial-gradient(ellipse 60% 50% at 90% 80%,rgba(111,187,122,.06) 0%,transparent 60%),
-    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%234a7c59' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");}
+    background-image:radial-gradient(ellipse 80% 60% at 10% 10%,rgba(58,143,135,.08) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 50% at 90% 80%,rgba(66,180,202,.06) 0%,transparent 60%),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%233a8f87' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");}
   ::-webkit-scrollbar{width:6px} ::-webkit-scrollbar-track{background:var(--bg2)} ::-webkit-scrollbar-thumb{background:var(--moss);border-radius:3px}
   #app{max-width:860px;margin:0 auto;padding:24px 20px 60px}
 
@@ -33,8 +33,14 @@
     font-family:var(--font-ui);font-weight:600;font-size:11px;letter-spacing:2px;text-transform:uppercase;
     padding:4px 14px;border-radius:20px;margin-bottom:14px}
   .lesson-title{font-family:var(--font-head);font-size:clamp(26px,5vw,42px);font-weight:900;color:var(--cream);
-    line-height:1.15;margin-bottom:8px;text-shadow:0 2px 20px rgba(232,160,32,.2)}
+    line-height:1.15;margin-bottom:8px;text-shadow:0 2px 20px rgba(66,180,202,.2)}
   .lesson-subtitle{font-family:var(--font-ui);color:var(--stone);font-size:14px;font-weight:300;letter-spacing:.5px}
+
+  /* ── HERO ── */
+  .hero-wrap{max-width:720px;margin:0 auto 28px;animation:fadeUp .5s ease both}
+  .hero-frame{border-radius:var(--r2);overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow)}
+  .hero-frame img{width:100%;height:auto;display:block}
+  .hero-cap{font-family:var(--font-ui);font-size:12.5px;color:var(--stone);text-align:center;margin-top:8px;font-style:italic}
 
   /* ── HUD ── */
   .hud{display:flex;align-items:center;justify-content:space-between;background:var(--card);
@@ -109,7 +115,7 @@
   .dnd-slot{min-width:140px;height:40px;background:var(--bg2);border:2px dashed var(--border);border-radius:6px;
     display:flex;align-items:center;justify-content:center;transition:border-color .2s,background .2s;
     font-family:var(--font-ui);font-size:13px;color:var(--stone);padding:0 10px}
-  .dnd-slot.over{border-color:var(--amber);background:rgba(232,160,32,.06)}
+  .dnd-slot.over{border-color:var(--amber);background:rgba(66,180,202,.06)}
   .dnd-slot.filled{border-style:solid;border-color:var(--dino);color:var(--cream)}
   .dnd-slot.correct{border-color:var(--correct);background:rgba(79,188,106,.1);color:var(--dino)}
   .dnd-slot.wrong{border-color:var(--wrong);background:rgba(224,85,85,.08);color:var(--wrong)}
@@ -136,7 +142,7 @@
     border-radius:var(--r);padding:11px 16px;cursor:grab;user-select:none;transition:background .15s,border-color .15s,transform .1s;
     font-family:var(--font-ui);font-size:14px;color:var(--cream2)}
   .reorder-item:hover{background:var(--card2);border-color:var(--moss)}
-  .reorder-item.drag-over{border-color:var(--amber);background:rgba(232,160,32,.06)}
+  .reorder-item.drag-over{border-color:var(--amber);background:rgba(66,180,202,.06)}
   .reorder-item.correct{border-color:var(--correct);background:rgba(79,188,106,.1);color:var(--cream)}
   .reorder-item.wrong{border-color:var(--wrong);background:rgba(224,85,85,.08)}
   .reorder-handle{color:var(--border);font-size:16px;cursor:grab}
@@ -158,10 +164,10 @@
   .btn{font-family:var(--font-ui);font-size:14px;font-weight:600;border:none;border-radius:var(--r);padding:13px 28px;cursor:pointer;transition:transform .12s,box-shadow .2s,background .2s;letter-spacing:.3px}
   .btn:hover{transform:translateY(-2px)}
   .btn:active{transform:translateY(0)}
-  .btn-primary{background:linear-gradient(135deg,var(--amber3),var(--amber));color:var(--bg);box-shadow:0 4px 20px rgba(232,160,32,.3)}
-  .btn-primary:hover{box-shadow:0 6px 28px rgba(232,160,32,.45)}
-  .btn-submit{background:linear-gradient(135deg,var(--moss2),var(--moss));color:var(--cream);box-shadow:0 4px 20px rgba(74,124,89,.25)}
-  .btn-submit:hover{box-shadow:0 6px 28px rgba(74,124,89,.4)}
+  .btn-primary{background:linear-gradient(135deg,var(--amber3),var(--amber));color:var(--bg);box-shadow:0 4px 20px rgba(66,180,202,.3)}
+  .btn-primary:hover{box-shadow:0 6px 28px rgba(66,180,202,.45)}
+  .btn-submit{background:linear-gradient(135deg,var(--moss2),var(--moss));color:var(--cream);box-shadow:0 4px 20px rgba(58,143,135,.25)}
+  .btn-submit:hover{box-shadow:0 6px 28px rgba(58,143,135,.4)}
 
   /* ── INTRO ── */
   #intro-screen{animation:fadeUp .6s ease both}
@@ -206,8 +212,8 @@
   <!-- LOGO -->
   <div class="logo-wrap">
     <svg class="logo-svg" viewBox="0 0 200 64" xmlns="http://www.w3.org/2000/svg">
-      <g transform="translate(73.03,3.07) scale(0.033230)"><g transform="translate(0,1504) scale(0.1,-0.1)" fill="#e8a020" stroke="none"><path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47 l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21 -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9 -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58 105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141 144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392 -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31 c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55 -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0 -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226 144 331 156 51 6 127 -4 183 -25z"/><path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95 -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72 -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0 -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18 108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553 -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70 -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3 469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38 -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/><path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73 -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939 -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1 205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247 -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22 -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24 -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449 121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/><path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611 -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538 -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77 144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430 -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67 347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580 -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132 -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87 66 245 85 341 40z"/><path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140 -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134 -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287 -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101 -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107 173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392 207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599 281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241 111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2 347 -112 40 c-318 112 -594 149 -892 121z"/><path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149 l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801 -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6 -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294 -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12 -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29 -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55 -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12 -33 22 -42 21 -9 0 -199 -27 -422 -60z"/></g></g>
-      <text x="100" y="52" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="20.80" font-weight="700" fill="#6fbb7a" letter-spacing="5">ENGLISH</text>
+      <g transform="translate(73.03,3.07) scale(0.033230)"><g transform="translate(0,1504) scale(0.1,-0.1)" fill="#42B4CA" stroke="none"><path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47 l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21 -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9 -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58 105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141 144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392 -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31 c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55 -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0 -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226 144 331 156 51 6 127 -4 183 -25z"/><path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95 -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72 -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0 -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18 108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553 -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70 -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3 469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38 -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/><path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73 -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939 -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1 205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247 -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22 -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24 -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449 121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/><path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611 -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538 -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77 144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430 -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67 347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580 -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132 -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87 66 245 85 341 40z"/><path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140 -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134 -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287 -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101 -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107 173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392 207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599 281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241 111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2 347 -112 40 c-318 112 -594 149 -892 121z"/><path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149 l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801 -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6 -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294 -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12 -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29 -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55 -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12 -33 22 -42 21 -9 0 -199 -27 -422 -60z"/></g></g>
+      <text x="100" y="52" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="20.80" font-weight="700" fill="#7FD4C4" letter-spacing="5">ENGLISH</text>
     </svg>
   </div>
 
@@ -216,6 +222,14 @@
     <div class="lesson-badge">C1 Advanced · Part II</div>
     <h1 class="lesson-title">Dino-Craft: The Lost Biome</h1>
     <p class="lesson-subtitle">Deeper into the Cretaceous — Language, Lore &amp; Lexicon</p>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero-wrap">
+    <div class="hero-frame">
+      <img src="minecraft/minecraft-underwater-temple.png" alt="A blocky Minecraft ocean monument biome, sunlit and half-lost beneath the waves">
+    </div>
+    <p class="hero-cap">The Lost Biome — a ruined monument, still lit from within.</p>
   </div>
 
   <!-- INTRO SCREEN -->
