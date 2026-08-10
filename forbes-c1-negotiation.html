@@ -40,6 +40,42 @@ body {
   padding-bottom: 80px;
 }
 
+/* ─── AMBIENT BACKGROUND PHOTO ─────────── */
+.bg-photo {
+  position: fixed; inset: 0; z-index: -1;
+  overflow: hidden; pointer-events: none;
+}
+.bg-photo img {
+  width: 100%; height: 100%; object-fit: cover;
+  opacity: 0.14; filter: saturate(0.85);
+}
+.bg-photo::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, var(--bg) 0%, rgba(245,240,232,0.72) 14%, rgba(245,240,232,0.72) 86%, var(--bg) 100%);
+}
+
+/* ─── HERO BAND PHOTO ──────────────────── */
+.hero-band {
+  max-width: 780px;
+  margin: 24px auto 0;
+  padding: 0 20px;
+}
+.hero-band-inner {
+  border-radius: var(--radius);
+  overflow: hidden;
+  height: 220px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+.hero-band-inner img {
+  width: 100%; height: 100%; object-fit: cover;
+  object-position: center 30%;
+}
+@media (max-width: 580px) {
+  .hero-band-inner { height: 160px; }
+}
+
 /* ─── HEADER ─────────────────────────── */
 .header {
   background: var(--surface);
@@ -626,6 +662,8 @@ select option { background: #fff; color: #1c1a17; }
 </head>
 <body>
 
+<div class="bg-photo"><img src="Negotiation/desert-phone-call.jpg" alt=""></div>
+
 <!-- HEADER -->
 <div class="header">
   <svg width="210" height="64" viewBox="0 0 210 64" xmlns="http://www.w3.org/2000/svg">
@@ -637,6 +675,8 @@ select option { background: #fff; color: #1c1a17; }
   <div class="header-rule"></div>
   <div class="lesson-tag">Negotiation Language · C1</div>
 </div>
+
+<div class="hero-band"><div class="hero-band-inner"><img src="Negotiation/desert-phone-call.jpg" alt="Negotiator on the phone at sunset"></div></div>
 
 <!-- SCORE BAR -->
 <div class="score-bar" id="scoreBar">
