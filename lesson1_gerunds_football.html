@@ -554,15 +554,15 @@ body {
 <div id="mainContent" style="display:none">
 
 <div class="topbar">
-  <span class="topbar-label">Module 1 · Lesson 1 · Gerunds</span>
+  <span class="topbar-label" id="topbarLabel">Module 1 · Lesson 1 · Gerunds</span>
   <div class="topbar-score" id="topScore">0 <span>/ 7 goals</span></div>
 </div>
 
 <div class="hero fade-up">
   <div>
-    <div class="hero-eyebrow">English for Graphic Designers</div>
-    <h1 class="hero-title">Verbs<br><em>+ Gerunds</em></h1>
-    <p class="hero-sub">Some verbs always demand the <strong style="color:var(--lime);font-weight:500">-ing form</strong>. Never an infinitive. This is your most repeated mistake — fix it here.</p>
+    <div class="hero-eyebrow" id="heroEyebrow">English for Graphic Designers</div>
+    <h1 class="hero-title" id="heroTitle">Verbs<br><em>+ Gerunds</em></h1>
+    <p class="hero-sub" id="heroSub">Some verbs always demand the <strong style="color:var(--lime);font-weight:500">-ing form</strong>. Never an infinitive. This is your most repeated mistake — fix it here.</p>
   </div>
   <!-- FLAT GEOMETRIC BALL -->
   <svg width="130" height="130" viewBox="0 0 130 130" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
@@ -615,7 +615,7 @@ body {
     </div>
   </div>
 
-  <div class="section-heading fade-up d3">Your mistakes — corrected <span class="sh-num">from your actual lessons</span></div>
+  <div class="section-heading fade-up d3" id="mistakesHeading">Your mistakes — corrected <span class="sh-num">from your actual lessons</span></div>
 
   <div class="mistake-grid fade-up d3">
     <div class="mistake-card bad"><div class="mc-label">Red card ✗</div><div class="mc-text">Once you finish <u>to do</u> 120 clips...</div></div>
@@ -635,13 +635,13 @@ body {
   </div>
 
   <div class="quiz-wrap">
-    <div class="section-heading fade-up d5">Match day <span class="sh-num">score your goals</span></div>
+    <div class="section-heading fade-up d5" id="quizHeading">Match day <span class="sh-num">score your goals</span></div>
     <div id="questionsEl"></div>
     <div class="scoreboard" id="scoreboard">
-      <div class="sb-title">⚽ Full Time</div>
+      <div class="sb-title" id="sbTitle">⚽ Full Time</div>
       <div class="sb-score" id="sbScore">0<em>/7</em></div>
       <div class="sb-msg" id="sbMsg"></div>
-      <button class="replay-btn" onclick="restart()">Play again ↺</button>
+      <button class="replay-btn" id="replayBtn" onclick="restart()">Play again ↺</button>
     </div>
   </div>
 
@@ -667,15 +667,87 @@ const UI_I18N = {
     coverBadge: 'English for Graphic Designers',
     coverTitle: 'Verbs <em>+ Gerunds</em>',
     coverSubtitle: 'Some verbs always demand the -ing form. Never an infinitive. This is your most repeated mistake — fix it here. · 7 questions',
-    start: 'Start →'
+    start: 'Start →',
+    topbarLabel: 'Module 1 · Lesson 1 · Gerunds',
+    heroTitle: 'Verbs<br><em>+ Gerunds</em>',
+    heroSub: 'Some verbs always demand the <strong style="color:var(--lime);font-weight:500">-ing form</strong>. Never an infinitive. This is your most repeated mistake — fix it here.',
+    mistakesHeading: 'Your mistakes — corrected <span class="sh-num">from your actual lessons</span>',
+    badLabel: 'Red card ✗',
+    goodLabel: 'Goal ✓',
+    quizHeading: 'Match day <span class="sh-num">score your goals</span>',
+    questionCounter: (n, total) => `Question ${n} of ${total}`,
+    topScoreLabel: (score, total) => `${score} <span>/ ${total} goals</span>`,
+    correctPrefix: '✓ Correct.',
+    incorrectPrefix: '✗ Not quite.',
+    fullTime: '⚽ Full Time',
+    playAgain: 'Play again ↺',
+    sbMsgs: [
+      'Keep going — study the rule and try again.',
+      'Getting there. Review your red cards.',
+      'Decent. Make the rule automatic — replay.',
+      'Good effort. One more run to cement it.',
+      'Strong performance. Nearly there.',
+      'Excellent. This rule is almost yours.',
+      'Perfect score. Full mastery. ⚽'
+    ]
   },
   de: {
     coverBadge: 'Englisch für Grafikdesigner',
     coverTitle: 'Verben <em>+ Gerundium</em>',
     coverSubtitle: 'Manche Verben verlangen immer die -ing-Form. Niemals einen Infinitiv. Das ist dein häufigster Fehler — behebe ihn hier. · 7 Fragen',
-    start: 'Start →'
+    start: 'Start →',
+    topbarLabel: 'Modul 1 · Lektion 1 · Gerundium',
+    heroTitle: 'Verben<br><em>+ Gerundium</em>',
+    heroSub: 'Manche Verben verlangen immer die <strong style="color:var(--lime);font-weight:500">-ing-Form</strong>. Niemals einen Infinitiv. Das ist dein häufigster Fehler — behebe ihn hier.',
+    mistakesHeading: 'Deine Fehler — korrigiert <span class="sh-num">aus deinen echten Lektionen</span>',
+    badLabel: 'Rote Karte ✗',
+    goodLabel: 'Tor ✓',
+    quizHeading: 'Spieltag <span class="sh-num">erziel deine Tore</span>',
+    questionCounter: (n, total) => `Frage ${n} von ${total}`,
+    topScoreLabel: (score, total) => `${score} <span>/ ${total} Tore</span>`,
+    correctPrefix: '✓ Richtig.',
+    incorrectPrefix: '✗ Nicht ganz.',
+    fullTime: '⚽ Abpfiff',
+    playAgain: 'Nochmal spielen ↺',
+    sbMsgs: [
+      'Weiter so — lerne die Regel und versuch es noch einmal.',
+      'Du kommst näher. Sieh dir deine roten Karten noch einmal an.',
+      'Ordentlich. Mach die Regel zur Gewohnheit — spiel noch einmal.',
+      'Guter Einsatz. Noch ein Durchgang, damit es sitzt.',
+      'Starke Leistung. Fast geschafft.',
+      'Ausgezeichnet. Diese Regel gehört dir fast schon.',
+      'Volle Punktzahl. Perfekt beherrscht. ⚽'
+    ]
   }
 };
+
+function applyStaticText(t) {
+  const setText = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  const setHtml = (id, val) => { const el = document.getElementById(id); if (el) el.innerHTML = val; };
+  setText('topbarLabel', t.topbarLabel);
+  setText('heroEyebrow', t.coverBadge);
+  setHtml('heroTitle', t.heroTitle);
+  setHtml('heroSub', t.heroSub);
+  setHtml('mistakesHeading', t.mistakesHeading);
+  setHtml('quizHeading', t.quizHeading);
+  setText('sbTitle', t.fullTime);
+  setText('replayBtn', t.playAgain);
+  document.querySelectorAll('.mistake-card.bad .mc-label').forEach(el => { el.textContent = t.badLabel; });
+  document.querySelectorAll('.mistake-card.good .mc-label').forEach(el => { el.textContent = t.goodLabel; });
+  // Top score counter — reflects current in-progress score/total, if the quiz has started
+  const topScoreEl = document.getElementById('topScore');
+  if (topScoreEl && typeof score === 'number' && typeof total === 'number') {
+    topScoreEl.innerHTML = t.topScoreLabel(score, total);
+  }
+  // Question counters on already-rendered question cards
+  document.querySelectorAll('.q-num').forEach((el, i) => { el.textContent = t.questionCounter(i + 1, total); });
+  // Scoreboard message, if results are currently shown
+  const sb = document.getElementById('scoreboard');
+  if (sb && sb.classList.contains('show')) {
+    const sbMsgEl = document.getElementById('sbMsg');
+    if (sbMsgEl) sbMsgEl.textContent = t.sbMsgs[Math.min(score, t.sbMsgs.length - 1)];
+  }
+}
 
 function setLang(code) {
   currentLang = UI_I18N[code] ? code : 'en';
@@ -690,6 +762,7 @@ function setLang(code) {
   if (startBtn) startBtn.textContent = t.start;
   const langSelect = document.getElementById('langSelect');
   if (langSelect) langSelect.value = currentLang;
+  applyStaticText(t);
 }
 
 function initLangSwitch() {
@@ -733,17 +806,18 @@ const total=qs.length;
 function buildProgress(){
   const row=document.getElementById('progressRow'); row.innerHTML='';
   qs.forEach((_,i)=>{ const d=document.createElement('div'); d.className='pdot'; d.id='pd'+i; row.appendChild(d); });
-  document.getElementById('topScore').innerHTML=`${score} <span>/ ${total} goals</span>`;
+  document.getElementById('topScore').innerHTML=UI_I18N[currentLang].topScoreLabel(score,total);
 }
 
 function buildQuestions(){
   const el=document.getElementById('questionsEl'); el.innerHTML='';
+  const t=UI_I18N[currentLang];
   qs.forEach((q,qi)=>{
     const card=document.createElement('div');
     card.className='q-card fade-up'; card.id='qc'+qi;
     card.style.animationDelay=(qi*0.07)+'s';
     card.innerHTML=`
-      <div class="q-num">Question ${qi+1} of ${total}</div>
+      <div class="q-num">${t.questionCounter(qi+1,total)}</div>
       <div class="q-text">${q.text.replace('___','<span class="q-blank" id="qb'+qi+'">___</span>')}</div>
       <div class="opts" id="opts${qi}">
         ${q.opts.map((o,oi)=>`<button class="opt-btn" onclick="pick(${qi},${oi})" id="ob${qi}_${oi}"><span class="opt-badge">${String.fromCharCode(65+oi)}</span>${o}</button>`).join('')}
@@ -758,6 +832,7 @@ function pick(qi,sel){
   if(card.dataset.done) return;
   card.dataset.done='1';
   const q=qs[qi];
+  const t=UI_I18N[currentLang];
   const opts=document.querySelectorAll('#opts'+qi+' .opt-btn');
   opts.forEach(b=>b.disabled=true);
   const correct=sel===q.ans;
@@ -770,20 +845,20 @@ function pick(qi,sel){
   blank.style.color=correct?'var(--grass)':'var(--red)';
   blank.style.borderBottomColor=correct?'var(--grass)':'var(--red)';
   const fb=document.getElementById('fb'+qi);
-  fb.textContent=correct?q.fb.ok:q.fb.err;
+  fb.innerHTML=`<strong>${correct?t.correctPrefix:t.incorrectPrefix}</strong> ${correct?q.fb.ok:q.fb.err}`;
   fb.classList.add('show',correct?'ok':'err');
   document.getElementById('pd'+qi).classList.add(correct?'correct':'wrong');
   if(correct) score++;
   done++;
-  document.getElementById('topScore').innerHTML=`${score} <span>/ ${total} goals</span>`;
+  document.getElementById('topScore').innerHTML=t.topScoreLabel(score,total);
   if(done===total) setTimeout(showSB,700);
 }
 
 function showSB(){
+  const t=UI_I18N[currentLang];
   const sb=document.getElementById('scoreboard'); sb.classList.add('show');
   document.getElementById('sbScore').innerHTML=`${score}<em>/${total}</em>`;
-  const msgs=['Keep going — study the rule and try again.','Getting there. Review your red cards.','Decent. Make the rule automatic — replay.','Good effort. One more run to cement it.','Strong performance. Nearly there.','Excellent. This rule is almost yours.','Perfect score. Full mastery. ⚽'];
-  document.getElementById('sbMsg').textContent=msgs[Math.min(score,msgs.length-1)];
+  document.getElementById('sbMsg').textContent=t.sbMsgs[Math.min(score,t.sbMsgs.length-1)];
   sb.scrollIntoView({behavior:'smooth',block:'center'});
 }
 
