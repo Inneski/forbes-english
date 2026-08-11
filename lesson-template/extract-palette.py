@@ -131,10 +131,12 @@ def build_palette(path, dark=True):
         # Paper, not pure white: keep a whisper of the image's own hue so a
         # bright lesson still belongs to its picture. Cards then sit ABOVE
         # the paper in pure white, which is what gives a light deck depth.
+        # A tinted mid-light canvas, not glare: bright enough for dark ink,
+        # muted enough to sit beside the dark decks without shouting.
         lh, _, ls_ = to_hls(lightest)
-        void = from_hls(lh, 0.965, min(0.30, max(0.05, ls_ * 0.55)))
-        surface = (255, 255, 255)
-        surface2 = shift(void, dl=-0.035, ds=+0.01)
+        void = from_hls(lh, 0.875, min(0.34, max(0.10, ls_ * 0.80)))
+        surface = shift(void, dl=+0.085, ds=-0.04)   # cards lift off the canvas
+        surface2 = shift(void, dl=+0.035, ds=-0.02)
 
         # Ink carries a trace of the accent hue, like the dark theme's text.
         text = from_hls(ah, 0.135, 0.42)

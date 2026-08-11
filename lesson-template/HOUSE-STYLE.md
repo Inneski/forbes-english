@@ -116,8 +116,14 @@ Size: `232px` on the cover, `152px` anywhere else.
   PDF export. There is no second place to update.
 
 The cover carries a built-in centre scrim so that title text stays legible
-over a light, dark or busy image. Do not remove it — it is what makes an
-arbitrary supplied image safe to drop in.
+over a light, dark or busy image. On a **dark** lesson do not remove it — it is
+what makes an arbitrary supplied image safe to drop in.
+
+**On a light lesson the cover keeps its picture.** Dark ink already carries
+against a bright image (measure it — ink on a mid sky reads around 5.5:1), so
+the light cover scrim is barely present. Never brighten a light cover to rescue
+text: if the text will not read, the hero is wrong for a light lesson, or the
+lesson should be dark.
 
 ---
 
@@ -180,9 +186,10 @@ gives you dark chrome on white paper, or unreadable pale text.
 
 **How the light theme differs, and why:**
 
-- `--void` is tinted paper, never pure white, and `--surface` *is* white — so
-  cards sit **above** the page rather than dissolving into it. That elevation
-  is what gives a bright deck depth.
+- `--void` is a **tinted mid-light canvas** (~0.87 lightness), not paper-white.
+  Near-white glares and makes the deck shout; a muted tone sits beside the dark
+  lessons without fighting them. `--surface` sits a step above it so cards
+  still lift off the page — that elevation is what gives a bright deck depth.
 - The accent is **deepened until it passes 4.5:1 on white**. A pastel lifted
   straight from a bright image cannot carry a button or a heading; the tool
   darkens it while holding its hue.

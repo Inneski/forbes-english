@@ -74,9 +74,9 @@ html[data-theme="light"] {
   --inset2: rgba(0,0,0,0.10);
   --scrim:  rgba(255,255,255,0.72);
   --hairline: rgba(0,0,0,0.14);
-  --cover-shadow: 0 2px 18px rgba(255,255,255,0.9);
-  --wash-mid: rgba(255,255,255,0.48);
-  --bg-opacity: 0.34;
+  --cover-shadow: 0 1px 3px rgba(255,255,255,0.55), 0 2px 16px rgba(255,255,255,0.4);
+  --wash-mid: rgba(255,255,255,0.40);
+  --bg-opacity: 0.32;
 }
 
 /* On paper, a translucent card has nothing to contrast against, so edges
@@ -142,12 +142,14 @@ html, body {
     linear-gradient(180deg, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.14) 28%,
                             rgba(0,0,0,0.22) 68%, rgba(0,0,0,0.78) 100%);
 }
+/* A light cover keeps its picture. Dark ink already carries against a bright
+   image, so the scrim here is barely there — just enough to stop the title
+   landing on a hard edge. Never brighten a light cover to rescue text; if the
+   text will not read, the hero is wrong for a light lesson. */
 html[data-theme="light"] .stage.on-cover .bg-layer::after {
   background:
-    radial-gradient(ellipse 62% 58% at 50% 47%,
-      rgba(255,255,255,0.86) 0%, rgba(255,255,255,0.58) 52%, transparent 80%),
-    linear-gradient(180deg, rgba(255,255,255,0.34) 0%, transparent 30%,
-                            transparent 66%, rgba(255,255,255,0.62) 100%);
+    radial-gradient(ellipse 58% 54% at 50% 47%,
+      rgba(255,255,255,0.20) 0%, rgba(255,255,255,0.08) 55%, transparent 78%);
 }
 
 /* ── SLIDES ── */
