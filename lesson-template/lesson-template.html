@@ -53,7 +53,40 @@
   --ok: #3fbf7f;
   --no: #e8555f;
   --bg-opacity: 0.34;     /* background pattern strength — see doc §6 */
+
+  /* Theme primitives. Dark is the default; a light lesson sets
+     data-theme="light" on <html> and only these flip. Never hardcode
+     rgba(0,0,0,…) or rgba(255,255,255,…) in a lesson — use these. */
+  --inset:  rgba(255,255,255,0.07);  /* recessed fills: inputs, key discs   */
+  --inset2: rgba(255,255,255,0.14);  /* the same, one step stronger         */
+  --scrim:  rgba(0,0,0,0.45);        /* chrome sitting over the hero        */
+  --hairline: rgba(255,255,255,0.28);
+  --cover-shadow: 0 4px 28px rgba(0,0,0,0.85);
+  --wash-mid: rgba(0,0,0,0.55);      /* interior background wash            */
 }
+
+/* ══ LIGHT THEME ══
+   For bright, airy heroes. The palette comes from
+   `extract-palette.py <hero> --light`; these are the structural flips the
+   palette alone cannot express. */
+html[data-theme="light"] {
+  --inset:  rgba(0,0,0,0.045);
+  --inset2: rgba(0,0,0,0.10);
+  --scrim:  rgba(255,255,255,0.72);
+  --hairline: rgba(0,0,0,0.14);
+  --cover-shadow: 0 2px 18px rgba(255,255,255,0.9);
+  --wash-mid: rgba(255,255,255,0.48);
+  --bg-opacity: 0.34;
+}
+
+/* On paper, a translucent card has nothing to contrast against, so edges
+   need more of the hairline than they do on a dark canvas. */
+html[data-theme="light"] .card { border-color: color-mix(in srgb, var(--border) 90%, transparent); }
+html[data-theme="light"] .opt,
+html[data-theme="light"] .match-item { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
+html[data-theme="light"] .opt-key { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
+html[data-theme="light"] .card { background: color-mix(in srgb, var(--surface) 88%, transparent); }
+html[data-theme="light"] .opt { background: color-mix(in srgb, var(--surface) 92%, transparent); }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -94,8 +127,8 @@ html, body {
   content: '';
   position: absolute; inset: 0;
   background:
-    linear-gradient(180deg, var(--void) 0%, rgba(0,0,0,0.55) 22%,
-                            rgba(0,0,0,0.55) 78%, var(--void) 100%);
+    linear-gradient(180deg, var(--void) 0%, var(--wash-mid) 22%,
+                            var(--wash-mid) 78%, var(--void) 100%);
 }
 /* The cover slide shows the hero at FULL strength — no wash, no dimming. */
 .stage.on-cover .bg-layer::before { opacity: 1; filter: none; }
@@ -108,6 +141,13 @@ html, body {
       rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.52) 52%, transparent 78%),
     linear-gradient(180deg, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.14) 28%,
                             rgba(0,0,0,0.22) 68%, rgba(0,0,0,0.78) 100%);
+}
+html[data-theme="light"] .stage.on-cover .bg-layer::after {
+  background:
+    radial-gradient(ellipse 62% 58% at 50% 47%,
+      rgba(255,255,255,0.86) 0%, rgba(255,255,255,0.58) 52%, transparent 80%),
+    linear-gradient(180deg, rgba(255,255,255,0.34) 0%, transparent 30%,
+                            transparent 66%, rgba(255,255,255,0.62) 100%);
 }
 
 /* ── SLIDES ── */
@@ -138,14 +178,14 @@ html, body {
   font-family: var(--font-display);
   font-size: 62px; font-weight: 900; line-height: 1.06;
   color: var(--text);
-  text-shadow: 0 4px 28px rgba(0,0,0,0.85);
+  text-shadow: var(--cover-shadow);
   margin-top: 26px;
 }
 .cover-title em { font-style: normal; color: var(--accent-bright); }
 .cover-sub {
   font-size: 19px; color: var(--text);
   letter-spacing: .04em; margin-top: 14px;
-  text-shadow: 0 2px 14px rgba(0,0,0,0.9);
+  text-shadow: var(--cover-shadow);
 }
 .cover-meta {
   display: flex; gap: 10px; margin-top: 26px; flex-wrap: wrap; justify-content: center;
@@ -154,8 +194,8 @@ html, body {
   font-family: var(--font-mono); font-size: 11.5px;
   letter-spacing: .12em; text-transform: uppercase;
   padding: 6px 14px; border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.28);
-  background: rgba(0,0,0,.42);
+  border: 1px solid var(--hairline);
+  background: var(--scrim);
   color: var(--text);
 }
 
@@ -214,7 +254,7 @@ html, body {
 .opt-key {
   flex: 0 0 30px; height: 30px; display: grid; place-items: center;
   border-radius: 50%; font-family: var(--font-mono); font-size: 13px;
-  background: rgba(255,255,255,.07);
+  background: var(--inset);
   border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
 }
 .opt.correct { border-color: var(--ok); background: color-mix(in srgb, var(--ok) 20%, var(--surface2)); }
@@ -224,11 +264,11 @@ html, body {
 /* Gap-fill */
 .gap {
   font-family: var(--font-ui); font-size: 20px; color: var(--text);
-  background: rgba(255,255,255,.06);
+  background: var(--inset);
   border: none; border-bottom: 2px solid var(--accent);
   padding: 3px 10px; min-width: 190px; border-radius: 4px 4px 0 0;
 }
-.gap:focus { outline: none; background: rgba(255,255,255,.12); }
+.gap:focus { outline: none; background: var(--inset2); }
 .gap.correct { border-bottom-color: var(--ok); color: var(--ok); }
 .gap.wrong   { border-bottom-color: var(--no); color: var(--no); }
 
@@ -259,11 +299,11 @@ html, body {
   position: absolute; z-index: 3; left: 0; right: 0; bottom: 0;
   height: 58px; padding: 0 26px;
   display: flex; align-items: center; gap: 18px;
-  background: linear-gradient(180deg, transparent, rgba(0,0,0,.55));
+  background: linear-gradient(180deg, transparent, var(--scrim));
 }
 .stage.on-cover .deck-bar { background: none; }
 .stage.on-cover .deck-score { visibility: hidden; }
-.progress { flex: 1; height: 3px; background: rgba(255,255,255,.16); border-radius: 2px; overflow: hidden; }
+.progress { flex: 1; height: 3px; background: var(--inset2); border-radius: 2px; overflow: hidden; }
 .progress-fill { height: 100%; width: 0; background: var(--accent); transition: width .3s ease; }
 .deck-count, .deck-score {
   font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); white-space: nowrap;
@@ -271,7 +311,7 @@ html, body {
 .nav-btn {
   width: 34px; height: 34px; border-radius: 50%;
   border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
-  background: rgba(0,0,0,.4); color: var(--text);
+  background: var(--scrim); color: var(--text);
   cursor: pointer; font-size: 15px; line-height: 1;
   display: grid; place-items: center; transition: border-color .15s, background .15s;
 }
@@ -281,7 +321,7 @@ html, body {
 /* ── LANGUAGE SWITCH ── */
 .lang-select {
   font-family: var(--font-mono); font-size: 12px;
-  background: rgba(0,0,0,.5); color: var(--text);
+  background: var(--scrim); color: var(--text);
   border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
   border-radius: 6px; padding: 6px 10px; cursor: pointer;
 }
@@ -337,11 +377,11 @@ html, body {
   flex: 1; min-height: 118px; resize: none;
   font-family: var(--font-ui); font-size: 15px; line-height: 1.55;
   color: var(--text);
-  background: rgba(255,255,255,.05);
+  background: var(--inset);
   border: 1px solid color-mix(in srgb, var(--border) 45%, transparent);
   border-radius: 8px; padding: 12px 14px;
 }
-.act-input:focus { outline: none; border-color: var(--accent); background: rgba(255,255,255,.08); }
+.act-input:focus { outline: none; border-color: var(--accent); background: var(--inset2); }
 .act-input::placeholder { color: var(--text-dim); opacity: .55; }
 .act-foot {
   display: flex; align-items: center; justify-content: space-between;
@@ -423,8 +463,8 @@ html, body {
   }
   .slide::after {
     content: ''; position: absolute; inset: 0; z-index: -1;
-    background: linear-gradient(180deg, var(--void) 0%, rgba(0,0,0,.55) 22%,
-                                        rgba(0,0,0,.55) 78%, var(--void) 100%);
+    background: linear-gradient(180deg, var(--void) 0%, var(--wash-mid) 22%,
+                                        var(--wash-mid) 78%, var(--void) 100%);
   }
   .slide[data-type="cover"]::before { opacity: 1; }
   .slide[data-type="cover"]::after {
@@ -862,7 +902,7 @@ function markGap(g, fb) {
   if (fb) {
     const why = fb.dataset.explain ? ' ' + fb.dataset.explain : '';
     fb.textContent = (ok ? t('fbCorrect')
-      : `${t('fbWrong')} ${t('fbAnswer')} ${g.dataset.answer.split('|')[0]}`) + why;
+      : `${t('fbWrong')} ${t('fbAnswer')} ${g.dataset.answer.split('|')[0]}.`) + why;
     fb.className = 'feedback show ' + (ok ? 'ok' : 'no');
   }
   return ok;

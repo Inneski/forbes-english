@@ -127,25 +127,51 @@ def build_palette(path, dark=True):
         accent_bright = shift(accent, dl=+0.14, ds=+0.06)
         accent_dim = shift(accent, dl=-0.18, ds=-0.05)
     else:
-        void = shift(lightest, dl=+0.22, ds=-0.45)
+        # ── LIGHT THEME ──────────────────────────────────────────────
+        # Paper, not pure white: keep a whisper of the image's own hue so a
+        # bright lesson still belongs to its picture. Cards then sit ABOVE
+        # the paper in pure white, which is what gives a light deck depth.
+        lh, _, ls_ = to_hls(lightest)
+        void = from_hls(lh, 0.965, min(0.30, max(0.05, ls_ * 0.55)))
         surface = (255, 255, 255)
         surface2 = shift(void, dl=-0.035, ds=+0.01)
-        border = shift(accent, dl=+0.28, ds=-0.35)
-        text = shift(darkest, dl=-0.12, ds=-0.25)
-        if contrast_ratio(text, surface) < 8:
-            text = (26, 28, 32)
-        text_dim = shift(text, dl=+0.30, ds=+0.02)
-        accent_bright = shift(accent, dl=-0.10, ds=+0.08)
-        accent_dim = shift(accent, dl=+0.24, ds=-0.20)
+
+        # Ink carries a trace of the accent hue, like the dark theme's text.
+        text = from_hls(ah, 0.135, 0.42)
+        if contrast_ratio(text, surface) < 9:
+            text = (22, 27, 34)
+        text_dim = shift(text, dl=+0.30, ds=-0.10)
+
+        # On white, an accent taken straight from a pastel image will not
+        # carry text or a button. Deepen it — keeping its hue — until it does.
+        accent = accent
+        guard = 0
+        while contrast_ratio(accent, surface) < 4.5 and guard < 24:
+            hx, lx, sx = to_hls(accent)
+            accent = from_hls(hx, lx - 0.035, min(1.0, sx + 0.03))
+            guard += 1
+
+        # "Bright" in a light theme means MORE emphatic, i.e. deeper still.
+        accent_bright = shift(accent, dl=-0.10, ds=+0.10)
+        guard = 0
+        while contrast_ratio(accent_bright, surface) < 5.5 and guard < 14:
+            hx, lx, sx = to_hls(accent_bright)
+            accent_bright = from_hls(hx, lx - 0.035, sx)
+            guard += 1
+
+        accent_dim = shift(accent, dl=+0.34, ds=-0.18)   # pale fills
+        # A hairline that is actually visible on paper.
+        border = from_hls(to_hls(accent)[0], 0.68, 0.30)
 
     # --accent-bright must stay visibly distinct from --text, or <em>
     # emphasis and eyebrows vanish into the body copy. When the image's
     # dominant colour is already near-white, brightening is the wrong move:
     # deepen and saturate instead.
     guard = 0
+    step_b = -0.05 if dark else +0.05
     while contrast_ratio(accent_bright, text) < 1.45 and guard < 12:
         hb, lb, sb = to_hls(accent_bright)
-        accent_bright = from_hls(hb, lb - 0.05, min(1.0, sb + 0.08))
+        accent_bright = from_hls(hb, lb + step_b, min(1.0, sb + 0.08))
         guard += 1
 
     # ── Contrast colour ───────────────────────────────────────────────
@@ -199,6 +225,7 @@ def main():
         ("accent on surface",        p["accent"],        p["surface"], 4.5, "buttons, rules"),
         ("accent-bright on surface", p["accent-bright"], p["surface"], 4.5, "headings"),
         ("contrast on surface",      p["contrast"],      p["surface"], 4.5, "counterpoint"),
+        ("border on surface",        p["border"],        p["surface"], 1.25, "hairlines must show"),
         # Not a readability check: emphasis must be VISIBLY different from body
         # text, or <em> and eyebrows disappear into the paragraph.
         ("accent-bright vs text",    p["accent-bright"], p["text"],    1.45, "emphasis must show"),

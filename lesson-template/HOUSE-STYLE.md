@@ -157,6 +157,50 @@ not on this list, you are solving the wrong problem.
 
 ---
 
+## 4a. Light lessons — the bright theme
+
+Not every lesson should be dark. A hero that is bright and airy — open sky,
+daylight, pale illustration — makes a far better **light** deck, and a mixed
+library reads better than fifteen variations of the same dark page.
+
+Two things switch together, and both are required:
+
+```bash
+python3 lesson-template/extract-palette.py <hero> --light
+```
+
+```html
+<html lang="en" data-theme="light">
+```
+
+The palette gives you paper, ink and a deepened accent. The `data-theme`
+attribute flips the structural values a palette cannot express — inset fills,
+scrims, the cover wash, the background wash. Setting one without the other
+gives you dark chrome on white paper, or unreadable pale text.
+
+**How the light theme differs, and why:**
+
+- `--void` is tinted paper, never pure white, and `--surface` *is* white — so
+  cards sit **above** the page rather than dissolving into it. That elevation
+  is what gives a bright deck depth.
+- The accent is **deepened until it passes 4.5:1 on white**. A pastel lifted
+  straight from a bright image cannot carry a button or a heading; the tool
+  darkens it while holding its hue.
+- `--accent-bright` goes *darker* than the accent, not lighter. On paper,
+  emphasis means more ink, not less.
+- Cards and options carry more of the hairline (90–95% vs the dark theme's
+  55%) plus a soft shadow. On a dark canvas a translucent card separates
+  itself; on paper it needs a real edge.
+
+Never hardcode `rgba(0,0,0,…)` or `rgba(255,255,255,…)` in a lesson. Use
+`--inset`, `--inset2`, `--scrim`, `--hairline` and `--wash-mid`, which flip
+with the theme. A lesson that hardcodes them looks correct in one theme and
+broken in the other.
+
+**Reference:** `forbes-construction-contracts.html` is the light benchmark.
+
+---
+
 ## 5. Background pattern and legibility
 
 The hero repeats behind every non-cover slide at `--bg-opacity: 0.34`,
@@ -416,6 +460,7 @@ things stand.
 - `forbes_english_lesson.html` — Refinery Safety & Turnaround, 16 slides
 - `football_c1_roleplay.html` — Full-Time Pressure, 15 slides (keeps its team-spirit meter)
 - `Forbes English - Product Strategy & Market Research Speaking (2).html` — 24 slides
+- `forbes-construction-contracts.html` — 15 slides, **light theme** (bright benchmark)
 
 All except the negotiation reference ship English + German; the other eight
 languages stay out of the switcher until they are written.
