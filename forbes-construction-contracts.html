@@ -27,17 +27,17 @@
      the accent — e.g. lime on a pink-dominant lesson. See HOUSE-STYLE §2. */
   /* --logo-mark: var(--contrast); */
 
-  --void          : #ead9d4;
-  --surface       : #f8f3f2;
-  --surface2      : #efe4e1;
-  --border        : #c6a095;
-  --text          : #311a14;
-  --text-dim      : #925b4b;
-  --accent        : #ca2d00;
-  --accent-bright : #972200;
-  --accent-dim    : #f39d84;
+  --void          : #d8b6ac;
+  --surface       : #e1cbc4;
+  --surface2      : #dcc0b8;
+  --border        : #965b4a;
+  --text          : #2a1711;
+  --text-dim      : #5e392e;
+  --accent        : #a62500;
+  --accent-bright : #731a00;
+  --accent-dim    : #ef5b31;
   --secondary     : #749cb9;
-  --contrast      : #096d53;
+  --contrast      : #075541;
 }
 
 /* ── Fixed tokens: identical in every lesson. Do not edit. ── */
@@ -67,25 +67,31 @@
 /* ══ LIGHT THEME ══
    For bright, airy heroes. The palette comes from
    `extract-palette.py <hero> --light`; these are the structural flips the
-   palette alone cannot express. */
+   palette alone cannot express.
+
+   A light lesson is a MID tone, not a white one. Every wash here is mixed
+   from --void rather than from white: mixing toward white bleaches the hero
+   out of the interior pages and turns the deck into glare on a projector.
+   If you find yourself reaching for rgba(255,255,255,…) in a lesson, the
+   answer is a higher --void percentage instead. */
 html[data-theme="light"] {
   --inset:  rgba(0,0,0,0.045);
   --inset2: rgba(0,0,0,0.10);
-  --scrim:  rgba(255,255,255,0.72);
+  --scrim:  color-mix(in srgb, var(--void) 78%, transparent);
   --hairline: rgba(0,0,0,0.14);
   --cover-shadow: 0 1px 3px rgba(255,255,255,0.55), 0 2px 16px rgba(255,255,255,0.4);
-  --wash-mid: rgba(255,255,255,0.40);
-  --bg-opacity: 0.32;
+  --wash-mid: color-mix(in srgb, var(--void) 62%, transparent);
+  --bg-opacity: 0.30;
 }
 
-/* On paper, a translucent card has nothing to contrast against, so edges
-   need more of the hairline than they do on a dark canvas. */
+/* On a mid canvas a translucent card has little to contrast against, so
+   edges need more of the hairline than they do on a dark canvas. */
 html[data-theme="light"] .card { border-color: color-mix(in srgb, var(--border) 90%, transparent); }
 html[data-theme="light"] .opt,
 html[data-theme="light"] .match-item { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
 html[data-theme="light"] .opt-key { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
-html[data-theme="light"] .card { background: color-mix(in srgb, var(--surface) 88%, transparent); }
-html[data-theme="light"] .opt { background: color-mix(in srgb, var(--surface) 92%, transparent); }
+html[data-theme="light"] .card { background: color-mix(in srgb, var(--surface) 92%, transparent); }
+html[data-theme="light"] .opt { background: color-mix(in srgb, var(--surface) 95%, transparent); }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
