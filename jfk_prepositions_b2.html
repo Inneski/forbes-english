@@ -3,933 +3,1359 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JFK & Prepositions Part 2</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- ══ REPLACE: lesson title. No "Forbes English —" prefix. ══ -->
+<title>JFK &amp; Prepositions | Forbes English</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg:        #0e1118;
-    --surface:   #141720;
-    --card:      #1b2030;
-    --navy:      #1e2d4a;
-    --blue:      #4a7fb5;
-    --blue-lt:   #7aafd4;
-    --amber:     #d4942a;
-    --amber-lt:  #e8b85a;
-    --cream:     #eae6de;
-    --muted:     #7a8498;
-    --correct:   #5aad8e;
-    --wrong:     #c96060;
-    --border:    rgba(74,127,181,0.18);
-    --radius:    14px;
-  }
+/* ══════════════════════════════════════════════════════════════════
+   FORBES ENGLISH — 16:9 SLIDE LESSON TEMPLATE
+   Everything you normally need to change lives in the two blocks
+   marked "REPLACE". Do not restructure the engine below them.
+   ══════════════════════════════════════════════════════════════════ */
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ══ REPLACE 1 of 2: hero image + palette ══
+   1. Point --hero at the lesson's cover image. This ONE line drives the
+      cover, the background pattern on every slide, and the PDF export.
+   2. Generate the palette FROM that same image:
+         python3 lesson-template/extract-palette.py <hero-image>
+      and paste its output over the colour block. Never hand-pick colours. */
+:root {
+  --hero: url('jfk/hero.jpg');
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--cream);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0 16px 60px;
-  }
+  /* Uncomment to run the Forbes mark in the contrasting colour instead of
+     the accent — e.g. lime on a pink-dominant lesson. See HOUSE-STYLE §2. */
+  /* --logo-mark: var(--contrast); */
 
-  /* grain */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
-    background-size: 180px;
-    pointer-events: none;
-    z-index: 0;
-    opacity: .6;
-  }
+  --void          : #090e0c;
+  --surface       : #121c19;
+  --surface2      : #1a2924;
+  --border        : #ae6661;
+  --text          : #f5f2f2;
+  --text-dim      : #bfa5a3;
+  --accent        : #e59590;
+  --accent-bright : #f4b3af;
+  --accent-dim    : #ce534b;
+  --secondary     : #050e0b;
+  --contrast      : #1ded95;
+}
 
-  /* scanline effect – subtle */
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 3px,
-      rgba(0,0,0,0.04) 3px,
-      rgba(0,0,0,0.04) 4px
-    );
-    pointer-events: none;
-    z-index: 0;
-  }
+/* ── Fixed tokens: identical in every lesson. Do not edit. ── */
+:root {
+  --slide-w: 1280px;
+  --slide-h: 720px;
+  --pad: 64px;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-ui: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'DM Mono', ui-monospace, monospace;
+  --r: 10px;
+  --ok: #3fbf7f;
+  --no: #e8555f;
+  --bg-opacity: 0.34;     /* background pattern strength — see doc §6 */
 
-  header, .hero, .activity-wrapper, #final-screen { position: relative; z-index: 1; }
+  /* Theme primitives. Dark is the default; a light lesson sets
+     data-theme="light" on <html> and only these flip. Never hardcode
+     rgba(0,0,0,…) or rgba(255,255,255,…) in a lesson — use these. */
+  --inset:  rgba(255,255,255,0.07);  /* recessed fills: inputs, key discs   */
+  --inset2: rgba(255,255,255,0.14);  /* the same, one step stronger         */
+  --scrim:  rgba(0,0,0,0.45);        /* chrome sitting over the hero        */
+  --hairline: rgba(255,255,255,0.28);
+  --cover-shadow: 0 4px 28px rgba(0,0,0,0.85);
+  --wash-mid: rgba(0,0,0,0.55);      /* interior background wash            */
+}
 
-  /* ── HEADER ── */
-  header {
-    width: 100%;
-    max-width: 800px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 28px 0 20px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 32px;
-  }
+/* ══ LIGHT THEME ══
+   For bright, airy heroes. The palette comes from
+   `extract-palette.py <hero> --light`; these are the structural flips the
+   palette alone cannot express.
 
-  .score-pill {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    padding: 8px 20px;
-    font-size: 13px;
-    color: var(--blue-lt);
-    font-weight: 500;
-    letter-spacing: .04em;
-    white-space: nowrap;
-  }
-  .score-pill span { color: var(--cream); font-weight: 700; }
+   A light lesson is a MID tone, not a white one. Every wash here is mixed
+   from --void rather than from white: mixing toward white bleaches the hero
+   out of the interior pages and turns the deck into glare on a projector.
+   If you find yourself reaching for rgba(255,255,255,…) in a lesson, the
+   answer is a higher --void percentage instead. */
+html[data-theme="light"] {
+  --inset:  rgba(0,0,0,0.045);
+  --inset2: rgba(0,0,0,0.10);
+  --scrim:  color-mix(in srgb, var(--void) 78%, transparent);
+  --hairline: rgba(0,0,0,0.14);
+  --cover-shadow: 0 1px 3px rgba(255,255,255,0.55), 0 2px 16px rgba(255,255,255,0.4);
+  --wash-mid: color-mix(in srgb, var(--void) 62%, transparent);
+  --bg-opacity: 0.30;
+}
 
-  /* ── HERO ── */
-  .hero {
-    width: 100%;
-    max-width: 800px;
-    display: flex;
-    gap: 36px;
-    align-items: flex-end;
-    margin-bottom: 40px;
-  }
+/* On a mid canvas a translucent card has little to contrast against, so
+   edges need more of the hairline than they do on a dark canvas. */
+html[data-theme="light"] .card { border-color: color-mix(in srgb, var(--border) 90%, transparent); }
+html[data-theme="light"] .opt,
+html[data-theme="light"] .match-item { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
+html[data-theme="light"] .opt-key { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
+html[data-theme="light"] .card { background: color-mix(in srgb, var(--surface) 92%, transparent); }
+html[data-theme="light"] .opt { background: color-mix(in srgb, var(--surface) 95%, transparent); }
 
-  .hero-text { flex: 1; }
-  .lesson-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: var(--amber);
-    border: 1px solid var(--amber);
-    border-radius: 4px;
-    padding: 3px 10px;
-    margin-bottom: 14px;
-  }
-  .part-badge {
-    background: rgba(212,148,42,0.15);
-    border: 1px solid rgba(212,148,42,0.4);
-    border-radius: 4px;
-    padding: 2px 7px;
-    font-size: 10px;
-    color: var(--amber-lt);
-    margin-left: 4px;
-  }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  .hero-text h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(26px, 5vw, 44px);
-    line-height: 1.15;
-    color: var(--cream);
-    margin-bottom: 14px;
-  }
-  .hero-text h1 em {
-    font-style: italic;
-    color: var(--blue-lt);
-  }
-  .hero-text p {
-    font-size: 15px;
-    color: var(--muted);
-    line-height: 1.65;
-    max-width: 420px;
-  }
+html, body {
+  height: 100%;
+  overflow: hidden;            /* NO SCROLLING. This is the whole point. */
+  background: var(--void);
+  color: var(--text);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+}
 
-  /* ── ILLUSTRATION ── */
-  .illustration svg {
-    width: clamp(130px, 22vw, 210px);
-    height: auto;
-    filter: drop-shadow(0 8px 40px rgba(74,127,181,0.2));
-  }
+/* ── STAGE: a fixed 1280×720 canvas scaled to fit any viewport ── */
+.stage-wrap { position: fixed; inset: 0; display: grid; place-items: center; }
+.stage {
+  position: relative;
+  width: var(--slide-w);
+  height: var(--slide-h);
+  transform-origin: center center;
+  overflow: hidden;
+  background: var(--void);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.55);
+}
 
-  /* ── ACTIVITY ── */
-  .activity { display: none; }
-  .activity.active { display: block; animation: fadeUp .4s ease; }
+/* ── BACKGROUND PATTERN: the cover image, behind every slide ──
+   Driven by --hero so the screen view and the PDF/PPT export read from
+   ONE definition. Two pseudo-layers because opacity on a parent would
+   also fade the wash sitting on top of it. */
+.bg-layer { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.bg-layer::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--hero) center / cover no-repeat;
+  opacity: var(--bg-opacity);
+  filter: saturate(0.75);
+}
+.bg-layer::after {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, var(--void) 0%, var(--wash-mid) 22%,
+                            var(--wash-mid) 78%, var(--void) 100%);
+}
+/* The cover slide shows the hero at FULL strength — no wash, no dimming. */
+.stage.on-cover .bg-layer::before { opacity: 1; filter: none; }
+/* Centre scrim: guarantees cover-text contrast over ANY hero — light, dark,
+   or busy — while leaving the artwork vivid at the edges. Do not remove it;
+   it is what makes an arbitrary dropped-in image safe. */
+.stage.on-cover .bg-layer::after {
+  background:
+    radial-gradient(ellipse 60% 56% at 50% 47%,
+      rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.52) 52%, transparent 78%),
+    linear-gradient(180deg, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.14) 28%,
+                            rgba(0,0,0,0.22) 68%, rgba(0,0,0,0.78) 100%);
+}
+/* A light cover keeps its picture. Dark ink already carries against a bright
+   image, so the scrim here is barely there — just enough to stop the title
+   landing on a hard edge. Never brighten a light cover to rescue text; if the
+   text will not read, the hero is wrong for a light lesson. */
+html[data-theme="light"] .stage.on-cover .bg-layer::after {
+  background:
+    radial-gradient(ellipse 58% 54% at 50% 47%,
+      rgba(255,255,255,0.20) 0%, rgba(255,255,255,0.08) 55%, transparent 78%);
+}
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(14px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+/* ── SLIDES ── */
+.slide {
+  position: absolute; inset: 0; z-index: 1;
+  display: none;
+  flex-direction: column;
+  padding: var(--pad);
+}
+.slide.is-active { display: flex; animation: slide-in .32s ease both; }
+@keyframes slide-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
-  .activity-header { margin-bottom: 24px; }
-  .activity-label {
-    font-size: 11px; font-weight: 600; letter-spacing: .12em;
-    text-transform: uppercase; color: var(--blue); margin-bottom: 8px;
-  }
-  .activity-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 22px; color: var(--cream); margin-bottom: 6px;
-  }
-  .activity-instructions { font-size: 14px; color: var(--muted); line-height: 1.6; }
+/* ── LOGO ── */
+.fe-logo { width: 152px; height: auto; display: block; }
+.fe-logo-mark { color: var(--logo-mark, var(--accent)); }
+.fe-logo-word { fill: var(--text); opacity: 0; transition: opacity .25s ease; }
+.fonts-ready .fe-logo-word { opacity: 1; }   /* never flash a fallback face */
+.slide[data-type="cover"] .fe-logo { width: 232px; }
 
-  .progress-bar-wrap {
-    width: 100%; height: 3px;
-    background: var(--card);
-    border-radius: 999px;
-    margin-bottom: 28px; overflow: hidden;
-  }
-  .progress-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--blue), var(--blue-lt));
-    border-radius: 999px;
-    transition: width .4s ease;
-  }
+/* ── COVER ── */
+.cover-inner {
+  height: 100%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; gap: 4px;
+}
+.cover-title {
+  font-family: var(--font-display);
+  font-size: 62px; font-weight: 900; line-height: 1.06;
+  color: var(--text);
+  text-shadow: var(--cover-shadow);
+  margin-top: 26px;
+}
+.cover-title em { font-style: normal; color: var(--accent-bright); }
+.cover-sub {
+  font-size: 19px; color: var(--text);
+  letter-spacing: .04em; margin-top: 14px;
+  text-shadow: var(--cover-shadow);
+}
+.cover-meta {
+  display: flex; gap: 10px; margin-top: 26px; flex-wrap: wrap; justify-content: center;
+}
+.chip {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase;
+  padding: 6px 14px; border-radius: 999px;
+  border: 1px solid var(--hairline);
+  background: var(--scrim);
+  color: var(--text);
+}
 
-  /* ── QUESTION CARD ── */
-  .question-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 28px;
-    margin-bottom: 20px;
-  }
-  .question-counter { font-size: 12px; color: var(--muted); font-weight: 500; letter-spacing: .06em; margin-bottom: 12px; }
-  .question-text { font-size: 16px; line-height: 1.7; color: var(--cream); margin-bottom: 22px; font-weight: 400; }
+/* ── SLIDE FURNITURE ── */
+.slide-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 20px; margin-bottom: 26px;
+}
+.eyebrow {
+  font-family: var(--font-mono); font-size: 12px;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent-bright);
+}
+.slide-title {
+  font-family: var(--font-display);
+  font-size: 38px; font-weight: 700; line-height: 1.15; color: var(--text);
+  margin-top: 6px;
+}
+.slide-body { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; }
 
-  /* ── MC OPTIONS ── */
-  .options { display: flex; flex-direction: column; gap: 10px; }
-  .option-btn {
-    background: var(--surface);
-    border: 1.5px solid rgba(74,127,181,0.15);
-    border-radius: 10px;
-    padding: 13px 18px;
-    text-align: left;
-    color: var(--cream);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    cursor: pointer;
-    transition: border-color .2s, background .2s, transform .1s;
-    display: flex; align-items: center; gap: 14px;
-  }
-  .option-btn:hover:not(:disabled) { border-color: var(--blue); background: var(--card); transform: translateX(3px); }
-  .option-btn:disabled { cursor: default; }
-  .option-btn .opt-label {
-    width: 26px; height: 26px; border-radius: 50%;
-    background: rgba(74,127,181,0.1);
-    border: 1.5px solid rgba(74,127,181,0.3);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 700; color: var(--blue);
-    flex-shrink: 0;
-  }
-  .option-btn.correct { border-color: var(--correct); background: rgba(90,173,142,0.1); }
-  .option-btn.correct .opt-label { background: var(--correct); border-color: var(--correct); color: #fff; }
-  .option-btn.wrong { border-color: var(--wrong); background: rgba(201,96,96,0.08); }
-  .option-btn.wrong .opt-label { background: var(--wrong); border-color: var(--wrong); color: #fff; }
+/* Content sits in a translucent card so it stays legible over the pattern. */
+.card {
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+  border-radius: var(--r);
+  padding: 30px 34px;
+  backdrop-filter: blur(3px);
+}
+.card + .card { margin-top: 16px; }
+.cols .card + .card,
+.cols .card { margin-top: 0; }   /* side-by-side cards must share a top edge */
+.prose { font-size: 20px; line-height: 1.62; color: var(--text); }
+.prose + .prose { margin-top: 14px; }
+.prose strong { color: var(--accent-bright); font-weight: 600; }
+.dim { color: var(--text-dim); }
 
-  /* ── FEEDBACK ── */
-  .feedback-box {
-    display: none;
-    background: var(--surface);
-    border-left: 3px solid var(--blue);
-    border-radius: 0 8px 8px 0;
-    padding: 14px 18px;
-    margin-top: 16px;
-    font-size: 14px; line-height: 1.65; color: var(--muted);
-  }
-  .feedback-box.show { display: block; animation: fadeUp .3s ease; }
-  .feedback-box strong { color: var(--cream); }
-  .feedback-correct { color: var(--correct) !important; font-weight: 600; }
-  .feedback-wrong { color: var(--wrong) !important; font-weight: 600; }
+/* Two-column teaching layout */
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
 
-  /* ── DROPDOWN ── */
-  .fitb-select {
-    background: var(--surface);
-    border: 1.5px solid rgba(74,127,181,0.35);
-    border-radius: 8px;
-    color: var(--cream);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    padding: 6px 12px;
-    cursor: pointer;
-    outline: none;
-    transition: border-color .2s;
-  }
-  .fitb-select:focus { border-color: var(--blue); }
-  .fitb-select option { background: var(--card); }
+/* ── QUESTIONS ── */
+.q-stem { font-size: 25px; line-height: 1.5; color: var(--text); margin-bottom: 22px; }
+.q-stem em { font-style: normal; color: var(--accent-bright); font-weight: 600; }
 
-  .fitb-submit {
-    background: transparent;
-    border: 1.5px solid var(--blue);
-    color: var(--blue-lt);
-    border-radius: 8px;
-    padding: 9px 24px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px; font-weight: 600;
-    cursor: pointer; margin-top: 18px;
-    transition: background .2s, color .2s;
-  }
-  .fitb-submit:hover:not(:disabled) { background: var(--blue); color: #fff; }
-  .fitb-submit:disabled { opacity: .35; cursor: default; }
+.opts { display: grid; gap: 11px; }
+.opts.two-up { grid-template-columns: 1fr 1fr; }
+.opt {
+  display: flex; align-items: center; gap: 14px;
+  width: 100%; text-align: left;
+  font-family: var(--font-ui); font-size: 19px; color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: var(--r);
+  padding: 15px 20px; cursor: pointer;
+  transition: border-color .15s, background .15s, transform .12s;
+}
+.opt:hover:not(:disabled) { border-color: var(--accent); transform: translateX(3px); }
+.opt-key {
+  flex: 0 0 30px; height: 30px; display: grid; place-items: center;
+  border-radius: 50%; font-family: var(--font-mono); font-size: 13px;
+  background: var(--inset);
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+}
+.opt.correct { border-color: var(--ok); background: color-mix(in srgb, var(--ok) 20%, var(--surface2)); }
+.opt.wrong   { border-color: var(--no); background: color-mix(in srgb, var(--no) 18%, var(--surface2)); }
+.opt:disabled { cursor: default; }
 
-  /* ── REORDERING ── */
-  .reorder-target {
-    min-height: 52px;
-    background: var(--surface);
-    border: 2px dashed rgba(74,127,181,0.3);
-    border-radius: 10px;
-    padding: 10px 14px;
-    margin-bottom: 16px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    align-items: center;
-  }
-  .reorder-target.drag-over {
-    border-color: var(--blue);
-    background: rgba(74,127,181,0.06);
-  }
+/* Gap-fill */
+.gap {
+  font-family: var(--font-ui); font-size: 20px; color: var(--text);
+  background: var(--inset);
+  border: none; border-bottom: 2px solid var(--accent);
+  padding: 3px 10px; min-width: 190px; border-radius: 4px 4px 0 0;
+}
+.gap:focus { outline: none; background: var(--inset2); }
+.gap.correct { border-bottom-color: var(--ok); color: var(--ok); }
+.gap.wrong   { border-bottom-color: var(--no); color: var(--no); }
 
-  .word-chip {
-    background: var(--navy);
-    border: 1.5px solid rgba(74,127,181,0.3);
-    border-radius: 8px;
-    padding: 7px 14px;
-    font-size: 14px;
-    color: var(--blue-lt);
-    cursor: grab;
-    user-select: none;
-    font-weight: 500;
-    transition: border-color .2s, opacity .2s, transform .1s;
-    white-space: nowrap;
-  }
-  .word-chip:hover { border-color: var(--blue); transform: translateY(-1px); }
-  .word-chip.placed { background: rgba(74,127,181,0.12); border-color: var(--blue); color: var(--cream); }
-  .word-chip.ro-correct { border-color: var(--correct); color: var(--correct); background: rgba(90,173,142,0.08); }
-  .word-chip.ro-wrong { border-color: var(--wrong); color: var(--wrong); background: rgba(201,96,96,0.08); }
+.feedback {
+  margin-top: 18px; font-size: 17px; line-height: 1.55;
+  min-height: 26px; opacity: 0; transition: opacity .2s;
+}
+.feedback.show { opacity: 1; }
+.feedback.ok { color: var(--ok); }
+.feedback.no { color: var(--no); }
 
-  .reorder-pool {
-    display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;
-  }
+/* ── BUTTONS ── */
+.btn {
+  font-family: var(--font-ui); font-size: 15px; font-weight: 600;
+  letter-spacing: .03em;
+  padding: 12px 26px; border-radius: var(--r);
+  border: 1px solid var(--accent); background: transparent; color: var(--accent-bright);
+  cursor: pointer; transition: background .15s, color .15s;
+}
+.btn:hover { background: var(--accent); color: var(--void); }
+.btn-solid { background: var(--accent); color: var(--void); border-color: var(--accent); }
+.btn-solid:hover { background: var(--accent-bright); border-color: var(--accent-bright); }
+.btn:disabled { opacity: .35; cursor: not-allowed; }
+.btn-lg { font-size: 17px; padding: 15px 38px; }
 
-  .reorder-check {
-    background: transparent;
-    border: 1.5px solid var(--blue);
-    color: var(--blue-lt);
-    border-radius: 8px;
-    padding: 9px 24px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px; font-weight: 600;
-    cursor: pointer; margin-top: 4px;
-    transition: background .2s, color .2s;
-  }
-  .reorder-check:hover:not(:disabled) { background: var(--blue); color: #fff; }
-  .reorder-check:disabled { opacity: .35; cursor: default; }
+/* ── CHROME: progress + nav, pinned inside the stage ── */
+.deck-bar {
+  position: absolute; z-index: 3; left: 0; right: 0; bottom: 0;
+  height: 58px; padding: 0 26px;
+  display: flex; align-items: center; gap: 18px;
+  background: linear-gradient(180deg, transparent, var(--scrim));
+}
+.stage.on-cover .deck-bar { background: none; }
+.stage.on-cover .deck-score { visibility: hidden; }
+.progress { flex: 1; height: 3px; background: var(--inset2); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0; background: var(--accent); transition: width .3s ease; }
+.deck-count, .deck-score {
+  font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); white-space: nowrap;
+}
+.nav-btn {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  background: var(--scrim); color: var(--text);
+  cursor: pointer; font-size: 15px; line-height: 1;
+  display: grid; place-items: center; transition: border-color .15s, background .15s;
+}
+.nav-btn:hover:not(:disabled) { border-color: var(--accent); background: var(--accent); color: var(--void); }
+.nav-btn:disabled { opacity: .28; cursor: not-allowed; }
 
-  /* ── NEXT ── */
-  .btn-next {
-    display: none;
-    margin-top: 24px;
-    background: linear-gradient(135deg, var(--blue), var(--blue-lt));
-    color: #fff;
-    border: none;
-    border-radius: 999px;
-    padding: 13px 36px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px; font-weight: 700;
-    cursor: pointer; letter-spacing: .03em;
-    transition: opacity .2s, transform .1s;
-  }
-  .btn-next:hover { opacity: .9; transform: translateY(-1px); }
-  .btn-next.show { display: inline-flex; align-items: center; gap: 8px; }
+/* ── LANGUAGE SWITCH ── */
+.lang-select {
+  font-family: var(--font-mono); font-size: 12px;
+  background: var(--scrim); color: var(--text);
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  border-radius: 6px; padding: 6px 10px; cursor: pointer;
+}
+.lang-select:focus { outline: 1px solid var(--accent); }
 
-  /* ── FINAL ── */
-  #final-screen { display: none; text-align: center; padding: 60px 20px; animation: fadeUp .5s ease; }
-  #final-screen.show { display: block; }
-  .final-star { font-size: 52px; margin-bottom: 16px; filter: drop-shadow(0 4px 16px rgba(74,127,181,0.5)); }
-  .final-score { font-family: 'Playfair Display', serif; font-size: 72px; color: var(--blue-lt); font-weight: 700; margin-bottom: 8px; line-height: 1; }
-  .final-label { font-size: 15px; color: var(--muted); margin-bottom: 24px; }
-  .final-msg { font-family: 'Playfair Display', serif; font-size: 21px; color: var(--cream); font-style: italic; margin-bottom: 36px; line-height: 1.55; max-width: 480px; margin-left: auto; margin-right: auto; }
-  .btn-restart { background: transparent; border: 2px solid var(--blue); color: var(--blue-lt); border-radius: 999px; padding: 13px 40px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; transition: background .2s, color .2s; }
-  .btn-restart:hover { background: var(--blue); color: #fff; }
+/* ── RESULTS ── */
+.score-big {
+  font-family: var(--font-display); font-size: 84px; font-weight: 900;
+  color: var(--accent-bright); line-height: 1;
+}
+
+/* ── RTL ── */
+[dir="rtl"] .opt { text-align: right; }
+[dir="rtl"] .opt:hover:not(:disabled) { transform: translateX(-3px); }
+
+
+/* ── ACTIVATION ──────────────────────────────────────────────────── */
+.act-target {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 16px;
+}
+.act-target-label {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-dim);
+  margin-right: 4px;
+}
+.bank-chip {
+  font-family: var(--font-mono); font-size: 12px;
+  padding: 5px 12px; border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  color: var(--accent-bright);
+}
+.act-cols { align-items: stretch; }
+.act-card { display: flex; flex-direction: column; padding: 20px 24px; }
+.act-kind {
+  display: flex; align-items: center; gap: 9px;
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--accent-bright); margin-bottom: 12px;
+}
+.act-icon { font-size: 16px; }
+.act-brief { font-size: 16.5px; line-height: 1.5; color: var(--text); margin-bottom: 12px; }
+.act-list { list-style: none; display: grid; gap: 9px; }
+.act-list li {
+  font-size: 15.5px; line-height: 1.45; color: var(--text-dim);
+  padding-left: 18px; position: relative;
+}
+.act-list li::before {
+  content: '—'; position: absolute; left: 0; color: var(--accent);
+}
+.act-input {
+  flex: 1; min-height: 118px; resize: none;
+  font-family: var(--font-ui); font-size: 15px; line-height: 1.55;
+  color: var(--text);
+  background: var(--inset);
+  border: 1px solid color-mix(in srgb, var(--border) 45%, transparent);
+  border-radius: 8px; padding: 12px 14px;
+}
+.act-input:focus { outline: none; border-color: var(--accent); background: var(--inset2); }
+.act-input::placeholder { color: var(--text-dim); opacity: .55; }
+.act-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 10px;
+}
+.act-count { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-dim); }
+.act-copy { font-size: 12.5px; padding: 6px 14px; }
+/* The textarea's value does not print; this mirror does. */
+.act-print { display: none; font-size: 14px; line-height: 1.55; white-space: pre-wrap; }
+
+
+/* ── MATCHING ────────────────────────────────────────────────────── */
+.match-grid { display: grid; grid-template-columns: 1fr 1.35fr; gap: 14px; }
+.match-col { display: grid; gap: 8px; align-content: start; }
+.match-item {
+  font-family: var(--font-ui); font-size: 15.5px; line-height: 1.4;
+  text-align: left; color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: var(--r); padding: 11px 16px; cursor: pointer;
+  transition: border-color .15s, background .15s, opacity .2s;
+}
+.match-item.term { font-weight: 600; }
+.match-item:hover:not(.done) { border-color: var(--accent); }
+.match-item.picked { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 22%, var(--surface2)); }
+.match-item.done { opacity: .45; cursor: default; border-color: var(--ok); }
+.match-item.miss { border-color: var(--no); animation: shake .3s; }
+@keyframes shake { 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
+
+/* ── ORDERING (build the sentence) ───────────────────────────────────
+   For word-order work — where the point is the SEQUENCE of prepositional
+   phrases, not choosing one word. Click to place, click again to take back;
+   no dragging, because a scaled stage makes drag targets lie. */
+.order-hint {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 10px;
+}
+.order-target {
+  display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start;
+  min-height: 92px; padding: 12px;
+  border: 1.5px dashed color-mix(in srgb, var(--border) 60%, transparent);
+  border-radius: var(--r); background: var(--inset);
+}
+.order-target.correct { border-style: solid; border-color: var(--ok); }
+.order-target.wrong   { border-style: solid; border-color: var(--no); }
+.order-pool { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.chunk {
+  font-family: var(--font-ui); font-size: 15.5px; line-height: 1.35;
+  color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: 999px; padding: 9px 16px; cursor: pointer;
+  transition: border-color .15s, background .15s, opacity .2s;
+}
+.chunk:hover:not(:disabled) { border-color: var(--accent); }
+.chunk.placed { background: color-mix(in srgb, var(--accent) 18%, var(--surface2)); border-color: var(--accent); }
+.chunk:disabled { cursor: default; opacity: .5; }
+
+/* ── DISCUSSION (unscored speaking prompts) ──────────────────────── */
+.discuss-meta {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 14px;
+}
+.prompts { display: grid; gap: 12px; list-style: none; margin: 0; padding: 0; }
+.prompt {
+  font-size: 19px; line-height: 1.5; color: var(--text);
+  padding-left: 26px; position: relative;
+}
+.prompt::before {
+  content: '?'; position: absolute; left: 0; top: 1px;
+  font-family: var(--font-mono); font-size: 15px; color: var(--accent);
+}
+.prompt.aside { font-size: 16.5px; color: var(--text-dim); font-style: italic; }
+.prompt.aside::before { content: '·'; }
+
+/* ══════════════════════════════════════════════════════════════════
+   PRINT / PDF EXPORT
+   Ctrl-P → Save as PDF → Landscape, margins None, Background graphics ON.
+   Each slide becomes one 16:9 page, ready to drop into PowerPoint.
+   ══════════════════════════════════════════════════════════════════ */
+@page { size: 1280px 720px; margin: 0; }
+@media print {
+  html, body { overflow: visible; height: auto; background: #fff; }
+  .stage-wrap { position: static; display: block; }
+  .stage {
+    transform: none !important;
+    width: 1280px; height: auto;      /* let the slides stack into pages */
+    overflow: visible; box-shadow: none;
+  }
+  .bg-layer, .deck-bar, .lang-select, .nav-btn { display: none !important; }
+
+  /* Each slide becomes its own page and carries its own background, so the
+     export does not depend on the single on-screen background layer. */
+  .slide {
+    display: flex !important;
+    position: relative; inset: auto;
+    width: 1280px; height: 720px;
+    isolation: isolate;
+    page-break-after: always; break-after: page;
+    animation: none !important;
+  }
+  .slide:last-child { page-break-after: auto; break-after: auto; }
+  .slide::before {
+    content: ''; position: absolute; inset: 0; z-index: -2;
+    background: var(--hero) center / cover no-repeat;
+    opacity: var(--bg-opacity);
+  }
+  .slide::after {
+    content: ''; position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(180deg, var(--void) 0%, var(--wash-mid) 22%,
+                                        var(--wash-mid) 78%, var(--void) 100%);
+  }
+  .slide[data-type="cover"]::before { opacity: 1; }
+  .slide[data-type="cover"]::after {
+    background:
+      radial-gradient(ellipse 60% 56% at 50% 47%,
+        rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.52) 52%, transparent 78%),
+      linear-gradient(180deg, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.14) 28%,
+                              rgba(0,0,0,0.22) 68%, rgba(0,0,0,0.78) 100%);
+  }
+  .feedback { opacity: 1 !important; }
+  .act-input, .act-foot { display: none !important; }
+  .act-print { display: block !important; }
+}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header>
-  <div class="logo">
-    <svg width="162" height="52" viewBox="0 0 162 52" xmlns="http://www.w3.org/2000/svg">
-      <g transform="translate(2.00,5.98) scale(0.026109)"><g transform="translate(0,1504) scale(0.1,-0.1)" fill="#4a7fb5" stroke="none"><path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47 l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21 -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9 -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58 105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141 144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392 -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31 c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55 -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0 -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226 144 331 156 51 6 127 -4 183 -25z"/><path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95 -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72 -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0 -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18 108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553 -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70 -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3 469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38 -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/><path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73 -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939 -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1 205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247 -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22 -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24 -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449 121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/><path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611 -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538 -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77 144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430 -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67 347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580 -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132 -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87 66 245 85 341 40z"/><path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140 -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134 -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287 -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101 -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107 173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392 207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599 281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241 111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2 347 -112 40 c-318 112 -594 149 -892 121z"/><path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149 l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801 -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6 -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294 -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12 -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29 -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55 -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12 -33 22 -42 21 -9 0 -199 -27 -422 -60z"/></g></g>
-      <text x="2" y="47" font-family="'DM Sans', Arial, sans-serif" font-size="20.80" font-weight="700" fill="#eae6de" letter-spacing="5">ENGLISH</text>
-    </svg>
-  </div>
-  <div class="score-pill">Score: <span id="score-display">0</span> / <span id="total-display">15</span></div>
-</header>
+<div class="stage-wrap">
+  <div class="stage" id="stage">
 
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-text">
-    <div class="lesson-tag">B2 · Prepositions <span class="part-badge">PART 2</span></div>
-    <h1>Who Killed<br><em>JFK?</em></h1>
-    <p>Master advanced prepositions of place, time, movement, and cause through one of history's most debated conspiracies — the assassination of John F. Kennedy.</p>
-  </div>
-  <div class="illustration">
-    <!-- SVG illustration: JFK silhouette, presidential + conspiratorial theme -->
-    <svg viewBox="0 0 200 290" xmlns="http://www.w3.org/2000/svg" width="200" height="290">
-      <defs>
-        <radialGradient id="blueglow" cx="50%" cy="35%" r="55%">
-          <stop offset="0%" stop-color="#4a7fb5" stop-opacity=".25"/>
-          <stop offset="100%" stop-color="#0e1118" stop-opacity="0"/>
-        </radialGradient>
-        <linearGradient id="suitskin" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#c8a87a"/>
-          <stop offset="100%" stop-color="#a07840"/>
-        </linearGradient>
-        <linearGradient id="suit" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#22304a"/>
-          <stop offset="100%" stop-color="#111820"/>
-        </linearGradient>
-        <linearGradient id="skytop" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#0e1a2e"/>
-          <stop offset="100%" stop-color="#1b2a44"/>
-        </linearGradient>
-        <filter id="blur2">
-          <feGaussianBlur stdDeviation="2"/>
-        </filter>
-      </defs>
-      <!-- background glow -->
-      <ellipse cx="100" cy="130" rx="92" ry="120" fill="url(#blueglow)"/>
-      <!-- city skyline silhouette (Dallas) -->
-      <rect x="0" y="210" width="200" height="80" fill="#0a0f18"/>
-      <rect x="10" y="185" width="18" height="25" fill="#0d1520"/>
-      <rect x="14" y="180" width="10" height="8" fill="#0d1520"/>
-      <rect x="35" y="195" width="22" height="20" fill="#0d1520"/>
-      <rect x="40" y="190" width="12" height="8" fill="#0d1520"/>
-      <rect x="62" y="178" width="28" height="37" fill="#111d2e"/>
-      <rect x="68" y="170" width="16" height="12" fill="#111d2e"/>
-      <rect x="72" y="165" width="8" height="8" rx="2" fill="#111d2e"/>
-      <!-- antenna -->
-      <line x1="76" y1="165" x2="76" y2="150" stroke="#0d1520" stroke-width="1.5"/>
-      <rect x="96" y="188" width="20" height="27" fill="#0d1520"/>
-      <rect x="120" y="192" width="16" height="23" fill="#0d1520"/>
-      <rect x="140" y="180" width="25" height="35" fill="#111d2e"/>
-      <rect x="146" y="172" width="13" height="12" fill="#111d2e"/>
-      <rect x="170" y="198" width="18" height="17" fill="#0d1520"/>
-      <!-- building windows glowing -->
-      <rect x="64" y="182" width="4" height="3" rx="0.5" fill="#d4942a" opacity=".6"/>
-      <rect x="72" y="182" width="4" height="3" rx="0.5" fill="#4a7fb5" opacity=".5"/>
-      <rect x="80" y="182" width="4" height="3" rx="0.5" fill="#d4942a" opacity=".4"/>
-      <rect x="64" y="190" width="4" height="3" rx="0.5" fill="#4a7fb5" opacity=".5"/>
-      <rect x="72" y="190" width="4" height="3" rx="0.5" fill="#d4942a" opacity=".3"/>
-      <rect x="143" y="184" width="3" height="3" rx="0.5" fill="#4a7fb5" opacity=".5"/>
-      <rect x="150" y="184" width="3" height="3" rx="0.5" fill="#d4942a" opacity=".4"/>
-      <rect x="143" y="192" width="3" height="3" rx="0.5" fill="#d4942a" opacity=".5"/>
-      <!-- road / motorcade hint -->
-      <rect x="0" y="230" width="200" height="60" fill="#0a0d14"/>
-      <line x1="0" y1="258" x2="200" y2="258" stroke="#d4942a" stroke-width="1" stroke-dasharray="12,8" opacity=".4"/>
-      <!-- car silhouette -->
-      <rect x="50" y="240" width="100" height="20" rx="6" fill="#1a2438"/>
-      <rect x="65" y="228" width="68" height="18" rx="8" fill="#1e2d46"/>
-      <circle cx="70" cy="262" r="9" fill="#111820" stroke="#2a3a54" stroke-width="2"/>
-      <circle cx="130" cy="262" r="9" fill="#111820" stroke="#2a3a54" stroke-width="2"/>
-      <circle cx="70" cy="262" r="4" fill="#1e2d46"/>
-      <circle cx="130" cy="262" r="4" fill="#1e2d46"/>
-      <!-- figure in car: JFK wave -->
-      <circle cx="100" cy="236" r="7" fill="url(#suitskin)"/>
-      <path d="M86 252 Q90 242 100 240 Q110 242 114 252 L118 275 L82 275 Z" fill="url(#suit)"/>
-      <!-- arm wave -->
-      <path d="M86 245 Q78 232 82 224" fill="none" stroke="url(#suitskin)" stroke-width="5" stroke-linecap="round"/>
-      <circle cx="82" cy="223" r="4" fill="url(#suitskin)"/>
-      <!-- hair -->
-      <path d="M93 230 Q100 223 107 230 Q103 228 100 229 Q97 228 93 230 Z" fill="#8a6020"/>
-      <!-- American flag pin -->
-      <rect x="105" y="246" width="5" height="3" rx=".5" fill="#c94040"/>
-      <rect x="105" y="249" width="5" height="1" fill="#fff" opacity=".8"/>
-      <rect x="105" y="250" width="5" height="2" fill="#2244aa"/>
-      <!-- crosshair overlay — conspiratorial motif -->
-      <g opacity=".18">
-        <circle cx="100" cy="100" r="45" fill="none" stroke="#c96060" stroke-width="1"/>
-        <circle cx="100" cy="100" r="30" fill="none" stroke="#c96060" stroke-width=".8"/>
-        <line x1="55" y1="100" x2="145" y2="100" stroke="#c96060" stroke-width=".8"/>
-        <line x1="100" y1="55" x2="100" y2="145" stroke="#c96060" stroke-width=".8"/>
-        <line x1="69" y1="69" x2="131" y2="131" stroke="#c96060" stroke-width=".5" stroke-dasharray="4,3"/>
-        <line x1="131" y1="69" x2="69" y2="131" stroke="#c96060" stroke-width=".5" stroke-dasharray="4,3"/>
-      </g>
-      <!-- question marks decorative -->
-      <text x="16" y="165" font-size="22" fill="#4a7fb5" opacity=".18" font-family="Georgia, serif">?</text>
-      <text x="170" y="175" font-size="18" fill="#d4942a" opacity=".2" font-family="Georgia, serif">?</text>
-      <text x="8" y="110" font-size="14" fill="#4a7fb5" opacity=".15" font-family="Georgia, serif">?</text>
-      <!-- TOP STAR -->
-      <text x="90" y="26" font-size="18" fill="#4a7fb5" opacity=".4">★</text>
-      <!-- document / classified stamp hint -->
-      <rect x="148" y="42" width="40" height="52" rx="3" fill="#111d2e" stroke="rgba(74,127,181,0.3)" stroke-width="1"/>
-      <line x1="152" y1="52" x2="184" y2="52" stroke="rgba(74,127,181,0.3)" stroke-width="1"/>
-      <line x1="152" y1="58" x2="184" y2="58" stroke="rgba(74,127,181,0.2)" stroke-width="1"/>
-      <line x1="152" y1="64" x2="178" y2="64" stroke="rgba(74,127,181,0.2)" stroke-width="1"/>
-      <line x1="152" y1="70" x2="184" y2="70" stroke="rgba(74,127,181,0.15)" stroke-width="1"/>
-      <line x1="152" y1="76" x2="172" y2="76" stroke="rgba(74,127,181,0.15)" stroke-width="1"/>
-      <rect x="150" y="80" width="38" height="10" rx="2" fill="rgba(201,96,96,0.2)" stroke="rgba(201,96,96,0.5)" stroke-width="1"/>
-      <text x="153" y="89" font-size="7" fill="#c96060" font-family="'DM Sans', sans-serif" font-weight="700" textLength="34" lengthAdjust="spacingAndGlyphs">CLASSIFIED</text>
-    </svg>
-  </div>
-</div>
+    <!-- Background pattern: driven entirely by --hero in the CSS above. -->
+    <div class="bg-layer" role="presentation"></div>
 
-<!-- ACTIVITY WRAPPER -->
-<div class="activity-wrapper" id="activity-wrapper">
+    <!-- ══════════════════════════════════════════════════════════
+         REPLACE 2 of 2: SLIDES
+         Author one <section class="slide"> per screen.
+         data-type: cover | teach | mc | gap | match | order | discuss | results | activate
+         data-bg="folder/other.jpg" swaps the background pattern on that slide.
+         Everything a learner reads must fit WITHOUT scrolling.
+         If it does not fit, split it across two slides — never shrink type.
+         ══════════════════════════════════════════════════════════ -->
 
-  <!-- ACT 1: Multiple Choice -->
-  <div class="activity active" id="act1">
-    <div class="activity-header">
-      <div class="activity-label">Activity 1 of 3</div>
-      <div class="activity-title">Multiple Choice</div>
-      <div class="activity-instructions">Choose the correct preposition or prepositional phrase. At B2 level, pay attention to subtle differences in meaning between similar options.</div>
+    <!-- ── COVER ────────────────────────────────────────────── -->
+    <section class="slide is-active" data-type="cover">
+      <div class="cover-inner">
+        <svg class="fe-logo" viewBox="0 0 200 78" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forbes English">
+          <g class="fe-logo-mark" transform="translate(-42.74,-30.22) scale(0.099477)"><g transform="translate(0,1504) scale(0.1,-0.1)" fill="currentColor" stroke="none"><path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47 l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21 -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9 -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58 105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141 144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392 -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31 c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55 -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0 -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226 144 331 156 51 6 127 -4 183 -25z"/><path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95 -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72 -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0 -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18 108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553 -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70 -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3 469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38 -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/><path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73 -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939 -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1 205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247 -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22 -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24 -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449 121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/><path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611 -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538 -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77 144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430 -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67 347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580 -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132 -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87 66 245 85 341 40z"/><path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140 -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134 -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287 -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101 -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107 173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392 207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599 281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241 111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2 347 -112 40 c-318 112 -594 149 -892 121z"/><path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149 l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801 -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6 -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294 -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12 -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29 -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55 -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12 -33 22 -42 21 -9 0 -199 -27 -422 -60z"/></g></g>
+          <text class="fe-logo-word" x="100" y="72.6" text-anchor="middle" font-family="'DM Sans', Arial, sans-serif" font-size="20.8" font-weight="600" letter-spacing="8">ENGLISH</text>
+        </svg>
+        <h1 class="cover-title" data-i18n="coverTitle">The Lesson <em>Title</em></h1>
+        <p class="cover-sub" data-i18n="coverSub">A one-line description of what the learner will be able to do afterwards</p>
+        <div class="cover-meta">
+          <span class="chip" data-i18n="chipLevel">B2 Upper-Intermediate</span>
+          <span class="chip" data-i18n="chipFocus">Focus area</span>
+          <span class="chip" data-i18n="chipCount">8 slides</span>
+        </div>
+        <div style="margin-top:34px">
+          <button class="btn btn-solid btn-lg" data-action="next" data-i18n="btnStart">Begin →</button>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="t1e">Language focus</div>
+        <h2 class="slide-title" data-i18n="t1t">Title</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols">
+          <div class="card"><p class="prose" data-i18n="t1a">A</p></div>
+          <div class="card"><p class="prose" data-i18n="t1b">B</p></div>
+        </div>
+        <div class="card" style="margin-top:16px">
+          <p class="prose dim" data-i18n="t1n">Note</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="a1e1">Activity 1 · Place &amp; movement — 1/5</div>
+        <h2 class="slide-title" data-i18n="a1t">Choose the best preposition</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Kennedy was assassinated <em>_______</em> Dealey Plaza in Dallas, Texas, on 22 November 1963.</p>
+        <div class="opts two-up">
+          <button class="opt" data-explain="'Inside' implies an enclosed interior with walls — a plaza is open ground.">inside</button>
+          <button class="opt" data-explain="'Within' is formal and draws a boundary; it is not how English names a public square.">within</button>
+          <button class="opt" data-correct>in</button>
+          <button class="opt" data-explain="'Around' suggests movement in the vicinity rather than a fixed location.">around</button>
+        </div>
+        <p class="feedback" data-explain="<strong>In</strong> is the standard preposition for named public spaces, squares and plazas."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="a1e2">Activity 1 · Place &amp; movement — 2/5</div>
+        <h2 class="slide-title" data-i18n="a1t">Choose the best preposition</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">The Warren Commission concluded that Lee Harvey Oswald acted <em>_______</em> his own, without co-conspirators.</p>
+        <div class="opts two-up">
+          <button class="opt" data-correct>on</button>
+          <button class="opt" data-explain="'By himself' works, but 'by his own' is not English — the possessive needs 'on'.">by</button>
+          <button class="opt" data-explain="'For his own' is incomplete; it needs a noun after it, as in 'for his own reasons'.">for</button>
+          <button class="opt" data-explain="'In his own' also needs a noun — 'in his own words', for instance.">in</button>
+        </div>
+        <p class="feedback" data-explain="<strong>On his own</strong> is a fixed expression meaning independently, without help."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="a1e3">Activity 1 · Place &amp; movement — 3/5</div>
+        <h2 class="slide-title" data-i18n="a1t">Choose the best preposition</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">The presidential motorcade was travelling <em>_______</em> Elm Street when the shots were fired.</p>
+        <div class="opts two-up">
+          <button class="opt" data-correct>along</button>
+          <button class="opt" data-explain="'Across' means from one side to the other — that would cross the street, not follow it.">across</button>
+          <button class="opt" data-explain="'Through' means entering and leaving something enclosed, like a tunnel or a crowd.">through</button>
+          <button class="opt" data-explain="'Over' suggests passing above something rather than following a road.">over</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Along</strong> describes movement following the length of a road or path."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="a1e4">Activity 1 · Place &amp; movement — 4/5</div>
+        <h2 class="slide-title" data-i18n="a1t">Choose the best preposition</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Many documents relating to the assassination were kept <em>_______</em> the public for decades.</p>
+        <div class="opts two-up">
+          <button class="opt" data-explain="Possible in speech, but 'kept away from' suggests physical distance, not concealment.">away from</button>
+          <button class="opt" data-explain="'Hidden' is a second verb, not a preposition — the sentence already has 'kept'.">hidden from</button>
+          <button class="opt" data-correct>from</button>
+          <button class="opt" data-explain="Too long and too literal; it describes distance rather than deliberate withholding.">out of reach of</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Keep something from someone</strong> means to withhold or conceal it deliberately."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="a1e5">Activity 1 · Place &amp; movement — 5/5</div>
+        <h2 class="slide-title" data-i18n="a1t">Choose the best preposition</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">The CIA has been <em>_______</em> suspicion ever since declassified files suggested prior knowledge of Oswald.</p>
+        <div class="opts two-up">
+          <button class="opt" data-explain="'Below' is purely spatial — it describes a position, not a state.">below</button>
+          <button class="opt" data-explain="'Beneath' is the literary form of 'below'; it does not collocate with 'suspicion'.">beneath</button>
+          <button class="opt" data-correct>under</button>
+          <button class="opt" data-explain="'Within' draws a boundary around something; suspicion is not a container.">within</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Under suspicion</strong> is a fixed collocation, like 'under scrutiny' and 'under investigation'."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="jfk/sunglasses.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="t2e">Language focus</div>
+        <h2 class="slide-title" data-i18n="t2t">Title</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols">
+          <div class="card"><p class="prose" data-i18n="t2a">A</p></div>
+          <div class="card"><p class="prose" data-i18n="t2b">B</p></div>
+        </div>
+        <div class="card" style="margin-top:16px">
+          <p class="prose dim" data-i18n="t2n">Note</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="a2e1">Activity 2 · Fixed collocations — 1/5</div>
+        <h2 class="slide-title" data-i18n="a2t">Complete the sentence</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Oswald was shot dead <input class="gap" data-answer="by" size="7" aria-label="gap"> a Dallas nightclub owner named Jack Ruby, just two days after the assassination.</p>
+        <div style="margin-top:22px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+        <p class="feedback" data-explain="<strong>By</strong> introduces the agent in a passive sentence — the person who performed the action."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="a2e2">Activity 2 · Fixed collocations — 2/5</div>
+        <h2 class="slide-title" data-i18n="a2t">Complete the sentence</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Kennedy was the fourth US president to die <input class="gap" data-answer="in" size="7" aria-label="gap"> office, following Lincoln, Garfield and McKinley.</p>
+        <div style="margin-top:22px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+        <p class="feedback" data-explain="<strong>In office</strong> is the fixed expression for the period when a politician holds their post."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="a2e3">Activity 2 · Fixed collocations — 3/5</div>
+        <h2 class="slide-title" data-i18n="a2t">Complete the sentence</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">The &lsquo;magic bullet&rsquo; theory claims that a single bullet passed <input class="gap" data-answer="through" size="9" aria-label="gap"> both Kennedy and Governor Connally.</p>
+        <div style="margin-top:22px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Pass through</strong> describes movement entering and leaving a solid object or body."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="a2e4">Activity 2 · Fixed collocations — 4/5</div>
+        <h2 class="slide-title" data-i18n="a2t">Complete the sentence</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">The grassy knoll — a small hill to the right of the motorcade — has been <input class="gap" data-answer="under" size="8" aria-label="gap"> intense scrutiny for over sixty years.</p>
+        <div style="margin-top:22px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Under scrutiny</strong> follows the same pattern as 'under suspicion': 'under' goes with examination and pressure."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="a2e5">Activity 2 · Fixed collocations — 5/5</div>
+        <h2 class="slide-title" data-i18n="a2t">Complete the sentence</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Some theorists argue that evidence was tampered <input class="gap" data-answer="with" size="7" aria-label="gap"> before it could be properly examined by independent investigators.</p>
+        <div style="margin-top:22px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Tamper with</strong> is a fixed phrasal verb — the preposition cannot be separated from it."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="jfk/skyline.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="t3e">Language focus</div>
+        <h2 class="slide-title" data-i18n="t3t">Title</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols">
+          <div class="card"><p class="prose" data-i18n="t3a">A</p></div>
+          <div class="card"><p class="prose" data-i18n="t3b">B</p></div>
+        </div>
+        <div class="card" style="margin-top:16px">
+          <p class="prose dim" data-i18n="t3n">Note</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="order">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="a3e1">Activity 3 · Word order — 1/5</div>
+        <h2 class="slide-title" data-i18n="a3t">Build the sentence</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="order-hint" data-i18n="orderHint">Click the parts in order · click one again to take it back</div>
+        <div class="order" data-answer="Kennedy|gave his final speech|at the Hotel Texas|in Fort Worth|on the morning of his death"></div>
+        <div style="margin-top:18px">
+          <button class="btn" data-action="check-order" data-i18n="btnCheck">Check</button>
+        </div>
+        <p class="feedback" data-explain="Subject → verb phrase → place → more specific place → time. In English the time expression comes last."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="order">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="a3e2">Activity 3 · Word order — 2/5</div>
+        <h2 class="slide-title" data-i18n="a3t">Build the sentence</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="order-hint" data-i18n="orderHint">Click the parts in order · click one again to take it back</div>
+        <div class="order" data-answer="The Warren Commission|was established|within weeks|of the assassination|to investigate the events"></div>
+        <div style="margin-top:18px">
+          <button class="btn" data-action="check-order" data-i18n="btnCheck">Check</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Within weeks of</strong> is a two-part prepositional phrase. The infinitive of purpose comes last."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="order">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="a3e3">Activity 3 · Word order — 3/5</div>
+        <h2 class="slide-title" data-i18n="a3t">Build the sentence</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="order-hint" data-i18n="orderHint">Click the parts in order · click one again to take it back</div>
+        <div class="order" data-answer="Protesters|gathered|outside the Warren Commission building|throughout the inquiry|demanding a full re-examination"></div>
+        <div style="margin-top:18px">
+          <button class="btn" data-action="check-order" data-i18n="btnCheck">Check</button>
+        </div>
+        <p class="feedback" data-explain="Place ('outside') comes before time ('throughout'). The participle phrase describes simultaneous action and comes last."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="order">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="a3e4">Activity 3 · Word order — 4/5</div>
+        <h2 class="slide-title" data-i18n="a3t">Build the sentence</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="order-hint" data-i18n="orderHint">Click the parts in order · click one again to take it back</div>
+        <div class="order" data-answer="A recording device|was found|beneath the dashboard|of the presidential limousine|after the car was examined"></div>
+        <div style="margin-top:18px">
+          <button class="btn" data-action="check-order" data-i18n="btnCheck">Check</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Beneath</strong> gives the specific place, 'of' links it to the whole, and 'after' places it in sequence."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="order">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="a3e5">Activity 3 · Word order — 5/5</div>
+        <h2 class="slide-title" data-i18n="a3t">Build the sentence</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="order-hint" data-i18n="orderHint">Click the parts in order · click one again to take it back</div>
+        <div class="order" data-answer="The case files|were transferred|from the National Archives|to a secure location|prior to their planned release"></div>
+        <div style="margin-top:18px">
+          <button class="btn" data-action="check-order" data-i18n="btnCheck">Check</button>
+        </div>
+        <p class="feedback" data-explain="<strong>From … to</strong> expresses movement between two points. 'Prior to' introduces the time clause and comes last."></p>
+      </div>
+    </section>
+
+    <!-- ── RESULTS ──────────────────────────────────────────── -->
+    <section class="slide" data-type="results">
+      <div class="slide-body" style="align-items:center;text-align:center">
+        <div class="score-big"><span id="scoreVal">0</span><span class="dim" style="font-size:34px">/<span id="scoreMax">0</span></span></div>
+        <p class="prose" style="margin-top:18px" id="scoreMsg"></p>
+        <p class="prose dim" style="margin-top:14px" data-i18n="resNext">Recognising the language is half of it. Now produce it →</p>
+      </div>
+    </section>
+
+    <!-- ── ACTIVATION ───────────────────────────────────────────
+         REQUIRED. Every lesson ends by having the learner USE the
+         language, not just recognise it. Two tracks, both live at
+         once — run either, or both. -->
+    <section class="slide" data-type="activate">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="actEyebrow">Activation</div>
+        <h2 class="slide-title" data-i18n="actTitle">Put it to work</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target">
+          <span class="act-target-label" data-i18n="actUse">Use at least three:</span>
+          <span class="bank-chip">in Dealey Plaza</span>
+          <span class="bank-chip">on his own</span>
+          <span class="bank-chip">under suspicion</span>
+          <span class="bank-chip">tampered with</span>
+          <span class="bank-chip">along Elm Street</span>
+        </div>
+        <div class="cols act-cols">
+          <div class="card act-card">
+            <div class="act-kind"><span class="act-icon">🗣</span><span data-i18n="actSpeakKind">Discussion · in pairs</span></div>
+            <p class="act-brief" data-i18n="actSpeakBrief">Frame the speaking task in one line.</p>
+            <ul class="act-list">
+              <li data-i18n="actSpeak1">First prompt — a situation, not a question.</li>
+              <li data-i18n="actSpeak2">Second prompt, raising the stakes.</li>
+              <li data-i18n="actSpeak3">Third prompt, arguing the opposite side.</li>
+            </ul>
+          </div>
+          <div class="card act-card">
+            <div class="act-kind"><span class="act-icon">✍️</span><span data-i18n="actWriteKind">Writing · 180–220 words</span></div>
+            <p class="act-brief" data-i18n="actWriteBrief">Frame the writing task in one or two lines.</p>
+            <textarea class="act-input" id="actInput" data-i18n-ph="actPlaceholder" placeholder="Write your response here…" aria-label="Written response"></textarea>
+            <div class="act-foot">
+              <span class="act-count" id="actCount">0 words</span>
+              <button class="btn act-copy" data-action="copy-writing" data-i18n="btnCopy">Copy</button>
+            </div>
+            <div class="act-print" id="actPrint" aria-hidden="true"></div>
+          </div>
+        </div>
+        <div style="margin-top:14px;text-align:center">
+          <button class="btn" data-action="restart" data-i18n="btnRestart">Start again</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── DECK CHROME ──────────────────────────────────────── -->
+    <div class="deck-bar">
+      <select class="lang-select" id="langSelect" aria-label="Language"></select>
+      <button class="nav-btn" data-action="prev" aria-label="Previous">‹</button>
+      <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+      <span class="deck-count" id="deckCount">1 / 1</span>
+      <span class="deck-score" id="deckScore"></span>
+      <button class="nav-btn" data-action="next" aria-label="Next">›</button>
     </div>
-    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="pb1" style="width:0%"></div></div>
-    <div id="mc-container"></div>
-    <div style="display:flex;justify-content:flex-end">
-      <button class="btn-next" id="mc-next">Next question →</button>
-    </div>
+
   </div>
-
-  <!-- ACT 2: Fill in the Blank -->
-  <div class="activity" id="act2">
-    <div class="activity-header">
-      <div class="activity-label">Activity 2 of 3</div>
-      <div class="activity-title">Fill in the Blank</div>
-      <div class="activity-instructions">Select the correct preposition from the dropdown to complete each sentence. These questions focus on fixed expressions and advanced collocations.</div>
-    </div>
-    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="pb2" style="width:0%"></div></div>
-    <div id="fitb-container"></div>
-    <div style="display:flex;justify-content:flex-end">
-      <button class="btn-next" id="fitb-next">Next question →</button>
-    </div>
-  </div>
-
-  <!-- ACT 3: Sentence Reordering -->
-  <div class="activity" id="act3">
-    <div class="activity-header">
-      <div class="activity-label">Activity 3 of 3</div>
-      <div class="activity-title">Sentence Reordering</div>
-      <div class="activity-instructions">Drag the word chunks into the correct order to form a grammatically accurate sentence. The prepositional phrase is highlighted — make sure it is in the right place.</div>
-    </div>
-    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="pb3" style="width:0%"></div></div>
-    <div id="reorder-container"></div>
-    <div style="display:flex;justify-content:flex-end">
-      <button class="btn-next" id="reorder-next">Next question →</button>
-    </div>
-  </div>
-
-</div>
-
-<!-- FINAL -->
-<div id="final-screen">
-  <div class="final-star">★</div>
-  <div class="final-score" id="final-score">0</div>
-  <div class="final-label">out of 15</div>
-  <div class="final-msg" id="final-msg"></div>
-  <button class="btn-restart" onclick="restartAll()">Start again</button>
 </div>
 
 <script>
-/* ══════════════════════════════════════
-   DATA
-══════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════════
+   ENGINE — identical in every lesson. Do not edit below this line
+   except to add UI_I18N strings.
+   ══════════════════════════════════════════════════════════════════ */
 
-const mcQuestions = [
-  {
-    q: "Kennedy was assassinated ___ Dealey Plaza in Dallas, Texas, on 22 November 1963.",
-    opts: ["inside", "within", "in", "around"],
-    correct: 2,
-    exp: "<strong>In</strong> is the standard preposition for named public spaces, squares, and plazas. 'Inside' implies an enclosed interior; 'within' is more formal and suggests boundaries; 'around' suggests movement."
-  },
-  {
-    q: "The Warren Commission concluded that Lee Harvey Oswald acted ___ his own, without co-conspirators.",
-    opts: ["on", "by", "for", "in"],
-    correct: 0,
-    exp: "<strong>On his own</strong> is a fixed expression meaning independently or alone. 'By himself' is also correct, but 'by his own' is not standard. 'On your own' is the natural collocation."
-  },
-  {
-    q: "The presidential motorcade was travelling ___ Elm Street when the shots were fired.",
-    opts: ["along", "across", "through", "over"],
-    correct: 0,
-    exp: "<strong>Along</strong> describes movement following the length of a road or path. 'Across' implies going from one side to the other. 'Through' implies passing inside something enclosed."
-  },
-  {
-    q: "Many documents relating to the assassination were kept ___ the public for decades.",
-    opts: ["away from", "hidden from", "from", "out of reach of"],
-    correct: 2,
-    exp: "<strong>Kept from</strong> means deliberately withheld or concealed. It is a common formal collocation: 'to keep something from someone'. The others are also possible in informal use, but 'from' is the most precise prepositional answer."
-  },
-  {
-    q: "The CIA has been ___ suspicion ever since declassified files suggested prior knowledge of Oswald.",
-    opts: ["below", "beneath", "under", "within"],
-    correct: 2,
-    exp: "<strong>Under suspicion</strong> is a fixed collocation meaning being considered a possible suspect. Other prepositions do not collocate naturally with 'suspicion' in this context."
-  }
+/* ── Languages. English is the base; German ships complete.
+      The other eight are deliberately empty — t() falls back to English,
+      so an unfinished language can never blank the interface. ── */
+const LANGS = [
+  { code:'en', label:'English'   }, { code:'de', label:'Deutsch'  },
+  { code:'es', label:'Español'   }, { code:'fr', label:'Français' },
+  { code:'it', label:'Italiano'  }, { code:'pt', label:'Português'},
+  { code:'ru', label:'Русский'   }, { code:'ar', label:'العربية'  },
+  { code:'zh', label:'中文'       }, { code:'ja', label:'日本語'    }
 ];
+const RTL_LANGS = ['ar'];
 
-const fitbQuestions = [
-  {
-    before: "Oswald was shot dead",
-    after: "a Dallas nightclub owner named Jack Ruby just two days after the assassination.",
-    opts: ["from", "by", "with", "through"],
-    correct: 1,
-    exp: "<strong>By</strong> is used in passive or quasi-passive constructions to introduce the agent — the person performing the action. 'Shot by someone' is the standard structure."
-  },
-  {
-    before: "Kennedy was the fourth US president to die",
-    after: "office, following Lincoln, Garfield, and McKinley.",
-    opts: ["in", "while in", "during", "within"],
-    correct: 0,
-    exp: "<strong>In office</strong> is the fixed expression for the period when a politician holds their post. 'Die in office' means to die while serving as president."
-  },
-  {
-    before: "The 'magic bullet' theory claims that a single bullet passed",
-    after: "both Kennedy and Governor Connally.",
-    opts: ["between", "across", "through", "via"],
-    correct: 2,
-    exp: "<strong>Through</strong> describes movement entering and exiting a solid object or body. 'Pass through something' is the precise phrasal verb here."
-  },
-  {
-    before: "The grassy knoll — a small hill to the right of the motorcade — has been",
-    after: "intense scrutiny for over sixty years.",
-    opts: ["below", "under", "beneath", "within"],
-    correct: 1,
-    exp: "<strong>Under scrutiny</strong> is a fixed collocation. Like 'under suspicion' and 'under investigation', 'under' is used with nouns that describe examination or pressure."
-  },
-  {
-    before: "Some theorists argue that evidence was tampered",
-    after: "before it could be properly examined by independent investigators.",
-    opts: ["on", "at", "with", "by"],
-    correct: 2,
-    exp: "<strong>Tampered with</strong> is a fixed phrasal verb meaning illegally or secretly interfered with. The preposition 'with' is inseparable from this verb."
-  }
-];
+const UI_I18N = {
+  en: {
+    /* ── chrome ── */
+    btnStart:'Begin →', btnCheck:'Check', btnNext:'Next →', btnRestart:'Start again',
+    orderHint:'Click the parts in order · click one again to take it back',
+    scoreLabel:'Score', slideOf:(a,b)=>`${a} / ${b}`,
+    fbCorrect:'Correct.', fbWrong:'Not quite.', fbAnswer:'Answer:',
+    resNext:'Recognising the language is half of it. Now produce it →',
+    actEyebrow:'Activation', actTitle:'Put it to work',
+    actUse:'Use at least three:',
+    actSpeakKind:'Discussion · in pairs', actWriteKind:'Writing · 180–220 words',
+    actSpeakBrief:'Sixty years on, the file is still open. Talk it through.',
+    actSpeak1:'An archive is holding documents that have been kept from the public for decades. Argue for releasing them now — then argue for keeping them sealed.',
+    actSpeak2:'Your partner says no official account of anything can ever be trusted. Take the opposite position.',
+    actSpeak3:'Describe a place you know well so precisely that your partner could walk it: what sits where, and what moves along, across and through it.',
+    actWriteBrief:'Write an account of a public event — real or invented — that was re-examined years later. Place it exactly: where, then where more precisely, then when.',
+    actPlaceholder:'Write your response here…',
+    btnCopy:'Copy', btnCopied:'Copied',
+    wordCount:(n)=>`${n} ${n===1?'word':'words'}`,
+    resPerfect:'Flawless. Every single one.',
+    resStrong:'Strong work — the rule has landed.',
+    resMid:'Solid start. Worth one more pass.',
+    resLow:'Review the language focus slides, then try again.',
+    /* ── content ── */
+    coverTitle:'JFK &amp; <em>Prepositions</em>',
+    coverSub:'The small words that put an event in a place, in a decade, and under suspicion',
+    chipLevel:'B2 Upper-Intermediate', chipFocus:'Prepositions', chipCount:'15 questions',
 
-// Reordering: each item is an array of chunks in correct order, one chunk is the preposition phrase (marked pp:true)
-const reorderQuestions = [
-  {
-    chunks: ["Kennedy", "gave his final speech", "at the Hotel Texas", "in Fort Worth", "on the morning of his death"],
-    prep_indices: [2,3,4],
-    exp: "The sentence follows the pattern: Subject → Verb phrase → Place → More specific place → Time. In English, time expressions typically come last in this type of sentence."
-  },
-  {
-    chunks: ["The Warren Commission", "was established", "within weeks", "of the assassination", "to investigate the events"],
-    prep_indices: [2,3],
-    exp: "<strong>Within weeks of</strong> is a two-part prepositional phrase. 'Within' indicates the time limit; 'of' links it to the event. The infinitive phrase 'to investigate' comes last as it expresses purpose."
-  },
-  {
-    chunks: ["Protesters", "gathered", "outside the Warren Commission building", "throughout the inquiry", "demanding a full re-examination"],
-    prep_indices: [2,3],
-    exp: "'Outside' (place) comes before 'throughout' (time). The participle phrase 'demanding...' comes last as it describes simultaneous action."
-  },
-  {
-    chunks: ["A recording device", "was found", "beneath the dashboard", "of the presidential limousine", "after the car was examined"],
-    prep_indices: [2,3,4],
-    exp: "<strong>Beneath</strong> (specific place) → 'of' (possession) → 'after' (time/sequence). The prepositional phrases build from specific location to context."
-  },
-  {
-    chunks: ["The case files", "were transferred", "from the National Archives", "to a secure location", "prior to their planned release"],
-    prep_indices: [2,3,4],
-    exp: "'From...to' expresses movement between two points. 'Prior to' (meaning before) introduces the time clause and comes last."
-  }
-];
+    t1e:'Language focus · 1 of 3', t1t:'Where it happened',
+    t1a:'English marks a named public space with <strong>in</strong> — <em>in Dealey Plaza</em>, <em>in Fort Worth</em>. <strong>Inside</strong> needs walls. <strong>Within</strong> is formal and draws a boundary.',
+    t1b:'Movement takes its own preposition. <strong>Along</strong> follows the length of a road, <strong>across</strong> cuts from one side to the other, <strong>through</strong> goes in one side and out again.',
+    t1n:'A motorcade travels <em>along</em> Elm Street. A bullet passes <em>through</em> a body. Same street, different geometry.',
 
-/* ══════════════════════════════════════
-   STATE
-══════════════════════════════════════ */
-let score = 0, mcIdx = 0, fitbIdx = 0, roIdx = 0;
-const TOTAL = 15;
-const LABELS = ['A','B','C','D'];
+    t2e:'Language focus · 2 of 3', t2t:'Under suspicion',
+    t2a:'Some nouns take one preposition and no other. <strong>Under</strong> goes with examination and pressure: <em>under suspicion</em>, <em>under scrutiny</em>, <em>under investigation</em>.',
+    t2b:'Others live inside the verb. <strong>Tamper with</strong>, <strong>act on your own</strong>, <strong>die in office</strong> — swap the preposition and the phrase breaks.',
+    t2n:'These are not rules you work out. They are collocations you collect — and the wrong one is instantly audible.',
 
-function updateScore(){ document.getElementById('score-display').textContent = score; }
+    t3e:'Language focus · 3 of 3', t3t:'Place, then time, then why',
+    t3a:'When several prepositional phrases stack up, English orders them: <strong>place</strong> first, then the <strong>more specific place</strong>, then <strong>time</strong>.',
+    t3b:'<em>Kennedy gave his final speech <strong>at the Hotel Texas</strong> <strong>in Fort Worth</strong> <strong>on the morning of his death</strong>.</em>',
+    t3n:'Purpose (<em>to investigate the events</em>) and simultaneous action (<em>demanding a re-examination</em>) come last of all.',
 
-/* ══════════════════════════════════════
-   ACT 1 – MULTIPLE CHOICE
-══════════════════════════════════════ */
-function renderMC(){
-  const q = mcQuestions[mcIdx];
-  document.getElementById('pb1').style.width = (mcIdx/mcQuestions.length*100)+'%';
-  document.getElementById('mc-next').classList.remove('show');
-  document.getElementById('mc-container').innerHTML = `
-    <div class="question-card">
-      <div class="question-counter">Question ${mcIdx+1} of ${mcQuestions.length}</div>
-      <div class="question-text">${q.q}</div>
-      <div class="options">
-        ${q.opts.map((o,i)=>`<button class="option-btn" onclick="answerMC(${i})" id="mc-opt-${i}">
-          <span class="opt-label">${LABELS[i]}</span>${o}</button>`).join('')}
-      </div>
-      <div class="feedback-box" id="mc-fb"></div>
-    </div>`;
+    a1t:'Choose the best preposition',
+    a1e1:'Activity 1 · Place &amp; movement — 1/5', a1e2:'Activity 1 · Place &amp; movement — 2/5',
+    a1e3:'Activity 1 · Place &amp; movement — 3/5', a1e4:'Activity 1 · Place &amp; movement — 4/5',
+    a1e5:'Activity 1 · Place &amp; movement — 5/5',
+
+    a2t:'Complete the sentence',
+    a2e1:'Activity 2 · Fixed collocations — 1/5', a2e2:'Activity 2 · Fixed collocations — 2/5',
+    a2e3:'Activity 2 · Fixed collocations — 3/5', a2e4:'Activity 2 · Fixed collocations — 4/5',
+    a2e5:'Activity 2 · Fixed collocations — 5/5',
+
+    a3t:'Build the sentence',
+    a3e1:'Activity 3 · Word order — 1/5', a3e2:'Activity 3 · Word order — 2/5',
+    a3e3:'Activity 3 · Word order — 3/5', a3e4:'Activity 3 · Word order — 4/5',
+    a3e5:'Activity 3 · Word order — 5/5'
+  },
+  de: {
+    btnStart:'Beginnen →', btnCheck:'Prüfen', btnNext:'Weiter →', btnRestart:'Neu starten',
+    orderHint:'Klicke die Teile der Reihe nach an · nochmal klicken nimmt einen zurück',
+    scoreLabel:'Punkte', slideOf:(a,b)=>`${a} / ${b}`,
+    fbCorrect:'Richtig.', fbWrong:'Nicht ganz.', fbAnswer:'Antwort:',
+    resNext:'Die Sprache zu erkennen ist die halbe Miete. Jetzt anwenden →',
+    actEyebrow:'Anwendung', actTitle:'In die Praxis bringen',
+    actUse:'Verwende mindestens drei:',
+    actSpeakKind:'Diskussion · zu zweit', actWriteKind:'Schreiben · 180–220 Wörter',
+    actSpeakBrief:'Sechzig Jahre später ist die Akte immer noch offen. Sprecht darüber.',
+    actSpeak1:'Ein Archiv hält Dokumente zurück, die der Öffentlichkeit jahrzehntelang vorenthalten wurden. Argumentiere zuerst für die sofortige Freigabe — dann dafür, sie weiter unter Verschluss zu halten.',
+    actSpeak2:'Dein Gegenüber behauptet, keiner offiziellen Darstellung könne man je trauen. Vertritt die Gegenposition.',
+    actSpeak3:'Beschreibe einen Ort, den du gut kennst, so genau, dass dein Gegenüber ihn abgehen könnte: was wo steht und was sich entlang, quer hindurch oder durch ihn bewegt.',
+    actWriteBrief:'Schreibe den Bericht über ein öffentliches Ereignis — echt oder erfunden —, das Jahre später neu untersucht wurde. Verorte es genau: wo, dann genauer wo, dann wann.',
+    actPlaceholder:'Schreibe hier deine Antwort…',
+    btnCopy:'Kopieren', btnCopied:'Kopiert',
+    wordCount:(n)=>`${n} ${n===1?'Wort':'Wörter'}`,
+    resPerfect:'Makellos. Alles richtig.',
+    resStrong:'Starke Leistung — die Regel sitzt.',
+    resMid:'Guter Anfang. Ein weiterer Durchgang lohnt sich.',
+    resLow:'Sieh dir die Erklärungsfolien noch einmal an und versuche es erneut.',
+    coverTitle:'JFK &amp; <em>Präpositionen</em>',
+    coverSub:'Die kleinen Wörter, die ein Ereignis an einen Ort, in ein Jahrzehnt und unter Verdacht stellen',
+    chipLevel:'B2 Obere Mittelstufe', chipFocus:'Präpositionen', chipCount:'15 Fragen',
+
+    t1e:'Sprachlicher Schwerpunkt · 1 von 3', t1t:'Wo es geschah',
+    t1a:'Für einen benannten öffentlichen Platz nimmt das Englische <strong>in</strong> — <em>in Dealey Plaza</em>, <em>in Fort Worth</em>. <strong>Inside</strong> braucht Wände. <strong>Within</strong> ist förmlich und zieht eine Grenze.',
+    t1b:'Bewegung hat ihre eigene Präposition. <strong>Along</strong> folgt der Länge einer Straße, <strong>across</strong> quert sie von einer Seite zur anderen, <strong>through</strong> geht auf einer Seite hinein und auf der anderen hinaus.',
+    t1n:'Eine Wagenkolonne fährt <em>along</em> Elm Street. Eine Kugel geht <em>through</em> einen Körper. Dieselbe Straße, andere Geometrie.',
+
+    t2e:'Sprachlicher Schwerpunkt · 2 von 3', t2t:'Unter Verdacht',
+    t2a:'Manche Substantive nehmen genau eine Präposition und keine andere. <strong>Under</strong> steht bei Prüfung und Druck: <em>under suspicion</em>, <em>under scrutiny</em>, <em>under investigation</em>.',
+    t2b:'Andere stecken im Verb selbst. <strong>Tamper with</strong>, <strong>act on your own</strong>, <strong>die in office</strong> — tausche die Präposition aus, und die Wendung zerbricht.',
+    t2n:'Das sind keine Regeln, die man herleitet. Das sind Kollokationen, die man sammelt — und die falsche hört man sofort.',
+
+    t3e:'Sprachlicher Schwerpunkt · 3 von 3', t3t:'Ort, dann Zeit, dann Zweck',
+    t3a:'Stehen mehrere Präpositionalphrasen hintereinander, ordnet das Englische sie: zuerst der <strong>Ort</strong>, dann der <strong>genauere Ort</strong>, dann die <strong>Zeit</strong>.',
+    t3b:'<em>Kennedy gave his final speech <strong>at the Hotel Texas</strong> <strong>in Fort Worth</strong> <strong>on the morning of his death</strong>.</em>',
+    t3n:'Zweck (<em>to investigate the events</em>) und gleichzeitige Handlung (<em>demanding a re-examination</em>) stehen ganz am Schluss.',
+
+    a1t:'Wähle die passende Präposition',
+    a1e1:'Aufgabe 1 · Ort &amp; Bewegung — 1/5', a1e2:'Aufgabe 1 · Ort &amp; Bewegung — 2/5',
+    a1e3:'Aufgabe 1 · Ort &amp; Bewegung — 3/5', a1e4:'Aufgabe 1 · Ort &amp; Bewegung — 4/5',
+    a1e5:'Aufgabe 1 · Ort &amp; Bewegung — 5/5',
+
+    a2t:'Vervollständige den Satz',
+    a2e1:'Aufgabe 2 · Feste Wendungen — 1/5', a2e2:'Aufgabe 2 · Feste Wendungen — 2/5',
+    a2e3:'Aufgabe 2 · Feste Wendungen — 3/5', a2e4:'Aufgabe 2 · Feste Wendungen — 4/5',
+    a2e5:'Aufgabe 2 · Feste Wendungen — 5/5',
+
+    a3t:'Baue den Satz',
+    a3e1:'Aufgabe 3 · Satzstellung — 1/5', a3e2:'Aufgabe 3 · Satzstellung — 2/5',
+    a3e3:'Aufgabe 3 · Satzstellung — 3/5', a3e4:'Aufgabe 3 · Satzstellung — 4/5',
+    a3e5:'Aufgabe 3 · Satzstellung — 5/5'
+  },
+  /* Fill these in later — English shows through until you do. */
+  es:{}, fr:{}, it:{}, pt:{}, ru:{}, ar:{}, zh:{}, ja:{}
+};
+
+let currentLang = 'en';
+const t = k => (UI_I18N[currentLang] && UI_I18N[currentLang][k] != null)
+  ? UI_I18N[currentLang][k] : UI_I18N.en[k];
+
+/* ── Deck state ── */
+const stage   = document.getElementById('stage');
+const slides  = [...document.querySelectorAll('.slide')];
+const scored  = slides.filter(s => ['mc','gap','match','order'].includes(s.dataset.type));
+/* A slide may hold more than one gap; each gap is worth a point. */
+const countIn = s => s.dataset.type === 'gap'   ? s.querySelectorAll('.gap').length
+                   : s.dataset.type === 'match' ? s.querySelectorAll('.match-pair').length
+                   : 1;
+const maxScore = scored.reduce((n, s) => n + Math.max(1, countIn(s)), 0);
+let idx = 0, score = 0;
+const answered = new WeakSet();
+
+/* ── Scale the 1280×720 stage to fit any viewport, never scroll ── */
+function fitStage() {
+  const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+  stage.style.transform = `scale(${s})`;
+}
+addEventListener('resize', fitStage);
+
+/* ── Navigation ── */
+function show(n) {
+  idx = Math.max(0, Math.min(slides.length - 1, n));
+  slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+  stage.classList.toggle('on-cover', slides[idx].dataset.type === 'cover');
+  // A slide may swap the background pattern for a second illustration from the
+  // same set (data-bg). Same idiom as the hero — picture at reduced opacity
+  // under the wash — so extra artwork never becomes a pasted-in box.
+  stage.style.setProperty('--hero', slides[idx].dataset.bg
+    ? `url('${slides[idx].dataset.bg}')` : '');
+  document.getElementById('progressFill').style.width =
+    (slides.length > 1 ? (idx / (slides.length - 1)) * 100 : 0) + '%';
+  document.getElementById('deckCount').textContent = t('slideOf')(idx + 1, slides.length);
+  document.querySelector('[data-action="prev"]').disabled = idx === 0;
+  document.querySelector('[data-action="next"]').disabled = idx === slides.length - 1;
+  if (slides[idx].dataset.type === 'results') renderResults();
+  const gap = slides[idx].querySelector('.gap');
+  if (gap && !answered.has(slides[idx])) setTimeout(() => gap.focus(), 60);
 }
 
-function answerMC(chosen){
-  const q = mcQuestions[mcIdx];
-  document.querySelectorAll('.option-btn').forEach(b=>b.disabled=true);
-  if(chosen===q.correct){
-    score++; updateScore();
-    document.getElementById(`mc-opt-${chosen}`).classList.add('correct');
-    showFb('mc-fb',`<span class="feedback-correct">✓ Correct!</span> ${q.exp}`);
-  } else {
-    document.getElementById(`mc-opt-${chosen}`).classList.add('wrong');
-    document.getElementById(`mc-opt-${q.correct}`).classList.add('correct');
-    showFb('mc-fb',`<span class="feedback-wrong">✗ Not quite.</span> The answer is <strong>${q.opts[q.correct]}</strong>. ${q.exp}`);
-  }
-  document.getElementById('pb1').style.width = ((mcIdx+1)/mcQuestions.length*100)+'%';
-  document.getElementById('mc-next').classList.add('show');
+function renderResults() {
+  const max = maxScore;
+  document.getElementById('scoreVal').textContent = score;
+  document.getElementById('scoreMax').textContent = max;
+  const pct = max ? score / max : 0;
+  document.getElementById('scoreMsg').textContent =
+    pct === 1 ? t('resPerfect') : pct >= .75 ? t('resStrong')
+    : pct >= .5 ? t('resMid') : t('resLow');
 }
 
-document.getElementById('mc-next').addEventListener('click',()=>{
-  mcIdx++;
-  if(mcIdx<mcQuestions.length) renderMC();
-  else { switchAct('act1','act2'); renderFITB(); }
+function updateScoreChip() {
+  document.getElementById('deckScore').textContent =
+    maxScore ? `${t('scoreLabel')} ${score}/${maxScore}` : '';
+}
+
+/* ── Answer handling ── */
+function award(slide, ok) {
+  if (answered.has(slide)) return;
+  answered.add(slide);
+  if (ok) score++;
+  updateScoreChip();
+}
+
+function feedback(slide, ok, extra, ownExplain) {
+  const el = slide.querySelector('.feedback');
+  if (!el) return;
+  // An option's own explanation wins: telling a learner why THEIR answer was
+  // wrong beats restating why the key was right.
+  const reason = ownExplain || el.dataset.explain;
+  const why = reason ? ' ' + reason : '';
+  el.textContent = (ok ? t('fbCorrect') : t('fbWrong') + (extra ? ` ${t('fbAnswer')} ${extra}` : '')) + why;
+  el.className = 'feedback show ' + (ok ? 'ok' : 'no');
+}
+
+/* Multiple choice — shuffled on first view so option order is never a tell. */
+slides.filter(s => s.dataset.type === 'mc').forEach(slide => {
+  const box = slide.querySelector('.opts');
+  const opts = [...box.querySelectorAll('.opt')];
+  opts.sort(() => Math.random() - .5).forEach((o, i) => {
+    o.prepend(Object.assign(document.createElement('span'), {
+      className: 'opt-key', textContent: 'ABCD'[i]
+    }));
+    box.appendChild(o);
+  });
+  opts.forEach(o => o.addEventListener('click', () => {
+    if (answered.has(slide)) return;
+    const ok = o.hasAttribute('data-correct');
+    opts.forEach(x => {
+      x.disabled = true;
+      if (x.hasAttribute('data-correct')) x.classList.add('correct');
+    });
+    if (!ok) o.classList.add('wrong');
+    award(slide, ok);
+    feedback(slide, ok, null, o.dataset.explain);
+  }));
 });
 
-/* ══════════════════════════════════════
-   ACT 2 – FILL IN THE BLANK
-══════════════════════════════════════ */
-function renderFITB(){
-  const q = fitbQuestions[fitbIdx];
-  document.getElementById('pb2').style.width = (fitbIdx/fitbQuestions.length*100)+'%';
-  document.getElementById('fitb-next').classList.remove('show');
-  const sel = `<select class="fitb-select" id="fitb-sel">
-    <option value="">— choose —</option>
-    ${q.opts.map((o,i)=>`<option value="${i}">${o}</option>`).join('')}
-  </select>`;
-  document.getElementById('fitb-container').innerHTML = `
-    <div class="question-card">
-      <div class="question-counter">Question ${fitbIdx+1} of ${fitbQuestions.length}</div>
-      <div class="question-text">${q.before} ${sel} ${q.after}</div>
-      <button class="fitb-submit" id="fitb-btn" onclick="answerFITB()">Check answer</button>
-      <div class="feedback-box" id="fitb-fb"></div>
-    </div>`;
-}
+/* Matching. Author as <div class="match-pair" data-term data-def> rows; the
+   engine builds both columns and shuffles the definitions. One point per pair. */
+slides.filter(s => s.dataset.type === 'match').forEach(slide => {
+  const pairs = [...slide.querySelectorAll('.match-pair')];
+  const grid = slide.querySelector('.match-grid');
+  if (!grid || !pairs.length) return;
+  const terms = document.createElement('div');
+  const defs = document.createElement('div');
+  terms.className = defs.className = 'match-col';
+  const mk = (txt, cls, key) => {
+    const b = document.createElement('button');
+    b.className = 'match-item ' + cls;
+    b.textContent = txt;
+    b.dataset.key = key;
+    return b;
+  };
+  pairs.forEach(p => terms.appendChild(mk(p.dataset.term, 'term', p.dataset.term)));
+  [...pairs].sort(() => Math.random() - .5)
+    .forEach(p => defs.appendChild(mk(p.dataset.def, 'def', p.dataset.term)));
+  grid.replaceChildren(terms, defs);
 
-function answerFITB(){
-  const q = fitbQuestions[fitbIdx];
-  const sel = document.getElementById('fitb-sel');
-  if(!sel.value) return;
-  const chosen = parseInt(sel.value);
-  sel.disabled = true;
-  document.getElementById('fitb-btn').disabled = true;
-  if(chosen===q.correct){
-    score++; updateScore();
-    showFb('fitb-fb',`<span class="feedback-correct">✓ Correct!</span> ${q.exp}`);
-  } else {
-    showFb('fitb-fb',`<span class="feedback-wrong">✗ Not quite.</span> The answer is <strong>${q.opts[q.correct]}</strong>. ${q.exp}`);
-  }
-  document.getElementById('pb2').style.width = ((fitbIdx+1)/fitbQuestions.length*100)+'%';
-  document.getElementById('fitb-next').classList.add('show');
-}
-
-document.getElementById('fitb-next').addEventListener('click',()=>{
-  fitbIdx++;
-  if(fitbIdx<fitbQuestions.length) renderFITB();
-  else { switchAct('act2','act3'); renderReorder(); }
+  let picked = null, done = 0;
+  const total = pairs.length;
+  grid.addEventListener('click', e => {
+    const el = e.target.closest('.match-item');
+    if (!el || el.classList.contains('done')) return;
+    if (el.classList.contains('term')) {
+      grid.querySelectorAll('.term.picked').forEach(x => x.classList.remove('picked'));
+      el.classList.add('picked');
+      picked = el;
+      return;
+    }
+    if (!picked) return;
+    if (el.dataset.key === picked.dataset.key) {
+      el.classList.add('done'); picked.classList.add('done');
+      picked.classList.remove('picked');
+      picked = null; done++; score++; updateScoreChip();
+      if (done === total) {
+        answered.add(slide);
+        feedback(slide, true);
+      }
+    } else {
+      el.classList.add('miss');
+      setTimeout(() => el.classList.remove('miss'), 320);
+    }
+  });
 });
 
-/* ══════════════════════════════════════
-   ACT 3 – SENTENCE REORDERING
-══════════════════════════════════════ */
-let roPlaced = [];   // chunks in the target zone, in order
-let roAvailable = []; // indices still in pool
+/* Sentence building. Author as
+     <div class="order" data-answer="chunk|chunk|chunk"></div>
+   with a [data-action="check-order"] button and a .feedback alongside it.
+   The engine shuffles the chunks into a pool; clicking places one, clicking a
+   placed one takes it back. One point for the whole sentence — a half-right
+   word order is not half-right English. */
+slides.filter(s => s.dataset.type === 'order').forEach(slide => {
+  const box = slide.querySelector('.order');
+  if (!box) return;
+  const answer = box.dataset.answer.split('|').map(x => x.trim());
+  const target = document.createElement('div'); target.className = 'order-target';
+  const pool   = document.createElement('div'); pool.className   = 'order-pool';
+  answer.map((txt, i) => ({ txt, i }))
+        .sort(() => Math.random() - .5)
+        .forEach(({ txt, i }) => {
+          const b = document.createElement('button');
+          b.className = 'chunk';
+          b.textContent = txt;
+          b.dataset.i = i;
+          pool.appendChild(b);
+        });
+  box.replaceChildren(target, pool);
 
-function renderReorder(){
-  const q = reorderQuestions[roIdx];
-  document.getElementById('pb3').style.width = (roIdx/reorderQuestions.length*100)+'%';
-  document.getElementById('reorder-next').classList.remove('show');
-  roPlaced = [];
-  // shuffle for pool
-  const shuffled = q.chunks.map((c,i)=>({c,i})).sort(()=>Math.random()-.5);
-  roAvailable = shuffled.map(x=>x.i);
-
-  document.getElementById('reorder-container').innerHTML = `
-    <div class="question-card">
-      <div class="question-counter">Question ${roIdx+1} of ${reorderQuestions.length}</div>
-      <div class="question-text" style="margin-bottom:12px">Rearrange these chunks into the correct sentence:</div>
-      <div class="reorder-target" id="ro-target"><span style="color:var(--muted);font-size:13px;font-style:italic">Drop chunks here…</span></div>
-      <div class="reorder-pool" id="ro-pool">
-        ${shuffled.map(({c,i})=>`<div class="word-chip" id="chip-${i}" draggable="true"
-          data-idx="${i}">${c}</div>`).join('')}
-      </div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <button class="reorder-check" id="ro-check-btn" onclick="checkReorder()">Check sentence</button>
-        <button class="reorder-check" id="ro-reset-btn" onclick="resetReorder()" style="border-color:var(--muted);color:var(--muted)">Reset</button>
-      </div>
-      <div class="feedback-box" id="ro-fb"></div>
-    </div>`;
-
-  bindReorderDrag();
-}
-
-function bindReorderDrag(){
-  const q = reorderQuestions[roIdx];
-  const target = document.getElementById('ro-target');
-
-  document.querySelectorAll('.word-chip').forEach(chip=>{
-    chip.addEventListener('dragstart',e=>{
-      e.dataTransfer.setData('idx', chip.dataset.idx);
-      e.dataTransfer.setData('from', chip.parentElement.id);
-      setTimeout(()=>chip.style.opacity='.4',0);
-    });
-    chip.addEventListener('dragend',()=>chip.style.opacity='');
-    chip.addEventListener('click',()=>{
-      // click to move
-      const idx = parseInt(chip.dataset.idx);
-      const inPool = chip.parentElement.id==='ro-pool';
-      if(inPool){ moveToTarget(idx); }
-      else { moveToPool(idx); }
-    });
-    // touch
-    chip.addEventListener('touchstart',tStart,{passive:true});
-    chip.addEventListener('touchend',tEnd);
+  box.addEventListener('click', e => {
+    const c = e.target.closest('.chunk');
+    if (!c || c.disabled) return;
+    if (c.parentElement === pool) { c.classList.add('placed');    target.appendChild(c); }
+    else                          { c.classList.remove('placed'); pool.appendChild(c); }
   });
 
-  target.addEventListener('dragover',e=>{ e.preventDefault(); target.classList.add('drag-over'); });
-  target.addEventListener('dragleave',()=>target.classList.remove('drag-over'));
-  target.addEventListener('drop',e=>{
-    e.preventDefault(); target.classList.remove('drag-over');
-    const idx = parseInt(e.dataTransfer.getData('idx'));
-    const from = e.dataTransfer.getData('from');
-    if(from==='ro-pool') moveToTarget(idx);
-  });
+  slide._check = () => {
+    if (answered.has(slide)) return;
+    // Marking a half-built sentence teaches nothing; wait until it is complete.
+    if (target.children.length < answer.length) return;
+    answered.add(slide);
+    const ok = [...target.children].map(c => +c.dataset.i).every((v, i) => v === i);
+    target.classList.add(ok ? 'correct' : 'wrong');
+    box.querySelectorAll('.chunk').forEach(c => c.disabled = true);
+    if (ok) score++;
+    updateScoreChip();
+    feedback(slide, ok, ok ? null : answer.join(' '));
+    const btn = slide.querySelector('[data-action="check-order"]');
+    if (btn) btn.disabled = true;
+  };
+});
 
-  // pool drop — to remove from target
-  const pool = document.getElementById('ro-pool');
-  pool.addEventListener('dragover',e=>e.preventDefault());
-  pool.addEventListener('drop',e=>{
-    e.preventDefault();
-    const idx = parseInt(e.dataTransfer.getData('idx'));
-    const from = e.dataTransfer.getData('from');
-    if(from==='ro-target') moveToPool(idx);
-  });
-}
+/* Gap fill. Supports several gaps on one slide, each scored and explained
+   individually via its own .gap-row wrapper. */
+const gapOk = g => g.dataset.answer.split('|')
+  .map(a => a.trim().toLowerCase())
+  .includes(g.value.trim().toLowerCase().replace(/\s+/g, ' '));
 
-function moveToTarget(idx){
-  if(roPlaced.includes(idx)) return;
-  roPlaced.push(idx);
-  refreshReorderUI();
-}
-function moveToPool(idx){
-  roPlaced = roPlaced.filter(i=>i!==idx);
-  refreshReorderUI();
-}
-
-function refreshReorderUI(){
-  const q = reorderQuestions[roIdx];
-  const target = document.getElementById('ro-target');
-  const pool = document.getElementById('ro-pool');
-
-  if(roPlaced.length===0){
-    target.innerHTML = `<span style="color:var(--muted);font-size:13px;font-style:italic">Drop chunks here…</span>`;
-  } else {
-    target.innerHTML = roPlaced.map(i=>`
-      <div class="word-chip placed" id="chip-${i}" draggable="true" data-idx="${i}">${q.chunks[i]}</div>`).join('');
+function markGap(g, fb) {
+  const ok = gapOk(g);
+  g.classList.add(ok ? 'correct' : 'wrong');
+  g.disabled = true;
+  if (ok) score++;
+  if (fb) {
+    const why = fb.dataset.explain ? ' ' + fb.dataset.explain : '';
+    fb.textContent = (ok ? t('fbCorrect')
+      : `${t('fbWrong')} ${t('fbAnswer')} ${g.dataset.answer.split('|')[0]}.`) + why;
+    fb.className = 'feedback show ' + (ok ? 'ok' : 'no');
   }
-  const inPool = q.chunks.map((_,i)=>i).filter(i=>!roPlaced.includes(i));
-  pool.innerHTML = inPool.map(i=>`
-    <div class="word-chip" id="chip-${i}" draggable="true" data-idx="${i}">${q.chunks[i]}</div>`).join('');
-
-  bindReorderDrag();
+  return ok;
 }
 
-function resetReorder(){
-  roPlaced = [];
-  refreshReorderUI();
-  const fb = document.getElementById('ro-fb');
-  if(fb){ fb.classList.remove('show'); fb.innerHTML=''; }
-  document.getElementById('reorder-next').classList.remove('show');
-  document.getElementById('ro-check-btn').disabled = false;
-  document.getElementById('ro-reset-btn').disabled = false;
+function checkGaps(slide) {
+  if (answered.has(slide)) return;
+  answered.add(slide);
+  const rows = [...slide.querySelectorAll('.gap-row')];
+  if (rows.length) {
+    rows.forEach(r => markGap(r.querySelector('.gap'), r.querySelector('.feedback')));
+  } else {
+    markGap(slide.querySelector('.gap'), slide.querySelector('.feedback'));
+  }
+  const btn = slide.querySelector('[data-action="check"]');
+  if (btn) btn.disabled = true;
+  updateScoreChip();
 }
 
-function checkReorder(){
-  const q = reorderQuestions[roIdx];
-  if(roPlaced.length !== q.chunks.length){
-    showFb('ro-fb',`<span class="feedback-wrong">Please place all ${q.chunks.length} chunks before checking.</span>`);
+/* ── Activation: word count, copy, and a print mirror (a textarea's
+   value does not appear in a PDF, so we mirror it into a div). ── */
+const actInput = document.getElementById('actInput');
+if (actInput) {
+  const countEl = document.getElementById('actCount');
+  const printEl = document.getElementById('actPrint');
+  const sync = () => {
+    const words = actInput.value.trim().split(/\s+/).filter(Boolean).length;
+    countEl.textContent = t('wordCount')(words);
+    printEl.textContent = actInput.value;
+  };
+  actInput.addEventListener('input', sync);
+  window.syncActivation = sync;
+  sync();
+}
+
+/* ── Events ── */
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-action]');
+  if (!a) return;
+  const act = a.dataset.action;
+  if (act === 'next') show(idx + 1);
+  if (act === 'prev') show(idx - 1);
+  if (act === 'check') checkGaps(a.closest('.slide'));
+  if (act === 'check-order') { const sl = a.closest('.slide'); if (sl._check) sl._check(); }
+  if (act === 'restart') location.reload();
+  if (act === 'copy-writing') {
+    const ta = document.getElementById('actInput');
+    if (ta && navigator.clipboard) navigator.clipboard.writeText(ta.value).then(() => {
+      const was = a.textContent;
+      a.textContent = t('btnCopied');
+      setTimeout(() => { a.textContent = was; }, 1400);
+    });
+  }
+});
+
+document.addEventListener('keydown', e => {
+  if (e.target.matches('input, select, textarea')) {
+    if (e.key === 'Enter') checkGaps(e.target.closest('.slide'));
     return;
   }
-  const correct = q.chunks.map((_,i)=>i);
-  const isCorrect = roPlaced.every((v,i)=>v===correct[i]);
-
-  // highlight chips
-  document.querySelectorAll('#ro-target .word-chip').forEach((chip,i)=>{
-    chip.draggable = false;
-    chip.style.cursor = 'default';
-    if(roPlaced[i]===correct[i]) chip.classList.add('ro-correct');
-    else chip.classList.add('ro-wrong');
-  });
-  document.querySelectorAll('#ro-pool .word-chip').forEach(c=>{c.draggable=false;c.style.cursor='default';});
-  document.getElementById('ro-check-btn').disabled = true;
-  document.getElementById('ro-reset-btn').disabled = true;
-
-  if(isCorrect){
-    score++; updateScore();
-    showFb('ro-fb',`<span class="feedback-correct">✓ Correct!</span> ${q.exp}`);
-  } else {
-    const correctSentence = q.chunks.join(' ');
-    showFb('ro-fb',`<span class="feedback-wrong">✗ Not quite.</span> The correct order is: <strong>${correctSentence}</strong>. ${q.exp}`);
-  }
-  document.getElementById('pb3').style.width = ((roIdx+1)/reorderQuestions.length*100)+'%';
-  document.getElementById('reorder-next').classList.add('show');
-}
-
-document.getElementById('reorder-next').addEventListener('click',()=>{
-  roIdx++;
-  if(roIdx<reorderQuestions.length) renderReorder();
-  else showFinalScreen();
+  if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); show(idx + 1); }
+  if (['ArrowLeft', 'PageUp'].includes(e.key))         { e.preventDefault(); show(idx - 1); }
 });
 
-// Touch helpers for reordering
-let tChip=null;
-function tStart(e){ tChip=e.currentTarget; }
-function tEnd(e){
-  if(!tChip) return;
-  const idx = parseInt(tChip.dataset.idx);
-  const inPool = tChip.parentElement.id==='ro-pool';
-  if(inPool) moveToTarget(idx);
-  else moveToPool(idx);
-  tChip=null;
+/* ── Language ── */
+function applyLang() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const v = t(el.dataset.i18n);
+    if (v != null) el.innerHTML = v;
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const v = t(el.dataset.i18nPh);
+    if (v != null) el.placeholder = v;
+  });
+  if (window.syncActivation) window.syncActivation();
+  document.documentElement.lang = currentLang;
+  document.documentElement.dir = RTL_LANGS.includes(currentLang) ? 'rtl' : 'ltr';
+  updateScoreChip();
+  show(idx);
 }
 
-/* ══════════════════════════════════════
-   HELPERS
-══════════════════════════════════════ */
-function showFb(id, html){
-  const el = document.getElementById(id);
-  el.innerHTML = html; el.classList.add('show');
+function initLang() {
+  const sel = document.getElementById('langSelect');
+  // Only offer languages that are actually translated. An empty or partial
+  // scaffold stays in the code for a future pass but never appears as a dead
+  // option in the menu.
+  const enKeys = Object.keys(UI_I18N.en).length;
+  LANGS.filter(l => l.code === 'en' ||
+                    Object.keys(UI_I18N[l.code] || {}).length >= enKeys)
+       .forEach(l => sel.add(new Option(l.label, l.code)));
+  sel.value = currentLang;
+  sel.hidden = sel.options.length < 2;
+  sel.addEventListener('change', () => { currentLang = sel.value; applyLang(); });
 }
 
-function switchAct(from, to){
-  document.getElementById(from).classList.remove('active');
-  document.getElementById(to).classList.add('active');
-}
+/* Per-slide background art: set the variable on the element as well, because
+   the print stylesheet paints each slide's own ::before from var(--hero). */
+slides.filter(s => s.dataset.bg).forEach(s =>
+  s.style.setProperty('--hero', `url('${s.dataset.bg}')`));
 
-function showFinalScreen(){
-  document.getElementById('activity-wrapper').style.display='none';
-  const fs = document.getElementById('final-screen');
-  fs.classList.add('show');
-  document.getElementById('final-score').textContent = score;
-  const pct = score/TOTAL;
-  let msg;
-  if(pct>=0.9) msg="Exceptional. You've cracked the case — your command of English prepositions is classified as top secret.";
-  else if(pct>=0.7) msg="Impressive work, Agent. A few details escaped you, but your instincts are sharp. Review and return.";
-  else if(pct>=0.5) msg="A solid investigation. The truth is out there — and so is a stronger grasp of prepositions. Keep digging.";
-  else msg="The conspiracy runs deeper than expected. Revisit the evidence, review your prepositions, and try again.";
-  document.getElementById('final-msg').textContent = msg;
-}
+/* ── Boot ── */
+initLang();
+fitStage();
+applyLang();
+updateScoreChip();
 
-function restartAll(){
-  score=0; mcIdx=0; fitbIdx=0; roIdx=0; roPlaced=[];
-  updateScore();
-  document.getElementById('final-screen').classList.remove('show');
-  document.getElementById('activity-wrapper').style.display='';
-  ['act1','act2','act3'].forEach(id=>document.getElementById(id).classList.remove('active'));
-  document.getElementById('act1').classList.add('active');
-  renderMC();
-}
-
-/* INIT */
-renderMC();
+/* Reveal the wordmark only once DM Sans is really available, so the
+   Forbes/ENGLISH lockup never renders at fallback-font proportions. */
+const ready = () => document.body.classList.add('fonts-ready');
+if (document.fonts && document.fonts.ready) { document.fonts.ready.then(ready); setTimeout(ready, 1500); }
+else ready();
 </script>
 </body>
 </html>
