@@ -80,6 +80,8 @@
   .diagram-intro{font-size:14px;color:var(--ink-soft);margin-bottom:18px;max-width:60ch;}
   .diagram-stage{width:100%;background:var(--paper);border:1px solid var(--accent-light);border-radius:var(--radius);padding:12px;}
   .diagram-stage svg{width:100%;height:auto;display:block;}
+  .dg-reveal{opacity:0;transition:opacity .2s ease;}
+  .dg-reveal.is-shown{opacity:1;}
   .diagram-shape{cursor:pointer;transition:filter .15s ease;}
   .diagram-shape:hover{filter:brightness(1.06);}
   .diagram-caption{font-family:'Inter',sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;}
@@ -159,7 +161,7 @@
       <h1>The rope still attached</h1>
       <p>Camp three was the ground you crossed and left. Camp four is the ground still roped to you. The present perfect describes a past that has not been cut loose &mdash; a period still running, an experience with no date on it, or something that happened moments ago and is still showing.</p>
     </div>
-    <svg class="hero-diagram" viewBox="0 0 640 344" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Past simple as a closed block on the left, three turquoise layers of the present perfect reaching across, and a narrow column marking now on the right">
+    <svg class="hero-diagram" viewBox="0 0 640 344" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Past simple on the left, three turquoise layers of the present perfect reaching across, and a narrow column marking now on the right">
       <defs>
         <linearGradient id="pastFade" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0"    stop-color="#B08968"/>
@@ -174,62 +176,24 @@
           <stop offset="0.80" stop-color="#56A2A8"/>
           <stop offset="1"    stop-color="#2E8E92"/>
         </linearGradient>
-        <filter id="grainHeroDark" x="0" y="0" width="100%" height="100%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" seed="11" result="t"/>
-          <feColorMatrix in="t" type="matrix"
-            values="0 0 0 0 0.10  0 0 0 0 0.07  0 0 0 0 0.05  0 0 0 2.4 -1.05"/>
-        </filter>
-        <filter id="grainHeroLight" x="0" y="0" width="100%" height="100%">
-          <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="4" seed="29" result="t"/>
-          <feColorMatrix in="t" type="matrix"
-            values="0 0 0 0 1  0 0 0 0 0.98  0 0 0 0 0.92  0 0 0 2.2 -1.05"/>
-        </filter>
-        <filter id="grainHeroPaper" x="0" y="0" width="100%" height="100%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="5" seed="5" result="t"/>
-          <feColorMatrix in="t" type="matrix"
-            values="0 0 0 0 0.35  0 0 0 0 0.28  0 0 0 0 0.20  0 0 0 1.5 -1.02"/>
-        </filter>
-        <filter id="grainHeroShape" x="-8%" y="-8%" width="116%" height="116%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch" result="n"/>
-          <feColorMatrix in="n" type="matrix"
-            values="0 0 0 0 0.98  0 0 0 0 0.95  0 0 0 0 0.88  0 0 0 0.4 0" result="g"/>
-          <feComposite in="g" in2="SourceGraphic" operator="in"/>
-        </filter>
       </defs>
       <rect x="0" y="0" width="640" height="344" fill="var(--paper)"/>
       <line x1="291" y1="299" x2="612" y2="299" stroke="#1c130c" stroke-width="2"/>
-      
       <path d="M122,38 L182,38 L182,299 L291,299 L224,326 L32,326 L32,264 L122,264 Z" fill="url(#pastFade)"/>
-      <path d="M122,38 L182,38 L182,299 L291,299 L224,326 L32,326 L32,264 L122,264 Z" filter="url(#grainHeroShape)" fill="#000" opacity="0.65"/>
-      
-      
       <rect x="182" y="38" width="254" height="87" fill="#56A2A8"/>
-      <rect x="182" y="38" width="254" height="87" filter="url(#grainHeroShape)" fill="#000" opacity="0.28"/>
-      
-      
       <rect x="182" y="131" width="254" height="79" fill="#8FC3C6"/>
-      <rect x="182" y="131" width="254" height="79" filter="url(#grainHeroShape)" fill="#000" opacity="0.28"/>
-      
-      
       <rect x="182" y="216" width="254" height="83" fill="url(#ppArrive)"/>
-      <rect x="182" y="216" width="254" height="83" filter="url(#grainHeroShape)" fill="#000" opacity="0.28"/>
-      
-      
       <rect x="436.5" y="38" width="17.0" height="261" fill="#D98A72"/>
       <rect x="439.0" y="72" width="12.0" height="200" fill="#5C7690"/>
-      
-      <rect x="0" y="0" width="640" height="344" filter="url(#grainHeroPaper)" opacity="0.30" pointer-events="none"/>
-      <rect x="0" y="0" width="640" height="344" filter="url(#grainHeroDark)" opacity="0.30" pointer-events="none"/>
-      <rect x="0" y="0" width="640" height="344" filter="url(#grainHeroLight)" opacity="0.55" pointer-events="none"/>
-      <!-- labels ride on top of the grain -->
-      <text x="48" y="292" class="diagram-caption" fill="#F1E6DC" style="letter-spacing:.08em" pointer-events="none">PAST SIMPLE</text>
-      <text x="48" y="311" font-family="Inter, sans-serif" font-size="11.5" fill="#CFC3B6" pointer-events="none">finished &#183; specified time</text>
-      <text x="300" y="26" text-anchor="middle" class="diagram-caption" fill="#1F6A70" style="font-size:13px" pointer-events="none">PRESENT PERFECT SIMPLE</text>
-      <text x="445" y="26" text-anchor="middle" class="diagram-caption" fill="#3E6A85" pointer-events="none">NOW</text>
-      <text x="196" y="68" class="dg-cap" fill="#F2FBFA" pointer-events="none">UNFINISHED TIME</text>
-      <text x="196" y="161" class="dg-cap" fill="#1F6A70" pointer-events="none">UNSPECIFIED TIME</text>
-      <text x="196" y="246" class="dg-cap" fill="#1F6A70" pointer-events="none">VERY RECENT</text>
       <text x="238" y="192" class="dg-q" fill="#2F7F86" pointer-events="none">????????</text>
+      <text x="48" y="292" class="diagram-caption" fill="#F1E6DC" style="letter-spacing:.08em" pointer-events="none">PAST SIMPLE</text>
+      <text x="278" y="26" text-anchor="middle" class="diagram-caption" fill="#1F6A70" style="font-size:13px" pointer-events="none">PRESENT PERFECT SIMPLE</text>
+      <text x="445" y="26" text-anchor="middle" class="diagram-caption" fill="#3E6A85" pointer-events="none">NOW</text>
+      <text x="48" y="311" class="dg-reveal" data-for="shape-past" font-family="Inter, sans-serif" font-size="11.5" fill="#CFC3B6" pointer-events="none">finished &#183; specified time</text>
+      <text x="445" y="317" text-anchor="middle" class="dg-reveal" data-for="shape-now" font-family="Inter, sans-serif" font-size="11.5" fill="#5F7C90" pointer-events="none">present simple</text>
+      <text x="196" y="68" class="dg-cap dg-reveal" data-for="shape-unfinished" fill="#F2FBFA" pointer-events="none">UNFINISHED TIME</text>
+      <text x="196" y="161" class="dg-cap dg-reveal" data-for="shape-unspecified" fill="#1F6A70" pointer-events="none">UNSPECIFIED TIME</text>
+      <text x="196" y="246" class="dg-cap dg-reveal" data-for="shape-recent" fill="#1F6A70" pointer-events="none">VERY RECENT</text>
     </svg>
   </section>
 
@@ -395,7 +359,7 @@
       <div class="camp-label">Interactive</div>
       <h2>Three ropes to now</h2>
       <div class="diagram-card">
-        <p class="diagram-intro">The past simple block on the left is closed &mdash; a stated time, over. Everything turquoise is still attached to the present: a period that has not ended, an experience with no date on it, and something that finished moments ago and is still showing. Click any block &mdash; or any bar below it &mdash; to single one out.</p>
+        <p class="diagram-intro">The past simple block on the left is closed &mdash; a stated time, over. Everything turquoise is still attached to the present: a period that has not ended, an experience with no date on it, and something that finished moments ago and is still showing. Click any block &mdash; or any bar below it &mdash; to name it and see it in sentences.</p>
         <div class="diagram-stage">
           <svg viewBox="0 0 640 344" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Interactive diagram: the three uses of the present perfect between past simple and now">
       <defs>
@@ -412,62 +376,34 @@
           <stop offset="0.80" stop-color="#56A2A8"/>
           <stop offset="1"    stop-color="#2E8E92"/>
         </linearGradient>
-        <filter id="grainStageDark" x="0" y="0" width="100%" height="100%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" seed="11" result="t"/>
-          <feColorMatrix in="t" type="matrix"
-            values="0 0 0 0 0.10  0 0 0 0 0.07  0 0 0 0 0.05  0 0 0 2.4 -1.05"/>
-        </filter>
-        <filter id="grainStageLight" x="0" y="0" width="100%" height="100%">
-          <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="4" seed="29" result="t"/>
-          <feColorMatrix in="t" type="matrix"
-            values="0 0 0 0 1  0 0 0 0 0.98  0 0 0 0 0.92  0 0 0 2.2 -1.05"/>
-        </filter>
-        <filter id="grainStagePaper" x="0" y="0" width="100%" height="100%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="5" seed="5" result="t"/>
-          <feColorMatrix in="t" type="matrix"
-            values="0 0 0 0 0.35  0 0 0 0 0.28  0 0 0 0 0.20  0 0 0 1.5 -1.02"/>
-        </filter>
-        <filter id="grainStageShape" x="-8%" y="-8%" width="116%" height="116%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch" result="n"/>
-          <feColorMatrix in="n" type="matrix"
-            values="0 0 0 0 0.98  0 0 0 0 0.95  0 0 0 0 0.88  0 0 0 0.4 0" result="g"/>
-          <feComposite in="g" in2="SourceGraphic" operator="in"/>
-        </filter>
       </defs>
       <rect x="0" y="0" width="640" height="344" fill="var(--paper)"/>
       <line x1="291" y1="299" x2="612" y2="299" stroke="#1c130c" stroke-width="2"/>
       <g class="diagram-shape" id="shape-past" tabindex="0" role="button" aria-label="Show past simple examples">
       <path d="M122,38 L182,38 L182,299 L291,299 L224,326 L32,326 L32,264 L122,264 Z" fill="url(#pastFade)"/>
-      <path d="M122,38 L182,38 L182,299 L291,299 L224,326 L32,326 L32,264 L122,264 Z" filter="url(#grainStageShape)" fill="#000" opacity="0.65"/>
       </g>
       <g class="diagram-shape" id="shape-unfinished" tabindex="0" role="button" aria-label="Show unfinished time examples">
       <rect x="182" y="38" width="254" height="87" fill="#56A2A8"/>
-      <rect x="182" y="38" width="254" height="87" filter="url(#grainStageShape)" fill="#000" opacity="0.28"/>
       </g>
       <g class="diagram-shape" id="shape-unspecified" tabindex="0" role="button" aria-label="Show unspecified time examples">
       <rect x="182" y="131" width="254" height="79" fill="#8FC3C6"/>
-      <rect x="182" y="131" width="254" height="79" filter="url(#grainStageShape)" fill="#000" opacity="0.28"/>
       </g>
       <g class="diagram-shape" id="shape-recent" tabindex="0" role="button" aria-label="Show very recent examples">
       <rect x="182" y="216" width="254" height="83" fill="url(#ppArrive)"/>
-      <rect x="182" y="216" width="254" height="83" filter="url(#grainStageShape)" fill="#000" opacity="0.28"/>
       </g>
       <g class="diagram-shape" id="shape-now" tabindex="0" role="button" aria-label="Show present simple examples">
       <rect x="436.5" y="38" width="17.0" height="261" fill="#D98A72"/>
       <rect x="439.0" y="72" width="12.0" height="200" fill="#5C7690"/>
       </g>
-      <rect x="0" y="0" width="640" height="344" filter="url(#grainStagePaper)" opacity="0.30" pointer-events="none"/>
-      <rect x="0" y="0" width="640" height="344" filter="url(#grainStageDark)" opacity="0.30" pointer-events="none"/>
-      <rect x="0" y="0" width="640" height="344" filter="url(#grainStageLight)" opacity="0.55" pointer-events="none"/>
-      <!-- labels ride on top of the grain -->
-      <text x="48" y="292" class="diagram-caption" fill="#F1E6DC" style="letter-spacing:.08em" pointer-events="none">PAST SIMPLE</text>
-      <text x="48" y="311" font-family="Inter, sans-serif" font-size="11.5" fill="#CFC3B6" pointer-events="none">finished &#183; specified time</text>
-      <text x="300" y="26" text-anchor="middle" class="diagram-caption" fill="#1F6A70" style="font-size:13px" pointer-events="none">PRESENT PERFECT SIMPLE</text>
-      <text x="445" y="26" text-anchor="middle" class="diagram-caption" fill="#3E6A85" pointer-events="none">NOW</text>
-      <text x="196" y="68" class="dg-cap" fill="#F2FBFA" pointer-events="none">UNFINISHED TIME</text>
-      <text x="196" y="161" class="dg-cap" fill="#1F6A70" pointer-events="none">UNSPECIFIED TIME</text>
-      <text x="196" y="246" class="dg-cap" fill="#1F6A70" pointer-events="none">VERY RECENT</text>
       <text x="238" y="192" class="dg-q" fill="#2F7F86" pointer-events="none">????????</text>
+      <text x="48" y="292" class="diagram-caption" fill="#F1E6DC" style="letter-spacing:.08em" pointer-events="none">PAST SIMPLE</text>
+      <text x="278" y="26" text-anchor="middle" class="diagram-caption" fill="#1F6A70" style="font-size:13px" pointer-events="none">PRESENT PERFECT SIMPLE</text>
+      <text x="445" y="26" text-anchor="middle" class="diagram-caption" fill="#3E6A85" pointer-events="none">NOW</text>
+      <text x="48" y="311" class="dg-reveal" data-for="shape-past" font-family="Inter, sans-serif" font-size="11.5" fill="#CFC3B6" pointer-events="none">finished &#183; specified time</text>
+      <text x="445" y="317" text-anchor="middle" class="dg-reveal" data-for="shape-now" font-family="Inter, sans-serif" font-size="11.5" fill="#5F7C90" pointer-events="none">present simple</text>
+      <text x="196" y="68" class="dg-cap dg-reveal" data-for="shape-unfinished" fill="#F2FBFA" pointer-events="none">UNFINISHED TIME</text>
+      <text x="196" y="161" class="dg-cap dg-reveal" data-for="shape-unspecified" fill="#1F6A70" pointer-events="none">UNSPECIFIED TIME</text>
+      <text x="196" y="246" class="dg-cap dg-reveal" data-for="shape-recent" fill="#1F6A70" pointer-events="none">VERY RECENT</text>
           </svg>
         </div>
         <div class="use-bars">
@@ -580,17 +516,25 @@ function pulseShape(el){
   );
 }
 
+function showCaptions(shapeId){
+  document.querySelectorAll(".dg-reveal").forEach(function(t){
+    t.classList.toggle("is-shown", t.dataset.for === shapeId);
+  });
+}
+
 function select(shapeId){
   bars.forEach(function(bar){
     var on = bar.dataset.shape === shapeId;
     bar.classList.toggle("is-on", on);
     bar.classList.toggle("is-off", !on);
   });
+  showCaptions(shapeId);
   pulseShape(document.getElementById(shapeId));
 }
 
 function clearSelection(){
   bars.forEach(function(bar){ bar.classList.remove("is-on", "is-off"); });
+  showCaptions(null);
 }
 
 bars.forEach(function(bar){
