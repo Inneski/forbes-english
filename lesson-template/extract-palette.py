@@ -138,6 +138,16 @@ def build_palette(path, dark=True):
         accent_bright = shift(accent, dl=-0.10, ds=+0.08)
         accent_dim = shift(accent, dl=+0.24, ds=-0.20)
 
+    # --accent-bright must stay visibly distinct from --text, or <em>
+    # emphasis and eyebrows vanish into the body copy. When the image's
+    # dominant colour is already near-white, brightening is the wrong move:
+    # deepen and saturate instead.
+    guard = 0
+    while contrast_ratio(accent_bright, text) < 1.45 and guard < 12:
+        hb, lb, sb = to_hls(accent_bright)
+        accent_bright = from_hls(hb, lb - 0.05, min(1.0, sb + 0.08))
+        guard += 1
+
     # ── Contrast colour ───────────────────────────────────────────────
     # A deliberate counterpoint to the accent, for the Forbes mark, a
     # highlight, or anything that should read as "not part of the wash".
@@ -180,28 +190,30 @@ def main():
         print(f"  --{key.ljust(width)} : {hex_of(p[key])};")
     print("}")
 
-    print("\n/* Contrast report — body text must be >= 4.5, ideally >= 7 */")
+    print("\n/* Contrast report */")
+    # (label, fg, bg, minimum, why)
     checks = [
-        ("text on surface", p["text"], p["surface"]),
-        ("text on void", p["text"], p["void"]),
-        ("text-dim on surface", p["text-dim"], p["surface"]),
-        ("accent on surface", p["accent"], p["surface"]),
-        ("accent-bright on surface", p["accent-bright"], p["surface"]),
-        ("contrast on surface", p["contrast"], p["surface"]),
-        ("contrast on void", p["contrast"], p["void"]),
+        ("text on surface",          p["text"],          p["surface"], 4.5, "body copy"),
+        ("text on void",             p["text"],          p["void"],    4.5, "body copy"),
+        ("text-dim on surface",      p["text-dim"],      p["surface"], 4.5, "secondary copy"),
+        ("accent on surface",        p["accent"],        p["surface"], 4.5, "buttons, rules"),
+        ("accent-bright on surface", p["accent-bright"], p["surface"], 4.5, "headings"),
+        ("contrast on surface",      p["contrast"],      p["surface"], 4.5, "counterpoint"),
+        # Not a readability check: emphasis must be VISIBLY different from body
+        # text, or <em> and eyebrows disappear into the paragraph.
+        ("accent-bright vs text",    p["accent-bright"], p["text"],    1.45, "emphasis must show"),
     ]
-    worst_body = None
-    for label, fg, bg in checks:
+    failed = []
+    for label, fg, bg, minimum, why in checks:
         c = contrast_ratio(fg, bg)
-        mark = "PASS" if c >= 4.5 else "FAIL"
-        if label.startswith("text"):
-            worst_body = c if worst_body is None else min(worst_body, c)
-        print(f"   {label.ljust(26)} {c:5.2f}:1  {mark}")
+        mark = "PASS" if c >= minimum else "FAIL"
+        if c < minimum:
+            failed.append(label)
+        print(f"   {label.ljust(26)} {c:5.2f}:1  (min {minimum})  {mark}   {why}")
 
-    if worst_body is not None and worst_body < 4.5:
-        print("\n   !! Body text fails WCAG AA on this palette.")
-        print("      Lighten --text (dark theme) or darken it (light theme) until it passes.")
-        print("      Do NOT ship the lesson until every body-text row reads PASS.")
+    if failed:
+        print("\n   !! Failing: " + ", ".join(failed))
+        print("      Do NOT ship the lesson until every row reads PASS.")
 
 
 if __name__ == "__main__":

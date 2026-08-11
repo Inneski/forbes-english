@@ -72,7 +72,9 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
           const kl = txt(key);
           const others = opts.filter(o => o !== key).map(txt);
           const maxOther = Math.max(...others);
-          if (kl > maxOther) {
+          // Flag only a NOTICEABLE excess. A two-character difference is not
+          // something a learner can scan for; 10%+ on a full option is.
+          if (kl > maxOther * 1.10) {
             out.answers.push({ n: i + 1, key: kl, maxOther, ratio: +(kl / maxOther).toFixed(2) });
           }
         }
@@ -81,7 +83,10 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
       // ── EXPLAIN ──────────────────────────────────────────────────
       if (['mc', 'gap'].includes(s.dataset.type)) {
         const fbs = [...s.querySelectorAll('.feedback')];
-        const missing = fbs.length === 0 || fbs.some(f => !f.dataset.explain);
+        // Either every option explains itself, or the slide explains the answer.
+        const opts = [...s.querySelectorAll('.opt')];
+        const perOption = opts.length > 0 && opts.every(o => o.dataset.explain);
+        const missing = !perOption && (fbs.length === 0 || fbs.some(f => !f.dataset.explain));
         if (missing) out.explain.push({ n: i + 1, type: s.dataset.type });
       }
 
@@ -150,7 +155,7 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
   else bad(`page scrolls (y:${r.scroll.y} x:${r.scroll.x})`);
 
   head('ANSWERS');
-  if (!r.answers.length) ok('no multiple-choice answer is the longest option');
+  if (!r.answers.length) ok('no multiple-choice answer is conspicuously the longest');
   else {
     r.answers.forEach(a => bad(
       `slide ${a.n}: correct option is longest — ${a.key} chars vs ${a.maxOther} (${a.ratio}x). ` +

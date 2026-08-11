@@ -412,7 +412,13 @@ things stand.
 
 **Converted to the 16:9 deck standard:**
 
-- `forbes-c1-negotiation.html` — 22 slides (first conversion, 2026-08-11)
+- `forbes-c1-negotiation.html` — 23 slides, all 10 languages (the worked reference)
+- `forbes_english_lesson.html` — Refinery Safety & Turnaround, 16 slides
+- `football_c1_roleplay.html` — Full-Time Pressure, 15 slides (keeps its team-spirit meter)
+- `Forbes English - Product Strategy & Market Research Speaking (2).html` — 24 slides
+
+All except the negotiation reference ship English + German; the other eight
+languages stay out of the switcher until they are written.
 
 **Touched but only partly modernised** — these got a prominent hero and the
 persistent background treatment while the old scrolling format was still the
