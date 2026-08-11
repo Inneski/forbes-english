@@ -266,6 +266,28 @@ hero-derived palette.
 
 ---
 
+## 5b. Extra artwork — swap the pattern, never paste a box
+
+A lesson often arrives with two or three illustrations rather than one. Pick
+the strongest as the hero; the others go on `data-bg` on whichever slide they
+belong to:
+
+```html
+<section class="slide" data-type="teach" data-bg="jfk/sunglasses.jpg">
+```
+
+That slide's background pattern becomes the second picture — same treatment as
+the hero, reduced opacity under the same wash, content legible on top. Screen
+and PDF both follow it.
+
+**Do not put an `<img>` in a card.** A boxed picture in the middle of a slide
+is the single most common way this house style gets broken: it reads as a
+pasted-in screenshot, it fights the text for the eye, and it does not survive
+the PDF export cleanly. If a picture is worth showing, it is worth being the
+whole background.
+
+---
+
 ## 6. Slide budget — the hard constraint
 
 The canvas is exactly **1280 × 720** with 64px padding. Roughly **1150 × 590**
@@ -303,7 +325,8 @@ These are the site's fonts across 216 lessons. Do not introduce others.
 ## 7. Authoring slides
 
 Each screen is one `<section class="slide" data-type="...">`. Types:
-`cover`, `teach`, `mc`, `gap`, `results`.
+`cover`, `teach`, `mc`, `gap`, `match`, `order`, `discuss`, `results`,
+`activate`.
 
 **Multiple choice.** Mark the right answer with `data-correct`. Order is
 shuffled at runtime and A/B/C/D labels are applied after shuffling, so never
@@ -326,6 +349,20 @@ distractor is the same length as the answer and wrong for a reason the lesson
 has taught — wrong register, imprecise term, a commitment the speaker did not
 intend. Three plausible same-length wrong answers is the work; it is also the
 part that makes the question worth asking.
+
+**Sentence building (`order`).** For word order, where the point is the
+*sequence* of phrases rather than the choice of one word:
+
+```html
+<div class="order" data-answer="Kennedy|gave his final speech|at the Hotel Texas|in Fort Worth|on the morning of his death"></div>
+<button class="btn" data-action="check-order" data-i18n="btnCheck">Check</button>
+```
+
+The engine shuffles the chunks into a pool. Click to place one, click a placed
+one to take it back — no dragging, because a scaled stage makes drag targets
+lie about where they are. It scores **one point for the whole sentence**: a
+half-right word order is not half-right English. Chunk the sentence at the
+joints you are teaching, never mid-phrase.
 
 **Gap fill.** `data-answer="was postponed|got postponed"` — pipe-separated
 alternatives, matched case-insensitively and whitespace-tolerantly.

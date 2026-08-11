@@ -81,7 +81,7 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
       }
 
       // ── EXPLAIN ──────────────────────────────────────────────────
-      if (['mc', 'gap'].includes(s.dataset.type)) {
+      if (['mc', 'gap', 'order'].includes(s.dataset.type)) {
         const fbs = [...s.querySelectorAll('.feedback')];
         // Either every option explains itself, or the slide explains the answer.
         const opts = [...s.querySelectorAll('.opt')];

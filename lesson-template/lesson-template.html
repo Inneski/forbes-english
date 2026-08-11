@@ -419,6 +419,36 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 .match-item.miss { border-color: var(--no); animation: shake .3s; }
 @keyframes shake { 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
 
+/* ── ORDERING (build the sentence) ───────────────────────────────────
+   For word-order work — where the point is the SEQUENCE of prepositional
+   phrases, not choosing one word. Click to place, click again to take back;
+   no dragging, because a scaled stage makes drag targets lie. */
+.order-hint {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 10px;
+}
+.order-target {
+  display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start;
+  min-height: 92px; padding: 12px;
+  border: 1.5px dashed color-mix(in srgb, var(--border) 60%, transparent);
+  border-radius: var(--r); background: var(--inset);
+}
+.order-target.correct { border-style: solid; border-color: var(--ok); }
+.order-target.wrong   { border-style: solid; border-color: var(--no); }
+.order-pool { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.chunk {
+  font-family: var(--font-ui); font-size: 15.5px; line-height: 1.35;
+  color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: 999px; padding: 9px 16px; cursor: pointer;
+  transition: border-color .15s, background .15s, opacity .2s;
+}
+.chunk:hover:not(:disabled) { border-color: var(--accent); }
+.chunk.placed { background: color-mix(in srgb, var(--accent) 18%, var(--surface2)); border-color: var(--accent); }
+.chunk:disabled { cursor: default; opacity: .5; }
+
 /* ── DISCUSSION (unscored speaking prompts) ──────────────────────── */
 .discuss-meta {
   font-family: var(--font-mono); font-size: 11.5px;
@@ -499,7 +529,8 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
     <!-- ══════════════════════════════════════════════════════════
          REPLACE 2 of 2: SLIDES
          Author one <section class="slide"> per screen.
-         data-type: cover | teach | mc | gap | match | discuss | results | activate
+         data-type: cover | teach | mc | gap | match | order | discuss | results | activate
+         data-bg="folder/other.jpg" swaps the background pattern on that slide.
          Everything a learner reads must fit WITHOUT scrolling.
          If it does not fit, split it across two slides — never shrink type.
          ══════════════════════════════════════════════════════════ -->
@@ -688,6 +719,7 @@ const UI_I18N = {
   en: {
     /* ── chrome ── */
     btnStart:'Begin →', btnCheck:'Check', btnNext:'Next →', btnRestart:'Start again',
+    orderHint:'Click the parts in order · click one again to take it back',
     scoreLabel:'Score', slideOf:(a,b)=>`${a} / ${b}`,
     fbCorrect:'Correct.', fbWrong:'Not quite.', fbAnswer:'Answer:',
     resNext:'Recognising the language is half of it. Now produce it →',
@@ -720,6 +752,7 @@ const UI_I18N = {
   },
   de: {
     btnStart:'Beginnen →', btnCheck:'Prüfen', btnNext:'Weiter →', btnRestart:'Neu starten',
+    orderHint:'Klicke die Teile der Reihe nach an · nochmal klicken nimmt einen zurück',
     scoreLabel:'Punkte', slideOf:(a,b)=>`${a} / ${b}`,
     fbCorrect:'Richtig.', fbWrong:'Nicht ganz.', fbAnswer:'Antwort:',
     resNext:'Die Sprache zu erkennen ist die halbe Miete. Jetzt anwenden →',
@@ -760,7 +793,7 @@ const t = k => (UI_I18N[currentLang] && UI_I18N[currentLang][k] != null)
 /* ── Deck state ── */
 const stage   = document.getElementById('stage');
 const slides  = [...document.querySelectorAll('.slide')];
-const scored  = slides.filter(s => ['mc','gap','match'].includes(s.dataset.type));
+const scored  = slides.filter(s => ['mc','gap','match','order'].includes(s.dataset.type));
 /* A slide may hold more than one gap; each gap is worth a point. */
 const countIn = s => s.dataset.type === 'gap'   ? s.querySelectorAll('.gap').length
                    : s.dataset.type === 'match' ? s.querySelectorAll('.match-pair').length
@@ -781,6 +814,11 @@ function show(n) {
   idx = Math.max(0, Math.min(slides.length - 1, n));
   slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
   stage.classList.toggle('on-cover', slides[idx].dataset.type === 'cover');
+  // A slide may swap the background pattern for a second illustration from the
+  // same set (data-bg). Same idiom as the hero — picture at reduced opacity
+  // under the wash — so extra artwork never becomes a pasted-in box.
+  stage.style.setProperty('--hero', slides[idx].dataset.bg
+    ? `url('${slides[idx].dataset.bg}')` : '');
   document.getElementById('progressFill').style.width =
     (slides.length > 1 ? (idx / (slides.length - 1)) * 100 : 0) + '%';
   document.getElementById('deckCount').textContent = t('slideOf')(idx + 1, slides.length);
@@ -896,6 +934,52 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
   });
 });
 
+/* Sentence building. Author as
+     <div class="order" data-answer="chunk|chunk|chunk"></div>
+   with a [data-action="check-order"] button and a .feedback alongside it.
+   The engine shuffles the chunks into a pool; clicking places one, clicking a
+   placed one takes it back. One point for the whole sentence — a half-right
+   word order is not half-right English. */
+slides.filter(s => s.dataset.type === 'order').forEach(slide => {
+  const box = slide.querySelector('.order');
+  if (!box) return;
+  const answer = box.dataset.answer.split('|').map(x => x.trim());
+  const target = document.createElement('div'); target.className = 'order-target';
+  const pool   = document.createElement('div'); pool.className   = 'order-pool';
+  answer.map((txt, i) => ({ txt, i }))
+        .sort(() => Math.random() - .5)
+        .forEach(({ txt, i }) => {
+          const b = document.createElement('button');
+          b.className = 'chunk';
+          b.textContent = txt;
+          b.dataset.i = i;
+          pool.appendChild(b);
+        });
+  box.replaceChildren(target, pool);
+
+  box.addEventListener('click', e => {
+    const c = e.target.closest('.chunk');
+    if (!c || c.disabled) return;
+    if (c.parentElement === pool) { c.classList.add('placed');    target.appendChild(c); }
+    else                          { c.classList.remove('placed'); pool.appendChild(c); }
+  });
+
+  slide._check = () => {
+    if (answered.has(slide)) return;
+    // Marking a half-built sentence teaches nothing; wait until it is complete.
+    if (target.children.length < answer.length) return;
+    answered.add(slide);
+    const ok = [...target.children].map(c => +c.dataset.i).every((v, i) => v === i);
+    target.classList.add(ok ? 'correct' : 'wrong');
+    box.querySelectorAll('.chunk').forEach(c => c.disabled = true);
+    if (ok) score++;
+    updateScoreChip();
+    feedback(slide, ok, ok ? null : answer.join(' '));
+    const btn = slide.querySelector('[data-action="check-order"]');
+    if (btn) btn.disabled = true;
+  };
+});
+
 /* Gap fill. Supports several gaps on one slide, each scored and explained
    individually via its own .gap-row wrapper. */
 const gapOk = g => g.dataset.answer.split('|')
@@ -954,6 +1038,7 @@ document.addEventListener('click', e => {
   if (act === 'next') show(idx + 1);
   if (act === 'prev') show(idx - 1);
   if (act === 'check') checkGaps(a.closest('.slide'));
+  if (act === 'check-order') { const sl = a.closest('.slide'); if (sl._check) sl._check(); }
   if (act === 'restart') location.reload();
   if (act === 'copy-writing') {
     const ta = document.getElementById('actInput');
@@ -1004,6 +1089,11 @@ function initLang() {
   sel.hidden = sel.options.length < 2;
   sel.addEventListener('change', () => { currentLang = sel.value; applyLang(); });
 }
+
+/* Per-slide background art: set the variable on the element as well, because
+   the print stylesheet paints each slide's own ::before from var(--hero). */
+slides.filter(s => s.dataset.bg).forEach(s =>
+  s.style.setProperty('--hero', `url('${s.dataset.bg}')`));
 
 /* ── Boot ── */
 initLang();
