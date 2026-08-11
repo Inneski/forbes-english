@@ -104,6 +104,26 @@ body::before {
   transform: rotate(-10deg);
 }
 
+.lang-switch {
+  position: absolute;
+  top: 18px; right: 18px;
+  z-index: 5;
+}
+.lang-switch select {
+  background: rgba(0,0,0,0.12);
+  border: 2px solid rgba(0,0,0,0.25);
+  color: var(--lego-black);
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 0.8rem;
+  padding: 6px 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  box-shadow: 0 3px 0 rgba(0,0,0,0.2);
+}
+.lang-switch select:focus { outline: none; border-color: var(--lego-blue); }
+@media(max-width:600px){ .lang-switch { position: static; margin-bottom: 14px; text-align: right; } }
+
 .hero-tag {
   display: inline-block;
   background: var(--lego-red);
@@ -369,8 +389,7 @@ body::before {
   box-shadow: 0 6px 0 rgba(255,107,0,0.4), 0 10px 24px rgba(0,0,0,0.1);
   position: relative;
 }
-.key-block::before {
-  content: '⚠ UWAŻAJ! — KEY RULE';
+.key-block-tag {
   position: absolute; top:-14px; left:20px;
   background: var(--lego-orange); color: #fff;
   font-family: 'Fredoka One', cursive;
@@ -378,6 +397,7 @@ body::before {
   padding: 4px 16px; border-radius: 50px;
   border: 2px solid rgba(0,0,0,0.15);
   box-shadow: 0 2px 0 rgba(0,0,0,0.2);
+  display: inline-block;
 }
 .key-block h3 {
   font-family: 'Fredoka One', cursive;
@@ -743,23 +763,53 @@ input.fi.err {
   border:2px solid rgba(0,0,0,0.15); vertical-align:middle; margin-left:6px;
   box-shadow:0 2px 0 rgba(0,0,0,0.2);
 }
+
+/* ══════════════════════════════
+   POSTER ART (editorial LEGO illustrations)
+══════════════════════════════ */
+.cover-poster {
+  max-height: 300px;
+  overflow: hidden;
+  border-bottom: 6px solid rgba(0,0,0,0.2);
+  box-shadow: 0 8px 0 rgba(0,0,0,0.15), 0 12px 28px rgba(0,0,0,0.18);
+}
+.cover-poster img { width:100%; height:100%; object-fit:cover; display:block; }
+@media(max-width:600px){ .cover-poster { max-height: 180px; } }
+
+.poster-img {
+  border-radius: 14px;
+  overflow: hidden;
+  margin: 0 0 28px;
+  border: 3px solid rgba(0,0,0,0.18);
+  box-shadow: 0 6px 0 rgba(0,0,0,0.2), 0 10px 24px rgba(0,0,0,0.15);
+}
+.poster-img img { width:100%; height:auto; max-height:320px; object-fit:cover; display:block; }
+@media(max-width:600px){ .poster-img img { max-height:200px; } }
 </style>
 </head>
 <body>
 
+<!-- ═══════════ COVER POSTER ═══════════ -->
+<div class="cover-poster">
+  <img src="lego-polish/lego-skyline-comparison.jpg" alt="A row of giant LEGO bricks of decreasing height, styled as a skyline silhouette bar chart, with a small human figure standing among them for scale — a bold red, pink and navy editorial poster illustration">
+</div>
+
 <!-- ═══════════ HERO ═══════════ -->
 <div class="hero">
-  <div class="hero-tag">🧱 LEGO Grammar Factory — EN / PL</div>
+  <div class="hero-tag" id="heroTag">🧱 LEGO Grammar Factory — EN / PL</div>
+  <div class="lang-switch">
+    <select id="langSelect" onchange="setLang(this.value)"></select>
+  </div>
   <h1 class="hero-h1">
     <span class="must-w">MUST</span><span class="amp-w"> &amp; </span><br>
     <span class="have-w">HAVE TO</span>
   </h1>
-  <p class="hero-sub">Positive &amp; Negative · Build your grammar block by block! 🧱</p>
+  <p class="hero-sub" id="heroSub">Positive &amp; Negative · Build your grammar block by block! 🧱</p>
   <div class="hero-bricks">
-    <span class="hero-brick">B1 Level</span>
-    <span class="hero-brick blue">4 Exercises</span>
-    <span class="hero-brick green">19 Questions</span>
-    <span class="hero-brick">EN / PL</span>
+    <span class="hero-brick" id="badgeLevel">B1 Level</span>
+    <span class="hero-brick blue" id="badgeExercises">4 Exercises</span>
+    <span class="hero-brick green" id="badgeQuestions">19 Questions</span>
+    <span class="hero-brick" id="badgeLang">10 Languages</span>
   </div>
 </div>
 
@@ -768,7 +818,7 @@ input.fi.err {
 <!-- PROGRESS -->
 <div class="prog-wrap">
   <div class="prog-top">
-    <span class="prog-label">🧱 Building Progress</span>
+    <span class="prog-label" id="progLabel">🧱 Building Progress</span>
     <span class="prog-score-text" id="scoreDisplay">0 / 19</span>
   </div>
   <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
@@ -778,18 +828,18 @@ input.fi.err {
 <div class="sec-head">
   <div class="sec-brick-num">01</div>
   <div class="sec-text">
-    <div class="sec-eyebrow">// Instrukcja — The Lesson</div>
-    <div class="sec-title">THE FOUR KEY BRICKS 🧱</div>
+    <div class="sec-eyebrow" id="sec1Eyebrow">// Instrukcja — The Lesson</div>
+    <div class="sec-title" id="sec1Title">THE FOUR KEY BRICKS 🧱</div>
   </div>
 </div>
 
 <div class="intro-card">
-  <p>Both <strong>MUST</strong> and <strong>HAVE TO</strong> mean <strong>obligation</strong> — something necessary or required. Like a LEGO instruction booklet that tells you which piece goes where! 📖</p>
-  <p>When a LEGO builder <em>personally feels</em> they must finish the castle before dinner — that's MUST. When the instruction manual says you <em>have to</em> use red bricks for this step — that's HAVE TO.</p>
-  <p>But the <span style="color:#FFD700; font-weight:800;">negative forms mean completely different things!</span> This is the most important rule — like mixing up LEGO Technic and Duplo pieces! 😱</p>
+  <p id="introP1">Both <strong>MUST</strong> and <strong>HAVE TO</strong> mean <strong>obligation</strong> — something necessary or required. Like a LEGO instruction booklet that tells you which piece goes where! 📖</p>
+  <p id="introP2">When a LEGO builder <em>personally feels</em> they must finish the castle before dinner — that's MUST. When the instruction manual says you <em>have to</em> use red bricks for this step — that's HAVE TO.</p>
+  <p id="introP3">But the <span style="color:#FFD700; font-weight:800;">negative forms mean completely different things!</span> This is the most important rule — like mixing up LEGO Technic and Duplo pieces! 😱</p>
   <div class="tip-card">
-    <strong>💡 WSKAZÓWKA — Key tip for Polish speakers:</strong>
-    <em>Must</em> sounds more like "chcę/muszę" from inside you. <em>Have to</em> sounds more like "trzeba/muszę" from outside rules. Both can often translate as "musieć / trzeba" — but the negative forms are TOTALLY different! Read on! 👇
+    <strong id="tipLabel">💡 WSKAZÓWKA — Key tip for Polish speakers:</strong>
+    <span id="tipBody"><em>Must</em> sounds more like "chcę/muszę" from inside you. <em>Have to</em> sounds more like "trzeba/muszę" from outside rules. Both can often translate as "musieć / trzeba" — but the negative forms are TOTALLY different! Read on! 👇</span>
   </div>
 </div>
 
@@ -797,94 +847,99 @@ input.fi.err {
 <div class="form-grid">
 
   <div class="form-card fc-must-pos">
-    <div class="fc-label">Form A · Positive</div>
+    <div class="fc-label" id="fcLabelA">Form A · Positive</div>
     <div class="fc-title">MUST ✓</div>
-    <div class="fc-meaning">Internal obligation / logical deduction</div>
+    <div class="fc-meaning" id="fcMeanA">Internal obligation / logical deduction</div>
     <div class="formula-block">Subject + MUST + base verb</div>
     <ul class="ex-list">
       <li>"I <strong>must</strong> finish this LEGO set tonight!" 🏰</li>
       <li>"That <strong>must</strong> be the rarest LEGO piece ever."</li>
       <li>"You <strong>must</strong> follow the instructions carefully."</li>
     </ul>
-    <div class="fc-pl">🇵🇱 = musieć / trzeba (wewnętrzne przekonanie)</div>
+    <div class="fc-pl" id="fcGlossA">🇵🇱 = musieć / trzeba (wewnętrzne przekonanie)</div>
   </div>
 
   <div class="form-card fc-must-neg">
-    <div class="fc-label">Form B · Negative</div>
+    <div class="fc-label" id="fcLabelB">Form B · Negative</div>
     <div class="fc-title">MUSTN'T 🚫</div>
-    <div class="fc-meaning">Prohibition — it is FORBIDDEN!</div>
+    <div class="fc-meaning" id="fcMeanB">Prohibition — it is FORBIDDEN!</div>
     <div class="formula-block">Subject + MUST NOT + base verb</div>
     <ul class="ex-list">
       <li>"You <strong>mustn't</strong> mix up the sorted pieces!" ❌</li>
       <li>"Children <strong>must not</strong> swallow small LEGO bricks."</li>
       <li>"You <strong>mustn't</strong> skip steps in the instruction manual."</li>
     </ul>
-    <div class="fc-pl">🇵🇱 = nie wolno / jest zabronione (Zakaz!)</div>
+    <div class="fc-pl" id="fcGlossB">🇵🇱 = nie wolno / jest zabronione (Zakaz!)</div>
   </div>
 
   <div class="form-card fc-have-pos">
-    <div class="fc-label">Form C · Positive</div>
+    <div class="fc-label" id="fcLabelC">Form C · Positive</div>
     <div class="fc-title">HAVE TO ✓</div>
-    <div class="fc-meaning">External obligation — rules, instructions, others</div>
+    <div class="fc-meaning" id="fcMeanC">External obligation — rules, instructions, others</div>
     <div class="formula-block">Subject + HAVE TO + base verb</div>
     <ul class="ex-list">
       <li>"You <strong>have to</strong> buy the correct set for the instructions." 📦</li>
       <li>"She <strong>has to</strong> count all the pieces before starting."</li>
       <li>"We <strong>had to</strong> buy new bricks — some were missing."</li>
     </ul>
-    <div class="fc-pl">🇵🇱 = musieć / trzeba (zewnętrzna reguła)</div>
+    <div class="fc-pl" id="fcGlossC">🇵🇱 = musieć / trzeba (zewnętrzna reguła)</div>
   </div>
 
   <div class="form-card fc-have-neg">
-    <div class="fc-label">Form D · Negative</div>
+    <div class="fc-label" id="fcLabelD">Form D · Negative</div>
     <div class="fc-title">DON'T HAVE TO ✅</div>
-    <div class="fc-meaning">NO obligation — not necessary, free choice</div>
+    <div class="fc-meaning" id="fcMeanD">NO obligation — not necessary, free choice</div>
     <div class="formula-block">Subject + DON'T/DOESN'T HAVE TO + base verb</div>
     <ul class="ex-list">
       <li>"You <strong>don't have to</strong> follow the instructions — build freely!" 😄</li>
       <li>"She <strong>doesn't have to</strong> sort every colour separately."</li>
       <li>"We <strong>didn't have to</strong> buy more — we had enough bricks."</li>
     </ul>
-    <div class="fc-pl">🇵🇱 = nie trzeba / nie musisz (brak obowiązku)</div>
+    <div class="fc-pl" id="fcGlossD">🇵🇱 = nie trzeba / nie musisz (brak obowiązku)</div>
   </div>
 </div>
 
 <!-- KEY RULE -->
 <div class="key-block">
-  <h3>🚨 The BIGGEST mistake in English — Don't mix these up!</h3>
+  <span class="key-block-tag" id="keyRuleBadge">⚠ UWAŻAJ! — KEY RULE</span>
+  <h3 id="keyRuleTitle">🚨 The BIGGEST mistake in English — Don't mix these up!</h3>
+
+  <div class="poster-img">
+    <img src="lego-polish/lego-scales-of-justice.jpg" alt="A set of empty justice scales hanging above three LEGO brick pillars of different heights, symbolising the balance between obligation and choice — a bold pink, orange and black editorial poster illustration">
+  </div>
 
   <div class="vs-grid">
     <div class="vs-brick vs-red">
       <div class="vs-brick-label vbl-red">MUSTN'T = FORBIDDEN 🚫</div>
       <p>"You <strong>mustn't</strong> step on LEGO bricks."</p>
-      <p style="font-size:.78rem;color:#888;margin-top:6px;">→ It is <em>forbidden</em>. Danger! Ouch! 😫<br>🇵🇱 = <strong>nie wolno</strong> (zabronione)</p>
+      <p id="vsMustntNote1" style="font-size:.78rem;color:#888;margin-top:6px;">→ It is <em>forbidden</em>. Danger! Ouch! 😫<br>🇵🇱 = <strong>nie wolno</strong> (zabronione)</p>
     </div>
     <div class="vs-mid">≠</div>
     <div class="vs-brick vs-green">
       <div class="vs-brick-label vbl-green">DON'T HAVE TO = NOT NEEDED ✅</div>
       <p>"You <strong>don't have to</strong> step on the bricks."</p>
-      <p style="font-size:.78rem;color:#888;margin-top:6px;">→ Not required — it's your choice! 😊<br>🇵🇱 = <strong>nie musisz</strong> (nie jest konieczne)</p>
+      <p id="vsDontHaveNote1" style="font-size:.78rem;color:#888;margin-top:6px;">→ Not required — it's your choice! 😊<br>🇵🇱 = <strong>nie musisz</strong> (nie jest konieczne)</p>
     </div>
   </div>
 
   <div class="vs-grid">
     <div class="vs-brick vs-red">
       <div class="vs-brick-label vbl-red">MUSTN'T break the bricks 🚫</div>
-      <p style="font-style:italic;">"You mustn't break LEGO pieces — they're not replaceable!" → Forbidden! ❌</p>
+      <p id="vsMustntNote2" style="font-style:italic;">"You mustn't break LEGO pieces — they're not replaceable!" → Forbidden! ❌</p>
     </div>
     <div class="vs-mid">≠</div>
     <div class="vs-brick vs-green">
       <div class="vs-brick-label vbl-green">DON'T HAVE TO use all bricks ✅</div>
-      <p style="font-style:italic;">"You don't have to use every single brick." → Optional! Build what you want. 😄</p>
+      <p id="vsDontHaveNote2" style="font-style:italic;">"You don't have to use every single brick." → Optional! Build what you want. 😄</p>
     </div>
   </div>
 
   <div class="tip-card" style="margin-top:16px;">
-    <strong>🧱 The LEGO Rule — ZAPAMIĘTAJ!</strong>
-    <span class="hl-bad">MUSTN'T</span> = forbidden, prohibited, don't do it → 🇵🇱 <em>nie wolno / jest zabronione</em><br>
+    <strong id="keyTipTitle">🧱 The LEGO Rule — ZAPAMIĘTAJ!</strong>
+    <span id="keyTipBody"><span class="hl-bad">MUSTN'T</span> = forbidden, prohibited, don't do it → 🇵🇱 <em>nie wolno / jest zabronione</em><br>
     <span class="hl-g">DON'T HAVE TO</span> = not necessary, optional, your choice → 🇵🇱 <em>nie musisz / nie trzeba</em><br><br>
     Also: <span class="hl-y">MUST has NO past form!</span> Use <strong>HAD TO</strong> instead.<br>
-    ❌ "Yesterday I must build it." &nbsp;→&nbsp; ✅ "Yesterday I <strong>had to</strong> build it."
+    ❌ "Yesterday I must build it." &nbsp;→&nbsp; ✅ "Yesterday I <strong>had to</strong> build it."</span>
   </div>
 </div>
 
@@ -896,43 +951,43 @@ input.fi.err {
     <div class="sec-title">FLIP THE BRICK! 🧱</div>
   </div>
 </div>
-<p style="font-size:.82rem;color:#888;margin-bottom:14px;font-family:'Share Tech Mono',monospace;letter-spacing:.08em;">👆 Click each brick to reveal the answer — kliknij każdy klocek!</p>
+<p id="flipInstructions" style="font-size:.82rem;color:#888;margin-bottom:14px;font-family:'Share Tech Mono',monospace;letter-spacing:.08em;">👆 Click each brick to reveal the answer — kliknij każdy klocek!</p>
 
 <div class="flip-grid">
   <div class="flip-card" onclick="this.classList.toggle('flipped')">
     <div class="flip-inner">
-      <div class="flip-front"><div class="ff-tag">PL → EN</div><div class="ff-q">"<strong>Nie wolno</strong> ci dotykać cudzych klocków."</div></div>
-      <div class="flip-back"><div class="fb-ans">You MUSTN'T touch others' bricks.</div><div class="fb-note">nie wolno = mustn't 🚫</div></div>
+      <div class="flip-front"><div class="ff-tag" id="flip1Tag">PL → EN</div><div class="ff-q" id="flip1Q">"<strong>Nie wolno</strong> ci dotykać cudzych klocków."</div></div>
+      <div class="flip-back"><div class="fb-ans">You MUSTN'T touch others' bricks.</div><div class="fb-note" id="flip1Note">nie wolno = mustn't 🚫</div></div>
     </div>
   </div>
   <div class="flip-card" onclick="this.classList.toggle('flipped')">
     <div class="flip-inner">
-      <div class="flip-front"><div class="ff-tag">PL → EN</div><div class="ff-q">"<strong>Nie musisz</strong> kupować nowego zestawu."</div></div>
-      <div class="flip-back"><div class="fb-ans">You DON'T HAVE TO buy a new set.</div><div class="fb-note">nie musisz = don't have to ✅</div></div>
+      <div class="flip-front"><div class="ff-tag" id="flip2Tag">PL → EN</div><div class="ff-q" id="flip2Q">"<strong>Nie musisz</strong> kupować nowego zestawu."</div></div>
+      <div class="flip-back"><div class="fb-ans">You DON'T HAVE TO buy a new set.</div><div class="fb-note" id="flip2Note">nie musisz = don't have to ✅</div></div>
     </div>
   </div>
   <div class="flip-card" onclick="this.classList.toggle('flipped')">
     <div class="flip-inner">
-      <div class="flip-front"><div class="ff-tag">Which form? 🤔</div><div class="ff-q">The LEGO instruction says: always use brick type 3001 in step 4.</div></div>
-      <div class="flip-back"><div class="fb-ans">You HAVE TO use brick 3001.</div><div class="fb-note">External rule = have to 📋</div></div>
+      <div class="flip-front"><div class="ff-tag" id="flip3Tag">Which form? 🤔</div><div class="ff-q">The LEGO instruction says: always use brick type 3001 in step 4.</div></div>
+      <div class="flip-back"><div class="fb-ans">You HAVE TO use brick 3001.</div><div class="fb-note" id="flip3Note">External rule = have to 📋</div></div>
     </div>
   </div>
   <div class="flip-card" onclick="this.classList.toggle('flipped')">
     <div class="flip-inner">
-      <div class="flip-front"><div class="ff-tag">Which form? 🧱</div><div class="ff-q">It's the last piece in the box — nobody forced you to keep it.</div></div>
-      <div class="flip-back"><div class="fb-ans">You DIDN'T HAVE TO keep it.</div><div class="fb-note">Not necessary = don't have to ✅</div></div>
+      <div class="flip-front"><div class="ff-tag" id="flip4Tag">Which form? 🧱</div><div class="ff-q">It's the last piece in the box — nobody forced you to keep it.</div></div>
+      <div class="flip-back"><div class="fb-ans">You DIDN'T HAVE TO keep it.</div><div class="fb-note" id="flip4Note">Not necessary = don't have to ✅</div></div>
     </div>
   </div>
   <div class="flip-card" onclick="this.classList.toggle('flipped')">
     <div class="flip-inner">
-      <div class="flip-front"><div class="ff-tag">Internal or external? 💭</div><div class="ff-q">A builder feels a deep personal drive to complete the Eiffel Tower set.</div></div>
-      <div class="flip-back"><div class="fb-ans">She MUST finish the Eiffel Tower!</div><div class="fb-note">Internal conviction = must 💪</div></div>
+      <div class="flip-front"><div class="ff-tag" id="flip5Tag">Internal or external? 💭</div><div class="ff-q">A builder feels a deep personal drive to complete the Eiffel Tower set.</div></div>
+      <div class="flip-back"><div class="fb-ans">She MUST finish the Eiffel Tower!</div><div class="fb-note" id="flip5Note">Internal conviction = must 💪</div></div>
     </div>
   </div>
   <div class="flip-card" onclick="this.classList.toggle('flipped')">
     <div class="flip-inner">
-      <div class="flip-front"><div class="ff-tag">3rd person! 👤</div><div class="ff-q">"has to" or "have to" with "he"?</div></div>
-      <div class="flip-back"><div class="fb-ans">HAS TO! (3rd person singular)</div><div class="fb-note">He/She/It → HAS TO 😄</div></div>
+      <div class="flip-front"><div class="ff-tag" id="flip6Tag">3rd person! 👤</div><div class="ff-q">"has to" or "have to" with "he"?</div></div>
+      <div class="flip-back"><div class="fb-ans">HAS TO! (3rd person singular)</div><div class="fb-note" id="flip6Note">He/She/It → HAS TO 😄</div></div>
     </div>
   </div>
 </div>
@@ -943,9 +998,13 @@ input.fi.err {
 <div class="sec-head">
   <div class="sec-brick-num" style="background:var(--lego-orange);">02</div>
   <div class="sec-text">
-    <div class="sec-eyebrow">// Ćwiczenia — Practice Time</div>
-    <div class="sec-title">BUILD YOUR SKILLS! 🏗️</div>
+    <div class="sec-eyebrow" id="sec2Eyebrow">// Ćwiczenia — Practice Time</div>
+    <div class="sec-title" id="sec2Title">BUILD YOUR SKILLS! 🏗️</div>
   </div>
+</div>
+
+<div class="poster-img">
+  <img src="lego-polish/lego-hand-placing-brick.jpg" alt="A close-up of a hand placing a small black-and-red LEGO brick down next to a longer pink brick, mid-assembly — a bold editorial poster illustration">
 </div>
 
 <!-- EX 1 -->
@@ -953,8 +1012,8 @@ input.fi.err {
   <div class="ex-hdr ex1-hdr">
     <div class="ex-hdr-num">01</div>
     <div class="ex-hdr-info">
-      <div class="ex-hdr-title">Fill in the Brick Gap! 📝</div>
-      <div class="ex-hdr-sub">Choose: must · mustn't · have to · has to · don't have to · doesn't have to · had to</div>
+      <div class="ex-hdr-title" id="ex1Title">Fill in the Brick Gap! 📝</div>
+      <div class="ex-hdr-sub" id="ex1Sub">Choose: must · mustn't · have to · has to · don't have to · doesn't have to · had to</div>
     </div>
   </div>
   <div class="ex-body">
@@ -962,46 +1021,46 @@ input.fi.err {
     <div class="qn">
       <div class="qn-label">Question 1 🚫</div>
       <p class="qn-text">The LEGO safety guide says: children <input class="fi" data-answer="mustn't" placeholder="???"> swallow small bricks — it is extremely dangerous!</p>
-      <p class="qn-hint">💡 Wskazówka: It is forbidden. (zakaz — mustn't)</p>
+      <p class="qn-hint" id="hintF1">💡 Wskazówka: It is forbidden. (zakaz — mustn't)</p>
       <div class="fb" id="fb-f1"></div>
     </div>
 
     <div class="qn">
       <div class="qn-label">Question 2 📋</div>
       <p class="qn-text">The instruction manual says: you <input class="fi" data-answer="have to" placeholder="???"> connect the base plate first before adding any other bricks.</p>
-      <p class="qn-hint">💡 Wskazówka: External rule from the manual. (zewnętrzna zasada)</p>
+      <p class="qn-hint" id="hintF2">💡 Wskazówka: External rule from the manual. (zewnętrzna zasada)</p>
       <div class="fb" id="fb-f2"></div>
     </div>
 
     <div class="qn">
       <div class="qn-label">Question 3 😊</div>
       <p class="qn-text">The shop assistant said: "You <input class="fi" data-answer="don't have to" placeholder="???"> follow the instructions — you can build whatever you like!"</p>
-      <p class="qn-hint">💡 Wskazówka: It's optional — not required. (nie jest konieczne)</p>
+      <p class="qn-hint" id="hintF3">💡 Wskazówka: It's optional — not required. (nie jest konieczne)</p>
       <div class="fb" id="fb-f3"></div>
     </div>
 
     <div class="qn">
       <div class="qn-label">Question 4 💪</div>
       <p class="qn-text">The young builder thinks: "I <input class="fi" data-answer="must" placeholder="???"> complete the Millennium Falcon before my birthday — I feel it!" 🚀</p>
-      <p class="qn-hint">💡 Wskazówka: Deep personal conviction — from inside. (wewnętrzne przekonanie)</p>
+      <p class="qn-hint" id="hintF4">💡 Wskazówka: Deep personal conviction — from inside. (wewnętrzne przekonanie)</p>
       <div class="fb" id="fb-f4"></div>
     </div>
 
     <div class="qn">
       <div class="qn-label">Question 5 🌟</div>
       <p class="qn-text">A master LEGO builder <input class="fi" data-answer="doesn't have to" placeholder="???"> use official sets — she designs her own creations from scratch.</p>
-      <p class="qn-hint">💡 Wskazówka: 3rd person (she), not necessary. (nie musi — 3. osoba)</p>
+      <p class="qn-hint" id="hintF5">💡 Wskazówka: 3rd person (she), not necessary. (nie musi — 3. osoba)</p>
       <div class="fb" id="fb-f5"></div>
     </div>
 
     <div class="qn">
       <div class="qn-label">Question 6 ⏮️</div>
       <p class="qn-text">Last week, we <input class="fi" data-answer="had to" placeholder="???"> go to three shops before finding the right LEGO Technic set!</p>
-      <p class="qn-hint">💡 Wskazówka: Past tense! MUST has no past — use HAD TO. 🇵🇱 (musieliśmy)</p>
+      <p class="qn-hint" id="hintF6">💡 Wskazówka: Past tense! MUST has no past — use HAD TO. 🇵🇱 (musieliśmy)</p>
       <div class="fb" id="fb-f6"></div>
     </div>
 
-    <button class="chk-btn" onclick="checkFill()">🧱 Check Answers!</button>
+    <button class="chk-btn" onclick="checkFill()" id="btnCheckAnswers">🧱 Check Answers!</button>
   </div>
 </div>
 
@@ -1010,8 +1069,8 @@ input.fi.err {
   <div class="ex-hdr ex2-hdr">
     <div class="ex-hdr-num">02</div>
     <div class="ex-hdr-info">
-      <div class="ex-hdr-title">Which Brick Fits? 🧠</div>
-      <div class="ex-hdr-sub">Select the correct option — only one chance!</div>
+      <div class="ex-hdr-title" id="ex2Title">Which Brick Fits? 🧠</div>
+      <div class="ex-hdr-sub" id="ex2Sub">Select the correct option — only one chance!</div>
     </div>
   </div>
   <div class="ex-body">
@@ -1079,42 +1138,42 @@ input.fi.err {
   <div class="ex-hdr ex3-hdr">
     <div class="ex-hdr-num">03</div>
     <div class="ex-hdr-info">
-      <div class="ex-hdr-title">Assemble the Sentence! 🏗️ <span class="badge">Trudne!</span></div>
-      <div class="ex-hdr-sub">Click bricks in order — click a placed brick to remove it.</div>
+      <div class="ex-hdr-title" id="ex3Title">Assemble the Sentence! 🏗️ <span class="badge" id="badgeHard1">Trudne!</span></div>
+      <div class="ex-hdr-sub" id="ex3Sub">Click bricks in order — click a placed brick to remove it.</div>
     </div>
   </div>
   <div class="ex-body">
 
     <div class="qn" id="bq1">
       <div class="qn-label">Question 1 🚫</div>
-      <p class="qn-hint">Make a sentence: "It is forbidden for children to put bricks in their mouth."</p>
+      <p class="qn-hint" id="hintB1">Make a sentence: "It is forbidden for children to put bricks in their mouth."</p>
       <div class="word-bank" id="wb1"></div>
       <div class="sb" id="sb1" onclick="removeWord(event,'sb1','wb1')">
-        <span id="sb1-ph" style="color:#bbb;font-size:.8rem;font-family:'Fredoka One',cursive;">Click bricks above to assemble the sentence... 🧱</span>
+        <span id="sb1-ph" class="sbPh" style="color:#bbb;font-size:.8rem;font-family:'Fredoka One',cursive;">Click bricks above to assemble the sentence... 🧱</span>
       </div>
-      <button class="chk-btn" onclick="checkBuilder('bq1','sb1',['children','mustn\'t','put','bricks','in','their','mouth'])">🧱 Check!</button>
+      <button class="chk-btn" onclick="checkBuilder('bq1','sb1',['children','mustn\'t','put','bricks','in','their','mouth'])" id="btnCheck1">🧱 Check!</button>
       <div class="fb" id="fb-bq1"></div>
     </div>
 
     <div class="qn" id="bq2">
       <div class="qn-label">Question 2 ❓</div>
-      <p class="qn-hint">Make a question: "Is it necessary for her to count all the pieces?"</p>
+      <p class="qn-hint" id="hintB2">Make a question: "Is it necessary for her to count all the pieces?"</p>
       <div class="word-bank" id="wb2"></div>
       <div class="sb" id="sb2" onclick="removeWord(event,'sb2','wb2')">
-        <span id="sb2-ph" style="color:#bbb;font-size:.8rem;font-family:'Fredoka One',cursive;">Click bricks above to assemble the question... 🧱</span>
+        <span id="sb2-ph" class="sbPhQ" style="color:#bbb;font-size:.8rem;font-family:'Fredoka One',cursive;">Click bricks above to assemble the question... 🧱</span>
       </div>
-      <button class="chk-btn" onclick="checkBuilder('bq2','sb2',['does','she','have','to','count','all','the','pieces'])">🧱 Check!</button>
+      <button class="chk-btn" onclick="checkBuilder('bq2','sb2',['does','she','have','to','count','all','the','pieces'])" id="btnCheck2">🧱 Check!</button>
       <div class="fb" id="fb-bq2"></div>
     </div>
 
     <div class="qn" id="bq3">
       <div class="qn-label">Question 3 ⏮️</div>
-      <p class="qn-hint">Make a sentence: "It wasn't necessary for us to buy more bricks." (past)</p>
+      <p class="qn-hint" id="hintB3">Make a sentence: "It wasn't necessary for us to buy more bricks." (past)</p>
       <div class="word-bank" id="wb3"></div>
       <div class="sb" id="sb3" onclick="removeWord(event,'sb3','wb3')">
-        <span id="sb3-ph" style="color:#bbb;font-size:.8rem;font-family:'Fredoka One',cursive;">Click bricks above to assemble the sentence... 🧱</span>
+        <span id="sb3-ph" class="sbPh" style="color:#bbb;font-size:.8rem;font-family:'Fredoka One',cursive;">Click bricks above to assemble the sentence... 🧱</span>
       </div>
-      <button class="chk-btn" onclick="checkBuilder('bq3','sb3',['we','didn\'t','have','to','buy','more','bricks'])">🧱 Check!</button>
+      <button class="chk-btn" onclick="checkBuilder('bq3','sb3',['we','didn\'t','have','to','buy','more','bricks'])" id="btnCheck3">🧱 Check!</button>
       <div class="fb" id="fb-bq3"></div>
     </div>
   </div>
@@ -1125,8 +1184,8 @@ input.fi.err {
   <div class="ex-hdr ex4-hdr">
     <div class="ex-hdr-num">04</div>
     <div class="ex-hdr-info">
-      <div class="ex-hdr-title">Find the Wrong Brick! 🔍 <span class="badge">Trudne!</span></div>
-      <div class="ex-hdr-sub">Each sentence has ONE mistake. Type only the corrected word(s).</div>
+      <div class="ex-hdr-title" id="ex4Title">Find the Wrong Brick! 🔍 <span class="badge" id="badgeHard2">Trudne!</span></div>
+      <div class="ex-hdr-sub" id="ex4Sub">Each sentence has ONE mistake. Type only the corrected word(s).</div>
     </div>
   </div>
   <div class="ex-body">
@@ -1134,7 +1193,7 @@ input.fi.err {
     <div class="qn">
       <div class="qn-label">Question 1 ✏️</div>
       <p class="qn-text">❌ "You <span class="hl-bad">must not to force</span> the bricks together — you will break them."</p>
-      <p class="qn-hint">💡 Type the corrected phrase (replacing "must not to force"):</p>
+      <p class="qn-hint" id="hintE1">💡 Type the corrected phrase (replacing "must not to force"):</p>
       <input class="fi" data-answer="must not force" placeholder="???" style="width:210px;">
       <div class="fb" id="fb-e1"></div>
     </div>
@@ -1142,7 +1201,7 @@ input.fi.err {
     <div class="qn">
       <div class="qn-label">Question 2 ✏️</div>
       <p class="qn-text">❌ "Does she <span class="hl-bad">musts</span> follow the instruction booklet?"</p>
-      <p class="qn-hint">💡 Type the correct modal verb to replace "musts":</p>
+      <p class="qn-hint" id="hintE2">💡 Type the correct modal verb to replace "musts":</p>
       <input class="fi" data-answer="have to" placeholder="???" style="width:150px;">
       <div class="fb" id="fb-e2"></div>
     </div>
@@ -1150,7 +1209,7 @@ input.fi.err {
     <div class="qn">
       <div class="qn-label">Question 3 ✏️</div>
       <p class="qn-text">❌ "Last summer, we <span class="hl-bad">must drive</span> to Warsaw to find the limited-edition LEGO set."</p>
-      <p class="qn-hint">💡 Past tense! MUST has no past form — use HAD TO:</p>
+      <p class="qn-hint" id="hintE3">💡 Past tense! MUST has no past form — use HAD TO:</p>
       <input class="fi" data-answer="had to drive" placeholder="???" style="width:180px;">
       <div class="fb" id="fb-e3"></div>
     </div>
@@ -1158,23 +1217,23 @@ input.fi.err {
     <div class="qn">
       <div class="qn-label">Question 4 ✏️</div>
       <p class="qn-text">❌ "You <span class="hl-bad">mustn't</span> buy extra bricks — we already have enough, it's completely your choice."</p>
-      <p class="qn-hint">💡 The meaning is "not required / not necessary." Which form is correct?</p>
+      <p class="qn-hint" id="hintE4">💡 The meaning is "not required / not necessary." Which form is correct?</p>
       <input class="fi" data-answer="don't have to" placeholder="???" style="width:210px;">
       <div class="fb" id="fb-e4"></div>
     </div>
 
-    <button class="chk-btn" onclick="checkErrors()">🧱 Check Mistakes!</button>
+    <button class="chk-btn" onclick="checkErrors()" id="btnCheckMistakes">🧱 Check Mistakes!</button>
   </div>
 </div>
 
 <!-- ═══════════ SCORE ═══════════ -->
 <div class="score-panel" id="scorePanel">
-  <div style="font-family:'Fredoka One',cursive;font-size:.82rem;letter-spacing:.15em;color:var(--lego-red);margin-bottom:8px;position:relative;text-transform:uppercase;">🧱 Build Complete!</div>
+  <div id="scoreCompleteLabel" style="font-family:'Fredoka One',cursive;font-size:.82rem;letter-spacing:.15em;color:var(--lego-red);margin-bottom:8px;position:relative;text-transform:uppercase;">🧱 Build Complete!</div>
   <div class="score-big" id="scoreNum">0</div>
-  <div class="score-denom">out of <span id="totalPts">0</span> bricks</div>
+  <div class="score-denom"><span id="scoreOutOfPre">out of</span> <span id="totalPts">0</span> <span id="scoreOutOfPost">bricks</span></div>
   <div class="score-msg" id="scoreMsg"></div>
   <br>
-  <button class="again-btn" onclick="location.reload()">🔄 Build Again!</button>
+  <button class="again-btn" onclick="location.reload()" id="btnBuildAgain">🔄 Build Again!</button>
 </div>
 
 <!-- ═══════════ CHEAT SHEET ═══════════ -->
@@ -1182,54 +1241,792 @@ input.fi.err {
 <div class="sec-head">
   <div class="sec-brick-num" style="background:var(--lego-green);">03</div>
   <div class="sec-text">
-    <div class="sec-eyebrow">// Ściągawka — Summary</div>
-    <div class="sec-title">YOUR LEGO GRAMMAR GUIDE 📖</div>
+    <div class="sec-eyebrow" id="sec3Eyebrow">// Ściągawka — Summary</div>
+    <div class="sec-title" id="sec3Title">YOUR LEGO GRAMMAR GUIDE 📖</div>
   </div>
+</div>
+
+<div class="poster-img">
+  <img src="lego-polish/lego-wall-silhouette.jpg" alt="A small silhouetted figure standing before a towering wall built from giant LEGO bricks in navy and coral, next to a bare tree — a bold editorial poster illustration">
 </div>
 
 <div class="cheat-grid">
   <div class="cheat-brick cb-red">
     <div class="cb-title">💪 MUST (positive)</div>
-    Strong personal obligation / logical deduction<br>
+    <span id="cheatMustBody">Strong personal obligation / logical deduction</span><br>
     <em>"I must finish this set tonight!"</em>
-    <div class="cb-pl">🇵🇱 musieć / wewnętrzne przekonanie</div>
+    <div class="cb-pl" id="cheatMustGloss">🇵🇱 musieć / wewnętrzne przekonanie</div>
   </div>
   <div class="cheat-brick cb-black">
     <div class="cb-title">🚫 MUSTN'T (negative)</div>
-    FORBIDDEN — prohibited, don't do it!<br>
+    <span id="cheatMustntBody">FORBIDDEN — prohibited, don't do it!</span><br>
     <em>"You mustn't swallow small bricks."</em>
-    <div class="cb-pl">🇵🇱 nie wolno / jest zabronione</div>
+    <div class="cb-pl" id="cheatMustntGloss">🇵🇱 nie wolno / jest zabronione</div>
   </div>
   <div class="cheat-brick cb-blue">
     <div class="cb-title">📋 HAVE TO (positive)</div>
-    External obligation — rules, instructions<br>
+    <span id="cheatHaveBody">External obligation — rules, instructions</span><br>
     <em>"You have to use the baseplate first."</em>
-    <div class="cb-pl">🇵🇱 trzeba / zewnętrzna zasada</div>
+    <div class="cb-pl" id="cheatHaveGloss">🇵🇱 trzeba / zewnętrzna zasada</div>
   </div>
   <div class="cheat-brick cb-green">
     <div class="cb-title">✅ DON'T HAVE TO (negative)</div>
-    NOT necessary — optional, your choice<br>
+    <span id="cheatDontHaveBody">NOT necessary — optional, your choice</span><br>
     <em>"You don't have to sort by colour."</em>
-    <div class="cb-pl">🇵🇱 nie trzeba / nie jest konieczne</div>
+    <div class="cb-pl" id="cheatDontHaveGloss">🇵🇱 nie trzeba / nie jest konieczne</div>
   </div>
 </div>
 
 <div class="tip-card" style="background:var(--lego-yellow);border:3px solid rgba(0,0,0,0.15);box-shadow:0 5px 0 rgba(0,0,0,0.2);padding:18px 22px;border-radius:12px;">
-  <strong>🧱 THE GOLDEN BRICK RULE — ZŁOTA ZASADA:</strong>
-  "You <em>mustn't</em> force the bricks together." → It will break them. FORBIDDEN! 🚫<br>
+  <strong id="goldenRuleTitle">🧱 THE GOLDEN BRICK RULE — ZŁOTA ZASADA:</strong>
+  <span id="goldenRuleBody">"You <em>mustn't</em> force the bricks together." → It will break them. FORBIDDEN! 🚫<br>
   "You <em>don't have to</em> force them together." → It's optional. Use the right-sized bricks. ✅<br><br>
   One destroys your LEGO set. The other is just a building tip. 🧱 Know the difference!<br><br>
   ⏮ And remember: <strong>HAD TO</strong> = past tense of MUST and HAVE TO.<br>
-  ❌ "Yesterday I must build it." &nbsp;→&nbsp; ✅ "Yesterday I <strong>had to</strong> build it." 🇵🇱 (musiałem)
+  ❌ "Yesterday I must build it." &nbsp;→&nbsp; ✅ "Yesterday I <strong>had to</strong> build it." 🇵🇱 (musiałem)</span>
 </div>
 
-<div style="text-align:center;margin-top:44px;opacity:.3;font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:.28em;color:var(--lego-black);">
-  🧱 LEGO GRAMMAR FACTORY ✦ MUST &amp; HAVE TO ✦ B1 ✦ ENGLISH / POLSKI ✦ ZBUDUJ SWÓJ ANGIELSKI! 🧱
+<div style="text-align:center;margin-top:44px;opacity:.3;font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:.28em;color:var(--lego-black);" id="footerTagline">
+  🧱 LEGO GRAMMAR FACTORY ✦ MUST &amp; HAVE TO ✦ B1 ✦ 10 LANGUAGES ✦ BUILD YOUR ENGLISH! 🧱
 </div>
 
 </div><!-- /page -->
 
 <script>
+// ═══════════════════════════════════════════════════════
+// LANGUAGE SUPPORT — chrome, hints, L1 glosses and feedback
+// are translated; the English target sentences, MC options
+// and sentence-builder content stay in English (that's what's
+// being learned). Extends the site's standard LANGS/UI_I18N
+// pattern (see forbes-english-skiing-lesson.html) to all 10
+// languages: en, pl, es, fr, de, it, ru, ar, zh, ja.
+// ═══════════════════════════════════════════════════════
+
+const LANGS = [
+  { code: 'en', label: '🇬🇧 English' },
+  { code: 'pl', label: '🇵🇱 Polski' },
+  { code: 'es', label: '🇪🇸 Español' },
+  { code: 'fr', label: '🇫🇷 Français' },
+  { code: 'de', label: '🇩🇪 Deutsch' },
+  { code: 'it', label: '🇮🇹 Italiano' },
+  { code: 'ru', label: '🇷🇺 Русский' },
+  { code: 'ar', label: '🇸🇦 العربية' },
+  { code: 'zh', label: '🇨🇳 中文' },
+  { code: 'ja', label: '🇯🇵 日本語' }
+];
+const RTL_LANGS = ['ar'];
+let currentLang = 'en';
+
+const UI_I18N = {};
+
+UI_I18N.en = {
+  heroTag: '🧱 LEGO Grammar Factory',
+  heroSub: 'Positive &amp; Negative · Build your grammar block by block! 🧱',
+  badgeLevel: 'B1 Level', badgeExercises: '4 Exercises', badgeQuestions: '19 Questions', badgeLang: '10 Languages',
+  progLabel: '🧱 Building Progress',
+  sec1Eyebrow: '// The Lesson', sec1Title: 'THE FOUR KEY BRICKS 🧱',
+  introP1: 'Both <strong>MUST</strong> and <strong>HAVE TO</strong> mean <strong>obligation</strong> — something necessary or required. Like a LEGO instruction booklet that tells you which piece goes where! 📖',
+  introP2: "When a LEGO builder <em>personally feels</em> they must finish the castle before dinner — that's MUST. When the instruction manual says you <em>have to</em> use red bricks for this step — that's HAVE TO.",
+  introP3: 'But the <span style="color:#FFD700; font-weight:800;">negative forms mean completely different things!</span> This is the most important rule — like mixing up LEGO Technic and Duplo pieces! 😱',
+  tipLabel: '💡 KEY TIP:',
+  tipBody: '<em>Must</em> is a personal, internal feeling of obligation. <em>Have to</em> comes from an outside rule. But watch out — the negative forms are TOTALLY different! Read on! 👇',
+  fcLabelA: 'Form A · Positive', fcLabelB: 'Form B · Negative', fcLabelC: 'Form C · Positive', fcLabelD: 'Form D · Negative',
+  fcMeanA: 'Internal obligation / logical deduction', fcMeanB: 'Prohibition — it is FORBIDDEN!',
+  fcMeanC: 'External obligation — rules, instructions, others', fcMeanD: 'NO obligation — not necessary, free choice',
+  fcGlossA: '🇬🇧 = must (personal conviction)', fcGlossB: "🇬🇧 = mustn't (forbidden!)",
+  fcGlossC: '🇬🇧 = have to (external rule)', fcGlossD: "🇬🇧 = don't have to (no obligation)",
+  keyRuleBadge: '⚠ WATCH OUT! — KEY RULE',
+  keyRuleTitle: "🚨 The BIGGEST mistake in English — Don't mix these up!",
+  vsMustntNote1: '→ It is <em>forbidden</em>. Danger! Ouch! 😫<br>🇬🇧 = <strong>forbidden</strong>',
+  vsDontHaveNote1: "→ Not required — it's your choice! 😊<br>🇬🇧 = <strong>optional</strong>",
+  vsMustntNote2: '"You mustn\'t break LEGO pieces — they\'re not replaceable!" → Forbidden! ❌',
+  vsDontHaveNote2: '"You don\'t have to use every single brick." → Optional! Build what you want. 😄',
+  keyTipTitle: '🧱 The LEGO Rule — REMEMBER!',
+  keyTipBody: '<span class="hl-bad">MUSTN\'T</span> = forbidden, prohibited, don\'t do it<br><span class="hl-g">DON\'T HAVE TO</span> = not necessary, optional, your choice<br><br>Also: <span class="hl-y">MUST has NO past form!</span> Use <strong>HAD TO</strong> instead.<br>❌ "Yesterday I must build it." &nbsp;→&nbsp; ✅ "Yesterday I <strong>had to</strong> build it."',
+  flipInstructions: '👆 Click each brick to reveal the answer!',
+  flip1Tag: 'EN → EN', flip1Q: '"It is <strong>forbidden</strong> to touch other people\'s blocks."', flip1Note: 'forbidden = mustn\'t 🚫',
+  flip2Tag: 'EN → EN', flip2Q: '"It\'s not necessary to buy a new set."', flip2Note: 'not necessary = don\'t have to ✅',
+  flip3Tag: 'Which form? 🤔', flip3Note: 'External rule = have to 📋',
+  flip4Tag: 'Which form? 🧱', flip4Note: 'Not necessary = don\'t have to ✅',
+  flip5Tag: 'Internal or external? 💭', flip5Note: 'Internal conviction = must 💪',
+  flip6Tag: '3rd person! 👤', flip6Note: 'He/She/It → HAS TO 😄',
+  sec2Eyebrow: '// Practice Time', sec2Title: 'BUILD YOUR SKILLS! 🏗️',
+  ex1Title: 'Fill in the Brick Gap! 📝', ex1Sub: "Choose: must · mustn't · have to · has to · don't have to · doesn't have to · had to",
+  hintF1: '💡 Hint: It is forbidden. (mustn\'t)', hintF2: '💡 Hint: External rule from the manual.',
+  hintF3: "💡 Hint: It's optional — not required.", hintF4: '💡 Hint: Deep personal conviction — from inside.',
+  hintF5: '💡 Hint: 3rd person (she), not necessary.', hintF6: '💡 Hint: Past tense! MUST has no past — use HAD TO.',
+  btnCheckAnswers: '🧱 Check Answers!',
+  ex2Title: 'Which Brick Fits? 🧠', ex2Sub: 'Select the correct option — only one chance!',
+  ex3Title: 'Assemble the Sentence! 🏗️', badgeHard1: 'Hard!', ex3Sub: 'Click bricks in order — click a placed brick to remove it.',
+  hintB1: 'Make a sentence: "It is forbidden for children to put bricks in their mouth."',
+  hintB2: 'Make a question: "Is it necessary for her to count all the pieces?"',
+  hintB3: 'Make a sentence: "It wasn\'t necessary for us to buy more bricks." (past)',
+  sbPh: 'Click bricks above to assemble the sentence... 🧱', sbPhQ: 'Click bricks above to assemble the question... 🧱',
+  btnCheck: '🧱 Check!',
+  ex4Title: 'Find the Wrong Brick! 🔍', badgeHard2: 'Hard!', ex4Sub: 'Each sentence has ONE mistake. Type only the corrected word(s).',
+  hintE1: '💡 Type the corrected phrase (replacing "must not to force"):', hintE2: '💡 Type the correct modal verb to replace "musts":',
+  hintE3: '💡 Past tense! MUST has no past form — use HAD TO:', hintE4: '💡 The meaning is "not required / not necessary." Which form is correct?',
+  btnCheckMistakes: '🧱 Check Mistakes!',
+  scoreCompleteLabel: '🧱 Build Complete!', scoreOutOfPre: 'out of', scoreOutOfPost: 'bricks',
+  score100Msg: "🧱🏆 Perfect! You've built the Master Builder Grammar Set! Every brick in place! AMAZING!",
+  score75Msg: "🧱 Great build! A few bricks are in the wrong place — check mustn't vs. don't have to and you'll complete the set!",
+  score50Msg: "🧱 Good start! Some bricks still need sorting — go back over the lesson and try again. Don't give up!",
+  scoreLowMsg: "🧱 Don't give up! Even LEGO Master Builders follow the instructions carefully at first. Read the lesson again — you've got this! 💪",
+  btnBuildAgain: '🔄 Build Again!',
+  sec3Eyebrow: '// Summary', sec3Title: 'YOUR LEGO GRAMMAR GUIDE 📖',
+  cheatMustBody: 'Strong personal obligation / logical deduction', cheatMustGloss: '🇬🇧 must',
+  cheatMustntBody: "FORBIDDEN — prohibited, don't do it!", cheatMustntGloss: "🇬🇧 mustn't",
+  cheatHaveBody: 'External obligation — rules, instructions', cheatHaveGloss: '🇬🇧 have to',
+  cheatDontHaveBody: 'NOT necessary — optional, your choice', cheatDontHaveGloss: "🇬🇧 don't have to",
+  goldenRuleTitle: '🧱 THE GOLDEN BRICK RULE:',
+  goldenRuleBody: '"You <em>mustn\'t</em> force the bricks together." → It will break them. FORBIDDEN! 🚫<br>"You <em>don\'t have to</em> force them together." → It\'s optional. Use the right-sized bricks. ✅<br><br>One destroys your LEGO set. The other is just a building tip. 🧱 Know the difference!<br><br>⏮ And remember: <strong>HAD TO</strong> = past tense of MUST and HAVE TO.<br>❌ "Yesterday I must build it." &nbsp;→&nbsp; ✅ "Yesterday I <strong>had to</strong> build it."',
+  footerTagline: '🧱 LEGO GRAMMAR FACTORY ✦ MUST &amp; HAVE TO ✦ B1 ✦ 10 LANGUAGES ✦ BUILD YOUR ENGLISH! 🧱',
+  fbCorrect: '✅ Correct!', fbAnswerPrefix: '❌ Answer:', fbBrilliant: '✅ Brilliant!', fbLookGreen: '❌ Look for the green brick!', fbPerfectSentence: '✅ Perfect sentence!',
+  quips: ['LEGO Master! 🧱', 'Fantastic build! 🏰', 'Perfect fit! ✅', 'Master Builder move! ⭐']
+};
+
+UI_I18N.pl = {
+  heroTag: '🧱 Fabryka Gramatyki LEGO',
+  heroSub: 'Forma twierdząca i przecząca · Zbuduj swoją gramatykę klocek po klocku! 🧱',
+  badgeLevel: 'Poziom B1', badgeExercises: '4 ćwiczenia', badgeQuestions: '19 pytań', badgeLang: '10 języków',
+  progLabel: '🧱 Postęp budowy',
+  sec1Eyebrow: '// Instrukcja — Lekcja', sec1Title: 'CZTERY KLUCZOWE KLOCKI 🧱',
+  introP1: 'Zarówno <strong>MUST</strong>, jak i <strong>HAVE TO</strong> oznaczają <strong>obowiązek</strong> — coś koniecznego lub wymaganego. Jak instrukcja LEGO, która mówi, gdzie pasuje który element! 📖',
+  introP2: 'Gdy budowniczy LEGO <em>osobiście czuje</em>, że musi skończyć zamek przed kolacją — to MUST. Gdy instrukcja mówi, że <em>musisz</em> użyć czerwonych klocków w tym kroku — to HAVE TO.',
+  introP3: 'Ale <span style="color:#FFD700; font-weight:800;">formy przeczące oznaczają zupełnie coś innego!</span> To najważniejsza zasada — jak pomylenie klocków LEGO Technic z Duplo! 😱',
+  tipLabel: '💡 WSKAZÓWKA:',
+  tipBody: '<em>Must</em> brzmi bardziej jak wewnętrzne "muszę/chcę". <em>Have to</em> brzmi bardziej jak "trzeba" z zewnętrznych zasad. Oba tłumaczy się jako "musieć / trzeba" — ale formy przeczące są CAŁKOWICIE inne! Czytaj dalej! 👇',
+  fcLabelA: 'Forma A · Twierdząca', fcLabelB: 'Forma B · Przecząca', fcLabelC: 'Forma C · Twierdząca', fcLabelD: 'Forma D · Przecząca',
+  fcMeanA: 'Wewnętrzny obowiązek / dedukcja logiczna', fcMeanB: 'Zakaz — jest ZABRONIONE!',
+  fcMeanC: 'Zewnętrzny obowiązek — zasady, instrukcje, inni', fcMeanD: 'BRAK obowiązku — niekonieczne, wolny wybór',
+  fcGlossA: '🇵🇱 = musieć / trzeba (wewnętrzne przekonanie)', fcGlossB: '🇵🇱 = nie wolno / jest zabronione',
+  fcGlossC: '🇵🇱 = musieć / trzeba (zewnętrzna reguła)', fcGlossD: '🇵🇱 = nie trzeba / nie musisz',
+  keyRuleBadge: '⚠ UWAŻAJ! — KEY RULE',
+  keyRuleTitle: '🚨 NAJWIĘKSZY błąd w angielskim — nie myl tego!',
+  vsMustntNote1: '→ Jest <em>zabronione</em>. Niebezpieczeństwo! Au! 😫<br>🇵🇱 = <strong>nie wolno</strong> (zabronione)',
+  vsDontHaveNote1: '→ Niewymagane — to twój wybór! 😊<br>🇵🇱 = <strong>nie musisz</strong> (nie jest konieczne)',
+  vsMustntNote2: '"You mustn\'t break LEGO pieces — they\'re not replaceable!" → Zabronione! ❌',
+  vsDontHaveNote2: '"You don\'t have to use every single brick." → Opcjonalne! Buduj, co chcesz. 😄',
+  keyTipTitle: '🧱 Zasada LEGO — ZAPAMIĘTAJ!',
+  keyTipBody: '<span class="hl-bad">MUSTN\'T</span> = zabronione, zakazane, nie rób tego → 🇵🇱 <em>nie wolno / jest zabronione</em><br><span class="hl-g">DON\'T HAVE TO</span> = niekonieczne, opcjonalne, twój wybór → 🇵🇱 <em>nie musisz / nie trzeba</em><br><br>Poza tym: <span class="hl-y">MUST nie ma formy przeszłej!</span> Użyj <strong>HAD TO</strong>.<br>❌ "Yesterday I must build it." &nbsp;→&nbsp; ✅ "Yesterday I <strong>had to</strong> build it."',
+  flipInstructions: '👆 Kliknij każdy klocek, aby odkryć odpowiedź — kliknij każdy klocek!',
+  flip1Tag: 'PL → EN', flip1Q: '"<strong>Nie wolno</strong> ci dotykać cudzych klocków."', flip1Note: 'nie wolno = mustn\'t 🚫',
+  flip2Tag: 'PL → EN', flip2Q: '"<strong>Nie musisz</strong> kupować nowego zestawu."', flip2Note: 'nie musisz = don\'t have to ✅',
+  flip3Tag: 'Która forma? 🤔', flip3Note: 'Zasada zewnętrzna = have to 📋',
+  flip4Tag: 'Która forma? 🧱', flip4Note: 'Niekonieczne = don\'t have to ✅',
+  flip5Tag: 'Wewnętrzne czy zewnętrzne? 💭', flip5Note: 'Wewnętrzne przekonanie = must 💪',
+  flip6Tag: '3. osoba! 👤', flip6Note: 'He/She/It → HAS TO 😄',
+  sec2Eyebrow: '// Ćwiczenia — Czas na praktykę', sec2Title: 'ZBUDUJ SWOJE UMIEJĘTNOŚCI! 🏗️',
+  ex1Title: 'Uzupełnij lukę w klocku! 📝', ex1Sub: "Wybierz: must · mustn't · have to · has to · don't have to · doesn't have to · had to",
+  hintF1: '💡 Wskazówka: To zakazane. (mustn\'t)', hintF2: '💡 Wskazówka: Zewnętrzna zasada z instrukcji.',
+  hintF3: '💡 Wskazówka: To opcjonalne — niewymagane.', hintF4: '💡 Wskazówka: Głębokie osobiste przekonanie — od wewnątrz.',
+  hintF5: '💡 Wskazówka: 3. osoba (she), niekonieczne.', hintF6: '💡 Wskazówka: Czas przeszły! MUST nie ma przeszłości — użyj HAD TO.',
+  btnCheckAnswers: '🧱 Sprawdź odpowiedzi!',
+  ex2Title: 'Który klocek pasuje? 🧠', ex2Sub: 'Wybierz poprawną opcję — tylko jedna szansa!',
+  ex3Title: 'Zbuduj zdanie! 🏗️', badgeHard1: 'Trudne!', ex3Sub: 'Klikaj klocki po kolei — kliknij umieszczony klocek, aby go usunąć.',
+  hintB1: 'Ułóż zdanie: "Dzieciom nie wolno wkładać klocków do ust."',
+  hintB2: 'Ułóż pytanie: "Czy ona musi policzyć wszystkie elementy?"',
+  hintB3: 'Ułóż zdanie: "Nie musieliśmy kupować więcej klocków." (przeszłość)',
+  sbPh: 'Kliknij klocki powyżej, aby ułożyć zdanie... 🧱', sbPhQ: 'Kliknij klocki powyżej, aby ułożyć pytanie... 🧱',
+  btnCheck: '🧱 Sprawdź!',
+  ex4Title: 'Znajdź zły klocek! 🔍', badgeHard2: 'Trudne!', ex4Sub: 'Każde zdanie ma JEDEN błąd. Wpisz tylko poprawione słowo(a).',
+  hintE1: '💡 Wpisz poprawioną frazę (zamiast "must not to force"):', hintE2: '💡 Wpisz poprawny czasownik modalny zamiast "musts":',
+  hintE3: '💡 Czas przeszły! MUST nie ma formy przeszłej — użyj HAD TO:', hintE4: '💡 Znaczenie to "niewymagane / niekonieczne." Która forma jest poprawna?',
+  btnCheckMistakes: '🧱 Sprawdź błędy!',
+  scoreCompleteLabel: '🧱 Budowa ukończona!', scoreOutOfPre: 'na', scoreOutOfPost: 'klocków',
+  score100Msg: '🧱🏆 Idealnie! Zbudowałeś Zestaw Gramatyczny Mistrza Budowniczego! Każdy klocek na miejscu! NIESAMOWITE!',
+  score75Msg: '🧱 Świetna budowa! Kilka klocków jest w złym miejscu — sprawdź mustn\'t vs. don\'t have to, a ukończysz zestaw!',
+  score50Msg: '🧱 Dobry początek! Niektóre klocki wymagają posortowania — wróć do lekcji i spróbuj ponownie. Nie poddawaj się!',
+  scoreLowMsg: '🧱 Nie poddawaj się! Nawet Mistrzowie Budowniczowie LEGO na początku uważnie czytają instrukcje. Przeczytaj lekcję jeszcze raz — dasz radę! 💪',
+  btnBuildAgain: '🔄 Buduj ponownie!',
+  sec3Eyebrow: '// Ściągawka — Podsumowanie', sec3Title: 'TWÓJ PRZEWODNIK GRAMATYKI LEGO 📖',
+  cheatMustBody: 'Silny osobisty obowiązek / dedukcja logiczna', cheatMustGloss: '🇵🇱 musieć / wewnętrzne przekonanie',
+  cheatMustntBody: 'ZABRONIONE — zakazane, nie rób tego!', cheatMustntGloss: '🇵🇱 nie wolno / jest zabronione',
+  cheatHaveBody: 'Zewnętrzny obowiązek — zasady, instrukcje', cheatHaveGloss: '🇵🇱 trzeba / zewnętrzna zasada',
+  cheatDontHaveBody: 'NIEKONIECZNE — opcjonalne, twój wybór', cheatDontHaveGloss: '🇵🇱 nie trzeba / nie jest konieczne',
+  goldenRuleTitle: '🧱 ZŁOTA ZASADA KLOCKÓW:',
+  goldenRuleBody: '"You <em>mustn\'t</em> force the bricks together." → Zepsujesz je. ZABRONIONE! 🚫<br>"You <em>don\'t have to</em> force them together." → To opcjonalne. Użyj klocków odpowiedniego rozmiaru. ✅<br><br>Jedno niszczy twój zestaw LEGO. Drugie to tylko wskazówka budowlana. 🧱 Znaj różnicę!<br><br>⏮ I pamiętaj: <strong>HAD TO</strong> = czas przeszły od MUST i HAVE TO.<br>❌ "Yesterday I must build it." &nbsp;→&nbsp; ✅ "Yesterday I <strong>had to</strong> build it." 🇵🇱 (musiałem)',
+  footerTagline: '🧱 FABRYKA GRAMATYKI LEGO ✦ MUST &amp; HAVE TO ✦ B1 ✦ 10 JĘZYKÓW ✦ ZBUDUJ SWÓJ ANGIELSKI! 🧱',
+  fbCorrect: '✅ Poprawnie!', fbAnswerPrefix: '❌ Odpowiedź:', fbBrilliant: '✅ Znakomicie!', fbLookGreen: '❌ Poszukaj zielonego klocka!', fbPerfectSentence: '✅ Idealne zdanie!',
+  quips: ['LEGO Mistrz! 🧱', 'Fantastyczna budowa! 🏰', 'Idealnie pasuje! ✅', 'Ruch Mistrza Budowniczego! ⭐']
+};
+
+UI_I18N.es = {
+  heroTag: '🧱 Fábrica de Gramática LEGO',
+  heroSub: 'Afirmativo y negativo · ¡Construye tu gramática, ladrillo a ladrillo! 🧱',
+  badgeLevel: 'Nivel B1', badgeExercises: '4 ejercicios', badgeQuestions: '19 preguntas', badgeLang: '10 idiomas',
+  progLabel: '🧱 Progreso de construcción',
+  sec1Eyebrow: '// La lección', sec1Title: 'LOS CUATRO LADRILLOS CLAVE 🧱',
+  introP1: 'Tanto <strong>MUST</strong> como <strong>HAVE TO</strong> significan <strong>obligación</strong> — algo necesario o requerido. ¡Como un manual de instrucciones de LEGO que te dice qué pieza va dónde! 📖',
+  introP2: 'Cuando un constructor de LEGO <em>siente personalmente</em> que debe terminar el castillo antes de cenar — eso es MUST. Cuando el manual dice que <em>tienes que</em> usar ladrillos rojos en este paso — eso es HAVE TO.',
+  introP3: '¡Pero las <span style="color:#FFD700; font-weight:800;">formas negativas significan cosas completamente distintas!</span> Esta es la regla más importante — ¡como confundir piezas de LEGO Technic con Duplo! 😱',
+  tipLabel: '💡 CONSEJO CLAVE:',
+  tipBody: '<em>Must</em> es un sentimiento personal e interno de obligación. <em>Have to</em> viene de una regla externa. ¡Pero cuidado — las formas negativas son TOTALMENTE distintas! ¡Sigue leyendo! 👇',
+  fcLabelA: 'Forma A · Afirmativa', fcLabelB: 'Forma B · Negativa', fcLabelC: 'Forma C · Afirmativa', fcLabelD: 'Forma D · Negativa',
+  fcMeanA: 'Obligación interna / deducción lógica', fcMeanB: '¡Prohibición — está PROHIBIDO!',
+  fcMeanC: 'Obligación externa — reglas, instrucciones, otros', fcMeanD: 'SIN obligación — no es necesario, libre elección',
+  fcGlossA: '🇪🇸 = deber (convicción personal)', fcGlossB: '🇪🇸 = mustn\'t (¡prohibido!)',
+  fcGlossC: '🇪🇸 = tener que (regla externa)', fcGlossD: '🇪🇸 = no hace falta (sin obligación)',
+  keyRuleBadge: '⚠ ¡ATENCIÓN! — REGLA CLAVE',
+  keyRuleTitle: '🚨 El error MÁS GRANDE en inglés — ¡no los confundas!',
+  vsMustntNote1: '→ Está <em>prohibido</em>. ¡Peligro! ¡Ay! 😫<br>🇪🇸 = <strong>prohibido</strong>',
+  vsDontHaveNote1: '→ No es obligatorio — ¡es tu elección! 😊<br>🇪🇸 = <strong>opcional</strong>',
+  vsMustntNote2: '"You mustn\'t break LEGO pieces — they\'re not replaceable!" → ¡Prohibido! ❌',
+  vsDontHaveNote2: '"You don\'t have to use every single brick." → ¡Opcional! Construye lo que quieras. 😄',
+  keyTipTitle: '🧱 La regla LEGO — ¡RECUERDA!',
+  keyTipBody: '<span class="hl-bad">MUSTN\'T</span> = prohibido, no lo hagas<br><span class="hl-g">DON\'T HAVE TO</span> = no es necesario, opcional, tu elección<br><br>Además: <span class="hl-y">¡MUST no tiene forma pasada!</span> Usa <strong>HAD TO</strong>.<br>❌ "Yesterday I must build it." &nbsp;→&nbsp; ✅ "Yesterday I <strong>had to</strong> build it."',
+  flipInstructions: '👆 ¡Haz clic en cada ladrillo para ver la respuesta!',
+  flip1Tag: 'ES → EN', flip1Q: '"Está <strong>prohibido</strong> tocar los bloques de otras personas."', flip1Note: 'prohibido = mustn\'t 🚫',
+  flip2Tag: 'ES → EN', flip2Q: '"No es necesario comprar un juego nuevo."', flip2Note: 'no es necesario = don\'t have to ✅',
+  flip3Tag: '¿Qué forma? 🤔', flip3Note: 'Regla externa = have to 📋',
+  flip4Tag: '¿Qué forma? 🧱', flip4Note: 'No es necesario = don\'t have to ✅',
+  flip5Tag: '¿Interno o externo? 💭', flip5Note: 'Convicción interna = must 💪',
+  flip6Tag: '¡Tercera persona! 👤', flip6Note: 'He/She/It → HAS TO 😄',
+  sec2Eyebrow: '// Hora de practicar', sec2Title: '¡DESARROLLA TUS HABILIDADES! 🏗️',
+  ex1Title: '¡Completa el hueco del ladrillo! 📝', ex1Sub: "Elige: must · mustn't · have to · has to · don't have to · doesn't have to · had to",
+  hintF1: '💡 Pista: Está prohibido. (mustn\'t)', hintF2: '💡 Pista: Regla externa del manual.',
+  hintF3: '💡 Pista: Es opcional — no obligatorio.', hintF4: '💡 Pista: Convicción personal profunda — desde dentro.',
+  hintF5: '💡 Pista: Tercera persona (she), no es necesario.', hintF6: '💡 Pista: ¡Pasado! MUST no tiene pasado — usa HAD TO.',
+  btnCheckAnswers: '🧱 ¡Comprobar respuestas!',
+  ex2Title: '¿Qué ladrillo encaja? 🧠', ex2Sub: '¡Elige la opción correcta — solo una oportunidad!',
+  ex3Title: '¡Arma la frase! 🏗️', badgeHard1: '¡Difícil!', ex3Sub: 'Haz clic en los ladrillos en orden — haz clic en uno colocado para quitarlo.',
+  hintB1: 'Forma una frase: "Está prohibido que los niños se metan piezas en la boca."',
+  hintB2: 'Forma una pregunta: "¿Es necesario que ella cuente todas las piezas?"',
+  hintB3: 'Forma una frase: "No fue necesario que compráramos más ladrillos." (pasado)',
+  sbPh: 'Haz clic en los ladrillos de arriba para armar la frase... 🧱', sbPhQ: 'Haz clic en los ladrillos de arriba para armar la pregunta... 🧱',
+  btnCheck: '🧱 ¡Comprobar!',
+  ex4Title: '¡Encuentra el ladrillo equivocado! 🔍', badgeHard2: '¡Difícil!', ex4Sub: 'Cada frase tiene UN error. Escribe solo la(s) palabra(s) corregida(s).',
+  hintE1: '💡 Escribe la frase corregida (en lugar de "must not to force"):', hintE2: '💡 Escribe el verbo modal correcto en lugar de "musts":',
+  hintE3: '💡 ¡Pasado! MUST no tiene forma pasada — usa HAD TO:', hintE4: '💡 El significado es "no obligatorio / no necesario." ¿Cuál es la forma correcta?',
+  btnCheckMistakes: '🧱 ¡Comprobar errores!',
+  scoreCompleteLabel: '🧱 ¡Construcción completa!', scoreOutOfPre: 'de', scoreOutOfPost: 'ladrillos',
+  score100Msg: '🧱🏆 ¡Perfecto! ¡Has construido el Set de Gramática de Maestro Constructor! ¡Cada ladrillo en su sitio! ¡INCREÍBLE!',
+  score75Msg: '🧱 ¡Buena construcción! Algunos ladrillos están en el lugar equivocado — revisa mustn\'t vs. don\'t have to ¡y completarás el set!',
+  score50Msg: '🧱 ¡Buen comienzo! Algunos ladrillos necesitan ordenarse — repasa la lección e inténtalo de nuevo. ¡No te rindas!',
+  scoreLowMsg: '🧱 ¡No te rindas! Incluso los Maestros Constructores de LEGO siguen las instrucciones con cuidado al principio. Vuelve a leer la lección — ¡tú puedes! 💪',
+  btnBuildAgain: '🔄 ¡Construir de nuevo!',
+  sec3Eyebrow: '// Resumen', sec3Title: 'TU GUÍA DE GRAMÁTICA LEGO 📖',
+  cheatMustBody: 'Fuerte obligación personal / deducción lógica', cheatMustGloss: '🇪🇸 deber',
+  cheatMustntBody: '¡PROHIBIDO — no lo hagas!', cheatMustntGloss: '🇪🇸 mustn\'t',
+  cheatHaveBody: 'Obligación externa — reglas, instrucciones', cheatHaveGloss: '🇪🇸 tener que',
+  cheatDontHaveBody: 'NO necesario — opcional, tu elección', cheatDontHaveGloss: '🇪🇸 no hace falta',
+  goldenRuleTitle: '🧱 LA REGLA DE ORO DEL LADRILLO:',
+  goldenRuleBody: '"You <em>mustn\'t</em> force the bricks together." → Los romperás. ¡PROHIBIDO! 🚫<br>"You <em>don\'t have to</em> force them together." → Es opcional. Usa ladrillos del tamaño correcto. ✅<br><br>Uno destruye tu set de LEGO. El otro es solo un consejo de construcción. 🧱 ¡Conoce la diferencia!<br><br>⏮ Y recuerda: <strong>HAD TO</strong> = pasado de MUST y HAVE TO.<br>❌ "Yesterday I must build it." &nbsp;→&nbsp; ✅ "Yesterday I <strong>had to</strong> build it."',
+  footerTagline: '🧱 FÁBRICA DE GRAMÁTICA LEGO ✦ MUST &amp; HAVE TO ✦ B1 ✦ 10 IDIOMAS ✦ ¡CONSTRUYE TU INGLÉS! 🧱',
+  fbCorrect: '✅ ¡Correcto!', fbAnswerPrefix: '❌ Respuesta:', fbBrilliant: '✅ ¡Brillante!', fbLookGreen: '❌ ¡Busca el ladrillo verde!', fbPerfectSentence: '✅ ¡Frase perfecta!',
+  quips: ['¡Maestro LEGO! 🧱', '¡Construcción fantástica! 🏰', '¡Encaje perfecto! ✅', '¡Movimiento de Maestro Constructor! ⭐']
+};
+
+UI_I18N.fr = {
+  heroTag: '🧱 Usine de Grammaire LEGO',
+  heroSub: 'Formes affirmative et négative · Construis ta grammaire brique par brique ! 🧱',
+  badgeLevel: 'Niveau B1', badgeExercises: '4 exercices', badgeQuestions: '19 questions', badgeLang: '10 langues',
+  progLabel: '🧱 Progression de la construction',
+  sec1Eyebrow: '// La leçon', sec1Title: 'LES QUATRE BRIQUES CLÉS 🧱',
+  introP1: '<strong>MUST</strong> et <strong>HAVE TO</strong> expriment tous deux une <strong>obligation</strong> — quelque chose de nécessaire ou requis. Comme une notice LEGO qui indique où va chaque pièce ! 📖',
+  introP2: "Quand un constructeur LEGO <em>ressent personnellement</em> qu'il doit finir le château avant le dîner — c'est MUST. Quand la notice dit que tu <em>dois</em> utiliser des briques rouges à cette étape — c'est HAVE TO.",
+  introP3: 'Mais <span style="color:#FFD700; font-weight:800;">les formes négatives ont un sens complètement différent !</span> C\'est la règle la plus importante — comme confondre des pièces LEGO Technic et Duplo ! 😱',
+  tipLabel: '💡 CONSEIL CLÉ :',
+  tipBody: "<em>Must</em> exprime un sentiment personnel et intérieur d'obligation. <em>Have to</em> vient d'une règle extérieure. Mais attention — les formes négatives sont TOTALEMENT différentes ! Continue à lire ! 👇",
+  fcLabelA: 'Forme A · Affirmative', fcLabelB: 'Forme B · Négative', fcLabelC: 'Forme C · Affirmative', fcLabelD: 'Forme D · Négative',
+  fcMeanA: 'Obligation interne / déduction logique', fcMeanB: 'Interdiction — c\'est INTERDIT !',
+  fcMeanC: 'Obligation externe — règles, instructions, autrui', fcMeanD: 'AUCUNE obligation — pas nécessaire, libre choix',
+  fcGlossA: '🇫🇷 = devoir (conviction personnelle)', fcGlossB: '🇫🇷 = mustn\'t (interdit !)',
+  fcGlossC: '🇫🇷 = devoir (règle extérieure)', fcGlossD: '🇫🇷 = ne pas être obligé de',
+  keyRuleBadge: '⚠ ATTENTION ! — RÈGLE CLÉ',
+  keyRuleTitle: "🚨 La PLUS GRANDE erreur en anglais — ne confonds pas ces formes !",
+  vsMustntNote1: '→ C\'est <em>interdit</em>. Danger ! Aïe ! 😫<br>🇫🇷 = <strong>interdit</strong>',
+  vsDontHaveNote1: '→ Pas obligatoire — c\'est ton choix ! 😊<br>🇫🇷 = <strong>facultatif</strong>',
+  vsMustntNote2: '"You mustn\'t break LEGO pieces — they\'re not replaceable!" → Interdit ! ❌',
+  vsDontHaveNote2: '"You don\'t have to use every single brick." → Facultatif ! Construis ce que tu veux. 😄',
+  keyTipTitle: '🧱 La règle LEGO — RETIENS ÇA !',
+  keyTipBody: '<span class="hl-bad">MUSTN\'T</span> = interdit, ne le fais pas<br><span class="hl-g">DON\'T HAVE TO</span> = pas nécessaire, facultatif, ton choix<br><br>Aussi : <span class="hl-y">MUST n\'a PAS de forme passée !</span> Utilise <strong>HAD TO</strong>.<br>❌ "Yesterday I must build it." &nbsp;→&nbsp; ✅ "Yesterday I <strong>had to</strong> build it."',
+  flipInstructions: '👆 Clique sur chaque brique pour révéler la réponse !',
+  flip1Tag: 'FR → EN', flip1Q: '"Il est <strong>interdit</strong> de toucher les briques des autres."', flip1Note: 'interdit = mustn\'t 🚫',
+  flip2Tag: 'FR → EN', flip2Q: '"Ce n\'est pas nécessaire d\'acheter un nouveau set."', flip2Note: 'pas nécessaire = don\'t have to ✅',
+  flip3Tag: 'Quelle forme ? 🤔', flip3Note: 'Règle externe = have to 📋',
+  flip4Tag: 'Quelle forme ? 🧱', flip4Note: 'Pas nécessaire = don\'t have to ✅',
+  flip5Tag: 'Interne ou externe ? 💭', flip5Note: 'Conviction interne = must 💪',
+  flip6Tag: '3e personne ! 👤', flip6Note: 'He/She/It → HAS TO 😄',
+  sec2Eyebrow: '// Place à la pratique', sec2Title: 'DÉVELOPPE TES COMPÉTENCES ! 🏗️',
+  ex1Title: 'Complète le trou dans la brique ! 📝', ex1Sub: "Choisis : must · mustn't · have to · has to · don't have to · doesn't have to · had to",
+  hintF1: '💡 Indice : c\'est interdit. (mustn\'t)', hintF2: '💡 Indice : règle externe de la notice.',
+  hintF3: '💡 Indice : c\'est facultatif — pas obligatoire.', hintF4: '💡 Indice : forte conviction personnelle — de l\'intérieur.',
+  hintF5: '💡 Indice : 3e personne (she), pas nécessaire.', hintF6: '💡 Indice : passé ! MUST n\'a pas de passé — utilise HAD TO.',
+  btnCheckAnswers: '🧱 Vérifier les réponses !',
+  ex2Title: 'Quelle brique correspond ? 🧠', ex2Sub: 'Choisis la bonne option — une seule chance !',
+  ex3Title: 'Assemble la phrase ! 🏗️', badgeHard1: 'Difficile !', ex3Sub: 'Clique sur les briques dans l\'ordre — clique sur une brique posée pour la retirer.',
+  hintB1: 'Forme une phrase : "Il est interdit aux enfants de mettre des briques dans leur bouche."',
+  hintB2: 'Forme une question : "Est-il nécessaire qu\'elle compte toutes les pièces ?"',
+  hintB3: 'Forme une phrase : "Ce n\'était pas nécessaire d\'acheter plus de briques." (passé)',
+  sbPh: 'Clique sur les briques ci-dessus pour assembler la phrase... 🧱', sbPhQ: 'Clique sur les briques ci-dessus pour assembler la question... 🧱',
+  btnCheck: '🧱 Vérifier !',
+  ex4Title: 'Trouve la mauvaise brique ! 🔍', badgeHard2: 'Difficile !', ex4Sub: 'Chaque phrase a UNE erreur. Tape seulement le(s) mot(s) corrigé(s).',
+  hintE1: '💡 Tape la phrase corrigée (à la place de "must not to force") :', hintE2: '💡 Tape le bon verbe modal à la place de "musts" :',
+  hintE3: '💡 Passé ! MUST n\'a pas de forme passée — utilise HAD TO :', hintE4: '💡 Le sens est "pas obligatoire / pas nécessaire." Quelle forme est correcte ?',
+  btnCheckMistakes: '🧱 Vérifier les erreurs !',
+  scoreCompleteLabel: '🧱 Construction terminée !', scoreOutOfPre: 'sur', scoreOutOfPost: 'briques',
+  score100Msg: '🧱🏆 Parfait ! Tu as construit le Set de Grammaire du Maître Constructeur ! Chaque brique à sa place ! INCROYABLE !',
+  score75Msg: '🧱 Belle construction ! Quelques briques sont mal placées — revois mustn\'t vs. don\'t have to et tu termineras le set !',
+  score50Msg: '🧱 Bon début ! Certaines briques doivent encore être triées — revois la leçon et réessaie. N\'abandonne pas !',
+  scoreLowMsg: '🧱 N\'abandonne pas ! Même les Maîtres Constructeurs LEGO suivent la notice avec attention au début. Relis la leçon — tu vas y arriver ! 💪',
+  btnBuildAgain: '🔄 Reconstruire !',
+  sec3Eyebrow: '// Résumé', sec3Title: 'TON GUIDE DE GRAMMAIRE LEGO 📖',
+  cheatMustBody: 'Forte obligation personnelle / déduction logique', cheatMustGloss: '🇫🇷 devoir',
+  cheatMustntBody: 'INTERDIT — ne le fais pas !', cheatMustntGloss: '🇫🇷 mustn\'t',
+  cheatHaveBody: 'Obligation externe — règles, instructions', cheatHaveGloss: '🇫🇷 devoir (obligation externe)',
+  cheatDontHaveBody: 'PAS nécessaire — facultatif, ton choix', cheatDontHaveGloss: '🇫🇷 ne pas être obligé de',
+  goldenRuleTitle: '🧱 LA RÈGLE D\'OR DE LA BRIQUE :',
+  goldenRuleBody: '"You <em>mustn\'t</em> force the bricks together." → Tu vas les casser. INTERDIT ! 🚫<br>"You <em>don\'t have to</em> force them together." → C\'est facultatif. Utilise des briques de la bonne taille. ✅<br><br>L\'un détruit ton set LEGO. L\'autre n\'est qu\'un conseil de construction. 🧱 Connais la différence !<br><br>⏮ Et rappelle-toi : <strong>HAD TO</strong> = passé de MUST et HAVE TO.<br>❌ "Yesterday I must build it." &nbsp;→&nbsp; ✅ "Yesterday I <strong>had to</strong> build it."',
+  footerTagline: '🧱 USINE DE GRAMMAIRE LEGO ✦ MUST &amp; HAVE TO ✦ B1 ✦ 10 LANGUES ✦ CONSTRUIS TON ANGLAIS ! 🧱',
+  fbCorrect: '✅ Correct !', fbAnswerPrefix: '❌ Réponse :', fbBrilliant: '✅ Brillant !', fbLookGreen: '❌ Cherche la brique verte !', fbPerfectSentence: '✅ Phrase parfaite !',
+  quips: ['Maître LEGO ! 🧱', 'Construction fantastique ! 🏰', 'Ajustement parfait ! ✅', 'Coup de Maître Constructeur ! ⭐']
+};
+
+UI_I18N.de = {
+  heroTag: '🧱 LEGO-Grammatikfabrik',
+  heroSub: 'Bejahte und verneinte Form · Baue deine Grammatik Stein für Stein! 🧱',
+  badgeLevel: 'Niveau B1', badgeExercises: '4 Übungen', badgeQuestions: '19 Fragen', badgeLang: '10 Sprachen',
+  progLabel: '🧱 Baufortschritt',
+  sec1Eyebrow: '// Die Lektion', sec1Title: 'DIE VIER SCHLÜSSELSTEINE 🧱',
+  introP1: 'Sowohl <strong>MUST</strong> als auch <strong>HAVE TO</strong> bedeuten <strong>Verpflichtung</strong> — etwas Notwendiges oder Erforderliches. Wie eine LEGO-Bauanleitung, die zeigt, welcher Stein wohin gehört! 📖',
+  introP2: 'Wenn ein LEGO-Baumeister <em>persönlich fühlt</em>, dass er die Burg vor dem Abendessen fertigstellen muss — das ist MUST. Wenn die Anleitung sagt, dass du bei diesem Schritt rote Steine <em>verwenden musst</em> — das ist HAVE TO.',
+  introP3: 'Aber die <span style="color:#FFD700; font-weight:800;">verneinten Formen bedeuten etwas völlig anderes!</span> Das ist die wichtigste Regel — wie LEGO Technic und Duplo zu verwechseln! 😱',
+  tipLabel: '💡 WICHTIGER TIPP:',
+  tipBody: '<em>Must</em> ist ein persönliches, inneres Pflichtgefühl. <em>Have to</em> kommt von einer äußeren Regel. Aber Achtung — die verneinten Formen sind VÖLLIG unterschiedlich! Lies weiter! 👇',
+  fcLabelA: 'Form A · Bejaht', fcLabelB: 'Form B · Verneint', fcLabelC: 'Form C · Bejaht', fcLabelD: 'Form D · Verneint',
+  fcMeanA: 'Innere Verpflichtung / logische Schlussfolgerung', fcMeanB: 'Verbot — es ist VERBOTEN!',
+  fcMeanC: 'Äußere Verpflichtung — Regeln, Anweisungen, andere', fcMeanD: 'KEINE Verpflichtung — nicht nötig, freie Wahl',
+  fcGlossA: '🇩🇪 = müssen (innere Verpflichtung)', fcGlossB: '🇩🇪 = mustn\'t (verboten!)',
+  fcGlossC: '🇩🇪 = müssen (äußere Regel)', fcGlossD: '🇩🇪 = nicht müssen (nicht nötig)',
+  keyRuleBadge: '⚠ ACHTUNG! — SCHLÜSSELREGEL',
+  keyRuleTitle: '🚨 Der GRÖSSTE Fehler im Englischen — verwechsle das nicht!',
+  vsMustntNote1: '→ Es ist <em>verboten</em>. Gefahr! Autsch! 😫<br>🇩🇪 = <strong>verboten</strong>',
+  vsDontHaveNote1: '→ Nicht erforderlich — es ist deine Wahl! 😊<br>🇩🇪 = <strong>optional</strong>',
+  vsMustntNote2: '"You mustn\'t break LEGO pieces — they\'re not replaceable!" → Verboten! ❌',
+  vsDontHaveNote2: '"You don\'t have to use every single brick." → Optional! Baue, was du willst. 😄',
+  keyTipTitle: '🧱 Die LEGO-Regel — MERKE DIR DAS!',
+  keyTipBody: '<span class="hl-bad">MUSTN\'T</span> = verboten, untersagt, tu es nicht<br><span class="hl-g">DON\'T HAVE TO</span> = nicht nötig, optional, deine Wahl<br><br>Außerdem: <span class="hl-y">MUST hat KEINE Vergangenheitsform!</span> Benutze <strong>HAD TO</strong>.<br>❌ "Yesterday I must build it." &nbsp;→&nbsp; ✅ "Yesterday I <strong>had to</strong> build it."',
+  flipInstructions: '👆 Klicke auf jeden Stein, um die Antwort zu sehen!',
+  flip1Tag: 'DE → EN', flip1Q: '"Es ist <strong>verboten</strong>, die Steine anderer anzufassen."', flip1Note: 'verboten = mustn\'t 🚫',
+  flip2Tag: 'DE → EN', flip2Q: '"Es ist nicht nötig, ein neues Set zu kaufen."', flip2Note: 'nicht nötig = don\'t have to ✅',
+  flip3Tag: 'Welche Form? 🤔', flip3Note: 'Äußere Regel = have to 📋',
+  flip4Tag: 'Welche Form? 🧱', flip4Note: 'Nicht nötig = don\'t have to ✅',
+  flip5Tag: 'Innerlich oder äußerlich? 💭', flip5Note: 'Innere Überzeugung = must 💪',
+  flip6Tag: '3. Person! 👤', flip6Note: 'He/She/It → HAS TO 😄',
+  sec2Eyebrow: '// Zeit zum Üben', sec2Title: 'BAUE DEINE FÄHIGKEITEN AUS! 🏗️',
+  ex1Title: 'Fülle die Steinlücke! 📝', ex1Sub: "Wähle: must · mustn't · have to · has to · don't have to · doesn't have to · had to",
+  hintF1: '💡 Tipp: Es ist verboten. (mustn\'t)', hintF2: '💡 Tipp: Äußere Regel aus der Anleitung.',
+  hintF3: '💡 Tipp: Es ist optional — nicht erforderlich.', hintF4: '💡 Tipp: Tiefe persönliche Überzeugung — von innen.',
+  hintF5: '💡 Tipp: 3. Person (she), nicht nötig.', hintF6: '💡 Tipp: Vergangenheit! MUST hat keine Vergangenheit — benutze HAD TO.',
+  btnCheckAnswers: '🧱 Antworten prüfen!',
+  ex2Title: 'Welcher Stein passt? 🧠', ex2Sub: 'Wähle die richtige Option — nur ein Versuch!',
+  ex3Title: 'Setze den Satz zusammen! 🏗️', badgeHard1: 'Schwer!', ex3Sub: 'Klicke die Steine der Reihe nach an — klicke einen gesetzten Stein an, um ihn zu entfernen.',
+  hintB1: 'Bilde einen Satz: "Es ist Kindern verboten, Steine in den Mund zu nehmen."',
+  hintB2: 'Bilde eine Frage: "Muss sie alle Teile zählen?"',
+  hintB3: 'Bilde einen Satz: "Wir mussten keine weiteren Steine kaufen." (Vergangenheit)',
+  sbPh: 'Klicke die Steine oben an, um den Satz zusammenzusetzen... 🧱', sbPhQ: 'Klicke die Steine oben an, um die Frage zusammenzusetzen... 🧱',
+  btnCheck: '🧱 Prüfen!',
+  ex4Title: 'Finde den falschen Stein! 🔍', badgeHard2: 'Schwer!', ex4Sub: 'Jeder Satz hat EINEN Fehler. Tippe nur das/die korrigierte(n) Wort/Wörter.',
+  hintE1: '💡 Tippe die korrigierte Phrase (statt "must not to force"):', hintE2: '💡 Tippe das richtige Modalverb statt "musts":',
+  hintE3: '💡 Vergangenheit! MUST hat keine Vergangenheitsform — benutze HAD TO:', hintE4: '💡 Die Bedeutung ist "nicht erforderlich / nicht nötig." Welche Form ist richtig?',
+  btnCheckMistakes: '🧱 Fehler prüfen!',
+  scoreCompleteLabel: '🧱 Bau abgeschlossen!', scoreOutOfPre: 'von', scoreOutOfPost: 'Steinen',
+  score100Msg: '🧱🏆 Perfekt! Du hast das Grammatik-Set des Meisterbaumeisters gebaut! Jeder Stein am richtigen Platz! FANTASTISCH!',
+  score75Msg: '🧱 Toller Bau! Ein paar Steine sind am falschen Platz — überprüfe mustn\'t vs. don\'t have to, dann vervollständigst du das Set!',
+  score50Msg: '🧱 Guter Anfang! Manche Steine müssen noch sortiert werden — sieh dir die Lektion nochmal an und versuch es erneut. Gib nicht auf!',
+  scoreLowMsg: '🧱 Gib nicht auf! Selbst LEGO-Meisterbaumeister folgen der Anleitung zu Beginn sorgfältig. Lies die Lektion noch einmal — du schaffst das! 💪',
+  btnBuildAgain: '🔄 Nochmal bauen!',
+  sec3Eyebrow: '// Zusammenfassung', sec3Title: 'DEIN LEGO-GRAMMATIKLEITFADEN 📖',
+  cheatMustBody: 'Starke persönliche Verpflichtung / logische Schlussfolgerung', cheatMustGloss: '🇩🇪 müssen',
+  cheatMustntBody: 'VERBOTEN — untersagt, tu es nicht!', cheatMustntGloss: '🇩🇪 mustn\'t',
+  cheatHaveBody: 'Äußere Verpflichtung — Regeln, Anweisungen', cheatHaveGloss: '🇩🇪 müssen (äußere Regel)',
+  cheatDontHaveBody: 'NICHT nötig — optional, deine Wahl', cheatDontHaveGloss: '🇩🇪 nicht müssen',
+  goldenRuleTitle: '🧱 DIE GOLDENE STEIN-REGEL:',
+  goldenRuleBody: '"You <em>mustn\'t</em> force the bricks together." → Du wirst sie zerbrechen. VERBOTEN! 🚫<br>"You <em>don\'t have to</em> force them together." → Es ist optional. Verwende Steine der richtigen Größe. ✅<br><br>Das eine zerstört dein LEGO-Set. Das andere ist nur ein Bautipp. 🧱 Kenne den Unterschied!<br><br>⏮ Und denk dran: <strong>HAD TO</strong> = Vergangenheitsform von MUST und HAVE TO.<br>❌ "Yesterday I must build it." &nbsp;→&nbsp; ✅ "Yesterday I <strong>had to</strong> build it."',
+  footerTagline: '🧱 LEGO-GRAMMATIKFABRIK ✦ MUST &amp; HAVE TO ✦ B1 ✦ 10 SPRACHEN ✦ BAUE DEIN ENGLISCH! 🧱',
+  fbCorrect: '✅ Richtig!', fbAnswerPrefix: '❌ Antwort:', fbBrilliant: '✅ Hervorragend!', fbLookGreen: '❌ Suche den grünen Stein!', fbPerfectSentence: '✅ Perfekter Satz!',
+  quips: ['LEGO-Meister! 🧱', 'Fantastischer Bau! 🏰', 'Perfekt gepasst! ✅', 'Ein Meisterbaumeister-Zug! ⭐']
+};
+
+UI_I18N.it = {
+  heroTag: '🧱 Fabbrica di Grammatica LEGO',
+  heroSub: 'Forma affermativa e negativa · Costruisci la tua grammatica, mattoncino per mattoncino! 🧱',
+  badgeLevel: 'Livello B1', badgeExercises: '4 esercizi', badgeQuestions: '19 domande', badgeLang: '10 lingue',
+  progLabel: '🧱 Avanzamento costruzione',
+  sec1Eyebrow: '// La lezione', sec1Title: 'I QUATTRO MATTONCINI CHIAVE 🧱',
+  introP1: 'Sia <strong>MUST</strong> che <strong>HAVE TO</strong> esprimono <strong>obbligo</strong> — qualcosa di necessario o richiesto. Come un libretto di istruzioni LEGO che indica dove va ogni pezzo! 📖',
+  introP2: 'Quando un costruttore LEGO <em>sente personalmente</em> di dover finire il castello prima di cena — questo è MUST. Quando il manuale dice che <em>devi</em> usare mattoncini rossi in questo passaggio — questo è HAVE TO.',
+  introP3: 'Ma le <span style="color:#FFD700; font-weight:800;">forme negative significano cose completamente diverse!</span> Questa è la regola più importante — come confondere i pezzi LEGO Technic con i Duplo! 😱',
+  tipLabel: '💡 CONSIGLIO CHIAVE:',
+  tipBody: '<em>Must</em> è un sentimento personale e interiore di obbligo. <em>Have to</em> deriva da una regola esterna. Ma attenzione — le forme negative sono TOTALMENTE diverse! Continua a leggere! 👇',
+  fcLabelA: 'Forma A · Affermativa', fcLabelB: 'Forma B · Negativa', fcLabelC: 'Forma C · Affermativa', fcLabelD: 'Forma D · Negativa',
+  fcMeanA: 'Obbligo interno / deduzione logica', fcMeanB: 'Divieto — è VIETATO!',
+  fcMeanC: 'Obbligo esterno — regole, istruzioni, altri', fcMeanD: 'NESSUN obbligo — non necessario, libera scelta',
+  fcGlossA: '🇮🇹 = dovere (convinzione personale)', fcGlossB: '🇮🇹 = mustn\'t (vietato!)',
+  fcGlossC: '🇮🇹 = dovere (regola esterna)', fcGlossD: '🇮🇹 = non è necessario',
+  keyRuleBadge: '⚠ ATTENZIONE! — REGOLA CHIAVE',
+  keyRuleTitle: '🚨 L\'errore PIÙ GRANDE in inglese — non confonderli!',
+  vsMustntNote1: '→ È <em>vietato</em>. Pericolo! Ahia! 😫<br>🇮🇹 = <strong>vietato</strong>',
+  vsDontHaveNote1: '→ Non obbligatorio — è una tua scelta! 😊<br>🇮🇹 = <strong>facoltativo</strong>',
+  vsMustntNote2: '"You mustn\'t break LEGO pieces — they\'re not replaceable!" → Vietato! ❌',
+  vsDontHaveNote2: '"You don\'t have to use every single brick." → Facoltativo! Costruisci quello che vuoi. 😄',
+  keyTipTitle: '🧱 La regola LEGO — RICORDALO!',
+  keyTipBody: '<span class="hl-bad">MUSTN\'T</span> = vietato, proibito, non farlo<br><span class="hl-g">DON\'T HAVE TO</span> = non necessario, facoltativo, tua scelta<br><br>Inoltre: <span class="hl-y">MUST NON ha una forma al passato!</span> Usa <strong>HAD TO</strong>.<br>❌ "Yesterday I must build it." &nbsp;→&nbsp; ✅ "Yesterday I <strong>had to</strong> build it."',
+  flipInstructions: '👆 Clicca su ogni mattoncino per rivelare la risposta!',
+  flip1Tag: 'IT → EN', flip1Q: '"È <strong>vietato</strong> toccare i mattoncini degli altri."', flip1Note: 'vietato = mustn\'t 🚫',
+  flip2Tag: 'IT → EN', flip2Q: '"Non è necessario comprare un set nuovo."', flip2Note: 'non è necessario = don\'t have to ✅',
+  flip3Tag: 'Quale forma? 🤔', flip3Note: 'Regola esterna = have to 📋',
+  flip4Tag: 'Quale forma? 🧱', flip4Note: 'Non necessario = don\'t have to ✅',
+  flip5Tag: 'Interno o esterno? 💭', flip5Note: 'Convinzione interna = must 💪',
+  flip6Tag: 'Terza persona! 👤', flip6Note: 'He/She/It → HAS TO 😄',
+  sec2Eyebrow: '// Tempo di esercitarsi', sec2Title: 'SVILUPPA LE TUE ABILITÀ! 🏗️',
+  ex1Title: 'Riempi il vuoto nel mattoncino! 📝', ex1Sub: "Scegli: must · mustn't · have to · has to · don't have to · doesn't have to · had to",
+  hintF1: '💡 Suggerimento: è vietato. (mustn\'t)', hintF2: '💡 Suggerimento: regola esterna dal manuale.',
+  hintF3: '💡 Suggerimento: è facoltativo — non obbligatorio.', hintF4: '💡 Suggerimento: profonda convinzione personale — dall\'interno.',
+  hintF5: '💡 Suggerimento: terza persona (she), non necessario.', hintF6: '💡 Suggerimento: passato! MUST non ha il passato — usa HAD TO.',
+  btnCheckAnswers: '🧱 Controlla le risposte!',
+  ex2Title: 'Quale mattoncino si adatta? 🧠', ex2Sub: 'Scegli l\'opzione corretta — una sola possibilità!',
+  ex3Title: 'Assembla la frase! 🏗️', badgeHard1: 'Difficile!', ex3Sub: 'Clicca i mattoncini in ordine — clicca un mattoncino posizionato per rimuoverlo.',
+  hintB1: 'Forma una frase: "È vietato per i bambini mettere i mattoncini in bocca."',
+  hintB2: 'Forma una domanda: "È necessario che lei conti tutti i pezzi?"',
+  hintB3: 'Forma una frase: "Non era necessario che comprassimo altri mattoncini." (passato)',
+  sbPh: 'Clicca i mattoncini sopra per assemblare la frase... 🧱', sbPhQ: 'Clicca i mattoncini sopra per assemblare la domanda... 🧱',
+  btnCheck: '🧱 Controlla!',
+  ex4Title: 'Trova il mattoncino sbagliato! 🔍', badgeHard2: 'Difficile!', ex4Sub: 'Ogni frase ha UN errore. Digita solo la/le parola/e corretta/e.',
+  hintE1: '💡 Digita la frase corretta (al posto di "must not to force"):', hintE2: '💡 Digita il verbo modale corretto al posto di "musts":',
+  hintE3: '💡 Passato! MUST non ha una forma al passato — usa HAD TO:', hintE4: '💡 Il significato è "non obbligatorio / non necessario." Quale forma è corretta?',
+  btnCheckMistakes: '🧱 Controlla gli errori!',
+  scoreCompleteLabel: '🧱 Costruzione completata!', scoreOutOfPre: 'su', scoreOutOfPost: 'mattoncini',
+  score100Msg: '🧱🏆 Perfetto! Hai costruito il Set di Grammatica del Maestro Costruttore! Ogni mattoncino al suo posto! INCREDIBILE!',
+  score75Msg: '🧱 Ottima costruzione! Alcuni mattoncini sono nel posto sbagliato — controlla mustn\'t vs. don\'t have to e completerai il set!',
+  score50Msg: '🧱 Buon inizio! Alcuni mattoncini devono ancora essere sistemati — rivedi la lezione e riprova. Non arrenderti!',
+  scoreLowMsg: '🧱 Non arrenderti! Anche i Maestri Costruttori LEGO all\'inizio seguono le istruzioni con attenzione. Rileggi la lezione — ce la puoi fare! 💪',
+  btnBuildAgain: '🔄 Costruisci di nuovo!',
+  sec3Eyebrow: '// Riepilogo', sec3Title: 'LA TUA GUIDA DI GRAMMATICA LEGO 📖',
+  cheatMustBody: 'Forte obbligo personale / deduzione logica', cheatMustGloss: '🇮🇹 dovere',
+  cheatMustntBody: 'VIETATO — proibito, non farlo!', cheatMustntGloss: '🇮🇹 mustn\'t',
+  cheatHaveBody: 'Obbligo esterno — regole, istruzioni', cheatHaveGloss: '🇮🇹 dovere (regola esterna)',
+  cheatDontHaveBody: 'NON necessario — facoltativo, tua scelta', cheatDontHaveGloss: '🇮🇹 non è necessario',
+  goldenRuleTitle: '🧱 LA REGOLA D\'ORO DEL MATTONCINO:',
+  goldenRuleBody: '"You <em>mustn\'t</em> force the bricks together." → Li romperai. VIETATO! 🚫<br>"You <em>don\'t have to</em> force them together." → È facoltativo. Usa mattoncini della misura giusta. ✅<br><br>Uno distrugge il tuo set LEGO. L\'altro è solo un consiglio di costruzione. 🧱 Conosci la differenza!<br><br>⏮ E ricorda: <strong>HAD TO</strong> = passato di MUST e HAVE TO.<br>❌ "Yesterday I must build it." &nbsp;→&nbsp; ✅ "Yesterday I <strong>had to</strong> build it."',
+  footerTagline: '🧱 FABBRICA DI GRAMMATICA LEGO ✦ MUST &amp; HAVE TO ✦ B1 ✦ 10 LINGUE ✦ COSTRUISCI IL TUO INGLESE! 🧱',
+  fbCorrect: '✅ Corretto!', fbAnswerPrefix: '❌ Risposta:', fbBrilliant: '✅ Brillante!', fbLookGreen: '❌ Cerca il mattoncino verde!', fbPerfectSentence: '✅ Frase perfetta!',
+  quips: ['Maestro LEGO! 🧱', 'Costruzione fantastica! 🏰', 'Incastro perfetto! ✅', 'Mossa da Maestro Costruttore! ⭐']
+};
+
+UI_I18N.ru = {
+  heroTag: '🧱 Фабрика Грамматики LEGO',
+  heroSub: 'Утвердительная и отрицательная форма · Строй свою грамматику деталь за деталью! 🧱',
+  badgeLevel: 'Уровень B1', badgeExercises: '4 упражнения', badgeQuestions: '19 вопросов', badgeLang: '10 языков',
+  progLabel: '🧱 Прогресс постройки',
+  sec1Eyebrow: '// Урок', sec1Title: 'ЧЕТЫРЕ КЛЮЧЕВЫЕ ДЕТАЛИ 🧱',
+  introP1: 'И <strong>MUST</strong>, и <strong>HAVE TO</strong> означают <strong>обязанность</strong> — что-то необходимое или требуемое. Как инструкция LEGO, которая показывает, какая деталь куда идёт! 📖',
+  introP2: 'Когда строитель LEGO <em>лично чувствует</em>, что должен закончить замок до ужина — это MUST. Когда инструкция говорит, что тебе <em>нужно</em> использовать красные детали на этом шаге — это HAVE TO.',
+  introP3: 'Но <span style="color:#FFD700; font-weight:800;">отрицательные формы означают совершенно разные вещи!</span> Это самое важное правило — как перепутать детали LEGO Technic и Duplo! 😱',
+  tipLabel: '💡 ВАЖНЫЙ СОВЕТ:',
+  tipBody: '<em>Must</em> — это личное, внутреннее чувство долга. <em>Have to</em> исходит из внешнего правила. Но осторожно — отрицательные формы СОВЕРШЕННО разные! Читай дальше! 👇',
+  fcLabelA: 'Форма A · Утвердительная', fcLabelB: 'Форма B · Отрицательная', fcLabelC: 'Форма C · Утвердительная', fcLabelD: 'Форма D · Отрицательная',
+  fcMeanA: 'Внутренняя обязанность / логический вывод', fcMeanB: 'Запрет — это ЗАПРЕЩЕНО!',
+  fcMeanC: 'Внешняя обязанность — правила, инструкции, другие', fcMeanD: 'НЕТ обязанности — не обязательно, свободный выбор',
+  fcGlossA: '🇷🇺 = должен (личное убеждение)', fcGlossB: '🇷🇺 = mustn\'t (запрещено!)',
+  fcGlossC: '🇷🇺 = должен (внешнее правило)', fcGlossD: '🇷🇺 = не обязательно',
+  keyRuleBadge: '⚠ ВНИМАНИЕ! — КЛЮЧЕВОЕ ПРАВИЛО',
+  keyRuleTitle: '🚨 САМАЯ БОЛЬШАЯ ошибка в английском — не путай эти формы!',
+  vsMustntNote1: '→ Это <em>запрещено</em>. Опасно! Ой! 😫<br>🇷🇺 = <strong>запрещено</strong>',
+  vsDontHaveNote1: '→ Не обязательно — это твой выбор! 😊<br>🇷🇺 = <strong>необязательно</strong>',
+  vsMustntNote2: '"You mustn\'t break LEGO pieces — they\'re not replaceable!" → Запрещено! ❌',
+  vsDontHaveNote2: '"You don\'t have to use every single brick." → Необязательно! Строй что хочешь. 😄',
+  keyTipTitle: '🧱 Правило LEGO — ЗАПОМНИ!',
+  keyTipBody: '<span class="hl-bad">MUSTN\'T</span> = запрещено, нельзя, не делай этого<br><span class="hl-g">DON\'T HAVE TO</span> = не обязательно, необязательно, твой выбор<br><br>Также: <span class="hl-y">у MUST НЕТ формы прошедшего времени!</span> Используй <strong>HAD TO</strong>.<br>❌ "Yesterday I must build it." &nbsp;→&nbsp; ✅ "Yesterday I <strong>had to</strong> build it."',
+  flipInstructions: '👆 Нажми на каждую деталь, чтобы увидеть ответ!',
+  flip1Tag: 'RU → EN', flip1Q: '"<strong>Запрещено</strong> трогать чужие детали."', flip1Note: 'запрещено = mustn\'t 🚫',
+  flip2Tag: 'RU → EN', flip2Q: '"Не обязательно покупать новый набор."', flip2Note: 'не обязательно = don\'t have to ✅',
+  flip3Tag: 'Какая форма? 🤔', flip3Note: 'Внешнее правило = have to 📋',
+  flip4Tag: 'Какая форма? 🧱', flip4Note: 'Не обязательно = don\'t have to ✅',
+  flip5Tag: 'Внутреннее или внешнее? 💭', flip5Note: 'Внутреннее убеждение = must 💪',
+  flip6Tag: '3-е лицо! 👤', flip6Note: 'He/She/It → HAS TO 😄',
+  sec2Eyebrow: '// Время практики', sec2Title: 'РАЗВИВАЙ СВОИ НАВЫКИ! 🏗️',
+  ex1Title: 'Заполни пропуск в детали! 📝', ex1Sub: "Выбери: must · mustn't · have to · has to · don't have to · doesn't have to · had to",
+  hintF1: '💡 Подсказка: это запрещено. (mustn\'t)', hintF2: '💡 Подсказка: внешнее правило из инструкции.',
+  hintF3: '💡 Подсказка: это необязательно.', hintF4: '💡 Подсказка: глубокое личное убеждение — изнутри.',
+  hintF5: '💡 Подсказка: 3-е лицо (she), не обязательно.', hintF6: '💡 Подсказка: прошедшее время! У MUST нет прошедшего — используй HAD TO.',
+  btnCheckAnswers: '🧱 Проверить ответы!',
+  ex2Title: 'Какая деталь подходит? 🧠', ex2Sub: 'Выбери правильный вариант — только одна попытка!',
+  ex3Title: 'Собери предложение! 🏗️', badgeHard1: 'Сложно!', ex3Sub: 'Нажимай на детали по порядку — нажми на размещённую деталь, чтобы убрать её.',
+  hintB1: 'Составь предложение: "Детям запрещено брать детали в рот."',
+  hintB2: 'Составь вопрос: "Нужно ли ей пересчитать все детали?"',
+  hintB3: 'Составь предложение: "Нам не нужно было покупать больше деталей." (прошедшее время)',
+  sbPh: 'Нажимай на детали выше, чтобы составить предложение... 🧱', sbPhQ: 'Нажимай на детали выше, чтобы составить вопрос... 🧱',
+  btnCheck: '🧱 Проверить!',
+  ex4Title: 'Найди неправильную деталь! 🔍', badgeHard2: 'Сложно!', ex4Sub: 'В каждом предложении ОДНА ошибка. Напиши только исправленное слово(а).',
+  hintE1: '💡 Напиши исправленную фразу (вместо "must not to force"):', hintE2: '💡 Напиши правильный модальный глагол вместо "musts":',
+  hintE3: '💡 Прошедшее время! У MUST нет прошедшей формы — используй HAD TO:', hintE4: '💡 Значение — "не обязательно / не нужно." Какая форма верна?',
+  btnCheckMistakes: '🧱 Проверить ошибки!',
+  scoreCompleteLabel: '🧱 Постройка завершена!', scoreOutOfPre: 'из', scoreOutOfPost: 'деталей',
+  score100Msg: '🧱🏆 Идеально! Ты собрал грамматический набор Мастера-строителя! Каждая деталь на месте! ПОТРЯСАЮЩЕ!',
+  score75Msg: '🧱 Отличная постройка! Пара деталей не на месте — проверь mustn\'t против don\'t have to, и ты завершишь набор!',
+  score50Msg: '🧱 Хорошее начало! Некоторые детали ещё нужно рассортировать — вернись к уроку и попробуй снова. Не сдавайся!',
+  scoreLowMsg: '🧱 Не сдавайся! Даже Мастера-строители LEGO сначала внимательно следуют инструкции. Перечитай урок — у тебя получится! 💪',
+  btnBuildAgain: '🔄 Построить снова!',
+  sec3Eyebrow: '// Итоги', sec3Title: 'ТВОЙ ГРАММАТИЧЕСКИЙ ГИД LEGO 📖',
+  cheatMustBody: 'Сильная личная обязанность / логический вывод', cheatMustGloss: '🇷🇺 должен',
+  cheatMustntBody: 'ЗАПРЕЩЕНО — нельзя, не делай этого!', cheatMustntGloss: '🇷🇺 mustn\'t',
+  cheatHaveBody: 'Внешняя обязанность — правила, инструкции', cheatHaveGloss: '🇷🇺 должен (внешнее правило)',
+  cheatDontHaveBody: 'НЕ обязательно — необязательно, твой выбор', cheatDontHaveGloss: '🇷🇺 не обязательно',
+  goldenRuleTitle: '🧱 ЗОЛОТОЕ ПРАВИЛО ДЕТАЛИ:',
+  goldenRuleBody: '"You <em>mustn\'t</em> force the bricks together." → Ты их сломаешь. ЗАПРЕЩЕНО! 🚫<br>"You <em>don\'t have to</em> force them together." → Это необязательно. Используй детали подходящего размера. ✅<br><br>Одно разрушает твой набор LEGO. Другое — просто совет по сборке. 🧱 Знай разницу!<br><br>⏮ И помни: <strong>HAD TO</strong> = прошедшее время MUST и HAVE TO.<br>❌ "Yesterday I must build it." &nbsp;→&nbsp; ✅ "Yesterday I <strong>had to</strong> build it."',
+  footerTagline: '🧱 ФАБРИКА ГРАММАТИКИ LEGO ✦ MUST &amp; HAVE TO ✦ B1 ✦ 10 ЯЗЫКОВ ✦ СТРОЙ СВОЙ АНГЛИЙСКИЙ! 🧱',
+  fbCorrect: '✅ Верно!', fbAnswerPrefix: '❌ Ответ:', fbBrilliant: '✅ Блестяще!', fbLookGreen: '❌ Ищи зелёную деталь!', fbPerfectSentence: '✅ Идеальное предложение!',
+  quips: ['Мастер LEGO! 🧱', 'Фантастическая постройка! 🏰', 'Идеально подходит! ✅', 'Ход настоящего Мастера-строителя! ⭐']
+};
+
+UI_I18N.ar = {
+  heroTag: '🧱 مصنع قواعد ليغو',
+  heroSub: 'الصيغة المُثبَتة والمنفية · ابنِ قواعدك قطعة تلو الأخرى! 🧱',
+  badgeLevel: 'المستوى B1', badgeExercises: '4 تمارين', badgeQuestions: '19 سؤالاً', badgeLang: '10 لغات',
+  progLabel: '🧱 تقدّم البناء',
+  sec1Eyebrow: '// الدرس', sec1Title: 'القطع الأربع الأساسية 🧱',
+  introP1: 'كلٌّ من <strong>MUST</strong> و<strong>HAVE TO</strong> يعني <strong>الإلزام</strong> — أمرًا ضروريًا أو مطلوبًا. مثل كتيّب تعليمات ليغو الذي يوضّح مكان كل قطعة! 📖',
+  introP2: 'عندما يشعر بانٍ من ليغو <em>شخصيًا</em> بأنه يجب أن ينهي القلعة قبل العشاء — هذا هو MUST. وعندما يقول الدليل إنه <em>يتوجب عليك</em> استخدام قطع حمراء في هذه الخطوة — هذا هو HAVE TO.',
+  introP3: 'لكن <span style="color:#FFD700; font-weight:800;">الصيغ المنفية تعني أشياء مختلفة تمامًا!</span> هذه أهم قاعدة — مثل الخلط بين قطع LEGO Technic وDuplo! 😱',
+  tipLabel: '💡 نصيحة أساسية:',
+  tipBody: '<em>Must</em> شعور شخصي داخلي بالإلزام. أما <em>Have to</em> فينشأ من قاعدة خارجية. لكن احذر — الصيغ المنفية مختلفة تمامًا! تابع القراءة! 👇',
+  fcLabelA: 'الصيغة A · مثبتة', fcLabelB: 'الصيغة B · منفية', fcLabelC: 'الصيغة C · مثبتة', fcLabelD: 'الصيغة D · منفية',
+  fcMeanA: 'إلزام داخلي / استنتاج منطقي', fcMeanB: 'حظر — الأمر ممنوع!',
+  fcMeanC: 'إلزام خارجي — قواعد، تعليمات، آخرون', fcMeanD: 'لا إلزام — غير ضروري، اختيار حر',
+  fcGlossA: '🇸🇦 = يجب (قناعة شخصية)', fcGlossB: '🇸🇦 = mustn\'t (ممنوع!)',
+  fcGlossC: '🇸🇦 = يتوجب (قاعدة خارجية)', fcGlossD: '🇸🇦 = لا داعي (غير ضروري)',
+  keyRuleBadge: '⚠ انتبه! — قاعدة أساسية',
+  keyRuleTitle: '🚨 أكبر خطأ في الإنجليزية — لا تخلط بينهما!',
+  vsMustntNote1: '→ الأمر <em>ممنوع</em>. خطر! آخ! 😫<br>🇸🇦 = <strong>ممنوع</strong>',
+  vsDontHaveNote1: '→ غير مطلوب — إنه اختيارك! 😊<br>🇸🇦 = <strong>اختياري</strong>',
+  vsMustntNote2: '"You mustn\'t break LEGO pieces — they\'re not replaceable!" → ممنوع! ❌',
+  vsDontHaveNote2: '"You don\'t have to use every single brick." → اختياري! ابنِ ما تريد. 😄',
+  keyTipTitle: '🧱 قاعدة ليغو — تذكّرها!',
+  keyTipBody: '<span class="hl-bad">MUSTN\'T</span> = ممنوع، محظور، لا تفعله<br><span class="hl-g">DON\'T HAVE TO</span> = غير ضروري، اختياري، اختيارك<br><br>أيضًا: <span class="hl-y">لا يوجد لـ MUST صيغة ماضٍ!</span> استخدم <strong>HAD TO</strong> بدلاً منها.<br>❌ "Yesterday I must build it." &nbsp;→&nbsp; ✅ "Yesterday I <strong>had to</strong> build it."',
+  flipInstructions: '👆 اضغط على كل قطعة لكشف الإجابة!',
+  flip1Tag: 'AR → EN', flip1Q: '"<strong>يُمنع</strong> لمس قطع الآخرين."', flip1Note: 'ممنوع = mustn\'t 🚫',
+  flip2Tag: 'AR → EN', flip2Q: '"لا داعي لشراء مجموعة جديدة."', flip2Note: 'لا داعي = don\'t have to ✅',
+  flip3Tag: 'أي صيغة؟ 🤔', flip3Note: 'قاعدة خارجية = have to 📋',
+  flip4Tag: 'أي صيغة؟ 🧱', flip4Note: 'غير ضروري = don\'t have to ✅',
+  flip5Tag: 'داخلي أم خارجي؟ 💭', flip5Note: 'قناعة داخلية = must 💪',
+  flip6Tag: 'الغائب المفرد! 👤', flip6Note: 'He/She/It → HAS TO 😄',
+  sec2Eyebrow: '// وقت التدريب', sec2Title: 'طوّر مهاراتك! 🏗️',
+  ex1Title: 'أكمل الفراغ في القطعة! 📝', ex1Sub: "اختر: must · mustn't · have to · has to · don't have to · doesn't have to · had to",
+  hintF1: '💡 تلميح: هذا ممنوع. (mustn\'t)', hintF2: '💡 تلميح: قاعدة خارجية من الدليل.',
+  hintF3: '💡 تلميح: هذا اختياري — غير مطلوب.', hintF4: '💡 تلميح: قناعة شخصية عميقة — من الداخل.',
+  hintF5: '💡 تلميح: ضمير الغائب (she)، غير ضروري.', hintF6: '💡 تلميح: زمن الماضي! لا يوجد لـ MUST ماضٍ — استخدم HAD TO.',
+  btnCheckAnswers: '🧱 تحقق من الإجابات!',
+  ex2Title: 'أي قطعة تناسب؟ 🧠', ex2Sub: 'اختر الخيار الصحيح — فرصة واحدة فقط!',
+  ex3Title: 'كوّن الجملة! 🏗️', badgeHard1: 'صعب!', ex3Sub: 'اضغط القطع بالترتيب — اضغط على قطعة موضوعة لإزالتها.',
+  hintB1: 'كوّن جملة: "يُمنع على الأطفال وضع القطع في أفواههم."',
+  hintB2: 'كوّن سؤالاً: "هل من الضروري أن تعدّ كل القطع؟"',
+  hintB3: 'كوّن جملة: "لم يكن ضروريًا أن نشتري المزيد من القطع." (ماضٍ)',
+  sbPh: 'اضغط القطع أعلاه لتكوين الجملة... 🧱', sbPhQ: 'اضغط القطع أعلاه لتكوين السؤال... 🧱',
+  btnCheck: '🧱 تحقق!',
+  ex4Title: 'اعثر على القطعة الخاطئة! 🔍', badgeHard2: 'صعب!', ex4Sub: 'كل جملة تحتوي على خطأ واحد. اكتب فقط الكلمة/الكلمات المصححة.',
+  hintE1: '💡 اكتب العبارة المصححة (بدلاً من "must not to force"):', hintE2: '💡 اكتب الفعل الناقص الصحيح بدلاً من "musts":',
+  hintE3: '💡 زمن الماضي! لا يوجد لـ MUST صيغة ماضٍ — استخدم HAD TO:', hintE4: '💡 المعنى هو "غير مطلوب / غير ضروري." ما هي الصيغة الصحيحة؟',
+  btnCheckMistakes: '🧱 تحقق من الأخطاء!',
+  scoreCompleteLabel: '🧱 اكتمل البناء!', scoreOutOfPre: 'من أصل', scoreOutOfPost: 'قطعة',
+  score100Msg: '🧱🏆 ممتاز! لقد بنيت مجموعة القواعد الخاصة بالبنّاء المحترف! كل قطعة في مكانها! رائع!',
+  score75Msg: '🧱 بناء رائع! بعض القطع في المكان الخطأ — راجع mustn\'t مقابل don\'t have to وستكمل المجموعة!',
+  score50Msg: '🧱 بداية جيدة! بعض القطع تحتاج ترتيبًا — راجع الدرس وحاول مجددًا. لا تستسلم!',
+  scoreLowMsg: '🧱 لا تستسلم! حتى بنّاؤو ليغو المحترفون يتبعون التعليمات بعناية في البداية. أعد قراءة الدرس — أنت قادر على ذلك! 💪',
+  btnBuildAgain: '🔄 ابنِ مجددًا!',
+  sec3Eyebrow: '// ملخص', sec3Title: 'دليلك لقواعد ليغو 📖',
+  cheatMustBody: 'إلزام شخصي قوي / استنتاج منطقي', cheatMustGloss: '🇸🇦 يجب',
+  cheatMustntBody: 'ممنوع — محظور، لا تفعله!', cheatMustntGloss: '🇸🇦 mustn\'t',
+  cheatHaveBody: 'إلزام خارجي — قواعد، تعليمات', cheatHaveGloss: '🇸🇦 يتوجب (قاعدة خارجية)',
+  cheatDontHaveBody: 'غير ضروري — اختياري، اختيارك', cheatDontHaveGloss: '🇸🇦 لا داعي',
+  goldenRuleTitle: '🧱 القاعدة الذهبية للقطعة:',
+  goldenRuleBody: '"You <em>mustn\'t</em> force the bricks together." → ستكسرها. ممنوع! 🚫<br>"You <em>don\'t have to</em> force them together." → هذا اختياري. استخدم قطعًا بالحجم المناسب. ✅<br><br>أحدهما يدمّر مجموعة الليغو، والآخر مجرد نصيحة بناء. 🧱 اعرف الفرق!<br><br>⏮ وتذكّر: <strong>HAD TO</strong> = صيغة الماضي لكل من MUST وHAVE TO.<br>❌ "Yesterday I must build it." &nbsp;→&nbsp; ✅ "Yesterday I <strong>had to</strong> build it."',
+  footerTagline: '🧱 مصنع قواعد ليغو ✦ MUST &amp; HAVE TO ✦ B1 ✦ 10 لغات ✦ ابنِ لغتك الإنجليزية! 🧱',
+  fbCorrect: '✅ صحيح!', fbAnswerPrefix: '❌ الإجابة:', fbBrilliant: '✅ رائع!', fbLookGreen: '❌ ابحث عن القطعة الخضراء!', fbPerfectSentence: '✅ جملة مثالية!',
+  quips: ['بنّاء ليغو محترف! 🧱', 'بناء رائع! 🏰', 'تطابق مثالي! ✅', 'حركة بنّاء محترف! ⭐']
+};
+
+UI_I18N.zh = {
+  heroTag: '🧱 乐高语法工厂',
+  heroSub: '肯定式与否定式 · 一块一块地搭建你的语法！🧱',
+  badgeLevel: 'B1 级别', badgeExercises: '4 个练习', badgeQuestions: '19 道题', badgeLang: '10 种语言',
+  progLabel: '🧱 搭建进度',
+  sec1Eyebrow: '// 课程内容', sec1Title: '四块关键积木 🧱',
+  introP1: '<strong>MUST</strong> 和 <strong>HAVE TO</strong> 都表示<strong>义务</strong>——某件必要或必须做的事。就像一本乐高说明书告诉你每个零件该放哪里！📖',
+  introP2: '当一个乐高搭建者<em>发自内心地觉得</em>必须在晚饭前完成城堡——这就是 MUST。当说明书说这一步<em>必须</em>使用红色积木——这就是 HAVE TO。',
+  introP3: '但是<span style="color:#FFD700; font-weight:800;">否定形式的意思完全不同！</span>这是最重要的规则——就像把乐高 Technic 和 Duplo 零件搞混一样！😱',
+  tipLabel: '💡 关键提示：',
+  tipBody: '<em>Must</em> 是个人内心的义务感。<em>Have to</em> 来自外部规则。但要小心——否定形式完全不同！继续往下看！👇',
+  fcLabelA: '形式 A · 肯定式', fcLabelB: '形式 B · 否定式', fcLabelC: '形式 C · 肯定式', fcLabelD: '形式 D · 否定式',
+  fcMeanA: '内在义务 / 逻辑推断', fcMeanB: '禁止——这是被禁止的！',
+  fcMeanC: '外部义务——规则、说明、他人要求', fcMeanD: '没有义务——非必要，自由选择',
+  fcGlossA: '🇨🇳 = 必须（个人信念）', fcGlossB: '🇨🇳 = mustn\'t（禁止！）',
+  fcGlossC: '🇨🇳 = 不得不（外部规定）', fcGlossD: '🇨🇳 = 不必（无需）',
+  keyRuleBadge: '⚠ 注意！——关键规则',
+  keyRuleTitle: '🚨 英语中最大的错误——别把它们搞混了！',
+  vsMustntNote1: '→ 这是<em>被禁止的</em>。危险！哎呀！😫<br>🇨🇳 = <strong>禁止</strong>',
+  vsDontHaveNote1: '→ 不是必须的——这是你的选择！😊<br>🇨🇳 = <strong>可选</strong>',
+  vsMustntNote2: '"You mustn\'t break LEGO pieces — they\'re not replaceable!" → 禁止！❌',
+  vsDontHaveNote2: '"You don\'t have to use every single brick." → 可选！随便搭你想要的。😄',
+  keyTipTitle: '🧱 乐高规则——记住这个！',
+  keyTipBody: '<span class="hl-bad">MUSTN\'T</span> = 禁止的、不允许的、不要这样做<br><span class="hl-g">DON\'T HAVE TO</span> = 不必要的、可选的、你的选择<br><br>另外：<span class="hl-y">MUST 没有过去式！</span>要用 <strong>HAD TO</strong> 代替。<br>❌ "Yesterday I must build it." &nbsp;→&nbsp; ✅ "Yesterday I <strong>had to</strong> build it."',
+  flipInstructions: '👆 点击每块积木查看答案！',
+  flip1Tag: '中文 → 英语', flip1Q: '"<strong>禁止</strong>触碰别人的积木。"', flip1Note: '禁止 = mustn\'t 🚫',
+  flip2Tag: '中文 → 英语', flip2Q: '"不必买一套新的。"', flip2Note: '不必 = don\'t have to ✅',
+  flip3Tag: '哪种形式？🤔', flip3Note: '外部规定 = have to 📋',
+  flip4Tag: '哪种形式？🧱', flip4Note: '不必要 = don\'t have to ✅',
+  flip5Tag: '内在还是外部？💭', flip5Note: '内在信念 = must 💪',
+  flip6Tag: '第三人称！👤', flip6Note: 'He/She/It → HAS TO 😄',
+  sec2Eyebrow: '// 练习时间', sec2Title: '提升你的技能！🏗️',
+  ex1Title: '填补积木空缺！📝', ex1Sub: "选择：must · mustn't · have to · has to · don't have to · doesn't have to · had to",
+  hintF1: '💡 提示：这是被禁止的。（mustn\'t）', hintF2: '💡 提示：来自说明书的外部规定。',
+  hintF3: '💡 提示：这是可选的——不是必须的。', hintF4: '💡 提示：发自内心的强烈信念。',
+  hintF5: '💡 提示：第三人称（she），不是必须的。', hintF6: '💡 提示：过去式！MUST 没有过去式——用 HAD TO。',
+  btnCheckAnswers: '🧱 检查答案！',
+  ex2Title: '哪块积木合适？🧠', ex2Sub: '选择正确的选项——只有一次机会！',
+  ex3Title: '组装句子！🏗️', badgeHard1: '困难！', ex3Sub: '按顺序点击积木——点击已放置的积木可以移除它。',
+  hintB1: '组成句子："儿童禁止把积木放进嘴里。"',
+  hintB2: '组成问句："她有必要数完所有零件吗？"',
+  hintB3: '组成句子："我们没必要再买更多积木了。"（过去式）',
+  sbPh: '点击上面的积木组成句子... 🧱', sbPhQ: '点击上面的积木组成问句... 🧱',
+  btnCheck: '🧱 检查！',
+  ex4Title: '找出错误的积木！🔍', badgeHard2: '困难！', ex4Sub: '每个句子有一个错误。只需输入更正后的词语。',
+  hintE1: '💡 输入更正后的短语（替换 "must not to force"）：', hintE2: '💡 输入正确的情态动词来替换 "musts"：',
+  hintE3: '💡 过去式！MUST 没有过去式——用 HAD TO：', hintE4: '💡 意思是"不需要 / 没有必要"。哪种形式是正确的？',
+  btnCheckMistakes: '🧱 检查错误！',
+  scoreCompleteLabel: '🧱 搭建完成！', scoreOutOfPre: '总分', scoreOutOfPost: '块积木',
+  score100Msg: '🧱🏆 完美！你已经搭建出大师级语法套装！每一块积木都在正确的位置！太厉害了！',
+  score75Msg: '🧱 搭建得不错！有几块积木放错了位置——检查一下 mustn\'t 和 don\'t have to 的区别，你就能完成整套了！',
+  score50Msg: '🧱 好的开始！有些积木还需要整理——回顾一下课程再试一次。不要放弃！',
+  scoreLowMsg: '🧱 不要放弃！就连乐高大师级搭建者一开始也会仔细遵循说明书。再读一遍课程——你可以的！💪',
+  btnBuildAgain: '🔄 再搭建一次！',
+  sec3Eyebrow: '// 总结', sec3Title: '你的乐高语法指南 📖',
+  cheatMustBody: '强烈的个人义务 / 逻辑推断', cheatMustGloss: '🇨🇳 必须',
+  cheatMustntBody: '禁止——不允许，不要这样做！', cheatMustntGloss: '🇨🇳 mustn\'t',
+  cheatHaveBody: '外部义务——规则、说明', cheatHaveGloss: '🇨🇳 不得不（外部规定）',
+  cheatDontHaveBody: '不必要——可选的，你的选择', cheatDontHaveGloss: '🇨🇳 不必',
+  goldenRuleTitle: '🧱 积木黄金法则：',
+  goldenRuleBody: '"You <em>mustn\'t</em> force the bricks together." → 你会弄坏它们。禁止！🚫<br>"You <em>don\'t have to</em> force them together." → 这是可选的。使用合适大小的积木。✅<br><br>一个会毁掉你的乐高套装，另一个只是搭建小贴士。🧱 了解它们的区别！<br><br>⏮ 记住：<strong>HAD TO</strong> = MUST 和 HAVE TO 的过去式。<br>❌ "Yesterday I must build it." &nbsp;→&nbsp; ✅ "Yesterday I <strong>had to</strong> build it."',
+  footerTagline: '🧱 乐高语法工厂 ✦ MUST &amp; HAVE TO ✦ B1 ✦ 10 种语言 ✦ 搭建你的英语！🧱',
+  fbCorrect: '✅ 正确！', fbAnswerPrefix: '❌ 答案：', fbBrilliant: '✅ 太棒了！', fbLookGreen: '❌ 找找绿色的积木！', fbPerfectSentence: '✅ 完美的句子！',
+  quips: ['乐高大师！🧱', '搭建得太棒了！🏰', '完美契合！✅', '大师级操作！⭐']
+};
+
+UI_I18N.ja = {
+  heroTag: '🧱 レゴ文法工場',
+  heroSub: '肯定形と否定形 · ブロックを一つずつ積み上げて文法を組み立てよう！🧱',
+  badgeLevel: 'B1レベル', badgeExercises: '4つの練習', badgeQuestions: '19問', badgeLang: '10言語',
+  progLabel: '🧱 組み立ての進捗',
+  sec1Eyebrow: '// レッスン', sec1Title: '4つの重要なブロック 🧱',
+  introP1: '<strong>MUST</strong> と <strong>HAVE TO</strong> はどちらも<strong>義務</strong>を表します——必要または要求されていること。どのピースをどこに置くか教えてくれるレゴの説明書のように！📖',
+  introP2: 'レゴを組み立てる人が夕食前にお城を完成させなければと<em>個人的に感じる</em>とき——それが MUST です。説明書がこのステップで赤いブロックを<em>使わなければならない</em>と言うとき——それが HAVE TO です。',
+  introP3: 'しかし<span style="color:#FFD700; font-weight:800;">否定形はまったく違う意味になります！</span>これが最も重要なルールです——LEGO Technic と Duplo のピースを混同するようなものです！😱',
+  tipLabel: '💡 重要なヒント：',
+  tipBody: '<em>Must</em> は個人的で内的な義務感です。<em>Have to</em> は外部のルールから来ます。でも注意——否定形はまったく違います！続きを読んでね！👇',
+  fcLabelA: '形A・肯定形', fcLabelB: '形B・否定形', fcLabelC: '形C・肯定形', fcLabelD: '形D・否定形',
+  fcMeanA: '内的な義務／論理的推論', fcMeanB: '禁止——してはいけません！',
+  fcMeanC: '外的な義務——規則、指示、他者からの要求', fcMeanD: '義務なし——不要、自由な選択',
+  fcGlossA: '🇯🇵 = しなければならない（内的な義務）', fcGlossB: '🇯🇵 = mustn\'t（禁止！）',
+  fcGlossC: '🇯🇵 = しなければならない（外的なルール）', fcGlossD: '🇯🇵 = する必要がない',
+  keyRuleBadge: '⚠ 注意！——重要ルール',
+  keyRuleTitle: '🚨 英語で最も大きな間違い——混同しないで！',
+  vsMustntNote1: '→ <em>禁止</em>されています。危険！痛い！😫<br>🇯🇵 = <strong>禁止</strong>',
+  vsDontHaveNote1: '→ 必須ではありません——あなたの選択です！😊<br>🇯🇵 = <strong>任意</strong>',
+  vsMustntNote2: '"You mustn\'t break LEGO pieces — they\'re not replaceable!" → 禁止！❌',
+  vsDontHaveNote2: '"You don\'t have to use every single brick." → 任意です！好きなように作りましょう。😄',
+  keyTipTitle: '🧱 レゴのルール——覚えておこう！',
+  keyTipBody: '<span class="hl-bad">MUSTN\'T</span> = 禁止、してはいけない<br><span class="hl-g">DON\'T HAVE TO</span> = 不要、任意、あなたの選択<br><br>また：<span class="hl-y">MUST には過去形がありません！</span>代わりに <strong>HAD TO</strong> を使いましょう。<br>❌ "Yesterday I must build it." &nbsp;→&nbsp; ✅ "Yesterday I <strong>had to</strong> build it."',
+  flipInstructions: '👆 各ブロックをクリックして答えを見よう！',
+  flip1Tag: '日本語 → 英語', flip1Q: '「他人のブロックに触れることは<strong>禁止</strong>されています。」', flip1Note: '禁止 = mustn\'t 🚫',
+  flip2Tag: '日本語 → 英語', flip2Q: '「新しいセットを買う必要はありません。」', flip2Note: '必要ない = don\'t have to ✅',
+  flip3Tag: 'どの形？🤔', flip3Note: '外的なルール = have to 📋',
+  flip4Tag: 'どの形？🧱', flip4Note: '不要 = don\'t have to ✅',
+  flip5Tag: '内的？外的？💭', flip5Note: '内的な確信 = must 💪',
+  flip6Tag: '三人称！👤', flip6Note: 'He/She/It → HAS TO 😄',
+  sec2Eyebrow: '// 練習の時間', sec2Title: 'スキルを伸ばそう！🏗️',
+  ex1Title: 'ブロックの穴を埋めよう！📝', ex1Sub: "選択: must · mustn't · have to · has to · don't have to · doesn't have to · had to",
+  hintF1: '💡 ヒント：禁止されています。（mustn\'t）', hintF2: '💡 ヒント：説明書からの外的なルール。',
+  hintF3: '💡 ヒント：任意です——必須ではありません。', hintF4: '💡 ヒント：内側からの深い個人的な確信。',
+  hintF5: '💡 ヒント：三人称（she）、不要。', hintF6: '💡 ヒント：過去形！MUST には過去形がない——HAD TO を使おう。',
+  btnCheckAnswers: '🧱 答えを確認しよう！',
+  ex2Title: 'どのブロックが合う？🧠', ex2Sub: '正しい選択肢を選ぼう——チャンスは一度だけ！',
+  ex3Title: '文を組み立てよう！🏗️', badgeHard1: '難しい！', ex3Sub: '順番にブロックをクリック——置いたブロックをクリックすると削除できます。',
+  hintB1: '文を作ろう：「子供がブロックを口に入れることは禁止されています。」',
+  hintB2: '疑問文を作ろう：「彼女はすべてのピースを数える必要がありますか？」',
+  hintB3: '文を作ろう：「私たちはもっとブロックを買う必要はありませんでした。」（過去形）',
+  sbPh: '上のブロックをクリックして文を組み立てよう... 🧱', sbPhQ: '上のブロックをクリックして疑問文を組み立てよう... 🧱',
+  btnCheck: '🧱 確認！',
+  ex4Title: '間違ったブロックを見つけよう！🔍', badgeHard2: '難しい！', ex4Sub: '各文には1つの間違いがあります。修正した単語だけを入力してください。',
+  hintE1: '💡 修正したフレーズを入力（"must not to force" の代わりに）：', hintE2: '💡 "musts" の代わりに正しい助動詞を入力：',
+  hintE3: '💡 過去形！MUST には過去形がない——HAD TO を使おう：', hintE4: '💡 意味は「不要／必須ではない」。正しい形はどれ？',
+  btnCheckMistakes: '🧱 間違いを確認しよう！',
+  scoreCompleteLabel: '🧱 組み立て完了！', scoreOutOfPre: '中', scoreOutOfPost: '個のブロック',
+  score100Msg: '🧱🏆 完璧！マスタービルダー文法セットを完成させました！すべてのブロックが正しい位置に！すごい！',
+  score75Msg: '🧱 素晴らしい出来栄え！いくつかのブロックが違う場所にあります——mustn\'t と don\'t have to を確認すればセットが完成します！',
+  score50Msg: '🧱 良いスタート！いくつかのブロックはまだ整理が必要です——レッスンを見直してもう一度挑戦しよう。あきらめないで！',
+  scoreLowMsg: '🧱 あきらめないで！レゴのマスタービルダーでさえ、最初は説明書を注意深く読みます。もう一度レッスンを読んでみよう——きっとできる！💪',
+  btnBuildAgain: '🔄 もう一度組み立てる！',
+  sec3Eyebrow: '// まとめ', sec3Title: 'あなたのレゴ文法ガイド 📖',
+  cheatMustBody: '強い個人的な義務／論理的推論', cheatMustGloss: '🇯🇵 しなければならない',
+  cheatMustntBody: '禁止——してはいけません！', cheatMustntGloss: '🇯🇵 mustn\'t',
+  cheatHaveBody: '外的な義務——規則、指示', cheatHaveGloss: '🇯🇵 しなければならない（外的ルール）',
+  cheatDontHaveBody: '不要——任意、あなたの選択', cheatDontHaveGloss: '🇯🇵 する必要がない',
+  goldenRuleTitle: '🧱 ブロックの黄金律：',
+  goldenRuleBody: '"You <em>mustn\'t</em> force the bricks together." → 壊れてしまいます。禁止！🚫<br>"You <em>don\'t have to</em> force them together." → 任意です。正しいサイズのブロックを使いましょう。✅<br><br>一方はレゴセットを壊し、もう一方はただの組み立てのコツです。🧱 違いを知ろう！<br><br>⏮ そして覚えておこう：<strong>HAD TO</strong> = MUST と HAVE TO の過去形。<br>❌ "Yesterday I must build it." &nbsp;→&nbsp; ✅ "Yesterday I <strong>had to</strong> build it."',
+  footerTagline: '🧱 レゴ文法工場 ✦ MUST &amp; HAVE TO ✦ B1 ✦ 10言語 ✦ あなたの英語を組み立てよう！🧱',
+  fbCorrect: '✅ 正解！', fbAnswerPrefix: '❌ 答え：', fbBrilliant: '✅ 素晴らしい！', fbLookGreen: '❌ 緑のブロックを探そう！', fbPerfectSentence: '✅ 完璧な文！',
+  quips: ['レゴマスター！🧱', '素晴らしい組み立て！🏰', '完璧なはまり具合！✅', 'マスタービルダーの一手！⭐']
+};
+
+function setText(id, val) { const el = document.getElementById(id); if (el) el.innerHTML = val; }
+
+function setLang(code) {
+  currentLang = UI_I18N[code] ? code : 'en';
+  const t = UI_I18N[currentLang];
+  const isRTL = RTL_LANGS.includes(currentLang);
+  document.documentElement.setAttribute('dir', isRTL ? 'rtl' : 'ltr');
+  document.documentElement.setAttribute('lang', currentLang);
+
+  [
+    'heroTag','heroSub','badgeLevel','badgeExercises','badgeQuestions','badgeLang','progLabel',
+    'sec1Eyebrow','sec1Title','introP1','introP2','introP3','tipLabel','tipBody',
+    'fcLabelA','fcLabelB','fcLabelC','fcLabelD','fcMeanA','fcMeanB','fcMeanC','fcMeanD',
+    'fcGlossA','fcGlossB','fcGlossC','fcGlossD',
+    'keyRuleBadge','keyRuleTitle','vsMustntNote1','vsDontHaveNote1','vsMustntNote2','vsDontHaveNote2','keyTipTitle','keyTipBody',
+    'flipInstructions','flip1Tag','flip1Q','flip1Note','flip2Tag','flip2Q','flip2Note',
+    'flip3Tag','flip3Note','flip4Tag','flip4Note','flip5Tag','flip5Note','flip6Tag','flip6Note',
+    'sec2Eyebrow','sec2Title','ex1Title','ex1Sub','hintF1','hintF2','hintF3','hintF4','hintF5','hintF6','btnCheckAnswers',
+    'ex2Title','ex2Sub','ex3Title','badgeHard1','ex3Sub','hintB1','hintB2','hintB3',
+    'ex4Title','badgeHard2','ex4Sub','hintE1','hintE2','hintE3','hintE4','btnCheckMistakes',
+    'scoreCompleteLabel','scoreOutOfPre','scoreOutOfPost','btnBuildAgain','sec3Eyebrow','sec3Title',
+    'cheatMustBody','cheatMustGloss','cheatMustntBody','cheatMustntGloss','cheatHaveBody','cheatHaveGloss','cheatDontHaveBody','cheatDontHaveGloss',
+    'goldenRuleTitle','goldenRuleBody','footerTagline'
+  ].forEach(key => setText(key, t[key]));
+
+  // buttons reused across builder exercises 1-3
+  ['btnCheck1','btnCheck2','btnCheck3'].forEach(id => setText(id, t.btnCheck));
+  // placeholder text inside the sentence-builder drop zones
+  document.querySelectorAll('.sbPh').forEach(el => el.textContent = t.sbPh);
+  document.querySelectorAll('.sbPhQ').forEach(el => el.textContent = t.sbPhQ);
+
+  const langSelect = document.getElementById('langSelect');
+  if (langSelect) langSelect.value = currentLang;
+}
+
+function initLangSwitch() {
+  const sel = document.getElementById('langSelect');
+  if (!sel) return;
+  LANGS.forEach(l => {
+    const opt = document.createElement('option');
+    opt.value = l.code; opt.textContent = l.label;
+    sel.appendChild(opt);
+  });
+  sel.value = currentLang;
+  setLang(currentLang);
+}
+initLangSwitch();
+
 // ── Builders data ──
 const bData = {
   wb1: ["children","mustn't","put","bricks","in","their","mouth","have","do"],
@@ -1293,7 +2090,7 @@ function checkFill(){
     inp.disabled=true;
     const ok=ans===exp||ans===exp.replace(/'/g,"'");
     inp.classList.add(ok?'ok':'err');
-    if(fb){fb.textContent=ok?'✅ Correct! '+quip():'❌ Answer: '+inp.dataset.answer; fb.className='fb '+(ok?'ok':'err');}
+    if(fb){const t=UI_I18N[currentLang]; fb.textContent=ok?t.fbCorrect+' '+quip():t.fbAnswerPrefix+' '+inp.dataset.answer; fb.className='fb '+(ok?'ok':'err');}
     tick(ok);
   });
 }
@@ -1307,7 +2104,7 @@ function checkMC(btn,qId){
   const ok=btn.dataset.c==='true';
   btn.classList.add(ok?'ok':'err');
   if(!ok) q.querySelectorAll('[data-c="true"]').forEach(b=>b.classList.add('ok'));
-  if(fb){fb.textContent=ok?'✅ Brilliant! '+quip():'❌ Look for the green brick!'; fb.className='fb '+(ok?'ok':'err');}
+  if(fb){const t=UI_I18N[currentLang]; fb.textContent=ok?t.fbBrilliant+' '+quip():t.fbLookGreen; fb.className='fb '+(ok?'ok':'err');}
   tick(ok);
 }
 
@@ -1319,7 +2116,7 @@ function checkBuilder(qId,sbId,exp){
   const norm=exp.map(w=>w.toLowerCase().replace(/'/g,"'"));
   const fb=document.getElementById('fb-'+qId);
   const ok=built.join(' ')===norm.join(' ');
-  if(fb){fb.textContent=ok?'✅ Perfect sentence! '+quip():'❌ Answer: '+exp.join(' '); fb.className='fb '+(ok?'ok':'err');}
+  if(fb){const t=UI_I18N[currentLang]; fb.textContent=ok?t.fbPerfectSentence+' '+quip():t.fbAnswerPrefix+' '+exp.join(' '); fb.className='fb '+(ok?'ok':'err');}
   tick(ok);
 }
 
@@ -1335,7 +2132,7 @@ function checkErrors(){
     inp.disabled=true;
     const ok=ans===exp;
     inp.classList.add(ok?'ok':'err');
-    if(fb){fb.textContent=ok?'✅ Correct! '+quip():'❌ Answer: '+answers[i]; fb.className='fb '+(ok?'ok':'err');}
+    if(fb){const t=UI_I18N[currentLang]; fb.textContent=ok?t.fbCorrect+' '+quip():t.fbAnswerPrefix+' '+answers[i]; fb.className='fb '+(ok?'ok':'err');}
     tick(ok);
   });
 }
@@ -1346,20 +2143,18 @@ function showScore(){
   document.getElementById('scoreNum').textContent=correct;
   document.getElementById('totalPts').textContent=TOTAL;
   const pct=correct/TOTAL*100;
+  const t=UI_I18N[currentLang];
   let msg;
-  if(pct===100) msg="🧱🏆 Idealnie! Perfect score! You've built the Master Builder Grammar Set! Every brick in place! NIESAMOWITE!";
-  else if(pct>=75) msg="🧱 Świetnie! Great build! A few bricks are in the wrong place — check mustn't vs. don't have to and you'll complete the set!";
-  else if(pct>=50) msg="🧱 Dobra robota! Good start! Some bricks still need sorting — go back over the lesson and try again. Nie poddawaj się!";
-  else msg="🧱 Spróbuj jeszcze raz! Don't give up! Even LEGO Master Builders follow the instructions carefully at first. Read the lesson again — you've got this! 💪";
+  if(pct===100) msg=t.score100Msg;
+  else if(pct>=75) msg=t.score75Msg;
+  else if(pct>=50) msg=t.score50Msg;
+  else msg=t.scoreLowMsg;
   document.getElementById('scoreMsg').textContent=msg;
   p.scrollIntoView({behavior:'smooth'});
 }
 
 function quip(){
-  const q=["LEGO Master! 🧱","Fantastic build! 🏰","Perfect fit! ✅",
-    "That brick is in exactly the right place! 🎯","Zbudowane idealnie! 🧱",
-    "Master Builder move! ⭐","Swoim klockom możesz być dumny! 🇵🇱",
-    "Click! Perfect connection! 🧱"];
+  const q=UI_I18N[currentLang].quips;
   return q[Math.floor(Math.random()*q.length)];
 }
 </script>
