@@ -1,0 +1,744 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sherpa Tensing - Camp Four: The Rope Still Attached (Present Perfect Simple)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16251F;
+    --ink-soft:#4E6A60;
+    --paper:#FBF6F0;
+    --card:#FFFFFF;
+    --accent:#0F6E56;
+    --accent-dark:#0A4E3D;
+    --accent-light:#C8E0D6;
+    --accent-lighter:#E9F3EF;
+    --good:#1E7A4C;
+    --good-bg:#E5F5EC;
+    --bad:#B23A3A;
+    --bad-bg:#FBEAEA;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;}
+  h1,h2,h3{font-family:'Fraunces',serif;font-weight:600;margin:0 0 .4em;color:var(--ink);}
+  .wordmark{display:flex;align-items:center;justify-content:space-between;max-width:1000px;margin:0 auto;padding:28px 24px 0;}
+  .wordmark .brand{font-family:'Fraunces',serif;font-weight:700;font-size:20px;letter-spacing:.02em;}
+  .wordmark .brand span{color:var(--accent);}
+  .wordmark .sub{font-size:13px;color:var(--ink-soft);}
+
+  .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px;}
+  .chart-wrap{margin-top:24px;background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:18px 20px;overflow-x:auto;}
+  .chart-wrap h3{font-size:15px;margin-bottom:4px;}
+  .chart-wrap + .chart-wrap{margin-top:16px;}
+  .chart-note{font-size:13px;color:var(--ink-soft);margin-bottom:14px;}
+  table.conj{width:100%;border-collapse:collapse;font-size:14px;min-width:520px;}
+  table.conj th, table.conj td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--accent-light);}
+  table.conj th{font-family:'Fraunces',serif;font-weight:600;color:var(--accent-dark);font-size:13px;text-transform:uppercase;letter-spacing:.03em;}
+  table.conj td.subj{font-weight:600;}
+  table.conj tr:last-child td{border-bottom:none;}
+  main{max-width:1000px;margin:0 auto;padding:0 24px 80px;}
+  .hero{display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:center;padding:40px 0 56px;}
+  .hero .eyebrow{
+    display:inline-block;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--accent-dark);background:var(--accent-lighter);padding:6px 12px;border-radius:999px;margin-bottom:14px;
+  }
+  .hero h1{font-size:38px;line-height:1.12;}
+  .hero p{color:var(--ink-soft);font-size:16px;max-width:46ch;}
+  .hero-diagram{width:100%;display:block;filter:drop-shadow(0 18px 40px -18px rgba(43,27,18,.45));}
+  @media (max-width:720px){.hero{grid-template-columns:1fr;}}
+
+  .trail-wrap{position:relative;padding-left:66px;}
+  .trail-wrap::before{
+    content:'';position:absolute;left:23px;top:8px;bottom:8px;width:2px;
+    background:repeating-linear-gradient(to bottom, var(--accent) 0 8px, transparent 8px 18px);
+  }
+  .camp{position:relative;margin-bottom:64px;}
+  .camp .marker{position:absolute;left:-66px;top:0;width:46px;height:46px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;}
+  .camp .marker svg{width:18px;height:18px;}
+  .camp .camp-label{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-dark);margin-bottom:6px;}
+
+  .rule-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px;}
+  .rule-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:18px 20px;}
+  .rule-card h3{font-size:16px;margin-bottom:8px;}
+  .rule-card p{margin:0 0 8px;font-size:14px;color:var(--ink-soft);}
+  .rule-card .ex{font-size:14px;font-style:italic;color:var(--accent-dark);border-left:2px solid var(--accent);padding-left:10px;}
+
+  .signal-groups{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px;}
+  .signal-box{background:var(--accent-lighter);border-radius:var(--radius);padding:18px 20px;}
+  .signal-box h3{font-size:15px;}
+  .signal-box ul{margin:8px 0 0;padding-left:18px;font-size:14px;color:var(--ink);}
+  .signal-box li{margin-bottom:4px;}
+  @media (max-width:600px){.signal-groups{grid-template-columns:1fr;}}
+
+  /* ── PAST vs NOW DIAGRAM CAMP ── */
+  .diagram-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:26px 26px 22px;}
+  .diagram-intro{font-size:14px;color:var(--ink-soft);margin-bottom:18px;max-width:60ch;}
+  .diagram-stage{width:100%;background:var(--paper);border:1px solid var(--accent-light);border-radius:var(--radius);padding:12px;}
+  .diagram-stage svg{width:100%;height:auto;display:block;}
+  .diagram-shape{cursor:pointer;transition:filter .15s ease;}
+  .diagram-shape:hover{filter:brightness(1.06);}
+  .diagram-caption{font-family:'Inter',sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;}
+  .dg-cap{font-family:'Inter',sans-serif;font-weight:700;font-size:9.5px;letter-spacing:.11em;}
+  .dg-line{font-family:'Inter',sans-serif;font-weight:600;font-size:14px;}
+  .dg-small{font-family:'Inter',sans-serif;font-weight:500;font-size:12px;}
+  .dg-q{font-family:'Inter',sans-serif;font-weight:700;font-size:26px;letter-spacing:.32em;}
+  .diagram-panels{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px;}
+  .diagram-panel{border-radius:12px;padding:16px 18px;border:1px solid var(--accent-light);background:var(--accent-lighter);}
+  .diagram-panel.is-now{background:#EAF1F6;border-color:#C9DCE6;}
+  .diagram-panel h4{margin:0 0 8px;font-family:'Fraunces',serif;font-size:14px;letter-spacing:.03em;text-transform:uppercase;color:var(--accent-dark);}
+  .diagram-panel.is-now h4{color:#3E6A85;}
+  .diagram-panel ul{margin:0;padding-left:18px;font-size:14px;}
+  .diagram-panel li{margin-bottom:5px;}
+  .diagram-panel li em{font-style:normal;font-weight:600;}
+  @media (max-width:600px){.diagram-panels{grid-template-columns:1fr;}}
+
+  .quiz-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:24px 24px 20px;}
+  .progress-row{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--ink-soft);margin-bottom:10px;}
+  .progress-track{height:6px;background:var(--accent-lighter);border-radius:999px;overflow:hidden;margin-bottom:20px;}
+  .progress-fill{height:100%;background:var(--accent);border-radius:999px;width:0%;transition:width .3s ease;}
+  .q-prompt{font-size:17px;margin-bottom:4px;}
+  .q-hint{font-size:13px;color:var(--ink-soft);margin-bottom:16px;font-style:italic;}
+  .options{display:grid;gap:10px;}
+  .opt-btn{text-align:left;padding:12px 16px;border-radius:10px;border:1px solid var(--accent-light);background:#fff;font-family:'Inter',sans-serif;font-size:15px;color:var(--ink);cursor:pointer;}
+  .opt-btn:hover{border-color:var(--accent);}
+  .opt-btn.correct{background:var(--good-bg);border-color:var(--good);color:var(--good);font-weight:600;}
+  .opt-btn.wrong{background:var(--bad-bg);border-color:var(--bad);color:var(--bad);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:16px;padding:14px 16px;border-radius:10px;background:var(--accent-lighter);font-size:14px;display:none;}
+  .feedback.show{display:block;}
+  .quiz-footer{display:flex;justify-content:flex-end;margin-top:20px;}
+  .next-btn{background:var(--accent);color:#fff;border:none;padding:11px 22px;border-radius:999px;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;cursor:pointer;}
+  .next-btn:disabled{background:var(--accent-light);cursor:not-allowed;}
+
+  #results{display:none;text-align:center;padding:12px 0 8px;}
+  #results .score{font-family:'Fraunces',serif;font-size:52px;color:var(--accent);margin:8px 0;}
+  #results p{color:var(--ink-soft);}
+  .retry-btn{margin-top:12px;background:transparent;border:1px solid var(--accent);color:var(--accent-dark);padding:10px 20px;border-radius:999px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
+  .route-nav{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:22px;padding-top:18px;border-top:1px solid var(--accent-light);}
+  .route-nav a{display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;padding:10px 20px;border-radius:999px;}
+  .route-nav a.next-camp{background:var(--accent);color:#fff;}
+  .route-nav a.base-camp{background:transparent;border:1px solid var(--ink-soft);color:var(--ink-soft);}
+  .route-nav a:hover{opacity:0.88;}
+</style>
+</head>
+<body>
+
+<div class="wordmark">
+  <div class="brand">Sherpa <span>Tensing</span></div>
+  <div class="sub">Forbes English &middot; a route up the tenses</div>
+</div>
+
+<main>
+
+  <section class="hero" id="hero">
+    <div>
+      <span class="eyebrow">Camp four &middot; present perfect simple</span>
+      <h1>The rope still attached</h1>
+      <p>Camp three was the ground you crossed and left. Camp four is the ground still roped to you. The present perfect describes a past that has not been cut loose &mdash; a period still running, an experience with no date on it, or something that happened moments ago and is still showing.</p>
+    </div>
+    <svg class="hero-diagram" viewBox="0 0 640 344" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A brown block labelled past simple, I moved here ten years ago; three green bands reaching across to a coral and blue block labelled now, I live here now; the bands show an unfinished time period, an unspecified time marked by question marks, and a very recent action arriving at the present">
+      <defs>
+        <linearGradient id="ppArrive" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0"    stop-color="#FBF6F0"/>
+          <stop offset="0.60" stop-color="#FBF6F0"/>
+          <stop offset="0.75" stop-color="#8FCBB8"/>
+          <stop offset="0.88" stop-color="#2E8E72"/>
+          <stop offset="1"    stop-color="#0F6E56"/>
+        </linearGradient>
+        <filter id="grainHero" x="-8%" y="-8%" width="116%" height="116%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch" result="n"/>
+          <feColorMatrix in="n" type="matrix"
+            values="0 0 0 0 0.98  0 0 0 0 0.95  0 0 0 0 0.88  0 0 0 0.4 0" result="g"/>
+          <feComposite in="g" in2="SourceGraphic" operator="in"/>
+        </filter>
+      </defs>
+      <rect x="0" y="0" width="640" height="344" fill="var(--paper)"/>
+      <!-- the ground the whole route stands on -->
+      <line x1="196" y1="300" x2="632" y2="300" stroke="#241811" stroke-width="2.5"/>
+      <!-- past simple: closed, and left behind -->
+      
+      <rect x="10" y="55" width="156" height="219" fill="#B08968"/>
+      <rect x="10" y="55" width="156" height="219" fill="#000" filter="url(#grainHero)" opacity="0.3"/>
+      <text x="24" y="78" class="dg-cap" fill="#F6EBE0" opacity="0.9">PAST SIMPLE</text>
+      <text x="24" y="152" class="dg-line" fill="#FDF8F3">I moved here</text>
+      <text x="24" y="171" class="dg-line" fill="#FDF8F3">ten years ago</text>
+      
+      <path d="M10,274 L196,274 L196,300 L52,300 L10,281 Z" fill="#241811"/>
+      <path d="M10,274 L196,274 L196,300 L52,300 L10,281 Z" fill="#000" filter="url(#grainHero)" opacity="0.5"/>
+      <!-- three ways the present perfect reaches forward to now -->
+      
+      <rect x="170" y="55" width="310" height="95" fill="#0F6E56"/>
+      <rect x="170" y="55" width="310" height="95" fill="#000" filter="url(#grainHero)" opacity="0.3"/>
+      <text x="209" y="80" class="dg-cap" fill="#BFE3D6">UNFINISHED TIME PERIOD</text>
+      <text x="209" y="116" class="dg-line" fill="#F2FAF7">I have lived here for ten years.</text>
+      
+      <rect x="166" y="150" width="30" height="150" fill="#241811"/>
+      <rect x="166" y="150" width="30" height="150" fill="#000" filter="url(#grainHero)" opacity="0.5"/>
+      
+      <rect x="196" y="150" width="284" height="72" fill="#FBF6F0"/>
+      <text x="209" y="167" class="dg-cap" fill="#0A4E3D">UNSPECIFIED TIME</text>
+      <text x="209" y="197" class="dg-q" fill="#0F6E56">????????</text>
+      <text x="209" y="216" class="dg-small" fill="#16251F">Have you ever been to Scotland?</text>
+      
+      
+      <rect x="196" y="222" width="284" height="73" fill="url(#ppArrive)"/>
+      <text x="209" y="243" class="dg-cap" fill="#0A4E3D">JUST NOW &#183; RESULT IN THE PRESENT</text>
+      <text x="209" y="268" class="dg-line" fill="#16251F">Doris has just made coffee.</text>
+      
+      <!-- now, and the one watching from it -->
+      
+      <text x="544" y="42" class="diagram-caption" fill="#3E6A85">NOW</text>
+      <rect x="480" y="55" width="128" height="240" fill="#D98A72"/>
+      <rect x="480" y="55" width="128" height="240" fill="#000" filter="url(#grainHero)" opacity="0.22"/>
+      <rect x="497" y="74" width="94" height="203" fill="#5C7690"/>
+      <text x="544" y="160" text-anchor="middle" class="dg-line" fill="#F1F5F8">I live</text>
+      <text x="544" y="179" text-anchor="middle" class="dg-line" fill="#F1F5F8">here</text>
+      <text x="544" y="198" text-anchor="middle" class="dg-line" fill="#F1F5F8">now</text>
+      
+      <g fill="#241811">
+        <path d="M614,300 L620,288 M626,300 L620,288 M620,300 L620,288" fill="none" stroke="#241811" stroke-width="1.3" stroke-linecap="round"/>
+        <rect x="611" y="278" width="15" height="9" rx="1"/>
+        <rect x="607" y="280" width="4" height="5"/>
+        <circle cx="631" cy="277" r="3.1"/>
+        <path d="M631,280 L631,292 L627,300 M631,292 L635,300 M631,283 L625,281" stroke="#241811" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+      </g>
+    </svg>
+  </section>
+
+  <div class="trail-wrap">
+
+    <div class="camp" id="rules">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 3v18M5 4h11l-3 4 3 4H5"/></svg></div>
+      <div class="camp-label">Basecamp briefing</div>
+      <h2>When to use it</h2>
+      <div class="rule-grid">
+        <div class="rule-card">
+          <h3>An unfinished time period</h3>
+          <p>The period started in the past and is still running now.</p>
+          <div class="ex">"I have lived here for ten years." <em>&mdash; and I still do</em></div>
+        </div>
+        <div class="rule-card">
+          <h3>An unspecified time</h3>
+          <p>It happened, but when is not stated and does not matter.</p>
+          <div class="ex">"Have you ever been to Scotland?"</div>
+        </div>
+        <div class="rule-card">
+          <h3>A very recent action</h3>
+          <p>Finished moments ago, with the result still in front of you.</p>
+          <div class="ex">"Doris has just made coffee." <em>&mdash; it is still hot</em></div>
+        </div>
+        <div class="rule-card">
+          <h3>Life experience, so far</h3>
+          <p>A running total, counted up to the present moment.</p>
+          <div class="ex">"I have been there a few times."</div>
+        </div>
+        <div class="rule-card">
+          <h3>A change up to now</h3>
+          <p>The situation is different from how it was.</p>
+          <div class="ex">"The village has grown since the road opened."</div>
+        </div>
+        <div class="rule-card">
+          <h3>Something still outstanding</h3>
+          <p>Expected, not done yet &mdash; and the door is still open.</p>
+          <div class="ex">"She hasn't sent the report yet."</div>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <h3>The line that decides it</h3>
+        <p class="chart-note">Give the sentence a finished, stated time and it falls back to camp three. This is the single test that settles almost every case.</p>
+        <table class="conj">
+          <thead><tr><th>Time is&hellip;</th><th>Tense</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">Finished and stated</td><td>Past simple</td><td>I <em>moved</em> here ten years ago.</td></tr>
+            <tr><td class="subj">Still running</td><td>Present perfect</td><td>I <em>have lived</em> here for ten years.</td></tr>
+            <tr><td class="subj">Not stated at all</td><td>Present perfect</td><td>I <em>have been</em> to Scotland.</td></tr>
+            <tr><td class="subj">Stated, once you ask</td><td>Past simple</td><td>I <em>went</em> in 2019.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="camp" id="form">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg></div>
+      <div class="camp-label">Building the tense</div>
+      <h2>How it's built</h2>
+      <div class="form-grid">
+        <div class="rule-card">
+          <h3>Affirmative</h3>
+          <p>subject + have / has + past participle</p>
+          <div class="ex">"She has worked here for years."</div>
+        </div>
+        <div class="rule-card">
+          <h3>Negative</h3>
+          <p>subject + have not (haven't) / has not (hasn't) + past participle</p>
+          <div class="ex">"They haven't finished yet."</div>
+        </div>
+        <div class="rule-card">
+          <h3>Yes / No questions</h3>
+          <p>Have / Has + subject + past participle?</p>
+          <div class="ex">"Have you called her?"</div>
+        </div>
+        <div class="rule-card">
+          <h3>Wh- questions</h3>
+          <p>question word + have / has + subject + past participle?</p>
+          <div class="ex">"How long have you known her?"</div>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <h3>Conjugation chart</h3>
+        <p class="chart-note">Only the auxiliary changes &mdash; <em>has</em> for he, she and it, <em>have</em> for everyone else. The participle never moves. Using the verb "to work" as the model.</p>
+        <table class="conj">
+          <thead>
+            <tr><th>Subject</th><th>Affirmative</th><th>Negative</th><th>Question</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="subj">I</td><td>I have worked</td><td>I have not worked <em>(haven't)</em></td><td>Have I worked?</td></tr>
+            <tr><td class="subj">You</td><td>You have worked</td><td>You have not worked <em>(haven't)</em></td><td>Have you worked?</td></tr>
+            <tr><td class="subj">He</td><td>He has worked</td><td>He has not worked <em>(hasn't)</em></td><td>Has he worked?</td></tr>
+            <tr><td class="subj">She</td><td>She has worked</td><td>She has not worked <em>(hasn't)</em></td><td>Has she worked?</td></tr>
+            <tr><td class="subj">It</td><td>It has worked</td><td>It has not worked <em>(hasn't)</em></td><td>Has it worked?</td></tr>
+            <tr><td class="subj">We</td><td>We have worked</td><td>We have not worked <em>(haven't)</em></td><td>Have we worked?</td></tr>
+            <tr><td class="subj">They</td><td>They have worked</td><td>They have not worked <em>(haven't)</em></td><td>Have they worked?</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="chart-wrap">
+        <h3>Irregular past participles worth carrying</h3>
+        <p class="chart-note">The participle is the third form, and it is not always the past simple. Getting <em>went</em> and <em>been</em> the wrong way round is the most common slip at this camp.</p>
+        <table class="conj">
+          <thead><tr><th>Base</th><th>Past simple</th><th>Past participle</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">be</td><td>was / were</td><td>been</td></tr>
+            <tr><td class="subj">go</td><td>went</td><td>gone / been</td></tr>
+            <tr><td class="subj">see</td><td>saw</td><td>seen</td></tr>
+            <tr><td class="subj">eat</td><td>ate</td><td>eaten</td></tr>
+            <tr><td class="subj">write</td><td>wrote</td><td>written</td></tr>
+            <tr><td class="subj">take</td><td>took</td><td>taken</td></tr>
+            <tr><td class="subj">do</td><td>did</td><td>done</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="camp" id="signals">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg></div>
+      <div class="camp-label">Trail markers</div>
+      <h2>Signal words</h2>
+      <div class="signal-groups">
+        <div class="signal-box">
+          <h3>Time still running</h3>
+          <ul>
+            <li>for &mdash; for ten years, for a while</li>
+            <li>since &mdash; since 2019, since I moved</li>
+            <li>so far, up to now</li>
+            <li>today, this week, this year</li>
+            <li>all my life</li>
+          </ul>
+        </div>
+        <div class="signal-box">
+          <h3>No time given</h3>
+          <ul>
+            <li>ever &mdash; Have you ever&hellip;?</li>
+            <li>never</li>
+            <li>before</li>
+            <li>once, twice, a few times</li>
+            <li>already</li>
+          </ul>
+        </div>
+        <div class="signal-box">
+          <h3>Only moments ago</h3>
+          <ul>
+            <li>just</li>
+            <li>recently, lately</li>
+            <li>yet &mdash; in questions and negatives</li>
+            <li>still &mdash; still hasn't arrived</li>
+          </ul>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <h3>The words that send you back to camp three</h3>
+        <p class="chart-note">These name a finished time, so they take the past simple &mdash; never the present perfect.</p>
+        <p style="font-size:14px;margin:0;">yesterday &middot; last night &middot; last week &middot; two days ago &middot; in 1990 &middot; when I was a child &middot; at six o'clock</p>
+      </div>
+    </div>
+
+    <div class="camp" id="past-now">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="4" width="8" height="16"/><rect x="13" y="4" width="8" height="16"/></svg></div>
+      <div class="camp-label">Interactive</div>
+      <h2>Three ropes to now</h2>
+      <div class="diagram-card">
+        <p class="diagram-intro">The past simple block on the left is closed &mdash; a stated time, over. Everything green is still attached to the present: a period that has not ended, an experience with no date on it, and something that finished moments ago and is still showing. Click any block to see it in sentences.</p>
+        <div class="diagram-stage">
+          <svg viewBox="0 0 640 344" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Interactive diagram of the three uses of the present perfect, between past simple and now">
+      <defs>
+        <linearGradient id="ppArrive" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0"    stop-color="#FBF6F0"/>
+          <stop offset="0.60" stop-color="#FBF6F0"/>
+          <stop offset="0.75" stop-color="#8FCBB8"/>
+          <stop offset="0.88" stop-color="#2E8E72"/>
+          <stop offset="1"    stop-color="#0F6E56"/>
+        </linearGradient>
+        <filter id="grainStage" x="-8%" y="-8%" width="116%" height="116%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch" result="n"/>
+          <feColorMatrix in="n" type="matrix"
+            values="0 0 0 0 0.98  0 0 0 0 0.95  0 0 0 0 0.88  0 0 0 0.4 0" result="g"/>
+          <feComposite in="g" in2="SourceGraphic" operator="in"/>
+        </filter>
+      </defs>
+      <rect x="0" y="0" width="640" height="344" fill="var(--paper)"/>
+      <!-- the ground the whole route stands on -->
+      <line x1="196" y1="300" x2="632" y2="300" stroke="#241811" stroke-width="2.5"/>
+      <!-- past simple: closed, and left behind -->
+      <g class="diagram-shape" id="shape-past" tabindex="0" role="button">
+      <rect x="10" y="55" width="156" height="219" fill="#B08968"/>
+      <rect x="10" y="55" width="156" height="219" fill="#000" filter="url(#grainStage)" opacity="0.3"/>
+      <text x="24" y="78" class="dg-cap" fill="#F6EBE0" opacity="0.9">PAST SIMPLE</text>
+      <text x="24" y="152" class="dg-line" fill="#FDF8F3">I moved here</text>
+      <text x="24" y="171" class="dg-line" fill="#FDF8F3">ten years ago</text>
+      </g>
+      <path d="M10,274 L196,274 L196,300 L52,300 L10,281 Z" fill="#241811"/>
+      <path d="M10,274 L196,274 L196,300 L52,300 L10,281 Z" fill="#000" filter="url(#grainStage)" opacity="0.5"/>
+      <!-- three ways the present perfect reaches forward to now -->
+      <g class="diagram-shape" id="shape-unfinished" tabindex="0" role="button">
+      <rect x="170" y="55" width="310" height="95" fill="#0F6E56"/>
+      <rect x="170" y="55" width="310" height="95" fill="#000" filter="url(#grainStage)" opacity="0.3"/>
+      <text x="209" y="80" class="dg-cap" fill="#BFE3D6">UNFINISHED TIME PERIOD</text>
+      <text x="209" y="116" class="dg-line" fill="#F2FAF7">I have lived here for ten years.</text>
+      </g>
+      <rect x="166" y="150" width="30" height="150" fill="#241811"/>
+      <rect x="166" y="150" width="30" height="150" fill="#000" filter="url(#grainStage)" opacity="0.5"/>
+      <g class="diagram-shape" id="shape-unspecified" tabindex="0" role="button">
+      <rect x="196" y="150" width="284" height="72" fill="#FBF6F0"/>
+      <text x="209" y="167" class="dg-cap" fill="#0A4E3D">UNSPECIFIED TIME</text>
+      <text x="209" y="197" class="dg-q" fill="#0F6E56">????????</text>
+      <text x="209" y="216" class="dg-small" fill="#16251F">Have you ever been to Scotland?</text>
+      </g>
+      <g class="diagram-shape" id="shape-recent" tabindex="0" role="button">
+      <rect x="196" y="222" width="284" height="73" fill="url(#ppArrive)"/>
+      <text x="209" y="243" class="dg-cap" fill="#0A4E3D">JUST NOW &#183; RESULT IN THE PRESENT</text>
+      <text x="209" y="268" class="dg-line" fill="#16251F">Doris has just made coffee.</text>
+      </g>
+      <!-- now, and the one watching from it -->
+      <g class="diagram-shape" id="shape-now" tabindex="0" role="button">
+      <text x="544" y="42" class="diagram-caption" fill="#3E6A85">NOW</text>
+      <rect x="480" y="55" width="128" height="240" fill="#D98A72"/>
+      <rect x="480" y="55" width="128" height="240" fill="#000" filter="url(#grainStage)" opacity="0.22"/>
+      <rect x="497" y="74" width="94" height="203" fill="#5C7690"/>
+      <text x="544" y="160" text-anchor="middle" class="dg-line" fill="#F1F5F8">I live</text>
+      <text x="544" y="179" text-anchor="middle" class="dg-line" fill="#F1F5F8">here</text>
+      <text x="544" y="198" text-anchor="middle" class="dg-line" fill="#F1F5F8">now</text>
+      </g>
+      <g fill="#241811">
+        <path d="M614,300 L620,288 M626,300 L620,288 M620,300 L620,288" fill="none" stroke="#241811" stroke-width="1.3" stroke-linecap="round"/>
+        <rect x="611" y="278" width="15" height="9" rx="1"/>
+        <rect x="607" y="280" width="4" height="5"/>
+        <circle cx="631" cy="277" r="3.1"/>
+        <path d="M631,280 L631,292 L627,300 M631,292 L635,300 M631,283 L625,281" stroke="#241811" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+      </g>
+          </svg>
+        </div>
+        <div class="diagram-panels">
+          <div class="diagram-panel" id="panel-pp">
+            <h4 id="panel-pp-title">Present perfect &mdash; still attached</h4>
+            <ul id="panel-pp-list"></ul>
+          </div>
+          <div class="diagram-panel is-now" id="panel-past">
+            <h4 id="panel-past-title">Past simple &mdash; cut loose</h4>
+            <ul id="panel-past-list"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="quiz">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3l3 7-3 3-3-3 3-7z"/><path d="M12 13v8"/></svg></div>
+      <div class="camp-label">The climb</div>
+      <h2>Practice</h2>
+      <div class="quiz-card">
+        <div class="progress-row">
+          <span id="progress-text">Checkpoint 1 of 14</span>
+          <span id="score-text">Score: 0</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+        <div class="q-prompt" id="q-prompt"></div>
+        <div class="q-hint" id="q-hint"></div>
+        <div class="options" id="options"></div>
+        <div class="feedback" id="feedback"></div>
+        <div class="quiz-footer">
+          <button class="next-btn" id="next-btn" disabled>Next checkpoint</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="results-camp">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 20l5-14 5 14M8 14h4"/></svg></div>
+      <div class="camp-label">Summit log</div>
+      <div id="results">
+        <div class="score" id="final-score"></div>
+        <p id="final-message"></p>
+        <button class="retry-btn" id="retry-btn">Climb again</button>
+        <div class="route-nav">
+          <a class="base-camp" href="sherpa-tensing-route-map.html">&larr; Return to base camp</a>
+          <a class="next-camp" href="sherpa-tensing-route-map.html">Choose your next camp &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+// ── THREE ROPES diagram interactivity ──
+var SHAPES = {
+  "shape-unfinished": {
+    panel: "pp",
+    title: "Unfinished time period",
+    items: [
+      "I <em>have lived</em> here for ten years.",
+      "She <em>has worked</em> at the clinic since April.",
+      "We <em>haven't had</em> a day off this week."
+    ]
+  },
+  "shape-unspecified": {
+    panel: "pp",
+    title: "Unspecified time",
+    items: [
+      "<em>Have</em> you ever <em>been</em> to Scotland?",
+      "Yes &mdash; I <em>have been</em> there a few times.",
+      "He <em>has never eaten</em> oysters."
+    ]
+  },
+  "shape-recent": {
+    panel: "pp",
+    title: "Very recent &mdash; the result is still here",
+    items: [
+      "Doris <em>has just made</em> coffee.",
+      "They <em>have already left</em>.",
+      "The train <em>hasn't arrived</em> yet."
+    ]
+  },
+  "shape-now": {
+    panel: "pp",
+    title: "Now &mdash; the moment you are speaking from",
+    items: [
+      "I <em>live</em> here now.",
+      "The coffee <em>is</em> still hot.",
+      "Everything green above is roped to this box."
+    ]
+  },
+  "shape-past": {
+    panel: "past",
+    title: "Past simple &mdash; cut loose",
+    items: [
+      "I <em>moved</em> here ten years ago.",
+      "I <em>went</em> to Scotland in 2019.",
+      "Doris <em>made</em> the coffee at eight."
+    ]
+  }
+};
+
+function renderPanel(which, title, items){
+  document.getElementById("panel-" + which + "-title").innerHTML = title;
+  var ul = document.getElementById("panel-" + which + "-list");
+  ul.innerHTML = "";
+  items.forEach(function(txt){
+    var li = document.createElement("li");
+    li.innerHTML = txt;
+    ul.appendChild(li);
+  });
+}
+renderPanel("pp", SHAPES["shape-unfinished"].title, SHAPES["shape-unfinished"].items);
+renderPanel("past", SHAPES["shape-past"].title, SHAPES["shape-past"].items);
+
+function pulseShape(el){
+  el.animate(
+    [{ filter: "brightness(1)" }, { filter: "brightness(1.14)" }, { filter: "brightness(1)" }],
+    { duration: 380, easing: "ease-out" }
+  );
+}
+
+Object.keys(SHAPES).forEach(function(id){
+  var el = document.getElementById(id);
+  if (!el) return;
+  var cfg = SHAPES[id];
+  el.setAttribute("aria-label", "Show examples: " + cfg.title.replace(/<[^>]+>/g, ""));
+  var activate = function(){
+    pulseShape(el);
+    renderPanel(cfg.panel, cfg.title, cfg.items);
+    document.querySelectorAll(".diagram-panel").forEach(function(p){ p.style.outline = "none"; });
+    document.getElementById("panel-" + cfg.panel).style.outline =
+      "2px solid " + (cfg.panel === "past" ? "#B08968" : "#0F6E56");
+  };
+  el.addEventListener("click", activate);
+  el.addEventListener("keydown", function(e){
+    if (e.key === "Enter" || e.key === " "){ e.preventDefault(); activate(); }
+  });
+});
+
+// ── QUIZ ──
+var questions = [
+  {
+    prompt: "I _____ here for ten years \u2014 and I'm still here. (live)",
+    hint: "The ten years are not over.",
+    correct: "have lived",
+    options: ["have lived", "lived", "live", "am living"],
+    explain: "The period is still running, so the present perfect keeps it attached to now: have lived."
+  },
+  {
+    prompt: "I _____ here ten years ago.",
+    hint: "\"Ten years ago\" is a finished, stated time.",
+    correct: "moved",
+    options: ["moved", "have moved", "move", "was moving"],
+    explain: "A stated finished time sends you back to camp three: past simple, moved."
+  },
+  {
+    prompt: "_____ you ever been to Scotland?",
+    hint: "No time is given \u2014 the question is about experience.",
+    correct: "Have",
+    options: ["Have", "Did", "Are", "Were"],
+    explain: "With ever and no stated time, the present perfect asks about experience: Have you ever been\u2026?"
+  },
+  {
+    prompt: "Doris has just _____ coffee \u2014 it's still hot. (make)",
+    hint: "Have / has takes the past participle, not the past simple.",
+    correct: "made",
+    options: ["made", "make", "making", "makes"],
+    explain: "Has + past participle. Make \u2192 made \u2192 made, so: has just made."
+  },
+  {
+    prompt: "She _____ at the clinic since April. (work)",
+    hint: "Since points at a starting point that runs up to now.",
+    correct: "has worked",
+    options: ["has worked", "worked", "works", "is working"],
+    explain: "Since anchors an unfinished period, so the present perfect: has worked."
+  },
+  {
+    prompt: "_____ the report yet?",
+    hint: "Yet belongs to something still outstanding.",
+    correct: "Have they finished",
+    options: ["Have they finished", "Did they finish", "Are they finishing", "Do they finish"],
+    explain: "Yet marks something expected but not done, which keeps it in the present perfect: Have they finished\u2026 yet?"
+  },
+  {
+    prompt: "We _____ to Lisbon last spring. (go)",
+    hint: "Last spring names a finished time.",
+    correct: "went",
+    options: ["went", "have gone", "have been", "were going"],
+    explain: "Last spring is stated and finished \u2014 past simple, went. Have gone would clash with it."
+  },
+  {
+    prompt: "He _____ oysters. (never / eat)",
+    hint: "A life experience, counted up to now.",
+    correct: "has never eaten",
+    options: ["has never eaten", "never ate", "never eats", "was never eating"],
+    explain: "Never with no stated time is experience up to the present: has never eaten."
+  },
+  {
+    prompt: "How long _____ you known her?",
+    hint: "How long asks about a period still running.",
+    correct: "have",
+    options: ["have", "did", "are", "do"],
+    explain: "How long + present perfect measures a period that reaches the present: How long have you known her?"
+  },
+  {
+    prompt: "The village _____ a lot since the road opened. (change)",
+    hint: "Since again \u2014 and the change is visible now.",
+    correct: "has changed",
+    options: ["has changed", "changed", "changes", "was changing"],
+    explain: "Since opens a period that runs to now, and the result is in front of you: has changed."
+  }
+];
+
+var current = 0;
+var score = 0;
+var answered = false;
+var order = [];
+
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+
+function renderQuestion(){
+  answered = false;
+  var q = questions[current];
+  document.getElementById("progress-text").textContent = "Checkpoint " + (current + 1) + " of " + questions.length;
+  document.getElementById("progress-fill").style.width = ((current / questions.length) * 100) + "%";
+  document.getElementById("q-prompt").textContent = q.prompt;
+  document.getElementById("q-hint").textContent = q.hint;
+  var feedback = document.getElementById("feedback");
+  feedback.className = "feedback";
+  feedback.textContent = "";
+  var optionsWrap = document.getElementById("options");
+  optionsWrap.innerHTML = "";
+  order = shuffle(q.options);
+  order.forEach(function(opt){
+    var btn = document.createElement("button");
+    btn.className = "opt-btn";
+    btn.type = "button";
+    btn.textContent = opt;
+    btn.addEventListener("click", function(){ selectOption(opt, btn); });
+    optionsWrap.appendChild(btn);
+  });
+  document.getElementById("next-btn").disabled = true;
+  document.getElementById("next-btn").textContent = (current === questions.length - 1) ? "Reach the summit" : "Next checkpoint";
+}
+
+function selectOption(opt, btn){
+  if (answered) return;
+  answered = true;
+  var q = questions[current];
+  var allBtns = document.querySelectorAll("#options .opt-btn");
+  allBtns.forEach(function(b){
+    b.disabled = true;
+    if (b.textContent === q.correct) b.classList.add("correct");
+  });
+  if (opt !== q.correct) btn.classList.add("wrong");
+  if (opt === q.correct) score++;
+  document.getElementById("score-text").textContent = "Score: " + score;
+  var feedback = document.getElementById("feedback");
+  feedback.textContent = q.explain;
+  feedback.classList.add("show");
+  document.getElementById("next-btn").disabled = false;
+}
+
+document.getElementById("next-btn").addEventListener("click", function(){
+  if (current < questions.length - 1){
+    current++;
+    renderQuestion();
+  } else {
+    document.getElementById("progress-fill").style.width = "100%";
+    document.getElementById("quiz").style.display = "none";
+    document.getElementById("results").style.display = "block";
+    document.getElementById("final-score").textContent = score + " / " + questions.length;
+    var msg = "";
+    if (score === questions.length) msg = "Camp struck. Every step behind you accounted for.";
+    else if (score >= questions.length - 2) msg = "Solid progress. A couple of loose stones to check before camp four.";
+    else msg = "Good first attempt. Worth another pass before moving on.";
+    document.getElementById("final-message").textContent = msg;
+  }
+});
+
+document.getElementById("retry-btn").addEventListener("click", function(){
+  current = 0;
+  score = 0;
+  document.getElementById("score-text").textContent = "Score: 0";
+  document.getElementById("quiz").style.display = "block";
+  document.getElementById("results").style.display = "none";
+  renderQuestion();
+});
+
+renderQuestion();
+</script>
+
+</body>
+</html>
