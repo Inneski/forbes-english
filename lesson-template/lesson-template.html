@@ -540,6 +540,9 @@ const t = k => (UI_I18N[currentLang] && UI_I18N[currentLang][k] != null)
 const stage   = document.getElementById('stage');
 const slides  = [...document.querySelectorAll('.slide')];
 const scored  = slides.filter(s => ['mc','gap'].includes(s.dataset.type));
+/* A slide may hold more than one gap; each gap is worth a point. */
+const itemsIn = s => Math.max(1, s.querySelectorAll('.gap').length || 1);
+const maxScore = scored.reduce((n, s) => n + (s.dataset.type === 'gap' ? itemsIn(s) : 1), 0);
 let idx = 0, score = 0;
 const answered = new WeakSet();
 
@@ -566,7 +569,7 @@ function show(n) {
 }
 
 function renderResults() {
-  const max = scored.length;
+  const max = maxScore;
   document.getElementById('scoreVal').textContent = score;
   document.getElementById('scoreMax').textContent = max;
   const pct = max ? score / max : 0;
@@ -577,7 +580,7 @@ function renderResults() {
 
 function updateScoreChip() {
   document.getElementById('deckScore').textContent =
-    scored.length ? `${t('scoreLabel')} ${score}/${scored.length}` : '';
+    maxScore ? `${t('scoreLabel')} ${score}/${maxScore}` : '';
 }
 
 /* ── Answer handling ── */
@@ -619,20 +622,38 @@ slides.filter(s => s.dataset.type === 'mc').forEach(slide => {
   }));
 });
 
-/* Gap fill */
+/* Gap fill. Supports several gaps on one slide, each scored and explained
+   individually via its own .gap-row wrapper. */
+const gapOk = g => g.dataset.answer.split('|')
+  .map(a => a.trim().toLowerCase())
+  .includes(g.value.trim().toLowerCase().replace(/\s+/g, ' '));
+
+function markGap(g, fb) {
+  const ok = gapOk(g);
+  g.classList.add(ok ? 'correct' : 'wrong');
+  g.disabled = true;
+  if (ok) score++;
+  if (fb) {
+    const why = fb.dataset.explain ? ' ' + fb.dataset.explain : '';
+    fb.textContent = (ok ? t('fbCorrect')
+      : `${t('fbWrong')} ${t('fbAnswer')} ${g.dataset.answer.split('|')[0]}`) + why;
+    fb.className = 'feedback show ' + (ok ? 'ok' : 'no');
+  }
+  return ok;
+}
+
 function checkGaps(slide) {
   if (answered.has(slide)) return;
-  const gaps = [...slide.querySelectorAll('.gap')];
-  let allOk = true;
-  gaps.forEach(g => {
-    const accepted = g.dataset.answer.split('|').map(a => a.trim().toLowerCase());
-    const ok = accepted.includes(g.value.trim().toLowerCase().replace(/\s+/g, ' '));
-    g.classList.add(ok ? 'correct' : 'wrong');
-    g.disabled = true;
-    if (!ok) { allOk = false; g.value = g.value || '—'; }
-  });
-  award(slide, allOk);
-  feedback(slide, allOk, gaps.map(g => g.dataset.answer.split('|')[0]).join(', '));
+  answered.add(slide);
+  const rows = [...slide.querySelectorAll('.gap-row')];
+  if (rows.length) {
+    rows.forEach(r => markGap(r.querySelector('.gap'), r.querySelector('.feedback')));
+  } else {
+    markGap(slide.querySelector('.gap'), slide.querySelector('.feedback'));
+  }
+  const btn = slide.querySelector('[data-action="check"]');
+  if (btn) btn.disabled = true;
+  updateScoreChip();
 }
 
 /* ── Events ── */
