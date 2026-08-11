@@ -33,6 +33,7 @@
   --accent-bright : #f6b9b3;
   --accent-dim    : #d63e2f;
   --secondary     : #0d191c;
+  --contrast      : #1ded9b;
 }
 
 /* ── Fixed tokens: identical in every lesson. Do not edit. ── */
@@ -116,7 +117,7 @@ html, body {
 
 /* ── LOGO ── */
 .fe-logo { width: 152px; height: auto; display: block; }
-.fe-logo-mark { color: var(--accent); }
+.fe-logo-mark { color: var(--logo-mark, var(--accent)); }
 .fe-logo-word { fill: var(--text); opacity: 0; transition: opacity .25s ease; }
 .fonts-ready .fe-logo-word { opacity: 1; }   /* never flash a fallback face */
 .slide[data-type="cover"] .fe-logo { width: 232px; }
@@ -333,6 +334,54 @@ html, body {
 .pb-term { font-family: var(--font-mono); font-size: 14px; color: var(--accent-bright); }
 .pb-use { font-size: 14.5px; line-height: 1.45; color: var(--text-dim); }
 
+/* ── ACTIVATION ──────────────────────────────────────────────────── */
+.act-target {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 16px;
+}
+.act-target-label {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-dim);
+  margin-right: 4px;
+}
+.act-cols { align-items: stretch; }
+.act-card { display: flex; flex-direction: column; padding: 20px 24px; }
+.act-kind {
+  display: flex; align-items: center; gap: 9px;
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--accent-bright); margin-bottom: 12px;
+}
+.act-icon { font-size: 16px; }
+.act-brief { font-size: 16.5px; line-height: 1.5; color: var(--text); margin-bottom: 12px; }
+.act-list { list-style: none; display: grid; gap: 9px; }
+.act-list li {
+  font-size: 15.5px; line-height: 1.45; color: var(--text-dim);
+  padding-left: 18px; position: relative;
+}
+.act-list li::before {
+  content: '—'; position: absolute; left: 0; color: var(--accent);
+}
+.act-input {
+  flex: 1; min-height: 118px; resize: none;
+  font-family: var(--font-ui); font-size: 15px; line-height: 1.55;
+  color: var(--text);
+  background: rgba(255,255,255,.05);
+  border: 1px solid color-mix(in srgb, var(--border) 45%, transparent);
+  border-radius: 8px; padding: 12px 14px;
+}
+.act-input:focus { outline: none; border-color: var(--accent); background: rgba(255,255,255,.08); }
+.act-input::placeholder { color: var(--text-dim); opacity: .55; }
+.act-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 10px;
+}
+.act-count { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-dim); }
+.act-copy { font-size: 12.5px; padding: 6px 14px; }
+/* The textarea's value does not print; this mirror does. */
+.act-print { display: none; font-size: 14px; line-height: 1.55; white-space: pre-wrap; }
+
+
 /* ══════════════════════════════════════════════════════════════════
    PRINT / PDF EXPORT
    Ctrl-P → Save as PDF → Landscape, margins None, Background graphics ON.
@@ -379,6 +428,8 @@ html, body {
                               rgba(0,0,0,0.22) 68%, rgba(0,0,0,0.78) 100%);
   }
   .feedback { opacity: 1 !important; }
+  .act-input, .act-foot { display: none !important; }
+  .act-print { display: block !important; }
 }
 </style>
 </head>
@@ -726,8 +777,49 @@ html, body {
       <div class="slide-body" style="align-items:center;text-align:center">
         <div class="score-big"><span id="scoreVal">0</span><span class="dim" style="font-size:34px">/<span id="scoreMax">0</span></span></div>
         <p class="prose" style="margin-top:18px;max-width:640px" id="scoreMsg"></p>
-        <div style="margin-top:30px">
-          <button class="btn btn-solid" data-action="restart" data-i18n="btnRestart">Start again</button>
+        <p class="prose dim" style="margin-top:14px" data-i18n="resNext">Recognising the language is half of it. Now produce it →</p>
+      </div>
+    </section>
+
+
+    <!-- ── ACTIVATION ──────────────────────────────────────── -->
+    <section class="slide" data-type="activate">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="actEyebrow">Activation</div>
+        <h2 class="slide-title" data-i18n="actTitle">Put it to work</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target">
+          <span class="act-target-label" data-i18n="actUse">Use at least three:</span>
+          <span class="bank-chip">we are not in a position to…</span>
+          <span class="bank-chip">subject to</span>
+          <span class="bank-chip">hereby reserve our right to claim</span>
+          <span class="bank-chip">inequitable allocation of risk</span>
+          <span class="bank-chip">material cost and programme impact</span>
+        </div>
+        <div class="cols act-cols">
+          <div class="card act-card">
+            <div class="act-kind"><span class="act-icon">🗣</span><span data-i18n="actSpeakKind">Discussion · in pairs</span></div>
+            <p class="act-brief" data-i18n="actSpeakBrief">Take one role each and run the exchange. Swap roles and run it again.</p>
+            <ul class="act-list">
+              <li data-i18n="actSpeak1">Your client demands a 12% fee reduction. Push back without closing the door.</li>
+              <li data-i18n="actSpeak2">A supplier has missed the same deadline twice. Raise it firmly and keep the relationship.</li>
+              <li data-i18n="actSpeak3">Argue that the contractor should carry all project risk. Then argue the opposite.</li>
+            </ul>
+          </div>
+          <div class="card act-card">
+            <div class="act-kind"><span class="act-icon">✍️</span><span data-i18n="actWriteKind">Writing · 180–220 words</span></div>
+            <p class="act-brief" data-i18n="actWriteBrief">Write a formal notice to a client whose repeated scope changes have delayed the works and increased your costs. Record the position, reserve your rights, keep the door open.</p>
+            <textarea class="act-input" id="actInput" data-i18n-ph="actPlaceholder" placeholder="Dear Ms Karlsson," aria-label="Written response"></textarea>
+            <div class="act-foot">
+              <span class="act-count" id="actCount">0 words</span>
+              <button class="btn act-copy" data-action="copy-writing" data-i18n="btnCopy">Copy</button>
+            </div>
+            <div class="act-print" id="actPrint" aria-hidden="true"></div>
+          </div>
+        </div>
+        <div style="margin-top:14px;text-align:center">
+          <button class="btn" data-action="restart" data-i18n="btnRestart">Start again</button>
         </div>
       </div>
     </section>
@@ -768,6 +860,18 @@ const UI_I18N = {
     btnStart:'Begin →', btnCheck:'Check', btnNext:'Next →', btnRestart:'Start again',
     scoreLabel:'Score', slideOf:(a,b)=>`${a} / ${b}`,
     fbCorrect:'Correct.', fbWrong:'Not quite.', fbAnswer:'Answer:',
+    resNext:'Recognising the language is half of it. Now produce it →',
+    actEyebrow:'Activation', actTitle:'Put it to work',
+    actUse:'Use at least three:',
+    actSpeakKind:'Discussion · in pairs', actWriteKind:'Writing · 180–220 words',
+    actSpeakBrief:'Take one role each and run the exchange. Swap roles and run it again.',
+    actSpeak1:'Your client demands a 12% fee reduction. Push back without closing the door.',
+    actSpeak2:'A supplier has missed the same deadline twice. Raise it firmly and keep the relationship.',
+    actSpeak3:'Argue that the contractor should carry all project risk. Then argue the opposite.',
+    actWriteBrief:'Write a formal notice to a client whose repeated scope changes have delayed the works and increased your costs. Record the position, reserve your rights, keep the door open.',
+    actPlaceholder:'Dear Ms Karlsson,',
+    btnCopy:'Copy', btnCopied:'Copied',
+    wordCount:(n)=>`${n} ${n===1?'word':'words'}`,
     resPerfect:'Twenty out of twenty. That is contract-room fluency.',
     resStrong:'Strong. The register is landing — keep the phrase bank close.',
     resMid:'A solid foundation. Re-read the explanations on the items you missed.',
@@ -793,6 +897,18 @@ const UI_I18N = {
     btnStart:'Beginnen →', btnCheck:'Prüfen', btnNext:'Weiter →', btnRestart:'Neu starten',
     scoreLabel:'Punkte', slideOf:(a,b)=>`${a} / ${b}`,
     fbCorrect:'Richtig.', fbWrong:'Nicht ganz.', fbAnswer:'Antwort:',
+    resNext:'Die Sprache zu erkennen ist die halbe Miete. Jetzt anwenden →',
+    actEyebrow:'Anwendung', actTitle:'In die Praxis bringen',
+    actUse:'Verwende mindestens drei:',
+    actSpeakKind:'Diskussion · zu zweit', actWriteKind:'Schreiben · 180–220 Wörter',
+    actSpeakBrief:'Übernehmt je eine Rolle und führt das Gespräch. Tauscht dann die Rollen und wiederholt es.',
+    actSpeak1:'Dein Kunde fordert 12 % Honorarnachlass. Wehre dich, ohne die Tür zuzuschlagen.',
+    actSpeak2:'Ein Lieferant hat dieselbe Frist zweimal verpasst. Sprich es bestimmt an und wahre die Beziehung.',
+    actSpeak3:'Argumentiere, der Auftragnehmer solle das gesamte Projektrisiko tragen. Dann das Gegenteil.',
+    actWriteBrief:'Schreibe eine förmliche Mitteilung an einen Kunden, dessen wiederholte Leistungsänderungen die Arbeiten verzögert und deine Kosten erhöht haben. Halte die Position fest, wahre deine Ansprüche, lass die Tür offen.',
+    actPlaceholder:'Sehr geehrte Frau Karlsson,',
+    btnCopy:'Kopieren', btnCopied:'Kopiert',
+    wordCount:(n)=>`${n} ${n===1?'Wort':'Wörter'}`,
     resPerfect:'Zwanzig von zwanzig. Das ist Verhandlungssicherheit auf Vertragsniveau.',
     resStrong:'Stark. Das Register sitzt — behalte die Phrasensammlung griffbereit.',
     resMid:'Eine solide Grundlage. Lies die Erklärungen zu den verpassten Aufgaben noch einmal.',
@@ -814,8 +930,342 @@ const UI_I18N = {
     a3Prompt:'Welche formelle Entsprechung ist hier angemessen?',
     pbEyebrow:'Phrasensammlung', pbTitle:'Sprache, die man behalten sollte'
   },
-  /* Fill these in later — English shows through until you do. */
-  es:{}, fr:{}, it:{}, pt:{}, ru:{}, ar:{}, zh:{}, ja:{}
+  es: {
+    btnStart:'Empezar →', btnCheck:'Comprobar', btnNext:'Siguiente →', btnRestart:'Empezar de nuevo',
+    scoreLabel:'Puntuación', slideOf:(a,b)=>`${a} / ${b}`,
+    fbCorrect:'Correcto.', fbWrong:'No exactamente.', fbAnswer:'Respuesta:',
+    resPerfect:'Veinte de veinte. Eso es soltura de sala de contratos.',
+    resStrong:'Muy bien. El registro está calando: ten el banco de frases a mano.',
+    resMid:'Una base sólida. Vuelve a leer las explicaciones de los fallos.',
+    resLow:'Repasa el banco de frases y vuelve a hacer la lección. Estas expresiones valen mucho en C1.',
+    resNext:'Reconocer el lenguaje es solo la mitad. Ahora prodúcelo →',
+    coverTitle:'El <em>lenguaje</em> de la negociación',
+    coverSub:'Registro, precisión y diplomacia en negociaciones comerciales de alto nivel',
+    chipLevel:'C1 Avanzado',
+    chipFocus:'Contratos y compras',
+    chipCount:'20 preguntas',
+    orEyebrow:'Orientación',
+    orTitle:'Qué distingue el C1 del B2 aquí',
+    orColA:'En B2 sabes <strong>expresar una posición</strong>. En C1 la expresas dejando margen a la otra parte — y oyes a qué la compromete su forma de decirlo.',
+    orColB:'Aquí se evalúan tres cosas: <strong>registro</strong> (cuán formal), <strong>precisión</strong> (qué significa un término en el contrato) y <strong>diplomacia</strong> (firmeza sin confrontación).',
+    orNote:'Veinte preguntas en tres actividades. Cada respuesta lleva explicación — la explicación es la lección, léela también cuando aciertes.',
+    a1Eyebrow:'Actividad 1 · Registro, matiz y precisión',
+    a2Eyebrow:'Actividad 2 · Precisión léxica',
+    a2Title:'El banco de palabras',
+    a2Intro:'Ocho términos, cada uno usado una sola vez en las próximas cuatro pantallas. Escribe el que encaje — piensa en registro, colocación y significado contractual.',
+    a3Eyebrow:'Actividad 3 · De lo directo a la sala de juntas',
+    a3Prompt:'¿Qué equivalente formal es apropiado aquí?',
+    pbEyebrow:'Banco de frases',
+    pbTitle:'Lenguaje que conviene retener',
+    actEyebrow:'Activación',
+    actTitle:'Ponlo en práctica',
+    actUse:'Usa al menos tres:',
+    actSpeakKind:'Debate · en parejas',
+    actWriteKind:'Redacción · 180–220 palabras',
+    actSpeakBrief:'Tomad un papel cada uno y desarrollad el intercambio. Luego intercambiad los papeles y repetidlo.',
+    actSpeak1:'Tu cliente exige una rebaja del 12% en los honorarios. Resístete sin cerrar la puerta.',
+    actSpeak2:'Un proveedor ha incumplido el mismo plazo dos veces. Plantéalo con firmeza y cuida la relación.',
+    actSpeak3:'Defiende que el contratista asuma todo el riesgo del proyecto. Después defiende lo contrario.',
+    actWriteBrief:'Redacta una notificación formal a un cliente cuyos cambios reiterados de alcance han retrasado las obras y aumentado tus costes. Deja constancia de la posición, reserva tus derechos y mantén la puerta abierta.',
+    actPlaceholder:'Estimada Sra. Karlsson:',
+    btnCopy:'Copiar',
+    btnCopied:'Copiado',
+    wordCount:(n)=>`${n} ${n===1?'palabra':'palabras'}`
+  },
+  fr: {
+    btnStart:'Commencer →', btnCheck:'Vérifier', btnNext:'Suivant →', btnRestart:'Recommencer',
+    scoreLabel:'Score', slideOf:(a,b)=>`${a} / ${b}`,
+    fbCorrect:'Correct.', fbWrong:'Pas tout à fait.', fbAnswer:'Réponse :',
+    resPerfect:'Vingt sur vingt. C’est une aisance de salle de négociation.',
+    resStrong:'Solide. Le registre est acquis — gardez le répertoire à portée de main.',
+    resMid:'Une bonne base. Relisez les explications des questions manquées.',
+    resLow:'Travaillez le répertoire, puis refaites la leçon. Ces tournures valent cher au niveau C1.',
+    resNext:'Reconnaître la langue n’est que la moitié du travail. À vous de la produire →',
+    coverTitle:'Le <em>langage</em> de la négociation',
+    coverSub:'Registre, précision et diplomatie dans les négociations commerciales à fort enjeu',
+    chipLevel:'C1 Avancé',
+    chipFocus:'Contrats et achats',
+    chipCount:'20 questions',
+    orEyebrow:'Orientation',
+    orTitle:'Ce qui distingue le C1 du B2 ici',
+    orColA:'En B2, vous savez <strong>exprimer une position</strong>. En C1, vous l’exprimez en laissant une marge à l’autre partie — et vous entendez ce que ses mots l’engagent à faire.',
+    orColB:'Trois choses sont évaluées : le <strong>registre</strong> (degré de formalité), la <strong>précision</strong> (ce qu’un terme signifie contractuellement) et la <strong>diplomatie</strong> (ferme sans être frontal).',
+    orNote:'Vingt questions réparties en trois activités. Chaque réponse est expliquée — l’explication est la leçon, lisez-la même quand vous avez juste.',
+    a1Eyebrow:'Activité 1 · Registre, nuance et précision',
+    a2Eyebrow:'Activité 2 · Précision lexicale',
+    a2Title:'Le lexique',
+    a2Intro:'Huit termes, chacun employé une seule fois sur les quatre écrans suivants. Saisissez celui qui convient — pensez registre, collocation et sens contractuel.',
+    a3Eyebrow:'Activité 3 · Du direct au conseil d’administration',
+    a3Prompt:'Quel équivalent formel convient ici ?',
+    pbEyebrow:'Répertoire',
+    pbTitle:'Des tournures à retenir',
+    actEyebrow:'Activation',
+    actTitle:'Passez à la pratique',
+    actUse:'Employez-en au moins trois :',
+    actSpeakKind:'Discussion · en binôme',
+    actWriteKind:'Rédaction · 180–220 mots',
+    actSpeakBrief:'Prenez un rôle chacun et jouez l’échange. Échangez les rôles et recommencez.',
+    actSpeak1:'Votre client exige une baisse d’honoraires de 12 %. Résistez sans fermer la porte.',
+    actSpeak2:'Un fournisseur a manqué la même échéance deux fois. Abordez-le fermement en préservant la relation.',
+    actSpeak3:'Défendez l’idée que le contractant porte tout le risque. Puis défendez l’inverse.',
+    actWriteBrief:'Rédigez une notification formelle à un client dont les modifications répétées du périmètre ont retardé les travaux et alourdi vos coûts. Actez la position, réservez vos droits, laissez la porte ouverte.',
+    actPlaceholder:'Madame Karlsson,',
+    btnCopy:'Copier',
+    btnCopied:'Copié',
+    wordCount:(n)=>`${n} ${n===1?'mot':'mots'}`
+  },
+  it: {
+    btnStart:'Inizia →', btnCheck:'Verifica', btnNext:'Avanti →', btnRestart:'Ricomincia',
+    scoreLabel:'Punteggio', slideOf:(a,b)=>`${a} / ${b}`,
+    fbCorrect:'Corretto.', fbWrong:'Non proprio.', fbAnswer:'Risposta:',
+    resPerfect:'Venti su venti. Questa è padronanza da tavolo negoziale.',
+    resStrong:'Ottimo. Il registro è acquisito — tieni il repertorio a portata di mano.',
+    resMid:'Una base solida. Rileggi le spiegazioni delle domande sbagliate.',
+    resLow:'Ripassa il repertorio e rifai la lezione. Queste espressioni valgono molto al C1.',
+    resNext:'Riconoscere la lingua è solo metà del lavoro. Ora producila →',
+    coverTitle:'Il <em>linguaggio</em> della negoziazione',
+    coverSub:'Registro, precisione e diplomazia nelle trattative commerciali ad alta posta',
+    chipLevel:'C1 Avanzato',
+    chipFocus:'Contratti e appalti',
+    chipCount:'20 domande',
+    orEyebrow:'Orientamento',
+    orTitle:'Che cosa distingue il C1 dal B2 qui',
+    orColA:'Al B2 sai <strong>esprimere una posizione</strong>. Al C1 la esprimi lasciando margine alla controparte — e senti a che cosa le loro parole li impegnano.',
+    orColB:'Qui si valutano tre cose: <strong>registro</strong> (quanto formale), <strong>precisione</strong> (che cosa significa un termine sul contratto) e <strong>diplomazia</strong> (fermezza senza scontro).',
+    orNote:'Venti domande in tre attività. Ogni risposta è spiegata — la spiegazione è la lezione, leggila anche quando hai indovinato.',
+    a1Eyebrow:'Attività 1 · Registro, sfumatura e precisione',
+    a2Eyebrow:'Attività 2 · Precisione lessicale',
+    a2Title:'Il lessico',
+    a2Intro:'Otto termini, ciascuno usato una sola volta nelle prossime quattro schermate. Scrivi quello giusto — considera registro, collocazione e significato contrattuale.',
+    a3Eyebrow:'Attività 3 · Dal diretto alla sala del consiglio',
+    a3Prompt:'Quale equivalente formale è appropriato qui?',
+    pbEyebrow:'Repertorio',
+    pbTitle:'Espressioni da tenere',
+    actEyebrow:'Attivazione',
+    actTitle:'Mettilo in pratica',
+    actUse:'Usane almeno tre:',
+    actSpeakKind:'Discussione · in coppia',
+    actWriteKind:'Scrittura · 180–220 parole',
+    actSpeakBrief:'Prendete un ruolo ciascuno e svolgete lo scambio. Poi invertite i ruoli e ripetete.',
+    actSpeak1:'Il cliente pretende una riduzione del 12% sull’onorario. Resisti senza chiudere la porta.',
+    actSpeak2:'Un fornitore ha mancato due volte la stessa scadenza. Sollevala con fermezza mantenendo il rapporto.',
+    actSpeak3:'Sostieni che l’appaltatore debba farsi carico di tutto il rischio. Poi sostieni il contrario.',
+    actWriteBrief:'Scrivi una comunicazione formale a un cliente le cui ripetute modifiche di perimetro hanno ritardato i lavori e aumentato i tuoi costi. Metti a verbale la posizione, riserva i tuoi diritti, lascia la porta aperta.',
+    actPlaceholder:'Gentile Sig.ra Karlsson,',
+    btnCopy:'Copia',
+    btnCopied:'Copiato',
+    wordCount:(n)=>`${n} ${n===1?'parola':'parole'}`
+  },
+  pt: {
+    btnStart:'Começar →', btnCheck:'Verificar', btnNext:'Seguinte →', btnRestart:'Recomeçar',
+    scoreLabel:'Pontuação', slideOf:(a,b)=>`${a} / ${b}`,
+    fbCorrect:'Correto.', fbWrong:'Não exatamente.', fbAnswer:'Resposta:',
+    resPerfect:'Vinte em vinte. Isto é fluência de mesa de negociação.',
+    resStrong:'Muito bom. O registo está assimilado — mantenha o repertório à mão.',
+    resMid:'Uma base sólida. Releia as explicações das que falhou.',
+    resLow:'Trabalhe o repertório e repita a lição. Estas expressões valem muito no C1.',
+    resNext:'Reconhecer a linguagem é metade do trabalho. Agora produza-a →',
+    coverTitle:'A <em>linguagem</em> da negociação',
+    coverSub:'Registo, precisão e diplomacia em negociações comerciais de elevado risco',
+    chipLevel:'C1 Avançado',
+    chipFocus:'Contratos e aquisições',
+    chipCount:'20 perguntas',
+    orEyebrow:'Orientação',
+    orTitle:'O que distingue o C1 do B2 aqui',
+    orColA:'No B2 sabe <strong>afirmar uma posição</strong>. No C1 afirma-a deixando margem à outra parte — e percebe a que é que as palavras dela a comprometem.',
+    orColB:'Avaliam-se três coisas: <strong>registo</strong> (quão formal), <strong>precisão</strong> (o que um termo significa em contrato) e <strong>diplomacia</strong> (firmeza sem confronto).',
+    orNote:'Vinte perguntas em três atividades. Cada resposta é explicada — a explicação é a lição, leia-a mesmo quando acertar.',
+    a1Eyebrow:'Atividade 1 · Registo, nuance e precisão',
+    a2Eyebrow:'Atividade 2 · Precisão lexical',
+    a2Title:'O léxico',
+    a2Intro:'Oito termos, cada um usado uma só vez nos próximos quatro ecrãs. Escreva o que encaixa — pense em registo, colocação e sentido contratual.',
+    a3Eyebrow:'Atividade 3 · Do direto à sala do conselho',
+    a3Prompt:'Que equivalente formal é apropriado aqui?',
+    pbEyebrow:'Repertório',
+    pbTitle:'Linguagem que vale a pena guardar',
+    actEyebrow:'Ativação',
+    actTitle:'Ponha em prática',
+    actUse:'Use pelo menos três:',
+    actSpeakKind:'Discussão · a pares',
+    actWriteKind:'Escrita · 180–220 palavras',
+    actSpeakBrief:'Assumam um papel cada um e conduzam a troca. Depois troquem de papéis e repitam.',
+    actSpeak1:'O seu cliente exige uma redução de 12% nos honorários. Resista sem fechar a porta.',
+    actSpeak2:'Um fornecedor falhou o mesmo prazo duas vezes. Levante a questão com firmeza e preserve a relação.',
+    actSpeak3:'Defenda que o empreiteiro assuma todo o risco do projeto. Depois defenda o contrário.',
+    actWriteBrief:'Escreva uma notificação formal a um cliente cujas alterações repetidas de âmbito atrasaram os trabalhos e aumentaram os seus custos. Registe a posição, reserve os seus direitos, mantenha a porta aberta.',
+    actPlaceholder:'Exma. Sra. Karlsson,',
+    btnCopy:'Copiar',
+    btnCopied:'Copiado',
+    wordCount:(n)=>`${n} ${n===1?'palavra':'palavras'}`
+  },
+  ru: {
+    btnStart:'Начать →', btnCheck:'Проверить', btnNext:'Далее →', btnRestart:'Начать заново',
+    scoreLabel:'Счёт', slideOf:(a,b)=>`${a} / ${b}`,
+    fbCorrect:'Верно.', fbWrong:'Не совсем.', fbAnswer:'Ответ:',
+    resPerfect:'Двадцать из двадцати. Это уверенное владение языком переговоров.',
+    resStrong:'Отлично. Регистр усвоен — держите список формулировок под рукой.',
+    resMid:'Хорошая основа. Перечитайте пояснения к ошибкам.',
+    resLow:'Проработайте список формулировок и пройдите урок заново. На уровне C1 они особенно ценны.',
+    resNext:'Узнавать язык — половина дела. Теперь используйте его сами →',
+    coverTitle:'<em>Язык</em> переговоров',
+    coverSub:'Регистр, точность и дипломатия в ответственных коммерческих переговорах',
+    chipLevel:'C1 Продвинутый',
+    chipFocus:'Договоры и закупки',
+    chipCount:'20 вопросов',
+    orEyebrow:'Ориентир',
+    orTitle:'Чем C1 отличается здесь от B2',
+    orColA:'На B2 вы умеете <strong>обозначить позицию</strong>. На C1 вы обозначаете её, оставляя другой стороне пространство для манёвра, — и слышите, к чему её обязывают собственные формулировки.',
+    orColB:'Проверяются три вещи: <strong>регистр</strong> (насколько формально), <strong>точность</strong> (что термин значит по договору) и <strong>дипломатичность</strong> (твёрдо, но без конфронтации).',
+    orNote:'Двадцать вопросов в трёх заданиях. К каждому ответу есть пояснение — пояснение и есть урок, читайте его и когда ответили верно.',
+    a1Eyebrow:'Задание 1 · Регистр, оттенок и точность',
+    a2Eyebrow:'Задание 2 · Лексическая точность',
+    a2Title:'Словарь',
+    a2Intro:'Восемь терминов, каждый используется ровно один раз на следующих четырёх экранах. Впишите подходящий — учитывайте регистр, сочетаемость и договорное значение.',
+    a3Eyebrow:'Задание 3 · От прямоты к языку совета директоров',
+    a3Prompt:'Какой формальный эквивалент здесь уместен?',
+    pbEyebrow:'Формулировки',
+    pbTitle:'Язык, который стоит запомнить',
+    actEyebrow:'Практика',
+    actTitle:'Применить на деле',
+    actUse:'Используйте не менее трёх:',
+    actSpeakKind:'Обсуждение · в парах',
+    actWriteKind:'Письмо · 180–220 слов',
+    actSpeakBrief:'Возьмите по роли и проведите разговор. Затем поменяйтесь ролями и повторите.',
+    actSpeak1:'Клиент требует снизить гонорар на 12%. Отстаивайте позицию, не закрывая дверь.',
+    actSpeak2:'Поставщик второй раз сорвал один и тот же срок. Поднимите вопрос твёрдо, сохранив отношения.',
+    actSpeak3:'Обоснуйте, что весь риск по проекту несёт подрядчик. Затем обоснуйте обратное.',
+    actWriteBrief:'Напишите официальное уведомление клиенту, чьи повторяющиеся изменения объёма работ задержали проект и увеличили ваши расходы. Зафиксируйте позицию, сохраните за собой право требования, оставьте дверь открытой.',
+    actPlaceholder:'Уважаемая госпожа Карлссон,',
+    btnCopy:'Копировать',
+    btnCopied:'Скопировано',
+    wordCount:(n)=>{const a=n%10,b=n%100;return `${n} ${a===1&&b!==11?'слово':(a>=2&&a<=4&&(b<12||b>14))?'слова':'слов'}`}
+  },
+  ar: {
+    btnStart:'ابدأ →', btnCheck:'تحقّق', btnNext:'التالي →', btnRestart:'ابدأ من جديد',
+    scoreLabel:'النتيجة', slideOf:(a,b)=>`${a} / ${b}`,
+    fbCorrect:'صحيح.', fbWrong:'ليس تماماً.', fbAnswer:'الإجابة:',
+    resPerfect:'عشرون من عشرين. هذه طلاقة على مستوى قاعة التفاوض.',
+    resStrong:'أداء قوي. الأسلوب ترسّخ — أبقِ قائمة العبارات في متناولك.',
+    resMid:'أساس متين. أعد قراءة الشروح الخاصة بما أخطأت فيه.',
+    resLow:'راجع قائمة العبارات ثم أعد الدرس. هذه الصيغ ذات قيمة عالية في المستوى C1.',
+    resNext:'التعرّف على اللغة نصف المهمة. والآن استخدمها →',
+    coverTitle:'<em>لغة</em> التفاوض',
+    coverSub:'الأسلوب والدقة والدبلوماسية في المفاوضات التجارية عالية المخاطر',
+    chipLevel:'C1 متقدّم',
+    chipFocus:'العقود والمشتريات',
+    chipCount:'٢٠ سؤالاً',
+    orEyebrow:'تمهيد',
+    orTitle:'ما الذي يميّز C1 عن B2 هنا',
+    orColA:'في B2 تستطيع <strong>إبداء موقف</strong>. في C1 تبديه مع ترك مجال للطرف الآخر — وتدرك ما تلتزم به صياغته.',
+    orColB:'تُختبر هنا ثلاثة أمور: <strong>الأسلوب</strong> (درجة الرسمية)، و<strong>الدقة</strong> (المعنى التعاقدي للمصطلح)، و<strong>الدبلوماسية</strong> (الحزم دون مواجهة).',
+    orNote:'عشرون سؤالاً في ثلاثة أنشطة. لكل إجابة شرح — والشرح هو الدرس، فاقرأه حتى عندما تصيب.',
+    a1Eyebrow:'النشاط ١ · الأسلوب والفروق الدقيقة',
+    a2Eyebrow:'النشاط ٢ · الدقة المعجمية',
+    a2Title:'بنك المفردات',
+    a2Intro:'ثمانية مصطلحات، يُستخدم كل منها مرة واحدة عبر الشاشات الأربع التالية. اكتب المصطلح المناسب — راعِ الأسلوب والتلازم والمعنى التعاقدي.',
+    a3Eyebrow:'النشاط ٣ · من الصراحة إلى لغة مجلس الإدارة',
+    a3Prompt:'أي صيغة رسمية تناسب هنا؟',
+    pbEyebrow:'بنك العبارات',
+    pbTitle:'لغة تستحق الحفظ',
+    actEyebrow:'التطبيق',
+    actTitle:'ضعها موضع التنفيذ',
+    actUse:'استخدم ثلاثاً على الأقل:',
+    actSpeakKind:'نقاش · ثنائي',
+    actWriteKind:'كتابة · ١٨٠–٢٢٠ كلمة',
+    actSpeakBrief:'ليأخذ كل منكما دوراً وأديا الحوار. ثم تبادلا الدورين وأعيدا.',
+    actSpeak1:'يطالب عميلك بخفض الأتعاب ١٢٪. اعترض دون أن تغلق الباب.',
+    actSpeak2:'أخلّ مورّد بالموعد نفسه مرتين. أثر الأمر بحزم مع الحفاظ على العلاقة.',
+    actSpeak3:'دافع عن تحميل المقاول كامل مخاطر المشروع. ثم دافع عن العكس.',
+    actWriteBrief:'اكتب إشعاراً رسمياً إلى عميل أدّت تغييراته المتكررة في نطاق العمل إلى تأخير الأعمال وزيادة تكاليفك. سجّل الموقف، واحتفظ بحقوقك، وأبقِ الباب مفتوحاً.',
+    actPlaceholder:'السيدة كارلسون المحترمة،',
+    btnCopy:'نسخ',
+    btnCopied:'تم النسخ',
+    wordCount:(n)=>`${n} كلمة`
+  },
+  zh: {
+    btnStart:'开始 →', btnCheck:'检查', btnNext:'下一步 →', btnRestart:'重新开始',
+    scoreLabel:'得分', slideOf:(a,b)=>`${a} / ${b}`,
+    fbCorrect:'正确。', fbWrong:'不太对。', fbAnswer:'答案：',
+    resPerfect:'二十题全对。这已是谈判桌上的流利水平。',
+    resStrong:'表现出色。语域已经掌握——把常用表达随手备着。',
+    resMid:'基础扎实。把答错题目的解析再读一遍。',
+    resLow:'先梳理常用表达，再重做一遍。这些说法在 C1 阶段很有价值。',
+    resNext:'认得出这些表达只是一半，接下来要能说出来 →',
+    coverTitle:'谈判<em>语言</em>',
+    coverSub:'高风险商务谈判中的语域、精确与外交辞令',
+    chipLevel:'C1 高级',
+    chipFocus:'合同与采购',
+    chipCount:'20 道题',
+    orEyebrow:'导入',
+    orTitle:'这里 C1 与 B2 的差别',
+    orColA:'在 B2，你能<strong>表明立场</strong>。在 C1，你表明立场的同时给对方留有余地——并能听出对方的措辞让他们承担了什么。',
+    orColB:'这里考查三点：<strong>语域</strong>（正式程度）、<strong>精确</strong>（术语在合同中的含义）与<strong>外交辞令</strong>（坚定而不对抗）。',
+    orNote:'三个活动，共二十题。每题都有解析——解析才是这堂课的重点，答对时也要读。',
+    a1Eyebrow:'活动一 · 语域、语气与精确',
+    a2Eyebrow:'活动二 · 词汇精确度',
+    a2Title:'词库',
+    a2Intro:'八个术语，在接下来的四屏中各用一次。填入合适的词——注意语域、搭配与合同含义。',
+    a3Eyebrow:'活动三 · 从直白到董事会措辞',
+    a3Prompt:'这里应选哪种正式说法？',
+    pbEyebrow:'常用表达',
+    pbTitle:'值得记住的说法',
+    actEyebrow:'运用',
+    actTitle:'实际用起来',
+    actUse:'至少使用其中三个：',
+    actSpeakKind:'讨论 · 两人一组',
+    actWriteKind:'写作 · 180–220 词',
+    actSpeakBrief:'各选一个角色完成对话，然后互换角色再做一次。',
+    actSpeak1:'客户要求降价 12%。在不谈崩的前提下顶回去。',
+    actSpeak2:'供应商同一个期限连续两次延误。既要说得明确，也要保住关系。',
+    actSpeak3:'先论证由承包商承担全部项目风险，再论证相反的立场。',
+    actWriteBrief:'给一位客户写一份正式通知：对方反复变更工作范围，导致工期延误、成本上升。写明立场，保留索赔权利，同时留有余地。',
+    actPlaceholder:'尊敬的卡尔松女士：',
+    btnCopy:'复制',
+    btnCopied:'已复制',
+    wordCount:(n)=>`${n} 词`
+  },
+  ja: {
+    btnStart:'開始 →', btnCheck:'確認', btnNext:'次へ →', btnRestart:'最初から',
+    scoreLabel:'スコア', slideOf:(a,b)=>`${a} / ${b}`,
+    fbCorrect:'正解です。', fbWrong:'惜しいです。', fbAnswer:'解答：',
+    resPerfect:'20問全問正解。交渉の場で通用する運用力です。',
+    resStrong:'見事です。語調は身についています——フレーズ集を手元に置いてください。',
+    resMid:'土台はできています。間違えた問題の解説を読み直しましょう。',
+    resLow:'フレーズ集を一通り確認してから、もう一度取り組んでください。C1では特に価値の高い表現です。',
+    resNext:'表現を見分けられるのは半分。ここからは自分で使います →',
+    coverTitle:'交渉の<em>言葉</em>',
+    coverSub:'重要な商談における語調・正確さ・外交的な言い回し',
+    chipLevel:'C1 上級',
+    chipFocus:'契約と調達',
+    chipCount:'20問',
+    orEyebrow:'導入',
+    orTitle:'ここでのC1とB2の違い',
+    orColA:'B2では<strong>立場を述べる</strong>ことができます。C1では、相手に余地を残しながら述べ、相手の言い回しが何を約束しているかを聞き取れます。',
+    orColB:'ここで問われるのは三つ。<strong>語調</strong>（どれだけ改まっているか）、<strong>正確さ</strong>（その語が契約上何を意味するか）、<strong>外交的配慮</strong>（対立せずに毅然と）。',
+    orNote:'三つの活動、全20問。すべての解答に解説があります——解説こそが学習内容なので、正解したときも読んでください。',
+    a1Eyebrow:'アクティビティ1 · 語調・ニュアンス・正確さ',
+    a2Eyebrow:'アクティビティ2 · 語彙の正確さ',
+    a2Title:'語彙リスト',
+    a2Intro:'8つの用語を、次の4画面で一度ずつ使います。当てはまる語を入力してください——語調・共起・契約上の意味を考えて。',
+    a3Eyebrow:'アクティビティ3 · 率直な物言いから役員会の言葉へ',
+    a3Prompt:'ここにふさわしい改まった言い方はどれですか。',
+    pbEyebrow:'フレーズ集',
+    pbTitle:'覚えておきたい言い回し',
+    actEyebrow:'実践',
+    actTitle:'実際に使う',
+    actUse:'次のうち3つ以上を使うこと：',
+    actSpeakKind:'ディスカッション · ペア',
+    actWriteKind:'ライティング · 180〜220語',
+    actSpeakBrief:'役割を一つずつ決めてやり取りを行い、その後、役割を交代してもう一度。',
+    actSpeak1:'顧客が報酬の12%減額を要求しています。関係を断たずに押し返してください。',
+    actSpeak2:'取引先が同じ納期を二度も守りませんでした。関係を保ちつつ、毅然と指摘してください。',
+    actSpeak3:'プロジェクトの全リスクを請負業者が負うべきだと主張し、その後、逆の立場で主張してください。',
+    actWriteBrief:'度重なる仕様変更により工期が遅れ、費用が増加した顧客宛てに、正式な通知を書いてください。立場を記録し、請求の権利を留保し、対話の余地は残すこと。',
+    actPlaceholder:'カールソン様',
+    btnCopy:'コピー',
+    btnCopied:'コピーしました',
+    wordCount:(n)=>`${n} 語`
+  }
 };
 
 let currentLang = 'en';
@@ -942,6 +1392,22 @@ function checkGaps(slide) {
   updateScoreChip();
 }
 
+/* ── Activation: word count, copy, and a print mirror (a textarea's
+   value does not appear in a PDF, so we mirror it into a div). ── */
+const actInput = document.getElementById('actInput');
+if (actInput) {
+  const countEl = document.getElementById('actCount');
+  const printEl = document.getElementById('actPrint');
+  const sync = () => {
+    const words = actInput.value.trim().split(/\s+/).filter(Boolean).length;
+    countEl.textContent = t('wordCount')(words);
+    printEl.textContent = actInput.value;
+  };
+  actInput.addEventListener('input', sync);
+  window.syncActivation = sync;
+  sync();
+}
+
 /* ── Events ── */
 document.addEventListener('click', e => {
   const a = e.target.closest('[data-action]');
@@ -951,6 +1417,14 @@ document.addEventListener('click', e => {
   if (act === 'prev') show(idx - 1);
   if (act === 'check') checkGaps(a.closest('.slide'));
   if (act === 'restart') location.reload();
+  if (act === 'copy-writing') {
+    const ta = document.getElementById('actInput');
+    if (ta && navigator.clipboard) navigator.clipboard.writeText(ta.value).then(() => {
+      const was = a.textContent;
+      a.textContent = t('btnCopied');
+      setTimeout(() => { a.textContent = was; }, 1400);
+    });
+  }
 });
 
 document.addEventListener('keydown', e => {
@@ -968,6 +1442,11 @@ function applyLang() {
     const v = t(el.dataset.i18n);
     if (v != null) el.innerHTML = v;
   });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const v = t(el.dataset.i18nPh);
+    if (v != null) el.placeholder = v;
+  });
+  if (window.syncActivation) window.syncActivation();
   document.documentElement.lang = currentLang;
   document.documentElement.dir = RTL_LANGS.includes(currentLang) ? 'rtl' : 'ltr';
   updateScoreChip();
@@ -976,8 +1455,15 @@ function applyLang() {
 
 function initLang() {
   const sel = document.getElementById('langSelect');
-  LANGS.forEach(l => sel.add(new Option(l.label, l.code)));
+  // Only offer languages that are actually translated. An empty or partial
+  // scaffold stays in the code for a future pass but never appears as a dead
+  // option in the menu.
+  const enKeys = Object.keys(UI_I18N.en).length;
+  LANGS.filter(l => l.code === 'en' ||
+                    Object.keys(UI_I18N[l.code] || {}).length >= enKeys)
+       .forEach(l => sel.add(new Option(l.label, l.code)));
   sel.value = currentLang;
+  sel.hidden = sel.options.length < 2;
   sel.addEventListener('change', () => { currentLang = sel.value; applyLang(); });
 }
 
