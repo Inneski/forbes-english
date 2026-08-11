@@ -128,21 +128,27 @@ def build_palette(path, dark=True):
         accent_dim = shift(accent, dl=-0.18, ds=-0.05)
     else:
         # ── LIGHT THEME ──────────────────────────────────────────────
-        # Paper, not pure white: keep a whisper of the image's own hue so a
-        # bright lesson still belongs to its picture. Cards then sit ABOVE
-        # the paper in pure white, which is what gives a light deck depth.
-        # A tinted mid-light canvas, not glare: bright enough for dark ink,
-        # muted enough to sit beside the dark decks without shouting.
+        # A MID tone, not paper. Halfway between the dark decks and white:
+        # a tinted canvas you could read a printed page against, with cards
+        # lifting off it. Anything above ~0.72 lightness starts to glare on a
+        # projector and stops looking like it belongs beside the dark lessons.
         lh, _, ls_ = to_hls(lightest)
-        void = from_hls(lh, 0.875, min(0.34, max(0.10, ls_ * 0.80)))
-        surface = shift(void, dl=+0.085, ds=-0.04)   # cards lift off the canvas
-        surface2 = shift(void, dl=+0.035, ds=-0.02)
+        void = from_hls(lh, 0.762, min(0.36, max(0.13, ls_ * 0.90)))
+        surface = shift(void, dl=+0.065, ds=-0.03)   # cards lift off the canvas
+        surface2 = shift(void, dl=+0.030, ds=-0.015)
 
         # Ink carries a trace of the accent hue, like the dark theme's text.
-        text = from_hls(ah, 0.135, 0.42)
+        text = from_hls(ah, 0.115, 0.42)
         if contrast_ratio(text, surface) < 9:
             text = (22, 27, 34)
-        text_dim = shift(text, dl=+0.30, ds=-0.10)
+        # Secondary copy must stay legible against a MID canvas, so it can
+        # only be lifted a little way off the ink.
+        text_dim = shift(text, dl=+0.16, ds=-0.08)
+        guard = 0
+        while contrast_ratio(text_dim, surface) < 4.5 and guard < 12:
+            hx, lx, sx = to_hls(text_dim)
+            text_dim = from_hls(hx, lx - 0.025, sx)
+            guard += 1
 
         # On white, an accent taken straight from a pastel image will not
         # carry text or a button. Deepen it — keeping its hue — until it does.
@@ -161,9 +167,9 @@ def build_palette(path, dark=True):
             accent_bright = from_hls(hx, lx - 0.035, sx)
             guard += 1
 
-        accent_dim = shift(accent, dl=+0.34, ds=-0.18)   # pale fills
-        # A hairline that is actually visible on paper.
-        border = from_hls(to_hls(accent)[0], 0.68, 0.30)
+        accent_dim = shift(accent, dl=+0.24, ds=-0.14)   # pale fills
+        # A hairline that is actually visible against a mid canvas.
+        border = from_hls(to_hls(accent)[0], 0.44, 0.34)
 
     # --accent-bright must stay visibly distinct from --text, or <em>
     # emphasis and eyebrows vanish into the body copy. When the image's

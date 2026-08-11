@@ -186,15 +186,24 @@ gives you dark chrome on white paper, or unreadable pale text.
 
 **How the light theme differs, and why:**
 
-- `--void` is a **tinted mid-light canvas** (~0.87 lightness), not paper-white.
-  Near-white glares and makes the deck shout; a muted tone sits beside the dark
-  lessons without fighting them. `--surface` sits a step above it so cards
-  still lift off the page — that elevation is what gives a bright deck depth.
-- The accent is **deepened until it passes 4.5:1 on white**. A pastel lifted
+- `--void` is a **mid tone** (~0.76 lightness), not paper and never white.
+  This is the single value most often set wrong. A near-white canvas glares on
+  a projector, bleaches the hero out of the interior pages, and makes a light
+  lesson look like a different product from the dark ones. Sitting it in the
+  middle keeps the background pattern visible and the deck part of the same
+  family. `--surface` sits one step above it so cards still lift off the
+  canvas — that elevation is what gives a bright deck depth.
+- **Every wash in a light lesson is mixed from `--void`, not from white.**
+  `--wash-mid` and `--scrim` are `color-mix(in srgb, var(--void) …%, transparent)`.
+  Mixing toward white is what produced the first, far too bright, version of
+  the construction deck. If a light page looks washed out, raise the `--void`
+  percentage; never reach for `rgba(255,255,255,…)`.
+- The accent is **deepened until it passes 4.5:1 on --surface**. A pastel lifted
   straight from a bright image cannot carry a button or a heading; the tool
   darkens it while holding its hue.
 - `--accent-bright` goes *darker* than the accent, not lighter. On paper,
-  emphasis means more ink, not less.
+  emphasis means more ink, not less. A mid canvas leaves less room for this,
+  which is why the canvas must not be pushed any darker than ~0.76.
 - Cards and options carry more of the hairline (90–95% vs the dark theme's
   55%) plus a soft shadow. On a dark canvas a translucent card separates
   itself; on paper it needs a real edge.
