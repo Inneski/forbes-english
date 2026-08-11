@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LEGO Prepositions & Phrasal Verbs</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<!-- Fonts already include Playfair Display for house-style headings -->
 <style>
   :root {
     --lego-red: #DA291C;
@@ -31,11 +32,28 @@
   body{font-family:'Nunito Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
   body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(circle at 10% 15%,rgba(218,41,28,0.07) 0%,transparent 45%),radial-gradient(circle at 90% 85%,rgba(0,109,183,0.07) 0%,transparent 45%),radial-gradient(circle at 50% 50%,rgba(255,215,0,0.04) 0%,transparent 60%);pointer-events:none;z-index:0;}
 
+  /* ── START SCREEN (house style) ── */
+  #screen-start{max-width:820px;margin:0 auto;padding:0 24px 80px;position:relative;z-index:1;animation:fadeUp 0.5s ease both;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+  .start-hero{border-radius:14px;overflow:hidden;box-shadow:0 4px 20px var(--shadow);margin:40px 0 32px;border:2px solid var(--border);}
+  .start-hero img{width:100%;height:auto;display:block;max-height:360px;object-fit:cover;}
+  .start-content{text-align:center}
+  .start-badge{display:inline-block;background:var(--lego-red);color:#fff;font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:4px;margin-bottom:16px;font-family:'Nunito',sans-serif;border-bottom:2px solid var(--lego-red-dark);}
+  .start-title{font-family:'Playfair Display',serif;font-size:38px;color:var(--text);margin-bottom:16px;line-height:1.15;}
+  .start-intro{font-size:16px;color:var(--text-mid);font-weight:400;line-height:1.7;max-width:560px;margin:0 auto 32px;}
+  #screen-start.hidden{display:none}
+
   /* HEADER */
-  header{background:var(--lego-yellow);border-bottom:4px solid var(--lego-yellow-dark);padding:0 36px;position:sticky;top:0;z-index:100;display:flex;align-items:stretch;justify-content:space-between;box-shadow:0 4px 16px rgba(0,0,51,0.18);}
+  header{background:var(--lego-black);border-bottom:3px solid var(--lego-red);padding:0 36px;position:sticky;top:0;z-index:100;display:flex;align-items:stretch;justify-content:space-between;box-shadow:0 4px 16px rgba(0,0,51,0.18);}
+  header.hidden{display:none}
   .header-left{display:flex;align-items:center;gap:20px;padding:14px 0;}
-  #score-board{display:flex;align-items:center;gap:10px;font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;color:var(--lego-blue-dark);}
+  #score-board{display:flex;align-items:center;gap:10px;font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;color:#FFF8E7;}
   .score-pill{background:var(--lego-red);color:#fff;padding:7px 20px;border-radius:6px;font-weight:900;font-size:15px;min-width:80px;text-align:center;border-bottom:3px solid var(--lego-red-dark);letter-spacing:0.5px;font-family:'Nunito',sans-serif;}
+  .header-right{display:flex;align-items:center;}
+  .lesson-meta{display:flex;flex-direction:column;justify-content:center;align-items:flex-end;text-align:right;padding:14px 0;}
+  .lesson-meta .level-badge{display:inline-block;background:var(--lego-yellow);color:var(--lego-black);font-weight:900;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:4px;margin-bottom:5px;font-family:'Nunito',sans-serif;}
+  .lesson-meta .lesson-title-sm{font-size:13px;color:rgba(255,248,231,0.65);font-weight:600;letter-spacing:0.3px;font-family:'Nunito',sans-serif;}
+  .hidden{display:none !important;}
 
   /* PROGRESS */
   .progress-wrap{padding:16px 36px 0;max-width:920px;margin:0 auto;position:relative;z-index:1;}
@@ -175,8 +193,8 @@
 <header>
   <div class="header-left">
     <svg width="200" height="56" viewBox="0 0 200 56" xmlns="http://www.w3.org/2000/svg">
-      <g transform="translate(73.03,7.07) scale(0.033230)"><g transform="translate(0,1504) scale(0.1,-0.1)" fill="#00336F" stroke="none"><path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47 l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21 -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9 -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58 105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141 144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392 -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31 c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55 -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0 -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226 144 331 156 51 6 127 -4 183 -25z"/><path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95 -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72 -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0 -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18 108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553 -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70 -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3 469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38 -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/><path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73 -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939 -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1 205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247 -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22 -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24 -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449 121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/><path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611 -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538 -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77 144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430 -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67 347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580 -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132 -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87 66 245 85 341 40z"/><path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140 -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134 -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287 -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101 -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107 173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392 207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599 281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241 111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2 347 -112 40 c-318 112 -594 149 -892 121z"/><path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149 l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801 -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6 -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294 -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12 -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29 -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55 -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12 -33 22 -42 21 -9 0 -199 -27 -422 -60z"/></g></g>
-      <text x="100" y="52" text-anchor="middle" font-family="'Nunito',Arial,sans-serif" font-size="20.80" font-weight="900" letter-spacing="7" fill="#1C1C1B">ENGLISH</text>
+      <g transform="translate(73.03,7.07) scale(0.033230)"><g transform="translate(0,1504) scale(0.1,-0.1)" fill="#FFD700" stroke="none"><path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47 l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21 -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9 -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58 105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141 144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392 -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31 c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55 -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0 -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226 144 331 156 51 6 127 -4 183 -25z"/><path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95 -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72 -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0 -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18 108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553 -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70 -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3 469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38 -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/><path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73 -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939 -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1 205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247 -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22 -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24 -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449 121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/><path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611 -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538 -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77 144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430 -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67 347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580 -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132 -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87 66 245 85 341 40z"/><path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140 -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134 -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287 -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101 -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107 173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392 207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599 281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241 111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2 347 -112 40 c-318 112 -594 149 -892 121z"/><path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149 l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801 -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6 -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294 -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12 -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29 -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55 -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12 -33 22 -42 21 -9 0 -199 -27 -422 -60z"/></g></g>
+      <text x="100" y="52" text-anchor="middle" font-family="'Nunito',Arial,sans-serif" font-size="20.80" font-weight="900" letter-spacing="7" fill="#FFF8E7">ENGLISH</text>
     </svg>
     <!-- LEGO brick pair decoration -->
     <svg width="52" height="40" viewBox="0 0 52 40" xmlns="http://www.w3.org/2000/svg">
@@ -194,13 +212,32 @@
       <rect x="32" y="19" width="16" height="3" rx="1.5" fill="#00336F"/>
     </svg>
   </div>
-  <div id="score-board">
-    <span style="font-weight:700;font-size:13px;color:var(--lego-blue-dark);">Score</span>
-    <div class="score-pill" id="total-score">0 / 0</div>
+  <div class="header-right">
+    <div class="lesson-meta" id="lesson-meta">
+      <div class="level-badge">A2 · Prepositions &amp; Phrasal Verbs</div>
+      <div class="lesson-title-sm">LEGO Prepositions &amp; Phrasal Verbs</div>
+    </div>
+    <div id="score-board" class="hidden">
+      <span style="font-weight:700;font-size:13px;color:#FFF8E7;">Score</span>
+      <div class="score-pill" id="total-score">0 / 0</div>
+    </div>
   </div>
 </header>
 
-<div class="progress-wrap">
+<!-- ══════════ START SCREEN ══════════ -->
+<div id="screen-start">
+  <div class="start-hero">
+    <img src="lego/lego-b2-scene-a.jpg" alt="A dramatic low-angle close-up of a giant LEGO brick building corner, studs embossed with the LEGO logo, rendered in a bold red and cream halftone poster style">
+  </div>
+  <div class="start-content">
+    <span class="start-badge">A2 · Prepositions &amp; Phrasal Verbs</span>
+    <h1 class="start-title">LEGO Prepositions &amp; Phrasal Verbs</h1>
+    <p class="start-intro">Four activities, brick by brick. Build your command of English prepositions and phrasal verbs through LEGO-themed sentences, one question at a time.</p>
+    <button class="btn-primary" onclick="startLesson()">Start Lesson →</button>
+  </div>
+</div>
+
+<div class="progress-wrap hidden" id="progress-wrap">
   <div class="progress-meta">
     <span id="progress-label">Activity 1 of 4</span>
     <span id="question-label">–</span>
@@ -208,7 +245,7 @@
   <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
 </div>
 
-<main>
+<main class="hidden" id="main-wrap">
   <div class="activity-tabs" id="activity-tabs">
     <button class="tab-btn active" onclick="goToActivity(0)">1 · Multiple Choice</button>
     <button class="tab-btn" onclick="goToActivity(1)">2 · Fill in the Blank</button>
@@ -693,7 +730,14 @@ function showFinal(){
 function restartAll(){ document.getElementById('final-screen').classList.remove('show'); document.getElementById('activities-wrap').style.display='block'; init(); }
 
 // GO
-init();
+function startLesson(){
+  document.getElementById('screen-start').classList.add('hidden');
+  document.getElementById('lesson-meta').classList.add('hidden');
+  document.getElementById('score-board').classList.remove('hidden');
+  document.getElementById('progress-wrap').classList.remove('hidden');
+  document.getElementById('main-wrap').classList.remove('hidden');
+  init();
+}
 </script>
 </body>
 </html>
