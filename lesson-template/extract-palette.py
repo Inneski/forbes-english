@@ -42,7 +42,7 @@ def rel_luminance(rgb):
     return 0.2126 * r + 0.7152 * g + 0.0722 * b
 
 
-def contrast(a, b):
+def contrast_ratio(a, b):
     la, lb = rel_luminance(a), rel_luminance(b)
     hi, lo = max(la, lb), min(la, lb)
     return (hi + 0.05) / (lo + 0.05)
@@ -121,7 +121,7 @@ def build_palette(path, dark=True):
         border = shift(accent, dl=-0.20, ds=-0.30)
         # Warm the text very slightly toward the accent hue for cohesion.
         text = from_hls(ah, 0.955, 0.16)
-        if contrast(text, surface) < 8:
+        if contrast_ratio(text, surface) < 8:
             text = (244, 240, 233)
         text_dim = shift(text, dl=-0.26, ds=+0.02)
         accent_bright = shift(accent, dl=+0.14, ds=+0.06)
@@ -132,17 +132,32 @@ def build_palette(path, dark=True):
         surface2 = shift(void, dl=-0.035, ds=+0.01)
         border = shift(accent, dl=+0.28, ds=-0.35)
         text = shift(darkest, dl=-0.12, ds=-0.25)
-        if contrast(text, surface) < 8:
+        if contrast_ratio(text, surface) < 8:
             text = (26, 28, 32)
         text_dim = shift(text, dl=+0.30, ds=+0.02)
         accent_bright = shift(accent, dl=-0.10, ds=+0.08)
         accent_dim = shift(accent, dl=+0.24, ds=-0.20)
+
+    # ── Contrast colour ───────────────────────────────────────────────
+    # A deliberate counterpoint to the accent, for the Forbes mark, a
+    # highlight, or anything that should read as "not part of the wash".
+    # Rotated ~150 degrees so it reads as a different colour family rather
+    # than a shade, then pushed until it is legible on --surface.
+    ch = (ah + 0.42) % 1.0
+    contrast = from_hls(ch, 0.52 if dark else 0.38, max(0.55, min(0.85, asat + 0.25)))
+    step = 0.05 if dark else -0.05
+    guard = 0
+    while contrast_ratio(contrast, surface) < 5.0 and guard < 9:
+        h_, l_, s_ = to_hls(contrast)
+        contrast = from_hls(h_, l_ + step, s_)
+        guard += 1
 
     return {
         "void": void, "surface": surface, "surface2": surface2,
         "border": border, "text": text, "text-dim": text_dim,
         "accent": accent, "accent-bright": accent_bright,
         "accent-dim": accent_dim, "secondary": secondary,
+        "contrast": contrast,
     }
 
 
@@ -159,7 +174,7 @@ def main():
     print(f"/* Palette derived from {path} ({'dark' if dark else 'light'} theme) */")
     print(":root {")
     order = ["void", "surface", "surface2", "border", "text", "text-dim",
-             "accent", "accent-bright", "accent-dim", "secondary"]
+             "accent", "accent-bright", "accent-dim", "secondary", "contrast"]
     width = max(len(k) for k in order)
     for key in order:
         print(f"  --{key.ljust(width)} : {hex_of(p[key])};")
@@ -172,10 +187,12 @@ def main():
         ("text-dim on surface", p["text-dim"], p["surface"]),
         ("accent on surface", p["accent"], p["surface"]),
         ("accent-bright on surface", p["accent-bright"], p["surface"]),
+        ("contrast on surface", p["contrast"], p["surface"]),
+        ("contrast on void", p["contrast"], p["void"]),
     ]
     worst_body = None
     for label, fg, bg in checks:
-        c = contrast(fg, bg)
+        c = contrast_ratio(fg, bg)
         mark = "PASS" if c >= 4.5 else "FAIL"
         if label.startswith("text"):
             worst_body = c if worst_body is None else min(worst_body, c)

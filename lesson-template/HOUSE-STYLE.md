@@ -10,10 +10,11 @@ bring up to this standard.
 
 Working template: **`lesson-template/lesson-template.html`**
 Palette tool: **`lesson-template/extract-palette.py`**
+Pre-ship checker: **`lesson-template/check-lesson.js`** — must exit clean.
 
 ---
 
-## 0. The five rules
+## 0. The six rules
 
 1. **16:9 slides, never a scrolling page.** A lesson is a deck. One idea per
    screen. The learner reads what is on the page and clicks to the next one.
@@ -23,10 +24,13 @@ Palette tool: **`lesson-template/extract-palette.py`**
    slide, at reduced opacity, with the content legible on top of it.
 4. **The colour palette is derived from the hero image**, mechanically, using
    the supplied script. Never hand-picked.
-5. **Every lesson ships with a language switcher**: complete German, English
-   base, and eight more languages scaffolded and ready to fill.
+5. **Every lesson ships with a language switcher**, and every language it
+   offers is complete. Unfinished languages stay out of the menu entirely.
+6. **Every lesson ends with an activation stage** — a speaking task and a
+   writing task, so the learner *produces* the language instead of only
+   recognising it.
 
-If you cannot satisfy all five, stop and say so. Do not ship a partial version
+If you cannot satisfy all six, stop and say so. Do not ship a partial version
 and describe it as done.
 
 ---
@@ -70,8 +74,23 @@ these numbers. If the two lines are different widths, the lockup is wrong.
 
 **Colour:** the Forbes mark takes `var(--accent)`; ENGLISH takes
 `var(--text)`. Both come from the palette, so the logo belongs to each
-lesson's own scheme. If the derived accent is so light or so loud that the
-mark stops reading against the cover, use `var(--text)` for both.
+lesson's own scheme.
+
+**The contrasting option.** The palette also yields `--contrast`, a colour
+rotated roughly 150° from the accent and pushed until it is legible. On a
+pink-dominant lesson that lands on lime; on coral it lands on spring green.
+Running the mark in it makes the logo a deliberate counterpoint rather than
+another tone in the wash. It is a one-line switch:
+
+```css
+--logo-mark: var(--contrast);
+```
+
+Use it when the accent is close to the hero's dominant colour and the mark
+is disappearing into the artwork, or simply when the lesson wants more snap.
+Leave it off when the accent already stands clear. If the accent is so light
+or so loud that the mark stops reading, `var(--text)` for both is the safe
+fallback.
 
 **The font must actually be loaded before the wordmark shows.** DM Sans at
 `letter-spacing: 8` is what makes ENGLISH exactly as wide as Forbes; in a
@@ -131,6 +150,7 @@ Ten variables come out, and they mean:
 | `--accent-bright` | headings emphasis, eyebrows, highlighted words |
 | `--accent-dim` | pressed/!hover states |
 | `--secondary` | second data colour when you need one |
+| `--contrast` | deliberate counterpoint — logo mark, a highlight that must not blend |
 
 Never introduce a hex value into a lesson body. If you need a colour that is
 not on this list, you are solving the wrong problem.
@@ -151,6 +171,38 @@ desaturated to `saturate(0.75)`, under a vertical wash.
   keeps text crisp over detailed artwork. Text placed directly on the
   background with no card is the single most common legibility failure —
   don't do it.
+
+---
+
+## 5a. The tense colour system
+
+The site already publishes a colour per tense: the Sherpa Tensing route map
+assigns thirteen, and each camp page is themed from its own. A learner who has
+used the route map has started associating brown with past simple and navy
+with present simple.
+
+**When a lesson teaches, contrasts or labels specific tenses, use these
+colours rather than inventing new ones.** They are in
+`lesson-template/tense-palette.css` — copy in the lines you need.
+
+| Tense | | Tense | |
+|---|---|---|---|
+| Present continuous | `#C2185B` | Future simple | `#E8632A` |
+| Present simple | `#16345C` | Present perfect continuous | `#2FA6A1` |
+| Past simple | `#B08968` | Future continuous | `#F0A500` |
+| Present perfect | `#0F6E56` | Past perfect | `#6E0B24` |
+| Going to | `#639922` | Past perfect continuous | `#4B1A7A` |
+| Past continuous | `#FFD400` | Future perfect | `#454545` |
+| | | Future perfect continuous | `#B0B0B0` |
+
+Two cautions. Several are dark — maroon, navy, dark grey — and will not read
+on a dark canvas; lighten with `color-mix(in srgb, var(--t-past-perfect) 55%,
+white)` to keep the hue and raise the lightness, then check contrast. And
+never put more than three tense colours on one slide: past that it stops
+being a code and becomes decoration.
+
+When a lesson is not about tenses, ignore this entirely and use the
+hero-derived palette.
 
 ---
 
@@ -197,13 +249,29 @@ Each screen is one `<section class="slide" data-type="...">`. Types:
 shuffled at runtime and A/B/C/D labels are applied after shuffling, so never
 write "the answer is C".
 
-> **Keep every option roughly the same length.** A correct answer written
-> longer or more precisely than its distractors lets a learner score without
-> knowing the language. This has been flagged as a real defect on this site
-> before. Check option lengths before you ship.
+> **The correct option must never be the longest one.** This is a hard gate,
+> not a preference, and `check-lesson.js` enforces it.
+
+A correct answer written longer or more precisely than its distractors lets a
+learner score without knowing any of the language being taught. It is the most
+common quality defect found on this site — the C1 negotiation lesson had it in
+10 of 12 items, several at nearly twice the length of every distractor.
+
+It is especially easy to introduce when the *teaching point itself* is that
+formal register is more elaborate. That is exactly when it does the most
+damage: the learner learns "pick the long one", not the register.
+
+**Fix it by lengthening the distractors, never by shortening the key.** A good
+distractor is the same length as the answer and wrong for a reason the lesson
+has taught — wrong register, imprecise term, a commitment the speaker did not
+intend. Three plausible same-length wrong answers is the work; it is also the
+part that makes the question worth asking.
 
 **Gap fill.** `data-answer="was postponed|got postponed"` — pipe-separated
-alternatives, matched case-insensitively and whitespace-tolerantly. List
+alternatives, matched case-insensitively and whitespace-tolerantly.
+Several gaps can share a slide: wrap each in `<div class="card gap-row">` with
+its own `.feedback`. Each gap is then scored and explained individually — the
+engine counts gaps, not slides, so a 2-gap slide is worth 2 points. List
 every genuinely acceptable answer; a learner who is right and marked wrong is
 worse than one who is wrong and marked right.
 
@@ -221,26 +289,32 @@ class; beyond about twenty-four, split into Part I and Part II.
 
 Structure is `LANGS` / `RTL_LANGS` / `UI_I18N` / `t()`, already wired.
 
-**Ship with English and German complete.** Not the cover only — *every* piece
-of interface the learner meets: buttons, headings, eyebrows, chips, progress
-and score labels, feedback strings, and all four results messages. "Lesson has
-a language switcher but most of it is still English" has been raised as a
-problem before; the switcher existing is not the deliverable, the translation
-is.
+**A language appears in the menu only if it is actually finished.** The
+switcher is built from `UI_I18N` at runtime and skips any language whose key
+count is short of English, so an empty or half-done scaffold is simply not
+offered. Never ship a dropdown with names in it that fall back to English when
+selected — a dead option is worse than no option.
 
-The other eight ship as **empty objects**, in this fixed order:
+That leaves two honest states, and the checker enforces them:
 
-> Spanish · French · Italian · Portuguese · Russian · Arabic · Chinese · Japanese
+- **Complete** — every key English defines. It shows in the menu.
+- **Empty** — `{}`. It stays in the code as a placeholder for a later pass and
+  does not show.
 
-`t()` falls back to English per key, so an empty or half-finished language can
-never blank the interface. This is what makes later expansion additive rather
-than a rebuild — filling in `UI_I18N.es` is the entire task, with no other
-file touched.
+**Partial is a failure**, not a work-in-progress: it puts a language in the
+menu that silently reverts to English halfway down the screen.
+
+English and German are the minimum. Beyond that, finish what you start: the
+nine-language set is Spanish, French, Italian, Portuguese, Russian, Arabic,
+Chinese and Japanese alongside German, and `forbes-c1-negotiation.html` carries
+all nine as the worked reference.
 
 **Scope boundary — this holds and does not change:** translate the app's own
 chrome. **Do not translate the English being taught** — question stems,
 options, gap sentences, example sentences and word banks stay in English.
-Translating the target language defeats the lesson.
+Translating the target language defeats the lesson. Note that this applies to
+the activation stage too: the task instructions translate, the target-language
+chips do not.
 
 Arabic is in `RTL_LANGS`; the engine sets `dir="rtl"` and the layout mirrors.
 Check it when you touch layout.
@@ -292,6 +366,68 @@ the file. Scale them to fit the 1280×720 canvas rather than cropping.
 
 ---
 
+## 10b. The activation stage — required
+
+A lesson that ends on a score has tested recognition and stopped. Recognising
+the right register in four options is not the same skill as producing it in
+front of a client. **Every lesson ends with an `activate` slide**, after the
+results, and it is the last thing the learner sees.
+
+It carries **two tracks, both live at once**:
+
+- **🗣 Discussion** — three prompts for pair or small-group work. Write
+  *situations*, not comprehension questions: "Your client wants 12% off. Push
+  back without closing the door." A prompt the learner can answer in one word
+  is not a speaking task.
+- **✍️ Writing** — a brief with a word count and a live text area. The word
+  counter runs as they type, a Copy button lifts the text out, and the content
+  is mirrored into the PDF export (a textarea's value does not print).
+
+Run either. Run both. They are not alternatives presented as a choice — the
+slide shows both because a class often does one in the room and sets the other
+as homework.
+
+Above the two tracks sits a **target-language strip**: the phrases from this
+lesson the learner is expected to actually use, as chips, with "use at least
+three". This is what connects production back to the material. Without it the
+task is generic and the lesson's own language goes unused.
+
+Writing the tasks:
+
+- The speaking prompts should require the target language, not merely permit
+  it. If a learner can complete the task in B1 English, the task is wrong.
+- Give the writing brief a real audience and purpose — a notice to a client, a
+  reply to a complaint — not "write about negotiation".
+- 150–250 words is the right size for a class. State it.
+- Keep the whole slide inside the canvas like any other. If both tasks will
+  not fit, shorten the prompts, not the type.
+
+---
+
+## 10a. Rollout status — which lessons are already converted
+
+The repo holds **216 lesson files**. Converting them is in progress, not done.
+Keep this list current when you convert one, so the next session knows where
+things stand.
+
+**Converted to the 16:9 deck standard:**
+
+- `forbes-c1-negotiation.html` — 22 slides (first conversion, 2026-08-11)
+
+**Touched but only partly modernised** — these got a prominent hero and the
+persistent background treatment while the old scrolling format was still the
+standard. They are *not* yet 16:9 decks and should be converted when revisited:
+
+- `forbes-dnd-rpg.html`
+- `forbes-english-dinosaur-minecraft-part2.html`
+
+**Everything else** is still an old-format scrolling lesson.
+
+Do not bulk-convert without being asked. Conversion is a rebuild per lesson
+(§10), and the content decisions inside it deserve a human look.
+
+---
+
 ## 11. Publishing
 
 1. **Thumbnail.** Add the hero to the `LESSON_IMAGES` map in `library.html`:
@@ -312,27 +448,40 @@ the file. Scale them to fit the 1280×720 canvas rather than cropping.
 
 ---
 
-## 12. QA checklist — run every item before saying it is done
+## 12. QA — run the checker, then check by eye
 
-Open the file in a browser and check:
+**First, run this. It is not optional.**
 
-- [ ] Nothing scrolls, at 1920×1080, 1440×900, and a narrow window
-- [ ] Every slide's content fits inside the canvas with margin to spare
+```bash
+node lesson-template/check-lesson.js <lesson>.html
+```
+
+It mechanically verifies the six things that have actually gone wrong here:
+every slide fits the canvas and nothing scrolls; no multiple-choice key is the
+longest option; every scored question has an explanation; German covers every
+English key and every `data-i18n` resolves; Forbes and ENGLISH render to the
+same width; and there are no JS errors. **A lesson does not ship until it exits
+clean.**
+
+Two notes on why it exists. A checker that measures the wrong box passes
+everything and teaches you nothing — the first version of this tool reported
+all 22 slides fitting because it measured a flex parent that silently absorbs
+overflow. And a written rule that nobody measures gets skipped; a failing exit
+code does not.
+
+Then open the file in a browser and check the things a script cannot judge:
+
 - [ ] Cover title and logo are legible against the hero
-- [ ] Forbes and ENGLISH are the same width, Forbes above
-- [ ] The wordmark is in DM Sans, not a fallback (no flash on load)
 - [ ] Background pattern is clearly visible on interior slides, not a faint ghost
 - [ ] All reading content sits in a `.card`
 - [ ] Palette contrast report: every body-text row PASS
 - [ ] Arrow keys, on-screen arrows, and the Begin button all navigate
-- [ ] Every question scores, gives feedback, and shows an explanation
-- [ ] MC options are similar lengths
-- [ ] Switch to German: nothing is still in English
-- [ ] Switch to Spanish (empty): everything falls back to English, nothing blank
+- [ ] Every question scores and gives feedback when answered
+- [ ] Switch to German: nothing is still in English on screen
 - [ ] Switch to Arabic: layout mirrors
-- [ ] Browser console: zero errors
 - [ ] Print preview: one 16:9 page per slide, backgrounds present
 - [ ] `library.html` thumbnail added
+- [ ] The lesson still teaches what the original taught — nothing dropped
 
 Verify by actually loading and screenshotting the page. Do not report a
 lesson as finished on the strength of having written the markup.

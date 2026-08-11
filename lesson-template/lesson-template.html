@@ -24,6 +24,10 @@
 :root {
   --hero: url('sample-hero.jpg');   /* real lessons: url('<folder>/hero.jpg') */
 
+  /* Uncomment to run the Forbes mark in the contrasting colour instead of
+     the accent — e.g. lime on a pink-dominant lesson. See HOUSE-STYLE §2. */
+  /* --logo-mark: var(--contrast); */
+
   --void          : #0c1113;
   --surface       : #151e21;
   --surface2      : #1c292d;
@@ -34,6 +38,7 @@
   --accent-bright : #fb779f;
   --accent-dim    : #bc1246;
   --secondary     : #002e3d;
+  --contrast      : #1ded49;
 }
 
 /* ── Fixed tokens: identical in every lesson. Do not edit. ── */
@@ -117,7 +122,7 @@ html, body {
 
 /* ── LOGO ── */
 .fe-logo { width: 152px; height: auto; display: block; }
-.fe-logo-mark { color: var(--accent); }
+.fe-logo-mark { color: var(--logo-mark, var(--accent)); }
 .fe-logo-word { fill: var(--text); opacity: 0; transition: opacity .25s ease; }
 .fonts-ready .fe-logo-word { opacity: 1; }   /* never flash a fallback face */
 .slide[data-type="cover"] .fe-logo { width: 232px; }
@@ -292,6 +297,61 @@ html, body {
 [dir="rtl"] .opt { text-align: right; }
 [dir="rtl"] .opt:hover:not(:disabled) { transform: translateX(-3px); }
 
+
+/* ── ACTIVATION ──────────────────────────────────────────────────── */
+.act-target {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 16px;
+}
+.act-target-label {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-dim);
+  margin-right: 4px;
+}
+.bank-chip {
+  font-family: var(--font-mono); font-size: 12px;
+  padding: 5px 12px; border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  color: var(--accent-bright);
+}
+.act-cols { align-items: stretch; }
+.act-card { display: flex; flex-direction: column; padding: 20px 24px; }
+.act-kind {
+  display: flex; align-items: center; gap: 9px;
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--accent-bright); margin-bottom: 12px;
+}
+.act-icon { font-size: 16px; }
+.act-brief { font-size: 16.5px; line-height: 1.5; color: var(--text); margin-bottom: 12px; }
+.act-list { list-style: none; display: grid; gap: 9px; }
+.act-list li {
+  font-size: 15.5px; line-height: 1.45; color: var(--text-dim);
+  padding-left: 18px; position: relative;
+}
+.act-list li::before {
+  content: '—'; position: absolute; left: 0; color: var(--accent);
+}
+.act-input {
+  flex: 1; min-height: 118px; resize: none;
+  font-family: var(--font-ui); font-size: 15px; line-height: 1.55;
+  color: var(--text);
+  background: rgba(255,255,255,.05);
+  border: 1px solid color-mix(in srgb, var(--border) 45%, transparent);
+  border-radius: 8px; padding: 12px 14px;
+}
+.act-input:focus { outline: none; border-color: var(--accent); background: rgba(255,255,255,.08); }
+.act-input::placeholder { color: var(--text-dim); opacity: .55; }
+.act-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 10px;
+}
+.act-count { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-dim); }
+.act-copy { font-size: 12.5px; padding: 6px 14px; }
+/* The textarea's value does not print; this mirror does. */
+.act-print { display: none; font-size: 14px; line-height: 1.55; white-space: pre-wrap; }
+
 /* ══════════════════════════════════════════════════════════════════
    PRINT / PDF EXPORT
    Ctrl-P → Save as PDF → Landscape, margins None, Background graphics ON.
@@ -338,6 +398,8 @@ html, body {
                               rgba(0,0,0,0.22) 68%, rgba(0,0,0,0.78) 100%);
   }
   .feedback { opacity: 1 !important; }
+  .act-input, .act-foot { display: none !important; }
+  .act-print { display: block !important; }
 }
 </style>
 </head>
@@ -352,7 +414,7 @@ html, body {
     <!-- ══════════════════════════════════════════════════════════
          REPLACE 2 of 2: SLIDES
          Author one <section class="slide"> per screen.
-         data-type: cover | teach | mc | gap | results
+         data-type: cover | teach | mc | gap | results | activate
          Everything a learner reads must fit WITHOUT scrolling.
          If it does not fit, split it across two slides — never shrink type.
          ══════════════════════════════════════════════════════════ -->
@@ -424,9 +486,9 @@ html, body {
         </p>
         <div class="opts two-up">
           <button class="opt" data-correct>had already approved</button>
-          <button class="opt">has already approve</button>
-          <button class="opt">was already approve</button>
-          <button class="opt">already approving</button>
+          <button class="opt">has already approving</button>
+          <button class="opt">was already approving</button>
+          <button class="opt">have already approve</button>
         </div>
         <p class="feedback" data-explain="Past perfect: the approval finished before another past point."></p>
       </div>
@@ -458,8 +520,50 @@ html, body {
       <div class="slide-body" style="align-items:center;text-align:center">
         <div class="score-big"><span id="scoreVal">0</span><span class="dim" style="font-size:34px">/<span id="scoreMax">0</span></span></div>
         <p class="prose" style="margin-top:18px" id="scoreMsg"></p>
-        <div style="margin-top:30px">
-          <button class="btn btn-solid" data-action="restart" data-i18n="btnRestart">Start again</button>
+        <p class="prose dim" style="margin-top:14px" data-i18n="resNext">Recognising the language is half of it. Now produce it →</p>
+      </div>
+    </section>
+
+    <!-- ── ACTIVATION ───────────────────────────────────────────
+         REQUIRED. Every lesson ends by having the learner USE the
+         language, not just recognise it. Two tracks, both live at
+         once — run either, or both. -->
+    <section class="slide" data-type="activate">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="actEyebrow">Activation</div>
+        <h2 class="slide-title" data-i18n="actTitle">Put it to work</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target">
+          <span class="act-target-label" data-i18n="actUse">Use at least three:</span>
+          <span class="bank-chip">target phrase</span>
+          <span class="bank-chip">target phrase</span>
+          <span class="bank-chip">target phrase</span>
+          <span class="bank-chip">target phrase</span>
+        </div>
+        <div class="cols act-cols">
+          <div class="card act-card">
+            <div class="act-kind"><span class="act-icon">🗣</span><span data-i18n="actSpeakKind">Discussion · in pairs</span></div>
+            <p class="act-brief" data-i18n="actSpeakBrief">Frame the speaking task in one line.</p>
+            <ul class="act-list">
+              <li data-i18n="actSpeak1">First prompt — a situation, not a question.</li>
+              <li data-i18n="actSpeak2">Second prompt, raising the stakes.</li>
+              <li data-i18n="actSpeak3">Third prompt, arguing the opposite side.</li>
+            </ul>
+          </div>
+          <div class="card act-card">
+            <div class="act-kind"><span class="act-icon">✍️</span><span data-i18n="actWriteKind">Writing · 180–220 words</span></div>
+            <p class="act-brief" data-i18n="actWriteBrief">Frame the writing task in one or two lines.</p>
+            <textarea class="act-input" id="actInput" data-i18n-ph="actPlaceholder" placeholder="Write your response here…" aria-label="Written response"></textarea>
+            <div class="act-foot">
+              <span class="act-count" id="actCount">0 words</span>
+              <button class="btn act-copy" data-action="copy-writing" data-i18n="btnCopy">Copy</button>
+            </div>
+            <div class="act-print" id="actPrint" aria-hidden="true"></div>
+          </div>
+        </div>
+        <div style="margin-top:14px;text-align:center">
+          <button class="btn" data-action="restart" data-i18n="btnRestart">Start again</button>
         </div>
       </div>
     </section>
@@ -501,6 +605,18 @@ const UI_I18N = {
     btnStart:'Begin →', btnCheck:'Check', btnNext:'Next →', btnRestart:'Start again',
     scoreLabel:'Score', slideOf:(a,b)=>`${a} / ${b}`,
     fbCorrect:'Correct.', fbWrong:'Not quite.', fbAnswer:'Answer:',
+    resNext:'Recognising the language is half of it. Now produce it →',
+    actEyebrow:'Activation', actTitle:'Put it to work',
+    actUse:'Use at least three:',
+    actSpeakKind:'Discussion · in pairs', actWriteKind:'Writing · 180–220 words',
+    actSpeakBrief:'Frame the speaking task in one line.',
+    actSpeak1:'First prompt — a situation, not a question.',
+    actSpeak2:'Second prompt, raising the stakes.',
+    actSpeak3:'Third prompt, arguing the opposite side.',
+    actWriteBrief:'Frame the writing task in one or two lines.',
+    actPlaceholder:'Write your response here…',
+    btnCopy:'Copy', btnCopied:'Copied',
+    wordCount:(n)=>`${n} ${n===1?'word':'words'}`,
     resPerfect:'Flawless. Every single one.',
     resStrong:'Strong work — the rule has landed.',
     resMid:'Solid start. Worth one more pass.',
@@ -510,13 +626,29 @@ const UI_I18N = {
     coverSub:'A one-line description of what the learner will be able to do afterwards',
     chipLevel:'B2 Upper-Intermediate', chipFocus:'Focus area', chipCount:'8 slides',
     s1Eyebrow:'Language focus', s1Title:'The rule, stated once and clearly',
+    s1ColA:'Use the <strong>left column</strong> for the rule itself. Keep it to roughly forty words — a slide is not a textbook page.',
+    s1ColB:'Use the <strong>right column</strong> for one worked example, so the learner sees the rule doing actual work.',
+    s1Note:'Optional note, caveat, or common-mistake warning.',
     s2Eyebrow:'Question 1', s2Title:'Choose the best option',
+    s2Stem:'The board <em>_______</em> the proposal before the deadline.',
     s3Eyebrow:'Question 2', s3Title:'Complete the sentence'
   },
   de: {
     btnStart:'Beginnen →', btnCheck:'Prüfen', btnNext:'Weiter →', btnRestart:'Neu starten',
     scoreLabel:'Punkte', slideOf:(a,b)=>`${a} / ${b}`,
     fbCorrect:'Richtig.', fbWrong:'Nicht ganz.', fbAnswer:'Antwort:',
+    resNext:'Die Sprache zu erkennen ist die halbe Miete. Jetzt anwenden →',
+    actEyebrow:'Anwendung', actTitle:'In die Praxis bringen',
+    actUse:'Verwende mindestens drei:',
+    actSpeakKind:'Diskussion · zu zweit', actWriteKind:'Schreiben · 180–220 Wörter',
+    actSpeakBrief:'Formuliere die Sprechaufgabe in einem Satz.',
+    actSpeak1:'Erster Impuls — eine Situation, keine Frage.',
+    actSpeak2:'Zweiter Impuls, der den Einsatz erhöht.',
+    actSpeak3:'Dritter Impuls, der die Gegenposition vertritt.',
+    actWriteBrief:'Formuliere die Schreibaufgabe in ein bis zwei Sätzen.',
+    actPlaceholder:'Schreibe hier deine Antwort…',
+    btnCopy:'Kopieren', btnCopied:'Kopiert',
+    wordCount:(n)=>`${n} ${n===1?'Wort':'Wörter'}`,
     resPerfect:'Makellos. Alles richtig.',
     resStrong:'Starke Leistung — die Regel sitzt.',
     resMid:'Guter Anfang. Ein weiterer Durchgang lohnt sich.',
@@ -525,7 +657,11 @@ const UI_I18N = {
     coverSub:'Eine Zeile dazu, was die Lernenden danach können',
     chipLevel:'B2 Obere Mittelstufe', chipFocus:'Schwerpunkt', chipCount:'8 Folien',
     s1Eyebrow:'Sprachlicher Schwerpunkt', s1Title:'Die Regel, einmal klar formuliert',
+    s1ColA:'Nutze die <strong>linke Spalte</strong> für die Regel selbst. Halte sie bei etwa vierzig Wörtern — eine Folie ist keine Lehrbuchseite.',
+    s1ColB:'Nutze die <strong>rechte Spalte</strong> für ein durchgearbeitetes Beispiel, damit die Regel in Aktion sichtbar wird.',
+    s1Note:'Optionaler Hinweis, Einschränkung oder Warnung vor einem typischen Fehler.',
     s2Eyebrow:'Frage 1', s2Title:'Wähle die beste Option',
+    s2Stem:'The board <em>_______</em> the proposal before the deadline.',
     s3Eyebrow:'Frage 2', s3Title:'Vervollständige den Satz'
   },
   /* Fill these in later — English shows through until you do. */
@@ -656,6 +792,22 @@ function checkGaps(slide) {
   updateScoreChip();
 }
 
+/* ── Activation: word count, copy, and a print mirror (a textarea's
+   value does not appear in a PDF, so we mirror it into a div). ── */
+const actInput = document.getElementById('actInput');
+if (actInput) {
+  const countEl = document.getElementById('actCount');
+  const printEl = document.getElementById('actPrint');
+  const sync = () => {
+    const words = actInput.value.trim().split(/\s+/).filter(Boolean).length;
+    countEl.textContent = t('wordCount')(words);
+    printEl.textContent = actInput.value;
+  };
+  actInput.addEventListener('input', sync);
+  window.syncActivation = sync;
+  sync();
+}
+
 /* ── Events ── */
 document.addEventListener('click', e => {
   const a = e.target.closest('[data-action]');
@@ -665,6 +817,14 @@ document.addEventListener('click', e => {
   if (act === 'prev') show(idx - 1);
   if (act === 'check') checkGaps(a.closest('.slide'));
   if (act === 'restart') location.reload();
+  if (act === 'copy-writing') {
+    const ta = document.getElementById('actInput');
+    if (ta && navigator.clipboard) navigator.clipboard.writeText(ta.value).then(() => {
+      const was = a.textContent;
+      a.textContent = t('btnCopied');
+      setTimeout(() => { a.textContent = was; }, 1400);
+    });
+  }
 });
 
 document.addEventListener('keydown', e => {
@@ -682,6 +842,11 @@ function applyLang() {
     const v = t(el.dataset.i18n);
     if (v != null) el.innerHTML = v;
   });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const v = t(el.dataset.i18nPh);
+    if (v != null) el.placeholder = v;
+  });
+  if (window.syncActivation) window.syncActivation();
   document.documentElement.lang = currentLang;
   document.documentElement.dir = RTL_LANGS.includes(currentLang) ? 'rtl' : 'ltr';
   updateScoreChip();
@@ -690,8 +855,15 @@ function applyLang() {
 
 function initLang() {
   const sel = document.getElementById('langSelect');
-  LANGS.forEach(l => sel.add(new Option(l.label, l.code)));
+  // Only offer languages that are actually translated. An empty or partial
+  // scaffold stays in the code for a future pass but never appears as a dead
+  // option in the menu.
+  const enKeys = Object.keys(UI_I18N.en).length;
+  LANGS.filter(l => l.code === 'en' ||
+                    Object.keys(UI_I18N[l.code] || {}).length >= enKeys)
+       .forEach(l => sel.add(new Option(l.label, l.code)));
   sel.value = currentLang;
+  sel.hidden = sel.options.length < 2;
   sel.addEventListener('change', () => { currentLang = sel.value; applyLang(); });
 }
 
