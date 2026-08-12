@@ -3,761 +3,1316 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Presenting on the Reconstruction of Ukraine (C1)</title>
+<!-- ══ REPLACE: lesson title. No "Forbes English —" prefix. ══ -->
+<title>Presenting on the Reconstruction of Ukraine (C1) | Forbes English</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg1:#0d2a31;
-    --bg2:#15414b;
-    --card:#f7f2e8;
-    --card-edge:#e6dcc6;
-    --ink:#1d2b30;
-    --ink-soft:#4a5a5f;
-    --amber:#cf9237;
-    --amber-deep:#b67a26;
-    --cream:#f3ead7;
-    --teal:#2f7d63;
-    --teal-soft:#e3efe8;
-    --brick:#b0463a;
-    --brick-soft:#f4e2df;
-    --rule:#cdbf9f;
-  }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{
-    font-family:'Inter',system-ui,sans-serif;
-    background:linear-gradient(155deg,var(--bg1),var(--bg2));
-    color:var(--ink);
-    min-height:100vh;
-    padding:34px 16px 64px;
-    -webkit-font-smoothing:antialiased;
-  }
-  .wrap{max-width:760px;margin:0 auto;}
+/* ══════════════════════════════════════════════════════════════════
+   FORBES ENGLISH — 16:9 SLIDE LESSON TEMPLATE
+   Everything you normally need to change lives in the two blocks
+   marked "REPLACE". Do not restructure the engine below them.
+   ══════════════════════════════════════════════════════════════════ */
 
-  /* ---- Logo ---- */
-  .brand{text-align:center;margin-bottom:26px;}
-  .brand .forbes{
-    font-family:'Playfair Display',serif;
-    font-weight:700;
-    font-size:46px;
-    letter-spacing:1px;
-    color:var(--cream);
-    line-height:1;
-  }
-  .brand .rule{
-    width:212px;height:2px;background:var(--amber);
-    margin:8px auto 7px;border-radius:2px;
-  }
-  .brand .english{
-    font-family:'Inter',sans-serif;
-    font-weight:700;
-    font-size: 33.600px;
-    letter-spacing:9px;
-    color:var(--amber);
-    padding-left:9px;
-  }
-  .subtitle{
-    text-align:center;color:#bfd3d2;font-size:13.5px;
-    margin-bottom:24px;letter-spacing:.4px;
-  }
+/* ══ REPLACE 1 of 2: hero image + palette ══
+   1. Point --hero at the lesson's cover image. This ONE line drives the
+      cover, the background pattern on every slide, and the PDF export.
+   2. Generate the palette FROM that same image:
+         python3 lesson-template/extract-palette.py <hero-image>
+      and paste its output over the colour block. Never hand-pick colours. */
+:root {
+  --hero: url('Ukraine/reconstruction-hero.jpg');
 
-  /* ---- Status bar ---- */
-  .status{
-    display:flex;justify-content:space-between;align-items:center;
-    gap:14px;margin-bottom:16px;flex-wrap:wrap;
-  }
-  .dots{display:flex;gap:7px;}
-  .dot{
-    width:30px;height:6px;border-radius:6px;background:rgba(255,255,255,.18);
-    transition:background .3s;
-  }
-  .dot.active{background:var(--amber);}
-  .dot.done{background:var(--teal);}
-  .score-chip{
-    background:rgba(255,255,255,.10);color:var(--cream);
-    font-size:13px;font-weight:600;padding:7px 14px;border-radius:20px;
-    border:1px solid rgba(255,255,255,.14);letter-spacing:.3px;
-  }
+  /* Uncomment to run the Forbes mark in the contrasting colour instead of
+     the accent — e.g. lime on a pink-dominant lesson. See HOUSE-STYLE §2. */
+  /* --logo-mark: var(--contrast); */
 
-  /* ---- Card ---- */
-  .card{
-    background:var(--card);
-    border:1px solid var(--card-edge);
-    border-radius:16px;
-    padding:30px 30px 28px;
-    box-shadow:0 18px 40px -20px rgba(0,0,0,.55);
-  }
-  .act-label{
-    font-size:12px;font-weight:700;letter-spacing:1.6px;
-    text-transform:uppercase;color:var(--amber-deep);margin-bottom:6px;
-  }
-  .progress-line{
-    font-size:13px;color:var(--ink-soft);font-weight:500;margin-bottom:18px;
-  }
-  .act-title{
-    font-family:'Playfair Display',serif;font-weight:600;
-    font-size:23px;color:var(--ink);margin-bottom:6px;line-height:1.25;
-  }
-  .act-intro{font-size:14.5px;color:var(--ink-soft);margin-bottom:22px;line-height:1.55;}
+  --void          : #0c0b0b;
+  --surface       : #191515;
+  --surface2      : #231f1f;
+  --border        : #aea495;
+  --text          : #f5f4f2;
+  --text-dim      : #bfb4a3;
+  --accent        : #e7d8c2;
+  --accent-bright : #fdbb5a;
+  --accent-dim    : #c9ad85;
+  --secondary     : #c9a997;
+  --contrast      : #31c5d8;
+}
 
-  .qtext{font-size:17px;line-height:1.6;margin-bottom:20px;color:var(--ink);}
-  .qtext .blank{
-    display:inline-block;min-width:96px;border-bottom:2px solid var(--amber-deep);
-    text-align:center;font-weight:600;color:var(--amber-deep);
-  }
+/* ── Fixed tokens: identical in every lesson. Do not edit. ── */
+:root {
+  --slide-w: 1280px;
+  --slide-h: 720px;
+  --pad: 64px;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-ui: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'DM Mono', ui-monospace, monospace;
+  --r: 10px;
+  --ok: #3fbf7f;
+  --no: #e8555f;
+  --bg-opacity: 0.44;     /* background pattern strength — see doc §6 */
 
-  /* ---- Options ---- */
-  .opts{display:flex;flex-direction:column;gap:11px;}
-  .opt{
-    text-align:left;background:#fff;border:1.6px solid var(--card-edge);
-    border-radius:11px;padding:14px 16px;font-size:15.5px;color:var(--ink);
-    cursor:pointer;font-family:inherit;transition:border-color .15s,background .15s;
-    line-height:1.4;
-  }
-  .opt:hover:not(:disabled){border-color:var(--amber);}
-  .opt:disabled{cursor:default;}
-  .opt.sel{border-color:var(--amber);background:#fffdf6;}
-  .opt.correct{border-color:var(--teal);background:var(--teal-soft);}
-  .opt.wrong{border-color:var(--brick);background:var(--brick-soft);}
+  /* Theme primitives. Dark is the default; a light lesson sets
+     data-theme="light" on <html> and only these flip. Never hardcode
+     rgba(0,0,0,…) or rgba(255,255,255,…) in a lesson — use these. */
+  --inset:  rgba(255,255,255,0.07);  /* recessed fills: inputs, key discs   */
+  --inset2: rgba(255,255,255,0.14);  /* the same, one step stronger         */
+  --scrim:  rgba(0,0,0,0.45);        /* chrome sitting over the hero        */
+  --hairline: rgba(255,255,255,0.28);
+  --cover-shadow: 0 4px 28px rgba(0,0,0,0.85);
+  --wash-mid: rgba(0,0,0,0.55);      /* interior background wash            */
+}
 
-  /* ---- Feedback ---- */
-  .fb{
-    margin-top:18px;padding:14px 16px;border-radius:11px;font-size:14.5px;
-    line-height:1.55;display:none;
-  }
-  .fb.show{display:block;}
-  .fb.ok{background:var(--teal-soft);border:1px solid #bcdac9;color:#1f4d3a;}
-  .fb.no{background:var(--brick-soft);border:1px solid #e6c4be;color:#7d2b22;}
-  .fb b{font-weight:700;}
+/* ══ LIGHT THEME ══
+   For bright, airy heroes. The palette comes from
+   `extract-palette.py <hero> --light`; these are the structural flips the
+   palette alone cannot express.
 
-  /* ---- Buttons ---- */
-  .actions{display:flex;justify-content:flex-end;margin-top:22px;gap:12px;}
-  .btn{
-    font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;
-    border:none;border-radius:10px;padding:12px 26px;letter-spacing:.3px;
-    transition:transform .08s,background .15s,opacity .15s;
-  }
-  .btn:active{transform:translateY(1px);}
-  .btn-primary{background:var(--amber);color:#2a1c05;}
-  .btn-primary:hover{background:var(--amber-deep);color:#fff;}
-  .btn-primary:disabled{opacity:.4;cursor:not-allowed;}
-  .btn-ghost{background:transparent;color:var(--ink-soft);border:1.6px solid var(--card-edge);}
+   A light lesson is a MID tone, not a white one. Every wash here is mixed
+   from --void rather than from white: mixing toward white bleaches the hero
+   out of the interior pages and turns the deck into glare on a projector.
+   If you find yourself reaching for rgba(255,255,255,…) in a lesson, the
+   answer is a higher --void percentage instead. */
+html[data-theme="light"] {
+  --inset:  rgba(0,0,0,0.045);
+  --inset2: rgba(0,0,0,0.10);
+  --scrim:  color-mix(in srgb, var(--void) 78%, transparent);
+  --hairline: rgba(0,0,0,0.14);
+  --cover-shadow: 0 1px 3px rgba(255,255,255,0.55), 0 2px 16px rgba(255,255,255,0.4);
+  --wash-mid: color-mix(in srgb, var(--void) 62%, transparent);
+  --bg-opacity: 0.30;
+}
 
-  /* ---- Gap-fill ---- */
-  .gf-para{font-size:16px;line-height:2.15;color:var(--ink);margin-bottom:22px;}
-  .gf-slot{
-    display:inline-block;min-width:118px;padding:3px 10px;margin:0 2px;
-    border:1.8px dashed var(--amber-deep);border-radius:8px;text-align:center;
-    font-weight:600;color:var(--amber-deep);cursor:pointer;background:#fff;
-    vertical-align:middle;line-height:1.3;
-  }
-  .gf-slot.active{background:#fff6e3;border-style:solid;}
-  .gf-slot.filled{border-style:solid;color:var(--ink);background:#fff8ec;}
-  .gf-slot.correct{border-color:var(--teal);color:#1f4d3a;background:var(--teal-soft);border-style:solid;}
-  .gf-slot.wrong{border-color:var(--brick);color:#7d2b22;background:var(--brick-soft);border-style:solid;}
-  .bank{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:8px;}
-  .chip{
-    background:#fff;border:1.6px solid var(--card-edge);border-radius:9px;
-    padding:9px 15px;font-size:14.5px;font-weight:600;color:var(--ink);
-    cursor:pointer;font-family:inherit;transition:border-color .15s,opacity .15s;
-  }
-  .chip:hover:not(.used){border-color:var(--amber);}
-  .chip.used{opacity:.32;cursor:default;text-decoration:line-through;}
-  .hint{font-size:13px;color:var(--ink-soft);margin-bottom:16px;}
+/* On a mid canvas a translucent card has little to contrast against, so
+   edges need more of the hairline than they do on a dark canvas. */
+html[data-theme="light"] .card { border-color: color-mix(in srgb, var(--border) 90%, transparent); }
+html[data-theme="light"] .opt,
+html[data-theme="light"] .match-item { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
+html[data-theme="light"] .opt-key { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
+html[data-theme="light"] .card { background: color-mix(in srgb, var(--surface) 92%, transparent); }
+html[data-theme="light"] .opt { background: color-mix(in srgb, var(--surface) 95%, transparent); }
 
-  /* ---- Matching ---- */
-  .match-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-  .col-h{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--amber-deep);margin-bottom:10px;}
-  .mcol{display:flex;flex-direction:column;gap:10px;}
-  .mitem{
-    position:relative;text-align:left;background:#fff;border:1.6px solid var(--card-edge);
-    border-radius:10px;padding:12px 14px 12px 14px;font-size:14px;line-height:1.4;
-    color:var(--ink);cursor:pointer;font-family:inherit;transition:border-color .15s;
-  }
-  .mitem:hover:not(:disabled){border-color:var(--amber);}
-  .mitem:disabled{cursor:default;}
-  .mitem.sel{border-color:var(--amber);background:#fffdf6;}
-  .mitem.correct{border-color:var(--teal);background:var(--teal-soft);}
-  .mitem.wrong{border-color:var(--brick);background:var(--brick-soft);}
-  .badge{
-    display:inline-flex;align-items:center;justify-content:center;
-    min-width:22px;height:22px;border-radius:50%;background:var(--amber);
-    color:#2a1c05;font-size:12px;font-weight:700;margin-right:8px;vertical-align:middle;
-  }
-  .rnum{
-    position:absolute;top:8px;right:10px;font-size:12px;font-weight:700;color:var(--amber-deep);
-  }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  /* ---- Reorder ---- */
-  .ro-answer{
-    min-height:58px;border:1.8px dashed var(--rule);border-radius:12px;
-    padding:12px;margin-bottom:16px;display:flex;flex-wrap:wrap;gap:9px;
-    background:#fffdf8;align-content:flex-start;
-  }
-  .ro-answer.empty::before{content:'Click chunks below in order…';color:#b3a989;font-size:14px;font-style:italic;}
-  .ro-bank{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:6px;}
-  .tile{
-    background:#fff;border:1.6px solid var(--card-edge);border-radius:10px;
-    padding:10px 14px;font-size:14.5px;color:var(--ink);cursor:pointer;
-    font-family:inherit;line-height:1.4;transition:border-color .15s;
-  }
-  .tile:hover{border-color:var(--amber);}
-  .tile.placed{background:#fff8ec;border-color:var(--amber);}
-  .tile.lock-correct{background:var(--teal-soft);border-color:var(--teal);cursor:default;}
-  .tile.lock-wrong{background:var(--brick-soft);border-color:var(--brick);cursor:default;}
+html, body {
+  height: 100%;
+  overflow: hidden;            /* NO SCROLLING. This is the whole point. */
+  background: var(--void);
+  color: var(--text);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+}
 
-  /* ---- Results ---- */
-  .results{text-align:center;}
-  .res-ring{
-    width:150px;height:150px;border-radius:50%;margin:6px auto 22px;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    background:conic-gradient(var(--amber) var(--pct,0%),#eadfc6 0);
-  }
-  .res-inner{
-    width:118px;height:118px;border-radius:50%;background:var(--card);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-  }
-  .res-pct{font-family:'Playfair Display',serif;font-size:34px;font-weight:700;color:var(--ink);}
-  .res-sub{font-size:12px;color:var(--ink-soft);}
-  .res-head{font-family:'Playfair Display',serif;font-size:26px;margin-bottom:8px;color:var(--ink);}
-  .res-msg{font-size:15px;color:var(--ink-soft);line-height:1.6;margin-bottom:24px;max-width:460px;margin-left:auto;margin-right:auto;}
-  .res-break{font-size:13.5px;color:var(--ink-soft);margin-bottom:24px;}
-  .res-break span{color:var(--amber-deep);font-weight:700;}
+/* ── STAGE: a fixed 1280×720 canvas scaled to fit any viewport ── */
+.stage-wrap { position: fixed; inset: 0; display: grid; place-items: center; }
+.stage {
+  position: relative;
+  width: var(--slide-w);
+  height: var(--slide-h);
+  transform-origin: center center;
+  overflow: hidden;
+  background: var(--void);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.55);
+}
 
-  @media(max-width:560px){
-    .card{padding:24px 20px;}
-    .match-grid{grid-template-columns:1fr;}
-    .brand .forbes{font-size:38px;}
+/* ── BACKGROUND PATTERN: the cover image, behind every slide ──
+   Driven by --hero so the screen view and the PDF/PPT export read from
+   ONE definition. Two pseudo-layers because opacity on a parent would
+   also fade the wash sitting on top of it. */
+.bg-layer { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.bg-layer::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--hero) center / cover no-repeat;
+  opacity: var(--bg-opacity);
+  filter: saturate(0.75);
+}
+.bg-layer::after {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, var(--void) 0%, var(--wash-mid) 22%,
+                            var(--wash-mid) 78%, var(--void) 100%);
+}
+/* The cover slide shows the hero at FULL strength — no wash, no dimming. */
+.stage.on-cover .bg-layer::before { opacity: 1; filter: none; }
+/* Centre scrim: guarantees cover-text contrast over ANY hero — light, dark,
+   or busy — while leaving the artwork vivid at the edges. Do not remove it;
+   it is what makes an arbitrary dropped-in image safe. */
+.stage.on-cover .bg-layer::after {
+  background:
+    radial-gradient(ellipse 60% 56% at 50% 47%,
+      rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.52) 52%, transparent 78%),
+    linear-gradient(180deg, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.14) 28%,
+                            rgba(0,0,0,0.22) 68%, rgba(0,0,0,0.78) 100%);
+}
+/* A light cover keeps its picture. Dark ink already carries against a bright
+   image, so the scrim here is barely there — just enough to stop the title
+   landing on a hard edge. Never brighten a light cover to rescue text; if the
+   text will not read, the hero is wrong for a light lesson. */
+html[data-theme="light"] .stage.on-cover .bg-layer::after {
+  background:
+    radial-gradient(ellipse 58% 54% at 50% 47%,
+      rgba(255,255,255,0.20) 0%, rgba(255,255,255,0.08) 55%, transparent 78%);
+}
+
+/* ── SLIDES ── */
+.slide {
+  position: absolute; inset: 0; z-index: 1;
+  display: none;
+  flex-direction: column;
+  padding: var(--pad);
+}
+.slide.is-active { display: flex; animation: slide-in .32s ease both; }
+@keyframes slide-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+/* ── LOGO ── */
+.fe-logo { width: 152px; height: auto; display: block; }
+.fe-logo-mark { color: var(--logo-mark, var(--accent)); }
+.fe-logo-word { fill: var(--text); opacity: 0; transition: opacity .25s ease; }
+.fonts-ready .fe-logo-word { opacity: 1; }   /* never flash a fallback face */
+.slide[data-type="cover"] .fe-logo { width: 232px; }
+
+/* ── COVER ── */
+.cover-inner {
+  height: 100%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; gap: 4px;
+}
+.cover-title {
+  font-family: var(--font-display);
+  font-size: 62px; font-weight: 900; line-height: 1.06;
+  color: var(--text);
+  text-shadow: var(--cover-shadow);
+  margin-top: 26px;
+}
+.cover-title em { font-style: normal; color: var(--accent-bright); }
+.cover-sub {
+  font-size: 19px; color: var(--text);
+  letter-spacing: .04em; margin-top: 14px;
+  text-shadow: var(--cover-shadow);
+}
+.cover-meta {
+  display: flex; gap: 10px; margin-top: 26px; flex-wrap: wrap; justify-content: center;
+}
+.chip {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase;
+  padding: 6px 14px; border-radius: 999px;
+  border: 1px solid var(--hairline);
+  background: var(--scrim);
+  color: var(--text);
+}
+
+/* ── SLIDE FURNITURE ── */
+.slide-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 20px; margin-bottom: 26px;
+}
+.eyebrow {
+  font-family: var(--font-mono); font-size: 12px;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent-bright);
+}
+.slide-title {
+  font-family: var(--font-display);
+  font-size: 38px; font-weight: 700; line-height: 1.15; color: var(--text);
+  margin-top: 6px;
+}
+.slide-body { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; }
+
+/* Content sits in a translucent card so it stays legible over the pattern. */
+.card {
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+  border-radius: var(--r);
+  padding: 30px 34px;
+  backdrop-filter: blur(3px);
+}
+.card + .card { margin-top: 16px; }
+.cols .card + .card,
+.cols .card { margin-top: 0; }   /* side-by-side cards must share a top edge */
+.prose { font-size: 20px; line-height: 1.62; color: var(--text); }
+.prose + .prose { margin-top: 14px; }
+.prose strong { color: var(--accent-bright); font-weight: 600; }
+.dim { color: var(--text-dim); }
+
+/* Two-column teaching layout */
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+
+/* ── QUESTIONS ── */
+.bank { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.gap-row + .gap-row { margin-top: 22px; }
+.q-stem { font-size: 25px; line-height: 1.5; color: var(--text); margin-bottom: 22px; }
+.q-stem em { font-style: normal; color: var(--accent-bright); font-weight: 600; }
+
+.opts { display: grid; gap: 11px; }
+.opts.two-up { grid-template-columns: 1fr 1fr; }
+.opt {
+  display: flex; align-items: center; gap: 14px;
+  width: 100%; text-align: left;
+  font-family: var(--font-ui); font-size: 19px; color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: var(--r);
+  padding: 15px 20px; cursor: pointer;
+  transition: border-color .15s, background .15s, transform .12s;
+}
+.opt:hover:not(:disabled) { border-color: var(--accent); transform: translateX(3px); }
+.opt-key {
+  flex: 0 0 30px; height: 30px; display: grid; place-items: center;
+  border-radius: 50%; font-family: var(--font-mono); font-size: 13px;
+  background: var(--inset);
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+}
+.opt.correct { border-color: var(--ok); background: color-mix(in srgb, var(--ok) 20%, var(--surface2)); }
+.opt.wrong   { border-color: var(--no); background: color-mix(in srgb, var(--no) 18%, var(--surface2)); }
+.opt:disabled { cursor: default; }
+
+/* Gap-fill */
+.gap {
+  font-family: var(--font-ui); font-size: 20px; color: var(--text);
+  background: var(--inset);
+  border: none; border-bottom: 2px solid var(--accent);
+  padding: 3px 10px; min-width: 190px; border-radius: 4px 4px 0 0;
+}
+.gap:focus { outline: none; background: var(--inset2); }
+.gap.correct { border-bottom-color: var(--ok); color: var(--ok); }
+.gap.wrong   { border-bottom-color: var(--no); color: var(--no); }
+
+.feedback {
+  margin-top: 18px; font-size: 17px; line-height: 1.55;
+  min-height: 26px; opacity: 0; transition: opacity .2s;
+}
+.feedback.show { opacity: 1; }
+.feedback.ok { color: var(--ok); }
+.feedback.no { color: var(--no); }
+
+/* ── BUTTONS ── */
+.btn {
+  font-family: var(--font-ui); font-size: 15px; font-weight: 600;
+  letter-spacing: .03em;
+  padding: 12px 26px; border-radius: var(--r);
+  border: 1px solid var(--accent); background: transparent; color: var(--accent-bright);
+  cursor: pointer; transition: background .15s, color .15s;
+}
+.btn:hover { background: var(--accent); color: var(--void); }
+.btn-solid { background: var(--accent); color: var(--void); border-color: var(--accent); }
+.btn-solid:hover { background: var(--accent-bright); border-color: var(--accent-bright); }
+.btn:disabled { opacity: .35; cursor: not-allowed; }
+.btn-lg { font-size: 17px; padding: 15px 38px; }
+
+/* ── CHROME: progress + nav, pinned inside the stage ── */
+.deck-bar {
+  position: absolute; z-index: 3; left: 0; right: 0; bottom: 0;
+  height: 58px; padding: 0 26px;
+  display: flex; align-items: center; gap: 18px;
+  background: linear-gradient(180deg, transparent, var(--scrim));
+}
+.stage.on-cover .deck-bar { background: none; }
+.stage.on-cover .deck-score { visibility: hidden; }
+.progress { flex: 1; height: 3px; background: var(--inset2); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0; background: var(--accent); transition: width .3s ease; }
+.deck-count, .deck-score {
+  font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); white-space: nowrap;
+}
+.nav-btn {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  background: var(--scrim); color: var(--text);
+  cursor: pointer; font-size: 15px; line-height: 1;
+  display: grid; place-items: center; transition: border-color .15s, background .15s;
+}
+.nav-btn:hover:not(:disabled) { border-color: var(--accent); background: var(--accent); color: var(--void); }
+.nav-btn:disabled { opacity: .28; cursor: not-allowed; }
+
+/* ── LANGUAGE SWITCH ── */
+.lang-select {
+  font-family: var(--font-mono); font-size: 12px;
+  background: var(--scrim); color: var(--text);
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  border-radius: 6px; padding: 6px 10px; cursor: pointer;
+}
+.lang-select:focus { outline: 1px solid var(--accent); }
+
+/* ── RESULTS ── */
+.score-big {
+  font-family: var(--font-display); font-size: 84px; font-weight: 900;
+  color: var(--accent-bright); line-height: 1;
+}
+
+/* ── RTL ── */
+[dir="rtl"] .opt { text-align: right; }
+[dir="rtl"] .opt:hover:not(:disabled) { transform: translateX(-3px); }
+
+
+/* ── ACTIVATION ──────────────────────────────────────────────────── */
+.act-target {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 16px;
+}
+.act-target-label {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-dim);
+  margin-right: 4px;
+}
+.bank-chip {
+  font-family: var(--font-mono); font-size: 12px;
+  padding: 5px 12px; border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  color: var(--accent-bright);
+}
+.act-cols { align-items: stretch; }
+.act-card { display: flex; flex-direction: column; padding: 20px 24px; }
+.act-kind {
+  display: flex; align-items: center; gap: 9px;
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--accent-bright); margin-bottom: 12px;
+}
+.act-icon { font-size: 16px; }
+.act-brief { font-size: 16.5px; line-height: 1.5; color: var(--text); margin-bottom: 12px; }
+.act-list { list-style: none; display: grid; gap: 9px; }
+.act-list li {
+  font-size: 15.5px; line-height: 1.45; color: var(--text-dim);
+  padding-left: 18px; position: relative;
+}
+.act-list li::before {
+  content: '—'; position: absolute; left: 0; color: var(--accent);
+}
+.act-input {
+  flex: 1; min-height: 118px; resize: none;
+  font-family: var(--font-ui); font-size: 15px; line-height: 1.55;
+  color: var(--text);
+  background: var(--inset);
+  border: 1px solid color-mix(in srgb, var(--border) 45%, transparent);
+  border-radius: 8px; padding: 12px 14px;
+}
+.act-input:focus { outline: none; border-color: var(--accent); background: var(--inset2); }
+.act-input::placeholder { color: var(--text-dim); opacity: .55; }
+.act-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 10px;
+}
+.act-count { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-dim); }
+.act-copy { font-size: 12.5px; padding: 6px 14px; }
+/* The textarea's value does not print; this mirror does. */
+.act-print { display: none; font-size: 14px; line-height: 1.55; white-space: pre-wrap; }
+
+
+/* ── MATCHING ────────────────────────────────────────────────────── */
+.match-grid { display: grid; grid-template-columns: 1fr 1.35fr; gap: 14px; }
+.match-col { display: grid; gap: 8px; align-content: start; }
+.match-item {
+  font-family: var(--font-ui); font-size: 15.5px; line-height: 1.4;
+  text-align: left; color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: var(--r); padding: 11px 16px; cursor: pointer;
+  transition: border-color .15s, background .15s, opacity .2s;
+}
+.match-item.term { font-weight: 600; }
+.match-item:hover:not(.done) { border-color: var(--accent); }
+.match-item.picked { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 22%, var(--surface2)); }
+.match-item.done { opacity: .45; cursor: default; border-color: var(--ok); }
+.match-item.miss { border-color: var(--no); animation: shake .3s; }
+@keyframes shake { 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
+
+/* ── ORDERING (build the sentence) ───────────────────────────────────
+   For word-order work — where the point is the SEQUENCE of prepositional
+   phrases, not choosing one word. Click to place, click again to take back;
+   no dragging, because a scaled stage makes drag targets lie. */
+.order-hint {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 10px;
+}
+.order-target {
+  display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start;
+  min-height: 92px; padding: 12px;
+  border: 1.5px dashed color-mix(in srgb, var(--border) 60%, transparent);
+  border-radius: var(--r); background: var(--inset);
+}
+.order-target.correct { border-style: solid; border-color: var(--ok); }
+.order-target.wrong   { border-style: solid; border-color: var(--no); }
+.order-pool { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.chunk {
+  font-family: var(--font-ui); font-size: 15.5px; line-height: 1.35;
+  color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: 999px; padding: 9px 16px; cursor: pointer;
+  transition: border-color .15s, background .15s, opacity .2s;
+}
+.chunk:hover:not(:disabled) { border-color: var(--accent); }
+.chunk.placed { background: color-mix(in srgb, var(--accent) 18%, var(--surface2)); border-color: var(--accent); }
+.chunk:disabled { cursor: default; opacity: .5; }
+
+/* ── DISCUSSION (unscored speaking prompts) ──────────────────────── */
+.discuss-meta {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 14px;
+}
+.prompts { display: grid; gap: 12px; list-style: none; margin: 0; padding: 0; }
+.prompt {
+  font-size: 19px; line-height: 1.5; color: var(--text);
+  padding-left: 26px; position: relative;
+}
+.prompt::before {
+  content: '?'; position: absolute; left: 0; top: 1px;
+  font-family: var(--font-mono); font-size: 15px; color: var(--accent);
+}
+.prompt.aside { font-size: 16.5px; color: var(--text-dim); font-style: italic; }
+.prompt.aside::before { content: '·'; }
+
+/* ══════════════════════════════════════════════════════════════════
+   PRINT / PDF EXPORT
+   Ctrl-P → Save as PDF → Landscape, margins None, Background graphics ON.
+   Each slide becomes one 16:9 page, ready to drop into PowerPoint.
+   ══════════════════════════════════════════════════════════════════ */
+@page { size: 1280px 720px; margin: 0; }
+@media print {
+  html, body { overflow: visible; height: auto; background: #fff; }
+  .stage-wrap { position: static; display: block; }
+  .stage {
+    transform: none !important;
+    width: 1280px; height: auto;      /* let the slides stack into pages */
+    overflow: visible; box-shadow: none;
   }
+  .bg-layer, .deck-bar, .lang-select, .nav-btn { display: none !important; }
+
+  /* Each slide becomes its own page and carries its own background, so the
+     export does not depend on the single on-screen background layer. */
+  .slide {
+    display: flex !important;
+    position: relative; inset: auto;
+    width: 1280px; height: 720px;
+    isolation: isolate;
+    page-break-after: always; break-after: page;
+    animation: none !important;
+  }
+  .slide:last-child { page-break-after: auto; break-after: auto; }
+  .slide::before {
+    content: ''; position: absolute; inset: 0; z-index: -2;
+    background: var(--hero) center / cover no-repeat;
+    opacity: var(--bg-opacity);
+  }
+  .slide::after {
+    content: ''; position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(180deg, var(--void) 0%, var(--wash-mid) 22%,
+                                        var(--wash-mid) 78%, var(--void) 100%);
+  }
+  .slide[data-type="cover"]::before { opacity: 1; }
+  .slide[data-type="cover"]::after {
+    background:
+      radial-gradient(ellipse 60% 56% at 50% 47%,
+        rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.52) 52%, transparent 78%),
+      linear-gradient(180deg, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.14) 28%,
+                              rgba(0,0,0,0.22) 68%, rgba(0,0,0,0.78) 100%);
+  }
+  .feedback { opacity: 1 !important; }
+  .act-input, .act-foot { display: none !important; }
+  .act-print { display: block !important; }
+}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="brand">
-    <svg class="logo-forbes-vec" viewBox="0 0 2760 1504" style="width:199px;height:auto;display:block;color:var(--cream);" xmlns="http://www.w3.org/2000/svg"><g transform="translate(0,1504) scale(0.1,-0.1)" fill="currentColor" stroke="none"><path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47 l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21 -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9 -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58 105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141 144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392 -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31 c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55 -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0 -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226 144 331 156 51 6 127 -4 183 -25z"/><path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95 -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72 -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0 -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18 108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553 -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70 -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3 469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38 -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/><path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73 -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939 -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1 205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247 -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22 -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24 -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449 121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/><path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611 -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538 -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77 144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430 -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67 347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580 -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132 -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87 66 245 85 341 40z"/><path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140 -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134 -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287 -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101 -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107 173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392 207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599 281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241 111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2 347 -112 40 c-318 112 -594 149 -892 121z"/><path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149 l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801 -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6 -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294 -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12 -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29 -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55 -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12 -33 22 -42 21 -9 0 -199 -27 -422 -60z"/></g></svg>
-    <div class="english">ENGLISH</div>
-  </div>
-  <div class="subtitle">Presenting on the Reconstruction of Ukraine · Advanced (C1)</div>
 
-  <div class="status">
-    <div class="dots" id="dots"></div>
-    <div class="score-chip" id="score">Score: 0 / 23</div>
-  </div>
+<div class="stage-wrap">
+  <div class="stage" id="stage">
 
-  <div class="card" id="card"></div>
+    <!-- Background pattern: driven entirely by --hero in the CSS above. -->
+    <div class="bg-layer" role="presentation"></div>
+
+    <!-- ══════════════════════════════════════════════════════════
+         REPLACE 2 of 2: SLIDES
+         Author one <section class="slide"> per screen.
+         data-type: cover | teach | mc | gap | match | order | discuss | results | activate
+         data-bg="folder/other.jpg" swaps the background pattern on that slide.
+         Everything a learner reads must fit WITHOUT scrolling.
+         If it does not fit, split it across two slides — never shrink type.
+         ══════════════════════════════════════════════════════════ -->
+
+    <!-- ── COVER ────────────────────────────────────────────── -->
+    <section class="slide is-active" data-type="cover">
+      <div class="cover-inner">
+        <svg class="fe-logo" viewBox="0 0 200 78" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forbes English">
+          <g class="fe-logo-mark" transform="translate(-42.74,-30.22) scale(0.099477)"><g transform="translate(0,1504) scale(0.1,-0.1)" fill="currentColor" stroke="none"><path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47 l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21 -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9 -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58 105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141 144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392 -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31 c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55 -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0 -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226 144 331 156 51 6 127 -4 183 -25z"/><path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95 -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72 -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0 -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18 108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553 -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70 -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3 469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38 -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/><path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73 -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939 -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1 205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247 -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22 -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24 -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449 121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/><path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611 -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538 -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77 144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430 -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67 347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580 -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132 -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87 66 245 85 341 40z"/><path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140 -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134 -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287 -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101 -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107 173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392 207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599 281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241 111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2 347 -112 40 c-318 112 -594 149 -892 121z"/><path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149 l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801 -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6 -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294 -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12 -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29 -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55 -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12 -33 22 -42 21 -9 0 -199 -27 -422 -60z"/></g></g>
+          <text class="fe-logo-word" x="100" y="72.6" text-anchor="middle" font-family="'DM Sans', Arial, sans-serif" font-size="20.8" font-weight="600" letter-spacing="8">ENGLISH</text>
+        </svg>
+        <h1 class="cover-title" data-i18n="coverTitle">The Lesson <em>Title</em></h1>
+        <p class="cover-sub" data-i18n="coverSub">A one-line description of what the learner will be able to do afterwards</p>
+        <div class="cover-meta">
+          <span class="chip" data-i18n="chipLevel">B2 Upper-Intermediate</span>
+          <span class="chip" data-i18n="chipFocus">Focus area</span>
+          <span class="chip" data-i18n="chipCount">8 slides</span>
+        </div>
+        <div style="margin-top:34px">
+          <button class="btn btn-solid btn-lg" data-action="next" data-i18n="btnStart">Begin →</button>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="a1e1">Precision vocabulary &middot; 1/6</div>
+        <h2 class="slide-title" data-i18n="a1t">Choose the exact word</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">The opening session gave a sobering <em>_______</em> of the destruction across the energy sector.</p>
+        <div class="opts two-up">
+          <button class="opt" data-correct>assessment</button>
+          <button class="opt">assertion</button>
+          <button class="opt">assignment</button>
+          <button class="opt">assortment</button>
+        </div>
+        <p class="feedback" data-explain="An &lt;strong&gt;assessment&lt;/strong&gt; is an evaluation or appraisal — exactly what a presentation gives of damage. An 'assertion' is a claim, an 'assignment' is a task, and an 'assortment' is a mixture."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="a1e2">Precision vocabulary &middot; 2/6</div>
+        <h2 class="slide-title" data-i18n="a1t">Choose the exact word</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Reconstruction on this scale is without <em>_______</em> in modern European history.</p>
+        <div class="opts two-up">
+          <button class="opt" data-correct>precedent</button>
+          <button class="opt">precaution</button>
+          <button class="opt">precision</button>
+          <button class="opt">preamble</button>
+        </div>
+        <p class="feedback" data-explain="&lt;strong&gt;Without precedent&lt;/strong&gt; means nothing comparable has happened before. A 'precaution' is a safeguard, 'precision' is accuracy, and a 'preamble' is an introduction."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="a1e3">Precision vocabulary &middot; 3/6</div>
+        <h2 class="slide-title" data-i18n="a1t">Choose the exact word</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Donors have made their continued support <em>_______</em> on measurable progress against corruption.</p>
+        <div class="opts two-up">
+          <button class="opt" data-correct>contingent</button>
+          <button class="opt">consistent</button>
+          <button class="opt">compliant</button>
+          <button class="opt">conclusive</button>
+        </div>
+        <p class="feedback" data-explain="&lt;strong&gt;Contingent on&lt;/strong&gt; means dependent or conditional on. 'Consistent', 'compliant' and 'conclusive' don't combine with 'on' to carry this meaning."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="a1e4">Precision vocabulary &middot; 4/6</div>
+        <h2 class="slide-title" data-i18n="a1t">Choose the exact word</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Without a credible anti-corruption framework, donor confidence could quickly <em>_______</em>.</p>
+        <div class="opts two-up">
+          <button class="opt" data-correct>evaporate</button>
+          <button class="opt">exaggerate</button>
+          <button class="opt">elaborate</button>
+          <button class="opt">escalate</button>
+        </div>
+        <p class="feedback" data-explain="Confidence &lt;strong&gt;evaporates&lt;/strong&gt; — it disappears. You can't 'exaggerate' or 'elaborate' confidence, and 'escalate' (increase) is the opposite of what the sentence implies."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="a1e5">Precision vocabulary &middot; 5/6</div>
+        <h2 class="slide-title" data-i18n="a1t">Choose the exact word</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Let me <em>_______</em> the myth that reconstruction can wait until the fighting has fully ended.</p>
+        <div class="opts two-up">
+          <button class="opt" data-correct>dispel</button>
+          <button class="opt">disperse</button>
+          <button class="opt">dissolve</button>
+          <button class="opt">distort</button>
+        </div>
+        <p class="feedback" data-explain="You &lt;strong&gt;dispel a myth&lt;/strong&gt; — drive it away. You 'disperse' a crowd, 'dissolve' a substance, and 'distort' (twist) a fact, but none of these collocates with 'myth' here."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="a1e6">Precision vocabulary &middot; 6/6</div>
+        <h2 class="slide-title" data-i18n="a1t">Choose the exact word</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">The figures I'm about to present should be <em>_______</em> with some caution, given the volatility on the ground.</p>
+        <div class="opts two-up">
+          <button class="opt" data-correct>treated</button>
+          <button class="opt">tackled</button>
+          <button class="opt">trusted</button>
+          <button class="opt">tested</button>
+        </div>
+        <p class="feedback" data-explain="Figures are &lt;strong&gt;treated with caution&lt;/strong&gt; — a fixed expression. 'Tackled', 'trusted' and 'tested' don't form this phrase."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="a2e1">Signposting the talk &middot; 1/3</div>
+        <h2 class="slide-title" data-i18n="a2t">Complete the sentence</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="bank"><span class="bank-chip">perspective</span> <span class="bank-chip">concise</span> <span class="bank-chip">outline</span> <span class="bank-chip">stress</span> <span class="bank-chip">turn</span> <span class="bank-chip">explore</span> <span class="bank-chip">digress</span> <span class="bank-chip">recap</span> <span class="bank-chip">gloss</span></div>
+        <div class="gap-row">
+          <p class="q-stem">To put these staggering figures into <input class="gap" data-answer="perspective" size="14" aria-label="gap">, the World Bank now estimates total recovery needs at well over half a trillion dollars.</p>
+          <p class="feedback" data-explain="&lt;strong&gt;Put figures into perspective&lt;/strong&gt; — the phrase that makes a huge number mean something to an audience."></p>
+        </div>
+        <div class="gap-row">
+          <p class="q-stem">I'll keep my remarks <input class="gap" data-answer="concise" size="10" aria-label="gap">, so we leave ample room for questions at the end.</p>
+          <p class="feedback" data-explain="&lt;strong&gt;Keep my remarks concise&lt;/strong&gt; — brief and to the point. The only adjective that fits the frame."></p>
+        </div>
+        <div style="margin-top:16px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="a2e2">Signposting the talk &middot; 2/3</div>
+        <h2 class="slide-title" data-i18n="a2t">Complete the sentence</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="bank"><span class="bank-chip">perspective</span> <span class="bank-chip">concise</span> <span class="bank-chip">outline</span> <span class="bank-chip">stress</span> <span class="bank-chip">turn</span> <span class="bank-chip">explore</span> <span class="bank-chip">digress</span> <span class="bank-chip">recap</span> <span class="bank-chip">gloss</span></div>
+        <div class="gap-row">
+          <p class="q-stem">Allow me to <input class="gap" data-answer="outline" size="10" aria-label="gap"> the three pillars on which our proposal rests, before we examine each in detail.</p>
+          <p class="feedback" data-explain="&lt;strong&gt;Outline&lt;/strong&gt; previews structure. &amp;ldquo;Before we examine each in detail&amp;rdquo; signals an overview, not a summary."></p>
+        </div>
+        <div class="gap-row">
+          <p class="q-stem">This timeline, I must <input class="gap" data-answer="stress" size="9" aria-label="gap">, is contingent on a stable security environment throughout.</p>
+          <p class="feedback" data-explain="A parenthetical &lt;strong&gt;I must stress&lt;/strong&gt; puts weight on a caveat without breaking the sentence."></p>
+        </div>
+        <div style="margin-top:16px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="a2e3">Signposting the talk &middot; 3/3</div>
+        <h2 class="slide-title" data-i18n="a2t">Complete the sentence</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="bank"><span class="bank-chip">perspective</span> <span class="bank-chip">concise</span> <span class="bank-chip">outline</span> <span class="bank-chip">stress</span> <span class="bank-chip">turn</span> <span class="bank-chip">explore</span> <span class="bank-chip">digress</span> <span class="bank-chip">recap</span> <span class="bank-chip">gloss</span></div>
+        <div class="gap-row">
+          <p class="q-stem">Having dealt with the costs, let me <input class="gap" data-answer="turn" size="7" aria-label="gap"> to the equally pressing issue of oversight.</p>
+          <p class="feedback" data-explain="&lt;strong&gt;Let me turn to&lt;/strong&gt; is the standard signpost for moving to a new topic."></p>
+        </div>
+        <div class="gap-row">
+          <p class="q-stem">I'd be glad to <input class="gap" data-answer="explore" size="10" aria-label="gap"> any of these themes in greater depth once I've finished.</p>
+          <p class="feedback" data-explain="&lt;strong&gt;Explore in greater depth&lt;/strong&gt; invites fuller discussion — the polite close before questions."></p>
+        </div>
+        <div style="margin-top:16px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="match" data-bg="Ukraine/reconstruction-hero.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="a3e">What the phrase is doing &middot; 6 pairs</div>
+        <h2 class="slide-title" data-i18n="a3t">Match the move to the words</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="match-grid">
+          <div class="match-pair" data-term="Testing your own argument by voicing the opposing view" data-def="&ldquo;Let me play devil&rsquo;s advocate for a moment&hellip;&rdquo;"></div>
+          <div class="match-pair" data-term="Making an abstract figure relatable" data-def="&ldquo;To give you a sense of scale, that&rsquo;s roughly the GDP of a mid-sized nation.&rdquo;"></div>
+          <div class="match-pair" data-term="Deferring a question politely" data-def="&ldquo;That&rsquo;s a fair question — I&rsquo;ll come back to it, if I may, in just a moment.&rdquo;"></div>
+          <div class="match-pair" data-term="Introducing a qualifying point" data-def="&ldquo;That said, the picture is not uniformly bleak.&rdquo;"></div>
+          <div class="match-pair" data-term="Flagging the single key message" data-def="&ldquo;If you take one thing away today, let it be this.&rdquo;"></div>
+          <div class="match-pair" data-term="Hedging a claim, inviting correction" data-def="&ldquo;Correct me if I&rsquo;m wrong, but my understanding is that funds are ring-fenced.&rdquo;"></div>
+        </div>
+        <p class="feedback" data-explain="Every one of these is a rhetorical move, not just a phrase: conceding, deferring, scaling, hedging. Naming the move is what lets you use it deliberately."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="order">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="a4e1">Building the sentence &middot; 1/5</div>
+        <h2 class="slide-title" data-i18n="a4t">Put the presenter&rsquo;s line together</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="order-hint" data-i18n="orderHint">Click the parts in order &middot; click one again to take it back</div>
+        <div class="order" data-answer="Before I outline our proposal,|let me briefly summarise|the scale of the damage."></div>
+        <div style="margin-top:18px">
+          <button class="btn" data-action="check-order" data-i18n="btnCheck">Check</button>
+        </div>
+        <p class="feedback" data-explain="A subordinate clause of time first, then the main clause it frames."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="order">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="a4e2">Building the sentence &middot; 2/5</div>
+        <h2 class="slide-title" data-i18n="a4t">Put the presenter&rsquo;s line together</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="order-hint" data-i18n="orderHint">Click the parts in order &middot; click one again to take it back</div>
+        <div class="order" data-answer="While the costs are daunting,|we cannot afford|the cost of inaction."></div>
+        <div style="margin-top:18px">
+          <button class="btn" data-action="check-order" data-i18n="btnCheck">Check</button>
+        </div>
+        <p class="feedback" data-explain="A concessive &lt;em&gt;while&lt;/em&gt; clause sets up the reversal that follows."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="order">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="a4e3">Building the sentence &middot; 3/5</div>
+        <h2 class="slide-title" data-i18n="a4t">Put the presenter&rsquo;s line together</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="order-hint" data-i18n="orderHint">Click the parts in order &middot; click one again to take it back</div>
+        <div class="order" data-answer="Public funds will get us started,|but to finish the job,|the private sector will be essential."></div>
+        <div style="margin-top:18px">
+          <button class="btn" data-action="check-order" data-i18n="btnCheck">Check</button>
+        </div>
+        <p class="feedback" data-explain="Two clauses joined by &lt;em&gt;but&lt;/em&gt;, with a purpose phrase in the middle."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="order">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="a4e4">Building the sentence &middot; 4/5</div>
+        <h2 class="slide-title" data-i18n="a4t">Put the presenter&rsquo;s line together</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="order-hint" data-i18n="orderHint">Click the parts in order &middot; click one again to take it back</div>
+        <div class="order" data-answer="Before we move on,|let me address the elephant in the room:|the risk of corruption."></div>
+        <div style="margin-top:18px">
+          <button class="btn" data-action="check-order" data-i18n="btnCheck">Check</button>
+        </div>
+        <p class="feedback" data-explain="Signpost, then the move, then the colon that names it."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="order">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="a4e5">Building the sentence &middot; 5/5</div>
+        <h2 class="slide-title" data-i18n="a4t">Put the presenter&rsquo;s line together</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="order-hint" data-i18n="orderHint">Click the parts in order &middot; click one again to take it back</div>
+        <div class="order" data-answer="And before I hand over,|I'd like to leave you with one thought:|recovery is not a cost but an investment."></div>
+        <div style="margin-top:18px">
+          <button class="btn" data-action="check-order" data-i18n="btnCheck">Check</button>
+        </div>
+        <p class="feedback" data-explain="The classic closing frame: time clause, intention, then the thought itself."></p>
+      </div>
+    </section>
+
+    <!-- ── RESULTS ──────────────────────────────────────────── -->
+    <section class="slide" data-type="results">
+      <div class="slide-body" style="align-items:center;text-align:center">
+        <div class="score-big"><span id="scoreVal">0</span><span class="dim" style="font-size:34px">/<span id="scoreMax">0</span></span></div>
+        <p class="prose" style="margin-top:18px" id="scoreMsg"></p>
+        <p class="prose dim" style="margin-top:14px" data-i18n="resNext">Recognising the language is half of it. Now produce it →</p>
+      </div>
+    </section>
+
+    <!-- ── ACTIVATION ───────────────────────────────────────────
+         REQUIRED. Every lesson ends by having the learner USE the
+         language, not just recognise it. Two tracks, both live at
+         once — run either, or both. -->
+    <section class="slide" data-type="activate">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="actEyebrow">Activation</div>
+        <h2 class="slide-title" data-i18n="actTitle">Put it to work</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target">
+          <span class="act-target-label" data-i18n="actUse">Use at least three:</span>
+          <span class="bank-chip">to put it into perspective</span>
+          <span class="bank-chip">contingent on</span>
+          <span class="bank-chip">let me turn to</span>
+          <span class="bank-chip">I must stress</span>
+          <span class="bank-chip">that said</span>
+          <span class="bank-chip">if you take one thing away</span>
+        </div>
+        <div class="cols act-cols">
+          <div class="card act-card">
+            <div class="act-kind"><span class="act-icon">🗣</span><span data-i18n="actSpeakKind">Discussion · in pairs</span></div>
+            <p class="act-brief" data-i18n="actSpeakBrief">Frame the speaking task in one line.</p>
+            <ul class="act-list">
+              <li data-i18n="actSpeak1">First prompt — a situation, not a question.</li>
+              <li data-i18n="actSpeak2">Second prompt, raising the stakes.</li>
+              <li data-i18n="actSpeak3">Third prompt, arguing the opposite side.</li>
+            </ul>
+          </div>
+          <div class="card act-card">
+            <div class="act-kind"><span class="act-icon">✍️</span><span data-i18n="actWriteKind">Writing · 180–220 words</span></div>
+            <p class="act-brief" data-i18n="actWriteBrief">Frame the writing task in one or two lines.</p>
+            <textarea class="act-input" id="actInput" data-i18n-ph="actPlaceholder" placeholder="Write your response here…" aria-label="Written response"></textarea>
+            <div class="act-foot">
+              <span class="act-count" id="actCount">0 words</span>
+              <button class="btn act-copy" data-action="copy-writing" data-i18n="btnCopy">Copy</button>
+            </div>
+            <div class="act-print" id="actPrint" aria-hidden="true"></div>
+          </div>
+        </div>
+        <div style="margin-top:14px;text-align:center">
+          <button class="btn" data-action="restart" data-i18n="btnRestart">Start again</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── DECK CHROME ──────────────────────────────────────── -->
+    <div class="deck-bar">
+      <select class="lang-select" id="langSelect" aria-label="Language"></select>
+      <button class="nav-btn" data-action="prev" aria-label="Previous">‹</button>
+      <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+      <span class="deck-count" id="deckCount">1 / 1</span>
+      <span class="deck-score" id="deckScore"></span>
+      <button class="nav-btn" data-action="next" aria-label="Next">›</button>
+    </div>
+
+  </div>
 </div>
 
 <script>
-"use strict";
+/* ══════════════════════════════════════════════════════════════════
+   ENGINE — identical in every lesson. Do not edit below this line
+   except to add UI_I18N strings.
+   ══════════════════════════════════════════════════════════════════ */
 
-/* ---------------- Utilities ---------------- */
-function shuffle(arr){
-  var a = arr.slice();
-  for(var i=a.length-1;i>0;i--){
-    var j=Math.floor(Math.random()*(i+1));
-    var t=a[i];a[i]=a[j];a[j]=t;
-  }
-  return a;
-}
-function el(id){return document.getElementById(id);}
-
-/* ---------------- Data ---------------- */
-
-// Activity 1 — Multiple choice (6)
-var MC = [
-  {
-    q:"The opening session gave a sobering ___ of the destruction across the energy sector.",
-    options:["assessment","assertion","assignment","assortment"],
-    answer:"assessment",
-    fb:"An <b>assessment</b> is an evaluation or appraisal \u2014 exactly what a presentation gives of damage. An 'assertion' is a claim, an 'assignment' is a task, and an 'assortment' is a mixture."
-  },
-  {
-    q:"Reconstruction on this scale is without ___ in modern European history.",
-    options:["precedent","precaution","precision","preamble"],
-    answer:"precedent",
-    fb:"<b>Without precedent</b> means nothing comparable has happened before. A 'precaution' is a safeguard, 'precision' is accuracy, and a 'preamble' is an introduction."
-  },
-  {
-    q:"Donors have made their continued support ___ on measurable progress against corruption.",
-    options:["contingent","consistent","compliant","conclusive"],
-    answer:"contingent",
-    fb:"<b>Contingent on</b> means dependent or conditional on. 'Consistent', 'compliant' and 'conclusive' don't combine with 'on' to carry this meaning."
-  },
-  {
-    q:"Without a credible anti-corruption framework, donor confidence could quickly ___.",
-    options:["evaporate","exaggerate","elaborate","escalate"],
-    answer:"evaporate",
-    fb:"Confidence <b>evaporates</b> \u2014 it disappears. You can't 'exaggerate' or 'elaborate' confidence, and 'escalate' (increase) is the opposite of what the sentence implies."
-  },
-  {
-    q:"Let me ___ the myth that reconstruction can wait until the fighting has fully ended.",
-    options:["dispel","disperse","dissolve","distort"],
-    answer:"dispel",
-    fb:"You <b>dispel a myth</b> \u2014 drive it away. You 'disperse' a crowd, 'dissolve' a substance, and 'distort' (twist) a fact, but none of these collocates with 'myth' here."
-  },
-  {
-    q:"The figures I'm about to present should be ___ with some caution, given the volatility on the ground.",
-    options:["treated","tackled","trusted","tested"],
-    answer:"treated",
-    fb:"Figures are <b>treated with caution</b> \u2014 a fixed expression. 'Tackled', 'trusted' and 'tested' don't form this phrase."
-  }
+/* ── Languages. English is the base; German ships complete.
+      The other eight are deliberately empty — t() falls back to English,
+      so an unfinished language can never blank the interface. ── */
+const LANGS = [
+  { code:'en', label:'English'   }, { code:'de', label:'Deutsch'  },
+  { code:'es', label:'Español'   }, { code:'fr', label:'Français' },
+  { code:'it', label:'Italiano'  }, { code:'pt', label:'Português'},
+  { code:'ru', label:'Русский'   }, { code:'ar', label:'العربية'  },
+  { code:'zh', label:'中文'       }, { code:'ja', label:'日本語'    }
 ];
+const RTL_LANGS = ['ar'];
 
-// Activity 2 — Gap-fill word bank (6 gaps)
-var GAP = {
-  sentences:[
-    {pre:"To put these staggering figures into ", n:1, post:", the World Bank now estimates total recovery needs at well over half a trillion dollars."},
-    {pre:"I'll keep my remarks ", n:2, post:", so we leave ample room for questions at the end."},
-    {pre:"Allow me to ", n:3, post:" the three pillars on which our proposal rests, before we examine each in detail."},
-    {pre:"This timeline, I must ", n:4, post:", is contingent on a stable security environment throughout."},
-    {pre:"Having dealt with the costs, let me ", n:5, post:" to the equally pressing issue of oversight."},
-    {pre:"I'd be glad to ", n:6, post:" any of these themes in greater depth once I've finished."}
-  ],
-  correct:{1:"perspective",2:"concise",3:"outline",4:"stress",5:"turn",6:"explore"},
-  bank:["perspective","concise","outline","stress","turn","explore","digress","recap","gloss"],
-  fb:{
-    1:"<b>perspective</b> \u2014 'to put figures into perspective' makes a huge number meaningful.",
-    2:"<b>concise</b> \u2014 the only adjective that fits 'keep my remarks ___' (brief and to the point).",
-    3:"<b>outline</b> \u2014 you preview structure here; 'before we examine each in detail' signals an overview, not a summary.",
-    4:"<b>stress</b> \u2014 a parenthetical 'I must stress' emphasises a caveat.",
-    5:"<b>turn</b> \u2014 'let me turn to' is the standard signpost for moving to a new topic.",
-    6:"<b>explore</b> \u2014 'explore in greater depth' invites fuller discussion. ('digress', 'recap' and 'gloss' fit none of the gaps.)"
-  }
+const UI_I18N = {
+  en: {
+    btnStart:'Begin →', btnCheck:'Check', btnNext:'Next →', btnRestart:'Start again',
+    orderHint:'Click the parts in order · click one again to take it back',
+    scoreLabel:'Score', slideOf:(a,b)=>`${a} / ${b}`,
+    fbCorrect:'Correct.', fbWrong:'Not quite.', fbAnswer:'Answer:',
+    resNext:'Recognising the language is half of it. Now produce it →',
+    actEyebrow:'Activation', actTitle:'Take the floor',
+    actUse:'Use at least four:',
+    actSpeakKind:'Presentation · in pairs', actWriteKind:'Writing · 220–260 words',
+    actSpeakBrief:'You have the vocabulary of scale, caveat and signpost. Now stand up and use it under pressure.',
+    actSpeak1:'Give a two-minute opening to a donor conference on any reconstruction project. Put one large figure into perspective and flag your single key message.',
+    actSpeak2:'Your partner asks a hostile question about corruption before you are ready for it. Defer it politely, then answer it fully two minutes later.',
+    actSpeak3:'Play devil&rsquo;s advocate against your own proposal for one minute. Then answer yourself.',
+    actWriteBrief:'Write the executive summary that goes in front of your slides: what the damage is, what the plan costs, what the money is contingent on, and the one thing the reader should take away.',
+    actPlaceholder:'Write your response here…',
+    btnCopy:'Copy', btnCopied:'Copied',
+    wordCount:(n)=>`${n} ${n===1?'word':'words'}`,
+    resPerfect:'Flawless. Every single one.',
+    resStrong:'Strong work — the language has landed.',
+    resMid:'Solid start. Worth one more pass.',
+    resLow:'Review the explanations, then try again.',
+    coverTitle:'Presenting on <em>Reconstruction</em>',
+    coverSub:'The English of scale, caveat and persuasion — presenting the rebuilding of Ukraine to an audience that decides',
+    chipLevel:'C1 Advanced', chipFocus:'Presentation language', chipCount:'23 questions',
+    a1t:'Choose the exact word',
+    a2t:'Complete the sentence',
+    a3e:'What the phrase is doing &middot; 6 pairs', a3t:'Match the move to the words',
+    a4t:'Put the presenter&rsquo;s line together',
+    a1e1:'Precision vocabulary &middot; 1/6',
+    a1e2:'Precision vocabulary &middot; 2/6',
+    a1e3:'Precision vocabulary &middot; 3/6',
+    a1e4:'Precision vocabulary &middot; 4/6',
+    a1e5:'Precision vocabulary &middot; 5/6',
+    a1e6:'Precision vocabulary &middot; 6/6',
+    a2e1:'Signposting the talk &middot; 1/3',
+    a2e2:'Signposting the talk &middot; 2/3',
+    a2e3:'Signposting the talk &middot; 3/3',
+    a4e1:'Building the sentence &middot; 1/5',
+    a4e2:'Building the sentence &middot; 2/5',
+    a4e3:'Building the sentence &middot; 3/5',
+    a4e4:'Building the sentence &middot; 4/5',
+    a4e5:'Building the sentence &middot; 5/5'
+  },
+  de: {
+    btnStart:'Beginnen →', btnCheck:'Prüfen', btnNext:'Weiter →', btnRestart:'Neu starten',
+    orderHint:'Klicke die Teile der Reihe nach an · nochmal klicken nimmt einen zurück',
+    scoreLabel:'Punkte', slideOf:(a,b)=>`${a} / ${b}`,
+    fbCorrect:'Richtig.', fbWrong:'Nicht ganz.', fbAnswer:'Antwort:',
+    resNext:'Die Sprache zu erkennen ist die halbe Miete. Jetzt anwenden →',
+    actEyebrow:'Anwendung', actTitle:'Übernimm das Wort',
+    actUse:'Verwende mindestens vier:',
+    actSpeakKind:'Präsentation · zu zweit', actWriteKind:'Schreiben · 220–260 Wörter',
+    actSpeakBrief:'Du hast den Wortschatz für Größenordnung, Einschränkung und Gliederung. Jetzt unter Druck anwenden.',
+    actSpeak1:'Halte eine zweiminütige Eröffnung bei einer Geberkonferenz zu einem Wiederaufbauprojekt. Ordne eine große Zahl ein und benenne deine zentrale Botschaft.',
+    actSpeak2:'Dein Gegenüber stellt eine unangenehme Korruptionsfrage, bevor du so weit bist. Vertage sie höflich und beantworte sie zwei Minuten später vollständig.',
+    actSpeak3:'Spiele eine Minute lang den Advocatus Diaboli gegen deinen eigenen Vorschlag. Dann widerlege dich selbst.',
+    actWriteBrief:'Schreibe die Zusammenfassung, die vor deinen Folien steht: der Schaden, die Kosten, wovon das Geld abhängt und die eine Sache, die hängen bleiben soll.',
+    actPlaceholder:'Schreibe hier deine Antwort…',
+    btnCopy:'Kopieren', btnCopied:'Kopiert',
+    wordCount:(n)=>`${n} ${n===1?'Wort':'Wörter'}`,
+    resPerfect:'Makellos. Alles richtig.',
+    resStrong:'Starke Leistung — die Sprache sitzt.',
+    resMid:'Guter Anfang. Ein weiterer Durchgang lohnt sich.',
+    resLow:'Sieh dir die Erklärungen noch einmal an und versuche es erneut.',
+    coverTitle:'Presenting on <em>Reconstruction</em>',
+    coverSub:'Das Englisch von Größenordnung, Vorbehalt und Überzeugung — den Wiederaufbau der Ukraine vor Entscheidern präsentieren',
+    chipLevel:'C1 Fortgeschritten', chipFocus:'Präsentationssprache', chipCount:'23 Fragen',
+    a1t:'Wähle das genaue Wort',
+    a2t:'Vervollständige den Satz',
+    a3e:'Was die Wendung leistet &middot; 6 Paare', a3t:'Ordne die Wendung ihrer Funktion zu',
+    a4t:'Setze den Satz zusammen',
+    a1e1:'Präziser Wortschatz &middot; 1/6',
+    a1e2:'Präziser Wortschatz &middot; 2/6',
+    a1e3:'Präziser Wortschatz &middot; 3/6',
+    a1e4:'Präziser Wortschatz &middot; 4/6',
+    a1e5:'Präziser Wortschatz &middot; 5/6',
+    a1e6:'Präziser Wortschatz &middot; 6/6',
+    a2e1:'Den Vortrag gliedern &middot; 1/3',
+    a2e2:'Den Vortrag gliedern &middot; 2/3',
+    a2e3:'Den Vortrag gliedern &middot; 3/3',
+    a4e1:'Den Satz bauen &middot; 1/5',
+    a4e2:'Den Satz bauen &middot; 2/5',
+    a4e3:'Den Satz bauen &middot; 3/5',
+    a4e4:'Den Satz bauen &middot; 4/5',
+    a4e5:'Den Satz bauen &middot; 5/5'
+  },
+  /* Fill these in later — English shows through until you do. */
+  es:{}, fr:{}, it:{}, pt:{}, ru:{}, ar:{}, zh:{}, ja:{}
 };
 
-// Activity 3 — Matching (6)
-var MATCH = {
-  left:[
-    {id:"a", text:"\"Let me play devil's advocate for a moment\u2026\""},
-    {id:"b", text:"\"To give you a sense of scale, that's roughly the GDP of a mid-sized nation.\""},
-    {id:"c", text:"\"That's a fair question \u2014 I'll come back to it, if I may, in just a moment.\""},
-    {id:"d", text:"\"That said, the picture is not uniformly bleak.\""},
-    {id:"e", text:"\"If you take one thing away today, let it be this.\""},
-    {id:"f", text:"\"Correct me if I'm wrong, but my understanding is that funds are ring-fenced.\""}
-  ],
-  right:[
-    {id:"a", text:"Testing your own argument by voicing the opposing view"},
-    {id:"b", text:"Making an abstract figure relatable to the audience"},
-    {id:"c", text:"Deferring a question politely without dismissing it"},
-    {id:"d", text:"Introducing a qualifying or contrasting point"},
-    {id:"e", text:"Flagging the single key message to remember"},
-    {id:"f", text:"Hedging a claim and inviting correction"}
-  ],
-  fb:{
-    a:"'Devil's advocate' = arguing the opposite case on purpose to stress-test an idea.",
-    b:"Comparing a vast sum to something familiar helps the audience grasp its scale.",
-    c:"It acknowledges the question as valid while postponing the answer \u2014 a polite deferral.",
-    d:"'That said' pivots to a contrasting or softening point after a strong statement.",
-    e:"'Take one thing away' explicitly spotlights the core takeaway.",
-    f:"'Correct me if I'm wrong' softens a claim and signals openness to being corrected."
+let currentLang = 'en';
+const t = k => (UI_I18N[currentLang] && UI_I18N[currentLang][k] != null)
+  ? UI_I18N[currentLang][k] : UI_I18N.en[k];
+
+/* ── Deck state ── */
+const stage   = document.getElementById('stage');
+const slides  = [...document.querySelectorAll('.slide')];
+const scored  = slides.filter(s => ['mc','gap','match','order'].includes(s.dataset.type));
+/* A slide may hold more than one gap; each gap is worth a point. */
+const countIn = s => s.dataset.type === 'gap'   ? s.querySelectorAll('.gap').length
+                   : s.dataset.type === 'match' ? s.querySelectorAll('.match-pair').length
+                   : 1;
+const maxScore = scored.reduce((n, s) => n + Math.max(1, countIn(s)), 0);
+let idx = 0, score = 0;
+const answered = new WeakSet();
+
+/* ── Scale the 1280×720 stage to fit any viewport, never scroll ── */
+function fitStage() {
+  const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+  stage.style.transform = `scale(${s})`;
+}
+addEventListener('resize', fitStage);
+
+/* ── Navigation ── */
+function show(n) {
+  idx = Math.max(0, Math.min(slides.length - 1, n));
+  slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+  stage.classList.toggle('on-cover', slides[idx].dataset.type === 'cover');
+  // A slide may swap the background pattern for a second illustration from the
+  // same set (data-bg). Same idiom as the hero — picture at reduced opacity
+  // under the wash — so extra artwork never becomes a pasted-in box.
+  stage.style.setProperty('--hero', slides[idx].dataset.bg
+    ? `url('${slides[idx].dataset.bg}')` : '');
+  document.getElementById('progressFill').style.width =
+    (slides.length > 1 ? (idx / (slides.length - 1)) * 100 : 0) + '%';
+  document.getElementById('deckCount').textContent = t('slideOf')(idx + 1, slides.length);
+  document.querySelector('[data-action="prev"]').disabled = idx === 0;
+  document.querySelector('[data-action="next"]').disabled = idx === slides.length - 1;
+  if (slides[idx].dataset.type === 'results') renderResults();
+  const gap = slides[idx].querySelector('.gap');
+  if (gap && !answered.has(slides[idx])) setTimeout(() => gap.focus(), 60);
+}
+
+function renderResults() {
+  const max = maxScore;
+  document.getElementById('scoreVal').textContent = score;
+  document.getElementById('scoreMax').textContent = max;
+  const pct = max ? score / max : 0;
+  document.getElementById('scoreMsg').textContent =
+    pct === 1 ? t('resPerfect') : pct >= .75 ? t('resStrong')
+    : pct >= .5 ? t('resMid') : t('resLow');
+}
+
+function updateScoreChip() {
+  document.getElementById('deckScore').textContent =
+    maxScore ? `${t('scoreLabel')} ${score}/${maxScore}` : '';
+}
+
+/* ── Answer handling ── */
+function award(slide, ok) {
+  if (answered.has(slide)) return;
+  answered.add(slide);
+  if (ok) score++;
+  updateScoreChip();
+}
+
+function feedback(slide, ok, extra, ownExplain) {
+  const el = slide.querySelector('.feedback');
+  if (!el) return;
+  // An option's own explanation wins: telling a learner why THEIR answer was
+  // wrong beats restating why the key was right.
+  const reason = ownExplain || el.dataset.explain;
+  const why = reason ? ' ' + reason : '';
+  el.textContent = (ok ? t('fbCorrect') : t('fbWrong') + (extra ? ` ${t('fbAnswer')} ${extra}` : '')) + why;
+  el.className = 'feedback show ' + (ok ? 'ok' : 'no');
+}
+
+/* Multiple choice — shuffled on first view so option order is never a tell. */
+slides.filter(s => s.dataset.type === 'mc').forEach(slide => {
+  const box = slide.querySelector('.opts');
+  const opts = [...box.querySelectorAll('.opt')];
+  opts.sort(() => Math.random() - .5).forEach((o, i) => {
+    o.prepend(Object.assign(document.createElement('span'), {
+      className: 'opt-key', textContent: 'ABCD'[i]
+    }));
+    box.appendChild(o);
+  });
+  opts.forEach(o => o.addEventListener('click', () => {
+    if (answered.has(slide)) return;
+    const ok = o.hasAttribute('data-correct');
+    opts.forEach(x => {
+      x.disabled = true;
+      if (x.hasAttribute('data-correct')) x.classList.add('correct');
+    });
+    if (!ok) o.classList.add('wrong');
+    award(slide, ok);
+    feedback(slide, ok, null, o.dataset.explain);
+  }));
+});
+
+/* Matching. Author as <div class="match-pair" data-term data-def> rows; the
+   engine builds both columns and shuffles the definitions. One point per pair. */
+slides.filter(s => s.dataset.type === 'match').forEach(slide => {
+  const pairs = [...slide.querySelectorAll('.match-pair')];
+  const grid = slide.querySelector('.match-grid');
+  if (!grid || !pairs.length) return;
+  const terms = document.createElement('div');
+  const defs = document.createElement('div');
+  terms.className = defs.className = 'match-col';
+  const mk = (txt, cls, key) => {
+    const b = document.createElement('button');
+    b.className = 'match-item ' + cls;
+    b.textContent = txt;
+    b.dataset.key = key;
+    return b;
+  };
+  pairs.forEach(p => terms.appendChild(mk(p.dataset.term, 'term', p.dataset.term)));
+  [...pairs].sort(() => Math.random() - .5)
+    .forEach(p => defs.appendChild(mk(p.dataset.def, 'def', p.dataset.term)));
+  grid.replaceChildren(terms, defs);
+
+  let picked = null, done = 0;
+  const total = pairs.length;
+  grid.addEventListener('click', e => {
+    const el = e.target.closest('.match-item');
+    if (!el || el.classList.contains('done')) return;
+    if (el.classList.contains('term')) {
+      grid.querySelectorAll('.term.picked').forEach(x => x.classList.remove('picked'));
+      el.classList.add('picked');
+      picked = el;
+      return;
+    }
+    if (!picked) return;
+    if (el.dataset.key === picked.dataset.key) {
+      el.classList.add('done'); picked.classList.add('done');
+      picked.classList.remove('picked');
+      picked = null; done++; score++; updateScoreChip();
+      if (done === total) {
+        answered.add(slide);
+        feedback(slide, true);
+      }
+    } else {
+      el.classList.add('miss');
+      setTimeout(() => el.classList.remove('miss'), 320);
+    }
+  });
+});
+
+/* Sentence building. Author as
+     <div class="order" data-answer="chunk|chunk|chunk"></div>
+   with a [data-action="check-order"] button and a .feedback alongside it.
+   The engine shuffles the chunks into a pool; clicking places one, clicking a
+   placed one takes it back. One point for the whole sentence — a half-right
+   word order is not half-right English. */
+slides.filter(s => s.dataset.type === 'order').forEach(slide => {
+  const box = slide.querySelector('.order');
+  if (!box) return;
+  const answer = box.dataset.answer.split('|').map(x => x.trim());
+  const target = document.createElement('div'); target.className = 'order-target';
+  const pool   = document.createElement('div'); pool.className   = 'order-pool';
+  answer.map((txt, i) => ({ txt, i }))
+        .sort(() => Math.random() - .5)
+        .forEach(({ txt, i }) => {
+          const b = document.createElement('button');
+          b.className = 'chunk';
+          b.textContent = txt;
+          b.dataset.i = i;
+          pool.appendChild(b);
+        });
+  box.replaceChildren(target, pool);
+
+  box.addEventListener('click', e => {
+    const c = e.target.closest('.chunk');
+    if (!c || c.disabled) return;
+    if (c.parentElement === pool) { c.classList.add('placed');    target.appendChild(c); }
+    else                          { c.classList.remove('placed'); pool.appendChild(c); }
+  });
+
+  slide._check = () => {
+    if (answered.has(slide)) return;
+    // Marking a half-built sentence teaches nothing; wait until it is complete.
+    if (target.children.length < answer.length) return;
+    answered.add(slide);
+    const ok = [...target.children].map(c => +c.dataset.i).every((v, i) => v === i);
+    target.classList.add(ok ? 'correct' : 'wrong');
+    box.querySelectorAll('.chunk').forEach(c => c.disabled = true);
+    if (ok) score++;
+    updateScoreChip();
+    feedback(slide, ok, ok ? null : answer.join(' '));
+    const btn = slide.querySelector('[data-action="check-order"]');
+    if (btn) btn.disabled = true;
+  };
+});
+
+/* Gap fill. Supports several gaps on one slide, each scored and explained
+   individually via its own .gap-row wrapper. */
+const gapOk = g => g.dataset.answer.split('|')
+  .map(a => a.trim().toLowerCase())
+  .includes(g.value.trim().toLowerCase().replace(/\s+/g, ' '));
+
+function markGap(g, fb) {
+  const ok = gapOk(g);
+  g.classList.add(ok ? 'correct' : 'wrong');
+  g.disabled = true;
+  if (ok) score++;
+  if (fb) {
+    const why = fb.dataset.explain ? ' ' + fb.dataset.explain : '';
+    fb.textContent = (ok ? t('fbCorrect')
+      : `${t('fbWrong')} ${t('fbAnswer')} ${g.dataset.answer.split('|')[0]}.`) + why;
+    fb.className = 'feedback show ' + (ok ? 'ok' : 'no');
   }
-};
-
-// Activity 4 — Reorder (5)
-var REORDER = [
-  {chunks:["Before I outline our proposal,","let me briefly summarise","the scale of the damage."]},
-  {chunks:["While the costs are daunting,","we cannot afford","the cost of inaction."]},
-  {chunks:["Public funds will get us started,","but to finish the job,","the private sector will be essential."]},
-  {chunks:["Before we move on,","let me address the elephant in the room:","the risk of corruption."]},
-  {chunks:["And before I hand over,","I'd like to leave you with one thought:","recovery is not a cost but an investment."]}
-];
-
-/* ---------------- State ---------------- */
-var TOTAL = MC.length + GAP.sentences.length + MATCH.left.length + REORDER.length; // 23
-var state = {activity:0, score:0};
-var sub = {};
-
-/* prepared shuffled data */
-var mcData, gapBank, matchLeft, matchRight, roData;
-
-function prepare(){
-  mcData = shuffle(MC).map(function(item){
-    return {q:item.q, answer:item.answer, fb:item.fb, options:shuffle(item.options)};
-  });
-  gapBank = shuffle(GAP.bank);
-  matchLeft = shuffle(MATCH.left);
-  matchRight = shuffle(MATCH.right);
-  roData = REORDER.map(function(item){
-    return {chunks:item.chunks, shuffled:shuffle(item.chunks)};
-  });
+  return ok;
 }
 
-/* ---------------- Header ---------------- */
-function renderHeader(){
-  var dots = el("dots");
-  dots.innerHTML = "";
-  for(var i=0;i<4;i++){
-    var d = document.createElement("div");
-    d.className = "dot" + (i<state.activity?" done":(i===state.activity?" active":""));
-    dots.appendChild(d);
+function checkGaps(slide) {
+  if (answered.has(slide)) return;
+  answered.add(slide);
+  const rows = [...slide.querySelectorAll('.gap-row')];
+  if (rows.length) {
+    rows.forEach(r => markGap(r.querySelector('.gap'), r.querySelector('.feedback')));
+  } else {
+    markGap(slide.querySelector('.gap'), slide.querySelector('.feedback'));
   }
-  el("score").textContent = "Score: " + state.score + " / " + TOTAL;
+  const btn = slide.querySelector('[data-action="check"]');
+  if (btn) btn.disabled = true;
+  updateScoreChip();
 }
 
-/* ---------------- Activity 1: Multiple choice ---------------- */
-function startMC(){ sub = {q:0, answered:false, picked:null}; renderMC(); }
-
-function renderMC(){
-  renderHeader();
-  var d = mcData[sub.q];
-  var html = "";
-  html += "<div class='act-label'>Activity 1 of 4 \u00b7 Multiple choice</div>";
-  html += "<div class='progress-line'>Question " + (sub.q+1) + " of " + mcData.length + " \u00b7 Choose the best word</div>";
-  html += "<div class='qtext'>" + d.q + "</div>";
-  html += "<div class='opts' id='opts'></div>";
-  html += "<div class='fb' id='fb'></div>";
-  html += "<div class='actions'><button class='btn btn-primary' id='next' disabled>Next</button></div>";
-  el("card").innerHTML = html;
-
-  var opts = el("opts");
-  d.options.forEach(function(opt){
-    var b = document.createElement("button");
-    b.className = "opt";
-    b.textContent = opt;
-    b.onclick = function(){ pickMC(opt, b); };
-    opts.appendChild(b);
-  });
-  el("next").onclick = nextMC;
+/* ── Activation: word count, copy, and a print mirror (a textarea's
+   value does not appear in a PDF, so we mirror it into a div). ── */
+const actInput = document.getElementById('actInput');
+if (actInput) {
+  const countEl = document.getElementById('actCount');
+  const printEl = document.getElementById('actPrint');
+  const sync = () => {
+    const words = actInput.value.trim().split(/\s+/).filter(Boolean).length;
+    countEl.textContent = t('wordCount')(words);
+    printEl.textContent = actInput.value;
+  };
+  actInput.addEventListener('input', sync);
+  window.syncActivation = sync;
+  sync();
 }
 
-function pickMC(opt, btn){
-  if(sub.answered) return;
-  sub.answered = true;
-  sub.picked = opt;
-  var d = mcData[sub.q];
-  var buttons = el("opts").children;
-  for(var i=0;i<buttons.length;i++){
-    var b = buttons[i];
-    b.disabled = true;
-    if(b.textContent === d.answer) b.className = "opt correct";
-    else if(b.textContent === opt) b.className = "opt wrong";
+/* ── Events ── */
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-action]');
+  if (!a) return;
+  const act = a.dataset.action;
+  if (act === 'next') show(idx + 1);
+  if (act === 'prev') show(idx - 1);
+  if (act === 'check') checkGaps(a.closest('.slide'));
+  if (act === 'check-order') { const sl = a.closest('.slide'); if (sl._check) sl._check(); }
+  if (act === 'restart') location.reload();
+  if (act === 'copy-writing') {
+    const ta = document.getElementById('actInput');
+    if (ta && navigator.clipboard) navigator.clipboard.writeText(ta.value).then(() => {
+      const was = a.textContent;
+      a.textContent = t('btnCopied');
+      setTimeout(() => { a.textContent = was; }, 1400);
+    });
   }
-  var fb = el("fb");
-  var correct = (opt === d.answer);
-  if(correct) state.score++;
-  fb.className = "fb show " + (correct?"ok":"no");
-  fb.innerHTML = (correct?"<b>Correct.</b> ":"<b>Not quite.</b> ") + d.fb;
-  el("next").disabled = false;
-  el("next").textContent = (sub.q === mcData.length-1) ? "Continue" : "Next";
-  renderHeader();
-}
+});
 
-function nextMC(){
-  if(sub.q < mcData.length-1){ sub.q++; sub.answered=false; renderMC(); }
-  else { state.activity = 1; startGap(); }
-}
+document.addEventListener('keydown', e => {
+  if (e.target.matches('input, select, textarea')) {
+    if (e.key === 'Enter') checkGaps(e.target.closest('.slide'));
+    return;
+  }
+  if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); show(idx + 1); }
+  if (['ArrowLeft', 'PageUp'].includes(e.key))         { e.preventDefault(); show(idx - 1); }
+});
 
-/* ---------------- Activity 2: Gap-fill ---------------- */
-function startGap(){
-  sub = {assign:{1:null,2:null,3:null,4:null,5:null,6:null}, active:null, checked:false};
-  renderGap();
-}
-
-function renderGap(){
-  renderHeader();
-  var html = "";
-  html += "<div class='act-label'>Activity 2 of 4 \u00b7 Fill in the blanks</div>";
-  html += "<div class='progress-line'>6 gaps \u00b7 Build a coherent presentation script</div>";
-  html += "<div class='hint'>Click a blank to select it, then click a word. Three words are not needed.</div>";
-  html += "<div class='gf-para' id='para'></div>";
-  html += "<div class='bank' id='bank'></div>";
-  html += "<div class='fb' id='fb'></div>";
-  html += "<div class='actions'><button class='btn btn-primary' id='check' disabled>Check answers</button></div>";
-  el("card").innerHTML = html;
-  el("check").onclick = checkGap;
-  drawGap();
-}
-
-function drawGap(){
-  var para = el("para");
-  para.innerHTML = "";
-  GAP.sentences.forEach(function(s){
-    para.appendChild(document.createTextNode(s.pre));
-    var slot = document.createElement("span");
-    var val = sub.assign[s.n];
-    slot.className = "gf-slot";
-    if(sub.active === s.n) slot.className += " active";
-    if(val) slot.className += " filled";
-    if(sub.checked){
-      slot.className = "gf-slot " + (val === GAP.correct[s.n] ? "correct":"wrong");
-    }
-    slot.textContent = val ? val : "\u00a0\u00a0\u00a0\u00a0\u00a0";
-    if(!sub.checked){
-      slot.onclick = function(){ slotClick(s.n); };
-    }
-    para.appendChild(slot);
-    para.appendChild(document.createTextNode(s.post + " "));
+/* ── Language ── */
+function applyLang() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const v = t(el.dataset.i18n);
+    if (v != null) el.innerHTML = v;
   });
-
-  var bank = el("bank");
-  bank.innerHTML = "";
-  var usedWords = [];
-  for(var k in sub.assign){ if(sub.assign[k]) usedWords.push(sub.assign[k]); }
-  gapBank.forEach(function(w){
-    var c = document.createElement("button");
-    var isUsed = usedWords.indexOf(w) !== -1;
-    c.className = "chip" + (isUsed?" used":"");
-    c.textContent = w;
-    if(!sub.checked && !isUsed){ c.onclick = function(){ wordClick(w); }; }
-    else { c.disabled = true; }
-    bank.appendChild(c);
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const v = t(el.dataset.i18nPh);
+    if (v != null) el.placeholder = v;
   });
-
-  el("check").disabled = !allGapsFilled();
+  if (window.syncActivation) window.syncActivation();
+  document.documentElement.lang = currentLang;
+  document.documentElement.dir = RTL_LANGS.includes(currentLang) ? 'rtl' : 'ltr';
+  updateScoreChip();
+  show(idx);
 }
 
-function allGapsFilled(){
-  for(var k in sub.assign){ if(!sub.assign[k]) return false; }
-  return true;
+function initLang() {
+  const sel = document.getElementById('langSelect');
+  // Only offer languages that are actually translated. An empty or partial
+  // scaffold stays in the code for a future pass but never appears as a dead
+  // option in the menu.
+  const enKeys = Object.keys(UI_I18N.en).length;
+  LANGS.filter(l => l.code === 'en' ||
+                    Object.keys(UI_I18N[l.code] || {}).length >= enKeys)
+       .forEach(l => sel.add(new Option(l.label, l.code)));
+  sel.value = currentLang;
+  sel.hidden = sel.options.length < 2;
+  sel.addEventListener('change', () => { currentLang = sel.value; applyLang(); });
 }
 
-function slotClick(n){
-  if(sub.checked) return;
-  if(sub.assign[n]){ sub.assign[n] = null; sub.active = n; }
-  else { sub.active = (sub.active === n) ? null : n; }
-  drawGap();
-}
+/* Per-slide background art: set the variable on the element as well, because
+   the print stylesheet paints each slide's own ::before from var(--hero). */
+slides.filter(s => s.dataset.bg).forEach(s =>
+  s.style.setProperty('--hero', `url('${s.dataset.bg}')`));
 
-function wordClick(w){
-  if(sub.checked || sub.active === null) return;
-  sub.assign[sub.active] = w;
-  // advance to next empty gap
-  var next = null;
-  for(var i=1;i<=6;i++){ if(!sub.assign[i]){ next=i; break; } }
-  sub.active = next;
-  drawGap();
-}
+/* ── Boot ── */
+initLang();
+fitStage();
+applyLang();
+updateScoreChip();
 
-function checkGap(){
-  sub.checked = true;
-  var correct = 0;
-  for(var k in sub.assign){ if(sub.assign[k] === GAP.correct[k]) correct++; }
-  state.score += correct;
-  var fb = el("fb");
-  fb.className = "fb show " + (correct===6?"ok":"no");
-  var lines = "<b>" + correct + " of 6 correct.</b><br>";
-  for(var i=1;i<=6;i++){ lines += "&bull; " + GAP.fb[i] + "<br>"; }
-  fb.innerHTML = lines;
-  var btn = el("check");
-  btn.textContent = "Continue";
-  btn.disabled = false;
-  btn.onclick = function(){ state.activity = 2; startMatch(); };
-  drawGap();
-  renderHeader();
-}
-
-/* ---------------- Activity 3: Matching ---------------- */
-function startMatch(){
-  sub = {selLeft:null, pairs:{}, checked:false};
-  renderMatch();
-}
-
-function renderMatch(){
-  renderHeader();
-  var html = "";
-  html += "<div class='act-label'>Activity 3 of 4 \u00b7 Matching</div>";
-  html += "<div class='progress-line'>6 pairs \u00b7 Match each phrase to its rhetorical function</div>";
-  html += "<div class='hint'>Click a phrase on the left, then its function on the right.</div>";
-  html += "<div class='match-grid'>";
-  html += "<div><div class='col-h'>Phrase</div><div class='mcol' id='leftcol'></div></div>";
-  html += "<div><div class='col-h'>Function</div><div class='mcol' id='rightcol'></div></div>";
-  html += "</div>";
-  html += "<div class='fb' id='fb'></div>";
-  html += "<div class='actions'><button class='btn btn-primary' id='check' disabled>Check answers</button></div>";
-  el("card").innerHTML = html;
-  el("check").onclick = checkMatch;
-  drawMatch();
-}
-
-function rightNumber(rid){
-  for(var i=0;i<matchRight.length;i++){ if(matchRight[i].id===rid) return i+1; }
-  return "";
-}
-
-function drawMatch(){
-  var lc = el("leftcol");
-  lc.innerHTML = "";
-  matchLeft.forEach(function(item){
-    var b = document.createElement("button");
-    b.className = "mitem";
-    var assigned = sub.pairs[item.id];
-    if(sub.selLeft === item.id) b.className += " sel";
-    if(sub.checked){
-      b.className = "mitem " + (assigned === item.id ? "correct":"wrong");
-    }
-    var badge = assigned ? "<span class='badge'>" + rightNumber(assigned) + "</span>" : "";
-    b.innerHTML = badge + item.text;
-    if(!sub.checked){ b.onclick = function(){ leftClick(item.id); }; }
-    else { b.disabled = true; }
-    lc.appendChild(b);
-  });
-
-  var rc = el("rightcol");
-  rc.innerHTML = "";
-  matchRight.forEach(function(item, idx){
-    var b = document.createElement("button");
-    b.className = "mitem";
-    b.innerHTML = "<span class='rnum'>" + (idx+1) + "</span>" + item.text;
-    if(!sub.checked){ b.onclick = function(){ rightClick(item.id); }; }
-    else { b.disabled = true; }
-    rc.appendChild(b);
-  });
-
-  el("check").disabled = !allMatched();
-}
-
-function allMatched(){
-  return Object.keys(sub.pairs).length === matchLeft.length;
-}
-
-function leftClick(lid){
-  if(sub.checked) return;
-  sub.selLeft = (sub.selLeft === lid) ? null : lid;
-  drawMatch();
-}
-
-function rightClick(rid){
-  if(sub.checked || sub.selLeft === null) return;
-  // remove this right from any other left
-  for(var k in sub.pairs){ if(sub.pairs[k] === rid) delete sub.pairs[k]; }
-  sub.pairs[sub.selLeft] = rid;
-  sub.selLeft = null;
-  drawMatch();
-}
-
-function checkMatch(){
-  sub.checked = true;
-  var correct = 0;
-  matchLeft.forEach(function(item){ if(sub.pairs[item.id] === item.id) correct++; });
-  state.score += correct;
-  var fb = el("fb");
-  fb.className = "fb show " + (correct===6?"ok":"no");
-  var lines = "<b>" + correct + " of 6 correct.</b><br>";
-  matchLeft.forEach(function(item){ lines += "&bull; " + MATCH.fb[item.id] + "<br>"; });
-  fb.innerHTML = lines;
-  var btn = el("check");
-  btn.textContent = "Continue";
-  btn.disabled = false;
-  btn.onclick = function(){ state.activity = 3; startReorder(); };
-  drawMatch();
-  renderHeader();
-}
-
-/* ---------------- Activity 4: Reorder ---------------- */
-function startReorder(){ sub = {q:0, placed:[], checked:false}; renderReorder(); }
-
-function renderReorder(){
-  renderHeader();
-  var html = "";
-  html += "<div class='act-label'>Activity 4 of 4 \u00b7 Reorder</div>";
-  html += "<div class='progress-line'>Question " + (sub.q+1) + " of " + roData.length + " \u00b7 Rebuild the signposted sentence</div>";
-  html += "<div class='ro-answer' id='answer'></div>";
-  html += "<div class='ro-bank' id='tiles'></div>";
-  html += "<div class='fb' id='fb'></div>";
-  html += "<div class='actions'>";
-  html += "<button class='btn btn-ghost' id='reset'>Reset</button>";
-  html += "<button class='btn btn-primary' id='check' disabled>Check</button>";
-  html += "</div>";
-  el("card").innerHTML = html;
-  el("reset").onclick = function(){ if(!sub.checked){ sub.placed=[]; drawReorder(); } };
-  el("check").onclick = checkReorder;
-  drawReorder();
-}
-
-function drawReorder(){
-  var d = roData[sub.q];
-  var ans = el("answer");
-  ans.innerHTML = "";
-  if(sub.placed.length===0 && !sub.checked) ans.className = "ro-answer empty";
-  else ans.className = "ro-answer";
-
-  sub.placed.forEach(function(chunk, idx){
-    var t = document.createElement("span");
-    t.className = "tile placed";
-    if(sub.checked){
-      t.className = "tile " + (chunk === d.chunks[idx] ? "lock-correct":"lock-wrong");
-    }
-    t.textContent = chunk;
-    if(!sub.checked){ t.onclick = function(){ unplace(idx); }; }
-    ans.appendChild(t);
-  });
-
-  var bank = el("tiles");
-  bank.innerHTML = "";
-  d.shuffled.forEach(function(chunk){
-    var used = sub.placed.indexOf(chunk) !== -1;
-    if(used) return;
-    var t = document.createElement("span");
-    t.className = "tile";
-    t.textContent = chunk;
-    if(!sub.checked){ t.onclick = function(){ place(chunk); }; }
-    bank.appendChild(t);
-  });
-
-  el("check").disabled = (sub.placed.length !== d.chunks.length) || sub.checked;
-}
-
-function place(chunk){
-  if(sub.checked) return;
-  sub.placed.push(chunk);
-  drawReorder();
-}
-function unplace(idx){
-  if(sub.checked) return;
-  sub.placed.splice(idx,1);
-  drawReorder();
-}
-
-function checkReorder(){
-  var d = roData[sub.q];
-  sub.checked = true;
-  var correct = (sub.placed.join(" ") === d.chunks.join(" "));
-  if(correct) state.score++;
-  var fb = el("fb");
-  fb.className = "fb show " + (correct?"ok":"no");
-  fb.innerHTML = (correct?"<b>Correct.</b> ":"<b>Not quite.</b> ") +
-    "The intended order is: <b>" + d.chunks.join(" ") + "</b>";
-  var btn = el("check");
-  btn.textContent = (sub.q === roData.length-1) ? "See results" : "Next";
-  btn.disabled = false;
-  btn.onclick = nextReorder;
-  drawReorder();
-  renderHeader();
-}
-
-function nextReorder(){
-  if(sub.q < roData.length-1){ sub.q++; sub.placed=[]; sub.checked=false; renderReorder(); }
-  else { state.activity = 4; renderResults(); }
-}
-
-/* ---------------- Results ---------------- */
-function renderResults(){
-  renderHeader();
-  var pct = Math.round(state.score/TOTAL*100);
-  var head, msg;
-  if(pct>=90){ head="Outstanding command."; msg="You're handling advanced presentation language and reconstruction vocabulary with real precision. You're ready to deliver this material live."; }
-  else if(pct>=70){ head="Strong work."; msg="You have a confident grasp of the language. Revisit the few items you missed and the register will be fully secure."; }
-  else if(pct>=50){ head="Solid foundation."; msg="The core ideas are there. A second pass through the feedback on signposting and collocations will sharpen things considerably."; }
-  else { head="Good start \u2014 keep going."; msg="This is demanding C1 material. Work back through the explanations, then restart; the phrasing will start to feel natural."; }
-
-  var html = "";
-  html += "<div class='results'>";
-  html += "<div class='res-ring' style='--pct:" + pct + "%'><div class='res-inner'>";
-  html += "<div class='res-pct'>" + pct + "%</div><div class='res-sub'>" + state.score + " / " + TOTAL + "</div>";
-  html += "</div></div>";
-  html += "<div class='res-head'>" + head + "</div>";
-  html += "<div class='res-msg'>" + msg + "</div>";
-  html += "<div class='res-break'>Multiple choice, fill-in-the-blank, matching &amp; reordering \u2014 <span>4 activities completed</span></div>";
-  html += "<div class='actions' style='justify-content:center'><button class='btn btn-primary' id='restart'>Restart lesson</button></div>";
-  html += "</div>";
-  el("card").innerHTML = html;
-  el("restart").onclick = function(){ state={activity:0,score:0}; prepare(); startMC(); };
-}
-
-/* ---------------- Boot ---------------- */
-prepare();
-startMC();
+/* Reveal the wordmark only once DM Sans is really available, so the
+   Forbes/ENGLISH lockup never renders at fallback-font proportions. */
+const ready = () => document.body.classList.add('fonts-ready');
+if (document.fonts && document.fonts.ready) { document.fonts.ready.then(ready); setTimeout(ready, 1500); }
+else ready();
 </script>
 </body>
 </html>
