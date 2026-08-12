@@ -219,21 +219,30 @@ broken in the other.
 
 ## 5. Background pattern and legibility
 
-The hero repeats behind every non-cover slide at `--bg-opacity: 0.55`,
+The hero repeats behind every non-cover slide at `--bg-opacity: 0.72`,
 barely desaturated (`saturate(0.92)`), under a **two-stop** vertical wash:
 `--wash-edge` at the top and bottom, `--wash-mid` across the middle.
 
-- **Start at 0.55.** This has been set too faint repeatedly in the past and
+- **Start at 0.72.** This has been set too faint repeatedly in the past and
   corrected each time — most recently because whole decks were shipping with
   interior pages that read as plain black. It is a floor, not a starting
   guess to tune downward.
-- Range 0.50–0.62. Go lower only if a specific hero is so busy that text
+- Range 0.65–0.78. Go lower only if a specific hero is so busy that text
   suffers, and say that you did.
-- **The wash darkens the edges, not the middle.** `--wash-edge` (0.62) sits
-  where the eyebrow, the deck bar and the progress rail live; `--wash-mid`
-  (0.30) is deliberately weak so the artwork survives across the body of the
-  slide. Never flatten the two into one heavy value — that is exactly the bug
-  this replaced.
+- **The wash darkens the edges, not the middle, and barely even those.**
+  `--wash-edge` (0.20) sits where the eyebrow, the deck bar and the progress
+  rail live; `--wash-mid` (0.06) is almost nothing, so the artwork carries
+  across the body of the slide. Never flatten the two into one heavy value —
+  that is exactly the bug this replaced. A heavy edge stop reads as a dark
+  vignette framing the slide, which is its own failure.
+- **Text that is not inside a card gets a halo, not a darker wash.** Slide
+  titles, eyebrows, stems and pull-quotes carry a `text-shadow`; that is what
+  makes a bright background safe. Reaching for a heavier wash to rescue a
+  stem undoes the whole treatment.
+- **Bump the wash only for the lesson that needs it.** A handful of heroes
+  are bright enough that even with the halo the stem falls under 3.5:1. Raise
+  `--wash-mid`/`--wash-edge` to 0.20/0.38 on *that lesson*, and leave the
+  rest alone. Measure, don't blanket-darken.
 - **An interior page that reads as black is a bug.** Measure rather than
   eyeball it: `python3 lesson-template/bgmeasure.py <lesson.html>` reports the
   rendered background luminance and the resulting body-text contrast. Aim for
