@@ -17,3 +17,11 @@ STRIPE_PRICE_ID_ANNUAL = "price_1U2FEt1GUnxEGcbL3N8P0ls0"
 directory = "."
 binding = "ASSETS"
 not_found_handling = "404-page"
+# Without this, Workers Static Assets serves any file that EXISTS straight
+# from the edge and never invokes the Worker — so the paywall in
+# src/index.js was being skipped for exactly the requests it exists to
+# check. /api/* worked only because no asset matches those paths, which is
+# why the health endpoint reported a healthy gate while lessons served 200.
+# With it, every request enters the Worker; anything it does not gate falls
+# through to env.ASSETS.fetch() at ~0.6ms.
+run_worker_first = true
