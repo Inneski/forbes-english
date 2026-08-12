@@ -24,19 +24,37 @@
     --radius:14px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  html{-webkit-text-size-adjust:100%}
+  html{-webkit-text-size-adjust:100%;background:var(--bg)}
   body{
-    background:
-      radial-gradient(1100px 600px at 85% -10%, rgba(201,165,92,.07), transparent 60%),
-      radial-gradient(900px 700px at -10% 110%, rgba(95,160,143,.05), transparent 55%),
-      var(--bg);
+    background:transparent;
     color:var(--parchment);
     font-family:'Karla',sans-serif;
     line-height:1.55;
     min-height:100vh;
     padding:28px 16px 64px;
   }
-  .wrap{max-width:720px;margin:0 auto}
+  .wrap{max-width:720px;margin:0 auto;position:relative;z-index:1}
+
+  /* ---------- The room you are locked in ----------
+     The study sits behind everything, fixed, so scrolling feels like moving
+     around inside it. It is heavily dimmed: the artwork is daylit and the
+     page is not, so the veil above it does the reconciling. The gilt and
+     teal glows that used to live on body{} moved into the same overlay,
+     which keeps them above the photograph instead of under it. */
+  .studybg{position:fixed;inset:0;z-index:0;pointer-events:none}
+  .studybg::before,
+  .studybg::after{content:'';position:absolute;inset:0}
+  .studybg::before{
+    background:url('LockedStudy/whitlock-study.jpg') center 42% / cover no-repeat;
+    opacity:.24;
+    filter:saturate(.5) brightness(.78) contrast(1.06);
+  }
+  .studybg::after{
+    background:
+      radial-gradient(1100px 600px at 85% -10%, rgba(201,165,92,.10), rgba(201,165,92,0) 60%),
+      radial-gradient(900px 700px at -10% 110%, rgba(95,160,143,.07), rgba(95,160,143,0) 55%),
+      linear-gradient(180deg, rgba(23,18,33,.58) 0%, rgba(23,18,33,.78) 46%, rgba(23,18,33,.93) 100%);
+  }
 
   /* ---------- Header ---------- */
   header{display:flex;flex-direction:column;align-items:center;gap:18px;margin-bottom:26px}
@@ -71,6 +89,27 @@
     padding:30px 28px;
     box-shadow:0 18px 40px rgba(0,0,0,.35);
   }
+  /* Full-bleed art at the head of the intro card. Negative margins take it
+     out to the card's edges; the gradient below it lands on the card colour
+     exactly, so the picture dissolves into the page rather than stopping. */
+  .hero-art{
+    position:relative;line-height:0;overflow:hidden;
+    margin:-30px -28px 22px;
+    border-radius:calc(var(--radius) - 1px) calc(var(--radius) - 1px) 0 0;
+  }
+  .hero-art img{
+    width:100%;display:block;aspect-ratio:16/7;object-fit:cover;object-position:50% 46%;
+    filter:saturate(.74) brightness(.88) contrast(1.04);
+  }
+  .hero-art::after{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(180deg,
+      rgba(23,18,33,.34) 0%,
+      rgba(23,18,33,0) 34%,
+      rgba(36,27,51,.70) 80%,
+      var(--card) 100%);
+  }
+
   .room-tag{
     display:inline-block;
     font-size:.74rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;
@@ -202,6 +241,8 @@
 
   @media (max-width:520px){
     .card{padding:22px 18px}
+    .hero-art{margin:-22px -18px 18px}
+    .hero-art img{aspect-ratio:16/9}
     h1{font-size:1.6rem}
     .status{flex-wrap:wrap;justify-content:center;text-align:center}
   }
@@ -211,6 +252,7 @@
 </style>
 </head>
 <body>
+<div class="studybg" aria-hidden="true"></div>
 <div class="wrap">
 
   <header>
@@ -253,6 +295,9 @@
   <!-- INTRO -->
   <section class="screen active" id="screen-intro">
     <div class="card">
+      <figure class="hero-art">
+        <img src="LockedStudy/whitlock-study.jpg" alt="Professor Whitlock's study: a tall arched window, walls of bookcases, a long desk with a lamp and a typewriter, and a door standing at the far left.">
+      </figure>
       <span class="room-tag">The Locked Study &middot; B1</span>
       <h1>Adjective Order: Escape the Study</h1>
       <p class="story">
