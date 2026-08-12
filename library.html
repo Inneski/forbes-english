@@ -524,15 +524,12 @@ function detectCategories(item) {
   if (cats.length === 0) cats.push('Lesson plan');
   return cats;
 }
-// Deterministic Free/Pro split (no real paywall behind this yet — just mirrors
-// the enghub.pro-style badge so it's easy to wire up real gating later).
-function hashStr(s) {
-  let h = 0;
-  for (let i = 0; i < s.length; i++) { h = (h * 31 + s.charCodeAt(i)) >>> 0; }
-  return h;
-}
+// The Free/Pro split is a real column on the `lessons` table, and it is what
+// the Cloudflare Worker enforces before it serves the file (src/index.js).
+// This badge only reports that value — it does not decide it, and hiding it
+// would not protect anything.
 function detectAccess(item) {
-  return (hashStr(item.file) % 5 === 0) ? 'Free' : 'Pro';
+  return item.access === 'free' ? 'Free' : 'Pro';
 }
 
 LESSONS.forEach(l => {
@@ -610,8 +607,12 @@ categories.forEach(cat => {
   catFilters.appendChild(btn);
 });
 
-let freeOnly = false;
+// ?free=1 arrives from the pricing page and the paywall, both of which
+// promise to show the free lessons — honour it rather than dumping the
+// visitor into the full library they were just told they cannot open.
+let freeOnly = new URLSearchParams(location.search).get('free') === '1';
 const freeToggleBtn = document.getElementById('freeToggle');
+if (freeOnly) freeToggleBtn.classList.add('active');
 freeToggleBtn.addEventListener('click', () => {
   freeOnly = !freeOnly;
   freeToggleBtn.classList.toggle('active', freeOnly);

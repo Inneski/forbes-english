@@ -10,6 +10,41 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 window.sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+// --- session cookie, so the Worker can see who is asking ---
+//
+// supabase-js keeps the session in localStorage, which the server never sees.
+// The paywall runs in the Cloudflare Worker (src/index.js) and has to decide
+// before it serves a lesson file, so the access token is mirrored into a
+// cookie that rides along with every request to the site.
+//
+// The token is not a secret being newly exposed here: it already lives in
+// localStorage on this origin, it is short-lived, and it grants exactly what
+// the row-level policies allow. The cookie is SameSite=Lax so it is not sent
+// with cross-site requests, and Secure everywhere except local development.
+
+const FE_COOKIE = "fe_at";
+
+function writeSessionCookie(session) {
+  const secure = location.protocol === "https:" ? "; Secure" : "";
+  if (!session || !session.access_token) {
+    document.cookie = `${FE_COOKIE}=; Path=/; Max-Age=0; SameSite=Lax${secure}`;
+    return;
+  }
+  // Expire the cookie with the token, so a stale one is never presented.
+  const maxAge = Math.max(
+    60,
+    (session.expires_at ? session.expires_at * 1000 - Date.now() : 3600e3) / 1000 | 0
+  );
+  document.cookie =
+    `${FE_COOKIE}=${encodeURIComponent(session.access_token)}` +
+    `; Path=/; Max-Age=${maxAge}; SameSite=Lax${secure}`;
+}
+
+// Fires on load with the restored session, and again on sign-in, sign-out and
+// every silent token refresh — so the cookie tracks the real session state.
+window.sb.auth.onAuthStateChange((_event, session) => writeSessionCookie(session));
+window.sb.auth.getSession().then(({ data }) => writeSessionCookie(data.session));
+
 // --- small helpers used by account.html ---
 
 async function sbSignUp(email, password) {
@@ -43,7 +78,7 @@ async function sbGetProfile(userId) {
 async function sbGetLessons() {
   const { data, error } = await window.sb
     .from("lessons")
-    .select("file, title, level, video, deck")
+    .select("file, title, level, video, deck, access")
     .order("id", { ascending: true });
   if (error) {
     console.error("Failed to load lessons from Supabase:", error);

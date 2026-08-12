@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>This lesson is for subscribers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow+Condensed:wght@700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --green-deep: #1b3a28; --green-mid: #2d6044; --green-light: #4a8f61;
+    --gold: #b8962e; --gold-bright: #e8c04a;
+    --cream: #faf8f3; --ink: #111; --muted: #6b7a6b; --border: #c8d4c8;
+    --white: #fff; --radius: 14px;
+  }
+  body { font-family: 'Lato', sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; }
+  header {
+    background: var(--green-deep); padding: 18px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .fe-logo-lockup { display: flex; flex-direction: column; text-decoration: none; line-height: 1; }
+  .fe-logo-svg { width: 88px; height: auto; display: block; color: var(--cream); }
+  .fe-logo-sub {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
+    font-size: 0.72rem; color: var(--gold-bright); margin-top: 4px;
+  }
+  .header-link {
+    color: var(--cream); text-decoration: none;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 0.9rem;
+  }
+  .header-link:hover { color: var(--gold-bright); }
+
+  main { max-width: 620px; margin: 0 auto; padding: 72px 24px 90px; text-align: center; }
+  .eyebrow {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
+    letter-spacing: 0.14em; text-transform: uppercase; font-size: 0.78rem;
+    color: var(--gold); margin-bottom: 12px;
+  }
+  h1 {
+    font-family: 'Playfair Display', serif; font-weight: 900;
+    font-size: clamp(1.7rem, 4vw, 2.3rem); color: var(--green-deep);
+    line-height: 1.18; margin-bottom: 14px;
+  }
+  .lede { color: var(--muted); font-size: 1rem; line-height: 1.65; margin-bottom: 30px; }
+  .actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 34px; }
+  .btn {
+    display: inline-block; padding: 13px 26px; border: none; border-radius: 999px;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 0.95rem;
+    letter-spacing: 0.4px; cursor: pointer; text-decoration: none;
+    background: var(--gold-bright); color: var(--green-deep); transition: background .15s ease;
+  }
+  .btn:hover { background: var(--gold); }
+  .btn.ghost { background: transparent; color: var(--green-deep); border: 1.5px solid var(--border); }
+  .btn.ghost:hover { background: var(--white); }
+
+  .free-note {
+    background: var(--white); border: 1px solid var(--border);
+    border-left: 5px solid var(--green-light);
+    border-radius: var(--radius); padding: 22px 26px; text-align: left;
+  }
+  .free-note h2 {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
+    font-size: 1.02rem; letter-spacing: 0.02em; color: var(--green-deep); margin-bottom: 8px;
+  }
+  .free-note p { color: var(--muted); font-size: 0.92rem; line-height: 1.6; }
+  .free-note a { color: var(--green-mid); font-weight: 700; }
+
+  .checking {
+    display: none; margin-bottom: 26px; font-size: 0.92rem; color: var(--muted);
+  }
+  .checking.show { display: block; }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="fe-logo-lockup" aria-label="Forbes English">
+    <svg class="fe-logo-svg" viewBox="0 0 200 46" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+      <text x="100" y="34" text-anchor="middle" font-family="'Playfair Display',serif"
+            font-size="34" font-weight="900" fill="currentColor">Forbes</text>
+    </svg>
+    <span class="fe-logo-sub">ENGLISH</span>
+  </a>
+  <a href="account.html" class="header-link">My Account</a>
+</header>
+
+<main>
+  <div class="eyebrow">Subscribers only</div>
+  <h1>This one's behind the subscription</h1>
+  <p class="lede">
+    You've reached a lesson that's part of Forbes English Pro. Plenty of the
+    library is free and always will be &mdash; this particular lesson isn't.
+  </p>
+
+  <p class="checking" id="checking">Checking your subscription&hellip;</p>
+
+  <div class="actions">
+    <a class="btn" href="pricing.html">See plans &amp; what's free</a>
+    <a class="btn ghost" href="library.html?free=1">Browse free lessons</a>
+  </div>
+
+  <div class="free-note">
+    <h2>Already subscribed?</h2>
+    <p>
+      If you're signed in on another tab this page will let you straight
+      through in a moment. If not, <a href="account.html">sign in</a> and open
+      the lesson again.
+    </p>
+  </div>
+</main>
+
+<script src="sb-client.js"></script>
+<script>
+// A subscriber can land here for a dull reason: the access token in the cookie
+// expired while they were reading. supabase-js still holds a refresh token in
+// this browser, so ask it for a fresh session, let sb-client.js re-write the
+// cookie, and retry the lesson once. Only retry once — if the second attempt
+// also comes back 402 the subscription really is inactive, and looping would
+// just flicker the page.
+(async () => {
+  if (sessionStorage.getItem('fe-retried') === location.pathname) {
+    sessionStorage.removeItem('fe-retried');
+    return;
+  }
+  const checking = document.getElementById('checking');
+  try {
+    const { data } = await window.sb.auth.getSession();
+    if (!data.session) return;
+
+    checking.classList.add('show');
+    const { data: rows } = await window.sb
+      .from('profiles').select('subscription_status').limit(1);
+    const status = rows && rows[0] && rows[0].subscription_status;
+    if (status === 'active' || status === 'trialing') {
+      sessionStorage.setItem('fe-retried', location.pathname);
+      location.reload();
+    } else {
+      checking.classList.remove('show');
+    }
+  } catch (e) {
+    /* leave the page as it is — the buttons still work */
+  }
+})();
+</script>
+
+</body>
+</html>
