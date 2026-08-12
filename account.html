@@ -330,16 +330,25 @@ async function renderAccount() {
   const profile = await sbGetProfile(user.id);
   const status = profile?.subscription_status || "inactive";
   const isActive = status === "active" || status === "trialing";
+  // An owner has full access without paying. Reporting only the billing
+  // status made a working account look like a broken one.
+  const isOwner = profile?.owner === true;
+  const hasAccess = isOwner || isActive;
 
   const badge = document.getElementById("sub-badge");
-  badge.textContent = isActive ? status[0].toUpperCase() + status.slice(1) : "Not subscribed";
-  badge.className = "badge " + (isActive ? "active" : "inactive");
+  badge.textContent = isOwner
+    ? "Owner \u2014 full access"
+    : isActive ? status[0].toUpperCase() + status.slice(1)
+               : "Not subscribed";
+  badge.className = "badge " + (hasAccess ? "active" : "inactive");
 
-  document.getElementById("sub-period").textContent = profile?.current_period_end
-    ? new Date(profile.current_period_end).toLocaleDateString()
-    : "—";
+  document.getElementById("sub-period").textContent = isOwner
+    ? "Never expires"
+    : profile?.current_period_end
+      ? new Date(profile.current_period_end).toLocaleDateString()
+      : "\u2014";
 
-  document.getElementById("subscribe-btn").hidden = isActive;
+  document.getElementById("subscribe-btn").hidden = hasAccess;
 }
 
 renderAccount();
