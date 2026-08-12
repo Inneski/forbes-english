@@ -59,6 +59,19 @@ async function sbSignOut() {
   return window.sb.auth.signOut();
 }
 
+// Sends the reset email. redirectTo must be an allowed URL in the Supabase
+// dashboard (Authentication -> URL Configuration -> Redirect URLs).
+async function sbSendPasswordReset(email) {
+  return window.sb.auth.resetPasswordForEmail(email, {
+    redirectTo: `${location.origin}/account.html`,
+  });
+}
+
+// Called after the user returns from that email with a recovery session.
+async function sbUpdatePassword(password) {
+  return window.sb.auth.updateUser({ password });
+}
+
 async function sbGetUser() {
   const { data } = await window.sb.auth.getUser();
   return data.user;

@@ -165,7 +165,22 @@
       <div class="switch-mode">
         <span id="switch-text">Don't have an account?</span>
         <a id="switch-link">Sign up</a>
+        <span id="forgot-wrap"> &middot; <a id="forgot-link">Forgot your password?</a></span>
       </div>
+    </div>
+  </section>
+
+  <!-- Shown only when the visitor arrives from a password-reset email. -->
+  <section id="recover-section" hidden>
+    <h1>Choose a new password</h1>
+    <p class="lead">You followed a reset link. Set a new password to finish.</p>
+    <div class="card">
+      <div class="error-msg" id="recover-error"></div>
+      <form id="recover-form">
+        <label for="new-password">New password</label>
+        <input type="password" id="new-password" required autocomplete="new-password" minlength="6">
+        <button type="submit" class="btn btn-primary">Save new password</button>
+      </form>
     </div>
   </section>
 
@@ -220,13 +235,46 @@ switchLink.addEventListener("click", () => {
     authSubmit.textContent = "Sign up";
     switchText.textContent = "Already have an account?";
     switchLink.textContent = "Log in";
+    document.getElementById("forgot-wrap").hidden = true;
   } else {
     authTitle.textContent = "Welcome back";
     authLead.textContent = "Log in to manage your subscription.";
     authSubmit.textContent = "Log in";
     switchText.textContent = "Don't have an account?";
     switchLink.textContent = "Sign up";
+    document.getElementById("forgot-wrap").hidden = false;
   }
+});
+
+// Someone who cannot get in is someone who cannot pay, so the reset path
+// matters as much as the login one. There was no way back in before this.
+document.getElementById("forgot-link").addEventListener("click", async () => {
+  clearError();
+  const email = document.getElementById("email").value.trim();
+  if (!email) { showError("Enter your email address above first."); return; }
+  const { error } = await sbSendPasswordReset(email);
+  showError(error ? error.message
+    : "If that address has an account, a reset link is on its way. Check your inbox.");
+});
+
+// Supabase returns from the reset email with a recovery session in the URL
+// fragment; supabase-js picks it up and fires this event.
+window.sb.auth.onAuthStateChange((event) => {
+  if (event === "PASSWORD_RECOVERY") {
+    loading.hidden = true;
+    authSection.hidden = true;
+    accountSection.hidden = true;
+    document.getElementById("recover-section").hidden = false;
+  }
+});
+
+document.getElementById("recover-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const err = document.getElementById("recover-error");
+  const { error } = await sbUpdatePassword(document.getElementById("new-password").value);
+  if (error) { err.textContent = error.message; err.classList.add("show"); return; }
+  document.getElementById("recover-section").hidden = true;
+  await renderAccount();
 });
 
 authForm.addEventListener("submit", async (e) => {
