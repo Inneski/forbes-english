@@ -88,6 +88,103 @@
   }
   .progress-label{font-size:12px;color:var(--ink-soft);margin-top:5px;display:flex;justify-content:space-between;}
 
+
+  /* ── the town, faint, behind everything ── */
+  body::before{
+    content:'';
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:url('TwinPeaks/cooper-steam.jpg') center 20% / cover no-repeat;
+    opacity:.06;
+    filter:saturate(.8);
+  }
+  header.top, .titleblock, .progress-shell, #gameArea, #resultsArea,
+  .sourcenote, .scorebar, .cover, .activation{position:relative; z-index:1;}
+
+  /* ── cover ── */
+  .cover{
+    position:relative;
+    min-height:min(58vh,420px);
+    display:flex; align-items:flex-end;
+    background:url('TwinPeaks/cooper-steam.jpg') center 30% / cover no-repeat;
+    border-bottom:3px solid var(--ink);
+  }
+  .cover::after{
+    content:'';
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(28,34,48,0) 30%, rgba(28,34,48,.55) 72%, rgba(28,34,48,.86) 100%);
+  }
+  .cover-inner{
+    position:relative; z-index:2;
+    max-width:760px; margin:0 auto; padding:0 20px 26px 20px; width:100%;
+  }
+  .cover .eyebrow{
+    font-family:'Special Elite',cursive; font-size:12px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--accent-2); margin:0 0 8px 0;
+  }
+  .cover h1{color:#f6f1e6; margin-bottom:8px; text-shadow:0 2px 18px rgba(0,0,0,.55);}
+  .cover .subtitle{color:#e3dccd; margin:0; max-width:56ch; text-shadow:0 1px 10px rgba(0,0,0,.5);}
+
+  /* ── a still from the case file, every few parts ── */
+  .scene-art{
+    display:block; width:100%; height:auto; aspect-ratio:2.35/1; object-fit:cover; object-position:center 42%;
+    border-bottom:1px solid var(--line);
+  }
+  .scene-art-cap{
+    font-family:'Special Elite',cursive; font-size:11.5px; letter-spacing:.06em;
+    color:var(--ink-soft); background:var(--paper-2);
+    padding:7px 22px; border-bottom:1px solid var(--line);
+  }
+
+  /* ── speaking &amp; writing ── */
+  .activation{
+    max-width:760px; margin:24px auto 0 auto; padding:0 20px;
+  }
+  .act-card{
+    background:#fffdf7; border:1px solid var(--line); border-radius:10px;
+    box-shadow:var(--shadow); overflow:hidden;
+  }
+  .act-head{
+    background:url('TwinPeaks/cooper-window.jpg') center 40% / cover no-repeat;
+    position:relative; padding:70px 22px 18px 22px;
+  }
+  .act-head::after{
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(28,34,48,.1) 0%, rgba(28,34,48,.72) 100%);
+  }
+  .act-head > *{position:relative; z-index:2;}
+  .act-head .qtag{background:var(--evidence);}
+  .act-head h2{
+    font-family:'Special Elite',cursive; font-size:22px; color:#f6f1e6;
+    margin:10px 0 0 0; text-shadow:0 2px 14px rgba(0,0,0,.6);
+  }
+  .act-body{padding:20px 22px 22px 22px;}
+  .act-lead{font-size:15px; color:var(--ink-soft); margin:0 0 18px 0; line-height:1.6;}
+  .act-split{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  @media (max-width:620px){.act-split{grid-template-columns:1fr;}}
+  .act-kind{
+    font-family:'Special Elite',cursive; font-size:12px; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--accent); margin:0 0 10px 0;
+  }
+  .act-list{margin:0; padding-left:18px; font-size:14.5px; line-height:1.6;}
+  .act-list li{margin-bottom:9px;}
+  .act-bank{
+    margin:16px 0 0 0; padding:12px 14px; background:var(--paper-2);
+    border:1px dashed var(--line); border-radius:8px; font-size:13.5px; line-height:1.9;
+  }
+  .act-bank strong{font-family:'Special Elite',cursive; font-weight:400; letter-spacing:.04em;}
+  .act-bank code{
+    font-family:'Inter',sans-serif; background:#fffdf7; border:1px solid var(--line);
+    border-radius:999px; padding:2px 10px; margin-right:5px; display:inline-block; font-size:13px;
+  }
+  .act-input{
+    width:100%; min-height:190px; resize:vertical;
+    font-family:'Inter',sans-serif; font-size:14.5px; line-height:1.6; color:var(--ink);
+    background:#fffdf7; border:1px solid var(--line); border-radius:8px; padding:12px 14px;
+  }
+  .act-input:focus{outline:none; border-color:var(--accent);}
+  .act-foot{display:flex; align-items:center; justify-content:space-between; margin-top:10px; gap:12px;}
+  .act-count{font-size:12.5px; color:var(--ink-soft);}
+
   .card{
     background:#fffdf7;
     border:1px solid var(--line);
@@ -233,6 +330,14 @@
 </head>
 <body>
 
+<section class="cover">
+  <div class="cover-inner">
+    <p class="eyebrow">Forbes English &middot; B2 Reading &amp; Discussion</p>
+    <h1>Behind the Curtains: Discussing Twin Peaks</h1>
+    <p class="subtitle">A short reading trail through the making, reception and legacy of a landmark television series &mdash; in ten pieces, each with a language checkpoint.</p>
+  </div>
+</section>
+
 <header class="top">
   <div class="brandrow">
     <div class="brand">
@@ -248,8 +353,7 @@
 </header>
 
 <div class="titleblock">
-  <h1>Behind the Curtains: Discussing Twin Peaks</h1>
-  <p class="subtitle">A short reading trail through the making, reception, and legacy of a landmark television series — in ten pieces, each with a language checkpoint. Read, answer, and build the fuller picture as you go.</p>
+  <p class="subtitle">Read, answer, and build the fuller picture as you go. Ten parts, ten checkpoints &mdash; and a damn fine cup of coffee along the way.</p>
 </div>
 
 <div class="progress-shell">
@@ -261,6 +365,43 @@
 
 <div id="gameArea"></div>
 <div id="resultsArea" class="hidden"></div>
+
+<section class="activation hidden" id="activationArea">
+  <div class="act-card">
+    <div class="act-head">
+      <span class="qtag" style="background:#2f5d50">Speaking &amp; Writing</span>
+      <h2>Now say it yourself</h2>
+    </div>
+    <div class="act-body">
+      <p class="act-lead">You have read ten accounts of how a strange little show was made, cancelled, missed and finally brought back. Recognising the language is half of it &mdash; here is where you use it.</p>
+      <div class="act-split">
+        <div>
+          <p class="act-kind">Discussion &middot; in pairs</p>
+          <ul class="act-list">
+            <li>A network is about to cancel a show with a small but devoted audience. One of you argues for keeping it; the other argues for cutting it. Use <em>would have</em>, <em>should have</em> and <em>might have</em>.</li>
+            <li>Describe something you loved that was ended before its time &mdash; a series, a band, a place, a job. What was lost when it went?</li>
+            <li>Twin Peaks came back twenty-five years later. Is it ever a good idea to return to something that finished? Give a reason your partner has not thought of.</li>
+            <li>Report what your partner said, without their words: <em>He said that…</em>, <em>She claimed that…</em>, <em>They admitted that…</em></li>
+          </ul>
+        </div>
+        <div>
+          <p class="act-kind">Writing &middot; 180&ndash;220 words</p>
+          <p class="act-lead" style="margin-bottom:12px;">Write a short review of a series, film or book that divided its audience. Explain what it was trying to do, why some people rejected it, and whether it has lasted.</p>
+          <textarea class="act-input" id="actInput" placeholder="Write your response here…" aria-label="Written response"></textarea>
+          <div class="act-foot">
+            <span class="act-count" id="actCount">0 words</span>
+            <button class="btn secondary" id="actCopy" type="button">Copy</button>
+          </div>
+        </div>
+      </div>
+      <div class="act-bank">
+        <strong>Use at least four:</strong><br>
+        <code>pitched an idea</code><code>a close-knit town</code><code>was broadcast</code><code>must have been</code>
+        <code>if it had…</code><code>claimed that</code><code>nevertheless</code><code>brought back</code>
+      </div>
+    </div>
+  </div>
+</section>
 
 <p class="sourcenote" id="sourceNote">Background facts summarised for teaching purposes from published interviews, reference sources, and contemporary press coverage of the series.</p>
 
@@ -338,6 +479,8 @@
       explanation: "Since the agent receives the action rather than performing it, the passive \"was sent\" is correct here. \"Sent\" alone would need an active subject performing the sending, \"has sending\" is not a valid verb form, and \"is sending\" wrongly shifts the event into the present."
     },
     {
+      art: "TwinPeaks/cooper-closeup.jpg",
+      artcap: "Case notes, over coffee.",
       tag: "Part 4 — A Genre of Its Own",
       title: "Impossible to Categorise",
       text: "Critics struggled to place the series in a single category, since it moved between genres that rarely appeared together in mainstream television: crime drama, soap opera, horror, and slapstick comedy, sometimes within the same scene.",
@@ -380,6 +523,8 @@
       explanation: "This is a third conditional, describing an unreal past condition and its unreal past result: \"If + past perfect, ... might/would (not) have + past participle.\" The other options use present or future forms, which cannot combine with an \"if hadn't\" clause describing a hypothetical past."
     },
     {
+      art: "TwinPeaks/cooper-window.jpg",
+      artcap: "The view from the Great Northern.",
       tag: "Part 7 — Life After Cancellation",
       title: "A Following That Would Not Disappear",
       text: "Even after cancellation, the show refused to fade away. Fans kept discussing its unanswered questions for decades, and it gradually built the kind of devoted, long-term audience known as a cult following.",
@@ -422,6 +567,8 @@
       explanation: "\"Although\" introduces a contrast between two facts — a short original run versus a long-lasting influence — which is exactly the relationship here. \"Because\" would wrongly suggest the short run caused the influence, \"so that\" expresses purpose, and \"moreover\" simply adds information rather than contrasting it."
     },
     {
+      art: "TwinPeaks/cooper-steam.jpg",
+      artcap: "Every day, once a day, give yourself a present.",
       tag: "Part 10 — A Hard Act to Follow",
       title: "Imitated, Rarely Matched",
       text: "Many later dramas have tried to follow its example, blending mystery with a distinctive mood and unresolved questions. Few, however, have managed to reach the same standard, or to feel quite as strange and original.",
@@ -468,6 +615,10 @@
 
     var html = '';
     html += '<div class="card">';
+    if (s.art){
+      html += '  <img class="scene-art" src="' + s.art + '" alt="" loading="lazy">';
+      html += '  <div class="scene-art-cap">' + (s.artcap || '') + '</div>';
+    }
     html += '  <div class="scene">';
     html += '    <div class="scene-tag">' + s.tag + '</div>';
     html += '    <h2 class="scene-title">' + s.title + '</h2>';
@@ -532,6 +683,15 @@
     updateProgress();
   }
 
+  // The cover sits above everything now, so "back to the top" would mean
+  // scrolling past the artwork on every click. Land on the work instead.
+  function scrollToWork(){
+    var shell = document.querySelector('.progress-shell');
+    if (!shell) return;
+    var y = shell.getBoundingClientRect().top + window.pageYOffset;
+    window.scrollTo({top: y, behavior:'smooth'});
+  }
+
   function goNext(){
     if (!answered) return;
     current++;
@@ -539,7 +699,7 @@
       showResults();
     } else {
       renderScene();
-      window.scrollTo({top:0, behavior:'smooth'});
+      scrollToWork();
     }
   }
 
@@ -576,20 +736,41 @@
 
     resultsArea.innerHTML = html;
     resultsArea.classList.remove('hidden');
+    document.getElementById('activationArea').classList.remove('hidden');
     document.getElementById('restartBtn').addEventListener('click', restart);
-    window.scrollTo({top:0, behavior:'smooth'});
+    scrollToWork();
   }
 
   function restart(){
     current = 0;
     score = 0;
     resultsArea.classList.add('hidden');
+    document.getElementById('activationArea').classList.add('hidden');
     gameArea.classList.remove('hidden');
     document.getElementById('scorebar').classList.remove('hidden');
     document.querySelector('.progress-shell').classList.remove('hidden');
     sourceNote.classList.remove('hidden');
     renderScene();
-    window.scrollTo({top:0, behavior:'smooth'});
+    scrollToWork();
+  }
+
+  // ── speaking & writing ──
+  var actInput = document.getElementById('actInput');
+  if (actInput){
+    var actCount = document.getElementById('actCount');
+    actInput.addEventListener('input', function(){
+      var n = actInput.value.trim().split(/\s+/).filter(Boolean).length;
+      actCount.textContent = n + (n === 1 ? ' word' : ' words');
+    });
+    document.getElementById('actCopy').addEventListener('click', function(){
+      var btn = this;
+      if (!navigator.clipboard) return;
+      navigator.clipboard.writeText(actInput.value).then(function(){
+        var was = btn.textContent;
+        btn.textContent = 'Copied';
+        setTimeout(function(){ btn.textContent = was; }, 1400);
+      });
+    });
   }
 
   renderScene();
