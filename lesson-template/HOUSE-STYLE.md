@@ -219,13 +219,30 @@ broken in the other.
 
 ## 5. Background pattern and legibility
 
-The hero repeats behind every non-cover slide at `--bg-opacity: 0.34`,
-desaturated to `saturate(0.75)`, under a vertical wash.
+The hero repeats behind every non-cover slide at `--bg-opacity: 0.55`,
+barely desaturated (`saturate(0.92)`), under a **two-stop** vertical wash:
+`--wash-edge` at the top and bottom, `--wash-mid` across the middle.
 
-- **Start at 0.34.** This has been set too faint repeatedly in the past and
-  corrected each time. It is a floor, not a starting guess to tune downward.
-- Range 0.30–0.40. Go lower only if a specific hero is so busy that text
+- **Start at 0.55.** This has been set too faint repeatedly in the past and
+  corrected each time — most recently because whole decks were shipping with
+  interior pages that read as plain black. It is a floor, not a starting
+  guess to tune downward.
+- Range 0.50–0.62. Go lower only if a specific hero is so busy that text
   suffers, and say that you did.
+- **The wash darkens the edges, not the middle.** `--wash-edge` (0.62) sits
+  where the eyebrow, the deck bar and the progress rail live; `--wash-mid`
+  (0.30) is deliberately weak so the artwork survives across the body of the
+  slide. Never flatten the two into one heavy value — that is exactly the bug
+  this replaced.
+- **An interior page that reads as black is a bug.** Measure rather than
+  eyeball it: `python3 lesson-template/bgmeasure.py <lesson.html>` reports the
+  rendered background luminance and the resulting body-text contrast. Aim for
+  a mean of 0.025–0.08 on a dark deck (0.40–0.60 on a light one) with text
+  contrast comfortably above 7:1.
+- **A bright, airy hero belongs in a light lesson.** Forcing cream artwork
+  into the dark theme is what produced the muddy backgrounds in the first
+  place. Run `extract-palette.py <hero> --light`, set `data-theme="light"`
+  on `<html>`, and let the picture stay bright.
 - **All reading content sits inside `.card`.** The card is translucent
   (`82%`) so the picture still shows through, plus a 3px backdrop blur that
   keeps text crisp over detailed artwork. Text placed directly on the
