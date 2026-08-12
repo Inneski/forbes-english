@@ -11,7 +11,7 @@
   :root {
     --bg:        #1D2B3A;
     --panel:     #253347;
-    --card:      rgba(255, 255, 255, 0.82);
+    --card:      rgba(255,255,255,0.94);
     --blue:      #1B4B8A;
     --blue-lt:   #2A6AC0;
     --amber:     #D4860A;
@@ -319,13 +319,17 @@
   @media(prefers-reduced-motion:reduce){ *{ transition:none!important; animation:none!important; } }
 
 
+
+
 /* ── BG-BRIGHTEN ──────────────────────────────────────────────────
    The hero photo was laid at a low opacity under a near-opaque wash, so
    the page rendered as effectively black and the artwork was invisible.
-   Lift the photo, wash only the top and bottom edges, and veil the reading
-   column so the margins carry the picture and the text keeps its contrast. */
-.bg-photo img { opacity: 0.55 !important; filter: saturate(0.92) !important; }
-.bg-photo::after { background: linear-gradient(90deg, color-mix(in srgb, var(--bg) 0%, transparent) 0%, color-mix(in srgb, var(--bg) 74%, transparent) 11%, color-mix(in srgb, var(--bg) 74%, transparent) 89%, color-mix(in srgb, var(--bg) 0%, transparent) 100%), linear-gradient(180deg, color-mix(in srgb, var(--bg) 66%, transparent) 0%, rgba(29,43,58,0.26) 20%, rgba(29,43,58,0.26) 80%, color-mix(in srgb, var(--bg) 66%, transparent) 100%) !important; opacity: 1 !important; }
+   Lift the photo, keep only a light wash at the top and bottom edges, and
+   veil the reading column just enough to protect the text. Heavy vignettes
+   are the failure mode here -- if the edges read as a dark frame rather
+   than as the picture continuing, the numbers are too high. */
+.bg-photo img { opacity: 0.72 !important; filter: saturate(0.95) !important; }
+.bg-photo::after { background: linear-gradient(90deg, color-mix(in srgb, var(--bg) 0%, transparent) 0%, color-mix(in srgb, var(--bg) 58%, transparent) 26%, color-mix(in srgb, var(--bg) 58%, transparent) 74%, color-mix(in srgb, var(--bg) 0%, transparent) 100%), linear-gradient(180deg, color-mix(in srgb, var(--bg) 18%, transparent) 0%, rgba(29,43,58,0.04) 20%, rgba(29,43,58,0.04) 80%, color-mix(in srgb, var(--bg) 18%, transparent) 100%) !important; opacity: 1 !important; }
 </style>
 </head>
 <body>
