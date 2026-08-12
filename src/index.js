@@ -13,7 +13,7 @@
 // deploy/06-environment-variables.md for the full list):
 //   STRIPE_SECRET_KEY, STRIPE_PRICE_ID_MONTHLY, STRIPE_PRICE_ID_SEMIANNUAL,
 //   STRIPE_PRICE_ID_ANNUAL, STRIPE_WEBHOOK_SECRET, SITE_URL,
-//   SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
+//   SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY
 
 const PLAN_ENV_KEYS = {
   monthly: "STRIPE_PRICE_ID_MONTHLY",
@@ -33,10 +33,169 @@ export default {
       return handleStripeWebhook(request, env);
     }
 
+    // ── THE PAYWALL ──────────────────────────────────────────────────
+    // This is the only place a paywall can actually work on this site.
+    // Lessons are static .html files on the asset CDN; they never pass
+    // through Postgres, so no Supabase RLS policy can protect them, and
+    // anything done in page JavaScript arrives after the file has already
+    // been delivered. The check has to happen here, before the bytes go out.
+    const gate = await gateLessonRequest(request, url, env, ctx);
+    if (gate) return gate;
+
     // Everything else (every page, image, etc.) is a static file.
     return env.ASSETS.fetch(request);
   },
 };
+
+// ─────────────────────────────────────────────────────────────────────────
+// Paywall
+// ─────────────────────────────────────────────────────────────────────────
+
+const SESSION_COOKIE = "fe_at";
+const ACTIVE_STATUSES = new Set(["active", "trialing"]);
+
+/**
+ * Returns a Response when the request is for a gated lesson the caller may
+ * not have, or null to let the request continue to the static assets.
+ */
+async function gateLessonRequest(request, url, env, ctx) {
+  if (request.method !== "GET" && request.method !== "HEAD") return null;
+
+  const file = lessonFileFor(url.pathname);
+  if (!file) return null;
+
+  const proFiles = await getProFiles(env, ctx);
+  // Fail OPEN, not closed: if Supabase is unreachable we would rather serve a
+  // pro lesson to a stranger than show every paying subscriber a paywall.
+  if (!proFiles) return null;
+  if (!proFiles.has(file)) return null;
+
+  if (await hasActiveSubscription(request, env)) {
+    // Serve it, but marked private. A pro lesson must never sit in a shared
+    // cache where the next person through gets it without the check.
+    const res = await env.ASSETS.fetch(request);
+    const out = new Response(res.body, res);
+    out.headers.set("Cache-Control", "private, no-store");
+    out.headers.set("Vary", "Cookie");
+    return out;
+  }
+
+  return locked(request, url, env);
+}
+
+/**
+ * Maps a request path to the lesson filename it would serve, or null if the
+ * request is not for a page at all. Cloudflare serves `/foo` from `foo.html`,
+ * so both spellings have to resolve to the same lesson — otherwise dropping
+ * the extension walks straight past the gate.
+ */
+function lessonFileFor(pathname) {
+  let p;
+  try {
+    p = decodeURIComponent(pathname);
+  } catch {
+    return null;
+  }
+  p = p.replace(/^\/+/, "");
+  if (!p || p.endsWith("/")) return null;
+  if (p.includes("/")) return null;            // lessons all sit at the root
+  if (p.toLowerCase().endsWith(".html")) return p;
+  if (/\.[a-z0-9]{2,5}$/i.test(p)) return null; // an image, a PDF, a script
+  return `${p}.html`;
+}
+
+/**
+ * The set of lesson filenames that require a subscription, read from the
+ * `lessons` table and cached at the edge. Cached for five minutes so flipping
+ * a lesson to free in the database takes effect without a deploy, while a
+ * burst of traffic does not become a burst of Supabase queries.
+ */
+async function getProFiles(env, ctx) {
+  const cacheKey = new Request(`${env.SITE_URL}/__internal/pro-lessons`);
+  const cache = caches.default;
+
+  const cached = await cache.match(cacheKey);
+  if (cached) {
+    try {
+      return new Set(await cached.json());
+    } catch {
+      /* fall through and re-fetch */
+    }
+  }
+
+  let files;
+  try {
+    const res = await fetch(
+      `${env.SUPABASE_URL}/rest/v1/lessons?select=file&access=eq.pro`,
+      { headers: { apikey: env.SUPABASE_ANON_KEY, Authorization: `Bearer ${env.SUPABASE_ANON_KEY}` } }
+    );
+    if (!res.ok) return null;
+    files = (await res.json()).map((r) => r.file);
+  } catch {
+    return null;
+  }
+
+  const body = JSON.stringify(files);
+  const toCache = new Response(body, {
+    headers: { "Content-Type": "application/json", "Cache-Control": "max-age=300" },
+  });
+  if (ctx && ctx.waitUntil) ctx.waitUntil(cache.put(cacheKey, toCache));
+  return new Set(files);
+}
+
+/**
+ * Verifies the caller's Supabase session and checks their subscription in a
+ * single request: PostgREST rejects an invalid or expired token outright, and
+ * the row-level policy on `profiles` means the row that comes back can only
+ * ever be the caller's own. There is no way to ask it for somebody else's.
+ */
+async function hasActiveSubscription(request, env) {
+  const token = readCookie(request.headers.get("Cookie"), SESSION_COOKIE);
+  if (!token) return false;
+
+  let rows;
+  try {
+    const res = await fetch(
+      `${env.SUPABASE_URL}/rest/v1/profiles?select=subscription_status&limit=1`,
+      { headers: { apikey: env.SUPABASE_ANON_KEY, Authorization: `Bearer ${token}` } }
+    );
+    if (!res.ok) return false;
+    rows = await res.json();
+  } catch {
+    return false;
+  }
+
+  return Array.isArray(rows) && rows.length > 0 && ACTIVE_STATUSES.has(rows[0].subscription_status);
+}
+
+function readCookie(header, name) {
+  if (!header) return null;
+  for (const part of header.split(";")) {
+    const [k, ...v] = part.trim().split("=");
+    if (k === name) return decodeURIComponent(v.join("="));
+  }
+  return null;
+}
+
+/**
+ * 402 with the locked page. The status is honest — this is not a 404 pretending
+ * the lesson does not exist, nor a 200 pretending the paywall is the lesson —
+ * and browsers render the body regardless.
+ */
+async function locked(request, url, env) {
+  const page = await env.ASSETS.fetch(new Request(`${url.origin}/locked.html`));
+  const html = page.ok ? await page.text() : "<h1>This lesson is for subscribers.</h1>";
+  return new Response(html, {
+    status: 402,
+    headers: {
+      "Content-Type": "text/html; charset=utf-8",
+      "Cache-Control": "no-store",
+      // Never let a CDN or proxy hold on to a paywall response and hand it to
+      // a subscriber, or hold on to a lesson and hand it to a stranger.
+      "Vary": "Cookie",
+    },
+  });
+}
 
 // ─────────────────────────────────────────────────────────────────────────
 // POST /api/create-checkout-session
