@@ -30,6 +30,58 @@
     --border-strong: rgba(90,60,20,0.4);
   }
 
+
+  /* ── cover ── */
+  .cover {
+    position: relative;
+    margin: -34px -34px 26px -34px;
+    min-height: 300px;
+    display: flex; align-items: flex-end;
+    background: url('PrepositionFiles/hero.jpg') center 38% / cover no-repeat;
+    border-bottom: 3px solid var(--ink);
+  }
+  .cover::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(26,18,8,0) 34%, rgba(26,18,8,.6) 72%, rgba(26,18,8,.92) 100%);
+  }
+  .cover-inner { position: relative; z-index: 2; padding: 0 34px 24px 34px; width: 100%; }
+  .cover .file-stamp { color: var(--amber-light); opacity: .95; }
+  .tab-nav { flex-wrap: wrap; }
+  .cover .case-badge { background: var(--red); color: var(--paper); border-color: var(--paper); }
+  .cover h1 { color: var(--paper); margin: 10px 0 6px 0; text-shadow: 0 3px 18px rgba(0,0,0,.7); }
+  .cover .tagline { color: var(--amber-light); text-shadow: 0 2px 12px rgba(0,0,0,.7); }
+  @media (max-width:640px){ .cover { min-height: 220px; } }
+
+  /* ── debrief ── */
+  .debrief-art {
+    height: 240px; margin: 0 0 22px 0;
+    background: url('PrepositionFiles/debrief.jpg') center 40% / cover no-repeat;
+    border: 1px solid var(--border-strong); border-radius: 4px;
+  }
+  .debrief-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 18px; }
+  @media (max-width:720px){ .debrief-grid { grid-template-columns: 1fr; } }
+  .debrief-kind {
+    font-family: inherit; font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--red); font-weight: 700; margin-bottom: 10px;
+  }
+  .debrief-list { margin: 0; padding-left: 20px; }
+  .debrief-list li { margin-bottom: 10px; line-height: 1.6; }
+  .debrief-bank {
+    margin-top: 18px; padding: 14px 16px;
+    background: var(--paper-dark); border: 1px dashed var(--border-strong); border-radius: 4px;
+    line-height: 2;
+  }
+  .debrief-bank .prep-highlight { margin-right: 4px; }
+  .debrief-input {
+    width: 100%; min-height: 200px; resize: vertical;
+    font-family: inherit; font-size: 15px; line-height: 1.6; color: var(--ink);
+    background: var(--paper); border: 1px solid var(--border-strong); border-radius: 4px; padding: 12px 14px;
+  }
+  .debrief-input:focus { outline: none; border-color: var(--amber-dark); }
+  .debrief-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; }
+  .debrief-count { font-size: 12.5px; color: var(--ink-faint); }
+
   html { font-size: 16px; scroll-behavior: smooth; }
 
   body {
@@ -645,11 +697,13 @@
 <div class="page">
   <div class="page-inner">
 
-    <div class="file-stamp">Grammar Case File — No. 7</div>
-    <div class="title-block">
-      <div class="case-badge">Classified</div>
-      <h1>The Preposition Files</h1>
-      <div class="tagline">"Every crime scene tells a story — if you know where to look."</div>
+    <div class="cover">
+      <div class="cover-inner">
+        <div class="file-stamp">Grammar Case File — No. 7</div>
+        <div class="case-badge">Classified</div>
+        <h1>The Preposition Files</h1>
+        <div class="tagline">"Every crime scene tells a story — if you know where to look."</div>
+      </div>
     </div>
 
     <nav class="tab-nav">
@@ -659,6 +713,7 @@
       <button class="tab-btn" onclick="showTab('quiz', this)">Interrogation</button>
       <button class="tab-btn" onclick="showTab('fill', this)">Fill Blanks</button>
       <button class="tab-btn" onclick="showTab('match', this)">Match Up</button>
+      <button class="tab-btn" onclick="showTab('debrief', this)">Debrief</button>
     </nav>
 
     <!-- ─── TAB: BRIEFING ─── -->
@@ -980,6 +1035,49 @@
       </div>
     </div>
 
+
+    <!-- ─── TAB: DEBRIEF ─── -->
+    <div id="tab-debrief" class="tab-panel">
+      <div class="debrief-art" role="img" aria-label="A detective standing in a doorway"></div>
+      <div class="section-eyebrow">Closing Statement</div>
+      <h2>Now give your own account</h2>
+      <p>You have placed the suspect, the weapon and the hour. The last thing any investigator has to do is <em>say it out loud</em> — and then write it down so it holds up. Prepositions are what make a statement precise enough to be believed.</p>
+
+      <div class="debrief-grid">
+        <div>
+          <div class="debrief-kind">Speaking &middot; in pairs</div>
+          <ul class="debrief-list">
+            <li>One of you is the detective, the other the last person to see the victim. Ask five questions that each begin with a preposition of place or time: <em>At what time&hellip;? In which room&hellip;? Since when&hellip;?</em></li>
+            <li>Describe this room to your partner with their eyes closed, precisely enough for them to draw it. Use at least six prepositions of place.</li>
+            <li>Give your alibi for last Tuesday evening in one unbroken minute. Your partner listens for a preposition used wrongly — one slip and you are a suspect.</li>
+            <li>Tell the story of a crime you have seen in a film. Move it through time: <em>before</em>, <em>during</em>, <em>after</em>, <em>by the time</em>.</li>
+          </ul>
+          <div class="debrief-bank">
+            <strong>Get at least six into your statement:</strong><br>
+            <span class="prep-highlight">at</span>
+            <span class="prep-highlight">under</span>
+            <span class="prep-highlight">behind</span>
+            <span class="prep-highlight">through</span>
+            <span class="prep-highlight">since</span>
+            <span class="prep-highlight">during</span>
+            <span class="prep-highlight">into</span>
+            <span class="prep-highlight">by</span>
+            <span class="prep-highlight">between</span>
+            <span class="prep-highlight">beneath</span>
+          </div>
+        </div>
+        <div>
+          <div class="debrief-kind">Writing &middot; 180&ndash;220 words</div>
+          <p>Write the detective&rsquo;s report on the case. Say where each person was, when they were there, and how the evidence moved from one place to another. Every sentence should earn its prepositions &mdash; a report that says <em>the knife was found</em> tells us nothing; <em>the knife was found beneath the floorboards, behind the stairs, three days after the body</em> closes a case.</p>
+          <textarea class="debrief-input" id="debriefInput" placeholder="At approximately nine o'clock on the evening of&hellip;" aria-label="Your report"></textarea>
+          <div class="debrief-foot">
+            <span class="debrief-count" id="debriefCount">0 words</span>
+            <button class="reset-btn" type="button" id="debriefCopy">Copy report</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="page-footer">
       <div class="footer-note">English Grammar — Prepositions Unit</div>
       <div class="footer-note">Case File #7 — All rights to the English language</div>
@@ -990,6 +1088,27 @@
 
 <script>
 // ── TAB NAVIGATION ──
+
+// ── DEBRIEF: word count and copy ──
+(function(){
+  var ta = document.getElementById('debriefInput');
+  if (!ta) return;
+  var out = document.getElementById('debriefCount');
+  ta.addEventListener('input', function(){
+    var n = ta.value.trim().split(/\s+/).filter(Boolean).length;
+    out.textContent = n + (n === 1 ? ' word' : ' words');
+  });
+  document.getElementById('debriefCopy').addEventListener('click', function(){
+    var btn = this;
+    if (!navigator.clipboard) return;
+    navigator.clipboard.writeText(ta.value).then(function(){
+      var was = btn.textContent;
+      btn.textContent = 'Copied';
+      setTimeout(function(){ btn.textContent = was; }, 1400);
+    });
+  });
+})();
+
 function showTab(id, btn) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
