@@ -1,0 +1,1914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Parisian Conquest II: The Long Winter | A Business RPG</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@400;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --void:      #0a0c10;
+  --obsidian:  #111418;
+  --iron:      #1c2128;
+  --steel:     #2d3748;
+  --ash:       #4a5568;
+  --mist:      #718096;
+  --parchment: #e8dcc8;
+  --cream:     #f4ede0;
+  --gold:      #c8963e;
+  --gold-bright: #e8b84a;
+  --gold-dim:  #8a6520;
+  --crimson:   #8b1a2a;
+  --crimson-bright: #c0253a;
+  --teal:      #0d7377;
+  --teal-light:#14a8ad;
+  --shadow:    0 4px 32px rgba(0,0,0,0.6);
+  --inner-shadow: inset 0 2px 8px rgba(0,0,0,0.5);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--void);
+  font-family: 'DM Sans', sans-serif;
+  color: var(--parchment);
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-image:
+    radial-gradient(ellipse at 20% 0%, rgba(139,26,42,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba(13,115,119,0.06) 0%, transparent 50%);
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--obsidian); }
+::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 3px; }
+
+/* ── HEADER ── */
+.masthead {
+  text-align: center;
+  padding: 36px 20px 28px;
+  border-bottom: 1px solid rgba(200,150,62,0.2);
+  position: relative;
+  background: linear-gradient(180deg, rgba(139,26,42,0.07) 0%, transparent 100%);
+}
+.masthead::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 5%; right: 5%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.logo-lockup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-bottom: 14px;
+}
+.logo-svg { width: 200px; flex-shrink: 0; display: block; }
+.masthead-divider { width: 1px; height: 48px; background: rgba(200,150,62,0.3); }
+.game-badge {
+  text-align: left;
+}
+.game-badge-top {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  color: var(--crimson-bright);
+  text-transform: uppercase;
+}
+.game-badge-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+}
+.main-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(1.5rem, 5vw, 2.8rem);
+  font-weight: 700;
+  color: var(--gold-bright);
+  line-height: 1.15;
+  text-shadow: 0 0 40px rgba(200,150,62,0.4), 0 2px 4px rgba(0,0,0,0.8);
+  letter-spacing: 0.03em;
+  margin-bottom: 6px;
+}
+.main-subtitle {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(0.75rem, 2vw, 0.95rem);
+  color: var(--mist);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+/* ── HUD (always visible during play) ── */
+.hud {
+  background: var(--obsidian);
+  border-bottom: 1px solid rgba(200,150,62,0.15);
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.hud-name {
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--gold);
+  min-width: 120px;
+}
+.hud-stats {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.hud-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+.hud-stat-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.12em;
+  color: var(--ash);
+  text-transform: uppercase;
+}
+.hud-stat-val {
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--parchment);
+}
+.hud-hp {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+.hp-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--crimson-bright);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.hp-pips {
+  display: flex;
+  gap: 3px;
+}
+.hp-pip {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--crimson-bright);
+  box-shadow: 0 0 4px rgba(192,37,58,0.6);
+  transition: all 0.3s;
+}
+.hp-pip.lost {
+  background: var(--iron);
+  box-shadow: none;
+  border: 1px solid var(--ash);
+}
+.hud-room {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--gold-dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-left: 8px;
+}
+
+/* ── MAIN LAYOUT ── */
+.game-wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 28px 16px 80px;
+}
+
+/* ── SCREEN BASE ── */
+.screen { display: none; animation: fadein 0.4s ease; }
+.screen.active { display: block; }
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── DECORATIVE PANEL ── */
+.panel {
+  background: var(--obsidian);
+  border: 1px solid rgba(200,150,62,0.2);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+.panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(200,150,62,0.04) 0%, transparent 60%);
+  pointer-events: none;
+}
+.panel-corner {
+  position: absolute;
+  width: 20px; height: 20px;
+  border-color: var(--gold-dim);
+  border-style: solid;
+  opacity: 0.6;
+}
+.panel-corner.tl { top: 6px; left: 6px; border-width: 1px 0 0 1px; }
+.panel-corner.tr { top: 6px; right: 6px; border-width: 1px 1px 0 0; }
+.panel-corner.bl { bottom: 6px; left: 6px; border-width: 0 0 1px 1px; }
+.panel-corner.br { bottom: 6px; right: 6px; border-width: 0 1px 1px 0; }
+
+/* ── INTRO SCREEN ── */
+.intro-hero {
+  position: relative;
+  margin: -1px -1px 0;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(200,150,62,0.3);
+}
+.intro-hero img {
+  width: 100%;
+  height: auto;
+  max-height: 380px;
+  object-fit: cover;
+  display: block;
+}
+.intro-hero::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 58%, var(--obsidian) 100%);
+}
+
+/* ── PERSISTENT BACKGROUND PHOTO ── */
+.bg-photo { position: fixed; inset: 0; z-index: -2; overflow: hidden; }
+.bg-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; opacity: 0.28; filter: saturate(0.5) sepia(0.3); }
+.bg-photo::after {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, var(--void) 0%, rgba(10,12,16,0.75) 18%, rgba(10,12,16,0.75) 82%, var(--void) 100%),
+    radial-gradient(ellipse at 20% 0%, rgba(139,26,42,0.18) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 100%, rgba(13,115,119,0.14) 0%, transparent 55%);
+}
+.intro-art {
+  text-align: center;
+  padding: 48px 32px 40px;
+}
+.intro-art .rune {
+  font-size: 4rem;
+  display: block;
+  margin-bottom: 16px;
+  filter: drop-shadow(0 0 20px rgba(200,150,62,0.5));
+}
+.intro-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  font-weight: 700;
+  color: var(--gold-bright);
+  margin-bottom: 8px;
+  text-shadow: 0 0 30px rgba(200,150,62,0.3);
+}
+.intro-lore {
+  color: var(--mist);
+  font-size: 0.9rem;
+  line-height: 1.75;
+  max-width: 560px;
+  margin: 0 auto 24px;
+  font-style: italic;
+}
+.intro-lore strong { color: var(--parchment); font-style: normal; }
+
+/* ── CHARACTER CREATION ── */
+.char-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 24px;
+}
+@media (max-width:540px) { .char-grid { grid-template-columns: 1fr; } }
+
+.char-class-card {
+  background: var(--iron);
+  border: 1.5px solid rgba(200,150,62,0.2);
+  border-radius: 6px;
+  padding: 18px 16px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  position: relative;
+}
+.char-class-card:hover {
+  border-color: var(--gold);
+  background: rgba(200,150,62,0.07);
+  transform: translateY(-2px);
+}
+.char-class-card.selected {
+  border-color: var(--gold-bright);
+  background: rgba(200,150,62,0.1);
+  box-shadow: 0 0 0 1px rgba(200,150,62,0.3), inset 0 0 20px rgba(200,150,62,0.05);
+}
+.class-icon { font-size: 2rem; margin-bottom: 8px; }
+.class-name {
+  font-family: 'Cinzel', serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+.class-title {
+  font-size: 0.72rem;
+  font-family: 'DM Mono', monospace;
+  color: var(--crimson-bright);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.class-desc {
+  font-size: 0.8rem;
+  color: var(--mist);
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+.class-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.stat-pip {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  padding: 2px 8px;
+  border-radius: 3px;
+  border: 1px solid rgba(200,150,62,0.3);
+  color: var(--gold-dim);
+}
+.stat-pip.high { border-color: rgba(200,150,62,0.6); color: var(--gold); }
+.selected-badge {
+  position: absolute;
+  top: 10px; right: 10px;
+  background: var(--gold);
+  color: var(--void);
+  font-family: 'Cinzel', serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 2px;
+  letter-spacing: 0.08em;
+  display: none;
+}
+.char-class-card.selected .selected-badge { display: block; }
+
+.name-row {
+  padding: 0 24px 24px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+}
+.name-field-wrap { flex: 1; }
+.name-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--gold-dim);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.name-input {
+  width: 100%;
+  background: var(--iron);
+  border: 1px solid rgba(200,150,62,0.3);
+  border-radius: 4px;
+  padding: 10px 14px;
+  font-family: 'Cinzel', serif;
+  font-size: 0.95rem;
+  color: var(--gold-bright);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.name-input::placeholder { color: var(--ash); font-family: 'DM Sans', sans-serif; font-size: 0.85rem; }
+.name-input:focus { border-color: var(--gold); }
+
+/* ── BUTTONS ── */
+.btn {
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  border: none;
+  border-radius: 4px;
+  padding: 12px 26px;
+  cursor: pointer;
+  transition: all 0.18s;
+  text-transform: uppercase;
+}
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-bright) 100%);
+  color: var(--void);
+  box-shadow: 0 2px 12px rgba(200,150,62,0.35);
+}
+.btn-gold:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(200,150,62,0.5); }
+.btn-gold:disabled { opacity: 0.4; cursor: default; transform: none; box-shadow: none; }
+.btn-ghost {
+  background: transparent;
+  color: var(--gold);
+  border: 1px solid rgba(200,150,62,0.4);
+}
+.btn-ghost:hover { border-color: var(--gold); background: rgba(200,150,62,0.07); }
+.btn-crimson {
+  background: linear-gradient(135deg, var(--crimson) 0%, var(--crimson-bright) 100%);
+  color: var(--cream);
+  box-shadow: 0 2px 12px rgba(139,26,42,0.4);
+}
+.btn-crimson:hover { transform: translateY(-2px); }
+
+/* ── ROOM / ENCOUNTER SCREEN ── */
+.room-header {
+  padding: 24px 28px 20px;
+  border-bottom: 1px solid rgba(200,150,62,0.12);
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+}
+.room-icon {
+  font-size: 2.8rem;
+  filter: drop-shadow(0 0 12px rgba(200,150,62,0.4));
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.room-meta { flex: 1; }
+.room-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  color: var(--crimson-bright);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.room-name {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1rem, 3vw, 1.4rem);
+  font-weight: 700;
+  color: var(--gold-bright);
+  margin-bottom: 6px;
+  text-shadow: 0 0 20px rgba(200,150,62,0.3);
+}
+.room-desc {
+  font-size: 0.88rem;
+  color: var(--mist);
+  line-height: 1.65;
+  font-style: italic;
+}
+
+/* ── ENEMY CARD ── */
+.enemy-card {
+  margin: 0 24px 20px;
+  background: var(--iron);
+  border: 1px solid rgba(139,26,42,0.4);
+  border-radius: 6px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.enemy-portrait {
+  font-size: 2.5rem;
+  width: 64px; height: 64px;
+  background: rgba(139,26,42,0.2);
+  border: 1px solid rgba(139,26,42,0.4);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.enemy-info { flex: 1; }
+.enemy-name {
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--crimson-bright);
+  margin-bottom: 2px;
+}
+.enemy-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--ash);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.enemy-quote {
+  font-size: 0.84rem;
+  color: var(--parchment);
+  font-style: italic;
+  line-height: 1.5;
+  border-left: 2px solid rgba(139,26,42,0.5);
+  padding-left: 10px;
+  margin-top: 6px;
+}
+.enemy-hp-bar {
+  width: 100%;
+  height: 6px;
+  background: var(--steel);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 10px;
+}
+.enemy-hp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--crimson), var(--crimson-bright));
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+.enemy-hp-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  color: var(--ash);
+  letter-spacing: 0.08em;
+  margin-top: 4px;
+  text-transform: uppercase;
+}
+
+/* ── COMBAT LOG ── */
+.combat-log {
+  margin: 0 24px 16px;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(200,150,62,0.1);
+  border-radius: 4px;
+  padding: 14px 16px;
+  min-height: 80px;
+  max-height: 180px;
+  overflow-y: auto;
+  font-size: 0.84rem;
+  line-height: 1.7;
+  color: var(--mist);
+}
+.log-line { margin-bottom: 2px; animation: logslide 0.25s ease; }
+@keyframes logslide {
+  from { opacity: 0; transform: translateX(-6px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.log-line.good  { color: var(--gold); }
+.log-line.crit  { color: var(--gold-bright); font-weight: 600; }
+.log-line.bad   { color: #e88; }
+.log-line.fumble { color: var(--crimson-bright); font-weight: 600; }
+.log-line.info  { color: var(--teal-light); }
+.log-line.sys   { color: var(--ash); font-size: 0.78rem; }
+
+/* ── ACTION CARDS ── */
+.actions-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  color: var(--gold-dim);
+  text-transform: uppercase;
+  padding: 0 24px 10px;
+}
+.actions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 0 24px 24px;
+}
+@media (max-width:480px) { .actions-grid { grid-template-columns: 1fr; } }
+
+.action-card {
+  background: var(--iron);
+  border: 1.5px solid rgba(200,150,62,0.18);
+  border-radius: 6px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: border-color 0.18s, background 0.18s, transform 0.12s;
+  text-align: left;
+}
+.action-card:hover:not(:disabled) {
+  border-color: var(--gold);
+  background: rgba(200,150,62,0.07);
+  transform: translateY(-2px);
+}
+.action-card:disabled {
+  opacity: 0.35;
+  cursor: default;
+  transform: none;
+}
+.action-icon { font-size: 1.4rem; margin-bottom: 6px; }
+.action-name {
+  font-family: 'Cinzel', serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 3px;
+}
+.action-desc {
+  font-size: 0.75rem;
+  color: var(--mist);
+  line-height: 1.45;
+}
+.action-bonus {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--teal-light);
+  margin-top: 5px;
+}
+
+/* ── DICE ROLL ANIMATION ── */
+.dice-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  display: none;
+}
+.dice-overlay.show { display: flex; animation: fadein 0.15s ease; }
+.dice-face {
+  font-size: 6rem;
+  animation: spin 0.4s ease-out;
+  filter: drop-shadow(0 0 40px rgba(200,150,62,0.8));
+  margin-bottom: 16px;
+}
+@keyframes spin {
+  0%   { transform: rotate(-30deg) scale(0.6); opacity: 0; }
+  60%  { transform: rotate(10deg) scale(1.15); }
+  100% { transform: rotate(0deg) scale(1); opacity: 1; }
+}
+.dice-result {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--gold-bright);
+  text-shadow: 0 0 30px rgba(200,150,62,0.6);
+  margin-bottom: 8px;
+}
+.dice-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  color: var(--mist);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* ── RESULT PANEL ── */
+.result-panel {
+  margin: 0 24px 20px;
+  border-radius: 6px;
+  padding: 16px 18px;
+  display: none;
+  animation: fadein 0.3s ease;
+}
+.result-panel.show { display: block; }
+.result-panel.crit {
+  background: rgba(200,150,62,0.12);
+  border: 1px solid rgba(200,150,62,0.4);
+}
+.result-panel.success {
+  background: rgba(13,115,119,0.1);
+  border: 1px solid rgba(20,168,173,0.3);
+}
+.result-panel.fail {
+  background: rgba(139,26,42,0.12);
+  border: 1px solid rgba(139,26,42,0.35);
+}
+.result-panel.fumble {
+  background: rgba(139,26,42,0.2);
+  border: 1px solid rgba(192,37,58,0.5);
+}
+.result-heading {
+  font-family: 'Cinzel', serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.result-panel.crit    .result-heading { color: var(--gold-bright); }
+.result-panel.success .result-heading { color: var(--teal-light); }
+.result-panel.fail    .result-heading { color: #e88; }
+.result-panel.fumble  .result-heading { color: var(--crimson-bright); }
+.result-text {
+  font-size: 0.86rem;
+  line-height: 1.65;
+  color: var(--parchment);
+}
+.result-coaching {
+  font-size: 0.78rem;
+  color: var(--gold-dim);
+  font-style: italic;
+  margin-top: 8px;
+  border-top: 1px solid rgba(200,150,62,0.15);
+  padding-top: 8px;
+  line-height: 1.6;
+}
+
+/* ── CONTINUE BUTTON ── */
+.continue-row {
+  padding: 0 24px 24px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  display: none;
+}
+.continue-row.show { display: flex; }
+
+/* ── STAT CHECK DISPLAY ── */
+.stat-check-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 0 24px 16px;
+}
+.stat-check {
+  background: var(--iron);
+  border: 1px solid rgba(200,150,62,0.2);
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--mist);
+}
+.stat-check .sc-val { color: var(--gold); font-weight: 700; }
+.stat-check .sc-mod { color: var(--teal-light); }
+
+/* ── ITEM / REWARD ── */
+.reward-card {
+  margin: 0 24px 20px;
+  background: rgba(200,150,62,0.06);
+  border: 1px solid rgba(200,150,62,0.3);
+  border-radius: 6px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.reward-icon { font-size: 1.8rem; }
+.reward-name {
+  font-family: 'Cinzel', serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--gold);
+}
+.reward-desc {
+  font-size: 0.78rem;
+  color: var(--mist);
+  margin-top: 2px;
+}
+
+/* ── VICTORY ── */
+.victory-wrap {
+  text-align: center;
+  padding: 48px 32px;
+}
+.victory-rune {
+  font-size: 5rem;
+  margin-bottom: 16px;
+  filter: drop-shadow(0 0 30px rgba(200,150,62,0.7));
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { filter: drop-shadow(0 0 20px rgba(200,150,62,0.5)); }
+  50%  { filter: drop-shadow(0 0 40px rgba(200,150,62,0.9)); }
+}
+.victory-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(1.4rem, 5vw, 2.2rem);
+  font-weight: 700;
+  color: var(--gold-bright);
+  text-shadow: 0 0 40px rgba(200,150,62,0.5);
+  margin-bottom: 10px;
+}
+.victory-subtitle {
+  font-family: 'Cinzel', serif;
+  font-size: 0.9rem;
+  color: var(--mist);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.final-scroll {
+  background: var(--iron);
+  border: 1px solid rgba(200,150,62,0.3);
+  border-radius: 6px;
+  padding: 20px 24px;
+  text-align: left;
+  margin-bottom: 24px;
+}
+.scroll-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--gold-dim);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  text-align: center;
+}
+.scroll-stat {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(200,150,62,0.1);
+  font-size: 0.86rem;
+}
+.scroll-stat:last-child { border-bottom: none; }
+.scroll-stat .ssl { color: var(--mist); }
+.scroll-stat .ssr { color: var(--gold); font-family: 'DM Mono', monospace; font-weight: 700; }
+
+/* ── GAME OVER ── */
+.gameover-wrap {
+  text-align: center;
+  padding: 48px 32px;
+}
+.gameover-rune {
+  font-size: 4rem;
+  margin-bottom: 16px;
+  opacity: 0.7;
+}
+.gameover-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  font-weight: 700;
+  color: var(--crimson-bright);
+  margin-bottom: 8px;
+  text-shadow: 0 0 30px rgba(192,37,58,0.4);
+}
+.gameover-msg {
+  color: var(--mist);
+  font-size: 0.88rem;
+  line-height: 1.7;
+  max-width: 480px;
+  margin: 0 auto 24px;
+  font-style: italic;
+}
+
+/* ── MAP ── */
+.dungeon-map {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 10px 20px;
+  flex-wrap: wrap;
+}
+.map-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  opacity: 0.35;
+  transition: opacity 0.3s;
+}
+.map-node.visited { opacity: 0.6; }
+.map-node.current { opacity: 1; }
+.map-node.current .mn-dot { box-shadow: 0 0 8px rgba(200,150,62,0.8); }
+.mn-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--gold);
+}
+.map-node.visited .mn-dot { background: var(--gold-dim); }
+.mn-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.48rem;
+  color: var(--ash);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.map-connector {
+  width: 20px; height: 1px;
+  background: rgba(200,150,62,0.2);
+  margin-top: -14px;
+}
+
+
+
+
+
+/* ── BG-BRIGHTEN ──────────────────────────────────────────────────
+   The hero photo was laid at a low opacity under a near-opaque wash, so
+   the page rendered as effectively black and the artwork was invisible.
+   Lift the photo, keep only a light wash at the top and bottom edges, and
+   veil the reading column just enough to protect the text. Heavy vignettes
+   are the failure mode here -- if the edges read as a dark frame rather
+   than as the picture continuing, the numbers are too high. */
+.bg-photo img { opacity: 0.72 !important; filter: saturate(0.95) !important; }
+.bg-photo::after { background: linear-gradient(90deg, color-mix(in srgb, var(--void) 0%, transparent) 0%, color-mix(in srgb, var(--void) 58%, transparent) 26%, color-mix(in srgb, var(--void) 58%, transparent) 74%, color-mix(in srgb, var(--void) 0%, transparent) 100%), linear-gradient(180deg, color-mix(in srgb, var(--void) 18%, transparent) 0%, rgba(10,12,16,0.04) 20%, rgba(10,12,16,0.04) 80%, color-mix(in srgb, var(--void) 18%, transparent) 100%), radial-gradient(ellipse at 20% 0%, rgba(139,26,42,0.18) 0%, transparent 55%), radial-gradient(ellipse at 80% 100%, rgba(13,115,119,0.14) 0%, transparent 55%) !important; opacity: 1 !important; }
+
+/* ── BG-BRIGHTEN: text over artwork ───────────────────────────────
+   Some body copy on these pages sits directly on the background with no card
+   behind it. Now that the artwork is visible, that text needs its own halo.
+   A shadow costs nothing visually and lets the picture stay bright, which
+   darkening the background to compensate would not. */
+body { text-shadow: 0 1px 2px rgba(0,0,0,0.55), 0 0 10px rgba(0,0,0,0.35); }
+input, textarea, select, button, option { text-shadow: none; }
+</style>
+</head>
+<body>
+
+<div class="bg-photo">
+  <img src="dnd-rpg/parisian-office-scene.jpg" alt="">
+</div>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <div class="logo-lockup">
+    <svg class="logo-svg" viewBox="0 0 200 62" width="200" height="62" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forbes English logo">
+      <g transform="translate(73.03,7.07) scale(0.033230)"><g transform="translate(0,1504) scale(0.1,-0.1)" fill="#c8963e" stroke="none"><path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47 l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21 -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9 -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58 105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141 144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392 -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31 c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55 -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0 -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226 144 331 156 51 6 127 -4 183 -25z"/><path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95 -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72 -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0 -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18 108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553 -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70 -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3 469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38 -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/><path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73 -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939 -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1 205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247 -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22 -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24 -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449 121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/><path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611 -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538 -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77 144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430 -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67 347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580 -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132 -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87 66 245 85 341 40z"/><path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140 -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134 -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287 -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101 -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107 173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392 207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599 281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241 111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2 347 -112 40 c-318 112 -594 149 -892 121z"/><path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149 l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801 -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6 -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294 -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12 -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29 -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55 -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12 -33 22 -42 21 -9 0 -199 -27 -422 -60z"/></g></g>
+      <text x="100" y="56" text-anchor="middle" font-family="'DM Sans', Arial, sans-serif" font-size="20.80" font-weight="600" letter-spacing="8" fill="#e8dcc8">ENGLISH</text>
+    </svg>
+    <div class="masthead-divider"></div>
+    <div class="game-badge">
+      <div class="game-badge-top">Interactive Quest</div>
+      <div class="game-badge-title">Business RPG · II</div>
+    </div>
+  </div>
+  <div class="main-title">The Parisian Conquest II</div>
+  <div class="main-subtitle">The Long Winter — keeping what you won · C1 Advanced</div>
+</header>
+
+<!-- HUD -->
+<div class="hud" id="hud" style="display:none">
+  <div class="hud-name" id="hud-name">Adventurer</div>
+  <div class="hud-stats">
+    <div class="hud-stat">
+      <span class="hud-stat-label">Eloquence</span>
+      <span class="hud-stat-val" id="hud-eloq">–</span>
+    </div>
+    <div class="hud-stat">
+      <span class="hud-stat-label">Gravitas</span>
+      <span class="hud-stat-val" id="hud-grav">–</span>
+    </div>
+    <div class="hud-stat">
+      <span class="hud-stat-label">Cultural IQ</span>
+      <span class="hud-stat-val" id="hud-cult">–</span>
+    </div>
+    <div class="hud-stat">
+      <span class="hud-stat-label">Resilience</span>
+      <span class="hud-stat-val" id="hud-res">–</span>
+    </div>
+  </div>
+  <div class="hud-hp">
+    <span class="hp-label">Reputation</span>
+    <div class="hp-pips" id="hp-pips"></div>
+  </div>
+  <div class="hud-room" id="hud-room"></div>
+</div>
+
+<!-- DUNGEON MAP -->
+<div class="dungeon-map" id="dungeon-map" style="display:none">
+  <div class="map-node" id="mapn-0"><div class="mn-dot"></div><span class="mn-label">Kickoff</span></div>
+  <div class="map-connector"></div>
+  <div class="map-node" id="mapn-1"><div class="mn-dot"></div><span class="mn-label">Scope</span></div>
+  <div class="map-connector"></div>
+  <div class="map-node" id="mapn-2"><div class="mn-dot"></div><span class="mn-label">Crisis</span></div>
+  <div class="map-connector"></div>
+  <div class="map-node" id="mapn-3"><div class="mn-dot"></div><span class="mn-label">Numbers</span></div>
+  <div class="map-connector"></div>
+  <div class="map-node" id="mapn-4"><div class="mn-dot"></div><span class="mn-label">Renewal</span></div>
+</div>
+
+<!-- SCREENS -->
+<div class="game-wrap">
+
+  <!-- ── INTRO ── -->
+  <div class="screen active" id="screen-intro">
+    <div class="panel">
+      <div class="panel-corner tl"></div><div class="panel-corner tr"></div>
+      <div class="panel-corner bl"></div><div class="panel-corner br"></div>
+      <div class="intro-hero">
+        <img src="dnd-rpg/parisian-office-scene.jpg" alt="A stylised retro corporate office at dusk, an executive silhouette at a desk between rows of empty client chairs, typewriters and a city skyline through the windows, in a dusty pink and blue editorial illustration style">
+      </div>
+      <div class="intro-art">
+        <span class="rune">⚔️</span>
+        <div class="intro-title">The Winter After the Victory</div>
+        <p class="intro-lore">
+          You won. The contract with <strong>Maison Éclore</strong> is signed, the champagne is
+          long finished, and the real work has started — the part nobody writes a case study about.<br><br>
+          Winning an account and <em>keeping</em> one require almost opposite language. The pitch
+          rewarded boldness. The next twelve months reward something harder: saying no without
+          damage, delivering bad news before it is discovered, defending numbers that missed,
+          and asking for more when you have not been perfect.<br><br>
+          Five more dungeons. A brand manager who never chose you, a hall of small favours that
+          bleeds you dry, a community crisis at 8:40 in the morning, a finance director with the
+          figures printed, and finally the throne room again — twelve months older, with a year
+          of evidence on the table.<br><br>
+          Your class carries over. Your reputation does not. <em>Do not fumble.</em>
+        </p>
+        <p class="intro-lore" style="opacity:.75;font-size:.94em">
+          Part I — <a href="forbes-dnd-rpg.html" style="color:#c8963e">The Parisian Conquest</a> —
+          covers winning the account. You do not need it to play this, but the executives here
+          remember you.
+        </p>
+        <button class="btn btn-gold" onclick="showScreen('screen-char')">Begin Your Quest →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CHARACTER CREATION ── -->
+  <div class="screen" id="screen-char">
+    <div class="panel">
+      <div class="panel-corner tl"></div><div class="panel-corner tr"></div>
+      <div class="panel-corner bl"></div><div class="panel-corner br"></div>
+      <div style="padding:24px 28px 16px">
+        <div class="room-eyebrow">Character Creation</div>
+        <div class="room-name">Choose Your Class</div>
+        <div class="room-desc">Your class determines your starting stats. Each has strengths and weaknesses in the dungeon ahead.</div>
+      </div>
+      <div class="char-grid">
+        <!-- FOUR CLASSES -->
+        <div class="char-class-card" onclick="selectClass('rainmaker')" id="class-rainmaker">
+          <span class="selected-badge">✓ Selected</span>
+          <div class="class-icon">🤝</div>
+          <div class="class-name">The Rainmaker</div>
+          <div class="class-title">Senior Business Developer</div>
+          <div class="class-desc">A natural closer. Charm and commercial instinct are your gifts. Cultural nuance is your blind spot.</div>
+          <div class="class-stats">
+            <span class="stat-pip high">Eloquence +4</span>
+            <span class="stat-pip high">Gravitas +3</span>
+            <span class="stat-pip">Cultural IQ +1</span>
+            <span class="stat-pip">Resilience +2</span>
+          </div>
+        </div>
+        <div class="char-class-card" onclick="selectClass('strategist')" id="class-strategist">
+          <span class="selected-badge">✓ Selected</span>
+          <div class="class-icon">🧠</div>
+          <div class="class-name">The Strategist</div>
+          <div class="class-title">Head of Market Intelligence</div>
+          <div class="class-desc">Data is your sword. You can out-think any CFO, but your cold-call charisma leaves something to be desired.</div>
+          <div class="class-stats">
+            <span class="stat-pip">Eloquence +2</span>
+            <span class="stat-pip high">Gravitas +4</span>
+            <span class="stat-pip high">Cultural IQ +3</span>
+            <span class="stat-pip">Resilience +1</span>
+          </div>
+        </div>
+        <div class="char-class-card" onclick="selectClass('diplomat')" id="class-diplomat">
+          <span class="selected-badge">✓ Selected</span>
+          <div class="class-icon">🌍</div>
+          <div class="class-name">The Diplomat</div>
+          <div class="class-title">International Account Director</div>
+          <div class="class-desc">You speak the language of cultures. French boardrooms hold no terror for you, but closing hard deals tests your limits.</div>
+          <div class="class-stats">
+            <span class="stat-pip">Eloquence +2</span>
+            <span class="stat-pip">Gravitas +2</span>
+            <span class="stat-pip high">Cultural IQ +5</span>
+            <span class="stat-pip">Resilience +1</span>
+          </div>
+        </div>
+        <div class="char-class-card" onclick="selectClass('resilient')" id="class-resilient">
+          <span class="selected-badge">✓ Selected</span>
+          <div class="class-icon">🛡️</div>
+          <div class="class-name">The Resilient</div>
+          <div class="class-title">Crisis & Client Partner Lead</div>
+          <div class="class-desc">Objections bounce off you. You absorb attacks others would crumble under. Not the flashiest fighter, but never defeated.</div>
+          <div class="class-stats">
+            <span class="stat-pip">Eloquence +2</span>
+            <span class="stat-pip">Gravitas +2</span>
+            <span class="stat-pip">Cultural IQ +2</span>
+            <span class="stat-pip high">Resilience +4</span>
+          </div>
+        </div>
+      </div>
+      <div class="name-row">
+        <div class="name-field-wrap">
+          <div class="name-label">Your Name, Adventurer</div>
+          <input class="name-input" type="text" id="char-name" placeholder="Enter your name..." maxlength="24">
+        </div>
+        <button class="btn btn-gold" id="btn-enter-dungeon" onclick="startGame()" disabled>Enter the Dungeon →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ENCOUNTER SCREEN ── -->
+  <div class="screen" id="screen-encounter">
+    <div class="panel" id="encounter-panel">
+      <div class="panel-corner tl"></div><div class="panel-corner tr"></div>
+      <div class="panel-corner bl"></div><div class="panel-corner br"></div>
+      <div class="room-header">
+        <div class="room-icon" id="enc-icon">🏰</div>
+        <div class="room-meta">
+          <div class="room-eyebrow" id="enc-eyebrow">Room 1</div>
+          <div class="room-name" id="enc-name">The Antechamber</div>
+          <div class="room-desc" id="enc-desc">A dungeon awaits.</div>
+        </div>
+      </div>
+      <div class="enemy-card" id="enemy-card">
+        <div class="enemy-portrait" id="enemy-portrait">👤</div>
+        <div class="enemy-info">
+          <div class="enemy-name" id="enemy-name">The Guardian</div>
+          <div class="enemy-title" id="enemy-title">Rank Unknown</div>
+          <div class="enemy-quote" id="enemy-quote">...</div>
+          <div class="enemy-hp-bar"><div class="enemy-hp-fill" id="enemy-hp-fill" style="width:100%"></div></div>
+          <div class="enemy-hp-label"><span id="enemy-hp-text">Resistance: Full</span></div>
+        </div>
+      </div>
+      <div class="stat-check-row" id="stat-check-row"></div>
+      <div class="combat-log" id="combat-log"></div>
+      <div class="result-panel" id="result-panel">
+        <div class="result-heading" id="result-heading"></div>
+        <div class="result-text" id="result-text"></div>
+        <div class="result-coaching" id="result-coaching"></div>
+      </div>
+      <div class="actions-label" id="actions-label">Choose Your Move</div>
+      <div class="actions-grid" id="actions-grid"></div>
+      <div class="continue-row" id="continue-row">
+        <button class="btn btn-ghost" onclick="showScreen('screen-char')" style="display:none" id="btn-restart-enc">Play Again</button>
+        <button class="btn btn-gold" id="btn-continue" onclick="continueGame()">Continue →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── VICTORY ── -->
+  <div class="screen" id="screen-victory">
+    <div class="panel">
+      <div class="panel-corner tl"></div><div class="panel-corner tr"></div>
+      <div class="panel-corner bl"></div><div class="panel-corner br"></div>
+      <div class="victory-wrap">
+        <div class="victory-rune">🏆</div>
+        <div class="victory-title">Partnership Secured!</div>
+        <div class="victory-subtitle" id="vic-subtitle">The French Market Yields</div>
+        <div class="final-scroll">
+          <div class="scroll-title">Campaign Chronicle</div>
+          <div id="vic-stats"></div>
+        </div>
+        <div style="margin-bottom:16px;font-size:0.88rem;color:var(--mist);font-style:italic;line-height:1.7;max-width:480px;margin:0 auto 20px" id="vic-msg"></div>
+        <button class="btn btn-gold" onclick="restartGame()">⚔️ Quest Again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── GAME OVER ── -->
+  <div class="screen" id="screen-gameover">
+    <div class="panel">
+      <div class="panel-corner tl"></div><div class="panel-corner tr"></div>
+      <div class="panel-corner bl"></div><div class="panel-corner br"></div>
+      <div class="gameover-wrap">
+        <div class="gameover-rune">💀</div>
+        <div class="gameover-title">Your Reputation Lies in Ruins</div>
+        <div class="gameover-msg" id="go-msg">The dungeon defeated you. But every great consultant has failed a pitch. Rise, learn, and return.</div>
+        <div style="margin-bottom:20px">
+          <div class="final-scroll" style="max-width:420px;margin:0 auto">
+            <div class="scroll-title">Post-Mortem</div>
+            <div id="go-stats"></div>
+          </div>
+        </div>
+        <button class="btn btn-crimson" onclick="restartGame()">Rise Again →</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /game-wrap -->
+
+<!-- DICE OVERLAY -->
+<div class="dice-overlay" id="dice-overlay">
+  <div class="dice-face" id="dice-face">🎲</div>
+  <div class="dice-result" id="dice-result">–</div>
+  <div class="dice-label" id="dice-label">Rolling the d20...</div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   CLASSES
+═══════════════════════════════════════════════════ */
+const CLASSES = {
+  rainmaker:  { name:'The Rainmaker',  stats:{ eloq:4, grav:3, cult:1, res:2 } },
+  strategist: { name:'The Strategist', stats:{ eloq:2, grav:4, cult:3, res:1 } },
+  diplomat:   { name:'The Diplomat',   stats:{ eloq:2, grav:2, cult:5, res:1 } },
+  resilient:  { name:'The Resilient',  stats:{ eloq:2, grav:2, cult:2, res:4 } }
+};
+
+/* ═══════════════════════════════════════════════════
+   DUNGEON ROOMS
+   Each room has an enemy and 4 action choices.
+   Each action has: stat used, DC (difficulty class),
+   and outcome text for crit/success/fail/fumble.
+═══════════════════════════════════════════════════ */
+const ROOMS = [
+  /* ── ROOM 1: The Kickoff Council ── */
+  {
+    id: 0,
+    icon: '🗝️',
+    eyebrow: 'Room I — The Kickoff Council',
+    name: 'The Council of Those Who Were Not There',
+    desc: `The contract is signed, but the people who must live with it never met you. A long table. A brand manager who inherited a decision she did not make. The honeymoon lasts exactly as long as this meeting.`,
+    enemy: {
+      portrait: '📋',
+      name: 'Camille Berger',
+      title: 'Brand Manager — Maison Éclore',
+      quote: `“I wasn’t in the room when this was signed. So — what exactly are you going to do for us, and what do you need from me?”`,
+      hp: 3, maxHp: 3
+    },
+    reward: { icon: '📆', name: 'The Cadence Charter', desc: '+1 Gravitas for next encounter. The rhythm of the account is agreed.' },
+    rewardStat: { stat: 'grav', bonus: 1 },
+    actions: [
+      {
+        icon: '🔁', name: 'Set the Rhythm First',
+        desc: 'Before any deliverable, agree how often you meet, who decides, and how things get approved.',
+        stat: 'grav', dc: 10,
+        crit: { head:'Critical Hit — The Account Runs Itself', text:`“Before we talk deliverables — I’d suggest a thirty-minute call every Tuesday, a written summary every Friday, and one named approver for anything that goes live. Does that fit how you work?” Camille visibly relaxes. “Nobody has ever offered me that on day one.”`, coach:`Establishing cadence and decision rights before scope is what separates a supplier from a partner. “One named approver” quietly prevents the single most common cause of delivery failure: approval by committee.` },
+        success: { head:'Success — A Working Rhythm', text:`Camille agrees to the weekly call and the Friday summary. The approval question stays a little vague, but the structure is there.`, coach:`Good. Now close the loop on approvals explicitly — “who signs off?” is an awkward question on day one and an unbearable one in week six.` },
+        fail: { head:'Fail — Straight to the Deliverables', text:`You open with the content calendar. Camille listens, then asks how any of it gets approved. You don’t have an answer yet, and it shows.`, coach:`Process feels like a boring way to open a kickoff. It is also the thing clients remember when a deadline slips. Rhythm first, then the work.` },
+        fumble: { head:'FUMBLE — The Imposed Process', text:`You present your agency’s standard operating procedure as fixed. “This is how we run all our accounts.” Camille: “And if it doesn’t suit how we run ours?”`, coach:`Never present internal process as non-negotiable to a client who is already sceptical. Propose it as a suggestion — “does that fit how you work?” — and let them adjust one detail. Ownership follows involvement.` }
+      },
+      {
+        icon: '🎯', name: 'Define What “Done” Means',
+        desc: 'Pin down what success looks like in month one, before anyone can invent their own version.',
+        stat: 'eloq', dc: 11,
+        crit: { head:'Critical Hit — One Definition, Shared', text:`“By the end of month one, you’ll have a baseline sentiment report and three community insights you can act on. That’s it — that’s what month one is. Anything else we deliver is a bonus, not the promise.” Camille writes it down word for word.`, coach:`Naming a deliberately modest month one is counter-intuitive and enormously effective. An under-promised first milestone that lands on time buys you credit for everything after it.` },
+        success: { head:'Success — The First Milestone Agreed', text:`Camille accepts your month-one definition and adds one item of her own. The bar is set, and both of you can see it.`, coach:`Good. Let her add the item — a milestone the client has contributed to is a milestone the client defends internally.` },
+        fail: { head:'Fail — The Everything Promise', text:`Asked what month one looks like, you list nine workstreams. Camille’s eyebrows rise. “All of that? In four weeks?”`, coach:`Listing everything you *could* do reads as either inexperience or as a promise. In a kickoff, breadth is a liability. Name the few things that will definitely be true.` },
+        fumble: { head:'FUMBLE — The Inherited Promise', text:`You cite a delivery date from the original pitch deck that your delivery team has never seen. Camille: “Great — I’ll tell the CMO to expect it.” Your production lead goes pale.`, coach:`Never repeat a sales-stage promise in a kickoff before checking it with the people who must deliver it. The pitch is a proposal; the kickoff is a commitment.` }
+      },
+      {
+        icon: '🙋', name: 'Ask What She Needs to Look Good',
+        desc: 'Find out what Camille is measured on internally, and build the reporting around that.',
+        stat: 'cult', dc: 11,
+        crit: { head:'Critical Hit — The Question Nobody Asks', text:`“What do you personally get asked about in your monthly review? I’d rather our reporting answered that question than one we invented.” Camille pauses. “Reach and cost per engagement. Nobody upstream cares about sentiment yet.” You now know exactly what to lead with.`, coach:`Every client contact has an internal audience. Finding out what your day-to-day contact is judged on lets you make them look good — which is the most durable form of account security there is.` },
+        success: { head:'Success — Her Metrics, Not Yours', text:`Camille explains what her director asks for each month. You adjust the reporting template on the spot.`, coach:`Good instinct. Reporting built around the client’s internal narrative gets forwarded upward. Reporting built around your own gets filed.` },
+        fail: { head:'Fail — The Standard Template', text:`You show your agency’s standard monthly report. It is handsome and thorough and contains nothing Camille is actually asked about.`, coach:`A standard template is a starting point, not a deliverable. One question — “what do you get asked about?” — turns it into something useful.` },
+        fumble: { head:'FUMBLE — The Overheard Politics', text:`You ask who internally opposed the contract. Camille goes quiet. “That’s… not really something I’m going to discuss with an agency.”`, coach:`Understanding internal politics is essential; asking about it directly in a first meeting is not the way to learn it. Ask about metrics and audiences, and the politics reveal itself.` }
+      },
+      {
+        icon: '⚖️', name: 'Name the Constraint Honestly',
+        desc: 'Say now what the retainer will not cover, while goodwill is at its highest.',
+        stat: 'res', dc: 12,
+        crit: { head:'Critical Hit — The Pre-Agreed No', text:`“One thing worth saying now, while we’re all friendly: the retainer covers France. Belgium and Switzerland would be a separate conversation — I’d rather flag that today than surprise you in March.” Camille laughs. “I appreciate you saying it out loud.”`, coach:`The single most valuable sentence in delivery English is the boundary named early, in good humour, before anyone wants to cross it. Saying no in month one costs nothing; saying it in month five costs the relationship.` },
+        success: { head:'Success — The Boundary Is Visible', text:`You set out what the retainer covers and what it doesn’t. Camille nods and notes the exclusions.`, coach:`Good. Consider adding what happens *when* something falls outside — not just that it does. A named process (“we’d scope it as a change request”) is easier to invoke later.` },
+        fail: { head:'Fail — The Deferred Conversation', text:`You mention the scope boundaries are “in the contract” and move on. Camille has not read the contract. She never will.`, coach:`“It’s in the contract” is technically true and practically useless. Nobody reads the schedule of services. Say the boundary out loud, in plain words, in the room.` },
+        fumble: { head:'FUMBLE — The Defensive Opening', text:`You spend six minutes of the kickoff listing everything that is out of scope. Camille: “Is there anything you *are* going to do?”`, coach:`Boundaries are best delivered as one confident sentence inside a positive frame. A catalogue of exclusions in a kickoff reads as an agency bracing for a fight.` }
+      }
+    ]
+  },
+
+  /* ── ROOM 2: The Hall of Creeping Scope ── */
+  {
+    id: 1,
+    icon: '🌫️',
+    eyebrow: 'Room II — The Creeping Hall',
+    name: 'The Hall of a Thousand Small Favours',
+    desc: `Nothing here attacks you directly. Requests arrive one at a time, each of them tiny, each of them reasonable. Six weeks in, your team is working two days a month for free and nobody can point to when it started.`,
+    enemy: {
+      portrait: '🙂',
+      name: 'Julien Petit',
+      title: 'Head of Social — Maison Éclore',
+      quote: `“Just a small thing — could you cover Belgium too? And maybe a short deck each week? It’s tiny, you probably have it already.”`,
+      hp: 4, maxHp: 4
+    },
+    reward: { icon: '🧾', name: 'The Ledger of Small Things', desc: '+1 Eloquence for next encounter. Every favour is now visible and priced.' },
+    rewardStat: { stat: 'eloq', bonus: 1 },
+    actions: [
+      {
+        icon: '🔄', name: 'Trade, Don’t Refuse',
+        desc: 'Say yes to the new request — and name what comes out of the plan to make room for it.',
+        stat: 'eloq', dc: 11,
+        crit: { head:'Critical Hit — The Yes That Holds the Line', text:`“Happy to take Belgium on. To fit it in this month, I’d pause the competitor deep-dive until May — or we scope Belgium properly as an add-on. Which would you rather?” Julien thinks. “Let’s scope it. The deep-dive matters more.”`, coach:`“Yes, and here is what moves” is the most useful sentence in account management. It never refuses, never absorbs the work silently, and makes the client the one who decides the trade-off.` },
+        success: { head:'Success — The Trade Is Understood', text:`Julien accepts that something has to give. He picks the pause rather than the add-on, but the principle is now established.`, coach:`Good. The principle matters more than this instance. Once a client has chosen a trade-off once, the next request arrives with the trade-off already assumed.` },
+        fail: { head:'Fail — The Silent Absorption', text:`“Sure, we can squeeze that in.” Your team works a weekend. Julien never learns that it cost anything, so next month he asks for two more things.`, coach:`Absorbed work is invisible work, and invisible work is unvalued work. If it never appears as a cost, it never appears as generosity either.` },
+        fumble: { head:'FUMBLE — The Flat Refusal', text:`“That’s out of scope.” Four words, no alternative. Julien’s face closes. He stops asking you for things — and stops telling you things too.`, coach:`“Out of scope” as a complete sentence is relationship damage for no commercial gain. The boundary is right; the delivery is wrong. Always pair the no with a route to yes.` }
+      },
+      {
+        icon: '📮', name: 'Institute the Change Request',
+        desc: 'Move the small asks out of chat and into a lightweight written ritual.',
+        stat: 'grav', dc: 12,
+        crit: { head:'Critical Hit — Friction in the Right Place', text:`“Can I suggest something? Anything new, drop it in one line on the shared sheet. I’ll come back within a day with effort and impact. It’s not bureaucracy — it’s so the small things stop disappearing.” Julien starts using it that afternoon.`, coach:`A change-request process is only adopted when it is genuinely lightweight and framed as a benefit to the client. “One line, answer in a day” is adoptable. A three-page form is not.` },
+        success: { head:'Success — The Sheet Exists', text:`Julien agrees to the sheet. He uses it about half the time, which is roughly a hundred per cent more than before.`, coach:`Realistic outcome. Keep logging the chat requests into the sheet yourself — the record matters more than who typed it.` },
+        fail: { head:'Fail — The Process Nobody Uses', text:`You send a link to a change-request form. Julien opens it once and returns to sending requests by message.`, coach:`Any process heavier than the request it governs will be bypassed. Make the ritual smaller than the ask, or it will not survive contact with a busy client.` },
+        fumble: { head:'FUMBLE — The Bureaucratic Wall', text:`You reply to a two-minute question with a change-request form and a five-day turnaround. Julien forwards it to Camille with the words “is this normal?”`, coach:`Process must be proportionate. Applying heavy governance to a trivial request is how an agency earns a reputation for being difficult — which costs far more than the two minutes would have.` }
+      },
+      {
+        icon: '👁️', name: 'Make the Invisible Visible',
+        desc: 'Show the accumulated goodwill work in the monthly report, priced but not charged.',
+        stat: 'cult', dc: 12,
+        crit: { head:'Critical Hit — The Line That Changes the Conversation', text:`Your monthly report gains one modest line: “Additional work delivered outside scope this month: 3.5 days, not charged.” Camille reads it and forwards it to Thierry. Two weeks later the retainer is reviewed upward.`, coach:`Goodwill you never mention is goodwill you never receive credit for. Quantify it, present it as a gift rather than a grievance, and let the number make the argument.` },
+        success: { head:'Success — The Goodwill Is Noticed', text:`The line lands. Camille thanks you for it. No money changes hands, but the account’s value is now legible internally.`, coach:`Good. This is the groundwork for a renewal conversation — nine months from now, that column will be the most persuasive slide you have.` },
+        fail: { head:'Fail — The Buried Detail', text:`You mention the extra work verbally at the end of a call. It is heard, forgotten, and never reaches anyone with a budget.`, coach:`Spoken generosity evaporates. Written, quantified, repeated monthly — that is what survives long enough to influence a renewal.` },
+        fumble: { head:'FUMBLE — The Invoice-Shaped Complaint', text:`Your report lists the extra work with the heading “Unbilled — €4,200” in red. Camille reads it as a demand. The tone of the next call is noticeably cooler.`, coach:`There is a decisive difference between demonstrating value and presenting a bill nobody agreed to. Keep the framing generous: “delivered, not charged”, never “owed”.` }
+      },
+      {
+        icon: '🛡️', name: 'Protect the Team Out Loud',
+        desc: 'Decline on behalf of the people doing the work, and say so plainly.',
+        stat: 'res', dc: 13,
+        crit: { head:'Critical Hit — Respect, Both Directions', text:`“I could say yes and my team would deliver it — they always do. But they’d be doing it on Sunday, and I’m not willing to spend them on something we haven’t scoped. Let’s do it properly in May.” Julien, quietly: “Fair. I didn’t realise.”`, coach:`Declining on behalf of named people is far harder to argue with than declining on behalf of a contract. It also tells the client something true: that the quality they like is produced by humans with limits.` },
+        success: { head:'Success — The Human Cost Registers', text:`Julien accepts the deferral once he understands what the yes would have cost. He is slightly more careful with the next request.`, coach:`Good. Most scope creep is not predatory — it is simply invisible to the person asking. Making the cost visible usually resolves it.` },
+        fail: { head:'Fail — The Vague Capacity Excuse', text:`“We’re a bit stretched at the moment.” Julien hears a soft no and asks again next week, assuming the stretch has passed.`, coach:`“Stretched” is temporary and therefore ignorable. Name the specific cost and the specific alternative, or the request simply returns.` },
+        fumble: { head:'FUMBLE — The Airing of Internal Grievances', text:`You explain that your agency is understaffed, that two people left, and that the account is under-resourced. Julien now doubts you can deliver anything at all.`, coach:`Never make your resourcing problems the client’s problem. Protecting the team means setting a boundary, not confessing an internal crisis — the second one damages confidence in everything you have already delivered.` }
+      }
+    ]
+  },
+
+  /* ── ROOM 3: The Crisis Vault ── */
+  {
+    id: 2,
+    icon: '🔥',
+    eyebrow: 'Room III — The Vault',
+    name: 'The Vault of the Thing That Went Wrong',
+    desc: `A community you were meant to be listening to has turned. Four hundred comments in nine hours, and two of the accounts belong to journalists. Your CMO is calling. It is 8:40 in the morning and you do not yet have all the facts.`,
+    enemy: {
+      portrait: '👩‍💼',
+      name: 'Sophie Renard',
+      title: 'CMO — now on the board of Maison Éclore',
+      quote: `“I have a board call at eleven. Tell me what happened, what you’re doing, and what you need from me. In that order.”`,
+      hp: 5, maxHp: 5
+    },
+    reward: { icon: '🧯', name: 'The Trust Won in Bad Weather', desc: '+2 Resilience permanently. You were the calm voice on the worst morning.' },
+    rewardStat: { stat: 'res', bonus: 2 },
+    actions: [
+      {
+        icon: '🫱', name: 'Acknowledge Before Explaining',
+        desc: 'Lead with the impact on her, not with the chain of events that caused it.',
+        stat: 'eloq', dc: 11,
+        crit: { head:'Critical Hit — The Right First Sentence', text:`“First — this landed on you with no warning and you have a board call in two hours. I’m sorry. Here’s where we are, and here’s what I’ll have for you by ten.” Sophie exhales. “Thank you. Go.”`, coach:`In a crisis, the client’s first need is not information — it is the knowledge that someone competent has hold of it. Acknowledge the position they are in before you explain anything.` },
+        success: { head:'Success — The Temperature Drops', text:`Your opening steadies the call. Sophie moves from demanding to directing, which is where you need her.`, coach:`Good. Follow it immediately with a time — “by ten” — because a deadline you set yourself is the fastest way to convert panic into a plan.` },
+        fail: { head:'Fail — The Chronology', text:`You begin at the beginning: what was posted, when, by whom, and in which subreddit. Four minutes in, Sophie interrupts: “What are you *doing* about it?”`, coach:`Chronology is how you understand a crisis and the worst way to communicate one. Impact first, action second, cause last — the cause can wait for the written note.` },
+        fumble: { head:'FUMBLE — The Defence Opens', text:`Your first sentence is “To be fair, this was flagged in our February report.” Sophie: “I’m not interested in whose fault it is. I’m interested in eleven o’clock.”`, coach:`Self-defence in the opening seconds of a crisis call is the fastest way to lose a client’s confidence. Even when you are right, being right is not the job this morning.` }
+      },
+      {
+        icon: '📝', name: 'Offer the Holding Line',
+        desc: 'Give her something she can say publicly in the next thirty minutes, before you have all the facts.',
+        stat: 'grav', dc: 12,
+        crit: { head:'Critical Hit — Something She Can Use at Eleven', text:`“Here’s a holding line you can use now: you’re aware, you’re reviewing it directly with the community, and you’ll respond properly rather than quickly. It commits you to nothing and it stops the silence being the story.” Sophie copies it verbatim into her board notes.`, coach:`A holding statement buys time without conceding fault. “We’ll respond properly rather than quickly” is the workhorse construction — it reframes delay as diligence.` },
+        success: { head:'Success — The Silence Is Broken', text:`Sophie takes the holding line with minor edits from her legal team. It does its job for the rest of the day.`, coach:`Good. Expect legal edits — offering a draft they can amend is far more useful than waiting for them to write one from nothing.` },
+        fail: { head:'Fail — Nothing to Say Yet', text:`You ask for a few hours to establish the facts before advising on messaging. Sophie has a board call at eleven and now has nothing to bring to it.`, coach:`“We need more facts” is responsible and insufficient. There is always a defensible holding line available before the facts are complete — have one ready.` },
+        fumble: { head:'FUMBLE — The Premature Apology', text:`You draft a public statement accepting responsibility for something you have not yet confirmed happened. Legal reads it. The call that follows is not with Sophie.`, coach:`Never draft an admission of fault before the facts are established — it can have contractual and legal consequences well beyond the incident. Acknowledge concern, never liability.` }
+      },
+      {
+        icon: '🧭', name: 'Sequence the Next 24 Hours',
+        desc: 'Convert the chaos into a short, named list with times and owners.',
+        stat: 'grav', dc: 11,
+        crit: { head:'Critical Hit — The Plan on One Page', text:`“By ten: verified comment volume and sentiment split. By one: draft response, reviewed by your legal. By five: recommendation on whether to respond in-thread or not at all. I own the first two, you own the legal review.” Sophie: “Send me exactly that.”`, coach:`Times and owners are what turn an incident into a managed process. Note the last item: recommending that responding may be wrong is often the most valuable advice in a community crisis.` },
+        success: { head:'Success — A Plan Exists', text:`Your sequence gives the day a shape. Sophie stops calling every twenty minutes, which is itself a measure of success.`, coach:`Good. Send it in writing immediately after the call — in a crisis, the written summary is what stops six people forming six different memories.` },
+        fail: { head:'Fail — The Continuous Update', text:`You promise to keep her posted as things develop. She spends the morning wondering whether no news is good news.`, coach:`“I’ll keep you posted” creates anxiety, not reassurance. Name the next contact point explicitly — even “nothing new by two” is a message worth sending.` },
+        fumble: { head:'FUMBLE — The Overpromised Hour', text:`You commit to a full root-cause analysis by midday. At midday you have half of one, and now you are managing a second failure on top of the first.`, coach:`In a crisis, deadlines you set become promises the client repeats upward. Commit to less than you think you can do — a missed crisis deadline damages trust far more than a modest one.` }
+      },
+      {
+        icon: '🪞', name: 'Own Your Part Precisely',
+        desc: 'Take responsibility for exactly the piece that is yours — no more, no less.',
+        stat: 'res', dc: 13,
+        crit: { head:'Critical Hit — The Precise Admission', text:`“The monitoring alert should have reached you on Tuesday and it didn’t — that’s ours, and I’ve already changed the escalation rule. The community reaction itself isn’t something either of us could have prevented.” Sophie nods slowly. “That’s a straight answer.”`, coach:`Precise accountability — naming the specific failure, the specific fix, and the clear limit of what you are accepting — builds more trust than either denial or blanket apology. Vague guilt invites blame for everything.` },
+        success: { head:'Success — Credibility Intact', text:`Sophie accepts your account of what went wrong on your side. The relationship survives the morning with its honesty upgraded.`, coach:`Good. Add the fix you have already made — accountability without a remedy is just an admission.` },
+        fail: { head:'Fail — The Diffuse Apology', text:`“We’re really sorry about all of this.” All of what? Sophie is left unsure which parts you are claiming and which parts are hers.`, coach:`A general apology in a crisis is often worse than none: it implies broader fault than you have, and it gives the client nothing specific to be reassured about.` },
+        fumble: { head:'FUMBLE — The Total Absorption', text:`You accept responsibility for the entire incident, including the client’s own product decision that triggered it. It goes into the board minutes that way.`, coach:`Accepting fault you do not own feels generous in the moment and becomes the official record. Own your piece exactly — in writing, in the same sentence that defines its limits.` }
+      }
+    ]
+  },
+
+  /* ── ROOM 4: The Court of Cold Numbers ── */
+  {
+    id: 3,
+    icon: '📉',
+    eyebrow: 'Room IV — The Court',
+    name: 'The Court of Cold Numbers',
+    desc: `Quarter three. Two of your four targets were missed. The Finance Director you out-manoeuvred a year ago has been waiting patiently for this meeting, and he has printed the figures himself.`,
+    enemy: {
+      portrait: '🧮',
+      name: 'Thierry Blanc',
+      title: 'Finance Director — Groupe Éclat',
+      quote: `“You promised a partnership. What I see in the ledger is a line item that missed two of its four targets. Justify it.”`,
+      hp: 5, maxHp: 5
+    },
+    reward: { icon: '📐', name: 'The Recalibrated Forecast', desc: '+1 Gravitas permanently. You survived the numbers by naming them first.' },
+    rewardStat: { stat: 'grav', bonus: 1 },
+    actions: [
+      {
+        icon: '🔻', name: 'Lead With the Miss',
+        desc: 'Open the review with the two failures, before he has to raise them.',
+        stat: 'res', dc: 11,
+        crit: { head:'Critical Hit — The Air Leaves the Ambush', text:`“Before the successes — we missed engagement rate by eleven per cent and cost per acquisition by six. Here’s why, and here’s what changes in Q4.” Thierry sets down his printed sheet. The confrontation he prepared has nowhere to go.`, coach:`Naming your own bad numbers first removes the accuser’s role from the room. It also signals that you read the same report they did — which is not always true of agencies, and everyone knows it.` },
+        success: { head:'Success — The Credibility Holds', text:`Thierry acknowledges that you came prepared. The meeting becomes an analysis rather than a prosecution.`, coach:`Good. Now make sure the explanation is causal rather than circumstantial — “why” earns far more patience than “what else was happening”.` },
+        fail: { head:'Fail — The Buried Bad News', text:`You present the two successes at length. Thierry waits, then turns to slide fourteen himself. “And these?” The meeting is now his.`, coach:`Bad news placed late reads as bad news concealed. Whatever credibility the good results earned is spent recovering from the sequencing.` },
+        fumble: { head:'FUMBLE — The External Blame', text:`You attribute both misses to the market, the algorithm and the client’s own late approvals. Thierry writes down the third one and reads it back to you.`, coach:`Blaming the client’s process for your results is occasionally accurate and never survives the room. If approvals genuinely caused a miss, raise it as a joint problem to fix — never as a defence.` }
+      },
+      {
+        icon: '🌱', name: 'Separate Leading From Lagging',
+        desc: 'Show him the early indicators that move before revenue does.',
+        stat: 'grav', dc: 12,
+        crit: { head:'Critical Hit — The Finance Director Reframes', text:`“Acquisition cost is a lagging indicator — it tells us about Q2. Branded search volume and community sentiment both turned positive in week six, and historically those precede conversion by a quarter. You’re looking at the result of the old plan, not the new one.” Thierry: “Show me that correlation.”`, coach:`The leading/lagging distinction is the most useful concept in a difficult numbers meeting — provided you can evidence the link. Claiming it without data is a rhetorical trick, and finance directors recognise the difference.` },
+        success: { head:'Success — A Longer Time Horizon', text:`Thierry accepts that some of the metrics lag. He grants you a quarter, and asks to see the leading indicators monthly from now on.`, coach:`Good outcome. Volunteering the leading indicators monthly turns a concession into a commitment — and gives you an early-warning system too.` },
+        fail: { head:'Fail — The Unevidenced Claim', text:`You assert that the good results are still coming. Thierry: “On what basis?” You do not have the correlation to hand.`, coach:`“It’s too early to tell” is only persuasive with evidence attached. Never bring the leading-indicator argument to a finance meeting without the historical relationship in a chart.` },
+        fumble: { head:'FUMBLE — The Moving Goalposts', text:`You propose replacing the missed metrics with different ones that look better. Thierry: “So we change the exam after the results.”`, coach:`Changing the measure after a miss destroys credibility permanently, even when the new measure is genuinely better. Argue for the new metric next quarter — never in the meeting where the old one failed.` }
+      },
+      {
+        icon: '🔮', name: 'Give the Honest Forecast',
+        desc: 'Tell him what Q4 will realistically deliver, including what it will not.',
+        stat: 'eloq', dc: 12,
+        crit: { head:'Critical Hit — The Forecast He Can Bank', text:`“Q4 will hit the sentiment and reach targets. It will not recover the acquisition-cost gap — that needs a budget shift we haven’t agreed. I’d rather tell you that in October than in January.” Thierry, unexpectedly: “That is the first forecast from an agency I have believed all year.”`, coach:`A forecast that includes a named failure is worth more than one full of confidence, because it can actually be planned around. Finance people are not persuaded by optimism; they are persuaded by predictability.` },
+        success: { head:'Success — A Believable Number', text:`Your forecast is accepted without the customary discount finance applies to agency projections.`, coach:`Good. That absence of discount is the real prize — it means your next number will be taken at face value.` },
+        fail: { head:'Fail — The Optimistic Recovery', text:`You forecast that Q4 will make up the shortfall. Thierry marks the number and, in January, will have it in front of him.`, coach:`Forecasting a full recovery to end a difficult meeting simply relocates the difficult meeting to next quarter, with your credibility attached to it.` },
+        fumble: { head:'FUMBLE — The Refused Forecast', text:`You decline to forecast at all, citing market uncertainty. Thierry: “Then what precisely am I paying for?”`, coach:`Refusing to commit to any number reads as either incompetence or evasion. Give a range with stated assumptions — uncertainty is a reason to caveat a forecast, never a reason to withhold one.` }
+      },
+      {
+        icon: '♻️', name: 'Propose the Reallocation',
+        desc: 'Recommend moving budget away from what is not working — including your own line.',
+        stat: 'cult', dc: 13,
+        crit: { head:'Critical Hit — The Agency That Cut Its Own Fee', text:`“The paid amplification isn’t returning. I’d move sixty per cent of it into community management, and I’d reduce our own retainer by the difference for one quarter while we prove it.” Thierry looks up properly for the first time in a year. “You’re recommending less money for yourselves.” “I’m recommending the thing that works.”`, coach:`Voluntarily proposing a reduction to your own revenue is the single most powerful trust move available in client management. Used once, honestly, it can define a relationship for years. Used tactically, it is transparent and worthless.` },
+        success: { head:'Success — The Reallocation Is Approved', text:`Thierry approves the shift. Your retainer is unchanged, but your standing in the room is not.`, coach:`Good. Recommending against your own short-term interest is remembered at renewal, which is exactly where you want it remembered.` },
+        fail: { head:'Fail — The Self-Serving Proposal', text:`Your reallocation moves budget from the client’s media spend into your own services. Thierry notices within seconds. “Convenient.”`, coach:`Any reallocation that increases your own revenue must be argued on evidence so strong it survives the obvious suspicion. If the evidence is thin, do not propose it.` },
+        fumble: { head:'FUMBLE — The Unauthorised Shift', text:`You mention that you already moved some budget between lines to try to fix the shortfall. Thierry: “You did what with our money?”`, coach:`Never move a client’s budget between approved lines without written authorisation, whatever the intention. It converts a performance discussion into a governance incident.` }
+      }
+    ]
+  },
+
+  /* ── ROOM 5: The Renewal Throne ── */
+  {
+    id: 4,
+    icon: '👑',
+    eyebrow: 'Room V — The Renewal Throne',
+    name: 'The Throne Room, Twelve Months On',
+    desc: `The same room. The same chair. A different conversation. She has a year of evidence now — some of it excellent, some of it the morning of the crisis — and a procurement team advising her to test the market.`,
+    enemy: {
+      portrait: '👑',
+      name: 'Véronique Lasserre',
+      title: 'Chief Executive Officer — Maison Éclore',
+      quote: `“Twelve months. Some of it was excellent. Some of it was not. Tell me why I should sign again — and why I should pay more.”`,
+      hp: 6, maxHp: 6
+    },
+    reward: { icon: '🏆', name: 'The Renewed Alliance', desc: 'Signed for two years, expanded to Benelux. The partnership outlives the campaign.' },
+    rewardStat: { stat: 'eloq', bonus: 1 },
+    actions: [
+      {
+        icon: '🧗', name: 'Price the Value, Not the Hours',
+        desc: 'Justify the increase by what the work is worth to her, not by what it costs you.',
+        stat: 'eloq', dc: 12,
+        crit: { head:'Critical Hit — The Uplift Argued Properly', text:`“The increase isn’t inflation — it’s Benelux, and a second analyst so insight reaches you in days rather than weeks. Year one bought you a baseline. Year two buys you speed, and speed is where the commercial return sits.” Véronique: “Speed is exactly what we lacked in March.”`, coach:`Never justify a price increase with your own cost base — clients have no reason to fund it. Justify it with what changes for them, and anchor it to a moment they remember needing it.` },
+        success: { head:'Success — The Increase Survives', text:`Véronique accepts most of the uplift and asks procurement to process it. Some of the increase is trimmed.`, coach:`Good. Expect trimming — build one genuinely removable element into any increase so the negotiation has somewhere to land that is not your margin.` },
+        fail: { head:'Fail — The Cost-Based Case', text:`You explain that salaries and software have risen. Véronique: “So has everything of ours. We didn’t raise prices.”`, coach:`A cost-based increase asks the client to solve your business problem. It is the weakest available argument and it invites a straight refusal.` },
+        fumble: { head:'FUMBLE — The Ultimatum', text:`You state that the account is no longer viable at the current fee. Véronique, evenly: “Then perhaps it should go to tender.”`, coach:`Never present a price increase as a condition of continuing unless you are genuinely prepared for the tender. Threats hand the client the initiative and turn a renewal into a procurement exercise.` }
+      },
+      {
+        icon: '🌍', name: 'The Earned Expansion',
+        desc: 'Use a year of proof to argue for a bigger remit rather than a bigger rate.',
+        stat: 'grav', dc: 12,
+        crit: { head:'Critical Hit — More Ground, Not More Rate', text:`“I’d rather not argue about the rate. I’d rather show you what the same team did in France and ask for Belgium and the Netherlands on the same terms. If year two looks like year one, that’s three markets for a proportionate fee.” Véronique turns to procurement. “Model that.”`, coach:`Expansion is usually an easier commercial conversation than a rate rise: it grows the account through evidence rather than through negotiation, and it is far harder for procurement to benchmark.` },
+        success: { head:'Success — One New Market', text:`You secure Belgium for year two, with the Netherlands held for review at six months.`, coach:`Good. A staged expansion with a review point is often more achievable than the full ask — and the review is a scheduled opportunity to sell the rest.` },
+        fail: { head:'Fail — The Premature Ask', text:`You propose three new markets. Véronique: “You had one difficult quarter in the market you already have.”`, coach:`Expansion arguments must be proportionate to the strength of the evidence. One shaky quarter caps how much new ground you can credibly ask for.` },
+        fumble: { head:'FUMBLE — The Forgotten Crisis', text:`Your expansion pitch never mentions March. Véronique does, in detail, and the omission looks like avoidance rather than confidence.`, coach:`In a renewal, address the worst moment of the year yourself, early and briefly. Leaving it for the client to raise makes it the theme of the meeting rather than a footnote.` }
+      },
+      {
+        icon: '🗣️', name: 'Ask for the Referral',
+        desc: 'Request the thing that is free to her and worth more to you than the uplift.',
+        stat: 'cult', dc: 11,
+        crit: { head:'Critical Hit — The Ask That Costs Her Nothing', text:`“One more thing, and it costs you nothing: would you be willing to say publicly that this worked? A quote, or twenty minutes with the two companies who’ve asked me who we work with.” Véronique smiles. “I’ll do the twenty minutes. The quote I’ll need to clear.”`, coach:`A referral or reference is the highest-return request in client management and the most frequently skipped. Ask when satisfaction is at its peak — the end of a successful renewal is precisely that moment.` },
+        success: { head:'Success — A Reference Secured', text:`Véronique agrees to act as a reference for prospective clients, with the usual approval caveats.`, coach:`Good. Make it easy — offer to draft the quote for her approval. A reference that requires the client to write something rarely materialises.` },
+        fail: { head:'Fail — The Ask That Never Came', text:`The renewal is signed. You leave without asking. Six weeks later a competitor cites her as a reference for a different service.`, coach:`Satisfaction decays. The referral you do not ask for at signature is one you will be asking for from a colder relationship in nine months.` },
+        fumble: { head:'FUMBLE — The Ask Before the Ink', text:`You request a public case study while the renewal terms are still being negotiated. Véronique: “Let’s agree what we’re doing before you publicise it.”`, coach:`Sequence matters. Never ask for public advocacy before the commercial agreement is closed — it looks presumptuous and it hands the client leverage.` }
+      },
+      {
+        icon: '🚪', name: 'Offer the Honest Exit',
+        desc: 'Tell her plainly what should happen if she is not convinced. Mean it.',
+        stat: 'res', dc: 14,
+        crit: { head:'Critical Hit — The Door You Left Open', text:`“If you’re not confident, don’t sign for two years. Take twelve months with a six-month break clause. I’d rather have you renewing because it works than locked in because you signed.” Véronique studies you for a long moment. “Two years. And I’ll take the break clause anyway.”`, coach:`Offering a genuine way out is the strongest possible signal of confidence in your own work. It removes the client’s fear of entrapment, which is frequently the real obstacle behind a hesitant renewal.` },
+        success: { head:'Success — Confidence Registered', text:`Véronique takes the shorter term with the break clause. The account continues, on slightly less certain terms and considerably more goodwill.`, coach:`A fair outcome. The break clause is not a defeat — it is a client who intends to stay and wants to feel free to leave.` },
+        fail: { head:'Fail — The Half-Hearted Offer', text:`You offer flexibility but hedge it with conditions and notice periods. It reads as a negotiating position rather than a genuine option.`, coach:`A conditional exit is not an exit. If you are going to use this move, the offer must be clean — otherwise it reads as a tactic and undermines the trust it was meant to build.` },
+        fumble: { head:'FUMBLE — The Invitation Taken', text:`You suggest that perhaps another agency would suit her better. Véronique considers this seriously. “Perhaps you’re right.”`, coach:`There is a decisive difference between offering an exit *route* and suggesting the client should *leave*. The first demonstrates confidence; the second supplies a conclusion nobody had reached yet.` }
+      }
+    ]
+  }
+];
+
+/* ═══════════════════════════════════════════════════
+   GAME STATE
+═══════════════════════════════════════════════════ */
+let G = {
+  name: '',
+  cls: null,
+  stats: { eloq: 0, grav: 0, cult: 0, res: 0 },
+  hp: 5, maxHp: 5,
+  room: 0,
+  enemyHp: 0,
+  enemyMaxHp: 0,
+  actionsTaken: 0,
+  victories: 0,
+  fumbles: 0,
+  crits: 0,
+  totalRolls: [],
+  items: [],
+  log: [],
+  phase: 'combat',  // combat | result | reward
+  lastResult: null,
+  canContinue: false
+};
+
+/* ═══════════════════════════════════════════════════
+   SCREEN CONTROL
+═══════════════════════════════════════════════════ */
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+/* ═══════════════════════════════════════════════════
+   CHARACTER CREATION
+═══════════════════════════════════════════════════ */
+let selectedClass = null;
+
+function selectClass(cls) {
+  selectedClass = cls;
+  document.querySelectorAll('.char-class-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById(`class-${cls}`).classList.add('selected');
+  checkCanStart();
+}
+
+document.getElementById('char-name').addEventListener('input', checkCanStart);
+
+function checkCanStart() {
+  const name = document.getElementById('char-name').value.trim();
+  document.getElementById('btn-enter-dungeon').disabled = !(name.length >= 1 && selectedClass);
+}
+
+function startGame() {
+  const name = document.getElementById('char-name').value.trim() || 'Adventurer';
+  G.name = name;
+  G.cls = selectedClass;
+  G.stats = { ...CLASSES[selectedClass].stats };
+  G.hp = 5; G.maxHp = 5;
+  G.room = 0; G.enemyHp = 0;
+  G.actionsTaken = 0; G.victories = 0;
+  G.fumbles = 0; G.crits = 0;
+  G.totalRolls = []; G.items = []; G.log = [];
+  G.canContinue = false;
+
+  document.getElementById('hud').style.display = 'flex';
+  document.getElementById('dungeon-map').style.display = 'flex';
+  updateHUD();
+  loadRoom(0);
+  showScreen('screen-encounter');
+}
+
+/* ═══════════════════════════════════════════════════
+   HUD & MAP
+═══════════════════════════════════════════════════ */
+function updateHUD() {
+  document.getElementById('hud-name').textContent = G.name;
+  document.getElementById('hud-eloq').textContent = G.stats.eloq;
+  document.getElementById('hud-grav').textContent = G.stats.grav;
+  document.getElementById('hud-cult').textContent = G.stats.cult;
+  document.getElementById('hud-res').textContent = G.stats.res;
+  document.getElementById('hud-room').textContent = `Room ${G.room + 1} / ${ROOMS.length}`;
+
+  // HP pips
+  const pips = document.getElementById('hp-pips');
+  pips.innerHTML = '';
+  for (let i = 0; i < G.maxHp; i++) {
+    const p = document.createElement('div');
+    p.className = 'hp-pip' + (i >= G.hp ? ' lost' : '');
+    pips.appendChild(p);
+  }
+
+  // Map
+  ROOMS.forEach((r, i) => {
+    const node = document.getElementById(`mapn-${i}`);
+    if (!node) return;
+    node.className = 'map-node';
+    if (i < G.room) node.classList.add('visited');
+    else if (i === G.room) node.classList.add('current');
+  });
+}
+
+/* ═══════════════════════════════════════════════════
+   LOAD ROOM
+═══════════════════════════════════════════════════ */
+function loadRoom(idx) {
+  const room = ROOMS[idx];
+  G.enemyHp = room.enemy.hp;
+  G.enemyMaxHp = room.enemy.maxHp;
+  G.log = [];
+  G.phase = 'combat';
+  G.canContinue = false;
+
+  document.getElementById('enc-icon').textContent = room.icon;
+  document.getElementById('enc-eyebrow').textContent = room.eyebrow;
+  document.getElementById('enc-name').textContent = room.name;
+  document.getElementById('enc-desc').textContent = room.desc;
+  document.getElementById('enemy-portrait').textContent = room.enemy.portrait;
+  document.getElementById('enemy-name').textContent = room.enemy.name;
+  document.getElementById('enemy-title').textContent = room.enemy.title;
+  document.getElementById('enemy-quote').textContent = room.enemy.quote;
+  document.getElementById('enemy-hp-fill').style.width = '100%';
+  document.getElementById('enemy-hp-text').textContent = `Resistance: Full`;
+
+  // Reset result panel
+  const rp = document.getElementById('result-panel');
+  rp.className = 'result-panel';
+  document.getElementById('result-heading').textContent = '';
+  document.getElementById('result-text').textContent = '';
+  document.getElementById('result-coaching').textContent = '';
+
+  document.getElementById('continue-row').classList.remove('show');
+  document.getElementById('btn-restart-enc').style.display = 'none';
+
+  // Stat check row
+  buildStatChecks(room);
+
+  // Clear log
+  document.getElementById('combat-log').innerHTML = '';
+  addLog('You enter the room. Choose your approach carefully.', 'sys');
+
+  // Build actions
+  buildActions(room);
+}
+
+function buildStatChecks(room) {
+  const row = document.getElementById('stat-check-row');
+  row.innerHTML = room.actions.map(a => {
+    const statName = { eloq:'Eloquence', grav:'Gravitas', cult:'Cultural IQ', res:'Resilience' }[a.stat];
+    const mod = G.stats[a.stat];
+    const modStr = mod >= 0 ? `+${mod}` : `${mod}`;
+    return `<div class="stat-check">${statName} <span class="sc-val">${G.stats[a.stat]}</span> <span class="sc-mod">(${modStr} to roll)</span> · DC <span class="sc-val">${a.dc}</span></div>`;
+  }).slice(0, 1).map(h => `<div class="stat-check" style="width:100%;display:flex;gap:12px;flex-wrap:wrap">${
+    room.actions.map(a => {
+      const statName = { eloq:'Eloquence', grav:'Gravitas', cult:'Cultural IQ', res:'Resilience' }[a.stat];
+      const mod = G.stats[a.stat];
+      const modStr = mod >= 0 ? `+${mod}` : `${mod}`;
+      return `<span>${statName} check: <strong style="color:var(--gold)">${G.stats[a.stat]}</strong> <span style="color:var(--teal-light)">(${modStr})</span></span>`;
+    }).join(' &nbsp;·&nbsp; ')
+  }</div>`).join('');
+  row.innerHTML = `<div style="background:var(--iron);border:1px solid rgba(200,150,62,0.15);border-radius:4px;padding:8px 14px;font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--mist);width:100%">
+    Your stats: &nbsp;
+    ${['eloq','grav','cult','res'].map(s => {
+      const n = {eloq:'ELQ',grav:'GRV',cult:'CLT',res:'RES'}[s];
+      return `<span style="margin-right:12px">${n} <strong style="color:var(--gold)">${G.stats[s]}</strong></span>`;
+    }).join('')}
+    &nbsp;&mdash;&nbsp; Roll d20 + stat vs DC to succeed
+  </div>`;
+}
+
+function buildActions(room) {
+  const grid = document.getElementById('actions-grid');
+  document.getElementById('actions-label').textContent = 'Choose Your Approach';
+  grid.innerHTML = room.actions.map((a, i) => `
+    <button class="action-card" onclick="takeAction(${i})">
+      <div class="action-icon">${a.icon}</div>
+      <div class="action-name">${a.name}</div>
+      <div class="action-desc">${a.desc}</div>
+      <div class="action-bonus">Uses: ${{eloq:'Eloquence',grav:'Gravitas',cult:'Cultural IQ',res:'Resilience'}[a.stat]} · DC ${a.dc}</div>
+    </button>`).join('');
+}
+
+/* ═══════════════════════════════════════════════════
+   DICE & ACTION
+═══════════════════════════════════════════════════ */
+function rollD20() { return Math.floor(Math.random() * 20) + 1; }
+
+function takeAction(actionIdx) {
+  if (G.phase !== 'combat') return;
+  G.phase = 'rolling';
+
+  // Disable all action buttons
+  document.querySelectorAll('.action-card').forEach(b => b.disabled = true);
+
+  const room = ROOMS[G.room];
+  const action = room.actions[actionIdx];
+  const raw = rollD20();
+  const mod = G.stats[action.stat];
+  const total = raw + mod;
+  const dc = action.dc;
+  G.totalRolls.push(total);
+  G.actionsTaken++;
+
+  // Show dice overlay
+  showDice(raw, total, action.stat, () => {
+    resolveCombat(action, raw, total, dc);
+  });
+}
+
+function showDice(raw, total, stat, cb) {
+  const overlay = document.getElementById('dice-overlay');
+  const faces = ['⚀','⚁','⚂','⚃','⚄','⚅','🎲'];
+  document.getElementById('dice-face').textContent = raw === 20 ? '⚅' : raw === 1 ? '⚀' : '🎲';
+  document.getElementById('dice-result').textContent = raw;
+  const statName = {eloq:'Eloquence',grav:'Gravitas',cult:'Cultural IQ',res:'Resilience'}[stat];
+  document.getElementById('dice-label').textContent = `${statName} check · Total: ${total}`;
+  overlay.classList.add('show');
+
+  setTimeout(() => {
+    document.getElementById('dice-result').textContent = total;
+    document.getElementById('dice-label').textContent = total >= 20 ? '🌟 Natural 20! CRITICAL HIT!' : total >= 16 ? 'Success!' : total >= 10 ? 'Partial...' : 'A grim roll.';
+  }, 500);
+
+  setTimeout(() => {
+    overlay.classList.remove('show');
+    cb();
+  }, 1400);
+}
+
+function resolveCombat(action, raw, total, dc) {
+  G.phase = 'result';
+  let outcome, resultClass, damage, selfDamage;
+
+  // Natural 20 = always crit; nat 1 = always fumble
+  if (raw === 20) {
+    outcome = 'crit';
+  } else if (raw === 1) {
+    outcome = 'fumble';
+  } else if (total >= dc + 5) {
+    outcome = 'crit';
+  } else if (total >= dc) {
+    outcome = 'success';
+  } else if (total >= dc - 4) {
+    outcome = 'fail';
+  } else {
+    outcome = 'fumble';
+  }
+
+  // Enemy damage
+  if (outcome === 'crit')    { damage = 2; selfDamage = 0; G.crits++; }
+  if (outcome === 'success') { damage = 1; selfDamage = 0; }
+  if (outcome === 'fail')    { damage = 0; selfDamage = 1; }
+  if (outcome === 'fumble')  { damage = 0; selfDamage = 2; G.fumbles++; }
+
+  G.enemyHp = Math.max(0, G.enemyHp - damage);
+  G.hp = Math.max(0, G.hp - selfDamage);
+
+  // Update enemy HP bar
+  const pct = (G.enemyHp / G.enemyMaxHp) * 100;
+  document.getElementById('enemy-hp-fill').style.width = pct + '%';
+  const hpLabels = ['Broken', 'Critical', 'Weakened', 'Shaken', 'Resistant', 'Full'];
+  document.getElementById('enemy-hp-text').textContent = `Resistance: ${hpLabels[Math.min(G.enemyHp, 5)]} (${G.enemyHp}/${G.enemyMaxHp})`;
+
+  // Combat log
+  const logClass = {crit:'crit',success:'good',fail:'bad',fumble:'fumble'}[outcome];
+  addLog(`You rolled ${raw} + ${G.stats[action.stat]} = ${total} vs DC ${action.dc} \u2014 ${outcome.toUpperCase()}`, logClass);
+  if (damage > 0) addLog(`You dealt ${damage} damage to their resistance.`, 'good');
+  if (selfDamage > 0) addLog(`You took ${selfDamage} reputation damage.`, 'bad');
+
+  // Show result panel
+  const resultData = action[outcome];
+  const rp = document.getElementById('result-panel');
+  rp.className = `result-panel ${outcome} show`;
+  document.getElementById('result-heading').textContent = resultData.head;
+  document.getElementById('result-text').textContent = resultData.text;
+  document.getElementById('result-coaching').textContent = `\u26a1 ${resultData.coach}`;
+
+  updateHUD();
+
+  // Check game-over
+  if (G.hp <= 0) {
+    setTimeout(() => showGameOver(), 1200);
+    return;
+  }
+
+  // Check enemy defeated
+  if (G.enemyHp <= 0) {
+    G.victories++;
+    addLog(`${ROOMS[G.room].enemy.name} has been overcome!`, 'crit');
+    G.phase = 'reward';
+    showReward();
+    return;
+  }
+
+  // Offer continue to next action or give up
+  G.phase = 'continue';
+  addLog(`Choose your next approach, or press Continue to advance.`, 'sys');
+
+  // Re-enable actions for next attack
+  document.querySelectorAll('.action-card').forEach(b => b.disabled = false);
+  document.getElementById('continue-row').classList.add('show');
+  document.getElementById('btn-continue').textContent = 'Try Another Approach';
+  document.getElementById('btn-continue').onclick = resetForNextAction;
+}
+
+function resetForNextAction() {
+  G.phase = 'combat';
+  document.getElementById('continue-row').classList.remove('show');
+  // Reset result panel
+  const rp = document.getElementById('result-panel');
+  rp.className = 'result-panel';
+  document.getElementById('result-heading').textContent = '';
+  document.getElementById('result-text').textContent = '';
+  document.getElementById('result-coaching').textContent = '';
+  buildActions(ROOMS[G.room]);
+}
+
+function showReward() {
+  const room = ROOMS[G.room];
+  const rw = room.reward;
+
+  // Apply stat bonus
+  if (room.rewardStat) {
+    G.stats[room.rewardStat.stat] += room.rewardStat.bonus;
+    G.items.push(rw.name);
+    addLog(`You gained: ${rw.name}`, 'crit');
+    addLog(`${room.rewardStat.stat.toUpperCase()} increased by ${room.rewardStat.bonus}!`, 'good');
+  }
+
+  // Show reward card
+  const rewardHTML = `
+    <div class="reward-card">
+      <div class="reward-icon">${rw.icon}</div>
+      <div>
+        <div class="reward-name">${rw.name}</div>
+        <div class="reward-desc">${rw.desc}</div>
+      </div>
+    </div>`;
+  document.getElementById('enemy-card').insertAdjacentHTML('afterend', rewardHTML);
+
+  updateHUD();
+  document.getElementById('actions-grid').innerHTML = '';
+  document.getElementById('actions-label').textContent = '';
+  document.getElementById('continue-row').classList.add('show');
+
+  if (G.room >= ROOMS.length - 1) {
+    document.getElementById('btn-continue').textContent = '\ud83c\udfc6 Claim Victory';
+    document.getElementById('btn-continue').onclick = showVictory;
+  } else {
+    document.getElementById('btn-continue').textContent = 'Enter Next Room \u2192';
+    document.getElementById('btn-continue').onclick = continueGame;
+  }
+}
+
+function continueGame() {
+  if (G.room < ROOMS.length - 1) {
+    G.room++;
+    updateHUD();
+    loadRoom(G.room);
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   VICTORY
+═══════════════════════════════════════════════════ */
+function showVictory() {
+  const avgRoll = G.totalRolls.length
+    ? Math.round(G.totalRolls.reduce((a,b)=>a+b,0) / G.totalRolls.length)
+    : 0;
+
+  document.getElementById('vic-subtitle').textContent = `${G.name} of ${CLASSES[G.cls].name} \u2014 Keeper of the Account`;
+
+  const msgs = [
+    `Signed for two years, and Benelux with it. You did not win this by being brilliant in a room — you won it by being predictable for twelve months, honest on the worst morning, and precise about what you would not do. Véronique renews because it works, not because she is locked in.`,
+    `The crisis in March is in the case study now, which is the surest sign it was handled. Camille defends your invoices internally. Thierry believes your forecasts. Julien uses the change-request sheet. None of that is glamorous. All of it is why you are still here.`,
+    `Anyone can win a pitch. You kept an account through a missed quarter and a community backlash, and came out of it with a bigger remit. That is the harder skill, and almost nobody teaches it.`
+  ];
+  document.getElementById('vic-msg').textContent = msgs[Math.floor(Math.random() * msgs.length)];
+
+  document.getElementById('vic-stats').innerHTML = [
+    ['Adventurer', G.name],
+    ['Class', CLASSES[G.cls].name],
+    ['Rooms Cleared', `${G.victories} / ${ROOMS.length}`],
+    ['Final Eloquence', G.stats.eloq],
+    ['Final Gravitas', G.stats.grav],
+    ['Final Cultural IQ', G.stats.cult],
+    ['Final Resilience', G.stats.res],
+    ['Critical Hits', G.crits],
+    ['Fumbles', G.fumbles],
+    ['Avg Roll', avgRoll],
+    ['Reputation Remaining', `${G.hp} / ${G.maxHp}`],
+    ['Artefacts Won', G.items.join(', ') || 'None']
+  ].map(([l,r]) => `<div class="scroll-stat"><span class="ssl">${l}</span><span class="ssr">${r}</span></div>`).join('');
+
+  document.getElementById('hud').style.display = 'none';
+  document.getElementById('dungeon-map').style.display = 'none';
+  showScreen('screen-victory');
+}
+
+/* ═══════════════════════════════════════════════════
+   GAME OVER
+═══════════════════════════════════════════════════ */
+function showGameOver() {
+  const goMsgs = [
+    `The account is not lost in a single meeting — it is lost in the accumulation of small silences, absorbed favours and deadlines quietly missed. Somewhere in these five rooms, the trust ran out. Renewal goes to tender.`,
+    `Delivery is unforgiving in a way that pitching never is: the client sees you every week, and every week is evidence. This time the evidence was against you. Read the coaching. Come back.`,
+    `Maison Éclore will work with someone else next year. The work was not the problem — the language around the work was. That is fixable, and it is exactly what this quest is for.`
+  ];
+  document.getElementById('go-msg').textContent = goMsgs[Math.floor(Math.random() * goMsgs.length)];
+  document.getElementById('go-stats').innerHTML = [
+    ['Adventurer', G.name],
+    ['Lost it in', ROOMS[G.room].name],
+    ['Rooms Cleared', G.victories],
+    ['Critical Hits', G.crits],
+    ['Fumbles', G.fumbles]
+  ].map(([l,r]) => `<div class="scroll-stat"><span class="ssl">${l}</span><span class="ssr">${r}</span></div>`).join('');
+
+  document.getElementById('hud').style.display = 'none';
+  document.getElementById('dungeon-map').style.display = 'none';
+  showScreen('screen-gameover');
+}
+
+/* ═══════════════════════════════════════════════════
+   UTILS
+═══════════════════════════════════════════════════ */
+function addLog(text, cls = '') {
+  const log = document.getElementById('combat-log');
+  const line = document.createElement('div');
+  line.className = 'log-line ' + cls;
+  line.textContent = text;
+  log.appendChild(line);
+  log.scrollTop = log.scrollHeight;
+}
+
+function restartGame() {
+  selectedClass = null;
+  document.querySelectorAll('.char-class-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('char-name').value = '';
+  document.getElementById('btn-enter-dungeon').disabled = true;
+  document.getElementById('hud').style.display = 'none';
+  document.getElementById('dungeon-map').style.display = 'none';
+  showScreen('screen-char');
+}
+</script>
+</body>
+</html>
