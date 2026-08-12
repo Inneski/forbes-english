@@ -51,7 +51,7 @@
   --r: 10px;
   --ok: #3fbf7f;
   --no: #e8555f;
-  --bg-opacity: 0.34;     /* background pattern strength — see doc §6 */
+  --bg-opacity: 0.72;     /* background pattern strength — see doc §6 */
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -93,8 +93,8 @@ html, body {
   content: '';
   position: absolute; inset: 0;
   background:
-    linear-gradient(180deg, var(--void) 0%, rgba(0,0,0,0.55) 22%,
-                            rgba(0,0,0,0.55) 78%, var(--void) 100%);
+    linear-gradient(180deg, rgba(0,0,0,0.38) 0%, rgba(0,0,0,0.20) 20%,
+                            rgba(0,0,0,0.20) 80%, rgba(0,0,0,0.38) 100%);
 }
 /* The cover slide shows the hero at FULL strength — no wash, no dimming. */
 .stage.on-cover .bg-layer::before { opacity: 1; filter: none; }
@@ -477,6 +477,22 @@ html, body {
   .feedback { opacity: 1 !important; }
   .act-input, .act-foot { display: none !important; }
   .act-print { display: block !important; }
+}
+
+/* Text that sits on the canvas rather than inside a card needs its own halo
+   now that the artwork behind it is bright. A shadow costs nothing and lets
+   the picture stay up, which darkening the wash back down would not. */
+.slide-title, .eyebrow, .q-stem, .q-ctx, .order-hint, .cover-title, .cover-sub,
+.score-big, .slide-body > .prose, .act-target-label {
+  text-shadow: 0 1px 2px rgba(0,0,0,0.55), 0 0 12px rgba(0,0,0,0.38);
+}
+html[data-theme="light"] .slide-title, html[data-theme="light"] .eyebrow,
+html[data-theme="light"] .q-stem, html[data-theme="light"] .q-ctx,
+html[data-theme="light"] .order-hint, html[data-theme="light"] .cover-title,
+html[data-theme="light"] .cover-sub, html[data-theme="light"] .score-big,
+html[data-theme="light"] .slide-body > .prose,
+html[data-theme="light"] .act-target-label {
+  text-shadow: 0 1px 2px rgba(255,255,255,0.75), 0 0 12px rgba(255,255,255,0.55);
 }
 </style>
 </head>
