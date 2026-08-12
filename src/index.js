@@ -214,8 +214,27 @@ async function handlePaywallStatus(request, url, env, ctx) {
   const proFiles = await getProFiles(env, ctx);
   const sample = "forbes-c1-negotiation.html";
 
+  // The field that actually matters, and the one that is easy to get wrong:
+  // does a page request reach this Worker at all? Answering "yes, because you
+  // are reading this" is worthless — /api/* can be on its own route while
+  // every page is served by a separate static deployment that never runs this
+  // code. So ask the site for a lesson we know is gated and see what it says.
+  let pageProbe;
+  try {
+    const probe = await fetch(`${url.origin}/${encodeURI(sample)}`, {
+      headers: { "x-paywall-probe": "1" },
+    });
+    pageProbe = probe.status;
+  } catch (e) {
+    pageProbe = null;
+  }
+
   const report = {
-    workerHandlesPages: true,           // if you can read this at all, it does
+    // 402 means the gate ran. 200 means the request never reached this Worker
+    // — check the Worker's route pattern in Cloudflare; it must cover the
+    // whole site, not just /api/*.
+    pageRequestStatus: pageProbe,
+    workerHandlesPages: pageProbe === 402,
     hasSupabaseUrl: Boolean(env.SUPABASE_URL),
     hasAnonKey: Boolean(env.SUPABASE_ANON_KEY),
     hasServiceRoleKey: Boolean(env.SUPABASE_SERVICE_ROLE_KEY),
@@ -227,15 +246,20 @@ async function handlePaywallStatus(request, url, env, ctx) {
   };
 
   report.gateEffective =
-    report.catalogueReadable && report.proLessonCount > 0;
+    report.workerHandlesPages && report.catalogueReadable && report.proLessonCount > 0;
   report.note = report.gateEffective
     ? "The gate is live. Pro lessons require an active subscription."
-    : "The gate is NOT effective — it is failing open and every lesson is public. " +
+    : "The gate is NOT effective — every lesson is public. " +
       (!report.hasAnonKey
         ? "SUPABASE_ANON_KEY is missing from the Worker environment."
         : !report.catalogueReadable
         ? "The Worker could not read the lessons table from Supabase."
-        : "No lessons are marked access='pro'.");
+        : report.proLessonCount === 0
+        ? "No lessons are marked access='pro'."
+        : "Page requests are not reaching this Worker — a gated lesson returned " +
+          report.pageRequestStatus + " instead of 402. The Worker's route in " +
+          "Cloudflare covers /api/* but not the rest of the site, so the gate " +
+          "never runs. Widen the route to cover the whole zone.");
 
   return json(report);
 }
