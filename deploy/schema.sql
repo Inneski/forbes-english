@@ -55,3 +55,34 @@ create policy "Users can view their own profile"
 create policy "Users can update their own profile"
   on public.profiles for update
   using (auth.uid() = id);
+
+
+-- ─────────────────────────────────────────────────────────────────────
+-- Lesson catalogue and the access tier the paywall reads.
+--
+-- The `lessons` table was created outside this file originally; this block
+-- records the part that matters for access control so the repo is the record.
+-- ─────────────────────────────────────────────────────────────────────
+
+alter table public.lessons
+  add column if not exists access text not null default 'pro'
+  check (access in ('free', 'pro'));
+
+comment on column public.lessons.access is
+  'free = served to anyone; pro = the Worker requires an active subscription.';
+
+-- The catalogue itself is public — library.html is a shop window and has to
+-- list everything. Only the CONTENT of pro lessons is gated, and that gate
+-- lives in the Cloudflare Worker (src/index.js), because lessons are static
+-- .html files that never pass through Postgres. No RLS policy can protect
+-- them; do not add one here and assume it did.
+alter table public.lessons enable row level security;
+
+drop policy if exists "Lesson catalogue is public" on public.lessons;
+create policy "Lesson catalogue is public"
+  on public.lessons for select
+  using (true);
+
+-- The free set: the whole Sherpa Tensing tense reference, two complete
+-- lessons at each of A1-C1 and one at C2.
+-- update public.lessons set access = 'free' where file in (...);
