@@ -165,7 +165,7 @@ async function hasActiveSubscription(request, env) {
   let rows;
   try {
     const res = await fetch(
-      `${env.SUPABASE_URL}/rest/v1/profiles?select=subscription_status&limit=1`,
+      `${env.SUPABASE_URL}/rest/v1/profiles?select=subscription_status,owner&limit=1`,
       { headers: { apikey: env.SUPABASE_ANON_KEY, Authorization: `Bearer ${token}` } }
     );
     if (!res.ok) return false;
@@ -174,7 +174,10 @@ async function hasActiveSubscription(request, env) {
     return false;
   }
 
-  return Array.isArray(rows) && rows.length > 0 && ACTIVE_STATUSES.has(rows[0].subscription_status);
+  if (!Array.isArray(rows) || rows.length === 0) return false;
+  // `owner` is deliberately separate from subscription_status: the person who
+  // runs the site should not lose access to it because of a billing event.
+  return rows[0].owner === true || ACTIVE_STATUSES.has(rows[0].subscription_status);
 }
 
 function readCookie(header, name) {
