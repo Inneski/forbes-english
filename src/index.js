@@ -33,6 +33,15 @@ export default {
       return handleStripeWebhook(request, env);
     }
 
+    // A read-only health check for the paywall. The gate deliberately fails
+    // OPEN, which means a misconfiguration looks exactly like a working site
+    // — the lessons just quietly stay public. This makes that visible without
+    // having to guess. It reports no secrets: only whether each piece is
+    // wired up, and how many lessons the gate can see.
+    if (url.pathname === "/api/paywall-status") {
+      return handlePaywallStatus(request, url, env, ctx);
+    }
+
     // ── THE PAYWALL ──────────────────────────────────────────────────
     // This is the only place a paywall can actually work on this site.
     // Lessons are static .html files on the asset CDN; they never pass
@@ -195,6 +204,40 @@ async function locked(request, url, env) {
       "Vary": "Cookie",
     },
   });
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// GET /api/paywall-status  — is the gate actually on?
+// ─────────────────────────────────────────────────────────────────────────
+
+async function handlePaywallStatus(request, url, env, ctx) {
+  const proFiles = await getProFiles(env, ctx);
+  const sample = "forbes-c1-negotiation.html";
+
+  const report = {
+    workerHandlesPages: true,           // if you can read this at all, it does
+    hasSupabaseUrl: Boolean(env.SUPABASE_URL),
+    hasAnonKey: Boolean(env.SUPABASE_ANON_KEY),
+    hasServiceRoleKey: Boolean(env.SUPABASE_SERVICE_ROLE_KEY),
+    catalogueReadable: proFiles !== null,
+    proLessonCount: proFiles ? proFiles.size : null,
+    sampleLessonIsGated: proFiles ? proFiles.has(sample) : null,
+    callerHasSessionCookie: Boolean(readCookie(request.headers.get("Cookie"), SESSION_COOKIE)),
+    callerSubscribed: await hasActiveSubscription(request, env),
+  };
+
+  report.gateEffective =
+    report.catalogueReadable && report.proLessonCount > 0;
+  report.note = report.gateEffective
+    ? "The gate is live. Pro lessons require an active subscription."
+    : "The gate is NOT effective — it is failing open and every lesson is public. " +
+      (!report.hasAnonKey
+        ? "SUPABASE_ANON_KEY is missing from the Worker environment."
+        : !report.catalogueReadable
+        ? "The Worker could not read the lessons table from Supabase."
+        : "No lessons are marked access='pro'.");
+
+  return json(report);
 }
 
 // ─────────────────────────────────────────────────────────────────────────
