@@ -234,7 +234,10 @@ async function handlePaywallStatus(request, url, env, ctx) {
     // — check the Worker's route pattern in Cloudflare; it must cover the
     // whole site, not just /api/*.
     pageRequestStatus: pageProbe,
-    workerHandlesPages: pageProbe === 402,
+    // 402 = the gate ran. 200 = the request bypassed this Worker. Anything
+    // else (a Worker subrequest to its own zone can be refused outright) is
+    // inconclusive, and saying so is more use than guessing.
+    workerHandlesPages: pageProbe === 402 ? true : pageProbe === 200 ? false : null,
     hasSupabaseUrl: Boolean(env.SUPABASE_URL),
     hasAnonKey: Boolean(env.SUPABASE_ANON_KEY),
     hasServiceRoleKey: Boolean(env.SUPABASE_SERVICE_ROLE_KEY),
@@ -256,10 +259,13 @@ async function handlePaywallStatus(request, url, env, ctx) {
         ? "The Worker could not read the lessons table from Supabase."
         : report.proLessonCount === 0
         ? "No lessons are marked access='pro'."
-        : "Page requests are not reaching this Worker — a gated lesson returned " +
-          report.pageRequestStatus + " instead of 402. The Worker's route in " +
-          "Cloudflare covers /api/* but not the rest of the site, so the gate " +
-          "never runs. Widen the route to cover the whole zone.");
+        : report.workerHandlesPages === false
+        ? "Page requests are not reaching this Worker — a gated lesson returned 200. " +
+          "The Worker's route in Cloudflare covers /api/* but not the rest of the " +
+          "site, so the gate never runs. Widen the route to cover the whole zone."
+        : "Could not probe a page request from inside the Worker (got " +
+          report.pageRequestStatus + "). Check by hand: open a pro lesson in a " +
+          "private window. If it loads, the Worker's route does not cover pages.");
 
   return json(report);
 }
