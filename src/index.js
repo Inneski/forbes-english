@@ -214,30 +214,12 @@ async function handlePaywallStatus(request, url, env, ctx) {
   const proFiles = await getProFiles(env, ctx);
   const sample = "forbes-c1-negotiation.html";
 
-  // The field that actually matters, and the one that is easy to get wrong:
-  // does a page request reach this Worker at all? Answering "yes, because you
-  // are reading this" is worthless — /api/* can be on its own route while
-  // every page is served by a separate static deployment that never runs this
-  // code. So ask the site for a lesson we know is gated and see what it says.
-  let pageProbe;
-  try {
-    const probe = await fetch(`${url.origin}/${encodeURI(sample)}`, {
-      headers: { "x-paywall-probe": "1" },
-    });
-    pageProbe = probe.status;
-  } catch (e) {
-    pageProbe = null;
-  }
-
   const report = {
-    // 402 means the gate ran. 200 means the request never reached this Worker
-    // — check the Worker's route pattern in Cloudflare; it must cover the
-    // whole site, not just /api/*.
-    pageRequestStatus: pageProbe,
-    // 402 = the gate ran. 200 = the request bypassed this Worker. Anything
-    // else (a Worker subrequest to its own zone can be refused outright) is
-    // inconclusive, and saying so is more use than guessing.
-    workerHandlesPages: pageProbe === 402 ? true : pageProbe === 200 ? false : null,
+    // Deliberately NOT reported: whether page requests reach this Worker.
+    // The Worker cannot answer that about itself — a subrequest to its own
+    // hostname is refused (it comes back 522), and "you are reading this"
+    // proves nothing, because /api/* reaches the Worker even when nothing
+    // else does. Verify it from a browser instead; see verifyBy below.
     hasSupabaseUrl: Boolean(env.SUPABASE_URL),
     hasAnonKey: Boolean(env.SUPABASE_ANON_KEY),
     hasServiceRoleKey: Boolean(env.SUPABASE_SERVICE_ROLE_KEY),
@@ -248,24 +230,21 @@ async function handlePaywallStatus(request, url, env, ctx) {
     callerSubscribed: await hasActiveSubscription(request, env),
   };
 
-  report.gateEffective =
-    report.workerHandlesPages && report.catalogueReadable && report.proLessonCount > 0;
-  report.note = report.gateEffective
-    ? "The gate is live. Pro lessons require an active subscription."
-    : "The gate is NOT effective — every lesson is public. " +
-      (!report.hasAnonKey
-        ? "SUPABASE_ANON_KEY is missing from the Worker environment."
-        : !report.catalogueReadable
-        ? "The Worker could not read the lessons table from Supabase."
-        : report.proLessonCount === 0
-        ? "No lessons are marked access='pro'."
-        : report.workerHandlesPages === false
-        ? "Page requests are not reaching this Worker — a gated lesson returned 200. " +
-          "The Worker's route in Cloudflare covers /api/* but not the rest of the " +
-          "site, so the gate never runs. Widen the route to cover the whole zone."
-        : "Could not probe a page request from inside the Worker (got " +
-          report.pageRequestStatus + "). Check by hand: open a pro lesson in a " +
-          "private window. If it loads, the Worker's route does not cover pages.");
+  report.configOk =
+    report.hasAnonKey && report.catalogueReadable && report.proLessonCount > 0;
+  report.note = report.configOk
+    ? "Everything this Worker can check is correct. Whether the gate actually " +
+      "runs depends on requests reaching the Worker at all — verify that from a browser."
+    : !report.hasAnonKey
+    ? "SUPABASE_ANON_KEY is missing from the Worker environment."
+    : !report.catalogueReadable
+    ? "The Worker could not read the lessons table from Supabase."
+    : "No lessons are marked access='pro'.";
+  report.verifyBy =
+    "Open a pro lesson in a private window. 402 with the subscribe page = the " +
+    "gate is live. 200 with the lesson = requests are bypassing the Worker; " +
+    "check run_worker_first in wrangler.toml, which is what makes Workers " +
+    "Static Assets stop serving existing files before the Worker sees them.";
 
   return json(report);
 }
