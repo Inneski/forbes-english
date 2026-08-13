@@ -3,1567 +3,1394 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ordering Food & Drink Part 2 (A1+)</title>
-<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- ══ REPLACE: lesson title. No "Forbes English —" prefix. ══ -->
+<title>Ordering Food &amp; Drink — A1 Part 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --teal:       #1A6B6A;
-    --teal-mid:   #258786;
-    --teal-light: #3DADA9;
-    --teal-pale:  #E0F2F1;
-    --gold:       #C9913A;
-    --gold-light: #E8B56A;
-    --gold-pale:  #FBF2E1;
-    --rose:       #C0464A;
-    --rose-pale:  #FAEAEA;
-    --ink:        #1A1208;
-    --ink-mid:    #4A3A22;
-    --ink-soft:   #8A7560;
-    --paper:      #FAF7F2;
-    --white:      #FFFFFF;
-    --shadow:     0 4px 28px rgba(26,19,8,0.09);
-    --shadow-lg:  0 10px 40px rgba(26,19,8,0.14);
-  }
+/* ══════════════════════════════════════════════════════════════════
+   FORBES ENGLISH — 16:9 SLIDE LESSON TEMPLATE
+   Everything you normally need to change lives in the two blocks
+   marked "REPLACE". Do not restructure the engine below them.
+   ══════════════════════════════════════════════════════════════════ */
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+/* ══ REPLACE 1 of 2: hero image + palette ══
+   1. Point --hero at the lesson's cover image. This ONE line drives the
+      cover, the background pattern on every slide, and the PDF export.
+   2. Generate the palette FROM that same image:
+         python3 lesson-template/extract-palette.py <hero-image>
+      and paste its output over the colour block. Never hand-pick colours. */
+:root {
+  --hero: url('FoodA1P2/hero.jpg');
 
-  body {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    background: var(--paper);
-    color: var(--ink);
-    min-height: 100vh;
-    background-image:
-      radial-gradient(ellipse at 0% 0%, rgba(26,107,106,0.06) 0%, transparent 55%),
-      radial-gradient(ellipse at 100% 100%, rgba(201,145,58,0.06) 0%, transparent 55%);
-  }
+  --void          : #0b0e09;
+  --surface       : #171c12;
+  --surface2      : #21291a;
+  --border        : #cd6553;
+  --text          : #f5f2f2;
+  --text-dim      : #bfa7a3;
+  --accent        : #f69f90;
+  --accent-bright : #ffaa9b;
+  --accent-dim    : #ea5940;
+  --secondary     : #325569;
+  --contrast      : #1deda7;
+}
 
-  /* ── HEADER ── */
-  header {
-    background: var(--teal);
-    padding: 18px 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 20px rgba(26,107,106,0.4);
-  }
+/* ── Fixed tokens: identical in every lesson. Do not edit. ── */
+:root {
+  --slide-w: 1280px;
+  --slide-h: 720px;
+  --pad: 64px;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-ui: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'DM Mono', ui-monospace, monospace;
+  --r: 10px;
+  --ok: #3fbf7f;
+  --no: #e8555f;
+  --bg-opacity: 0.72;     /* background pattern strength — see doc §6 */
 
-  .header-score {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 13px;
-    font-weight: 600;
-    color: rgba(255,255,255,0.8);
-  }
+  /* Theme primitives. Dark is the default; a light lesson sets
+     data-theme="light" on <html> and only these flip. Never hardcode
+     rgba(0,0,0,…) or rgba(255,255,255,…) in a lesson — use these. */
+  --inset:  rgba(255,255,255,0.07);  /* recessed fills: inputs, key discs   */
+  --inset2: rgba(255,255,255,0.14);  /* the same, one step stronger         */
+  --scrim:  rgba(0,0,0,0.45);        /* chrome sitting over the hero        */
+  --hairline: rgba(255,255,255,0.28);
+  --cover-shadow: 0 1px 2px rgba(0,0,0,0.95), 0 2px 8px rgba(0,0,0,0.90),
+                  0 4px 26px rgba(0,0,0,0.80), 0 0 3px rgba(0,0,0,0.85);
+  /* Interior background wash. Two stops, not one: the artwork stays visible
+     across the middle of the slide and is only pulled down at the very top
+     and bottom, where the eyebrow, the deck bar and the progress rail sit.
+     An interior page that reads as plain black is a bug — see doc §6. */
+  --wash-mid:  rgba(0,0,0,0.06);
+  --wash-edge: rgba(0,0,0,0.20);
+}
 
-  .score-badge {
-    background: var(--gold);
-    color: white;
-    font-weight: 700;
-    font-size: 17px;
-    padding: 5px 16px;
-    border-radius: 24px;
-    letter-spacing: 0.02em;
-    min-width: 44px;
-    text-align: center;
-  }
+/* ══ LIGHT THEME ══
+   For bright, airy heroes. The palette comes from
+   `extract-palette.py <hero> --light`; these are the structural flips the
+   palette alone cannot express.
 
-  /* ── HERO ── */
-  .hero {
-    background: linear-gradient(135deg, var(--teal) 0%, var(--teal-mid) 55%, #2EA89F 100%);
-    padding: 52px 32px 44px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
+   A light lesson is a MID tone, not a white one. Every wash here is mixed
+   from --void rather than from white: mixing toward white bleaches the hero
+   out of the interior pages and turns the deck into glare on a projector.
+   If you find yourself reaching for rgba(255,255,255,…) in a lesson, the
+   answer is a higher --void percentage instead. */
+html[data-theme="light"] {
+  --inset:  rgba(0,0,0,0.045);
+  --inset2: rgba(0,0,0,0.10);
+  --scrim:  color-mix(in srgb, var(--void) 78%, transparent);
+  --hairline: rgba(0,0,0,0.14);
+  --cover-shadow: 0 1px 2px rgba(255,255,255,0.95), 0 2px 8px rgba(255,255,255,0.85),
+                  0 4px 26px rgba(255,255,255,0.6), 0 0 3px rgba(255,255,255,0.9);
+  --wash-mid:  color-mix(in srgb, var(--void) 8%, transparent);
+  --wash-edge: color-mix(in srgb, var(--void) 26%, transparent);
+  --bg-opacity: 0.62;
+}
 
-  .hero::before, .hero::after {
-    content: '';
-    position: absolute;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.05);
-  }
-  .hero::before { width: 320px; height: 320px; top: -120px; right: -80px; }
-  .hero::after  { width: 200px; height: 200px; bottom: -80px; left: -50px; }
+/* On a mid canvas a translucent card has little to contrast against, so
+   edges need more of the hairline than they do on a dark canvas. */
+html[data-theme="light"] .card { border-color: color-mix(in srgb, var(--border) 90%, transparent); }
+html[data-theme="light"] .opt,
+html[data-theme="light"] .match-item { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
+html[data-theme="light"] .opt-key { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
+html[data-theme="light"] .card { background: color-mix(in srgb, var(--surface) 92%, transparent); }
+html[data-theme="light"] .opt { background: color-mix(in srgb, var(--surface) 95%, transparent); }
 
-  .part-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(255,255,255,0.15);
-    border: 1.5px solid rgba(255,255,255,0.3);
-    padding: 5px 16px;
-    border-radius: 24px;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.95);
-    margin-bottom: 16px;
-  }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  .hero h1 {
-    font-family: 'Libre Baskerville', serif;
-    font-size: clamp(24px, 5vw, 40px);
-    color: white;
-    margin-bottom: 12px;
-    line-height: 1.2;
-  }
+html, body {
+  height: 100%;
+  overflow: hidden;            /* NO SCROLLING. This is the whole point. */
+  background: var(--void);
+  color: var(--text);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+}
 
-  .hero p {
-    font-size: 14px;
-    color: rgba(255,255,255,0.85);
-    max-width: 460px;
-    margin: 0 auto 20px;
-    line-height: 1.7;
-  }
+/* ── STAGE: a fixed 1280×720 canvas scaled to fit any viewport ── */
+.stage-wrap { position: fixed; inset: 0; display: grid; place-items: center; }
+.stage {
+  position: relative;
+  width: var(--slide-w);
+  height: var(--slide-h);
+  transform-origin: center center;
+  overflow: hidden;
+  background: var(--void);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.55);
+}
 
-  .difficulty-bar {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: rgba(255,255,255,0.1);
-    padding: 6px 14px;
-    border-radius: 16px;
-    font-size: 12px;
-    color: rgba(255,255,255,0.9);
-    font-weight: 500;
-  }
+/* ── BACKGROUND PATTERN: the cover image, behind every slide ──
+   Driven by --hero so the screen view and the PDF/PPT export read from
+   ONE definition. Two pseudo-layers because opacity on a parent would
+   also fade the wash sitting on top of it. */
+.bg-layer { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.bg-layer::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--hero) center / cover no-repeat;
+  opacity: var(--bg-opacity);
+  filter: saturate(0.92);
+}
+.bg-layer::after {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, var(--wash-edge) 0%, var(--wash-mid) 20%,
+                            var(--wash-mid) 80%, var(--wash-edge) 100%);
+}
+/* The cover slide shows the hero at FULL strength — no wash, no dimming. */
+.stage.on-cover .bg-layer::before { opacity: 1; filter: none; }
+/* Centre scrim: guarantees cover-text contrast over ANY hero — light, dark,
+   or busy — while leaving the artwork vivid at the edges. Do not remove it;
+   it is what makes an arbitrary dropped-in image safe. */
+.stage.on-cover .bg-layer::after {
+  background:
+    radial-gradient(ellipse 58% 54% at 50% 46%,
+      rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.22) 54%, transparent 82%),
+    linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.03) 30%,
+                            rgba(0,0,0,0.05) 70%, rgba(0,0,0,0.38) 100%);
+}
+/* A light cover keeps its picture. Dark ink already carries against a bright
+   image, so the scrim here is barely there — just enough to stop the title
+   landing on a hard edge. Never brighten a light cover to rescue text; if the
+   text will not read, the hero is wrong for a light lesson. */
+html[data-theme="light"] .stage.on-cover .bg-layer::after {
+  background:
+    radial-gradient(ellipse 58% 54% at 50% 46%,
+      rgba(255,255,255,0.48) 0%, rgba(255,255,255,0.28) 54%, transparent 82%),
+    linear-gradient(180deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.03) 30%,
+                            rgba(255,255,255,0.05) 70%, rgba(255,255,255,0.22) 100%);
+}
 
-  .diff-dot {
-    width: 10px; height: 10px;
-    border-radius: 50%;
-    background: var(--gold);
-  }
-  .diff-dot.empty { background: rgba(255,255,255,0.25); }
+/* ── SLIDES ── */
+.slide {
+  position: absolute; inset: 0; z-index: 1;
+  display: none;
+  flex-direction: column;
+  padding: var(--pad);
+}
+.slide.is-active { display: flex; animation: slide-in .32s ease both; }
+@keyframes slide-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
-  /* ── ILLO ROW ── */
-  .illo-row {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-    padding: 28px 20px 8px;
-    flex-wrap: wrap;
-  }
+/* ── LOGO ── */
+.fe-logo { width: 152px; height: auto; display: block; }
+.fe-logo-mark { color: var(--logo-mark, var(--accent)); }
+.fe-logo-word { fill: var(--text); opacity: 0; transition: opacity .25s ease; }
+.fonts-ready .fe-logo-word { opacity: 1; }   /* never flash a fallback face */
+.slide[data-type="cover"] .fe-logo { width: 232px; }
 
-  .illo-card {
-    background: var(--white);
-    border-radius: 18px;
-    padding: 18px;
-    box-shadow: var(--shadow);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    width: 120px;
-    border: 2px solid var(--teal-pale);
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  .illo-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+/* ── COVER ── */
+.cover-inner {
+  height: 100%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; gap: 4px;
+}
+.cover-title {
+  font-family: var(--font-display);
+  font-size: 62px; font-weight: 900; line-height: 1.06;
+  color: var(--text);
+  text-shadow: var(--cover-shadow);
+  margin-top: 26px;
+}
+.cover-title em { font-style: normal; color: var(--accent-bright); }
+.cover-sub {
+  font-size: 19px; color: var(--text);
+  letter-spacing: .04em; margin-top: 14px;
+  text-shadow: var(--cover-shadow);
+}
+.cover-meta {
+  display: flex; gap: 10px; margin-top: 26px; flex-wrap: wrap; justify-content: center;
+}
+.chip {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase;
+  padding: 6px 14px; border-radius: 999px;
+  border: 1px solid var(--hairline);
+  background: var(--scrim);
+  color: var(--text);
+}
 
-  .illo-label {
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--teal);
-    text-align: center;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
+/* ── SLIDE FURNITURE ── */
+.slide-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 20px; margin-bottom: 26px;
+}
+.eyebrow {
+  font-family: var(--font-mono); font-size: 12px;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent-bright);
+}
+.slide-title {
+  font-family: var(--font-display);
+  font-size: 38px; font-weight: 700; line-height: 1.15; color: var(--text);
+  margin-top: 6px;
+}
+.slide-body { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; }
 
-  /* ── NAV TABS ── */
-  .act-nav {
-    display: flex;
-    gap: 8px;
-    padding: 24px 20px 0;
-    max-width: 780px;
-    margin: 0 auto;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  .act-nav::-webkit-scrollbar { display: none; }
+/* Content sits in a translucent card so it stays legible over the pattern. */
+.card {
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+  border-radius: var(--r);
+  padding: 30px 34px;
+  backdrop-filter: blur(3px);
+}
+.card + .card { margin-top: 16px; }
+.cols .card + .card,
+.cols .card { margin-top: 0; }   /* side-by-side cards must share a top edge */
+.prose { font-size: 20px; line-height: 1.62; color: var(--text); }
+.prose + .prose { margin-top: 14px; }
+.prose strong { color: var(--accent-bright); font-weight: 600; }
+.dim { color: var(--text-dim); }
 
-  .nav-tab {
-    flex-shrink: 0;
-    background: var(--white);
-    border: 2px solid var(--teal-pale);
-    border-radius: 24px;
-    padding: 7px 18px;
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--ink-mid);
-    cursor: default;
-    transition: all 0.2s;
-  }
-  .nav-tab.current { background: var(--teal); border-color: var(--teal); color: white; }
-  .nav-tab.done { background: var(--teal-pale); border-color: var(--teal-light); color: var(--teal); }
+/* Two-column teaching layout */
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
 
-  /* ── MAIN ── */
-  main { max-width: 780px; margin: 0 auto; padding: 0 20px 80px; }
+/* ── QUESTIONS ── */
+.q-stem { font-size: 25px; line-height: 1.5; color: var(--text); margin-bottom: 22px; }
+.q-stem em { font-style: normal; color: var(--accent-bright); font-weight: 600; }
 
-  .activity { display: none; animation: fadeUp 0.4s ease; }
-  .activity.active { display: block; }
+.opts { display: grid; gap: 11px; }
+.opts.two-up { grid-template-columns: 1fr 1fr; }
+.opt {
+  display: flex; align-items: center; gap: 14px;
+  width: 100%; text-align: left;
+  font-family: var(--font-ui); font-size: 19px; color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: var(--r);
+  padding: 15px 20px; cursor: pointer;
+  transition: border-color .15s, background .15s, transform .12s;
+}
+.opt:hover:not(:disabled) { border-color: var(--accent); transform: translateX(3px); }
+.opt-key {
+  flex: 0 0 30px; height: 30px; display: grid; place-items: center;
+  border-radius: 50%; font-family: var(--font-mono); font-size: 13px;
+  background: var(--inset);
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+}
+.opt.correct { border-color: var(--ok); background: color-mix(in srgb, var(--ok) 20%, var(--surface2)); }
+.opt.wrong   { border-color: var(--no); background: color-mix(in srgb, var(--no) 18%, var(--surface2)); }
+.opt:disabled { cursor: default; }
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+/* Gap-fill */
+.gap {
+  font-family: var(--font-ui); font-size: 20px; color: var(--text);
+  background: var(--inset);
+  border: none; border-bottom: 2px solid var(--accent);
+  padding: 3px 10px; min-width: 190px; border-radius: 4px 4px 0 0;
+}
+.gap:focus { outline: none; background: var(--inset2); }
+.gap.correct { border-bottom-color: var(--ok); color: var(--ok); }
+.gap.wrong   { border-bottom-color: var(--no); color: var(--no); }
 
-  /* ── ACTIVITY HEADER ── */
-  .act-header { margin-bottom: 22px; padding-top: 32px; }
+.feedback {
+  margin-top: 18px; font-size: 17px; line-height: 1.55;
+  min-height: 26px; opacity: 0; transition: opacity .2s;
+}
+.feedback.show { opacity: 1; }
+.feedback.ok { color: var(--ok); }
+.feedback.no { color: var(--no); }
 
-  .act-tag {
-    display: inline-block;
-    background: var(--gold-pale);
-    color: var(--gold);
-    border: 1.5px solid var(--gold-light);
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    padding: 4px 12px;
-    border-radius: 12px;
-    margin-bottom: 10px;
-  }
+/* ── BUTTONS ── */
+.btn {
+  font-family: var(--font-ui); font-size: 15px; font-weight: 600;
+  letter-spacing: .03em;
+  padding: 12px 26px; border-radius: var(--r);
+  border: 1px solid var(--accent); background: transparent; color: var(--accent-bright);
+  cursor: pointer; transition: background .15s, color .15s;
+}
+.btn:hover { background: var(--accent); color: var(--void); }
+.btn-solid { background: var(--accent); color: var(--void); border-color: var(--accent); }
+.btn-solid:hover { background: var(--accent-bright); border-color: var(--accent-bright); }
+.btn:disabled { opacity: .35; cursor: not-allowed; }
+.btn-lg { font-size: 17px; padding: 15px 38px; }
 
-  .act-title {
-    font-family: 'Libre Baskerville', serif;
-    font-size: 22px;
-    color: var(--ink);
-    margin-bottom: 6px;
-  }
+/* ── CHROME: progress + nav, pinned inside the stage ── */
+.deck-bar {
+  position: absolute; z-index: 3; left: 0; right: 0; bottom: 0;
+  height: 58px; padding: 0 26px;
+  display: flex; align-items: center; gap: 18px;
+  background: linear-gradient(180deg, transparent, var(--scrim));
+}
+.stage.on-cover .deck-bar { background: none; }
+.stage.on-cover .deck-score { visibility: hidden; }
+.progress { flex: 1; height: 3px; background: var(--inset2); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0; background: var(--accent); transition: width .3s ease; }
+.deck-count, .deck-score {
+  font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); white-space: nowrap;
+}
+.nav-btn {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  background: var(--scrim); color: var(--text);
+  cursor: pointer; font-size: 15px; line-height: 1;
+  display: grid; place-items: center; transition: border-color .15s, background .15s;
+}
+.nav-btn:hover:not(:disabled) { border-color: var(--accent); background: var(--accent); color: var(--void); }
+.nav-btn:disabled { opacity: .28; cursor: not-allowed; }
 
-  .act-instruction {
-    font-size: 13px;
-    color: var(--ink-soft);
-    line-height: 1.7;
-    max-width: 560px;
-  }
+/* ── LANGUAGE SWITCH ── */
+.lang-select {
+  font-family: var(--font-mono); font-size: 12px;
+  background: var(--scrim); color: var(--text);
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  border-radius: 6px; padding: 6px 10px; cursor: pointer;
+}
+.lang-select:focus { outline: 1px solid var(--accent); }
 
-  /* ── PROGRESS ── */
-  .prog-wrap {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 24px;
-  }
-  .prog-bar { flex: 1; height: 7px; background: var(--teal-pale); border-radius: 8px; overflow: hidden; }
-  .prog-fill { height: 100%; background: linear-gradient(90deg, var(--teal), var(--teal-light)); border-radius: 8px; transition: width 0.5s ease; }
-  .prog-label { font-size: 12px; font-weight: 700; color: var(--ink-mid); white-space: nowrap; }
+/* ── RESULTS ── */
+.score-big {
+  font-family: var(--font-display); font-size: 84px; font-weight: 900;
+  color: var(--accent-bright); line-height: 1;
+}
 
-  /* ── CARD ── */
-  .q-card {
-    background: var(--white);
-    border-radius: 18px;
-    padding: 26px;
-    box-shadow: var(--shadow);
-    margin-bottom: 20px;
-    border: 2px solid transparent;
-  }
+/* ── RTL ── */
+[dir="rtl"] .opt { text-align: right; }
+[dir="rtl"] .opt:hover:not(:disabled) { transform: translateX(-3px); }
 
-  .q-num { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--teal); margin-bottom: 8px; }
-  .q-text { font-family: 'Libre Baskerville', serif; font-size: 17px; color: var(--ink); margin-bottom: 20px; line-height: 1.5; }
-  .q-sub  { font-size: 12px; color: var(--ink-soft); font-style: italic; margin-top: -12px; margin-bottom: 16px; }
 
-  /* ── OPTIONS ── */
-  .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  @media (max-width: 480px) { .opts { grid-template-columns: 1fr; } }
+/* ── ACTIVATION ──────────────────────────────────────────────────── */
+.act-target {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 16px;
+}
+.act-target-label {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-dim);
+  margin-right: 4px;
+}
+.bank-chip {
+  font-family: var(--font-mono); font-size: 12px;
+  padding: 5px 12px; border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  color: var(--accent-bright);
+}
+.act-cols { align-items: stretch; }
+.act-card { display: flex; flex-direction: column; padding: 20px 24px; }
+.act-kind {
+  display: flex; align-items: center; gap: 9px;
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--accent-bright); margin-bottom: 12px;
+}
+.act-icon { font-size: 16px; }
+.act-brief { font-size: 16.5px; line-height: 1.5; color: var(--text); margin-bottom: 12px; }
+.act-list { list-style: none; display: grid; gap: 9px; }
+.act-list li {
+  font-size: 15.5px; line-height: 1.45; color: var(--text-dim);
+  padding-left: 18px; position: relative;
+}
+.act-list li::before {
+  content: '—'; position: absolute; left: 0; color: var(--accent);
+}
+.act-input {
+  flex: 1; min-height: 118px; resize: none;
+  font-family: var(--font-ui); font-size: 15px; line-height: 1.55;
+  color: var(--text);
+  background: var(--inset);
+  border: 1px solid color-mix(in srgb, var(--border) 45%, transparent);
+  border-radius: 8px; padding: 12px 14px;
+}
+.act-input:focus { outline: none; border-color: var(--accent); background: var(--inset2); }
+.act-input::placeholder { color: var(--text-dim); opacity: .55; }
+.act-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 10px;
+}
+.act-count { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-dim); }
+.act-copy { font-size: 12.5px; padding: 6px 14px; }
+/* The textarea's value does not print; this mirror does. */
+.act-print { display: none; font-size: 14px; line-height: 1.55; white-space: pre-wrap; }
 
-  .opt {
-    background: var(--paper);
-    border: 2px solid #E0D8CC;
-    border-radius: 12px;
-    padding: 12px 15px;
-    text-align: left;
-    cursor: pointer;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 13.5px;
-    font-weight: 500;
-    color: var(--ink);
-    transition: all 0.2s;
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    line-height: 1.5;
-  }
-  .opt-letter {
-    width: 24px; height: 24px;
-    background: var(--white);
-    border: 2px solid #D8CEC0;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    font-weight: 800;
-    color: var(--ink-soft);
-    flex-shrink: 0;
-    margin-top: 1px;
-    transition: all 0.2s;
-  }
-  .opt:hover:not(:disabled) { border-color: var(--teal-light); background: var(--teal-pale); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(26,107,106,0.12); }
-  .opt:hover:not(:disabled) .opt-letter { background: var(--teal); border-color: var(--teal); color: white; }
-  .opt:disabled { cursor: default; }
-  .opt.correct { background: var(--teal-pale); border-color: var(--teal); }
-  .opt.correct .opt-letter { background: var(--teal); border-color: var(--teal); color: white; }
-  .opt.wrong { background: var(--rose-pale); border-color: var(--rose); }
-  .opt.wrong .opt-letter { background: var(--rose); border-color: var(--rose); color: white; }
 
-  /* ── FEEDBACK ── */
-  .feedback {
-    display: none;
-    padding: 13px 17px;
-    border-radius: 11px;
-    font-size: 13.5px;
-    margin-top: 14px;
-    line-height: 1.65;
-    font-weight: 500;
-  }
-  .fb-ok  { display: block; background: var(--teal-pale); border: 1.5px solid var(--teal-light); color: #0F4F4E; }
-  .fb-bad { display: block; background: var(--rose-pale);  border: 1.5px solid #D97070;          color: #8A2020; }
+/* ── MATCHING ────────────────────────────────────────────────────── */
+.match-grid { display: grid; grid-template-columns: 1fr 1.35fr; gap: 14px; }
+.match-col { display: grid; gap: 8px; align-content: start; }
+.match-item {
+  font-family: var(--font-ui); font-size: 15.5px; line-height: 1.4;
+  text-align: left; color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: var(--r); padding: 11px 16px; cursor: pointer;
+  transition: border-color .15s, background .15s, opacity .2s;
+}
+.match-item.term { font-weight: 600; }
+.match-item:hover:not(.done) { border-color: var(--accent); }
+.match-item.picked { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 22%, var(--surface2)); }
+.match-item.done { opacity: .45; cursor: default; border-color: var(--ok); }
+.match-item.miss { border-color: var(--no); animation: shake .3s; }
+@keyframes shake { 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
 
-  /* ── BUTTONS ── */
-  .btn-next {
-    display: none;
-    background: var(--teal);
-    color: white;
-    border: none;
-    padding: 13px 30px;
-    border-radius: 13px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s;
-    margin-top: 20px;
-    letter-spacing: 0.02em;
-  }
-  .btn-next:hover { background: #145857; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26,107,106,0.35); }
-  .btn-next.show { display: inline-flex; align-items: center; gap: 8px; }
+/* ── ORDERING (build the sentence) ───────────────────────────────────
+   For word-order work — where the point is the SEQUENCE of prepositional
+   phrases, not choosing one word. Click to place, click again to take back;
+   no dragging, because a scaled stage makes drag targets lie. */
+.order-hint {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 10px;
+}
+.order-target {
+  display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start;
+  min-height: 92px; padding: 12px;
+  border: 1.5px dashed color-mix(in srgb, var(--border) 60%, transparent);
+  border-radius: var(--r); background: var(--inset);
+}
+.order-target.correct { border-style: solid; border-color: var(--ok); }
+.order-target.wrong   { border-style: solid; border-color: var(--no); }
+.order-pool { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.chunk {
+  font-family: var(--font-ui); font-size: 15.5px; line-height: 1.35;
+  color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: 999px; padding: 9px 16px; cursor: pointer;
+  transition: border-color .15s, background .15s, opacity .2s;
+}
+.chunk:hover:not(:disabled) { border-color: var(--accent); }
+.chunk.placed { background: color-mix(in srgb, var(--accent) 18%, var(--surface2)); border-color: var(--accent); }
+.chunk:disabled { cursor: default; opacity: .5; }
 
-  .btn-check {
-    background: var(--ink);
-    color: white;
-    border: none;
-    padding: 12px 26px;
-    border-radius: 11px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 13.5px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s;
-    margin-top: 14px;
-  }
-  .btn-check:hover { background: var(--ink-mid); transform: translateY(-1px); }
-  .btn-check:disabled { opacity: 0.35; cursor: default; transform: none; }
+/* ── DISCUSSION (unscored speaking prompts) ──────────────────────── */
+.discuss-meta {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 14px;
+}
+.prompts { display: grid; gap: 12px; list-style: none; margin: 0; padding: 0; }
+.prompt {
+  font-size: 19px; line-height: 1.5; color: var(--text);
+  padding-left: 26px; position: relative;
+}
+.prompt::before {
+  content: '?'; position: absolute; left: 0; top: 1px;
+  font-family: var(--font-mono); font-size: 15px; color: var(--accent);
+}
+.prompt.aside { font-size: 16.5px; color: var(--text-dim); font-style: italic; }
+.prompt.aside::before { content: '·'; }
 
-  /* ── DIALOGUE BOXES ── */
-  .dialogue { display: flex; flex-direction: column; gap: 12px; margin-bottom: 18px; }
-  .d-line { display: flex; gap: 12px; align-items: flex-start; }
-  .d-line.customer { flex-direction: row-reverse; }
-  .d-avatar {
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
+/* ══════════════════════════════════════════════════════════════════
+   PRINT / PDF EXPORT
+   Ctrl-P → Save as PDF → Landscape, margins None, Background graphics ON.
+   Each slide becomes one 16:9 page, ready to drop into PowerPoint.
+   ══════════════════════════════════════════════════════════════════ */
+@page { size: 1280px 720px; margin: 0; }
+@media print {
+  html, body { overflow: visible; height: auto; background: #fff; }
+  .stage-wrap { position: static; display: block; }
+  .stage {
+    transform: none !important;
+    width: 1280px; height: auto;      /* let the slides stack into pages */
+    overflow: visible; box-shadow: none;
   }
-  .d-avatar.waiter-av { background: var(--teal-pale); }
-  .d-avatar.cust-av   { background: var(--gold-pale); }
-  .d-bubble {
-    background: var(--paper);
-    border: 1.5px solid #E0D8CC;
-    border-radius: 14px;
-    padding: 11px 15px;
-    font-size: 13.5px;
-    line-height: 1.65;
-    max-width: 85%;
-    color: var(--ink);
-  }
-  .d-line.customer .d-bubble { background: var(--teal-pale); border-color: var(--teal-light); }
-  .d-speaker { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-soft); margin-bottom: 4px; }
+  .bg-layer, .deck-bar, .lang-select, .nav-btn { display: none !important; }
 
-  /* ── WORD BANK ── */
-  .wordbank {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 18px;
-    padding: 16px;
-    background: var(--gold-pale);
-    border: 1.5px solid var(--gold-light);
-    border-radius: 14px;
+  /* Each slide becomes its own page and carries its own background, so the
+     export does not depend on the single on-screen background layer. */
+  .slide {
+    display: flex !important;
+    position: relative; inset: auto;
+    width: 1280px; height: 720px;
+    isolation: isolate;
+    page-break-after: always; break-after: page;
+    animation: none !important;
   }
-  .wchip {
-    background: var(--white);
-    border: 2px solid var(--gold-light);
-    border-radius: 20px;
-    padding: 5px 14px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--ink);
-    cursor: pointer;
-    transition: all 0.2s;
-    user-select: none;
+  .slide:last-child { page-break-after: auto; break-after: auto; }
+  .slide::before {
+    content: ''; position: absolute; inset: 0; z-index: -2;
+    background: var(--hero) center / cover no-repeat;
+    opacity: var(--bg-opacity);
   }
-  .wchip:hover { background: var(--gold-pale); border-color: var(--gold); transform: translateY(-1px); }
-  .wchip.selected { outline: 3px solid var(--teal); background: var(--teal-pale); }
-  .wchip.used { opacity: 0.3; pointer-events: none; text-decoration: line-through; }
+  .slide::after {
+    content: ''; position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(180deg, var(--wash-edge) 0%, var(--wash-mid) 20%,
+                                        var(--wash-mid) 80%, var(--wash-edge) 100%);
+  }
+  .slide[data-type="cover"]::before { opacity: 1; }
+  .slide[data-type="cover"]::after {
+    background:
+      radial-gradient(ellipse 58% 54% at 50% 46%,
+        rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.22) 54%, transparent 82%),
+      linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.03) 30%,
+                            rgba(0,0,0,0.05) 70%, rgba(0,0,0,0.38) 100%);
+  }
+  .feedback { opacity: 1 !important; }
+  .act-input, .act-foot { display: none !important; }
+  .act-print { display: block !important; }
+}
 
-  /* ── INLINE BLANKS ── */
-  .blank-span {
-    display: inline-block;
-    min-width: 90px;
-    border-bottom: 2.5px solid var(--teal);
-    color: var(--teal);
-    font-weight: 700;
-    text-align: center;
-    padding: 1px 6px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: border-color 0.2s;
-    vertical-align: middle;
-  }
-  .blank-span:hover { border-color: var(--teal-light); }
-  .blank-span.ok  { border-color: var(--teal);  color: var(--teal); }
-  .blank-span.bad { border-color: var(--rose);  color: var(--rose); }
-
-  /* ── MATCHING ── */
-  .match-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-    align-items: start;
-  }
-  .match-col-label {
-    font-size: 10px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--ink-soft);
-    margin-bottom: 8px;
-  }
-  .match-source {
-    background: var(--paper);
-    border: 2px solid #E0D8CC;
-    border-radius: 11px;
-    padding: 11px 14px;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: grab;
-    user-select: none;
-    transition: all 0.2s;
-    margin-bottom: 8px;
-    min-height: 44px;
-    display: flex;
-    align-items: center;
-  }
-  .match-source:hover { border-color: var(--teal-light); background: var(--teal-pale); transform: translateX(3px); }
-  .match-source.dragging { opacity: 0.35; }
-  .match-source.matched-ok  { background: var(--teal-pale); border-color: var(--teal); color: #0F4F4E; cursor: default; }
-  .match-source.matched-bad { background: var(--rose-pale);  border-color: var(--rose); color: #8A2020; cursor: default; }
-
-  .match-target {
-    border: 2.5px dashed #D0C8BC;
-    border-radius: 11px;
-    padding: 11px 14px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--ink);
-    min-height: 44px;
-    display: flex;
-    align-items: center;
-    margin-bottom: 8px;
-    transition: all 0.2s;
-    background: var(--white);
-    position: relative;
-  }
-  .match-target .target-label {
-    position: absolute;
-    top: -9px; left: 10px;
-    background: var(--white);
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--ink-soft);
-    padding: 0 4px;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-  }
-  .match-target.drag-over { border-color: var(--teal); background: var(--teal-pale); }
-  .match-target.filled    { border-style: solid; border-color: var(--gold); background: var(--gold-pale); }
-  .match-target.tgt-ok    { border-style: solid; border-color: var(--teal); background: var(--teal-pale); color: #0F4F4E; }
-  .match-target.tgt-bad   { border-style: solid; border-color: var(--rose);  background: var(--rose-pale);  color: #8A2020; }
-
-  /* ── ERROR SPOTTING ── */
-  .error-sentence {
-    font-size: 15px;
-    line-height: 1.9;
-    color: var(--ink);
-    padding: 14px 18px;
-    background: var(--paper);
-    border-radius: 12px;
-    border: 1.5px solid #E0D8CC;
-    margin-bottom: 14px;
-    font-family: 'Libre Baskerville', serif;
-  }
-  .err-word {
-    display: inline-block;
-    border-bottom: 2px dashed var(--ink-soft);
-    cursor: pointer;
-    padding: 0 2px;
-    transition: all 0.15s;
-    border-radius: 3px;
-  }
-  .err-word:hover { background: var(--gold-pale); border-color: var(--gold); }
-  .err-word.selected { background: var(--gold-pale); border-color: var(--gold); color: var(--gold); border-bottom-style: solid; }
-  .err-word.correct-err { background: var(--teal-pale); border-color: var(--teal); color: var(--teal); border-bottom-style: solid; }
-  .err-word.wrong-err   { background: var(--rose-pale);  border-color: var(--rose);  color: var(--rose);  border-bottom-style: solid; }
-
-  /* ── RESULT ── */
-  #result-screen { display: none; text-align: center; padding: 60px 20px; animation: fadeUp 0.5s ease; }
-
-  .result-ring {
-    width: 150px; height: 150px;
-    margin: 0 auto 28px;
-    position: relative;
-  }
-  .result-ring svg { width: 150px; height: 150px; }
-  .result-ring .ring-bg  { fill: none; stroke: var(--teal-pale); stroke-width: 10; }
-  .result-ring .ring-val { fill: none; stroke: var(--teal); stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 1s ease; transform-origin: center; transform: rotate(-90deg); }
-  .result-center {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-  }
-  .result-num { font-family: 'Libre Baskerville', serif; font-size: 36px; color: var(--teal); line-height: 1; }
-  .result-of  { font-size: 13px; color: var(--ink-soft); font-weight: 500; }
-
-  .result-title { font-family: 'Libre Baskerville', serif; font-size: 28px; color: var(--ink); margin-bottom: 12px; }
-  .result-msg   { font-size: 14px; color: var(--ink-mid); max-width: 420px; margin: 0 auto 32px; line-height: 1.75; }
-
-  .result-acts {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin-bottom: 32px;
-  }
-  .result-act-item {
-    background: var(--white);
-    border: 2px solid var(--teal-pale);
-    border-radius: 14px;
-    padding: 14px 20px;
-    min-width: 130px;
-  }
-  .result-act-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-soft); margin-bottom: 4px; }
-  .result-act-score { font-family: 'Libre Baskerville', serif; font-size: 22px; color: var(--teal); }
-
-  .btn-restart {
-    background: var(--teal);
-    color: white;
-    border: none;
-    padding: 14px 34px;
-    border-radius: 13px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .btn-restart:hover { background: #145857; transform: translateY(-2px); box-shadow: 0 6px 24px rgba(26,107,106,0.35); }
-
-  /* ── DIVIDER ── */
-  .hero-divider { height: 4px; background: linear-gradient(90deg, var(--teal), var(--gold), var(--teal-light)); }
-
-  /* ── TOOLTIP ── */
-  .vocab-pill {
-    display: inline-block;
-    background: var(--gold-pale);
-    border: 1px solid var(--gold-light);
-    border-radius: 10px;
-    padding: 1px 8px;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--gold);
-    margin: 0 2px;
-    vertical-align: middle;
-  }
+/* Text that sits on the canvas rather than inside a card needs its own halo
+   now that the artwork behind it is bright. A shadow costs nothing and lets
+   the picture stay up, which darkening the wash back down would not. */
+.slide-title, .eyebrow, .q-stem, .q-ctx, .order-hint, .cover-title, .cover-sub,
+.score-big, .slide-body > .prose, .act-target-label {
+  text-shadow: 0 1px 2px rgba(0,0,0,0.55), 0 0 12px rgba(0,0,0,0.38);
+}
+html[data-theme="light"] .slide-title, html[data-theme="light"] .eyebrow,
+html[data-theme="light"] .q-stem, html[data-theme="light"] .q-ctx,
+html[data-theme="light"] .order-hint, html[data-theme="light"] .cover-title,
+html[data-theme="light"] .cover-sub, html[data-theme="light"] .score-big,
+html[data-theme="light"] .slide-body > .prose,
+html[data-theme="light"] .act-target-label {
+  text-shadow: 0 1px 2px rgba(255,255,255,0.75), 0 0 12px rgba(255,255,255,0.55);
+}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header>
-  <svg width="130" height="52" viewBox="0 0 130 52" xmlns="http://www.w3.org/2000/svg">
-    <g transform="translate(0.00,3.52) scale(0.029668)"><g transform="translate(0,1504) scale(0.1,-0.1)" fill="#E8C97A" stroke="none"><path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47 l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21 -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9 -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58 105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141 144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392 -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31 c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55 -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0 -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226 144 331 156 51 6 127 -4 183 -25z"/><path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95 -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72 -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0 -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18 108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553 -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70 -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3 469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38 -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/><path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73 -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939 -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1 205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247 -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22 -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24 -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449 121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/><path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611 -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538 -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77 144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430 -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67 347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580 -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132 -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87 66 245 85 341 40z"/><path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140 -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134 -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287 -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101 -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107 173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392 207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599 281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241 111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2 347 -112 40 c-318 112 -594 149 -892 121z"/><path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149 l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801 -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6 -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294 -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12 -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29 -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55 -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12 -33 22 -42 21 -9 0 -199 -27 -422 -60z"/></g></g>
-    <text x="0" y="48" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-size="19.20" font-weight="700" fill="white" letter-spacing="4">ENGLISH</text>
-  </svg>
-  <div class="header-score">
-    <span>Score</span>
-    <div class="score-badge" id="score-display">0</div>
-  </div>
-</header>
+<div class="stage-wrap">
+  <div class="stage" id="stage">
 
-<!-- HERO -->
-<div class="hero">
-  <div class="part-badge">⭐ Part 2 · A1+ Level</div>
-  <h1>Ordering Food & Drink</h1>
-  <p>You know the basics — now go deeper. Learn to handle real conversations: describing dishes, making requests, and understanding menus.</p>
-  <div class="difficulty-bar">
-    Difficulty:
-    <div class="diff-dot"></div>
-    <div class="diff-dot"></div>
-    <div class="diff-dot"></div>
-    <div class="diff-dot empty"></div>
-    <div class="diff-dot empty"></div>
-    &nbsp;A1+
-  </div>
-</div>
-<div class="hero-divider"></div>
+    <!-- Background pattern: driven entirely by --hero in the CSS above. -->
+    <div class="bg-layer" role="presentation"></div>
 
-<!-- ILLUSTRATIONS -->
-<div class="illo-row">
+    <!-- ══════════════════════════════════════════════════════════
+         REPLACE 2 of 2: SLIDES
+         Author one <section class="slide"> per screen.
+         data-type: cover | teach | mc | gap | match | order | discuss | results | activate
+         data-bg="folder/other.jpg" swaps the background pattern on that slide.
+         Everything a learner reads must fit WITHOUT scrolling.
+         If it does not fit, split it across two slides — never shrink type.
+         ══════════════════════════════════════════════════════════ -->
 
-  <!-- Burger -->
-  <div class="illo-card">
-    <svg width="76" height="76" viewBox="0 0 76 76" xmlns="http://www.w3.org/2000/svg">
-      <!-- shadow -->
-      <ellipse cx="38" cy="70" rx="28" ry="5" fill="#D4B896" opacity="0.35"/>
-      <!-- top bun -->
-      <ellipse cx="38" cy="22" rx="28" ry="16" fill="#E8A840"/>
-      <ellipse cx="38" cy="14" rx="28" ry="8" fill="#D4893A"/>
-      <!-- sesame -->
-      <ellipse cx="30" cy="14" rx="3" ry="2" fill="#C97830" transform="rotate(-15,30,14)"/>
-      <ellipse cx="38" cy="11" rx="3" ry="2" fill="#C97830"/>
-      <ellipse cx="46" cy="14" rx="3" ry="2" fill="#C97830" transform="rotate(15,46,14)"/>
-      <!-- lettuce -->
-      <path d="M10,34 Q20,28 38,32 Q56,28 66,34 Q56,40 38,36 Q20,40 10,34Z" fill="#5AB050"/>
-      <!-- tomato -->
-      <rect x="12" y="36" width="52" height="8" rx="4" fill="#E05040"/>
-      <!-- patty -->
-      <rect x="10" y="44" width="56" height="12" rx="6" fill="#7A4020"/>
-      <!-- cheese -->
-      <path d="M10,44 L66,44 L60,52 L16,52Z" fill="#F5C030" opacity="0.7"/>
-      <!-- bottom bun -->
-      <ellipse cx="38" cy="60" rx="28" ry="8" fill="#E8A840"/>
-      <ellipse cx="38" cy="64" rx="28" ry="5" fill="#D4893A"/>
-    </svg>
-    <div class="illo-label">Burger</div>
-  </div>
 
-  <!-- Wine glass -->
-  <div class="illo-card">
-    <svg width="76" height="76" viewBox="0 0 76 76" xmlns="http://www.w3.org/2000/svg">
-      <!-- shadow -->
-      <ellipse cx="38" cy="72" rx="16" ry="4" fill="#D4B896" opacity="0.35"/>
-      <!-- stem -->
-      <rect x="35" y="52" width="6" height="16" rx="3" fill="#B8C8D0"/>
-      <!-- base -->
-      <ellipse cx="38" cy="68" rx="12" ry="4" fill="#A0B0B8"/>
-      <!-- glass body -->
-      <path d="M18,10 Q16,36 28,50 L48,50 Q60,36 58,10Z" fill="#D0E8F0" opacity="0.5" stroke="#A0B8C0" stroke-width="1.5"/>
-      <!-- wine -->
-      <path d="M22,32 Q22,50 28,50 L48,50 Q54,50 54,32Z" fill="#9B2335" opacity="0.75"/>
-      <!-- wine shine -->
-      <path d="M26,36 Q27,30 30,28" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-linecap="round" fill="none"/>
-      <!-- rim -->
-      <ellipse cx="38" cy="12" rx="20" ry="4" fill="none" stroke="#A0B8C0" stroke-width="1.5"/>
-    </svg>
-    <div class="illo-label">Wine</div>
-  </div>
-
-  <!-- Chef -->
-  <div class="illo-card">
-    <svg width="76" height="76" viewBox="0 0 76 76" xmlns="http://www.w3.org/2000/svg">
-      <!-- body / apron -->
-      <rect x="22" y="40" width="32" height="30" rx="4" fill="white" stroke="#E0D8CC" stroke-width="1.5"/>
-      <!-- apron strings -->
-      <rect x="34" y="42" width="8" height="26" rx="2" fill="#E0D8CC" opacity="0.6"/>
-      <!-- chef jacket -->
-      <rect x="22" y="40" width="14" height="30" rx="3" fill="#F5F5F5"/>
-      <rect x="40" y="40" width="14" height="30" rx="3" fill="#F5F5F5"/>
-      <!-- buttons -->
-      <circle cx="38" cy="48" r="2" fill="#CCC"/>
-      <circle cx="38" cy="56" r="2" fill="#CCC"/>
-      <!-- head -->
-      <circle cx="38" cy="28" r="12" fill="#F5C5A0"/>
-      <!-- chef hat -->
-      <rect x="26" y="10" width="24" height="12" rx="3" fill="white" stroke="#E0D8CC" stroke-width="1.5"/>
-      <ellipse cx="38" cy="10" rx="16" ry="5" fill="white" stroke="#E0D8CC" stroke-width="1.5"/>
-      <!-- hat puff -->
-      <ellipse cx="38" cy="8" rx="14" ry="8" fill="white"/>
-      <!-- face -->
-      <circle cx="34" cy="28" r="2" fill="#2C1A0E"/>
-      <circle cx="42" cy="28" r="2" fill="#2C1A0E"/>
-      <path d="M33,33 Q38,37 43,33" stroke="#C97830" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-      <!-- arm with ladle -->
-      <path d="M54,46 L68,38" stroke="#F5F5F5" stroke-width="6" stroke-linecap="round"/>
-      <circle cx="70" cy="36" r="5" fill="#C9913A" opacity="0.8"/>
-    </svg>
-    <div class="illo-label">Chef</div>
-  </div>
-
-  <!-- Dessert -->
-  <div class="illo-card">
-    <svg width="76" height="76" viewBox="0 0 76 76" xmlns="http://www.w3.org/2000/svg">
-      <!-- plate shadow -->
-      <ellipse cx="38" cy="68" rx="28" ry="5" fill="#D4B896" opacity="0.35"/>
-      <!-- plate -->
-      <ellipse cx="38" cy="62" rx="26" ry="8" fill="#EEE8E0"/>
-      <!-- cake base -->
-      <rect x="16" y="44" width="44" height="20" rx="4" fill="#F5C842"/>
-      <!-- frosting drip -->
-      <path d="M16,44 Q20,38 24,44 Q28,38 32,44 Q36,38 40,44 Q44,38 48,44 Q52,38 56,44 Q60,38 60,44" fill="#FEFDF8" stroke="none"/>
-      <rect x="16" y="38" width="44" height="8" rx="4" fill="#FEFDF8"/>
-      <!-- strawberry on top -->
-      <path d="M32,28 Q38,18 44,28 Q44,36 38,38 Q32,36 32,28Z" fill="#E03040"/>
-      <path d="M38,18 L36,14" stroke="#5A9040" stroke-width="2" stroke-linecap="round"/>
-      <path d="M38,18 L42,13" stroke="#5A9040" stroke-width="2" stroke-linecap="round"/>
-      <!-- seeds -->
-      <circle cx="36" cy="28" r="1.5" fill="rgba(255,255,255,0.5)"/>
-      <circle cx="40" cy="31" r="1.5" fill="rgba(255,255,255,0.5)"/>
-      <circle cx="38" cy="35" r="1.5" fill="rgba(255,255,255,0.5)"/>
-      <!-- sprinkles -->
-      <rect x="22" y="46" width="8" height="3" rx="1.5" fill="#E8604A" transform="rotate(-20,22,46)"/>
-      <rect x="34" y="48" width="8" height="3" rx="1.5" fill="#1A6B6A" transform="rotate(10,34,48)"/>
-      <rect x="46" y="46" width="8" height="3" rx="1.5" fill="#C9913A" transform="rotate(-10,46,46)"/>
-    </svg>
-    <div class="illo-label">Dessert</div>
-  </div>
-
-</div>
-
-<!-- NAV TABS -->
-<div class="act-nav" id="act-nav">
-  <div class="nav-tab current">1 · Multiple Choice</div>
-  <div class="nav-tab">2 · Fill the Dialogue</div>
-  <div class="nav-tab">3 · Drag & Match</div>
-  <div class="nav-tab">4 · Spot the Error</div>
-</div>
-
-<main>
-
-<!-- ═══════════════════════════════════════
-     ACTIVITY 1 – MULTIPLE CHOICE (harder)
-═══════════════════════════════════════ -->
-<div class="activity active" id="act-0">
-  <div class="act-header">
-    <div class="act-tag">Activity 1 · Multiple Choice</div>
-    <h2 class="act-title">Choose the best answer</h2>
-    <p class="act-instruction">These questions are trickier — read carefully. Choose the most natural and correct phrase for each situation.</p>
-  </div>
-
-  <div class="prog-wrap">
-    <div class="prog-bar"><div class="prog-fill" id="mc-prog" style="width:0%"></div></div>
-    <div class="prog-label" id="mc-label">0 / 6</div>
-  </div>
-
-  <!-- Q1 -->
-  <div class="q-card" id="mc-card-1">
-    <div class="q-num">Question 1 of 6</div>
-    <div class="q-text">The waiter asks: "How would you like your steak?" You want it cooked until there is no pink inside. You say:</div>
-    <div class="opts">
-      <button class="opt" onclick="mcAns(this,1,'B')" data-key="A"><span class="opt-letter">A</span>I'd like it very cooked.</button>
-      <button class="opt" onclick="mcAns(this,1,'B')" data-key="B"><span class="opt-letter">B</span>I'd like it well done, please.</button>
-      <button class="opt" onclick="mcAns(this,1,'B')" data-key="C"><span class="opt-letter">C</span>I'd like it completely hot.</button>
-      <button class="opt" onclick="mcAns(this,1,'B')" data-key="D"><span class="opt-letter">D</span>Please give me a cooked steak.</button>
-    </div>
-    <div class="feedback" id="mc-fb-1">✅ <strong>"Well done"</strong> is the correct cooking term for a steak with no pink. The other options are grammatically possible but are not the natural phrases used in restaurants. Other options: <span class="vocab-pill">rare</span> <span class="vocab-pill">medium</span> <span class="vocab-pill">medium rare</span></div>
-  </div>
-
-  <!-- Q2 -->
-  <div class="q-card" id="mc-card-2" style="display:none">
-    <div class="q-num">Question 2 of 6</div>
-    <div class="q-text">You are vegetarian. The waiter describes a dish. You want to check if it has meat. You ask:</div>
-    <div class="opts">
-      <button class="opt" onclick="mcAns(this,2,'C')" data-key="A"><span class="opt-letter">A</span>Is this dish without animals?</button>
-      <button class="opt" onclick="mcAns(this,2,'C')" data-key="B"><span class="opt-letter">B</span>Did you put meat in this food?</button>
-      <button class="opt" onclick="mcAns(this,2,'C')" data-key="C"><span class="opt-letter">C</span>Does this dish contain any meat?</button>
-      <button class="opt" onclick="mcAns(this,2,'C')" data-key="D"><span class="opt-letter">D</span>I don't like meat in my dishes.</button>
-    </div>
-    <div class="feedback" id="mc-fb-2">✅ <strong>"Does this dish contain any meat?"</strong> is the natural question. We use <em>contain</em> to ask about ingredients in food. Option D is a statement, not a question.</div>
-  </div>
-
-  <!-- Q3 -->
-  <div class="q-card" id="mc-card-3" style="display:none">
-    <div class="q-num">Question 3 of 6</div>
-    <div class="q-text">Your soup is cold. You want to tell the waiter politely. You say:</div>
-    <div class="opts">
-      <button class="opt" onclick="mcAns(this,3,'D')" data-key="A"><span class="opt-letter">A</span>This soup is terrible and cold!</button>
-      <button class="opt" onclick="mcAns(this,3,'D')" data-key="B"><span class="opt-letter">B</span>I don't want this soup anymore.</button>
-      <button class="opt" onclick="mcAns(this,3,'D')" data-key="C"><span class="opt-letter">C</span>My soup has a cold temperature.</button>
-      <button class="opt" onclick="mcAns(this,3,'D')" data-key="D"><span class="opt-letter">D</span>Excuse me, I think my soup is cold.</button>
-    </div>
-    <div class="feedback" id="mc-fb-3">✅ <strong>"Excuse me, I think my soup is cold."</strong> is polite and natural. Starting with <em>Excuse me</em> and using <em>I think</em> makes it softer and more polite — important in restaurant English.</div>
-  </div>
-
-  <!-- Q4 -->
-  <div class="q-card" id="mc-card-4" style="display:none">
-    <div class="q-num">Question 4 of 6</div>
-    <div class="q-text">The waiter asks: "Would you like still or sparkling water?" You want water with bubbles. You say:</div>
-    <div class="opts">
-      <button class="opt" onclick="mcAns(this,4,'A')" data-key="A"><span class="opt-letter">A</span>Sparkling, please.</button>
-      <button class="opt" onclick="mcAns(this,4,'A')" data-key="B"><span class="opt-letter">B</span>Bubbly water for me.</button>
-      <button class="opt" onclick="mcAns(this,4,'A')" data-key="C"><span class="opt-letter">C</span>Not still water, thanks.</button>
-      <button class="opt" onclick="mcAns(this,4,'A')" data-key="D"><span class="opt-letter">D</span>The second one, I think.</button>
-    </div>
-    <div class="feedback" id="mc-fb-4">✅ <strong>"Sparkling, please."</strong> is the natural, concise answer. When someone gives you two options, you can answer with just the one you want + <em>please</em>. <em>Bubbly</em> is informal and <em>not still</em> is indirect.</div>
-  </div>
-
-  <!-- Q5 -->
-  <div class="q-card" id="mc-card-5" style="display:none">
-    <div class="q-num">Question 5 of 6</div>
-    <div class="q-text">You want to order the same dish as your friend. You say:</div>
-    <div class="opts">
-      <button class="opt" onclick="mcAns(this,5,'B')" data-key="A"><span class="opt-letter">A</span>I also order the pasta please.</button>
-      <button class="opt" onclick="mcAns(this,5,'B')" data-key="B"><span class="opt-letter">B</span>I'll have the same as him, please.</button>
-      <button class="opt" onclick="mcAns(this,5,'B')" data-key="C"><span class="opt-letter">C</span>Same pasta that he did order.</button>
-      <button class="opt" onclick="mcAns(this,5,'B')" data-key="D"><span class="opt-letter">D</span>Give me the pasta of my friend.</span></button>
-    </div>
-    <div class="feedback" id="mc-fb-5">✅ <strong>"I'll have the same as him, please."</strong> is the natural phrase. <em>I'll have…</em> is very common for ordering food — it sounds confident and polite.</div>
-  </div>
-
-  <!-- Q6 -->
-  <div class="q-card" id="mc-card-6" style="display:none">
-    <div class="q-num">Question 6 of 6</div>
-    <div class="q-text">You are not sure what "crème brûlée" is. You ask the waiter:</div>
-    <div class="opts">
-      <button class="opt" onclick="mcAns(this,6,'C')" data-key="A"><span class="opt-letter">A</span>Translate crème brûlée for me.</button>
-      <button class="opt" onclick="mcAns(this,6,'C')" data-key="B"><span class="opt-letter">B</span>This word is very difficult to say.</button>
-      <button class="opt" onclick="mcAns(this,6,'C')" data-key="C"><span class="opt-letter">C</span>Could you tell me what crème brûlée is?</button>
-      <button class="opt" onclick="mcAns(this,6,'C')" data-key="D"><span class="opt-letter">D</span>What the crème brûlée is exactly?</button>
-    </div>
-    <div class="feedback" id="mc-fb-6">✅ <strong>"Could you tell me what crème brûlée is?"</strong> is correct and polite. <em>Could you tell me…</em> is a great structure for polite questions. Option D has incorrect word order — in English, indirect questions use statement word order: <em>what it is</em>, not <em>what is it</em>.</div>
-  </div>
-
-  <button class="btn-next" id="mc-next" onclick="goNext(0)">Next Activity →</button>
-</div>
-
-<!-- ═══════════════════════════════════════
-     ACTIVITY 2 – FILL THE DIALOGUE
-═══════════════════════════════════════ -->
-<div class="activity" id="act-1">
-  <div class="act-header">
-    <div class="act-tag">Activity 2 · Complete the Dialogue</div>
-    <h2 class="act-title">Fill in the conversation</h2>
-    <p class="act-instruction">Click a word from the bank, then click a blank space in the conversation to place it there. Complete the full restaurant exchange.</p>
-  </div>
-
-  <div class="q-card">
-    <div class="q-num">Word Bank — click a word, then click a blank</div>
-    <div class="wordbank" id="fib-bank">
-      <div class="wchip" data-w="reservation">reservation</div>
-      <div class="wchip" data-w="recommend">recommend</div>
-      <div class="wchip" data-w="included">included</div>
-      <div class="wchip" data-w="medium">medium</div>
-      <div class="wchip" data-w="starter">starter</div>
-      <div class="wchip" data-w="share">share</div>
-      <div class="wchip" data-w="separate">separate</div>
-      <div class="wchip" data-w="dessert">dessert</div>
-    </div>
-
-    <div class="dialogue">
-      <div class="d-line">
-        <div class="d-avatar waiter-av">🧑‍🍳</div>
-        <div>
-          <div class="d-speaker">Waiter</div>
-          <div class="d-bubble">Good evening! Do you have a <span class="blank-span" id="fb1" onclick="placeWord('fb1','reservation')">________</span>?</div>
+    <section class="slide is-active" data-type="cover">
+      <div class="cover-inner">
+        <svg class="fe-logo" viewBox="0 0 200 78" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forbes English">
+          <g class="fe-logo-mark" transform="translate(-42.74,-30.22) scale(0.099477)"><g transform="translate(0,1504) scale(0.1,-0.1)" fill="currentColor" stroke="none"><path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47 l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21 -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9 -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58 105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141 144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392 -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31 c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55 -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0 -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226 144 331 156 51 6 127 -4 183 -25z"/><path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95 -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72 -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0 -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18 108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553 -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70 -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3 469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38 -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/><path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73 -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939 -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1 205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247 -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22 -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24 -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449 121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/><path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611 -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538 -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77 144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430 -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67 347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580 -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132 -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87 66 245 85 341 40z"/><path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140 -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134 -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287 -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101 -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107 173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392 207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599 281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241 111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2 347 -112 40 c-318 112 -594 149 -892 121z"/><path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149 l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801 -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6 -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294 -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12 -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29 -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55 -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12 -33 22 -42 21 -9 0 -199 -27 -422 -60z"/></g></g>
+          <text class="fe-logo-word" x="100" y="72.6" text-anchor="middle" font-family="'DM Sans', Arial, sans-serif" font-size="20.8" font-weight="600" letter-spacing="8">ENGLISH</text>
+        </svg>
+        <h1 class="cover-title" data-i18n="coverTitle">Ordering Food &amp; <em>Drink</em></h1>
+        <p class="cover-sub" data-i18n="coverSub">Part two: from the door to the bill, in the words people actually use</p>
+        <div class="cover-meta">
+          <span class="chip" data-i18n="chipLevel">A1 &middot; Part 2 of 2</span>
+          <span class="chip" data-i18n="chipFocus">Restaurant English</span>
+          <span class="chip" data-i18n="chipCount">16 slides</span>
+        </div>
+        <div style="margin-top:34px">
+          <button class="btn btn-solid btn-lg" data-action="next" data-i18n="btnStart">Begin →</button>
         </div>
       </div>
-      <div class="d-line customer">
-        <div class="d-avatar cust-av">👤</div>
-        <div style="text-align:right">
-          <div class="d-speaker">Customer</div>
-          <div class="d-bubble">Yes, for two. Could you <span class="blank-span" id="fb2" onclick="placeWord('fb2','recommend')">________</span> a good <span class="blank-span" id="fb3" onclick="placeWord('fb3','starter')">________</span>?</div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="FoodA1P2/counter.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="shapeEyebrow">Before the questions</div>
+        <h2 class="slide-title" data-i18n="shapeTitle">Three phrases carry the whole meal</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong>I&rsquo;d like&hellip;</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">&ldquo;I&rsquo;d like the soup, please.&rdquo;</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="p1">To order. Short for <em>I would like</em> — softer than <em>I want</em>, which sounds like a demand.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong>Could you&hellip;?</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">&ldquo;Could you bring some water?&rdquo;</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="p2">To ask for something. The verb after it never changes: <em>bring</em>, not <em>to bring</em> or <em>bringing</em>.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong>Excuse me&hellip;</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">&ldquo;Excuse me, my soup is cold.&rdquo;</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="p3">To get attention, and to open a complaint. Without it the same sentence sounds angry.</p>
+          </div>
         </div>
       </div>
-      <div class="d-line">
-        <div class="d-avatar waiter-av">🧑‍🍳</div>
-        <div>
-          <div class="d-speaker">Waiter</div>
-          <div class="d-bubble">Our soup of the day is excellent. For the main course, how would you like your steak — rare, <span class="blank-span" id="fb4" onclick="placeWord('fb4','medium')">________</span>, or well done?</div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="FoodA1P2/kitchen.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="menuEyebrow">The menu, in order</div>
+        <h2 class="slide-title" data-i18n="menuTitle">The words on the card, and the ones you will be asked</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="courseH">The courses</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:19px">
+              <strong>starter</strong> &rarr; <strong>main course</strong> &rarr; <strong>dessert</strong>
+            </p>
+            <p class="prose dim" style="margin-top:8px;font-size:16px" data-i18n="courseB">
+              American menus say <em>appetizer</em> and <em>entrée</em> instead of <em>starter</em> and <em>main course</em>. Same meal.
+            </p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="askH">Three questions you will be asked</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">&ldquo;Still or sparkling?&rdquo;</p>
+            <p class="prose" style="margin-top:4px;font-size:18px">&ldquo;How would you like your steak?&rdquo;</p>
+            <p class="prose" style="margin-top:4px;font-size:18px">&ldquo;Anything else?&rdquo;</p>
+            <p class="prose dim" style="margin-top:8px;font-size:16px" data-i18n="askB">
+              Steak has exactly three answers: <em>rare</em>, <em>medium</em>, <em>well done</em>.
+            </p>
+          </div>
         </div>
       </div>
-      <div class="d-line customer">
-        <div class="d-avatar cust-av">👤</div>
-        <div style="text-align:right">
-          <div class="d-speaker">Customer</div>
-          <div class="d-bubble">Medium, please. Is service <span class="blank-span" id="fb5" onclick="placeWord('fb5','included')">________</span> in the bill?</div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">In the restaurant</span> &middot; 1 / 6</div>
+        <h2 class="slide-title" data-i18n="qTitle">What do you say?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">The waiter asks: &ldquo;How would you like your steak?&rdquo; You want it cooked until there is no pink inside. You say:</p>
+        <div class="opts">
+          <button class="opt">I would like it very cooked, please.</button>
+          <button class="opt" data-correct>I&rsquo;d like it well done, please.</button>
+          <button class="opt">I would like it completely hot.</button>
+          <button class="opt">Please give me a cooked steak.</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Well done</strong> is the fixed term for a steak with no pink. The three cooking words are <em>rare</em>, <em>medium</em> and <em>well done</em> — nothing else is used, however logical it sounds."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-bg="FoodA1P2/counter.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">In the restaurant</span> &middot; 2 / 6</div>
+        <h2 class="slide-title" data-i18n="qTitle">What do you say?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">You are vegetarian. The waiter describes a dish and you want to check whether there is meat in it. You ask:</p>
+        <div class="opts">
+          <button class="opt">Is this dish made without any animals?</button>
+          <button class="opt">Did you put any meat inside this food?</button>
+          <button class="opt" data-correct>Does this dish contain any meat?</button>
+          <button class="opt">I don&rsquo;t really like meat in my dishes.</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Contain</strong> is the verb we use for ingredients. Option D is a statement about your taste, not a question — the waiter cannot answer it, and you still do not know what is in the dish."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">In the restaurant</span> &middot; 3 / 6</div>
+        <h2 class="slide-title" data-i18n="qTitle">What do you say?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Your soup arrives cold. You want to tell the waiter politely. You say:</p>
+        <div class="opts">
+          <button class="opt">This soup is completely cold and terrible!</button>
+          <button class="opt">I do not want to eat this soup any more.</button>
+          <button class="opt">My soup is at a very cold temperature.</button>
+          <button class="opt" data-correct>Excuse me, I think my soup is cold.</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Excuse me</strong> opens the complaint and <strong>I think</strong> softens it. Both are doing real work: without them the same fact sounds like an accusation."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-bg="FoodA1P2/kitchen.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">In the restaurant</span> &middot; 4 / 6</div>
+        <h2 class="slide-title" data-i18n="qTitle">What do you say?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">The waiter asks: &ldquo;Would you like still or sparkling water?&rdquo; You want water with bubbles. You say:</p>
+        <div class="opts">
+          <button class="opt" data-correct>Sparkling, please.</button>
+          <button class="opt">Bubbly one for me.</button>
+          <button class="opt">Not the still one.</button>
+          <button class="opt">The second, I think.</button>
+        </div>
+        <p class="feedback" data-explain="When someone offers you two things, you answer with the one you want plus <em>please</em>. <em>Bubbly</em> is informal, and answering by pointing at what you do <em>not</em> want makes the waiter do the work."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">In the restaurant</span> &middot; 5 / 6</div>
+        <h2 class="slide-title" data-i18n="qTitle">What do you say?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Your friend has just ordered the pasta and you want the same dish. You say:</p>
+        <div class="opts">
+          <button class="opt">I will also order the pasta, please.</button>
+          <button class="opt" data-correct>I&rsquo;ll have the same as him, please.</button>
+          <button class="opt">The same pasta that he did order.</button>
+          <button class="opt">Give me the pasta of my friend.</button>
+        </div>
+        <p class="feedback" data-explain="<strong>I&rsquo;ll have&hellip;</strong> is how you order in English — present simple <em>I order</em> sounds like a report rather than a request, and <em>give me</em> is an instruction."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-bg="FoodA1P2/pass.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">In the restaurant</span> &middot; 6 / 6</div>
+        <h2 class="slide-title" data-i18n="qTitle">What do you say?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">You do not know what &ldquo;cr&egrave;me br&ucirc;l&eacute;e&rdquo; is. You ask the waiter:</p>
+        <div class="opts">
+          <button class="opt">Please translate cr&egrave;me br&ucirc;l&eacute;e for me now.</button>
+          <button class="opt">This word is really very difficult to say.</button>
+          <button class="opt" data-correct>Could you tell me what cr&egrave;me br&ucirc;l&eacute;e is?</button>
+          <button class="opt">What is the cr&egrave;me br&ucirc;l&eacute;e exactly made of?</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Could you tell me&hellip;</strong> is the polite way in. Note the word order after it: <em>what cr&egrave;me br&ucirc;l&eacute;e is</em>, not <em>what is cr&egrave;me br&ucirc;l&eacute;e</em> — indirect questions use statement order."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap" data-bg="FoodA1P2/counter.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="gapEyebrow">The whole meal, in order</span> &middot; 1 / 2</div>
+        <h2 class="slide-title" data-i18n="gapTitle">Complete the conversation</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target" style="margin-bottom:12px">
+          <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
+          <span class="bank-chip">dessert</span> <span class="bank-chip">included</span> <span class="bank-chip">medium</span> <span class="bank-chip">recommend</span> <span class="bank-chip">reservation</span> <span class="bank-chip">separate</span> <span class="bank-chip">share</span> <span class="bank-chip">starter</span>
+        </div>
+        <div class="card"><p class="prose" style="font-size:20px;margin-bottom:14px"><span class="dim" style="font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin-right:10px">Waiter</span>Good evening! Do you have a <input class="gap" data-answer="reservation" aria-label="gap" style="width:190px">?</p><p class="prose" style="font-size:20px;margin-bottom:14px"><span class="dim" style="font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin-right:10px">You</span>Yes, for two. Could you <input class="gap" data-answer="recommend" aria-label="gap" style="width:190px"> a good <input class="gap" data-answer="starter" aria-label="gap" style="width:190px">?</p><p class="prose" style="font-size:20px;margin-bottom:14px"><span class="dim" style="font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin-right:10px">Waiter</span>Our soup of the day is excellent. And how would you like your steak &mdash; rare, <input class="gap" data-answer="medium" aria-label="gap" style="width:190px">, or well done?</p></div>
+        <p class="feedback" data-explain="A reservation is the booking; you recommend a dish to somebody; the starter is the first course; and the steak scale runs rare - medium - well done, with nothing else on it."></p>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
         </div>
       </div>
-      <div class="d-line">
-        <div class="d-avatar waiter-av">🧑‍🍳</div>
-        <div>
-          <div class="d-speaker">Waiter</div>
-          <div class="d-bubble">Yes, it is. Would you like to see the <span class="blank-span" id="fb6" onclick="placeWord('fb6','dessert')">________</span> menu?</div>
+    </section>
+
+    <section class="slide" data-type="gap" data-bg="FoodA1P2/counter.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="gapEyebrow">The whole meal, in order</span> &middot; 2 / 2</div>
+        <h2 class="slide-title" data-i18n="gapTitle">Complete the conversation</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target" style="margin-bottom:12px">
+          <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
+          <span class="bank-chip">dessert</span> <span class="bank-chip">included</span> <span class="bank-chip">medium</span> <span class="bank-chip">recommend</span> <span class="bank-chip">reservation</span> <span class="bank-chip">separate</span> <span class="bank-chip">share</span> <span class="bank-chip">starter</span>
+        </div>
+        <div class="card"><p class="prose" style="font-size:20px;margin-bottom:14px"><span class="dim" style="font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin-right:10px">You</span>Medium, please. Is service <input class="gap" data-answer="included" aria-label="gap" style="width:190px"> in the bill?</p><p class="prose" style="font-size:20px;margin-bottom:14px"><span class="dim" style="font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin-right:10px">Waiter</span>Yes, it is. Would you like to see the <input class="gap" data-answer="dessert" aria-label="gap" style="width:190px"> menu?</p><p class="prose" style="font-size:20px;margin-bottom:14px"><span class="dim" style="font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin-right:10px">You</span>Yes please. Could we <input class="gap" data-answer="share" aria-label="gap" style="width:190px"> the chocolate cake? And could we have <input class="gap" data-answer="separate" aria-label="gap" style="width:190px"> bills?</p></div>
+        <p class="feedback" data-explain="Service included means the tip is already on the bill. Share takes no preposition here, and separate bills is the fixed phrase - not divided or single."></p>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
         </div>
       </div>
-      <div class="d-line customer">
-        <div class="d-avatar cust-av">👤</div>
-        <div style="text-align:right">
-          <div class="d-speaker">Customer</div>
-          <div class="d-bubble">Yes please. Could we <span class="blank-span" id="fb7" onclick="placeWord('fb7','share')">________</span> the chocolate cake? And could we have <span class="blank-span" id="fb8" onclick="placeWord('fb8','separate')">________</span> bills?</div>
+    </section>
+
+    <section class="slide" data-type="match" data-bg="FoodA1P2/pass.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="matchEyebrow">What it really means</div>
+        <h2 class="slide-title" data-i18n="matchTitle">Six phrases you will hear or need</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="prose dim" style="margin-bottom:14px;font-size:17px" data-i18n="matchHint">
+          Click a phrase, then click what it means.
+        </p>
+        <div class="match-pair" data-term="Is this dish gluten-free?" data-def="Checking a dish is safe for a wheat intolerance"></div>
+        <div class="match-pair" data-term="Could I have it on the side?" data-def="Asking for a sauce or extra separately"></div>
+        <div class="match-pair" data-term="I&rsquo;d like to make a complaint." data-def="Telling the waiter something is wrong"></div>
+        <div class="match-pair" data-term="Can we get a doggy bag?" data-def="Asking to take leftover food home"></div>
+        <div class="match-pair" data-term="What&rsquo;s the dish of the day?" data-def="Asking what today&rsquo;s special is"></div>
+        <div class="match-pair" data-term="We&rsquo;re ready to order now." data-def="Telling the waiter you want to order"></div>
+        <div class="match-grid"></div>
+        <p class="feedback" data-explain="Two of these are worth memorising whole: is this dish gluten-free is the safest way to ask about any ingredient, and could I have it on the side works for every sauce, dressing and side dish on any menu."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap" data-bg="FoodA1P2/kitchen.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="fixEyebrow">One word out of place</span> &middot; 1 / 2</div>
+        <h2 class="slide-title" data-i18n="fixTitle">Repair the sentence</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="prose dim" style="margin-bottom:4px;font-size:16px" data-i18n="fixHint">
+          The crossed-out word is wrong. Type the word that belongs there.
+        </p>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:18px">Could you <s>bringing</s> me a glass of water, please?
+            <span class="dim" style="font-size:15px;margin-left:10px" data-i18n="fixLabel">It should be:</span>
+            <input class="gap" data-answer="bring" aria-label="correction" style="width:190px">
+          </p>
+          <p class="feedback" data-explain="After <em>Could you&hellip;</em> we use the plain infinitive with no <em>to</em> and no <em>-ing</em>: <strong>Could you bring me&hellip;?</strong>"></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:18px">I&rsquo;m allergic <s>at</s> shellfish. Does this dish contain any?
+            <span class="dim" style="font-size:15px;margin-left:10px" data-i18n="fixLabel">It should be:</span>
+            <input class="gap" data-answer="to" aria-label="correction" style="width:190px">
+          </p>
+          <p class="feedback" data-explain="The preposition is fixed: <strong>allergic to</strong>. Worth learning as one word, because getting it wrong is the one mistake here that could actually matter."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:18px">We&rsquo;d like a table for <s>fours</s> people, please.
+            <span class="dim" style="font-size:15px;margin-left:10px" data-i18n="fixLabel">It should be:</span>
+            <input class="gap" data-answer="four" aria-label="correction" style="width:190px">
+          </p>
+          <p class="feedback" data-explain="Numbers do not take an <em>-s</em> when they describe a noun: <strong>a table for four people</strong>."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
         </div>
       </div>
+    </section>
+
+    <section class="slide" data-type="gap" data-bg="FoodA1P2/kitchen.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="fixEyebrow">One word out of place</span> &middot; 2 / 2</div>
+        <h2 class="slide-title" data-i18n="fixTitle">Repair the sentence</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="prose dim" style="margin-bottom:4px;font-size:16px" data-i18n="fixHint">
+          The crossed-out word is wrong. Type the word that belongs there.
+        </p>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:18px">Excuse me, I think I <s>orderer</s> the pasta, not the risotto.
+            <span class="dim" style="font-size:15px;margin-left:10px" data-i18n="fixLabel">It should be:</span>
+            <input class="gap" data-answer="ordered" aria-label="correction" style="width:190px">
+          </p>
+          <p class="feedback" data-explain="<em>Order</em> is a regular verb, so the past simple is <strong>ordered</strong>."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:18px">Is the service charge <s>include</s> in the price?
+            <span class="dim" style="font-size:15px;margin-left:10px" data-i18n="fixLabel">It should be:</span>
+            <input class="gap" data-answer="included" aria-label="correction" style="width:190px">
+          </p>
+          <p class="feedback" data-explain="This is a passive: <em>be</em> plus the past participle. <strong>Is the service charge included?</strong>"></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="results">
+      <div class="slide-body" style="align-items:center;text-align:center">
+        <div class="score-big"><span id="scoreVal">0</span><span class="dim" style="font-size:34px">/<span id="scoreMax">0</span></span></div>
+        <p class="prose" style="margin-top:18px" id="scoreMsg"></p>
+        <p class="prose dim" style="margin-top:14px" data-i18n="resNext">Now say it out loud. That is the part that transfers →</p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="activate">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="actEyebrow">Activation</div>
+        <h2 class="slide-title" data-i18n="actTitle">Run the whole meal</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target">
+          <span class="act-target-label" data-i18n="actUse">Use at least four:</span>
+          <span class="bank-chip">I&rsquo;d like&hellip;</span>
+          <span class="bank-chip">Could you&hellip;?</span>
+          <span class="bank-chip">Excuse me</span>
+          <span class="bank-chip">a table for four</span>
+          <span class="bank-chip">still or sparkling</span>
+          <span class="bank-chip">separate bills</span>
+          <span class="bank-chip">the dish of the day</span>
+        </div>
+        <div class="cols act-cols">
+          <div class="card act-card">
+            <div class="act-kind"><span class="act-icon">🗣</span><span data-i18n="actSpeakKind">Roleplay · in pairs</span></div>
+            <p class="act-brief" data-i18n="actSpeakBrief">One waiter, one customer. Then swap, and make the second run harder.</p>
+            <ul class="act-list">
+              <li data-i18n="actSpeak1">Arrive without a reservation. The waiter must find you a table anyway.</li>
+              <li data-i18n="actSpeak2">Order a starter and a main. Ask the waiter to recommend one of them.</li>
+              <li data-i18n="actSpeak3">Something is wrong with the food. Complain without once saying &ldquo;bad&rdquo;.</li>
+              <li data-i18n="actSpeak4">Ask for separate bills, and check whether service is included.</li>
+            </ul>
+          </div>
+          <div class="card act-card">
+            <div class="act-kind"><span class="act-icon">✍️</span><span data-i18n="actWriteKind">Writing · 60–90 words</span></div>
+            <p class="act-brief" data-i18n="actWriteBrief">Write the conversation you had, as a dialogue. Waiter first.</p>
+            <textarea class="act-input" id="actInput" data-i18n-ph="actPlaceholder" placeholder="Waiter: Good evening — do you have a reservation?" aria-label="Written response"></textarea>
+            <div class="act-foot">
+              <span class="act-count" id="actCount">0 words</span>
+              <button class="btn act-copy" data-action="copy-writing" data-i18n="btnCopy">Copy</button>
+            </div>
+            <div class="act-print" id="actPrint" aria-hidden="true"></div>
+          </div>
+        </div>
+        <div style="margin-top:14px;text-align:center">
+          <button class="btn" data-action="restart" data-i18n="btnRestart">Start again</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── DECK CHROME ──────────────────────────────────────── -->
+    <div class="deck-bar">
+      <select class="lang-select" id="langSelect" aria-label="Language"></select>
+      <button class="nav-btn" data-action="prev" aria-label="Previous">‹</button>
+      <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+      <span class="deck-count" id="deckCount">1 / 1</span>
+      <span class="deck-score" id="deckScore"></span>
+      <button class="nav-btn" data-action="next" aria-label="Next">›</button>
     </div>
 
-    <button class="btn-check" id="fib-check" onclick="checkFib()">Check my answers</button>
-    <div class="feedback" id="fib-fb"></div>
   </div>
-
-  <button class="btn-next" id="fib-next" onclick="goNext(1)">Next Activity →</button>
 </div>
-
-<!-- ═══════════════════════════════════════
-     ACTIVITY 3 – DRAG & MATCH
-═══════════════════════════════════════ -->
-<div class="activity" id="act-2">
-  <div class="act-header">
-    <div class="act-tag">Activity 3 · Drag & Match</div>
-    <h2 class="act-title">Match the phrase to the meaning</h2>
-    <p class="act-instruction">Drag each restaurant phrase on the left to its correct meaning on the right.</p>
-  </div>
-
-  <div class="q-card">
-    <div class="match-grid">
-      <div>
-        <div class="match-col-label">Restaurant Phrase</div>
-        <div class="match-source" draggable="true" id="ms-1" data-id="1">
-          "Is this dish gluten-free?"
-        </div>
-        <div class="match-source" draggable="true" id="ms-2" data-id="2">
-          "Could I have it on the side?"
-        </div>
-        <div class="match-source" draggable="true" id="ms-3" data-id="3">
-          "I'd like to make a complaint."
-        </div>
-        <div class="match-source" draggable="true" id="ms-4" data-id="4">
-          "We're ready to order now."
-        </div>
-        <div class="match-source" draggable="true" id="ms-5" data-id="5">
-          "Can we get a doggy bag?"
-        </div>
-        <div class="match-source" draggable="true" id="ms-6" data-id="6">
-          "What's the dish of the day?"
-        </div>
-      </div>
-      <div>
-        <div class="match-col-label">Meaning</div>
-        <div class="match-target" id="mt-A" data-correct="4">
-          <span class="target-label">A</span>
-          Telling the waiter you want to order
-        </div>
-        <div class="match-target" id="mt-B" data-correct="1">
-          <span class="target-label">B</span>
-          Checking if a dish is safe for a wheat intolerance
-        </div>
-        <div class="match-target" id="mt-C" data-correct="6">
-          <span class="target-label">C</span>
-          Asking what the special is today
-        </div>
-        <div class="match-target" id="mt-D" data-correct="2">
-          <span class="target-label">D</span>
-          Asking for a sauce or extra food separately
-        </div>
-        <div class="match-target" id="mt-E" data-correct="5">
-          <span class="target-label">E</span>
-          Asking to take leftover food home
-        </div>
-        <div class="match-target" id="mt-F" data-correct="3">
-          <span class="target-label">F</span>
-          Telling the waiter something is wrong
-        </div>
-      </div>
-    </div>
-
-    <button class="btn-check" id="match-check" onclick="checkMatch()">Check my answers</button>
-    <div class="feedback" id="match-fb" style="margin-top:14px"></div>
-  </div>
-
-  <button class="btn-next" id="match-next" onclick="goNext(2)">Next Activity →</button>
-</div>
-
-<!-- ═══════════════════════════════════════
-     ACTIVITY 4 – SPOT THE ERROR
-═══════════════════════════════════════ -->
-<div class="activity" id="act-3">
-  <div class="act-header">
-    <div class="act-tag">Activity 4 · Spot the Error</div>
-    <h2 class="act-title">Find the mistake</h2>
-    <p class="act-instruction">Each sentence has <strong>one</strong> underlined word that is wrong. Click the incorrect word in each sentence, then submit to check.</p>
-  </div>
-
-  <div id="err-container"></div>
-
-  <button class="btn-check" id="err-check" onclick="checkErrors()">Check my answers</button>
-  <div class="feedback" id="err-fb" style="margin-top:14px"></div>
-  <button class="btn-next" id="err-next" onclick="showResult()">See My Results →</button>
-</div>
-
-<!-- RESULT -->
-<div id="result-screen">
-  <div class="result-ring">
-    <svg viewBox="0 0 150 150">
-      <circle class="ring-bg"  cx="75" cy="75" r="60"/>
-      <circle class="ring-val" id="ring-path" cx="75" cy="75" r="60" stroke-dasharray="377" stroke-dashoffset="377"/>
-    </svg>
-    <div class="result-center">
-      <div class="result-num" id="result-num">0</div>
-      <div class="result-of"  id="result-of">/ 0</div>
-    </div>
-  </div>
-
-  <h2 class="result-title" id="result-title">Well done!</h2>
-  <p class="result-msg" id="result-msg"></p>
-
-  <div class="result-acts">
-    <div class="result-act-item"><div class="result-act-label">Multiple Choice</div><div class="result-act-score" id="ra-mc">–</div></div>
-    <div class="result-act-item"><div class="result-act-label">Dialogue</div><div class="result-act-score" id="ra-fib">–</div></div>
-    <div class="result-act-item"><div class="result-act-label">Matching</div><div class="result-act-score" id="ra-match">–</div></div>
-    <div class="result-act-item"><div class="result-act-label">Spot the Error</div><div class="result-act-score" id="ra-err">–</div></div>
-  </div>
-
-  <button class="btn-restart" onclick="restartAll()">Try Again 🔄</button>
-</div>
-
-</main>
 
 <script>
-/* ── STATE ── */
-let totalScore = 0;
-const scores = { mc: 0, fib: 0, match: 0, err: 0 };
-const MAX = { mc: 6, fib: 8, match: 6, err: 5 };
+/* ══════════════════════════════════════════════════════════════════
+   ENGINE — identical in every lesson. Do not edit below this line
+   except to add UI_I18N strings.
+   ══════════════════════════════════════════════════════════════════ */
 
-function addScore(cat, n) {
-  scores[cat] += n;
-  totalScore += n;
-  document.getElementById('score-display').textContent = totalScore;
-}
-
-/* ═══════════════════
-   ACTIVITY 1 – MC
-═══════════════════ */
-let mcDone = 0;
-let mcCurrent = 1;
-const MC_TOTAL = 6;
-
-// map: question index → correct key
-const mcCorrect = { 1:'B', 2:'C', 3:'D', 4:'A', 5:'B', 6:'C' };
-
-function mcAns(btn, qi, correctKey) {
-  const card = document.getElementById('mc-card-' + qi);
-  const btns = card.querySelectorAll('.opt');
-  const clickedKey = btn.dataset.key;
-  const fb = document.getElementById('mc-fb-' + qi);
-
-  btns.forEach(b => {
-    b.disabled = true;
-    if (b.dataset.key === correctKey) b.classList.add('correct');
-    if (b === btn && clickedKey !== correctKey) b.classList.add('wrong');
-  });
-
-  const isRight = clickedKey === correctKey;
-  fb.className = 'feedback ' + (isRight ? 'fb-ok' : 'fb-bad');
-  if (!isRight) fb.innerHTML = fb.innerHTML.replace('✅','❌');
-
-  if (isRight) addScore('mc', 1);
-  mcDone++;
-
-  const pct = (mcDone / MC_TOTAL) * 100;
-  document.getElementById('mc-prog').style.width = pct + '%';
-  document.getElementById('mc-label').textContent = mcDone + ' / ' + MC_TOTAL;
-
-  mcCurrent++;
-  setTimeout(() => {
-    if (mcCurrent <= MC_TOTAL) {
-      card.style.display = 'none';
-      document.getElementById('mc-card-' + mcCurrent).style.display = 'block';
-    } else {
-      document.getElementById('mc-next').classList.add('show');
-    }
-  }, 1800);
-}
-
-/* ═══════════════════
-   ACTIVITY 2 – FIB
-═══════════════════ */
-const fibCorrect = {
-  fb1: 'reservation', fb2: 'recommend', fb3: 'starter',
-  fb4: 'medium', fb5: 'included', fb6: 'dessert',
-  fb7: 'share', fb8: 'separate'
-};
-const fibFilled = {};
-let fibSelected = null;
-
-document.getElementById('fib-bank').addEventListener('click', e => {
-  const chip = e.target.closest('.wchip');
-  if (!chip || chip.classList.contains('used')) return;
-  document.querySelectorAll('.wchip').forEach(c => c.classList.remove('selected'));
-  fibSelected = chip.dataset.w;
-  chip.classList.add('selected');
-});
-
-function placeWord(id, correctW) {
-  if (!fibSelected) return;
-  const el = document.getElementById(id);
-
-  // un-use old chip if replacing
-  if (fibFilled[id]) {
-    document.querySelectorAll('.wchip').forEach(c => {
-      if (c.dataset.w === fibFilled[id]) c.classList.remove('used');
-    });
-  }
-
-  el.textContent = fibSelected;
-  fibFilled[id] = fibSelected;
-
-  document.querySelectorAll('.wchip').forEach(c => {
-    if (c.dataset.w === fibSelected) { c.classList.add('used'); c.classList.remove('selected'); }
-  });
-  fibSelected = null;
-}
-
-function checkFib() {
-  let correct = 0;
-  Object.keys(fibCorrect).forEach(id => {
-    const el = document.getElementById(id);
-    const given = (fibFilled[id] || '').toLowerCase().trim();
-    const expected = fibCorrect[id];
-    if (given === expected) {
-      el.classList.add('ok');
-      correct++;
-    } else {
-      el.classList.add('bad');
-      el.textContent = (given || '—') + ' → ' + expected;
-    }
-  });
-
-  addScore('fib', correct);
-  const fb = document.getElementById('fib-fb');
-  if (correct === Object.keys(fibCorrect).length) {
-    fb.className = 'feedback fb-ok';
-    fb.innerHTML = '✅ Perfect! All 8 blanks correct. You can handle a full restaurant conversation!';
-  } else {
-    fb.className = 'feedback fb-bad';
-    fb.innerHTML = '❌ You got <strong>' + correct + ' of 8</strong> correct. The right words are shown above.';
-  }
-
-  document.getElementById('fib-check').disabled = true;
-  document.querySelectorAll('.wchip').forEach(c => c.style.pointerEvents = 'none');
-  document.querySelectorAll('.blank-span').forEach(s => s.style.cursor = 'default');
-  document.getElementById('fib-next').classList.add('show');
-}
-
-/* ═══════════════════
-   ACTIVITY 3 – MATCH
-═══════════════════ */
-let dragId = null;
-
-document.querySelectorAll('.match-source').forEach(src => {
-  src.addEventListener('dragstart', e => {
-    dragId = src.dataset.id;
-    src.classList.add('dragging');
-    e.dataTransfer.effectAllowed = 'move';
-  });
-  src.addEventListener('dragend', () => {
-    src.classList.remove('dragging');
-    dragId = null;
-  });
-});
-
-document.querySelectorAll('.match-target').forEach(tgt => {
-  tgt.addEventListener('dragover', e => { e.preventDefault(); tgt.classList.add('drag-over'); });
-  tgt.addEventListener('dragleave', () => tgt.classList.remove('drag-over'));
-  tgt.addEventListener('drop', e => {
-    e.preventDefault();
-    tgt.classList.remove('drag-over');
-    if (!dragId) return;
-
-    // un-fill if this target already had something
-    const prev = tgt.dataset.filled;
-    if (prev) {
-      const prevSrc = document.getElementById('ms-' + prev);
-      if (prevSrc) prevSrc.style.opacity = '1';
-    }
-    // un-assign from previous target
-    document.querySelectorAll('.match-target').forEach(t => {
-      if (t !== tgt && t.dataset.filled === dragId) {
-        const lbl = t.querySelector('.target-label').textContent;
-        t.innerHTML = '<span class="target-label">' + lbl + '</span>' + t.dataset.meaning;
-        t.classList.remove('filled');
-        delete t.dataset.filled;
-      }
-    });
-
-    const src = document.getElementById('ms-' + dragId);
-    const lbl = tgt.querySelector('.target-label').textContent;
-    tgt.innerHTML = '<span class="target-label">' + lbl + '</span>' + src.textContent.trim();
-    tgt.classList.add('filled');
-    tgt.dataset.filled = dragId;
-    src.style.opacity = '0.45';
-  });
-});
-
-// Store original meanings
-document.querySelectorAll('.match-target').forEach(t => {
-  t.dataset.meaning = t.innerHTML.replace(/<span[^>]*>[^<]*<\/span>/,'').trim();
-});
-
-function checkMatch() {
-  let correct = 0;
-  document.querySelectorAll('.match-target').forEach(tgt => {
-    const filled = tgt.dataset.filled;
-    const expected = tgt.dataset.correct;
-    if (filled && filled === expected) {
-      tgt.classList.add('tgt-ok');
-      correct++;
-      const src = document.getElementById('ms-' + filled);
-      if (src) src.classList.add('matched-ok');
-    } else if (filled) {
-      tgt.classList.add('tgt-bad');
-      const src = document.getElementById('ms-' + filled);
-      if (src) src.classList.add('matched-bad');
-    }
-    tgt.classList.remove('filled');
-  });
-
-  addScore('match', correct);
-  const fb = document.getElementById('match-fb');
-  const pairs = [
-    ["Is this dish gluten-free?", "Checking if a dish is safe for a wheat intolerance"],
-    ["Could I have it on the side?", "Asking for a sauce or extra food separately"],
-    ["I'd like to make a complaint.", "Telling the waiter something is wrong"],
-    ["We're ready to order now.", "Telling the waiter you want to order"],
-    ["Can we get a doggy bag?", "Asking to take leftover food home"],
-    ["What's the dish of the day?", "Asking what the special is today"],
-  ];
-  if (correct === 6) {
-    fb.className = 'feedback fb-ok';
-    fb.innerHTML = '✅ Excellent! All 6 phrases matched correctly. You know your restaurant vocabulary!';
-  } else {
-    fb.className = 'feedback fb-bad';
-    fb.innerHTML = '❌ You matched <strong>' + correct + ' of 6</strong> correctly. Correct pairs: ' +
-      pairs.map(p => '<em>"' + p[0] + '"</em> → ' + p[1]).join('; ') + '.';
-  }
-  document.getElementById('match-check').disabled = true;
-  document.querySelectorAll('.match-source').forEach(s => s.draggable = false);
-  document.getElementById('match-next').classList.add('show');
-}
-
-/* ═══════════════════
-   ACTIVITY 4 – ERRORS
-═══════════════════ */
-const errData = [
-  {
-    parts: [
-      { text: "Could", clickable: false },
-      { text: " you ", clickable: false },
-      { text: "bringing", clickable: true, correct: true, fix: "bring" },
-      { text: " me ", clickable: false },
-      { text: "a", clickable: false },
-      { text: " glass ", clickable: false },
-      { text: "of", clickable: false },
-      { text: " water, please?", clickable: false }
-    ],
-    explanation: '<strong>"bringing"</strong> is wrong. After <em>Could you…</em>, we use the infinitive without <em>to</em>: <strong>"Could you bring me…?"</strong>'
-  },
-  {
-    parts: [
-      { text: "I'm ", clickable: false },
-      { text: "allergic", clickable: false },
-      { text: " at", clickable: true, correct: true, fix: "to" },
-      { text: " shellfish. Does", clickable: false },
-      { text: " this", clickable: false },
-      { text: " dish", clickable: false },
-      { text: " contain", clickable: false },
-      { text: " any?", clickable: false }
-    ],
-    explanation: '<strong>"at"</strong> is wrong. The correct phrase is <strong>"allergic to"</strong> — we always use <em>to</em> after <em>allergic</em>.'
-  },
-  {
-    parts: [
-      { text: "We'd like", clickable: false },
-      { text: " a table", clickable: false },
-      { text: " for ", clickable: false },
-      { text: "fours", clickable: true, correct: true, fix: "four" },
-      { text: " people", clickable: false },
-      { text: ", please.", clickable: false }
-    ],
-    explanation: '<strong>"fours"</strong> is wrong. Numbers used as adjectives do not take an <em>-s</em>: <strong>"a table for four people"</strong>.'
-  },
-  {
-    parts: [
-      { text: "Excuse me,", clickable: false },
-      { text: " I think", clickable: false },
-      { text: " I orderer", clickable: true, correct: true, fix: "ordered" },
-      { text: " the pasta,", clickable: false },
-      { text: " not", clickable: false },
-      { text: " the risotto.", clickable: false }
-    ],
-    explanation: '<strong>"orderer"</strong> is wrong. The simple past of <em>order</em> is <strong>"ordered"</strong> — regular -ed ending.'
-  },
-  {
-    parts: [
-      { text: "Is the", clickable: false },
-      { text: " service", clickable: false },
-      { text: " charge", clickable: false },
-      { text: " include", clickable: true, correct: true, fix: "included" },
-      { text: " in", clickable: false },
-      { text: " the price?", clickable: false }
-    ],
-    explanation: '<strong>"include"</strong> is wrong. We need the past participle in this passive structure: <strong>"Is the service charge included?"</strong>'
-  }
+/* ── Languages. English is the base; German ships complete.
+      The other eight are deliberately empty — t() falls back to English,
+      so an unfinished language can never blank the interface. ── */
+const LANGS = [
+  { code:'en', label:'English'   }, { code:'de', label:'Deutsch'  },
+  { code:'es', label:'Español'   }, { code:'fr', label:'Français' },
+  { code:'it', label:'Italiano'  }, { code:'pt', label:'Português'},
+  { code:'ru', label:'Русский'   }, { code:'ar', label:'العربية'  },
+  { code:'zh', label:'中文'       }, { code:'ja', label:'日本語'    }
 ];
+const RTL_LANGS = ['ar'];
 
-const errSelected = {}; // qi → element clicked
+const UI_I18N = {
+  en: {
+    actEyebrow: 'Activation',
+    actPlaceholder: "Waiter: Good evening — do you have a reservation?",
+    actSpeak1: "Arrive without a reservation. The waiter must find you a table anyway.",
+    actSpeak2: "Order a starter and a main. Ask the waiter to recommend one of them.",
+    actSpeak3: "Something is wrong with the food. Complain without once saying “bad”.",
+    actSpeak4: "Ask for separate bills, and check whether service is included.",
+    actSpeakBrief: "One waiter, one customer. Then swap, and make the second run harder.",
+    actSpeakKind: 'Discussion · in pairs',
+    actTitle: "Run the whole meal",
+    actUse: "Use at least four:",
+    actWriteBrief: "Write the conversation you had, as a dialogue. Waiter first.",
+    actWriteKind: "Writing · 60–90 words",
+    askB: "Steak has exactly three answers: <em>rare</em>, <em>medium</em>, <em>well done</em>.",
+    askH: "Three questions you will be asked",
+    bankLabel: "Word bank:",
+    btnCheck: 'Check',
+    btnCopied: 'Copied',
+    btnCopy: 'Copy',
+    btnNext: 'Next →',
+    btnRestart: 'Start again',
+    btnStart: 'Begin →',
+    chipCount: "16 slides",
+    chipFocus: "Restaurant English",
+    chipLevel: "A1 · Part 2 of 2",
+    courseB: "American menus say <em>appetizer</em> and <em>entrée</em> instead of <em>starter</em> and <em>main course</em>. Same meal.",
+    courseH: "The courses",
+    coverSub: "Part two: from the door to the bill, in the words people actually use",
+    coverTitle: "Ordering Food &amp; <em>Drink</em>",
+    fbAnswer: 'Answer:',
+    fbCorrect: 'Correct.',
+    fbWrong: 'Not quite.',
+    fixEyebrow: "One word out of place",
+    fixHint: "The crossed-out word is wrong. Type the word that belongs there.",
+    fixLabel: "It should be:",
+    fixTitle: "Repair the sentence",
+    gapEyebrow: "The whole meal, in order",
+    gapTitle: "Complete the conversation",
+    matchEyebrow: "What it really means",
+    matchHint: "Click a phrase, then click what it means.",
+    matchTitle: "Six phrases you will hear or need",
+    menuEyebrow: "The menu, in order",
+    menuTitle: "The words on the card, and the ones you will be asked",
+    p1: "To order. Short for <em>I would like</em> — softer than <em>I want</em>, which sounds like a demand.",
+    p2: "To ask for something. The verb after it never changes: <em>bring</em>, not <em>to bring</em> or <em>bringing</em>.",
+    p3: "To get attention, and to open a complaint. Without it the same sentence sounds angry.",
+    qEyebrow: "In the restaurant",
+    qTitle: "What do you say?",
+    resLow: "Read the first two slides again, then run it once more. The phrases first, the questions after.",
+    resMid: "A good base. Go back to the three phrases; most of the misses start there.",
+    resNext: 'Recognising the language is half of it. Now produce it →',
+    resPerfect: "Full marks. You could walk into a restaurant tonight and be understood.",
+    resStrong: "Strong. The phrases have landed — the polite openings are what to practise aloud.",
+    scoreLabel: 'Score',
+    shapeEyebrow: "Before the questions",
+    shapeTitle: "Three phrases carry the whole meal",
+    slideOf: (a,b)=>`${a} / ${b}`,
+    wordCount: (n)=>`${n} ${n===1?'word':'words'}`
+  },
+  de: {
+    actEyebrow: 'Anwendung',
+    actPlaceholder: "Waiter: Good evening — do you have a reservation?",
+    actSpeak1: "Sie kommen ohne Reservierung. Der Kellner muss trotzdem einen Tisch finden.",
+    actSpeak2: "Bestellen Sie eine Vorspeise und ein Hauptgericht. Lassen Sie sich eines davon empfehlen.",
+    actSpeak3: "Mit dem Essen stimmt etwas nicht. Beschweren Sie sich, ohne einmal „bad“ zu sagen.",
+    actSpeak4: "Bitten Sie um getrennte Rechnungen und fragen Sie, ob die Bedienung inbegriffen ist.",
+    actSpeakBrief: "Einer bedient, einer bestellt. Dann tauschen — und den zweiten Durchgang schwerer machen.",
+    actSpeakKind: 'Diskussion · zu zweit',
+    actTitle: "Das ganze Essen durchspielen",
+    actUse: "Mindestens vier verwenden:",
+    actWriteBrief: "Schreiben Sie Ihr Gespräch als Dialog auf. Der Kellner beginnt.",
+    actWriteKind: "Schreiben · 60–90 Wörter",
+    askB: "Beim Steak gibt es genau drei Antworten: <em>rare</em>, <em>medium</em>, <em>well done</em>.",
+    askH: "Drei Fragen, die Ihnen gestellt werden",
+    bankLabel: "Wortliste:",
+    btnCheck: 'Prüfen',
+    btnCopied: 'Kopiert',
+    btnCopy: 'Kopieren',
+    btnNext: 'Weiter →',
+    btnRestart: 'Neu starten',
+    btnStart: 'Beginnen →',
+    chipCount: "16 Folien",
+    chipFocus: "Englisch im Restaurant",
+    chipLevel: "A1 · Teil 2 von 2",
+    courseB: "Auf amerikanischen Karten stehen <em>appetizer</em> und <em>entrée</em> statt <em>starter</em> und <em>main course</em>. Dasselbe Essen.",
+    courseH: "Die Gänge",
+    coverSub: "Teil zwei: von der Tür bis zur Rechnung, in den Wendungen, die wirklich benutzt werden",
+    coverTitle: "Essen &amp; <em>Trinken</em> bestellen",
+    fbAnswer: 'Antwort:',
+    fbCorrect: 'Richtig.',
+    fbWrong: 'Nicht ganz.',
+    fixEyebrow: "Ein Wort sitzt falsch",
+    fixHint: "Das durchgestrichene Wort ist falsch. Tippen Sie das Wort, das dorthin gehört.",
+    fixLabel: "Richtig wäre:",
+    fixTitle: "Reparieren Sie den Satz",
+    gapEyebrow: "Das ganze Essen, der Reihe nach",
+    gapTitle: "Vervollständigen Sie das Gespräch",
+    matchEyebrow: "Was es wirklich heißt",
+    matchHint: "Klicken Sie auf eine Wendung und dann auf ihre Bedeutung.",
+    matchTitle: "Sechs Wendungen, die Sie hören oder brauchen",
+    menuEyebrow: "Die Speisekarte, der Reihe nach",
+    menuTitle: "Die Wörter auf der Karte — und die Fragen, die kommen",
+    p1: "Zum Bestellen. Kurzform von <em>I would like</em> — höflicher als <em>I want</em>, das wie eine Forderung klingt.",
+    p2: "Um etwas zu bitten. Das Verb danach bleibt unverändert: <em>bring</em>, nicht <em>to bring</em> oder <em>bringing</em>.",
+    p3: "Um Aufmerksamkeit zu bekommen und eine Beschwerde zu eröffnen. Ohne diese Wendung klingt derselbe Satz verärgert.",
+    qEyebrow: "Im Restaurant",
+    qTitle: "Was sagen Sie?",
+    resLow: "Lesen Sie die ersten beiden Folien noch einmal und starten Sie neu. Erst die Wendungen, dann die Fragen.",
+    resMid: "Eine gute Grundlage. Gehen Sie zu den drei Wendungen zurück; dort beginnen die meisten Fehler.",
+    resNext: 'Die Sprache zu erkennen ist die halbe Miete. Jetzt anwenden →',
+    resPerfect: "Volle Punktzahl. Sie könnten heute Abend in ein Restaurant gehen und verstanden werden.",
+    resStrong: "Stark. Die Wendungen sitzen — üben Sie jetzt die höflichen Einstiege laut.",
+    scoreLabel: 'Punkte',
+    shapeEyebrow: "Vor den Aufgaben",
+    shapeTitle: "Drei Wendungen tragen das ganze Essen",
+    slideOf: (a,b)=>`${a} / ${b}`,
+    wordCount: (n)=>`${n} ${n===1?'Wort':'Wörter'}`
+  },
+  es: {},
+  fr: {},
+  it: {},
+  pt: {},
+  ru: {},
+  ar: {},
+  zh: {},
+  ja: {}
+};
 
-(function buildErrors() {
-  const container = document.getElementById('err-container');
-  errData.forEach((q, qi) => {
-    const card = document.createElement('div');
-    card.className = 'q-card';
-    card.innerHTML = `<div class="q-num">Sentence ${qi + 1} of ${errData.length}</div>`;
+let currentLang = 'en';
+const t = k => (UI_I18N[currentLang] && UI_I18N[currentLang][k] != null)
+  ? UI_I18N[currentLang][k] : UI_I18N.en[k];
 
-    const sent = document.createElement('div');
-    sent.className = 'error-sentence';
-    sent.id = 'err-sent-' + qi;
+/* ── Deck state ── */
+const stage   = document.getElementById('stage');
+const slides  = [...document.querySelectorAll('.slide')];
+const scored  = slides.filter(s => ['mc','gap','match','order'].includes(s.dataset.type));
+/* A slide may hold more than one gap; each gap is worth a point. */
+const countIn = s => s.dataset.type === 'gap'   ? s.querySelectorAll('.gap').length
+                   : s.dataset.type === 'match' ? s.querySelectorAll('.match-pair').length
+                   : 1;
+const maxScore = scored.reduce((n, s) => n + Math.max(1, countIn(s)), 0);
+let idx = 0, score = 0;
+const answered = new WeakSet();
 
-    q.parts.forEach(part => {
-      if (part.clickable) {
-        const span = document.createElement('span');
-        span.className = 'err-word';
-        span.textContent = part.text;
-        span.dataset.qi = qi;
-        span.dataset.correct = part.correct;
-        span.addEventListener('click', function() {
-          // deselect others in same sentence
-          sent.querySelectorAll('.err-word').forEach(w => w.classList.remove('selected'));
-          this.classList.add('selected');
-          errSelected[qi] = this;
-        });
-        sent.appendChild(span);
-      } else {
-        sent.appendChild(document.createTextNode(part.text));
-      }
-    });
+/* ── Scale the 1280×720 stage to fit any viewport, never scroll ── */
+function fitStage() {
+  const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+  stage.style.transform = `scale(${s})`;
+}
+addEventListener('resize', fitStage);
 
-    const fb = document.createElement('div');
-    fb.className = 'feedback';
-    fb.id = 'err-fb-' + qi;
+/* ── Navigation ── */
+function show(n) {
+  idx = Math.max(0, Math.min(slides.length - 1, n));
+  slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+  stage.classList.toggle('on-cover', slides[idx].dataset.type === 'cover');
+  // A slide may swap the background pattern for a second illustration from the
+  // same set (data-bg). Same idiom as the hero — picture at reduced opacity
+  // under the wash — so extra artwork never becomes a pasted-in box.
+  stage.style.setProperty('--hero', slides[idx].dataset.bg
+    ? `url('${slides[idx].dataset.bg}')` : '');
+  document.getElementById('progressFill').style.width =
+    (slides.length > 1 ? (idx / (slides.length - 1)) * 100 : 0) + '%';
+  document.getElementById('deckCount').textContent = t('slideOf')(idx + 1, slides.length);
+  document.querySelector('[data-action="prev"]').disabled = idx === 0;
+  document.querySelector('[data-action="next"]').disabled = idx === slides.length - 1;
+  if (slides[idx].dataset.type === 'results') renderResults();
+  const gap = slides[idx].querySelector('.gap');
+  if (gap && !answered.has(slides[idx])) setTimeout(() => gap.focus(), 60);
+}
 
-    card.appendChild(sent);
-    card.appendChild(fb);
-    container.appendChild(card);
+function renderResults() {
+  const max = maxScore;
+  document.getElementById('scoreVal').textContent = score;
+  document.getElementById('scoreMax').textContent = max;
+  const pct = max ? score / max : 0;
+  document.getElementById('scoreMsg').textContent =
+    pct === 1 ? t('resPerfect') : pct >= .75 ? t('resStrong')
+    : pct >= .5 ? t('resMid') : t('resLow');
+}
+
+function updateScoreChip() {
+  document.getElementById('deckScore').textContent =
+    maxScore ? `${t('scoreLabel')} ${score}/${maxScore}` : '';
+}
+
+/* ── Answer handling ── */
+function award(slide, ok) {
+  if (answered.has(slide)) return;
+  answered.add(slide);
+  if (ok) score++;
+  updateScoreChip();
+}
+
+function feedback(slide, ok, extra, ownExplain) {
+  const el = slide.querySelector('.feedback');
+  if (!el) return;
+  // An option's own explanation wins: telling a learner why THEIR answer was
+  // wrong beats restating why the key was right.
+  const reason = ownExplain || el.dataset.explain;
+  const why = reason ? ' ' + reason : '';
+  // innerHTML, not textContent: explanations carry <strong> and <em>, and the
+  // whole point of an explanation is that the word being taught is marked.
+  // Written with textContent this printed the tags as literal source text on
+  // every deck built from this template.
+  el.innerHTML = (ok ? t('fbCorrect') : t('fbWrong') + (extra ? ` ${t('fbAnswer')} ${extra}` : '')) + why;
+  el.className = 'feedback show ' + (ok ? 'ok' : 'no');
+}
+
+/* Multiple choice — shuffled on first view so option order is never a tell. */
+slides.filter(s => s.dataset.type === 'mc').forEach(slide => {
+  const box = slide.querySelector('.opts');
+  const opts = [...box.querySelectorAll('.opt')];
+  opts.sort(() => Math.random() - .5).forEach((o, i) => {
+    o.prepend(Object.assign(document.createElement('span'), {
+      className: 'opt-key', textContent: 'ABCD'[i]
+    }));
+    box.appendChild(o);
   });
-})();
+  opts.forEach(o => o.addEventListener('click', () => {
+    if (answered.has(slide)) return;
+    const ok = o.hasAttribute('data-correct');
+    opts.forEach(x => {
+      x.disabled = true;
+      if (x.hasAttribute('data-correct')) x.classList.add('correct');
+    });
+    if (!ok) o.classList.add('wrong');
+    award(slide, ok);
+    feedback(slide, ok, null, o.dataset.explain);
+  }));
+});
 
-function checkErrors() {
-  let correct = 0;
-  errData.forEach((q, qi) => {
-    const sel = errSelected[qi];
-    const fb = document.getElementById('err-fb-' + qi);
+/* Matching. Author as <div class="match-pair" data-term data-def> rows; the
+   engine builds both columns and shuffles the definitions. One point per pair. */
+slides.filter(s => s.dataset.type === 'match').forEach(slide => {
+  const pairs = [...slide.querySelectorAll('.match-pair')];
+  const grid = slide.querySelector('.match-grid');
+  if (!grid || !pairs.length) return;
+  const terms = document.createElement('div');
+  const defs = document.createElement('div');
+  terms.className = defs.className = 'match-col';
+  const mk = (txt, cls, key) => {
+    const b = document.createElement('button');
+    b.className = 'match-item ' + cls;
+    b.textContent = txt;
+    b.dataset.key = key;
+    return b;
+  };
+  pairs.forEach(p => terms.appendChild(mk(p.dataset.term, 'term', p.dataset.term)));
+  [...pairs].sort(() => Math.random() - .5)
+    .forEach(p => defs.appendChild(mk(p.dataset.def, 'def', p.dataset.term)));
+  grid.replaceChildren(terms, defs);
 
-    if (sel && sel.dataset.correct === 'true') {
-      sel.classList.remove('selected');
-      sel.classList.add('correct-err');
-      sel.textContent += ' ✗ → ' + q.parts.find(p => p.correct).fix;
-      fb.className = 'feedback fb-ok';
-      fb.innerHTML = '✅ ' + q.explanation;
-      correct++;
+  let picked = null, done = 0;
+  const total = pairs.length;
+  grid.addEventListener('click', e => {
+    const el = e.target.closest('.match-item');
+    if (!el || el.classList.contains('done')) return;
+    if (el.classList.contains('term')) {
+      grid.querySelectorAll('.term.picked').forEach(x => x.classList.remove('picked'));
+      el.classList.add('picked');
+      picked = el;
+      return;
+    }
+    if (!picked) return;
+    if (el.dataset.key === picked.dataset.key) {
+      el.classList.add('done'); picked.classList.add('done');
+      picked.classList.remove('picked');
+      picked = null; done++; score++; updateScoreChip();
+      if (done === total) {
+        answered.add(slide);
+        feedback(slide, true);
+      }
     } else {
-      // mark correct word
-      const sent = document.getElementById('err-sent-' + qi);
-      sent.querySelectorAll('.err-word').forEach(w => {
-        w.classList.remove('selected');
-        if (w.dataset.correct === 'true') {
-          w.classList.add('correct-err');
-          w.textContent += ' → ' + q.parts.find(p => p.correct).fix;
-        }
-      });
-      if (sel) sel.classList.add('wrong-err');
-      fb.className = 'feedback fb-bad';
-      fb.innerHTML = '❌ ' + q.explanation;
+      el.classList.add('miss');
+      setTimeout(() => el.classList.remove('miss'), 320);
     }
   });
+});
 
-  addScore('err', correct);
-  const fb = document.getElementById('err-fb');
-  if (correct === errData.length) {
-    fb.className = 'feedback fb-ok';
-    fb.innerHTML = '✅ Brilliant! You found all 5 errors — excellent grammar awareness!';
+/* Sentence building. Author as
+     <div class="order" data-answer="chunk|chunk|chunk"></div>
+   with a [data-action="check-order"] button and a .feedback alongside it.
+   The engine shuffles the chunks into a pool; clicking places one, clicking a
+   placed one takes it back. One point for the whole sentence — a half-right
+   word order is not half-right English. */
+slides.filter(s => s.dataset.type === 'order').forEach(slide => {
+  const box = slide.querySelector('.order');
+  if (!box) return;
+  const answer = box.dataset.answer.split('|').map(x => x.trim());
+  const target = document.createElement('div'); target.className = 'order-target';
+  const pool   = document.createElement('div'); pool.className   = 'order-pool';
+  answer.map((txt, i) => ({ txt, i }))
+        .sort(() => Math.random() - .5)
+        .forEach(({ txt, i }) => {
+          const b = document.createElement('button');
+          b.className = 'chunk';
+          b.textContent = txt;
+          b.dataset.i = i;
+          pool.appendChild(b);
+        });
+  box.replaceChildren(target, pool);
+
+  box.addEventListener('click', e => {
+    const c = e.target.closest('.chunk');
+    if (!c || c.disabled) return;
+    if (c.parentElement === pool) { c.classList.add('placed');    target.appendChild(c); }
+    else                          { c.classList.remove('placed'); pool.appendChild(c); }
+  });
+
+  slide._check = () => {
+    if (answered.has(slide)) return;
+    // Marking a half-built sentence teaches nothing; wait until it is complete.
+    if (target.children.length < answer.length) return;
+    answered.add(slide);
+    const ok = [...target.children].map(c => +c.dataset.i).every((v, i) => v === i);
+    target.classList.add(ok ? 'correct' : 'wrong');
+    box.querySelectorAll('.chunk').forEach(c => c.disabled = true);
+    if (ok) score++;
+    updateScoreChip();
+    feedback(slide, ok, ok ? null : answer.join(' '));
+    const btn = slide.querySelector('[data-action="check-order"]');
+    if (btn) btn.disabled = true;
+  };
+});
+
+/* Gap fill. Supports several gaps on one slide, each scored and explained
+   individually via its own .gap-row wrapper. */
+const gapOk = g => g.dataset.answer.split('|')
+  .map(a => a.trim().toLowerCase())
+  .includes(g.value.trim().toLowerCase().replace(/\s+/g, ' '));
+
+function markGap(g, fb) {
+  const ok = gapOk(g);
+  g.classList.add(ok ? 'correct' : 'wrong');
+  g.disabled = true;
+  if (ok) score++;
+  if (fb) {
+    const why = fb.dataset.explain ? ' ' + fb.dataset.explain : '';
+    fb.innerHTML = (ok ? t('fbCorrect')
+      : `${t('fbWrong')} ${t('fbAnswer')} ${g.dataset.answer.split('|')[0]}.`) + why;
+    fb.className = 'feedback show ' + (ok ? 'ok' : 'no');
+  }
+  return ok;
+}
+
+function checkGaps(slide) {
+  if (answered.has(slide)) return;
+  answered.add(slide);
+  const rows = [...slide.querySelectorAll('.gap-row')];
+  if (rows.length) {
+    rows.forEach(r => markGap(r.querySelector('.gap'), r.querySelector('.feedback')));
   } else {
-    fb.className = 'feedback fb-bad';
-    fb.innerHTML = '❌ You found <strong>' + correct + ' of 5</strong> errors correctly. Corrections are shown above.';
+    markGap(slide.querySelector('.gap'), slide.querySelector('.feedback'));
   }
-
-  document.getElementById('err-check').disabled = true;
-  document.querySelectorAll('.err-word').forEach(w => { w.style.cursor = 'default'; w.style.pointerEvents = 'none'; });
-  document.getElementById('err-next').classList.add('show');
+  const btn = slide.querySelector('[data-action="check"]');
+  if (btn) btn.disabled = true;
+  updateScoreChip();
 }
 
-/* ═══════════════════
-   NAVIGATION
-═══════════════════ */
-function goNext(from) {
-  document.getElementById('act-' + from).classList.remove('active');
-  document.getElementById('act-' + (from + 1)).classList.add('active');
-  const tabs = document.querySelectorAll('.nav-tab');
-  tabs[from].classList.remove('current');
-  tabs[from].classList.add('done');
-  if (tabs[from + 1]) tabs[from + 1].classList.add('current');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+/* ── Activation: word count, copy, and a print mirror (a textarea's
+   value does not appear in a PDF, so we mirror it into a div). ── */
+const actInput = document.getElementById('actInput');
+if (actInput) {
+  const countEl = document.getElementById('actCount');
+  const printEl = document.getElementById('actPrint');
+  const sync = () => {
+    const words = actInput.value.trim().split(/\s+/).filter(Boolean).length;
+    countEl.textContent = t('wordCount')(words);
+    printEl.textContent = actInput.value;
+  };
+  actInput.addEventListener('input', sync);
+  window.syncActivation = sync;
+  sync();
 }
 
-function showResult() {
-  document.getElementById('act-3').classList.remove('active');
-  document.querySelectorAll('.nav-tab').forEach(t => { t.classList.remove('current'); t.classList.add('done'); });
-
-  const maxTotal = MAX.mc + MAX.fib + MAX.match + MAX.err;
-  document.getElementById('result-num').textContent = totalScore;
-  document.getElementById('result-of').textContent = '/ ' + maxTotal;
-  document.getElementById('ra-mc').textContent    = scores.mc + ' / ' + MAX.mc;
-  document.getElementById('ra-fib').textContent   = scores.fib + ' / ' + MAX.fib;
-  document.getElementById('ra-match').textContent = scores.match + ' / ' + MAX.match;
-  document.getElementById('ra-err').textContent   = scores.err + ' / ' + MAX.err;
-
-  const pct = totalScore / maxTotal;
-  const circumference = 377;
-  const offset = circumference - (pct * circumference);
-  setTimeout(() => {
-    document.getElementById('ring-path').style.strokeDashoffset = offset;
-  }, 100);
-
-  let title, msg;
-  if (pct >= 0.9) {
-    title = "Outstanding! 🌟"; msg = "You have excellent restaurant English at A1+ level. You can handle complex ordering conversations with confidence!";
-  } else if (pct >= 0.75) {
-    title = "Great Work! 🎉"; msg = "You have a strong grasp of restaurant language. Review the phrases you missed and you'll be even better next time.";
-  } else if (pct >= 0.55) {
-    title = "Good Progress! 😊"; msg = "You're developing your restaurant English well. Try again to practise the trickier phrases and grammar structures.";
-  } else {
-    title = "Keep Going! 💪"; msg = "Every mistake is a learning opportunity! Focus on the feedback for each activity and try again — you'll improve quickly.";
-  }
-
-  document.getElementById('result-title').textContent = title;
-  document.getElementById('result-msg').textContent = msg;
-  document.getElementById('result-screen').style.display = 'block';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-/* ═══════════════════
-   RESTART
-═══════════════════ */
-function restartAll() {
-  totalScore = 0;
-  scores.mc = scores.fib = scores.match = scores.err = 0;
-  mcDone = 0; mcCurrent = 1;
-  Object.keys(errSelected).forEach(k => delete errSelected[k]);
-
-  document.getElementById('score-display').textContent = '0';
-  document.getElementById('result-screen').style.display = 'none';
-
-  // MC
-  for (let i = 1; i <= MC_TOTAL; i++) {
-    const c = document.getElementById('mc-card-' + i);
-    c.style.display = i === 1 ? 'block' : 'none';
-    c.querySelectorAll('.opt').forEach(b => { b.disabled = false; b.classList.remove('correct','wrong'); });
-    const fb = document.getElementById('mc-fb-' + i);
-    fb.className = 'feedback';
-    if (!fb.innerHTML.startsWith('✅')) fb.innerHTML = fb.innerHTML.replace('❌','✅');
-  }
-  document.getElementById('mc-prog').style.width = '0%';
-  document.getElementById('mc-label').textContent = '0 / ' + MC_TOTAL;
-  document.getElementById('mc-next').classList.remove('show');
-
-  // FIB
-  Object.keys(fibCorrect).forEach(id => {
-    const el = document.getElementById(id);
-    el.textContent = '________';
-    el.classList.remove('ok','bad');
-    delete el.dataset.filled;
-  });
-  Object.keys(fibFilled).forEach(k => delete fibFilled[k]);
-  fibSelected = null;
-  document.querySelectorAll('.wchip').forEach(c => { c.classList.remove('used','selected'); c.style.pointerEvents = ''; });
-  document.querySelectorAll('.blank-span').forEach(s => s.style.cursor = '');
-  document.getElementById('fib-fb').className = 'feedback';
-  document.getElementById('fib-check').disabled = false;
-  document.getElementById('fib-next').classList.remove('show');
-
-  // MATCH — rebuild
-  document.querySelectorAll('.match-source').forEach(s => {
-    s.style.opacity = '1';
-    s.classList.remove('matched-ok','matched-bad','dragging');
-    s.draggable = true;
-  });
-  document.querySelectorAll('.match-target').forEach(t => {
-    const lbl = t.querySelector('.target-label').textContent;
-    t.innerHTML = '<span class="target-label">' + lbl + '</span>' + t.dataset.meaning;
-    t.classList.remove('tgt-ok','tgt-bad','filled','drag-over');
-    delete t.dataset.filled;
-  });
-  document.getElementById('match-fb').className = 'feedback';
-  document.getElementById('match-check').disabled = false;
-  document.getElementById('match-next').classList.remove('show');
-
-  // ERRORS — rebuild
-  document.getElementById('err-container').innerHTML = '';
-  (function buildErrors() {
-    const container = document.getElementById('err-container');
-    errData.forEach((q, qi) => {
-      const card = document.createElement('div');
-      card.className = 'q-card';
-      card.innerHTML = `<div class="q-num">Sentence ${qi + 1} of ${errData.length}</div>`;
-      const sent = document.createElement('div');
-      sent.className = 'error-sentence';
-      sent.id = 'err-sent-' + qi;
-      q.parts.forEach(part => {
-        if (part.clickable) {
-          const span = document.createElement('span');
-          span.className = 'err-word';
-          span.textContent = part.text;
-          span.dataset.qi = qi;
-          span.dataset.correct = part.correct;
-          span.addEventListener('click', function() {
-            sent.querySelectorAll('.err-word').forEach(w => w.classList.remove('selected'));
-            this.classList.add('selected');
-            errSelected[qi] = this;
-          });
-          sent.appendChild(span);
-        } else {
-          sent.appendChild(document.createTextNode(part.text));
-        }
-      });
-      const fb = document.createElement('div');
-      fb.className = 'feedback';
-      fb.id = 'err-fb-' + qi;
-      card.appendChild(sent);
-      card.appendChild(fb);
-      container.appendChild(card);
+/* ── Events ── */
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-action]');
+  if (!a) return;
+  const act = a.dataset.action;
+  if (act === 'next') show(idx + 1);
+  if (act === 'prev') show(idx - 1);
+  if (act === 'check') checkGaps(a.closest('.slide'));
+  if (act === 'check-order') { const sl = a.closest('.slide'); if (sl._check) sl._check(); }
+  if (act === 'restart') location.reload();
+  if (act === 'copy-writing') {
+    const ta = document.getElementById('actInput');
+    if (ta && navigator.clipboard) navigator.clipboard.writeText(ta.value).then(() => {
+      const was = a.textContent;
+      a.textContent = t('btnCopied');
+      setTimeout(() => { a.textContent = was; }, 1400);
     });
-  })();
-  document.getElementById('err-fb').className = 'feedback';
-  document.getElementById('err-check').disabled = false;
-  document.getElementById('err-next').classList.remove('show');
+  }
+});
 
-  // ring reset
-  document.getElementById('ring-path').style.strokeDashoffset = 377;
+document.addEventListener('keydown', e => {
+  if (e.target.matches('input, select, textarea')) {
+    if (e.key === 'Enter') checkGaps(e.target.closest('.slide'));
+    return;
+  }
+  if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); show(idx + 1); }
+  if (['ArrowLeft', 'PageUp'].includes(e.key))         { e.preventDefault(); show(idx - 1); }
+});
 
-  // nav
-  document.querySelectorAll('.nav-tab').forEach((t, i) => {
-    t.classList.remove('done','current');
-    if (i === 0) t.classList.add('current');
+/* ── Language ── */
+function applyLang() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const v = t(el.dataset.i18n);
+    if (v != null) el.innerHTML = v;
   });
-  document.querySelectorAll('.activity').forEach((a, i) => {
-    a.classList.toggle('active', i === 0);
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const v = t(el.dataset.i18nPh);
+    if (v != null) el.placeholder = v;
   });
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (window.syncActivation) window.syncActivation();
+  document.documentElement.lang = currentLang;
+  document.documentElement.dir = RTL_LANGS.includes(currentLang) ? 'rtl' : 'ltr';
+  updateScoreChip();
+  show(idx);
 }
+
+function initLang() {
+  const sel = document.getElementById('langSelect');
+  // Only offer languages that are actually translated. An empty or partial
+  // scaffold stays in the code for a future pass but never appears as a dead
+  // option in the menu.
+  const enKeys = Object.keys(UI_I18N.en).length;
+  LANGS.filter(l => l.code === 'en' ||
+                    Object.keys(UI_I18N[l.code] || {}).length >= enKeys)
+       .forEach(l => sel.add(new Option(l.label, l.code)));
+  sel.value = currentLang;
+  sel.hidden = sel.options.length < 2;
+  sel.addEventListener('change', () => { currentLang = sel.value; applyLang(); });
+}
+
+/* Per-slide background art: set the variable on the element as well, because
+   the print stylesheet paints each slide's own ::before from var(--hero). */
+slides.filter(s => s.dataset.bg).forEach(s =>
+  s.style.setProperty('--hero', `url('${s.dataset.bg}')`));
+
+/* ── Boot ── */
+initLang();
+fitStage();
+applyLang();
+updateScoreChip();
+
+/* Reveal the wordmark only once DM Sans is really available, so the
+   Forbes/ENGLISH lockup never renders at fallback-font proportions. */
+const ready = () => document.body.classList.add('fonts-ready');
+if (document.fonts && document.fonts.ready) { document.fonts.ready.then(ready); setTimeout(ready, 1500); }
+else ready();
 </script>
 </body>
 </html>

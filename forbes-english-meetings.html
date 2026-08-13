@@ -3,750 +3,1330 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Open Answer Practice</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- ══ REPLACE: lesson title. No "Forbes English —" prefix. ══ -->
+<title>Say it in your own words — B2 open practice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --ink: #1e1a14;
-    --ink2: #332c1e;
-    --slate: #6b5e44;
-    --mist: #b0a080;
-    --cream: #faf6ee;
-    --paper: #fffdf8;
-    --amber: #c07820;
-    --amber-light: #e09840;
-    --amber-pale: #fef3d8;
-    --correct: #3d6b3a;
-    --correct-bg: #eaf4e8;
-    --rule: #ddd0b8;
-    --warm-shadow: rgba(30,26,20,0.07);
+/* ══════════════════════════════════════════════════════════════════
+   FORBES ENGLISH — 16:9 SLIDE LESSON TEMPLATE
+   Everything you normally need to change lives in the two blocks
+   marked "REPLACE". Do not restructure the engine below them.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ══ REPLACE 1 of 2: hero image + palette ══
+   1. Point --hero at the lesson's cover image. This ONE line drives the
+      cover, the background pattern on every slide, and the PDF export.
+   2. Generate the palette FROM that same image:
+         python3 lesson-template/extract-palette.py <hero-image>
+      and paste its output over the colour block. Never hand-pick colours. */
+:root {
+  --hero: url('Meetings/hero.jpg');
+
+  --void          : #090e0c;
+  --surface       : #121c18;
+  --surface2      : #1a2923;
+  --border        : #b55e53;
+  --text          : #f5f2f2;
+  --text-dim      : #bfa6a3;
+  --accent        : #e99085;
+  --accent-bright : #f7aea5;
+  --accent-dim    : #d54e3d;
+  --secondary     : #040c09;
+  --contrast      : #1deda0;
+}
+
+/* ── Fixed tokens: identical in every lesson. Do not edit. ── */
+:root {
+  --slide-w: 1280px;
+  --slide-h: 720px;
+  --pad: 64px;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-ui: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'DM Mono', ui-monospace, monospace;
+  --r: 10px;
+  --ok: #3fbf7f;
+  --no: #e8555f;
+  --bg-opacity: 0.72;     /* background pattern strength — see doc §6 */
+
+  /* Theme primitives. Dark is the default; a light lesson sets
+     data-theme="light" on <html> and only these flip. Never hardcode
+     rgba(0,0,0,…) or rgba(255,255,255,…) in a lesson — use these. */
+  --inset:  rgba(255,255,255,0.07);  /* recessed fills: inputs, key discs   */
+  --inset2: rgba(255,255,255,0.14);  /* the same, one step stronger         */
+  --scrim:  rgba(0,0,0,0.45);        /* chrome sitting over the hero        */
+  --hairline: rgba(255,255,255,0.28);
+  --cover-shadow: 0 1px 2px rgba(0,0,0,0.95), 0 2px 8px rgba(0,0,0,0.90),
+                  0 4px 26px rgba(0,0,0,0.80), 0 0 3px rgba(0,0,0,0.85);
+  /* Interior background wash. Two stops, not one: the artwork stays visible
+     across the middle of the slide and is only pulled down at the very top
+     and bottom, where the eyebrow, the deck bar and the progress rail sit.
+     An interior page that reads as plain black is a bug — see doc §6. */
+  --wash-mid:  rgba(0,0,0,0.06);
+  --wash-edge: rgba(0,0,0,0.20);
+}
+
+/* ══ LIGHT THEME ══
+   For bright, airy heroes. The palette comes from
+   `extract-palette.py <hero> --light`; these are the structural flips the
+   palette alone cannot express.
+
+   A light lesson is a MID tone, not a white one. Every wash here is mixed
+   from --void rather than from white: mixing toward white bleaches the hero
+   out of the interior pages and turns the deck into glare on a projector.
+   If you find yourself reaching for rgba(255,255,255,…) in a lesson, the
+   answer is a higher --void percentage instead. */
+html[data-theme="light"] {
+  --inset:  rgba(0,0,0,0.045);
+  --inset2: rgba(0,0,0,0.10);
+  --scrim:  color-mix(in srgb, var(--void) 78%, transparent);
+  --hairline: rgba(0,0,0,0.14);
+  --cover-shadow: 0 1px 2px rgba(255,255,255,0.95), 0 2px 8px rgba(255,255,255,0.85),
+                  0 4px 26px rgba(255,255,255,0.6), 0 0 3px rgba(255,255,255,0.9);
+  --wash-mid:  color-mix(in srgb, var(--void) 8%, transparent);
+  --wash-edge: color-mix(in srgb, var(--void) 26%, transparent);
+  --bg-opacity: 0.62;
+}
+
+/* On a mid canvas a translucent card has little to contrast against, so
+   edges need more of the hairline than they do on a dark canvas. */
+html[data-theme="light"] .card { border-color: color-mix(in srgb, var(--border) 90%, transparent); }
+html[data-theme="light"] .opt,
+html[data-theme="light"] .match-item { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
+html[data-theme="light"] .opt-key { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
+html[data-theme="light"] .card { background: color-mix(in srgb, var(--surface) 92%, transparent); }
+html[data-theme="light"] .opt { background: color-mix(in srgb, var(--surface) 95%, transparent); }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;            /* NO SCROLLING. This is the whole point. */
+  background: var(--void);
+  color: var(--text);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── STAGE: a fixed 1280×720 canvas scaled to fit any viewport ── */
+.stage-wrap { position: fixed; inset: 0; display: grid; place-items: center; }
+.stage {
+  position: relative;
+  width: var(--slide-w);
+  height: var(--slide-h);
+  transform-origin: center center;
+  overflow: hidden;
+  background: var(--void);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.55);
+}
+
+/* ── BACKGROUND PATTERN: the cover image, behind every slide ──
+   Driven by --hero so the screen view and the PDF/PPT export read from
+   ONE definition. Two pseudo-layers because opacity on a parent would
+   also fade the wash sitting on top of it. */
+.bg-layer { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.bg-layer::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--hero) center / cover no-repeat;
+  opacity: var(--bg-opacity);
+  filter: saturate(0.92);
+}
+.bg-layer::after {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, var(--wash-edge) 0%, var(--wash-mid) 20%,
+                            var(--wash-mid) 80%, var(--wash-edge) 100%);
+}
+/* The cover slide shows the hero at FULL strength — no wash, no dimming. */
+.stage.on-cover .bg-layer::before { opacity: 1; filter: none; }
+/* Centre scrim: guarantees cover-text contrast over ANY hero — light, dark,
+   or busy — while leaving the artwork vivid at the edges. Do not remove it;
+   it is what makes an arbitrary dropped-in image safe. */
+.stage.on-cover .bg-layer::after {
+  background:
+    radial-gradient(ellipse 58% 54% at 50% 46%,
+      rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.22) 54%, transparent 82%),
+    linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.03) 30%,
+                            rgba(0,0,0,0.05) 70%, rgba(0,0,0,0.38) 100%);
+}
+/* A light cover keeps its picture. Dark ink already carries against a bright
+   image, so the scrim here is barely there — just enough to stop the title
+   landing on a hard edge. Never brighten a light cover to rescue text; if the
+   text will not read, the hero is wrong for a light lesson. */
+html[data-theme="light"] .stage.on-cover .bg-layer::after {
+  background:
+    radial-gradient(ellipse 58% 54% at 50% 46%,
+      rgba(255,255,255,0.48) 0%, rgba(255,255,255,0.28) 54%, transparent 82%),
+    linear-gradient(180deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.03) 30%,
+                            rgba(255,255,255,0.05) 70%, rgba(255,255,255,0.22) 100%);
+}
+
+/* ── SLIDES ── */
+.slide {
+  position: absolute; inset: 0; z-index: 1;
+  display: none;
+  flex-direction: column;
+  padding: var(--pad);
+}
+.slide.is-active { display: flex; animation: slide-in .32s ease both; }
+@keyframes slide-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+/* ── LOGO ── */
+.fe-logo { width: 152px; height: auto; display: block; }
+.fe-logo-mark { color: var(--logo-mark, var(--accent)); }
+.fe-logo-word { fill: var(--text); opacity: 0; transition: opacity .25s ease; }
+.fonts-ready .fe-logo-word { opacity: 1; }   /* never flash a fallback face */
+.slide[data-type="cover"] .fe-logo { width: 232px; }
+
+/* ── COVER ── */
+.cover-inner {
+  height: 100%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; gap: 4px;
+}
+.cover-title {
+  font-family: var(--font-display);
+  font-size: 62px; font-weight: 900; line-height: 1.06;
+  color: var(--text);
+  text-shadow: var(--cover-shadow);
+  margin-top: 26px;
+}
+.cover-title em { font-style: normal; color: var(--accent-bright); }
+.cover-sub {
+  font-size: 19px; color: var(--text);
+  letter-spacing: .04em; margin-top: 14px;
+  text-shadow: var(--cover-shadow);
+}
+.cover-meta {
+  display: flex; gap: 10px; margin-top: 26px; flex-wrap: wrap; justify-content: center;
+}
+.chip {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase;
+  padding: 6px 14px; border-radius: 999px;
+  border: 1px solid var(--hairline);
+  background: var(--scrim);
+  color: var(--text);
+}
+
+/* ── SLIDE FURNITURE ── */
+.slide-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 20px; margin-bottom: 26px;
+}
+.eyebrow {
+  font-family: var(--font-mono); font-size: 12px;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent-bright);
+}
+.slide-title {
+  font-family: var(--font-display);
+  font-size: 38px; font-weight: 700; line-height: 1.15; color: var(--text);
+  margin-top: 6px;
+}
+.slide-body { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; }
+
+/* Content sits in a translucent card so it stays legible over the pattern. */
+.card {
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+  border-radius: var(--r);
+  padding: 30px 34px;
+  backdrop-filter: blur(3px);
+}
+.card + .card { margin-top: 16px; }
+.cols .card + .card,
+.cols .card { margin-top: 0; }   /* side-by-side cards must share a top edge */
+.prose { font-size: 20px; line-height: 1.62; color: var(--text); }
+.prose + .prose { margin-top: 14px; }
+.prose strong { color: var(--accent-bright); font-weight: 600; }
+.dim { color: var(--text-dim); }
+
+/* Two-column teaching layout */
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+
+/* ── QUESTIONS ── */
+.q-stem { font-size: 25px; line-height: 1.5; color: var(--text); margin-bottom: 22px; }
+.q-stem em { font-style: normal; color: var(--accent-bright); font-weight: 600; }
+
+.opts { display: grid; gap: 11px; }
+.opts.two-up { grid-template-columns: 1fr 1fr; }
+.opt {
+  display: flex; align-items: center; gap: 14px;
+  width: 100%; text-align: left;
+  font-family: var(--font-ui); font-size: 19px; color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: var(--r);
+  padding: 15px 20px; cursor: pointer;
+  transition: border-color .15s, background .15s, transform .12s;
+}
+.opt:hover:not(:disabled) { border-color: var(--accent); transform: translateX(3px); }
+.opt-key {
+  flex: 0 0 30px; height: 30px; display: grid; place-items: center;
+  border-radius: 50%; font-family: var(--font-mono); font-size: 13px;
+  background: var(--inset);
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+}
+.opt.correct { border-color: var(--ok); background: color-mix(in srgb, var(--ok) 20%, var(--surface2)); }
+.opt.wrong   { border-color: var(--no); background: color-mix(in srgb, var(--no) 18%, var(--surface2)); }
+.opt:disabled { cursor: default; }
+
+/* Gap-fill */
+.gap {
+  font-family: var(--font-ui); font-size: 20px; color: var(--text);
+  background: var(--inset);
+  border: none; border-bottom: 2px solid var(--accent);
+  padding: 3px 10px; min-width: 190px; border-radius: 4px 4px 0 0;
+}
+.gap:focus { outline: none; background: var(--inset2); }
+.gap.correct { border-bottom-color: var(--ok); color: var(--ok); }
+.gap.wrong   { border-bottom-color: var(--no); color: var(--no); }
+
+.feedback {
+  margin-top: 18px; font-size: 17px; line-height: 1.55;
+  min-height: 26px; opacity: 0; transition: opacity .2s;
+}
+.feedback.show { opacity: 1; }
+.feedback.ok { color: var(--ok); }
+.feedback.no { color: var(--no); }
+
+/* ── BUTTONS ── */
+.btn {
+  font-family: var(--font-ui); font-size: 15px; font-weight: 600;
+  letter-spacing: .03em;
+  padding: 12px 26px; border-radius: var(--r);
+  border: 1px solid var(--accent); background: transparent; color: var(--accent-bright);
+  cursor: pointer; transition: background .15s, color .15s;
+}
+.btn:hover { background: var(--accent); color: var(--void); }
+.btn-solid { background: var(--accent); color: var(--void); border-color: var(--accent); }
+.btn-solid:hover { background: var(--accent-bright); border-color: var(--accent-bright); }
+.btn:disabled { opacity: .35; cursor: not-allowed; }
+.btn-lg { font-size: 17px; padding: 15px 38px; }
+
+/* ── CHROME: progress + nav, pinned inside the stage ── */
+.deck-bar {
+  position: absolute; z-index: 3; left: 0; right: 0; bottom: 0;
+  height: 58px; padding: 0 26px;
+  display: flex; align-items: center; gap: 18px;
+  background: linear-gradient(180deg, transparent, var(--scrim));
+}
+.stage.on-cover .deck-bar { background: none; }
+.stage.on-cover .deck-score { visibility: hidden; }
+.progress { flex: 1; height: 3px; background: var(--inset2); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0; background: var(--accent); transition: width .3s ease; }
+.deck-count, .deck-score {
+  font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); white-space: nowrap;
+}
+.nav-btn {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  background: var(--scrim); color: var(--text);
+  cursor: pointer; font-size: 15px; line-height: 1;
+  display: grid; place-items: center; transition: border-color .15s, background .15s;
+}
+.nav-btn:hover:not(:disabled) { border-color: var(--accent); background: var(--accent); color: var(--void); }
+.nav-btn:disabled { opacity: .28; cursor: not-allowed; }
+
+/* ── LANGUAGE SWITCH ── */
+.lang-select {
+  font-family: var(--font-mono); font-size: 12px;
+  background: var(--scrim); color: var(--text);
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  border-radius: 6px; padding: 6px 10px; cursor: pointer;
+}
+.lang-select:focus { outline: 1px solid var(--accent); }
+
+/* ── RESULTS ── */
+.score-big {
+  font-family: var(--font-display); font-size: 84px; font-weight: 900;
+  color: var(--accent-bright); line-height: 1;
+}
+
+/* ── RTL ── */
+[dir="rtl"] .opt { text-align: right; }
+[dir="rtl"] .opt:hover:not(:disabled) { transform: translateX(-3px); }
+
+
+/* ── ACTIVATION ──────────────────────────────────────────────────── */
+.act-target {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 16px;
+}
+.act-target-label {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-dim);
+  margin-right: 4px;
+}
+.bank-chip {
+  font-family: var(--font-mono); font-size: 12px;
+  padding: 5px 12px; border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  color: var(--accent-bright);
+}
+.act-cols { align-items: stretch; }
+.act-card { display: flex; flex-direction: column; padding: 20px 24px; }
+.act-kind {
+  display: flex; align-items: center; gap: 9px;
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--accent-bright); margin-bottom: 12px;
+}
+.act-icon { font-size: 16px; }
+.act-brief { font-size: 16.5px; line-height: 1.5; color: var(--text); margin-bottom: 12px; }
+.act-list { list-style: none; display: grid; gap: 9px; }
+.act-list li {
+  font-size: 15.5px; line-height: 1.45; color: var(--text-dim);
+  padding-left: 18px; position: relative;
+}
+.act-list li::before {
+  content: '—'; position: absolute; left: 0; color: var(--accent);
+}
+.act-input {
+  flex: 1; min-height: 118px; resize: none;
+  font-family: var(--font-ui); font-size: 15px; line-height: 1.55;
+  color: var(--text);
+  background: var(--inset);
+  border: 1px solid color-mix(in srgb, var(--border) 45%, transparent);
+  border-radius: 8px; padding: 12px 14px;
+}
+.act-input:focus { outline: none; border-color: var(--accent); background: var(--inset2); }
+.act-input::placeholder { color: var(--text-dim); opacity: .55; }
+.act-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 10px;
+}
+.act-count { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-dim); }
+.act-copy { font-size: 12.5px; padding: 6px 14px; }
+/* The textarea's value does not print; this mirror does. */
+.act-print { display: none; font-size: 14px; line-height: 1.55; white-space: pre-wrap; }
+
+
+/* ── MATCHING ────────────────────────────────────────────────────── */
+.match-grid { display: grid; grid-template-columns: 1fr 1.35fr; gap: 14px; }
+.match-col { display: grid; gap: 8px; align-content: start; }
+.match-item {
+  font-family: var(--font-ui); font-size: 15.5px; line-height: 1.4;
+  text-align: left; color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: var(--r); padding: 11px 16px; cursor: pointer;
+  transition: border-color .15s, background .15s, opacity .2s;
+}
+.match-item.term { font-weight: 600; }
+.match-item:hover:not(.done) { border-color: var(--accent); }
+.match-item.picked { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 22%, var(--surface2)); }
+.match-item.done { opacity: .45; cursor: default; border-color: var(--ok); }
+.match-item.miss { border-color: var(--no); animation: shake .3s; }
+@keyframes shake { 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
+
+/* ── ORDERING (build the sentence) ───────────────────────────────────
+   For word-order work — where the point is the SEQUENCE of prepositional
+   phrases, not choosing one word. Click to place, click again to take back;
+   no dragging, because a scaled stage makes drag targets lie. */
+.order-hint {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 10px;
+}
+.order-target {
+  display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start;
+  min-height: 92px; padding: 12px;
+  border: 1.5px dashed color-mix(in srgb, var(--border) 60%, transparent);
+  border-radius: var(--r); background: var(--inset);
+}
+.order-target.correct { border-style: solid; border-color: var(--ok); }
+.order-target.wrong   { border-style: solid; border-color: var(--no); }
+.order-pool { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.chunk {
+  font-family: var(--font-ui); font-size: 15.5px; line-height: 1.35;
+  color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: 999px; padding: 9px 16px; cursor: pointer;
+  transition: border-color .15s, background .15s, opacity .2s;
+}
+.chunk:hover:not(:disabled) { border-color: var(--accent); }
+.chunk.placed { background: color-mix(in srgb, var(--accent) 18%, var(--surface2)); border-color: var(--accent); }
+.chunk:disabled { cursor: default; opacity: .5; }
+
+/* ── DISCUSSION (unscored speaking prompts) ──────────────────────── */
+.discuss-meta {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 14px;
+}
+.prompts { display: grid; gap: 12px; list-style: none; margin: 0; padding: 0; }
+.prompt {
+  font-size: 19px; line-height: 1.5; color: var(--text);
+  padding-left: 26px; position: relative;
+}
+.prompt::before {
+  content: '?'; position: absolute; left: 0; top: 1px;
+  font-family: var(--font-mono); font-size: 15px; color: var(--accent);
+}
+.prompt.aside { font-size: 16.5px; color: var(--text-dim); font-style: italic; }
+.prompt.aside::before { content: '·'; }
+
+/* ══════════════════════════════════════════════════════════════════
+   PRINT / PDF EXPORT
+   Ctrl-P → Save as PDF → Landscape, margins None, Background graphics ON.
+   Each slide becomes one 16:9 page, ready to drop into PowerPoint.
+   ══════════════════════════════════════════════════════════════════ */
+@page { size: 1280px 720px; margin: 0; }
+@media print {
+  html, body { overflow: visible; height: auto; background: #fff; }
+  .stage-wrap { position: static; display: block; }
+  .stage {
+    transform: none !important;
+    width: 1280px; height: auto;      /* let the slides stack into pages */
+    overflow: visible; box-shadow: none;
   }
+  .bg-layer, .deck-bar, .lang-select, .nav-btn { display: none !important; }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--cream);
-    color: var(--ink);
-    min-height: 100vh;
-    background-image:
-      radial-gradient(ellipse at 20% 0%, rgba(192,120,32,0.08) 0%, transparent 60%),
-      radial-gradient(ellipse at 85% 100%, rgba(61,107,58,0.06) 0%, transparent 60%);
+  /* Each slide becomes its own page and carries its own background, so the
+     export does not depend on the single on-screen background layer. */
+  .slide {
+    display: flex !important;
+    position: relative; inset: auto;
+    width: 1280px; height: 720px;
+    isolation: isolate;
+    page-break-after: always; break-after: page;
+    animation: none !important;
   }
-
-  /* HEADER */
-  .header {
-    background: var(--ink);
-    padding: 0 2.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 68px;
-    border-bottom: 3px solid var(--amber);
+  .slide:last-child { page-break-after: auto; break-after: auto; }
+  .slide::before {
+    content: ''; position: absolute; inset: 0; z-index: -2;
+    background: var(--hero) center / cover no-repeat;
+    opacity: var(--bg-opacity);
   }
-  .logo-svg { height: 44px; width: auto; }
-
-  .score-pill {
-    display: flex; align-items: center; gap: 10px;
-    background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(255,255,255,0.14);
-    border-radius: 40px; padding: 6px 18px;
+  .slide::after {
+    content: ''; position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(180deg, var(--wash-edge) 0%, var(--wash-mid) 20%,
+                                        var(--wash-mid) 80%, var(--wash-edge) 100%);
   }
-  .score-pill span { color: rgba(255,255,255,0.5); font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; }
-  .score-pill strong { color: var(--amber-light); font-size: 17px; font-weight: 600; }
-
-  /* PROGRESS */
-  .progress-bar-wrap { background: var(--ink); height: 6px; }
-  .progress-bar-track { background: rgba(255,255,255,0.1); height: 6px; }
-  .progress-bar-fill { background: linear-gradient(90deg, var(--amber), var(--amber-light)); height: 6px; transition: width 0.5s ease; }
-
-  /* HERO */
-  .hero {
-    background: var(--ink2);
-    padding: 2.4rem 2.5rem;
-    display: flex; align-items: center;
-    justify-content: space-between;
-    gap: 2rem; overflow: hidden; position: relative;
+  .slide[data-type="cover"]::before { opacity: 1; }
+  .slide[data-type="cover"]::after {
+    background:
+      radial-gradient(ellipse 58% 54% at 50% 46%,
+        rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.22) 54%, transparent 82%),
+      linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.03) 30%,
+                            rgba(0,0,0,0.05) 70%, rgba(0,0,0,0.38) 100%);
   }
-  .hero::before {
-    content: '';
-    position: absolute; inset: 0;
-    background-image: radial-gradient(ellipse at 70% 50%, rgba(192,120,32,0.1) 0%, transparent 65%);
-    pointer-events: none;
-  }
-  .hero-text { position: relative; }
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: rgba(192,120,32,0.18); border: 1px solid rgba(224,152,64,0.4);
-    color: var(--amber-light); font-size: 11px; font-weight: 600;
-    letter-spacing: 0.1em; text-transform: uppercase;
-    padding: 4px 13px; border-radius: 20px; margin-bottom: 10px;
-  }
-  .hero-text h1 { font-family: 'Playfair Display', serif; font-size: 1.85rem; color: #fff; font-weight: 700; line-height: 1.2; }
-  .hero-text h1 em { color: var(--amber-light); font-style: italic; }
-  .hero-text p { color: var(--mist); font-size: 0.88rem; margin-top: 8px; line-height: 1.6; max-width: 480px; }
-  .hero-illo { flex-shrink: 0; position: relative; }
+  .feedback { opacity: 1 !important; }
+  .act-input, .act-foot { display: none !important; }
+  .act-print { display: block !important; }
+}
 
-  /* MAIN */
-  .main { max-width: 780px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
-
-  /* QUESTION COUNTER */
-  .q-header {
-    display: flex; align-items: flex-start;
-    justify-content: space-between; gap: 1rem;
-    margin-bottom: 1.6rem;
-  }
-  .q-meta { display: flex; align-items: center; gap: 10px; }
-  .q-num-badge {
-    width: 40px; height: 40px; border-radius: 10px;
-    background: var(--ink); color: var(--amber-light);
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1rem; font-weight: 700;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  .q-type-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--slate); font-weight: 600; }
-  .q-type-title { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: var(--ink); margin-top: 1px; }
-  .q-counter-pill { font-size: 13px; color: var(--slate); background: var(--paper); border: 1px solid var(--rule); border-radius: 20px; padding: 5px 14px; white-space: nowrap; }
-
-  /* SCENARIO CARD */
-  .scenario-card {
-    background: var(--ink2);
-    border-radius: 14px;
-    padding: 1.6rem 1.8rem;
-    margin-bottom: 1.4rem;
-    position: relative;
-    overflow: hidden;
-  }
-  .scenario-card::before {
-    content: '';
-    position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
-    background: linear-gradient(180deg, var(--amber), var(--amber-light));
-  }
-  .scenario-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--mist); font-weight: 600; margin-bottom: 8px; }
-  .scenario-text { color: #e8e0d0; font-size: 0.97rem; line-height: 1.7; }
-  .scenario-text strong { color: var(--amber-light); font-weight: 500; }
-
-  /* PROMPT */
-  .prompt-card {
-    background: var(--paper);
-    border: 1px solid var(--rule);
-    border-radius: 14px;
-    padding: 1.6rem 1.8rem;
-    margin-bottom: 1.2rem;
-    box-shadow: 0 2px 14px var(--warm-shadow);
-  }
-  .prompt-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--slate); font-weight: 600; margin-bottom: 10px; }
-  .prompt-text { font-size: 1.08rem; color: var(--ink); line-height: 1.65; font-weight: 400; }
-  .prompt-hint { font-size: 0.83rem; color: var(--mist); margin-top: 10px; font-style: italic; }
-
-  /* ANSWER AREA */
-  .answer-wrap { margin-bottom: 1.2rem; }
-  .answer-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--slate); font-weight: 600; margin-bottom: 8px; }
-
-  textarea {
-    width: 100%;
-    min-height: 110px;
-    padding: 14px 16px;
-    border: 1.5px solid var(--rule);
-    border-radius: 10px;
-    background: #fff;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.97rem;
-    color: var(--ink);
-    line-height: 1.65;
-    resize: vertical;
-    transition: border-color 0.18s, box-shadow 0.18s;
-    outline: none;
-  }
-  textarea:focus {
-    border-color: var(--amber);
-    box-shadow: 0 0 0 3px rgba(192,120,32,0.1);
-  }
-  textarea:disabled { background: #faf8f5; color: var(--slate); cursor: default; }
-
-  .char-counter { font-size: 12px; color: var(--mist); text-align: right; margin-top: 5px; }
-  .char-counter.warn { color: var(--amber); }
-
-  /* BUTTONS */
-  .btn-row { display: flex; gap: 12px; justify-content: flex-end; flex-wrap: wrap; margin-top: 0.5rem; }
-  .btn {
-    padding: 12px 26px; border-radius: 9px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem; font-weight: 600;
-    cursor: pointer; border: none;
-    transition: all 0.18s; letter-spacing: 0.02em;
-  }
-  .btn-primary { background: var(--ink); color: #fff; border: 2px solid var(--ink); }
-  .btn-primary:hover:not(:disabled) { background: var(--ink2); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(30,26,20,0.2); }
-  .btn-primary:disabled { opacity: 0.35; cursor: not-allowed; }
-  .btn-amber { background: var(--amber); color: #fff; border: 2px solid var(--amber); }
-  .btn-amber:hover { background: #a86510; border-color: #a86510; transform: translateY(-1px); }
-  .btn-ghost { background: transparent; color: var(--slate); border: 1.5px solid var(--rule); }
-  .btn-ghost:hover { border-color: var(--slate); color: var(--ink); }
-
-  /* AI FEEDBACK */
-  .feedback-wrap {
-    display: none;
-    margin-top: 1.2rem;
-    animation: fadeUp 0.3s ease;
-  }
-  @keyframes fadeUp { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform:translateY(0); } }
-
-  .feedback-card {
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid var(--rule);
-    background: var(--paper);
-  }
-
-  .feedback-header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 18px;
-    background: var(--ink);
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-  }
-  .feedback-header-left { display: flex; align-items: center; gap: 10px; }
-  .fb-title { font-size: 13px; font-weight: 600; color: #fff; letter-spacing: 0.02em; }
-
-  .score-badge {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1rem; font-weight: 700;
-    padding: 3px 14px; border-radius: 20px;
-    background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.15);
-  }
-  .score-badge.high { color: #7ed890; border-color: rgba(126,216,144,0.4); }
-  .score-badge.mid { color: var(--amber-light); border-color: rgba(224,152,64,0.4); }
-  .score-badge.low { color: #e08080; border-color: rgba(224,128,128,0.4); }
-
-  .feedback-body { padding: 1.4rem 1.6rem; }
-
-  .fb-section { margin-bottom: 1.2rem; }
-  .fb-section:last-child { margin-bottom: 0; }
-  .fb-section-label {
-    font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em;
-    font-weight: 600; margin-bottom: 7px; display: flex; align-items: center; gap: 6px;
-  }
-  .fb-section-label.praise { color: var(--correct); }
-  .fb-section-label.improve { color: var(--amber); }
-  .fb-section-label.model { color: var(--slate); }
-  .fb-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-  .fb-dot.praise { background: var(--correct); }
-  .fb-dot.improve { background: var(--amber); }
-  .fb-dot.model { background: var(--slate); }
-
-  .fb-text { font-size: 0.92rem; color: var(--ink2); line-height: 1.7; }
-  .fb-model-text {
-    font-size: 0.92rem; color: var(--ink);
-    line-height: 1.7;
-    background: var(--amber-pale);
-    border-left: 3px solid var(--amber);
-    border-radius: 0 8px 8px 0;
-    padding: 10px 14px;
-    font-style: italic;
-  }
-
-  /* LOADING STATE */
-  .loading-wrap { display: none; padding: 1.6rem; text-align: center; }
-  .loading-dots { display: inline-flex; gap: 6px; align-items: center; }
-  .loading-dots span {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--amber); opacity: 0.3;
-    animation: pulse 1.2s ease-in-out infinite;
-  }
-  .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
-  .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
-  @keyframes pulse { 0%,100%{opacity:0.3;transform:scale(1)} 50%{opacity:1;transform:scale(1.3)} }
-  .loading-text { font-size: 0.88rem; color: var(--slate); margin-top: 10px; }
-
-  /* ENCOURAGEMENT STRIP */
-  .encourage-strip {
-    background: linear-gradient(135deg, var(--ink2), var(--ink));
-    border: 1px solid rgba(192,120,32,0.3);
-    border-radius: 10px;
-    padding: 12px 18px;
-    margin-bottom: 1.4rem;
-    display: flex; align-items: center; gap: 12px;
-  }
-  .encourage-icon { font-size: 20px; flex-shrink: 0; }
-  .encourage-text { font-size: 0.87rem; color: var(--mist); line-height: 1.5; }
-  .encourage-text strong { color: var(--amber-light); }
-
-  /* FINAL SCREEN */
-  #final-screen { display: none; animation: fadeUp 0.4s ease; }
-  .final-card {
-    background: var(--paper); border: 1px solid var(--rule);
-    border-radius: 16px; padding: 3rem 2rem; text-align: center;
-    box-shadow: 0 4px 30px var(--warm-shadow);
-  }
-  .final-ring {
-    width: 130px; height: 130px; border-radius: 50%;
-    background: var(--ink); border: 4px solid var(--amber);
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    margin: 0 auto 1.8rem;
-    box-shadow: 0 0 0 8px rgba(192,120,32,0.08);
-  }
-  .final-ring .big { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 700; color: var(--amber-light); line-height: 1; }
-  .final-ring .denom { font-size: 0.75rem; color: var(--mist); margin-top: 3px; }
-  .final-card h2 { font-family: 'Playfair Display', serif; font-size: 1.7rem; color: var(--ink); margin-bottom: 10px; }
-  .final-card .final-msg { color: var(--slate); font-size: 0.95rem; line-height: 1.7; max-width: 500px; margin: 0 auto 2rem; }
-
-  .scores-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 2rem; }
-  .score-tile { background: var(--cream); border: 1px solid var(--rule); border-radius: 10px; padding: 12px 18px; min-width: 110px; }
-  .score-tile .st-q { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--slate); font-weight: 600; margin-bottom: 4px; }
-  .score-tile .st-v { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--ink); font-weight: 700; }
-
-  .lesson-section { animation: fadeUp 0.32s ease; }
-
-  @media (max-width: 600px) {
-    .header { padding: 0 1.2rem; }
-    .hero { padding: 1.5rem 1.2rem; flex-direction: column; }
-    .hero-illo { display: none; }
-    .main { padding: 1.5rem 1rem 3rem; }
-    .q-header { flex-direction: column; gap: 8px; }
-  }
+/* Text that sits on the canvas rather than inside a card needs its own halo
+   now that the artwork behind it is bright. A shadow costs nothing and lets
+   the picture stay up, which darkening the wash back down would not. */
+.slide-title, .eyebrow, .q-stem, .q-ctx, .order-hint, .cover-title, .cover-sub,
+.score-big, .slide-body > .prose, .act-target-label {
+  text-shadow: 0 1px 2px rgba(0,0,0,0.55), 0 0 12px rgba(0,0,0,0.38);
+}
+html[data-theme="light"] .slide-title, html[data-theme="light"] .eyebrow,
+html[data-theme="light"] .q-stem, html[data-theme="light"] .q-ctx,
+html[data-theme="light"] .order-hint, html[data-theme="light"] .cover-title,
+html[data-theme="light"] .cover-sub, html[data-theme="light"] .score-big,
+html[data-theme="light"] .slide-body > .prose,
+html[data-theme="light"] .act-target-label {
+  text-shadow: 0 1px 2px rgba(255,255,255,0.75), 0 0 12px rgba(255,255,255,0.55);
+}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header class="header">
-  <svg class="logo-svg" viewBox="0 0 160 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g transform="translate(0.00,3.98) scale(0.026109)"><g transform="translate(0,1504) scale(0.1,-0.1)" fill="#e09840" stroke="none"><path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47 l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21 -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9 -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58 105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141 144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392 -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31 c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55 -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0 -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226 144 331 156 51 6 127 -4 183 -25z"/><path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95 -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72 -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0 -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18 108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553 -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70 -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3 469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38 -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/><path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73 -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939 -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1 205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247 -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22 -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24 -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449 121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/><path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611 -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538 -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77 144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430 -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67 347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580 -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132 -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87 66 245 85 341 40z"/><path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140 -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134 -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287 -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101 -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107 173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392 207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599 281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241 111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2 347 -112 40 c-318 112 -594 149 -892 121z"/><path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149 l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801 -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6 -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294 -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12 -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29 -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55 -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12 -33 22 -42 21 -9 0 -199 -27 -422 -60z"/></g></g>
-    <text x="1" y="40" font-family="'DM Sans', Arial, sans-serif" font-size="17.60" font-weight="600" fill="#b0a080" letter-spacing="5">ENGLISH</text>
-  </svg>
-  <div class="score-pill">
-    <span>Total</span>
-    <strong id="header-score">—</strong>
-  </div>
-</header>
+<div class="stage-wrap">
+  <div class="stage" id="stage">
 
-<!-- PROGRESS BAR -->
-<div class="progress-bar-wrap">
-  <div class="progress-bar-track">
-    <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
-  </div>
-</div>
+    <!-- Background pattern: driven entirely by --hero in the CSS above. -->
+    <div class="bg-layer" role="presentation"></div>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-text">
-    <div class="hero-badge">B2 · Open Practice</div>
-    <h1>Say it in <em>your own words</em></h1>
-    <p>No multiple choice. No word banks. Read the scenario, answer freely, and receive personalised feedback from your AI tutor on every response.</p>
-  </div>
-  <div class="hero-illo">
-    <svg width="190" height="120" viewBox="0 0 190 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- desk -->
-      <ellipse cx="95" cy="105" rx="80" ry="10" fill="rgba(192,120,32,0.07)"/>
-      <!-- open notebook -->
-      <rect x="28" y="42" width="60" height="54" rx="4" fill="#332c1e"/>
-      <rect x="28" y="42" width="30" height="54" rx="4" fill="#2a2418"/>
-      <line x1="58" y1="42" x2="58" y2="96" stroke="#c07820" stroke-width="1" opacity="0.4"/>
-      <!-- writing lines left page -->
-      <rect x="33" y="52" width="20" height="2" rx="1" fill="rgba(255,255,255,0.15)"/>
-      <rect x="33" y="57" width="18" height="2" rx="1" fill="rgba(255,255,255,0.1)"/>
-      <rect x="33" y="62" width="20" height="2" rx="1" fill="rgba(255,255,255,0.12)"/>
-      <rect x="33" y="67" width="14" height="2" rx="1" fill="rgba(255,255,255,0.08)"/>
-      <rect x="33" y="72" width="19" height="2" rx="1" fill="rgba(255,255,255,0.1)"/>
-      <!-- right page — being filled -->
-      <rect x="62" y="52" width="22" height="2" rx="1" fill="#c07820" opacity="0.6"/>
-      <rect x="62" y="57" width="18" height="2" rx="1" fill="#c07820" opacity="0.4"/>
-      <rect x="62" y="62" width="20" height="2" rx="1" fill="#c07820" opacity="0.5"/>
-      <!-- pen -->
-      <line x1="78" y1="68" x2="100" y2="50" stroke="#e09840" stroke-width="2.5" stroke-linecap="round"/>
-      <circle cx="100" cy="50" r="3.5" fill="#e09840"/>
-      <!-- speech bubble — open / free form -->
-      <rect x="105" y="22" width="68" height="42" rx="10" fill="#332c1e" stroke="#c07820" stroke-width="1.2" opacity="0.9"/>
-      <polygon points="108,56 100,68 120,56" fill="#332c1e"/>
-      <!-- dotted lines suggesting free writing -->
-      <rect x="113" y="31" width="32" height="2" rx="1" fill="#e09840" opacity="0.7"/>
-      <rect x="113" y="37" width="44" height="2" rx="1" fill="rgba(255,255,255,0.2)"/>
-      <rect x="113" y="43" width="36" height="2" rx="1" fill="rgba(255,255,255,0.15)"/>
-      <rect x="113" y="49" width="26" height="2" rx="1" fill="#c07820" opacity="0.35"/>
-      <!-- sparkle dots -->
-      <circle cx="155" cy="18" r="2.5" fill="#e09840" opacity="0.5"/>
-      <circle cx="168" cy="28" r="1.5" fill="#e09840" opacity="0.3"/>
-      <circle cx="160" cy="8" r="1.5" fill="#e09840" opacity="0.4"/>
-    </svg>
-  </div>
-</div>
+    <!-- ══════════════════════════════════════════════════════════
+         REPLACE 2 of 2: SLIDES
+         Author one <section class="slide"> per screen.
+         data-type: cover | teach | mc | gap | match | order | discuss | results | activate
+         data-bg="folder/other.jpg" swaps the background pattern on that slide.
+         Everything a learner reads must fit WITHOUT scrolling.
+         If it does not fit, split it across two slides — never shrink type.
+         ══════════════════════════════════════════════════════════ -->
 
-<main class="main">
 
-  <!-- LESSON SECTION -->
-  <div id="lesson-section" class="lesson-section">
-
-    <div class="encourage-strip" id="encourage-strip">
-      <div class="encourage-icon">✍</div>
-      <div class="encourage-text"><strong>There are no wrong answers here — only better ones.</strong> Write naturally, as you would in a real situation. Your AI tutor will give you honest, constructive feedback after every response.</div>
-    </div>
-
-    <div class="q-header">
-      <div class="q-meta">
-        <div class="q-num-badge" id="q-num">1</div>
-        <div>
-          <div class="q-type-label" id="q-type-label">Situation</div>
-          <div class="q-type-title" id="q-type-title">Loading…</div>
+    <section class="slide is-active" data-type="cover">
+      <div class="cover-inner">
+        <svg class="fe-logo" viewBox="0 0 200 78" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forbes English">
+          <g class="fe-logo-mark" transform="translate(-42.74,-30.22) scale(0.099477)"><g transform="translate(0,1504) scale(0.1,-0.1)" fill="currentColor" stroke="none"><path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47 l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21 -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9 -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58 105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141 144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392 -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31 c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55 -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0 -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226 144 331 156 51 6 127 -4 183 -25z"/><path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95 -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72 -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0 -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18 108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553 -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70 -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3 469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38 -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/><path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73 -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939 -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1 205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247 -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22 -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24 -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449 121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/><path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611 -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538 -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77 144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430 -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67 347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580 -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132 -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87 66 245 85 341 40z"/><path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140 -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134 -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287 -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101 -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107 173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392 207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599 281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241 111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2 347 -112 40 c-318 112 -594 149 -892 121z"/><path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149 l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801 -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6 -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294 -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12 -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29 -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55 -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12 -33 22 -42 21 -9 0 -199 -27 -422 -60z"/></g></g>
+          <text class="fe-logo-word" x="100" y="72.6" text-anchor="middle" font-family="'DM Sans', Arial, sans-serif" font-size="20.8" font-weight="600" letter-spacing="8">ENGLISH</text>
+        </svg>
+        <h1 class="cover-title" data-i18n="coverTitle">Say it in <em>your own words</em></h1>
+        <p class="cover-sub" data-i18n="coverSub">Eight situations, no options to choose from &mdash; write the answer, then read one that works</p>
+        <div class="cover-meta">
+          <span class="chip" data-i18n="chipLevel">B2 &middot; Open practice</span>
+          <span class="chip" data-i18n="chipFocus">Meetings, calls &amp; email</span>
+          <span class="chip" data-i18n="chipCount">13 slides</span>
+        </div>
+        <div style="margin-top:34px">
+          <button class="btn btn-solid btn-lg" data-action="next" data-i18n="btnStart">Begin →</button>
         </div>
       </div>
-      <div class="q-counter-pill" id="q-counter">Question 1 of 8</div>
-    </div>
+    </section>
 
-    <div class="scenario-card" id="scenario-card">
-      <div class="scenario-label">Context</div>
-      <div class="scenario-text" id="scenario-text"></div>
-    </div>
-
-    <div class="prompt-card">
-      <div class="prompt-label">Your task</div>
-      <div class="prompt-text" id="prompt-text"></div>
-      <div class="prompt-hint" id="prompt-hint"></div>
-    </div>
-
-    <div class="answer-wrap">
-      <div class="answer-label">Your answer</div>
-      <textarea id="answer-input" placeholder="Write your response here…" onkeyup="updateCharCount()" oninput="updateCharCount()"></textarea>
-      <div class="char-counter" id="char-counter">0 characters</div>
-    </div>
-
-    <!-- Loading -->
-    <div class="loading-wrap" id="loading-wrap">
-      <div class="loading-dots"><span></span><span></span><span></span></div>
-      <div class="loading-text" id="loading-text">Your tutor is reading your answer…</div>
-    </div>
-
-    <!-- Feedback -->
-    <div class="feedback-wrap" id="feedback-wrap">
-      <div class="feedback-card">
-        <div class="feedback-header">
-          <div class="feedback-header-left">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#e09840" stroke-width="1.2"/><path d="M8 5v4" stroke="#e09840" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="11.5" r="0.8" fill="#e09840"/></svg>
-            <span class="fb-title">Tutor feedback</span>
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="howEyebrow">How to use this</div>
+        <h2 class="slide-title" data-i18n="howTitle">Write first. The model answer is not the point.</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="h1h">1 &middot; Write it</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Three to five sentences, out loud or on paper, before you look right.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="h1b">Reading a good answer teaches you almost nothing. Producing a bad one and then reading a good one teaches you a great deal.</p>
           </div>
-          <div class="score-badge" id="fb-score-badge">—</div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="h2h">2 &middot; Compare the moves</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Not the words &mdash; the moves. What does it do first, and why?</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="h2b">The model answers are one version, not the version. Yours may be better; check that it does the same jobs.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="h3h">3 &middot; Say it again</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Rewrite your version using one phrase you took from the model.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="h3b">One phrase per scenario is a realistic rate. Eight new phrases from one lesson is not.</p>
+          </div>
         </div>
-        <div class="feedback-body" id="feedback-body"></div>
       </div>
-    </div>
+    </section>
 
-    <div class="btn-row">
-      <button class="btn btn-primary" id="submit-btn" onclick="submitAnswer()" disabled>Submit answer</button>
-      <button class="btn btn-amber" id="next-btn" onclick="nextQuestion()" style="display:none">Next question →</button>
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="movesEyebrow">What nearly every answer needs</div>
+        <h2 class="slide-title" data-i18n="movesTitle">Acknowledge, be specific, offer something</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="m1h">Acknowledge</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px"><em>That&rsquo;s a fair point&hellip;</em> &middot; <em>You&rsquo;re right about the response times&hellip;</em></p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="m1b">Conceding what is true costs nothing and buys you the right to say the rest.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="m2h">Be specific</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px"><em>&hellip;back by two weeks, to the 28th.</em> &middot; <em>&hellip;from nine days to three.</em></p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="m2b">A date or a number turns a soft statement into something the other person can act on.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="m3h">Offer something</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px"><em>In return, I&rsquo;m happy to&hellip;</em> &middot; <em>I&rsquo;ll send you the figures each Friday.</em></p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="m3b">Bad news, a refusal and a request all need a second half. Without one you have only made a statement.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="discuss">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="sEyebrow">Client meeting</span> &middot; 1 / 8</div>
+        <h2 class="slide-title">Opening a meeting</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr">
+          <div class="card">
+            <p class="prose dim" style="font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px" data-i18n="sCtx">The situation</p>
+            <p class="prose" style="font-size:18px">You are meeting Sarah Chen, procurement director of a mid-sized logistics company, for the first time. You sell software that automates invoicing.</p>
+            <p class="prose dim" style="font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin:14px 0 6px" data-i18n="sTask">Your task</p>
+            <p class="prose" style="font-size:18px">Open the meeting: greet her, introduce yourself and your company briefly, and say why you are here.</p>
+          </div>
+          <div class="card">
+            <p class="prose dim" style="font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px" data-i18n="sModel">One way to say it &mdash; read after you have written</p>
+            <p class="prose" style="font-size:17px">&ldquo;Good morning, Ms Chen &mdash; thank you for making the time. I&rsquo;m Daniel Reyes from Arcline; we build invoicing automation for logistics operators. I&rsquo;d like to spend twenty minutes understanding how your invoicing runs today, and then show you where we&rsquo;ve saved similar teams about a week a month. Does that work for you?&rdquo;</p>
+            <p class="prose dim" style="font-size:15px;margin-top:12px">Three moves in four sentences: who you are, why you are here, and a check that the agenda suits her. The time estimate is what makes it easy to say yes to.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="discuss" data-bg="Meetings/hero.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="sEyebrow">Handling objections</span> &middot; 2 / 8</div>
+        <h2 class="slide-title">Responding to price pushback</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr">
+          <div class="card">
+            <p class="prose dim" style="font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px" data-i18n="sCtx">The situation</p>
+            <p class="prose" style="font-size:18px">You have presented your proposal. The client says: &ldquo;The price is higher than we expected. Our current provider charges significantly less.&rdquo;</p>
+            <p class="prose dim" style="font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin:14px 0 6px" data-i18n="sTask">Your task</p>
+            <p class="prose" style="font-size:18px">Respond. Acknowledge the concern, then make the case for your value &mdash; without being defensive and without dropping the price.</p>
+          </div>
+          <div class="card">
+            <p class="prose dim" style="font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px" data-i18n="sModel">One way to say it &mdash; read after you have written</p>
+            <p class="prose" style="font-size:17px">&ldquo;That&rsquo;s a fair comparison to draw, and I&rsquo;d want to make it too. Can I ask what&rsquo;s included in their figure? Ours covers implementation and support, which is usually where the difference sits &mdash; and it&rsquo;s the part that decides whether the system is actually used six months in.&rdquo;</p>
+            <p class="prose dim" style="font-size:15px;margin-top:12px">It concedes the reasonableness of the objection, asks a question instead of arguing, and moves the comparison onto ground where the price makes sense.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="discuss">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="sEyebrow">Email writing</span> &middot; 3 / 8</div>
+        <h2 class="slide-title">Following up after no reply</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr">
+          <div class="card">
+            <p class="prose dim" style="font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px" data-i18n="sCtx">The situation</p>
+            <p class="prose" style="font-size:18px">You sent a detailed proposal ten days ago. You have heard nothing. You want to follow up without seeming pushy.</p>
+            <p class="prose dim" style="font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin:14px 0 6px" data-i18n="sTask">Your task</p>
+            <p class="prose" style="font-size:18px">Write a subject line and the opening two or three sentences of your follow-up.</p>
+          </div>
+          <div class="card">
+            <p class="prose dim" style="font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px" data-i18n="sModel">One way to say it &mdash; read after you have written</p>
+            <p class="prose" style="font-size:17px"><strong>Subject: Following up &mdash; Arcline proposal</strong><br>&ldquo;I hope this finds you well. I wanted to check whether you&rsquo;ve had a chance to look at the proposal I sent on the 3rd. If it would help to talk any of it through, I&rsquo;m happy to find twenty minutes this week.&rdquo;</p>
+            <p class="prose dim" style="font-size:15px;margin-top:12px"><em>Had a chance to</em> offers them a reason for the silence. The offer of a short call gives them something easier to say yes to than a full reply.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="discuss" data-bg="Meetings/hero.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="sEyebrow">Difficult situations</span> &middot; 4 / 8</div>
+        <h2 class="slide-title">Delivering bad news</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr">
+          <div class="card">
+            <p class="prose dim" style="font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px" data-i18n="sCtx">The situation</p>
+            <p class="prose" style="font-size:18px">A project will be delayed by two weeks because of technical issues at your end. The client has a strict deadline.</p>
+            <p class="prose dim" style="font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin:14px 0 6px" data-i18n="sTask">Your task</p>
+            <p class="prose" style="font-size:18px">Deliver the news. Take responsibility and propose a way forward.</p>
+          </div>
+          <div class="card">
+            <p class="prose dim" style="font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px" data-i18n="sModel">One way to say it &mdash; read after you have written</p>
+            <p class="prose" style="font-size:17px">&ldquo;I need to tell you about a delay before it affects your planning. We&rsquo;ve hit a problem in the data migration, and it will push delivery back by two weeks, to the 28th. That&rsquo;s on us. Two things I can offer: we can release the reporting module on the original date so your finance team isn&rsquo;t held up, and I&rsquo;ll send you a written recovery plan by Thursday.&rdquo;</p>
+            <p class="prose dim" style="font-size:15px;margin-top:12px">The delay is named with a date, the responsibility is taken in three words, and two concrete offers follow. No hedging, no <em>unforeseen circumstances</em>.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="discuss">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="sEyebrow">Telephone skills</span> &middot; 5 / 8</div>
+        <h2 class="slide-title">Opening a cold call</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr">
+          <div class="card">
+            <p class="prose dim" style="font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px" data-i18n="sCtx">The situation</p>
+            <p class="prose" style="font-size:18px">You are calling Marcus Hoffman, head of operations at a manufacturing company, who has never heard of you. You have about twenty seconds.</p>
+            <p class="prose dim" style="font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin:14px 0 6px" data-i18n="sTask">Your task</p>
+            <p class="prose" style="font-size:18px">Write your opening three or four sentences.</p>
+          </div>
+          <div class="card">
+            <p class="prose dim" style="font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px" data-i18n="sModel">One way to say it &mdash; read after you have written</p>
+            <p class="prose" style="font-size:17px">&ldquo;Mr Hoffman, good morning &mdash; Daniel Reyes from Arcline. I&rsquo;ll be brief. We work with manufacturers who are running invoicing through three or four disconnected systems, and we typically cut the month-end close from nine days to three. Is that a problem you recognise, or am I describing someone else&rsquo;s company?&rdquo;</p>
+            <p class="prose dim" style="font-size:15px;margin-top:12px">It leads with the problem rather than the product, gives a number, and ends with a question that is genuinely easy to answer either way &mdash; which is what makes it hard to hang up on.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="discuss" data-bg="Meetings/hero.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="sEyebrow">Negotiation</span> &middot; 6 / 8</div>
+        <h2 class="slide-title">Asking for a concession</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr">
+          <div class="card">
+            <p class="prose dim" style="font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px" data-i18n="sCtx">The situation</p>
+            <p class="prose" style="font-size:18px">You want a supplier to extend payment terms from 30 days to 60. You do not want to seem demanding, but the cash flow matters.</p>
+            <p class="prose dim" style="font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin:14px 0 6px" data-i18n="sTask">Your task</p>
+            <p class="prose" style="font-size:18px">Raise the request. Write what you would say.</p>
+          </div>
+          <div class="card">
+            <p class="prose dim" style="font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px" data-i18n="sModel">One way to say it &mdash; read after you have written</p>
+            <p class="prose" style="font-size:17px">&ldquo;There&rsquo;s one thing I&rsquo;d like to ask about before we finalise. Our cash cycle runs on 60 days with our own customers, so 30-day terms leave us carrying the gap. Would you consider 60? In return I&rsquo;m happy to commit to the full annual volume up front rather than quarterly.&rdquo;</p>
+            <p class="prose dim" style="font-size:15px;margin-top:12px">A reason, a specific ask, and something offered back. Asking for a concession without naming what you will trade is how a request becomes a demand.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="discuss">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="sEyebrow">Client relationships</span> &middot; 7 / 8</div>
+        <h2 class="slide-title">Responding to a complaint</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr">
+          <div class="card">
+            <p class="prose dim" style="font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px" data-i18n="sCtx">The situation</p>
+            <p class="prose" style="font-size:18px">A long-standing client writes: &ldquo;We&rsquo;ve been very disappointed with the level of service recently. Response times have been slow and we&rsquo;re starting to question whether this partnership is still working for us.&rdquo;</p>
+            <p class="prose dim" style="font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin:14px 0 6px" data-i18n="sTask">Your task</p>
+            <p class="prose" style="font-size:18px">Write your reply. Acknowledge, apologise where it is warranted, and say what you will do.</p>
+          </div>
+          <div class="card">
+            <p class="prose dim" style="font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px" data-i18n="sModel">One way to say it &mdash; read after you have written</p>
+            <p class="prose" style="font-size:17px">&ldquo;Thank you for telling me directly &mdash; I&rsquo;d much rather hear it than not. You&rsquo;re right about the response times; our average has slipped since August and that isn&rsquo;t the service you signed up for. I&rsquo;ve moved your account to a named contact from today, and I&rsquo;ll send you the response figures each Friday for the next month so you can see whether it&rsquo;s actually improving.&rdquo;</p>
+            <p class="prose dim" style="font-size:15px;margin-top:12px">Thanking someone for criticism is a strong opening because it costs you nothing and signals you are not about to argue. The check is measurable, and it is offered rather than promised.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="discuss" data-bg="Meetings/hero.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="sEyebrow">Closing a deal</span> &middot; 8 / 8</div>
+        <h2 class="slide-title">Asking for the business</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr">
+          <div class="card">
+            <p class="prose dim" style="font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px" data-i18n="sCtx">The situation</p>
+            <p class="prose" style="font-size:18px">Three productive meetings. The client seems interested but has not committed. Today has gone well and you sense the moment.</p>
+            <p class="prose dim" style="font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin:14px 0 6px" data-i18n="sTask">Your task</p>
+            <p class="prose" style="font-size:18px">Ask for the business. Write what you would say.</p>
+          </div>
+          <div class="card">
+            <p class="prose dim" style="font-size:14px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px" data-i18n="sModel">One way to say it &mdash; read after you have written</p>
+            <p class="prose" style="font-size:17px">&ldquo;It sounds as though the fit is there. Shall we make it real? If you&rsquo;re happy in principle, I can have the paperwork with you tomorrow for a start on the first of next month &mdash; and if something is still open, tell me what it is and let&rsquo;s deal with it now rather than in another meeting.&rdquo;</p>
+            <p class="prose dim" style="font-size:15px;margin-top:12px">Two doors, both easy to walk through: yes, or tell me what is in the way. The second is what stops a soft close from ending in another round of silence.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="activate">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="actEyebrow">Activation</div>
+        <h2 class="slide-title" data-i18n="actTitle">Run three of them live</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target">
+          <span class="act-target-label" data-i18n="actUse">Use at least four:</span>
+          <span class="bank-chip">I wanted to check whether&hellip;</span>
+          <span class="bank-chip">That&rsquo;s a fair point</span>
+          <span class="bank-chip">That&rsquo;s on us</span>
+          <span class="bank-chip">Would you consider&hellip;?</span>
+          <span class="bank-chip">In return, I&rsquo;m happy to&hellip;</span>
+          <span class="bank-chip">Shall we make it real?</span>
+          <span class="bank-chip">Just to confirm</span>
+        </div>
+        <div class="cols act-cols">
+          <div class="card act-card">
+            <div class="act-kind"><span class="act-icon">🗣</span><span data-i18n="actSpeakKind">Roleplay &middot; in pairs</span></div>
+            <p class="act-brief" data-i18n="actSpeakBrief">Pick three scenarios. Your partner plays the other side and does not make it easy.</p>
+            <ul class="act-list">
+              <li data-i18n="actSpeak1">Cold call: your partner tries to end the call inside fifteen seconds.</li>
+              <li data-i18n="actSpeak2">Bad news: your partner asks twice who is at fault. Answer once, then move on.</li>
+              <li data-i18n="actSpeak3">Complaint: your partner is not satisfied by your first reply. Do not repeat yourself.</li>
+              <li data-i18n="actSpeak4">Close: your partner says &ldquo;let me think about it.&rdquo; Find out what is actually in the way.</li>
+            </ul>
+          </div>
+          <div class="card act-card">
+            <div class="act-kind"><span class="act-icon">✍️</span><span data-i18n="actWriteKind">Writing &middot; 150&ndash;200 words</span></div>
+            <p class="act-brief" data-i18n="actWriteBrief">Pick the scenario you found hardest and write it properly. Then rewrite it in half the words.</p>
+            <textarea class="act-input" id="actInput" data-i18n-ph="actPlaceholder" placeholder="Dear Ms Chen," aria-label="Written response"></textarea>
+            <div class="act-foot">
+              <span class="act-count" id="actCount">0 words</span>
+              <button class="btn act-copy" data-action="copy-writing" data-i18n="btnCopy">Copy</button>
+            </div>
+            <div class="act-print" id="actPrint" aria-hidden="true"></div>
+          </div>
+        </div>
+        <div style="margin-top:14px;text-align:center">
+          <button class="btn" data-action="restart" data-i18n="btnRestart">Start again</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── DECK CHROME ──────────────────────────────────────── -->
+    <div class="deck-bar">
+      <select class="lang-select" id="langSelect" aria-label="Language"></select>
+      <button class="nav-btn" data-action="prev" aria-label="Previous">‹</button>
+      <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+      <span class="deck-count" id="deckCount">1 / 1</span>
+      <span class="deck-score" id="deckScore"></span>
+      <button class="nav-btn" data-action="next" aria-label="Next">›</button>
     </div>
 
   </div>
-
-  <!-- FINAL SCREEN -->
-  <div id="final-screen">
-    <div class="final-card">
-      <div class="final-ring">
-        <div class="big" id="final-avg">—</div>
-        <div class="denom">avg score</div>
-      </div>
-      <h2 id="final-heading">Lesson complete!</h2>
-      <p class="final-msg" id="final-msg">You have completed all 8 open practice questions.</p>
-      <div class="scores-grid" id="scores-grid"></div>
-      <div class="btn-row" style="justify-content:center; margin-top:0;">
-        <button class="btn btn-amber" onclick="restartLesson()">↺ Start again</button>
-      </div>
-    </div>
-  </div>
-
-</main>
+</div>
 
 <script>
-const questions = [
-  {
-    type: "Client Meeting",
-    title: "Opening a meeting",
-    scenario: "You are meeting a new client, <strong>Sarah Chen</strong>, the procurement director of a mid-sized logistics company. It is the first time you have spoken. You are selling a software product that automates invoicing.",
-    prompt: "How do you open this meeting professionally? Greet Sarah, introduce yourself and your company briefly, and explain the purpose of the meeting.",
-    hint: "Aim for 3–5 sentences. Think about what a client needs to hear first.",
-    category: "speaking"
-  },
-  {
-    type: "Handling Objections",
-    title: "Responding to price pushback",
-    scenario: "You have presented your proposal. The client says: <strong>\"The price is higher than we expected. Our current provider charges significantly less.\"</strong>",
-    prompt: "How do you respond? Acknowledge their concern, then make a case for your value without being defensive or aggressive.",
-    hint: "You don't need to lower the price — but you do need to justify it.",
-    category: "negotiation"
-  },
-  {
-    type: "Email Writing",
-    title: "Following up after no reply",
-    scenario: "You sent a detailed proposal to a client <strong>ten days ago</strong>. You have not heard back. You want to follow up without seeming pushy or impatient.",
-    prompt: "Write the opening two or three sentences of your follow-up email. Include a subject line.",
-    hint: "Give the client the benefit of the doubt. Keep it brief and professional.",
-    category: "writing"
-  },
-  {
-    type: "Difficult Situations",
-    title: "Delivering bad news",
-    scenario: "You need to inform a client that a project will be <strong>delayed by two weeks</strong> due to unexpected technical issues on your side. The client has a strict deadline and is counting on you.",
-    prompt: "How do you deliver this news? Write what you would say or email to the client. Take responsibility and propose a path forward.",
-    hint: "Don't be vague about the delay. Own the problem and offer a solution.",
-    category: "speaking"
-  },
-  {
-    type: "Telephone Skills",
-    title: "Opening a cold call",
-    scenario: "You are calling <strong>Marcus Hoffman</strong>, a potential client you have never spoken to before. He is the head of operations at a manufacturing company. You have 20 seconds before he might hang up.",
-    prompt: "Write your opening 3–4 sentences for this cold call. Introduce yourself, your company, and give him a reason to keep listening.",
-    hint: "Lead with value, not features. Why should he care right now?",
-    category: "speaking"
-  },
-  {
-    type: "Negotiation",
-    title: "Asking for a concession",
-    scenario: "You are in a negotiation and would like the supplier to extend the payment terms from <strong>30 days to 60 days</strong>. You do not want to seem demanding, but this is important for your cash flow.",
-    prompt: "How do you raise this request professionally? Write what you would say.",
-    hint: "Frame it as a request, not a demand. You might offer something in return.",
-    category: "negotiation"
-  },
-  {
-    type: "Client Relationships",
-    title: "Responding to a complaint",
-    scenario: "A long-standing client emails you: <strong>\"We've been very disappointed with the level of service recently. Response times have been slow and we're starting to question whether this partnership is still working for us.\"</strong>",
-    prompt: "Write your reply. Acknowledge the issue, apologise where appropriate, and outline what you will do to improve the situation.",
-    hint: "Do not get defensive. This client is valuable — keep them.",
-    category: "writing"
-  },
-  {
-    type: "Closing a Deal",
-    title: "Asking for the business",
-    scenario: "You have had three productive meetings with a client. They seem interested but have not committed. The conversation has gone well today and you sense the moment is right to <strong>close</strong>.",
-    prompt: "How do you ask for the business? Write what you would say to move from conversation to commitment.",
-    hint: "Be direct but not pushy. Make it easy for them to say yes.",
-    category: "negotiation"
-  }
+/* ══════════════════════════════════════════════════════════════════
+   ENGINE — identical in every lesson. Do not edit below this line
+   except to add UI_I18N strings.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── Languages. English is the base; German ships complete.
+      The other eight are deliberately empty — t() falls back to English,
+      so an unfinished language can never blank the interface. ── */
+const LANGS = [
+  { code:'en', label:'English'   }, { code:'de', label:'Deutsch'  },
+  { code:'es', label:'Español'   }, { code:'fr', label:'Français' },
+  { code:'it', label:'Italiano'  }, { code:'pt', label:'Português'},
+  { code:'ru', label:'Русский'   }, { code:'ar', label:'العربية'  },
+  { code:'zh', label:'中文'       }, { code:'ja', label:'日本語'    }
 ];
+const RTL_LANGS = ['ar'];
 
-let currentQ = 0;
-let scores = [];
-let totalScoreSum = 0;
+const UI_I18N = {
+  en: {
+    actEyebrow: 'Activation',
+    actPlaceholder: "Dear Ms Chen,",
+    actSpeak1: "Cold call: your partner tries to end the call inside fifteen seconds.",
+    actSpeak2: "Bad news: your partner asks twice who is at fault. Answer once, then move on.",
+    actSpeak3: "Complaint: your partner is not satisfied by your first reply. Do not repeat yourself.",
+    actSpeak4: "Close: your partner says “let me think about it.” Find out what is actually in the way.",
+    actSpeakBrief: "Pick three scenarios. Your partner plays the other side and does not make it easy.",
+    actSpeakKind: 'Discussion · in pairs',
+    actTitle: "Run three of them live",
+    actUse: "Use at least four:",
+    actWriteBrief: "Pick the scenario you found hardest and write it properly. Then rewrite it in half the words.",
+    actWriteKind: "Writing · 150–200 words",
+    btnCheck: 'Check',
+    btnCopied: 'Copied',
+    btnCopy: 'Copy',
+    btnNext: 'Next →',
+    btnRestart: 'Start again',
+    btnStart: 'Begin →',
+    chipCount: "13 slides",
+    chipFocus: "Meetings, calls &amp; email",
+    chipLevel: "B2 · Open practice",
+    coverSub: "Eight situations, no options to choose from — write the answer, then read one that works",
+    coverTitle: "Say it in <em>your own words</em>",
+    fbAnswer: 'Answer:',
+    fbCorrect: 'Correct.',
+    fbWrong: 'Not quite.',
+    h1b: "Reading a good answer teaches you almost nothing. Producing a bad one and then reading a good one teaches you a great deal.",
+    h1h: "1 · Write it",
+    h2b: "The model answers are one version, not the version. Yours may be better; check that it does the same jobs.",
+    h2h: "2 · Compare the moves",
+    h3b: "One phrase per scenario is a realistic rate. Eight new phrases from one lesson is not.",
+    h3h: "3 · Say it again",
+    howEyebrow: "How to use this",
+    howTitle: "Write first. The model answer is not the point.",
+    m1b: "Conceding what is true costs nothing and buys you the right to say the rest.",
+    m1h: "Acknowledge",
+    m2b: "A date or a number turns a soft statement into something the other person can act on.",
+    m2h: "Be specific",
+    m3b: "Bad news, a refusal and a request all need a second half. Without one you have only made a statement.",
+    m3h: "Offer something",
+    movesEyebrow: "What nearly every answer needs",
+    movesTitle: "Acknowledge, be specific, offer something",
+    resLow: "",
+    resMid: "",
+    resNext: 'Recognising the language is half of it. Now produce it →',
+    resPerfect: "",
+    resStrong: "",
+    sCtx: "The situation",
+    sEyebrow: "Situation",
+    sModel: "One way to say it — read after you have written",
+    sTask: "Your task",
+    scoreLabel: 'Score',
+    slideOf: (a,b)=>`${a} / ${b}`,
+    wordCount: (n)=>`${n} ${n===1?'word':'words'}`
+  },
+  de: {
+    actEyebrow: 'Anwendung',
+    actPlaceholder: "Dear Ms Chen,",
+    actSpeak1: "Kaltakquise: Ihr Gegenüber versucht, das Gespräch in fünfzehn Sekunden zu beenden.",
+    actSpeak2: "Schlechte Nachricht: Ihr Gegenüber fragt zweimal nach der Schuld. Antworten Sie einmal und gehen Sie weiter.",
+    actSpeak3: "Beschwerde: Ihre erste Antwort genügt dem Gegenüber nicht. Wiederholen Sie sich nicht.",
+    actSpeak4: "Abschluss: Ihr Gegenüber sagt „let me think about it.“ Finden Sie heraus, was wirklich im Weg steht.",
+    actSpeakBrief: "Wählen Sie drei Situationen. Ihr Gegenüber spielt die andere Seite und macht es Ihnen nicht leicht.",
+    actSpeakKind: 'Diskussion · zu zweit',
+    actTitle: "Spielen Sie drei davon durch",
+    actUse: "Mindestens vier verwenden:",
+    actWriteBrief: "Nehmen Sie die schwierigste Situation und schreiben Sie sie sauber aus. Dann noch einmal in der Hälfte der Wörter.",
+    actWriteKind: "Schreiben · 150–200 Wörter",
+    btnCheck: 'Prüfen',
+    btnCopied: 'Kopiert',
+    btnCopy: 'Kopieren',
+    btnNext: 'Weiter →',
+    btnRestart: 'Neu starten',
+    btnStart: 'Beginnen →',
+    chipCount: "13 Folien",
+    chipFocus: "Meetings, Anrufe &amp; E-Mail",
+    chipLevel: "B2 · Freies Üben",
+    coverSub: "Acht Situationen, keine Auswahlmöglichkeiten — schreiben Sie die Antwort, lesen Sie dann eine, die funktioniert",
+    coverTitle: "Sagen Sie es <em>in eigenen Worten</em>",
+    fbAnswer: 'Antwort:',
+    fbCorrect: 'Richtig.',
+    fbWrong: 'Nicht ganz.',
+    h1b: "Eine gute Antwort zu lesen bringt fast nichts. Eine schlechte zu produzieren und danach eine gute zu lesen bringt sehr viel.",
+    h1h: "1 · Schreiben Sie",
+    h2b: "Die Musterantworten sind eine Fassung, nicht die Fassung. Ihre kann besser sein; prüfen Sie nur, ob sie dieselben Aufgaben erfüllt.",
+    h2h: "2 · Vergleichen Sie die Schritte",
+    h3b: "Eine Wendung pro Situation ist ein realistisches Tempo. Acht neue Wendungen aus einer Lektion sind es nicht.",
+    h3h: "3 · Sagen Sie es noch einmal",
+    howEyebrow: "So arbeiten Sie damit",
+    howTitle: "Erst schreiben. Die Musterantwort ist nicht der Punkt.",
+    m1b: "Zuzugeben, was stimmt, kostet nichts und verschafft Ihnen das Recht, den Rest zu sagen.",
+    m1h: "Bestätigen",
+    m2b: "Ein Datum oder eine Zahl macht aus einer vagen Aussage etwas, womit das Gegenüber arbeiten kann.",
+    m2h: "Konkret werden",
+    m3b: "Schlechte Nachrichten, Absagen und Bitten brauchen alle eine zweite Hälfte. Ohne sie haben Sie nur etwas festgestellt.",
+    m3h: "Etwas anbieten",
+    movesEyebrow: "Was fast jede Antwort braucht",
+    movesTitle: "Bestätigen, konkret werden, etwas anbieten",
+    resLow: "",
+    resMid: "",
+    resNext: 'Die Sprache zu erkennen ist die halbe Miete. Jetzt anwenden →',
+    resPerfect: "",
+    resStrong: "",
+    sCtx: "Die Situation",
+    sEyebrow: "Situation",
+    sModel: "Eine mögliche Formulierung — erst lesen, wenn Sie geschrieben haben",
+    sTask: "Ihre Aufgabe",
+    scoreLabel: 'Punkte',
+    slideOf: (a,b)=>`${a} / ${b}`,
+    wordCount: (n)=>`${n} ${n===1?'Wort':'Wörter'}`
+  },
+  es: {},
+  fr: {},
+  it: {},
+  pt: {},
+  ru: {},
+  ar: {},
+  zh: {},
+  ja: {}
+};
 
-const SYSTEM_PROMPT = `You are an expert business English tutor evaluating a B2-level professional learner's open written or spoken response. Your feedback must be:
-- Warm, encouraging, and specific — never harsh or generic
-- Structured in exactly three parts, each clearly separated
+let currentLang = 'en';
+const t = k => (UI_I18N[currentLang] && UI_I18N[currentLang][k] != null)
+  ? UI_I18N[currentLang][k] : UI_I18N.en[k];
 
-Return ONLY valid JSON in this exact format (no markdown, no extra text):
-{
-  "score": <integer 1-10>,
-  "praise": "<1-2 sentences: what they did well, specifically>",
-  "improve": "<1-2 sentences: one clear, specific improvement with an example of better phrasing>",
-  "model": "<A model answer of 2-4 sentences showing excellent B2+ phrasing for this exact scenario>"
+/* ── Deck state ── */
+const stage   = document.getElementById('stage');
+const slides  = [...document.querySelectorAll('.slide')];
+const scored  = slides.filter(s => ['mc','gap','match','order'].includes(s.dataset.type));
+/* A slide may hold more than one gap; each gap is worth a point. */
+const countIn = s => s.dataset.type === 'gap'   ? s.querySelectorAll('.gap').length
+                   : s.dataset.type === 'match' ? s.querySelectorAll('.match-pair').length
+                   : 1;
+const maxScore = scored.reduce((n, s) => n + Math.max(1, countIn(s)), 0);
+let idx = 0, score = 0;
+const answered = new WeakSet();
+
+/* ── Scale the 1280×720 stage to fit any viewport, never scroll ── */
+function fitStage() {
+  const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+  stage.style.transform = `scale(${s})`;
+}
+addEventListener('resize', fitStage);
+
+/* ── Navigation ── */
+function show(n) {
+  idx = Math.max(0, Math.min(slides.length - 1, n));
+  slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+  stage.classList.toggle('on-cover', slides[idx].dataset.type === 'cover');
+  // A slide may swap the background pattern for a second illustration from the
+  // same set (data-bg). Same idiom as the hero — picture at reduced opacity
+  // under the wash — so extra artwork never becomes a pasted-in box.
+  stage.style.setProperty('--hero', slides[idx].dataset.bg
+    ? `url('${slides[idx].dataset.bg}')` : '');
+  document.getElementById('progressFill').style.width =
+    (slides.length > 1 ? (idx / (slides.length - 1)) * 100 : 0) + '%';
+  document.getElementById('deckCount').textContent = t('slideOf')(idx + 1, slides.length);
+  document.querySelector('[data-action="prev"]').disabled = idx === 0;
+  document.querySelector('[data-action="next"]').disabled = idx === slides.length - 1;
+  if (slides[idx].dataset.type === 'results') renderResults();
+  const gap = slides[idx].querySelector('.gap');
+  if (gap && !answered.has(slides[idx])) setTimeout(() => gap.focus(), 60);
 }
 
-Scoring guide:
-9-10: Near-perfect B2/C1 professional English. Natural, appropriate, well-structured.
-7-8: Good B2. Clear and appropriate with minor issues.
-5-6: Functional but has notable gaps in vocabulary, register, or structure.
-3-4: Attempts the task but struggles with professional register or accuracy.
-1-2: Significant difficulty with the task or very short/unclear response.
-
-If the answer is in a language other than English, give a score of 1 and gently remind them to answer in English.`;
-
-function renderQuestion() {
-  const q = questions[currentQ];
-  document.getElementById('q-num').textContent = currentQ + 1;
-  document.getElementById('q-type-label').textContent = q.type;
-  document.getElementById('q-type-title').textContent = q.title;
-  document.getElementById('q-counter').textContent = 'Question ' + (currentQ+1) + ' of ' + questions.length;
-  document.getElementById('scenario-text').innerHTML = q.scenario;
-  document.getElementById('prompt-text').textContent = q.prompt;
-  document.getElementById('prompt-hint').textContent = q.hint ? '💡 ' + q.hint : '';
-
-  const input = document.getElementById('answer-input');
-  input.value = '';
-  input.disabled = false;
-  input.focus();
-
-  document.getElementById('char-counter').textContent = '0 characters';
-  document.getElementById('char-counter').classList.remove('warn');
-  document.getElementById('submit-btn').disabled = true;
-  document.getElementById('submit-btn').style.display = '';
-  document.getElementById('next-btn').style.display = 'none';
-  document.getElementById('feedback-wrap').style.display = 'none';
-  document.getElementById('loading-wrap').style.display = 'none';
-
-  const pct = (currentQ / questions.length) * 100;
-  document.getElementById('progress-fill').style.width = pct + '%';
-  document.getElementById('header-score').textContent = scores.length > 0 ? (Math.round(totalScoreSum / scores.length * 10) / 10) + '/10' : '—';
+function renderResults() {
+  const max = maxScore;
+  document.getElementById('scoreVal').textContent = score;
+  document.getElementById('scoreMax').textContent = max;
+  const pct = max ? score / max : 0;
+  document.getElementById('scoreMsg').textContent =
+    pct === 1 ? t('resPerfect') : pct >= .75 ? t('resStrong')
+    : pct >= .5 ? t('resMid') : t('resLow');
 }
 
-function updateCharCount() {
-  const val = document.getElementById('answer-input').value;
-  const n = val.length;
-  const counter = document.getElementById('char-counter');
-  counter.textContent = n + ' character' + (n !== 1 ? 's' : '');
-  counter.classList.toggle('warn', n > 600);
-  document.getElementById('submit-btn').disabled = val.trim().length < 8;
+function updateScoreChip() {
+  document.getElementById('deckScore').textContent =
+    maxScore ? `${t('scoreLabel')} ${score}/${maxScore}` : '';
 }
 
-async function submitAnswer() {
-  const answer = document.getElementById('answer-input').value.trim();
-  if (answer.length < 8) return;
+/* ── Answer handling ── */
+function award(slide, ok) {
+  if (answered.has(slide)) return;
+  answered.add(slide);
+  if (ok) score++;
+  updateScoreChip();
+}
 
-  const q = questions[currentQ];
-  document.getElementById('answer-input').disabled = true;
-  document.getElementById('submit-btn').disabled = true;
-  document.getElementById('submit-btn').style.display = 'none';
-  document.getElementById('loading-wrap').style.display = 'block';
+function feedback(slide, ok, extra, ownExplain) {
+  const el = slide.querySelector('.feedback');
+  if (!el) return;
+  // An option's own explanation wins: telling a learner why THEIR answer was
+  // wrong beats restating why the key was right.
+  const reason = ownExplain || el.dataset.explain;
+  const why = reason ? ' ' + reason : '';
+  // innerHTML, not textContent: explanations carry <strong> and <em>, and the
+  // whole point of an explanation is that the word being taught is marked.
+  // Written with textContent this printed the tags as literal source text on
+  // every deck built from this template.
+  el.innerHTML = (ok ? t('fbCorrect') : t('fbWrong') + (extra ? ` ${t('fbAnswer')} ${extra}` : '')) + why;
+  el.className = 'feedback show ' + (ok ? 'ok' : 'no');
+}
 
-  const loadingMessages = [
-    'Your tutor is reading your answer…',
-    'Analysing your phrasing and register…',
-    'Preparing personalised feedback…'
-  ];
-  let lmi = 0;
-  const lmInterval = setInterval(() => {
-    lmi = (lmi + 1) % loadingMessages.length;
-    document.getElementById('loading-text').textContent = loadingMessages[lmi];
-  }, 1800);
-
-  const userMessage = `Scenario: ${q.scenario.replace(/<[^>]*>/g, '')}
-
-Task: ${q.prompt}
-
-Student's answer: "${answer}"
-
-Evaluate this response for a B2 professional English learner.`;
-
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system: SYSTEM_PROMPT,
-        messages: [{ role: 'user', content: userMessage }]
-      })
+/* Multiple choice — shuffled on first view so option order is never a tell. */
+slides.filter(s => s.dataset.type === 'mc').forEach(slide => {
+  const box = slide.querySelector('.opts');
+  const opts = [...box.querySelectorAll('.opt')];
+  opts.sort(() => Math.random() - .5).forEach((o, i) => {
+    o.prepend(Object.assign(document.createElement('span'), {
+      className: 'opt-key', textContent: 'ABCD'[i]
+    }));
+    box.appendChild(o);
+  });
+  opts.forEach(o => o.addEventListener('click', () => {
+    if (answered.has(slide)) return;
+    const ok = o.hasAttribute('data-correct');
+    opts.forEach(x => {
+      x.disabled = true;
+      if (x.hasAttribute('data-correct')) x.classList.add('correct');
     });
-    const data = await res.json();
-    const raw = data.content?.[0]?.text || '{}';
-    let fb;
-    try {
-      fb = JSON.parse(raw.replace(/```json|```/g, '').trim());
-    } catch(e) {
-      fb = { score: 5, praise: "Your answer showed a real attempt at professional communication.", improve: "Try to use more specific business phrases in your response.", model: "I appreciate your time today. Could you share a bit more about your current setup so I can tailor my proposal accordingly?" };
+    if (!ok) o.classList.add('wrong');
+    award(slide, ok);
+    feedback(slide, ok, null, o.dataset.explain);
+  }));
+});
+
+/* Matching. Author as <div class="match-pair" data-term data-def> rows; the
+   engine builds both columns and shuffles the definitions. One point per pair. */
+slides.filter(s => s.dataset.type === 'match').forEach(slide => {
+  const pairs = [...slide.querySelectorAll('.match-pair')];
+  const grid = slide.querySelector('.match-grid');
+  if (!grid || !pairs.length) return;
+  const terms = document.createElement('div');
+  const defs = document.createElement('div');
+  terms.className = defs.className = 'match-col';
+  const mk = (txt, cls, key) => {
+    const b = document.createElement('button');
+    b.className = 'match-item ' + cls;
+    b.textContent = txt;
+    b.dataset.key = key;
+    return b;
+  };
+  pairs.forEach(p => terms.appendChild(mk(p.dataset.term, 'term', p.dataset.term)));
+  [...pairs].sort(() => Math.random() - .5)
+    .forEach(p => defs.appendChild(mk(p.dataset.def, 'def', p.dataset.term)));
+  grid.replaceChildren(terms, defs);
+
+  let picked = null, done = 0;
+  const total = pairs.length;
+  grid.addEventListener('click', e => {
+    const el = e.target.closest('.match-item');
+    if (!el || el.classList.contains('done')) return;
+    if (el.classList.contains('term')) {
+      grid.querySelectorAll('.term.picked').forEach(x => x.classList.remove('picked'));
+      el.classList.add('picked');
+      picked = el;
+      return;
     }
-    clearInterval(lmInterval);
-    showFeedback(fb);
-    scores.push(fb.score);
-    totalScoreSum += fb.score;
-    document.getElementById('header-score').textContent = (Math.round(totalScoreSum / scores.length * 10) / 10) + '/10';
-  } catch(e) {
-    clearInterval(lmInterval);
-    showFeedback({ score: null, praise: "Your answer was submitted, but feedback could not be loaded right now.", improve: "Please check your connection and try again.", model: "" });
-  }
+    if (!picked) return;
+    if (el.dataset.key === picked.dataset.key) {
+      el.classList.add('done'); picked.classList.add('done');
+      picked.classList.remove('picked');
+      picked = null; done++; score++; updateScoreChip();
+      if (done === total) {
+        answered.add(slide);
+        feedback(slide, true);
+      }
+    } else {
+      el.classList.add('miss');
+      setTimeout(() => el.classList.remove('miss'), 320);
+    }
+  });
+});
 
-  document.getElementById('loading-wrap').style.display = 'none';
-}
+/* Sentence building. Author as
+     <div class="order" data-answer="chunk|chunk|chunk"></div>
+   with a [data-action="check-order"] button and a .feedback alongside it.
+   The engine shuffles the chunks into a pool; clicking places one, clicking a
+   placed one takes it back. One point for the whole sentence — a half-right
+   word order is not half-right English. */
+slides.filter(s => s.dataset.type === 'order').forEach(slide => {
+  const box = slide.querySelector('.order');
+  if (!box) return;
+  const answer = box.dataset.answer.split('|').map(x => x.trim());
+  const target = document.createElement('div'); target.className = 'order-target';
+  const pool   = document.createElement('div'); pool.className   = 'order-pool';
+  answer.map((txt, i) => ({ txt, i }))
+        .sort(() => Math.random() - .5)
+        .forEach(({ txt, i }) => {
+          const b = document.createElement('button');
+          b.className = 'chunk';
+          b.textContent = txt;
+          b.dataset.i = i;
+          pool.appendChild(b);
+        });
+  box.replaceChildren(target, pool);
 
-function showFeedback(fb) {
-  const wrap = document.getElementById('feedback-wrap');
-  const body = document.getElementById('feedback-body');
-  const badge = document.getElementById('fb-score-badge');
-
-  if (fb.score !== null) {
-    badge.textContent = fb.score + '/10';
-    badge.className = 'score-badge ' + (fb.score >= 8 ? 'high' : fb.score >= 5 ? 'mid' : 'low');
-  } else {
-    badge.textContent = '—';
-    badge.className = 'score-badge mid';
-  }
-
-  body.innerHTML = '';
-
-  if (fb.praise) {
-    const s = document.createElement('div');
-    s.className = 'fb-section';
-    s.innerHTML = `<div class="fb-section-label praise"><div class="fb-dot praise"></div>What you did well</div><div class="fb-text">${fb.praise}</div>`;
-    body.appendChild(s);
-  }
-
-  if (fb.improve) {
-    const s = document.createElement('div');
-    s.className = 'fb-section';
-    s.innerHTML = `<div class="fb-section-label improve"><div class="fb-dot improve"></div>One thing to improve</div><div class="fb-text">${fb.improve}</div>`;
-    body.appendChild(s);
-  }
-
-  if (fb.model) {
-    const s = document.createElement('div');
-    s.className = 'fb-section';
-    s.innerHTML = `<div class="fb-section-label model"><div class="fb-dot model"></div>Model answer</div><div class="fb-model-text">${fb.model}</div>`;
-    body.appendChild(s);
-  }
-
-  wrap.style.display = 'block';
-
-  if (currentQ < questions.length - 1) {
-    document.getElementById('next-btn').style.display = '';
-    document.getElementById('next-btn').textContent = 'Next question →';
-  } else {
-    document.getElementById('next-btn').style.display = '';
-    document.getElementById('next-btn').textContent = 'See my results →';
-  }
-
-  wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
-
-function nextQuestion() {
-  currentQ++;
-  if (currentQ >= questions.length) {
-    showFinal();
-  } else {
-    renderQuestion();
-    document.getElementById('lesson-section').scrollIntoView({ behavior: 'smooth' });
-  }
-}
-
-function showFinal() {
-  document.getElementById('lesson-section').style.display = 'none';
-  document.getElementById('progress-fill').style.width = '100%';
-
-  const avg = scores.length ? Math.round(totalScoreSum / scores.length * 10) / 10 : 0;
-  document.getElementById('final-avg').textContent = avg;
-  document.getElementById('header-score').textContent = avg + '/10';
-
-  let heading, msg;
-  if (avg >= 8.5) { heading = 'Outstanding!'; msg = 'Your open answers show a strong, confident command of professional English. Your ability to respond naturally across different business situations is excellent — you are well into B2 territory.'; }
-  else if (avg >= 7) { heading = 'Very well done!'; msg = 'You handled most scenarios with clarity and professionalism. Review the model answers for the questions where you scored lower — look at how the phrasing and tone shift the impact of your message.'; }
-  else if (avg >= 5.5) { heading = 'Good effort!'; msg = 'You are developing solid professional English skills. Focus on the feedback for each question — particularly around register (formal vs informal) and specific business collocations that will elevate your responses.'; }
-  else { heading = 'Keep going!'; msg = 'Open-answer practice is challenging, and every attempt builds your fluency. Read back through the model answers and try to notice the structure: acknowledge, explain, propose. That pattern will help in almost every situation.'; }
-
-  document.getElementById('final-heading').textContent = heading;
-  document.getElementById('final-msg').textContent = msg;
-
-  const grid = document.getElementById('scores-grid');
-  grid.innerHTML = '';
-  questions.forEach((q, i) => {
-    const tile = document.createElement('div');
-    tile.className = 'score-tile';
-    const sc = scores[i] !== undefined ? scores[i] + '/10' : '—';
-    tile.innerHTML = `<div class="st-q">Q${i+1} — ${q.type}</div><div class="st-v">${sc}</div>`;
-    grid.appendChild(tile);
+  box.addEventListener('click', e => {
+    const c = e.target.closest('.chunk');
+    if (!c || c.disabled) return;
+    if (c.parentElement === pool) { c.classList.add('placed');    target.appendChild(c); }
+    else                          { c.classList.remove('placed'); pool.appendChild(c); }
   });
 
-  document.getElementById('final-screen').style.display = 'block';
-  document.getElementById('final-screen').scrollIntoView({ behavior: 'smooth' });
+  slide._check = () => {
+    if (answered.has(slide)) return;
+    // Marking a half-built sentence teaches nothing; wait until it is complete.
+    if (target.children.length < answer.length) return;
+    answered.add(slide);
+    const ok = [...target.children].map(c => +c.dataset.i).every((v, i) => v === i);
+    target.classList.add(ok ? 'correct' : 'wrong');
+    box.querySelectorAll('.chunk').forEach(c => c.disabled = true);
+    if (ok) score++;
+    updateScoreChip();
+    feedback(slide, ok, ok ? null : answer.join(' '));
+    const btn = slide.querySelector('[data-action="check-order"]');
+    if (btn) btn.disabled = true;
+  };
+});
+
+/* Gap fill. Supports several gaps on one slide, each scored and explained
+   individually via its own .gap-row wrapper. */
+const gapOk = g => g.dataset.answer.split('|')
+  .map(a => a.trim().toLowerCase())
+  .includes(g.value.trim().toLowerCase().replace(/\s+/g, ' '));
+
+function markGap(g, fb) {
+  const ok = gapOk(g);
+  g.classList.add(ok ? 'correct' : 'wrong');
+  g.disabled = true;
+  if (ok) score++;
+  if (fb) {
+    const why = fb.dataset.explain ? ' ' + fb.dataset.explain : '';
+    fb.innerHTML = (ok ? t('fbCorrect')
+      : `${t('fbWrong')} ${t('fbAnswer')} ${g.dataset.answer.split('|')[0]}.`) + why;
+    fb.className = 'feedback show ' + (ok ? 'ok' : 'no');
+  }
+  return ok;
 }
 
-function restartLesson() {
-  currentQ = 0; scores = []; totalScoreSum = 0;
-  document.getElementById('header-score').textContent = '—';
-  document.getElementById('final-screen').style.display = 'none';
-  document.getElementById('lesson-section').style.display = 'block';
-  renderQuestion();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+function checkGaps(slide) {
+  if (answered.has(slide)) return;
+  answered.add(slide);
+  const rows = [...slide.querySelectorAll('.gap-row')];
+  if (rows.length) {
+    rows.forEach(r => markGap(r.querySelector('.gap'), r.querySelector('.feedback')));
+  } else {
+    markGap(slide.querySelector('.gap'), slide.querySelector('.feedback'));
+  }
+  const btn = slide.querySelector('[data-action="check"]');
+  if (btn) btn.disabled = true;
+  updateScoreChip();
 }
 
-renderQuestion();
+/* ── Activation: word count, copy, and a print mirror (a textarea's
+   value does not appear in a PDF, so we mirror it into a div). ── */
+const actInput = document.getElementById('actInput');
+if (actInput) {
+  const countEl = document.getElementById('actCount');
+  const printEl = document.getElementById('actPrint');
+  const sync = () => {
+    const words = actInput.value.trim().split(/\s+/).filter(Boolean).length;
+    countEl.textContent = t('wordCount')(words);
+    printEl.textContent = actInput.value;
+  };
+  actInput.addEventListener('input', sync);
+  window.syncActivation = sync;
+  sync();
+}
+
+/* ── Events ── */
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-action]');
+  if (!a) return;
+  const act = a.dataset.action;
+  if (act === 'next') show(idx + 1);
+  if (act === 'prev') show(idx - 1);
+  if (act === 'check') checkGaps(a.closest('.slide'));
+  if (act === 'check-order') { const sl = a.closest('.slide'); if (sl._check) sl._check(); }
+  if (act === 'restart') location.reload();
+  if (act === 'copy-writing') {
+    const ta = document.getElementById('actInput');
+    if (ta && navigator.clipboard) navigator.clipboard.writeText(ta.value).then(() => {
+      const was = a.textContent;
+      a.textContent = t('btnCopied');
+      setTimeout(() => { a.textContent = was; }, 1400);
+    });
+  }
+});
+
+document.addEventListener('keydown', e => {
+  if (e.target.matches('input, select, textarea')) {
+    if (e.key === 'Enter') checkGaps(e.target.closest('.slide'));
+    return;
+  }
+  if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); show(idx + 1); }
+  if (['ArrowLeft', 'PageUp'].includes(e.key))         { e.preventDefault(); show(idx - 1); }
+});
+
+/* ── Language ── */
+function applyLang() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const v = t(el.dataset.i18n);
+    if (v != null) el.innerHTML = v;
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const v = t(el.dataset.i18nPh);
+    if (v != null) el.placeholder = v;
+  });
+  if (window.syncActivation) window.syncActivation();
+  document.documentElement.lang = currentLang;
+  document.documentElement.dir = RTL_LANGS.includes(currentLang) ? 'rtl' : 'ltr';
+  updateScoreChip();
+  show(idx);
+}
+
+function initLang() {
+  const sel = document.getElementById('langSelect');
+  // Only offer languages that are actually translated. An empty or partial
+  // scaffold stays in the code for a future pass but never appears as a dead
+  // option in the menu.
+  const enKeys = Object.keys(UI_I18N.en).length;
+  LANGS.filter(l => l.code === 'en' ||
+                    Object.keys(UI_I18N[l.code] || {}).length >= enKeys)
+       .forEach(l => sel.add(new Option(l.label, l.code)));
+  sel.value = currentLang;
+  sel.hidden = sel.options.length < 2;
+  sel.addEventListener('change', () => { currentLang = sel.value; applyLang(); });
+}
+
+/* Per-slide background art: set the variable on the element as well, because
+   the print stylesheet paints each slide's own ::before from var(--hero). */
+slides.filter(s => s.dataset.bg).forEach(s =>
+  s.style.setProperty('--hero', `url('${s.dataset.bg}')`));
+
+/* ── Boot ── */
+initLang();
+fitStage();
+applyLang();
+updateScoreChip();
+
+/* Reveal the wordmark only once DM Sans is really available, so the
+   Forbes/ENGLISH lockup never renders at fallback-font proportions. */
+const ready = () => document.body.classList.add('fonts-ready');
+if (document.fonts && document.fonts.ready) { document.fonts.ready.then(ready); setTimeout(ready, 1500); }
+else ready();
 </script>
 </body>
 </html>
