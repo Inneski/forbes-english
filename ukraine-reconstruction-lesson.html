@@ -1092,7 +1092,11 @@ function feedback(slide, ok, extra, ownExplain) {
   // wrong beats restating why the key was right.
   const reason = ownExplain || el.dataset.explain;
   const why = reason ? ' ' + reason : '';
-  el.textContent = (ok ? t('fbCorrect') : t('fbWrong') + (extra ? ` ${t('fbAnswer')} ${extra}` : '')) + why;
+  // innerHTML, not textContent: explanations carry <strong> and <em>, and the
+  // whole point of an explanation is that the word being taught is marked.
+  // Written with textContent this printed the tags as literal source text on
+  // every deck built from this template.
+  el.innerHTML = (ok ? t('fbCorrect') : t('fbWrong') + (extra ? ` ${t('fbAnswer')} ${extra}` : '')) + why;
   el.className = 'feedback show ' + (ok ? 'ok' : 'no');
 }
 
@@ -1226,7 +1230,7 @@ function markGap(g, fb) {
   if (ok) score++;
   if (fb) {
     const why = fb.dataset.explain ? ' ' + fb.dataset.explain : '';
-    fb.textContent = (ok ? t('fbCorrect')
+    fb.innerHTML = (ok ? t('fbCorrect')
       : `${t('fbWrong')} ${t('fbAnswer')} ${g.dataset.answer.split('|')[0]}.`) + why;
     fb.className = 'feedback show ' + (ok ? 'ok' : 'no');
   }

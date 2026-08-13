@@ -904,7 +904,11 @@ function feedback(slide, ok, extra) {
   const el = slide.querySelector('.feedback');
   if (!el) return;
   const why = el.dataset.explain ? ' ' + el.dataset.explain : '';
-  el.textContent = (ok ? t('fbCorrect') : t('fbWrong') + (extra ? ` ${t('fbAnswer')} ${extra}` : '')) + why;
+  // innerHTML, not textContent: explanations carry <strong> and <em>, and the
+  // whole point of an explanation is that the word being taught is marked.
+  // Written with textContent this printed the tags as literal source text on
+  // every deck built from this template.
+  el.innerHTML = (ok ? t('fbCorrect') : t('fbWrong') + (extra ? ` ${t('fbAnswer')} ${extra}` : '')) + why;
   el.className = 'feedback show ' + (ok ? 'ok' : 'no');
 }
 
