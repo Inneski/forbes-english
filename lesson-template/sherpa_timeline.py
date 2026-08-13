@@ -104,8 +104,7 @@ def diagram(gid, stops, block, caption, reveal, reveal_for,
       <text x="%d" y="%d" text-anchor="middle" class="diagram-caption" fill="#3E6A85" pointer-events="none">NOW</text>
       <text x="%d" y="%d" text-anchor="middle" class="diagram-caption" fill="%s" style="letter-spacing:.14em" pointer-events="none">FUTURE</text>
       <text x="%g" y="288" text-anchor="middle" class="diagram-caption" fill="#F4F1E8" style="font-size:12.5px;letter-spacing:.03em" pointer-events="none">%s</text>
-      <text x="%g" y="%d" text-anchor="middle" class="dg-reveal" data-for="shape-%s" font-family="Inter, sans-serif" font-size="11.5" fill="%s" pointer-events="none">%s</text>
-      <text x="%d" y="%d" text-anchor="middle" class="dg-reveal" data-for="shape-now" font-family="Inter, sans-serif" font-size="11.5" fill="#5F7C90" pointer-events="none">present simple</text>%s
+      <text x="%g" y="%d" text-anchor="middle" class="dg-reveal" data-for="shape-%s" font-family="Inter, sans-serif" font-size="11.5" fill="%s" pointer-events="none">%s</text>%s
     </svg>''' % (
         classes, VIEWBOX, aria,
         gradient(gid, stops), gid,
@@ -116,6 +115,5 @@ def diagram(gid, stops, block, caption, reveal, reveal_for,
         FUTURE_LABEL_X, LABEL_Y, label_ink,
         cx, caption,
         cx, REVEAL_Y, reveal_for, "#CFC9BC", reveal,
-        NOW_X, REVEAL_Y,
         extra,
     )
