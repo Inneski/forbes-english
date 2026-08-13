@@ -12,7 +12,7 @@
     --ink:#EEF6E1;
     --ink-soft:#A9BE8B;
     --paper:#101705;
-    --card:#FFFFFF;
+    --card:#1B240C;
     --accent:#5C8F20;
     --accent-dark:#BEE07E;
     --accent-light:#243610;
@@ -216,13 +216,16 @@
       <text x="490" y="261" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#D2E9AC" pointer-events="none">left out</text>
     </svg>
   </section>
+
+    
+
       <div class="trail-wrap">
 
     <div class="camp" id="rules">
       <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 3v18M5 4h11l-3 4 3 4H5"/></svg></div>
       <div class="camp-label">Descent briefing</div>
       <h2>When to use it</h2>
-      <p class="chart-note" style="margin:-6px 0 18px">The passive is not a different tense. It is the {TENSE} with the doer let go &mdash; and the reason you let them go is always one of these six.</p>
+      <p class="chart-note" style="margin:-6px 0 18px">The passive is not a different tense. It is the going to future with the doer let go &mdash; and the reason you let them go is always one of these six.</p>
       <div class="rule-grid">
         <div class="rule-card">
           <h3>You do not know who</h3>
@@ -469,54 +472,6 @@
 </main>
 
 <script>
-
-
-// ── the event and the dropped doer ──
-var exA = [
-  "The shop <em>is going to be demolished</em>.",
-  "He <em>is going to be charged</em>.",
-  "Some of these posts <em>are going to be cut</em>."
-];
-var exB = [
-  "&hellip; <em>by</em> the developer.",
-  "&hellip; <em>by</em> the police, obviously.",
-  "&hellip; and nobody at all is cutting them."
-];
-
-function renderList(id, items){
-  var ul = document.getElementById(id);
-  ul.innerHTML = "";
-  items.forEach(function(txt){
-    var li = document.createElement("li");
-    li.innerHTML = txt;
-    ul.appendChild(li);
-  });
-}
-renderList("panel-event-list", exA);
-renderList("panel-agent-list", exB);
-
-function pulseShape(el){
-  el.style.transformOrigin = "center";
-  el.animate(
-    [{ opacity: 1 }, { opacity: 0.6 }, { opacity: 1 }],
-    { duration: 380, easing: "ease-out" }
-  );
-}
-[["shape-event","panel-event","#B7DC7B"],
- ["shape-agent","panel-agent","#D2E9AC"]].forEach(function(pair){
-  var el = document.getElementById(pair[0]);
-  if (!el) return;
-  var activate = function(){
-    pulseShape(el);
-    document.querySelectorAll(".diagram-panel").forEach(function(p){ p.style.outline = "none"; });
-    var panel = document.getElementById(pair[1]);
-    if (panel) panel.style.outline = "2px solid " + pair[2];
-  };
-  el.addEventListener("click", activate);
-  el.addEventListener("keydown", function(e){
-    if (e.key === "Enter" || e.key === " "){ e.preventDefault(); activate(); }
-  });
-});
 
 // ── QUIZ ──
 var questions = [
