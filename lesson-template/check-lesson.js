@@ -8,6 +8,7 @@
  *
  *   LAYOUT   every slide fits the 1280x720 canvas, and nothing scrolls
  *   ANSWERS  the correct MC option is not simply the longest one
+ *   BANK     a word bank does not hand over the gap answers in gap order
  *   EXPLAIN  every scored question carries an explanation
  *   ACTIVATE every lesson ends with a speaking + writing production task
  *   I18N     German covers every key English defines, and every data-i18n
@@ -36,7 +37,7 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
   await page.waitForTimeout(2000);
 
   const r = await page.evaluate(() => {
-    const out = { layout: [], answers: [], explain: [], i18n: [], logo: null, scroll: null };
+    const out = { layout: [], answers: [], explain: [], i18n: [], logo: null, scroll: null, bank: null };
     const slides = [...document.querySelectorAll('.slide')];
 
     // ── LAYOUT ──────────────────────────────────────────────────────
@@ -93,6 +94,26 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
       if (!wasActive) s.classList.remove('is-active');
       s.style.animation = anim;
     });
+
+    // ── BANK: does a word bank give the answers away? ───────────────
+    // A bank listing the answers in the same order as the gaps below it is
+    // not a scaffold, it is an answer key: the learner reads straight down.
+    // Shipped twice before it was caught, so it is measured here now.
+    {
+      const seen = [];
+      [...document.querySelectorAll('.bank-chip')].forEach(c => {
+        const t = c.textContent.trim();
+        if (t && !seen.includes(t)) seen.push(t);
+      });
+      const answers = [...document.querySelectorAll('input.gap[data-answer]')]
+        .map(g => g.dataset.answer.split('|')[0].trim());
+      const pos = answers.map(a => seen.indexOf(a));
+      const found = pos.filter(p => p >= 0);
+      // Two or more answers present AND appearing in gap order is the failure.
+      const ascending = found.length >= 2 &&
+        found.every((v, i, arr) => i === 0 || arr[i - 1] < v);
+      if (ascending) out.bank = { answers, positions: pos, bank: seen.slice(0, 12) };
+    }
 
     // ── I18N ────────────────────────────────────────────────────────
     if (typeof UI_I18N !== 'undefined') {
@@ -161,6 +182,14 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
       `slide ${a.n}: correct option is longest — ${a.key} chars vs ${a.maxOther} (${a.ratio}x). ` +
       `A learner can score by picking the longest.`));
     console.log(DIM('          Fix by lengthening the distractors, not by shortening the key.'));
+  }
+
+  head('BANK');
+  if (!r.bank) ok('no word bank hands over the answers in order');
+  else {
+    bad(`the word bank lists the gap answers in gap order: ${r.bank.answers.join(' → ')}`);
+    console.log(DIM(`          bank reads: ${r.bank.bank.join(' · ')}`));
+    console.log(DIM('          Sort the bank, or shuffle it — a learner must not be able to read straight down.'));
   }
 
   head('EXPLAIN');
