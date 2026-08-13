@@ -97,6 +97,9 @@
     @media (max-width:640px){
       .up-link{ top:10px; left:10px; padding:7px 13px 7px 10px; font-size:13px; }
     }
+  .locked-link{opacity:.45;pointer-events:none;}
+  .lock-note{font-family:'Inter',sans-serif;font-size:12.5px;color:#6A5A62;margin:14px 0 0;}
+  .lock-note strong{color:#2B0F1D;}
 </style>
 </head>
 <body>
@@ -581,6 +584,44 @@ document.querySelectorAll(".camp-dot").forEach(function(g){
     });
   }
 });
+</script>
+
+
+<script>
+// ── the off-route grammar has to be earned ──
+(function(){
+  var p = {};
+  try { p = JSON.parse(localStorage.getItem("sherpa.progress.v1")) || {}; } catch (e) {}
+  var camps = 0, descents = 0;
+  for (var k in p){ if (p[k] && p[k].face === "ascent") camps++; else if (p[k] && p[k].face === "descent") descents++; }
+
+  function gate(sel, ok, why){
+    document.querySelectorAll(sel).forEach(function(a){
+      if (ok) return;
+      a.classList.add("locked-link");
+      a.setAttribute("aria-disabled", "true");
+      a.setAttribute("title", why);
+      a.removeAttribute("href");
+    });
+  }
+  gate('a[href*="cloud-used-to"], a[href*="cloud-be-used-to"]', camps >= 4,
+       "Finish four camps to open the clouds.");
+  gate('a[href*="cloud-causative"]', camps >= 13 && descents >= 4,
+       "Finish the ascent and four descents to open the moon.");
+
+  var note = document.createElement("p");
+  note.className = "lock-note";
+  var bits = [];
+  bits.push("<strong>" + camps + " of 13</strong> camps");
+  bits.push("<strong>" + descents + " of 9</strong> descents");
+  var earned = [];
+  if (camps >= 4) earned.push("the clouds"); else earned.push("clouds at 4 camps");
+  if (camps >= 13) earned.push("the descent"); else earned.push("the descent at 13");
+  if (camps >= 13 && descents >= 4) earned.push("the moon"); else earned.push("the moon at 13 + 4");
+  note.innerHTML = bits.join(" &middot; ") + " &mdash; " + earned.join(" &middot; ");
+  var host = document.querySelector(".zone-note");
+  if (host && host.parentNode) host.parentNode.insertBefore(note, host);
+})();
 </script>
 
 </body>

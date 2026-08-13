@@ -163,6 +163,16 @@
                  cursor:pointer;transition:background .12s ease,color .12s ease;}
   .tr-bar button:hover{color:var(--ink);}
   .tr-bar button.on{background:var(--accent);color:#FFFFFF;border-color:var(--accent);}
+  /* ── progression: the voice toggle and its lock ── */
+  .voice-bar{position:fixed;top:14px;right:16px;z-index:40;display:flex;align-items:center;gap:8px;
+             font-family:'Inter',sans-serif;font-size:12px;font-weight:700;}
+  .voice-bar a,.voice-bar span.locked{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;
+             border-radius:999px;border:1px solid var(--accent-light);background:var(--card);
+             color:var(--accent-dark);text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.14);}
+  .voice-bar a:hover{background:var(--accent);color:#FFFFFF;border-color:var(--accent);}
+  .voice-bar span.locked{opacity:.62;cursor:help;font-weight:600;}
+  .voice-bar .tick{font-size:13px;}
+  @media (max-width:820px){ .voice-bar{position:static;margin:12px 16px 0;justify-content:flex-end;} }
 </style>
 </head>
 <body>
@@ -496,6 +506,66 @@
 </main>
 
 <script>
+
+// ── progression: what you have earned so far ──
+var SHERPA_KEY = "sherpa.progress.v1";
+var SHERPA_ID = "camp-thirteen-future-perfect-continuous";
+var SHERPA_FACE = "ascent";
+var SHERPA_TWIN = null;
+
+function sherpaRead(){
+  try { return JSON.parse(localStorage.getItem(SHERPA_KEY)) || {}; }
+  catch (e) { return {}; }
+}
+function sherpaWrite(p){
+  try { localStorage.setItem(SHERPA_KEY, JSON.stringify(p)); } catch (e) {}
+}
+function sherpaCount(face){
+  var p = sherpaRead(), n = 0;
+  for (var k in p) if (p[k] && p[k].face === face) n++;
+  return n;
+}
+function sherpaRecord(score, total){
+  var p = sherpaRead();
+  var prev = p[SHERPA_ID] && p[SHERPA_ID].best || 0;
+  p[SHERPA_ID] = { face: SHERPA_FACE, best: Math.max(prev, score), total: total };
+  sherpaWrite(p);
+}
+
+// the results panel appearing is the signal that a camp is done
+(function(){
+  var res = document.getElementById("results");
+  if (!res) return;
+  new MutationObserver(function(){
+    if (res.style.display === "block"){
+      var txt = (document.getElementById("final-score") || {}).textContent || "";
+      var m = txt.match(/(\d+)\s*\/\s*(\d+)/);
+      if (m) { sherpaRecord(+m[1], +m[2]); sherpaBar(); }
+    }
+  }).observe(res, { attributes: true, attributeFilter: ["style"] });
+})();
+
+function sherpaBar(){
+  var old = document.querySelector(".voice-bar");
+  if (old) old.remove();
+  var camps = sherpaCount("ascent");
+  var bar = document.createElement("div");
+  bar.className = "voice-bar";
+  if (SHERPA_FACE === "descent"){
+    bar.innerHTML = '<a href="' + SHERPA_TWIN + '"><span class="tick">&#8646;</span>Active voice</a>';
+  } else if (!SHERPA_TWIN){
+    bar.innerHTML = '<span class="locked" title="This tense has no passive anybody uses.">'
+                  + '<span class="tick">&#8709;</span>No passive</span>';
+  } else if (camps >= 13){
+    bar.innerHTML = '<a href="' + SHERPA_TWIN + '"><span class="tick">&#8646;</span>Passive voice</a>';
+  } else {
+    bar.innerHTML = '<span class="locked" title="Finish all thirteen camps to open the descent.">'
+                  + '<span class="tick">&#128274;</span>Passive &middot; ' + camps + '/13 camps</span>';
+  }
+  document.body.appendChild(bar);
+}
+sherpaBar();
+
 
 // ── example translations: nine languages, click to reveal ──
 var EX_TR = {"97": ["Im Juni wohnen wir seit zehn Jahren hier.", "En junio llevaremos diez años viviendo aquí.", "En juin, cela fera dix ans que nous habitons ici.", "A giugno saranno dieci anni che viviamo qui.", "Em junho faremos dez anos a viver aqui.", "К июню мы проживём здесь десять лет.", "بحلول يونيو سنكون قد عشنا هنا عشر سنوات.", "到六月我们就在这里住满十年了。", "六月でここに住んで十年になります。"], "98": ["Um sechs fahre ich schon acht Stunden.", "A las seis llevaré ocho horas conduciendo.", "À six heures, je conduirai depuis huit heures.", "Alle sei starò guidando da otto ore.", "Às seis terei estado a conduzir oito horas.", "К шести я буду за рулём уже восемь часов.", "بحلول السادسة سأكون قد قدت ثماني ساعات.", "到六点我就开了八个小时的车了。", "六時には八時間運転し続けていることになります。"], "99": ["Sie wird völlig erschöpft sein. Sie ist die ganze Nacht unterwegs.", "Estará agotada. Habrá viajado toda la noche.", "Elle sera épuisée. Elle aura voyagé toute la nuit.", "Sarà distrutta. Avrà viaggiato tutta la notte.", "Ela vai estar exausta. Terá viajado a noite toda.", "Она будет измотана. Она будет в пути всю ночь.", "ستكون منهكة. ستكون قد سافرت طوال الليل.", "她会累坏的。她要赶一整夜的路。", "彼女はへとへとでしょう。一晩中移動し続けているのですから。"], "100": ["Bis dahin warte ich schon zwei Stunden.", "Para entonces llevaré dos horas esperando.", "D'ici là, j'attendrai depuis deux heures.", "Per allora starò aspettando da due ore.", "Até lá terei estado à espera duas horas.", "К тому времени я буду ждать уже два часа.", "بحلول ذلك الوقت سأكون قد انتظرت ساعتين.", "到那时我就等了两个小时了。", "その頃には二時間待ち続けていることになります。"], "101": ["Ich kenne sie dann seit zwanzig Jahren.", "Para entonces la conoceré desde hace veinte años.", "Cela fera vingt ans que je la connais.", "La conoscerò da vent'anni.", "Nessa altura conhecê-la-ei há vinte anos.", "К тому моменту я буду знать её двадцать лет.", "سأكون قد عرفتها منذ عشرين عامًا.", "到那时我认识她就二十年了。", "その時には彼女と二十年の付き合いになります。"], "102": ["Bis zur Fertigstellung arbeitet das Team seit drei Jahren daran.", "Al terminarse, el equipo llevará tres años trabajando en ello.", "À la livraison, l'équipe y travaillera depuis trois ans.", "Al completamento, il team ci starà lavorando da tre anni.", "Na conclusão, a equipa terá trabalhado nisso três anos.", "К сдаче объекта команда проработает над ним три года.", "عند الإنجاز سيكون الفريق قد عمل عليه ثلاث سنوات.", "到竣工时，团队将已经做了三年。", "完成時には、チームは三年間これに取り組んでいることになります。"], "103": ["Ich warte dann schon zwei Stunden.", "Llevaré dos horas esperando.", "J'attendrai depuis deux heures.", "Starò aspettando da due ore.", "Terei estado à espera duas horas.", "Я буду ждать уже два часа.", "سأكون قد انتظرت ساعتين.", "我就等了两个小时了。", "二時間待ち続けていることになります。"], "104": ["Es läuft dann noch nicht lange.", "No llevará mucho tiempo en marcha.", "Cela ne tournera pas depuis longtemps.", "Non sarà in funzione da molto.", "Não estará a funcionar há muito tempo.", "Он проработает недолго.", "لن يكون قد اشتغل طويلًا.", "到时候它运行的时间还不长。", "そのときはまだ長くは動いていません。"], "105": ["Wirst du den ganzen Tag gefahren sein?", "¿Habrás estado conduciendo todo el día?", "Auras-tu conduit toute la journée ?", "Avrai guidato tutto il giorno?", "Terás estado a conduzir o dia todo?", "Ты будешь ехать целый день?", "هل ستكون قد قدت طوال اليوم؟", "到时候你会已经开了一整天的车吗？", "一日中運転し続けていることになりますか。"], "106": ["Wie lange wird sie dann schon unterrichten?", "¿Cuánto tiempo llevará enseñando?", "Depuis combien de temps enseignera-t-elle ?", "Da quanto tempo starà insegnando?", "Há quanto tempo estará a ensinar?", "Как долго она к тому времени будет преподавать?", "منذ متى ستكون قد درّست؟", "到那时她教书多久了？", "その時点で彼女は何年教えていることになりますか。"]};
