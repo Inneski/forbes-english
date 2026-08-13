@@ -37,7 +37,7 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
   await page.waitForTimeout(2000);
 
   const r = await page.evaluate(() => {
-    const out = { layout: [], answers: [], explain: [], i18n: [], logo: null, scroll: null, bank: null };
+    const out = { layout: [], answers: [], explain: [], i18n: [], logo: null, scroll: null, bank: null, markup: null };
     const slides = [...document.querySelectorAll('.slide')];
 
     // ── LAYOUT ──────────────────────────────────────────────────────
@@ -75,7 +75,12 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
           const maxOther = Math.max(...others);
           // Flag only a NOTICEABLE excess. A two-character difference is not
           // something a learner can scan for; 10%+ on a full option is.
-          if (kl > maxOther * 1.10) {
+          // The ratio alone is not enough: on one-word options (a modal-verb
+          // lesson offering can / could / must / should) "should" beats "must"
+          // by 50% while carrying no information at all, because the option
+          // set is closed and the learner can see all of it. So the excess has
+          // to clear an absolute floor as well.
+          if (kl > maxOther * 1.10 && kl - maxOther >= 4) {
             out.answers.push({ n: i + 1, key: kl, maxOther, ratio: +(kl / maxOther).toFixed(2) });
           }
         }
@@ -94,6 +99,27 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
       if (!wasActive) s.classList.remove('is-active');
       s.style.animation = anim;
     });
+
+    // ── MARKUP: does any explanation print its own tags? ────────────
+    // Explanations mark the word being taught with <strong>/<em>. If the
+    // engine writes them with textContent instead of innerHTML the learner
+    // reads the tags. Shipped on 26 pages of one family and 19 of another
+    // before it was caught, so it is measured here rather than remembered:
+    // answer the first scored question and look at what actually rendered.
+    {
+      const marked = [...document.querySelectorAll('[data-explain]')]
+        .filter(el => /<(strong|em|b|i|code)\b/i.test(el.dataset.explain));
+      if (marked.length) {
+        const slide = marked[0].closest('.slide');
+        const opt = slide && slide.querySelector('.opt');
+        const check = slide && slide.querySelector('[data-action="check"]');
+        if (opt) opt.click(); else if (check) check.click();
+        const shown = [...document.querySelectorAll('.feedback.show')]
+          .map(e => e.textContent || '')
+          .filter(t => /<(strong|em|b|i|code)\b/i.test(t));
+        if (shown.length) out.markup = shown.map(t => t.slice(0, 70));
+      }
+    }
 
     // ── BANK: does a word bank give the answers away? ───────────────
     // A bank listing the answers in the same order as the gaps below it is
@@ -191,6 +217,10 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
     console.log(DIM(`          bank reads: ${r.bank.bank.join(' · ')}`));
     console.log(DIM('          Sort the bank, or shuffle it — a learner must not be able to read straight down.'));
   }
+
+  head('MARKUP');
+  if (!r.markup) ok('explanations render their markup instead of printing it');
+  else r.markup.forEach(m => bad(`an explanation prints its own tags: ${m}…`));
 
   head('EXPLAIN');
   if (!r.explain.length) ok('every scored question has an explanation');
