@@ -178,6 +178,9 @@
   .voice-bar span.locked{opacity:.62;cursor:help;font-weight:600;}
   .voice-bar .tick{font-size:13px;}
   @media (max-width:820px){ .voice-bar{position:static;margin:12px 16px 0;justify-content:flex-end;} }
+  .voice-bar a.ghost{background:transparent;border-style:dashed;box-shadow:none;font-weight:600;
+                     color:var(--ink-soft);padding:8px 12px;}
+  .voice-bar a.ghost:hover{background:var(--accent-lighter);color:var(--accent-dark);border-color:var(--accent);}
 </style>
 </head>
 <body>
@@ -483,7 +486,7 @@
 
 <script>
 
-// ── progression: what you have earned so far ──
+// ── progression: earn each passive from its own camp ──
 var SHERPA_KEY = "sherpa.progress.v1";
 var SHERPA_ID = "descent-nine-going-to-passive";
 var SHERPA_FACE = "descent";
@@ -496,6 +499,8 @@ function sherpaRead(){
 function sherpaWrite(p){
   try { localStorage.setItem(SHERPA_KEY, JSON.stringify(p)); } catch (e) {}
 }
+function sherpaDone(id){ var p = sherpaRead(); return !!p[id]; }
+function sherpaAll(){ return sherpaRead()["*all*"] === true; }
 function sherpaCount(face){
   var p = sherpaRead(), n = 0;
   for (var k in p) if (p[k] && p[k].face === face) n++;
@@ -508,7 +513,6 @@ function sherpaRecord(score, total){
   sherpaWrite(p);
 }
 
-// the results panel appearing is the signal that a camp is done
 (function(){
   var res = document.getElementById("results");
   if (!res) return;
@@ -524,23 +528,28 @@ function sherpaRecord(score, total){
 function sherpaBar(){
   var old = document.querySelector(".voice-bar");
   if (old) old.remove();
-  var camps = sherpaCount("ascent");
   var bar = document.createElement("div");
   bar.className = "voice-bar";
+
   if (SHERPA_FACE === "descent"){
-    bar.innerHTML = '<a href="' + SHERPA_TWIN + '"><span class="tick">&#8646;</span>Active voice</a>';
+    bar.innerHTML = SHERPA_TWIN
+      ? '<a href="' + SHERPA_TWIN + '"><span class="tick">&#8646;</span>Active voice</a>' : '';
+  } else if (SHERPA_FACE === "cloud"){
+    bar.innerHTML = '';
   } else if (!SHERPA_TWIN){
-    bar.innerHTML = '<span class="locked" title="This tense has no passive anybody uses.">'
+    bar.innerHTML = '<span class="locked" title="Nobody says the passive of this tense.">'
                   + '<span class="tick">&#8709;</span>No passive</span>';
-  } else if (camps >= 13){
+  } else if (sherpaAll() || sherpaDone(SHERPA_ID)){
     bar.innerHTML = '<a href="' + SHERPA_TWIN + '"><span class="tick">&#8646;</span>Passive voice</a>';
   } else {
-    bar.innerHTML = '<span class="locked" title="Finish all thirteen camps to open the descent.">'
-                  + '<span class="tick">&#128274;</span>Passive &middot; ' + camps + '/13 camps</span>';
+    bar.innerHTML = '<span class="locked" title="Finish this camp and its passive opens.">'
+                  + '<span class="tick">&#128274;</span>Passive &middot; finish this camp</span>'
+                  + '<a class="ghost" href="' + SHERPA_TWIN + '">Show me anyway</a>';
   }
-  document.body.appendChild(bar);
+  if (bar.innerHTML) document.body.appendChild(bar);
 }
 sherpaBar();
+
 
 
 // ── QUIZ ──

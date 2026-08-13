@@ -100,6 +100,14 @@
   .locked-link{opacity:.45;pointer-events:none;}
   .lock-note{font-family:'Inter',sans-serif;font-size:12.5px;color:#6A5A62;margin:14px 0 0;}
   .lock-note strong{color:#2B0F1D;}
+  .teach-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:14px 0 0;padding:0 4px;
+             font-family:'Inter',sans-serif;font-size:12.5px;color:#6A5A62;}
+  .teach-btn{display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border-radius:999px;
+             border:1px solid #D7C6CE;background:#FFFFFF;color:#2B0F1D;font-family:'Inter',sans-serif;
+             font-size:12px;font-weight:700;cursor:pointer;transition:background .15s ease,border-color .15s ease;}
+  .teach-btn:hover{background:#FBEEF3;border-color:#C2185B;}
+  .teach-btn.on{background:#C2185B;border-color:#C2185B;color:#FFFFFF;}
+  .camp-dot.locked-dot{cursor:help;}
 </style>
 </head>
 <body>
@@ -566,63 +574,159 @@
 </main>
 
 <script>
-document.querySelectorAll(".camp-dot").forEach(function(g){
-  var color = g.getAttribute("data-color");
-  var href = g.getAttribute("data-href");
-  var fillEl = g.querySelector(".dot-fill");
-  var segId = g.getAttribute("data-seg");
-  var segEl = segId ? document.getElementById(segId) : null;
-  if (href){
-    fillEl.setAttribute("fill", color);
-    if (segEl) segEl.setAttribute("stroke", color);
-    g.addEventListener("click", function(){ window.location.href = href; });
-  } else {
-    g.addEventListener("click", function(){
-      var lit = g.classList.toggle("lit");
-      fillEl.setAttribute("fill", lit ? color : "#C9C6C2");
-      if (segEl) segEl.setAttribute("stroke", lit ? color : "#C9C6C2");
-    });
-  }
-});
-</script>
-
-
-<script>
-// ── the off-route grammar has to be earned ──
+// ── what you have earned, and where you earned it ──
 (function(){
-  var p = {};
-  try { p = JSON.parse(localStorage.getItem("sherpa.progress.v1")) || {}; } catch (e) {}
-  var camps = 0, descents = 0;
-  for (var k in p){ if (p[k] && p[k].face === "ascent") camps++; else if (p[k] && p[k].face === "descent") descents++; }
+  var KEY = "sherpa.progress.v1";
+  var PAIR = {
+    "descent-one-present-continuous-passive":  ["camp-one-present-continuous", "camp 1, present continuous"],
+    "descent-two-present-simple-passive":      ["camp-two-present-simple", "camp 2, present simple"],
+    "descent-three-past-simple-passive":       ["camp-three-past-simple", "camp 3, past simple"],
+    "descent-four-present-perfect-passive":    ["camp-four-present-perfect", "camp 4, present perfect"],
+    "descent-nine-going-to-passive":           ["camp-five-going-to", "camp 5, going to"],
+    "descent-eight-past-continuous-passive":   ["camp-six-past-continuous", "camp 6, past continuous"],
+    "descent-seven-future-simple-passive":     ["camp-seven-future-simple", "camp 7, future simple"],
+    "descent-ten-past-perfect-passive":        ["camp-ten-past-perfect", "camp 10, past perfect"],
+    "descent-twelve-future-perfect-passive":   ["camp-twelve-future-perfect", "camp 12, future perfect"]
+  };
 
-  function gate(sel, ok, why){
-    document.querySelectorAll(sel).forEach(function(a){
-      if (ok) return;
-      a.classList.add("locked-link");
-      a.setAttribute("aria-disabled", "true");
-      a.setAttribute("title", why);
-      a.removeAttribute("href");
+  function read(){ try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
+  function write(p){ try { localStorage.setItem(KEY, JSON.stringify(p)); } catch (e) {} }
+
+  function paint(){
+    var p = read(), all = p["*all*"] === true;
+    var camps = 0, descents = 0;
+    for (var k in p){
+      if (!p[k] || k === "*all*") continue;
+      if (p[k].face === "ascent") camps++; else if (p[k].face === "descent") descents++;
+    }
+    function done(id){ return all || !!p[id]; }
+
+    // the descent: each stop opens from its own camp
+    var locked = 0;
+    document.querySelectorAll('.camp-dot[data-href], .camp-dot[data-locked-href]').forEach(function(g){
+      var href = g.getAttribute("data-href") || g.getAttribute("data-locked-href");
+      var slug = href.replace("sherpa-tensing-", "").replace(".html", "");
+      var pair = PAIR[slug];
+      if (!pair) return;
+      if (done(pair[0])){
+        g.setAttribute("data-href", href);
+        g.removeAttribute("data-locked-href");
+        g.classList.remove("locked-dot");
+        g.removeAttribute("title");
+      } else {
+        locked++;
+        g.setAttribute("data-locked-href", href);
+        g.removeAttribute("data-href");
+        g.classList.add("locked-dot");
+        g.setAttribute("title", "Finish " + pair[1] + " and this one opens.");
+      }
     });
-  }
-  gate('a[href*="cloud-used-to"], a[href*="cloud-be-used-to"]', camps >= 4,
-       "Finish four camps to open the clouds.");
-  gate('a[href*="cloud-causative"]', camps >= 13 && descents >= 4,
-       "Finish the ascent and four descents to open the moon.");
 
-  var note = document.createElement("p");
-  note.className = "lock-note";
-  var bits = [];
-  bits.push("<strong>" + camps + " of 13</strong> camps");
-  bits.push("<strong>" + descents + " of 9</strong> descents");
-  var earned = [];
-  if (camps >= 4) earned.push("the clouds"); else earned.push("clouds at 4 camps");
-  if (camps >= 13) earned.push("the descent"); else earned.push("the descent at 13");
-  if (camps >= 13 && descents >= 4) earned.push("the moon"); else earned.push("the moon at 13 + 4");
-  note.innerHTML = bits.join(" &middot; ") + " &mdash; " + earned.join(" &middot; ");
-  var host = document.querySelector(".zone-note");
-  if (host && host.parentNode) host.parentNode.insertBefore(note, host);
+    // the off-route grammar, earned from the tense it argues with
+    function gate(sel, ok, why){
+      document.querySelectorAll(sel).forEach(function(a){
+        var href = a.getAttribute("href") || a.getAttribute("data-locked");
+        if (!href) return;
+        if (ok){
+          a.setAttribute("href", href);
+          a.removeAttribute("data-locked");
+          a.classList.remove("locked-link");
+          a.removeAttribute("aria-disabled");
+          a.removeAttribute("title");
+        } else {
+          a.setAttribute("data-locked", href);
+          a.removeAttribute("href");
+          a.classList.add("locked-link");
+          a.setAttribute("aria-disabled", "true");
+          a.setAttribute("title", why);
+        }
+      });
+    }
+    gate('a[href*="cloud-used-to"], a[data-locked*="cloud-used-to"]', done("camp-three-past-simple"),
+         "Finish camp 3, past simple \u2014 used to is the thing it turns into.");
+    gate('a[href*="cloud-be-used-to"], a[data-locked*="cloud-be-used-to"]', done("camp-two-present-simple"),
+         "Finish camp 2, present simple \u2014 be used to is a state, not an event.");
+    gate('a[href*="cloud-causative"], a[data-locked*="cloud-causative"]', descents >= 1 || all,
+         "Finish any one descent camp \u2014 the causative is a passive wearing a hat.");
+
+    var note = document.querySelector(".lock-note");
+    if (!note){
+      note = document.createElement("p");
+      note.className = "lock-note";
+      var host = document.querySelector(".zone-note");
+      if (host && host.parentNode) host.parentNode.insertBefore(note, host);
+    }
+    var bits = ["<strong>" + camps + " of 13</strong> camps",
+                "<strong>" + descents + " of 9</strong> descents"];
+    var tail;
+    if (all){
+      tail = "everything is open.";
+    } else if (locked === 0 && camps >= 13){
+      tail = "the whole mountain is open, both faces.";
+    } else {
+      tail = "each camp opens its own passive; <em>used to</em> comes off camp 3, "
+           + "<em>be used to</em> off camp 2, the causative off your first descent.";
+    }
+    note.innerHTML = bits.join(" &middot; ") + " &mdash; " + tail;
+
+    if (window.sherpaPaintDots) window.sherpaPaintDots();
+
+    var btn = document.getElementById("teach-btn");
+    if (btn){
+      btn.classList.toggle("on", all);
+      btn.textContent = all ? "Locks off \u2014 everything is open" : "I\u2019m teaching this \u2014 open everything";
+      btn.setAttribute("aria-pressed", all ? "true" : "false");
+    }
+  }
+
+  var row = document.createElement("div");
+  row.className = "teach-row";
+  row.innerHTML = '<button class="teach-btn" id="teach-btn" type="button" aria-pressed="false"></button>'
+                + '<span>Learners earn each stop by finishing the camp above it. '
+                + 'Teachers, and anyone in a hurry, can open the lot.</span>';
+  var legend = document.querySelector(".legend");
+  if (legend && legend.parentNode) legend.parentNode.insertBefore(row, legend.nextSibling);
+  row.querySelector("#teach-btn").addEventListener("click", function(){
+    var p = read();
+    if (p["*all*"] === true) delete p["*all*"]; else p["*all*"] = true;
+    write(p);
+    paint();
+  });
+
+  paint();
 })();
 </script>
+
+<script>
+// dots read their state at click time, so the teacher switch takes effect at once
+function sherpaPaintDots(){
+  document.querySelectorAll(".camp-dot").forEach(function(g){
+    var color = g.getAttribute("data-color");
+    var fillEl = g.querySelector(".dot-fill");
+    var segId = g.getAttribute("data-seg");
+    var segEl = segId ? document.getElementById(segId) : null;
+    var open = !!g.getAttribute("data-href");
+    if (open || g.classList.contains("lit")){
+      fillEl.setAttribute("fill", color);
+      if (segEl) segEl.setAttribute("stroke", color);
+    } else {
+      fillEl.setAttribute("fill", "#C9C6C2");
+      if (segEl) segEl.setAttribute("stroke", "#C9C6C2");
+    }
+  });
+}
+document.querySelectorAll(".camp-dot").forEach(function(g){
+  g.addEventListener("click", function(){
+    var href = g.getAttribute("data-href");
+    if (href){ window.location.href = href; return; }
+    g.classList.toggle("lit");
+    sherpaPaintDots();
+  });
+});
+window.sherpaPaintDots = sherpaPaintDots;
+sherpaPaintDots();
+</script>
+
 
 </body>
 </html>
