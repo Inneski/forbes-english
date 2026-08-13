@@ -1,0 +1,753 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sherpa Tensing - The Moon: The Causative</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16232A;
+    --ink-soft:#54707D;
+    --paper:#F6FAFB;
+    --card:#FFFFFF;
+    --accent:#3F6577;
+    --accent-dark:#2A4854;
+    --accent-light:#C7DAE1;
+    --accent-lighter:#EAF2F5;
+    --good:#1E7A4C;
+    --good-bg:#E5F5EC;
+    --bad:#B23A3A;
+    --bad-bg:#FBEAEA;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;}
+  h1,h2,h3{font-family:'Fraunces',serif;font-weight:600;margin:0 0 .4em;color:var(--ink);}
+  .wordmark{display:flex;align-items:center;justify-content:space-between;max-width:1000px;margin:0 auto;padding:28px 24px 0;}
+  .wordmark .brand{font-family:'Fraunces',serif;font-weight:700;font-size:20px;letter-spacing:.02em;}
+  .wordmark .brand span{color:var(--accent);}
+  .wordmark .sub{font-size:13px;color:var(--ink-soft);}
+
+  .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px;}
+  .chart-wrap{margin-top:24px;background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:18px 20px;overflow-x:auto;}
+  .chart-wrap h3{font-size:15px;margin-bottom:4px;}
+  .chart-wrap + .chart-wrap{margin-top:16px;}
+  .chart-note{font-size:13px;color:var(--ink-soft);margin-bottom:14px;}
+  table.conj{width:100%;border-collapse:collapse;font-size:14px;min-width:520px;}
+  table.conj th, table.conj td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--accent-light);}
+  table.conj th{font-family:'Fraunces',serif;font-weight:600;color:var(--accent-dark);font-size:13px;text-transform:uppercase;letter-spacing:.03em;}
+  table.conj td.subj{font-weight:600;}
+  table.conj tr:last-child td{border-bottom:none;}
+  main{max-width:1000px;margin:0 auto;padding:0 24px 80px;}
+  .hero{display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:center;padding:40px 0 56px;}
+  .hero .eyebrow{
+    display:inline-block;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--accent-dark);background:var(--accent-lighter);padding:6px 12px;border-radius:999px;margin-bottom:14px;
+  }
+  .hero h1{font-size:38px;line-height:1.12;}
+  .hero p{color:var(--ink-soft);font-size:16px;max-width:46ch;}
+  .hero-diagram{width:100%;display:block;}
+  @media (max-width:720px){.hero{grid-template-columns:1fr;}}
+
+  .trail-wrap{position:relative;padding-left:66px;}
+  .trail-wrap::before{
+    content:'';position:absolute;left:23px;top:8px;bottom:8px;width:2px;
+    background:repeating-linear-gradient(to bottom, var(--accent) 0 8px, transparent 8px 18px);
+  }
+  .camp{position:relative;margin-bottom:64px;}
+  .camp .marker{position:absolute;left:-66px;top:0;width:46px;height:46px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;}
+  .camp .marker svg{width:18px;height:18px;}
+  .camp .camp-label{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-dark);margin-bottom:6px;}
+
+  .rule-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px;}
+  .rule-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:18px 20px;}
+  .rule-card h3{font-size:16px;margin-bottom:8px;}
+  .rule-card p{margin:0 0 8px;font-size:14px;color:var(--ink-soft);}
+  .rule-card .ex{font-size:14px;font-style:italic;color:var(--accent-dark);border-left:2px solid var(--accent);padding-left:10px;}
+
+  .signal-groups{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px;}
+  .signal-box{background:var(--accent-lighter);border-radius:var(--radius);padding:18px 20px;}
+  .signal-box h3{font-size:15px;}
+  .signal-box ul{margin:8px 0 0;padding-left:18px;font-size:14px;color:var(--ink);}
+  .signal-box li{margin-bottom:4px;}
+  @media (max-width:600px){.signal-groups{grid-template-columns:1fr;}}
+
+  /* ── YOU vs THEM DIAGRAM ── */
+  .diagram-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:26px 26px 22px;}
+  .diagram-intro{font-size:14px;color:var(--ink-soft);margin-bottom:18px;max-width:60ch;}
+  .diagram-stage{width:100%;background:var(--paper);border:1px solid var(--accent-light);border-radius:var(--radius);padding:12px;}
+  .diagram-stage svg{width:100%;height:auto;display:block;}
+  .dg-reveal{opacity:0;transition:opacity .2s ease;}
+  .dg-reveal.is-shown{opacity:1;}
+  .diagram-shape{cursor:pointer;transition:opacity .15s ease;}
+  .diagram-shape:hover{opacity:.86;}
+  .diagram-shape:focus{outline:none;}
+  .diagram-shape:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px;}
+  .diagram-caption{font-family:'Inter',sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;}
+  .diagram-panels{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px;}
+  .diagram-panel{border-radius:12px;padding:16px 18px;border:1px solid var(--accent-light);background:var(--accent-lighter);}
+  .diagram-panel.is-now{background:#EAF1F6;border-color:#C9DCE6;}
+  .diagram-panel h4{margin:0 0 8px;font-family:'Fraunces',serif;font-size:14px;letter-spacing:.03em;text-transform:uppercase;color:var(--accent-dark);}
+  .diagram-panel.is-now h4{color:#3E6A85;}
+  .diagram-panel ul{margin:0;padding-left:18px;font-size:14px;}
+  .diagram-panel li{margin-bottom:5px;}
+  .diagram-panel li em{font-style:normal;font-weight:600;}
+  @media (max-width:600px){.diagram-panels{grid-template-columns:1fr;}}
+
+  .route-link{display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-weight:600;font-size:14px;
+    padding:9px 18px;border-radius:999px;border:1px solid var(--accent);color:var(--accent-dark);}
+  .route-link:hover{background:var(--accent-lighter);}
+  .quiz-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:24px 24px 20px;}
+  .progress-row{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--ink-soft);margin-bottom:10px;}
+  .progress-track{height:6px;background:var(--accent-lighter);border-radius:999px;overflow:hidden;margin-bottom:20px;}
+  .progress-fill{height:100%;background:var(--accent);border-radius:999px;width:0%;transition:width .3s ease;}
+  .q-prompt{font-size:17px;margin-bottom:4px;}
+  .q-hint{font-size:13px;color:var(--ink-soft);margin-bottom:16px;font-style:italic;}
+  .options{display:grid;gap:10px;}
+  .opt-btn{text-align:left;padding:12px 16px;border-radius:10px;border:1px solid var(--accent-light);background:#fff;font-family:'Inter',sans-serif;font-size:15px;color:var(--ink);cursor:pointer;}
+  .opt-btn:hover{border-color:var(--accent);}
+  .opt-btn.correct{background:var(--good-bg);border-color:var(--good);color:var(--good);font-weight:600;}
+  .opt-btn.wrong{background:var(--bad-bg);border-color:var(--bad);color:var(--bad);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:16px;padding:14px 16px;border-radius:10px;background:var(--accent-lighter);font-size:14px;display:none;}
+  .feedback.show{display:block;}
+  .quiz-footer{display:flex;justify-content:flex-end;margin-top:20px;}
+  .next-btn{background:var(--accent);color:#fff;border:none;padding:11px 22px;border-radius:999px;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;cursor:pointer;}
+  .next-btn:disabled{background:var(--accent-light);cursor:not-allowed;}
+
+  #results{display:none;text-align:center;padding:12px 0 8px;}
+  #results .score{font-family:'Fraunces',serif;font-size:52px;color:var(--accent);margin:8px 0;}
+  #results p{color:var(--ink-soft);}
+  .retry-btn{margin-top:12px;background:transparent;border:1px solid var(--accent);color:var(--accent-dark);padding:10px 20px;border-radius:999px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
+  .route-nav{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:22px;padding-top:18px;border-top:1px solid var(--accent-light);}
+  .route-nav a{display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;padding:10px 20px;border-radius:999px;}
+  .route-nav a.next-camp{background:var(--accent);color:#fff;}
+  .route-nav a.base-camp{background:transparent;border:1px solid var(--ink-soft);color:var(--ink-soft);}
+  .route-nav a:hover{opacity:0.88;}
+
+    /* ── Persistent way back. Pinned, so it is reachable from anywhere on
+       the page rather than only after scrolling to the bottom. ── */
+    /* Clear a band at the top of the page for the pinned link so it never
+       lands on the wordmark. */
+    body{ padding-top:46px; }
+    .up-link{
+      position:fixed; top:16px; left:16px; z-index:60;
+      display:inline-flex; align-items:center; gap:8px;
+      padding:9px 16px 9px 13px; border-radius:999px;
+      background:var(--card,#fff); color:var(--accent-dark,#333);
+      border:1.5px solid var(--accent-light,rgba(0,0,0,.18));
+      font:600 14px/1 'Inter',system-ui,sans-serif; letter-spacing:.01em;
+      text-decoration:none; box-shadow:0 2px 10px rgba(0,0,0,.10);
+      transition:background .18s ease, color .18s ease, transform .18s ease;
+    }
+    .up-link:hover{ background:var(--accent,#333); color:#fff; transform:translateX(-2px); }
+    .up-link .arw{ font-size:15px; line-height:1; }
+    @media print{ .up-link{ display:none; } }
+    @media (max-width:640px){
+      .up-link{ top:10px; left:10px; padding:7px 13px 7px 10px; font-size:13px; }
+    }
+  /* ── example translations ── */
+  .ex[data-tr]{cursor:pointer;}
+  .ex[data-tr]:hover{filter:brightness(1.06);}
+  .ex-tr{display:block;margin-top:8px;padding-top:7px;border-top:1px dashed var(--accent-light);
+         font-style:normal;font-size:.95em;opacity:.92;}
+  .ex-tr[dir="rtl"]{text-align:right;}
+  .tr-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 26px;
+          font-family:'Inter',sans-serif;font-size:12.5px;color:var(--ink-soft);}
+  .tr-bar .tr-label{letter-spacing:.06em;text-transform:uppercase;font-weight:700;font-size:11px;}
+  .tr-bar button{font:inherit;font-weight:600;border:1px solid var(--accent-light);
+                 background:var(--card);color:var(--ink-soft);padding:5px 11px;border-radius:999px;
+                 cursor:pointer;transition:background .12s ease,color .12s ease;}
+  .tr-bar button:hover{color:var(--ink);}
+  .tr-bar button.on{background:var(--accent);color:#FFFFFF;border-color:var(--accent);}
+</style>
+</head>
+<body>
+<a class="up-link" href="sherpa-tensing-route-map.html"><span class="arw" aria-hidden="true">&larr;</span>Route map</a>
+
+
+<div class="wordmark">
+  <div class="brand">Sherpa <span>Tensing</span></div>
+  <div class="sub">Forbes English &middot; a route up the tenses</div>
+</div>
+
+<main>
+
+  <section class="hero" id="hero">
+    <div>
+      <span class="eyebrow">The moon &middot; the causative</span>
+      <h1>Somebody else did it, and you arranged it</h1>
+      <p>Not a tense but a shape, and one English uses constantly. You stay the subject &mdash; it was your decision and your money &mdash; while the hands belong to a hairdresser, a garage or a roofer who never makes it into the sentence at all. The whole trick is where you put the thing.</p>
+    </div>
+    <svg class="hero-diagram" viewBox="0 0 640 344" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three boxes across a line: you, who arrange it; a dashed box for somebody else, who does the work and is rarely named; and the thing, which gets done.">
+      <defs>
+        <marker id="cs-cs" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,1 L9,5 L0,9 z" fill="#7FA6B6"/>
+        </marker>
+      </defs>
+      <rect x="0" y="0" width="640" height="344" fill="var(--paper)"/>
+      <line x1="24" y1="299" x2="616" y2="299" stroke="#1c130c" stroke-width="2"/>
+      <rect x="88" y="150" width="104" height="149" rx="4" fill="#2F4A57"/>
+      <text x="140" y="182" text-anchor="middle" class="diagram-caption" fill="#E8F1F5" style="font-size:12px;letter-spacing:.04em" pointer-events="none">YOU</text>
+      <text x="140" y="206" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" fill="#B7CDD8" pointer-events="none">arrange it</text>
+      <text x="140" y="228" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" fill="#B7CDD8" pointer-events="none">and pay for it</text>
+      <rect x="278" y="118" width="118" height="181" rx="4" fill="none" stroke="#7FA6B6" stroke-width="1.6" stroke-dasharray="5 4"/>
+      <text x="337" y="150" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" font-weight="700" fill="#9FC0CE" letter-spacing="1.4" pointer-events="none">SOMEBODY ELSE</text>
+      <text x="337" y="176" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" fill="#9FC0CE" pointer-events="none">does the work</text>
+      <text x="337" y="196" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" fill="#9FC0CE" pointer-events="none">and is rarely named</text>
+      <rect x="452" y="150" width="118" height="149" rx="4" fill="#7FA6B6"/>
+      <text x="511" y="182" text-anchor="middle" class="diagram-caption" fill="#132029" style="font-size:12px;letter-spacing:.04em" pointer-events="none">THE THING</text>
+      <text x="511" y="206" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" fill="#1E323C" pointer-events="none">gets done</text>
+      <line x1="200" y1="224" x2="270" y2="224" stroke="#7FA6B6" stroke-width="1.6" marker-end="url(#cs-cs)"/>
+      <line x1="404" y1="224" x2="444" y2="224" stroke="#7FA6B6" stroke-width="1.6" marker-end="url(#cs-cs)"/>
+      <text x="235" y="214" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" font-weight="700" fill="#7FA6B6" pointer-events="none">have / get</text>
+      <text x="424" y="214" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" font-weight="700" fill="#7FA6B6" pointer-events="none">done</text>
+      <text x="140" y="317" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" fill="#5E7683" pointer-events="none">the subject of the sentence</text>
+      <text x="511" y="317" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" fill="#5E7683" pointer-events="none">what actually changes</text>
+    </svg>
+  </section>
+
+    <div class="tr-bar" id="tr-bar"><span class="tr-label">Examples in</span><button type="button" data-lang="" class="on">Off</button><button type="button" data-lang="de">DE</button><button type="button" data-lang="es">ES</button><button type="button" data-lang="fr">FR</button><button type="button" data-lang="it">IT</button><button type="button" data-lang="pt">PT</button><button type="button" data-lang="ru">RU</button><button type="button" data-lang="ar">AR</button><button type="button" data-lang="zh">ZH</button><button type="button" data-lang="ja">JA</button></div>
+
+      <div class="trail-wrap">
+
+    <div class="camp" id="rules">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 3v18M5 4h11l-3 4 3 4H5"/></svg></div>
+      <div class="camp-label">Moon briefing</div>
+      <h2>When to use it</h2>
+      <p class="chart-note" style="margin:-6px 0 18px">The causative is the sentence for work you <strong>arrange</strong> rather than do. You are still the subject &mdash; it is your money and your decision &mdash; but the hands belong to somebody you usually do not bother to name.</p>
+      <div class="rule-grid">
+        <div class="rule-card">
+          <h3>A service you pay for</h3>
+          <p>The classic use, and the reason it exists.</p>
+          <div class="ex" data-tr="170">"I <em>had</em> my hair <em>cut</em> on Friday."</div>
+        </div>
+        <div class="rule-card">
+          <h3>Work on a house, a car, a tooth</h3>
+          <p>Anywhere a professional does the thing to your thing.</p>
+          <div class="ex" data-tr="171">"We <em>had</em> the kitchen <em>rewired</em>."</div>
+        </div>
+        <div class="rule-card">
+          <h3><em>Get</em> instead of <em>have</em></h3>
+          <p>More informal, and slightly more effort on your part.</p>
+          <div class="ex" data-tr="172">"I must <em>get</em> this jacket <em>cleaned</em>."</div>
+        </div>
+        <div class="rule-card">
+          <h3>Something bad that happened to you</h3>
+          <p>Here you arranged nothing. This is the other causative.</p>
+          <div class="ex" data-tr="173">"They <em>had</em> their car <em>stolen</em>."</div>
+        </div>
+        <div class="rule-card">
+          <h3>Making somebody do it</h3>
+          <p>With a person and no <em>to</em>: this one is about authority.</p>
+          <div class="ex" data-tr="174">"She <em>had</em> the porter <em>carry</em> the bags."</div>
+        </div>
+        <div class="rule-card">
+          <h3>Persuading somebody to do it</h3>
+          <p><em>Get</em> + person takes <em>to</em>. <em>Have</em> never does.</p>
+          <div class="ex" data-tr="175">"I <em>got</em> my brother <em>to</em> help."</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="form">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg></div>
+      <div class="camp-label">Building it</div>
+      <h2>How it&#39;s built</h2>
+      <div class="form-grid">
+        <div class="rule-card">
+          <h3>The everyday one</h3>
+          <p>subject + have + <strong>thing</strong> + past participle</p>
+          <div class="ex" data-tr="176">"I <em>had</em> the car <em>serviced</em>."</div>
+        </div>
+        <div class="rule-card">
+          <h3>The informal one</h3>
+          <p>subject + get + <strong>thing</strong> + past participle</p>
+          <div class="ex" data-tr="177">"I <em>got</em> the car <em>serviced</em>."</div>
+        </div>
+        <div class="rule-card">
+          <h3>With a person, using <em>have</em></h3>
+          <p>subject + have + <strong>person</strong> + infinitive</p>
+          <div class="ex" data-tr="178">"He <em>had</em> the plumber <em>look</em> at it."</div>
+        </div>
+        <div class="rule-card">
+          <h3>With a person, using <em>get</em></h3>
+          <p>subject + get + <strong>person</strong> + <em>to</em> + infinitive</p>
+          <div class="ex" data-tr="179">"He <em>got</em> the plumber <em>to look</em> at it."</div>
+        </div>
+      </div>      <div class="chart-wrap">
+        <h3>The word order is the whole trick</h3>
+        <p class="chart-note">The thing comes <em>before</em> the participle, never after it. Put the participle next to <em>have</em> and you have written the present perfect instead, which says something completely different about who did the work.</p>
+        <table class="conj">
+          <thead><tr><th>Sentence</th><th>Means</th><th>Who did it</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">I <em>had cut</em> my hair.</td><td>Present perfect: I did it myself, earlier.</td><td>You, with scissors.</td></tr>
+            <tr><td class="subj">I <em>had my hair cut</em>.</td><td>Causative: I arranged it.</td><td>A hairdresser.</td></tr>
+            <tr><td class="subj">I <em>have repaired</em> the roof.</td><td>I climbed up and repaired it.</td><td>You.</td></tr>
+            <tr><td class="subj">I <em>have had the roof repaired</em>.</td><td>I paid somebody to.</td><td>A roofer.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="chart-wrap">
+        <h3>It moves through every tense</h3>
+        <p class="chart-note">Only <em>have</em> changes. The thing and the participle behind it never move, so once you can hear the order you can build it in any tense on the mountain.</p>
+        <table class="conj">
+          <thead><tr><th>Tense</th><th>Example</th><th>Camp</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">Present simple</td><td>I <em>have</em> my hair cut every month.</td><td>Camp two</td></tr>
+            <tr><td class="subj">Past simple</td><td>I <em>had</em> my hair cut on Friday.</td><td>Camp three</td></tr>
+            <tr><td class="subj">Present perfect</td><td>I <em>have had</em> my hair cut.</td><td>Camp four</td></tr>
+            <tr><td class="subj">Future</td><td>I<em>&#39;ll have</em> my hair cut before the wedding.</td><td>The moon</td></tr>
+            <tr><td class="subj">Continuous</td><td>I<em>&#39;m having</em> my hair cut at three.</td><td>Camp one</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="chart-wrap">
+        <h3>Three mistakes worth naming</h3>
+        <p class="chart-note">Almost every error with the causative is one of these three.</p>
+        <table class="conj">
+          <thead><tr><th>Not this</th><th>This</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">I had cut my hair at the salon.</td><td>I had my hair cut at the salon.</td><td>The thing goes between <em>had</em> and the participle. Otherwise you cut it yourself.</td></tr>
+            <tr><td class="subj">I had the plumber to look at it.</td><td>I had the plumber look at it.</td><td><em>Have</em> + person takes the bare infinitive. Only <em>get</em> takes <em>to</em>.</td></tr>
+            <tr><td class="subj">I had my hair cutted.</td><td>I had my hair cut.</td><td>It is the third form, and for <em>cut</em> that is <em>cut</em>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <div class="camp" id="vs-simple">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3v18"/><path d="M7 8l-4 4 4 4M17 8l4 4-4 4"/></svg></div>
+      <div class="camp-label">The fork in the path</div>
+      <h2><em>Have</em> or <em>get</em>?</h2>
+      <div class="chart-wrap" style="margin-top:18px">
+        <p class="chart-note" style="margin-bottom:16px">They are close enough that most of the time either works. Where they differ is in how much effort the sentence implies on your part, and what follows when a person is involved.</p>
+        <table class="conj">
+          <thead><tr><th>Question</th><th>have</th><th>get</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">Register</td><td>Neutral, and slightly more formal.</td><td>Informal, and more common in speech.</td></tr>
+            <tr><td class="subj">With a person?</td><td>Bare infinitive: "have him look".</td><td>Takes <em>to</em>: "get him <em>to</em> look".</td></tr>
+            <tr><td class="subj">Any effort implied?</td><td>None. You simply arranged it.</td><td>Some. You had to persuade or chase.</td></tr>
+            <tr><td class="subj">Something bad?</td><td>Yes: "they had their car stolen".</td><td>Yes: "he got his phone taken".</td></tr>
+          </tbody>
+        </table>
+        <p class="example" style="margin-top:14px">The pair that shows the order: <em>"I had cut my hair"</em> &mdash; I stood in front of a mirror with scissors. <em>"I had my hair cut"</em> &mdash; I sat in a chair and paid. Three words, same words, and the only difference is where <em>my hair</em> sits.</p>
+      </div>
+      <div class="btnrow" style="margin-top:16px">
+        <a class="route-link" href="sherpa-tensing-cloud-used-to.html">&larr; The clouds &middot; used to</a>
+        <a class="route-link" href="sherpa-tensing-route-map.html">The route map</a>
+      </div>
+    </div>
+
+    <div class="camp" id="signals">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg></div>
+      <div class="camp-label">Trail markers</div>
+      <h2>Signal words</h2>
+      <div class="signal-groups">
+        <div class="signal-box">
+          <h3>Where you will meet it</h3>
+          <ul>
+            <li>at the hairdresser&#39;s</li>
+            <li>at the garage</li>
+            <li>at the dentist&#39;s</li>
+            <li>building work &middot; repairs</li>
+            <li>printing &middot; framing &middot; dry cleaning</li>
+            <li>anything you pay somebody to do</li>
+          </ul>
+        </div>
+        <div class="signal-box">
+          <h3>The other causative &mdash; nothing arranged</h3>
+          <ul>
+            <li>have your car stolen</li>
+            <li>have your phone taken</li>
+            <li>have your flight cancelled</li>
+            <li>get your fingers burnt</li>
+            <li>have your wallet lifted</li>
+            <li>have your hours cut</li>
+          </ul>
+        </div>
+      </div>
+      <p class="example" style="margin-top:14px">A useful habit: if you can put <em>somebody else did it, and I organised it</em> after the sentence and it still makes sense, the causative is the form you want.</p>
+    </div>
+
+    <div class="camp" id="order">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="4" width="8" height="16"/><rect x="13" y="4" width="8" height="16"/></svg></div>
+      <div class="camp-label">Interactive</div>
+      <h2>You, them, and the thing</h2>
+      <div class="diagram-card">
+        <p class="diagram-intro">Three boxes and two arrows. You are still the subject on the left, because it was your decision and your money. The thing on the right is what actually changes. The dashed box in the middle is whoever did the work &mdash; drawn dashed for the same reason as on the descent, because English lets you leave them out entirely. Click your box or theirs to see it in a sentence.</p>
+        <div class="diagram-stage">
+          <svg viewBox="0 0 640 344" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three boxes across a line: you, who arrange it; a dashed box for somebody else, who does the work and is rarely named; and the thing, which gets done.">
+      <defs>
+        <marker id="cs-csb" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,1 L9,5 L0,9 z" fill="#7FA6B6"/>
+        </marker>
+      </defs>
+      <rect x="0" y="0" width="640" height="344" fill="var(--paper)"/>
+      <line x1="24" y1="299" x2="616" y2="299" stroke="#1c130c" stroke-width="2"/>
+      <g class="diagram-shape" id="shape-you" tabindex="0" role="button" aria-label="Show causative examples">
+        <rect x="88" y="150" width="104" height="149" rx="4" fill="#2F4A57"/>
+      <text x="140" y="182" text-anchor="middle" class="diagram-caption" fill="#E8F1F5" style="font-size:12px;letter-spacing:.04em" pointer-events="none">YOU</text>
+      <text x="140" y="206" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" fill="#B7CDD8" pointer-events="none">arrange it</text>
+      <text x="140" y="228" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" fill="#B7CDD8" pointer-events="none">and pay for it</text>
+      </g>
+      <g class="diagram-shape" id="shape-them" tabindex="0" role="button" aria-label="Show the unnamed doer examples">
+        <rect x="278" y="118" width="118" height="181" rx="4" fill="none" stroke="#7FA6B6" stroke-width="1.6" stroke-dasharray="5 4"/>
+      <text x="337" y="150" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" font-weight="700" fill="#9FC0CE" letter-spacing="1.4" pointer-events="none">SOMEBODY ELSE</text>
+      <text x="337" y="176" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" fill="#9FC0CE" pointer-events="none">does the work</text>
+      <text x="337" y="196" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" fill="#9FC0CE" pointer-events="none">and is rarely named</text>
+      </g>
+      <rect x="452" y="150" width="118" height="149" rx="4" fill="#7FA6B6"/>
+      <text x="511" y="182" text-anchor="middle" class="diagram-caption" fill="#132029" style="font-size:12px;letter-spacing:.04em" pointer-events="none">THE THING</text>
+      <text x="511" y="206" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" fill="#1E323C" pointer-events="none">gets done</text>
+      <line x1="200" y1="224" x2="270" y2="224" stroke="#7FA6B6" stroke-width="1.6" marker-end="url(#cs-csb)"/>
+      <line x1="404" y1="224" x2="444" y2="224" stroke="#7FA6B6" stroke-width="1.6" marker-end="url(#cs-csb)"/>
+      <text x="235" y="214" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" font-weight="700" fill="#7FA6B6" pointer-events="none">have / get</text>
+      <text x="424" y="214" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" font-weight="700" fill="#7FA6B6" pointer-events="none">done</text>
+      <text x="140" y="317" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" fill="#5E7683" pointer-events="none">the subject of the sentence</text>
+      <text x="511" y="317" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" fill="#5E7683" pointer-events="none">what actually changes</text>
+    </svg>
+        </div>
+        <div class="diagram-panels">
+          <div class="diagram-panel" id="panel-you">
+            <h4>You &mdash; the one who arranged it</h4>
+            <ul id="panel-you-list"></ul>
+          </div>
+          <div class="diagram-panel is-now" id="panel-them">
+            <h4>Them &mdash; the one who did it</h4>
+            <ul id="panel-them-list"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="quiz">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3l3 7-3 3-3-3 3-7z"/><path d="M12 13v8"/></svg></div>
+      <div class="camp-label">The climb</div>
+      <h2>Practice</h2>
+      <div class="quiz-card">
+        <div class="progress-row">
+          <span id="progress-text">Checkpoint 1 of 14</span>
+          <span id="score-text">Score: 0</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+        <div class="q-prompt" id="q-prompt"></div>
+        <div class="q-hint" id="q-hint"></div>
+        <div class="options" id="options"></div>
+        <div class="feedback" id="feedback"></div>
+        <div class="quiz-footer">
+          <button class="next-btn" id="next-btn" disabled>Next checkpoint</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="results-camp">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 20l5-14 5 14M8 14h4"/></svg></div>
+      <div class="camp-label">Summit log</div>
+      <div id="results">
+        <div class="score" id="final-score"></div>
+        <p id="final-message"></p>
+        <button class="retry-btn" id="retry-btn">Climb again</button>
+        <div class="route-nav">
+          <a class="base-camp" href="sherpa-tensing-route-map.html">&larr; Return to base camp</a>
+          <a class="next-camp" href="sherpa-tensing-route-map.html">Choose your next camp &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+
+// ── example translations: nine languages, click to reveal ──
+var EX_TR = {"170": ["Ich habe mir am Freitag die Haare schneiden lassen.", "El viernes me corté el pelo (en la peluquería).", "Je me suis fait couper les cheveux vendredi.", "Venerdì mi sono fatto tagliare i capelli.", "Cortei o cabelo na sexta-feira (no cabeleireiro).", "В пятницу я подстригся (в парикмахерской).", "قصصت شعري يوم الجمعة عند الحلاق.", "我星期五去理了发。", "金曜日に髪を切ってもらいました。"], "171": ["Wir haben die Küche neu verkabeln lassen.", "Hicimos reinstalar la electricidad de la cocina.", "Nous avons fait refaire l'électricité de la cuisine.", "Abbiamo fatto rifare l'impianto elettrico della cucina.", "Mandámos refazer a instalação elétrica da cozinha.", "Мы заказали новую проводку на кухне.", "قمنا بتغيير أسلاك المطبخ عن طريق فني.", "我们请人重新给厨房布了电线。", "キッチンの配線をやり直してもらいました。"], "172": ["Ich muss diese Jacke reinigen lassen.", "Tengo que llevar esta chaqueta a la tintorería.", "Je dois faire nettoyer cette veste.", "Devo far pulire questa giacca.", "Tenho de mandar limpar este casaco.", "Мне нужно отдать этот пиджак в чистку.", "يجب أن أنظف هذه السترة عند المحل.", "我得把这件外套送去干洗。", "この上着をクリーニングに出さないと。"], "173": ["Ihnen wurde das Auto gestohlen.", "Les robaron el coche.", "On leur a volé leur voiture.", "Si sono fatti rubare la macchina.", "Roubaram-lhes o carro.", "У них угнали машину.", "سُرقت سيارتهم.", "他们的车被偷了。", "彼らは車を盗まれました。"], "174": ["Sie ließ den Gepäckträger die Taschen tragen.", "Hizo que el mozo llevara las maletas.", "Elle a fait porter les bagages par le porteur.", "Ha fatto portare le valigie al facchino.", "Mandou o carregador levar as malas.", "Она поручила носильщику отнести сумки.", "طلبت من الحمّال أن يحمل الحقائب.", "她让行李员把包拿过去。", "彼女はポーターに荷物を運ばせました。"], "175": ["Ich habe meinen Bruder dazu gebracht zu helfen.", "Conseguí que mi hermano me ayudara.", "J'ai réussi à faire aider mon frère.", "Sono riuscito a farmi aiutare da mio fratello.", "Consegui que o meu irmão me ajudasse.", "Я уговорил брата помочь.", "أقنعت أخي بأن يساعد.", "我让我弟弟来帮忙了。", "弟に手伝ってもらいました。"], "176": ["Ich lasse den Wagen warten.", "Llevo el coche a la revisión.", "Je fais réviser la voiture.", "Faccio revisionare la macchina.", "Mando fazer a revisão do carro.", "Я отдаю машину на техобслуживание.", "أرسل السيارة للصيانة.", "我把车送去保养。", "車を点検に出します。"], "177": ["Ich lasse den Wagen warten. (umgangssprachlich)", "Llevo el coche a la revisión. (coloquial)", "Je fais réviser la voiture. (familier)", "Faccio revisionare la macchina. (colloquiale)", "Mando fazer a revisão do carro. (coloquial)", "Я отдаю машину на обслуживание. (разговорно)", "أرسل السيارة للصيانة. (بشكل عامي)", "我把车送去保养。（口语）", "車を点検に出します。（くだけた言い方）"], "178": ["Er ließ den Klempner nachsehen.", "Hizo que el fontanero lo mirara.", "Il a fait venir le plombier pour regarder.", "Ha fatto controllare all'idraulico.", "Mandou o canalizador ver aquilo.", "Он попросил сантехника посмотреть.", "جعل السبّاك يفحصها.", "他让水管工来看了看。", "配管工に見てもらいました。"], "179": ["Er brachte den Klempner dazu, nachzusehen.", "Consiguió que el fontanero lo mirara.", "Il a réussi à faire venir le plombier.", "È riuscito a far controllare all'idraulico.", "Conseguiu que o canalizador fosse ver.", "Он уговорил сантехника посмотреть.", "أقنع السبّاك بأن يفحصها.", "他说服水管工来看了看。", "配管工に見に来てもらいました。"]};
+var TR_ORDER = ["de", "es", "fr", "it", "pt", "ru", "ar", "zh", "ja"];
+var trLang = "";
+
+function trIndex(el){ return el.getAttribute("data-tr"); }
+
+function showTr(el){
+  var row = EX_TR[trIndex(el)];
+  if (!row || !trLang) return;
+  var i = TR_ORDER.indexOf(trLang);
+  if (i < 0 || !row[i]) return;
+  var line = el.querySelector(":scope > .ex-tr");
+  if (!line){
+    line = document.createElement("span");
+    line.className = "ex-tr";
+    el.appendChild(line);
+  }
+  line.textContent = row[i];
+  if (trLang === "ar") line.setAttribute("dir", "rtl"); else line.removeAttribute("dir");
+}
+
+function hideTr(el){
+  var line = el.querySelector(":scope > .ex-tr");
+  if (line) line.remove();
+}
+
+function applyTr(){
+  document.querySelectorAll(".ex[data-tr]").forEach(function(el){
+    if (trLang) showTr(el); else hideTr(el);
+  });
+}
+
+document.querySelectorAll("#tr-bar button").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    trLang = btn.getAttribute("data-lang");
+    document.querySelectorAll("#tr-bar button").forEach(function(b){ b.classList.remove("on"); });
+    btn.classList.add("on");
+    applyTr();
+  });
+});
+
+document.querySelectorAll(".ex[data-tr]").forEach(function(el){
+  el.addEventListener("click", function(){
+    if (!trLang) return;
+    if (el.querySelector(":scope > .ex-tr")) hideTr(el); else showTr(el);
+  });
+});
+
+// ── you, them, and the thing ──
+var exA = [
+  "I <em>had</em> my hair <em>cut</em> on Friday.",
+  "We <em>had</em> the kitchen <em>rewired</em>.",
+  "I must <em>get</em> this jacket <em>cleaned</em>."
+];
+var exB = [
+  "&hellip; <em>by</em> a hairdresser on the high street.",
+  "&hellip; <em>by</em> an electrician from the village.",
+  "&hellip; and normally you would not mention them at all."
+];
+
+function renderList(id, items){
+  var ul = document.getElementById(id);
+  ul.innerHTML = "";
+  items.forEach(function(txt){
+    var li = document.createElement("li");
+    li.innerHTML = txt;
+    ul.appendChild(li);
+  });
+}
+renderList("panel-you-list", exA);
+renderList("panel-them-list", exB);
+
+function pulseShape(el){
+  el.style.transformOrigin = "center";
+  el.animate(
+    [{ opacity: 1 }, { opacity: 0.6 }, { opacity: 1 }],
+    { duration: 380, easing: "ease-out" }
+  );
+}
+[["shape-you","panel-you","#4A6E80"],
+ ["shape-them","panel-them","#7FA6B6"]].forEach(function(pair){
+  var el = document.getElementById(pair[0]);
+  if (!el) return;
+  var activate = function(){
+    pulseShape(el);
+    document.querySelectorAll(".diagram-panel").forEach(function(p){ p.style.outline = "none"; });
+    var panel = document.getElementById(pair[1]);
+    if (panel) panel.style.outline = "2px solid " + pair[2];
+  };
+  el.addEventListener("click", activate);
+  el.addEventListener("keydown", function(e){
+    if (e.key === "Enter" || e.key === " "){ e.preventDefault(); activate(); }
+  });
+});
+
+// ── QUIZ ──
+var questions = [
+  {
+    prompt: "I _____ on Friday. (have / my hair / cut)",
+    hint: "Where does the thing go?",
+    correct: "had my hair cut",
+    options: ["had my hair cut", "had cut my hair", "have cut my hair", "had my hair cutted"],
+    explain: "The thing goes between had and the participle. Had cut my hair would mean you did it yourself."
+  },
+  {
+    prompt: "We _____ last month. (have / the kitchen / rewire)",
+    hint: "A professional did the work.",
+    correct: "had the kitchen rewired",
+    options: ["had the kitchen rewired", "had rewired the kitchen", "have the kitchen rewire", "had the kitchen rewiring"],
+    explain: "Have + thing + past participle. Rewire / rewired / rewired."
+  },
+  {
+    prompt: "I must _____ before the interview. (get / this jacket / clean)",
+    hint: "The informal one.",
+    correct: "get this jacket cleaned",
+    options: ["get this jacket cleaned", "get clean this jacket", "get this jacket to clean", "have this jacket cleaning"],
+    explain: "Get works exactly like have with a thing: get + thing + participle."
+  },
+  {
+    prompt: "They _____ outside the station. (have / their car / steal)",
+    hint: "Nothing was arranged here.",
+    correct: "had their car stolen",
+    options: ["had their car stolen", "had stolen their car", "have their car steal", "had their car stole"],
+    explain: "The other causative: something bad happened to you. Steal / stole / stolen."
+  },
+  {
+    prompt: "She _____ the bags. (have / the porter / carry)",
+    hint: "A person, using have.",
+    correct: "had the porter carry",
+    options: ["had the porter carry", "had the porter to carry", "had carried the porter", "had the porter carried"],
+    explain: "Have + person takes the bare infinitive, with no to."
+  },
+  {
+    prompt: "I _____ me with the boxes. (get / my brother / help)",
+    hint: "A person, using get.",
+    correct: "got my brother to help",
+    options: ["got my brother to help", "got my brother help", "got helped my brother", "had my brother to help"],
+    explain: "Get + person always takes to. Have never does."
+  },
+  {
+    prompt: "I _____ myself, and it was a disaster.",
+    hint: "Who held the scissors?",
+    correct: "cut my hair",
+    options: ["cut my hair", "had my hair cut", "got my hair cut", "had cut my hair"],
+    explain: "Myself rules out the causative entirely: you did it."
+  },
+  {
+    prompt: "_____ you _____ yet? (have / the car / service)",
+    hint: "Question with the present perfect.",
+    correct: "Have ... had the car serviced",
+    options: ["Have ... had the car serviced", "Have ... the car serviced", "Did ... had the car serviced", "Have ... serviced the car"],
+    explain: "The causative sits inside any tense: have had + thing + participle."
+  },
+  {
+    prompt: "We _____ next week. (have / the roof / repair)",
+    hint: "Arranged, not done by you.",
+    correct: "are having the roof repaired",
+    options: ["are having the roof repaired", "are having repaired the roof", "have the roof repairing", "are had the roof repaired"],
+    explain: "The continuous of an arrangement: are having + thing + participle."
+  },
+  {
+    prompt: "He _____ at the airport. (have / his phone / take)",
+    hint: "Something bad.",
+    correct: "had his phone taken",
+    options: ["had his phone taken", "had taken his phone", "have his phone take", "had his phone took"],
+    explain: "Take / took / taken. Nothing was arranged; it happened to him."
+  },
+  {
+    prompt: "I _____ before the wedding. (will / have / my suit / press)",
+    hint: "Future.",
+    correct: "will have my suit pressed",
+    options: ["will have my suit pressed", "will have pressed my suit", "will my suit have pressed", "will have my suit press"],
+    explain: "Will + have + thing + participle."
+  },
+  {
+    prompt: "She _____ every six weeks. (have / her hair / colour)",
+    hint: "A routine.",
+    correct: "has her hair coloured",
+    options: ["has her hair coloured", "has coloured her hair", "have her hair coloured", "has her hair colour"],
+    explain: "Present simple, third person: has + thing + participle."
+  },
+  {
+    prompt: "I _____ the quote by Friday. (get / them / send)",
+    hint: "Persuading a person.",
+    correct: "got them to send",
+    options: ["got them to send", "got them send", "got sent them", "had them to send"],
+    explain: "Get + person + to + infinitive."
+  },
+  {
+    prompt: "The photos _____ next week. (have / frame)",
+    hint: "No doer at all.",
+    correct: "are being framed",
+    options: ["are being framed", "are having framed", "have framed", "are had framed"],
+    explain: "With no arranger in the sentence, the plain passive does the job."
+  }
+];
+
+
+var current = 0;
+var score = 0;
+var answered = false;
+var order = [];
+
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+
+function renderQuestion(){
+  answered = false;
+  var q = questions[current];
+  document.getElementById("progress-text").textContent = "Checkpoint " + (current + 1) + " of " + questions.length;
+  document.getElementById("progress-fill").style.width = ((current / questions.length) * 100) + "%";
+  document.getElementById("q-prompt").textContent = q.prompt;
+  document.getElementById("q-hint").textContent = q.hint;
+  var feedback = document.getElementById("feedback");
+  feedback.className = "feedback";
+  feedback.textContent = "";
+  var optionsWrap = document.getElementById("options");
+  optionsWrap.innerHTML = "";
+  order = shuffle(q.options);
+  order.forEach(function(opt){
+    var btn = document.createElement("button");
+    btn.className = "opt-btn";
+    btn.type = "button";
+    btn.textContent = opt;
+    btn.addEventListener("click", function(){ selectOption(opt, btn); });
+    optionsWrap.appendChild(btn);
+  });
+  document.getElementById("next-btn").disabled = true;
+  document.getElementById("next-btn").textContent = (current === questions.length - 1) ? "Reach the summit" : "Next checkpoint";
+}
+
+function selectOption(opt, btn){
+  if (answered) return;
+  answered = true;
+  var q = questions[current];
+  var allBtns = document.querySelectorAll("#options .opt-btn");
+  allBtns.forEach(function(b){
+    b.disabled = true;
+    if (b.textContent === q.correct) b.classList.add("correct");
+  });
+  if (opt !== q.correct) btn.classList.add("wrong");
+  if (opt === q.correct) score++;
+  document.getElementById("score-text").textContent = "Score: " + score;
+  var feedback = document.getElementById("feedback");
+  feedback.textContent = q.explain;
+  feedback.classList.add("show");
+  document.getElementById("next-btn").disabled = false;
+}
+
+document.getElementById("next-btn").addEventListener("click", function(){
+  if (current < questions.length - 1){
+    current++;
+    renderQuestion();
+  } else {
+    document.getElementById("progress-fill").style.width = "100%";
+    document.getElementById("quiz").style.display = "none";
+    document.getElementById("results").style.display = "block";
+    document.getElementById("final-score").textContent = score + " / " + questions.length;
+    var msg = "";
+    if (score === questions.length) msg = "Clean run. The thing goes in the middle, and you know when get needs a to.";
+    else if (score >= questions.length - 2) msg = "Solid progress. Worth another look at the word order before you go on.";
+    else msg = "Good first attempt. Where the thing sits is the part to read again.";
+    document.getElementById("final-message").textContent = msg;
+  }
+});
+
+document.getElementById("retry-btn").addEventListener("click", function(){
+  current = 0;
+  score = 0;
+  document.getElementById("score-text").textContent = "Score: 0";
+  document.getElementById("quiz").style.display = "block";
+  document.getElementById("results").style.display = "none";
+  renderQuestion();
+});
+
+renderQuestion();
+</script>
+
+</body>
+</html>
