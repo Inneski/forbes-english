@@ -1,0 +1,1110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sailing the Seas of Grammar &mdash; Gerunds and Infinitives</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#12262E;
+    --ink-soft:#4E6B77;
+    --paper:#F4F9FA;
+    --card:#FFFFFF;
+    --accent:#1B7A87;
+    --accent-dark:#0E5460;
+    --accent-light:#B9DCE1;
+    --accent-lighter:#E6F3F5;
+    --good:#1E7A4C;
+    --good-bg:#E5F5EC;
+    --bad:#B23A3A;
+    --bad-bg:#FBEAEA;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;}
+  h1,h2,h3{font-family:'Fraunces',serif;font-weight:600;margin:0 0 .4em;color:var(--ink);}
+  .wordmark{display:flex;align-items:center;justify-content:space-between;max-width:1000px;margin:0 auto;padding:28px 24px 0;}
+  .wordmark .brand{font-family:'Fraunces',serif;font-weight:700;font-size:20px;letter-spacing:.02em;}
+  .wordmark .brand span{color:var(--accent);}
+  .wordmark .sub{font-size:13px;color:var(--ink-soft);}
+
+  .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px;}
+  .chart-wrap{margin-top:24px;background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:18px 20px;overflow-x:auto;}
+  .chart-wrap h3{font-size:15px;margin-bottom:4px;}
+  .chart-wrap + .chart-wrap{margin-top:16px;}
+  .chart-note{font-size:13px;color:var(--ink-soft);margin-bottom:14px;}
+  table.conj{width:100%;border-collapse:collapse;font-size:14px;min-width:520px;}
+  table.conj th, table.conj td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--accent-light);}
+  table.conj th{font-family:'Fraunces',serif;font-weight:600;color:var(--accent-dark);font-size:13px;text-transform:uppercase;letter-spacing:.03em;}
+  table.conj td.subj{font-weight:600;}
+  table.conj tr:last-child td{border-bottom:none;}
+  main{max-width:1000px;margin:0 auto;padding:0 24px 80px;}
+  .hero{display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:center;padding:40px 0 56px;}
+  .hero .eyebrow{
+    display:inline-block;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--accent-dark);background:var(--accent-lighter);padding:6px 12px;border-radius:999px;margin-bottom:14px;
+  }
+  .hero h1{font-size:38px;line-height:1.12;}
+  .hero p{color:var(--ink-soft);font-size:16px;max-width:46ch;}
+  .hero-diagram{width:100%;display:block;}
+  @media (max-width:720px){.hero{grid-template-columns:1fr;}}
+
+  .trail-wrap{position:relative;padding-left:66px;}
+  .trail-wrap::before{
+    content:'';position:absolute;left:23px;top:8px;bottom:8px;width:2px;
+    background:repeating-linear-gradient(to bottom, var(--accent) 0 8px, transparent 8px 18px);
+  }
+  .camp{position:relative;margin-bottom:64px;}
+  .camp .marker{position:absolute;left:-66px;top:0;width:46px;height:46px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;}
+  .camp .marker svg{width:18px;height:18px;}
+  .camp .camp-label{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-dark);margin-bottom:6px;}
+
+  .rule-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px;}
+  .rule-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:18px 20px;}
+  .rule-card h3{font-size:16px;margin-bottom:8px;}
+  .rule-card p{margin:0 0 8px;font-size:14px;color:var(--ink-soft);}
+  .rule-card .ex{font-size:14px;font-style:italic;color:var(--accent-dark);border-left:2px solid var(--accent);padding-left:10px;}
+
+  .signal-groups{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px;}
+  .signal-box{background:var(--accent-lighter);border-radius:var(--radius);padding:18px 20px;}
+  .signal-box h3{font-size:15px;}
+  .signal-box ul{margin:8px 0 0;padding-left:18px;font-size:14px;color:var(--ink);}
+  .signal-box li{margin-bottom:4px;}
+  @media (max-width:600px){.signal-groups{grid-template-columns:1fr;}}
+
+  /* ── THE SEA CHART ── */
+  .diagram-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:26px 26px 22px;}
+  .diagram-intro{font-size:14px;color:var(--ink-soft);margin-bottom:18px;max-width:60ch;}
+  .diagram-stage{width:100%;background:var(--paper);border:1px solid var(--accent-light);border-radius:var(--radius);padding:12px;}
+  .diagram-stage svg{width:100%;height:auto;display:block;}
+  .dg-reveal{opacity:0;transition:opacity .2s ease;}
+  .dg-reveal.is-shown{opacity:1;}
+  .diagram-shape{cursor:pointer;transition:opacity .15s ease;}
+  .diagram-shape:hover{opacity:.86;}
+  .diagram-shape:focus{outline:none;}
+  .diagram-shape:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px;}
+  .diagram-caption{font-family:'Inter',sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;}
+  .diagram-panels{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px;}
+  .diagram-panel{border-radius:12px;padding:16px 18px;border:1px solid var(--accent-light);background:var(--accent-lighter);}
+  .diagram-panel.is-now{background:#EAF1F6;border-color:#C9DCE6;}
+  .diagram-panel h4{margin:0 0 8px;font-family:'Fraunces',serif;font-size:14px;letter-spacing:.03em;text-transform:uppercase;color:var(--accent-dark);}
+  .diagram-panel.is-now h4{color:#3E6A85;}
+  .diagram-panel ul{margin:0;padding-left:18px;font-size:14px;}
+  .diagram-panel li{margin-bottom:5px;}
+  .diagram-panel li em{font-style:normal;font-weight:600;}
+  @media (max-width:600px){.diagram-panels{grid-template-columns:1fr;}}
+
+  .route-link{display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-weight:600;font-size:14px;
+    padding:9px 18px;border-radius:999px;border:1px solid var(--accent);color:var(--accent-dark);}
+  .route-link:hover{background:var(--accent-lighter);}
+  .quiz-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:24px 24px 20px;}
+  .progress-row{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--ink-soft);margin-bottom:10px;}
+  .progress-track{height:6px;background:var(--accent-lighter);border-radius:999px;overflow:hidden;margin-bottom:20px;}
+  .progress-fill{height:100%;background:var(--accent);border-radius:999px;width:0%;transition:width .3s ease;}
+  .q-prompt{font-size:17px;margin-bottom:4px;}
+  .q-hint{font-size:13px;color:var(--ink-soft);margin-bottom:16px;font-style:italic;}
+  .options{display:grid;gap:10px;}
+  .opt-btn{text-align:left;padding:12px 16px;border-radius:10px;border:1px solid var(--accent-light);background:#fff;font-family:'Inter',sans-serif;font-size:15px;color:var(--ink);cursor:pointer;}
+  .opt-btn:hover{border-color:var(--accent);}
+  .opt-btn.correct{background:var(--good-bg);border-color:var(--good);color:var(--good);font-weight:600;}
+  .opt-btn.wrong{background:var(--bad-bg);border-color:var(--bad);color:var(--bad);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:16px;padding:14px 16px;border-radius:10px;background:var(--accent-lighter);font-size:14px;display:none;}
+  .feedback.show{display:block;}
+  .quiz-footer{display:flex;justify-content:flex-end;margin-top:20px;}
+  .next-btn{background:var(--accent);color:#fff;border:none;padding:11px 22px;border-radius:999px;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;cursor:pointer;}
+  .next-btn:disabled{background:var(--accent-light);cursor:not-allowed;}
+
+  #results{display:none;text-align:center;padding:12px 0 8px;}
+  #results .score{font-family:'Fraunces',serif;font-size:52px;color:var(--accent);margin:8px 0;}
+  #results p{color:var(--ink-soft);}
+  .retry-btn{margin-top:12px;background:transparent;border:1px solid var(--accent);color:var(--accent-dark);padding:10px 20px;border-radius:999px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
+  .route-nav{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:22px;padding-top:18px;border-top:1px solid var(--accent-light);}
+  .route-nav a{display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;padding:10px 20px;border-radius:999px;}
+  .route-nav a.next-camp{background:var(--accent);color:#fff;}
+  .route-nav a.base-camp{background:transparent;border:1px solid var(--ink-soft);color:var(--ink-soft);}
+  .route-nav a:hover{opacity:0.88;}
+
+    /* ── Persistent way back. Pinned, so it is reachable from anywhere on
+       the page rather than only after scrolling to the bottom. ── */
+    /* Clear a band at the top of the page for the pinned link so it never
+       lands on the wordmark. */
+    body{ padding-top:46px; }
+    .up-link{
+      position:fixed; top:16px; left:16px; z-index:60;
+      display:inline-flex; align-items:center; gap:8px;
+      padding:9px 16px 9px 13px; border-radius:999px;
+      background:var(--card,#fff); color:var(--accent-dark,#333);
+      border:1.5px solid var(--accent-light,rgba(0,0,0,.18));
+      font:600 14px/1 'Inter',system-ui,sans-serif; letter-spacing:.01em;
+      text-decoration:none; box-shadow:0 2px 10px rgba(0,0,0,.10);
+      transition:background .18s ease, color .18s ease, transform .18s ease;
+    }
+    .up-link:hover{ background:var(--accent,#333); color:#fff; transform:translateX(-2px); }
+    .up-link .arw{ font-size:15px; line-height:1; }
+    @media print{ .up-link{ display:none; } }
+    @media (max-width:640px){
+      .up-link{ top:10px; left:10px; padding:7px 13px 7px 10px; font-size:13px; }
+    }
+  /* ── example translations ── */
+  .ex[data-tr]{cursor:pointer;}
+  .ex[data-tr]:hover{filter:brightness(1.06);}
+  .ex-tr{display:block;margin-top:8px;padding-top:7px;border-top:1px dashed var(--accent-light);
+         font-style:normal;font-size:.95em;opacity:.92;}
+  .ex-tr[dir="rtl"]{text-align:right;}
+  .tr-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 26px;
+          font-family:'Inter',sans-serif;font-size:12.5px;color:var(--ink-soft);}
+  .tr-bar .tr-label{letter-spacing:.06em;text-transform:uppercase;font-weight:700;font-size:11px;}
+  .tr-bar button{font:inherit;font-weight:600;border:1px solid var(--accent-light);
+                 background:var(--card);color:var(--ink-soft);padding:5px 11px;border-radius:999px;
+                 cursor:pointer;transition:background .12s ease,color .12s ease;}
+  .tr-bar button:hover{color:var(--ink);}
+  .tr-bar button.on{background:var(--accent);color:#FFFFFF;border-color:var(--accent);}
+  /* ── the sea chart ── */
+  .diagram-panels.three{grid-template-columns:repeat(3,1fr);}
+  @media (max-width:820px){.diagram-panels.three{grid-template-columns:1fr;}}
+  .diagram-panel.is-west{background:#FBEEDF;border-color:#E8C99F;}
+  .diagram-panel.is-west h4{color:#8A4A16;}
+  .diagram-panel.is-isle{background:#F2EAF6;border-color:#D6C0E2;}
+  .diagram-panel.is-isle h4{color:#5C3470;}
+  .diagram-panel.is-east{background:#EDF4E5;border-color:#C4D9AE;}
+  .diagram-panel.is-east h4{color:#31552B;}
+  .sail-chart .land,.sail-chart .land-false{transition:filter .15s ease;}
+  .sail-chart .land[role="button"]:hover,.sail-chart .land-false[role="button"]:hover{filter:brightness(1.06);}
+  .sail-chart .land[role="button"]:focus-visible,
+  .sail-chart .land-false[role="button"]:focus-visible{outline:3px solid #12626F;outline-offset:2px;}
+</style>
+</head>
+<body>
+<a class="up-link" href="library.html"><span class="arw" aria-hidden="true">&larr;</span>Lesson library</a>
+
+
+<div class="wordmark">
+  <div class="brand">Sailing the <span>Seas of Grammar</span></div>
+  <div class="sub">Forbes English &middot; gerunds and infinitives</div>
+</div>
+
+<main>
+
+  <section class="hero" id="hero">
+    <div>
+      <span class="eyebrow">Gerunds &amp; infinitives</span>
+      <h1>Sailing the Seas of Grammar</h1>
+      <p>Two shores face each other across one narrow strait. Every harbour on the western shore takes the <em>-ing</em> form; every harbour on the eastern shore takes <em>to</em> + infinitive. No rule of logic decides which verb belongs where &mdash; it is geography, and you learn it the way sailors learn a coast. What you <em>can</em> learn as rules are the three things in the water between them: the current, the island, and the cape flying a false flag.</p>
+    </div>
+    <svg class="sail-chart" viewBox="0 0 1000 660" role="img"
+       aria-label="A sea chart. The western shore, Gerundia, has harbours named after verbs that take the -ing form: Cape Avoid, Enjoy Bay, Finish Point and others. The eastern shore, Infinitivia, has harbours named after verbs that take to plus infinitive: Want Harbour, Decide Head, Hope Point and others. Between them lies Twofold Isle, whose harbours take either form with a change of meaning. Dashed currents run west across the strait, labelled prepositions. A spur off the western shore flies a flag reading TO and is marked the False Cape.">
+        <defs>
+          <linearGradient id="sail-sea" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#DEEFF6"/><stop offset="100%" stop-color="#B2D5E4"/>
+          </linearGradient>
+          <marker id="sail-tide" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6"
+                  markerHeight="6" orient="auto">
+            <path d="M 0 1 L 9 5 L 0 9 z" fill="#22707F"/>
+          </marker>
+          <pattern id="sail-sand" width="11" height="11" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+            <rect width="11" height="11" fill="#F6E7C9"/>
+            <line x1="0" y1="0" x2="0" y2="11" stroke="#E4C994" stroke-width="4"/>
+          </pattern>
+        </defs>
+
+        <rect x="0" y="0" width="1000" height="660" fill="url(#sail-sea)"/>
+        <path d="M 348 210 q 7 -5 14 0 q 7 5 14 0" fill="none" stroke="#84B4C9" stroke-width="1.6" stroke-linecap="round" opacity=".6"/>
+        <path d="M 614 200 q 7 -5 14 0 q 7 5 14 0" fill="none" stroke="#84B4C9" stroke-width="1.6" stroke-linecap="round" opacity=".6"/>
+        <path d="M 346 330 q 7 -5 14 0 q 7 5 14 0" fill="none" stroke="#84B4C9" stroke-width="1.6" stroke-linecap="round" opacity=".6"/>
+        <path d="M 612 340 q 7 -5 14 0 q 7 5 14 0" fill="none" stroke="#84B4C9" stroke-width="1.6" stroke-linecap="round" opacity=".6"/>
+        <path d="M 352 560 q 7 -5 14 0 q 7 5 14 0" fill="none" stroke="#84B4C9" stroke-width="1.6" stroke-linecap="round" opacity=".6"/>
+        <path d="M 600 520 q 7 -5 14 0 q 7 5 14 0" fill="none" stroke="#84B4C9" stroke-width="1.6" stroke-linecap="round" opacity=".6"/>
+        <path d="M 424 468 q 7 -5 14 0 q 7 5 14 0" fill="none" stroke="#84B4C9" stroke-width="1.6" stroke-linecap="round" opacity=".6"/>
+        <path d="M 536 470 q 7 -5 14 0 q 7 5 14 0" fill="none" stroke="#84B4C9" stroke-width="1.6" stroke-linecap="round" opacity=".6"/>
+        <path d="M 452 612 q 7 -5 14 0 q 7 5 14 0" fill="none" stroke="#84B4C9" stroke-width="1.6" stroke-linecap="round" opacity=".6"/>
+        <path d="M 348 130 q 7 -5 14 0 q 7 5 14 0" fill="none" stroke="#84B4C9" stroke-width="1.6" stroke-linecap="round" opacity=".6"/>
+
+        <g id="sail-shape-gerund" class="land" aria-hidden="true">
+          <path d="M -30 20 L 120 34 C 200 46, 244 92, 236 140 C 228 188, 282 214, 300 258 C 318 302, 268 330, 258 372 C 248 414, 296 448, 268 492 C 240 536, 260 566, 236 592 C 212 618, 130 638, 40 646 L -30 652 Z" fill="none" stroke="#F3DCBB" stroke-width="17" stroke-linejoin="round"/>
+          <path d="M -30 20 L 120 34 C 200 46, 244 92, 236 140 C 228 188, 282 214, 300 258 C 318 302, 268 330, 258 372 C 248 414, 296 448, 268 492 C 240 536, 260 566, 236 592 C 212 618, 130 638, 40 646 L -30 652 Z" fill="#D89257" stroke="#2B4A57" stroke-width="2.4" stroke-linejoin="round"/>
+        </g>
+        <g id="sail-shape-infin" class="land" aria-hidden="true">
+          <path d="M 1030 14 L 892 30 C 812 44, 736 96, 748 148 C 760 200, 706 230, 700 276 C 694 322, 744 348, 736 392 C 728 436, 690 462, 706 506 C 722 550, 700 586, 726 614 C 752 642, 880 652, 1030 654 Z" fill="none" stroke="#DCEBC9" stroke-width="17" stroke-linejoin="round"/>
+          <path d="M 1030 14 L 892 30 C 812 44, 736 96, 748 148 C 760 200, 706 230, 700 276 C 694 322, 744 348, 736 392 C 728 436, 690 462, 706 506 C 722 550, 700 586, 726 614 C 752 642, 880 652, 1030 654 Z" fill="#7FA870" stroke="#2B4A57" stroke-width="2.4" stroke-linejoin="round"/>
+        </g>
+        <g id="sail-shape-isle" class="land" aria-hidden="true">
+          <path d="M 500 226 C 556 226, 596 258, 596 300 C 596 342, 566 396, 500 402 C 434 396, 404 342, 404 300 C 404 258, 444 226, 500 226 Z" fill="none" stroke="#E7DAEF" stroke-width="17" stroke-linejoin="round"/>
+          <path d="M 500 226 C 556 226, 596 258, 596 300 C 596 342, 566 396, 500 402 C 434 396, 404 342, 404 300 C 404 258, 444 226, 500 226 Z" fill="#AE87BE" stroke="#2B4A57" stroke-width="2.4" stroke-linejoin="round"/>
+        </g>
+
+        <g id="sail-shape-false" class="land-false" aria-hidden="true">
+          <path d="M 258 452 C 300 442, 352 452, 388 472 C 350 498, 296 498, 262 480 Z" fill="none" stroke="#F3DCBB" stroke-width="13" stroke-linejoin="round"/>
+          <path d="M 258 452 C 300 442, 352 452, 388 472 C 350 498, 296 498, 262 480 Z" fill="#D89257" stroke="#2B4A57" stroke-width="2.2" stroke-linejoin="round"/>
+          <path d="M 388 472 L 388 414" stroke="#2B4A57" stroke-width="2.4"/>
+          <path d="M 388 416 L 434 427 L 388 438 Z" fill="#D89257" stroke="#2B4A57" stroke-width="1.5"/>
+          <text x="408" y="432" text-anchor="middle" font-family="Inter,sans-serif"
+                font-size="11.5" font-weight="700" fill="#3A1D04">TO</text>
+          <text x="318" y="508" text-anchor="middle" font-family="Inter,sans-serif"
+                font-size="10.5" font-weight="700" letter-spacing=".06em" fill="#4A2409">THE FALSE CAPE</text>
+        </g>
+
+        <g class="shallows" aria-hidden="true">
+          <ellipse cx="512" cy="548" rx="108" ry="33" fill="url(#sail-sand)" opacity=".9"/>
+          <ellipse cx="512" cy="548" rx="108" ry="33" fill="none" stroke="#C09A55"
+                   stroke-width="1.6" stroke-dasharray="7 5"/>
+          <text x="512" y="545" text-anchor="middle" font-family="Inter,sans-serif"
+                font-size="10.5" font-weight="700" letter-spacing=".06em" fill="#6B5320">THE SHALLOWS</text>
+          <text x="512" y="560" text-anchor="middle" font-family="Inter,sans-serif"
+                font-size="9.5" fill="#6B5320">begin &#183; start &#183; continue &#183; like &#183; hate</text>
+        </g>
+
+        <g class="current">
+          <path d="M 618 176 C 572 161, 404 191, 352 176" fill="none" stroke="#22707F"
+                stroke-width="2.6" stroke-dasharray="10 7" stroke-linecap="round"
+                marker-end="url(#sail-tide)" opacity=".9"/>
+          <text x="485" y="154" text-anchor="middle" font-family="Inter,sans-serif"
+                font-size="10.5" font-weight="700" letter-spacing=".1em"
+                fill="#1A5A66">PREPOSITIONS RUN WEST</text>
+        </g>
+        <g class="current">
+          <path d="M 616 462 C 570 447, 494 477, 442 462" fill="none" stroke="#22707F"
+                stroke-width="2.6" stroke-dasharray="10 7" stroke-linecap="round"
+                marker-end="url(#sail-tide)" opacity=".9"/>
+          <text x="529" y="442" text-anchor="middle" font-family="Inter,sans-serif"
+                font-size="10.5" font-weight="700" letter-spacing=".1em"
+                fill="#1A5A66">EVEN THE ONES SPELLED &#8220;TO&#8221;</text>
+        </g>
+        <g class="compass">
+          <circle cx="500" cy="92" r="36" fill="#FFFFFF" opacity=".6"/>
+          <circle cx="500" cy="92" r="36" fill="none" stroke="#22707F" stroke-width="1.4"/>
+          <path d="M 500 60 L 507 88 L 500 124 L 493 88 Z" fill="#D89257" stroke="#2B4A57" stroke-width="1"/>
+          <path d="M 468 92 L 496 85 L 532 92 L 496 99 Z" fill="#2B4A57" opacity=".72"/>
+          <text x="500" y="48" text-anchor="middle" font-family="Inter,sans-serif"
+                font-size="10.5" font-weight="700" letter-spacing=".06em" fill="#1A5A66">&#9664; -ING &#183; TO &#9654;</text>
+        </g>
+        <g class="ship">
+          <path d="M 622 606 L 678 606 L 669 620 L 631 620 Z" fill="#3B2A1E"/>
+          <path d="M 650 566 L 650 606" stroke="#3B2A1E" stroke-width="2.4"/>
+          <path d="M 652 570 L 678 601 L 652 601 Z" fill="#FBF6EC" stroke="#3B2A1E" stroke-width="1.3"/>
+          <path d="M 646 576 L 623 601 L 646 601 Z" fill="#FBF6EC" stroke="#3B2A1E" stroke-width="1.3"/>
+        </g>
+
+        <g class="labels" aria-hidden="true">
+          <text x="56" y="608" font-family="Fraunces,Georgia,serif" font-size="22"
+                font-weight="700" letter-spacing=".05em" fill="#4A2409">GERUNDIA</text>
+          <text x="58" y="627" font-family="Inter,sans-serif" font-size="11"
+                font-weight="600" fill="#4A2409">verb + <tspan font-style="italic">-ing</tspan></text>
+          <text x="946" y="608" text-anchor="end" font-family="Fraunces,Georgia,serif" font-size="22"
+                font-weight="700" letter-spacing=".05em" fill="#1C3A17">INFINITIVIA</text>
+          <text x="944" y="627" text-anchor="end" font-family="Inter,sans-serif" font-size="11"
+                font-weight="600" fill="#1C3A17">verb + <tspan font-style="italic">to</tspan> + infinitive</text>
+          <text x="500" y="204" text-anchor="middle" font-family="Fraunces,Georgia,serif"
+                font-size="15.5" font-weight="700" letter-spacing=".05em" fill="#341A40">TWOFOLD ISLE</text>
+          <text x="500" y="219" text-anchor="middle" font-family="Inter,sans-serif"
+                font-size="9.5" font-weight="600" fill="#341A40">both channels &#183; two meanings</text>
+        </g>
+
+        <g class="place-layer" aria-hidden="true">
+        <g class="place"><circle cx="140" cy="92" r="2.8" fill="#4A2409"/><text x="140" y="84" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4A2409">Cape Avoid</text></g>
+        <g class="place"><circle cx="78" cy="132" r="2.8" fill="#4A2409"/><text x="78" y="124" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4A2409">Enjoy Bay</text></g>
+        <g class="place"><circle cx="172" cy="152" r="2.8" fill="#4A2409"/><text x="172" y="144" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4A2409">Finish Point</text></g>
+        <g class="place"><circle cx="100" cy="196" r="2.8" fill="#4A2409"/><text x="100" y="188" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4A2409">Mind Head</text></g>
+        <g class="place"><circle cx="78" cy="250" r="2.8" fill="#4A2409"/><text x="78" y="242" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4A2409">Suggest Sound</text></g>
+        <g class="place"><circle cx="190" cy="244" r="2.8" fill="#4A2409"/><text x="190" y="236" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4A2409">Admit Cove</text></g>
+        <g class="place"><circle cx="96" cy="300" r="2.8" fill="#4A2409"/><text x="96" y="292" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4A2409">Deny Rock</text></g>
+        <g class="place"><circle cx="206" cy="312" r="2.8" fill="#4A2409"/><text x="206" y="304" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4A2409">Practise Sands</text></g>
+        <g class="place"><circle cx="86" cy="356" r="2.8" fill="#4A2409"/><text x="86" y="348" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4A2409">Postpone Marsh</text></g>
+        <g class="place"><circle cx="196" cy="372" r="2.8" fill="#4A2409"/><text x="196" y="364" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4A2409">Risk Reef</text></g>
+        <g class="place"><circle cx="96" cy="412" r="2.8" fill="#4A2409"/><text x="96" y="404" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4A2409">Consider Ness</text></g>
+        <g class="place"><circle cx="200" cy="452" r="2.8" fill="#4A2409"/><text x="200" y="444" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4A2409">Miss Mere</text></g>
+        <g class="place"><circle cx="86" cy="494" r="2.8" fill="#4A2409"/><text x="86" y="486" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4A2409">Imagine Fell</text></g>
+        <g class="place"><circle cx="150" cy="536" r="2.8" fill="#4A2409"/><text x="150" y="528" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4A2409">Can&#39;t-Stand Crag</text></g>
+        <g class="place"><circle cx="86" cy="572" r="2.8" fill="#4A2409"/><text x="86" y="564" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4A2409">Keep Gill</text></g>
+        <g class="place"><circle cx="840" cy="86" r="2.8" fill="#1C3A17"/><text x="840" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1C3A17">Want Harbour</text></g>
+        <g class="place"><circle cx="804" cy="132" r="2.8" fill="#1C3A17"/><text x="804" y="124" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1C3A17">Decide Head</text></g>
+        <g class="place"><circle cx="900" cy="158" r="2.8" fill="#1C3A17"/><text x="900" y="150" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1C3A17">Hope Point</text></g>
+        <g class="place"><circle cx="778" cy="208" r="2.8" fill="#1C3A17"/><text x="778" y="200" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1C3A17">Refuse Rock</text></g>
+        <g class="place"><circle cx="906" cy="236" r="2.8" fill="#1C3A17"/><text x="906" y="228" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1C3A17">Promise Bay</text></g>
+        <g class="place"><circle cx="752" cy="268" r="2.8" fill="#1C3A17"/><text x="752" y="260" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1C3A17">Agree Sands</text></g>
+        <g class="place"><circle cx="866" cy="306" r="2.8" fill="#1C3A17"/><text x="866" y="298" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1C3A17">Manage Moor</text></g>
+        <g class="place"><circle cx="786" cy="352" r="2.8" fill="#1C3A17"/><text x="786" y="344" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1C3A17">Offer Ness</text></g>
+        <g class="place"><circle cx="902" cy="386" r="2.8" fill="#1C3A17"/><text x="902" y="378" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1C3A17">Learn Ridge</text></g>
+        <g class="place"><circle cx="776" cy="428" r="2.8" fill="#1C3A17"/><text x="776" y="420" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1C3A17">Afford Fell</text></g>
+        <g class="place"><circle cx="886" cy="466" r="2.8" fill="#1C3A17"/><text x="886" y="458" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1C3A17">Pretend Pike</text></g>
+        <g class="place"><circle cx="758" cy="496" r="2.8" fill="#1C3A17"/><text x="758" y="488" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1C3A17">Expect Tarn</text></g>
+        <g class="place"><circle cx="868" cy="536" r="2.8" fill="#1C3A17"/><text x="868" y="528" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1C3A17">Fail Force</text></g>
+        <g class="place"><circle cx="748" cy="582" r="2.8" fill="#1C3A17"/><text x="748" y="574" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1C3A17">Plan Peak</text></g>
+        <g class="place"><circle cx="500" cy="262" r="2.8" fill="#341A40"/><text x="500" y="254" text-anchor="middle" font-family="Inter,sans-serif" font-size="10.5" font-weight="600" fill="#341A40">Stop Harbour</text></g>
+        <g class="place"><circle cx="458" cy="296" r="2.8" fill="#341A40"/><text x="458" y="288" text-anchor="middle" font-family="Inter,sans-serif" font-size="10.5" font-weight="600" fill="#341A40">Remember Rock</text></g>
+        <g class="place"><circle cx="552" cy="300" r="2.8" fill="#341A40"/><text x="552" y="292" text-anchor="middle" font-family="Inter,sans-serif" font-size="10.5" font-weight="600" fill="#341A40">Forget Ness</text></g>
+        <g class="place"><circle cx="466" cy="336" r="2.8" fill="#341A40"/><text x="466" y="328" text-anchor="middle" font-family="Inter,sans-serif" font-size="10.5" font-weight="600" fill="#341A40">Try Tarn</text></g>
+        <g class="place"><circle cx="548" cy="340" r="2.8" fill="#341A40"/><text x="548" y="332" text-anchor="middle" font-family="Inter,sans-serif" font-size="10.5" font-weight="600" fill="#341A40">Regret Reach</text></g>
+        <g class="place"><circle cx="500" cy="374" r="2.8" fill="#341A40"/><text x="500" y="366" text-anchor="middle" font-family="Inter,sans-serif" font-size="10.5" font-weight="600" fill="#341A40">Go-On Gill</text></g>
+        </g>
+      </svg>
+  </section>
+
+    <div class="tr-bar" id="tr-bar"><span class="tr-label">Examples in</span><button type="button" data-lang="" class="on">Off</button><button type="button" data-lang="de">DE</button><button type="button" data-lang="es">ES</button><button type="button" data-lang="fr">FR</button><button type="button" data-lang="it">IT</button><button type="button" data-lang="pt">PT</button><button type="button" data-lang="ru">RU</button><button type="button" data-lang="ar">AR</button><button type="button" data-lang="zh">ZH</button><button type="button" data-lang="ja">JA</button></div>
+
+      <div class="trail-wrap">
+
+    <div class="camp" id="rules">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 3v18M5 4h11l-3 4 3 4H5"/></svg></div>
+      <div class="camp-label">The western shore</div>
+      <h2>When you take the <em>-ing</em> form</h2>
+      <p class="chart-note" style="margin:-6px 0 18px">A gerund is a verb wearing a noun&#39;s coat. Once you see it as a noun, four of these six stop being rules and start being obvious &mdash; nouns go after prepositions, nouns go at the front of sentences, nouns are what you avoid and enjoy and finish.</p>
+      <div class="rule-grid">
+        <div class="rule-card">
+          <h3>After the verbs of Gerundia</h3>
+          <p>A closed list you learn rather than work out: <em>avoid, enjoy, finish, mind, suggest, admit, deny, keep, practise, risk, consider, miss, imagine, postpone, give up</em>.</p>
+          <div class="ex" data-tr="0">She <em>avoided answering</em> the question.</div>
+        </div>
+        <div class="rule-card">
+          <h3>After every preposition, without exception</h3>
+          <p>This is the current on the chart. If a preposition comes first, the verb after it can only be <em>-ing</em>.</p>
+          <div class="ex" data-tr="1">He left <em>without saying</em> goodbye.</div>
+        </div>
+        <div class="rule-card">
+          <h3>As the subject of a sentence</h3>
+          <p>English will not start a sentence with a bare verb, so the verb puts on its noun coat.</p>
+          <div class="ex" data-tr="2"><em>Sailing</em> in fog is dangerous.</div>
+        </div>
+        <div class="rule-card">
+          <h3>After <em>go</em>, for activities</h3>
+          <p>Sports and pastimes you go out and do. <em>Go sailing, go fishing, go shopping, go walking</em>.</p>
+          <div class="ex" data-tr="3">We <em>went swimming</em> before breakfast.</div>
+        </div>
+        <div class="rule-card">
+          <h3>After <em>no use, no point, worth</em></h3>
+          <p>A small family of fixed expressions that all behave the same way.</p>
+          <div class="ex" data-tr="4">There&#39;s no point <em>arguing</em> with the tide.</div>
+        </div>
+        <div class="rule-card">
+          <h3>After a possessive, in careful English</h3>
+          <p><em>my, your, his, the captain&#39;s</em>. Spoken English usually drops to the object form, and nobody minds.</p>
+          <div class="ex" data-tr="5">I don&#39;t mind <em>your borrowing</em> the chart.</div>
+        </div>
+      </div>      <div class="chart-wrap">
+        <h3>The harbours of Gerundia</h3>
+        <p class="chart-note">Grouped so they are easier to hold. Nothing joins a group for a reason &mdash; the groups are a memory aid, not a rule.</p>
+        <table class="conj">
+          <thead><tr><th>Group</th><th>Verbs</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">Stopping and avoiding</td><td>avoid &middot; give up &middot; finish &middot; quit &middot; postpone &middot; put off</td><td>They <em>put off leaving</em> until the fog lifted.</td></tr>
+            <tr><td class="subj">Liking and not liking</td><td>enjoy &middot; love &middot; like &middot; hate &middot; don&#39;t mind &middot; can&#39;t stand</td><td>I <em>can&#39;t stand waiting</em> on the quay.</td></tr>
+            <tr><td class="subj">Saying and not saying</td><td>admit &middot; deny &middot; suggest &middot; recommend &middot; mention &middot; report</td><td>He <em>denied touching</em> the wheel.</td></tr>
+            <tr><td class="subj">Carrying on</td><td>keep &middot; keep on &middot; carry on &middot; practise &middot; spend time</td><td>She <em>kept checking</em> the compass.</td></tr>
+            <tr><td class="subj">Thinking about it</td><td>consider &middot; imagine &middot; fancy &middot; risk &middot; involve &middot; miss</td><td>We <em>considered turning</em> back.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <div class="camp" id="form">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg></div>
+      <div class="camp-label">The eastern shore</div>
+      <h2>When you take <em>to</em> + infinitive</h2>
+      <p class="chart-note" style="margin:-6px 0 18px">The infinitive leans forward. Look at the verbs that take it &mdash; <em>want, hope, plan, decide, promise, agree, refuse, expect</em> &mdash; and almost every one of them is about something that has not happened yet. That is not a rule you can rely on, but it is a useful instinct while the list is still settling.</p>
+      <div class="rule-grid">
+        <div class="rule-card">
+          <h3>After the verbs of Infinitivia</h3>
+          <p>The other closed list: <em>want, decide, hope, refuse, promise, agree, manage, offer, learn, seem, afford, pretend, expect, plan, fail, choose</em>.</p>
+          <div class="ex" data-tr="6">They <em>decided to turn</em> back.</div>
+        </div>
+        <div class="rule-card">
+          <h3>After a verb <em>and its object</em></h3>
+          <p>Somebody does something to somebody else: <em>tell, ask, want, expect, advise, allow, remind, warn, teach</em>.</p>
+          <div class="ex" data-tr="7">He <em>told me to wait</em> on deck.</div>
+        </div>
+        <div class="rule-card">
+          <h3>After an adjective</h3>
+          <p><em>easy, hard, glad, ready, lucky, difficult, important</em> &mdash; the infinitive says what the adjective is about.</p>
+          <div class="ex" data-tr="8">It was <em>hard to read</em> the chart.</div>
+        </div>
+        <div class="rule-card">
+          <h3>To say why you did something</h3>
+          <p>The purpose infinitive. It answers <em>what for?</em> and it is the commonest infinitive of the lot.</p>
+          <div class="ex" data-tr="9">I climbed the mast <em>to see</em> the shore.</div>
+        </div>
+        <div class="rule-card">
+          <h3>After a question word</h3>
+          <p><em>what, where, when, how, whether</em> + <em>to</em> + infinitive, when the question is unresolved.</p>
+          <div class="ex" data-tr="10">Nobody knew <em>what to do</em>.</div>
+        </div>
+        <div class="rule-card">
+          <h3>After <em>too</em> and <em>enough</em></h3>
+          <p><em>too</em> + adjective + <em>to</em>, or adjective + <em>enough</em> + <em>to</em>.</p>
+          <div class="ex" data-tr="11">The sea was <em>too rough to sail</em>.</div>
+        </div>
+      </div>      <div class="chart-wrap">
+        <h3>Verb, then object, then <em>to</em></h3>
+        <p class="chart-note">These verbs need somebody in the middle. The pattern is fixed: you cannot say <em>he told to wait</em> &mdash; English wants to know who was told.</p>
+        <table class="conj">
+          <thead><tr><th>Verb</th><th>Pattern</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">tell</td><td>tell + somebody + to</td><td>The captain <em>told us to go</em> below.</td></tr>
+            <tr><td class="subj">ask</td><td>ask + somebody + to</td><td>She <em>asked me to hold</em> the rope.</td></tr>
+            <tr><td class="subj">want / expect</td><td>want + somebody + to</td><td>They <em>wanted him to stay</em> aboard.</td></tr>
+            <tr><td class="subj">advise / warn</td><td>advise + somebody + to</td><td>He <em>warned them not to swim</em> there.</td></tr>
+            <tr><td class="subj">remind / teach</td><td>remind + somebody + to</td><td>Remind me <em>to check</em> the fuel.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="chart-wrap">
+        <h3>The bare infinitive: no <em>to</em> at all</h3>
+        <p class="chart-note">A short list where the <em>to</em> disappears. Getting these wrong is the most audible error in this whole area, because <em>she let me to go</em> stops a listener dead.</p>
+        <table class="conj">
+          <thead><tr><th>After</th><th>Form</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">make &middot; let</td><td>no <em>to</em></td><td>She <em>let the new hand take</em> the wheel.</td></tr>
+            <tr><td class="subj">help</td><td>both are correct</td><td>He <em>helped me (to) tie</em> it off.</td></tr>
+            <tr><td class="subj">modals</td><td>no <em>to</em></td><td>We <em>must leave</em> before dark.</td></tr>
+            <tr><td class="subj">had better</td><td>no <em>to</em></td><td>You <em>had better check</em> the forecast.</td></tr>
+            <tr><td class="subj">would rather</td><td>no <em>to</em></td><td>I <em>would rather wait</em> for the tide.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <div class="camp" id="order">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="4" width="8" height="16"/><rect x="13" y="4" width="8" height="16"/></svg></div>
+      <div class="camp-label">Interactive</div>
+      <h2>Read the chart</h2>
+      <div class="diagram-card">
+        <p class="diagram-intro">Click a landmass. The strait is narrow and the two shores look alike from a distance, which is exactly the problem &mdash; nothing about the <em>meaning</em> of <em>avoid</em> and <em>refuse</em> tells you they belong to different coasts. The island between them is where the same verb serves both, and changes what it means depending on which channel you took to reach it.</p>
+        <div class="diagram-stage">
+          <svg class="sail-chart" viewBox="0 0 1000 660" role="img"
+       aria-label="A sea chart. The western shore, Gerundia, has harbours named after verbs that take the -ing form: Cape Avoid, Enjoy Bay, Finish Point and others. The eastern shore, Infinitivia, has harbours named after verbs that take to plus infinitive: Want Harbour, Decide Head, Hope Point and others. Between them lies Twofold Isle, whose harbours take either form with a change of meaning. Dashed currents run west across the strait, labelled prepositions. A spur off the western shore flies a flag reading TO and is marked the False Cape.">
+        <defs>
+          <linearGradient id="sailb-sea" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#DEEFF6"/><stop offset="100%" stop-color="#B2D5E4"/>
+          </linearGradient>
+          <marker id="sailb-tide" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6"
+                  markerHeight="6" orient="auto">
+            <path d="M 0 1 L 9 5 L 0 9 z" fill="#22707F"/>
+          </marker>
+          <pattern id="sailb-sand" width="11" height="11" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+            <rect width="11" height="11" fill="#F6E7C9"/>
+            <line x1="0" y1="0" x2="0" y2="11" stroke="#E4C994" stroke-width="4"/>
+          </pattern>
+        </defs>
+
+        <rect x="0" y="0" width="1000" height="660" fill="url(#sailb-sea)"/>
+        <path d="M 348 210 q 7 -5 14 0 q 7 5 14 0" fill="none" stroke="#84B4C9" stroke-width="1.6" stroke-linecap="round" opacity=".6"/>
+        <path d="M 614 200 q 7 -5 14 0 q 7 5 14 0" fill="none" stroke="#84B4C9" stroke-width="1.6" stroke-linecap="round" opacity=".6"/>
+        <path d="M 346 330 q 7 -5 14 0 q 7 5 14 0" fill="none" stroke="#84B4C9" stroke-width="1.6" stroke-linecap="round" opacity=".6"/>
+        <path d="M 612 340 q 7 -5 14 0 q 7 5 14 0" fill="none" stroke="#84B4C9" stroke-width="1.6" stroke-linecap="round" opacity=".6"/>
+        <path d="M 352 560 q 7 -5 14 0 q 7 5 14 0" fill="none" stroke="#84B4C9" stroke-width="1.6" stroke-linecap="round" opacity=".6"/>
+        <path d="M 600 520 q 7 -5 14 0 q 7 5 14 0" fill="none" stroke="#84B4C9" stroke-width="1.6" stroke-linecap="round" opacity=".6"/>
+        <path d="M 424 468 q 7 -5 14 0 q 7 5 14 0" fill="none" stroke="#84B4C9" stroke-width="1.6" stroke-linecap="round" opacity=".6"/>
+        <path d="M 536 470 q 7 -5 14 0 q 7 5 14 0" fill="none" stroke="#84B4C9" stroke-width="1.6" stroke-linecap="round" opacity=".6"/>
+        <path d="M 452 612 q 7 -5 14 0 q 7 5 14 0" fill="none" stroke="#84B4C9" stroke-width="1.6" stroke-linecap="round" opacity=".6"/>
+        <path d="M 348 130 q 7 -5 14 0 q 7 5 14 0" fill="none" stroke="#84B4C9" stroke-width="1.6" stroke-linecap="round" opacity=".6"/>
+
+        <g id="sailb-shape-gerund" class="land" tabindex="0" role="button" aria-label="Gerundia, the shore of verbs followed by the -ing form" style="cursor:pointer">
+          <path d="M -30 20 L 120 34 C 200 46, 244 92, 236 140 C 228 188, 282 214, 300 258 C 318 302, 268 330, 258 372 C 248 414, 296 448, 268 492 C 240 536, 260 566, 236 592 C 212 618, 130 638, 40 646 L -30 652 Z" fill="none" stroke="#F3DCBB" stroke-width="17" stroke-linejoin="round"/>
+          <path d="M -30 20 L 120 34 C 200 46, 244 92, 236 140 C 228 188, 282 214, 300 258 C 318 302, 268 330, 258 372 C 248 414, 296 448, 268 492 C 240 536, 260 566, 236 592 C 212 618, 130 638, 40 646 L -30 652 Z" fill="#D89257" stroke="#2B4A57" stroke-width="2.4" stroke-linejoin="round"/>
+        </g>
+        <g id="sailb-shape-infin" class="land" tabindex="0" role="button" aria-label="Infinitivia, the shore of verbs followed by to plus infinitive" style="cursor:pointer">
+          <path d="M 1030 14 L 892 30 C 812 44, 736 96, 748 148 C 760 200, 706 230, 700 276 C 694 322, 744 348, 736 392 C 728 436, 690 462, 706 506 C 722 550, 700 586, 726 614 C 752 642, 880 652, 1030 654 Z" fill="none" stroke="#DCEBC9" stroke-width="17" stroke-linejoin="round"/>
+          <path d="M 1030 14 L 892 30 C 812 44, 736 96, 748 148 C 760 200, 706 230, 700 276 C 694 322, 744 348, 736 392 C 728 436, 690 462, 706 506 C 722 550, 700 586, 726 614 C 752 642, 880 652, 1030 654 Z" fill="#7FA870" stroke="#2B4A57" stroke-width="2.4" stroke-linejoin="round"/>
+        </g>
+        <g id="sailb-shape-isle" class="land" tabindex="0" role="button" aria-label="Twofold Isle, verbs that take both forms with a change of meaning" style="cursor:pointer">
+          <path d="M 500 226 C 556 226, 596 258, 596 300 C 596 342, 566 396, 500 402 C 434 396, 404 342, 404 300 C 404 258, 444 226, 500 226 Z" fill="none" stroke="#E7DAEF" stroke-width="17" stroke-linejoin="round"/>
+          <path d="M 500 226 C 556 226, 596 258, 596 300 C 596 342, 566 396, 500 402 C 434 396, 404 342, 404 300 C 404 258, 444 226, 500 226 Z" fill="#AE87BE" stroke="#2B4A57" stroke-width="2.4" stroke-linejoin="round"/>
+        </g>
+
+        <g id="sailb-shape-false" class="land-false" tabindex="0" role="button" aria-label="The False Cape, where to is a preposition and takes the -ing form" style="cursor:pointer">
+          <path d="M 258 452 C 300 442, 352 452, 388 472 C 350 498, 296 498, 262 480 Z" fill="none" stroke="#F3DCBB" stroke-width="13" stroke-linejoin="round"/>
+          <path d="M 258 452 C 300 442, 352 452, 388 472 C 350 498, 296 498, 262 480 Z" fill="#D89257" stroke="#2B4A57" stroke-width="2.2" stroke-linejoin="round"/>
+          <path d="M 388 472 L 388 414" stroke="#2B4A57" stroke-width="2.4"/>
+          <path d="M 388 416 L 434 427 L 388 438 Z" fill="#D89257" stroke="#2B4A57" stroke-width="1.5"/>
+          <text x="408" y="432" text-anchor="middle" font-family="Inter,sans-serif"
+                font-size="11.5" font-weight="700" fill="#3A1D04">TO</text>
+          <text x="318" y="508" text-anchor="middle" font-family="Inter,sans-serif"
+                font-size="10.5" font-weight="700" letter-spacing=".06em" fill="#4A2409">THE FALSE CAPE</text>
+        </g>
+
+        <g class="shallows" aria-hidden="true">
+          <ellipse cx="512" cy="548" rx="108" ry="33" fill="url(#sailb-sand)" opacity=".9"/>
+          <ellipse cx="512" cy="548" rx="108" ry="33" fill="none" stroke="#C09A55"
+                   stroke-width="1.6" stroke-dasharray="7 5"/>
+          <text x="512" y="545" text-anchor="middle" font-family="Inter,sans-serif"
+                font-size="10.5" font-weight="700" letter-spacing=".06em" fill="#6B5320">THE SHALLOWS</text>
+          <text x="512" y="560" text-anchor="middle" font-family="Inter,sans-serif"
+                font-size="9.5" fill="#6B5320">begin &#183; start &#183; continue &#183; like &#183; hate</text>
+        </g>
+
+        <g class="current">
+          <path d="M 618 176 C 572 161, 404 191, 352 176" fill="none" stroke="#22707F"
+                stroke-width="2.6" stroke-dasharray="10 7" stroke-linecap="round"
+                marker-end="url(#sailb-tide)" opacity=".9"/>
+          <text x="485" y="154" text-anchor="middle" font-family="Inter,sans-serif"
+                font-size="10.5" font-weight="700" letter-spacing=".1em"
+                fill="#1A5A66">PREPOSITIONS RUN WEST</text>
+        </g>
+        <g class="current">
+          <path d="M 616 462 C 570 447, 494 477, 442 462" fill="none" stroke="#22707F"
+                stroke-width="2.6" stroke-dasharray="10 7" stroke-linecap="round"
+                marker-end="url(#sailb-tide)" opacity=".9"/>
+          <text x="529" y="442" text-anchor="middle" font-family="Inter,sans-serif"
+                font-size="10.5" font-weight="700" letter-spacing=".1em"
+                fill="#1A5A66">EVEN THE ONES SPELLED &#8220;TO&#8221;</text>
+        </g>
+        <g class="compass">
+          <circle cx="500" cy="92" r="36" fill="#FFFFFF" opacity=".6"/>
+          <circle cx="500" cy="92" r="36" fill="none" stroke="#22707F" stroke-width="1.4"/>
+          <path d="M 500 60 L 507 88 L 500 124 L 493 88 Z" fill="#D89257" stroke="#2B4A57" stroke-width="1"/>
+          <path d="M 468 92 L 496 85 L 532 92 L 496 99 Z" fill="#2B4A57" opacity=".72"/>
+          <text x="500" y="48" text-anchor="middle" font-family="Inter,sans-serif"
+                font-size="10.5" font-weight="700" letter-spacing=".06em" fill="#1A5A66">&#9664; -ING &#183; TO &#9654;</text>
+        </g>
+        <g class="ship">
+          <path d="M 622 606 L 678 606 L 669 620 L 631 620 Z" fill="#3B2A1E"/>
+          <path d="M 650 566 L 650 606" stroke="#3B2A1E" stroke-width="2.4"/>
+          <path d="M 652 570 L 678 601 L 652 601 Z" fill="#FBF6EC" stroke="#3B2A1E" stroke-width="1.3"/>
+          <path d="M 646 576 L 623 601 L 646 601 Z" fill="#FBF6EC" stroke="#3B2A1E" stroke-width="1.3"/>
+        </g>
+
+        <g class="labels" aria-hidden="true">
+          <text x="56" y="608" font-family="Fraunces,Georgia,serif" font-size="22"
+                font-weight="700" letter-spacing=".05em" fill="#4A2409">GERUNDIA</text>
+          <text x="58" y="627" font-family="Inter,sans-serif" font-size="11"
+                font-weight="600" fill="#4A2409">verb + <tspan font-style="italic">-ing</tspan></text>
+          <text x="946" y="608" text-anchor="end" font-family="Fraunces,Georgia,serif" font-size="22"
+                font-weight="700" letter-spacing=".05em" fill="#1C3A17">INFINITIVIA</text>
+          <text x="944" y="627" text-anchor="end" font-family="Inter,sans-serif" font-size="11"
+                font-weight="600" fill="#1C3A17">verb + <tspan font-style="italic">to</tspan> + infinitive</text>
+          <text x="500" y="204" text-anchor="middle" font-family="Fraunces,Georgia,serif"
+                font-size="15.5" font-weight="700" letter-spacing=".05em" fill="#341A40">TWOFOLD ISLE</text>
+          <text x="500" y="219" text-anchor="middle" font-family="Inter,sans-serif"
+                font-size="9.5" font-weight="600" fill="#341A40">both channels &#183; two meanings</text>
+        </g>
+
+        <g class="place-layer" aria-hidden="true">
+        <g class="place"><circle cx="140" cy="92" r="2.8" fill="#4A2409"/><text x="140" y="84" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4A2409">Cape Avoid</text></g>
+        <g class="place"><circle cx="78" cy="132" r="2.8" fill="#4A2409"/><text x="78" y="124" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4A2409">Enjoy Bay</text></g>
+        <g class="place"><circle cx="172" cy="152" r="2.8" fill="#4A2409"/><text x="172" y="144" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4A2409">Finish Point</text></g>
+        <g class="place"><circle cx="100" cy="196" r="2.8" fill="#4A2409"/><text x="100" y="188" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4A2409">Mind Head</text></g>
+        <g class="place"><circle cx="78" cy="250" r="2.8" fill="#4A2409"/><text x="78" y="242" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4A2409">Suggest Sound</text></g>
+        <g class="place"><circle cx="190" cy="244" r="2.8" fill="#4A2409"/><text x="190" y="236" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4A2409">Admit Cove</text></g>
+        <g class="place"><circle cx="96" cy="300" r="2.8" fill="#4A2409"/><text x="96" y="292" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4A2409">Deny Rock</text></g>
+        <g class="place"><circle cx="206" cy="312" r="2.8" fill="#4A2409"/><text x="206" y="304" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4A2409">Practise Sands</text></g>
+        <g class="place"><circle cx="86" cy="356" r="2.8" fill="#4A2409"/><text x="86" y="348" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4A2409">Postpone Marsh</text></g>
+        <g class="place"><circle cx="196" cy="372" r="2.8" fill="#4A2409"/><text x="196" y="364" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4A2409">Risk Reef</text></g>
+        <g class="place"><circle cx="96" cy="412" r="2.8" fill="#4A2409"/><text x="96" y="404" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4A2409">Consider Ness</text></g>
+        <g class="place"><circle cx="200" cy="452" r="2.8" fill="#4A2409"/><text x="200" y="444" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4A2409">Miss Mere</text></g>
+        <g class="place"><circle cx="86" cy="494" r="2.8" fill="#4A2409"/><text x="86" y="486" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4A2409">Imagine Fell</text></g>
+        <g class="place"><circle cx="150" cy="536" r="2.8" fill="#4A2409"/><text x="150" y="528" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4A2409">Can&#39;t-Stand Crag</text></g>
+        <g class="place"><circle cx="86" cy="572" r="2.8" fill="#4A2409"/><text x="86" y="564" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4A2409">Keep Gill</text></g>
+        <g class="place"><circle cx="840" cy="86" r="2.8" fill="#1C3A17"/><text x="840" y="78" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1C3A17">Want Harbour</text></g>
+        <g class="place"><circle cx="804" cy="132" r="2.8" fill="#1C3A17"/><text x="804" y="124" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1C3A17">Decide Head</text></g>
+        <g class="place"><circle cx="900" cy="158" r="2.8" fill="#1C3A17"/><text x="900" y="150" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1C3A17">Hope Point</text></g>
+        <g class="place"><circle cx="778" cy="208" r="2.8" fill="#1C3A17"/><text x="778" y="200" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1C3A17">Refuse Rock</text></g>
+        <g class="place"><circle cx="906" cy="236" r="2.8" fill="#1C3A17"/><text x="906" y="228" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1C3A17">Promise Bay</text></g>
+        <g class="place"><circle cx="752" cy="268" r="2.8" fill="#1C3A17"/><text x="752" y="260" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1C3A17">Agree Sands</text></g>
+        <g class="place"><circle cx="866" cy="306" r="2.8" fill="#1C3A17"/><text x="866" y="298" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1C3A17">Manage Moor</text></g>
+        <g class="place"><circle cx="786" cy="352" r="2.8" fill="#1C3A17"/><text x="786" y="344" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1C3A17">Offer Ness</text></g>
+        <g class="place"><circle cx="902" cy="386" r="2.8" fill="#1C3A17"/><text x="902" y="378" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1C3A17">Learn Ridge</text></g>
+        <g class="place"><circle cx="776" cy="428" r="2.8" fill="#1C3A17"/><text x="776" y="420" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1C3A17">Afford Fell</text></g>
+        <g class="place"><circle cx="886" cy="466" r="2.8" fill="#1C3A17"/><text x="886" y="458" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1C3A17">Pretend Pike</text></g>
+        <g class="place"><circle cx="758" cy="496" r="2.8" fill="#1C3A17"/><text x="758" y="488" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1C3A17">Expect Tarn</text></g>
+        <g class="place"><circle cx="868" cy="536" r="2.8" fill="#1C3A17"/><text x="868" y="528" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1C3A17">Fail Force</text></g>
+        <g class="place"><circle cx="748" cy="582" r="2.8" fill="#1C3A17"/><text x="748" y="574" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1C3A17">Plan Peak</text></g>
+        <g class="place"><circle cx="500" cy="262" r="2.8" fill="#341A40"/><text x="500" y="254" text-anchor="middle" font-family="Inter,sans-serif" font-size="10.5" font-weight="600" fill="#341A40">Stop Harbour</text></g>
+        <g class="place"><circle cx="458" cy="296" r="2.8" fill="#341A40"/><text x="458" y="288" text-anchor="middle" font-family="Inter,sans-serif" font-size="10.5" font-weight="600" fill="#341A40">Remember Rock</text></g>
+        <g class="place"><circle cx="552" cy="300" r="2.8" fill="#341A40"/><text x="552" y="292" text-anchor="middle" font-family="Inter,sans-serif" font-size="10.5" font-weight="600" fill="#341A40">Forget Ness</text></g>
+        <g class="place"><circle cx="466" cy="336" r="2.8" fill="#341A40"/><text x="466" y="328" text-anchor="middle" font-family="Inter,sans-serif" font-size="10.5" font-weight="600" fill="#341A40">Try Tarn</text></g>
+        <g class="place"><circle cx="548" cy="340" r="2.8" fill="#341A40"/><text x="548" y="332" text-anchor="middle" font-family="Inter,sans-serif" font-size="10.5" font-weight="600" fill="#341A40">Regret Reach</text></g>
+        <g class="place"><circle cx="500" cy="374" r="2.8" fill="#341A40"/><text x="500" y="366" text-anchor="middle" font-family="Inter,sans-serif" font-size="10.5" font-weight="600" fill="#341A40">Go-On Gill</text></g>
+        </g>
+      </svg>
+        </div>
+        <div class="diagram-panels three">
+          <div class="diagram-panel is-west" id="panel-gerund">
+            <h4>Gerundia &middot; verb + <em>-ing</em></h4>
+            <ul id="panel-gerund-list"></ul>
+          </div>
+          <div class="diagram-panel is-isle" id="panel-isle">
+            <h4>Twofold Isle &middot; either</h4>
+            <ul id="panel-isle-list"></ul>
+          </div>
+          <div class="diagram-panel is-east" id="panel-infin">
+            <h4>Infinitivia &middot; <em>to</em> + infinitive</h4>
+            <ul id="panel-infin-list"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="false-cape">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg></div>
+      <div class="camp-label">The False Cape</div>
+      <h2>When <em>to</em> is not an infinitive</h2>
+      <p class="chart-note" style="margin:-6px 0 18px">Here is the single most useful thing on this page. In <em>look forward to</em>, <em>be used to</em> and their relatives, the word <em>to</em> is a <strong>preposition</strong>, not the front half of an infinitive &mdash; so the current applies and the verb after it can only be <em>-ing</em>. The cape looks like it belongs to the eastern shore. It does not.</p>
+            <div class="chart-wrap">
+        <h3>The test that settles it</h3>
+        <p class="chart-note">Put <em>it</em> after the <em>to</em>. If the sentence still works, the <em>to</em> is a preposition, and whatever follows takes <em>-ing</em>.</p>
+        <table class="conj">
+          <thead><tr><th>Phrase</th><th>Does <em>&hellip; to it</em> work?</th><th>So you say</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">look forward to</td><td>I look forward <strong>to it</strong>. &#10003;</td><td>looking forward <em>to seeing</em> you</td></tr>
+            <tr><td class="subj">be used to</td><td>I&#39;m used <strong>to it</strong>. &#10003;</td><td>used <em>to sailing</em> at night</td></tr>
+            <tr><td class="subj">object to</td><td>They objected <strong>to it</strong>. &#10003;</td><td>objected <em>to being</em> woken</td></tr>
+            <tr><td class="subj">get round to</td><td>I&#39;ll get round <strong>to it</strong>. &#10003;</td><td>get round <em>to fixing</em> it</td></tr>
+            <tr><td class="subj">when it comes to</td><td>When it comes <strong>to it</strong>&hellip; &#10003;</td><td>when it comes <em>to navigating</em></td></tr>
+            <tr><td class="subj">want</td><td>I want <strong>to it</strong>. &#10007;</td><td>want <em>to leave</em></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="chart-wrap">
+        <h3>The other traps on this coast</h3>
+        <p class="chart-note">All of them are prepositions wearing the same coat.</p>
+        <table class="conj">
+          <thead><tr><th>Phrase</th><th>Wrong</th><th>Right</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">be used to</td><td>I&#39;m used to sail at night.</td><td>I&#39;m used <em>to sailing</em> at night.</td></tr>
+            <tr><td class="subj">get used to</td><td>You&#39;ll get used to work nights.</td><td>You&#39;ll get used <em>to working</em> nights.</td></tr>
+            <tr><td class="subj">look forward to</td><td>I look forward to hear from you.</td><td>I look forward <em>to hearing</em> from you.</td></tr>
+            <tr><td class="subj">in addition to</td><td>In addition to carry the mail&hellip;</td><td>In addition <em>to carrying</em> the mail&hellip;</td></tr>
+            <tr><td class="subj">confess to</td><td>He confessed to take the chart.</td><td>He confessed <em>to taking</em> the chart.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="chart-note" style="margin-top:16px"><strong>One more thing worth separating.</strong> <em>Used to</em> and <em>be used to</em> are different words that happen to look alike. <em>I used to sail</em> is a past habit and takes the infinitive. <em>I&#39;m used to sailing</em> is a state of familiarity and takes <em>-ing</em>. The difference is the verb <em>be</em>, and it is the whole difference.</p>
+      <p class="ex" data-tr="12" style="margin:14px 0 0">I <em>used to sail</em> here. &nbsp;&middot;&nbsp; I<em>&#39;m used to sailing</em> here.</p>
+    </div>
+
+    <div class="camp" id="vs-simple">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3v18"/><path d="M7 8l-4 4 4 4M17 8l4 4-4 4"/></svg></div>
+      <div class="camp-label">The strait</div>
+      <h2>Twofold Isle: the same verb, two meanings</h2>
+      <div class="chart-wrap" style="margin-top:18px">
+        <p class="chart-note" style="margin-bottom:16px">These verbs take both forms, and the form changes what the sentence means. This is the only part of gerunds and infinitives where getting it wrong changes the facts rather than just the grammar &mdash; which is why it is the part worth learning properly. The pattern underneath is consistent: the <em>-ing</em> form looks back at something real that happened, and the <em>to</em> form looks forward to something intended.</p>
+        <table class="conj">
+          <thead><tr><th>Verb</th><th>With <em>-ing</em> &mdash; looking back</th><th>With <em>to</em> &mdash; looking forward</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">stop</td><td>ended the activity<br><em>She stopped reading.</em> (put the book down)</td><td>paused in order to do something else<br><em>She stopped to read.</em> (halted, then read)</td></tr>
+            <tr><td class="subj">remember</td><td>the memory of doing it<br><em>I remember posting it.</em> (I can picture it)</td><td>not forgetting to do it<br><em>I remembered to post it.</em> (it got done)</td></tr>
+            <tr><td class="subj">forget</td><td>no memory of doing it<br><em>I&#39;ll never forget seeing land.</em></td><td>failed to do it<br><em>I forgot to check the fuel.</em></td></tr>
+            <tr><td class="subj">try</td><td>experiment with a method<br><em>Try moving the aerial.</em> (see if that helps)</td><td>attempt something difficult<br><em>Try to lift it.</em> (make the effort)</td></tr>
+            <tr><td class="subj">regret</td><td>sorry about the past<br><em>I regret telling him.</em></td><td>sorry about what you must now say<br><em>We regret to inform you&hellip;</em></td></tr>
+            <tr><td class="subj">go on</td><td>continue the same thing<br><em>He went on talking.</em> (didn&#39;t stop)</td><td>move to the next thing<br><em>He went on to talk about costs.</em></td></tr>
+            <tr><td class="subj">mean</td><td>involve, have as a consequence<br><em>This means leaving at four.</em></td><td>intend<br><em>I meant to leave at four.</em></td></tr>
+            <tr><td class="subj">need</td><td>passive sense &mdash; it needs doing<br><em>The sail needs mending.</em></td><td>active sense &mdash; somebody needs to act<br><em>You need to mend the sail.</em></td></tr>
+          </tbody>
+        </table>
+        <p class="example" style="margin-top:14px">The reliable test: if you can put <em>somebody did it and I know about it</em> behind the sentence, take the <em>-ing</em> channel. If it has not happened yet, take <em>to</em>.</p>
+      </div>
+      <div class="btnrow" style="margin-top:16px">
+        <a class="route-link" href="sailing-the-seas-of-grammar.html#quiz">Straight to the test &rarr;</a>
+        <a class="route-link" href="library.html">The lesson library</a>
+      </div>
+    </div>
+
+    <div class="camp" id="shallows">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3v18"/><path d="M7 8l-4 4 4 4M17 8l4 4-4 4"/></svg></div>
+      <div class="camp-label">The Shallows</div>
+      <h2>Where it makes no difference</h2>
+      <p class="chart-note" style="margin:-6px 0 18px">A sandbank in the middle of the strait where the two channels run together. After these verbs both forms are correct and mean the same thing, so if you are unsure, you are safe.</p>
+            <div class="chart-wrap">
+        <h3>Both, with no change of meaning</h3>
+        <p class="chart-note">Two small cautions all the same, and they are the only things to remember here.</p>
+        <table class="conj">
+          <thead><tr><th>Verb</th><th>Either works</th><th>Caution</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">begin &middot; start</td><td>It began raining. / It began to rain.</td><td>Avoid two <em>-ing</em>s in a row: <em>It&#39;s starting to rain</em>, not <em>starting raining</em>.</td></tr>
+            <tr><td class="subj">continue</td><td>She continued walking. / to walk.</td><td>&mdash;</td></tr>
+            <tr><td class="subj">like &middot; love &middot; hate</td><td>I like sailing. / I like to sail.</td><td><em>-ing</em> leans toward enjoying it; <em>to</em> leans toward choosing it.</td></tr>
+            <tr><td class="subj">prefer</td><td>I prefer walking. / to walk.</td><td>&mdash;</td></tr>
+            <tr><td class="subj">can&#39;t bear</td><td>I can&#39;t bear waiting. / to wait.</td><td>&mdash;</td></tr>
+            <tr><td class="subj">would like &middot; would love</td><td>&mdash;</td><td>With <em>would</em>, only the infinitive: <em>I&#39;d like to sail</em>, never <em>I&#39;d like sailing</em>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <div class="camp" id="signals">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg></div>
+      <div class="camp-label">Tide tables</div>
+      <h2>Signal words</h2>
+      <div class="signal-groups">
+        <div class="signal-box">
+          <h3>Currents running west &mdash; take <em>-ing</em></h3>
+          <ul>
+            <li>after any preposition</li>
+            <li>after <em>to</em> when it is a preposition</li>
+            <li>as the subject</li>
+            <li>after <em>go</em> + activity</li>
+            <li>after <em>no use &middot; no point &middot; worth</em></li>
+            <li>after <em>spend / waste</em> + time</li>
+          </ul>
+        </div>
+        <div class="signal-box">
+          <h3>Ropes pulling east &mdash; take <em>to</em></h3>
+          <ul>
+            <li>after an adjective</li>
+            <li>to say why (purpose)</li>
+            <li>after a question word</li>
+            <li>after <em>too</em> and <em>enough</em></li>
+            <li>after verb + object</li>
+            <li>after <em>would like / love / hate</em></li>
+          </ul>
+        </div>
+      </div>
+      <p class="example" style="margin-top:14px">One line to keep: a preposition is a current and it only runs one way. If you can find a preposition in front of the gap, stop looking for a rule &mdash; it is <em>-ing</em>.</p>
+    </div>
+
+    <div class="camp" id="quiz">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3l3 7-3 3-3-3 3-7z"/><path d="M12 13v8"/></svg></div>
+      <div class="camp-label">The crossing</div>
+      <h2>Practice</h2>
+      <div class="quiz-card">
+        <div class="progress-row">
+          <span id="progress-text">Checkpoint 1 of 14</span>
+          <span id="score-text">Score: 0</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+        <div class="q-prompt" id="q-prompt"></div>
+        <div class="q-hint" id="q-hint"></div>
+        <div class="options" id="options"></div>
+        <div class="feedback" id="feedback"></div>
+        <div class="quiz-footer">
+          <button class="next-btn" id="next-btn" disabled>Next checkpoint</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="results-camp">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 20l5-14 5 14M8 14h4"/></svg></div>
+      <div class="camp-label">Ship&#39;s log</div>
+      <div id="results">
+        <div class="score" id="final-score"></div>
+        <p id="final-message"></p>
+        <button class="retry-btn" id="retry-btn">Sail it again</button>
+        <div class="route-nav">
+          <a class="base-camp" href="library.html">&larr; Back to the library</a>
+          <a class="next-camp" href="sherpa-tensing-route-map.html">The tenses: Sherpa Tensing &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+
+
+
+
+// ── example translations: nine languages, click to reveal ──
+var EX_TR = {"0": ["Sie vermied es, die Frage zu beantworten.", "Evitó responder a la pregunta.", "Elle a évité de répondre à la question.", "Ha evitato di rispondere alla domanda.", "Ela evitou responder à pergunta.", "Она уклонилась от ответа на вопрос.", "تجنّبت الإجابة عن السؤال.", "她避免回答这个问题。", "彼女はその質問に答えるのを避けました。"], "1": ["Er ging, ohne sich zu verabschieden.", "Se fue sin despedirse.", "Il est parti sans dire au revoir.", "È andato via senza salutare.", "Ele foi-se embora sem se despedir.", "Он ушёл, не попрощавшись.", "غادر دون أن يودّع أحدًا.", "他没打招呼就走了。", "彼は別れも告げずに出て行きました。"], "2": ["Bei Nebel zu segeln ist gefährlich.", "Navegar con niebla es peligroso.", "Naviguer dans le brouillard est dangereux.", "Navigare nella nebbia è pericoloso.", "Navegar com nevoeiro é perigoso.", "Ходить под парусом в тумане опасно.", "الإبحار في الضباب خطير.", "在雾中航行很危险。", "霧の中で航海するのは危険です。"], "3": ["Wir waren vor dem Frühstück schwimmen.", "Fuimos a nadar antes del desayuno.", "Nous sommes allés nager avant le petit-déjeuner.", "Siamo andati a nuotare prima di colazione.", "Fomos nadar antes do pequeno-almoço.", "Перед завтраком мы ходили купаться.", "ذهبنا للسباحة قبل الفطور.", "我们早饭前去游泳了。", "朝食前に泳ぎに行きました。"], "4": ["Es hat keinen Sinn, mit der Tide zu streiten.", "No tiene sentido discutir con la marea.", "Ça ne sert à rien de discuter avec la marée.", "Non ha senso discutere con la marea.", "Não vale a pena discutir com a maré.", "Спорить с приливом бессмысленно.", "لا فائدة من مجادلة المدّ.", "跟潮水较劲毫无意义。", "潮に逆らって議論しても意味がありません。"], "5": ["Es macht mir nichts aus, wenn du die Seekarte ausleihst.", "No me importa que te lleves la carta náutica.", "Ça ne me dérange pas que tu empruntes la carte marine.", "Non mi dispiace che tu prenda in prestito la carta nautica.", "Não me importo que leves a carta náutica.", "Я не против, если ты возьмёшь карту.", "لا مانع لديّ من أن تستعير الخريطة البحرية.", "你借走海图我不介意。", "海図を借りてもらってもかまいません。"], "6": ["Sie beschlossen umzukehren.", "Decidieron dar la vuelta.", "Ils ont décidé de faire demi-tour.", "Hanno deciso di tornare indietro.", "Decidiram voltar para trás.", "Они решили повернуть назад.", "قرّروا العودة أدراجهم.", "他们决定掉头返航。", "彼らは引き返すことに決めました。"], "7": ["Er sagte mir, ich solle an Deck warten.", "Me dijo que esperara en cubierta.", "Il m'a dit d'attendre sur le pont.", "Mi ha detto di aspettare in coperta.", "Disse-me para esperar no convés.", "Он велел мне ждать на палубе.", "طلب مني أن أنتظر على ظهر السفينة.", "他叫我在甲板上等着。", "彼は私に甲板で待つように言いました。"], "8": ["Die Seekarte war schwer zu lesen.", "Era difícil leer la carta náutica.", "La carte marine était difficile à lire.", "Era difficile leggere la carta nautica.", "Era difícil ler a carta náutica.", "Карту было трудно читать.", "كان من الصعب قراءة الخريطة البحرية.", "海图很难看懂。", "海図を読むのは難しかったです。"], "9": ["Ich kletterte den Mast hinauf, um die Küste zu sehen.", "Subí al mástil para ver la costa.", "J'ai grimpé au mât pour voir la côte.", "Sono salito sull'albero per vedere la costa.", "Subi ao mastro para ver a costa.", "Я забрался на мачту, чтобы увидеть берег.", "تسلّقت الصاري لأرى الشاطئ.", "我爬上桅杆去看岸边。", "岸を見るためにマストに登りました。"], "10": ["Niemand wusste, was zu tun war.", "Nadie sabía qué hacer.", "Personne ne savait quoi faire.", "Nessuno sapeva cosa fare.", "Ninguém sabia o que fazer.", "Никто не знал, что делать.", "لم يعرف أحد ماذا يفعل.", "没人知道该怎么办。", "誰も何をすべきか分かりませんでした。"], "11": ["Die See war zu rau zum Segeln.", "El mar estaba demasiado picado para navegar.", "La mer était trop agitée pour naviguer.", "Il mare era troppo mosso per navigare.", "O mar estava demasiado agitado para navegar.", "Море было слишком бурным, чтобы выходить под парусом.", "كان البحر هائجًا أكثر من أن نبحر فيه.", "海浪太大，无法出航。", "海が荒れすぎていて航行できませんでした。"], "12": ["Früher bin ich hier gesegelt. · Ich bin es gewohnt, hier zu segeln.", "Antes navegaba por aquí. · Estoy acostumbrado a navegar por aquí.", "Avant, je naviguais ici. · J'ai l'habitude de naviguer ici.", "Una volta navigavo qui. · Sono abituato a navigare qui.", "Dantes navegava por aqui. · Estou habituado a navegar por aqui.", "Раньше я здесь ходил под парусом. · Я привык здесь ходить под парусом.", "كنت أُبحر هنا سابقًا. · أنا معتاد على الإبحار هنا.", "我以前常在这里航行。· 我习惯了在这里航行。", "以前はここで航海していました。・ここで航海するのには慣れています。"]};
+var TR_ORDER = ["de", "es", "fr", "it", "pt", "ru", "ar", "zh", "ja"];
+var trLang = "";
+
+function trIndex(el){ return el.getAttribute("data-tr"); }
+
+function showTr(el){
+  var row = EX_TR[trIndex(el)];
+  if (!row || !trLang) return;
+  var i = TR_ORDER.indexOf(trLang);
+  if (i < 0 || !row[i]) return;
+  var line = el.querySelector(":scope > .ex-tr");
+  if (!line){
+    line = document.createElement("span");
+    line.className = "ex-tr";
+    el.appendChild(line);
+  }
+  line.textContent = row[i];
+  if (trLang === "ar") line.setAttribute("dir", "rtl"); else line.removeAttribute("dir");
+}
+
+function hideTr(el){
+  var line = el.querySelector(":scope > .ex-tr");
+  if (line) line.remove();
+}
+
+function applyTr(){
+  document.querySelectorAll(".ex[data-tr]").forEach(function(el){
+    if (trLang) showTr(el); else hideTr(el);
+  });
+}
+
+document.querySelectorAll("#tr-bar button").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    trLang = btn.getAttribute("data-lang");
+    document.querySelectorAll("#tr-bar button").forEach(function(b){ b.classList.remove("on"); });
+    btn.classList.add("on");
+    applyTr();
+  });
+});
+
+document.querySelectorAll(".ex[data-tr]").forEach(function(el){
+  el.addEventListener("click", function(){
+    if (!trLang) return;
+    if (el.querySelector(":scope > .ex-tr")) hideTr(el); else showTr(el);
+  });
+});
+
+// ── the chart, made clickable ──
+var panelGerund = [
+  "She <em>avoided answering</em>.",
+  "He left <em>without saying</em> goodbye.",
+  "<em>Sailing</em> in fog is dangerous.",
+  "We <em>went swimming</em> at dawn.",
+  "I look forward <em>to hearing</em> from you."
+];
+var panelIsle = [
+  "<em>stopped reading</em> &middot; <em>stopped to read</em>",
+  "<em>remember posting</em> &middot; <em>remembered to post</em>",
+  "<em>try moving</em> it &middot; <em>try to lift</em> it",
+  "<em>went on talking</em> &middot; <em>went on to talk</em>",
+  "It <em>needs mending</em> &middot; You <em>need to mend</em> it."
+];
+var panelInfin = [
+  "They <em>decided to turn</em> back.",
+  "He <em>told me to wait</em>.",
+  "It was <em>hard to read</em>.",
+  "I climbed <em>to see</em> the shore.",
+  "Too rough <em>to sail</em>."
+];
+
+function renderList(id, items){
+  var ul = document.getElementById(id);
+  if (!ul) return;
+  ul.innerHTML = "";
+  items.forEach(function(txt){
+    var li = document.createElement("li");
+    li.innerHTML = txt;
+    ul.appendChild(li);
+  });
+}
+renderList("panel-gerund-list", panelGerund);
+renderList("panel-isle-list", panelIsle);
+renderList("panel-infin-list", panelInfin);
+
+function pulseShape(el){
+  el.style.transformOrigin = "center";
+  el.animate(
+    [{ opacity: 1 }, { opacity: 0.55 }, { opacity: 1 }],
+    { duration: 380, easing: "ease-out" }
+  );
+}
+
+// clicking a landmass lights the list that belongs to it. The False Cape
+// lights Gerundia, because that is the whole point of the False Cape.
+[["sailb-shape-gerund", "panel-gerund", "#D89257"],
+ ["sailb-shape-isle",   "panel-isle",   "#AE87BE"],
+ ["sailb-shape-infin",  "panel-infin",  "#7FA870"],
+ ["sailb-shape-false",  "panel-gerund", "#D89257"]].forEach(function(pair){
+  var el = document.getElementById(pair[0]);
+  if (!el) return;
+  var activate = function(){
+    pulseShape(el);
+    document.querySelectorAll(".diagram-panel").forEach(function(p){ p.style.outline = "none"; });
+    var panel = document.getElementById(pair[1]);
+    if (panel){
+      panel.style.outline = "2px solid " + pair[2];
+      panel.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    }
+  };
+  el.addEventListener("click", activate);
+  el.addEventListener("keydown", function(e){
+    if (e.key === "Enter" || e.key === " "){ e.preventDefault(); activate(); }
+  });
+});
+
+// ── QUIZ ──
+var questions = [
+  {
+    prompt: "We should avoid ___ after dark in these waters.",
+    hint: "Cape Avoid sits on the western shore.",
+    correct: "sailing",
+    options: ["sailing", "to sail", "sail", "to sailing"],
+    explain: "Avoid is a Gerundia verb, so it takes the -ing form. There is no reason for it beyond the geography &mdash; you learn the coast."
+  },
+  {
+    prompt: "They refused ___ the harbour fees.",
+    hint: "Refuse Rock is on the eastern shore.",
+    correct: "to pay",
+    options: ["to pay", "paying", "pay", "for paying"],
+    explain: "Refuse belongs to Infinitivia: refuse to do. Compare deny, which belongs to the other shore and takes -ing."
+  },
+  {
+    prompt: "He left the ship without ___ anyone.",
+    hint: "What kind of word is <em>without</em>?",
+    correct: "telling",
+    options: ["telling", "to tell", "tell", "having tell"],
+    explain: "Without is a preposition, and every preposition runs west. After any preposition the verb can only be -ing."
+  },
+  {
+    prompt: "I look forward to ___ you again next season.",
+    hint: "Try putting <em>it</em> after the <em>to</em>.",
+    correct: "seeing",
+    options: ["seeing", "see", "to see", "have seen"],
+    explain: "This is the False Cape. &#8220;I look forward to it&#8221; works, so the to is a preposition, not an infinitive &mdash; and prepositions take -ing."
+  },
+  {
+    prompt: "She was tired, so she stopped ___ the chart and rubbed her eyes.",
+    hint: "Did she give up the activity, or pause in order to do it?",
+    correct: "reading",
+    options: ["reading", "to read", "read", "for reading"],
+    explain: "Stop + -ing ends the activity: she had been reading and she stopped. Stop + to would mean she halted in order to start reading."
+  },
+  {
+    prompt: "Halfway up the mast he stopped ___ at the horizon.",
+    hint: "Why did he stop?",
+    correct: "to look",
+    options: ["to look", "looking", "look", "for looking"],
+    explain: "Stop + to is the purpose infinitive: he interrupted the climb so that he could look. He had not been looking before."
+  },
+  {
+    prompt: "Remember ___ the log before you turn in.",
+    hint: "Has it happened yet?",
+    correct: "to fill in",
+    options: ["to fill in", "filling in", "fill in", "to filling in"],
+    explain: "Remember + to is an instruction about the future: do not forget. Remember + -ing would be a memory of having already done it."
+  },
+  {
+    prompt: "I&#39;ll never forget ___ land for the first time.",
+    hint: "Is this a memory or an omission?",
+    correct: "seeing",
+    options: ["seeing", "to see", "see", "to have see"],
+    explain: "Forget + -ing is about the memory of something that really happened. Forget + to means you failed to do it."
+  },
+  {
+    prompt: "It&#39;s no use ___ about the weather.",
+    hint: "A fixed expression from the western shore.",
+    correct: "complaining",
+    options: ["complaining", "to complain", "complain", "for complain"],
+    explain: "It&#39;s no use, there&#39;s no point and it&#39;s worth all take -ing. They travel as a small family."
+  },
+  {
+    prompt: "The captain told ___ below.",
+    hint: "Who was told?",
+    correct: "us to go",
+    options: ["us to go", "to go us", "us going", "that go us"],
+    explain: "Tell needs an object before the infinitive: tell somebody to do something. &#8220;The captain told to go&#8221; leaves a listener waiting for a name."
+  },
+  {
+    prompt: "She let the new hand ___ the wheel for an hour.",
+    hint: "One of the verbs that drops the <em>to</em>.",
+    correct: "take",
+    options: ["take", "to take", "taking", "for taking"],
+    explain: "Let and make take the bare infinitive &mdash; no to. &#8220;She let him to take it&#8221; is the most audible error in this area."
+  },
+  {
+    prompt: "The fog was too thick ___ the buoy.",
+    hint: "<em>too</em> + adjective + what?",
+    correct: "to see",
+    options: ["to see", "seeing", "for seeing", "that we see"],
+    explain: "Too + adjective is always followed by to + infinitive. The same goes for adjective + enough: warm enough to swim."
+  },
+  {
+    prompt: "After twenty years at sea, they are used to ___ in rough water.",
+    hint: "Is this a past habit, or being accustomed to something?",
+    correct: "sleeping",
+    options: ["sleeping", "sleep", "to sleep", "have slept"],
+    explain: "Be used to means accustomed to, and the to is a preposition &mdash; so it takes -ing. Used to without be is a past habit: they used to sleep."
+  },
+  {
+    prompt: "The radio was dead, so she tried ___ the aerial &mdash; and it worked.",
+    hint: "Was this an experiment or an effort?",
+    correct: "moving",
+    options: ["moving", "to move", "move", "for moving"],
+    explain: "Try + -ing is experimenting with a method to see whether it helps. Try + to is making an effort at something difficult: she tried to lift it."
+  }
+];
+
+
+var current = 0;
+var score = 0;
+var answered = false;
+var order = [];
+
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+
+function renderQuestion(){
+  answered = false;
+  var q = questions[current];
+  document.getElementById("progress-text").textContent = "Checkpoint " + (current + 1) + " of " + questions.length;
+  document.getElementById("progress-fill").style.width = ((current / questions.length) * 100) + "%";
+  document.getElementById("q-prompt").textContent = q.prompt;
+  document.getElementById("q-hint").textContent = q.hint;
+  var feedback = document.getElementById("feedback");
+  feedback.className = "feedback";
+  feedback.textContent = "";
+  var optionsWrap = document.getElementById("options");
+  optionsWrap.innerHTML = "";
+  order = shuffle(q.options);
+  order.forEach(function(opt){
+    var btn = document.createElement("button");
+    btn.className = "opt-btn";
+    btn.type = "button";
+    btn.textContent = opt;
+    btn.addEventListener("click", function(){ selectOption(opt, btn); });
+    optionsWrap.appendChild(btn);
+  });
+  document.getElementById("next-btn").disabled = true;
+  document.getElementById("next-btn").textContent = (current === questions.length - 1) ? "Make landfall" : "Next checkpoint";
+}
+
+function selectOption(opt, btn){
+  if (answered) return;
+  answered = true;
+  var q = questions[current];
+  var allBtns = document.querySelectorAll("#options .opt-btn");
+  allBtns.forEach(function(b){
+    b.disabled = true;
+    if (b.textContent === q.correct) b.classList.add("correct");
+  });
+  if (opt !== q.correct) btn.classList.add("wrong");
+  if (opt === q.correct) score++;
+  document.getElementById("score-text").textContent = "Score: " + score;
+  var feedback = document.getElementById("feedback");
+  feedback.textContent = q.explain;
+  feedback.classList.add("show");
+  document.getElementById("next-btn").disabled = false;
+}
+
+document.getElementById("next-btn").addEventListener("click", function(){
+  if (current < questions.length - 1){
+    current++;
+    renderQuestion();
+  } else {
+    document.getElementById("progress-fill").style.width = "100%";
+    document.getElementById("quiz").style.display = "none";
+    document.getElementById("results").style.display = "block";
+    document.getElementById("final-score").textContent = score + " / " + questions.length;
+    var msg = "";
+    if (score === questions.length) msg = "Clean run. You can read both shores, and the island did not catch you out.";
+    else if (score >= questions.length - 2) msg = "Solid progress. Twofold Isle is the part worth reading again.";
+    else msg = "Good first attempt. Start with the current: every preposition takes -ing.";
+    document.getElementById("final-message").textContent = msg;
+  }
+});
+
+document.getElementById("retry-btn").addEventListener("click", function(){
+  current = 0;
+  score = 0;
+  document.getElementById("score-text").textContent = "Score: 0";
+  document.getElementById("quiz").style.display = "block";
+  document.getElementById("results").style.display = "none";
+  renderQuestion();
+});
+
+renderQuestion();
+</script>
+
+</body>
+</html>
