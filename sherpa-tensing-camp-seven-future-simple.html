@@ -149,6 +149,20 @@
     @media (max-width:640px){
       .up-link{ top:10px; left:10px; padding:7px 13px 7px 10px; font-size:13px; }
     }
+  /* ── example translations ── */
+  .ex[data-tr]{cursor:pointer;}
+  .ex[data-tr]:hover{filter:brightness(1.06);}
+  .ex-tr{display:block;margin-top:8px;padding-top:7px;border-top:1px dashed var(--accent-light);
+         font-style:normal;font-size:.95em;opacity:.92;}
+  .ex-tr[dir="rtl"]{text-align:right;}
+  .tr-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 26px;
+          font-family:'Inter',sans-serif;font-size:12.5px;color:var(--ink-soft);}
+  .tr-bar .tr-label{letter-spacing:.06em;text-transform:uppercase;font-weight:700;font-size:11px;}
+  .tr-bar button{font:inherit;font-weight:600;border:1px solid var(--accent-light);
+                 background:var(--card);color:var(--ink-soft);padding:5px 11px;border-radius:999px;
+                 cursor:pointer;transition:background .12s ease,color .12s ease;}
+  .tr-bar button:hover{color:var(--ink);}
+  .tr-bar button.on{background:var(--accent);color:#FFFFFF;border-color:var(--accent);}
 </style>
 </head>
 <body>
@@ -194,7 +208,9 @@
     </svg>
   </section>
 
-  <div class="trail-wrap">
+    <div class="tr-bar" id="tr-bar"><span class="tr-label">Examples in</span><button type="button" data-lang="" class="on">Off</button><button type="button" data-lang="de">DE</button><button type="button" data-lang="es">ES</button><button type="button" data-lang="fr">FR</button><button type="button" data-lang="it">IT</button><button type="button" data-lang="pt">PT</button><button type="button" data-lang="ru">RU</button><button type="button" data-lang="ar">AR</button><button type="button" data-lang="zh">ZH</button><button type="button" data-lang="ja">JA</button></div>
+
+      <div class="trail-wrap">
 
     <div class="camp" id="rules">
       <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 3v18M5 4h11l-3 4 3 4H5"/></svg></div>
@@ -204,32 +220,32 @@
         <div class="rule-card">
           <h3>A decision made as you speak</h3>
           <p>You didn't plan it. You are deciding now, out loud.</p>
-          <div class="ex">"That's the phone &mdash; I'll get it."</div>
+          <div class="ex" data-tr="66">"That's the phone &mdash; I'll get it."</div>
         </div>
         <div class="rule-card">
           <h3>An offer</h3>
           <p>Volunteering to do something for someone.</p>
-          <div class="ex">"I'll carry that for you."</div>
+          <div class="ex" data-tr="67">"I'll carry that for you."</div>
         </div>
         <div class="rule-card">
           <h3>A promise</h3>
           <p>Committing yourself, often with a time.</p>
-          <div class="ex">"I'll have it finished by Friday."</div>
+          <div class="ex" data-tr="68">"I'll have it finished by Friday."</div>
         </div>
         <div class="rule-card">
           <h3>A prediction or belief</h3>
           <p>What you think will happen, with no evidence to point at.</p>
-          <div class="ex">"I think she'll get the job."</div>
+          <div class="ex" data-tr="69">"I think she'll get the job."</div>
         </div>
         <div class="rule-card">
           <h3>A refusal</h3>
           <p><em>Won't</em> is the strongest way to say no &mdash; even about objects.</p>
-          <div class="ex">"He won't listen." &middot; "The car won't start."</div>
+          <div class="ex" data-tr="70">"He won't listen." &middot; "The car won't start."</div>
         </div>
         <div class="rule-card">
           <h3>A future fact</h3>
           <p>Something certain that nobody chose and nobody can change.</p>
-          <div class="ex">"She'll be forty in March."</div>
+          <div class="ex" data-tr="71">"She'll be forty in March."</div>
         </div>
       </div>
     </div>
@@ -242,22 +258,22 @@
         <div class="rule-card">
           <h3>Affirmative</h3>
           <p>subject + will + <strong>base verb</strong></p>
-          <div class="ex">"I will call you." &middot; "I'll call you."</div>
+          <div class="ex" data-tr="72">"I will call you." &middot; "I'll call you."</div>
         </div>
         <div class="rule-card">
           <h3>Negative</h3>
           <p>subject + will not (won't) + base verb</p>
-          <div class="ex">"They won't agree to that."</div>
+          <div class="ex" data-tr="73">"They won't agree to that."</div>
         </div>
         <div class="rule-card">
           <h3>Yes / No questions</h3>
           <p>Will + subject + base verb?</p>
-          <div class="ex">"Will you be there?"</div>
+          <div class="ex" data-tr="74">"Will you be there?"</div>
         </div>
         <div class="rule-card">
           <h3>Wh- questions</h3>
           <p>question word + will + subject + base verb?</p>
-          <div class="ex">"When will they announce it?"</div>
+          <div class="ex" data-tr="75">"When will they announce it?"</div>
         </div>
       </div>
       <div class="chart-wrap">
@@ -450,6 +466,56 @@
 </main>
 
 <script>
+
+// ── example translations: nine languages, click to reveal ──
+var EX_TR = {"66": ["Das ist das Telefon — ich gehe ran.", "Es el teléfono; ya lo cojo yo.", "C'est le téléphone — j'y vais.", "È il telefono — rispondo io.", "É o telefone — eu atendo.", "Это телефон — я возьму.", "إنه الهاتف — سأرد أنا.", "电话响了——我去接。", "電話だ — 私が出ます。"], "67": ["Ich trage das für dich.", "Yo te llevo eso.", "Je vais te porter ça.", "Te lo porto io.", "Eu levo isso por ti.", "Я это для тебя понесу.", "سأحمل ذلك عنك.", "我来帮你拿吧。", "それ、私が持ちます。"], "68": ["Bis Freitag habe ich es fertig.", "Lo tendré terminado para el viernes.", "Je l'aurai terminé pour vendredi.", "Lo avrò finito entro venerdì.", "Terei isso pronto até sexta-feira.", "Я закончу это к пятнице.", "سأنجزه بحلول يوم الجمعة.", "我周五之前会做完。", "金曜までに仕上げます。"], "69": ["Ich glaube, sie bekommt die Stelle.", "Creo que conseguirá el puesto.", "Je pense qu'elle aura le poste.", "Penso che otterrà il lavoro.", "Acho que ela vai conseguir o emprego.", "Думаю, она получит эту работу.", "أعتقد أنها ستحصل على الوظيفة.", "我觉得她会得到那份工作。", "彼女はその仕事に就くと思います。"], "70": ["Er hört nicht zu. · Das Auto springt nicht an.", "No quiere escuchar. · El coche no arranca.", "Il refuse d'écouter. · La voiture ne démarre pas.", "Non vuole ascoltare. · La macchina non parte.", "Ele não quer ouvir. · O carro não pega.", "Он не хочет слушать. · Машина не заводится.", "إنه يرفض الإصغاء. · السيارة لا تعمل.", "他就是不听。· 车发动不起来。", "彼はどうしても聞きません。・車がかかりません。"], "71": ["Sie wird im März vierzig.", "Cumplirá cuarenta en marzo.", "Elle aura quarante ans en mars.", "Compirà quarant'anni a marzo.", "Ela faz quarenta em março.", "В марте ей исполнится сорок.", "ستبلغ الأربعين في مارس.", "她三月就四十岁了。", "彼女は三月で四十歳になります。"], "72": ["Ich werde dich anrufen. · Ich ruf dich an.", "Te llamaré. · Te llamo.", "Je t'appellerai. · Je t'appelle.", "Ti chiamerò. · Ti chiamo.", "Vou telefonar-te. · Telefono-te.", "Я тебе позвоню. · Позвоню тебе.", "سأتصل بك. · سأتصل بك.", "我会给你打电话。· 我给你打电话。", "電話します。・電話するね。"], "73": ["Dem werden sie nicht zustimmen.", "No van a aceptar eso.", "Ils n'accepteront pas cela.", "Non saranno d'accordo.", "Eles não vão concordar com isso.", "Они на это не согласятся.", "لن يوافقوا على ذلك.", "他们不会同意的。", "彼らはそれに同意しないでしょう。"], "74": ["Wirst du da sein?", "¿Estarás allí?", "Tu seras là ?", "Ci sarai?", "Vais estar lá?", "Ты там будешь?", "هل ستكون هناك؟", "你会在吗？", "そこにいますか。"], "75": ["Wann werden sie es bekannt geben?", "¿Cuándo lo anunciarán?", "Quand vont-ils l'annoncer ?", "Quando lo annunceranno?", "Quando é que vão anunciar?", "Когда они это объявят?", "متى سيعلنون ذلك؟", "他们什么时候会公布？", "いつ発表するのでしょうか。"]};
+var TR_ORDER = ["de", "es", "fr", "it", "pt", "ru", "ar", "zh", "ja"];
+var trLang = "";
+
+function trIndex(el){ return el.getAttribute("data-tr"); }
+
+function showTr(el){
+  var row = EX_TR[trIndex(el)];
+  if (!row || !trLang) return;
+  var i = TR_ORDER.indexOf(trLang);
+  if (i < 0 || !row[i]) return;
+  var line = el.querySelector(":scope > .ex-tr");
+  if (!line){
+    line = document.createElement("span");
+    line.className = "ex-tr";
+    el.appendChild(line);
+  }
+  line.textContent = row[i];
+  if (trLang === "ar") line.setAttribute("dir", "rtl"); else line.removeAttribute("dir");
+}
+
+function hideTr(el){
+  var line = el.querySelector(":scope > .ex-tr");
+  if (line) line.remove();
+}
+
+function applyTr(){
+  document.querySelectorAll(".ex[data-tr]").forEach(function(el){
+    if (trLang) showTr(el); else hideTr(el);
+  });
+}
+
+document.querySelectorAll("#tr-bar button").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    trLang = btn.getAttribute("data-lang");
+    document.querySelectorAll("#tr-bar button").forEach(function(b){ b.classList.remove("on"); });
+    btn.classList.add("on");
+    applyTr();
+  });
+});
+
+document.querySelectorAll(".ex[data-tr]").forEach(function(el){
+  el.addEventListener("click", function(){
+    if (!trLang) return;
+    if (el.querySelector(":scope > .ex-tr")) hideTr(el); else showTr(el);
+  });
+});
+
 // ── NOW vs WILL diagram interactivity ──
 var willExamples = [
   "I <em>'ll</em> get the door.",

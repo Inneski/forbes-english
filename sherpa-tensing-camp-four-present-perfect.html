@@ -166,6 +166,20 @@
     @media (max-width:640px){
       .up-link{ top:10px; left:10px; padding:7px 13px 7px 10px; font-size:13px; }
     }
+  /* ── example translations ── */
+  .ex[data-tr]{cursor:pointer;}
+  .ex[data-tr]:hover{filter:brightness(1.06);}
+  .ex-tr{display:block;margin-top:8px;padding-top:7px;border-top:1px dashed var(--accent-light);
+         font-style:normal;font-size:.95em;opacity:.92;}
+  .ex-tr[dir="rtl"]{text-align:right;}
+  .tr-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 26px;
+          font-family:'Inter',sans-serif;font-size:12.5px;color:var(--ink-soft);}
+  .tr-bar .tr-label{letter-spacing:.06em;text-transform:uppercase;font-weight:700;font-size:11px;}
+  .tr-bar button{font:inherit;font-weight:600;border:1px solid var(--accent-light);
+                 background:var(--card);color:var(--ink-soft);padding:5px 11px;border-radius:999px;
+                 cursor:pointer;transition:background .12s ease,color .12s ease;}
+  .tr-bar button:hover{color:var(--ink);}
+  .tr-bar button.on{background:var(--accent);color:#FFFFFF;border-color:var(--accent);}
 </style>
 </head>
 <body>
@@ -220,7 +234,9 @@
     </svg>
   </section>
 
-  <div class="trail-wrap">
+    <div class="tr-bar" id="tr-bar"><span class="tr-label">Examples in</span><button type="button" data-lang="" class="on">Off</button><button type="button" data-lang="de">DE</button><button type="button" data-lang="es">ES</button><button type="button" data-lang="fr">FR</button><button type="button" data-lang="it">IT</button><button type="button" data-lang="pt">PT</button><button type="button" data-lang="ru">RU</button><button type="button" data-lang="ar">AR</button><button type="button" data-lang="zh">ZH</button><button type="button" data-lang="ja">JA</button></div>
+
+      <div class="trail-wrap">
 
     <div class="camp" id="rules">
       <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 3v18M5 4h11l-3 4 3 4H5"/></svg></div>
@@ -230,32 +246,32 @@
         <div class="rule-card">
           <h3>An unfinished time period</h3>
           <p>The period started in the past and is still running now.</p>
-          <div class="ex">"I have lived here for ten years." <em>&mdash; and I still do</em></div>
+          <div class="ex" data-tr="30">"I have lived here for ten years." <em>&mdash; and I still do</em></div>
         </div>
         <div class="rule-card">
           <h3>An unspecified time</h3>
           <p>It happened, but when is not stated and does not matter.</p>
-          <div class="ex">"Have you ever been to Scotland?"</div>
+          <div class="ex" data-tr="31">"Have you ever been to Scotland?"</div>
         </div>
         <div class="rule-card">
           <h3>A very recent action</h3>
           <p>Finished moments ago, with the result still in front of you.</p>
-          <div class="ex">"Doris has just made coffee." <em>&mdash; it is still hot</em></div>
+          <div class="ex" data-tr="32">"Doris has just made coffee." <em>&mdash; it is still hot</em></div>
         </div>
         <div class="rule-card">
           <h3>Life experience, so far</h3>
           <p>A running total, counted up to the present moment.</p>
-          <div class="ex">"I have been there a few times."</div>
+          <div class="ex" data-tr="33">"I have been there a few times."</div>
         </div>
         <div class="rule-card">
           <h3>A change up to now</h3>
           <p>The situation is different from how it was.</p>
-          <div class="ex">"The village has grown since the road opened."</div>
+          <div class="ex" data-tr="34">"The village has grown since the road opened."</div>
         </div>
         <div class="rule-card">
           <h3>Something still outstanding</h3>
           <p>Expected, not done yet &mdash; and the door is still open.</p>
-          <div class="ex">"She hasn't sent the report yet."</div>
+          <div class="ex" data-tr="35">"She hasn't sent the report yet."</div>
         </div>
       </div>
       <div class="chart-wrap">
@@ -281,22 +297,22 @@
         <div class="rule-card">
           <h3>Affirmative</h3>
           <p>subject + have / has + past participle</p>
-          <div class="ex">"She has worked here for years."</div>
+          <div class="ex" data-tr="36">"She has worked here for years."</div>
         </div>
         <div class="rule-card">
           <h3>Negative</h3>
           <p>subject + have not (haven't) / has not (hasn't) + past participle</p>
-          <div class="ex">"They haven't finished yet."</div>
+          <div class="ex" data-tr="37">"They haven't finished yet."</div>
         </div>
         <div class="rule-card">
           <h3>Yes / No questions</h3>
           <p>Have / Has + subject + past participle?</p>
-          <div class="ex">"Have you called her?"</div>
+          <div class="ex" data-tr="38">"Have you called her?"</div>
         </div>
         <div class="rule-card">
           <h3>Wh- questions</h3>
           <p>question word + have / has + subject + past participle?</p>
-          <div class="ex">"How long have you known her?"</div>
+          <div class="ex" data-tr="39">"How long have you known her?"</div>
         </div>
       </div>
       <div class="chart-wrap">
@@ -527,6 +543,56 @@
 </main>
 
 <script>
+
+// ── example translations: nine languages, click to reveal ──
+var EX_TR = {"30": ["Ich wohne seit zehn Jahren hier — und immer noch.", "Vivo aquí desde hace diez años, y sigo aquí.", "J'habite ici depuis dix ans — et j'y suis toujours.", "Vivo qui da dieci anni — e ci vivo ancora.", "Vivo aqui há dez anos — e continuo.", "Я живу здесь десять лет — и до сих пор.", "أعيش هنا منذ عشر سنوات — وما زلت.", "我在这里住了十年——现在还住着。", "十年前からここに住んでいます — 今もです。"], "31": ["Warst du schon einmal in Schottland?", "¿Has estado alguna vez en Escocia?", "Es-tu déjà allé en Écosse ?", "Sei mai stato in Scozia?", "Já estiveste na Escócia?", "Ты когда-нибудь был в Шотландии?", "هل سبق أن زرت اسكتلندا؟", "你去过苏格兰吗？", "スコットランドに行ったことがありますか。"], "32": ["Doris hat gerade Kaffee gemacht — er ist noch heiß.", "Doris acaba de hacer café: todavía está caliente.", "Doris vient de faire du café — il est encore chaud.", "Doris ha appena fatto il caffè — è ancora caldo.", "A Doris acabou de fazer café — ainda está quente.", "Дорис только что сварила кофе — он ещё горячий.", "دوريس أعدت القهوة للتو — ما زالت ساخنة.", "多丽丝刚煮了咖啡——还是热的。", "ドリスがコーヒーを淹れたばかりです — まだ熱いです。"], "33": ["Ich war ein paar Mal dort.", "He estado allí unas cuantas veces.", "J'y suis allé plusieurs fois.", "Ci sono stato qualche volta.", "Já lá estive algumas vezes.", "Я был там несколько раз.", "لقد ذهبت إلى هناك بضع مرات.", "我去过那里几次。", "そこには数回行ったことがあります。"], "34": ["Das Dorf ist gewachsen, seit die Straße eröffnet wurde.", "El pueblo ha crecido desde que abrió la carretera.", "Le village a grandi depuis l'ouverture de la route.", "Il paese è cresciuto da quando è stata aperta la strada.", "A aldeia cresceu desde que a estrada abriu.", "Деревня выросла с тех пор, как открыли дорогу.", "نمت القرية منذ افتتاح الطريق.", "自从这条路通车，村子变大了。", "道路が開通してから村は大きくなりました。"], "35": ["Sie hat den Bericht noch nicht geschickt.", "Todavía no ha enviado el informe.", "Elle n'a pas encore envoyé le rapport.", "Non ha ancora inviato il rapporto.", "Ela ainda não enviou o relatório.", "Она ещё не отправила отчёт.", "لم ترسل التقرير بعد.", "她还没有把报告发出去。", "彼女はまだ報告書を送っていません。"], "36": ["Sie arbeitet seit Jahren hier.", "Lleva años trabajando aquí.", "Elle travaille ici depuis des années.", "Lavora qui da anni.", "Ela trabalha aqui há anos.", "Она работает здесь много лет.", "إنها تعمل هنا منذ سنوات.", "她在这里工作好几年了。", "彼女は何年もここで働いています。"], "37": ["Sie sind noch nicht fertig.", "Todavía no han terminado.", "Ils n'ont pas encore fini.", "Non hanno ancora finito.", "Ainda não terminaram.", "Они ещё не закончили.", "لم ينتهوا بعد.", "他们还没有做完。", "彼らはまだ終えていません。"], "38": ["Hast du sie angerufen?", "¿La has llamado?", "Tu l'as appelée ?", "L'hai chiamata?", "Já lhe ligaste?", "Ты ей звонил?", "هل اتصلت بها؟", "你给她打电话了吗？", "彼女に電話しましたか。"], "39": ["Wie lange kennst du sie schon?", "¿Cuánto hace que la conoces?", "Tu la connais depuis combien de temps ?", "Da quanto tempo la conosci?", "Há quanto tempo a conheces?", "Как давно ты её знаешь?", "منذ متى تعرفها؟", "你认识她多久了？", "彼女とはどのくらいの付き合いですか。"]};
+var TR_ORDER = ["de", "es", "fr", "it", "pt", "ru", "ar", "zh", "ja"];
+var trLang = "";
+
+function trIndex(el){ return el.getAttribute("data-tr"); }
+
+function showTr(el){
+  var row = EX_TR[trIndex(el)];
+  if (!row || !trLang) return;
+  var i = TR_ORDER.indexOf(trLang);
+  if (i < 0 || !row[i]) return;
+  var line = el.querySelector(":scope > .ex-tr");
+  if (!line){
+    line = document.createElement("span");
+    line.className = "ex-tr";
+    el.appendChild(line);
+  }
+  line.textContent = row[i];
+  if (trLang === "ar") line.setAttribute("dir", "rtl"); else line.removeAttribute("dir");
+}
+
+function hideTr(el){
+  var line = el.querySelector(":scope > .ex-tr");
+  if (line) line.remove();
+}
+
+function applyTr(){
+  document.querySelectorAll(".ex[data-tr]").forEach(function(el){
+    if (trLang) showTr(el); else hideTr(el);
+  });
+}
+
+document.querySelectorAll("#tr-bar button").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    trLang = btn.getAttribute("data-lang");
+    document.querySelectorAll("#tr-bar button").forEach(function(b){ b.classList.remove("on"); });
+    btn.classList.add("on");
+    applyTr();
+  });
+});
+
+document.querySelectorAll(".ex[data-tr]").forEach(function(el){
+  el.addEventListener("click", function(){
+    if (!trLang) return;
+    if (el.querySelector(":scope > .ex-tr")) hideTr(el); else showTr(el);
+  });
+});
+
 // ── DIAGRAM <-> EXPLANATION BARS ──
 var bars = Array.prototype.slice.call(document.querySelectorAll(".use-bar"));
 

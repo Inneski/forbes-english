@@ -144,6 +144,20 @@
     @media (max-width:640px){
       .up-link{ top:10px; left:10px; padding:7px 13px 7px 10px; font-size:13px; }
     }
+  /* ── example translations ── */
+  .ex[data-tr]{cursor:pointer;}
+  .ex[data-tr]:hover{filter:brightness(1.06);}
+  .ex-tr{display:block;margin-top:8px;padding-top:7px;border-top:1px dashed var(--accent-light);
+         font-style:normal;font-size:.95em;opacity:.92;}
+  .ex-tr[dir="rtl"]{text-align:right;}
+  .tr-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 26px;
+          font-family:'Inter',sans-serif;font-size:12.5px;color:var(--ink-soft);}
+  .tr-bar .tr-label{letter-spacing:.06em;text-transform:uppercase;font-weight:700;font-size:11px;}
+  .tr-bar button{font:inherit;font-weight:600;border:1px solid var(--accent-light);
+                 background:var(--card);color:var(--ink-soft);padding:5px 11px;border-radius:999px;
+                 cursor:pointer;transition:background .12s ease,color .12s ease;}
+  .tr-bar button:hover{color:var(--ink);}
+  .tr-bar button.on{background:var(--accent);color:#FFFFFF;border-color:var(--accent);}
 </style>
 </head>
 <body>
@@ -183,7 +197,9 @@
     </svg>
   </section>
 
-  <div class="trail-wrap">
+    <div class="tr-bar" id="tr-bar"><span class="tr-label">Examples in</span><button type="button" data-lang="" class="on">Off</button><button type="button" data-lang="de">DE</button><button type="button" data-lang="es">ES</button><button type="button" data-lang="fr">FR</button><button type="button" data-lang="it">IT</button><button type="button" data-lang="pt">PT</button><button type="button" data-lang="ru">RU</button><button type="button" data-lang="ar">AR</button><button type="button" data-lang="zh">ZH</button><button type="button" data-lang="ja">JA</button></div>
+
+      <div class="trail-wrap">
 
     <div class="camp" id="rules">
       <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 3v18M5 4h11l-3 4 3 4H5"/></svg></div>
@@ -193,32 +209,32 @@
         <div class="rule-card">
           <h3>A completed action</h3>
           <p>One finished event at a specific point in the past.</p>
-          <div class="ex">"I finished the report yesterday afternoon."</div>
+          <div class="ex" data-tr="107">"I finished the report yesterday afternoon."</div>
         </div>
         <div class="rule-card">
           <h3>A past habit or routine</h3>
           <p>Something you regularly did, but no longer do.</p>
-          <div class="ex">"We climbed every weekend when we lived in the Alps."</div>
+          <div class="ex" data-tr="108">"We climbed every weekend when we lived in the Alps."</div>
         </div>
         <div class="rule-card">
           <h3>A sequence of events</h3>
           <p>Telling a story: one thing happened, then the next.</p>
-          <div class="ex">"She packed her bag, closed the door, and left."</div>
+          <div class="ex" data-tr="109">"She packed her bag, closed the door, and left."</div>
         </div>
         <div class="rule-card">
           <h3>A historical fact</h3>
           <p>Something true for a period that has since ended.</p>
-          <div class="ex">"The Ottoman Empire lasted six centuries."</div>
+          <div class="ex" data-tr="110">"The Ottoman Empire lasted six centuries."</div>
         </div>
         <div class="rule-card">
           <h3>A past state or feeling</h3>
           <p>A condition or opinion that no longer applies.</p>
-          <div class="ex">"I didn't like coffee when I was a child."</div>
+          <div class="ex" data-tr="111">"I didn't like coffee when I was a child."</div>
         </div>
         <div class="rule-card">
           <h3>A specific past moment</h3>
           <p>Anchored to a stated or clearly implied time.</p>
-          <div class="ex">"They arrived at 6pm last night."</div>
+          <div class="ex" data-tr="112">"They arrived at 6pm last night."</div>
         </div>
       </div>
     </div>
@@ -231,22 +247,22 @@
         <div class="rule-card">
           <h3>Affirmative</h3>
           <p>subject + past form (regular: base + -ed &middot; irregular: its own form)</p>
-          <div class="ex">"She worked late." &middot; "She went home."</div>
+          <div class="ex" data-tr="113">"She worked late." &middot; "She went home."</div>
         </div>
         <div class="rule-card">
           <h3>Negative</h3>
           <p>subject + did not (didn't) + base verb</p>
-          <div class="ex">"They didn't finish on time."</div>
+          <div class="ex" data-tr="114">"They didn't finish on time."</div>
         </div>
         <div class="rule-card">
           <h3>Yes / No questions</h3>
           <p>Did + subject + base verb?</p>
-          <div class="ex">"Did you call her?"</div>
+          <div class="ex" data-tr="115">"Did you call her?"</div>
         </div>
         <div class="rule-card">
           <h3>Wh- questions</h3>
           <p>question word + did + subject + base verb?</p>
-          <div class="ex">"Where did you go?"</div>
+          <div class="ex" data-tr="116">"Where did you go?"</div>
         </div>
       </div>
       <div class="chart-wrap">
@@ -395,6 +411,56 @@
 </main>
 
 <script>
+
+// ── example translations: nine languages, click to reveal ──
+var EX_TR = {"107": ["Ich habe den Bericht gestern Nachmittag fertiggestellt.", "Terminé el informe ayer por la tarde.", "J'ai terminé le rapport hier après-midi.", "Ho finito il rapporto ieri pomeriggio.", "Terminei o relatório ontem à tarde.", "Я закончил отчёт вчера днём.", "أنهيت التقرير بعد ظهر أمس.", "我昨天下午完成了报告。", "昨日の午後、報告書を仕上げました。"], "108": ["Wir sind jedes Wochenende geklettert, als wir in den Alpen lebten.", "Escalábamos todos los fines de semana cuando vivíamos en los Alpes.", "Nous grimpions chaque week-end quand nous vivions dans les Alpes.", "Scalavamo ogni fine settimana quando vivevamo sulle Alpi.", "Escalávamos todos os fins de semana quando vivíamos nos Alpes.", "Мы лазили каждые выходные, когда жили в Альпах.", "كنا نتسلق كل عطلة أسبوع عندما كنا نعيش في جبال الألب.", "我们住在阿尔卑斯山时，每个周末都去攀登。", "アルプスに住んでいた頃は毎週末登っていました。"], "109": ["Sie packte ihre Tasche, schloss die Tür und ging.", "Hizo la maleta, cerró la puerta y se marchó.", "Elle a fait son sac, fermé la porte et est partie.", "Ha fatto la borsa, ha chiuso la porta ed è uscita.", "Fez a mala, fechou a porta e saiu.", "Она собрала сумку, закрыла дверь и ушла.", "حزمت حقيبتها وأغلقت الباب وغادرت.", "她收拾好包，关上门，走了。", "彼女はかばんを詰め、ドアを閉めて出ていきました。"], "110": ["Das Osmanische Reich bestand sechs Jahrhunderte.", "El Imperio otomano duró seis siglos.", "L'Empire ottoman a duré six siècles.", "L'Impero ottomano durò sei secoli.", "O Império Otomano durou seis séculos.", "Османская империя просуществовала шесть веков.", "دامت الدولة العثمانية ستة قرون.", "奥斯曼帝国延续了六个世纪。", "オスマン帝国は六世紀にわたって続きました。"], "111": ["Als Kind mochte ich keinen Kaffee.", "De niño no me gustaba el café.", "Enfant, je n'aimais pas le café.", "Da bambino non mi piaceva il caffè.", "Em criança não gostava de café.", "В детстве я не любил кофе.", "لم أكن أحب القهوة عندما كنت طفلًا.", "我小时候不喜欢咖啡。", "子どもの頃はコーヒーが嫌いでした。"], "112": ["Sie kamen gestern Abend um 18 Uhr an.", "Llegaron ayer a las seis de la tarde.", "Ils sont arrivés hier à 18 heures.", "Sono arrivati ieri alle 18.", "Chegaram ontem às seis da tarde.", "Они приехали вчера в шесть вечера.", "وصلوا الساعة السادسة مساء أمس.", "他们昨晚六点到的。", "昨夜六時に到着しました。"], "113": ["Sie arbeitete lange. · Sie ging nach Hause.", "Trabajó hasta tarde. · Se fue a casa.", "Elle a travaillé tard. · Elle est rentrée.", "Ha lavorato fino a tardi. · È andata a casa.", "Trabalhou até tarde. · Foi para casa.", "Она работала допоздна. · Она пошла домой.", "عملت حتى وقت متأخر. · ذهبت إلى البيت.", "她工作到很晚。· 她回家了。", "彼女は遅くまで働いた。・帰宅した。"], "114": ["Sie wurden nicht rechtzeitig fertig.", "No terminaron a tiempo.", "Ils n'ont pas fini à temps.", "Non hanno finito in tempo.", "Não terminaram a tempo.", "Они не закончили вовремя.", "لم ينتهوا في الوقت المحدد.", "他们没有按时完成。", "彼らは間に合いませんでした。"], "115": ["Hast du sie angerufen?", "¿La llamaste?", "Tu l'as appelée ?", "L'hai chiamata?", "Ligaste-lhe?", "Ты ей позвонил?", "هل اتصلت بها؟", "你给她打电话了吗？", "彼女に電話しましたか。"], "116": ["Wo bist du hingegangen?", "¿Adónde fuiste?", "Où es-tu allé ?", "Dove sei andato?", "Onde é que foste?", "Куда ты ходил?", "إلى أين ذهبت؟", "你去哪儿了？", "どこへ行きましたか。"]};
+var TR_ORDER = ["de", "es", "fr", "it", "pt", "ru", "ar", "zh", "ja"];
+var trLang = "";
+
+function trIndex(el){ return el.getAttribute("data-tr"); }
+
+function showTr(el){
+  var row = EX_TR[trIndex(el)];
+  if (!row || !trLang) return;
+  var i = TR_ORDER.indexOf(trLang);
+  if (i < 0 || !row[i]) return;
+  var line = el.querySelector(":scope > .ex-tr");
+  if (!line){
+    line = document.createElement("span");
+    line.className = "ex-tr";
+    el.appendChild(line);
+  }
+  line.textContent = row[i];
+  if (trLang === "ar") line.setAttribute("dir", "rtl"); else line.removeAttribute("dir");
+}
+
+function hideTr(el){
+  var line = el.querySelector(":scope > .ex-tr");
+  if (line) line.remove();
+}
+
+function applyTr(){
+  document.querySelectorAll(".ex[data-tr]").forEach(function(el){
+    if (trLang) showTr(el); else hideTr(el);
+  });
+}
+
+document.querySelectorAll("#tr-bar button").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    trLang = btn.getAttribute("data-lang");
+    document.querySelectorAll("#tr-bar button").forEach(function(b){ b.classList.remove("on"); });
+    btn.classList.add("on");
+    applyTr();
+  });
+});
+
+document.querySelectorAll(".ex[data-tr]").forEach(function(el){
+  el.addEventListener("click", function(){
+    if (!trLang) return;
+    if (el.querySelector(":scope > .ex-tr")) hideTr(el); else showTr(el);
+  });
+});
+
 // ── PAST vs NOW diagram interactivity ──
 var pastExamples = [
   "I <em>finished</em> the report yesterday.",
