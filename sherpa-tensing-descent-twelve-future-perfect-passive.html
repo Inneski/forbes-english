@@ -1,0 +1,711 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sherpa Tensing - Descent Twelve: It Will Have Been Done (Future Perfect Passive)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#F0F0F0;
+    --ink-soft:#A8A8A8;
+    --paper:#121212;
+    --card:#FFFFFF;
+    --accent:#8A8A8A;
+    --accent-dark:#B4B4B4;
+    --accent-light:#2C2C2C;
+    --accent-lighter:#1C1C1C;
+    --good:#1E7A4C;
+    --good-bg:#E5F5EC;
+    --bad:#B23A3A;
+    --bad-bg:#FBEAEA;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;}
+  h1,h2,h3{font-family:'Fraunces',serif;font-weight:600;margin:0 0 .4em;color:var(--ink);}
+  .wordmark{display:flex;align-items:center;justify-content:space-between;max-width:1000px;margin:0 auto;padding:28px 24px 0;}
+  .wordmark .brand{font-family:'Fraunces',serif;font-weight:700;font-size:20px;letter-spacing:.02em;}
+  .wordmark .brand span{color:var(--accent);}
+  .wordmark .sub{font-size:13px;color:var(--ink-soft);}
+
+  .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px;}
+  .chart-wrap{margin-top:24px;background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:18px 20px;overflow-x:auto;}
+  .chart-wrap h3{font-size:15px;margin-bottom:4px;}
+  .chart-wrap + .chart-wrap{margin-top:16px;}
+  .chart-note{font-size:13px;color:var(--ink-soft);margin-bottom:14px;}
+  table.conj{width:100%;border-collapse:collapse;font-size:14px;min-width:520px;}
+  table.conj th, table.conj td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--accent-light);}
+  table.conj th{font-family:'Fraunces',serif;font-weight:600;color:var(--accent-dark);font-size:13px;text-transform:uppercase;letter-spacing:.03em;}
+  table.conj td.subj{font-weight:600;}
+  table.conj tr:last-child td{border-bottom:none;}
+  main{max-width:1000px;margin:0 auto;padding:0 24px 80px;}
+  .hero{display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:center;padding:40px 0 56px;}
+  .hero .eyebrow{
+    display:inline-block;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--accent-dark);background:var(--accent-lighter);padding:6px 12px;border-radius:999px;margin-bottom:14px;
+  }
+  .hero h1{font-size:38px;line-height:1.12;}
+  .hero p{color:var(--ink-soft);font-size:16px;max-width:46ch;}
+  .hero-diagram{width:100%;display:block;}
+  @media (max-width:720px){.hero{grid-template-columns:1fr;}}
+
+  .trail-wrap{position:relative;padding-left:66px;}
+  .trail-wrap::before{
+    content:'';position:absolute;left:23px;top:8px;bottom:8px;width:2px;
+    background:repeating-linear-gradient(to bottom, var(--accent) 0 8px, transparent 8px 18px);
+  }
+  .camp{position:relative;margin-bottom:64px;}
+  .camp .marker{position:absolute;left:-66px;top:0;width:46px;height:46px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;}
+  .camp .marker svg{width:18px;height:18px;}
+  .camp .camp-label{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-dark);margin-bottom:6px;}
+
+  .rule-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px;}
+  .rule-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:18px 20px;}
+  .rule-card h3{font-size:16px;margin-bottom:8px;}
+  .rule-card p{margin:0 0 8px;font-size:14px;color:var(--ink-soft);}
+  .rule-card .ex{font-size:14px;font-style:italic;color:var(--accent-dark);border-left:2px solid var(--accent);padding-left:10px;}
+
+  .signal-groups{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px;}
+  .signal-box{background:var(--accent-lighter);border-radius:var(--radius);padding:18px 20px;}
+  .signal-box h3{font-size:15px;}
+  .signal-box ul{margin:8px 0 0;padding-left:18px;font-size:14px;color:var(--ink);}
+  .signal-box li{margin-bottom:4px;}
+  @media (max-width:600px){.signal-groups{grid-template-columns:1fr;}}
+
+  /* ── EVENT vs DOER DIAGRAM CAMP ── */
+  .diagram-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:26px 26px 22px;}
+  .diagram-intro{font-size:14px;color:var(--ink-soft);margin-bottom:18px;max-width:60ch;}
+  .diagram-stage{width:100%;background:var(--paper);border:1px solid var(--accent-light);border-radius:var(--radius);padding:12px;}
+  .diagram-stage svg{width:100%;height:auto;display:block;}
+  .dg-reveal{opacity:0;transition:opacity .2s ease;}
+  .dg-reveal.is-shown{opacity:1;}
+  .diagram-shape{cursor:pointer;transition:opacity .15s ease;}
+  .diagram-shape:hover{opacity:.86;}
+  .diagram-shape:focus{outline:none;}
+  .diagram-shape:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px;}
+  .diagram-caption{font-family:'Inter',sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;}
+  .diagram-panels{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px;}
+  .diagram-panel{border-radius:12px;padding:16px 18px;border:1px solid var(--accent-light);background:var(--accent-lighter);}
+  .diagram-panel.is-now{background:#EAF1F6;border-color:#C9DCE6;}
+  .diagram-panel h4{margin:0 0 8px;font-family:'Fraunces',serif;font-size:14px;letter-spacing:.03em;text-transform:uppercase;color:var(--accent-dark);}
+  .diagram-panel.is-now h4{color:#3E6A85;}
+  .diagram-panel ul{margin:0;padding-left:18px;font-size:14px;}
+  .diagram-panel li{margin-bottom:5px;}
+  .diagram-panel li em{font-style:normal;font-weight:600;}
+  @media (max-width:600px){.diagram-panels{grid-template-columns:1fr;}}
+
+  .route-link{display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-weight:600;font-size:14px;
+    padding:9px 18px;border-radius:999px;border:1px solid var(--accent);color:var(--accent-dark);}
+  .route-link:hover{background:var(--accent-lighter);}
+  .quiz-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:24px 24px 20px;}
+  .progress-row{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--ink-soft);margin-bottom:10px;}
+  .progress-track{height:6px;background:var(--accent-lighter);border-radius:999px;overflow:hidden;margin-bottom:20px;}
+  .progress-fill{height:100%;background:var(--accent);border-radius:999px;width:0%;transition:width .3s ease;}
+  .q-prompt{font-size:17px;margin-bottom:4px;}
+  .q-hint{font-size:13px;color:var(--ink-soft);margin-bottom:16px;font-style:italic;}
+  .options{display:grid;gap:10px;}
+  .opt-btn{text-align:left;padding:12px 16px;border-radius:10px;border:1px solid var(--accent-light);background:#fff;font-family:'Inter',sans-serif;font-size:15px;color:var(--ink);cursor:pointer;}
+  .opt-btn:hover{border-color:var(--accent);}
+  .opt-btn.correct{background:var(--good-bg);border-color:var(--good);color:var(--good);font-weight:600;}
+  .opt-btn.wrong{background:var(--bad-bg);border-color:var(--bad);color:var(--bad);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:16px;padding:14px 16px;border-radius:10px;background:var(--accent-lighter);font-size:14px;display:none;}
+  .feedback.show{display:block;}
+  .quiz-footer{display:flex;justify-content:flex-end;margin-top:20px;}
+  .next-btn{background:var(--accent);color:#fff;border:none;padding:11px 22px;border-radius:999px;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;cursor:pointer;}
+  .next-btn:disabled{background:var(--accent-light);cursor:not-allowed;}
+
+  #results{display:none;text-align:center;padding:12px 0 8px;}
+  #results .score{font-family:'Fraunces',serif;font-size:52px;color:var(--accent);margin:8px 0;}
+  #results p{color:var(--ink-soft);}
+  .retry-btn{margin-top:12px;background:transparent;border:1px solid var(--accent);color:var(--accent-dark);padding:10px 20px;border-radius:999px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
+  .route-nav{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:22px;padding-top:18px;border-top:1px solid var(--accent-light);}
+  .route-nav a{display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;padding:10px 20px;border-radius:999px;}
+  .route-nav a.next-camp{background:var(--accent);color:#fff;}
+  .route-nav a.base-camp{background:transparent;border:1px solid var(--ink-soft);color:var(--ink-soft);}
+  .route-nav a:hover{opacity:0.88;}
+
+    /* ── Persistent way back. Pinned, so it is reachable from anywhere on
+       the page rather than only after scrolling to the bottom. ── */
+    /* Clear a band at the top of the page for the pinned link so it never
+       lands on the wordmark. */
+    body{ padding-top:46px; }
+    .up-link{
+      position:fixed; top:16px; left:16px; z-index:60;
+      display:inline-flex; align-items:center; gap:8px;
+      padding:9px 16px 9px 13px; border-radius:999px;
+      background:var(--card,#fff); color:var(--accent-dark,#333);
+      border:1.5px solid var(--accent-light,rgba(0,0,0,.18));
+      font:600 14px/1 'Inter',system-ui,sans-serif; letter-spacing:.01em;
+      text-decoration:none; box-shadow:0 2px 10px rgba(0,0,0,.10);
+      transition:background .18s ease, color .18s ease, transform .18s ease;
+    }
+    .up-link:hover{ background:var(--accent,#333); color:#fff; transform:translateX(-2px); }
+    .up-link .arw{ font-size:15px; line-height:1; }
+    @media print{ .up-link{ display:none; } }
+    @media (max-width:640px){
+      .up-link{ top:10px; left:10px; padding:7px 13px 7px 10px; font-size:13px; }
+    }
+  /* ── example translations ── */
+  .ex[data-tr]{cursor:pointer;}
+  .ex[data-tr]:hover{filter:brightness(1.06);}
+  .ex-tr{display:block;margin-top:8px;padding-top:7px;border-top:1px dashed var(--accent-light);
+         font-style:normal;font-size:.95em;opacity:.92;}
+  .ex-tr[dir="rtl"]{text-align:right;}
+  .tr-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 26px;
+          font-family:'Inter',sans-serif;font-size:12.5px;color:var(--ink-soft);}
+  .tr-bar .tr-label{letter-spacing:.06em;text-transform:uppercase;font-weight:700;font-size:11px;}
+  .tr-bar button{font:inherit;font-weight:600;border:1px solid var(--accent-light);
+                 background:var(--card);color:var(--ink-soft);padding:5px 11px;border-radius:999px;
+                 cursor:pointer;transition:background .12s ease,color .12s ease;}
+  .tr-bar button:hover{color:var(--ink);}
+  .tr-bar button.on{background:var(--accent);color:#FFFFFF;border-color:var(--accent);}
+  /* ── descent overrides: the three places the ascent hard-codes light ── */
+  .diagram-panel.is-now{background:#1B2229;border-color:#33434F;}
+  .opt-btn{background:var(--card);color:var(--ink);}
+  .opt-btn:hover{filter:brightness(1.35);}
+  .card,.rule-card,.chart-wrap,.signal-box,.diagram-card,.diagram-panel{box-shadow:0 2px 12px rgba(0,0,0,.45);}
+</style>
+</head>
+<body>
+<a class="up-link" href="sherpa-tensing-route-map.html"><span class="arw" aria-hidden="true">&larr;</span>Route map</a>
+
+
+<div class="wordmark">
+  <div class="brand">Sherpa <span>Tensing</span></div>
+  <div class="sub">Forbes English &middot; a route up the tenses</div>
+</div>
+
+<main>
+
+  <section class="hero" id="hero">
+    <div>
+      <span class="eyebrow">Descent twelve &middot; future perfect passive</span>
+      <h1>It will have been done</h1>
+      <p>Four words of auxiliary and not a person in sight. Stand at a point in the future, look back, and this says the thing is already behind you &mdash; without committing anybody to having done it. Contracts are full of it, and that is not an accident.</p>
+    </div>
+    <svg class="hero-diagram" viewBox="0 0 640 344" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A timeline on dark paper. A grey block stands in future time with a dashed box inside marking the doer, usually left out.">
+      <defs>
+        <linearGradient id="dgfppf1" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#B4B4B4"/>
+          <stop offset="0.42" stop-color="#6E6E6E"/>
+          <stop offset="0.78" stop-color="#2E2E2E"/>
+          <stop offset="1" stop-color="#1A1A1A"/>
+        </linearGradient>
+        <marker id="ah-fppf1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#C9BCAE"/>
+        </marker>
+      </defs>
+      <rect x="0" y="0" width="640" height="344" fill="var(--paper)"/>
+      <line x1="24" y1="299" x2="616" y2="299" stroke="#C9BCAE" stroke-width="2"
+            marker-start="url(#ah-fppf1)" marker-end="url(#ah-fppf1)"/>
+      <rect x="311.5" y="38" width="17.0" height="261" fill="#D98A72"/>
+      <rect x="314.0" y="40.5" width="12.0" height="256" fill="#4A6379"/>
+      <rect x="390" y="38" width="95" height="261" fill="url(#dgfppf1)"/>
+      <rect x="398" y="190" width="79" height="98" rx="4" fill="none" stroke="#DCDCDC" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.9"/>
+      <text x="437.5" y="216" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" font-weight="700" fill="#DCDCDC" letter-spacing="1.4" pointer-events="none">BY&#8230;</text>
+      <text x="150" y="26" text-anchor="middle" class="diagram-caption" fill="#9C8E7F" style="letter-spacing:.14em" pointer-events="none">PAST</text>
+      <text x="320" y="26" text-anchor="middle" class="diagram-caption" fill="#8FB2C6" pointer-events="none">NOW</text>
+      <text x="490" y="26" text-anchor="middle" class="diagram-caption" fill="#9C8E7F" style="letter-spacing:.14em" pointer-events="none">FUTURE</text>
+      <text x="437.5" y="66" text-anchor="middle" class="diagram-caption" fill="#3A2A1C" style="font-size:12.5px;letter-spacing:.03em" pointer-events="none">WILL HAVE BEEN DONE</text>
+      <text x="437.5" y="317" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" fill="#C6C6C6" pointer-events="none">finished before you arrive</text>
+      <text x="437.5" y="245" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#DCDCDC" pointer-events="none">doer usually</text>
+      <text x="437.5" y="261" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#DCDCDC" pointer-events="none">left out</text>
+    </svg>
+  </section>
+      <div class="trail-wrap">
+
+    <div class="camp" id="rules">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 3v18M5 4h11l-3 4 3 4H5"/></svg></div>
+      <div class="camp-label">Descent briefing</div>
+      <h2>When to use it</h2>
+      <p class="chart-note" style="margin:-6px 0 18px">The passive is not a different tense. It is the {TENSE} with the doer let go &mdash; and the reason you let them go is always one of these six.</p>
+      <div class="rule-grid">
+        <div class="rule-card">
+          <h3>You do not know who</h3>
+          <p>Nobody can tell you the doer, so the sentence does without one.</p>
+          <div class="ex">"The road <em>will have been resurfaced</em> by then."</div>
+        </div>
+        <div class="rule-card">
+          <h3>The doer does not matter</h3>
+          <p>The event is the news; who did it is a footnote.</p>
+          <div class="ex">"All the units <em>will have been sold</em> before completion."</div>
+        </div>
+        <div class="rule-card">
+          <h3>The doer is obvious</h3>
+          <p>Saying it would be a waste of everyone&#39;s time.</p>
+          <div class="ex">"You <em>will have been notified</em> in writing."</div>
+        </div>
+        <div class="rule-card">
+          <h3>You would rather not say</h3>
+          <p>The passive is how English removes a person from a sentence.</p>
+          <div class="ex">"The matter <em>will have been resolved</em> by Friday."</div>
+        </div>
+        <div class="rule-card">
+          <h3>Putting the important thing first</h3>
+          <p>Whatever you put at the front is what the sentence is about.</p>
+          <div class="ex">"Every invoice <em>will have been settled</em> by the year end."</div>
+        </div>
+        <div class="rule-card">
+          <h3>Putting the doer back with <em>by</em></h3>
+          <p>When the doer <em>is</em> the point, it goes at the end.</p>
+          <div class="ex">"The site <em>will have been cleared</em> by the contractor."</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="form">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg></div>
+      <div class="camp-label">Building the passive</div>
+      <h2>How it&#39;s built</h2>
+      <div class="form-grid">
+        <div class="rule-card">
+          <h3>Affirmative</h3>
+          <p>subject + <strong>will have been</strong> + past participle</p>
+          <div class="ex">"It <em>will have been finished</em> by six."</div>
+        </div>
+        <div class="rule-card">
+          <h3>Negative</h3>
+          <p>the <em>not</em> goes after the first auxiliary</p>
+          <div class="ex">"The forms <em>won&#39;t have been processed</em> by Monday."</div>
+        </div>
+        <div class="rule-card">
+          <h3>Questions</h3>
+          <p>the first auxiliary moves to the front</p>
+          <div class="ex">"<em>Will</em> the work <em>have been completed</em>?"</div>
+        </div>
+        <div class="rule-card">
+          <h3>With the doer</h3>
+          <p>&hellip; + <strong>by</strong> + doer, at the end</p>
+          <div class="ex">"It <em>will have been cleared</em> by the contractor."</div>
+        </div>
+      </div>      <div class="chart-wrap">
+        <h3>Turning an active sentence around</h3>
+        <p class="chart-note">Three moves, always the same: the object comes to the front, the verb becomes <em>will have been</em> + participle, and the old subject either disappears or goes to the back behind <em>by</em>. Only the middle step changes from camp to camp.</p>
+        <table class="conj">
+          <thead><tr><th>Active</th><th>Passive</th><th>What moved</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">They will have resurfaced the road.</td><td>The road will have been resurfaced.</td><td>The road came first.</td></tr>
+            <tr><td class="subj">Someone will have notified you.</td><td>You will have been notified.</td><td><em>Someone</em> was nobody.</td></tr>
+            <tr><td class="subj">The contractor will have cleared the site.</td><td>The site will have been cleared by the contractor.</td><td>The contractor stayed, at the end.</td></tr>
+            <tr><td class="subj">They will have sold all the units.</td><td>All the units will have been sold.</td><td>No seller anywhere.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="chart-wrap">
+        <h3>Conjugation chart</h3>
+        <p class="chart-note">Four fixed words and then the participle. Nothing changes for the subject at all &mdash; this is the longest form on the mountain and the least trouble to conjugate.</p>
+        <table class="conj">
+          <thead><tr><th>Subject</th><th>Affirmative</th><th>Negative</th><th>Question</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">It</td><td>It will have been done</td><td>It won&#39;t have been done</td><td>Will it have been done?</td></tr>
+            <tr><td class="subj">They</td><td>They will have been done</td><td>They won&#39;t have been done</td><td>Will they have been done?</td></tr>
+            <tr><td class="subj">I</td><td>I will have been told</td><td>I won&#39;t have been told</td><td>Will I have been told?</td></tr>
+            <tr><td class="subj">You</td><td>You will have been notified</td><td>You won&#39;t have been notified</td><td>Will you have been notified?</td></tr>
+            <tr><td class="subj">We</td><td>We will have been moved</td><td>We won&#39;t have been moved</td><td>Will we have been moved?</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="chart-wrap">
+        <h3>Three mistakes worth naming</h3>
+        <p class="chart-note">Almost every error with this one is one of these three.</p>
+        <table class="conj">
+          <thead><tr><th>Not this</th><th>This</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">It will have been finish by six.</td><td>It will have been finished by six.</td><td>After <em>been</em> comes the participle. Four auxiliaries do not change that.</td></tr>
+            <tr><td class="subj">It will has been finished.</td><td>It will have been finished.</td><td>After <em>will</em> the verb is always the plain form: <em>have</em>, never <em>has</em>.</td></tr>
+            <tr><td class="subj">By Friday it will be resolved.</td><td>By Friday it will have been resolved.</td><td>A deadline needs the perfect. <em>Will be resolved</em> says when, not already done.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <div class="camp" id="vs-simple">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3v18"/><path d="M7 8l-4 4 4 4M17 8l4 4-4 4"/></svg></div>
+      <div class="camp-label">The fork in the path</div>
+      <h2>Active or passive?</h2>
+      <div class="chart-wrap" style="margin-top:18px">
+        <p class="chart-note" style="margin-bottom:16px">Neither is better. The question is only what the sentence is about &mdash; because whatever you put at the front is what the reader will think it is about.</p>
+        <table class="conj">
+          <thead><tr><th>Question</th><th>Passive</th><th>Active</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">What is the sentence about?</td><td>The thing it happens to.<br>"The road <em>will have been resurfaced</em>."</td><td>The one who does it.<br>"They <em>will have resurfaced</em> the road."</td></tr>
+            <tr><td class="subj">Do you know the doer?</td><td>Often not &mdash; and you do not need to.</td><td>Yes, and you are naming them.</td></tr>
+            <tr><td class="subj">Where does the doer go?</td><td>At the end with <em>by</em>, or nowhere at all.</td><td>At the front, as the subject.</td></tr>
+            <tr><td class="subj">Which is shorter?</td><td>Longer by two or three words.</td><td>Usually shorter. Prefer it when both work.</td></tr>
+          </tbody>
+        </table>
+        <p class="example" style="margin-top:14px">Read a completion clause in any contract and you will find this form doing quiet work: <em>the works will have been completed to the satisfaction of the surveyor</em>. Deadline met, standard stated, and nobody named as the one who has to meet it. That is the sentence to learn to notice.</p>
+      </div>
+      <div class="btnrow" style="margin-top:16px">
+        <a class="route-link" href="sherpa-tensing-camp-twelve-future-perfect.html">&larr; Camp twelve &middot; future perfect, active</a>
+        <a class="route-link" href="sherpa-tensing-route-map.html">The route map</a>
+      </div>
+    </div>
+
+    <div class="camp" id="signals">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg></div>
+      <div class="camp-label">Trail markers</div>
+      <h2>Signal words</h2>
+      <div class="signal-groups">
+        <div class="signal-box">
+          <h3>Reach for the passive when</h3>
+          <ul>
+            <li>the doer is unknown</li>
+            <li>the doer is irrelevant</li>
+            <li>the doer is obvious</li>
+            <li>the process is the point</li>
+            <li>a report needs distance</li>
+            <li>the object is the topic</li>
+          </ul>
+        </div>
+        <div class="signal-box">
+          <h3>Verbs with no passive at all</h3>
+          <ul>
+            <li>happen &middot; occur</li>
+            <li>arrive &middot; go &middot; come</li>
+            <li>die &middot; live</li>
+            <li>exist &middot; belong</li>
+            <li>seem &middot; appear</li>
+            <li>become &middot; fall</li>
+          </ul>
+        </div>
+      </div>
+      <p class="example" style="margin-top:14px">The test for whether a verb can go passive: does it take an object? <em>They built it</em> has one, so it turns. <em>It happened</em> has none, so it cannot.</p>
+    </div>
+
+    <div class="camp" id="order">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="4" width="8" height="16"/><rect x="13" y="4" width="8" height="16"/></svg></div>
+      <div class="camp-label">Interactive</div>
+      <h2>The event, and the doer you dropped</h2>
+      <div class="diagram-card">
+        <p class="diagram-intro">The block is the same block as the ascent, lit from above instead of fading into the dark &mdash; because the tense has not changed, only the light. Inside it sits a dashed box: the doer. It is drawn inside the event rather than beside it because the doer is not a moment in time, it is a part of the sentence &mdash; and it is dashed because most of the time nobody says it. Click either to see it in a sentence.</p>
+        <div class="diagram-stage">
+          <svg viewBox="0 0 640 344" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A timeline on dark paper. A grey block stands in future time with a dashed box inside marking the doer, usually left out.">
+      <defs>
+        <linearGradient id="dgfppf1b" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#B4B4B4"/>
+          <stop offset="0.42" stop-color="#6E6E6E"/>
+          <stop offset="0.78" stop-color="#2E2E2E"/>
+          <stop offset="1" stop-color="#1A1A1A"/>
+        </linearGradient>
+        <marker id="ah-fppf1b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#C9BCAE"/>
+        </marker>
+      </defs>
+      <rect x="0" y="0" width="640" height="344" fill="var(--paper)"/>
+      <line x1="24" y1="299" x2="616" y2="299" stroke="#C9BCAE" stroke-width="2"
+            marker-start="url(#ah-fppf1b)" marker-end="url(#ah-fppf1b)"/>
+      <rect x="311.5" y="38" width="17.0" height="261" fill="#D98A72"/>
+      <rect x="314.0" y="40.5" width="12.0" height="256" fill="#4A6379"/>
+      <g class="diagram-shape" id="shape-event" tabindex="0" role="button" aria-label="Show passive examples">
+        <rect x="390" y="38" width="95" height="261" fill="url(#dgfppf1b)"/>
+      </g>
+      <g class="diagram-shape" id="shape-agent" tabindex="0" role="button" aria-label="Show by-phrase examples">
+        <rect x="398" y="190" width="79" height="98" rx="4" fill="none" stroke="#DCDCDC" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.9"/>
+      </g>
+      <text x="437.5" y="216" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" font-weight="700" fill="#DCDCDC" letter-spacing="1.4" pointer-events="none">BY&#8230;</text>
+      <text x="150" y="26" text-anchor="middle" class="diagram-caption" fill="#9C8E7F" style="letter-spacing:.14em" pointer-events="none">PAST</text>
+      <text x="320" y="26" text-anchor="middle" class="diagram-caption" fill="#8FB2C6" pointer-events="none">NOW</text>
+      <text x="490" y="26" text-anchor="middle" class="diagram-caption" fill="#9C8E7F" style="letter-spacing:.14em" pointer-events="none">FUTURE</text>
+      <text x="437.5" y="66" text-anchor="middle" class="diagram-caption" fill="#3A2A1C" style="font-size:12.5px;letter-spacing:.03em" pointer-events="none">WILL HAVE BEEN DONE</text>
+      <text x="437.5" y="317" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" fill="#C6C6C6" pointer-events="none">finished before you arrive</text>
+      <text x="437.5" y="245" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#DCDCDC" pointer-events="none">doer usually</text>
+      <text x="437.5" y="261" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#DCDCDC" pointer-events="none">left out</text>
+    </svg>
+        </div>
+        <div class="diagram-panels">
+          <div class="diagram-panel" id="panel-event">
+            <h4>The event &mdash; now the subject</h4>
+            <ul id="panel-event-list"></ul>
+          </div>
+          <div class="diagram-panel is-now" id="panel-agent">
+            <h4>The doer &mdash; optional, and usually gone</h4>
+            <ul id="panel-agent-list"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="quiz">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3l3 7-3 3-3-3 3-7z"/><path d="M12 13v8"/></svg></div>
+      <div class="camp-label">The climb</div>
+      <h2>Practice</h2>
+      <div class="quiz-card">
+        <div class="progress-row">
+          <span id="progress-text">Checkpoint 1 of 14</span>
+          <span id="score-text">Score: 0</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+        <div class="q-prompt" id="q-prompt"></div>
+        <div class="q-hint" id="q-hint"></div>
+        <div class="options" id="options"></div>
+        <div class="feedback" id="feedback"></div>
+        <div class="quiz-footer">
+          <button class="next-btn" id="next-btn" disabled>Next checkpoint</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="results-camp">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 20l5-14 5 14M8 14h4"/></svg></div>
+      <div class="camp-label">Summit log</div>
+      <div id="results">
+        <div class="score" id="final-score"></div>
+        <p id="final-message"></p>
+        <button class="retry-btn" id="retry-btn">Climb again</button>
+        <div class="route-nav">
+          <a class="base-camp" href="sherpa-tensing-route-map.html">&larr; Back to the route map</a>
+          <a class="next-camp" href="sherpa-tensing-route-map.html">Choose your next camp &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+
+
+// ── the event and the dropped doer ──
+var exA = [
+  "The road <em>will have been resurfaced</em> &hellip;",
+  "You <em>will have been notified</em> &hellip;",
+  "Every invoice <em>will have been settled</em> &hellip;"
+];
+var exB = [
+  "&hellip; <em>by</em> the contractor.",
+  "&hellip; in writing, by somebody.",
+  "&hellip; by the year end, and by nobody in particular."
+];
+
+function renderList(id, items){
+  var ul = document.getElementById(id);
+  ul.innerHTML = "";
+  items.forEach(function(txt){
+    var li = document.createElement("li");
+    li.innerHTML = txt;
+    ul.appendChild(li);
+  });
+}
+renderList("panel-event-list", exA);
+renderList("panel-agent-list", exB);
+
+function pulseShape(el){
+  el.style.transformOrigin = "center";
+  el.animate(
+    [{ opacity: 1 }, { opacity: 0.6 }, { opacity: 1 }],
+    { duration: 380, easing: "ease-out" }
+  );
+}
+[["shape-event","panel-event","#C6C6C6"],
+ ["shape-agent","panel-agent","#DCDCDC"]].forEach(function(pair){
+  var el = document.getElementById(pair[0]);
+  if (!el) return;
+  var activate = function(){
+    pulseShape(el);
+    document.querySelectorAll(".diagram-panel").forEach(function(p){ p.style.outline = "none"; });
+    var panel = document.getElementById(pair[1]);
+    if (panel) panel.style.outline = "2px solid " + pair[2];
+  };
+  el.addEventListener("click", activate);
+  el.addEventListener("keydown", function(e){
+    if (e.key === "Enter" || e.key === " "){ e.preventDefault(); activate(); }
+  });
+});
+
+// ── QUIZ ──
+var questions = [
+  {
+    prompt: "The road _____ by then. (resurface)",
+    hint: "A deadline in the future.",
+    correct: "will have been resurfaced",
+    options: ["will have been resurfaced", "will be resurfaced", "will have resurfaced", "will has been resurfaced"],
+    explain: "By then is a deadline, so the perfect: will have been + participle."
+  },
+  {
+    prompt: "All the units _____ before completion. (sell)",
+    hint: "Plural makes no difference.",
+    correct: "will have been sold",
+    options: ["will have been sold", "will be sold", "will have sold", "will have been sell"],
+    explain: "Will have been is the same for every subject. Sell / sold / sold."
+  },
+  {
+    prompt: "You _____ in writing. (notify)",
+    hint: "The clause nobody reads.",
+    correct: "will have been notified",
+    options: ["will have been notified", "will be notified", "will have notified", "will have been notify"],
+    explain: "Will have been notified — with, as ever, nobody doing the notifying."
+  },
+  {
+    prompt: "The forms _____ by Monday. (not / process)",
+    hint: "Negative.",
+    correct: "won&#39;t have been processed",
+    options: ["won&#39;t have been processed", "won&#39;t be processed", "won&#39;t have processed", "haven&#39;t been processed"],
+    explain: "Won&#39;t + have been + participle."
+  },
+  {
+    prompt: "_____ the work _____ by then? (complete)",
+    hint: "Question order.",
+    correct: "Will ... have been completed",
+    options: ["Will ... have been completed", "Will ... be completed", "Will ... have completed", "Has ... been completed"],
+    explain: "Will + subject + have been + participle."
+  },
+  {
+    prompt: "The site _____ by the contractor. (clear)",
+    hint: "The doer is named.",
+    correct: "will have been cleared",
+    options: ["will have been cleared", "will be cleared", "will have cleared", "will has been cleared"],
+    explain: "Will have been cleared, with the doer behind by."
+  },
+  {
+    prompt: "I _____ at five, so ring after that. (finish)",
+    hint: "Is there a deadline?",
+    correct: "will finish",
+    options: ["will finish", "will have been finished", "will have finished", "will be finished"],
+    explain: "At five names when the action happens, so camp seven, and I am the one doing it."
+  },
+  {
+    prompt: "It _____ by six. (finish)",
+    hint: "A deadline, passive.",
+    correct: "will have been finished",
+    options: ["will have been finished", "will have been finish", "will has been finished", "will be finishing"],
+    explain: "After been comes the participle, however many auxiliaries are stacked in front."
+  },
+  {
+    prompt: "The matter _____ by Friday. (resolve)",
+    hint: "The complaints-department promise.",
+    correct: "will have been resolved",
+    options: ["will have been resolved", "will be resolve", "will have resolved", "is resolved"],
+    explain: "By Friday is a deadline, so the future perfect passive."
+  },
+  {
+    prompt: "Every invoice _____ by the year end. (settle)",
+    hint: "A total by a deadline.",
+    correct: "will have been settled",
+    options: ["will have been settled", "will be settled", "will have settled", "will have been settle"],
+    explain: "Will have been settled. Every invoice is singular in form."
+  },
+  {
+    prompt: "We _____ before the audit begins. (move)",
+    hint: "Plural, deadline.",
+    correct: "will have been moved",
+    options: ["will have been moved", "will be moved", "will have moved", "will has been moved"],
+    explain: "Will have been moved says it will already have happened to us."
+  },
+  {
+    prompt: "By the time you land, the room _____ . (prepare)",
+    hint: "By the time sets the deadline.",
+    correct: "will have been prepared",
+    options: ["will have been prepared", "will be prepared", "will have prepared", "is prepared"],
+    explain: "By the time sets a deadline, so the main clause takes the future perfect passive."
+  },
+  {
+    prompt: "By the time you _____ , the room will have been prepared. (land)",
+    hint: "The deadline clause itself.",
+    correct: "land",
+    options: ["land", "will land", "will have landed", "are landing"],
+    explain: "The clause that sets the deadline stays in the present, even though it describes the future."
+  },
+  {
+    prompt: "Nothing _____ before the report is read. (decide)",
+    hint: "Negative meaning, positive form.",
+    correct: "will have been decided",
+    options: ["will have been decided", "will be decided", "will have decided", "has been decided"],
+    explain: "Nothing is the subject and it decides nothing, so the passive."
+  }
+];
+
+
+var current = 0;
+var score = 0;
+var answered = false;
+var order = [];
+
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+
+function renderQuestion(){
+  answered = false;
+  var q = questions[current];
+  document.getElementById("progress-text").textContent = "Checkpoint " + (current + 1) + " of " + questions.length;
+  document.getElementById("progress-fill").style.width = ((current / questions.length) * 100) + "%";
+  document.getElementById("q-prompt").textContent = q.prompt;
+  document.getElementById("q-hint").textContent = q.hint;
+  var feedback = document.getElementById("feedback");
+  feedback.className = "feedback";
+  feedback.textContent = "";
+  var optionsWrap = document.getElementById("options");
+  optionsWrap.innerHTML = "";
+  order = shuffle(q.options);
+  order.forEach(function(opt){
+    var btn = document.createElement("button");
+    btn.className = "opt-btn";
+    btn.type = "button";
+    btn.textContent = opt;
+    btn.addEventListener("click", function(){ selectOption(opt, btn); });
+    optionsWrap.appendChild(btn);
+  });
+  document.getElementById("next-btn").disabled = true;
+  document.getElementById("next-btn").textContent = (current === questions.length - 1) ? "Reach the summit" : "Next checkpoint";
+}
+
+function selectOption(opt, btn){
+  if (answered) return;
+  answered = true;
+  var q = questions[current];
+  var allBtns = document.querySelectorAll("#options .opt-btn");
+  allBtns.forEach(function(b){
+    b.disabled = true;
+    if (b.textContent === q.correct) b.classList.add("correct");
+  });
+  if (opt !== q.correct) btn.classList.add("wrong");
+  if (opt === q.correct) score++;
+  document.getElementById("score-text").textContent = "Score: " + score;
+  var feedback = document.getElementById("feedback");
+  feedback.textContent = q.explain;
+  feedback.classList.add("show");
+  document.getElementById("next-btn").disabled = false;
+}
+
+document.getElementById("next-btn").addEventListener("click", function(){
+  if (current < questions.length - 1){
+    current++;
+    renderQuestion();
+  } else {
+    document.getElementById("progress-fill").style.width = "100%";
+    document.getElementById("quiz").style.display = "none";
+    document.getElementById("results").style.display = "block";
+    document.getElementById("final-score").textContent = score + " / " + questions.length;
+    var msg = "";
+    if (score === questions.length) msg = "Clean run. You can turn a sentence around and you know when the doer is worth keeping.";
+    else if (score >= questions.length - 2) msg = "Solid progress. Worth a look back at the active version before you go on.";
+    else msg = "Good first attempt. The auxiliary chain is the part to read again.";
+    document.getElementById("final-message").textContent = msg;
+  }
+});
+
+document.getElementById("retry-btn").addEventListener("click", function(){
+  current = 0;
+  score = 0;
+  document.getElementById("score-text").textContent = "Score: 0";
+  document.getElementById("quiz").style.display = "block";
+  document.getElementById("results").style.display = "none";
+  renderQuestion();
+});
+
+renderQuestion();
+</script>
+
+</body>
+</html>
