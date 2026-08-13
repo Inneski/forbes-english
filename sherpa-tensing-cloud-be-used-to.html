@@ -1,0 +1,782 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sherpa Tensing - The Clouds: To Be Used To + -ing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1E1A2C;
+    --ink-soft:#5F5878;
+    --paper:#FAF8FD;
+    --card:#FFFFFF;
+    --accent:#6A5E8C;
+    --accent-dark:#4C4270;
+    --accent-light:#D6D0E8;
+    --accent-lighter:#F0EDF8;
+    --good:#1E7A4C;
+    --good-bg:#E5F5EC;
+    --bad:#B23A3A;
+    --bad-bg:#FBEAEA;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;}
+  h1,h2,h3{font-family:'Fraunces',serif;font-weight:600;margin:0 0 .4em;color:var(--ink);}
+  .wordmark{display:flex;align-items:center;justify-content:space-between;max-width:1000px;margin:0 auto;padding:28px 24px 0;}
+  .wordmark .brand{font-family:'Fraunces',serif;font-weight:700;font-size:20px;letter-spacing:.02em;}
+  .wordmark .brand span{color:var(--accent);}
+  .wordmark .sub{font-size:13px;color:var(--ink-soft);}
+
+  .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px;}
+  .chart-wrap{margin-top:24px;background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:18px 20px;overflow-x:auto;}
+  .chart-wrap h3{font-size:15px;margin-bottom:4px;}
+  .chart-wrap + .chart-wrap{margin-top:16px;}
+  .chart-note{font-size:13px;color:var(--ink-soft);margin-bottom:14px;}
+  table.conj{width:100%;border-collapse:collapse;font-size:14px;min-width:520px;}
+  table.conj th, table.conj td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--accent-light);}
+  table.conj th{font-family:'Fraunces',serif;font-weight:600;color:var(--accent-dark);font-size:13px;text-transform:uppercase;letter-spacing:.03em;}
+  table.conj td.subj{font-weight:600;}
+  table.conj tr:last-child td{border-bottom:none;}
+  main{max-width:1000px;margin:0 auto;padding:0 24px 80px;}
+  .hero{display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:center;padding:40px 0 56px;}
+  .hero .eyebrow{
+    display:inline-block;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--accent-dark);background:var(--accent-lighter);padding:6px 12px;border-radius:999px;margin-bottom:14px;
+  }
+  .hero h1{font-size:38px;line-height:1.12;}
+  .hero p{color:var(--ink-soft);font-size:16px;max-width:46ch;}
+  .hero-diagram{width:100%;display:block;}
+  @media (max-width:720px){.hero{grid-template-columns:1fr;}}
+
+  .trail-wrap{position:relative;padding-left:66px;}
+  .trail-wrap::before{
+    content:'';position:absolute;left:23px;top:8px;bottom:8px;width:2px;
+    background:repeating-linear-gradient(to bottom, var(--accent) 0 8px, transparent 8px 18px);
+  }
+  .camp{position:relative;margin-bottom:64px;}
+  .camp .marker{position:absolute;left:-66px;top:0;width:46px;height:46px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;}
+  .camp .marker svg{width:18px;height:18px;}
+  .camp .camp-label{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-dark);margin-bottom:6px;}
+
+  .rule-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px;}
+  .rule-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:18px 20px;}
+  .rule-card h3{font-size:16px;margin-bottom:8px;}
+  .rule-card p{margin:0 0 8px;font-size:14px;color:var(--ink-soft);}
+  .rule-card .ex{font-size:14px;font-style:italic;color:var(--accent-dark);border-left:2px solid var(--accent);padding-left:10px;}
+
+  .signal-groups{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px;}
+  .signal-box{background:var(--accent-lighter);border-radius:var(--radius);padding:18px 20px;}
+  .signal-box h3{font-size:15px;}
+  .signal-box ul{margin:8px 0 0;padding-left:18px;font-size:14px;color:var(--ink);}
+  .signal-box li{margin-bottom:4px;}
+  @media (max-width:600px){.signal-groups{grid-template-columns:1fr;}}
+
+  /* ── THE STATE THAT RUNS THROUGH NOW ── */
+  .diagram-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:26px 26px 22px;}
+  .diagram-intro{font-size:14px;color:var(--ink-soft);margin-bottom:18px;max-width:60ch;}
+  .diagram-stage{width:100%;background:var(--paper);border:1px solid var(--accent-light);border-radius:var(--radius);padding:12px;}
+  .diagram-stage svg{width:100%;height:auto;display:block;}
+  .dg-reveal{opacity:0;transition:opacity .2s ease;}
+  .dg-reveal.is-shown{opacity:1;}
+  .diagram-shape{cursor:pointer;transition:opacity .15s ease;}
+  .diagram-shape:hover{opacity:.86;}
+  .diagram-shape:focus{outline:none;}
+  .diagram-shape:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px;}
+  .diagram-caption{font-family:'Inter',sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;}
+  .diagram-panels{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px;}
+  .diagram-panel{border-radius:12px;padding:16px 18px;border:1px solid var(--accent-light);background:var(--accent-lighter);}
+  .diagram-panel.is-now{background:#EAF1F6;border-color:#C9DCE6;}
+  .diagram-panel h4{margin:0 0 8px;font-family:'Fraunces',serif;font-size:14px;letter-spacing:.03em;text-transform:uppercase;color:var(--accent-dark);}
+  .diagram-panel.is-now h4{color:#3E6A85;}
+  .diagram-panel ul{margin:0;padding-left:18px;font-size:14px;}
+  .diagram-panel li{margin-bottom:5px;}
+  .diagram-panel li em{font-style:normal;font-weight:600;}
+  @media (max-width:600px){.diagram-panels{grid-template-columns:1fr;}}
+
+  .route-link{display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-weight:600;font-size:14px;
+    padding:9px 18px;border-radius:999px;border:1px solid var(--accent);color:var(--accent-dark);}
+  .route-link:hover{background:var(--accent-lighter);}
+  .quiz-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:24px 24px 20px;}
+  .progress-row{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--ink-soft);margin-bottom:10px;}
+  .progress-track{height:6px;background:var(--accent-lighter);border-radius:999px;overflow:hidden;margin-bottom:20px;}
+  .progress-fill{height:100%;background:var(--accent);border-radius:999px;width:0%;transition:width .3s ease;}
+  .q-prompt{font-size:17px;margin-bottom:4px;}
+  .q-hint{font-size:13px;color:var(--ink-soft);margin-bottom:16px;font-style:italic;}
+  .options{display:grid;gap:10px;}
+  .opt-btn{text-align:left;padding:12px 16px;border-radius:10px;border:1px solid var(--accent-light);background:#fff;font-family:'Inter',sans-serif;font-size:15px;color:var(--ink);cursor:pointer;}
+  .opt-btn:hover{border-color:var(--accent);}
+  .opt-btn.correct{background:var(--good-bg);border-color:var(--good);color:var(--good);font-weight:600;}
+  .opt-btn.wrong{background:var(--bad-bg);border-color:var(--bad);color:var(--bad);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:16px;padding:14px 16px;border-radius:10px;background:var(--accent-lighter);font-size:14px;display:none;}
+  .feedback.show{display:block;}
+  .quiz-footer{display:flex;justify-content:flex-end;margin-top:20px;}
+  .next-btn{background:var(--accent);color:#fff;border:none;padding:11px 22px;border-radius:999px;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;cursor:pointer;}
+  .next-btn:disabled{background:var(--accent-light);cursor:not-allowed;}
+
+  #results{display:none;text-align:center;padding:12px 0 8px;}
+  #results .score{font-family:'Fraunces',serif;font-size:52px;color:var(--accent);margin:8px 0;}
+  #results p{color:var(--ink-soft);}
+  .retry-btn{margin-top:12px;background:transparent;border:1px solid var(--accent);color:var(--accent-dark);padding:10px 20px;border-radius:999px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
+  .route-nav{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:22px;padding-top:18px;border-top:1px solid var(--accent-light);}
+  .route-nav a{display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;padding:10px 20px;border-radius:999px;}
+  .route-nav a.next-camp{background:var(--accent);color:#fff;}
+  .route-nav a.base-camp{background:transparent;border:1px solid var(--ink-soft);color:var(--ink-soft);}
+  .route-nav a:hover{opacity:0.88;}
+
+    /* ── Persistent way back. Pinned, so it is reachable from anywhere on
+       the page rather than only after scrolling to the bottom. ── */
+    /* Clear a band at the top of the page for the pinned link so it never
+       lands on the wordmark. */
+    body{ padding-top:46px; }
+    .up-link{
+      position:fixed; top:16px; left:16px; z-index:60;
+      display:inline-flex; align-items:center; gap:8px;
+      padding:9px 16px 9px 13px; border-radius:999px;
+      background:var(--card,#fff); color:var(--accent-dark,#333);
+      border:1.5px solid var(--accent-light,rgba(0,0,0,.18));
+      font:600 14px/1 'Inter',system-ui,sans-serif; letter-spacing:.01em;
+      text-decoration:none; box-shadow:0 2px 10px rgba(0,0,0,.10);
+      transition:background .18s ease, color .18s ease, transform .18s ease;
+    }
+    .up-link:hover{ background:var(--accent,#333); color:#fff; transform:translateX(-2px); }
+    .up-link .arw{ font-size:15px; line-height:1; }
+    @media print{ .up-link{ display:none; } }
+    @media (max-width:640px){
+      .up-link{ top:10px; left:10px; padding:7px 13px 7px 10px; font-size:13px; }
+    }
+  /* ── example translations ── */
+  .ex[data-tr]{cursor:pointer;}
+  .ex[data-tr]:hover{filter:brightness(1.06);}
+  .ex-tr{display:block;margin-top:8px;padding-top:7px;border-top:1px dashed var(--accent-light);
+         font-style:normal;font-size:.95em;opacity:.92;}
+  .ex-tr[dir="rtl"]{text-align:right;}
+  .tr-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 26px;
+          font-family:'Inter',sans-serif;font-size:12.5px;color:var(--ink-soft);}
+  .tr-bar .tr-label{letter-spacing:.06em;text-transform:uppercase;font-weight:700;font-size:11px;}
+  .tr-bar button{font:inherit;font-weight:600;border:1px solid var(--accent-light);
+                 background:var(--card);color:var(--ink-soft);padding:5px 11px;border-radius:999px;
+                 cursor:pointer;transition:background .12s ease,color .12s ease;}
+  .tr-bar button:hover{color:var(--ink);}
+  .tr-bar button.on{background:var(--accent);color:#FFFFFF;border-color:var(--accent);}
+</style>
+</head>
+<body>
+<a class="up-link" href="sherpa-tensing-route-map.html"><span class="arw" aria-hidden="true">&larr;</span>Route map</a>
+
+
+<div class="wordmark">
+  <div class="brand">Sherpa <span>Tensing</span></div>
+  <div class="sub">Forbes English &middot; a route up the tenses</div>
+</div>
+
+<main>
+
+  <section class="hero" id="hero">
+    <div>
+      <span class="eyebrow">Off the route &middot; to be used to</span>
+      <h1>The thing that stopped being strange</h1>
+      <p>One letter from the other cloud and nothing like it. This is not a past habit &mdash; it is a <em>present state</em>, a description of how you are right now. It takes a noun or an <em>-ing</em> form, never an infinitive, and it runs straight through NOW instead of stopping short of it.</p>
+    </div>
+    <svg class="hero-diagram" viewBox="0 0 640 344" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A timeline. A pale violet band of familiarity runs from a brown starting peg in the past, straight through the NOW column and on into the future, with dots growing more solid along it. A violet zone above marks the present state: not strange any more.">
+      <defs>
+
+        <marker id="ah-but" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#1c130c"/>
+        </marker>
+      </defs>
+      <rect x="0" y="0" width="640" height="344" fill="var(--paper)"/>
+      <rect x="96" y="196" width="448" height="103" fill="#DCD8EC"/>
+        <circle cx="126" cy="247" r="5" fill="#7A6E9B" opacity="0.22"/>
+        <circle cx="152" cy="247" r="5" fill="#7A6E9B" opacity="0.28"/>
+        <circle cx="178" cy="247" r="5" fill="#7A6E9B" opacity="0.33"/>
+        <circle cx="204" cy="247" r="5" fill="#7A6E9B" opacity="0.39"/>
+        <circle cx="230" cy="247" r="5" fill="#7A6E9B" opacity="0.44"/>
+        <circle cx="256" cy="247" r="5" fill="#7A6E9B" opacity="0.49"/>
+        <circle cx="282" cy="247" r="5" fill="#7A6E9B" opacity="0.55"/>
+        <circle cx="308" cy="247" r="5" fill="#7A6E9B" opacity="0.60"/>
+        <circle cx="334" cy="247" r="5" fill="#7A6E9B" opacity="0.66"/>
+        <circle cx="360" cy="247" r="5" fill="#7A6E9B" opacity="0.71"/>
+        <circle cx="386" cy="247" r="5" fill="#7A6E9B" opacity="0.77"/>
+        <circle cx="412" cy="247" r="5" fill="#7A6E9B" opacity="0.82"/>
+        <circle cx="438" cy="247" r="5" fill="#7A6E9B" opacity="0.88"/>
+        <circle cx="464" cy="247" r="5" fill="#7A6E9B" opacity="0.93"/>
+        <circle cx="490" cy="247" r="5" fill="#7A6E9B" opacity="0.99"/>
+        <circle cx="516" cy="247" r="5" fill="#7A6E9B" opacity="1.00"/>
+      <line x1="24" y1="299" x2="616" y2="299" stroke="#1c130c" stroke-width="2"
+            marker-start="url(#ah-but)" marker-end="url(#ah-but)"/>
+      <rect x="200" y="118" width="111.5" height="64" rx="3" fill="#7A6E9B"/>
+      <text x="255.75" y="146" text-anchor="middle" class="diagram-caption" fill="#FFFFFF" style="font-size:12.5px;letter-spacing:.04em" pointer-events="none">NOT STRANGE</text>
+      <text x="255.75" y="168" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" fill="#E4DFF3" pointer-events="none">how you are now</text>
+      <rect x="89.5" y="118" width="13" height="181" fill="#7A5A3E"/>
+      <rect x="92" y="120.5" width="8" height="176" fill="#B08968"/>
+      <text x="96" y="110" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" font-weight="700" fill="#7A5A3E" letter-spacing="1.4" pointer-events="none">AT FIRST</text>
+      <rect x="311.5" y="38" width="17.0" height="261" fill="#D98A72"/>
+      <rect x="314.0" y="40.5" width="12.0" height="256" fill="#5C7690"/>
+      <text x="200" y="317" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" font-weight="400" fill="#6E6490" pointer-events="none">strange at first, then normal</text>
+      <text x="450" y="317" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" font-weight="400" fill="#9A92B4" pointer-events="none">and it stays that way</text>
+      <text x="150" y="26" text-anchor="middle" class="diagram-caption" fill="#8A8175" style="letter-spacing:.14em" pointer-events="none">PAST</text>
+      <text x="320" y="26" text-anchor="middle" class="diagram-caption" fill="#3E6A85" pointer-events="none">NOW</text>
+      <text x="490" y="26" text-anchor="middle" class="diagram-caption" fill="#8A8175" style="letter-spacing:.14em" pointer-events="none">FUTURE</text>
+    </svg>
+  </section>
+
+    <div class="tr-bar" id="tr-bar"><span class="tr-label">Examples in</span><button type="button" data-lang="" class="on">Off</button><button type="button" data-lang="de">DE</button><button type="button" data-lang="es">ES</button><button type="button" data-lang="fr">FR</button><button type="button" data-lang="it">IT</button><button type="button" data-lang="pt">PT</button><button type="button" data-lang="ru">RU</button><button type="button" data-lang="ar">AR</button><button type="button" data-lang="zh">ZH</button><button type="button" data-lang="ja">JA</button></div>
+
+      <div class="trail-wrap">
+
+    <div class="camp" id="rules">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 3v18M5 4h11l-3 4 3 4H5"/></svg></div>
+      <div class="camp-label">Cloud briefing</div>
+      <h2>When to use it</h2>
+      <p class="chart-note" style="margin:-6px 0 18px">One letter from its neighbour and nothing like it. This is not a past habit &mdash; it is a <strong>present state</strong>, a description of how you are right now, and it takes a noun or an <em>-ing</em> form, never an infinitive.</p>
+      <div class="rule-grid">
+        <div class="rule-card">
+          <h3>Something has stopped being strange</h3>
+          <p>The state of finding a thing normal, having once found it odd.</p>
+          <div class="ex" data-tr="150">"I<em>&#39;m used to</em> the noise now."</div>
+        </div>
+        <div class="rule-card">
+          <h3>It takes a noun or an <em>-ing</em></h3>
+          <p>Never an infinitive. This is the error that gives it away.</p>
+          <div class="ex" data-tr="151">"I<em>&#39;m used to</em> <em>getting</em> up early."</div>
+        </div>
+        <div class="rule-card">
+          <h3>It moves through the tenses</h3>
+          <p>It is an ordinary adjective phrase, so <em>be</em> does the usual work.</p>
+          <div class="ex" data-tr="152">"I <em>was used to</em> it by then." &middot; "You<em>&#39;ll be used to</em> it soon."</div>
+        </div>
+        <div class="rule-card">
+          <h3><em>Get</em> used to = the process</h3>
+          <p>Becoming familiar, rather than already being familiar.</p>
+          <div class="ex" data-tr="153">"I<em>&#39;m getting used to</em> the shifts."</div>
+        </div>
+        <div class="rule-card">
+          <h3>The negative is common and useful</h3>
+          <p>Most often you are explaining why something is hard.</p>
+          <div class="ex" data-tr="154">"She<em>&#39;s not used to</em> the cold."</div>
+        </div>
+        <div class="rule-card">
+          <h3>It says nothing about the past</h3>
+          <p>Unlike its neighbour, it makes no claim that anything has stopped.</p>
+          <div class="ex" data-tr="155">"I<em>&#39;m used to</em> living alone." &mdash; and I still do</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="form">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg></div>
+      <div class="camp-label">Building it</div>
+      <h2>How it&#39;s built</h2>
+      <div class="form-grid">
+        <div class="rule-card">
+          <h3>Affirmative</h3>
+          <p>subject + am / is / are + <strong>used to</strong> + noun or -ing</p>
+          <div class="ex" data-tr="156">"He<em>&#39;s used to</em> the early shifts."</div>
+        </div>
+        <div class="rule-card">
+          <h3>Negative</h3>
+          <p>subject + am / is / are + not + used to + &hellip;</p>
+          <div class="ex" data-tr="157">"They<em>&#39;re not used to</em> the heat."</div>
+        </div>
+        <div class="rule-card">
+          <h3>Questions</h3>
+          <p>Am / Is / Are + subject + used to + &hellip;?</p>
+          <div class="ex" data-tr="158">"<em>Are</em> you <em>used to</em> it yet?"</div>
+        </div>
+        <div class="rule-card">
+          <h3>Becoming</h3>
+          <p>get / am getting / got + <strong>used to</strong> + &hellip;</p>
+          <div class="ex" data-tr="159">"I <em>got used to</em> it quickly."</div>
+        </div>
+      </div>      <div class="chart-wrap">
+        <h3>The three forms, side by side</h3>
+        <p class="chart-note">This is the chart worth learning by heart. Three phrases, one letter apart, three different jobs.</p>
+        <table class="conj">
+          <thead><tr><th>Form</th><th>Means</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">used to + infinitive</td><td>a past habit that has stopped</td><td>"I used to live here." &mdash; I don&#39;t now</td></tr>
+            <tr><td class="subj">be used to + -ing</td><td>a present state: it is normal to me</td><td>"I&#39;m used to living here." &mdash; I still do</td></tr>
+            <tr><td class="subj">get used to + -ing</td><td>the process of becoming familiar</td><td>"I&#39;m getting used to living here."</td></tr>
+            <tr><td class="subj">would + infinitive</td><td>a repeated past action only</td><td>"We would walk there every Sunday."</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="chart-wrap">
+        <h3>What can follow it</h3>
+        <p class="chart-note">After <em>used to</em> in this phrase comes a <em>thing</em>, never an action in its plain form. If you can put <em>it</em> there, you can put an <em>-ing</em> there.</p>
+        <table class="conj">
+          <thead><tr><th>Follows with</th><th>Example</th><th>Right?</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">a noun</td><td>"I&#39;m used to the noise."</td><td>Yes</td></tr>
+            <tr><td class="subj">a pronoun</td><td>"I&#39;m used to it."</td><td>Yes</td></tr>
+            <tr><td class="subj">an <em>-ing</em> form</td><td>"I&#39;m used to working nights."</td><td>Yes</td></tr>
+            <tr><td class="subj">an infinitive</td><td>"I&#39;m used to work nights."</td><td>No &mdash; this is the classic error</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="chart-wrap">
+        <h3>Three mistakes worth naming</h3>
+        <p class="chart-note">Almost every error with this phrase is one of these three.</p>
+        <table class="conj">
+          <thead><tr><th>Not this</th><th>This</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">I&#39;m used to get up early.</td><td>I&#39;m used to getting up early.</td><td>After this <em>to</em> comes a thing, not an action. The <em>-ing</em> makes it a thing.</td></tr>
+            <tr><td class="subj">I used to the noise.</td><td>I&#39;m used to the noise.</td><td>The phrase needs <em>be</em>. Without it you have accidentally written the other form.</td></tr>
+            <tr><td class="subj">I&#39;m used to live here.</td><td>I used to live here. / I&#39;m used to living here.</td><td>Both are English and they mean opposite things. Decide which you mean.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <div class="camp" id="vs-simple">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3v18"/><path d="M7 8l-4 4 4 4M17 8l4 4-4 4"/></svg></div>
+      <div class="camp-label">The fork in the path</div>
+      <h2>Which of the two do you want?</h2>
+      <div class="chart-wrap" style="margin-top:18px">
+        <p class="chart-note" style="margin-bottom:16px">They differ by one word and they point in opposite directions. <em>Used to</em> looks back and says something ended. <em>Be used to</em> looks at now and says something is normal.</p>
+        <table class="conj">
+          <thead><tr><th>Question</th><th>be used to + -ing</th><th>used to + infinitive</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">When is it true?</td><td>Now.<br>"I&#39;m used to the cold."</td><td>It was true, and stopped.<br>"I used to hate the cold."</td></tr>
+            <tr><td class="subj">What follows?</td><td>A noun or an <em>-ing</em>.</td><td>An infinitive.</td></tr>
+            <tr><td class="subj">Can it change tense?</td><td>Yes: was used to, will be used to.</td><td>No. Past only.</td></tr>
+            <tr><td class="subj">Is <em>be</em> there?</td><td>Always.</td><td>Never.</td></tr>
+          </tbody>
+        </table>
+        <p class="example" style="margin-top:14px">The pair that decides it: <em>"I used to live alone"</em> &mdash; I have a flatmate now. <em>"I&#39;m used to living alone"</em> &mdash; I still do, and it suits me. One word apart, and the second one is the only one that tells you where I live today.</p>
+      </div>
+      <div class="btnrow" style="margin-top:16px">
+        <a class="route-link" href="sherpa-tensing-cloud-used-to.html">&larr; The other cloud &middot; used to</a>
+        <a class="route-link" href="sherpa-tensing-route-map.html">The route map</a>
+      </div>
+    </div>
+
+    <div class="camp" id="signals">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg></div>
+      <div class="camp-label">Trail markers</div>
+      <h2>Signal words</h2>
+      <div class="signal-groups">
+        <div class="signal-box">
+          <h3>Words that go with it</h3>
+          <ul>
+            <li>now &middot; by now &middot; yet</li>
+            <li>soon &middot; after a while</li>
+            <li>still not used to</li>
+            <li>gradually</li>
+            <li>it took me a month</li>
+            <li>you&#39;ll get used to it</li>
+          </ul>
+        </div>
+        <div class="signal-box">
+          <h3>The giveaway that you want the other one</h3>
+          <ul>
+            <li>not any more</li>
+            <li>back then</li>
+            <li>when I was younger</li>
+            <li>in those days</li>
+            <li>but I gave up</li>
+            <li>and now I don&#39;t</li>
+          </ul>
+        </div>
+      </div>
+      <p class="example" style="margin-top:14px">A useful habit: try replacing the phrase with <em>familiar with</em>. If the sentence still works, you want <em>be used to</em>. If it collapses, you want <em>used to</em>.</p>
+    </div>
+
+    <div class="camp" id="order">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="4" width="8" height="16"/><rect x="13" y="4" width="8" height="16"/></svg></div>
+      <div class="camp-label">Interactive</div>
+      <h2>A state that runs through now</h2>
+      <div class="diagram-card">
+        <p class="diagram-intro">The brown peg is where it started &mdash; the first day, when the thing was still strange. From there the band runs on, and the dots grow more solid as it becomes ordinary. Crucially it does not stop at NOW: it goes straight through and out the other side, because this is a description of how you are, not a report of something finished. The violet zone above is that present state. Click either to see it in a sentence.</p>
+        <div class="diagram-stage">
+          <svg viewBox="0 0 640 344" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A timeline. A pale violet band of familiarity runs from a brown starting peg in the past, straight through the NOW column and on into the future, with dots growing more solid along it. A violet zone above marks the present state: not strange any more.">
+      <defs>
+
+        <marker id="ah-butb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#1c130c"/>
+        </marker>
+      </defs>
+      <rect x="0" y="0" width="640" height="344" fill="var(--paper)"/>
+      <g class="diagram-shape" id="shape-state" tabindex="0" role="button" aria-label="Show be used to examples">
+        <rect x="96" y="196" width="448" height="103" fill="#DCD8EC"/>
+      </g>
+        <circle cx="126" cy="247" r="5" fill="#7A6E9B" opacity="0.22"/>
+        <circle cx="152" cy="247" r="5" fill="#7A6E9B" opacity="0.28"/>
+        <circle cx="178" cy="247" r="5" fill="#7A6E9B" opacity="0.33"/>
+        <circle cx="204" cy="247" r="5" fill="#7A6E9B" opacity="0.39"/>
+        <circle cx="230" cy="247" r="5" fill="#7A6E9B" opacity="0.44"/>
+        <circle cx="256" cy="247" r="5" fill="#7A6E9B" opacity="0.49"/>
+        <circle cx="282" cy="247" r="5" fill="#7A6E9B" opacity="0.55"/>
+        <circle cx="308" cy="247" r="5" fill="#7A6E9B" opacity="0.60"/>
+        <circle cx="334" cy="247" r="5" fill="#7A6E9B" opacity="0.66"/>
+        <circle cx="360" cy="247" r="5" fill="#7A6E9B" opacity="0.71"/>
+        <circle cx="386" cy="247" r="5" fill="#7A6E9B" opacity="0.77"/>
+        <circle cx="412" cy="247" r="5" fill="#7A6E9B" opacity="0.82"/>
+        <circle cx="438" cy="247" r="5" fill="#7A6E9B" opacity="0.88"/>
+        <circle cx="464" cy="247" r="5" fill="#7A6E9B" opacity="0.93"/>
+        <circle cx="490" cy="247" r="5" fill="#7A6E9B" opacity="0.99"/>
+        <circle cx="516" cy="247" r="5" fill="#7A6E9B" opacity="1.00"/>
+      <line x1="24" y1="299" x2="616" y2="299" stroke="#1c130c" stroke-width="2"
+            marker-start="url(#ah-butb)" marker-end="url(#ah-butb)"/>
+      <g class="diagram-shape" id="shape-nowstate" tabindex="0" role="button" aria-label="Show the present state examples">
+        <rect x="200" y="118" width="111.5" height="64" rx="3" fill="#7A6E9B"/>
+      <text x="255.75" y="146" text-anchor="middle" class="diagram-caption" fill="#FFFFFF" style="font-size:12.5px;letter-spacing:.04em" pointer-events="none">NOT STRANGE</text>
+      <text x="255.75" y="168" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" fill="#E4DFF3" pointer-events="none">how you are now</text>
+      </g>
+      <rect x="89.5" y="118" width="13" height="181" fill="#7A5A3E"/>
+      <rect x="92" y="120.5" width="8" height="176" fill="#B08968"/>
+      <text x="96" y="110" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" font-weight="700" fill="#7A5A3E" letter-spacing="1.4" pointer-events="none">AT FIRST</text>
+      <rect x="311.5" y="38" width="17.0" height="261" fill="#D98A72"/>
+      <rect x="314.0" y="40.5" width="12.0" height="256" fill="#5C7690"/>
+      <text x="200" y="317" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" font-weight="400" fill="#6E6490" pointer-events="none">strange at first, then normal</text>
+      <text x="450" y="317" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" font-weight="400" fill="#9A92B4" pointer-events="none">and it stays that way</text>
+      <text x="150" y="26" text-anchor="middle" class="diagram-caption" fill="#8A8175" style="letter-spacing:.14em" pointer-events="none">PAST</text>
+      <text x="320" y="26" text-anchor="middle" class="diagram-caption" fill="#3E6A85" pointer-events="none">NOW</text>
+      <text x="490" y="26" text-anchor="middle" class="diagram-caption" fill="#8A8175" style="letter-spacing:.14em" pointer-events="none">FUTURE</text>
+    </svg>
+        </div>
+        <div class="diagram-panels">
+          <div class="diagram-panel" id="panel-state">
+            <h4>The stretch &mdash; strange, then ordinary</h4>
+            <ul id="panel-state-list"></ul>
+          </div>
+          <div class="diagram-panel is-now" id="panel-nowstate">
+            <h4>Now &mdash; how you are today</h4>
+            <ul id="panel-nowstate-list"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="quiz">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3l3 7-3 3-3-3 3-7z"/><path d="M12 13v8"/></svg></div>
+      <div class="camp-label">The climb</div>
+      <h2>Practice</h2>
+      <div class="quiz-card">
+        <div class="progress-row">
+          <span id="progress-text">Checkpoint 1 of 14</span>
+          <span id="score-text">Score: 0</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+        <div class="q-prompt" id="q-prompt"></div>
+        <div class="q-hint" id="q-hint"></div>
+        <div class="options" id="options"></div>
+        <div class="feedback" id="feedback"></div>
+        <div class="quiz-footer">
+          <button class="next-btn" id="next-btn" disabled>Next checkpoint</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="results-camp">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 20l5-14 5 14M8 14h4"/></svg></div>
+      <div class="camp-label">Summit log</div>
+      <div id="results">
+        <div class="score" id="final-score"></div>
+        <p id="final-message"></p>
+        <button class="retry-btn" id="retry-btn">Climb again</button>
+        <div class="route-nav">
+          <a class="base-camp" href="sherpa-tensing-route-map.html">&larr; Return to base camp</a>
+          <a class="next-camp" href="sherpa-tensing-route-map.html">Choose your next camp &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+
+// ── example translations: nine languages, click to reveal ──
+var EX_TR = {"150": ["Ich habe früher geraucht.", "Antes fumaba.", "Avant, je fumais.", "Una volta fumavo.", "Dantes fumava.", "Раньше я курил.", "كنت أدخن في الماضي.", "我以前抽烟。", "以前はたばこを吸っていました。"], "151": ["An dieser Ecke war früher eine Bäckerei.", "Antes había una panadería en esta esquina.", "Il y avait une boulangerie à ce coin autrefois.", "Una volta a quest'angolo c'era un panificio.", "Antigamente havia uma padaria nesta esquina.", "Раньше на этом углу была пекарня.", "كان هناك مخبز في هذه الزاوية سابقًا.", "这个街角以前有家面包店。", "この角には以前パン屋がありました。"], "152": ["Wir sind früher jeden Tag zu Fuß zur Schule gegangen.", "Antes íbamos andando al colegio todos los días.", "Avant, nous allions à l'école à pied tous les jours.", "Una volta andavamo a scuola a piedi ogni giorno.", "Antigamente íamos a pé para a escola todos os dias.", "Раньше мы каждый день ходили в школу пешком.", "كنا نمشي إلى المدرسة كل يوم في الماضي.", "我们以前每天都走路上学。", "以前は毎日歩いて学校へ通っていました。"], "153": ["Früher mochte ich keinen Kaffee.", "Antes odiaba el café.", "Avant, je détestais le café.", "Una volta odiavo il caffè.", "Antigamente detestava café.", "Раньше я терпеть не мог кофе.", "كنت أكره القهوة في الماضي.", "我以前讨厌咖啡。", "以前はコーヒーが大嫌いでした。"], "154": ["„Ich trinke Kaffee.\" nicht „I use to drink coffee.\"", "«Bebo café.» no «I use to drink coffee.»", "« Je bois du café. » et non « I use to drink coffee. »", "«Bevo caffè.» non «I use to drink coffee.»", "«Bebo café.» e não «I use to drink coffee.»", "«Я пью кофе.», а не «I use to drink coffee.»", "«أشرب القهوة.» وليس «I use to drink coffee.»", "“我喝咖啡。”而不是 “I use to drink coffee.”", "「コーヒーを飲みます」であって「I use to drink coffee」ではありません。"], "155": ["Hast du früher hier gewohnt?", "¿Antes vivías aquí?", "Tu habitais ici, avant ?", "Una volta abitavi qui?", "Antigamente vivias aqui?", "Ты раньше здесь жил?", "هل كنت تسكن هنا سابقًا؟", "你以前住在这里吗？", "以前ここに住んでいましたか。"], "156": ["Sie ist früher mit dem Rad zur Arbeit gefahren.", "Antes iba en bici al trabajo.", "Avant, elle allait au travail à vélo.", "Una volta andava al lavoro in bici.", "Antigamente ia de bicicleta para o trabalho.", "Раньше она ездила на работу на велосипеде.", "كانت تذهب إلى العمل بالدراجة سابقًا.", "她以前骑车上班。", "以前は自転車で通勤していました。"], "157": ["Früher mochte ich es nicht.", "Antes no me gustaba.", "Avant, je n'aimais pas ça.", "Una volta non mi piaceva.", "Antigamente não gostava.", "Раньше мне это не нравилось.", "لم أكن أحبه في الماضي.", "我以前不喜欢。", "以前は好きではありませんでした。"], "158": ["Hat er früher geraucht?", "¿Antes fumaba?", "Il fumait, avant ?", "Una volta fumava?", "Antigamente fumava?", "Он раньше курил?", "هل كان يدخن سابقًا؟", "他以前抽烟吗？", "彼は以前たばこを吸っていましたか。"], "159": ["Früher schon. · Er früher auch.", "Antes sí. · Él antes también.", "Avant, oui. · Lui aussi, avant.", "Una volta sì. · Anche lui, una volta.", "Antigamente sim. · Ele também, antigamente.", "Раньше — да. · И он раньше тоже.", "في الماضي، نعم. · وهو أيضًا في الماضي.", "以前是的。· 他以前也是。", "以前はそうでした。・彼も以前はそうでした。"]};
+var TR_ORDER = ["de", "es", "fr", "it", "pt", "ru", "ar", "zh", "ja"];
+var trLang = "";
+
+function trIndex(el){ return el.getAttribute("data-tr"); }
+
+function showTr(el){
+  var row = EX_TR[trIndex(el)];
+  if (!row || !trLang) return;
+  var i = TR_ORDER.indexOf(trLang);
+  if (i < 0 || !row[i]) return;
+  var line = el.querySelector(":scope > .ex-tr");
+  if (!line){
+    line = document.createElement("span");
+    line.className = "ex-tr";
+    el.appendChild(line);
+  }
+  line.textContent = row[i];
+  if (trLang === "ar") line.setAttribute("dir", "rtl"); else line.removeAttribute("dir");
+}
+
+function hideTr(el){
+  var line = el.querySelector(":scope > .ex-tr");
+  if (line) line.remove();
+}
+
+function applyTr(){
+  document.querySelectorAll(".ex[data-tr]").forEach(function(el){
+    if (trLang) showTr(el); else hideTr(el);
+  });
+}
+
+document.querySelectorAll("#tr-bar button").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    trLang = btn.getAttribute("data-lang");
+    document.querySelectorAll("#tr-bar button").forEach(function(b){ b.classList.remove("on"); });
+    btn.classList.add("on");
+    applyTr();
+  });
+});
+
+document.querySelectorAll(".ex[data-tr]").forEach(function(el){
+  el.addEventListener("click", function(){
+    if (!trLang) return;
+    if (el.querySelector(":scope > .ex-tr")) hideTr(el); else showTr(el);
+  });
+});
+
+// ── the stretch and the present state ──
+var exA = [
+  "It was strange at first &hellip;",
+  "The shifts took me a month &hellip;",
+  "Nobody speaks on the train here &hellip;"
+];
+var exB = [
+  "&hellip; but I<em>&#39;m used to</em> it now.",
+  "&hellip; now I<em>&#39;m used to</em> working nights.",
+  "&hellip; and I<em>&#39;ve got used to</em> the quiet."
+];
+
+function renderList(id, items){
+  var ul = document.getElementById(id);
+  ul.innerHTML = "";
+  items.forEach(function(txt){
+    var li = document.createElement("li");
+    li.innerHTML = txt;
+    ul.appendChild(li);
+  });
+}
+renderList("panel-state-list", exA);
+renderList("panel-nowstate-list", exB);
+
+function pulseShape(el){
+  el.style.transformOrigin = "center";
+  el.animate(
+    [{ opacity: 1 }, { opacity: 0.6 }, { opacity: 1 }],
+    { duration: 380, easing: "ease-out" }
+  );
+}
+[["shape-state","panel-state","#7A6E9B"],
+ ["shape-nowstate","panel-nowstate","#4C4270"]].forEach(function(pair){
+  var el = document.getElementById(pair[0]);
+  if (!el) return;
+  var activate = function(){
+    pulseShape(el);
+    document.querySelectorAll(".diagram-panel").forEach(function(p){ p.style.outline = "none"; });
+    var panel = document.getElementById(pair[1]);
+    if (panel) panel.style.outline = "2px solid " + pair[2];
+  };
+  el.addEventListener("click", activate);
+  el.addEventListener("keydown", function(e){
+    if (e.key === "Enter" || e.key === " "){ e.preventDefault(); activate(); }
+  });
+});
+
+// ── QUIZ ──
+var questions = [
+  {
+    prompt: "I&#39;m used to _____ up early.",
+    hint: "What follows this to?",
+    correct: "getting",
+    options: ["getting", "get", "got", "have got"],
+    explain: "After be used to comes a noun or an -ing form. Getting is the -ing."
+  },
+  {
+    prompt: "She _____ the cold &mdash; she grew up in Oslo.",
+    hint: "A present state.",
+    correct: "is used to",
+    options: ["is used to", "used to", "was using to", "gets used"],
+    explain: "Be + used to describes how she is now. Used to would say she doesn&#39;t any more."
+  },
+  {
+    prompt: "I _____ live in Rome, but I moved back in 2019.",
+    hint: "Something ended.",
+    correct: "used to",
+    options: ["used to", "am used to", "was used to", "get used to"],
+    explain: "A past habit that has stopped, with no be: used to live."
+  },
+  {
+    prompt: "I _____ living alone &mdash; it suits me.",
+    hint: "Still true.",
+    correct: "am used to",
+    options: ["am used to", "used to", "was used to", "use to"],
+    explain: "Be used to + -ing: a present state. It says nothing has stopped."
+  },
+  {
+    prompt: "It was strange at first, but I _____ it. (get)",
+    hint: "The process of becoming familiar.",
+    correct: "got used to",
+    options: ["got used to", "used to", "was used to get", "get use to"],
+    explain: "Get used to is the becoming; be used to is the being."
+  },
+  {
+    prompt: "They _____ the noise yet.",
+    hint: "Negative, present.",
+    correct: "aren&#39;t used to",
+    options: ["aren&#39;t used to", "didn&#39;t use to", "weren&#39;t used to", "don&#39;t use to"],
+    explain: "Yet points at now, so the present of be: aren&#39;t used to."
+  },
+  {
+    prompt: "_____ you _____ the new system yet?",
+    hint: "Question, present state.",
+    correct: "Are ... used to",
+    options: ["Are ... used to", "Did ... use to", "Were ... used to", "Do ... used to"],
+    explain: "Are + subject + used to. Did you use to would ask about a stopped habit."
+  },
+  {
+    prompt: "By the end of the winter I _____ the dark mornings.",
+    hint: "A past state, not a habit.",
+    correct: "was used to",
+    options: ["was used to", "used to", "am used to", "use to"],
+    explain: "Be used to takes the past of be when the state itself is in the past."
+  },
+  {
+    prompt: "You _____ it in a week or two.",
+    hint: "The process, in the future.",
+    correct: "&#39;ll get used to",
+    options: ["&#39;ll get used to", "&#39;ll use to", "used to", "are used to"],
+    explain: "Get used to carries the becoming, and will puts it in the future."
+  },
+  {
+    prompt: "I&#39;m used to _____ nights, so the shift doesn&#39;t bother me.",
+    hint: "A thing, not an action.",
+    correct: "working",
+    options: ["working", "work", "worked", "be working"],
+    explain: "An -ing form turns the action into a thing, which is what this to needs."
+  },
+  {
+    prompt: "He _____ a beard, but he shaved it off.",
+    hint: "Something ended.",
+    correct: "used to have",
+    options: ["used to have", "is used to have", "is used to having", "was used to have"],
+    explain: "A past state that has changed, with no be: used to have."
+  },
+  {
+    prompt: "She&#39;s not used to _____ so much.",
+    hint: "After not used to.",
+    correct: "walking",
+    options: ["walking", "walk", "walked", "the walk"],
+    explain: "The negative changes nothing about what follows: still a noun or an -ing."
+  },
+  {
+    prompt: "I _____ the traffic here. It still shocks me.",
+    hint: "Negative present state.",
+    correct: "&#39;m not used to",
+    options: ["&#39;m not used to", "didn&#39;t use to", "don&#39;t use to", "wasn&#39;t used to"],
+    explain: "Still shocks me puts it firmly in the present, so the present of be."
+  },
+  {
+    prompt: "We _____ swim in the lake every summer.",
+    hint: "A repeated past action.",
+    correct: "used to",
+    options: ["used to", "are used to", "were used to", "get used to"],
+    explain: "No be, and an infinitive follows: a stopped past habit."
+  }
+];
+
+
+var current = 0;
+var score = 0;
+var answered = false;
+var order = [];
+
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+
+function renderQuestion(){
+  answered = false;
+  var q = questions[current];
+  document.getElementById("progress-text").textContent = "Checkpoint " + (current + 1) + " of " + questions.length;
+  document.getElementById("progress-fill").style.width = ((current / questions.length) * 100) + "%";
+  document.getElementById("q-prompt").textContent = q.prompt;
+  document.getElementById("q-hint").textContent = q.hint;
+  var feedback = document.getElementById("feedback");
+  feedback.className = "feedback";
+  feedback.textContent = "";
+  var optionsWrap = document.getElementById("options");
+  optionsWrap.innerHTML = "";
+  order = shuffle(q.options);
+  order.forEach(function(opt){
+    var btn = document.createElement("button");
+    btn.className = "opt-btn";
+    btn.type = "button";
+    btn.textContent = opt;
+    btn.addEventListener("click", function(){ selectOption(opt, btn); });
+    optionsWrap.appendChild(btn);
+  });
+  document.getElementById("next-btn").disabled = true;
+  document.getElementById("next-btn").textContent = (current === questions.length - 1) ? "Reach the summit" : "Next checkpoint";
+}
+
+function selectOption(opt, btn){
+  if (answered) return;
+  answered = true;
+  var q = questions[current];
+  var allBtns = document.querySelectorAll("#options .opt-btn");
+  allBtns.forEach(function(b){
+    b.disabled = true;
+    if (b.textContent === q.correct) b.classList.add("correct");
+  });
+  if (opt !== q.correct) btn.classList.add("wrong");
+  if (opt === q.correct) score++;
+  document.getElementById("score-text").textContent = "Score: " + score;
+  var feedback = document.getElementById("feedback");
+  feedback.textContent = q.explain;
+  feedback.classList.add("show");
+  document.getElementById("next-btn").disabled = false;
+}
+
+document.getElementById("next-btn").addEventListener("click", function(){
+  if (current < questions.length - 1){
+    current++;
+    renderQuestion();
+  } else {
+    document.getElementById("progress-fill").style.width = "100%";
+    document.getElementById("quiz").style.display = "none";
+    document.getElementById("results").style.display = "block";
+    document.getElementById("final-score").textContent = score + " / " + questions.length;
+    var msg = "";
+    if (score === questions.length) msg = "Clean run. You never put an infinitive after this one, and you can hear which cloud a sentence wants.";
+    else if (score >= questions.length - 2) msg = "Solid progress. Worth a look at the other cloud before you go on.";
+    else msg = "Good first attempt. The three-forms chart is the part to read again.";
+    document.getElementById("final-message").textContent = msg;
+  }
+});
+
+document.getElementById("retry-btn").addEventListener("click", function(){
+  current = 0;
+  score = 0;
+  document.getElementById("score-text").textContent = "Score: 0";
+  document.getElementById("quiz").style.display = "block";
+  document.getElementById("results").style.display = "none";
+  renderQuestion();
+});
+
+renderQuestion();
+</script>
+
+</body>
+</html>
