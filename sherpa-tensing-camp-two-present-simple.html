@@ -182,6 +182,16 @@
                  cursor:pointer;transition:background .12s ease,color .12s ease;}
   .tr-bar button:hover{color:var(--ink);}
   .tr-bar button.on{background:var(--accent);color:#FFFFFF;border-color:var(--accent);}
+  /* ── progression: the voice toggle and its lock ── */
+  .voice-bar{position:fixed;top:14px;right:16px;z-index:40;display:flex;align-items:center;gap:8px;
+             font-family:'Inter',sans-serif;font-size:12px;font-weight:700;}
+  .voice-bar a,.voice-bar span.locked{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;
+             border-radius:999px;border:1px solid var(--accent-light);background:var(--card);
+             color:var(--accent-dark);text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.14);}
+  .voice-bar a:hover{background:var(--accent);color:#FFFFFF;border-color:var(--accent);}
+  .voice-bar span.locked{opacity:.62;cursor:help;font-weight:600;}
+  .voice-bar .tick{font-size:13px;}
+  @media (max-width:820px){ .voice-bar{position:static;margin:12px 16px 0;justify-content:flex-end;} }
 </style>
 </head>
 <body>
@@ -655,6 +665,66 @@
 </main>
 
 <script>
+
+// ── progression: what you have earned so far ──
+var SHERPA_KEY = "sherpa.progress.v1";
+var SHERPA_ID = "camp-two-present-simple";
+var SHERPA_FACE = "ascent";
+var SHERPA_TWIN = "sherpa-tensing-descent-two-present-simple-passive.html";
+
+function sherpaRead(){
+  try { return JSON.parse(localStorage.getItem(SHERPA_KEY)) || {}; }
+  catch (e) { return {}; }
+}
+function sherpaWrite(p){
+  try { localStorage.setItem(SHERPA_KEY, JSON.stringify(p)); } catch (e) {}
+}
+function sherpaCount(face){
+  var p = sherpaRead(), n = 0;
+  for (var k in p) if (p[k] && p[k].face === face) n++;
+  return n;
+}
+function sherpaRecord(score, total){
+  var p = sherpaRead();
+  var prev = p[SHERPA_ID] && p[SHERPA_ID].best || 0;
+  p[SHERPA_ID] = { face: SHERPA_FACE, best: Math.max(prev, score), total: total };
+  sherpaWrite(p);
+}
+
+// the results panel appearing is the signal that a camp is done
+(function(){
+  var res = document.getElementById("results");
+  if (!res) return;
+  new MutationObserver(function(){
+    if (res.style.display === "block"){
+      var txt = (document.getElementById("final-score") || {}).textContent || "";
+      var m = txt.match(/(\d+)\s*\/\s*(\d+)/);
+      if (m) { sherpaRecord(+m[1], +m[2]); sherpaBar(); }
+    }
+  }).observe(res, { attributes: true, attributeFilter: ["style"] });
+})();
+
+function sherpaBar(){
+  var old = document.querySelector(".voice-bar");
+  if (old) old.remove();
+  var camps = sherpaCount("ascent");
+  var bar = document.createElement("div");
+  bar.className = "voice-bar";
+  if (SHERPA_FACE === "descent"){
+    bar.innerHTML = '<a href="' + SHERPA_TWIN + '"><span class="tick">&#8646;</span>Active voice</a>';
+  } else if (!SHERPA_TWIN){
+    bar.innerHTML = '<span class="locked" title="This tense has no passive anybody uses.">'
+                  + '<span class="tick">&#8709;</span>No passive</span>';
+  } else if (camps >= 13){
+    bar.innerHTML = '<a href="' + SHERPA_TWIN + '"><span class="tick">&#8646;</span>Passive voice</a>';
+  } else {
+    bar.innerHTML = '<span class="locked" title="Finish all thirteen camps to open the descent.">'
+                  + '<span class="tick">&#128274;</span>Passive &middot; ' + camps + '/13 camps</span>';
+  }
+  document.body.appendChild(bar);
+}
+sherpaBar();
+
 
 // ── example translations: nine languages, click to reveal ──
 var EX_TR = {"127": ["Wasser kocht bei 100 Grad Celsius.", "El agua hierve a 100 grados Celsius.", "L'eau bout à 100 degrés Celsius.", "L'acqua bolle a 100 gradi Celsius.", "A água ferve a 100 graus Celsius.", "Вода кипит при 100 градусах Цельсия.", "الماء يغلي عند 100 درجة مئوية.", "水在100摄氏度沸腾。", "水は摂氏100度で沸騰します。"], "128": ["Meine Schwester arbeitet als Krankenschwester.", "Mi hermana trabaja de enfermera.", "Ma sœur travaille comme infirmière.", "Mia sorella fa l'infermiera.", "A minha irmã trabalha como enfermeira.", "Моя сестра работает медсестрой.", "أختي تعمل ممرضة.", "我姐姐是护士。", "姉は看護師として働いています。"], "129": ["Wir besuchen jeden Sonntag unsere Großeltern.", "Visitamos a nuestros abuelos todos los domingos.", "Nous rendons visite à nos grands-parents tous les dimanches.", "Andiamo a trovare i nonni ogni domenica.", "Visitamos os nossos avós todos os domingos.", "Мы навещаем бабушку и дедушку каждое воскресенье.", "نزور أجدادنا كل يوم أحد.", "我们每周日都去看望祖父母。", "毎週日曜に祖父母を訪ねます。"], "130": ["Der Zug fährt morgen früh um 6:45 ab.", "El tren sale mañana a las 6:45.", "Le train part demain à 6 h 45.", "Il treno parte domani alle 6:45.", "O comboio parte amanhã às 6:45.", "Поезд отправляется завтра в 6:45.", "يغادر القطار غدًا في السادسة والنصف تقريبًا.", "火车明早6:45发车。", "電車は明朝6時45分に出ます。"], "131": ["Diese Tasche gehört meiner Kollegin.", "Este bolso es de mi compañera.", "Ce sac appartient à ma collègue.", "Questa borsa è della mia collega.", "Esta mala pertence à minha colega.", "Эта сумка принадлежит моей коллеге.", "هذه الحقيبة تخص زميلتي.", "这个包是我同事的。", "このかばんは同僚のものです。"], "132": ["Zuerst schlägt man zwei Eier auf, dann verquirlt man sie.", "Primero cascas dos huevos y luego los bates.", "D'abord on casse deux œufs, puis on les bat.", "Prima rompi due uova, poi le sbatti.", "Primeiro parte dois ovos, depois bate-os.", "Сначала разбиваете два яйца, затем взбиваете их.", "أولًا تكسر بيضتين، ثم تخفقهما.", "先打两个鸡蛋，然后搅匀。", "まず卵を二個割り、それから溶きます。"], "133": ["Sie arbeitet im Marketing.", "Trabaja en marketing.", "Elle travaille dans le marketing.", "Lavora nel marketing.", "Trabalha em marketing.", "Она работает в маркетинге.", "تعمل في التسويق.", "她在市场部工作。", "彼女はマーケティングの仕事をしています。"], "134": ["Sie wohnen nicht mehr hier.", "Ya no viven aquí.", "Ils n'habitent plus ici.", "Non abitano più qui.", "Já não vivem aqui.", "Они здесь больше не живут.", "لم يعودوا يعيشون هنا.", "他们不住这里了。", "彼らはもうここに住んでいません。"], "135": ["Spricht er Französisch?", "¿Habla francés?", "Est-ce qu'il parle français ?", "Parla francese?", "Ele fala francês?", "Он говорит по-французски?", "هل يتحدث الفرنسية؟", "他会说法语吗？", "彼はフランス語を話しますか。"], "136": ["Wo arbeitest du?", "¿Dónde trabajas?", "Où travailles-tu ?", "Dove lavori?", "Onde trabalhas?", "Где ты работаешь?", "أين تعمل؟", "你在哪里工作？", "どこで働いていますか。"], "137": ["Der Zug fährt um 6:40. · Der Film beginnt um acht.", "El tren sale a las 6:40. · La película empieza a las ocho.", "Le train part à 6 h 40. · Le film commence à huit heures.", "Il treno parte alle 6:40. · Il film inizia alle otto.", "O comboio parte às 6:40. · O filme começa às oito.", "Поезд отправляется в 6:40. · Фильм начинается в восемь.", "يغادر القطار في السادسة وأربعين دقيقة. · يبدأ الفيلم في الثامنة.", "火车6:40发车。· 电影八点开始。", "電車は6時40分発です。・映画は八時に始まります。"], "138": ["Unser Flug landet um Mitternacht.", "Nuestro vuelo aterriza a medianoche.", "Notre vol atterrit à minuit.", "Il nostro volo atterra a mezzanotte.", "O nosso voo aterra à meia-noite.", "Наш рейс приземляется в полночь.", "رحلتنا تهبط عند منتصف الليل.", "我们的航班午夜降落。", "私たちの便は真夜中に到着します。"], "139": ["„Ich treffe Ana morgen.\" ✗  „Ich treffe mich morgen mit Ana.\" ✓", "«Quedo con Ana mañana.» ✗  «He quedado con Ana mañana.» ✓", "« Je rencontre Ana demain. » ✗  « Je vais voir Ana demain. » ✓", "«Incontro Ana domani.» ✗  «Vedo Ana domani.» ✓", "«Encontro a Ana amanhã.» ✗  «Vou encontrar-me com a Ana amanhã.» ✓", "«Я встречаю Ану завтра.» ✗  «Я встречаюсь с Аной завтра.» ✓", "«ألتقي بآنا غدًا.» ✗  «سألتقي بآنا غدًا.» ✓", "“我明天见安娜。”✗ “我明天要见安娜。”✓", "「明日アナに会う」✗ 「明日アナに会うことになっている」✓"]};
