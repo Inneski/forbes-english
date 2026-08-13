@@ -149,6 +149,20 @@
     @media (max-width:640px){
       .up-link{ top:10px; left:10px; padding:7px 13px 7px 10px; font-size:13px; }
     }
+  /* ── example translations ── */
+  .ex[data-tr]{cursor:pointer;}
+  .ex[data-tr]:hover{filter:brightness(1.06);}
+  .ex-tr{display:block;margin-top:8px;padding-top:7px;border-top:1px dashed var(--accent-light);
+         font-style:normal;font-size:.95em;opacity:.92;}
+  .ex-tr[dir="rtl"]{text-align:right;}
+  .tr-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 26px;
+          font-family:'Inter',sans-serif;font-size:12.5px;color:var(--ink-soft);}
+  .tr-bar .tr-label{letter-spacing:.06em;text-transform:uppercase;font-weight:700;font-size:11px;}
+  .tr-bar button{font:inherit;font-weight:600;border:1px solid var(--accent-light);
+                 background:var(--card);color:var(--ink-soft);padding:5px 11px;border-radius:999px;
+                 cursor:pointer;transition:background .12s ease,color .12s ease;}
+  .tr-bar button:hover{color:var(--ink);}
+  .tr-bar button.on{background:var(--accent);color:#FFFFFF;border-color:var(--accent);}
 </style>
 </head>
 <body>
@@ -209,7 +223,9 @@
     </svg>
   </section>
 
-  <div class="trail-wrap">
+    <div class="tr-bar" id="tr-bar"><span class="tr-label">Examples in</span><button type="button" data-lang="" class="on">Off</button><button type="button" data-lang="de">DE</button><button type="button" data-lang="es">ES</button><button type="button" data-lang="fr">FR</button><button type="button" data-lang="it">IT</button><button type="button" data-lang="pt">PT</button><button type="button" data-lang="ru">RU</button><button type="button" data-lang="ar">AR</button><button type="button" data-lang="zh">ZH</button><button type="button" data-lang="ja">JA</button></div>
+
+      <div class="trail-wrap">
 
     <div class="camp" id="rules">
       <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 3v18M5 4h11l-3 4 3 4H5"/></svg></div>
@@ -219,32 +235,32 @@
         <div class="rule-card">
           <h3>In progress at a future moment</h3>
           <p>It starts before the moment and is still running at it.</p>
-          <div class="ex">"This time tomorrow I <em>'ll be flying</em> over the Alps."</div>
+          <div class="ex" data-tr="40">"This time tomorrow I <em>'ll be flying</em> over the Alps."</div>
         </div>
         <div class="rule-card">
           <h3>Already arranged, running its course</h3>
           <p>Nobody has to decide anything; it is simply going to be happening.</p>
-          <div class="ex">"I <em>'ll be seeing</em> her at the meeting anyway."</div>
+          <div class="ex" data-tr="41">"I <em>'ll be seeing</em> her at the meeting anyway."</div>
         </div>
         <div class="rule-card">
           <h3>Asking without asking</h3>
           <p>The politest way in English to find out someone's plans.</p>
-          <div class="ex">"<em>Will you be using</em> the car tonight?"</div>
+          <div class="ex" data-tr="42">"<em>Will you be using</em> the car tonight?"</div>
         </div>
         <div class="rule-card">
           <h3>Two futures side by side</h3>
           <p>Both in progress at the same future time.</p>
-          <div class="ex">"While you <em>'re unpacking</em>, I <em>'ll be cooking</em>."</div>
+          <div class="ex" data-tr="43">"While you <em>'re unpacking</em>, I <em>'ll be cooking</em>."</div>
         </div>
         <div class="rule-card">
           <h3>Guessing what is going on now</h3>
           <p>A confident assumption about this very moment.</p>
-          <div class="ex">"Don't call &mdash; he <em>'ll be driving</em>."</div>
+          <div class="ex" data-tr="44">"Don't call &mdash; he <em>'ll be driving</em>."</div>
         </div>
         <div class="rule-card">
           <h3>Softening a plain future</h3>
           <p>Less pushy than <em>will do</em>, because nobody chose it.</p>
-          <div class="ex">"I <em>'ll be sending</em> the invoice on Friday."</div>
+          <div class="ex" data-tr="45">"I <em>'ll be sending</em> the invoice on Friday."</div>
         </div>
       </div>
     </div>
@@ -257,22 +273,22 @@
         <div class="rule-card">
           <h3>Affirmative</h3>
           <p>subject + will be + <strong>-ing</strong></p>
-          <div class="ex">"They <em>'ll be waiting</em> at arrivals."</div>
+          <div class="ex" data-tr="46">"They <em>'ll be waiting</em> at arrivals."</div>
         </div>
         <div class="rule-card">
           <h3>Negative</h3>
           <p>subject + will not (won't) be + -ing</p>
-          <div class="ex">"I <em>won't be working</em> on Friday."</div>
+          <div class="ex" data-tr="47">"I <em>won't be working</em> on Friday."</div>
         </div>
         <div class="rule-card">
           <h3>Yes / No questions</h3>
           <p>Will + subject + be + -ing?</p>
-          <div class="ex">"<em>Will you be joining</em> us?"</div>
+          <div class="ex" data-tr="48">"<em>Will you be joining</em> us?"</div>
         </div>
         <div class="rule-card">
           <h3>Wh- questions</h3>
           <p>question word + will + subject + be + -ing?</p>
-          <div class="ex">"Where <em>will you be staying</em>?"</div>
+          <div class="ex" data-tr="49">"Where <em>will you be staying</em>?"</div>
         </div>
       </div>
       <div class="chart-wrap">
@@ -458,6 +474,56 @@
 </main>
 
 <script>
+
+// ── example translations: nine languages, click to reveal ──
+var EX_TR = {"40": ["Morgen um diese Zeit fliege ich über die Alpen.", "Mañana a esta hora estaré volando sobre los Alpes.", "Demain à cette heure-ci, je survolerai les Alpes.", "Domani a quest'ora starò sorvolando le Alpi.", "Amanhã a esta hora estarei a sobrevoar os Alpes.", "Завтра в это время я буду лететь над Альпами.", "غدًا في مثل هذا الوقت سأكون محلقًا فوق جبال الألب.", "明天这个时候我将在飞越阿尔卑斯山。", "明日の今ごろはアルプスの上空を飛んでいるでしょう。"], "41": ["Ich sehe sie sowieso bei der Besprechung.", "De todas formas la veré en la reunión.", "Je la verrai de toute façon à la réunion.", "La vedrò comunque alla riunione.", "De qualquer forma vou vê-la na reunião.", "Я всё равно увижу её на совещании.", "سأراها على أي حال في الاجتماع.", "反正我开会时会见到她。", "どのみち会議で彼女に会います。"], "42": ["Brauchst du heute Abend das Auto?", "¿Vas a usar el coche esta noche?", "Tu utiliseras la voiture ce soir ?", "Userai la macchina stasera?", "Vais usar o carro esta noite?", "Ты будешь пользоваться машиной сегодня вечером?", "هل ستستخدم السيارة الليلة؟", "你今晚会用车吗？", "今夜、車を使いますか。"], "43": ["Während du auspackst, koche ich.", "Mientras deshaces las maletas, yo estaré cocinando.", "Pendant que tu déballes, je ferai la cuisine.", "Mentre disfai i bagagli, io cucinerò.", "Enquanto desfazes as malas, eu estarei a cozinhar.", "Пока ты разбираешь вещи, я буду готовить.", "بينما تفرغ الأمتعة، سأكون أطبخ.", "你收拾行李的时候，我会在做饭。", "あなたが荷ほどきをしている間、私は料理をしています。"], "44": ["Ruf nicht an — er fährt gerade.", "No llames: estará conduciendo.", "N'appelle pas — il sera au volant.", "Non chiamare: starà guidando.", "Não ligues — ele estará a conduzir.", "Не звони — он будет за рулём.", "لا تتصل — سيكون يقود.", "别打电话——他会在开车。", "電話しないで。彼は運転中でしょう。"], "45": ["Ich schicke die Rechnung am Freitag.", "Enviaré la factura el viernes.", "J'enverrai la facture vendredi.", "Invierò la fattura venerdì.", "Vou enviar a fatura na sexta-feira.", "Я отправлю счёт в пятницу.", "سأرسل الفاتورة يوم الجمعة.", "我周五会把发票发出去。", "金曜日に請求書をお送りします。"], "46": ["Sie warten in der Ankunftshalle.", "Estarán esperando en llegadas.", "Ils attendront aux arrivées.", "Aspetteranno agli arrivi.", "Estarão à espera nas chegadas.", "Они будут ждать в зоне прилёта.", "سيكونون في انتظارك في صالة الوصول.", "他们会在到达大厅等着。", "彼らは到着ロビーで待っているでしょう。"], "47": ["Am Freitag arbeite ich nicht.", "El viernes no estaré trabajando.", "Vendredi, je ne travaillerai pas.", "Venerdì non lavorerò.", "Na sexta não estarei a trabalhar.", "В пятницу я не буду работать.", "لن أكون أعمل يوم الجمعة.", "周五我不会在上班。", "金曜日は仕事をしていません。"], "48": ["Kommst du mit?", "¿Nos vas a acompañar?", "Tu te joindras à nous ?", "Ti unirai a noi?", "Vais juntar-te a nós?", "Ты к нам присоединишься?", "هل ستنضم إلينا؟", "你会加入我们吗？", "ご一緒されますか。"], "49": ["Wo wirst du wohnen?", "¿Dónde te vas a alojar?", "Où vas-tu loger ?", "Dove alloggerai?", "Onde vais ficar?", "Где ты будешь жить?", "أين ستقيم؟", "你会住在哪里？", "どこに滞在する予定ですか。"]};
+var TR_ORDER = ["de", "es", "fr", "it", "pt", "ru", "ar", "zh", "ja"];
+var trLang = "";
+
+function trIndex(el){ return el.getAttribute("data-tr"); }
+
+function showTr(el){
+  var row = EX_TR[trIndex(el)];
+  if (!row || !trLang) return;
+  var i = TR_ORDER.indexOf(trLang);
+  if (i < 0 || !row[i]) return;
+  var line = el.querySelector(":scope > .ex-tr");
+  if (!line){
+    line = document.createElement("span");
+    line.className = "ex-tr";
+    el.appendChild(line);
+  }
+  line.textContent = row[i];
+  if (trLang === "ar") line.setAttribute("dir", "rtl"); else line.removeAttribute("dir");
+}
+
+function hideTr(el){
+  var line = el.querySelector(":scope > .ex-tr");
+  if (line) line.remove();
+}
+
+function applyTr(){
+  document.querySelectorAll(".ex[data-tr]").forEach(function(el){
+    if (trLang) showTr(el); else hideTr(el);
+  });
+}
+
+document.querySelectorAll("#tr-bar button").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    trLang = btn.getAttribute("data-lang");
+    document.querySelectorAll("#tr-bar button").forEach(function(b){ b.classList.remove("on"); });
+    btn.classList.add("on");
+    applyTr();
+  });
+});
+
+document.querySelectorAll(".ex[data-tr]").forEach(function(el){
+  el.addEventListener("click", function(){
+    if (!trLang) return;
+    if (el.querySelector(":scope > .ex-tr")) hideTr(el); else showTr(el);
+  });
+});
+
 // ── NOW vs FUTURE CONTINUOUS diagram interactivity ──
 var fcExamples = [
   "This time tomorrow I <em>'ll be flying</em> over the Alps.",
