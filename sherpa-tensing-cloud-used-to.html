@@ -766,8 +766,8 @@ function renderQuestion(){
   var q = questions[current];
   document.getElementById("progress-text").textContent = "Checkpoint " + (current + 1) + " of " + questions.length;
   document.getElementById("progress-fill").style.width = ((current / questions.length) * 100) + "%";
-  document.getElementById("q-prompt").textContent = q.prompt;
-  document.getElementById("q-hint").textContent = q.hint;
+  document.getElementById("q-prompt").innerHTML = q.prompt;
+  document.getElementById("q-hint").innerHTML = q.hint;
   var feedback = document.getElementById("feedback");
   feedback.className = "feedback";
   feedback.textContent = "";
@@ -778,7 +778,8 @@ function renderQuestion(){
     var btn = document.createElement("button");
     btn.className = "opt-btn";
     btn.type = "button";
-    btn.textContent = opt;
+    btn.innerHTML = opt;
+    btn.dataset.opt = opt;
     btn.addEventListener("click", function(){ selectOption(opt, btn); });
     optionsWrap.appendChild(btn);
   });
@@ -793,13 +794,13 @@ function selectOption(opt, btn){
   var allBtns = document.querySelectorAll("#options .opt-btn");
   allBtns.forEach(function(b){
     b.disabled = true;
-    if (b.textContent === q.correct) b.classList.add("correct");
+    if (b.dataset.opt === q.correct) b.classList.add("correct");
   });
   if (opt !== q.correct) btn.classList.add("wrong");
   if (opt === q.correct) score++;
   document.getElementById("score-text").textContent = "Score: " + score;
   var feedback = document.getElementById("feedback");
-  feedback.textContent = q.explain;
+  feedback.innerHTML = q.explain;
   feedback.classList.add("show");
   document.getElementById("next-btn").disabled = false;
 }
