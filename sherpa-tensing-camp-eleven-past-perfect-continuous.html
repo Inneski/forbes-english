@@ -1,0 +1,702 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sherpa Tensing - Camp Eleven: The Hours Before the Hut (Past Perfect Continuous)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1E1030;
+    --ink-soft:#584A6E;
+    --paper:#FAF7FD;
+    --card:#FFFFFF;
+    --accent:#4B1A7A;
+    --accent-dark:#331052;
+    --accent-light:#D9C9EE;
+    --accent-lighter:#F2EBFA;
+    --good:#1E7A4C;
+    --good-bg:#E5F5EC;
+    --bad:#B23A3A;
+    --bad-bg:#FBEAEA;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;}
+  h1,h2,h3{font-family:'Fraunces',serif;font-weight:600;margin:0 0 .4em;color:var(--ink);}
+  .wordmark{display:flex;align-items:center;justify-content:space-between;max-width:1000px;margin:0 auto;padding:28px 24px 0;}
+  .wordmark .brand{font-family:'Fraunces',serif;font-weight:700;font-size:20px;letter-spacing:.02em;}
+  .wordmark .brand span{color:var(--accent);}
+  .wordmark .sub{font-size:13px;color:var(--ink-soft);}
+
+  .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px;}
+  .chart-wrap{margin-top:24px;background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:18px 20px;overflow-x:auto;}
+  .chart-wrap h3{font-size:15px;margin-bottom:4px;}
+  .chart-wrap + .chart-wrap{margin-top:16px;}
+  .chart-note{font-size:13px;color:var(--ink-soft);margin-bottom:14px;}
+  table.conj{width:100%;border-collapse:collapse;font-size:14px;min-width:520px;}
+  table.conj th, table.conj td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--accent-light);}
+  table.conj th{font-family:'Fraunces',serif;font-weight:600;color:var(--accent-dark);font-size:13px;text-transform:uppercase;letter-spacing:.03em;}
+  table.conj td.subj{font-weight:600;}
+  table.conj tr:last-child td{border-bottom:none;}
+  main{max-width:1000px;margin:0 auto;padding:0 24px 80px;}
+  .hero{display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:center;padding:40px 0 56px;}
+  .hero .eyebrow{
+    display:inline-block;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--accent-dark);background:var(--accent-lighter);padding:6px 12px;border-radius:999px;margin-bottom:14px;
+  }
+  .hero h1{font-size:38px;line-height:1.12;}
+  .hero p{color:var(--ink-soft);font-size:16px;max-width:46ch;}
+  .hero-diagram{width:100%;display:block;}
+  @media (max-width:720px){.hero{grid-template-columns:1fr;}}
+
+  .trail-wrap{position:relative;padding-left:66px;}
+  .trail-wrap::before{
+    content:'';position:absolute;left:23px;top:8px;bottom:8px;width:2px;
+    background:repeating-linear-gradient(to bottom, var(--accent) 0 8px, transparent 8px 18px);
+  }
+  .camp{position:relative;margin-bottom:64px;}
+  .camp .marker{position:absolute;left:-66px;top:0;width:46px;height:46px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;}
+  .camp .marker svg{width:18px;height:18px;}
+  .camp .camp-label{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-dark);margin-bottom:6px;}
+
+  .rule-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px;}
+  .rule-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:18px 20px;}
+  .rule-card h3{font-size:16px;margin-bottom:8px;}
+  .rule-card p{margin:0 0 8px;font-size:14px;color:var(--ink-soft);}
+  .rule-card .ex{font-size:14px;font-style:italic;color:var(--accent-dark);border-left:2px solid var(--accent);padding-left:10px;}
+
+  .signal-groups{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px;}
+  .signal-box{background:var(--accent-lighter);border-radius:var(--radius);padding:18px 20px;}
+  .signal-box h3{font-size:15px;}
+  .signal-box ul{margin:8px 0 0;padding-left:18px;font-size:14px;color:var(--ink);}
+  .signal-box li{margin-bottom:4px;}
+  @media (max-width:600px){.signal-groups{grid-template-columns:1fr;}}
+
+  /* ── THE INTERACTIVE DIAGRAM CAMP ── */
+  .diagram-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:26px 26px 22px;}
+  .diagram-intro{font-size:14px;color:var(--ink-soft);margin-bottom:18px;max-width:60ch;}
+  .diagram-stage{width:100%;background:var(--paper);border:1px solid var(--accent-light);border-radius:var(--radius);padding:12px;}
+  .diagram-stage svg{width:100%;height:auto;display:block;}
+  .dg-reveal{opacity:0;transition:opacity .2s ease;}
+  .dg-reveal.is-shown{opacity:1;}
+  .diagram-shape{cursor:pointer;transition:opacity .15s ease;}
+  .diagram-shape:hover{opacity:.86;}
+  .diagram-shape:focus{outline:none;}
+  .diagram-shape:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px;}
+  .diagram-caption{font-family:'Inter',sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;}
+  .diagram-panels{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px;}
+  .diagram-panel{border-radius:12px;padding:16px 18px;border:1px solid var(--accent-light);background:var(--accent-lighter);}
+  .diagram-panel.is-now{background:#EAF1F6;border-color:#C9DCE6;}
+  .diagram-panel h4{margin:0 0 8px;font-family:'Fraunces',serif;font-size:14px;letter-spacing:.03em;text-transform:uppercase;color:var(--accent-dark);}
+  .diagram-panel.is-now h4{color:#3E6A85;}
+  .diagram-panel ul{margin:0;padding-left:18px;font-size:14px;}
+  .diagram-panel li{margin-bottom:5px;}
+  .diagram-panel li em{font-style:normal;font-weight:600;}
+  @media (max-width:600px){.diagram-panels{grid-template-columns:1fr;}}
+
+  .route-link{display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-weight:600;font-size:14px;
+    padding:9px 18px;border-radius:999px;border:1px solid var(--accent);color:var(--accent-dark);}
+  .route-link:hover{background:var(--accent-lighter);}
+  .quiz-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:24px 24px 20px;}
+  .progress-row{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--ink-soft);margin-bottom:10px;}
+  .progress-track{height:6px;background:var(--accent-lighter);border-radius:999px;overflow:hidden;margin-bottom:20px;}
+  .progress-fill{height:100%;background:var(--accent);border-radius:999px;width:0%;transition:width .3s ease;}
+  .q-prompt{font-size:17px;margin-bottom:4px;}
+  .q-hint{font-size:13px;color:var(--ink-soft);margin-bottom:16px;font-style:italic;}
+  .options{display:grid;gap:10px;}
+  .opt-btn{text-align:left;padding:12px 16px;border-radius:10px;border:1px solid var(--accent-light);background:#fff;font-family:'Inter',sans-serif;font-size:15px;color:var(--ink);cursor:pointer;}
+  .opt-btn:hover{border-color:var(--accent);}
+  .opt-btn.correct{background:var(--good-bg);border-color:var(--good);color:var(--good);font-weight:600;}
+  .opt-btn.wrong{background:var(--bad-bg);border-color:var(--bad);color:var(--bad);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:16px;padding:14px 16px;border-radius:10px;background:var(--accent-lighter);font-size:14px;display:none;}
+  .feedback.show{display:block;}
+  .quiz-footer{display:flex;justify-content:flex-end;margin-top:20px;}
+  .next-btn{background:var(--accent);color:#fff;border:none;padding:11px 22px;border-radius:999px;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;cursor:pointer;}
+  .next-btn:disabled{background:var(--accent-light);cursor:not-allowed;}
+
+  #results{display:none;text-align:center;padding:12px 0 8px;}
+  #results .score{font-family:'Fraunces',serif;font-size:52px;color:var(--accent);margin:8px 0;}
+  #results p{color:var(--ink-soft);}
+  .retry-btn{margin-top:12px;background:transparent;border:1px solid var(--accent);color:var(--accent-dark);padding:10px 20px;border-radius:999px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
+  .route-nav{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:22px;padding-top:18px;border-top:1px solid var(--accent-light);}
+  .route-nav a{display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;padding:10px 20px;border-radius:999px;}
+  .route-nav a.next-camp{background:var(--accent);color:#fff;}
+  .route-nav a.base-camp{background:transparent;border:1px solid var(--ink-soft);color:var(--ink-soft);}
+  .route-nav a:hover{opacity:0.88;}
+
+    /* ── Persistent way back. Pinned, so it is reachable from anywhere on
+       the page rather than only after scrolling to the bottom. ── */
+    /* Clear a band at the top of the page for the pinned link so it never
+       lands on the wordmark. */
+    body{ padding-top:46px; }
+    .up-link{
+      position:fixed; top:16px; left:16px; z-index:60;
+      display:inline-flex; align-items:center; gap:8px;
+      padding:9px 16px 9px 13px; border-radius:999px;
+      background:var(--card,#fff); color:var(--accent-dark,#333);
+      border:1.5px solid var(--accent-light,rgba(0,0,0,.18));
+      font:600 14px/1 'Inter',system-ui,sans-serif; letter-spacing:.01em;
+      text-decoration:none; box-shadow:0 2px 10px rgba(0,0,0,.10);
+      transition:background .18s ease, color .18s ease, transform .18s ease;
+    }
+    .up-link:hover{ background:var(--accent,#333); color:#fff; transform:translateX(-2px); }
+    .up-link .arw{ font-size:15px; line-height:1; }
+    @media print{ .up-link{ display:none; } }
+    @media (max-width:640px){
+      .up-link{ top:10px; left:10px; padding:7px 13px 7px 10px; font-size:13px; }
+    }
+</style>
+</head>
+<body>
+<a class="up-link" href="sherpa-tensing-route-map.html"><span class="arw" aria-hidden="true">&larr;</span>Route map</a>
+
+
+<div class="wordmark">
+  <div class="brand">Sherpa <span>Tensing</span></div>
+  <div class="sub">Forbes English &middot; a route up the tenses</div>
+</div>
+
+<main>
+
+  <section class="hero" id="hero">
+    <div>
+      <span class="eyebrow">Camp eleven &middot; past perfect continuous</span>
+      <h1>The hours before the hut</h1>
+      <p>Camp eight measures up to now. Camp eleven moves the whole measurement back: an activity that <em>had been</em> running for a while before something else in the past happened &mdash; and how things looked by the time it did.</p>
+    </div>
+    <svg class="hero-diagram" viewBox="0 0 640 344" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A timeline from past to future. A pale purple band of time carries a trail of chevrons between two brown past simple pegs, the second marking the past moment you are measuring to. A purple zone above holds the evidence visible at that moment. Now is a narrow column further right.">
+      <defs>
+
+        <marker id="ah-ppc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#1c130c"/>
+        </marker>
+      </defs>
+      <rect x="0" y="0" width="640" height="344" fill="var(--paper)"/>
+      <rect x="76" y="196" width="176" height="103" fill="#E0D5F1"/>
+      <path d="M97.5,230 L110.5,247 L97.5,264" fill="none" stroke="#4B1A7A" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.20"/>
+        <path d="M121.5,230 L134.5,247 L121.5,264" fill="none" stroke="#4B1A7A" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.36"/>
+        <path d="M145.5,230 L158.5,247 L145.5,264" fill="none" stroke="#4B1A7A" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.52"/>
+        <path d="M169.5,230 L182.5,247 L169.5,264" fill="none" stroke="#4B1A7A" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.68"/>
+        <path d="M193.5,230 L206.5,247 L193.5,264" fill="none" stroke="#4B1A7A" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.84"/>
+        <path d="M217.5,230 L230.5,247 L217.5,264" fill="none" stroke="#4B1A7A" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" opacity="1.00"/>
+      <line x1="24" y1="299" x2="616" y2="299" stroke="#1c130c" stroke-width="2"
+            marker-start="url(#ah-ppc)" marker-end="url(#ah-ppc)"/>
+      <rect x="124" y="118" width="124" height="64" rx="3" fill="#4B1A7A"/>
+      <text x="186" y="146" text-anchor="middle" class="diagram-caption" fill="#FFFFFF" style="font-size:12.5px;letter-spacing:.04em" pointer-events="none">THE EVIDENCE</text>
+      <text x="186" y="168" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" fill="#DCCBF0" pointer-events="none">how things stood</text>
+      <rect x="69.5" y="118" width="13" height="181" fill="#7A5A3E"/>
+      <rect x="72" y="120.5" width="8" height="176" fill="#B08968"/>
+      <text x="76" y="110" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" font-weight="700" fill="#7A5A3E" letter-spacing="1.4" pointer-events="none">SINCE</text>
+      <rect x="245.5" y="118" width="13" height="181" fill="#7A5A3E"/>
+      <rect x="248" y="120.5" width="8" height="176" fill="#B08968"/>
+      <text x="252" y="110" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" font-weight="700" fill="#7A5A3E" letter-spacing="1.4" pointer-events="none">WHEN</text>
+      <rect x="311.5" y="38" width="17.0" height="261" fill="#D98A72"/>
+      <rect x="314.0" y="40.5" width="12.0" height="256" fill="#5C7690"/>
+      <text x="150" y="317" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" font-weight="400" fill="#6E5A8A" pointer-events="none">it had been running for a while</text>
+      <text x="420" y="317" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" font-weight="400" fill="#5F7C90" pointer-events="none">and you are telling it now</text>
+      <text x="150" y="26" text-anchor="middle" class="diagram-caption" fill="#8A8175" style="letter-spacing:.14em" pointer-events="none">PAST</text>
+      <text x="320" y="26" text-anchor="middle" class="diagram-caption" fill="#3E6A85" pointer-events="none">NOW</text>
+      <text x="490" y="26" text-anchor="middle" class="diagram-caption" fill="#8A8175" style="letter-spacing:.14em" pointer-events="none">FUTURE</text>
+    </svg>
+  </section>
+
+  <div class="trail-wrap">
+
+    <div class="camp" id="rules">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 3v18M5 4h11l-3 4 3 4H5"/></svg></div>
+      <div class="camp-label">Basecamp briefing</div>
+      <h2>When to use it</h2>
+      <div class="rule-grid">
+        <div class="rule-card">
+          <h3>How long, up to a past moment</h3>
+          <p>It had been running for a while before something else in the past happened.</p>
+          <div class="ex">"We <em>had been walking</em> for six hours when we saw the hut."</div>
+        </div>
+        <div class="rule-card">
+          <h3>The cause of a past state</h3>
+          <p>Why somebody or something was the way you found them.</p>
+          <div class="ex">"His hands were shaking. He <em>had been carrying</em> the pack all day."</div>
+        </div>
+        <div class="rule-card">
+          <h3>Repeated, up to that point</h3>
+          <p>The same thing over and over, right up to the moment it stopped.</p>
+          <div class="ex">"She <em>had been calling</em> all morning before he answered."</div>
+        </div>
+        <div class="rule-card">
+          <h3>Reported speech</h3>
+          <p>A present perfect continuous shifts back one step when you report it.</p>
+          <div class="ex">"I&#39;ve been waiting." &rarr; He said he <em>had been waiting</em>.</div>
+        </div>
+        <div class="rule-card">
+          <h3>The third conditional</h3>
+          <p>An unreal past, with the activity rather than the result in focus.</p>
+          <div class="ex">"If I <em>had been paying</em> attention, I would have seen it."</div>
+        </div>
+        <div class="rule-card">
+          <h3>The activity, not the total</h3>
+          <p>How the time was filled, rather than what came out of it.</p>
+          <div class="ex">"I <em>had been reading</em> it." (not necessarily finished)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="form">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg></div>
+      <div class="camp-label">Building the tense</div>
+      <h2>How it's built</h2>
+      <div class="form-grid">
+        <div class="rule-card">
+          <h3>Affirmative</h3>
+          <p>subject + had been + <strong>-ing</strong></p>
+          <div class="ex">"They <em>had been waiting</em> for hours."</div>
+        </div>
+        <div class="rule-card">
+          <h3>Negative</h3>
+          <p>subject + hadn't been + -ing</p>
+          <div class="ex">"It <em>hadn&#39;t been raining</em> long."</div>
+        </div>
+        <div class="rule-card">
+          <h3>Yes / No questions</h3>
+          <p>Had + subject + been + -ing?</p>
+          <div class="ex">"<em>Had you been running</em>?"</div>
+        </div>
+        <div class="rule-card">
+          <h3>Wh- questions</h3>
+          <p>How long + had + subject + been + -ing?</p>
+          <div class="ex">"How long <em>had they been driving</em>?"</div>
+        </div>
+      </div>      <div class="chart-wrap">
+        <h3>Conjugation chart</h3>
+        <p class="chart-note">Four pieces, and not one of them changes for the subject. <em>Had</em> is the same for everybody, <em>been</em> never moves, and the <em>-ing</em> form is fixed. This is the easiest tense on the mountain to conjugate and one of the hardest to know when to use.</p>
+        <table class="conj">
+          <thead><tr><th>Subject</th><th>Affirmative</th><th>Negative</th><th>Question</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">I</td><td>I had been working</td><td>I hadn't been working</td><td>Had I been working?</td></tr>
+            <tr><td class="subj">You</td><td>You had been working</td><td>You hadn't been working</td><td>Had you been working?</td></tr>
+            <tr><td class="subj">He / She / It</td><td>She had been working</td><td>She hadn't been working</td><td>Had she been working?</td></tr>
+            <tr><td class="subj">We</td><td>We had been working</td><td>We hadn't been working</td><td>Had we been working?</td></tr>
+            <tr><td class="subj">They</td><td>They had been working</td><td>They hadn't been working</td><td>Had they been working?</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="chart-wrap">
+        <h3>The verbs that refuse the -ing</h3>
+        <p class="chart-note">A state is not an activity, so it cannot be in progress. When the meaning is a state, camp ten takes over: <em>had known</em>, never <em>had been knowing</em>.</p>
+        <table class="conj">
+          <thead><tr><th>Group</th><th>Verbs</th><th>Say this instead</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">Thinking</td><td>know, believe, understand</td><td>"I <em>had known</em> him for years."</td></tr>
+            <tr><td class="subj">Feeling</td><td>like, love, hate, want</td><td>"She <em>had wanted</em> it since March."</td></tr>
+            <tr><td class="subj">Having</td><td>own, belong, have (= possess)</td><td>"They <em>had had</em> the flat a year."</td></tr>
+            <tr><td class="subj">Being</td><td>be, seem</td><td>"It <em>had been</em> quiet all night."</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="chart-wrap">
+        <h3>Three mistakes worth naming</h3>
+        <p class="chart-note">Almost every error with this tense is one of these three.</p>
+        <table class="conj">
+          <thead><tr><th>Not this</th><th>This</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">I was walking for six hours when we arrived.</td><td>I had been walking for six hours when we arrived.</td><td>A duration measured back from a past moment needs the perfect, not camp six.</td></tr>
+            <tr><td class="subj">I had been knowing him for years.</td><td>I had known him for years.</td><td>State verbs refuse the continuous, so camp ten takes it.</td></tr>
+            <tr><td class="subj">I had been reading three books.</td><td>I had read three books.</td><td>A number is a result, and results belong to camp ten.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <div class="camp" id="vs-simple">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3v18"/><path d="M7 8l-4 4 4 4M17 8l4 4-4 4"/></svg></div>
+      <div class="camp-label">The fork in the path</div>
+      <h2>Continuous or simple?</h2>
+      <div class="chart-wrap" style="margin-top:18px">
+        <p class="chart-note" style="margin-bottom:16px">Camp ten and camp eleven both sit behind a past moment. The question is only ever which half you are pointing at: the <em>activity</em> that filled the time, or the <em>result</em> that was sitting there when you arrived.</p>
+        <table class="conj">
+          <thead><tr><th>Question</th><th>Past perfect continuous</th><th>Past perfect simple</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">What is in focus?</td><td>The activity and how long it ran.<br>"He <em>had been painting</em>."</td><td>The finished result.<br>"He <em>had painted</em> the fence."</td></tr>
+            <tr><td class="subj">With a number?</td><td>Never. "He had been writing three emails" is wrong.</td><td>Always. "He had written three emails."</td></tr>
+            <tr><td class="subj">With a state verb?</td><td>Never &mdash; know, be, own refuse it.</td><td>Always. "He had known her for years."</td></tr>
+            <tr><td class="subj">And camp six?</td><td>Measures a <em>duration</em> up to the past moment.</td><td>Camp six just says what was going on at it: "I <em>was walking</em> when&hellip;"</td></tr>
+          </tbody>
+        </table>
+        <p class="example" style="margin-top:14px">The pair that shows the whole difference: <em>"I was walking when the storm hit"</em> &mdash; that is what was going on. <em>"I had been walking for six hours when the storm hit"</em> &mdash; that is how long it had been going on for. Camp six gives you the scene; camp eleven gives you the bill.</p>
+      </div>
+      <div class="btnrow" style="margin-top:16px">
+        <a class="route-link" href="sherpa-tensing-camp-ten-past-perfect.html">&larr; Camp ten &middot; past perfect</a>
+        <a class="route-link" href="sherpa-tensing-camp-eight-present-perfect-continuous.html">Camp eight &middot; present perfect continuous</a>
+      </div>
+    </div>
+
+    <div class="camp" id="signals">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg></div>
+      <div class="camp-label">Trail markers</div>
+      <h2>Signal words</h2>
+      <div class="signal-groups">
+        <div class="signal-box">
+          <h3>How long it had run</h3>
+          <ul>
+            <li>for &middot; since</li>
+            <li>how long &hellip;?</li>
+            <li>all morning / all day / all night</li>
+            <li>before &middot; by the time</li>
+            <li>until then</li>
+            <li>the whole time</li>
+          </ul>
+        </div>
+        <div class="signal-box">
+          <h3>The evidence, back then</h3>
+          <ul>
+            <li>he was out of breath</li>
+            <li>the ground was still wet</li>
+            <li>her eyes were red</li>
+            <li>there was paint on his hands</li>
+            <li>the kitchen smelled of it</li>
+            <li>that was why they were late</li>
+          </ul>
+        </div>
+      </div>
+      <p class="example" style="margin-top:14px">A useful habit: find the past simple first &mdash; that is the moment you are standing on. Then ask how long the other thing had already been going when you got there.</p>
+    </div>
+
+    <div class="camp" id="order">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="4" width="8" height="16"/><rect x="13" y="4" width="8" height="16"/></svg></div>
+      <div class="camp-label">Interactive</div>
+      <h2>The stretch, and what it left</h2>
+      <div class="diagram-card">
+        <p class="diagram-intro">Two brown pegs mark past simple events: the one on the left is where it started, the one on the right is the moment you are measuring to. Between them the trail is the same action happening over and over &mdash; faint behind, solid at the head. The purple zone above is what that activity had left by the time you arrived. NOW stands well clear on the right, because none of this reaches it. Click either shape to see it in a sentence.</p>
+        <div class="diagram-stage">
+          <svg viewBox="0 0 640 344" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A timeline from past to future. A pale purple band of time carries a trail of chevrons between two brown past simple pegs, the second marking the past moment you are measuring to. A purple zone above holds the evidence visible at that moment. Now is a narrow column further right.">
+      <defs>
+
+        <marker id="ah-ppcb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#1c130c"/>
+        </marker>
+      </defs>
+      <rect x="0" y="0" width="640" height="344" fill="var(--paper)"/>
+      <g class="diagram-shape" id="shape-run" tabindex="0" role="button" aria-label="Show the duration examples">
+        <rect x="76" y="196" width="176" height="103" fill="#E0D5F1"/>
+      </g>
+      <path d="M97.5,230 L110.5,247 L97.5,264" fill="none" stroke="#4B1A7A" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.20"/>
+        <path d="M121.5,230 L134.5,247 L121.5,264" fill="none" stroke="#4B1A7A" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.36"/>
+        <path d="M145.5,230 L158.5,247 L145.5,264" fill="none" stroke="#4B1A7A" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.52"/>
+        <path d="M169.5,230 L182.5,247 L169.5,264" fill="none" stroke="#4B1A7A" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.68"/>
+        <path d="M193.5,230 L206.5,247 L193.5,264" fill="none" stroke="#4B1A7A" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.84"/>
+        <path d="M217.5,230 L230.5,247 L217.5,264" fill="none" stroke="#4B1A7A" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" opacity="1.00"/>
+      <line x1="24" y1="299" x2="616" y2="299" stroke="#1c130c" stroke-width="2"
+            marker-start="url(#ah-ppcb)" marker-end="url(#ah-ppcb)"/>
+      <g class="diagram-shape" id="shape-evidence" tabindex="0" role="button" aria-label="Show the evidence examples">
+        <rect x="124" y="118" width="124" height="64" rx="3" fill="#4B1A7A"/>
+      <text x="186" y="146" text-anchor="middle" class="diagram-caption" fill="#FFFFFF" style="font-size:12.5px;letter-spacing:.04em" pointer-events="none">THE EVIDENCE</text>
+      <text x="186" y="168" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" fill="#DCCBF0" pointer-events="none">how things stood</text>
+      </g>
+      <rect x="69.5" y="118" width="13" height="181" fill="#7A5A3E"/>
+      <rect x="72" y="120.5" width="8" height="176" fill="#B08968"/>
+      <text x="76" y="110" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" font-weight="700" fill="#7A5A3E" letter-spacing="1.4" pointer-events="none">SINCE</text>
+      <rect x="245.5" y="118" width="13" height="181" fill="#7A5A3E"/>
+      <rect x="248" y="120.5" width="8" height="176" fill="#B08968"/>
+      <text x="252" y="110" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" font-weight="700" fill="#7A5A3E" letter-spacing="1.4" pointer-events="none">WHEN</text>
+      <rect x="311.5" y="38" width="17.0" height="261" fill="#D98A72"/>
+      <rect x="314.0" y="40.5" width="12.0" height="256" fill="#5C7690"/>
+      <text x="150" y="317" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" font-weight="400" fill="#6E5A8A" pointer-events="none">it had been running for a while</text>
+      <text x="420" y="317" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" font-weight="400" fill="#5F7C90" pointer-events="none">and you are telling it now</text>
+      <text x="150" y="26" text-anchor="middle" class="diagram-caption" fill="#8A8175" style="letter-spacing:.14em" pointer-events="none">PAST</text>
+      <text x="320" y="26" text-anchor="middle" class="diagram-caption" fill="#3E6A85" pointer-events="none">NOW</text>
+      <text x="490" y="26" text-anchor="middle" class="diagram-caption" fill="#8A8175" style="letter-spacing:.14em" pointer-events="none">FUTURE</text>
+    </svg>
+        </div>
+        <div class="diagram-panels">
+          <div class="diagram-panel" id="panel-run">
+            <h4>The stretch &mdash; how long it had run</h4>
+            <ul id="panel-run-list"></ul>
+          </div>
+          <div class="diagram-panel is-now" id="panel-evidence">
+            <h4>The evidence &mdash; how things stood then</h4>
+            <ul id="panel-evidence-list"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="quiz">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3l3 7-3 3-3-3 3-7z"/><path d="M12 13v8"/></svg></div>
+      <div class="camp-label">The climb</div>
+      <h2>Practice</h2>
+      <div class="quiz-card">
+        <div class="progress-row">
+          <span id="progress-text">Checkpoint 1 of 14</span>
+          <span id="score-text">Score: 0</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+        <div class="q-prompt" id="q-prompt"></div>
+        <div class="q-hint" id="q-hint"></div>
+        <div class="options" id="options"></div>
+        <div class="feedback" id="feedback"></div>
+        <div class="quiz-footer">
+          <button class="next-btn" id="next-btn" disabled>Next checkpoint</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="results-camp">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 20l5-14 5 14M8 14h4"/></svg></div>
+      <div class="camp-label">Summit log</div>
+      <div id="results">
+        <div class="score" id="final-score"></div>
+        <p id="final-message"></p>
+        <button class="retry-btn" id="retry-btn">Climb again</button>
+        <div class="route-nav">
+          <a class="base-camp" href="sherpa-tensing-route-map.html">&larr; Return to base camp</a>
+          <a class="next-camp" href="sherpa-tensing-route-map.html">Choose your next camp &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+// ── the diagram, made clickable ──
+var exA = [
+  "We <em>had been walking</em> for six hours &hellip;",
+  "It <em>had been raining</em> all night &hellip;",
+  "She <em>had been calling</em> all morning &hellip;"
+];
+var exB = [
+  "&hellip; and our legs were finished.",
+  "&hellip; so the path was under water.",
+  "&hellip; and he still had not picked up."
+];
+
+function renderList(id, items){
+  var ul = document.getElementById(id);
+  ul.innerHTML = "";
+  items.forEach(function(txt){
+    var li = document.createElement("li");
+    li.innerHTML = txt;
+    ul.appendChild(li);
+  });
+}
+renderList("panel-run-list", exA);
+renderList("panel-evidence-list", exB);
+
+function pulseShape(el){
+  el.style.transformOrigin = "center";
+  el.animate(
+    [{ opacity: 1 }, { opacity: 0.6 }, { opacity: 1 }],
+    { duration: 380, easing: "ease-out" }
+  );
+}
+[["shape-run","panel-run","#4B1A7A"],
+ ["shape-evidence","panel-evidence","#7A5A3E"]].forEach(function(pair){
+  var el = document.getElementById(pair[0]);
+  if (!el) return;
+  var activate = function(){
+    pulseShape(el);
+    document.querySelectorAll(".diagram-panel").forEach(function(p){ p.style.outline = "none"; });
+    var panel = document.getElementById(pair[1]);
+    if (panel) panel.style.outline = "2px solid " + pair[2];
+  };
+  el.addEventListener("click", activate);
+  el.addEventListener("keydown", function(e){
+    if (e.key === "Enter" || e.key === " "){ e.preventDefault(); activate(); }
+  });
+});
+
+// ── QUIZ ──
+var questions = [
+  {
+    prompt: "We _____ for six hours when we finally saw the hut. (walk)",
+    hint: "A duration measured back from a past moment.",
+    correct: "had been walking",
+    options: ["had been walking", "were walking", "have been walking", "had walked"],
+    explain: "For six hours + a past moment to measure back from: past perfect continuous. Were walking would only say what was going on."
+  },
+  {
+    prompt: "His hands were shaking. He _____ the pack all day. (carry)",
+    hint: "Why were his hands shaking?",
+    correct: "had been carrying",
+    options: ["had been carrying", "was carrying", "has been carrying", "carried"],
+    explain: "The activity came before the shaking hands, and the point is how long it ran. Past perfect continuous."
+  },
+  {
+    prompt: "She _____ all morning before he finally answered. (call)",
+    hint: "Repeated, up to a past point.",
+    correct: "had been calling",
+    options: ["had been calling", "was calling", "has been calling", "called"],
+    explain: "Repeated action across a period ending at a past moment takes the past perfect continuous."
+  },
+  {
+    prompt: "\"I have been waiting an hour.\" \u2192 He said he _____ an hour. (wait)",
+    hint: "Reported speech shifts back one step.",
+    correct: "had been waiting",
+    options: ["had been waiting", "has been waiting", "was waiting", "had waited"],
+    explain: "A present perfect continuous in the original becomes a past perfect continuous when reported."
+  },
+  {
+    prompt: "If I _____ attention, I would have seen it. (pay)",
+    hint: "The unreal past, with the activity in focus.",
+    correct: "had been paying",
+    options: ["had been paying", "was paying", "have been paying", "had paid"],
+    explain: "The third conditional takes if + past perfect; the continuous keeps the focus on the activity rather than a result."
+  },
+  {
+    prompt: "I _____ him for years before that evening. (know)",
+    hint: "A state verb.",
+    correct: "had known",
+    options: ["had known", "had been knowing", "was knowing", "have known"],
+    explain: "Know is a state verb and refuses the continuous, so the past perfect simple takes the duration."
+  },
+  {
+    prompt: "By lunchtime she _____ three reports. (write)",
+    hint: "There is a number in the sentence.",
+    correct: "had written",
+    options: ["had written", "had been writing", "was writing", "has written"],
+    explain: "A number is a result, and results belong to the simple. Had been writing would be right without the three."
+  },
+  {
+    prompt: "The path was flooded. It _____ all night. (rain)",
+    hint: "The cause of a past state.",
+    correct: "had been raining",
+    options: ["had been raining", "was raining", "has been raining", "rained"],
+    explain: "The rain ran up to the moment you found the flooded path, and the duration is the point."
+  },
+  {
+    prompt: "How long _____ they _____ before the taxi came? (wait)",
+    hint: "The question this tense was made for.",
+    correct: "had ... been waiting",
+    options: ["had ... been waiting", "were ... waiting", "have ... been waiting", "had ... waited"],
+    explain: "How long + had been + -ing is the standard way to ask about a duration ending at a past moment."
+  },
+  {
+    prompt: "They _____ well that week, and it showed. (not / sleep)",
+    hint: "Negative, four pieces.",
+    correct: "hadn't been sleeping",
+    options: ["hadn't been sleeping", "weren't sleeping", "haven't been sleeping", "hadn't slept"],
+    explain: "Hadn't + been + -ing. The past perfect simple would report it as a finished fact rather than a running condition."
+  },
+  {
+    prompt: "I _____ when the phone rang, and I nearly dropped the pan. (cook)",
+    hint: "What was going on, not how long.",
+    correct: "was cooking",
+    options: ["was cooking", "had been cooking", "have been cooking", "had cooked"],
+    explain: "With no duration and no need to measure back, camp six is the right tense: the scene, not the bill."
+  },
+  {
+    prompt: "We _____ there for ten years when the mill closed. (live)",
+    hint: "A duration reaching a past event.",
+    correct: "had been living",
+    options: ["had been living", "were living", "have been living", "had lived"],
+    explain: "For ten years + a past moment: past perfect continuous. Had lived is also possible, but the continuous keeps the stretch in view."
+  },
+  {
+    prompt: "He was covered in mud because he _____ the ditch. (clear)",
+    hint: "Evidence in the past.",
+    correct: "had been clearing",
+    options: ["had been clearing", "was clearing", "has been clearing", "cleared"],
+    explain: "The mud is what the activity left behind at that past moment, which is exactly this tense's job."
+  },
+  {
+    prompt: "She _____ the same excuse for months before anyone checked. (use)",
+    hint: "Repeated over a long stretch.",
+    correct: "had been using",
+    options: ["had been using", "was using", "has been using", "used"],
+    explain: "Repeated across a period that ends at a past moment takes the past perfect continuous."
+  }
+];
+
+
+var current = 0;
+var score = 0;
+var answered = false;
+var order = [];
+
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+
+function renderQuestion(){
+  answered = false;
+  var q = questions[current];
+  document.getElementById("progress-text").textContent = "Checkpoint " + (current + 1) + " of " + questions.length;
+  document.getElementById("progress-fill").style.width = ((current / questions.length) * 100) + "%";
+  document.getElementById("q-prompt").textContent = q.prompt;
+  document.getElementById("q-hint").textContent = q.hint;
+  var feedback = document.getElementById("feedback");
+  feedback.className = "feedback";
+  feedback.textContent = "";
+  var optionsWrap = document.getElementById("options");
+  optionsWrap.innerHTML = "";
+  order = shuffle(q.options);
+  order.forEach(function(opt){
+    var btn = document.createElement("button");
+    btn.className = "opt-btn";
+    btn.type = "button";
+    btn.textContent = opt;
+    btn.addEventListener("click", function(){ selectOption(opt, btn); });
+    optionsWrap.appendChild(btn);
+  });
+  document.getElementById("next-btn").disabled = true;
+  document.getElementById("next-btn").textContent = (current === questions.length - 1) ? "Reach the summit" : "Next checkpoint";
+}
+
+function selectOption(opt, btn){
+  if (answered) return;
+  answered = true;
+  var q = questions[current];
+  var allBtns = document.querySelectorAll("#options .opt-btn");
+  allBtns.forEach(function(b){
+    b.disabled = true;
+    if (b.textContent === q.correct) b.classList.add("correct");
+  });
+  if (opt !== q.correct) btn.classList.add("wrong");
+  if (opt === q.correct) score++;
+  document.getElementById("score-text").textContent = "Score: " + score;
+  var feedback = document.getElementById("feedback");
+  feedback.textContent = q.explain;
+  feedback.classList.add("show");
+  document.getElementById("next-btn").disabled = false;
+}
+
+document.getElementById("next-btn").addEventListener("click", function(){
+  if (current < questions.length - 1){
+    current++;
+    renderQuestion();
+  } else {
+    document.getElementById("progress-fill").style.width = "100%";
+    document.getElementById("quiz").style.display = "none";
+    document.getElementById("results").style.display = "block";
+    document.getElementById("final-score").textContent = score + " / " + questions.length;
+    var msg = "";
+    if (score === questions.length) msg = "Clean run. You can hear the difference between what was going on and how long it had been going on.";
+    else if (score >= questions.length - 2) msg = "Solid progress. Worth a look back at camp six and camp ten before camp thirteen.";
+    else msg = "Good first attempt. The continuous/simple fork is the part to read again.";
+    document.getElementById("final-message").textContent = msg;
+  }
+});
+
+document.getElementById("retry-btn").addEventListener("click", function(){
+  current = 0;
+  score = 0;
+  document.getElementById("score-text").textContent = "Score: 0";
+  document.getElementById("quiz").style.display = "block";
+  document.getElementById("results").style.display = "none";
+  renderQuestion();
+});
+
+renderQuestion();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,700 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sherpa Tensing - Camp Twelve: Done Before You Get There (Future Perfect)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1E1E1E;
+    --ink-soft:#5E5E5E;
+    --paper:#F8F8F7;
+    --card:#FFFFFF;
+    --accent:#454545;
+    --accent-dark:#2A2A2A;
+    --accent-light:#D2D2D2;
+    --accent-lighter:#EFEFEF;
+    --good:#1E7A4C;
+    --good-bg:#E5F5EC;
+    --bad:#B23A3A;
+    --bad-bg:#FBEAEA;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;}
+  h1,h2,h3{font-family:'Fraunces',serif;font-weight:600;margin:0 0 .4em;color:var(--ink);}
+  .wordmark{display:flex;align-items:center;justify-content:space-between;max-width:1000px;margin:0 auto;padding:28px 24px 0;}
+  .wordmark .brand{font-family:'Fraunces',serif;font-weight:700;font-size:20px;letter-spacing:.02em;}
+  .wordmark .brand span{color:var(--accent);}
+  .wordmark .sub{font-size:13px;color:var(--ink-soft);}
+
+  .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px;}
+  .chart-wrap{margin-top:24px;background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:18px 20px;overflow-x:auto;}
+  .chart-wrap h3{font-size:15px;margin-bottom:4px;}
+  .chart-wrap + .chart-wrap{margin-top:16px;}
+  .chart-note{font-size:13px;color:var(--ink-soft);margin-bottom:14px;}
+  table.conj{width:100%;border-collapse:collapse;font-size:14px;min-width:520px;}
+  table.conj th, table.conj td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--accent-light);}
+  table.conj th{font-family:'Fraunces',serif;font-weight:600;color:var(--accent-dark);font-size:13px;text-transform:uppercase;letter-spacing:.03em;}
+  table.conj td.subj{font-weight:600;}
+  table.conj tr:last-child td{border-bottom:none;}
+  main{max-width:1000px;margin:0 auto;padding:0 24px 80px;}
+  .hero{display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:center;padding:40px 0 56px;}
+  .hero .eyebrow{
+    display:inline-block;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--accent-dark);background:var(--accent-lighter);padding:6px 12px;border-radius:999px;margin-bottom:14px;
+  }
+  .hero h1{font-size:38px;line-height:1.12;}
+  .hero p{color:var(--ink-soft);font-size:16px;max-width:46ch;}
+  .hero-diagram{width:100%;display:block;}
+  @media (max-width:720px){.hero{grid-template-columns:1fr;}}
+
+  .trail-wrap{position:relative;padding-left:66px;}
+  .trail-wrap::before{
+    content:'';position:absolute;left:23px;top:8px;bottom:8px;width:2px;
+    background:repeating-linear-gradient(to bottom, var(--accent) 0 8px, transparent 8px 18px);
+  }
+  .camp{position:relative;margin-bottom:64px;}
+  .camp .marker{position:absolute;left:-66px;top:0;width:46px;height:46px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;}
+  .camp .marker svg{width:18px;height:18px;}
+  .camp .camp-label{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-dark);margin-bottom:6px;}
+
+  .rule-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px;}
+  .rule-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:18px 20px;}
+  .rule-card h3{font-size:16px;margin-bottom:8px;}
+  .rule-card p{margin:0 0 8px;font-size:14px;color:var(--ink-soft);}
+  .rule-card .ex{font-size:14px;font-style:italic;color:var(--accent-dark);border-left:2px solid var(--accent);padding-left:10px;}
+
+  .signal-groups{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px;}
+  .signal-box{background:var(--accent-lighter);border-radius:var(--radius);padding:18px 20px;}
+  .signal-box h3{font-size:15px;}
+  .signal-box ul{margin:8px 0 0;padding-left:18px;font-size:14px;color:var(--ink);}
+  .signal-box li{margin-bottom:4px;}
+  @media (max-width:600px){.signal-groups{grid-template-columns:1fr;}}
+
+  /* ── THE INTERACTIVE DIAGRAM CAMP ── */
+  .diagram-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:26px 26px 22px;}
+  .diagram-intro{font-size:14px;color:var(--ink-soft);margin-bottom:18px;max-width:60ch;}
+  .diagram-stage{width:100%;background:var(--paper);border:1px solid var(--accent-light);border-radius:var(--radius);padding:12px;}
+  .diagram-stage svg{width:100%;height:auto;display:block;}
+  .dg-reveal{opacity:0;transition:opacity .2s ease;}
+  .dg-reveal.is-shown{opacity:1;}
+  .diagram-shape{cursor:pointer;transition:opacity .15s ease;}
+  .diagram-shape:hover{opacity:.86;}
+  .diagram-shape:focus{outline:none;}
+  .diagram-shape:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px;}
+  .diagram-caption{font-family:'Inter',sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;}
+  .diagram-panels{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px;}
+  .diagram-panel{border-radius:12px;padding:16px 18px;border:1px solid var(--accent-light);background:var(--accent-lighter);}
+  .diagram-panel.is-now{background:#EAF1F6;border-color:#C9DCE6;}
+  .diagram-panel h4{margin:0 0 8px;font-family:'Fraunces',serif;font-size:14px;letter-spacing:.03em;text-transform:uppercase;color:var(--accent-dark);}
+  .diagram-panel.is-now h4{color:#3E6A85;}
+  .diagram-panel ul{margin:0;padding-left:18px;font-size:14px;}
+  .diagram-panel li{margin-bottom:5px;}
+  .diagram-panel li em{font-style:normal;font-weight:600;}
+  @media (max-width:600px){.diagram-panels{grid-template-columns:1fr;}}
+
+  .route-link{display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-weight:600;font-size:14px;
+    padding:9px 18px;border-radius:999px;border:1px solid var(--accent);color:var(--accent-dark);}
+  .route-link:hover{background:var(--accent-lighter);}
+  .quiz-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:24px 24px 20px;}
+  .progress-row{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--ink-soft);margin-bottom:10px;}
+  .progress-track{height:6px;background:var(--accent-lighter);border-radius:999px;overflow:hidden;margin-bottom:20px;}
+  .progress-fill{height:100%;background:var(--accent);border-radius:999px;width:0%;transition:width .3s ease;}
+  .q-prompt{font-size:17px;margin-bottom:4px;}
+  .q-hint{font-size:13px;color:var(--ink-soft);margin-bottom:16px;font-style:italic;}
+  .options{display:grid;gap:10px;}
+  .opt-btn{text-align:left;padding:12px 16px;border-radius:10px;border:1px solid var(--accent-light);background:#fff;font-family:'Inter',sans-serif;font-size:15px;color:var(--ink);cursor:pointer;}
+  .opt-btn:hover{border-color:var(--accent);}
+  .opt-btn.correct{background:var(--good-bg);border-color:var(--good);color:var(--good);font-weight:600;}
+  .opt-btn.wrong{background:var(--bad-bg);border-color:var(--bad);color:var(--bad);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:16px;padding:14px 16px;border-radius:10px;background:var(--accent-lighter);font-size:14px;display:none;}
+  .feedback.show{display:block;}
+  .quiz-footer{display:flex;justify-content:flex-end;margin-top:20px;}
+  .next-btn{background:var(--accent);color:#fff;border:none;padding:11px 22px;border-radius:999px;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;cursor:pointer;}
+  .next-btn:disabled{background:var(--accent-light);cursor:not-allowed;}
+
+  #results{display:none;text-align:center;padding:12px 0 8px;}
+  #results .score{font-family:'Fraunces',serif;font-size:52px;color:var(--accent);margin:8px 0;}
+  #results p{color:var(--ink-soft);}
+  .retry-btn{margin-top:12px;background:transparent;border:1px solid var(--accent);color:var(--accent-dark);padding:10px 20px;border-radius:999px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
+  .route-nav{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:22px;padding-top:18px;border-top:1px solid var(--accent-light);}
+  .route-nav a{display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;padding:10px 20px;border-radius:999px;}
+  .route-nav a.next-camp{background:var(--accent);color:#fff;}
+  .route-nav a.base-camp{background:transparent;border:1px solid var(--ink-soft);color:var(--ink-soft);}
+  .route-nav a:hover{opacity:0.88;}
+
+    /* ── Persistent way back. Pinned, so it is reachable from anywhere on
+       the page rather than only after scrolling to the bottom. ── */
+    /* Clear a band at the top of the page for the pinned link so it never
+       lands on the wordmark. */
+    body{ padding-top:46px; }
+    .up-link{
+      position:fixed; top:16px; left:16px; z-index:60;
+      display:inline-flex; align-items:center; gap:8px;
+      padding:9px 16px 9px 13px; border-radius:999px;
+      background:var(--card,#fff); color:var(--accent-dark,#333);
+      border:1.5px solid var(--accent-light,rgba(0,0,0,.18));
+      font:600 14px/1 'Inter',system-ui,sans-serif; letter-spacing:.01em;
+      text-decoration:none; box-shadow:0 2px 10px rgba(0,0,0,.10);
+      transition:background .18s ease, color .18s ease, transform .18s ease;
+    }
+    .up-link:hover{ background:var(--accent,#333); color:#fff; transform:translateX(-2px); }
+    .up-link .arw{ font-size:15px; line-height:1; }
+    @media print{ .up-link{ display:none; } }
+    @media (max-width:640px){
+      .up-link{ top:10px; left:10px; padding:7px 13px 7px 10px; font-size:13px; }
+    }
+</style>
+</head>
+<body>
+<a class="up-link" href="sherpa-tensing-route-map.html"><span class="arw" aria-hidden="true">&larr;</span>Route map</a>
+
+
+<div class="wordmark">
+  <div class="brand">Sherpa <span>Tensing</span></div>
+  <div class="sub">Forbes English &middot; a route up the tenses</div>
+</div>
+
+<main>
+
+  <section class="hero" id="hero">
+    <div>
+      <span class="eyebrow">Camp twelve &middot; future perfect</span>
+      <h1>Done before you get there</h1>
+      <p>Camp ten looks back from a moment in the past. Camp twelve does the same thing facing the other way: it stands at a point in the future and tells you what is already behind you by the time you arrive.</p>
+    </div>
+    <svg class="hero-diagram" viewBox="0 0 640 344" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A timeline from past to future. A dark grey block stands in future time and ends before a dashed appointment further along the line, with an arrow between them reading before. Now is a narrow column at the centre.">
+      <defs>
+        <linearGradient id="fpFadefp" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#8A8A8A"/>
+          <stop offset="0.42" stop-color="#5A5A5A"/>
+          <stop offset="0.78" stop-color="#333333"/>
+          <stop offset="1" stop-color="#1C1C1C"/>
+        </linearGradient>
+        <marker id="seq-fp" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,1 L9,5 L0,9 z" fill="#3A3A3A"/>
+        </marker>
+        <marker id="ah-fp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#1c130c"/>
+        </marker>
+      </defs>
+      <rect x="0" y="0" width="640" height="344" fill="var(--paper)"/>
+      <line x1="24" y1="299" x2="616" y2="299" stroke="#1c130c" stroke-width="2"
+            marker-start="url(#ah-fp)" marker-end="url(#ah-fp)"/>
+      <rect x="311.5" y="38" width="17.0" height="261" fill="#D98A72"/>
+      <rect x="314.0" y="40.5" width="12.0" height="256" fill="#5C7690"/>
+      <rect x="352" y="38" width="128" height="261" fill="url(#fpFadefp)"/>
+      <line x1="490" y1="170" x2="534" y2="170" stroke="#3A3A3A" stroke-width="1.6" marker-end="url(#seq-fp)"/>
+      <text x="512" y="160" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#3A3A3A" pointer-events="none">before</text>
+      <line x1="546" y1="80" x2="546" y2="299" stroke="#3A3A3A" stroke-width="1.8" stroke-dasharray="5 4"/>
+      <circle cx="546" cy="299" r="4.5" fill="#3A3A3A"/>
+      <text x="546" y="72" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" font-weight="700" fill="#3A3A3A" letter-spacing="1.4" pointer-events="none">BY THEN</text>
+      <text x="416" y="288" text-anchor="middle" class="diagram-caption" fill="#EDEDED" style="font-size:12.5px;letter-spacing:.03em" pointer-events="none">WILL HAVE DONE</text>
+      <text x="430" y="317" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" font-weight="400" fill="#8A8A8A" pointer-events="none">already done by then</text>
+      <text x="320" y="317" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" font-weight="400" fill="#5F7C90" pointer-events="none">present simple</text>
+      <text x="150" y="26" text-anchor="middle" class="diagram-caption" fill="#8A8175" style="letter-spacing:.14em" pointer-events="none">PAST</text>
+      <text x="320" y="26" text-anchor="middle" class="diagram-caption" fill="#3E6A85" pointer-events="none">NOW</text>
+      <text x="490" y="26" text-anchor="middle" class="diagram-caption" fill="#8A8175" style="letter-spacing:.14em" pointer-events="none">FUTURE</text>
+    </svg>
+  </section>
+
+  <div class="trail-wrap">
+
+    <div class="camp" id="rules">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 3v18M5 4h11l-3 4 3 4H5"/></svg></div>
+      <div class="camp-label">Basecamp briefing</div>
+      <h2>When to use it</h2>
+      <div class="rule-grid">
+        <div class="rule-card">
+          <h3>Finished before a future deadline</h3>
+          <p>The action is over by the time the future moment arrives.</p>
+          <div class="ex">"By Friday I <em>will have finished</em> the report."</div>
+        </div>
+        <div class="rule-card">
+          <h3>With <em>by the time</em></h3>
+          <p>The clause that sets the deadline stays in the present.</p>
+          <div class="ex">"By the time you land, we <em>will have left</em>."</div>
+        </div>
+        <div class="rule-card">
+          <h3>A total reached by then</h3>
+          <p>Counting up to a future point rather than to now.</p>
+          <div class="ex">"Next month she <em>will have worked</em> here ten years."</div>
+        </div>
+        <div class="rule-card">
+          <h3>A confident guess about now</h3>
+          <p>Not future at all &mdash; an assumption about something already done.</p>
+          <div class="ex">"He <em>will have arrived</em> by now."</div>
+        </div>
+        <div class="rule-card">
+          <h3>Looking back from the future</h3>
+          <p>Standing at a future moment and describing what is behind you.</p>
+          <div class="ex">"In 2030 we <em>will have forgotten</em> all this."</div>
+        </div>
+        <div class="rule-card">
+          <h3>Not done by then</h3>
+          <p>The negative is just as useful, and just as precise.</p>
+          <div class="ex">"They <em>won&#39;t have decided</em> by Monday."</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="form">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg></div>
+      <div class="camp-label">Building the tense</div>
+      <h2>How it's built</h2>
+      <div class="form-grid">
+        <div class="rule-card">
+          <h3>Affirmative</h3>
+          <p>subject + will have + <strong>past participle</strong></p>
+          <div class="ex">"I <em>will have finished</em> by six."</div>
+        </div>
+        <div class="rule-card">
+          <h3>Negative</h3>
+          <p>subject + won't have + past participle</p>
+          <div class="ex">"They <em>won&#39;t have decided</em>."</div>
+        </div>
+        <div class="rule-card">
+          <h3>Yes / No questions</h3>
+          <p>Will + subject + have + past participle?</p>
+          <div class="ex">"<em>Will you have eaten</em>?"</div>
+        </div>
+        <div class="rule-card">
+          <h3>Wh- questions</h3>
+          <p>question word + will + subject + have + participle?</p>
+          <div class="ex">"How much <em>will it have cost</em>?"</div>
+        </div>
+      </div>      <div class="chart-wrap">
+        <h3>Conjugation chart</h3>
+        <p class="chart-note">Nothing changes for the subject &mdash; <em>will have</em> is the same for everybody, exactly as it is at camp seven. Every difficulty here is in the participle and in the deadline word.</p>
+        <table class="conj">
+          <thead><tr><th>Subject</th><th>Affirmative</th><th>Negative</th><th>Question</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">I</td><td>I will have finished</td><td>I won't have finished</td><td>Will I have finished?</td></tr>
+            <tr><td class="subj">You</td><td>You will have finished</td><td>You won't have finished</td><td>Will you have finished?</td></tr>
+            <tr><td class="subj">He / She / It</td><td>She will have finished</td><td>She won't have finished</td><td>Will she have finished?</td></tr>
+            <tr><td class="subj">We</td><td>We will have finished</td><td>We won't have finished</td><td>Will we have finished?</td></tr>
+            <tr><td class="subj">They</td><td>They will have finished</td><td>They won't have finished</td><td>Will they have finished?</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="chart-wrap">
+        <h3><em>By</em> or <em>until</em>?</h3>
+        <p class="chart-note">This is the error that costs money in a work email. <em>By Friday</em> means at any point up to and including Friday &mdash; a deadline. <em>Until Friday</em> means the whole stretch continuing up to Friday &mdash; a duration. The future perfect takes <em>by</em>.</p>
+        <table class="conj">
+          <thead><tr><th>Word</th><th>Means</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">by</td><td>at or before that point &mdash; a deadline</td><td>"I <em>will have sent</em> it by Friday."</td></tr>
+            <tr><td class="subj">until</td><td>right up to that point &mdash; a duration</td><td>"I <em>will be working</em> until Friday."</td></tr>
+            <tr><td class="subj">before</td><td>earlier than that point</td><td>"We <em>will have left</em> before you land."</td></tr>
+            <tr><td class="subj">by the time</td><td>a deadline set by another event</td><td>"By the time it opens, we <em>will have queued</em> an hour."</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="chart-wrap">
+        <h3>Three mistakes worth naming</h3>
+        <p class="chart-note">Almost every error with this tense is one of these three.</p>
+        <table class="conj">
+          <thead><tr><th>Not this</th><th>This</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">By Friday I will finish the report.</td><td>By Friday I will have finished the report.</td><td>A deadline needs the perfect. Will finish names when it happens, not that it is already done.</td></tr>
+            <tr><td class="subj">I will have went by then.</td><td>I will have gone by then.</td><td><em>Have</em> takes the third form, never the past simple.</td></tr>
+            <tr><td class="subj">By the time you will arrive, we will have left.</td><td>By the time you arrive, we will have left.</td><td>The clause that sets the deadline stays in the present, even though it is about the future.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <div class="camp" id="vs-simple">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3v18"/><path d="M7 8l-4 4 4 4M17 8l4 4-4 4"/></svg></div>
+      <div class="camp-label">The fork in the path</div>
+      <h2>Future perfect or future simple?</h2>
+      <div class="chart-wrap" style="margin-top:18px">
+        <p class="chart-note" style="margin-bottom:16px">Camp seven says <em>when</em> something happens. Camp twelve says it is <em>already done</em> by a point you name. If there is a deadline in the sentence, you are at camp twelve.</p>
+        <table class="conj">
+          <thead><tr><th>Question</th><th>Future perfect</th><th>Future simple</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">What does it say?</td><td>It is finished before then.<br>"I <em>will have finished</em> by five."</td><td>It happens at that time.<br>"I <em>will finish</em> at five."</td></tr>
+            <tr><td class="subj">Which word triggers it?</td><td><em>by</em>, <em>by the time</em>, <em>before</em></td><td><em>at</em>, <em>tomorrow</em>, <em>next week</em></td></tr>
+            <tr><td class="subj">A total?</td><td>Yes. "She will have worked here ten years."</td><td>No &mdash; it names one event.</td></tr>
+            <tr><td class="subj">About the present?</td><td>Yes, as a confident guess: "He will have landed by now."</td><td>No. That is a different job.</td></tr>
+          </tbody>
+        </table>
+        <p class="example" style="margin-top:14px">The pair that shows the whole difference: <em>"I will finish at five"</em> &mdash; five o&#39;clock is when I stop. <em>"I will have finished by five"</em> &mdash; five o&#39;clock is when you can safely assume it is done, and I may well be finished long before. One is a schedule; the other is a promise.</p>
+      </div>
+      <div class="btnrow" style="margin-top:16px">
+        <a class="route-link" href="sherpa-tensing-camp-seven-future-simple.html">&larr; Camp seven &middot; future simple</a>
+        <a class="route-link" href="sherpa-tensing-camp-ten-past-perfect.html">Camp ten &middot; past perfect</a>
+      </div>
+    </div>
+
+    <div class="camp" id="signals">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg></div>
+      <div class="camp-label">Trail markers</div>
+      <h2>Signal words</h2>
+      <div class="signal-groups">
+        <div class="signal-box">
+          <h3>Deadline words</h3>
+          <ul>
+            <li>by &middot; by then</li>
+            <li>by the time</li>
+            <li>before</li>
+            <li>in two weeks&#39; time</li>
+            <li>this time next year</li>
+            <li>by the end of the month</li>
+          </ul>
+        </div>
+        <div class="signal-box">
+          <h3>What it does not take</h3>
+          <ul>
+            <li>until (that is a duration)</li>
+            <li>at five o&#39;clock (that is camp seven)</li>
+            <li>for two hours (that is camp thirteen)</li>
+            <li>now</li>
+            <li>yesterday</li>
+            <li>while</li>
+          </ul>
+        </div>
+      </div>
+      <p class="example" style="margin-top:14px">A useful habit: if you can put the word <em>already</em> in front of the verb and the sentence still makes sense at that future moment, the future perfect is right.</p>
+    </div>
+
+    <div class="camp" id="order">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="4" width="8" height="16"/><rect x="13" y="4" width="8" height="16"/></svg></div>
+      <div class="camp-label">Interactive</div>
+      <h2>Done, and then the deadline</h2>
+      <div class="diagram-card">
+        <p class="diagram-intro">The block is the action, standing in future time. What matters is that it <em>ends before</em> the dashed line, not on it &mdash; the deadline is a moment you look back from, not a moment when anything happens. The action itself could be at any point in the shaded stretch; the sentence only promises it is behind you by then. Click the block or the NOW column to see it in a sentence.</p>
+        <div class="diagram-stage">
+          <svg viewBox="0 0 640 344" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A timeline from past to future. A dark grey block stands in future time and ends before a dashed appointment further along the line, with an arrow between them reading before. Now is a narrow column at the centre.">
+      <defs>
+        <linearGradient id="fpFadefpb" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#8A8A8A"/>
+          <stop offset="0.42" stop-color="#5A5A5A"/>
+          <stop offset="0.78" stop-color="#333333"/>
+          <stop offset="1" stop-color="#1C1C1C"/>
+        </linearGradient>
+        <marker id="seq-fpb" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,1 L9,5 L0,9 z" fill="#3A3A3A"/>
+        </marker>
+        <marker id="ah-fpb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#1c130c"/>
+        </marker>
+      </defs>
+      <rect x="0" y="0" width="640" height="344" fill="var(--paper)"/>
+      <line x1="24" y1="299" x2="616" y2="299" stroke="#1c130c" stroke-width="2"
+            marker-start="url(#ah-fpb)" marker-end="url(#ah-fpb)"/>
+      <g class="diagram-shape" id="shape-now" tabindex="0" role="button" aria-label="Show present simple examples">
+        <rect x="311.5" y="38" width="17.0" height="261" fill="#D98A72"/>
+      <rect x="314.0" y="40.5" width="12.0" height="256" fill="#5C7690"/>
+      </g>
+      <g class="diagram-shape" id="shape-done" tabindex="0" role="button" aria-label="Show future perfect examples">
+        <rect x="352" y="38" width="128" height="261" fill="url(#fpFadefpb)"/>
+      </g>
+      <line x1="490" y1="170" x2="534" y2="170" stroke="#3A3A3A" stroke-width="1.6" marker-end="url(#seq-fpb)"/>
+      <text x="512" y="160" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#3A3A3A" pointer-events="none">before</text>
+      <line x1="546" y1="80" x2="546" y2="299" stroke="#3A3A3A" stroke-width="1.8" stroke-dasharray="5 4"/>
+      <circle cx="546" cy="299" r="4.5" fill="#3A3A3A"/>
+      <text x="546" y="72" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" font-weight="700" fill="#3A3A3A" letter-spacing="1.4" pointer-events="none">BY THEN</text>
+      <text x="416" y="288" text-anchor="middle" class="diagram-caption" fill="#EDEDED" style="font-size:12.5px;letter-spacing:.03em" pointer-events="none">WILL HAVE DONE</text>
+      <text x="430" y="317" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" font-weight="400" fill="#8A8A8A" pointer-events="none">already done by then</text>
+      <text x="320" y="317" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" font-weight="400" fill="#5F7C90" pointer-events="none">present simple</text>
+      <text x="150" y="26" text-anchor="middle" class="diagram-caption" fill="#8A8175" style="letter-spacing:.14em" pointer-events="none">PAST</text>
+      <text x="320" y="26" text-anchor="middle" class="diagram-caption" fill="#3E6A85" pointer-events="none">NOW</text>
+      <text x="490" y="26" text-anchor="middle" class="diagram-caption" fill="#8A8175" style="letter-spacing:.14em" pointer-events="none">FUTURE</text>
+    </svg>
+        </div>
+        <div class="diagram-panels">
+          <div class="diagram-panel" id="panel-done">
+            <h4>Future perfect &mdash; already behind you</h4>
+            <ul id="panel-done-list"></ul>
+          </div>
+          <div class="diagram-panel is-now" id="panel-now">
+            <h4>Present simple &mdash; the deadline clause</h4>
+            <ul id="panel-now-list"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="quiz">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3l3 7-3 3-3-3 3-7z"/><path d="M12 13v8"/></svg></div>
+      <div class="camp-label">The climb</div>
+      <h2>Practice</h2>
+      <div class="quiz-card">
+        <div class="progress-row">
+          <span id="progress-text">Checkpoint 1 of 14</span>
+          <span id="score-text">Score: 0</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+        <div class="q-prompt" id="q-prompt"></div>
+        <div class="q-hint" id="q-hint"></div>
+        <div class="options" id="options"></div>
+        <div class="feedback" id="feedback"></div>
+        <div class="quiz-footer">
+          <button class="next-btn" id="next-btn" disabled>Next checkpoint</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="results-camp">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 20l5-14 5 14M8 14h4"/></svg></div>
+      <div class="camp-label">Summit log</div>
+      <div id="results">
+        <div class="score" id="final-score"></div>
+        <p id="final-message"></p>
+        <button class="retry-btn" id="retry-btn">Climb again</button>
+        <div class="route-nav">
+          <a class="base-camp" href="sherpa-tensing-route-map.html">&larr; Return to base camp</a>
+          <a class="next-camp" href="sherpa-tensing-route-map.html">Choose your next camp &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+// ── the diagram, made clickable ──
+var exA = [
+  "By Friday I <em>will have finished</em> the report.",
+  "We <em>will have left</em> before you land.",
+  "She <em>will have worked</em> here ten years."
+];
+var exB = [
+  "By the time you <em>land</em> &hellip;",
+  "Before it <em>opens</em> &hellip;",
+  "As soon as she <em>gets</em> back &hellip;"
+];
+
+function renderList(id, items){
+  var ul = document.getElementById(id);
+  ul.innerHTML = "";
+  items.forEach(function(txt){
+    var li = document.createElement("li");
+    li.innerHTML = txt;
+    ul.appendChild(li);
+  });
+}
+renderList("panel-done-list", exA);
+renderList("panel-now-list", exB);
+
+function pulseShape(el){
+  el.style.transformOrigin = "center";
+  el.animate(
+    [{ opacity: 1 }, { opacity: 0.6 }, { opacity: 1 }],
+    { duration: 380, easing: "ease-out" }
+  );
+}
+[["shape-done","panel-done","#454545"],
+ ["shape-now","panel-now","#5C7690"]].forEach(function(pair){
+  var el = document.getElementById(pair[0]);
+  if (!el) return;
+  var activate = function(){
+    pulseShape(el);
+    document.querySelectorAll(".diagram-panel").forEach(function(p){ p.style.outline = "none"; });
+    var panel = document.getElementById(pair[1]);
+    if (panel) panel.style.outline = "2px solid " + pair[2];
+  };
+  el.addEventListener("click", activate);
+  el.addEventListener("keydown", function(e){
+    if (e.key === "Enter" || e.key === " "){ e.preventDefault(); activate(); }
+  });
+});
+
+// ── QUIZ ──
+var questions = [
+  {
+    prompt: "By Friday I _____ the report. (finish)",
+    hint: "There is a deadline in the sentence.",
+    correct: "will have finished",
+    options: ["will have finished", "will finish", "am finishing", "will have finish"],
+    explain: "By + a future point needs the perfect: it says the report is already done when Friday arrives."
+  },
+  {
+    prompt: "By the time you land, we _____ . (leave)",
+    hint: "One future event sets the deadline for another.",
+    correct: "will have left",
+    options: ["will have left", "will leave", "are leaving", "will have leaved"],
+    explain: "By the time sets a deadline, so the main clause takes the future perfect. The participle of leave is left."
+  },
+  {
+    prompt: "By the time you _____ , we will have left. (arrive)",
+    hint: "Careful with the deadline clause itself.",
+    correct: "arrive",
+    options: ["arrive", "will arrive", "will have arrived", "are arriving"],
+    explain: "The clause that sets the deadline stays in the present, even though it describes the future."
+  },
+  {
+    prompt: "Next month she _____ here for ten years. (work)",
+    hint: "A total counted up to a future point.",
+    correct: "will have worked",
+    options: ["will have worked", "will work", "works", "will have work"],
+    explain: "Counting a total up to a future moment is the future perfect. Will work would only say it happens."
+  },
+  {
+    prompt: "Don't ring him now &mdash; he _____ by now. (land)",
+    hint: "Not future at all.",
+    correct: "will have landed",
+    options: ["will have landed", "will land", "is landing", "has been landing"],
+    explain: "The future perfect also carries a confident assumption about something already finished: he will have landed by now."
+  },
+  {
+    prompt: "They _____ by Monday, so don't expect an answer. (not / decide)",
+    hint: "The negative form.",
+    correct: "won't have decided",
+    options: ["won't have decided", "won't decide", "aren't deciding", "won't have decide"],
+    explain: "Won't have + participle. It says the decision is still outstanding when Monday comes."
+  },
+  {
+    prompt: "_____ you _____ by seven? (eat)",
+    hint: "Question order.",
+    correct: "Will ... have eaten",
+    options: ["Will ... have eaten", "Will ... eat", "Are ... eating", "Will ... have ate"],
+    explain: "Questions invert will: Will you have eaten? The participle of eat is eaten, not ate."
+  },
+  {
+    prompt: "I _____ at five, so ring me any time after that. (finish)",
+    hint: "Is there a deadline here, or a time?",
+    correct: "will finish",
+    options: ["will finish", "will have finished", "will have finish", "am finishing"],
+    explain: "At five names when the action happens, not a point to look back from. That is camp seven."
+  },
+  {
+    prompt: "I _____ it to you by Friday. (send)",
+    hint: "A promise with a deadline.",
+    correct: "will have sent",
+    options: ["will have sent", "will have send", "will be sending", "am sending"],
+    explain: "By Friday is a deadline, so the future perfect: it will already be sent when Friday comes."
+  },
+  {
+    prompt: "In 2030 everyone _____ this argument. (forget)",
+    hint: "Standing at a future point, looking back.",
+    correct: "will have forgotten",
+    options: ["will have forgotten", "will forget", "forgets", "will have forget"],
+    explain: "Looking back from a future moment takes the future perfect, and the participle of forget is forgotten."
+  },
+  {
+    prompt: "By the end of the tour the band _____ in twelve countries. (play)",
+    hint: "A total by a deadline.",
+    correct: "will have played",
+    options: ["will have played", "will play", "plays", "will have play"],
+    explain: "A running total counted up to a future point is the future perfect."
+  },
+  {
+    prompt: "We _____ here until Friday, then we move on. (work)",
+    hint: "Until is not a deadline.",
+    correct: "will be working",
+    options: ["will be working", "will have worked", "will have been work", "have worked"],
+    explain: "Until marks a stretch continuing up to a point, so the future continuous fits. By would have made it a deadline."
+  },
+  {
+    prompt: "How much _____ it _____ by the time it's built? (cost)",
+    hint: "A wh- question with a deadline.",
+    correct: "will ... have cost",
+    options: ["will ... have cost", "will ... cost", "does ... cost", "will ... have costed"],
+    explain: "By the time sets the deadline, so the question takes the future perfect. Cost is the same in all three forms."
+  },
+  {
+    prompt: "She _____ the keys before you get there. (leave)",
+    hint: "Before also sets a point to look back from.",
+    correct: "will have left",
+    options: ["will have left", "will leave", "leaves", "will have leaved"],
+    explain: "Before you get there is a deadline, so the action is already behind you: will have left."
+  }
+];
+
+
+var current = 0;
+var score = 0;
+var answered = false;
+var order = [];
+
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+
+function renderQuestion(){
+  answered = false;
+  var q = questions[current];
+  document.getElementById("progress-text").textContent = "Checkpoint " + (current + 1) + " of " + questions.length;
+  document.getElementById("progress-fill").style.width = ((current / questions.length) * 100) + "%";
+  document.getElementById("q-prompt").textContent = q.prompt;
+  document.getElementById("q-hint").textContent = q.hint;
+  var feedback = document.getElementById("feedback");
+  feedback.className = "feedback";
+  feedback.textContent = "";
+  var optionsWrap = document.getElementById("options");
+  optionsWrap.innerHTML = "";
+  order = shuffle(q.options);
+  order.forEach(function(opt){
+    var btn = document.createElement("button");
+    btn.className = "opt-btn";
+    btn.type = "button";
+    btn.textContent = opt;
+    btn.addEventListener("click", function(){ selectOption(opt, btn); });
+    optionsWrap.appendChild(btn);
+  });
+  document.getElementById("next-btn").disabled = true;
+  document.getElementById("next-btn").textContent = (current === questions.length - 1) ? "Reach the summit" : "Next checkpoint";
+}
+
+function selectOption(opt, btn){
+  if (answered) return;
+  answered = true;
+  var q = questions[current];
+  var allBtns = document.querySelectorAll("#options .opt-btn");
+  allBtns.forEach(function(b){
+    b.disabled = true;
+    if (b.textContent === q.correct) b.classList.add("correct");
+  });
+  if (opt !== q.correct) btn.classList.add("wrong");
+  if (opt === q.correct) score++;
+  document.getElementById("score-text").textContent = "Score: " + score;
+  var feedback = document.getElementById("feedback");
+  feedback.textContent = q.explain;
+  feedback.classList.add("show");
+  document.getElementById("next-btn").disabled = false;
+}
+
+document.getElementById("next-btn").addEventListener("click", function(){
+  if (current < questions.length - 1){
+    current++;
+    renderQuestion();
+  } else {
+    document.getElementById("progress-fill").style.width = "100%";
+    document.getElementById("quiz").style.display = "none";
+    document.getElementById("results").style.display = "block";
+    document.getElementById("final-score").textContent = score + " / " + questions.length;
+    var msg = "";
+    if (score === questions.length) msg = "Clean run. You can hear a deadline from a time of day, and you keep the by-the-time clause in the present.";
+    else if (score >= questions.length - 2) msg = "Solid progress. Worth a look back at camp seven before camp thirteen.";
+    else msg = "Good first attempt. The by/until distinction is the part to read again.";
+    document.getElementById("final-message").textContent = msg;
+  }
+});
+
+document.getElementById("retry-btn").addEventListener("click", function(){
+  current = 0;
+  score = 0;
+  document.getElementById("score-text").textContent = "Score: 0";
+  document.getElementById("quiz").style.display = "block";
+  document.getElementById("results").style.display = "none";
+  renderQuestion();
+});
+
+renderQuestion();
+</script>
+
+</body>
+</html>
