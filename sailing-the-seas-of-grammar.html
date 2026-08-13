@@ -176,6 +176,14 @@
   .sail-chart .land[role="button"]:hover,.sail-chart .land-false[role="button"]:hover{filter:brightness(1.06);}
   .sail-chart .land[role="button"]:focus-visible,
   .sail-chart .land-false[role="button"]:focus-visible{outline:3px solid #12626F;outline-offset:2px;}
+  /* a map squeezed onto a phone is a map you cannot read: let it scroll at a
+     legible width instead of shrinking the place names to nothing */
+  .chart-scroll-hint{display:none;font-size:12.5px;color:var(--ink-soft);margin:9px 2px 0;font-style:italic;}
+  @media (max-width:760px){
+    .diagram-stage{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+    .diagram-stage .sail-chart{width:720px;max-width:none;}
+    .chart-scroll-hint{display:block;}
+  }
 </style>
 </head>
 <body>
@@ -621,6 +629,7 @@
         </g>
       </svg>
         </div>
+        <p class="chart-scroll-hint">Drag the chart sideways to read the far shore.</p>
         <div class="diagram-panels three">
           <div class="diagram-panel is-west" id="panel-gerund">
             <h4>Gerundia &middot; verb + <em>-ing</em></h4>
