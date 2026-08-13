@@ -1,753 +1,1830 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>El Zar: Words of Force & Effect</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- ══ REPLACE: lesson title. No "Forbes English —" prefix. ══ -->
+<title>El Zar — Words of Force and Effect (C2)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg:        #12080e;
-    --surface:   #1e0f19;
-    --card:      #271526;
-    --border:    #4a2040;
-    --gold:      #c9a84c;
-    --gold-pale: #e8d09a;
-    --crimson:   #8b1a3a;
-    --cream:     #f0e6d3;
-    --muted:     #9a7a8a;
-    --right:     #3a7d5a;
-    --wrong:     #8b2a2a;
-    --text:      #e8d8c8;
-  }
+/* ══════════════════════════════════════════════════════════════════
+   FORBES ENGLISH — 16:9 SLIDE LESSON TEMPLATE
+   Everything you normally need to change lives in the two blocks
+   marked "REPLACE". Do not restructure the engine below them.
+   ══════════════════════════════════════════════════════════════════ */
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ══ REPLACE 1 of 2: hero image + palette ══
+   1. Point --hero at the lesson's cover image. This ONE line drives the
+      cover, the background pattern on every slide, and the PDF export.
+   2. Generate the palette FROM that same image:
+         python3 lesson-template/extract-palette.py <hero-image>
+      and paste its output over the colour block. Never hand-pick colours. */
+:root {
+  --hero: url('ElZar/studio-hero.jpg');
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
-    min-height: 100vh;
-  }
+  --void          : #d8c5ac;
+  --surface       : #e1d5c4;
+  --surface2      : #dcccb8;
+  --border        : #96634a;
+  --text          : #2a1911;
+  --text-dim      : #5e3e2e;
+  --accent        : #9f3906;
+  --accent-bright : #722600;
+  --accent-dim    : #e87237;
+  --secondary     : #121713;
+  --contrast      : #085449;
+}
 
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(139,26,58,0.18) 0%, transparent 60%),
-      radial-gradient(ellipse 40% 30% at 80% 80%, rgba(201,168,76,0.07) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: 0;
-  }
+/* ── Fixed tokens: identical in every lesson. Do not edit. ── */
+:root {
+  --slide-w: 1280px;
+  --slide-h: 720px;
+  --pad: 64px;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-ui: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'DM Mono', ui-monospace, monospace;
+  --r: 10px;
+  --ok: #3fbf7f;
+  --no: #e8555f;
+  --bg-opacity: 0.72;     /* background pattern strength — see doc §6 */
 
-  .page-wrap {
-    position: relative;
-    z-index: 1;
-    max-width: 820px;
-    margin: 0 auto;
-    padding: 40px 20px 80px;
-  }
+  /* Theme primitives. Dark is the default; a light lesson sets
+     data-theme="light" on <html> and only these flip. Never hardcode
+     rgba(0,0,0,…) or rgba(255,255,255,…) in a lesson — use these. */
+  --inset:  rgba(255,255,255,0.07);  /* recessed fills: inputs, key discs   */
+  --inset2: rgba(255,255,255,0.14);  /* the same, one step stronger         */
+  --scrim:  rgba(0,0,0,0.45);        /* chrome sitting over the hero        */
+  --hairline: rgba(255,255,255,0.28);
+  --cover-shadow: 0 1px 2px rgba(0,0,0,0.95), 0 2px 8px rgba(0,0,0,0.90),
+                  0 4px 26px rgba(0,0,0,0.80), 0 0 3px rgba(0,0,0,0.85);
+  /* Interior background wash. Two stops, not one: the artwork stays visible
+     across the middle of the slide and is only pulled down at the very top
+     and bottom, where the eyebrow, the deck bar and the progress rail sit.
+     An interior page that reads as plain black is a bug — see doc §6. */
+  --wash-mid:  rgba(0,0,0,0.06);
+  --wash-edge: rgba(0,0,0,0.20);
+}
 
-  .logo-wrap { display: flex; justify-content: center; margin-bottom: 48px; }
+/* ══ LIGHT THEME ══
+   For bright, airy heroes. The palette comes from
+   `extract-palette.py <hero> --light`; these are the structural flips the
+   palette alone cannot express.
 
-  .hero { text-align: center; margin-bottom: 48px; }
-  .hero-eyebrow {
-    font-family: 'Source Sans 3', sans-serif;
-    font-size: 11px; font-weight: 600;
-    letter-spacing: 3px; text-transform: uppercase;
-    color: var(--gold); margin-bottom: 16px;
-  }
-  .hero h1 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2rem, 6vw, 3.2rem);
-    font-weight: 700; color: var(--cream);
-    line-height: 1.15; margin-bottom: 16px;
-  }
-  .hero h1 em { color: var(--gold); font-style: italic; }
-  .hero p { color: var(--muted); font-size: 15px; max-width: 520px; margin: 0 auto; font-style: italic; }
+   A light lesson is a MID tone, not a white one. Every wash here is mixed
+   from --void rather than from white: mixing toward white bleaches the hero
+   out of the interior pages and turns the deck into glare on a projector.
+   If you find yourself reaching for rgba(255,255,255,…) in a lesson, the
+   answer is a higher --void percentage instead. */
+html[data-theme="light"] {
+  --inset:  rgba(0,0,0,0.045);
+  --inset2: rgba(0,0,0,0.10);
+  --scrim:  color-mix(in srgb, var(--void) 78%, transparent);
+  --hairline: rgba(0,0,0,0.14);
+  --cover-shadow: 0 1px 2px rgba(255,255,255,0.95), 0 2px 8px rgba(255,255,255,0.85),
+                  0 4px 26px rgba(255,255,255,0.6), 0 0 3px rgba(255,255,255,0.9);
+  --wash-mid:  color-mix(in srgb, var(--void) 8%, transparent);
+  --wash-edge: color-mix(in srgb, var(--void) 26%, transparent);
+  --bg-opacity: 0.62;
+}
 
-  /* SCORE BAR */
-  .scorebar {
-    position: sticky; top: 16px; z-index: 100;
-    background: rgba(30,15,25,0.92); backdrop-filter: blur(12px);
-    border: 1px solid var(--border); border-radius: 12px;
-    padding: 12px 20px;
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 40px; gap: 12px; flex-wrap: wrap;
-  }
-  .scorebar-left { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 600; color: var(--cream); }
-  .scorebar-left span { color: var(--gold); }
-  .prog-track { flex: 1; min-width: 120px; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
-  .prog-fill { height: 100%; background: linear-gradient(90deg, var(--crimson), var(--gold)); border-radius: 2px; transition: width 0.5s ease; }
-  .scorebar-right { font-size: 13px; color: var(--muted); }
+/* On a mid canvas a translucent card has little to contrast against, so
+   edges need more of the hairline than they do on a dark canvas. */
+html[data-theme="light"] .card { border-color: color-mix(in srgb, var(--border) 90%, transparent); }
+html[data-theme="light"] .opt,
+html[data-theme="light"] .match-item { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
+html[data-theme="light"] .opt-key { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
+html[data-theme="light"] .card { background: color-mix(in srgb, var(--surface) 92%, transparent); }
+html[data-theme="light"] .opt { background: color-mix(in srgb, var(--surface) 95%, transparent); }
 
-  /* TASK HEADERS */
-  .task-header { margin-bottom: 28px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
-  .task-header h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 700; color: var(--cream); margin-bottom: 4px; }
-  .task-header p { color: var(--muted); font-size: 14px; font-style: italic; }
-  .task-badge {
-    display: inline-block; background: var(--crimson); color: var(--cream);
-    font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
-    padding: 3px 10px; border-radius: 20px; margin-bottom: 10px;
-  }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  /* CARDS */
-  .card {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 14px; padding: 28px; margin-bottom: 20px;
-    position: relative; overflow: hidden; transition: border-color 0.3s;
-  }
-  .card::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-    background: linear-gradient(90deg, var(--crimson), var(--gold));
-    opacity: 0; transition: opacity 0.3s;
-  }
-  .card.done::before { opacity: 1; }
+html, body {
+  height: 100%;
+  overflow: hidden;            /* NO SCROLLING. This is the whole point. */
+  background: var(--void);
+  color: var(--text);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+}
 
-  .item-num { font-family: 'Cormorant Garamond', serif; font-size: 0.75rem; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; }
-  .item-text { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 600; color: var(--cream); margin-bottom: 20px; line-height: 1.4; }
+/* ── STAGE: a fixed 1280×720 canvas scaled to fit any viewport ── */
+.stage-wrap { position: fixed; inset: 0; display: grid; place-items: center; }
+.stage {
+  position: relative;
+  width: var(--slide-w);
+  height: var(--slide-h);
+  transform-origin: center center;
+  overflow: hidden;
+  background: var(--void);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.55);
+}
 
-  /* CHOICES */
-  .choices-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  @media(max-width:560px) { .choices-grid { grid-template-columns: 1fr; } }
+/* ── BACKGROUND PATTERN: the cover image, behind every slide ──
+   Driven by --hero so the screen view and the PDF/PPT export read from
+   ONE definition. Two pseudo-layers because opacity on a parent would
+   also fade the wash sitting on top of it. */
+.bg-layer { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.bg-layer::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--hero) center / cover no-repeat;
+  opacity: var(--bg-opacity);
+  filter: saturate(0.92);
+}
+.bg-layer::after {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, var(--wash-edge) 0%, var(--wash-mid) 20%,
+                            var(--wash-mid) 80%, var(--wash-edge) 100%);
+}
+/* The cover slide shows the hero at FULL strength — no wash, no dimming. */
+.stage.on-cover .bg-layer::before { opacity: 1; filter: none; }
+/* Centre scrim: guarantees cover-text contrast over ANY hero — light, dark,
+   or busy — while leaving the artwork vivid at the edges. Do not remove it;
+   it is what makes an arbitrary dropped-in image safe. */
+.stage.on-cover .bg-layer::after {
+  background:
+    radial-gradient(ellipse 58% 54% at 50% 46%,
+      rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.22) 54%, transparent 82%),
+    linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.03) 30%,
+                            rgba(0,0,0,0.05) 70%, rgba(0,0,0,0.38) 100%);
+}
+/* A light cover keeps its picture. Dark ink already carries against a bright
+   image, so the scrim here is barely there — just enough to stop the title
+   landing on a hard edge. Never brighten a light cover to rescue text; if the
+   text will not read, the hero is wrong for a light lesson. */
+html[data-theme="light"] .stage.on-cover .bg-layer::after {
+  background:
+    radial-gradient(ellipse 58% 54% at 50% 46%,
+      rgba(255,255,255,0.48) 0%, rgba(255,255,255,0.28) 54%, transparent 82%),
+    linear-gradient(180deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.03) 30%,
+                            rgba(255,255,255,0.05) 70%, rgba(255,255,255,0.22) 100%);
+}
 
-  .choice-btn {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 10px; padding: 12px 16px;
-    color: var(--text); font-family: 'Source Sans 3', sans-serif; font-size: 14px;
-    cursor: pointer; text-align: left;
-    transition: background 0.2s, border-color 0.2s, transform 0.1s;
-    display: flex; align-items: flex-start; gap: 10px;
-  }
-  .choice-btn:hover:not(:disabled) { background: rgba(201,168,76,0.08); border-color: var(--gold); transform: translateY(-1px); }
-  .choice-letter {
-    flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
-    background: var(--border); display: flex; align-items: center; justify-content: center;
-    font-size: 11px; font-weight: 600; color: var(--gold); margin-top: 1px;
-  }
-  .choice-btn.right { background: rgba(58,125,90,0.25); border-color: var(--right); }
-  .choice-btn.wrong { background: rgba(139,42,42,0.25);  border-color: var(--wrong); }
-  .choice-btn.right .choice-letter { background: var(--right); color: #fff; }
-  .choice-btn.wrong .choice-letter { background: var(--wrong); color: #fff; }
-  .choice-btn:disabled { cursor: default; transform: none; }
+/* ── SLIDES ── */
+.slide {
+  position: absolute; inset: 0; z-index: 1;
+  display: none;
+  flex-direction: column;
+  padding: var(--pad);
+}
+.slide.is-active { display: flex; animation: slide-in .32s ease both; }
+@keyframes slide-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
-  /* FEEDBACK */
-  .feedback { display: none; margin-top: 16px; padding: 14px 16px; border-radius: 10px; font-size: 14px; line-height: 1.5; border-left: 4px solid; }
-  .feedback.show { display: block; }
-  .feedback.right { background: rgba(58,125,90,0.15); border-color: var(--right); color: #a8d4b8; }
-  .feedback.wrong { background: rgba(139,42,42,0.15);  border-color: var(--wrong); color: #d4a8a8; }
-  .feedback strong { color: var(--cream); }
+/* ── LOGO ── */
+.fe-logo { width: 152px; height: auto; display: block; }
+.fe-logo-mark { color: var(--logo-mark, var(--accent)); }
+.fe-logo-word { fill: var(--text); opacity: 0; transition: opacity .25s ease; }
+.fonts-ready .fe-logo-word { opacity: 1; }   /* never flash a fallback face */
+.slide[data-type="cover"] .fe-logo { width: 232px; }
 
-  /* FILL THE GAP */
-  .fitb-input {
-    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
-    padding: 10px 14px; color: var(--cream);
-    font-family: 'Source Sans 3', sans-serif; font-size: 15px;
-    width: 100%; max-width: 340px; transition: border-color 0.2s; outline: none; margin-top: 10px;
-  }
-  .fitb-input:focus { border-color: var(--gold); }
-  .fitb-input.right { border-color: var(--right); background: rgba(58,125,90,0.15); }
-  .fitb-input.wrong { border-color: var(--wrong); background: rgba(139,42,42,0.15); }
+/* ── COVER ── */
+.cover-inner {
+  height: 100%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; gap: 4px;
+}
+.cover-title {
+  font-family: var(--font-display);
+  font-size: 62px; font-weight: 900; line-height: 1.06;
+  color: var(--text);
+  text-shadow: var(--cover-shadow);
+  margin-top: 26px;
+}
+.cover-title em { font-style: normal; color: var(--accent-bright); }
+.cover-sub {
+  font-size: 19px; color: var(--text);
+  letter-spacing: .04em; margin-top: 14px;
+  text-shadow: var(--cover-shadow);
+}
+.cover-meta {
+  display: flex; gap: 10px; margin-top: 26px; flex-wrap: wrap; justify-content: center;
+}
+.chip {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase;
+  padding: 6px 14px; border-radius: 999px;
+  border: 1px solid var(--hairline);
+  background: var(--scrim);
+  color: var(--text);
+}
 
-  /* WORD BANK */
-  .word-bank {
-    display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px;
-    padding: 16px; background: var(--surface);
-    border: 1px dashed var(--border); border-radius: 10px;
-  }
-  .word-chip {
-    background: var(--bg); border: 1px solid var(--border);
-    border-radius: 20px; padding: 5px 14px; font-size: 13px;
-    color: var(--gold-pale); cursor: pointer; transition: all 0.2s; user-select: none;
-  }
-  .word-chip:hover { background: rgba(201,168,76,0.1); border-color: var(--gold); }
-  .word-chip.used  { opacity: 0.3; cursor: default; pointer-events: none; }
+/* ── SLIDE FURNITURE ── */
+.slide-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 20px; margin-bottom: 26px;
+}
+.eyebrow {
+  font-family: var(--font-mono); font-size: 12px;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent-bright);
+}
+.slide-title {
+  font-family: var(--font-display);
+  font-size: 38px; font-weight: 700; line-height: 1.15; color: var(--text);
+  margin-top: 6px;
+}
+.slide-body { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; }
 
-  /* MATCHING */
-  .match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  @media(max-width:560px) { .match-grid { grid-template-columns: 1fr; } }
-  .match-col-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; font-weight: 600; }
-  .match-item {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 8px; padding: 11px 14px; font-size: 14px;
-    cursor: pointer; transition: all 0.2s; min-height: 48px;
-    display: flex; align-items: center;
-  }
-  .match-item:hover:not(.matched):not(.used-right) { border-color: var(--gold); background: rgba(201,168,76,0.07); }
-  .match-item.chosen  { border-color: var(--gold); background: rgba(201,168,76,0.13); }
-  .match-item.matched { border-color: var(--right); background: rgba(58,125,90,0.2); color: #a8d4b8; cursor: default; }
-  .match-item.bad-flash { border-color: var(--wrong); background: rgba(139,42,42,0.2); }
-  .match-item.used-right { opacity: 0.35; cursor: default; }
-  .match-left-col, .match-right-col { display: flex; flex-direction: column; gap: 8px; }
+/* Content sits in a translucent card so it stays legible over the pattern. */
+.card {
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+  border-radius: var(--r);
+  padding: 30px 34px;
+  backdrop-filter: blur(3px);
+}
+.card + .card { margin-top: 16px; }
+.cols .card + .card,
+.cols .card { margin-top: 0; }   /* side-by-side cards must share a top edge */
+.prose { font-size: 20px; line-height: 1.62; color: var(--text); }
+.prose + .prose { margin-top: 14px; }
+.prose strong { color: var(--accent-bright); font-weight: 600; }
+.dim { color: var(--text-dim); }
 
-  /* ORDER */
-  .order-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-  .order-item {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 8px; padding: 12px 16px; cursor: grab;
-    display: flex; align-items: center; gap: 12px; font-size: 14px;
-    transition: all 0.2s; user-select: none;
-  }
-  .order-item:active { cursor: grabbing; }
-  .order-item.dragging  { opacity: 0.4; border-style: dashed; }
-  .order-item.drag-over { border-color: var(--gold); background: rgba(201,168,76,0.08); }
-  .drag-handle { color: var(--muted); font-size: 16px; flex-shrink: 0; }
-  .order-num {
-    flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%;
-    background: var(--border); display: flex; align-items: center; justify-content: center;
-    font-size: 11px; font-weight: 600; color: var(--gold);
-  }
-  .order-item.right-place { border-color: var(--right); background: rgba(58,125,90,0.15); }
-  .order-item.wrong-place { border-color: var(--wrong); background: rgba(139,42,42,0.15); }
+/* Two-column teaching layout */
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
 
-  /* BUTTONS */
-  .btn-row { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
-  .btn-hand-in, .btn-go-on, .btn-check {
-    font-family: 'Source Sans 3', sans-serif; font-size: 14px; font-weight: 600;
-    letter-spacing: 0.5px; border: none; border-radius: 8px; padding: 11px 24px; cursor: pointer; transition: all 0.2s;
-  }
-  .btn-hand-in, .btn-check { background: linear-gradient(135deg, var(--crimson), #6b1230); color: var(--cream); }
-  .btn-hand-in:hover, .btn-check:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(139,26,58,0.4); }
-  .btn-go-on { background: linear-gradient(135deg, var(--gold), #a07a30); color: var(--bg); display: none; }
-  .btn-go-on.show { display: inline-flex; align-items: center; gap: 6px; }
-  .btn-go-on:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(201,168,76,0.4); }
-  .btn-hand-in:disabled, .btn-check:disabled { opacity: 0.5; cursor: default; transform: none; }
+/* ── QUESTIONS ── */
+.q-stem { font-size: 25px; line-height: 1.5; color: var(--text); margin-bottom: 22px; }
+.q-stem em { font-style: normal; color: var(--accent-bright); font-weight: 600; }
 
-  /* TASK BLOCKS */
-  .task-block { display: none; margin-bottom: 60px; }
-  .task-block.active { display: block; }
+.opts { display: grid; gap: 11px; }
+.opts.two-up { grid-template-columns: 1fr 1fr; }
+.opt {
+  display: flex; align-items: center; gap: 14px;
+  width: 100%; text-align: left;
+  font-family: var(--font-ui); font-size: 19px; color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: var(--r);
+  padding: 15px 20px; cursor: pointer;
+  transition: border-color .15s, background .15s, transform .12s;
+}
+.opt:hover:not(:disabled) { border-color: var(--accent); transform: translateX(3px); }
+.opt-key {
+  flex: 0 0 30px; height: 30px; display: grid; place-items: center;
+  border-radius: 50%; font-family: var(--font-mono); font-size: 13px;
+  background: var(--inset);
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+}
+.opt.correct { border-color: var(--ok); background: color-mix(in srgb, var(--ok) 20%, var(--surface2)); }
+.opt.wrong   { border-color: var(--no); background: color-mix(in srgb, var(--no) 18%, var(--surface2)); }
+.opt:disabled { cursor: default; }
 
-  /* LAST SCREEN */
-  #last-screen { display: none; text-align: center; padding: 60px 20px; }
-  #last-screen.active { display: block; }
-  .score-ring {
-    width: 140px; height: 140px; border-radius: 50%;
-    border: 4px solid var(--gold); display: flex; flex-direction: column;
-    align-items: center; justify-content: center; margin: 0 auto 32px;
-    background: var(--card); box-shadow: 0 0 40px rgba(201,168,76,0.2);
+/* Gap-fill */
+.gap {
+  font-family: var(--font-ui); font-size: 20px; color: var(--text);
+  background: var(--inset);
+  border: none; border-bottom: 2px solid var(--accent);
+  padding: 3px 10px; min-width: 190px; border-radius: 4px 4px 0 0;
+}
+.gap:focus { outline: none; background: var(--inset2); }
+.gap.correct { border-bottom-color: var(--ok); color: var(--ok); }
+.gap.wrong   { border-bottom-color: var(--no); color: var(--no); }
+
+.feedback {
+  margin-top: 18px; font-size: 17px; line-height: 1.55;
+  min-height: 26px; opacity: 0; transition: opacity .2s;
+}
+.feedback.show { opacity: 1; }
+.feedback.ok { color: var(--ok); }
+.feedback.no { color: var(--no); }
+
+/* ── BUTTONS ── */
+.btn {
+  font-family: var(--font-ui); font-size: 15px; font-weight: 600;
+  letter-spacing: .03em;
+  padding: 12px 26px; border-radius: var(--r);
+  border: 1px solid var(--accent); background: transparent; color: var(--accent-bright);
+  cursor: pointer; transition: background .15s, color .15s;
+}
+.btn:hover { background: var(--accent); color: var(--void); }
+.btn-solid { background: var(--accent); color: var(--void); border-color: var(--accent); }
+.btn-solid:hover { background: var(--accent-bright); border-color: var(--accent-bright); }
+.btn:disabled { opacity: .35; cursor: not-allowed; }
+.btn-lg { font-size: 17px; padding: 15px 38px; }
+
+/* ── CHROME: progress + nav, pinned inside the stage ── */
+.deck-bar {
+  position: absolute; z-index: 3; left: 0; right: 0; bottom: 0;
+  height: 58px; padding: 0 26px;
+  display: flex; align-items: center; gap: 18px;
+  background: linear-gradient(180deg, transparent, var(--scrim));
+}
+.stage.on-cover .deck-bar { background: none; }
+.stage.on-cover .deck-score { visibility: hidden; }
+.progress { flex: 1; height: 3px; background: var(--inset2); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0; background: var(--accent); transition: width .3s ease; }
+.deck-count, .deck-score {
+  font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); white-space: nowrap;
+}
+.nav-btn {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  background: var(--scrim); color: var(--text);
+  cursor: pointer; font-size: 15px; line-height: 1;
+  display: grid; place-items: center; transition: border-color .15s, background .15s;
+}
+.nav-btn:hover:not(:disabled) { border-color: var(--accent); background: var(--accent); color: var(--void); }
+.nav-btn:disabled { opacity: .28; cursor: not-allowed; }
+
+/* ── LANGUAGE SWITCH ── */
+.lang-select {
+  font-family: var(--font-mono); font-size: 12px;
+  background: var(--scrim); color: var(--text);
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  border-radius: 6px; padding: 6px 10px; cursor: pointer;
+}
+.lang-select:focus { outline: 1px solid var(--accent); }
+
+/* ── RESULTS ── */
+.score-big {
+  font-family: var(--font-display); font-size: 84px; font-weight: 900;
+  color: var(--accent-bright); line-height: 1;
+}
+
+/* ── RTL ── */
+[dir="rtl"] .opt { text-align: right; }
+[dir="rtl"] .opt:hover:not(:disabled) { transform: translateX(-3px); }
+
+
+/* ── ACTIVATION ──────────────────────────────────────────────────── */
+.act-target {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 16px;
+}
+.act-target-label {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-dim);
+  margin-right: 4px;
+}
+.bank-chip {
+  font-family: var(--font-mono); font-size: 12px;
+  padding: 5px 12px; border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  color: var(--accent-bright);
+}
+.act-cols { align-items: stretch; }
+.act-card { display: flex; flex-direction: column; padding: 20px 24px; }
+.act-kind {
+  display: flex; align-items: center; gap: 9px;
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--accent-bright); margin-bottom: 12px;
+}
+.act-icon { font-size: 16px; }
+.act-brief { font-size: 16.5px; line-height: 1.5; color: var(--text); margin-bottom: 12px; }
+.act-list { list-style: none; display: grid; gap: 9px; }
+.act-list li {
+  font-size: 15.5px; line-height: 1.45; color: var(--text-dim);
+  padding-left: 18px; position: relative;
+}
+.act-list li::before {
+  content: '—'; position: absolute; left: 0; color: var(--accent);
+}
+.act-input {
+  flex: 1; min-height: 118px; resize: none;
+  font-family: var(--font-ui); font-size: 15px; line-height: 1.55;
+  color: var(--text);
+  background: var(--inset);
+  border: 1px solid color-mix(in srgb, var(--border) 45%, transparent);
+  border-radius: 8px; padding: 12px 14px;
+}
+.act-input:focus { outline: none; border-color: var(--accent); background: var(--inset2); }
+.act-input::placeholder { color: var(--text-dim); opacity: .55; }
+.act-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 10px;
+}
+.act-count { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-dim); }
+.act-copy { font-size: 12.5px; padding: 6px 14px; }
+/* The textarea's value does not print; this mirror does. */
+.act-print { display: none; font-size: 14px; line-height: 1.55; white-space: pre-wrap; }
+
+
+/* ── MATCHING ────────────────────────────────────────────────────── */
+.match-grid { display: grid; grid-template-columns: 1fr 1.35fr; gap: 14px; }
+.match-col { display: grid; gap: 8px; align-content: start; }
+.match-item {
+  font-family: var(--font-ui); font-size: 15.5px; line-height: 1.4;
+  text-align: left; color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: var(--r); padding: 11px 16px; cursor: pointer;
+  transition: border-color .15s, background .15s, opacity .2s;
+}
+.match-item.term { font-weight: 600; }
+.match-item:hover:not(.done) { border-color: var(--accent); }
+.match-item.picked { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 22%, var(--surface2)); }
+.match-item.done { opacity: .45; cursor: default; border-color: var(--ok); }
+.match-item.miss { border-color: var(--no); animation: shake .3s; }
+@keyframes shake { 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
+
+/* ── ORDERING (build the sentence) ───────────────────────────────────
+   For word-order work — where the point is the SEQUENCE of prepositional
+   phrases, not choosing one word. Click to place, click again to take back;
+   no dragging, because a scaled stage makes drag targets lie. */
+.order-hint {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 10px;
+}
+.order-target {
+  display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start;
+  min-height: 92px; padding: 12px;
+  border: 1.5px dashed color-mix(in srgb, var(--border) 60%, transparent);
+  border-radius: var(--r); background: var(--inset);
+}
+.order-target.correct { border-style: solid; border-color: var(--ok); }
+.order-target.wrong   { border-style: solid; border-color: var(--no); }
+.order-pool { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.chunk {
+  font-family: var(--font-ui); font-size: 15.5px; line-height: 1.35;
+  color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: 999px; padding: 9px 16px; cursor: pointer;
+  transition: border-color .15s, background .15s, opacity .2s;
+}
+.chunk:hover:not(:disabled) { border-color: var(--accent); }
+.chunk.placed { background: color-mix(in srgb, var(--accent) 18%, var(--surface2)); border-color: var(--accent); }
+.chunk:disabled { cursor: default; opacity: .5; }
+
+/* ── DISCUSSION (unscored speaking prompts) ──────────────────────── */
+.discuss-meta {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 14px;
+}
+.prompts { display: grid; gap: 12px; list-style: none; margin: 0; padding: 0; }
+.prompt {
+  font-size: 19px; line-height: 1.5; color: var(--text);
+  padding-left: 26px; position: relative;
+}
+.prompt::before {
+  content: '?'; position: absolute; left: 0; top: 1px;
+  font-family: var(--font-mono); font-size: 15px; color: var(--accent);
+}
+.prompt.aside { font-size: 16.5px; color: var(--text-dim); font-style: italic; }
+.prompt.aside::before { content: '·'; }
+
+/* ══════════════════════════════════════════════════════════════════
+   PRINT / PDF EXPORT
+   Ctrl-P → Save as PDF → Landscape, margins None, Background graphics ON.
+   Each slide becomes one 16:9 page, ready to drop into PowerPoint.
+   ══════════════════════════════════════════════════════════════════ */
+@page { size: 1280px 720px; margin: 0; }
+@media print {
+  html, body { overflow: visible; height: auto; background: #fff; }
+  .stage-wrap { position: static; display: block; }
+  .stage {
+    transform: none !important;
+    width: 1280px; height: auto;      /* let the slides stack into pages */
+    overflow: visible; box-shadow: none;
   }
-  .score-big { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 700; color: var(--gold); line-height: 1; }
-  .score-word { font-size: 12px; color: var(--muted); letter-spacing: 1px; }
-  .last-heading { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--cream); margin-bottom: 12px; }
-  .last-note { color: var(--muted); font-size: 15px; font-style: italic; max-width: 460px; margin: 0 auto 32px; }
-  .btn-again {
-    background: linear-gradient(135deg, var(--gold), #a07a30); color: var(--bg);
-    font-family: 'Source Sans 3', sans-serif; font-size: 14px; font-weight: 600;
-    border: none; border-radius: 8px; padding: 13px 32px; cursor: pointer;
-    letter-spacing: 0.5px; transition: all 0.2s;
+  .bg-layer, .deck-bar, .lang-select, .nav-btn { display: none !important; }
+
+  /* Each slide becomes its own page and carries its own background, so the
+     export does not depend on the single on-screen background layer. */
+  .slide {
+    display: flex !important;
+    position: relative; inset: auto;
+    width: 1280px; height: 720px;
+    isolation: isolate;
+    page-break-after: always; break-after: page;
+    animation: none !important;
   }
-  .btn-again:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(201,168,76,0.4); }
+  .slide:last-child { page-break-after: auto; break-after: auto; }
+  .slide::before {
+    content: ''; position: absolute; inset: 0; z-index: -2;
+    background: var(--hero) center / cover no-repeat;
+    opacity: var(--bg-opacity);
+  }
+  .slide::after {
+    content: ''; position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(180deg, var(--wash-edge) 0%, var(--wash-mid) 20%,
+                                        var(--wash-mid) 80%, var(--wash-edge) 100%);
+  }
+  .slide[data-type="cover"]::before { opacity: 1; }
+  .slide[data-type="cover"]::after {
+    background:
+      radial-gradient(ellipse 58% 54% at 50% 46%,
+        rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.22) 54%, transparent 82%),
+      linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.03) 30%,
+                            rgba(0,0,0,0.05) 70%, rgba(0,0,0,0.38) 100%);
+  }
+  .feedback { opacity: 1 !important; }
+  .act-input, .act-foot { display: none !important; }
+  .act-print { display: block !important; }
+}
+
+/* Text that sits on the canvas rather than inside a card needs its own halo
+   now that the artwork behind it is bright. A shadow costs nothing and lets
+   the picture stay up, which darkening the wash back down would not. */
+.slide-title, .eyebrow, .q-stem, .q-ctx, .order-hint, .cover-title, .cover-sub,
+.score-big, .slide-body > .prose, .act-target-label {
+  text-shadow: 0 1px 2px rgba(0,0,0,0.55), 0 0 12px rgba(0,0,0,0.38);
+}
+html[data-theme="light"] .slide-title, html[data-theme="light"] .eyebrow,
+html[data-theme="light"] .q-stem, html[data-theme="light"] .q-ctx,
+html[data-theme="light"] .order-hint, html[data-theme="light"] .cover-title,
+html[data-theme="light"] .cover-sub, html[data-theme="light"] .score-big,
+html[data-theme="light"] .slide-body > .prose,
+html[data-theme="light"] .act-target-label {
+  text-shadow: 0 1px 2px rgba(255,255,255,0.75), 0 0 12px rgba(255,255,255,0.55);
+}
 </style>
 </head>
 <body>
-<div class="page-wrap">
 
-  <!-- LOGO -->
-  <div class="logo-wrap">
-    <svg width="160" height="60" viewBox="0 0 160 60" xmlns="http://www.w3.org/2000/svg">
-      <g transform="translate(54.95,6.71) scale(0.030857)"><g transform="translate(0,1504) scale(0.1,-0.1)" fill="#c9a84c" stroke="none"><path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47 l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21 -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9 -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58 105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141 144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392 -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31 c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55 -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0 -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226 144 331 156 51 6 127 -4 183 -25z"/><path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95 -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72 -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0 -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18 108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553 -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70 -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3 469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38 -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/><path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73 -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939 -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1 205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247 -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22 -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24 -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449 121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/><path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611 -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538 -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77 144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430 -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67 347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580 -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132 -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87 66 245 85 341 40z"/><path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140 -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134 -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287 -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101 -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107 173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392 207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599 281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241 111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2 347 -112 40 c-318 112 -594 149 -892 121z"/><path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149 l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801 -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6 -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294 -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12 -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29 -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55 -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12 -33 22 -42 21 -9 0 -199 -27 -422 -60z"/></g></g>
-      <text x="80" y="52" font-family="Arial,Helvetica,sans-serif" font-size="20.80" font-weight="700" fill="#e8d8c8" text-anchor="middle" letter-spacing="6">ENGLISH</text>
-    </svg>
-  </div>
+<div class="stage-wrap">
+  <div class="stage" id="stage">
 
-  <!-- HERO -->
-  <div class="hero">
-    <p class="hero-eyebrow">C2 · Words of Force &amp; Effect</p>
-    <h1>El Zar —<br><em>The Pull of These Words</em></h1>
-    <p>Twenty words that shape how strength shifts, fades, or breaks through. Work through each task to make them yours.</p>
-  </div>
+    <!-- Background pattern: driven entirely by --hero in the CSS above. -->
+    <div class="bg-layer" role="presentation"></div>
 
-  <!-- SCORE BAR -->
-  <div class="scorebar">
-    <div class="scorebar-left">Score: <span id="score-out">0</span></div>
-    <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
-    <div class="scorebar-right" id="prog-label">Task 1 of 4</div>
-  </div>
+    <!-- ══════════════════════════════════════════════════════════
+         REPLACE 2 of 2: SLIDES
+         Author one <section class="slide"> per screen.
+         data-type: cover | teach | mc | gap | match | order | discuss | results | activate
+         data-bg="folder/other.jpg" swaps the background pattern on that slide.
+         Everything a learner reads must fit WITHOUT scrolling.
+         If it does not fit, split it across two slides — never shrink type.
+         ══════════════════════════════════════════════════════════ -->
 
-  <!-- TASK 1 -->
-  <div class="task-block active" id="task-1">
-    <div class="task-header">
-      <span class="task-badge">Task 1</span>
-      <h2>Pick the Right Word</h2>
-      <p>Choose the word that fits the gap most sharply. Only one is right.</p>
-    </div>
-    <div id="mc-wrap"></div>
-    <div class="btn-row">
-      <button class="btn-go-on" id="mc-go-on">Go on to Task 2 →</button>
-    </div>
-  </div>
 
-  <!-- TASK 2 -->
-  <div class="task-block" id="task-2">
-    <div class="task-header">
-      <span class="task-badge">Task 2</span>
-      <h2>Fill the Gap</h2>
-      <p>Pick from the words below — click a word to drop it into the gap you have open, or type it in. Each word is used only once.</p>
-    </div>
-    <div class="word-bank" id="word-bank"></div>
-    <div id="fitb-wrap"></div>
-    <div class="btn-row">
-      <button class="btn-hand-in" id="fitb-hand-in">Hand In</button>
-      <button class="btn-go-on" id="fitb-go-on">Go on to Task 3 →</button>
-    </div>
-  </div>
-
-  <!-- TASK 3 -->
-  <div class="task-block" id="task-3">
-    <div class="task-header">
-      <span class="task-badge">Task 3</span>
-      <h2>Match the Meanings</h2>
-      <p>Click a word on the left, then click what it means on the right.</p>
-    </div>
-    <div class="match-grid">
-      <div>
-        <div class="match-col-label">Word</div>
-        <div class="match-left-col" id="match-left"></div>
+    <!-- ── COVER ────────────────────────────────────────────── -->
+    <section class="slide is-active" data-type="cover">
+      <div class="cover-inner">
+        <svg class="fe-logo" viewBox="0 0 200 78" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forbes English">
+          <g class="fe-logo-mark" transform="translate(-42.74,-30.22) scale(0.099477)"><g transform="translate(0,1504) scale(0.1,-0.1)" fill="currentColor" stroke="none"><path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47 l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21 -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9 -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58 105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141 144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392 -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31 c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55 -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0 -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226 144 331 156 51 6 127 -4 183 -25z"/><path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95 -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72 -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0 -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18 108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553 -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70 -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3 469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38 -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/><path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73 -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939 -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1 205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247 -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22 -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24 -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449 121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/><path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611 -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538 -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77 144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430 -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67 347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580 -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132 -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87 66 245 85 341 40z"/><path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140 -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134 -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287 -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101 -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107 173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392 207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599 281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241 111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2 347 -112 40 c-318 112 -594 149 -892 121z"/><path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149 l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801 -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6 -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294 -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12 -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29 -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55 -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12 -33 22 -42 21 -9 0 -199 -27 -422 -60z"/></g></g>
+          <text class="fe-logo-word" x="100" y="72.6" text-anchor="middle" font-family="'DM Sans', Arial, sans-serif" font-size="20.8" font-weight="600" letter-spacing="8">ENGLISH</text>
+        </svg>
+        <h1 class="cover-title" data-i18n="coverTitle">El Zar — the <em>pull</em> of these words</h1>
+        <p class="cover-sub" data-i18n="coverSub">Eighteen C2 verbs of force and effect, sorted by the direction they push</p>
+        <div class="cover-meta">
+          <span class="chip" data-i18n="chipLevel">C2 Proficiency</span>
+          <span class="chip" data-i18n="chipFocus">Vocabulary in use</span>
+          <span class="chip" data-i18n="chipCount">18 slides</span>
+        </div>
+        <div style="margin-top:34px">
+          <button class="btn btn-solid btn-lg" data-action="next" data-i18n="btnStart">Begin →</button>
+        </div>
       </div>
-      <div>
-        <div class="match-col-label">What it means</div>
-        <div class="match-right-col" id="match-right"></div>
+    </section>
+
+    <!-- ── THE IDEA ─────────────────────────────────────────── -->
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="famEyebrow">The idea</div>
+        <h2 class="slide-title" data-i18n="famTitleA">These are not synonyms. They are vectors.</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols">
+          <div class="card">
+            <p class="prose" data-i18n="famIntroA">At C2 the test is almost never <em>what does this word mean</em>. It is <strong>which way does it push</strong> — and the four wrong options will usually push the other way.</p>
+          </div>
+          <div class="card">
+            <p class="prose" data-i18n="famIntroB">Learn them in the four groups on the next slide and most questions answer themselves before you have read the options.</p>
+          </div>
+        </div>
+        <div class="card" style="margin-top:16px">
+          <p class="prose dim" data-i18n="famNote">Every sentence in this lesson comes from the world of a fictional band called El Zar — their tours, their rows, their reviews.</p>
+        </div>
       </div>
-    </div>
-    <div class="btn-row">
-      <button class="btn-go-on" id="match-go-on">Go on to Task 4 →</button>
-    </div>
-    <div class="feedback" id="match-fb"></div>
-  </div>
+    </section>
 
-  <!-- TASK 4 -->
-  <div class="task-block" id="task-4">
-    <div class="task-header">
-      <span class="task-badge">Task 4</span>
-      <h2>Put It in Order</h2>
-      <p>Drag the chunks into the right order to build a well-formed line.</p>
-    </div>
-    <div id="order-wrap"></div>
-    <div class="btn-row">
-      <button class="btn-check" id="order-check">Check All</button>
-      <button class="btn-go-on" id="order-go-on">See Your Score →</button>
-    </div>
-  </div>
+    <!-- ── THE FOUR FAMILIES ────────────────────────────────── -->
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="famEyebrow">The idea</div>
+        <h2 class="slide-title" data-i18n="famTitleB">Four directions, eighteen words</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="fam1h">↓ Turn it down</strong></p>
+            <p class="prose" style="margin-top:6px;font-size:18px">attenuate · diminish · abate · curtail · mitigate · alleviate · assuage · mollify · circumscribe</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="fam2h">↑ Turn it up, or set it off</strong></p>
+            <p class="prose" style="margin-top:6px;font-size:18px">exacerbate · precipitate · engender · bolster</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="fam3h">◑ Clear it, or cloud it</strong></p>
+            <p class="prose" style="margin-top:6px;font-size:18px">elucidate · obfuscate</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="fam4h">⌈ Back it up</strong></p>
+            <p class="prose" style="margin-top:6px;font-size:18px">corroborate · substantiate · underscore</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  <!-- LAST SCREEN -->
-  <div id="last-screen">
-    <div class="score-ring">
-      <div class="score-big" id="last-num">0</div>
-      <div class="score-word">OUT OF 20</div>
-    </div>
-    <h2 class="last-heading" id="last-heading">Well done.</h2>
-    <p class="last-note" id="last-note"></p>
-    <button class="btn-again" onclick="startAgain()">Start Again</button>
-  </div>
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Choose the word</span> &middot; 1 / 4</div>
+        <h2 class="slide-title" data-i18n="qTitle">Which direction does the sentence need?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">The producer used wide, rolling reverb to ______ the sharpness of the lead guitar, keeping the mix warm at high volumes.</p>
+        <div class="opts two-up">
+          <button class="opt">exacerbate</button>
+          <button class="opt" data-correct>attenuate</button>
+          <button class="opt">precipitate</button>
+          <button class="opt">underscore</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Attenuate</strong> means to bring down the strength or sharpness of something. The producer wanted less harshness — not more (exacerbate), not a sudden shift (precipitate), and not further stress on it (underscore)."></p>
+      </div>
+    </section>
 
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Choose the word</span> &middot; 2 / 4</div>
+        <h2 class="slide-title" data-i18n="qTitle">Which direction does the sentence need?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">The tour was meant to ______ the growing ill-feeling between the two founding members — yet within three nights it had ______ a lasting rift.</p>
+        <div class="opts two-up">
+          <button class="opt" data-correct>assuage … precipitated</button>
+          <button class="opt">bolster … engendered</button>
+          <button class="opt">circumscribe … attenuated</button>
+          <button class="opt">mollify … corroborated</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Assuage</strong> means to make a painful feeling less sharp; <strong>precipitated</strong> means brought something about very fast and suddenly. The gap between what was hoped and what happened is the whole weight of the line."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Choose the word</span> &middot; 3 / 4</div>
+        <h2 class="slide-title" data-i18n="qTitle">Which direction does the sentence need?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">The band&rsquo;s handler spoke in a rolling fog of vague, shifting words at every press gathering — plainly meant to ______ the truth rather than shed light on it.</p>
+        <div class="opts two-up">
+          <button class="opt">elucidate</button>
+          <button class="opt">substantiate</button>
+          <button class="opt">corroborate</button>
+          <button class="opt" data-correct>obfuscate</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Obfuscate</strong> means to cloud or muddy something on purpose. The other three words all move toward clarity or backing up a claim — the other way round from what the handler was doing."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Choose the word</span> &middot; 4 / 4</div>
+        <h2 class="slide-title" data-i18n="qTitle">Which direction does the sentence need?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Three write-ups, each glowing and each written without knowledge of the others, went a long way to ______ the claim that El Zar&rsquo;s live shows had reached a new height.</p>
+        <div class="opts two-up">
+          <button class="opt">diminish</button>
+          <button class="opt">curtail</button>
+          <button class="opt" data-correct>corroborate</button>
+          <button class="opt">circumscribe</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Corroborate</strong> means to back up a claim with fresh, independent support. Three separate writers agreeing is exactly that — the other three all narrow or weaken a claim rather than strengthening it."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="gapEyebrow">Fill the gap</span> &middot; 1 / 3</div>
+        <h2 class="slide-title" data-i18n="gapTitle">One word, and only one, will do</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target" style="margin-bottom:14px">
+          <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
+          <span class="bank-chip">diminish</span> <span class="bank-chip">exacerbate</span> <span class="bank-chip">mollify</span> <span class="bank-chip">circumscribed</span> <span class="bank-chip">elucidate</span> <span class="bank-chip">assuage</span> <span class="bank-chip">curtail</span> <span class="bank-chip">bolster</span>
+        </div>
+        <div class="card gap-row">
+          <p class="q-stem" style="margin-bottom:12px">Years of thin funding had begun to <input class="gap" data-answer="diminish" aria-label="gap"> the band&rsquo;s standing, which had once been thought the strongest in the field.</p>
+          <p class="feedback" data-explain="<strong>Diminish</strong> means to make smaller or weaker by degrees. Standing that was once strong wore away through neglect."></p>
+        </div>
+        <div class="card gap-row">
+          <p class="q-stem" style="margin-bottom:12px">Rather than deal with the row head-on, the label put out a statement so hedged and murky it seemed likely to <input class="gap" data-answer="exacerbate" aria-label="gap"> things rather than settle them.</p>
+          <p class="feedback" data-explain="<strong>Exacerbate</strong> means to make something bad even worse. Hedging and murkiness inflame rather than calm a row."></p>
+        </div>
+        <div style="margin-top:14px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="gapEyebrow">Fill the gap</span> &middot; 2 / 3</div>
+        <h2 class="slide-title" data-i18n="gapTitle">One word, and only one, will do</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target" style="margin-bottom:14px">
+          <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
+          <span class="bank-chip">diminish</span> <span class="bank-chip">exacerbate</span> <span class="bank-chip">mollify</span> <span class="bank-chip">circumscribed</span> <span class="bank-chip">elucidate</span> <span class="bank-chip">assuage</span> <span class="bank-chip">curtail</span> <span class="bank-chip">bolster</span>
+        </div>
+        <div class="card gap-row">
+          <p class="q-stem" style="margin-bottom:12px">The tour manager hoped that handing out free backstage passes might <input class="gap" data-answer="mollify" aria-label="gap"> the anger of fans who had been turned away at the gate.</p>
+          <p class="feedback" data-explain="<strong>Mollify</strong> means to calm someone&rsquo;s anger or soften their mood. A goodwill offering is a classic way of trying to mollify."></p>
+        </div>
+        <div class="card gap-row">
+          <p class="q-stem" style="margin-bottom:12px">The venue&rsquo;s deal <input class="gap" data-answer="circumscribed" aria-label="gap"> the band&rsquo;s freedom to play their own songs, setting a rule that at least forty in every hundred tracks had to be licensed covers.</p>
+          <p class="feedback" data-explain="<strong>Circumscribed</strong> means to draw a tight boundary around something — to hold it within set walls. The deal put a hard limit on their creative freedom."></p>
+        </div>
+        <div style="margin-top:14px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="gapEyebrow">Fill the gap</span> &middot; 3 / 3</div>
+        <h2 class="slide-title" data-i18n="gapTitle">One word, and only one, will do</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target" style="margin-bottom:14px">
+          <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
+          <span class="bank-chip">diminish</span> <span class="bank-chip">exacerbate</span> <span class="bank-chip">mollify</span> <span class="bank-chip">circumscribed</span> <span class="bank-chip">elucidate</span> <span class="bank-chip">assuage</span> <span class="bank-chip">curtail</span> <span class="bank-chip">bolster</span>
+        </div>
+        <div class="card gap-row">
+          <p class="q-stem" style="margin-bottom:12px">The teacher played a track from El Zar&rsquo;s third record to <input class="gap" data-answer="elucidate" aria-label="gap"> the idea of &lsquo;timbral layering&rsquo; — a term that had meant nothing to the students when it was set out in the abstract.</p>
+          <p class="feedback" data-explain="<strong>Elucidate</strong> means to make something clear, to shed light on it. A real, heard example brought a dry idea to life."></p>
+        </div>
+        <div style="margin-top:14px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="match">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="matchEyebrow">Match the meanings</div>
+        <h2 class="slide-title" data-i18n="matchTitle">Five more, defined by what they do</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="prose dim" style="margin-bottom:14px;font-size:17px" data-i18n="matchHint">
+          Click a word, then click its meaning. Each definition describes the <em>movement</em> the word makes, not just its sense.
+        </p>
+        <div class="match-pair" data-term="mitigate" data-def="To make something harmful less sharp or strong in its reach"></div>
+        <div class="match-pair" data-term="engender" data-def="To bring a feeling, mood, or state of things into being"></div>
+        <div class="match-pair" data-term="underscore" data-def="To draw out the weight or meaning of something already there"></div>
+        <div class="match-pair" data-term="substantiate" data-def="To back up a claim by bringing forward hard, real backing"></div>
+        <div class="match-pair" data-term="alleviate" data-def="To lift some — though not all — of a weight, ache, or hardship"></div>
+        <div class="match-grid"></div>
+        <p class="feedback" data-explain="Every one of these is a verb of force: something is lessened, brought into being, drawn out, propped up, or lifted."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="order">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="orderEyebrow">Build the sentence</span> &middot; 1 / 5</div>
+        <h2 class="slide-title" data-i18n="orderTitle">Put it in order</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="order-hint" data-i18n="orderHint">Click the parts in order · click one again to take it back</p>
+        <div class="order" data-answer="The write-up | went a long way to bolster | the long-held view | that the band had lost none of their edge"></div>
+        <div style="margin-top:16px">
+          <button class="btn" data-action="check-order" data-i18n="btnCheck">Check</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Bolster</strong>: to prop up or strengthen. The write-up added weight to something people already believed."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="order">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="orderEyebrow">Build the sentence</span> &middot; 2 / 5</div>
+        <h2 class="slide-title" data-i18n="orderTitle">Put it in order</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="order-hint" data-i18n="orderHint">Click the parts in order · click one again to take it back</p>
+        <div class="order" data-answer="The chairman&rsquo;s reach | had been so thoroughly circumscribed | by the board | that his word carried almost no weight in the room"></div>
+        <div style="margin-top:16px">
+          <button class="btn" data-action="check-order" data-i18n="btnCheck">Check</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Circumscribed</strong>: held within tight walls. The board had drawn such a narrow ring around his power that he could do very little."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="order">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="orderEyebrow">Build the sentence</span> &middot; 3 / 5</div>
+        <h2 class="slide-title" data-i18n="orderTitle">Put it in order</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="order-hint" data-i18n="orderHint">Click the parts in order · click one again to take it back</p>
+        <div class="order" data-answer="A long stretch of cold silence | between the two lead players | did nothing to abate | the talk of a lasting split"></div>
+        <div style="margin-top:16px">
+          <button class="btn" data-action="check-order" data-i18n="btnCheck">Check</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Abate</strong>: to grow less strong. The silence did not quiet the talk — if anything it fed it."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="order">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="orderEyebrow">Build the sentence</span> &middot; 4 / 5</div>
+        <h2 class="slide-title" data-i18n="orderTitle">Put it in order</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="order-hint" data-i18n="orderHint">Click the parts in order · click one again to take it back</p>
+        <div class="order" data-answer="Their failure to substantiate | any of the claims | with hard, written backing | left their whole case hollow"></div>
+        <div style="margin-top:16px">
+          <button class="btn" data-action="check-order" data-i18n="btnCheck">Check</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Substantiate</strong>: to back up with solid proof. Without written backing, their words stood on nothing."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="order">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="orderEyebrow">Build the sentence</span> &middot; 5 / 5</div>
+        <h2 class="slide-title" data-i18n="orderTitle">Put it in order</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="order-hint" data-i18n="orderHint">Click the parts in order · click one again to take it back</p>
+        <div class="order" data-answer="The rework, rather than attenuating | the raw, unguarded feel of the first take, | only seemed to precipitate | a fresh wave of feeling for the old recording"></div>
+        <div style="margin-top:16px">
+          <button class="btn" data-action="check-order" data-i18n="btnCheck">Check</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Attenuate</strong>: to bring down in strength. <strong>Precipitate</strong>: to bring something about sharply and fast. The rework did not dull the old track — it sparked a new rush of love for it."></p>
+      </div>
+    </section>
+
+    <!-- ── RESULTS ──────────────────────────────────────────── -->
+    <section class="slide" data-type="results">
+      <div class="slide-body" style="align-items:center;text-align:center">
+        <div class="score-big"><span id="scoreVal">0</span><span class="dim" style="font-size:34px">/<span id="scoreMax">0</span></span></div>
+        <p class="prose" style="margin-top:18px" id="scoreMsg"></p>
+        <p class="prose dim" style="margin-top:14px" data-i18n="resNext">Recognising the language is half of it. Now produce it →</p>
+      </div>
+    </section>
+
+    <!-- ── ACTIVATION ───────────────────────────────────────── -->
+    <section class="slide" data-type="activate">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="actEyebrow">Activation</div>
+        <h2 class="slide-title" data-i18n="actTitle">Write the band into trouble</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target">
+          <span class="act-target-label" data-i18n="actUse">Use at least four:</span>
+          <span class="bank-chip">attenuate</span>
+          <span class="bank-chip">assuage</span>
+          <span class="bank-chip">precipitate</span>
+          <span class="bank-chip">obfuscate</span>
+          <span class="bank-chip">corroborate</span>
+          <span class="bank-chip">circumscribe</span>
+          <span class="bank-chip">bolster</span>
+          <span class="bank-chip">engender</span>
+        </div>
+        <div class="cols act-cols">
+          <div class="card act-card">
+            <div class="act-kind"><span class="act-icon">🗣</span><span data-i18n="actSpeakKind">Discussion · in pairs</span></div>
+            <p class="act-brief" data-i18n="actSpeakBrief">One of you manages El Zar. The other runs the label. The tour is losing money.</p>
+            <ul class="act-list">
+              <li data-i18n="actSpeak1">Manager: press for a bigger marketing spend without conceding the tour was mismanaged.</li>
+              <li data-i18n="actSpeak2">Label: curtail the tour by four dates, and mollify the manager while you do it.</li>
+              <li data-i18n="actSpeak3">Both: agree a public statement that does not obfuscate, yet admits nothing actionable.</li>
+            </ul>
+          </div>
+          <div class="card act-card">
+            <div class="act-kind"><span class="act-icon">✍️</span><span data-i18n="actWriteKind">Writing · 180–220 words</span></div>
+            <p class="act-brief" data-i18n="actWriteBrief">Write the review that ends the band — or saves them. Broadsheet register, no hedging.</p>
+            <textarea class="act-input" id="actInput" data-i18n-ph="actPlaceholder" placeholder="Write your response here…" aria-label="Written response"></textarea>
+            <div class="act-foot">
+              <span class="act-count" id="actCount">0 words</span>
+              <button class="btn act-copy" data-action="copy-writing" data-i18n="btnCopy">Copy</button>
+            </div>
+            <div class="act-print" id="actPrint" aria-hidden="true"></div>
+          </div>
+        </div>
+        <div style="margin-top:14px;text-align:center">
+          <button class="btn" data-action="restart" data-i18n="btnRestart">Start again</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── DECK CHROME ──────────────────────────────────────── -->
+    <div class="deck-bar">
+      <select class="lang-select" id="langSelect" aria-label="Language"></select>
+      <button class="nav-btn" data-action="prev" aria-label="Previous">‹</button>
+      <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+      <span class="deck-count" id="deckCount">1 / 1</span>
+      <span class="deck-score" id="deckScore"></span>
+      <button class="nav-btn" data-action="next" aria-label="Next">›</button>
+    </div>
+
+  </div>
 </div>
 
 <script>
-/* ── STATE ── */
-let score = 0;
-let nowOn = 1;
-const TOPS = 20;
+/* ══════════════════════════════════════════════════════════════════
+   ENGINE — identical in every lesson. Do not edit below this line
+   except to add UI_I18N strings.
+   ══════════════════════════════════════════════════════════════════ */
 
-function addScore(n) {
-  score += n;
-  document.getElementById("score-out").textContent = score;
+/* ── Languages. English is the base; German ships complete.
+      The other eight are deliberately empty — t() falls back to English,
+      so an unfinished language can never blank the interface. ── */
+const LANGS = [
+  { code:'en', label:'English'   }, { code:'de', label:'Deutsch'  },
+  { code:'es', label:'Español'   }, { code:'fr', label:'Français' },
+  { code:'it', label:'Italiano'  }, { code:'pt', label:'Português'},
+  { code:'ru', label:'Русский'   }, { code:'ar', label:'العربية'  },
+  { code:'zh', label:'中文'       }, { code:'ja', label:'日本語'    }
+];
+const RTL_LANGS = ['ar'];
+
+const UI_I18N = {
+  en: {
+    actEyebrow: 'Activation',
+    actPlaceholder: "On the evidence of Tuesday night…",
+    actSpeak1: "Manager: press for a bigger marketing spend without conceding the tour was mismanaged.",
+    actSpeak2: "Label: curtail the tour by four dates, and mollify the manager while you do it.",
+    actSpeak3: "Both: agree a public statement that does not obfuscate, yet admits nothing actionable.",
+    actSpeakBrief: "One of you manages El Zar. The other runs the label. The tour is losing money.",
+    actSpeakKind: 'Discussion · in pairs',
+    actTitle: "Write the band into trouble",
+    actUse: "Use at least four:",
+    actWriteBrief: "Write the review that ends the band — or saves them. Broadsheet register, no hedging.",
+    actWriteKind: "Writing · 180–220 words",
+    bankLabel: "Word bank:",
+    btnCheck: 'Check',
+    btnCopied: 'Copied',
+    btnCopy: 'Copy',
+    btnNext: 'Next →',
+    btnRestart: 'Start again',
+    btnStart: 'Begin →',
+    chipCount: "18 slides",
+    chipFocus: "Vocabulary in use",
+    chipLevel: "C2 Proficiency",
+    coverSub: "Eighteen C2 verbs of force and effect, sorted by the direction they push",
+    coverTitle: "El Zar — the <em>pull</em> of these words",
+    fam1h: "↓ Turn it down",
+    fam2h: "↑ Turn it up, or set it off",
+    fam3h: "◑ Clear it, or cloud it",
+    fam4h: "⌈ Back it up",
+    famEyebrow: "The idea",
+    famIntroA: "At C2 the test is almost never <em>what does this word mean</em>. It is <strong>which way does it push</strong> — and the wrong options will usually push the other way.",
+    famIntroB: "Learn them in the four groups on the next slide and most questions answer themselves before you have finished reading the options.",
+    famNote: "Every sentence in this lesson comes from the world of a fictional band called El Zar — their tours, their rows, their reviews.",
+    famTitleA: "These are not synonyms. They are vectors.",
+    famTitleB: "Four directions, eighteen words",
+    fbAnswer: 'Answer:',
+    fbCorrect: 'Correct.',
+    fbWrong: 'Not quite.',
+    gapEyebrow: "Fill the gap",
+    gapTitle: "One word, and only one, will do",
+    matchEyebrow: "Match the meanings",
+    matchHint: "Click a word, then click its meaning. Each definition describes the <em>movement</em> the word makes, not just its sense.",
+    matchTitle: "Five more, defined by what they do",
+    orderEyebrow: "Build the sentence",
+    orderHint: "Click the parts in order · click one again to take it back",
+    orderTitle: "Put it in order",
+    qEyebrow: "Choose the word",
+    qTitle: "Which direction does the sentence need?",
+    resLow: "Re-read the four directions, then run it again. Eighteen words, four arrows — that is the whole lesson.",
+    resMid: "A real foundation. Go back to the four groups; the misses will cluster in one of them.",
+    resNext: 'Recognising the language is half of it. Now produce it →',
+    resPerfect: "Full marks. You are reading direction, not guessing meaning.",
+    resStrong: "Strong. The vectors have landed — the near-synonyms are what to drill next.",
+    scoreLabel: 'Score',
+    slideOf: (a,b)=>`${a} / ${b}`,
+    wordCount: (n)=>`${n} ${n===1?'word':'words'}`
+  },
+  de: {
+    actEyebrow: 'Anwendung',
+    actPlaceholder: "Nach dem Dienstagabend zu urteilen…",
+    actSpeak1: "Manager: dringe auf ein größeres Marketingbudget, ohne einzuräumen, dass die Tour schlecht geplant war.",
+    actSpeak2: "Label: streiche vier Termine — und besänftige den Manager dabei.",
+    actSpeak3: "Beide: einigt euch auf ein Statement, das nichts vernebelt und doch nichts Justiziables zugibt.",
+    actSpeakBrief: "Einer von euch managt El Zar, der andere leitet das Label. Die Tour macht Verluste.",
+    actSpeakKind: 'Diskussion · zu zweit',
+    actTitle: "Schreib die Band in Schwierigkeiten",
+    actUse: "Verwende mindestens vier:",
+    actWriteBrief: "Schreibe die Kritik, die die Band beendet — oder rettet. Feuilleton-Register, kein Herumdrucksen.",
+    actWriteKind: "Schreiben · 180–220 Wörter",
+    bankLabel: "Wortspeicher:",
+    btnCheck: 'Prüfen',
+    btnCopied: 'Kopiert',
+    btnCopy: 'Kopieren',
+    btnNext: 'Weiter →',
+    btnRestart: 'Neu starten',
+    btnStart: 'Beginnen →',
+    chipCount: "18 Folien",
+    chipFocus: "Wortschatz im Einsatz",
+    chipLevel: "C2 Proficiency",
+    coverSub: "Achtzehn C2-Verben der Wirkung, geordnet nach ihrer Stoßrichtung",
+    coverTitle: "El Zar — die <em>Kraft</em> dieser Wörter",
+    fam1h: "↓ Herunterfahren",
+    fam2h: "↑ Verstärken oder auslösen",
+    fam3h: "◑ Klären oder vernebeln",
+    fam4h: "⌈ Untermauern",
+    famEyebrow: "Der Gedanke",
+    famIntroA: "Auf C2-Niveau wird fast nie gefragt, <em>was ein Wort bedeutet</em>. Gefragt ist, <strong>in welche Richtung es drückt</strong> — und die falschen Optionen drücken meist in die andere.",
+    famIntroB: "Lerne sie in den vier Gruppen der nächsten Folie, und die meisten Aufgaben beantworten sich, bevor du die Optionen zu Ende gelesen hast.",
+    famNote: "Jeder Satz dieser Lektion stammt aus der Welt einer erfundenen Band namens El Zar — ihre Tourneen, ihre Streitigkeiten, ihre Kritiken.",
+    famTitleA: "Das sind keine Synonyme. Das sind Vektoren.",
+    famTitleB: "Vier Richtungen, achtzehn Wörter",
+    fbAnswer: 'Antwort:',
+    fbCorrect: 'Richtig.',
+    fbWrong: 'Nicht ganz.',
+    gapEyebrow: "Lückentext",
+    gapTitle: "Genau ein Wort passt",
+    matchEyebrow: "Bedeutungen zuordnen",
+    matchHint: "Klicke ein Wort an, dann seine Bedeutung. Jede Definition beschreibt die <em>Bewegung</em>, die das Wort macht — nicht bloß seinen Sinn.",
+    matchTitle: "Fünf weitere, definiert über ihre Wirkung",
+    orderEyebrow: "Satz bauen",
+    orderHint: "Klicke die Teile der Reihe nach an · nochmal klicken nimmt einen zurück",
+    orderTitle: "Bring es in die richtige Reihenfolge",
+    qEyebrow: "Wähle das Wort",
+    qTitle: "Welche Richtung verlangt der Satz?",
+    resLow: "Lies die vier Richtungen noch einmal und wiederhole. Achtzehn Wörter, vier Pfeile — mehr ist es nicht.",
+    resMid: "Ein echtes Fundament. Geh zurück zu den vier Gruppen; die Fehler häufen sich in einer davon.",
+    resNext: 'Die Sprache zu erkennen ist die halbe Miete. Jetzt anwenden →',
+    resPerfect: "Volle Punktzahl. Du liest die Richtung, statt die Bedeutung zu raten.",
+    resStrong: "Stark. Die Vektoren sitzen — als Nächstes die nahen Synonyme.",
+    scoreLabel: 'Punkte',
+    slideOf: (a,b)=>`${a} / ${b}`,
+    wordCount: (n)=>`${n} ${n===1?'Wort':'Wörter'}`
+  },
+  es: {
+    actEyebrow: 'Activación',
+    actPlaceholder: "A juzgar por la noche del martes…",
+    actSpeak1: "Mánager: exige más presupuesto de marketing sin admitir que la gira se planificó mal.",
+    actSpeak2: "Discográfica: recorta cuatro fechas y aplaca al mánager mientras lo haces.",
+    actSpeak3: "Los dos: acordad un comunicado que no oculte nada y que tampoco admita nada denunciable.",
+    actSpeakBrief: "Uno gestiona a El Zar; el otro dirige la discográfica. La gira pierde dinero.",
+    actSpeakKind: 'Debate · en parejas',
+    actTitle: "Mete al grupo en un lío",
+    actUse: "Usa al menos cuatro:",
+    actWriteBrief: "Escribe la reseña que hunde al grupo — o lo salva. Registro de prensa seria, sin medias tintas.",
+    actWriteKind: "Redacción · 180–220 palabras",
+    bankLabel: "Banco de palabras:",
+    btnCheck: 'Comprobar',
+    btnCopied: 'Copiado',
+    btnCopy: 'Copiar',
+    btnNext: 'Siguiente →',
+    btnRestart: 'Empezar de nuevo',
+    btnStart: 'Empezar →',
+    chipCount: "18 diapositivas",
+    chipFocus: "Vocabulario en uso",
+    chipLevel: "C2 Proficiency",
+    coverSub: "Dieciocho verbos C2 de efecto, ordenados según la dirección en que empujan",
+    coverTitle: "El Zar — la <em>fuerza</em> de estas palabras",
+    fam1h: "↓ Bajar la intensidad",
+    fam2h: "↑ Subirla o desencadenarla",
+    fam3h: "◑ Aclarar u ocultar",
+    fam4h: "⌈ Respaldar",
+    famEyebrow: "La idea",
+    famIntroA: "En C2 casi nunca se pregunta <em>qué significa esta palabra</em>. Se pregunta <strong>hacia dónde empuja</strong>, y las opciones incorrectas suelen empujar al revés.",
+    famIntroB: "Apréndelas en los cuatro grupos de la diapositiva siguiente y la mayoría de las preguntas se resuelven antes de terminar de leer las opciones.",
+    famNote: "Cada frase de esta lección sale del mundo de un grupo inventado llamado El Zar: sus giras, sus broncas, sus reseñas.",
+    famTitleA: "No son sinónimos. Son vectores.",
+    famTitleB: "Cuatro direcciones, dieciocho palabras",
+    fbAnswer: 'Respuesta:',
+    fbCorrect: 'Correcto.',
+    fbWrong: 'No exactamente.',
+    gapEyebrow: "Rellena el hueco",
+    gapTitle: "Solo una palabra encaja",
+    matchEyebrow: "Relaciona los significados",
+    matchHint: "Pulsa una palabra y luego su significado. Cada definición describe el <em>movimiento</em> que hace la palabra, no solo su sentido.",
+    matchTitle: "Cinco más, definidas por lo que hacen",
+    orderEyebrow: "Construye la frase",
+    orderHint: "Pulsa las partes en orden · vuelve a pulsar una para retirarla",
+    orderTitle: "Ponla en orden",
+    qEyebrow: "Elige la palabra",
+    qTitle: "¿Qué dirección pide la frase?",
+    resLow: "Relee las cuatro direcciones y repite. Dieciocho palabras, cuatro flechas: eso es toda la lección.",
+    resMid: "Una base real. Vuelve a los cuatro grupos: los fallos se concentrarán en uno.",
+    resNext: 'Reconocer el lenguaje es solo la mitad. Ahora prodúcelo →',
+    resPerfect: "Pleno. Estás leyendo la dirección, no adivinando el significado.",
+    resStrong: "Muy bien. Los vectores han calado; lo siguiente son los sinónimos cercanos.",
+    scoreLabel: 'Puntuación',
+    slideOf: (a,b)=>`${a} / ${b}`,
+    wordCount: (n)=>`${n} ${n===1?'palabra':'palabras'}`
+  },
+  fr: {
+    actEyebrow: 'Activation',
+    actPlaceholder: "À en juger par la soirée de mardi…",
+    actSpeak1: "Manager : exigez un budget marketing plus large sans concéder que la tournée a été mal gérée.",
+    actSpeak2: "Label : supprimez quatre dates, et amadouez le manager pendant que vous le faites.",
+    actSpeak3: "Les deux : convenez d’un communiqué qui n’embrouille rien et n’avoue rien d’attaquable.",
+    actSpeakBrief: "L’un manage El Zar, l’autre dirige le label. La tournée perd de l’argent.",
+    actSpeakKind: 'Discussion · en binôme',
+    actTitle: "Mettez le groupe en difficulté",
+    actUse: "Utilisez au moins quatre :",
+    actWriteBrief: "Écrivez la critique qui achève le groupe — ou le sauve. Registre de grand quotidien, sans détour.",
+    actWriteKind: "Écriture · 180–220 mots",
+    bankLabel: "Banque de mots :",
+    btnCheck: 'Vérifier',
+    btnCopied: 'Copié',
+    btnCopy: 'Copier',
+    btnNext: 'Suivant →',
+    btnRestart: 'Recommencer',
+    btnStart: 'Commencer →',
+    chipCount: "18 diapositives",
+    chipFocus: "Vocabulaire en contexte",
+    chipLevel: "C2 Proficiency",
+    coverSub: "Dix-huit verbes C2 d’effet, classés selon la direction qu’ils imposent",
+    coverTitle: "El Zar — la <em>force</em> de ces mots",
+    fam1h: "↓ Faire baisser",
+    fam2h: "↑ Faire monter, ou déclencher",
+    fam3h: "◑ Éclaircir ou embrouiller",
+    fam4h: "⌈ Étayer",
+    famEyebrow: "L’idée",
+    famIntroA: "En C2, on ne demande presque jamais <em>ce que veut dire un mot</em>. On demande <strong>dans quel sens il pousse</strong> — et les mauvaises réponses poussent en général dans l’autre.",
+    famIntroB: "Apprenez-les par les quatre groupes de la diapositive suivante et la plupart des questions se règlent avant même la fin des options.",
+    famNote: "Chaque phrase de cette leçon vient du monde d’un groupe imaginaire appelé El Zar : ses tournées, ses brouilles, ses critiques.",
+    famTitleA: "Ce ne sont pas des synonymes. Ce sont des vecteurs.",
+    famTitleB: "Quatre directions, dix-huit mots",
+    fbAnswer: 'Réponse :',
+    fbCorrect: 'Correct.',
+    fbWrong: 'Pas tout à fait.',
+    gapEyebrow: "Complétez",
+    gapTitle: "Un seul mot convient",
+    matchEyebrow: "Associez les sens",
+    matchHint: "Cliquez un mot, puis son sens. Chaque définition décrit le <em>mouvement</em> que fait le mot, pas seulement son sens.",
+    matchTitle: "Cinq de plus, définis par leur effet",
+    orderEyebrow: "Construisez la phrase",
+    orderHint: "Cliquez les segments dans l’ordre · recliquez pour en retirer un",
+    orderTitle: "Remettez-la dans l’ordre",
+    qEyebrow: "Choisissez le mot",
+    qTitle: "Quelle direction la phrase exige-t-elle ?",
+    resLow: "Relisez les quatre directions puis recommencez. Dix-huit mots, quatre flèches — c’est toute la leçon.",
+    resMid: "Une vraie base. Revenez aux quatre groupes : les erreurs se concentreront dans l’un d’eux.",
+    resNext: 'Reconnaître la langue n’est que la moitié du travail. À vous de la produire →',
+    resPerfect: "Sans faute. Vous lisez la direction au lieu de deviner le sens.",
+    resStrong: "Solide. Les vecteurs sont acquis — les quasi-synonymes sont la suite.",
+    scoreLabel: 'Score',
+    slideOf: (a,b)=>`${a} / ${b}`,
+    wordCount: (n)=>`${n} ${n===1?'mot':'mots'}`
+  },
+  it: {
+    actEyebrow: 'Attivazione',
+    actPlaceholder: "A giudicare dalla serata di martedì…",
+    actSpeak1: "Manager: chiedi più budget di marketing senza ammettere che il tour è stato gestito male.",
+    actSpeak2: "Etichetta: taglia quattro date e ammansisci il manager mentre lo fai.",
+    actSpeak3: "Entrambi: concordate un comunicato che non offuschi nulla e non ammetta nulla di attaccabile.",
+    actSpeakBrief: "Uno di voi gestisce gli El Zar, l’altro dirige l’etichetta. Il tour sta perdendo soldi.",
+    actSpeakKind: 'Discussione · in coppia',
+    actTitle: "Metti la band nei guai",
+    actUse: "Usa almeno quattro:",
+    actWriteBrief: "Scrivi la recensione che affonda la band — o la salva. Registro da quotidiano serio, senza giri di parole.",
+    actWriteKind: "Scrittura · 180–220 parole",
+    bankLabel: "Banca di parole:",
+    btnCheck: 'Verifica',
+    btnCopied: 'Copiato',
+    btnCopy: 'Copia',
+    btnNext: 'Avanti →',
+    btnRestart: 'Ricomincia',
+    btnStart: 'Inizia →',
+    chipCount: "18 diapositive",
+    chipFocus: "Lessico in uso",
+    chipLevel: "C2 Proficiency",
+    coverSub: "Diciotto verbi C2 di effetto, ordinati per la direzione in cui spingono",
+    coverTitle: "El Zar — la <em>spinta</em> di queste parole",
+    fam1h: "↓ Abbassare",
+    fam2h: "↑ Alzare, o innescare",
+    fam3h: "◑ Chiarire o offuscare",
+    fam4h: "⌈ Sostenere con prove",
+    famEyebrow: "L’idea",
+    famIntroA: "In C2 non si chiede quasi mai <em>che cosa significa questa parola</em>. Si chiede <strong>in che direzione spinge</strong> — e le opzioni sbagliate di solito spingono dall’altra parte.",
+    famIntroB: "Imparale nei quattro gruppi della prossima diapositiva e la maggior parte delle domande si risolve prima ancora di finire di leggere le opzioni.",
+    famNote: "Ogni frase di questa lezione viene dal mondo di una band immaginaria chiamata El Zar: i suoi tour, i suoi litigi, le sue recensioni.",
+    famTitleA: "Non sono sinonimi. Sono vettori.",
+    famTitleB: "Quattro direzioni, diciotto parole",
+    fbAnswer: 'Risposta:',
+    fbCorrect: 'Corretto.',
+    fbWrong: 'Non proprio.',
+    gapEyebrow: "Completa",
+    gapTitle: "Una parola sola va bene",
+    matchEyebrow: "Abbina i significati",
+    matchHint: "Clicca una parola, poi il suo significato. Ogni definizione descrive il <em>movimento</em> che la parola compie, non solo il suo senso.",
+    matchTitle: "Altre cinque, definite da ciò che fanno",
+    orderEyebrow: "Costruisci la frase",
+    orderHint: "Clicca le parti in ordine · riclicca per rimuoverne una",
+    orderTitle: "Rimettila in ordine",
+    qEyebrow: "Scegli la parola",
+    qTitle: "Quale direzione richiede la frase?",
+    resLow: "Rileggi le quattro direzioni e riprova. Diciotto parole, quattro frecce: la lezione è tutta qui.",
+    resMid: "Una base solida. Torna ai quattro gruppi: gli errori si concentreranno in uno.",
+    resNext: 'Riconoscere la lingua è solo metà del lavoro. Ora producila →',
+    resPerfect: "Punteggio pieno. Stai leggendo la direzione, non indovinando il significato.",
+    resStrong: "Ottimo. I vettori sono chiari — i quasi-sinonimi sono il passo successivo.",
+    scoreLabel: 'Punteggio',
+    slideOf: (a,b)=>`${a} / ${b}`,
+    wordCount: (n)=>`${n} ${n===1?'parola':'parole'}`
+  },
+  pt: {
+    actEyebrow: 'Ativação',
+    actPlaceholder: "A julgar pela noite de terça-feira…",
+    actSpeak1: "Manager: exige mais orçamento de marketing sem admitir que a digressão foi mal planeada.",
+    actSpeak2: "Editora: corta quatro datas e apazigua o manager enquanto o fazes.",
+    actSpeak3: "Ambos: acordem um comunicado que não tolde nada e que não admita nada acionável.",
+    actSpeakBrief: "Um de vocês gere os El Zar; o outro dirige a editora. A digressão está a dar prejuízo.",
+    actSpeakKind: 'Discussão · a pares',
+    actTitle: "Mete a banda em sarilhos",
+    actUse: "Usa pelo menos quatro:",
+    actWriteBrief: "Escreve a crítica que afunda a banda — ou a salva. Registo de jornal de referência, sem rodeios.",
+    actWriteKind: "Escrita · 180–220 palavras",
+    bankLabel: "Banco de palavras:",
+    btnCheck: 'Verificar',
+    btnCopied: 'Copiado',
+    btnCopy: 'Copiar',
+    btnNext: 'Seguinte →',
+    btnRestart: 'Recomeçar',
+    btnStart: 'Começar →',
+    chipCount: "18 diapositivos",
+    chipFocus: "Vocabulário em uso",
+    chipLevel: "C2 Proficiency",
+    coverSub: "Dezoito verbos C2 de efeito, ordenados pela direção em que empurram",
+    coverTitle: "El Zar — a <em>força</em> destas palavras",
+    fam1h: "↓ Baixar",
+    fam2h: "↑ Aumentar, ou desencadear",
+    fam3h: "◑ Esclarecer ou toldar",
+    fam4h: "⌈ Sustentar",
+    famEyebrow: "A ideia",
+    famIntroA: "Em C2 quase nunca se pergunta <em>o que significa esta palavra</em>. Pergunta-se <strong>para que lado empurra</strong> — e as opções erradas costumam empurrar para o lado contrário.",
+    famIntroB: "Aprende-as nos quatro grupos do diapositivo seguinte e a maioria das perguntas resolve-se antes de acabares de ler as opções.",
+    famNote: "Cada frase desta lição vem do mundo de uma banda inventada chamada El Zar: as digressões, as zangas, as críticas.",
+    famTitleA: "Não são sinónimos. São vetores.",
+    famTitleB: "Quatro direções, dezoito palavras",
+    fbAnswer: 'Resposta:',
+    fbCorrect: 'Correto.',
+    fbWrong: 'Não exatamente.',
+    gapEyebrow: "Preenche o espaço",
+    gapTitle: "Só uma palavra serve",
+    matchEyebrow: "Liga os significados",
+    matchHint: "Clica numa palavra e depois no seu significado. Cada definição descreve o <em>movimento</em> que a palavra faz, não apenas o sentido.",
+    matchTitle: "Mais cinco, definidas pelo que fazem",
+    orderEyebrow: "Constrói a frase",
+    orderHint: "Clica as partes por ordem · clica outra vez para retirar",
+    orderTitle: "Põe por ordem",
+    qEyebrow: "Escolhe a palavra",
+    qTitle: "Que direção pede a frase?",
+    resLow: "Relê as quatro direções e repete. Dezoito palavras, quatro setas — a lição é essa.",
+    resMid: "Uma base real. Volta aos quatro grupos: os erros vão concentrar-se num deles.",
+    resNext: 'Reconhecer a linguagem é metade do trabalho. Agora produza-a →',
+    resPerfect: "Pontuação máxima. Estás a ler a direção, não a adivinhar o significado.",
+    resStrong: "Forte. Os vetores assentaram — os quase-sinónimos são o passo seguinte.",
+    scoreLabel: 'Pontuação',
+    slideOf: (a,b)=>`${a} / ${b}`,
+    wordCount: (n)=>`${n} ${n===1?'palavra':'palavras'}`
+  },
+  ru: {
+    actEyebrow: 'Практика',
+    actPlaceholder: "Судя по вторнику…",
+    actSpeak1: "Менеджер: добивайтесь большего бюджета на продвижение, не признавая, что тур спланировали плохо.",
+    actSpeak2: "Лейбл: снимите четыре даты — и смягчите менеджера, пока это делаете.",
+    actSpeak3: "Оба: согласуйте заявление, которое ничего не запутывает и при этом ни в чём не признаётся.",
+    actSpeakBrief: "Один из вас — менеджер El Zar, другой — глава лейбла. Тур убыточен.",
+    actSpeakKind: 'Обсуждение · в парах',
+    actTitle: "Впишите группу в неприятности",
+    actUse: "Используйте не менее четырёх:",
+    actWriteBrief: "Напишите рецензию, которая уничтожит группу — или спасёт её. Регистр серьёзной газеты, без обиняков.",
+    actWriteKind: "Письмо · 180–220 слов",
+    bankLabel: "Банк слов:",
+    btnCheck: 'Проверить',
+    btnCopied: 'Скопировано',
+    btnCopy: 'Копировать',
+    btnNext: 'Далее →',
+    btnRestart: 'Начать заново',
+    btnStart: 'Начать →',
+    chipCount: "18 слайдов",
+    chipFocus: "Лексика в действии",
+    chipLevel: "C2 Proficiency",
+    coverSub: "Восемнадцать глаголов уровня C2, разложенных по направлению воздействия",
+    coverTitle: "El Zar — <em>сила</em> этих слов",
+    fam1h: "↓ Ослабить",
+    fam2h: "↑ Усилить или спровоцировать",
+    fam3h: "◑ Прояснить или запутать",
+    fam4h: "⌈ Подкрепить",
+    famEyebrow: "Идея",
+    famIntroA: "На уровне C2 почти никогда не спрашивают, <em>что значит слово</em>. Спрашивают, <strong>в какую сторону оно толкает</strong>, — а неверные варианты обычно толкают в другую.",
+    famIntroB: "Выучите их четырьмя группами со следующего слайда, и большинство заданий решится ещё до того, как вы дочитаете варианты.",
+    famNote: "Все предложения в этом уроке взяты из мира вымышленной группы El Zar: её туры, ссоры и рецензии.",
+    famTitleA: "Это не синонимы. Это векторы.",
+    famTitleB: "Четыре направления, восемнадцать слов",
+    fbAnswer: 'Ответ:',
+    fbCorrect: 'Верно.',
+    fbWrong: 'Не совсем.',
+    gapEyebrow: "Заполните пропуск",
+    gapTitle: "Подходит только одно слово",
+    matchEyebrow: "Соотнесите значения",
+    matchHint: "Нажмите на слово, затем на его значение. Каждое определение описывает <em>движение</em>, которое совершает слово, а не только смысл.",
+    matchTitle: "Ещё пять — через то, что они делают",
+    orderEyebrow: "Соберите предложение",
+    orderHint: "Нажимайте части по порядку · нажмите ещё раз, чтобы вернуть",
+    orderTitle: "Расставьте по порядку",
+    qEyebrow: "Выберите слово",
+    qTitle: "Какое направление требуется в предложении?",
+    resLow: "Перечитайте четыре направления и пройдите ещё раз. Восемнадцать слов, четыре стрелки — вот и весь урок.",
+    resMid: "Настоящая база. Вернитесь к четырём группам: ошибки соберутся в одной из них.",
+    resNext: 'Узнавать язык — половина дела. Теперь используйте его сами →',
+    resPerfect: "Максимум. Вы читаете направление, а не угадываете значение.",
+    resStrong: "Сильно. Векторы закрепились — дальше близкие синонимы.",
+    scoreLabel: 'Счёт',
+    slideOf: (a,b)=>`${a} / ${b}`,
+    wordCount: (n)=>{const a=n%10,b=n%100;return `${n} ${a===1&&b!==11?'слово':(a>=2&&a<=4&&(b<12||b>14))?'слова':'слов'}`}
+  },
+  ar: {
+    actEyebrow: 'التطبيق',
+    actPlaceholder: "بناءً على ليلة الثلاثاء…",
+    actSpeak1: "المدير: اضغط من أجل ميزانية تسويق أكبر دون الإقرار بسوء تنظيم الجولة.",
+    actSpeak2: "الشركة: احذف أربعة مواعيد، واسترضِ المدير وأنت تفعل ذلك.",
+    actSpeak3: "كلاكما: اتفقا على بيان لا يعتّم على شيء ولا يعترف بشيء يمكن مساءلتكما عليه.",
+    actSpeakBrief: "أحدكما يدير فرقة El Zar والآخر يدير شركة الإنتاج. الجولة تخسر مالًا.",
+    actSpeakKind: 'نقاش · ثنائي',
+    actTitle: "ضع الفرقة في مأزق",
+    actUse: "استخدم أربع كلمات على الأقل:",
+    actWriteBrief: "اكتب المقال الذي ينهي الفرقة — أو ينقذها. بأسلوب صحيفة رصينة، دون مواربة.",
+    actWriteKind: "كتابة · 180–220 كلمة",
+    bankLabel: "بنك الكلمات:",
+    btnCheck: 'تحقّق',
+    btnCopied: 'تم النسخ',
+    btnCopy: 'نسخ',
+    btnNext: 'التالي →',
+    btnRestart: 'ابدأ من جديد',
+    btnStart: 'ابدأ →',
+    chipCount: "18 شريحة",
+    chipFocus: "المفردات في الاستعمال",
+    chipLevel: "C2 Proficiency",
+    coverSub: "ثمانية عشر فعلًا بمستوى C2، مرتّبة حسب الاتجاه الذي تدفع نحوه",
+    coverTitle: "El Zar — <em>قوة</em> هذه الكلمات",
+    fam1h: "↓ التخفيف",
+    fam2h: "↑ التصعيد أو الإشعال",
+    fam3h: "◑ التوضيح أو التعتيم",
+    fam4h: "⌈ التدعيم بالأدلة",
+    famEyebrow: "الفكرة",
+    famIntroA: "في مستوى C2 نادرًا ما يُسأل <em>ما معنى هذه الكلمة</em>. السؤال هو <strong>إلى أي اتجاه تدفع</strong> — والخيارات الخاطئة تدفع عادةً إلى الاتجاه المعاكس.",
+    famIntroB: "تعلّمها ضمن المجموعات الأربع في الشريحة التالية، وستجيب معظم الأسئلة عن نفسها قبل أن تنهي قراءة الخيارات.",
+    famNote: "كل جملة في هذا الدرس مأخوذة من عالم فرقة متخيَّلة اسمها El Zar: جولاتها وخلافاتها والمقالات المكتوبة عنها.",
+    famTitleA: "هذه ليست مترادفات، بل متجهات.",
+    famTitleB: "أربعة اتجاهات، ثماني عشرة كلمة",
+    fbAnswer: 'الإجابة:',
+    fbCorrect: 'صحيح.',
+    fbWrong: 'ليس تماماً.',
+    gapEyebrow: "املأ الفراغ",
+    gapTitle: "كلمة واحدة فقط تفي بالغرض",
+    matchEyebrow: "طابق المعاني",
+    matchHint: "انقر كلمة ثم انقر معناها. كل تعريف يصف <em>الحركة</em> التي تُحدثها الكلمة، لا معناها فحسب.",
+    matchTitle: "خمس أخرى، معرَّفة بما تفعله",
+    orderEyebrow: "ابنِ الجملة",
+    orderHint: "انقر الأجزاء بالترتيب · انقر مرة أخرى للتراجع",
+    orderTitle: "رتّبها",
+    qEyebrow: "اختر الكلمة",
+    qTitle: "أي اتجاه تتطلبه الجملة؟",
+    resLow: "أعد قراءة الاتجاهات الأربعة ثم حاول مجددًا. ثماني عشرة كلمة وأربعة أسهم — هذا هو الدرس كله.",
+    resMid: "أساس حقيقي. عد إلى المجموعات الأربع؛ ستتجمّع أخطاؤك في واحدة منها.",
+    resNext: 'التعرّف على اللغة نصف المهمة. والآن استخدمها →',
+    resPerfect: "علامة كاملة. أنت تقرأ الاتجاه لا تخمّن المعنى.",
+    resStrong: "ممتاز. المتجهات رسخت — والمترادفات المتقاربة هي الخطوة التالية.",
+    scoreLabel: 'النتيجة',
+    slideOf: (a,b)=>`${a} / ${b}`,
+    wordCount: (n)=>`${n} كلمة`
+  },
+  zh: {
+    actEyebrow: '运用',
+    actPlaceholder: "就周二晚上的表现而言……",
+    actSpeak1: "经纪人：争取更多营销预算，但不承认巡演安排有问题。",
+    actSpeak2: "唱片公司：砍掉四场演出，同时把经纪人安抚下来。",
+    actSpeak3: "两人：拟一份声明，既不含糊其辞，也不承认任何可被追责的事。",
+    actSpeakBrief: "一人是 El Zar 的经纪人，另一人是唱片公司负责人。巡演正在亏钱。",
+    actSpeakKind: '讨论 · 两人一组',
+    actTitle: "把乐队写进麻烦里",
+    actUse: "至少使用四个：",
+    actWriteBrief: "写下那篇会终结这支乐队——或拯救它——的乐评。大报文体，不留退路。",
+    actWriteKind: "写作 · 180–220 词",
+    bankLabel: "词库：",
+    btnCheck: '检查',
+    btnCopied: '已复制',
+    btnCopy: '复制',
+    btnNext: '下一步 →',
+    btnRestart: '重新开始',
+    btnStart: '开始 →',
+    chipCount: "18 张幻灯片",
+    chipFocus: "词汇实战",
+    chipLevel: "C2 精通级",
+    coverSub: "十八个 C2 级效果动词，按它们推动的方向分类",
+    coverTitle: "El Zar——这些词的<em>力道</em>",
+    fam1h: "↓ 调低",
+    fam2h: "↑ 调高，或引爆",
+    fam3h: "◑ 说清，或搅浑",
+    fam4h: "⌈ 佐证",
+    famEyebrow: "核心思路",
+    famIntroA: "到了 C2，考的几乎从来不是<em>这个词什么意思</em>，而是<strong>它往哪个方向推</strong>——错误选项通常推向相反的一侧。",
+    famIntroB: "按下一页的四组来记，多数题目在你读完选项之前就已经有答案了。",
+    famNote: "本课每一个句子都来自一支虚构乐队 El Zar 的世界——他们的巡演、争执与乐评。",
+    famTitleA: "它们不是同义词，而是向量。",
+    famTitleB: "四个方向，十八个词",
+    fbAnswer: '答案：',
+    fbCorrect: '正确。',
+    fbWrong: '不太对。',
+    gapEyebrow: "填空",
+    gapTitle: "只有一个词说得通",
+    matchEyebrow: "配对释义",
+    matchHint: "先点词，再点释义。每条释义描述的是这个词造成的<em>动作方向</em>，而不只是字面意思。",
+    matchTitle: "再来五个，用它们的作用来定义",
+    orderEyebrow: "组句",
+    orderHint: "按顺序点击各部分 · 再点一次可以收回",
+    orderTitle: "把它排好",
+    qEyebrow: "选词",
+    qTitle: "这句话需要哪个方向？",
+    resLow: "把四个方向再读一遍，然后重来。十八个词，四个箭头——这就是全部。",
+    resMid: "底子是实的。回到那四组，错的题多半集中在其中一组。",
+    resNext: '认得出这些表达只是一半，接下来要能说出来 →',
+    resPerfect: "满分。你读的是方向，不是在猜意思。",
+    resStrong: "很好。方向已经掌握——下一步是那些近义词。",
+    scoreLabel: '得分',
+    slideOf: (a,b)=>`${a} / ${b}`,
+    wordCount: (n)=>`${n} 词`
+  },
+  ja: {
+    actEyebrow: '実践',
+    actPlaceholder: "火曜の夜を見るかぎり…",
+    actSpeak1: "マネージャー：ツアー運営の失敗を認めないまま、宣伝予算の増額を求めてください。",
+    actSpeak2: "レーベル：公演を四本削り、その間マネージャーをなだめてください。",
+    actSpeak3: "二人で：何も濁さず、しかし責任を問われることは何も認めない声明をまとめてください。",
+    actSpeakBrief: "一方は El Zar のマネージャー、他方はレーベルの責任者。ツアーは赤字です。",
+    actSpeakKind: 'ディスカッション · ペア',
+    actTitle: "バンドを窮地に書き込む",
+    actUse: "四語以上を使うこと：",
+    actWriteBrief: "このバンドを終わらせる——あるいは救う——批評を書いてください。高級紙の文体で、逃げ道なしに。",
+    actWriteKind: "ライティング · 180〜220語",
+    bankLabel: "語彙バンク：",
+    btnCheck: '確認',
+    btnCopied: 'コピーしました',
+    btnCopy: 'コピー',
+    btnNext: '次へ →',
+    btnRestart: '最初から',
+    btnStart: '開始 →',
+    chipCount: "18 スライド",
+    chipFocus: "使うための語彙",
+    chipLevel: "C2 プロフィシエンシー",
+    coverSub: "C2 レベルの効果動詞十八語を、押す向きで分類する",
+    coverTitle: "El Zar——これらの語の<em>力</em>",
+    fam1h: "↓ 弱める",
+    fam2h: "↑ 強める、あるいは引き起こす",
+    fam3h: "◑ 明らかにする／濁す",
+    fam4h: "⌈ 裏づける",
+    famEyebrow: "考え方",
+    famIntroA: "C2 で問われるのは、ほぼ<em>語の意味</em>ではありません。<strong>どちらへ押すか</strong>です——そして誤答は多くの場合、逆へ押します。",
+    famIntroB: "次のスライドの四グループで覚えれば、選択肢を読み終える前に答えが出る問題がほとんどです。",
+    famNote: "この課の文はすべて、El Zar という架空のバンドの世界から来ています——ツアー、いさかい、批評。",
+    famTitleA: "これらは同義語ではありません。ベクトルです。",
+    famTitleB: "四つの向き、十八の語",
+    fbAnswer: '解答：',
+    fbCorrect: '正解です。',
+    fbWrong: '惜しいです。',
+    gapEyebrow: "空所を埋める",
+    gapTitle: "当てはまる語はひとつだけ",
+    matchEyebrow: "意味を結ぶ",
+    matchHint: "語をクリックし、次にその意味をクリックします。どの定義も、語が起こす<em>動き</em>を述べています。",
+    matchTitle: "さらに五語、その働きで定義する",
+    orderEyebrow: "文を組み立てる",
+    orderHint: "部分を順にクリック · もう一度クリックで戻せます",
+    orderTitle: "順番に並べる",
+    qEyebrow: "語を選ぶ",
+    qTitle: "この文はどちらの向きを求めていますか",
+    resLow: "四つの向きを読み直してから、もう一度どうぞ。十八語と四本の矢印、それがこの課のすべてです。",
+    resMid: "土台は本物です。四つのグループに戻ってください。間違いはどれか一つに固まっているはずです。",
+    resNext: '表現を見分けられるのは半分。ここからは自分で使います →',
+    resPerfect: "満点。意味を当てるのではなく、向きを読めています。",
+    resStrong: "見事です。ベクトルは身につきました——次は近い意味の語の区別です。",
+    scoreLabel: 'スコア',
+    slideOf: (a,b)=>`${a} / ${b}`,
+    wordCount: (n)=>`${n} 語`
+  }
+};
+
+let currentLang = 'en';
+const t = k => (UI_I18N[currentLang] && UI_I18N[currentLang][k] != null)
+  ? UI_I18N[currentLang][k] : UI_I18N.en[k];
+
+/* ── Deck state ── */
+const stage   = document.getElementById('stage');
+const slides  = [...document.querySelectorAll('.slide')];
+const scored  = slides.filter(s => ['mc','gap','match','order'].includes(s.dataset.type));
+/* A slide may hold more than one gap; each gap is worth a point. */
+const countIn = s => s.dataset.type === 'gap'   ? s.querySelectorAll('.gap').length
+                   : s.dataset.type === 'match' ? s.querySelectorAll('.match-pair').length
+                   : 1;
+const maxScore = scored.reduce((n, s) => n + Math.max(1, countIn(s)), 0);
+let idx = 0, score = 0;
+const answered = new WeakSet();
+
+/* ── Scale the 1280×720 stage to fit any viewport, never scroll ── */
+function fitStage() {
+  const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+  stage.style.transform = `scale(${s})`;
+}
+addEventListener('resize', fitStage);
+
+/* ── Navigation ── */
+function show(n) {
+  idx = Math.max(0, Math.min(slides.length - 1, n));
+  slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+  stage.classList.toggle('on-cover', slides[idx].dataset.type === 'cover');
+  // A slide may swap the background pattern for a second illustration from the
+  // same set (data-bg). Same idiom as the hero — picture at reduced opacity
+  // under the wash — so extra artwork never becomes a pasted-in box.
+  stage.style.setProperty('--hero', slides[idx].dataset.bg
+    ? `url('${slides[idx].dataset.bg}')` : '');
+  document.getElementById('progressFill').style.width =
+    (slides.length > 1 ? (idx / (slides.length - 1)) * 100 : 0) + '%';
+  document.getElementById('deckCount').textContent = t('slideOf')(idx + 1, slides.length);
+  document.querySelector('[data-action="prev"]').disabled = idx === 0;
+  document.querySelector('[data-action="next"]').disabled = idx === slides.length - 1;
+  if (slides[idx].dataset.type === 'results') renderResults();
+  const gap = slides[idx].querySelector('.gap');
+  if (gap && !answered.has(slides[idx])) setTimeout(() => gap.focus(), 60);
 }
 
-/* ── TASK 1: PICK THE RIGHT WORD ── */
-const mcItems = [
-  {
-    text: "The producer used wide, rolling reverb to ______ the sharpness of the lead guitar, keeping the mix warm at high volumes.",
-    choices: ["exacerbate","attenuate","precipitate","underscore"],
-    right: 1,
-    why: "<strong>Attenuate</strong> means to bring down the strength or sharpness of something. The producer wanted less harshness — not more (exacerbate), not a sudden shift (precipitate), and not further stress on it (underscore)."
-  },
-  {
-    text: "The tour was meant to ______ the growing ill-feeling between the two founding members — yet within three nights it had ______ a lasting rift.",
-    choices: ["assuage … precipitated","bolster … engendered","circumscribe … attenuated","mollify … corroborated"],
-    right: 0,
-    why: "<strong>Assuage</strong> means to make a painful feeling less sharp; <strong>precipitated</strong> means brought something about very fast and suddenly. The gap between what was hoped and what happened is the whole weight of the line."
-  },
-  {
-    text: "The band's handler spoke in a rolling fog of vague, shifting words at every press gathering — plainly meant to ______ the truth rather than shed light on it.",
-    choices: ["elucidate","substantiate","corroborate","obfuscate"],
-    right: 3,
-    why: "<strong>Obfuscate</strong> means to cloud or muddy something on purpose. The other three words all move toward clarity or backing up a claim — the other way round from what the handler was doing."
-  },
-  {
-    text: "Three write-ups, each glowing and each written without knowledge of the others, went a long way to ______ the claim that El Zar's live shows had reached a new height.",
-    choices: ["diminish","curtail","corroborate","abate"],
-    right: 2,
-    why: "<strong>Corroborate</strong> means to back up a claim with further backing. Three writers arriving at the same reading without talking to each other is strong, added proof — it builds the claim up rather than wearing it down."
-  },
-  {
-    text: "By choosing to ______ his usual sweeping, layered style — stripping things to a voice and a single string — the lyricist ______ a fresh chapter in the band's sound.",
-    choices: ["engender … precipitated","temper … engendered","bolster … obfuscated","assuage … curtailed"],
-    right: 1,
-    why: "<strong>Temper</strong> means to soften or hold back something; <strong>engendered</strong> means gave rise to something new. Pulling back from a big, loud style opened up a new era — it brought something fresh into being."
-  }
-];
+function renderResults() {
+  const max = maxScore;
+  document.getElementById('scoreVal').textContent = score;
+  document.getElementById('scoreMax').textContent = max;
+  const pct = max ? score / max : 0;
+  document.getElementById('scoreMsg').textContent =
+    pct === 1 ? t('resPerfect') : pct >= .75 ? t('resStrong')
+    : pct >= .5 ? t('resMid') : t('resLow');
+}
 
-const ABC = ["A","B","C","D"];
+function updateScoreChip() {
+  document.getElementById('deckScore').textContent =
+    maxScore ? `${t('scoreLabel')} ${score}/${maxScore}` : '';
+}
 
-function buildMC() {
-  const wrap = document.getElementById("mc-wrap");
-  let done = 0;
-  mcItems.forEach((q, qi) => {
-    const card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `
-      <div class="item-num">Item ${qi+1} of ${mcItems.length}</div>
-      <div class="item-text">${q.text}</div>
-      <div class="choices-grid" id="cg-${qi}"></div>
-      <div class="feedback" id="mc-fb-${qi}"></div>
-    `;
-    wrap.appendChild(card);
-    const grid = card.querySelector("#cg-"+qi);
-    q.choices.forEach((ch, ci) => {
-      const btn = document.createElement("button");
-      btn.className = "choice-btn";
-      btn.innerHTML = `<span class="choice-letter">${ABC[ci]}</span><span>${ch}</span>`;
-      btn.addEventListener("click", () => {
-        if (card.classList.contains("done")) return;
-        card.classList.add("done");
-        grid.querySelectorAll(".choice-btn").forEach(b => b.disabled = true);
-        const fb = card.querySelector("#mc-fb-"+qi);
-        if (ci === q.right) {
-          btn.classList.add("right"); addScore(1);
-          fb.className = "feedback right show";
-          fb.innerHTML = "✓ Right. " + q.why;
-        } else {
-          btn.classList.add("wrong");
-          grid.querySelectorAll(".choice-btn")[q.right].classList.add("right");
-          fb.className = "feedback wrong show";
-          fb.innerHTML = "✗ Not quite. " + q.why;
-        }
-        done++;
-        setBar(1, done, mcItems.length);
-        if (done === mcItems.length) document.getElementById("mc-go-on").classList.add("show");
-      });
-      grid.appendChild(btn);
-    });
+/* ── Answer handling ── */
+function award(slide, ok) {
+  if (answered.has(slide)) return;
+  answered.add(slide);
+  if (ok) score++;
+  updateScoreChip();
+}
+
+function feedback(slide, ok, extra, ownExplain) {
+  const el = slide.querySelector('.feedback');
+  if (!el) return;
+  // An option's own explanation wins: telling a learner why THEIR answer was
+  // wrong beats restating why the key was right.
+  const reason = ownExplain || el.dataset.explain;
+  const why = reason ? ' ' + reason : '';
+  el.textContent = (ok ? t('fbCorrect') : t('fbWrong') + (extra ? ` ${t('fbAnswer')} ${extra}` : '')) + why;
+  el.className = 'feedback show ' + (ok ? 'ok' : 'no');
+}
+
+/* Multiple choice — shuffled on first view so option order is never a tell. */
+slides.filter(s => s.dataset.type === 'mc').forEach(slide => {
+  const box = slide.querySelector('.opts');
+  const opts = [...box.querySelectorAll('.opt')];
+  opts.sort(() => Math.random() - .5).forEach((o, i) => {
+    o.prepend(Object.assign(document.createElement('span'), {
+      className: 'opt-key', textContent: 'ABCD'[i]
+    }));
+    box.appendChild(o);
   });
-}
+  opts.forEach(o => o.addEventListener('click', () => {
+    if (answered.has(slide)) return;
+    const ok = o.hasAttribute('data-correct');
+    opts.forEach(x => {
+      x.disabled = true;
+      if (x.hasAttribute('data-correct')) x.classList.add('correct');
+    });
+    if (!ok) o.classList.add('wrong');
+    award(slide, ok);
+    feedback(slide, ok, null, o.dataset.explain);
+  }));
+});
 
-/* ── TASK 2: FILL THE GAP ── */
-const fitbItems = [
-  {
-    line: "Years of thin funding had begun to ______ the band's standing, which had once been thought the strongest in the field.",
-    answer: "diminish",
-    why: "<strong>Diminish</strong> means to make smaller or weaker by degrees. Standing that was once strong wore away through neglect."
-  },
-  {
-    line: "Rather than deal with the row head-on, the label put out a statement so hedged and murky it seemed likely to ______ things rather than settle them.",
-    answer: "exacerbate",
-    why: "<strong>Exacerbate</strong> means to make something bad even worse. Hedging and murkiness inflame rather than calm a row."
-  },
-  {
-    line: "The tour manager hoped that handing out free backstage passes might ______ the anger of fans who had been turned away at the gate.",
-    answer: "mollify",
-    why: "<strong>Mollify</strong> means to calm someone's anger or soften their mood. A goodwill offering is a classic way of trying to mollify."
-  },
-  {
-    line: "The venue's deal ______ the band's freedom to play their own songs, setting a rule that at least forty in every hundred tracks had to be licensed covers.",
-    answer: "circumscribed",
-    why: "<strong>Circumscribed</strong> means to draw a tight boundary around something — to hold it within set walls. The deal put a hard limit on their creative freedom."
-  },
-  {
-    line: "The teacher played a track from El Zar's third record to ______ the idea of 'timbral layering' — a term that had meant nothing to the students when it was set out in the abstract.",
-    answer: "elucidate",
-    why: "<strong>Elucidate</strong> means to make something clear, to shed light on it. A real, heard example brought a dry idea to life."
-  }
-];
+/* Matching. Author as <div class="match-pair" data-term data-def> rows; the
+   engine builds both columns and shuffles the definitions. One point per pair. */
+slides.filter(s => s.dataset.type === 'match').forEach(slide => {
+  const pairs = [...slide.querySelectorAll('.match-pair')];
+  const grid = slide.querySelector('.match-grid');
+  if (!grid || !pairs.length) return;
+  const terms = document.createElement('div');
+  const defs = document.createElement('div');
+  terms.className = defs.className = 'match-col';
+  const mk = (txt, cls, key) => {
+    const b = document.createElement('button');
+    b.className = 'match-item ' + cls;
+    b.textContent = txt;
+    b.dataset.key = key;
+    return b;
+  };
+  pairs.forEach(p => terms.appendChild(mk(p.dataset.term, 'term', p.dataset.term)));
+  [...pairs].sort(() => Math.random() - .5)
+    .forEach(p => defs.appendChild(mk(p.dataset.def, 'def', p.dataset.term)));
+  grid.replaceChildren(terms, defs);
 
-const bankWords = ["diminish","exacerbate","mollify","circumscribed","elucidate","assuage","curtail","bolster"];
-
-function buildFITB() {
-  const bank = document.getElementById("word-bank");
-  [...bankWords].sort(() => Math.random()-0.5).forEach(w => {
-    const chip = document.createElement("div");
-    chip.className = "word-chip"; chip.textContent = w; chip.dataset.word = w;
-    chip.addEventListener("click", () => {
-      const hot = document.querySelector(".fitb-input:focus");
-      if (hot && !chip.classList.contains("used")) {
-        if (hot.dataset.chipWord) {
-          const old = bank.querySelector(`[data-word="${hot.dataset.chipWord}"]`);
-          if (old) old.classList.remove("used");
-        }
-        hot.value = w; hot.dataset.chipWord = w; chip.classList.add("used");
+  let picked = null, done = 0;
+  const total = pairs.length;
+  grid.addEventListener('click', e => {
+    const el = e.target.closest('.match-item');
+    if (!el || el.classList.contains('done')) return;
+    if (el.classList.contains('term')) {
+      grid.querySelectorAll('.term.picked').forEach(x => x.classList.remove('picked'));
+      el.classList.add('picked');
+      picked = el;
+      return;
+    }
+    if (!picked) return;
+    if (el.dataset.key === picked.dataset.key) {
+      el.classList.add('done'); picked.classList.add('done');
+      picked.classList.remove('picked');
+      picked = null; done++; score++; updateScoreChip();
+      if (done === total) {
+        answered.add(slide);
+        feedback(slide, true);
       }
-    });
-    bank.appendChild(chip);
-  });
-  const wrap = document.getElementById("fitb-wrap");
-  fitbItems.forEach((q, qi) => {
-    const card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `
-      <div class="item-num">Item ${qi+1} of ${fitbItems.length}</div>
-      <div class="item-text">${q.line.replace("______","___________")}</div>
-      <input class="fitb-input" type="text" placeholder="Type your answer…" data-qi="${qi}" autocomplete="off" autocorrect="off" spellcheck="false">
-      <div class="feedback" id="fitb-fb-${qi}"></div>
-    `;
-    wrap.appendChild(card);
-    const inp = card.querySelector("input");
-    inp.addEventListener("input", () => {
-      const prev = inp.dataset.chipWord;
-      if (prev && inp.value !== prev) {
-        const ch = bank.querySelector(`[data-word="${prev}"]`);
-        if (ch) ch.classList.remove("used");
-        delete inp.dataset.chipWord;
-      }
-    });
-  });
-  document.getElementById("fitb-hand-in").addEventListener("click", checkFITB);
-}
-
-function checkFITB() {
-  let got = 0;
-  fitbItems.forEach((q, qi) => {
-    const inp = document.querySelector(`.fitb-input[data-qi="${qi}"]`);
-    const val = inp.value.trim().toLowerCase();
-    const fb  = document.getElementById("fitb-fb-"+qi);
-    inp.disabled = true;
-    if (val === q.answer.toLowerCase()) {
-      inp.classList.add("right"); fb.className = "feedback right show";
-      fb.innerHTML = "✓ Right. " + q.why; got++;
     } else {
-      inp.classList.add("wrong"); fb.className = "feedback wrong show";
-      fb.innerHTML = `✗ The word is <strong>${q.answer}</strong>. ${q.why}`;
+      el.classList.add('miss');
+      setTimeout(() => el.classList.remove('miss'), 320);
     }
   });
-  addScore(got);
-  document.getElementById("fitb-hand-in").disabled = true;
-  document.getElementById("fitb-go-on").classList.add("show");
-  setBar(2, fitbItems.length, fitbItems.length);
+});
+
+/* Sentence building. Author as
+     <div class="order" data-answer="chunk|chunk|chunk"></div>
+   with a [data-action="check-order"] button and a .feedback alongside it.
+   The engine shuffles the chunks into a pool; clicking places one, clicking a
+   placed one takes it back. One point for the whole sentence — a half-right
+   word order is not half-right English. */
+slides.filter(s => s.dataset.type === 'order').forEach(slide => {
+  const box = slide.querySelector('.order');
+  if (!box) return;
+  const answer = box.dataset.answer.split('|').map(x => x.trim());
+  const target = document.createElement('div'); target.className = 'order-target';
+  const pool   = document.createElement('div'); pool.className   = 'order-pool';
+  answer.map((txt, i) => ({ txt, i }))
+        .sort(() => Math.random() - .5)
+        .forEach(({ txt, i }) => {
+          const b = document.createElement('button');
+          b.className = 'chunk';
+          b.textContent = txt;
+          b.dataset.i = i;
+          pool.appendChild(b);
+        });
+  box.replaceChildren(target, pool);
+
+  box.addEventListener('click', e => {
+    const c = e.target.closest('.chunk');
+    if (!c || c.disabled) return;
+    if (c.parentElement === pool) { c.classList.add('placed');    target.appendChild(c); }
+    else                          { c.classList.remove('placed'); pool.appendChild(c); }
+  });
+
+  slide._check = () => {
+    if (answered.has(slide)) return;
+    // Marking a half-built sentence teaches nothing; wait until it is complete.
+    if (target.children.length < answer.length) return;
+    answered.add(slide);
+    const ok = [...target.children].map(c => +c.dataset.i).every((v, i) => v === i);
+    target.classList.add(ok ? 'correct' : 'wrong');
+    box.querySelectorAll('.chunk').forEach(c => c.disabled = true);
+    if (ok) score++;
+    updateScoreChip();
+    feedback(slide, ok, ok ? null : answer.join(' '));
+    const btn = slide.querySelector('[data-action="check-order"]');
+    if (btn) btn.disabled = true;
+  };
+});
+
+/* Gap fill. Supports several gaps on one slide, each scored and explained
+   individually via its own .gap-row wrapper. */
+const gapOk = g => g.dataset.answer.split('|')
+  .map(a => a.trim().toLowerCase())
+  .includes(g.value.trim().toLowerCase().replace(/\s+/g, ' '));
+
+function markGap(g, fb) {
+  const ok = gapOk(g);
+  g.classList.add(ok ? 'correct' : 'wrong');
+  g.disabled = true;
+  if (ok) score++;
+  if (fb) {
+    const why = fb.dataset.explain ? ' ' + fb.dataset.explain : '';
+    fb.textContent = (ok ? t('fbCorrect')
+      : `${t('fbWrong')} ${t('fbAnswer')} ${g.dataset.answer.split('|')[0]}.`) + why;
+    fb.className = 'feedback show ' + (ok ? 'ok' : 'no');
+  }
+  return ok;
 }
 
-/* ── TASK 3: MATCH THE MEANINGS ── */
-const matchPairs = [
-  { word: "mitigate",     meaning: "To make something harmful less sharp or strong in its reach" },
-  { word: "engender",     meaning: "To bring a feeling, mood, or state of things into being" },
-  { word: "underscore",   meaning: "To draw out the weight or meaning of something already there" },
-  { word: "substantiate", meaning: "To back up a claim by bringing forward hard, real backing" },
-  { word: "alleviate",    meaning: "To lift some — though not all — of a weight, ache, or hardship" }
-];
-
-let matchChosen = null, matchDone = 0, matchGot = 0;
-
-function buildMatching() {
-  const lc = document.getElementById("match-left");
-  const rc = document.getElementById("match-right");
-  [...matchPairs.map(p => p.meaning)].sort(() => Math.random()-0.5).forEach(m => {
-    const el = document.createElement("div");
-    el.className = "match-item"; el.textContent = m; el.dataset.meaning = m; el.dataset.side = "right";
-    el.addEventListener("click", () => handleMatch(el));
-    rc.appendChild(el);
-  });
-  matchPairs.map(p => p.word).forEach(w => {
-    const el = document.createElement("div");
-    el.className = "match-item"; el.textContent = w; el.dataset.word = w; el.dataset.side = "left";
-    el.addEventListener("click", () => handleMatch(el));
-    lc.appendChild(el);
-  });
-}
-
-function handleMatch(el) {
-  if (el.classList.contains("matched") || el.classList.contains("used-right")) return;
-  if (!matchChosen) {
-    if (el.dataset.side !== "left") return;
-    matchChosen = el; el.classList.add("chosen"); return;
-  }
-  if (el.dataset.side === "left") {
-    document.querySelectorAll(".match-item").forEach(e => e.classList.remove("chosen"));
-    matchChosen = el; el.classList.add("chosen"); return;
-  }
-  const word = matchChosen.dataset.word;
-  const meaning = el.dataset.meaning;
-  const good = matchPairs.find(p => p.word === word).meaning;
-  if (meaning === good) {
-    matchChosen.classList.remove("chosen"); matchChosen.classList.add("matched");
-    el.classList.add("matched"); matchGot++; matchDone++;
+function checkGaps(slide) {
+  if (answered.has(slide)) return;
+  answered.add(slide);
+  const rows = [...slide.querySelectorAll('.gap-row')];
+  if (rows.length) {
+    rows.forEach(r => markGap(r.querySelector('.gap'), r.querySelector('.feedback')));
   } else {
-    matchChosen.classList.add("bad-flash"); el.classList.add("bad-flash");
-    const snap = matchChosen;
-    setTimeout(() => { snap.classList.remove("bad-flash","chosen"); el.classList.remove("bad-flash"); }, 700);
+    markGap(slide.querySelector('.gap'), slide.querySelector('.feedback'));
   }
-  matchChosen = null;
-  if (matchDone === matchPairs.length) {
-    addScore(matchGot);
-    const fb = document.getElementById("match-fb");
-    fb.className = "feedback right show";
-    fb.innerHTML = `All matched! You got <strong>${matchGot} of ${matchPairs.length}</strong> right.`;
-    document.getElementById("match-go-on").classList.add("show");
-    setBar(3, matchPairs.length, matchPairs.length);
-  }
+  const btn = slide.querySelector('[data-action="check"]');
+  if (btn) btn.disabled = true;
+  updateScoreChip();
 }
 
-/* ── TASK 4: PUT IT IN ORDER ── */
-const orderItems = [
-  {
-    chunks: ["The write-up","went a long way to bolster","the long-held view","that the band had lost none of their edge"],
-    right: [0,1,2,3],
-    why: "<strong>Bolster</strong>: to prop up or strengthen. The write-up added weight to something people already believed."
-  },
-  {
-    chunks: ["The chairman's reach","had been so thoroughly circumscribed","by the board","that his word carried almost no weight in the room"],
-    right: [0,1,2,3],
-    why: "<strong>Circumscribed</strong>: held within tight walls. The board had drawn such a narrow ring around his power that he could do very little."
-  },
-  {
-    chunks: ["A long stretch of cold silence","between the two lead players","did nothing to abate","the talk of a lasting split"],
-    right: [0,1,2,3],
-    why: "<strong>Abate</strong>: to grow less strong. The silence did not quiet the talk — if anything it fed it."
-  },
-  {
-    chunks: ["Their failure to substantiate","any of the claims","with hard, written backing","left their whole case hollow"],
-    right: [0,1,2,3],
-    why: "<strong>Substantiate</strong>: to back up with solid proof. Without written backing, their words stood on nothing."
-  },
-  {
-    chunks: ["The rework, rather than attenuating","the raw, unguarded feel of the first take,","only seemed to precipitate","a fresh wave of feeling for the old recording"],
-    right: [0,1,2,3],
-    why: "<strong>Attenuate</strong>: to bring down in strength. <strong>Precipitate</strong>: to bring something about sharply and fast. The rework did not dull the old track — it sparked a new rush of love for it."
-  }
-];
+/* ── Activation: word count, copy, and a print mirror (a textarea's
+   value does not appear in a PDF, so we mirror it into a div). ── */
+const actInput = document.getElementById('actInput');
+if (actInput) {
+  const countEl = document.getElementById('actCount');
+  const printEl = document.getElementById('actPrint');
+  const sync = () => {
+    const words = actInput.value.trim().split(/\s+/).filter(Boolean).length;
+    countEl.textContent = t('wordCount')(words);
+    printEl.textContent = actInput.value;
+  };
+  actInput.addEventListener('input', sync);
+  window.syncActivation = sync;
+  sync();
+}
 
-function buildOrdering() {
-  const wrap = document.getElementById("order-wrap");
-  orderItems.forEach((item, qi) => {
-    const shuffled = [...item.chunks].sort(() => Math.random()-0.5);
-    const card = document.createElement("div");
-    card.className = "card"; card.id = "ord-card-"+qi;
-    card.innerHTML = `
-      <div class="item-num">Line ${qi+1} of ${orderItems.length}</div>
-      <p style="font-style:italic;color:var(--muted);font-size:13px;margin-bottom:14px;">Drag the chunks into the right order.</p>
-      <ul class="order-list" id="ord-list-${qi}"></ul>
-      <div class="feedback" id="ord-fb-${qi}"></div>
-    `;
-    wrap.appendChild(card);
-    const list = card.querySelector("#ord-list-"+qi);
-    shuffled.forEach((chunk, ci) => list.appendChild(makeOrderItem(chunk, ci, list)));
+/* ── Events ── */
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-action]');
+  if (!a) return;
+  const act = a.dataset.action;
+  if (act === 'next') show(idx + 1);
+  if (act === 'prev') show(idx - 1);
+  if (act === 'check') checkGaps(a.closest('.slide'));
+  if (act === 'check-order') { const sl = a.closest('.slide'); if (sl._check) sl._check(); }
+  if (act === 'restart') location.reload();
+  if (act === 'copy-writing') {
+    const ta = document.getElementById('actInput');
+    if (ta && navigator.clipboard) navigator.clipboard.writeText(ta.value).then(() => {
+      const was = a.textContent;
+      a.textContent = t('btnCopied');
+      setTimeout(() => { a.textContent = was; }, 1400);
+    });
+  }
+});
+
+document.addEventListener('keydown', e => {
+  if (e.target.matches('input, select, textarea')) {
+    if (e.key === 'Enter') checkGaps(e.target.closest('.slide'));
+    return;
+  }
+  if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); show(idx + 1); }
+  if (['ArrowLeft', 'PageUp'].includes(e.key))         { e.preventDefault(); show(idx - 1); }
+});
+
+/* ── Language ── */
+function applyLang() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const v = t(el.dataset.i18n);
+    if (v != null) el.innerHTML = v;
   });
-  document.getElementById("order-check").addEventListener("click", checkOrdering);
-}
-
-function makeOrderItem(text, idx, list) {
-  const li = document.createElement("li");
-  li.className = "order-item"; li.draggable = true; li.dataset.text = text;
-  li.innerHTML = `<span class="drag-handle">⠿</span><span class="order-num">${idx+1}</span><span>${text}</span>`;
-  let src = null;
-  li.addEventListener("dragstart", e => { src = li; li.classList.add("dragging"); e.dataTransfer.effectAllowed = "move"; });
-  li.addEventListener("dragend",   () => { li.classList.remove("dragging"); list.querySelectorAll(".order-item").forEach(el => el.classList.remove("drag-over")); });
-  li.addEventListener("dragover",  e => { e.preventDefault(); if (li !== src) li.classList.add("drag-over"); });
-  li.addEventListener("dragleave", () => li.classList.remove("drag-over"));
-  li.addEventListener("drop", e => {
-    e.preventDefault(); li.classList.remove("drag-over");
-    if (src && src !== li) {
-      const els = [...list.querySelectorAll(".order-item")];
-      els.indexOf(src) < els.indexOf(li) ? list.insertBefore(src, li.nextSibling) : list.insertBefore(src, li);
-      list.querySelectorAll(".order-num").forEach((n,i) => n.textContent = i+1);
-    }
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const v = t(el.dataset.i18nPh);
+    if (v != null) el.placeholder = v;
   });
-  return li;
+  if (window.syncActivation) window.syncActivation();
+  document.documentElement.lang = currentLang;
+  document.documentElement.dir = RTL_LANGS.includes(currentLang) ? 'rtl' : 'ltr';
+  updateScoreChip();
+  show(idx);
 }
 
-function checkOrdering() {
-  let got = 0;
-  orderItems.forEach((item, qi) => {
-    const list = document.getElementById("ord-list-"+qi);
-    const els  = [...list.querySelectorAll(".order-item")];
-    const userOrder = els.map(el => el.dataset.text);
-    const goodOrder = item.right.map(i => item.chunks[i]);
-    const isRight   = userOrder.join("|") === goodOrder.join("|");
-    const fb = document.getElementById("ord-fb-"+qi);
-    els.forEach(el => el.draggable = false);
-    if (isRight) {
-      els.forEach(el => el.classList.add("right-place"));
-      fb.className = "feedback right show"; fb.innerHTML = "✓ Right order. " + item.why; got++;
-    } else {
-      els.forEach(el => el.classList.add("wrong-place"));
-      fb.className = "feedback wrong show";
-      fb.innerHTML = `✗ The right order was: <strong>${goodOrder.join(" / ")}</strong>. ${item.why}`;
-    }
-  });
-  addScore(got);
-  document.getElementById("order-check").disabled = true;
-  document.getElementById("order-go-on").classList.add("show");
-  setBar(4, orderItems.length, orderItems.length);
+function initLang() {
+  const sel = document.getElementById('langSelect');
+  // Only offer languages that are actually translated. An empty or partial
+  // scaffold stays in the code for a future pass but never appears as a dead
+  // option in the menu.
+  const enKeys = Object.keys(UI_I18N.en).length;
+  LANGS.filter(l => l.code === 'en' ||
+                    Object.keys(UI_I18N[l.code] || {}).length >= enKeys)
+       .forEach(l => sel.add(new Option(l.label, l.code)));
+  sel.value = currentLang;
+  sel.hidden = sel.options.length < 2;
+  sel.addEventListener('change', () => { currentLang = sel.value; applyLang(); });
 }
 
-/* ── NAV & BAR ── */
-function setBar(task, done, of) {
-  const pct = ((task-1)/4 + done/of/4)*100;
-  document.getElementById("prog-fill").style.width = Math.min(pct,100)+"%";
-  document.getElementById("prog-label").textContent = `Task ${task} of 4`;
-}
+/* Per-slide background art: set the variable on the element as well, because
+   the print stylesheet paints each slide's own ::before from var(--hero). */
+slides.filter(s => s.dataset.bg).forEach(s =>
+  s.style.setProperty('--hero', `url('${s.dataset.bg}')`));
 
-function goTo(n) {
-  document.getElementById("task-"+nowOn).classList.remove("active");
-  nowOn = n;
-  if (n <= 4) {
-    document.getElementById("task-"+n).classList.add("active");
-    setBar(n,0,1);
-    window.scrollTo({top:0,behavior:"smooth"});
-  } else { showLastScreen(); }
-}
+/* ── Boot ── */
+initLang();
+fitStage();
+applyLang();
+updateScoreChip();
 
-document.getElementById("mc-go-on").addEventListener("click",    () => goTo(2));
-document.getElementById("fitb-go-on").addEventListener("click",  () => goTo(3));
-document.getElementById("match-go-on").addEventListener("click", () => goTo(4));
-document.getElementById("order-go-on").addEventListener("click", () => goTo(5));
-
-/* ── LAST SCREEN ── */
-function showLastScreen() {
-  document.getElementById("prog-fill").style.width = "100%";
-  document.getElementById("prog-label").textContent = "Done";
-  document.getElementById("last-screen").classList.add("active");
-  document.getElementById("last-num").textContent = score;
-  window.scrollTo({top:0,behavior:"smooth"});
-  const frac = score/TOPS;
-  let heading, note;
-  if (frac >= 0.9) {
-    heading = "Extraordinary.";
-    note = "You hold these words with the sureness of a writer who has long owned them. They are yours now — use them.";
-  } else if (frac >= 0.75) {
-    heading = "Strong work.";
-    note = "You have a firm grip on most of these words. A few still slip — go back, read them again, and they will fall into place.";
-  } else if (frac >= 0.55) {
-    heading = "A good start.";
-    note = "The shape of these words is there. Some of the finer gaps are still open — one more run through will close them.";
-  } else {
-    heading = "Keep at it.";
-    note = "These are hard words at a high level. Run through the lesson again — each time, more will stick.";
-  }
-  document.getElementById("last-heading").textContent = heading;
-  document.getElementById("last-note").textContent = note;
-}
-
-/* ── START AGAIN ── */
-function startAgain() {
-  score = 0; nowOn = 1;
-  matchChosen = null; matchDone = 0; matchGot = 0;
-  document.getElementById("score-out").textContent = "0";
-  ["mc-wrap","fitb-wrap","word-bank","match-left","match-right","order-wrap"].forEach(id => document.getElementById(id).innerHTML = "");
-  ["mc-go-on","fitb-go-on","match-go-on","order-go-on"].forEach(id => document.getElementById(id).classList.remove("show"));
-  document.getElementById("fitb-hand-in").disabled = false;
-  document.getElementById("order-check").disabled  = false;
-  const mfb = document.getElementById("match-fb"); mfb.className = "feedback"; mfb.textContent = "";
-  document.getElementById("last-screen").classList.remove("active");
-  document.getElementById("prog-fill").style.width = "0%";
-  document.getElementById("prog-label").textContent = "Task 1 of 4";
-  for (let i=1;i<=4;i++) document.getElementById("task-"+i).classList.remove("active");
-  document.getElementById("task-1").classList.add("active");
-  init();
-}
-
-function init() { buildMC(); buildFITB(); buildMatching(); buildOrdering(); }
-init();
+/* Reveal the wordmark only once DM Sans is really available, so the
+   Forbes/ENGLISH lockup never renders at fallback-font proportions. */
+const ready = () => document.body.classList.add('fonts-ready');
+if (document.fonts && document.fonts.ready) { document.fonts.ready.then(ready); setTimeout(ready, 1500); }
+else ready();
 </script>
 </body>
 </html>
