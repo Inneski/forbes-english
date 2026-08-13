@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sherpa Tensing - Camp Six: The Weather You Were Already In (Past Continuous)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#2A2208;
+    --ink-soft:#6E6231;
+    --paper:#FDFBF0;
+    --card:#FFFFFF;
+    --accent:#A8860B;
+    --accent-dark:#6B5200;
+    --accent-light:#F0E0A6;
+    --accent-lighter:#FBF4DA;
+    --good:#1E7A4C;
+    --good-bg:#E5F5EC;
+    --bad:#B23A3A;
+    --bad-bg:#FBEAEA;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;}
+  h1,h2,h3{font-family:'Fraunces',serif;font-weight:600;margin:0 0 .4em;color:var(--ink);}
+  .wordmark{display:flex;align-items:center;justify-content:space-between;max-width:1000px;margin:0 auto;padding:28px 24px 0;}
+  .wordmark .brand{font-family:'Fraunces',serif;font-weight:700;font-size:20px;letter-spacing:.02em;}
+  .wordmark .brand span{color:var(--accent);}
+  .wordmark .sub{font-size:13px;color:var(--ink-soft);}
+
+  .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px;}
+  .chart-wrap{margin-top:24px;background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:18px 20px;overflow-x:auto;}
+  .chart-wrap h3{font-size:15px;margin-bottom:4px;}
+  .chart-wrap + .chart-wrap{margin-top:16px;}
+  .chart-note{font-size:13px;color:var(--ink-soft);margin-bottom:14px;}
+  table.conj{width:100%;border-collapse:collapse;font-size:14px;min-width:520px;}
+  table.conj th, table.conj td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--accent-light);}
+  table.conj th{font-family:'Fraunces',serif;font-weight:600;color:var(--accent-dark);font-size:13px;text-transform:uppercase;letter-spacing:.03em;}
+  table.conj td.subj{font-weight:600;}
+  table.conj tr:last-child td{border-bottom:none;}
+  main{max-width:1000px;margin:0 auto;padding:0 24px 80px;}
+  .hero{display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:center;padding:40px 0 56px;}
+  .hero .eyebrow{
+    display:inline-block;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--accent-dark);background:var(--accent-lighter);padding:6px 12px;border-radius:999px;margin-bottom:14px;
+  }
+  .hero h1{font-size:38px;line-height:1.12;}
+  .hero p{color:var(--ink-soft);font-size:16px;max-width:46ch;}
+  .hero-diagram{width:100%;display:block;}
+  @media (max-width:720px){.hero{grid-template-columns:1fr;}}
+
+  .trail-wrap{position:relative;padding-left:66px;}
+  .trail-wrap::before{
+    content:'';position:absolute;left:23px;top:8px;bottom:8px;width:2px;
+    background:repeating-linear-gradient(to bottom, var(--accent) 0 8px, transparent 8px 18px);
+  }
+  .camp{position:relative;margin-bottom:64px;}
+  .camp .marker{position:absolute;left:-66px;top:0;width:46px;height:46px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;}
+  .camp .marker svg{width:18px;height:18px;}
+  .camp .camp-label{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-dark);margin-bottom:6px;}
+
+  .rule-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px;}
+  .rule-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:18px 20px;}
+  .rule-card h3{font-size:16px;margin-bottom:8px;}
+  .rule-card p{margin:0 0 8px;font-size:14px;color:var(--ink-soft);}
+  .rule-card .ex{font-size:14px;font-style:italic;color:var(--accent-dark);border-left:2px solid var(--accent);padding-left:10px;}
+
+  .signal-groups{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px;}
+  .signal-box{background:var(--accent-lighter);border-radius:var(--radius);padding:18px 20px;}
+  .signal-box h3{font-size:15px;}
+  .signal-box ul{margin:8px 0 0;padding-left:18px;font-size:14px;color:var(--ink);}
+  .signal-box li{margin-bottom:4px;}
+  @media (max-width:600px){.signal-groups{grid-template-columns:1fr;}}
+
+  /* ── LONG vs SHORT DIAGRAM CAMP ── */
+  .diagram-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:26px 26px 22px;}
+  .diagram-intro{font-size:14px;color:var(--ink-soft);margin-bottom:18px;max-width:60ch;}
+  .diagram-stage{width:100%;background:var(--paper);border:1px solid var(--accent-light);border-radius:var(--radius);padding:12px;}
+  .diagram-stage svg{width:100%;height:auto;display:block;}
+  .dg-reveal{opacity:0;transition:opacity .2s ease;}
+  .dg-reveal.is-shown{opacity:1;}
+  .diagram-shape{cursor:pointer;transition:opacity .15s ease;}
+  .diagram-shape:hover{opacity:.86;}
+  .diagram-shape:focus{outline:none;}
+  .diagram-shape:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px;}
+  .diagram-caption{font-family:'Inter',sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;}
+  .diagram-panels{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px;}
+  .diagram-panel{border-radius:12px;padding:16px 18px;border:1px solid var(--accent-light);background:var(--accent-lighter);}
+  .diagram-panel.is-now{background:#EAF1F6;border-color:#C9DCE6;}
+  .diagram-panel h4{margin:0 0 8px;font-family:'Fraunces',serif;font-size:14px;letter-spacing:.03em;text-transform:uppercase;color:var(--accent-dark);}
+  .diagram-panel.is-now h4{color:#3E6A85;}
+  .diagram-panel ul{margin:0;padding-left:18px;font-size:14px;}
+  .diagram-panel li{margin-bottom:5px;}
+  .diagram-panel li em{font-style:normal;font-weight:600;}
+  @media (max-width:600px){.diagram-panels{grid-template-columns:1fr;}}
+
+  .route-link{display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-weight:600;font-size:14px;
+    padding:9px 18px;border-radius:999px;border:1px solid var(--accent);color:var(--accent-dark);}
+  .route-link:hover{background:var(--accent-lighter);}
+  .quiz-card{background:var(--card);border:1px solid var(--accent-light);border-radius:var(--radius);padding:24px 24px 20px;}
+  .progress-row{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--ink-soft);margin-bottom:10px;}
+  .progress-track{height:6px;background:var(--accent-lighter);border-radius:999px;overflow:hidden;margin-bottom:20px;}
+  .progress-fill{height:100%;background:var(--accent);border-radius:999px;width:0%;transition:width .3s ease;}
+  .q-prompt{font-size:17px;margin-bottom:4px;}
+  .q-hint{font-size:13px;color:var(--ink-soft);margin-bottom:16px;font-style:italic;}
+  .options{display:grid;gap:10px;}
+  .opt-btn{text-align:left;padding:12px 16px;border-radius:10px;border:1px solid var(--accent-light);background:#fff;font-family:'Inter',sans-serif;font-size:15px;color:var(--ink);cursor:pointer;}
+  .opt-btn:hover{border-color:var(--accent);}
+  .opt-btn.correct{background:var(--good-bg);border-color:var(--good);color:var(--good);font-weight:600;}
+  .opt-btn.wrong{background:var(--bad-bg);border-color:var(--bad);color:var(--bad);}
+  .opt-btn:disabled{cursor:default;}
+  .feedback{margin-top:16px;padding:14px 16px;border-radius:10px;background:var(--accent-lighter);font-size:14px;display:none;}
+  .feedback.show{display:block;}
+  .quiz-footer{display:flex;justify-content:flex-end;margin-top:20px;}
+  .next-btn{background:var(--accent);color:#fff;border:none;padding:11px 22px;border-radius:999px;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;cursor:pointer;}
+  .next-btn:disabled{background:var(--accent-light);cursor:not-allowed;}
+
+  #results{display:none;text-align:center;padding:12px 0 8px;}
+  #results .score{font-family:'Fraunces',serif;font-size:52px;color:var(--accent);margin:8px 0;}
+  #results p{color:var(--ink-soft);}
+  .retry-btn{margin-top:12px;background:transparent;border:1px solid var(--accent);color:var(--accent-dark);padding:10px 20px;border-radius:999px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
+  .route-nav{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:22px;padding-top:18px;border-top:1px solid var(--accent-light);}
+  .route-nav a{display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;padding:10px 20px;border-radius:999px;}
+  .route-nav a.next-camp{background:var(--accent);color:#fff;}
+  .route-nav a.base-camp{background:transparent;border:1px solid var(--ink-soft);color:var(--ink-soft);}
+  .route-nav a:hover{opacity:0.88;}
+
+    /* ── Persistent way back. Pinned, so it is reachable from anywhere on
+       the page rather than only after scrolling to the bottom. ── */
+    /* Clear a band at the top of the page for the pinned link so it never
+       lands on the wordmark. */
+    body{ padding-top:46px; }
+    .up-link{
+      position:fixed; top:16px; left:16px; z-index:60;
+      display:inline-flex; align-items:center; gap:8px;
+      padding:9px 16px 9px 13px; border-radius:999px;
+      background:var(--card,#fff); color:var(--accent-dark,#333);
+      border:1.5px solid var(--accent-light,rgba(0,0,0,.18));
+      font:600 14px/1 'Inter',system-ui,sans-serif; letter-spacing:.01em;
+      text-decoration:none; box-shadow:0 2px 10px rgba(0,0,0,.10);
+      transition:background .18s ease, color .18s ease, transform .18s ease;
+    }
+    .up-link:hover{ background:var(--accent,#333); color:#fff; transform:translateX(-2px); }
+    .up-link .arw{ font-size:15px; line-height:1; }
+    @media print{ .up-link{ display:none; } }
+    @media (max-width:640px){
+      .up-link{ top:10px; left:10px; padding:7px 13px 7px 10px; font-size:13px; }
+    }
+</style>
+</head>
+<body>
+<a class="up-link" href="sherpa-tensing-route-map.html"><span class="arw" aria-hidden="true">&larr;</span>Route map</a>
+
+
+<div class="wordmark">
+  <div class="brand">Sherpa <span>Tensing</span></div>
+  <div class="sub">Forbes English &middot; a route up the tenses</div>
+</div>
+
+<main>
+
+  <section class="hero" id="hero">
+    <div>
+      <span class="eyebrow">Camp six &middot; past continuous</span>
+      <h1>The weather you were already in</h1>
+      <p>Camp three struck the tent and walked away. Camp six goes back and stands inside the day itself &mdash; the rain that was already falling, the argument that was already running, the thing that was going on when something else cut across it.</p>
+    </div>
+    <svg class="hero-diagram" viewBox="0 0 640 344" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A timeline from past to future. A yellow ripple spreads through past time, and a thin brown bar drops into it partway down: the past simple interrupting the past continuous. Now is a narrow column at the centre.">
+      <defs>
+        <radialGradient id="pcGlowpc" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#8A6A00"/>
+          <stop offset="16%" stop-color="#D9AE00"/>
+          <stop offset="38%" stop-color="#FFD400"/>
+          <stop offset="64%" stop-color="#FFE87A"/>
+          <stop offset="100%" stop-color="#FFF7D1"/>
+        </radialGradient>
+        <marker id="ah-pc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#1c130c"/>
+        </marker>
+        <clipPath id="above-pc"><rect x="0" y="0" width="640" height="299"/></clipPath>
+      </defs>
+      <rect x="0" y="0" width="640" height="344" fill="var(--paper)"/>
+      <g clip-path="url(#above-pc)">
+      <circle cx="150" cy="299" r="118" fill="url(#pcGlowpc)"/>
+      <circle cx="150" cy="299" r="14.8" fill="none" stroke="#C79A00" stroke-width="1" opacity="0.39"/>
+      <circle cx="150" cy="299" r="29.5" fill="none" stroke="#C79A00" stroke-width="1" opacity="0.36"/>
+      <circle cx="150" cy="299" r="44.2" fill="none" stroke="#C79A00" stroke-width="1" opacity="0.33"/>
+      <circle cx="150" cy="299" r="59.0" fill="none" stroke="#C79A00" stroke-width="1" opacity="0.30"/>
+      <circle cx="150" cy="299" r="73.8" fill="none" stroke="#C79A00" stroke-width="1" opacity="0.27"/>
+      <circle cx="150" cy="299" r="88.5" fill="none" stroke="#C79A00" stroke-width="1" opacity="0.24"/>
+      <circle cx="150" cy="299" r="103.2" fill="none" stroke="#C79A00" stroke-width="1" opacity="0.21"/>
+      <circle cx="150" cy="299" r="118.0" fill="none" stroke="#C79A00" stroke-width="1" opacity="0.18"/>
+      <rect x="196" y="118" width="13" height="150" fill="#7A5A3E"/>
+      <rect x="198.5" y="120.5" width="8" height="145" fill="#B08968"/>
+      </g>
+      <line x1="24" y1="299" x2="616" y2="299" stroke="#1c130c" stroke-width="2"
+            marker-start="url(#ah-pc)" marker-end="url(#ah-pc)"/>
+      <rect x="311.5" y="38" width="17.0" height="261" fill="#D98A72"/>
+      <rect x="314.0" y="40.5" width="12.0" height="256" fill="#5C7690"/>
+      <text x="112" y="188" text-anchor="middle" class="diagram-caption" fill="#6B5200" style="letter-spacing:.06em" pointer-events="none">WAS DOING</text>
+      <text x="150" y="319" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" fill="#8A7A4A" pointer-events="none">already running, no start and no end in view</text>
+      <text x="253" y="112" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" font-weight="700" fill="#7A5A3E" pointer-events="none">past simple &#8212; the interruption</text>
+      <text x="320" y="319" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" fill="#5F7C90" pointer-events="none">present simple</text>
+      <text x="150" y="26" text-anchor="middle" class="diagram-caption" fill="#8A8175" style="letter-spacing:.14em" pointer-events="none">PAST</text>
+      <text x="320" y="26" text-anchor="middle" class="diagram-caption" fill="#3E6A85" pointer-events="none">NOW</text>
+      <text x="490" y="26" text-anchor="middle" class="diagram-caption" fill="#8A8175" style="letter-spacing:.14em" pointer-events="none">FUTURE</text>
+    </svg>
+  </section>
+
+  <div class="trail-wrap">
+
+    <div class="camp" id="rules">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 3v18M5 4h11l-3 4 3 4H5"/></svg></div>
+      <div class="camp-label">Basecamp briefing</div>
+      <h2>When to use it</h2>
+      <div class="rule-grid">
+        <div class="rule-card">
+          <h3>The action that got interrupted</h3>
+          <p>Something was already running when a shorter, finished action cut in.</p>
+          <div class="ex">"I <em>was driving</em> home when the call came."</div>
+        </div>
+        <div class="rule-card">
+          <h3>Two things at once</h3>
+          <p>Both were in progress, usually joined by <em>while</em>.</p>
+          <div class="ex">"She <em>was cooking</em> while he <em>was unpacking</em>."</div>
+        </div>
+        <div class="rule-card">
+          <h3>Setting a scene</h3>
+          <p>The background of a story, before anything happens in it.</p>
+          <div class="ex">"It <em>was raining</em>. Nobody <em>was speaking</em>."</div>
+        </div>
+        <div class="rule-card">
+          <h3>A temporary past situation</h3>
+          <p>True for a while, and not any more.</p>
+          <div class="ex">"That year we <em>were living</em> above the bakery."</div>
+        </div>
+        <div class="rule-card">
+          <h3>An irritating past habit</h3>
+          <p>always, forever or constantly + -ing carries the complaint.</p>
+          <div class="ex">"He <em>was always losing</em> his keys."</div>
+        </div>
+        <div class="rule-card">
+          <h3>Softening what you want</h3>
+          <p>The past continuous makes a request sound less blunt.</p>
+          <div class="ex">"I <em>was wondering</em> whether you had a moment."</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="form">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg></div>
+      <div class="camp-label">Building the tense</div>
+      <h2>How it's built</h2>
+      <div class="form-grid">
+        <div class="rule-card">
+          <h3>Affirmative</h3>
+          <p>subject + was / were + <strong>-ing</strong></p>
+          <div class="ex">"They <em>were waiting</em> outside."</div>
+        </div>
+        <div class="rule-card">
+          <h3>Negative</h3>
+          <p>subject + was / were + not + -ing</p>
+          <div class="ex">"I <em>wasn't listening</em>."</div>
+        </div>
+        <div class="rule-card">
+          <h3>Yes / No questions</h3>
+          <p>Was / Were + subject + -ing?</p>
+          <div class="ex">"<em>Were you sleeping</em>?"</div>
+        </div>
+        <div class="rule-card">
+          <h3>Wh- questions</h3>
+          <p>question word + was / were + subject + -ing?</p>
+          <div class="ex">"What <em>were they doing</em>?"</div>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <h3>Conjugation chart</h3>
+        <p class="chart-note">Only <em>be</em> changes, and it changes exactly as it does in camp three &mdash; <em>was</em> for I, he, she and it; <em>were</em> for the rest. The <em>-ing</em> form never moves.</p>
+        <table class="conj">
+          <thead><tr><th>Subject</th><th>Affirmative</th><th>Negative</th><th>Question</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">I</td><td>I was working</td><td>I wasn't working</td><td>Was I working?</td></tr>
+            <tr><td class="subj">You</td><td>You were working</td><td>You weren't working</td><td>Were you working?</td></tr>
+            <tr><td class="subj">He / She / It</td><td>She was working</td><td>She wasn't working</td><td>Was she working?</td></tr>
+            <tr><td class="subj">We</td><td>We were working</td><td>We weren't working</td><td>Were we working?</td></tr>
+            <tr><td class="subj">They</td><td>They were working</td><td>They weren't working</td><td>Were they working?</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="chart-wrap">
+        <h3>The verbs that refuse the -ing</h3>
+        <p class="chart-note">State verbs describe a condition rather than an activity, and English does not put a condition in the continuous. These take the past simple even when everything around them is continuous.</p>
+        <table class="conj">
+          <thead><tr><th>Group</th><th>Verbs</th><th>Say this instead</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">Thinking</td><td>know, believe, understand, remember</td><td>"I <em>knew</em> the answer." not "I was knowing"</td></tr>
+            <tr><td class="subj">Feeling</td><td>like, love, hate, want, need</td><td>"She <em>wanted</em> to leave."</td></tr>
+            <tr><td class="subj">Senses</td><td>see, hear, smell, seem</td><td>"It <em>seemed</em> quiet."</td></tr>
+            <tr><td class="subj">Having</td><td>own, belong, have (= possess)</td><td>"We <em>had</em> two cars then."</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="chart-wrap">
+        <h3>Three mistakes worth naming</h3>
+        <p class="chart-note">Almost every error with this tense is one of these three.</p>
+        <table class="conj">
+          <thead><tr><th>Not this</th><th>This</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">They was waiting.</td><td>They were waiting.</td><td><em>They</em> is plural, so it takes <em>were</em>.</td></tr>
+            <tr><td class="subj">I was knowing him.</td><td>I knew him.</td><td>State verbs do not take the continuous.</td></tr>
+            <tr><td class="subj">While I was walking, it was starting to rain.</td><td>While I was walking, it started to rain.</td><td>The thing that cuts in is short and finished: past simple.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="camp" id="vs-simple">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3v18"/><path d="M7 8l-4 4 4 4M17 8l4 4-4 4"/></svg></div>
+      <div class="camp-label">The fork in the path</div>
+      <h2>Past continuous or past simple?</h2>
+      <div class="chart-wrap" style="margin-top:18px">
+        <p class="chart-note" style="margin-bottom:16px">Camp three and camp six describe the same night. The difference is whether you are standing <em>inside</em> the action or looking back at it as one finished event.</p>
+        <table class="conj">
+          <thead><tr><th>Question</th><th>Past continuous</th><th>Past simple</th></tr></thead>
+          <tbody>
+            <tr><td class="subj">What is it?</td><td>The background, still running.<br>"I <em>was reading</em>."</td><td>The event, complete.<br>"I <em>read</em> it."</td></tr>
+            <tr><td class="subj">Which one interrupts?</td><td>Gets interrupted.</td><td>Does the interrupting.<br>"I was reading when the lights <em>went out</em>."</td></tr>
+            <tr><td class="subj">A sequence?</td><td>Never.</td><td>Always.<br>"She stood up, paid and left."</td></tr>
+            <tr><td class="subj">Which word introduces it?</td><td><em>while</em>, <em>as</em></td><td><em>when</em></td></tr>
+          </tbody>
+        </table>
+        <p class="example" style="margin-top:14px">The reliable test: <em>while</em> takes the long action, <em>when</em> takes the short one. "While I was cooking, the phone rang" and "When the phone rang, I was cooking" are the same night told from opposite ends.</p>
+      </div>
+      <div class="btnrow" style="margin-top:16px">
+        <a class="route-link" href="sherpa-tensing-camp-three-past-simple.html">&larr; Camp three &middot; past simple</a>
+      </div>
+    </div>
+
+    <div class="camp" id="signals">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg></div>
+      <div class="camp-label">Trail markers</div>
+      <h2>Signal words</h2>
+      <div class="signal-groups">
+        <div class="signal-box">
+          <h3>The long action</h3>
+          <ul>
+            <li>while &middot; as</li>
+            <li>all morning / all day / all night</li>
+            <li>at eight o'clock last night</li>
+            <li>at that moment</li>
+            <li>this time last week</li>
+            <li>the whole time</li>
+          </ul>
+        </div>
+        <div class="signal-box">
+          <h3>The thing that cuts in</h3>
+          <ul>
+            <li>when</li>
+            <li>suddenly</li>
+            <li>just then</li>
+            <li>at that point</li>
+            <li>until</li>
+            <li>and then</li>
+          </ul>
+        </div>
+      </div>
+      <p class="example" style="margin-top:14px">If a sentence has both, they almost always split the same way: <em>while</em> + was/were doing, <em>when</em> + past simple.</p>
+    </div>
+
+    <div class="camp" id="past-now">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="4" width="8" height="16"/><rect x="13" y="4" width="8" height="16"/></svg></div>
+      <div class="camp-label">Interactive</div>
+      <h2>The long action and the short one</h2>
+      <div class="diagram-card">
+        <p class="diagram-intro">The yellow spreads through past time with no edge you can point at &mdash; that is the past continuous, and it is why the picture is a glow and not a block. The brown bar dropping into it is camp three: one short, finished action, cutting in. Click either to name it and see it in a sentence.</p>
+        <div class="diagram-stage">
+          <svg viewBox="0 0 640 344" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A timeline from past to future. A yellow ripple spreads through past time, and a thin brown bar drops into it partway down: the past simple interrupting the past continuous. Now is a narrow column at the centre.">
+      <defs>
+        <radialGradient id="pcGlowpcb" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#8A6A00"/>
+          <stop offset="16%" stop-color="#D9AE00"/>
+          <stop offset="38%" stop-color="#FFD400"/>
+          <stop offset="64%" stop-color="#FFE87A"/>
+          <stop offset="100%" stop-color="#FFF7D1"/>
+        </radialGradient>
+        <marker id="ah-pcb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#1c130c"/>
+        </marker>
+        <clipPath id="above-pcb"><rect x="0" y="0" width="640" height="299"/></clipPath>
+      </defs>
+      <rect x="0" y="0" width="640" height="344" fill="var(--paper)"/>
+      <g clip-path="url(#above-pcb)">
+      <g class="diagram-shape" id="shape-long" tabindex="0" role="button" aria-label="Show past continuous examples">
+      <circle cx="150" cy="299" r="118" fill="url(#pcGlowpcb)"/>
+      <circle cx="150" cy="299" r="14.8" fill="none" stroke="#C79A00" stroke-width="1" opacity="0.39"/>
+      <circle cx="150" cy="299" r="29.5" fill="none" stroke="#C79A00" stroke-width="1" opacity="0.36"/>
+      <circle cx="150" cy="299" r="44.2" fill="none" stroke="#C79A00" stroke-width="1" opacity="0.33"/>
+      <circle cx="150" cy="299" r="59.0" fill="none" stroke="#C79A00" stroke-width="1" opacity="0.30"/>
+      <circle cx="150" cy="299" r="73.8" fill="none" stroke="#C79A00" stroke-width="1" opacity="0.27"/>
+      <circle cx="150" cy="299" r="88.5" fill="none" stroke="#C79A00" stroke-width="1" opacity="0.24"/>
+      <circle cx="150" cy="299" r="103.2" fill="none" stroke="#C79A00" stroke-width="1" opacity="0.21"/>
+      <circle cx="150" cy="299" r="118.0" fill="none" stroke="#C79A00" stroke-width="1" opacity="0.18"/>
+      </g>
+      <g class="diagram-shape" id="shape-short" tabindex="0" role="button" aria-label="Show past simple examples">
+      <rect x="196" y="118" width="13" height="150" fill="#7A5A3E"/>
+      <rect x="198.5" y="120.5" width="8" height="145" fill="#B08968"/>
+      </g>
+      </g>
+      <line x1="24" y1="299" x2="616" y2="299" stroke="#1c130c" stroke-width="2"
+            marker-start="url(#ah-pcb)" marker-end="url(#ah-pcb)"/>
+      <rect x="311.5" y="38" width="17.0" height="261" fill="#D98A72"/>
+      <rect x="314.0" y="40.5" width="12.0" height="256" fill="#5C7690"/>
+      <text x="112" y="188" text-anchor="middle" class="diagram-caption" fill="#6B5200" style="letter-spacing:.06em" pointer-events="none">WAS DOING</text>
+      <text x="150" y="319" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" fill="#8A7A4A" pointer-events="none">already running, no start and no end in view</text>
+      <text x="253" y="112" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" font-weight="700" fill="#7A5A3E" pointer-events="none">past simple &#8212; the interruption</text>
+      <text x="320" y="319" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" fill="#5F7C90" pointer-events="none">present simple</text>
+      <text x="150" y="26" text-anchor="middle" class="diagram-caption" fill="#8A8175" style="letter-spacing:.14em" pointer-events="none">PAST</text>
+      <text x="320" y="26" text-anchor="middle" class="diagram-caption" fill="#3E6A85" pointer-events="none">NOW</text>
+      <text x="490" y="26" text-anchor="middle" class="diagram-caption" fill="#8A8175" style="letter-spacing:.14em" pointer-events="none">FUTURE</text>
+    </svg>
+        </div>
+        <div class="diagram-panels">
+          <div class="diagram-panel" id="panel-long">
+            <h4>Past continuous &mdash; the long action</h4>
+            <ul id="panel-long-list"></ul>
+          </div>
+          <div class="diagram-panel is-now" id="panel-short">
+            <h4>Past simple &mdash; the interruption</h4>
+            <ul id="panel-short-list"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="quiz">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3l3 7-3 3-3-3 3-7z"/><path d="M12 13v8"/></svg></div>
+      <div class="camp-label">The climb</div>
+      <h2>Practice</h2>
+      <div class="quiz-card">
+        <div class="progress-row">
+          <span id="progress-text">Checkpoint 1 of 14</span>
+          <span id="score-text">Score: 0</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+        <div class="q-prompt" id="q-prompt"></div>
+        <div class="q-hint" id="q-hint"></div>
+        <div class="options" id="options"></div>
+        <div class="feedback" id="feedback"></div>
+        <div class="quiz-footer">
+          <button class="next-btn" id="next-btn" disabled>Next checkpoint</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="camp" id="results-camp">
+      <div class="marker"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 20l5-14 5 14M8 14h4"/></svg></div>
+      <div class="camp-label">Summit log</div>
+      <div id="results">
+        <div class="score" id="final-score"></div>
+        <p id="final-message"></p>
+        <button class="retry-btn" id="retry-btn">Climb again</button>
+        <div class="route-nav">
+          <a class="base-camp" href="sherpa-tensing-route-map.html">&larr; Return to base camp</a>
+          <a class="next-camp" href="sherpa-tensing-route-map.html">Choose your next camp &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+// ── the long action and the interruption ──
+var longExamples = [
+  "I <em>was driving</em> home in the dark.",
+  "It <em>was raining</em> and nobody <em>was speaking</em>.",
+  "That year we <em>were living</em> above the bakery."
+];
+var shortExamples = [
+  "&hellip; when the call <em>came</em>.",
+  "&hellip; when the lights <em>went out</em>.",
+  "&hellip; then the door <em>opened</em>."
+];
+
+function renderList(id, items){
+  var ul = document.getElementById(id);
+  ul.innerHTML = "";
+  items.forEach(function(txt){
+    var li = document.createElement("li");
+    li.innerHTML = txt;
+    ul.appendChild(li);
+  });
+}
+renderList("panel-long-list", longExamples);
+renderList("panel-short-list", shortExamples);
+
+function pulseShape(el){
+  el.style.transformOrigin = "center";
+  el.animate(
+    [{ opacity: 1 }, { opacity: 0.6 }, { opacity: 1 }],
+    { duration: 380, easing: "ease-out" }
+  );
+}
+[["shape-long","panel-long","#C79A00"],
+ ["shape-short","panel-short","#7A5A3E"]].forEach(function(pair){
+  var el = document.getElementById(pair[0]);
+  if (!el) return;
+  var activate = function(){
+    pulseShape(el);
+    document.querySelectorAll(".diagram-panel").forEach(function(p){ p.style.outline = "none"; });
+    var panel = document.getElementById(pair[1]);
+    if (panel) panel.style.outline = "2px solid " + pair[2];
+  };
+  el.addEventListener("click", activate);
+  el.addEventListener("keydown", function(e){
+    if (e.key === "Enter" || e.key === " "){ e.preventDefault(); activate(); }
+  });
+});
+
+
+// ── QUIZ ──
+var questions = [
+  {
+    prompt: "I _____ home when the call came. (drive)",
+    hint: "The long action that got interrupted.",
+    correct: "was driving",
+    options: ["was driving", "drove", "were driving", "was drive"],
+    explain: "The action already running takes the past continuous: was driving. The short thing that cut in — the call — takes the past simple."
+  },
+  {
+    prompt: "While she _____ , the doorbell rang. (cook)",
+    hint: "\"While\" almost always takes the long action.",
+    correct: "was cooking",
+    options: ["was cooking", "cooked", "were cooking", "is cooking"],
+    explain: "While introduces the background action, so it takes the past continuous: while she was cooking."
+  },
+  {
+    prompt: "When the lights went out, we _____ dinner. (have)",
+    hint: "Which half is the background here?",
+    correct: "were having",
+    options: ["were having", "had", "was having", "were had"],
+    explain: "The dinner was already in progress when the lights went out, so it takes the past continuous with the plural were."
+  },
+  {
+    prompt: "They _____ ready when the taxi arrived. (not / be)",
+    hint: "Careful \u2014 be is a state verb.",
+    correct: "weren't",
+    options: ["weren't", "weren't being", "wasn't", "didn't be"],
+    explain: "Be describes a state, so it stays in the past simple: they weren't ready. \"Weren't being ready\" is not English."
+  },
+  {
+    prompt: "I _____ the answer at the time. (know)",
+    hint: "A state verb again.",
+    correct: "knew",
+    options: ["knew", "was knowing", "were knowing", "knowed"],
+    explain: "Know is a state verb and refuses the continuous. Past simple: I knew."
+  },
+  {
+    prompt: "_____ you _____ when I called? (sleep)",
+    hint: "Question order for the past continuous.",
+    correct: "Were ... sleeping",
+    options: ["Were ... sleeping", "Did ... sleeping", "Was ... sleeping", "Were ... slept"],
+    explain: "Questions invert be: Were you sleeping? You is plural in form, so it takes were."
+  },
+  {
+    prompt: "He _____ his keys that summer. (always / lose)",
+    hint: "A complaint, not a neutral fact.",
+    correct: "was always losing",
+    options: ["was always losing", "always lost", "was losing always", "always was lose"],
+    explain: "Always + the past continuous carries irritation: he was always losing his keys. Always lost would just be a habit."
+  },
+  {
+    prompt: "She stood up, _____ the bill and left. (pay)",
+    hint: "Three finished actions in order.",
+    correct: "paid",
+    options: ["paid", "was paying", "were paying", "pays"],
+    explain: "A sequence of completed actions stays in the past simple throughout. The past continuous never tells a sequence."
+  },
+  {
+    prompt: "At eight o'clock last night I _____ on a train. (sit)",
+    hint: "A clock time in the past, mid-action.",
+    correct: "was sitting",
+    options: ["was sitting", "sat", "were sitting", "have sat"],
+    explain: "A precise past moment with the action already under way takes the past continuous: I was sitting."
+  },
+  {
+    prompt: "I _____ whether you had a moment. (wonder)",
+    hint: "A softened request.",
+    correct: "was wondering",
+    options: ["was wondering", "wondered", "am wondering", "were wondering"],
+    explain: "The past continuous makes a request less blunt: I was wondering whether… It is politeness, not past time."
+  },
+  {
+    prompt: "While we _____ , they _____ the whole flat. (talk / repaint)",
+    hint: "Two long actions at the same time.",
+    correct: "were talking ... were repainting",
+    options: ["were talking ... were repainting", "talked ... repainted",
+              "were talking ... repainted", "talked ... were repainting"],
+    explain: "Two actions running side by side both take the past continuous, joined by while."
+  },
+  {
+    prompt: "The car _____ when I turned the key. (not / start)",
+    hint: "A single finished attempt.",
+    correct: "didn't start",
+    options: ["didn't start", "wasn't starting", "weren't starting", "not started"],
+    explain: "One completed attempt at a moment in the past is the past simple: it didn't start."
+  },
+  {
+    prompt: "It _____ hard, so we stayed in. (rain)",
+    hint: "The weather as background.",
+    correct: "was raining",
+    options: ["was raining", "rained", "were raining", "is raining"],
+    explain: "Weather setting the scene takes the past continuous: it was raining. \"It rained\" would report the whole day as one finished event."
+  },
+  {
+    prompt: "What _____ you _____ at midnight? (do)",
+    hint: "Asking about a moment, not a whole night.",
+    correct: "were ... doing",
+    options: ["were ... doing", "did ... do", "was ... doing", "were ... did"],
+    explain: "Asking what was in progress at a precise past time takes the past continuous: What were you doing?"
+  }
+];
+
+var current = 0;
+var score = 0;
+var answered = false;
+var order = [];
+
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+
+function renderQuestion(){
+  answered = false;
+  var q = questions[current];
+  document.getElementById("progress-text").textContent = "Checkpoint " + (current + 1) + " of " + questions.length;
+  document.getElementById("progress-fill").style.width = ((current / questions.length) * 100) + "%";
+  document.getElementById("q-prompt").textContent = q.prompt;
+  document.getElementById("q-hint").textContent = q.hint;
+  var feedback = document.getElementById("feedback");
+  feedback.className = "feedback";
+  feedback.textContent = "";
+  var optionsWrap = document.getElementById("options");
+  optionsWrap.innerHTML = "";
+  order = shuffle(q.options);
+  order.forEach(function(opt){
+    var btn = document.createElement("button");
+    btn.className = "opt-btn";
+    btn.type = "button";
+    btn.textContent = opt;
+    btn.addEventListener("click", function(){ selectOption(opt, btn); });
+    optionsWrap.appendChild(btn);
+  });
+  document.getElementById("next-btn").disabled = true;
+  document.getElementById("next-btn").textContent = (current === questions.length - 1) ? "Reach the summit" : "Next checkpoint";
+}
+
+function selectOption(opt, btn){
+  if (answered) return;
+  answered = true;
+  var q = questions[current];
+  var allBtns = document.querySelectorAll("#options .opt-btn");
+  allBtns.forEach(function(b){
+    b.disabled = true;
+    if (b.textContent === q.correct) b.classList.add("correct");
+  });
+  if (opt !== q.correct) btn.classList.add("wrong");
+  if (opt === q.correct) score++;
+  document.getElementById("score-text").textContent = "Score: " + score;
+  var feedback = document.getElementById("feedback");
+  feedback.textContent = q.explain;
+  feedback.classList.add("show");
+  document.getElementById("next-btn").disabled = false;
+}
+
+document.getElementById("next-btn").addEventListener("click", function(){
+  if (current < questions.length - 1){
+    current++;
+    renderQuestion();
+  } else {
+    document.getElementById("progress-fill").style.width = "100%";
+    document.getElementById("quiz").style.display = "none";
+    document.getElementById("results").style.display = "block";
+    document.getElementById("final-score").textContent = score + " / " + questions.length;
+    var msg = "";
+    if (score === questions.length) msg = "Clean run. You can hear which action is the background and which one cuts in.";
+    else if (score >= questions.length - 2) msg = "Solid progress. Worth a look back at camp three before camp seven.";
+    else msg = "Good first attempt. The while/when fork is the part to read again.";
+    document.getElementById("final-message").textContent = msg;
+  }
+});
+
+document.getElementById("retry-btn").addEventListener("click", function(){
+  current = 0;
+  score = 0;
+  document.getElementById("score-text").textContent = "Score: 0";
+  document.getElementById("quiz").style.display = "block";
+  document.getElementById("results").style.display = "none";
+  renderQuestion();
+});
+
+renderQuestion();
+</script>
+
+</body>
+</html>
