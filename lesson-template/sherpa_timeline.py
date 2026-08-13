@@ -24,8 +24,11 @@ NOW_COL = (
 )
 
 # Blocks sit centred under their label, so the eye pairs them automatically.
-PAST_BLOCK = dict(x=64, width=190)
-FUTURE_BLOCK = dict(x=386, width=190)
+# Narrow, and set well clear of the NOW column: the gap is doing work — it is
+# the distance between where you are standing and where the tense lives. A
+# block that crowds NOW reads as "soon", which is not what any of these mean.
+PAST_BLOCK = dict(x=102.5, width=95)
+FUTURE_BLOCK = dict(x=442.5, width=95)
 
 
 def gradient(gid, stops):
@@ -100,7 +103,7 @@ def diagram(gid, stops, block, caption, reveal, reveal_for,
       <text x="%d" y="%d" text-anchor="middle" class="diagram-caption" fill="%s" style="letter-spacing:.14em" pointer-events="none">PAST</text>
       <text x="%d" y="%d" text-anchor="middle" class="diagram-caption" fill="#3E6A85" pointer-events="none">NOW</text>
       <text x="%d" y="%d" text-anchor="middle" class="diagram-caption" fill="%s" style="letter-spacing:.14em" pointer-events="none">FUTURE</text>
-      <text x="%g" y="288" text-anchor="middle" class="diagram-caption" fill="#F4F1E8" style="letter-spacing:.08em" pointer-events="none">%s</text>
+      <text x="%g" y="288" text-anchor="middle" class="diagram-caption" fill="#F4F1E8" style="font-size:12.5px;letter-spacing:.03em" pointer-events="none">%s</text>
       <text x="%g" y="%d" text-anchor="middle" class="dg-reveal" data-for="shape-%s" font-family="Inter, sans-serif" font-size="11.5" fill="%s" pointer-events="none">%s</text>
       <text x="%d" y="%d" text-anchor="middle" class="dg-reveal" data-for="shape-now" font-family="Inter, sans-serif" font-size="11.5" fill="#5F7C90" pointer-events="none">present simple</text>%s
     </svg>''' % (
