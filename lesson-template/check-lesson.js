@@ -11,7 +11,7 @@
  *   BANK     a word bank does not hand over the gap answers in gap order
  *   EXPLAIN  every scored question carries an explanation
  *   ACTIVATE every lesson ends with a speaking + writing production task
- *   I18N     German covers every key English defines, and every data-i18n
+ *   I18N     at least one language besides English is complete, and every data-i18n
  *            attribute resolves to a real key
  *   LOGO     Forbes and ENGLISH render to the same optical width
  *   RUNTIME  no JS errors
@@ -144,9 +144,25 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
     // ── I18N ────────────────────────────────────────────────────────
     if (typeof UI_I18N !== 'undefined') {
       const en = Object.keys(UI_I18N.en || {});
-      const de = new Set(Object.keys(UI_I18N.de || {}));
-      const missingDe = en.filter(k => !de.has(k));
-      if (missingDe.length) out.i18n.push({ kind: 'German missing keys', list: missingDe });
+      // The house minimum is English plus one finished language. It used to
+      // be checked as "German covers English", which was right for every
+      // deck until the first one shipped English + Japanese: a complete ja
+      // and an empty de is a legitimate finished state, and the gate failed
+      // it while passing a deck with no second language at all. What the
+      // rule actually says is "at least one language besides English is
+      // complete" — so that is what is measured.
+      const complete = Object.keys(UI_I18N)
+        .filter(c => c !== 'en' && Object.keys(UI_I18N[c] || {}).length >= en.length);
+      if (!complete.length) {
+        const started = Object.keys(UI_I18N)
+          .filter(c => c !== 'en' && Object.keys(UI_I18N[c] || {}).length > 0);
+        out.i18n.push({
+          kind: 'no second language is complete — English plus one finished language is the minimum',
+          list: started.length
+            ? started.map(c => `${c}: ${Object.keys(UI_I18N[c]).length}/${en.length}`)
+            : ['every language other than English is empty'],
+        });
+      }
       // A partially-filled language is the dangerous state: it shows in the
       // menu but silently falls back to English mid-interface.
       if (typeof LANGS !== 'undefined') {
