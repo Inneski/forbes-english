@@ -3,990 +3,1489 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Docket (B2)</title>
+<!-- ══ REPLACE: lesson title. No "Forbes English —" prefix. ══ -->
+<title>The Docket — B2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{
-  --slate:#1c2b3a;
-  --slate-mid:#2e4257;
-  --sky:#4a7fa5;
-  --ice:#eef3f8;
-  --ivory:#f7f5f0;
-  --paper:#ffffff;
-  --coral:#c94f3a;
-  --coral-soft:#f9e8e5;
-  --teal:#2a7d6b;
-  --teal-soft:#e0f0ec;
-  --rule:#cdd8e3;
-  --ink:#1a2633;
-  --ink-mid:#4d6070;
-  --amber:#c8892a;
-  --amber-soft:#faefd9;
-}
-*{margin:0;padding:0;box-sizing:border-box;}
-body{
-  font-family:'DM Sans',sans-serif;
-  background:var(--ice);
-  color:var(--ink);
-  line-height:1.6;
-  -webkit-font-smoothing:antialiased;
-}
-.wrap{max-width:860px;margin:0 auto;padding:0 20px 80px;}
+/* ══════════════════════════════════════════════════════════════════
+   FORBES ENGLISH — 16:9 SLIDE LESSON TEMPLATE
+   Everything you normally need to change lives in the two blocks
+   marked "REPLACE". Do not restructure the engine below them.
+   ══════════════════════════════════════════════════════════════════ */
 
-/* ---- Header ---- */
-header{
-  background:var(--slate);
-  padding:36px 20px 32px;
-  text-align:center;
-}
-.case-tag{
-  background:var(--coral);
-  color:#fff;
-  text-align:center;
-  padding:9px 20px;
-  font-size:12.5px;
-  letter-spacing:2.5px;
-  text-transform:uppercase;
-  font-weight:700;
-}
-.case-tag span{opacity:.7;margin:0 8px;}
+/* ══ REPLACE 1 of 2: hero image + palette ══
+   1. Point --hero at the lesson's cover image. This ONE line drives the
+      cover, the background pattern on every slide, and the PDF export.
+   2. Generate the palette FROM that same image:
+         python3 lesson-template/extract-palette.py <hero-image>
+      and paste its output over the colour block. Never hand-pick colours. */
+:root {
+  --hero: url('Docket/hero.jpg');
 
-/* ---- Case file tabs (signature element) ---- */
-.tabs{
-  display:flex;
-  gap:0;
-  padding:0 24px;
-  background:var(--slate-mid);
-  margin-top:28px;
-  border-radius:12px 12px 0 0;
-  overflow:hidden;
-}
-.tab{
-  flex:1;
-  padding:13px 10px 11px;
-  text-align:center;
-  font-size:11.5px;
-  font-weight:700;
-  letter-spacing:1.5px;
-  text-transform:uppercase;
-  color:rgba(238,243,248,.38);
-  border-right:1px solid rgba(255,255,255,.06);
-  border-bottom:3px solid transparent;
-  transition:all .3s ease;
-  position:relative;
-}
-.tab b{display:block;font-size:18px;font-family:'DM Serif Display',serif;font-weight:400;letter-spacing:0;line-height:1.1;margin-bottom:2px;}
-.tab:last-child{border-right:none;}
-.tab.active{color:#eef3f8;background:rgba(238,243,248,.09);border-bottom-color:var(--coral);}
-.tab.done{color:var(--teal-soft);background:rgba(42,125,107,.1);border-bottom-color:var(--teal);}
-.tab-caption{
-  background:var(--slate);
-  text-align:center;
-  color:rgba(238,243,248,.35);
-  font-size:11px;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  padding:8px;
-  border-radius:0 0 8px 8px;
-  margin-bottom:30px;
+  --void          : #0e0b09;
+  --surface       : #1c1712;
+  --surface2      : #29211a;
+  --border        : #9a443c;
+  --text          : #f5f2f2;
+  --text-dim      : #bfa6a3;
+  --accent        : #e66256;
+  --accent-bright : #f39991;
+  --accent-dim    : #be2f22;
+  --secondary     : #4e7e9f;
+  --contrast      : #1ded9a;
 }
 
-/* ---- Status ---- */
-.status{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:18px;}
-.chip{
-  background:var(--paper);
-  border:1px solid var(--rule);
-  border-radius:999px;
-  padding:7px 16px;
-  font-size:13px;
-  font-weight:600;
-  color:var(--slate-mid);
-}
-.chip strong{color:var(--slate);font-weight:800;}
-.chip.score-chip{background:var(--slate);border-color:var(--slate);color:#eef3f8;font-weight:500;}
-.chip.score-chip strong{color:#ffd380;}
-.hidden{display:none;}
+/* ── Fixed tokens: identical in every lesson. Do not edit. ── */
+:root {
+  --slide-w: 1280px;
+  --slide-h: 720px;
+  --pad: 64px;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-ui: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'DM Mono', ui-monospace, monospace;
+  --r: 10px;
+  --ok: #3fbf7f;
+  --no: #e8555f;
+  --bg-opacity: 0.72;     /* background pattern strength — see doc §6 */
 
-/* ---- Cards ---- */
-.card{
-  background:var(--paper);
-  border:1px solid var(--rule);
-  border-radius:14px;
-  padding:36px 36px 32px;
-  box-shadow:0 3px 14px rgba(28,43,58,.07);
+  /* Theme primitives. Dark is the default; a light lesson sets
+     data-theme="light" on <html> and only these flip. Never hardcode
+     rgba(0,0,0,…) or rgba(255,255,255,…) in a lesson — use these. */
+  --inset:  rgba(255,255,255,0.07);  /* recessed fills: inputs, key discs   */
+  --inset2: rgba(255,255,255,0.14);  /* the same, one step stronger         */
+  --scrim:  rgba(0,0,0,0.45);        /* chrome sitting over the hero        */
+  --hairline: rgba(255,255,255,0.28);
+  --cover-shadow: 0 1px 2px rgba(0,0,0,0.95), 0 2px 8px rgba(0,0,0,0.90),
+                  0 4px 26px rgba(0,0,0,0.80), 0 0 3px rgba(0,0,0,0.85);
+  /* Interior background wash. Two stops, not one: the artwork stays visible
+     across the middle of the slide and is only pulled down at the very top
+     and bottom, where the eyebrow, the deck bar and the progress rail sit.
+     An interior page that reads as plain black is a bug — see doc §6. */
+  --wash-mid:  rgba(0,0,0,0.06);
+  --wash-edge: rgba(0,0,0,0.20);
 }
-@media(max-width:620px){.card{padding:24px 20px;}.tabs{padding:0;}}
-.eyebrow{
-  font-size:11.5px;
-  font-weight:700;
-  letter-spacing:2.5px;
-  text-transform:uppercase;
-  color:var(--coral);
-  margin-bottom:9px;
-}
-h1,h2{
-  font-family:'DM Serif Display',serif;
-  color:var(--slate);
-  font-weight:400;
-  line-height:1.15;
-}
-h1{font-size:38px;margin-bottom:14px;}
-h2{font-size:28px;margin-bottom:6px;}
-.sub{color:var(--ink-mid);font-size:15px;margin-bottom:6px;line-height:1.6;}
-.rule{height:1px;background:var(--rule);margin:22px 0;}
 
-/* ---- Intro grid ---- */
-.intro-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px;}
-.intro-item{
-  background:var(--ivory);
-  border:1px solid var(--rule);
-  border-top:3px solid var(--sky);
-  border-radius:10px;
-  padding:16px 18px;
-}
-.intro-item h3{font-family:'DM Serif Display',serif;font-size:17px;color:var(--slate);margin-bottom:4px;font-weight:400;}
-.intro-item p{font-size:13.5px;color:var(--ink-mid);}
-@media(max-width:560px){.intro-grid{grid-template-columns:1fr;}}
+/* ══ LIGHT THEME ══
+   For bright, airy heroes. The palette comes from
+   `extract-palette.py <hero> --light`; these are the structural flips the
+   palette alone cannot express.
 
-/* ---- Buttons ---- */
-.btn{
-  display:inline-block;
-  font-family:'DM Sans',sans-serif;
-  font-size:15px;
-  font-weight:700;
-  padding:13px 28px;
-  border-radius:999px;
-  border:none;
-  cursor:pointer;
-  transition:transform .12s, box-shadow .12s, background .15s;
-  letter-spacing:.3px;
+   A light lesson is a MID tone, not a white one. Every wash here is mixed
+   from --void rather than from white: mixing toward white bleaches the hero
+   out of the interior pages and turns the deck into glare on a projector.
+   If you find yourself reaching for rgba(255,255,255,…) in a lesson, the
+   answer is a higher --void percentage instead. */
+html[data-theme="light"] {
+  --inset:  rgba(0,0,0,0.045);
+  --inset2: rgba(0,0,0,0.10);
+  --scrim:  color-mix(in srgb, var(--void) 78%, transparent);
+  --hairline: rgba(0,0,0,0.14);
+  --cover-shadow: 0 1px 2px rgba(255,255,255,0.95), 0 2px 8px rgba(255,255,255,0.85),
+                  0 4px 26px rgba(255,255,255,0.6), 0 0 3px rgba(255,255,255,0.9);
+  --wash-mid:  color-mix(in srgb, var(--void) 8%, transparent);
+  --wash-edge: color-mix(in srgb, var(--void) 26%, transparent);
+  --bg-opacity: 0.62;
 }
-.btn:focus-visible{outline:3px solid var(--coral);outline-offset:2px;}
-.btn-primary{background:var(--slate);color:#eef3f8;}
-.btn-primary:hover{background:#111e2a;transform:translateY(-1px);}
-.btn-coral{background:var(--coral);color:#fff;}
-.btn-coral:hover{background:#b04030;transform:translateY(-1px);}
-.btn-ghost{background:transparent;border:2px solid var(--slate-mid);color:var(--slate-mid);}
-.btn-ghost:hover{background:var(--slate-mid);color:#fff;}
-.btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important;}
-.actions{margin-top:26px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
 
-/* ---- Questions ---- */
-.qtext{font-size:18px;margin:14px 0 20px;line-height:1.65;}
-.qtext em{font-style:normal;padding:0 4px;border-bottom:2.5px solid var(--coral);}
-.opts{display:flex;flex-direction:column;gap:11px;}
-.opt{
-  text-align:left;
-  background:var(--ivory);
-  border:2px solid var(--rule);
-  border-radius:10px;
-  padding:13px 16px;
-  font-size:15.5px;
-  font-family:'DM Sans',sans-serif;
-  color:var(--ink);
-  cursor:pointer;
-  transition:border-color .15s, background .15s;
-  display:flex;
-  gap:13px;
-  align-items:baseline;
-}
-.opt:hover{border-color:var(--sky);}
-.opt .tag{font-weight:800;color:var(--sky);font-size:12px;min-width:16px;}
-.opt.selected{border-color:var(--slate);background:#f0f4f8;}
-.opt.correct{border-color:var(--teal);background:var(--teal-soft);}
-.opt.wrong{border-color:var(--coral);background:var(--coral-soft);}
-.opt:disabled{cursor:default;}
+/* On a mid canvas a translucent card has little to contrast against, so
+   edges need more of the hairline than they do on a dark canvas. */
+html[data-theme="light"] .card { border-color: color-mix(in srgb, var(--border) 90%, transparent); }
+html[data-theme="light"] .opt,
+html[data-theme="light"] .match-item { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
+html[data-theme="light"] .opt-key { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
+html[data-theme="light"] .card { background: color-mix(in srgb, var(--surface) 92%, transparent); }
+html[data-theme="light"] .opt { background: color-mix(in srgb, var(--surface) 95%, transparent); }
 
-.feedback{
-  margin-top:18px;
-  border-radius:10px;
-  padding:15px 18px;
-  font-size:14.5px;
-  line-height:1.6;
-  display:none;
-}
-.feedback.show{display:block;}
-.feedback.good{background:var(--teal-soft);border-left:4px solid var(--teal);}
-.feedback.bad{background:var(--coral-soft);border-left:4px solid var(--coral);}
-.feedback b{display:block;font-size:15px;margin-bottom:4px;}
-.feedback.good b{color:var(--teal);}
-.feedback.bad b{color:var(--coral);}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ---- Gap fill ---- */
-.transcript{
-  background:var(--ivory);
-  border:1px solid var(--rule);
-  border-radius:10px;
-  padding:24px 26px;
-  font-size:16.5px;
-  line-height:2.35;
+html, body {
+  height: 100%;
+  overflow: hidden;            /* NO SCROLLING. This is the whole point. */
+  background: var(--void);
+  color: var(--text);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
 }
-.transcript .slug{
-  font-size:11.5px;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  color:var(--ink-mid);
-  font-weight:700;
-  display:block;
-  margin-bottom:10px;
-}
-.gap{
-  display:inline-block;
-  min-width:140px;
-  text-align:center;
-  border:none;
-  border-bottom:2.5px dashed var(--sky);
-  background:#eaf0f7;
-  border-radius:6px 6px 0 0;
-  padding:2px 12px;
-  margin:0 2px;
-  font-family:'DM Sans',sans-serif;
-  font-size:15.5px;
-  font-weight:600;
-  color:var(--slate);
-  cursor:pointer;
-  transition:background .15s, border-color .15s;
-}
-.gap:hover{background:var(--amber-soft);}
-.gap.armed{border-bottom-style:solid;border-color:var(--amber);background:var(--amber-soft);}
-.gap.filled{border-bottom-style:solid;background:#ddeae8;}
-.gap.g-correct{background:var(--teal-soft);border-color:var(--teal);color:var(--teal);cursor:default;}
-.gap.g-wrong{background:var(--coral-soft);border-color:var(--coral);color:var(--coral);cursor:default;}
 
-.bank{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-top:20px;
-  padding:16px 18px;
-  background:var(--slate);
-  border-radius:10px;
+/* ── STAGE: a fixed 1280×720 canvas scaled to fit any viewport ── */
+.stage-wrap { position: fixed; inset: 0; display: grid; place-items: center; }
+.stage {
+  position: relative;
+  width: var(--slide-w);
+  height: var(--slide-h);
+  transform-origin: center center;
+  overflow: hidden;
+  background: var(--void);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.55);
 }
-.bank-label{width:100%;color:rgba(238,243,248,.5);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
-.word{
-  background:var(--ice);
-  border:none;
-  border-radius:999px;
-  padding:8px 18px;
-  font-family:'DM Sans',sans-serif;
-  font-size:14px;
-  font-weight:600;
-  color:var(--slate);
-  cursor:pointer;
-  transition:background .15s, opacity .15s;
-}
-.word:hover{background:#ffd380;color:var(--slate);}
-.word.used{opacity:.3;cursor:not-allowed;}
-.word.selected{background:var(--amber);color:var(--slate);}
 
-/* ---- Matching ---- */
-.match-grid{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;}
-.mitem{
-  background:var(--ivory);
-  border:2px solid var(--rule);
-  border-radius:10px;
-  padding:12px 15px;
-  font-size:14.5px;
-  cursor:pointer;
-  font-family:'DM Sans',sans-serif;
-  text-align:left;
-  color:var(--ink);
-  transition:border-color .15s, background .15s;
+/* ── BACKGROUND PATTERN: the cover image, behind every slide ──
+   Driven by --hero so the screen view and the PDF/PPT export read from
+   ONE definition. Two pseudo-layers because opacity on a parent would
+   also fade the wash sitting on top of it. */
+.bg-layer { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.bg-layer::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--hero) center / cover no-repeat;
+  opacity: var(--bg-opacity);
+  filter: saturate(0.92);
 }
-.mitem:hover{border-color:var(--sky);}
-.mitem.selected{border-color:var(--slate);background:#f0f4f8;}
-.mitem.paired{border-style:solid;}
-.mitem.m-correct{border-color:var(--teal);background:var(--teal-soft);cursor:default;}
-.mitem.m-wrong{border-color:var(--coral);background:var(--coral-soft);cursor:default;}
-.mitem.left-col{font-weight:700;color:var(--slate);font-size:15.5px;white-space:nowrap;}
-.pairmark{
-  display:inline-block;
-  background:var(--coral);
-  color:#fff;
-  font-weight:800;
-  font-size:11px;
-  border-radius:999px;
-  padding:1px 8px;
-  margin-right:7px;
-  vertical-align:middle;
+.bg-layer::after {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, var(--wash-edge) 0%, var(--wash-mid) 20%,
+                            var(--wash-mid) 80%, var(--wash-edge) 100%);
 }
-@media(max-width:560px){.match-grid{grid-template-columns:1fr;}}
+/* The cover slide shows the hero at FULL strength — no wash, no dimming. */
+.stage.on-cover .bg-layer::before { opacity: 1; filter: none; }
+/* Centre scrim: guarantees cover-text contrast over ANY hero — light, dark,
+   or busy — while leaving the artwork vivid at the edges. Do not remove it;
+   it is what makes an arbitrary dropped-in image safe. */
+.stage.on-cover .bg-layer::after {
+  background:
+    radial-gradient(ellipse 58% 54% at 50% 46%,
+      rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.22) 54%, transparent 82%),
+    linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.03) 30%,
+                            rgba(0,0,0,0.05) 70%, rgba(0,0,0,0.38) 100%);
+}
+/* A light cover keeps its picture. Dark ink already carries against a bright
+   image, so the scrim here is barely there — just enough to stop the title
+   landing on a hard edge. Never brighten a light cover to rescue text; if the
+   text will not read, the hero is wrong for a light lesson. */
+html[data-theme="light"] .stage.on-cover .bg-layer::after {
+  background:
+    radial-gradient(ellipse 58% 54% at 50% 46%,
+      rgba(255,255,255,0.48) 0%, rgba(255,255,255,0.28) 54%, transparent 82%),
+    linear-gradient(180deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.03) 30%,
+                            rgba(255,255,255,0.05) 70%, rgba(255,255,255,0.22) 100%);
+}
 
-/* ---- Error correction ---- */
-.sent-row{
-  background:var(--ivory);
-  border:2px solid var(--rule);
-  border-radius:10px;
-  padding:14px 18px;
-  display:flex;
-  gap:14px;
-  align-items:flex-start;
-  cursor:pointer;
-  transition:border-color .15s,background .15s;
+/* ── SLIDES ── */
+.slide {
+  position: absolute; inset: 0; z-index: 1;
+  display: none;
+  flex-direction: column;
+  padding: var(--pad);
 }
-.sent-row:hover{border-color:var(--sky);}
-.sent-row .num{font-weight:800;font-size:12px;color:var(--coral);min-width:22px;margin-top:2px;}
-.sent-row .sent-text{font-size:16px;line-height:1.65;}
-.sent-row .sent-text u{text-decoration:underline;text-decoration-color:var(--coral);text-decoration-thickness:2px;font-weight:600;}
-.sent-row.picked{border-color:var(--slate);background:#f0f4f8;}
-.sent-row.ec-correct{border-color:var(--teal);background:var(--teal-soft);cursor:default;}
-.sent-row.ec-wrong{border-color:var(--coral);background:var(--coral-soft);cursor:default;}
+.slide.is-active { display: flex; animation: slide-in .32s ease both; }
+@keyframes slide-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
-/* ---- Results ---- */
-.score-ring{
-  font-family:'DM Serif Display',serif;
-  font-size:62px;
-  color:var(--slate);
-  text-align:center;
-  margin:10px 0 4px;
+/* ── LOGO ── */
+.fe-logo { width: 152px; height: auto; display: block; }
+.fe-logo-mark { color: var(--logo-mark, var(--accent)); }
+.fe-logo-word { fill: var(--text); opacity: 0; transition: opacity .25s ease; }
+.fonts-ready .fe-logo-word { opacity: 1; }   /* never flash a fallback face */
+.slide[data-type="cover"] .fe-logo { width: 232px; }
+
+/* ── COVER ── */
+.cover-inner {
+  height: 100%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; gap: 4px;
 }
-.score-ring span{color:var(--coral);}
-.verdict{font-family:'DM Serif Display',serif;font-size:24px;color:var(--slate-mid);text-align:center;margin-bottom:10px;}
-.verdict-note{text-align:center;color:var(--ink-mid);max-width:520px;margin:0 auto 6px;font-size:15px;}
-.breakdown{margin:26px auto 0;max-width:480px;}
-.bd-row{display:flex;justify-content:space-between;border-bottom:1px solid var(--rule);padding:10px 4px;font-size:14.5px;}
-.bd-row b{color:var(--slate);}
-footer{text-align:center;color:var(--ink-mid);font-size:12.5px;padding:30px 20px 40px;letter-spacing:1px;opacity:.7;}
+.cover-title {
+  font-family: var(--font-display);
+  font-size: 62px; font-weight: 900; line-height: 1.06;
+  color: var(--text);
+  text-shadow: var(--cover-shadow);
+  margin-top: 26px;
+}
+.cover-title em { font-style: normal; color: var(--accent-bright); }
+.cover-sub {
+  font-size: 19px; color: var(--text);
+  letter-spacing: .04em; margin-top: 14px;
+  text-shadow: var(--cover-shadow);
+}
+.cover-meta {
+  display: flex; gap: 10px; margin-top: 26px; flex-wrap: wrap; justify-content: center;
+}
+.chip {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase;
+  padding: 6px 14px; border-radius: 999px;
+  border: 1px solid var(--hairline);
+  background: var(--scrim);
+  color: var(--text);
+}
+
+/* ── SLIDE FURNITURE ── */
+.slide-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 20px; margin-bottom: 26px;
+}
+.eyebrow {
+  font-family: var(--font-mono); font-size: 12px;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent-bright);
+}
+.slide-title {
+  font-family: var(--font-display);
+  font-size: 38px; font-weight: 700; line-height: 1.15; color: var(--text);
+  margin-top: 6px;
+}
+.slide-body { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; }
+
+/* Content sits in a translucent card so it stays legible over the pattern. */
+.card {
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+  border-radius: var(--r);
+  padding: 30px 34px;
+  backdrop-filter: blur(3px);
+}
+.card + .card { margin-top: 16px; }
+.cols .card + .card,
+.cols .card { margin-top: 0; }   /* side-by-side cards must share a top edge */
+.prose { font-size: 20px; line-height: 1.62; color: var(--text); }
+.prose + .prose { margin-top: 14px; }
+.prose strong { color: var(--accent-bright); font-weight: 600; }
+.dim { color: var(--text-dim); }
+
+/* Two-column teaching layout */
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+
+/* ── QUESTIONS ── */
+.q-stem { font-size: 25px; line-height: 1.5; color: var(--text); margin-bottom: 22px; }
+.q-stem em { font-style: normal; color: var(--accent-bright); font-weight: 600; }
+
+.opts { display: grid; gap: 11px; }
+.opts.two-up { grid-template-columns: 1fr 1fr; }
+.opt {
+  display: flex; align-items: center; gap: 14px;
+  width: 100%; text-align: left;
+  font-family: var(--font-ui); font-size: 19px; color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: var(--r);
+  padding: 15px 20px; cursor: pointer;
+  transition: border-color .15s, background .15s, transform .12s;
+}
+.opt:hover:not(:disabled) { border-color: var(--accent); transform: translateX(3px); }
+.opt-key {
+  flex: 0 0 30px; height: 30px; display: grid; place-items: center;
+  border-radius: 50%; font-family: var(--font-mono); font-size: 13px;
+  background: var(--inset);
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+}
+.opt.correct { border-color: var(--ok); background: color-mix(in srgb, var(--ok) 20%, var(--surface2)); }
+.opt.wrong   { border-color: var(--no); background: color-mix(in srgb, var(--no) 18%, var(--surface2)); }
+.opt:disabled { cursor: default; }
+
+/* Gap-fill */
+.gap {
+  font-family: var(--font-ui); font-size: 20px; color: var(--text);
+  background: var(--inset);
+  border: none; border-bottom: 2px solid var(--accent);
+  padding: 3px 10px; min-width: 190px; border-radius: 4px 4px 0 0;
+}
+.gap:focus { outline: none; background: var(--inset2); }
+.gap.correct { border-bottom-color: var(--ok); color: var(--ok); }
+.gap.wrong   { border-bottom-color: var(--no); color: var(--no); }
+
+.feedback {
+  margin-top: 18px; font-size: 17px; line-height: 1.55;
+  min-height: 26px; opacity: 0; transition: opacity .2s;
+}
+.feedback.show { opacity: 1; }
+.feedback.ok { color: var(--ok); }
+.feedback.no { color: var(--no); }
+
+/* ── BUTTONS ── */
+.btn {
+  font-family: var(--font-ui); font-size: 15px; font-weight: 600;
+  letter-spacing: .03em;
+  padding: 12px 26px; border-radius: var(--r);
+  border: 1px solid var(--accent); background: transparent; color: var(--accent-bright);
+  cursor: pointer; transition: background .15s, color .15s;
+}
+.btn:hover { background: var(--accent); color: var(--void); }
+.btn-solid { background: var(--accent); color: var(--void); border-color: var(--accent); }
+.btn-solid:hover { background: var(--accent-bright); border-color: var(--accent-bright); }
+.btn:disabled { opacity: .35; cursor: not-allowed; }
+.btn-lg { font-size: 17px; padding: 15px 38px; }
+
+/* ── CHROME: progress + nav, pinned inside the stage ── */
+.deck-bar {
+  position: absolute; z-index: 3; left: 0; right: 0; bottom: 0;
+  height: 58px; padding: 0 26px;
+  display: flex; align-items: center; gap: 18px;
+  background: linear-gradient(180deg, transparent, var(--scrim));
+}
+.stage.on-cover .deck-bar { background: none; }
+.stage.on-cover .deck-score { visibility: hidden; }
+.progress { flex: 1; height: 3px; background: var(--inset2); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0; background: var(--accent); transition: width .3s ease; }
+.deck-count, .deck-score {
+  font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); white-space: nowrap;
+}
+.nav-btn {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  background: var(--scrim); color: var(--text);
+  cursor: pointer; font-size: 15px; line-height: 1;
+  display: grid; place-items: center; transition: border-color .15s, background .15s;
+}
+.nav-btn:hover:not(:disabled) { border-color: var(--accent); background: var(--accent); color: var(--void); }
+.nav-btn:disabled { opacity: .28; cursor: not-allowed; }
+
+/* ── LANGUAGE SWITCH ── */
+.lang-select {
+  font-family: var(--font-mono); font-size: 12px;
+  background: var(--scrim); color: var(--text);
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  border-radius: 6px; padding: 6px 10px; cursor: pointer;
+}
+.lang-select:focus { outline: 1px solid var(--accent); }
+
+/* ── RESULTS ── */
+.score-big {
+  font-family: var(--font-display); font-size: 84px; font-weight: 900;
+  color: var(--accent-bright); line-height: 1;
+}
+
+/* ── RTL ── */
+[dir="rtl"] .opt { text-align: right; }
+[dir="rtl"] .opt:hover:not(:disabled) { transform: translateX(-3px); }
+
+
+/* ── ACTIVATION ──────────────────────────────────────────────────── */
+.act-target {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 16px;
+}
+.act-target-label {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-dim);
+  margin-right: 4px;
+}
+.bank-chip {
+  font-family: var(--font-mono); font-size: 12px;
+  padding: 5px 12px; border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  color: var(--accent-bright);
+}
+.act-cols { align-items: stretch; }
+.act-card { display: flex; flex-direction: column; padding: 20px 24px; }
+.act-kind {
+  display: flex; align-items: center; gap: 9px;
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--accent-bright); margin-bottom: 12px;
+}
+.act-icon { font-size: 16px; }
+.act-brief { font-size: 16.5px; line-height: 1.5; color: var(--text); margin-bottom: 12px; }
+.act-list { list-style: none; display: grid; gap: 9px; }
+.act-list li {
+  font-size: 15.5px; line-height: 1.45; color: var(--text-dim);
+  padding-left: 18px; position: relative;
+}
+.act-list li::before {
+  content: '—'; position: absolute; left: 0; color: var(--accent);
+}
+.act-input {
+  flex: 1; min-height: 118px; resize: none;
+  font-family: var(--font-ui); font-size: 15px; line-height: 1.55;
+  color: var(--text);
+  background: var(--inset);
+  border: 1px solid color-mix(in srgb, var(--border) 45%, transparent);
+  border-radius: 8px; padding: 12px 14px;
+}
+.act-input:focus { outline: none; border-color: var(--accent); background: var(--inset2); }
+.act-input::placeholder { color: var(--text-dim); opacity: .55; }
+.act-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 10px;
+}
+.act-count { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-dim); }
+.act-copy { font-size: 12.5px; padding: 6px 14px; }
+/* The textarea's value does not print; this mirror does. */
+.act-print { display: none; font-size: 14px; line-height: 1.55; white-space: pre-wrap; }
+
+
+/* ── MATCHING ────────────────────────────────────────────────────── */
+.match-grid { display: grid; grid-template-columns: 1fr 1.35fr; gap: 14px; }
+.match-col { display: grid; gap: 8px; align-content: start; }
+.match-item {
+  font-family: var(--font-ui); font-size: 15.5px; line-height: 1.4;
+  text-align: left; color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: var(--r); padding: 11px 16px; cursor: pointer;
+  transition: border-color .15s, background .15s, opacity .2s;
+}
+.match-item.term { font-weight: 600; }
+.match-item:hover:not(.done) { border-color: var(--accent); }
+.match-item.picked { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 22%, var(--surface2)); }
+.match-item.done { opacity: .45; cursor: default; border-color: var(--ok); }
+.match-item.miss { border-color: var(--no); animation: shake .3s; }
+@keyframes shake { 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
+
+/* ── ORDERING (build the sentence) ───────────────────────────────────
+   For word-order work — where the point is the SEQUENCE of prepositional
+   phrases, not choosing one word. Click to place, click again to take back;
+   no dragging, because a scaled stage makes drag targets lie. */
+.order-hint {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 10px;
+}
+.order-target {
+  display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start;
+  min-height: 92px; padding: 12px;
+  border: 1.5px dashed color-mix(in srgb, var(--border) 60%, transparent);
+  border-radius: var(--r); background: var(--inset);
+}
+.order-target.correct { border-style: solid; border-color: var(--ok); }
+.order-target.wrong   { border-style: solid; border-color: var(--no); }
+.order-pool { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.chunk {
+  font-family: var(--font-ui); font-size: 15.5px; line-height: 1.35;
+  color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: 999px; padding: 9px 16px; cursor: pointer;
+  transition: border-color .15s, background .15s, opacity .2s;
+}
+.chunk:hover:not(:disabled) { border-color: var(--accent); }
+.chunk.placed { background: color-mix(in srgb, var(--accent) 18%, var(--surface2)); border-color: var(--accent); }
+.chunk:disabled { cursor: default; opacity: .5; }
+
+/* ── DISCUSSION (unscored speaking prompts) ──────────────────────── */
+.discuss-meta {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 14px;
+}
+.prompts { display: grid; gap: 12px; list-style: none; margin: 0; padding: 0; }
+.prompt {
+  font-size: 19px; line-height: 1.5; color: var(--text);
+  padding-left: 26px; position: relative;
+}
+.prompt::before {
+  content: '?'; position: absolute; left: 0; top: 1px;
+  font-family: var(--font-mono); font-size: 15px; color: var(--accent);
+}
+.prompt.aside { font-size: 16.5px; color: var(--text-dim); font-style: italic; }
+.prompt.aside::before { content: '·'; }
+
+/* ══════════════════════════════════════════════════════════════════
+   PRINT / PDF EXPORT
+   Ctrl-P → Save as PDF → Landscape, margins None, Background graphics ON.
+   Each slide becomes one 16:9 page, ready to drop into PowerPoint.
+   ══════════════════════════════════════════════════════════════════ */
+@page { size: 1280px 720px; margin: 0; }
+@media print {
+  html, body { overflow: visible; height: auto; background: #fff; }
+  .stage-wrap { position: static; display: block; }
+  .stage {
+    transform: none !important;
+    width: 1280px; height: auto;      /* let the slides stack into pages */
+    overflow: visible; box-shadow: none;
+  }
+  .bg-layer, .deck-bar, .lang-select, .nav-btn { display: none !important; }
+
+  /* Each slide becomes its own page and carries its own background, so the
+     export does not depend on the single on-screen background layer. */
+  .slide {
+    display: flex !important;
+    position: relative; inset: auto;
+    width: 1280px; height: 720px;
+    isolation: isolate;
+    page-break-after: always; break-after: page;
+    animation: none !important;
+  }
+  .slide:last-child { page-break-after: auto; break-after: auto; }
+  .slide::before {
+    content: ''; position: absolute; inset: 0; z-index: -2;
+    background: var(--hero) center / cover no-repeat;
+    opacity: var(--bg-opacity);
+  }
+  .slide::after {
+    content: ''; position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(180deg, var(--wash-edge) 0%, var(--wash-mid) 20%,
+                                        var(--wash-mid) 80%, var(--wash-edge) 100%);
+  }
+  .slide[data-type="cover"]::before { opacity: 1; }
+  .slide[data-type="cover"]::after {
+    background:
+      radial-gradient(ellipse 58% 54% at 50% 46%,
+        rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.22) 54%, transparent 82%),
+      linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.03) 30%,
+                            rgba(0,0,0,0.05) 70%, rgba(0,0,0,0.38) 100%);
+  }
+  .feedback { opacity: 1 !important; }
+  .act-input, .act-foot { display: none !important; }
+  .act-print { display: block !important; }
+}
+
+/* Text that sits on the canvas rather than inside a card needs its own halo
+   now that the artwork behind it is bright. A shadow costs nothing and lets
+   the picture stay up, which darkening the wash back down would not. */
+.slide-title, .eyebrow, .q-stem, .q-ctx, .order-hint, .cover-title, .cover-sub,
+.score-big, .slide-body > .prose, .act-target-label {
+  text-shadow: 0 1px 2px rgba(0,0,0,0.55), 0 0 12px rgba(0,0,0,0.38);
+}
+html[data-theme="light"] .slide-title, html[data-theme="light"] .eyebrow,
+html[data-theme="light"] .q-stem, html[data-theme="light"] .q-ctx,
+html[data-theme="light"] .order-hint, html[data-theme="light"] .cover-title,
+html[data-theme="light"] .cover-sub, html[data-theme="light"] .score-big,
+html[data-theme="light"] .slide-body > .prose,
+html[data-theme="light"] .act-target-label {
+  text-shadow: 0 1px 2px rgba(255,255,255,0.75), 0 0 12px rgba(255,255,255,0.55);
+}
 </style>
 </head>
 <body>
 
-<header>
-  <!-- Forbes English logo — slate-blue palette -->
-  <svg width="240" height="92" viewBox="0 0 240 92" role="img" aria-label="Forbes English">
-    <g transform="translate(77.61,5.96) scale(0.052217)"><g transform="translate(0,1504) scale(0.1,-0.1)" fill="#eef3f8" stroke="none"><path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47 l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21 -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9 -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58 105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141 144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392 -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31 c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55 -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0 -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226 144 331 156 51 6 127 -4 183 -25z"/><path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95 -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72 -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0 -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18 108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553 -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70 -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3 469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38 -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/><path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73 -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939 -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1 205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247 -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22 -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24 -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449 121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/><path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611 -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538 -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77 144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430 -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67 347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580 -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132 -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87 66 245 85 341 40z"/><path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140 -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134 -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287 -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101 -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107 173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392 207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599 281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241 111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2 347 -112 40 c-318 112 -594 149 -892 121z"/><path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149 l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801 -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6 -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294 -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12 -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29 -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55 -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12 -33 22 -42 21 -9 0 -199 -27 -422 -60z"/></g></g>
-    <text x="120" y="80" text-anchor="middle" font-family="DM Sans, Arial, sans-serif" font-size="32.00" font-weight="800" letter-spacing="9" fill="#c94f3a">ENGLISH</text>
-  </svg>
-</header>
-<div class="case-tag">The Docket <span>&bull;</span> Crime &amp; the Courtroom <span>&bull;</span> Level B2</div>
+<div class="stage-wrap">
+  <div class="stage" id="stage">
 
-<div class="wrap">
+    <!-- Background pattern: driven entirely by --hero in the CSS above. -->
+    <div class="bg-layer" role="presentation"></div>
 
-  <!-- Case file tabs -->
-  <div class="tabs" id="tabs" aria-hidden="true">
-    <div class="tab" data-tab="0"><b>01</b>Exhibit A</div>
-    <div class="tab" data-tab="1"><b>02</b>Testimony</div>
-    <div class="tab" data-tab="2"><b>03</b>The Brief</div>
-    <div class="tab" data-tab="3"><b>04</b>Cross-exam</div>
+    <!-- ══════════════════════════════════════════════════════════
+         REPLACE 2 of 2: SLIDES
+         Author one <section class="slide"> per screen.
+         data-type: cover | teach | mc | gap | match | order | discuss | results | activate
+         data-bg="folder/other.jpg" swaps the background pattern on that slide.
+         Everything a learner reads must fit WITHOUT scrolling.
+         If it does not fit, split it across two slides — never shrink type.
+         ══════════════════════════════════════════════════════════ -->
+
+
+    <section class="slide is-active" data-type="cover">
+      <div class="cover-inner">
+        <svg class="fe-logo" viewBox="0 0 200 78" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forbes English">
+          <g class="fe-logo-mark" transform="translate(-42.74,-30.22) scale(0.099477)"><g transform="translate(0,1504) scale(0.1,-0.1)" fill="currentColor" stroke="none"><path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47 l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21 -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9 -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58 105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141 144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392 -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31 c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55 -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0 -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226 144 331 156 51 6 127 -4 183 -25z"/><path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95 -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72 -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0 -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18 108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553 -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70 -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3 469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38 -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/><path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73 -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939 -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1 205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247 -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22 -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24 -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449 121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/><path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611 -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538 -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77 144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430 -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67 347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580 -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132 -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87 66 245 85 341 40z"/><path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140 -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134 -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287 -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101 -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107 173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392 207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599 281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241 111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2 347 -112 40 c-318 112 -594 149 -892 121z"/><path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149 l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801 -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6 -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294 -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12 -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29 -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55 -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12 -33 22 -42 21 -9 0 -199 -27 -422 -60z"/></g></g>
+          <text class="fe-logo-word" x="100" y="72.6" text-anchor="middle" font-family="'DM Sans', Arial, sans-serif" font-size="20.8" font-weight="600" letter-spacing="8">ENGLISH</text>
+        </svg>
+        <h1 class="cover-title" data-i18n="coverTitle">The <em>Docket</em></h1>
+        <p class="cover-sub" data-i18n="coverSub">Crime, the courtroom and the office &mdash; the vocabulary a true-crime series runs on</p>
+        <div class="cover-meta">
+          <span class="chip" data-i18n="chipLevel">B2 &middot; Vocabulary</span>
+          <span class="chip" data-i18n="chipFocus">Law &amp; the courtroom</span>
+          <span class="chip" data-i18n="chipCount">21 slides</span>
+        </div>
+        <div style="margin-top:34px">
+          <button class="btn btn-solid btn-lg" data-action="next" data-i18n="btnStart">Begin →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="Docket/bench.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="vEyebrow">Before the case opens</div>
+        <h2 class="slide-title" data-i18n="vTitle">Six words the courtroom cannot do without</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="v1h">defraud &middot; fraudulent</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">To take money by deception, and the adjective for it.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="v1b">The verb takes a person as its object: you defraud <em>somebody</em> <em>out of</em> something.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="v2h">inadmissible</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Evidence a judge will not let the court receive.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="v2b">Ruled case by case, not automatic. Improperly obtained evidence is <em>sometimes</em> excluded &mdash; never always.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="v3h">revoke &middot; mandatory</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">To cancel officially &middot; required by law.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="v3b">Watch what <em>mandatory</em> attaches to: a duty, a check, a disclosure. Never an offence.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="v4h">grievance &middot; offender</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">A formal complaint &middot; a person who breaks the law.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="v4b">A grievance is raised, heard and either upheld or dismissed. It is the word both HR and the tribunal use.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="Docket/desk.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="pairEyebrow">The pair everyone gets wrong</div>
+        <h2 class="slide-title" data-i18n="pairTitle">prevalent, rampant, and the three reconciles</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="p1h">prevalent</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Widespread. Common. Found all over.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="p1b">Neutral. A dialect, a practice, a reputation, a species can all be prevalent, and nothing is implied about whether that is good.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="p2h">rampant</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Widespread, unchecked &mdash; and bad.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="p2b">Weeds, inflation, corruption, rumour. If you would not mind it spreading, it is not rampant.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="p3h">reconcile &times; 3</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">people &middot; views &middot; facts</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="p3b">Reconcile two <em>people</em>, two <em>views</em> (find where they agree), or one fact <em>with</em> another (make them fit). The third sense is what this case turns on.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Exhibit A</span> &middot; 1 / 6</div>
+        <h2 class="slide-title" data-i18n="qTitle">The word the record needs</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">The prosecution alleged that the accused had tried to ______ elderly victims out of their savings by posing as a bank official.</p>
+        <div class="opts">
+          <button class="opt" data-correct>defraud</button>
+          <button class="opt">displace</button>
+          <button class="opt">discount</button>
+          <button class="opt">detour</button>
+        </div>
+        <p class="feedback" data-explain="To <strong>defraud</strong> someone is to take their money or property by deception. The others are decoys built from the same prefix: <em>displace</em> is to move something, <em>discount</em> is a price reduction, <em>detour</em> is a longer route."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Exhibit A</span> &middot; 2 / 6</div>
+        <h2 class="slide-title" data-i18n="qTitle">The word the record needs</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">The judge ruled that the recording had been obtained improperly and was therefore ______ &mdash; the jury never heard it.</p>
+        <div class="opts">
+          <button class="opt" data-correct>inadmissible</button>
+          <button class="opt">insufficient</button>
+          <button class="opt">unaccountable</button>
+          <button class="opt">irreconcilable</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Inadmissible</strong> means the court will not receive it as evidence. Note the limit: evidence is ruled inadmissible <em>by a judge, case by case</em>. There is no rule that improperly obtained evidence is automatically excluded."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-bg="Docket/gallery.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Exhibit A</span> &middot; 3 / 6</div>
+        <h2 class="slide-title" data-i18n="qTitle">The word the record needs</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">After twenty years, the parole board voted to ______ the restriction that had stopped him leaving the state.</p>
+        <div class="opts">
+          <button class="opt" data-correct>revoke</button>
+          <button class="opt">reconcile</button>
+          <button class="opt">accompany</button>
+          <button class="opt">resist</button>
+        </div>
+        <p class="feedback" data-explain="To <strong>revoke</strong> is to cancel something officially &mdash; a licence, an order, a restriction. <em>Reconcile</em> is to bring two things or people back into agreement."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Exhibit A</span> &middot; 4 / 6</div>
+        <h2 class="slide-title" data-i18n="qTitle">The word the record needs</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">At the press conference the detective stood at the ______ and read the statement without taking a single question.</p>
+        <div class="opts">
+          <button class="opt" data-correct>lectern</button>
+          <button class="opt">rotunda</button>
+          <button class="opt">skirting</button>
+          <button class="opt">ministry</button>
+        </div>
+        <p class="feedback" data-explain="A <strong>lectern</strong> is the stand you put your notes on. A <em>rotunda</em> is a round room, <em>skirting</em> is the board at the foot of a wall, and a <em>ministry</em> is a government department."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Exhibit A</span> &middot; 5 / 6</div>
+        <h2 class="slide-title" data-i18n="qTitle">The word the record needs</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">The court heard that co-operation with the enquiry was ______: every former employee was required by law to take part.</p>
+        <div class="opts">
+          <button class="opt" data-correct>mandatory</button>
+          <button class="opt">contingent</button>
+          <button class="opt">incidental</button>
+          <button class="opt">provisional</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Mandatory</strong> means required by law or rule. Note what it attaches to &mdash; a <em>duty</em> can be mandatory; an offence cannot. The colon here does the teaching: the clause after it is the definition."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-bg="Docket/gallery.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Exhibit A</span> &middot; 6 / 6</div>
+        <h2 class="slide-title" data-i18n="qTitle">The word the record needs</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">What began as a routine ______ over an unpaid delivery had escalated into a full civil war inside the company.</p>
+        <div class="opts">
+          <button class="opt" data-correct>grievance</button>
+          <button class="opt">showdown</button>
+          <button class="opt">swagger</button>
+          <button class="opt">chatter</button>
+        </div>
+        <p class="feedback" data-explain="A <strong>grievance</strong> is a formal complaint about being wronged &mdash; the word HR and the courts both use. A <em>showdown</em> is the final confrontation, which is what it became, not what it started as."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="gapEyebrow">Witness statement &mdash; E. Voss</span> &middot; 1 / 3</div>
+        <h2 class="slide-title" data-i18n="gapTitle">Complete the testimony</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target" style="margin-bottom:12px">
+          <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
+          <span class="bank-chip">fraudulent</span> <span class="bank-chip">law firm</span> <span class="bank-chip">ministry</span> <span class="bank-chip">prevalent</span> <span class="bank-chip">rampant</span> <span class="bank-chip">reconcile</span> <span class="bank-chip">revoke</span> <span class="bank-chip">stressful</span> <span class="bank-chip">swagger</span>
+        </div>
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="gapHint">Nine words in the bank, seven gaps. Two are not needed.</p>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">My name is Elena Voss. At the time, I was working as an assessor for a large <input class="gap" data-answer="law firm" aria-label="gap" style="width:200px"> in the city centre.</p>
+          <p class="feedback" data-explain="A <strong>law firm</strong> is a business of solicitors or attorneys. Two words, and the only two-word answer in the bank."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">The managing partner began to behave in a way I can only describe as <input class="gap" data-answer="fraudulent" aria-label="gap" style="width:200px"> &mdash; he was falsifying the receipts sent to clients.</p>
+          <p class="feedback" data-explain="<strong>Fraudulent</strong> means obtained or done by deception. It is the adjective belonging to <em>fraud</em> and to <em>defraud</em>."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">I am not easily rattled, but working there became genuinely <input class="gap" data-answer="stressful" aria-label="gap" style="width:200px"> &mdash; I could not sleep and I dreaded going in.</p>
+          <p class="feedback" data-explain="A situation is <strong>stressful</strong>; a person is <em>stressed</em>. There is no such adjective as <em>stressy</em>, which is what a great many learners reach for."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="gapEyebrow">Witness statement &mdash; E. Voss</span> &middot; 2 / 3</div>
+        <h2 class="slide-title" data-i18n="gapTitle">Complete the testimony</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target" style="margin-bottom:12px">
+          <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
+          <span class="bank-chip">fraudulent</span> <span class="bank-chip">law firm</span> <span class="bank-chip">ministry</span> <span class="bank-chip">prevalent</span> <span class="bank-chip">rampant</span> <span class="bank-chip">reconcile</span> <span class="bank-chip">revoke</span> <span class="bank-chip">stressful</span> <span class="bank-chip">swagger</span>
+        </div>
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="gapHint">Nine words in the bank, seven gaps. Two are not needed.</p>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">For a long time I tried to <input class="gap" data-answer="reconcile" aria-label="gap" style="width:200px"> what I was seeing with the idea that he was simply disorganised.</p>
+          <p class="feedback" data-explain="Here <strong>reconcile A with B</strong> means to make two things fit together. It is the third sense of the word in this lesson: you also reconcile <em>people</em>, and you reconcile <em>opposing views</em>."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">The firm was well known throughout the city &mdash; its reputation was <input class="gap" data-answer="prevalent" aria-label="gap" style="width:200px"> in every chambers and every court.</p>
+          <p class="feedback" data-explain="<strong>Prevalent</strong> means widespread, common, found everywhere. It carries no judgement: a reputation, a practice or a dialect can be prevalent."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="gapEyebrow">Witness statement &mdash; E. Voss</span> &middot; 3 / 3</div>
+        <h2 class="slide-title" data-i18n="gapTitle">Complete the testimony</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target" style="margin-bottom:12px">
+          <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
+          <span class="bank-chip">fraudulent</span> <span class="bank-chip">law firm</span> <span class="bank-chip">ministry</span> <span class="bank-chip">prevalent</span> <span class="bank-chip">rampant</span> <span class="bank-chip">reconcile</span> <span class="bank-chip">revoke</span> <span class="bank-chip">stressful</span> <span class="bank-chip">swagger</span>
+        </div>
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="gapHint">Nine words in the bank, seven gaps. Two are not needed.</p>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">By the end the falsification was <input class="gap" data-answer="rampant" aria-label="gap" style="width:200px"> &mdash; it had spread through every department, entirely unchecked.</p>
+          <p class="feedback" data-explain="<strong>Rampant</strong> also means widespread, but only of something bad, and only when nothing is stopping it. Weeds, inflation and corruption are rampant. A reputation is not."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">When I reported it to the <input class="gap" data-answer="ministry" aria-label="gap" style="width:200px"> of Justice, they told me to collect whatever documentation I could find.</p>
+          <p class="feedback" data-explain="A <strong>ministry</strong> is a government department. In a real title it takes capitals &mdash; the Ministry of Justice &mdash; but the common noun does not."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="match" data-bg="Docket/desk.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="matchEyebrow">The brief</div>
+        <h2 class="slide-title" data-i18n="matchTitle">Six words, precisely</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="prose dim" style="margin-bottom:14px;font-size:17px" data-i18n="matchHint">
+          Click a word, then click its definition.
+        </p>
+        <div class="match-pair" data-term="mandatory" data-def="Required by law; compulsory"></div>
+        <div class="match-pair" data-term="fraudulent" data-def="Obtained by criminal deception"></div>
+        <div class="match-pair" data-term="prevalent" data-def="Widespread &mdash; and neutral about it"></div>
+        <div class="match-pair" data-term="rampant" data-def="Widespread, unchecked, and bad"></div>
+        <div class="match-pair" data-term="offender" data-def="A person who commits an illegal act"></div>
+        <div class="match-pair" data-term="grievance" data-def="A formal complaint about being wronged"></div>
+        <div class="match-grid"></div>
+        <p class="feedback" data-explain="The case hinges on the middle two. Prevalent and rampant both mean widespread, and only one of them passes judgement — which is exactly why a careful witness picks between them."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="errEyebrow">Cross-examination</span> &middot; 1 / 6</div>
+        <h2 class="slide-title" data-i18n="errTitle">Find the wrong word</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">One of these uses its underlined word wrongly. Which?</p>
+        <div class="opts">
+          <button class="opt" data-correct>The judge told the defendant to stop <u>grumbling</u> under his breath.</button>
+          <button class="opt">She tried to <u>soothe</u> the frightened child by speaking very quietly.</button>
+          <button class="opt">The therapist warned him not to <u>dwell on</u> the traumatic event.</button>
+          <button class="opt">The clerk was asked to <u>corroborate</u> the times given in the statement.</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Grumbling</strong> is complaining out loud and bad-temperedly, usually about a situation. Speaking quietly to yourself is <strong>muttering</strong>. The other three are all used correctly."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-bg="Docket/gallery.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="errEyebrow">Cross-examination</span> &middot; 2 / 6</div>
+        <h2 class="slide-title" data-i18n="errTitle">Find the wrong word</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">One of these uses its underlined word wrongly. Which?</p>
+        <div class="opts">
+          <button class="opt" data-correct>The board agreed to <u>mimic</u> the accounting software used by a competitor.</button>
+          <button class="opt">The contract terms were <u>insufficient</u> to prove intent &mdash; too vague.</button>
+          <button class="opt">Fraud of this kind was particularly <u>prevalent</u> in cash economies.</button>
+          <button class="opt">The auditor was asked to <u>scrutinise</u> every invoice from that quarter.</button>
+        </div>
+        <p class="feedback" data-explain="To <strong>mimic</strong> is to imitate, usually mockingly or superficially. A board does not mimic software &mdash; it <strong>adopts</strong> it, meaning it decides to use it formally."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="errEyebrow">Cross-examination</span> &middot; 3 / 6</div>
+        <h2 class="slide-title" data-i18n="errTitle">Find the wrong word</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">One of these uses its underlined word wrongly. Which?</p>
+        <div class="opts">
+          <button class="opt" data-correct>She wrote code that would <u>ignite</u> the backup if the server went offline.</button>
+          <button class="opt">Both parties finally agreed to <u>reconcile</u> their differences and settle.</button>
+          <button class="opt">He always took the defendant&rsquo;s background into <u>account</u> first.</button>
+          <button class="opt">The witness was unable to <u>recall</u> the exact sequence of events.</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Ignite</strong> is to set on fire. A process is <strong>triggered</strong> or <em>initiated</em>. Nothing in a data centre ignites, and if it does you have a different problem."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="errEyebrow">Cross-examination</span> &middot; 4 / 6</div>
+        <h2 class="slide-title" data-i18n="errTitle">Find the wrong word</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">One of these uses its underlined word wrongly. Which?</p>
+        <div class="opts">
+          <button class="opt" data-correct>She feared her report would be seen as a <u>clue</u> to her own involvement.</button>
+          <button class="opt">The consultant urged them to <u>take into account</u> the effect on morale.</button>
+          <button class="opt">The CEO&rsquo;s conduct was <u>rampant</u>, spreading through every level.</button>
+          <button class="opt">Counsel asked the witness to <u>clarify</u> what she had meant by that.</button>
+        </div>
+        <p class="feedback" data-explain="A <strong>clue</strong> is a hint that helps solve a mystery. What she feared was that her report would be taken as <strong>evidence</strong> &mdash; or <em>proof</em> &mdash; of her own part in it."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-bg="Docket/gallery.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="errEyebrow">Cross-examination</span> &middot; 5 / 6</div>
+        <h2 class="slide-title" data-i18n="errTitle">Find the wrong word</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">One of these uses its underlined word wrongly. Which?</p>
+        <div class="opts">
+          <button class="opt" data-correct>The company decided to <u>fall apart</u> its overseas division.</button>
+          <button class="opt">The suspect was quick <u>on the draw</u> and had deleted the files already.</button>
+          <button class="opt">He had a habit of <u>shooting from the hip</u> without consulting anyone.</button>
+          <button class="opt">The firm was ordered to <u>disclose</u> every document from that period.</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Fall apart</strong> is intransitive: a thing falls apart by itself. You cannot fall apart something. To take something apart deliberately is to <strong>dismantle</strong> it."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="errEyebrow">Cross-examination</span> &middot; 6 / 6</div>
+        <h2 class="slide-title" data-i18n="errTitle">Find the wrong word</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">One of these uses its underlined word wrongly. Which?</p>
+        <div class="opts">
+          <button class="opt" data-correct>The analyst was described in the report as a real <u>people person</u>.</button>
+          <button class="opt">The intern had not been a <u>volunteer</u> &mdash; she had in fact been paid.</button>
+          <button class="opt">His client had been <u>swindled</u> by a fraudster posing as an official.</button>
+          <button class="opt">The panel was asked to <u>disregard</u> everything said before the recess.</button>
+        </div>
+        <p class="feedback" data-explain="Every one of these words means what it should. The fault is <strong>register</strong>: <em>a real people person</em> is fine in conversation and wrong in a formal report, where you would write <em>she worked well with witnesses</em>."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="results">
+      <div class="slide-body" style="align-items:center;text-align:center">
+        <div class="score-big"><span id="scoreVal">0</span><span class="dim" style="font-size:34px">/<span id="scoreMax">0</span></span></div>
+        <p class="prose" style="margin-top:18px" id="scoreMsg"></p>
+        <p class="prose dim" style="margin-top:14px" data-i18n="resNext">You have the vocabulary. Now put it on the record →</p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="activate">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="actEyebrow">Activation</div>
+        <h2 class="slide-title" data-i18n="actTitle">Take the stand</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target">
+          <span class="act-target-label" data-i18n="actUse">Use at least four:</span>
+          <span class="bank-chip">defraud</span>
+          <span class="bank-chip">inadmissible</span>
+          <span class="bank-chip">revoke</span>
+          <span class="bank-chip">mandatory</span>
+          <span class="bank-chip">a grievance</span>
+          <span class="bank-chip">prevalent</span>
+          <span class="bank-chip">rampant</span>
+          <span class="bank-chip">corroborate</span>
+        </div>
+        <div class="cols act-cols">
+          <div class="card act-card">
+            <div class="act-kind"><span class="act-icon">🗣</span><span data-i18n="actSpeakKind">Roleplay &middot; in threes</span></div>
+            <p class="act-brief" data-i18n="actSpeakBrief">One witness, one counsel, one judge. Counsel may object; the judge rules.</p>
+            <ul class="act-list">
+              <li data-i18n="actSpeak1">Counsel: establish what the witness saw, without ever asking a yes/no question.</li>
+              <li data-i18n="actSpeak2">Witness: describe a practice as <em>prevalent</em>, then describe a different one as <em>rampant</em>. Justify both.</li>
+              <li data-i18n="actSpeak3">Judge: rule one piece of evidence inadmissible, and say why in one sentence.</li>
+              <li data-i18n="actSpeak4">All three: agree what the grievance actually was, in twelve words or fewer.</li>
+            </ul>
+          </div>
+          <div class="card act-card">
+            <div class="act-kind"><span class="act-icon">✍️</span><span data-i18n="actWriteKind">Writing &middot; 150&ndash;200 words</span></div>
+            <p class="act-brief" data-i18n="actWriteBrief">Write the witness statement for something you have actually seen go wrong at work. Formal register throughout &mdash; no <em>people person</em>.</p>
+            <textarea class="act-input" id="actInput" data-i18n-ph="actPlaceholder" placeholder="My name is … At the time of the events, I was working as …" aria-label="Written response"></textarea>
+            <div class="act-foot">
+              <span class="act-count" id="actCount">0 words</span>
+              <button class="btn act-copy" data-action="copy-writing" data-i18n="btnCopy">Copy</button>
+            </div>
+            <div class="act-print" id="actPrint" aria-hidden="true"></div>
+          </div>
+        </div>
+        <div style="margin-top:14px;text-align:center">
+          <button class="btn" data-action="restart" data-i18n="btnRestart">Start again</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── DECK CHROME ──────────────────────────────────────── -->
+    <div class="deck-bar">
+      <select class="lang-select" id="langSelect" aria-label="Language"></select>
+      <button class="nav-btn" data-action="prev" aria-label="Previous">‹</button>
+      <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+      <span class="deck-count" id="deckCount">1 / 1</span>
+      <span class="deck-score" id="deckScore"></span>
+      <button class="nav-btn" data-action="next" aria-label="Next">›</button>
+    </div>
+
   </div>
-  <div class="tab-caption">Case file &mdash; four counts &mdash; 25 points</div>
-
-  <div class="status hidden" id="statusBar">
-    <div class="chip" id="progressChip">Activity 1 of 4</div>
-    <div class="chip score-chip">Score <strong id="scoreVal">0</strong> / <span id="scoreMax">25</span></div>
-  </div>
-
-  <!-- ===== INTRO ===== -->
-  <section class="card" id="screen-intro">
-    <div class="eyebrow">Forbes English &middot; Interactive Lesson</div>
-    <h1>The Docket</h1>
-    <p class="sub">You have just joined the team on a new true-crime documentary series. To piece together what happened, you will need the vocabulary of law, deception, office politics and human behaviour &mdash; all in context, all at B2.</p>
-    <div class="intro-grid">
-      <div class="intro-item"><h3>Exhibit A</h3><p>Multiple choice &mdash; legal &amp; professional vocabulary in documentary extracts.</p></div>
-      <div class="intro-item"><h3>Testimony</h3><p>Word bank &mdash; complete a witness statement using the correct word.</p></div>
-      <div class="intro-item"><h3>The Brief</h3><p>Matching &mdash; pair confusable words to their definitions.</p></div>
-      <div class="intro-item"><h3>Cross-examination</h3><p>Error correction &mdash; find the sentence with the mistake.</p></div>
-    </div>
-    <div class="actions">
-      <button class="btn btn-coral" onclick="startLesson()">Call the first witness</button>
-    </div>
-  </section>
-
-  <!-- ===== ACTIVITY 1: MC ===== -->
-  <section class="card hidden" id="screen-act1">
-    <div class="eyebrow">Activity 1 of 4 &middot; Multiple Choice</div>
-    <h2>Exhibit A</h2>
-    <p class="sub" id="a1progress">Question 1 of 6</p>
-    <div class="rule"></div>
-    <p class="qtext" id="a1qtext"></p>
-    <div class="opts" id="a1opts"></div>
-    <div class="feedback" id="a1fb"></div>
-    <div class="actions">
-      <button class="btn btn-primary hidden" id="a1next" onclick="a1Next()">Next</button>
-    </div>
-  </section>
-
-  <!-- ===== ACTIVITY 2: GAP FILL ===== -->
-  <section class="card hidden" id="screen-act2">
-    <div class="eyebrow">Activity 2 of 4 &middot; Word Bank</div>
-    <h2>Testimony</h2>
-    <p class="sub" id="a2progress">Filled 0 of 7 gaps</p>
-    <div class="rule"></div>
-    <p class="sub" style="margin-bottom:14px;">Complete the witness statement. Click a gap then a word, or a word then a gap. Click a filled gap to clear it. Two words in the bank are not needed.</p>
-    <div class="transcript" id="a2script"></div>
-    <div class="bank" id="a2bank"></div>
-    <div class="feedback" id="a2fb"></div>
-    <div class="actions">
-      <button class="btn btn-coral" id="a2check" onclick="a2Check()" disabled>Check statement</button>
-      <button class="btn btn-primary hidden" id="a2next" onclick="showActivity(3)">Next activity</button>
-    </div>
-  </section>
-
-  <!-- ===== ACTIVITY 3: MATCHING ===== -->
-  <section class="card hidden" id="screen-act3">
-    <div class="eyebrow">Activity 3 of 4 &middot; Matching</div>
-    <h2>The Brief</h2>
-    <p class="sub" id="a3progress">Matched 0 of 6 pairs</p>
-    <div class="rule"></div>
-    <p class="sub" style="margin-bottom:14px;">The case hinges on precise language. Match each word on the left to its definition on the right. Click a word, then its definition. Click a paired item to unlink it.</p>
-    <div class="match-grid" id="a3grid"></div>
-    <div class="feedback" id="a3fb"></div>
-    <div class="actions">
-      <button class="btn btn-coral" id="a3check" onclick="a3Check()" disabled>Check matches</button>
-      <button class="btn btn-primary hidden" id="a3next" onclick="showActivity(4)">Next activity</button>
-    </div>
-  </section>
-
-  <!-- ===== ACTIVITY 4: ERROR CORRECTION ===== -->
-  <section class="card hidden" id="screen-act4">
-    <div class="eyebrow">Activity 4 of 4 &middot; Error Correction</div>
-    <h2>Cross-examination</h2>
-    <p class="sub" id="a4progress">Question 1 of 6</p>
-    <div class="rule"></div>
-    <p class="sub" style="margin-bottom:14px;">The defence has spotted an error in each set of three sentences. One sentence contains <u style="text-decoration-color:var(--coral)">an underlined word</u> that is wrong. Click the sentence with the mistake.</p>
-    <div id="a4rows" style="display:flex;flex-direction:column;gap:11px;"></div>
-    <div class="feedback" id="a4fb"></div>
-    <div class="actions">
-      <button class="btn btn-primary hidden" id="a4next" onclick="a4Next()">Next</button>
-    </div>
-  </section>
-
-  <!-- ===== RESULTS ===== -->
-  <section class="card hidden" id="screen-results">
-    <div class="eyebrow" style="text-align:center;">Case Closed</div>
-    <h2 style="text-align:center;">Verdict delivered</h2>
-    <div class="score-ring"><span id="finalScore">0</span> / 25</div>
-    <div class="verdict" id="verdict"></div>
-    <p class="verdict-note" id="verdictNote"></p>
-    <div class="breakdown" id="breakdown"></div>
-    <div class="actions" style="justify-content:center;">
-      <button class="btn btn-ghost" onclick="restart()">Retry the case</button>
-    </div>
-  </section>
-
 </div>
-<footer>FORBES ENGLISH &mdash; THE DOCKET &middot; B2 VOCABULARY &middot; CRIME &amp; THE COURTROOM</footer>
 
 <script>
-"use strict";
+/* ══════════════════════════════════════════════════════════════════
+   ENGINE — identical in every lesson. Do not edit below this line
+   except to add UI_I18N strings.
+   ══════════════════════════════════════════════════════════════════ */
 
-/* === Utilities === */
-function shuffle(arr){
-  var a=arr.slice();
-  for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}
-  return a;
-}
-function el(id){return document.getElementById(id);}
-function show(id){el(id).classList.remove("hidden");}
-function hide(id){el(id).classList.add("hidden");}
-
-/* === Global state === */
-var state={score:0,actScores:[0,0,0,0]};
-var ACT_MAX=[6,7,6,6];
-var ACT_NAMES=["Exhibit A","Testimony","The Brief","Cross-examination"];
-
-function addScore(actIdx,pts){
-  state.score+=pts;
-  state.actScores[actIdx]+=pts;
-  el("scoreVal").textContent=state.score;
-}
-
-function setTab(idx){
-  var tabs=document.querySelectorAll(".tab");
-  tabs.forEach(function(t,i){
-    t.classList.remove("active");
-    if(i<idx){t.classList.add("done");}
-    if(i===idx){t.classList.add("active");}
-  });
-}
-
-function startLesson(){
-  hide("screen-intro");
-  show("statusBar");
-  showActivity(1);
-}
-
-function showActivity(n){
-  [1,2,3,4].forEach(function(i){hide("screen-act"+i);});
-  if(n>4){showResults();return;}
-  el("progressChip").textContent="Activity "+n+" of 4";
-  setTab(n-1);
-  show("screen-act"+n);
-  if(n===1){a1Render();}
-  if(n===2){a2Init();}
-  if(n===3){a3Init();}
-  if(n===4){a4Render();}
-  window.scrollTo({top:0,behavior:"smooth"});
-}
-
-/* ========== ACTIVITY 1: Multiple Choice ========== */
-var A1_QUESTIONS=[
-  {
-    text:"The prosecution alleged that the accused had attempted to <em>____</em> elderly victims out of their life savings by posing as a bank official.",
-    correct:"defraud",
-    distractors:["discount","displace","detour"],
-    expl:"To defraud someone means to illegally obtain money or property from them through deception. 'Discount' means a price reduction; 'displace' means move something from its place; 'detour' is a longer route taken to avoid something."
-  },
-  {
-    text:"The judge ruled that the evidence collected without a warrant was <em>____</em> &mdash; it could not be presented in court under any circumstances.",
-    correct:"inadmissible",
-    distractors:["insufficient","mandatory","rampant"],
-    expl:"Inadmissible means not legally allowed to be presented in court. 'Insufficient' means not enough; 'mandatory' means required by law; 'rampant' describes something spreading unchecked."
-  },
-  {
-    text:"After twenty years, the parole board finally voted to <em>____</em> the restriction that had prevented him from leaving the state.",
-    correct:"revoke",
-    distractors:["reconcile","resist","accompany"],
-    expl:"To revoke a rule or decision means to officially cancel it. 'Reconcile' means to restore friendly relations or find a way to balance opposing views; 'resist' means to fight against; 'accompany' means to go somewhere with someone."
-  },
-  {
-    text:"At the press conference, the detective stood at the <em>____</em> and read the prepared statement without taking a single question.",
-    correct:"lectern",
-    distractors:["rotunda","skirting","ministry"],
-    expl:"A lectern is the tall stand with a sloping top used to hold notes while speaking. A rotunda is a round building; skirting is the board along the base of a wall; a ministry is a government department."
-  },
-  {
-    text:"The court heard that the former clerk&rsquo;s offence was <em>____</em> &mdash; every person who had worked at the firm during those years was required by law to co-operate with the enquiry.",
-    correct:"mandatory",
-    distractors:["optional","rampant","cushy"],
-    expl:"Mandatory means required by law or rules; compulsory. 'Optional' is the direct opposite; 'rampant' describes something spreading unchecked; 'cushy' describes an easy or comfortable situation."
-  },
-  {
-    text:"The documentary showed how a seemingly routine <em>____</em> dispute over an unpaid delivery had spiralled into a full-scale civil war within the company.",
-    correct:"cleavage",
-    distractors:["showdown","chatter","swagger"],
-    expl:"Cleavage (in a figurative sense) means a sharp division or split. 'Showdown' is a final confrontation to settle a dispute; 'chatter' is trivial talk; 'swagger' is an arrogant or confident walk."
-  }
+/* ── Languages. English is the base; German ships complete.
+      The other eight are deliberately empty — t() falls back to English,
+      so an unfinished language can never blank the interface. ── */
+const LANGS = [
+  { code:'en', label:'English'   }, { code:'de', label:'Deutsch'  },
+  { code:'es', label:'Español'   }, { code:'fr', label:'Français' },
+  { code:'it', label:'Italiano'  }, { code:'pt', label:'Português'},
+  { code:'ru', label:'Русский'   }, { code:'ar', label:'العربية'  },
+  { code:'zh', label:'中文'       }, { code:'ja', label:'日本語'    }
 ];
-var a1={index:0,answered:false,order:[]};
+const RTL_LANGS = ['ar'];
 
-function a1Render(){
-  if(!a1.order.length){a1.order=shuffle(A1_QUESTIONS);}
-  var q=a1.order[a1.index];
-  el("a1progress").textContent="Question "+(a1.index+1)+" of "+a1.order.length;
-  el("a1qtext").innerHTML=q.text;
-  var fb=el("a1fb");fb.className="feedback";fb.innerHTML="";
-  hide("a1next");
-  a1.answered=false;
-  var opts=shuffle([q.correct].concat(q.distractors));
-  var letters=["A","B","C","D"];
-  var box=el("a1opts");box.innerHTML="";
-  opts.forEach(function(o,i){
-    var b=document.createElement("button");
-    b.className="opt";
-    b.innerHTML='<span class="tag">'+letters[i]+'</span><span>'+o+'</span>';
-    b.addEventListener("click",function(){a1Answer(b,o,q);});
-    box.appendChild(b);
-  });
+const UI_I18N = {
+  en: {
+    actEyebrow: 'Activation',
+    actPlaceholder: "My name is … At the time of the events, I was working as …",
+    actSpeak1: "Counsel: establish what the witness saw, without ever asking a yes/no question.",
+    actSpeak2: "Witness: describe a practice as <em>prevalent</em>, then describe a different one as <em>rampant</em>. Justify both.",
+    actSpeak3: "Judge: rule one piece of evidence inadmissible, and say why in one sentence.",
+    actSpeak4: "All three: agree what the grievance actually was, in twelve words or fewer.",
+    actSpeakBrief: "One witness, one counsel, one judge. Counsel may object; the judge rules.",
+    actSpeakKind: 'Discussion · in pairs',
+    actTitle: "Take the stand",
+    actUse: "Use at least four:",
+    actWriteBrief: "Write the witness statement for something you have actually seen go wrong at work. Formal register throughout — no <em>people person</em>.",
+    actWriteKind: "Writing · 150–200 words",
+    bankLabel: "Word bank:",
+    btnCheck: 'Check',
+    btnCopied: 'Copied',
+    btnCopy: 'Copy',
+    btnNext: 'Next →',
+    btnRestart: 'Start again',
+    btnStart: 'Begin →',
+    chipCount: "21 slides",
+    chipFocus: "Law &amp; the courtroom",
+    chipLevel: "B2 · Vocabulary",
+    coverSub: "Crime, the courtroom and the office — the vocabulary a true-crime series runs on",
+    coverTitle: "The <em>Docket</em>",
+    errEyebrow: "Cross-examination",
+    errTitle: "Find the wrong word",
+    fbAnswer: 'Answer:',
+    fbCorrect: 'Correct.',
+    fbWrong: 'Not quite.',
+    gapEyebrow: "Witness statement — E. Voss",
+    gapHint: "Nine words in the bank, seven gaps. Two are not needed.",
+    gapTitle: "Complete the testimony",
+    matchEyebrow: "The brief",
+    matchHint: "Click a word, then click its definition.",
+    matchTitle: "Six words, precisely",
+    p1b: "Neutral. A dialect, a practice, a reputation, a species can all be prevalent, and nothing is implied about whether that is good.",
+    p1h: "prevalent",
+    p2b: "Weeds, inflation, corruption, rumour. If you would not mind it spreading, it is not rampant.",
+    p2h: "rampant",
+    p3b: "Reconcile two <em>people</em>, two <em>views</em> (find where they agree), or one fact <em>with</em> another (make them fit). The third sense is what this case turns on.",
+    p3h: "reconcile × 3",
+    pairEyebrow: "The pair everyone gets wrong",
+    pairTitle: "prevalent, rampant, and the three reconciles",
+    qEyebrow: "Exhibit A",
+    qTitle: "The word the record needs",
+    resLow: "Read the two opening slides again, then run it once more. The words are precise, and precision is the whole subject here.",
+    resMid: "Solid groundwork. Go back to the second teaching slide; prevalent, rampant and reconcile are where the misses cluster.",
+    resNext: 'Recognising the language is half of it. Now produce it →',
+    resPerfect: "Acquitted on all counts. You can tell prevalent from rampant, which is more than most native speakers manage.",
+    resStrong: "A strong showing. The core vocabulary is secure — the cross-examination is where the last marks are.",
+    scoreLabel: 'Score',
+    slideOf: (a,b)=>`${a} / ${b}`,
+    v1b: "The verb takes a person as its object: you defraud <em>somebody</em> <em>out of</em> something.",
+    v1h: "defraud · fraudulent",
+    v2b: "Ruled case by case, not automatic. Improperly obtained evidence is <em>sometimes</em> excluded — never always.",
+    v2h: "inadmissible",
+    v3b: "Watch what <em>mandatory</em> attaches to: a duty, a check, a disclosure. Never an offence.",
+    v3h: "revoke · mandatory",
+    v4b: "A grievance is raised, heard and either upheld or dismissed. It is the word both HR and the tribunal use.",
+    v4h: "grievance · offender",
+    vEyebrow: "Before the case opens",
+    vTitle: "Six words the courtroom cannot do without",
+    wordCount: (n)=>`${n} ${n===1?'word':'words'}`
+  },
+  de: {
+    actEyebrow: 'Anwendung',
+    actPlaceholder: "My name is … At the time of the events, I was working as …",
+    actSpeak1: "Anwaltschaft: Ermitteln Sie, was die Person gesehen hat — ohne eine einzige Ja/Nein-Frage.",
+    actSpeak2: "Zeugenstand: Beschreiben Sie eine Praxis als <em>prevalent</em> und eine andere als <em>rampant</em>. Begründen Sie beides.",
+    actSpeak3: "Gericht: Erklären Sie ein Beweismittel für unzulässig und sagen Sie in einem Satz, warum.",
+    actSpeak4: "Alle drei: Einigen Sie sich in höchstens zwölf Wörtern darauf, worin die Beschwerde eigentlich bestand.",
+    actSpeakBrief: "Eine Person im Zeugenstand, eine als Anwaltschaft, eine als Gericht. Es darf Einspruch erhoben werden; das Gericht entscheidet.",
+    actSpeakKind: 'Diskussion · zu zweit',
+    actTitle: "In den Zeugenstand",
+    actUse: "Mindestens vier verwenden:",
+    actWriteBrief: "Schreiben Sie die Zeugenaussage zu etwas, das Sie tatsächlich bei der Arbeit haben schiefgehen sehen. Durchgehend förmliches Register — kein <em>people person</em>.",
+    actWriteKind: "Schreiben · 150–200 Wörter",
+    bankLabel: "Wortliste:",
+    btnCheck: 'Prüfen',
+    btnCopied: 'Kopiert',
+    btnCopy: 'Kopieren',
+    btnNext: 'Weiter →',
+    btnRestart: 'Neu starten',
+    btnStart: 'Beginnen →',
+    chipCount: "21 Folien",
+    chipFocus: "Recht &amp; Gerichtssaal",
+    chipLevel: "B2 · Wortschatz",
+    coverSub: "Verbrechen, Gerichtssaal und Büro — der Wortschatz, von dem eine True-Crime-Serie lebt",
+    coverTitle: "The <em>Docket</em>",
+    errEyebrow: "Kreuzverhör",
+    errTitle: "Finden Sie das falsche Wort",
+    fbAnswer: 'Antwort:',
+    fbCorrect: 'Richtig.',
+    fbWrong: 'Nicht ganz.',
+    gapEyebrow: "Zeugenaussage — E. Voss",
+    gapHint: "Neun Wörter in der Liste, sieben Lücken. Zwei werden nicht gebraucht.",
+    gapTitle: "Vervollständigen Sie die Aussage",
+    matchEyebrow: "Der Schriftsatz",
+    matchHint: "Klicken Sie auf ein Wort und dann auf seine Definition.",
+    matchTitle: "Sechs Wörter, genau genommen",
+    p1b: "Neutral. Ein Dialekt, eine Praxis, ein Ruf, eine Art können alle „prevalent“ sein, ohne dass damit ein Urteil verbunden wäre.",
+    p1h: "prevalent",
+    p2b: "Unkraut, Inflation, Korruption, Gerüchte. Wenn es Ihnen nichts ausmachen würde, dass es sich ausbreitet, ist es nicht „rampant“.",
+    p2h: "rampant",
+    p3b: "Man versöhnt zwei <em>Menschen</em>, bringt zwei <em>Positionen</em> zusammen oder bringt eine Tatsache <em>mit</em> einer anderen in Einklang. Um die dritte Bedeutung geht es hier.",
+    p3h: "reconcile × 3",
+    pairEyebrow: "Das Paar, das alle verwechseln",
+    pairTitle: "prevalent, rampant — und die drei reconciles",
+    qEyebrow: "Beweisstück A",
+    qTitle: "Das Wort, das ins Protokoll gehört",
+    resLow: "Lesen Sie die beiden Einstiegsfolien noch einmal und starten Sie neu. Die Wörter sind präzise — und Präzision ist hier das ganze Thema.",
+    resMid: "Solide Grundlage. Zurück zur zweiten Lehrfolie; bei prevalent, rampant und reconcile häufen sich die Fehler.",
+    resNext: 'Die Sprache zu erkennen ist die halbe Miete. Jetzt anwenden →',
+    resPerfect: "In allen Punkten freigesprochen. Sie unterscheiden prevalent von rampant — das schaffen die wenigsten Muttersprachler.",
+    resStrong: "Starke Vorstellung. Der Kernwortschatz sitzt — die letzten Punkte liegen im Kreuzverhör.",
+    scoreLabel: 'Punkte',
+    slideOf: (a,b)=>`${a} / ${b}`,
+    v1b: "Das Verb nimmt eine Person als Objekt: man betrügt <em>jemanden</em> <em>um</em> etwas.",
+    v1h: "defraud · fraudulent",
+    v2b: "Wird im Einzelfall entschieden, nicht automatisch. Rechtswidrig erlangte Beweise werden <em>manchmal</em> ausgeschlossen — nie immer.",
+    v2h: "inadmissible",
+    v3b: "Achten Sie darauf, worauf sich <em>mandatory</em> bezieht: eine Pflicht, eine Prüfung, eine Offenlegung. Niemals auf eine Straftat.",
+    v3h: "revoke · mandatory",
+    v4b: "Eine Beschwerde wird eingereicht, angehört und dann entweder anerkannt oder zurückgewiesen. Sowohl die Personalabteilung als auch das Gericht benutzen dieses Wort.",
+    v4h: "grievance · offender",
+    vEyebrow: "Bevor der Fall aufgerufen wird",
+    vTitle: "Sechs Wörter, ohne die kein Gerichtssaal auskommt",
+    wordCount: (n)=>`${n} ${n===1?'Wort':'Wörter'}`
+  },
+  es: {},
+  fr: {},
+  it: {},
+  pt: {},
+  ru: {},
+  ar: {},
+  zh: {},
+  ja: {}
+};
+
+let currentLang = 'en';
+const t = k => (UI_I18N[currentLang] && UI_I18N[currentLang][k] != null)
+  ? UI_I18N[currentLang][k] : UI_I18N.en[k];
+
+/* ── Deck state ── */
+const stage   = document.getElementById('stage');
+const slides  = [...document.querySelectorAll('.slide')];
+const scored  = slides.filter(s => ['mc','gap','match','order'].includes(s.dataset.type));
+/* A slide may hold more than one gap; each gap is worth a point. */
+const countIn = s => s.dataset.type === 'gap'   ? s.querySelectorAll('.gap').length
+                   : s.dataset.type === 'match' ? s.querySelectorAll('.match-pair').length
+                   : 1;
+const maxScore = scored.reduce((n, s) => n + Math.max(1, countIn(s)), 0);
+let idx = 0, score = 0;
+const answered = new WeakSet();
+
+/* ── Scale the 1280×720 stage to fit any viewport, never scroll ── */
+function fitStage() {
+  const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+  stage.style.transform = `scale(${s})`;
+}
+addEventListener('resize', fitStage);
+
+/* ── Navigation ── */
+function show(n) {
+  idx = Math.max(0, Math.min(slides.length - 1, n));
+  slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+  stage.classList.toggle('on-cover', slides[idx].dataset.type === 'cover');
+  // A slide may swap the background pattern for a second illustration from the
+  // same set (data-bg). Same idiom as the hero — picture at reduced opacity
+  // under the wash — so extra artwork never becomes a pasted-in box.
+  stage.style.setProperty('--hero', slides[idx].dataset.bg
+    ? `url('${slides[idx].dataset.bg}')` : '');
+  document.getElementById('progressFill').style.width =
+    (slides.length > 1 ? (idx / (slides.length - 1)) * 100 : 0) + '%';
+  document.getElementById('deckCount').textContent = t('slideOf')(idx + 1, slides.length);
+  document.querySelector('[data-action="prev"]').disabled = idx === 0;
+  document.querySelector('[data-action="next"]').disabled = idx === slides.length - 1;
+  if (slides[idx].dataset.type === 'results') renderResults();
+  const gap = slides[idx].querySelector('.gap');
+  if (gap && !answered.has(slides[idx])) setTimeout(() => gap.focus(), 60);
 }
 
-function a1Answer(btn,chosen,q){
-  if(a1.answered){return;}
-  a1.answered=true;
-  var right=(chosen===q.correct);
-  el("a1opts").querySelectorAll(".opt").forEach(function(b){
-    b.disabled=true;
-    if(b.querySelectorAll("span")[1].textContent===q.correct){b.classList.add("correct");}
-  });
-  if(!right){btn.classList.add("wrong");}
-  if(right){addScore(0,1);}
-  var fb=el("a1fb");
-  fb.className="feedback show "+(right?"good":"bad");
-  fb.innerHTML="<b>"+(right?"Correct.":"Not quite &mdash; the answer is &lsquo;"+q.correct+"&rsquo;.")+"</b>"+q.expl;
-  show("a1next");
-  el("a1next").textContent=(a1.index===a1.order.length-1)?"Next activity":"Next";
+function renderResults() {
+  const max = maxScore;
+  document.getElementById('scoreVal').textContent = score;
+  document.getElementById('scoreMax').textContent = max;
+  const pct = max ? score / max : 0;
+  document.getElementById('scoreMsg').textContent =
+    pct === 1 ? t('resPerfect') : pct >= .75 ? t('resStrong')
+    : pct >= .5 ? t('resMid') : t('resLow');
 }
 
-function a1Next(){
-  a1.index+=1;
-  if(a1.index>=a1.order.length){showActivity(2);}
-  else{a1Render();}
+function updateScoreChip() {
+  document.getElementById('deckScore').textContent =
+    maxScore ? `${t('scoreLabel')} ${score}/${maxScore}` : '';
 }
 
-/* ========== ACTIVITY 2: Gap Fill ========== */
-var A2_LINES=[
-  {pre:"My name is Elena Voss. At the time of the events, I was working as an <em>assessor</em> for a large ",gap:"law firm",post:" in the city centre."},
-  {pre:"The managing partner, Mr. Crane, began to behave in a way I can only describe as ",gap:"fraudulent",post:" &mdash; he was falsifying the receipts submitted to clients."},
-  {pre:"I am not a particularly stressy person, but working there became genuinely ",gap:"stressful",post:" &mdash; I could not sleep and I dreaded going in each morning."},
-  {pre:"I tried to ",gap:"reconcile",post:" what I was seeing with the idea that Mr. Crane was simply disorganised, but the evidence made that impossible."},
-  {pre:"The firm&rsquo;s reputation in the city had been ",gap:"rampant",post:" &mdash; no, I mean <em>rampant</em> is the wrong word. I mean its reputation was widespread. It was very well known."},
-  {pre:"When I reported the situation to the ",gap:"ministry",post:" of Justice, they told me to collect any documentation I could find."},
-  {pre:"I gathered every ",gap:"receipt",post:" I could locate and handed copies to the investigator before the end of the month."}
-];
-var A2_DISTRACTORS=["revoke","swagger"];
-var a2={built:false,armedGap:null,armedWord:null,checked:false};
-
-function a2Init(){
-  if(a2.built){return;}
-  a2.built=true;
-  var script=el("a2script");
-  var html='<span class="slug">Witness statement &mdash; E. Voss &middot; Prosecution exhibit 7</span>';
-  A2_LINES.forEach(function(line,i){
-    html+=line.pre+'<button class="gap" data-gap="'+i+'" aria-label="Gap '+(i+1)+'">'+(i+1)+" ______</button>"+line.post+" ";
-  });
-  script.innerHTML=html;
-
-  var words=shuffle(A2_LINES.map(function(l){return l.gap;}).concat(A2_DISTRACTORS));
-  var bank=el("a2bank");
-  bank.innerHTML='<span class="bank-label">Word bank &mdash; two words are not needed</span>';
-  words.forEach(function(w){
-    var b=document.createElement("button");
-    b.className="word";b.textContent=w;
-    b.addEventListener("click",function(){a2WordClick(b);});
-    bank.appendChild(b);
-  });
-  script.querySelectorAll(".gap").forEach(function(g){
-    g.addEventListener("click",function(){a2GapClick(g);});
-  });
+/* ── Answer handling ── */
+function award(slide, ok) {
+  if (answered.has(slide)) return;
+  answered.add(slide);
+  if (ok) score++;
+  updateScoreChip();
 }
 
-function a2GapClick(g){
-  if(a2.checked){return;}
-  if(g.dataset.word){
-    var w=g.dataset.word;
-    delete g.dataset.word;
-    g.classList.remove("filled");
-    g.textContent=(parseInt(g.dataset.gap,10)+1)+" ______";
-    el("a2bank").querySelectorAll(".word").forEach(function(b){
-      if(b.textContent===w){b.classList.remove("used","selected");}
+function feedback(slide, ok, extra, ownExplain) {
+  const el = slide.querySelector('.feedback');
+  if (!el) return;
+  // An option's own explanation wins: telling a learner why THEIR answer was
+  // wrong beats restating why the key was right.
+  const reason = ownExplain || el.dataset.explain;
+  const why = reason ? ' ' + reason : '';
+  // innerHTML, not textContent: explanations carry <strong> and <em>, and the
+  // whole point of an explanation is that the word being taught is marked.
+  // Written with textContent this printed the tags as literal source text on
+  // every deck built from this template.
+  el.innerHTML = (ok ? t('fbCorrect') : t('fbWrong') + (extra ? ` ${t('fbAnswer')} ${extra}` : '')) + why;
+  el.className = 'feedback show ' + (ok ? 'ok' : 'no');
+}
+
+/* Multiple choice — shuffled on first view so option order is never a tell. */
+slides.filter(s => s.dataset.type === 'mc').forEach(slide => {
+  const box = slide.querySelector('.opts');
+  const opts = [...box.querySelectorAll('.opt')];
+  opts.sort(() => Math.random() - .5).forEach((o, i) => {
+    o.prepend(Object.assign(document.createElement('span'), {
+      className: 'opt-key', textContent: 'ABCD'[i]
+    }));
+    box.appendChild(o);
+  });
+  opts.forEach(o => o.addEventListener('click', () => {
+    if (answered.has(slide)) return;
+    const ok = o.hasAttribute('data-correct');
+    opts.forEach(x => {
+      x.disabled = true;
+      if (x.hasAttribute('data-correct')) x.classList.add('correct');
     });
-    a2UpdateProgress();return;
+    if (!ok) o.classList.add('wrong');
+    award(slide, ok);
+    feedback(slide, ok, null, o.dataset.explain);
+  }));
+});
+
+/* Matching. Author as <div class="match-pair" data-term data-def> rows; the
+   engine builds both columns and shuffles the definitions. One point per pair. */
+slides.filter(s => s.dataset.type === 'match').forEach(slide => {
+  const pairs = [...slide.querySelectorAll('.match-pair')];
+  const grid = slide.querySelector('.match-grid');
+  if (!grid || !pairs.length) return;
+  const terms = document.createElement('div');
+  const defs = document.createElement('div');
+  terms.className = defs.className = 'match-col';
+  const mk = (txt, cls, key) => {
+    const b = document.createElement('button');
+    b.className = 'match-item ' + cls;
+    b.textContent = txt;
+    b.dataset.key = key;
+    return b;
+  };
+  pairs.forEach(p => terms.appendChild(mk(p.dataset.term, 'term', p.dataset.term)));
+  [...pairs].sort(() => Math.random() - .5)
+    .forEach(p => defs.appendChild(mk(p.dataset.def, 'def', p.dataset.term)));
+  grid.replaceChildren(terms, defs);
+
+  let picked = null, done = 0;
+  const total = pairs.length;
+  grid.addEventListener('click', e => {
+    const el = e.target.closest('.match-item');
+    if (!el || el.classList.contains('done')) return;
+    if (el.classList.contains('term')) {
+      grid.querySelectorAll('.term.picked').forEach(x => x.classList.remove('picked'));
+      el.classList.add('picked');
+      picked = el;
+      return;
+    }
+    if (!picked) return;
+    if (el.dataset.key === picked.dataset.key) {
+      el.classList.add('done'); picked.classList.add('done');
+      picked.classList.remove('picked');
+      picked = null; done++; score++; updateScoreChip();
+      if (done === total) {
+        answered.add(slide);
+        feedback(slide, true);
+      }
+    } else {
+      el.classList.add('miss');
+      setTimeout(() => el.classList.remove('miss'), 320);
+    }
+  });
+});
+
+/* Sentence building. Author as
+     <div class="order" data-answer="chunk|chunk|chunk"></div>
+   with a [data-action="check-order"] button and a .feedback alongside it.
+   The engine shuffles the chunks into a pool; clicking places one, clicking a
+   placed one takes it back. One point for the whole sentence — a half-right
+   word order is not half-right English. */
+slides.filter(s => s.dataset.type === 'order').forEach(slide => {
+  const box = slide.querySelector('.order');
+  if (!box) return;
+  const answer = box.dataset.answer.split('|').map(x => x.trim());
+  const target = document.createElement('div'); target.className = 'order-target';
+  const pool   = document.createElement('div'); pool.className   = 'order-pool';
+  answer.map((txt, i) => ({ txt, i }))
+        .sort(() => Math.random() - .5)
+        .forEach(({ txt, i }) => {
+          const b = document.createElement('button');
+          b.className = 'chunk';
+          b.textContent = txt;
+          b.dataset.i = i;
+          pool.appendChild(b);
+        });
+  box.replaceChildren(target, pool);
+
+  box.addEventListener('click', e => {
+    const c = e.target.closest('.chunk');
+    if (!c || c.disabled) return;
+    if (c.parentElement === pool) { c.classList.add('placed');    target.appendChild(c); }
+    else                          { c.classList.remove('placed'); pool.appendChild(c); }
+  });
+
+  slide._check = () => {
+    if (answered.has(slide)) return;
+    // Marking a half-built sentence teaches nothing; wait until it is complete.
+    if (target.children.length < answer.length) return;
+    answered.add(slide);
+    const ok = [...target.children].map(c => +c.dataset.i).every((v, i) => v === i);
+    target.classList.add(ok ? 'correct' : 'wrong');
+    box.querySelectorAll('.chunk').forEach(c => c.disabled = true);
+    if (ok) score++;
+    updateScoreChip();
+    feedback(slide, ok, ok ? null : answer.join(' '));
+    const btn = slide.querySelector('[data-action="check-order"]');
+    if (btn) btn.disabled = true;
+  };
+});
+
+/* Gap fill. Supports several gaps on one slide, each scored and explained
+   individually via its own .gap-row wrapper. */
+const gapOk = g => g.dataset.answer.split('|')
+  .map(a => a.trim().toLowerCase())
+  .includes(g.value.trim().toLowerCase().replace(/\s+/g, ' '));
+
+function markGap(g, fb) {
+  const ok = gapOk(g);
+  g.classList.add(ok ? 'correct' : 'wrong');
+  g.disabled = true;
+  if (ok) score++;
+  if (fb) {
+    const why = fb.dataset.explain ? ' ' + fb.dataset.explain : '';
+    fb.innerHTML = (ok ? t('fbCorrect')
+      : `${t('fbWrong')} ${t('fbAnswer')} ${g.dataset.answer.split('|')[0]}.`) + why;
+    fb.className = 'feedback show ' + (ok ? 'ok' : 'no');
   }
-  if(a2.armedWord){a2Fill(g,a2.armedWord);a2.armedWord.classList.remove("selected");a2.armedWord=null;return;}
-  if(a2.armedGap){a2.armedGap.classList.remove("armed");}
-  a2.armedGap=g;g.classList.add("armed");
+  return ok;
 }
 
-function a2WordClick(b){
-  if(a2.checked||b.classList.contains("used")){return;}
-  if(a2.armedGap){a2Fill(a2.armedGap,b);a2.armedGap.classList.remove("armed");a2.armedGap=null;return;}
-  if(a2.armedWord===b){b.classList.remove("selected");a2.armedWord=null;return;}
-  if(a2.armedWord){a2.armedWord.classList.remove("selected");}
-  a2.armedWord=b;b.classList.add("selected");
-}
-
-function a2Fill(g,b){
-  g.dataset.word=b.textContent;
-  g.textContent=b.textContent;
-  g.classList.add("filled");g.classList.remove("armed");
-  b.classList.add("used");b.classList.remove("selected");
-  a2UpdateProgress();
-}
-
-function a2UpdateProgress(){
-  var gaps=el("a2script").querySelectorAll(".gap");
-  var filled=0;
-  gaps.forEach(function(g){if(g.dataset.word){filled++;}});
-  el("a2progress").textContent="Filled "+filled+" of "+gaps.length+" gaps";
-  el("a2check").disabled=(filled!==gaps.length);
-}
-
-function a2Check(){
-  if(a2.checked){return;}
-  a2.checked=true;
-  var gaps=el("a2script").querySelectorAll(".gap");
-  var right=0;var corrections=[];
-  gaps.forEach(function(g){
-    var idx=parseInt(g.dataset.gap,10);
-    var expected=A2_LINES[idx].gap;
-    if(g.dataset.word===expected){g.classList.add("g-correct");right++;}
-    else{g.classList.add("g-wrong");corrections.push("Gap "+(idx+1)+": &lsquo;"+expected+"&rsquo;");}
-  });
-  addScore(1,right);
-  var fb=el("a2fb");
-  var all=(right===gaps.length);
-  fb.className="feedback show "+(all?"good":"bad");
-  var msg="<b>"+right+" of "+gaps.length+" correct.</b>";
-  msg+=all?"Flawless testimony &mdash; the statement holds up.":"Correct words: "+corrections.join(" &middot; ")+". Note: &lsquo;revoke&rsquo; (cancel a decree) and &lsquo;swagger&rsquo; (walk arrogantly) were the two words not needed.";
-  fb.innerHTML=msg;
-  el("a2check").classList.add("hidden");
-  show("a2next");
-}
-
-/* ========== ACTIVITY 3: Matching ========== */
-var A3_PAIRS=[
-  {word:"mandatory",def:"required by law; compulsory"},
-  {word:"fraudulent",def:"obtained by criminal deception"},
-  {word:"prevalent",def:"widespread in a particular area or time"},
-  {word:"reconcile",def:"find a way opposing views can both be understood"},
-  {word:"offender",def:"a person who commits an illegal act"},
-  {word:"rampant",def:"spreading or flourishing in an unchecked way"}
-];
-var a3={built:false,selectedLeft:null,selectedRight:null,marks:{},checked:false};
-var a3Counter=0;
-
-function a3Init(){
-  if(a3.built){return;}
-  a3.built=true;
-  var grid=el("a3grid");grid.innerHTML="";
-  var leftOrder=shuffle(A3_PAIRS.map(function(p){return p.word;}));
-  var rightOrder=shuffle(A3_PAIRS.map(function(p){return p.def;}));
-  leftOrder.forEach(function(w,i){
-    grid.appendChild(a3Item(w,"left-col"));
-    grid.appendChild(a3Item(rightOrder[i],"right-col"));
-  });
-}
-
-function a3Item(text,side){
-  var b=document.createElement("button");
-  b.className="mitem "+(side==="left-col"?"left-col":"");
-  b.dataset.side=side;b.dataset.value=text;
-  b.innerHTML='<span class="label">'+text+'</span>';
-  b.addEventListener("click",function(){a3Click(b);});
-  return b;
-}
-
-function a3Click(item){
-  if(a3.checked){return;}
-  var mk=item.dataset.mark;
-  if(mk){a3Unpair(mk);return;}
-  var side=item.dataset.side;
-  if(side==="left-col"){
-    if(a3.selectedLeft===item){item.classList.remove("selected");a3.selectedLeft=null;return;}
-    if(a3.selectedLeft){a3.selectedLeft.classList.remove("selected");}
-    a3.selectedLeft=item;item.classList.add("selected");
+function checkGaps(slide) {
+  if (answered.has(slide)) return;
+  answered.add(slide);
+  const rows = [...slide.querySelectorAll('.gap-row')];
+  if (rows.length) {
+    rows.forEach(r => markGap(r.querySelector('.gap'), r.querySelector('.feedback')));
   } else {
-    if(a3.selectedRight===item){item.classList.remove("selected");a3.selectedRight=null;return;}
-    if(a3.selectedRight){a3.selectedRight.classList.remove("selected");}
-    a3.selectedRight=item;item.classList.add("selected");
+    markGap(slide.querySelector('.gap'), slide.querySelector('.feedback'));
   }
-  if(a3.selectedLeft&&a3.selectedRight){a3Pair(a3.selectedLeft,a3.selectedRight);}
+  const btn = slide.querySelector('[data-action="check"]');
+  if (btn) btn.disabled = true;
+  updateScoreChip();
 }
 
-function a3Pair(L,R){
-  a3Counter++;
-  var mk=String(a3Counter);
-  L.dataset.mark=mk;R.dataset.mark=mk;
-  a3.marks[mk]={left:L,right:R};
-  L.classList.remove("selected");R.classList.remove("selected");
-  L.classList.add("paired");R.classList.add("paired");
-  a3Label(L);a3Label(R);
-  a3.selectedLeft=null;a3.selectedRight=null;
-  a3UpdateProgress();
+/* ── Activation: word count, copy, and a print mirror (a textarea's
+   value does not appear in a PDF, so we mirror it into a div). ── */
+const actInput = document.getElementById('actInput');
+if (actInput) {
+  const countEl = document.getElementById('actCount');
+  const printEl = document.getElementById('actPrint');
+  const sync = () => {
+    const words = actInput.value.trim().split(/\s+/).filter(Boolean).length;
+    countEl.textContent = t('wordCount')(words);
+    printEl.textContent = actInput.value;
+  };
+  actInput.addEventListener('input', sync);
+  window.syncActivation = sync;
+  sync();
 }
 
-function a3Label(item){
-  var lbl=item.querySelector(".label").textContent;
-  item.innerHTML='<span class="pairmark">'+a3DisplayNum(item.dataset.mark)+'</span><span class="label">'+lbl+'</span>';
-}
-
-function a3DisplayNum(mk){
-  var keys=Object.keys(a3.marks);
-  return String(keys.indexOf(mk)+1);
-}
-
-function a3Unpair(mk){
-  var pair=a3.marks[mk];if(!pair){return;}
-  [pair.left,pair.right].forEach(function(item){
-    delete item.dataset.mark;
-    item.classList.remove("paired");
-    var lbl=item.querySelector(".label").textContent;
-    item.innerHTML='<span class="label">'+lbl+'</span>';
-  });
-  delete a3.marks[mk];
-  Object.keys(a3.marks).forEach(function(m){a3Label(a3.marks[m].left);a3Label(a3.marks[m].right);});
-  a3UpdateProgress();
-}
-
-function a3UpdateProgress(){
-  var count=Object.keys(a3.marks).length;
-  el("a3progress").textContent="Matched "+count+" of "+A3_PAIRS.length+" pairs";
-  el("a3check").disabled=(count!==A3_PAIRS.length);
-}
-
-function a3Check(){
-  if(a3.checked){return;}
-  a3.checked=true;
-  var defFor={};A3_PAIRS.forEach(function(p){defFor[p.word]=p.def;});
-  var right=0;var corrections=[];
-  Object.keys(a3.marks).forEach(function(m){
-    var pair=a3.marks[m];
-    var word=pair.left.querySelector(".label").textContent;
-    var def=pair.right.querySelector(".label").textContent;
-    var ok=(defFor[word]===def);
-    pair.left.classList.add(ok?"m-correct":"m-wrong");
-    pair.right.classList.add(ok?"m-correct":"m-wrong");
-    if(ok){right++;}else{corrections.push("&lsquo;"+word+"&rsquo; = "+defFor[word]);}
-  });
-  addScore(2,right);
-  var fb=el("a3fb");var all=(right===A3_PAIRS.length);
-  fb.className="feedback show "+(all?"good":"bad");
-  var msg="<b>"+right+" of "+A3_PAIRS.length+" pairs correct.</b>";
-  msg+=all?"The brief is watertight.":"Correct pairings: "+corrections.join(" &middot; ")+".";
-  fb.innerHTML=msg;
-  el("a3check").classList.add("hidden");show("a3next");
-}
-
-/* ========== ACTIVITY 4: Error Correction ========== */
-/* Each set has three sentences. One contains a wrong underlined word.
-   data: correct = index (0,1,2) of the wrong sentence. */
-var A4_SETS=[
-  {
-    sentences:[
-      "The judge told the defendant to stop <u>grumbling</u> under his breath and to address the court properly.",
-      "The witness described how, after the incident, she tried to <u>soothe</u> the frightened child by speaking quietly and holding her hand.",
-      "The therapist warned the client not to <u>dwell on</u> the traumatic event, recommending instead that he seek structured cognitive support."
-    ],
-    wrong:0,
-    wrongWord:"grumbling",
-    correctWord:"muttering",
-    expl:"&lsquo;Grumbling&rsquo; means complaining in a bad-tempered way, usually about a general situation. The defendant was speaking quietly under his breath to himself &mdash; that is &lsquo;muttering&rsquo;. &lsquo;Soothe&rsquo; (calm) and &lsquo;dwell on&rsquo; (think at length about) are both used correctly."
-  },
-  {
-    sentences:[
-      "The defence argued that the contract terms were <u>insufficient</u> to prove intent &mdash; the wording was simply too vague.",
-      "Detectives noted that fraudulent activity of this kind was particularly <u>prevalent</u> in cities with a large, unregulated cash economy.",
-      "The board agreed to <u>mimic</u> the accounting software used by their main competitor, which they hoped would reduce costs."
-    ],
-    wrong:2,
-    wrongWord:"mimic",
-    correctWord:"adopt",
-    expl:"To mimic means to copy or imitate (often mockingly or superficially). A company board does not mimic software &mdash; they adopt it, meaning to choose to use it formally. &lsquo;Insufficient&rsquo; and &lsquo;prevalent&rsquo; are both used correctly."
-  },
-  {
-    sentences:[
-      "The programmer was asked to write code that would <u>ignite</u> the backup process automatically if the main server went offline.",
-      "After weeks of negotiation, both parties finally agreed to <u>reconcile</u> their differences and sign the settlement.",
-      "The investigator said he always tried to take the defendant&rsquo;s background into <u>account</u> before making a recommendation to the court."
-    ],
-    wrong:0,
-    wrongWord:"ignite",
-    correctWord:"trigger",
-    expl:"&lsquo;Ignite&rsquo; means to catch fire or cause to catch fire. In computing or technical language, you trigger (or initiate) a process &mdash; you do not ignite it. &lsquo;Reconcile&rsquo; (restore relations) and &lsquo;take into account&rsquo; (consider alongside other factors) are used correctly."
-  },
-  {
-    sentences:[
-      "The newspaper described the CEO&rsquo;s behaviour as rampant, saying it had spread through every level of the organisation like a virus.",
-      "Asked why she had not reported the problem sooner, the clerk explained that she feared her contribution would be seen as a <u>clue</u> to her own involvement.",
-      "The consultant urged the company to <u>take into account</u> the potential impact on staff morale before announcing the restructure."
-    ],
-    wrong:1,
-    wrongWord:"clue",
-    correctWord:"clue",
-    expl:"Actually, the error is in sentence B: &lsquo;clue&rsquo; (a piece of evidence in solving a mystery) is wrong here. The clerk feared her report would be seen as &lsquo;evidence&rsquo; or &lsquo;proof&rsquo; of her involvement, not a mysterious hint. &lsquo;Rampant&rsquo; (spreading unchecked) and &lsquo;take into account&rsquo; (consider) are used correctly."
-  },
-  {
-    sentences:[
-      "The documentary revealed that the intern had not been a <u>volunteer</u> &mdash; she had in fact been paid a small wage under a separate agreement.",
-      "The analyst was described by colleagues as a real <u>people person</u>: she made every witness feel comfortable and quickly gained their trust.",
-      "The defence barrister argued that his client had been <u>swindled</u> by a fraudster posing as a government official."
-    ],
-    wrong:0,
-    wrongWord:"volunteer",
-    correctWord:"volunteer",
-    expl:"Sentence A is correct as written &mdash; wait, let us look again. All three sentences here are correctly formed. This set tests attention: A uses &lsquo;volunteer&rsquo; correctly (an unpaid person), B uses &lsquo;people person&rsquo; correctly (someone good with others), and C uses &lsquo;swindle&rsquo; correctly (to cheat). The trick: none of these have errors. Click the one that the defence would challenge &mdash; the answer is B, because the phrase &lsquo;real people person&rsquo; in a formal witness statement is inappropriately informal."
-  },
-  {
-    sentences:[
-      "The police reported that the suspect had been quick <u>on the draw</u> when approached &mdash; she had already deleted the files before the officers reached the door.",
-      "The journalist said the politician had a habit of <u>shooting from the hip</u>, making announcements without consulting his legal team first.",
-      "The court heard that the company&rsquo;s decision to <u>fall apart</u> its overseas division had been taken purely for financial reasons."
-    ],
-    wrong:2,
-    wrongWord:"fall apart",
-    correctWord:"dismantle",
-    expl:"&lsquo;Fall apart&rsquo; is intransitive &mdash; it means to break up or disintegrate on its own. You cannot &lsquo;fall apart&rsquo; something else. The correct verb here is &lsquo;dismantle&rsquo; (to take apart deliberately). &lsquo;Quick on the draw&rsquo; (very fast to act) and &lsquo;shoot from the hip&rsquo; (act without careful consideration) are both used correctly."
+/* ── Events ── */
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-action]');
+  if (!a) return;
+  const act = a.dataset.action;
+  if (act === 'next') show(idx + 1);
+  if (act === 'prev') show(idx - 1);
+  if (act === 'check') checkGaps(a.closest('.slide'));
+  if (act === 'check-order') { const sl = a.closest('.slide'); if (sl._check) sl._check(); }
+  if (act === 'restart') location.reload();
+  if (act === 'copy-writing') {
+    const ta = document.getElementById('actInput');
+    if (ta && navigator.clipboard) navigator.clipboard.writeText(ta.value).then(() => {
+      const was = a.textContent;
+      a.textContent = t('btnCopied');
+      setTimeout(() => { a.textContent = was; }, 1400);
+    });
   }
-];
-var a4={index:0,answered:false,order:[]};
+});
 
-function a4Render(){
-  if(!a4.order.length){a4.order=shuffle(A4_SETS);}
-  var set=a4.order[a4.index];
-  el("a4progress").textContent="Question "+(a4.index+1)+" of "+a4.order.length;
-  var fb=el("a4fb");fb.className="feedback";fb.innerHTML="";
-  hide("a4next");
-  a4.answered=false;
-  var rows=el("a4rows");rows.innerHTML="";
-  var labels=["A","B","C"];
-  /* Randomize the sentence order but keep track of which is wrong */
-  var indices=[0,1,2];
-  var shuffledIdx=shuffle(indices);
-  var wrongPos=shuffledIdx.indexOf(set.wrong);
-  shuffledIdx.forEach(function(origIdx,pos){
-    var div=document.createElement("div");
-    div.className="sent-row";
-    div.innerHTML='<span class="num">'+labels[pos]+'</span><span class="sent-text">'+set.sentences[origIdx]+'</span>';
-    div.addEventListener("click",function(){a4Answer(div,pos,wrongPos,set);});
-    rows.appendChild(div);
+document.addEventListener('keydown', e => {
+  if (e.target.matches('input, select, textarea')) {
+    if (e.key === 'Enter') checkGaps(e.target.closest('.slide'));
+    return;
+  }
+  if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); show(idx + 1); }
+  if (['ArrowLeft', 'PageUp'].includes(e.key))         { e.preventDefault(); show(idx - 1); }
+});
+
+/* ── Language ── */
+function applyLang() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const v = t(el.dataset.i18n);
+    if (v != null) el.innerHTML = v;
   });
-}
-
-function a4Answer(div,pos,wrongPos,set){
-  if(a4.answered){return;}
-  a4.answered=true;
-  var right=(pos===wrongPos);
-  var allRows=el("a4rows").querySelectorAll(".sent-row");
-  allRows.forEach(function(r,i){
-    r.style.cursor="default";
-    if(i===wrongPos){r.classList.add("ec-correct");}
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const v = t(el.dataset.i18nPh);
+    if (v != null) el.placeholder = v;
   });
-  if(!right){div.classList.add("ec-wrong");}
-  if(right){addScore(3,1);}
-  var fb=el("a4fb");
-  fb.className="feedback show "+(right?"good":"bad");
-  fb.innerHTML="<b>"+(right?"Correct &mdash; that sentence contains the error.":"Not quite &mdash; sentence "+["A","B","C"][wrongPos]+" contains the error.")+"</b>"+set.expl;
-  show("a4next");
-  el("a4next").textContent=(a4.index===a4.order.length-1)?"See verdict":"Next";
+  if (window.syncActivation) window.syncActivation();
+  document.documentElement.lang = currentLang;
+  document.documentElement.dir = RTL_LANGS.includes(currentLang) ? 'rtl' : 'ltr';
+  updateScoreChip();
+  show(idx);
 }
 
-function a4Next(){
-  a4.index+=1;
-  if(a4.index>=a4.order.length){showResults();}
-  else{a4Render();}
+function initLang() {
+  const sel = document.getElementById('langSelect');
+  // Only offer languages that are actually translated. An empty or partial
+  // scaffold stays in the code for a future pass but never appears as a dead
+  // option in the menu.
+  const enKeys = Object.keys(UI_I18N.en).length;
+  LANGS.filter(l => l.code === 'en' ||
+                    Object.keys(UI_I18N[l.code] || {}).length >= enKeys)
+       .forEach(l => sel.add(new Option(l.label, l.code)));
+  sel.value = currentLang;
+  sel.hidden = sel.options.length < 2;
+  sel.addEventListener('change', () => { currentLang = sel.value; applyLang(); });
 }
 
-/* ========== RESULTS ========== */
-function showResults(){
-  document.querySelectorAll(".tab").forEach(function(t){t.classList.add("done");t.classList.remove("active");});
-  el("progressChip").textContent="Case closed";
-  hide("screen-act4");
-  show("screen-results");
-  el("finalScore").textContent=state.score;
-  var pct=state.score/25;
-  var v,n;
-  if(pct>=0.9){v="Acquitted on all counts";n="Exceptional command of legal, professional and confusable vocabulary. The jury was never in doubt.";}
-  else if(pct>=0.72){v="Charges partially dropped";n="A strong performance. Review the explanations for the questions you missed and you will have the full picture.";}
-  else if(pct>=0.5){v="Case referred for retrial";n="Solid groundwork. Revisit the witness statement and error correction activities where the vocabulary is most demanding.";}
-  else{v="Remanded for further study";n="Every good defence is built on evidence. Restart the lesson, read the feedback carefully, and the gaps will close.";}
-  el("verdict").textContent=v;el("verdictNote").textContent=n;
-  var bd=el("breakdown");bd.innerHTML="";
-  ACT_NAMES.forEach(function(name,i){
-    var row=document.createElement("div");row.className="bd-row";
-    row.innerHTML="<span>"+(i+1)+" &middot; "+name+"</span><b>"+state.actScores[i]+" / "+ACT_MAX[i]+"</b>";
-    bd.appendChild(row);
-  });
-  window.scrollTo({top:0,behavior:"smooth"});
-}
+/* Per-slide background art: set the variable on the element as well, because
+   the print stylesheet paints each slide's own ::before from var(--hero). */
+slides.filter(s => s.dataset.bg).forEach(s =>
+  s.style.setProperty('--hero', `url('${s.dataset.bg}')`));
 
-function restart(){
-  state={score:0,actScores:[0,0,0,0]};
-  el("scoreVal").textContent="0";
-  a1={index:0,answered:false,order:[]};
-  a2={built:false,armedGap:null,armedWord:null,checked:false};
-  a3={built:false,selectedLeft:null,selectedRight:null,marks:{},checked:false};
-  a3Counter=0;
-  a4={index:0,answered:false,order:[]};
-  /* Reset DOM */
-  el("a2script").innerHTML="";el("a2bank").innerHTML="";
-  el("a2fb").className="feedback";el("a2fb").innerHTML="";
-  el("a2check").classList.remove("hidden");el("a2check").disabled=true;
-  hide("a2next");
-  el("a3grid").innerHTML="";
-  el("a3fb").className="feedback";el("a3fb").innerHTML="";
-  el("a3check").classList.remove("hidden");el("a3check").disabled=true;
-  hide("a3next");
-  el("a4rows").innerHTML="";
-  hide("screen-results");
-  document.querySelectorAll(".tab").forEach(function(t){t.classList.remove("done","active");});
-  setTab(0);
-  el("progressChip").textContent="Activity 1 of 4";
-  show("screen-act1");
-  a1Render();
-  window.scrollTo({top:0,behavior:"smooth"});
-}
+/* ── Boot ── */
+initLang();
+fitStage();
+applyLang();
+updateScoreChip();
+
+/* Reveal the wordmark only once DM Sans is really available, so the
+   Forbes/ENGLISH lockup never renders at fallback-font proportions. */
+const ready = () => document.body.classList.add('fonts-ready');
+if (document.fonts && document.fonts.ready) { document.fonts.ready.then(ready); setTimeout(ready, 1500); }
+else ready();
 </script>
 </body>
 </html>
