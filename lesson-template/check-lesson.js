@@ -11,6 +11,7 @@
  *   BANK     a word bank does not hand over the gap answers in gap order
  *   EXPLAIN  every scored question carries an explanation
  *   ACTIVATE every lesson ends with a speaking + writing production task
+ *   SORT     every sorting slide has 2+ bins, no stray items, no empty bin
  *   I18N     at least one language besides English is complete, and every data-i18n
  *            attribute resolves to a real key
  *   LOGO     Forbes and ENGLISH render to the same optical width
@@ -37,7 +38,7 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
   await page.waitForTimeout(2000);
 
   const r = await page.evaluate(() => {
-    const out = { layout: [], answers: [], explain: [], i18n: [], logo: null, scroll: null, bank: null, markup: null };
+    const out = { layout: [], answers: [], explain: [], i18n: [], logo: null, scroll: null, bank: null, markup: null, sort: [] };
     const slides = [...document.querySelectorAll('.slide')];
 
     // ── LAYOUT ──────────────────────────────────────────────────────
@@ -141,6 +142,23 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
       if (ascending) out.bank = { answers, positions: pos, bank: seen.slice(0, 12) };
     }
 
+    // ── SORT ────────────────────────────────────────────────────────
+    // A sorting slide stops being a decision in two ways: an item that
+    // points at a bin which does not exist (unplaceable, and it will sit
+    // in the pool for ever), or a bin that receives nothing — sorting
+    // into a box that nothing goes in is a choice the learner cannot get
+    // wrong, and its presence makes the real choice easier by one.
+    [...document.querySelectorAll('.sort')].forEach((box, n) => {
+      const bins = (box.dataset.bins || '').split('|').map(x => x.trim()).filter(Boolean);
+      const items = [...box.querySelectorAll('.sort-item')];
+      const targets = items.map(i => +i.dataset.bin);
+      const stray = items.filter(i => !(+i.dataset.bin >= 0 && +i.dataset.bin < bins.length));
+      if (bins.length < 2) out.sort.push({ n: n + 1, why: `only ${bins.length} bin(s) — a sort needs at least two` });
+      if (stray.length) out.sort.push({ n: n + 1, why: `${stray.length} item(s) point at a bin that does not exist: ` + stray.map(i => i.textContent.trim()).join(', ') });
+      const empty = bins.map((b, i) => [b, i]).filter(([, i]) => !targets.includes(i));
+      if (empty.length) out.sort.push({ n: n + 1, why: 'bin(s) receive no items: ' + empty.map(([b]) => `"${b}"`).join(', ') });
+    });
+
     // ── I18N ────────────────────────────────────────────────────────
     if (typeof UI_I18N !== 'undefined') {
       const en = Object.keys(UI_I18N.en || {});
@@ -237,6 +255,10 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
   head('MARKUP');
   if (!r.markup) ok('explanations render their markup instead of printing it');
   else r.markup.forEach(m => bad(`an explanation prints its own tags: ${m}…`));
+
+  head('SORT');
+  if (!r.sort || !r.sort.length) ok('every sorting slide is actually sortable');
+  else r.sort.forEach(x => bad(`sort slide ${x.n}: ${x.why}`));
 
   head('EXPLAIN');
   if (!r.explain.length) ok('every scored question has an explanation');
