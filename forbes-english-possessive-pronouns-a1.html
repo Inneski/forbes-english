@@ -24,17 +24,24 @@
 :root {
   --hero: url('Possessives/hero.jpg');
 
-  --void          : #d8cfac;
-  --surface       : #e1dcc4;
-  --surface2      : #dcd5b8;
-  --border        : #964a53;
-  --text          : #2a1114;
-  --text-dim      : #5e2e34;
-  --accent        : #bd1427;
-  --accent-bright : #970717;
-  --accent-dim    : #e26a77;
+  /* The locker corridor is the busiest hero on the site: hard-edged vertical
+     louvres at high contrast, right behind the reading area. A light theme on
+     top of it left the question stems fighting the artwork, so this lesson
+     runs dark and drops the background well below the usual strength. Both
+     departures are deliberate and both were made because text suffered. */
+  --bg-opacity    : 0.30;
+
+  --void          : #0a0d0a;
+  --surface       : #141914;
+  --surface2      : #1e251e;
+  --border        : #853f47;
+  --text          : #f5f2f2;
+  --text-dim      : #bfa3a6;
+  --accent        : #e0616f;
+  --accent-bright : #eb8692;
+  --accent-dim    : #a62837;
   --secondary     : #315582;
-  --contrast      : #075527;
+  --contrast      : #b8e62a;
 }
 
 /* ── Fixed tokens: identical in every lesson. Do not edit. ── */
@@ -538,6 +545,36 @@ html[data-theme="light"] .slide-body > .prose,
 html[data-theme="light"] .act-target-label {
   text-shadow: 0 1px 2px rgba(255,255,255,0.75), 0 0 12px rgba(255,255,255,0.55);
 }
+
+/* ── per-lesson overrides ──────────────────────────────────────
+   The locker corridor is the busiest hero on the site, and at A1 the
+   learner is decoding the English as well as reading it. Two changes:
+   every heading runs in the lime counterpoint so it separates from the
+   blue and cream behind it, and the feedback line gets an opaque plate
+   with black text instead of coloured type on bare artwork — it was
+   landing across the floor/locker boundary and disappearing into it. */
+.cover-title, .slide-title, .eyebrow, .q-stem, .q-ctx,
+.order-hint, .cover-sub { color: var(--contrast); }
+.cover-title em { color: var(--accent-bright); }
+.fe-logo-mark { color: var(--contrast); }
+.feedback.show {
+  margin-top: 18px; padding: 14px 18px; border-radius: 10px;
+  background: #f4f1e4; color: #14100c;
+  border-left: 6px solid var(--contrast);
+  text-shadow: none; font-size: 18px; line-height: 1.5;
+}
+.feedback.show.no { border-left-color: var(--accent-dim); }
+.feedback.show strong, .feedback.show em { color: inherit; }
+/* the instruction line sits outside a card, so it needs full-strength
+   text rather than the dim tone, and the input needs to look typeable */
+.slide-body > .prose.dim { color: var(--text); }
+input.gap { background: rgba(245,242,242,0.92); color: #14100c; }
+input.gap::placeholder { color: #6b6258; }
+/* the engine focuses the first gap on arrival, and .gap:focus outranks
+   input.gap, so the focused field went dark while its neighbours went
+   light. Match the specificity and keep every field readable. */
+input.gap:focus { background: #ffffff; color: #14100c; }
+input.gap.correct, input.gap.wrong { background: rgba(245,242,242,0.92); }
 </style>
 </head>
 <body>
