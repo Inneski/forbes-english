@@ -1,0 +1,2279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- ══ REPLACE: lesson title. No "Forbes English —" prefix. ══ -->
+<title>Out of This World — 5-Hour English Test Prep · Part II</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════════════════
+   FORBES ENGLISH — 16:9 SLIDE LESSON TEMPLATE
+   Everything you normally need to change lives in the two blocks
+   marked "REPLACE". Do not restructure the engine below them.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ══ REPLACE 1 of 2: hero image + palette ══
+   1. Point --hero at the lesson's cover image. This ONE line drives the
+      cover, the background pattern on every slide, and the PDF export.
+   2. Generate the palette FROM that same image:
+         python3 lesson-template/extract-palette.py <hero-image>
+      and paste its output over the colour block. Never hand-pick colours. */
+:root {
+  --hero: url('ExamPrep/hero.jpg');
+
+  --void          : #d8d6ac;
+  --surface       : #e1e0c4;
+  --surface2      : #dcdbb8;
+  --border        : #964a64;
+  --text          : #2a1119;
+  --text-dim      : #5e2e3f;
+  --accent        : #c0134e;
+  --accent-bright : #9a0639;
+  --accent-dim    : #e36b94;
+  --secondary     : #255c5a;
+  --contrast      : #075515;
+
+  /* Same hero as Part I, same reason: a flat colour chart has no quiet
+     area, so the pattern runs well below the house floor. */
+  --bg-opacity    : 0.15;
+}
+
+/* ── Fixed tokens: identical in every lesson. Do not edit. ── */
+:root {
+  --slide-w: 1280px;
+  --slide-h: 720px;
+  --pad: 64px;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-ui: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'DM Mono', ui-monospace, monospace;
+  --r: 10px;
+  --ok: #3fbf7f;
+  --no: #e8555f;
+  --bg-opacity: 0.72;     /* background pattern strength — see doc §6 */
+
+  /* Theme primitives. Dark is the default; a light lesson sets
+     data-theme="light" on <html> and only these flip. Never hardcode
+     rgba(0,0,0,…) or rgba(255,255,255,…) in a lesson — use these. */
+  --inset:  rgba(255,255,255,0.07);  /* recessed fills: inputs, key discs   */
+  --inset2: rgba(255,255,255,0.14);  /* the same, one step stronger         */
+  --scrim:  rgba(0,0,0,0.45);        /* chrome sitting over the hero        */
+  --hairline: rgba(255,255,255,0.28);
+  --cover-shadow: 0 1px 2px rgba(0,0,0,0.95), 0 2px 8px rgba(0,0,0,0.90),
+                  0 4px 26px rgba(0,0,0,0.80), 0 0 3px rgba(0,0,0,0.85);
+  /* Interior background wash. Two stops, not one: the artwork stays visible
+     across the middle of the slide and is only pulled down at the very top
+     and bottom, where the eyebrow, the deck bar and the progress rail sit.
+     An interior page that reads as plain black is a bug — see doc §6. */
+  --wash-mid:  rgba(0,0,0,0.06);
+  --wash-edge: rgba(0,0,0,0.20);
+}
+
+/* ══ LIGHT THEME ══
+   For bright, airy heroes. The palette comes from
+   `extract-palette.py <hero> --light`; these are the structural flips the
+   palette alone cannot express.
+
+   A light lesson is a MID tone, not a white one. Every wash here is mixed
+   from --void rather than from white: mixing toward white bleaches the hero
+   out of the interior pages and turns the deck into glare on a projector.
+   If you find yourself reaching for rgba(255,255,255,…) in a lesson, the
+   answer is a higher --void percentage instead. */
+html[data-theme="light"] {
+  --inset:  rgba(0,0,0,0.045);
+  --inset2: rgba(0,0,0,0.10);
+  --scrim:  color-mix(in srgb, var(--void) 78%, transparent);
+  --hairline: rgba(0,0,0,0.14);
+  --cover-shadow: 0 1px 2px rgba(255,255,255,0.95), 0 2px 8px rgba(255,255,255,0.85),
+                  0 4px 26px rgba(255,255,255,0.6), 0 0 3px rgba(255,255,255,0.9);
+  --wash-mid:  color-mix(in srgb, var(--void) 8%, transparent);
+  --wash-edge: color-mix(in srgb, var(--void) 26%, transparent);
+  --bg-opacity: 0.62;
+}
+
+/* On a mid canvas a translucent card has little to contrast against, so
+   edges need more of the hairline than they do on a dark canvas. */
+html[data-theme="light"] .card { border-color: color-mix(in srgb, var(--border) 90%, transparent); }
+html[data-theme="light"] .opt,
+html[data-theme="light"] .match-item { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
+html[data-theme="light"] .opt-key { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
+html[data-theme="light"] .card { background: color-mix(in srgb, var(--surface) 92%, transparent); }
+html[data-theme="light"] .opt { background: color-mix(in srgb, var(--surface) 95%, transparent); }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;            /* NO SCROLLING. This is the whole point. */
+  background: var(--void);
+  color: var(--text);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── STAGE: a fixed 1280×720 canvas scaled to fit any viewport ── */
+.stage-wrap { position: fixed; inset: 0; display: grid; place-items: center; }
+.stage {
+  position: relative;
+  width: var(--slide-w);
+  height: var(--slide-h);
+  transform-origin: center center;
+  overflow: hidden;
+  background: var(--void);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.55);
+}
+
+/* ── BACKGROUND PATTERN: the cover image, behind every slide ──
+   Driven by --hero so the screen view and the PDF/PPT export read from
+   ONE definition. Two pseudo-layers because opacity on a parent would
+   also fade the wash sitting on top of it. */
+.bg-layer { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.bg-layer::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--hero) center / cover no-repeat;
+  opacity: var(--bg-opacity);
+  filter: saturate(0.92);
+}
+.bg-layer::after {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, var(--wash-edge) 0%, var(--wash-mid) 20%,
+                            var(--wash-mid) 80%, var(--wash-edge) 100%);
+}
+/* The cover slide shows the hero at FULL strength — no wash, no dimming. */
+.stage.on-cover .bg-layer::before { opacity: 1; filter: none; }
+/* Centre scrim: guarantees cover-text contrast over ANY hero — light, dark,
+   or busy — while leaving the artwork vivid at the edges. Do not remove it;
+   it is what makes an arbitrary dropped-in image safe. */
+.stage.on-cover .bg-layer::after {
+  background:
+    radial-gradient(ellipse 58% 54% at 50% 46%,
+      rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.22) 54%, transparent 82%),
+    linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.03) 30%,
+                            rgba(0,0,0,0.05) 70%, rgba(0,0,0,0.38) 100%);
+}
+/* A light cover keeps its picture. Dark ink already carries against a bright
+   image, so the scrim here is barely there — just enough to stop the title
+   landing on a hard edge. Never brighten a light cover to rescue text; if the
+   text will not read, the hero is wrong for a light lesson. */
+html[data-theme="light"] .stage.on-cover .bg-layer::after {
+  background:
+    radial-gradient(ellipse 58% 54% at 50% 46%,
+      rgba(255,255,255,0.48) 0%, rgba(255,255,255,0.28) 54%, transparent 82%),
+    linear-gradient(180deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.03) 30%,
+                            rgba(255,255,255,0.05) 70%, rgba(255,255,255,0.22) 100%);
+}
+
+/* ── SLIDES ── */
+.slide {
+  position: absolute; inset: 0; z-index: 1;
+  display: none;
+  flex-direction: column;
+  padding: var(--pad);
+}
+.slide.is-active { display: flex; animation: slide-in .32s ease both; }
+@keyframes slide-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+/* ── LOGO ── */
+.fe-logo { width: 152px; height: auto; display: block; }
+.fe-logo-mark { color: var(--logo-mark, var(--accent)); }
+.fe-logo-word { fill: var(--text); opacity: 0; transition: opacity .25s ease; }
+.fonts-ready .fe-logo-word { opacity: 1; }   /* never flash a fallback face */
+.slide[data-type="cover"] .fe-logo { width: 232px; }
+
+/* ── COVER ── */
+.cover-inner {
+  height: 100%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; gap: 4px;
+}
+.cover-title {
+  font-family: var(--font-display);
+  font-size: 62px; font-weight: 900; line-height: 1.06;
+  color: var(--text);
+  text-shadow: var(--cover-shadow);
+  margin-top: 26px;
+}
+.cover-title em { font-style: normal; color: var(--accent-bright); }
+.cover-sub {
+  font-size: 19px; color: var(--text);
+  letter-spacing: .04em; margin-top: 14px;
+  text-shadow: var(--cover-shadow);
+}
+.cover-meta {
+  display: flex; gap: 10px; margin-top: 26px; flex-wrap: wrap; justify-content: center;
+}
+.chip {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase;
+  padding: 6px 14px; border-radius: 999px;
+  border: 1px solid var(--hairline);
+  background: var(--scrim);
+  color: var(--text);
+}
+
+/* ── SLIDE FURNITURE ── */
+.slide-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 20px; margin-bottom: 26px;
+}
+.eyebrow {
+  font-family: var(--font-mono); font-size: 12px;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent-bright);
+}
+.slide-title {
+  font-family: var(--font-display);
+  font-size: 38px; font-weight: 700; line-height: 1.15; color: var(--text);
+  margin-top: 6px;
+}
+.slide-body { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; }
+
+/* Content sits in a translucent card so it stays legible over the pattern. */
+.card {
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+  border-radius: var(--r);
+  padding: 30px 34px;
+  backdrop-filter: blur(3px);
+}
+.card + .card { margin-top: 16px; }
+.cols .card + .card,
+.cols .card { margin-top: 0; }   /* side-by-side cards must share a top edge */
+.prose { font-size: 20px; line-height: 1.62; color: var(--text); }
+.prose + .prose { margin-top: 14px; }
+.prose strong { color: var(--accent-bright); font-weight: 600; }
+.dim { color: var(--text-dim); }
+
+/* Two-column teaching layout */
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+
+/* ── QUESTIONS ── */
+.q-stem { font-size: 25px; line-height: 1.5; color: var(--text); margin-bottom: 22px; }
+.q-stem em { font-style: normal; color: var(--accent-bright); font-weight: 600; }
+
+.opts { display: grid; gap: 11px; }
+.opts.two-up { grid-template-columns: 1fr 1fr; }
+.opt {
+  display: flex; align-items: center; gap: 14px;
+  width: 100%; text-align: left;
+  font-family: var(--font-ui); font-size: 19px; color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: var(--r);
+  padding: 15px 20px; cursor: pointer;
+  transition: border-color .15s, background .15s, transform .12s;
+}
+.opt:hover:not(:disabled) { border-color: var(--accent); transform: translateX(3px); }
+.opt-key {
+  flex: 0 0 30px; height: 30px; display: grid; place-items: center;
+  border-radius: 50%; font-family: var(--font-mono); font-size: 13px;
+  background: var(--inset);
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+}
+.opt.correct { border-color: var(--ok); background: color-mix(in srgb, var(--ok) 20%, var(--surface2)); }
+.opt.wrong   { border-color: var(--no); background: color-mix(in srgb, var(--no) 18%, var(--surface2)); }
+.opt:disabled { cursor: default; }
+
+/* Gap-fill */
+.gap {
+  font-family: var(--font-ui); font-size: 20px; color: var(--text);
+  background: var(--inset);
+  border: none; border-bottom: 2px solid var(--accent);
+  padding: 3px 10px; min-width: 190px; border-radius: 4px 4px 0 0;
+}
+.gap:focus { outline: none; background: var(--inset2); }
+.gap.correct { border-bottom-color: var(--ok); color: var(--ok); }
+.gap.wrong   { border-bottom-color: var(--no); color: var(--no); }
+
+.feedback {
+  margin-top: 18px; font-size: 17px; line-height: 1.55;
+  min-height: 26px; opacity: 0; transition: opacity .2s;
+}
+.feedback.show { opacity: 1; }
+.feedback.ok { color: var(--ok); }
+.feedback.no { color: var(--no); }
+
+/* ── BUTTONS ── */
+.btn {
+  font-family: var(--font-ui); font-size: 15px; font-weight: 600;
+  letter-spacing: .03em;
+  padding: 12px 26px; border-radius: var(--r);
+  border: 1px solid var(--accent); background: transparent; color: var(--accent-bright);
+  cursor: pointer; transition: background .15s, color .15s;
+}
+.btn:hover { background: var(--accent); color: var(--void); }
+.btn-solid { background: var(--accent); color: var(--void); border-color: var(--accent); }
+.btn-solid:hover { background: var(--accent-bright); border-color: var(--accent-bright); }
+.btn:disabled { opacity: .35; cursor: not-allowed; }
+.btn-lg { font-size: 17px; padding: 15px 38px; }
+
+/* ── CHROME: progress + nav, pinned inside the stage ── */
+.deck-bar {
+  position: absolute; z-index: 3; left: 0; right: 0; bottom: 0;
+  height: 58px; padding: 0 26px;
+  display: flex; align-items: center; gap: 18px;
+  background: linear-gradient(180deg, transparent, var(--scrim));
+}
+.stage.on-cover .deck-bar { background: none; }
+.stage.on-cover .deck-score { visibility: hidden; }
+.progress { flex: 1; height: 3px; background: var(--inset2); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0; background: var(--accent); transition: width .3s ease; }
+.deck-count, .deck-score {
+  font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); white-space: nowrap;
+}
+.nav-btn {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  background: var(--scrim); color: var(--text);
+  cursor: pointer; font-size: 15px; line-height: 1;
+  display: grid; place-items: center; transition: border-color .15s, background .15s;
+}
+.nav-btn:hover:not(:disabled) { border-color: var(--accent); background: var(--accent); color: var(--void); }
+.nav-btn:disabled { opacity: .28; cursor: not-allowed; }
+
+/* ── LANGUAGE SWITCH ── */
+.lang-select {
+  font-family: var(--font-mono); font-size: 12px;
+  background: var(--scrim); color: var(--text);
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  border-radius: 6px; padding: 6px 10px; cursor: pointer;
+}
+.lang-select:focus { outline: 1px solid var(--accent); }
+
+/* ── RESULTS ── */
+.score-big {
+  font-family: var(--font-display); font-size: 84px; font-weight: 900;
+  color: var(--accent-bright); line-height: 1;
+}
+
+/* ── RTL ── */
+[dir="rtl"] .opt { text-align: right; }
+[dir="rtl"] .opt:hover:not(:disabled) { transform: translateX(-3px); }
+
+
+/* ── ACTIVATION ──────────────────────────────────────────────────── */
+.act-target {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 16px;
+}
+.act-target-label {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-dim);
+  margin-right: 4px;
+}
+.bank-chip {
+  font-family: var(--font-mono); font-size: 12px;
+  padding: 5px 12px; border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  color: var(--accent-bright);
+}
+.act-cols { align-items: stretch; }
+.act-card { display: flex; flex-direction: column; padding: 20px 24px; }
+.act-kind {
+  display: flex; align-items: center; gap: 9px;
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--accent-bright); margin-bottom: 12px;
+}
+.act-icon { font-size: 16px; }
+.act-brief { font-size: 16.5px; line-height: 1.5; color: var(--text); margin-bottom: 12px; }
+.act-list { list-style: none; display: grid; gap: 9px; }
+.act-list li {
+  font-size: 15.5px; line-height: 1.45; color: var(--text-dim);
+  padding-left: 18px; position: relative;
+}
+.act-list li::before {
+  content: '—'; position: absolute; left: 0; color: var(--accent);
+}
+.act-input {
+  flex: 1; min-height: 118px; resize: none;
+  font-family: var(--font-ui); font-size: 15px; line-height: 1.55;
+  color: var(--text);
+  background: var(--inset);
+  border: 1px solid color-mix(in srgb, var(--border) 45%, transparent);
+  border-radius: 8px; padding: 12px 14px;
+}
+.act-input:focus { outline: none; border-color: var(--accent); background: var(--inset2); }
+.act-input::placeholder { color: var(--text-dim); opacity: .55; }
+.act-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 10px;
+}
+.act-count { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-dim); }
+.act-copy { font-size: 12.5px; padding: 6px 14px; }
+/* The textarea's value does not print; this mirror does. */
+.act-print { display: none; font-size: 14px; line-height: 1.55; white-space: pre-wrap; }
+
+
+/* ── MATCHING ────────────────────────────────────────────────────── */
+.match-grid { display: grid; grid-template-columns: 1fr 1.35fr; gap: 14px; }
+.match-col { display: grid; gap: 8px; align-content: start; }
+.match-item {
+  font-family: var(--font-ui); font-size: 15.5px; line-height: 1.4;
+  text-align: left; color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: var(--r); padding: 11px 16px; cursor: pointer;
+  transition: border-color .15s, background .15s, opacity .2s;
+}
+.match-item.term { font-weight: 600; }
+.match-item:hover:not(.done) { border-color: var(--accent); }
+.match-item.picked { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 22%, var(--surface2)); }
+.match-item.done { opacity: .45; cursor: default; border-color: var(--ok); }
+.match-item.miss { border-color: var(--no); animation: shake .3s; }
+@keyframes shake { 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
+
+/* ── ORDERING (build the sentence) ───────────────────────────────────
+   For word-order work — where the point is the SEQUENCE of prepositional
+   phrases, not choosing one word. Click to place, click again to take back;
+   no dragging, because a scaled stage makes drag targets lie. */
+.order-hint {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 10px;
+}
+.order-target {
+  display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start;
+  min-height: 92px; padding: 12px;
+  border: 1.5px dashed color-mix(in srgb, var(--border) 60%, transparent);
+  border-radius: var(--r); background: var(--inset);
+}
+.order-target.correct { border-style: solid; border-color: var(--ok); }
+.order-target.wrong   { border-style: solid; border-color: var(--no); }
+.order-pool { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.chunk {
+  font-family: var(--font-ui); font-size: 15.5px; line-height: 1.35;
+  color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: 999px; padding: 9px 16px; cursor: pointer;
+  transition: border-color .15s, background .15s, opacity .2s;
+}
+.chunk:hover:not(:disabled) { border-color: var(--accent); }
+.chunk.placed { background: color-mix(in srgb, var(--accent) 18%, var(--surface2)); border-color: var(--accent); }
+.chunk:disabled { cursor: default; opacity: .5; }
+
+/* ── DISCUSSION (unscored speaking prompts) ──────────────────────── */
+.discuss-meta {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 14px;
+}
+.prompts { display: grid; gap: 12px; list-style: none; margin: 0; padding: 0; }
+.prompt {
+  font-size: 19px; line-height: 1.5; color: var(--text);
+  padding-left: 26px; position: relative;
+}
+.prompt::before {
+  content: '?'; position: absolute; left: 0; top: 1px;
+  font-family: var(--font-mono); font-size: 15px; color: var(--accent);
+}
+.prompt.aside { font-size: 16.5px; color: var(--text-dim); font-style: italic; }
+.prompt.aside::before { content: '·'; }
+
+/* ══════════════════════════════════════════════════════════════════
+   PRINT / PDF EXPORT
+   Ctrl-P → Save as PDF → Landscape, margins None, Background graphics ON.
+   Each slide becomes one 16:9 page, ready to drop into PowerPoint.
+   ══════════════════════════════════════════════════════════════════ */
+@page { size: 1280px 720px; margin: 0; }
+@media print {
+  html, body { overflow: visible; height: auto; background: #fff; }
+  .stage-wrap { position: static; display: block; }
+  .stage {
+    transform: none !important;
+    width: 1280px; height: auto;      /* let the slides stack into pages */
+    overflow: visible; box-shadow: none;
+  }
+  .bg-layer, .deck-bar, .lang-select, .nav-btn { display: none !important; }
+
+  /* Each slide becomes its own page and carries its own background, so the
+     export does not depend on the single on-screen background layer. */
+  .slide {
+    display: flex !important;
+    position: relative; inset: auto;
+    width: 1280px; height: 720px;
+    isolation: isolate;
+    page-break-after: always; break-after: page;
+    animation: none !important;
+  }
+  .slide:last-child { page-break-after: auto; break-after: auto; }
+  .slide::before {
+    content: ''; position: absolute; inset: 0; z-index: -2;
+    background: var(--hero) center / cover no-repeat;
+    opacity: var(--bg-opacity);
+  }
+  .slide::after {
+    content: ''; position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(180deg, var(--wash-edge) 0%, var(--wash-mid) 20%,
+                                        var(--wash-mid) 80%, var(--wash-edge) 100%);
+  }
+  .slide[data-type="cover"]::before { opacity: 1; }
+  .slide[data-type="cover"]::after {
+    background:
+      radial-gradient(ellipse 58% 54% at 50% 46%,
+        rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.22) 54%, transparent 82%),
+      linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.03) 30%,
+                            rgba(0,0,0,0.05) 70%, rgba(0,0,0,0.38) 100%);
+  }
+  .feedback { opacity: 1 !important; }
+  .act-input, .act-foot { display: none !important; }
+  .act-print { display: block !important; }
+}
+
+/* Text that sits on the canvas rather than inside a card needs its own halo
+   now that the artwork behind it is bright. A shadow costs nothing and lets
+   the picture stay up, which darkening the wash back down would not. */
+.slide-title, .eyebrow, .q-stem, .q-ctx, .order-hint, .cover-title, .cover-sub,
+.score-big, .slide-body > .prose, .act-target-label {
+  text-shadow: 0 1px 2px rgba(0,0,0,0.55), 0 0 12px rgba(0,0,0,0.38);
+}
+html[data-theme="light"] .slide-title, html[data-theme="light"] .eyebrow,
+html[data-theme="light"] .q-stem, html[data-theme="light"] .q-ctx,
+html[data-theme="light"] .order-hint, html[data-theme="light"] .cover-title,
+html[data-theme="light"] .cover-sub, html[data-theme="light"] .score-big,
+html[data-theme="light"] .slide-body > .prose,
+html[data-theme="light"] .act-target-label {
+  text-shadow: 0 1px 2px rgba(255,255,255,0.75), 0 0 12px rgba(255,255,255,0.55);
+}
+.bg-layer::before { filter: saturate(0.28); }
+.slide[data-type="cover"] .cover-inner { position: relative; }
+.slide[data-type="cover"] .cover-inner > * { position: relative; z-index: 1; }
+.slide[data-type="cover"] .cover-inner::before {
+  content: ""; position: absolute; z-index: 0;
+  left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: 1010px; height: 500px; border-radius: 26px;
+  background: rgba(241,239,214,0.90);
+  box-shadow: 0 10px 60px rgba(0,0,0,0.28);
+}
+.slide[data-type="cover"] .cover-title,
+.slide[data-type="cover"] .cover-sub { text-shadow: none; }
+.slide[data-type="cover"] .chip {
+  background: #ffffff; border-color: var(--border); color: var(--text);
+}
+.stage.on-cover .deck-bar {
+  background: linear-gradient(180deg, transparent, rgba(241,239,214,0.92));
+}
+.deck-count, .deck-score { color: var(--text); }
+.eyebrow { color: var(--accent-bright); font-weight: 700; }
+.slide-title { text-shadow: 0 1px 0 rgba(255,255,255,0.75); }
+.card { background: rgba(238,236,208,0.94); }
+/* the reading passages are the one place this deck puts a block of
+   running text on screen, and the learner reads them twice. Solid. */
+.card.read-text { background: #f4f2e2; }
+</style>
+</head>
+<body>
+
+<div class="stage-wrap">
+  <div class="stage" id="stage">
+
+    <!-- Background pattern: driven entirely by --hero in the CSS above. -->
+    <div class="bg-layer" role="presentation"></div>
+
+    <!-- ══════════════════════════════════════════════════════════
+         REPLACE 2 of 2: SLIDES
+         Author one <section class="slide"> per screen.
+         data-type: cover | teach | mc | gap | match | order | discuss | results | activate
+         data-bg="folder/other.jpg" swaps the background pattern on that slide.
+         Everything a learner reads must fit WITHOUT scrolling.
+         If it does not fit, split it across two slides — never shrink type.
+         ══════════════════════════════════════════════════════════ -->
+
+
+    <section class="slide is-active" data-type="cover">
+      <div class="cover-inner">
+        <svg class="fe-logo" viewBox="0 0 200 78" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forbes English">
+          <g class="fe-logo-mark" transform="translate(-42.74,-30.22) scale(0.099477)"><g transform="translate(0,1504) scale(0.1,-0.1)" fill="currentColor" stroke="none"><path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47 l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21 -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9 -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58 105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141 144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392 -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31 c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55 -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0 -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226 144 331 156 51 6 127 -4 183 -25z"/><path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95 -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72 -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0 -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18 108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553 -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70 -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3 469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38 -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/><path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73 -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939 -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1 205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247 -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22 -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24 -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449 121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/><path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611 -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538 -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77 144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430 -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67 347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580 -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132 -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87 66 245 85 341 40z"/><path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140 -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134 -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287 -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101 -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107 173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392 207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599 281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241 111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2 347 -112 40 c-318 112 -594 149 -892 121z"/><path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149 l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801 -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6 -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294 -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12 -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29 -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55 -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12 -33 22 -42 21 -9 0 -199 -27 -422 -60z"/></g></g>
+          <text class="fe-logo-word" x="100" y="72.6" text-anchor="middle" font-family="'DM Sans', Arial, sans-serif" font-size="20.8" font-weight="600" letter-spacing="8">ENGLISH</text>
+        </svg>
+        <h1 class="cover-title" data-i18n="coverTitle">Out of <em>This World</em></h1>
+        <p class="cover-sub" data-i18n="coverSub">Part II: some and any, one and ones, reading technique, and the mock test</p>
+        <div class="cover-meta">
+          <span class="chip" data-i18n="chipLevel">A1+ / A2 &middot; Part II</span>
+          <span class="chip" data-i18n="chipFocus">Hours 4&ndash;5</span>
+          <span class="chip" data-i18n="chipCount">50 slides</span>
+        </div>
+        <div style="margin-top:34px">
+          <button class="btn btn-solid btn-lg" data-action="next" data-i18n="btnStart">Begin →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="saE">Hour 4 &middot; some or any</div>
+        <h2 class="slide-title" data-i18n="saT">The rule, and then the exception</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="sa1h">Positive → some</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">There are <strong>some</strong> apples.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="sa1n">This one never changes.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="sa2h">Negative → any</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">There aren't <strong>any</strong> plums.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="sa2n">After <em>not</em>, <em>isn't</em>, <em>don't</em> — always <em>any</em>.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="sa3h">Question → any</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Have you got <strong>any</strong> money?</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="sa3n">When you genuinely do not know the answer. Keep reading — the next slide is the case that catches people out.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="sbE">Hour 4 &middot; The case that catches people out</div>
+        <h2 class="slide-title" data-i18n="sbT">Offers and requests take some — even as questions</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="sb1h">An offer</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Would you like <strong>some</strong> tea?</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="sb1n">You are giving, not asking. <em>Would you like…?</em> is always an offer.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="sb2h">A request</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Can I have <strong>some</strong> water, please?</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="sb2n">You are asking for a thing, not asking whether it exists.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="sb3h">The overlap</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Have you got <strong>any</strong> / <strong>some</strong> apple juice?</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="sb3n">In a café this is really a request, so both are natural. In the test, <em>any</em> is the safe answer to a plain question — but you now know why you hear both.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="ooE">Hour 4 &middot; one or ones</div>
+        <h2 class="slide-title" data-i18n="ooT">So you do not have to say the noun twice</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="oo1h">one — singular</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">I like the red jacket. → I like the red <strong>one</strong>.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="oo1n">One thing.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="oo2h">ones — plural</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">I want the blue shoes. → I want the blue <strong>ones</strong>.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="oo2n">More than one thing. Shoes, glasses, trousers and jeans are always plural in English.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="oo3h">How to decide</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Look back at the noun in the question.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="oo3n">The question tells you. <em>Which shoes…?</em> → plural → <em>ones</em>. Nothing else decides it.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="rmE">Hour 4 &middot; Reading method</div>
+        <h2 class="slide-title" data-i18n="rmT1">Before you read the questions (1 of 2)</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="rm1h">1 &middot; Read the title</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">It tells you the topic before you meet a single sentence.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="rm2h">2 &middot; Look at any picture</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Free information, and it is usually about the main event.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="rm3h">3 &middot; Underline the facts</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Names, days, times, places, numbers.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="rm3n">Almost every True/False item is decided by one of these. Underline them and the answers are already on the page.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="rmE">Hour 4 &middot; Reading method</div>
+        <h2 class="slide-title" data-i18n="rmT2">Then answer (2 of 2)</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="rm4h">4 &middot; Read the question twice</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Small, large, Friday, Saturday — one word decides it.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="rm5h">5 &middot; Find the line</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Go back and point at the sentence that proves it.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="rm5n">If you cannot find the line, your answer is a guess. An answer that "sounds right" is the classic trap.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="rm6h">6 &middot; Full sentence if asked</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px"><em>Where did Mia go?</em> → Mia went to a restaurant.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="rm6n">If the instruction says <em>in full sentences</em>, one word scores nothing — however right it is.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="sgE">Hour 4 &middot; Activity 1</span> &middot; 1 / 2</div>
+        <h2 class="slide-title" data-i18n="sgT">some or any?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="sgHint">Decide what the sentence is doing first: stating, denying, asking, offering.</p>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:18px">There are <input class="gap" data-answer="some" aria-label="gap" style="width:140px"> grapes on the table.</p>
+          <p class="feedback" data-explain="A positive sentence → <strong>some</strong>."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:18px">There aren't <input class="gap" data-answer="any" aria-label="gap" style="width:140px"> onions left.</p>
+          <p class="feedback" data-explain="A negative sentence → <strong>any</strong>."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:18px">Have you got <input class="gap" data-answer="any|some" aria-label="gap" style="width:140px"> money?</p>
+          <p class="feedback" data-explain="A plain question → <strong>any</strong>. Both are accepted here: if you are really asking for money rather than checking, <em>some</em> is also natural English."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="sgE">Hour 4 &middot; Activity 1</span> &middot; 2 / 2</div>
+        <h2 class="slide-title" data-i18n="sgT">some or any?</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:18px">Can I have <input class="gap" data-answer="some" aria-label="gap" style="width:140px"> water, please?</p>
+          <p class="feedback" data-explain="A request → <strong>some</strong>. <em>Please</em> is the giveaway."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:18px">I don't want <input class="gap" data-answer="any" aria-label="gap" style="width:140px"> soup.</p>
+          <p class="feedback" data-explain="Negative (<em>don't want</em>) → <strong>any</strong>."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:18px">Would you like <input class="gap" data-answer="some" aria-label="gap" style="width:140px"> orange juice?</p>
+          <p class="feedback" data-explain="An offer → <strong>some</strong>. <em>Would you like…?</em> is always an offer, never a plain question."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="ogE">Hour 4 &middot; Activity 2</span> &middot; 1 / 2</div>
+        <h2 class="slide-title" data-i18n="ogT">one or ones?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="ogHint">Look back at the noun in the question.</p>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:18px">Which cake do you want? The chocolate <input class="gap" data-answer="one" aria-label="gap" style="width:140px">.</p>
+          <p class="feedback" data-explain="One cake, singular → <strong>one</strong>."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:18px">Which shoes do you like? The black <input class="gap" data-answer="ones" aria-label="gap" style="width:140px">.</p>
+          <p class="feedback" data-explain="Shoes are plural → <strong>ones</strong>."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:18px">Do you want the small pizza or the large <input class="gap" data-answer="one" aria-label="gap" style="width:140px">?</p>
+          <p class="feedback" data-explain="One pizza, singular → <strong>one</strong>."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="ogE">Hour 4 &middot; Activity 2</span> &middot; 2 / 2</div>
+        <h2 class="slide-title" data-i18n="ogT">one or ones?</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:18px">I don't like these glasses. I like the old <input class="gap" data-answer="ones" aria-label="gap" style="width:140px">.</p>
+          <p class="feedback" data-explain="Glasses are plural → <strong>ones</strong>."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:18px">Which bananas do you want? The yellow <input class="gap" data-answer="ones" aria-label="gap" style="width:140px">.</p>
+          <p class="feedback" data-explain="Bananas are plural → <strong>ones</strong>."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="ExamPrep/hero.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="r1E">Hour 4 &middot; Reading 1</div>
+        <h2 class="slide-title" data-i18n="r1T">Mia's restaurant</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="card read-text" style="padding:26px 30px">
+          <p class="prose" style="font-size:21px;line-height:1.65">Yesterday, Mia went to a restaurant with her family. She wanted pizza, but there wasn't any pizza left. Her brother had chicken and potatoes. Mia had pancakes with strawberries. Later, they bought some ice cream.</p>
+        </div>
+        <p class="prose dim" style="margin-top:14px;font-size:16px"
+           data-i18n="r1N">Underline the names, the food and the word <em>left</em> before you turn the page.</p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="tf1E">Hour 4 &middot; Activity 3</span> &middot; 1 / 2</div>
+        <h2 class="slide-title" data-i18n="tf1T">True or false?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">There was a lot of pizza at the restaurant.</p>
+        <div class="opts">
+          <button class="opt">True</button>
+          <button class="opt" data-correct>False</button>
+        </div>
+        <p class="feedback" data-explain="<strong>False.</strong> The text says there <em>wasn't any pizza left</em>."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="tf1E">Hour 4 &middot; Activity 3</span> &middot; 2 / 2</div>
+        <h2 class="slide-title" data-i18n="tf1T">True or false?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Mia had pancakes with strawberries.</p>
+        <div class="opts">
+          <button class="opt" data-correct>True</button>
+          <button class="opt">False</button>
+        </div>
+        <p class="feedback" data-explain="<strong>True.</strong> Straight from the text — this is the kind of mark you must not lose."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="fsE">Hour 4 &middot; Full sentences</div>
+        <h2 class="slide-title" data-i18n="fsT">What a full answer looks like</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="fs1h">Where did Mia go yesterday?</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Mia <strong>went to a restaurant</strong> yesterday.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="fs1n">The answer reuses the words of the question. That is the whole technique.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="fs2h">What did her brother eat?</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Her brother <strong>ate chicken and potatoes</strong>.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="fs2n">Past question → past answer. <em>Ate</em>, not <em>eat</em>.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="fs3h">What did they buy later?</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">They <strong>bought some ice cream</strong> later.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="fs3n">Not "ice cream". A full sentence needs a subject and a verb.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="dgE">Hour 4 &middot; Activity 4</span> &middot; 1 / 2</div>
+        <h2 class="slide-title" data-i18n="dgT">At the restaurant — some or any?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="dgHint">Read who is speaking. A waiter offers; a customer asks.</p>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px"><strong>Waiter:</strong> Good evening! Would you like <input class="gap" data-answer="some" aria-label="gap" style="width:130px"> water?</p>
+          <p class="feedback" data-explain="An offer → <strong>some</strong>."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px"><strong>Customer:</strong> Yes, please. And have you got <input class="gap" data-answer="any|some" aria-label="gap" style="width:130px"> apple juice?</p>
+          <p class="feedback" data-explain="A question → <strong>any</strong> is the neutral form. <em>Some</em> is also correct here, because the customer is really making a request."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px"><strong>Waiter:</strong> Sorry, there isn't <input class="gap" data-answer="any" aria-label="gap" style="width:130px"> apple juice&hellip;</p>
+          <p class="feedback" data-explain="A negative → <strong>any</strong>. Only <em>any</em> works after <em>isn't</em>."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="dgE">Hour 4 &middot; Activity 4</span> &middot; 2 / 2</div>
+        <h2 class="slide-title" data-i18n="dgT">At the restaurant — some or any?</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">&hellip;but we have <input class="gap" data-answer="some" aria-label="gap" style="width:130px"> orange juice.</p>
+          <p class="feedback" data-explain="A positive statement → <strong>some</strong>."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px"><strong>Customer:</strong> OK, I'll have <input class="gap" data-answer="some" aria-label="gap" style="width:130px"> orange juice. Thank you!</p>
+          <p class="feedback" data-explain="A request → <strong>some</strong>."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="doE">Hour 4 &middot; Activity 5</span> &middot; 1 / 2</div>
+        <h2 class="slide-title" data-i18n="doT">In the shop — one or ones?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="doHint">The assistant's question tells you singular or plural.</p>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px"><strong>Assistant:</strong> Which jacket would you like?<br><strong>Customer:</strong> The red <input class="gap" data-answer="one" aria-label="gap" style="width:130px">, please.</p>
+          <p class="feedback" data-explain="One jacket → <strong>one</strong>. Look back at the question to find out whether the thing is singular or plural."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px"><strong>Assistant:</strong> And which shoes?<br><strong>Customer:</strong> The black <input class="gap" data-answer="ones" aria-label="gap" style="width:130px">.</p>
+          <p class="feedback" data-explain="Shoes are plural → <strong>ones</strong>."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="doE">Hour 4 &middot; Activity 5</span> &middot; 2 / 2</div>
+        <h2 class="slide-title" data-i18n="doT">In the shop — one or ones?</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px"><strong>Assistant:</strong> The small bag or the large <input class="gap" data-answer="one" aria-label="gap" style="width:130px">?</p>
+          <p class="feedback" data-explain="One bag → <strong>one</strong>."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px"><strong>Customer:</strong> The small <input class="gap" data-answer="one" aria-label="gap" style="width:130px">, please.</p>
+          <p class="feedback" data-explain="Still one bag → <strong>one</strong>."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="ExamPrep/hero.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="r2E">Hour 4 &middot; Reading 2</div>
+        <h2 class="slide-title" data-i18n="r2T">Emma's restaurant visit</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="card read-text" style="padding:26px 30px">
+          <p class="prose" style="font-size:21px;line-height:1.65">Last Friday, Emma went to a new restaurant in the city centre. She wanted chicken but there wasn't any chicken left. The waiter recommended the lamb. Emma did not usually eat lamb, but she tried it and loved it! For dessert, she ordered the small cheesecake — she didn't want the large one. She also had some strawberries.</p>
+        </div>
+        <p class="prose dim" style="margin-top:14px;font-size:16px"
+           data-i18n="r2N">Watch the day, the two dishes, and the words <em>left</em>, <em>small</em> and <em>large</em>.</p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="tf2E">Hour 4 &middot; Activity 6</span> &middot; 1 / 4</div>
+        <h2 class="slide-title" data-i18n="tf2T">True or false?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Emma went to the restaurant on Saturday.</p>
+        <div class="opts">
+          <button class="opt">True</button>
+          <button class="opt" data-correct>False</button>
+        </div>
+        <p class="feedback" data-explain="<strong>False.</strong> The text says <em>Last Friday</em>. Days and dates are exactly what step 3 of the reading method tells you to underline."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="tf2E">Hour 4 &middot; Activity 6</span> &middot; 2 / 4</div>
+        <h2 class="slide-title" data-i18n="tf2T">True or false?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">There wasn't any chicken left when Emma ordered.</p>
+        <div class="opts">
+          <button class="opt" data-correct>True</button>
+          <button class="opt">False</button>
+        </div>
+        <p class="feedback" data-explain="<strong>True.</strong> Note the word <em>left</em> — the restaurant had chicken earlier and ran out."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="tf2E">Hour 4 &middot; Activity 6</span> &middot; 3 / 4</div>
+        <h2 class="slide-title" data-i18n="tf2T">True or false?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Emma loved the lamb.</p>
+        <div class="opts">
+          <button class="opt" data-correct>True</button>
+          <button class="opt">False</button>
+        </div>
+        <p class="feedback" data-explain="<strong>True.</strong> &quot;She tried it and loved it.&quot;"></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="tf2E">Hour 4 &middot; Activity 6</span> &middot; 4 / 4</div>
+        <h2 class="slide-title" data-i18n="tf2T">True or false?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Emma ordered the large cheesecake.</p>
+        <div class="opts">
+          <button class="opt">True</button>
+          <button class="opt" data-correct>False</button>
+        </div>
+        <p class="feedback" data-explain="<strong>False.</strong> She ordered the <em>small</em> one. One word decides it, which is why you read the question twice."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="r5E">Hour 4 &middot; Activity 6</span> &middot; 1 / 1</div>
+        <h2 class="slide-title" data-i18n="r5T">Complete from the text</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">For dessert, Emma had the small cheesecake and some <input class="gap" data-answer="strawberries" aria-label="gap" style="width:200px">.</p>
+          <p class="feedback" data-explain="<strong>strawberries</strong> — the last sentence of the text."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="mxE">Hour 4 &middot; Activity 7</span> &middot; 1 / 2</div>
+        <h2 class="slide-title" data-i18n="mxT">Mixed: some, any, one, ones</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="mxHint">All four are in play now. Decide what the sentence is doing, then whether the thing is singular or plural.</p>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:18px">I'd like <input class="gap" data-answer="some" aria-label="gap" style="width:140px"> grapes, please.</p>
+          <p class="feedback" data-explain="A request → <strong>some</strong>."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:18px">Have you got <input class="gap" data-answer="any|some" aria-label="gap" style="width:140px"> onions?</p>
+          <p class="feedback" data-explain="<strong>Any</strong> is the neutral question form. In a shop this is really a request, so <em>some</em> is also correct."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:18px">Which apple do you want? The green <input class="gap" data-answer="one" aria-label="gap" style="width:140px">.</p>
+          <p class="feedback" data-explain="One apple → <strong>one</strong>."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="mxE">Hour 4 &middot; Activity 7</span> &middot; 2 / 2</div>
+        <h2 class="slide-title" data-i18n="mxT">Mixed: some, any, one, ones</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:18px">Would you like <input class="gap" data-answer="some" aria-label="gap" style="width:140px"> more water?</p>
+          <p class="feedback" data-explain="An offer → <strong>some</strong>."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:18px">I don't like these old shoes. I prefer the new <input class="gap" data-answer="ones" aria-label="gap" style="width:140px">.</p>
+          <p class="feedback" data-explain="Shoes are plural → <strong>ones</strong>."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="stE">Hour 5 &middot; Guided writing</div>
+        <h2 class="slide-title" data-i18n="stT">The shape of a story that scores</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="st1h">Beginning</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">When? Who? Where?</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="st1n">Two sentences is enough. Start with a time marker and the examiner knows immediately that you can use one.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="st2h">Middle, then the problem</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">What happened? What went wrong?</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="st2n">A story with no problem is a list. The problem is what makes the reader keep going.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="st3h">Ending</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">What happened in the end?</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="st3n">Finish it. An unfinished story loses marks even if every sentence in it is correct.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="phE">Hour 5 &middot; Guided writing</div>
+        <h2 class="slide-title" data-i18n="phT">Phrases to join it together</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="ph1h">To begin</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Last weekend &middot; One day &middot; Yesterday</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="ph2h">To go on</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">First &middot; Then &middot; After that &middot; Later</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="ph3h">For the surprise, and the end</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Suddenly &middot; But then &middot; In the end &middot; Finally</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="ph3n">Use three or four across the whole text. Ten is worse than three — it stops being a story and becomes a list of connectors.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="ExamPrep/hero.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="mdE">Hour 5 &middot; Model text</div>
+        <h2 class="slide-title" data-i18n="mdT1">A story that does the job (1 of 2)</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="card read-text" style="padding:26px 30px">
+          <p class="prose" style="font-size:21px;line-height:1.65"><strong>Last Saturday,</strong> Mia and her brother went to the space centre. They looked at a big spaceship and took <strong>some</strong> photos. <strong>Suddenly,</strong> they heard a strange noise. An alien came out of the spaceship! At first Mia was scared, but the alien was friendly.</p>
+        </div>
+        <p class="prose dim" style="margin-top:14px;font-size:16px"
+           data-i18n="mdN1">Bold marks every checklist item as it happens: a time marker to open, <em>some</em>, and <em>suddenly</em> for the surprise.</p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="ExamPrep/hero.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="mdE">Hour 5 &middot; Model text</div>
+        <h2 class="slide-title" data-i18n="mdT2">A story that does the job (2 of 2)</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="card read-text" style="padding:26px 30px">
+          <p class="prose" style="font-size:21px;line-height:1.65">He was hungry, so they gave him <strong>some</strong> pancakes and <strong>some</strong> strawberries. He <strong>didn't like</strong> the pancakes, but he loved the strawberries. He wanted more, but there weren't <strong>any</strong> left. <strong>Later,</strong> the alien went back into the spaceship. Before he left, he gave Mia two small stones — a green <strong>one</strong> and a blue <strong>one</strong>. <strong>In the end,</strong> Mia was happy, because she <strong>had</strong> an exciting story to tell at school.</p>
+        </div>
+        <p class="prose dim" style="margin-top:14px;font-size:16px"
+           data-i18n="mdN2">112 words in total. Note <em>any</em> in the negative, <em>one</em> twice, and three irregular pasts — <em>gave</em>, <em>went</em>, <em>had</em>. The old model was 99 words and never showed <em>one</em> at all.</p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="ecE">Hour 5 &middot; Before the mock test</div>
+        <h2 class="slide-title" data-i18n="ecT">The five mistakes the error-correction section tests</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="ec1h">The -s, and don't / doesn't</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">She <strong>doesn't</strong> eat meat.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="ec1n">she / he / it → doesn't. Everyone else → don't.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="ec2h">The base verb after did</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Did she <strong>go</strong>? &middot; I didn't <strong>see</strong> it.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="ec2n">Never <em>did she went</em>. The past is inside <em>did</em>.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="ec3h">any in negatives, ones for plurals</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">There isn't <strong>any</strong> milk. &middot; The red <strong>ones</strong>.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="ec3n">And <em>Look!</em> always forces the progressive. Five rules — that is the whole section.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="v5E">Mock test &middot; Section 1</span> &middot; 1 / 2</div>
+        <h2 class="slide-title" data-i18n="v5T">Vocabulary</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="v5Hint">No word bank this time — this is the test.</p>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">The ship landed and three <input class="gap" data-answer="aliens|alien" aria-label="gap" style="width:170px"> walked out onto the sand.</p>
+          <p class="feedback" data-explain="<strong>Aliens</strong> — beings from another planet. The plural takes <em>-s</em> like any other noun."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">You cannot breathe outside, so put your <input class="gap" data-answer="spacesuit|space suit" aria-label="gap" style="width:170px"> on first.</p>
+          <p class="feedback" data-explain="<strong>Spacesuit</strong> (<em>Raumanzug</em>)."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">Small, red and sweet, and they grow near the ground: <input class="gap" data-answer="strawberries" aria-label="gap" style="width:170px">.</p>
+          <p class="feedback" data-explain="<strong>Strawberries</strong> (<em>Erdbeeren</em>). Pears grow on trees; these do not."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="v5E">Mock test &middot; Section 1</span> &middot; 2 / 2</div>
+        <h2 class="slide-title" data-i18n="v5T">Vocabulary</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">Beef, chicken and lamb are all types of <input class="gap" data-answer="meat" aria-label="gap" style="width:170px">.</p>
+          <p class="feedback" data-explain="<strong>Meat</strong> (<em>Fleisch</em>) — the category, not one of the three."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">The <input class="gap" data-answer="commander" aria-label="gap" style="width:170px"> gave the order and the ship left the space centre.</p>
+          <p class="feedback" data-explain="<strong>Commander</strong> (<em>Kommandant/in</em>) — the person in charge."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="g5E">Mock test &middot; Section 2</span> &middot; 1 / 2</div>
+        <h2 class="slide-title" data-i18n="g5T">Grammar</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">She usually <input class="gap" data-answer="goes" aria-label="gap" style="width:160px"> (go) to school by bus.</p>
+          <p class="feedback" data-explain="<strong>Usually</strong> is a habit → present simple, and <em>she</em> takes <em>-es</em> after <em>-o</em>."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">Look! The alien <input class="gap" data-answer="is leaving|'s leaving" aria-label="gap" style="width:160px"> (leave) the spaceship.</p>
+          <p class="feedback" data-explain="<strong>Look!</strong> → present progressive."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">Yesterday, I <input class="gap" data-answer="watched" aria-label="gap" style="width:160px"> (watch) a science fiction film.</p>
+          <p class="feedback" data-explain="<strong>Yesterday</strong> → past simple. <em>Watch</em> is regular, so just <em>-ed</em>."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="g5E">Mock test &middot; Section 2</span> &middot; 2 / 2</div>
+        <h2 class="slide-title" data-i18n="g5T">Grammar</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">Did you <input class="gap" data-answer="eat" aria-label="gap" style="width:160px"> (eat) pizza yesterday?</p>
+          <p class="feedback" data-explain="After <strong>did</strong>, the basic verb — <em>eat</em>, never <em>ate</em>."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">There aren't <input class="gap" data-answer="any" aria-label="gap" style="width:160px"> tomatoes.</p>
+          <p class="feedback" data-explain="A negative → <strong>any</strong>."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">Which cake do you want? The small <input class="gap" data-answer="one" aria-label="gap" style="width:160px">.</p>
+          <p class="feedback" data-explain="One cake → <strong>one</strong>."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="ExamPrep/hero.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="r3E">Mock test &middot; Section 3</div>
+        <h2 class="slide-title" data-i18n="r3T">The space camp</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="card read-text" style="padding:26px 30px">
+          <p class="prose" style="font-size:21px;line-height:1.65">Last week, Tom and his sister went to a space camp. They saw a real spacesuit and ate lunch in a rocket café. Tom wanted a burger, but there wasn't any beef. He had chicken instead. His sister had a salad with peppers and tomatoes.</p>
+        </div>
+        <p class="prose dim" style="margin-top:14px;font-size:16px"
+           data-i18n="r3N">Three questions follow. Underline first.</p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="r3qE">Mock test &middot; Section 3</span> &middot; 1 / 2</div>
+        <h2 class="slide-title" data-i18n="r3qT">True or false?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Tom and his sister went to a space camp last week.</p>
+        <div class="opts">
+          <button class="opt" data-correct>True</button>
+          <button class="opt">False</button>
+        </div>
+        <p class="feedback" data-explain="<strong>True.</strong> First sentence of the text."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="r3qE">Mock test &middot; Section 3</span> &middot; 2 / 2</div>
+        <h2 class="slide-title" data-i18n="r3qT">True or false?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Tom ate a beef burger.</p>
+        <div class="opts">
+          <button class="opt">True</button>
+          <button class="opt" data-correct>False</button>
+        </div>
+        <p class="feedback" data-explain="<strong>False.</strong> He wanted one, but there wasn't any beef, so he had chicken. <em>Wanted</em> is not <em>ate</em>."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="r3gE">Mock test &middot; Section 3</span> &middot; 1 / 1</div>
+        <h2 class="slide-title" data-i18n="r3gT">Complete from the text</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">His sister had a salad with peppers and <input class="gap" data-answer="tomatoes|tomato" aria-label="gap" style="width:190px">.</p>
+          <p class="feedback" data-explain="<strong>Tomatoes</strong> — last sentence. Both the singular and the plural are accepted."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="e5E">Mock test &middot; Section 4</span> &middot; 1 / 2</div>
+        <h2 class="slide-title" data-i18n="e5T">Error correction</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="e5Hint">Each sentence has one mistake. Write the correction only.</p>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:16px">Wrong: <em>She don't eat meat.</em> &nbsp;→&nbsp; She <input class="gap" data-answer="doesn't|does not" aria-label="gap" style="width:140px"> eat meat.</p>
+          <p class="feedback" data-explain="she → <strong>doesn't</strong>."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:16px">Wrong: <em>Look! The alien leaves the spaceship.</em> &nbsp;→&nbsp; Look! The alien <input class="gap" data-answer="is leaving|'s leaving" aria-label="gap" style="width:140px"> the spaceship.</p>
+          <p class="feedback" data-explain="<strong>Look!</strong> forces the progressive."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:16px">Wrong: <em>Did she went to the restaurant?</em> &nbsp;→&nbsp; Did she <input class="gap" data-answer="go" aria-label="gap" style="width:140px"> to the restaurant?</p>
+          <p class="feedback" data-explain="Basic verb after <strong>did</strong>."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="e5E">Mock test &middot; Section 4</span> &middot; 2 / 2</div>
+        <h2 class="slide-title" data-i18n="e5T">Error correction</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:16px">Wrong: <em>There isn't some milk.</em> &nbsp;→&nbsp; There isn't <input class="gap" data-answer="any" aria-label="gap" style="width:140px"> milk.</p>
+          <p class="feedback" data-explain="A negative takes <strong>any</strong>, never <em>some</em>."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:16px">Wrong: <em>I want the red one.</em> (the question was about shoes) &nbsp;→&nbsp; I want the red <input class="gap" data-answer="ones" aria-label="gap" style="width:140px">.</p>
+          <p class="feedback" data-explain="Shoes are plural → <strong>ones</strong>."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="s5E">Mock test &middot; Section 5</span> &middot; 1 / 2</div>
+        <h2 class="slide-title" data-i18n="s5T">some &middot; any &middot; one &middot; ones</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:18px">Would you like <input class="gap" data-answer="some" aria-label="gap" style="width:140px"> ice cream?</p>
+          <p class="feedback" data-explain="An offer → <strong>some</strong>."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:18px">He doesn't have <input class="gap" data-answer="any" aria-label="gap" style="width:140px"> money.</p>
+          <p class="feedback" data-explain="A negative → <strong>any</strong>."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="s5E">Mock test &middot; Section 5</span> &middot; 2 / 2</div>
+        <h2 class="slide-title" data-i18n="s5T">some &middot; any &middot; one &middot; ones</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:18px">Which pizza is yours? The small <input class="gap" data-answer="one" aria-label="gap" style="width:140px">.</p>
+          <p class="feedback" data-explain="One pizza → <strong>one</strong>."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:18px">Those are nice pears. I want the yellow <input class="gap" data-answer="ones" aria-label="gap" style="width:140px">.</p>
+          <p class="feedback" data-explain="Pears are plural → <strong>ones</strong>."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="ExamPrep/hero.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="r4E">Mock test &middot; Section 6</div>
+        <h2 class="slide-title" data-i18n="r4T">The space museum</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="card read-text" style="padding:26px 30px">
+          <p class="prose" style="font-size:21px;line-height:1.65">Yesterday, Lena and her family visited a space museum. They watched a film about planets and saw some old spacesuits. Lena's favourite was a red one from the 1960s. She also found an alien toy in the museum shop. She didn't buy it because there wasn't any money left. Later, they ate some pizza in the café.</p>
+        </div>
+        <p class="prose dim" style="margin-top:14px;font-size:16px"
+           data-i18n="r4N">Four questions follow — two true/false, one gap and one multiple choice.</p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="r4qE">Mock test &middot; Section 6</span> &middot; 1 / 2</div>
+        <h2 class="slide-title" data-i18n="r4qT">True or false?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Lena visited the space museum yesterday.</p>
+        <div class="opts">
+          <button class="opt" data-correct>True</button>
+          <button class="opt">False</button>
+        </div>
+        <p class="feedback" data-explain="<strong>True.</strong> The text opens with <em>Yesterday</em>."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="r4qE">Mock test &middot; Section 6</span> &middot; 2 / 2</div>
+        <h2 class="slide-title" data-i18n="r4qT">True or false?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Lena's favourite spacesuit was blue.</p>
+        <div class="opts">
+          <button class="opt">True</button>
+          <button class="opt" data-correct>False</button>
+        </div>
+        <p class="feedback" data-explain="<strong>False.</strong> &quot;Her favourite was a red <em>one</em>&quot; — and note that <em>one</em> is standing in for <em>spacesuit</em>, which is the grammar from Hour 4 doing real work in a text."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="r4gE">Mock test &middot; Section 6</span> &middot; 1 / 1</div>
+        <h2 class="slide-title" data-i18n="r4gT">Complete from the text</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">Lena found an alien <input class="gap" data-answer="toy" aria-label="gap" style="width:180px"> in the museum shop.</p>
+          <p class="feedback" data-explain="<strong>Toy</strong> — the sentence is there in the text, and this is what step 5 of the reading method is for."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="r4mE">Mock test &middot; Section 6</span> &middot; 1 / 1</div>
+        <h2 class="slide-title" data-i18n="r4mT">Why?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Why didn't Lena buy the alien toy?</p>
+        <div class="opts">
+          <button class="opt" data-correct>There wasn't any money left.</button>
+          <button class="opt">The museum shop was already closed.</button>
+          <button class="opt">She did not really like it very much.</button>
+        </div>
+        <p class="feedback" data-explain="The text says <strong>there wasn't any money left</strong>. The other two are the kind of answer that sounds reasonable but is not in the text — always go back and find the line."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="results">
+      <div class="slide-body" style="align-items:center;text-align:center">
+        <div class="score-big"><span id="scoreVal">0</span><span class="dim" style="font-size:34px">/<span id="scoreMax">0</span></span></div>
+        <p class="prose" style="margin-top:18px" id="scoreMsg"></p>
+        <p class="prose dim" style="margin-top:14px" data-i18n="resNext">Now use it →</p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="activate">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="actEyebrow">Activation</div>
+        <h2 class="slide-title" data-i18n="actTitle">The Alien in the Restaurant</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target">
+          <span class="act-target-label" data-i18n="actUse">Use at least four:</span>
+          <span class="bank-chip">some</span>
+          <span class="bank-chip">any</span>
+          <span class="bank-chip">one / ones</span>
+          <span class="bank-chip">suddenly</span>
+          <span class="bank-chip">In the end</span>
+          <span class="bank-chip">went</span>
+          <span class="bank-chip">had</span>
+        </div>
+        <div class="cols act-cols">
+          <div class="card act-card">
+            <div class="act-kind"><span class="act-icon">🗣</span><span data-i18n="actSpeakKind">Speaking &middot; in pairs</span></div>
+            <p class="act-brief" data-i18n="actSpeakBrief">One of you is the waiter. The other has brought an alien to dinner.</p>
+            <ul class="act-list">
+              <li data-i18n="actSpeak1">Waiter: offer four things, every offer with <em>some</em>. Two of them have run out — say so with <em>any</em>.</li>
+              <li data-i18n="actSpeak2">Customer: order using <em>one</em> and <em>ones</em> at least once each. Do not repeat the noun.</li>
+              <li data-i18n="actSpeak3">Both: the alien does not like the first dish. Sort it out without either of you being rude.</li>
+              <li data-i18n="actSpeak4">Both: tell the story afterwards in the past simple, in six sentences, starting with a time marker.</li>
+            </ul>
+          </div>
+          <div class="card act-card">
+            <div class="act-kind"><span class="act-icon">✍️</span><span data-i18n="actWriteKind">Writing &middot; 100&ndash;120 words</span></div>
+            <p class="act-brief" data-i18n="actWriteBrief">Write "The Alien in the Restaurant". Check it against the model: a time marker to open, some and any used correctly, one or ones once, three irregular past verbs, and a real ending.</p>
+            <textarea class="act-input" id="actInput" data-i18n-ph="actPlaceholder" placeholder="Last Saturday, an alien came into our restaurant. Suddenly, …" aria-label="Written response"></textarea>
+            <div class="act-foot">
+              <span class="act-count" id="actCount">0 words</span>
+              <button class="btn act-copy" data-action="copy-writing" data-i18n="btnCopy">Copy</button>
+            </div>
+            <div class="act-print" id="actPrint" aria-hidden="true"></div>
+          </div>
+        </div>
+        <div style="margin-top:14px;text-align:center">
+          <button class="btn" data-action="restart" data-i18n="btnRestart">Start again</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── DECK CHROME ──────────────────────────────────────── -->
+    <div class="deck-bar">
+      <select class="lang-select" id="langSelect" aria-label="Language"></select>
+      <button class="nav-btn" data-action="prev" aria-label="Previous">‹</button>
+      <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+      <span class="deck-count" id="deckCount">1 / 1</span>
+      <span class="deck-score" id="deckScore"></span>
+      <button class="nav-btn" data-action="next" aria-label="Next">›</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════
+   ENGINE — identical in every lesson. Do not edit below this line
+   except to add UI_I18N strings.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── Languages. English is the base; German ships complete.
+      The other eight are deliberately empty — t() falls back to English,
+      so an unfinished language can never blank the interface. ── */
+const LANGS = [
+  { code:'en', label:'English'   }, { code:'de', label:'Deutsch'  },
+  { code:'es', label:'Español'   }, { code:'fr', label:'Français' },
+  { code:'it', label:'Italiano'  }, { code:'pt', label:'Português'},
+  { code:'ru', label:'Русский'   }, { code:'ar', label:'العربية'  },
+  { code:'zh', label:'中文'       }, { code:'ja', label:'日本語'    }
+];
+const RTL_LANGS = ['ar'];
+
+const UI_I18N = {
+  en: {
+    actEyebrow: 'Activation',
+    actPlaceholder: "Last Saturday, an alien came into our restaurant. Suddenly, …",
+    actSpeak1: "Waiter: offer four things, every offer with <em>some</em>. Two of them have run out — say so with <em>any</em>.",
+    actSpeak2: "Customer: order using <em>one</em> and <em>ones</em> at least once each. Do not repeat the noun.",
+    actSpeak3: "Both: the alien does not like the first dish. Sort it out without either of you being rude.",
+    actSpeak4: "Both: tell the story afterwards in the past simple, in six sentences, starting with a time marker.",
+    actSpeakBrief: "One of you is the waiter. The other has brought an alien to dinner.",
+    actSpeakKind: 'Discussion · in pairs',
+    actTitle: "The Alien in the Restaurant",
+    actUse: "Use at least four:",
+    actWriteBrief: "Write \"The Alien in the Restaurant\". Check it against the model: a time marker to open, some and any used correctly, one or ones once, three irregular past verbs, and a real ending.",
+    actWriteKind: "Writing &middot; 100–120 words",
+    btnCheck: 'Check',
+    btnCopied: 'Copied',
+    btnCopy: 'Copy',
+    btnNext: 'Next →',
+    btnRestart: 'Start again',
+    btnStart: 'Begin →',
+    chipCount: "50 slides",
+    chipFocus: "Hours 4&ndash;5",
+    chipLevel: "A1+ / A2 &middot; Part II",
+    coverSub: "Part II: some and any, one and ones, reading technique, and the mock test",
+    coverTitle: "Out of <em>This World</em>",
+    dgE: "Hour 4 &middot; Activity 4",
+    dgHint: "Read who is speaking. A waiter offers; a customer asks.",
+    dgT: "At the restaurant — some or any?",
+    doE: "Hour 4 &middot; Activity 5",
+    doHint: "The assistant's question tells you singular or plural.",
+    doT: "In the shop — one or ones?",
+    e5E: "Mock test &middot; Section 4",
+    e5Hint: "Each sentence has one mistake. Write the correction only.",
+    e5T: "Error correction",
+    ec1h: "The -s, and don't / doesn't",
+    ec1n: "she / he / it → doesn't. Everyone else → don't.",
+    ec2h: "The base verb after did",
+    ec2n: "Never <em>did she went</em>. The past is inside <em>did</em>.",
+    ec3h: "any in negatives, ones for plurals",
+    ec3n: "And <em>Look!</em> always forces the progressive. Five rules — that is the whole section.",
+    ecE: "Hour 5 &middot; Before the mock test",
+    ecT: "The five mistakes the error-correction section tests",
+    fbAnswer: 'Answer:',
+    fbCorrect: 'Correct.',
+    fbWrong: 'Not quite.',
+    fs1h: "Where did Mia go yesterday?",
+    fs1n: "The answer reuses the words of the question. That is the whole technique.",
+    fs2h: "What did her brother eat?",
+    fs2n: "Past question → past answer. <em>Ate</em>, not <em>eat</em>.",
+    fs3h: "What did they buy later?",
+    fs3n: "Not \"ice cream\". A full sentence needs a subject and a verb.",
+    fsE: "Hour 4 &middot; Full sentences",
+    fsT: "What a full answer looks like",
+    g5E: "Mock test &middot; Section 2",
+    g5T: "Grammar",
+    mdE: "Hour 5 &middot; Model text",
+    mdN1: "Bold marks every checklist item as it happens: a time marker to open, <em>some</em>, and <em>suddenly</em> for the surprise.",
+    mdN2: "112 words in total. Note <em>any</em> in the negative, <em>one</em> twice, and three irregular pasts — <em>gave</em>, <em>went</em>, <em>had</em>. The old model was 99 words and never showed <em>one</em> at all.",
+    mdT1: "A story that does the job (1 of 2)",
+    mdT2: "A story that does the job (2 of 2)",
+    mxE: "Hour 4 &middot; Activity 7",
+    mxHint: "All four are in play now. Decide what the sentence is doing, then whether the thing is singular or plural.",
+    mxT: "Mixed: some, any, one, ones",
+    ogE: "Hour 4 &middot; Activity 2",
+    ogHint: "Look back at the noun in the question.",
+    ogT: "one or ones?",
+    oo1h: "one — singular",
+    oo1n: "One thing.",
+    oo2h: "ones — plural",
+    oo2n: "More than one thing. Shoes, glasses, trousers and jeans are always plural in English.",
+    oo3h: "How to decide",
+    oo3n: "The question tells you. <em>Which shoes…?</em> → plural → <em>ones</em>. Nothing else decides it.",
+    ooE: "Hour 4 &middot; one or ones",
+    ooT: "So you do not have to say the noun twice",
+    ph1h: "To begin",
+    ph2h: "To go on",
+    ph3h: "For the surprise, and the end",
+    ph3n: "Use three or four across the whole text. Ten is worse than three — it stops being a story and becomes a list of connectors.",
+    phE: "Hour 5 &middot; Guided writing",
+    phT: "Phrases to join it together",
+    r1E: "Hour 4 &middot; Reading 1",
+    r1N: "Underline the names, the food and the word <em>left</em> before you turn the page.",
+    r1T: "Mia's restaurant",
+    r2E: "Hour 4 &middot; Reading 2",
+    r2N: "Watch the day, the two dishes, and the words <em>left</em>, <em>small</em> and <em>large</em>.",
+    r2T: "Emma's restaurant visit",
+    r3E: "Mock test &middot; Section 3",
+    r3N: "Three questions follow. Underline first.",
+    r3T: "The space camp",
+    r3gE: "Mock test &middot; Section 3",
+    r3gT: "Complete from the text",
+    r3qE: "Mock test &middot; Section 3",
+    r3qT: "True or false?",
+    r4E: "Mock test &middot; Section 6",
+    r4N: "Four questions follow — two true/false, one gap and one multiple choice.",
+    r4T: "The space museum",
+    r4gE: "Mock test &middot; Section 6",
+    r4gT: "Complete from the text",
+    r4mE: "Mock test &middot; Section 6",
+    r4mT: "Why?",
+    r4qE: "Mock test &middot; Section 6",
+    r4qT: "True or false?",
+    r5E: "Hour 4 &middot; Activity 6",
+    r5T: "Complete from the text",
+    resLow: "Go back to Hour 4 and read the two some/any slides and the one/ones slide again, then run the mock a second time.",
+    resMid: "A solid pass. Sections 4 and 5 are usually where the marks are: five rules, and they are all on the slide before the mock.",
+    resNext: 'Recognising the language is half of it. Now produce it →',
+    resPerfect: "Full marks on the mock. You are ready for the real thing.",
+    resStrong: "Strong. Look at which section your misses came from and read that hour again — the mock is a diagnosis, not a verdict.",
+    rm1h: "1 &middot; Read the title",
+    rm2h: "2 &middot; Look at any picture",
+    rm3h: "3 &middot; Underline the facts",
+    rm3n: "Almost every True/False item is decided by one of these. Underline them and the answers are already on the page.",
+    rm4h: "4 &middot; Read the question twice",
+    rm5h: "5 &middot; Find the line",
+    rm5n: "If you cannot find the line, your answer is a guess. An answer that \"sounds right\" is the classic trap.",
+    rm6h: "6 &middot; Full sentence if asked",
+    rm6n: "If the instruction says <em>in full sentences</em>, one word scores nothing — however right it is.",
+    rmE: "Hour 4 &middot; Reading method",
+    rmT1: "Before you read the questions (1 of 2)",
+    rmT2: "Then answer (2 of 2)",
+    s5E: "Mock test &middot; Section 5",
+    s5T: "some &middot; any &middot; one &middot; ones",
+    sa1h: "Positive → some",
+    sa1n: "This one never changes.",
+    sa2h: "Negative → any",
+    sa2n: "After <em>not</em>, <em>isn't</em>, <em>don't</em> — always <em>any</em>.",
+    sa3h: "Question → any",
+    sa3n: "When you genuinely do not know the answer. Keep reading — the next slide is the case that catches people out.",
+    saE: "Hour 4 &middot; some or any",
+    saT: "The rule, and then the exception",
+    sb1h: "An offer",
+    sb1n: "You are giving, not asking. <em>Would you like…?</em> is always an offer.",
+    sb2h: "A request",
+    sb2n: "You are asking for a thing, not asking whether it exists.",
+    sb3h: "The overlap",
+    sb3n: "In a café this is really a request, so both are natural. In the test, <em>any</em> is the safe answer to a plain question — but you now know why you hear both.",
+    sbE: "Hour 4 &middot; The case that catches people out",
+    sbT: "Offers and requests take some — even as questions",
+    scoreLabel: 'Score',
+    sgE: "Hour 4 &middot; Activity 1",
+    sgHint: "Decide what the sentence is doing first: stating, denying, asking, offering.",
+    sgT: "some or any?",
+    slideOf: (a,b)=>`${a} / ${b}`,
+    st1h: "Beginning",
+    st1n: "Two sentences is enough. Start with a time marker and the examiner knows immediately that you can use one.",
+    st2h: "Middle, then the problem",
+    st2n: "A story with no problem is a list. The problem is what makes the reader keep going.",
+    st3h: "Ending",
+    st3n: "Finish it. An unfinished story loses marks even if every sentence in it is correct.",
+    stE: "Hour 5 &middot; Guided writing",
+    stT: "The shape of a story that scores",
+    tf1E: "Hour 4 &middot; Activity 3",
+    tf1T: "True or false?",
+    tf2E: "Hour 4 &middot; Activity 6",
+    tf2T: "True or false?",
+    v5E: "Mock test &middot; Section 1",
+    v5Hint: "No word bank this time — this is the test.",
+    v5T: "Vocabulary",
+    wordCount: (n)=>`${n} ${n===1?'word':'words'}`
+  },
+  de: {
+    actEyebrow: 'Anwendung',
+    actPlaceholder: "Last Saturday, an alien came into our restaurant. Suddenly, …",
+    actSpeak1: "Bedienung: Biete vier Dinge an, jedes Angebot mit <em>some</em>. Zwei davon sind aus — sag das mit <em>any</em>.",
+    actSpeak2: "Gast: Bestelle und benutze <em>one</em> und <em>ones</em> je mindestens einmal. Wiederhole das Nomen nicht.",
+    actSpeak3: "Beide: Dem Außerirdischen schmeckt das erste Gericht nicht. Klärt das, ohne dass jemand unhöflich wird.",
+    actSpeak4: "Beide: Erzählt die Geschichte danach im Past Simple, in sechs Sätzen, beginnend mit einer Zeitangabe.",
+    actSpeakBrief: "Eine Person ist die Bedienung. Die andere hat einen Außerirdischen zum Essen mitgebracht.",
+    actSpeakKind: 'Diskussion · zu zweit',
+    actTitle: "The Alien in the Restaurant",
+    actUse: "Mindestens vier verwenden:",
+    actWriteBrief: "Schreibe „The Alien in the Restaurant“. Prüfe deinen Text am Modell: Zeitangabe am Anfang, some und any richtig benutzt, einmal one oder ones, drei unregelmäßige Vergangenheitsformen und ein richtiger Schluss.",
+    actWriteKind: "Schreiben &middot; 100–120 Wörter",
+    btnCheck: 'Prüfen',
+    btnCopied: 'Kopiert',
+    btnCopy: 'Kopieren',
+    btnNext: 'Weiter →',
+    btnRestart: 'Neu starten',
+    btnStart: 'Beginnen →',
+    chipCount: "50 Folien",
+    chipFocus: "Stunden 4&ndash;5",
+    chipLevel: "A1+ / A2 &middot; Teil II",
+    coverSub: "Teil II: some und any, one und ones, Lesetechnik und der Übungstest",
+    coverTitle: "Out of <em>This World</em>",
+    dgE: "Stunde 4 &middot; Aufgabe 4",
+    dgHint: "Achte darauf, wer spricht. Die Bedienung bietet an, der Gast fragt.",
+    dgT: "Im Restaurant — some oder any?",
+    doE: "Stunde 4 &middot; Aufgabe 5",
+    doHint: "Die Frage der Verkäuferin verrät dir Einzahl oder Mehrzahl.",
+    doT: "Im Geschäft — one oder ones?",
+    e5E: "Übungstest &middot; Teil 4",
+    e5Hint: "In jedem Satz steckt ein Fehler. Schreibe nur die Korrektur.",
+    e5T: "Fehlerkorrektur",
+    ec1h: "Das -s und don't / doesn't",
+    ec1n: "she / he / it → doesn't. Alle anderen → don't.",
+    ec2h: "Die Grundform nach did",
+    ec2n: "Niemals <em>did she went</em>. Die Vergangenheit steckt in <em>did</em>.",
+    ec3h: "any bei Verneinung, ones bei Mehrzahl",
+    ec3n: "Und <em>Look!</em> erzwingt immer das Progressive. Fünf Regeln — mehr ist der ganze Teil nicht.",
+    ecE: "Stunde 5 &middot; Vor dem Übungstest",
+    ecT: "Die fünf Fehler, die im Korrekturteil abgefragt werden",
+    fbAnswer: 'Antwort:',
+    fbCorrect: 'Richtig.',
+    fbWrong: 'Nicht ganz.',
+    fs1h: "Where did Mia go yesterday?",
+    fs1n: "Die Antwort benutzt die Wörter der Frage wieder. Das ist die ganze Technik.",
+    fs2h: "What did her brother eat?",
+    fs2n: "Frage in der Vergangenheit → Antwort in der Vergangenheit. <em>Ate</em>, nicht <em>eat</em>.",
+    fs3h: "What did they buy later?",
+    fs3n: "Nicht „ice cream“. Ein ganzer Satz braucht Subjekt und Verb.",
+    fsE: "Stunde 4 &middot; Ganze Sätze",
+    fsT: "So sieht eine ganze Antwort aus",
+    g5E: "Übungstest &middot; Teil 2",
+    g5T: "Grammatik",
+    mdE: "Stunde 5 &middot; Modelltext",
+    mdN1: "Fett markiert jeden Punkt der Checkliste an der Stelle, an der er vorkommt: Zeitangabe am Anfang, <em>some</em> und <em>suddenly</em> für die Überraschung.",
+    mdN2: "Insgesamt 112 Wörter. Beachte <em>any</em> in der Verneinung, zweimal <em>one</em> und drei unregelmäßige Vergangenheitsformen — <em>gave</em>, <em>went</em>, <em>had</em>. Der alte Modelltext hatte 99 Wörter und zeigte <em>one</em> überhaupt nicht.",
+    mdT1: "Eine Geschichte, die funktioniert (1 von 2)",
+    mdT2: "Eine Geschichte, die funktioniert (2 von 2)",
+    mxE: "Stunde 4 &middot; Aufgabe 7",
+    mxHint: "Jetzt sind alle vier im Spiel. Entscheide erst, was der Satz tut, dann ob die Sache Einzahl oder Mehrzahl ist.",
+    mxT: "Gemischt: some, any, one, ones",
+    ogE: "Stunde 4 &middot; Aufgabe 2",
+    ogHint: "Schau in der Frage nach, welches Nomen gemeint ist.",
+    ogT: "one oder ones?",
+    oo1h: "one — Einzahl",
+    oo1n: "Eine Sache.",
+    oo2h: "ones — Mehrzahl",
+    oo2n: "Mehr als eine Sache. Shoes, glasses, trousers und jeans stehen im Englischen immer in der Mehrzahl.",
+    oo3h: "So entscheidest du",
+    oo3n: "Die Frage sagt es dir. <em>Which shoes…?</em> → Mehrzahl → <em>ones</em>. Sonst entscheidet nichts.",
+    ooE: "Stunde 4 &middot; one oder ones",
+    ooT: "Damit du das Nomen nicht zweimal sagen musst",
+    ph1h: "Zum Anfangen",
+    ph2h: "Zum Weitererzählen",
+    ph3h: "Für die Überraschung und den Schluss",
+    ph3n: "Drei oder vier im ganzen Text. Zehn sind schlechter als drei — dann ist es keine Geschichte mehr, sondern eine Liste von Bindewörtern.",
+    phE: "Stunde 5 &middot; Angeleitetes Schreiben",
+    phT: "Wendungen, die den Text zusammenhalten",
+    r1E: "Stunde 4 &middot; Lesetext 1",
+    r1N: "Unterstreiche die Namen, das Essen und das Wort <em>left</em>, bevor du weiterklickst.",
+    r1T: "Mias Restaurantbesuch",
+    r2E: "Stunde 4 &middot; Lesetext 2",
+    r2N: "Achte auf den Wochentag, die zwei Gerichte und die Wörter <em>left</em>, <em>small</em> und <em>large</em>.",
+    r2T: "Emmas Restaurantbesuch",
+    r3E: "Übungstest &middot; Teil 3",
+    r3N: "Es folgen drei Fragen. Erst unterstreichen.",
+    r3T: "Das Weltraumcamp",
+    r3gE: "Übungstest &middot; Teil 3",
+    r3gT: "Ergänze aus dem Text",
+    r3qE: "Übungstest &middot; Teil 3",
+    r3qT: "Richtig oder falsch?",
+    r4E: "Übungstest &middot; Teil 6",
+    r4N: "Es folgen vier Fragen — zwei richtig/falsch, eine Lücke und eine Auswahlfrage.",
+    r4T: "Das Weltraummuseum",
+    r4gE: "Übungstest &middot; Teil 6",
+    r4gT: "Ergänze aus dem Text",
+    r4mE: "Übungstest &middot; Teil 6",
+    r4mT: "Warum?",
+    r4qE: "Übungstest &middot; Teil 6",
+    r4qT: "Richtig oder falsch?",
+    r5E: "Stunde 4 &middot; Aufgabe 6",
+    r5T: "Ergänze aus dem Text",
+    resLow: "Geh zurück zu Stunde 4 und lies die beiden some/any-Folien und die one/ones-Folie noch einmal, dann mach den Übungstest ein zweites Mal.",
+    resMid: "Sicher bestanden. Teil 4 und 5 sind meistens die Punktebringer: fünf Regeln, und die stehen alle auf der Folie vor dem Übungstest.",
+    resNext: 'Die Sprache zu erkennen ist die halbe Miete. Jetzt anwenden →',
+    resPerfect: "Volle Punktzahl im Übungstest. Du bist bereit für die echte Arbeit.",
+    resStrong: "Stark. Schau nach, aus welchem Teil deine Fehler kamen, und lies die Stunde noch einmal — der Übungstest ist eine Diagnose, kein Urteil.",
+    rm1h: "1 &middot; Lies die Überschrift",
+    rm2h: "2 &middot; Schau dir das Bild an",
+    rm3h: "3 &middot; Unterstreiche die Fakten",
+    rm3n: "Fast jede Richtig/Falsch-Aufgabe entscheidet sich an einer davon. Unterstreiche sie, und die Antworten stehen schon auf dem Blatt.",
+    rm4h: "4 &middot; Lies die Frage zweimal",
+    rm5h: "5 &middot; Finde die Zeile",
+    rm5n: "Wenn du die Zeile nicht findest, ist deine Antwort geraten. Eine Antwort, die „richtig klingt“, ist die klassische Falle.",
+    rm6h: "6 &middot; Ganzer Satz, wenn verlangt",
+    rm6n: "Steht in der Aufgabe <em>in full sentences</em>, bringt ein einzelnes Wort keine Punkte — so richtig es auch ist.",
+    rmE: "Stunde 4 &middot; Lesetechnik",
+    rmT1: "Bevor du die Fragen liest (1 von 2)",
+    rmT2: "Und dann antworten (2 von 2)",
+    s5E: "Übungstest &middot; Teil 5",
+    s5T: "some &middot; any &middot; one &middot; ones",
+    sa1h: "Bejahter Satz → some",
+    sa1n: "Das ändert sich nie.",
+    sa2h: "Verneinung → any",
+    sa2n: "Nach <em>not</em>, <em>isn't</em>, <em>don't</em> — immer <em>any</em>.",
+    sa3h: "Frage → any",
+    sa3n: "Wenn du die Antwort wirklich nicht kennst. Lies weiter — auf der nächsten Folie kommt der Fall, über den alle stolpern.",
+    saE: "Stunde 4 &middot; some oder any",
+    saT: "Die Regel — und dann die Ausnahme",
+    sb1h: "Ein Angebot",
+    sb1n: "Du gibst etwas, du fragst nicht. <em>Would you like…?</em> ist immer ein Angebot.",
+    sb2h: "Eine Bitte",
+    sb2n: "Du bittest um eine Sache und fragst nicht, ob es sie gibt.",
+    sb3h: "Die Überschneidung",
+    sb3n: "Im Café ist das eigentlich eine Bitte, also klingen beide natürlich. In der Arbeit ist <em>any</em> bei einer echten Frage die sichere Antwort — aber jetzt weißt du, warum man beides hört.",
+    sbE: "Stunde 4 &middot; Der Fall, über den alle stolpern",
+    sbT: "Angebote und Bitten nehmen some — auch als Frage",
+    scoreLabel: 'Punkte',
+    sgE: "Stunde 4 &middot; Aufgabe 1",
+    sgHint: "Entscheide zuerst, was der Satz tut: feststellen, verneinen, fragen, anbieten.",
+    sgT: "some oder any?",
+    slideOf: (a,b)=>`${a} / ${b}`,
+    st1h: "Anfang",
+    st1n: "Zwei Sätze reichen. Beginne mit einer Zeitangabe — dann weiß die Lehrkraft sofort, dass du das kannst.",
+    st2h: "Mitte, dann das Problem",
+    st2n: "Eine Geschichte ohne Problem ist eine Aufzählung. Das Problem hält die Lesenden bei der Stange.",
+    st3h: "Schluss",
+    st3n: "Schreib sie zu Ende. Eine unfertige Geschichte kostet Punkte, auch wenn jeder Satz darin richtig ist.",
+    stE: "Stunde 5 &middot; Angeleitetes Schreiben",
+    stT: "Der Aufbau einer Geschichte, die Punkte bringt",
+    tf1E: "Stunde 4 &middot; Aufgabe 3",
+    tf1T: "Richtig oder falsch?",
+    tf2E: "Stunde 4 &middot; Aufgabe 6",
+    tf2T: "Richtig oder falsch?",
+    v5E: "Übungstest &middot; Teil 1",
+    v5Hint: "Diesmal ohne Wortliste — das hier ist der Test.",
+    v5T: "Wortschatz",
+    wordCount: (n)=>`${n} ${n===1?'Wort':'Wörter'}`
+  },
+  es: {},
+  fr: {},
+  it: {},
+  pt: {},
+  ru: {},
+  ar: {},
+  zh: {},
+  ja: {}
+};
+
+let currentLang = 'en';
+const t = k => (UI_I18N[currentLang] && UI_I18N[currentLang][k] != null)
+  ? UI_I18N[currentLang][k] : UI_I18N.en[k];
+
+/* ── Deck state ── */
+const stage   = document.getElementById('stage');
+const slides  = [...document.querySelectorAll('.slide')];
+const scored  = slides.filter(s => ['mc','gap','match','order'].includes(s.dataset.type));
+/* A slide may hold more than one gap; each gap is worth a point. */
+const countIn = s => s.dataset.type === 'gap'   ? s.querySelectorAll('.gap').length
+                   : s.dataset.type === 'match' ? s.querySelectorAll('.match-pair').length
+                   : 1;
+const maxScore = scored.reduce((n, s) => n + Math.max(1, countIn(s)), 0);
+let idx = 0, score = 0;
+const answered = new WeakSet();
+
+/* ── Scale the 1280×720 stage to fit any viewport, never scroll ── */
+function fitStage() {
+  const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+  stage.style.transform = `scale(${s})`;
+}
+addEventListener('resize', fitStage);
+
+/* ── Navigation ── */
+function show(n) {
+  idx = Math.max(0, Math.min(slides.length - 1, n));
+  slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+  stage.classList.toggle('on-cover', slides[idx].dataset.type === 'cover');
+  // A slide may swap the background pattern for a second illustration from the
+  // same set (data-bg). Same idiom as the hero — picture at reduced opacity
+  // under the wash — so extra artwork never becomes a pasted-in box.
+  stage.style.setProperty('--hero', slides[idx].dataset.bg
+    ? `url('${slides[idx].dataset.bg}')` : '');
+  document.getElementById('progressFill').style.width =
+    (slides.length > 1 ? (idx / (slides.length - 1)) * 100 : 0) + '%';
+  document.getElementById('deckCount').textContent = t('slideOf')(idx + 1, slides.length);
+  document.querySelector('[data-action="prev"]').disabled = idx === 0;
+  document.querySelector('[data-action="next"]').disabled = idx === slides.length - 1;
+  if (slides[idx].dataset.type === 'results') renderResults();
+  const gap = slides[idx].querySelector('.gap');
+  if (gap && !answered.has(slides[idx])) setTimeout(() => gap.focus(), 60);
+}
+
+function renderResults() {
+  const max = maxScore;
+  document.getElementById('scoreVal').textContent = score;
+  document.getElementById('scoreMax').textContent = max;
+  const pct = max ? score / max : 0;
+  document.getElementById('scoreMsg').textContent =
+    pct === 1 ? t('resPerfect') : pct >= .75 ? t('resStrong')
+    : pct >= .5 ? t('resMid') : t('resLow');
+}
+
+function updateScoreChip() {
+  document.getElementById('deckScore').textContent =
+    maxScore ? `${t('scoreLabel')} ${score}/${maxScore}` : '';
+}
+
+/* ── Answer handling ── */
+function award(slide, ok) {
+  if (answered.has(slide)) return;
+  answered.add(slide);
+  if (ok) score++;
+  updateScoreChip();
+}
+
+function feedback(slide, ok, extra, ownExplain) {
+  const el = slide.querySelector('.feedback');
+  if (!el) return;
+  // An option's own explanation wins: telling a learner why THEIR answer was
+  // wrong beats restating why the key was right.
+  const reason = ownExplain || el.dataset.explain;
+  const why = reason ? ' ' + reason : '';
+  // innerHTML, not textContent: explanations carry <strong> and <em>, and the
+  // whole point of an explanation is that the word being taught is marked.
+  // Written with textContent this printed the tags as literal source text on
+  // every deck built from this template.
+  el.innerHTML = (ok ? t('fbCorrect') : t('fbWrong') + (extra ? ` ${t('fbAnswer')} ${extra}` : '')) + why;
+  el.className = 'feedback show ' + (ok ? 'ok' : 'no');
+}
+
+/* Multiple choice — shuffled on first view so option order is never a tell. */
+slides.filter(s => s.dataset.type === 'mc').forEach(slide => {
+  const box = slide.querySelector('.opts');
+  const opts = [...box.querySelectorAll('.opt')];
+  opts.sort(() => Math.random() - .5).forEach((o, i) => {
+    o.prepend(Object.assign(document.createElement('span'), {
+      className: 'opt-key', textContent: 'ABCD'[i]
+    }));
+    box.appendChild(o);
+  });
+  opts.forEach(o => o.addEventListener('click', () => {
+    if (answered.has(slide)) return;
+    const ok = o.hasAttribute('data-correct');
+    opts.forEach(x => {
+      x.disabled = true;
+      if (x.hasAttribute('data-correct')) x.classList.add('correct');
+    });
+    if (!ok) o.classList.add('wrong');
+    award(slide, ok);
+    feedback(slide, ok, null, o.dataset.explain);
+  }));
+});
+
+/* Matching. Author as <div class="match-pair" data-term data-def> rows; the
+   engine builds both columns and shuffles the definitions. One point per pair. */
+slides.filter(s => s.dataset.type === 'match').forEach(slide => {
+  const pairs = [...slide.querySelectorAll('.match-pair')];
+  const grid = slide.querySelector('.match-grid');
+  if (!grid || !pairs.length) return;
+  const terms = document.createElement('div');
+  const defs = document.createElement('div');
+  terms.className = defs.className = 'match-col';
+  const mk = (txt, cls, key) => {
+    const b = document.createElement('button');
+    b.className = 'match-item ' + cls;
+    b.textContent = txt;
+    b.dataset.key = key;
+    return b;
+  };
+  pairs.forEach(p => terms.appendChild(mk(p.dataset.term, 'term', p.dataset.term)));
+  [...pairs].sort(() => Math.random() - .5)
+    .forEach(p => defs.appendChild(mk(p.dataset.def, 'def', p.dataset.term)));
+  grid.replaceChildren(terms, defs);
+
+  let picked = null, done = 0;
+  const total = pairs.length;
+  grid.addEventListener('click', e => {
+    const el = e.target.closest('.match-item');
+    if (!el || el.classList.contains('done')) return;
+    if (el.classList.contains('term')) {
+      grid.querySelectorAll('.term.picked').forEach(x => x.classList.remove('picked'));
+      el.classList.add('picked');
+      picked = el;
+      return;
+    }
+    if (!picked) return;
+    if (el.dataset.key === picked.dataset.key) {
+      el.classList.add('done'); picked.classList.add('done');
+      picked.classList.remove('picked');
+      picked = null; done++; score++; updateScoreChip();
+      if (done === total) {
+        answered.add(slide);
+        feedback(slide, true);
+      }
+    } else {
+      el.classList.add('miss');
+      setTimeout(() => el.classList.remove('miss'), 320);
+    }
+  });
+});
+
+/* Sentence building. Author as
+     <div class="order" data-answer="chunk|chunk|chunk"></div>
+   with a [data-action="check-order"] button and a .feedback alongside it.
+   The engine shuffles the chunks into a pool; clicking places one, clicking a
+   placed one takes it back. One point for the whole sentence — a half-right
+   word order is not half-right English. */
+slides.filter(s => s.dataset.type === 'order').forEach(slide => {
+  const box = slide.querySelector('.order');
+  if (!box) return;
+  const answer = box.dataset.answer.split('|').map(x => x.trim());
+  const target = document.createElement('div'); target.className = 'order-target';
+  const pool   = document.createElement('div'); pool.className   = 'order-pool';
+  answer.map((txt, i) => ({ txt, i }))
+        .sort(() => Math.random() - .5)
+        .forEach(({ txt, i }) => {
+          const b = document.createElement('button');
+          b.className = 'chunk';
+          b.textContent = txt;
+          b.dataset.i = i;
+          pool.appendChild(b);
+        });
+  box.replaceChildren(target, pool);
+
+  box.addEventListener('click', e => {
+    const c = e.target.closest('.chunk');
+    if (!c || c.disabled) return;
+    if (c.parentElement === pool) { c.classList.add('placed');    target.appendChild(c); }
+    else                          { c.classList.remove('placed'); pool.appendChild(c); }
+  });
+
+  slide._check = () => {
+    if (answered.has(slide)) return;
+    // Marking a half-built sentence teaches nothing; wait until it is complete.
+    if (target.children.length < answer.length) return;
+    answered.add(slide);
+    const ok = [...target.children].map(c => +c.dataset.i).every((v, i) => v === i);
+    target.classList.add(ok ? 'correct' : 'wrong');
+    box.querySelectorAll('.chunk').forEach(c => c.disabled = true);
+    if (ok) score++;
+    updateScoreChip();
+    feedback(slide, ok, ok ? null : answer.join(' '));
+    const btn = slide.querySelector('[data-action="check-order"]');
+    if (btn) btn.disabled = true;
+  };
+});
+
+/* Gap fill. Supports several gaps on one slide, each scored and explained
+   individually via its own .gap-row wrapper. */
+const gapOk = g => g.dataset.answer.split('|')
+  .map(a => a.trim().toLowerCase())
+  .includes(g.value.trim().toLowerCase().replace(/\s+/g, ' '));
+
+function markGap(g, fb) {
+  const ok = gapOk(g);
+  g.classList.add(ok ? 'correct' : 'wrong');
+  g.disabled = true;
+  if (ok) score++;
+  if (fb) {
+    const why = fb.dataset.explain ? ' ' + fb.dataset.explain : '';
+    fb.innerHTML = (ok ? t('fbCorrect')
+      : `${t('fbWrong')} ${t('fbAnswer')} ${g.dataset.answer.split('|')[0]}.`) + why;
+    fb.className = 'feedback show ' + (ok ? 'ok' : 'no');
+  }
+  return ok;
+}
+
+function checkGaps(slide) {
+  if (answered.has(slide)) return;
+  answered.add(slide);
+  const rows = [...slide.querySelectorAll('.gap-row')];
+  if (rows.length) {
+    rows.forEach(r => markGap(r.querySelector('.gap'), r.querySelector('.feedback')));
+  } else {
+    markGap(slide.querySelector('.gap'), slide.querySelector('.feedback'));
+  }
+  const btn = slide.querySelector('[data-action="check"]');
+  if (btn) btn.disabled = true;
+  updateScoreChip();
+}
+
+/* ── Activation: word count, copy, and a print mirror (a textarea's
+   value does not appear in a PDF, so we mirror it into a div). ── */
+const actInput = document.getElementById('actInput');
+if (actInput) {
+  const countEl = document.getElementById('actCount');
+  const printEl = document.getElementById('actPrint');
+  const sync = () => {
+    const words = actInput.value.trim().split(/\s+/).filter(Boolean).length;
+    countEl.textContent = t('wordCount')(words);
+    printEl.textContent = actInput.value;
+  };
+  actInput.addEventListener('input', sync);
+  window.syncActivation = sync;
+  sync();
+}
+
+/* ── Events ── */
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-action]');
+  if (!a) return;
+  const act = a.dataset.action;
+  if (act === 'next') show(idx + 1);
+  if (act === 'prev') show(idx - 1);
+  if (act === 'check') checkGaps(a.closest('.slide'));
+  if (act === 'check-order') { const sl = a.closest('.slide'); if (sl._check) sl._check(); }
+  if (act === 'restart') location.reload();
+  if (act === 'copy-writing') {
+    const ta = document.getElementById('actInput');
+    if (ta && navigator.clipboard) navigator.clipboard.writeText(ta.value).then(() => {
+      const was = a.textContent;
+      a.textContent = t('btnCopied');
+      setTimeout(() => { a.textContent = was; }, 1400);
+    });
+  }
+});
+
+document.addEventListener('keydown', e => {
+  if (e.target.matches('input, select, textarea')) {
+    if (e.key === 'Enter') checkGaps(e.target.closest('.slide'));
+    return;
+  }
+  if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); show(idx + 1); }
+  if (['ArrowLeft', 'PageUp'].includes(e.key))         { e.preventDefault(); show(idx - 1); }
+});
+
+/* ── Language ── */
+function applyLang() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const v = t(el.dataset.i18n);
+    if (v != null) el.innerHTML = v;
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const v = t(el.dataset.i18nPh);
+    if (v != null) el.placeholder = v;
+  });
+  if (window.syncActivation) window.syncActivation();
+  document.documentElement.lang = currentLang;
+  document.documentElement.dir = RTL_LANGS.includes(currentLang) ? 'rtl' : 'ltr';
+  updateScoreChip();
+  show(idx);
+}
+
+function initLang() {
+  const sel = document.getElementById('langSelect');
+  // Only offer languages that are actually translated. An empty or partial
+  // scaffold stays in the code for a future pass but never appears as a dead
+  // option in the menu.
+  const enKeys = Object.keys(UI_I18N.en).length;
+  LANGS.filter(l => l.code === 'en' ||
+                    Object.keys(UI_I18N[l.code] || {}).length >= enKeys)
+       .forEach(l => sel.add(new Option(l.label, l.code)));
+  sel.value = currentLang;
+  sel.hidden = sel.options.length < 2;
+  sel.addEventListener('change', () => { currentLang = sel.value; applyLang(); });
+}
+
+/* Per-slide background art: set the variable on the element as well, because
+   the print stylesheet paints each slide's own ::before from var(--hero). */
+slides.filter(s => s.dataset.bg).forEach(s =>
+  s.style.setProperty('--hero', `url('${s.dataset.bg}')`));
+
+/* ── Boot ── */
+initLang();
+fitStage();
+applyLang();
+updateScoreChip();
+
+/* Reveal the wordmark only once DM Sans is really available, so the
+   Forbes/ENGLISH lockup never renders at fallback-font proportions. */
+const ready = () => document.body.classList.add('fonts-ready');
+if (document.fonts && document.fonts.ready) { document.fonts.ready.then(ready); setTimeout(ready, 1500); }
+else ready();
+</script>
+</body>
+</html>
