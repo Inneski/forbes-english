@@ -20,6 +20,7 @@ stale copy.
 | `forbes-nature-agency-part2.html` | `NatureAgency2/`: `hero-otter.jpg` (cover), `hide.jpg` (the hide slide), `loch.jpg` (scene-setting + results), `reeds.jpg` (dividers), `shore.jpg` (activation) | **BUILT — 59 slides, checker clean.** `build_nature2.py` + `i18n_nature2.py`. |
 | `forbes-english-b2-lesson.html` | `TopGearB2/hero.jpg` | **BUILT — 37 slides, checker clean.** `lesson-template/build/build_topgear.py` + `i18n_topgear.py`. Audit at `docs/topgear-b2-audit.md`. Not yet pushed. |
 | `forbes-geoscience-phrases.html` | `Geoscience/` (5 images) | **BUILT — 39 slides, checker clean.** `build_geo.py` + `i18n_geo.py`. Audit at `docs/geoscience-audit.md`. Not yet pushed. |
+| `stranger-things-test.html` | `StrangerThings/hero.jpg` | **BUILT — 38 slides, checker clean, English + German + Spanish.** `build_stranger_test.py` + `i18n_stranger_test.py`. Merged the interactive test and the German worksheet; `stranger-things-test-german.html` is now a redirect stub. Not yet pushed. |
 
 ### Decisions taken on Nature Agency Part 2 (Innes, this session)
 
@@ -157,6 +158,56 @@ rediscover:
   fires on every gap slide. The placeholder half of the check is
   unchanged and still absolute: no scored input carries a placeholder at
   all.
+
+### Stranger Things — the English test — built, and two files became one
+
+`stranger-things-test.html`, 38 slides, all ten gates clean, dark theme,
+English + German + **Spanish** all complete. `build_stranger_test.py` +
+`i18n_stranger_test.py`. Twenty-eight scored points: fourteen
+multiple-choice, fourteen gaps. The old `stranger-things-test-german.html`
+— a printable worksheet of the same material — is retired to a
+`<meta http-equiv="refresh">` stub, which the build writes and which was
+verified to land on the deck. Full reasoning is in the builder docstring.
+Four things a later session should not have to rediscover:
+
+- **An L1 → English task is the one place the translation scope boundary
+  has to bend.** The house rule is that the English being taught stays
+  English in every language. A vocabulary section that asks "here is *der
+  Herbst*, write the English" inverts that: the *prompt* is content and
+  must translate, or the task does not exist for a Spanish learner. The
+  prompts are i18n keys (`v1p` … `v10p`) and switch with the selector.
+  **For English there is no L1**, so the English layer carries a
+  definition or picture-clue instead — "the season between summer and
+  winter, when the woods turn orange". Same production task, different
+  route to the meaning. If another lesson needs this, copy the pattern
+  rather than inventing a second one.
+- **A prompt in the learner's own language can contain the answer.**
+  German for a roller disco is *die Rollerdisco*, which handed the answer
+  over whole. The build now resolves every prompt and hint on every gap
+  slide in **every language** and checks it against every accepted
+  answer; that is what caught it (the prompt is the native compound *die
+  Rollschuhdisco*). `build_geo.py`'s `assert_no_answer_is_shown` only
+  ever saw the English render, because that is what the builder writes.
+- **`assert_no_answer_is_shown` needs to be per-slide, not per-row, once
+  a slide carries two gaps.** Two rows on one slide means a clue can leak
+  its *neighbour's* answer, and a row-scoped check cannot see it. The
+  version here collects every answer on the slide and tests all of them
+  against the whole slide's visible text.
+- **The BANK gate reads the activation chips as a word bank.** It walks
+  every `.bank-chip` on the page, and `D.activate` emits the target-
+  language strip as `.bank-chip`. A strip listing bare headwords that
+  happen to be gap answers therefore fails the gate, from a slide that
+  sits *after* the results and after every gap has been marked. The fix
+  is chips as phrases — `the autumn leaves`, `a rusty colour` — which is
+  better production practice anyway, plus a build-time assertion
+  mirroring the gate. Worth knowing before spending twenty minutes
+  looking for a word bank that does not exist.
+
+Also: **this was the fifth lesson needing per-option `data-explain`**,
+and it was still injected after `D.mc` rather than promoted to an
+`explains=` argument. Five is well past the point where promoting it
+looks right; the cost is still a regression run of `check-lesson.js` over
+every shipped deck, which is a job of its own.
 
 ---
 
