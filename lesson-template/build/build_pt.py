@@ -223,6 +223,12 @@ select.tbtn { padding-right: 8px; }
   font-size: 16px; line-height: 1.45; color: var(--text);
   opacity: 0; pointer-events: none; transition: opacity .18s;
 }
+#why .why-go {
+  display: none; margin-top: 8px;
+  font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--text-dim);
+}
+#why.waiting .why-go { display: block; }
 #why.show { opacity: 1; }
 #why.no { border-left-color: var(--no); }
 
@@ -448,7 +454,8 @@ function fall() {
 }
 
 function showWhy(text, ok) {
-  whyEl.innerHTML = text;
+  whyEl.innerHTML = text +
+    '<span class="why-go">' + t('continueHint') + '</span>';
   whyEl.classList.toggle('no', !ok);
   whyEl.classList.add('show');
 }
@@ -472,12 +479,39 @@ function answer(bin) {
   // colour, so a learner who did not already know could not find out.
   showWhy(w.why, ok);
   renderCounts();
-  setTimeout(() => {
+
+  // The explanation used to be pulled off screen after 1.1s (2.6s on a miss),
+  // which is not long enough to read a two-clause sentence in a second
+  // language — the card you most need to read is the one you got wrong, and it
+  // was gone before you finished it. Now:
+  //   * a miss does not auto-advance at all. You read it, then continue.
+  //   * a hit advances on a timer scaled to the length of its explanation,
+  //     floored so the shortest one still sits long enough to be read.
+  //   * either way, a click or Space/Enter goes on immediately, so nobody who
+  //     reads quickly is held up.
+  const words = w.why.replace(/<[^>]+>/g, ' ').trim().split(/\s+/).length;
+  armAdvance(ok ? Math.min(9000, Math.max(2600, words * 320)) : null);
+}
+
+/* Advancing is one path whether it fires from the timer, a click or a key. */
+let advanceTimer = null, advanceFn = null;
+
+function armAdvance(ms) {
+  clearTimeout(advanceTimer);
+  advanceFn = () => {
+    if (!advanceFn) return;
+    advanceFn = null;
+    clearTimeout(advanceTimer);
+    whyEl.classList.remove('waiting');
     cardEl.style.display = 'none';
     i++; renderCounts();
     setTimeout(() => (i < queue.length ? next() : finish()), 150);
-  }, ok ? 1100 : 2600);
+  };
+  whyEl.classList.toggle('waiting', ms === null);
+  if (ms !== null) advanceTimer = setTimeout(() => advanceFn && advanceFn(), ms);
 }
+
+whyEl.addEventListener('click', () => advanceFn && advanceFn());
 
 function finish() {
   live = false;
@@ -526,6 +560,7 @@ binsEl.addEventListener('drop', e => {
 });
 addEventListener('keydown', e => {
   if (!live) return;
+  if ((e.key === ' ' || e.key === 'Enter') && advanceFn) { e.preventDefault(); advanceFn(); return; }
   if (e.key === '1' || e.key === 'ArrowLeft')  answer(0);
   if (e.key === '2' || e.key === 'ArrowDown')  answer(1);
   if (e.key === '3' || e.key === 'ArrowRight') answer(2);
