@@ -29,6 +29,10 @@
   --font-ui: 'DM Sans', system-ui, sans-serif;
   --font-mono: 'DM Mono', ui-monospace, monospace;
   --r: 14px;
+  /* The height of the bin row. The falling card, the progress bar and the
+     why-line are all positioned off this, so it is one number, not four —
+     the narrow-screen bug was three of them drifting apart. */
+  --bins-h: 200px;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -85,7 +89,7 @@ select.tbtn { padding-right: 8px; }
 /* ── arena ── */
 #arena { flex: 1; position: relative; overflow: hidden; }
 #rail {
-  position: absolute; left: 50%; top: 0; bottom: 200px;
+  position: absolute; left: 50%; top: 0; bottom: var(--bins-h);
   transform: translateX(-50%); width: 2px;
   background: linear-gradient(180deg,
     transparent, color-mix(in srgb, var(--accent) 45%, transparent), transparent);
@@ -106,7 +110,7 @@ select.tbtn { padding-right: 8px; }
 
 /* ── bins ── */
 #bins {
-  position: absolute; left: 0; right: 0; bottom: 0; height: 200px;
+  position: absolute; left: 0; right: 0; bottom: 0; height: var(--bins-h);
   display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; padding: 12px 16px 18px;
   z-index: 15;
 }
@@ -135,13 +139,13 @@ select.tbtn { padding-right: 8px; }
   position: absolute; top: 10px; right: 12px;
   font-family: var(--font-mono); font-size: 12px; color: var(--text-dim);
 }
-#bar-wrap { position: absolute; left: 0; right: 0; bottom: 200px; height: 3px;
+#bar-wrap { position: absolute; left: 0; right: 0; bottom: var(--bins-h); height: 3px;
   background: rgba(0,0,0,.35); z-index: 15; }
 #bar { height: 100%; width: 0; background: var(--accent); transition: width .3s; }
 
 /* ── why line ── */
 #why {
-  position: absolute; left: 50%; bottom: 214px; transform: translateX(-50%);
+  position: absolute; left: 50%; bottom: calc(var(--bins-h) + 14px); transform: translateX(-50%);
   width: min(760px, 92%); z-index: 18;
   background: color-mix(in srgb, var(--surface) 94%, transparent);
   border: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
@@ -156,7 +160,12 @@ select.tbtn { padding-right: 8px; }
 /* ── overlays ── */
 .overlay {
   position: fixed; inset: 0; z-index: 100; display: none;
-  align-items: center; justify-content: center; padding: 24px;
+  /* flex-start + auto margins on the sheet, not align-items:center — a
+     centred flex child taller than the viewport has its top cut off and
+     cannot be scrolled to. On a 320px-wide phone that put the Play button
+     off-screen with no way to reach it. */
+  align-items: flex-start; justify-content: center; padding: 24px;
+  overflow-y: auto;
   background: color-mix(in srgb, var(--void) 78%, transparent);
   backdrop-filter: blur(5px);
 }
@@ -164,7 +173,7 @@ select.tbtn { padding-right: 8px; }
 .sheet {
   background: color-mix(in srgb, var(--surface) 96%, transparent);
   border: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
-  border-radius: 20px; padding: 30px 34px; max-width: 880px; width: 100%;
+  border-radius: 20px; padding: 30px 34px; max-width: 880px; width: 100%; margin: auto;
   box-shadow: 0 20px 70px rgba(0,0,0,.6);
 }
 .eyebrow {
@@ -199,9 +208,30 @@ select.tbtn { padding-right: 8px; }
 .pill.g { background: color-mix(in srgb, var(--ok) 22%, transparent); color: var(--ok); }
 .pill.b { background: color-mix(in srgb, var(--no) 22%, transparent); color: var(--no); }
 .centre { text-align: center; }
+/* Narrow screens stack the three bins, but they must stay pinned to the
+   bottom of the arena. The previous rule set `position: static` here, which
+   moved the bins to the TOP of the arena — straight under the falling card,
+   which has a higher z-index and covered the first bin completely. On a
+   phone the game showed a card and only two of the three boxes, with
+   "Present simple" hidden underneath it, and the card never fell because
+   its stop position was computed from the bins and came out negative. */
 @media (max-width: 820px) {
-  .rules, #bins { grid-template-columns: 1fr; }
-  #bins { height: auto; position: static; }
+  :root { --bins-h: 264px; }
+  .rules { grid-template-columns: 1fr; }
+  #bins { grid-template-columns: 1fr; gap: 8px; padding: 8px 12px 12px; }
+  .bin { flex-direction: row; justify-content: flex-start; gap: 12px; padding: 10px 16px; }
+  .bin-label { font-size: 16px; text-align: left; }
+  .bin-count { top: 50%; transform: translateY(-50%); }
+  #card { font-size: 24px; padding: 12px 22px; max-width: 88%; white-space: normal; text-align: center; }
+  #why { font-size: 14.5px; padding: 10px 14px; }
+}
+
+/* On a phone the header ran off the right edge and clipped the score. */
+@media (max-width: 560px) {
+  #top { padding: 10px 12px; gap: 8px; }
+  #top-right { gap: 6px; }
+  .badge, .tbtn { font-size: 11px; padding: 4px 9px; }
+  .fe-logo { width: 74px; }
 }
 </style>
 </head>
@@ -366,7 +396,11 @@ function answer(bin) {
   cancelAnimationFrame(raf);
   const w = WORDS[queue[i]];
   const ok = bin === w.b;
-  if (ok) { right++; counts[bin]++; } else { wrong++; }
+  // The tally in each bin counts every card dropped there, right or wrong.
+  // It used to increment only on a correct answer, so a learner who missed
+  // one watched the number stay put and reasonably concluded it was broken.
+  counts[bin]++;
+  if (ok) { right++; } else { wrong++; }
   cardEl.classList.add(ok ? 'good' : 'bad');
   const b = binsEl.querySelector('.bin[data-bin="' + bin + '"]');
   if (b) { b.classList.add('pop'); setTimeout(() => b.classList.remove('pop'), 230); }
