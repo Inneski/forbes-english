@@ -1,0 +1,320 @@
+# -*- coding: utf-8 -*-
+"""Shared slide builders for the 16:9 deck house style.
+
+Written after the fourth rebuild in a row re-typed the same six functions with
+small drifts between them. Everything a lesson can differ in is an argument;
+everything the house style fixes is in here, including the two rules that have
+each shipped broken once and are now asserted at build time:
+
+  * no multiple-choice key may be the longest option on its slide
+  * no word bank may list the gap answers in gap order
+
+Both are also measured by lesson-template/check-lesson.js. The assertions here
+just fail earlier and say why.
+"""
+import html as _html
+import re
+
+
+# ── guards ─────────────────────────────────────────────────────────────
+def assert_no_key_is_longest(mc, label='MC'):
+    """mc: list of dicts with 'options' (list) and 'correct' (index)."""
+    for n, q in enumerate(mc, 1):
+        L = [len(_html.unescape(re.sub(r'<[^>]+>', '', o))) for o in q['options']]
+        k = L[q['correct']]
+        # The absolute floor matters as much as the comparison. Where the
+        # options are single words from a closed set — can / could / must /
+        # should — the key being two characters longer carries no information,
+        # because the learner can see the whole set. Same floor as the checker.
+        assert not (k == max(L) and L.count(max(L)) == 1 and k - sorted(L)[-2] >= 4), (
+            '%s Q%d: the key is the only longest option (%d vs %d). Lengthen the '
+            'distractors — never shorten the key.' % (label, n, k, sorted(L)[-2]))
+
+
+def assert_bank_is_not_a_key(bank, answers_in_gap_order):
+    pos = [bank.index(a) for a in answers_in_gap_order if a in bank]
+    assert not all(x < y for x, y in zip(pos, pos[1:])), (
+        'the word bank lists the gap answers in gap order (%s). Sort the bank '
+        'instead — a bank in gap order is an answer key.' % pos)
+    return pos
+
+
+def esc(t):
+    return t.replace('"', '&quot;')
+
+
+def _bg(folder, bg):
+    return ' data-bg="%s/%s"' % (folder, bg) if bg else ''
+
+
+# ── slides ─────────────────────────────────────────────────────────────
+def cover(logo, title, sub, chips):
+    return '''
+    <section class="slide is-active" data-type="cover">
+      <div class="cover-inner">
+        %s
+        <h1 class="cover-title" data-i18n="coverTitle">%s</h1>
+        <p class="cover-sub" data-i18n="coverSub">%s</p>
+        <div class="cover-meta">
+          %s
+        </div>
+        <div style="margin-top:34px">
+          <button class="btn btn-solid btn-lg" data-action="next" data-i18n="btnStart">Begin →</button>
+        </div>
+      </div>
+    </section>
+''' % (logo, title, sub,
+       "\n          ".join('<span class="chip" data-i18n="chip%s">%s</span>' % (k, v)
+                           for k, v in chips))
+
+
+def teach(eyebrow_key, eyebrow, title_key, title, cards, cols=None, folder='', bg=None):
+    """cards: list of (head_html, body_html, note_i18n_key_or_None, note_html)."""
+    grid = cols or '1fr ' * len(cards)
+    body = "\n          ".join(
+        '''<div class="card">
+            <p class="prose"><strong%s>%s</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">%s</p>%s
+          </div>''' % (' data-i18n="%s"' % hk if hk else '', h,
+                       b,
+                       ('\n            <p class="prose dim" style="margin-top:8px;font-size:15px"'
+                        ' data-i18n="%s">%s</p>' % (nk, n)) if n else '')
+        for hk, h, b, nk, n in cards)
+    return '''
+    <section class="slide" data-type="teach"%s>
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="%s">%s</div>
+        <h2 class="slide-title" data-i18n="%s">%s</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:%s">
+          %s
+        </div>
+      </div>
+    </section>
+''' % (_bg(folder, bg), eyebrow_key, eyebrow, title_key, title, grid.strip(), body)
+
+
+def mc(i, total, q, eyebrow_key, eyebrow, title_key, title, folder='', bg=None,
+       ctx=None):
+    opts = "\n          ".join(
+        '<button class="opt"%s>%s</button>' % (' data-correct' if n == q['correct'] else '', o)
+        for n, o in enumerate(q['options']))
+    return '''
+    <section class="slide" data-type="mc"%s>
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="%s">%s</span> &middot; %d / %d</div>
+        <h2 class="slide-title" data-i18n="%s">%s</h2>
+      </div></div>
+      <div class="slide-body">
+%s        <p class="q-stem">%s</p>
+        <div class="opts">
+          %s
+        </div>
+        <p class="feedback" data-explain="%s"></p>
+      </div>
+    </section>
+''' % (_bg(folder, bg), eyebrow_key, eyebrow, i, total, title_key, title,
+       ('        <p class="q-ctx">%s</p>\n' % ctx) if ctx else '',
+       q['stem'], opts, esc(q['why']))
+
+
+def gap(i, total, rows, bank, eyebrow_key, eyebrow, title_key, title,
+        folder='', bg=None, hint=None, hint_key=None, why=None, width=190,
+        size=19):
+    """rows: list of (sentence_with_BLANK_markers, [answers], why_or_None)."""
+    out = []
+    for sentence, answers, w in rows:
+        s = sentence
+        for a in answers:
+            s = s.replace('______',
+                          '<input class="gap" data-answer="%s" aria-label="gap" '
+                          'style="width:%dpx">' % (a, width), 1)
+        out.append('''<div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:%dpx">%%s</p>%%s
+        </div>''' % size % (s, ('\n          <p class="feedback" data-explain="%s"></p>' % esc(w))
+                     if w else ''))
+    chips = ("\n        <div class=\"act-target\" style=\"margin-bottom:12px\">\n"
+             "          <span class=\"act-target-label\" data-i18n=\"bankLabel\">Word bank:</span>\n"
+             "          %s\n        </div>"
+             % " ".join('<span class="bank-chip">%s</span>' % w for w in bank)) if bank else ''
+    return '''
+    <section class="slide" data-type="gap"%s>
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="%s">%s</span> &middot; %d / %d</div>
+        <h2 class="slide-title" data-i18n="%s">%s</h2>
+      </div></div>
+      <div class="slide-body">%s%s
+        %s%s
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+''' % (_bg(folder, bg), eyebrow_key, eyebrow, i, total, title_key, title, chips,
+       ('\n        <p class="prose dim" style="margin-bottom:6px;font-size:16px" '
+        'data-i18n="%s">%s</p>' % (hint_key, hint)) if hint else '',
+       "\n        ".join(out),
+       ('\n        <p class="feedback" data-explain="%s"></p>' % esc(why)) if why else '')
+
+
+def match(pairs, eyebrow_key, eyebrow, title_key, title, hint_key, hint,
+          why, folder='', bg=None):
+    rows = "\n".join('        <div class="match-pair" data-term="%s" data-def="%s"></div>' % p
+                     for p in pairs)
+    return '''
+    <section class="slide" data-type="match"%s>
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="%s">%s</div>
+        <h2 class="slide-title" data-i18n="%s">%s</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="prose dim" style="margin-bottom:14px;font-size:17px" data-i18n="%s">
+          %s
+        </p>
+%s
+        <div class="match-grid"></div>
+        <p class="feedback" data-explain="%s"></p>
+      </div>
+    </section>
+''' % (_bg(folder, bg), eyebrow_key, eyebrow, title_key, title, hint_key, hint,
+       rows, esc(why))
+
+
+def order(items, eyebrow_key, eyebrow, title_key, title, hint_key, hint, why,
+          folder='', bg=None):
+    assert not any('|' in t for t in items), 'order chunks must not contain "|"'
+    return '''
+    <section class="slide" data-type="order"%s>
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="%s">%s</div>
+        <h2 class="slide-title" data-i18n="%s">%s</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="order-hint" data-i18n="%s">%s</p>
+        <div class="order" data-answer="%s"></div>
+        <div style="margin-top:12px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+        <p class="feedback" data-explain="%s"></p>
+      </div>
+    </section>
+''' % (_bg(folder, bg), eyebrow_key, eyebrow, title_key, title, hint_key, hint,
+       " | ".join(items), esc(why))
+
+
+def results(next_key='resNext', next_text='Now use it →'):
+    return '''
+    <section class="slide" data-type="results">
+      <div class="slide-body" style="align-items:center;text-align:center">
+        <div class="score-big"><span id="scoreVal">0</span><span class="dim" style="font-size:34px">/<span id="scoreMax">0</span></span></div>
+        <p class="prose" style="margin-top:18px" id="scoreMsg"></p>
+        <p class="prose dim" style="margin-top:14px" data-i18n="%s">%s</p>
+      </div>
+    </section>
+''' % (next_key, next_text)
+
+
+def activate(title, use_label, chips, speak_kind, speak_brief, speak_items,
+             write_kind, write_brief, placeholder):
+    lis = "\n              ".join('<li data-i18n="actSpeak%d">%s</li>' % (n + 1, t)
+                                 for n, t in enumerate(speak_items))
+    return '''
+    <section class="slide" data-type="activate">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="actEyebrow">Activation</div>
+        <h2 class="slide-title" data-i18n="actTitle">%s</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target">
+          <span class="act-target-label" data-i18n="actUse">%s</span>
+          %s
+        </div>
+        <div class="cols act-cols">
+          <div class="card act-card">
+            <div class="act-kind"><span class="act-icon">🗣</span><span data-i18n="actSpeakKind">%s</span></div>
+            <p class="act-brief" data-i18n="actSpeakBrief">%s</p>
+            <ul class="act-list">
+              %s
+            </ul>
+          </div>
+          <div class="card act-card">
+            <div class="act-kind"><span class="act-icon">✍️</span><span data-i18n="actWriteKind">%s</span></div>
+            <p class="act-brief" data-i18n="actWriteBrief">%s</p>
+            <textarea class="act-input" id="actInput" data-i18n-ph="actPlaceholder" placeholder="%s" aria-label="Written response"></textarea>
+            <div class="act-foot">
+              <span class="act-count" id="actCount">0 words</span>
+              <button class="btn act-copy" data-action="copy-writing" data-i18n="btnCopy">Copy</button>
+            </div>
+            <div class="act-print" id="actPrint" aria-hidden="true"></div>
+          </div>
+        </div>
+        <div style="margin-top:14px;text-align:center">
+          <button class="btn" data-action="restart" data-i18n="btnRestart">Start again</button>
+        </div>
+      </div>
+    </section>
+''' % (title, use_label,
+       "\n          ".join('<span class="bank-chip">%s</span>' % c for c in chips),
+       speak_kind, speak_brief, lis, write_kind, write_brief, placeholder)
+
+
+# ── assembly ───────────────────────────────────────────────────────────
+def assemble(tpl_path, out_path, slides, palette, title, i18n_module, langs=('en', 'de'),
+             all_langs=('en', 'de', 'es', 'fr', 'it', 'pt', 'ru', 'ar', 'zh', 'ja')):
+    s = open(tpl_path, encoding='utf-8').read()
+    a = s.index('    <!-- ── COVER ')
+    b = s.index('    <!-- ── DECK CHROME ')
+    s = s[:a] + slides + '\n' + s[b:]
+    s = re.sub(r"  --hero: url\('sample-hero\.jpg'\);.*?--contrast      : #1ded49;",
+               palette, s, count=1, flags=re.S)
+    s = s.replace('<title>' + re.search(r'<title>(.*?)</title>', s, re.S).group(1) + '</title>',
+                  '<title>%s</title>' % title, 1)
+    block = 'const UI_I18N = {\n' + ",\n".join(
+        ['  %s: %s' % (c, i18n_module.render(c)) for c in langs]
+        + ['  %s: {}' % c for c in all_langs if c not in langs]) + '\n};'
+    s = re.sub(r'const UI_I18N = \{.*?\n\};', block, s, count=1, flags=re.S)
+    open(out_path, 'w', encoding='utf-8').write(s)
+    return s
+
+
+def logo_from(tpl_path):
+    s = open(tpl_path, encoding='utf-8').read()
+    return re.search(r'(<svg class="fe-logo".*?</svg>)', s, re.S).group(1)
+
+
+def sort_slide(bins, items, eyebrow_key, eyebrow, title_key, title, hint_key,
+               hint, why, folder='', bg=None):
+    """items: list of (text, bin_index). bins: list of labels.
+
+    Guards the two ways a sorting task stops being a task: an item that
+    belongs to no bin, and a bin that never receives one — sorting into a
+    box nothing goes in is a decision the learner cannot get wrong."""
+    used = {b for _, b in items}
+    assert all(0 <= b < len(bins) for _, b in items), \
+        'sort: an item points at a bin that does not exist'
+    assert used == set(range(len(bins))), \
+        'sort: bin(s) %s receive no items — a bin nothing goes in is not a ' \
+        'choice' % sorted(set(range(len(bins))) - used)
+    assert len(items) >= 2 * len(bins), \
+        'sort: %d items across %d bins is too thin to be worth a slide' % (
+            len(items), len(bins))
+    chips = "\n          ".join(
+        '<span class="sort-item" data-bin="%d">%s</span>' % (b, t)
+        for t, b in items)
+    return '''
+    <section class="slide" data-type="sort"%s>
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="%s">%s</div>
+        <h2 class="slide-title" data-i18n="%s">%s</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="order-hint" data-i18n="%s">%s</p>
+        <div class="sort" data-bins="%s">
+          %s
+        </div>
+        <p class="feedback" data-explain="%s"></p>
+      </div>
+    </section>
+''' % (_bg(folder, bg), eyebrow_key, eyebrow, title_key, title, hint_key, hint,
+       " | ".join(bins), chips, esc(why))

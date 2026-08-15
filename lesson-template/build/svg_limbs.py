@@ -1,0 +1,131 @@
+# -*- coding: utf-8 -*-
+"""Limbs & extremities.
+
+Two views, chosen because the words demand them:
+
+  the arm, palm forward, so palm, knuckle and thumb are all visible at
+  once — a back-of-hand view hides the palm and makes the knuckles the
+  only readable thing;
+
+  the leg from the side, because shin and calf are the front and the back
+  of the same segment. Head-on you can label one or the other, never
+  both, and that is exactly where diagrams of this go wrong. The foot is
+  turned to show the sole.
+"""
+W, H = 1280, 720
+CREAM, NAVY, PINK, MUTE = '#f4eee2', '#1b2340', '#ef4b6b', '#46557f'
+
+def leader(x1, y1, x2, y2, tx, ty, text, anchor='start'):
+    return (f'  <polyline class="lead" points="{x1},{y1} {x2},{y2}"/>\n'
+            f'  <circle class="dot" cx="{x1}" cy="{y1}" r="4.5"/>\n'
+            f'  <text class="lbl" x="{tx}" y="{ty}" text-anchor="{anchor}">{text}</text>')
+
+svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-label="Labelled arm, hand, leg and foot">
+<title>Limbs and extremities</title>
+<style>
+  .bg   {{ fill: {CREAM}; }}
+  .limb {{ fill: {NAVY}; }}
+  .cut  {{ fill: {PINK}; }}
+  .soft {{ fill: {PINK}; opacity: .45; }}
+  .mute {{ fill: {MUTE}; }}
+  .lead {{ fill: none; stroke: {NAVY}; stroke-width: 1.6; opacity: .7; }}
+  .dot  {{ fill: {PINK}; stroke: {CREAM}; stroke-width: 1.5; }}
+  .lbl  {{ font-family: 'DM Sans', system-ui, sans-serif; font-size: 20px;
+           font-weight: 600; fill: {NAVY}; }}
+  .ttl  {{ font-family: 'Playfair Display', Georgia, serif; font-size: 34px;
+           font-weight: 700; fill: {NAVY}; }}
+  .sub  {{ font-family: 'DM Mono', ui-monospace, monospace; font-size: 12.5px;
+           letter-spacing: .14em; fill: {PINK}; }}
+  .note {{ font-family: 'DM Mono', ui-monospace, monospace; font-size: 11px;
+           letter-spacing: .1em; fill: {MUTE}; }}
+</style>
+<rect class="bg" x="0" y="0" width="{W}" height="{H}"/>
+<text class="sub" x="64" y="64">FORBES ENGLISH · C1 BODY PARTS</text>
+<text class="ttl" x="64" y="104">Limbs &amp; extremities</text>
+<text class="note" x="64" y="132">ARM WITH THE PALM TOWARDS YOU · LEG FROM THE SIDE, FACING RIGHT</text>
+
+<!-- ══ ARM, palm forward ══════════════════════════════════════════ -->
+<g transform="translate(38,-52) scale(0.9)" transform-origin="340 400">
+<!-- shoulder mass and the hollow of the armpit beneath it -->
+<path class="limb" d="M 250 196 C 320 186 372 214 380 262
+  L 392 372 C 396 402 392 420 386 440
+  L 380 520 C 378 540 384 552 392 562
+  L 396 588
+  L 306 596 L 300 566
+  C 306 552 310 538 308 520
+  L 300 440 C 292 418 288 398 292 372
+  L 300 268 C 262 262 240 240 250 196 Z"/>
+<!-- armpit: the hollow where the arm meets the chest -->
+<path class="soft" d="M 250 200 c 30 16 44 34 48 62 c -30 -4 -50 -24 -48 -62 Z"/>
+<!-- elbow: the joint at the mid-point of the arm -->
+<ellipse class="cut" cx="342" cy="384" rx="52" ry="22"/>
+<!-- wrist: the narrow band above the hand -->
+<rect class="cut" x="298" y="556" width="98" height="26" rx="10"/>
+
+<!-- hand, palm towards you: palm block, four fingers, thumb to the side -->
+<path class="limb" d="M 300 582 L 396 582 C 410 582 416 592 416 606
+  L 416 660 C 416 690 400 706 372 708 L 322 708
+  C 296 706 282 690 282 660 L 282 606 C 282 592 288 582 300 582 Z"/>
+<g class="limb">
+  <rect x="292" y="694" width="26" height="70" rx="13"/>
+  <rect x="324" y="694" width="26" height="78" rx="13"/>
+  <rect x="356" y="694" width="26" height="74" rx="13"/>
+  <rect x="388" y="694" width="24" height="64" rx="12"/>
+</g>
+<!-- thumb: shorter, set off to the side, and opposed -->
+<path class="limb" d="M 282 618 C 258 622 244 642 246 666 C 248 690 264 700 280 694
+  C 288 690 288 668 286 650 Z"/>
+<!-- palm: the inner surface -->
+<ellipse class="soft" cx="349" cy="644" rx="46" ry="42"/>
+<!-- knuckles: the row of joints where the fingers meet the hand -->
+<g class="cut">
+  <circle cx="305" cy="694" r="11"/><circle cx="337" cy="694" r="11"/>
+  <circle cx="369" cy="694" r="11"/><circle cx="400" cy="694" r="10"/>
+</g>
+
+</g>
+
+<!-- ══ LEG, from the side, facing right ═══════════════════════════ -->
+<path class="limb" d="M 812 196 C 890 190 936 220 940 270
+  L 936 372 C 934 400 926 414 922 436
+  L 918 470 C 916 494 922 508 928 520
+  L 930 596 C 930 626 924 646 916 664
+  L 1000 668 C 1016 668 1024 678 1024 692 L 1024 712
+  L 856 712 C 838 712 830 700 830 684
+  L 834 596 L 832 520 C 826 500 820 480 822 456
+  L 830 400 C 826 372 820 340 822 300
+  L 812 260 Z"/>
+<!-- thigh: hip to knee -->
+<path class="soft" d="M 826 232 C 872 224 918 226 938 236 L 934 372 C 900 364 862 366 828 374 Z"/>
+<!-- knee sits between them, unlabelled, as the landmark -->
+<ellipse class="mute" cx="880" cy="398" rx="56" ry="20"/>
+<!-- shin: the FRONT of the lower leg, along the bone -->
+<path class="cut" d="M 916 424 C 922 466 920 494 926 522 L 908 526
+  C 902 496 904 466 898 428 Z"/>
+<!-- calf: the muscle at the BACK of the same segment -->
+<path class="cut" d="M 830 424 C 812 456 810 496 826 524 L 846 520
+  C 834 494 836 460 848 430 Z"/>
+<!-- ankle: the joint between leg and foot -->
+<ellipse class="cut" cx="880" cy="600" rx="50" ry="17"/>
+<!-- heel: the back of the foot -->
+<path class="cut" d="M 838 640 C 820 648 818 676 832 692 L 866 692
+  C 850 678 848 656 862 644 Z"/>
+<!-- sole: the underside, shown as the contact surface -->
+<rect class="soft" x="856" y="694" width="168" height="18" rx="8"/>
+
+{leader(313, 197, 190, 200, 178, 206, 'armpit', 'end')}
+{leader(380, 334, 190, 322, 178, 328, 'elbow', 'end')}
+{leader(378, 499, 190, 446, 178, 452, 'wrist', 'end')}
+{leader(386, 568, 190, 570, 178, 576, 'palm', 'end')}
+{leader(375, 613, 190, 660, 178, 666, 'knuckle', 'end')}
+{leader(308, 582, 190, 700, 178, 706, 'thumb', 'end')}
+{leader(880, 296, 1120, 236, 1136, 242, 'thigh')}
+{leader(912, 470, 1120, 330, 1136, 336, 'shin')}
+{leader(828, 476, 1120, 424, 1136, 430, 'calf')}
+{leader(880, 600, 1120, 518, 1136, 524, 'ankle')}
+{leader(838, 666, 1120, 612, 1136, 618, 'heel')}
+{leader(960, 703, 1120, 700, 1136, 706, 'sole')}
+</svg>
+'''
+open('/home/claude/forbes-english/BodyParts/limbs-extremities.svg','w',encoding='utf-8').write(svg)
+print('wrote limbs-extremities.svg')
