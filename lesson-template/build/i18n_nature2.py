@@ -37,6 +37,7 @@ T['en'] = dict(
     b1bn='You can take this part on its own, but you will be choosing between '
          'a word you have been taught and a word you have not. Part 1 removes '
          'that guesswork.',
+    bhE='Before you begin', bhT='The hide',
     b2E='Before you begin', b2T='Four words the briefings assume you know',
     b2n='All four appear inside question stems later on. They are glossed here '
         'so that no item is testing whether you happen to know the jargon.',
@@ -234,6 +235,8 @@ T['de'] = dict(
     b1bn='Du kannst diesen Teil auch allein bearbeiten, aber dann wählst du '
          'zwischen einem Wort, das dir beigebracht wurde, und einem, das dir '
          'nicht beigebracht wurde. Teil 1 nimmt dieses Raten heraus.',
+    bhE='Bevor du beginnst',
+    bhT='The hide',
     b2E='Bevor du beginnst',
     b2T='Vier Wörter, die die Aufgaben voraussetzen',
     b2n='Alle vier tauchen später in den Aufgabentexten auf. Sie werden hier '

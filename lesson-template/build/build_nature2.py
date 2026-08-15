@@ -82,8 +82,9 @@ activation stage, none of which existed.
 
 Artwork: `NatureAgency2/hero-otter.jpg` on the cover and behind every
 interior slide; `NatureAgency2/loch.jpg` behind the two scene-setting
-slides and the results; `NatureAgency2/reeds.jpg` on the three section
-dividers. The two savanna illustrations that shipped in this
+slides and the results; `NatureAgency2/hide.jpg` behind the glossary,
+under the definition of *the hide*; `NatureAgency2/shore.jpg` behind the
+activation stage; `NatureAgency2/reeds.jpg` on the three section dividers. The two savanna illustrations that shipped in this
 folder are of a different continent from every word in the lesson and are
 not used.
 """
@@ -103,6 +104,17 @@ BG2 = 'reeds.jpg'
 # is a house — two storeys, two chimney stacks. It is NOT a bird hide, and
 # nothing in this deck may caption it as one; the hide is taught in words.
 BG3 = 'loch.jpg'
+# A bird hide: timber box on stilts over the water, viewing shutters, walkway,
+# reed bed. It sits behind the glossary slide, under the definition of *the
+# hide* — the deck's highest-risk piece of jargon, because read as a verb the
+# stem 'moving the hide further from the nest' collapses. This is the one
+# background in the deck doing teaching work rather than atmosphere, and it
+# earns it by actually depicting the thing. (loch.jpg does NOT: the structure
+# on its far shore is a two-storey house.)
+BG4 = 'hide.jpg'
+# The wider shore — cabin, moored boat, waders. Atmosphere behind the
+# activation stage. Nothing in it is captioned; nothing in it needs to be.
+BG5 = 'shore.jpg'
 
 # Derived mechanically from NatureAgency2/hero-otter.jpg:
 #   python3 lesson-template/extract-palette.py NatureAgency2/hero-otter.jpg --light
@@ -725,6 +737,23 @@ def build():
                     'word you have not. Part 1 removes that guesswork.')],
                   folder=F, bg=BG3)]
 
+    # One card in a two-column grid, so the right half of the slide stays
+    # clear and the hide in the artwork is actually visible next to its own
+    # definition. The image is mirrored for this: the structure was on the
+    # left, exactly where the card sits, and the tree that came with it was
+    # sitting behind the title.
+    S += [D.teach('bhE', 'Before you begin', 'bhT',
+                  'The hide',
+                  [(None, 'a noun, not a verb',
+                    'A <strong>hide</strong> is a small screened shelter that '
+                    'birdwatchers sit inside so they can watch without being '
+                    'seen &mdash; often a timber box on stilts at the edge of '
+                    'the water, with shutters to look through. Later on you '
+                    'will read about <em>moving the hide further from the '
+                    'nest</em>. That is this building being moved, not anyone '
+                    'concealing anything.', None, None)],
+                  cols='1fr 1fr', folder=F, bg=BG4)]
+
     S += [D.teach('b2E', 'Before you begin', 'b2T',
                   'Four words the briefings assume you know',
                   [(None, 'the hide',
@@ -1090,6 +1119,10 @@ if __name__ == '__main__':
     body = body.replace('<section class="slide" data-type="results">',
                         '<section class="slide" data-type="results" '
                         'data-bg="%s/%s">' % (F, BG3), 1)
+    # The wider shore behind the activation stage.
+    body = body.replace('<section class="slide" data-type="activate">',
+                        '<section class="slide" data-type="activate" '
+                        'data-bg="%s/%s">' % (F, BG5), 1)
     n = body.count('<section class="slide')
     body = body.replace('NN slides', '%d slides' % n)
     i18n_nature2.T['en']['chipCount'] = '%d slides' % n
