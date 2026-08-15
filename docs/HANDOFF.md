@@ -20,6 +20,7 @@ stale copy.
 | `forbes-nature-agency-part2.html` | `NatureAgency2/` (hero, plain) | not audited |
 | `forbes-english-b2-lesson.html` | `TopGearB2/hero.jpg` | not audited |
 | `forbes-geoscience-phrases.html` | `Geoscience/` (5 images) | **audited, see `docs/geoscience-audit.md`** |
+| `make-v-do.html` | `MakeVDo/` (hero, lettering) | **built** — `build_makevdo.py`, 26 slides, checker clean |
 
 All palettes derived with `extract-palette.py`, every contrast row
 passing.
@@ -39,8 +40,14 @@ Every explanatory sentence sits inside a post-answer `explanation:`
 string or a pre-answer `hint:`.
 
 - **All 17 Section 1 keys are `correct: 0`.** A runtime shuffle hides it
-  live; a static deck rebuild inherits a 100% "always A" key unless the
-  options are deliberately deranged.
+  live. **Correction:** the claim that "a static deck rebuild inherits a
+  100% 'always A' key" is wrong — `lesson-template.html` shuffles `.opt`
+  children on first view, and shuffles the `sort` pool too, both on
+  purpose ("so option order is never a tell"). Source-order keys are
+  therefore never learner-visible in a deck either. Deranging the source
+  is still worth doing — printed hand-outs, readability, insurance if the
+  shuffle is ever dropped — but it is hygiene, not a defect fix, and the
+  distinction matters when triaging a lesson.
 - **Section 3 cannot be lost.** `s3Score++` fires only on a correct
   match, wrong matches carry no penalty and no attempt cap, and the exit
   gate requires all 16 matched — so every learner scores exactly 16/16.
@@ -269,3 +276,53 @@ still inline in the shipped HTML, so parse it back out, commit it beside its
 builder, and repoint the path at `__file__`. Until that is done, treat those
 lessons as hand-editable only, and do not assume re-running a builder will
 reproduce what is live.
+
+---
+
+## Make v Do — built
+
+`build_makevdo.py`, `MakeVDo/`, 26 slides, checker clean, stage centred to
+0.0px at 390x844 / 844x390 / 1024x768 / 1440x900.
+
+The old page was a scrolling quiz with no hero, no logo, no activation stage,
+its own font stack and an invented palette. Everything scored survives — ten
+gap-fills, six collocation pairs, an eight-item sort, eight phrasal verbs — but
+**every rule in the lesson existed only inside post-answer feedback**, so the
+one way to learn a rule was to get its item wrong. Four teaching slides now
+carry the produce/perform split, the four fixed expressions that break it, and
+the phrasal verbs grouped by particle instead of met one at a time in a
+shuffled queue.
+
+Source keys were all at index 0 and the sort ran make/do/make/do; deranged, but
+see the correction above — the engine already shuffles both, so this was never
+live in either version.
+
+**Artwork.** The supplied image is a 3376x1440 diptych with a hard seam at
+x=1688. The left panel has "MAKING. v DOING." set into it, which fights the
+deck's own cover title, so the cover takes the right panel (the Mustang, clean
+space for type) and the lettered panel becomes `data-bg` on the teaching
+slides. Both crops are 1688x950. `--bg-opacity` is dropped to 0.34: the
+template default of 0.72 assumes a photographic hero, and against flat vector
+art with a metre-high wordmark in it the letterforms competed with the slide
+titles and swallowed the eyebrow line.
+
+**Content lost, and it needs an engine change.** The old page carried a German
+explanation for all 24 explained items. `deck.py` writes per-item feedback into
+a `data-explain` attribute and `UI_I18N` only resolves `data-i18n` keys, so
+per-item feedback cannot be translated in any deck on this site. Every
+converted lesson has silently dropped its non-English explanations at this
+step. Worth fixing centrally — the switcher currently translates the chrome and
+leaves the actual teaching in English.
+
+## Uploading through the web uploader
+
+The GitHub uploader's **"Commit changes" button does nothing when clicked by
+element reference.** The tool reports `Clicked on element ref_N` and the form
+sits there. Clicking by coordinate works. Two commits were reported as
+successful and had not happened; the only reason it was caught was the
+byte-for-byte hash check, which is the step that turns this from a guess into a
+fact. Never skip it, and never trust the click report.
+
+Also: `file_upload` takes **sandbox paths** (`/home/claude/...`) directly. It
+rejects paths on the user's device even inside a granted folder, so staging
+files across the device bridge first is wasted work.
