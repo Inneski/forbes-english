@@ -13,8 +13,32 @@ five by always picking the longest and learning nothing about register. It is
 the trap this topic invites, because the professional version genuinely is the
 wordier one. All fifteen distractors were rewritten to match the key's length
 while staying wrong for a reason the lesson teaches.
+
+Gap 1 was repaired later. Two faults, one item:
+
+  * Its feedback argued against `demand` and `reserve`, neither of which is in
+    the word bank, and said nothing about `arrange` — which is the first chip
+    in the bank and the answer a learner is most likely to try. The bank has
+    ten chips and only five are ever the answer, so `arrange` is a live decoy
+    with no rebuttal anywhere. "Request an appointment is the standard formal
+    collocation" also implies `arrange an appointment` is not standard English,
+    and it plainly is.
+  * The stem contradicted itself. `for next week` fixes the timing while `at
+    your earliest convenience` hands it to the reader, and the phrase was
+    attached to the appointment when it belongs to their reply.
+
+The repair keeps `request` as the key rather than switching the stem to
+`Could we arrange a time to meet next week?`. That reads well in isolation, but
+gap 3 is already `I would like to ______ a time to speak this week` keyed to
+`schedule`, and `arrange` and `schedule` are interchangeable in both — two gaps
+that can each be answered with the other's key is a worse defect than the one
+being fixed. Asking the reader to supply the times is what makes `request`
+uniquely right and rules out the two verbs that presume agreement.
 """
-import re, sys
+import os, re, sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
 
 TPL = 'lesson-template/lesson-template.html'
 OUT = 'forbes-english-emails calls part3.html'
@@ -34,13 +58,15 @@ PALETTE = '''  --hero: url('%s/hero.jpg');
   --secondary     : #050e10;
   --contrast      : #1deda4;''' % FOLDER
 
-sys.path.insert(0, '/tmp')
 from emails_mc import MC
 
 GAPS = [
-    ('I am writing to ______ an appointment for next week at your earliest convenience.',
+    ('I am writing to ______ an appointment; please let me know which times next week would suit you.',
      'request',
-     '<strong>Request an appointment</strong> is the standard formal collocation. <em>Demand</em> is aggressive, <em>propose</em> suggests you are already offering a time, and <em>reserve</em> is for seats and venues.'),
+     '<strong>Request</strong> is what you do before there is anything to arrange: you ask, and they decide. '
+     '<em>Arrange</em> and <em>schedule</em> both treat the appointment as already agreed and settle its details '
+     '&mdash; and the second half of this sentence, which asks them to supply the times, rules that out. '
+     '<em>Propose</em> would mean you were offering a time yourself.'),
     ('Please find ______ the documents we discussed during our call on Thursday.',
      'attached',
      '<strong>Please find attached</strong> is the fixed phrase for an email. <em>Enclosed</em> belongs to a paper letter, <em>appended</em> is academic, and <em>included</em> does not take this construction.'),

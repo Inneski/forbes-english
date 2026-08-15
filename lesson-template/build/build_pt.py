@@ -35,13 +35,15 @@ old version supported and never mentioned.
 than derived, and no German — in a lesson whose sibling files all carry
 it.
 """
-import json, sys
-sys.path.insert(0, '/tmp')
+import json, os, sys
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(os.path.dirname(HERE))
+sys.path.insert(0, HERE)
 import deck as D
 
-OUT = '/home/claude/forbes-english/present-simple-vs-continuous.html'
-TPL = '/home/claude/forbes-english/lesson-template/lesson-template.html'
-DATA = json.load(open('/tmp/pt_data.json', encoding='utf-8'))
+OUT = os.path.join(ROOT, 'present-simple-vs-continuous.html')
+TPL = os.path.join(ROOT, 'lesson-template', 'lesson-template.html')
+DATA = json.load(open(os.path.join(HERE, 'pt_data.json'), encoding='utf-8'))
 LOGO = D.logo_from(TPL)
 
 HTML = '''<!DOCTYPE html>
@@ -75,6 +77,24 @@ HTML = '''<!DOCTYPE html>
   --font-ui: 'DM Sans', system-ui, sans-serif;
   --font-mono: 'DM Mono', ui-monospace, monospace;
   --r: 14px;
+  /* The height of the bin row. The falling card, the progress bar, the centre
+     rail and the why-line are all positioned off this, so it is one number,
+     not four — the narrow-screen bug was three of them drifting apart. */
+  --bins-h: 200px;
+
+  /* Tense colours, from lesson-template/tense-palette.css. This lesson
+     contrasts two tenses the system already owns, so it uses the system's
+     values rather than the hero accent — which had been painting the
+     present-simple box in the present-continuous pink. Both published values
+     are dark, so each is lightened 55% toward white as that file instructs:
+     navy 5.25:1 on --surface, pink 6.34:1.
+
+     The third box is not a tense and takes no tense colour. --text-dim is
+     pink-tinted in this palette and sits 46 RGB units from the continuous
+     pink, so a true neutral is used: 71 units away, 7.68:1. */
+  --t-present-simple    : color-mix(in srgb, #16345C 55%, white);
+  --t-present-continuous: color-mix(in srgb, #C2185B 55%, white);
+  --t-either            : #A8AEAE;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -131,7 +151,7 @@ select.tbtn { padding-right: 8px; }
 /* ── arena ── */
 #arena { flex: 1; position: relative; overflow: hidden; }
 #rail {
-  position: absolute; left: 50%; top: 0; bottom: 200px;
+  position: absolute; left: 50%; top: 0; bottom: var(--bins-h);
   transform: translateX(-50%); width: 2px;
   background: linear-gradient(180deg,
     transparent, color-mix(in srgb, var(--accent) 45%, transparent), transparent);
@@ -139,7 +159,7 @@ select.tbtn { padding-right: 8px; }
 #card {
   position: absolute; left: 50%; transform: translateX(-50%);
   font-family: var(--font-display); font-size: 30px; font-weight: 700;
-  color: var(--void); background: var(--accent-bright);
+  color: var(--void); background: var(--text);
   border-radius: var(--r); padding: 14px 30px; white-space: nowrap;
   box-shadow: 0 10px 40px rgba(0,0,0,.45); cursor: grab; user-select: none;
   z-index: 20;
@@ -152,7 +172,7 @@ select.tbtn { padding-right: 8px; }
 
 /* ── bins ── */
 #bins {
-  position: absolute; left: 0; right: 0; bottom: 0; height: 200px;
+  position: absolute; left: 0; right: 0; bottom: 0; height: var(--bins-h);
   display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; padding: 12px 16px 18px;
   z-index: 15;
 }
@@ -164,12 +184,19 @@ select.tbtn { padding-right: 8px; }
   gap: 8px; padding: 14px; text-align: center;
   transition: border-color .12s, background .12s, transform .1s;
 }
-.bin:hover, .bin.over { border-style: solid; border-color: var(--accent); transform: translateY(-2px); }
+/* One box per tense, in the site's tense colours. The third box is not a
+   tense and takes the neutral. */
+.bin[data-bin="0"] { --bin-colour: var(--t-present-simple); }
+.bin[data-bin="1"] { --bin-colour: var(--t-present-continuous); }
+.bin[data-bin="2"] { --bin-colour: var(--t-either); }
+.bin { border-color: color-mix(in srgb, var(--bin-colour) 60%, transparent); }
+.bin-label { color: var(--bin-colour); }
+.bin:hover, .bin.over { border-style: solid; border-color: var(--bin-colour); transform: translateY(-2px); }
 .bin.pop { animation: pop .22s ease-out; }
 @keyframes pop { 50% { transform: scale(1.04); } }
 .bin-key {
   font-family: var(--font-mono); font-size: 11px; color: var(--void);
-  background: var(--accent); border-radius: 999px; width: 22px; height: 22px;
+  background: var(--bin-colour); border-radius: 999px; width: 22px; height: 22px;
   display: grid; place-items: center;
 }
 .bin-label { font-family: var(--font-ui); font-weight: 600; font-size: 17px; }
@@ -181,13 +208,13 @@ select.tbtn { padding-right: 8px; }
   position: absolute; top: 10px; right: 12px;
   font-family: var(--font-mono); font-size: 12px; color: var(--text-dim);
 }
-#bar-wrap { position: absolute; left: 0; right: 0; bottom: 200px; height: 3px;
+#bar-wrap { position: absolute; left: 0; right: 0; bottom: var(--bins-h); height: 3px;
   background: rgba(0,0,0,.35); z-index: 15; }
 #bar { height: 100%; width: 0; background: var(--accent); transition: width .3s; }
 
 /* ── why line ── */
 #why {
-  position: absolute; left: 50%; bottom: 214px; transform: translateX(-50%);
+  position: absolute; left: 50%; bottom: calc(var(--bins-h) + 14px); transform: translateX(-50%);
   width: min(760px, 92%); z-index: 18;
   background: color-mix(in srgb, var(--surface) 94%, transparent);
   border: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
@@ -202,7 +229,11 @@ select.tbtn { padding-right: 8px; }
 /* ── overlays ── */
 .overlay {
   position: fixed; inset: 0; z-index: 100; display: none;
-  align-items: center; justify-content: center; padding: 24px;
+  /* flex-start + auto margins on the sheet, not align-items:center — a centred
+     flex child taller than the viewport has its top cut off and cannot be
+     scrolled to. At 320px that put the Play button out of reach. */
+  align-items: flex-start; justify-content: center; padding: 24px;
+  overflow-y: auto;
   background: color-mix(in srgb, var(--void) 78%, transparent);
   backdrop-filter: blur(5px);
 }
@@ -210,7 +241,7 @@ select.tbtn { padding-right: 8px; }
 .sheet {
   background: color-mix(in srgb, var(--surface) 96%, transparent);
   border: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
-  border-radius: 20px; padding: 30px 34px; max-width: 880px; width: 100%;
+  border-radius: 20px; padding: 30px 34px; max-width: 880px; width: 100%; margin: auto;
   box-shadow: 0 20px 70px rgba(0,0,0,.6);
 }
 .eyebrow {
@@ -245,9 +276,29 @@ select.tbtn { padding-right: 8px; }
 .pill.g { background: color-mix(in srgb, var(--ok) 22%, transparent); color: var(--ok); }
 .pill.b { background: color-mix(in srgb, var(--no) 22%, transparent); color: var(--no); }
 .centre { text-align: center; }
+/* Narrow screens stack the three bins, but they must stay pinned to the bottom
+   of the arena. The previous rule set `position: static`, which moved them to
+   the TOP — straight under the falling card, which has the higher z-index and
+   covered the first bin completely. On a phone the game showed a card and only
+   two of the three boxes, with "Present simple" hidden underneath, and the card
+   never fell because its stop is computed from the bins and came out negative. */
 @media (max-width: 820px) {
-  .rules, #bins { grid-template-columns: 1fr; }
-  #bins { height: auto; position: static; }
+  :root { --bins-h: 264px; }
+  .rules { grid-template-columns: 1fr; }
+  #bins { grid-template-columns: 1fr; gap: 8px; padding: 8px 12px 12px; }
+  .bin { flex-direction: row; justify-content: flex-start; gap: 12px; padding: 10px 16px; }
+  .bin-label { font-size: 16px; text-align: left; }
+  .bin-count { top: 50%; transform: translateY(-50%); }
+  #card { font-size: 24px; padding: 12px 22px; max-width: 88%; white-space: normal; text-align: center; }
+  #why { font-size: 14.5px; padding: 10px 14px; }
+}
+
+/* On a phone the header ran off the right edge and clipped the score. */
+@media (max-width: 560px) {
+  #top { padding: 10px 12px; gap: 8px; }
+  #top-right { gap: 6px; }
+  .badge, .tbtn { font-size: 11px; padding: 4px 9px; }
+  .fe-logo { width: 74px; flex: 0 0 auto; }
 }
 </style>
 </head>
@@ -409,7 +460,11 @@ function answer(bin) {
   cancelAnimationFrame(raf);
   const w = WORDS[queue[i]];
   const ok = bin === w.b;
-  if (ok) { right++; counts[bin]++; } else { wrong++; }
+  // The tally counts every card dropped in a box, right or wrong. It used to
+  // increment only on a correct answer, so a learner who missed one watched
+  // the number stay put and reasonably concluded it was broken.
+  counts[bin]++;
+  if (ok) { right++; } else { wrong++; }
   cardEl.classList.add(ok ? 'good' : 'bad');
   const b = binsEl.querySelector('.bin[data-bin="' + bin + '"]');
   if (b) { b.classList.add('pop'); setTimeout(() => b.classList.remove('pop'), 230); }
