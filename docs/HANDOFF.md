@@ -16,14 +16,29 @@ stale copy.
 
 | Lesson | Artwork | State |
 |---|---|---|
-| `forbes-nature-agency-part1.html` | `NatureAgency/` (hero, lake, station, prairie) | **built** — `build_nature1.py`, 36 slides, checker clean, delivered by `SendUserFile`. Not yet on `origin`. |
+| `forbes-nature-agency-part1.html` | `NatureAgency/` (hero, lake, station, prairie) | **built & live** — `build_nature1.py`, 36 slides, checker clean |
 | `forbes-nature-agency-part2.html` | `NatureAgency2/` (hero, plain) | not audited |
 | `forbes-english-b2-lesson.html` | `TopGearB2/hero.jpg` | not audited |
-| `forbes-geoscience-phrases.html` | `Geoscience/` (5 images) | **audited, see `docs/geoscience-audit.md`** |
+| `forbes-geoscience-phrases.html` | `Geoscience/` (5 images) | **audited, see `docs/geoscience-audit.md`** — next in the queue |
 | `make-v-do.html` | `MakeVDo/` (hero, lettering) | **built** — `build_makevdo.py`, 26 slides, checker clean |
 
 All palettes derived with `extract-palette.py`, every contrast row
 passing.
+
+**73 catalogued lessons still have no artwork at all** — no `--hero` and no
+library card image. Four of them already have a folder staged and just need
+wiring (`Geoscience/`, `NatureAgency2/`, `TopGearB2/`, and `grammarjail/`,
+which is unassigned but fits the Grammar Court pair). Three pairs are the same
+lesson filed twice and should be retired before anyone commissions art for
+both halves. Full inventory, method and merge analysis: **`docs/HERO-QUEUE.md`**.
+
+**Only one course exists as a course.** 213 of 239 lesson files have no
+inbound link from any other lesson — Sherpa Tensing's route map is the sole
+piece of course navigation on the site. Everything else is a latent course:
+coherent sets with no sequencing. 78 lessons (33%) also have no CEFR level, so
+they cannot be ordered even in principle. Course-by-course analysis and the
+missing instalments (Emails Parts 1–2, Ordering Food Part 1, JFK Part 1,
+Active/Passive Quiz Part 1): **`docs/COURSES.md`**.
 
 **Standing constraint on the B2 lesson:** do not rename Clarkson,
 Hammond or May in the published Stranger Gears build, and the Stranger
