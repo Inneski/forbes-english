@@ -1,1244 +1,2173 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Language of Geoscience</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Syne:wght@400;500;600&family=Syne+Mono&display=swap" rel="stylesheet">
+<!-- ══ REPLACE: lesson title. No "Forbes English —" prefix. ══ -->
+<title>The Language of Geoscience — C1 Technical English</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+/* ══════════════════════════════════════════════════════════════════
+   FORBES ENGLISH — 16:9 SLIDE LESSON TEMPLATE
+   Everything you normally need to change lives in the two blocks
+   marked "REPLACE". Do not restructure the engine below them.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ══ REPLACE 1 of 2: hero image + palette ══
+   1. Point --hero at the lesson's cover image. This ONE line drives the
+      cover, the background pattern on every slide, and the PDF export.
+   2. Generate the palette FROM that same image:
+         python3 lesson-template/extract-palette.py <hero-image>
+      and paste its output over the colour block. Never hand-pick colours. */
+:root {
+  --hero: url('Geoscience/buttes.jpg');
+
+  --void          : #d8c7ac;
+  --surface       : #e1d6c4;
+  --surface2      : #dcceb8;
+  --border        : #96714a;
+  --text          : #2a1e11;
+  --text-dim      : #5e472e;
+  --accent        : #8c4e0d;
+  --accent-bright : #633404;
+  --accent-dim    : #db8b39;
+  --secondary     : #90a8ad;
+  --contrast      : #095153;
+}
+
+/* ── Fixed tokens: identical in every lesson. Do not edit. ── */
+:root {
+  --slide-w: 1280px;
+  --slide-h: 720px;
+  --pad: 64px;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-ui: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'DM Mono', ui-monospace, monospace;
+  --r: 10px;
+  --ok: #3fbf7f;
+  --no: #e8555f;
+  --bg-opacity: 0.72;     /* background pattern strength — see doc §6 */
+
+  /* Theme primitives. Dark is the default; a light lesson sets
+     data-theme="light" on <html> and only these flip. Never hardcode
+     rgba(0,0,0,…) or rgba(255,255,255,…) in a lesson — use these. */
+  --inset:  rgba(255,255,255,0.07);  /* recessed fills: inputs, key discs   */
+  --inset2: rgba(255,255,255,0.14);  /* the same, one step stronger         */
+  --scrim:  rgba(0,0,0,0.45);        /* chrome sitting over the hero        */
+  --hairline: rgba(255,255,255,0.28);
+  --cover-shadow: 0 1px 2px rgba(0,0,0,0.95), 0 2px 8px rgba(0,0,0,0.90),
+                  0 4px 26px rgba(0,0,0,0.80), 0 0 3px rgba(0,0,0,0.85);
+  /* Interior background wash. Two stops, not one: the artwork stays visible
+     across the middle of the slide and is only pulled down at the very top
+     and bottom, where the eyebrow, the deck bar and the progress rail sit.
+     An interior page that reads as plain black is a bug — see doc §6. */
+  --wash-mid:  rgba(0,0,0,0.06);
+  --wash-edge: rgba(0,0,0,0.20);
+}
+
+/* ══ LIGHT THEME ══
+   For bright, airy heroes. The palette comes from
+   `extract-palette.py <hero> --light`; these are the structural flips the
+   palette alone cannot express.
+
+   A light lesson is a MID tone, not a white one. Every wash here is mixed
+   from --void rather than from white: mixing toward white bleaches the hero
+   out of the interior pages and turns the deck into glare on a projector.
+   If you find yourself reaching for rgba(255,255,255,…) in a lesson, the
+   answer is a higher --void percentage instead. */
+html[data-theme="light"] {
+  --inset:  rgba(0,0,0,0.045);
+  --inset2: rgba(0,0,0,0.10);
+  --scrim:  color-mix(in srgb, var(--void) 78%, transparent);
+  --hairline: rgba(0,0,0,0.14);
+  --cover-shadow: 0 1px 2px rgba(255,255,255,0.95), 0 2px 8px rgba(255,255,255,0.85),
+                  0 4px 26px rgba(255,255,255,0.6), 0 0 3px rgba(255,255,255,0.9);
+  --wash-mid:  color-mix(in srgb, var(--void) 8%, transparent);
+  --wash-edge: color-mix(in srgb, var(--void) 26%, transparent);
+  --bg-opacity: 0.62;
+}
+
+/* On a mid canvas a translucent card has little to contrast against, so
+   edges need more of the hairline than they do on a dark canvas. */
+html[data-theme="light"] .card { border-color: color-mix(in srgb, var(--border) 90%, transparent); }
+html[data-theme="light"] .opt,
+html[data-theme="light"] .match-item { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
+html[data-theme="light"] .opt-key { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
+html[data-theme="light"] .card { background: color-mix(in srgb, var(--surface) 92%, transparent); }
+html[data-theme="light"] .opt { background: color-mix(in srgb, var(--surface) 95%, transparent); }
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-:root {
-  --sand: #f5ede0;
-  --sand2: #ecdcca;
-  --sand3: #dfc9ae;
-  --clay: #c8956b;
-  --clay2: #a8704a;
-  --clay3: #7a4f2f;
-  --slate: #2e3a45;
-  --slate2: #3d4e5c;
-  --slate3: #1e2830;
-  --rust: #b85c38;
-  --rust2: #d97040;
-  --ochre: #c09a3c;
-  --ochre2: #e8bf6a;
-  --sage: #6b8c6b;
-  --sage2: #8aad8a;
-  --bg: #f0e6d6;
-  --card: #faf4ec;
-  --card2: #f5ede2;
-  --text: #1e2830;
-  --text2: #4a5c6a;
-  --text3: #7a8c96;
-  --border: rgba(160,110,70,0.18);
-  --border2: rgba(160,110,70,0.35);
-  --success: #5a8c5a;
-  --error: #c04040;
-  --r: 10px;
-  --rl: 16px;
-}
-
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Syne', sans-serif;
-  font-weight: 400;
-  min-height: 100vh;
-  overflow-x: hidden;
-  position: relative;
-}
-
-/* Strata pattern background */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background:
-    linear-gradient(180deg,
-      rgba(200,149,107,0.06) 0%,
-      rgba(200,149,107,0.03) 15%,
-      rgba(110,140,107,0.05) 30%,
-      rgba(200,149,107,0.04) 45%,
-      rgba(110,140,107,0.06) 60%,
-      rgba(180,92,56,0.04) 75%,
-      rgba(200,149,107,0.05) 100%
-    );
-  pointer-events: none;
-  z-index: 0;
-}
-
-.page-wrap {
-  position: relative;
-  z-index: 1;
-  max-width: 840px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem 5rem;
-}
-
-/* ── HEADER ── */
-.header {
-  text-align: center;
-  margin-bottom: 2.5rem;
-  padding-top: 1.5rem;
-}
-
-.logo-svg { display: block; margin: 0 auto 1.8rem; }
-
-.badge-row {
-  display: flex;
-  justify-content: center;
-  gap: 0.6rem;
-  flex-wrap: wrap;
-  margin-bottom: 1.2rem;
-}
-
-.badge {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  padding: 4px 13px;
-  border-radius: 100px;
-  border: 1px solid var(--border2);
-  color: var(--clay2);
-  background: rgba(200,149,107,0.1);
-}
-
-.lesson-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(1.8rem, 4.5vw, 2.8rem);
-  font-weight: 700;
-  color: var(--slate);
-  line-height: 1.15;
-  margin-bottom: 0.6rem;
-}
-
-.lesson-subtitle {
-  font-size: 0.92rem;
-  color: var(--text3);
-  font-weight: 400;
-  max-width: 500px;
-  margin: 0 auto;
-  line-height: 1.6;
-}
-
-/* ── STRATA DIVIDER ── */
-.strata-divider {
-  width: 100%;
-  height: 18px;
-  margin: 1.8rem 0;
-  border-radius: 4px;
-  overflow: hidden;
-  display: flex;
-}
-.strata-divider span {
-  flex: 1;
-  display: block;
-}
-
-/* ── SCORE BAR ── */
-.score-bar {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  padding: 0.85rem 1.4rem;
-  margin-bottom: 1.8rem;
-  box-shadow: 0 2px 12px rgba(46,58,69,0.06);
-}
-
-.score-label {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text3);
-}
-
-.score-val {
-  font-family: 'Syne Mono', monospace;
-  font-size: 1.05rem;
-  color: var(--clay);
-  min-width: 52px;
-}
-
-.progress-track {
-  flex: 1;
-  height: 5px;
-  background: var(--sand2);
-  border-radius: 99px;
-  overflow: hidden;
-}
-
-.progress-fill {
+html, body {
   height: 100%;
-  background: linear-gradient(90deg, var(--clay2), var(--rust2));
-  border-radius: 99px;
-  transition: width 0.4s ease;
-  width: 0%;
-}
-
-.progress-label {
-  font-size: 11px;
-  color: var(--text3);
-  white-space: nowrap;
-  font-weight: 500;
-}
-
-/* ── ACTIVITY TABS ── */
-.act-tabs {
-  display: flex;
-  gap: 0.4rem;
-  margin-bottom: 1.5rem;
-}
-
-.act-tab {
-  padding: 5px 14px;
-  border-radius: 100px;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text3);
-}
-
-.act-tab.active { background: var(--clay2); border-color: var(--clay2); color: #fff; }
-.act-tab.done { background: rgba(200,149,107,0.12); color: var(--clay2); border-color: var(--border2); }
-
-/* ── SECTION INTRO ── */
-.section-intro {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-top: 3px solid var(--clay);
-  border-radius: var(--r);
-  padding: 1.4rem 1.6rem;
-  margin-bottom: 1.8rem;
-  box-shadow: 0 2px 12px rgba(46,58,69,0.05);
-}
-
-.section-label {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--clay);
-  margin-bottom: 0.4rem;
-}
-
-.section-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: var(--slate);
-  margin-bottom: 0.5rem;
-}
-
-.section-desc {
-  font-size: 0.88rem;
-  color: var(--text2);
-  line-height: 1.65;
-}
-
-/* ── ILLUSTRATION ── */
-.illustration {
-  display: block;
-  margin: 0 auto 2rem;
-  border-radius: var(--r);
-  overflow: visible;
-}
-
-/* ── QUESTION CARD ── */
-.question-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--rl);
-  padding: 1.8rem;
-  margin-bottom: 1.2rem;
-  box-shadow: 0 2px 16px rgba(46,58,69,0.07);
-}
-
-.q-counter {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text3);
-  margin-bottom: 0.8rem;
-}
-
-.q-text {
-  font-size: 1rem;
-  line-height: 1.7;
-  color: var(--slate);
-  margin-bottom: 1.4rem;
-}
-
-.q-phrase {
-  color: var(--rust);
-  font-weight: 600;
-}
-
-/* ── MCQ OPTIONS ── */
-.options-grid { display: grid; gap: 0.55rem; }
-
-.option-btn {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  width: 100%;
-  text-align: left;
-  padding: 0.8rem 1.1rem;
-  background: var(--sand);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
+  overflow: hidden;            /* NO SCROLLING. This is the whole point. */
+  background: var(--void);
   color: var(--text);
-  font-family: 'Syne', sans-serif;
-  font-size: 0.88rem;
-  line-height: 1.5;
-  cursor: pointer;
-  transition: all 0.15s;
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
 }
 
-.option-btn:hover:not(:disabled) {
-  background: var(--sand2);
-  border-color: var(--border2);
+/* ── STAGE: a fixed 1280×720 canvas scaled to fit any viewport ── */
+/* A plain fixed box, NOT a centring grid. A grid item wider than its track is
+   aligned to start by the browser rather than overflowing both sides, so on any
+   viewport narrower than 1280px the stage's layout box began at x=0 and
+   `transform-origin: center center` scaled it about x=640 — shifting it right,
+   and clean off the screen on a phone, leaving a black page. The stage is now
+   pinned top-left and fitStage() does the centring, so the transform can never
+   disagree with the layout. */
+.stage-wrap { position: fixed; inset: 0; overflow: hidden; }
+.stage {
+  position: absolute; left: 0; top: 0;
+  width: var(--slide-w);
+  height: var(--slide-h);
+  transform-origin: top left;
+  overflow: hidden;
+  background: var(--void);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.55);
 }
 
-.option-btn.correct {
-  background: rgba(90,140,90,0.1);
-  border-color: rgba(90,140,90,0.5);
-  color: var(--text);
+/* ── BACKGROUND PATTERN: the cover image, behind every slide ──
+   Driven by --hero so the screen view and the PDF/PPT export read from
+   ONE definition. Two pseudo-layers because opacity on a parent would
+   also fade the wash sitting on top of it. */
+.bg-layer { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.bg-layer::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--hero) center / cover no-repeat;
+  opacity: var(--bg-opacity);
+  filter: saturate(0.92);
+}
+.bg-layer::after {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, var(--wash-edge) 0%, var(--wash-mid) 20%,
+                            var(--wash-mid) 80%, var(--wash-edge) 100%);
+}
+/* The cover slide shows the hero at FULL strength — no wash, no dimming. */
+.stage.on-cover .bg-layer::before { opacity: 1; filter: none; }
+/* Centre scrim: guarantees cover-text contrast over ANY hero — light, dark,
+   or busy — while leaving the artwork vivid at the edges. Do not remove it;
+   it is what makes an arbitrary dropped-in image safe. */
+.stage.on-cover .bg-layer::after {
+  background:
+    radial-gradient(ellipse 58% 54% at 50% 46%,
+      rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.22) 54%, transparent 82%),
+    linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.03) 30%,
+                            rgba(0,0,0,0.05) 70%, rgba(0,0,0,0.38) 100%);
+}
+/* A light cover keeps its picture. Dark ink already carries against a bright
+   image, so the scrim here is barely there — just enough to stop the title
+   landing on a hard edge. Never brighten a light cover to rescue text; if the
+   text will not read, the hero is wrong for a light lesson. */
+html[data-theme="light"] .stage.on-cover .bg-layer::after {
+  background:
+    radial-gradient(ellipse 58% 54% at 50% 46%,
+      rgba(255,255,255,0.48) 0%, rgba(255,255,255,0.28) 54%, transparent 82%),
+    linear-gradient(180deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.03) 30%,
+                            rgba(255,255,255,0.05) 70%, rgba(255,255,255,0.22) 100%);
 }
 
-.option-btn.incorrect {
-  background: rgba(192,64,64,0.07);
-  border-color: rgba(192,64,64,0.35);
-  color: var(--text2);
-}
-
-.option-btn:disabled { cursor: default; }
-
-.opt-letter {
-  flex-shrink: 0;
-  width: 22px;
-  height: 22px;
-  line-height: 22px;
-  text-align: center;
-  border-radius: 50%;
-  background: rgba(160,110,70,0.1);
-  border: 1px solid var(--border2);
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--clay2);
-  margin-top: 1px;
-}
-
-.option-btn.correct .opt-letter { background: rgba(90,140,90,0.2); border-color: rgba(90,140,90,0.6); color: var(--success); }
-.option-btn.incorrect .opt-letter { background: rgba(192,64,64,0.12); border-color: rgba(192,64,64,0.4); color: var(--error); }
-
-/* ── FEEDBACK ── */
-.feedback-box {
-  margin-top: 1rem;
-  padding: 1rem 1.2rem;
-  border-radius: var(--r);
-  font-size: 0.88rem;
-  line-height: 1.65;
+/* ── SLIDES ── */
+.slide {
+  position: absolute; inset: 0; z-index: 1;
   display: none;
-}
-
-.feedback-box.show { display: block; }
-.feedback-box.correct { background: rgba(90,140,90,0.08); border: 1px solid rgba(90,140,90,0.3); color: #3a6e3a; }
-.feedback-box.incorrect { background: rgba(192,64,64,0.06); border: 1px solid rgba(192,64,64,0.25); color: #8a3030; }
-.feedback-label { font-weight: 700; margin-bottom: 0.3rem; }
-
-/* ── FILL IN THE BLANK ── */
-.fitb-sentence {
-  font-size: 1rem;
-  line-height: 2.1;
-  color: var(--slate);
-  margin-bottom: 0.75rem;
-}
-
-.blank-input {
-  display: inline-block;
-  border: none;
-  border-bottom: 2px solid var(--clay);
-  background: transparent;
-  color: var(--rust);
-  font-family: 'Syne', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 600;
-  padding: 2px 8px;
-  min-width: 130px;
-  outline: none;
-  text-align: center;
-  transition: border-color 0.2s;
-}
-
-.blank-input:focus { border-bottom-color: var(--rust); }
-.blank-input.correct { border-bottom-color: var(--success); color: var(--success); }
-.blank-input.incorrect { border-bottom-color: var(--error); color: var(--error); }
-.blank-input:disabled { cursor: default; }
-
-.word-bank {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin: 0.75rem 0;
-}
-
-.word-chip {
-  padding: 5px 15px;
-  background: var(--sand);
-  border: 1px solid var(--border2);
-  border-radius: 100px;
-  font-size: 0.84rem;
-  font-weight: 500;
-  color: var(--clay2);
-  cursor: pointer;
-  transition: all 0.15s;
-}
-
-.word-chip:hover:not(.used) { background: var(--sand2); border-color: var(--clay); color: var(--clay3); }
-.word-chip.used { opacity: 0.3; cursor: default; text-decoration: line-through; }
-
-/* ── DRAG AND DROP (sentence reorder) ── */
-.reorder-list {
-  display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin: 0.75rem 0;
+  padding: var(--pad);
 }
+.slide.is-active { display: flex; animation: slide-in .32s ease both; }
+@keyframes slide-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
-.reorder-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 0.8rem 1rem;
-  background: var(--sand);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  font-size: 0.9rem;
+/* ── LOGO ── */
+.fe-logo { width: 152px; height: auto; display: block; }
+.fe-logo-mark { color: var(--logo-mark, var(--accent)); }
+.fe-logo-word { fill: var(--text); opacity: 0; transition: opacity .25s ease; }
+.fonts-ready .fe-logo-word { opacity: 1; }   /* never flash a fallback face */
+.slide[data-type="cover"] .fe-logo { width: 232px; }
+
+/* ── COVER ── */
+.cover-inner {
+  height: 100%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; gap: 4px;
+}
+.cover-title {
+  font-family: var(--font-display);
+  font-size: 62px; font-weight: 900; line-height: 1.06;
   color: var(--text);
-  cursor: grab;
-  user-select: none;
-  transition: all 0.15s;
+  text-shadow: var(--cover-shadow);
+  margin-top: 26px;
+}
+.cover-title em { font-style: normal; color: var(--accent-bright); }
+.cover-sub {
+  font-size: 19px; color: var(--text);
+  letter-spacing: .04em; margin-top: 14px;
+  text-shadow: var(--cover-shadow);
+}
+.cover-meta {
+  display: flex; gap: 10px; margin-top: 26px; flex-wrap: wrap; justify-content: center;
+}
+.chip {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase;
+  padding: 6px 14px; border-radius: 999px;
+  border: 1px solid var(--hairline);
+  background: var(--scrim);
+  color: var(--text);
 }
 
-.reorder-item:active { cursor: grabbing; opacity: 0.7; }
-.reorder-item.drag-over { border-color: var(--clay); background: rgba(200,149,107,0.12); }
-.reorder-item.correct-pos { border-color: rgba(90,140,90,0.5); background: rgba(90,140,90,0.07); }
-.reorder-item.wrong-pos { border-color: rgba(192,64,64,0.4); background: rgba(192,64,64,0.06); }
-
-.drag-handle {
-  color: var(--clay3);
-  font-size: 13px;
-  flex-shrink: 0;
-  opacity: 0.5;
+/* ── SLIDE FURNITURE ── */
+.slide-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 20px; margin-bottom: 26px;
 }
-
-.item-num {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: rgba(160,110,70,0.12);
-  border: 1px solid var(--border2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--clay2);
-  flex-shrink: 0;
+.eyebrow {
+  font-family: var(--font-mono); font-size: 12px;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent-bright);
 }
-
-/* ── MATCHING ── */
-.match-cols {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.6rem 1.2rem;
-  margin: 0.75rem 0;
+.slide-title {
+  font-family: var(--font-display);
+  font-size: 38px; font-weight: 700; line-height: 1.15; color: var(--text);
+  margin-top: 6px;
 }
+.slide-body { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; }
 
-.match-col-hdr {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text3);
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--border);
-  text-align: center;
-}
-
-.match-item {
-  padding: 0.65rem 0.9rem;
-  background: var(--sand);
-  border: 1px solid var(--border);
+/* Content sits in a translucent card so it stays legible over the pattern. */
+.card {
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
   border-radius: var(--r);
-  font-size: 0.84rem;
-  cursor: pointer;
-  transition: all 0.15s;
-  text-align: center;
-  line-height: 1.45;
+  padding: 30px 34px;
+  backdrop-filter: blur(3px);
 }
+.card + .card { margin-top: 16px; }
+.cols .card + .card,
+.cols .card { margin-top: 0; }   /* side-by-side cards must share a top edge */
+.prose { font-size: 20px; line-height: 1.62; color: var(--text); }
+.prose + .prose { margin-top: 14px; }
+.prose strong { color: var(--accent-bright); font-weight: 600; }
+.dim { color: var(--text-dim); }
 
-.match-item.left { color: var(--slate); font-weight: 500; }
-.match-item.right { color: var(--text2); font-style: italic; }
-.match-item.selected { border-color: var(--clay); background: rgba(200,149,107,0.12); color: var(--slate); }
-.match-item.matched-correct { border-color: rgba(90,140,90,0.5); background: rgba(90,140,90,0.08); color: var(--success); cursor: default; }
-.match-item.matched-wrong { border-color: rgba(192,64,64,0.4); background: rgba(192,64,64,0.06); color: var(--error); cursor: default; }
+/* Two-column teaching layout */
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+
+/* ── QUESTIONS ── */
+.q-stem { font-size: 25px; line-height: 1.5; color: var(--text); margin-bottom: 22px; }
+.q-stem em { font-style: normal; color: var(--accent-bright); font-weight: 600; }
+
+.opts { display: grid; gap: 11px; }
+.opts.two-up { grid-template-columns: 1fr 1fr; }
+.opt {
+  display: flex; align-items: center; gap: 14px;
+  width: 100%; text-align: left;
+  font-family: var(--font-ui); font-size: 19px; color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: var(--r);
+  padding: 15px 20px; cursor: pointer;
+  transition: border-color .15s, background .15s, transform .12s;
+}
+.opt:hover:not(:disabled) { border-color: var(--accent); transform: translateX(3px); }
+.opt-key {
+  flex: 0 0 30px; height: 30px; display: grid; place-items: center;
+  border-radius: 50%; font-family: var(--font-mono); font-size: 13px;
+  background: var(--inset);
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+}
+.opt.correct { border-color: var(--ok); background: color-mix(in srgb, var(--ok) 20%, var(--surface2)); }
+.opt.wrong   { border-color: var(--no); background: color-mix(in srgb, var(--no) 18%, var(--surface2)); }
+.opt:disabled { cursor: default; }
+
+/* Gap-fill */
+.gap {
+  font-family: var(--font-ui); font-size: 20px; color: var(--text);
+  background: var(--inset);
+  border: none; border-bottom: 2px solid var(--accent);
+  padding: 3px 10px; min-width: 190px; border-radius: 4px 4px 0 0;
+}
+.gap:focus { outline: none; background: var(--inset2); }
+.gap.correct { border-bottom-color: var(--ok); color: var(--ok); }
+.gap.wrong   { border-bottom-color: var(--no); color: var(--no); }
+
+.feedback {
+  margin-top: 18px; font-size: 17px; line-height: 1.55;
+  min-height: 26px; opacity: 0; transition: opacity .2s;
+}
+.feedback.show { opacity: 1; }
+.feedback.ok { color: var(--ok); }
+.feedback.no { color: var(--no); }
 
 /* ── BUTTONS ── */
-.btn-row {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 1.5rem;
-  gap: 0.75rem;
-}
-
 .btn {
-  padding: 0.75rem 2rem;
-  border-radius: var(--r);
-  font-family: 'Syne', sans-serif;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.18s;
-  border: none;
-  outline: none;
-  letter-spacing: 0.02em;
+  font-family: var(--font-ui); font-size: 15px; font-weight: 600;
+  letter-spacing: .03em;
+  padding: 12px 26px; border-radius: var(--r);
+  border: 1px solid var(--accent); background: transparent; color: var(--accent-bright);
+  cursor: pointer; transition: background .15s, color .15s;
+}
+.btn:hover { background: var(--accent); color: var(--void); }
+.btn-solid { background: var(--accent); color: var(--void); border-color: var(--accent); }
+.btn-solid:hover { background: var(--accent-bright); border-color: var(--accent-bright); }
+.btn:disabled { opacity: .35; cursor: not-allowed; }
+.btn-lg { font-size: 17px; padding: 15px 38px; }
+
+/* ── CHROME: progress + nav, pinned inside the stage ── */
+.deck-bar {
+  position: absolute; z-index: 3; left: 0; right: 0; bottom: 0;
+  height: 58px; padding: 0 26px;
+  display: flex; align-items: center; gap: 18px;
+  background: linear-gradient(180deg, transparent, var(--scrim));
+}
+.stage.on-cover .deck-bar { background: none; }
+.stage.on-cover .deck-score { visibility: hidden; }
+.progress { flex: 1; height: 3px; background: var(--inset2); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0; background: var(--accent); transition: width .3s ease; }
+.deck-count, .deck-score {
+  font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); white-space: nowrap;
+}
+.nav-btn {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  background: var(--scrim); color: var(--text);
+  cursor: pointer; font-size: 15px; line-height: 1;
+  display: grid; place-items: center; transition: border-color .15s, background .15s;
+}
+.nav-btn:hover:not(:disabled) { border-color: var(--accent); background: var(--accent); color: var(--void); }
+.nav-btn:disabled { opacity: .28; cursor: not-allowed; }
+
+/* ── LANGUAGE SWITCH ── */
+.lang-select {
+  font-family: var(--font-mono); font-size: 12px;
+  background: var(--scrim); color: var(--text);
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  border-radius: 6px; padding: 6px 10px; cursor: pointer;
+}
+.lang-select:focus { outline: 1px solid var(--accent); }
+
+/* ── RESULTS ── */
+.score-big {
+  font-family: var(--font-display); font-size: 84px; font-weight: 900;
+  color: var(--accent-bright); line-height: 1;
 }
 
-.btn-primary {
-  background: var(--clay2);
-  color: #fff;
+/* ── RTL ── */
+[dir="rtl"] .opt { text-align: right; }
+[dir="rtl"] .opt:hover:not(:disabled) { transform: translateX(-3px); }
+
+
+/* ── ACTIVATION ──────────────────────────────────────────────────── */
+.act-target {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 16px;
+}
+.act-target-label {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-dim);
+  margin-right: 4px;
+}
+.bank-chip {
+  font-family: var(--font-mono); font-size: 12px;
+  padding: 5px 12px; border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  color: var(--accent-bright);
+}
+.act-cols { align-items: stretch; }
+.act-card { display: flex; flex-direction: column; padding: 20px 24px; }
+.act-kind {
+  display: flex; align-items: center; gap: 9px;
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--accent-bright); margin-bottom: 12px;
+}
+.act-icon { font-size: 16px; }
+.act-brief { font-size: 16.5px; line-height: 1.5; color: var(--text); margin-bottom: 12px; }
+.act-list { list-style: none; display: grid; gap: 9px; }
+.act-list li {
+  font-size: 15.5px; line-height: 1.45; color: var(--text-dim);
+  padding-left: 18px; position: relative;
+}
+.act-list li::before {
+  content: '—'; position: absolute; left: 0; color: var(--accent);
+}
+.act-input {
+  flex: 1; min-height: 118px; resize: none;
+  font-family: var(--font-ui); font-size: 15px; line-height: 1.55;
+  color: var(--text);
+  background: var(--inset);
+  border: 1px solid color-mix(in srgb, var(--border) 45%, transparent);
+  border-radius: 8px; padding: 12px 14px;
+}
+.act-input:focus { outline: none; border-color: var(--accent); background: var(--inset2); }
+.act-input::placeholder { color: var(--text-dim); opacity: .55; }
+.act-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 10px;
+}
+.act-count { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-dim); }
+.act-copy { font-size: 12.5px; padding: 6px 14px; }
+/* The textarea's value does not print; this mirror does. */
+.act-print { display: none; font-size: 14px; line-height: 1.55; white-space: pre-wrap; }
+
+
+/* ── MATCHING ────────────────────────────────────────────────────── */
+.match-grid { display: grid; grid-template-columns: 1fr 1.35fr; gap: 14px; }
+.match-col { display: grid; gap: 8px; align-content: start; }
+.match-item {
+  font-family: var(--font-ui); font-size: 15.5px; line-height: 1.4;
+  text-align: left; color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: var(--r); padding: 11px 16px; cursor: pointer;
+  transition: border-color .15s, background .15s, opacity .2s;
+}
+.match-item.term { font-weight: 600; }
+.match-item:hover:not(.done) { border-color: var(--accent); }
+.match-item.picked { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 22%, var(--surface2)); }
+.match-item.done { opacity: .45; cursor: default; border-color: var(--ok); }
+.match-item.miss { border-color: var(--no); animation: shake .3s; }
+@keyframes shake { 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
+
+/* ── ORDERING (build the sentence) ───────────────────────────────────
+   For word-order work — where the point is the SEQUENCE of prepositional
+   phrases, not choosing one word. Click to place, click again to take back;
+   no dragging, because a scaled stage makes drag targets lie. */
+.order-hint {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 10px;
+}
+.order-target {
+  display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start;
+  min-height: 92px; padding: 12px;
+  border: 1.5px dashed color-mix(in srgb, var(--border) 60%, transparent);
+  border-radius: var(--r); background: var(--inset);
+}
+.order-target.correct { border-style: solid; border-color: var(--ok); }
+.order-target.wrong   { border-style: solid; border-color: var(--no); }
+.order-pool { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.chunk {
+  font-family: var(--font-ui); font-size: 15.5px; line-height: 1.35;
+  color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: 999px; padding: 9px 16px; cursor: pointer;
+  transition: border-color .15s, background .15s, opacity .2s;
+}
+.chunk:hover:not(:disabled) { border-color: var(--accent); }
+.chunk.placed { background: color-mix(in srgb, var(--accent) 18%, var(--surface2)); border-color: var(--accent); }
+.chunk:disabled { cursor: default; opacity: .5; }
+
+/* ── SORTING (drop each item in the right box) ────────────────────────
+   Two or more labelled bins and a pool of items; the learner puts each
+   item where it belongs. The right shape for anything that is a closed
+   two-way contrast — signal words for one tense against another, count
+   against non-count, formal against neutral — because it asks for the
+   whole set at once instead of one item at a time.
+
+   Both interactions work. Native HTML5 drag-and-drop is used rather than
+   pointer maths: the browser hit-tests a drop target in screen space, so
+   the stage's CSS scale is handled for us — which is what made the
+   hand-rolled kind unreliable here (see the note on ordering above).
+   Dragging does not exist on touch, so click-an-item-then-click-a-bin
+   does the same job and is the fallback that always works. */
+.sort { display: flex; flex-direction: column; gap: 14px; }
+.sort-pool {
+  display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+  min-height: 44px;
+}
+.sort-bins { display: grid; gap: 14px; }
+.sort-bin {
+  border: 1.5px dashed color-mix(in srgb, var(--border) 60%, transparent);
+  border-radius: var(--r); background: var(--inset);
+  padding: 10px 12px; min-height: 132px;
+  display: flex; flex-direction: column; gap: 8px;
+  transition: border-color .15s, background .15s;
+}
+.sort-bin.over { border-style: solid; border-color: var(--accent); }
+.sort-bin.full { border-style: solid; border-color: var(--ok); }
+.sort-bin-label {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--accent-bright); text-align: center;
+}
+.sort-bin-items { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.sort-item {
+  font-family: var(--font-ui); font-size: 15.5px; line-height: 1.35;
+  color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: 999px; padding: 9px 16px; cursor: grab;
+  transition: border-color .15s, background .15s, opacity .2s;
+}
+.sort-item:hover:not(.placed) { border-color: var(--accent); }
+.sort-item.picked { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 22%, var(--surface2)); }
+.sort-item.dragging { opacity: .45; cursor: grabbing; }
+.sort-item.placed { cursor: default; border-color: var(--ok); opacity: .7; }
+.sort-item.miss { border-color: var(--no); animation: shake .3s; }
+
+/* ── DISCUSSION (unscored speaking prompts) ──────────────────────── */
+.discuss-meta {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 14px;
+}
+.prompts { display: grid; gap: 12px; list-style: none; margin: 0; padding: 0; }
+.prompt {
+  font-size: 19px; line-height: 1.5; color: var(--text);
+  padding-left: 26px; position: relative;
+}
+.prompt::before {
+  content: '?'; position: absolute; left: 0; top: 1px;
+  font-family: var(--font-mono); font-size: 15px; color: var(--accent);
+}
+.prompt.aside { font-size: 16.5px; color: var(--text-dim); font-style: italic; }
+.prompt.aside::before { content: '·'; }
+
+/* ══════════════════════════════════════════════════════════════════
+   PRINT / PDF EXPORT
+   Ctrl-P → Save as PDF → Landscape, margins None, Background graphics ON.
+   Each slide becomes one 16:9 page, ready to drop into PowerPoint.
+   ══════════════════════════════════════════════════════════════════ */
+@page { size: 1280px 720px; margin: 0; }
+@media print {
+  html, body { overflow: visible; height: auto; background: #fff; }
+  .stage-wrap { position: static; display: block; }
+  .stage {
+    position: static;
+    transform: none !important;
+    width: 1280px; height: auto;      /* let the slides stack into pages */
+    overflow: visible; box-shadow: none;
+  }
+  .bg-layer, .deck-bar, .lang-select, .nav-btn { display: none !important; }
+
+  /* Each slide becomes its own page and carries its own background, so the
+     export does not depend on the single on-screen background layer. */
+  .slide {
+    display: flex !important;
+    position: relative; inset: auto;
+    width: 1280px; height: 720px;
+    isolation: isolate;
+    page-break-after: always; break-after: page;
+    animation: none !important;
+  }
+  .slide:last-child { page-break-after: auto; break-after: auto; }
+  .slide::before {
+    content: ''; position: absolute; inset: 0; z-index: -2;
+    background: var(--hero) center / cover no-repeat;
+    opacity: var(--bg-opacity);
+  }
+  .slide::after {
+    content: ''; position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(180deg, var(--wash-edge) 0%, var(--wash-mid) 20%,
+                                        var(--wash-mid) 80%, var(--wash-edge) 100%);
+  }
+  .slide[data-type="cover"]::before { opacity: 1; }
+  .slide[data-type="cover"]::after {
+    background:
+      radial-gradient(ellipse 58% 54% at 50% 46%,
+        rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.22) 54%, transparent 82%),
+      linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.03) 30%,
+                            rgba(0,0,0,0.05) 70%, rgba(0,0,0,0.38) 100%);
+  }
+  .feedback { opacity: 1 !important; }
+  .act-input, .act-foot { display: none !important; }
+  .act-print { display: block !important; }
 }
 
-.btn-primary:hover { background: var(--clay3); }
-.btn-primary:disabled { opacity: 0.35; cursor: default; }
-
-/* ── FINAL ── */
-.final-screen { display: none; text-align: center; padding: 3rem 1.5rem; }
-.final-screen.show { display: block; }
-
-.final-score-ring {
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  border: 3px solid var(--clay);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 1.5rem auto;
-  background: rgba(200,149,107,0.06);
+/* Text that sits on the canvas rather than inside a card needs its own halo
+   now that the artwork behind it is bright. A shadow costs nothing and lets
+   the picture stay up, which darkening the wash back down would not. */
+.slide-title, .eyebrow, .q-stem, .q-ctx, .order-hint, .cover-title, .cover-sub,
+.score-big, .slide-body > .prose, .act-target-label {
+  text-shadow: 0 1px 2px rgba(0,0,0,0.55), 0 0 12px rgba(0,0,0,0.38);
 }
-
-.final-score-num {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 2.8rem;
-  font-weight: 700;
-  color: var(--clay2);
-  line-height: 1;
+html[data-theme="light"] .slide-title, html[data-theme="light"] .eyebrow,
+html[data-theme="light"] .q-stem, html[data-theme="light"] .q-ctx,
+html[data-theme="light"] .order-hint, html[data-theme="light"] .cover-title,
+html[data-theme="light"] .cover-sub, html[data-theme="light"] .score-big,
+html[data-theme="light"] .slide-body > .prose,
+html[data-theme="light"] .act-target-label {
+  text-shadow: 0 1px 2px rgba(255,255,255,0.75), 0 0 12px rgba(255,255,255,0.55);
 }
-
-.final-score-sub { font-size: 0.8rem; color: var(--text3); margin-top: 4px; }
-
-.final-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--slate);
-  margin-bottom: 0.75rem;
-}
-
-.final-msg {
-  font-size: 0.95rem;
-  color: var(--text2);
-  line-height: 1.75;
-  max-width: 520px;
-  margin: 0 auto 2rem;
-}
-
-.hidden { display: none !important; }
+.q-ctx { font-size: 16px; line-height: 1.5; font-style: italic; color: var(--text-dim); border-left: 2px solid var(--accent-dim); padding-left: 14px; margin-bottom: 12px; max-width: 84ch; }
+.bank-chip { font-size: 13px; }
+[data-type="gap"] .act-target,
+[data-type="gap"] .slide-body > .prose.dim {
+  background: color-mix(in srgb, var(--surface) 84%, transparent);
+  backdrop-filter: blur(3px);
+  border: 1px solid color-mix(in srgb, var(--border) 90%, transparent);
+  border-radius: 14px; padding: 9px 14px; }
+[data-type="gap"] .slide-body > .prose.dim { color: var(--text); }
 </style>
 </head>
 <body>
-<div class="page-wrap">
 
-  <!-- ═══ HEADER ═══ -->
-  <header class="header">
-    <svg class="logo-svg" width="210" height="62" viewBox="0 0 210 62" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <g transform="translate(79.95,6.71) scale(0.030857)"><g transform="translate(0,1504) scale(0.1,-0.1)" fill="#7a4f2f" stroke="none"><path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47 l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21 -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9 -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58 105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141 144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392 -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31 c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55 -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0 -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226 144 331 156 51 6 127 -4 183 -25z"/><path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95 -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72 -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0 -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18 108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553 -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70 -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3 469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38 -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/><path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73 -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939 -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1 205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247 -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22 -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24 -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449 121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/><path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611 -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538 -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77 144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430 -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67 347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580 -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132 -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87 66 245 85 341 40z"/><path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140 -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134 -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287 -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101 -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107 173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392 207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599 281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241 111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2 347 -112 40 c-318 112 -594 149 -892 121z"/><path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149 l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801 -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6 -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294 -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12 -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29 -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55 -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12 -33 22 -42 21 -9 0 -199 -27 -422 -60z"/></g></g>
-      <text x="105" y="52" text-anchor="middle"
-        font-family="'Syne', Arial, sans-serif"
-        font-size="19.20" font-weight="600"
-        fill="#a8704a" letter-spacing="7">ENGLISH</text>
-    </svg>
+<div class="stage-wrap">
+  <div class="stage" id="stage">
 
-    <!-- Strata illustration in header -->
-    <svg width="660" height="90" viewBox="0 0 660 90" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto 1.5rem;border-radius:12px;overflow:hidden">
-      <rect width="660" height="90" fill="#e8d8c0"/>
-      <!-- Strata layers -->
-      <rect x="0" y="0" width="660" height="12" fill="#dfc9ae"/>
-      <path d="M0 12 Q165 8 330 14 Q495 20 660 12 L660 22 Q495 28 330 22 Q165 16 0 22 Z" fill="#c8a97a"/>
-      <path d="M0 22 Q165 16 330 22 Q495 28 660 22 L660 36 Q495 40 330 36 Q165 32 0 36 Z" fill="#b8956a"/>
-      <path d="M0 36 Q165 32 330 36 Q495 40 660 36 L660 52 Q495 55 330 52 Q165 49 0 52 Z" fill="#c09a3c" opacity="0.6"/>
-      <path d="M0 52 Q165 49 330 52 Q495 55 660 52 L660 66 Q495 68 330 66 Q165 64 0 66 Z" fill="#a08030" opacity="0.5"/>
-      <path d="M0 66 Q165 64 330 66 Q495 68 660 66 L660 78 Q495 79 330 78 Q165 77 0 78 Z" fill="#8a6b28" opacity="0.45"/>
-      <rect x="0" y="78" width="660" height="12" fill="#7a5820" opacity="0.4"/>
-      <!-- Vertical scale -->
-      <line x1="32" y1="0" x2="32" y2="90" stroke="rgba(90,58,30,0.3)" stroke-width="1"/>
-      <text x="6" y="11" fill="rgba(90,58,30,0.5)" font-family="Syne Mono" font-size="8">0m</text>
-      <text x="6" y="28" fill="rgba(90,58,30,0.5)" font-family="Syne Mono" font-size="8">500</text>
-      <text x="6" y="44" fill="rgba(90,58,30,0.5)" font-family="Syne Mono" font-size="8">1km</text>
-      <text x="6" y="59" fill="rgba(90,58,30,0.5)" font-family="Syne Mono" font-size="8">2km</text>
-      <text x="6" y="74" fill="rgba(90,58,30,0.5)" font-family="Syne Mono" font-size="8">3km</text>
-      <text x="6" y="88" fill="rgba(90,58,30,0.5)" font-family="Syne Mono" font-size="8">4km</text>
-      <!-- Tick marks -->
-      <line x1="32" y1="12" x2="38" y2="12" stroke="rgba(90,58,30,0.3)" stroke-width="1"/>
-      <line x1="32" y1="26" x2="38" y2="26" stroke="rgba(90,58,30,0.3)" stroke-width="1"/>
-      <line x1="32" y1="40" x2="38" y2="40" stroke="rgba(90,58,30,0.3)" stroke-width="1"/>
-      <line x1="32" y1="55" x2="38" y2="55" stroke="rgba(90,58,30,0.3)" stroke-width="1"/>
-      <line x1="32" y1="69" x2="38" y2="69" stroke="rgba(90,58,30,0.3)" stroke-width="1"/>
-      <!-- Layer labels -->
-      <text x="54" y="10" fill="rgba(90,58,30,0.55)" font-family="Syne Mono" font-size="8.5">TOPSOIL / QUATERNARY</text>
-      <text x="54" y="24" fill="rgba(90,58,30,0.55)" font-family="Syne Mono" font-size="8.5">SANDSTONE FORMATION</text>
-      <text x="54" y="39" fill="rgba(90,58,30,0.55)" font-family="Syne Mono" font-size="8.5">CARBONATE PLATFORM</text>
-      <text x="54" y="54" fill="rgba(90,58,30,0.55)" font-family="Syne Mono" font-size="8.5">EVAPORITE SEQUENCE</text>
-      <text x="54" y="68" fill="rgba(90,58,30,0.55)" font-family="Syne Mono" font-size="8.5">SOURCE ROCK (SHALE)</text>
-      <text x="54" y="82" fill="rgba(90,58,30,0.55)" font-family="Syne Mono" font-size="8.5">CRYSTALLINE BASEMENT</text>
-      <!-- Borehole -->
-      <line x1="580" y1="0" x2="580" y2="90" stroke="rgba(90,58,30,0.4)" stroke-width="2.5"/>
-      <polygon points="580,0 574,12 586,12" fill="#7a4f2f" opacity="0.6"/>
-      <text x="590" y="10" fill="rgba(90,58,30,0.5)" font-family="Syne Mono" font-size="8">WELL-1</text>
-    </svg>
+    <!-- Background pattern: driven entirely by --hero in the CSS above. -->
+    <div class="bg-layer" role="presentation"></div>
 
-    <div class="badge-row">
-      <span class="badge">C1 Advanced</span>
-      <span class="badge">Technical English</span>
-      <span class="badge">Geoscience</span>
+    <!-- ══════════════════════════════════════════════════════════
+         REPLACE 2 of 2: SLIDES
+         Author one <section class="slide"> per screen.
+         data-type: cover | teach | mc | gap | match | order | discuss | results | activate
+         data-bg="folder/other.jpg" swaps the background pattern on that slide.
+         Everything a learner reads must fit WITHOUT scrolling.
+         If it does not fit, split it across two slides — never shrink type.
+         ══════════════════════════════════════════════════════════ -->
+
+
+    <section class="slide is-active" data-type="cover">
+      <div class="cover-inner">
+        <svg class="fe-logo" viewBox="0 0 200 78" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forbes English">
+          <g class="fe-logo-mark" transform="translate(-42.74,-30.22) scale(0.099477)"><g transform="translate(0,1504) scale(0.1,-0.1)" fill="currentColor" stroke="none"><path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47 l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21 -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9 -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58 105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141 144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392 -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31 c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55 -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0 -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226 144 331 156 51 6 127 -4 183 -25z"/><path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95 -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72 -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0 -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18 108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553 -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70 -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3 469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38 -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/><path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73 -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939 -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1 205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247 -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22 -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24 -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449 121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/><path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611 -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538 -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77 144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430 -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67 347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580 -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132 -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87 66 245 85 341 40z"/><path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140 -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134 -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287 -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101 -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107 173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392 207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599 281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241 111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2 347 -112 40 c-318 112 -594 149 -892 121z"/><path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149 l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801 -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6 -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294 -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12 -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29 -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55 -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12 -33 22 -42 21 -9 0 -199 -27 -422 -60z"/></g></g>
+          <text class="fe-logo-word" x="100" y="72.6" text-anchor="middle" font-family="'DM Sans', Arial, sans-serif" font-size="20.8" font-weight="600" letter-spacing="8">ENGLISH</text>
+        </svg>
+        <h1 class="cover-title" data-i18n="coverTitle">The Language of <em>Geoscience</em></h1>
+        <p class="cover-sub" data-i18n="coverSub">Technical phrases and field expressions used by practising geoscientists — from the wellsite to the seminar room</p>
+        <div class="cover-meta">
+          <span class="chip" data-i18n="chipLevel">C1 &middot; Technical English</span>
+          <span class="chip" data-i18n="chipFocus">Subsurface geoscience</span>
+          <span class="chip" data-i18n="chipTime">50&ndash;60 minutes</span>
+          <span class="chip" data-i18n="chipCount">39 slides</span>
+        </div>
+        <div style="margin-top:34px">
+          <button class="btn btn-solid btn-lg" data-action="next" data-i18n="btnStart">Begin →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="tOrient">Orientation</div>
+        <h2 class="slide-title" data-i18n="oT">Who this deck is for, and how it works</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="oa">English for practising geoscientists</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">The phrases here are the ones that turn up in well completion reports, prospect risking notes, wireline analyses and conference talks. The geology is the context; the English is the target.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="ob">Nothing is tested before it is taught</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Every phrase in the three activities, and every term in the word bank, is explained on a slide before you meet it in a question. Read the language slides first.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="on">Nineteen scored items: six phrases in context, six field-note sentences and seven report terms. The chip at the top of every slide shows your running total out of nineteen.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="tRes">Language focus &middot; Rock, trap and seal</div>
+        <h2 class="slide-title" data-i18n="p1T">Porosity: the matrix and the fractures</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="p1a">matrix porosity</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">The intergranular pore space of the rock itself. It usually holds most of the fluid in the reservoir, but it gives that fluid up slowly.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="p1b">fracture porosity</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">The void space of a fracture network. It holds very little, but it drains quickly, so the fractures are the main conduits to the wellbore.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="p1n">A reservoir with both is said to <strong>exhibit dual porosity behaviour</strong>: matrix storage feeding fracture flow. Modelling the two as one system gives the wrong production forecast.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="tRes">Language focus &middot; Rock, trap and seal</div>
+        <h2 class="slide-title" data-i18n="p2T">Two ways a trap is made</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="p2a">structural trapping</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Deformation makes the closure: a fold &mdash; an anticline &mdash; or a fault sealing across the reservoir. The shape of the structure holds the hydrocarbons in.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="p2b">stratigraphic trapping</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">A change in the rock makes the closure: a sandstone pinching out, a facies change, an unconformity cutting across the bed. No deformation is needed.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="p2n">Stratigraphic traps are usually subtler on seismic than structural ones, which is why a review panel will ask whether one has been ruled out.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="tRes">Language focus &middot; Rock, trap and seal</div>
+        <h2 class="slide-title" data-i18n="p3T">The seal, and how it fails</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="p3a">What seals a trap</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">The cap rock above the reservoir &mdash; shale, evaporite or tight carbonate. Its pore throats are fine enough to hold back a buoyant hydrocarbon column.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="p3b">How a seal fails</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">A fault offsets it, fractures open a path through it, or the column grows tall enough to force fluid through the pore throats. That last one is capillary leakage.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="p3n"><strong>Seal integrity</strong> is the cap rock&rsquo;s capacity to keep the column in the trap. Uncertainty about it is one of the commonest reasons a prospect is risked down.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="tSrc">Language focus &middot; Source rock and logs</div>
+        <h2 class="slide-title" data-i18n="s1T">Source rock: immature, oil window, overmature</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="s1a">Immature</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Buried too shallow, or too cool for too long. The kerogen has not yet generated hydrocarbons.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="s1b">The oil window</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Typically about 60&ndash;120&nbsp;&deg;C. The rock generates liquid hydrocarbons and expels them into a carrier bed. A <strong>mature source rock</strong> has reached this stage.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="s1c">Overmature</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">The kerogen has exhausted its oil potential, and oil generated earlier has been cracked to gas.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="s1n">Maturity follows burial depth and temperature history, not age alone. Cracking is the mechanism that turns oil into gas &mdash; not a separate way of losing it.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="tSrc">Language focus &middot; Source rock and logs</div>
+        <h2 class="slide-title" data-i18n="s2T">Water saturation and what the logs see</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="s2a">water saturation (Sw)</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">The fraction of the pore space filled with water. What is left is filled with hydrocarbons, so a low Sw is what the interpreter hopes to see.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="s2b">Why resistivity is read beside it</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Saline formation water conducts electricity; oil, gas and tight clean rock do not. High resistivity is therefore usually read as hydrocarbons in the pores.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="s2n"><strong>Anomalously high water saturation</strong> means a share of water larger than the other measurements would lead you to expect. It is a flag for the interpreter, not a result.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="tSrc">Language focus &middot; Source rock and logs</div>
+        <h2 class="slide-title" data-i18n="s3T">When high resistivity does not mean pay</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="s3a">Wet, and still resistive</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Fresh, low-salinity formation water is a poor conductor, so a fully wet interval can log as resistive. Very low porosity does the same, and so does deep invasion by resistive mud filtrate.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="s3b">The opposite anomaly</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Conductive minerals &mdash; clay, pyrite &mdash; pull resistivity <em>down</em>. They produce low-resistivity pay: a good zone that logs as wet, with its Sw overestimated.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="s3n">Conductive minerals therefore cannot explain an interval that is both wet and highly resistive: they cause the reverse. Fresh formation water is the textbook explanation, with very low porosity and invasion next.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="tSrc">Language focus &middot; Source rock and logs</div>
+        <h2 class="slide-title" data-i18n="s4T">Cross-bedding and what it records</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="s4a">What it is</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Layers inclined within a larger bed, formed as sediment avalanches down the lee face of a migrating dune or ripple. <strong>Well-developed</strong> means the sets are clear and measurable.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="s4b">What it tells you</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">The dip direction of the foresets gives the palaeocurrent direction; the scale and angle of the sets give the energy of the flow.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="s4n">Currents build cross-beds in fluvial, aeolian, tidal and deltaic settings alike, so a field note says the structure is <em>consistent with</em> a high-energy river system &mdash; never that it proves one.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="tGlos">Language focus &middot; Glossary</div>
+        <h2 class="slide-title" data-i18n="gT">Six terms the questions use</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="ga">four-way closure</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">the structure dips away from the crest on every side, so nothing escapes laterally</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="gb">net pay</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">the thickness of an interval that counts as reservoir once the cut-offs are applied</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="gc">mud weight</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">the density of the drilling fluid, set to balance the pressure in the formation</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="gd">bubble point</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">the pressure at which gas dissolved in the oil starts to come out of solution</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="ge">cuttings</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">the rock chips carried up by the mud and examined for lithology and shows</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="gf">depth conversion</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">turning a seismic image measured in travel time into one measured in metres</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="gn">Two more: <em>subsea</em> &mdash; measured from sea level, not from the rig floor &mdash; and <em>aquifer support</em>, water moving in from below to hold reservoir pressure up.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="a1E">Activity 1 &middot; Reading the formation</div>
+        <h2 class="slide-title" data-i18n="d1T">Reading the formation</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="d1a">Six phrases, each in context</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Each question quotes a phrase from a field report, a well completion report, a peer review or a conference presentation, and asks what it means where it stands. Every one of them has been explained on the slides you have just read.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="d1n">Choose one option. You will be told why your answer was right or wrong before you move on, so read the feedback even when you score.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="a1E">Activity 1 &middot; Reading the formation</span> &middot; 1 / 6</div>
+        <h2 class="slide-title" data-i18n="a1T">What does the phrase mean here?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">A well completion report notes that <em>the reservoir exhibits dual porosity behaviour</em>, with significant implications for the production forecast.</p>
+        <div class="opts">
+          <button class="opt" data-explain="Dual porosity is a property of the rock, not of the completion programme. It would still be there if the well had been drilled and completed in a single pass.">The pore space drains in two stages because the well has been completed across two separate intervals of the same reservoir</button>
+          <button class="opt" data-explain="Seasonal recharge belongs to shallow groundwater, not to a reservoir at depth &mdash; and the phrase describes the pore space itself, not a pressure that changes.">The reservoir pressure moves between two measurable states as the aquifer recharges the pore space from season to season</button>
+          <button class="opt" data-correct>Pore space sits in two systems &mdash; the rock matrix and a fracture network &mdash; which give up their fluid at very different rates</button>
+          <button class="opt" data-explain="That is a gas cap over an oil leg, separated by a fluid contact. It is a division of the <em>fluids</em>; dual porosity is a division of the <em>pore space</em>.">The hydrocarbon column has two parts, a gas cap above and an oil leg below, divided by a mappable fluid contact</button>
+        </div>
+        <p class="feedback" data-explain="Matrix pores hold most of the fluid and release it slowly; the fractures hold little but carry it to the wellbore. Treating the two as one system is what gets the flow rates wrong."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="a1E">Activity 1 &middot; Reading the formation</span> &middot; 2 / 6</div>
+        <h2 class="slide-title" data-i18n="a1T">What does the phrase mean here?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">At peer review, the panel objects that the authors have not ruled out <em>stratigraphic trapping</em> as an explanation for the accumulation.</p>
+        <div class="opts">
+          <button class="opt" data-correct>Hydrocarbons held in place by a change of rock type or porosity rather than by any deformation of the beds</button>
+          <button class="opt" data-explain="That is a <em>structural</em> trap, and it is the alternative the panel is contrasting it with. A stratigraphic trap needs no deformation at all.">Hydrocarbons held in place by a fold or a sealing fault, with the closure defined by the shape of the structure</button>
+          <button class="opt" data-explain="That describes compaction and cementation &mdash; a diagenetic process acting on the rock. It destroys pore space; it does not trap anything in it.">Sedimentary particles becoming progressively locked together as burial compaction squeezes the pore volume out</button>
+          <button class="opt" data-explain="That is a processing or velocity problem in the seismic image. A stratigraphic trap is a real feature of the rock, however hard it is to see.">A seismic artefact created by velocity changes inside a layered sequence, which can mimic a real accumulation</button>
+        </div>
+        <p class="feedback" data-explain="A pinch-out, a facies change or an unconformity does the sealing. Nothing has to be folded or faulted &mdash; which is also why these traps are subtler on seismic than structural ones."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="a1E">Activity 1 &middot; Reading the formation</span> &middot; 3 / 6</div>
+        <h2 class="slide-title" data-i18n="a1T">What does the phrase mean here?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">A field geologist records that the exposed section shows <em>well-developed cross-bedding</em>, consistent with a high-energy fluvial environment.</p>
+        <div class="opts">
+          <button class="opt" data-explain="Still water and suspension settling give flat, parallel lamination. Cross-bedding needs a current strong enough to move grains along the bed.">Flat lamination formed as fine particles settle out of suspension in still water, one quiet layer at a time</button>
+          <button class="opt" data-explain="Fractures cut <em>across</em> bedding after the rock is lithified. Cross-beds are depositional: they are laid down inclined, inside the bed.">A network of intersecting fractures cutting across several bedding planes at a range of different orientations</button>
+          <button class="opt" data-explain="That is cyclicity, read at the scale of a whole section. Cross-bedding is a structure inside a single bed.">Beds of alternating grain size stacked in cycles, each of them recording a rise and fall of relative sea level</button>
+          <button class="opt" data-correct>Layers inclined inside a bed, built as dunes or ripples migrate and sediment avalanches down their lee face</button>
+        </div>
+        <p class="feedback" data-explain="The dip direction of the foresets gives the palaeocurrent; the scale and angle of the sets give the energy of the flow. Hence &ldquo;consistent with&rdquo; a high-energy river."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="a1E">Activity 1 &middot; Reading the formation</span> &middot; 4 / 6</div>
+        <h2 class="slide-title" data-i18n="a1T">What does the phrase mean here?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">A risking assessment concludes that the prospect has a low chance of success, primarily because of uncertainty over <em>seal integrity</em>.</p>
+        <div class="opts">
+          <button class="opt" data-explain="That is <em>well</em> integrity &mdash; a drilling and completion question. Seal integrity is a property of the rock above the reservoir, and it matters before a well exists.">The strength of the casing and the cement bond in the upper part of the planned wellbore, tested before drilling ahead</button>
+          <button class="opt" data-correct>The capacity of the cap rock above the reservoir to hold the hydrocarbon column and stop it leaking upward</button>
+          <button class="opt" data-explain="That is the reliability of the seismic interpretation. It is a real risk on a prospect, but it is not what the seal is or does.">The degree to which an interpreted seismic horizon corresponds to a genuine geological boundary in the subsurface</button>
+          <button class="opt" data-explain="That is commercial confidentiality between partners. The word <em>seal</em> here is geological: the rock that keeps the column in the trap.">The quality of the confidentiality terms governing the exchange of data between the partners in a joint venture</button>
+        </div>
+        <p class="feedback" data-explain="Shale, evaporite or tight carbonate, with pore throats fine enough to hold a buoyant column. It fails by faulting, by fracturing, or by capillary leakage through those throats."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="a1E">Activity 1 &middot; Reading the formation</span> &middot; 5 / 6</div>
+        <h2 class="slide-title" data-i18n="a1T">What does the phrase mean here?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">At a basin-scale conference presentation, the speaker argues that prospectivity depends on finding <em>mature source rock</em> within reach of a migration pathway.</p>
+        <div class="opts">
+          <button class="opt" data-explain="That is compaction and diagenesis, which act on any buried rock. Maturity is about the <em>organic matter</em> in it and the temperature it has reached.">Rock that has been fully compacted and cemented, so that no further loss of porosity can take place with burial</button>
+          <button class="opt" data-explain="That is an outcrop being well described. <em>Mature</em> is a thermal state at depth, and a source rock at surface has stopped generating.">Strata exposed at surface for long enough to be described, logged and sampled in detail by a field party</button>
+          <button class="opt" data-explain="That is a well-characterised reservoir, not a source rock. The two are different rocks doing different jobs in the same play.">A formation whose petrophysical properties are well established from several wells drilled in the same basin</button>
+          <button class="opt" data-correct>Organic-rich rock buried deep and hot enough to have generated hydrocarbons and expelled them into a carrier bed</button>
+        </div>
+        <p class="feedback" data-explain="Maturity follows burial depth and temperature history. Below the oil window the kerogen has not generated; above it, the kerogen is spent and earlier oil has been cracked to gas."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="a1E">Activity 1 &middot; Reading the formation</span> &middot; 6 / 6</div>
+        <h2 class="slide-title" data-i18n="a1T">What does the phrase mean here?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">A petrophysicist highlights an interval with <em>anomalously high water saturation</em> despite elevated resistivity readings, and recommends further analysis.</p>
+        <div class="opts">
+          <button class="opt" data-correct>A share of the pore space filled with water that is larger than the other measurements would lead you to expect</button>
+          <button class="opt" data-explain="Saline water is a good conductor, so more salt means <em>lower</em> resistivity. That is the opposite of the combination described here.">An unusually high concentration of dissolved salt in the formation water, which depresses the resistivity reading</button>
+          <button class="opt" data-explain="Invasion is one of the explanations an interpreter would test for this reading, but it is not what the phrase means. The phrase names the saturation itself.">A borehole condition in which mud filtrate has invaded the near-wellbore rock to an unusually great depth</button>
+          <button class="opt" data-explain="That is a surface geochemical survey. Water saturation is a petrophysical measurement made downhole, over a specific interval.">A surface geochemical trace of shallow gas, picked up by sampling while the upper hole section was being drilled</button>
+        </div>
+        <p class="feedback" data-explain="Wet and highly resistive at once points to fresh, low-salinity formation water, to very low porosity, or to deep invasion by resistive mud filtrate &mdash; and is why it is called anomalous."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="tStr">Language focus &middot; Structure and pressure</div>
+        <h2 class="slide-title" data-i18n="b1T">Anticlines, crests and closure</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="b1a">the crest</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">The highest point of an anticlinal fold. Hydrocarbons migrate upward by buoyancy and collect there first, provided there is a seal above.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="b1b">closure</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">The vertical distance from the crest down to the lowest closing contour. With <strong>four-way closure</strong> the beds dip away on every side, so no fault has to seal.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="b1n">A structure map is contoured on a horizon and quoted in metres subsea: the crest sits inside the innermost contour, and the surface deepens outwards from it.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="tStr">Language focus &middot; Structure and pressure</div>
+        <h2 class="slide-title" data-i18n="b2T">Pore pressure, overpressure and mud weight</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="b2a">The hydrostatic gradient</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Normal pore pressure is the weight of the column of formation water above the point of measurement &mdash; roughly 10&nbsp;kPa for every metre of depth.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="b2b">overpressure</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Pore fluid pressure above that normal value, usually where compacting shale could not expel its water. The mud weight has to be raised to balance it.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="b2n">Too light a mud and the formation flows into the well &mdash; a well control incident. Too heavy and the mud fractures the formation and is lost into it.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="tWell">Language focus &middot; Wellsite to production</div>
+        <h2 class="slide-title" data-i18n="b3T">Shows in the cuttings, porosity in the log</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="b3a">oil shows</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Visible or measurable traces of hydrocarbon in cuttings, core or mud. <strong>Residual</strong> shows are immobile: they record that migration happened at some stage, not that it is happening now.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="b3b">effective porosity</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">The interconnected pore space available to flow, once isolated pores and clay-bound water are excluded. Total porosity counts all of it and reads higher.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="b3n">The two porosities are easy to confuse in a report. A figure quoted after cut-offs and exclusions is the effective one.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="tWell">Language focus &middot; Wellsite to production</div>
+        <h2 class="slide-title" data-i18n="b4T">From travel time to depth</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="b4a">two-way time</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Seismic data is recorded in the time a wave takes to travel down to a reflector and back, not in metres. The section is an image in time.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="b4b">the check-shot survey</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">A receiver is lowered to known depths in the well and the travel time from surface is measured directly. That calibrates the velocity model used for depth conversion.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="b4n">Get the velocity model wrong and a mapped crest moves or a closure disappears. Depth conversion is where a good seismic interpretation is most often lost.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="tWell">Language focus &middot; Wellsite to production</div>
+        <h2 class="slide-title" data-i18n="b5T">What pushes the oil to the well</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="b5a">solution gas drive</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Below the bubble point, gas dissolved in the oil comes out of solution and expands, pushing oil toward the wellbore. Recovery is usually modest.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="b5b">gas cap drive</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">A free gas cap above the oil expands as the reservoir is produced and drives the oil down toward the perforations.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="b5c">water drive</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">An aquifer moves in as pressure falls, holding the pressure up and sweeping the oil ahead of it. Usually the most efficient of the three.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="b5n">With limited aquifer support and no gas cap, solution gas is what is left &mdash; which is why the recovery factor in that case is expected to be modest.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="a2E">Activity 2 &middot; Completing the field notes</span> &middot; 1 / 6</div>
+        <h2 class="slide-title" data-i18n="a2T">Choose the phrase that fits</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target" style="margin-bottom:12px">
+          <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
+          <span class="bank-chip">anticlinal crest</span> <span class="bank-chip">check-shot survey</span> <span class="bank-chip">effective porosity</span> <span class="bank-chip">gas cap drive</span> <span class="bank-chip">hydrostatic gradient</span> <span class="bank-chip">overburden stress</span> <span class="bank-chip">pore pressure</span> <span class="bank-chip">residual oil shows</span> <span class="bank-chip">solution gas drive</span> <span class="bank-chip">structural closure</span> <span class="bank-chip">total porosity</span> <span class="bank-chip">two-way time</span>
+        </div>
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="h1">The cuttings carried traces of oil that no longer moves.</p>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">Geochemical analysis of the cuttings confirmed that the formation contained <input class="gap" data-answer="residual oil shows" aria-label="gap" style="width:215px">, so hydrocarbons had migrated along the fault corridor at some stage.</p>
+          <p class="feedback" data-explain="Shows are visible or measurable traces of hydrocarbon in cuttings, core or mud. <strong>Residual</strong> means immobile &mdash; a palaeo-accumulation, or the tail of a column that has since moved on. They record that migration happened, not that it is happening now."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="a2E">Activity 2 &middot; Completing the field notes</span> &middot; 2 / 6</div>
+        <h2 class="slide-title" data-i18n="a2T">Choose the phrase that fits</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target" style="margin-bottom:12px">
+          <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
+          <span class="bank-chip">anticlinal crest</span> <span class="bank-chip">check-shot survey</span> <span class="bank-chip">effective porosity</span> <span class="bank-chip">gas cap drive</span> <span class="bank-chip">hydrostatic gradient</span> <span class="bank-chip">overburden stress</span> <span class="bank-chip">pore pressure</span> <span class="bank-chip">residual oil shows</span> <span class="bank-chip">solution gas drive</span> <span class="bank-chip">structural closure</span> <span class="bank-chip">total porosity</span> <span class="bank-chip">two-way time</span>
+        </div>
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="h2">The high point of the fold, picked off the structure map.</p>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">The structure map showed a well-defined <input class="gap" data-answer="anticlinal crest" aria-label="gap" style="width:200px"> at about 2,400 metres subsea, with four-way closure confirmed by the seismic interpretation.</p>
+          <p class="feedback" data-explain="The crest is the highest point of the fold, and buoyant hydrocarbons collect there first if a seal is present above. With four-way closure the beds dip away on every side, so nothing has to be sealed by a fault."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="a2E">Activity 2 &middot; Completing the field notes</span> &middot; 3 / 6</div>
+        <h2 class="slide-title" data-i18n="a2T">Choose the phrase that fits</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target" style="margin-bottom:12px">
+          <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
+          <span class="bank-chip">anticlinal crest</span> <span class="bank-chip">check-shot survey</span> <span class="bank-chip">effective porosity</span> <span class="bank-chip">gas cap drive</span> <span class="bank-chip">hydrostatic gradient</span> <span class="bank-chip">overburden stress</span> <span class="bank-chip">pore pressure</span> <span class="bank-chip">residual oil shows</span> <span class="bank-chip">solution gas drive</span> <span class="bank-chip">structural closure</span> <span class="bank-chip">total porosity</span> <span class="bank-chip">two-way time</span>
+        </div>
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="h3">Porosity, but only the part of it that can flow.</p>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">Wireline analysis gave net pay of 18 metres, with <input class="gap" data-answer="effective porosity" aria-label="gap" style="width:205px"> averaging 22% once clay-bound water and isolated pores had been excluded.</p>
+          <p class="feedback" data-explain="Total porosity counts every void in the rock; the effective figure counts only the interconnected pore space available to flow, and it is the one that goes into the volumetrics. The exclusions in the sentence are what makes it effective."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="a2E">Activity 2 &middot; Completing the field notes</span> &middot; 4 / 6</div>
+        <h2 class="slide-title" data-i18n="a2T">Choose the phrase that fits</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target" style="margin-bottom:12px">
+          <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
+          <span class="bank-chip">anticlinal crest</span> <span class="bank-chip">check-shot survey</span> <span class="bank-chip">effective porosity</span> <span class="bank-chip">gas cap drive</span> <span class="bank-chip">hydrostatic gradient</span> <span class="bank-chip">overburden stress</span> <span class="bank-chip">pore pressure</span> <span class="bank-chip">residual oil shows</span> <span class="bank-chip">solution gas drive</span> <span class="bank-chip">structural closure</span> <span class="bank-chip">total porosity</span> <span class="bank-chip">two-way time</span>
+        </div>
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="h4">The pressure of the fluid in the pores, which the mud weight has to balance.</p>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">The team saw a sharp rise in <input class="gap" data-answer="pore pressure" aria-label="gap" style="width:190px"> while drilling the overpressured shale, and raised the mud weight at once to keep the well under control.</p>
+          <p class="feedback" data-explain="Pore pressure is the pressure of the fluid in the pore spaces. Where it runs above the hydrostatic gradient the interval is overpressured, and the mud weight has to be raised to balance it or the formation flows into the well."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="a2E">Activity 2 &middot; Completing the field notes</span> &middot; 5 / 6</div>
+        <h2 class="slide-title" data-i18n="a2T">Choose the phrase that fits</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target" style="margin-bottom:12px">
+          <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
+          <span class="bank-chip">anticlinal crest</span> <span class="bank-chip">check-shot survey</span> <span class="bank-chip">effective porosity</span> <span class="bank-chip">gas cap drive</span> <span class="bank-chip">hydrostatic gradient</span> <span class="bank-chip">overburden stress</span> <span class="bank-chip">pore pressure</span> <span class="bank-chip">residual oil shows</span> <span class="bank-chip">solution gas drive</span> <span class="bank-chip">structural closure</span> <span class="bank-chip">total porosity</span> <span class="bank-chip">two-way time</span>
+        </div>
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="h5">The downhole survey that ties travel time to true depth.</p>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">Integrating the results of a <input class="gap" data-answer="check-shot survey|check shot survey|checkshot survey" aria-label="gap" style="width:210px"> with the 3D seismic volume let the team calibrate the velocity model and improve the depth conversion of the reservoir target.</p>
+          <p class="feedback" data-explain="A receiver is lowered to known depths in the well and the travel time from surface is measured directly. That calibrates the velocity model used to turn two-way time into true vertical depth."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="a2E">Activity 2 &middot; Completing the field notes</span> &middot; 6 / 6</div>
+        <h2 class="slide-title" data-i18n="a2T">Choose the phrase that fits</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target" style="margin-bottom:12px">
+          <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
+          <span class="bank-chip">anticlinal crest</span> <span class="bank-chip">check-shot survey</span> <span class="bank-chip">effective porosity</span> <span class="bank-chip">gas cap drive</span> <span class="bank-chip">hydrostatic gradient</span> <span class="bank-chip">overburden stress</span> <span class="bank-chip">pore pressure</span> <span class="bank-chip">residual oil shows</span> <span class="bank-chip">solution gas drive</span> <span class="bank-chip">structural closure</span> <span class="bank-chip">total porosity</span> <span class="bank-chip">two-way time</span>
+        </div>
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="h6">The drive mechanism left when there is neither an aquifer nor a gas cap.</p>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">The reservoir model predicted that <input class="gap" data-answer="solution gas drive" aria-label="gap" style="width:210px"> would dominate recovery in the early production phase, given limited aquifer support and the absence of a gas cap.</p>
+          <p class="feedback" data-explain="Below the bubble point, gas dissolved in the oil comes out of solution and expands, pushing oil toward the wellbore. With no aquifer and no gas cap it is what remains, and it is generally the least efficient of the three drives."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="tGlos">Language focus &middot; Glossary</div>
+        <h2 class="slide-title" data-i18n="m1T">Seven terms from the report &mdash; maturity, faults, seals</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="m1a">vitrinite reflectance</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">a measure of thermal maturity, read from the optical reflectivity of vitrinite particles in the source rock and quoted as %Ro</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="m1b">fault throw</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">the vertical component of the displacement across a fault plane; the horizontal component is the heave</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="m1c">capillary entry pressure</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">the pressure a non-wetting fluid needs before it can enter the pore throats of the seal and displace the wetting fluid</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="m1d">gas&ndash;water contact</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">the level in the reservoir below which the pore space holds water rather than gas</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="m1n">Note the pair: throw and heave are the two components of one displacement, so quoting the wrong one misstates the offset at reservoir level.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="tGlos">Language focus &middot; Glossary</div>
+        <h2 class="slide-title" data-i18n="m2T">&mdash; and reservoir quality, pressure, facies</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="m2a">net-to-gross ratio</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">the proportion of an interval that meets the cut-offs for reservoir quality &mdash; net thickness over gross thickness</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="m2b">overpressure</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">pore fluid pressure that exceeds the hydrostatic pressure expected at that depth</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="m2c">facies association</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">a group of related sedimentary facies that together characterise one depositional environment</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="m2n">All seven appear in the questions that follow, each inside a sentence of the kind you would meet in a report.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="a3E">Activity 3 &middot; Correlating the sections</span> &middot; 1 / 7</div>
+        <h2 class="slide-title" data-i18n="a3T">What the term means in the report</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-ctx">&ldquo;Vitrinite reflectance in the deepest well averages 0.85% Ro, placing the shale squarely in the oil window.&rdquo;</p>
+        <p class="q-stem">What does <em>vitrinite reflectance</em> measure?</p>
+        <div class="opts">
+          <button class="opt" data-explain="That is total organic carbon (TOC) &mdash; how much organic matter is present. Reflectance says how far the organic matter has been <em>cooked</em>, which is a different question.">The proportion of organic carbon still present in the shale, measured by combustion of a crushed sample</button>
+          <button class="opt" data-correct>The thermal maturity of the source rock, read from the reflectivity of organic particles in it</button>
+          <button class="opt" data-explain="Nothing is measured at the moment of recovery. The reflectivity records the whole burial and temperature history of the sample, not the conditions in the borehole.">The temperature at which the deepest sample in the well was recovered from the borehole wall</button>
+          <button class="opt" data-explain="That is the transformation ratio. Reflectance is measured optically on the particles themselves and says nothing directly about how much has left the rock.">The volume of oil the source rock has already expelled, as a fraction of its original potential</button>
+        </div>
+        <p class="feedback" data-explain="Vitrinite particles reflect more light the hotter and longer they have been buried, so %Ro is read as a maturity scale: roughly 0.6&ndash;1.0% for the oil window."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="a3E">Activity 3 &middot; Correlating the sections</span> &middot; 2 / 7</div>
+        <h2 class="slide-title" data-i18n="a3T">What the term means in the report</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-ctx">&ldquo;The bounding fault has a throw of about 40 metres at reservoir level, so the sand is juxtaposed against shale.&rdquo;</p>
+        <p class="q-stem">What does the <em>throw</em> of a fault describe?</p>
+        <div class="opts">
+          <button class="opt" data-explain="That is the <em>heave</em> &mdash; the other component of the same displacement. Quoting it as the throw understates or overstates the offset at reservoir level.">The horizontal component of the displacement, measured across the fault plane at right angles to it</button>
+          <button class="opt" data-explain="That is the length or extent of the fault, which a map shows. Throw is measured across the fault, not along it.">The total length of the fault plane where it cuts the mapped reservoir horizon in the subsurface</button>
+          <button class="opt" data-explain="That is the dip of the fault plane. It controls how throw and heave divide up the displacement, but it is not the throw itself.">The angle at which the fault plane dips away from the vertical as it passes through the section</button>
+          <button class="opt" data-correct>The vertical component of the displacement of the strata on either side of the fault plane</button>
+        </div>
+        <p class="feedback" data-explain="Throw and heave are the two components of one displacement: throw is the vertical part, heave the horizontal. At 40 metres of throw the sand is offset against shale, which may seal it."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="a3E">Activity 3 &middot; Correlating the sections</span> &middot; 3 / 7</div>
+        <h2 class="slide-title" data-i18n="a3T">What the term means in the report</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-ctx">&ldquo;Mercury injection gave a capillary entry pressure high enough to hold a hydrocarbon column of about 200 metres.&rdquo;</p>
+        <p class="q-stem">What is <em>capillary entry pressure</em>?</p>
+        <div class="opts">
+          <button class="opt" data-explain="That is leakage along a fault, one of the ways a seal fails. Entry pressure is a property of the seal&rsquo;s pore throats, measured before any fault is involved.">The pressure at which pore fluid in the seal begins to escape upward along a fault plane</button>
+          <button class="opt" data-explain="That is the fracture pressure, and fracturing is a different failure mode. Capillary leakage happens through intact pore throats, without breaking the rock.">The pressure needed to fracture the cap rock and open a path through it for the hydrocarbons</button>
+          <button class="opt" data-correct>The pressure a non-wetting fluid needs to enter a pore throat and displace the wetting fluid</button>
+          <button class="opt" data-explain="That is the bubble point, which belongs to the fluid in the reservoir rather than to the seal above it.">The pressure below which gas dissolved in the oil column begins to come out of solution</button>
+        </div>
+        <p class="feedback" data-explain="The finer the pore throats, the higher the entry pressure and the taller the column the seal can hold. It is measured in the laboratory by forcing mercury into a sample."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="a3E">Activity 3 &middot; Correlating the sections</span> &middot; 4 / 7</div>
+        <h2 class="slide-title" data-i18n="a3T">What the term means in the report</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-ctx">&ldquo;The gas&ndash;water contact was picked at 2,310 metres from the resistivity and density logs.&rdquo;</p>
+        <p class="q-stem">What does a <em>gas&ndash;water contact</em> mark?</p>
+        <div class="opts">
+          <button class="opt" data-correct>The level below which the pore space holds water rather than gas</button>
+          <button class="opt" data-explain="That is invasion by mud filtrate, which happens all along the open hole. The contact is a property of the reservoir, not of the drilling.">The level at which drilling mud first entered the gas-bearing sand</button>
+          <button class="opt" data-explain="That is the top of the reservoir. The contact sits inside the reservoir, wherever the gas gives way to water.">The boundary between the reservoir sand and the cap rock above it</button>
+          <button class="opt" data-explain="That is a casing point, chosen for well control reasons. It has no necessary relationship to where the fluids change.">The depth at which the well was cased before drilling ahead into water</button>
+        </div>
+        <p class="feedback" data-explain="A fluid contact, not a rock boundary: the same reservoir continues below it, but the pore space is water-filled. It is picked from the logs and used to close the volumetrics."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="a3E">Activity 3 &middot; Correlating the sections</span> &middot; 5 / 7</div>
+        <h2 class="slide-title" data-i18n="a3T">What the term means in the report</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-ctx">&ldquo;Net-to-gross falls from 0.8 in the channel axis to below 0.3 towards the margin of the fan.&rdquo;</p>
+        <p class="q-stem">What does the <em>net-to-gross ratio</em> express?</p>
+        <div class="opts">
+          <button class="opt" data-explain="That is a production profile or a recovery factor. Net-to-gross is measured in the rock and is fixed before a single barrel is produced.">The share of the recoverable oil that the operator expects to produce in the first five years</button>
+          <button class="opt" data-correct>The share of an interval that meets the cut-offs for being counted as reservoir</button>
+          <button class="opt" data-explain="That is core coverage, a data question. Net-to-gross is a property of the interval itself, however it was measured.">The share of the drilled section that was cored rather than logged with wireline tools</button>
+          <button class="opt" data-explain="That is hydrocarbon saturation, which is one of the cut-offs applied &mdash; but the ratio counts thickness, not pore volume.">The share of the pore space occupied by hydrocarbons rather than by formation water</button>
+        </div>
+        <p class="feedback" data-explain="Net thickness over gross thickness, once porosity, saturation and shale cut-offs are applied. It is the same idea as net pay, expressed as a ratio rather than a thickness."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="a3E">Activity 3 &middot; Correlating the sections</span> &middot; 6 / 7</div>
+        <h2 class="slide-title" data-i18n="a3T">What the term means in the report</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-ctx">&ldquo;The shale below 3,000 metres is overpressured, and the casing point was moved up accordingly.&rdquo;</p>
+        <p class="q-stem">What does <em>overpressure</em> mean?</p>
+        <div class="opts">
+          <button class="opt" data-explain="That is over-balance, or at its extreme lost circulation &mdash; too <em>heavy</em> a mud fracturing the rock. Overpressure is in the formation, before any mud arrives.">Pressure in the drilling mud column that exceeds the strength of the exposed formation</button>
+          <button class="opt" data-explain="That is wellhead or annular pressure, an engineering measure at surface. Overpressure is measured in the pores at depth.">Pressure applied at the wellhead to hold the fluids back while the well is being completed</button>
+          <button class="opt" data-correct>Pore fluid pressure above the hydrostatic pressure expected at that depth</button>
+          <button class="opt" data-explain="That is pressure maintenance by water injection, a production operation. Overpressure is natural and is present before the field is developed.">Pressure in the reservoir that has been maintained by injecting water into the aquifer</button>
+        </div>
+        <p class="feedback" data-explain="Usually a compacting shale that could not expel its water fast enough. The mud weight has to be raised to balance it, which is why the casing programme changes."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="a3E">Activity 3 &middot; Correlating the sections</span> &middot; 7 / 7</div>
+        <h2 class="slide-title" data-i18n="a3T">What the term means in the report</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-ctx">&ldquo;The facies association &mdash; cross-bedded sands passing up into bioturbated mudstone &mdash; points to a tidally influenced delta front.&rdquo;</p>
+        <p class="q-stem">What is a <em>facies association</em>?</p>
+        <div class="opts">
+          <button class="opt" data-correct>A group of related facies that together characterise one depositional environment</button>
+          <button class="opt" data-explain="That is a well correlation. An association is read within one section, from what lies with what.">A correlation between two wells in which the same bed is identified in both of them</button>
+          <button class="opt" data-explain="Diagenetic features form after deposition. A facies records the conditions the sediment was <em>laid down</em> in.">A set of sedimentary structures that all formed after burial, during diagenesis</button>
+          <button class="opt" data-explain="That is a faunal list. Fossils contribute to a facies, but the association is about the sediment as a whole.">A list of the fossil species recovered from a single measured section of the outcrop</button>
+        </div>
+        <p class="feedback" data-explain="One facies on its own is ambiguous; the company it keeps is not. Cross-bedded sand passing up into bioturbated mud is a delta front in a way that either bed alone is not."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="results">
+      <div class="slide-body" style="align-items:center;text-align:center">
+        <div class="score-big"><span id="scoreVal">0</span><span class="dim" style="font-size:34px">/<span id="scoreMax">0</span></span></div>
+        <p class="prose" style="margin-top:18px" id="scoreMsg"></p>
+        <p class="prose dim" style="margin-top:14px" data-i18n="resNext">Now use it →</p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="activate">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="actEyebrow">Activation</div>
+        <h2 class="slide-title" data-i18n="actTitle">The prospect review</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target">
+          <span class="act-target-label" data-i18n="actUse">Use at least four:</span>
+          <span class="bank-chip">exhibits dual porosity behaviour</span>
+          <span class="bank-chip">stratigraphic trapping</span>
+          <span class="bank-chip">seal integrity</span>
+          <span class="bank-chip">mature source rock</span>
+          <span class="bank-chip">anomalously high water saturation</span>
+          <span class="bank-chip">four-way closure</span>
+          <span class="bank-chip">net pay</span>
+          <span class="bank-chip">residual oil shows</span>
+          <span class="bank-chip">solution gas drive</span>
+        </div>
+        <div class="cols act-cols">
+          <div class="card act-card">
+            <div class="act-kind"><span class="act-icon">🗣</span><span data-i18n="actSpeakKind">Discussion &middot; in pairs</span></div>
+            <p class="act-brief" data-i18n="actSpeakBrief">Your team is presenting a prospect to a joint-venture partner. They have read the summary, and they are not yet convinced.</p>
+            <ul class="act-list">
+              <li data-i18n="actSpeak1">Present the trap in two minutes: what makes the closure, what seals it, and what you know about the source rock charging it.</li>
+              <li data-i18n="actSpeak2">Swap. As the partner, press on the risk you think is highest &mdash; seal integrity or charge &mdash; and make the presenter defend the ranking out loud.</li>
+              <li data-i18n="actSpeak3">Both: the petrophysicist reports anomalously high water saturation across an interval that logs as resistive. Agree what you will tell the partner it might mean.</li>
+            </ul>
+          </div>
+          <div class="card act-card">
+            <div class="act-kind"><span class="act-icon">✍️</span><span data-i18n="actWriteKind">Writing &middot; 150&ndash;250 words</span></div>
+            <p class="act-brief" data-i18n="actWriteBrief">Write the reservoir summary for the well completion report: what the logs showed over the pay interval, what the shows in the cuttings say about charge, and which recovery mechanism the model expects. Hedge what is uncertain.</p>
+            <textarea class="act-input" id="actInput" data-i18n-ph="actPlaceholder" placeholder="Over the interval 2,380–2,398 m subsea the logs indicate …" aria-label="Written response"></textarea>
+            <div class="act-foot">
+              <span class="act-count" id="actCount">0 words</span>
+              <button class="btn act-copy" data-action="copy-writing" data-i18n="btnCopy">Copy</button>
+            </div>
+            <div class="act-print" id="actPrint" aria-hidden="true"></div>
+          </div>
+        </div>
+        <div style="margin-top:14px;text-align:center">
+          <button class="btn" data-action="restart" data-i18n="btnRestart">Start again</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── DECK CHROME ──────────────────────────────────────── -->
+    <div class="deck-bar">
+      <select class="lang-select" id="langSelect" aria-label="Language"></select>
+      <button class="nav-btn" data-action="prev" aria-label="Previous">‹</button>
+      <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+      <span class="deck-count" id="deckCount">1 / 1</span>
+      <span class="deck-score" id="deckScore"></span>
+      <button class="nav-btn" data-action="next" aria-label="Next">›</button>
     </div>
-    <h1 class="lesson-title">The Language of Geoscience</h1>
-    <p class="lesson-subtitle">Technical phrases and field expressions used by practising geoscientists — from the wellsite to the seminar room</p>
-  </header>
 
-  <!-- ═══ SCORE BAR ═══ -->
-  <div class="score-bar">
-    <div>
-      <div class="score-label">Score</div>
-      <div class="score-val" id="scoreVal">0 / 0</div>
-    </div>
-    <div class="progress-track">
-      <div class="progress-fill" id="progressFill"></div>
-    </div>
-    <div class="progress-label" id="progressLabel">Activity 1 of 3</div>
   </div>
-
-  <!-- TABS -->
-  <div class="act-tabs">
-    <span class="act-tab active" id="tab1">1 · Multiple Choice</span>
-    <span class="act-tab" id="tab2">2 · Fill in the Blank</span>
-    <span class="act-tab" id="tab3">3 · Matching</span>
-  </div>
-
-  <!-- ══════════════════════════
-       ACT 1 – MCQ
-  ══════════════════════════ -->
-  <div id="act1">
-    <div class="section-intro">
-      <div class="section-label">Activity 1 · Multiple Choice</div>
-      <div class="section-title">Reading the Formation</div>
-      <p class="section-desc">Each question features a phrase drawn from authentic geoscience discourse — field reports, conference presentations, well completion reports, and peer review. Choose the option that best explains the phrase as it is used in context.</p>
-    </div>
-
-    <!-- Seismic section illustration -->
-    <svg class="illustration" width="660" height="120" viewBox="0 0 660 120" xmlns="http://www.w3.org/2000/svg" style="border-radius:10px">
-      <rect width="660" height="120" fill="#ecdcca"/>
-      <!-- Seismic reflectors -->
-      <g opacity="0.6">
-        <path d="M50 20 Q165 15 280 22 Q395 29 510 18 Q580 13 640 20" stroke="#a07040" stroke-width="1.2" fill="none"/>
-        <path d="M50 32 Q165 27 280 36 Q395 43 510 30 Q580 24 640 32" stroke="#906030" stroke-width="1.2" fill="none"/>
-        <path d="M50 45 Q165 39 280 48 Q395 57 510 44 Q580 37 640 46" stroke="#a07040" stroke-width="2" fill="none"/>
-        <path d="M50 58 Q165 52 280 62 Q395 71 510 57 Q580 50 640 59" stroke="#806028" stroke-width="1.5" fill="none"/>
-        <path d="M50 70 Q165 65 280 74 Q395 83 510 70 Q580 63 640 72" stroke="#c09a3c" stroke-width="2.5" fill="none"/>
-        <path d="M50 83 Q165 78 280 86 Q395 94 510 82 Q580 76 640 85" stroke="#906030" stroke-width="1.2" fill="none"/>
-        <path d="M50 96 Q165 92 280 98 Q395 104 510 95 Q580 90 640 98" stroke="#a07040" stroke-width="1" fill="none"/>
-        <path d="M50 108 Q165 105 280 110 Q395 115 510 107 Q580 103 640 110" stroke="#906030" stroke-width="1" fill="none"/>
-      </g>
-      <!-- Bright reflector (reservoir) highlight -->
-      <path d="M50 70 Q165 65 280 74 Q395 83 510 70 Q580 63 640 72" stroke="#c8956b" stroke-width="3" fill="none" opacity="0.8"/>
-      <!-- Vertical lines (traces) -->
-      <g opacity="0.12" stroke="#7a4f2f" stroke-width="0.5">
-        <line x1="80" y1="0" x2="80" y2="120"/>
-        <line x1="130" y1="0" x2="130" y2="120"/>
-        <line x1="180" y1="0" x2="180" y2="120"/>
-        <line x1="230" y1="0" x2="230" y2="120"/>
-        <line x1="280" y1="0" x2="280" y2="120"/>
-        <line x1="330" y1="0" x2="330" y2="120"/>
-        <line x1="380" y1="0" x2="380" y2="120"/>
-        <line x1="430" y1="0" x2="430" y2="120"/>
-        <line x1="480" y1="0" x2="480" y2="120"/>
-        <line x1="530" y1="0" x2="530" y2="120"/>
-        <line x1="580" y1="0" x2="580" y2="120"/>
-      </g>
-      <!-- Labels -->
-      <rect x="0" y="0" width="46" height="120" fill="#dfc9ae" opacity="0.7"/>
-      <text x="23" y="14" text-anchor="middle" fill="#7a4f2f" font-family="Syne Mono" font-size="8" opacity="0.7">TWT</text>
-      <text x="23" y="32" text-anchor="middle" fill="#7a4f2f" font-family="Syne Mono" font-size="8" opacity="0.6">0.2s</text>
-      <text x="23" y="58" text-anchor="middle" fill="#7a4f2f" font-family="Syne Mono" font-size="8" opacity="0.6">0.4s</text>
-      <text x="23" y="72" text-anchor="middle" fill="#7a4f2f" font-family="Syne Mono" font-size="8" opacity="0.6">0.6s</text>
-      <text x="23" y="96" text-anchor="middle" fill="#7a4f2f" font-family="Syne Mono" font-size="8" opacity="0.6">0.8s</text>
-      <!-- Annotation -->
-      <text x="620" y="66" fill="#c8956b" font-family="Syne Mono" font-size="8" opacity="0.9">BRIGHT</text>
-      <text x="620" y="76" fill="#c8956b" font-family="Syne Mono" font-size="8" opacity="0.9">SPOT</text>
-      <line x1="617" y1="71" x2="608" y2="71" stroke="#c8956b" stroke-width="1" opacity="0.7"/>
-    </svg>
-
-    <div id="mcqContainer"></div>
-    <div class="btn-row">
-      <button class="btn btn-primary hidden" id="mcqNext">Next Activity →</button>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════
-       ACT 2 – FITB
-  ══════════════════════════ -->
-  <div id="act2" class="hidden">
-    <div class="section-intro">
-      <div class="section-label">Activity 2 · Fill in the Blank</div>
-      <div class="section-title">Completing the Field Notes</div>
-      <p class="section-desc">Select the correct geoscience phrase from the word bank to complete each sentence. Sentences are drawn from well reports, project summaries, and technical presentations.</p>
-    </div>
-
-    <!-- Core sample illustration -->
-    <svg class="illustration" width="660" height="100" viewBox="0 0 660 100" xmlns="http://www.w3.org/2000/svg" style="border-radius:10px">
-      <rect width="660" height="100" fill="#ecdcca"/>
-      <!-- Gamma ray log -->
-      <rect x="20" y="10" width="80" height="80" rx="4" fill="#dfc9ae" stroke="#c8956b" stroke-width="0.8" opacity="0.8"/>
-      <text x="60" y="8" text-anchor="middle" fill="#7a4f2f" font-family="Syne Mono" font-size="7.5">GR</text>
-      <polyline points="60,15 45,22 70,32 38,44 72,55 42,66 68,77 50,88" stroke="#b85c38" stroke-width="2" fill="none" stroke-linejoin="round"/>
-      <!-- Resistivity log -->
-      <rect x="115" y="10" width="80" height="80" rx="4" fill="#dfc9ae" stroke="#c8956b" stroke-width="0.8" opacity="0.8"/>
-      <text x="155" y="8" text-anchor="middle" fill="#7a4f2f" font-family="Syne Mono" font-size="7.5">RT</text>
-      <polyline points="135,15 145,28 138,40 158,48 148,55 175,62 155,75 165,88" stroke="#c09a3c" stroke-width="2" fill="none" stroke-linejoin="round"/>
-      <!-- Porosity log -->
-      <rect x="210" y="10" width="80" height="80" rx="4" fill="#dfc9ae" stroke="#c8956b" stroke-width="0.8" opacity="0.8"/>
-      <text x="250" y="8" text-anchor="middle" fill="#7a4f2f" font-family="Syne Mono" font-size="7.5">NPHI</text>
-      <polyline points="245,15 230,24 255,36 240,46 260,58 235,68 250,80 242,88" stroke="#6b8c6b" stroke-width="2" fill="none" stroke-linejoin="round"/>
-      <!-- Formation tops markers -->
-      <line x1="310" y1="10" x2="620" y2="10" stroke="rgba(120,80,40,0.2)" stroke-width="0.5"/>
-      <line x1="310" y1="35" x2="620" y2="35" stroke="#b85c38" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.6"/>
-      <line x1="310" y1="58" x2="620" y2="58" stroke="rgba(120,80,40,0.2)" stroke-width="0.5"/>
-      <line x1="310" y1="78" x2="620" y2="78" stroke="#c09a3c" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.6"/>
-      <line x1="310" y1="95" x2="620" y2="95" stroke="rgba(120,80,40,0.2)" stroke-width="0.5"/>
-      <text x="320" y="30" fill="#b85c38" font-family="Syne Mono" font-size="8" opacity="0.8">TOP RESERVOIR — 2 340 mTVD</text>
-      <text x="320" y="53" fill="rgba(90,58,30,0.5)" font-family="Syne Mono" font-size="8">MID FORMATION</text>
-      <text x="320" y="73" fill="#a07030" font-family="Syne Mono" font-size="8" opacity="0.8">BASE RESERVOIR — 2 680 mTVD</text>
-      <text x="320" y="90" fill="rgba(90,58,30,0.5)" font-family="Syne Mono" font-size="8">BASEMENT CONTACT</text>
-    </svg>
-
-    <div id="fitbContainer"></div>
-    <div class="btn-row">
-      <button class="btn btn-primary hidden" id="fitbNext">Next Activity →</button>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════
-       ACT 3 – MATCHING
-  ══════════════════════════ -->
-  <div id="act3" class="hidden">
-    <div class="section-intro">
-      <div class="section-label">Activity 3 · Matching</div>
-      <div class="section-title">Correlating the Sections</div>
-      <p class="section-desc">Match each technical phrase on the left with its correct definition on the right. Select one item from each column to make a pair. These expressions appear routinely in geoscience reports, academic papers, and fieldwork logs.</p>
-    </div>
-
-    <!-- Map / structure contour illustration -->
-    <svg class="illustration" width="660" height="110" viewBox="0 0 660 110" xmlns="http://www.w3.org/2000/svg" style="border-radius:10px">
-      <rect width="660" height="110" fill="#ecdcca"/>
-      <!-- Structure contours (anticline) -->
-      <ellipse cx="330" cy="55" rx="50" ry="30" fill="none" stroke="#b85c38" stroke-width="2.5" opacity="0.7"/>
-      <ellipse cx="330" cy="55" rx="90" ry="50" fill="none" stroke="#c8956b" stroke-width="1.8" opacity="0.55"/>
-      <ellipse cx="330" cy="55" rx="135" ry="72" fill="none" stroke="#c8a96e" stroke-width="1.4" opacity="0.45"/>
-      <ellipse cx="330" cy="55" rx="185" ry="90" fill="none" stroke="#dfc9ae" stroke-width="1" opacity="0.8"/>
-      <!-- Crest marker -->
-      <circle cx="330" cy="55" r="5" fill="#b85c38" opacity="0.8"/>
-      <text x="340" y="52" fill="#7a4f2f" font-family="Syne Mono" font-size="8.5" opacity="0.8">CREST — 2 100 m</text>
-      <!-- Contour labels -->
-      <text x="278" y="20" fill="#7a4f2f" font-family="Syne Mono" font-size="7.5" opacity="0.6">2 300</text>
-      <text x="164" y="38" fill="#7a4f2f" font-family="Syne Mono" font-size="7.5" opacity="0.6">2 500</text>
-      <text x="80" y="55" fill="#7a4f2f" font-family="Syne Mono" font-size="7.5" opacity="0.5">2 700</text>
-      <!-- Fault scarp -->
-      <path d="M480 10 Q500 55 485 105" stroke="#7a4f2f" stroke-width="2" fill="none" stroke-dasharray="6,3" opacity="0.55"/>
-      <text x="490" y="20" fill="#7a4f2f" font-family="Syne Mono" font-size="8" opacity="0.6">FAULT</text>
-      <!-- Well symbols -->
-      <circle cx="330" cy="55" r="3" fill="none" stroke="#fff" stroke-width="2"/>
-      <circle cx="410" cy="62" r="3" fill="none" stroke="#7a4f2f" stroke-width="1.5" opacity="0.7"/>
-      <text x="415" y="59" fill="#7a4f2f" font-family="Syne Mono" font-size="7" opacity="0.6">WELL-A</text>
-      <!-- North arrow -->
-      <polygon points="630,12 626,24 630,21 634,24" fill="#7a4f2f" opacity="0.5"/>
-      <text x="630" y="10" text-anchor="middle" fill="#7a4f2f" font-family="Syne Mono" font-size="8" opacity="0.6">N</text>
-      <!-- Scale bar -->
-      <line x1="30" y1="100" x2="110" y2="100" stroke="#7a4f2f" stroke-width="1" opacity="0.5"/>
-      <line x1="30" y1="96" x2="30" y2="104" stroke="#7a4f2f" stroke-width="1" opacity="0.5"/>
-      <line x1="110" y1="96" x2="110" y2="104" stroke="#7a4f2f" stroke-width="1" opacity="0.5"/>
-      <text x="70" y="97" text-anchor="middle" fill="#7a4f2f" font-family="Syne Mono" font-size="7.5" opacity="0.6">10 km</text>
-    </svg>
-
-    <div id="matchContainer"></div>
-    <div class="btn-row">
-      <button class="btn btn-primary hidden" id="matchNext">See Results →</button>
-    </div>
-  </div>
-
-  <!-- ═══ FINAL ═══ -->
-  <div class="final-screen" id="finalScreen">
-    <svg width="180" height="150" viewBox="0 0 180 150" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto 0.5rem">
-      <!-- Outcrop cliff face -->
-      <rect x="30" y="30" width="120" height="100" rx="6" fill="#dfc9ae"/>
-      <!-- Strata in outcrop -->
-      <rect x="30" y="30" width="120" height="14" rx="3" fill="#c8956b" opacity="0.7"/>
-      <rect x="30" y="44" width="120" height="16" fill="#b87040" opacity="0.6"/>
-      <rect x="30" y="60" width="120" height="12" fill="#c09a3c" opacity="0.55"/>
-      <rect x="30" y="72" width="120" height="20" fill="#a07030" opacity="0.5"/>
-      <rect x="30" y="92" width="120" height="14" fill="#8a6028" opacity="0.5"/>
-      <rect x="30" y="106" width="120" height="24" rx="3" fill="#7a5020" opacity="0.45"/>
-      <!-- Hammer (geologist symbol) -->
-      <rect x="80" y="15" width="20" height="8" rx="3" fill="#7a4f2f" opacity="0.7"/>
-      <rect x="88" y="8" width="4" height="24" rx="2" fill="#a07030" opacity="0.7"/>
-      <!-- Outcrop label marks -->
-      <line x1="155" y1="37" x2="163" y2="37" stroke="#7a4f2f" stroke-width="1" opacity="0.5"/>
-      <line x1="155" y1="52" x2="163" y2="52" stroke="#7a4f2f" stroke-width="1" opacity="0.5"/>
-      <line x1="155" y1="66" x2="163" y2="66" stroke="#7a4f2f" stroke-width="1" opacity="0.5"/>
-      <line x1="155" y1="82" x2="163" y2="82" stroke="#7a4f2f" stroke-width="1" opacity="0.5"/>
-      <line x1="155" y1="99" x2="163" y2="99" stroke="#7a4f2f" stroke-width="1" opacity="0.5"/>
-      <!-- Ground -->
-      <rect x="10" y="130" width="160" height="10" rx="4" fill="#c8956b" opacity="0.5"/>
-    </svg>
-
-    <div class="final-score-ring">
-      <div class="final-score-num" id="finalNum">0</div>
-      <div class="final-score-sub" id="finalSub">of 0 correct</div>
-    </div>
-    <h2 class="final-title" id="finalTitle"></h2>
-    <p class="final-msg" id="finalMsg"></p>
-    <button class="btn btn-primary" onclick="restartLesson()" style="margin:0 auto;display:block">↩ Restart Lesson</button>
-  </div>
-
 </div>
 
 <script>
-// ════════════════════════════════════
-// DATA
-// ════════════════════════════════════
+/* ══════════════════════════════════════════════════════════════════
+   ENGINE — identical in every lesson. Do not edit below this line
+   except to add UI_I18N strings.
+   ══════════════════════════════════════════════════════════════════ */
 
-const MCQ = [
-  {
-    q: `The well completion report noted that <span class="q-phrase">the reservoir exhibits dual porosity behaviour</span>, which had significant implications for the production forecast model.`,
-    opts: [
-      { t: "The rock contains two distinct types of pore space — typically matrix porosity and fracture porosity — each contributing differently to fluid flow", c: true },
-      { t: "The formation was drilled in two separate stages, each requiring different completion techniques and wellbore fluids", c: false },
-      { t: "The reservoir pressure fluctuates between two measurable states depending on the seasonal recharge cycle", c: false },
-      { t: "The hydrocarbon column is divided into an upper gas cap and a lower oil zone with a distinct fluid contact", c: false }
-    ],
-    exp: "<strong>Dual porosity</strong> refers to a reservoir where pore space exists in two systems: the rock matrix (intergranular pores) and a fracture network. Fluid in the matrix is released slowly into the fractures, which then act as the main conduits to the wellbore — a critical distinction for modelling flow rates."
-  },
-  {
-    q: `During the peer review, the panel raised concerns that the authors had not adequately accounted for <span class="q-phrase">stratigraphic trapping</span> as an alternative explanation for the hydrocarbon accumulation.`,
-    opts: [
-      { t: "A hydrocarbon accumulation sealed laterally or vertically by a change in rock type or porosity, rather than by structural deformation", c: true },
-      { t: "The physical process by which sedimentary particles become progressively locked together during compaction", c: false },
-      { t: "A drilling hazard caused by unconsolidated sediment layers collapsing into the open borehole", c: false },
-      { t: "A seismic artefact produced by velocity variations within layered sedimentary sequences", c: false }
-    ],
-    exp: "<strong>Stratigraphic traps</strong> form when changes in rock properties — a pinch-out, a facies change, or an unconformity — create a seal, rather than structural folding or faulting. They are often subtle and harder to detect seismically than structural traps."
-  },
-  {
-    q: `The field geologist recorded in her notebook that the exposed section showed <span class="q-phrase">well-developed cross-bedding</span>, consistent with a high-energy fluvial depositional environment.`,
-    opts: [
-      { t: "Inclined sedimentary layers within a larger bed, formed by the migration of bedforms such as dunes or ripples in a current", c: true },
-      { t: "Horizontal lamination produced by low-energy suspension settling of fine-grained particles in standing water", c: false },
-      { t: "A network of intersecting fractures cutting across multiple bedding planes at varying orientations", c: false },
-      { t: "Alternating beds of contrasting grain size indicative of cyclic sea-level change", c: false }
-    ],
-    exp: "<strong>Cross-bedding</strong> (or cross-stratification) consists of inclined layers within a set, formed when sediment avalanches down the lee face of bedforms like dunes. The angle, scale, and direction of dip provide information about palaeocurrent direction and depositional energy."
-  },
-  {
-    q: `The exploration team's risking assessment concluded that the prospect carried a low probability of success, primarily because of uncertainty over <span class="q-phrase">seal integrity</span>.`,
-    opts: [
-      { t: "The capacity of the confining rock above the reservoir to prevent hydrocarbons from migrating further upward", c: true },
-      { t: "The mechanical strength of the casing and cement bond in the upper sections of the planned wellbore", c: false },
-      { t: "The degree to which the interpreted seismic horizon corresponds to a genuine geological boundary", c: false },
-      { t: "The quality of the contractual terms governing confidential data exchange between joint venture partners", c: false }
-    ],
-    exp: "<strong>Seal integrity</strong> refers to the ability of the cap rock (commonly shale, evaporite, or tight carbonate) to hold hydrocarbons in the trap without allowing them to leak upward. A compromised seal — through faulting, fracturing, or capillary failure — is one of the main reasons prospects fail."
-  },
-  {
-    q: `At the basin-scale conference presentation, the speaker argued that the region's prospectivity depended on identifying areas of <span class="q-phrase">mature source rock</span> within reach of viable migration pathways.`,
-    opts: [
-      { t: "Organic-rich rock that has been buried to sufficient depth and temperature to generate and expel hydrocarbons", c: true },
-      { t: "Rock that has undergone complete compaction and diagenesis, leaving no remaining capacity for further deformation", c: false },
-      { t: "Sedimentary strata that have been exposed at surface long enough to be accurately described and logged", c: false },
-      { t: "A formation with well-established petrophysical properties confirmed by multiple wells within the same basin", c: false }
-    ],
-    exp: "<strong>Source rock maturity</strong> is determined by burial depth and the resulting temperature history (thermal maturity). Immature source rock has not generated hydrocarbons; overmature rock has converted most of its organic content to gas or lost it to cracking. The 'oil window' of maturity — typically 60–120°C — is where liquid hydrocarbons are generated."
-  },
-  {
-    q: `The petrophysicist highlighted that the interval of interest was characterised by <span class="q-phrase">anomalously high water saturation</span> despite the elevated resistivity readings, and recommended further analysis.`,
-    opts: [
-      { t: "A proportion of pore space occupied by water that is unexpectedly large given the other measured parameters", c: true },
-      { t: "An unusually high concentration of dissolved salts in the formation water, affecting the reliability of log data", c: false },
-      { t: "A borehole condition where drilling fluid has invaded the near-wellbore zone to an excessive depth of penetration", c: false },
-      { t: "A surface geochemical indicator of shallow gas accumulation detected during the drilling phase", c: false }
-    ],
-    exp: "<strong>Water saturation (Sw)</strong> is the fraction of pore space filled with water. High Sw in the presence of high resistivity can indicate tight, low-porosity rock, complex pore geometry, or the presence of conductive minerals — all of which require careful evaluation before ruling out a productive interval."
-  }
+/* ── Languages. English is the base; German ships complete.
+      The other eight are deliberately empty — t() falls back to English,
+      so an unfinished language can never blank the interface. ── */
+const LANGS = [
+  { code:'en', label:'English'   }, { code:'de', label:'Deutsch'  },
+  { code:'es', label:'Español'   }, { code:'fr', label:'Français' },
+  { code:'it', label:'Italiano'  }, { code:'pt', label:'Português'},
+  { code:'ru', label:'Русский'   }, { code:'ar', label:'العربية'  },
+  { code:'zh', label:'中文'       }, { code:'ja', label:'日本語'    }
 ];
+const RTL_LANGS = ['ar'];
 
-const FITB = [
-  {
-    s: "The geochemical analysis of the cuttings confirmed that the formation contained {BLANK}, suggesting active generation and vertical migration along the identified fault corridor.",
-    ans: "residual oil shows",
-    bank: ["residual oil shows", "compressional wave arrivals", "cementation exponents", "diagenetic overprinting", "reflection coefficients"],
-    exp: "<strong>Oil shows</strong> are visible or measurable traces of hydrocarbons in rock cuttings, cores, or drilling mud. 'Residual' indicates the oil is immobile — trapped in pores — and may represent a paleo-accumulation or the tail end of a migrating column."
+const UI_I18N = {
+  en: {
+    a1E: "Activity 1 &middot; Reading the formation",
+    a1T: "What does the phrase mean here?",
+    a2E: "Activity 2 &middot; Completing the field notes",
+    a2T: "Choose the phrase that fits",
+    a3E: "Activity 3 &middot; Correlating the sections",
+    a3T: "What the term means in the report",
+    actEyebrow: 'Activation',
+    actPlaceholder: "Over the interval 2,380–2,398 m subsea the logs indicate …",
+    actSpeak1: "Present the trap in two minutes: what makes the closure, what seals it, and what you know about the source rock charging it.",
+    actSpeak2: "Swap. As the partner, press on the risk you think is highest &mdash; seal integrity or charge &mdash; and make the presenter defend the ranking out loud.",
+    actSpeak3: "Both: the petrophysicist reports anomalously high water saturation across an interval that logs as resistive. Agree what you will tell the partner it might mean.",
+    actSpeakBrief: "Your team is presenting a prospect to a joint-venture partner. They have read the summary, and they are not yet convinced.",
+    actSpeakKind: 'Discussion · in pairs',
+    actTitle: "The prospect review",
+    actUse: "Use at least four:",
+    actWriteBrief: "Write the reservoir summary for the well completion report: what the logs showed over the pay interval, what the shows in the cuttings say about charge, and which recovery mechanism the model expects. Hedge what is uncertain.",
+    actWriteKind: "Writing &middot; 150&ndash;250 words",
+    b1T: "Anticlines, crests and closure",
+    b1a: "the crest",
+    b1b: "closure",
+    b1n: "A structure map is contoured on a horizon and quoted in metres subsea: the crest sits inside the innermost contour, and the surface deepens outwards from it.",
+    b2T: "Pore pressure, overpressure and mud weight",
+    b2a: "The hydrostatic gradient",
+    b2b: "overpressure",
+    b2n: "Too light a mud and the formation flows into the well &mdash; a well control incident. Too heavy and the mud fractures the formation and is lost into it.",
+    b3T: "Shows in the cuttings, porosity in the log",
+    b3a: "oil shows",
+    b3b: "effective porosity",
+    b3n: "The two porosities are easy to confuse in a report. A figure quoted after cut-offs and exclusions is the effective one.",
+    b4T: "From travel time to depth",
+    b4a: "two-way time",
+    b4b: "the check-shot survey",
+    b4n: "Get the velocity model wrong and a mapped crest moves or a closure disappears. Depth conversion is where a good seismic interpretation is most often lost.",
+    b5T: "What pushes the oil to the well",
+    b5a: "solution gas drive",
+    b5b: "gas cap drive",
+    b5c: "water drive",
+    b5n: "With limited aquifer support and no gas cap, solution gas is what is left &mdash; which is why the recovery factor in that case is expected to be modest.",
+    bankLabel: "Word bank:",
+    btnCheck: 'Check',
+    btnCopied: 'Copied',
+    btnCopy: 'Copy',
+    btnNext: 'Next →',
+    btnRestart: 'Start again',
+    btnStart: 'Begin →',
+    chipCount: "39 slides",
+    chipFocus: "Subsurface geoscience",
+    chipLevel: "C1 &middot; Technical English",
+    chipTime: "50&ndash;60 minutes",
+    coverSub: "Technical phrases and field expressions used by practising geoscientists — from the wellsite to the seminar room",
+    coverTitle: "The Language of <em>Geoscience</em>",
+    d1T: "Reading the formation",
+    d1a: "Six phrases, each in context",
+    d1n: "Choose one option. You will be told why your answer was right or wrong before you move on, so read the feedback even when you score.",
+    fbAnswer: 'Answer:',
+    fbCorrect: 'Correct.',
+    fbWrong: 'Not quite.',
+    gT: "Six terms the questions use",
+    ga: "four-way closure",
+    gb: "net pay",
+    gc: "mud weight",
+    gd: "bubble point",
+    ge: "cuttings",
+    gf: "depth conversion",
+    gn: "Two more: <em>subsea</em> &mdash; measured from sea level, not from the rig floor &mdash; and <em>aquifer support</em>, water moving in from below to hold reservoir pressure up.",
+    h1: "The cuttings carried traces of oil that no longer moves.",
+    h2: "The high point of the fold, picked off the structure map.",
+    h3: "Porosity, but only the part of it that can flow.",
+    h4: "The pressure of the fluid in the pores, which the mud weight has to balance.",
+    h5: "The downhole survey that ties travel time to true depth.",
+    h6: "The drive mechanism left when there is neither an aquifer nor a gas cap.",
+    m1T: "Seven terms from the report &mdash; maturity, faults, seals",
+    m1a: "vitrinite reflectance",
+    m1b: "fault throw",
+    m1c: "capillary entry pressure",
+    m1d: "gas&ndash;water contact",
+    m1n: "Note the pair: throw and heave are the two components of one displacement, so quoting the wrong one misstates the offset at reservoir level.",
+    m2T: "&mdash; and reservoir quality, pressure, facies",
+    m2a: "net-to-gross ratio",
+    m2b: "overpressure",
+    m2c: "facies association",
+    m2n: "All seven appear in the questions that follow, each inside a sentence of the kind you would meet in a report.",
+    oT: "Who this deck is for, and how it works",
+    oa: "English for practising geoscientists",
+    ob: "Nothing is tested before it is taught",
+    on: "Nineteen scored items: six phrases in context, six field-note sentences and seven report terms. The chip at the top of every slide shows your running total out of nineteen.",
+    p1T: "Porosity: the matrix and the fractures",
+    p1a: "matrix porosity",
+    p1b: "fracture porosity",
+    p1n: "A reservoir with both is said to <strong>exhibit dual porosity behaviour</strong>: matrix storage feeding fracture flow. Modelling the two as one system gives the wrong production forecast.",
+    p2T: "Two ways a trap is made",
+    p2a: "structural trapping",
+    p2b: "stratigraphic trapping",
+    p2n: "Stratigraphic traps are usually subtler on seismic than structural ones, which is why a review panel will ask whether one has been ruled out.",
+    p3T: "The seal, and how it fails",
+    p3a: "What seals a trap",
+    p3b: "How a seal fails",
+    p3n: "<strong>Seal integrity</strong> is the cap rock&rsquo;s capacity to keep the column in the trap. Uncertainty about it is one of the commonest reasons a prospect is risked down.",
+    resLow: "Work through the language slides again before you retry. Every phrase tested here is explained on a slide before the questions begin, and the glossary slides carry the terms the reports use around them.",
+    resMid: "A pass. Go back to the slides on the seal, on water saturation and on the drive mechanisms. Most of the marks here sit on those three, and each of them is a distinction rather than a single term.",
+    resNext: 'Recognising the language is half of it. Now produce it →',
+    resPerfect: "Full marks. You are reading these phrases the way the report writer meant them, including the two that turn on a distinction rather than a definition: effective against total porosity, and a wet interval that still logs as resistive.",
+    resStrong: "Strong. Look at where the misses fall. The phrases about rock and trap tend to be learned once; the ones about pressure, saturation and drive mechanism have to be re-read against the numbers every time.",
+    s1T: "Source rock: immature, oil window, overmature",
+    s1a: "Immature",
+    s1b: "The oil window",
+    s1c: "Overmature",
+    s1n: "Maturity follows burial depth and temperature history, not age alone. Cracking is the mechanism that turns oil into gas &mdash; not a separate way of losing it.",
+    s2T: "Water saturation and what the logs see",
+    s2a: "water saturation (Sw)",
+    s2b: "Why resistivity is read beside it",
+    s2n: "<strong>Anomalously high water saturation</strong> means a share of water larger than the other measurements would lead you to expect. It is a flag for the interpreter, not a result.",
+    s3T: "When high resistivity does not mean pay",
+    s3a: "Wet, and still resistive",
+    s3b: "The opposite anomaly",
+    s3n: "Conductive minerals therefore cannot explain an interval that is both wet and highly resistive: they cause the reverse. Fresh formation water is the textbook explanation, with very low porosity and invasion next.",
+    s4T: "Cross-bedding and what it records",
+    s4a: "What it is",
+    s4b: "What it tells you",
+    s4n: "Currents build cross-beds in fluvial, aeolian, tidal and deltaic settings alike, so a field note says the structure is <em>consistent with</em> a high-energy river system &mdash; never that it proves one.",
+    scoreLabel: 'Score',
+    slideOf: (a,b)=>`${a} / ${b}`,
+    tGlos: "Language focus &middot; Glossary",
+    tOrient: "Orientation",
+    tRes: "Language focus &middot; Rock, trap and seal",
+    tSrc: "Language focus &middot; Source rock and logs",
+    tStr: "Language focus &middot; Structure and pressure",
+    tWell: "Language focus &middot; Wellsite to production",
+    wordCount: (n)=>`${n} ${n===1?'word':'words'}`
   },
-  {
-    s: "The structure map revealed a well-defined {BLANK} at approximately 2 400 metres subsea, with four-way closure confirmed by the seismic interpretation.",
-    ans: "anticlinal crest",
-    bank: ["anticlinal crest", "porosity pinch-out", "compactional drape", "overpressure gradient", "isopach minimum"],
-    exp: "<strong>An anticlinal crest</strong> is the highest point of an anticlinal fold — a dome-shaped arch of rock layers. Hydrocarbons, being less dense than water, migrate upward and accumulate at the crest if a seal is present. Four-way closure means the structure is bounded on all sides by rock dipping away from the crest."
+  de: {
+    a1E: "Aufgabe 1 &middot; Die Formation lesen",
+    a1T: "Was bedeutet die Wendung hier?",
+    a2E: "Aufgabe 2 &middot; Feldnotizen vervollständigen",
+    a2T: "Wähle die passende Wendung",
+    a3E: "Aufgabe 3 &middot; Profile korrelieren",
+    a3T: "Was der Begriff im Bericht bedeutet",
+    actEyebrow: 'Anwendung',
+    actPlaceholder: "Over the interval 2,380–2,398 m subsea the logs indicate …",
+    actSpeak1: "Stell die Falle in zwei Minuten vor: Was erzeugt den Schluss, was dichtet ihn ab, und was weißt du über das Muttergestein, das sie füllt?",
+    actSpeak2: "Tauscht die Rollen. Bohre als Partner bei dem Risiko nach, das du für das größte hältst &mdash; <em>seal integrity</em> oder Füllung &mdash; und lass die Reihenfolge laut begründen.",
+    actSpeak3: "Beide: Die Petrophysik meldet <em>anomalously high water saturation</em> über einem Intervall, das hochohmig misst. Einigt euch auf eine mögliche Erklärung für den Partner.",
+    actSpeakBrief: "Euer Team stellt einem Joint-Venture-Partner ein Prospekt vor. Er hat die Zusammenfassung gelesen und ist noch nicht überzeugt.",
+    actSpeakKind: 'Diskussion · zu zweit',
+    actTitle: "Die Prospektbesprechung",
+    actUse: "Mindestens vier verwenden:",
+    actWriteBrief: "Schreibe die Reservoir-Zusammenfassung für den <em>well completion report</em>: was die Messungen über dem Nettomächtigkeitsintervall gezeigt haben, was die Spuren im Bohrklein über die Füllung sagen und welchen Fördermechanismus das Modell erwartet. Formuliere Unsicheres vorsichtig.",
+    actWriteKind: "Schreiben &middot; 150&ndash;250 Wörter",
+    b1T: "Antiklinalen, Kulminationen und Schluss",
+    b1a: "the crest",
+    b1b: "closure",
+    b1n: "Eine Strukturkarte wird auf einen Horizont konturiert und in Metern <em>subsea</em> angegeben: Die Kulmination liegt innerhalb der innersten Isolinie, nach außen fällt die Fläche ab.",
+    b2T: "Porendruck, Überdruck und Spülungsgewicht",
+    b2a: "Der hydrostatische Gradient",
+    b2b: "overpressure",
+    b2n: "Ist die Spülung zu leicht, strömt die Formation in die Bohrung — ein <em>well control incident</em>. Ist sie zu schwer, bricht sie die Formation auf und geht in ihr verloren.",
+    b3T: "Spuren im Bohrklein, Porosität im Log",
+    b3a: "oil shows",
+    b3b: "effective porosity",
+    b3n: "Die beiden Porositäten werden in Berichten leicht verwechselt. Ein Wert, der nach Grenzwerten und Abzügen genannt wird, ist der effektive.",
+    b4T: "Von der Laufzeit zur Tiefe",
+    b4a: "two-way time",
+    b4b: "the check-shot survey",
+    b4n: "Stimmt das Geschwindigkeitsmodell nicht, verschiebt sich die kartierte Kulmination oder der Schluss verschwindet. An der <em>depth conversion</em> scheitert eine gute seismische Interpretation am häufigsten.",
+    b5T: "Was das Öl zur Bohrung treibt",
+    b5a: "solution gas drive",
+    b5b: "gas cap drive",
+    b5c: "water drive",
+    b5n: "Ohne nennenswerten Aquifer und ohne Gaskappe bleibt das gelöste Gas — und deshalb erwartet man in diesem Fall einen bescheidenen Entölungsgrad.",
+    bankLabel: "Wortspeicher:",
+    btnCheck: 'Prüfen',
+    btnCopied: 'Kopiert',
+    btnCopy: 'Kopieren',
+    btnNext: 'Weiter →',
+    btnRestart: 'Neu starten',
+    btnStart: 'Beginnen →',
+    chipCount: "39 Folien",
+    chipFocus: "Geologie des Untergrunds",
+    chipLevel: "C1 &middot; Fachenglisch",
+    chipTime: "50&ndash;60 Minuten",
+    coverSub: "Fachbegriffe und Feldausdrücke, wie sie Geowissenschaftler im Beruf verwenden — von der Bohrstelle bis zum Vortragssaal",
+    coverTitle: "The Language of <em>Geoscience</em>",
+    d1T: "Die Formation lesen",
+    d1a: "Sechs Wendungen, jede im Kontext",
+    d1n: "Wähle eine Option. Du erfährst vor dem Weiterklicken, warum deine Antwort richtig oder falsch war — lies die Rückmeldung auch dann, wenn du punktest.",
+    fbAnswer: 'Antwort:',
+    fbCorrect: 'Richtig.',
+    fbWrong: 'Nicht ganz.',
+    gT: "Sechs Begriffe, die in den Aufgaben vorkommen",
+    ga: "four-way closure",
+    gb: "net pay",
+    gc: "mud weight",
+    gd: "bubble point",
+    ge: "cuttings",
+    gf: "depth conversion",
+    gn: "Zwei weitere: <em>subsea</em> — gemessen ab Meeresspiegel, nicht ab Bohrtisch — und <em>aquifer support</em>: Wasser strömt von unten nach und hält den Lagerstättendruck.",
+    h1: "Das Bohrklein enthielt Spuren von Öl, das sich nicht mehr bewegt.",
+    h2: "Der höchste Punkt der Falte, von der Strukturkarte abgegriffen.",
+    h3: "Porosität, aber nur der Anteil, der auch fließen kann.",
+    h4: "Der Druck der Fluide im Porenraum, den das Spülungsgewicht ausgleichen muss.",
+    h5: "Die Bohrlochmessung, die Laufzeit an die wahre Tiefe bindet.",
+    h6: "Der Fördermechanismus, der bleibt, wenn weder Aquifer noch Gaskappe da sind.",
+    m1T: "Sieben Begriffe aus dem Bericht &mdash; Reife, Störungen, Abdeckung",
+    m1a: "vitrinite reflectance",
+    m1b: "fault throw",
+    m1c: "capillary entry pressure",
+    m1d: "gas&ndash;water contact",
+    m1n: "Beachte das Paar: <em>throw</em> und <em>heave</em> sind die beiden Komponenten ein und derselben Verschiebung. Die falsche zu nennen, verfälscht den Versatz auf Reservoirniveau.",
+    m2T: "&mdash; und Reservoirqualität, Druck, Fazies",
+    m2a: "net-to-gross ratio",
+    m2b: "overpressure",
+    m2c: "facies association",
+    m2n: "Alle sieben tauchen in den folgenden Aufgaben auf, jeweils in einem Satz, wie er so in einem Bericht stehen könnte.",
+    oT: "Für wen diese Lektion ist und wie sie aufgebaut ist",
+    oa: "English for practising geoscientists",
+    ob: "Nichts wird abgefragt, bevor es erklärt wurde",
+    on: "Neunzehn bewertete Aufgaben: sechs Wendungen im Kontext, sechs Sätze aus Feldnotizen und sieben Fachbegriffe aus Berichten. Die Anzeige oben auf jeder Folie zeigt deinen Punktestand von neunzehn.",
+    p1T: "Porosität: Matrix und Klüfte",
+    p1a: "matrix porosity",
+    p1b: "fracture porosity",
+    p1n: "Ein Reservoir mit beidem <strong>exhibits dual porosity behaviour</strong>: Die Matrix speichert, die Klüfte leiten. Wer beides als ein System modelliert, erhält die falsche Förderprognose.",
+    p2T: "Zwei Arten, wie eine Falle entsteht",
+    p2a: "structural trapping",
+    p2b: "stratigraphic trapping",
+    p2n: "Stratigraphische Fallen sind seismisch meist unauffälliger als strukturelle. Genau deshalb fragt ein Gutachtergremium, ob sie ausgeschlossen wurden.",
+    p3T: "Die Abdeckung und wie sie versagt",
+    p3a: "Was eine Falle abdichtet",
+    p3b: "Wie eine Abdeckung versagt",
+    p3n: "<strong>Seal integrity</strong> ist die Fähigkeit des Deckgebirges, die Kohlenwasserstoffsäule in der Falle zu halten. Zweifel daran sind einer der häufigsten Gründe, ein Prospekt abzuwerten.",
+    resLow: "Arbeite die Sprachfolien noch einmal durch, bevor du es erneut versuchst. Jede hier abgefragte Wendung steht vor den Aufgaben auf einer Folie, und die Glossarfolien tragen die Begriffe, die in den Berichten daneben stehen.",
+    resMid: "Bestanden. Geh noch einmal zu den Folien über die Abdeckung, über die Wassersättigung und über die Fördermechanismen. Dort liegen die meisten Punkte, und jedes dieser drei Themen ist eine Unterscheidung und kein Einzelbegriff.",
+    resNext: 'Die Sprache zu erkennen ist die halbe Miete. Jetzt anwenden →',
+    resPerfect: "Volle Punktzahl. Du liest diese Wendungen so, wie der Berichtschreiber sie gemeint hat — auch die beiden, bei denen es auf eine Unterscheidung ankommt und nicht auf eine Definition: effektive gegen totale Porosität, und ein wasserführendes Intervall, das trotzdem hochohmig misst.",
+    resStrong: "Stark. Sieh dir an, wo die Fehler liegen. Die Wendungen zu Gestein und Falle lernt man einmal; die zu Druck, Sättigung und Fördermechanismus muss man jedes Mal neu gegen die Zahlen lesen.",
+    s1T: "Muttergestein: unreif, Ölfenster, überreif",
+    s1a: "Immature &mdash; unreif",
+    s1b: "The oil window &mdash; das Ölfenster",
+    s1c: "Overmature &mdash; überreif",
+    s1n: "Die Reife hängt von Versenkungstiefe und Temperaturgeschichte ab, nicht vom Alter allein. <em>Cracking</em> ist der Mechanismus, der Öl in Gas umwandelt — kein zusätzlicher Verlustweg.",
+    s2T: "Wassersättigung und was die Messungen sehen",
+    s2a: "water saturation (Sw)",
+    s2b: "Warum der Widerstand danebensteht",
+    s2n: "<strong>Anomalously high water saturation</strong> heißt: mehr Wasser, als die übrigen Messwerte erwarten lassen. Das ist ein Warnsignal für die Auswertung, kein Ergebnis.",
+    s3T: "Wenn hoher Widerstand nicht Kohlenwasserstoffe bedeutet",
+    s3a: "Wasserführend und trotzdem hochohmig",
+    s3b: "Die umgekehrte Anomalie",
+    s3n: "Leitfähige Minerale können ein Intervall, das zugleich wasserführend und hochohmig ist, deshalb nicht erklären: Sie bewirken das Gegenteil. Süßes Formationswasser ist die Lehrbucherklärung, danach sehr geringe Porosität und Filtratinvasion.",
+    s4T: "Schrägschichtung und was sie festhält",
+    s4a: "Was es ist",
+    s4b: "Was es dir verrät",
+    s4n: "Strömungen erzeugen Schrägschichtung in fluviatilen, äolischen, gezeitengeprägten und deltaischen Milieus gleichermaßen. Eine Feldnotiz sagt deshalb <em>consistent with</em> — nie, dass es bewiesen sei.",
+    scoreLabel: 'Punkte',
+    slideOf: (a,b)=>`${a} / ${b}`,
+    tGlos: "Sprachfokus &middot; Glossar",
+    tOrient: "Orientierung",
+    tRes: "Sprachfokus &middot; Gestein, Falle und Abdeckung",
+    tSrc: "Sprachfokus &middot; Muttergestein und Bohrlochmessung",
+    tStr: "Sprachfokus &middot; Struktur und Druck",
+    tWell: "Sprachfokus &middot; Von der Bohrstelle zur Förderung",
+    wordCount: (n)=>`${n} ${n===1?'Wort':'Wörter'}`
   },
-  {
-    s: "Wireline log analysis across the interval indicated net pay of 18 metres, with {BLANK} averaging 22% and hydrocarbon saturation exceeding 70%.",
-    ans: "effective porosity",
-    bank: ["effective porosity", "acoustic impedance", "differential compaction", "vitrinite reflectance", "shale volume fraction"],
-    exp: "<strong>Effective porosity</strong> is the portion of total porosity that is interconnected and available for fluid flow — excluding isolated pores and clay-bound water. It is a critical input to volumetric calculations of oil or gas in place."
-  },
-  {
-    s: "The team noted a sharp increase in {BLANK} while drilling the overpressured shale interval, requiring an immediate increase in mud weight to prevent a well control incident.",
-    ans: "pore pressure",
-    bank: ["pore pressure", "overburden stress", "sonic velocity", "carbonate saturation", "shear wave splitting"],
-    exp: "<strong>Pore pressure</strong> is the pressure of fluids within the pore spaces of the rock. In overpressured zones — where pore pressure exceeds the normal hydrostatic gradient — the risk of blowout is significant if mud weight is insufficient to balance formation pressure."
-  },
-  {
-    s: "Integration of {BLANK} data with the 3D seismic volume allowed the team to calibrate the velocity model and significantly improve the depth conversion of the reservoir target.",
-    ans: "check-shot",
-    bank: ["check-shot", "permeability plug", "formation water", "mud log", "vitrinite"],
-    exp: "<strong>Check-shot surveys</strong> measure the travel time of a seismic pulse from surface to a downhole receiver at known depths. These measurements calibrate the seismic velocity model, which is essential for accurately converting two-way travel time to true vertical depth."
-  },
-  {
-    s: "The reservoir model predicted that {BLANK} would be the dominant recovery mechanism in the early production phase, given the limited aquifer support and absence of a gas cap.",
-    ans: "solution gas drive",
-    bank: ["solution gas drive", "stratigraphic onlap", "thermal cracking", "isostatic rebound", "lateral accretion"],
-    exp: "<strong>Solution gas drive</strong> (also called dissolved gas drive) occurs when reservoir pressure drops below the bubble point, causing dissolved gas to exsolve from the oil. The expanding gas pushes oil toward the wellbore. It is one of several natural drive mechanisms, generally less efficient than water drive or gas cap drive."
-  }
-];
+  es: {},
+  fr: {},
+  it: {},
+  pt: {},
+  ru: {},
+  ar: {},
+  zh: {},
+  ja: {}
+};
 
-const MATCH = [
-  { term: "vitrinite reflectance", def: "a measure of thermal maturity derived from the optical reflectivity of organic matter in source rock" },
-  { term: "fault throw", def: "the vertical displacement of rock strata on either side of a fault plane" },
-  { term: "capillary entry pressure", def: "the pressure required for a non-wetting fluid to enter and displace the wetting fluid from a pore throat" },
-  { term: "gas–water contact", def: "the subsurface interface below which pore space is occupied by water rather than gas" },
-  { term: "net-to-gross ratio", def: "the proportion of a formation interval that meets minimum criteria to be considered reservoir quality" },
-  { term: "overpressure", def: "pore fluid pressure that exceeds the expected hydrostatic pressure at a given depth" },
-  { term: "facies association", def: "a group of related sedimentary facies that together characterise a specific depositional environment" }
-];
+let currentLang = 'en';
+const t = k => (UI_I18N[currentLang] && UI_I18N[currentLang][k] != null)
+  ? UI_I18N[currentLang][k] : UI_I18N.en[k];
 
-// ════════════════════════════════════
-// STATE
-// ════════════════════════════════════
-let totalCorrect = 0, totalAnswered = 0;
-const totalQ = MCQ.length + FITB.length + MATCH.length;
-let mcqDone = new Array(MCQ.length).fill(false);
-let fitbDone = new Array(FITB.length).fill(false);
-let fitbSel = {};
-let matchState = { leftSel: null, rightSel: null, matched: {} };
+/* ── Deck state ── */
+const stage   = document.getElementById('stage');
+const slides  = [...document.querySelectorAll('.slide')];
+const scored  = slides.filter(s => ['mc','gap','match','order','sort'].includes(s.dataset.type));
+/* A slide may hold more than one gap; each gap is worth a point. */
+const countIn = s => s.dataset.type === 'gap'   ? s.querySelectorAll('.gap').length
+                   : s.dataset.type === 'match' ? s.querySelectorAll('.match-pair').length
+                   : s.dataset.type === 'sort'  ? s.querySelectorAll('.sort-item').length
+                   : 1;
+const maxScore = scored.reduce((n, s) => n + Math.max(1, countIn(s)), 0);
+let idx = 0, score = 0;
+const answered = new WeakSet();
 
-function shuffle(a) {
-  const b = [...a];
-  for (let i = b.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [b[i], b[j]] = [b[j], b[i]];
-  }
-  return b;
+/* ── Scale the 1280×720 stage to fit any viewport, never scroll ── */
+function fitStage() {
+  const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+  // Centre explicitly. Relying on the wrapper to centre an oversized child is
+  // what put the stage off-screen on every viewport under 1280px wide.
+  const x = (window.innerWidth  - 1280 * s) / 2;
+  const y = (window.innerHeight -  720 * s) / 2;
+  stage.style.transform = `translate(${x}px, ${y}px) scale(${s})`;
+}
+addEventListener('resize', fitStage);
+
+/* ── Navigation ── */
+function show(n) {
+  idx = Math.max(0, Math.min(slides.length - 1, n));
+  slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+  stage.classList.toggle('on-cover', slides[idx].dataset.type === 'cover');
+  // A slide may swap the background pattern for a second illustration from the
+  // same set (data-bg). Same idiom as the hero — picture at reduced opacity
+  // under the wash — so extra artwork never becomes a pasted-in box.
+  stage.style.setProperty('--hero', slides[idx].dataset.bg
+    ? `url('${slides[idx].dataset.bg}')` : '');
+  document.getElementById('progressFill').style.width =
+    (slides.length > 1 ? (idx / (slides.length - 1)) * 100 : 0) + '%';
+  document.getElementById('deckCount').textContent = t('slideOf')(idx + 1, slides.length);
+  document.querySelector('[data-action="prev"]').disabled = idx === 0;
+  document.querySelector('[data-action="next"]').disabled = idx === slides.length - 1;
+  if (slides[idx].dataset.type === 'results') renderResults();
+  const gap = slides[idx].querySelector('.gap');
+  if (gap && !answered.has(slides[idx])) setTimeout(() => gap.focus(), 60);
 }
 
-function updateBar() {
-  document.getElementById("scoreVal").textContent = totalCorrect + " / " + totalAnswered;
-  document.getElementById("progressFill").style.width = (totalAnswered / totalQ * 100) + "%";
+function renderResults() {
+  const max = maxScore;
+  document.getElementById('scoreVal').textContent = score;
+  document.getElementById('scoreMax').textContent = max;
+  const pct = max ? score / max : 0;
+  document.getElementById('scoreMsg').textContent =
+    pct === 1 ? t('resPerfect') : pct >= .75 ? t('resStrong')
+    : pct >= .5 ? t('resMid') : t('resLow');
 }
 
-function setTab(n) {
-  [1,2,3].forEach(i => {
-    const t = document.getElementById("tab" + i);
-    t.className = "act-tab" + (i === n ? " active" : i < n ? " done" : "");
+function updateScoreChip() {
+  document.getElementById('deckScore').textContent =
+    maxScore ? `${t('scoreLabel')} ${score}/${maxScore}` : '';
+}
+
+/* ── Answer handling ── */
+function award(slide, ok) {
+  if (answered.has(slide)) return;
+  answered.add(slide);
+  if (ok) score++;
+  updateScoreChip();
+}
+
+function feedback(slide, ok, extra, ownExplain) {
+  const el = slide.querySelector('.feedback');
+  if (!el) return;
+  // An option's own explanation wins: telling a learner why THEIR answer was
+  // wrong beats restating why the key was right.
+  const reason = ownExplain || el.dataset.explain;
+  const why = reason ? ' ' + reason : '';
+  // innerHTML, not textContent: explanations carry <strong> and <em>, and the
+  // whole point of an explanation is that the word being taught is marked.
+  // Written with textContent this printed the tags as literal source text on
+  // every deck built from this template.
+  el.innerHTML = (ok ? t('fbCorrect') : t('fbWrong') + (extra ? ` ${t('fbAnswer')} ${extra}` : '')) + why;
+  el.className = 'feedback show ' + (ok ? 'ok' : 'no');
+}
+
+/* Multiple choice — shuffled on first view so option order is never a tell. */
+slides.filter(s => s.dataset.type === 'mc').forEach(slide => {
+  const box = slide.querySelector('.opts');
+  const opts = [...box.querySelectorAll('.opt')];
+  opts.sort(() => Math.random() - .5).forEach((o, i) => {
+    o.prepend(Object.assign(document.createElement('span'), {
+      className: 'opt-key', textContent: 'ABCD'[i]
+    }));
+    box.appendChild(o);
   });
-  document.getElementById("progressLabel").textContent = "Activity " + n + " of 3";
-}
-
-// ── MCQ ──
-function buildMCQ() {
-  const c = document.getElementById("mcqContainer");
-  c.innerHTML = "";
-  MCQ.forEach((q, qi) => {
-    const opts = shuffle(q.opts.map(o => ({ ...o })));
-    const ltrs = ["A","B","C","D"];
-    const card = document.createElement("div");
-    card.className = "question-card";
-    card.innerHTML = `
-      <div class="q-counter">Question ${qi+1} of ${MCQ.length}</div>
-      <div class="q-text">${q.q}</div>
-      <div class="options-grid" id="og${qi}">
-        ${opts.map((o,li) => `
-          <button class="option-btn" id="ob${qi}_${li}" onclick="pickMCQ(${qi},${li},${o.c})">
-            <span class="opt-letter">${ltrs[li]}</span>${o.t}
-          </button>`).join("")}
-      </div>
-      <div class="feedback-box" id="fb${qi}"></div>`;
-    c.appendChild(card);
-  });
-}
-
-function pickMCQ(qi, li, correct) {
-  if (mcqDone[qi]) return;
-  mcqDone[qi] = true;
-  totalAnswered++;
-  if (correct) totalCorrect++;
-  updateBar();
-
-  const btns = document.querySelectorAll(`#og${qi} .option-btn`);
-  btns.forEach((b,i) => {
-    b.disabled = true;
-    const isThisCorrect = b.getAttribute("onclick").includes(",true)");
-    if (i === li) b.classList.add(correct ? "correct" : "incorrect");
-    if (isThisCorrect && !correct) b.classList.add("correct");
-  });
-
-  const fb = document.getElementById("fb"+qi);
-  fb.className = "feedback-box show " + (correct ? "correct" : "incorrect");
-  fb.innerHTML = `<div class="feedback-label">${correct ? "✓ Correct" : "✗ Incorrect"}</div>${MCQ[qi].exp}`;
-
-  if (mcqDone.every(Boolean)) document.getElementById("mcqNext").classList.remove("hidden");
-}
-
-document.getElementById("mcqNext").addEventListener("click", () => {
-  document.getElementById("act1").classList.add("hidden");
-  document.getElementById("act2").classList.remove("hidden");
-  setTab(2);
-  buildFITB();
+  opts.forEach(o => o.addEventListener('click', () => {
+    if (answered.has(slide)) return;
+    const ok = o.hasAttribute('data-correct');
+    opts.forEach(x => {
+      x.disabled = true;
+      if (x.hasAttribute('data-correct')) x.classList.add('correct');
+    });
+    if (!ok) o.classList.add('wrong');
+    award(slide, ok);
+    feedback(slide, ok, null, o.dataset.explain);
+  }));
 });
 
-// ── FITB ──
-function buildFITB() {
-  const c = document.getElementById("fitbContainer");
-  c.innerHTML = "";
-  FITB.forEach((q, qi) => {
-    const bank = shuffle(q.bank);
-    const card = document.createElement("div");
-    card.className = "question-card";
-    const sent = q.s.replace("{BLANK}", `<input class="blank-input" id="bi${qi}" placeholder="…" readonly>`);
-    card.innerHTML = `
-      <div class="q-counter">Question ${qi+1} of ${FITB.length}</div>
-      <div class="fitb-sentence">${sent}</div>
-      <div class="word-bank" id="wb${qi}">
-        ${bank.map((w,wi) => `<span class="word-chip" id="wc${qi}_${wi}" onclick="pickFITB(${qi},'${w.replace(/'/g,"\\'")}',${wi})">${w}</span>`).join("")}
-      </div>
-      <div class="feedback-box" id="ffb${qi}"></div>`;
-    c.appendChild(card);
-  });
-}
+/* Matching. Author as <div class="match-pair" data-term data-def> rows; the
+   engine builds both columns and shuffles the definitions. One point per pair. */
+slides.filter(s => s.dataset.type === 'match').forEach(slide => {
+  const pairs = [...slide.querySelectorAll('.match-pair')];
+  const grid = slide.querySelector('.match-grid');
+  if (!grid || !pairs.length) return;
+  const terms = document.createElement('div');
+  const defs = document.createElement('div');
+  terms.className = defs.className = 'match-col';
+  const mk = (txt, cls, key) => {
+    const b = document.createElement('button');
+    b.className = 'match-item ' + cls;
+    b.textContent = txt;
+    b.dataset.key = key;
+    return b;
+  };
+  pairs.forEach(p => terms.appendChild(mk(p.dataset.term, 'term', p.dataset.term)));
+  [...pairs].sort(() => Math.random() - .5)
+    .forEach(p => defs.appendChild(mk(p.dataset.def, 'def', p.dataset.term)));
+  grid.replaceChildren(terms, defs);
 
-function pickFITB(qi, word, chipIdx) {
-  if (fitbDone[qi]) return;
-  if (fitbSel[qi] !== undefined) {
-    const prev = document.getElementById(`wc${qi}_${fitbSel[qi]}`);
-    if (prev) prev.classList.remove("used");
-  }
-  fitbSel[qi] = chipIdx;
-  document.getElementById("bi"+qi).value = word;
-  document.querySelectorAll(`#wb${qi} .word-chip`).forEach(c => c.classList.remove("used"));
-  document.getElementById(`wc${qi}_${chipIdx}`).classList.add("used");
-
-  fitbDone[qi] = true;
-  totalAnswered++;
-  const correct = word.toLowerCase() === FITB[qi].ans.toLowerCase();
-  if (correct) totalCorrect++;
-  updateBar();
-
-  const inp = document.getElementById("bi"+qi);
-  inp.classList.add(correct ? "correct" : "incorrect");
-  inp.disabled = true;
-
-  document.querySelectorAll(`#wb${qi} .word-chip`).forEach(c => {
-    c.onclick = null;
-    c.style.cursor = "default";
-    if (!correct && c.textContent.toLowerCase() === FITB[qi].ans.toLowerCase()) {
-      c.style.borderColor = "rgba(90,140,90,0.6)";
-      c.style.color = "var(--success)";
-      c.style.opacity = "1";
+  let picked = null, done = 0;
+  const total = pairs.length;
+  grid.addEventListener('click', e => {
+    const el = e.target.closest('.match-item');
+    if (!el || el.classList.contains('done')) return;
+    if (el.classList.contains('term')) {
+      grid.querySelectorAll('.term.picked').forEach(x => x.classList.remove('picked'));
+      el.classList.add('picked');
+      picked = el;
+      return;
+    }
+    if (!picked) return;
+    if (el.dataset.key === picked.dataset.key) {
+      el.classList.add('done'); picked.classList.add('done');
+      picked.classList.remove('picked');
+      picked = null; done++; score++; updateScoreChip();
+      if (done === total) {
+        answered.add(slide);
+        feedback(slide, true);
+      }
+    } else {
+      el.classList.add('miss');
+      setTimeout(() => el.classList.remove('miss'), 320);
     }
   });
-
-  const fb = document.getElementById("ffb"+qi);
-  fb.className = "feedback-box show " + (correct ? "correct" : "incorrect");
-  fb.innerHTML = `<div class="feedback-label">${correct ? "✓ Correct" : `✗ The correct answer was: <em>${FITB[qi].ans}</em>`}</div>${FITB[qi].exp}`;
-
-  if (fitbDone.every(Boolean)) document.getElementById("fitbNext").classList.remove("hidden");
-}
-
-document.getElementById("fitbNext").addEventListener("click", () => {
-  document.getElementById("act2").classList.add("hidden");
-  document.getElementById("act3").classList.remove("hidden");
-  setTab(3);
-  buildMatch();
 });
 
-// ── MATCHING ──
-function buildMatch() {
-  const shuffledRight = shuffle(MATCH.map((m,i) => ({ def: m.def, origIdx: i })));
-  const c = document.getElementById("matchContainer");
-  c.innerHTML = "";
-  const card = document.createElement("div");
-  card.className = "question-card";
+/* Sentence building. Author as
+     <div class="order" data-answer="chunk|chunk|chunk"></div>
+   with a [data-action="check-order"] button and a .feedback alongside it.
+   The engine shuffles the chunks into a pool; clicking places one, clicking a
+   placed one takes it back. One point for the whole sentence — a half-right
+   word order is not half-right English. */
+slides.filter(s => s.dataset.type === 'order').forEach(slide => {
+  const box = slide.querySelector('.order');
+  if (!box) return;
+  const answer = box.dataset.answer.split('|').map(x => x.trim());
+  const target = document.createElement('div'); target.className = 'order-target';
+  const pool   = document.createElement('div'); pool.className   = 'order-pool';
+  answer.map((txt, i) => ({ txt, i }))
+        .sort(() => Math.random() - .5)
+        .forEach(({ txt, i }) => {
+          const b = document.createElement('button');
+          b.className = 'chunk';
+          b.textContent = txt;
+          b.dataset.i = i;
+          pool.appendChild(b);
+        });
+  box.replaceChildren(target, pool);
 
-  let leftHtml = MATCH.map((m,i) => `<div class="match-item left" id="ml${i}" onclick="matchPick('left',${i})">${m.term}</div>`).join("");
-  let rightHtml = shuffledRight.map(r => `<div class="match-item right" id="mr${r.origIdx}" onclick="matchPick('right',${r.origIdx})">${r.def}</div>`).join("");
+  box.addEventListener('click', e => {
+    const c = e.target.closest('.chunk');
+    if (!c || c.disabled) return;
+    if (c.parentElement === pool) { c.classList.add('placed');    target.appendChild(c); }
+    else                          { c.classList.remove('placed'); pool.appendChild(c); }
+  });
 
-  card.innerHTML = `
-    <div class="q-text" style="margin-bottom:1rem">Select a term from the left, then its matching definition from the right.</div>
-    <div class="match-cols">
-      <div class="match-col-hdr">Technical Term</div>
-      <div class="match-col-hdr">Definition</div>
-      ${MATCH.map((m,i) => `
-        <div class="match-item left" id="ml${i}" onclick="matchPick('left',${i})">${m.term}</div>
-        <div class="match-item right" id="mr_s${i}"></div>`).join("")}
-    </div>
-    <div class="feedback-box" id="mfb"></div>`;
+  slide._check = () => {
+    if (answered.has(slide)) return;
+    // Marking a half-built sentence teaches nothing; wait until it is complete.
+    if (target.children.length < answer.length) return;
+    answered.add(slide);
+    const ok = [...target.children].map(c => +c.dataset.i).every((v, i) => v === i);
+    target.classList.add(ok ? 'correct' : 'wrong');
+    box.querySelectorAll('.chunk').forEach(c => c.disabled = true);
+    if (ok) score++;
+    updateScoreChip();
+    feedback(slide, ok, ok ? null : answer.join(' '));
+    const btn = slide.querySelector('[data-action="check-order"]');
+    if (btn) btn.disabled = true;
+  };
+});
 
-  // Better: build proper two-column layout
-  card.innerHTML = `
-    <div class="q-text" style="margin-bottom:1rem">Select a term from the left, then its matching definition from the right.</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem 1.2rem">
-      <div class="match-col-hdr">Technical Term</div>
-      <div class="match-col-hdr">Definition</div>
-      ${(() => {
-        let rows = "";
-        const n = Math.max(MATCH.length, shuffledRight.length);
-        for (let i = 0; i < n; i++) {
-          const l = MATCH[i] ? `<div class="match-item left" id="ml${i}" onclick="matchPick('left',${i})">${MATCH[i].term}</div>` : "<div></div>";
-          const r = shuffledRight[i] ? `<div class="match-item right" id="mr${shuffledRight[i].origIdx}" onclick="matchPick('right',${shuffledRight[i].origIdx})">${shuffledRight[i].def}</div>` : "<div></div>";
-          rows += l + r;
-        }
-        return rows;
-      })()}
-    </div>
-    <div class="feedback-box" id="mfb" style="margin-top:1rem"></div>`;
+/* Sorting. Author as
+     <div class="sort" data-bins="Label one|Label two" data-explain="…">
+       <span class="sort-item" data-bin="0">every day</span>
+       …
+     </div>
+   The engine shuffles the items into a pool and builds one bin per label.
+   Drag an item into a bin, or click the item and then click the bin —
+   both do the same thing, and the click path is the one that works on a
+   touch screen. One point per item.
 
-  c.appendChild(card);
+   Unlike matching, a wrong placement costs the point for that item: the
+   learner can still put it right and finish the slide, but the first
+   answer is the one that counts. A sorting task with unlimited free
+   retries is a task you cannot fail, and a score that cannot go down
+   tells the learner nothing. (Matching still allows free retries; that
+   is thirty-odd shipped lessons' worth of behaviour to change, and it
+   should be changed deliberately, not as a side effect of this.) */
+slides.filter(s => s.dataset.type === 'sort').forEach(slide => {
+  const box = slide.querySelector('.sort');
+  if (!box) return;
+  const labels = (box.dataset.bins || '').split('|').map(x => x.trim());
+  const items = [...box.querySelectorAll('.sort-item')];
+  if (labels.length < 2 || !items.length) return;
+
+  const pool = document.createElement('div');
+  pool.className = 'sort-pool';
+  const bins = document.createElement('div');
+  bins.className = 'sort-bins';
+  bins.style.gridTemplateColumns = '1fr '.repeat(labels.length).trim();
+
+  const binEls = labels.map((label, i) => {
+    const bin = document.createElement('div');
+    bin.className = 'sort-bin';
+    bin.dataset.bin = i;
+    const h = document.createElement('div');
+    h.className = 'sort-bin-label';
+    h.textContent = label;
+    const body = document.createElement('div');
+    body.className = 'sort-bin-items';
+    bin.append(h, body);
+    bins.appendChild(bin);
+    return bin;
+  });
+
+  items.sort(() => Math.random() - .5).forEach(it => {
+    it.setAttribute('draggable', 'true');
+    it.tabIndex = 0;
+    pool.appendChild(it);
+  });
+  box.replaceChildren(pool, bins);
+
+  let picked = null, placed = 0, dragged = null;
+  const missed = new WeakSet();   // items answered wrongly at least once
+
+  function place(item, binIndex) {
+    if (item.classList.contains('placed')) return;
+    if (+item.dataset.bin !== binIndex) {
+      missed.add(item);
+      item.classList.add('miss');
+      setTimeout(() => item.classList.remove('miss'), 320);
+      return;
+    }
+    item.classList.remove('picked');
+    item.classList.add('placed');
+    item.setAttribute('draggable', 'false');
+    binEls[binIndex].querySelector('.sort-bin-items').appendChild(item);
+    placed++;
+    if (!missed.has(item)) { score++; updateScoreChip(); }
+    if (placed === items.length) {
+      binEls.forEach(b => b.classList.add('full'));
+      answered.add(slide);
+      // Right only if every item went to the right bin first time.
+      feedback(slide, !items.some(i => missed.has(i)));
+    }
+  }
+
+  box.addEventListener('click', e => {
+    const item = e.target.closest('.sort-item');
+    if (item && !item.classList.contains('placed')) {
+      box.querySelectorAll('.sort-item.picked').forEach(x => x.classList.remove('picked'));
+      item.classList.add('picked');
+      picked = item;
+      return;
+    }
+    const bin = e.target.closest('.sort-bin');
+    if (bin && picked) { place(picked, +bin.dataset.bin); picked = null; }
+  });
+
+  box.addEventListener('dragstart', e => {
+    const item = e.target.closest('.sort-item');
+    if (!item || item.classList.contains('placed')) return;
+    dragged = item;
+    item.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    // Firefox will not start a drag without data on the transfer.
+    e.dataTransfer.setData('text/plain', '');
+  });
+  box.addEventListener('dragend', () => {
+    if (dragged) dragged.classList.remove('dragging');
+    dragged = null;
+    binEls.forEach(b => b.classList.remove('over'));
+  });
+  binEls.forEach(bin => {
+    bin.addEventListener('dragover', e => { e.preventDefault(); bin.classList.add('over'); });
+    bin.addEventListener('dragleave', () => bin.classList.remove('over'));
+    bin.addEventListener('drop', e => {
+      e.preventDefault();
+      bin.classList.remove('over');
+      if (dragged) { place(dragged, +bin.dataset.bin); dragged = null; }
+    });
+  });
+});
+
+/* Gap fill. Supports several gaps on one slide, each scored and explained
+   individually via its own .gap-row wrapper. */
+const gapOk = g => g.dataset.answer.split('|')
+  .map(a => a.trim().toLowerCase())
+  .includes(g.value.trim().toLowerCase().replace(/\s+/g, ' '));
+
+function markGap(g, fb) {
+  const ok = gapOk(g);
+  g.classList.add(ok ? 'correct' : 'wrong');
+  g.disabled = true;
+  if (ok) score++;
+  if (fb) {
+    const why = fb.dataset.explain ? ' ' + fb.dataset.explain : '';
+    fb.innerHTML = (ok ? t('fbCorrect')
+      : `${t('fbWrong')} ${t('fbAnswer')} ${g.dataset.answer.split('|')[0]}.`) + why;
+    fb.className = 'feedback show ' + (ok ? 'ok' : 'no');
+  }
+  return ok;
 }
 
-function matchPick(side, idx) {
-  const dominated = Object.values(matchState.matched).includes(idx);
-  if (matchState.matched[idx] !== undefined && side === "left") return;
-  if (dominated && side === "right") return;
-
-  if (side === "left") {
-    if (matchState.leftSel !== null) {
-      const prev = document.getElementById("ml" + matchState.leftSel);
-      if (prev && !prev.classList.contains("matched-correct") && !prev.classList.contains("matched-wrong")) prev.classList.remove("selected");
-    }
-    matchState.leftSel = idx;
-    const el = document.getElementById("ml"+idx);
-    if (el && !el.classList.contains("matched-correct") && !el.classList.contains("matched-wrong")) el.classList.add("selected");
+function checkGaps(slide) {
+  if (answered.has(slide)) return;
+  answered.add(slide);
+  const rows = [...slide.querySelectorAll('.gap-row')];
+  if (rows.length) {
+    rows.forEach(r => markGap(r.querySelector('.gap'), r.querySelector('.feedback')));
   } else {
-    if (matchState.rightSel !== null) {
-      const prev = document.getElementById("mr" + matchState.rightSel);
-      if (prev && !prev.classList.contains("matched-correct") && !prev.classList.contains("matched-wrong")) prev.classList.remove("selected");
-    }
-    matchState.rightSel = idx;
-    const el = document.getElementById("mr"+idx);
-    if (el && !el.classList.contains("matched-correct") && !el.classList.contains("matched-wrong")) el.classList.add("selected");
+    markGap(slide.querySelector('.gap'), slide.querySelector('.feedback'));
   }
-
-  if (matchState.leftSel !== null && matchState.rightSel !== null) {
-    const li = matchState.leftSel, ri = matchState.rightSel;
-    const correct = li === ri;
-    matchState.matched[li] = ri;
-    totalAnswered++;
-    if (correct) totalCorrect++;
-    updateBar();
-
-    const lEl = document.getElementById("ml"+li);
-    const rEl = document.getElementById("mr"+ri);
-    lEl.classList.remove("selected"); rEl.classList.remove("selected");
-    lEl.classList.add(correct ? "matched-correct" : "matched-wrong");
-    rEl.classList.add(correct ? "matched-correct" : "matched-wrong");
-    lEl.onclick = null; rEl.onclick = null;
-
-    matchState.leftSel = null; matchState.rightSel = null;
-
-    if (Object.keys(matchState.matched).length === MATCH.length) {
-      document.getElementById("matchNext").classList.remove("hidden");
-      const fb = document.getElementById("mfb");
-      fb.className = "feedback-box show correct";
-      fb.innerHTML = `<div class="feedback-label">All pairs matched.</div>Green pairs are correctly matched. Any red pairs indicate an error — take note of the correct associations and consider reviewing your vocabulary log.`;
-    }
-  }
+  const btn = slide.querySelector('[data-action="check"]');
+  if (btn) btn.disabled = true;
+  updateScoreChip();
 }
 
-document.getElementById("matchNext").addEventListener("click", () => {
-  document.getElementById("act3").classList.add("hidden");
-  showFinal();
+/* ── Activation: word count, copy, and a print mirror (a textarea's
+   value does not appear in a PDF, so we mirror it into a div). ── */
+const actInput = document.getElementById('actInput');
+if (actInput) {
+  const countEl = document.getElementById('actCount');
+  const printEl = document.getElementById('actPrint');
+  const sync = () => {
+    const words = actInput.value.trim().split(/\s+/).filter(Boolean).length;
+    countEl.textContent = t('wordCount')(words);
+    printEl.textContent = actInput.value;
+  };
+  actInput.addEventListener('input', sync);
+  window.syncActivation = sync;
+  sync();
+}
+
+/* ── Events ── */
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-action]');
+  if (!a) return;
+  const act = a.dataset.action;
+  if (act === 'next') show(idx + 1);
+  if (act === 'prev') show(idx - 1);
+  if (act === 'check') checkGaps(a.closest('.slide'));
+  if (act === 'check-order') { const sl = a.closest('.slide'); if (sl._check) sl._check(); }
+  if (act === 'restart') location.reload();
+  if (act === 'copy-writing') {
+    const ta = document.getElementById('actInput');
+    if (ta && navigator.clipboard) navigator.clipboard.writeText(ta.value).then(() => {
+      const was = a.textContent;
+      a.textContent = t('btnCopied');
+      setTimeout(() => { a.textContent = was; }, 1400);
+    });
+  }
 });
 
-// ── FINAL ──
-function showFinal() {
-  document.getElementById("finalScreen").classList.add("show");
-  const pct = Math.round(totalCorrect / totalAnswered * 100);
-  document.getElementById("finalNum").textContent = totalCorrect;
-  document.getElementById("finalSub").textContent = "of " + totalAnswered + " correct";
-
-  let title, msg;
-  if (pct >= 85) {
-    title = "Field-ready vocabulary.";
-    msg = "You demonstrated command of authentic geoscience discourse at the level expected of practising professionals. These phrases — from petrophysical parameters to depositional interpretations — form the working vocabulary of exploration and production teams worldwide. You're well placed to use them confidently in technical writing and presentations.";
-  } else if (pct >= 60) {
-    title = "A productive section.";
-    msg = "You have solid coverage of core geoscience terminology. A handful of more specialised phrases — perhaps from petrophysics or reservoir engineering — may benefit from further attention. Revisit any questions you found challenging and consider looking up the terms in context, such as in SPE papers or AAPG bulletins.";
-  } else {
-    title = "Every formation rewards study.";
-    msg = "Geoscience English is a dense and specialised register, and this lesson covers terminology from multiple sub-disciplines. Don't be discouraged — even experienced geoscientists encounter unfamiliar phrasing outside their specialism. Work through the feedback explanations carefully and consider keeping a technical vocabulary log as you encounter these phrases in reading.";
+document.addEventListener('keydown', e => {
+  if (e.target.matches('input, select, textarea')) {
+    if (e.key === 'Enter') checkGaps(e.target.closest('.slide'));
+    return;
   }
+  if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); show(idx + 1); }
+  if (['ArrowLeft', 'PageUp'].includes(e.key))         { e.preventDefault(); show(idx - 1); }
+});
 
-  document.getElementById("finalTitle").textContent = title;
-  document.getElementById("finalMsg").textContent = msg;
+/* ── Language ── */
+function applyLang() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const v = t(el.dataset.i18n);
+    if (v != null) el.innerHTML = v;
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const v = t(el.dataset.i18nPh);
+    if (v != null) el.placeholder = v;
+  });
+  if (window.syncActivation) window.syncActivation();
+  document.documentElement.lang = currentLang;
+  document.documentElement.dir = RTL_LANGS.includes(currentLang) ? 'rtl' : 'ltr';
+  updateScoreChip();
+  show(idx);
 }
 
-function restartLesson() {
-  totalCorrect = 0; totalAnswered = 0;
-  mcqDone = new Array(MCQ.length).fill(false);
-  fitbDone = new Array(FITB.length).fill(false);
-  fitbSel = {};
-  matchState = { leftSel: null, rightSel: null, matched: {} };
-  updateBar();
-
-  ["act2","act3","finalScreen"].forEach(id => document.getElementById(id).classList.add("hidden"));
-  document.getElementById("finalScreen").classList.remove("show");
-  document.getElementById("act1").classList.remove("hidden");
-  ["mcqContainer","fitbContainer","matchContainer"].forEach(id => document.getElementById(id).innerHTML = "");
-  ["mcqNext","fitbNext","matchNext"].forEach(id => document.getElementById(id).classList.add("hidden"));
-  setTab(1);
-  buildMCQ();
+function initLang() {
+  const sel = document.getElementById('langSelect');
+  // Only offer languages that are actually translated. An empty or partial
+  // scaffold stays in the code for a future pass but never appears as a dead
+  // option in the menu.
+  const enKeys = Object.keys(UI_I18N.en).length;
+  LANGS.filter(l => l.code === 'en' ||
+                    Object.keys(UI_I18N[l.code] || {}).length >= enKeys)
+       .forEach(l => sel.add(new Option(l.label, l.code)));
+  sel.value = currentLang;
+  sel.hidden = sel.options.length < 2;
+  sel.addEventListener('change', () => { currentLang = sel.value; applyLang(); });
 }
 
-// ── INIT ──
-buildMCQ();
-updateBar();
+/* Per-slide background art: set the variable on the element as well, because
+   the print stylesheet paints each slide's own ::before from var(--hero). */
+slides.filter(s => s.dataset.bg).forEach(s =>
+  s.style.setProperty('--hero', `url('${s.dataset.bg}')`));
+
+/* ── Boot ── */
+initLang();
+fitStage();
+applyLang();
+updateScoreChip();
+
+/* Reveal the wordmark only once DM Sans is really available, so the
+   Forbes/ENGLISH lockup never renders at fallback-font proportions. */
+const ready = () => document.body.classList.add('fonts-ready');
+if (document.fonts && document.fonts.ready) { document.fonts.ready.then(ready); setTimeout(ready, 1500); }
+else ready();
 </script>
 </body>
 </html>
