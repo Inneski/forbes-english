@@ -114,12 +114,19 @@ html, body {
 }
 
 /* ── STAGE: a fixed 1280×720 canvas scaled to fit any viewport ── */
-.stage-wrap { position: fixed; inset: 0; display: grid; place-items: center; }
+/* A plain fixed box, NOT a centring grid. A grid item wider than its track is
+   aligned to start by the browser rather than overflowing both sides, so on any
+   viewport narrower than 1280px the stage's layout box began at x=0 and
+   `transform-origin: center center` scaled it about x=640 — shifting it right,
+   and clean off the screen on a phone, leaving a black page. The stage is now
+   pinned top-left and fitStage() does the centring, so the transform can never
+   disagree with the layout. */
+.stage-wrap { position: fixed; inset: 0; overflow: hidden; }
 .stage {
-  position: relative;
+  position: absolute; left: 0; top: 0;
   width: var(--slide-w);
   height: var(--slide-h);
-  transform-origin: center center;
+  transform-origin: top left;
   overflow: hidden;
   background: var(--void);
   box-shadow: 0 24px 80px rgba(0,0,0,0.55);
@@ -492,6 +499,7 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
   html, body { overflow: visible; height: auto; background: #fff; }
   .stage-wrap { position: static; display: block; }
   .stage {
+    position: static;
     transform: none !important;
     width: 1280px; height: auto;      /* let the slides stack into pages */
     overflow: visible; box-shadow: none;
@@ -1043,7 +1051,11 @@ const answered = new WeakSet();
 /* ── Scale the 1280×720 stage to fit any viewport, never scroll ── */
 function fitStage() {
   const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
-  stage.style.transform = `scale(${s})`;
+  // Centre explicitly. Relying on the wrapper to centre an oversized child is
+  // what put the stage off-screen on every viewport under 1280px wide.
+  const x = (window.innerWidth  - 1280 * s) / 2;
+  const y = (window.innerHeight -  720 * s) / 2;
+  stage.style.transform = `translate(${x}px, ${y}px) scale(${s})`;
 }
 addEventListener('resize', fitStage);
 
