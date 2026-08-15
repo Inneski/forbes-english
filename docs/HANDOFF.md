@@ -17,8 +17,8 @@ stale copy.
 | Lesson | Artwork | State |
 |---|---|---|
 | `forbes-nature-agency-part1.html` | `NatureAgency/` (hero, lake, station, prairie) | **BUILT — 36 slides, checker clean** (`381754c`). An earlier finished rebuild of this same lesson was lost to an unpushed branch first — see the warning under Publishing in `CLAUDE.md`. |
-| `forbes-nature-agency-part2.html` | `NatureAgency2/hero-otter.jpg` (cover), `reeds.jpg` (dividers + results) | **BUILT — 58 slides, checker clean.** `lesson-template/build/build_nature2.py` + `i18n_nature2.py`. Not yet pushed. |
-| `forbes-english-b2-lesson.html` | `TopGearB2/hero.jpg` | not audited |
+| `forbes-nature-agency-part2.html` | `NatureAgency2/`: `hero-otter.jpg` (cover), `hide.jpg` (the hide slide), `loch.jpg` (scene-setting + results), `reeds.jpg` (dividers), `shore.jpg` (activation) | **BUILT — 59 slides, checker clean.** `build_nature2.py` + `i18n_nature2.py`. |
+| `forbes-english-b2-lesson.html` | `TopGearB2/hero.jpg` | **BUILT — 37 slides, checker clean.** `lesson-template/build/build_topgear.py` + `i18n_topgear.py`. Audit at `docs/topgear-b2-audit.md`. Not yet pushed. |
 | `forbes-geoscience-phrases.html` | `Geoscience/` (5 images) | **audited, see `docs/geoscience-audit.md`** |
 
 ### Decisions taken on Nature Agency Part 2 (Innes, this session)
@@ -39,9 +39,18 @@ stale copy.
 **Built.** The wetland hero arrived as `NatureAgency2/hero-otter.jpg` (otter on
 a bank, reed line, open water) with `reeds.jpg` as the per-slide background for
 the three section dividers and the results slide. Light theme, palette derived
-with `--light`, every contrast row PASS. 58 slides, all ten gates clean. The
-agency is now the **Wildlife and Countryside Agency**. Two notes for whoever
-does Part 1:
+with `--light`, every contrast row PASS. 59 slides, all ten gates clean.
+`hide.jpg` sits behind a dedicated slide for *the hide*, the deck's
+highest-risk piece of jargon, and is the only background doing teaching work.
+
+**The agency is The Nature Agency**, in both parts and in both Supabase
+titles (ids 130, 131). Part 2 briefly shipped as the "Wildlife and
+Countryside Agency" while Part 1 said "The Nature Agency" and the library
+cards still said "Federal Agency for Nature Conservation" — three names for
+one two-part set. If you touch either part, keep the name. The Wildlife and
+Countryside **Act** is real and stays; only the agency was renamed.
+
+Two notes for whoever does Part 1:
 
 - **The shared match engine still cannot be lost**, so Section 3 here is three
   `sort_slide` activities binned by sense rather than a `match` slide. Sorting
@@ -61,6 +70,44 @@ passing.
 Hammond or May in the published Stranger Gears build, and the Stranger
 Gears front-page image is not to be questioned. Check whether that
 lesson belongs to the Stranger Gears family before touching a name.
+
+### Top Gear B2 — built
+
+`forbes-english-b2-lesson.html`, 37 slides, all ten gates clean, dark
+theme, palette verbatim from `extract-palette.py TopGearB2/hero.jpg`.
+760 KB → 126 KB: the 714 KB base64 hero is now
+`--hero: url('TopGearB2/hero.jpg')`. Clarkson, Hammond, May and the Stig
+all stay; what went is the invented speech attributed to them, and the
+four factual errors in the audit's C8. `library.html` has the thumbnail.
+Full reasoning is in the builder docstring. Four things a later session
+should not have to rediscover:
+
+- **The match engine still cannot be lost** — third lesson in a row. The
+  five matching pairs became five one-per-slide "identify the structure"
+  MC items, which also cleared the 592px overflow the ten-row board
+  measured. `deck.py` untouched, same call as Nature Agency.
+- **This was the third lesson needing per-option `data-explain`, and it
+  was still injected after `D.mc` rather than promoted to an `explains=`
+  argument.** Promoting it now looks right; the cost is re-running
+  `check-lesson.js` over every shipped deck to prove no regression, which
+  is a job of its own and was not this build's.
+- **One gap per `.gap-row`, always.** `checkGaps` marks
+  `r.querySelector('.gap')` — the *first* gap in each row — while
+  `maxScore` counts every `.gap` on the slide. Two inputs inside one row
+  therefore create a point nobody can score. The two-error correction
+  item here is two rows for exactly that reason, and it is what makes it
+  worth two points.
+- **`applyLang` assigns placeholders as a DOM property**, so `&rsquo;` in
+  an `actPlaceholder` renders as literal `&rsquo;` once the language is
+  applied — the §13 entity trap in its attribute form. Use the real
+  character. Same applies to `resPerfect`/`resStrong`/`resMid`/`resLow`,
+  which reach `scoreMsg` through `textContent`.
+
+Gap tolerance (whitespace, curly apostrophe, `-ise`/`-ize`) is done at
+build time in `build_topgear.py`'s `alts()` by expanding each answer into
+every accepted spelling, not by changing the engine's `gapOk`. A
+lesson that deliberately tests BrE against AmE spelling would be broken
+by a blanket engine change; per-lesson data is not.
 
 ---
 
