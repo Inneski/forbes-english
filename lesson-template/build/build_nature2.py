@@ -67,7 +67,7 @@ Conservation" is the official English name of Germany's Bundesamt für
 Naturschutz, wrapped around bylaws, the Wildlife Act, licences,
 roundabouts, car parks, visitor centres, a bird hide and reed warblers —
 and the UK has no federal agencies. The institution is now the
-**Wildlife and Countryside Agency**; `offense`→`offence`,
+**Nature Agency**; `offense`→`offence`,
 `bylaw`→`byelaw`, `memorize`→`memorise`.
 
 Also fixed: nineteen words appeared only as distractors and were defined
@@ -711,7 +711,7 @@ def build():
     assert_pairs_are_separated(S1, 4, 'Section 1')
 
     logo = D.logo_from(TPL)
-    S = [D.cover(logo, 'The Wildlife and <em>Countryside</em> Agency',
+    S = [D.cover(logo, 'The <em>Nature Agency</em>',
                  'Vocabulary in the field, Part 2 — eight confusable pairs, '
                  'seventeen briefings and sixteen terms',
                  [('Level', 'C1 &middot; Part 2 of 2'),
@@ -721,8 +721,8 @@ def build():
     # ── front matter: the setting, the prerequisite, the jargon ──
     S += [D.teach('b1E', 'Before you begin', 'b1T', 'Six weeks in',
                   [('b1ah', 'Where you are',
-                    'Elena Voss is a field officer at the Wildlife and '
-                    'Countryside Agency. She has sat in on a fraud '
+                    'Elena Voss is a field officer at the Nature '
+                    'Agency. She has sat in on a fraud '
                     'investigation, learned which permits can be revoked, and '
                     'discovered that Tomas would rather count reed warblers '
                     'than make small talk.',
@@ -1129,7 +1129,7 @@ if __name__ == '__main__':
     i18n_nature2.T['de']['chipCount'] = '%d Folien' % n
 
     s = D.assemble(TPL, OUT, body, PALETTE,
-                   'Wildlife and Countryside Agency — Vocabulary, Part 2',
+                   'The Nature Agency — Vocabulary, Part 2',
                    i18n_nature2)
     s = s.replace('<html lang="en">', '<html lang="en" data-theme="light">', 1)
     s = s.replace('</style>\n</head>', CSS + '</style>\n</head>', 1)

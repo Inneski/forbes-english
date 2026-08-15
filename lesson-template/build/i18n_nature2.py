@@ -24,7 +24,7 @@ LIFT = ['btnStart', 'btnCheck', 'btnNext', 'btnRestart', 'scoreLabel',
 T = {}
 
 T['en'] = dict(
-    coverTitle='The Wildlife and <em>Countryside</em> Agency',
+    coverTitle='The <em>Nature Agency</em>',
     coverSub='Vocabulary in the field, Part 2 — eight confusable pairs, '
              'seventeen briefings and sixteen terms',
     chipLevel='C1 &middot; Part 2 of 2',
@@ -223,7 +223,7 @@ T['en'] = dict(
 )
 
 T['de'] = dict(
-    coverTitle='The Wildlife and <em>Countryside</em> Agency',
+    coverTitle='The <em>Nature Agency</em>',
     coverSub='Fachwortschatz im Gelände, Teil 2 — acht verwechselbare Paare, '
              'siebzehn Einträge und sechzehn Begriffe',
     chipLevel='C1 &middot; Teil 2 von 2',
