@@ -3,1344 +3,2111 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Federal Agency for Nature Conservation — Vocabulary Assessment, Part 1</title>
+<!-- ══ REPLACE: lesson title. No "Forbes English —" prefix. ══ -->
+<title>The Nature Agency — Sense &amp; Register (C1) | Forbes English</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --forest: #1F4D3B;
-    --forest-light: #2E6B52;
-    --forest-pale: #E4ECE6;
-    --gold: #C9A227;
-    --gold-light: #E0BE5C;
-    --cream: #F5F1E6;
-    --cream-dark: #EBE3CD;
-    --ink: #1B2A22;
-    --ink-light: #52655B;
-    --correct: #3C8C63;
-    --incorrect: #B3432B;
-    --border: #D8CFB4;
+/* ══════════════════════════════════════════════════════════════════
+   FORBES ENGLISH — 16:9 SLIDE LESSON TEMPLATE
+   Everything you normally need to change lives in the two blocks
+   marked "REPLACE". Do not restructure the engine below them.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ══ REPLACE 1 of 2: hero image + palette ══
+   1. Point --hero at the lesson's cover image. This ONE line drives the
+      cover, the background pattern on every slide, and the PDF export.
+   2. Generate the palette FROM that same image:
+         python3 lesson-template/extract-palette.py <hero-image>
+      and paste its output over the colour block. Never hand-pick colours. */
+:root {
+  --hero: url('NatureAgency/hero.jpg');
+
+  --void          : #0d0e09;
+  --surface       : #1b1c12;
+  --surface2      : #27291a;
+  --border        : #9a6a48;
+  --text          : #f5f3f2;
+  --text-dim      : #bfafa3;
+  --accent        : #e09968;
+  --accent-bright : #efc0a0;
+  --accent-dim    : #be692e;
+  --secondary     : #96b9c9;
+  --contrast      : #1dedde;
+}
+
+/* ── Fixed tokens: identical in every lesson. Do not edit. ── */
+:root {
+  --slide-w: 1280px;
+  --slide-h: 720px;
+  --pad: 64px;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-ui: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'DM Mono', ui-monospace, monospace;
+  --r: 10px;
+  --ok: #3fbf7f;
+  --no: #e8555f;
+  --bg-opacity: 0.40;     /* background pattern strength — see doc §6 */
+
+  /* Theme primitives. Dark is the default; a light lesson sets
+     data-theme="light" on <html> and only these flip. Never hardcode
+     rgba(0,0,0,…) or rgba(255,255,255,…) in a lesson — use these. */
+  --inset:  rgba(255,255,255,0.07);  /* recessed fills: inputs, key discs   */
+  --inset2: rgba(255,255,255,0.14);  /* the same, one step stronger         */
+  --scrim:  rgba(0,0,0,0.45);        /* chrome sitting over the hero        */
+  --hairline: rgba(255,255,255,0.28);
+  --cover-shadow: 0 1px 2px rgba(0,0,0,0.95), 0 2px 8px rgba(0,0,0,0.90),
+                  0 4px 26px rgba(0,0,0,0.80), 0 0 3px rgba(0,0,0,0.85);
+  /* Interior background wash. Two stops, not one: the artwork stays visible
+     across the middle of the slide and is only pulled down at the very top
+     and bottom, where the eyebrow, the deck bar and the progress rail sit.
+     An interior page that reads as plain black is a bug — see doc §6. */
+  --wash-mid:  rgba(0,0,0,0.06);
+  --wash-edge: rgba(0,0,0,0.20);
+}
+
+/* ══ LIGHT THEME ══
+   For bright, airy heroes. The palette comes from
+   `extract-palette.py <hero> --light`; these are the structural flips the
+   palette alone cannot express.
+
+   A light lesson is a MID tone, not a white one. Every wash here is mixed
+   from --void rather than from white: mixing toward white bleaches the hero
+   out of the interior pages and turns the deck into glare on a projector.
+   If you find yourself reaching for rgba(255,255,255,…) in a lesson, the
+   answer is a higher --void percentage instead. */
+html[data-theme="light"] {
+  --inset:  rgba(0,0,0,0.045);
+  --inset2: rgba(0,0,0,0.10);
+  --scrim:  color-mix(in srgb, var(--void) 78%, transparent);
+  --hairline: rgba(0,0,0,0.14);
+  --cover-shadow: 0 1px 2px rgba(255,255,255,0.95), 0 2px 8px rgba(255,255,255,0.85),
+                  0 4px 26px rgba(255,255,255,0.6), 0 0 3px rgba(255,255,255,0.9);
+  --wash-mid:  color-mix(in srgb, var(--void) 8%, transparent);
+  --wash-edge: color-mix(in srgb, var(--void) 26%, transparent);
+  --bg-opacity: 0.62;
+}
+
+/* On a mid canvas a translucent card has little to contrast against, so
+   edges need more of the hairline than they do on a dark canvas. */
+html[data-theme="light"] .card { border-color: color-mix(in srgb, var(--border) 90%, transparent); }
+html[data-theme="light"] .opt,
+html[data-theme="light"] .match-item { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
+html[data-theme="light"] .opt-key { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
+html[data-theme="light"] .card { background: color-mix(in srgb, var(--surface) 92%, transparent); }
+html[data-theme="light"] .opt { background: color-mix(in srgb, var(--surface) 95%, transparent); }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;            /* NO SCROLLING. This is the whole point. */
+  background: var(--void);
+  color: var(--text);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── STAGE: a fixed 1280×720 canvas scaled to fit any viewport ── */
+/* A plain fixed box, NOT a centring grid. A grid item wider than its track is
+   aligned to start by the browser rather than overflowing both sides, so on any
+   viewport narrower than 1280px the stage's layout box began at x=0 and
+   `transform-origin: center center` scaled it about x=640 — shifting it right,
+   and clean off the screen on a phone, leaving a black page. The stage is now
+   pinned top-left and fitStage() does the centring, so the transform can never
+   disagree with the layout. */
+.stage-wrap { position: fixed; inset: 0; overflow: hidden; }
+.stage {
+  position: absolute; left: 0; top: 0;
+  width: var(--slide-w);
+  height: var(--slide-h);
+  transform-origin: top left;
+  overflow: hidden;
+  background: var(--void);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.55);
+}
+
+/* ── BACKGROUND PATTERN: the cover image, behind every slide ──
+   Driven by --hero so the screen view and the PDF/PPT export read from
+   ONE definition. Two pseudo-layers because opacity on a parent would
+   also fade the wash sitting on top of it. */
+.bg-layer { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.bg-layer::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--hero) center / cover no-repeat;
+  opacity: var(--bg-opacity);
+  filter: saturate(0.92);
+}
+.bg-layer::after {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, var(--wash-edge) 0%, var(--wash-mid) 20%,
+                            var(--wash-mid) 80%, var(--wash-edge) 100%);
+}
+/* The cover slide shows the hero at FULL strength — no wash, no dimming. */
+.stage.on-cover .bg-layer::before { opacity: 1; filter: none; }
+/* Centre scrim: guarantees cover-text contrast over ANY hero — light, dark,
+   or busy — while leaving the artwork vivid at the edges. Do not remove it;
+   it is what makes an arbitrary dropped-in image safe. */
+.stage.on-cover .bg-layer::after {
+  background:
+    radial-gradient(ellipse 58% 54% at 50% 46%,
+      rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.22) 54%, transparent 82%),
+    linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.03) 30%,
+                            rgba(0,0,0,0.05) 70%, rgba(0,0,0,0.38) 100%);
+}
+/* A light cover keeps its picture. Dark ink already carries against a bright
+   image, so the scrim here is barely there — just enough to stop the title
+   landing on a hard edge. Never brighten a light cover to rescue text; if the
+   text will not read, the hero is wrong for a light lesson. */
+html[data-theme="light"] .stage.on-cover .bg-layer::after {
+  background:
+    radial-gradient(ellipse 58% 54% at 50% 46%,
+      rgba(255,255,255,0.48) 0%, rgba(255,255,255,0.28) 54%, transparent 82%),
+    linear-gradient(180deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.03) 30%,
+                            rgba(255,255,255,0.05) 70%, rgba(255,255,255,0.22) 100%);
+}
+
+/* ── SLIDES ── */
+.slide {
+  position: absolute; inset: 0; z-index: 1;
+  display: none;
+  flex-direction: column;
+  padding: var(--pad);
+}
+.slide.is-active { display: flex; animation: slide-in .32s ease both; }
+@keyframes slide-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+/* ── LOGO ── */
+.fe-logo { width: 152px; height: auto; display: block; }
+.fe-logo-mark { color: var(--logo-mark, var(--accent)); }
+.fe-logo-word { fill: var(--text); opacity: 0; transition: opacity .25s ease; }
+.fonts-ready .fe-logo-word { opacity: 1; }   /* never flash a fallback face */
+.slide[data-type="cover"] .fe-logo { width: 232px; }
+
+/* ── COVER ── */
+.cover-inner {
+  height: 100%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; gap: 4px;
+}
+.cover-title {
+  font-family: var(--font-display);
+  font-size: 62px; font-weight: 900; line-height: 1.06;
+  color: var(--text);
+  text-shadow: var(--cover-shadow);
+  margin-top: 26px;
+}
+.cover-title em { font-style: normal; color: var(--accent-bright); }
+.cover-sub {
+  font-size: 19px; color: var(--text);
+  letter-spacing: .04em; margin-top: 14px;
+  text-shadow: var(--cover-shadow);
+}
+.cover-meta {
+  display: flex; gap: 10px; margin-top: 26px; flex-wrap: wrap; justify-content: center;
+}
+.chip {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase;
+  padding: 6px 14px; border-radius: 999px;
+  border: 1px solid var(--hairline);
+  background: var(--scrim);
+  color: var(--text);
+}
+
+/* ── SLIDE FURNITURE ── */
+.slide-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 20px; margin-bottom: 26px;
+}
+.eyebrow {
+  font-family: var(--font-mono); font-size: 12px;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent-bright);
+}
+.slide-title {
+  font-family: var(--font-display);
+  font-size: 38px; font-weight: 700; line-height: 1.15; color: var(--text);
+  margin-top: 6px;
+}
+.slide-body { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; }
+
+/* Content sits in a translucent card so it stays legible over the pattern. */
+.card {
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+  border-radius: var(--r);
+  padding: 30px 34px;
+  backdrop-filter: blur(3px);
+}
+.card + .card { margin-top: 16px; }
+.cols .card + .card,
+.cols .card { margin-top: 0; }   /* side-by-side cards must share a top edge */
+.prose { font-size: 20px; line-height: 1.62; color: var(--text); }
+.prose + .prose { margin-top: 14px; }
+.prose strong { color: var(--accent-bright); font-weight: 600; }
+.dim { color: var(--text-dim); }
+
+/* Two-column teaching layout */
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+
+/* ── QUESTIONS ── */
+.q-stem { font-size: 25px; line-height: 1.5; color: var(--text); margin-bottom: 22px; }
+.q-stem em { font-style: normal; color: var(--accent-bright); font-weight: 600; }
+
+.opts { display: grid; gap: 11px; }
+.opts.two-up { grid-template-columns: 1fr 1fr; }
+.opt {
+  display: flex; align-items: center; gap: 14px;
+  width: 100%; text-align: left;
+  font-family: var(--font-ui); font-size: 19px; color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: var(--r);
+  padding: 15px 20px; cursor: pointer;
+  transition: border-color .15s, background .15s, transform .12s;
+}
+.opt:hover:not(:disabled) { border-color: var(--accent); transform: translateX(3px); }
+.opt-key {
+  flex: 0 0 30px; height: 30px; display: grid; place-items: center;
+  border-radius: 50%; font-family: var(--font-mono); font-size: 13px;
+  background: var(--inset);
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+}
+.opt.correct { border-color: var(--ok); background: color-mix(in srgb, var(--ok) 20%, var(--surface2)); }
+.opt.wrong   { border-color: var(--no); background: color-mix(in srgb, var(--no) 18%, var(--surface2)); }
+.opt:disabled { cursor: default; }
+
+/* Gap-fill */
+.gap {
+  font-family: var(--font-ui); font-size: 20px; color: var(--text);
+  background: var(--inset);
+  border: none; border-bottom: 2px solid var(--accent);
+  padding: 3px 10px; min-width: 190px; border-radius: 4px 4px 0 0;
+}
+.gap:focus { outline: none; background: var(--inset2); }
+.gap.correct { border-bottom-color: var(--ok); color: var(--ok); }
+.gap.wrong   { border-bottom-color: var(--no); color: var(--no); }
+
+.feedback {
+  margin-top: 18px; font-size: 17px; line-height: 1.55;
+  min-height: 26px; opacity: 0; transition: opacity .2s;
+}
+.feedback.show { opacity: 1; }
+.feedback.ok { color: var(--ok); }
+.feedback.no { color: var(--no); }
+
+/* ── BUTTONS ── */
+.btn {
+  font-family: var(--font-ui); font-size: 15px; font-weight: 600;
+  letter-spacing: .03em;
+  padding: 12px 26px; border-radius: var(--r);
+  border: 1px solid var(--accent); background: transparent; color: var(--accent-bright);
+  cursor: pointer; transition: background .15s, color .15s;
+}
+.btn:hover { background: var(--accent); color: var(--void); }
+.btn-solid { background: var(--accent); color: var(--void); border-color: var(--accent); }
+.btn-solid:hover { background: var(--accent-bright); border-color: var(--accent-bright); }
+.btn:disabled { opacity: .35; cursor: not-allowed; }
+.btn-lg { font-size: 17px; padding: 15px 38px; }
+
+/* ── CHROME: progress + nav, pinned inside the stage ── */
+.deck-bar {
+  position: absolute; z-index: 3; left: 0; right: 0; bottom: 0;
+  height: 58px; padding: 0 26px;
+  display: flex; align-items: center; gap: 18px;
+  background: linear-gradient(180deg, transparent, var(--scrim));
+}
+.stage.on-cover .deck-bar { background: none; }
+.stage.on-cover .deck-score { visibility: hidden; }
+.progress { flex: 1; height: 3px; background: var(--inset2); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0; background: var(--accent); transition: width .3s ease; }
+.deck-count, .deck-score {
+  font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); white-space: nowrap;
+}
+.nav-btn {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  background: var(--scrim); color: var(--text);
+  cursor: pointer; font-size: 15px; line-height: 1;
+  display: grid; place-items: center; transition: border-color .15s, background .15s;
+}
+.nav-btn:hover:not(:disabled) { border-color: var(--accent); background: var(--accent); color: var(--void); }
+.nav-btn:disabled { opacity: .28; cursor: not-allowed; }
+
+/* ── LANGUAGE SWITCH ── */
+.lang-select {
+  font-family: var(--font-mono); font-size: 12px;
+  background: var(--scrim); color: var(--text);
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  border-radius: 6px; padding: 6px 10px; cursor: pointer;
+}
+.lang-select:focus { outline: 1px solid var(--accent); }
+
+/* ── RESULTS ── */
+.score-big {
+  font-family: var(--font-display); font-size: 84px; font-weight: 900;
+  color: var(--accent-bright); line-height: 1;
+}
+
+/* ── RTL ── */
+[dir="rtl"] .opt { text-align: right; }
+[dir="rtl"] .opt:hover:not(:disabled) { transform: translateX(-3px); }
+
+
+/* ── ACTIVATION ──────────────────────────────────────────────────── */
+.act-target {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 16px;
+}
+.act-target-label {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-dim);
+  margin-right: 4px;
+}
+.bank-chip {
+  font-family: var(--font-mono); font-size: 12px;
+  padding: 5px 12px; border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  color: var(--accent-bright);
+}
+.act-cols { align-items: stretch; }
+.act-card { display: flex; flex-direction: column; padding: 20px 24px; }
+.act-kind {
+  display: flex; align-items: center; gap: 9px;
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--accent-bright); margin-bottom: 12px;
+}
+.act-icon { font-size: 16px; }
+.act-brief { font-size: 16.5px; line-height: 1.5; color: var(--text); margin-bottom: 12px; }
+.act-list { list-style: none; display: grid; gap: 9px; }
+.act-list li {
+  font-size: 15.5px; line-height: 1.45; color: var(--text-dim);
+  padding-left: 18px; position: relative;
+}
+.act-list li::before {
+  content: '—'; position: absolute; left: 0; color: var(--accent);
+}
+.act-input {
+  flex: 1; min-height: 118px; resize: none;
+  font-family: var(--font-ui); font-size: 15px; line-height: 1.55;
+  color: var(--text);
+  background: var(--inset);
+  border: 1px solid color-mix(in srgb, var(--border) 45%, transparent);
+  border-radius: 8px; padding: 12px 14px;
+}
+.act-input:focus { outline: none; border-color: var(--accent); background: var(--inset2); }
+.act-input::placeholder { color: var(--text-dim); opacity: .55; }
+.act-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 10px;
+}
+.act-count { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-dim); }
+.act-copy { font-size: 12.5px; padding: 6px 14px; }
+/* The textarea's value does not print; this mirror does. */
+.act-print { display: none; font-size: 14px; line-height: 1.55; white-space: pre-wrap; }
+
+
+/* ── MATCHING ────────────────────────────────────────────────────── */
+.match-grid { display: grid; grid-template-columns: 1fr 1.35fr; gap: 14px; }
+.match-col { display: grid; gap: 8px; align-content: start; }
+.match-item {
+  font-family: var(--font-ui); font-size: 15.5px; line-height: 1.4;
+  text-align: left; color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: var(--r); padding: 11px 16px; cursor: pointer;
+  transition: border-color .15s, background .15s, opacity .2s;
+}
+.match-item.term { font-weight: 600; }
+.match-item:hover:not(.done) { border-color: var(--accent); }
+.match-item.picked { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 22%, var(--surface2)); }
+.match-item.done { opacity: .45; cursor: default; border-color: var(--ok); }
+.match-item.miss { border-color: var(--no); animation: shake .3s; }
+@keyframes shake { 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
+
+/* ── ORDERING (build the sentence) ───────────────────────────────────
+   For word-order work — where the point is the SEQUENCE of prepositional
+   phrases, not choosing one word. Click to place, click again to take back;
+   no dragging, because a scaled stage makes drag targets lie. */
+.order-hint {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 10px;
+}
+.order-target {
+  display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start;
+  min-height: 92px; padding: 12px;
+  border: 1.5px dashed color-mix(in srgb, var(--border) 60%, transparent);
+  border-radius: var(--r); background: var(--inset);
+}
+.order-target.correct { border-style: solid; border-color: var(--ok); }
+.order-target.wrong   { border-style: solid; border-color: var(--no); }
+.order-pool { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.chunk {
+  font-family: var(--font-ui); font-size: 15.5px; line-height: 1.35;
+  color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: 999px; padding: 9px 16px; cursor: pointer;
+  transition: border-color .15s, background .15s, opacity .2s;
+}
+.chunk:hover:not(:disabled) { border-color: var(--accent); }
+.chunk.placed { background: color-mix(in srgb, var(--accent) 18%, var(--surface2)); border-color: var(--accent); }
+.chunk:disabled { cursor: default; opacity: .5; }
+
+/* ── SORTING (drop each item in the right box) ────────────────────────
+   Two or more labelled bins and a pool of items; the learner puts each
+   item where it belongs. The right shape for anything that is a closed
+   two-way contrast — signal words for one tense against another, count
+   against non-count, formal against neutral — because it asks for the
+   whole set at once instead of one item at a time.
+
+   Both interactions work. Native HTML5 drag-and-drop is used rather than
+   pointer maths: the browser hit-tests a drop target in screen space, so
+   the stage's CSS scale is handled for us — which is what made the
+   hand-rolled kind unreliable here (see the note on ordering above).
+   Dragging does not exist on touch, so click-an-item-then-click-a-bin
+   does the same job and is the fallback that always works. */
+.sort { display: flex; flex-direction: column; gap: 14px; }
+.sort-pool {
+  display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+  min-height: 44px;
+}
+.sort-bins { display: grid; gap: 14px; }
+.sort-bin {
+  border: 1.5px dashed color-mix(in srgb, var(--border) 60%, transparent);
+  border-radius: var(--r); background: var(--inset);
+  padding: 10px 12px; min-height: 132px;
+  display: flex; flex-direction: column; gap: 8px;
+  transition: border-color .15s, background .15s;
+}
+.sort-bin.over { border-style: solid; border-color: var(--accent); }
+.sort-bin.full { border-style: solid; border-color: var(--ok); }
+.sort-bin-label {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--accent-bright); text-align: center;
+}
+.sort-bin-items { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.sort-item {
+  font-family: var(--font-ui); font-size: 15.5px; line-height: 1.35;
+  color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: 999px; padding: 9px 16px; cursor: grab;
+  transition: border-color .15s, background .15s, opacity .2s;
+}
+.sort-item:hover:not(.placed) { border-color: var(--accent); }
+.sort-item.picked { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 22%, var(--surface2)); }
+.sort-item.dragging { opacity: .45; cursor: grabbing; }
+.sort-item.placed { cursor: default; border-color: var(--ok); opacity: .7; }
+.sort-item.miss { border-color: var(--no); animation: shake .3s; }
+
+/* ── DISCUSSION (unscored speaking prompts) ──────────────────────── */
+.discuss-meta {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 14px;
+}
+.prompts { display: grid; gap: 12px; list-style: none; margin: 0; padding: 0; }
+.prompt {
+  font-size: 19px; line-height: 1.5; color: var(--text);
+  padding-left: 26px; position: relative;
+}
+.prompt::before {
+  content: '?'; position: absolute; left: 0; top: 1px;
+  font-family: var(--font-mono); font-size: 15px; color: var(--accent);
+}
+.prompt.aside { font-size: 16.5px; color: var(--text-dim); font-style: italic; }
+.prompt.aside::before { content: '·'; }
+
+/* ══════════════════════════════════════════════════════════════════
+   PRINT / PDF EXPORT
+   Ctrl-P → Save as PDF → Landscape, margins None, Background graphics ON.
+   Each slide becomes one 16:9 page, ready to drop into PowerPoint.
+   ══════════════════════════════════════════════════════════════════ */
+@page { size: 1280px 720px; margin: 0; }
+@media print {
+  html, body { overflow: visible; height: auto; background: #fff; }
+  .stage-wrap { position: static; display: block; }
+  .stage {
+    position: static;
+    transform: none !important;
+    width: 1280px; height: auto;      /* let the slides stack into pages */
+    overflow: visible; box-shadow: none;
   }
+  .bg-layer, .deck-bar, .lang-select, .nav-btn { display: none !important; }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: var(--cream);
-    color: var(--ink);
-    font-family: 'Inter', sans-serif;
-    line-height: 1.55;
-    min-height: 100vh;
-    padding-bottom: 80px;
+  /* Each slide becomes its own page and carries its own background, so the
+     export does not depend on the single on-screen background layer. */
+  .slide {
+    display: flex !important;
+    position: relative; inset: auto;
+    width: 1280px; height: 720px;
+    isolation: isolate;
+    page-break-after: always; break-after: page;
+    animation: none !important;
   }
-
-  .header {
-    background: var(--forest);
-    color: var(--cream);
-    padding: 28px 24px 24px;
-    border-bottom: 4px solid var(--gold);
+  .slide:last-child { page-break-after: auto; break-after: auto; }
+  .slide::before {
+    content: ''; position: absolute; inset: 0; z-index: -2;
+    background: var(--hero) center / cover no-repeat;
+    opacity: var(--bg-opacity);
   }
-
-  .header-inner {
-    max-width: 760px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    gap: 18px;
+  .slide::after {
+    content: ''; position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(180deg, var(--wash-edge) 0%, var(--wash-mid) 20%,
+                                        var(--wash-mid) 80%, var(--wash-edge) 100%);
   }
-
-  .logo-svg { flex-shrink: 0; }
-
-  .header-text-wrap { flex: 1; }
-
-  .agency-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
-    color: var(--gold-light);
-    margin-bottom: 4px;
+  .slide[data-type="cover"]::before { opacity: 1; }
+  .slide[data-type="cover"]::after {
+    background:
+      radial-gradient(ellipse 58% 54% at 50% 46%,
+        rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.22) 54%, transparent 82%),
+      linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.03) 30%,
+                            rgba(0,0,0,0.05) 70%, rgba(0,0,0,0.38) 100%);
   }
+  .feedback { opacity: 1 !important; }
+  .act-input, .act-foot { display: none !important; }
+  .act-print { display: block !important; }
+}
 
-  .agency-title {
-    font-family: 'Fraunces', serif;
-    font-weight: 700;
-    font-size: 24px;
-    line-height: 1.2;
-    letter-spacing: -0.3px;
-  }
-
-  .header-meta {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 10px;
-  }
-
-  .badge {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 1px;
-    padding: 4px 10px;
-    border-radius: 3px;
-  }
-
-  .badge-level {
-    background: var(--gold);
-    color: var(--forest);
-  }
-
-  .badge-part {
-    background: rgba(245,241,230,0.12);
-    color: var(--cream);
-    border: 1px solid rgba(245,241,230,0.3);
-  }
-
-  .progress-wrap {
-    max-width: 760px;
-    margin: 20px auto 0;
-    padding: 0 24px;
-  }
-
-  .progress-track {
-    width: 100%;
-    height: 8px;
-    background: var(--cream-dark);
-    border-radius: 4px;
-    overflow: hidden;
-    border: 1px solid var(--border);
-  }
-
-  .progress-fill {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, var(--forest-light), var(--gold));
-    transition: width 0.4s ease;
-  }
-
-  .progress-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
-    color: var(--ink-light);
-    margin-top: 6px;
-  }
-
-  .container {
-    max-width: 760px;
-    margin: 28px auto 0;
-    padding: 0 24px;
-  }
-
-  .section { display: none; }
-  .section.active { display: block; }
-
-  .card {
-    background: #FFFDF7;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 28px;
-    box-shadow: 0 2px 10px rgba(31,77,59,0.06);
-  }
-
-  .intro-scenario {
-    font-size: 15.5px;
-    color: var(--ink);
-  }
-
-  .intro-scenario p { margin-bottom: 14px; }
-  .intro-scenario p:last-child { margin-bottom: 0; }
-
-  .sec-heading {
-    font-family: 'Fraunces', serif;
-    font-weight: 700;
-    font-size: 21px;
-    color: var(--forest);
-    margin-bottom: 4px;
-  }
-
-  .sec-sub {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
-    color: var(--ink-light);
-    margin-bottom: 20px;
-    letter-spacing: 0.5px;
-  }
-
-  .q-counter {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
-    color: var(--gold);
-    font-weight: 500;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 14px;
-  }
-
-  .prompt-sentence {
-    font-size: 17px;
-    color: var(--ink);
-    margin-bottom: 14px;
-    line-height: 1.6;
-  }
-
-  .prompt-question {
-    font-weight: 600;
-    font-size: 15px;
-    color: var(--forest);
-    margin-bottom: 18px;
-  }
-
-  .hint {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 13px;
-    color: var(--ink-light);
-    background: var(--forest-pale);
-    border-left: 3px solid var(--forest-light);
-    padding: 10px 14px;
-    border-radius: 4px;
-    margin-bottom: 18px;
-  }
-
-  .options-wrap {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .option-btn {
-    text-align: left;
-    background: #fff;
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
-    padding: 13px 16px;
-    font-family: 'Inter', sans-serif;
-    font-size: 14.5px;
-    color: var(--ink);
-    cursor: pointer;
-    transition: border-color 0.15s ease, background 0.15s ease;
-  }
-
-  .option-btn:hover:not(:disabled) {
-    border-color: var(--forest-light);
-    background: var(--forest-pale);
-  }
-
-  .option-btn:disabled { cursor: default; }
-
-  .opt-correct {
-    border-color: var(--correct) !important;
-    background: rgba(60,140,99,0.12) !important;
-    font-weight: 600;
-  }
-
-  .opt-incorrect {
-    border-color: var(--incorrect) !important;
-    background: rgba(179,67,43,0.1) !important;
-  }
-
-  .input-row {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 6px;
-  }
-
-  .fib-input {
-    flex: 1;
-    padding: 12px 14px;
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
-    font-family: 'Inter', sans-serif;
-    font-size: 15px;
-    color: var(--ink);
-    background: #fff;
-  }
-
-  .fib-input:focus { outline: none; border-color: var(--forest-light); }
-
-  .input-correct { border-color: var(--correct) !important; background: rgba(60,140,99,0.08); }
-  .input-incorrect { border-color: var(--incorrect) !important; background: rgba(179,67,43,0.06); }
-
-  .check-btn {
-    background: var(--forest);
-    color: var(--cream);
-    border: none;
-    border-radius: 8px;
-    padding: 0 22px;
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    font-size: 14.5px;
-    cursor: pointer;
-  }
-
-  .check-btn:disabled { opacity: 0.5; cursor: default; }
-
-  .feedback {
-    display: none;
-    margin-top: 18px;
-    padding: 14px 16px;
-    border-radius: 8px;
-    font-size: 14px;
-    line-height: 1.55;
-  }
-
-  .feedback.visible { display: block; }
-
-  .feedback-correct {
-    background: rgba(60,140,99,0.1);
-    border-left: 3px solid var(--correct);
-    color: var(--ink);
-  }
-
-  .feedback-incorrect {
-    background: rgba(179,67,43,0.08);
-    border-left: 3px solid var(--incorrect);
-    color: var(--ink);
-  }
-
-  .next-row {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 22px;
-  }
-
-  .next-btn {
-    background: var(--gold);
-    color: var(--forest);
-    border: none;
-    border-radius: 8px;
-    padding: 12px 26px;
-    font-family: 'Inter', sans-serif;
-    font-weight: 700;
-    font-size: 14.5px;
-    cursor: pointer;
-  }
-
-  .next-btn:disabled { opacity: 0.4; cursor: default; }
-
-  .start-btn {
-    background: var(--forest);
-    color: var(--cream);
-    border: none;
-    border-radius: 8px;
-    padding: 13px 28px;
-    font-family: 'Inter', sans-serif;
-    font-weight: 700;
-    font-size: 15px;
-    cursor: pointer;
-    margin-top: 20px;
-  }
-
-  .match-grid-wrap {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-
-  .match-col-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--ink-light);
-    margin-bottom: 10px;
-  }
-
-  .match-col {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .match-tile {
-    text-align: left;
-    background: #fff;
-    border: 1.5px solid var(--border);
-    border-radius: 7px;
-    padding: 10px 12px;
-    font-family: 'Inter', sans-serif;
-    font-size: 13.5px;
-    color: var(--ink);
-    cursor: pointer;
-    transition: all 0.15s ease;
-  }
-
-  .match-word { font-weight: 600; color: var(--forest); }
-
-  .match-tile:hover:not(.match-locked) { border-color: var(--forest-light); }
-
-  .match-selected {
-    border-color: var(--gold) !important;
-    background: rgba(201,162,39,0.12) !important;
-  }
-
-  .match-locked {
-    border-color: var(--correct) !important;
-    background: rgba(60,140,99,0.1) !important;
-    opacity: 0.6;
-    cursor: default;
-  }
-
-  .match-wrong {
-    border-color: var(--incorrect) !important;
-    background: rgba(179,67,43,0.1) !important;
-  }
-
-  #s3-counter {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
-    color: var(--ink-light);
-    margin-top: 18px;
-    text-align: center;
-  }
-
-  #s3-continue-btn {
-    display: none;
-    margin: 18px auto 0;
-  }
-
-  .results-card {
-    text-align: center;
-  }
-
-  .results-title {
-    font-family: 'Fraunces', serif;
-    font-weight: 700;
-    font-size: 24px;
-    color: var(--forest);
-    margin-bottom: 6px;
-  }
-
-  .results-total {
-    font-family: 'Fraunces', serif;
-    font-size: 46px;
-    font-weight: 900;
-    color: var(--gold);
-    margin: 18px 0 2px;
-  }
-
-  .results-pct {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 14px;
-    color: var(--ink-light);
-    margin-bottom: 24px;
-  }
-
-  .results-breakdown {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 22px;
-  }
-
-  .rb-item {
-    flex: 1;
-    background: var(--forest-pale);
-    border-radius: 8px;
-    padding: 14px 8px;
-  }
-
-  .rb-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10.5px;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    color: var(--ink-light);
-    margin-bottom: 6px;
-  }
-
-  .rb-score {
-    font-family: 'Fraunces', serif;
-    font-weight: 700;
-    font-size: 19px;
-    color: var(--forest);
-  }
-
-  .results-message {
-    font-size: 15px;
-    color: var(--ink);
-    margin-bottom: 6px;
-  }
-
-  .part-note {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12.5px;
-    color: var(--ink-light);
-    margin-top: 20px;
-    padding-top: 18px;
-    border-top: 1px solid var(--border);
-  }
-
-  footer {
-    max-width: 760px;
-    margin: 40px auto 0;
-    padding: 0 24px;
-    text-align: center;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    color: var(--ink-light);
-    letter-spacing: 0.5px;
-  }
+/* Text that sits on the canvas rather than inside a card needs its own halo
+   now that the artwork behind it is bright. A shadow costs nothing and lets
+   the picture stay up, which darkening the wash back down would not. */
+.slide-title, .eyebrow, .q-stem, .q-ctx, .order-hint, .cover-title, .cover-sub,
+.score-big, .slide-body > .prose, .act-target-label {
+  text-shadow: 0 1px 2px rgba(0,0,0,0.55), 0 0 12px rgba(0,0,0,0.38);
+}
+html[data-theme="light"] .slide-title, html[data-theme="light"] .eyebrow,
+html[data-theme="light"] .q-stem, html[data-theme="light"] .q-ctx,
+html[data-theme="light"] .order-hint, html[data-theme="light"] .cover-title,
+html[data-theme="light"] .cover-sub, html[data-theme="light"] .score-big,
+html[data-theme="light"] .slide-body > .prose,
+html[data-theme="light"] .act-target-label {
+  text-shadow: 0 1px 2px rgba(255,255,255,0.75), 0 0 12px rgba(255,255,255,0.55);
+}
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="header-inner">
-    <svg class="logo-svg" width="46" height="46" viewBox="0 0 46 46" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="23" cy="23" r="22" fill="none" stroke="#C9A227" stroke-width="1.5"/>
-      <path d="M23 8 C14 14, 14 24, 23 38 C32 24, 32 14, 23 8 Z" fill="#2E6B52" opacity="0.9"/>
-      <path d="M23 8 L23 38" stroke="#C9A227" stroke-width="1.2"/>
-      <path d="M23 16 C19 17, 17 20, 17 23" stroke="#E0BE5C" stroke-width="1" fill="none"/>
-      <path d="M23 24 C27 25, 29 28, 29 31" stroke="#E0BE5C" stroke-width="1" fill="none"/>
-    </svg>
-    <div class="header-text-wrap">
-      <div class="agency-label">Forbes English &middot; Professional Vocabulary Series</div>
-      <div class="agency-title">Federal Agency for Nature Conservation</div>
-      <div class="header-meta">
-        <span class="badge badge-level">C1</span>
-        <span class="badge badge-part">Vocabulary Assessment &middot; Part 1 of 2</span>
+<div class="stage-wrap">
+  <div class="stage" id="stage">
+
+    <!-- Background pattern: driven entirely by --hero in the CSS above. -->
+    <div class="bg-layer" role="presentation"></div>
+
+    <!-- ══════════════════════════════════════════════════════════
+         REPLACE 2 of 2: SLIDES
+         Author one <section class="slide"> per screen.
+         data-type: cover | teach | mc | gap | match | order | discuss | results | activate
+         data-bg="folder/other.jpg" swaps the background pattern on that slide.
+         Everything a learner reads must fit WITHOUT scrolling.
+         If it does not fit, split it across two slides — never shrink type.
+         ══════════════════════════════════════════════════════════ -->
+
+
+    <section class="slide is-active" data-type="cover">
+      <div class="cover-inner">
+        <svg class="fe-logo" viewBox="0 0 200 78" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forbes English">
+          <g class="fe-logo-mark" transform="translate(-42.74,-30.22) scale(0.099477)"><g transform="translate(0,1504) scale(0.1,-0.1)" fill="currentColor" stroke="none"><path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47 l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21 -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9 -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58 105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141 144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392 -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31 c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55 -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0 -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226 144 331 156 51 6 127 -4 183 -25z"/><path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95 -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72 -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0 -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18 108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553 -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70 -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3 469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38 -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/><path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73 -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939 -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1 205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247 -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22 -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24 -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449 121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/><path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611 -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538 -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77 144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430 -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67 347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580 -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132 -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87 66 245 85 341 40z"/><path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140 -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134 -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287 -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101 -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107 173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392 207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599 281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241 111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2 347 -112 40 c-318 112 -594 149 -892 121z"/><path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149 l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801 -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6 -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294 -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12 -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29 -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55 -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12 -33 22 -42 21 -9 0 -199 -27 -422 -60z"/></g></g>
+          <text class="fe-logo-word" x="100" y="72.6" text-anchor="middle" font-family="'DM Sans', Arial, sans-serif" font-size="20.8" font-weight="600" letter-spacing="8">ENGLISH</text>
+        </svg>
+        <h1 class="cover-title" data-i18n="coverTitle">The <em>Nature Agency</em></h1>
+        <p class="cover-sub" data-i18n="coverSub">Elena Voss&rsquo;s first weeks as a field officer &mdash; and the second sense of every word she already knew</p>
+        <div class="cover-meta">
+          <span class="chip" data-i18n="chipLevel">C1 &middot; Advanced</span>
+          <span class="chip" data-i18n="chipFocus">Sense discrimination &amp; register</span>
+          <span class="chip" data-i18n="chipCount">36 slides</span>
+        </div>
+        <div style="margin-top:34px">
+          <button class="btn btn-solid btn-lg" data-action="next" data-i18n="btnStart">Begin →</button>
+        </div>
       </div>
+    </section>
+
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="t1e">Before the first question</div>
+        <h2 class="slide-title" data-i18n="t1t">This section is not testing whether you know these words</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="t1ah">You already know them</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Every word in the next seventeen items is one a C1 speaker has met before.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t1an">Not one of them is rare. That is deliberate, and it is the point of the exercise.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t1bh">It tests which <em>sense</em></strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Each item asks you to pick the right sense of a familiar word.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t1bn">Usually the second sense &mdash; the formal, technical or idiomatic one, not the one you learned first.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t1ch">Five words appear twice</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px"><em>report</em>, <em>critic</em>, <em>decay</em>, <em>reconcile</em>, <em>dwell</em>.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t1cn">Each is tested once in each sense, on consecutive slides. When you meet a word for the second time, ask what changed.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="NatureAgency/station.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="t2e">The transferable part</div>
+        <h2 class="slide-title" data-i18n="t2t">Three tells for picking the right sense</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="t2ah">1 &middot; The collocation</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">What sits next to the word.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2an"><em>A report circulates</em> is a rumour. <em>To report a sighting</em> is an account. Same word, different company.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t2bh">2 &middot; The grammar</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Noun or verb; transitive or not; which preposition follows.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2bn"><em>Reconcile X with Y</em> makes two things fit. <em>Reconcile with Y</em> repairs a relationship. Count the objects.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t2ch">3 &middot; The register</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">How formal the sentence around it is.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2cn">A formal sentence pulls a formal sense. <em>In receipt of your letter</em> is not the slip from a till.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="t3e">Contrast one</div>
+        <h2 class="slide-title" data-i18n="t3t"><em>report</em> &mdash; three senses, and one of them is a sound</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="t3ah">a report <span class="dim">(noun)</span></strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">An unverified account going round. <em>A report is circulating that&hellip;</em></p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t3an">Also the formal written kind &mdash; <em>the annual report</em>. The article and the verb around it tell you which.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t3bh">to report <span class="dim">(verb)</span></strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">To give an account of what you saw. <em>Report any sighting within 24 hours.</em></p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t3bn">Takes a direct object. Also <em>report to</em> someone &mdash; the person you answer to.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t3ch">the report <span class="dim">(of a rifle)</span></strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">The sharp crack of a firearm. <em>Two reports from the far ridge.</em></p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t3cn">Rare in general English and routine in this one. On a reserve dealing with poaching and culls, it is the sense you will need in writing.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="NatureAgency/lake.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="t4e">Contrast two and three</div>
+        <h2 class="slide-title" data-i18n="t4t"><em>critic</em> and <em>decay</em> &mdash; opinion, and word class</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="t4ah">critic &mdash; the objector</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Someone who says a thing is bad. <em>A vocal critic on the council.</em></p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t4an">Unfavourable by definition. Comes with <em>vocal</em>, <em>fierce</em>, <em>outspoken</em>.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t4bh">critic &mdash; the reviewer</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Someone whose job is judging work. <em>A critic for a magazine.</em></p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t4bn">Carries no judgement at all. A critic in this sense can love everything they review.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t4ch">decay &mdash; verb, then noun</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px"><em>Branches decay</em> (the process). <em>Visible decay</em> (the condition).</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t4cn">The article is the tell. Adjectives such as <em>visible</em> or <em>advanced</em> can only modify the noun.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="t5e">Contrast four</div>
+        <h2 class="slide-title" data-i18n="t5t"><em>reconcile</em> &mdash; the preposition tells you the sense</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="t5ah">reconcile X <em>with</em> Y</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Make two accounts fit. <em>Reconcile the survey data with the landowner&rsquo;s figures.</em></p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t5an">Two objects. Bookkeeping, evidence, competing versions of a number. Nothing to do with feelings.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t5bh">reconcile <em>with</em> Y</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Repair a relationship. <em>Bergmann reconciled with the farmers&rsquo; union.</em></p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t5bn">No direct object. People, or groups of them.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t5ch">Why it generalises</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Count the objects before you choose the sense.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t5cn">The same test settles <em>dwell</em> on the next slide, and dozens of verbs beyond this lesson.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="NatureAgency/lake.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="t6e">Contrast five</div>
+        <h2 class="slide-title" data-i18n="t6t"><em>dwell</em> &mdash; add a preposition, change the subject</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="t6ah">dwell <span class="dim">(somewhere)</span></strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">To live in a place. <em>Otters once dwelled along this river.</em></p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t6an">Formal and a little archaic. It survives mostly in <em>dwelling</em>, which is the word a planning document uses for a house.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t6bh">dwell <em>on</em> <span class="dim">(something)</span></strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">To think or talk about it at length. <em>Don&rsquo;t dwell on the failed application.</em></p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t6bn">Almost always something unhappy. To dwell on a success is to boast; the word expects a grievance.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t6ch">Same tell as <em>reconcile</em></strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">One preposition moves the word from place to attention.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t6cn">Two pairs, one rule. This is the tell worth carrying out of the lesson.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="NatureAgency/prairie.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="t7e">The pair that matters most here</div>
+        <h2 class="slide-title" data-i18n="t7t"><em>prevalent</em> or <em>rampant</em> &mdash; both mean widespread</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="t7ah">prevalent</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Common in a place or a time. <em>Snaring is prevalent in this region.</em></p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t7an">Neutral. It reports a frequency and passes no judgement. Any disapproval in the sentence comes from other words.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t7bh">rampant</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Spreading unchecked, and unwelcome. <em>Knotweed had grown rampant.</em></p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t7bn">Carries two things at once: widespread, <em>and</em> bad, <em>and</em> nobody is stopping it. Never a compliment.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t7ch">For a conservation agency</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">A native species is <strong>prevalent</strong>. An invasive species is <strong>rampant</strong>.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t7cn">Choosing the wrong one in a site report either understates a problem or editorialises about a healthy population.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="NatureAgency/station.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="t8e">Register</div>
+        <h2 class="slide-title" data-i18n="t8t">The formal senses these same words carry</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="t8ah">in receipt of</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px"><em>We are in receipt of your objection.</em></p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t8an">Formal acknowledgement that something arrived. Not the slip of paper &mdash; the same word doing near-legal work.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t8bh">to launder</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px"><em>Funds laundered through a shell company.</em></p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t8bn">From <em>laundry</em>. To wash money is to make illegal money look clean. Also <em>airing dirty laundry</em> &mdash; private disputes made public.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t8ch">the decay of an institution</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px"><em>The slow decay of enforcement in the region.</em></p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t8cn">The rot sense, applied to something abstract. This is the register a field officer writes reports in.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t8dh">domineering</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px"><em>A domineering site manager.</em></p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t8dn">Arrogant and controlling &mdash; the near-opposite of <em>humble</em>, which you will meet shortly.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Which sense is it?</span> &middot; 1 / 17</div>
+        <h2 class="slide-title" data-i18n="qTitle">Read the sentence, then choose</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem"><strong>A report is circulating among the field staff</strong> that the reserve&rsquo;s funding will be halved, though nothing has come from Head Office.</p>
+        <div class="opts">
+          <button class="opt">A formal written record submitted to Head Office at the end of a survey period</button>
+          <button class="opt">A loud sharp sound made by an explosion, a firearm or a breaking branch</button>
+          <button class="opt" data-correct>A piece of information that is unsupported by firm evidence and may not be true</button>
+          <button class="opt">An official complaint made to a supervisor about a colleague&rsquo;s conduct</button>
+        </div>
+        <p class="feedback" data-explain="Here <strong>a report</strong> is an unverified rumour &mdash; note <em>circulating</em>, and <em>nothing has come from Head Office</em>. The collocation is the tell."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-bg="NatureAgency/prairie.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Which sense is it?</span> &middot; 2 / 17</div>
+        <h2 class="slide-title" data-i18n="qTitle">Read the sentence, then choose</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Elena is required to <strong>report</strong> any sighting of the protected marsh harrier to Director Bergmann within twenty-four hours.</p>
+        <div class="opts">
+          <button class="opt" data-correct>Give a spoken or written account of something observed, heard or investigated</button>
+          <button class="opt">Formally accuse someone of wrongdoing before an authority or a tribunal</button>
+          <button class="opt">Circulate an unverified account of something among colleagues at work</button>
+          <button class="opt">Submit an itemised expense claim for reimbursement at the end of a field survey</button>
+        </div>
+        <p class="feedback" data-explain="The verb sense. Two slides, one word, two grammars: <em>a report circulates</em> (noun, rumour), <em>you report a sighting</em> (verb, account). A third sense &mdash; the <em>report</em> of a rifle &mdash; comes later."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-bg="NatureAgency/lake.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Which sense is it?</span> &middot; 3 / 17</div>
+        <h2 class="slide-title" data-i18n="qTitle">Read the sentence, then choose</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">One vocal <strong>critic</strong> on the town council called the wetland restoration a waste of taxpayer money before it had even begun.</p>
+        <div class="opts">
+          <button class="opt">A person who judges literary, artistic or musical works professionally</button>
+          <button class="opt">A person who examines the accuracy of financial records and accounts</button>
+          <button class="opt">A person who gives evidence in a legal case brought against an agency</button>
+          <button class="opt" data-correct>A person who expresses an unfavourable opinion of something</button>
+        </div>
+        <p class="feedback" data-explain="The everyday sense: someone who objects. <em>Vocal</em> and <em>called it a waste</em> set the register &mdash; this is opposition, not expertise."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Which sense is it?</span> &middot; 4 / 17</div>
+        <h2 class="slide-title" data-i18n="qTitle">Read the sentence, then choose</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Before joining the agency, Tomas worked as a <strong>critic</strong> for a nature-writing magazine, reviewing books on rewilding and conservation.</p>
+        <div class="opts">
+          <button class="opt">A person who publicly expresses an unfavourable opinion of something or someone in a formal setting</button>
+          <button class="opt" data-correct>A person who judges the merits of literary, artistic or musical works, especially professionally</button>
+          <button class="opt">A person who edits and fact-checks manuscripts before they go to press</button>
+          <button class="opt">A person who reports breaking news for a newspaper or broadcaster</button>
+        </div>
+        <p class="feedback" data-explain="The professional sense. <em>Worked as a critic for a magazine, reviewing books</em> &mdash; the job title and the object of the verb both point at it. A critic in this sense is not necessarily unfavourable."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-bg="NatureAgency/prairie.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Which sense is it?</span> &middot; 5 / 17</div>
+        <h2 class="slide-title" data-i18n="qTitle">Read the sentence, then choose</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Fallen branches left on the forest floor <strong>decay</strong> slowly, returning nutrients to the soil over several years.</p>
+        <div class="opts">
+          <button class="opt">The state or process of rotting, considered as a condition of the material</button>
+          <button class="opt" data-correct>Rot or decompose through the action of bacteria and fungi</button>
+          <button class="opt">Grow rapidly and spread across a wide area of ground</button>
+          <button class="opt">Lose colour gradually after long exposure to direct sunlight</button>
+        </div>
+        <p class="feedback" data-explain="A verb here &mdash; <em>branches decay</em>. The grammar is the whole tell: it has a subject and no article in front of it."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-bg="NatureAgency/lake.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Which sense is it?</span> &middot; 6 / 17</div>
+        <h2 class="slide-title" data-i18n="qTitle">Read the sentence, then choose</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Inspectors noted visible <strong>decay</strong> in the old hide&rsquo;s wooden supports and recommended it be rebuilt before winter.</p>
+        <div class="opts">
+          <button class="opt">Rot or decompose through the action of bacteria and fungi over time</button>
+          <button class="opt">A sudden structural collapse brought on by flooding or by frost damage</button>
+          <button class="opt">The natural weathering of stone caused by wind and driving rain</button>
+          <button class="opt" data-correct>The state or process of rotting or decomposition</button>
+        </div>
+        <p class="feedback" data-explain="The noun. Same word, one slide apart: <em>branches decay</em> is the process happening, <em>visible decay</em> is the condition you can see. <em>Visible</em> only modifies a noun."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Which sense is it?</span> &middot; 7 / 17</div>
+        <h2 class="slide-title" data-i18n="qTitle">Read the sentence, then choose</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">The final report tries to <strong>reconcile</strong> the ecologists&rsquo; survey data <strong>with</strong> the much lower figures submitted by the landowner.</p>
+        <div class="opts">
+          <button class="opt" data-correct>Find a way in which two opposing accounts can both be made to fit</button>
+          <button class="opt">Restore friendly relations between two people after a period of tension</button>
+          <button class="opt">Check a long technical document for spelling and grammatical errors</button>
+          <button class="opt">Translate a specialist report into plain language for the general public</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Reconcile X with Y</strong> &mdash; two objects, two sets of figures. You are making things fit, not making peace."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-bg="NatureAgency/prairie.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Which sense is it?</span> &middot; 8 / 17</div>
+        <h2 class="slide-title" data-i18n="qTitle">Read the sentence, then choose</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">After weeks of tension over the badger cull, Bergmann finally <strong>reconciled with</strong> the local farmers&rsquo; union at a community meeting.</p>
+        <div class="opts">
+          <button class="opt">Find a way in which two opposing accounts can both be made to fit together</button>
+          <button class="opt">Formally apologise in writing for a mistake made in an official capacity</button>
+          <button class="opt" data-correct>Restore friendly relations after a disagreement</button>
+          <button class="opt">Reach a negotiated compromise over a disputed sum of money</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Reconcile with Y</strong> &mdash; no direct object. One slide back it was <em>reconcile the data with the figures</em>. The syntax picks the sense for you, and it generalises: count the objects before you choose."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-bg="NatureAgency/lake.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Which sense is it?</span> &middot; 9 / 17</div>
+        <h2 class="slide-title" data-i18n="qTitle">Read the sentence, then choose</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Otters once <strong>dwelled</strong> along this stretch of river, before pesticide run-off emptied it from the late 1950s onwards.</p>
+        <div class="opts">
+          <button class="opt">Migrated seasonally between two separate habitats along the same river</button>
+          <button class="opt">Built temporary shelters at the water&rsquo;s edge during the breeding season</button>
+          <button class="opt">Thought or spoke at length about something, usually something unhappy</button>
+          <button class="opt" data-correct>Lived in or at a specified place</button>
+        </div>
+        <p class="feedback" data-explain="The literal sense: to dwell somewhere is to live there. Formal, and slightly archaic &mdash; which is why it survives mostly in <em>dwelling</em>."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Which sense is it?</span> &middot; 10 / 17</div>
+        <h2 class="slide-title" data-i18n="qTitle">Read the sentence, then choose</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Bergmann told Elena not to <strong>dwell on</strong> the failed grant application and to focus instead on next month&rsquo;s survey.</p>
+        <div class="opts">
+          <button class="opt">Live in or at a specified place for an extended period of time</button>
+          <button class="opt" data-correct>Think, speak or write at length about something, especially something unhappy</button>
+          <button class="opt">Double-check a piece of work several times over before submitting it</button>
+          <button class="opt">Postpone an unwelcome task until a more favourable opportunity happens to arise</button>
+        </div>
+        <p class="feedback" data-explain="Add <strong>on</strong> and the word stops being about place and starts being about attention. Same tell as <em>reconcile</em> one pair ago: the preposition decides."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-bg="NatureAgency/prairie.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Which sense is it?</span> &middot; 11 / 17</div>
+        <h2 class="slide-title" data-i18n="qTitle">Read the sentence, then choose</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">From the <strong>outset</strong>, the reserve&rsquo;s managers made clear that public access would be limited during the breeding season.</p>
+        <div class="opts">
+          <button class="opt">The final stage of a long-running and expensive restoration project</button>
+          <button class="opt">A formal announcement made to the press about a change in policy</button>
+          <button class="opt" data-correct>The start or beginning of something</button>
+          <button class="opt">An unexpected complication that delays progress on an agreed plan</button>
+        </div>
+        <p class="feedback" data-explain="<em>From the outset</em> is a fixed phrase meaning from the very beginning. It belongs to the formal register a field officer writes in."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-bg="NatureAgency/lake.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Which sense is it?</span> &middot; 12 / 17</div>
+        <h2 class="slide-title" data-i18n="qTitle">Read the sentence, then choose</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Despite decades of research into peatland restoration, Dr Reyes remained remarkably <strong>humble</strong> about her own contribution to the field.</p>
+        <div class="opts">
+          <button class="opt" data-correct>Having or showing a modest estimate of one&rsquo;s own importance</button>
+          <button class="opt">Asserting one&rsquo;s will over other people in an arrogant, controlling way</button>
+          <button class="opt">Reluctant to share credit for a discovery with more junior colleagues</button>
+          <button class="opt">Uncertain or hesitant when speaking in front of a large public audience</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Humble</strong> is not the same as timid. Its near-opposite is <strong>domineering</strong> &mdash; taught two slides back, and worth holding on to: it comes round again later in the lesson."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Which sense is it?</span> &middot; 13 / 17</div>
+        <h2 class="slide-title" data-i18n="qTitle">Read the sentence, then choose</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Priya had a <strong>hunch</strong> that the missing otter tracks led towards the old mill, and she turned out to be right.</p>
+        <div class="opts">
+          <button class="opt">A documented conclusion supported by evidence gathered in the field</button>
+          <button class="opt">A formal hypothesis to be tested through a properly controlled experiment</button>
+          <button class="opt">A piece of practical advice offered informally by a senior colleague</button>
+          <button class="opt" data-correct>A feeling or guess based on intuition rather than on known facts</button>
+        </div>
+        <p class="feedback" data-explain="A <strong>hunch</strong> is explicitly not evidence. The sentence tells you she was right, which is the point: a hunch can be correct and still be a hunch."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-bg="NatureAgency/prairie.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Which sense is it?</span> &middot; 14 / 17</div>
+        <h2 class="slide-title" data-i18n="qTitle">Read the sentence, then choose</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">The interns were <strong>curious</strong> about why the agency had chosen this particular floodplain for reintroducing beavers.</p>
+        <div class="opts">
+          <button class="opt">Suspicious that something relevant was being deliberately kept from them</button>
+          <button class="opt" data-correct>Eager to know or learn something</button>
+          <button class="opt">Unconvinced by the official explanation they had been given at the briefing</button>
+          <button class="opt">Reluctant to ask questions during a briefing in front of senior staff</button>
+        </div>
+        <p class="feedback" data-explain="The plain sense. <strong>Curious</strong> has a second one &mdash; <em>a curious decision</em> means an odd one &mdash; but <em>curious about</em> fixes it as interest."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-bg="NatureAgency/lake.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Which sense is it?</span> &middot; 15 / 17</div>
+        <h2 class="slide-title" data-i18n="qTitle">Read the sentence, then choose</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">The new wildlife corridor gives roe deer <strong>uninterrupted</strong> access between the two forest blocks for the first time in decades.</p>
+        <div class="opts">
+          <button class="opt">Closely monitored by rangers on foot at all hours of the day and night</button>
+          <button class="opt">Legally protected under the terms of national conservation legislation</button>
+          <button class="opt" data-correct>Without a break in continuity</button>
+          <button class="opt">Open to the animals only during certain clearly specified months</button>
+        </div>
+        <p class="feedback" data-explain="Literally <em>not interrupted</em> &mdash; unbroken in space here, though the same word covers time. The prefix does the work; nothing else in the sentence needs to."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Which sense is it?</span> &middot; 16 / 17</div>
+        <h2 class="slide-title" data-i18n="qTitle">Read the sentence, then choose</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Illegal snaring is far more <strong>prevalent</strong> in this region than the agency&rsquo;s official figures suggest.</p>
+        <div class="opts">
+          <button class="opt" data-correct>Widespread in a particular area or at a particular time</button>
+          <button class="opt">Completely eliminated after many years of sustained enforcement work</button>
+          <button class="opt">Difficult to detect reliably using the survey methods currently available</button>
+          <button class="opt">Limited to a single, well-documented location within the reserve boundary</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Prevalent</strong> reports how common something is and passes no judgement. The disapproval in this sentence comes from <em>illegal</em>, not from the word itself."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-bg="NatureAgency/prairie.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Which sense is it?</span> &middot; 17 / 17</div>
+        <h2 class="slide-title" data-i18n="qTitle">Read the sentence, then choose</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Invasive Japanese knotweed had grown <strong>rampant</strong> along the riverbank, choking out the native reeds and sedges.</p>
+        <div class="opts">
+          <button class="opt">Slow to establish itself successfully in an unfamiliar new environment</button>
+          <button class="opt">Confined to a small and easily managed patch beside the water&rsquo;s edge</button>
+          <button class="opt">Dependent on one specific soil type in order to survive and spread</button>
+          <button class="opt" data-correct>Flourishing or spreading unchecked, especially something unwelcome</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Rampant</strong> carries both <em>widespread</em> and <em>bad, and nobody is stopping it</em>. That is the whole difference from <em>prevalent</em> one slide back: a species is prevalent, an invasive species is rampant. Never a compliment."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="gapEyebrow">The exact word</span> &middot; 1 / 6</div>
+        <h2 class="slide-title" data-i18n="gapTitle">Complete the briefing</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target" style="margin-bottom:12px">
+          <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
+          <span class="bank-chip">crowd</span> <span class="bank-chip">sewn</span> <span class="bank-chip">shoegazing</span>
+        </div>
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="gapHint">Every word in the bank is used exactly once on this slide.</p>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">On the drive back from the coast, Tomas played an old <input class="gap" data-answer="shoegazing|shoegaze" aria-label="gap" style="width:200px"> album, all reverb and blurred guitars, and nobody said a word for an hour.</p>
+          <p class="feedback" data-explain="The genre is <strong>shoegazing</strong>, often shortened to <strong>shoegaze</strong>. Both are accepted."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">Elena&rsquo;s field jacket, freshly <input class="gap" data-answer="sewn" aria-label="gap" style="width:200px"> after a tear from barbed wire, kept her warm through the dawn survey.</p>
+          <p class="feedback" data-explain="<strong>Sewn</strong> is the past participle of <em>sew</em>. <em>Sown</em> is seed, not thread &mdash; a different verb entirely."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">A small <input class="gap" data-answer="crowd" aria-label="gap" style="width:200px"> gathered at the visitor centre to watch the release of the rehabilitated red kites.</p>
+          <p class="feedback" data-explain="A <strong>crowd</strong> is any gathered group. It takes <em>small</em> perfectly well &mdash; the word carries no size of its own."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap" data-bg="NatureAgency/station.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="gapEyebrow">The exact word</span> &middot; 2 / 6</div>
+        <h2 class="slide-title" data-i18n="gapTitle">Complete the briefing</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target" style="margin-bottom:12px">
+          <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
+          <span class="bank-chip">discount</span> <span class="bank-chip">ministry</span> <span class="bank-chip">programmer</span>
+        </div>
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="gapHint">Every word in the bank is used exactly once on this slide.</p>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">The agency hired a <input class="gap" data-answer="programmer|developer" aria-label="gap" style="width:200px"> to rebuild the database that tracks protected-species sightings across the region.</p>
+          <p class="feedback" data-explain="A <strong>programmer</strong> writes the code. <em>Developer</em> is accepted; <em>programme</em> would be the thing, not the person."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">Funding for the reserve ultimately comes from the <input class="gap" data-answer="ministry|department" aria-label="gap" style="width:200px"> responsible for environment and agriculture.</p>
+          <p class="feedback" data-explain="A <strong>ministry</strong> is a government department headed by a minister. Formal register &mdash; this is how a funding line is described in writing."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">Local schools receive a <input class="gap" data-answer="discount|reduction" aria-label="gap" style="width:200px"> on entry fees when they book a guided tour of the wetlands.</p>
+          <p class="feedback" data-explain="A <strong>discount</strong> is money off a stated price. You <em>receive</em> or <em>get</em> one; you do not <em>make</em> one."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="gapEyebrow">The exact word</span> &middot; 3 / 6</div>
+        <h2 class="slide-title" data-i18n="gapTitle">Complete the briefing</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target" style="margin-bottom:12px">
+          <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
+          <span class="bank-chip">assessor</span> <span class="bank-chip">contribution</span> <span class="bank-chip">headlight</span>
+        </div>
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="gapHint">Every word in the bank is used exactly once on this slide.</p>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">Dr Reyes&rsquo;s <input class="gap" data-answer="contribution" aria-label="gap" style="width:200px"> to the peatland restoration project was recognised with a national conservation award.</p>
+          <p class="feedback" data-explain="A <strong>contribution</strong> is what you add to a shared effort. Note the preposition: a contribution <em>to</em>, never <em>for</em>."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">An independent <input class="gap" data-answer="assessor|inspector" aria-label="gap" style="width:200px"> visits the site every spring to check that the grazing plan is being followed correctly.</p>
+          <p class="feedback" data-explain="An <strong>assessor</strong> judges whether a standard has been met. Formal, and near-legal &mdash; the register this lesson promised."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">A deer froze in the beam of the truck&rsquo;s <input class="gap" data-answer="headlight|headlights" aria-label="gap" style="width:200px"> before darting back into the trees.</p>
+          <p class="feedback" data-explain="Singular or plural both work here. <strong>Headlight</strong> is one word, like <em>headland</em> and <em>headwater</em>."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap" data-bg="NatureAgency/station.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="gapEyebrow">The exact word</span> &middot; 4 / 6</div>
+        <h2 class="slide-title" data-i18n="gapTitle">Complete the briefing</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target" style="margin-bottom:12px">
+          <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
+          <span class="bank-chip">glitterati</span> <span class="bank-chip">hunky-dory</span> <span class="bank-chip">occupy</span>
+        </div>
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="gapHint">Every word in the bank is used exactly once on this slide.</p>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">A pair of peregrine falcons has come to <input class="gap" data-answer="occupy" aria-label="gap" style="width:200px"> the old quarry cliff face every spring since 2019.</p>
+          <p class="feedback" data-explain="To <strong>occupy</strong> a site is to be present in it and hold it. Transitive &mdash; it takes the place as a direct object, with no preposition."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">The gala to launch the new nature documentary drew more <input class="gap" data-answer="glitterati" aria-label="gap" style="width:200px"> than genuine conservationists, according to Tomas.</p>
+          <p class="feedback" data-explain="<strong>Glitterati</strong> &mdash; fashionable celebrities, always plural, always faintly disparaging. Built from <em>glitter</em> on the pattern of <em>literati</em>."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">Everything seemed <input class="gap" data-answer="hunky-dory|hunky dory" aria-label="gap" style="width:200px"> on the survey until the boat&rsquo;s engine cut out halfway across the lake.</p>
+          <p class="feedback" data-explain="<strong>Hunky-dory</strong> means fine, with no problems. Usually hyphenated; unhyphenated is accepted."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="gapEyebrow">The exact word</span> &middot; 5 / 6</div>
+        <h2 class="slide-title" data-i18n="gapTitle">Complete the briefing</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target" style="margin-bottom:12px">
+          <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
+          <span class="bank-chip">chatter</span> <span class="bank-chip">interpretation</span> <span class="bank-chip">swagger</span>
+        </div>
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="gapHint">Every word in the bank is used exactly once on this slide.</p>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">The new field officer walked in with a <input class="gap" data-answer="swagger" aria-label="gap" style="width:200px"> that made the older rangers doubt he would last a week outdoors.</p>
+          <p class="feedback" data-explain="A <strong>swagger</strong> is a walk that advertises confidence. Almost always unearned when someone else describes it."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">The <input class="gap" data-answer="chatter" aria-label="gap" style="width:200px"> in the staff room died down the moment Director Bergmann walked in with the budget figures.</p>
+          <p class="feedback" data-explain="<strong>Chatter</strong> is light, continuous talk, and it is uncountable &mdash; <em>the chatter</em>, never <em>a chatter</em>."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">The visitor centre&rsquo;s new <input class="gap" data-answer="interpretation" aria-label="gap" style="width:200px"> panels explain how the reedbeds filter pollutants from the river.</p>
+          <p class="feedback" data-explain="<strong>Interpretation</strong> is the museum and heritage term for explaining a site to visitors. A technical sense of a word you already know &mdash; exactly the skill this lesson opened with."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap" data-bg="NatureAgency/station.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="gapEyebrow">The exact word</span> &middot; 6 / 6</div>
+        <h2 class="slide-title" data-i18n="gapTitle">Complete the briefing</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target" style="margin-bottom:12px">
+          <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
+          <span class="bank-chip">company</span> <span class="bank-chip">ersatz</span>
+        </div>
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="gapHint">Every word in the bank is used exactly once on this slide.</p>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">The canteen&rsquo;s coffee was a kind of <input class="gap" data-answer="ersatz" aria-label="gap" style="width:200px"> brew made from roasted chicory, since the real thing had not been delivered.</p>
+          <p class="feedback" data-explain="<strong>Ersatz</strong> &mdash; an inferior substitute for the real thing. Borrowed from German, and it keeps a faint sneer in English that it does not have there."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">The agency contracted a private <input class="gap" data-answer="company|contractor|firm" aria-label="gap" style="width:200px"> to remove the invasive rhododendron from the eastern slope.</p>
+          <p class="feedback" data-explain="<strong>Company</strong>, <strong>firm</strong> and <strong>contractor</strong> all fit. Note the other sense hiding here: <em>in the company of</em> is people, not a business."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="sort" data-bg="NatureAgency/prairie.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="sortEyebrow">Register</div>
+        <h2 class="slide-title" data-i18n="sortTitle">Sort these by how formal they are</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="order-hint" data-i18n="sortHint">Drag each term into a box &mdash; or click the term, then the box. A wrong first placement costs that term&rsquo;s point.</p>
+        <div class="sort" data-bins="Everyday | Formal or technical | Figurative or idiomatic">
+          <span class="sort-item" data-bin="2">quick on the draw</span>
+          <span class="sort-item" data-bin="2">shoot from the hip</span>
+          <span class="sort-item" data-bin="1">insufficient</span>
+          <span class="sort-item" data-bin="1">skirting</span>
+          <span class="sort-item" data-bin="1">accompany</span>
+          <span class="sort-item" data-bin="0">detour</span>
+          <span class="sort-item" data-bin="0">chapter</span>
+          <span class="sort-item" data-bin="0">decent</span>
+        </div>
+        <p class="feedback" data-explain="The third tell from the opening slides, used on its own. Register is what tells you that <em>in receipt of</em> and <em>a receipt</em> are the same word doing two different jobs."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="sort">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="sortEyebrow">Register</div>
+        <h2 class="slide-title" data-i18n="sortTitle2">Sort these by how formal they are</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="order-hint" data-i18n="sortHint">Drag each term into a box &mdash; or click the term, then the box. A wrong first placement costs that term&rsquo;s point.</p>
+        <div class="sort" data-bins="Everyday | Formal or technical | Figurative or idiomatic">
+          <span class="sort-item" data-bin="2">fall apart</span>
+          <span class="sort-item" data-bin="2">showdown</span>
+          <span class="sort-item" data-bin="1">receipt</span>
+          <span class="sort-item" data-bin="1">civil war</span>
+          <span class="sort-item" data-bin="1">encyclopedia</span>
+          <span class="sort-item" data-bin="0">domineering</span>
+          <span class="sort-item" data-bin="0">car park</span>
+          <span class="sort-item" data-bin="0">laundry</span>
+        </div>
+        <p class="feedback" data-explain="<em>Showdown</em> and <em>quick on the draw</em> both come from westerns; <em>civil war</em> is the technical term for a specific kind of conflict. Where a phrase comes from is often the fastest guide to when you can use it."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="results">
+      <div class="slide-body" style="align-items:center;text-align:center">
+        <div class="score-big"><span id="scoreVal">0</span><span class="dim" style="font-size:34px">/<span id="scoreMax">0</span></span></div>
+        <p class="prose" style="margin-top:18px" id="scoreMsg"></p>
+        <p class="prose dim" style="margin-top:14px" data-i18n="resNext">You can pick the sense. Now produce it →</p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="activate">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="actEyebrow">Activation</div>
+        <h2 class="slide-title" data-i18n="actTitle">Write the site report</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target">
+          <span class="act-target-label" data-i18n="actUse">Use at least four:</span>
+          <span class="bank-chip">report</span>
+          <span class="bank-chip">critic</span>
+          <span class="bank-chip">decay</span>
+          <span class="bank-chip">reconcile with</span>
+          <span class="bank-chip">dwell on</span>
+          <span class="bank-chip">prevalent</span>
+          <span class="bank-chip">rampant</span>
+          <span class="bank-chip">in receipt of</span>
+        </div>
+        <div class="cols act-cols">
+          <div class="card act-card">
+            <div class="act-kind"><span class="act-icon">🗣</span><span data-i18n="actSpeakKind">Speaking &middot; in pairs</span></div>
+            <p class="act-brief" data-i18n="actSpeakBrief">One field officer, one landowner. The survey figures do not agree.</p>
+            <ul class="act-list">
+              <li data-i18n="actSpeak1">Report a sighting formally, then report a rumour. Make the difference audible.</li>
+              <li data-i18n="actSpeak2">Say the snaring is <em>prevalent</em>. Then say the knotweed is <em>rampant</em>. Explain to your partner why you did not swap the words.</li>
+              <li data-i18n="actSpeak3">Reconcile your figures with theirs &mdash; then reconcile with them.</li>
+              <li data-i18n="actSpeak4">Disagree without becoming domineering.</li>
+            </ul>
+          </div>
+          <div class="card act-card">
+            <div class="act-kind"><span class="act-icon">✍️</span><span data-i18n="actWriteKind">Writing &middot; 150&ndash;200 words</span></div>
+            <p class="act-brief" data-i18n="actWriteBrief">Write the summary paragraph of a site report: what you observed, what is disputed, and what you recommend. Formal register throughout.</p>
+            <textarea class="act-input" id="actInput" data-i18n-ph="actPlaceholder" placeholder="Site report — eastern slope, October" aria-label="Written response"></textarea>
+            <div class="act-foot">
+              <span class="act-count" id="actCount">0 words</span>
+              <button class="btn act-copy" data-action="copy-writing" data-i18n="btnCopy">Copy</button>
+            </div>
+            <div class="act-print" id="actPrint" aria-hidden="true"></div>
+          </div>
+        </div>
+        <div style="margin-top:14px;text-align:center">
+          <button class="btn" data-action="restart" data-i18n="btnRestart">Start again</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── DECK CHROME ──────────────────────────────────────── -->
+    <div class="deck-bar">
+      <select class="lang-select" id="langSelect" aria-label="Language"></select>
+      <button class="nav-btn" data-action="prev" aria-label="Previous">‹</button>
+      <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+      <span class="deck-count" id="deckCount">1 / 1</span>
+      <span class="deck-score" id="deckScore"></span>
+      <button class="nav-btn" data-action="next" aria-label="Next">›</button>
     </div>
+
   </div>
 </div>
-
-<div class="progress-wrap">
-  <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
-  <div class="progress-label" id="progress-label">Question 1 of 50</div>
-</div>
-
-<div class="container">
-
-  <div class="section active" id="intro-screen">
-    <div class="card">
-      <div class="sec-heading">Before you begin</div>
-      <div class="sec-sub">ONBOARDING BRIEFING &middot; ELENA VOSS, FIELD OFFICER</div>
-      <div class="intro-scenario">
-        <p>It is Elena Voss's first week as a field officer at the Federal Agency for Nature Conservation. Between site visits, staff briefings, and the odd piece of office gossip, she is finding that her new job runs on a very particular vocabulary &mdash; some of it formal and legal, some of it just the everyday language of a busy workplace.</p>
-        <p>This assessment follows Elena through her first weeks at the agency, testing 50 words and phrases across three activities: <strong>definitions in context</strong>, <strong>fill in the blank</strong>, and <strong>matching</strong>. Read each scenario carefully &mdash; context is everything at C1 level.</p>
-        <p>Part 2 continues the story with another 50 items.</p>
-      </div>
-      <button class="start-btn" id="start-btn">Begin Assessment</button>
-    </div>
-  </div>
-
-  <div class="section" id="section-1">
-    <div class="card">
-      <div class="sec-heading">Section 1 &middot; Definitions in Context</div>
-      <div class="sec-sub">CHOOSE THE MEANING THAT FITS THE SENTENCE</div>
-      <div id="section1-body"></div>
-      <div class="next-row"><button class="next-btn" id="s1-next-btn" disabled>Next &rarr;</button></div>
-    </div>
-  </div>
-
-  <div class="section" id="section-2">
-    <div class="card">
-      <div class="sec-heading">Section 2 &middot; Complete the Briefing</div>
-      <div class="sec-sub">TYPE THE MISSING WORD OR PHRASE</div>
-      <div id="section2-body"></div>
-      <div class="next-row"><button class="next-btn" id="s2-next-btn" disabled>Next &rarr;</button></div>
-    </div>
-  </div>
-
-  <div class="section" id="section-3">
-    <div class="card">
-      <div class="sec-heading">Section 3 &middot; Match the Terms</div>
-      <div class="sec-sub">CLICK A WORD, THEN CLICK ITS DEFINITION</div>
-      <div class="match-grid-wrap">
-        <div class="match-col">
-          <div class="match-col-label">Word</div>
-          <div class="match-col" id="s3-words"></div>
-        </div>
-        <div class="match-col">
-          <div class="match-col-label">Definition</div>
-          <div class="match-col" id="s3-defs"></div>
-        </div>
-      </div>
-      <div id="s3-counter">Matched 0 of 16</div>
-      <div style="text-align:center;">
-        <button class="next-btn" id="s3-continue-btn">See Results &rarr;</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="section" id="results-screen">
-    <div class="card results-card">
-      <div class="sec-heading" style="text-align:center;">Assessment Complete</div>
-      <div class="results-title">Part 1 &middot; Federal Agency for Nature Conservation</div>
-      <div class="results-total" id="res-total">0 / 50</div>
-      <div class="results-pct" id="res-pct">0%</div>
-      <div class="results-breakdown">
-        <div class="rb-item">
-          <div class="rb-label">Definitions</div>
-          <div class="rb-score" id="res-s1">0 / 17</div>
-        </div>
-        <div class="rb-item">
-          <div class="rb-label">Fill-in</div>
-          <div class="rb-score" id="res-s2">0 / 17</div>
-        </div>
-        <div class="rb-item">
-          <div class="rb-label">Matching</div>
-          <div class="rb-score" id="res-s3">0 / 16</div>
-        </div>
-      </div>
-      <div class="results-message" id="res-message"></div>
-      <div class="part-note">Continue to Part 2 for the remaining 50 items in this vocabulary series.</div>
-    </div>
-  </div>
-
-</div>
-
-<footer>FORBES ENGLISH &middot; C1 PROFESSIONAL VOCABULARY &middot; FEDERAL AGENCY FOR NATURE CONSERVATION, PART 1 OF 2</footer>
 
 <script>
-const section1Questions = [
-  {
-    id: "s1q1",
-    word: "report",
-    sentence: "A report is circulating among the field staff that the reserve's funding will be halved next year, though nothing has come from Head Office.",
-    question: "What does \"report\" mean in this sentence?",
-    options: [
-      "A piece of information that is unsupported by firm evidence and may or may not be true",
-      "To give a spoken or written account of something one has observed or investigated",
-      "A formal written record submitted at the end of a project",
-      "A loud sound made by an explosion or gunshot"
-    ],
-    correct: 0,
-    explanation: "Here \"report\" is an unconfirmed rumour circulating among staff — nobody has verified it. Compare this with the verb sense (\"to report a sighting\"), which means something quite different."
-  },
-  {
-    id: "s1q2",
-    word: "report",
-    sentence: "Elena is required to report any sightings of the protected marsh harrier directly to Director Bergmann within twenty-four hours.",
-    question: "What does \"report\" mean in this sentence?",
-    options: [
-      "To give a spoken or written account of something one has observed, heard, done, or investigated",
-      "A piece of information that is unsupported by firm evidence",
-      "To formally accuse someone of wrongdoing to an authority",
-      "To submit an expense claim for reimbursement"
-    ],
-    correct: 0,
-    explanation: "Here \"report\" is a verb meaning to inform someone officially of what you've observed — quite different from the noun sense meaning an unverified rumour."
-  },
-  {
-    id: "s1q3",
-    word: "critic",
-    sentence: "One vocal critic on the town council called the wetland restoration project a waste of taxpayer money before it had even begun.",
-    question: "What does \"critic\" mean in this sentence?",
-    options: [
-      "A person who expresses an unfavourable opinion of something",
-      "A person who judges the merits of literary, artistic, or musical works professionally",
-      "A person who examines the accuracy of financial records",
-      "A person who gives evidence in a legal case"
-    ],
-    correct: 0,
-    explanation: "This councillor is simply voicing disapproval — not professionally reviewing art or literature, which is the other sense of \"critic.\""
-  },
-  {
-    id: "s1q4",
-    word: "critic",
-    sentence: "Before joining the agency, Tomas worked as a critic for a nature-writing magazine, reviewing books on rewilding and conservation.",
-    question: "What does \"critic\" mean in this sentence?",
-    options: [
-      "A person who judges the merits of literary, artistic, or musical works, especially professionally",
-      "A person who expresses an unfavourable opinion of something",
-      "A person who edits manuscripts before publication",
-      "A person who reports breaking news for a newspaper"
-    ],
-    correct: 0,
-    explanation: "Tomas's job was professional reviewing, not simply disapproving of something — that's the more general sense of \"critic\"."
-  },
-  {
-    id: "s1q5",
-    word: "decay",
-    sentence: "Fallen branches left on the forest floor decay slowly, returning nutrients to the soil over several years.",
-    question: "What does \"decay\" mean in this sentence?",
-    options: [
-      "(of organic matter) rot or decompose through the action of bacteria and fungi",
-      "The state or process of rotting or decomposition",
-      "To grow rapidly and spread across a wide area",
-      "To lose colour gradually when exposed to sunlight"
-    ],
-    correct: 0,
-    explanation: "Used here as a verb describing what the branches do over time. The noun sense (\"visible decay\") describes the state itself, not the action."
-  },
-  {
-    id: "s1q6",
-    word: "decay",
-    sentence: "Inspectors noted visible decay in the old hide's wooden supports and recommended it be rebuilt before winter.",
-    question: "What does \"decay\" mean in this sentence?",
-    options: [
-      "The state or process of rotting or decomposition",
-      "(of organic matter) rot or decompose through the action of bacteria and fungi",
-      "A sudden structural collapse caused by flooding",
-      "The natural weathering of stone caused by wind"
-    ],
-    correct: 0,
-    explanation: "Here \"decay\" is a noun naming the condition the inspectors observed, not the verb describing an ongoing action."
-  },
-  {
-    id: "s1q7",
-    word: "reconcile",
-    sentence: "The final report tries to reconcile the ecologists' survey data with the much lower figures submitted by the landowner.",
-    question: "What does \"reconcile\" mean in this sentence?",
-    options: [
-      "Find a way in which opposing perspectives can be understood and incorporated",
-      "Restore friendly relations between two people",
-      "Check a document for spelling and grammar errors",
-      "Translate a technical report into plain language"
-    ],
-    correct: 0,
-    explanation: "This is about making two conflicting sets of data fit together, not about repairing a personal relationship."
-  },
-  {
-    id: "s1q8",
-    word: "reconcile",
-    sentence: "After weeks of tension over the badger cull, Bergmann finally reconciled with the local farmers' union at a community meeting.",
-    question: "What does \"reconcile\" mean in this sentence?",
-    options: [
-      "Restore friendly relations between people or groups",
-      "Find a way in which opposing perspectives can be understood and incorporated",
-      "Formally apologise in writing for a mistake",
-      "Reach a compromise on a financial dispute"
-    ],
-    correct: 0,
-    explanation: "Here the tension was personal and relational — this is about mending a relationship, not reconciling conflicting data."
-  },
-  {
-    id: "s1q9",
-    word: "dwell",
-    sentence: "Otters once dwelled along this stretch of river before the water quality declined in the 1980s.",
-    question: "What does \"dwelled\" mean in this sentence?",
-    options: [
-      "Lived in or at a specified place",
-      "Thought, spoke, or wrote at length about something, especially something unhappy",
-      "Migrated seasonally between two habitats",
-      "Built a temporary nest or shelter"
-    ],
-    correct: 0,
-    explanation: "This is the plain sense of \"dwell\" — to live somewhere. It's easy to confuse with the phrasal verb \"dwell on\", which means something quite different."
-  },
-  {
-    id: "s1q10",
-    word: "dwell on",
-    sentence: "Bergmann told Elena not to dwell on the failed grant application and to focus instead on next month's survey.",
-    question: "What does \"dwell on\" mean in this sentence?",
-    options: [
-      "Think, speak, or write at length about a subject, especially one that causes unhappiness",
-      "Live in or at a specified place",
-      "Double-check a piece of work several times before submitting it",
-      "Postpone a task until a better opportunity arises"
-    ],
-    correct: 0,
-    explanation: "\"Dwell on\" is about mentally lingering on something upsetting — completely different from \"dwell\" meaning \"to live somewhere\"."
-  },
-  {
-    id: "s1q11",
-    word: "outset",
-    sentence: "From the outset, the reserve's managers made clear that public access would be limited during the breeding season.",
-    question: "What does \"outset\" mean in this sentence?",
-    options: [
-      "The start or beginning of something",
-      "The final stage of a long-running project",
-      "A formal announcement made to the press",
-      "An unexpected complication that delays progress"
-    ],
-    correct: 0,
-    explanation: "\"From the outset\" is a fixed phrase meaning \"from the very beginning\"."
-  },
-  {
-    id: "s1q12",
-    word: "humble",
-    sentence: "Despite decades of research into peatland restoration, Dr. Reyes remained remarkably humble about her own contribution to the field.",
-    question: "What does \"humble\" mean in this sentence?",
-    options: [
-      "Having or showing a modest, low estimate of one's own importance",
-      "Asserting one's will over others in an arrogant way",
-      "Reluctant to share credit with junior colleagues",
-      "Uncertain or hesitant when speaking in public"
-    ],
-    correct: 0,
-    explanation: "\"Humble\" describes someone who doesn't overstate their own importance — the near-opposite of \"domineering\"."
-  },
-  {
-    id: "s1q13",
-    word: "hunch",
-    sentence: "Priya had a hunch that the missing otter tracks led toward the old mill, and she turned out to be right.",
-    question: "What does \"hunch\" mean in this sentence?",
-    options: [
-      "A feeling or guess based on intuition rather than known facts",
-      "A documented conclusion supported by field evidence",
-      "A formal hypothesis tested through a controlled experiment",
-      "A piece of advice offered by a senior colleague"
-    ],
-    correct: 0,
-    explanation: "A \"hunch\" is an instinctive guess, not something backed by evidence — that's precisely why Priya \"turned out to be right\" is worth remarking on."
-  },
-  {
-    id: "s1q14",
-    word: "curious",
-    sentence: "The interns were curious about why the agency had chosen this particular floodplain for reintroducing beavers.",
-    question: "What does \"curious\" mean in this sentence?",
-    options: [
-      "Eager to know or learn something",
-      "Suspicious that something is being deliberately hidden",
-      "Unconvinced by an official explanation",
-      "Reluctant to ask questions during a briefing"
-    ],
-    correct: 0,
-    explanation: "\"Curious\" here simply expresses genuine interest in learning the reason, not suspicion or doubt."
-  },
-  {
-    id: "s1q15",
-    word: "uninterrupted",
-    sentence: "The new wildlife corridor gives roe deer uninterrupted access between the two forest blocks for the first time in decades.",
-    question: "What does \"uninterrupted\" mean in this sentence?",
-    options: [
-      "Without a break in continuity",
-      "Closely monitored by rangers at all times",
-      "Legally protected under national conservation law",
-      "Open only during specific months of the year"
-    ],
-    correct: 0,
-    explanation: "The corridor lets deer move continuously between the two forest blocks with no gaps or barriers."
-  },
-  {
-    id: "s1q16",
-    word: "prevalent",
-    sentence: "Illegal snaring is far more prevalent in this region than the agency's official figures suggest.",
-    question: "What does \"prevalent\" mean in this sentence?",
-    options: [
-      "Widespread in a particular area or at a particular time",
-      "Completely eliminated through years of enforcement",
-      "Difficult to detect using current surveying methods",
-      "Limited to a single, well-documented location"
-    ],
-    correct: 0,
-    explanation: "\"Prevalent\" describes how common or widespread something is — here, the practice is more common than the figures show."
-  },
-  {
-    id: "s1q17",
-    word: "rampant",
-    sentence: "Invasive Japanese knotweed had grown rampant along the riverbank, choking out native reeds and sedges.",
-    question: "What does \"rampant\" mean in this sentence?",
-    options: [
-      "(especially of something unwelcome) flourishing or spreading unchecked",
-      "Slow to establish itself in a new environment",
-      "Confined to a small, easily managed patch",
-      "Dependent on a specific soil type to survive"
-    ],
-    correct: 0,
-    explanation: "\"Rampant\" describes something spreading out of control — here, the knotweed overwhelming native plants."
-  }
-];
-const section2Questions = [
-  {
-    id: "s2q1",
-    sentence: "Elena's field jacket, freshly ___ after a tear from barbed wire, kept her warm during the dawn survey.",
-    answer: "sewn",
-    hint: "Past participle of \"sew\" — joined fabric using a needle and thread.",
-    explanation: "\"Sewn\" is the past participle of \"sew\", meaning joined or repaired using needle and thread."
-  },
-  {
-    id: "s2q2",
-    sentence: "A small ___ gathered at the visitor centre to watch the release of the rehabilitated red kites.",
-    answer: "crowd",
-    hint: "A large, informally gathered number of people.",
-    explanation: "\"Crowd\" describes a large group of people gathered together, often without much organisation."
-  },
-  {
-    id: "s2q3",
-    sentence: "On the drive back from the coast, Tomas played an old ___ album, all reverb and blurred guitars, and nobody said a word for an hour.",
-    answer: "shoegazing",
-    hint: "A style of rock music where instruments and vocals blur together.",
-    explanation: "\"Shoegazing\" (or \"shoegaze\") is a genre of rock music known for its wall of blurred, reverb-heavy sound."
-  },
-  {
-    id: "s2q4",
-    sentence: "The agency hired a ___ to rebuild the database that tracks protected-species sightings across the region.",
-    answer: "programmer",
-    hint: "Someone who writes computer programs.",
-    explanation: "\"Programmer\" refers to a person who writes computer software."
-  },
-  {
-    id: "s2q5",
-    sentence: "Funding for the reserve ultimately comes from the ___ responsible for environment and agriculture.",
-    answer: "ministry",
-    hint: "A government department headed by a minister.",
-    explanation: "\"Ministry\" is a government department, typically headed by a minister of state."
-  },
-  {
-    id: "s2q6",
-    sentence: "Local schools receive a ___ on entry fees when they book a guided tour of the wetlands.",
-    answer: "discount",
-    hint: "A reduction in price.",
-    explanation: "\"Discount\" means a reduction in the usual price."
-  },
-  {
-    id: "s2q7",
-    sentence: "Dr. Reyes's ___ to the peatland restoration project was recognised with a national conservation award.",
-    answer: "contribution",
-    hint: "Help given toward achieving something, alongside others.",
-    explanation: "\"Contribution\" refers to the help someone provides toward a shared goal."
-  },
-  {
-    id: "s2q8",
-    sentence: "An independent ___ visits the site every spring to check that the grazing plan is being followed correctly.",
-    answer: "assessor",
-    hint: "A person who evaluates the quality of something.",
-    explanation: "\"Assessor\" is someone whose job is to evaluate or judge the quality of something."
-  },
-  {
-    id: "s2q9",
-    sentence: "A deer froze in the beam of the truck's ___ before darting back into the trees.",
-    answer: "headlight",
-    hint: "A powerful light at the front of a vehicle.",
-    explanation: "\"Headlight\" is the powerful light at the front of a vehicle."
-  },
-  {
-    id: "s2q10",
-    sentence: "The gala to launch the new nature documentary drew more ___ than genuine conservationists, according to Tomas.",
-    answer: "glitterati",
-    hint: "The fashionable set of people in show business or glamorous circles.",
-    explanation: "\"Glitterati\" refers to fashionable, glamorous people, often from show business."
-  },
-  {
-    id: "s2q11",
-    sentence: "Everything seemed ___ on the survey until the boat's engine cut out halfway across the lake.",
-    answer: "hunky-dory",
-    hint: "Informal — fine, going well.",
-    explanation: "\"Hunky-dory\" is an informal way of saying that everything is fine or going well."
-  },
-  {
-    id: "s2q12",
-    sentence: "A pair of peregrine falcons has come to ___ the old quarry cliff face every spring since 2019.",
-    answer: "occupy",
-    hint: "To reside or have one's place in a location.",
-    explanation: "\"Occupy\" means to reside in or take up a particular place."
-  },
-  {
-    id: "s2q13",
-    sentence: "The ___ in the staff room died down the moment Director Bergmann walked in with the budget figures.",
-    answer: "chatter",
-    hint: "Incessant, trivial talk.",
-    explanation: "\"Chatter\" describes light, trivial, continuous talk."
-  },
-  {
-    id: "s2q14",
-    sentence: "The visitor centre's new ___ panels explain how the reedbeds filter pollutants from the river.",
-    answer: "interpretation",
-    hint: "The action of explaining the meaning of something to visitors.",
-    explanation: "\"Interpretation\" panels are a standard feature at nature sites, explaining what visitors are looking at."
-  },
-  {
-    id: "s2q15",
-    sentence: "The new field officer walked in with a ___ that made the older rangers doubt he'd last a week outdoors.",
-    answer: "swagger",
-    hint: "A confident, typically arrogant way of walking or behaving.",
-    explanation: "\"Swagger\" describes a confident, somewhat arrogant manner or way of walking."
-  },
-  {
-    id: "s2q16",
-    sentence: "The agency contracted a private ___ to remove the invasive rhododendron from the eastern slope.",
-    answer: "company",
-    hint: "A number of individuals gathered for a particular purpose, such as a business.",
-    explanation: "\"Company\" here refers to a business organisation hired to do the work."
-  },
-  {
-    id: "s2q17",
-    sentence: "The canteen's coffee was a kind of ___ brew made from roasted chicory, since the real thing hadn't been delivered.",
-    answer: "ersatz",
-    hint: "Made or used as an inferior substitute for something else.",
-    explanation: "\"Ersatz\" describes an inferior substitute standing in for the real thing."
-  }
-];
-const section3Pairs = [
-  { id: "s3p1", word: "domineering", definition: "Behaving in an arrogant, controlling way toward others" },
-  { id: "s3p2", word: "detour", definition: "A longer, roundabout route taken to avoid something or visit somewhere extra" },
-  { id: "s3p3", word: "receipt", definition: "A slip of paper proving that a payment was made" },
-  { id: "s3p4", word: "chapter", definition: "A numbered or titled section of a book" },
-  { id: "s3p5", word: "encyclopedia", definition: "A reference work covering many subjects, usually arranged alphabetically" },
-  { id: "s3p6", word: "showdown", definition: "A final confrontation meant to settle a dispute" },
-  { id: "s3p7", word: "insufficient", definition: "Not enough for what is needed" },
-  { id: "s3p8", word: "quick on the draw", definition: "Extremely fast to react or respond" },
-  { id: "s3p9", word: "shoot from the hip", definition: "To speak or act without thinking things through first" },
-  { id: "s3p10", word: "accompany", definition: "To go somewhere together with someone" },
-  { id: "s3p11", word: "skirting", definition: "A narrow board running along the bottom of an interior wall" },
-  { id: "s3p12", word: "decent", definition: "Reasonably good or acceptable" },
-  { id: "s3p13", word: "parking lot", definition: "An outdoor area where vehicles are left temporarily" },
-  { id: "s3p14", word: "civil war", definition: "A war fought between citizens of the same country" },
-  { id: "s3p15", word: "fall apart", definition: "To break down or disintegrate" },
-  { id: "s3p16", word: "laundry", definition: "Clothes or linens that need washing, or have just been washed" }
-];
-// ---------- Utilities ----------
-function shuffle(array) {
-  const arr = array.slice();
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-}
+/* ══════════════════════════════════════════════════════════════════
+   ENGINE — identical in every lesson. Do not edit below this line
+   except to add UI_I18N strings.
+   ══════════════════════════════════════════════════════════════════ */
 
-// ---------- State ----------
-var state = {
-  s1: shuffle(section1Questions).map(q => {
-    const optOrder = shuffle(q.options.map((opt, idx) => ({ opt, idx })));
-    return {
-      ...q,
-      shuffledOptions: optOrder.map(o => o.opt),
-      shuffledCorrectIndex: optOrder.findIndex(o => o.idx === q.correct),
-      answered: false,
-      correctOnAttempt: false
-    };
-  }),
-  s2: shuffle(section2Questions).map(q => ({ ...q, answered: false, correctOnAttempt: false })),
-  s3pairs: section3Pairs,
-  s1Index: 0,
-  s2Index: 0,
-  s1Score: 0,
-  s2Score: 0,
-  s3Score: 0,
-  s3Matched: 0,
-  currentSection: 1,
-  s3Selection: { word: null, def: null }
+/* ── Languages. English is the base; German ships complete.
+      The other eight are deliberately empty — t() falls back to English,
+      so an unfinished language can never blank the interface. ── */
+const LANGS = [
+  { code:'en', label:'English'   }, { code:'de', label:'Deutsch'  },
+  { code:'es', label:'Español'   }, { code:'fr', label:'Français' },
+  { code:'it', label:'Italiano'  }, { code:'pt', label:'Português'},
+  { code:'ru', label:'Русский'   }, { code:'ar', label:'العربية'  },
+  { code:'zh', label:'中文'       }, { code:'ja', label:'日本語'    }
+];
+const RTL_LANGS = ['ar'];
+
+const UI_I18N = {
+  en: {
+    actEyebrow: "Activation",
+    actPlaceholder: "Site report — eastern slope, October",
+    actSpeak1: "Report a sighting formally, then report a rumour. Make the difference audible.",
+    actSpeak2: "Say the snaring is <em>prevalent</em>. Then say the knotweed is <em>rampant</em>. Explain to your partner why you did not swap the words.",
+    actSpeak3: "Reconcile your figures with theirs — then reconcile with them.",
+    actSpeak4: "Disagree without becoming domineering.",
+    actSpeakBrief: "One field officer, one landowner. The survey figures do not agree.",
+    actSpeakKind: "Speaking · in pairs",
+    actTitle: "Write the site report",
+    actUse: "Use at least four:",
+    actWriteBrief: "Write the summary paragraph of a site report: what you observed, what is disputed, and what you recommend. Formal register throughout.",
+    actWriteKind: "Writing · 150–200 words",
+    bankLabel: "Word bank:",
+    btnCheck: 'Check',
+    btnCopied: 'Copied',
+    btnCopy: 'Copy',
+    btnNext: 'Next →',
+    btnRestart: 'Start again',
+    btnStart: 'Begin →',
+    chipCount: "36 slides",
+    chipFocus: "Sense discrimination & register",
+    chipLevel: "C1 · Advanced",
+    coverSub: "Elena Voss’s first weeks as a field officer — and the second sense of every word she already knew",
+    coverTitle: "The <em>Nature Agency</em>",
+    fbAnswer: 'Answer:',
+    fbCorrect: 'Correct.',
+    fbWrong: 'Not quite.',
+    gapEyebrow: "The exact word",
+    gapHint: "Every word in the bank is used exactly once on this slide.",
+    gapTitle: "Complete the briefing",
+    qEyebrow: "Which sense is it?",
+    qTitle: "Read the sentence, then choose",
+    resLow: "Read the opening slides again before retrying. The skill is picking the sense, not learning new words.",
+    resMid: "A good base. Go back to the three tells: collocation, grammar, register. Most misses come from skipping the second.",
+    resNext: "You can pick the sense. Now produce it →",
+    resPerfect: "Full marks. You can hear the difference between two senses of the same word, which is most of what C1 is.",
+    resStrong: "Strong. The contrasts have landed — the register slide is the one worth a second look.",
+    scoreLabel: 'Score',
+    slideOf: (a,b)=>`${a} / ${b}`,
+    sortEyebrow: "Register",
+    sortHint: "Drag each term into a box — or click the term, then the box. A wrong first placement costs that term’s point.",
+    sortTitle: "Sort these by how formal they are",
+    sortTitle2: "Sort these by how formal they are",
+    t1ah: "You already know them",
+    t1an: "Not one of them is rare. That is deliberate, and it is the point of the exercise.",
+    t1bh: "It tests which <em>sense</em>",
+    t1bn: "Usually the second sense — the formal, technical or idiomatic one, not the one you learned first.",
+    t1ch: "Five words appear twice",
+    t1cn: "Each is tested once in each sense, on consecutive slides. When you meet a word for the second time, ask what changed.",
+    t1e: "Before the first question",
+    t1t: "This section is not testing whether you know these words",
+    t2ah: "1 · The collocation",
+    t2an: "<em>A report circulates</em> is a rumour. <em>To report a sighting</em> is an account. Same word, different company.",
+    t2bh: "2 · The grammar",
+    t2bn: "<em>Reconcile X with Y</em> makes two things fit. <em>Reconcile with Y</em> repairs a relationship. Count the objects.",
+    t2ch: "3 · The register",
+    t2cn: "A formal sentence pulls a formal sense. <em>In receipt of your letter</em> is not the slip from a till.",
+    t2e: "The transferable part",
+    t2t: "Three tells for picking the right sense",
+    t3ah: "a report <span class=\"dim\">(noun)</span>",
+    t3an: "Also the formal written kind — <em>the annual report</em>. The article and the verb around it tell you which.",
+    t3bh: "to report <span class=\"dim\">(verb)</span>",
+    t3bn: "Takes a direct object. Also <em>report to</em> someone — the person you answer to.",
+    t3ch: "the report <span class=\"dim\">(of a rifle)</span>",
+    t3cn: "Rare in general English and routine in this one. On a reserve dealing with poaching and culls, it is the sense you will need in writing.",
+    t3e: "Contrast one",
+    t3t: "<em>report</em> — three senses, and one of them is a sound",
+    t4ah: "critic — the objector",
+    t4an: "Unfavourable by definition. Comes with <em>vocal</em>, <em>fierce</em>, <em>outspoken</em>.",
+    t4bh: "critic — the reviewer",
+    t4bn: "Carries no judgement at all. A critic in this sense can love everything they review.",
+    t4ch: "decay — verb, then noun",
+    t4cn: "The article is the tell. Adjectives such as <em>visible</em> or <em>advanced</em> can only modify the noun.",
+    t4e: "Contrast two and three",
+    t4t: "<em>critic</em> and <em>decay</em> — opinion, and word class",
+    t5ah: "reconcile X <em>with</em> Y",
+    t5an: "Two objects. Bookkeeping, evidence, competing versions of a number. Nothing to do with feelings.",
+    t5bh: "reconcile <em>with</em> Y",
+    t5bn: "No direct object. People, or groups of them.",
+    t5ch: "Why it generalises",
+    t5cn: "The same test settles <em>dwell</em> on the next slide, and dozens of verbs beyond this lesson.",
+    t5e: "Contrast four",
+    t5t: "<em>reconcile</em> — the preposition tells you the sense",
+    t6ah: "dwell <span class=\"dim\">(somewhere)</span>",
+    t6an: "Formal and a little archaic. It survives mostly in <em>dwelling</em>, which is the word a planning document uses for a house.",
+    t6bh: "dwell <em>on</em> <span class=\"dim\">(something)</span>",
+    t6bn: "Almost always something unhappy. To dwell on a success is to boast; the word expects a grievance.",
+    t6ch: "Same tell as <em>reconcile</em>",
+    t6cn: "Two pairs, one rule. This is the tell worth carrying out of the lesson.",
+    t6e: "Contrast five",
+    t6t: "<em>dwell</em> — add a preposition, change the subject",
+    t7ah: "prevalent",
+    t7an: "Neutral. It reports a frequency and passes no judgement. Any disapproval in the sentence comes from other words.",
+    t7bh: "rampant",
+    t7bn: "Carries two things at once: widespread, <em>and</em> bad, <em>and</em> nobody is stopping it. Never a compliment.",
+    t7ch: "For a conservation agency",
+    t7cn: "Choosing the wrong one in a site report either understates a problem or editorialises about a healthy population.",
+    t7e: "The pair that matters most here",
+    t7t: "<em>prevalent</em> or <em>rampant</em> — both mean widespread",
+    t8ah: "in receipt of",
+    t8an: "Formal acknowledgement that something arrived. Not the slip of paper — the same word doing near-legal work.",
+    t8bh: "to launder",
+    t8bn: "From <em>laundry</em>. To wash money is to make illegal money look clean. Also <em>airing dirty laundry</em> — private disputes made public.",
+    t8ch: "the decay of an institution",
+    t8cn: "The rot sense, applied to something abstract. This is the register a field officer writes reports in.",
+    t8dh: "domineering",
+    t8dn: "Arrogant and controlling — the near-opposite of <em>humble</em>, which you will meet shortly.",
+    t8e: "Register",
+    t8t: "The formal senses these same words carry",
+    wordCount: (n)=>`${n} ${n===1?'word':'words'}`
+  },
+  de: {
+    actEyebrow: "Anwendung",
+    actPlaceholder: "Site report — eastern slope, October",
+    actSpeak1: "Melden Sie erst formell eine Sichtung, dann ein Gerücht. Machen Sie den Unterschied hörbar.",
+    actSpeak2: "Sagen Sie, die Schlingenstellerei sei <em>prevalent</em>. Dann, der Staudenknöterich sei <em>rampant</em>. Erklären Sie, warum Sie die Wörter nicht getauscht haben.",
+    actSpeak3: "Gleichen Sie Ihre Zahlen mit deren Zahlen ab — und versöhnen Sie sich dann mit der Person.",
+    actSpeak4: "Widersprechen Sie, ohne herrisch zu werden.",
+    actSpeakBrief: "Eine Person im Außendienst, eine Person als Grundeigentümer. Die Erhebungszahlen stimmen nicht überein.",
+    actSpeakKind: "Sprechen · zu zweit",
+    actTitle: "Schreiben Sie den Standortbericht",
+    actUse: "Verwenden Sie mindestens vier:",
+    actWriteBrief: "Schreiben Sie den zusammenfassenden Absatz eines Standortberichts: was Sie beobachtet haben, was strittig ist, was Sie empfehlen. Durchgehend formelles Register.",
+    actWriteKind: "Schreiben · 150–200 Wörter",
+    bankLabel: "Wortspeicher:",
+    btnCheck: 'Prüfen',
+    btnCopied: 'Kopiert',
+    btnCopy: 'Kopieren',
+    btnNext: 'Weiter →',
+    btnRestart: 'Neu starten',
+    btnStart: 'Beginnen →',
+    chipCount: "36 Folien",
+    chipFocus: "Bedeutungsunterscheidung & Register",
+    chipLevel: "C1 · Fortgeschritten",
+    coverSub: "Elena Voss’ erste Wochen im Außendienst — und die zweite Bedeutung jedes Wortes, das sie schon kannte",
+    coverTitle: "The <em>Nature Agency</em>",
+    fbAnswer: 'Antwort:',
+    fbCorrect: 'Richtig.',
+    fbWrong: 'Nicht ganz.',
+    gapEyebrow: "Das genaue Wort",
+    gapHint: "Jedes Wort aus dem Wortspeicher wird auf dieser Folie genau einmal verwendet.",
+    gapTitle: "Vervollständigen Sie das Briefing",
+    qEyebrow: "Welche Bedeutung ist gemeint?",
+    qTitle: "Lesen Sie den Satz und wählen Sie",
+    resLow: "Lesen Sie die Einstiegsfolien noch einmal, bevor Sie es erneut versuchen. Es geht ums Erkennen der Bedeutung, nicht um neue Wörter.",
+    resMid: "Eine gute Grundlage. Zurück zu den drei Hinweisen: Kollokation, Grammatik, Register. Die meisten Fehler entstehen, wenn der zweite übersprungen wird.",
+    resNext: "Sie erkennen die Bedeutung. Jetzt produzieren Sie sie →",
+    resPerfect: "Volle Punktzahl. Sie hören den Unterschied zwischen zwei Bedeutungen desselben Wortes — das ist der Kern von C1.",
+    resStrong: "Stark. Die Gegensätze sitzen — die Registerfolie lohnt noch einen zweiten Blick.",
+    scoreLabel: 'Punkte',
+    slideOf: (a,b)=>`${a} / ${b}`,
+    sortEyebrow: "Register",
+    sortHint: "Ziehen Sie jeden Begriff in ein Feld — oder klicken Sie erst den Begriff, dann das Feld. Eine falsche erste Zuordnung kostet den Punkt für diesen Begriff.",
+    sortTitle: "Ordnen Sie nach Formalität",
+    sortTitle2: "Ordnen Sie nach Formalität",
+    t1ah: "Sie kennen sie bereits",
+    t1an: "Keines davon ist selten. Das ist Absicht und genau der Sinn der Übung.",
+    t1bh: "Geprüft wird, <em>welche</em> Bedeutung",
+    t1bn: "Meist die zweite — die formelle, fachliche oder idiomatische, nicht die zuerst gelernte.",
+    t1ch: "Fünf Wörter kommen zweimal vor",
+    t1cn: "Jedes wird einmal in jeder Bedeutung geprüft, auf aufeinanderfolgenden Folien. Fragen Sie beim zweiten Mal, was sich geändert hat.",
+    t1e: "Vor der ersten Frage",
+    t1t: "Hier wird nicht geprüft, ob Sie diese Wörter kennen",
+    t2ah: "1 · Die Kollokation",
+    t2an: "<em>A report circulates</em> ist ein Gerücht. <em>To report a sighting</em> ist eine Meldung. Gleiches Wort, andere Umgebung.",
+    t2bh: "2 · Die Grammatik",
+    t2bn: "<em>Reconcile X with Y</em> bringt zwei Dinge in Einklang. <em>Reconcile with Y</em> versöhnt. Zählen Sie die Objekte.",
+    t2ch: "3 · Das Register",
+    t2cn: "Ein formeller Satz zieht eine formelle Bedeutung nach sich. <em>In receipt of your letter</em> ist nicht der Kassenbon.",
+    t2e: "Der übertragbare Teil",
+    t2t: "Drei Hinweise auf die richtige Bedeutung",
+    t3ah: "a report <span class=\"dim\">(Substantiv)</span>",
+    t3an: "Auch der formelle schriftliche Bericht — <em>the annual report</em>. Artikel und Verb verraten, welche Bedeutung gilt.",
+    t3bh: "to report <span class=\"dim\">(Verb)</span>",
+    t3bn: "Mit direktem Objekt. Auch <em>report to</em> jemandem — die Person, der man unterstellt ist.",
+    t3ch: "the report <span class=\"dim\">(eines Gewehrs)</span>",
+    t3cn: "Im Alltagsenglisch selten, in dieser Lektion Routine. Auf einem Schutzgebiet mit Wilderei und Abschüssen ist es die Bedeutung, die man schriftlich braucht.",
+    t3e: "Gegensatz eins",
+    t3t: "<em>report</em> — drei Bedeutungen, und eine davon ist ein Geräusch",
+    t4ah: "critic — der Kritiker im Sinne von Gegner",
+    t4an: "Per Definition ablehnend. Steht bei <em>vocal</em>, <em>fierce</em>, <em>outspoken</em>.",
+    t4bh: "critic — der Rezensent",
+    t4bn: "Völlig wertfrei. Ein Kritiker in diesem Sinne kann alles lieben, was er bespricht.",
+    t4ch: "decay — erst Verb, dann Substantiv",
+    t4cn: "Der Artikel ist der Hinweis. Adjektive wie <em>visible</em> oder <em>advanced</em> können nur das Substantiv näher bestimmen.",
+    t4e: "Gegensatz zwei und drei",
+    t4t: "<em>critic</em> und <em>decay</em> — Wertung und Wortart",
+    t5ah: "reconcile X <em>with</em> Y",
+    t5an: "Zwei Objekte. Buchhaltung, Belege, widersprüchliche Zahlen. Nichts mit Gefühlen zu tun.",
+    t5bh: "reconcile <em>with</em> Y",
+    t5bn: "Kein direktes Objekt. Personen oder Gruppen.",
+    t5ch: "Warum das übertragbar ist",
+    t5cn: "Derselbe Test klärt <em>dwell</em> auf der nächsten Folie — und Dutzende Verben über diese Lektion hinaus.",
+    t5e: "Gegensatz vier",
+    t5t: "<em>reconcile</em> — die Präposition verrät die Bedeutung",
+    t6ah: "dwell <span class=\"dim\">(irgendwo)</span>",
+    t6an: "Formell und leicht altertümlich. Erhalten vor allem in <em>dwelling</em>, dem Wort für Wohngebäude in Bauunterlagen.",
+    t6bh: "dwell <em>on</em> <span class=\"dim\">(etwas)</span>",
+    t6bn: "Fast immer etwas Unerfreuliches. Über einen Erfolg zu „dwell“ heißt angeben; das Wort erwartet einen Kummer.",
+    t6ch: "Gleicher Hinweis wie bei <em>reconcile</em>",
+    t6cn: "Zwei Paare, eine Regel. Das ist der Hinweis, den man aus der Lektion mitnimmt.",
+    t6e: "Gegensatz fünf",
+    t6t: "<em>dwell</em> — eine Präposition dazu, und das Thema wechselt",
+    t7ah: "prevalent",
+    t7an: "Neutral. Es nennt eine Häufigkeit und wertet nicht. Missbilligung im Satz kommt von anderen Wörtern.",
+    t7bh: "rampant",
+    t7bn: "Trägt zweierlei zugleich: weit verbreitet, <em>und</em> schlecht, <em>und</em> niemand stoppt es. Nie ein Lob.",
+    t7ch: "Für eine Naturschutzbehörde",
+    t7cn: "Eine heimische Art ist <strong>prevalent</strong>. Eine invasive Art ist <strong>rampant</strong>.",
+    t7e: "Das hier wichtigste Paar",
+    t7t: "<em>prevalent</em> oder <em>rampant</em> — beide heißen „weit verbreitet“",
+    t8ah: "in receipt of",
+    t8an: "Formelle Bestätigung des Eingangs. Nicht der Kassenbon — dasselbe Wort in nahezu juristischer Funktion.",
+    t8bh: "to launder",
+    t8bn: "Von <em>laundry</em>. Geld zu waschen heißt, illegales Geld sauber aussehen zu lassen. Auch <em>airing dirty laundry</em> — Privates öffentlich machen.",
+    t8ch: "the decay of an institution",
+    t8cn: "Die Verfallsbedeutung, auf Abstraktes angewandt. Das ist das Register, in dem Berichte geschrieben werden.",
+    t8dh: "domineering",
+    t8dn: "Herrisch und kontrollierend — das nahezu Gegenteil von <em>humble</em>, das gleich vorkommt.",
+    t8e: "Register",
+    t8t: "Die formellen Bedeutungen derselben Wörter",
+    wordCount: (n)=>`${n} ${n===1?'Wort':'Wörter'}`
+  },
+  es: {},
+  fr: {},
+  it: {},
+  pt: {},
+  ru: {},
+  ar: {},
+  zh: {},
+  ja: {}
 };
 
-var TOTAL_QUESTIONS = section1Questions.length + section2Questions.length + section3Pairs.length;
+let currentLang = 'en';
+const t = k => (UI_I18N[currentLang] && UI_I18N[currentLang][k] != null)
+  ? UI_I18N[currentLang][k] : UI_I18N.en[k];
 
-// ---------- Progress ----------
-function answeredSoFar() {
-  const s1Done = state.s1.filter(q => q.answered).length;
-  const s2Done = state.s2.filter(q => q.answered).length;
-  return s1Done + s2Done + state.s3Matched;
+/* ── Deck state ── */
+const stage   = document.getElementById('stage');
+const slides  = [...document.querySelectorAll('.slide')];
+const scored  = slides.filter(s => ['mc','gap','match','order','sort'].includes(s.dataset.type));
+/* A slide may hold more than one gap; each gap is worth a point. */
+const countIn = s => s.dataset.type === 'gap'   ? s.querySelectorAll('.gap').length
+                   : s.dataset.type === 'match' ? s.querySelectorAll('.match-pair').length
+                   : s.dataset.type === 'sort'  ? s.querySelectorAll('.sort-item').length
+                   : 1;
+const maxScore = scored.reduce((n, s) => n + Math.max(1, countIn(s)), 0);
+let idx = 0, score = 0;
+const answered = new WeakSet();
+
+/* ── Scale the 1280×720 stage to fit any viewport, never scroll ── */
+function fitStage() {
+  const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+  // Centre explicitly. Relying on the wrapper to centre an oversized child is
+  // what put the stage off-screen on every viewport under 1280px wide.
+  const x = (window.innerWidth  - 1280 * s) / 2;
+  const y = (window.innerHeight -  720 * s) / 2;
+  stage.style.transform = `translate(${x}px, ${y}px) scale(${s})`;
+}
+addEventListener('resize', fitStage);
+
+/* ── Navigation ── */
+function show(n) {
+  idx = Math.max(0, Math.min(slides.length - 1, n));
+  slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+  stage.classList.toggle('on-cover', slides[idx].dataset.type === 'cover');
+  // A slide may swap the background pattern for a second illustration from the
+  // same set (data-bg). Same idiom as the hero — picture at reduced opacity
+  // under the wash — so extra artwork never becomes a pasted-in box.
+  stage.style.setProperty('--hero', slides[idx].dataset.bg
+    ? `url('${slides[idx].dataset.bg}')` : '');
+  document.getElementById('progressFill').style.width =
+    (slides.length > 1 ? (idx / (slides.length - 1)) * 100 : 0) + '%';
+  document.getElementById('deckCount').textContent = t('slideOf')(idx + 1, slides.length);
+  document.querySelector('[data-action="prev"]').disabled = idx === 0;
+  document.querySelector('[data-action="next"]').disabled = idx === slides.length - 1;
+  if (slides[idx].dataset.type === 'results') renderResults();
+  const gap = slides[idx].querySelector('.gap');
+  if (gap && !answered.has(slides[idx])) setTimeout(() => gap.focus(), 60);
 }
 
-function updateProgress() {
-  const done = answeredSoFar();
-  const pct = Math.round((done / TOTAL_QUESTIONS) * 100);
-  document.getElementById("progress-fill").style.width = pct + "%";
-  document.getElementById("progress-label").textContent =
-    "Question " + Math.min(done + 1, TOTAL_QUESTIONS) + " of " + TOTAL_QUESTIONS;
+function renderResults() {
+  const max = maxScore;
+  document.getElementById('scoreVal').textContent = score;
+  document.getElementById('scoreMax').textContent = max;
+  const pct = max ? score / max : 0;
+  document.getElementById('scoreMsg').textContent =
+    pct === 1 ? t('resPerfect') : pct >= .75 ? t('resStrong')
+    : pct >= .5 ? t('resMid') : t('resLow');
 }
 
-// ---------- Section 1: MCQ ----------
-function renderS1() {
-  const q = state.s1[state.s1Index];
-  const container = document.getElementById("section1-body");
-  container.innerHTML = "";
+function updateScoreChip() {
+  document.getElementById('deckScore').textContent =
+    maxScore ? `${t('scoreLabel')} ${score}/${maxScore}` : '';
+}
 
-  const secLabel = document.createElement("div");
-  secLabel.className = "q-counter";
-  secLabel.textContent = "Item " + (state.s1Index + 1) + " of " + state.s1.length;
-  container.appendChild(secLabel);
+/* ── Answer handling ── */
+function award(slide, ok) {
+  if (answered.has(slide)) return;
+  answered.add(slide);
+  if (ok) score++;
+  updateScoreChip();
+}
 
-  const sentEl = document.createElement("p");
-  sentEl.className = "prompt-sentence";
-  sentEl.textContent = q.sentence;
-  container.appendChild(sentEl);
+function feedback(slide, ok, extra, ownExplain) {
+  const el = slide.querySelector('.feedback');
+  if (!el) return;
+  // An option's own explanation wins: telling a learner why THEIR answer was
+  // wrong beats restating why the key was right.
+  const reason = ownExplain || el.dataset.explain;
+  const why = reason ? ' ' + reason : '';
+  // innerHTML, not textContent: explanations carry <strong> and <em>, and the
+  // whole point of an explanation is that the word being taught is marked.
+  // Written with textContent this printed the tags as literal source text on
+  // every deck built from this template.
+  el.innerHTML = (ok ? t('fbCorrect') : t('fbWrong') + (extra ? ` ${t('fbAnswer')} ${extra}` : '')) + why;
+  el.className = 'feedback show ' + (ok ? 'ok' : 'no');
+}
 
-  const qEl = document.createElement("p");
-  qEl.className = "prompt-question";
-  qEl.textContent = q.question;
-  container.appendChild(qEl);
-
-  const optsWrap = document.createElement("div");
-  optsWrap.className = "options-wrap";
-
-  q.shuffledOptions.forEach((optText, i) => {
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "option-btn";
-    btn.textContent = optText;
-    btn.addEventListener("click", () => handleS1Answer(i, btn, optsWrap));
-    optsWrap.appendChild(btn);
+/* Multiple choice — shuffled on first view so option order is never a tell. */
+slides.filter(s => s.dataset.type === 'mc').forEach(slide => {
+  const box = slide.querySelector('.opts');
+  const opts = [...box.querySelectorAll('.opt')];
+  opts.sort(() => Math.random() - .5).forEach((o, i) => {
+    o.prepend(Object.assign(document.createElement('span'), {
+      className: 'opt-key', textContent: 'ABCD'[i]
+    }));
+    box.appendChild(o);
   });
+  opts.forEach(o => o.addEventListener('click', () => {
+    if (answered.has(slide)) return;
+    const ok = o.hasAttribute('data-correct');
+    opts.forEach(x => {
+      x.disabled = true;
+      if (x.hasAttribute('data-correct')) x.classList.add('correct');
+    });
+    if (!ok) o.classList.add('wrong');
+    award(slide, ok);
+    feedback(slide, ok, null, o.dataset.explain);
+  }));
+});
 
-  container.appendChild(optsWrap);
+/* Matching. Author as <div class="match-pair" data-term data-def> rows; the
+   engine builds both columns and shuffles the definitions. One point per pair. */
+slides.filter(s => s.dataset.type === 'match').forEach(slide => {
+  const pairs = [...slide.querySelectorAll('.match-pair')];
+  const grid = slide.querySelector('.match-grid');
+  if (!grid || !pairs.length) return;
+  const terms = document.createElement('div');
+  const defs = document.createElement('div');
+  terms.className = defs.className = 'match-col';
+  const mk = (txt, cls, key) => {
+    const b = document.createElement('button');
+    b.className = 'match-item ' + cls;
+    b.textContent = txt;
+    b.dataset.key = key;
+    return b;
+  };
+  pairs.forEach(p => terms.appendChild(mk(p.dataset.term, 'term', p.dataset.term)));
+  [...pairs].sort(() => Math.random() - .5)
+    .forEach(p => defs.appendChild(mk(p.dataset.def, 'def', p.dataset.term)));
+  grid.replaceChildren(terms, defs);
 
-  const feedback = document.createElement("div");
-  feedback.className = "feedback";
-  feedback.id = "s1-feedback";
-  container.appendChild(feedback);
-
-  const nextBtn = document.getElementById("s1-next-btn");
-  nextBtn.disabled = true;
-}
-
-function handleS1Answer(chosenIndex, btnEl, optsWrap) {
-  const q = state.s1[state.s1Index];
-  if (q.answered) return;
-  q.answered = true;
-
-  const allBtns = optsWrap.querySelectorAll(".option-btn");
-  allBtns.forEach(b => (b.disabled = true));
-
-  const isCorrect = chosenIndex === q.shuffledCorrectIndex;
-  q.correctOnAttempt = isCorrect;
-  if (isCorrect) {
-    state.s1Score++;
-    btnEl.classList.add("opt-correct");
-  } else {
-    btnEl.classList.add("opt-incorrect");
-    allBtns[q.shuffledCorrectIndex].classList.add("opt-correct");
-  }
-
-  const feedback = document.getElementById("s1-feedback");
-  feedback.classList.add("visible");
-  feedback.classList.add(isCorrect ? "feedback-correct" : "feedback-incorrect");
-  feedback.innerHTML =
-    "<strong>" + (isCorrect ? "Correct. " : "Not quite. ") + "</strong>" + q.explanation;
-
-  document.getElementById("s1-next-btn").disabled = false;
-  updateProgress();
-}
-
-function goToNextS1() {
-  if (state.s1Index < state.s1.length - 1) {
-    state.s1Index++;
-    renderS1();
-  } else {
-    switchSection(2);
-  }
-}
-
-// ---------- Section 2: Fill in the Blank ----------
-function renderS2() {
-  const q = state.s2[state.s2Index];
-  const container = document.getElementById("section2-body");
-  container.innerHTML = "";
-
-  const secLabel = document.createElement("div");
-  secLabel.className = "q-counter";
-  secLabel.textContent = "Item " + (state.s2Index + 1) + " of " + state.s2.length;
-  container.appendChild(secLabel);
-
-  const sentEl = document.createElement("p");
-  sentEl.className = "prompt-sentence";
-  sentEl.textContent = q.sentence;
-  container.appendChild(sentEl);
-
-  const hintEl = document.createElement("p");
-  hintEl.className = "hint";
-  hintEl.textContent = "Hint: " + q.hint;
-  container.appendChild(hintEl);
-
-  const inputRow = document.createElement("div");
-  inputRow.className = "input-row";
-
-  const input = document.createElement("input");
-  input.type = "text";
-  input.className = "fib-input";
-  input.id = "s2-input";
-  input.autocomplete = "off";
-  input.spellcheck = false;
-
-  const checkBtn = document.createElement("button");
-  checkBtn.type = "button";
-  checkBtn.className = "check-btn";
-  checkBtn.textContent = "Check";
-  checkBtn.addEventListener("click", () => handleS2Answer());
-
-  input.addEventListener("keydown", e => {
-    if (e.key === "Enter") handleS2Answer();
-  });
-
-  inputRow.appendChild(input);
-  inputRow.appendChild(checkBtn);
-  container.appendChild(inputRow);
-
-  const feedback = document.createElement("div");
-  feedback.className = "feedback";
-  feedback.id = "s2-feedback";
-  container.appendChild(feedback);
-
-  document.getElementById("s2-next-btn").disabled = true;
-  input.focus();
-}
-
-function normalizeAnswer(str) {
-  return str.trim().toLowerCase().replace(/\s+/g, " ");
-}
-
-function handleS2Answer() {
-  const q = state.s2[state.s2Index];
-  if (q.answered) return;
-  const input = document.getElementById("s2-input");
-  const userVal = normalizeAnswer(input.value);
-  if (userVal.length === 0) return;
-
-  q.answered = true;
-  input.disabled = true;
-  document.querySelector("#section2-body .check-btn").disabled = true;
-
-  const isCorrect = userVal === normalizeAnswer(q.answer);
-  q.correctOnAttempt = isCorrect;
-  if (isCorrect) {
-    state.s2Score++;
-    input.classList.add("input-correct");
-  } else {
-    input.classList.add("input-incorrect");
-  }
-
-  const feedback = document.getElementById("s2-feedback");
-  feedback.classList.add("visible");
-  feedback.classList.add(isCorrect ? "feedback-correct" : "feedback-incorrect");
-  feedback.innerHTML =
-    "<strong>" +
-    (isCorrect ? "Correct. " : "Not quite \u2014 the answer was \"" + q.answer + "\". ") +
-    "</strong>" +
-    q.explanation;
-
-  document.getElementById("s2-next-btn").disabled = false;
-  updateProgress();
-}
-
-function goToNextS2() {
-  if (state.s2Index < state.s2.length - 1) {
-    state.s2Index++;
-    renderS2();
-  } else {
-    switchSection(3);
-  }
-}
-
-// ---------- Section 3: Matching ----------
-function renderS3() {
-  const wordsWrap = document.getElementById("s3-words");
-  const defsWrap = document.getElementById("s3-defs");
-  wordsWrap.innerHTML = "";
-  defsWrap.innerHTML = "";
-
-  const shuffledWords = shuffle(state.s3pairs);
-  const shuffledDefs = shuffle(state.s3pairs);
-
-  shuffledWords.forEach(pair => {
-    const tile = document.createElement("button");
-    tile.type = "button";
-    tile.className = "match-tile match-word";
-    tile.textContent = pair.word;
-    tile.dataset.id = pair.id;
-    tile.addEventListener("click", () => selectMatchTile(tile, "word", pair.id));
-    wordsWrap.appendChild(tile);
-  });
-
-  shuffledDefs.forEach(pair => {
-    const tile = document.createElement("button");
-    tile.type = "button";
-    tile.className = "match-tile match-def";
-    tile.textContent = pair.definition;
-    tile.dataset.id = pair.id;
-    tile.addEventListener("click", () => selectMatchTile(tile, "def", pair.id));
-    defsWrap.appendChild(tile);
-  });
-
-  document.getElementById("s3-counter").textContent =
-    "Matched " + state.s3Matched + " of " + state.s3pairs.length;
-  document.getElementById("s3-continue-btn").style.display = "none";
-}
-
-function selectMatchTile(tileEl, kind, id) {
-  if (tileEl.classList.contains("match-locked")) return;
-
-  if (kind === "word") {
-    document.querySelectorAll(".match-word").forEach(t => t.classList.remove("match-selected"));
-    tileEl.classList.add("match-selected");
-    state.s3Selection.word = { id, el: tileEl };
-  } else {
-    document.querySelectorAll(".match-def").forEach(t => t.classList.remove("match-selected"));
-    tileEl.classList.add("match-selected");
-    state.s3Selection.def = { id, el: tileEl };
-  }
-
-  const sel = state.s3Selection;
-  if (sel.word && sel.def) {
-    const isMatch = sel.word.id === sel.def.id;
-    if (isMatch) {
-      sel.word.el.classList.remove("match-selected");
-      sel.def.el.classList.remove("match-selected");
-      sel.word.el.classList.add("match-locked");
-      sel.def.el.classList.add("match-locked");
-      state.s3Matched++;
-      state.s3Score++;
-      document.getElementById("s3-counter").textContent =
-        "Matched " + state.s3Matched + " of " + state.s3pairs.length;
-      updateProgress();
-      if (state.s3Matched === state.s3pairs.length) {
-        document.getElementById("s3-continue-btn").style.display = "inline-block";
+  let picked = null, done = 0;
+  const total = pairs.length;
+  grid.addEventListener('click', e => {
+    const el = e.target.closest('.match-item');
+    if (!el || el.classList.contains('done')) return;
+    if (el.classList.contains('term')) {
+      grid.querySelectorAll('.term.picked').forEach(x => x.classList.remove('picked'));
+      el.classList.add('picked');
+      picked = el;
+      return;
+    }
+    if (!picked) return;
+    if (el.dataset.key === picked.dataset.key) {
+      el.classList.add('done'); picked.classList.add('done');
+      picked.classList.remove('picked');
+      picked = null; done++; score++; updateScoreChip();
+      if (done === total) {
+        answered.add(slide);
+        feedback(slide, true);
       }
     } else {
-      sel.word.el.classList.add("match-wrong");
-      sel.def.el.classList.add("match-wrong");
-      setTimeout(() => {
-        sel.word.el.classList.remove("match-selected", "match-wrong");
-        sel.def.el.classList.remove("match-selected", "match-wrong");
-      }, 550);
+      el.classList.add('miss');
+      setTimeout(() => el.classList.remove('miss'), 320);
     }
-    state.s3Selection = { word: null, def: null };
-  }
-}
-
-// ---------- Section switching ----------
-function switchSection(n) {
-  document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
-  state.currentSection = n;
-  if (n === 1) {
-    document.getElementById("section-1").classList.add("active");
-    renderS1();
-  } else if (n === 2) {
-    document.getElementById("section-2").classList.add("active");
-    renderS2();
-  } else if (n === 3) {
-    document.getElementById("section-3").classList.add("active");
-    renderS3();
-  } else if (n === 4) {
-    showResults();
-  }
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-// ---------- Results ----------
-function showResults() {
-  document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
-  document.getElementById("results-screen").classList.add("active");
-
-  const total = state.s1Score + state.s2Score + state.s3Score;
-  const pct = Math.round((total / TOTAL_QUESTIONS) * 100);
-
-  document.getElementById("res-total").textContent = total + " / " + TOTAL_QUESTIONS;
-  document.getElementById("res-pct").textContent = pct + "%";
-  document.getElementById("res-s1").textContent = state.s1Score + " / " + state.s1.length;
-  document.getElementById("res-s2").textContent = state.s2Score + " / " + state.s2.length;
-  document.getElementById("res-s3").textContent = state.s3Score + " / " + state.s3pairs.length;
-
-  let msg;
-  if (pct >= 90) {
-    msg = "Outstanding. This is C1-level command of the vocabulary \u2014 ready for the field.";
-  } else if (pct >= 75) {
-    msg = "Strong result. A quick review of the missed items and you're fully briefed.";
-  } else if (pct >= 60) {
-    msg = "Solid foundation. Revisit the sections with lower scores before moving to Part 2.";
-  } else {
-    msg = "This vocabulary needs more time. Go back through the explanations and try again before Part 2.";
-  }
-  document.getElementById("res-message").textContent = msg;
-
-  document.getElementById("progress-fill").style.width = "100%";
-  document.getElementById("progress-label").textContent = "Assessment complete";
-}
-
-// ---------- Init ----------
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("start-btn").addEventListener("click", () => {
-    document.getElementById("intro-screen").classList.remove("active");
-    switchSection(1);
   });
-  document.getElementById("s1-next-btn").addEventListener("click", goToNextS1);
-  document.getElementById("s2-next-btn").addEventListener("click", goToNextS2);
-  document.getElementById("s3-continue-btn").addEventListener("click", () => switchSection(4));
-  updateProgress();
 });
+
+/* Sentence building. Author as
+     <div class="order" data-answer="chunk|chunk|chunk"></div>
+   with a [data-action="check-order"] button and a .feedback alongside it.
+   The engine shuffles the chunks into a pool; clicking places one, clicking a
+   placed one takes it back. One point for the whole sentence — a half-right
+   word order is not half-right English. */
+slides.filter(s => s.dataset.type === 'order').forEach(slide => {
+  const box = slide.querySelector('.order');
+  if (!box) return;
+  const answer = box.dataset.answer.split('|').map(x => x.trim());
+  const target = document.createElement('div'); target.className = 'order-target';
+  const pool   = document.createElement('div'); pool.className   = 'order-pool';
+  answer.map((txt, i) => ({ txt, i }))
+        .sort(() => Math.random() - .5)
+        .forEach(({ txt, i }) => {
+          const b = document.createElement('button');
+          b.className = 'chunk';
+          b.textContent = txt;
+          b.dataset.i = i;
+          pool.appendChild(b);
+        });
+  box.replaceChildren(target, pool);
+
+  box.addEventListener('click', e => {
+    const c = e.target.closest('.chunk');
+    if (!c || c.disabled) return;
+    if (c.parentElement === pool) { c.classList.add('placed');    target.appendChild(c); }
+    else                          { c.classList.remove('placed'); pool.appendChild(c); }
+  });
+
+  slide._check = () => {
+    if (answered.has(slide)) return;
+    // Marking a half-built sentence teaches nothing; wait until it is complete.
+    if (target.children.length < answer.length) return;
+    answered.add(slide);
+    const ok = [...target.children].map(c => +c.dataset.i).every((v, i) => v === i);
+    target.classList.add(ok ? 'correct' : 'wrong');
+    box.querySelectorAll('.chunk').forEach(c => c.disabled = true);
+    if (ok) score++;
+    updateScoreChip();
+    feedback(slide, ok, ok ? null : answer.join(' '));
+    const btn = slide.querySelector('[data-action="check-order"]');
+    if (btn) btn.disabled = true;
+  };
+});
+
+/* Sorting. Author as
+     <div class="sort" data-bins="Label one|Label two" data-explain="…">
+       <span class="sort-item" data-bin="0">every day</span>
+       …
+     </div>
+   The engine shuffles the items into a pool and builds one bin per label.
+   Drag an item into a bin, or click the item and then click the bin —
+   both do the same thing, and the click path is the one that works on a
+   touch screen. One point per item.
+
+   Unlike matching, a wrong placement costs the point for that item: the
+   learner can still put it right and finish the slide, but the first
+   answer is the one that counts. A sorting task with unlimited free
+   retries is a task you cannot fail, and a score that cannot go down
+   tells the learner nothing. (Matching still allows free retries; that
+   is thirty-odd shipped lessons' worth of behaviour to change, and it
+   should be changed deliberately, not as a side effect of this.) */
+slides.filter(s => s.dataset.type === 'sort').forEach(slide => {
+  const box = slide.querySelector('.sort');
+  if (!box) return;
+  const labels = (box.dataset.bins || '').split('|').map(x => x.trim());
+  const items = [...box.querySelectorAll('.sort-item')];
+  if (labels.length < 2 || !items.length) return;
+
+  const pool = document.createElement('div');
+  pool.className = 'sort-pool';
+  const bins = document.createElement('div');
+  bins.className = 'sort-bins';
+  bins.style.gridTemplateColumns = '1fr '.repeat(labels.length).trim();
+
+  const binEls = labels.map((label, i) => {
+    const bin = document.createElement('div');
+    bin.className = 'sort-bin';
+    bin.dataset.bin = i;
+    const h = document.createElement('div');
+    h.className = 'sort-bin-label';
+    h.textContent = label;
+    const body = document.createElement('div');
+    body.className = 'sort-bin-items';
+    bin.append(h, body);
+    bins.appendChild(bin);
+    return bin;
+  });
+
+  items.sort(() => Math.random() - .5).forEach(it => {
+    it.setAttribute('draggable', 'true');
+    it.tabIndex = 0;
+    pool.appendChild(it);
+  });
+  box.replaceChildren(pool, bins);
+
+  let picked = null, placed = 0, dragged = null;
+  const missed = new WeakSet();   // items answered wrongly at least once
+
+  function place(item, binIndex) {
+    if (item.classList.contains('placed')) return;
+    if (+item.dataset.bin !== binIndex) {
+      missed.add(item);
+      item.classList.add('miss');
+      setTimeout(() => item.classList.remove('miss'), 320);
+      return;
+    }
+    item.classList.remove('picked');
+    item.classList.add('placed');
+    item.setAttribute('draggable', 'false');
+    binEls[binIndex].querySelector('.sort-bin-items').appendChild(item);
+    placed++;
+    if (!missed.has(item)) { score++; updateScoreChip(); }
+    if (placed === items.length) {
+      binEls.forEach(b => b.classList.add('full'));
+      answered.add(slide);
+      // Right only if every item went to the right bin first time.
+      feedback(slide, !items.some(i => missed.has(i)));
+    }
+  }
+
+  box.addEventListener('click', e => {
+    const item = e.target.closest('.sort-item');
+    if (item && !item.classList.contains('placed')) {
+      box.querySelectorAll('.sort-item.picked').forEach(x => x.classList.remove('picked'));
+      item.classList.add('picked');
+      picked = item;
+      return;
+    }
+    const bin = e.target.closest('.sort-bin');
+    if (bin && picked) { place(picked, +bin.dataset.bin); picked = null; }
+  });
+
+  box.addEventListener('dragstart', e => {
+    const item = e.target.closest('.sort-item');
+    if (!item || item.classList.contains('placed')) return;
+    dragged = item;
+    item.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    // Firefox will not start a drag without data on the transfer.
+    e.dataTransfer.setData('text/plain', '');
+  });
+  box.addEventListener('dragend', () => {
+    if (dragged) dragged.classList.remove('dragging');
+    dragged = null;
+    binEls.forEach(b => b.classList.remove('over'));
+  });
+  binEls.forEach(bin => {
+    bin.addEventListener('dragover', e => { e.preventDefault(); bin.classList.add('over'); });
+    bin.addEventListener('dragleave', () => bin.classList.remove('over'));
+    bin.addEventListener('drop', e => {
+      e.preventDefault();
+      bin.classList.remove('over');
+      if (dragged) { place(dragged, +bin.dataset.bin); dragged = null; }
+    });
+  });
+});
+
+/* Gap fill. Supports several gaps on one slide, each scored and explained
+   individually via its own .gap-row wrapper. */
+const gapOk = g => g.dataset.answer.split('|')
+  .map(a => a.trim().toLowerCase())
+  .includes(g.value.trim().toLowerCase().replace(/\s+/g, ' '));
+
+function markGap(g, fb) {
+  const ok = gapOk(g);
+  g.classList.add(ok ? 'correct' : 'wrong');
+  g.disabled = true;
+  if (ok) score++;
+  if (fb) {
+    const why = fb.dataset.explain ? ' ' + fb.dataset.explain : '';
+    fb.innerHTML = (ok ? t('fbCorrect')
+      : `${t('fbWrong')} ${t('fbAnswer')} ${g.dataset.answer.split('|')[0]}.`) + why;
+    fb.className = 'feedback show ' + (ok ? 'ok' : 'no');
+  }
+  return ok;
+}
+
+function checkGaps(slide) {
+  if (answered.has(slide)) return;
+  answered.add(slide);
+  const rows = [...slide.querySelectorAll('.gap-row')];
+  if (rows.length) {
+    rows.forEach(r => markGap(r.querySelector('.gap'), r.querySelector('.feedback')));
+  } else {
+    markGap(slide.querySelector('.gap'), slide.querySelector('.feedback'));
+  }
+  const btn = slide.querySelector('[data-action="check"]');
+  if (btn) btn.disabled = true;
+  updateScoreChip();
+}
+
+/* ── Activation: word count, copy, and a print mirror (a textarea's
+   value does not appear in a PDF, so we mirror it into a div). ── */
+const actInput = document.getElementById('actInput');
+if (actInput) {
+  const countEl = document.getElementById('actCount');
+  const printEl = document.getElementById('actPrint');
+  const sync = () => {
+    const words = actInput.value.trim().split(/\s+/).filter(Boolean).length;
+    countEl.textContent = t('wordCount')(words);
+    printEl.textContent = actInput.value;
+  };
+  actInput.addEventListener('input', sync);
+  window.syncActivation = sync;
+  sync();
+}
+
+/* ── Events ── */
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-action]');
+  if (!a) return;
+  const act = a.dataset.action;
+  if (act === 'next') show(idx + 1);
+  if (act === 'prev') show(idx - 1);
+  if (act === 'check') checkGaps(a.closest('.slide'));
+  if (act === 'check-order') { const sl = a.closest('.slide'); if (sl._check) sl._check(); }
+  if (act === 'restart') location.reload();
+  if (act === 'copy-writing') {
+    const ta = document.getElementById('actInput');
+    if (ta && navigator.clipboard) navigator.clipboard.writeText(ta.value).then(() => {
+      const was = a.textContent;
+      a.textContent = t('btnCopied');
+      setTimeout(() => { a.textContent = was; }, 1400);
+    });
+  }
+});
+
+document.addEventListener('keydown', e => {
+  if (e.target.matches('input, select, textarea')) {
+    if (e.key === 'Enter') checkGaps(e.target.closest('.slide'));
+    return;
+  }
+  if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); show(idx + 1); }
+  if (['ArrowLeft', 'PageUp'].includes(e.key))         { e.preventDefault(); show(idx - 1); }
+});
+
+/* ── Language ── */
+function applyLang() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const v = t(el.dataset.i18n);
+    if (v != null) el.innerHTML = v;
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const v = t(el.dataset.i18nPh);
+    if (v != null) el.placeholder = v;
+  });
+  if (window.syncActivation) window.syncActivation();
+  document.documentElement.lang = currentLang;
+  document.documentElement.dir = RTL_LANGS.includes(currentLang) ? 'rtl' : 'ltr';
+  updateScoreChip();
+  show(idx);
+}
+
+function initLang() {
+  const sel = document.getElementById('langSelect');
+  // Only offer languages that are actually translated. An empty or partial
+  // scaffold stays in the code for a future pass but never appears as a dead
+  // option in the menu.
+  const enKeys = Object.keys(UI_I18N.en).length;
+  LANGS.filter(l => l.code === 'en' ||
+                    Object.keys(UI_I18N[l.code] || {}).length >= enKeys)
+       .forEach(l => sel.add(new Option(l.label, l.code)));
+  sel.value = currentLang;
+  sel.hidden = sel.options.length < 2;
+  sel.addEventListener('change', () => { currentLang = sel.value; applyLang(); });
+}
+
+/* Per-slide background art: set the variable on the element as well, because
+   the print stylesheet paints each slide's own ::before from var(--hero). */
+slides.filter(s => s.dataset.bg).forEach(s =>
+  s.style.setProperty('--hero', `url('${s.dataset.bg}')`));
+
+/* ── Boot ── */
+initLang();
+fitStage();
+applyLang();
+updateScoreChip();
+
+/* Reveal the wordmark only once DM Sans is really available, so the
+   Forbes/ENGLISH lockup never renders at fallback-font proportions. */
+const ready = () => document.body.classList.add('fonts-ready');
+if (document.fonts && document.fonts.ready) { document.fonts.ready.then(ready); setTimeout(ready, 1500); }
+else ready();
 </script>
 </body>
 </html>

@@ -29,10 +29,24 @@
   --font-ui: 'DM Sans', system-ui, sans-serif;
   --font-mono: 'DM Mono', ui-monospace, monospace;
   --r: 14px;
-  /* The height of the bin row. The falling card, the progress bar and the
-     why-line are all positioned off this, so it is one number, not four —
-     the narrow-screen bug was three of them drifting apart. */
+  /* The height of the bin row. The falling card, the progress bar, the centre
+     rail and the why-line are all positioned off this, so it is one number,
+     not four — the narrow-screen bug was three of them drifting apart. */
   --bins-h: 200px;
+
+  /* Tense colours, from lesson-template/tense-palette.css. This lesson
+     contrasts two tenses the system already owns, so it uses the system's
+     values rather than the hero accent — which had been painting the
+     present-simple box in the present-continuous pink. Both published values
+     are dark, so each is lightened 55% toward white as that file instructs:
+     navy 5.25:1 on --surface, pink 6.34:1.
+
+     The third box is not a tense and takes no tense colour. --text-dim is
+     pink-tinted in this palette and sits 46 RGB units from the continuous
+     pink, so a true neutral is used: 71 units away, 7.68:1. */
+  --t-present-simple    : color-mix(in srgb, #16345C 55%, white);
+  --t-present-continuous: color-mix(in srgb, #C2185B 55%, white);
+  --t-either            : #A8AEAE;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -97,7 +111,7 @@ select.tbtn { padding-right: 8px; }
 #card {
   position: absolute; left: 50%; transform: translateX(-50%);
   font-family: var(--font-display); font-size: 30px; font-weight: 700;
-  color: var(--void); background: var(--accent-bright);
+  color: var(--void); background: var(--text);
   border-radius: var(--r); padding: 14px 30px; white-space: nowrap;
   box-shadow: 0 10px 40px rgba(0,0,0,.45); cursor: grab; user-select: none;
   z-index: 20;
@@ -122,12 +136,19 @@ select.tbtn { padding-right: 8px; }
   gap: 8px; padding: 14px; text-align: center;
   transition: border-color .12s, background .12s, transform .1s;
 }
-.bin:hover, .bin.over { border-style: solid; border-color: var(--accent); transform: translateY(-2px); }
+/* One box per tense, in the site's tense colours. The third box is not a
+   tense and takes the neutral. */
+.bin[data-bin="0"] { --bin-colour: var(--t-present-simple); }
+.bin[data-bin="1"] { --bin-colour: var(--t-present-continuous); }
+.bin[data-bin="2"] { --bin-colour: var(--t-either); }
+.bin { border-color: color-mix(in srgb, var(--bin-colour) 60%, transparent); }
+.bin-label { color: var(--bin-colour); }
+.bin:hover, .bin.over { border-style: solid; border-color: var(--bin-colour); transform: translateY(-2px); }
 .bin.pop { animation: pop .22s ease-out; }
 @keyframes pop { 50% { transform: scale(1.04); } }
 .bin-key {
   font-family: var(--font-mono); font-size: 11px; color: var(--void);
-  background: var(--accent); border-radius: 999px; width: 22px; height: 22px;
+  background: var(--bin-colour); border-radius: 999px; width: 22px; height: 22px;
   display: grid; place-items: center;
 }
 .bin-label { font-family: var(--font-ui); font-weight: 600; font-size: 17px; }
@@ -160,10 +181,9 @@ select.tbtn { padding-right: 8px; }
 /* ── overlays ── */
 .overlay {
   position: fixed; inset: 0; z-index: 100; display: none;
-  /* flex-start + auto margins on the sheet, not align-items:center — a
-     centred flex child taller than the viewport has its top cut off and
-     cannot be scrolled to. On a 320px-wide phone that put the Play button
-     off-screen with no way to reach it. */
+  /* flex-start + auto margins on the sheet, not align-items:center — a centred
+     flex child taller than the viewport has its top cut off and cannot be
+     scrolled to. At 320px that put the Play button out of reach. */
   align-items: flex-start; justify-content: center; padding: 24px;
   overflow-y: auto;
   background: color-mix(in srgb, var(--void) 78%, transparent);
@@ -208,13 +228,12 @@ select.tbtn { padding-right: 8px; }
 .pill.g { background: color-mix(in srgb, var(--ok) 22%, transparent); color: var(--ok); }
 .pill.b { background: color-mix(in srgb, var(--no) 22%, transparent); color: var(--no); }
 .centre { text-align: center; }
-/* Narrow screens stack the three bins, but they must stay pinned to the
-   bottom of the arena. The previous rule set `position: static` here, which
-   moved the bins to the TOP of the arena — straight under the falling card,
-   which has a higher z-index and covered the first bin completely. On a
-   phone the game showed a card and only two of the three boxes, with
-   "Present simple" hidden underneath it, and the card never fell because
-   its stop position was computed from the bins and came out negative. */
+/* Narrow screens stack the three bins, but they must stay pinned to the bottom
+   of the arena. The previous rule set `position: static`, which moved them to
+   the TOP — straight under the falling card, which has the higher z-index and
+   covered the first bin completely. On a phone the game showed a card and only
+   two of the three boxes, with "Present simple" hidden underneath, and the card
+   never fell because its stop is computed from the bins and came out negative. */
 @media (max-width: 820px) {
   :root { --bins-h: 264px; }
   .rules { grid-template-columns: 1fr; }
@@ -231,7 +250,7 @@ select.tbtn { padding-right: 8px; }
   #top { padding: 10px 12px; gap: 8px; }
   #top-right { gap: 6px; }
   .badge, .tbtn { font-size: 11px; padding: 4px 9px; }
-  .fe-logo { width: 74px; }
+  .fe-logo { width: 74px; flex: 0 0 auto; }
 }
 </style>
 </head>
@@ -293,7 +312,7 @@ select.tbtn { padding-right: 8px; }
 </div>
 
 <script>
-const DATA = {"words": [{"t": "every day", "b": 0, "why": "A repeated, regular time. Frequency like this is the core of the present simple: <em>I check my email every day</em>."}, {"t": "always", "b": 0, "why": "An adverb of frequency, so present simple: <em>She always takes the bus</em>. (With the continuous it exists but means something else — <em>He's always interrupting</em> is a complaint, not a timetable.)"}, {"t": "usually", "b": 0, "why": "Frequency adverb → present simple. It sits before the main verb: <em>I usually walk</em>."}, {"t": "never", "b": 0, "why": "Frequency adverb → present simple, and the verb stays positive: <em>He never eats meat</em>, not <em>doesn't never</em>."}, {"t": "sometimes", "b": 0, "why": "Frequency adverb → present simple. It is the one that can also open the sentence: <em>Sometimes I walk home</em>."}, {"t": "on Mondays", "b": 0, "why": "A repeating appointment. Note the plural <em>-s</em> — that is what makes it every Monday rather than one particular one."}, {"t": "twice a week", "b": 0, "why": "A stated frequency → present simple: <em>She swims twice a week</em>."}, {"t": "in general", "b": 0, "why": "Signals a general truth, which is the present simple's other main job: <em>In general, people prefer the direct train</em>."}, {"t": "often", "b": 0, "why": "Frequency adverb → present simple."}, {"t": "rarely", "b": 0, "why": "Frequency adverb → present simple, and like <em>never</em> it carries the negative itself: <em>I rarely see him</em>."}, {"t": "every summer", "b": 0, "why": "A repeated season → present simple: <em>They visit every summer</em>."}, {"t": "as a rule", "b": 0, "why": "A more formal way of saying <em>usually</em> → present simple."}, {"t": "right now", "b": 1, "why": "This exact moment → present continuous: <em>I'm writing right now</em>."}, {"t": "at the moment", "b": 1, "why": "This moment, or the current stretch of time → present continuous: <em>She's living in Berlin at the moment</em>."}, {"t": "currently", "b": 1, "why": "The formal version of <em>at the moment</em> → present continuous: <em>We are currently reviewing your application</em>."}, {"t": "at present", "b": 1, "why": "Formal, and points at now → present continuous."}, {"t": "Look!", "b": 1, "why": "An instruction to look at something happening in front of you → present continuous: <em>Look! It's snowing</em>."}, {"t": "Listen!", "b": 1, "why": "Works exactly like <em>Look!</em> — it points at this second: <em>Listen! Someone's knocking</em>."}, {"t": "at this moment", "b": 1, "why": "As explicit as it gets → present continuous."}, {"t": "while you wait", "b": 1, "why": "An action in progress around another one → present continuous: <em>I'm printing it while you wait</em>."}, {"t": "today", "b": 2, "why": "<strong>Both.</strong> <em>I have three lessons today</em> is a fact about the timetable — simple. <em>I'm working from home today</em> is a temporary arrangement — continuous. The word does not decide; the meaning does."}, {"t": "this week", "b": 2, "why": "<strong>Both.</strong> <em>The shop closes at six this week</em> (the schedule) against <em>I'm covering for Sam this week</em> (a temporary situation)."}, {"t": "this month", "b": 2, "why": "<strong>Both.</strong> Same split as <em>this week</em>: a fixed arrangement takes the simple, a temporary state takes the continuous."}, {"t": "these days", "b": 2, "why": "<strong>Both.</strong> <em>These days people work from home</em> is a general truth — simple. <em>These days I'm cycling in</em> is a temporary change — continuous."}, {"t": "nowadays", "b": 2, "why": "<strong>Both</strong>, though the simple is far commoner: <em>Nowadays most people book online</em>. The continuous appears for a change still under way."}, {"t": "this year", "b": 2, "why": "<strong>Both.</strong> <em>My birthday falls on a Sunday this year</em> against <em>I'm learning Italian this year</em>."}], "bins": {"en": ["Present simple", "Present continuous", "Either — the meaning decides"], "de": ["Present Simple", "Present Continuous", "Beides — die Bedeutung entscheidet"]}, "i18n": {"en": {"title": "Present Simple vs Present <em>Continuous</em>", "sub": "Speed sorting — twenty-six time expressions, three boxes", "ruleEyebrow": "Read this first", "ruleTitle": "The rule the game is testing", "r1h": "Present simple", "r1b": "Repeated, permanent, or generally true.", "r1n": "every day &middot; always &middot; usually &middot; on Mondays &middot; twice a week", "r2h": "Present continuous", "r2b": "Happening now, or temporary.", "r2n": "right now &middot; at the moment &middot; currently &middot; Look! &middot; Listen!", "r3h": "And the third box", "r3b": "Some expressions genuinely take either.", "r3n": "<em>today</em>, <em>this week</em>, <em>these days</em> — a timetable takes the simple, a temporary arrangement takes the continuous. Six of the twenty-six belong here.", "play": "Play &rarr;", "howto": "Click a box, drag the card into it, or press <b>1</b>, <b>2</b>, <b>3</b>. You do not have to wait for the card to land.", "left": "left", "scoreLabel": "Score", "again": "Play again", "doneTitle": "Finished", "correct": "correct", "wrong": "wrong", "band4": "Full marks — including the six that go either way, which is the hard part.", "band3": "Strong. Check which of the three boxes your misses came from.", "band2": "A fair start. Read the rule card again — especially the third box.", "band1": "Read the rule card, then play again. Everything you need is on it.", "backRule": "Show the rule"}, "de": {"title": "Present Simple vs Present <em>Continuous</em>", "sub": "Schnelles Sortieren — 26 Zeitangaben, drei Kästen", "ruleEyebrow": "Zuerst lesen", "ruleTitle": "Die Regel, um die es im Spiel geht", "r1h": "Present Simple", "r1b": "Wiederholt, dauerhaft oder allgemein gültig.", "r1n": "every day &middot; always &middot; usually &middot; on Mondays &middot; twice a week", "r2h": "Present Continuous", "r2b": "Passiert gerade jetzt, oder vorübergehend.", "r2n": "right now &middot; at the moment &middot; currently &middot; Look! &middot; Listen!", "r3h": "Und der dritte Kasten", "r3b": "Manche Ausdrücke passen wirklich zu beidem.", "r3n": "<em>today</em>, <em>this week</em>, <em>these days</em> — ein fester Plan verlangt das Simple, eine vorübergehende Regelung das Continuous. Sechs der 26 gehören hierher.", "play": "Spielen &rarr;", "howto": "Klicke einen Kasten an, zieh die Karte hinein oder drücke <b>1</b>, <b>2</b>, <b>3</b>. Du musst nicht warten, bis die Karte unten ist.", "left": "übrig", "scoreLabel": "Punkte", "again": "Nochmal spielen", "doneTitle": "Fertig", "correct": "richtig", "wrong": "falsch", "band4": "Volle Punktzahl — inklusive der sechs, die zu beidem passen. Das ist der schwierige Teil.", "band3": "Stark. Schau nach, aus welchem der drei Kästen deine Fehler kamen.", "band2": "Ein ordentlicher Anfang. Lies die Regelkarte noch einmal — vor allem den dritten Kasten.", "band1": "Lies die Regelkarte und spiel noch einmal. Alles, was du brauchst, steht darauf.", "backRule": "Regel anzeigen"}}};
+const DATA = {"words": [{"t": "every day", "b": 0, "why": "A repeated, regular time. Frequency like this is the core of the present simple: <em>I check my email every day</em>."}, {"t": "always", "b": 2, "why": "<strong>Both.</strong> As a frequency adverb it takes the simple: <em>She always takes the bus</em>. With the continuous it stops being a timetable and becomes a complaint: <em>He&rsquo;s always interrupting</em>. Same adverb, two grammars, two meanings."}, {"t": "usually", "b": 0, "why": "Frequency adverb → present simple. It sits before the main verb: <em>I usually walk</em>."}, {"t": "never", "b": 0, "why": "Frequency adverb → present simple, and the verb stays positive: <em>He never eats meat</em>, not <em>doesn't never</em>."}, {"t": "sometimes", "b": 0, "why": "Frequency adverb → present simple. It is the one that can also open the sentence: <em>Sometimes I walk home</em>."}, {"t": "on Mondays", "b": 0, "why": "A repeating appointment. Note the plural <em>-s</em> — that is what makes it every Monday rather than one particular one."}, {"t": "twice a week", "b": 0, "why": "A stated frequency → present simple: <em>She swims twice a week</em>."}, {"t": "in general", "b": 0, "why": "Signals a general truth, which is the present simple's other main job: <em>In general, people prefer the direct train</em>."}, {"t": "often", "b": 0, "why": "Frequency adverb → present simple."}, {"t": "rarely", "b": 0, "why": "Frequency adverb → present simple, and like <em>never</em> it carries the negative itself: <em>I rarely see him</em>."}, {"t": "every summer", "b": 0, "why": "A repeated season → present simple: <em>They visit every summer</em>."}, {"t": "as a rule", "b": 0, "why": "A more formal way of saying <em>usually</em> → present simple."}, {"t": "right now", "b": 1, "why": "This exact moment → present continuous: <em>I'm writing right now</em>."}, {"t": "at the moment", "b": 1, "why": "This moment, or the current stretch of time → present continuous: <em>She's living in Berlin at the moment</em>."}, {"t": "currently", "b": 1, "why": "The formal version of <em>at the moment</em> → present continuous: <em>We are currently reviewing your application</em>."}, {"t": "at present", "b": 1, "why": "Formal, and points at now → present continuous."}, {"t": "Look!", "b": 1, "why": "An instruction to look at something happening in front of you → present continuous: <em>Look! It's snowing</em>."}, {"t": "Listen!", "b": 1, "why": "Works exactly like <em>Look!</em> — it points at this second: <em>Listen! Someone's knocking</em>."}, {"t": "at this moment", "b": 1, "why": "As explicit as it gets → present continuous."}, {"t": "while you wait", "b": 1, "why": "An action in progress around another one → present continuous: <em>I'm printing it while you wait</em>."}, {"t": "today", "b": 2, "why": "<strong>Both.</strong> <em>I have three lessons today</em> is a fact about the timetable — simple. <em>I'm working from home today</em> is a temporary arrangement — continuous. The word does not decide; the meaning does."}, {"t": "this week", "b": 2, "why": "<strong>Both.</strong> <em>The shop closes at six this week</em> (the schedule) against <em>I'm covering for Sam this week</em> (a temporary situation)."}, {"t": "this month", "b": 2, "why": "<strong>Both.</strong> Same split as <em>this week</em>: a fixed arrangement takes the simple, a temporary state takes the continuous."}, {"t": "these days", "b": 2, "why": "<strong>Both.</strong> <em>These days people work from home</em> is a general truth — simple. <em>These days I'm cycling in</em> is a temporary change — continuous."}, {"t": "nowadays", "b": 2, "why": "<strong>Both</strong>, though the simple is far commoner: <em>Nowadays most people book online</em>. The continuous appears for a change still under way."}, {"t": "this year", "b": 2, "why": "<strong>Both.</strong> <em>My birthday falls on a Sunday this year</em> against <em>I'm learning Italian this year</em>."}], "bins": {"en": ["Present simple", "Present continuous", "Either — the meaning decides"], "de": ["Present Simple", "Present Continuous", "Beides — die Bedeutung entscheidet"]}, "i18n": {"en": {"title": "Present Simple vs Present <em>Continuous</em>", "sub": "Speed sorting — twenty-six time expressions, three boxes", "ruleEyebrow": "Read this first", "ruleTitle": "The rule the game is testing", "r1h": "Present simple", "r1b": "Repeated, permanent, or generally true.", "r1n": "every day &middot; usually &middot; often &middot; on Mondays &middot; twice a week", "r2h": "Present continuous", "r2b": "Happening now, or temporary.", "r2n": "right now &middot; at the moment &middot; currently &middot; Look! &middot; Listen!", "r3h": "And the third box", "r3b": "Some expressions genuinely take either.", "r3n": "<em>today</em>, <em>this week</em>, <em>always</em> — a timetable takes the simple, a temporary arrangement takes the continuous, and <em>always</em> with the continuous is a complaint. Seven of the twenty-six belong here.", "play": "Play &rarr;", "howto": "Click a box, drag the card into it, or press <b>1</b>, <b>2</b>, <b>3</b>. You do not have to wait for the card to land.", "left": "left", "scoreLabel": "Score", "again": "Play again", "doneTitle": "Finished", "correct": "correct", "wrong": "wrong", "band4": "Full marks — including the seven that go either way, which is the hard part.", "band3": "Strong. Check which of the three boxes your misses came from.", "band2": "A fair start. Read the rule card again — especially the third box.", "band1": "Read the rule card, then play again. Everything you need is on it.", "backRule": "Show the rule"}, "de": {"title": "Present Simple vs Present <em>Continuous</em>", "sub": "Schnelles Sortieren — 26 Zeitangaben, drei Kästen", "ruleEyebrow": "Zuerst lesen", "ruleTitle": "Die Regel, um die es im Spiel geht", "r1h": "Present Simple", "r1b": "Wiederholt, dauerhaft oder allgemein gültig.", "r1n": "every day &middot; usually &middot; often &middot; on Mondays &middot; twice a week", "r2h": "Present Continuous", "r2b": "Passiert gerade jetzt, oder vorübergehend.", "r2n": "right now &middot; at the moment &middot; currently &middot; Look! &middot; Listen!", "r3h": "Und der dritte Kasten", "r3b": "Manche Ausdrücke passen wirklich zu beidem.", "r3n": "<em>today</em>, <em>this week</em>, <em>always</em> — ein fester Plan verlangt das Simple, eine vorübergehende Regelung das Continuous, und <em>always</em> mit dem Continuous ist eine Beschwerde. Sieben der 26 gehören hierher.", "play": "Spielen &rarr;", "howto": "Klicke einen Kasten an, zieh die Karte hinein oder drücke <b>1</b>, <b>2</b>, <b>3</b>. Du musst nicht warten, bis die Karte unten ist.", "left": "übrig", "scoreLabel": "Punkte", "again": "Nochmal spielen", "doneTitle": "Fertig", "correct": "richtig", "wrong": "falsch", "band4": "Volle Punktzahl — inklusive der sieben, die zu beidem passen. Das ist der schwierige Teil.", "band3": "Stark. Schau nach, aus welchem der drei Kästen deine Fehler kamen.", "band2": "Ein ordentlicher Anfang. Lies die Regelkarte noch einmal — vor allem den dritten Kasten.", "band1": "Lies die Regelkarte und spiel noch einmal. Alles, was du brauchst, steht darauf.", "backRule": "Regel anzeigen"}}};
 const WORDS = DATA.words, BINS = DATA.bins, I18N = DATA.i18n;
 let lang = 'en';
 const t = k => (I18N[lang] && I18N[lang][k] != null) ? I18N[lang][k] : I18N.en[k];
@@ -396,9 +415,9 @@ function answer(bin) {
   cancelAnimationFrame(raf);
   const w = WORDS[queue[i]];
   const ok = bin === w.b;
-  // The tally in each bin counts every card dropped there, right or wrong.
-  // It used to increment only on a correct answer, so a learner who missed
-  // one watched the number stay put and reasonably concluded it was broken.
+  // The tally counts every card dropped in a box, right or wrong. It used to
+  // increment only on a correct answer, so a learner who missed one watched
+  // the number stay put and reasonably concluded it was broken.
   counts[bin]++;
   if (ok) { right++; } else { wrong++; }
   cardEl.classList.add(ok ? 'good' : 'bad');
