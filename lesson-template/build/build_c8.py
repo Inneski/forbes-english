@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Camp eight · present perfect continuous. Built from camp seven."""
 import re, sys
-sys.path.insert(0, '/tmp')
+sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 sys.path.insert(0, 'lesson-template')
 import trail_diagram as D
 from build_c10 import (assemble, hero, rule_grid, MARK_FLAG, MARK_TABLE,

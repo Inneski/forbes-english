@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Camp ten · past perfect. Built from camp seven, like camps six and nine."""
 import re, sys
-sys.path.insert(0, '/tmp')
+sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 sys.path.insert(0, 'lesson-template')
 import camp_ten_diagram as D
 

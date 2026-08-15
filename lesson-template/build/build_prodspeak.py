@@ -33,7 +33,7 @@ gives the deck a spine without touching the speaking work — a teacher can
 still run them aloud, with the options on the wall.
 """
 import sys
-sys.path.insert(0, '/tmp')
+sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 import deck as D
 
 TPL = 'lesson-template/lesson-template.html'

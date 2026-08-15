@@ -50,7 +50,7 @@ Three illustrations: the shepherd on the hill as the hero, the
 alchemist's laboratory and the pyramids as per-slide backgrounds.
 """
 import sys
-sys.path.insert(0, '/tmp')
+sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 import deck as D
 
 TPL = 'lesson-template/lesson-template.html'

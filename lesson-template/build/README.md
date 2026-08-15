@@ -35,6 +35,38 @@ here rather than retranslating. Russian's `wordCount` is a multi-line
 arrow function, so it was lifted with a brace-aware scan rather than a
 line regex.
 
+## Two things `deck.py` now does for you
+
+**`mc(..., explains=[...])`** takes one explanation per option, so a learner
+who picks a distractor is told why *their* answer was wrong rather than why
+the key was right. Five builders did this by injecting `data-explain` onto
+the buttons after calling `D.mc`; those still work and produce identical
+markup, so they have not been rewritten, but **new builders should pass
+`explains=`**. `None` in the list leaves that option to the slide-level
+explanation.
+
+**`assemble()` sets `data-theme` from the palette.** It reads `--void`,
+computes its relative luminance, and adds `data-theme="light"` above 0.2.
+Two shipped decks carried a light palette with no attribute, so the light
+primitives never applied and their insets and hairlines — white on cream —
+were invisible. It used to be a line each builder had to remember. It is not
+any more; a builder that still does the replace itself is harmless, because
+the attribute is already there and the replace finds nothing.
+
+## Import path
+
+Every builder must import from the repo:
+
+```python
+sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
+```
+
+**Not `/tmp`.** Fifty-four of them used to, which meant that on a fresh
+session — where `/tmp` is empty — they could not import `deck` at all and no
+lesson could be rebuilt. The modules they needed lived only in `/tmp` too;
+`camp_diagrams`, `passive_kit`, `sailing_map` and five others were rescued
+into this folder for the same reason.
+
 ## Building a lesson
 
 ```bash
@@ -73,3 +105,18 @@ lesson.
   line. Counting `<section class="slide` in the source returns N+1.
 - The shell's working directory resets between calls; run builders from
   the repo root.
+
+## Two builders are not builders
+
+`build_gf.py` and `build_kool.py` read their already-built lesson and
+extract a JS block from it. They were one-shot converters, they cannot
+regenerate their deck from the template, and they fail if run. Left in place
+because they record how those two lessons were made; do not expect them to
+run.
+
+## Order matters for the sherpa decks
+
+`sherpa-tensing-camp-one` and `camp-two` are written by one builder and then
+post-processed by another that **appends** the shared route-timeline CSS
+without checking whether it is already there. Running the whole build set
+twice injects it twice. Regenerate those two singly, or check the output.

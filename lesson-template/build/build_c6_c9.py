@@ -9,7 +9,7 @@ rectangle, and the diagrams are deliberately siblings.
 """
 import re, sys, shutil
 sys.path.insert(0, 'lesson-template')
-shutil.copy('/tmp/camp_diagrams.py', 'camp_diagrams.py')
+# camp_diagrams lives in lesson-template/build/, already on sys.path
 import camp_diagrams as D
 
 BASE = open('sherpa-tensing-camp-seven-future-simple.html', encoding='utf-8').read()
@@ -703,4 +703,4 @@ assemble(NINE_HERO, NINE_CAMPS, NINE_JS, NINE_Q, NINE_PALETTE,
 print('camp nine written')
 
 import os
-os.remove('camp_diagrams.py')
+# nothing to clean up: camp_diagrams is imported from the build dir, not copied in

@@ -20,7 +20,7 @@ makes it work. Write first, then compare — which is what the AI feedback was
 approximating anyway.
 """
 import sys
-sys.path.insert(0, '/tmp')
+sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 import deck as D
 
 TPL = 'lesson-template/lesson-template.html'

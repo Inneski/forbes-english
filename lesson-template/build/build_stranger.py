@@ -66,7 +66,7 @@ this lesson actually uses, which can be taught and tested honestly
 without audio.
 """
 import sys
-sys.path.insert(0, '/tmp')
+sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 import deck as D
 
 TPL = 'lesson-template/lesson-template.html'

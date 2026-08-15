@@ -51,7 +51,7 @@ one, so the answer was the long option whenever the answer was
 progressive. Gaps instead — the learner produces the form.
 """
 import sys
-sys.path.insert(0, '/tmp')
+sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 import deck as D
 
 TPL = 'lesson-template/lesson-template.html'

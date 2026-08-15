@@ -14,7 +14,7 @@ verbatim from forbes-c1-negotiation.html, which is the worked reference, so
 the two lessons say the same thing the same way.
 """
 import json, sys
-sys.path.insert(0, '/tmp')
+sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 from chrome_i18n import CHROME
 
 LIFT = ['btnStart', 'btnCheck', 'btnNext', 'btnRestart', 'scoreLabel', 'slideOf',

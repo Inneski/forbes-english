@@ -96,10 +96,29 @@ def teach(eyebrow_key, eyebrow, title_key, title, cards, cols=None, folder='', b
 
 
 def mc(i, total, q, eyebrow_key, eyebrow, title_key, title, folder='', bg=None,
-       ctx=None):
-    opts = "\n          ".join(
-        '<button class="opt"%s>%s</button>' % (' data-correct' if n == q['correct'] else '', o)
-        for n, o in enumerate(q['options']))
+       ctx=None, explains=None):
+    """explains: optional list, one per option, of why THAT option is wrong.
+
+    Without it the slide carries a single explanation and a learner who picks
+    a distractor is told why the key was right rather than why their answer
+    was not — the identical-feedback defect that has been fixed by hand in
+    five separate builders, each of which injected data-explain onto the
+    buttons after calling this function. The engine already prefers an
+    option's own explanation, so this only moves the injection here.
+
+    Pass None for an option to leave it without its own explanation; the
+    slide-level one still applies.
+    """
+    if explains is not None and len(explains) != len(q['options']):
+        raise AssertionError(
+            'mc: %d explains for %d options — one per option, None to skip'
+            % (len(explains), len(q['options'])))
+    def _opt(n, o):
+        attrs = ' data-correct' if n == q['correct'] else ''
+        if explains is not None and explains[n]:
+            attrs += ' data-explain="%s"' % esc(explains[n])
+        return '<button class="opt"%s>%s</button>' % (attrs, o)
+    opts = "\n          ".join(_opt(n, o) for n, o in enumerate(q['options']))
     return '''
     <section class="slide" data-type="mc"%s>
       <div class="slide-head"><div>
@@ -274,6 +293,19 @@ def assemble(tpl_path, out_path, slides, palette, title, i18n_module, langs=('en
         ['  %s: %s' % (c, i18n_module.render(c)) for c in langs]
         + ['  %s: {}' % c for c in all_langs if c not in langs]) + '\n};'
     s = re.sub(r'const UI_I18N = \{.*?\n\};', block, s, count=1, flags=re.S)
+
+    # The theme follows the palette, because it is the palette. Two shipped
+    # decks carried a light palette with no data-theme attribute, so the
+    # light primitives never applied and their insets and hairlines — white
+    # on white — were invisible. That was a line each builder had to
+    # remember, and two forgot. Deriving it removes the chance.
+    m = re.search(r'--void\s*:\s*#([0-9a-fA-F]{6})', palette)
+    if m:
+        rgb = [int(m.group(1)[i:i + 2], 16) / 255.0 for i in (0, 2, 4)]
+        f = lambda c: c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4
+        if 0.2126 * f(rgb[0]) + 0.7152 * f(rgb[1]) + 0.0722 * f(rgb[2]) > 0.2:
+            s = s.replace('<html lang="en">', '<html lang="en" data-theme="light">', 1)
+
     open(out_path, 'w', encoding='utf-8').write(s)
     return s
 

@@ -34,7 +34,7 @@ possessives", "the independent form", "no noun directly after". At this level
 the rule is: <strong>the noun disappears</strong>.
 """
 import sys
-sys.path.insert(0, '/tmp')
+sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 import deck as D
 
 TPL = 'lesson-template/lesson-template.html'

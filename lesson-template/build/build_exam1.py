@@ -66,7 +66,7 @@ potatoes, peaches, cream. Added, with German glosses, on their own slide.
 unexpectedly, German *plötzlich*) and the next activity tested that word.
 """
 import sys
-sys.path.insert(0, '/tmp')
+sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 import deck as D
 
 TPL = 'lesson-template/lesson-template.html'

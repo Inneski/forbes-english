@@ -350,5 +350,5 @@ def build():
 
 if __name__ == '__main__':
     import sys
-    sys.path.insert(0, '/tmp')
+    sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
     build()

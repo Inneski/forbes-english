@@ -17,7 +17,7 @@ which the deck engine supports — telling a learner why THEIR answer was wrong
 is worth more than restating why the key was right.
 """
 import sys
-sys.path.insert(0, '/tmp')
+sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 import deck as D
 
 TPL = 'lesson-template/lesson-template.html'

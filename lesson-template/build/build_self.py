@@ -30,7 +30,7 @@ fill out of eight, and nothing added them up. The deck counts every scored
 element once.
 """
 import sys
-sys.path.insert(0, '/tmp')
+sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 import deck as D
 
 TPL = 'lesson-template/lesson-template.html'

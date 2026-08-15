@@ -15,7 +15,7 @@ existed to demonstrate, and two rows of the discourse-marker table the
 same way.
 """
 import json, sys
-sys.path.insert(0, '/tmp')
+sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 from chrome_i18n import CHROME
 import build_impostor as B
 

@@ -38,7 +38,7 @@ deputy lead was inspected by the bund wall" passed. It is a gap now, and the
 open version moved to the activation stage where a human reads it.
 """
 import sys
-sys.path.insert(0, '/tmp')
+sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 import deck as D
 
 TPL = 'lesson-template/lesson-template.html'

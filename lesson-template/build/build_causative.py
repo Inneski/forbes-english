@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """The moon: the causative — you arrange it, somebody else does it."""
 import sys
-sys.path.insert(0, '/tmp')
+sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 sys.path.insert(0, 'lesson-template')
 from build_c10 import assemble, hero, rule_grid, MARK_FLAG, MARK_TABLE, MARK_FORK, MARK_CLOCK, MARK_PANES
 from build_c11_12_13 import chart, fork, signals, interactive, questions, js, palette

@@ -11,7 +11,7 @@ those distractors were lengthened. The rest already sat within a character or
 two, which is what a well-built item looks like.
 """
 import sys
-sys.path.insert(0, '/tmp')
+sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 import deck as D
 
 TPL = 'lesson-template/lesson-template.html'

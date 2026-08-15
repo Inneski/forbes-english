@@ -7,7 +7,7 @@ English on every setting. The other eight languages ship empty so they stay
 out of the menu rather than half-filling the interface.
 """
 import json, sys
-sys.path.insert(0, '/tmp')
+sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 from chrome_i18n import CHROME
 
 LIFT = ['btnStart', 'btnCheck', 'btnNext', 'btnRestart', 'scoreLabel', 'slideOf',

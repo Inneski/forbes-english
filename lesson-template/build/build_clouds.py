@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """The first two clouds: used to, and to be used to + -ing."""
 import sys
-sys.path.insert(0, '/tmp')
+sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 sys.path.insert(0, 'lesson-template')
 import cloud_diagram as C
 from build_c10 import assemble, hero, rule_grid, MARK_FLAG, MARK_TABLE, MARK_FORK, MARK_CLOCK, MARK_PANES

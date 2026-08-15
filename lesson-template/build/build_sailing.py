@@ -14,7 +14,7 @@ island (the same verb, two meanings, depending on the channel) and the cape
 that flies a false flag (the *to* in *look forward to* is a preposition).
 """
 import re, sys, glob
-sys.path.insert(0, '/tmp')
+sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 sys.path.insert(0, 'lesson-template')
 import sailing_map as M
 

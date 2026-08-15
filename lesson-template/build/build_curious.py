@@ -27,7 +27,7 @@ twice was marked out of a larger denominator than one who guessed once. The
 deck engine scores pairs.
 """
 import sys
-sys.path.insert(0, '/tmp')
+sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 import deck as D
 
 TPL = 'lesson-template/lesson-template.html'

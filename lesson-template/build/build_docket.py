@@ -39,7 +39,7 @@ And, as everywhere in this batch, there was no teaching: twenty-five scored
 items and not one line of presentation before them.
 """
 import sys
-sys.path.insert(0, '/tmp')
+sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 import deck as D
 
 TPL = 'lesson-template/lesson-template.html'

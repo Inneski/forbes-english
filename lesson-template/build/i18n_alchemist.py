@@ -5,7 +5,7 @@ Vocabulary notes and reading notes are attached from the data tables in
 build_alchemist.py rather than retyped.
 """
 import json, sys
-sys.path.insert(0, '/tmp')
+sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 from chrome_i18n import CHROME
 import build_alchemist as B
 

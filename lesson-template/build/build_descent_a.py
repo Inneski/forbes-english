@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Descent: present simple, present continuous, present perfect, future simple."""
 import sys
-sys.path.insert(0, '/tmp')
+sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 from passive_kit import build
 
 Q = lambda *a: a

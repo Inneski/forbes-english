@@ -15,7 +15,7 @@ fatal: the more considered wording genuinely is the longer one, so length was
 a free answer key. Every distractor was lengthened to match.
 """
 import sys
-sys.path.insert(0, '/tmp')
+sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 import deck as D
 from pitch_mc import MC
 

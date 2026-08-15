@@ -31,7 +31,7 @@ was defined as the distance from optical centre to sensor, which is only true
 at infinity focus.
 """
 import sys
-sys.path.insert(0, '/tmp')
+sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 import deck as D
 
 TPL = 'lesson-template/lesson-template.html'

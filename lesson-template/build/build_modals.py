@@ -13,7 +13,7 @@ because the whole sentence sat in the `before` field with `after` empty — so
 that item is now written the way the other four are.
 """
 import sys
-sys.path.insert(0, '/tmp')
+sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 import deck as D
 
 TPL = 'lesson-template/lesson-template.html'

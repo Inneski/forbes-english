@@ -7,7 +7,7 @@ the word bank and the explanations all stay in English on every setting —
 translating them would hand the learner the answer.
 """
 import json, sys
-sys.path.insert(0, '/tmp')
+sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 from chrome_i18n import CHROME
 
 LIFT = ['btnStart', 'btnCheck', 'btnNext', 'btnRestart', 'scoreLabel', 'slideOf',

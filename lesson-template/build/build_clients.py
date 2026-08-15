@@ -14,7 +14,7 @@ four moves that hold a client conversation together, and the same message at
 three temperatures.
 """
 import sys
-sys.path.insert(0, '/tmp')
+sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 import deck as D
 from clients_mc import MC
 

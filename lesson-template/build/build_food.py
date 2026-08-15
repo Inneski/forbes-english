@@ -34,7 +34,7 @@ PALETTE = '''  --hero: url('%s/hero.jpg');
   --secondary     : #325569;
   --contrast      : #1deda7;''' % FOLDER
 
-sys.path.insert(0, '/tmp')
+sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 from food_mc import MC
 
 # ── The dialogue, in two halves. Each line is (speaker, text). ──────────

@@ -6,7 +6,7 @@ scenarios, their options, the collocations, the word bank and the five office
 idioms all stay in English on every setting — they are the lesson.
 """
 import json, sys
-sys.path.insert(0, '/tmp')
+sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 from chrome_i18n import CHROME
 
 LIFT = ['btnStart', 'btnCheck', 'btnNext', 'btnRestart', 'scoreLabel', 'slideOf',

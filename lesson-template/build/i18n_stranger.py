@@ -6,7 +6,7 @@ attached at the bottom, so the English exists in one place. That import is
 safe: build_stranger only imports this module inside its __main__ block.
 """
 import json, sys
-sys.path.insert(0, '/tmp')
+sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 from chrome_i18n import CHROME
 import build_stranger as B
 
