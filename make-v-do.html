@@ -1,873 +1,1797 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Make v Do</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- ══ REPLACE: lesson title. No "Forbes English —" prefix. ══ -->
+<title>Make v Do — B1 | Forbes English</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --paper: #faf7f2;
-    --ink: #1f2430;
-    --ink-soft: #565c6b;
-    --make: #146b5c;
-    --make-soft: #d9ece7;
-    --make-deep: #0c463c;
-    --do: #3c4a9e;
-    --do-soft: #e1e4f7;
-    --do-deep: #262f6b;
-    --line: #e4ded3;
-    --wrong: #b3432f;
+/* ══════════════════════════════════════════════════════════════════
+   FORBES ENGLISH — 16:9 SLIDE LESSON TEMPLATE
+   Everything you normally need to change lives in the two blocks
+   marked "REPLACE". Do not restructure the engine below them.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ══ REPLACE 1 of 2: hero image + palette ══
+   1. Point --hero at the lesson's cover image. This ONE line drives the
+      cover, the background pattern on every slide, and the PDF export.
+   2. Generate the palette FROM that same image:
+         python3 lesson-template/extract-palette.py <hero-image>
+      and paste its output over the colour block. Never hand-pick colours. */
+:root {
+  --hero: url('MakeVDo/hero.jpg');
+
+  --void          : #0e090e;
+  --surface       : #1c121c;
+  --surface2      : #281a28;
+  --border        : #8f3e54;
+  --text          : #f5f2f3;
+  --text-dim      : #bfa3ab;
+  --accent        : #e05379;
+  --accent-bright : #ef8ca6;
+  --accent-dim    : #b1264c;
+  --secondary     : #35496c;
+  --contrast      : #1ded51;
+}
+
+/* ── Fixed tokens: identical in every lesson. Do not edit. ── */
+:root {
+  --slide-w: 1280px;
+  --slide-h: 720px;
+  --pad: 64px;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-ui: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'DM Mono', ui-monospace, monospace;
+  --r: 10px;
+  --ok: #3fbf7f;
+  --no: #e8555f;
+  --bg-opacity: 0.34;     /* background pattern strength — see doc §6 */
+
+  /* Theme primitives. Dark is the default; a light lesson sets
+     data-theme="light" on <html> and only these flip. Never hardcode
+     rgba(0,0,0,…) or rgba(255,255,255,…) in a lesson — use these. */
+  --inset:  rgba(255,255,255,0.07);  /* recessed fills: inputs, key discs   */
+  --inset2: rgba(255,255,255,0.14);  /* the same, one step stronger         */
+  --scrim:  rgba(0,0,0,0.45);        /* chrome sitting over the hero        */
+  --hairline: rgba(255,255,255,0.28);
+  --cover-shadow: 0 1px 2px rgba(0,0,0,0.95), 0 2px 8px rgba(0,0,0,0.90),
+                  0 4px 26px rgba(0,0,0,0.80), 0 0 3px rgba(0,0,0,0.85);
+  /* Interior background wash. Two stops, not one: the artwork stays visible
+     across the middle of the slide and is only pulled down at the very top
+     and bottom, where the eyebrow, the deck bar and the progress rail sit.
+     An interior page that reads as plain black is a bug — see doc §6. */
+  --wash-mid:  rgba(0,0,0,0.06);
+  --wash-edge: rgba(0,0,0,0.20);
+}
+
+/* ══ LIGHT THEME ══
+   For bright, airy heroes. The palette comes from
+   `extract-palette.py <hero> --light`; these are the structural flips the
+   palette alone cannot express.
+
+   A light lesson is a MID tone, not a white one. Every wash here is mixed
+   from --void rather than from white: mixing toward white bleaches the hero
+   out of the interior pages and turns the deck into glare on a projector.
+   If you find yourself reaching for rgba(255,255,255,…) in a lesson, the
+   answer is a higher --void percentage instead. */
+html[data-theme="light"] {
+  --inset:  rgba(0,0,0,0.045);
+  --inset2: rgba(0,0,0,0.10);
+  --scrim:  color-mix(in srgb, var(--void) 78%, transparent);
+  --hairline: rgba(0,0,0,0.14);
+  --cover-shadow: 0 1px 2px rgba(255,255,255,0.95), 0 2px 8px rgba(255,255,255,0.85),
+                  0 4px 26px rgba(255,255,255,0.6), 0 0 3px rgba(255,255,255,0.9);
+  --wash-mid:  color-mix(in srgb, var(--void) 8%, transparent);
+  --wash-edge: color-mix(in srgb, var(--void) 26%, transparent);
+  --bg-opacity: 0.62;
+}
+
+/* On a mid canvas a translucent card has little to contrast against, so
+   edges need more of the hairline than they do on a dark canvas. */
+html[data-theme="light"] .card { border-color: color-mix(in srgb, var(--border) 90%, transparent); }
+html[data-theme="light"] .opt,
+html[data-theme="light"] .match-item { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
+html[data-theme="light"] .opt-key { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
+html[data-theme="light"] .card { background: color-mix(in srgb, var(--surface) 92%, transparent); }
+html[data-theme="light"] .opt { background: color-mix(in srgb, var(--surface) 95%, transparent); }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;            /* NO SCROLLING. This is the whole point. */
+  background: var(--void);
+  color: var(--text);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── STAGE: a fixed 1280×720 canvas scaled to fit any viewport ── */
+/* A plain fixed box, NOT a centring grid. A grid item wider than its track is
+   aligned to start by the browser rather than overflowing both sides, so on any
+   viewport narrower than 1280px the stage's layout box began at x=0 and
+   `transform-origin: center center` scaled it about x=640 — shifting it right,
+   and clean off the screen on a phone, leaving a black page. The stage is now
+   pinned top-left and fitStage() does the centring, so the transform can never
+   disagree with the layout. */
+.stage-wrap { position: fixed; inset: 0; overflow: hidden; }
+.stage {
+  position: absolute; left: 0; top: 0;
+  width: var(--slide-w);
+  height: var(--slide-h);
+  transform-origin: top left;
+  overflow: hidden;
+  background: var(--void);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.55);
+}
+
+/* ── BACKGROUND PATTERN: the cover image, behind every slide ──
+   Driven by --hero so the screen view and the PDF/PPT export read from
+   ONE definition. Two pseudo-layers because opacity on a parent would
+   also fade the wash sitting on top of it. */
+.bg-layer { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.bg-layer::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--hero) center / cover no-repeat;
+  opacity: var(--bg-opacity);
+  filter: saturate(0.92);
+}
+.bg-layer::after {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, var(--wash-edge) 0%, var(--wash-mid) 20%,
+                            var(--wash-mid) 80%, var(--wash-edge) 100%);
+}
+/* The cover slide shows the hero at FULL strength — no wash, no dimming. */
+.stage.on-cover .bg-layer::before { opacity: 1; filter: none; }
+/* Centre scrim: guarantees cover-text contrast over ANY hero — light, dark,
+   or busy — while leaving the artwork vivid at the edges. Do not remove it;
+   it is what makes an arbitrary dropped-in image safe. */
+.stage.on-cover .bg-layer::after {
+  background:
+    radial-gradient(ellipse 58% 54% at 50% 46%,
+      rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.22) 54%, transparent 82%),
+    linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.03) 30%,
+                            rgba(0,0,0,0.05) 70%, rgba(0,0,0,0.38) 100%);
+}
+/* A light cover keeps its picture. Dark ink already carries against a bright
+   image, so the scrim here is barely there — just enough to stop the title
+   landing on a hard edge. Never brighten a light cover to rescue text; if the
+   text will not read, the hero is wrong for a light lesson. */
+html[data-theme="light"] .stage.on-cover .bg-layer::after {
+  background:
+    radial-gradient(ellipse 58% 54% at 50% 46%,
+      rgba(255,255,255,0.48) 0%, rgba(255,255,255,0.28) 54%, transparent 82%),
+    linear-gradient(180deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.03) 30%,
+                            rgba(255,255,255,0.05) 70%, rgba(255,255,255,0.22) 100%);
+}
+
+/* ── SLIDES ── */
+.slide {
+  position: absolute; inset: 0; z-index: 1;
+  display: none;
+  flex-direction: column;
+  padding: var(--pad);
+}
+.slide.is-active { display: flex; animation: slide-in .32s ease both; }
+@keyframes slide-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+/* ── LOGO ── */
+.fe-logo { width: 152px; height: auto; display: block; }
+.fe-logo-mark { color: var(--logo-mark, var(--accent)); }
+.fe-logo-word { fill: var(--text); opacity: 0; transition: opacity .25s ease; }
+.fonts-ready .fe-logo-word { opacity: 1; }   /* never flash a fallback face */
+.slide[data-type="cover"] .fe-logo { width: 232px; }
+
+/* ── COVER ── */
+.cover-inner {
+  height: 100%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; gap: 4px;
+}
+.cover-title {
+  font-family: var(--font-display);
+  font-size: 62px; font-weight: 900; line-height: 1.06;
+  color: var(--text);
+  text-shadow: var(--cover-shadow);
+  margin-top: 26px;
+}
+.cover-title em { font-style: normal; color: var(--accent-bright); }
+.cover-sub {
+  font-size: 19px; color: var(--text);
+  letter-spacing: .04em; margin-top: 14px;
+  text-shadow: var(--cover-shadow);
+}
+.cover-meta {
+  display: flex; gap: 10px; margin-top: 26px; flex-wrap: wrap; justify-content: center;
+}
+.chip {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase;
+  padding: 6px 14px; border-radius: 999px;
+  border: 1px solid var(--hairline);
+  background: var(--scrim);
+  color: var(--text);
+}
+
+/* ── SLIDE FURNITURE ── */
+.slide-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 20px; margin-bottom: 26px;
+}
+.eyebrow {
+  font-family: var(--font-mono); font-size: 12px;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent-bright);
+}
+.slide-title {
+  font-family: var(--font-display);
+  font-size: 38px; font-weight: 700; line-height: 1.15; color: var(--text);
+  margin-top: 6px;
+}
+.slide-body { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; }
+
+/* Content sits in a translucent card so it stays legible over the pattern. */
+.card {
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+  border-radius: var(--r);
+  padding: 30px 34px;
+  backdrop-filter: blur(3px);
+}
+.card + .card { margin-top: 16px; }
+.cols .card + .card,
+.cols .card { margin-top: 0; }   /* side-by-side cards must share a top edge */
+.prose { font-size: 20px; line-height: 1.62; color: var(--text); }
+.prose + .prose { margin-top: 14px; }
+.prose strong { color: var(--accent-bright); font-weight: 600; }
+.dim { color: var(--text-dim); }
+
+/* Two-column teaching layout */
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+
+/* ── QUESTIONS ── */
+.q-stem { font-size: 25px; line-height: 1.5; color: var(--text); margin-bottom: 22px; }
+.q-stem em { font-style: normal; color: var(--accent-bright); font-weight: 600; }
+
+.opts { display: grid; gap: 11px; }
+.opts.two-up { grid-template-columns: 1fr 1fr; }
+.opt {
+  display: flex; align-items: center; gap: 14px;
+  width: 100%; text-align: left;
+  font-family: var(--font-ui); font-size: 19px; color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: var(--r);
+  padding: 15px 20px; cursor: pointer;
+  transition: border-color .15s, background .15s, transform .12s;
+}
+.opt:hover:not(:disabled) { border-color: var(--accent); transform: translateX(3px); }
+.opt-key {
+  flex: 0 0 30px; height: 30px; display: grid; place-items: center;
+  border-radius: 50%; font-family: var(--font-mono); font-size: 13px;
+  background: var(--inset);
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+}
+.opt.correct { border-color: var(--ok); background: color-mix(in srgb, var(--ok) 20%, var(--surface2)); }
+.opt.wrong   { border-color: var(--no); background: color-mix(in srgb, var(--no) 18%, var(--surface2)); }
+.opt:disabled { cursor: default; }
+
+/* Gap-fill */
+.gap {
+  font-family: var(--font-ui); font-size: 20px; color: var(--text);
+  background: var(--inset);
+  border: none; border-bottom: 2px solid var(--accent);
+  padding: 3px 10px; min-width: 190px; border-radius: 4px 4px 0 0;
+}
+.gap:focus { outline: none; background: var(--inset2); }
+.gap.correct { border-bottom-color: var(--ok); color: var(--ok); }
+.gap.wrong   { border-bottom-color: var(--no); color: var(--no); }
+
+.feedback {
+  margin-top: 18px; font-size: 17px; line-height: 1.55;
+  min-height: 26px; opacity: 0; transition: opacity .2s;
+}
+.feedback.show { opacity: 1; }
+.feedback.ok { color: var(--ok); }
+.feedback.no { color: var(--no); }
+
+/* ── BUTTONS ── */
+.btn {
+  font-family: var(--font-ui); font-size: 15px; font-weight: 600;
+  letter-spacing: .03em;
+  padding: 12px 26px; border-radius: var(--r);
+  border: 1px solid var(--accent); background: transparent; color: var(--accent-bright);
+  cursor: pointer; transition: background .15s, color .15s;
+}
+.btn:hover { background: var(--accent); color: var(--void); }
+.btn-solid { background: var(--accent); color: var(--void); border-color: var(--accent); }
+.btn-solid:hover { background: var(--accent-bright); border-color: var(--accent-bright); }
+.btn:disabled { opacity: .35; cursor: not-allowed; }
+.btn-lg { font-size: 17px; padding: 15px 38px; }
+
+/* ── CHROME: progress + nav, pinned inside the stage ── */
+.deck-bar {
+  position: absolute; z-index: 3; left: 0; right: 0; bottom: 0;
+  height: 58px; padding: 0 26px;
+  display: flex; align-items: center; gap: 18px;
+  background: linear-gradient(180deg, transparent, var(--scrim));
+}
+.stage.on-cover .deck-bar { background: none; }
+.stage.on-cover .deck-score { visibility: hidden; }
+.progress { flex: 1; height: 3px; background: var(--inset2); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0; background: var(--accent); transition: width .3s ease; }
+.deck-count, .deck-score {
+  font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); white-space: nowrap;
+}
+.nav-btn {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  background: var(--scrim); color: var(--text);
+  cursor: pointer; font-size: 15px; line-height: 1;
+  display: grid; place-items: center; transition: border-color .15s, background .15s;
+}
+.nav-btn:hover:not(:disabled) { border-color: var(--accent); background: var(--accent); color: var(--void); }
+.nav-btn:disabled { opacity: .28; cursor: not-allowed; }
+
+/* ── LANGUAGE SWITCH ── */
+.lang-select {
+  font-family: var(--font-mono); font-size: 12px;
+  background: var(--scrim); color: var(--text);
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  border-radius: 6px; padding: 6px 10px; cursor: pointer;
+}
+.lang-select:focus { outline: 1px solid var(--accent); }
+
+/* ── RESULTS ── */
+.score-big {
+  font-family: var(--font-display); font-size: 84px; font-weight: 900;
+  color: var(--accent-bright); line-height: 1;
+}
+
+/* ── RTL ── */
+[dir="rtl"] .opt { text-align: right; }
+[dir="rtl"] .opt:hover:not(:disabled) { transform: translateX(-3px); }
+
+
+/* ── ACTIVATION ──────────────────────────────────────────────────── */
+.act-target {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 16px;
+}
+.act-target-label {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-dim);
+  margin-right: 4px;
+}
+.bank-chip {
+  font-family: var(--font-mono); font-size: 12px;
+  padding: 5px 12px; border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  color: var(--accent-bright);
+}
+.act-cols { align-items: stretch; }
+.act-card { display: flex; flex-direction: column; padding: 20px 24px; }
+.act-kind {
+  display: flex; align-items: center; gap: 9px;
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--accent-bright); margin-bottom: 12px;
+}
+.act-icon { font-size: 16px; }
+.act-brief { font-size: 16.5px; line-height: 1.5; color: var(--text); margin-bottom: 12px; }
+.act-list { list-style: none; display: grid; gap: 9px; }
+.act-list li {
+  font-size: 15.5px; line-height: 1.45; color: var(--text-dim);
+  padding-left: 18px; position: relative;
+}
+.act-list li::before {
+  content: '—'; position: absolute; left: 0; color: var(--accent);
+}
+.act-input {
+  flex: 1; min-height: 118px; resize: none;
+  font-family: var(--font-ui); font-size: 15px; line-height: 1.55;
+  color: var(--text);
+  background: var(--inset);
+  border: 1px solid color-mix(in srgb, var(--border) 45%, transparent);
+  border-radius: 8px; padding: 12px 14px;
+}
+.act-input:focus { outline: none; border-color: var(--accent); background: var(--inset2); }
+.act-input::placeholder { color: var(--text-dim); opacity: .55; }
+.act-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 10px;
+}
+.act-count { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-dim); }
+.act-copy { font-size: 12.5px; padding: 6px 14px; }
+/* The textarea's value does not print; this mirror does. */
+.act-print { display: none; font-size: 14px; line-height: 1.55; white-space: pre-wrap; }
+
+
+/* ── MATCHING ────────────────────────────────────────────────────── */
+.match-grid { display: grid; grid-template-columns: 1fr 1.35fr; gap: 14px; }
+.match-col { display: grid; gap: 8px; align-content: start; }
+.match-item {
+  font-family: var(--font-ui); font-size: 15.5px; line-height: 1.4;
+  text-align: left; color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: var(--r); padding: 11px 16px; cursor: pointer;
+  transition: border-color .15s, background .15s, opacity .2s;
+}
+.match-item.term { font-weight: 600; }
+.match-item:hover:not(.done) { border-color: var(--accent); }
+.match-item.picked { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 22%, var(--surface2)); }
+.match-item.done { opacity: .45; cursor: default; border-color: var(--ok); }
+.match-item.miss { border-color: var(--no); animation: shake .3s; }
+@keyframes shake { 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
+
+/* ── ORDERING (build the sentence) ───────────────────────────────────
+   For word-order work — where the point is the SEQUENCE of prepositional
+   phrases, not choosing one word. Click to place, click again to take back;
+   no dragging, because a scaled stage makes drag targets lie. */
+.order-hint {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 10px;
+}
+.order-target {
+  display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start;
+  min-height: 92px; padding: 12px;
+  border: 1.5px dashed color-mix(in srgb, var(--border) 60%, transparent);
+  border-radius: var(--r); background: var(--inset);
+}
+.order-target.correct { border-style: solid; border-color: var(--ok); }
+.order-target.wrong   { border-style: solid; border-color: var(--no); }
+.order-pool { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.chunk {
+  font-family: var(--font-ui); font-size: 15.5px; line-height: 1.35;
+  color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: 999px; padding: 9px 16px; cursor: pointer;
+  transition: border-color .15s, background .15s, opacity .2s;
+}
+.chunk:hover:not(:disabled) { border-color: var(--accent); }
+.chunk.placed { background: color-mix(in srgb, var(--accent) 18%, var(--surface2)); border-color: var(--accent); }
+.chunk:disabled { cursor: default; opacity: .5; }
+
+/* ── SORTING (drop each item in the right box) ────────────────────────
+   Two or more labelled bins and a pool of items; the learner puts each
+   item where it belongs. The right shape for anything that is a closed
+   two-way contrast — signal words for one tense against another, count
+   against non-count, formal against neutral — because it asks for the
+   whole set at once instead of one item at a time.
+
+   Both interactions work. Native HTML5 drag-and-drop is used rather than
+   pointer maths: the browser hit-tests a drop target in screen space, so
+   the stage's CSS scale is handled for us — which is what made the
+   hand-rolled kind unreliable here (see the note on ordering above).
+   Dragging does not exist on touch, so click-an-item-then-click-a-bin
+   does the same job and is the fallback that always works. */
+.sort { display: flex; flex-direction: column; gap: 14px; }
+.sort-pool {
+  display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+  min-height: 44px;
+}
+.sort-bins { display: grid; gap: 14px; }
+.sort-bin {
+  border: 1.5px dashed color-mix(in srgb, var(--border) 60%, transparent);
+  border-radius: var(--r); background: var(--inset);
+  padding: 10px 12px; min-height: 132px;
+  display: flex; flex-direction: column; gap: 8px;
+  transition: border-color .15s, background .15s;
+}
+.sort-bin.over { border-style: solid; border-color: var(--accent); }
+.sort-bin.full { border-style: solid; border-color: var(--ok); }
+.sort-bin-label {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--accent-bright); text-align: center;
+}
+.sort-bin-items { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.sort-item {
+  font-family: var(--font-ui); font-size: 15.5px; line-height: 1.35;
+  color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: 999px; padding: 9px 16px; cursor: grab;
+  transition: border-color .15s, background .15s, opacity .2s;
+}
+.sort-item:hover:not(.placed) { border-color: var(--accent); }
+.sort-item.picked { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 22%, var(--surface2)); }
+.sort-item.dragging { opacity: .45; cursor: grabbing; }
+.sort-item.placed { cursor: default; border-color: var(--ok); opacity: .7; }
+.sort-item.miss { border-color: var(--no); animation: shake .3s; }
+
+/* ── DISCUSSION (unscored speaking prompts) ──────────────────────── */
+.discuss-meta {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 14px;
+}
+.prompts { display: grid; gap: 12px; list-style: none; margin: 0; padding: 0; }
+.prompt {
+  font-size: 19px; line-height: 1.5; color: var(--text);
+  padding-left: 26px; position: relative;
+}
+.prompt::before {
+  content: '?'; position: absolute; left: 0; top: 1px;
+  font-family: var(--font-mono); font-size: 15px; color: var(--accent);
+}
+.prompt.aside { font-size: 16.5px; color: var(--text-dim); font-style: italic; }
+.prompt.aside::before { content: '·'; }
+
+/* ══════════════════════════════════════════════════════════════════
+   PRINT / PDF EXPORT
+   Ctrl-P → Save as PDF → Landscape, margins None, Background graphics ON.
+   Each slide becomes one 16:9 page, ready to drop into PowerPoint.
+   ══════════════════════════════════════════════════════════════════ */
+@page { size: 1280px 720px; margin: 0; }
+@media print {
+  html, body { overflow: visible; height: auto; background: #fff; }
+  .stage-wrap { position: static; display: block; }
+  .stage {
+    position: static;
+    transform: none !important;
+    width: 1280px; height: auto;      /* let the slides stack into pages */
+    overflow: visible; box-shadow: none;
   }
+  .bg-layer, .deck-bar, .lang-select, .nav-btn { display: none !important; }
 
-  * { box-sizing: border-box; }
-
-  body {
-    margin: 0;
-    background: var(--paper);
-    color: var(--ink);
-    font-family: 'Inter', sans-serif;
-    min-height: 100vh;
+  /* Each slide becomes its own page and carries its own background, so the
+     export does not depend on the single on-screen background layer. */
+  .slide {
+    display: flex !important;
+    position: relative; inset: auto;
+    width: 1280px; height: 720px;
+    isolation: isolate;
+    page-break-after: always; break-after: page;
+    animation: none !important;
   }
-
-  .app { max-width: 720px; margin: 0 auto; padding: 0 20px 60px; }
-
-  .topbar {
-    position: sticky;
-    top: 0;
-    background: var(--paper);
-    padding: 16px 0 12px;
-    border-bottom: 1px solid var(--line);
-    z-index: 10;
+  .slide:last-child { page-break-after: auto; break-after: auto; }
+  .slide::before {
+    content: ''; position: absolute; inset: 0; z-index: -2;
+    background: var(--hero) center / cover no-repeat;
+    opacity: var(--bg-opacity);
   }
-
-  .topbar-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
+  .slide::after {
+    content: ''; position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(180deg, var(--wash-edge) 0%, var(--wash-mid) 20%,
+                                        var(--wash-mid) 80%, var(--wash-edge) 100%);
   }
-
-  .brand-block { display: flex; align-items: center; gap: 10px; }
-
-  .logo-mark { width: 38px; height: 38px; flex-shrink: 0; }
-
-  .brand-text { display: flex; flex-direction: column; line-height: 1.15; }
-
-  #brandName { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
-
-  #lessonTitle { font-family: 'Fraunces', serif; font-weight: 700; font-size: 22px; }
-
-  .topbar-controls { display: flex; align-items: center; gap: 10px; }
-
-  #langBtn {
-    font-family: 'Space Mono', monospace;
-    font-size: 13px;
-    font-weight: 700;
-    background: var(--ink);
-    color: var(--paper);
-    border: none;
-    border-radius: 20px;
-    padding: 7px 14px;
-    cursor: pointer;
+  .slide[data-type="cover"]::before { opacity: 1; }
+  .slide[data-type="cover"]::after {
+    background:
+      radial-gradient(ellipse 58% 54% at 50% 46%,
+        rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.22) 54%, transparent 82%),
+      linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.03) 30%,
+                            rgba(0,0,0,0.05) 70%, rgba(0,0,0,0.38) 100%);
   }
+  .feedback { opacity: 1 !important; }
+  .act-input, .act-foot { display: none !important; }
+  .act-print { display: block !important; }
+}
 
-  .score-chip {
-    font-family: 'Space Mono', monospace;
-    font-size: 13px;
-    font-weight: 700;
-    background: var(--make-soft);
-    color: var(--make-deep);
-    border-radius: 20px;
-    padding: 7px 14px;
-    white-space: nowrap;
-  }
-
-  .progress-track {
-    margin-top: 12px;
-    height: 6px;
-    border-radius: 4px;
-    background: var(--line);
-    overflow: hidden;
-    position: relative;
-  }
-
-  .progress-fill {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, var(--make), var(--do));
-    transition: width 0.35s ease;
-  }
-
-  #progressLabel {
-    display: block;
-    text-align: right;
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    color: var(--ink-soft);
-    margin-top: 4px;
-  }
-
-  main { padding-top: 28px; }
-
-  .card {
-    background: #fff;
-    border: 1px solid var(--line);
-    border-radius: 18px;
-    padding: 32px 28px;
-    animation: rise 0.35s ease;
-  }
-
-  @keyframes rise {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .subtitle { color: var(--ink-soft); font-size: 15px; margin-top: 0; }
-
-  .intro h2 { font-family: 'Fraunces', serif; font-size: 19px; margin-bottom: 14px; }
-
-  .rule-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
-  .rule-row p { margin: 0; font-size: 15px; line-height: 1.5; }
-
-  .pill {
-    font-family: 'Space Mono', monospace;
-    font-weight: 700;
-    font-size: 12px;
-    padding: 5px 10px;
-    border-radius: 20px;
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
-  .pill.make { background: var(--make-soft); color: var(--make-deep); }
-  .pill.do { background: var(--do-soft); color: var(--do-deep); }
-
-  .rule-warning {
-    font-size: 14px;
-    color: var(--ink-soft);
-    background: #fbf3ec;
-    border-left: 3px solid #c98a4b;
-    padding: 10px 14px;
-    border-radius: 8px;
-    margin: 18px 0 22px;
-  }
-
-  .btn.primary {
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    font-size: 15px;
-    background: var(--ink);
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    padding: 13px 22px;
-    cursor: pointer;
-    width: 100%;
-  }
-  .btn.primary:hover { background: #000; }
-
-  .q-sentence {
-    font-family: 'Fraunces', serif;
-    font-size: 21px;
-    line-height: 1.5;
-    margin-bottom: 26px;
-  }
-
-  .gap {
-    display: inline-block;
-    border-bottom: 2px dashed var(--ink-soft);
-    padding: 0 6px;
-  }
-
-  .q-prompt { color: var(--ink-soft); font-size: 14px; margin-bottom: 14px; }
-
-  .options {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 6px;
-  }
-  .options.stacked { flex-direction: column; }
-
-  .opt-btn {
-    flex: 1;
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    font-size: 15px;
-    padding: 16px;
-    border-radius: 12px;
-    border: 2px solid var(--line);
-    background: #fff;
-    cursor: pointer;
-    transition: border-color 0.15s, background 0.15s;
-    text-align: center;
-  }
-  .opt-btn.make:hover:not(:disabled) { border-color: var(--make); }
-  .opt-btn.do:hover:not(:disabled) { border-color: var(--do); }
-  .opt-btn.pv:hover:not(:disabled) { border-color: var(--do); }
-  .opt-btn:disabled { cursor: default; }
-
-  .opt-btn.correct { background: var(--make-soft); border-color: var(--make); color: var(--make-deep); }
-  .opt-btn.wrong { background: #fbe8e4; border-color: var(--wrong); color: var(--wrong); }
-
-  .feedback {
-    margin-top: 20px;
-    padding: 16px 18px;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    font-size: 14.5px;
-    line-height: 1.5;
-  }
-  .feedback.good { background: var(--make-soft); color: var(--make-deep); }
-  .feedback.bad { background: #fbe8e4; color: var(--wrong); }
-  .feedback strong { font-family: 'Fraunces', serif; font-size: 16px; }
-  .feedback em { font-style: normal; color: var(--ink-soft); font-size: 13.5px; }
-
-  #nextBtn, #sortNextBtn { margin-top: 22px; }
-
-  .sort-card h2 { font-family: 'Fraunces', serif; font-size: 19px; margin-top: 0; }
-  .sort-help { color: var(--ink-soft); font-size: 14px; margin-top: -6px; }
-
-  .chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin: 20px 0 26px;
-  }
-
-  .chip {
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    font-size: 14px;
-    padding: 10px 16px;
-    border-radius: 20px;
-    border: 2px solid var(--line);
-    background: #fff;
-    cursor: pointer;
-  }
-  .chip.selected { border-color: var(--ink); background: #f1efe9; }
-  .chip.locked { cursor: default; }
-  .chip.locked.correct { background: var(--make-soft); border-color: var(--make); color: var(--make-deep); }
-  .chip.locked.wrong { background: #fbe8e4; border-color: var(--wrong); color: var(--wrong); }
-
-  .buckets { display: flex; gap: 12px; }
-
-  .bucket {
-    flex: 1;
-    font-family: 'Space Mono', monospace;
-    font-weight: 700;
-    font-size: 15px;
-    padding: 18px;
-    border-radius: 14px;
-    border: 2px dashed var(--line);
-    background: #fff;
-    cursor: pointer;
-  }
-  .bucket.make { color: var(--make-deep); }
-  .bucket.make:hover { border-color: var(--make); background: var(--make-soft); }
-  .bucket.do { color: var(--do-deep); }
-  .bucket.do:hover { border-color: var(--do); background: var(--do-soft); }
-
-  .results { text-align: center; }
-  .results h2 { font-family: 'Fraunces', serif; font-size: 22px; }
-  .score-circle {
-    font-family: 'Space Mono', monospace;
-    font-weight: 700;
-    font-size: 30px;
-    width: 130px;
-    height: 130px;
-    border-radius: 50%;
-    border: 4px solid var(--ink);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 18px auto;
-    background: linear-gradient(135deg, var(--make-soft), var(--do-soft));
-  }
-  .tier-msg { font-size: 15px; color: var(--ink-soft); margin-bottom: 20px; }
-  .review-list { text-align: left; font-size: 14px; color: var(--ink-soft); padding-left: 20px; margin-bottom: 24px; }
-  .review-list li { margin-bottom: 6px; }
-
-  @media (max-width: 480px) {
-    .card { padding: 24px 18px; }
-    .q-sentence { font-size: 18px; }
-    .buckets { flex-direction: column; }
-  }
+/* Text that sits on the canvas rather than inside a card needs its own halo
+   now that the artwork behind it is bright. A shadow costs nothing and lets
+   the picture stay up, which darkening the wash back down would not. */
+.slide-title, .eyebrow, .q-stem, .q-ctx, .order-hint, .cover-title, .cover-sub,
+.score-big, .slide-body > .prose, .act-target-label {
+  text-shadow: 0 1px 2px rgba(0,0,0,0.55), 0 0 12px rgba(0,0,0,0.38);
+}
+html[data-theme="light"] .slide-title, html[data-theme="light"] .eyebrow,
+html[data-theme="light"] .q-stem, html[data-theme="light"] .q-ctx,
+html[data-theme="light"] .order-hint, html[data-theme="light"] .cover-title,
+html[data-theme="light"] .cover-sub, html[data-theme="light"] .score-big,
+html[data-theme="light"] .slide-body > .prose,
+html[data-theme="light"] .act-target-label {
+  text-shadow: 0 1px 2px rgba(255,255,255,0.75), 0 0 12px rgba(255,255,255,0.55);
+}
 </style>
 </head>
 <body>
-  <div class="app">
-    <header class="topbar">
-      <div class="topbar-row">
-        <div class="brand-block">
-          <svg class="logo-mark" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-            <rect x="1" y="1" width="46" height="46" rx="12" fill="#fff" stroke="#e4ded3" stroke-width="2"/>
-            <path d="M24 4 L24 44" stroke="#e4ded3" stroke-width="1.5"/>
-            <path d="M8 32 L14 16 L20 32 M9.5 26 H18.5" stroke="#146b5c" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M28 16 H40 M28 24 H37 M28 32 H40" stroke="#3c4a9e" stroke-width="2.6" fill="none" stroke-linecap="round"/>
-          </svg>
-          <div class="brand-text">
-            <span id="brandName">Forbes English</span>
-            <span id="lessonTitle">Make v Do</span>
+
+<div class="stage-wrap">
+  <div class="stage" id="stage">
+
+    <!-- Background pattern: driven entirely by --hero in the CSS above. -->
+    <div class="bg-layer" role="presentation"></div>
+
+    <!-- ══════════════════════════════════════════════════════════
+         REPLACE 2 of 2: SLIDES
+         Author one <section class="slide"> per screen.
+         data-type: cover | teach | mc | gap | match | order | discuss | results | activate
+         data-bg="folder/other.jpg" swaps the background pattern on that slide.
+         Everything a learner reads must fit WITHOUT scrolling.
+         If it does not fit, split it across two slides — never shrink type.
+         ══════════════════════════════════════════════════════════ -->
+
+
+    <section class="slide is-active" data-type="cover">
+      <div class="cover-inner">
+        <svg class="fe-logo" viewBox="0 0 200 78" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forbes English">
+          <g class="fe-logo-mark" transform="translate(-42.74,-30.22) scale(0.099477)"><g transform="translate(0,1504) scale(0.1,-0.1)" fill="currentColor" stroke="none"><path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47 l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21 -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9 -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58 105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141 144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392 -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31 c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55 -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0 -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226 144 331 156 51 6 127 -4 183 -25z"/><path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95 -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72 -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0 -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18 108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553 -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70 -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3 469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38 -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/><path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73 -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939 -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1 205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247 -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22 -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24 -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449 121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/><path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611 -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538 -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77 144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430 -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67 347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580 -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132 -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87 66 245 85 341 40z"/><path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140 -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134 -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287 -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101 -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107 173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392 207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599 281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241 111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2 347 -112 40 c-318 112 -594 149 -892 121z"/><path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149 l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801 -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6 -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294 -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12 -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29 -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55 -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12 -33 22 -42 21 -9 0 -199 -27 -422 -60z"/></g></g>
+          <text class="fe-logo-word" x="100" y="72.6" text-anchor="middle" font-family="'DM Sans', Arial, sans-serif" font-size="20.8" font-weight="600" letter-spacing="8">ENGLISH</text>
+        </svg>
+        <h1 class="cover-title" data-i18n="coverTitle">Make <em>v</em> Do</h1>
+        <p class="cover-sub" data-i18n="coverSub">The rule that covers most of it, the handful that break it, and the phrasal verbs underneath</p>
+        <div class="cover-meta">
+          <span class="chip" data-i18n="chipLevel">B1 &middot; Intermediate</span>
+          <span class="chip" data-i18n="chipFocus">Collocation &amp; phrasal verbs</span>
+          <span class="chip" data-i18n="chipCount">26 slides</span>
+        </div>
+        <div style="margin-top:34px">
+          <button class="btn btn-solid btn-lg" data-action="next" data-i18n="btnStart">Begin →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="MakeVDo/lettering.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="t1e">The split, before anything is graded</div>
+        <h2 class="slide-title" data-i18n="t1t">One produces a thing. The other performs an activity.</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="t1ah">make &rarr; you produce something</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">A thing exists afterwards that did not exist before.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t1an"><em>make a cake &middot; make a plan &middot; make a decision &middot; make money &middot; make noise &middot; make progress</em></p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t1bh">do &rarr; you perform an activity</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Work, tasks, chores, jobs. Nothing new is created.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t1bn"><em>do homework &middot; do research &middot; do the shopping &middot; do the washing-up &middot; do exercise</em></p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t1ch">The test</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Ask: is there a <em>thing</em> at the end of it?</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t1cn">A cake, a plan, a decision &mdash; yes, so <em>make</em>. Homework and research are things you <em>did</em>, not things you made.</p>
           </div>
         </div>
-        <div class="topbar-controls">
-          <span class="score-chip"><span id="scoreVal">0 / 24</span></span>
-          <button id="langBtn" type="button">DE</button>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="MakeVDo/lettering.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="t2e">The exceptions</div>
+        <h2 class="slide-title" data-i18n="t2t">Four that break the rule, and have to be learned</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="t2ah">make a mistake</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Nobody produces a mistake deliberately.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2an">By the rule this should be <em>do</em>. It is not. Learn it as a phrase.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t2bh">do your best</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">A best effort sounds like something you produce.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2bn">It takes <em>do</em> anyway. The mirror image of <em>make a mistake</em>.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t2ch">do business</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Business feels like a thing; it behaves as an activity.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2cn">Also uncountable here &mdash; never <em>do a business</em>.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t2dh">do exercise</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">German <em>Sport machen</em> pulls you to <em>make</em>.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2dn">One of the most reliable first-language slips in this pair.</p>
+          </div>
         </div>
       </div>
-      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-      <span id="progressLabel">0 / 24</span>
-    </header>
-    <main id="screen"></main>
+    </section>
+
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="t3e">Phrasal verbs &middot; make</div>
+        <h2 class="slide-title" data-i18n="t3t">Four with <em>make</em>, grouped by particle</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="t3ah">make off with</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">To steal it and leave quickly.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t3an"><em>The raccoon made off with the sandwiches.</em></p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t3bh">make up for</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">To compensate for something bad or missing.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t3bn"><em>He bought coffee to make up for being late.</em></p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t3ch">make of</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">To have an opinion or reading of something.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t3cn">Nearly always a question: <em>what do you make of it?</em></p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t3dh">make up</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">To invent something untrue.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t3dn">Separable: <em>made it up</em>, never <em>made up it</em>.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="t4e">Phrasal verbs &middot; do</div>
+        <h2 class="slide-title" data-i18n="t4t">Four with <em>do</em> &mdash; and two that are easily swapped</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="t4ah">do away with</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">To abolish it. <em>You</em> remove it.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t4an">Formal, and used of rules and systems rather than objects.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t4bh">do without</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">To manage although you do not have it.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t4bn">The pair to watch: <em>do away with</em> is your choice, <em>do without</em> is your circumstance.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t4ch">could do with</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">To want or need something.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t4cn">Only in the conditional. There is no <em>I do with a coffee</em>.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t4dh">do up</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">To renovate &mdash; or to fasten.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t4dn"><em>doing up the barn</em>, and <em>do up your coat</em>.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="gapEyebrow">make or do</span> &middot; 1 / 4</div>
+        <h2 class="slide-title" data-i18n="gapTitle">Complete the sentence</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">I need to <input class="gap" data-answer="make" aria-label="gap" style="width:110px"> a decision about my job.</p>
+          <p class="feedback" data-explain="<strong>Make a decision.</strong> A decision is a new result you produce."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">Can you help me <input class="gap" data-answer="do" aria-label="gap" style="width:110px"> my homework?</p>
+          <p class="feedback" data-explain="<strong>Do homework.</strong> An activity you carry out, not an object you produce."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">She wants to <input class="gap" data-answer="make" aria-label="gap" style="width:110px"> a cake for the party.</p>
+          <p class="feedback" data-explain="<strong>Make a cake.</strong> The clearest case of all: it did not exist before."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap" data-bg="MakeVDo/lettering.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="gapEyebrow">make or do</span> &middot; 2 / 4</div>
+        <h2 class="slide-title" data-i18n="gapTitle">Complete the sentence</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">He always tries to <input class="gap" data-answer="do" aria-label="gap" style="width:110px"> his best in exams.</p>
+          <p class="feedback" data-explain="<strong>Do your best.</strong> Fixed &mdash; and it beats the rule, since a best effort sounds like something you produce."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">They always <input class="gap" data-answer="make" aria-label="gap" style="width:110px"> a lot of noise at parties.</p>
+          <p class="feedback" data-explain="<strong>Make noise.</strong> Produced by an action, so <em>make</em>."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">We need to <input class="gap" data-answer="do" aria-label="gap" style="width:110px"> some research before the meeting.</p>
+          <p class="feedback" data-explain="<strong>Do research.</strong> An activity. Note it is uncountable: not <em>a research</em>."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="gapEyebrow">make or do</span> &middot; 3 / 4</div>
+        <h2 class="slide-title" data-i18n="gapTitle">Complete the sentence</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">I don&rsquo;t want to <input class="gap" data-answer="make" aria-label="gap" style="width:110px"> another mistake.</p>
+          <p class="feedback" data-explain="<strong>Make a mistake.</strong> Fixed, and worth memorising as a pair with <em>do your best</em> &mdash; the two that break the rule in opposite directions."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">Let&rsquo;s <input class="gap" data-answer="make" aria-label="gap" style="width:110px"> a plan for the weekend.</p>
+          <p class="feedback" data-explain="<strong>Make a plan.</strong> Something new you create."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap" data-bg="MakeVDo/lettering.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="gapEyebrow">make or do</span> &middot; 4 / 4</div>
+        <h2 class="slide-title" data-i18n="gapTitle">Complete the sentence</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">Could you <input class="gap" data-answer="do" aria-label="gap" style="width:110px"> the washing-up, please?</p>
+          <p class="feedback" data-explain="<strong>Do the washing-up.</strong> Household task, like <em>do the shopping</em>."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">We always <input class="gap" data-answer="make" aria-label="gap" style="width:110px"> progress when we plan carefully.</p>
+          <p class="feedback" data-explain="<strong>Make progress.</strong> Treated as a result being produced, so it takes <em>make</em> despite being abstract."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="colEyebrow">Which collocation?</span> &middot; 1 / 6</div>
+        <h2 class="slide-title" data-i18n="colTitle">One of these is English</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Which is correct?</p>
+        <div class="opts">
+          <button class="opt">make business</button>
+          <button class="opt" data-correct>do business</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Do business.</strong> Business is treated as an activity you carry out, not a thing you produce &mdash; and it stays uncountable here."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="colEyebrow">Which collocation?</span> &middot; 2 / 6</div>
+        <h2 class="slide-title" data-i18n="colTitle">One of these is English</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Which is correct?</p>
+        <div class="opts">
+          <button class="opt" data-correct>make a mistake</button>
+          <button class="opt">do a mistake</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Make a mistake.</strong> One of the ones that breaks the rule: nobody produces a mistake on purpose, but the collocation is fixed."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-bg="MakeVDo/lettering.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="colEyebrow">Which collocation?</span> &middot; 3 / 6</div>
+        <h2 class="slide-title" data-i18n="colTitle">One of these is English</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Which is correct?</p>
+        <div class="opts">
+          <button class="opt" data-correct>do the shopping</button>
+          <button class="opt">make the shopping</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Do the shopping.</strong> Household activities take <em>do</em> &mdash; the shopping, the washing-up, the ironing."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="colEyebrow">Which collocation?</span> &middot; 4 / 6</div>
+        <h2 class="slide-title" data-i18n="colTitle">One of these is English</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Which is correct?</p>
+        <div class="opts">
+          <button class="opt">do money</button>
+          <button class="opt" data-correct>make money</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Make money.</strong> Money is a result you produce, through work or investment. This one follows the general rule cleanly."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="colEyebrow">Which collocation?</span> &middot; 5 / 6</div>
+        <h2 class="slide-title" data-i18n="colTitle">One of these is English</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Which is correct?</p>
+        <div class="opts">
+          <button class="opt">make exercise</button>
+          <button class="opt" data-correct>do exercise</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Do exercise.</strong> A physical activity you perform. Note that German <em>Sport machen</em> pulls learners straight to <em>make</em>."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-bg="MakeVDo/lettering.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="colEyebrow">Which collocation?</span> &middot; 6 / 6</div>
+        <h2 class="slide-title" data-i18n="colTitle">One of these is English</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Which is correct?</p>
+        <div class="opts">
+          <button class="opt" data-correct>make a noise</button>
+          <button class="opt">do a noise</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Make a noise.</strong> Noise is produced by an action &mdash; a result, so <em>make</em>. Same logic as <em>make a sound</em>."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="sort">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="sortEyebrow">Sort</div>
+        <h2 class="slide-title" data-i18n="sortTitle">Which verb does each one take?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="order-hint" data-i18n="sortHint">Drag each expression into a box &mdash; or click the expression, then the box. A wrong first placement costs that item&rsquo;s point.</p>
+        <div class="sort" data-bins="make | do">
+          <span class="sort-item" data-bin="0">a plan</span>
+          <span class="sort-item" data-bin="0">a decision</span>
+          <span class="sort-item" data-bin="1">homework</span>
+          <span class="sort-item" data-bin="0">money</span>
+          <span class="sort-item" data-bin="1">research</span>
+          <span class="sort-item" data-bin="1">the washing-up</span>
+          <span class="sort-item" data-bin="0">a cake</span>
+          <span class="sort-item" data-bin="1">business</span>
+        </div>
+        <p class="feedback" data-explain="Six of these follow the rule. <em>Business</em> does not &mdash; it is an activity that sounds like a thing, and it is the one worth remembering."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="pvEyebrow">Phrasal verbs</span> &middot; 1 / 8</div>
+        <h2 class="slide-title" data-i18n="pvTitle">Complete the sentence</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">The raccoon knocked over the bin and ______ half our sandwiches.</p>
+        <div class="opts">
+          <button class="opt">did without</button>
+          <button class="opt">made up for</button>
+          <button class="opt" data-correct>made off with</button>
+          <button class="opt">did away with</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Make off with something</strong> is to steal it and leave quickly."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-bg="MakeVDo/lettering.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="pvEyebrow">Phrasal verbs</span> &middot; 2 / 8</div>
+        <h2 class="slide-title" data-i18n="pvTitle">Complete the sentence</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">He was late again, so he bought coffee for the whole team to ______ it.</p>
+        <div class="opts">
+          <button class="opt" data-correct>make up for</button>
+          <button class="opt">make of</button>
+          <button class="opt">make off with</button>
+          <button class="opt">do up</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Make up for something</strong> is to compensate for it."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="pvEyebrow">Phrasal verbs</span> &middot; 3 / 8</div>
+        <h2 class="slide-title" data-i18n="pvTitle">Complete the sentence</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">I really don&rsquo;t know what to ______ this cryptic email from the landlord.</p>
+        <div class="opts">
+          <button class="opt">make up</button>
+          <button class="opt">do without</button>
+          <button class="opt">do up</button>
+          <button class="opt" data-correct>make of</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Make of someone or something</strong> is to have an opinion or reading of it. Almost always in a question: <em>what do you make of&hellip;?</em>"></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="pvEyebrow">Phrasal verbs</span> &middot; 4 / 8</div>
+        <h2 class="slide-title" data-i18n="pvTitle">Complete the sentence</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">The child ______ an elaborate story about a dragon eating his homework.</p>
+        <div class="opts">
+          <button class="opt">did up</button>
+          <button class="opt" data-correct>made up</button>
+          <button class="opt">made off with</button>
+          <button class="opt">did away with</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Make something up</strong> is to invent it. Separable: <em>made it up</em>, not <em>made up it</em>."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-bg="MakeVDo/lettering.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="pvEyebrow">Phrasal verbs</span> &middot; 5 / 8</div>
+        <h2 class="slide-title" data-i18n="pvTitle">Complete the sentence</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">The council decided to ______ the outdated parking permits altogether.</p>
+        <div class="opts">
+          <button class="opt" data-correct>do away with</button>
+          <button class="opt">do without</button>
+          <button class="opt">make of</button>
+          <button class="opt">make up for</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Do away with something</strong> is to abolish it. Formal, and it goes with rules, systems and institutions rather than objects."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="pvEyebrow">Phrasal verbs</span> &middot; 6 / 8</div>
+        <h2 class="slide-title" data-i18n="pvTitle">Complete the sentence</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">During the power cut, the whole street had to ______ hot water for two days.</p>
+        <div class="opts">
+          <button class="opt">do away with</button>
+          <button class="opt">make up for</button>
+          <button class="opt">do up</button>
+          <button class="opt" data-correct>do without</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Do without something</strong> is to manage although you do not have it. Compare <em>do away with</em>, where you are the one removing it."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="pvEyebrow">Phrasal verbs</span> &middot; 7 / 8</div>
+        <h2 class="slide-title" data-i18n="pvTitle">Complete the sentence</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">After the long flight, she said she ______ a good night&rsquo;s sleep.</p>
+        <div class="opts">
+          <button class="opt">could make up for</button>
+          <button class="opt" data-correct>could do with</button>
+          <button class="opt">could do away with</button>
+          <button class="opt">could make off with</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Could do with something</strong> is to want or need it. Idiomatic and always in the conditional &mdash; there is no <em>I do with a coffee</em>."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-bg="MakeVDo/lettering.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="pvEyebrow">Phrasal verbs</span> &middot; 8 / 8</div>
+        <h2 class="slide-title" data-i18n="pvTitle">Complete the sentence</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">They spent the whole summer ______ the old barn before turning it into a studio.</p>
+        <div class="opts">
+          <button class="opt">making up</button>
+          <button class="opt">making off with</button>
+          <button class="opt" data-correct>doing up</button>
+          <button class="opt">doing away with</button>
+        </div>
+        <p class="feedback" data-explain="<strong>Do something up</strong> is to renovate it. Also clothing: <em>do up your coat</em>."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="results">
+      <div class="slide-body" style="align-items:center;text-align:center">
+        <div class="score-big"><span id="scoreVal">0</span><span class="dim" style="font-size:34px">/<span id="scoreMax">0</span></span></div>
+        <p class="prose" style="margin-top:18px" id="scoreMsg"></p>
+        <p class="prose dim" style="margin-top:14px" data-i18n="resNext">You know which verb. Now use them →</p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="activate">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="actEyebrow">Activation</div>
+        <h2 class="slide-title" data-i18n="actTitle">Say what you made and what you did</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target">
+          <span class="act-target-label" data-i18n="actUse">Use at least four:</span>
+          <span class="bank-chip">make a decision</span>
+          <span class="bank-chip">do your best</span>
+          <span class="bank-chip">make progress</span>
+          <span class="bank-chip">do business</span>
+          <span class="bank-chip">make up for</span>
+          <span class="bank-chip">do away with</span>
+          <span class="bank-chip">could do with</span>
+          <span class="bank-chip">do up</span>
+        </div>
+        <div class="cols act-cols">
+          <div class="card act-card">
+            <div class="act-kind"><span class="act-icon">🗣</span><span data-i18n="actSpeakKind">Speaking &middot; in pairs</span></div>
+            <p class="act-brief" data-i18n="actSpeakBrief">Last week, in detail. Your partner listens for a wrong collocation and stops you.</p>
+            <ul class="act-list">
+              <li data-i18n="actSpeak1">Describe one decision you made and one task you did. Do not swap the verbs.</li>
+              <li data-i18n="actSpeak2">Tell your partner about something you had to do without.</li>
+              <li data-i18n="actSpeak3">Describe a mistake you made, and how you made up for it.</li>
+              <li data-i18n="actSpeak4">Name one thing at work or at school you would do away with.</li>
+            </ul>
+          </div>
+          <div class="card act-card">
+            <div class="act-kind"><span class="act-icon">✍️</span><span data-i18n="actWriteKind">Writing &middot; 120&ndash;150 words</span></div>
+            <p class="act-brief" data-i18n="actWriteBrief">Write about a week when you were very busy: what you made, what you did, and what you had to do without.</p>
+            <textarea class="act-input" id="actInput" data-i18n-ph="actPlaceholder" placeholder="Last week — what I made and what I did" aria-label="Written response"></textarea>
+            <div class="act-foot">
+              <span class="act-count" id="actCount">0 words</span>
+              <button class="btn act-copy" data-action="copy-writing" data-i18n="btnCopy">Copy</button>
+            </div>
+            <div class="act-print" id="actPrint" aria-hidden="true"></div>
+          </div>
+        </div>
+        <div style="margin-top:14px;text-align:center">
+          <button class="btn" data-action="restart" data-i18n="btnRestart">Start again</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── DECK CHROME ──────────────────────────────────────── -->
+    <div class="deck-bar">
+      <select class="lang-select" id="langSelect" aria-label="Language"></select>
+      <button class="nav-btn" data-action="prev" aria-label="Previous">‹</button>
+      <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+      <span class="deck-count" id="deckCount">1 / 1</span>
+      <span class="deck-score" id="deckScore"></span>
+      <button class="nav-btn" data-action="next" aria-label="Next">›</button>
+    </div>
+
   </div>
+</div>
 
 <script>
-// ===== Make v Do — data =====
+/* ══════════════════════════════════════════════════════════════════
+   ENGINE — identical in every lesson. Do not edit below this line
+   except to add UI_I18N strings.
+   ══════════════════════════════════════════════════════════════════ */
 
-const UI = {
+/* ── Languages. English is the base; German ships complete.
+      The other eight are deliberately empty — t() falls back to English,
+      so an unfinished language can never blank the interface. ── */
+const LANGS = [
+  { code:'en', label:'English'   }, { code:'de', label:'Deutsch'  },
+  { code:'es', label:'Español'   }, { code:'fr', label:'Français' },
+  { code:'it', label:'Italiano'  }, { code:'pt', label:'Português'},
+  { code:'ru', label:'Русский'   }, { code:'ar', label:'العربية'  },
+  { code:'zh', label:'中文'       }, { code:'ja', label:'日本語'    }
+];
+const RTL_LANGS = ['ar'];
+
+const UI_I18N = {
   en: {
-    brand: "Forbes English",
-    title: "Make v Do",
-    subtitle: "Fixed collocations you have to learn — plus the general rules that help",
-    langLabel: "DE",
-    startBtn: "Start the test",
-    next: "Next",
-    check: "Check",
-    finish: "See results",
-    retry: "Try again",
-    score: "Score",
-    question: "Question",
-    of: "of",
-    correct: "Correct!",
-    incorrect: "Not quite.",
-    sortTitle: "Sort each expression into MAKE or DO",
-    sortHelp: "Click an expression, then click MAKE or DO to sort it.",
-    resultsTitle: "Your results",
-    resultsGood: "Strong grasp of make v do.",
-    resultsMid: "Good start — a few collocations still to fix in memory.",
-    resultsLow: "Worth another pass — these are best learned as fixed chunks.",
-    reviewTitle: "Items to review",
-    introRules: "The rules",
-    ruleMake: "MAKE — creating or producing something. The result is usually new or different.",
-    ruleDo: "DO — an activity, job or task. The focus is the activity, not a new result.",
-    ruleFixed: "Careful: many expressions are fixed and don't follow the rule exactly — e.g. do your best, not make your best.",
-    pvHeading: "Phrasal verbs with make and do",
-    pvSubtitle: "These go a step further than the basic rule — each one has its own fixed meaning to learn.",
-    pvStart: "Start this section",
+    actEyebrow: "Activation",
+    actPlaceholder: "Last week — what I made and what I did",
+    actSpeak1: "Describe one decision you made and one task you did. Do not swap the verbs.",
+    actSpeak2: "Tell your partner about something you had to do without.",
+    actSpeak3: "Describe a mistake you made, and how you made up for it.",
+    actSpeak4: "Name one thing at work or at school you would do away with.",
+    actSpeakBrief: "Last week, in detail. Your partner listens for a wrong collocation and stops you.",
+    actSpeakKind: "Speaking · in pairs",
+    actTitle: "Say what you made and what you did",
+    actUse: "Use at least four:",
+    actWriteBrief: "Write about a week when you were very busy: what you made, what you did, and what you had to do without.",
+    actWriteKind: "Writing · 120–150 words",
+    bankLabel: "Word bank:",
+    btnCheck: 'Check',
+    btnCopied: 'Copied',
+    btnCopy: 'Copy',
+    btnNext: 'Next →',
+    btnRestart: 'Start again',
+    btnStart: 'Begin →',
+    chipCount: "26 slides",
+    chipFocus: "Collocation & phrasal verbs",
+    chipLevel: "B1 · Intermediate",
+    colEyebrow: "Which collocation?",
+    colTitle: "One of these is English",
+    coverSub: "The rule that covers most of it, the handful that break it, and the phrasal verbs underneath",
+    coverTitle: "Make <em>v</em> Do",
+    fbAnswer: 'Answer:',
+    fbCorrect: 'Correct.',
+    fbWrong: 'Not quite.',
+    gapEyebrow: "make or do",
+    gapTitle: "Complete the sentence",
+    pvEyebrow: "Phrasal verbs",
+    pvTitle: "Complete the sentence",
+    resLow: "Read the first two slides again, then run it once more. The rule covers most of it; only four break it.",
+    resMid: "A good base. Go back to the exceptions slide — four phrases carry most of the errors in this pair.",
+    resNext: "You know which verb. Now use them →",
+    resPerfect: "Full marks, including the ones that break the rule — which is the part that usually goes wrong.",
+    resStrong: "Strong. Check whether your misses were the exceptions or the phrasal verbs; they need different work.",
+    scoreLabel: 'Score',
+    slideOf: (a,b)=>`${a} / ${b}`,
+    sortEyebrow: "Sort",
+    sortHint: "Drag each expression into a box — or click the expression, then the box. A wrong first placement costs that item’s point.",
+    sortTitle: "Which verb does each one take?",
+    t1ah: "make → you produce something",
+    t1an: "<em>make a cake · make a plan · make a decision · make money · make noise · make progress</em>",
+    t1bh: "do → you perform an activity",
+    t1bn: "<em>do homework · do research · do the shopping · do the washing-up · do exercise</em>",
+    t1ch: "The test",
+    t1cn: "A cake, a plan, a decision — yes, so <em>make</em>. Homework and research are things you <em>did</em>, not things you made.",
+    t1e: "The split, before anything is graded",
+    t1t: "One produces a thing. The other performs an activity.",
+    t2ah: "make a mistake",
+    t2an: "By the rule this should be <em>do</em>. It is not. Learn it as a phrase.",
+    t2bh: "do your best",
+    t2bn: "It takes <em>do</em> anyway. The mirror image of <em>make a mistake</em>.",
+    t2ch: "do business",
+    t2cn: "Also uncountable here — never <em>do a business</em>.",
+    t2dh: "do exercise",
+    t2dn: "One of the most reliable first-language slips in this pair.",
+    t2e: "The exceptions",
+    t2t: "Four that break the rule, and have to be learned",
+    t3ah: "make off with",
+    t3an: "<em>The raccoon made off with the sandwiches.</em>",
+    t3bh: "make up for",
+    t3bn: "<em>He bought coffee to make up for being late.</em>",
+    t3ch: "make of",
+    t3cn: "Nearly always a question: <em>what do you make of it?</em>",
+    t3dh: "make up",
+    t3dn: "Separable: <em>made it up</em>, never <em>made up it</em>.",
+    t3e: "Phrasal verbs · make",
+    t3t: "Four with <em>make</em>, grouped by particle",
+    t4ah: "do away with",
+    t4an: "Formal, and used of rules and systems rather than objects.",
+    t4bh: "do without",
+    t4bn: "The pair to watch: <em>do away with</em> is your choice, <em>do without</em> is your circumstance.",
+    t4ch: "could do with",
+    t4cn: "Only in the conditional. There is no <em>I do with a coffee</em>.",
+    t4dh: "do up",
+    t4dn: "<em>doing up the barn</em>, and <em>do up your coat</em>.",
+    t4e: "Phrasal verbs · do",
+    t4t: "Four with <em>do</em> — and two that are easily swapped",
+    wordCount: (n)=>`${n} ${n===1?'word':'words'}`
   },
   de: {
-    brand: "Forbes English",
-    title: "Make v Do",
-    subtitle: "Feste Kombinationen, die man einfach lernen muss — plus die allgemeinen Regeln, die helfen",
-    langLabel: "EN",
-    startBtn: "Test starten",
-    next: "Weiter",
-    check: "Prüfen",
-    finish: "Ergebnisse ansehen",
-    retry: "Nochmal versuchen",
-    score: "Punkte",
-    question: "Frage",
-    of: "von",
-    correct: "Richtig!",
-    incorrect: "Nicht ganz.",
-    sortTitle: "Sortiere jeden Ausdruck zu MAKE oder DO",
-    sortHelp: "Klicke einen Ausdruck an, dann klicke MAKE oder DO, um ihn zu sortieren.",
-    resultsTitle: "Deine Ergebnisse",
-    resultsGood: "Sehr gutes Verständnis von make v do.",
-    resultsMid: "Guter Anfang — ein paar Kombinationen musst du noch festigen.",
-    resultsLow: "Lohnt sich zu wiederholen — diese Ausdrücke lernt man am besten als feste Einheiten.",
-    reviewTitle: "Zum Wiederholen",
-    introRules: "Die Regeln",
-    ruleMake: "MAKE — etwas erschaffen oder herstellen. Das Ergebnis ist meist neu oder anders.",
-    ruleDo: "DO — eine Tätigkeit, Arbeit oder Aufgabe. Der Fokus liegt auf der Tätigkeit, nicht auf einem neuen Ergebnis.",
-    ruleFixed: "Achtung: Viele Ausdrücke sind feststehend und folgen der Regel nicht genau — z. B. do your best, nicht make your best.",
-    pvHeading: "Phrasal Verbs mit make und do",
-    pvSubtitle: "Diese gehen über die Grundregel hinaus — jeder hat seine eigene feste Bedeutung, die man lernen muss.",
-    pvStart: "Diesen Abschnitt starten",
-  }
+    actEyebrow: "Anwendung",
+    actPlaceholder: "Last week — what I made and what I did",
+    actSpeak1: "Beschreiben Sie eine Entscheidung, die Sie getroffen haben, und eine Aufgabe, die Sie erledigt haben. Vertauschen Sie die Verben nicht.",
+    actSpeak2: "Erzählen Sie von etwas, auf das Sie verzichten mussten.",
+    actSpeak3: "Beschreiben Sie einen Fehler, den Sie gemacht haben, und wie Sie ihn ausgeglichen haben.",
+    actSpeak4: "Nennen Sie eine Sache in Arbeit oder Schule, die Sie abschaffen würden.",
+    actSpeakBrief: "Die letzte Woche, im Detail. Ihr Gegenüber hört auf falsche Kollokationen und unterbricht Sie.",
+    actSpeakKind: "Sprechen · zu zweit",
+    actTitle: "Sagen Sie, was Sie gemacht und was Sie getan haben",
+    actUse: "Verwenden Sie mindestens vier:",
+    actWriteBrief: "Schreiben Sie über eine sehr volle Woche: was Sie gemacht haben, was Sie getan haben und worauf Sie verzichten mussten.",
+    actWriteKind: "Schreiben · 120–150 Wörter",
+    bankLabel: "Wortspeicher:",
+    btnCheck: 'Prüfen',
+    btnCopied: 'Kopiert',
+    btnCopy: 'Kopieren',
+    btnNext: 'Weiter →',
+    btnRestart: 'Neu starten',
+    btnStart: 'Beginnen →',
+    chipCount: "26 Folien",
+    chipFocus: "Kollokation & Phrasal Verbs",
+    chipLevel: "B1 · Mittelstufe",
+    colEyebrow: "Welche Kollokation?",
+    colTitle: "Eine davon ist Englisch",
+    coverSub: "Die Regel, die das meiste abdeckt, die wenigen Ausnahmen und die Phrasal Verbs darunter",
+    coverTitle: "Make <em>v</em> Do",
+    fbAnswer: 'Antwort:',
+    fbCorrect: 'Richtig.',
+    fbWrong: 'Nicht ganz.',
+    gapEyebrow: "make oder do",
+    gapTitle: "Vervollständigen Sie den Satz",
+    pvEyebrow: "Phrasal Verbs",
+    pvTitle: "Vervollständigen Sie den Satz",
+    resLow: "Lesen Sie die ersten beiden Folien noch einmal und starten Sie neu. Die Regel deckt das meiste ab; nur vier brechen sie.",
+    resMid: "Eine gute Grundlage. Zurück zur Ausnahmen-Folie — vier Wendungen verursachen die meisten Fehler.",
+    resNext: "Sie wissen, welches Verb. Jetzt anwenden →",
+    resPerfect: "Volle Punktzahl, inklusive der Ausnahmen — genau die gehen sonst schief.",
+    resStrong: "Stark. Prüfen Sie, ob Ihre Fehler bei den Ausnahmen oder den Phrasal Verbs lagen; das sind zwei verschiedene Baustellen.",
+    scoreLabel: 'Punkte',
+    slideOf: (a,b)=>`${a} / ${b}`,
+    sortEyebrow: "Sortieren",
+    sortHint: "Ziehen Sie jeden Ausdruck in ein Feld — oder klicken Sie erst den Ausdruck, dann das Feld. Eine falsche erste Zuordnung kostet den Punkt.",
+    sortTitle: "Welches Verb nimmt jeder Ausdruck?",
+    t1ah: "make → du erzeugst etwas",
+    t1an: "<em>make a cake · make a plan · make a decision · make money · make noise · make progress</em>",
+    t1bh: "do → du führst eine Tätigkeit aus",
+    t1bn: "<em>do homework · do research · do the shopping · do the washing-up · do exercise</em>",
+    t1ch: "Die Probe",
+    t1cn: "Ein Kuchen, ein Plan, eine Entscheidung — ja, also <em>make</em>. Hausaufgaben und Forschung sind Dinge, die man <em>getan</em> hat, nicht hergestellt.",
+    t1e: "Die Unterscheidung, bevor etwas bewertet wird",
+    t1t: "Das eine erzeugt eine Sache. Das andere führt eine Tätigkeit aus.",
+    t2ah: "make a mistake",
+    t2an: "Nach der Regel müsste es <em>do</em> heißen. Tut es nicht. Als feste Wendung lernen.",
+    t2bh: "do your best",
+    t2bn: "Nimmt trotzdem <em>do</em>. Das Spiegelbild von <em>make a mistake</em>.",
+    t2ch: "do business",
+    t2cn: "Hier außerdem unzählbar — niemals <em>do a business</em>.",
+    t2dh: "do exercise",
+    t2dn: "„Sport machen“ führt hier besonders zuverlässig zum falschen Verb.",
+    t2e: "Die Ausnahmen",
+    t2t: "Vier, die die Regel brechen und gelernt werden müssen",
+    t3ah: "make off with",
+    t3an: "<em>The raccoon made off with the sandwiches.</em> — damit verschwinden.",
+    t3bh: "make up for",
+    t3bn: "<em>He bought coffee to make up for being late.</em> — ausgleichen.",
+    t3ch: "make of",
+    t3cn: "Fast immer als Frage: <em>what do you make of it?</em> — davon halten.",
+    t3dh: "make up",
+    t3dn: "Trennbar: <em>made it up</em>, nie <em>made up it</em>. — erfinden.",
+    t3e: "Phrasal Verbs · make",
+    t3t: "Vier mit <em>make</em>, nach Partikel geordnet",
+    t4ah: "do away with",
+    t4an: "Formell, eher für Regeln und Systeme als für Gegenstände. — abschaffen.",
+    t4bh: "do without",
+    t4bn: "Das Paar zum Aufpassen: <em>do away with</em> ist deine Entscheidung, <em>do without</em> deine Lage.",
+    t4ch: "could do with",
+    t4cn: "Nur im Konditional. Es gibt kein <em>I do with a coffee</em>. — gut gebrauchen können.",
+    t4dh: "do up",
+    t4dn: "<em>doing up the barn</em> (renovieren) und <em>do up your coat</em> (zumachen).",
+    t4e: "Phrasal Verbs · do",
+    t4t: "Vier mit <em>do</em> — und zwei, die leicht verwechselt werden",
+    wordCount: (n)=>`${n} ${n===1?'Wort':'Wörter'}`
+  },
+  es: {},
+  fr: {},
+  it: {},
+  pt: {},
+  ru: {},
+  ar: {},
+  zh: {},
+  ja: {}
 };
 
-const BLANK_ITEMS = [
-  {
-    id: "b1",
-    sentence: "I need to ___ a decision about my job.",
-    answer: "make",
-    en: "Use make: a decision is a new result you produce.",
-    de: "Benutze make: eine Entscheidung ist ein neues Ergebnis, das du erzeugst."
-  },
-  {
-    id: "b2",
-    sentence: "Can you help me ___ my homework?",
-    answer: "do",
-    en: "Use do: homework is an activity or task, not a new object.",
-    de: "Benutze do: Hausaufgaben sind eine Tätigkeit, kein neues Objekt."
-  },
-  {
-    id: "b3",
-    sentence: "She wants to ___ a cake for the party.",
-    answer: "make",
-    en: "Use make: a cake is something new that didn't exist before.",
-    de: "Benutze make: ein Kuchen ist etwas Neues, das vorher nicht existierte."
-  },
-  {
-    id: "b4",
-    sentence: "He always tries to ___ his best in exams.",
-    answer: "do",
-    en: "Fixed expression: do your best. It doesn't follow the general rule — just learn it.",
-    de: "Feste Wendung: do your best. Sie folgt nicht der allgemeinen Regel — einfach auswendig lernen."
-  },
-  {
-    id: "b5",
-    sentence: "They always ___ a lot of noise at parties.",
-    answer: "make",
-    en: "Use make: noise is produced, a result of an action.",
-    de: "Benutze make: Lärm wird erzeugt, ein Ergebnis einer Handlung."
-  },
-  {
-    id: "b6",
-    sentence: "We need to ___ some research before the meeting.",
-    answer: "do",
-    en: "Use do: research is an activity you carry out.",
-    de: "Benutze do: Forschung ist eine Tätigkeit, die man ausführt."
-  },
-  {
-    id: "b7",
-    sentence: "I don't want to ___ another mistake.",
-    answer: "make",
-    en: "Fixed expression: make a mistake. The mistake is treated as something produced.",
-    de: "Feste Wendung: make a mistake. Der Fehler wird als etwas Erzeugtes behandelt."
-  },
-  {
-    id: "b8",
-    sentence: "Let's ___ a plan for the weekend.",
-    answer: "make",
-    en: "Use make: a plan is something new you create.",
-    de: "Benutze make: ein Plan ist etwas Neues, das du erstellst."
-  },
-  {
-    id: "b9",
-    sentence: "Could you ___ the washing-up, please?",
-    answer: "do",
-    en: "Use do: the washing-up is a household task, not a new product.",
-    de: "Benutze do: Abwasch ist eine Hausarbeit, kein neues Produkt."
-  },
-  {
-    id: "b10",
-    sentence: "We always ___ progress when we plan carefully.",
-    answer: "make",
-    en: "Use make: progress is treated as a result being produced.",
-    de: "Benutze make: Fortschritt wird als ein Ergebnis behandelt, das erzeugt wird."
-  }
-];
+let currentLang = 'en';
+const t = k => (UI_I18N[currentLang] && UI_I18N[currentLang][k] != null)
+  ? UI_I18N[currentLang][k] : UI_I18N.en[k];
 
-const CHOICE_ITEMS = [
-  {
-    id: "c1",
-    options: ["do business", "make business"],
-    answer: "do business",
-    en: "Fixed expression: do business. Business is treated as an activity you carry out.",
-    de: "Feste Wendung: do business. Geschäfte werden als eine Tätigkeit behandelt."
-  },
-  {
-    id: "c2",
-    options: ["make a mistake", "do a mistake"],
-    answer: "make a mistake",
-    en: "Fixed expression: make a mistake, even though a mistake isn't really 'produced' on purpose.",
-    de: "Feste Wendung: make a mistake, obwohl ein Fehler nicht wirklich absichtlich 'hergestellt' wird."
-  },
-  {
-    id: "c3",
-    options: ["do the shopping", "make the shopping"],
-    answer: "do the shopping",
-    en: "Fixed expression: do the shopping. Shopping is an activity/task.",
-    de: "Feste Wendung: do the shopping. Einkaufen ist eine Tätigkeit/Aufgabe."
-  },
-  {
-    id: "c4",
-    options: ["make money", "do money"],
-    answer: "make money",
-    en: "Use make: money is a result you produce, e.g. through work or investment.",
-    de: "Benutze make: Geld ist ein Ergebnis, das man erzeugt, z. B. durch Arbeit oder Investition."
-  },
-  {
-    id: "c5",
-    options: ["do exercise", "make exercise"],
-    answer: "do exercise",
-    en: "Fixed expression: do exercise. Exercise is a physical activity.",
-    de: "Feste Wendung: do exercise. Sport/Bewegung ist eine körperliche Tätigkeit."
-  },
-  {
-    id: "c6",
-    options: ["make a noise", "do a noise"],
-    answer: "make a noise",
-    en: "Use make: a noise is something produced by an action.",
-    de: "Benutze make: ein Geräusch wird durch eine Handlung erzeugt."
-  }
-];
+/* ── Deck state ── */
+const stage   = document.getElementById('stage');
+const slides  = [...document.querySelectorAll('.slide')];
+const scored  = slides.filter(s => ['mc','gap','match','order','sort'].includes(s.dataset.type));
+/* A slide may hold more than one gap; each gap is worth a point. */
+const countIn = s => s.dataset.type === 'gap'   ? s.querySelectorAll('.gap').length
+                   : s.dataset.type === 'match' ? s.querySelectorAll('.match-pair').length
+                   : s.dataset.type === 'sort'  ? s.querySelectorAll('.sort-item').length
+                   : 1;
+const maxScore = scored.reduce((n, s) => n + Math.max(1, countIn(s)), 0);
+let idx = 0, score = 0;
+const answered = new WeakSet();
 
-const SORT_ITEMS = [
-  { id: "s1", phrase: "a plan", answer: "make" },
-  { id: "s2", phrase: "homework", answer: "do" },
-  { id: "s3", phrase: "a decision", answer: "make" },
-  { id: "s4", phrase: "research", answer: "do" },
-  { id: "s5", phrase: "a cake", answer: "make" },
-  { id: "s6", phrase: "business", answer: "do" },
-  { id: "s7", phrase: "money", answer: "make" },
-  { id: "s8", phrase: "the washing-up", answer: "do" }
-];
-
-const PV_ITEMS = [
-  {
-    id: "pv1",
-    sentence: "The raccoon knocked over the bin and ___ half our sandwiches.",
-    options: ["made off with", "made up for", "did away with", "did without"],
-    answer: "made off with",
-    en: "Make off with sth means to steal something and leave quickly with it.",
-    de: "Make off with etwas bedeutet, etwas zu stehlen und schnell damit zu verschwinden."
-  },
-  {
-    id: "pv2",
-    sentence: "He was late again, so he bought coffee for the whole team to ___ it.",
-    options: ["make up for", "make of", "make off with", "do up"],
-    answer: "make up for",
-    en: "Make up for sth means to compensate for something bad or missing.",
-    de: "Make up for etwas bedeutet, etwas Schlechtes oder Fehlendes auszugleichen."
-  },
-  {
-    id: "pv3",
-    sentence: "I really don't know what to ___ this cryptic email from the landlord.",
-    options: ["make of", "make up", "do without", "do up"],
-    answer: "make of",
-    en: "Make of sb/sth means to have an opinion or interpretation of them.",
-    de: "Make of jmdn./etwas bedeutet, eine Meinung oder Interpretation davon zu haben."
-  },
-  {
-    id: "pv4",
-    sentence: "The child ___ an elaborate story about a dragon eating his homework.",
-    options: ["made up", "made off with", "did up", "did away with"],
-    answer: "made up",
-    en: "Make sth up means to invent something that isn't true.",
-    de: "Make sth up bedeutet, etwas zu erfinden, das nicht wahr ist."
-  },
-  {
-    id: "pv5",
-    sentence: "The council decided to ___ the outdated parking permits altogether.",
-    options: ["do away with", "do without", "make of", "make up for"],
-    answer: "do away with",
-    en: "Do away with sth means to abolish or get rid of it completely.",
-    de: "Do away with etwas bedeutet, es abzuschaffen oder vollständig loszuwerden."
-  },
-  {
-    id: "pv6",
-    sentence: "During the power cut, the whole street had to ___ hot water for two days.",
-    options: ["do without", "do away with", "make up for", "do up"],
-    answer: "do without",
-    en: "Do without sth means to manage even though you don't have it.",
-    de: "Do without etwas bedeutet, auch ohne es zurechtzukommen."
-  },
-  {
-    id: "pv7",
-    sentence: "After the long flight, she said she ___ a good night's sleep.",
-    options: ["could do with", "could make up for", "could do away with", "could make off with"],
-    answer: "could do with",
-    en: "Could do with sth means you want or need it.",
-    de: "Could do with etwas bedeutet, dass man es möchte oder braucht."
-  },
-  {
-    id: "pv8",
-    sentence: "They spent the whole summer ___ the old barn before turning it into a studio.",
-    options: ["doing up", "making up", "doing away with", "making off with"],
-    answer: "doing up",
-    en: "Do sth up means to renovate or repair it.",
-    de: "Do sth up bedeutet, etwas zu renovieren oder zu reparieren."
-  }
-];
-
-// ===== Make v Do — logic =====
-
-let lang = "en";
-let score = 0;
-let answeredCount = 0;
-let totalItems = BLANK_ITEMS.length + CHOICE_ITEMS.length + PV_ITEMS.length + SORT_ITEMS.length;
-let missed = [];
-
-function fisherYates(arr) {
-  const a = arr.slice();
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+/* ── Scale the 1280×720 stage to fit any viewport, never scroll ── */
+function fitStage() {
+  const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+  // Centre explicitly. Relying on the wrapper to centre an oversized child is
+  // what put the stage off-screen on every viewport under 1280px wide.
+  const x = (window.innerWidth  - 1280 * s) / 2;
+  const y = (window.innerHeight -  720 * s) / 2;
+  stage.style.transform = `translate(${x}px, ${y}px) scale(${s})`;
 }
+addEventListener('resize', fitStage);
 
-const questionScreens = fisherYates(
-  BLANK_ITEMS.map(it => ({ kind: "blank", item: it }))
-    .concat(CHOICE_ITEMS.map(it => ({ kind: "choice", item: it })))
-);
-const pvScreens = fisherYates(PV_ITEMS.map(it => ({ kind: "pv", item: it })));
-const sortScreen = { kind: "sort", items: fisherYates(SORT_ITEMS) };
-
-let screenIndex = -1;
-const screens = ["intro", ...questionScreens, "pv-intro", ...pvScreens, sortScreen, "results"];
-
-const root = document.getElementById("screen");
-const scoreEl = document.getElementById("scoreVal");
-const progressFill = document.getElementById("progressFill");
-const progressLabel = document.getElementById("progressLabel");
-const langBtn = document.getElementById("langBtn");
-
-function t(key) {
-  return UI[lang][key];
-}
-
-function updateChrome() {
-  document.getElementById("brandName").textContent = t("brand");
-  document.getElementById("lessonTitle").textContent = t("title");
-  langBtn.textContent = t("langLabel");
-  scoreEl.textContent = score + " / " + totalItems;
-  const stepsDone = Math.max(0, Math.min(answeredCount, totalItems));
-  progressFill.style.width = (totalItems ? (stepsDone / totalItems) * 100 : 0) + "%";
-  progressLabel.textContent = stepsDone + " / " + totalItems;
-}
-
-function renderIntro() {
-  root.innerHTML = `
-    <div class="card intro">
-      <p class="subtitle">${t("subtitle")}</p>
-      <h2>${t("introRules")}</h2>
-      <div class="rule-row"><span class="pill make">MAKE</span><p>${t("ruleMake")}</p></div>
-      <div class="rule-row"><span class="pill do">DO</span><p>${t("ruleDo")}</p></div>
-      <p class="rule-warning">${t("ruleFixed")}</p>
-      <button class="btn primary" id="startBtn">${t("startBtn")}</button>
-    </div>
-  `;
-  document.getElementById("startBtn").addEventListener("click", () => goTo(screenIndex + 1));
-}
-
-function renderPvIntro() {
-  root.innerHTML = `
-    <div class="card intro">
-      <h2>${t("pvHeading")}</h2>
-      <p class="subtitle">${t("pvSubtitle")}</p>
-      <button class="btn primary" id="pvStartBtn">${t("pvStart")}</button>
-    </div>
-  `;
-  document.getElementById("pvStartBtn").addEventListener("click", () => goTo(screenIndex + 1));
-}
-
-function renderBlank(item) {
-  const opts = fisherYates(["make", "do"]);
-  root.innerHTML = `
-    <div class="card">
-      <div class="q-sentence">${item.sentence.replace("___", '<span class="gap">___</span>')}</div>
-      <div class="options" id="optionsRow"></div>
-      <div class="feedback" id="feedback" hidden></div>
-      <button class="btn primary" id="nextBtn" hidden>${t("next")}</button>
-    </div>
-  `;
-  const optionsRow = document.getElementById("optionsRow");
-  opts.forEach(word => {
-    const b = document.createElement("button");
-    b.className = "opt-btn " + word;
-    b.textContent = word.toUpperCase();
-    b.addEventListener("click", () => handleBlankAnswer(item, word, b, optionsRow));
-    optionsRow.appendChild(b);
-  });
-}
-
-function handleBlankAnswer(item, chosen, btnEl, row) {
-  Array.from(row.children).forEach(c => (c.disabled = true));
-  const isCorrect = chosen === item.answer;
-  markResult(isCorrect, btnEl, row, item.answer);
-  showFeedback(isCorrect, item.en, item.de, item.sentence.replace("___", item.answer.toUpperCase()));
-  recordAnswer(isCorrect, item.sentence.replace("___", "___ (" + item.answer + ")"));
-}
-
-function renderChoice(item) {
-  const opts = fisherYates(item.options);
-  root.innerHTML = `
-    <div class="card">
-      <p class="q-prompt">${t("check")}:</p>
-      <div class="options stacked" id="optionsRow"></div>
-      <div class="feedback" id="feedback" hidden></div>
-      <button class="btn primary" id="nextBtn" hidden>${t("next")}</button>
-    </div>
-  `;
-  const optionsRow = document.getElementById("optionsRow");
-  opts.forEach(phrase => {
-    const b = document.createElement("button");
-    b.className = "opt-btn phrase " + (phrase.startsWith("make") ? "make" : "do");
-    b.textContent = phrase;
-    b.addEventListener("click", () => handleChoiceAnswer(item, phrase, b, optionsRow));
-    optionsRow.appendChild(b);
-  });
-}
-
-function handleChoiceAnswer(item, chosen, btnEl, row) {
-  Array.from(row.children).forEach(c => (c.disabled = true));
-  const isCorrect = chosen === item.answer;
-  markResult(isCorrect, btnEl, row, item.answer, true);
-  showFeedback(isCorrect, item.en, item.de);
-  recordAnswer(isCorrect, item.answer);
-}
-
-function renderPv(item) {
-  const opts = fisherYates(item.options);
-  root.innerHTML = `
-    <div class="card">
-      <div class="q-sentence pv-sentence">${item.sentence.replace("___", '<span class="gap">___</span>')}</div>
-      <div class="options stacked" id="optionsRow"></div>
-      <div class="feedback" id="feedback" hidden></div>
-      <button class="btn primary" id="nextBtn" hidden>${t("next")}</button>
-    </div>
-  `;
-  const optionsRow = document.getElementById("optionsRow");
-  opts.forEach(phrase => {
-    const b = document.createElement("button");
-    b.className = "opt-btn phrase pv";
-    b.textContent = phrase;
-    b.addEventListener("click", () => handlePvAnswer(item, phrase, b, optionsRow));
-    optionsRow.appendChild(b);
-  });
-}
-
-function handlePvAnswer(item, chosen, btnEl, row) {
-  Array.from(row.children).forEach(c => (c.disabled = true));
-  const isCorrect = chosen === item.answer;
-  markResult(isCorrect, btnEl, row, item.answer, true);
-  showFeedback(isCorrect, item.en, item.de, item.sentence.replace("___", item.answer.toUpperCase()));
-  recordAnswer(isCorrect, item.sentence.replace("___", "___ (" + item.answer + ")"));
-}
-
-function markResult(isCorrect, btnEl, row, correctValue, isPhrase) {
-  btnEl.classList.add(isCorrect ? "correct" : "wrong");
-  if (!isCorrect) {
-    Array.from(row.children).forEach(c => {
-      const val = isPhrase ? c.textContent : c.textContent.toLowerCase();
-      if (val === correctValue) c.classList.add("correct");
-    });
-  }
-}
-
-function showFeedback(isCorrect, enText, deText, extra) {
-  const fb = document.getElementById("feedback");
-  fb.hidden = false;
-  fb.className = "feedback " + (isCorrect ? "good" : "bad");
-  const headline = isCorrect ? t("correct") : t("incorrect");
-  const explanation = lang === "en" ? enText : deText;
-  fb.innerHTML = `<strong>${headline}</strong><span>${explanation}</span>${extra ? `<em>${extra}</em>` : ""}`;
-  const nextBtn = document.getElementById("nextBtn");
-  nextBtn.hidden = false;
-  nextBtn.onclick = () => goTo(screenIndex + 1);
-}
-
-function recordAnswer(isCorrect, label) {
-  answeredCount++;
-  if (isCorrect) score++;
-  else missed.push(label);
-  updateChrome();
-}
-
-function renderSort(screenData) {
-  root.innerHTML = `
-    <div class="card sort-card">
-      <h2>${t("sortTitle")}</h2>
-      <p class="sort-help">${t("sortHelp")}</p>
-      <div class="chips" id="chips"></div>
-      <div class="buckets">
-        <button class="bucket make" id="bucketMake">MAKE</button>
-        <button class="bucket do" id="bucketDo">DO</button>
-      </div>
-      <button class="btn primary" id="sortNextBtn" hidden>${t("next")}</button>
-    </div>
-  `;
-  const chipsEl = document.getElementById("chips");
-  let selected = null;
-  let doneCount = 0;
-
-  screenData.items.forEach(it => {
-    const chip = document.createElement("button");
-    chip.className = "chip";
-    chip.textContent = it.phrase;
-    chip.dataset.id = it.id;
-    chip.addEventListener("click", () => {
-      if (chip.classList.contains("locked")) return;
-      Array.from(chipsEl.children).forEach(c => c.classList.remove("selected"));
-      chip.classList.add("selected");
-      selected = { chip, data: it };
-    });
-    chipsEl.appendChild(chip);
-  });
-
-  function assign(bucketAnswer) {
-    if (!selected) return;
-    const { chip, data } = selected;
-    const isCorrect = bucketAnswer === data.answer;
-    chip.classList.remove("selected");
-    chip.classList.add("locked", isCorrect ? "correct" : "wrong", bucketAnswer);
-    if (!isCorrect) {
-      chip.title = lang === "en"
-        ? `Correct: ${data.answer.toUpperCase()}`
-        : `Richtig: ${data.answer.toUpperCase()}`;
-    }
-    recordAnswer(isCorrect, data.phrase + " → " + data.answer);
-    selected = null;
-    doneCount++;
-    if (doneCount === screenData.items.length) {
-      const nextBtn = document.getElementById("sortNextBtn");
-      nextBtn.hidden = false;
-      nextBtn.onclick = () => goTo(screenIndex + 1);
-    }
-  }
-
-  document.getElementById("bucketMake").addEventListener("click", () => assign("make"));
-  document.getElementById("bucketDo").addEventListener("click", () => assign("do"));
+/* ── Navigation ── */
+function show(n) {
+  idx = Math.max(0, Math.min(slides.length - 1, n));
+  slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+  stage.classList.toggle('on-cover', slides[idx].dataset.type === 'cover');
+  // A slide may swap the background pattern for a second illustration from the
+  // same set (data-bg). Same idiom as the hero — picture at reduced opacity
+  // under the wash — so extra artwork never becomes a pasted-in box.
+  stage.style.setProperty('--hero', slides[idx].dataset.bg
+    ? `url('${slides[idx].dataset.bg}')` : '');
+  document.getElementById('progressFill').style.width =
+    (slides.length > 1 ? (idx / (slides.length - 1)) * 100 : 0) + '%';
+  document.getElementById('deckCount').textContent = t('slideOf')(idx + 1, slides.length);
+  document.querySelector('[data-action="prev"]').disabled = idx === 0;
+  document.querySelector('[data-action="next"]').disabled = idx === slides.length - 1;
+  if (slides[idx].dataset.type === 'results') renderResults();
+  const gap = slides[idx].querySelector('.gap');
+  if (gap && !answered.has(slides[idx])) setTimeout(() => gap.focus(), 60);
 }
 
 function renderResults() {
-  const pct = totalItems ? Math.round((score / totalItems) * 100) : 0;
-  let tier = "resultsLow";
-  if (pct >= 85) tier = "resultsGood";
-  else if (pct >= 60) tier = "resultsMid";
-
-  root.innerHTML = `
-    <div class="card results">
-      <h2>${t("resultsTitle")}</h2>
-      <div class="score-circle">${score}/${totalItems}</div>
-      <p class="tier-msg">${t(tier)}</p>
-      ${missed.length ? `
-        <h3>${t("reviewTitle")}</h3>
-        <ul class="review-list">${missed.map(m => `<li>${m}</li>`).join("")}</ul>
-      ` : ""}
-      <button class="btn primary" id="retryBtn">${t("retry")}</button>
-    </div>
-  `;
-  document.getElementById("retryBtn").addEventListener("click", () => window.location.reload());
+  const max = maxScore;
+  document.getElementById('scoreVal').textContent = score;
+  document.getElementById('scoreMax').textContent = max;
+  const pct = max ? score / max : 0;
+  document.getElementById('scoreMsg').textContent =
+    pct === 1 ? t('resPerfect') : pct >= .75 ? t('resStrong')
+    : pct >= .5 ? t('resMid') : t('resLow');
 }
 
-function goTo(index) {
-  screenIndex = index;
-  const s = screens[index];
-  if (s === "intro") renderIntro();
-  else if (s === "pv-intro") renderPvIntro();
-  else if (s === "results") renderResults();
-  else if (s.kind === "blank") renderBlank(s.item);
-  else if (s.kind === "choice") renderChoice(s.item);
-  else if (s.kind === "pv") renderPv(s.item);
-  else if (s.kind === "sort") renderSort(s);
-  updateChrome();
-  window.scrollTo({ top: 0, behavior: "smooth" });
+function updateScoreChip() {
+  document.getElementById('deckScore').textContent =
+    maxScore ? `${t('scoreLabel')} ${score}/${maxScore}` : '';
 }
 
-langBtn.addEventListener("click", () => {
-  lang = lang === "en" ? "de" : "en";
-  goTo(screenIndex);
+/* ── Answer handling ── */
+function award(slide, ok) {
+  if (answered.has(slide)) return;
+  answered.add(slide);
+  if (ok) score++;
+  updateScoreChip();
+}
+
+function feedback(slide, ok, extra, ownExplain) {
+  const el = slide.querySelector('.feedback');
+  if (!el) return;
+  // An option's own explanation wins: telling a learner why THEIR answer was
+  // wrong beats restating why the key was right.
+  const reason = ownExplain || el.dataset.explain;
+  const why = reason ? ' ' + reason : '';
+  // innerHTML, not textContent: explanations carry <strong> and <em>, and the
+  // whole point of an explanation is that the word being taught is marked.
+  // Written with textContent this printed the tags as literal source text on
+  // every deck built from this template.
+  el.innerHTML = (ok ? t('fbCorrect') : t('fbWrong') + (extra ? ` ${t('fbAnswer')} ${extra}` : '')) + why;
+  el.className = 'feedback show ' + (ok ? 'ok' : 'no');
+}
+
+/* Multiple choice — shuffled on first view so option order is never a tell. */
+slides.filter(s => s.dataset.type === 'mc').forEach(slide => {
+  const box = slide.querySelector('.opts');
+  const opts = [...box.querySelectorAll('.opt')];
+  opts.sort(() => Math.random() - .5).forEach((o, i) => {
+    o.prepend(Object.assign(document.createElement('span'), {
+      className: 'opt-key', textContent: 'ABCD'[i]
+    }));
+    box.appendChild(o);
+  });
+  opts.forEach(o => o.addEventListener('click', () => {
+    if (answered.has(slide)) return;
+    const ok = o.hasAttribute('data-correct');
+    opts.forEach(x => {
+      x.disabled = true;
+      if (x.hasAttribute('data-correct')) x.classList.add('correct');
+    });
+    if (!ok) o.classList.add('wrong');
+    award(slide, ok);
+    feedback(slide, ok, null, o.dataset.explain);
+  }));
 });
 
-goTo(0);
+/* Matching. Author as <div class="match-pair" data-term data-def> rows; the
+   engine builds both columns and shuffles the definitions. One point per pair. */
+slides.filter(s => s.dataset.type === 'match').forEach(slide => {
+  const pairs = [...slide.querySelectorAll('.match-pair')];
+  const grid = slide.querySelector('.match-grid');
+  if (!grid || !pairs.length) return;
+  const terms = document.createElement('div');
+  const defs = document.createElement('div');
+  terms.className = defs.className = 'match-col';
+  const mk = (txt, cls, key) => {
+    const b = document.createElement('button');
+    b.className = 'match-item ' + cls;
+    b.textContent = txt;
+    b.dataset.key = key;
+    return b;
+  };
+  pairs.forEach(p => terms.appendChild(mk(p.dataset.term, 'term', p.dataset.term)));
+  [...pairs].sort(() => Math.random() - .5)
+    .forEach(p => defs.appendChild(mk(p.dataset.def, 'def', p.dataset.term)));
+  grid.replaceChildren(terms, defs);
+
+  let picked = null, done = 0;
+  const total = pairs.length;
+  grid.addEventListener('click', e => {
+    const el = e.target.closest('.match-item');
+    if (!el || el.classList.contains('done')) return;
+    if (el.classList.contains('term')) {
+      grid.querySelectorAll('.term.picked').forEach(x => x.classList.remove('picked'));
+      el.classList.add('picked');
+      picked = el;
+      return;
+    }
+    if (!picked) return;
+    if (el.dataset.key === picked.dataset.key) {
+      el.classList.add('done'); picked.classList.add('done');
+      picked.classList.remove('picked');
+      picked = null; done++; score++; updateScoreChip();
+      if (done === total) {
+        answered.add(slide);
+        feedback(slide, true);
+      }
+    } else {
+      el.classList.add('miss');
+      setTimeout(() => el.classList.remove('miss'), 320);
+    }
+  });
+});
+
+/* Sentence building. Author as
+     <div class="order" data-answer="chunk|chunk|chunk"></div>
+   with a [data-action="check-order"] button and a .feedback alongside it.
+   The engine shuffles the chunks into a pool; clicking places one, clicking a
+   placed one takes it back. One point for the whole sentence — a half-right
+   word order is not half-right English. */
+slides.filter(s => s.dataset.type === 'order').forEach(slide => {
+  const box = slide.querySelector('.order');
+  if (!box) return;
+  const answer = box.dataset.answer.split('|').map(x => x.trim());
+  const target = document.createElement('div'); target.className = 'order-target';
+  const pool   = document.createElement('div'); pool.className   = 'order-pool';
+  answer.map((txt, i) => ({ txt, i }))
+        .sort(() => Math.random() - .5)
+        .forEach(({ txt, i }) => {
+          const b = document.createElement('button');
+          b.className = 'chunk';
+          b.textContent = txt;
+          b.dataset.i = i;
+          pool.appendChild(b);
+        });
+  box.replaceChildren(target, pool);
+
+  box.addEventListener('click', e => {
+    const c = e.target.closest('.chunk');
+    if (!c || c.disabled) return;
+    if (c.parentElement === pool) { c.classList.add('placed');    target.appendChild(c); }
+    else                          { c.classList.remove('placed'); pool.appendChild(c); }
+  });
+
+  slide._check = () => {
+    if (answered.has(slide)) return;
+    // Marking a half-built sentence teaches nothing; wait until it is complete.
+    if (target.children.length < answer.length) return;
+    answered.add(slide);
+    const ok = [...target.children].map(c => +c.dataset.i).every((v, i) => v === i);
+    target.classList.add(ok ? 'correct' : 'wrong');
+    box.querySelectorAll('.chunk').forEach(c => c.disabled = true);
+    if (ok) score++;
+    updateScoreChip();
+    feedback(slide, ok, ok ? null : answer.join(' '));
+    const btn = slide.querySelector('[data-action="check-order"]');
+    if (btn) btn.disabled = true;
+  };
+});
+
+/* Sorting. Author as
+     <div class="sort" data-bins="Label one|Label two" data-explain="…">
+       <span class="sort-item" data-bin="0">every day</span>
+       …
+     </div>
+   The engine shuffles the items into a pool and builds one bin per label.
+   Drag an item into a bin, or click the item and then click the bin —
+   both do the same thing, and the click path is the one that works on a
+   touch screen. One point per item.
+
+   Unlike matching, a wrong placement costs the point for that item: the
+   learner can still put it right and finish the slide, but the first
+   answer is the one that counts. A sorting task with unlimited free
+   retries is a task you cannot fail, and a score that cannot go down
+   tells the learner nothing. (Matching still allows free retries; that
+   is thirty-odd shipped lessons' worth of behaviour to change, and it
+   should be changed deliberately, not as a side effect of this.) */
+slides.filter(s => s.dataset.type === 'sort').forEach(slide => {
+  const box = slide.querySelector('.sort');
+  if (!box) return;
+  const labels = (box.dataset.bins || '').split('|').map(x => x.trim());
+  const items = [...box.querySelectorAll('.sort-item')];
+  if (labels.length < 2 || !items.length) return;
+
+  const pool = document.createElement('div');
+  pool.className = 'sort-pool';
+  const bins = document.createElement('div');
+  bins.className = 'sort-bins';
+  bins.style.gridTemplateColumns = '1fr '.repeat(labels.length).trim();
+
+  const binEls = labels.map((label, i) => {
+    const bin = document.createElement('div');
+    bin.className = 'sort-bin';
+    bin.dataset.bin = i;
+    const h = document.createElement('div');
+    h.className = 'sort-bin-label';
+    h.textContent = label;
+    const body = document.createElement('div');
+    body.className = 'sort-bin-items';
+    bin.append(h, body);
+    bins.appendChild(bin);
+    return bin;
+  });
+
+  items.sort(() => Math.random() - .5).forEach(it => {
+    it.setAttribute('draggable', 'true');
+    it.tabIndex = 0;
+    pool.appendChild(it);
+  });
+  box.replaceChildren(pool, bins);
+
+  let picked = null, placed = 0, dragged = null;
+  const missed = new WeakSet();   // items answered wrongly at least once
+
+  function place(item, binIndex) {
+    if (item.classList.contains('placed')) return;
+    if (+item.dataset.bin !== binIndex) {
+      missed.add(item);
+      item.classList.add('miss');
+      setTimeout(() => item.classList.remove('miss'), 320);
+      return;
+    }
+    item.classList.remove('picked');
+    item.classList.add('placed');
+    item.setAttribute('draggable', 'false');
+    binEls[binIndex].querySelector('.sort-bin-items').appendChild(item);
+    placed++;
+    if (!missed.has(item)) { score++; updateScoreChip(); }
+    if (placed === items.length) {
+      binEls.forEach(b => b.classList.add('full'));
+      answered.add(slide);
+      // Right only if every item went to the right bin first time.
+      feedback(slide, !items.some(i => missed.has(i)));
+    }
+  }
+
+  box.addEventListener('click', e => {
+    const item = e.target.closest('.sort-item');
+    if (item && !item.classList.contains('placed')) {
+      box.querySelectorAll('.sort-item.picked').forEach(x => x.classList.remove('picked'));
+      item.classList.add('picked');
+      picked = item;
+      return;
+    }
+    const bin = e.target.closest('.sort-bin');
+    if (bin && picked) { place(picked, +bin.dataset.bin); picked = null; }
+  });
+
+  box.addEventListener('dragstart', e => {
+    const item = e.target.closest('.sort-item');
+    if (!item || item.classList.contains('placed')) return;
+    dragged = item;
+    item.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    // Firefox will not start a drag without data on the transfer.
+    e.dataTransfer.setData('text/plain', '');
+  });
+  box.addEventListener('dragend', () => {
+    if (dragged) dragged.classList.remove('dragging');
+    dragged = null;
+    binEls.forEach(b => b.classList.remove('over'));
+  });
+  binEls.forEach(bin => {
+    bin.addEventListener('dragover', e => { e.preventDefault(); bin.classList.add('over'); });
+    bin.addEventListener('dragleave', () => bin.classList.remove('over'));
+    bin.addEventListener('drop', e => {
+      e.preventDefault();
+      bin.classList.remove('over');
+      if (dragged) { place(dragged, +bin.dataset.bin); dragged = null; }
+    });
+  });
+});
+
+/* Gap fill. Supports several gaps on one slide, each scored and explained
+   individually via its own .gap-row wrapper. */
+const gapOk = g => g.dataset.answer.split('|')
+  .map(a => a.trim().toLowerCase())
+  .includes(g.value.trim().toLowerCase().replace(/\s+/g, ' '));
+
+function markGap(g, fb) {
+  const ok = gapOk(g);
+  g.classList.add(ok ? 'correct' : 'wrong');
+  g.disabled = true;
+  if (ok) score++;
+  if (fb) {
+    const why = fb.dataset.explain ? ' ' + fb.dataset.explain : '';
+    fb.innerHTML = (ok ? t('fbCorrect')
+      : `${t('fbWrong')} ${t('fbAnswer')} ${g.dataset.answer.split('|')[0]}.`) + why;
+    fb.className = 'feedback show ' + (ok ? 'ok' : 'no');
+  }
+  return ok;
+}
+
+function checkGaps(slide) {
+  if (answered.has(slide)) return;
+  answered.add(slide);
+  const rows = [...slide.querySelectorAll('.gap-row')];
+  if (rows.length) {
+    rows.forEach(r => markGap(r.querySelector('.gap'), r.querySelector('.feedback')));
+  } else {
+    markGap(slide.querySelector('.gap'), slide.querySelector('.feedback'));
+  }
+  const btn = slide.querySelector('[data-action="check"]');
+  if (btn) btn.disabled = true;
+  updateScoreChip();
+}
+
+/* ── Activation: word count, copy, and a print mirror (a textarea's
+   value does not appear in a PDF, so we mirror it into a div). ── */
+const actInput = document.getElementById('actInput');
+if (actInput) {
+  const countEl = document.getElementById('actCount');
+  const printEl = document.getElementById('actPrint');
+  const sync = () => {
+    const words = actInput.value.trim().split(/\s+/).filter(Boolean).length;
+    countEl.textContent = t('wordCount')(words);
+    printEl.textContent = actInput.value;
+  };
+  actInput.addEventListener('input', sync);
+  window.syncActivation = sync;
+  sync();
+}
+
+/* ── Events ── */
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-action]');
+  if (!a) return;
+  const act = a.dataset.action;
+  if (act === 'next') show(idx + 1);
+  if (act === 'prev') show(idx - 1);
+  if (act === 'check') checkGaps(a.closest('.slide'));
+  if (act === 'check-order') { const sl = a.closest('.slide'); if (sl._check) sl._check(); }
+  if (act === 'restart') location.reload();
+  if (act === 'copy-writing') {
+    const ta = document.getElementById('actInput');
+    if (ta && navigator.clipboard) navigator.clipboard.writeText(ta.value).then(() => {
+      const was = a.textContent;
+      a.textContent = t('btnCopied');
+      setTimeout(() => { a.textContent = was; }, 1400);
+    });
+  }
+});
+
+document.addEventListener('keydown', e => {
+  if (e.target.matches('input, select, textarea')) {
+    if (e.key === 'Enter') checkGaps(e.target.closest('.slide'));
+    return;
+  }
+  if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); show(idx + 1); }
+  if (['ArrowLeft', 'PageUp'].includes(e.key))         { e.preventDefault(); show(idx - 1); }
+});
+
+/* ── Language ── */
+function applyLang() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const v = t(el.dataset.i18n);
+    if (v != null) el.innerHTML = v;
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const v = t(el.dataset.i18nPh);
+    if (v != null) el.placeholder = v;
+  });
+  if (window.syncActivation) window.syncActivation();
+  document.documentElement.lang = currentLang;
+  document.documentElement.dir = RTL_LANGS.includes(currentLang) ? 'rtl' : 'ltr';
+  updateScoreChip();
+  show(idx);
+}
+
+function initLang() {
+  const sel = document.getElementById('langSelect');
+  // Only offer languages that are actually translated. An empty or partial
+  // scaffold stays in the code for a future pass but never appears as a dead
+  // option in the menu.
+  const enKeys = Object.keys(UI_I18N.en).length;
+  LANGS.filter(l => l.code === 'en' ||
+                    Object.keys(UI_I18N[l.code] || {}).length >= enKeys)
+       .forEach(l => sel.add(new Option(l.label, l.code)));
+  sel.value = currentLang;
+  sel.hidden = sel.options.length < 2;
+  sel.addEventListener('change', () => { currentLang = sel.value; applyLang(); });
+}
+
+/* Per-slide background art: set the variable on the element as well, because
+   the print stylesheet paints each slide's own ::before from var(--hero). */
+slides.filter(s => s.dataset.bg).forEach(s =>
+  s.style.setProperty('--hero', `url('${s.dataset.bg}')`));
+
+/* ── Boot ── */
+initLang();
+fitStage();
+applyLang();
+updateScoreChip();
+
+/* Reveal the wordmark only once DM Sans is really available, so the
+   Forbes/ENGLISH lockup never renders at fallback-font proportions. */
+const ready = () => document.body.classList.add('fonts-ready');
+if (document.fonts && document.fonts.ready) { document.fonts.ready.then(ready); setTimeout(ready, 1500); }
+else ready();
 </script>
 </body>
 </html>
