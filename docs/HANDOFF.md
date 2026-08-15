@@ -369,3 +369,34 @@ the strength of that row — a light-vs-dark decision was very nearly made on
 it here. Either wire `--secondary` into the template so it means something,
 or drop it from `extract-palette.py`'s output. Until one of those happens,
 ignore it.
+
+## The builders imported from /tmp, and /tmp is empty in a fresh session
+
+Committing the builders was only half the fix. **54 of them opened with
+`sys.path.insert(0, '/tmp')`** and imported `deck` from there — a copy that
+dies with the sandbox. Eight modules they need (`camp_diagrams`,
+`camp_ten_diagram`, `cloud_diagram`, `ex_tr_sail`, `passive_diagram`,
+`passive_kit`, `passive_shapes`, `sailing_map`, `trail_diagram`) existed
+**only** in `/tmp` and were never committed at all.
+
+All 54 now import from `lesson-template/build/`, and the missing modules are
+in the repo. Verified the way that matters: `/tmp` was emptied and every
+builder re-run — **54 reproduce their lesson from the repo alone.** The two
+that do not (`build_gf.py`, `build_kool.py`) are one-shot converters that
+read an already-built deck, not builders.
+
+If you add a builder, do not point it at `/tmp`. Nothing there survives.
+
+## Do not regenerate every deck at once
+
+Two things bite:
+
+- **Template drift.** Most decks were built before the `sort` slide type
+  existed, so regenerating any of them pulls ~160 lines of inert sorting CSS
+  and JS into the file. Harmless, but it turns a one-line fix into a
+  40-file diff.
+- **`sherpa-tensing-camp-one` and `camp-two` are not idempotent.** A second
+  builder appends the route-timeline CSS to the already-written file without
+  checking, so a repeated full build injects it twice.
+
+Regenerate the lesson you are changing. Not the set.
