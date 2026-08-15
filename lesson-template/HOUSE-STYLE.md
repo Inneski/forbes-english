@@ -2,6 +2,10 @@
 
 **This document is binding. Follow it to the letter.**
 
+See also `CLAUDE.md` at the repo root for how work actually gets started and
+shipped here, and `docs/HANDOFF.md` for the current queue and per-lesson
+audits.
+
 Every lesson on forbesenglish.com is built to one standard. If a request is
 "add an image to lesson X", "revamp lesson Y", or "build a new lesson on Z",
 this document defines what the finished thing must look like. There is no
@@ -529,24 +533,65 @@ Writing the tasks:
 
 ## 10a. Rollout status — which lessons are already converted
 
-The repo holds **216 lesson files**. Converting them is in progress, not done.
-Keep this list current when you convert one, so the next session knows where
-things stand.
+The repo holds **245 lesson files**; **36** are 16:9 decks. Converting them is in
+progress, not done.
 
-**Converted to the 16:9 deck standard:**
+**Do not maintain this list by hand — regenerate it.** A file is a deck if it
+contains `class="stage-wrap"`. Take slide counts from `check-lesson.js`'s own
+header line; counting `<section class="slide` returns N+1.
 
-- `forbes-c1-negotiation.html` — 23 slides, all 10 languages (the worked reference)
-- `forbes_english_lesson.html` — Refinery Safety & Turnaround, 16 slides
-- `football_c1_roleplay.html` — Full-Time Pressure, 15 slides (keeps its team-spirit meter)
+```bash
+for f in *.html; do grep -q 'class="stage-wrap"' "$f" && \
+  echo "$(node lesson-template/check-lesson.js "$f" | grep -oE '[0-9]+ slides') $f"; done
+```
+
+Converted as of this writing:
+
 - `Forbes English - Product Strategy & Market Research Speaking (2).html` — 24 slides
-- `forbes-construction-contracts.html` — 15 slides, **light theme** (bright benchmark)
+- `active_passive_refinery_lesson.html` — 16 slides
+- `alchemist_b2_lesson.html` — 31 slides
+- `english_class_picture_description.html` — 18 slides
+- `english_firefighter_v3.html` — 19 slides
+- `exam-prep-5hour-course-part2.html` — 50 slides
+- `exam-prep-5hour-courseEXP.html` — 69 slides
+- `football_c1_roleplay.html` — 15 slides
+- `forbes-ai-productive-struggle-c1.html` — 19 slides
+- `forbes-c1-negotiation.html` — 23 slides
+- `forbes-construction-contracts.html` — 15 slides
+- `forbes-el-zar-c2.html` — 18 slides
+- `forbes-english-emails calls part3.html` — 14 slides
+- `forbes-english-food-ordering-a1-part2.html` — 16 slides
+- `forbes-english-hiking-c1.html` — 19 slides
+- `forbes-english-lesson (2).html` — 15 slides
+- `forbes-english-lesson (talking with clients).html` — 13 slides
+- `forbes-english-lesson-2.html` — 15 slides
+- `forbes-english-lesson-curious incident.html` — 14 slides
+- `forbes-english-lesson-managing energy.html` — 15 slides
+- `forbes-english-lesson_self-improvement (self).html` — 16 slides
+- `forbes-english-meetings.html` — 12 slides
+- `forbes-english-modal-verbs-B1.html` — 20 slides
+- `forbes-english-ope- say in your words.html` — 12 slides
+- `forbes-english-photography-b2.html` — 16 slides
+- `forbes-english-possessive-pronouns-a1.html` — 16 slides
+- `forbes-english-product-speaking.html` — 17 slides
+- `forbes-english-the-docket-b2.html` — 21 slides
+- `forbes-gap-fill.html` — 11 slides
+- `forbes_english_lesson.html` — 16 slides
+- `impostor_syndrome_advanced_JP.html` — 45 slides
+- `jfk_prepositions_b2.html` — 21 slides
+- `koolhas & Lamb.html` — 19 slides
+- `stranger-things-b1-lesson.html` — 42 slides
+- `twin-peaks-b2-discussion.html` — 23 slides
+- `ukraine-reconstruction-lesson.html` — 18 slides
 
-All except the negotiation reference ship English + German; the other eight
-languages stay out of the switcher until they are written.
+`forbes-c1-negotiation.html` is the worked reference and the only one carrying
+all ten languages; most ship English + German, and
+`impostor_syndrome_advanced_JP.html` is English + Japanese.
+`forbes-construction-contracts.html` is the light-theme benchmark.
 
-**Touched but only partly modernised** — these got a prominent hero and the
-persistent background treatment while the old scrolling format was still the
-standard. They are *not* yet 16:9 decks and should be converted when revisited:
+**Touched but only partly modernised** — a prominent hero and the persistent
+background treatment, applied while scrolling was still the standard. Not decks
+yet; convert when revisited:
 
 - `forbes-dnd-rpg.html`
 - `forbes-english-dinosaur-minecraft-part2.html`
@@ -571,10 +616,19 @@ Do not bulk-convert without being asked. Conversion is a rebuild per lesson
    the `<title>` tag. If a title looks wrong on the library page, grepping
    HTML will mislead you; query the table. Titles carry no "Forbes English —"
    prefix.
-3. **Push.** Two commits when a new folder is involved, because the GitHub web
-   upload UI targets one directory at a time: images to
-   `/upload/main/<lesson-name>`, then the HTML files to `/upload/main`.
-   Sync after: `git fetch origin && git reset --hard origin/main`.
+3. **Push.** `git push` currently fails with a proxy 403 — the repository is
+   not in the session's authorized set, which is fixed at session start and
+   cannot be changed from inside. Everything goes through the GitHub web
+   uploader, **one directory per commit**: images to
+   `/upload/main/<lesson-name>`, then the HTML to `/upload/main`.
+   **Verify byte-for-byte rather than trusting the upload** — `git fetch
+   origin`, compare `git hash-object <file>` against
+   `git rev-parse origin/main:<file>`, and only then
+   `git reset --hard origin/main`.
+
+   If the session has no browser tools, commit locally and call `SendUserFile`
+   on every changed file. A local branch that is never pushed dies with the
+   container — see `CLAUDE.md`.
 
 ---
 
@@ -586,12 +640,28 @@ Do not bulk-convert without being asked. Conversion is a rebuild per lesson
 node lesson-template/check-lesson.js <lesson>.html
 ```
 
-It mechanically verifies the six things that have actually gone wrong here:
-every slide fits the canvas and nothing scrolls; no multiple-choice key is the
-longest option; every scored question has an explanation; German covers every
-English key and every `data-i18n` resolves; Forbes and ENGLISH render to the
-same width; and there are no JS errors. **A lesson does not ship until it exits
-clean.**
+It mechanically verifies the ten things that have actually gone wrong here:
+
+- **LAYOUT** — every slide fits the canvas and nothing scrolls.
+- **ANSWERS** — no multiple-choice key is conspicuously the longest option.
+  The test is a ratio **and** an absolute floor of four characters: on one-word
+  options from a closed set (`can / could / must / should`) a key two
+  characters longer carries no information at all.
+- **BANK** — a word bank must not list the gap answers in gap order.
+- **MARKUP** — an explanation must not print its own `<strong>` as literal
+  text, which happens when `textContent` was used where `innerHTML` was needed.
+- **SORT** — no sort item points at a bin that does not exist, and no bin
+  receives nothing. A bin nothing goes in is not a choice.
+- **EXPLAIN** — every scored question has an explanation.
+- **ACTIVATION** — the deck ends with an activation stage.
+- **I18N** — English plus **at least one** finished language, and every
+  `data-i18n` resolves. This is no longer "German covers English": a complete
+  Japanese alongside an empty German is a legitimate finished state. A language
+  is offered only if it is complete.
+- **LOGO** — Forbes and ENGLISH render to the same width.
+- **RUNTIME** — no JS errors.
+
+**A lesson does not ship until it exits clean.**
 
 Two notes on why it exists. A checker that measures the wrong box passes
 everything and teaches you nothing — the first version of this tool reported
