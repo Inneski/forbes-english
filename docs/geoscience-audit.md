@@ -491,44 +491,51 @@ drive-mechanism efficiency ranking.
 
 ---
 
-## PART E — ARTWORK FIT (`Geoscience/`: hero.jpg, buttes.jpg, volcano.jpg, stratovolcano.jpg, fissure.jpg)
+## PART E — ARTWORK FIT (`Geoscience/`)
+
+> **CORRECTION, 15 Aug.** The original version of this section had the
+> filenames wrong, and the error survived into a build brief before anyone
+> opened the files. What each file actually contains, verified by looking:
+>
+> | File | What it actually is |
+> |---|---|
+> | `hero.jpg` | **An erupting stratovolcano over the sea.** Ash column, lava, breaking waves. Not strata. Despite the name, this is **not** the hero. |
+> | `buttes.jpg` | **Monument Valley** — layered sedimentary buttes and mesas, big sky, tan plain. **This is the hero.** |
+> | `volcano.jpg` | A linear curtain of fire. |
+> | `stratovolcano.jpg` | A second ash-column cone. |
+> | `fissure.jpg` | A banded escarpment above what the filename calls a lava plain. |
+>
+> **Do not trust these filenames. Open the file.**
 
 **Supported by lesson content:**
 
-- **hero.jpg** (banded sedimentary strata above a red plain) — fully
-  supported. The lesson is wall-to-wall sedimentary/stratigraphic content
-  and its own header art is a strata column. **Use on the title slide**,
-  optionally behind the Act 1 intro. Safe captions: "sedimentary strata",
-  "layered formations".
-- **buttes.jpg** (Monument Valley buttes and mesas) — weakly supported,
-  usable with care. The lesson never discusses erosion or landscape
-  evolution, so any caption explaining *how* buttes form introduces
-  untaught, unchecked material. It works as neutral outcrop imagery: the
-  **Act 1 divider** ("reading the formation") or the **results slide**,
-  whose current SVG is an outcrop cliff. Do **not** caption it as
-  illustrating MCQ[2]'s "high-energy fluvial" cross-bedding — those faces
-  read as flat-lying strata, and the lesson only says cross-bedding is
-  "consistent with" fluvial settings (C.8.5).
+- **`buttes.jpg`** — the hero. Layered sedimentary rock is what this lesson is
+  about wall to wall, and its own header art is a strata column. Cover,
+  background pattern and palette source. Measured: mean luminance 0.366,
+  median 0.352, middle third 0.412 — bright and open, so **light theme**
+  (`extract-palette.py Geoscience/buttes.jpg --light`, every contrast row
+  PASS). Safe captions: "sedimentary strata", "layered formations".
+  **Never caption it as illustrating MCQ[2]'s "high-energy fluvial"
+  cross-bedding** — those faces read as flat-lying strata, and the lesson
+  itself only says cross-bedding is *consistent with* fluvial settings
+  (C.8.5).
 
-**Not supported — do not use without new content:**
+**Not supported — do not use:**
 
-- **volcano.jpg, stratovolcano.jpg, fissure.jpg** — the lesson contains
-  **zero volcanic or igneous content**: no eruption styles, no plate
-  boundaries, no magma, no lava. There is no slide any of these belongs
-  on.
-- **The lesson does not distinguish central-vent from fissure eruptions —
-  it never mentions eruptions at all.** So there is no in-lesson basis
-  for captioning these images, and captioning the two near-identical
-  steep cones (volcano.jpg / stratovolcano.jpg — central-vent
-  stratovolcanoes) interchangeably with fissure.jpg (a linear fissure
-  eruption, no central cone) **would be a factual error the lesson gives
-  the learner no means to detect**. A stratovolcano erupts from a central
-  vent, building a steep composite cone of viscous lava and pyroclastics;
-  a fissure eruption issues low-viscosity, typically basaltic lava along
-  a linear crack and builds no cone. If volcanism imagery is wanted, a
-  volcanism teaching slide making exactly that distinction must come
-  first — otherwise **omit all three**. volcano.jpg and stratovolcano.jpg
-  are near-duplicates in any case; even in a volcanism module, use one.
+- **`hero.jpg`, `volcano.jpg`, `stratovolcano.jpg`, `fissure.jpg`** — the
+  lesson contains **zero volcanic or igneous content**: no eruption styles, no
+  plate boundaries, no magma, no lava. The sole igneous token is the
+  decorative "CRYSTALLINE BASEMENT" label in the header SVG. There is no
+  slide any of them belongs on, and the misleading filename of the first
+  makes it the most dangerous of the four.
+- **The lesson never mentions eruptions at all**, so there is no in-lesson
+  basis for captioning any of them, and captioning a central-vent cone
+  interchangeably with a fissure eruption **would be a factual error the
+  lesson gives the learner no means to detect**. A stratovolcano erupts from
+  a central vent, building a steep composite cone of viscous lava and
+  pyroclastics; a fissure eruption issues low-viscosity basaltic lava along a
+  linear crack and builds no cone. If volcanism imagery is ever wanted, a
+  teaching slide making exactly that distinction must come first.
 
 ---
 
