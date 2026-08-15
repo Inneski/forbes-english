@@ -16,7 +16,7 @@ stale copy.
 
 | Lesson | Artwork | State |
 |---|---|---|
-| `forbes-nature-agency-part1.html` | `NatureAgency/` (hero, lake, station, prairie) | **audited, see below** |
+| `forbes-nature-agency-part1.html` | `NatureAgency/` (hero, lake, station, prairie) | **built** — `build_nature1.py`, 36 slides, checker clean, delivered by `SendUserFile`. Not yet on `origin`. |
 | `forbes-nature-agency-part2.html` | `NatureAgency2/` (hero, plain) | not audited |
 | `forbes-english-b2-lesson.html` | `TopGearB2/hero.jpg` | not audited |
 | `forbes-geoscience-phrases.html` | `Geoscience/` (5 images) | **audited, see `docs/geoscience-audit.md`** |
@@ -76,13 +76,22 @@ Budget: 37 slides as-is, 51 with the ~14 teaching slides it needs.
 
 ### What Section 1's teaching content should cover
 
-Section 1 looks like 17 unrelated words (*domineering, receipt,
-encyclopedia, skirting, laundry…*). It isn't. **It is built as eight
-polysemy contrasts** — `report`, `critic`, `decay` and `reconcile` are
-each tested twice — and the section reveals each contrast only *after*
-grading. Every item tests whether the learner can pick the right
-**sense** of a word they already know, usually the formal, technical or
-idiomatic one. Teach that, not a word list:
+Section 1 looks like a list of unrelated words. It isn't. **It is built
+as five polysemy contrasts — ten of the seventeen items** — and the
+section reveals each contrast only *after* grading. Every item tests
+whether the learner can pick the right **sense** of a word they already
+know, usually the formal, technical or idiomatic one. Teach that, not a
+word list:
+
+> **Corrected on the rebuild.** This section previously read "eight
+> polysemy contrasts", naming `report`, `critic`, `decay` and
+> `reconcile`. Those are four pairs — eight *items*, not eight
+> contrasts — and there is a fifth: **`dwelled` / `dwell on` at
+> Q9/Q10**, same shape, adjacent items, contrast never drawn. Ten items
+> in five pairs, plus seven singles.
+>
+> The example words quoted here (*domineering, receipt, encyclopedia,
+> skirting, laundry*) are from **Section 3**, not Section 1.
 
 1. **Name the skill** before the first item.
 2. **The method:** disambiguate from the collocation, the grammar (which
@@ -108,9 +117,27 @@ lesson about a conservation agency. **`domineering` is used to define
 `humble`** in a Section 1 feedback string but isn't taught until Section
 3.
 
-Caveat: the polysemy reading of *skirting*, *receipt*, *laundry* and
-*encyclopedia* is inference from the words themselves; the audit only
-confirmed the doubling for the four it named. Check the actual stems.
+**Caveat resolved.** The polysemy reading of *skirting*, *receipt*,
+*laundry* and *encyclopedia* was inference. The stems were checked on
+the rebuild and it does **not** hold: Section 3 gives each word a single
+definition, and three of the four target the plain everyday sense —
+*receipt* is the slip of paper, *laundry* is the washing,
+*encyclopedia* is the book. Only **`skirting`** is defined in its
+less-obvious sense (the board at the foot of a wall, not the verb).
+Section 3 is a flat glossary, not a polysemy set. The formal senses
+(*in receipt of*, *laundering*, the *decay* of an institution) are worth
+teaching, but as material added on top — they are not latent in the
+items.
+
+**Not fixed, needs a deliberate decision.** The template's `match`
+engine has the same unloseable defect Section 3 had: `score++` on a
+correct pair, no penalty and no cap on wrong ones. The template says so
+itself, and asks for the change to be made deliberately rather than as a
+side effect of one rebuild — so Part 1 routes its sorting through `sort`
+slides (which do forfeit the point on a wrong first placement) and
+leaves `match` alone. Roughly thirty shipped lessons would get stricter
+overnight if the engine is changed; the fix is the `missed` WeakSet the
+`sort` engine already uses.
 
 ---
 
@@ -138,6 +165,14 @@ builder docstring and the commit message.
 ---
 
 ## Deltas — where `lesson-template/HOUSE-STYLE.md` is wrong
+
+> **Mostly applied as of `f9d75d8`.** That commit folded these corrections into
+> `HOUSE-STYLE.md` itself, so the binding doc is no longer wrong and this list
+> is no longer the thing to follow. Two items were checked and are *not* yet
+> reflected there — the rollout figure (36 of 216) and the gate count — so
+> those two still stand. The rest is kept below only as a record of what
+> changed and why. Delete the section once someone has confirmed all of it
+> landed.
 
 - **Rollout list.** It names five converted lessons. The real figure is
   31 of 216. Regenerate rather than trusting it: a file is a deck if it
@@ -170,3 +205,67 @@ builder docstring and the commit message.
 - **Builders are in `lesson-template/build/`.** Every deck is generated;
   edit the builder and re-run, don't hand-edit the HTML. Use `deck.py`,
   don't rewrite it.
+
+---
+
+## Emails, Calls & Follow-ups Part 3 — gap 1 repaired
+
+`build_emails3.py`. The item read *"I am writing to ______ an appointment for
+next week at your earliest convenience"*, keyed to `request`, and it was broken
+twice over.
+
+Its feedback argued against `demand` and `reserve`, **neither of which is in the
+word bank**, and said nothing at all about `arrange` — the first chip in the
+bank and the answer a learner actually reaches for. The bank carries ten chips
+and only five are ever the answer, so `arrange` was a live decoy with no
+rebuttal anywhere in the lesson. The old wording also implied `arrange an
+appointment` is not standard English, which is false; it is in every learner's
+dictionary. That is recurring defect 6 — marking correct English wrong.
+
+The stem also contradicted itself: `for next week` fixes the timing while `at
+your earliest convenience` hands it to the reader, and that phrase belongs to
+their *reply*, not to the appointment.
+
+Now: *"I am writing to ______ an appointment; please let me know which times
+next week would suit you."* Asking them to supply the times is what makes
+`request` uniquely right — it rules out `arrange` and `schedule`, which both
+presume the appointment is already agreed. The feedback names those two and
+`propose`, all three of which are really in the bank.
+
+**Rejected repair, and why.** `Could we arrange a time to meet next week?` reads
+well alone, but gap 3 is already *"I would like to ______ a time to speak this
+week"* keyed to `schedule`, and `arrange` and `schedule` are interchangeable in
+both. Two gaps each answerable with the other's key is a worse defect than the
+one being fixed. When repairing a gap, check it against the other gaps sharing
+its bank.
+
+## Builders that read from /tmp
+
+`build_pt.py` and `build_emails3.py` both did `sys.path.insert(0, '/tmp')` and
+loaded their data from there, so neither could run in a fresh container — the
+trap `build/README.md` describes. Both now resolve paths from `__file__`, and
+`pt_data.json` was recovered out of a shipped HTML and committed beside its
+builder. I then grepped the rest. **69 of the 86 builders reference `/tmp`, and these
+14 read their actual content from a `/tmp` JSON that no longer exists** — so
+those lessons cannot currently be regenerated from source at all:
+
+  - `build_ai.py` &larr; `/tmp/ai.json`, `/tmp/ai_stage1.html`
+  - `build_dnd2.py` &larr; `/tmp/dnd2_rooms.js`
+  - `build_ff.py` &larr; `/tmp/ff_stage1.html`
+  - `build_full_grammar_test.py` &larr; `/tmp/all_questions_i18n.json`, `/tmp/sections_i18n.json`, `/tmp/ui_i18n.json`
+  - `build_gf.py` &larr; `/tmp/gf_stage1.html`
+  - `build_hike.py` &larr; `/tmp/hike.json`, `/tmp/hike_stage1.html`
+  - `build_jfk.py` &larr; `/tmp/jfk_stage1.html`
+  - `build_kool.py` &larr; `/tmp/kool.json`
+  - `build_pp.py` &larr; `/tmp/pp_stage1.html`
+  - `build_pp2.py` &larr; `/tmp/pp_stage1.html`, `/tmp/pp_stage2.html`
+  - `build_pp3.py` &larr; `/tmp/pp_stage2.html`
+  - `build_ua.py` &larr; `/tmp/ua_mc.json`, `/tmp/ua_stage1.html`
+  - `i18n_ff.py` &larr; `/tmp/ff_stage1.html`
+  - `i18n_jfk.py` &larr; `/tmp/jfk_stage1.html`
+
+Recovering each is the same move that worked for `pt_data.json`: the data is
+still inline in the shipped HTML, so parse it back out, commit it beside its
+builder, and repoint the path at `__file__`. Until that is done, treat those
+lessons as hand-editable only, and do not assume re-running a builder will
+reproduce what is live.
