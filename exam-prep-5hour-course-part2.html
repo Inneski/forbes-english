@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -465,6 +465,54 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 .chunk:hover:not(:disabled) { border-color: var(--accent); }
 .chunk.placed { background: color-mix(in srgb, var(--accent) 18%, var(--surface2)); border-color: var(--accent); }
 .chunk:disabled { cursor: default; opacity: .5; }
+
+/* ── SORTING (drop each item in the right box) ────────────────────────
+   Two or more labelled bins and a pool of items; the learner puts each
+   item where it belongs. The right shape for anything that is a closed
+   two-way contrast — signal words for one tense against another, count
+   against non-count, formal against neutral — because it asks for the
+   whole set at once instead of one item at a time.
+
+   Both interactions work. Native HTML5 drag-and-drop is used rather than
+   pointer maths: the browser hit-tests a drop target in screen space, so
+   the stage's CSS scale is handled for us — which is what made the
+   hand-rolled kind unreliable here (see the note on ordering above).
+   Dragging does not exist on touch, so click-an-item-then-click-a-bin
+   does the same job and is the fallback that always works. */
+.sort { display: flex; flex-direction: column; gap: 14px; }
+.sort-pool {
+  display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+  min-height: 44px;
+}
+.sort-bins { display: grid; gap: 14px; }
+.sort-bin {
+  border: 1.5px dashed color-mix(in srgb, var(--border) 60%, transparent);
+  border-radius: var(--r); background: var(--inset);
+  padding: 10px 12px; min-height: 132px;
+  display: flex; flex-direction: column; gap: 8px;
+  transition: border-color .15s, background .15s;
+}
+.sort-bin.over { border-style: solid; border-color: var(--accent); }
+.sort-bin.full { border-style: solid; border-color: var(--ok); }
+.sort-bin-label {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--accent-bright); text-align: center;
+}
+.sort-bin-items { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.sort-item {
+  font-family: var(--font-ui); font-size: 15.5px; line-height: 1.35;
+  color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: 999px; padding: 9px 16px; cursor: grab;
+  transition: border-color .15s, background .15s, opacity .2s;
+}
+.sort-item:hover:not(.placed) { border-color: var(--accent); }
+.sort-item.picked { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 22%, var(--surface2)); }
+.sort-item.dragging { opacity: .45; cursor: grabbing; }
+.sort-item.placed { cursor: default; border-color: var(--ok); opacity: .7; }
+.sort-item.miss { border-color: var(--no); animation: shake .3s; }
 
 /* ── DISCUSSION (unscored speaking prompts) ──────────────────────── */
 .discuss-meta {
@@ -1965,10 +2013,11 @@ const t = k => (UI_I18N[currentLang] && UI_I18N[currentLang][k] != null)
 /* ── Deck state ── */
 const stage   = document.getElementById('stage');
 const slides  = [...document.querySelectorAll('.slide')];
-const scored  = slides.filter(s => ['mc','gap','match','order'].includes(s.dataset.type));
+const scored  = slides.filter(s => ['mc','gap','match','order','sort'].includes(s.dataset.type));
 /* A slide may hold more than one gap; each gap is worth a point. */
 const countIn = s => s.dataset.type === 'gap'   ? s.querySelectorAll('.gap').length
                    : s.dataset.type === 'match' ? s.querySelectorAll('.match-pair').length
+                   : s.dataset.type === 'sort'  ? s.querySelectorAll('.sort-item').length
                    : 1;
 const maxScore = scored.reduce((n, s) => n + Math.max(1, countIn(s)), 0);
 let idx = 0, score = 0;
@@ -2158,6 +2207,119 @@ slides.filter(s => s.dataset.type === 'order').forEach(slide => {
     const btn = slide.querySelector('[data-action="check-order"]');
     if (btn) btn.disabled = true;
   };
+});
+
+/* Sorting. Author as
+     <div class="sort" data-bins="Label one|Label two" data-explain="…">
+       <span class="sort-item" data-bin="0">every day</span>
+       …
+     </div>
+   The engine shuffles the items into a pool and builds one bin per label.
+   Drag an item into a bin, or click the item and then click the bin —
+   both do the same thing, and the click path is the one that works on a
+   touch screen. One point per item.
+
+   Unlike matching, a wrong placement costs the point for that item: the
+   learner can still put it right and finish the slide, but the first
+   answer is the one that counts. A sorting task with unlimited free
+   retries is a task you cannot fail, and a score that cannot go down
+   tells the learner nothing. (Matching still allows free retries; that
+   is thirty-odd shipped lessons' worth of behaviour to change, and it
+   should be changed deliberately, not as a side effect of this.) */
+slides.filter(s => s.dataset.type === 'sort').forEach(slide => {
+  const box = slide.querySelector('.sort');
+  if (!box) return;
+  const labels = (box.dataset.bins || '').split('|').map(x => x.trim());
+  const items = [...box.querySelectorAll('.sort-item')];
+  if (labels.length < 2 || !items.length) return;
+
+  const pool = document.createElement('div');
+  pool.className = 'sort-pool';
+  const bins = document.createElement('div');
+  bins.className = 'sort-bins';
+  bins.style.gridTemplateColumns = '1fr '.repeat(labels.length).trim();
+
+  const binEls = labels.map((label, i) => {
+    const bin = document.createElement('div');
+    bin.className = 'sort-bin';
+    bin.dataset.bin = i;
+    const h = document.createElement('div');
+    h.className = 'sort-bin-label';
+    h.textContent = label;
+    const body = document.createElement('div');
+    body.className = 'sort-bin-items';
+    bin.append(h, body);
+    bins.appendChild(bin);
+    return bin;
+  });
+
+  items.sort(() => Math.random() - .5).forEach(it => {
+    it.setAttribute('draggable', 'true');
+    it.tabIndex = 0;
+    pool.appendChild(it);
+  });
+  box.replaceChildren(pool, bins);
+
+  let picked = null, placed = 0, dragged = null;
+  const missed = new WeakSet();   // items answered wrongly at least once
+
+  function place(item, binIndex) {
+    if (item.classList.contains('placed')) return;
+    if (+item.dataset.bin !== binIndex) {
+      missed.add(item);
+      item.classList.add('miss');
+      setTimeout(() => item.classList.remove('miss'), 320);
+      return;
+    }
+    item.classList.remove('picked');
+    item.classList.add('placed');
+    item.setAttribute('draggable', 'false');
+    binEls[binIndex].querySelector('.sort-bin-items').appendChild(item);
+    placed++;
+    if (!missed.has(item)) { score++; updateScoreChip(); }
+    if (placed === items.length) {
+      binEls.forEach(b => b.classList.add('full'));
+      answered.add(slide);
+      // Right only if every item went to the right bin first time.
+      feedback(slide, !items.some(i => missed.has(i)));
+    }
+  }
+
+  box.addEventListener('click', e => {
+    const item = e.target.closest('.sort-item');
+    if (item && !item.classList.contains('placed')) {
+      box.querySelectorAll('.sort-item.picked').forEach(x => x.classList.remove('picked'));
+      item.classList.add('picked');
+      picked = item;
+      return;
+    }
+    const bin = e.target.closest('.sort-bin');
+    if (bin && picked) { place(picked, +bin.dataset.bin); picked = null; }
+  });
+
+  box.addEventListener('dragstart', e => {
+    const item = e.target.closest('.sort-item');
+    if (!item || item.classList.contains('placed')) return;
+    dragged = item;
+    item.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    // Firefox will not start a drag without data on the transfer.
+    e.dataTransfer.setData('text/plain', '');
+  });
+  box.addEventListener('dragend', () => {
+    if (dragged) dragged.classList.remove('dragging');
+    dragged = null;
+    binEls.forEach(b => b.classList.remove('over'));
+  });
+  binEls.forEach(bin => {
+    bin.addEventListener('dragover', e => { e.preventDefault(); bin.classList.add('over'); });
+    bin.addEventListener('dragleave', () => bin.classList.remove('over'));
+    bin.addEventListener('drop', e => {
+      e.preventDefault();
+      bin.classList.remove('over');
+      if (dragged) { place(dragged, +bin.dataset.bin); dragged = null; }
+    });
+  });
 });
 
 /* Gap fill. Supports several gaps on one slide, each scored and explained
