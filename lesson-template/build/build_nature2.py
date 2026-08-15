@@ -81,8 +81,9 @@ now has a logo, a hero, a derived palette, a German interface and an
 activation stage, none of which existed.
 
 Artwork: `NatureAgency2/hero-otter.jpg` on the cover and behind every
-interior slide; `NatureAgency2/reeds.jpg` on the three section dividers
-and the results slide. The two savanna illustrations that shipped in this
+interior slide; `NatureAgency2/loch.jpg` behind the two scene-setting
+slides and the results; `NatureAgency2/reeds.jpg` on the three section
+dividers. The two savanna illustrations that shipped in this
 folder are of a different continent from every word in the lesson and are
 not used.
 """
@@ -96,6 +97,12 @@ TPL = '/home/claude/forbes-english/lesson-template/lesson-template.html'
 OUT = '/home/claude/forbes-english/forbes-nature-agency-part2.html'
 F = 'NatureAgency2'
 BG2 = 'reeds.jpg'
+# The loch: calm water, a clean band of sky, and the most empty space of the
+# three, so it goes behind the text-heavy scene-setting slides and the results
+# where the reeds' verticals fight the copy. The stone house on the far shore
+# is a house — two storeys, two chimney stacks. It is NOT a bird hide, and
+# nothing in this deck may caption it as one; the hide is taught in words.
+BG3 = 'loch.jpg'
 
 # Derived mechanically from NatureAgency2/hero-otter.jpg:
 #   python3 lesson-template/extract-palette.py NatureAgency2/hero-otter.jpg --light
@@ -716,7 +723,7 @@ def build():
                     'b1bn', 'You can take this part on its own, but you will '
                     'be choosing between a word you have been taught and a '
                     'word you have not. Part 1 removes that guesswork.')],
-                  folder=F, bg=BG2)]
+                  folder=F, bg=BG3)]
 
     S += [D.teach('b2E', 'Before you begin', 'b2T',
                   'Four words the briefings assume you know',
@@ -736,7 +743,7 @@ def build():
                     'b2n', 'All four appear inside question stems later on. '
                     'They are glossed here so that no item is testing whether '
                     'you happen to know the jargon.')],
-                  cols='1fr 1fr', folder=F, bg=BG2)]
+                  cols='1fr 1fr', folder=F, bg=BG3)]
 
     # ── fourteen teaching slides ──
     TP = ('tpE', 'Confusable pairs')
@@ -1078,10 +1085,11 @@ if __name__ == '__main__':
 
     slides, key_spread, sib_spread = build()
     body = "".join(slides)
-    # reeds.jpg behind the results slide as well as the dividers and sorts.
+    # The loch behind the results slide — the calmest of the three, and the
+    # score ring needs the quietest background in the deck.
     body = body.replace('<section class="slide" data-type="results">',
                         '<section class="slide" data-type="results" '
-                        'data-bg="%s/%s">' % (F, BG2), 1)
+                        'data-bg="%s/%s">' % (F, BG3), 1)
     n = body.count('<section class="slide')
     body = body.replace('NN slides', '%d slides' % n)
     i18n_nature2.T['en']['chipCount'] = '%d slides' % n
