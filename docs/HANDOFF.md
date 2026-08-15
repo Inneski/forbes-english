@@ -16,7 +16,7 @@ stale copy.
 
 | Lesson | Artwork | State |
 |---|---|---|
-| `forbes-nature-agency-part1.html` | `NatureAgency/` (hero, lake, station, prairie) | **audited, see below.** A finished 36-slide rebuild was lost — see the warning under Publishing in `CLAUDE.md`. Needs building again. |
+| `forbes-nature-agency-part1.html` | `NatureAgency/` (hero, lake, station, prairie) | **BUILT — 36 slides, checker clean** (`381754c`). An earlier finished rebuild of this same lesson was lost to an unpushed branch first — see the warning under Publishing in `CLAUDE.md`. |
 | `forbes-nature-agency-part2.html` | `NatureAgency2/hero-otter.jpg` (cover), `reeds.jpg` (dividers + results) | **BUILT — 58 slides, checker clean.** `lesson-template/build/build_nature2.py` + `i18n_nature2.py`. Not yet pushed. |
 | `forbes-english-b2-lesson.html` | `TopGearB2/hero.jpg` | not audited |
 | `forbes-geoscience-phrases.html` | `Geoscience/` (5 images) | **audited, see `docs/geoscience-audit.md`** |
