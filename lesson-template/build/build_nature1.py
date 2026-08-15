@@ -8,8 +8,11 @@ was to get the item testing it wrong.
 
 Defects carried by the old file and fixed here:
 
-  * All 17 Section 1 keys were `correct: 0`. A runtime shuffle hid it live, but
-    a static deck would have inherited a 100% "always A" key.
+  * All 17 Section 1 keys were `correct: 0`. A runtime shuffle hid it live in
+    the old page, and the deck template shuffles `.opt` children on first view
+    too, so this was never learner-visible in either — deranging the source is
+    hygiene (printed hand-outs, readability, and insurance if the engine's
+    shuffle is ever dropped) rather than a fix.
 
     The keys are now deranged to, in slide order:
 
