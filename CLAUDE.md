@@ -35,7 +35,16 @@ standard and say what you did.
 python3 lesson-template/extract-palette.py <hero.jpg> [--light]   # every row must PASS
 python3 lesson-template/build/build_<name>.py                     # builders live here
 node   lesson-template/check-lesson.js <lesson>.html               # must exit clean
+python3 tools/seo.py                                              # ALWAYS last
 ```
+
+**`tools/seo.py` runs after every build, without exception.** It writes the
+title, description, canonical, Open Graph and JSON-LD into each page, plus
+`sitemap.xml`, `robots.txt` and `lesson-meta.json` — the last of which the
+Worker reads to build a real gate page per Pro lesson. A builder re-run
+overwrites the generated HTML and takes the SEO block with it, so a deck
+shipped without this step goes out with no metadata at all. It is idempotent;
+run it twice if you are unsure. `--check` reports without writing.
 
 Every deck is **generated**. Edit the builder in `lesson-template/build/` and
 re-run it; hand-editing the generated HTML works once and is then overwritten.
