@@ -20,6 +20,7 @@ stale copy.
 | `forbes-nature-agency-part2.html` | `NatureAgency2/`: `hero-otter.jpg` (cover), `hide.jpg` (the hide slide), `loch.jpg` (scene-setting + results), `reeds.jpg` (dividers), `shore.jpg` (activation) | **BUILT — 59 slides, checker clean.** `build_nature2.py` + `i18n_nature2.py`. |
 | `forbes-english-b2-lesson.html` | `TopGearB2/hero.jpg` | **BUILT — 37 slides, checker clean.** `lesson-template/build/build_topgear.py` + `i18n_topgear.py`. Audit at `docs/topgear-b2-audit.md`. Not yet pushed. |
 | `forbes-geoscience-phrases.html` | `Geoscience/` (5 images) | **audited, see `docs/geoscience-audit.md`** |
+| `forbes-english-lesson (flow).html` | `FlowState/` (hero, bg-pattern) | **BUILT — 15 slides, all 12 gates clean, 19/19 play-tested.** `build_flow.py` + `i18n_flow.py`. Catalogue row 41 corrected in Supabase. |
 
 ### Decisions taken on Nature Agency Part 2 (Innes, this session)
 
@@ -108,6 +109,87 @@ build time in `build_topgear.py`'s `alts()` by expanding each answer into
 every accepted spelling, not by changing the engine's `gapOk`. A
 lesson that deliberately tests BrE against AmE spelling would be broken
 by a blanket engine change; per-lesson data is not.
+
+---
+
+## The Language of Flow (B2) — rebuilt, and two things worth keeping
+
+`forbes-english-lesson (flow).html` was a four-part scrolling page: watch a
+TED-Ed talk, click eight vocabulary cards to reveal their definitions, answer
+five questions, read four discussion prompts. It is now a 15-slide deck.
+`lesson-template/build/build_flow.py` + `i18n_flow.py` (en + de). Artwork
+`FlowState/flow-hero.jpg` (cover) and `flow-bg-pattern.jpg` (interior).
+Dark palette, all twelve gates clean, play-tested to 19/19.
+
+What the audit found, and what the build does about it:
+
+- **The five keys sat at positions `[1, 2, 2, 1, 2]`** — never A, never D.
+  Always guess B or C and you beat chance on every item. Rebalanced to
+  `[2, 3, 0, 1, 3]`. `build_flow.py` now carries `assert_keys_deranged()`,
+  which fails the build if any of the four positions goes unused. **This is a
+  general defect and there is no gate for it** — `check-lesson.js` checks key
+  *length*, not key *position*. `football_c1_roleplay` has all eleven keys at
+  index 0 and is still live. Promoting the assert to a gate is the obvious
+  next move.
+- Two keys were the longest option by a wide margin (Q2: 23 chars against a
+  14-char field; Q5: 57 against 49). Distractors lengthened, keys untouched.
+- The vocabulary was click-to-reveal, which scores nothing. Eight terms are now
+  taught on two slides, matched against plain-English glosses, and used in
+  eight marked gap-fills.
+- The four discussion prompts are now the activation stage proper.
+
+### A slide-level gap explanation was never once displayed
+
+`deck.gap(..., why=...)` puts one pooled explanation on the slide instead of
+one per row. `checkGaps()` only ever touched feedback found **inside** a
+`.gap-row`, so the pooled note sat in the DOM with no code path to reach it:
+the learner pressed Check, saw the gaps go green, and got no explanation at
+all. Fixed in `lesson-template/lesson-template.html` — `markGroup()` now
+returns the missed gaps rather than a boolean, and `checkGaps()` fills the
+pooled note with the misses pooled across every row.
+
+Swept every lesson in the repo. Exactly one other deck used the pattern:
+`forbes-english-food-ordering-a1-part1.html`, whose `WHY_A`/`WHY_B` had never
+displayed since it shipped. Rebuilt from `build_food_a1.py`, verified against a
+deliberately-wrong answer, checker clean. The static regex sweep over-reports
+(it flagged `english_firefighter_v3`, `forbes-gap-fill`,
+`ukraine-reconstruction-lesson`); the DOM check cleared all three.
+
+Related: `deck.teach()` emitted `data-i18n="None"` for a card whose note has no
+translation key — a five-item card passes `c[3]` straight through. Guarded.
+
+### Why the gap slides use a pooled note at all
+
+Four rows each carrying their own `.feedback` reserve 46px apiece whether or
+not anyone has pressed Check, which put both gap slides 51px past the canvas.
+One pooled note per screen is what `build_food_a1` already does. If you need
+per-row explanations on a four-row gap slide, it will not fit — use three rows.
+
+### `--bg-opacity` was measured, not guessed
+
+`lesson-template/bgmeasure.py` against the brightest patterned slide (index 5):
+0.46 → 6.97 (fails 7:1), 0.44 → 7.32, 0.42 → 7.68, 0.40 → 8.06. Shipped at
+**0.44**, the highest value that clears AAA for body text. The builder comment
+records the whole walk, so the next person does not repeat it.
+
+### Supabase IS reachable — via the MCP tool, not the sandbox
+
+`tools/seo.py` still prints *"supabase unreachable (403 Forbidden)"* and falls
+back to `tools/lessons.json`. That is true of the sandbox's HTTP path only.
+**The `mcp__Supabase__*` tools work.** Project `tusioporxpjtegjlqkkb`
+(`forbes-english`), table `lessons`. Row 41 was updated live this session:
+
+```sql
+update lessons set title = 'The Language of Flow', deck = true, video = true
+where id = 41;
+```
+
+It had been `"Flow State Lesson"`, `deck false`, `video false` — all three
+wrong once it became a deck with a video. `tools/lessons.json` was mirrored to
+match. **Check the catalogue row after every rebuild**: a deck that ships with
+`deck: false` never appears under the deck filter, and nothing in the pipeline
+catches it. Teaching `seo.py` to read Supabase through the MCP path is worth
+doing.
 
 ---
 
