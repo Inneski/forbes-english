@@ -13,7 +13,7 @@ because the whole sentence sat in the `before` field with `after` empty — so
 that item is now written the way the other four are.
 """
 import sys
-sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
+sys.path.insert(0, '/tmp')
 import deck as D
 
 TPL = 'lesson-template/lesson-template.html'
@@ -70,15 +70,15 @@ GAPS = [
 BANK = sorted(['can', 'could', 'might not', 'must not', 'should not', 'will', 'would', 'must'])
 
 FIX = [
-    ('Tom is only five years old, so he <s>must not</s> ski on the difficult runs yet.', 'cannot',
+    ('Tom is only five years old, so he <s>must not</s> ______ ski on the difficult runs yet.', 'cannot',
      'This is about ability, not permission. Tom is not <em>able</em> to ski difficult runs, so <strong>cannot</strong>. <em>Must not</em> would mean it is forbidden.'),
-    ('<s>Must</s> you help me carry my skis to the chairlift, please?', 'Could',
+    ('<s>Must</s> ______ you help me carry my skis to the chairlift, please?', 'Could',
      'A polite request takes <strong>Could</strong> (or <em>Can</em>). <em>Must you&hellip;?</em> asks whether somebody is obliged to do something &mdash; which is not what you meant.'),
-    ('The mountain rescue team <s>should</s> arrive in about twenty minutes &mdash; they called ahead.', 'will',
+    ('The mountain rescue team <s>should</s> ______ arrive in about twenty minutes &mdash; they called ahead.', 'will',
      'They called ahead, so the arrival is confirmed. <strong>Will</strong> states a certain future; <em>should</em> would only express an expectation.'),
-    ('We cannot find your ski poles. You <s>might leave</s> them at the rental shop this morning.', 'might have left',
+    ('We cannot find your ski poles. You <s>might leave</s> ______ them at the rental shop this morning.', 'might have left',
      'Past possibility is <strong>might have</strong> + past participle. <em>Might leave</em> points forwards, not back.'),
-    ('You <s>should book</s> the ski school earlier &mdash; now all the sessions are full.', 'should have booked',
+    ('You <s>should book</s> ______ the ski school earlier &mdash; now all the sessions are full.', 'should have booked',
      'Regret about the past is <strong>should have</strong> + past participle. <em>Should book</em> would still be advice about the future, which is too late.'),
 ]
 

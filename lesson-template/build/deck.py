@@ -32,8 +32,13 @@ def assert_no_key_is_longest(mc, label='MC'):
 
 
 def assert_bank_is_not_a_key(bank, answers_in_gap_order):
-    pos = [bank.index(a) for a in answers_in_gap_order if a in bank]
-    assert not all(x < y for x, y in zip(pos, pos[1:])), (
+    # An answer may be a pipe-separated list of accepted spellings; the
+    # bank shows the first. And fewer than two answers found in the bank
+    # cannot be "in gap order" — an empty list made all() vacuously true
+    # and failed every lesson whose answers were all alternatives.
+    first = [a.split('|')[0] for a in answers_in_gap_order]
+    pos = [bank.index(a) for a in first if a in bank]
+    assert len(pos) < 2 or not all(x < y for x, y in zip(pos, pos[1:])), (
         'the word bank lists the gap answers in gap order (%s). Sort the bank '
         'instead — a bank in gap order is an answer key.' % pos)
     return pos
@@ -41,6 +46,17 @@ def assert_bank_is_not_a_key(bank, answers_in_gap_order):
 
 def esc(t):
     return t.replace('"', '&quot;')
+
+
+def at(slide_html, stop, take=None):
+    """Tag any slide with the rail stop it belongs to.
+
+    A post-processor rather than an argument on all nine slide builders:
+    the rail is one lesson format's idea, and threading it through every
+    signature would tax thirty decks that will never use it."""
+    extra = ' data-stop="%d"' % stop + (' data-take="%s"' % take if take else '')
+    return slide_html.replace('<section class="slide"',
+                              '<section class="slide"' + extra, 1)
 
 
 def _bg(folder, bg):
@@ -69,17 +85,25 @@ def cover(logo, title, sub, chips):
 
 
 def teach(eyebrow_key, eyebrow, title_key, title, cards, cols=None, folder='', bg=None):
-    """cards: list of (head_html, body_html, note_i18n_key_or_None, note_html)."""
+    """cards: list of (head_key, head, body, note_key, note).
+
+    A six-item card is (head_key, head, body_key, body, note_key, note):
+    the body translates too. Worth having at A0-A2, where the rule needs
+    to be readable in the learner's own language and only the *examples*
+    have to stay in English; at B2 and above the five-item form, with the
+    body left in English, is usually the right call."""
     grid = cols or '1fr ' * len(cards)
+    cards = [c if len(c) == 6 else (c[0], c[1], None, c[2], c[3], c[4])
+             for c in cards]
     body = "\n          ".join(
         '''<div class="card">
             <p class="prose"><strong%s>%s</strong></p>
-            <p class="prose" style="margin-top:8px;font-size:18px">%s</p>%s
+            <p class="prose"%s style="margin-top:8px;font-size:18px">%s</p>%s
           </div>''' % (' data-i18n="%s"' % hk if hk else '', h,
-                       b,
+                       ' data-i18n="%s"' % bk if bk else '', b,
                        ('\n            <p class="prose dim" style="margin-top:8px;font-size:15px"'
                         ' data-i18n="%s">%s</p>' % (nk, n)) if n else '')
-        for hk, h, b, nk, n in cards)
+        for hk, h, bk, b, nk, n in cards)
     return '''
     <section class="slide" data-type="teach"%s>
       <div class="slide-head"><div>
@@ -96,29 +120,10 @@ def teach(eyebrow_key, eyebrow, title_key, title, cards, cols=None, folder='', b
 
 
 def mc(i, total, q, eyebrow_key, eyebrow, title_key, title, folder='', bg=None,
-       ctx=None, explains=None):
-    """explains: optional list, one per option, of why THAT option is wrong.
-
-    Without it the slide carries a single explanation and a learner who picks
-    a distractor is told why the key was right rather than why their answer
-    was not — the identical-feedback defect that has been fixed by hand in
-    five separate builders, each of which injected data-explain onto the
-    buttons after calling this function. The engine already prefers an
-    option's own explanation, so this only moves the injection here.
-
-    Pass None for an option to leave it without its own explanation; the
-    slide-level one still applies.
-    """
-    if explains is not None and len(explains) != len(q['options']):
-        raise AssertionError(
-            'mc: %d explains for %d options — one per option, None to skip'
-            % (len(explains), len(q['options'])))
-    def _opt(n, o):
-        attrs = ' data-correct' if n == q['correct'] else ''
-        if explains is not None and explains[n]:
-            attrs += ' data-explain="%s"' % esc(explains[n])
-        return '<button class="opt"%s>%s</button>' % (attrs, o)
-    opts = "\n          ".join(_opt(n, o) for n, o in enumerate(q['options']))
+       ctx=None):
+    opts = "\n          ".join(
+        '<button class="opt"%s>%s</button>' % (' data-correct' if n == q['correct'] else '', o)
+        for n, o in enumerate(q['options']))
     return '''
     <section class="slide" data-type="mc"%s>
       <div class="slide-head"><div>
@@ -141,9 +146,19 @@ def mc(i, total, q, eyebrow_key, eyebrow, title_key, title, folder='', bg=None,
 def gap(i, total, rows, bank, eyebrow_key, eyebrow, title_key, title,
         folder='', bg=None, hint=None, hint_key=None, why=None, width=190,
         size=19):
-    """rows: list of (sentence_with_BLANK_markers, [answers], why_or_None)."""
+    """rows: list of (sentence_with_BLANK_markers, [answers], why_or_None).
+
+    A sentence with no `______` in it produces a gap-fill with nothing to
+    fill: the slide renders, the engine counts a point for it, and no
+    learner can ever score that point. It shipped that way on the B1
+    modal-verbs deck — five "repair the sentence" items with no input box
+    — because nothing failed loudly. Now it does."""
     out = []
     for sentence, answers, w in rows:
+        assert sentence.count('______') >= len(answers), (
+            'gap: "%s" has %d blank(s) for %d answer(s). A gap-fill with no '
+            '______ marker renders an unanswerable question.'
+            % (sentence[:60], sentence.count('______'), len(answers)))
         s = sentence
         for a in answers:
             s = s.replace('______',
@@ -213,7 +228,7 @@ def order(items, eyebrow_key, eyebrow, title_key, title, hint_key, hint, why,
         <p class="order-hint" data-i18n="%s">%s</p>
         <div class="order" data-answer="%s"></div>
         <div style="margin-top:12px">
-          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+          <button class="btn" data-action="check-order" data-i18n="btnCheck">Check</button>
         </div>
         <p class="feedback" data-explain="%s"></p>
       </div>
@@ -222,10 +237,67 @@ def order(items, eyebrow_key, eyebrow, title_key, title, hint_key, hint, why,
        " | ".join(items), esc(why))
 
 
-def results(next_key='resNext', next_text='Now use it →'):
+def search(i, total, stem, items, eyebrow_key, eyebrow, title_key, title,
+           why, limit=20, folder='', bg=None, stop=None, take=None):
+    """Timed identify-the-object hunt. items: list of (name, svg, is_key).
+
+    The names ride on the buttons but the engine keeps them hidden until
+    the item is answered — a labelled picture is a reading task, not a
+    vocabulary one. Exactly one item may be the key, and there has to be
+    a real field to search: two objects is a coin toss with a clock on
+    it."""
+    keys = [n for n, _, k in items if k]
+    assert len(keys) == 1, 'search: exactly one item is the key, got %s' % keys
+    assert len(items) >= 4, 'search: %d objects is not a search' % len(items)
+    cells = "\n          ".join(
+        '<button class="find" data-name="%s"%s>%s</button>'
+        % (esc(name), ' data-correct' if is_key else '', svg)
+        for name, svg, is_key in items)
     return '''
-    <section class="slide" data-type="results">
-      <div class="slide-body" style="align-items:center;text-align:center">
+    <section class="slide" data-type="search"%s%s%s>
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="%s">%s</span> &middot; %d / %d</div>
+        <h2 class="slide-title" data-i18n="%s">%s</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">%s</p>
+        <div class="search" data-limit="%d">
+          %s
+        </div>
+        <p class="feedback" data-explain="%s"></p>
+      </div>
+    </section>
+''' % (_bg(folder, bg),
+       ' data-stop="%d"' % stop if stop else '',
+       ' data-take="%s"' % take if take else '',
+       eyebrow_key, eyebrow, i, total, title_key, title, stem, limit, cells,
+       esc(why))
+
+
+def lock(code, stem, eyebrow_key, eyebrow, title_key, title, why,
+         folder='', bg=None, stop=None):
+    """Combination lock. The digits were earned one per section."""
+    assert code.isdigit(), 'lock: the code must be digits'
+    return '''
+    <section class="slide" data-type="lock"%s%s>
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="%s">%s</div>
+        <h2 class="slide-title" data-i18n="%s">%s</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem" style="text-align:center">%s</p>
+        <div class="lock" data-code="%s"></div>
+        <p class="feedback" style="text-align:center" data-explain="%s"></p>
+      </div>
+    </section>
+''' % (_bg(folder, bg), ' data-stop="%d"' % stop if stop else '',
+       eyebrow_key, eyebrow, title_key, title, stem, code, esc(why))
+
+
+def results(next_key='resNext', next_text='Now use it →', folder='', bg=None):
+    return '''
+    <section class="slide" data-type="results"%s>
+      <div class="slide-body" style="align-items:center;text-align:center">''' % _bg(folder, bg) + '''
         <div class="score-big"><span id="scoreVal">0</span><span class="dim" style="font-size:34px">/<span id="scoreMax">0</span></span></div>
         <p class="prose" style="margin-top:18px" id="scoreMsg"></p>
         <p class="prose dim" style="margin-top:14px" data-i18n="%s">%s</p>
@@ -293,19 +365,6 @@ def assemble(tpl_path, out_path, slides, palette, title, i18n_module, langs=('en
         ['  %s: %s' % (c, i18n_module.render(c)) for c in langs]
         + ['  %s: {}' % c for c in all_langs if c not in langs]) + '\n};'
     s = re.sub(r'const UI_I18N = \{.*?\n\};', block, s, count=1, flags=re.S)
-
-    # The theme follows the palette, because it is the palette. Two shipped
-    # decks carried a light palette with no data-theme attribute, so the
-    # light primitives never applied and their insets and hairlines — white
-    # on white — were invisible. That was a line each builder had to
-    # remember, and two forgot. Deriving it removes the chance.
-    m = re.search(r'--void\s*:\s*#([0-9a-fA-F]{6})', palette)
-    if m:
-        rgb = [int(m.group(1)[i:i + 2], 16) / 255.0 for i in (0, 2, 4)]
-        f = lambda c: c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4
-        if 0.2126 * f(rgb[0]) + 0.7152 * f(rgb[1]) + 0.0722 * f(rgb[2]) > 0.2:
-            s = s.replace('<html lang="en">', '<html lang="en" data-theme="light">', 1)
-
     open(out_path, 'w', encoding='utf-8').write(s)
     return s
 
