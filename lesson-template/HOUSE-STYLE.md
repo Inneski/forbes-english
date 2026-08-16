@@ -406,6 +406,40 @@ worse than one who is wrong and marked right.
 It shows after answering, right or wrong. Every question gets one. A quiz
 that only says "Not quite" teaches nothing.
 
+**Timed search (`search`).** An identify-the-object hunt against a clock, for
+concrete vocabulary:
+
+```html
+<div class="search" data-limit="22">
+  <button class="find" data-name="a spoon" data-correct><svg…></button>
+  …
+</div>
+```
+
+The engine adds the countdown, hides every object's name until the item is
+answered, reveals them all when it is, and marks it wrong if the clock runs
+out. One point. Objects come from `lesson-template/build/icons.py` — plain
+line drawings on a 100×100 grid in `currentColor`, so they inherit the
+lesson's palette. **The names must stay hidden while the clock runs**: a
+labelled picture turns a vocabulary task into a reading task, because the
+learner scans for the word in the stem instead of recognising the thing.
+Leaving a slide pauses the clock and returning resumes it, so paging back to
+re-read a rule never costs the answer.
+
+**Combination lock (`lock`).** `<div class="lock" data-code="64937"></div>`
+builds a display and a keypad. Unlimited attempts, but **only the first one
+scores** — the lock usually has to open for the lesson to end, and a puzzle
+you cannot fail is not worth a point.
+
+**The rail.** A strip of stops along the bottom of the deck, for a lesson
+built as a journey. Put the labels in `UI_I18N` under the key named by the
+rail's `data-i18n-stops`, then tag slides with `D.at(slide, stop, take)`:
+`data-stop` says which stop this slide belongs to, `data-take` what is picked
+up there. A digit on a scored slide is only collected once that slide has been
+answered — otherwise the rail prints the reward before the question is asked.
+The rail exists so that a puzzle can test *reading an instruction in English*
+rather than testing memory; a deck that declares no stops never shows it.
+
 **Recommended shape for a lesson:** cover → 1–3 teaching slides → 6–12
 question slides → results. Twelve to eighteen slides total is a comfortable
 class; beyond about twenty-four, split into Part I and Part II.

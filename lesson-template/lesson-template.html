@@ -485,9 +485,15 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
   min-height: 44px;
 }
 .sort-bins { display: grid; gap: 14px; }
+/* The bin gets the card's own backdrop, not a bare tint. `--inset` alone
+   is nearly transparent, and over a bright hero the bin outline and its
+   label both disappeared — the board read as loose chips floating on
+   artwork with no boxes to put them in. */
 .sort-bin {
   border: 1.5px dashed color-mix(in srgb, var(--border) 60%, transparent);
-  border-radius: var(--r); background: var(--inset);
+  border-radius: var(--r);
+  background: color-mix(in srgb, var(--surface) 78%, transparent);
+  backdrop-filter: blur(3px);
   padding: 10px 12px; min-height: 132px;
   display: flex; flex-direction: column; gap: 8px;
   transition: border-color .15s, background .15s;
@@ -513,6 +519,129 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 .sort-item.dragging { opacity: .45; cursor: grabbing; }
 .sort-item.placed { cursor: default; border-color: var(--ok); opacity: .7; }
 .sort-item.miss { border-color: var(--no); animation: shake .3s; }
+
+/* ── ESCAPE-ROOM MECHANICS ───────────────────────────────────────
+   Three things a puzzle lesson needs that a quiz deck does not: a timed
+   visual hunt, a combination lock, and a rail that remembers what the
+   learner has picked up on the way. All three are click-only. A scaled
+   stage makes drag targets lie about where they are — the same reason
+   `order` is click-based — and a timer plus a moving target would put
+   that inaccuracy where it costs a point.
+
+   A deck that uses none of them pays nothing: the rail hides itself when
+   no stops are declared, and the two slide types simply never match. */
+
+/* Timed search: identify the object by its shape, against a clock. The
+   names are hidden until the item is answered — a labelled picture is a
+   reading task, not a vocabulary one. */
+.search { display: flex; flex-direction: column; gap: 16px; }
+/* Clock beside the bar, not floating above it: sitting it over the
+   question stem put a countdown on top of the thing being read. */
+.search-bar { display: flex; align-items: center; gap: 12px; }
+.search-track {
+  flex: 1; height: 6px; border-radius: 3px;
+  background: var(--inset2); overflow: hidden;
+}
+.search-fill {
+  height: 100%; width: 100%;
+  background: var(--accent); transition: width .9s linear;
+}
+.search-bar.urgent .search-fill { background: var(--no); }
+/* A chip, not bare text: the countdown sits on the artwork, and on a
+   bright hero a thin mono glyph on its own does not survive. */
+.search-clock {
+  font-family: var(--font-mono); font-size: 14px; color: var(--text);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+  border-radius: 999px; padding: 4px 12px;
+  backdrop-filter: blur(3px);
+  min-width: 56px; text-align: center;
+}
+.search-bar.urgent .search-clock {
+  color: var(--no); border-color: var(--no);
+}
+.find-grid { display: grid; gap: 12px; }
+.find {
+  background: color-mix(in srgb, var(--surface2) 84%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 55%, transparent);
+  border-radius: var(--r); padding: 12px 8px 8px;
+  backdrop-filter: blur(3px);
+  cursor: pointer; color: var(--text);
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  transition: border-color .15s, background .15s, transform .15s;
+}
+.find:hover:not(:disabled) { border-color: var(--accent); transform: translateY(-3px); }
+.find svg { width: 100%; height: 86px; display: block; }
+.find-name {
+  font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .06em;
+  color: var(--text-dim); opacity: 0; transition: opacity .25s ease;
+  min-height: 15px; text-align: center;
+}
+.find.revealed .find-name { opacity: 1; }
+.find.correct { border-color: var(--ok); background: color-mix(in srgb, var(--ok) 18%, var(--surface2)); }
+.find.correct .find-name { color: var(--ok); }
+.find.wrong   { border-color: var(--no); background: color-mix(in srgb, var(--no) 16%, var(--surface2)); }
+.find:disabled { cursor: default; }
+.find:disabled:hover { transform: none; }
+
+/* Combination lock: the digits were earned one per section, and this is
+   where they are spent. Unlimited attempts, but only the first one
+   scores — the lock has to open for the story to end, and a puzzle you
+   cannot fail is not worth a point. */
+.lock { display: flex; align-items: center; justify-content: center; gap: 34px; }
+.lock-display { display: flex; gap: 10px; }
+.lock-cell {
+  width: 54px; height: 68px; border-radius: 8px;
+  border: 1.5px solid color-mix(in srgb, var(--border) 70%, transparent);
+  background: var(--inset);
+  font-family: var(--font-mono); font-size: 30px; color: var(--text);
+  display: grid; place-items: center;
+  transition: border-color .15s, background .15s;
+}
+.lock-cell.filled { border-color: var(--accent); background: var(--inset2); }
+.lock-cell.ok { border-color: var(--ok); color: var(--ok); }
+.lock.bad .lock-display { animation: shake .3s; }
+.lock-keys { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.lock-pad { display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; }
+.lock-key {
+  width: 44px; height: 38px; border-radius: 7px;
+  border: 1.5px solid color-mix(in srgb, var(--border) 55%, transparent);
+  background: color-mix(in srgb, var(--surface2) 84%, transparent);
+  color: var(--text); font-family: var(--font-mono); font-size: 16px;
+  cursor: pointer; transition: border-color .15s, background .15s;
+}
+.lock-key:hover:not(:disabled) { border-color: var(--accent); }
+.lock-key:disabled { opacity: .4; cursor: default; }
+
+/* The rail: which room you are in, and what you picked up in each. It
+   doubles as the progress indicator, so a learner who forgets a digit
+   is not being tested on memory — they are being tested on English. */
+.deck-rail {
+  position: absolute; z-index: 3; left: 26px; right: 26px; bottom: 56px;
+  display: flex; gap: 8px; justify-content: center;
+}
+.deck-rail[hidden] { display: none; }
+.stage.on-cover .deck-rail { display: none; }
+.rail-stop {
+  display: flex; align-items: center; gap: 7px;
+  padding: 4px 12px 4px 5px; border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--border) 45%, transparent);
+  background: var(--scrim); opacity: .45; transition: opacity .2s, border-color .2s;
+}
+.rail-stop.reached { opacity: .9; }
+.rail-stop.current { opacity: 1; border-color: var(--accent); }
+.rail-digit {
+  width: 21px; height: 21px; border-radius: 50%;
+  background: var(--inset2); color: var(--text-dim);
+  font-family: var(--font-mono); font-size: 12px;
+  display: grid; place-items: center;
+}
+.rail-stop.has-digit .rail-digit { background: var(--accent); color: var(--void); }
+.rail-label {
+  font-family: var(--font-mono); font-size: 10.5px;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--text);
+}
+.stage.has-rail .slide { padding-bottom: calc(var(--pad) + 34px); }
 
 /* ── DISCUSSION (unscored speaking prompts) ──────────────────────── */
 .discuss-meta {
@@ -547,7 +676,8 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
     width: 1280px; height: auto;      /* let the slides stack into pages */
     overflow: visible; box-shadow: none;
   }
-  .bg-layer, .deck-bar, .lang-select, .nav-btn { display: none !important; }
+  .bg-layer, .deck-bar, .lang-select, .nav-btn, .deck-rail { display: none !important; }
+  .stage.has-rail .slide { padding-bottom: var(--pad); }
 
   /* Each slide becomes its own page and carries its own background, so the
      export does not depend on the single on-screen background layer. */
@@ -767,6 +897,9 @@ html[data-theme="light"] .act-target-label {
     </section>
 
     <!-- ── DECK CHROME ──────────────────────────────────────── -->
+    <!-- The rail only appears if a lesson declares stops on it (see
+         data-i18n-stops / data-stops). Every other deck ignores it. -->
+    <div class="deck-rail" id="deckRail" data-i18n-stops="railStops" hidden></div>
     <div class="deck-bar">
       <select class="lang-select" id="langSelect" aria-label="Language"></select>
       <button class="nav-btn" data-action="prev" aria-label="Previous">‹</button>
@@ -801,6 +934,7 @@ const UI_I18N = {
   en: {
     /* ── chrome ── */
     btnStart:'Begin →', btnCheck:'Check', btnNext:'Next →', btnRestart:'Start again',
+    btnOpen:'Open',
     orderHint:'Click the parts in order · click one again to take it back',
     scoreLabel:'Score', slideOf:(a,b)=>`${a} / ${b}`,
     fbCorrect:'Correct.', fbWrong:'Not quite.', fbAnswer:'Answer:',
@@ -834,6 +968,7 @@ const UI_I18N = {
   },
   de: {
     btnStart:'Beginnen →', btnCheck:'Prüfen', btnNext:'Weiter →', btnRestart:'Neu starten',
+    btnOpen:'Öffnen',
     orderHint:'Klicke die Teile der Reihe nach an · nochmal klicken nimmt einen zurück',
     scoreLabel:'Punkte', slideOf:(a,b)=>`${a} / ${b}`,
     fbCorrect:'Richtig.', fbWrong:'Nicht ganz.', fbAnswer:'Antwort:',
@@ -875,7 +1010,7 @@ const t = k => (UI_I18N[currentLang] && UI_I18N[currentLang][k] != null)
 /* ── Deck state ── */
 const stage   = document.getElementById('stage');
 const slides  = [...document.querySelectorAll('.slide')];
-const scored  = slides.filter(s => ['mc','gap','match','order','sort'].includes(s.dataset.type));
+const scored  = slides.filter(s => ['mc','gap','match','order','sort','search','lock'].includes(s.dataset.type));
 /* A slide may hold more than one gap; each gap is worth a point. */
 const countIn = s => s.dataset.type === 'gap'   ? s.querySelectorAll('.gap').length
                    : s.dataset.type === 'match' ? s.querySelectorAll('.match-pair').length
@@ -898,6 +1033,11 @@ addEventListener('resize', fitStage);
 
 /* ── Navigation ── */
 function show(n) {
+  // A slide may own a running clock. Leaving it pauses; coming back
+  // resumes with the time that was left, so paging back to re-read a
+  // rule never costs the learner the answer.
+  const leaving = slides[idx];
+  if (leaving && leaving._leave) leaving._leave();
   idx = Math.max(0, Math.min(slides.length - 1, n));
   slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
   stage.classList.toggle('on-cover', slides[idx].dataset.type === 'cover');
@@ -912,6 +1052,8 @@ function show(n) {
   document.querySelector('[data-action="prev"]').disabled = idx === 0;
   document.querySelector('[data-action="next"]').disabled = idx === slides.length - 1;
   if (slides[idx].dataset.type === 'results') renderResults();
+  markRail(slides[idx]);
+  if (slides[idx]._enter) slides[idx]._enter();
   const gap = slides[idx].querySelector('.gap');
   if (gap && !answered.has(slides[idx])) setTimeout(() => gap.focus(), 60);
 }
@@ -1184,6 +1326,197 @@ slides.filter(s => s.dataset.type === 'sort').forEach(slide => {
   });
 });
 
+/* ══ ESCAPE-ROOM MECHANICS ═══════════════════════════════════════════
+   Added for the puzzle-lesson format. A deck that uses none of them is
+   unaffected: the selectors match nothing and the rail stays hidden. */
+
+/* Timed search. Author as
+     <div class="search" data-limit="20">
+       <button class="find" data-name="a spoon" data-correct><svg…></button>
+       …
+     </div>
+   The engine adds the clock, hides the names until the item is answered,
+   and marks it wrong if the clock runs out. One point.
+
+   The names must stay hidden while the clock runs. A labelled picture
+   turns a vocabulary task into a reading task: the learner scans for the
+   word in the stem instead of recognising the object. They are revealed
+   on answering, which is when they teach. */
+slides.filter(s => s.dataset.type === 'search').forEach(slide => {
+  const box = slide.querySelector('.search');
+  if (!box) return;
+  const items = [...box.querySelectorAll('.find')];
+  if (!items.length) return;
+  const limit = +(box.dataset.limit || 20);
+  const key = items.find(i => i.hasAttribute('data-correct'));
+
+  const bar = document.createElement('div'); bar.className = 'search-bar';
+  const track = document.createElement('div'); track.className = 'search-track';
+  const fill = document.createElement('div'); fill.className = 'search-fill';
+  const clock = document.createElement('span'); clock.className = 'search-clock';
+  track.appendChild(fill);
+  bar.append(track, clock);
+  const grid = document.createElement('div');
+  grid.className = 'find-grid';
+  grid.style.gridTemplateColumns = `repeat(${items.length}, 1fr)`;
+  items.forEach(it => {
+    const n = document.createElement('span');
+    n.className = 'find-name';
+    n.textContent = it.dataset.name || '';
+    it.appendChild(n);
+    grid.appendChild(it);
+  });
+  box.replaceChildren(bar, grid);
+
+  let left = limit, tid = null;
+  clock.textContent = left + 's';
+
+  function finish(chosen) {
+    if (answered.has(slide)) return;
+    if (tid) { clearInterval(tid); tid = null; }
+    answered.add(slide);
+    const ok = !!chosen && chosen.hasAttribute('data-correct');
+    items.forEach(i => { i.disabled = true; i.classList.add('revealed'); });
+    if (key) key.classList.add('correct');
+    if (chosen && !ok) chosen.classList.add('wrong');
+    if (ok) score++;
+    updateScoreChip();
+    feedback(slide, ok, ok || !key ? null : key.dataset.name);
+    markRail(slide);          // the digit is picked up here, not on arrival
+  }
+
+  items.forEach(i => i.addEventListener('click', () => finish(i)));
+
+  slide._enter = () => {
+    if (answered.has(slide) || tid) return;
+    tid = setInterval(() => {
+      left--;
+      clock.textContent = Math.max(0, left) + 's';
+      fill.style.width = Math.max(0, left / limit * 100) + '%';
+      if (left <= 5) bar.classList.add('urgent');
+      if (left <= 0) finish(null);
+    }, 1000);
+  };
+  slide._leave = () => { if (tid) { clearInterval(tid); tid = null; } };
+});
+
+/* Combination lock. Author as
+     <div class="lock" data-code="63741"></div>
+   The engine builds the display and the keypad. The first attempt is the
+   one that scores; after that the learner keeps trying until it opens,
+   because the lock is the last door and the story has to get through it. */
+slides.filter(s => s.dataset.type === 'lock').forEach(slide => {
+  const box = slide.querySelector('.lock');
+  if (!box) return;
+  const code = (box.dataset.code || '').trim().split('');
+  if (!code.length) return;
+
+  const disp = document.createElement('div'); disp.className = 'lock-display';
+  const cells = code.map(() => {
+    const c = document.createElement('span'); c.className = 'lock-cell';
+    disp.appendChild(c); return c;
+  });
+  const keys = document.createElement('div'); keys.className = 'lock-keys';
+  const pad  = document.createElement('div'); pad.className  = 'lock-pad';
+
+  let entry = [], scoredOnce = false, opened = false;
+  const draw = () => cells.forEach((c, i) => {
+    c.textContent = entry[i] != null ? entry[i] : '';
+    c.classList.toggle('filled', entry[i] != null);
+  });
+
+  '1234567890'.split('').forEach(n => {
+    const b = document.createElement('button');
+    b.className = 'lock-key'; b.textContent = n;
+    b.addEventListener('click', () => {
+      if (opened || entry.length >= code.length) return;
+      entry.push(n); draw();
+    });
+    pad.appendChild(b);
+  });
+  const del = document.createElement('button');
+  del.className = 'lock-key'; del.textContent = '⌫';
+  del.setAttribute('aria-label', 'delete');
+  del.addEventListener('click', () => { if (!opened) { entry.pop(); draw(); } });
+  pad.appendChild(del);
+
+  const go = document.createElement('button');
+  go.className = 'btn'; go.dataset.i18n = 'btnOpen'; go.textContent = 'Open';
+  go.addEventListener('click', () => {
+    if (opened || entry.length < code.length) return;
+    const ok = entry.join('') === code.join('');
+    if (!scoredOnce) {
+      scoredOnce = true; answered.add(slide);
+      if (ok) score++;
+      updateScoreChip();
+    }
+    if (ok) {
+      opened = true;
+      cells.forEach(c => c.classList.add('ok'));
+      pad.querySelectorAll('.lock-key').forEach(k => k.disabled = true);
+      go.disabled = true;
+      feedback(slide, true);
+    } else {
+      box.classList.add('bad');
+      setTimeout(() => box.classList.remove('bad'), 400);
+      feedback(slide, false, code.join(''));
+      entry = []; draw();
+    }
+  });
+
+  keys.append(pad, go);
+  box.replaceChildren(disp, keys);
+  draw();
+});
+
+/* The rail. A lesson declares its stops as a pipe-separated string, in
+   UI_I18N under the key named by data-i18n-stops, and each slide says
+   which stop it belongs to (data-stop) and what was picked up there
+   (data-take). Reached stops stay reached when the learner pages back. */
+const deckRail = document.getElementById('deckRail');
+const railTakes = new Map();
+let railMax = 0, railCur = 0;
+
+function markRail(slide) {
+  const st = +(slide.dataset.stop || 0);
+  if (st) {
+    railCur = st;
+    railMax = Math.max(railMax, st);
+    // A digit carried by a scored slide is only picked up once that slide
+    // has been answered. Otherwise the rail prints the reward the moment
+    // the learner arrives, and the question is over before it is asked.
+    if (slide.dataset.take &&
+        (!scored.includes(slide) || answered.has(slide)))
+      railTakes.set(st, slide.dataset.take);
+  }
+  renderRail();
+}
+
+function renderRail() {
+  if (!deckRail) return;
+  const raw = (deckRail.dataset.i18nStops ? t(deckRail.dataset.i18nStops) : null)
+            || deckRail.dataset.stops || '';
+  const labels = raw.split('|').map(x => x.trim()).filter(Boolean);
+  if (!labels.length) { deckRail.hidden = true; stage.classList.remove('has-rail'); return; }
+  deckRail.replaceChildren(...labels.map((label, i) => {
+    const n = i + 1;
+    const el = document.createElement('div');
+    el.className = 'rail-stop'
+      + (n <= railMax ? ' reached' : '')
+      + (n === railCur ? ' current' : '')
+      + (railTakes.has(n) ? ' has-digit' : '');
+    const d = document.createElement('span');
+    d.className = 'rail-digit';
+    d.textContent = railTakes.has(n) ? railTakes.get(n) : '·';
+    const l = document.createElement('span');
+    l.className = 'rail-label'; l.textContent = label;
+    el.append(d, l);
+    return el;
+  }));
+  deckRail.hidden = false;
+  stage.classList.add('has-rail');
+}
+
 /* Gap fill. Supports several gaps on one slide, each scored and explained
    individually via its own .gap-row wrapper. */
 const gapOk = g => g.dataset.answer.split('|')
@@ -1206,6 +1539,14 @@ function markGap(g, fb) {
 
 function checkGaps(slide) {
   if (answered.has(slide)) return;
+  // A slide with no gap on it is not a gap-fill: sentence-building shipped
+  // for months with a plain [data-action="check"] button, which landed
+  // here, threw on a null input and left the Check button dead. Route it
+  // to the slide's own checker instead of guessing.
+  if (!slide.querySelector('.gap')) {
+    if (slide._check) slide._check();
+    return;
+  }
   answered.add(slide);
   const rows = [...slide.querySelectorAll('.gap-row')];
   if (rows.length) {
@@ -1295,9 +1636,16 @@ function initLang() {
 }
 
 /* Per-slide background art: set the variable on the element as well, because
-   the print stylesheet paints each slide's own ::before from var(--hero). */
-slides.filter(s => s.dataset.bg).forEach(s =>
-  s.style.setProperty('--hero', `url('${s.dataset.bg}')`));
+   the print stylesheet paints each slide's own ::before from var(--hero).
+
+   Decode them all up front. A background-image on a display:none slide is
+   never fetched, so a deck printed without visiting every slide first
+   exported those pages with no artwork at all — black interiors in the
+   PDF while the screen looked right. */
+slides.filter(s => s.dataset.bg).forEach(s => {
+  s.style.setProperty('--hero', `url('${s.dataset.bg}')`);
+  new Image().src = s.dataset.bg;
+});
 
 /* ── Boot ── */
 initLang();

@@ -222,6 +222,65 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
     return out;
   });
 
+  // ── ACTIONS ───────────────────────────────────────────────────────
+  // Every scored slide must actually be answerable. This exists because
+  // `deck.order` emitted a plain [data-action="check"] button while the
+  // engine routed sentence-building through "check-order": the click
+  // landed in checkGaps, threw on a null input, and the Check button did
+  // nothing on every deck with an order slide. Nothing measured it —
+  // the LAYOUT pass never clicks, and a thrown handler is silent. So:
+  // walk the deck, press the thing the learner would press, and require
+  // that the slide ends up marked.
+  const dead = await page.evaluate(async () => {
+    const out = [];
+    const slides = [...document.querySelectorAll('.slide')];
+    const wait = () => new Promise(r => setTimeout(r, 40));
+    for (let i = 0; i < slides.length; i++) {
+      const s = slides[i];
+      const type = s.dataset.type;
+      if (!['mc', 'gap', 'order', 'sort', 'search', 'lock'].includes(type)) continue;
+      slides.forEach((x, n) => x.classList.toggle('is-active', n === i));
+      try {
+        if (type === 'mc') {
+          const o = s.querySelector('.opt[data-correct]'); if (o) o.click();
+        } else if (type === 'gap') {
+          s.querySelectorAll('input.gap').forEach(g => {
+            g.value = (g.dataset.answer || '').split('|')[0];
+          });
+          const b = s.querySelector('[data-action="check"]'); if (b) b.click();
+        } else if (type === 'order') {
+          [...s.querySelectorAll('.chunk')]
+            .sort((a, b) => +a.dataset.i - +b.dataset.i)
+            .forEach(c => c.click());
+          const b = s.querySelector('[data-action="check-order"], [data-action="check"]');
+          if (b) b.click();
+        } else if (type === 'sort') {
+          [...s.querySelectorAll('.sort-item')].forEach(it => {
+            it.click();
+            const bin = s.querySelector(`.sort-bin[data-bin="${it.dataset.bin}"]`);
+            if (bin) bin.click();
+          });
+        } else if (type === 'search') {
+          const f = s.querySelector('.find[data-correct]'); if (f) f.click();
+        } else if (type === 'lock') {
+          const code = (s.querySelector('.lock').dataset.code || '').split('');
+          const keys = [...s.querySelectorAll('.lock-key')];
+          code.forEach(d => { const k = keys.find(x => x.textContent === d); if (k) k.click(); });
+          const go = s.querySelector('.lock-keys .btn'); if (go) go.click();
+        }
+      } catch (e) {
+        out.push({ n: i + 1, type, why: 'threw: ' + e.message });
+        continue;
+      }
+      await wait();
+      const marked = s.querySelector('.feedback.show')
+        || s.querySelector('.opt.correct, .gap.correct, .order-target.correct, '
+                           + '.sort-item.placed, .find.correct, .lock-cell.ok');
+      if (!marked) out.push({ n: i + 1, type, why: 'answering it correctly changed nothing' });
+    }
+    return out;
+  });
+
   let fails = 0;
   const head = t => console.log('\n  ' + t);
   const ok = m => console.log('    ' + GRN('PASS') + '  ' + m);
@@ -259,6 +318,10 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
   head('SORT');
   if (!r.sort || !r.sort.length) ok('every sorting slide is actually sortable');
   else r.sort.forEach(x => bad(`sort slide ${x.n}: ${x.why}`));
+
+  head('ACTIONS');
+  if (!dead.length) ok('every scored slide can actually be answered');
+  else dead.forEach(d => bad(`slide ${d.n} (${d.type}): ${d.why}`));
 
   head('EXPLAIN');
   if (!r.explain.length) ok('every scored question has an explanation');
