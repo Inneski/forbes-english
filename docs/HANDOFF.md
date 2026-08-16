@@ -986,3 +986,47 @@ but it disagreed with the checker on seven items, in two ways, both mine:
    `forbes-english-lesson (2)` look like a 1.38x offender when it passes.
 
 Screen with the sweep; decide with the checker, which reads a real DOM.
+
+## Ordering Food & Drink A1 — Part 1 does not exist, artwork staged
+
+`forbes-english-food-ordering-a1-part2.html` is live (A1, deck, pro) with
+`FoodA1P2/` and a full builder set — `build_food.py`, `food_mc.py`,
+`i18n_food.py`. **There is no Part 1.** Checked four ways: no matching file, no
+catalogue row, no lesson whose content is about ordering food under another
+name, and nothing in git history. Part 2 never refers back to a Part 1 either,
+so it is not orphaned — it was simply built first.
+
+A lesson publicly numbered "Part 2" with no Part 1 is worth fixing, and A1 is
+the level least able to work out what it has missed.
+
+### Artwork is staged; the content is not reachable
+
+Six images in `FoodA1P1/`: `tray`, `counter-till`, `bar-shaker`, `wine-bar`,
+`two-at-bar`, `drink-sign`.
+
+**All six arrived at 3376×1440 — 2.34:1, much wider than 16:9** — and are
+centre-cropped to 2560×1440. Uncropped they letterbox and the cover title lands
+in a black band. Same trap as `Impostor2/hero.jpg`; check the aspect ratio of
+anything from this generator before deriving a palette.
+
+**The content lives in a claude.ai artifact that cannot be read from here.**
+`https://claude.ai/public/artifacts/f089b9e1-3a4d-4d46-ad0e-8ad80cea873f`,
+titled `forbes-english-food-ordering-a1.html`. `WebFetch` returns page metadata
+only, the rendered preview is blank in Chrome, the code view yields nothing to
+`get_page_text`, and `javascript_tool` is blocked on that origin. Ask Innes to
+attach the HTML rather than re-attempting the URL.
+
+### Two decisions waiting
+
+- **Go light, not dark.** Innes asked for backgrounds that are not so dark. The
+  pattern that causes it: derive a dark palette, then drop `--bg-opacity` to
+  ~0.40 to keep text legible, which leaves the artwork as a murky wash. These
+  images are bright pink and blue and the **light** palette passes every
+  contrast row (`text on surface` 12.66:1), which allows a much higher opacity
+  and lets the artwork actually show. Prefer `--light` whenever the hero is
+  bright rather than forcing a dark theme down.
+- **Five of the six images are bars** — cocktail shakers, wine, spirits. Only
+  `tray.jpg` and `counter-till.jpg` read as ordinary food service. That is an
+  odd fit for A1, and possibly better suited to a B1/B2 bar lesson. Raise it
+  before building rather than shipping an A1 deck set in cocktail bars.
+
