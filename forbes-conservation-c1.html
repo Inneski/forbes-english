@@ -3,1526 +3,2113 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- SEO:start -->
-<meta name="description" content="ENGLISH Interactive Lesson · Conservation Travel · C1 / C2 Conservation Travel FROM CLOUD FORESTS TO CORAL REEFS C1 / C2 · Reading &amp; Comprehension The…">
-<link rel="canonical" href="https://forbesenglish.com/forbes-conservation-c1.html">
-<meta property="og:type" content="article">
-<meta property="og:site_name" content="Forbes English">
-<meta property="og:title" content="Conservation Travel — Global Projects (C1) | Forbes English">
-<meta property="og:description" content="ENGLISH Interactive Lesson · Conservation Travel · C1 / C2 Conservation Travel FROM CLOUD FORESTS TO CORAL REEFS C1 / C2 · Reading &amp; Comprehension The…">
-<meta property="og:url" content="https://forbesenglish.com/forbes-conservation-c1.html">
-<meta property="og:image" content="https://forbesenglish.com/logo-forbes-english_1.png">
-<meta property="og:locale" content="en_GB">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Conservation Travel — Global Projects (C1) | Forbes English">
-<meta name="twitter:description" content="ENGLISH Interactive Lesson · Conservation Travel · C1 / C2 Conservation Travel FROM CLOUD FORESTS TO CORAL REEFS C1 / C2 · Reading &amp; Comprehension The…">
-<meta name="twitter:image" content="https://forbesenglish.com/logo-forbes-english_1.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Conservation Travel — Global Projects (C1)","description":"ENGLISH Interactive Lesson · Conservation Travel · C1 / C2 Conservation Travel FROM CLOUD FORESTS TO CORAL REEFS C1 / C2 · Reading & Comprehension The…","url":"https://forbesenglish.com/forbes-conservation-c1.html","inLanguage":"en","learningResourceType":"lesson","interactivityType":"active","isAccessibleForFree":false,"image":"https://forbesenglish.com/logo-forbes-english_1.png","provider":{"@type":"Organization","name":"Forbes English","url":"https://forbesenglish.com/"},"isPartOf":{"@type":"Course","name":"Forbes English lesson library","url":"https://forbesenglish.com/library.html"},"educationalLevel":"C1","teaches":"C1 English","datePublished":"2026-08-07","hasPart":{"@type":"WebPageElement","isAccessibleForFree":false,"cssSelector":".paywalled"}}</script>
-<!-- SEO:end -->
-<title>Conservation Travel — Global Projects (C1) | Forbes English</title>
+<!-- ══ REPLACE: lesson title. No "Forbes English —" prefix. ══ -->
+<title>Conservation Travel — Inference &amp; Vocabulary (C1) | Forbes English</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --deep: #0d2b35;
-    --ocean: #1a4a5a;
-    --teal: #2a7a8a;
-    --light-teal: #4aa8b8;
-    --amber: #c8841e;
-    --gold: #e8a830;
-    --cream: #f5f0e8;
-    --off-white: #faf8f4;
-    --text: #1a2a2e;
-    --muted: #5a7a82;
-    --card-bg: #ffffff;
-    --correct: #2d7a4f;
-    --wrong: #8b2a2a;
-    --correct-light: #e8f5ee;
-    --wrong-light: #f8eaea;
+/* ══════════════════════════════════════════════════════════════════
+   FORBES ENGLISH — 16:9 SLIDE LESSON TEMPLATE
+   Everything you normally need to change lives in the two blocks
+   marked "REPLACE". Do not restructure the engine below them.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ══ REPLACE 1 of 2: hero image + palette ══
+   1. Point --hero at the lesson's cover image. This ONE line drives the
+      cover, the background pattern on every slide, and the PDF export.
+   2. Generate the palette FROM that same image:
+         python3 lesson-template/extract-palette.py <hero-image>
+      and paste its output over the colour block. Never hand-pick colours. */
+:root {
+  --hero: url('Conservation/reef-lagoon.jpg');
+
+  --void          : #0d0f10;
+  --surface       : #191d1f;
+  --surface2      : #252a2d;
+  --border        : #7c8c93;
+  --text          : #f2f4f5;
+  --text-dim      : #a8b4b9;
+  --accent        : #7fb2c4;
+  --accent-bright : #a8cfdc;
+  --accent-dim    : #4d8598;
+  --secondary     : #e8836f;
+  --contrast      : #1eeb9a;
+}
+
+/* ── Fixed tokens: identical in every lesson. Do not edit. ── */
+:root {
+  --slide-w: 1280px;
+  --slide-h: 720px;
+  --pad: 64px;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-ui: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'DM Mono', ui-monospace, monospace;
+  --r: 10px;
+  --ok: #3fbf7f;
+  --no: #e8555f;
+  --bg-opacity: 0.42;     /* background pattern strength — see doc §6 */
+
+  /* Theme primitives. Dark is the default; a light lesson sets
+     data-theme="light" on <html> and only these flip. Never hardcode
+     rgba(0,0,0,…) or rgba(255,255,255,…) in a lesson — use these. */
+  --inset:  rgba(255,255,255,0.07);  /* recessed fills: inputs, key discs   */
+  --inset2: rgba(255,255,255,0.14);  /* the same, one step stronger         */
+  --scrim:  rgba(0,0,0,0.45);        /* chrome sitting over the hero        */
+  --hairline: rgba(255,255,255,0.28);
+  --cover-shadow: 0 1px 2px rgba(0,0,0,0.95), 0 2px 8px rgba(0,0,0,0.90),
+                  0 4px 26px rgba(0,0,0,0.80), 0 0 3px rgba(0,0,0,0.85);
+  /* Interior background wash. Two stops, not one: the artwork stays visible
+     across the middle of the slide and is only pulled down at the very top
+     and bottom, where the eyebrow, the deck bar and the progress rail sit.
+     An interior page that reads as plain black is a bug — see doc §6. */
+  --wash-mid:  rgba(0,0,0,0.06);
+  --wash-edge: rgba(0,0,0,0.20);
+}
+
+/* ══ LIGHT THEME ══
+   For bright, airy heroes. The palette comes from
+   `extract-palette.py <hero> --light`; these are the structural flips the
+   palette alone cannot express.
+
+   A light lesson is a MID tone, not a white one. Every wash here is mixed
+   from --void rather than from white: mixing toward white bleaches the hero
+   out of the interior pages and turns the deck into glare on a projector.
+   If you find yourself reaching for rgba(255,255,255,…) in a lesson, the
+   answer is a higher --void percentage instead. */
+html[data-theme="light"] {
+  --inset:  rgba(0,0,0,0.045);
+  --inset2: rgba(0,0,0,0.10);
+  --scrim:  color-mix(in srgb, var(--void) 78%, transparent);
+  --hairline: rgba(0,0,0,0.14);
+  --cover-shadow: 0 1px 2px rgba(255,255,255,0.95), 0 2px 8px rgba(255,255,255,0.85),
+                  0 4px 26px rgba(255,255,255,0.6), 0 0 3px rgba(255,255,255,0.9);
+  --wash-mid:  color-mix(in srgb, var(--void) 8%, transparent);
+  --wash-edge: color-mix(in srgb, var(--void) 26%, transparent);
+  --bg-opacity: 0.62;
+}
+
+/* On a mid canvas a translucent card has little to contrast against, so
+   edges need more of the hairline than they do on a dark canvas. */
+html[data-theme="light"] .card { border-color: color-mix(in srgb, var(--border) 90%, transparent); }
+html[data-theme="light"] .opt,
+html[data-theme="light"] .match-item { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
+html[data-theme="light"] .opt-key { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
+html[data-theme="light"] .card { background: color-mix(in srgb, var(--surface) 92%, transparent); }
+html[data-theme="light"] .opt { background: color-mix(in srgb, var(--surface) 95%, transparent); }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;            /* NO SCROLLING. This is the whole point. */
+  background: var(--void);
+  color: var(--text);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── STAGE: a fixed 1280×720 canvas scaled to fit any viewport ── */
+/* A plain fixed box, NOT a centring grid. A grid item wider than its track is
+   aligned to start by the browser rather than overflowing both sides, so on any
+   viewport narrower than 1280px the stage's layout box began at x=0 and
+   `transform-origin: center center` scaled it about x=640 — shifting it right,
+   and clean off the screen on a phone, leaving a black page. The stage is now
+   pinned top-left and fitStage() does the centring, so the transform can never
+   disagree with the layout. */
+.stage-wrap { position: fixed; inset: 0; overflow: hidden; }
+.stage {
+  position: absolute; left: 0; top: 0;
+  width: var(--slide-w);
+  height: var(--slide-h);
+  transform-origin: top left;
+  overflow: hidden;
+  background: var(--void);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.55);
+}
+
+/* ── BACKGROUND PATTERN: the cover image, behind every slide ──
+   Driven by --hero so the screen view and the PDF/PPT export read from
+   ONE definition. Two pseudo-layers because opacity on a parent would
+   also fade the wash sitting on top of it. */
+.bg-layer { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.bg-layer::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--hero) center / cover no-repeat;
+  opacity: var(--bg-opacity);
+  filter: saturate(0.92);
+}
+.bg-layer::after {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, var(--wash-edge) 0%, var(--wash-mid) 20%,
+                            var(--wash-mid) 80%, var(--wash-edge) 100%);
+}
+/* The cover slide shows the hero at FULL strength — no wash, no dimming. */
+.stage.on-cover .bg-layer::before { opacity: 1; filter: none; }
+/* Centre scrim: guarantees cover-text contrast over ANY hero — light, dark,
+   or busy — while leaving the artwork vivid at the edges. Do not remove it;
+   it is what makes an arbitrary dropped-in image safe. */
+.stage.on-cover .bg-layer::after {
+  background:
+    radial-gradient(ellipse 58% 54% at 50% 46%,
+      rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.22) 54%, transparent 82%),
+    linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.03) 30%,
+                            rgba(0,0,0,0.05) 70%, rgba(0,0,0,0.38) 100%);
+}
+/* A light cover keeps its picture. Dark ink already carries against a bright
+   image, so the scrim here is barely there — just enough to stop the title
+   landing on a hard edge. Never brighten a light cover to rescue text; if the
+   text will not read, the hero is wrong for a light lesson. */
+html[data-theme="light"] .stage.on-cover .bg-layer::after {
+  background:
+    radial-gradient(ellipse 58% 54% at 50% 46%,
+      rgba(255,255,255,0.48) 0%, rgba(255,255,255,0.28) 54%, transparent 82%),
+    linear-gradient(180deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.03) 30%,
+                            rgba(255,255,255,0.05) 70%, rgba(255,255,255,0.22) 100%);
+}
+
+/* ── SLIDES ── */
+.slide {
+  position: absolute; inset: 0; z-index: 1;
+  display: none;
+  flex-direction: column;
+  padding: var(--pad);
+}
+.slide.is-active { display: flex; animation: slide-in .32s ease both; }
+@keyframes slide-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+/* ── LOGO ── */
+.fe-logo { width: 152px; height: auto; display: block; }
+.fe-logo-mark { color: var(--logo-mark, var(--accent)); }
+.fe-logo-word { fill: var(--text); opacity: 0; transition: opacity .25s ease; }
+.fonts-ready .fe-logo-word { opacity: 1; }   /* never flash a fallback face */
+.slide[data-type="cover"] .fe-logo { width: 232px; }
+
+/* ── COVER ── */
+.cover-inner {
+  height: 100%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; gap: 4px;
+}
+.cover-title {
+  font-family: var(--font-display);
+  font-size: 62px; font-weight: 900; line-height: 1.06;
+  color: var(--text);
+  text-shadow: var(--cover-shadow);
+  margin-top: 26px;
+}
+.cover-title em { font-style: normal; color: var(--accent-bright); }
+.cover-sub {
+  font-size: 19px; color: var(--text);
+  letter-spacing: .04em; margin-top: 14px;
+  text-shadow: var(--cover-shadow);
+}
+.cover-meta {
+  display: flex; gap: 10px; margin-top: 26px; flex-wrap: wrap; justify-content: center;
+}
+.chip {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase;
+  padding: 6px 14px; border-radius: 999px;
+  border: 1px solid var(--hairline);
+  background: var(--scrim);
+  color: var(--text);
+}
+
+/* ── SLIDE FURNITURE ── */
+.slide-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 20px; margin-bottom: 26px;
+}
+.eyebrow {
+  font-family: var(--font-mono); font-size: 12px;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--accent-bright);
+}
+.slide-title {
+  font-family: var(--font-display);
+  font-size: 38px; font-weight: 700; line-height: 1.15; color: var(--text);
+  margin-top: 6px;
+}
+.slide-body { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; }
+
+/* Content sits in a translucent card so it stays legible over the pattern. */
+.card {
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+  border-radius: var(--r);
+  padding: 30px 34px;
+  backdrop-filter: blur(3px);
+}
+.card + .card { margin-top: 16px; }
+.cols .card + .card,
+.cols .card { margin-top: 0; }   /* side-by-side cards must share a top edge */
+.prose { font-size: 20px; line-height: 1.62; color: var(--text); }
+.prose + .prose { margin-top: 14px; }
+.prose strong { color: var(--accent-bright); font-weight: 600; }
+.dim { color: var(--text-dim); }
+
+/* Two-column teaching layout */
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+
+/* ── QUESTIONS ── */
+.q-stem { font-size: 25px; line-height: 1.5; color: var(--text); margin-bottom: 22px; }
+.q-stem em { font-style: normal; color: var(--accent-bright); font-weight: 600; }
+
+.opts { display: grid; gap: 11px; }
+.opts.two-up { grid-template-columns: 1fr 1fr; }
+.opt {
+  display: flex; align-items: center; gap: 14px;
+  width: 100%; text-align: left;
+  font-family: var(--font-ui); font-size: 19px; color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: var(--r);
+  padding: 15px 20px; cursor: pointer;
+  transition: border-color .15s, background .15s, transform .12s;
+}
+.opt:hover:not(:disabled) { border-color: var(--accent); transform: translateX(3px); }
+.opt-key {
+  flex: 0 0 30px; height: 30px; display: grid; place-items: center;
+  border-radius: 50%; font-family: var(--font-mono); font-size: 13px;
+  background: var(--inset);
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+}
+.opt.correct { border-color: var(--ok); background: color-mix(in srgb, var(--ok) 20%, var(--surface2)); }
+.opt.wrong   { border-color: var(--no); background: color-mix(in srgb, var(--no) 18%, var(--surface2)); }
+.opt:disabled { cursor: default; }
+
+/* Gap-fill */
+.gap {
+  font-family: var(--font-ui); font-size: 20px; color: var(--text);
+  background: var(--inset);
+  border: none; border-bottom: 2px solid var(--accent);
+  padding: 3px 10px; min-width: 190px; border-radius: 4px 4px 0 0;
+}
+.gap:focus { outline: none; background: var(--inset2); }
+.gap.correct { border-bottom-color: var(--ok); color: var(--ok); }
+.gap.wrong   { border-bottom-color: var(--no); color: var(--no); }
+
+.feedback {
+  margin-top: 18px; font-size: 17px; line-height: 1.55;
+  min-height: 26px; opacity: 0; transition: opacity .2s;
+}
+.feedback.show { opacity: 1; }
+.feedback.ok { color: var(--ok); }
+.feedback.no { color: var(--no); }
+
+/* ── BUTTONS ── */
+.btn {
+  font-family: var(--font-ui); font-size: 15px; font-weight: 600;
+  letter-spacing: .03em;
+  padding: 12px 26px; border-radius: var(--r);
+  border: 1px solid var(--accent); background: transparent; color: var(--accent-bright);
+  cursor: pointer; transition: background .15s, color .15s;
+}
+.btn:hover { background: var(--accent); color: var(--void); }
+.btn-solid { background: var(--accent); color: var(--void); border-color: var(--accent); }
+.btn-solid:hover { background: var(--accent-bright); border-color: var(--accent-bright); }
+.btn:disabled { opacity: .35; cursor: not-allowed; }
+.btn-lg { font-size: 17px; padding: 15px 38px; }
+
+/* ── CHROME: progress + nav, pinned inside the stage ── */
+.deck-bar {
+  position: absolute; z-index: 3; left: 0; right: 0; bottom: 0;
+  height: 58px; padding: 0 26px;
+  display: flex; align-items: center; gap: 18px;
+  background: linear-gradient(180deg, transparent, var(--scrim));
+}
+.stage.on-cover .deck-bar { background: none; }
+.stage.on-cover .deck-score { visibility: hidden; }
+.progress { flex: 1; height: 3px; background: var(--inset2); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0; background: var(--accent); transition: width .3s ease; }
+.deck-count, .deck-score {
+  font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); white-space: nowrap;
+}
+.nav-btn {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  background: var(--scrim); color: var(--text);
+  cursor: pointer; font-size: 15px; line-height: 1;
+  display: grid; place-items: center; transition: border-color .15s, background .15s;
+}
+.nav-btn:hover:not(:disabled) { border-color: var(--accent); background: var(--accent); color: var(--void); }
+.nav-btn:disabled { opacity: .28; cursor: not-allowed; }
+
+/* ── LANGUAGE SWITCH ── */
+.lang-select {
+  font-family: var(--font-mono); font-size: 12px;
+  background: var(--scrim); color: var(--text);
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  border-radius: 6px; padding: 6px 10px; cursor: pointer;
+}
+.lang-select:focus { outline: 1px solid var(--accent); }
+
+/* ── RESULTS ── */
+.score-big {
+  font-family: var(--font-display); font-size: 84px; font-weight: 900;
+  color: var(--accent-bright); line-height: 1;
+}
+
+/* ── RTL ── */
+[dir="rtl"] .opt { text-align: right; }
+[dir="rtl"] .opt:hover:not(:disabled) { transform: translateX(-3px); }
+
+
+/* ── ACTIVATION ──────────────────────────────────────────────────── */
+.act-target {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 16px;
+}
+.act-target-label {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--text-dim);
+  margin-right: 4px;
+}
+.bank-chip {
+  font-family: var(--font-mono); font-size: 12px;
+  padding: 5px 12px; border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  color: var(--accent-bright);
+}
+.act-cols { align-items: stretch; }
+.act-card { display: flex; flex-direction: column; padding: 20px 24px; }
+.act-kind {
+  display: flex; align-items: center; gap: 9px;
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--accent-bright); margin-bottom: 12px;
+}
+.act-icon { font-size: 16px; }
+.act-brief { font-size: 16.5px; line-height: 1.5; color: var(--text); margin-bottom: 12px; }
+.act-list { list-style: none; display: grid; gap: 9px; }
+.act-list li {
+  font-size: 15.5px; line-height: 1.45; color: var(--text-dim);
+  padding-left: 18px; position: relative;
+}
+.act-list li::before {
+  content: '—'; position: absolute; left: 0; color: var(--accent);
+}
+.act-input {
+  flex: 1; min-height: 118px; resize: none;
+  font-family: var(--font-ui); font-size: 15px; line-height: 1.55;
+  color: var(--text);
+  background: var(--inset);
+  border: 1px solid color-mix(in srgb, var(--border) 45%, transparent);
+  border-radius: 8px; padding: 12px 14px;
+}
+.act-input:focus { outline: none; border-color: var(--accent); background: var(--inset2); }
+.act-input::placeholder { color: var(--text-dim); opacity: .55; }
+.act-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 10px;
+}
+.act-count { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-dim); }
+.act-copy { font-size: 12.5px; padding: 6px 14px; }
+/* The textarea's value does not print; this mirror does. */
+.act-print { display: none; font-size: 14px; line-height: 1.55; white-space: pre-wrap; }
+
+
+/* ── MATCHING ────────────────────────────────────────────────────── */
+.match-grid { display: grid; grid-template-columns: 1fr 1.35fr; gap: 14px; }
+.match-col { display: grid; gap: 8px; align-content: start; }
+.match-item {
+  font-family: var(--font-ui); font-size: 15.5px; line-height: 1.4;
+  text-align: left; color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: var(--r); padding: 11px 16px; cursor: pointer;
+  transition: border-color .15s, background .15s, opacity .2s;
+}
+.match-item.term { font-weight: 600; }
+.match-item:hover:not(.done) { border-color: var(--accent); }
+.match-item.picked { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 22%, var(--surface2)); }
+.match-item.done { opacity: .45; cursor: default; border-color: var(--ok); }
+.match-item.miss { border-color: var(--no); animation: shake .3s; }
+@keyframes shake { 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
+
+/* ── ORDERING (build the sentence) ───────────────────────────────────
+   For word-order work — where the point is the SEQUENCE of prepositional
+   phrases, not choosing one word. Click to place, click again to take back;
+   no dragging, because a scaled stage makes drag targets lie. */
+.order-hint {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 10px;
+}
+.order-target {
+  display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start;
+  min-height: 92px; padding: 12px;
+  border: 1.5px dashed color-mix(in srgb, var(--border) 60%, transparent);
+  border-radius: var(--r); background: var(--inset);
+}
+.order-target.correct { border-style: solid; border-color: var(--ok); }
+.order-target.wrong   { border-style: solid; border-color: var(--no); }
+.order-pool { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.chunk {
+  font-family: var(--font-ui); font-size: 15.5px; line-height: 1.35;
+  color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: 999px; padding: 9px 16px; cursor: pointer;
+  transition: border-color .15s, background .15s, opacity .2s;
+}
+.chunk:hover:not(:disabled) { border-color: var(--accent); }
+.chunk.placed { background: color-mix(in srgb, var(--accent) 18%, var(--surface2)); border-color: var(--accent); }
+.chunk:disabled { cursor: default; opacity: .5; }
+
+/* ── SORTING (drop each item in the right box) ────────────────────────
+   Two or more labelled bins and a pool of items; the learner puts each
+   item where it belongs. The right shape for anything that is a closed
+   two-way contrast — signal words for one tense against another, count
+   against non-count, formal against neutral — because it asks for the
+   whole set at once instead of one item at a time.
+
+   Both interactions work. Native HTML5 drag-and-drop is used rather than
+   pointer maths: the browser hit-tests a drop target in screen space, so
+   the stage's CSS scale is handled for us — which is what made the
+   hand-rolled kind unreliable here (see the note on ordering above).
+   Dragging does not exist on touch, so click-an-item-then-click-a-bin
+   does the same job and is the fallback that always works. */
+.sort { display: flex; flex-direction: column; gap: 14px; }
+.sort-pool {
+  display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+  min-height: 44px;
+}
+.sort-bins { display: grid; gap: 14px; }
+/* The bin gets the card's own backdrop, not a bare tint. `--inset` alone
+   is nearly transparent, and over a bright hero the bin outline and its
+   label both disappeared — the board read as loose chips floating on
+   artwork with no boxes to put them in. */
+.sort-bin {
+  border: 1.5px dashed color-mix(in srgb, var(--border) 60%, transparent);
+  border-radius: var(--r);
+  background: color-mix(in srgb, var(--surface) 78%, transparent);
+  backdrop-filter: blur(3px);
+  padding: 10px 12px; min-height: 132px;
+  display: flex; flex-direction: column; gap: 8px;
+  transition: border-color .15s, background .15s;
+}
+.sort-bin.over { border-style: solid; border-color: var(--accent); }
+.sort-bin.full { border-style: solid; border-color: var(--ok); }
+.sort-bin-label {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--accent-bright); text-align: center;
+}
+.sort-bin-items { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.sort-item {
+  font-family: var(--font-ui); font-size: 15.5px; line-height: 1.35;
+  color: var(--text);
+  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
+  border-radius: 999px; padding: 9px 16px; cursor: grab;
+  transition: border-color .15s, background .15s, opacity .2s;
+}
+.sort-item:hover:not(.placed) { border-color: var(--accent); }
+.sort-item.picked { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 22%, var(--surface2)); }
+.sort-item.dragging { opacity: .45; cursor: grabbing; }
+.sort-item.placed { cursor: default; border-color: var(--ok); opacity: .7; }
+.sort-item.miss { border-color: var(--no); animation: shake .3s; }
+
+/* ── ESCAPE-ROOM MECHANICS ───────────────────────────────────────
+   Three things a puzzle lesson needs that a quiz deck does not: a timed
+   visual hunt, a combination lock, and a rail that remembers what the
+   learner has picked up on the way. All three are click-only. A scaled
+   stage makes drag targets lie about where they are — the same reason
+   `order` is click-based — and a timer plus a moving target would put
+   that inaccuracy where it costs a point.
+
+   A deck that uses none of them pays nothing: the rail hides itself when
+   no stops are declared, and the two slide types simply never match. */
+
+/* Timed search: identify the object by its shape, against a clock. The
+   names are hidden until the item is answered — a labelled picture is a
+   reading task, not a vocabulary one. */
+.search { display: flex; flex-direction: column; gap: 16px; }
+/* Clock beside the bar, not floating above it: sitting it over the
+   question stem put a countdown on top of the thing being read. */
+.search-bar { display: flex; align-items: center; gap: 12px; }
+.search-track {
+  flex: 1; height: 6px; border-radius: 3px;
+  background: var(--inset2); overflow: hidden;
+}
+.search-fill {
+  height: 100%; width: 100%;
+  background: var(--accent); transition: width .9s linear;
+}
+.search-bar.urgent .search-fill { background: var(--no); }
+/* A chip, not bare text: the countdown sits on the artwork, and on a
+   bright hero a thin mono glyph on its own does not survive. */
+.search-clock {
+  font-family: var(--font-mono); font-size: 14px; color: var(--text);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+  border-radius: 999px; padding: 4px 12px;
+  backdrop-filter: blur(3px);
+  min-width: 56px; text-align: center;
+}
+.search-bar.urgent .search-clock {
+  color: var(--no); border-color: var(--no);
+}
+.find-grid { display: grid; gap: 12px; }
+.find {
+  background: color-mix(in srgb, var(--surface2) 84%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--border) 55%, transparent);
+  border-radius: var(--r); padding: 12px 8px 8px;
+  backdrop-filter: blur(3px);
+  cursor: pointer; color: var(--text);
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  transition: border-color .15s, background .15s, transform .15s;
+}
+.find:hover:not(:disabled) { border-color: var(--accent); transform: translateY(-3px); }
+.find svg { width: 100%; height: 86px; display: block; }
+.find-name {
+  font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .06em;
+  color: var(--text-dim); opacity: 0; transition: opacity .25s ease;
+  min-height: 15px; text-align: center;
+}
+.find.revealed .find-name { opacity: 1; }
+.find.correct { border-color: var(--ok); background: color-mix(in srgb, var(--ok) 18%, var(--surface2)); }
+.find.correct .find-name { color: var(--ok); }
+.find.wrong   { border-color: var(--no); background: color-mix(in srgb, var(--no) 16%, var(--surface2)); }
+.find:disabled { cursor: default; }
+.find:disabled:hover { transform: none; }
+
+/* Combination lock: the digits were earned one per section, and this is
+   where they are spent. Unlimited attempts, but only the first one
+   scores — the lock has to open for the story to end, and a puzzle you
+   cannot fail is not worth a point. */
+.lock { display: flex; align-items: center; justify-content: center; gap: 34px; }
+.lock-display { display: flex; gap: 10px; }
+.lock-cell {
+  width: 54px; height: 68px; border-radius: 8px;
+  border: 1.5px solid color-mix(in srgb, var(--border) 70%, transparent);
+  background: var(--inset);
+  font-family: var(--font-mono); font-size: 30px; color: var(--text);
+  display: grid; place-items: center;
+  transition: border-color .15s, background .15s;
+}
+.lock-cell.filled { border-color: var(--accent); background: var(--inset2); }
+.lock-cell.ok { border-color: var(--ok); color: var(--ok); }
+.lock.bad .lock-display { animation: shake .3s; }
+.lock-keys { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.lock-pad { display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; }
+.lock-key {
+  width: 44px; height: 38px; border-radius: 7px;
+  border: 1.5px solid color-mix(in srgb, var(--border) 55%, transparent);
+  background: color-mix(in srgb, var(--surface2) 84%, transparent);
+  color: var(--text); font-family: var(--font-mono); font-size: 16px;
+  cursor: pointer; transition: border-color .15s, background .15s;
+}
+.lock-key:hover:not(:disabled) { border-color: var(--accent); }
+.lock-key:disabled { opacity: .4; cursor: default; }
+
+/* The rail: which room you are in, and what you picked up in each. It
+   doubles as the progress indicator, so a learner who forgets a digit
+   is not being tested on memory — they are being tested on English. */
+.deck-rail {
+  position: absolute; z-index: 3; left: 26px; right: 26px; bottom: 56px;
+  display: flex; gap: 8px; justify-content: center;
+}
+.deck-rail[hidden] { display: none; }
+.stage.on-cover .deck-rail { display: none; }
+.rail-stop {
+  display: flex; align-items: center; gap: 7px;
+  padding: 4px 12px 4px 5px; border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--border) 45%, transparent);
+  background: var(--scrim); opacity: .45; transition: opacity .2s, border-color .2s;
+}
+.rail-stop.reached { opacity: .9; }
+.rail-stop.current { opacity: 1; border-color: var(--accent); }
+.rail-digit {
+  width: 21px; height: 21px; border-radius: 50%;
+  background: var(--inset2); color: var(--text-dim);
+  font-family: var(--font-mono); font-size: 12px;
+  display: grid; place-items: center;
+}
+.rail-stop.has-digit .rail-digit { background: var(--accent); color: var(--void); }
+.rail-label {
+  font-family: var(--font-mono); font-size: 10.5px;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--text);
+}
+.stage.has-rail .slide { padding-bottom: calc(var(--pad) + 34px); }
+
+/* ── DISCUSSION (unscored speaking prompts) ──────────────────────── */
+.discuss-meta {
+  font-family: var(--font-mono); font-size: 11.5px;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 14px;
+}
+.prompts { display: grid; gap: 12px; list-style: none; margin: 0; padding: 0; }
+.prompt {
+  font-size: 19px; line-height: 1.5; color: var(--text);
+  padding-left: 26px; position: relative;
+}
+.prompt::before {
+  content: '?'; position: absolute; left: 0; top: 1px;
+  font-family: var(--font-mono); font-size: 15px; color: var(--accent);
+}
+.prompt.aside { font-size: 16.5px; color: var(--text-dim); font-style: italic; }
+.prompt.aside::before { content: '·'; }
+
+/* ══════════════════════════════════════════════════════════════════
+   PRINT / PDF EXPORT
+   Ctrl-P → Save as PDF → Landscape, margins None, Background graphics ON.
+   Each slide becomes one 16:9 page, ready to drop into PowerPoint.
+   ══════════════════════════════════════════════════════════════════ */
+@page { size: 1280px 720px; margin: 0; }
+@media print {
+  html, body { overflow: visible; height: auto; background: #fff; }
+  .stage-wrap { position: static; display: block; }
+  .stage {
+    position: static;
+    transform: none !important;
+    width: 1280px; height: auto;      /* let the slides stack into pages */
+    overflow: visible; box-shadow: none;
   }
+  .bg-layer, .deck-bar, .lang-select, .nav-btn, .deck-rail { display: none !important; }
+  .stage.has-rail .slide { padding-bottom: var(--pad); }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--deep);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
+  /* Each slide becomes its own page and carries its own background, so the
+     export does not depend on the single on-screen background layer. */
+  .slide {
+    display: flex !important;
+    position: relative; inset: auto;
+    width: 1280px; height: 720px;
+    isolation: isolate;
+    page-break-after: always; break-after: page;
+    animation: none !important;
   }
-
-  /* Background texture */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
+  .slide:last-child { page-break-after: auto; break-after: auto; }
+  .slide::before {
+    content: ''; position: absolute; inset: 0; z-index: -2;
+    background: var(--hero) center / cover no-repeat;
+    opacity: var(--bg-opacity);
+  }
+  .slide::after {
+    content: ''; position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(180deg, var(--wash-edge) 0%, var(--wash-mid) 20%,
+                                        var(--wash-mid) 80%, var(--wash-edge) 100%);
+  }
+  .slide[data-type="cover"]::before { opacity: 1; }
+  .slide[data-type="cover"]::after {
     background:
-      radial-gradient(ellipse at 20% 20%, rgba(42,122,138,0.15) 0%, transparent 60%),
-      radial-gradient(ellipse at 80% 80%, rgba(200,132,30,0.08) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: 0;
+      radial-gradient(ellipse 58% 54% at 50% 46%,
+        rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.22) 54%, transparent 82%),
+      linear-gradient(180deg, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.03) 30%,
+                            rgba(0,0,0,0.05) 70%, rgba(0,0,0,0.38) 100%);
   }
-
-  .wrapper {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 0 20px 60px;
-    position: relative;
-    z-index: 1;
-  }
-
-  /* ===== HEADER ===== */
-  header {
-    padding: 32px 0 0;
-    text-align: center;
-  }
-
-  .logo-svg-wrap { display: inline-block; }
-
-  .lesson-meta {
-    margin-top: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    color: var(--light-teal);
-    font-size: 12px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    font-weight: 500;
-  }
-
-  .lesson-meta span { opacity: 0.5; }
-
-  /* ===== SCORE TRACKER ===== */
-  .score-bar {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(13,43,53,0.96);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid rgba(42,122,138,0.3);
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .score-bar .label {
-    color: var(--muted);
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
-  .score-display {
-    color: var(--gold);
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px;
-    font-weight: 600;
-    letter-spacing: 0.03em;
-  }
-
-  .progress-track {
-    height: 3px;
-    background: rgba(42,122,138,0.2);
-    border-radius: 2px;
-    overflow: hidden;
-    width: 160px;
-  }
-
-  .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--teal), var(--gold));
-    border-radius: 2px;
-    transition: width 0.5s ease;
-  }
-
-  /* ===== HERO ILLUSTRATION ===== */
-  .hero-illo {
-    margin: 32px 0 28px;
-    border-radius: 8px;
-    overflow: hidden;
-    position: relative;
-  }
-
-  /* ===== INTRO CARD ===== */
-  .intro-card {
-    background: var(--ocean);
-    border: 1px solid rgba(42,122,138,0.4);
-    border-radius: 10px;
-    padding: 36px 40px;
-    margin-bottom: 32px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .intro-card::before {
-    content: '';
-    position: absolute;
-    top: -60px;
-    right: -60px;
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(42,122,138,0.3) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .intro-card h1 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 32px;
-    font-weight: 300;
-    color: var(--cream);
-    line-height: 1.2;
-    margin-bottom: 6px;
-  }
-
-  .intro-card h1 em {
-    font-style: italic;
-    color: var(--gold);
-  }
-
-  .level-badge {
-    display: inline-block;
-    background: var(--amber);
-    color: #fff;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    padding: 3px 10px;
-    border-radius: 20px;
-    margin-bottom: 14px;
-  }
-
-  .intro-card p {
-    color: rgba(245,240,232,0.75);
-    font-size: 14.5px;
-    line-height: 1.7;
-    max-width: 640px;
-  }
-
-  /* ===== SECTION DIVIDER ===== */
-  .section-header {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin: 40px 0 22px;
-  }
-
-  .section-num {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: var(--teal);
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    font-weight: 600;
-    flex-shrink: 0;
-  }
-
-  .section-title-wrap h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px;
-    font-weight: 600;
-    color: var(--cream);
-    line-height: 1.2;
-  }
-
-  .section-title-wrap .section-sub {
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-top: 2px;
-  }
-
-  .section-line {
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, rgba(42,122,138,0.5), transparent);
-  }
-
-  /* ===== ILLUSTRATION SVGs ===== */
-  .illo-wrap {
-    margin: 0 0 24px;
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid rgba(42,122,138,0.2);
-  }
-
-  /* ===== QUESTION CARD ===== */
-  .question-card {
-    background: var(--card-bg);
-    border-radius: 10px;
-    padding: 28px 32px;
-    margin-bottom: 18px;
-    box-shadow: 0 2px 20px rgba(0,0,0,0.15);
-    display: none;
-    animation: fadeUp 0.35s ease;
-  }
-
-  .question-card.active { display: block; }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .q-progress {
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 14px;
-  }
-
-  .q-text {
-    font-size: 16px;
-    font-weight: 500;
-    color: var(--text);
-    line-height: 1.55;
-    margin-bottom: 20px;
-  }
-
-  /* MC options */
-  .options-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
-
-  .option-btn {
-    width: 100%;
-    text-align: left;
-    padding: 12px 16px;
-    border: 1.5px solid #dde5e8;
-    border-radius: 7px;
-    background: #fff;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14.5px;
-    color: var(--text);
-    cursor: pointer;
-    transition: border-color 0.18s, background 0.18s;
-    line-height: 1.45;
-  }
-
-  .option-btn:hover:not(:disabled) {
-    border-color: var(--teal);
-    background: #f0f8fa;
-  }
-
-  .option-btn.correct {
-    border-color: var(--correct);
-    background: var(--correct-light);
-    color: var(--correct);
-  }
-
-  .option-btn.wrong {
-    border-color: var(--wrong);
-    background: var(--wrong-light);
-    color: var(--wrong);
-  }
-
-  .option-btn:disabled { cursor: default; }
-
-  /* Fill-in-blank */
-  .blank-sentence {
-    font-size: 16px;
-    line-height: 1.9;
-    color: var(--text);
-    margin-bottom: 20px;
-  }
-
-  .blank-input {
-    border: none;
-    border-bottom: 2px solid var(--teal);
-    outline: none;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    color: var(--text);
-    padding: 2px 6px;
-    min-width: 120px;
-    background: transparent;
-    text-align: center;
-    transition: border-color 0.2s;
-  }
-
-  .blank-input.correct-input { border-color: var(--correct); color: var(--correct); background: var(--correct-light); border-radius: 4px; }
-  .blank-input.wrong-input { border-color: var(--wrong); color: var(--wrong); background: var(--wrong-light); border-radius: 4px; }
-
-  .word-bank {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 22px;
-    padding: 14px;
-    background: #f4f8fa;
-    border-radius: 8px;
-  }
-
-  .word-chip {
-    background: var(--ocean);
-    color: var(--cream);
-    padding: 5px 14px;
-    border-radius: 20px;
-    font-size: 13px;
-    cursor: pointer;
-    border: none;
-    font-family: 'DM Sans', sans-serif;
-    transition: background 0.15s, opacity 0.15s;
-  }
-
-  .word-chip:hover:not(:disabled) { background: var(--teal); }
-  .word-chip.used { opacity: 0.3; cursor: default; }
-
-  /* Matching activity */
-  .matching-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 18px;
-  }
-
-  .match-col { display: flex; flex-direction: column; gap: 8px; }
-
-  .match-item {
-    padding: 11px 14px;
-    border-radius: 7px;
-    font-size: 13.5px;
-    line-height: 1.4;
-    cursor: pointer;
-    border: 1.5px solid transparent;
-    transition: all 0.18s;
-    user-select: none;
-  }
-
-  .match-left {
-    background: rgba(26,74,90,0.08);
-    border-color: rgba(26,74,90,0.2);
-    color: var(--ocean);
-    font-weight: 500;
-  }
-
-  .match-right {
-    background: rgba(200,132,30,0.06);
-    border-color: rgba(200,132,30,0.2);
-    color: #5a3a00;
-  }
-
-  .match-item.selected { border-color: var(--teal); background: rgba(42,122,138,0.12); }
-  .match-item.matched-correct { border-color: var(--correct); background: var(--correct-light); color: var(--correct); cursor: default; }
-  .match-item.matched-wrong { border-color: var(--wrong); background: var(--wrong-light); color: var(--wrong); }
-
-  /* Ordering activity */
-  .ordering-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
-
-  .order-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 12px 14px;
-    border: 1.5px solid #dde5e8;
-    border-radius: 7px;
-    background: #fff;
-    cursor: grab;
-    font-size: 14px;
-    color: var(--text);
-    line-height: 1.45;
-    transition: box-shadow 0.15s;
-    user-select: none;
-  }
-
-  .order-item:active { cursor: grabbing; box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
-  .order-item.dragging { opacity: 0.4; }
-  .order-item.drag-over { border-color: var(--teal); background: #f0f8fa; }
-
-  .drag-handle {
-    color: #aaa;
-    font-size: 16px;
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-
-  /* Submit button */
-  .btn-submit {
-    background: var(--teal);
-    color: #fff;
-    border: none;
-    padding: 11px 26px;
-    border-radius: 7px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.18s;
-    letter-spacing: 0.02em;
-  }
-
-  .btn-submit:hover { background: var(--ocean); }
-
-  /* Feedback */
-  .feedback-box {
-    margin-top: 16px;
-    padding: 14px 16px;
-    border-radius: 7px;
-    font-size: 13.5px;
-    line-height: 1.55;
-    display: none;
-  }
-
-  .feedback-box.correct-fb { background: var(--correct-light); color: var(--correct); border-left: 3px solid var(--correct); }
-  .feedback-box.wrong-fb { background: var(--wrong-light); color: var(--wrong); border-left: 3px solid var(--wrong); }
-
-  .feedback-box .fb-label {
-    font-weight: 600;
-    font-size: 12px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 4px;
-  }
-
-  /* Next button */
-  .btn-next {
-    display: none;
-    margin-top: 14px;
-    background: var(--deep);
-    color: var(--gold);
-    border: 1.5px solid var(--amber);
-    padding: 10px 24px;
-    border-radius: 7px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    letter-spacing: 0.04em;
-    transition: all 0.18s;
-  }
-
-  .btn-next:hover { background: var(--amber); color: #fff; }
-  .btn-next.show { display: inline-block; }
-
-  /* ===== DISCUSSION CARD ===== */
-  .discussion-card {
-    background: var(--ocean);
-    border: 1px solid rgba(74,168,184,0.3);
-    border-radius: 10px;
-    padding: 28px 32px;
-    margin-top: 32px;
-  }
-
-  .discussion-card h3 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 20px;
-    color: var(--cream);
-    margin-bottom: 14px;
-    font-weight: 600;
-  }
-
-  .discussion-card .disc-q {
-    padding: 11px 16px;
-    background: rgba(255,255,255,0.07);
-    border-radius: 6px;
-    font-size: 14px;
-    color: rgba(245,240,232,0.85);
-    line-height: 1.55;
-    margin-bottom: 8px;
-    border-left: 3px solid var(--amber);
-  }
-
-  /* ===== FINAL SCREEN ===== */
-  #final-screen {
-    display: none;
-    text-align: center;
-    padding: 60px 40px;
-  }
-
-  .final-illo {
-    margin: 0 auto 30px;
-  }
-
-  #final-screen h2 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 36px;
-    color: var(--cream);
-    font-weight: 300;
-    margin-bottom: 10px;
-  }
-
-  #final-screen h2 em { color: var(--gold); font-style: italic; }
-
-  .final-score-big {
-    font-size: 72px;
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 600;
-    color: var(--gold);
-    line-height: 1;
-    margin: 12px 0 8px;
-  }
-
-  .final-score-sub {
-    color: var(--muted);
-    font-size: 14px;
-    margin-bottom: 24px;
-  }
-
-  .final-message {
-    background: rgba(42,122,138,0.15);
-    border: 1px solid rgba(42,122,138,0.3);
-    border-radius: 10px;
-    padding: 20px 28px;
-    color: rgba(245,240,232,0.8);
-    font-size: 15px;
-    line-height: 1.65;
-    max-width: 500px;
-    margin: 0 auto 28px;
-  }
-
-  .btn-restart {
-    background: var(--amber);
-    color: #fff;
-    border: none;
-    padding: 13px 32px;
-    border-radius: 7px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    letter-spacing: 0.04em;
-    transition: background 0.18s;
-  }
-
-  .btn-restart:hover { background: var(--gold); color: var(--deep); }
-
-  /* ===== RESPONSIVE ===== */
-  @media (max-width: 600px) {
-    .intro-card { padding: 24px 22px; }
-    .question-card { padding: 22px 18px; }
-    .matching-grid { grid-template-columns: 1fr; }
-    .intro-card h1 { font-size: 24px; }
-    #final-screen { padding: 40px 20px; }
-    .final-score-big { font-size: 56px; }
-  }
+  .feedback { opacity: 1 !important; }
+  .act-input, .act-foot { display: none !important; }
+  .act-print { display: block !important; }
+}
+
+/* Text that sits on the canvas rather than inside a card needs its own halo
+   now that the artwork behind it is bright. A shadow costs nothing and lets
+   the picture stay up, which darkening the wash back down would not. */
+.slide-title, .eyebrow, .q-stem, .q-ctx, .order-hint, .cover-title, .cover-sub,
+.score-big, .slide-body > .prose, .act-target-label {
+  text-shadow: 0 1px 2px rgba(0,0,0,0.55), 0 0 12px rgba(0,0,0,0.38);
+}
+html[data-theme="light"] .slide-title, html[data-theme="light"] .eyebrow,
+html[data-theme="light"] .q-stem, html[data-theme="light"] .q-ctx,
+html[data-theme="light"] .order-hint, html[data-theme="light"] .cover-title,
+html[data-theme="light"] .cover-sub, html[data-theme="light"] .score-big,
+html[data-theme="light"] .slide-body > .prose,
+html[data-theme="light"] .act-target-label {
+  text-shadow: 0 1px 2px rgba(255,255,255,0.75), 0 0 12px rgba(255,255,255,0.55);
+}
 </style>
 </head>
 <body>
 
-<div class="score-bar">
-  <div>
-    <div class="label">Score</div>
-    <div class="score-display" id="score-display">0 / 0</div>
-  </div>
-  <div style="text-align:center">
-    <div class="label" style="margin-bottom:6px" id="progress-label">Progress</div>
-    <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
-  </div>
-  <div style="text-align:right">
-    <div class="label">Level</div>
-    <div class="score-display" style="font-size:16px;color:var(--light-teal)">C1 / C2</div>
+<div class="stage-wrap">
+  <div class="stage" id="stage">
+
+    <!-- Background pattern: driven entirely by --hero in the CSS above. -->
+    <div class="bg-layer" role="presentation"></div>
+
+    <!-- ══════════════════════════════════════════════════════════
+         REPLACE 2 of 2: SLIDES
+         Author one <section class="slide"> per screen.
+         data-type: cover | teach | mc | gap | match | order | discuss | results | activate
+         data-bg="folder/other.jpg" swaps the background pattern on that slide.
+         Everything a learner reads must fit WITHOUT scrolling.
+         If it does not fit, split it across two slides — never shrink type.
+         ══════════════════════════════════════════════════════════ -->
+
+
+    <section class="slide is-active" data-type="cover">
+      <div class="cover-inner">
+        <svg class="fe-logo" viewBox="0 0 200 78" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Forbes English">
+          <g class="fe-logo-mark" transform="translate(-42.74,-30.22) scale(0.099477)"><g transform="translate(0,1504) scale(0.1,-0.1)" fill="currentColor" stroke="none"><path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47 l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21 -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9 -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58 105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141 144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392 -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31 c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55 -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0 -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226 144 331 156 51 6 127 -4 183 -25z"/><path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95 -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72 -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0 -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18 108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553 -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70 -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3 469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38 -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/><path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73 -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939 -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1 205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247 -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22 -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24 -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449 121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/><path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611 -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538 -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77 144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430 -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67 347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580 -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132 -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87 66 245 85 341 40z"/><path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140 -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134 -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287 -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101 -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107 173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392 207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599 281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241 111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2 347 -112 40 c-318 112 -594 149 -892 121z"/><path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149 l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801 -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6 -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294 -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12 -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29 -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55 -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12 -33 22 -42 21 -9 0 -199 -27 -422 -60z"/></g></g>
+          <text class="fe-logo-word" x="100" y="72.6" text-anchor="middle" font-family="'DM Sans', Arial, sans-serif" font-size="20.8" font-weight="600" letter-spacing="8">ENGLISH</text>
+        </svg>
+        <h1 class="cover-title" data-i18n="coverTitle">Conservation <em>Travel</em></h1>
+        <p class="cover-sub" data-i18n="coverSub">From cloud forests to coral reefs &mdash; five projects, and the difference between what a text says and what it means</p>
+        <div class="cover-meta">
+          <span class="chip" data-i18n="chipLevel">C1 &middot; C2</span>
+          <span class="chip" data-i18n="chipFocus">Inference &amp; the vocabulary of loss</span>
+          <span class="chip" data-i18n="chipCount">21 slides</span>
+        </div>
+        <div style="margin-top:34px">
+          <button class="btn btn-solid btn-lg" data-action="next" data-i18n="btnStart">Begin →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="Conservation/island.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="t1e">Before the first question</div>
+        <h2 class="slide-title" data-i18n="t1t">Five of the six questions ask what the article <em>implies</em></h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="t1ah">Not what it says</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Recall questions have one findable answer. These do not.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t1an">You are being asked what follows from the text &mdash; which is why you can locate a sentence and still choose wrong.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t1bh">The distractors are usually true</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">They are just not the article&rsquo;s point.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t1bn">Several name real problems that conservation projects elsewhere do face. Truth is not the test; relevance is.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t1ch">The habit that helps</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Ask what the sentence is <em>doing</em>, not only what it reports.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t1cn">A detail can be there to prove a point, to concede one, or to set a scene. Which it is decides the answer.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="Conservation/frog.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="t2e">Worked example</div>
+        <h2 class="slide-title" data-i18n="t2t">Two readings of the same sentence</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="t2ah">The sentence</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px"><em>It could have vanished before science knew it existed.</em></p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2an">About the Mashpi glass frog, documented after five years of survey work in the Chocó cloud forest.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t2bh">The shallow reading</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">&ldquo;A rare frog was found.&rdquo;</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2bn">True, and it answers nothing. It treats the clause as a fact about an animal.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t2ch">The reading being tested</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">&ldquo;Undocumented species are being lost, so the reserve is urgent.&rdquo;</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2cn">The clause is an <em>argument for the reserve</em>. That is what it is doing in the paragraph, and that is the answer.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="Conservation/wildfire.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="t3e">The transferable one</div>
+        <h2 class="slide-title" data-i18n="t3t">Naming by comparison &mdash; &ldquo;Europe&rsquo;s Yellowstone&rdquo;</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="t3ah">What it imports</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Scale, ambition, continental-scale rewilding, restored large mammals.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t3an">This is the load the phrase is meant to carry, and the article says so in the sentences around it.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t3bh">What it does not</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">The car parks, the visitor numbers, the funding, the nationality.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t3bn">A comparison never imports everything. If it did, it would be an identity claim rather than a comparison.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t3ch">Deciding which</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Read what the writer does with the phrase immediately afterwards.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t3cn">The next sentences here are about reintroduced species and old-growth forest. So: ecology, not commerce. The context selects the load.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="Conservation/reef-canyon.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="t4e">The vocabulary, one</div>
+        <h2 class="slide-title" data-i18n="t4t">Scarcity and loss</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="t4ah">rare</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Uncommon in itself. <em>Rare high-altitude ecosystems.</em></p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t4an">Not <em>scarce</em>, which is about supply against demand, and not <em>endangered</em>, which is about trajectory.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t4bh">face extinction</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">The collocation. <em>All coral reefs could face extinction by 2050.</em></p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t4bn">Of a species or a whole system. <em>Face</em> is doing work: it frames the outcome as still ahead and still avoidable.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t4ch">millennia</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Plural of <em>millennium</em>. <em>Over two millennia.</em></p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t4cn">A Latin plural that survived intact into formal English. Reach for it when the span itself is the point.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="Conservation/plantation.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="t5e">The vocabulary, two</div>
+        <h2 class="slide-title" data-i18n="t5t">Transformation and heritage</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="t5ah">retraining</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px"><em>Retraining its loggers and poachers as researchers.</em></p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t5an">The prefix carries the argument: the skills were already there &mdash; the forest knowledge, the tracking &mdash; and were redirected, not replaced.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t5bh">traditional</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px"><em>Traditional Polynesian knowledge</em>, blended with marine science.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t5bn">Neutral here, deliberately. Elsewhere it can imply outdated; set alongside modern science as an equal partner, it does not.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t5ch">cultural</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px"><em>Important Intangible Folk Cultural Property</em> &mdash; Japan&rsquo;s formal designation for the ama.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t5cn">An ordinary word inside a fixed official title. The capitals belong to the title, not to the word.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="Conservation/ama-dusk.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="t6e">The five projects</div>
+        <h2 class="slide-title" data-i18n="t6t">What each one is actually protecting</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr 1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="t6ah">Ecuador &middot; Mashpi</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">A logging concession bought out and turned into cloud forest reserve.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t6an">24 new species recorded, the glass frog among them.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t6bh">Romania &middot; the Carpathians</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Rewilding at scale &mdash; bison, lynx, old-growth forest.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t6bn">The one the Yellowstone comparison is about.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t6ch">Costa Rica &middot; the turtles</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Night patrols, nests relocated to guarded hatcheries.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t6cn">Against poaching, with round-the-clock monitoring.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="t6dh">Polynesia &amp; Japan</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Coral Gardeners replant resilient coral; the ama dive on held breath.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t6dn">One protects a habitat, the other a practice. The last activity asks you to tell those apart.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">What does it imply?</span> &middot; 1 / 6</div>
+        <h2 class="slide-title" data-i18n="qTitle">Choose the reading the article supports</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-ctx">The distinction the whole activity turns on: what a text does, not what it is about.</p>
+        <p class="q-stem">What is the article actually for, judged by its opening rather than its subject?</p>
+        <div class="opts">
+          <button class="opt">To rank wildlife-protection schemes across six continents by how much measurable recovery each one has achieved for the species it targets</button>
+          <button class="opt">To argue that conservation science belongs to scientists, and that visitors on site are at best a distraction and at worst an active hindrance to the work</button>
+          <button class="opt" data-correct>To show that travel can support conservation, and that a traveller can contribute rather than only observe</button>
+          <button class="opt">To promote high-end eco-resorts and wilderness retreats to readers who can afford to pay a premium for access to protected landscapes</button>
+        </div>
+        <p class="feedback" data-explain="The opening offers <em>the opportunity to meet the individuals leading such efforts and contribute your time</em>. Contribution is the claim. The other three are all things the article could plausibly have been, which is what makes them useful here."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-bg="Conservation/turtles.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">What does it imply?</span> &middot; 2 / 6</div>
+        <h2 class="slide-title" data-i18n="qTitle">Choose the reading the article supports</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-ctx">Ecuador, Chocó cloud forest.</p>
+        <p class="q-stem">Why is the Mashpi glass frog scientifically significant?</p>
+        <div class="opts">
+          <button class="opt" data-correct>Because it took five years to document a species that could have vanished before science knew it existed</button>
+          <button class="opt">Because it is the largest transparent amphibian ever recorded anywhere in South America, and the only one found above two thousand metres</button>
+          <button class="opt">Because it was the first amphibian species anywhere to be discovered using eco-acoustic monitoring devices rather than by direct field observation</button>
+          <button class="opt">Because it demonstrated that cloud forests hold more species per hectare than any other terrestrial ecosystem yet surveyed on Earth</button>
+        </div>
+        <p class="feedback" data-explain="The significance is the near-miss, not the record. <em>Could have vanished before science knew it existed</em> — the point is how close the species came to being lost unrecorded, which is an argument for the reserve, not a fact about frogs."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-bg="Conservation/reef-lagoon.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">What does it imply?</span> &middot; 3 / 6</div>
+        <h2 class="slide-title" data-i18n="qTitle">Choose the reading the article supports</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-ctx">Romania. One MC item in the source turned entirely on reading this correctly.</p>
+        <p class="q-stem">The Carpathians are called &ldquo;Europe&rsquo;s Yellowstone&rdquo;. What does the comparison import?</p>
+        <div class="opts">
+          <button class="opt">That Romania is marketing its wilderness primarily to American visitors, and has chosen a reference point they will recognise immediately</button>
+          <button class="opt">That the mountains are as commercially developed as Yellowstone, with the same density of roads, lodges and visitor infrastructure across the protected area</button>
+          <button class="opt">That the project depends on American funding and American expertise, and would not be viable on European resources alone</button>
+          <button class="opt" data-correct>The scale and ambition of the wildlife recovery — not the commerce, the visitor numbers or the funding</button>
+        </div>
+        <p class="feedback" data-explain="A comparison imports some properties and not others, and you have to decide which. Yellowstone here means <em>continental-scale rewilding</em>. It does not import the car parks. Deciding what an analogy carries is the transferable skill in this item."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">What does it imply?</span> &middot; 4 / 6</div>
+        <h2 class="slide-title" data-i18n="qTitle">Choose the reading the article supports</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-ctx">The one item on this activity that is straight recall rather than inference.</p>
+        <p class="q-stem">Why are sea turtle nests moved to protected hatcheries in Costa Rica?</p>
+        <div class="opts">
+          <button class="opt">Because the open beach has become too hot for natural incubation to succeed reliably, following several unusually warm nesting seasons</button>
+          <button class="opt" data-correct>To protect the eggs from poaching and allow round-the-clock monitoring</button>
+          <button class="opt">To allow the eggs to be studied with scientific equipment that cannot practicably be transported to or operated on an open beach at night</button>
+          <button class="opt">Because the turtles increasingly lay their eggs below the high-water line, where tidal inundation destroys a large proportion of each clutch</button>
+        </div>
+        <p class="feedback" data-explain="Poaching and monitoring. Worth noticing that three plausible-sounding alternatives here are <em>real problems that turtle projects elsewhere do face</em> — they are simply not this article&rsquo;s reason."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-bg="Conservation/turtles.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">What does it imply?</span> &middot; 5 / 6</div>
+        <h2 class="slide-title" data-i18n="qTitle">Choose the reading the article supports</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-ctx">The project the ordering activity also covers.</p>
+        <p class="q-stem">What makes Coral Gardeners in French Polynesia innovative, on the article&rsquo;s account?</p>
+        <div class="opts">
+          <button class="opt">It replants coral at depths that bleaching events cannot reach, using the thermal stability of deeper water as a refuge for vulnerable species</button>
+          <button class="opt">It works exclusively from traditional Polynesian reef knowledge and deliberately rejects modern scientific instrumentation as inappropriate to the setting</button>
+          <button class="opt">It concentrates on relocating endangered fish populations to healthier reef sections rather than on restoring the damaged reef structure itself</button>
+          <button class="opt" data-correct>It selects corals that already survived bleaching, then tracks the regrowth with AI</button>
+        </div>
+        <p class="feedback" data-explain="Two halves, and you need both: <em>selection for demonstrated resilience</em> plus <em>instrumented monitoring</em>. Option 1 describes a real technique that is not this project&rsquo;s, which is the commonest way to get this item wrong."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-bg="Conservation/reef-lagoon.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">What does it imply?</span> &middot; 6 / 6</div>
+        <h2 class="slide-title" data-i18n="qTitle">Choose the reading the article supports</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-ctx">Japan. The article calls the tradition an Important Intangible Folk Cultural Property.</p>
+        <p class="q-stem">Why would losing the ama divers be more than the end of a profession?</p>
+        <div class="opts">
+          <button class="opt" data-correct>Because generations of sustainable fishing knowledge and ecological understanding would go with it</button>
+          <button class="opt">Because the ama hold the only legal right to fish certain Japanese coastal waters, and those grounds would fall out of any management regime if the right lapsed</button>
+          <button class="opt">Because their disappearance would cause the immediate collapse of the local seafood industry and the coastal economies that depend on it for employment</button>
+          <button class="opt">Because the tradition is the only surviving evidence that Japanese women worked in coastal industries before the modern period, and the record would be lost</button>
+        </div>
+        <p class="feedback" data-explain="The loss is <em>epistemic</em> — knowledge about the sea, accumulated over two millennia and held nowhere else. Option 3 is close enough to be tempting: heritage value is real, but the article&rsquo;s claim is about ecological knowledge."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="gapEyebrow">The article&rsquo;s own words</span> &middot; 1 / 3</div>
+        <h2 class="slide-title" data-i18n="gapTitle">Complete the sentence</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target" style="margin-bottom:12px">
+          <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
+          <span class="bank-chip">extinction</span> <span class="bank-chip">retraining</span>
+        </div>
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="gapHint">Every word in the bank is used exactly once on this slide.</p>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:18px">Sevilla bought the land from a logging company and turned it into a reserve, <input class="gap" data-answer="retraining" aria-label="gap" style="width:210px"> its loggers and poachers as researchers.</p>
+          <p class="feedback" data-explain="A participle carrying the second action. The prefix does the work: the skills were already there and were redirected, not replaced."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:18px">Scientists warn that without urgent action all coral reefs could face <input class="gap" data-answer="extinction" aria-label="gap" style="width:210px"> by 2050.</p>
+          <p class="feedback" data-explain="Of a species or a whole system. <em>Face extinction</em> is the collocation; <em>face extinguishing</em> is not English."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap" data-bg="Conservation/ama-boat.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="gapEyebrow">The article&rsquo;s own words</span> &middot; 2 / 3</div>
+        <h2 class="slide-title" data-i18n="gapTitle">Complete the sentence</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target" style="margin-bottom:12px">
+          <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
+          <span class="bank-chip">cultural</span> <span class="bank-chip">traditional</span>
+        </div>
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="gapHint">Every word in the bank is used exactly once on this slide.</p>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:18px">Coral Gardeners blends <input class="gap" data-answer="traditional" aria-label="gap" style="width:210px"> Polynesian knowledge with modern marine science.</p>
+          <p class="feedback" data-explain="Neutral here, and deliberately so. In other contexts it can imply outdated; paired with <em>modern science</em> as an equal, it does not."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:18px">Japan lists the practice as an Important Intangible Folk <input class="gap" data-answer="cultural" aria-label="gap" style="width:210px"> Property, a formal designation of heritage value.</p>
+          <p class="feedback" data-explain="Part of a fixed official title, which is why the whole phrase capitalises in the source. The word itself is ordinary."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="gap">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="gapEyebrow">The article&rsquo;s own words</span> &middot; 3 / 3</div>
+        <h2 class="slide-title" data-i18n="gapTitle">Complete the sentence</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target" style="margin-bottom:12px">
+          <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
+          <span class="bank-chip">millennia</span> <span class="bank-chip">rare</span>
+        </div>
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="gapHint">Every word in the bank is used exactly once on this slide.</p>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:18px">Cloud forests are <input class="gap" data-answer="rare" aria-label="gap" style="width:210px"> high-altitude ecosystems, uncommon by comparison with almost any other habitat type.</p>
+          <p class="feedback" data-explain="Sits directly before the noun phrase it limits. Not <em>scarce</em>, which is about supply against demand."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:18px">The ama have dived for over two <input class="gap" data-answer="millennia" aria-label="gap" style="width:210px">, on breath control alone.</p>
+          <p class="feedback" data-explain="Plural of <em>millennium</em>. A Latin plural that survives intact in formal English — <em>two millenniums</em> is not wrong but reads oddly."></p>
+        </div>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="order" data-bg="Conservation/reef-canyon.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="ordEyebrow">Sequence</div>
+        <h2 class="slide-title" data-i18n="ordTitle">The Coral Gardeners restoration process</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="order-hint" data-i18n="ordHint">Drag the steps into order &mdash; or click one, then the position you want it in.</p>
+        <div class="order" data-answer="Divers pick out corals that came through earlier bleaching events | Fragments are grown on in underwater nurseries | Healthy coral is transplanted onto the damaged reef | AI tracks how much of it takes and regrows | Visitors join the daily boat missions"></div>
+        <div style="margin-top:12px">
+          <button class="btn" data-action="check-order" data-i18n="btnCheck">Check</button>
+        </div>
+        <p class="feedback" data-explain="Selection, then cultivation, then transplant, then monitoring, then visitors. The visitors come last for a reason: the project is a restoration programme that accepts help, not a tourist activity with a conservation theme."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="order" data-bg="Conservation/frog.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="ordEyebrow">Sequence</div>
+        <h2 class="slide-title" data-i18n="ordTitle2">How the Mashpi Reserve came about</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="order-hint" data-i18n="ordHint">Drag the steps into order &mdash; or click one, then the position you want it in.</p>
+        <div class="order" data-answer="A logging company holds 1,500 acres of Chocó cloud forest | Sevilla buys the land and founds the Mashpi Reserve | Its loggers and poachers are retrained as researchers | A team finds the glass frog on the Amagusa River | The reserve has 24 new species to its name"></div>
+        <div style="margin-top:12px">
+          <button class="btn" data-action="check-order" data-i18n="btnCheck">Check</button>
+        </div>
+        <p class="feedback" data-explain="The order carries the argument. The retraining comes <em>before</em> the discovery, so the people who found the frog are the same people who had been logging the forest. That is the article&rsquo;s point, and it is lost if you read the steps as a list rather than a sequence."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="sort" data-bg="Conservation/island.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="sortEyebrow">The five projects</div>
+        <h2 class="slide-title" data-i18n="sortTitle">What is each one protecting?</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="order-hint" data-i18n="sortHint">Drag each into a box &mdash; or click it, then the box. A wrong first placement costs that item&rsquo;s point.</p>
+        <div class="sort" data-bins="A species | A habitat | A human practice">
+          <span class="sort-item" data-bin="0">The Mashpi glass frog</span>
+          <span class="sort-item" data-bin="0">Carpathian bison and lynx</span>
+          <span class="sort-item" data-bin="0">Leatherback nests at Tortuguero</span>
+          <span class="sort-item" data-bin="1">1,500 acres of Chocó cloud forest</span>
+          <span class="sort-item" data-bin="1">Bleached reef sections off Mo&rsquo;orea</span>
+          <span class="sort-item" data-bin="1">Old-growth forest in Romania</span>
+          <span class="sort-item" data-bin="2">Ama breath-hold diving</span>
+          <span class="sort-item" data-bin="2">Polynesian reef knowledge</span>
+        </div>
+        <p class="feedback" data-explain="Species, habitat, practice. The three need different arguments and different laws: you can list a species, you can designate a habitat, and for a practice Japan had to invent a category &mdash; Important Intangible Folk Cultural Property."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="results">
+      <div class="slide-body" style="align-items:center;text-align:center">
+        <div class="score-big"><span id="scoreVal">0</span><span class="dim" style="font-size:34px">/<span id="scoreMax">0</span></span></div>
+        <p class="prose" style="margin-top:18px" id="scoreMsg"></p>
+        <p class="prose dim" style="margin-top:14px" data-i18n="resNext">You can read the argument. Now make one →</p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="activate">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="actEyebrow">Activation</div>
+        <h2 class="slide-title" data-i18n="actTitle">Make the case for one project</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="act-target">
+          <span class="act-target-label" data-i18n="actUse">Use at least four:</span>
+          <span class="bank-chip">rare</span>
+          <span class="bank-chip">retraining</span>
+          <span class="bank-chip">traditional</span>
+          <span class="bank-chip">millennia</span>
+          <span class="bank-chip">cultural</span>
+          <span class="bank-chip">extinction</span>
+          <span class="bank-chip">face extinction</span>
+          <span class="bank-chip">imply</span>
+          <span class="bank-chip">the article suggests</span>
+        </div>
+        <div class="cols act-cols">
+          <div class="card act-card">
+            <div class="act-kind"><span class="act-icon">🗣</span><span data-i18n="actSpeakKind">Speaking &middot; in pairs</span></div>
+            <p class="act-brief" data-i18n="actSpeakBrief">One of you has funding for exactly one of the five projects. The other wants it spent somewhere else.</p>
+            <ul class="act-list">
+              <li data-i18n="actSpeak1">Argue for a project that protects a <em>practice</em> rather than a species. Notice that it is harder, and say why.</li>
+              <li data-i18n="actSpeak2">Use <em>face extinction</em> once, accurately &mdash; about something that can actually become extinct.</li>
+              <li data-i18n="actSpeak3">Make one claim your partner has to infer rather than one you state outright. Then ask them what they took from it.</li>
+              <li data-i18n="actSpeak4">Compare your project to a famous one. Then say which properties the comparison carries and which it does not.</li>
+            </ul>
+          </div>
+          <div class="card act-card">
+            <div class="act-kind"><span class="act-icon">✍️</span><span data-i18n="actWriteKind">Writing &middot; 250&ndash;300 words</span></div>
+            <p class="act-brief" data-i18n="actWriteBrief">A funding case for one project: what it protects, what is lost without it, and what a visitor actually contributes. Do not overstate — the strongest version concedes the weakest part of the case.</p>
+            <textarea class="act-input" id="actInput" data-i18n-ph="actPlaceholder" placeholder="This project protects…" aria-label="Written response"></textarea>
+            <div class="act-foot">
+              <span class="act-count" id="actCount">0 words</span>
+              <button class="btn act-copy" data-action="copy-writing" data-i18n="btnCopy">Copy</button>
+            </div>
+            <div class="act-print" id="actPrint" aria-hidden="true"></div>
+          </div>
+        </div>
+        <div style="margin-top:14px;text-align:center">
+          <button class="btn" data-action="restart" data-i18n="btnRestart">Start again</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── DECK CHROME ──────────────────────────────────────── -->
+    <!-- The rail only appears if a lesson declares stops on it (see
+         data-i18n-stops / data-stops). Every other deck ignores it. -->
+    <div class="deck-rail" id="deckRail" data-i18n-stops="railStops" hidden></div>
+    <div class="deck-bar">
+      <select class="lang-select" id="langSelect" aria-label="Language"></select>
+      <button class="nav-btn" data-action="prev" aria-label="Previous">‹</button>
+      <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+      <span class="deck-count" id="deckCount">1 / 1</span>
+      <span class="deck-score" id="deckScore"></span>
+      <button class="nav-btn" data-action="next" aria-label="Next">›</button>
+    </div>
+
   </div>
 </div>
 
-<div class="wrapper">
-
-  <header>
-    <!-- Forbes English Logo SVG -->
-    <svg class="logo-svg-wrap" xmlns="http://www.w3.org/2000/svg" width="220" height="68" viewBox="0 0 220 68">
-      <g transform="translate(81.10,7.43) scale(0.035603)"><g transform="translate(0,1504) scale(0.1,-0.1)" fill="#4aa8b8" stroke="none"><path d="M14940 11379 c-58 -10 -226 -34 -375 -54 -148 -20 -305 -41 -348 -47 l-78 -10 3 -146 3 -146 76 -12 c42 -6 85 -17 97 -23 27 -15 66 -67 82 -111 21 -57 27 -487 25 -1635 -2 -832 -6 -1120 -18 -1295 -8 -124 -14 -226 -13 -227 9 -9 462 -54 473 -47 7 5 40 61 72 124 32 63 63 116 68 117 6 2 43 -24 84 -58 105 -89 177 -133 272 -167 125 -45 205 -57 372 -57 316 1 518 82 725 294 141 144 224 297 285 521 74 276 91 648 42 925 -32 176 -68 310 -113 418 -164 392 -526 609 -944 565 -204 -21 -372 -97 -522 -237 l-48 -44 0 656 0 655 -31 31 c-35 36 -40 36 -189 10z m788 -1611 c112 -42 190 -158 236 -353 43 -182 55 -299 51 -525 -6 -382 -71 -618 -205 -744 -76 -71 -126 -91 -235 -91 -57 0 -110 6 -145 17 -71 22 -169 81 -225 135 l-45 43 0 669 0 669 54 49 c84 77 226 144 331 156 51 6 127 -4 183 -25z"/><path d="M6896 11053 c-4 -71 -3 -141 2 -158 8 -28 13 -31 89 -46 44 -9 95 -21 112 -29 43 -17 88 -72 98 -117 11 -50 10 -2471 0 -2545 -5 -31 -18 -72 -30 -89 -26 -39 -95 -76 -157 -84 -25 -3 -62 -8 -82 -11 l-38 -6 0 -159 0 -159 755 0 755 0 -2 163 -3 162 -87 7 c-175 13 -250 55 -284 158 -16 49 -18 108 -22 558 l-3 502 236 0 c344 0 346 -1 410 -267 l18 -73 168 0 169 0 -2 553 -3 552 -167 3 c-167 2 -168 2 -172 -20 -2 -13 -9 -54 -16 -93 -21 -126 -70 -206 -139 -225 -20 -5 -141 -10 -268 -10 l-233 0 0 555 0 556 428 -3 c473 -3 469 -3 540 -71 46 -44 78 -108 132 -267 l46 -135 203 -3 203 -2 -6 67 c-3 38 -15 205 -26 373 -11 168 -22 347 -26 398 l-6 92 -1293 0 -1292 0 -7 -127z"/><path d="M10520 10306 c-503 -73 -861 -361 -1014 -817 -51 -153 -68 -261 -73 -477 -6 -224 4 -336 43 -502 62 -263 143 -419 296 -569 255 -249 547 -361 939 -361 298 0 517 60 724 198 282 187 439 437 517 823 20 100 23 142 23 339 -1 205 -3 236 -27 350 -76 353 -203 581 -425 759 -147 119 -353 211 -551 247 -120 22 -335 26 -452 10z m325 -436 c141 -69 239 -258 297 -571 20 -108 22 -158 23 -384 0 -288 -10 -379 -57 -540 -52 -176 -121 -278 -224 -330 -47 -24 -73 -30 -145 -33 -171 -8 -285 53 -372 199 -95 161 -150 473 -142 809 10 449 121 745 315 845 58 30 81 34 170 32 67 -2 96 -7 135 -27z"/><path d="M18255 10313 c-141 -16 -204 -29 -292 -58 -271 -90 -467 -237 -611 -458 -182 -280 -257 -619 -223 -1007 37 -415 159 -696 387 -893 253 -218 538 -317 914 -317 341 1 615 84 815 247 60 49 185 177 191 195 4 14 -19 57 -77 144 -45 69 -86 127 -91 130 -5 3 -43 -17 -86 -44 -164 -106 -284 -154 -430 -173 -168 -22 -350 5 -497 76 -134 64 -216 161 -275 323 -33 90 -77 320 -67 347 6 13 94 15 776 15 l769 0 7 113 c7 120 -6 307 -31 447 -62 340 -198 580 -413 723 -95 64 -242 133 -334 156 -127 33 -318 48 -432 34z m221 -427 c132 -62 228 -270 241 -528 l6 -118 -408 0 -408 0 7 68 c25 246 110 453 221 538 87 66 245 85 341 40z"/><path d="M20656 10309 c-301 -29 -581 -166 -723 -354 -56 -73 -116 -197 -140 -285 -13 -48 -17 -103 -17 -210 0 -129 3 -155 28 -235 35 -114 68 -174 134 -246 129 -140 318 -226 797 -364 192 -55 255 -84 317 -146 106 -107 103 -287 -8 -389 -84 -78 -192 -107 -357 -97 -209 13 -353 92 -403 223 -10 27 -32 101 -49 164 l-30 115 -219 3 -219 2 6 -256 c4 -142 7 -304 7 -360 0 -122 -15 -107 173 -170 263 -88 487 -124 781 -124 205 0 315 10 436 41 164 41 281 102 392 207 155 146 233 326 245 562 12 245 -69 470 -218 604 -123 111 -266 178 -599 281 -385 119 -458 152 -515 234 -28 40 -30 49 -29 124 1 125 43 190 154 241 111 51 254 56 389 14 121 -37 177 -121 236 -353 l20 -80 205 0 205 0 3 346 2 347 -112 40 c-318 112 -594 149 -892 121z"/><path d="M12620 10249 c-223 -32 -411 -61 -417 -64 -10 -3 -13 -42 -13 -149 l0 -144 58 -7 c111 -13 183 -65 199 -143 4 -20 8 -397 8 -837 0 -787 0 -801 -21 -840 -26 -52 -87 -83 -177 -92 l-67 -6 0 -41 c0 -23 -3 -94 -7 -158 l-6 -118 702 0 701 0 0 159 0 158 -83 6 c-146 12 -214 43 -253 119 -27 51 -37 294 -30 722 7 428 12 470 69 579 82 157 210 228 407 226 76 0 166 -18 278 -54 12 -4 22 -3 22 1 0 5 20 167 44 359 25 193 41 353 38 356 -14 14 -115 29 -188 29 -112 0 -217 -25 -319 -75 -170 -83 -273 -193 -362 -382 -26 -56 -51 -103 -55 -103 -5 0 -8 15 -8 33 0 18 -7 134 -15 258 -15 218 -16 225 -41 247 -14 12 -33 22 -42 21 -9 0 -199 -27 -422 -60z"/></g></g>
-      <text x="110" y="60" text-anchor="middle" font-family="'Arial Black', 'Helvetica Neue', sans-serif" font-size="20.80" font-weight="900" letter-spacing="8" fill="#c8841e">ENGLISH</text>
-    </svg>
-    <div class="lesson-meta">
-      <span>Interactive Lesson</span> · Conservation Travel · <span>C1 / C2</span>
-    </div>
-  </header>
-
-  <!-- Hero Illustration -->
-  <div class="hero-illo">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 260" width="100%" preserveAspectRatio="xMidYMid slice">
-      <defs>
-        <linearGradient id="heroGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color:#0d2b35"/>
-          <stop offset="100%" style="stop-color:#1a4a5a"/>
-        </linearGradient>
-        <radialGradient id="sunGlow" cx="75%" cy="30%" r="30%">
-          <stop offset="0%" style="stop-color:#e8a830;stop-opacity:0.3"/>
-          <stop offset="100%" style="stop-color:transparent"/>
-        </radialGradient>
-        <clipPath id="heroClip"><rect width="860" height="260"/></clipPath>
-      </defs>
-      <rect width="860" height="260" fill="url(#heroGrad)"/>
-      <rect width="860" height="260" fill="url(#sunGlow)"/>
-      <!-- Water ripples -->
-      <ellipse cx="430" cy="220" rx="500" ry="80" fill="rgba(26,74,90,0.7)"/>
-      <ellipse cx="430" cy="240" rx="500" ry="60" fill="rgba(13,43,53,0.8)"/>
-      <!-- Mountains / landscape -->
-      <polygon points="0,260 0,140 80,90 160,140 220,80 300,130 380,60 440,100 520,40 600,90 680,50 760,100 860,60 860,260" fill="rgba(26,74,90,0.6)"/>
-      <polygon points="0,260 0,160 100,120 180,160 260,100 360,150 460,80 550,120 650,70 760,130 860,90 860,260" fill="rgba(22,60,72,0.8)"/>
-      <!-- Trees silhouettes -->
-      <g fill="rgba(13,43,53,0.9)">
-        <rect x="60" y="165" width="6" height="40"/>
-        <polygon points="63,80 40,170 86,170"/>
-        <polygon points="63,110 44,168 82,168"/>
-        <rect x="120" y="175" width="5" height="30"/>
-        <polygon points="122,105 102,178 142,178"/>
-        <polygon points="122,130 106,176 138,176"/>
-        <rect x="760" y="160" width="6" height="45"/>
-        <polygon points="763,75 740,165 786,165"/>
-        <polygon points="763,105 744,163 782,163"/>
-        <rect x="820" y="170" width="5" height="35"/>
-        <polygon points="822,100 804,173 840,173"/>
-      </g>
-      <!-- Bird silhouettes -->
-      <g fill="none" stroke="rgba(200,180,140,0.5)" stroke-width="1.5">
-        <path d="M350,70 Q360,65 370,70"/>
-        <path d="M375,60 Q385,55 395,60"/>
-        <path d="M330,85 Q338,81 346,85"/>
-        <path d="M560,50 Q570,45 580,50"/>
-        <path d="M590,62 Q598,57 606,62"/>
-      </g>
-      <!-- Turtle silhouette in water -->
-      <g transform="translate(400,205)">
-        <ellipse rx="28" ry="18" fill="rgba(42,122,138,0.5)"/>
-        <ellipse rx="20" ry="12" fill="rgba(42,122,138,0.7)"/>
-        <line x1="-30" y1="0" x2="-42" y2="-5" stroke="rgba(42,122,138,0.6)" stroke-width="5" stroke-linecap="round"/>
-        <line x1="30" y1="0" x2="42" y2="-5" stroke="rgba(42,122,138,0.6)" stroke-width="5" stroke-linecap="round"/>
-        <line x1="-18" y1="14" x2="-24" y2="22" stroke="rgba(42,122,138,0.6)" stroke-width="4" stroke-linecap="round"/>
-        <line x1="18" y1="14" x2="24" y2="22" stroke="rgba(42,122,138,0.6)" stroke-width="4" stroke-linecap="round"/>
-        <ellipse cx="0" cy="-2" rx="22" ry="15" fill="none" stroke="rgba(74,168,184,0.3)" stroke-width="1"/>
-      </g>
-      <!-- Coral/reef in water -->
-      <g transform="translate(200,230)" fill="rgba(42,100,115,0.6)">
-        <rect x="-4" y="-30" width="8" height="30" rx="4"/>
-        <rect x="8" y="-22" width="6" height="22" rx="3"/>
-        <rect x="-14" y="-18" width="6" height="18" rx="3"/>
-        <circle cx="0" cy="-30" r="6"/>
-        <circle cx="8" cy="-22" r="5"/>
-        <circle cx="-14" cy="-18" r="4"/>
-      </g>
-      <g transform="translate(650,238)" fill="rgba(42,100,115,0.5)">
-        <rect x="-4" y="-25" width="8" height="25" rx="4"/>
-        <rect x="8" y="-18" width="6" height="18" rx="3"/>
-        <rect x="-13" y="-15" width="6" height="15" rx="3"/>
-        <circle cx="0" cy="-25" r="5"/>
-        <circle cx="8" cy="-18" r="4"/>
-        <circle cx="-13" cy="-15" r="3.5"/>
-      </g>
-      <!-- Title text in hero -->
-      <text x="430" y="135" text-anchor="middle" font-family="Georgia, serif" font-size="26" font-weight="300" fill="rgba(245,240,232,0.9)" letter-spacing="1">Conservation Travel</text>
-      <text x="430" y="162" text-anchor="middle" font-family="'Arial', sans-serif" font-size="11" font-weight="400" fill="rgba(200,180,140,0.7)" letter-spacing="5">FROM CLOUD FORESTS TO CORAL REEFS</text>
-    </svg>
-  </div>
-
-  <div class="intro-card">
-    <div class="level-badge">C1 / C2 · Reading & Comprehension</div>
-    <h1>The world's best <em>conservation projects</em> worth travelling for</h1>
-    <p style="margin-top:14px">From Ecuador's mist-shrouded cloud forests to Japan's vanishing <em>ama</em> diving tradition, a new generation of conservation projects invites travellers to witness — and support — environmental restoration. Test your understanding of meaning, inference, and key ideas across three activities.</p>
-  </div>
-
-  <!-- ============================
-       ACTIVITY 1: MULTIPLE CHOICE
-       ============================ -->
-  <div class="section-header">
-    <div class="section-num">1</div>
-    <div class="section-title-wrap">
-      <h2>Multiple Choice – Comprehension & Inference</h2>
-      <div class="section-sub">Activity 1 of 3 · 6 questions</div>
-    </div>
-    <div class="section-line"></div>
-  </div>
-
-  <!-- Section illustration: Ecuador cloud forest -->
-  <div class="illo-wrap">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 180" width="100%">
-      <defs>
-        <linearGradient id="ecoGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" style="stop-color:#1a3a2a"/>
-          <stop offset="100%" style="stop-color:#0d2b35"/>
-        </linearGradient>
-      </defs>
-      <rect width="860" height="180" fill="url(#ecoGrad)"/>
-      <!-- Mist -->
-      <ellipse cx="200" cy="80" rx="180" ry="40" fill="rgba(200,230,220,0.06)"/>
-      <ellipse cx="600" cy="60" rx="200" ry="35" fill="rgba(200,230,220,0.05)"/>
-      <!-- Trees layered -->
-      <g opacity="0.7">
-        <rect x="30" y="60" width="12" height="120" fill="#0a2010"/>
-        <ellipse cx="36" cy="55" rx="28" ry="45" fill="#1a4a2a"/>
-        <rect x="90" y="80" width="10" height="100" fill="#0a2010"/>
-        <ellipse cx="95" cy="72" rx="22" ry="38" fill="#1e5530"/>
-        <rect x="150" y="50" width="14" height="130" fill="#0a2010"/>
-        <ellipse cx="157" cy="44" rx="32" ry="50" fill="#1a4a2a"/>
-        <rect x="220" y="70" width="10" height="110" fill="#0a2010"/>
-        <ellipse cx="225" cy="62" rx="24" ry="40" fill="#246030"/>
-        <rect x="680" y="55" width="13" height="125" fill="#0a2010"/>
-        <ellipse cx="686" cy="48" rx="30" ry="48" fill="#1a4a2a"/>
-        <rect x="740" y="72" width="10" height="108" fill="#0a2010"/>
-        <ellipse cx="745" cy="65" rx="22" ry="36" fill="#1e5530"/>
-        <rect x="800" y="48" width="14" height="132" fill="#0a2010"/>
-        <ellipse cx="807" cy="42" rx="32" ry="50" fill="#246030"/>
-      </g>
-      <!-- Frog silhouette -->
-      <g transform="translate(430,110)">
-        <ellipse rx="22" ry="14" fill="rgba(40,180,100,0.4)"/>
-        <circle cx="-10" cy="-10" r="5" fill="rgba(40,180,100,0.3)"/>
-        <circle cx="10" cy="-10" r="5" fill="rgba(40,180,100,0.3)"/>
-        <line x1="-22" y1="5" x2="-38" y2="14" stroke="rgba(40,180,100,0.4)" stroke-width="4" stroke-linecap="round"/>
-        <line x1="22" y1="5" x2="38" y2="14" stroke="rgba(40,180,100,0.4)" stroke-width="4" stroke-linecap="round"/>
-        <line x1="-15" y1="14" x2="-20" y2="26" stroke="rgba(40,180,100,0.4)" stroke-width="3" stroke-linecap="round"/>
-        <line x1="15" y1="14" x2="20" y2="26" stroke="rgba(40,180,100,0.4)" stroke-width="3" stroke-linecap="round"/>
-        <!-- transparent belly hint -->
-        <ellipse rx="14" ry="9" fill="rgba(150,255,200,0.1)" stroke="rgba(40,180,100,0.2)" stroke-width="0.8"/>
-      </g>
-      <text x="430" y="168" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="rgba(180,220,200,0.5)" letter-spacing="3">ECUADOR · ROMANIA · COSTA RICA · FRENCH POLYNESIA · JAPAN</text>
-    </svg>
-  </div>
-
-  <div id="mc-container"></div>
-
-  <!-- ============================
-       ACTIVITY 2: FILL IN THE BLANK
-       ============================ -->
-  <div class="section-header" id="fib-section" style="display:none">
-    <div class="section-num">2</div>
-    <div class="section-title-wrap">
-      <h2>Fill in the Blank – Key Vocabulary & Ideas</h2>
-      <div class="section-sub">Activity 2 of 3 · 6 questions · Use the word bank</div>
-    </div>
-    <div class="section-line"></div>
-  </div>
-
-  <!-- Ocean illustration -->
-  <div class="illo-wrap" id="fib-illo" style="display:none">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 150" width="100%">
-      <defs>
-        <linearGradient id="oceanGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" style="stop-color:#0d2b45"/>
-          <stop offset="70%" style="stop-color:#0a3855"/>
-          <stop offset="100%" style="stop-color:#062030"/>
-        </linearGradient>
-      </defs>
-      <rect width="860" height="150" fill="url(#oceanGrad)"/>
-      <!-- Light rays -->
-      <g opacity="0.12" fill="rgba(100,200,220,1)">
-        <polygon points="350,0 340,150 360,150"/>
-        <polygon points="430,0 415,150 445,150"/>
-        <polygon points="510,0 498,150 522,150"/>
-        <polygon points="260,0 250,150 268,150"/>
-      </g>
-      <!-- Coral structures -->
-      <g transform="translate(100,130)">
-        <rect x="-5" y="-50" width="10" height="50" rx="5" fill="rgba(220,80,60,0.5)"/>
-        <rect x="10" y="-35" width="8" height="35" rx="4" fill="rgba(220,80,60,0.4)"/>
-        <rect x="-16" y="-28" width="8" height="28" rx="4" fill="rgba(200,60,80,0.45)"/>
-        <circle cx="0" cy="-50" r="8" fill="rgba(220,80,60,0.5)"/>
-        <circle cx="10" cy="-35" r="6" fill="rgba(220,80,60,0.4)"/>
-        <circle cx="-16" cy="-28" r="5" fill="rgba(200,60,80,0.45)"/>
-      </g>
-      <g transform="translate(760,130)">
-        <rect x="-5" y="-45" width="10" height="45" rx="5" fill="rgba(80,180,160,0.5)"/>
-        <rect x="10" y="-30" width="8" height="30" rx="4" fill="rgba(80,180,160,0.4)"/>
-        <rect x="-16" y="-25" width="8" height="25" rx="4" fill="rgba(60,160,180,0.45)"/>
-        <circle cx="0" cy="-45" r="7" fill="rgba(80,180,160,0.5)"/>
-        <circle cx="10" cy="-30" r="5.5" fill="rgba(80,180,160,0.4)"/>
-        <circle cx="-16" cy="-25" r="4.5" fill="rgba(60,160,180,0.45)"/>
-      </g>
-      <!-- Fish -->
-      <g fill="rgba(200,200,100,0.5)">
-        <ellipse cx="300" cy="70" rx="14" ry="8"/>
-        <polygon points="286,70 272,62 272,78"/>
-        <ellipse cx="560" cy="50" rx="12" ry="7"/>
-        <polygon points="548,50 535,43 535,57"/>
-        <ellipse cx="480" cy="90" rx="10" ry="6"/>
-        <polygon points="470,90 459,84 459,96"/>
-      </g>
-      <!-- Diver silhouette -->
-      <g transform="translate(430,75)">
-        <ellipse rx="10" ry="13" fill="rgba(42,100,130,0.6)"/>
-        <circle cx="0" cy="-18" r="8" fill="rgba(42,100,130,0.6)"/>
-        <line x1="-10" y1="-5" x2="-24" y2="5" stroke="rgba(42,100,130,0.6)" stroke-width="5" stroke-linecap="round"/>
-        <line x1="10" y1="-5" x2="24" y2="5" stroke="rgba(42,100,130,0.6)" stroke-width="5" stroke-linecap="round"/>
-        <line x1="-5" y1="13" x2="-8" y2="28" stroke="rgba(42,100,130,0.6)" stroke-width="4" stroke-linecap="round"/>
-        <line x1="5" y1="13" x2="8" y2="28" stroke="rgba(42,100,130,0.6)" stroke-width="4" stroke-linecap="round"/>
-      </g>
-      <text x="430" y="143" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="rgba(100,180,200,0.4)" letter-spacing="4">FRENCH POLYNESIA · CORAL GARDENERS · AMA DIVERS</text>
-    </svg>
-  </div>
-
-  <div id="fib-container"></div>
-
-  <!-- ============================
-       ACTIVITY 3: SENTENCE ORDERING
-       ============================ -->
-  <div class="section-header" id="ord-section" style="display:none">
-    <div class="section-num">3</div>
-    <div class="section-title-wrap">
-      <h2>Sentence Ordering – Logical Sequence</h2>
-      <div class="section-sub">Activity 3 of 3 · 5 questions · Drag the steps into the correct order</div>
-    </div>
-    <div class="section-line"></div>
-  </div>
-
-  <div class="illo-wrap" id="ord-illo" style="display:none">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 150" width="100%">
-      <defs>
-        <linearGradient id="savannaGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" style="stop-color:#1a2a10"/>
-          <stop offset="100%" style="stop-color:#0d1a08"/>
-        </linearGradient>
-      </defs>
-      <rect width="860" height="150" fill="url(#savannaGrad)"/>
-      <!-- Stars -->
-      <g fill="rgba(240,220,180,0.6)">
-        <circle cx="80" cy="20" r="1.2"/>
-        <circle cx="150" cy="35" r="0.8"/>
-        <circle cx="220" cy="15" r="1.4"/>
-        <circle cx="310" cy="28" r="1"/>
-        <circle cx="400" cy="12" r="1.5"/>
-        <circle cx="480" cy="30" r="0.9"/>
-        <circle cx="570" cy="18" r="1.2"/>
-        <circle cx="650" cy="35" r="0.8"/>
-        <circle cx="730" cy="22" r="1.3"/>
-        <circle cx="810" cy="10" r="1"/>
-      </g>
-      <!-- Horizon -->
-      <rect x="0" y="100" width="860" height="50" fill="rgba(30,50,20,0.8)"/>
-      <!-- Acacia tree -->
-      <g transform="translate(200,100)">
-        <rect x="-5" y="-55" width="10" height="55" fill="rgba(60,35,10,0.8)"/>
-        <ellipse cx="-30" cy="-52" rx="30" ry="14" fill="rgba(30,70,20,0.7)"/>
-        <ellipse cx="25" cy="-58" rx="28" ry="12" fill="rgba(30,70,20,0.7)"/>
-        <ellipse cx="0" cy="-68" rx="22" ry="10" fill="rgba(30,70,20,0.7)"/>
-      </g>
-      <g transform="translate(660,100)">
-        <rect x="-4" y="-48" width="8" height="48" fill="rgba(60,35,10,0.8)"/>
-        <ellipse cx="-25" cy="-46" rx="25" ry="12" fill="rgba(30,70,20,0.7)"/>
-        <ellipse cx="20" cy="-50" rx="22" ry="10" fill="rgba(30,70,20,0.7)"/>
-        <ellipse cx="0" cy="-58" rx="18" ry="8" fill="rgba(30,70,20,0.7)"/>
-      </g>
-      <!-- Bison/bear silhouette -->
-      <g transform="translate(430,105)">
-        <ellipse rx="35" ry="20" fill="rgba(50,35,20,0.7)"/>
-        <ellipse cx="-20" cy="-18" rx="16" ry="14" fill="rgba(50,35,20,0.7)"/>
-        <line x1="-55" y1="10" x2="-62" y2="25" stroke="rgba(50,35,20,0.7)" stroke-width="7" stroke-linecap="round"/>
-        <line x1="-30" y1="18" x2="-32" y2="30" stroke="rgba(50,35,20,0.7)" stroke-width="7" stroke-linecap="round"/>
-        <line x1="15" y1="18" x2="14" y2="30" stroke="rgba(50,35,20,0.7)" stroke-width="7" stroke-linecap="round"/>
-        <line x1="38" y1="14" x2="44" y2="26" stroke="rgba(50,35,20,0.7)" stroke-width="7" stroke-linecap="round"/>
-      </g>
-      <text x="430" y="143" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="rgba(180,200,150,0.4)" letter-spacing="4">ROMANIA · COSTA RICA · ECUADOR · REWILDING EUROPE</text>
-    </svg>
-  </div>
-
-  <div id="ord-container"></div>
-
-  <!-- Discussion -->
-  <div class="discussion-card" id="discussion-card" style="display:none">
-    <h3>🌿 Discussion Questions</h3>
-    <div class="disc-q">Which of the six conservation projects do you think is the most sustainable long-term, and why?</div>
-    <div class="disc-q">Can tourism realistically help conservation, or might it create new environmental problems?</div>
-    <div class="disc-q">Should travellers be required to contribute to conservation efforts if they visit fragile ecosystems?</div>
-  </div>
-
-  <!-- Final Screen -->
-  <div id="final-screen">
-    <svg class="final-illo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 160" width="200" height="160">
-      <circle cx="100" cy="80" r="70" fill="rgba(42,122,138,0.15)" stroke="rgba(42,122,138,0.3)" stroke-width="1.5"/>
-      <circle cx="100" cy="80" r="50" fill="rgba(42,122,138,0.1)" stroke="rgba(74,168,184,0.3)" stroke-width="1"/>
-      <!-- Globe meridians -->
-      <ellipse cx="100" cy="80" rx="50" ry="50" fill="none" stroke="rgba(74,168,184,0.2)" stroke-width="0.8"/>
-      <ellipse cx="100" cy="80" rx="30" ry="50" fill="none" stroke="rgba(74,168,184,0.2)" stroke-width="0.6"/>
-      <ellipse cx="100" cy="80" rx="50" ry="20" fill="none" stroke="rgba(74,168,184,0.2)" stroke-width="0.6"/>
-      <ellipse cx="100" cy="80" rx="50" ry="38" fill="none" stroke="rgba(74,168,184,0.15)" stroke-width="0.5"/>
-      <!-- Leaf -->
-      <g transform="translate(100,80)">
-        <path d="M0,-30 Q20,-10 0,20 Q-20,-10 0,-30 Z" fill="rgba(40,140,80,0.6)"/>
-        <line x1="0" y1="-30" x2="0" y2="20" stroke="rgba(40,140,80,0.4)" stroke-width="0.8"/>
-      </g>
-    </svg>
-    <h2>Lesson <em>complete</em></h2>
-    <div class="final-score-big" id="final-score-num">—</div>
-    <div class="final-score-sub" id="final-score-sub">questions answered correctly</div>
-    <div class="final-message" id="final-message"></div>
-    <button class="btn-restart" onclick="restartLesson()">↺ Start again</button>
-  </div>
-
-</div><!-- /wrapper -->
-
 <script>
-// ============================================================
-// DATA
-// ============================================================
+/* ══════════════════════════════════════════════════════════════════
+   ENGINE — identical in every lesson. Do not edit below this line
+   except to add UI_I18N strings.
+   ══════════════════════════════════════════════════════════════════ */
 
-const mcQuestions = [
-  {
-    q: "What is the primary purpose of the article, according to its opening paragraphs?",
-    options: [
-      "To promote luxury eco-resorts and upscale wilderness retreats",
-      "To show how travel can support conservation and allow travellers to contribute directly",
-      "To argue that scientists should lead all conservation efforts without tourist involvement",
-      "To compare the effectiveness of wildlife protection schemes across six continents"
-    ],
-    correct: 1,
-    explanation: "The article's opening states that these projects offer 'the opportunity to meet the individuals leading such efforts and contribute your time' — making active participation central, not passive observation or luxury."
-  },
-  {
-    q: "Why is the Mashpi glass frog considered scientifically significant?",
-    options: [
-      "It is the largest transparent amphibian ever recorded in South America",
-      "It took five years to document a species that could have vanished before science knew it existed",
-      "It was the first frog species to be discovered using eco-acoustic monitoring devices",
-      "It proved that cloud forests contain more species than any other ecosystem on Earth"
-    ],
-    correct: 1,
-    explanation: "The article emphasises that the glass frog 'could have vanished before science knew it existed' — its significance lies in how close it came to extinction before being documented."
-  },
-  {
-    q: "What does the phrase 'Europe's Yellowstone' suggest about the Carpathian rewilding project?",
-    options: [
-      "It implies the mountains are as commercially developed as Yellowstone National Park",
-      "It compares the scale and ambition of wildlife recovery to a famous US conservation model",
-      "It suggests Romania is marketing its wilderness primarily to American tourists",
-      "It means the project relies exclusively on American funding and expertise"
-    ],
-    correct: 1,
-    explanation: "The comparison to Yellowstone evokes an ambitious, large-scale rewilding project — not commercialisation. The article describes reintroducing species and protecting old-growth forests on a continental scale."
-  },
-  {
-    q: "Why do conservationists relocate sea turtle nests to protected hatcheries in Costa Rica?",
-    options: [
-      "Because the beach environment is too hot for natural incubation to be successful",
-      "To study the eggs using scientific equipment that cannot be used on open beaches",
-      "To protect eggs from poaching and allow around-the-clock monitoring of nests",
-      "Because turtles lay their eggs in the wrong locations during nesting season"
-    ],
-    correct: 2,
-    explanation: "The article states that 'most nests are relocated to a protected hatchery where staff monitor them around the clock' — poaching protection and supervision are the key reasons."
-  },
-  {
-    q: "What makes the Coral Gardeners project in French Polynesia particularly innovative?",
-    options: [
-      "It exclusively uses traditional Polynesian reef knowledge, rejecting modern scientific tools",
-      "It selects climate-resilient corals that survived bleaching, then tracks regrowth using AI technology",
-      "It focuses on relocating endangered fish species rather than restoring reef structures",
-      "It replants corals at depths where bleaching events cannot reach them"
-    ],
-    correct: 1,
-    explanation: "The project 'cultivates climate-resilient coral fragments... selecting specimens that survived bleaching events' and tracks growth 'using AI technology' — a blend of ecological selection and modern tech."
-  },
-  {
-    q: "Why does the article suggest that the loss of ama divers represents more than the end of a profession?",
-    options: [
-      "Because ama divers are the only people with the legal right to fish in certain Japanese waters",
-      "Because generations of sustainable fishing knowledge and ecological understanding would be lost",
-      "Because their disappearance would cause the immediate collapse of local seafood industries",
-      "Because their tradition is the only evidence that Japanese women ever worked in coastal industries"
-    ],
-    correct: 1,
-    explanation: "The article explicitly states that 'what's being lost isn't just a profession but generations of sustainable fishing knowledge' — their practices regulate harvest to protect marine populations."
-  }
+/* ── Languages. English is the base; German ships complete.
+      The other eight are deliberately empty — t() falls back to English,
+      so an unfinished language can never blank the interface. ── */
+const LANGS = [
+  { code:'en', label:'English'   }, { code:'de', label:'Deutsch'  },
+  { code:'es', label:'Español'   }, { code:'fr', label:'Français' },
+  { code:'it', label:'Italiano'  }, { code:'pt', label:'Português'},
+  { code:'ru', label:'Русский'   }, { code:'ar', label:'العربية'  },
+  { code:'zh', label:'中文'       }, { code:'ja', label:'日本語'    }
 ];
+const RTL_LANGS = ['ar'];
 
-const fibQuestions = [
-  {
-    sentence: "Cloud forests are ______ high-altitude ecosystems, meaning they are relatively uncommon compared to other habitat types.",
-    answer: "rare",
-    hint: "The article uses this adjective directly before 'high-altitude ecosystems'.",
-    explanation: "The article describes cloud forests as 'rare high-altitude ecosystems' — emphasising their scarcity globally."
+const UI_I18N = {
+  en: {
+    actEyebrow: "Activation",
+    actPlaceholder: "This project protects…",
+    actSpeak1: "Argue for a project that protects a <em>practice</em> rather than a species. Notice that it is harder, and say why.",
+    actSpeak2: "Use <em>face extinction</em> once, accurately — about something that can actually become extinct.",
+    actSpeak3: "Make one claim your partner has to infer rather than one you state outright. Then ask them what they took from it.",
+    actSpeak4: "Compare your project to a famous one. Then say which properties the comparison carries and which it does not.",
+    actSpeakBrief: "One of you has funding for exactly one of the five projects. The other wants it spent somewhere else.",
+    actSpeakKind: "Speaking · in pairs",
+    actTitle: "Make the case for one project",
+    actUse: "Use at least four:",
+    actWriteBrief: "A funding case for one project: what it protects, what is lost without it, and what a visitor actually contributes. Do not overstate — the strongest version concedes the weakest part of the case.",
+    actWriteKind: "Writing · 250–300 words",
+    bankLabel: "Word bank:",
+    btnCheck: 'Check',
+    btnCopied: 'Copied',
+    btnCopy: 'Copy',
+    btnNext: 'Next →',
+    btnRestart: 'Start again',
+    btnStart: 'Begin →',
+    chipCount: "21 slides",
+    chipFocus: "Inference & the vocabulary of loss",
+    chipLevel: "C1 · C2",
+    coverSub: "From cloud forests to coral reefs — five projects, and the difference between what a text says and what it means",
+    coverTitle: "Conservation <em>Travel</em>",
+    fbAnswer: 'Answer:',
+    fbCorrect: 'Correct.',
+    fbWrong: 'Not quite.',
+    gapEyebrow: "The article’s own words",
+    gapHint: "Every word in the bank is used exactly once on this slide.",
+    gapTitle: "Complete the sentence",
+    ordEyebrow: "Sequence",
+    ordHint: "Drag the steps into order — or click one, then the position you want it in.",
+    ordTitle: "The Coral Gardeners restoration process",
+    ordTitle2: "How the Mashpi Reserve came about",
+    qEyebrow: "What does it imply?",
+    qTitle: "Choose the reading the article supports",
+    resLow: "Start again from the opening slides. The distractors are true; the question is which one is the point.",
+    resMid: "A solid base. Most of the lost marks are on inference, not vocabulary — re-read the worked example.",
+    resNext: "You can read the argument. Now make one →",
+    resPerfect: "Full marks. You separated what the article says from what it means — that is the whole of C1 reading.",
+    resStrong: "Strong. Go back over the comparison slide before you write; that is the one that transfers furthest.",
+    scoreLabel: 'Score',
+    slideOf: (a,b)=>`${a} / ${b}`,
+    sortEyebrow: "The five projects",
+    sortHint: "Drag each into a box — or click it, then the box. A wrong first placement costs that item’s point.",
+    sortTitle: "What is each one protecting?",
+    t1ah: "Not what it says",
+    t1an: "You are being asked what follows from the text &mdash; which is why you can locate a sentence and still choose wrong.",
+    t1bh: "The distractors are usually true",
+    t1bn: "Several name real problems that conservation projects elsewhere do face. Truth is not the test; relevance is.",
+    t1ch: "The habit that helps",
+    t1cn: "A detail can be there to prove a point, to concede one, or to set a scene. Which it is decides the answer.",
+    t1e: "Before the first question",
+    t1t: "Five of the six questions ask what the article <em>implies</em>",
+    t2ah: "The sentence",
+    t2an: "About the Mashpi glass frog, documented after five years of survey work in the Chocó cloud forest.",
+    t2bh: "The shallow reading",
+    t2bn: "True, and it answers nothing. It treats the clause as a fact about an animal.",
+    t2ch: "The reading being tested",
+    t2cn: "The clause is an <em>argument for the reserve</em>. That is what it is doing in the paragraph, and that is the answer.",
+    t2e: "Worked example",
+    t2t: "Two readings of the same sentence",
+    t3ah: "What it imports",
+    t3an: "This is the load the phrase is meant to carry, and the article says so in the sentences around it.",
+    t3bh: "What it does not",
+    t3bn: "A comparison never imports everything. If it did, it would be an identity claim rather than a comparison.",
+    t3ch: "Deciding which",
+    t3cn: "The next sentences here are about reintroduced species and old-growth forest. So: ecology, not commerce. The context selects the load.",
+    t3e: "The transferable one",
+    t3t: "Naming by comparison &mdash; &ldquo;Europe&rsquo;s Yellowstone&rdquo;",
+    t4ah: "rare",
+    t4an: "Not <em>scarce</em>, which is about supply against demand, and not <em>endangered</em>, which is about trajectory.",
+    t4bh: "face extinction",
+    t4bn: "Of a species or a whole system. <em>Face</em> is doing work: it frames the outcome as still ahead and still avoidable.",
+    t4ch: "millennia",
+    t4cn: "A Latin plural that survived intact into formal English. Reach for it when the span itself is the point.",
+    t4e: "The vocabulary, one",
+    t4t: "Scarcity and loss",
+    t5ah: "retraining",
+    t5an: "The prefix carries the argument: the skills were already there &mdash; the forest knowledge, the tracking &mdash; and were redirected, not replaced.",
+    t5bh: "traditional",
+    t5bn: "Neutral here, deliberately. Elsewhere it can imply outdated; set alongside modern science as an equal partner, it does not.",
+    t5ch: "cultural",
+    t5cn: "An ordinary word inside a fixed official title. The capitals belong to the title, not to the word.",
+    t5e: "The vocabulary, two",
+    t5t: "Transformation and heritage",
+    t6ah: "Ecuador &middot; Mashpi",
+    t6an: "24 new species recorded, the glass frog among them.",
+    t6bh: "Romania &middot; the Carpathians",
+    t6bn: "The one the Yellowstone comparison is about.",
+    t6ch: "Costa Rica &middot; the turtles",
+    t6cn: "Against poaching, with round-the-clock monitoring.",
+    t6dh: "Polynesia &amp; Japan",
+    t6dn: "One protects a habitat, the other a practice. The last activity asks you to tell those apart.",
+    t6e: "The five projects",
+    t6t: "What each one is actually protecting",
+    wordCount: (n)=>`${n} ${n===1?'word':'words'}`
   },
-  {
-    sentence: "Roque Sevilla bought land from a logging company and transformed it into a nature reserve, ______ former loggers and poachers as researchers.",
-    answer: "retraining",
-    hint: "A participial phrase describing what Sevilla did with the local workers.",
-    explanation: "The article states he was 'retraining local loggers and poachers as researchers' — turning environmental threat into conservation asset."
+  de: {
+    actEyebrow: "Anwendung",
+    actPlaceholder: "This project protects…",
+    actSpeak1: "Argumentieren Sie für ein Projekt, das eine <em>Praxis</em> schützt und keine Art. Merken Sie, dass es schwerer ist — und sagen Sie warum.",
+    actSpeak2: "Verwenden Sie <em>face extinction</em> einmal korrekt — für etwas, das tatsächlich aussterben kann.",
+    actSpeak3: "Formulieren Sie eine Behauptung so, dass Ihr Gegenüber sie erschließen muss. Fragen Sie dann, was angekommen ist.",
+    actSpeak4: "Vergleichen Sie Ihr Projekt mit einem berühmten. Sagen Sie dann, welche Eigenschaften der Vergleich trägt und welche nicht.",
+    actSpeakBrief: "Eine Person hat Mittel für genau eines der fünf Projekte. Die andere will sie anderswo ausgeben.",
+    actSpeakKind: "Sprechen · zu zweit",
+    actTitle: "Führen Sie den Fall für ein Projekt",
+    actUse: "Verwenden Sie mindestens vier:",
+    actWriteBrief: "Ein Förderantrag für ein Projekt: was es schützt, was ohne es verloren geht, und was ein Besucher tatsächlich beiträgt. Nicht übertreiben — die stärkste Fassung räumt den schwächsten Punkt ein.",
+    actWriteKind: "Schreiben · 250–300 Wörter",
+    bankLabel: "Wortspeicher:",
+    btnCheck: 'Prüfen',
+    btnCopied: 'Kopiert',
+    btnCopy: 'Kopieren',
+    btnNext: 'Weiter →',
+    btnRestart: 'Neu starten',
+    btnStart: 'Beginnen →',
+    chipCount: "21 Folien",
+    chipFocus: "Inferenz & der Wortschatz des Verlusts",
+    chipLevel: "C1 · C2",
+    coverSub: "Vom Nebelwald zum Korallenriff — fünf Projekte, und der Unterschied zwischen dem, was ein Text sagt, und dem, was er meint",
+    coverTitle: "Naturschutz<em>reisen</em>",
+    fbAnswer: 'Antwort:',
+    fbCorrect: 'Richtig.',
+    fbWrong: 'Nicht ganz.',
+    gapEyebrow: "Die Worte des Artikels",
+    gapHint: "Jedes Wort aus dem Wortspeicher wird auf dieser Folie genau einmal verwendet.",
+    gapTitle: "Vervollständigen Sie den Satz",
+    ordEyebrow: "Reihenfolge",
+    ordHint: "Ziehen Sie die Schritte in die richtige Reihenfolge — oder klicken Sie einen Schritt und dann die Position.",
+    ordTitle: "Der Restaurierungsprozess von Coral Gardeners",
+    ordTitle2: "Wie das Mashpi-Reservat entstand",
+    qEyebrow: "Was wird impliziert?",
+    qTitle: "Wählen Sie die Lesart, die der Artikel stützt",
+    resLow: "Beginnen Sie noch einmal bei den Einstiegsfolien. Die Distraktoren stimmen; die Frage ist, welcher der Punkt ist.",
+    resMid: "Eine solide Grundlage. Die meisten verlorenen Punkte liegen bei der Inferenz, nicht beim Wortschatz — lesen Sie das Beispiel erneut.",
+    resNext: "Sie können das Argument lesen. Jetzt führen Sie eines →",
+    resPerfect: "Volle Punktzahl. Sie haben getrennt, was der Artikel sagt, von dem, was er meint — das ist der Kern des Lesens auf C1.",
+    resStrong: "Stark. Sehen Sie die Vergleichsfolie noch einmal an, bevor Sie schreiben; sie trägt am weitesten.",
+    scoreLabel: 'Punkte',
+    slideOf: (a,b)=>`${a} / ${b}`,
+    sortEyebrow: "Die fünf Projekte",
+    sortHint: "Ziehen Sie jeden Eintrag in ein Feld — oder klicken Sie erst den Eintrag, dann das Feld. Eine falsche erste Zuordnung kostet den Punkt.",
+    sortTitle: "Was schützt jedes davon?",
+    t1ah: "Nicht, was dasteht",
+    t1an: "Verständnisfragen haben eine auffindbare Antwort. Diese nicht. Gefragt ist, was aus dem Text folgt — deshalb können Sie den Satz finden und trotzdem falsch wählen.",
+    t1bh: "Die Distraktoren stimmen meist",
+    t1bn: "Sie sind nur nicht der Punkt des Artikels. Mehrere benennen reale Probleme anderer Naturschutzprojekte. Geprüft wird nicht Wahrheit, sondern Relevanz.",
+    t1ch: "Die hilfreiche Gewohnheit",
+    t1cn: "Fragen Sie, was der Satz <em>tut</em>, nicht nur, was er berichtet. Ein Detail kann belegen, einräumen oder eine Szene setzen — welches davon, entscheidet die Antwort.",
+    t1e: "Vor der ersten Frage",
+    t1t: "Fünf der sechs Fragen zielen darauf, was der Artikel <em>impliziert</em>",
+    t2ah: "Der Satz",
+    t2an: "<em>It could have vanished before science knew it existed.</em> Über den Mashpi-Glasfrosch, dokumentiert nach fünf Jahren Feldarbeit im Chocó-Nebelwald.",
+    t2bh: "Die flache Lesart",
+    t2bn: "„Ein seltener Frosch wurde gefunden.“ Wahr — und beantwortet nichts. Sie behandelt den Nebensatz als Tatsache über ein Tier.",
+    t2ch: "Die geprüfte Lesart",
+    t2cn: "„Undokumentierte Arten gehen verloren, das Reservat ist dringend.“ Der Nebensatz ist ein <em>Argument für das Reservat</em>. Das tut er im Absatz, und das ist die Antwort.",
+    t2e: "Beispiel",
+    t2t: "Zwei Lesarten desselben Satzes",
+    t3ah: "Was der Vergleich mitbringt",
+    t3an: "Maßstab, Ambition, Rewilding auf kontinentaler Ebene, zurückgekehrte Großsäuger. Das ist die Last, die er tragen soll, und der Artikel sagt es in den umgebenden Sätzen.",
+    t3bh: "Was nicht",
+    t3bn: "Die Parkplätze, die Besucherzahlen, die Finanzierung, die Nationalität. Ein Vergleich bringt nie alles mit — sonst wäre er eine Gleichsetzung.",
+    t3ch: "Wie man entscheidet",
+    t3cn: "Lesen Sie, was direkt danach folgt. Hier: ausgewilderte Arten und Urwald. Also Ökologie, nicht Kommerz. Der Kontext wählt die Last aus.",
+    t3e: "Die übertragbare Fertigkeit",
+    t3t: "Benennen durch Vergleich — „Europe&rsquo;s Yellowstone“",
+    t4ah: "rare",
+    t4an: "An sich selten. <em>Rare high-altitude ecosystems.</em> Nicht <em>scarce</em> (Angebot gegen Nachfrage) und nicht <em>endangered</em> (Entwicklung).",
+    t4bh: "face extinction",
+    t4bn: "Die feste Verbindung. Von einer Art oder einem ganzen System. <em>Face</em> arbeitet mit: Es rahmt das Ergebnis als noch bevorstehend und noch abwendbar.",
+    t4ch: "millennia",
+    t4cn: "Plural von <em>millennium</em>. <em>Over two millennia.</em> Ein lateinischer Plural, der im formellen Englisch überlebt hat. Nehmen Sie ihn, wenn die Zeitspanne selbst der Punkt ist.",
+    t4e: "Wortschatz I",
+    t4t: "Knappheit und Verlust",
+    t5ah: "retraining",
+    t5an: "<em>Retraining its loggers and poachers as researchers.</em> Das Präfix trägt das Argument: Die Fähigkeiten waren da — Waldkenntnis, Fährtenlesen — und wurden umgelenkt, nicht ersetzt.",
+    t5bh: "traditional",
+    t5bn: "Hier bewusst neutral. Anderswo kann es „überholt“ mitschwingen lassen; neben moderner Wissenschaft als gleichwertig gestellt, tut es das nicht.",
+    t5ch: "cultural",
+    t5cn: "<em>Important Intangible Folk Cultural Property</em> — Japans formelle Bezeichnung für die Ama. Ein gewöhnliches Wort in einem festen Titel. Die Großschreibung gehört dem Titel.",
+    t5e: "Wortschatz II",
+    t5t: "Wandel und Erbe",
+    t6ah: "Ecuador · Mashpi",
+    t6an: "Eine Holzkonzession aufgekauft und in ein Nebelwaldreservat verwandelt. 24 neue Arten erfasst, darunter der Glasfrosch.",
+    t6bh: "Rumänien · Karpaten",
+    t6bn: "Rewilding im großen Maßstab — Wisent, Luchs, Urwald. Das Projekt, um das es beim Yellowstone-Vergleich geht.",
+    t6ch: "Costa Rica · Schildkröten",
+    t6cn: "Nachtpatrouillen, Gelege in bewachte Aufzuchtstationen umgesiedelt. Gegen Wilderei, mit Überwachung rund um die Uhr.",
+    t6dh: "Polynesien &amp; Japan",
+    t6dn: "Coral Gardeners pflanzen widerstandsfähige Korallen; die Ama tauchen mit angehaltenem Atem. Eines schützt einen Lebensraum, das andere eine Praxis.",
+    t6e: "Die fünf Projekte",
+    t6t: "Was jedes davon eigentlich schützt",
+    wordCount: (n)=>`${n} ${n===1?'Wort':'Wörter'}`
   },
-  {
-    sentence: "The Coral Gardeners project blends ______ Polynesian knowledge with modern marine science to restore damaged reef sections.",
-    answer: "traditional",
-    hint: "An adjective describing the type of knowledge that indigenous communities hold.",
-    explanation: "The article describes 'traditional Polynesian knowledge' — indigenous understanding of the reef passed down through generations."
-  },
-  {
-    sentence: "Ama divers have been practising their craft for over two ______, relying entirely on breath control rather than oxygen tanks.",
-    answer: "millennia",
-    hint: "A plural noun meaning 'thousands of years'.",
-    explanation: "The article states 'for over two millennia' — roughly 2,000 years of uninterrupted diving tradition."
-  },
-  {
-    sentence: "The ama tradition was designated an Important Intangible Folk ______ Property by the Japanese government in 2017.",
-    answer: "Cultural",
-    hint: "This adjective appears in the formal designation given by the Japanese government.",
-    explanation: "The full title is 'Important Intangible Folk Cultural Property' — a formal recognition of the tradition's heritage value."
-  },
-  {
-    sentence: "Without urgent action, scientists warn that all coral reefs could face ______ by 2050.",
-    answer: "extinction",
-    hint: "The article uses this dramatic noun to describe the fate of coral reefs if nothing changes.",
-    explanation: "The article states that 'all coral reefs could face extinction by 2050' — underscoring the urgency of projects like Coral Gardeners."
-  }
-];
+  es: {},
+  fr: {},
+  it: {},
+  pt: {},
+  ru: {},
+  ar: {},
+  zh: {},
+  ja: {}
+};
 
-const fibWordBank = ["rare", "retraining", "traditional", "millennia", "Cultural", "extinction"];
+let currentLang = 'en';
+const t = k => (UI_I18N[currentLang] && UI_I18N[currentLang][k] != null)
+  ? UI_I18N[currentLang][k] : UI_I18N.en[k];
 
-const ordQuestions = [
-  {
-    q: "Arrange the steps in the Coral Gardeners restoration process in the correct order:",
-    steps: [
-      "Researchers identify coral specimens that survived past bleaching events",
-      "Selected coral fragments are cultivated in underwater nurseries",
-      "Healthy coral is transplanted onto damaged sections of reef",
-      "AI technology tracks the growth and recovery of replanted coral",
-      "Visitors join daily boat missions to observe and support the process"
-    ],
-    correctOrder: [0,1,2,3,4],
-    explanation: "The process flows logically: selection → cultivation → replanting → monitoring → visitor involvement. This sequence reflects the article's description of the Coral Gardeners project."
-  },
-  {
-    q: "Put the events in the history of the Mashpi Reserve in the correct chronological order:",
-    steps: [
-      "A logging company owned 1,500 acres of Chocó cloud forest",
-      "Roque Sevilla purchased the land and established the Mashpi Reserve",
-      "Local loggers and poachers were retrained as conservation researchers",
-      "A research team discovered the Mashpi glass frog on the Amagusa River",
-      "The reserve had recorded 24 new species in total"
-    ],
-    correctOrder: [0,1,2,3,4],
-    explanation: "The article traces this sequence: logging ownership → purchase → retraining → glass frog discovery → growing species count."
-  },
-  {
-    q: "Arrange the stages of a volunteer's experience during Costa Rica's sea turtle nesting season:",
-    steps: [
-      "Volunteers join night patrols searching for females coming ashore to lay eggs",
-      "Most nests are relocated from the beach to a protected hatchery",
-      "Staff monitor the eggs around the clock until they are ready to hatch",
-      "Volunteers measure the turtles and assist with relocating the egg clutches",
-      "Tiny hatchlings are released by the ocean at dawn"
-    ],
-    correctOrder: [0,1,2,3,4],
-    explanation: "The turtle experience follows: nocturnal patrol → nest relocation → monitoring → volunteer tasks → dawn release. The article describes this as the full volunteer arc."
-  },
-  {
-    q: "Order the following facts about ama divers from most historical to most recent:",
-    steps: [
-      "Ama divers begin practising breath-hold diving in coastal Japan",
-      "There were approximately 9,100 ama divers recorded across Japan",
-      "The tradition was designated an Important Intangible Folk Cultural Property",
-      "Amanemu resort begins working with veteran ama to preserve the tradition",
-      "Today only an estimated 2,000 ama divers remain active"
-    ],
-    correctOrder: [0,1,2,3,4],
-    explanation: "The timeline: ancient origins → 1978 peak of 9,100 divers → 2017 government designation → resort partnership → present-day figure of ~2,000."
-  },
-  {
-    q: "Arrange these statements about the article's argument in order from most general to most specific:",
-    steps: [
-      "Travel can play a role in supporting environmental conservation globally",
-      "Some projects combine luxury accommodation with active habitat restoration funding",
-      "Visitors to Mashpi Lodge can help analyse sounds from eco-acoustic monitoring devices",
-      "One research team discovered the Mashpi glass frog by torchlight on the Amagusa River",
-      "The frog took five years to fully document and could have vanished unrecorded"
-    ],
-    correctOrder: [0,1,2,3,4],
-    explanation: "This moves from the article's broad argument → specific project type → one activity → one discovery → one detail about that discovery. Good C1 skill: recognising macro to micro argumentation."
-  }
-];
+/* ── Deck state ── */
+const stage   = document.getElementById('stage');
+const slides  = [...document.querySelectorAll('.slide')];
+const scored  = slides.filter(s => ['mc','gap','match','order','sort','search','lock'].includes(s.dataset.type));
+/* A slide may hold more than one gap; each gap is worth a point. */
+const countIn = s => s.dataset.type === 'gap'   ? s.querySelectorAll('.gap').length
+                   : s.dataset.type === 'match' ? s.querySelectorAll('.match-pair').length
+                   : s.dataset.type === 'sort'  ? s.querySelectorAll('.sort-item').length
+                   : 1;
+const maxScore = scored.reduce((n, s) => n + Math.max(1, countIn(s)), 0);
+let idx = 0, score = 0;
+const answered = new WeakSet();
 
-// ============================================================
-// STATE
-// ============================================================
-let totalCorrect = 0;
-let totalAnswered = 0;
-let totalQuestions = mcQuestions.length + fibQuestions.length + ordQuestions.length;
+/* ── Scale the 1280×720 stage to fit any viewport, never scroll ── */
+function fitStage() {
+  const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+  // Centre explicitly. Relying on the wrapper to centre an oversized child is
+  // what put the stage off-screen on every viewport under 1280px wide.
+  const x = (window.innerWidth  - 1280 * s) / 2;
+  const y = (window.innerHeight -  720 * s) / 2;
+  stage.style.transform = `translate(${x}px, ${y}px) scale(${s})`;
+}
+addEventListener('resize', fitStage);
 
-let mcIndex = 0;
-let fibIndex = 0;
-let ordIndex = 0;
-
-let currentActivity = 'mc'; // mc, fib, ord, done
-let matchSelected = null;
-
-// ============================================================
-// RENDER FUNCTIONS
-// ============================================================
-
-function updateScoreBar() {
-  document.getElementById('score-display').textContent = totalCorrect + ' / ' + totalAnswered;
-  const pct = Math.round((totalAnswered / totalQuestions) * 100);
-  document.getElementById('progress-fill').style.width = pct + '%';
+/* ── Navigation ── */
+function show(n) {
+  // A slide may own a running clock. Leaving it pauses; coming back
+  // resumes with the time that was left, so paging back to re-read a
+  // rule never costs the learner the answer.
+  const leaving = slides[idx];
+  if (leaving && leaving._leave) leaving._leave();
+  idx = Math.max(0, Math.min(slides.length - 1, n));
+  slides.forEach((s, i) => s.classList.toggle('is-active', i === idx));
+  stage.classList.toggle('on-cover', slides[idx].dataset.type === 'cover');
+  // A slide may swap the background pattern for a second illustration from the
+  // same set (data-bg). Same idiom as the hero — picture at reduced opacity
+  // under the wash — so extra artwork never becomes a pasted-in box.
+  stage.style.setProperty('--hero', slides[idx].dataset.bg
+    ? `url('${slides[idx].dataset.bg}')` : '');
+  document.getElementById('progressFill').style.width =
+    (slides.length > 1 ? (idx / (slides.length - 1)) * 100 : 0) + '%';
+  document.getElementById('deckCount').textContent = t('slideOf')(idx + 1, slides.length);
+  document.querySelector('[data-action="prev"]').disabled = idx === 0;
+  document.querySelector('[data-action="next"]').disabled = idx === slides.length - 1;
+  if (slides[idx].dataset.type === 'results') renderResults();
+  markRail(slides[idx]);
+  if (slides[idx]._enter) slides[idx]._enter();
+  const gap = slides[idx].querySelector('.gap');
+  if (gap && !answered.has(slides[idx])) setTimeout(() => gap.focus(), 60);
 }
 
-// ---------- MULTIPLE CHOICE ----------
-function renderMC() {
-  const container = document.getElementById('mc-container');
-  container.innerHTML = '';
+function renderResults() {
+  const max = maxScore;
+  document.getElementById('scoreVal').textContent = score;
+  document.getElementById('scoreMax').textContent = max;
+  const pct = max ? score / max : 0;
+  document.getElementById('scoreMsg').textContent =
+    pct === 1 ? t('resPerfect') : pct >= .75 ? t('resStrong')
+    : pct >= .5 ? t('resMid') : t('resLow');
+}
 
-  if (mcIndex >= mcQuestions.length) {
-    startFIB();
-    return;
-  }
+function updateScoreChip() {
+  document.getElementById('deckScore').textContent =
+    maxScore ? `${t('scoreLabel')} ${score}/${maxScore}` : '';
+}
 
-  const q = mcQuestions[mcIndex];
-  const card = document.createElement('div');
-  card.className = 'question-card active';
+/* ── Answer handling ── */
+function award(slide, ok) {
+  if (answered.has(slide)) return;
+  answered.add(slide);
+  if (ok) score++;
+  updateScoreChip();
+}
 
-  const qProg = document.createElement('div');
-  qProg.className = 'q-progress';
-  qProg.textContent = 'Question ' + (mcIndex + 1) + ' of ' + mcQuestions.length;
-  card.appendChild(qProg);
+function feedback(slide, ok, extra, ownExplain) {
+  const el = slide.querySelector('.feedback');
+  if (!el) return;
+  // An option's own explanation wins: telling a learner why THEIR answer was
+  // wrong beats restating why the key was right.
+  const reason = ownExplain || el.dataset.explain;
+  const why = reason ? ' ' + reason : '';
+  // innerHTML, not textContent: explanations carry <strong> and <em>, and the
+  // whole point of an explanation is that the word being taught is marked.
+  // Written with textContent this printed the tags as literal source text on
+  // every deck built from this template.
+  el.innerHTML = (ok ? t('fbCorrect') : t('fbWrong') + (extra ? ` ${t('fbAnswer')} ${extra}` : '')) + why;
+  el.className = 'feedback show ' + (ok ? 'ok' : 'no');
+}
 
-  const qText = document.createElement('div');
-  qText.className = 'q-text';
-  qText.textContent = q.q;
-  card.appendChild(qText);
-
-  const ul = document.createElement('ul');
-  ul.className = 'options-list';
-
-  q.options.forEach((opt, i) => {
-    const li = document.createElement('li');
-    const btn = document.createElement('button');
-    btn.className = 'option-btn';
-    btn.textContent = opt;
-    btn.onclick = () => handleMCAnswer(i, q.correct, btn, ul, feedback, nextBtn);
-    li.appendChild(btn);
-    ul.appendChild(li);
+/* Multiple choice — shuffled on first view so option order is never a tell. */
+slides.filter(s => s.dataset.type === 'mc').forEach(slide => {
+  const box = slide.querySelector('.opts');
+  const opts = [...box.querySelectorAll('.opt')];
+  opts.sort(() => Math.random() - .5).forEach((o, i) => {
+    o.prepend(Object.assign(document.createElement('span'), {
+      className: 'opt-key', textContent: 'ABCD'[i]
+    }));
+    box.appendChild(o);
   });
-  card.appendChild(ul);
+  opts.forEach(o => o.addEventListener('click', () => {
+    if (answered.has(slide)) return;
+    const ok = o.hasAttribute('data-correct');
+    opts.forEach(x => {
+      x.disabled = true;
+      if (x.hasAttribute('data-correct')) x.classList.add('correct');
+    });
+    if (!ok) o.classList.add('wrong');
+    award(slide, ok);
+    feedback(slide, ok, null, o.dataset.explain);
+  }));
+});
 
-  const feedback = document.createElement('div');
-  feedback.className = 'feedback-box';
-  card.appendChild(feedback);
-
-  const nextBtn = document.createElement('button');
-  nextBtn.className = 'btn-next';
-  nextBtn.textContent = mcIndex < mcQuestions.length - 1 ? 'Next question →' : 'Move to Activity 2 →';
-  nextBtn.onclick = () => { mcIndex++; renderMC(); };
-  card.appendChild(nextBtn);
-
-  container.appendChild(card);
-}
-
-function handleMCAnswer(chosen, correct, clickedBtn, ul, feedback, nextBtn) {
-  const buttons = ul.querySelectorAll('.option-btn');
-  buttons.forEach((b, i) => {
-    b.disabled = true;
-    if (i === correct) b.classList.add('correct');
-    if (i === chosen && chosen !== correct) b.classList.add('wrong');
-  });
-
-  const isCorrect = chosen === correct;
-  totalAnswered++;
-  if (isCorrect) totalCorrect++;
-  updateScoreBar();
-
-  feedback.style.display = 'block';
-  feedback.className = 'feedback-box ' + (isCorrect ? 'correct-fb' : 'wrong-fb');
-  feedback.innerHTML = '<div class="fb-label">' + (isCorrect ? '✓ Correct' : '✗ Incorrect') + '</div>' + mcQuestions[mcIndex].explanation;
-
-  nextBtn.classList.add('show');
-}
-
-// ---------- FILL IN THE BLANK ----------
-function startFIB() {
-  document.getElementById('fib-section').style.display = 'flex';
-  document.getElementById('fib-illo').style.display = 'block';
-  fibIndex = 0;
-  renderFIB();
-}
-
-function renderFIB() {
-  const container = document.getElementById('fib-container');
-  container.innerHTML = '';
-
-  if (fibIndex >= fibQuestions.length) {
-    startORD();
-    return;
-  }
-
-  const q = fibQuestions[fibIndex];
-  const card = document.createElement('div');
-  card.className = 'question-card active';
-
-  const qProg = document.createElement('div');
-  qProg.className = 'q-progress';
-  qProg.textContent = 'Question ' + (fibIndex + 1) + ' of ' + fibQuestions.length;
-  card.appendChild(qProg);
-
-  // Word bank
-  const wbLabel = document.createElement('div');
-  wbLabel.style.cssText = 'font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;font-weight:500';
-  wbLabel.textContent = 'Word bank — click a word to place it';
-  card.appendChild(wbLabel);
-
-  const wb = document.createElement('div');
-  wb.className = 'word-bank';
-
-  // Shuffle word bank display
-  const shuffled = [...fibWordBank].sort(() => Math.random() - 0.5);
-  const chips = {};
-
-  shuffled.forEach(word => {
-    const chip = document.createElement('button');
-    chip.className = 'word-chip';
-    chip.textContent = word;
-    chip.dataset.word = word;
-    chip.onclick = () => {
-      if (chip.classList.contains('used')) return;
-      const input = card.querySelector('.blank-input');
-      if (input && !input.disabled) {
-        input.value = word;
-        chip.classList.add('used');
-      }
-    };
-    chips[word] = chip;
-    wb.appendChild(chip);
-  });
-  card.appendChild(wb);
-
-  // Sentence with blank
-  const parts = q.sentence.split('______');
-  const sentDiv = document.createElement('div');
-  sentDiv.className = 'blank-sentence';
-
-  const before = document.createTextNode(parts[0]);
-  sentDiv.appendChild(before);
-
-  const inp = document.createElement('input');
-  inp.type = 'text';
-  inp.className = 'blank-input';
-  inp.placeholder = '…';
-  sentDiv.appendChild(inp);
-
-  if (parts[1]) {
-    const after = document.createTextNode(parts[1]);
-    sentDiv.appendChild(after);
-  }
-  card.appendChild(sentDiv);
-
-  const submitBtn = document.createElement('button');
-  submitBtn.className = 'btn-submit';
-  submitBtn.textContent = 'Check answer';
-  card.appendChild(submitBtn);
-
-  const feedback = document.createElement('div');
-  feedback.className = 'feedback-box';
-  card.appendChild(feedback);
-
-  const nextBtn = document.createElement('button');
-  nextBtn.className = 'btn-next';
-  nextBtn.textContent = fibIndex < fibQuestions.length - 1 ? 'Next question →' : 'Move to Activity 3 →';
-  nextBtn.onclick = () => { fibIndex++; renderFIB(); };
-  card.appendChild(nextBtn);
-
-  submitBtn.onclick = () => {
-    const val = inp.value.trim();
-    if (!val) return;
-
-    const isCorrect = val.toLowerCase() === q.answer.toLowerCase();
-    inp.disabled = true;
-    submitBtn.disabled = true;
-
-    // Mark all chips as used/inactive
-    Object.values(chips).forEach(c => { c.disabled = true; c.classList.add('used'); });
-
-    inp.classList.add(isCorrect ? 'correct-input' : 'wrong-input');
-    if (!isCorrect) inp.value = val + '  →  ' + q.answer;
-
-    totalAnswered++;
-    if (isCorrect) totalCorrect++;
-    updateScoreBar();
-
-    feedback.style.display = 'block';
-    feedback.className = 'feedback-box ' + (isCorrect ? 'correct-fb' : 'wrong-fb');
-    feedback.innerHTML = '<div class="fb-label">' + (isCorrect ? '✓ Correct' : '✗ Incorrect — the answer is: ' + q.answer) + '</div>' + q.explanation;
-
-    nextBtn.classList.add('show');
+/* Matching. Author as <div class="match-pair" data-term data-def> rows; the
+   engine builds both columns and shuffles the definitions. One point per pair. */
+slides.filter(s => s.dataset.type === 'match').forEach(slide => {
+  const pairs = [...slide.querySelectorAll('.match-pair')];
+  const grid = slide.querySelector('.match-grid');
+  if (!grid || !pairs.length) return;
+  const terms = document.createElement('div');
+  const defs = document.createElement('div');
+  terms.className = defs.className = 'match-col';
+  const mk = (txt, cls, key) => {
+    const b = document.createElement('button');
+    b.className = 'match-item ' + cls;
+    b.textContent = txt;
+    b.dataset.key = key;
+    return b;
   };
+  pairs.forEach(p => terms.appendChild(mk(p.dataset.term, 'term', p.dataset.term)));
+  [...pairs].sort(() => Math.random() - .5)
+    .forEach(p => defs.appendChild(mk(p.dataset.def, 'def', p.dataset.term)));
+  grid.replaceChildren(terms, defs);
 
-  container.appendChild(card);
-}
+  let picked = null, done = 0;
+  const total = pairs.length;
+  grid.addEventListener('click', e => {
+    const el = e.target.closest('.match-item');
+    if (!el || el.classList.contains('done')) return;
+    if (el.classList.contains('term')) {
+      grid.querySelectorAll('.term.picked').forEach(x => x.classList.remove('picked'));
+      el.classList.add('picked');
+      picked = el;
+      return;
+    }
+    if (!picked) return;
+    if (el.dataset.key === picked.dataset.key) {
+      el.classList.add('done'); picked.classList.add('done');
+      picked.classList.remove('picked');
+      picked = null; done++; score++; updateScoreChip();
+      if (done === total) {
+        answered.add(slide);
+        feedback(slide, true);
+      }
+    } else {
+      el.classList.add('miss');
+      setTimeout(() => el.classList.remove('miss'), 320);
+    }
+  });
+});
 
-// ---------- ORDERING ----------
-function startORD() {
-  document.getElementById('ord-section').style.display = 'flex';
-  document.getElementById('ord-illo').style.display = 'block';
-  ordIndex = 0;
-  renderORD();
-}
+/* Sentence building. Author as
+     <div class="order" data-answer="chunk|chunk|chunk"></div>
+   with a [data-action="check-order"] button and a .feedback alongside it.
+   The engine shuffles the chunks into a pool; clicking places one, clicking a
+   placed one takes it back. One point for the whole sentence — a half-right
+   word order is not half-right English. */
+slides.filter(s => s.dataset.type === 'order').forEach(slide => {
+  const box = slide.querySelector('.order');
+  if (!box) return;
+  const answer = box.dataset.answer.split('|').map(x => x.trim());
+  const target = document.createElement('div'); target.className = 'order-target';
+  const pool   = document.createElement('div'); pool.className   = 'order-pool';
+  answer.map((txt, i) => ({ txt, i }))
+        .sort(() => Math.random() - .5)
+        .forEach(({ txt, i }) => {
+          const b = document.createElement('button');
+          b.className = 'chunk';
+          b.textContent = txt;
+          b.dataset.i = i;
+          pool.appendChild(b);
+        });
+  box.replaceChildren(target, pool);
 
-function renderORD() {
-  const container = document.getElementById('ord-container');
-  container.innerHTML = '';
+  box.addEventListener('click', e => {
+    const c = e.target.closest('.chunk');
+    if (!c || c.disabled) return;
+    if (c.parentElement === pool) { c.classList.add('placed');    target.appendChild(c); }
+    else                          { c.classList.remove('placed'); pool.appendChild(c); }
+  });
 
-  if (ordIndex >= ordQuestions.length) {
-    showFinal();
-    return;
+  slide._check = () => {
+    if (answered.has(slide)) return;
+    // Marking a half-built sentence teaches nothing; wait until it is complete.
+    if (target.children.length < answer.length) return;
+    answered.add(slide);
+    const ok = [...target.children].map(c => +c.dataset.i).every((v, i) => v === i);
+    target.classList.add(ok ? 'correct' : 'wrong');
+    box.querySelectorAll('.chunk').forEach(c => c.disabled = true);
+    if (ok) score++;
+    updateScoreChip();
+    feedback(slide, ok, ok ? null : answer.join(' '));
+    const btn = slide.querySelector('[data-action="check-order"]');
+    if (btn) btn.disabled = true;
+  };
+});
+
+/* Sorting. Author as
+     <div class="sort" data-bins="Label one|Label two" data-explain="…">
+       <span class="sort-item" data-bin="0">every day</span>
+       …
+     </div>
+   The engine shuffles the items into a pool and builds one bin per label.
+   Drag an item into a bin, or click the item and then click the bin —
+   both do the same thing, and the click path is the one that works on a
+   touch screen. One point per item.
+
+   Unlike matching, a wrong placement costs the point for that item: the
+   learner can still put it right and finish the slide, but the first
+   answer is the one that counts. A sorting task with unlimited free
+   retries is a task you cannot fail, and a score that cannot go down
+   tells the learner nothing. (Matching still allows free retries; that
+   is thirty-odd shipped lessons' worth of behaviour to change, and it
+   should be changed deliberately, not as a side effect of this.) */
+slides.filter(s => s.dataset.type === 'sort').forEach(slide => {
+  const box = slide.querySelector('.sort');
+  if (!box) return;
+  const labels = (box.dataset.bins || '').split('|').map(x => x.trim());
+  const items = [...box.querySelectorAll('.sort-item')];
+  if (labels.length < 2 || !items.length) return;
+
+  const pool = document.createElement('div');
+  pool.className = 'sort-pool';
+  const bins = document.createElement('div');
+  bins.className = 'sort-bins';
+  bins.style.gridTemplateColumns = '1fr '.repeat(labels.length).trim();
+
+  const binEls = labels.map((label, i) => {
+    const bin = document.createElement('div');
+    bin.className = 'sort-bin';
+    bin.dataset.bin = i;
+    const h = document.createElement('div');
+    h.className = 'sort-bin-label';
+    h.textContent = label;
+    const body = document.createElement('div');
+    body.className = 'sort-bin-items';
+    bin.append(h, body);
+    bins.appendChild(bin);
+    return bin;
+  });
+
+  items.sort(() => Math.random() - .5).forEach(it => {
+    it.setAttribute('draggable', 'true');
+    it.tabIndex = 0;
+    pool.appendChild(it);
+  });
+  box.replaceChildren(pool, bins);
+
+  let picked = null, placed = 0, dragged = null;
+  const missed = new WeakSet();   // items answered wrongly at least once
+
+  function place(item, binIndex) {
+    if (item.classList.contains('placed')) return;
+    if (+item.dataset.bin !== binIndex) {
+      missed.add(item);
+      item.classList.add('miss');
+      setTimeout(() => item.classList.remove('miss'), 320);
+      return;
+    }
+    item.classList.remove('picked');
+    item.classList.add('placed');
+    item.setAttribute('draggable', 'false');
+    binEls[binIndex].querySelector('.sort-bin-items').appendChild(item);
+    placed++;
+    if (!missed.has(item)) { score++; updateScoreChip(); }
+    if (placed === items.length) {
+      binEls.forEach(b => b.classList.add('full'));
+      answered.add(slide);
+      // Right only if every item went to the right bin first time.
+      feedback(slide, !items.some(i => missed.has(i)));
+    }
   }
 
-  const q = ordQuestions[ordIndex];
-  const card = document.createElement('div');
-  card.className = 'question-card active';
+  box.addEventListener('click', e => {
+    const item = e.target.closest('.sort-item');
+    if (item && !item.classList.contains('placed')) {
+      box.querySelectorAll('.sort-item.picked').forEach(x => x.classList.remove('picked'));
+      item.classList.add('picked');
+      picked = item;
+      return;
+    }
+    const bin = e.target.closest('.sort-bin');
+    if (bin && picked) { place(picked, +bin.dataset.bin); picked = null; }
+  });
 
-  const qProg = document.createElement('div');
-  qProg.className = 'q-progress';
-  qProg.textContent = 'Question ' + (ordIndex + 1) + ' of ' + ordQuestions.length;
-  card.appendChild(qProg);
+  box.addEventListener('dragstart', e => {
+    const item = e.target.closest('.sort-item');
+    if (!item || item.classList.contains('placed')) return;
+    dragged = item;
+    item.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    // Firefox will not start a drag without data on the transfer.
+    e.dataTransfer.setData('text/plain', '');
+  });
+  box.addEventListener('dragend', () => {
+    if (dragged) dragged.classList.remove('dragging');
+    dragged = null;
+    binEls.forEach(b => b.classList.remove('over'));
+  });
+  binEls.forEach(bin => {
+    bin.addEventListener('dragover', e => { e.preventDefault(); bin.classList.add('over'); });
+    bin.addEventListener('dragleave', () => bin.classList.remove('over'));
+    bin.addEventListener('drop', e => {
+      e.preventDefault();
+      bin.classList.remove('over');
+      if (dragged) { place(dragged, +bin.dataset.bin); dragged = null; }
+    });
+  });
+});
 
-  const qText = document.createElement('div');
-  qText.className = 'q-text';
-  qText.textContent = q.q;
-  card.appendChild(qText);
+/* ══ ESCAPE-ROOM MECHANICS ═══════════════════════════════════════════
+   Added for the puzzle-lesson format. A deck that uses none of them is
+   unaffected: the selectors match nothing and the rail stays hidden. */
 
-  const instrEl = document.createElement('div');
-  instrEl.style.cssText = 'font-size:12px;color:var(--muted);margin-bottom:10px;letter-spacing:.04em';
-  instrEl.textContent = 'Drag and drop to reorder, then click Check order';
-  card.appendChild(instrEl);
+/* Timed search. Author as
+     <div class="search" data-limit="20">
+       <button class="find" data-name="a spoon" data-correct><svg…></button>
+       …
+     </div>
+   The engine adds the clock, hides the names until the item is answered,
+   and marks it wrong if the clock runs out. One point.
 
-  // Shuffle steps (but keep track of original indices)
-  const shuffled = q.steps.map((s, i) => ({ text: s, origIdx: i })).sort(() => Math.random() - 0.5);
+   The names must stay hidden while the clock runs. A labelled picture
+   turns a vocabulary task into a reading task: the learner scans for the
+   word in the stem instead of recognising the object. They are revealed
+   on answering, which is when they teach. */
+slides.filter(s => s.dataset.type === 'search').forEach(slide => {
+  const box = slide.querySelector('.search');
+  if (!box) return;
+  const items = [...box.querySelectorAll('.find')];
+  if (!items.length) return;
+  const limit = +(box.dataset.limit || 20);
+  const key = items.find(i => i.hasAttribute('data-correct'));
 
-  const list = document.createElement('div');
-  list.className = 'ordering-list';
+  const bar = document.createElement('div'); bar.className = 'search-bar';
+  const track = document.createElement('div'); track.className = 'search-track';
+  const fill = document.createElement('div'); fill.className = 'search-fill';
+  const clock = document.createElement('span'); clock.className = 'search-clock';
+  track.appendChild(fill);
+  bar.append(track, clock);
+  const grid = document.createElement('div');
+  grid.className = 'find-grid';
+  grid.style.gridTemplateColumns = `repeat(${items.length}, 1fr)`;
+  items.forEach(it => {
+    const n = document.createElement('span');
+    n.className = 'find-name';
+    n.textContent = it.dataset.name || '';
+    it.appendChild(n);
+    grid.appendChild(it);
+  });
+  box.replaceChildren(bar, grid);
 
-  // Use a closure variable to hold the element being dragged
-  let dragSrc = null;
+  let left = limit, tid = null;
+  clock.textContent = left + 's';
 
-  shuffled.forEach((item) => {
+  function finish(chosen) {
+    if (answered.has(slide)) return;
+    if (tid) { clearInterval(tid); tid = null; }
+    answered.add(slide);
+    const ok = !!chosen && chosen.hasAttribute('data-correct');
+    items.forEach(i => { i.disabled = true; i.classList.add('revealed'); });
+    if (key) key.classList.add('correct');
+    if (chosen && !ok) chosen.classList.add('wrong');
+    if (ok) score++;
+    updateScoreChip();
+    feedback(slide, ok, ok || !key ? null : key.dataset.name);
+    markRail(slide);          // the digit is picked up here, not on arrival
+  }
+
+  items.forEach(i => i.addEventListener('click', () => finish(i)));
+
+  slide._enter = () => {
+    if (answered.has(slide) || tid) return;
+    tid = setInterval(() => {
+      left--;
+      clock.textContent = Math.max(0, left) + 's';
+      fill.style.width = Math.max(0, left / limit * 100) + '%';
+      if (left <= 5) bar.classList.add('urgent');
+      if (left <= 0) finish(null);
+    }, 1000);
+  };
+  slide._leave = () => { if (tid) { clearInterval(tid); tid = null; } };
+});
+
+/* Combination lock. Author as
+     <div class="lock" data-code="63741"></div>
+   The engine builds the display and the keypad. The first attempt is the
+   one that scores; after that the learner keeps trying until it opens,
+   because the lock is the last door and the story has to get through it. */
+slides.filter(s => s.dataset.type === 'lock').forEach(slide => {
+  const box = slide.querySelector('.lock');
+  if (!box) return;
+  const code = (box.dataset.code || '').trim().split('');
+  if (!code.length) return;
+
+  const disp = document.createElement('div'); disp.className = 'lock-display';
+  const cells = code.map(() => {
+    const c = document.createElement('span'); c.className = 'lock-cell';
+    disp.appendChild(c); return c;
+  });
+  const keys = document.createElement('div'); keys.className = 'lock-keys';
+  const pad  = document.createElement('div'); pad.className  = 'lock-pad';
+
+  let entry = [], scoredOnce = false, opened = false;
+  const draw = () => cells.forEach((c, i) => {
+    c.textContent = entry[i] != null ? entry[i] : '';
+    c.classList.toggle('filled', entry[i] != null);
+  });
+
+  '1234567890'.split('').forEach(n => {
+    const b = document.createElement('button');
+    b.className = 'lock-key'; b.textContent = n;
+    b.addEventListener('click', () => {
+      if (opened || entry.length >= code.length) return;
+      entry.push(n); draw();
+    });
+    pad.appendChild(b);
+  });
+  const del = document.createElement('button');
+  del.className = 'lock-key'; del.textContent = '⌫';
+  del.setAttribute('aria-label', 'delete');
+  del.addEventListener('click', () => { if (!opened) { entry.pop(); draw(); } });
+  pad.appendChild(del);
+
+  const go = document.createElement('button');
+  go.className = 'btn'; go.dataset.i18n = 'btnOpen'; go.textContent = 'Open';
+  go.addEventListener('click', () => {
+    if (opened || entry.length < code.length) return;
+    const ok = entry.join('') === code.join('');
+    if (!scoredOnce) {
+      scoredOnce = true; answered.add(slide);
+      if (ok) score++;
+      updateScoreChip();
+    }
+    if (ok) {
+      opened = true;
+      cells.forEach(c => c.classList.add('ok'));
+      pad.querySelectorAll('.lock-key').forEach(k => k.disabled = true);
+      go.disabled = true;
+      feedback(slide, true);
+    } else {
+      box.classList.add('bad');
+      setTimeout(() => box.classList.remove('bad'), 400);
+      feedback(slide, false, code.join(''));
+      entry = []; draw();
+    }
+  });
+
+  keys.append(pad, go);
+  box.replaceChildren(disp, keys);
+  draw();
+});
+
+/* The rail. A lesson declares its stops as a pipe-separated string, in
+   UI_I18N under the key named by data-i18n-stops, and each slide says
+   which stop it belongs to (data-stop) and what was picked up there
+   (data-take). Reached stops stay reached when the learner pages back. */
+const deckRail = document.getElementById('deckRail');
+const railTakes = new Map();
+let railMax = 0, railCur = 0;
+
+function markRail(slide) {
+  const st = +(slide.dataset.stop || 0);
+  if (st) {
+    railCur = st;
+    railMax = Math.max(railMax, st);
+    // A digit carried by a scored slide is only picked up once that slide
+    // has been answered. Otherwise the rail prints the reward the moment
+    // the learner arrives, and the question is over before it is asked.
+    if (slide.dataset.take &&
+        (!scored.includes(slide) || answered.has(slide)))
+      railTakes.set(st, slide.dataset.take);
+  }
+  renderRail();
+}
+
+function renderRail() {
+  if (!deckRail) return;
+  const raw = (deckRail.dataset.i18nStops ? t(deckRail.dataset.i18nStops) : null)
+            || deckRail.dataset.stops || '';
+  const labels = raw.split('|').map(x => x.trim()).filter(Boolean);
+  if (!labels.length) { deckRail.hidden = true; stage.classList.remove('has-rail'); return; }
+  deckRail.replaceChildren(...labels.map((label, i) => {
+    const n = i + 1;
     const el = document.createElement('div');
-    el.className = 'order-item';
-    el.draggable = true;
-    el.dataset.origIdx = item.origIdx;
-
-    const handle = document.createElement('span');
-    handle.className = 'drag-handle';
-    handle.textContent = '⠿';
-    el.appendChild(handle);
-
-    const txt = document.createTextNode(item.text);
-    el.appendChild(txt);
-
-    el.addEventListener('dragstart', e => {
-      dragSrc = el;
-      e.dataTransfer.effectAllowed = 'move';
-      e.dataTransfer.setData('text/plain', ''); // required for Firefox
-      setTimeout(() => el.classList.add('dragging'), 0);
-    });
-
-    el.addEventListener('dragend', () => {
-      el.classList.remove('dragging');
-      list.querySelectorAll('.drag-over').forEach(x => x.classList.remove('drag-over'));
-      dragSrc = null;
-    });
-
-    el.addEventListener('dragover', e => {
-      e.preventDefault();
-      e.dataTransfer.dropEffect = 'move';
-      if (el !== dragSrc) el.classList.add('drag-over');
-    });
-
-    el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
-
-    el.addEventListener('drop', e => {
-      e.preventDefault();
-      e.stopPropagation();
-      el.classList.remove('drag-over');
-      if (!dragSrc || dragSrc === el) return;
-      // Swap the two elements
-      const allItems = Array.from(list.children);
-      const fromIdx = allItems.indexOf(dragSrc);
-      const toIdx = allItems.indexOf(el);
-      if (fromIdx < toIdx) {
-        list.insertBefore(dragSrc, el.nextSibling);
-      } else {
-        list.insertBefore(dragSrc, el);
-      }
-    });
-
-    list.appendChild(el);
-  });
-
-  card.appendChild(list);
-
-  const submitBtn = document.createElement('button');
-  submitBtn.className = 'btn-submit';
-  submitBtn.textContent = 'Check order';
-  card.appendChild(submitBtn);
-
-  const feedback = document.createElement('div');
-  feedback.className = 'feedback-box';
-  card.appendChild(feedback);
-
-  const nextBtn = document.createElement('button');
-  nextBtn.className = 'btn-next';
-  nextBtn.textContent = ordIndex < ordQuestions.length - 1 ? 'Next question →' : 'See your results →';
-  nextBtn.onclick = () => { ordIndex++; renderORD(); };
-  card.appendChild(nextBtn);
-
-  submitBtn.onclick = () => {
-    const currentOrder = Array.from(list.children).map(el => parseInt(el.dataset.origIdx));
-    const isCorrect = JSON.stringify(currentOrder) === JSON.stringify(q.correctOrder);
-
-    Array.from(list.children).forEach(el => { el.draggable = false; el.style.cursor = 'default'; });
-    submitBtn.disabled = true;
-
-    totalAnswered++;
-    if (isCorrect) totalCorrect++;
-    updateScoreBar();
-
-    feedback.style.display = 'block';
-    feedback.className = 'feedback-box ' + (isCorrect ? 'correct-fb' : 'wrong-fb');
-    const correctList = q.correctOrder.map((idx, pos) => (pos + 1) + '. ' + q.steps[idx]).join(' → ');
-    feedback.innerHTML = '<div class="fb-label">' + (isCorrect ? '✓ Correct order' : '✗ Not quite right') + '</div>' + q.explanation + (isCorrect ? '' : '<br><br><strong>Correct sequence:</strong> ' + correctList);
-
-    nextBtn.classList.add('show');
-  };
-
-  container.appendChild(card);
+    el.className = 'rail-stop'
+      + (n <= railMax ? ' reached' : '')
+      + (n === railCur ? ' current' : '')
+      + (railTakes.has(n) ? ' has-digit' : '');
+    const d = document.createElement('span');
+    d.className = 'rail-digit';
+    d.textContent = railTakes.has(n) ? railTakes.get(n) : '·';
+    const l = document.createElement('span');
+    l.className = 'rail-label'; l.textContent = label;
+    el.append(d, l);
+    return el;
+  }));
+  deckRail.hidden = false;
+  stage.classList.add('has-rail');
 }
 
-// ---------- FINAL ----------
-function showFinal() {
-  document.getElementById('discussion-card').style.display = 'block';
-  document.getElementById('final-screen').style.display = 'block';
+/* Gap fill. Supports several gaps on one slide, each scored and explained
+   individually via its own .gap-row wrapper. */
+const gapOk = g => g.dataset.answer.split('|')
+  .map(a => a.trim().toLowerCase())
+  .includes(g.value.trim().toLowerCase().replace(/\s+/g, ' '));
 
-  const pct = Math.round((totalCorrect / totalQuestions) * 100);
-  document.getElementById('final-score-num').textContent = totalCorrect + ' / ' + totalQuestions;
-  document.getElementById('final-score-sub').textContent = 'questions answered correctly (' + pct + '%)';
-
-  let msg = '';
-  if (pct >= 90) {
-    msg = 'Outstanding work. You demonstrate exceptional comprehension of inference, vocabulary in context, and logical sequencing — the hallmarks of true C2 proficiency. Your understanding of conservation science and argument structure is impressive.';
-  } else if (pct >= 75) {
-    msg = 'Excellent result. You show strong C1 reading comprehension and a sophisticated grasp of the article\'s key arguments. Review any areas of difficulty and consider exploring the discussion questions with a partner.';
-  } else if (pct >= 55) {
-    msg = 'Good effort. You are working at C1 level and demonstrating solid understanding of the main ideas. Focus on inference questions — try rereading the article with those specific sections in mind.';
-  } else {
-    msg = 'Keep going. C1 texts are genuinely challenging, and engaging with complex conservation topics in English takes practice. Review the feedback for each question and try again — your comprehension will improve with every attempt.';
+function markGap(g, fb) {
+  const ok = gapOk(g);
+  g.classList.add(ok ? 'correct' : 'wrong');
+  g.disabled = true;
+  if (ok) score++;
+  if (fb) {
+    const why = fb.dataset.explain ? ' ' + fb.dataset.explain : '';
+    fb.innerHTML = (ok ? t('fbCorrect')
+      : `${t('fbWrong')} ${t('fbAnswer')} ${g.dataset.answer.split('|')[0]}.`) + why;
+    fb.className = 'feedback show ' + (ok ? 'ok' : 'no');
   }
-  document.getElementById('final-message').textContent = msg;
+  return ok;
 }
 
-function restartLesson() {
-  totalCorrect = 0; totalAnswered = 0;
-  mcIndex = 0; fibIndex = 0; ordIndex = 0;
-  currentActivity = 'mc';
-
-  document.getElementById('fib-section').style.display = 'none';
-  document.getElementById('fib-illo').style.display = 'none';
-  document.getElementById('fib-container').innerHTML = '';
-  document.getElementById('ord-section').style.display = 'none';
-  document.getElementById('ord-illo').style.display = 'none';
-  document.getElementById('ord-container').innerHTML = '';
-  document.getElementById('discussion-card').style.display = 'none';
-  document.getElementById('final-screen').style.display = 'none';
-
-  updateScoreBar();
-  renderMC();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+function checkGaps(slide) {
+  if (answered.has(slide)) return;
+  // A slide with no gap on it is not a gap-fill: sentence-building shipped
+  // for months with a plain [data-action="check"] button, which landed
+  // here, threw on a null input and left the Check button dead. Route it
+  // to the slide's own checker instead of guessing.
+  if (!slide.querySelector('.gap')) {
+    if (slide._check) slide._check();
+    return;
+  }
+  answered.add(slide);
+  const rows = [...slide.querySelectorAll('.gap-row')];
+  if (rows.length) {
+    rows.forEach(r => markGap(r.querySelector('.gap'), r.querySelector('.feedback')));
+  } else {
+    markGap(slide.querySelector('.gap'), slide.querySelector('.feedback'));
+  }
+  const btn = slide.querySelector('[data-action="check"]');
+  if (btn) btn.disabled = true;
+  updateScoreChip();
 }
 
-// ============================================================
-// INIT
-// ============================================================
-updateScoreBar();
-renderMC();
+/* ── Activation: word count, copy, and a print mirror (a textarea's
+   value does not appear in a PDF, so we mirror it into a div). ── */
+const actInput = document.getElementById('actInput');
+if (actInput) {
+  const countEl = document.getElementById('actCount');
+  const printEl = document.getElementById('actPrint');
+  const sync = () => {
+    const words = actInput.value.trim().split(/\s+/).filter(Boolean).length;
+    countEl.textContent = t('wordCount')(words);
+    printEl.textContent = actInput.value;
+  };
+  actInput.addEventListener('input', sync);
+  window.syncActivation = sync;
+  sync();
+}
+
+/* ── Events ── */
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-action]');
+  if (!a) return;
+  const act = a.dataset.action;
+  if (act === 'next') show(idx + 1);
+  if (act === 'prev') show(idx - 1);
+  if (act === 'check') checkGaps(a.closest('.slide'));
+  if (act === 'check-order') { const sl = a.closest('.slide'); if (sl._check) sl._check(); }
+  if (act === 'restart') location.reload();
+  if (act === 'copy-writing') {
+    const ta = document.getElementById('actInput');
+    if (ta && navigator.clipboard) navigator.clipboard.writeText(ta.value).then(() => {
+      const was = a.textContent;
+      a.textContent = t('btnCopied');
+      setTimeout(() => { a.textContent = was; }, 1400);
+    });
+  }
+});
+
+document.addEventListener('keydown', e => {
+  if (e.target.matches('input, select, textarea')) {
+    if (e.key === 'Enter') checkGaps(e.target.closest('.slide'));
+    return;
+  }
+  if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); show(idx + 1); }
+  if (['ArrowLeft', 'PageUp'].includes(e.key))         { e.preventDefault(); show(idx - 1); }
+});
+
+/* ── Language ── */
+function applyLang() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const v = t(el.dataset.i18n);
+    if (v != null) el.innerHTML = v;
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const v = t(el.dataset.i18nPh);
+    if (v != null) el.placeholder = v;
+  });
+  if (window.syncActivation) window.syncActivation();
+  document.documentElement.lang = currentLang;
+  document.documentElement.dir = RTL_LANGS.includes(currentLang) ? 'rtl' : 'ltr';
+  updateScoreChip();
+  show(idx);
+}
+
+function initLang() {
+  const sel = document.getElementById('langSelect');
+  // Only offer languages that are actually translated. An empty or partial
+  // scaffold stays in the code for a future pass but never appears as a dead
+  // option in the menu.
+  const enKeys = Object.keys(UI_I18N.en).length;
+  LANGS.filter(l => l.code === 'en' ||
+                    Object.keys(UI_I18N[l.code] || {}).length >= enKeys)
+       .forEach(l => sel.add(new Option(l.label, l.code)));
+  sel.value = currentLang;
+  sel.hidden = sel.options.length < 2;
+  sel.addEventListener('change', () => { currentLang = sel.value; applyLang(); });
+}
+
+/* Per-slide background art: set the variable on the element as well, because
+   the print stylesheet paints each slide's own ::before from var(--hero).
+
+   Decode them all up front. A background-image on a display:none slide is
+   never fetched, so a deck printed without visiting every slide first
+   exported those pages with no artwork at all — black interiors in the
+   PDF while the screen looked right. */
+slides.filter(s => s.dataset.bg).forEach(s => {
+  s.style.setProperty('--hero', `url('${s.dataset.bg}')`);
+  new Image().src = s.dataset.bg;
+});
+
+/* ── Boot ── */
+initLang();
+fitStage();
+applyLang();
+updateScoreChip();
+
+/* Reveal the wordmark only once DM Sans is really available, so the
+   Forbes/ENGLISH lockup never renders at fallback-font proportions. */
+const ready = () => document.body.classList.add('fonts-ready');
+if (document.fonts && document.fonts.ready) { document.fonts.ready.then(ready); setTimeout(ready, 1500); }
+else ready();
 </script>
 </body>
 </html>
