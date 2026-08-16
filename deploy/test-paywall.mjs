@@ -15,7 +15,21 @@ const env = {
   SITE_URL: 'https://x.test',
   SUPABASE_URL: 'https://sb.test',
   SUPABASE_ANON_KEY: 'anon',
-  ASSETS: { fetch: (req) => new Response('LESSON BODY', { status: 200, headers: {'Content-Type':'text/html'} }) },
+  // Distinct bodies per asset. Since the gate began answering 200 (so that a
+  // gated lesson can be indexed at all), the status alone no longer tells a
+  // gate from a lesson — the body has to, or these tests pass vacuously.
+  ASSETS: { fetch: (req) => {
+    const p = decodeURIComponent(new URL(req.url).pathname);
+    if (p === '/locked.html') return new Response(
+      '<html><head><title>x</title><!-- LESSON:head --></head><body>' +
+      '<!-- LESSON:intro -->GATE PAGE<!-- /LESSON:intro --></body></html>',
+      { status: 200, headers: {'Content-Type':'text/html'} });
+    if (p === '/lesson-meta.json') return new Response(JSON.stringify({
+      'forbes-c1-negotiation.html': { title: 'Negotiation & Persuasion', level: 'C1',
+        description: 'Register, nuance and precision under pressure.', access: 'pro' },
+    }), { status: 200, headers: {'Content-Type':'application/json'} });
+    return new Response('LESSON BODY', { status: 200, headers: {'Content-Type':'text/html'} });
+  } },
 };
 let activeToken = 'good-token';
 globalThis.fetch = async (url, opts) => {
@@ -41,29 +55,46 @@ async function get(path, cookie) {
   return mod.default.fetch(req, env, ctx);
 }
 
+// 'gate'   = the subscribe page went out, and the lesson did not
+// 'lesson'  = the real file went out
 const cases = [
-  // [path, cookie, expected status, why]
-  ['/forbes-c1-negotiation.html', null, 402, 'pro lesson, no session'],
-  ['/forbes-c1-negotiation',      null, 402, 'pro lesson WITHOUT .html — the obvious bypass'],
-  ['/forbes-c1-negotiation.html', 'fe_at=good-token', 200, 'pro lesson, subscriber'],
-  ['/forbes-c1-negotiation.html', 'fe_at=expired',    402, 'pro lesson, expired token'],
-  ['/forbes-c1-negotiation.html', 'other=1; fe_at=good-token; z=2', 200, 'cookie among others'],
-  ['/koolhas%20%26%20Lamb.html',  null, 402, 'percent-encoded space and ampersand'],
-  ['/koolhas%20%26%20Lamb',       null, 402, 'percent-encoded, no extension'],
-  ['/Race%20Day%20-%20The%20Falcon%20Racing%20Story%20(B1%20F1%20RPG)', null, 402, 'parens and spaces, no extension'],
-  ['/snack-attack-a1.html',       null, 200, 'free lesson, no session'],
-  ['/library.html',               null, 200, 'library is never gated'],
-  ['/',                           null, 200, 'root'],
-  ['/Ukraine/rebuild-hero.jpg',   null, 200, 'image in a folder'],
-  ['/sb-client.js',               null, 200, 'script'],
+  // [path, cookie, expected kind, why]
+  ['/forbes-c1-negotiation.html', null, 'gate', 'pro lesson, no session'],
+  ['/forbes-c1-negotiation',      null, 'gate', 'pro lesson WITHOUT .html — the obvious bypass'],
+  ['/forbes-c1-negotiation.html', 'fe_at=good-token', 'lesson', 'pro lesson, subscriber'],
+  ['/forbes-c1-negotiation.html', 'fe_at=expired',    'gate', 'pro lesson, expired token'],
+  ['/forbes-c1-negotiation.html', 'other=1; fe_at=good-token; z=2', 'lesson', 'cookie among others'],
+  ['/koolhas%20%26%20Lamb.html',  null, 'gate', 'percent-encoded space and ampersand'],
+  ['/koolhas%20%26%20Lamb',       null, 'gate', 'percent-encoded, no extension'],
+  ['/Race%20Day%20-%20The%20Falcon%20Racing%20Story%20(B1%20F1%20RPG)', null, 'gate', 'parens and spaces, no extension'],
+  ['/snack-attack-a1.html',       null, 'lesson', 'free lesson, no session'],
+  ['/library.html',               null, 'lesson', 'library is never gated'],
+  ['/',                           null, 'lesson', 'root'],
+  ['/Ukraine/rebuild-hero.jpg',   null, 'lesson', 'image in a folder'],
+  ['/sb-client.js',               null, 'lesson', 'script'],
 ];
 
 let pass = 0, fail = 0;
 for (const [path, cookie, want, why] of cases) {
   const res = await get(path, cookie);
-  const ok = res.status === want;
+  const body = await res.clone().text();
+  const kind = body.includes('GATE PAGE') || body.includes('Subscribers only') ? 'gate' : 'lesson';
+  // A gate must answer 200 or it can never be indexed; see locked() in src.
+  const ok = kind === want && res.status === 200;
   ok ? pass++ : fail++;
-  console.log(`${ok ? ' PASS' : ' FAIL'}  ${String(res.status).padEnd(4)} (want ${want})  ${path.slice(0,52).padEnd(54)} ${why}`);
+  console.log(`${ok ? ' PASS' : ' FAIL'}  ${kind.padEnd(6)} ${String(res.status).padEnd(4)} (want ${want})  ${path.slice(0,46).padEnd(48)} ${why}`);
+}
+
+// The gate page must carry THIS lesson's title and description, not a generic
+// one: 195 identical pages is what made four fifths of the library invisible.
+{
+  const res = await get('/forbes-c1-negotiation.html', null);
+  const body = await res.text();
+  const named = body.includes('Negotiation &amp; Persuasion') &&
+                body.includes('Register, nuance and precision') &&
+                body.includes('"isAccessibleForFree":false');
+  named ? pass++ : fail++;
+  console.log(`${named ? ' PASS' : ' FAIL'}  the gate page names the lesson it is gating, and declares itself gated`);
 }
 
 // A served pro lesson must not be cacheable by a shared cache.
@@ -78,7 +109,7 @@ const realFetch = globalThis.fetch;
 store.clear();
 globalThis.fetch = async () => { throw new Error('network down'); };
 const down = await get('/forbes-c1-negotiation.html', null);
-const open_ = down.status === 200;
+const open_ = down.status === 200 && (await down.text()).includes('LESSON BODY');
 open_ ? pass++ : fail++;
 console.log(`${open_ ? ' PASS' : ' FAIL'}  fails open when Supabase is unreachable (${down.status})`);
 globalThis.fetch = realFetch;
