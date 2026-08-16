@@ -457,6 +457,7 @@ built. Pick them up in any order.
 | `impostor_syndrome_lesson.html` | `Impostor2/hero.jpg` — a woman at a podium with a drink, audience in silhouette, Noma Bar treatment. **Ultra-wide (3376×1440), not 16:9** — crop or letterbox before deriving the palette. | Not audited. Note `Impostor/` is already taken by `impostor_syndrome_advanced_JP.html`, which is why the folder is `Impostor2/`. |
 | `contingency-trade-offs-vocab.html` | `Construction3/`: `hero.jpg` (crane, red sun, dusk), `a.jpg` (unfinished concrete frame, palms), `b.jpg` (four-panel site strip), `c.jpg` (tower crane against cloud) | Not audited. 22 KB, the smallest of the four — likely a short vocab list rather than a full lesson. `Construction/` and `Construction2/` are both taken. |
 | `expressions_take_put_v2` + `_ES` + `_PL` → one lesson | `TakePut/hero.jpg` (car on a road at dusk) | **A real merge, not a dedupe.** Innes asked for it explicitly. |
+| `forbes-conservation-c1.html` | `Conservation/` (9): `reef-lagoon.jpg`, `reef-canyon.jpg`, `island.jpg`, `turtles.jpg`, `frog.jpg`, `wildfire.jpg`, `plantation.jpg`, `ama-boat.jpg`, `ama-dusk.jpg` | **Audited — see below.** Innes sent the art with no URL; it was matched to this lesson by content — the lesson is subtitled "From Cloud Forests to Coral Reefs" and runs Ecuador cloud forest → coral reef → Japan's *ama* divers, so the frog, the reef and the turtles are its own material. 60 KB, three activities, 6 MC questions. |
 
 ### The take/put merge is the awkward one
 
@@ -492,3 +493,129 @@ the page looked identical either way. The hash check is not optional, and it
 must cover *every* file in the batch — `check-library.js --vs-origin` caught
 that a `library.html` about to be uploaded would have wiped two cards another
 session had added forty minutes earlier.
+
+### ~~The take/put merge is NOT blocked after all~~ — SUPERSEDED, THIS WAS WRONG
+
+> **Do not act on this section.** It claimed the ES and PL support was chrome
+> only. It is not: all three files carry 32 per-item glosses each. The error and
+> the real picture are in **"CORRECTION: take/put support is per-item after
+> all"** at the end of this file. The paragraph below is kept only so the
+> mistake is legible, because the *method* that produced it — testing for
+> diacritics rather than counting object keys — is the reusable lesson.
+
+~~Every Spanish-bearing text node in `expressions_take_put_ES.html` is chrome —
+headings, task instructions, button labels, the section intros. There is no
+`data-explain`, and no Spanish or Polish anywhere in the JS data.~~
+
+The one part of this section that held up: **both files promise something they
+do not fully contain.** The ES page says *"Las traducciones al español aparecen
+en rojo después de cada respuesta"* and the PL page says the same in Polish.
+True for activities 1–3, false for activity 4. Same class of defect as the
+Harari transcript claim — a checkable promise the file does not keep.
+
+### Artwork is committed the moment it is staged
+
+Learned the hard way this session — see the `reset --hard` note above. Every
+folder in the queue table is already on `origin/main`, so the next session
+starts with the art in hand and nothing depends on a sandbox surviving.
+
+## Conservation Travel C1 — audited, not built
+
+`forbes-conservation-c1.html`, 60 KB, three activities: 6 MC, 6 gap-fill, 5
+sentence-ordering, plus discussion prompts. Artwork is in `Conservation/`
+(nine images, listed in the queue table).
+
+**The word bank is the answer key, in order.** Not correlated with it — the
+same list:
+
+```
+bank    : rare  retraining  traditional  millennia  Cultural  extinction
+answers : rare  retraining  traditional  millennia  Cultural  extinction
+```
+
+A learner reads the bank top to bottom, fills the gaps top to bottom, and
+scores 6/6 without reading a single sentence. This is the most blatant
+instance of the `assert_bank_is_not_a_key` defect in the catalogue — every
+previous case was a bank that merely leaked the order; this one *is* the key.
+Fix by sorting the bank, which is what the guard wants and what
+`build_nature1.py` does.
+
+`Cultural` is capitalised in the bank, which separately tells the learner that
+gap begins a sentence. Sorting alone does not fix that; either lower-case it in
+the bank or move the gap off a sentence boundary.
+
+**The MC keys run 1 1 1 2 1 1** — five of six on index 1 — and **the key is the
+longest option in 3 of 6** (up to +12 chars). Same pair of tells as Harari,
+milder. Derange the keys and lengthen the three distractors; do not shorten a
+key.
+
+The ordering activity was not measured — check whether it can be lost before
+trusting it, since the `match` engine's equivalent could not be.
+
+The reading itself is good and should survive: Ecuador cloud forest, coral reef
+restoration, Japan's *ama* divers. That last is what the `ama-boat.jpg` and
+`ama-dusk.jpg` frames are for, and the lesson names the tradition explicitly,
+so those two backgrounds do teaching work rather than decoration.
+
+## CORRECTION: take/put support is per-item after all — and the merge is still easy
+
+An earlier note in this file said the take/put ES and PL support was chrome
+only and merged cleanly. **That was wrong, and it was wrong for an avoidable
+reason.** The test used was "does any string in the JS carry Spanish or Polish
+diacritics" — and most of these glosses do not. `tomar la iniciativa`,
+`correr un riesgo` and `poner por escrito` are all pure ASCII. The check
+reported zero and the conclusion was drawn from it.
+
+What is actually there, counted by object key rather than by accent:
+
+| File | Field | S1 | S2items | S3data | S4left/right |
+|---|---|---|---|---|---|
+| `expressions_take_put_v2.html` | `de:` | 7/7 | 18/18 | 7/7 | **0/12** |
+| `expressions_take_put_ES.html` | `es:` | 7/7 | 18/18 | 7/7 | **0/12** |
+| `expressions_take_put_PL.html` | `pl:` | 7/7 | 18/18 | 7/7 | **0/12** |
+
+Two things follow.
+
+**The "base" file is the German edition.** `expressions_take_put_v2.html` is
+not language-neutral with two translations bolted on; it is DE, and ES and PL
+are its siblings. Three editions, not one-plus-two.
+
+**The merge is easy anyway, and it destroys nothing.** The support is a
+*parallel field on identical item objects* — `{lbl, cat, de}` against
+`{lbl, cat, es}` — so merging is `{lbl, cat, de, es, pl}` and a renderer that
+picks the field by current language. This is nothing like `cheat_sheet` DE/IT,
+where the divergent strings were whole example sentences. The general blocker
+(`UI_I18N` cannot reach `data-explain`) does not bite here because the gloss
+never goes through `data-i18n` at all — it is read straight off the item.
+
+### Innes's decision on the promises
+
+All three files tell the learner that translations appear after every answer.
+That is true for activities 1–3 (32 items) and **false for activity 4**, the
+dialogue-matching board — 12 items with no gloss in any language.
+
+**Instruction: keep or delete all promises — no partially-kept ones. Spanish
+takes priority over Polish.**
+
+So, in the merge: add the missing activity-4 glosses so the claim is true, and
+where a language cannot be completed to standard, delete that language's claim
+rather than ship it half-kept. Spanish is the one to complete first; Polish is
+the one to drop the claim from if something has to give.
+
+Six expressions need a gloss (the right-hand replies are not glossed anywhere
+and do not need to be — the existing pattern glosses the *expression*, not the
+sentence). Spanish drafted, matching the `'x \/ y'` two-option house format
+used in S1 and S3:
+
+| id | expression | `es:` |
+|---|---|---|
+| L1 | put my foot in it | `meter la pata \/ decir algo inoportuno` |
+| L2 | take a break | `tomar un descanso \/ hacer una pausa` |
+| L3 | take the lead | `tomar la iniciativa \/ ponerse al frente` |
+| L4 | put in writing | `poner por escrito \/ dejar constancia escrita` |
+| L5 | put it behind you | `pasar página \/ dejarlo atrás` |
+| L6 | take advantage of | `aprovechar \/ sacar partido de` |
+
+L3 deliberately reuses the exact string already on `S2items` for *take the
+lead*, so the same expression does not get two different glosses in one lesson.
+Check the other five against S1/S2/S3 for the same reason before adding them.
