@@ -1017,18 +1017,29 @@ const gapOk = g => g.dataset.answer.split('|')
   .map(a => a.trim().toLowerCase())
   .includes(g.value.trim().toLowerCase().replace(/\s+/g, ' '));
 
-function markGap(g, fb) {
+function markGap(g) {
   const ok = gapOk(g);
   g.classList.add(ok ? 'correct' : 'wrong');
   g.disabled = true;
   if (ok) score++;
+  return ok;
+}
+
+/* Mark EVERY input in a group and write ONE piece of feedback for it. This
+   used to mark the first and stop, while maxScore counted them all, so a
+   row with two blanks was worth two points and could only earn one. This
+   lesson has no builder, so the fix is applied here directly; the same fix
+   is in lesson-template.html for everything that is generated. */
+function markGroup(gaps, fb) {
+  const missed = gaps.filter(g => !markGap(g));
   if (fb) {
     const why = fb.dataset.explain ? ' ' + fb.dataset.explain : '';
-    fb.textContent = (ok ? t('fbCorrect')
-      : `${t('fbWrong')} ${t('fbAnswer')} ${g.dataset.answer.split('|')[0]}`) + why;
-    fb.className = 'feedback show ' + (ok ? 'ok' : 'no');
+    fb.textContent = (missed.length === 0 ? t('fbCorrect')
+      : `${t('fbWrong')} ${t('fbAnswer')} ` +
+        missed.map(g => g.dataset.answer.split('|')[0]).join(', ')) + why;
+    fb.className = 'feedback show ' + (missed.length === 0 ? 'ok' : 'no');
   }
-  return ok;
+  return missed.length === 0;
 }
 
 function checkGaps(slide) {
@@ -1036,9 +1047,11 @@ function checkGaps(slide) {
   answered.add(slide);
   const rows = [...slide.querySelectorAll('.gap-row')];
   if (rows.length) {
-    rows.forEach(r => markGap(r.querySelector('.gap'), r.querySelector('.feedback')));
+    rows.forEach(r => markGroup([...r.querySelectorAll('.gap')],
+                                r.querySelector('.feedback')));
   } else {
-    markGap(slide.querySelector('.gap'), slide.querySelector('.feedback'));
+    markGroup([...slide.querySelectorAll('.gap')],
+              slide.querySelector('.feedback'));
   }
   const btn = slide.querySelector('[data-action="check"]');
   if (btn) btn.disabled = true;
