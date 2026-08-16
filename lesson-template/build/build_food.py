@@ -35,32 +35,51 @@ PALETTE = '''  --hero: url('%s/hero.jpg');
   --contrast      : #1deda7;''' % FOLDER
 
 sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
+import deck
 from food_mc import MC
 
-# ── The dialogue, in two halves. Each line is (speaker, text). ──────────
-# ______ marks a blank; the answer follows in ANSWERS in the same order.
+# ── The dialogue, in two halves. One blank per line, and that is a hard
+# constraint rather than a stylistic one: checkGaps() in the template marks
+# the FIRST input inside a .gap-row and ignores the rest, while maxScore
+# counts them all. Two of these lines used to carry two blanks each, and the
+# slide rendered them all inside a single card with no .gap-row at all — so
+# of the eight answers here, six were unscorable. A perfect run finished
+# 10/16. deck.gap() now asserts the rule; see deck.py.
 DIALOGUE_A = [
-    ('Waiter', 'Good evening! Do you have a ______?'),
-    ('You', 'Yes, for two. Could you ______ a good ______?'),
-    ('Waiter', 'Our soup of the day is excellent. And how would you like your steak &mdash; rare, ______, or well done?'),
+    ('Waiter', 'Good evening! Do you have a ______?', 'reservation',
+     'A <strong>reservation</strong> is the booking you made in advance. This is the first '
+     'thing you will be asked, every time.'),
+    ('You', 'Yes, for two. What would you ______?', 'recommend',
+     'You <strong>recommend</strong> a dish to somebody. <em>What would you recommend?</em> is '
+     'the whole question — no <em>what dish</em>, no <em>for me</em> on the end.'),
+    ('Waiter', 'The soup of the day, as a ______. And how would you like your steak?', 'starter',
+     'The <strong>starter</strong> is the first course, before the main. American menus call '
+     'the same thing an <em>appetizer</em>.'),
+    ('You', 'Not too rare &mdash; ______, please.', 'medium',
+     'The steak scale has exactly three points: <em>rare</em>, <strong>medium</strong>, '
+     '<em>well done</em>. Nothing else is used, however logical it sounds.'),
 ]
-ANSWERS_A = ['reservation', 'recommend', 'starter', 'medium']
 
 DIALOGUE_B = [
-    ('You', 'Medium, please. Is service ______ in the bill?'),
-    ('Waiter', 'Yes, it is. Would you like to see the ______ menu?'),
-    ('You', 'Yes please. Could we ______ the chocolate cake? And could we have ______ bills?'),
+    ('You', 'Thank you. Is service ______ in the bill?', 'included',
+     '<strong>Service included</strong> means the tip is already on the bill. Ask before you '
+     'add anything on top.'),
+    ('Waiter', 'Yes, it is. Would you like to see the ______ menu?', 'dessert',
+     '<strong>Dessert</strong> is the last course, and it often comes on a card of its own.'),
+    ('You', 'Yes please. Could we ______ the chocolate cake?', 'share',
+     '<strong>Share</strong> takes no preposition here: <em>share the cake</em>, not '
+     '<em>share of the cake</em>.'),
+    ('Waiter', 'Of course &mdash; one cake, two spoons. And ______ bills?', 'separate',
+     '<strong>Separate bills</strong> is the fixed phrase — not <em>divided</em>, not '
+     '<em>single</em>. In America, <em>separate checks</em>.'),
 ]
-ANSWERS_B = ['included', 'dessert', 'share', 'separate']
+
+ANSWERS_A = [a for _, _, a, _ in DIALOGUE_A]
+ANSWERS_B = [a for _, _, a, _ in DIALOGUE_B]
 
 # Alphabetical, deliberately. A bank listed in gap order is an answer key:
 # the learner reads straight down it and never looks at the sentences.
 BANK = sorted(ANSWERS_A + ANSWERS_B)
-
-WHY_A = ('A reservation is the booking; you recommend a dish to somebody; the starter is the '
-         'first course; and the steak scale runs rare - medium - well done, with nothing else on it.')
-WHY_B = ('Service included means the tip is already on the bill. Share takes no preposition here, '
-         'and separate bills is the fixed phrase - not divided or single.')
 
 MATCH = [
     ('Is this dish gluten-free?', 'Checking a dish is safe for a wheat intolerance'),
@@ -83,6 +102,15 @@ FIX = [
     ('Is the service charge <s>include</s> in the price?', 'included',
      'This is a passive: <em>be</em> plus the past participle. <strong>Is the service charge included?</strong>'),
 ]
+
+
+# Four dialogue rows, a word bank and a Check button do not fit the 720px
+# canvas at the shared builder's default row padding — the slide came out
+# 21px over. Trimming the vertical padding on this lesson's gap rows buys
+# 32px, which is the smallest change that clears it; the alternative was
+# cutting a line out of the conversation.
+HEAD_CSS = ('[data-type="gap"] .gap-row { padding: 8px 16px !important; }\n'
+            '[data-type="gap"] .gap-row .feedback { margin-top: 4px; }\n')
 
 
 def esc(t):
@@ -110,42 +138,21 @@ def mc_slide(i, q, bg=None):
 ''' % (' data-bg="%s/%s"' % (FOLDER, bg) if bg else '', i, q['stem'], opts, esc(q['why']))
 
 
-def dialogue_slide(n, lines, answers, why, bg=None):
-    """One half of the restaurant exchange, blanks as inputs."""
-    pool = list(answers)
-    rows = []
-    for who, text in lines:
-        out = text
-        while '______' in out:
-            out = out.replace(
-                '______',
-                '<input class="gap" data-answer="%s" aria-label="gap" style="width:190px">' % pool.pop(0), 1)
-        rows.append(
-            '<p class="prose" style="font-size:20px;margin-bottom:14px">'
-            '<span class="dim" style="font-size:14px;letter-spacing:.08em;'
-            'text-transform:uppercase;margin-right:10px">%s</span>%s</p>' % (who, out))
-    rows = ['<div class="card">%s</div>' % "".join(rows)]
-    chips = " ".join('<span class="bank-chip">%s</span>' % w for w in BANK)
-    return '''
-    <section class="slide" data-type="gap"%s>
-      <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="gapEyebrow">The whole meal, in order</span> &middot; %d / 2</div>
-        <h2 class="slide-title" data-i18n="gapTitle">Complete the conversation</h2>
-      </div></div>
-      <div class="slide-body">
-        <div class="act-target" style="margin-bottom:12px">
-          <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
-          %s
-        </div>
-        %s
-        <p class="feedback" data-explain="%s"></p>
-        <div style="margin-top:10px">
-          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
-        </div>
-      </div>
-    </section>
-''' % (' data-bg="%s/%s"' % (FOLDER, bg) if bg else '', n, chips,
-       "\n        ".join(rows), esc(why))
+SPEAKER = ('<span class="dim" style="font-size:14px;letter-spacing:.08em;'
+           'text-transform:uppercase;margin-right:10px">%s</span>')
+
+
+def dialogue_slide(n, lines, bg=None):
+    """One half of the restaurant exchange, through the shared gap builder.
+
+    This used to be a hand-rolled slide that put every input inside one
+    card. deck.gap() gives each line its own .gap-row, which is what the
+    engine scores against, and its own explanation."""
+    rows = [(SPEAKER % who + text, [ans], why) for who, text, ans, why in lines]
+    return deck.gap(n, 2, rows, BANK,
+                    'gapEyebrow', 'The whole meal, in order',
+                    'gapTitle', 'Complete the conversation',
+                    folder=FOLDER, bg=bg, width=180, size=18)
 
 
 def fix_slide(n, items, bg=None):
@@ -347,8 +354,8 @@ def build():
     bgs = [None, 'counter.jpg', None, 'kitchen.jpg', None, 'pass.jpg']
     slides = (HEAD.replace('{LOGO}', logo)
               + "".join(mc_slide(i + 1, q, bgs[i]) for i, q in enumerate(MC))
-              + dialogue_slide(1, DIALOGUE_A, ANSWERS_A, WHY_A, 'counter.jpg')
-              + dialogue_slide(2, DIALOGUE_B, ANSWERS_B, WHY_B, 'counter.jpg')
+              + dialogue_slide(1, DIALOGUE_A, 'counter.jpg')
+              + dialogue_slide(2, DIALOGUE_B, 'counter.jpg')
               + (MATCH_SLIDE % pairs)
               + fix_slide(1, FIX[:3], 'kitchen.jpg')
               + fix_slide(2, FIX[3:], 'kitchen.jpg')
@@ -371,6 +378,8 @@ def build():
         + ['  %s: {}' % c for c in ['es', 'fr', 'it', 'pt', 'ru', 'ar', 'zh', 'ja']]) + '\n};'
     s = re.sub(r'const UI_I18N = \{.*?\n\};', block, s, count=1, flags=re.S)
 
+    s = s.replace('</style>\n</head>', HEAD_CSS + '</style>\n</head>', 1)
+    assert '.gap-row { padding: 8px' in s, 'the head CSS did not attach'
     open(OUT, 'w', encoding='utf-8').write(s)
     print('wrote %s — %d slides, %d MC, %d gaps, %d pairs, %d fixes, bank positions %s, %d bytes'
           % (OUT, s.count('<section class="slide'), len(MC),

@@ -159,6 +159,19 @@ def gap(i, total, rows, bank, eyebrow_key, eyebrow, title_key, title,
             'gap: "%s" has %d blank(s) for %d answer(s). A gap-fill with no '
             '______ marker renders an unanswerable question.'
             % (sentence[:60], sentence.count('______'), len(answers)))
+        # ONE blank per row, and the reason is in the engine, not in taste.
+        # checkGaps() scores a .gap-row by its FIRST input —
+        # `rows.forEach(r => markGap(r.querySelector('.gap'), …))` — while
+        # maxScore counts every input on the slide. Put two blanks in one
+        # row and the second is unscorable and unexplained: the learner
+        # types the right word, gets no mark, and the deck can never reach
+        # its own maximum. Caught on Food A1 Part 1, where one line held
+        # two blanks and a perfect run finished 18/19. Split the sentence.
+        assert len(answers) == 1, (
+            'gap: "%s" carries %d answers in one row. checkGaps() marks the '
+            'first input of a .gap-row and ignores the rest, so every blank '
+            'after the first is unscorable. One blank per row.'
+            % (re.sub(r'<[^>]+>', '', sentence)[:60], len(answers)))
         s = sentence
         for a in answers:
             s = s.replace('______',
