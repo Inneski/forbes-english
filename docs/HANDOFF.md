@@ -1012,6 +1012,47 @@ pdftoppm -jpeg -jpegopt quality=88 -r 144 deck.pdf slide     # gives 1921px — 
 progressive lands each slide at 200-400KB; the twin-peaks PNGs average 1.4MB
 each for no visible gain, so use JPEG.
 
+### CHECK THE FONT BEFORE YOU PUBLISH — `pdffonts`, every time
+
+The first render of this deck went out in the wrong typeface and Innes spotted
+it. The deck asks for **Courier New**, which is not installed here.
+Fontconfig resolves it to **Liberation Mono**, which is *metric-compatible* —
+so nothing overflows, nothing shifts, every QA check passes — and looks nothing
+like Courier: a neutral grotesque with none of the typewriter slabs. A
+substituted font is invisible to every check we run. The only reliable tell:
+
+```bash
+pdffonts deck.pdf     # BAAAAA+LiberationMono-Bold  <- wrong
+                      # BAAAAA+CourierNew-Bold      <- right
+```
+
+**Fontconfig alone cannot fix it.** LibreOffice consults its own substitution
+table first and that table maps Courier New to Liberation Mono; a
+`<match target="pattern">` rule for the family never gets a look in. Two things
+that also do not work: `ttf-mscorefonts-installer` (its postinst fetches from
+SourceForge and fails in this sandbox), and pointing at "Nimbus Mono PS"
+by name in a fontconfig alias.
+
+What works is giving LibreOffice an exact family-name match. Nimbus Mono PS is
+URW's clone of Adobe Courier — the face Courier New was itself drawn from — so
+install it under the name it is standing in for:
+
+```python
+from fontTools.ttLib import TTFont
+f = TTFont('/usr/share/fonts/opentype/urw-base35/NimbusMonoPS-Bold.otf')
+for rec in f['name'].names:
+    if rec.nameID in (1, 16): rec.string = 'Courier New'
+    elif rec.nameID == 4:     rec.string = 'Courier New Bold'
+    elif rec.nameID == 6:     rec.string = 'CourierNew-Bold'
+f.save('/usr/share/fonts/opentype/couriersub/CourierNew-Bold.otf')   # then fc-cache -f
+```
+
+Do all four styles. This is a **render-time substitution inside the sandbox** —
+no font ships, and the container is rebuilt every session, so **this has to be
+redone every time a deck using Courier New is rendered.** The same trap waits
+for any deck naming a font Office ships and Linux does not: Calibri, Cambria,
+Aptos. `pdffonts` is the check.
+
 **The `LESSON_IMAGES` entry is not optional any more** — without it the lesson
 renders as "Coming soon" and is excluded from the sitemap. Point it at
 `slide-01.jpg`.
@@ -1029,9 +1070,53 @@ closing on a recap grid.
 Courier New 13.5pt box positioned above the title. Not a rendering artefact —
 `markitdown` showed no text in it either. Replaced with a copy of slide 6's
 `Grammar 9` shape, `PLAY` → `FIGHT`, x shifted to 7176135 to sit over slide 8's
-own title. `validate.py --original` passes. **The uploaded `.pptx` is therefore
-one shape different from the file Innes sent**, and the download button serves
-the corrected copy.
+own title. `validate.py --original` passes.
+
+**Slide 2 carried a duplicate eyebrow.** Two shapes with the same text: the
+correct one (`Grammar 9`, black `tx1`, above the title) and a stray
+(`Grammar 2`, salmon `E85F5B`, parked in the top-left corner over the pink
+panel, where it was near-invisible but present). Innes asked for it to be
+black; it already was — the salmon one was a second copy in the wrong place.
+Deleted.
+
+**The uploaded `.pptx` is therefore two shapes different from the file Innes
+sent** — slide 8's eyebrow added, slide 2's duplicate removed — and the
+download button serves that corrected copy.
+
+### Branding: the logo, and where it can actually go
+
+The deck arrived with no Forbes English mark at all. Precedent from the two
+older pptx decks: **Star Wars puts it bottom-right on the cover only; Twin
+Peaks also puts it in the bottom-right of interior slides.** Innes asked for it
+"green like the website" — that is `--green-deep #1b3a28` and
+`--green-light #4a8f61`, both straight out of `library.html`.
+
+`logo-forbes-english_1.png` (692x360, RGBA, transparent) is the only usable
+asset. The five files in `HOUSE STYLE/` are photographs of business cards.
+Recolour by rewriting RGB and keeping alpha — a flat monotone mark, which is
+what both older decks use.
+
+**Placement had to be measured, not guessed.** This artwork is dark in almost
+every corner: the bottom-left of the ten slides runs L=0.01 to 0.54 and the
+bottom-right L=0.01 to 0.33, so neither green reads everywhere and there is no
+one corner that works across the set. First attempt put the cover logo just
+below the subtitle at 106px tall and "ENGLISH" landed in the treeline. What
+worked:
+
+- **Cover** — the cloud strip directly under "Actions happening now",
+  right-aligned with the title column, 81px tall so it stops above the trees.
+  L=0.42 there; deep green measures **5.2:1**.
+- **Closing** — bottom-left on flat dark navy, L=0.01; light green, **4.1:1**.
+
+Interior slides carry no mark, matching Star Wars. Twin Peaks brands its
+interiors, so **if Innes wants all ten, the per-slide colour has to be chosen
+from the local luminance** — a single colour will disappear on some of them.
+
+Worth knowing for next time: every *visible* run in this deck is Courier New.
+The Arial that shows up in a naive font scan is only in paragraph defaults
+(`defRPr`) and in two empty leftover boxes, `Prompt 7` and `Prompt 8`. Check
+`<a:r>` runs, not `<p:sp>` shapes, before reporting a font inconsistency —
+`Prompt 7` is still in the file, empty and invisible.
 
 ### Two departures from the twin-peaks viewer, both deliberate
 
