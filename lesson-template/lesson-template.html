@@ -1541,16 +1541,18 @@ function markGap(g) {
    exam-prep five points and two other lessons one each.
 
    A miss now names every answer it missed, not just the first. */
+function fillFeedback(fb, missed) {
+  const why = fb.dataset.explain ? ' ' + fb.dataset.explain : '';
+  fb.innerHTML = (missed.length === 0 ? t('fbCorrect')
+    : `${t('fbWrong')} ${t('fbAnswer')} ` +
+      missed.map(g => g.dataset.answer.split('|')[0]).join(', ') + '.') + why;
+  fb.className = 'feedback show ' + (missed.length === 0 ? 'ok' : 'no');
+}
+
 function markGroup(gaps, fb) {
   const missed = gaps.filter(g => !markGap(g));
-  if (fb) {
-    const why = fb.dataset.explain ? ' ' + fb.dataset.explain : '';
-    fb.innerHTML = (missed.length === 0 ? t('fbCorrect')
-      : `${t('fbWrong')} ${t('fbAnswer')} ` +
-        missed.map(g => g.dataset.answer.split('|')[0]).join(', ') + '.') + why;
-    fb.className = 'feedback show ' + (missed.length === 0 ? 'ok' : 'no');
-  }
-  return missed.length === 0;
+  if (fb) fillFeedback(fb, missed);
+  return missed;
 }
 
 function checkGaps(slide) {
@@ -1565,14 +1567,24 @@ function checkGaps(slide) {
   }
   answered.add(slide);
   const rows = [...slide.querySelectorAll('.gap-row')];
+  // A screen may carry ONE pooled explanation instead of one per row — the
+  // four traps are variations on a single point and read better together,
+  // and four per-row feedback blocks reserve 46px each whether or not
+  // anyone has pressed Check. It shipped that way on Food A1 and was never
+  // once displayed: this loop only ever touched feedback found *inside* a
+  // row, so the slide's own note sat in the DOM with no code path to reach
+  // it. The learner pressed Check, saw the gaps go green, and got no
+  // explanation at all.
+  const pooled = [...slide.querySelectorAll('.feedback')]
+    .find(f => !f.closest('.gap-row'));
   if (rows.length) {
-    rows.forEach(r => markGroup([...r.querySelectorAll('.gap')],
-                                r.querySelector('.feedback')));
+    const missed = rows.flatMap(r => markGroup([...r.querySelectorAll('.gap')],
+                                               r.querySelector('.feedback')));
+    if (pooled) fillFeedback(pooled, missed);
   } else {
     // No .gap-row wrappers: the whole slide is one group. Marking only the
     // first input here is the same bug in its other form.
-    markGroup([...slide.querySelectorAll('.gap')],
-              slide.querySelector('.feedback'));
+    markGroup([...slide.querySelectorAll('.gap')], pooled);
   }
   const btn = slide.querySelector('[data-action="check"]');
   if (btn) btn.disabled = true;
