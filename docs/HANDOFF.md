@@ -16,10 +16,10 @@ stale copy.
 
 | Lesson | Artwork | State |
 |---|---|---|
-| `forbes-nature-agency-part1.html` | `NatureAgency/`: `hero.jpg` (harrier, daylight — cover), `harrier-dusk.jpg` (the `report` slide + sort 1), `peatland.jpg`, `restoration.jpg`, `hags.jpg` | **BUILT — 36 slides, checker clean** (`381754c`), **re-arted since** — see "The artwork was American" below. An earlier finished rebuild of this same lesson was lost to an unpushed branch first — see the warning under Publishing in `CLAUDE.md`. |
+| `forbes-nature-agency-part1.html` | `NatureAgency/` (hero, lake, station, prairie) | **BUILT — 36 slides, checker clean** (`381754c`). An earlier finished rebuild of this same lesson was lost to an unpushed branch first — see the warning under Publishing in `CLAUDE.md`. |
 | `forbes-nature-agency-part2.html` | `NatureAgency2/`: `hero-otter.jpg` (cover), `hide.jpg` (the hide slide), `loch.jpg` (scene-setting + results), `reeds.jpg` (dividers), `shore.jpg` (activation) | **BUILT — 59 slides, checker clean.** `build_nature2.py` + `i18n_nature2.py`. |
 | `forbes-english-b2-lesson.html` | `TopGearB2/hero.jpg` | **BUILT — 37 slides, checker clean.** `lesson-template/build/build_topgear.py` + `i18n_topgear.py`. Audit at `docs/topgear-b2-audit.md`. Not yet pushed. |
-| `forbes-geoscience-phrases.html` | `Geoscience/` (5 images) | **BUILT — 39 slides, checker clean.** `build_geo.py` + `i18n_geo.py`. Audit at `docs/geoscience-audit.md`. Not yet pushed. |
+| `forbes-geoscience-phrases.html` | `Geoscience/` (5 images) | **audited, see `docs/geoscience-audit.md`** |
 
 ### Decisions taken on Nature Agency Part 2 (Innes, this session)
 
@@ -109,55 +109,6 @@ every accepted spelling, not by changing the engine's `gapOk`. A
 lesson that deliberately tests BrE against AmE spelling would be broken
 by a blanket engine change; per-lesson data is not.
 
-### The Language of Geoscience — built
-
-`forbes-geoscience-phrases.html`, 39 slides, all ten gates clean, light
-theme. `build_geo.py` + `i18n_geo.py`, English + German both complete.
-Nineteen scored points, the same nineteen the old file had: six phrases
-in context, six field-note gaps, seven report terms. Full reasoning is in
-the builder docstring. Five things a later session should not have to
-rediscover:
-
-- **The images in `Geoscience/` are not what the audit says they are.**
-  `docs/geoscience-audit.md` Part E describes `hero.jpg` as "banded
-  sedimentary strata above a red plain" and approves it for the cover.
-  `hero.jpg` is an **erupting stratovolcano over the sea**. The picture
-  the audit is describing is `buttes.jpg` (Monument Valley). The other
-  three are also volcanic: a second ash-column cone, a linear curtain of
-  fire, and a banded escarpment above what its filename says is a lava
-  plain. Since the lesson has zero volcanic content — that is the audit's
-  own reason for banning eruption imagery — the hero here is
-  `buttes.jpg`, the palette is derived from it, and the build asserts
-  that none of the other four paths appears anywhere in the deck. **Look
-  at an image before trusting a filename or an audit's description of
-  it.**
-- **The match engine still cannot be lost** — fourth lesson in a row. The
-  seven pairs became seven one-per-slide "what does the term mean"
-  multiple-choice items, which also gave the activity the per-item
-  explanations and worked example sentences it never had. `deck.py`
-  untouched, same decision as Nature Agency and Top Gear.
-- **This was the fourth lesson needing per-option `data-explain`**, and it
-  was still injected after `D.mc` rather than promoted to an `explains=`
-  argument on `D.mc`. Four lessons is past the point where that looks
-  optional; the cost is still re-running `check-lesson.js` over every
-  shipped deck to prove no regression, which is a job of its own.
-- **Per-item word banks trip the BANK gate once the answers are
-  deranged.** The gate walks `.bank-chip` in deduplicated document order,
-  so with one small bank per gap slide the answers appear in ascending
-  positions no matter how each bank is shuffled — the chips of slide 2
-  simply come after those of slide 1. The fix here is **one shared
-  twelve-chip bank repeated on all six gap slides**: the positions are
-  then fixed by the bank's own order and can be deliberately deranged
-  ([7, 0, 2, 6, 1, 8]). It is also better teaching — every chip in that
-  bank is defined on a language slide first.
-- **`build_topgear.py`'s `assert_no_answer_is_shown` needs one change to
-  work on a bank lesson.** A word bank legitimately contains the answer,
-  so the bank block has to be stripped from the slide head before the
-  "answer readable before it is given" check; without that the assertion
-  fires on every gap slide. The placeholder half of the check is
-  unchanged and still absolute: no scored input carries a placeholder at
-  all.
-
 ---
 
 ## Nature Agency Part 1 — audit
@@ -243,6 +194,152 @@ confirmed the doubling for the four it named. Check the actual stems.
 
 ---
 
+## Escape from Alcatraz (A2) — built, and three new engine mechanics
+
+`escape-from-alcatraz-a2.html`, 43 slides, 50 scored points, all ten
+gates clean, dark theme, palette verbatim from `extract-palette.py
+Alcatraz/hero.jpg` (every contrast row PASS). `build_alcatraz.py` +
+`i18n_alcatraz.py`. **All ten languages complete** — the second deck
+after `forbes-c1-negotiation.html` to carry the full set.
+
+New in the shared engine, so every future lesson inherits them:
+
+- **`search`** — timed identify-the-object hunt over unlabelled line
+  drawings (`lesson-template/build/icons.py`, 20 objects). Names hidden
+  until answered; the clock pauses on leaving a slide and resumes on
+  return.
+- **`lock`** — combination lock, first attempt scores, unlimited
+  attempts after that so the story can finish.
+- **the rail** — stops along the bottom that remember which room you are
+  in and what you picked up. `D.at(slide, stop, take)` tags a slide.
+  Hidden unless a lesson declares stops.
+
+Four things a later session should not have to rediscover:
+
+- **A background on a `display:none` slide is never fetched, and
+  `page.pdf()` does not wait for the ones that print media reveals.** A
+  deck printed without visiting every slide first exported black
+  interiors while the screen looked correct. Fixed in the template:
+  every `data-bg` is decoded at boot (`new Image().src`). This affected
+  every deck with per-slide artwork, not just this one — Nature Agency
+  and Top Gear are both worth re-checking.
+- **`.sort-bin` now carries the card's backdrop** (`--surface` 78% plus a
+  3px blur) instead of the near-transparent `--inset`. Over a bright hero
+  the bins and their labels had disappeared and the board read as loose
+  chips floating on artwork.
+- **`deck.teach` takes an optional key for a card's *body*.** Six-item
+  cards translate the body; five-item cards behave exactly as before. At
+  A2 the rule itself has to be readable in the learner's language and
+  only the worked examples stay English — the B2 split is wrong at this
+  level. `EXAMPLE_KEYS` in `i18n_alcatraz.py` copies the English examples
+  into all nine other languages so they cannot drift.
+- **The wash is raised on this deck** to 0.17 / 0.36 (§5 permits it, per
+  lesson, measured). Four of the twenty-three illustrations are
+  cream-and-coral at full brightness. `bgmeasure.py` reads 0.046 mean
+  with text at 7.58:1 — inside the dark-theme band.
+
+The artwork is sixteen Black Isler illustrations plus a later set of
+nine guard, surveillance and composite scenes; the guards carry the
+final-check section, which is a nine-item mixed test with no rule on the
+screen.
+
+### Three defects in the shared builders, found by playing the deck
+
+All three were silent — nothing threw, nothing failed a gate, and the
+slides looked correct. Innes found the first two by using the lesson.
+
+1. **`deck.order` emitted `data-action="check"`** while the engine routed
+   sentence-building through `check-order`. The click landed in
+   `checkGaps`, threw on a null input, and **the Check button did nothing
+   on every deck generated with the shared `order()`**. Fixed in
+   `deck.py`; `checkGaps` now routes a gap-less slide to the slide's own
+   checker rather than throwing.
+2. **`deck.gap` renders one answer per `______`, not alternatives.** A
+   row written `['aren't', 'are not']` looks like two accepted spellings
+   and is in fact two blanks — with one marker in the sentence, the
+   second spelling is silently dropped and a correct learner is marked
+   wrong. Alternatives go in one pipe-separated string:
+   `["aren't|are not"]`. `deck.gap` now asserts that a row has at least
+   as many markers as answers, which also catches the next one.
+3. **`build_modals.py` had five "repair the sentence" items with no
+   `______` at all**, so the B1 modal-verbs deck shipped a whole activity
+   with no input boxes and five points nobody could score.
+
+`assert_bank_is_not_a_key` was also failing open: with pipe-separated
+answers nothing matched the bank, `all()` over an empty list is true, and
+it fired on lessons that were fine. It now splits on `|` and needs two
+found positions before it can fail.
+
+**New checker gate: ACTIONS.** It walks the deck, presses what the
+learner would press on every scored slide, and requires the slide to end
+up marked. Verified failing first — it flagged exactly the two dead order
+slides here and twelve across five shipped decks — then passing after the
+fix.
+
+Rebuilt and re-checked clean: `forbes-english-modal-verbs-B1.html`,
+`forbes-english-lesson-managing energy.html`,
+`forbes-english-photography-b2.html`,
+`active_passive_refinery_lesson.html`, `exam-prep-5hour-courseEXP.html`.
+**Run the new gate over the rest of the deck library** — a partial sweep
+timed out, so most of it is still unchecked. It already found one more,
+not fixed here because it needs a content decision per item:
+
+> **`forbes-construction-contracts.html` — Activity 1, six MC slides,
+> and not one option carries `data-correct`.** Every learner scores 0/6
+> on it, whatever they pick, and the deck reports the result as if it
+> were earned. The right answer is stated inside each item's
+> `data-explain`, so the fix is to mark the matching option — but that is
+> six judgements about which option the explanation means, and this is
+> the light-theme benchmark file, so it deserves a careful pass rather
+> than a regex. There is no builder for it; it would want one.
+
+---
+
+## SEO — the site had none, and now has a generator
+
+`tools/seo.py`, run last in the pipeline (see `CLAUDE.md`). Before it: 246
+pages with **no meta description, no Open Graph, no structured data**, two
+canonicals, four pages titled "Lesson Library", and no sitemap. Three
+structural problems mattered more than any of that:
+
+1. **Nothing was discoverable.** `library.html` builds its list from Supabase
+   in the browser, so the HTML a crawler receives had five links and 77 words.
+   236 lessons sat behind it, reachable only by a URL you already knew. The
+   generator writes a static list of all 236 *inside* `<div id="grid">` — the
+   element the page's own script empties on start-up, so a visitor never sees
+   it. When Supabase is unreachable it is also the fallback the visitor gets,
+   which used to be a blank page.
+2. **The gate answered 402.** Google does not index a non-2xx response, so all
+   195 Pro lessons were unindexable whatever else was done. `locked()` now
+   answers **200** carrying `isAccessibleForFree: false` and a `hasPart`
+   marking the withheld region — Google's documented way to declare gated
+   content. Same page for crawler and visitor: nothing here is cloaking.
+3. **Every gate page was identical.** All 195 served the same generic
+   `locked.html`. It now takes the lesson's own title, level and description
+   from `lesson-meta.json` (generated by `seo.py` from the `lessons` table)
+   and fills slots marked `<!-- LESSON:head -->` and `<!-- LESSON:intro -->`.
+
+`deploy/test-paywall.mjs` was updated with it and still passes 16/16. **It now
+asserts on the body, not the status** — once the gate answers 200 like a
+lesson does, status alone cannot tell them apart and the bypass tests would
+have passed vacuously. There is also a new case requiring the gate page to
+name the lesson it is gating.
+
+Left for a human:
+
+- **`level` is null on 77 lessons.** It goes into the title, the description
+  and `educationalLevel`, and it is what people actually search ("A2 English
+  lesson"). Filling those 77 rows in Supabase is the single cheapest SEO win
+  left, and `seo.py` picks it up on the next run with no code change.
+- `front-page.html` and `index_1.html` are near-duplicates of `index.html`.
+  They are `noindex,follow` with a canonical for now; deleting them is a
+  content decision.
+- The sitemap is static. Regenerate (`python3 tools/seo.py`) whenever lessons
+  are added, or it goes stale.
+- Nobody has verified any of this in Search Console — submit the sitemap.
+
+---
+
 ## Recurring defect pattern
 
 Check for these first in anything not yet rebuilt. Every lesson audited
@@ -299,323 +396,3 @@ builder docstring and the commit message.
 - **Builders are in `lesson-template/build/`.** Every deck is generated;
   edit the builder and re-run, don't hand-edit the HTML. Use `deck.py`,
   don't rewrite it.
-
-## `--secondary` is a derived token that nothing renders
-
-Noticed while choosing a theme for the geoscience deck: 13 of 41 shipped
-decks have a `--secondary` that is invisible against their own `--surface`
-(under 1.5:1), including `forbes-c1-negotiation.html`, the worked reference,
-at 1.01:1, and one deck where the two values are byte-identical.
-
-**It does not matter, and that is the point.** `var(--secondary)` appears
-**zero times** in `lesson-template.html`. `extract-palette.py` derives the
-token and prints it, the contrast report does not include its row, and
-nothing consumes it. Thirteen decks carry an invisible colour because the
-colour is never drawn.
-
-Do not "fix" the 13, do not add a gate for it, and do not pick a theme on
-the strength of that row — a light-vs-dark decision was very nearly made on
-it here. Either wire `--secondary` into the template so it means something,
-or drop it from `extract-palette.py`'s output. Until one of those happens,
-ignore it.
-
-## The artwork was American and the lesson was British
-
-Part 1 shipped on a bison hero with a prairie and a US ranger station behind the
-teaching slides, over a lesson about a badger cull, a town council, a marsh
-harrier, hides and a car park. Part 2 had already hit exactly this — its African
-elephants were rejected and replaced with `hero-otter.jpg` — so it is a repeat,
-not a one-off, and worth treating as a class of defect rather than a taste call.
-
-Five replacement images are now in `NatureAgency/`, drawn from the lesson's own
-content rather than from "nature" in the abstract:
-
-| File | Picture | Where it lands |
-|---|---|---|
-| `hero.jpg` | marsh harrier, daylight, bird upper-left | cover, and the library card |
-| `harrier-dusk.jpg` | marsh harrier, dusk silhouette, bird upper-right | the `report` teaching slide, and sort 1 |
-| `peatland.jpg` | cut hags, dark water, poppies, hills | `decay`, `prevalent`/`rampant`, and 6 MC slides |
-| `restoration.jpg` | hag face, tractor, cattle, a worker | "three tells", register, and the 3 odd gap slides |
-| `hags.jpg` | lone tree on a hag, cottongrass fringe | `dwell`, and 6 MC slides |
-
-Two decisions worth not re-litigating:
-
-- **The daylight harrier is the cover, not the dusk one**, even though the dusk
-  frame is the better picture. `.cover-inner` centres its text and the scrim is
-  a radial at 50%/46%, so a centred title needs a clear centre. The daylight
-  frame keeps its bird upper-left; the dusk frame flies straight through where
-  the title goes. The dusk frame backs the `report` slide instead, which is the
-  right home anyway — the harrier *is* the bird Elena has to report within 24
-  hours, and that slide is where the verb sense is taught.
-- **`--bg-opacity` stays at 0.40.** It was set there for the bison hero and the
-  reason still holds for the new set, but it was **re-measured rather than
-  carried over**: `lesson-template/bgmeasure.py` on the four background images
-  gives `text_vs_brightest_bg` of 6.33–6.87 at 0.40 and **2.62–2.98 at the
-  template's default 0.72** — a fail. `hags.jpg` is the worst case both ways.
-
-**Watch out for `bgmeasure.py`'s slide index.** It indexes
-`document.querySelectorAll('.slide')`, which is *not* the same sequence as
-`<section class="slide` in the source — the source count is N+1, the same
-off-by-one the slide-count chip has. Measuring by source index silently reads
-slides that have no `data-bg` at all and returns the bare-wash number for every
-one of them, which looks like a clean pass. Enumerate the indices from the DOM
-first.
-
-`lake.jpg`, `prairie.jpg` and `station.jpg` are unreferenced now but still in
-the repo, because the web uploader cannot delete. `git rm` them from the first
-session that has a working push.
-
-**Nothing checks that a lesson's art matches its setting.** `check-lesson.js`
-verifies the hero resolves; `docs/HERO-QUEUE.md` verifies the file exists. Both
-catches so far came from reading the lesson text and looking at the picture.
-
-## `library.html` loses card entries to stale-base overwrites
-
-`forbes-geoscience-phrases` and `forbes-nature-agency-part1` both had a card
-image, and both silently lost it. Not a gap — a regression:
-
-```
-9497eb4  Library: thumbnail for Nature Agency Part 1     <- both entries present
-5066174  Merge the two Stranger Things tests             <- both entries gone
-```
-
-`5066174` did not touch either lesson. It uploaded a `library.html` built from
-a base that predated them, and the web uploader replaces a file wholesale, so
-two unrelated entries went with it. `LESSON_IMAGES` is a single 166-line
-literal that every session edits, which makes it the most collision-prone file
-in the repo — and the collision is invisible, because a missing card falls back
-to a category-gradient placeholder that looks deliberate.
-
-**Before uploading `library.html`, diff its map against origin's**, and treat
-any key that disappears without a matching lesson deletion as a clobber:
-
-```bash
-ext() { git show "$1:library.html" | python3 -c "
-import sys,re
-m=re.search(r'const LESSON_IMAGES = \{(.*?)\n\};', sys.stdin.read(), re.S).group(1)
-[print(k,'=>',v) for k,v in re.findall(r'\"([^\"]+\.html)\":\s*\"([^\"]+)\"', m)]" | sort; }
-diff <(ext origin/main) <(ext HEAD)
-```
-
-The same check caught a second thing worth knowing: **the map had a duplicate
-key.** `english_firefighter_v3.html` appeared at two lines with two different
-images, so 167 source lines parsed to 166 entries and the earlier line did
-nothing. The dead line is removed and live behaviour is unchanged — the card
-still shows `Fire Brigade/fire-2-truck.png`, which is what was winning.
-
-**But that lesson's card and its own cover now disagree**: the deck's
-`--hero` is `firefighter/hero.jpg` while the card is the fire truck. Every
-other entry in the map matches its lesson's hero. It is one line either way;
-it was left as-is rather than changed inside an unrelated commit.
-
-A gate for this would be cheap — parse the map, assert no duplicate keys, and
-assert each value matches the lesson's own `--hero` where the lesson declares
-one. Not written yet.
-
-## library.html: run the checker, do not run a diff from memory
-
-`node lesson-template/check-library.js --vs-origin` before you upload
-`library.html`. It is not optional and it takes a second.
-
-The clobber went **both ways** and neither session noticed:
-
-| commit | added | silently removed |
-|---|---|---|
-| `5066174` | `stranger-things-test` | `forbes-nature-agency-part1` |
-| `c5a9625` | Alcatraz + five decks | `stranger-things-test` |
-| `0a39b5b` | restored two cards | — but not the one `c5a9625` took |
-
-The restore commit fixed the two losses it knew about and missed the one
-its own predecessor had caused. That is the shape of this failure: it is
-invisible three ways over. The entry count does not change when one is
-swapped for another; a lesson with no card falls back to a category
-gradient that looks deliberate; and the session that clobbers is never the
-session that notices.
-
-The checker also verifies what a diff cannot: that every thumbnail file
-exists, that every key is a real lesson, that no key is duplicated (a
-duplicate keeps the last value, so the earlier line silently does
-nothing), and that every finished deck has a card at all. Its first run
-found two decks with none — `make-v-do` had never had one, and
-`stranger-things-test` had been clobbered an hour earlier.
-
-The one advisory it prints is a mismatch between a deck's card and its own
-`--hero`. Two lessons differ on purpose or by accident and nobody knows
-which: `english_firefighter_v3` (card `Fire Brigade/fire-2-truck.png`,
-hero `firefighter/hero.jpg`) and `forbes-ai-productive-struggle-c1` (card
-`AILearning/c1-lesson-thumb.jpg`, hero `AILearning/retro-desk-sunset.jpg`).
-Left alone pending a decision; a deliberate detail-shot card is legitimate.
-
-## Queue: three lessons with artwork staged and audits started
-
-Innes sent four URLs in quick succession. Harari is **built and pushed**. The
-other three have their artwork committed and their groundwork done; none is
-built. Pick them up in any order.
-
-| Lesson | Artwork | State |
-|---|---|---|
-| `impostor_syndrome_lesson.html` | `Impostor2/hero.jpg` — a woman at a podium with a drink, audience in silhouette, Noma Bar treatment. **Ultra-wide (3376×1440), not 16:9** — crop or letterbox before deriving the palette. | Not audited. Note `Impostor/` is already taken by `impostor_syndrome_advanced_JP.html`, which is why the folder is `Impostor2/`. |
-| `contingency-trade-offs-vocab.html` | `Construction3/`: `hero.jpg` (crane, red sun, dusk), `a.jpg` (unfinished concrete frame, palms), `b.jpg` (four-panel site strip), `c.jpg` (tower crane against cloud) | Not audited. 22 KB, the smallest of the four — likely a short vocab list rather than a full lesson. `Construction/` and `Construction2/` are both taken. |
-| `expressions_take_put_v2` + `_ES` + `_PL` → one lesson | `TakePut/hero.jpg` (car on a road at dusk) | **A real merge, not a dedupe.** Innes asked for it explicitly. |
-| `forbes-conservation-c1.html` | `Conservation/` (9): `reef-lagoon.jpg`, `reef-canyon.jpg`, `island.jpg`, `turtles.jpg`, `frog.jpg`, `wildfire.jpg`, `plantation.jpg`, `ama-boat.jpg`, `ama-dusk.jpg` | **Audited — see below.** Innes sent the art with no URL; it was matched to this lesson by content — the lesson is subtitled "From Cloud Forests to Coral Reefs" and runs Ecuador cloud forest → coral reef → Japan's *ama* divers, so the frog, the reef and the turtles are its own material. 60 KB, three activities, 6 MC questions. |
-
-### The take/put merge is the awkward one
-
-`docs/HERO-QUEUE.md` lists these under "checked and *not* doubles": 56–87 of
-~150 strings shared, and **the ES and PL versions share more with each other
-than either shares with the base**. So this is not the `full_grammar_test`
-shape, where the only difference was chrome and the merge was free.
-
-Worse, it runs straight into the blocker already recorded above: per-item L1
-support lives in `data-explain`, which `UI_I18N` never reaches. If the ES and
-PL support is per-item rather than chrome, merging destroys the thing that
-makes the second and third files worth having — exactly the reason
-`cheat_sheet` DE/IT was left alone.
-
-**Diff the three before building anything.** If the support is per-item, the
-per-item translation fix has to come first, and that is a `deck.py` change
-affecting every shipped deck rather than a one-lesson job. Innes has asked for
-the merge, so if it turns out to be blocked, say so and say why rather than
-shipping a merge that silently drops the Spanish and Polish.
-
-### Two process notes from this batch
-
-**Never `git reset --hard` while staged artwork is untracked.** A
-`git stash -u && git reset --hard && git stash pop` sequence in this session
-silently lost four artwork folders — the stash did not survive — and reverted a
-finished deck to its pre-rebuild state. Both were recoverable only because the
-source PNGs were still in the uploads directory and the commit was still in the
-reflog. Commit artwork as soon as it is staged.
-
-**The uploader's "Commit changes" click fails silently more often than the
-existing note suggests.** Two of four commits in this batch did not land, and
-the page looked identical either way. The hash check is not optional, and it
-must cover *every* file in the batch — `check-library.js --vs-origin` caught
-that a `library.html` about to be uploaded would have wiped two cards another
-session had added forty minutes earlier.
-
-### ~~The take/put merge is NOT blocked after all~~ — SUPERSEDED, THIS WAS WRONG
-
-> **Do not act on this section.** It claimed the ES and PL support was chrome
-> only. It is not: all three files carry 32 per-item glosses each. The error and
-> the real picture are in **"CORRECTION: take/put support is per-item after
-> all"** at the end of this file. The paragraph below is kept only so the
-> mistake is legible, because the *method* that produced it — testing for
-> diacritics rather than counting object keys — is the reusable lesson.
-
-~~Every Spanish-bearing text node in `expressions_take_put_ES.html` is chrome —
-headings, task instructions, button labels, the section intros. There is no
-`data-explain`, and no Spanish or Polish anywhere in the JS data.~~
-
-The one part of this section that held up: **both files promise something they
-do not fully contain.** The ES page says *"Las traducciones al español aparecen
-en rojo después de cada respuesta"* and the PL page says the same in Polish.
-True for activities 1–3, false for activity 4. Same class of defect as the
-Harari transcript claim — a checkable promise the file does not keep.
-
-### Artwork is committed the moment it is staged
-
-Learned the hard way this session — see the `reset --hard` note above. Every
-folder in the queue table is already on `origin/main`, so the next session
-starts with the art in hand and nothing depends on a sandbox surviving.
-
-## Conservation Travel C1 — audited, not built
-
-`forbes-conservation-c1.html`, 60 KB, three activities: 6 MC, 6 gap-fill, 5
-sentence-ordering, plus discussion prompts. Artwork is in `Conservation/`
-(nine images, listed in the queue table).
-
-**The word bank is the answer key, in order.** Not correlated with it — the
-same list:
-
-```
-bank    : rare  retraining  traditional  millennia  Cultural  extinction
-answers : rare  retraining  traditional  millennia  Cultural  extinction
-```
-
-A learner reads the bank top to bottom, fills the gaps top to bottom, and
-scores 6/6 without reading a single sentence. This is the most blatant
-instance of the `assert_bank_is_not_a_key` defect in the catalogue — every
-previous case was a bank that merely leaked the order; this one *is* the key.
-Fix by sorting the bank, which is what the guard wants and what
-`build_nature1.py` does.
-
-`Cultural` is capitalised in the bank, which separately tells the learner that
-gap begins a sentence. Sorting alone does not fix that; either lower-case it in
-the bank or move the gap off a sentence boundary.
-
-**The MC keys run 1 1 1 2 1 1** — five of six on index 1 — and **the key is the
-longest option in 3 of 6** (up to +12 chars). Same pair of tells as Harari,
-milder. Derange the keys and lengthen the three distractors; do not shorten a
-key.
-
-The ordering activity was not measured — check whether it can be lost before
-trusting it, since the `match` engine's equivalent could not be.
-
-The reading itself is good and should survive: Ecuador cloud forest, coral reef
-restoration, Japan's *ama* divers. That last is what the `ama-boat.jpg` and
-`ama-dusk.jpg` frames are for, and the lesson names the tradition explicitly,
-so those two backgrounds do teaching work rather than decoration.
-
-## CORRECTION: take/put support is per-item after all — and the merge is still easy
-
-An earlier note in this file said the take/put ES and PL support was chrome
-only and merged cleanly. **That was wrong, and it was wrong for an avoidable
-reason.** The test used was "does any string in the JS carry Spanish or Polish
-diacritics" — and most of these glosses do not. `tomar la iniciativa`,
-`correr un riesgo` and `poner por escrito` are all pure ASCII. The check
-reported zero and the conclusion was drawn from it.
-
-What is actually there, counted by object key rather than by accent:
-
-| File | Field | S1 | S2items | S3data | S4left/right |
-|---|---|---|---|---|---|
-| `expressions_take_put_v2.html` | `de:` | 7/7 | 18/18 | 7/7 | **0/12** |
-| `expressions_take_put_ES.html` | `es:` | 7/7 | 18/18 | 7/7 | **0/12** |
-| `expressions_take_put_PL.html` | `pl:` | 7/7 | 18/18 | 7/7 | **0/12** |
-
-Two things follow.
-
-**The "base" file is the German edition.** `expressions_take_put_v2.html` is
-not language-neutral with two translations bolted on; it is DE, and ES and PL
-are its siblings. Three editions, not one-plus-two.
-
-**The merge is easy anyway, and it destroys nothing.** The support is a
-*parallel field on identical item objects* — `{lbl, cat, de}` against
-`{lbl, cat, es}` — so merging is `{lbl, cat, de, es, pl}` and a renderer that
-picks the field by current language. This is nothing like `cheat_sheet` DE/IT,
-where the divergent strings were whole example sentences. The general blocker
-(`UI_I18N` cannot reach `data-explain`) does not bite here because the gloss
-never goes through `data-i18n` at all — it is read straight off the item.
-
-### Innes's decision on the promises
-
-All three files tell the learner that translations appear after every answer.
-That is true for activities 1–3 (32 items) and **false for activity 4**, the
-dialogue-matching board — 12 items with no gloss in any language.
-
-**Instruction: keep or delete all promises — no partially-kept ones. Spanish
-takes priority over Polish.**
-
-So, in the merge: add the missing activity-4 glosses so the claim is true, and
-where a language cannot be completed to standard, delete that language's claim
-rather than ship it half-kept. Spanish is the one to complete first; Polish is
-the one to drop the claim from if something has to give.
-
-Six expressions need a gloss (the right-hand replies are not glossed anywhere
-and do not need to be — the existing pattern glosses the *expression*, not the
-sentence). Spanish drafted, matching the `'x \/ y'` two-option house format
-used in S1 and S3:
-
-| id | expression | `es:` |
-|---|---|---|
-| L1 | put my foot in it | `meter la pata \/ decir algo inoportuno` |
-| L2 | take a break | `tomar un descanso \/ hacer una pausa` |
-| L3 | take the lead | `tomar la iniciativa \/ ponerse al frente` |
-| L4 | put in writing | `poner por escrito \/ dejar constancia escrita` |
-| L5 | put it behind you | `pasar página \/ dejarlo atrás` |
-| L6 | take advantage of | `aprovechar \/ sacar partido de` |
-
-L3 deliberately reuses the exact string already on `S2items` for *take the
-lead*, so the same expression does not get two different glosses in one lesson.
-Check the other five against S1/S2/S3 for the same reason before adding them.
