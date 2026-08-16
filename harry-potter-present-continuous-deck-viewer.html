@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <!-- SEO:start -->
 <meta name="description" content="An interactive A1 English lesson from Forbes English: Harry Potter and the Present Continuous.">
 <link rel="canonical" href="https://forbesenglish.com/harry-potter-present-continuous-deck-viewer.html">
@@ -22,7 +22,7 @@
 <title>Harry Potter and the Present Continuous (A1) | Forbes English</title>
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  html,body{height:100%;overflow:hidden;background:#0f1a13;}
+  html,body{overflow:hidden;background:#0f1a13;}
   body{
     font-family:'Segoe UI',Arial,sans-serif;
     display:flex;flex-direction:column;
@@ -54,7 +54,7 @@
     display:flex;align-items:center;justify-content:center;
   }
   .slide-wrap img{
-    max-width:100%;max-height:calc(100vh - 130px);
+    max-width:100%;max-height:calc(100vh - 130px);max-height:calc(100dvh - 130px);
     border-radius:6px;
     box-shadow:0 10px 40px rgba(0,0,0,.5);
     display:block;
@@ -96,6 +96,49 @@
     header h1{font-size:0.85rem;}
     header h1 span{display:block;margin-left:0;}
   }
+
+  /* ── maximise ─────────────────────────────────────────────────────
+     vh is the LARGEST viewport — with a mobile address bar showing, a
+     100vh box runs off the bottom of the screen and takes the footer
+     with it. dvh tracks the bar. The vh line stays first as a fallback
+     for browsers without dvh; where dvh is understood it wins. */
+  html, body { height: 100vh; height: 100dvh; }
+  .maximise-btn{
+    font-size:0.78rem;font-weight:700;letter-spacing:.02em;
+    color:#cfe9d8;background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.25);
+    padding:7px 14px;border-radius:999px;cursor:pointer;white-space:nowrap;
+  }
+  .maximise-btn:hover{background:rgba(255,255,255,.18);}
+  /* Maximised: the green sandwich goes, the slide takes the whole screen. */
+  body.maxed header, body.maxed footer{ display:none; }
+  body.maxed .stage{ padding:0; }
+  body.maxed .slide-wrap img{
+    max-height:100vh; max-height:100dvh;
+    border-radius:0; box-shadow:none;
+  }
+  /* Two shapes in the wild: three viewers cap the <img>, Star Wars sizes the
+     wrap and lets the image fill it. Cover both. */
+  body.maxed .slide-wrap{
+    height:100vh; height:100dvh;
+    max-height:100vh; max-height:100dvh;
+  }
+  .exit-max{
+    position:fixed; top:10px; right:10px; z-index:50;
+    width:38px; height:38px; border-radius:50%;
+    display:none; align-items:center; justify-content:center;
+    background:rgba(0,0,0,.45); border:1px solid rgba(255,255,255,.3);
+    color:#fff; font-size:1rem; cursor:pointer; line-height:1;
+  }
+  body.maxed .exit-max{ display:flex; }
+  /* A landscape phone has almost no vertical room; shrink the furniture. */
+  @media (max-height:460px){
+    header{ padding:5px 12px; }
+    header h1{ font-size:0.8rem; }
+    footer{ padding:6px 12px; gap:10px; }
+    .slide-wrap img{ max-height:calc(100vh - 84px); max-height:calc(100dvh - 84px); }
+    .slide-wrap{ height:calc(100vh - 84px); height:calc(100dvh - 84px); }
+  }
 </style>
 </head>
 <body>
@@ -116,8 +159,10 @@
 <footer>
   <span class="counter" id="counter">1 / 10</span>
   <div class="dots" id="dots"></div>
+  <button class="maximise-btn" id="maxBtn" title="Maximise (F)">⤢ Maximise</button>
   <a class="download-btn" href="harry-potter-present-continuous.pptx" download>⬇ Download .pptx</a>
 </footer>
+<button class="exit-max" id="exitMax" aria-label="Exit full screen">✕</button>
 
 <script>
 const TOTAL = 10;
@@ -193,6 +238,51 @@ stage.addEventListener('touchend', e => {
 }, { passive: true });
 
 render();
+</script>
+<script>
+/* ── maximise ────────────────────────────────────────────────────────
+   Fullscreen where it exists, chrome-hiding everywhere. iPhone Safari has
+   no Element.requestFullscreen, so the button is still worth having there:
+   it reclaims the ~130px of green sandwich, and dvh handles the address
+   bar. Everything below is feature-detected. */
+(function () {
+  const body = document.body;
+  const btn = document.getElementById('maxBtn');
+  const exit = document.getElementById('exitMax');
+  if (!btn) return;
+  const root = document.documentElement;
+  const canFS = !!(root.requestFullscreen || root.webkitRequestFullscreen);
+  const isFS = () => !!(document.fullscreenElement || document.webkitFullscreenElement);
+
+  function enter() {
+    body.classList.add('maxed');
+    if (canFS) {
+      const r = (root.requestFullscreen || root.webkitRequestFullscreen).call(root);
+      if (r && r.catch) r.catch(() => {});
+    }
+    // Only meaningful in fullscreen, and only Android/Chrome implements it.
+    if (screen.orientation && screen.orientation.lock) {
+      try { const p = screen.orientation.lock('landscape'); if (p && p.catch) p.catch(() => {}); }
+      catch (e) { /* unsupported: the user turns the phone, as before */ }
+    }
+  }
+  function leave() {
+    body.classList.remove('maxed');
+    if (isFS()) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+    if (screen.orientation && screen.orientation.unlock) {
+      try { screen.orientation.unlock(); } catch (e) {}
+    }
+  }
+  btn.addEventListener('click', () => body.classList.contains('maxed') ? leave() : enter());
+  if (exit) exit.addEventListener('click', leave);
+  // Esc leaves fullscreen without telling us, so follow the browser's state.
+  ['fullscreenchange', 'webkitfullscreenchange'].forEach(ev =>
+    document.addEventListener(ev, () => { if (!isFS() && canFS) body.classList.remove('maxed'); }));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && body.classList.contains('maxed')) leave();
+    if (e.key === 'f' || e.key === 'F') btn.click();
+  });
+})();
 </script>
 </body>
 </html>

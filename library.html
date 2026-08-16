@@ -1176,11 +1176,16 @@ function render() {
     const matchesQuery = !q || normalizeForSearch(l.title).includes(q) || normalizeForSearch(l.file).includes(q);
     return matchesLevel && matchesCategory && matchesFree && matchesQuery;
   });
-  // Finished lessons first. Interleaved, a third of the shelf is dead cards
-  // and the catalogue reads as half-built; grouped at the end, what is ready
-  // reads as a solid block and what is coming still shows. Stable sort, so
-  // the existing order survives inside each group.
-  filtered.sort((a, b) => (comingSoon(a) ? 1 : 0) - (comingSoon(b) ? 1 : 0));
+  // Three bands, in this order: the presentation decks, then the rest of the
+  // finished lessons, then coming soon. The four .pptx decks — Star Wars,
+  // Twin Peaks, Breaking Bad, Harry Potter — are the flagship material and
+  // belong at the top of the shelf. Derived from the filename like every
+  // other state here, so a fifth one lands in the right band on its own.
+  // Interleaving coming-soon made the catalogue read as half-built; grouped
+  // at the end, what is ready reads as a solid block. Stable sort, so the
+  // existing order survives inside each band.
+  const band = l => comingSoon(l) ? 2 : (/-deck-viewer\.html$/.test(l.file) ? 0 : 1);
+  filtered.sort((a, b) => band(a) - band(b));
   grid.innerHTML = '';
   filtered.forEach(l => {
     const soon = comingSoon(l);
