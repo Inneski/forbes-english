@@ -396,3 +396,56 @@ builder docstring and the commit message.
 - **Builders are in `lesson-template/build/`.** Every deck is generated;
   edit the builder and re-run, don't hand-edit the HTML. Use `deck.py`,
   don't rewrite it.
+
+## The SEO pass reverted a finished deck — third stale-base clobber
+
+`c5b2bc6` ("SEO/GEO metadata — lesson pages 1/3") took
+`harari_davos_c2_lesson_v2.html` from **125,615 bytes back to 66,667** — the
+24-slide deck replaced by the pre-rebuild scrolling page with an SEO block
+bolted on. The deck had landed forty minutes earlier in `d9154e9`.
+
+Swept the other two SEO commits the same way; **Harari was the only casualty**:
+
+```bash
+# every .html that SHRANK by >5 KB inside a commit — a shrink means content was lost
+for c in $(git log --format=%h origin/main | head -40); do
+  git diff --numstat $c~1 $c -- '*.html' | while read a d f; do
+    b=$(git cat-file -s $c~1:"$f" 2>/dev/null||echo 0); n=$(git cat-file -s $c:"$f" 2>/dev/null||echo 0)
+    [ "$b" -gt 0 ] && [ $((b-n)) -gt 5000 ] && echo "$c $f $b -> $n"; done; done
+```
+
+**This is the same failure as the `library.html` clobber, one level worse.**
+That one dropped two card entries. This one silently reverted a whole rebuilt
+lesson, and it would have gone unnoticed indefinitely: the page still loaded,
+still had a title, still had activities. It only surfaced because the checker
+was re-run and reported four gates failing on a file nobody had touched.
+
+Recovered by re-running `build_harari.py` — the deck came back byte-identical
+(`54e443c9`), which is the argument for every deck being generated rather than
+hand-edited.
+
+**Two rules follow, and they cost nothing:**
+
+1. **A site-wide pass must start from a fresh `git fetch` + `reset --hard
+   origin/main`, not from a checkout of unknown age.** Any pass that touches
+   every page — SEO, logo swaps, title rewrites — is a clobber waiting to
+   happen, and the batch commits (`1/3`, `2/3`, `3/3`) mean a stale base
+   damages a third of the catalogue at a time.
+2. **Re-run `check-lesson.js` over every file a site-wide pass touched, not
+   just the ones you meant to change.** The shrink sweep above is the cheaper
+   version and catches the same thing.
+
+### Order of operations, now that `tools/seo.py` exists
+
+    build_<name>.py  →  check-lesson.js  →  tools/seo.py  →  upload
+
+`seo.py` writes into the *generated* HTML, so re-running a builder strips it.
+If you rebuild anything, re-run `seo.py` before uploading or the page ships
+with no metadata. Running the checker again after `seo.py` is worth the two
+seconds — that is what caught this.
+
+**`seo.py` cannot reach Supabase from the sandbox** (proxy 403) and falls back
+to `tools/lessons.json`. That cache is stale: it still has
+`forbes-conservation-c1` at `deck: false` although the flag is now true in the
+table, so `lesson-meta.json` and the deck category will lag until the cache is
+refreshed from a session that can reach the database.
