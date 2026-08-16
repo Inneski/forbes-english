@@ -70,6 +70,26 @@ draw the two contrasts the old file put in adjacent items and never joined up:
 in a lesson whose subject matter is poaching and culls. It is taught now.
 `domineering` was used twice in Q12 — once as a distractor, once in the
 feedback string — but not defined until Section 3. It is taught before use.
+
+**The artwork was American and the lesson is British.** The first build shipped
+with `hero.jpg` (bison), `prairie.jpg` (bison, further off), `station.jpg` and
+`lake.jpg` — a Western national park — over a lesson about a badger cull, a town
+council, a marsh harrier, hides and a car park. Part 2 hit this already: its
+African elephants were rejected on the same grounds and replaced.
+
+The five images now in `NatureAgency/` are commissioned to the lesson's own
+content. The marsh harrier is the species Elena has to report within 24 hours,
+which is the item that teaches the verb sense of `report`, so the cover is
+carrying a memory hook rather than decoration; the peatland frames are the
+agency's actual work. `hero.jpg` is the daylight harrier rather than the dusk
+one because the cover title is centred — the template's scrim sits at 50%/46%
+— and the daylight frame keeps its bird upper-left with the centre clear. The
+dusk frame is a stronger picture and a worse cover, so it backs the `report`
+slide, where a hard silhouette still reads at 40% opacity.
+
+`lake.jpg`, `prairie.jpg` and `station.jpg` are now unreferenced. They are still
+in the repo because the web uploader cannot delete; `git rm` them on the first
+session that has a working push.
 """
 import os
 import sys
@@ -84,17 +104,17 @@ F = 'NatureAgency'
 # Every body-text row in the contrast report passes.
 PALETTE = '''  --hero: url('%s/hero.jpg');
 
-  --void          : #0d0e09;
-  --surface       : #1b1c12;
-  --surface2      : #27291a;
-  --border        : #9a6a48;
+  --void          : #0e0c09;
+  --surface       : #1c1812;
+  --surface2      : #29231a;
+  --border        : #846548;
   --text          : #f5f3f2;
-  --text-dim      : #bfafa3;
-  --accent        : #e09968;
-  --accent-bright : #efc0a0;
-  --accent-dim    : #be692e;
-  --secondary     : #96b9c9;
-  --contrast      : #1dedde;''' % F
+  --text-dim      : #bfb1a3;
+  --accent        : #d6965c;
+  --accent-bright : #e8bb91;
+  --accent-dim    : #a66830;
+  --secondary     : #abc4c5;
+  --contrast      : #1deceb;''' % F
 
 # ── Section 1 · sense discrimination ──────────────────────────────────
 # Key positions, in slide order: 2 0 3 1 1 3 0 2 3 1 2 0 3 1 2 0 3
@@ -430,7 +450,7 @@ def build():
                   'How formal the sentence around it is.',
                   't2cn', 'A formal sentence pulls a formal sense. '
                           '<em>In receipt of your letter</em> is not the slip from a till.')],
-                cols='1fr 1fr 1fr', folder=F, bg='station.jpg'),
+                cols='1fr 1fr 1fr', folder=F, bg='restoration.jpg'),
         # 3 · report, all three senses including the gunshot
         D.teach('t3e', 'Contrast one',
                 't3t', '<em>report</em> &mdash; three senses, and one of them is a sound',
@@ -446,7 +466,10 @@ def build():
                   'The sharp crack of a firearm. <em>Two reports from the far ridge.</em>',
                   't3cn', 'Rare in general English and routine in this one. On a reserve dealing '
                           'with poaching and culls, it is the sense you will need in writing.')],
-                cols='1fr 1fr 1fr', folder=F),
+                # The harrier is the bird Elena has to *report* within 24 hours, and this
+                # is the slide that teaches that verb. Dusk frame: the silhouette is the
+                # one thing in the folder still legible washed to 40%.
+                cols='1fr 1fr 1fr', folder=F, bg='harrier-dusk.jpg'),
         # 4 · critic and decay
         D.teach('t4e', 'Contrast two and three',
                 't4t', '<em>critic</em> and <em>decay</em> &mdash; opinion, and word class',
@@ -462,7 +485,7 @@ def build():
                   '<em>Branches decay</em> (the process). <em>Visible decay</em> (the condition).',
                   't4cn', 'The article is the tell. Adjectives such as <em>visible</em> or '
                           '<em>advanced</em> can only modify the noun.')],
-                cols='1fr 1fr 1fr', folder=F, bg='lake.jpg'),
+                cols='1fr 1fr 1fr', folder=F, bg='peatland.jpg'),
         # 5 · reconcile — the syntax tell
         D.teach('t5e', 'Contrast four',
                 't5t', '<em>reconcile</em> &mdash; the preposition tells you the sense',
@@ -492,7 +515,7 @@ def build():
                  ('t6ch', 'Same tell as <em>reconcile</em>',
                   'One preposition moves the word from place to attention.',
                   't6cn', 'Two pairs, one rule. This is the tell worth carrying out of the lesson.')],
-                cols='1fr 1fr 1fr', folder=F, bg='lake.jpg'),
+                cols='1fr 1fr 1fr', folder=F, bg='hags.jpg'),
         # 7 · the anchor
         D.teach('t7e', 'The pair that matters most here',
                 't7t', '<em>prevalent</em> or <em>rampant</em> &mdash; both mean widespread',
@@ -508,7 +531,7 @@ def build():
                   'A native species is <strong>prevalent</strong>. An invasive species is <strong>rampant</strong>.',
                   't7cn', 'Choosing the wrong one in a site report either understates a problem '
                           'or editorialises about a healthy population.')],
-                cols='1fr 1fr 1fr', folder=F, bg='prairie.jpg'),
+                cols='1fr 1fr 1fr', folder=F, bg='peatland.jpg'),
         # 8 · register — makes good on the "formal and legal" promise
         D.teach('t8e', 'Register',
                 't8t', 'The formal senses these same words carry',
@@ -528,7 +551,7 @@ def build():
                   '<em>A domineering site manager.</em>',
                   't8dn', 'Arrogant and controlling &mdash; the near-opposite of <em>humble</em>, '
                           'which you will meet shortly.')],
-                cols='1fr 1fr 1fr 1fr', folder=F, bg='station.jpg'),
+                cols='1fr 1fr 1fr 1fr', folder=F, bg='restoration.jpg'),
     )
 
     slides = (
@@ -540,13 +563,13 @@ def build():
         + "".join(teach)
         + "".join(D.mc(i + 1, len(MC), q, 'qEyebrow', 'Which sense is it?',
                        'qTitle', 'Read the sentence, then choose', folder=F,
-                       bg=('prairie.jpg' if i % 3 == 1 else 'lake.jpg' if i % 3 == 2 else None))
+                       bg=('peatland.jpg' if i % 3 == 1 else 'hags.jpg' if i % 3 == 2 else None))
                   for i, q in enumerate(MC))
         + "".join(D.gap(n + 1, len(GAPS), rows, BANKS[n], 'gapEyebrow', 'The exact word',
                         'gapTitle', 'Complete the briefing', folder=F,
                         hint_key='gapHint',
                         hint='Every word in the bank is used exactly once on this slide.',
-                        bg='station.jpg' if n % 2 else None,
+                        bg='restoration.jpg' if n % 2 else None,
                         width=200, size=17)
                   for n, rows in enumerate(GAPS))
         + D.sort_slide(BINS, SORT1, 'sortEyebrow', 'Register',
@@ -556,7 +579,7 @@ def build():
                        'The third tell from the opening slides, used on its own. Register is what '
                        'tells you that <em>in receipt of</em> and <em>a receipt</em> are the same '
                        'word doing two different jobs.',
-                       folder=F, bg='prairie.jpg')
+                       folder=F, bg='harrier-dusk.jpg')
         + D.sort_slide(BINS, SORT2, 'sortEyebrow', 'Register',
                        'sortTitle2', 'Sort these by how formal they are',
                        'sortHint', 'Drag each term into a box &mdash; or click the term, then the box. '
@@ -584,11 +607,13 @@ def build():
     s = D.assemble(TPL, OUT, slides, PALETTE,
                    'The Nature Agency — Sense &amp; Register (C1) | Forbes English', I)
     # The template ships --bg-opacity at 0.72, which assumes a hero that is
-    # mid-tone or darker. This hero is a pale sky over pale prairie, and at 0.72
-    # on a dark palette the sky comes through bright enough that the sort-bin
-    # labels and the results text stop reading against it — house style rule 3.
-    # Everything with its own card surface was fine either way; the two slides
-    # that place text straight onto the wash were not.
+    # mid-tone or darker. Every image here is a pale sky over a pale reedbed or
+    # a bright hillside, and at 0.72 on a dark palette the sky comes through
+    # bright enough that the sort-bin labels and the results text stop reading
+    # against it — house style rule 3. Everything with its own card surface was
+    # fine either way; the two slides that place text straight onto the wash
+    # were not. Re-measured after the artwork swap, not carried over on trust:
+    # `lesson-template/bgmeasure.py` reports the same verdict for the new set.
     s = s.replace('  --bg-opacity: 0.72;', '  --bg-opacity: 0.40;', 1)
     open(OUT, 'w', encoding='utf-8').write(s)
     n = s.count('<section class="slide')
