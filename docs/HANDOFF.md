@@ -987,7 +987,133 @@ but it disagreed with the checker on seven items, in two ways, both mine:
 
 Screen with the sweep; decide with the checker, which reads a real DOM.
 
+## A gap-fill row may hold ONE blank — the engine scores no more than that
+
+Found while play-testing Food A1 Part 1: a perfect run finished **18/19**. The
+missing point was a dialogue line carrying two blanks.
+
+`checkGaps()` in `lesson-template/lesson-template.html` marks a `.gap-row` by
+its **first** input and stops:
+
+```js
+rows.forEach(r => markGap(r.querySelector('.gap'), r.querySelector('.feedback')));
+```
+
+`maxScore`, meanwhile, counts every `.gap` on the slide. So a second blank in
+the same row is unscorable *and* unexplained: the learner types the right word,
+the input is never marked, and the deck can never reach its own maximum. A
+slide with several gaps and **no** `.gap-row` wrapper at all is worse — `rows`
+comes back empty and the fallback branch marks exactly one input for the whole
+slide.
+
+`deck.gap()` now asserts one answer per row, with the reason inline. That
+closes it for anything built through the shared builder from here on.
+
+### The sweep — 13 unscorable gaps still live in three other lessons
+
+Parsed every built `.html` for `.gap` inputs that no `.gap-row` will ever
+reach:
+
+| File | Lost | Where |
+|---|---|---|
+| `forbes-english-food-ordering-a1-part2.html` | 6 | slides 9, 10 — 4 gaps each, no `.gap-row` at all | 
+| `exam-prep-5hour-courseEXP.html` | 5 | slide 60 rows `[2,2,2]`, slide 61 rows `[2,2]` |
+| `alchemist_b2_lesson.html` | 1 | slide 27 rows `[1,2]` |
+| `forbes_english_lesson.html` | 1 | slide 4 rows `[2,1]` |
+
+**Part 2 is fixed** (below). The other three are not — `exam-prep` is the one
+worth doing next, at five points. The sweep script is worth keeping:
+
+```python
+# a .gap-row scores its FIRST input only; count the rest
+for row in slide_rows: lost += max(0, gaps_in(row) - 1)
+if not slide_rows: lost += max(0, gaps_in(slide) - 1)
+```
+
+Note that `check-lesson.js` passes all twelve gates on every one of these
+files. The ACTIONS gate asks whether a scored slide *can* be answered, not
+whether every answer on it *counts*. Worth adding as a thirteenth gate.
+
+---
+
+## Ordering Food & Drink A1 — Part 1 BUILT, and Part 2 repaired
+
+`forbes-english-food-ordering-a1-part1.html` — **18 slides, checker clean,
+19/19 on a play-through.** `build_food_a1.py` + `i18n_food_a1.py`. Catalogue
+row `id 242`, A1, deck, pro, to match Part 2. Thumbnail
+`FoodA1P1/two-at-bar.jpg`.
+
+Innes attached the source after the artifact URL proved unreadable. What the
+audit found in it, and what the rebuild did:
+
+- **The answer key was in the HTML.** Every blank carried its own answer as a
+  literal argument — `onclick="fillBlank('fib-1','table')"` — and the handler
+  did not even use it. Answers now live in `data-answer` like every other deck.
+- **Q6 failed ANSWERS and taught bad grammar.** 48 characters against a
+  33-character field, and the key read *"I'm allergic to nuts. **Is** there any
+  in this dish?"* — `nuts` is plural. A grammar error inside the key of an A1
+  item is the worst place to have one. Rewritten to *"Does this dish have
+  any?"*; distractors lengthened to close the gap, key never shortened.
+- **No activation stage and no teaching.** Both added: three polite openings
+  (`Can I…?` / `Could we…?` / `I'd like…`) and four words before any question.
+- Key positions were already deranged — `[1,3,1,2,0,2]` — and the word bank was
+  already not in gap order. Those two were fine.
+
+### Light theme, and the two contrast measurements it needed
+
+`extract-palette.py FoodA1P1/two-at-bar.jpg --light` passes every row
+(`text on surface` 12.28:1). But a light theme puts **dark ink on artwork**,
+and this set has hard black silhouettes in it. Two measured problems, two
+targeted fixes, both in `build_food_a1.py`'s `HEAD_CSS`:
+
+1. **Three of the six pictures have a dark band across the top** — a chalkboard
+   menu, rows of pendant lamps. Sampling the rendered pixels behind the slide
+   title with the text hidden gave **2.57:1 on ten of eighteen slides**. Fix:
+   raise the template's top wash stop for this lesson from 26% of `--void` to
+   88%, and pull the ramp down from 20% of slide height to 26% so it clears the
+   title. Worst case after: 4.82:1. The middle 54% of the slide is untouched.
+2. **Text sitting on the bare illustration** — question stems, order hints,
+   word banks, the results lines — measured 2.5–3.0:1. Fix: the card treatment,
+   as on the Geoscience and Nature Agency light decks. Not a heavier wash.
+
+**Do not fix a light-theme contrast problem by dropping `--bg-opacity`.** That
+bleaches all the artwork to save two text blocks, and it is the failure the
+light theme exists to avoid. Plate the text instead.
+
+The measurement script is worth rebuilding when needed: screenshot each slide,
+set the text `color: transparent` (not `visibility: hidden` — that hides the
+plate you are trying to measure), sample the element's central band (not its
+full box — the 1px border and the rounded corners dominate the 5th percentile
+and report a false failure), and compare against `--text`.
+
+### Part 2 was rebuilt too
+
+`build_food.py`'s hand-rolled `dialogue_slide` put all four inputs inside one
+`.card` with no `.gap-row`, so **six of its eight dialogue answers did not
+score** — a perfect run reached 19/25 instead of 25/25. It now goes through
+`deck.gap()` like everything else, with each line rewritten to carry exactly
+one blank and its own explanation. Rows had to drop to 8px vertical padding to
+fit the canvas; the alternative was cutting a line out of the conversation.
+
+Rebuilding it also pulled in ~9KB of template CSS added since Part 2 was last
+built. That is expected — every generated deck is one rebuild behind the
+template until someone re-runs its builder.
+
+### The bar-artwork question, answered by building it
+
+The earlier note flagged that five of the six images are bars rather than
+cafés. Built anyway: the deck's language is café and restaurant language
+throughout, the pictures are backgrounds rather than comprehension material,
+and the one image with a chalkboard menu and a barman serving two customers
+makes a better A1 cover than either of the food shots. If Innes disagrees, the
+hero is one line in `build_food_a1.py`.
+
+---
+
 ## Ordering Food & Drink A1 — Part 1 does not exist, artwork staged
+
+**SUPERSEDED — Part 1 is built and live. Kept for the artwork notes and the
+crop warning; ignore the "two decisions waiting" at the end, both were made.**
 
 `forbes-english-food-ordering-a1-part2.html` is live (A1, deck, pro) with
 `FoodA1P2/` and a full builder set — `build_food.py`, `food_mc.py`,
