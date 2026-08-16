@@ -159,19 +159,18 @@ def gap(i, total, rows, bank, eyebrow_key, eyebrow, title_key, title,
             'gap: "%s" has %d blank(s) for %d answer(s). A gap-fill with no '
             '______ marker renders an unanswerable question.'
             % (sentence[:60], sentence.count('______'), len(answers)))
-        # ONE blank per row, and the reason is in the engine, not in taste.
-        # checkGaps() scores a .gap-row by its FIRST input —
-        # `rows.forEach(r => markGap(r.querySelector('.gap'), …))` — while
-        # maxScore counts every input on the slide. Put two blanks in one
-        # row and the second is unscorable and unexplained: the learner
-        # types the right word, gets no mark, and the deck can never reach
-        # its own maximum. Caught on Food A1 Part 1, where one line held
-        # two blanks and a perfect run finished 18/19. Split the sentence.
-        assert len(answers) == 1, (
-            'gap: "%s" carries %d answers in one row. checkGaps() marks the '
-            'first input of a .gap-row and ignores the rest, so every blank '
-            'after the first is unscorable. One blank per row.'
-            % (re.sub(r'<[^>]+>', '', sentence)[:60], len(answers)))
+        # A row may hold several blanks — "___ she ___ an alien?" is one
+        # question, and splitting it into two rows destroys the exercise.
+        # It did NOT work until this session: checkGaps() marked a row's
+        # first input and stopped, while maxScore counted them all, so the
+        # second blank was worth a point nobody could earn. The engine now
+        # marks every input in the row and names every miss. What is still
+        # worth guarding is the row with more answers than blanks, which is
+        # a builder typo rather than a design choice.
+        assert sentence.count('______') == len(answers) or not answers, (
+            'gap: "%s" has %d blank(s) for %d answer(s) — they must match.'
+            % (re.sub(r'<[^>]+>', '', sentence)[:60],
+               sentence.count('______'), len(answers)))
         s = sentence
         for a in answers:
             s = s.replace('______',
