@@ -912,3 +912,77 @@ Two of those four were mine. The pattern is not carelessness by one session —
 it is that **the web uploader replaces files wholesale and nothing in the loop
 compares against what was there.** Until `git push` works, the diff before
 upload is the only defence, and it has to be run against the right baseline.
+
+## The longest-key defect, swept and cleared
+
+Measured across all 41 decks, then fixed. **Every deck now passes the ANSWERS
+gate.**
+
+| Deck | Was | Fix |
+|---|---|---|
+| `forbes-c1-negotiation` | 10 of 12 items | 10 distractors rewritten |
+| `football_c1_roleplay` | 10 of 11 items | 10 distractors rewritten |
+| `stranger-gears-rpg` | 2 items | 2 distractors extended |
+| `forbes_english_lesson` | word bank in gap order | bank sorted |
+
+### None of these had a builder — which is why editing the HTML was correct
+
+`forbes-c1-negotiation`, `football_c1_roleplay` and `forbes_english_lesson`
+predate the generator. `CLAUDE.md`'s rule that hand-editing generated HTML "works
+once and is then overwritten" applies to files a builder can regenerate. These
+have none, so the edit is permanent. `build_stranger.py` exists but outputs
+`stranger-things-b1-lesson.html`, not `stranger-gears-rpg.html`.
+
+If anyone later writes builders for these four, the distractor text must be
+carried across or the defect returns.
+
+### Padding was the wrong fix on two of them, and why
+
+**`forbes-c1-negotiation` teaches formal contract register.** Six of its items
+ask "which is the most formal version", and formal contract English is
+genuinely wordier than plain English — so length was *correlated with the
+answer*, not accidentally attached to it. Padding a distractor with more formal
+language would have produced a second plausible key.
+
+Each rewritten distractor is instead made long by becoming **more
+conversational** — hedges, filler, first-person commentary, vague quantifiers.
+It ends up as long as the key and more obviously wrong on register. That is a
+better item than the one it replaced: the learner now judges register instead
+of counting words.
+
+**`stranger-gears-rpg`'s two items test verb form** (`must have opened` against
+`must opened`). The distractors were extended by completing their noun phrase to
+match the key — `below it` → `below the chamber` — so the only remaining
+difference is the verb form, which is the thing being tested. The error itself
+is untouched. Note those strings appear **ten times each** in that file; all ten
+were replaced, or the copies drift apart.
+
+### `football_c1_roleplay` has a second defect, not fixed
+
+**All 11 keys sit at index 0.** The template shuffles `.opt` children on first
+view so it is not learner-visible — the same situation as Nature Agency's
+all-zero keys, hygiene rather than a live fault. Deranging it means reordering
+whole `<button>` blocks by hand in a file with no builder. Worth doing, not done.
+
+### `stranger-gears-rpg` still fails three structural gates
+
+No `activate` slide, no `UI_I18N`, no `.fe-logo`. It is a pre-house-style page,
+not a scoring problem, and bringing it up to standard is a rebuild. **It carries
+the standing Stranger Gears constraints** — Clarkson, Hammond and May keep their
+names and the front-page image is not up for discussion — so that rebuild is a
+deliberate decision, not a tidy-up.
+
+### The screening sweep over-reports — use `check-lesson.js` to decide
+
+A static regex sweep is useful for finding candidates across 41 decks quickly,
+but it disagreed with the checker on seven items, in two ways, both mine:
+
+1. **It used only the 4-char floor.** The real rule in `check-lesson.js` is
+   `key > maxOther * 1.10 && key - maxOther >= 4` — a **ratio and** a floor. The
+   comment there explains why: in a closed option set of modals, "should" beats
+   "must" by 50% while carrying no information.
+2. **It mis-parses options carrying a `data-explain` attribute**, pulling the
+   explanation text into the option and inflating the length. That is what made
+   `forbes-english-lesson (2)` look like a 1.38x offender when it passes.
+
+Screen with the sweep; decide with the checker, which reads a real DOM.
