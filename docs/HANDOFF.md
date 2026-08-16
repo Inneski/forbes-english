@@ -165,12 +165,52 @@ not anyone has pressed Check, which put both gap slides 51px past the canvas.
 One pooled note per screen is what `build_food_a1` already does. If you need
 per-row explanations on a four-row gap slide, it will not fit — use three rows.
 
-### `--bg-opacity` was measured, not guessed
+### One background for the whole deck, not two alternating
 
-`lesson-template/bgmeasure.py` against the brightest patterned slide (index 5):
-0.46 → 6.97 (fails 7:1), 0.44 → 7.32, 0.42 → 7.68, 0.40 → 8.06. Shipped at
-**0.44**, the highest value that clears AAA for body text. The builder comment
-records the whole walk, so the next person does not repeat it.
+The set ships two images: `flow-hero.jpg`, the full illustration, and
+`flow-bg-pattern.jpg`, a deliberately murky crop of it (mean luminance 0.139
+against the hero's 0.42 — a factor of three). The first build alternated them,
+because `deck.py` falls back to the root `--hero` on any slide with no
+`data-bg`. The result swung between a bright desert and a near-black screen
+every second slide. **A slide with no `data-bg` does not get "no background" —
+it gets the hero.** If a deck ships a second background image, give it to every
+interior slide or to none.
+
+Now: the cover carries the illustration (the template renders `.on-cover` at
+opacity 1 regardless of `--bg-opacity`), and everything after it is the quiet
+crop. `deck.activate()` gained `folder`/`bg` parameters so the activation slide
+could join in; it was the only builder with no way to set a background.
+
+`--bg-opacity` was then measured with `lesson-template/bgmeasure.py` rather than
+guessed. Against the hero it was tight — 0.46 → 6.97 (fails 7:1), 0.44 → 7.32.
+Against the crop there is no contest: 0.44 → 16.45, 1.0 → 14.38. Shipped at
+**1.0**, which is as visible as that image can be made and still 14:1 for body
+text.
+
+### Three shipped decks were running a stale copy of the engine
+
+`lesson-template.html` is inlined into every generated deck, so a template fix
+only reaches a lesson when that lesson's builder is re-run. Re-running all of
+them as a regression check on the `deck.py` change turned up three that had
+drifted:
+
+| Deck | Drift |
+|---|---|
+| `forbes-english-b2-lesson.html` | 395 lines |
+| `forbes-nature-agency-part2.html` | 395 lines |
+| `forbes-english-food-ordering-a1-part2.html` | 43 lines |
+
+They were missing the sort-bin backdrop fix and the gap-scoring rewrite, among
+others. All three were rebuilt, re-checked (37 / 59 / 16 slides, twelve gates
+each) and shipped in this session. `build_food_a1` came back byte-identical,
+so it was already current.
+
+**Re-run every builder after touching `lesson-template.html` or `deck.py`**, not
+just the lesson you are working on — `for f in lesson-template/build/build_*.py;
+do python3 $f; done`, then `python3 tools/seo.py` to put the metadata back. It
+takes under a minute and it is the only thing that catches this.
+(`build_ua.py` fails on a missing `/tmp/ua_mc.json`; that is pre-existing and
+unrelated — its data was never committed.)
 
 ### Supabase IS reachable — via the MCP tool, not the sandbox
 
