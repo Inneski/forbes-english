@@ -445,3 +445,50 @@ which: `english_firefighter_v3` (card `Fire Brigade/fire-2-truck.png`,
 hero `firefighter/hero.jpg`) and `forbes-ai-productive-struggle-c1` (card
 `AILearning/c1-lesson-thumb.jpg`, hero `AILearning/retro-desk-sunset.jpg`).
 Left alone pending a decision; a deliberate detail-shot card is legitimate.
+
+## Queue: three lessons with artwork staged and audits started
+
+Innes sent four URLs in quick succession. Harari is **built and pushed**. The
+other three have their artwork committed and their groundwork done; none is
+built. Pick them up in any order.
+
+| Lesson | Artwork | State |
+|---|---|---|
+| `impostor_syndrome_lesson.html` | `Impostor2/hero.jpg` — a woman at a podium with a drink, audience in silhouette, Noma Bar treatment. **Ultra-wide (3376×1440), not 16:9** — crop or letterbox before deriving the palette. | Not audited. Note `Impostor/` is already taken by `impostor_syndrome_advanced_JP.html`, which is why the folder is `Impostor2/`. |
+| `contingency-trade-offs-vocab.html` | `Construction3/`: `hero.jpg` (crane, red sun, dusk), `a.jpg` (unfinished concrete frame, palms), `b.jpg` (four-panel site strip), `c.jpg` (tower crane against cloud) | Not audited. 22 KB, the smallest of the four — likely a short vocab list rather than a full lesson. `Construction/` and `Construction2/` are both taken. |
+| `expressions_take_put_v2` + `_ES` + `_PL` → one lesson | `TakePut/hero.jpg` (car on a road at dusk) | **A real merge, not a dedupe.** Innes asked for it explicitly. |
+
+### The take/put merge is the awkward one
+
+`docs/HERO-QUEUE.md` lists these under "checked and *not* doubles": 56–87 of
+~150 strings shared, and **the ES and PL versions share more with each other
+than either shares with the base**. So this is not the `full_grammar_test`
+shape, where the only difference was chrome and the merge was free.
+
+Worse, it runs straight into the blocker already recorded above: per-item L1
+support lives in `data-explain`, which `UI_I18N` never reaches. If the ES and
+PL support is per-item rather than chrome, merging destroys the thing that
+makes the second and third files worth having — exactly the reason
+`cheat_sheet` DE/IT was left alone.
+
+**Diff the three before building anything.** If the support is per-item, the
+per-item translation fix has to come first, and that is a `deck.py` change
+affecting every shipped deck rather than a one-lesson job. Innes has asked for
+the merge, so if it turns out to be blocked, say so and say why rather than
+shipping a merge that silently drops the Spanish and Polish.
+
+### Two process notes from this batch
+
+**Never `git reset --hard` while staged artwork is untracked.** A
+`git stash -u && git reset --hard && git stash pop` sequence in this session
+silently lost four artwork folders — the stash did not survive — and reverted a
+finished deck to its pre-rebuild state. Both were recoverable only because the
+source PNGs were still in the uploads directory and the commit was still in the
+reflog. Commit artwork as soon as it is staged.
+
+**The uploader's "Commit changes" click fails silently more often than the
+existing note suggests.** Two of four commits in this batch did not land, and
+the page looked identical either way. The hash check is not optional, and it
+must cover *every* file in the batch — `check-library.js --vs-origin` caught
+that a `library.html` about to be uploaded would have wiped two cards another
+session had added forty minutes earlier.
