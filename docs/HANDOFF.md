@@ -368,3 +368,46 @@ session that has a working push.
 **Nothing checks that a lesson's art matches its setting.** `check-lesson.js`
 verifies the hero resolves; `docs/HERO-QUEUE.md` verifies the file exists. Both
 catches so far came from reading the lesson text and looking at the picture.
+
+## `library.html` loses card entries to stale-base overwrites
+
+`forbes-geoscience-phrases` and `forbes-nature-agency-part1` both had a card
+image, and both silently lost it. Not a gap — a regression:
+
+```
+9497eb4  Library: thumbnail for Nature Agency Part 1     <- both entries present
+5066174  Merge the two Stranger Things tests             <- both entries gone
+```
+
+`5066174` did not touch either lesson. It uploaded a `library.html` built from
+a base that predated them, and the web uploader replaces a file wholesale, so
+two unrelated entries went with it. `LESSON_IMAGES` is a single 166-line
+literal that every session edits, which makes it the most collision-prone file
+in the repo — and the collision is invisible, because a missing card falls back
+to a category-gradient placeholder that looks deliberate.
+
+**Before uploading `library.html`, diff its map against origin's**, and treat
+any key that disappears without a matching lesson deletion as a clobber:
+
+```bash
+ext() { git show "$1:library.html" | python3 -c "
+import sys,re
+m=re.search(r'const LESSON_IMAGES = \{(.*?)\n\};', sys.stdin.read(), re.S).group(1)
+[print(k,'=>',v) for k,v in re.findall(r'\"([^\"]+\.html)\":\s*\"([^\"]+)\"', m)]" | sort; }
+diff <(ext origin/main) <(ext HEAD)
+```
+
+The same check caught a second thing worth knowing: **the map had a duplicate
+key.** `english_firefighter_v3.html` appeared at two lines with two different
+images, so 167 source lines parsed to 166 entries and the earlier line did
+nothing. The dead line is removed and live behaviour is unchanged — the card
+still shows `Fire Brigade/fire-2-truck.png`, which is what was winning.
+
+**But that lesson's card and its own cover now disagree**: the deck's
+`--hero` is `firefighter/hero.jpg` while the card is the fire truck. Every
+other entry in the map matches its lesson's hero. It is one line either way;
+it was left as-is rather than changed inside an unrelated commit.
+
+A gate for this would be cheap — parse the map, assert no duplicate keys, and
+assert each value matches the lesson's own `--hero` where the lesson declares
+one. Not written yet.
