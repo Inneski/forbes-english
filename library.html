@@ -899,15 +899,15 @@ const searchEl = document.getElementById('search');
 const statsEl = document.getElementById('stats');
 
 function renderStats() {
-  const counts = { 'Grammar activity': 0, 'Speaking activity': 0 };
+  const counts = { 'Grammar activity': 0, 'Role Playing Games': 0 };
   LESSONS.forEach(l => {
     if (l.categories.includes('Grammar activity')) counts['Grammar activity']++;
-    if (l.categories.includes('Speaking activity')) counts['Speaking activity']++;
+    if (l.categories.includes('Role Playing Games')) counts['Role Playing Games']++;
   });
   statsEl.innerHTML = `
     <a class="stat-deck" href="#" id="lessonPlansBtn"><div class="stat-ico">📚</div><div class="stat-lbl">${LESSONS.length} Lesson Plans</div></a>
     <a class="stat-deck" href="#" id="grammarBtn"><div class="stat-ico">✏️</div><div class="stat-lbl">${counts['Grammar activity']} Grammar Activities</div></a>
-    <a class="stat-deck" href="#" id="speakingBtn"><div class="stat-ico">🗣️</div><div class="stat-lbl">${counts['Speaking activity']} Speaking Activities</div></a>
+    <a class="stat-deck" href="#cat=Role+Playing+Games" id="rpgBtn"><div class="stat-ico">🎲</div><div class="stat-lbl">${counts['Role Playing Games']} Role-Playing Games</div></a>
     <a class="stat-deck" href="#cat=Slide+Decks"><div class="stat-ico">▶</div><div class="stat-lbl">Open Slide Deck</div></a>
     <a class="stat-deck" href="#cat=Video+Lessons" id="videoLessonsBtn"><div class="stat-ico">🎬</div><div class="stat-lbl">Video Lessons</div></a>
     <a class="stat-deck" href="mailto:forbes@goodtimebook.com"><div class="stat-ico">✉️</div><div class="stat-lbl">Work With Me</div></a>
@@ -920,10 +920,6 @@ function renderStats() {
     e.preventDefault();
     window.scrollTo({top: document.querySelector('main').offsetTop - 20, behavior: 'smooth'});
   });
-  document.getElementById('speakingBtn').addEventListener('click', (e) => {
-    e.preventDefault();
-    window.scrollTo({top: document.querySelector('main').offsetTop - 20, behavior: 'smooth'});
-  });
   function goToCategory(cat) {
     activeCategory = cat;
     document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === cat));
@@ -933,6 +929,13 @@ function renderStats() {
   document.getElementById('videoLessonsBtn').addEventListener('click', (e) => {
     e.preventDefault();
     goToCategory('Video Lessons');
+  });
+  // Filters, rather than just scrolling like the Speaking button it replaces —
+  // that one moved the page and left the grid showing everything, so it read
+  // as broken.
+  document.getElementById('rpgBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    goToCategory('Role Playing Games');
   });
   window.applyHashCategory = function() {
     const hash = window.location.hash;
