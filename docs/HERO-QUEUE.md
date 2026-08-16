@@ -36,13 +36,38 @@ catalogue.
 
 ## Artwork already staged and waiting
 
-These need no new art — just a rebuild that wires them up.
+**None. All three are now wired** — verified by reading each file's `--hero`:
 
-| Folder | Images | Lesson |
+| Folder | Lesson | `--hero` now |
 |---|---|---|
-| `Geoscience/` | hero, buttes, fissure, stratovolcano, volcano | `forbes-geoscience-phrases.html` (already audited — `docs/geoscience-audit.md`) |
-| `NatureAgency2/` | hero, plain | `forbes-nature-agency-part2.html` |
-| `TopGearB2/` | hero | `forbes-english-b2-lesson.html` |
+| `Geoscience/` | `forbes-geoscience-phrases.html` | `Geoscience/buttes.jpg` |
+| `NatureAgency2/` | `forbes-nature-agency-part2.html` | `NatureAgency2/hero-otter.jpg` |
+| `TopGearB2/` | `forbes-english-b2-lesson.html` | `TopGearB2/hero.jpg` |
+
+So **the count is 67, not 70**, and every one of the remaining 67 needs art
+commissioning rather than wiring. Do not re-read the "3 staged" row in the
+numbers table above as work still outstanding.
+
+### Art that exists and is wrong for its lesson
+
+A hero that points at a real file passes every check in this document and can
+still be the wrong picture. Two have been caught by eye, both the same fault —
+American or African art over a British lesson:
+
+| Lesson | Was | Now |
+|---|---|---|
+| `forbes-nature-agency-part2.html` | African elephants | `hero-otter.jpg` |
+| `forbes-nature-agency-part1.html` | bison, prairie, US ranger station | marsh harrier over a reedbed, plus three peatland-restoration frames |
+
+Part 1's replacement set is `hero.jpg` (harrier, daylight), `harrier-dusk.jpg`,
+`peatland.jpg`, `restoration.jpg` and `hags.jpg`. **`lake.jpg`, `prairie.jpg`
+and `station.jpg` are now unreferenced** and should be `git rm`-ed by the first
+session with a working push — the web uploader cannot delete, so they are still
+sitting in the folder inviting reuse.
+
+Worth a sweep: nothing in this document checks whether a lesson's art matches
+its *setting*, only whether the file exists. Both catches so far came from
+reading the lesson text, not from a script.
 
 
 `grammarjail/` was listed here as unassigned in the first pass. It is not:
