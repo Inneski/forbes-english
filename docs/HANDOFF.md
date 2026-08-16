@@ -449,3 +449,466 @@ to `tools/lessons.json`. That cache is stale: it still has
 `forbes-conservation-c1` at `deck: false` although the flag is now true in the
 table, so `lesson-meta.json` and the deck category will lag until the cache is
 refreshed from a session that can reach the database.
+
+## Confirmed: what `seo.py` actually emits for JSON-LD
+
+Asked for before claiming the schema win over enghub.pro. Measured across the
+generated pages rather than read off the source:
+
+| | |
+|---|---|
+| Root `.html` pages | 246 |
+| Carrying JSON-LD | **237** |
+| Parse cleanly as JSON | **all of them** |
+
+| `@type` | count |
+|---|---|
+| `Organization` | 237 |
+| `LearningResource` | 236 |
+| `Course` (as `isPartOf`) | 236 |
+| `WebPageElement` (the withheld region on Pro pages) | 195 |
+| `WebSite` | 1 |
+| `EducationalOrganization` | 1 |
+
+**All 236 `LearningResource` nodes now carry `educationalLevel`.** That is only
+true as of `19d9565`; before the CEFR fill, 77 of them had nothing to put there.
+
+### The claim is right, with three holes worth naming
+
+enghub.pro emits no JSON-LD at all, so "we are ahead on structured data" holds.
+But the gap list used to make that comparison names five types, and **we are
+missing three of them**:
+
+- **`BreadcrumbList` — absent site-wide.** Cheap, and it is the one Google
+  actually renders in results. Nothing else in the stack has to change.
+- **`ItemList` on `library.html` — absent, and this is the worst of the three.**
+  The catalogue is the most linkable page on the site, it now carries a static
+  list of all 236 lessons for crawlers, and it has *no structured data at all*.
+  It is one of the nine pages below with no JSON-LD.
+- **`Product` / `Offer` on `pricing.html` — absent.** A paid product with no
+  offer markup.
+
+`FAQPage` is also absent, but there is no FAQ content to mark up, so that one
+is not a hole — do not add it to hit a checklist.
+
+### The nine pages with no JSON-LD, triaged
+
+| Page | Verdict |
+|---|---|
+| `library.html` | **Fix.** Needs `ItemList`. |
+| `pricing.html` | **Fix.** Needs `Product`/`Offer`. |
+| `account.html` | Fine — private, should not be indexed. |
+| `locked.html` | Fine — it is the gate template; the 195 real gate pages get theirs injected. |
+| `front-page.html`, `index_1.html` | Fine — the noindex near-duplicates of `index.html`. |
+| `full_grammar_test_italian.html`, `stranger-things-test-german.html` | Fine — redirect stubs. |
+| `falklands-lesson.html` | Not in the `lessons` table at all. An orphan, same as the two index duplicates — catalogue it or delete it. |
+
+### Two KNOWN LIMITS in the SEO handoff are already closed
+
+- ~~`level` is null on 77 lessons~~ — **done** (`19d9565`). All 236 have a
+  level; 75 were transcribed from their own title or filename, two resolved
+  from a sibling lesson. Zero nulls in the table and in `lesson-meta.json`.
+- ~~`lessons.json` cache is stale, wrong on the conservation deck flag~~ —
+  **done** (`db34fbc`). Refreshed from the live table: 236 rows, zero null
+  levels, deck flags current. `seo.py` still cannot reach Supabase from the
+  sandbox, so the cache will drift again — refresh it whenever the table
+  changes.
+
+---
+
+# Restored after a fourth stale-base clobber
+
+Everything from here to the end was lost when `6fc8f3f` uploaded a
+`docs/HANDOFF.md` built from a checkout that predated it — 35,224 bytes down
+to 21,971, seven sections gone. Recovered from `e30f874`. Two sections
+describe state that has since moved on and carry a correction at the top.
+
+## `--secondary` is a derived token that nothing renders
+
+Noticed while choosing a theme for the geoscience deck: 13 of 41 shipped
+decks have a `--secondary` that is invisible against their own `--surface`
+(under 1.5:1), including `forbes-c1-negotiation.html`, the worked reference,
+at 1.01:1, and one deck where the two values are byte-identical.
+
+**It does not matter, and that is the point.** `var(--secondary)` appears
+**zero times** in `lesson-template.html`. `extract-palette.py` derives the
+token and prints it, the contrast report does not include its row, and
+nothing consumes it. Thirteen decks carry an invisible colour because the
+colour is never drawn.
+
+Do not "fix" the 13, do not add a gate for it, and do not pick a theme on
+the strength of that row — a light-vs-dark decision was very nearly made on
+it here. Either wire `--secondary` into the template so it means something,
+or drop it from `extract-palette.py`'s output. Until one of those happens,
+ignore it.
+
+## The artwork was American and the lesson was British
+
+Part 1 shipped on a bison hero with a prairie and a US ranger station behind the
+teaching slides, over a lesson about a badger cull, a town council, a marsh
+harrier, hides and a car park. Part 2 had already hit exactly this — its African
+elephants were rejected and replaced with `hero-otter.jpg` — so it is a repeat,
+not a one-off, and worth treating as a class of defect rather than a taste call.
+
+Five replacement images are now in `NatureAgency/`, drawn from the lesson's own
+content rather than from "nature" in the abstract:
+
+| File | Picture | Where it lands |
+|---|---|---|
+| `hero.jpg` | marsh harrier, daylight, bird upper-left | cover, and the library card |
+| `harrier-dusk.jpg` | marsh harrier, dusk silhouette, bird upper-right | the `report` teaching slide, and sort 1 |
+| `peatland.jpg` | cut hags, dark water, poppies, hills | `decay`, `prevalent`/`rampant`, and 6 MC slides |
+| `restoration.jpg` | hag face, tractor, cattle, a worker | "three tells", register, and the 3 odd gap slides |
+| `hags.jpg` | lone tree on a hag, cottongrass fringe | `dwell`, and 6 MC slides |
+
+Two decisions worth not re-litigating:
+
+- **The daylight harrier is the cover, not the dusk one**, even though the dusk
+  frame is the better picture. `.cover-inner` centres its text and the scrim is
+  a radial at 50%/46%, so a centred title needs a clear centre. The daylight
+  frame keeps its bird upper-left; the dusk frame flies straight through where
+  the title goes. The dusk frame backs the `report` slide instead, which is the
+  right home anyway — the harrier *is* the bird Elena has to report within 24
+  hours, and that slide is where the verb sense is taught.
+- **`--bg-opacity` stays at 0.40.** It was set there for the bison hero and the
+  reason still holds for the new set, but it was **re-measured rather than
+  carried over**: `lesson-template/bgmeasure.py` on the four background images
+  gives `text_vs_brightest_bg` of 6.33–6.87 at 0.40 and **2.62–2.98 at the
+  template's default 0.72** — a fail. `hags.jpg` is the worst case both ways.
+
+**Watch out for `bgmeasure.py`'s slide index.** It indexes
+`document.querySelectorAll('.slide')`, which is *not* the same sequence as
+`<section class="slide` in the source — the source count is N+1, the same
+off-by-one the slide-count chip has. Measuring by source index silently reads
+slides that have no `data-bg` at all and returns the bare-wash number for every
+one of them, which looks like a clean pass. Enumerate the indices from the DOM
+first.
+
+`lake.jpg`, `prairie.jpg` and `station.jpg` are unreferenced now but still in
+the repo, because the web uploader cannot delete. `git rm` them from the first
+session that has a working push.
+
+**Nothing checks that a lesson's art matches its setting.** `check-lesson.js`
+verifies the hero resolves; `docs/HERO-QUEUE.md` verifies the file exists. Both
+catches so far came from reading the lesson text and looking at the picture.
+
+## `library.html` loses card entries to stale-base overwrites
+
+`forbes-geoscience-phrases` and `forbes-nature-agency-part1` both had a card
+image, and both silently lost it. Not a gap — a regression:
+
+```
+9497eb4  Library: thumbnail for Nature Agency Part 1     <- both entries present
+5066174  Merge the two Stranger Things tests             <- both entries gone
+```
+
+`5066174` did not touch either lesson. It uploaded a `library.html` built from
+a base that predated them, and the web uploader replaces a file wholesale, so
+two unrelated entries went with it. `LESSON_IMAGES` is a single 166-line
+literal that every session edits, which makes it the most collision-prone file
+in the repo — and the collision is invisible, because a missing card falls back
+to a category-gradient placeholder that looks deliberate.
+
+**Before uploading `library.html`, diff its map against origin's**, and treat
+any key that disappears without a matching lesson deletion as a clobber:
+
+```bash
+ext() { git show "$1:library.html" | python3 -c "
+import sys,re
+m=re.search(r'const LESSON_IMAGES = \{(.*?)\n\};', sys.stdin.read(), re.S).group(1)
+[print(k,'=>',v) for k,v in re.findall(r'\"([^\"]+\.html)\":\s*\"([^\"]+)\"', m)]" | sort; }
+diff <(ext origin/main) <(ext HEAD)
+```
+
+The same check caught a second thing worth knowing: **the map had a duplicate
+key.** `english_firefighter_v3.html` appeared at two lines with two different
+images, so 167 source lines parsed to 166 entries and the earlier line did
+nothing. The dead line is removed and live behaviour is unchanged — the card
+still shows `Fire Brigade/fire-2-truck.png`, which is what was winning.
+
+**But that lesson's card and its own cover now disagree**: the deck's
+`--hero` is `firefighter/hero.jpg` while the card is the fire truck. Every
+other entry in the map matches its lesson's hero. It is one line either way;
+it was left as-is rather than changed inside an unrelated commit.
+
+A gate for this would be cheap — parse the map, assert no duplicate keys, and
+assert each value matches the lesson's own `--hero` where the lesson declares
+one. Not written yet.
+
+## library.html: run the checker, do not run a diff from memory
+
+`node lesson-template/check-library.js --vs-origin` before you upload
+`library.html`. It is not optional and it takes a second.
+
+The clobber went **both ways** and neither session noticed:
+
+| commit | added | silently removed |
+|---|---|---|
+| `5066174` | `stranger-things-test` | `forbes-nature-agency-part1` |
+| `c5a9625` | Alcatraz + five decks | `stranger-things-test` |
+| `0a39b5b` | restored two cards | — but not the one `c5a9625` took |
+
+The restore commit fixed the two losses it knew about and missed the one
+its own predecessor had caused. That is the shape of this failure: it is
+invisible three ways over. The entry count does not change when one is
+swapped for another; a lesson with no card falls back to a category
+gradient that looks deliberate; and the session that clobbers is never the
+session that notices.
+
+The checker also verifies what a diff cannot: that every thumbnail file
+exists, that every key is a real lesson, that no key is duplicated (a
+duplicate keeps the last value, so the earlier line silently does
+nothing), and that every finished deck has a card at all. Its first run
+found two decks with none — `make-v-do` had never had one, and
+`stranger-things-test` had been clobbered an hour earlier.
+
+The one advisory it prints is a mismatch between a deck's card and its own
+`--hero`. Two lessons differ on purpose or by accident and nobody knows
+which: `english_firefighter_v3` (card `Fire Brigade/fire-2-truck.png`,
+hero `firefighter/hero.jpg`) and `forbes-ai-productive-struggle-c1` (card
+`AILearning/c1-lesson-thumb.jpg`, hero `AILearning/retro-desk-sunset.jpg`).
+Left alone pending a decision; a deliberate detail-shot card is legitimate.
+
+## CORRECTION: take/put support is per-item after all — and the merge is still easy
+
+An earlier note in this file said the take/put ES and PL support was chrome
+only and merged cleanly. **That was wrong, and it was wrong for an avoidable
+reason.** The test used was "does any string in the JS carry Spanish or Polish
+diacritics" — and most of these glosses do not. `tomar la iniciativa`,
+`correr un riesgo` and `poner por escrito` are all pure ASCII. The check
+reported zero and the conclusion was drawn from it.
+
+What is actually there, counted by object key rather than by accent:
+
+| File | Field | S1 | S2items | S3data | S4left/right |
+|---|---|---|---|---|---|
+| `expressions_take_put_v2.html` | `de:` | 7/7 | 18/18 | 7/7 | **0/12** |
+| `expressions_take_put_ES.html` | `es:` | 7/7 | 18/18 | 7/7 | **0/12** |
+| `expressions_take_put_PL.html` | `pl:` | 7/7 | 18/18 | 7/7 | **0/12** |
+
+Two things follow.
+
+**The "base" file is the German edition.** `expressions_take_put_v2.html` is
+not language-neutral with two translations bolted on; it is DE, and ES and PL
+are its siblings. Three editions, not one-plus-two.
+
+**The merge is easy anyway, and it destroys nothing.** The support is a
+*parallel field on identical item objects* — `{lbl, cat, de}` against
+`{lbl, cat, es}` — so merging is `{lbl, cat, de, es, pl}` and a renderer that
+picks the field by current language. This is nothing like `cheat_sheet` DE/IT,
+where the divergent strings were whole example sentences. The general blocker
+(`UI_I18N` cannot reach `data-explain`) does not bite here because the gloss
+never goes through `data-i18n` at all — it is read straight off the item.
+
+### Innes's decision on the promises
+
+All three files tell the learner that translations appear after every answer.
+That is true for activities 1–3 (32 items) and **false for activity 4**, the
+dialogue-matching board — 12 items with no gloss in any language.
+
+**Instruction: keep or delete all promises — no partially-kept ones. Spanish
+takes priority over Polish.**
+
+So, in the merge: add the missing activity-4 glosses so the claim is true, and
+where a language cannot be completed to standard, delete that language's claim
+rather than ship it half-kept. Spanish is the one to complete first; Polish is
+the one to drop the claim from if something has to give.
+
+Six expressions need a gloss (the right-hand replies are not glossed anywhere
+and do not need to be — the existing pattern glosses the *expression*, not the
+sentence). Spanish drafted, matching the `'x \/ y'` two-option house format
+used in S1 and S3:
+
+| id | expression | `es:` |
+|---|---|---|
+| L1 | put my foot in it | `meter la pata \/ decir algo inoportuno` |
+| L2 | take a break | `tomar un descanso \/ hacer una pausa` |
+| L3 | take the lead | `tomar la iniciativa \/ ponerse al frente` |
+| L4 | put in writing | `poner por escrito \/ dejar constancia escrita` |
+| L5 | put it behind you | `pasar página \/ dejarlo atrás` |
+| L6 | take advantage of | `aprovechar \/ sacar partido de` |
+
+L3 deliberately reuses the exact string already on `S2items` for *take the
+lead*, so the same expression does not get two different glosses in one lesson.
+Check the other five against S1/S2/S3 for the same reason before adding them.
+
+## Queue: lessons with artwork staged
+
+> **Updated.** Conservation Travel has since been **built and shipped** (21
+> slides, `a3b7791`). Three remain: Impostor Syndrome, Contingency &
+> Trade-offs, and the take/put merge. Artwork for all three is on `origin/main`.
+
+Innes sent four URLs in quick succession. Harari is **built and pushed**. The
+other three have their artwork committed and their groundwork done; none is
+built. Pick them up in any order.
+
+| Lesson | Artwork | State |
+|---|---|---|
+| `impostor_syndrome_lesson.html` | `Impostor2/hero.jpg` — a woman at a podium with a drink, audience in silhouette, Noma Bar treatment. **Ultra-wide (3376×1440), not 16:9** — crop or letterbox before deriving the palette. | Not audited. Note `Impostor/` is already taken by `impostor_syndrome_advanced_JP.html`, which is why the folder is `Impostor2/`. |
+| `contingency-trade-offs-vocab.html` | `Construction3/`: `hero.jpg` (crane, red sun, dusk), `a.jpg` (unfinished concrete frame, palms), `b.jpg` (four-panel site strip), `c.jpg` (tower crane against cloud) | Not audited. 22 KB, the smallest of the four — likely a short vocab list rather than a full lesson. `Construction/` and `Construction2/` are both taken. |
+| `expressions_take_put_v2` + `_ES` + `_PL` → one lesson | `TakePut/hero.jpg` (car on a road at dusk) | **A real merge, not a dedupe.** Innes asked for it explicitly. |
+| `forbes-conservation-c1.html` | `Conservation/` (9): `reef-lagoon.jpg`, `reef-canyon.jpg`, `island.jpg`, `turtles.jpg`, `frog.jpg`, `wildfire.jpg`, `plantation.jpg`, `ama-boat.jpg`, `ama-dusk.jpg` | **Audited — see below.** Innes sent the art with no URL; it was matched to this lesson by content — the lesson is subtitled "From Cloud Forests to Coral Reefs" and runs Ecuador cloud forest → coral reef → Japan's *ama* divers, so the frog, the reef and the turtles are its own material. 60 KB, three activities, 6 MC questions. |
+
+### The take/put merge is the awkward one
+
+`docs/HERO-QUEUE.md` lists these under "checked and *not* doubles": 56–87 of
+~150 strings shared, and **the ES and PL versions share more with each other
+than either shares with the base**. So this is not the `full_grammar_test`
+shape, where the only difference was chrome and the merge was free.
+
+Worse, it runs straight into the blocker already recorded above: per-item L1
+support lives in `data-explain`, which `UI_I18N` never reaches. If the ES and
+PL support is per-item rather than chrome, merging destroys the thing that
+makes the second and third files worth having — exactly the reason
+`cheat_sheet` DE/IT was left alone.
+
+**Diff the three before building anything.** If the support is per-item, the
+per-item translation fix has to come first, and that is a `deck.py` change
+affecting every shipped deck rather than a one-lesson job. Innes has asked for
+the merge, so if it turns out to be blocked, say so and say why rather than
+shipping a merge that silently drops the Spanish and Polish.
+
+### Two process notes from this batch
+
+**Never `git reset --hard` while staged artwork is untracked.** A
+`git stash -u && git reset --hard && git stash pop` sequence in this session
+silently lost four artwork folders — the stash did not survive — and reverted a
+finished deck to its pre-rebuild state. Both were recoverable only because the
+source PNGs were still in the uploads directory and the commit was still in the
+reflog. Commit artwork as soon as it is staged.
+
+**The uploader's "Commit changes" click fails silently more often than the
+existing note suggests.** Two of four commits in this batch did not land, and
+the page looked identical either way. The hash check is not optional, and it
+must cover *every* file in the batch — `check-library.js --vs-origin` caught
+that a `library.html` about to be uploaded would have wiped two cards another
+session had added forty minutes earlier.
+
+### ~~The take/put merge is NOT blocked after all~~ — SUPERSEDED, THIS WAS WRONG
+
+> **Do not act on this section.** It claimed the ES and PL support was chrome
+> only. It is not: all three files carry 32 per-item glosses each. The error and
+> the real picture are in **"CORRECTION: take/put support is per-item after
+> all"** at the end of this file. The paragraph below is kept only so the
+> mistake is legible, because the *method* that produced it — testing for
+> diacritics rather than counting object keys — is the reusable lesson.
+
+~~Every Spanish-bearing text node in `expressions_take_put_ES.html` is chrome —
+headings, task instructions, button labels, the section intros. There is no
+`data-explain`, and no Spanish or Polish anywhere in the JS data.~~
+
+The one part of this section that held up: **both files promise something they
+do not fully contain.** The ES page says *"Las traducciones al español aparecen
+en rojo después de cada respuesta"* and the PL page says the same in Polish.
+True for activities 1–3, false for activity 4. Same class of defect as the
+Harari transcript claim — a checkable promise the file does not keep.
+
+### Artwork is committed the moment it is staged
+
+Learned the hard way this session — see the `reset --hard` note above. Every
+folder in the queue table is already on `origin/main`, so the next session
+starts with the art in hand and nothing depends on a sandbox surviving.
+
+## Conservation Travel C1 — audited, and now built
+
+> **Built and shipped** as a 21-slide deck (`a3b7791`), all twelve gates clean.
+> Every defect below was fixed; the audit is kept because the defects are the
+> reusable part.
+
+`forbes-conservation-c1.html`, 60 KB, three activities: 6 MC, 6 gap-fill, 5
+sentence-ordering, plus discussion prompts. Artwork is in `Conservation/`
+(nine images, listed in the queue table).
+
+**The word bank is the answer key, in order.** Not correlated with it — the
+same list:
+
+```
+bank    : rare  retraining  traditional  millennia  Cultural  extinction
+answers : rare  retraining  traditional  millennia  Cultural  extinction
+```
+
+A learner reads the bank top to bottom, fills the gaps top to bottom, and
+scores 6/6 without reading a single sentence. This is the most blatant
+instance of the `assert_bank_is_not_a_key` defect in the catalogue — every
+previous case was a bank that merely leaked the order; this one *is* the key.
+Fix by sorting the bank, which is what the guard wants and what
+`build_nature1.py` does.
+
+`Cultural` is capitalised in the bank, which separately tells the learner that
+gap begins a sentence. Sorting alone does not fix that; either lower-case it in
+the bank or move the gap off a sentence boundary.
+
+**The MC keys run 1 1 1 2 1 1** — five of six on index 1 — and **the key is the
+longest option in 3 of 6** (up to +12 chars). Same pair of tells as Harari,
+milder. Derange the keys and lengthen the three distractors; do not shorten a
+key.
+
+The ordering activity was not measured — check whether it can be lost before
+trusting it, since the `match` engine's equivalent could not be.
+
+The reading itself is good and should survive: Ecuador cloud forest, coral reef
+restoration, Japan's *ama* divers. That last is what the `ama-boat.jpg` and
+`ama-dusk.jpg` frames are for, and the lesson names the tradition explicitly,
+so those two backgrounds do teaching work rather than decoration.
+
+---
+
+## The fourth clobber, and the hole in the check I was using
+
+`6fc8f3f` took `docs/HANDOFF.md` from **35,224 bytes to 21,971** and dropped
+seven sections. Same cause as the other three: a file uploaded from a checkout
+that predated the work it overwrote.
+
+This one is worth more attention than the others, because **the file it
+destroyed is the one whose entire job is to survive between sessions.** Losing
+a card entry costs a thumbnail. Losing a deck costs a rebuild. Losing the
+handoff costs every session after it the reason anything was done.
+
+### The check I was running does not catch this
+
+Before uploading `HANDOFF.md` I had been running:
+
+```python
+mine.startswith(open(origin_version).read())   # "am I a clean superset of origin?"
+```
+
+That answers *"am I about to clobber origin?"* It does **not** answer *"has
+origin already lost work of mine?"* — and after `6fc8f3f`, origin was the
+clobbered version, so my append passed the check and quietly built on top of
+the damage. I appended twice more before noticing.
+
+**The check has to be against the last version known to contain your work, not
+against whatever origin happens to be now:**
+
+```bash
+# every ## section that existed in <known-good> and is missing from the file now
+python3 - <<'EOF'
+import re, subprocess
+def secs(t): return {p.split('\n')[0].strip(): p
+                     for p in re.split(r'(?m)^(?=## )', t) if p.startswith('## ')}
+old = secs(subprocess.run(['git','show','<known-good-sha>:docs/HANDOFF.md'],
+                          capture_output=True, text=True).stdout)
+new = secs(open('docs/HANDOFF.md', encoding='utf-8').read())
+for k in old:
+    if k not in new: print('LOST', k)
+EOF
+```
+
+The byte-size trend is the cheap version of the same signal: **`HANDOFF.md`
+should only ever grow.** Any commit where it shrinks is a clobber until proven
+otherwise. Same rule as the deck shrink-sweep, applied to the one file that
+cannot be regenerated from a builder.
+
+### Four instances now, all the same shape
+
+| Commit | What it overwrote | Cost |
+|---|---|---|
+| `5066174` | two `library.html` card entries | thumbnails |
+| `a3b7791` | an SEO block in `library.html` (mine) | metadata, self-repaired by luck |
+| `c5b2bc6` | the Harari deck, 125,615 → 66,667 bytes | a full rebuild |
+| `6fc8f3f` | `HANDOFF.md`, 35,224 → 21,971 bytes | seven sections of institutional memory |
+
+Two of those four were mine. The pattern is not carelessness by one session —
+it is that **the web uploader replaces files wholesale and nothing in the loop
+compares against what was there.** Until `git push` works, the diff before
+upload is the only defence, and it has to be run against the right baseline.
