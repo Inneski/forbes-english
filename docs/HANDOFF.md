@@ -987,6 +987,67 @@ but it disagreed with the checker on seven items, in two ways, both mine:
 
 Screen with the sweep; decide with the checker, which reads a real DOM.
 
+## Publishing a .pptx: the slide-viewer pattern
+
+Innes sends a finished PowerPoint and says "upload to decks". There is no
+`decks/` folder — the established shape, set by `twin-peaks-deck-viewer.html`
+and `star-wars-question-words-deck-viewer.html`, is four artefacts:
+
+```
+<name>.pptx                       the source, at the repo root, for download
+<name>-slides/slide-01.jpg …      one 1920x1080 render per slide
+<name>-deck-viewer.html           the page: one <img>, arrows, dots, download
+catalogue row + LESSON_IMAGES     deck=true, thumbnail = slide-01
+```
+
+Rendering:
+
+```bash
+python3 <pptx-skill>/scripts/office/soffice.py --headless --convert-to pdf deck.pptx
+pdftoppm -jpeg -jpegopt quality=88 -r 144 deck.pdf slide     # gives 1921px — resize
+```
+
+`pdftoppm` at 144dpi returns **1921x1080**, one pixel wide. Resize to exactly
+1920x1080 before committing or the images are subtly non-standard. JPEG q86
+progressive lands each slide at 200-400KB; the twin-peaks PNGs average 1.4MB
+each for no visible gain, so use JPEG.
+
+**The `LESSON_IMAGES` entry is not optional any more** — without it the lesson
+renders as "Coming soon" and is excluded from the sitemap. Point it at
+`slide-01.jpg`.
+
+### Harry Potter and the Present Continuous — uploaded, with one fix
+
+`harry-potter-present-continuous-deck-viewer.html`, 10 slides, A1, deck, pro,
+catalogue id 243. Eight verbs — talk, tell, discuss, fly, play, buy, fight,
+escape — one per slide over Harry Potter artwork, opening on the form and
+closing on a recap grid.
+
+**Slide 8 shipped without its eyebrow.** Every other verb slide carries
+`VERB → IS VERB-ING` above the title; slide 8 had an empty text box named
+`Prompt 8` sitting top-left in Arial 12.75pt, while its siblings use a
+Courier New 13.5pt box positioned above the title. Not a rendering artefact —
+`markitdown` showed no text in it either. Replaced with a copy of slide 6's
+`Grammar 9` shape, `PLAY` → `FIGHT`, x shifted to 7176135 to sit over slide 8's
+own title. `validate.py --original` passes. **The uploaded `.pptx` is therefore
+one shape different from the file Innes sent**, and the download button serves
+the corrected copy.
+
+### Two departures from the twin-peaks viewer, both deliberate
+
+- **Neighbour preloading.** At ~250KB a slide, every arrow press showed an
+  empty frame while the next image downloaded. `warm(idx±1)` after each render.
+- **Swipe.** A deck on a phone that only advances by hitting a 40px circle is a
+  deck nobody reaches the end of. Horizontal intent is required
+  (`|dx| > 45 && |dx| > |dy| * 1.5`) or scrolling flips slides.
+
+Also: the back link goes to `library.html`, not `index.html`. Both older
+viewers say "← Back to catalog" and point at `index.html`, which is the home
+page, not the catalogue. **Those two are still wrong** — a one-line fix each,
+not done here.
+
+---
+
 ## The gap engine scored one blank per row — fixed, and swept clean
 
 Found by play-testing Food A1 Part 1: a perfect run finished **18/19**. The
