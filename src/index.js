@@ -89,7 +89,7 @@ async function gateLessonRequest(request, url, env, ctx) {
     return out;
   }
 
-  return locked(request, url, env);
+  return locked(request, url, env, ctx);
 }
 
 /**
@@ -190,15 +190,36 @@ function readCookie(header, name) {
 }
 
 /**
- * 402 with the locked page. The status is honest — this is not a 404 pretending
- * the lesson does not exist, nor a 200 pretending the paywall is the lesson —
- * and browsers render the body regardless.
+ * The gate page, built for the lesson that was asked for.
+ *
+ * **200, not 402.** The old status was the honest one and it cost every pro
+ * lesson its place in search: Google does not index a non-2xx response, so
+ * 195 lessons — four fifths of the library — could not appear in a result
+ * however good they were. The supported way to say "this is deliberately
+ * gated" is a 200 carrying `isAccessibleForFree: false` and a `hasPart`
+ * marking the withheld region, which is exactly what goes out below. It is
+ * not a 200 pretending the paywall is the lesson: the page says plainly, to
+ * a reader and to a crawler, that the lesson is behind a subscription.
+ *
+ * **The same page for everybody.** Whatever a crawler is shown here, a
+ * logged-out person sees too — the title, what the lesson teaches, its
+ * level. Showing Google the lesson and a visitor the gate would be
+ * cloaking, and this deliberately does not do that.
+ *
+ * The per-lesson text comes from `lesson-meta.json`, which `tools/seo.py`
+ * generates from the same `lessons` table this gate reads.
  */
-async function locked(request, url, env) {
+async function locked(request, url, env, ctx) {
   const page = await env.ASSETS.fetch(new Request(`${url.origin}/locked.html`));
-  const html = page.ok ? await page.text() : "<h1>This lesson is for subscribers.</h1>";
+  let html = page.ok ? await page.text() : "<h1>This lesson is for subscribers.</h1>";
+
+  const file = lessonFileFor(url.pathname);
+  const meta = await getLessonMeta(request, url, env, ctx);
+  const m = file && meta ? meta[file] : null;
+  if (m) html = personaliseGate(html, m, url);
+
   return new Response(html, {
-    status: 402,
+    status: 200,
     headers: {
       "Content-Type": "text/html; charset=utf-8",
       "Cache-Control": "no-store",
@@ -207,6 +228,94 @@ async function locked(request, url, env) {
       "Vary": "Cookie",
     },
   });
+}
+
+/** The generated per-lesson title/description map, cached at the edge. */
+async function getLessonMeta(request, url, env, ctx) {
+  const cacheKey = new Request(`${url.origin}/__internal/lesson-meta`);
+  const cache = caches.default;
+  const hit = await cache.match(cacheKey);
+  if (hit) {
+    try {
+      return await hit.json();
+    } catch {
+      /* fall through */
+    }
+  }
+  try {
+    const res = await env.ASSETS.fetch(new Request(`${url.origin}/lesson-meta.json`));
+    if (!res.ok) return null;
+    const text = await res.text();
+    const data = JSON.parse(text);
+    const store = new Response(text, {
+      headers: { "Content-Type": "application/json", "Cache-Control": "max-age=300" },
+    });
+    if (ctx && ctx.waitUntil) ctx.waitUntil(cache.put(cacheKey, store));
+    return data;
+  } catch {
+    // No metadata is not a failure — the gate still works, it is just generic.
+    return null;
+  }
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+/**
+ * Fill the gate page's slots with this lesson's own words. Everything is
+ * escaped: the values come from a database row, and a lesson title with an
+ * ampersand in it should not be able to close a tag.
+ */
+function personaliseGate(html, m, url) {
+  const title = escapeHtml(m.title || "");
+  const desc = escapeHtml(m.description || "");
+  const level = escapeHtml(m.level || "");
+  const canonical = `${url.origin}${url.pathname}`;
+  const image = m.image ? `${url.origin}${m.image}` : "";
+
+  const ld = {
+    "@context": "https://schema.org",
+    "@type": "LearningResource",
+    name: m.title,
+    description: m.description,
+    url: canonical,
+    inLanguage: "en",
+    learningResourceType: "lesson",
+    isAccessibleForFree: false,
+    hasPart: { "@type": "WebPageElement", isAccessibleForFree: false, cssSelector: ".paywalled" },
+    provider: { "@type": "Organization", name: "Forbes English", url: `${url.origin}/` },
+  };
+  if (m.level) ld.educationalLevel = m.level;
+  if (image) ld.image = image;
+
+  const head = [
+    `<meta name="description" content="${desc}">`,
+    `<link rel="canonical" href="${canonical}">`,
+    `<meta property="og:type" content="article">`,
+    `<meta property="og:title" content="${title}">`,
+    `<meta property="og:description" content="${desc}">`,
+    `<meta property="og:url" content="${canonical}">`,
+    image ? `<meta property="og:image" content="${image}">` : "",
+    `<meta name="twitter:card" content="summary_large_image">`,
+    `<script type="application/ld+json">${JSON.stringify(ld)}</script>`,
+  ].filter(Boolean).join("\n");
+
+  const intro = [
+    `<div class="eyebrow">Subscribers only${level ? ` &middot; ${level}` : ""}</div>`,
+    `<h1>${title}</h1>`,
+    `<p class="lede">${desc}</p>`,
+    `<p class="lede paywalled">The lesson itself &mdash; every slide, every exercise and`,
+    ` the answers &mdash; is part of Forbes English Pro. Plenty of the library is free`,
+    ` and always will be.</p>`,
+  ].join("");
+
+  return html
+    .replace(/<title>[\s\S]*?<\/title>/, `<title>${title} | Forbes English</title>`)
+    .replace("<!-- LESSON:head -->", head)
+    .replace(/<!-- LESSON:intro -->[\s\S]*?<!-- \/LESSON:intro -->/,
+             `<!-- LESSON:intro -->${intro}<!-- /LESSON:intro -->`);
 }
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -244,7 +353,7 @@ async function handlePaywallStatus(request, url, env, ctx) {
     ? "The Worker could not read the lessons table from Supabase."
     : "No lessons are marked access='pro'.";
   report.verifyBy =
-    "Open a pro lesson in a private window. 402 with the subscribe page = the " +
+    "Open a pro lesson in a private window. The subscribe page instead of the " +
     "gate is live. 200 with the lesson = requests are bypassing the Worker; " +
     "check run_worker_first in wrangler.toml, which is what makes Workers " +
     "Static Assets stop serving existing files before the Worker sees them.";
