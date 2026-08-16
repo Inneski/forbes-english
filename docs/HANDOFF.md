@@ -987,6 +987,52 @@ but it disagreed with the checker on seven items, in two ways, both mine:
 
 Screen with the sweep; decide with the checker, which reads a real DOM.
 
+## Recolouring a deck: Breaking Bad, orange to pink
+
+Innes: *"give this same treatment of font and pink tones instead of orange."*
+`breaking-bad-present-continuous-deck-viewer.html`, 16 slides, A2, deck, pro,
+catalogue id 244.
+
+**Measure both palettes before writing the transform.** Breaking Bad's warm sat
+at hue 0-20, S 0.5-0.6; the Harry Potter pink at hue 340-350, S 0.3-0.4. So the
+mapping is a 22-degree anticlockwise rotation with a 28% saturation cut, over a
+band that ramps to zero by -25 and +35 so the deck's several creams (hue 34-42)
+are untouched and there is no hard edge. Blues, greys and blacks never enter
+the band. Applied to all 14 media images **and** to `srgbClr` values in the XML
+— `#F27D6B` (26 uses) becomes `#F794AB`. The transform is in the commit; keep
+it if another deck needs recolouring.
+
+### Recolouring changes contrast, so re-measure the text afterwards
+
+Pink is lighter than the coral it replaced, so every cream or pink caption lost
+contrast against it. A sweep of all 16 slides found three text blocks that were
+invisible in the render:
+
+| Slide | Text | Orange | Pink | Fixed to |
+|---|---|---|---|---|
+| 8 | "Where are they standing?" | 1.20:1 | **1.01:1** | `#10272B` → 7.2:1 |
+| 13 | "Gustav is adjusting his tie" | 2.86:1 | 2.35:1 | `#10272B` → 6.3:1 |
+| 16 | "SUBJECT + BE + VERB-ING" | 1.01:1 | 1.01:1 | `#FFF8E8` → 14.6:1 |
+
+Two of those the recolour made worse; slide 16 was already broken. All three
+were fixed with colours the deck already uses.
+
+**The per-block sweep over-reports.** Sampling the median inside a text box
+includes the glyphs and any second background the box overlaps, so a wide box
+spanning two tones scores low even when the text is perfectly legible — it
+flagged 21 blocks and only 3 were real. Use it to shortlist, then crop and look
+at each one.
+
+### "All Courier New" needed the theme changing too
+
+The deck named Courier New on 43 runs and left 16 inheriting, and the theme's
+`majorFont`/`minorFont` were **Calibri** — so `pdffonts` showed a
+LiberationSans alongside the two Courier faces. Setting the theme to Courier
+New *and* giving those 16 runs an explicit face cleared it. `pdffonts` is again
+the check: two Courier entries and nothing else.
+
+---
+
 ## Publishing a .pptx: the slide-viewer pattern
 
 Innes sends a finished PowerPoint and says "upload to decks". There is no
@@ -1103,10 +1149,17 @@ one corner that works across the set. First attempt put the cover logo just
 below the subtitle at 106px tall and "ENGLISH" landed in the treeline. What
 worked:
 
-- **Cover** — the cloud strip directly under "Actions happening now",
-  right-aligned with the title column, 81px tall so it stops above the trees.
-  L=0.42 there; deep green measures **5.2:1**.
-- **Closing** — bottom-left on flat dark navy, L=0.01; light green, **4.1:1**.
+- **Cover** — bottom-right, **on the black bag**, right-aligned to the page
+  number above it. The bag is as close to pure black as the deck gets
+  (median L=0.003), so the light green measures **5.4:1** — the best contrast
+  anywhere on the ten slides.
+- **Back page** — the identical corner and identical size, so the two pages
+  book-end. Darkest patch there is L=0.055; same light green, **3.3:1**.
+
+Same green on both, deliberately: different tints in the same corner on the
+two pages read as a mistake. An earlier attempt put the cover mark in the
+cloud strip under the subtitle in the deep green — legible at 5.2:1, but the
+bag is both darker and the corner Innes asked for.
 
 Interior slides carry no mark, matching Star Wars. Twin Peaks brands its
 interiors, so **if Innes wants all ten, the per-slide colour has to be chosen
