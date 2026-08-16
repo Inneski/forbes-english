@@ -102,7 +102,7 @@ def teach(eyebrow_key, eyebrow, title_key, title, cards, cols=None, folder='', b
           </div>''' % (' data-i18n="%s"' % hk if hk else '', h,
                        ' data-i18n="%s"' % bk if bk else '', b,
                        ('\n            <p class="prose dim" style="margin-top:8px;font-size:15px"'
-                        ' data-i18n="%s">%s</p>' % (nk, n)) if n else '')
+                        '%s>%s</p>' % (' data-i18n="%s"' % nk if nk else '', n)) if n else '')
         for hk, h, bk, b, nk, n in cards)
     return '''
     <section class="slide" data-type="teach"%s>
