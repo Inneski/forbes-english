@@ -994,13 +994,43 @@ Innes: *"give this same treatment of font and pink tones instead of orange."*
 catalogue id 244.
 
 **Measure both palettes before writing the transform.** Breaking Bad's warm sat
-at hue 0-20, S 0.5-0.6; the Harry Potter pink at hue 340-350, S 0.3-0.4. So the
-mapping is a 22-degree anticlockwise rotation with a 28% saturation cut, over a
-band that ramps to zero by -25 and +35 so the deck's several creams (hue 34-42)
-are untouched and there is no hard edge. Blues, greys and blacks never enter
-the band. Applied to all 14 media images **and** to `srgbClr` values in the XML
-— `#F27D6B` (26 uses) becomes `#F794AB`. The transform is in the commit; keep
-it if another deck needs recolouring.
+at hue 0-20, S 0.5-0.6; the Harry Potter pink at hue 340-350, S 0.3-0.4.
+
+**Rotate the hue. Do not touch saturation or value.** The first attempt did all
+three — 22 degrees, minus 28% saturation, plus 2% value — and Innes came back
+with *"the pink has overpowered subtle neighbouring tones."* He was right, and
+it is measurable: multiplicative desaturation compresses the *absolute* gap
+between tones, so the saturation spread of the warm family fell by roughly half
+on every slide. The coral wall, the terracotta recesses, the skin and the dusty
+rose all converged on one flat pink.
+
+| | slide 1 | slide 7 | slide 11 | slide 13 |
+|---|---|---|---|---|
+| original spread | 0.122 | 0.378 | 0.121 | 0.107 |
+| v1 (rot + desat) | 0.061 | 0.225 | 0.079 | 0.075 |
+| **v2 (rot only)** | **0.109** | **0.349** | **0.108** | **0.099** |
+
+A pure hue rotation preserves S and V per pixel, so every tonal difference in
+the original survives and only the hue moves. v2 is 20 degrees, 6% desaturation
+and no lift.
+
+**Keep the band tight so the neighbours survive.** v1 ramped out at +35, which
+dragged the tans and terracotta (hue 20-40) into the pink along with everything
+else and left nothing for it to sit against. v2 is at full strength only from
+-8 to +12 and back to zero by +24. Blues, greys and blacks never enter the
+band either way. Applied to all 14 media images **and** to `srgbClr` values in
+the XML — `#F27D6B` (26 uses) becomes `#F2738C`.
+
+### Slide 2 was the only one with no artwork
+
+Every text box on it stopped by x=1530 of 1920, so the right third was empty,
+and the three column boxes behind SUBJECT / AM-IS-ARE / VERB+ING existed with
+no fill, so the table read as three floating words. Gave the boxes a 16% tint
+of the deck pink with a 9% corner radius, and put a tall crop of the Jessie
+picture — the same media part slide 4 uses, a second relationship to it — in
+the empty third. **A tall panel needs `srcRect`, not a squash**: the panel is
+320x1080 (aspect 0.30) and the source is 1600x900, so the crop has to be about
+17% of the source width or the picture comes out at half width.
 
 ### Recolouring changes contrast, so re-measure the text afterwards
 
