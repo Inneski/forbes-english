@@ -1011,8 +1011,27 @@ rose all converged on one flat pink.
 | **v2 (rot only)** | **0.109** | **0.349** | **0.108** | **0.099** |
 
 A pure hue rotation preserves S and V per pixel, so every tonal difference in
-the original survives and only the hue moves. v2 is 20 degrees, 6% desaturation
-and no lift.
+the original survives and only the hue moves.
+
+### Then he asked for much less saturated — SUBTRACT, do not multiply
+
+Those two requests are only in tension if you desaturate the wrong way:
+
+```
+s * 0.72    multiplies: a 0.12 gap between two tones becomes 0.086.
+            The tones converge, the picture goes flat. This was v1.
+s - 0.15    subtracts: a 0.12 gap stays 0.12. Every tone drops by the same
+            amount and the separation between them is untouched.
+```
+
+Final settings: rotate 20 degrees, subtract 0.15 from saturation with a soft
+floor at 0.06 so the palest washes cannot clip to grey, leave value alone.
+Median saturation of the warm family falls from 0.50 to about 0.36 while the
+spread survives. `#F27D6B` ends up `#F28FA3`.
+
+**The general rule: to change how saturated something looks, subtract. To
+change the relationship between tones — which is almost never what you
+want — multiply.**
 
 **Keep the band tight so the neighbours survive.** v1 ramped out at +35, which
 dragged the tans and terracotta (hue 20-40) into the pink along with everything
@@ -1060,6 +1079,53 @@ The deck named Courier New on 43 runs and left 16 inheriting, and the theme's
 LiberationSans alongside the two Courier faces. Setting the theme to Courier
 New *and* giving those 16 runs an explicit face cleared it. `pdffonts` is again
 the check: two Courier entries and nothing else.
+
+---
+
+## The four presentation decks: top of the shelf, and a maximise mode
+
+`star-wars`, `twin-peaks`, `breaking-bad`, `harry-potter` — the four decks
+built from a `.pptx` behind `*-deck-viewer.html`. Innes: *"the only true
+presentation decks, should be at top of list."*
+
+`library.html` now sorts into three bands, derived from the filename like
+every other state there, so a fifth deck lands in the right band on its own:
+
+```js
+const band = l => comingSoon(l) ? 2 : (/-deck-viewer\.html$/.test(l.file) ? 0 : 1);
+```
+
+### Mobile: `vh` is the bug, `dvh` is the fix
+
+*"When I try to open any lesson on mobile must switch to landscape and address
+bar sticks."* Three separate things, worth keeping straight:
+
+1. **`vh` is the LARGEST viewport** — the one with the mobile address bar
+   hidden. Size a box `100vh` with the bar showing and its bottom runs off the
+   screen, taking the footer with it. That is the "address bar sticks" symptom.
+   **`dvh` tracks the bar as it moves.** Every `vh` in the four viewers now has
+   a `dvh` twin written after it: browsers that understand `dvh` take the
+   second line, older ones keep the first.
+2. **The green sandwich costs ~130px** of a landscape phone's ~390px — a third
+   of the screen. A `Maximise` control now hides header and footer.
+3. **Landscape** cannot be forced. `screen.orientation.lock('landscape')` only
+   works inside fullscreen and only on Android/Chrome; iOS has no equivalent.
+   It is called in a try/catch and the user turns the phone if it does not
+   take.
+
+Measured on a 844x390 landscape phone viewport, slide area after maximise:
+**+62%** on three of them, **+103%** on Star Wars.
+
+**iPhone Safari has no `Element.requestFullscreen`.** It is feature-detected,
+and the button is still worth having there: it reclaims the chrome and `dvh`
+handles the bar. Never assume fullscreen exists.
+
+**Two viewer shapes, both need covering.** Three viewers cap the `<img>` with
+`max-height:calc(100vh - 130px)`; **Star Wars sizes the `.slide-wrap`** with
+`height:calc(100vh - 130px)` plus an `aspect-ratio` and lets the image fill it.
+A first pass only rewrote `max-height` rules and Star Wars gained **0%** — it
+measured as fixed while the other three moved. If you touch this again, check
+all four, and check the number, not the diff.
 
 ---
 
