@@ -42,6 +42,16 @@ OUT = 'forbes-english-lesson (flow).html'
 F = 'FlowState'
 VIDEO = 'https://www.youtube.com/watch?v=0rIjFCNay2Q'
 
+# Every slide after the cover takes the same background. The set ships two
+# images: the hero, which is the full illustration, and flow-bg-pattern.jpg,
+# a deliberately murky crop of it. Alternating between them — which is what
+# this builder did first — swings the deck between a bright desert and a
+# near-black screen every second slide, because the two differ by a factor of
+# three in mean luminance. The cover carries the illustration (the template
+# renders it at full opacity there regardless of --bg-opacity); everything
+# after it is the quiet crop, so the deck reads as one thing.
+BG = 'flow-bg-pattern.jpg'
+
 # Derived by lesson-template/extract-palette.py FlowState/flow-hero.jpg.
 # Every row of the contrast report passes; text on surface is 15.61:1.
 PALETTE = '''  --hero: url('%s/flow-hero.jpg');
@@ -206,7 +216,7 @@ def video_slide():
     lesson is the only one that needs one, so it is a teach slide with a real
     link rather than a ninth builder in deck.py."""
     return '''
-    <section class="slide" data-type="teach" data-bg="%s/flow-bg-pattern.jpg">
+    <section class="slide" data-type="teach" data-bg="%s/%s">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="vidEyebrow">Part one</div>
         <h2 class="slide-title" data-i18n="vidTitle">Watch this first</h2>
@@ -227,15 +237,22 @@ def video_slide():
               Opens YouTube in a new tab.
             </p>
           </div>
-          <div class="card" style="padding:0;overflow:hidden">
-            <img src="https://img.youtube.com/vi/0rIjFCNay2Q/hqdefault.jpg"
-                 alt="TED-Ed: How to Enter a Flow State"
-                 style="width:100%%;height:100%%;object-fit:cover;display:block">
-          </div>
+          <!-- The thumbnail is a CSS background rather than an <img>, and the
+               panel is a link. YouTube's still is the one asset in this deck
+               that is not in the repo, so it is the one asset that can fail to
+               load — behind a classroom proxy, or offline. As an <img> that
+               failure is a broken-image icon and the alt text in the middle of
+               the slide; as a background it is simply a dark panel that still
+               opens the video when clicked. -->
+          <a class="card" href="%s" target="_blank" rel="noopener"
+             aria-label="Watch: TED-Ed, How to Enter a Flow State"
+             style="padding:0;overflow:hidden;display:block;
+                    background:url('https://img.youtube.com/vi/0rIjFCNay2Q/hqdefault.jpg')
+                               center / cover no-repeat"></a>
         </div>
       </div>
     </section>
-''' % (F, VIDEO)
+''' % (F, BG, VIDEO, VIDEO)
 
 
 def assert_keys_deranged(mc):
@@ -279,17 +296,18 @@ def build():
          (None, 'One thing at a time', '&ldquo;No notifications for two hours.&rdquo;', 's4',
           'One thing, uninterrupted. Every switch of attention costs more than the seconds it '
           'appears to take.')],
-        cols='1fr 1fr 1fr 1fr', folder=F, bg='flow-bg-pattern.jpg')
+        cols='1fr 1fr 1fr 1fr', folder=F, bg=BG)
 
     slides += video_slide()
 
     slides += deck.teach('termEyebrow', 'The eight terms',
                          'termTitleA', 'Four to describe the state',
-                         term_cards(TERMS_STATE), cols='1fr 1fr 1fr 1fr', folder=F)
+                         term_cards(TERMS_STATE), cols='1fr 1fr 1fr 1fr',
+                         folder=F, bg=BG)
     slides += deck.teach('termEyebrow', 'The eight terms',
                          'termTitleB', 'Four to describe the conditions',
                          term_cards(TERMS_COND), cols='1fr 1fr 1fr 1fr',
-                         folder=F, bg='flow-bg-pattern.jpg')
+                         folder=F, bg=BG)
 
     slides += deck.match(
         MATCH, 'matchEyebrow', 'Say it in plain English',
@@ -298,22 +316,22 @@ def build():
         'Two of these are worth memorising whole. Optimal challenge is the condition you can '
         'actually engineer, and cognitive load is the one you can actually reduce — the other '
         'four describe what happens once you have.',
-        folder=F)
+        folder=F, bg=BG)
 
     for n, rows, why in ((1, GAP_A, WHY_A), (2, GAP_B, WHY_B)):
         slides += deck.gap(n, 2, rows, BANK, 'gapEyebrow', 'The terms in use',
                            'gapTitle', 'Complete the sentence', folder=F,
-                           bg='flow-bg-pattern.jpg' if n == 2 else None,
+                           bg=BG,
                            hint='One term per gap. Every term in the bank is used exactly '
                                 'once across the two screens.',
                            hint_key='gapHint', why=why, width=210, size=19)
 
-    mc_bg = [None, 'flow-bg-pattern.jpg', None, 'flow-bg-pattern.jpg', None]
     for n, q in enumerate(MC, 1):
         slides += deck.mc(n, len(MC), q, 'qEyebrow', 'Comprehension',
-                          'qTitle', 'What does the research say?', folder=F, bg=mc_bg[n - 1])
+                          'qTitle', 'What does the research say?', folder=F, bg=BG)
 
-    slides += deck.results('resNext', 'Now produce it. That is the part that transfers →')
+    slides += deck.results('resNext', 'Now produce it. That is the part that transfers →',
+                           folder=F, bg=BG)
 
     slides += deck.activate(
         'Now argue about it', 'Use at least four:',
@@ -327,20 +345,24 @@ def build():
          'Struggle and discomfort have value too. To what extent should work feel like flow?'],
         'Writing · 150–200 words',
         'Take the prompt you did not speak on and answer it in writing. Use at least four of the eight terms.',
-        'The clearest flow state I can remember was…')
+        'The clearest flow state I can remember was…', folder=F, bg=BG)
 
     s = deck.assemble(TPL, OUT, slides, PALETTE,
                       'The Language of Flow — B2', I, langs=('en', 'de'))
 
-    # The template ships --bg-opacity at 0.72, which suits a photographic hero.
-    # This one is a flat illustration with large areas of saturated teal and
-    # sand; at 0.72 the interior slides read as the picture with text on top
-    # rather than a slide. Walked down with lesson-template/bgmeasure.py against
-    # the brightest patterned slide (index 5, the video slide) until the body
-    # copy cleared 7:1, then stopped at the highest value that does:
-    #   0.46 -> 6.97  (fails)   0.44 -> 7.32   0.42 -> 7.68   0.40 -> 8.06
-    # 0.44 keeps the most of the illustration that AAA-for-body-text allows.
-    s = s.replace('  --bg-opacity: 0.72;', '  --bg-opacity: 0.44;', 1)
+    # Every interior slide carries flow-bg-pattern.jpg (see BG above), which is
+    # dark enough that the usual reason to hold --bg-opacity down does not
+    # apply. Measured with lesson-template/bgmeasure.py, body copy against the
+    # brightest background pixel on the slide:
+    #
+    #   the crop   0.44 -> 16.45   0.70 -> 15.54   0.85 -> 15.02   1.0 -> 14.38
+    #   the hero   0.40 ->  8.06   0.42 ->  7.68   0.44 ->  7.32   0.46 -> 6.97
+    #
+    # The hero is the tight one and it is why the first build sat at 0.44. With
+    # the hero confined to the cover — where the template ignores this value
+    # anyway — the crop can run at full strength and still clear 14:1. Anything
+    # below 1.0 here just throws away texture for no legibility in return.
+    s = s.replace('  --bg-opacity: 0.72;', '  --bg-opacity: 1.0;', 1)
     open(OUT, 'w', encoding='utf-8').write(s)
 
     print('wrote %s — %d sections, %d MC (keys at %s), %d gaps, %d pairs, '

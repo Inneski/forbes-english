@@ -319,11 +319,11 @@ def results(next_key='resNext', next_text='Now use it →', folder='', bg=None):
 
 
 def activate(title, use_label, chips, speak_kind, speak_brief, speak_items,
-             write_kind, write_brief, placeholder):
+             write_kind, write_brief, placeholder, folder='', bg=None):
     lis = "\n              ".join('<li data-i18n="actSpeak%d">%s</li>' % (n + 1, t)
                                  for n, t in enumerate(speak_items))
-    return '''
-    <section class="slide" data-type="activate">
+    return ('''
+    <section class="slide" data-type="activate"%s>''' % _bg(folder, bg)) + '''
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="actEyebrow">Activation</div>
         <h2 class="slide-title" data-i18n="actTitle">%s</h2>
