@@ -411,3 +411,37 @@ it was left as-is rather than changed inside an unrelated commit.
 A gate for this would be cheap — parse the map, assert no duplicate keys, and
 assert each value matches the lesson's own `--hero` where the lesson declares
 one. Not written yet.
+
+## library.html: run the checker, do not run a diff from memory
+
+`node lesson-template/check-library.js --vs-origin` before you upload
+`library.html`. It is not optional and it takes a second.
+
+The clobber went **both ways** and neither session noticed:
+
+| commit | added | silently removed |
+|---|---|---|
+| `5066174` | `stranger-things-test` | `forbes-nature-agency-part1` |
+| `c5a9625` | Alcatraz + five decks | `stranger-things-test` |
+| `0a39b5b` | restored two cards | — but not the one `c5a9625` took |
+
+The restore commit fixed the two losses it knew about and missed the one
+its own predecessor had caused. That is the shape of this failure: it is
+invisible three ways over. The entry count does not change when one is
+swapped for another; a lesson with no card falls back to a category
+gradient that looks deliberate; and the session that clobbers is never the
+session that notices.
+
+The checker also verifies what a diff cannot: that every thumbnail file
+exists, that every key is a real lesson, that no key is duplicated (a
+duplicate keeps the last value, so the earlier line silently does
+nothing), and that every finished deck has a card at all. Its first run
+found two decks with none — `make-v-do` had never had one, and
+`stranger-things-test` had been clobbered an hour earlier.
+
+The one advisory it prints is a mismatch between a deck's card and its own
+`--hero`. Two lessons differ on purpose or by accident and nobody knows
+which: `english_firefighter_v3` (card `Fire Brigade/fire-2-truck.png`,
+hero `firefighter/hero.jpg`) and `forbes-ai-productive-struggle-c1` (card
+`AILearning/c1-lesson-thumb.jpg`, hero `AILearning/retro-desk-sunset.jpg`).
+Left alone pending a decision; a deliberate detail-shot card is legitimate.
