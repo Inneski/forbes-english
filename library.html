@@ -327,21 +327,31 @@
     transform: none;
     border-color: var(--border);
   }
-  .card.coming-soon .card-img-wrap { filter: grayscale(0.85); opacity: 0.55; }
   .card.coming-soon .card-title,
   .card.coming-soon .card-cat { opacity: 0.62; }
-  .soon-ribbon {
-    position: absolute;
-    inset: 0 0 auto 0;
+  /* The words sit in the 16:9 slot the hero would have filled — that empty
+     rectangle is the thing the reader is asking a question about, so it is
+     where the answer belongs. No category emoji underneath it: a placeholder
+     for a placeholder. The slot itself is not dimmed, because dimming it
+     would dim the only text on the card that matters. */
+  .card.coming-soon .card-img-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: repeating-linear-gradient(135deg,
+      var(--green-pale) 0 14px, #eef4ef 14px 28px);
+  }
+  .soon-slot {
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 800;
-    font-size: 0.78rem;
-    letter-spacing: 1.4px;
+    font-size: 1.15rem;
+    letter-spacing: 2.4px;
     text-transform: uppercase;
-    text-align: center;
-    padding: 5px 0;
-    background: rgba(27,58,40,0.82);
-    color: #fff;
+    color: var(--green-mid);
+    border: 1.5px solid var(--green-light);
+    border-radius: 999px;
+    padding: 7px 20px;
+    background: rgba(255,255,255,0.72);
   }
   .access-badge.soon { background: var(--green-pale); color: var(--green-mid); }
   .access-badge.free { background: var(--free-bg); color: var(--free); }
@@ -1143,6 +1153,10 @@ function cardImageHTML(l) {
   if (img) {
     return `<div class="card-img-wrap"><img src="${encodeURI(img)}" alt="" loading="lazy"></div>`;
   }
+  // No hero: say so in the space the hero would have occupied.
+  if (comingSoon(l)) {
+    return `<div class="card-img-wrap placeholder"><span class="soon-slot">Coming soon</span></div>`;
+  }
   const override = PLACEHOLDER_OVERRIDE[l.file];
   const cat = l.categories.find(c => CATEGORY_STYLE[c]) || 'default';
   const [gradient, icon] = override || CATEGORY_STYLE[cat] || CATEGORY_STYLE.default;
@@ -1179,7 +1193,7 @@ function render() {
       a.setAttribute('aria-disabled', 'true');
     }
     a.innerHTML = `
-      ${cardImageHTML(l)}${soon ? '<span class="soon-ribbon">Coming soon</span>' : ''}
+      ${cardImageHTML(l)}
       <div class="card-body">
         <div class="card-top">
           <div>
