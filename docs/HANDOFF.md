@@ -987,52 +987,131 @@ but it disagreed with the checker on seven items, in two ways, both mine:
 
 Screen with the sweep; decide with the checker, which reads a real DOM.
 
-## A gap-fill row may hold ONE blank — the engine scores no more than that
+## The gap engine scored one blank per row — fixed, and swept clean
 
-Found while play-testing Food A1 Part 1: a perfect run finished **18/19**. The
+Found by play-testing Food A1 Part 1: a perfect run finished **18/19**. The
 missing point was a dialogue line carrying two blanks.
 
-`checkGaps()` in `lesson-template/lesson-template.html` marks a `.gap-row` by
-its **first** input and stops:
+`checkGaps()` marked a `.gap-row` by its **first** input and stopped, while
+`maxScore` counted every input on the slide:
 
 ```js
 rows.forEach(r => markGap(r.querySelector('.gap'), r.querySelector('.feedback')));
 ```
 
-`maxScore`, meanwhile, counts every `.gap` on the slide. So a second blank in
-the same row is unscorable *and* unexplained: the learner types the right word,
-the input is never marked, and the deck can never reach its own maximum. A
-slide with several gaps and **no** `.gap-row` wrapper at all is worse — `rows`
-comes back empty and the fallback branch marks exactly one input for the whole
-slide.
+So a second blank in the same row was worth a point nobody could earn, and it
+was never explained either: the learner typed both words correctly, watched the
+score go up by one, and had no way to tell which half had supposedly failed. A
+slide with several gaps and **no** `.gap-row` at all was worse — the fallback
+branch marked exactly one input for the whole slide.
 
-`deck.gap()` now asserts one answer per row, with the reason inline. That
-closes it for anything built through the shared builder from here on.
+### The fix is in the engine, not in the content
 
-### The sweep — 13 unscorable gaps still live in three other lessons
+The first instinct was to split every multi-blank row and add an assert to
+`deck.gap()` forbidding them. That is wrong, and exam-prep is why: its
+"Write the question" items read `______ she ______ an alien?` — the auxiliary
+and the bare verb are **one** question, and splitting them into two rows
+destroys the exercise.
 
-Parsed every built `.html` for `.gap` inputs that no `.gap-row` will ever
-reach:
+`lesson-template.html` now has `markGroup(gaps, fb)`: it marks every input in
+the group, and writes one piece of feedback naming **every** answer missed
+rather than only the first. `markGap` no longer touches feedback at all. Both
+branches of `checkGaps` go through it, so a slide with no `.gap-row` is handled
+too. Behaviour for a single-blank row is byte-identical.
 
-| File | Lost | Where |
-|---|---|---|
-| `forbes-english-food-ordering-a1-part2.html` | 6 | slides 9, 10 — 4 gaps each, no `.gap-row` at all | 
-| `exam-prep-5hour-courseEXP.html` | 5 | slide 60 rows `[2,2,2]`, slide 61 rows `[2,2]` |
-| `alchemist_b2_lesson.html` | 1 | slide 27 rows `[1,2]` |
-| `forbes_english_lesson.html` | 1 | slide 4 rows `[2,1]` |
+`deck.gap()`'s assert was relaxed to match: blanks must equal answers (a
+mismatch is a builder typo), and multi-blank rows are legal again.
 
-**Part 2 is fixed** (below). The other three are not — `exam-prep` is the one
-worth doing next, at five points. The sweep script is worth keeping:
+### Swept, at runtime rather than statically
 
-```python
-# a .gap-row scores its FIRST input only; count the rest
-for row in slide_rows: lost += max(0, gaps_in(row) - 1)
-if not slide_rows: lost += max(0, gaps_in(slide) - 1)
+A static sweep for `.gap-row` elements holding more than one `.gap` is the
+wrong instrument now that the engine handles them — it reports false failures.
+The right test drives the page: fill every gap on a slide with its own
+`data-answer`, click Check, and assert the score chip rose by the number of
+inputs.
+
+```js
+gaps.forEach(g => { g.value = g.dataset.answer.split('|')[0]; });
+btn.click();
+if (chip() - before !== gaps.length) /* unscorable */;
 ```
 
-Note that `check-lesson.js` passes all twelve gates on every one of these
-files. The ACTIONS gate asks whether a scored slide *can* be answered, not
-whether every answer on it *counts*. Worth adding as a thirteenth gate.
+**46 files carry gap-fills. All 46 now score every gap.** Before the fix, seven
+points were unreachable across three lessons, on top of the six in Food Part 2
+and the one in Part 1:
+
+| File | Was losing | Fix |
+|---|---|---|
+| `forbes-english-food-ordering-a1-part2.html` | 6 | rebuilt through `deck.gap()` |
+| `exam-prep-5hour-courseEXP.html` | 5 | rebuilt; content unchanged |
+| `alchemist_b2_lesson.html` | 1 | rebuilt; content unchanged |
+| `forbes_english_lesson.html` | 1 | **no builder** — engine patched in place |
+| `forbes-english-food-ordering-a1-part1.html` | 1 | dialogue restructured |
+
+**`forbes_english_lesson.html` has no builder**, so its inlined copy of the
+engine was edited directly. Its copy is an older variant — `fb.textContent`,
+no full stop after the answer — and the patch was written to match rather than
+to import the current shape. If a builder is ever written for it, that patch
+disappears with the rest of the hand-edits.
+
+### The engine lives inside every generated deck
+
+`lesson-template.html`'s script is inlined into each build, so an engine fix
+reaches a deck only when its builder is re-run. Every deck is now one rebuild
+behind on `markGroup`. That costs nothing today — the runtime sweep says no
+other lesson has a multi-blank row — but a deck rebuilt later will silently
+pick it up, and one that is never rebuilt keeps the old code. Do not treat a
+template fix as shipped until the affected decks are rebuilt.
+
+Also worth noting: `check-lesson.js` passed all twelve gates on every one of
+these files throughout. The ACTIONS gate asks whether a scored slide *can* be
+answered, not whether every answer on it *counts*. **A thirteenth gate that
+drives the page and compares the score chip against the input count is the
+obvious next addition** — it is about fifteen lines, and it is the only one of
+the gates that would have caught this.
+
+---
+
+## "Coming soon": a lesson with no hero is not available
+
+Innes: *"Write coming soon on any lesson without a hero and make them
+unavailable."* 66 of 237 catalogue rows have no entry in `LESSON_IMAGES`.
+
+The rule is **derived, never stored**. There is no column, no list, no second
+place to update: `comingSoon(l)` is `!LESSON_IMAGES[l.file]` in `library.html`,
+and `coming_soon(row, images)` is the same test in `tools/seo.py`. A lesson
+becomes available the moment its artwork lands in `LESSON_IMAGES` — which is
+already the last step of every rebuild.
+
+The correlation is worth knowing: **all 66 heroless rows are `deck=false`** —
+every one is an old scroll page that has never been rebuilt. The converse is
+not true, though: 124 non-deck lessons *do* have heroes and stay available. So
+"no hero" is a much narrower rule than "not a deck", and it is the right one.
+
+What "unavailable" means, concretely:
+
+- **In the library** the card is a `<div>`, not an `<a>` — no href, no hover
+  lift, `aria-disabled`. An `<a>` with no href is still focusable and still
+  announced as a link; a keyboard user would have got a worse answer than a
+  mouse user. Dashed border, greyed artwork, a `COMING SOON` ribbon across the
+  image and a `Coming soon` badge where `Pro` would be.
+- **Sorted to the end.** Interleaved, a third of the shelf was dead cards and
+  the catalogue read as half-built. Stable sort, so the order inside each group
+  is unchanged.
+- **The count line** reads `171 lessons · 66 coming soon`.
+- **Out of the index**: no sitemap entry, no line in `llms.txt`, not in the
+  crawlable list inside `library.html`, and `<meta name="robots"
+  content="noindex,follow">` on the page itself. `follow`, not `none` — the
+  internal links are still worth crawling, and it all reverses when artwork
+  lands.
+- **`lesson-meta.json` carries `"coming_soon": true`** on those 66 entries. The
+  Worker reads that file to build each gate page, so the flag is the hook for
+  serving a real coming-soon page instead of an unfinished lesson. **The Worker
+  does not read it yet — that change has not been made.**
+
+Sitemap went 240 → 174 URLs. That is deliberate: an indexed result that lands
+on an unfinished lesson is worse than no result, and Innes has said he wants
+the site fixed before he drives traffic to it.
 
 ---
 
