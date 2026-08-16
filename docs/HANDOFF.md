@@ -19,8 +19,7 @@ stale copy.
 | `forbes-nature-agency-part1.html` | `NatureAgency/` (hero, lake, station, prairie) | **BUILT — 36 slides, checker clean** (`381754c`). An earlier finished rebuild of this same lesson was lost to an unpushed branch first — see the warning under Publishing in `CLAUDE.md`. |
 | `forbes-nature-agency-part2.html` | `NatureAgency2/`: `hero-otter.jpg` (cover), `hide.jpg` (the hide slide), `loch.jpg` (scene-setting + results), `reeds.jpg` (dividers), `shore.jpg` (activation) | **BUILT — 59 slides, checker clean.** `build_nature2.py` + `i18n_nature2.py`. |
 | `forbes-english-b2-lesson.html` | `TopGearB2/hero.jpg` | **BUILT — 37 slides, checker clean.** `lesson-template/build/build_topgear.py` + `i18n_topgear.py`. Audit at `docs/topgear-b2-audit.md`. Not yet pushed. |
-| `forbes-geoscience-phrases.html` | `Geoscience/` (5 images) | **BUILT — 39 slides, checker clean.** `build_geo.py` + `i18n_geo.py`. Audit at `docs/geoscience-audit.md`. Not yet pushed. |
-| `stranger-things-test.html` | `StrangerThings/hero.jpg` | **BUILT — 38 slides, checker clean, English + German + Spanish.** `build_stranger_test.py` + `i18n_stranger_test.py`. Merged the interactive test and the German worksheet; `stranger-things-test-german.html` is now a redirect stub. Not yet pushed. |
+| `forbes-geoscience-phrases.html` | `Geoscience/` (5 images) | **audited, see `docs/geoscience-audit.md`** |
 
 ### Decisions taken on Nature Agency Part 2 (Innes, this session)
 
@@ -110,105 +109,6 @@ every accepted spelling, not by changing the engine's `gapOk`. A
 lesson that deliberately tests BrE against AmE spelling would be broken
 by a blanket engine change; per-lesson data is not.
 
-### The Language of Geoscience — built
-
-`forbes-geoscience-phrases.html`, 39 slides, all ten gates clean, light
-theme. `build_geo.py` + `i18n_geo.py`, English + German both complete.
-Nineteen scored points, the same nineteen the old file had: six phrases
-in context, six field-note gaps, seven report terms. Full reasoning is in
-the builder docstring. Five things a later session should not have to
-rediscover:
-
-- **The images in `Geoscience/` are not what the audit says they are.**
-  `docs/geoscience-audit.md` Part E describes `hero.jpg` as "banded
-  sedimentary strata above a red plain" and approves it for the cover.
-  `hero.jpg` is an **erupting stratovolcano over the sea**. The picture
-  the audit is describing is `buttes.jpg` (Monument Valley). The other
-  three are also volcanic: a second ash-column cone, a linear curtain of
-  fire, and a banded escarpment above what its filename says is a lava
-  plain. Since the lesson has zero volcanic content — that is the audit's
-  own reason for banning eruption imagery — the hero here is
-  `buttes.jpg`, the palette is derived from it, and the build asserts
-  that none of the other four paths appears anywhere in the deck. **Look
-  at an image before trusting a filename or an audit's description of
-  it.**
-- **The match engine still cannot be lost** — fourth lesson in a row. The
-  seven pairs became seven one-per-slide "what does the term mean"
-  multiple-choice items, which also gave the activity the per-item
-  explanations and worked example sentences it never had. `deck.py`
-  untouched, same decision as Nature Agency and Top Gear.
-- **This was the fourth lesson needing per-option `data-explain`**, and it
-  was still injected after `D.mc` rather than promoted to an `explains=`
-  argument on `D.mc`. Four lessons is past the point where that looks
-  optional; the cost is still re-running `check-lesson.js` over every
-  shipped deck to prove no regression, which is a job of its own.
-- **Per-item word banks trip the BANK gate once the answers are
-  deranged.** The gate walks `.bank-chip` in deduplicated document order,
-  so with one small bank per gap slide the answers appear in ascending
-  positions no matter how each bank is shuffled — the chips of slide 2
-  simply come after those of slide 1. The fix here is **one shared
-  twelve-chip bank repeated on all six gap slides**: the positions are
-  then fixed by the bank's own order and can be deliberately deranged
-  ([7, 0, 2, 6, 1, 8]). It is also better teaching — every chip in that
-  bank is defined on a language slide first.
-- **`build_topgear.py`'s `assert_no_answer_is_shown` needs one change to
-  work on a bank lesson.** A word bank legitimately contains the answer,
-  so the bank block has to be stripped from the slide head before the
-  "answer readable before it is given" check; without that the assertion
-  fires on every gap slide. The placeholder half of the check is
-  unchanged and still absolute: no scored input carries a placeholder at
-  all.
-
-### Stranger Things — the English test — built, and two files became one
-
-`stranger-things-test.html`, 38 slides, all ten gates clean, dark theme,
-English + German + **Spanish** all complete. `build_stranger_test.py` +
-`i18n_stranger_test.py`. Twenty-eight scored points: fourteen
-multiple-choice, fourteen gaps. The old `stranger-things-test-german.html`
-— a printable worksheet of the same material — is retired to a
-`<meta http-equiv="refresh">` stub, which the build writes and which was
-verified to land on the deck. Full reasoning is in the builder docstring.
-Four things a later session should not have to rediscover:
-
-- **An L1 → English task is the one place the translation scope boundary
-  has to bend.** The house rule is that the English being taught stays
-  English in every language. A vocabulary section that asks "here is *der
-  Herbst*, write the English" inverts that: the *prompt* is content and
-  must translate, or the task does not exist for a Spanish learner. The
-  prompts are i18n keys (`v1p` … `v10p`) and switch with the selector.
-  **For English there is no L1**, so the English layer carries a
-  definition or picture-clue instead — "the season between summer and
-  winter, when the woods turn orange". Same production task, different
-  route to the meaning. If another lesson needs this, copy the pattern
-  rather than inventing a second one.
-- **A prompt in the learner's own language can contain the answer.**
-  German for a roller disco is *die Rollerdisco*, which handed the answer
-  over whole. The build now resolves every prompt and hint on every gap
-  slide in **every language** and checks it against every accepted
-  answer; that is what caught it (the prompt is the native compound *die
-  Rollschuhdisco*). `build_geo.py`'s `assert_no_answer_is_shown` only
-  ever saw the English render, because that is what the builder writes.
-- **`assert_no_answer_is_shown` needs to be per-slide, not per-row, once
-  a slide carries two gaps.** Two rows on one slide means a clue can leak
-  its *neighbour's* answer, and a row-scoped check cannot see it. The
-  version here collects every answer on the slide and tests all of them
-  against the whole slide's visible text.
-- **The BANK gate reads the activation chips as a word bank.** It walks
-  every `.bank-chip` on the page, and `D.activate` emits the target-
-  language strip as `.bank-chip`. A strip listing bare headwords that
-  happen to be gap answers therefore fails the gate, from a slide that
-  sits *after* the results and after every gap has been marked. The fix
-  is chips as phrases — `the autumn leaves`, `a rusty colour` — which is
-  better production practice anyway, plus a build-time assertion
-  mirroring the gate. Worth knowing before spending twenty minutes
-  looking for a word bank that does not exist.
-
-Also: **this was the fifth lesson needing per-option `data-explain`**,
-and it was still injected after `D.mc` rather than promoted to an
-`explains=` argument. Five is well past the point where promoting it
-looks right; the cost is still a regression run of `check-lesson.js` over
-every shipped deck, which is a job of its own.
-
 ---
 
 ## Nature Agency Part 1 — audit
@@ -294,6 +194,107 @@ confirmed the doubling for the four it named. Check the actual stems.
 
 ---
 
+## Escape from Alcatraz (A2) — built, and three new engine mechanics
+
+`escape-from-alcatraz-a2.html`, 43 slides, 50 scored points, all ten
+gates clean, dark theme, palette verbatim from `extract-palette.py
+Alcatraz/hero.jpg` (every contrast row PASS). `build_alcatraz.py` +
+`i18n_alcatraz.py`. **All ten languages complete** — the second deck
+after `forbes-c1-negotiation.html` to carry the full set.
+
+New in the shared engine, so every future lesson inherits them:
+
+- **`search`** — timed identify-the-object hunt over unlabelled line
+  drawings (`lesson-template/build/icons.py`, 20 objects). Names hidden
+  until answered; the clock pauses on leaving a slide and resumes on
+  return.
+- **`lock`** — combination lock, first attempt scores, unlimited
+  attempts after that so the story can finish.
+- **the rail** — stops along the bottom that remember which room you are
+  in and what you picked up. `D.at(slide, stop, take)` tags a slide.
+  Hidden unless a lesson declares stops.
+
+Four things a later session should not have to rediscover:
+
+- **A background on a `display:none` slide is never fetched, and
+  `page.pdf()` does not wait for the ones that print media reveals.** A
+  deck printed without visiting every slide first exported black
+  interiors while the screen looked correct. Fixed in the template:
+  every `data-bg` is decoded at boot (`new Image().src`). This affected
+  every deck with per-slide artwork, not just this one — Nature Agency
+  and Top Gear are both worth re-checking.
+- **`.sort-bin` now carries the card's backdrop** (`--surface` 78% plus a
+  3px blur) instead of the near-transparent `--inset`. Over a bright hero
+  the bins and their labels had disappeared and the board read as loose
+  chips floating on artwork.
+- **`deck.teach` takes an optional key for a card's *body*.** Six-item
+  cards translate the body; five-item cards behave exactly as before. At
+  A2 the rule itself has to be readable in the learner's language and
+  only the worked examples stay English — the B2 split is wrong at this
+  level. `EXAMPLE_KEYS` in `i18n_alcatraz.py` copies the English examples
+  into all nine other languages so they cannot drift.
+- **The wash is raised on this deck** to 0.17 / 0.36 (§5 permits it, per
+  lesson, measured). Four of the twenty-three illustrations are
+  cream-and-coral at full brightness. `bgmeasure.py` reads 0.046 mean
+  with text at 7.58:1 — inside the dark-theme band.
+
+The artwork is sixteen Black Isler illustrations plus a later set of
+nine guard, surveillance and composite scenes; the guards carry the
+final-check section, which is a nine-item mixed test with no rule on the
+screen.
+
+### Three defects in the shared builders, found by playing the deck
+
+All three were silent — nothing threw, nothing failed a gate, and the
+slides looked correct. Innes found the first two by using the lesson.
+
+1. **`deck.order` emitted `data-action="check"`** while the engine routed
+   sentence-building through `check-order`. The click landed in
+   `checkGaps`, threw on a null input, and **the Check button did nothing
+   on every deck generated with the shared `order()`**. Fixed in
+   `deck.py`; `checkGaps` now routes a gap-less slide to the slide's own
+   checker rather than throwing.
+2. **`deck.gap` renders one answer per `______`, not alternatives.** A
+   row written `['aren't', 'are not']` looks like two accepted spellings
+   and is in fact two blanks — with one marker in the sentence, the
+   second spelling is silently dropped and a correct learner is marked
+   wrong. Alternatives go in one pipe-separated string:
+   `["aren't|are not"]`. `deck.gap` now asserts that a row has at least
+   as many markers as answers, which also catches the next one.
+3. **`build_modals.py` had five "repair the sentence" items with no
+   `______` at all**, so the B1 modal-verbs deck shipped a whole activity
+   with no input boxes and five points nobody could score.
+
+`assert_bank_is_not_a_key` was also failing open: with pipe-separated
+answers nothing matched the bank, `all()` over an empty list is true, and
+it fired on lessons that were fine. It now splits on `|` and needs two
+found positions before it can fail.
+
+**New checker gate: ACTIONS.** It walks the deck, presses what the
+learner would press on every scored slide, and requires the slide to end
+up marked. Verified failing first — it flagged exactly the two dead order
+slides here and twelve across five shipped decks — then passing after the
+fix.
+
+Rebuilt and re-checked clean: `forbes-english-modal-verbs-B1.html`,
+`forbes-english-lesson-managing energy.html`,
+`forbes-english-photography-b2.html`,
+`active_passive_refinery_lesson.html`, `exam-prep-5hour-courseEXP.html`.
+**Run the new gate over the rest of the deck library** — a partial sweep
+timed out, so most of it is still unchecked. It already found one more,
+not fixed here because it needs a content decision per item:
+
+> **`forbes-construction-contracts.html` — Activity 1, six MC slides,
+> and not one option carries `data-correct`.** Every learner scores 0/6
+> on it, whatever they pick, and the deck reports the result as if it
+> were earned. The right answer is stated inside each item's
+> `data-explain`, so the fix is to mark the matching option — but that is
+> six judgements about which option the explanation means, and this is
+> the light-theme benchmark file, so it deserves a careful pass rather
+> than a regex. There is no builder for it; it would want one.
+
+---
+
 ## Recurring defect pattern
 
 Check for these first in anything not yet rebuilt. Every lesson audited
@@ -350,53 +351,3 @@ builder docstring and the commit message.
 - **Builders are in `lesson-template/build/`.** Every deck is generated;
   edit the builder and re-run, don't hand-edit the HTML. Use `deck.py`,
   don't rewrite it.
-
-## `--secondary` is a derived token that nothing renders
-
-Noticed while choosing a theme for the geoscience deck: 13 of 41 shipped
-decks have a `--secondary` that is invisible against their own `--surface`
-(under 1.5:1), including `forbes-c1-negotiation.html`, the worked reference,
-at 1.01:1, and one deck where the two values are byte-identical.
-
-**It does not matter, and that is the point.** `var(--secondary)` appears
-**zero times** in `lesson-template.html`. `extract-palette.py` derives the
-token and prints it, the contrast report does not include its row, and
-nothing consumes it. Thirteen decks carry an invisible colour because the
-colour is never drawn.
-
-Do not "fix" the 13, do not add a gate for it, and do not pick a theme on
-the strength of that row — a light-vs-dark decision was very nearly made on
-it here. Either wire `--secondary` into the template so it means something,
-or drop it from `extract-palette.py`'s output. Until one of those happens,
-ignore it.
-
-## The builders imported from /tmp, and /tmp is empty in a fresh session
-
-Committing the builders was only half the fix. **54 of them opened with
-`sys.path.insert(0, '/tmp')`** and imported `deck` from there — a copy that
-dies with the sandbox. Eight modules they need (`camp_diagrams`,
-`camp_ten_diagram`, `cloud_diagram`, `ex_tr_sail`, `passive_diagram`,
-`passive_kit`, `passive_shapes`, `sailing_map`, `trail_diagram`) existed
-**only** in `/tmp` and were never committed at all.
-
-All 54 now import from `lesson-template/build/`, and the missing modules are
-in the repo. Verified the way that matters: `/tmp` was emptied and every
-builder re-run — **54 reproduce their lesson from the repo alone.** The two
-that do not (`build_gf.py`, `build_kool.py`) are one-shot converters that
-read an already-built deck, not builders.
-
-If you add a builder, do not point it at `/tmp`. Nothing there survives.
-
-## Do not regenerate every deck at once
-
-Two things bite:
-
-- **Template drift.** Most decks were built before the `sort` slide type
-  existed, so regenerating any of them pulls ~160 lines of inert sorting CSS
-  and JS into the file. Harmless, but it turns a one-line fix into a
-  40-file diff.
-- **`sherpa-tensing-camp-one` and `camp-two` are not idempotent.** A second
-  builder appends the route-timeline CSS to the already-written file without
-  checking, so a repeated full build injects it twice.
-
-Regenerate the lesson you are changing. Not the set.
