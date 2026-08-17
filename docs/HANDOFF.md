@@ -112,6 +112,71 @@ by a blanket engine change; per-lesson data is not.
 
 ---
 
+## Escape from Grammar Jail, and 103 junk meta descriptions
+
+`full_grammar_test.html` (id 183) is renamed **Escape from Grammar Jail** —
+Innes's wording, agreed as "Escape from" rather than "Get out the". The name is
+in the catalogue, the page title, the topbar, the footer and the eyebrow in all
+ten languages. The lesson NAME stays in English everywhere, the way a film
+title does; only the "· All Topics" half after the separator is localised.
+Translating the pun ten ways would have produced ten different lessons.
+
+The real problem was that it had no `LESSON_IMAGES` entry, so it was one of the
+66 shipping as "Coming soon" and unavailable. It now has one, and the
+coming-soon count is 65.
+
+Artwork: `grammarjail/escape-the-cliff.jpg`, cropped from the Alcatraz set Innes
+sent, to the 3376x1440 shape the other three images in that folder already use.
+It is the library card and it opens the results screen — you sit the test in the
+exam hall (`jail-test-room.jpg`, already on the intro) and you finish on a
+figure climbing out. Seven of the eight images he sent are unplaced; ask before
+scattering them.
+
+**`grammarjail/jail-cell-bars.jpg` and `jail-desk-window.jpg` are unreferenced**
+— 1.2 MB of good artwork nothing points at, same defect class as the
+`NatureAgency/` strays. Place them or remove them.
+
+### `<p[^>]*>` also matches `<path>`
+
+`seo.py`'s `describe()` falls back to "the first real paragraph" via
+`<p[^>]*>(.*?)</p>`. That pattern matches **`<path>`, `<picture>`, `<pre>` and
+`<progress>`**. Every page whose logo is an inline SVG opens with a `<path>`, so
+the "first paragraph" ran from that path to the first genuine `</p>` much
+further down and swallowed the entire header on the way.
+
+The grammar test's Google snippet was, verbatim:
+
+> Forbes EnglishGrammar · Full Test 0 / 45 0 / 45 ENGLISH Cheat Sheet Test ·
+> Alle Themen 🇬🇧English 🇩🇪Deutsch 🇮🇹Italiano 🇪🇸…
+
+**103 pages** were carrying a description of that shape. Fixed by requiring a
+word boundary — `<p(?:\s[^>]*)?>` — and measured by capturing every description
+before and after the run. Nine pages fell back to the built generic sentence
+because their standfirst is not in a `<p>`; a `class="sub|subtitle|lede|
+standfirst"` pattern with a lower length floor recovered two of them, and the
+remaining seven now read "An interactive B1 English lesson from Forbes English:
+<title>." — worse than a real sentence, far better than chrome soup. **Those
+seven are worth a hand-written description each.**
+
+### seo.py was feeding its own output back to itself
+
+Found while fixing the above. `describe()` reads the page's existing
+`<meta name="description">` as its third choice, and it was handed the raw
+source — including the SEO block `seo.py` itself wrote last time. So whatever
+description a page got on its first pass was frozen there permanently: rewriting
+the page could never improve it. The block is now stripped before `describe()`
+runs. Eleven pages picked up a correction on the first run after the fix (all
+had been missing the level word, e.g. "An interactive English lesson" →
+"An interactive C1 English lesson").
+
+**Both of these were invisible.** Nothing checks meta descriptions, and the two
+faults hid each other — the freeze meant the `<path>` bug's output persisted
+even after a page was rewritten. A `--check` mode that flags a description
+containing the site chrome ("0 / 45", a flag emoji, "ENGLISH" as a bare word)
+would have caught it years earlier.
+
+---
+
 ## IELTS: five lessons published, and the shelf now has a series
 
 `forbes-english-ielts-*.html`, catalogue ids 245-249, all C1, all pro, all
