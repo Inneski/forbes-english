@@ -2113,3 +2113,61 @@ open('_tmp_ru.html', 'w', encoding='utf-8').write(s)
 PY
 node lesson-template/check-lesson.js _tmp_ru.html && rm _tmp_ru.html
 ```
+
+## Star Wars: the Courier New question, answered
+
+Innes said the slide images were not in Courier New. They were not. The pptx
+was correct at every level — 633 runs name Courier New explicitly, zero defer
+to the Calibri theme, no embedded font parts — but **this container has no
+genuine Courier New and cannot install one**. `ttf-mscorefonts-installer`
+fails on `ModuleNotFoundError: No module named 'apt_pkg'`. What sits in
+`/usr/share/fonts/opentype/couriersub/` is URW Nimbus Mono PS renamed to
+"Courier New": 600/1000 advance, so metrically identical, so nothing reflows
+and nothing looks broken — the glyphs are simply the wrong ones. That is
+invisible from inside and obvious to anyone who knows the typeface.
+
+`pdffonts` is the only reliable check. On a LibreOffice render here it reports
+`BAAAAA+CourierNew-Bold`, which looks right and is not.
+
+**The fix is to render from a PDF Innes exports on his own machine.** He sent
+one (WPS Presentation, 960x540pt, 11 pages); `pdffonts` reports
+`QKASJD+CourierNewPS-BoldMT` and `TYXLQB+CourierNewPSMT` — genuine Monotype.
+`pdftoppm -r 150 -jpeg` gives exactly 2000x1125, which is the published size,
+so no resampling is needed.
+
+Do not re-render these eleven slides in this container. If the deck changes,
+ask for a fresh PDF export.
+
+### The logo lockup, and where it goes
+
+"Forbes ENGLISH" is two objects, not one: `image2.svg` (the Forbes wordmark,
+black, vector, **"Forbes" only**) plus a separate Courier New text run reading
+ENGLISH at sz=2250. Anything that adds the logo has to add both.
+
+On the cover the lockup sits at ink top y=1003px of 1125. On the interior
+slides that position collides with the page number, which is a 20x13px block
+at x 1895-1914, y 1065-1077 on every one of them. So the interior lockup is
+raised to ink top y=925 (picture `<a:off y="5329682">`, text `y="5889117">`),
+which stacks it above the number instead of over it.
+
+Colour is chosen by sampling the destination: white on slides whose corner is
+dark (presentation pages 2,6,7,8,11), black where light (3,4,5,9,10). Three
+corners are half and half (pages 4,5,9) and get a soft opposing glow —
+`outerShdw blurRad="34925" dist="0"` at 75% alpha in the pptx, a blurred
+dilated alpha in the raster.
+
+The site JPGs get the lockup **composited on top of Innes's PDF render**, so
+the Courier New underneath is untouched. The stamp itself was cut from the
+cover of that same PDF and keyed off the cream background, which is why the
+ENGLISH glyphs on the interior slides are real Courier New too — they are the
+cover's own pixels.
+
+### Two traps in this file
+
+`slide10.xml` is presentation page **11** (the KEY) and `slide11.xml` is page
+**10** (WHICH?). Check `sldIdLst` before editing by number.
+
+The cover's logo `<a:blip r:embed="rId1">` pointed at the **background
+photograph**, not the logo; only the `svgBlip` fallback was right. Any renderer
+without SVG support would have drawn a full-bleed still of Han and Chewbacca
+into the corner. Fixed — it now points at `image13.png`.
