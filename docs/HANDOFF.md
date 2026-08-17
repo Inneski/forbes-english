@@ -112,6 +112,61 @@ by a blanket engine change; per-lesson data is not.
 
 ---
 
+## El Zar is a band, not a Tsar
+
+Innes: *"is this really geopolitics? or music?"* Music. `library.html` had
+**`el zar` hardcoded into the Geopolitics regex**, almost certainly because the
+name reads as "the Tsar".
+
+The lesson is eighteen C2 verbs of force and effect — mitigate, exacerbate,
+obfuscate, corroborate, undermine, mollify, curtail — and every single example
+sentence is music industry: a producer using reverb to soften a lead guitar, a
+tour meant to calm a feud between two founding members, a handler obfuscating at
+a press gathering, a venue contract imposing a set-list quota. The activation is
+a label-versus-manager negotiation over a mismanaged tour, the writing task is a
+broadsheet review, and the hero is `ElZar/studio-hero.jpg`. Zero political words
+in the whole file.
+
+Refiled as **Music + Negotiation** — the setting and the function, both real.
+Music is a new category (🎸, added between Fashion and Construction) and El Zar
+is currently its only member, which is fine: the site already carries Martial
+Arts at three.
+
+### `venezuela` was doing the same thing
+
+Same rule, same mistake. "Used To & Be Used To — Venezuela Edition" is a
+past-habit grammar lesson set on a hacienda — its own standfirst is "A quiet
+hacienda on the llanos — the kind of place used to being visited only by dust
+and time." No politics at all. **A place name is a setting, not a subject.**
+Removed.
+
+That left it with no topic category, which exposed a second gap: `used to` was
+in none of the grammar rules, so all three used-to lessons (this one and two
+Sherpa camps) were reachable only under ALL and Lesson plan. `used to` is now in
+the Tenses rule, which takes Tenses from 26 to 29.
+
+Geopolitics is down from 8 to 6. The two survivors worth a second opinion are
+**Friedrich I of Prussia** and **JFK & Prepositions** — both are prepositions
+lessons hung on a historical figure. Friedrich's own standfirst says
+"prepositions of power, politics, and Baroque statecraft", so it has a claim;
+JFK's is "the small words that put an event in a place, in a decade, and under
+suspicion", which is really biography. There is no History category. Left as
+they are rather than invent one for two lessons.
+
+### How to check this yourself
+
+`detectCategories()` keys off `title + ' ' + file`, lower-cased — **never the
+lesson body**. So any proper noun in a title is matched against every rule, and
+a name that happens to look like a topic gets filed under it. The way to audit
+it is to run the real function over the catalogue rather than eyeball the
+regexes: extract `NOT_ACTUALLY_SPEAKING` and `detectCategories` verbatim from
+`library.html`, feed it `tools/lessons.json`, and print which lessons each
+category catches. Reading the rules by hand gave me a bogus
+"71 lessons uncategorised"; running the function gave the true answer, **0** —
+the activity-type rules at the end of the function catch everything.
+
+---
+
 ## Escape from Grammar Jail, and 103 junk meta descriptions
 
 `full_grammar_test.html` (id 183) is renamed **Escape from Grammar Jail** —
@@ -1877,54 +1932,3 @@ attach the HTML rather than re-attempting the URL.
   odd fit for A1, and possibly better suited to a B1/B2 bar lesson. Raise it
   before building rather than shipping an A1 deck set in cocktail bars.
 
----
-
-## sort_order: pinning a lesson, and why it is not enough on its own
-
-The library used to order strictly by `id`, so the only way to put a lesson at
-the front was to renumber the primary key — which `lesson-meta.json`, the
-sitemap and the 195 gate pages all reference. There is now a nullable
-`sort_order` column on `lessons`: lower sorts first, `NULL` means unpinned and
-falls back to `id` order. Every row is `NULL` today except the Stranger Things
-deck at 1, so the shelf is otherwise exactly what it always was.
-
-`sb-client.js` and `tools/seo.py` must order **identically** — the static list
-seo.py writes into `<div id="grid">` is both the crawler-visible library and
-the fallback a visitor gets when Supabase is down. `nullsFirst: false` /
-`.nullslast` are load-bearing: ascending sorts NULLs first by default, which
-would put all 246 unpinned lessons ahead of the pinned one.
-
-**`sort_order` does not beat the coming-soon band, and this will catch you.**
-`render()` sorts into three bands before anything else — decks, finished
-lessons, coming soon — and `comingSoon(l)` is `!LESSON_IMAGES[l.file]`. A new
-deck with a catalogue row, a `sort_order` of 1 and no `LESSON_IMAGES` entry is
-live, reachable and sitting at the very bottom of the shelf behind a
-"Coming soon" placeholder. The thumbnail registration is not decoration; it is
-what makes a lesson exist. It is the last line of the four-artefact list in
-*Publishing a .pptx* above — read that section **before** building, not after.
-
-## A deck can ship as a PDF, and probably should
-
-Innes's decks come out of WPS Presentation. Exporting to PDF there embeds the
-real Segoe UI and Georgia, so the PDF is the deck exactly as he sees it —
-whereas anything rendered here goes through LibreOffice's substitutions. The
-viewer pattern is unchanged; only the download target differs
-(`href="<name>.pdf"`, label `⬇ Download .pdf`).
-
-Two things this settles:
-
-- **The "13" that wrapped to two lines** on the final REVIEW slide was
-  LibreOffice, not the deck. WPS renders it correctly. Before filing a layout
-  defect found in a soffice render, check it against a WPS-exported PDF.
-- **Editing the PDF is safer than re-exporting it.** The cream caption
-  backings (`#F4EBD7`) were removed by turning each `f*` into `n` — the path
-  still ends, nothing is painted. Do **not** delete the operators: the same
-  drawing block carries the caption text on several slides, and cutting them
-  risks unbalancing `q`/`Q`. Find them by fill colour, not by geometry.
-
-Sizes: Workers Static Assets refuses any single file over **25 MiB**, and the
-Chrome `file_upload` tool refuses over **10 MB**, which is the tighter of the
-two and the one that actually bites. Recompressing embedded JPEGs with pikepdf
-(cap the long edge at 1000px, q76) took 14.0 MiB to 8.4 MiB with no visible
-loss — the text is vector and is untouched. Only Star Wars, at 47 MB, still
-needs the `.assetsignore` + raw.githubusercontent escape hatch.
