@@ -1,26 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- SEO:start -->
-<meta name="description" content="Five hours to your English test — Part I: strategy, vocabulary and the two present tenses">
-<link rel="canonical" href="https://forbesenglish.com/exam-prep-5hour-courseEXP.html">
-<meta property="og:type" content="article">
-<meta property="og:site_name" content="Forbes English">
-<meta property="og:title" content="Out of This World — 5-Hour Test Prep · Part I (A2)">
-<meta property="og:description" content="Five hours to your English test — Part I: strategy, vocabulary and the two present tenses">
-<meta property="og:url" content="https://forbesenglish.com/exam-prep-5hour-courseEXP.html">
-<meta property="og:image" content="https://forbesenglish.com/ExamPrep/hero.jpg">
-<meta property="og:locale" content="en_GB">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Out of This World — 5-Hour Test Prep · Part I (A2)">
-<meta name="twitter:description" content="Five hours to your English test — Part I: strategy, vocabulary and the two present tenses">
-<meta name="twitter:image" content="https://forbesenglish.com/ExamPrep/hero.jpg">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Out of This World — 5-Hour Test Prep · Part I","description":"Five hours to your English test — Part I: strategy, vocabulary and the two present tenses","url":"https://forbesenglish.com/exam-prep-5hour-courseEXP.html","inLanguage":"en","learningResourceType":"lesson","interactivityType":"active","isAccessibleForFree":false,"image":"https://forbesenglish.com/ExamPrep/hero.jpg","provider":{"@type":"Organization","name":"Forbes English","url":"https://forbesenglish.com/"},"isPartOf":{"@type":"Course","name":"Forbes English lesson library","url":"https://forbesenglish.com/library.html"},"educationalLevel":"A2","teaches":"A2 English","datePublished":"2026-08-07","hasPart":{"@type":"WebPageElement","isAccessibleForFree":false,"cssSelector":".paywalled"}}</script>
-<!-- SEO:end -->
 <!-- ══ REPLACE: lesson title. No "Forbes English —" prefix. ══ -->
-<title>Out of This World — 5-Hour Test Prep · Part I (A2)</title>
+<title>Out of This World — 5-Hour English Test Prep · Part I</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -3240,16 +3224,18 @@ function markGap(g) {
    exam-prep five points and two other lessons one each.
 
    A miss now names every answer it missed, not just the first. */
+function fillFeedback(fb, missed) {
+  const why = fb.dataset.explain ? ' ' + fb.dataset.explain : '';
+  fb.innerHTML = (missed.length === 0 ? t('fbCorrect')
+    : `${t('fbWrong')} ${t('fbAnswer')} ` +
+      missed.map(g => g.dataset.answer.split('|')[0]).join(', ') + '.') + why;
+  fb.className = 'feedback show ' + (missed.length === 0 ? 'ok' : 'no');
+}
+
 function markGroup(gaps, fb) {
   const missed = gaps.filter(g => !markGap(g));
-  if (fb) {
-    const why = fb.dataset.explain ? ' ' + fb.dataset.explain : '';
-    fb.innerHTML = (missed.length === 0 ? t('fbCorrect')
-      : `${t('fbWrong')} ${t('fbAnswer')} ` +
-        missed.map(g => g.dataset.answer.split('|')[0]).join(', ') + '.') + why;
-    fb.className = 'feedback show ' + (missed.length === 0 ? 'ok' : 'no');
-  }
-  return missed.length === 0;
+  if (fb) fillFeedback(fb, missed);
+  return missed;
 }
 
 function checkGaps(slide) {
@@ -3264,14 +3250,24 @@ function checkGaps(slide) {
   }
   answered.add(slide);
   const rows = [...slide.querySelectorAll('.gap-row')];
+  // A screen may carry ONE pooled explanation instead of one per row — the
+  // four traps are variations on a single point and read better together,
+  // and four per-row feedback blocks reserve 46px each whether or not
+  // anyone has pressed Check. It shipped that way on Food A1 and was never
+  // once displayed: this loop only ever touched feedback found *inside* a
+  // row, so the slide's own note sat in the DOM with no code path to reach
+  // it. The learner pressed Check, saw the gaps go green, and got no
+  // explanation at all.
+  const pooled = [...slide.querySelectorAll('.feedback')]
+    .find(f => !f.closest('.gap-row'));
   if (rows.length) {
-    rows.forEach(r => markGroup([...r.querySelectorAll('.gap')],
-                                r.querySelector('.feedback')));
+    const missed = rows.flatMap(r => markGroup([...r.querySelectorAll('.gap')],
+                                               r.querySelector('.feedback')));
+    if (pooled) fillFeedback(pooled, missed);
   } else {
     // No .gap-row wrappers: the whole slide is one group. Marking only the
     // first input here is the same bug in its other form.
-    markGroup([...slide.querySelectorAll('.gap')],
-              slide.querySelector('.feedback'));
+    markGroup([...slide.querySelectorAll('.gap')], pooled);
   }
   const btn = slide.querySelector('[data-action="check"]');
   if (btn) btn.disabled = true;
