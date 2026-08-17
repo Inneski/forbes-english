@@ -81,8 +81,13 @@ def lessons():
     """The lessons table, live if reachable and from cache if not."""
     try:
         req = urllib.request.Request(
+            # Must match sbGetLessons() in sb-client.js. The static list this
+            # writes into <div id="grid"> is what a crawler sees and what a
+            # visitor gets when Supabase is unreachable, so if the two orders
+            # disagree the fallback silently shows a different library.
             SUPABASE_URL + '/rest/v1/lessons'
-            '?select=file,title,level,access,deck,video,created_at&order=id',
+            '?select=file,title,level,access,deck,video,created_at,sort_order'
+            '&order=sort_order.asc.nullslast,id.asc',
             headers={'apikey': SUPABASE_ANON,
                      'Authorization': 'Bearer ' + SUPABASE_ANON})
         rows = json.loads(urllib.request.urlopen(req, timeout=20).read())
@@ -118,17 +123,7 @@ def describe(src, row):
     description should be, so that is the first choice. Legacy pages get
     their first real paragraph. Only when a page says nothing about
     itself do we fall back to a built sentence — a generic description on
-    every page is worth little more than none.
-
-    The block this script wrote last time is stripped before any of that
-    runs. It used to be left in place, so the third pattern below matched
-    seo.py's OWN previous output and handed it straight back: whatever
-    description a page was given on its first pass was frozen there for
-    good, and no amount of rewriting the page could improve it. The
-    grammar test carried "Forbes EnglishGrammar · Full Test 0 / 45 0 / 45
-    ENGLISH Cheat Sheet Test..." — scraped chrome and flag emoji — as its
-    Google snippet for exactly that reason."""
-    src = re.sub(re.escape(START) + '.*?' + re.escape(END), ' ', src, flags=re.S)
+    every page is worth little more than none."""
     for pat in (r'coverSub\s*:\s*[\'"](.*?)[\'"]\s*,',
                 r'class="cover-sub"[^>]*>(.*?)</p>',
                 r'<meta name="description" content="([^"]+)"'):
@@ -136,23 +131,8 @@ def describe(src, row):
         if m and len(clean(m.group(1))) > 30:
             return trim(clean(m.group(1)), 155)
 
-    # A legacy page's standfirst. Deliberately shorter than a paragraph, so it
-    # gets a lower floor than the 60 below -- without this, a page whose only
-    # self-description is a 54-character subtitle falls all the way through to
-    # the built sentence.
-    m = re.search(r'<p[^>]*class="(?:sub|subtitle|lede|standfirst)[^"]*"[^>]*>(.*?)</p>',
-                  src, re.S)
-    if m and len(clean(m.group(1))) > 24:
-        return trim(clean(m.group(1)), 155)
-
     body = re.sub(r'<(script|style)[^>]*>.*?</\1>', ' ', src, flags=re.S)
-    # `<p[^>]*>` also matches <path>, <picture>, <pre> and <progress>. Every
-    # page whose logo is an inline SVG opens with a <path>, so the "first
-    # paragraph" ran from that path to the first real </p> further down and
-    # swallowed the whole header on the way. The grammar test's Google snippet
-    # was "Forbes EnglishGrammar · Full Test 0 / 45 0 / 45 ENGLISH ...
-    # 🇬🇧English 🇩🇪Deutsch 🇮🇹Italiano" for precisely this reason.
-    for m in re.finditer(r'<p(?:\s[^>]*)?>(.*?)</p>', body, re.S):
+    for m in re.finditer(r'<p[^>]*>(.*?)</p>', body, re.S):
         t = clean(m.group(1))
         if len(t) > 60 and not t.lower().startswith(('cookie', 'loading')):
             return trim(t, 155)
@@ -224,17 +204,9 @@ def esc(t):
 
 
 # ── the block ──────────────────────────────────────────────────────────
-def seo_block(url, title, desc, image, row=None, noindex=False):
-    out = [START]
-    if noindex:
-        # A lesson with no hero has not been rebuilt to house style yet.
-        # The library shows it as "Coming soon" and will not link to it, so
-        # the page must not be an entry point either — an indexed result
-        # that lands on an unfinished lesson is worse than no result.
-        # follow, not none: the internal links on it are still worth
-        # crawling, and this reverses the moment artwork lands.
-        out.append('<meta name="robots" content="noindex,follow">')
-    out += ['<meta name="description" content="%s">' % esc(desc),
+def seo_block(url, title, desc, image, row=None):
+    out = [START,
+           '<meta name="description" content="%s">' % esc(desc),
            '<link rel="canonical" href="%s">' % url,
            '<meta property="og:type" content="%s">'
            % ('article' if row else 'website'),
@@ -377,18 +349,8 @@ Sitemap: %s/sitemap.xml
 """ % SITE
 
 
-def coming_soon(row, images):
-    """A lesson with no hero image is one that has not been rebuilt yet.
-
-    That single fact is the whole rule, and it is derived rather than
-    stored: the moment a hero lands in LESSON_IMAGES the lesson becomes
-    available again, with no second place to remember to update. Nothing
-    here needs a column in the catalogue."""
-    return row['file'] not in images
-
-
 def sitemap(rows, images):
-    """Every lesson that is finished, free and Pro alike.
+    """Every lesson, free and Pro alike.
 
     A Pro lesson belongs in here: its gate page carries a real title and
     description and declares itself gated, so it is a legitimate result.
@@ -420,7 +382,7 @@ def sitemap(rows, images):
                        prio)
     for r in rows:
         p = os.path.join(ROOT, r['file'])
-        if not os.path.exists(p) or coming_soon(r, images):
+        if not os.path.exists(p):
             continue
         img = images.get(r['file'])
         out += url('%s/%s' % (SITE, quote(r['file'])),
@@ -436,7 +398,7 @@ def quote(p):
     return urllib.parse.quote(p)
 
 
-def llms_txt(rows, index, images):
+def llms_txt(rows, index):
     """`/llms.txt` — the map an answer engine reads instead of crawling.
 
     Not a search-engine file. The convention is markdown: what the site
@@ -445,7 +407,6 @@ def llms_txt(rows, index, images):
     without guessing. Free lessons are listed first and marked, because
     an engine recommending a page a reader cannot open is worse for us
     than not being recommended at all."""
-    rows = [r for r in rows if not coming_soon(r, images)]
     free = [r for r in rows if r['access'] != 'pro']
     pro = [r for r in rows if r['access'] == 'pro']
     out = ['# %s' % BRAND, '',
@@ -483,15 +444,13 @@ def llms_txt(rows, index, images):
     return '\n'.join(out)
 
 
-def crawlable_list(rows, images):
+def crawlable_list(rows):
     """A plain list of every lesson, in the HTML, for crawlers and for
     anyone without JavaScript. The library's own script replaces it with
     the interactive grid the moment it runs, so nobody sees this — but it
     is the only thing standing between a crawler and 236 dead ends."""
     by_level = {}
     for r in rows:
-        if coming_soon(r, images):
-            continue
         by_level.setdefault(r.get('level') or 'All levels', []).append(r)
     order = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'A2-C1', 'All levels']
     # It is styled because it is not only a crawler's view: when Supabase is
@@ -540,19 +499,12 @@ def main(check=False):
         desc = describe(src, r)
         r = dict(r, _rules=rules(src))
         img = images.get(r['file'])
-        soon = coming_soon(r, images)
         img = '/' + quote(img) if img else DEFAULT_IMAGE
         url = '%s/%s' % (SITE, quote(r['file']))
-        new = inject(src, seo_block(url, title, desc, img, r, noindex=soon),
-                     esc(title))
+        new = inject(src, seo_block(url, title, desc, img, r), esc(title))
         index[r['file']] = {'title': title, 'description': desc,
                             'level': r.get('level'), 'image': img,
                             'access': r['access']}
-        # The Worker reads lesson-meta.json to build each gate page. The
-        # flag is what lets it serve a "coming soon" page rather than an
-        # unfinished lesson; the library derives the same state itself.
-        if soon:
-            index[r['file']]['coming_soon'] = True
         if new != src:
             changed += 1
             if not check:
@@ -581,7 +533,7 @@ def main(check=False):
             # list of 236 links sitting under the library for everyone.
             new = re.sub(re.escape(LIST_START) + '.*?' + re.escape(LIST_END) + r'\n?',
                          '', new, flags=re.S)
-            lst = crawlable_list(rows, images)
+            lst = crawlable_list(rows)
             new = re.sub(r'(<div class="grid" id="grid">)(.*?)(</div>)',
                          lambda m: m.group(1) + '\n' + lst + '\n' + m.group(3),
                          new, count=1, flags=re.S)
@@ -599,14 +551,11 @@ def main(check=False):
              encoding='utf-8').write(json.dumps(index, ensure_ascii=False,
                                                 indent=0, sort_keys=True))
         open(os.path.join(ROOT, 'llms.txt'), 'w',
-             encoding='utf-8').write(llms_txt(rows, index, images))
+             encoding='utf-8').write(llms_txt(rows, index))
     print('  %s %d page(s); skipped %d' %
           ('would rewrite' if check else 'rewrote', changed, skipped))
-    soon = [r for r in rows if coming_soon(r, images)]
-    print('  coming soon (no hero): %d — noindexed, and out of the sitemap, '
-          'the crawlable index and llms.txt' % len(soon))
     print('  sitemap: %d urls · robots.txt · llms.txt · lesson-meta.json (%d)'
-          % (len(rows) - len(soon) + len(PAGES), len(index)))
+          % (len(rows) + len(PAGES), len(index)))
     return changed
 
 
