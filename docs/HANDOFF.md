@@ -182,6 +182,56 @@ were the exception and are worth knowing about:
 the lesson's own reference card, which fixed the length problem and taught more
 at the same time.
 
+### The paragraph-builder was printing its own answer key
+
+Found on a second pass, after the first audit had already shipped. `renderReorder`
+in Parts 1 and 2 filled each slot like this:
+
+```js
+`<span class="tag">${data.sentences[s].tag}</span>${data.sentences[st.slots[s]].text}`
+```
+
+The **tag** is the role slot `s` wants. The **text** is whatever the learner put
+there. So the moment anything landed in slot 1 the slot announced "Topic",
+slot 2 "Explanation", slot 3 "Example", slot 4 "Concluding" — before any
+checking. Two failures at once:
+
+1. **It hands over the key.** Drop any sentence anywhere, read the label, and
+   the exercise tells you what belongs in that position. All four slots do it.
+   A learner never has to judge a single sentence.
+2. **It mislabels the learner's own work.** Put the concluding sentence in slot
+   1 and the page tells them it is a topic sentence — on an activity whose
+   entire purpose is recognising paragraph roles, at C1.
+
+The tag is *feedback*, so it now waits for the check: nothing before, all four
+roles plus correct/incorrect styling after. Verified both ways in both files.
+
+**Look for this shape wherever a slot, bin or drop-zone renders a label from
+its own index rather than from what was placed in it.** The sort slides are the
+obvious next place to check.
+
+### What the second pass actually ran
+
+The first audit covered four defect classes — JS errors, key position, key
+length, cloze-answer length — and reported the lessons as done. That was too
+narrow, and the paragraph-builder defect above is what it missed. The full pass:
+
+- **perfect play-through, driven from each lesson's own data arrays.** Maps
+  20/20, Accurate Data 20/20, Bar Charts 20/20 — five each on multiple choice,
+  fill-in-the-blank, sentence building and matching, so the advertised maximum
+  is genuinely reachable. Parts 1 and 2: every activity to full marks
+  (5/5, 5/5, 5/5, 5/5, 6/6, 5/5, 5/5, 5/5 and 10/10, 4/4, 8/8, 8/8, 5/5, 5/5).
+- **advertised maximum vs reachable maximum.** All three score pills say "/ 20"
+  and all three sum to 20 across their four activity arrays.
+- **every cloze answer is present in its own options list** — an answer missing
+  from its options is a point nobody can score. All fifteen pass.
+- **no explanation prints its own markup** in any of the five, after answering
+  every question.
+- **Part 3 has no scoring at all**, by design. What was checked instead: word
+  count and its threshold class, the countdown timer, the essay-type check, the
+  five-item checklist, and the download — which produces a real 1.6 KB text
+  file with the plan, the writing and the checklist in it.
+
 ### These are not deck-template lessons
 
 `check-lesson.js` does not apply to them — no `.slide` sections, no shared
