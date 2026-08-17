@@ -92,8 +92,8 @@ HTML = '''<!DOCTYPE html>
      The third box is not a tense and takes no tense colour. --text-dim is
      pink-tinted in this palette and sits 46 RGB units from the continuous
      pink, so a true neutral is used: 71 units away, 7.68:1. */
-  --t-present-simple    : color-mix(in srgb, #16345C 55%, white);
-  --t-present-continuous: color-mix(in srgb, #C2185B 55%, white);
+  --t-present-simple    : color-mix(in srgb, #7A93B5 55%, white);
+  --t-present-continuous: color-mix(in srgb, #E66085 55%, white);
   --t-either            : #A8AEAE;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }

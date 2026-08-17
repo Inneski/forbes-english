@@ -6,7 +6,7 @@ from passive_kit import build
 
 Q = lambda *a: a
 
-# ═══ present simple passive · #16345C ════════════════════════════════
+# ═══ present simple passive · #7A93B5 ════════════════════════════════
 PS = dict(
     uid='psp1', card='#1A2333', file='sherpa-tensing-descent-two-present-simple-passive.html',
     title='Sherpa Tensing - Descent Two: The Way Things Are Done (Present Simple Passive)',
@@ -15,7 +15,7 @@ PS = dict(
     lede='The tense of rules, processes and signs &mdash; and the passive is where it does most of its '
          'work. Nobody signs a notice <em>we empty the bins on Fridays</em>; they write <em>bins are '
          'emptied on Fridays</em>, because the bins are the point and the emptier is nobody in particular.',
-    stops=[("0", "#7C99C4"), ("0.42", "#3F5E8C"), ("0.78", "#1B2A42"), ("1", "#101827")],
+    stops=[("0", "#B4CBEC"), ("0.42", "#3F5E8C"), ("0.78", "#1B2A42"), ("1", "#101827")],
     bx=180, block='IS DONE', reveal='the rule, not the rule-maker',
     ink='#9DB6D8', ghost='#C9D8EE', tense='present simple',
     aria='A timeline on dark paper. A navy block spans the middle of the line with the NOW column '
@@ -53,7 +53,7 @@ PS = dict(
          '<em>Doors are closed at 6pm.</em> <em>Payment is taken on collection.</em> Nobody is named, '
          'because the rule applies whoever is on duty &mdash; and that anonymity is the whole point.',
     back='sherpa-tensing-camp-two-present-simple.html', back_label='Camp two &middot; present simple',
-    palette=('#EAF0F7', '#9AAEC6', '#0E141F', '#18203040'.replace('40', ''), '#7C99C4', '#26334A', '#141C2A'),
+    palette=('#EAF0F7', '#9AAEC6', '#0E141F', '#18203040'.replace('40', ''), '#B4CBEC', '#26334A', '#141C2A'),
     panelA=['The bins <em>are emptied</em> on Fridays.', 'English <em>is spoken</em> here.',
             'Tickets <em>are checked</em> at the barrier.'],
     panelB=['&hellip; <em>by</em> the caretaker.', '&hellip; <em>by</em> almost everyone.',
@@ -103,7 +103,7 @@ PS = dict(
          "Is cleaned is the routine; is clean would only describe its state."),
     ])
 
-# ═══ present continuous passive · #C2185B ════════════════════════════
+# ═══ present continuous passive · #E66085 ════════════════════════════
 PC = dict(
     uid='pcp1', card='#2A1119', shape='pc_passive', file='sherpa-tensing-descent-one-present-continuous-passive.html',
     title='Sherpa Tensing - Descent One: Being Done Right Now (Present Continuous Passive)',
@@ -112,7 +112,7 @@ PC = dict(
     lede='The longest thing you will say in ordinary English without anyone noticing: <em>is being '
          'done</em>. Three words to say that something is happening to a thing at this moment, and that '
          'whoever is doing it is not what the sentence is about.',
-    stops=[("0", "#F09BBB"), ("0.42", "#C2185B"), ("0.78", "#5E0B2C"), ("1", "#33061A")],
+    stops=[("0", "#FDB4CF"), ("0.42", "#E66085"), ("0.78", "#5E0B2C"), ("1", "#33061A")],
     bx=272, block='IS BEING DONE', reveal='happening, right now, to it',
     ink='#F0A9C3', ghost='#F3C4D6', tense='present continuous',
     aria='A timeline on dark paper. A pink block stands at the centre around the NOW column, with a '
@@ -151,7 +151,7 @@ PC = dict(
          'promise activity while naming nobody at all &mdash; which is exactly why it is worth being able '
          'to hear.',
     back='sherpa-tensing-camp-one-present-continuous.html', back_label='Camp one &middot; present continuous',
-    palette=('#F9E7EE', '#C99BAE', '#1A0810', '#D14C7E', '#F09BBB', '#3E1526', '#260D18'),
+    palette=('#F9E7EE', '#C99BAE', '#1A0810', '#EE7BA1', '#FDB4CF', '#3E1526', '#260D18'),
     panelA=['The road <em>is being resurfaced</em>.', 'The suspect <em>is being questioned</em>.',
             'Some difficult decisions <em>are being made</em>.'],
     panelB=['&hellip; <em>by</em> a firm from Leeds.', '&hellip; <em>by</em> two detectives.',

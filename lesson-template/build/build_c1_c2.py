@@ -23,14 +23,14 @@ def camp_one_svg(gid_suffix=""):
     """Two ripples on the same line: the one you are standing in, and the one
     already agreed further along. Both are clipped to the upper half so the
     line stays a line and the captions below it stay readable."""
-    pink = [("0%", "#7A0F3E"), ("18%", "#C2185B"), ("42%", "#E0568F"),
-            ("70%", "#F3B8CF"), ("100%", "#FBEAF0")]
+    pink = [("0%", "#AD5470"), ("18%", "#E66085"), ("42%", "#F882AE"),
+            ("70%", "#FCCADD"), ("100%", "#FEEFF4")]
 
     def dome(gid, cx, r, dashed):
         out = ['<circle cx="%d" cy="299" r="%d" fill="url(#%s)"/>' % (cx, r, gid)]
         for k in range(1, 8):
             d = ' stroke-dasharray="4 5"' if dashed else ''
-            out.append('<circle cx="%d" cy="299" r="%.1f" fill="none" stroke="#C2185B" '
+            out.append('<circle cx="%d" cy="299" r="%.1f" fill="none" stroke="#E66085" '
                        'stroke-width="1"%s opacity="%.2f"/>' % (cx, r * k / 8, d, 0.40 - 0.03 * k))
         return "\n      ".join(out)
 
@@ -54,10 +54,10 @@ def camp_one_svg(gid_suffix=""):
       <text x="150" y="26" text-anchor="middle" class="diagram-caption" fill="#8A7E84" style="letter-spacing:.14em" pointer-events="none">PAST</text>
       <text x="320" y="26" text-anchor="middle" class="diagram-caption" fill="#3E6A85" pointer-events="none">NOW</text>
       <text x="500" y="26" text-anchor="middle" class="diagram-caption" fill="#8A7E84" style="letter-spacing:.14em" pointer-events="none">FUTURE</text>
-      <text x="320" y="192" text-anchor="middle" class="diagram-caption" fill="#7A0F3E" style="letter-spacing:.06em" pointer-events="none" data-i18n="dgNowCap">HAPPENING</text>
-      <text x="500" y="192" text-anchor="middle" class="diagram-caption" fill="#7A0F3E" style="letter-spacing:.06em" pointer-events="none" data-i18n="dgFutCap">ARRANGED</text>
-      <text x="320" y="319" text-anchor="middle" class="dg-reveal-1" font-family="Inter, sans-serif" font-size="11.5" fill="#8A6070" pointer-events="none" data-i18n="dgNowSub">right now, still moving</text>
-      <text x="500" y="319" text-anchor="middle" class="dg-reveal-1" font-family="Inter, sans-serif" font-size="11.5" fill="#8A6070" pointer-events="none" data-i18n="dgFutSub">fixed, with a time and a place</text>
+      <text x="320" y="192" text-anchor="middle" class="diagram-caption" fill="#AD5470" style="letter-spacing:.06em" pointer-events="none" data-i18n="dgNowCap">HAPPENING</text>
+      <text x="500" y="192" text-anchor="middle" class="diagram-caption" fill="#AD5470" style="letter-spacing:.06em" pointer-events="none" data-i18n="dgFutCap">ARRANGED</text>
+      <text x="320" y="319" text-anchor="middle" class="dg-reveal-1" font-family="Inter, sans-serif" font-size="11.5" fill="#906777" pointer-events="none" data-i18n="dgNowSub">right now, still moving</text>
+      <text x="500" y="319" text-anchor="middle" class="dg-reveal-1" font-family="Inter, sans-serif" font-size="11.5" fill="#906777" pointer-events="none" data-i18n="dgFutSub">fixed, with a time and a place</text>
     </svg>''' % (
         T.radial_defs("ripNow", pink), T.radial_defs("ripFut", pink),
         dome("ripFut", 500, 88, True), dome("ripNow", 320, 88, False), T.NOW_COL)
@@ -65,7 +65,7 @@ def camp_one_svg(gid_suffix=""):
 
 def camp_two_svg():
     gid = "bedrockFade"
-    navy = T.ramp('#3E6EA6', '#1E4372', '#0C2340', '#050F1C')
+    navy = T.ramp('#90B4E1', '#7F9CC3', '#0C2340', '#050F1C')
     svg = T.diagram(gid, navy, None, 'TIMETABLE',
                     'a printed time, not a plan', 'timetable',
                     label_ink='#7C8899', classes='',
