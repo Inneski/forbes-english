@@ -1932,3 +1932,41 @@ attach the HTML rather than re-attempting the URL.
   odd fit for A1, and possibly better suited to a B1/B2 bar lesson. Raise it
   before building rather than shipping an A1 deck set in cocktail bars.
 
+
+## Why an image upload silently drops most of a batch
+
+`mcp__claude-in-chrome__file_upload` caps a **single call at 10 MB combined**.
+Innes's generated artwork is 2944x1648 PNG at 2.7-4.7 MB each, so a set of
+eight is ~28 MB — nearly three times the limit. One image lands, the rest do
+not, and it does not read as an error: the folder simply has fewer files than
+the conversation did.
+
+That is what happened to Grammar Jail. `c7e6cdb` committed exactly one file,
+`escape-the-cliff.jpg`, and the lesson ended up leaning on it four times over.
+
+**Convert before uploading.** JPEG at quality 88 takes those same images from
+2.7-4.7 MB to 400-630 KB with no visible loss at deck scale — the whole set of
+eight becomes 4.3 MB, one comfortable call:
+
+```python
+Image.open(src).convert('RGB').save(dst, 'JPEG', quality=88, optimize=True)
+```
+
+Check the count after uploading. `ls <folder> | wc -l` against what you were
+sent is a two-second habit that would have caught this a week ago.
+
+### grammarjail/ — eight new images, unwired
+
+`arrival` (figure below the prison tower at sunset, flag on the wall),
+`watched` (face behind a rig of camera lenses), `valves` (face among pipework),
+`cliff-climb` (climbing a rope up the cliff below the lighthouse), `skating`
+(the getaway, on skates), `cell-door` (figure framed in an open cell door, gull
+on a block), `lookout` (sunglasses and a cigarette against the pipes),
+`corridor-cat` (walking the pipe run, black cat watching).
+
+They are **staged, not used**. `full_grammar_test.html` is a test page rather
+than a deck and has slots for about two — its three current `grammarjail`
+references are all SEO metadata, not visual content. Wiring eight in means a
+redesign of a file another session was actively working, so it was left alone.
+Palette from `arrival.jpg` derives clean, every contrast row PASS, if a deck
+rebuild ever wants it.
