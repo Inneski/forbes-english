@@ -1877,3 +1877,54 @@ attach the HTML rather than re-attempting the URL.
   odd fit for A1, and possibly better suited to a B1/B2 bar lesson. Raise it
   before building rather than shipping an A1 deck set in cocktail bars.
 
+---
+
+## sort_order: pinning a lesson, and why it is not enough on its own
+
+The library used to order strictly by `id`, so the only way to put a lesson at
+the front was to renumber the primary key — which `lesson-meta.json`, the
+sitemap and the 195 gate pages all reference. There is now a nullable
+`sort_order` column on `lessons`: lower sorts first, `NULL` means unpinned and
+falls back to `id` order. Every row is `NULL` today except the Stranger Things
+deck at 1, so the shelf is otherwise exactly what it always was.
+
+`sb-client.js` and `tools/seo.py` must order **identically** — the static list
+seo.py writes into `<div id="grid">` is both the crawler-visible library and
+the fallback a visitor gets when Supabase is down. `nullsFirst: false` /
+`.nullslast` are load-bearing: ascending sorts NULLs first by default, which
+would put all 246 unpinned lessons ahead of the pinned one.
+
+**`sort_order` does not beat the coming-soon band, and this will catch you.**
+`render()` sorts into three bands before anything else — decks, finished
+lessons, coming soon — and `comingSoon(l)` is `!LESSON_IMAGES[l.file]`. A new
+deck with a catalogue row, a `sort_order` of 1 and no `LESSON_IMAGES` entry is
+live, reachable and sitting at the very bottom of the shelf behind a
+"Coming soon" placeholder. The thumbnail registration is not decoration; it is
+what makes a lesson exist. It is the last line of the four-artefact list in
+*Publishing a .pptx* above — read that section **before** building, not after.
+
+## A deck can ship as a PDF, and probably should
+
+Innes's decks come out of WPS Presentation. Exporting to PDF there embeds the
+real Segoe UI and Georgia, so the PDF is the deck exactly as he sees it —
+whereas anything rendered here goes through LibreOffice's substitutions. The
+viewer pattern is unchanged; only the download target differs
+(`href="<name>.pdf"`, label `⬇ Download .pdf`).
+
+Two things this settles:
+
+- **The "13" that wrapped to two lines** on the final REVIEW slide was
+  LibreOffice, not the deck. WPS renders it correctly. Before filing a layout
+  defect found in a soffice render, check it against a WPS-exported PDF.
+- **Editing the PDF is safer than re-exporting it.** The cream caption
+  backings (`#F4EBD7`) were removed by turning each `f*` into `n` — the path
+  still ends, nothing is painted. Do **not** delete the operators: the same
+  drawing block carries the caption text on several slides, and cutting them
+  risks unbalancing `q`/`Q`. Find them by fill colour, not by geometry.
+
+Sizes: Workers Static Assets refuses any single file over **25 MiB**, and the
+Chrome `file_upload` tool refuses over **10 MB**, which is the tighter of the
+two and the one that actually bites. Recompressing embedded JPEGs with pikepdf
+(cap the long edge at 1000px, q76) took 14.0 MiB to 8.4 MiB with no visible
+loss — the text is vector and is untouched. Only Star Wars, at 47 MB, still
+needs the `.assetsignore` + raw.githubusercontent escape hatch.
