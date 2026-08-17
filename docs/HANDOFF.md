@@ -1970,3 +1970,146 @@ references are all SEO metadata, not visual content. Wiring eight in means a
 redesign of a file another session was actively working, so it was left alone.
 Palette from `arrival.jpg` derives clean, every contrast row PASS, if a deck
 rebuild ever wants it.
+
+**Now wired.** `full_grammar_test.html` is a 64-slide deck and seven of the
+eight carry it — see below.
+
+---
+
+## Escape from Grammar Jail — rebuilt as a deck, in ten languages
+
+`full_grammar_test.html`, **64 slides**, all eleven gates clean, same
+filename. `lesson-template/build/build_full_grammar_test.py` +
+`i18n_full_grammar_test.py`. Dark theme, palette verbatim from
+`extract-palette.py grammarjail/arrival.jpg`, every contrast row PASS.
+
+Cover `arrival.jpg`; the escape then runs across the deck as per-slide
+backgrounds, uncaptioned — `cell-door` for the modals of obligation,
+`watched` for preferences and plans, `valves` for predictions and the past,
+`lookout` for the present perfect, `corridor-cat` for experience and
+quantity, `skating` for the pronoun sections, `cliff-climb` for the adverbs,
+the last section and the activation. `jail-test-room.jpg` keeps the
+orientation slide and `escape-the-cliff.jpg` keeps the results screen.
+`jail-cell-bars.jpg` and `jail-desk-window.jpg` are **still unreferenced**.
+
+### `deck.py` has been clobbered too — the sixth stale base, and the first on a shared builder
+
+`d11d5e1` ("Make every builder work from the repo, not /tmp") added two
+things to `deck.py`, both described in its own commit message, in
+`build/README.md` and in this file:
+
+- `mc(..., explains=[...])`, so per-option feedback stops being an
+  injection pass five builders each wrote by hand
+- `assemble()` deriving `data-theme` from the palette's `--void`
+  luminance, so a light deck cannot ship without the attribute
+
+**`807e19c` ("Builders: Alcatraz, icon set, order/gap guards, translatable
+card bodies") reverted both.** Its stated change is unrelated; its diff
+against `d11d5e1` puts `def mc(...)` back to the version without
+`explains`, and takes the luminance branch out of `assemble()`. Nothing
+failed: no existing caller passes `explains=`, and a dark deck does not
+need `data-theme`, so the loss is silent in exactly the way the
+`library.html` clobbers are.
+
+`git show d11d5e1:lesson-template/build/deck.py` still has both. Restoring
+them is a small diff and a wide blast radius — `assemble()` runs for every
+generated deck — so it wants its own pass with `check-lesson.js` re-run
+across all of them, and it was **not** done here.
+
+Until it is: `README.md` documents a `deck.py` that does not exist. A
+builder that follows the README will `TypeError` on the first `explains=`.
+**Check the function, not the README.** Grammar Jail carries a verbatim
+port of the clobbered `mc()` in its own builder and says so.
+
+### What the forty-five questions were doing wrong
+
+All six of the recurring defects, and the counts are worth having:
+
+| Defect | Count |
+|---|---|
+| Key at index 0 | **30 of 30** |
+| Key is the only longest option | 1 of 30 (Q26) |
+| Right and wrong print the same string | **45 of 45** |
+| Rule stated only in the feedback | all 15 topics — there was no teaching stage at all |
+| Hint set opens with its own answer | **10 of 15** |
+| Marks correct English wrong / unanswerable | 4, plus 5 gaps rejecting a correct spelling |
+
+Named, because they are the ones a future session should not re-introduce:
+
+- **`It's Doris's book` was presented as a mistake**, keyed to `Doris'`,
+  and explained as "when a name ends in -s, just add an apostrophe". It is
+  standard English, and it contradicted the gap two questions earlier,
+  which teaches apostrophe + s. Replaced with a real plural-possessive
+  error.
+- **`A: I have a headache. B: So do I.` was marked wrong** in favour of
+  *So have I*. With lexical *have*, *So do I* is the ordinary answer.
+- **`Have you ___ been to London?`** offered ever / never / yet / already.
+  All four are grammatical there.
+- **`I prefer the blue ___`** offered **dress** as a distractor.
+
+Five gap answers were rejected although the item's own hint offered them:
+**will not**, **have to**, **may**, **nor**, and *Tom's* with a curly
+apostrophe. Expanded in the builder's `alts()`, not in the engine's
+`gapOk` — a lesson that deliberately tests one spelling against another
+would be broken by a blanket engine change.
+
+And **five English feedback strings carried a German gloss inside them** —
+*"'might not' = vielleicht nicht"*, *"already = schon"*, *"Whose =
+wessen"*. Invisible to a Spanish learner, wrong for an English one, and
+already said properly nine times over in `all_questions_i18n.json`. Same
+shape as the `(= Blätter)` gloss found in the Stranger Things test.
+
+### Per-question translations do not fit `UI_I18N`, so they are not forced in
+
+`all_questions_i18n.json` is, per language, a 45x2 array — an L1 rendering
+of the question and an L1 grammar note — with **no English column**. Two
+things stop it becoming `data-i18n` keys, and the second is the one that
+bites: `check-lesson.js` resolves a key by asking whether `UI_I18N.en[key]`
+is **truthy**, so ninety keys whose English value is `''` would each report
+as unresolved. An empty string is a legitimate value and the gate cannot
+say so.
+
+So the table stays in its own structure in the lesson, as `QUESTION_L1`,
+and one `change` listener on `#langSelect` — registered after the engine's,
+so `currentLang` is already updated — drives both layers. Each question
+slide carries `<span class="q-l1" data-qi="N">` for the prompt, and the L1
+note is **appended to every `data-explain` in that question's container**,
+the slide-level one and each option's own, so it arrives with the feedback
+whichever answer was picked. The engine still writes the feedback.
+
+`ui_i18n.json` and `sections_i18n.json` *are* mapped onto deck keys, which
+is where nine tenths of the ten-language coverage comes from for free:
+`verdicts` become the four `res*` bands, `typeTags` become the orientation
+cards, the fifteen section glosses become the eyebrows. Six strings were
+written fresh — two activation briefs, three speaking prompts, a
+placeholder. Everything else is lifted from `chrome_i18n.py` or from
+`forbes-c1-negotiation.html`.
+
+### `?lang=` without touching the template
+
+The deck template always boots English. Rather than teach it about query
+strings, the lesson sets `#langSelect.value` and dispatches `change` —
+what a reader clicking the menu does — and keeps the URL in step
+afterwards. `full_grammar_test_italian.html` still redirects to
+`full_grammar_test.html?lang=it` and lands on the Italian deck, verified in
+a browser.
+
+### Layout is language-dependent, and only one language showed it
+
+All eleven gates were re-run against a copy of the deck with each of the
+ten languages forced on at load. Nine passed; **Russian overflowed the
+activation slide by 5px**, because one speaking prompt wrapped to three
+lines where every other language took two. Trimmed, and it is worth doing
+this every time a deck ships more than two languages — `check-lesson.js`
+measures whatever language the page boots in, which is always English.
+
+```bash
+python3 - <<'PY'
+s = open('lesson.html', encoding='utf-8').read()
+s = s.replace('</body>', '<script>(function(){var s=document.getElementById'
+              '("langSelect");s.value="ru";s.dispatchEvent(new Event("change"));'
+              '})();</script>\n</body>', 1)
+open('_tmp_ru.html', 'w', encoding='utf-8').write(s)
+PY
+node lesson-template/check-lesson.js _tmp_ru.html && rm _tmp_ru.html
+```
