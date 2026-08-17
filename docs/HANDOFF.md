@@ -158,6 +158,35 @@ remaining seven now read "An interactive B1 English lesson from Forbes English:
 <title>." — worse than a real sentence, far better than chrome soup. **Those
 seven are worth a hand-written description each.**
 
+### The fifth stale-base clobber — coming-soon deleted from seo.py
+
+Ninety minutes after `8c68f2c` shipped, commit `1e485ae` ("seo.py: fetch
+lessons in sort_order then id, matching sb-client.js") landed from another
+session. Its stated change is four lines. Its actual diff is **+19 / −70**:
+it uploaded a `seo.py` built on a base that predated the coming-soon work and
+took the whole feature out with it —
+
+- `coming_soon()` itself
+- the `noindex,follow` branch in `seo_block()`
+- the sitemap exclusion, the crawlable-list exclusion, the llms.txt exclusion
+- the `coming_soon: true` flag in `lesson-meta.json` that the Worker reads to
+  serve a gate page instead of an unfinished lesson
+
+Live effect until it was noticed: **65 heroless, unfinished lessons back in the
+sitemap, indexable, and served as if they were real.** The sitemap went from 182
+URLs to 247 and nobody would have seen a thing.
+
+Restored by starting from `8c68f2c:tools/seo.py` and applying only the genuine
+`sort_order` change on top. Re-running then rewrote **0 pages** — proof the
+restore is exact and not a second clobber in the other direction. The three
+`describe()` fixes are in the same merged file.
+
+**This is the fifth time.** The four earlier ones are further down this file.
+The uploader route makes it easy: you upload a whole file, so any staleness in
+your local copy silently reverts whatever landed while you were working.
+`git fetch origin && git diff origin/main -- <file>` before every upload is the
+only thing that catches it, and it takes two seconds.
+
 ### seo.py was feeding its own output back to itself
 
 Found while fixing the above. `describe()` reads the page's existing
