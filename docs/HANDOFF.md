@@ -112,6 +112,87 @@ by a blanket engine change; per-lesson data is not.
 
 ---
 
+## IELTS: five lessons published, and the shelf now has a series
+
+`forbes-english-ielts-*.html`, catalogue ids 245-249, all C1, all pro, all
+`deck: false` — they are Innes's own scrolling pages, uploaded as-is rather than
+rebuilt as 16:9 decks, which is what he asked for. Card artwork in `IELTS/`.
+
+| File | Catalogue title |
+|---|---|
+| `forbes-english-ielts-academic-writing-part1.html` | IELTS Academic Writing (Part 1) |
+| `forbes-english-ielts-writing-lab-part2.html` | The IELTS Writing Lab (Part 2) |
+| `forbes-english-ielts-writing-studio-part3.html` | The Writing Studio (IELTS Part 3) |
+| `forbes-english-ielts-maps-and-data-c1.html` | IELTS Writing Task 1: Maps & Accurate Data |
+| `forbes-english-ielts-bar-charts-c1.html` | IELTS Writing Task 1: The Bar Chart |
+
+The `IELTS` category already existed in `library.html` with no lessons in it;
+it derives from `/\bielts\b/` against `title + ' ' + file`, so the filenames
+alone are enough.
+
+### The cards are placeholders cut from the lessons themselves
+
+Innes sent no artwork, and a lesson with no `LESSON_IMAGES` entry ships as
+"Coming soon" and unavailable — which would have defeated the point. Each card
+is therefore a 1600x900 crop of that page's own most distinctive visual,
+padded onto its own paper colour: the paragraph-flow diagram, the five-essay-
+type grid, the two pie charts, the map with its compass rose. **Nothing was
+invented and nothing was borrowed from another lesson.** `bar-charts.jpg` is
+the exception and the best of them — that page already carried a 1400x783
+base64 JPEG hero (a typewriter, books and a city skyline), extracted straight
+out of the HTML. If real artwork arrives, these are one line each in
+`library.html`.
+
+### "The Liz Method" is not a phrase this site uses
+
+Innes: *"dont say the LIZ METHOD"*. Part 1 was titled "IELTS Academic Writing,
+the Liz Method" in both languages and named her in four quiz explanations; Part
+3 said "Plan It — Liz's Steps" and "using Liz's own steps". All of it is gone,
+en and de. The agreed replacement for the planning stage is **"The Four
+Steps"** (`Die vier Schritte`), confirmed by Innes. The advice itself is
+unchanged — only the attribution.
+
+### The longest-key defect, found again in three of the five
+
+Every one of these pages shuffles its options at render time, so key *position*
+is a non-issue here. Key *length* was not. Ten questions had a key that was the
+only longest option by 4+ characters:
+
+- `maps-and-data`: `mapsMCQ` Q1, Q2, Q4 and `dataMCQ` Q1, Q2, Q3
+- `bar-charts`: `MCQ` Q2, Q3, Q4, Q5 — worst was 102 characters against a
+  76-character field
+- `academic-writing-part1`: `c2_recap_items` Q1, Q4, Q5, in English *and*
+  German
+- `maps-and-data`: `dataCloze[3]`, the one cloze offender — "considerably more
+  than" at 22 characters against 9, 13, 14
+
+All fixed the house way: **distractors lengthened, keys untouched.** Two keys
+were the exception and are worth knowing about:
+
+- `mapsMCQ` Q4's key carried two claims joined by an em dash, the second of
+  which duplicated the explanation verbatim. Split rather than padded — the
+  explanation already said "write them in normal lower case".
+- The same question's key was also the only option not starting with
+  "Because". All four now match, so the grammatical tell is gone too. **Check
+  option *shape*, not just option length** — a key that is the only one in a
+  different grammatical form is as much of a giveaway as a long one, and no
+  gate looks for it.
+
+`dataMCQ` Q2's distractors were replaced with the genuine full band lists from
+the lesson's own reference card, which fixed the length problem and taught more
+at the same time.
+
+### These are not deck-template lessons
+
+`check-lesson.js` does not apply to them — no `.slide` sections, no shared
+engine. What was run instead: a Playwright load of each page (no JS errors on
+any; the only console noise is Google Fonts failing in the sandbox, which is
+network, not code), plus two purpose-written audits that read the quiz arrays
+out of the live page and check key position, key length and cloze-answer
+length. Both are worth rewriting if more of these arrive.
+
+---
+
 ## The Language of Flow (B2) — rebuilt, and two things worth keeping
 
 `forbes-english-lesson (flow).html` was a four-part scrolling page: watch a
