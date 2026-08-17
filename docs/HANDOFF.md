@@ -2171,3 +2171,75 @@ The cover's logo `<a:blip r:embed="rId1">` pointed at the **background
 photograph**, not the logo; only the `svgBlip` fallback was right. Any renderer
 without SVG support would have drawn a full-bleed still of Han and Chewbacca
 into the corner. Fixed — it now points at `image13.png`.
+
+---
+
+## 2026-08-17 — the present-continuous pink and the present-simple navy were softened
+
+Innes asked for "the pink and blue much softer/lighter". Shipped in three
+commits: `d15af97` (pages), `539008a` (`lesson-template/`), `54e47f3`
+(builders).
+
+```
+present continuous   #C2185B  ->  #E66085     soft rose
+present simple       #16345C  ->  #7A93B5     soft slate
+```
+
+**The amount is derived, not chosen.** `lesson-template/soften.py` walks a
+colour up an OKLCh path — raise lightness, drop chroma faster, hold hue —
+and stops at the last step where `--accent` still clears 3:1 against its
+own paper and `--accent-dark` still clears 4.5:1 as small text. That is
+t=0.29 for the pink and t=0.49 for the navy. If Innes wants them softer or
+firmer, change `FLOOR` in `soften.py` and re-run `apply_soften.py`; don't
+hand-pick a replacement hex.
+
+`apply_soften.py` moves every other member of each family along the same
+path by the same t — the tints, the diagram gradient stops, the route-map
+dots — so the ramps stay families instead of drifting stop by stop.
+
+**Three things that will bite whoever changes a tense colour next.**
+
+1. **Two roles, two floors.** Fills and gradient stops take the full t.
+   Small text — `--accent-dark` on the italic examples and the retry
+   button, the 11.5px diagram captions — takes t and then walks *back*
+   until it clears 4.5:1 on its own paper. Softening those blind puts a
+   caption at 2.9:1. `#7C8899` on camp two ends up unmoved for exactly
+   this reason.
+2. **Skip the non-accent tokens by declaration name.** Camp two's `--ink`
+   is `#0C2340`, which is *also* a stop in its pyramid gradient. A blind
+   hex substitution lightens the page's body text. `apply_soften.py`
+   guards `--ink`, `--ink-soft`, `--paper`, `--card`, `--good`, `--bad`.
+3. **The softened fills cannot carry white text.** White on the new pink
+   is 3.3:1. Camp one, camp two and the route map each gained an
+   `--on-accent` token (`#2E000D` and `#0A131F`) and every label sitting
+   on an accent fill was repointed at it. Any new page using these two
+   colours as a fill must do the same.
+
+The Sherpa pages are hand-maintained references that build scripts splice
+into, so the hexes live in **both** the HTML and the builder. Both were
+rewritten. Changing only one means the next builder run silently restores
+the old pink.
+
+`library.html` was done by hand, not by the script: its pink appears in
+the `.sherpa-banner` gradient, which carries white text and so takes a
+smaller t (`#D23E6E` -> `#B25A76`), and in the 'Speaking activity'
+category chip, which is not a tense colour and must not move.
+
+### Measured, so nobody re-litigates it from a screenshot
+
+On the route map the two route segments sit at **1.1–2.3:1 against the
+mountain photograph in both versions**. The change moves the pink up
+(1.08 -> 1.65) and the navy down (2.30 -> 1.73). Every segment is below
+the 3:1 graphical floor before and after — that is a pre-existing route
+map issue, not one this change introduced. Worth fixing on its own
+ticket; the segments need a halo or a lighter plate under them.
+
+### Open, for Innes to rule on
+
+- The other eleven camps are still fully saturated, so one and two now
+  read as a different generation. The same transform runs on them in one
+  command if he wants the whole set softened.
+- **Present perfect still forks**: the route map and camp four use
+  `#1F6A70`; `tense-palette.css`, `mtb-perfect-vs-simple`, both Ecuador
+  parts, impostor syndrome and `build_pp*.py` use `#0F6E56`. Both are
+  published. Untouched pending his decision.
