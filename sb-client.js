@@ -88,10 +88,18 @@ async function sbGetProfile(userId) {
 
 // --- lesson library helpers used by library.html ---
 
+// Grid order is sort_order first, then id. sort_order is NULL on almost every
+// row: those are unpinned and keep their historical id order, which is what
+// the library has always shown. Give a row a low sort_order to pin it to the
+// front without renumbering ids -- the ids are referenced by lesson-meta.json,
+// the sitemap and the gate pages, so renumbering them is not a safe reorder.
+// nullsFirst: false is what keeps the unpinned rows behind the pinned ones;
+// Postgres sorts NULLs first by default on ascending, which would invert this.
 async function sbGetLessons() {
   const { data, error } = await window.sb
     .from("lessons")
-    .select("file, title, level, video, deck, access")
+    .select("file, title, level, video, deck, access, sort_order")
+    .order("sort_order", { ascending: true, nullsFirst: false })
     .order("id", { ascending: true });
   if (error) {
     console.error("Failed to load lessons from Supabase:", error);
