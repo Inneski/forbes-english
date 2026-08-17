@@ -118,7 +118,17 @@ def describe(src, row):
     description should be, so that is the first choice. Legacy pages get
     their first real paragraph. Only when a page says nothing about
     itself do we fall back to a built sentence — a generic description on
-    every page is worth little more than none."""
+    every page is worth little more than none.
+
+    The block this script wrote last time is stripped before any of that
+    runs. It used to be left in place, so the third pattern below matched
+    seo.py's OWN previous output and handed it straight back: whatever
+    description a page was given on its first pass was frozen there for
+    good, and no amount of rewriting the page could improve it. The
+    grammar test carried "Forbes EnglishGrammar · Full Test 0 / 45 0 / 45
+    ENGLISH Cheat Sheet Test..." — scraped chrome and flag emoji — as its
+    Google snippet for exactly that reason."""
+    src = re.sub(re.escape(START) + '.*?' + re.escape(END), ' ', src, flags=re.S)
     for pat in (r'coverSub\s*:\s*[\'"](.*?)[\'"]\s*,',
                 r'class="cover-sub"[^>]*>(.*?)</p>',
                 r'<meta name="description" content="([^"]+)"'):
@@ -126,8 +136,23 @@ def describe(src, row):
         if m and len(clean(m.group(1))) > 30:
             return trim(clean(m.group(1)), 155)
 
+    # A legacy page's standfirst. Deliberately shorter than a paragraph, so it
+    # gets a lower floor than the 60 below -- without this, a page whose only
+    # self-description is a 54-character subtitle falls all the way through to
+    # the built sentence.
+    m = re.search(r'<p[^>]*class="(?:sub|subtitle|lede|standfirst)[^"]*"[^>]*>(.*?)</p>',
+                  src, re.S)
+    if m and len(clean(m.group(1))) > 24:
+        return trim(clean(m.group(1)), 155)
+
     body = re.sub(r'<(script|style)[^>]*>.*?</\1>', ' ', src, flags=re.S)
-    for m in re.finditer(r'<p[^>]*>(.*?)</p>', body, re.S):
+    # `<p[^>]*>` also matches <path>, <picture>, <pre> and <progress>. Every
+    # page whose logo is an inline SVG opens with a <path>, so the "first
+    # paragraph" ran from that path to the first real </p> further down and
+    # swallowed the whole header on the way. The grammar test's Google snippet
+    # was "Forbes EnglishGrammar · Full Test 0 / 45 0 / 45 ENGLISH ...
+    # 🇬🇧English 🇩🇪Deutsch 🇮🇹Italiano" for precisely this reason.
+    for m in re.finditer(r'<p(?:\s[^>]*)?>(.*?)</p>', body, re.S):
         t = clean(m.group(1))
         if len(t) > 60 and not t.lower().startswith(('cookie', 'loading')):
             return trim(t, 155)
