@@ -77,6 +77,31 @@ Deliver the files first, ask afterwards.
 
 The live site follows `origin/main` within a few minutes.
 
+### Before uploading `library.html`, always run
+
+```bash
+node lesson-template/check-library.js --vs-origin     # must PASS
+```
+
+**Verifying after the upload is not enough.** A byte-for-byte match against
+`origin/main` only proves your bytes landed — which is exactly what a clobber
+looks like too. The uploader replaces the file wholesale, so any entry added to
+`LESSON_IMAGES` since you last read the file is deleted by your upload, and
+nothing errors.
+
+This has now happened twice to the same entry. The second time, `f6be885`
+dropped the Stranger Things deck's thumbnail; its parent *did* contain the
+commit that added it, so this was not a stale base — it was an in-memory copy
+of `library.html` read before that commit and uploaded whole afterwards.
+`git fetch` does not help. **Re-read the file from `origin/main` and re-apply
+your change to it immediately before uploading.**
+
+The failure is invisible from the front. The lesson keeps working: its row,
+its page and its download are all fine. But `comingSoon()` is
+`!LESSON_IMAGES[l.file]`, so losing the line turns the card into a disabled
+"Coming soon" div and sorts it behind every other lesson. It reports as
+"I can't see it", not as an error.
+
 ## Standing constraints
 
 - **Learner-facing text must never mention a previous version of the lesson.**
