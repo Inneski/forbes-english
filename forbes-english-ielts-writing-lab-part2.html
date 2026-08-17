@@ -1084,7 +1084,13 @@ function renderReorder(a){
     if(st.checked){ cls += (st.slots[s]===s) ? ' correct' : ' incorrect'; }
     html += `<div class="${cls}">
       <span class="num">${s+1}</span>
-      <span>${filled?`<span class="tag">${data.sentences[s].tag}</span>${data.sentences[st.slots[s]].text}`:''}</span>
+      <!-- The tag names the role slot s WANTS, not the role of the sentence the
+           learner put there. Showing it while the exercise is still open both
+           handed over the answer key -- fill slot 1 with anything and it tells
+           you it wants a topic sentence -- and told the learner their
+           concluding sentence WAS a topic sentence. It is feedback, so it now
+           waits for the check. -->
+      <span>${filled?`${st.checked?`<span class="tag">${data.sentences[s].tag}</span>`:''}${data.sentences[st.slots[s]].text}`:''}</span>
     </div>`;
   }
   html += `</div>`;
