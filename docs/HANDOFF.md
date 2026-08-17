@@ -2286,3 +2286,41 @@ Two things found while doing it:
 Unrelated but measured while surveying: `library.html` references **180
 thumbnails averaging 620 KB, totalling roughly 110 MB**, the largest a
 9 MB PNG (`Architecture/architecture-1-hero.png`). Worth its own job.
+
+### The cover title was the actual complaint
+
+Everything above is true and was still not the thing Innes could see. The
+deck's *body* type was always Courier New; the **cover title was not**.
+`QUESTION WORDS` rendered in a heavy metric-compatible slab, and once you
+know to look, it is obvious next to page 2's `WHERE`.
+
+Why: on page 1 of his export those words are not text. `page.get_images()`
+returns thirty-odd small bitmaps — WPS rasterised them per glyph. The two
+cover title shapes are the only ones in the file carrying **both** an
+`outerShdw` on the run **and** a `<p:style>` block with `<a:fontRef
+idx="major"/>`. WPS rasterises text with effects on PDF export, and when it
+did, it drew them in the theme font rather than the run font. `Rectangle 3`
+(the faint WHERE/WHO/WHAT column) rasterised too, for the analogous reason:
+a `gradFill` at 12-24% alpha.
+
+`<p:style>` is now stripped from both title shapes, shadow kept. If a fresh
+export still comes back wrong, the shadow is the trigger and has to go.
+
+**How the published cover was repaired without a re-export.** Every word on
+that slide is a shape, so `ppt/media/image1.jpeg` is the artwork with no
+text on it at all. Scale it to 2005x1129 and paste at (-4,-5) — that is
+`Picture 4`'s xfrm — and you have a clean plate. Replace the title area
+with it wherever the plate is brighter than luma 195, which keeps
+Chewbacca's fur out of the patch, then draw the words back at the measured
+baselines (173 and 300) and ink-left edges (1430 and 1482).
+
+Draw them in **Courier New Bold extracted from Innes's own PDF**. The
+embedded subsets have no `cmap` and no `name`, so rebuild those: the glyph
+order is the standard Macintosh ordering, so `A`=36 and everything else
+falls out of that. `/tmp` is not durable — the recipe is in this commit.
+
+One glyph has to be made. `Q` appears nowhere else in the deck, so the
+subset carries no outline for it. The one on the cover now is a genuine
+Courier New Bold `O` with the tail from URW Nimbus Mono PS grafted on,
+scaled so the two bowls match. Dilate the `O` by 3px, not 9, when
+subtracting — at 9 the tail detaches from the ring.
