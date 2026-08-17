@@ -2243,3 +2243,46 @@ ticket; the segments need a halo or a lighter plate under them.
   `#1F6A70`; `tense-palette.css`, `mtb-perfect-vs-simple`, both Ecuador
   parts, impostor syndrome and `build_pp*.py` use `#0F6E56`. Both are
   published. Untouched pending his decision.
+
+### Follow-up: the cards are renders too
+
+Changing a page's palette leaves its library card on the old colours. The
+Sherpa cards are static renders of the same diagrams, so the library kept
+advertising the old pink for as long as it took Innes to notice. Four were
+re-rendered in `4135216` and `dca520c`.
+
+**Which cards are renders and which are artwork** — check before assuming:
+
+| card | source | recolour with the page? |
+|---|---|---|
+| `Sherpa Tensing/thumb-route-map.png` | inline SVG | yes |
+| `SherpaCamps/camp-one-ripple-rings.png` | inline SVG | yes |
+| `SherpaCamps/descent-one-…-passive.jpg` | inline SVG | yes |
+| `SherpaCamps/descent-two-…-passive.jpg` | inline SVG | yes |
+| `SherpaCamps/camp-two-frequency-mountain.png` | **artwork** | no |
+
+The test is one grep: if the page has `<img src="...">` pointing at the
+card, the card is the source and nothing to regenerate. If the hero is an
+inline `<svg>`, the card is a snapshot that has now gone stale. Camp two
+is the only one of these five that is artwork — its navy belongs to the
+illustration, not to the tense token.
+
+Re-render with Playwright at **exact pixel scale** (set
+`device_scale_factor` so the element's CSS width × dsf equals the target
+width) rather than rendering at 3× and downsampling. Same crispness,
+markedly fewer unique colours, smaller PNG.
+
+Two things found while doing it:
+
+- **Do not quantise these.** Palette-reducing the route map to 192 colours
+  saved 250 KB and turned the orange and yellow segments muddy and the
+  teal green — on a card whose entire job is colour coding. Full-colour
+  PNG at 390 KB is under this library's 620 KB mean thumbnail.
+- **The old route-map card was RGBA with the sky transparent**, so the
+  library's card background showed through where the mountain wasn't. The
+  new render is opaque. Not something anyone reported; visible only when
+  the two are put side by side.
+
+Unrelated but measured while surveying: `library.html` references **180
+thumbnails averaging 620 KB, totalling roughly 110 MB**, the largest a
+9 MB PNG (`Architecture/architecture-1-hero.png`). Worth its own job.
