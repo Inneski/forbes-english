@@ -120,10 +120,32 @@ def teach(eyebrow_key, eyebrow, title_key, title, cards, cols=None, folder='', b
 
 
 def mc(i, total, q, eyebrow_key, eyebrow, title_key, title, folder='', bg=None,
-       ctx=None):
-    opts = "\n          ".join(
-        '<button class="opt"%s>%s</button>' % (' data-correct' if n == q['correct'] else '', o)
-        for n, o in enumerate(q['options']))
+       ctx=None, explains=None):
+    """explains: optional list, one per option, of why THAT option is wrong.
+
+    Without it the slide carries a single explanation, so a learner who picks
+    a distractor is told why the key was right rather than why their answer
+    was not. Six builders have now worked around that by injecting
+    data-explain onto the buttons after calling this function.
+
+    Pass None for an option to leave it to the slide-level explanation.
+
+    Added in d11d5e1, removed by 807e19c on a stale base, restored here.
+    Purely additive: a caller that does not pass it gets byte-identical
+    output, and that is checked by rebuilding every deck.
+    """
+    if explains is not None and len(explains) != len(q['options']):
+        raise AssertionError(
+            'mc: %d explains for %d options — one per option, None to skip'
+            % (len(explains), len(q['options'])))
+
+    def _opt(n, o):
+        attrs = ' data-correct' if n == q['correct'] else ''
+        if explains is not None and explains[n]:
+            attrs += ' data-explain="%s"' % esc(explains[n])
+        return '<button class="opt"%s>%s</button>' % (attrs, o)
+
+    opts = "\n          ".join(_opt(n, o) for n, o in enumerate(q['options']))
     return '''
     <section class="slide" data-type="mc"%s>
       <div class="slide-head"><div>
@@ -377,6 +399,21 @@ def assemble(tpl_path, out_path, slides, palette, title, i18n_module, langs=('en
         ['  %s: %s' % (c, i18n_module.render(c)) for c in langs]
         + ['  %s: {}' % c for c in all_langs if c not in langs]) + '\n};'
     s = re.sub(r'const UI_I18N = \{.*?\n\};', block, s, count=1, flags=re.S)
+
+    # The theme follows the palette, because it is the palette. Two shipped
+    # decks once carried a light palette with no data-theme attribute, so the
+    # light primitives never applied and their insets and hairlines — white on
+    # cream — were invisible. It was a line each builder had to remember, and
+    # two forgot. Added in d11d5e1, removed by 807e19c on a stale base,
+    # restored here. A builder that still does the replace itself is harmless:
+    # the attribute is already there, so its own replace finds nothing.
+    m = re.search(r'--void\s*:\s*#([0-9a-fA-F]{6})', palette)
+    if m:
+        rgb = [int(m.group(1)[i:i + 2], 16) / 255.0 for i in (0, 2, 4)]
+        f = lambda c: c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4
+        if 0.2126 * f(rgb[0]) + 0.7152 * f(rgb[1]) + 0.0722 * f(rgb[2]) > 0.2:
+            s = s.replace('<html lang="en">', '<html lang="en" data-theme="light">', 1)
+
     open(out_path, 'w', encoding='utf-8').write(s)
     return s
 
