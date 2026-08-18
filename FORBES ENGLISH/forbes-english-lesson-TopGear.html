@@ -1286,7 +1286,7 @@ function renderReorder() {
   reorderAnswered = false;
 
   // Shuffle words
-  currentOrder = [...q.words].sort(() => Math.random() - 0.5);
+  currentOrder = [...q.words].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
 
   area.innerHTML = `
     <div class="activity-card">

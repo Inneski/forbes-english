@@ -620,7 +620,7 @@ function renderFIB() {
   fibChecked = false;
   const q = fibQuestions[fibIndex];
   document.getElementById('fib-counter').textContent = 'Question ' + (fibIndex+1) + ' of ' + fibQuestions.length;
-  const shuffled = [...q.wordBank].sort(() => Math.random() - 0.5);
+  const shuffled = [...q.wordBank].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
   const area = document.getElementById('fib-question-area');
   area.innerHTML = `<div class="q-card"><div class="q-stem" style="margin-bottom:1rem;">Choose the correct word for the blank:</div><div class="word-bank" id="fib-bank">${shuffled.map(w => `<div class="word-chip" id="chip-${w.replace(/\s/g,'_')}" onclick="selectFIBWord('${w}')">${w}</div>`).join('')}</div><div class="blank-sentence" id="fib-sentence"></div><div class="feedback-box" id="fib-feedback"></div></div>`;
   document.getElementById('fib-check-btn').style.display = '';
@@ -679,7 +679,7 @@ function nextFIB() {
 
 // MATCH
 function renderMatch() {
-  const shuffledMeanings = [...matchPairs].sort(() => Math.random() - 0.5);
+  const shuffledMeanings = [...matchPairs].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
   const area = document.getElementById('match-area');
   area.innerHTML = `<div class="match-grid"><div class="match-col"><div class="match-col-label">Term</div>${matchPairs.map((p,i) => `<div class="match-item phrase-item" id="phrase-${i}" onclick="selectPhrase(${i})">${p.phrase}</div>`).join('')}</div><div class="match-col"><div class="match-col-label">Meaning</div>${shuffledMeanings.map((p,i) => `<div class="match-item meaning-item" id="meaning-${i}" data-meaning="${p.meaning}" onclick="selectMeaning(${i})">${p.meaning}</div>`).join('')}</div></div>`;
   matchPhraseSelected = null; matchedCount = 0; matchCorrectCount = 0; matchLocked = false;

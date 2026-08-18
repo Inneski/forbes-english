@@ -640,7 +640,7 @@ const fillContainer = document.getElementById('fill-container');
 sentences.forEach((s, i) => {
   const div = document.createElement('div');
   div.className = 'fill-sentence';
-  const shuffled = [...s.options].sort(() => Math.random() - 0.5);
+  const shuffled = [...s.options].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
   let opts = `<option value="">— choose —</option>`;
   shuffled.forEach(o => { opts += `<option value="${o}">${o}</option>`; });
   div.innerHTML = `${s.pre} <select class="blank-select" id="sel${i}">${opts}</select> ${s.post}<div class="feedback-line" id="fb${i}"></div>`;

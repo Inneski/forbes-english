@@ -743,7 +743,7 @@ function showActivity(n) {
 // ACTIVITY 1: MATCHING
 // ============================================================
 let matchState = { selectedTerm: null, matched: 0, wrong: 0 };
-const matchShuffledDefs = [...matchData].sort(() => Math.random() - 0.5);
+const matchShuffledDefs = [...matchData].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
 
 function buildMatching() {
   const termsCol = document.getElementById('matchTerms');
@@ -837,7 +837,7 @@ function buildFillBlanks() {
   container.innerHTML = '';
 
   // Shuffle word bank display
-  const shuffled = [...allWordBankWords].sort(() => Math.random() - 0.5);
+  const shuffled = [...allWordBankWords].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
   const wb = document.getElementById('wordBankDisplay');
   wb.innerHTML = '';
   shuffled.forEach(w => {
@@ -962,7 +962,7 @@ function buildMCQ() {
     choices.className = 'choices';
 
     // Shuffle options while tracking correct
-    const shuffledOpts = [...q.options.map((o, i) => ({ ...o, origIndex: i }))].sort(() => Math.random() - 0.5);
+    const shuffledOpts = [...q.options.map((o, i) => ({ ...o, origIndex: i }))].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
 
     shuffledOpts.forEach((opt, si) => {
       const btn = document.createElement('button');

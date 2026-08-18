@@ -769,7 +769,7 @@ function renderFITB(){
 
 function renderFITBQ(){
   const act=activities[actIdx], q=act.questions[qIdx];
-  const bank=[...act.bank].sort(()=>Math.random()-0.5);
+  const bank=[...act.bank].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
   document.getElementById('mainCard').innerHTML=`
     <div class="q-label">Gap ${qIdx+1} of ${act.questions.length}</div>
     <div class="q-text" style="margin-bottom:10px">Fill in the missing word.</div>
@@ -837,7 +837,7 @@ function renderReorder(){
 function renderReorderQ(){
   const act=activities[actIdx], q=act.questions[qIdx];
   answered=false;
-  const shuffled=[...q.chunks].sort(()=>Math.random()-0.5);
+  const shuffled=[...q.chunks].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
   let placed=[], bank=[...shuffled];
 
   document.getElementById('mainCard').innerHTML=`

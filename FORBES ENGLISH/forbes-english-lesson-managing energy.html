@@ -1201,7 +1201,7 @@ let dragSetIdx = null;
 
 function renderOrdering() {
   const container = document.getElementById('ordering-container');
-  orderingState = orderingData.map(set => [...set.items].sort(()=>Math.random()-0.5));
+  orderingState = orderingData.map(set => [...set.items].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]));
 
   container.innerHTML = orderingData.map((set, si)=>`
     <div class="question-card" style="margin-bottom:20px;">

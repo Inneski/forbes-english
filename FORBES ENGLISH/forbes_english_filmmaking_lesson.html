@@ -890,7 +890,7 @@ function buildDrag() {
   const container = document.getElementById('drag-container');
 
   // Shuffle chips
-  const shuffled = [...dragData].sort(() => Math.random() - 0.5);
+  const shuffled = [...dragData].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
 
   let poolHTML = '<div class="drag-pool" id="drag-pool">';
   shuffled.forEach(d => {
@@ -1011,7 +1011,7 @@ let dragSentence = null;
 
 function buildOrder() {
   const container = document.getElementById('order-container');
-  const shuffled = [...orderSentences].sort(() => Math.random() - 0.5);
+  const shuffled = [...orderSentences].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
 
   const list = document.createElement('div');
   list.className = 'order-list';

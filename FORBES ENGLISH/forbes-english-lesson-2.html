@@ -937,7 +937,7 @@ function a1Next(){
 // ══════════════════════════════════════════
 function renderSort(){
   sortPlaced = {};
-  const shuffled = [...sortData.items].sort(()=>Math.random()-0.5);
+  const shuffled = [...sortData.items].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
 
   let pool = `<div class="sort-pool-wrap" id="sort-pool" ondragover="sortPoolOver(event)" ondrop="sortPoolDrop(event)">`;
   shuffled.forEach(item=>{
@@ -1075,7 +1075,7 @@ function renderPitch(idx){
   document.getElementById('a3-next').style.display='none';
   document.getElementById('a3-end').style.display='none';
 
-  const allOpts = [q.correct, ...q.distractors].sort(()=>Math.random()-0.5);
+  const allOpts = [q.correct, ...q.distractors].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
   ddDragSrc = null;
 
   let pool=`<div class="dd-pool" id="dd-pool">`;

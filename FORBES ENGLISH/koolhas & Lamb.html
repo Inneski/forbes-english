@@ -1124,7 +1124,7 @@ function nextQ(act) {
 function renderFITB() {
   const data = fitbData;
   let bankHTML = `<div class="word-bank"><div class="word-bank-label">Word Bank</div>`;
-  const shuffled = [...data.wordBank].sort(() => Math.random() - 0.5);
+  const shuffled = [...data.wordBank].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
   shuffled.forEach(w => {
     bankHTML += `<div class="word-chip" id="chip-${w}" onclick="selectWord('${w}')">${w}</div>`;
   });
@@ -1224,7 +1224,7 @@ function renderReorder(idx) {
   document.getElementById('a3-finish').style.display = 'none';
 
   // Shuffle segments
-  const shuffled = [...item.segments.map((s,i)=>({text:s, origIdx:i}))].sort(() => Math.random()-0.5);
+  const shuffled = [...item.segments.map((s,i)=>({text:s, origIdx:i}))].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
   reorderCurrentOrder = shuffled.map(s => s.origIdx);
 
   let html = `<div class="question-card">

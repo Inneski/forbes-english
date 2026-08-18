@@ -646,7 +646,7 @@ function buildFITB() {
   wrap.innerHTML = '';
 
   // Shuffle bank
-  const shuffled = [...FITB_BANK].sort(()=>Math.random()-.5);
+  const shuffled = [...FITB_BANK].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
   shuffled.forEach(w => bank.appendChild(makeBankChip(w, 'fitb')));
 
   // Sentences
@@ -787,7 +787,7 @@ function buildMatch() {
   wrap.innerHTML = '';
 
   // Shuffle defs for dropdown options
-  const shuffledDefs = [...MATCH_DEFS].sort(()=>Math.random()-.5);
+  const shuffledDefs = [...MATCH_DEFS].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
 
   const leftCol = document.createElement('div');
   leftCol.className = 'match-left';
@@ -849,7 +849,7 @@ function buildDND() {
   bank.innerHTML = '';
   wrap.innerHTML = '';
 
-  const shuffled = [...DND_BANK].sort(()=>Math.random()-.5);
+  const shuffled = [...DND_BANK].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
   shuffled.forEach(w => bank.appendChild(makeBankChip(w, 'dnd')));
 
   DND_ITEMS.forEach((item, i) => {
@@ -962,7 +962,7 @@ function buildReorder() {
     list.className = 'reord-list';
     list.id = `rl-${si}`;
 
-    const shuffled = [...set.sents].sort(()=>Math.random()-.5);
+    const shuffled = [...set.sents].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
     shuffled.forEach(s => {
       const item = document.createElement('div');
       item.className = 'reord-item';

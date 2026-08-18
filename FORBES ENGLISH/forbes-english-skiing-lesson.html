@@ -907,7 +907,7 @@ function renderFITBQuestion() {
   const card = document.getElementById('mainCard');
 
   // Shuffle bank each time
-  const bankWords = [...act.bank].sort(() => Math.random()-0.5);
+  const bankWords = [...act.bank].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
 
   card.innerHTML = `
     <div class="q-label">Gap ${qIdx+1} of ${act.questions.length}</div>
@@ -982,7 +982,7 @@ function renderMatching() {
   matchCompleted = 0;
   matchSelected = { side: null, idx: null };
   // Shuffle right side
-  const rightOrder = [...act.pairs.map((_,i)=>i)].sort(()=>Math.random()-0.5);
+  const rightOrder = [...act.pairs.map((_,i)=>i)].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
   matchPairs = act.pairs.map((p,i) => ({
     term: p.term, def: p.def,
     termIdx: i, defIdx: rightOrder.indexOf(i),
@@ -1083,7 +1083,7 @@ function renderReorderQuestion() {
   answered = false;
 
   // Shuffle chunks
-  const shuffled = [...q.chunks].sort(() => Math.random()-0.5);
+  const shuffled = [...q.chunks].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
   let placed = [];
   let bankChunks = [...shuffled];
 

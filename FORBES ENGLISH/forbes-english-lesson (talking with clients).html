@@ -906,7 +906,7 @@ function renderFIB() {
   document.getElementById('fib-counter').textContent = 'Question ' + (fibIndex+1) + ' of ' + fibQuestions.length;
 
   // shuffle word bank
-  const shuffled = [...q.wordBank].sort(() => Math.random() - 0.5);
+  const shuffled = [...q.wordBank].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
 
   const area = document.getElementById('fib-question-area');
   area.innerHTML = `
@@ -987,7 +987,7 @@ let matchCorrectCount = 0;
 let matchLocked = false;
 
 function renderMatch() {
-  const shuffledMeanings = [...matchPairs].sort(() => Math.random() - 0.5);
+  const shuffledMeanings = [...matchPairs].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
   const area = document.getElementById('match-area');
   area.innerHTML = `
     <div class="match-grid">
