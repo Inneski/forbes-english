@@ -68,6 +68,11 @@
   --r: 10px;
   --ok: #3fbf7f;
   --no: #e8555f;
+  /* One status colour cannot do both jobs: as a border or a 20% fill it must
+     be vivid enough to spot, as text dark enough to read. These are the text
+     halves; the light theme overrides them. */
+  --ok-text: var(--ok);
+  --no-text: var(--no);
   --bg-opacity: 0.72;     /* background pattern strength — see doc §6 */
 
   /* Theme primitives. Dark is the default; a light lesson sets
@@ -107,16 +112,30 @@ html[data-theme="light"] {
   --wash-mid:  color-mix(in srgb, var(--void) 8%, transparent);
   --wash-edge: color-mix(in srgb, var(--void) 26%, transparent);
   --bg-opacity: 0.62;
+  /* Status as TEXT on a light canvas. One status colour cannot do both jobs:
+     as a border or a 20% fill it must stay vivid enough to spot, as text it
+     must be dark enough to read. The vivid tokens are a mint and a coral
+     chosen for a dark canvas — measured on the cream palettes in this library
+     they land between 1.51:1 and 1.75:1, which is not low contrast, it is
+     invisible.
+
+     Mixed toward the lesson's own ink rather than set to a hex, so it follows
+     the palette instead of having to be re-derived when the palette changes.
+     45% is the ratio that clears WCAG AA 4.5:1 on every light palette
+     shipped here — worst case 4.51:1 green, 5.55:1 red — while keeping the
+     hue plainly green and plainly red. */
+  --ok-text: color-mix(in srgb, var(--ok) 45%, var(--text));
+  --no-text: color-mix(in srgb, var(--no) 45%, var(--text));
 }
 
 /* On a mid canvas a translucent card has little to contrast against, so
    edges need more of the hairline than they do on a dark canvas. */
-html[data-theme="light"] .card { border-color: color-mix(in srgb, var(--border) 90%, transparent); }
-html[data-theme="light"] .opt,
-html[data-theme="light"] .match-item { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
-html[data-theme="light"] .opt-key { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
-html[data-theme="light"] .card { background: color-mix(in srgb, var(--surface) 92%, transparent); }
-html[data-theme="light"] .opt { background: color-mix(in srgb, var(--surface) 95%, transparent); }
+html[data-theme="light"] :where(.card) { border-color: color-mix(in srgb, var(--border) 90%, transparent); }
+html[data-theme="light"] :where(.opt),
+html[data-theme="light"] :where(.match-item) { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
+html[data-theme="light"] :where(.opt-key) { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
+html[data-theme="light"] :where(.card) { background: color-mix(in srgb, var(--surface) 92%, transparent); }
+html[data-theme="light"] :where(.opt) { background: color-mix(in srgb, var(--surface) 95%, transparent); }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -310,16 +329,16 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
   padding: 3px 10px; min-width: 190px; border-radius: 4px 4px 0 0;
 }
 .gap:focus { outline: none; background: var(--inset2); }
-.gap.correct { border-bottom-color: var(--ok); color: var(--ok); }
-.gap.wrong   { border-bottom-color: var(--no); color: var(--no); }
+.gap.correct { border-bottom-color: var(--ok); color: var(--ok-text); }
+.gap.wrong   { border-bottom-color: var(--no); color: var(--no-text); }
 
 .feedback {
   margin-top: 18px; font-size: 17px; line-height: 1.55;
   min-height: 26px; opacity: 0; transition: opacity .2s;
 }
 .feedback.show { opacity: 1; }
-.feedback.ok { color: var(--ok); }
-.feedback.no { color: var(--no); }
+.feedback.ok { color: var(--ok-text); }
+.feedback.no { color: var(--no-text); }
 
 /* ── BUTTONS ── */
 .btn {

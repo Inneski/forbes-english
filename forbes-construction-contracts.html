@@ -67,6 +67,11 @@
   --r: 10px;
   --ok: #3fbf7f;
   --no: #e8555f;
+  /* One status colour cannot do both jobs: as a border or a 20% fill it must
+     be vivid enough to spot, as text dark enough to read. These are the text
+     halves; the light theme overrides them. */
+  --ok-text: var(--ok);
+  --no-text: var(--no);
   --bg-opacity: 0.72;     /* background pattern strength — see doc §6 */
 
   /* Theme primitives. Dark is the default; a light lesson sets
@@ -106,16 +111,30 @@ html[data-theme="light"] {
   --wash-mid:  color-mix(in srgb, var(--void) 8%, transparent);
   --wash-edge: color-mix(in srgb, var(--void) 26%, transparent);
   --bg-opacity: 0.62;
+  /* Status as TEXT on a light canvas. One status colour cannot do both jobs:
+     as a border or a 20% fill it must stay vivid enough to spot, as text it
+     must be dark enough to read. The vivid tokens are a mint and a coral
+     chosen for a dark canvas — measured on the cream palettes in this library
+     they land between 1.51:1 and 1.75:1, which is not low contrast, it is
+     invisible.
+
+     Mixed toward the lesson's own ink rather than set to a hex, so it follows
+     the palette instead of having to be re-derived when the palette changes.
+     45% is the ratio that clears WCAG AA 4.5:1 on every light palette
+     shipped here — worst case 4.51:1 green, 5.55:1 red — while keeping the
+     hue plainly green and plainly red. */
+  --ok-text: color-mix(in srgb, var(--ok) 45%, var(--text));
+  --no-text: color-mix(in srgb, var(--no) 45%, var(--text));
 }
 
 /* On a mid canvas a translucent card has little to contrast against, so
    edges need more of the hairline than they do on a dark canvas. */
-html[data-theme="light"] .card { border-color: color-mix(in srgb, var(--border) 90%, transparent); }
-html[data-theme="light"] .opt,
-html[data-theme="light"] .match-item { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
-html[data-theme="light"] .opt-key { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
-html[data-theme="light"] .card { background: color-mix(in srgb, var(--surface) 92%, transparent); }
-html[data-theme="light"] .opt { background: color-mix(in srgb, var(--surface) 95%, transparent); }
+html[data-theme="light"] :where(.card) { border-color: color-mix(in srgb, var(--border) 90%, transparent); }
+html[data-theme="light"] :where(.opt),
+html[data-theme="light"] :where(.match-item) { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
+html[data-theme="light"] :where(.opt-key) { border-color: color-mix(in srgb, var(--border) 95%, transparent); }
+html[data-theme="light"] :where(.card) { background: color-mix(in srgb, var(--surface) 92%, transparent); }
+html[data-theme="light"] :where(.opt) { background: color-mix(in srgb, var(--surface) 95%, transparent); }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -305,16 +324,16 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
   padding: 3px 10px; min-width: 190px; border-radius: 4px 4px 0 0;
 }
 .gap:focus { outline: none; background: var(--inset2); }
-.gap.correct { border-bottom-color: var(--ok); color: var(--ok); }
-.gap.wrong   { border-bottom-color: var(--no); color: var(--no); }
+.gap.correct { border-bottom-color: var(--ok); color: var(--ok-text); }
+.gap.wrong   { border-bottom-color: var(--no); color: var(--no-text); }
 
 .feedback {
   margin-top: 18px; font-size: 17px; line-height: 1.55;
   min-height: 26px; opacity: 0; transition: opacity .2s;
 }
 .feedback.show { opacity: 1; }
-.feedback.ok { color: var(--ok); }
-.feedback.no { color: var(--no); }
+.feedback.ok { color: var(--ok-text); }
+.feedback.no { color: var(--no-text); }
 
 /* ── BUTTONS ── */
 .btn {
@@ -604,10 +623,10 @@ html[data-theme="light"] .act-target-label {
       <div class="slide-body">
         <p class="q-stem">A contractor signs a <em>lump-sum contract</em> for a new office building. What does this mean for the client?</p>
         <div class="opts">
-          <button class="opt">The client pays all project costs plus an agreed management fee.</button>
-          <button class="opt">The client pays a single fixed price, regardless of the contractor's actual costs.</button>
+          <button class="opt">The client reimburses every project cost as it arises, plus an agreed management fee.</button>
+          <button class="opt" data-correct>The client pays a single fixed price, regardless of the contractor's actual costs.</button>
           <button class="opt">The client and contractor share all financial risks and savings equally.</button>
-          <button class="opt">The client pays the contractor only after the building is fully inspected.</button>
+          <button class="opt">The client pays the contractor nothing until the finished building has passed inspection.</button>
         </div>
         <p class="feedback" data-explain="A lump-sum contract fixes the total price upfront. The client knows their exact financial commitment, and any cost overruns are the contractor&#x27;s responsibility — not the client&#x27;s."></p>
       </div>
@@ -622,7 +641,7 @@ html[data-theme="light"] .act-target-label {
         <div class="opts">
           <button class="opt">A penalty clause designed to punish poor performance.</button>
           <button class="opt">A cost-plus fee added to reimburse contractor expenses.</button>
-          <button class="opt">A financial incentive to motivate early delivery.</button>
+          <button class="opt" data-correct>A financial incentive to motivate early delivery.</button>
           <button class="opt">A change order modifying the original scope of work.</button>
         </div>
         <p class="feedback" data-explain="A performance bonus is a positive incentive — it rewards contractors for exceeding targets. This is different from a penalty clause, which punishes underperformance."></p>
@@ -636,10 +655,10 @@ html[data-theme="light"] .act-target-label {
       <div class="slide-body">
         <p class="q-stem">In a <em>target cost contract</em>, the project comes in €2M under budget. How are the savings typically handled?</p>
         <div class="opts">
-          <button class="opt">The client retains all savings, as they were funding the project.</button>
+          <button class="opt">The client retains the whole of the underspend, on the grounds that it funded the project.</button>
           <button class="opt">The contractor keeps all savings as reward for efficiency.</button>
-          <button class="opt">The savings are shared between client and contractor according to an agreed formula.</button>
-          <button class="opt">Savings are reinvested into additional project features automatically.</button>
+          <button class="opt" data-correct>The savings are shared between client and contractor according to an agreed formula.</button>
+          <button class="opt">Any underspend is reinvested automatically in extra features chosen by the design team.</button>
         </div>
         <p class="feedback" data-explain="Target cost contracts use a &quot;pain/gain&quot; mechanism — savings and overruns are shared according to a pre-agreed ratio. This aligns the financial interests of both parties."></p>
       </div>
@@ -653,7 +672,7 @@ html[data-theme="light"] .act-target-label {
         <p class="q-stem">Which contract type carries the <em>greatest financial risk</em> for the client?</p>
         <div class="opts">
           <button class="opt">A lump-sum contract with detailed specifications.</button>
-          <button class="opt">A cost-plus contract with no upper cost limit.</button>
+          <button class="opt" data-correct>A cost-plus contract with no upper cost limit.</button>
           <button class="opt">A target cost contract with shared savings incentives.</button>
           <button class="opt">An incentive-based contract with performance milestones.</button>
         </div>
@@ -671,7 +690,7 @@ html[data-theme="light"] .act-target-label {
           <button class="opt">Value engineering proposal for scope optimisation.</button>
           <button class="opt">Procurement strategy revision to reflect new priorities.</button>
           <button class="opt">Performance milestone requiring an updated timeline.</button>
-          <button class="opt">Change order modifying the agreed scope of work.</button>
+          <button class="opt" data-correct>Change order modifying the agreed scope of work.</button>
         </div>
         <p class="feedback" data-explain="A change order (or variation order) is a formal document that modifies the original contract — adjusting scope, cost, and/or timeline. They are common in large construction projects."></p>
       </div>
@@ -684,10 +703,10 @@ html[data-theme="light"] .act-target-label {
       <div class="slide-body">
         <p class="q-stem"><em>Value engineering</em> in a construction context refers to:</p>
         <div class="opts">
-          <button class="opt">A method of calculating the contractor's profit margin on materials.</button>
-          <button class="opt">A systematic review that improves project value by optimising design or materials without reducing quality.</button>
-          <button class="opt">A penalty clause triggered when the contractor uses inferior materials.</button>
-          <button class="opt">A procurement process for selecting the most affordable contractor.</button>
+          <button class="opt">A method of calculating the contractor's profit margin on materials and installed plant.</button>
+          <button class="opt" data-correct>A systematic review that improves project value by optimising design or materials without reducing quality.</button>
+          <button class="opt">A penalty clause triggered whenever the contractor substitutes inferior materials for those specified.</button>
+          <button class="opt">A procurement process for selecting the most affordable contractor from a pre-qualified list.</button>
         </div>
         <p class="feedback" data-explain="Value engineering analyses a project to find ways to achieve the same function at lower cost or better performance at the same cost — without compromising the design intent."></p>
       </div>
@@ -700,7 +719,7 @@ html[data-theme="light"] .act-target-label {
       </div></div>
       <div class="slide-body">
         <div class="card"><p class="prose" data-i18n="a2Intro">Six phrases, each used once across the next three screens. Each one names a mechanism for moving risk from one party to another — pick the one the sentence is actually describing.</p>
-        <div class="bank"><span class="bank-chip">risk allocation</span><span class="bank-chip">cost-plus</span><span class="bank-chip">performance bonus</span><span class="bank-chip">value engineering</span><span class="bank-chip">penalty clauses</span><span class="bank-chip">procurement strategy</span></div></div>
+        <div class="bank"><span class="bank-chip">cost-plus</span><span class="bank-chip">penalty clauses</span><span class="bank-chip">performance bonus</span><span class="bank-chip">procurement strategy</span><span class="bank-chip">risk allocation</span><span class="bank-chip">value engineering</span></div></div>
       </div>
     </section>
 
