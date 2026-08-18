@@ -2416,3 +2416,94 @@ measurement script above is the way to find out which ones need it.
 identifier 'I'`) all fail RUNTIME, and did so before the sweep — checked
 against `git show HEAD:<file>`. They are archive duplicates, not linked
 lessons. Not fixed.
+
+## The green text, and the mark that was never there
+
+Innes: *"The green text is illegible."* Two separate faults under one symptom,
+and the second was worse than the one he could see.
+
+### 1. One status colour cannot do both jobs
+
+`--ok: #3fbf7f` and `--no: #e8555f` sit in the "Fixed tokens — identical in
+every lesson, do not edit" block, and they are used **both** as border/fill
+colours **and** as text colours (`.feedback.ok`, `.feedback.no`,
+`.gap.correct`, `.gap.wrong`). They are a mint and a coral chosen for a dark
+canvas. Measured against the nine light palettes in this library they land
+between **1.51:1 and 1.75:1** for the green and 2.30–2.66:1 for the red. That
+is not low contrast; it is invisible.
+
+The obvious fix — darken `--ok` — breaks the other job. Tried it: the correct
+option's 20% fill went from a clear green tint to a three-level nudge,
+measured `(224,212,189)` against a plain `(226,215,196)`.
+
+So the roles are split. `--ok`/`--no` stay vivid for borders and fills;
+`--ok-text`/`--no-text` are new and used for text. In the dark theme they are
+`var(--ok)`/`var(--no)`; the light theme overrides them with
+
+```css
+--ok-text: color-mix(in srgb, var(--ok) 45%, var(--text));
+--no-text: color-mix(in srgb, var(--no) 45%, var(--text));
+```
+
+Mixed toward the lesson's own ink rather than pinned to a hex, so it follows
+the palette instead of needing re-derivation whenever the palette changes.
+**45% is the ratio that clears AA 4.5:1 on every light palette shipped here** —
+worst case 4.51:1 green, 5.55:1 red — while keeping the hue plainly green and
+plainly red. Hand-derived hexes were tried first and thrown away: they were
+tighter to 4.5 but froze the palette.
+
+### 2. On every light lesson, the answer was never marked at all
+
+```css
+html[data-theme="light"] .opt { background: … }   /* 1 class, 1 attribute */
+.opt.correct                  { background: … }   /* 2 classes  → LOSES */
+```
+
+`.opt.correct` and `.opt.wrong` were being overridden by the theme's base
+rule. **Forty-four files.** Verified from the computed style, not by eye:
+after answering, the key's background came back
+`color(srgb 0.882 0.843 0.769 / 0.95)` — byte for byte the three distractors.
+`.match-item.done` and `.match-item.miss` lost the same way.
+
+Fixed by wrapping the theme base rules in `:where()`, which contributes no
+specificity, so any two-class state rule wins:
+`html[data-theme="light"] :where(.opt) { … }`. Prefer this to piling
+`html[data-theme="light"] .opt.correct` overrides on top — the intent is that
+state beats theme, and `:where()` says exactly that.
+
+The ACTIONS gate never caught it because a marked `.feedback.show` also
+satisfies the gate, and feedback text did appear — illegibly.
+
+### `forbes-construction-contracts.html` was completely unscoreable
+
+Found while gating the light lessons: **all six of its MC slides had no
+`data-correct` at all.** Clicking did nothing, no feedback, no score. The keys
+were recoverable without guesswork because every slide's own `data-explain`
+names the answer outright — B, C, C, B, D, B. Set from those.
+
+With keys in place the ANSWERS gate could finally see the slides, and three of
+the six keys were the longest option (up to 1.51x). Distractors lengthened, as
+the gate's advice says, rather than the key shortened. Its word bank also
+listed the gap answers in gap order; sorted.
+
+### Only nine lessons actually render light
+
+Worth knowing before sweeping anything theme-related: 44 files contain the
+`html[data-theme="light"]` block — every deck inlines the whole template — but
+only **nine** carry `data-theme="light"` on the `<html>` element and therefore
+render light. Test for the attribute on the tag, not for the CSS block:
+
+`english_class_picture_description`, `exam-prep-5hour-course-part2`,
+`exam-prep-5hour-courseEXP`, `forbes-construction-contracts`,
+`forbes-el-zar-c2`, `forbes-english-food-ordering-a1-part1`,
+`forbes-geoscience-phrases`, `forbes-nature-agency-part2`,
+`ukraine-reconstruction-lesson`.
+
+The `--ok-text` mix is harmless in the other 35 — the light block never
+applies — and the `:where()` change is theme-agnostic.
+
+### Still outstanding
+
+The `.feedback.show` plate is on the Ukraine lesson only. The other eight light
+lessons now have legible status text but it still sits directly on artwork, so
+the plate treatment described above should follow.
