@@ -117,11 +117,14 @@ html[data-theme="light"] {
 
      Mixed toward the lesson's own ink rather than set to a hex, so it follows
      the palette instead of having to be re-derived when the palette changes.
-     45% is the ratio that clears WCAG AA 4.5:1 on every light palette
-     shipped here — worst case 4.51:1 green, 5.55:1 red — while keeping the
-     hue plainly green and plainly red. */
-  --ok-text: color-mix(in srgb, var(--ok) 45%, var(--text));
-  --no-text: color-mix(in srgb, var(--no) 45%, var(--text));
+     45% cleared AA against --surface at full strength, but the plate the
+     feedback sits on is --surface at 94%, and the artwork showing through the
+     other 6% cost about a quarter of a point: measured 4.25:1 to 4.39:1 on
+     the graded feedback across the nine light lessons. 38% carries the
+     margin — worst case 4.9:1 — and is still plainly green and plainly
+     red. */
+  --ok-text: color-mix(in srgb, var(--ok) 38%, var(--text));
+  --no-text: color-mix(in srgb, var(--no) 38%, var(--text));
 }
 
 /* On a mid canvas a translucent card has little to contrast against, so
@@ -341,7 +344,12 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
   font-family: var(--font-ui); font-size: 15px; font-weight: 600;
   letter-spacing: .03em;
   padding: 12px 26px; border-radius: var(--r);
-  border: 1px solid var(--accent); background: transparent; color: var(--accent-bright);
+  /* NOT transparent. A transparent button puts its own label on whatever
+     artwork happens to be behind it: measured at 1.55:1 on this lesson
+     before this line, against 7.8:1 for the same ink on the surface. The
+     variants below still override it — .btn:hover and .btn-solid come
+     later and carry their own fill. */
+  border: 1px solid var(--accent); background: var(--surface); color: var(--accent-bright);
   cursor: pointer; transition: background .15s, color .15s;
 }
 .btn:hover { background: var(--accent); color: var(--void); }
@@ -614,21 +622,60 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
   .act-print { display: block !important; }
 }
 
-/* Text that sits on the canvas rather than inside a card needs its own halo
-   now that the artwork behind it is bright. A shadow costs nothing and lets
-   the picture stay up, which darkening the wash back down would not. */
-.slide-title, .eyebrow, .q-stem, .q-ctx, .order-hint, .cover-title, .cover-sub,
-.score-big, .slide-body > .prose, .act-target-label {
-  text-shadow: 0 1px 2px rgba(0,0,0,0.55), 0 0 12px rgba(0,0,0,0.38);
+/* Text that sits on the canvas rather than inside a card needs a GROUND, not
+   a halo. A halo is one value; a hero is many. The same white glow that lifts
+   a title clear of a cream sky does nothing for the half of it crossing a
+   black silhouette.
+
+   Measured before this rule existed, sampling the real pixels behind each
+   block with the glyphs made transparent: 52 of 60 on-canvas text blocks on
+   the Ukraine deck contained ground below WCAG AA 4.5:1, a third of the area
+   on a typical question stem, the cover subtitle bottoming out at 1.44:1.
+
+   So on-canvas text gets a plate of --surface, exactly what .card and .opt
+   already sit on. Both themes come free: --surface flips with data-theme.
+
+   .feedback is plated on .show rather than always, because it holds a
+   min-height while empty and would otherwise paint a blank bar under every
+   unanswered question. */
+.eyebrow, .slide-title, .q-stem, .q-ctx, .order-hint,
+.slide-body > .prose, .cover-title, .cover-sub, .act-target-label,
+.feedback.show, .score-big {
+  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  border-radius: 8px;
+  /* The plate is grown with a spread shadow rather than padding: padding
+     changes the content box, and on the cover that was enough to tip the
+     subtitle onto a second line. A spread costs no layout at all. */
+  box-shadow: 0 0 0 0.34em color-mix(in srgb, var(--surface) 94%, transparent);
+  text-shadow: none;
 }
-html[data-theme="light"] .slide-title, html[data-theme="light"] .eyebrow,
-html[data-theme="light"] .q-stem, html[data-theme="light"] .q-ctx,
-html[data-theme="light"] .order-hint, html[data-theme="light"] .cover-title,
-html[data-theme="light"] .cover-sub, html[data-theme="light"] .score-big,
-html[data-theme="light"] .slide-body > .prose,
-html[data-theme="light"] .act-target-label {
-  text-shadow: 0 1px 2px rgba(255,255,255,0.75), 0 0 12px rgba(255,255,255,0.55);
-}
+/* Short labels should not stretch a plate across the whole column. */
+.eyebrow, .slide-title, .order-hint { width: fit-content; }
+.act-target-label { display: inline-block; }
+/* The cover is centred, so its plates are too. */
+.cover-title, .cover-sub { width: fit-content; margin-inline: auto; max-width: 100%; }
+.cover-sub { padding-inline: 0.22em; }
+.score-big { width: fit-content; }
+
+/* A transparent background is a hole in the plate. .btn was
+   `background: transparent` and .bank-chip a 16% tint of --accent into
+   nothing, so on a light lesson their rust text — #701c00, which reads at
+   7.8:1 on the surface — sat straight on the artwork and measured 1.53:1 to
+   1.94:1. The Check button was the worst of it. Give them a real ground and
+   the same ink reads. Light theme only: on a dark canvas --accent-bright is
+   the bright end of the palette and the transparent fill is correct. */
+/* Do NOT reach for `html[data-theme="light"] .btn` here. It scores one
+   attribute plus one type and beats `.btn-solid`, which scores one class —
+   the cover's Begin button lost its red fill and its cream label went to
+   1.03:1. :where() does not rescue it either, because the attribute counts
+   in the same specificity column as the class. Fix the base rule instead. */
+html[data-theme="light"] .bank-chip { background: color-mix(in srgb, var(--accent) 16%, var(--surface)); }
+/* The solid button's label is --void, which is right on a dark canvas where
+   --void is the darkest token and --accent the bright one. Inverted, cream on
+   the accent red measures 4.45:1 — a hair under AA at 17px, which is not
+   large text. --surface as the label takes the same pair to 5.00:1. */
+html[data-theme="light"] .btn-solid { color: var(--surface); }
+html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 92%, transparent); }
 .q-ctx { font-size: 16px; line-height: 1.5; font-style: italic; color: var(--text-dim); border-left: 2px solid var(--accent-dim); padding-left: 14px; margin-bottom: 12px; max-width: 84ch; }
 .bank-chip { font-size: 13px; }
 [data-type="gap"] .act-target,
