@@ -713,10 +713,10 @@ html[data-theme="light"] .act-target-label {
       <div class="slide-body">
         <p class="q-stem">In the TED Talk, what does Matt Cutts suggest that people should do?</p>
         <div class="opts">
-          <button class="opt" data-correct>Try something new every day for thirty days</button>
           <button class="opt">Work considerably harder at their job every day</button>
           <button class="opt">Try something new every single hour of the day</button>
           <button class="opt">Watch a good deal less television every week</button>
+          <button class="opt" data-correct>Try something new every day for thirty days</button>
         </div>
         <p class="feedback" data-explain="Think of something you have always wanted to try, and do it for the next <strong>30 days</strong>. He argues that thirty days is long enough to build a habit and short enough to finish."></p>
       </div>
@@ -730,9 +730,9 @@ html[data-theme="light"] .act-target-label {
       <div class="slide-body">
         <p class="q-stem">According to the reading, what is the <em>1% rule</em>?</p>
         <div class="opts">
-          <button class="opt" data-correct>Getting 1% better each day, which adds up over a year</button>
           <button class="opt">Working about 1% harder than everyone else does</button>
           <button class="opt">Spending only 1% of your free time on social media</button>
+          <button class="opt" data-correct>Getting 1% better each day, which adds up over a year</button>
           <button class="opt">Saving roughly 1% of your salary every single month</button>
         </div>
         <p class="feedback" data-explain="One per cent a day compounds: after a year you are almost <strong>38 times</strong> better. The point is not the number &mdash; it is that small and daily beats large and occasional."></p>
@@ -747,10 +747,10 @@ html[data-theme="light"] .act-target-label {
       <div class="slide-body">
         <p class="q-stem">Your friend fails a driving test and says &ldquo;I am just not a driver.&rdquo; What would a growth mindset sound like?</p>
         <div class="opts">
-          <button class="opt" data-correct>&ldquo;I failed the hill start. I will practise that this week.&rdquo;</button>
           <button class="opt">&ldquo;I have never been very good at practical things at all.&rdquo;</button>
           <button class="opt">&ldquo;The examiner was extremely strict with me this morning.&rdquo;</button>
           <button class="opt">&ldquo;I should probably stop and try again in a few years.&rdquo;</button>
+          <button class="opt" data-correct>&ldquo;I failed the hill start. I will practise that this week.&rdquo;</button>
         </div>
         <p class="feedback" data-explain="A <strong>growth mindset</strong> treats the mistake as information, not as a verdict on the person. Notice that the right answer names the <em>specific</em> thing to work on &mdash; that is what makes it useful."></p>
       </div>
@@ -798,8 +798,8 @@ html[data-theme="light"] .act-target-label {
       <div class="slide-body">
         <p class="q-stem">What does <em>sustainable</em> mean when we talk about self-improvement?</p>
         <div class="opts">
-          <button class="opt" data-correct>Able to continue for a long time without stopping</button>
           <button class="opt">Very exciting and motivating right from the start</button>
+          <button class="opt" data-correct>Able to continue for a long time without stopping</button>
           <button class="opt">Possible to do perfectly and without any mistakes</button>
           <button class="opt">Extremely difficult and requiring maximum effort</button>
         </div>
@@ -1214,7 +1214,7 @@ function feedback(slide, ok, extra, ownExplain) {
 slides.filter(s => s.dataset.type === 'mc').forEach(slide => {
   const box = slide.querySelector('.opts');
   const opts = [...box.querySelectorAll('.opt')];
-  opts.sort(() => Math.random() - .5).forEach((o, i) => {
+  opts.map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]).forEach((o, i) => {
     o.prepend(Object.assign(document.createElement('span'), {
       className: 'opt-key', textContent: 'ABCD'[i]
     }));
@@ -1250,7 +1250,7 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
     return b;
   };
   pairs.forEach(p => terms.appendChild(mk(p.dataset.term, 'term', p.dataset.term)));
-  [...pairs].sort(() => Math.random() - .5)
+  [...pairs].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1])
     .forEach(p => defs.appendChild(mk(p.dataset.def, 'def', p.dataset.term)));
   grid.replaceChildren(terms, defs);
 
@@ -1294,7 +1294,7 @@ slides.filter(s => s.dataset.type === 'order').forEach(slide => {
   const target = document.createElement('div'); target.className = 'order-target';
   const pool   = document.createElement('div'); pool.className   = 'order-pool';
   answer.map((txt, i) => ({ txt, i }))
-        .sort(() => Math.random() - .5)
+        .map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1])
         .forEach(({ txt, i }) => {
           const b = document.createElement('button');
           b.className = 'chunk';

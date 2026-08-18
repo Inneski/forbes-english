@@ -972,7 +972,7 @@ function renderDND(){
   document.getElementById('dnd-next').classList.remove('show');
 
   // Shuffle pool display
-  const shuffled = [...q.pool].sort(()=>Math.random()-.5);
+  const shuffled = [...q.pool].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
 
   const container = document.getElementById('dnd-container');
   container.innerHTML = `

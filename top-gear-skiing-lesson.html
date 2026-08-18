@@ -1492,7 +1492,7 @@ const unscrambles = {
 
 function buildChips(n) {
   const data = unscrambles[n];
-  const shuffled = [...data.words].sort(() => Math.random() - 0.5);
+  const shuffled = [...data.words].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
   const container = document.getElementById('chips' + n);
   const builder = document.getElementById('builder' + n);
   container.innerHTML = '';

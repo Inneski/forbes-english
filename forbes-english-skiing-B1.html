@@ -923,7 +923,7 @@ function renderFITB(){
 function renderFITBQ(){
   const act=activities[actIdx], q=act.questions[qIdx];
   const t=UI_I18N[currentLang];
-  const bank=[...act.bank].sort(()=>Math.random()-0.5);
+  const bank=[...act.bank].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
   document.getElementById('mainCard').innerHTML=`
     <div class="q-label">${t.gapCounter(qIdx+1, act.questions.length)}</div>
     <div class="q-text" style="margin-bottom:10px">${t.fitbFillInstruction}</div>
@@ -993,7 +993,7 @@ function renderReorderQ(){
   const act=activities[actIdx], q=act.questions[qIdx];
   const t=UI_I18N[currentLang];
   answered=false;
-  const shuffled=[...q.chunks].sort(()=>Math.random()-0.5);
+  const shuffled=[...q.chunks].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
   let placed=[], bank=[...shuffled];
 
   document.getElementById('mainCard').innerHTML=`

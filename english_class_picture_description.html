@@ -734,8 +734,8 @@ html[data-theme="light"] .act-target-label {
       <div class="slide-body">
         <p class="q-stem">The&nbsp;<em>_______</em>&nbsp;path wound through loose boulders and broken rock.</p>
         <div class="opts two-up">
-          <button class="opt" data-correct>rugged</button>
           <button class="opt">outdoors</button>
+          <button class="opt" data-correct>rugged</button>
           <button class="opt">scenic</button>
           <button class="opt">ruined</button>
         </div>
@@ -768,8 +768,8 @@ html[data-theme="light"] .act-target-label {
       <div class="slide-body">
         <p class="q-stem">In the&nbsp;<em>_______</em>, fragments of old pottery lay scattered across the mud.</p>
         <div class="opts two-up">
-          <button class="opt" data-correct>foreground</button>
           <button class="opt">outdoors</button>
+          <button class="opt" data-correct>foreground</button>
           <button class="opt">aperture</button>
           <button class="opt">background</button>
         </div>
@@ -785,9 +785,9 @@ html[data-theme="light"] .act-target-label {
       <div class="slide-body">
         <p class="q-stem">The building&rsquo;s ornate&nbsp;<em>_______</em>&nbsp;&mdash; twelve tall windows in three rows &mdash; was remarkable.</p>
         <div class="opts two-up">
-          <button class="opt" data-correct>fenestration</button>
           <button class="opt">ornamentation</button>
           <button class="opt">foreboding</button>
+          <button class="opt" data-correct>fenestration</button>
           <button class="opt">aperture</button>
         </div>
         <p class="feedback" data-explain="Fenestration is the arrangement of the windows, not a single window and not the decoration on them. It is the precise word an architect would use here."></p>
@@ -802,10 +802,10 @@ html[data-theme="light"] .act-target-label {
       <div class="slide-body">
         <p class="q-stem">They preferred to dine&nbsp;<em>_______</em>, surrounded by the pine-scented air of the mountains.</p>
         <div class="opts two-up">
-          <button class="opt" data-correct>outdoors</button>
           <button class="opt">scenic</button>
           <button class="opt">foreground</button>
           <button class="opt">picturesque</button>
+          <button class="opt" data-correct>outdoors</button>
         </div>
         <p class="feedback" data-explain="Outdoors works as an adverb here — dine where? Scenic and picturesque are adjectives and would need a noun to describe."></p>
       </div>
@@ -819,10 +819,10 @@ html[data-theme="light"] .act-target-label {
       <div class="slide-body">
         <p class="q-stem">A heavy sense of&nbsp;<em>_______</em>&nbsp;settled over them as the sky darkened above the valley.</p>
         <div class="opts two-up">
-          <button class="opt" data-correct>foreboding</button>
           <button class="opt">fenestration</button>
           <button class="opt">aperture</button>
           <button class="opt">confidence</button>
+          <button class="opt" data-correct>foreboding</button>
         </div>
         <p class="feedback" data-explain="Foreboding is the feeling that something bad is coming. It is the word to reach for when a picture&rsquo;s mood is uneasy rather than calm."></p>
       </div>
@@ -836,9 +836,9 @@ html[data-theme="light"] .act-target-label {
       <div class="slide-body">
         <p class="q-stem">The village was so&nbsp;<em>_______</em>&nbsp;that visitors often stopped to photograph its cobbled lanes.</p>
         <div class="opts two-up">
-          <button class="opt" data-correct>picturesque</button>
           <button class="opt">foreboding</button>
           <button class="opt">rugged</button>
+          <button class="opt" data-correct>picturesque</button>
           <button class="opt">ruined</button>
         </div>
         <p class="feedback" data-explain="Picturesque means charmingly attractive, the sort of thing people photograph. Scenic would also work; rugged and ruined would not."></p>
@@ -1634,7 +1634,7 @@ function feedback(slide, ok, extra, ownExplain) {
 slides.filter(s => s.dataset.type === 'mc').forEach(slide => {
   const box = slide.querySelector('.opts');
   const opts = [...box.querySelectorAll('.opt')];
-  opts.sort(() => Math.random() - .5).forEach((o, i) => {
+  opts.map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]).forEach((o, i) => {
     o.prepend(Object.assign(document.createElement('span'), {
       className: 'opt-key', textContent: 'ABCD'[i]
     }));
@@ -1670,7 +1670,7 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
     return b;
   };
   pairs.forEach(p => terms.appendChild(mk(p.dataset.term, 'term', p.dataset.term)));
-  [...pairs].sort(() => Math.random() - .5)
+  [...pairs].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1])
     .forEach(p => defs.appendChild(mk(p.dataset.def, 'def', p.dataset.term)));
   grid.replaceChildren(terms, defs);
 
@@ -1714,7 +1714,7 @@ slides.filter(s => s.dataset.type === 'order').forEach(slide => {
   const target = document.createElement('div'); target.className = 'order-target';
   const pool   = document.createElement('div'); pool.className   = 'order-pool';
   answer.map((txt, i) => ({ txt, i }))
-        .sort(() => Math.random() - .5)
+        .map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1])
         .forEach(({ txt, i }) => {
           const b = document.createElement('button');
           b.className = 'chunk';

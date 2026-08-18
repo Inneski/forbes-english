@@ -672,9 +672,9 @@ html[data-theme="light"] .act-target-label {
         <p class="q-ctx">Christopher cannot tell lies. A sentence in his own voice, describing how he always behaves:</p>
         <p class="q-stem">&ldquo;I know that ______ someone asks me to describe something, I will always tell the exact truth.&rdquo;</p>
         <div class="opts">
-          <button class="opt" data-correct>if</button>
           <button class="opt">unless</button>
           <button class="opt">although</button>
+          <button class="opt" data-correct>if</button>
           <button class="opt">provided that</button>
         </div>
         <p class="feedback" data-explain="<strong>If</strong> is the zero-conditional marker: this is a universal truth about how Christopher works. <em>Unless</em> would reverse the meaning, and <em>although</em> is concessive, not conditional."></p>
@@ -690,10 +690,10 @@ html[data-theme="light"] .act-target-label {
         <p class="q-ctx">Christopher imagines what would have happened if he had never found Wellington.</p>
         <p class="q-stem">Which sentence uses the third conditional correctly?</p>
         <div class="opts">
-          <button class="opt" data-correct>If Christopher hadn&rsquo;t found Wellington, he wouldn&rsquo;t have started investigating.</button>
           <button class="opt">If Christopher hasn&rsquo;t found Wellington, he wouldn&rsquo;t have started investigating.</button>
           <button class="opt">If Christopher didn&rsquo;t find Wellington, he wouldn&rsquo;t have started investigating.</button>
           <button class="opt">If Christopher wouldn&rsquo;t find Wellington, he hadn&rsquo;t started investigating then.</button>
+          <button class="opt" data-correct>If Christopher hadn&rsquo;t found Wellington, he wouldn&rsquo;t have started investigating.</button>
         </div>
         <p class="feedback" data-explain="Third conditional: <em>if</em> + past perfect &rarr; <strong>would have</strong> + past participle. It describes a past that did not happen and a consequence that therefore did not either."></p>
       </div>
@@ -708,10 +708,10 @@ html[data-theme="light"] .act-target-label {
         <p class="q-ctx">Siobhan is advising Christopher about social situations. She chooses a formal structure.</p>
         <p class="q-stem">&ldquo;______ you to trust people more, conversations would feel less overwhelming.&rdquo;</p>
         <div class="opts">
-          <button class="opt" data-correct>Were</button>
           <button class="opt">Had</button>
           <button class="opt">Should</button>
           <button class="opt">If you would</button>
+          <button class="opt" data-correct>Were</button>
         </div>
         <p class="feedback" data-explain="<strong>Were you to&hellip;</strong> is the formal inversion of <em>If you were to&hellip;</em> &mdash; a second conditional. <em>Had</em> inverts the third conditional; <em>Should</em> inverts the first."></p>
       </div>
@@ -726,9 +726,9 @@ html[data-theme="light"] .act-target-label {
         <p class="q-ctx">Christopher likes statements that are true every time, without exception.</p>
         <p class="q-stem">Which sentence expresses a general scientific truth &mdash; a zero conditional?</p>
         <div class="opts">
-          <button class="opt" data-correct>If you heat water to 100&deg;C, it boils.</button>
           <button class="opt">If you would heat water to 100&deg;C, it boils.</button>
           <button class="opt">If you had heated water to 100&deg;C, it boils.</button>
+          <button class="opt" data-correct>If you heat water to 100&deg;C, it boils.</button>
           <button class="opt">If you heated the water to 100&deg;C, it would boil.</button>
         </div>
         <p class="feedback" data-explain="Zero conditional: present simple in <em>both</em> clauses. Not a prediction and not a hypothesis &mdash; a fact that holds every time."></p>
@@ -744,8 +744,8 @@ html[data-theme="light"] .act-target-label {
         <p class="q-ctx">Christopher reflects: &ldquo;I wish Father hadn&rsquo;t lied to me.&rdquo;</p>
         <p class="q-stem">Which conditional thought follows from that?</p>
         <div class="opts">
-          <button class="opt" data-correct>If he hadn&rsquo;t lied, I would have trusted him more.</button>
           <button class="opt">If he hadn&rsquo;t lied, I would be trusting him now.</button>
+          <button class="opt" data-correct>If he hadn&rsquo;t lied, I would have trusted him more.</button>
           <button class="opt">If he didn&rsquo;t lie, I would trust him rather more now.</button>
           <button class="opt">If he wouldn&rsquo;t lie, I will have trusted him by now.</button>
         </div>
@@ -762,8 +762,8 @@ html[data-theme="light"] .act-target-label {
         <p class="q-ctx">Christopher&rsquo;s routines are not optional for him.</p>
         <p class="q-stem">Which sentence uses <em>unless</em> correctly in a first conditional?</p>
         <div class="opts">
-          <button class="opt" data-correct>Unless he follows his routine, he will become distressed.</button>
           <button class="opt">Unless he will follow his routine, he becomes distressed.</button>
+          <button class="opt" data-correct>Unless he follows his routine, he will become distressed.</button>
           <button class="opt">Unless he would follow his routine, he will become distressed.</button>
           <button class="opt">Unless he had followed his routine, he will become distressed.</button>
         </div>
@@ -1158,7 +1158,7 @@ function feedback(slide, ok, extra, ownExplain) {
 slides.filter(s => s.dataset.type === 'mc').forEach(slide => {
   const box = slide.querySelector('.opts');
   const opts = [...box.querySelectorAll('.opt')];
-  opts.sort(() => Math.random() - .5).forEach((o, i) => {
+  opts.map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]).forEach((o, i) => {
     o.prepend(Object.assign(document.createElement('span'), {
       className: 'opt-key', textContent: 'ABCD'[i]
     }));
@@ -1194,7 +1194,7 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
     return b;
   };
   pairs.forEach(p => terms.appendChild(mk(p.dataset.term, 'term', p.dataset.term)));
-  [...pairs].sort(() => Math.random() - .5)
+  [...pairs].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1])
     .forEach(p => defs.appendChild(mk(p.dataset.def, 'def', p.dataset.term)));
   grid.replaceChildren(terms, defs);
 
@@ -1238,7 +1238,7 @@ slides.filter(s => s.dataset.type === 'order').forEach(slide => {
   const target = document.createElement('div'); target.className = 'order-target';
   const pool   = document.createElement('div'); pool.className   = 'order-pool';
   answer.map((txt, i) => ({ txt, i }))
-        .sort(() => Math.random() - .5)
+        .map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1])
         .forEach(({ txt, i }) => {
           const b = document.createElement('button');
           b.className = 'chunk';

@@ -374,7 +374,7 @@ function renderQuestion(){
     inner+=`<div class="q-text">${q.prompt}</div>`;
     inner+=`<div class="q-german">${q.german}</div>`;
     // shuffled word bank
-    const shuffled=[...q.words].sort(()=>Math.random()-.5);
+    const shuffled=[...q.words].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
     inner+=`<div class="word-bank" id="wordBank">`;
     shuffled.forEach((w,i)=>{
       inner+=`<div class="word-chip" id="chip_${i}" onclick="addWord('${escQ(w)}',${i})">${w}</div>`;

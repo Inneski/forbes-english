@@ -702,9 +702,9 @@ input.gap.correct, input.gap.wrong { background: rgba(245,242,242,0.92); }
       <div class="slide-body">
         <p class="q-stem">Lena has a red bag. Sophie has a blue bag. The blue bag is ______.</p>
         <div class="opts">
-          <button class="opt" data-correct>hers</button>
           <button class="opt">mine</button>
           <button class="opt">ours</button>
+          <button class="opt" data-correct>hers</button>
           <button class="opt">yours</button>
         </div>
         <p class="feedback" data-explain="The bag belongs to <strong>Sophie</strong>, so it is <strong>hers</strong>. We do not say <em>her</em> here, because there is no word after it."></p>
@@ -719,9 +719,9 @@ input.gap.correct, input.gap.wrong { background: rgba(245,242,242,0.92); }
       <div class="slide-body">
         <p class="q-stem">Sophie asks Lena: &ldquo;Is this pencil ______?&rdquo;</p>
         <div class="opts">
-          <button class="opt" data-correct>yours</button>
           <button class="opt">mine</button>
           <button class="opt">hers</button>
+          <button class="opt" data-correct>yours</button>
           <button class="opt">theirs</button>
         </div>
         <p class="feedback" data-explain="Sophie is talking <strong>to Lena</strong>, so she says <strong>yours</strong>. If Lena answers, she says <em>Yes, it is mine.</em>"></p>
@@ -736,8 +736,8 @@ input.gap.correct, input.gap.wrong { background: rgba(245,242,242,0.92); }
       <div class="slide-body">
         <p class="q-stem">Lena and Sophie say: &ldquo;This locker is ______. We use it together.&rdquo;</p>
         <div class="opts">
-          <button class="opt" data-correct>ours</button>
           <button class="opt">yours</button>
+          <button class="opt" data-correct>ours</button>
           <button class="opt">theirs</button>
           <button class="opt">hers</button>
         </div>
@@ -787,10 +787,10 @@ input.gap.correct, input.gap.wrong { background: rgba(245,242,242,0.92); }
       <div class="slide-body">
         <p class="q-stem">Tom has a black jacket. The black jacket is ______.</p>
         <div class="opts">
-          <button class="opt" data-correct>his</button>
           <button class="opt">hers</button>
           <button class="opt">ours</button>
           <button class="opt">mine</button>
+          <button class="opt" data-correct>his</button>
         </div>
         <p class="feedback" data-explain="<strong>His</strong> is the easy one: it does not change. <em>his</em> jacket &rarr; the jacket is <strong>his</strong>."></p>
       </div>
@@ -1220,7 +1220,7 @@ function feedback(slide, ok, extra, ownExplain) {
 slides.filter(s => s.dataset.type === 'mc').forEach(slide => {
   const box = slide.querySelector('.opts');
   const opts = [...box.querySelectorAll('.opt')];
-  opts.sort(() => Math.random() - .5).forEach((o, i) => {
+  opts.map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]).forEach((o, i) => {
     o.prepend(Object.assign(document.createElement('span'), {
       className: 'opt-key', textContent: 'ABCD'[i]
     }));
@@ -1256,7 +1256,7 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
     return b;
   };
   pairs.forEach(p => terms.appendChild(mk(p.dataset.term, 'term', p.dataset.term)));
-  [...pairs].sort(() => Math.random() - .5)
+  [...pairs].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1])
     .forEach(p => defs.appendChild(mk(p.dataset.def, 'def', p.dataset.term)));
   grid.replaceChildren(terms, defs);
 
@@ -1300,7 +1300,7 @@ slides.filter(s => s.dataset.type === 'order').forEach(slide => {
   const target = document.createElement('div'); target.className = 'order-target';
   const pool   = document.createElement('div'); pool.className   = 'order-pool';
   answer.map((txt, i) => ({ txt, i }))
-        .sort(() => Math.random() - .5)
+        .map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1])
         .forEach(({ txt, i }) => {
           const b = document.createElement('button');
           b.className = 'chunk';

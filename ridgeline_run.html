@@ -261,8 +261,8 @@ let vocabMatches = {};
 
 function renderVocab(s){
   const area = document.getElementById("vocabArea");
-  const words = [...s.items].sort(()=>Math.random()-0.5);
-  const defs = [...s.items].sort(()=>Math.random()-0.5);
+  const words = [...s.items].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
+  const defs = [...s.items].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
   vocabMatches = {};
   area.innerHTML = `
     <div style="display:flex;gap:18px;flex-wrap:wrap;margin-top:10px;">

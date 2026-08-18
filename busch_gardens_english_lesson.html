@@ -724,7 +724,7 @@ function buildGrammarExamples() {
 function buildEx1() {
   const c = document.getElementById('ex1Container');
   EX1_DATA.forEach((q, i) => {
-    const shuffled = [...q.options].sort(() => Math.random()-0.5);
+    const shuffled = [...q.options].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
     c.innerHTML += `
       <div class="question-card" id="ex1q${i}">
         <div class="q-prompt">${q.prompt}</div>
@@ -821,7 +821,7 @@ let ex3Answers = {};
 function buildEx3() {
   const c = document.getElementById('ex3Container');
   EX3_DATA.forEach((q, i) => {
-    const shuffled = [...q.options].sort(() => Math.random()-0.5);
+    const shuffled = [...q.options].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
     c.innerHTML += `
       <div class="question-card" id="ex3q${i}">
         <div class="q-prompt">Statement: <em>${q.statement}</em></div>

@@ -556,8 +556,8 @@ html[data-theme="light"] .act-target-label {
         <p class="q-stem">During a site visit, a roofer tells you: "This underlay is fine, but it does not breathe — moisture gets trapped under the tiles." Which term best describes the property he is missing?</p>
         <p class="q-sub">Choose the term that captures the roofer concern.</p>
         <div class="opts opts-dense">
-          <button class="opt" data-correct>Vapour permeability</button>
           <button class="opt">Tensile strength</button>
+          <button class="opt" data-correct>Vapour permeability</button>
           <button class="opt">UV stabilisation</button>
           <button class="opt">Fire retardancy</button>
         </div>
@@ -590,8 +590,8 @@ html[data-theme="light"] .act-target-label {
         <p class="q-stem">A carpenter says your vapour barrier is "a nightmare to tape in cold weather." In a follow-up call, how would you best probe for the root cause?</p>
         <p class="q-sub">Choose the most effective open question.</p>
         <div class="opts opts-dense">
-          <button class="opt" data-correct>Talk me through exactly what happens when you try to tape it below five degrees?</button>
           <button class="opt">Is it really the tape that is bad here, yes or no, nothing more to discuss?</button>
+          <button class="opt" data-correct>Talk me through exactly what happens when you try to tape it below five degrees?</button>
           <button class="opt">Why do carpenters always complain about absolutely everything on every job?</button>
           <button class="opt">Have you simply tried doing the whole installation indoors instead of outside?</button>
         </div>
@@ -607,9 +607,9 @@ html[data-theme="light"] .act-target-label {
         <p class="q-stem">In a product roadmap meeting, you want to propose delaying a new cladding membrane launch by one quarter. Which phrasing is most appropriately diplomatic and persuasive for a stakeholder audience?</p>
         <p class="q-sub">Select the strongest professional phrasing.</p>
         <div class="opts opts-dense">
-          <button class="opt" data-correct>I would propose pushing the launch back a quarter to close the gaps the trials found.</button>
           <button class="opt">We simply have to delay it, there is no other option here, end of discussion really.</button>
           <button class="opt">It is not really my decision at all, so whatever the rest of you want is fine by me.</button>
+          <button class="opt" data-correct>I would propose pushing the launch back a quarter to close the gaps the trials found.</button>
           <button class="opt">Honestly the entire original timeline was unrealistic right from the very first day.</button>
         </div>
         <p class="feedback" data-explain="This phrasing is assertive but collaborative: it states a clear recommendation, gives a concrete reason, and invites discussion. The alternatives are either too blunt and closed, too passive for someone in a product strategy role, or unnecessarily critical of past decisions."></p>
@@ -637,9 +637,9 @@ html[data-theme="light"] .act-target-label {
         <p class="q-stem">A retailer mentions a competitor breather membrane "undercuts us by 15% but the roofers do not trust it." How should you most usefully frame this in your strategy notes?</p>
         <p class="q-sub">Choose the analysis that captures the real strategic insight.</p>
         <div class="opts opts-dense">
-          <button class="opt" data-correct>Price is not the only lever, trust in the product may matter more than the discount.</button>
           <button class="opt">We should immediately cut our own price by at least 15% to stay properly competitive.</button>
           <button class="opt">This retailer clearly does not know what they are even talking about in this case.</button>
+          <button class="opt" data-correct>Price is not the only lever, trust in the product may matter more than the discount.</button>
           <button class="opt">Trust never really matters in this market at all, only the price point ever does.</button>
         </div>
         <p class="feedback" data-explain="Good strategic thinking looks past the surface comment to the underlying insight: price alone is not winning the competitor business, because trust is the real barrier. Reacting only on price would ignore where the actual leverage lies."></p>
@@ -654,10 +654,10 @@ html[data-theme="light"] .act-target-label {
         <p class="q-stem">You are negotiating with a raw material supplier about a lead time increase. Which response best balances firmness with maintaining the relationship?</p>
         <p class="q-sub">Pick the most professionally balanced response.</p>
         <div class="opts opts-dense">
-          <button class="opt" data-correct>I understand the constraints, but eight weeks would affect our retailers, can we phase it?</button>
           <button class="opt">This is completely unacceptable to us and we will be looking elsewhere immediately for this.</button>
           <button class="opt">That is fine, take however long you possibly need, it really does not matter much to us.</button>
           <button class="opt">Why exactly is your factory always so disorganised whenever we need something from you?</button>
+          <button class="opt" data-correct>I understand the constraints, but eight weeks would affect our retailers, can we phase it?</button>
         </div>
         <p class="feedback" data-explain="This response acknowledges the supplier position, clearly states the business impact, and proposes a constructive alternative -- a hallmark of effective B2B negotiation. The other options are either confrontational, overly passive, or personally critical."></p>
       </div>
@@ -1102,7 +1102,7 @@ function feedback(slide, ok, extra, ownExplain) {
 slides.filter(s => s.dataset.type === 'mc').forEach(slide => {
   const box = slide.querySelector('.opts');
   const opts = [...box.querySelectorAll('.opt')];
-  opts.sort(() => Math.random() - .5).forEach((o, i) => {
+  opts.map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]).forEach((o, i) => {
     o.prepend(Object.assign(document.createElement('span'), {
       className: 'opt-key', textContent: 'ABCD'[i]
     }));
@@ -1138,7 +1138,7 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
     return b;
   };
   pairs.forEach(p => terms.appendChild(mk(p.dataset.term, 'term', p.dataset.term)));
-  [...pairs].sort(() => Math.random() - .5)
+  [...pairs].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1])
     .forEach(p => defs.appendChild(mk(p.dataset.def, 'def', p.dataset.term)));
   grid.replaceChildren(terms, defs);
 

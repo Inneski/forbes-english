@@ -874,7 +874,7 @@ function buildFITB() {
     card.id = 'fitb-card-'+qi;
 
     // Shuffle word bank
-    const shuffled = [...q.bank].sort(() => Math.random()-.5);
+    const shuffled = [...q.bank].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
 
     card.innerHTML = `
       <div class="q-label">Question ${qi+1} of ${fitbQuestions.length}</div>
@@ -940,7 +940,7 @@ function buildDND() {
   const wrap = document.getElementById('dnd-container-wrap');
   
   // Shuffled definitions (keep original indices for answer checking)
-  const defIndices = dndData.map((_,i) => i).sort(() => Math.random()-.5);
+  const defIndices = dndData.map((_,i) => i).map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
   
   let poolHTML = '<div class="draggable-pool" id="dnd-pool" ondragover="event.preventDefault()" ondrop="dropToPool(event)">';
   defIndices.forEach(di => {
@@ -1079,7 +1079,7 @@ function buildOrder() {
     card.id = 'order-card-'+qi;
 
     // Shuffle display order
-    const shuffled = q.segments.map((s,i) => ({seg: s, origIdx: i})).sort(() => Math.random()-.5);
+    const shuffled = q.segments.map((s,i) => ({seg: s, origIdx: i})).map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
 
     card.innerHTML = `
       <div class="q-label">Question ${qi+1} of ${orderQuestions.length}</div>

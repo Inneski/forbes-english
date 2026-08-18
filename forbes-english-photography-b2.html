@@ -870,8 +870,8 @@ html[data-theme="light"] .act-target-label {
       <div class="slide-body">
         <p class="q-stem">Which term describes the zone in a scene that appears <strong>acceptably sharp</strong>?</p>
         <div class="opts">
-          <button class="opt" data-correct>Depth of field &mdash; the sharp zone extending in front of and behind the focus point</button>
           <button class="opt">Focal length &mdash; the optical property of a lens that determines its angle of view</button>
+          <button class="opt" data-correct>Depth of field &mdash; the sharp zone extending in front of and behind the focus point</button>
           <button class="opt">Dynamic range &mdash; the ratio between the lightest and darkest values a sensor records</button>
           <button class="opt">Exposure range &mdash; the span of tones a camera can capture in one single frame</button>
         </div>
@@ -887,8 +887,8 @@ html[data-theme="light"] .act-target-label {
       <div class="slide-body">
         <p class="q-stem">You want to freeze a sprinting athlete with no motion blur, and you have light to spare. Which setting matters most?</p>
         <div class="opts">
-          <button class="opt" data-correct>Shutter speed &mdash; a fast setting limits how long the sensor is exposed</button>
           <button class="opt">White balance &mdash; matching colour temperature to the ambient light source</button>
+          <button class="opt" data-correct>Shutter speed &mdash; a fast setting limits how long the sensor is exposed</button>
           <button class="opt">Aperture priority &mdash; a wide aperture throws the background out of focus</button>
           <button class="opt">Focal length &mdash; a longer lens fills the frame with the moving subject</button>
         </div>
@@ -904,10 +904,10 @@ html[data-theme="light"] .act-target-label {
       <div class="slide-body">
         <p class="q-stem">In the exposure triangle, raising ISO from 400 to 3200 costs you what?</p>
         <div class="opts">
-          <button class="opt" data-correct>More digital noise, as the sensor amplifies its signal</button>
           <button class="opt">A shallower depth of field, so the background goes soft</button>
           <button class="opt">More camera shake, as the sensor picks up vibration</button>
           <button class="opt">A narrower aperture, so less light enters the lens</button>
+          <button class="opt" data-correct>More digital noise, as the sensor amplifies its signal</button>
         </div>
         <p class="feedback" data-explain="ISO amplifies the signal the sensor already has, and amplifies its errors with it. That is <strong>noise</strong> &mdash; grain in the shadows and mottled colour. Nothing optical changes."></p>
       </div>
@@ -921,9 +921,9 @@ html[data-theme="light"] .act-target-label {
       <div class="slide-body">
         <p class="q-stem"><em>Bokeh</em>, from the Japanese for blur, refers specifically to what?</p>
         <div class="opts">
-          <button class="opt" data-correct>The quality of the out-of-focus areas, especially the highlights</button>
           <button class="opt">A post-processing technique for selectively sharpening parts of an image</button>
           <button class="opt">A filter placed in front of the lens to soften contrast across the frame</button>
+          <button class="opt" data-correct>The quality of the out-of-focus areas, especially the highlights</button>
           <button class="opt">Deliberate camera movement during a long exposure, for artistic effect</button>
         </div>
         <p class="feedback" data-explain="Not <em>how much</em> blur &mdash; <em>what kind</em>. <strong>Bokeh</strong> is the character of the blur, and photographers pay a great deal for lenses that render it smoothly."></p>
@@ -938,10 +938,10 @@ html[data-theme="light"] .act-target-label {
       <div class="slide-body">
         <p class="q-stem">What does the <em>sunny 16 rule</em> help you estimate, with no light meter?</p>
         <div class="opts">
-          <button class="opt" data-correct>Exposure in sunlight: f/16, with shutter speed matched to ISO</button>
           <button class="opt">The ideal focal length in millimetres for shooting in bright daylight</button>
           <button class="opt">The white balance in Kelvin needed for neutral colour outdoors</button>
           <button class="opt">The number of frames you can shoot before the memory card fills</button>
+          <button class="opt" data-correct>Exposure in sunlight: f/16, with shutter speed matched to ISO</button>
         </div>
         <p class="feedback" data-explain="In direct sun, set f/16 and the shutter to roughly 1 over the ISO &mdash; ISO 100 gives 1/100s. It is a starting point, not a law, but it is close enough to work."></p>
       </div>
@@ -1399,7 +1399,7 @@ function feedback(slide, ok, extra, ownExplain) {
 slides.filter(s => s.dataset.type === 'mc').forEach(slide => {
   const box = slide.querySelector('.opts');
   const opts = [...box.querySelectorAll('.opt')];
-  opts.sort(() => Math.random() - .5).forEach((o, i) => {
+  opts.map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]).forEach((o, i) => {
     o.prepend(Object.assign(document.createElement('span'), {
       className: 'opt-key', textContent: 'ABCD'[i]
     }));
@@ -1435,7 +1435,7 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
     return b;
   };
   pairs.forEach(p => terms.appendChild(mk(p.dataset.term, 'term', p.dataset.term)));
-  [...pairs].sort(() => Math.random() - .5)
+  [...pairs].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1])
     .forEach(p => defs.appendChild(mk(p.dataset.def, 'def', p.dataset.term)));
   grid.replaceChildren(terms, defs);
 
@@ -1479,7 +1479,7 @@ slides.filter(s => s.dataset.type === 'order').forEach(slide => {
   const target = document.createElement('div'); target.className = 'order-target';
   const pool   = document.createElement('div'); pool.className   = 'order-pool';
   answer.map((txt, i) => ({ txt, i }))
-        .sort(() => Math.random() - .5)
+        .map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1])
         .forEach(({ txt, i }) => {
           const b = document.createElement('button');
           b.className = 'chunk';
@@ -1556,7 +1556,7 @@ slides.filter(s => s.dataset.type === 'sort').forEach(slide => {
     return bin;
   });
 
-  items.sort(() => Math.random() - .5).forEach(it => {
+  items.map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]).forEach(it => {
     it.setAttribute('draggable', 'true');
     it.tabIndex = 0;
     pool.appendChild(it);

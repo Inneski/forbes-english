@@ -1052,7 +1052,7 @@ function renderDND(area, q, sec) {
   area.appendChild(card);
 
   // Shuffle bank
-  const bank = [...q.bank].sort(() => Math.random() - 0.5);
+  const bank = [...q.bank].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
   const bankEl = card.querySelector('#dnd-bank');
   bank.forEach(word => {
     const chip = document.createElement('div');
@@ -1137,7 +1137,7 @@ function renderMatch(area, q, sec) {
 
   // Shuffle definitions for dropdown
   const defs = q.pairs.map(p => p.def);
-  const shuffledDefs = [...defs].sort(() => Math.random() - 0.5);
+  const shuffledDefs = [...defs].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
 
   card.innerHTML = `
     <div class="q-num">Match all five terms</div>
@@ -1203,7 +1203,7 @@ function renderReorder(area, q, sec) {
 
   const container = card.querySelector('#reorder-sentences');
   q.segments.forEach((segs, si) => {
-    const shuffled = [...segs].sort(() => Math.random() - 0.5);
+    const shuffled = [...segs].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
     const sentDiv = document.createElement('div');
     sentDiv.style.marginBottom = '18px';
     sentDiv.innerHTML = `<div class="dnd-label" style="margin-bottom:6px">Sentence ${si+1}</div>`;

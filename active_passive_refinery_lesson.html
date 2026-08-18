@@ -857,9 +857,9 @@ html[data-theme="light"] .act-target-label {
       <div class="slide-body">
         <p class="q-stem">Which sentence is in the <strong>active</strong> voice?</p>
         <div class="opts">
-          <button class="opt" data-correct>The crew suppressed the fire.</button>
           <button class="opt">The fire was suppressed by the crew.</button>
           <button class="opt">The fire has been extinguished.</button>
+          <button class="opt" data-correct>The crew suppressed the fire.</button>
           <button class="opt">The fire was reported at 09:14.</button>
         </div>
         <p class="feedback" data-explain="In <em>The crew suppressed the fire</em> the subject does the action. That is the whole definition. The other three all have something happening <em>to</em> the fire."></p>
@@ -874,10 +874,10 @@ html[data-theme="light"] .act-target-label {
       <div class="slide-body">
         <p class="q-stem">Put into the passive: &ldquo;We test the gas detectors every quarter.&rdquo;</p>
         <div class="opts">
-          <button class="opt" data-correct>The gas detectors are tested every quarter.</button>
           <button class="opt">The gas detectors were tested every quarter.</button>
           <button class="opt">The gas detectors are being tested every quarter.</button>
           <button class="opt">The gas detectors have been tested every quarter.</button>
+          <button class="opt" data-correct>The gas detectors are tested every quarter.</button>
         </div>
         <p class="feedback" data-explain="The active is present simple, so the passive is present simple: <strong>are tested</strong>. <em>Were tested</em> moves it to the past; <em>are being tested</em> says it is happening at this moment."></p>
       </div>
@@ -891,10 +891,10 @@ html[data-theme="light"] .act-target-label {
       <div class="slide-body">
         <p class="q-stem">You are writing a formal incident report. Which phrasing belongs there?</p>
         <div class="opts">
-          <button class="opt" data-correct>The evacuation was ordered at 09:45. All isolation valves were closed.</button>
           <button class="opt">I ordered the evacuation at 09:45, and then we closed all of the valves.</button>
           <button class="opt">Evacuation ordered at 09:45. Valves closed. All personnel accounted for.</button>
           <button class="opt">We had the evacuation ordered at 09:45 and got all the valves closed up.</button>
+          <button class="opt" data-correct>The evacuation was ordered at 09:45. All isolation valves were closed.</button>
         </div>
         <p class="feedback" data-explain="A report wants an objective tone, and the passive supplies it: <em>the evacuation was ordered</em>, not <em>I ordered the evacuation</em>. The third option is note form &mdash; fine in a log, not in a report."></p>
       </div>
@@ -908,8 +908,8 @@ html[data-theme="light"] .act-target-label {
       <div class="slide-body">
         <p class="q-stem">A fireground radio command should normally be&hellip;</p>
         <div class="opts">
-          <button class="opt" data-correct>&ldquo;Bravo team, withdraw to the muster point.&rdquo;</button>
           <button class="opt">&ldquo;Bravo team is to be withdrawn to the muster point.&rdquo;</button>
+          <button class="opt" data-correct>&ldquo;Bravo team, withdraw to the muster point.&rdquo;</button>
           <button class="opt">&ldquo;The muster point is where Bravo team should now be.&rdquo;</button>
           <button class="opt">&ldquo;Withdrawal to the muster point is required of Bravo.&rdquo;</button>
         </div>
@@ -925,8 +925,8 @@ html[data-theme="light"] .act-target-label {
       <div class="slide-body">
         <p class="q-stem">True or false: a passive sentence must always say who performed the action.</p>
         <div class="opts">
-          <button class="opt" data-correct>False &mdash; the agent is optional, so <em>The deluge system was activated</em> is complete.</button>
           <button class="opt">True &mdash; without a <em>by + agent</em> phrase a passive sentence is grammatically incomplete.</button>
+          <button class="opt" data-correct>False &mdash; the agent is optional, so <em>The deluge system was activated</em> is complete.</button>
           <button class="opt">True in formal reports only &mdash; everywhere else the agent may safely be left out.</button>
           <button class="opt">False &mdash; but only when the doer is genuinely unknown to the writer.</button>
         </div>
@@ -1352,7 +1352,7 @@ function feedback(slide, ok, extra, ownExplain) {
 slides.filter(s => s.dataset.type === 'mc').forEach(slide => {
   const box = slide.querySelector('.opts');
   const opts = [...box.querySelectorAll('.opt')];
-  opts.sort(() => Math.random() - .5).forEach((o, i) => {
+  opts.map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]).forEach((o, i) => {
     o.prepend(Object.assign(document.createElement('span'), {
       className: 'opt-key', textContent: 'ABCD'[i]
     }));
@@ -1388,7 +1388,7 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
     return b;
   };
   pairs.forEach(p => terms.appendChild(mk(p.dataset.term, 'term', p.dataset.term)));
-  [...pairs].sort(() => Math.random() - .5)
+  [...pairs].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1])
     .forEach(p => defs.appendChild(mk(p.dataset.def, 'def', p.dataset.term)));
   grid.replaceChildren(terms, defs);
 
@@ -1432,7 +1432,7 @@ slides.filter(s => s.dataset.type === 'order').forEach(slide => {
   const target = document.createElement('div'); target.className = 'order-target';
   const pool   = document.createElement('div'); pool.className   = 'order-pool';
   answer.map((txt, i) => ({ txt, i }))
-        .sort(() => Math.random() - .5)
+        .map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1])
         .forEach(({ txt, i }) => {
           const b = document.createElement('button');
           b.className = 'chunk';
@@ -1509,7 +1509,7 @@ slides.filter(s => s.dataset.type === 'sort').forEach(slide => {
     return bin;
   });
 
-  items.sort(() => Math.random() - .5).forEach(it => {
+  items.map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]).forEach(it => {
     it.setAttribute('draggable', 'true');
     it.tabIndex = 0;
     pool.appendChild(it);

@@ -666,10 +666,10 @@ html[data-theme="light"] .act-target-label {
       <div class="slide-body">
         <p class="q-stem">If the board <strong>approves</strong> the merger, the company ______ its market share significantly.</p>
         <div class="opts">
-          <button class="opt" data-correct data-explain="First conditional: <em>if</em> + present simple &rarr; <em>will</em> + bare infinitive. The approval is realistic, so <strong>will expand</strong>.">will expand noticeably</button>
           <button class="opt" data-explain="Close, but the simple form is what a real future outcome takes. <em>Will be expanding</em> describes a process, not a result.">would be expanding steadily</button>
           <button class="opt" data-explain="Past simple. It cannot follow a present-tense <em>if</em>-clause about a future possibility.">expanded very significantly</button>
           <button class="opt" data-explain="Second-conditional structure, which would mean the approval is unlikely &mdash; contradicting <em>approves</em>.">would expand substantially</button>
+          <button class="opt" data-correct data-explain="First conditional: <em>if</em> + present simple &rarr; <em>will</em> + bare infinitive. The approval is realistic, so <strong>will expand</strong>.">will expand noticeably</button>
         </div>
         <p class="feedback" data-explain="First conditional: <em>if</em> + present simple &rarr; <em>will</em> + bare infinitive."></p>
       </div>
@@ -683,10 +683,10 @@ html[data-theme="light"] .act-target-label {
       <div class="slide-body">
         <p class="q-stem">______ we had invested in that technology earlier, we would not be facing these supply chain issues today.</p>
         <div class="opts">
-          <button class="opt" data-correct data-explain="<strong>Had we invested</strong> is an inverted third conditional &mdash; the formal written form of <em>If we had invested&hellip;</em>.">Had</button>
           <button class="opt" data-explain="<em>Although</em> introduces a contrast, not a condition. It cannot carry regret about a past action.">Although</button>
           <button class="opt" data-explain="Grammatical as <em>If we had invested</em>, but the sentence is already inverted: the verb comes first, so <em>If</em> would make it ungrammatical.">If</button>
           <button class="opt" data-explain="<em>Provided</em> needs <em>that</em> and a present tense. It cannot take the past perfect.">Provided</button>
+          <button class="opt" data-correct data-explain="<strong>Had we invested</strong> is an inverted third conditional &mdash; the formal written form of <em>If we had invested&hellip;</em>.">Had</button>
         </div>
         <p class="feedback" data-explain="The inversion <em>Had we invested&hellip;</em> is the formal third conditional, common in business writing."></p>
       </div>
@@ -700,9 +700,9 @@ html[data-theme="light"] .act-target-label {
       <div class="slide-body">
         <p class="q-stem">If our competitors <strong>were to reduce</strong> their prices by 20%, our sales division ______ a significant response strategy.</p>
         <div class="opts">
-          <button class="opt" data-correct data-explain="<em>Were to</em> + infinitive is a formal hypothetical, and it pairs with <strong>would</strong> + bare infinitive.">would certainly need</button>
           <button class="opt" data-explain="<em>Will need</em> implies the event is likely, but <em>were to reduce</em> marks it as hypothetical.">will certainly need</button>
           <button class="opt" data-explain="Past simple does not pair with <em>were to reduce</em>.">certainly needed then</button>
+          <button class="opt" data-correct data-explain="<em>Were to</em> + infinitive is a formal hypothetical, and it pairs with <strong>would</strong> + bare infinitive.">would certainly need</button>
           <button class="opt" data-explain="<em>Would have needed</em> is a third-conditional result &mdash; past unreal. The <em>if</em>-clause here is present hypothetical.">would have needed</button>
         </div>
         <p class="feedback" data-explain="<em>Were to</em> + infinitive is the formal second conditional. The result clause takes <em>would</em>."></p>
@@ -717,9 +717,9 @@ html[data-theme="light"] .act-target-label {
       <div class="slide-body">
         <p class="q-stem">Unless the client ______ by Friday, we will cancel the contract automatically.</p>
         <div class="opts">
-          <button class="opt" data-correct data-explain="<em>Unless</em> = <em>if&hellip;not</em>, and it introduces a real future condition: present simple in the clause, <em>will</em> in the result.">confirms payment promptly</button>
           <button class="opt" data-explain="<em>Would confirm</em> is second-conditional mood. The result clause here is <em>will cancel</em>, so the condition is real.">would confirm the payment</button>
           <button class="opt" data-explain="Past perfect belongs to the third conditional. This sentence looks forward.">had confirmed the payment</button>
+          <button class="opt" data-correct data-explain="<em>Unless</em> = <em>if&hellip;not</em>, and it introduces a real future condition: present simple in the clause, <em>will</em> in the result.">confirms payment promptly</button>
           <button class="opt" data-explain="This is the classic error: never <em>will</em> after <em>if</em> or <em>unless</em>.">will confirm their payment</button>
         </div>
         <p class="feedback" data-explain="<em>Unless</em> takes the present simple, exactly like <em>if</em>. Never <em>will</em> in the condition clause."></p>
@@ -1169,7 +1169,7 @@ function feedback(slide, ok, extra, ownExplain) {
 slides.filter(s => s.dataset.type === 'mc').forEach(slide => {
   const box = slide.querySelector('.opts');
   const opts = [...box.querySelectorAll('.opt')];
-  opts.sort(() => Math.random() - .5).forEach((o, i) => {
+  opts.map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]).forEach((o, i) => {
     o.prepend(Object.assign(document.createElement('span'), {
       className: 'opt-key', textContent: 'ABCD'[i]
     }));
@@ -1205,7 +1205,7 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
     return b;
   };
   pairs.forEach(p => terms.appendChild(mk(p.dataset.term, 'term', p.dataset.term)));
-  [...pairs].sort(() => Math.random() - .5)
+  [...pairs].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1])
     .forEach(p => defs.appendChild(mk(p.dataset.def, 'def', p.dataset.term)));
   grid.replaceChildren(terms, defs);
 
@@ -1249,7 +1249,7 @@ slides.filter(s => s.dataset.type === 'order').forEach(slide => {
   const target = document.createElement('div'); target.className = 'order-target';
   const pool   = document.createElement('div'); pool.className   = 'order-pool';
   answer.map((txt, i) => ({ txt, i }))
-        .sort(() => Math.random() - .5)
+        .map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1])
         .forEach(({ txt, i }) => {
           const b = document.createElement('button');
           b.className = 'chunk';

@@ -634,7 +634,7 @@ function renderFITB() {
   const total = act.questions.length;
   updateProgress(S.qIdx + 1, total);
 
-  const shuffled = [...q.bank].sort(() => Math.random() - 0.5);
+  const shuffled = [...q.bank].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
 
   const sentHTML = q.parts[0]
     + `<input class="blank-input" id="blankInput" placeholder="__________" readonly>`
@@ -714,7 +714,7 @@ function renderMatching() {
   updateProgress(1, 2);
 
   // Shuffle right column
-  S.rightShuffle = mq.pairs.map((_,i)=>i).sort(()=>Math.random()-0.5);
+  S.rightShuffle = mq.pairs.map((_,i)=>i).map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
   S.matchLeft = null; S.matchRight = null;
   S.leftMatches = {}; S.matchSubmitted = false; S.answered = false;
 
@@ -836,7 +836,7 @@ function renderReorder() {
   const rq = act.reorderQ;
   updateProgress(2, 2);
 
-  S.reorderItems = [...rq.items].sort(()=>Math.random()-0.5);
+  S.reorderItems = [...rq.items].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
   S.reorderSubmitted = false; S.answered = false;
 
   el('activityArea').innerHTML = `

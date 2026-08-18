@@ -1038,7 +1038,7 @@ function renderSortQuestion(container, qi) {
   container.appendChild(card);
 
   // Shuffle segments for the pool
-  const shuffled = [...q.correct].sort(() => Math.random() - .5);
+  const shuffled = [...q.correct].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
   const pool = card.querySelector(`#${poolId}`);
   shuffled.forEach(segIdx => {
     const el = createDragItem(segIdx, q.segments[segIdx], qi, pool);

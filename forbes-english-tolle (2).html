@@ -876,7 +876,7 @@ function updateScoreDisplay() {
     // Shuffled options as clickable chips
     const chipWrap = document.createElement('div');
     chipWrap.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;';
-    const shuffled = [...q.options].sort(() => Math.random() - 0.5);
+    const shuffled = [...q.options].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
     shuffled.forEach(opt => {
       const chip = document.createElement('button');
       chip.style.cssText = `
@@ -967,7 +967,7 @@ function updateScoreDisplay() {
 
   // shuffle right column
   const leftItems  = matchingPairs.map(p => p.left);
-  const rightItems = [...matchingPairs.map(p => p.right)].sort(() => Math.random() - 0.5);
+  const rightItems = [...matchingPairs.map(p => p.right)].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]);
 
   let selectedLeft  = null;
   let selectedRight = null;

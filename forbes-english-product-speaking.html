@@ -692,8 +692,8 @@ html[data-theme="light"] .act-target-label {
         <p class="q-ctx">&ldquo;I make market research with customers in England.&rdquo;</p>
         <p class="q-stem">How would you say that professionally?</p>
         <div class="opts">
-          <button class="opt" data-correct>I conduct market research with customers in England.</button>
           <button class="opt">I do some market research with the customers in England.</button>
+          <button class="opt" data-correct>I conduct market research with customers in England.</button>
           <button class="opt">I am making market research with our customers in England.</button>
           <button class="opt">I perform market researches with customers over in England.</button>
         </div>
@@ -710,8 +710,8 @@ html[data-theme="light"] .act-target-label {
         <p class="q-ctx">&ldquo;I am responsible to develop the product strategy.&rdquo;</p>
         <p class="q-stem">How would you say that professionally?</p>
         <div class="opts">
-          <button class="opt" data-correct>I am responsible for developing the product strategy.</button>
           <button class="opt">I am responsible on developing our new product strategy.</button>
+          <button class="opt" data-correct>I am responsible for developing the product strategy.</button>
           <button class="opt">I have the responsibility to develop the product strategy.</button>
           <button class="opt">I am the responsible for developing the product strategy.</button>
         </div>
@@ -764,9 +764,9 @@ html[data-theme="light"] .act-target-label {
         <p class="q-ctx">&ldquo;We discuss with suppliers about the new product.&rdquo;</p>
         <p class="q-stem">How would you say that professionally?</p>
         <div class="opts">
-          <button class="opt" data-correct>We discuss the new product with our suppliers.</button>
           <button class="opt">We are discussing about the new product together with suppliers.</button>
           <button class="opt">We have a discussion about the new product with our suppliers.</button>
+          <button class="opt" data-correct>We discuss the new product with our suppliers.</button>
           <button class="opt">We talk with our suppliers about the new product regularly.</button>
         </div>
         <p class="feedback" data-explain="<strong>Discuss</strong> takes a direct object and no preposition: you discuss <em>something</em>, never <em>about something</em>. (Option C is correct English &mdash; a <em>discussion</em> does take <em>about</em> &mdash; but it is heavier.)"></p>
@@ -1290,7 +1290,7 @@ function feedback(slide, ok, extra, ownExplain) {
 slides.filter(s => s.dataset.type === 'mc').forEach(slide => {
   const box = slide.querySelector('.opts');
   const opts = [...box.querySelectorAll('.opt')];
-  opts.sort(() => Math.random() - .5).forEach((o, i) => {
+  opts.map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]).forEach((o, i) => {
     o.prepend(Object.assign(document.createElement('span'), {
       className: 'opt-key', textContent: 'ABCD'[i]
     }));
@@ -1326,7 +1326,7 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
     return b;
   };
   pairs.forEach(p => terms.appendChild(mk(p.dataset.term, 'term', p.dataset.term)));
-  [...pairs].sort(() => Math.random() - .5)
+  [...pairs].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1])
     .forEach(p => defs.appendChild(mk(p.dataset.def, 'def', p.dataset.term)));
   grid.replaceChildren(terms, defs);
 
@@ -1370,7 +1370,7 @@ slides.filter(s => s.dataset.type === 'order').forEach(slide => {
   const target = document.createElement('div'); target.className = 'order-target';
   const pool   = document.createElement('div'); pool.className   = 'order-pool';
   answer.map((txt, i) => ({ txt, i }))
-        .sort(() => Math.random() - .5)
+        .map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1])
         .forEach(({ txt, i }) => {
           const b = document.createElement('button');
           b.className = 'chunk';
