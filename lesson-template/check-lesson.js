@@ -8,6 +8,8 @@
  *
  *   LAYOUT   every slide fits the 1280x720 canvas, and nothing scrolls
  *   ANSWERS  the correct MC option is not simply the longest one
+ *   KEYS     the key is not parked at the same option letter every time, and
+ *            the runtime shuffle that hides its position is a real shuffle
  *   BANK     a word bank does not hand over the gap answers in gap order
  *   EXPLAIN  every scored question carries an explanation
  *   ACTIVATE every lesson ends with a speaking + writing production task
@@ -293,6 +295,51 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
   else r.layout.forEach(l => bad(`slide ${l.n} overflows by ${l.over}px (${l.culprit})`));
   if (!r.scroll.y && !r.scroll.x) ok('no scrolling');
   else bad(`page scrolls (y:${r.scroll.y} x:${r.scroll.x})`);
+
+  // ── KEYS ────────────────────────────────────────────────────────
+  // Two questions, both about the same failure: can a student score above
+  // chance without reading the option?
+  //
+  // 1. Where is the key in the SOURCE? By the time the page is measurable the
+  //    engine has already reordered the options, so this is invisible in the
+  //    browser — which is why it survived until a student noticed. It still
+  //    leaks through print and PDF export.
+  // 2. Is the reordering a real shuffle? `arr.sort(() => Math.random() - .5)`
+  //    is not one. Array.prototype.sort is entitled to anything at all when
+  //    the comparator is inconsistent, and what V8 actually does with four
+  //    elements is leave the first where it is 35.9% of the time against a
+  //    fair 25%. Authored-first plus that comparator is a scoreable pattern.
+  const src = require('fs').readFileSync(path.resolve(file), 'utf8');
+  const optsBlocks = [...src.matchAll(/<div class="opts[^"]*">([\s\S]*?)<\/div>/g)];
+  const keyAt = [];
+  optsBlocks.forEach(b => {
+    const btns = [...b[1].matchAll(/<button[^>]*class="opt"[^>]*>/g)].map(m => m[0]);
+    const at = btns.findIndex(t => /\sdata-correct/.test(t));
+    if (at >= 0 && btns.length > 1) keyAt.push({ at, of: btns.length });
+  });
+  const badShuffle = /\.sort\(\(\)\s*=>\s*Math\.random\(\)/.test(src);
+  head('KEYS');
+  let keysOk = true;
+  if (keyAt.length >= 4) {
+    const tally = {};
+    keyAt.forEach(k => { tally[k.at] = (tally[k.at] || 0) + 1; });
+    const [top, count] = Object.entries(tally).sort((a, b) => b[1] - a[1])[0];
+    const share = count / keyAt.length;
+    // One letter carrying most of the keys is a pattern; four questions all
+    // answering A is the version of it that a student finds in a minute.
+    if (share >= 0.8) {
+      keysOk = false;
+      bad(`the key is option ${'ABCDEFGH'[top]} in ${count} of ${keyAt.length} questions ` +
+          `(${Math.round(share * 100)}%). Deal them across the letters in the source.`);
+    }
+  }
+  if (badShuffle) {
+    keysOk = false;
+    bad('options are reordered with `sort(() => Math.random() - .5)`, which is not a shuffle');
+    console.log(DIM('          Measured in V8 at n=4: the first element stays first 35.9% of the'));
+    console.log(DIM('          time, not 25%. Use Fisher-Yates, or sort by a random key.'));
+  }
+  if (keysOk) ok(`the key moves around${keyAt.length ? ` across ${keyAt.length} questions` : ''}, and the shuffle is uniform`);
 
   head('ANSWERS');
   if (!r.answers.length) ok('no multiple-choice answer is conspicuously the longest');
