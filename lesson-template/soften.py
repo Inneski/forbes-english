@@ -161,3 +161,35 @@ if __name__ == '__main__':
     _, bad = report()
     if '--check' in sys.argv and bad:
         sys.exit(1)
+
+
+# ── softening a colour that is already at the top of its lightness range ──
+#
+# The path above (raise L, drop C) is wrong for yellow. #FFD400 sits at
+# L=0.88 — there is almost no headroom, so raising lightness turns it to
+# paper rather than softening it. Everything that reads as "too strong"
+# about it is chroma.
+#
+# So for these, hold lightness and cut chroma. Two things were measured
+# before trusting it, because neither is obvious:
+#
+#   The contrast floor does not bind. Cutting chroma at constant L leaves
+#   the route segment at 3.8:1 against the mountain from 0% all the way to
+#   -80%. There is no last-passing step, so contrast cannot pick the value
+#   here the way it does for soften().
+#
+#   Separation IMPROVES. The nearest other tense colour to the yellow is
+#   future continuous (#F0A500) at dE 12.0. Softening moves it further
+#   away, not closer — dE 13.3 at -50% — because the amber is both darker
+#   and more saturated. Dropping LIGHTNESS instead would close that gap to
+#   dE 8.4, which is why this function does not touch L.
+#
+# With neither constraint binding, the amount is a judgement. Say so
+# rather than inventing a floor to justify it. Render the candidates in
+# situ and let Innes pick: he chose -35% over -45% on 2026-08-18.
+
+def soften_light(h, chroma_drop):
+    """Reduce chroma at constant lightness and hue. For colours near the
+    top of the lightness range, where soften() would wash them out."""
+    L, C, H = to_lch(h)
+    return from_lch(L, C * (1 - chroma_drop), H)
