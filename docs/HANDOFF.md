@@ -2507,3 +2507,70 @@ applies — and the `:where()` change is theme-agnostic.
 The `.feedback.show` plate is on the Ukraine lesson only. The other eight light
 lessons now have legible status text but it still sits directly on artwork, so
 the plate treatment described above should follow.
+
+## The red too — and the measurement that finally found all of it
+
+Innes, after the green was fixed: *"The red also."* He was right again, and the
+red was not the feedback text I had just fixed. It was `--accent-bright`
+`#701c00` on the **Check button** and the **word-bank chips**, both of which
+had `background: transparent` or a 16% tint into `transparent`. That ink reads
+at **7.8:1 on the surface** and measured **1.53:1 to 1.94:1** where it actually
+sat, which was on the artwork.
+
+**A transparent background is a hole in the plate.** Plating the text elements
+did nothing for text inside a component whose own fill is see-through. Fixed at
+the base rule, not with a theme override — see the specificity note below.
+
+### How to measure this properly — third attempt, and the one to use
+
+1. Blurring the screenshot and calling it the ground is wrong: on a small
+   element the blur pulls in artwork from outside the plate.
+2. Sampling the element's whole rect is wrong too: a 1px accent border and a
+   10px corner radius are inside the rect and nothing to do with the glyphs.
+   That put the Check button at 3.01:1 when its ground was solid `--surface`.
+3. **Right:** screenshot the slide twice, once normally and once with
+   `* { color: transparent !important; -webkit-text-fill-color: transparent
+   !important }`. Glyph pixels are where the two differ by more than ~18.
+   Sample the *ground* shot at exactly those pixels. Then compare against the
+   element's computed colour, with the WCAG large-text threshold of 3.0 for
+   ≥18.66px or ≥14px bold, and 4.5 otherwise.
+
+Also **skip disabled controls** — `.btn:disabled` is `opacity: .35`, so the
+Check button reads 3.0:1 after it has been pressed. WCAG exempts disabled
+controls, and treating that as a defect sends you chasing a deliberate design.
+
+Run over all nine light lessons the audit found, and now clears: 0 of 154 to
+814 text elements per lesson below threshold.
+
+### Two more things it caught
+
+**`.score-big`** — the 84px score on the results page — sat bare on artwork at
+2.44:1. Now plated.
+
+**The solid button's label.** `.btn-solid` sets `color: var(--void)`, correct on
+a dark canvas where `--void` is the darkest token. Inverted, cream on the
+accent red is 4.45:1 — under AA at 17px, which is not large text. Light theme
+now uses `--surface` for that label: 5.00:1.
+
+### The specificity trap, again, and why :where() does not save you here
+
+My first attempt at the button was
+`html[data-theme="light"] .btn { background: … }`. That scores one attribute
+plus one type; `.btn-solid` scores one class. **The attribute counts in the same
+column as the class**, so the theme rule wins on the type tiebreak, the cover's
+Begin button lost its red fill, and its cream label went to 1.03:1. `:where()`
+around `.btn` does not help — it zeroes the `.btn` part, not the attribute.
+
+The audit caught it within one run of introducing it. If a component has
+variants (`.btn-solid`, `.btn:hover`), change the **base declaration** and let
+the variants override as they already do.
+
+### The status ratio moved 45% -> 38%
+
+45% cleared AA against `--surface` at full strength, but the feedback plate is
+`--surface` at 94% and the artwork through the other 6% costs about a quarter
+of a point — measured 4.25:1 to 4.39:1 on graded feedback across the nine.
+38% carries the margin at ~4.9:1 worst case and is still plainly green and red.
+
+**All nine light lessons now carry the plate**, not just Ukraine. The item left
+open in the section above is closed.
