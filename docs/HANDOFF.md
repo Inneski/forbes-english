@@ -2324,3 +2324,95 @@ subset carries no outline for it. The one on the cover now is a genuine
 Courier New Bold `O` with the tail from URW Nimbus Mono PS grafted on,
 scaled so the two bowls match. Dilate the `O` by 3px, not 9, when
 subtracting — at 9 the tail detaches from the ring.
+
+## `arr.sort(() => Math.random() - .5)` is not a shuffle
+
+Innes, on the Ukraine reconstruction lesson: *"The answers are all in sequence
+and can quickly be guessed by a students."* He was right and the cause was not
+where it looked.
+
+All six of that lesson's multiple-choice keys were authored as option A. That
+should have been harmless — the engine reorders options on first view — except
+the reordering was the comparator idiom above. `Array.prototype.sort` is
+entitled to do anything at all when the comparator is inconsistent, and what
+V8 does with four elements is mostly nothing. Measured in this engine's own
+runtime, 400,000 trials, for an element authored first:
+
+| n | A | B | C | D |
+|---|---|---|---|---|
+| 4 | **35.9%** | 17.1% | 15.7% | **31.2%** |
+
+Fair is 25%. "Always press A" scored 36%; "A or D" scored 67%. With every key
+authored first, that held across the whole lesson.
+
+The replacement is a sort by an independent random key —
+`.map(v => [Math.random(), v]).sort((a,b) => a[0]-b[0]).map(p => p[1])` — which
+is a drop-in for the same expression, so the sweep was textual and safe.
+Maximum deviation from 25% after: **0.1 points, against 15.6**. The template
+uses a named `shuffled()` Fisher-Yates instead; both are uniform.
+
+**252 call sites in 93 files.** The idiom is gone from the repo.
+
+### The authored positions were fixed too
+
+A uniform runtime shuffle hides source order in the browser, but it still
+leaks through print and PDF export. Fifteen lessons had **every** key on A —
+130 questions; `stranger-things-b1-lesson` alone had 23. All dealt across the
+letters with a deterministic per-file hash, balanced, no run of three.
+
+### New KEYS gate
+
+`check-lesson.js` gained a KEYS gate between LAYOUT and ANSWERS. It fails on
+either half: one letter carrying ≥80% of the keys, or the comparator idiom
+anywhere in the source. **The key-position half has to read the file, not the
+DOM** — by the time the page is measurable the engine has already reordered
+the options, which is exactly why this survived every previous check. Verified
+failing against a deliberately broken copy first.
+
+This closes the "no gate for key *position*" hole recorded earlier in this
+file.
+
+## A halo is one value; a hero is many
+
+Innes, same message: *"some text is not visible without shadow behind or
+glow."* There was already a glow. In a light-theme lesson it is white, and it
+does nothing at all where the hero goes dark — on the Ukraine cover the same
+shadow that lifts "Reconstruction" clear of the cream leaves "Presenting on"
+invisible against the black building.
+
+**How to measure this properly.** Do not blur the screenshot and call the
+result the ground; on a small element the blur pulls in artwork from outside
+the plate and the number is meaningless. Instead re-render with the text
+elements set to `color: transparent` and the interactive furniture hidden,
+screenshot that, and sample the real pixels under each element's rect. Then
+WCAG-contrast them against the element's computed colour.
+
+Ukraine before: **52 of 60 on-canvas text blocks** contained ground below AA
+4.5:1, roughly a third of the area on a typical question stem, the cover
+subtitle bottoming out at **1.44:1**. After: 7 blocks, none over 0.5% of area,
+and that residue is the rounded corner of the plate rather than anywhere a
+glyph sits.
+
+The fix is a plate of `--surface` — what `.card` and `.opt` already sit on, so
+both themes come free — applied to `.eyebrow`, `.slide-title`, `.q-stem`,
+`.q-ctx`, `.order-hint`, `.slide-body > .prose`, `.cover-title`, `.cover-sub`
+and `.act-target-label`.
+
+**Grow the plate with a spread shadow, not padding.**
+`box-shadow: 0 0 0 .34em <colour>` paints outside the border box and costs no
+layout at all. The first attempt used padding plus a negative inline margin
+and it was enough to tip the cover subtitle onto a second line.
+
+Both changes are in `lesson-template.html`. Existing decks inline their own
+copy, so only the Ukraine lesson has the plate so far — **every other
+light-theme lesson with a high-contrast hero still has the halo**, and the
+measurement script above is the way to find out which ones need it.
+
+### Three archived copies have pre-existing JS syntax errors
+
+`FORBES ENGLISH/forbes-english-lesson-2.html` (`Unexpected token '}'`),
+`FORBES ENGLISH/-dinosaurs C1.html` (`Unexpected identifier 's'`) and
+`FORBES ENGLISH/forbes-english-lesson-curious incident.html` (`Unexpected
+identifier 'I'`) all fail RUNTIME, and did so before the sweep — checked
+against `git show HEAD:<file>`. They are archive duplicates, not linked
+lessons. Not fixed.
