@@ -322,6 +322,31 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 .led i { font-style: normal; color: var(--accent-bright); margin-inline-start: 5px; }
 .led.spend i { color: var(--contrast); }
 .choice[disabled] { opacity: .38; cursor: not-allowed; }
+
+/* ── Click-to-reveal glosses ───────────────────────────────────────────
+   House style §8 says do not translate the English being taught, and that
+   holds for question stems, options and explanations. But a story-driven
+   lesson is mostly NARRATIVE, and narrative is not the target language: a
+   B1 learner who loses the plot cannot do the grammar either. So prose
+   marked .gloss can reveal a translation underneath, English stays primary,
+   and the control only appears once a language other than English is
+   chosen. Same bargain as the Sherpa pages. */
+.gloss { position: relative; }
+.gloss-btn {
+  display: none; margin-top: 8px; padding: 3px 9px;
+  font: 600 10.5px/1.5 'DM Mono', monospace; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--text-dim);
+  background: transparent; border: 1px solid var(--border);
+  border-radius: 999px; cursor: pointer;
+}
+.gloss-btn:hover { color: var(--accent-bright); border-color: var(--accent); }
+html[data-gloss="on"] .gloss-btn { display: inline-block; }
+.gloss-tr {
+  display: none; margin-top: 9px; padding-top: 9px;
+  border-top: 1px solid var(--border);
+  font: 400 16.5px/1.5 'DM Sans', sans-serif; color: var(--text-dim);
+}
+.gloss-tr.show { display: block; }
 .choice-why { display: block; font: 500 11.5px/1.4 'DM Mono', monospace;
               letter-spacing: .06em; text-transform: uppercase;
               color: var(--text-dim); margin-top: 6px; }
@@ -865,7 +890,7 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
         </div>
       </div>
     </section>
-    <section class="slide" data-type="teach" data-node="mission" data-act="Before you begin" data-progress="6">
+    <section class="slide" data-type="teach" data-node="mission" data-act="Before you begin" data-progress="6" data-bg="Sherlock/compass.jpg">
       <div class="slide-head"><div>
         <div class="eyebrow">Your mission</div>
         <h2 class="slide-title">Three questions. One night.</h2>
@@ -882,13 +907,13 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
         </div>
       </div>
     </section>
-    <section class="slide" data-type="teach" data-node="casefile" data-act="Before you begin" data-progress="9">
+    <section class="slide" data-type="teach" data-node="casefile" data-act="Before you begin" data-progress="9" data-bg="Sherlock/door.jpg">
       <div class="slide-head"><div>
         <div class="eyebrow">Scotland Yard · case file 7B</div>
         <h2 class="slide-title">Sir Edmund Vale is dead.</h2>
       </div></div>
       <div class="slide-body">
-        <div class="card"><p class="prose"><strong>8:40 p.m.</strong> The Royal Museum closes.<br><strong>8:55 p.m.</strong> Celeste Marlowe is seen near the east gallery.<br><strong>9:12 p.m.</strong> A guard hears glass break inside the private study.<br><strong>9:20 p.m.</strong> Police force the locked door. Sir Edmund is dead.</p></div>
+        <div class="card"><p class="prose gloss" data-tr="casefile"><strong>8:40 p.m.</strong> The Royal Museum closes.<br><strong>8:55 p.m.</strong> Celeste Marlowe is seen near the east gallery.<br><strong>9:12 p.m.</strong> A guard hears glass break inside the private study.<br><strong>9:20 p.m.</strong> Police force the locked door. Sir Edmund is dead.</p></div>
         <div class="card" style="margin-top:14px"><p class="prose dim">The Scarlet Star is missing. The window is open. No weapon is found.</p></div>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="prologue" data-i18n="btnContinue">Continue →</button>
@@ -901,7 +926,7 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
         <h2 class="slide-title">London holds its breath.</h2>
       </div></div>
       <div class="slide-body">
-        <div class="card"><p class="prose">Rain turns the streets to mirrors. At 9:37 Holmes and Watson reach the museum — twenty-three minutes before Moriarty’s promised midnight move.</p></div>
+        <div class="card"><p class="prose gloss" data-tr="prologue">Rain turns the streets to mirrors. At 9:37 Holmes and Watson reach the museum — twenty-three minutes before Moriarty’s promised midnight move.</p></div>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="room" data-i18n="btnContinue">Continue →</button>
         </div>
@@ -913,14 +938,14 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
         <h2 class="slide-title">The locked room is too tidy.</h2>
       </div></div>
       <div class="slide-body">
-        <div class="card"><p class="prose">Sir Edmund lies beside his desk. A half-smoked pipe rests near his hand. The display case is empty. Coal dust marks the open windowsill — but the dust is <strong>dry</strong>, although rain is pouring outside.</p></div>
+        <div class="card"><p class="prose gloss" data-tr="room">Sir Edmund lies beside his desk. A half-smoked pipe rests near his hand. The display case is empty. Coal dust marks the open windowsill — but the dust is <strong>dry</strong>, although rain is pouring outside.</p></div>
         <div class="card" style="margin-top:14px"><p class="prose dim">Is the pipe completely smoked? Is the coal dust wet? Is it raining?</p></div>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="q1" data-i18n="btnContinue">Continue →</button>
         </div>
       </div>
     </section>
-    <section class="slide" data-type="mc" data-node="q1" data-act="Act I" data-progress="18">
+    <section class="slide" data-type="mc" data-node="q1" data-act="Act I" data-progress="18" data-bg="Sherlock/study.jpg">
       <div class="slide-head"><div>
         <div class="eyebrow">Evidence check · question 1</div>
       </div></div>
@@ -938,33 +963,33 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
         </div>
       </div>
     </section>
-    <section class="slide" data-type="teach" data-node="q1yes" data-act="Act I" data-progress="21" data-dp="1" data-clue="c1">
+    <section class="slide" data-type="teach" data-node="q1yes" data-act="Act I" data-progress="21" data-bg="Sherlock/window.jpg" data-dp="1" data-clue="c1">
       <div class="slide-head"><div>
         <div class="eyebrow">Clue card 1 secured</div>
         <h2 class="slide-title">The escape was staged.</h2>
       </div></div>
       <div class="slide-body">
-        <div class="card"><p class="prose">Dry dust cannot have come from the wet roof. Someone wanted the police to look at the window.</p></div>
+        <div class="card"><p class="prose gloss" data-tr="q1yes">Dry dust cannot have come from the wet roof. Someone wanted the police to look at the window.</p></div>
         <p class="feedback show ok" style="margin-top:14px">The window clue was staged</p>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="dec1" data-i18n="btnContinue">Continue →</button>
         </div>
       </div>
     </section>
-    <section class="slide" data-type="teach" data-node="q1no" data-act="Act I" data-progress="21" data-time="-1">
+    <section class="slide" data-type="teach" data-node="q1no" data-act="Act I" data-progress="21" data-bg="Sherlock/street.jpg" data-time="-1">
       <div class="slide-head"><div>
         <div class="eyebrow">The fog thickens</div>
         <h2 class="slide-title">A useful detail was missed.</h2>
       </div></div>
       <div class="slide-body">
-        <div class="card"><p class="prose">Lestrade spends twelve minutes checking the locked door again. Moriarty’s timetable advances.</p></div>
+        <div class="card"><p class="prose gloss" data-tr="q1no">Lestrade spends twelve minutes checking the locked door again. Moriarty’s timetable advances.</p></div>
         <p class="feedback show no" style="margin-top:14px">No clue card. The dry dust was the contradiction to catch.</p>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="dec1" data-i18n="btnContinue">Continue →</button>
         </div>
       </div>
     </section>
-    <section class="slide" data-type="teach" data-node="dec1" data-act="Act I" data-progress="24">
+    <section class="slide" data-type="teach" data-node="dec1" data-act="Act I" data-progress="24" data-bg="Sherlock/study.jpg">
       <div class="slide-head"><div>
         <div class="eyebrow">Decision 1 · you cannot examine everything</div>
         <h2 class="slide-title">Where does Holmes spend the next ten minutes?</h2>
@@ -972,11 +997,11 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
       <div class="slide-body">
         <div class="cols">
           <div class="card">
-            <p class="prose">Learn how and when Sir Edmund died.</p>
+            <p class="prose gloss" data-tr="dec1-a">Learn how and when Sir Edmund died.</p>
             <div style="margin-top:12px"><button class="btn btn-solid choice" data-goto="path-a" data-i18n="chooseA">Choose</button></div>
           </div>
           <div class="card">
-            <p class="prose">Test whether anyone really entered from outside.</p>
+            <p class="prose gloss" data-tr="dec1-b">Test whether anyone really entered from outside.</p>
             <div style="margin-top:12px"><button class="btn btn-solid choice" data-goto="path-b" data-i18n="chooseB">Choose</button></div>
           </div>
         </div>
@@ -989,13 +1014,13 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
         <h2 class="slide-title">No wound. No struggle.</h2>
       </div></div>
       <div class="slide-body">
-        <div class="card"><p class="prose">Watson finds blue colouring around the lips and a bitter smell in the pipe. Sir Edmund’s watch stopped at 9:12 when he fell. The killer may not have been in the room at that moment.</p></div>
+        <div class="card"><p class="prose gloss" data-tr="path-a">Watson finds blue colouring around the lips and a bitter smell in the pipe. Sir Edmund’s watch stopped at 9:12 when he fell. The killer may not have been in the room at that moment.</p></div>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="q2a" data-i18n="btnContinue">Continue →</button>
         </div>
       </div>
     </section>
-    <section class="slide" data-type="mc" data-node="q2a" data-act="Act I · path A" data-progress="32">
+    <section class="slide" data-type="mc" data-node="q2a" data-act="Act I · path A" data-progress="32" data-bg="Sherlock/body.jpg">
       <div class="slide-head"><div>
         <div class="eyebrow">Past modals · question 2A</div>
       </div></div>
@@ -1013,26 +1038,26 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
         </div>
       </div>
     </section>
-    <section class="slide" data-type="teach" data-node="q2ayes" data-act="Act I · path A" data-progress="36" data-dp="1" data-clue="c2">
+    <section class="slide" data-type="teach" data-node="q2ayes" data-act="Act I · path A" data-progress="36" data-bg="Sherlock/body.jpg" data-dp="1" data-clue="c2">
       <div class="slide-head"><div>
         <div class="eyebrow">Clue card 2A secured</div>
         <h2 class="slide-title">The murder was delayed.</h2>
       </div></div>
       <div class="slide-body">
-        <div class="card"><p class="prose">Poison in the tobacco could have been prepared hours earlier. The killer did not need to enter at 9:12.</p></div>
+        <div class="card"><p class="prose gloss" data-tr="q2ayes">Poison in the tobacco could have been prepared hours earlier. The killer did not need to enter at 9:12.</p></div>
         <p class="feedback show ok" style="margin-top:14px">The pipe may have been poisoned earlier</p>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="twocrime" data-i18n="btnContinue">Continue →</button>
         </div>
       </div>
     </section>
-    <section class="slide" data-type="teach" data-node="q2ano" data-act="Act I · path A" data-progress="36" data-time="-1">
+    <section class="slide" data-type="teach" data-node="q2ano" data-act="Act I · path A" data-progress="36" data-bg="Sherlock/chase.jpg" data-time="-1">
       <div class="slide-head"><div>
         <div class="eyebrow">A false theory takes hold</div>
         <h2 class="slide-title">Lestrade searches for a gun.</h2>
       </div></div>
       <div class="slide-body">
-        <div class="card"><p class="prose">No bullet wound exists, but the error costs precious minutes.</p></div>
+        <div class="card"><p class="prose gloss" data-tr="q2ano">No bullet wound exists, but the error costs precious minutes.</p></div>
         <p class="feedback show no" style="margin-top:14px"><strong>must have</strong> is a strong conclusion — it has to be supported by evidence.</p>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="twocrime" data-i18n="btnContinue">Continue →</button>
@@ -1045,13 +1070,13 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
         <h2 class="slide-title">The footprints stop at the sill.</h2>
       </div></div>
       <div class="slide-body">
-        <div class="card"><p class="prose">Outside, the roof is wet and clean, with no prints beyond the window. Inside, the coal dust forms two perfect shoe shapes — as if someone pressed a pair of shoes into it.</p></div>
+        <div class="card"><p class="prose gloss" data-tr="path-b">Outside, the roof is wet and clean, with no prints beyond the window. Inside, the coal dust forms two perfect shoe shapes — as if someone pressed a pair of shoes into it.</p></div>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="q2b" data-i18n="btnContinue">Continue →</button>
         </div>
       </div>
     </section>
-    <section class="slide" data-type="mc" data-node="q2b" data-act="Act I · path B" data-progress="32">
+    <section class="slide" data-type="mc" data-node="q2b" data-act="Act I · path B" data-progress="32" data-bg="Sherlock/window.jpg">
       <div class="slide-head"><div>
         <div class="eyebrow">Past modals · question 2B</div>
       </div></div>
@@ -1069,26 +1094,26 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
         </div>
       </div>
     </section>
-    <section class="slide" data-type="teach" data-node="q2byes" data-act="Act I · path B" data-progress="36" data-dp="1" data-clue="c2">
+    <section class="slide" data-type="teach" data-node="q2byes" data-act="Act I · path B" data-progress="36" data-bg="Sherlock/window.jpg" data-dp="1" data-clue="c2">
       <div class="slide-head"><div>
         <div class="eyebrow">Clue card 2B secured</div>
         <h2 class="slide-title">Nobody escaped through the window.</h2>
       </div></div>
       <div class="slide-body">
-        <div class="card"><p class="prose">The prints were manufactured inside. The locked-room mystery is theatre, not magic.</p></div>
+        <div class="card"><p class="prose gloss" data-tr="q2byes">The prints were manufactured inside. The locked-room mystery is theatre, not magic.</p></div>
         <p class="feedback show ok" style="margin-top:14px">The footprints were made inside</p>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="twocrime" data-i18n="btnContinue">Continue →</button>
         </div>
       </div>
     </section>
-    <section class="slide" data-type="teach" data-node="q2bno" data-act="Act I · path B" data-progress="36" data-time="-1">
+    <section class="slide" data-type="teach" data-node="q2bno" data-act="Act I · path B" data-progress="36" data-bg="Sherlock/stairs.jpg" data-time="-1">
       <div class="slide-head"><div>
         <div class="eyebrow">The trail goes cold</div>
         <h2 class="slide-title">Police search the roofs.</h2>
       </div></div>
       <div class="slide-body">
-        <div class="card"><p class="prose">They find nothing but rain. Moriarty gains another twelve minutes.</p></div>
+        <div class="card"><p class="prose gloss" data-tr="q2bno">They find nothing but rain. Moriarty gains another twelve minutes.</p></div>
         <p class="feedback show no" style="margin-top:14px">An intruder <strong>can’t have</strong> crossed the roof — there were no wet prints.</p>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="twocrime" data-i18n="btnContinue">Continue →</button>
@@ -1101,7 +1126,7 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
         <h2 class="slide-title">Holmes rejects the obvious story.</h2>
       </div></div>
       <div class="slide-body">
-        <div class="card"><p class="prose">“The empty case, the open window and the dead curator look like one event,” he says. “That is exactly why we must consider that they are not.”</p></div>
+        <div class="card"><p class="prose gloss" data-tr="twocrime">“The empty case, the open window and the dead curator look like one event,” he says. “That is exactly why we must consider that they are not.”</p></div>
         <div class="card" style="margin-top:14px"><p class="prose dim">The theft and the death may be connected without being the same act, or the same hand.</p></div>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="parcel" data-i18n="btnContinue">Continue →</button>
@@ -1114,7 +1139,7 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
         <h2 class="slide-title">Mrs Hudson kept it safe.</h2>
       </div></div>
       <div class="slide-body">
-        <div class="card"><p class="prose">At 221B she places a black tea tin on the table. A scarlet wax seal carries Sir Edmund’s initials: <strong>E.V.</strong> It arrived forty-two minutes before his death.</p></div>
+        <div class="card"><p class="prose gloss" data-tr="parcel">At 221B she places a black tea tin on the table. A scarlet wax seal carries Sir Edmund’s initials: <strong>E.V.</strong> It arrived forty-two minutes before his death.</p></div>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="witness" data-i18n="btnContinue">Continue →</button>
         </div>
@@ -1126,14 +1151,14 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
         <h2 class="slide-title">Mrs Hudson</h2>
       </div></div>
       <div class="slide-body">
-        <div class="card"><p class="prose" style="font-size:22px;font-style:italic">“A young messenger brought it at half past eight. He said Sir Edmund had sent it. I put it beside the fire, and I have not opened it.”</p></div>
+        <div class="card"><p class="prose gloss" data-tr="witness" style="font-size:22px;font-style:italic">“A young messenger brought it at half past eight. He said Sir Edmund had sent it. I put it beside the fire, and I have not opened it.”</p></div>
         <div class="card" style="margin-top:14px"><p class="prose dim">Report her words without changing the meaning.</p></div>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="q3" data-i18n="btnContinue">Continue →</button>
         </div>
       </div>
     </section>
-    <section class="slide" data-type="mc" data-node="q3" data-act="Act II" data-progress="50">
+    <section class="slide" data-type="mc" data-node="q3" data-act="Act II" data-progress="50" data-bg="Sherlock/teatin.jpg">
       <div class="slide-head"><div>
         <div class="eyebrow">Reported speech · question 3</div>
       </div></div>
@@ -1151,33 +1176,33 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
         </div>
       </div>
     </section>
-    <section class="slide" data-type="teach" data-node="q3yes" data-act="Act II" data-progress="54" data-dp="1" data-clue="c3">
+    <section class="slide" data-type="teach" data-node="q3yes" data-act="Act II" data-progress="54" data-bg="Sherlock/teatin.jpg" data-dp="1" data-clue="c3">
       <div class="slide-head"><div>
         <div class="eyebrow">Clue card 3 secured</div>
         <h2 class="slide-title">The Star may already be here.</h2>
       </div></div>
       <div class="slide-body">
-        <div class="card"><p class="prose">Sir Edmund sent the sealed tin before the museum alarm. The missing object could have left before the ‘theft’.</p></div>
+        <div class="card"><p class="prose gloss" data-tr="q3yes">Sir Edmund sent the sealed tin before the museum alarm. The missing object could have left before the ‘theft’.</p></div>
         <p class="feedback show ok" style="margin-top:14px">The parcel left before the crime</p>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="dec2" data-i18n="btnContinue">Continue →</button>
         </div>
       </div>
     </section>
-    <section class="slide" data-type="teach" data-node="q3no" data-act="Act II" data-progress="54" data-time="-1">
+    <section class="slide" data-type="teach" data-node="q3no" data-act="Act II" data-progress="54" data-bg="Sherlock/door.jpg" data-time="-1">
       <div class="slide-head"><div>
         <div class="eyebrow">Mrs Hudson takes offence</div>
         <h2 class="slide-title">The report changes her meaning.</h2>
       </div></div>
       <div class="slide-body">
-        <div class="card"><p class="prose">She refuses more questions until Watson apologises. The trail loses momentum.</p></div>
+        <div class="card"><p class="prose gloss" data-tr="q3no">She refuses more questions until Watson apologises. The trail loses momentum.</p></div>
         <p class="feedback show no" style="margin-top:14px">The parcel stays in play, but the clue is unconfirmed.</p>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="dec2" data-i18n="btnContinue">Continue →</button>
         </div>
       </div>
     </section>
-    <section class="slide" data-type="teach" data-node="dec2" data-act="Act II" data-progress="57">
+    <section class="slide" data-type="teach" data-node="dec2" data-act="Act II" data-progress="57" data-bg="Sherlock/faces.jpg">
       <div class="slide-head"><div>
         <div class="eyebrow">Decision 2 · choose your suspect</div>
         <h2 class="slide-title">Who is more likely to break first?</h2>
@@ -1185,11 +1210,11 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
       <div class="slide-body">
         <div class="cols">
           <div class="card">
-            <p class="prose">Perfume on the case. Seen in the gallery. A known thief.</p>
+            <p class="prose gloss" data-tr="dec2-a">Perfume on the case. Seen in the gallery. A known thief.</p>
             <div style="margin-top:12px"><button class="btn btn-solid choice" data-goto="path-c" data-i18n="chooseC">Choose</button></div>
           </div>
           <div class="card">
-            <p class="prose">Visited at six. Wanted the Star. A strong dinner alibi.</p>
+            <p class="prose gloss" data-tr="dec2-b">Visited at six. Wanted the Star. A strong dinner alibi.</p>
             <div style="margin-top:12px"><button class="btn btn-solid choice" data-goto="path-d" data-i18n="chooseD">Choose</button></div>
           </div>
         </div>
@@ -1202,13 +1227,13 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
         <h2 class="slide-title">Celeste admits the theft.</h2>
       </div></div>
       <div class="slide-body">
-        <div class="card"><p class="prose">“I stole what Sir Edmund asked me to steal,” she says. “The real Star had already left the museum. The copy was bait. Moriarty was meant to follow me — not the messenger.”</p></div>
+        <div class="card"><p class="prose gloss" data-tr="path-c">“I stole what Sir Edmund asked me to steal,” she says. “The real Star had already left the museum. The copy was bait. Moriarty was meant to follow me — not the messenger.”</p></div>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="q4c" data-i18n="btnContinue">Continue →</button>
         </div>
       </div>
     </section>
-    <section class="slide" data-type="mc" data-node="q4c" data-act="Act II · path C" data-progress="65">
+    <section class="slide" data-type="mc" data-node="q4c" data-act="Act II · path C" data-progress="65" data-bg="Sherlock/celeste.jpg">
       <div class="slide-head"><div>
         <div class="eyebrow">Reported speech · question 4C</div>
       </div></div>
@@ -1226,26 +1251,26 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
         </div>
       </div>
     </section>
-    <section class="slide" data-type="teach" data-node="q4cyes" data-act="Act II · path C" data-progress="69" data-dp="1" data-clue="c4">
+    <section class="slide" data-type="teach" data-node="q4cyes" data-act="Act II · path C" data-progress="69" data-bg="Sherlock/faces.jpg" data-dp="1" data-clue="c4">
       <div class="slide-head"><div>
         <div class="eyebrow">Clue card 4C secured</div>
         <h2 class="slide-title">A confession is not the whole truth.</h2>
       </div></div>
       <div class="slide-body">
-        <div class="card"><p class="prose">Celeste stole a decoy on Sir Edmund’s own instructions. She admitted a theft. She did not admit a murder.</p></div>
+        <div class="card"><p class="prose gloss" data-tr="q4cyes">Celeste stole a decoy on Sir Edmund’s own instructions. She admitted a theft. She did not admit a murder.</p></div>
         <p class="feedback show ok" style="margin-top:14px">Celeste stole a decoy, not the Star</p>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="lab" data-i18n="btnContinue">Continue →</button>
         </div>
       </div>
     </section>
-    <section class="slide" data-type="teach" data-node="q4cno" data-act="Act II · path C" data-progress="69" data-time="-1">
+    <section class="slide" data-type="teach" data-node="q4cno" data-act="Act II · path C" data-progress="69" data-bg="Sherlock/bar.jpg" data-time="-1">
       <div class="slide-head"><div>
         <div class="eyebrow">The confession closes</div>
         <h2 class="slide-title">Celeste stops cooperating.</h2>
       </div></div>
       <div class="slide-body">
-        <div class="card"><p class="prose">A report that changes her words gives her every reason to stop talking.</p></div>
+        <div class="card"><p class="prose gloss" data-tr="q4cno">A report that changes her words gives her every reason to stop talking.</p></div>
         <p class="feedback show no" style="margin-top:14px">She admitted taking an object — not the Star, and not a murder.</p>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="lab" data-i18n="btnContinue">Continue →</button>
@@ -1258,13 +1283,13 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
         <h2 class="slide-title">Moriarty’s alibi is perfect.</h2>
       </div></div>
       <div class="slide-body">
-        <div class="card"><p class="prose">At 9:12 he was dining with the Home Secretary. But the museum register shows he visited Sir Edmund at 6:10 and left a sample of Turkish tobacco as a ‘gift’.</p></div>
+        <div class="card"><p class="prose gloss" data-tr="path-d">At 9:12 he was dining with the Home Secretary. But the museum register shows he visited Sir Edmund at 6:10 and left a sample of Turkish tobacco as a ‘gift’.</p></div>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="q4d" data-i18n="btnContinue">Continue →</button>
         </div>
       </div>
     </section>
-    <section class="slide" data-type="mc" data-node="q4d" data-act="Act II · path D" data-progress="65">
+    <section class="slide" data-type="mc" data-node="q4d" data-act="Act II · path D" data-progress="65" data-bg="Sherlock/table.jpg">
       <div class="slide-head"><div>
         <div class="eyebrow">Past modals · question 4D</div>
       </div></div>
@@ -1282,26 +1307,26 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
         </div>
       </div>
     </section>
-    <section class="slide" data-type="teach" data-node="q4dyes" data-act="Act II · path D" data-progress="69" data-dp="1" data-clue="c4">
+    <section class="slide" data-type="teach" data-node="q4dyes" data-act="Act II · path D" data-progress="69" data-bg="Sherlock/table.jpg" data-dp="1" data-clue="c4">
       <div class="slide-head"><div>
         <div class="eyebrow">Clue card 4D secured</div>
         <h2 class="slide-title">An alibi can hide an earlier action.</h2>
       </div></div>
       <div class="slide-body">
-        <div class="card"><p class="prose">Moriarty supplied the poisoned tobacco at 6:10. A man can cause a death without being present when it happens.</p></div>
+        <div class="card"><p class="prose gloss" data-tr="q4dyes">Moriarty supplied the poisoned tobacco at 6:10. A man can cause a death without being present when it happens.</p></div>
         <p class="feedback show ok" style="margin-top:14px">Moriarty supplied the poison at 6:10</p>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="lab" data-i18n="btnContinue">Continue →</button>
         </div>
       </div>
     </section>
-    <section class="slide" data-type="teach" data-node="q4dno" data-act="Act II · path D" data-progress="69" data-time="-1">
+    <section class="slide" data-type="teach" data-node="q4dno" data-act="Act II · path D" data-progress="69" data-bg="Sherlock/moriarty.jpg" data-time="-1">
       <div class="slide-head"><div>
         <div class="eyebrow">The alibi survives</div>
         <h2 class="slide-title">The Home Secretary is a fine witness.</h2>
       </div></div>
       <div class="slide-body">
-        <div class="card"><p class="prose">Without a deduction that reaches back to 6:10, the dinner table protects him.</p></div>
+        <div class="card"><p class="prose gloss" data-tr="q4dno">Without a deduction that reaches back to 6:10, the dinner table protects him.</p></div>
         <p class="feedback show no" style="margin-top:14px">He was not in the room at 9:12 — but poison prepared at six can still kill at nine.</p>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="lab" data-i18n="btnContinue">Continue →</button>
@@ -1338,37 +1363,37 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
       <div class="slide-body">
         <div class="cols">
           <div class="card">
-            <p class="prose">The Phoenix Theatre. Celeste may have the warehouse key.</p>
+            <p class="prose gloss" data-tr="dec3-a">The Phoenix Theatre. Celeste may have the warehouse key.</p>
             <div style="margin-top:12px"><button class="btn btn-solid choice" data-goto="route-a" data-i18n="chooseE">Choose</button></div>
           </div>
           <div class="card">
-            <p class="prose">Crown Dock. Moriarty’s men are moving a private train.</p>
+            <p class="prose gloss" data-tr="dec3-b">Crown Dock. Moriarty’s men are moving a private train.</p>
             <div style="margin-top:12px"><button class="btn btn-solid choice" data-goto="route-b" data-i18n="chooseF">Choose</button></div>
           </div>
         </div>
         <p class="prose dim" style="margin-top:14px;text-align:center" data-i18n="explainFirst">Explain your choice in English before you click.</p>
       </div>
     </section>
-    <section class="slide" data-type="teach" data-node="route-a" data-act="Act III · route A" data-progress="80" data-clue="c5">
+    <section class="slide" data-type="teach" data-node="route-a" data-act="Act III · route A" data-progress="80" data-bg="Sherlock/bar.jpg" data-clue="c5">
       <div class="slide-head"><div>
         <div class="eyebrow">Route A · the Phoenix Theatre</div>
         <h2 class="slide-title">Celeste chooses a side.</h2>
       </div></div>
       <div class="slide-body">
-        <div class="card"><p class="prose">Behind the theatre bar she gives Holmes a warehouse key and a rope diagram. “Moriarty believes I still work for him,” she says. “Let us preserve that mistake.”</p></div>
+        <div class="card"><p class="prose gloss" data-tr="route-a">Behind the theatre bar she gives Holmes a warehouse key and a rope diagram. “Moriarty believes I still work for him,” she says. “Let us preserve that mistake.”</p></div>
         <p class="feedback show ok" style="margin-top:14px">Clue 5A — the rope diagram</p>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="q5" data-i18n="btnContinue">Continue →</button>
         </div>
       </div>
     </section>
-    <section class="slide" data-type="teach" data-node="route-b" data-act="Act III · route B" data-progress="80" data-time="-1" data-clue="c5">
+    <section class="slide" data-type="teach" data-node="route-b" data-act="Act III · route B" data-progress="80" data-bg="Sherlock/stairs.jpg" data-time="-1" data-clue="c5">
       <div class="slide-head"><div>
         <div class="eyebrow">Route B · Crown Dock</div>
         <h2 class="slide-title">The dock is a trap — but not an empty one.</h2>
       </div></div>
       <div class="slide-body">
-        <div class="card"><p class="prose">Moriarty’s men chase Watson across the iron stairs. The team escapes carrying a freight receipt: <strong>Crown Rail Warehouse, Platform 4</strong>.</p></div>
+        <div class="card"><p class="prose gloss" data-tr="route-b">Moriarty’s men chase Watson across the iron stairs. The team escapes carrying a freight receipt: <strong>Crown Rail Warehouse, Platform 4</strong>.</p></div>
         <p class="feedback show ok" style="margin-top:14px">Clue 5B — Platform 4. The trap cost you a Time token.</p>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="q5" data-i18n="btnContinue">Continue →</button>
@@ -1393,26 +1418,26 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
         </div>
       </div>
     </section>
-    <section class="slide" data-type="teach" data-node="q5yes" data-act="Act III" data-progress="88" data-dp="1">
+    <section class="slide" data-type="teach" data-node="q5yes" data-act="Act III" data-progress="88" data-bg="Sherlock/carriage.jpg" data-dp="1">
       <div class="slide-head"><div>
         <div class="eyebrow">Pursuit advantage</div>
         <h2 class="slide-title">Holmes predicts the departure.</h2>
       </div></div>
       <div class="slide-body">
-        <div class="card"><p class="prose">He reaches Platform 4 before the engine moves. Moriarty loses his clean escape.</p></div>
+        <div class="card"><p class="prose gloss" data-tr="q5yes">He reaches Platform 4 before the engine moves. Moriarty loses his clean escape.</p></div>
         <p class="feedback show ok" style="margin-top:14px">Keep your Time tokens</p>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="board" data-i18n="btnContinue">Continue →</button>
         </div>
       </div>
     </section>
-    <section class="slide" data-type="teach" data-node="q5no" data-act="Act III" data-progress="88" data-time="-1">
+    <section class="slide" data-type="teach" data-node="q5no" data-act="Act III" data-progress="88" data-bg="Sherlock/chase.jpg" data-time="-1">
       <div class="slide-head"><div>
         <div class="eyebrow">The train starts moving</div>
         <h2 class="slide-title">The deduction arrives too late.</h2>
       </div></div>
       <div class="slide-body">
-        <div class="card"><p class="prose">Watson jumps aboard and injures his arm. The team continues, but the escape route is closing.</p></div>
+        <div class="card"><p class="prose gloss" data-tr="q5no">Watson jumps aboard and injures his arm. The team continues, but the escape route is closing.</p></div>
         <p class="feedback show no" style="margin-top:14px">modal + <strong>have</strong> + past participle. Say it before the next platform.</p>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="board" data-i18n="btnContinue">Continue →</button>
@@ -1446,7 +1471,7 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
       </div></div>
       <div class="slide-body">
           <div class="card gap-row">
-            <p class="q-stem" style="font-size:21px">Sir Edmund <input class="gap" data-answer="must have sent|must’ve sent|must have sent it" aria-label="gap"> the real Star away before he died.</p>
+            <p class="q-stem" style="font-size:21px">Sir Edmund <input class="gap" data-answer="must have sent|must’ve sent|mustve sent|must have sent it" aria-label="gap"> the real Star away before he died.</p>
             <p class="prose dim" style="font-size:13px;margin-top:6px">strong deduction · send</p>
             <p class="feedback" data-explain="The evidence is overwhelming, so &lt;strong&gt;must have sent&lt;/strong&gt; — not &lt;em&gt;might&lt;/em&gt;."></p>
           </div>
@@ -1468,12 +1493,12 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
       </div></div>
       <div class="slide-body">
           <div class="card gap-row">
-            <p class="q-stem" style="font-size:21px">Moriarty <input class="gap" data-answer="can’t have entered|cannot have entered|couldn’t have entered|could not have entered|can not have entered" aria-label="gap"> the room at 9:12.</p>
+            <p class="q-stem" style="font-size:21px">Moriarty <input class="gap" data-answer="can’t have entered|cannot have entered|couldn’t have entered|could not have entered|can not have entered|cant have entered|couldnt have entered" aria-label="gap"> the room at 9:12.</p>
             <p class="prose dim" style="font-size:13px;margin-top:6px">impossible · enter</p>
             <p class="feedback" data-explain="The dinner alibi makes it impossible, and impossibility in the past is &lt;strong&gt;can’t have entered&lt;/strong&gt;."></p>
           </div>
           <div class="card gap-row">
-            <p class="q-stem" style="font-size:21px">But he <input class="gap" data-answer="must have prepared|must’ve prepared" aria-label="gap"> the poison earlier that evening.</p>
+            <p class="q-stem" style="font-size:21px">But he <input class="gap" data-answer="must have prepared|must’ve prepared|mustve prepared" aria-label="gap"> the poison earlier that evening.</p>
             <p class="prose dim" style="font-size:13px;margin-top:6px">strong deduction · prepare</p>
             <p class="feedback" data-explain="The 6:10 visit and the tobacco gift make this near-certain: &lt;strong&gt;must have prepared&lt;/strong&gt;."></p>
           </div>
@@ -1530,7 +1555,7 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
         <h2 class="slide-title">The complete deduction wins.</h2>
       </div></div>
       <div class="slide-body">
-        <div class="card"><p class="prose">Celeste cuts the marked rope. A cargo net blocks the exit. Watson secures the Scarlet Star; Holmes exposes Moriarty’s coded network. The Professor is arrested before the midnight train departs.</p></div>
+        <div class="card"><p class="prose gloss" data-tr="end-gold">Celeste cuts the marked rope. A cargo net blocks the exit. Watson secures the Scarlet Star; Holmes exposes Moriarty’s coded network. The Professor is arrested before the midnight train departs.</p></div>
         <p class="prose dim" style="margin-top:14px;text-align:center;text-transform:uppercase;letter-spacing:.1em;font-size:12px">Case closed · Moriarty defeated · Celeste cleared</p>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="reveal" data-i18n="btnContinue">Continue →</button>
@@ -1543,7 +1568,7 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
         <h2 class="slide-title">The Star is safe. Moriarty is not caught.</h2>
       </div></div>
       <div class="slide-body">
-        <div class="card"><p class="prose">Holmes finds the real artefact inside the false bottom of Mrs Hudson’s tea tin. But missing evidence — or one incomplete theory — gives Moriarty time to disappear into the London fog.</p></div>
+        <div class="card"><p class="prose gloss" data-tr="end-silver">Holmes finds the real artefact inside the false bottom of Mrs Hudson’s tea tin. But missing evidence — or one incomplete theory — gives Moriarty time to disappear into the London fog.</p></div>
         <p class="prose dim" style="margin-top:14px;text-align:center;text-transform:uppercase;letter-spacing:.1em;font-size:12px">Artefact recovered · murder explained · Moriarty escapes</p>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="reveal" data-i18n="btnContinue">Continue →</button>
@@ -1556,7 +1581,7 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
         <h2 class="slide-title">Moriarty writes the final chapter.</h2>
       </div></div>
       <div class="slide-body">
-        <div class="card"><p class="prose">The accusation comes too late, or names the wrong criminal. The midnight train carries Moriarty away. By morning the Scarlet Star’s network has vanished, and Celeste stands accused of Sir Edmund’s murder.</p></div>
+        <div class="card"><p class="prose gloss" data-tr="end-shadow">The accusation comes too late, or names the wrong criminal. The midnight train carries Moriarty away. By morning the Scarlet Star’s network has vanished, and Celeste stands accused of Sir Edmund’s murder.</p></div>
         <p class="prose dim" style="margin-top:14px;text-align:center;text-transform:uppercase;letter-spacing:.1em;font-size:12px">Case failed · the evidence was not strong enough</p>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="reveal" data-i18n="btnContinue">Continue →</button>
@@ -1570,10 +1595,10 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
       </div></div>
       <div class="slide-body">
         <div class="cols">
-          <div class="card"><p class="prose"><strong>The theft</strong><br>Celeste stole a decoy at Sir Edmund’s own request. The real Star had already gone to Baker Street inside the sealed tea tin.</p></div>
-          <div class="card"><p class="prose"><strong>The murder</strong><br>During his 6:10 visit Moriarty poisoned the gift tobacco. Sir Edmund smoked it later and died at 9:12 — so the alibi was genuine.</p></div>
+          <div class="card"><p class="prose gloss" data-tr="reveal-a"><strong>The theft</strong><br>Celeste stole a decoy at Sir Edmund’s own request. The real Star had already gone to Baker Street inside the sealed tea tin.</p></div>
+          <div class="card"><p class="prose gloss" data-tr="reveal-b"><strong>The murder</strong><br>During his 6:10 visit Moriarty poisoned the gift tobacco. Sir Edmund smoked it later and died at 9:12 — so the alibi was genuine.</p></div>
         </div>
-        <div class="card" style="margin-top:14px"><p class="prose dim">The staging framed Celeste and invented an impossible intruder. The Star itself was an optical cipher naming Moriarty’s network.</p></div>
+        <div class="card" style="margin-top:14px"><p class="prose dim gloss" data-tr="reveal-c">The staging framed Celeste and invented an impossible intruder. The Star itself was an optical cipher naming Moriarty’s network.</p></div>
         <div style="margin-top:18px">
           <button class="btn btn-solid" data-goto="results" data-i18n="btnContinue">Continue →</button>
         </div>
@@ -1669,6 +1694,92 @@ const LANGS = [
 ];
 const RTL_LANGS = ['ar'];
 
+
+/* Story glosses. Narrative only — never the English being taught. */
+const NARRATIVE_TR = {
+  de:{
+    'mission':'Wer hat den Scharlachroten Stern genommen? Wie starb Sir Edmund? Wer hat das ganze Verbrechen geplant? Der Fall endet um Mitternacht.',
+    'casefile':'20:40 Das Königliche Museum schließt. 20:55 Celeste Marlowe wird in der Nähe der Ostgalerie gesehen. 21:12 Ein Wächter hört Glas zerbrechen im Arbeitszimmer. 21:20 Die Polizei bricht die verschlossene Tür auf. Sir Edmund ist tot. Der Stern fehlt, das Fenster steht offen, es wird keine Waffe gefunden.',
+    'prologue':'Der Regen verwandelt die Straßen in Spiegel. Um 21:37 erreichen Holmes und Watson das Museum — dreiundzwanzig Minuten vor Moriartys angekündigtem Zug um Mitternacht.',
+    'room':'Sir Edmund liegt neben seinem Schreibtisch. Eine halb gerauchte Pfeife liegt bei seiner Hand. Die Vitrine ist leer. Kohlenstaub liegt auf der offenen Fensterbank — aber der Staub ist trocken, obwohl draußen der Regen strömt.',
+    'q1yes':'Trockener Staub kann nicht vom nassen Dach stammen. Jemand wollte, dass die Polizei auf das Fenster schaut.',
+    'q1no':'Lestrade verbringt zwölf Minuten damit, die verschlossene Tür erneut zu prüfen. Moriartys Zeitplan rückt vor.',
+    'path-a':'Watson findet eine blaue Verfärbung um die Lippen und einen bitteren Geruch in der Pfeife. Sir Edmunds Uhr blieb um 21:12 stehen, als er fiel. Der Mörder war in diesem Moment vielleicht gar nicht im Raum.',
+    'q2ayes':'Gift im Tabak konnte Stunden vorher vorbereitet worden sein. Der Mörder musste um 21:12 nicht anwesend sein.',
+    'q2ano':'Es gibt keine Schusswunde, aber der Irrtum kostet wertvolle Minuten.',
+    'path-b':'Draußen ist das Dach nass und sauber, und jenseits des Fensters gibt es keine Spuren. Drinnen bildet der Kohlenstaub zwei perfekte Schuhabdrücke — als hätte jemand ein Paar Schuhe hineingedrückt.',
+    'q2byes':'Die Abdrücke wurden drinnen hergestellt. Das Rätsel des verschlossenen Zimmers ist Theater, nicht Zauberei.',
+    'q2bno':'Sie finden nichts als Regen. Moriarty gewinnt weitere zwölf Minuten.',
+    'twocrime':'„Der leere Kasten, das offene Fenster und der tote Kurator sehen aus wie ein einziges Ereignis“, sagt er. „Genau deshalb müssen wir erwägen, dass sie es nicht sind.“',
+    'parcel':'In der Baker Street 221B stellt sie eine schwarze Teedose auf den Tisch. Ein scharlachrotes Wachssiegel trägt Sir Edmunds Initialen: E.V. Sie kam zweiundvierzig Minuten vor seinem Tod an.',
+    'witness':'„Ein junger Bote brachte sie um halb neun. Er sagte, Sir Edmund habe sie geschickt. Ich stellte sie neben das Feuer, und ich habe sie nicht geöffnet.“',
+    'q3yes':'Sir Edmund schickte die versiegelte Dose vor dem Museumsalarm ab. Der fehlende Gegenstand könnte vor dem „Diebstahl“ das Haus verlassen haben.',
+    'q3no':'Sie beantwortet keine weiteren Fragen, bis Watson sich entschuldigt. Die Spur verliert an Schwung.',
+    'path-c':'„Ich habe gestohlen, worum Sir Edmund mich gebeten hat“, sagt sie. „Der echte Stern hatte das Museum längst verlassen. Die Kopie war ein Köder. Moriarty sollte mir folgen — nicht dem Boten.“',
+    'q4cyes':'Celeste stahl eine Attrappe auf Sir Edmunds eigene Anweisung. Sie gab einen Diebstahl zu. Einen Mord gab sie nicht zu.',
+    'q4cno':'Ein Bericht, der ihre Worte verändert, gibt ihr allen Grund, nicht mehr zu reden.',
+    'path-d':'Um 21:12 speiste er mit dem Innenminister. Aber das Museumsregister zeigt, dass er Sir Edmund um 18:10 besuchte und eine Probe türkischen Tabaks als „Geschenk“ daließ.',
+    'q4dyes':'Moriarty lieferte den vergifteten Tabak um 18:10. Ein Mann kann einen Tod verursachen, ohne anwesend zu sein, wenn er eintritt.',
+    'q4dno':'Ohne eine Schlussfolgerung, die bis 18:10 zurückreicht, schützt ihn der Esstisch.',
+    'route-a':'Hinter der Theaterbar gibt sie Holmes einen Lagerhausschlüssel und eine Seilzeichnung. „Moriarty glaubt, ich arbeite noch für ihn“, sagt sie. „Lassen wir ihm diesen Irrtum.“',
+    'route-b':'Moriartys Männer jagen Watson über die Eisentreppen. Das Team entkommt mit einem Frachtschein: Crown Rail Lagerhaus, Gleis 4.',
+    'q5yes':'Er erreicht Gleis 4, bevor sich die Lokomotive in Bewegung setzt. Moriarty verliert seine saubere Flucht.',
+    'q5no':'Watson springt auf und verletzt sich den Arm. Das Team macht weiter, aber der Fluchtweg schließt sich.',
+    'end-gold':'Celeste durchtrennt das markierte Seil. Ein Frachtnetz versperrt den Ausgang. Watson sichert den Scharlachroten Stern; Holmes deckt Moriartys verschlüsseltes Netzwerk auf. Der Professor wird verhaftet, bevor der Mitternachtszug abfährt.',
+    'end-silver':'Holmes findet das echte Artefakt im doppelten Boden von Mrs Hudsons Teedose. Aber fehlende Beweise — oder eine unvollständige Theorie — geben Moriarty Zeit, im Londoner Nebel zu verschwinden.',
+    'end-shadow':'Die Anklage kommt zu spät oder nennt den falschen Täter. Der Mitternachtszug trägt Moriarty davon. Am Morgen ist das Netzwerk des Scharlachroten Sterns verschwunden, und Celeste steht unter Mordanklage.',
+    'reveal-a':'Der Diebstahl: Celeste stahl auf Sir Edmunds eigenen Wunsch eine Attrappe. Der echte Stern war bereits in der versiegelten Teedose in die Baker Street gegangen.',
+    'reveal-b':'Der Mord: Bei seinem Besuch um 18:10 vergiftete Moriarty den Geschenktabak. Sir Edmund rauchte ihn später und starb um 21:12 — das Alibi war also echt.',
+    'reveal-c':'Die Inszenierung beschuldigte Celeste und erfand einen unmöglichen Eindringling. Der Stern selbst war eine optische Chiffre, die Moriartys Netzwerk benannte.',
+    'dec1-a':'Erfahre, wie und wann Sir Edmund starb.',
+    'dec1-b':'Prüfe, ob wirklich jemand von außen eingedrungen ist.',
+    'dec2-a':'Parfüm an der Vitrine. In der Galerie gesehen. Eine bekannte Diebin.',
+    'dec2-b':'Besuchte um sechs. Wollte den Stern. Ein starkes Abendessen-Alibi.',
+    'dec3-a':'Das Phoenix-Theater. Celeste hat vielleicht den Lagerhausschlüssel.',
+    'dec3-b':'Crown Dock. Moriartys Männer bewegen einen Privatzug.'
+  },
+  es:{
+    'mission':'¿Quién se llevó la Estrella Escarlata? ¿Cómo murió Sir Edmund? ¿Quién planeó todo el crimen? El caso termina a medianoche.',
+    'casefile':'20:40 El Museo Real cierra. 20:55 Ven a Celeste Marlowe cerca de la galería este. 21:12 Un guardia oye romperse un cristal en el estudio. 21:20 La policía fuerza la puerta cerrada. Sir Edmund está muerto. Falta la Estrella, la ventana está abierta y no se encuentra ningún arma.',
+    'prologue':'La lluvia convierte las calles en espejos. A las 21:37 Holmes y Watson llegan al museo, veintitrés minutos antes del movimiento que Moriarty prometió para medianoche.',
+    'room':'Sir Edmund yace junto a su escritorio. Una pipa a medio fumar reposa cerca de su mano. La vitrina está vacía. Hay polvo de carbón en el alféizar abierto, pero el polvo está seco, aunque fuera está lloviendo a cántaros.',
+    'q1yes':'El polvo seco no puede venir del tejado mojado. Alguien quería que la policía mirara la ventana.',
+    'q1no':'Lestrade pasa doce minutos revisando otra vez la puerta cerrada. El calendario de Moriarty avanza.',
+    'path-a':'Watson encuentra una coloración azul alrededor de los labios y un olor amargo en la pipa. El reloj de Sir Edmund se paró a las 21:12, cuando cayó. Puede que el asesino no estuviera en la sala en ese momento.',
+    'q2ayes':'El veneno en el tabaco pudo prepararse horas antes. El asesino no necesitaba entrar a las 21:12.',
+    'q2ano':'No hay herida de bala, pero el error cuesta minutos preciosos.',
+    'path-b':'Fuera, el tejado está mojado y limpio, y no hay huellas más allá de la ventana. Dentro, el polvo de carbón forma dos huellas de zapato perfectas, como si alguien hubiera presionado un par de zapatos en él.',
+    'q2byes':'Las huellas se fabricaron dentro. El misterio del cuarto cerrado es teatro, no magia.',
+    'q2bno':'No encuentran más que lluvia. Moriarty gana otros doce minutos.',
+    'twocrime':'«La vitrina vacía, la ventana abierta y el conservador muerto parecen un solo suceso», dice. «Precisamente por eso debemos considerar que no lo son».',
+    'parcel':'En el 221B deja una lata de té negra sobre la mesa. Un sello de cera escarlata lleva las iniciales de Sir Edmund: E.V. Llegó cuarenta y dos minutos antes de su muerte.',
+    'witness':'«Un mensajero joven la trajo a las ocho y media. Dijo que la enviaba Sir Edmund. La puse junto al fuego y no la he abierto».',
+    'q3yes':'Sir Edmund envió la lata sellada antes de la alarma del museo. El objeto desaparecido pudo salir antes del «robo».',
+    'q3no':'Se niega a más preguntas hasta que Watson se disculpe. La pista pierde impulso.',
+    'path-c':'«Robé lo que Sir Edmund me pidió robar», dice. «La Estrella auténtica ya había salido del museo. La copia era un cebo. Moriarty debía seguirme a mí, no al mensajero».',
+    'q4cyes':'Celeste robó un señuelo siguiendo las instrucciones del propio Sir Edmund. Admitió un robo. No admitió un asesinato.',
+    'q4cno':'Un informe que cambia sus palabras le da todas las razones para dejar de hablar.',
+    'path-d':'A las 21:12 cenaba con el Ministro del Interior. Pero el registro del museo muestra que visitó a Sir Edmund a las 18:10 y dejó una muestra de tabaco turco como «regalo».',
+    'q4dyes':'Moriarty suministró el tabaco envenenado a las 18:10. Un hombre puede causar una muerte sin estar presente cuando ocurre.',
+    'q4dno':'Sin una deducción que se remonte a las 18:10, la mesa del comedor lo protege.',
+    'route-a':'Detrás de la barra del teatro le da a Holmes una llave del almacén y un diagrama de cuerdas. «Moriarty cree que sigo trabajando para él», dice. «Conservemos ese error».',
+    'route-b':'Los hombres de Moriarty persiguen a Watson por las escaleras de hierro. El equipo escapa con un recibo de carga: Almacén Crown Rail, Andén 4.',
+    'q5yes':'Llega al Andén 4 antes de que la locomotora se mueva. Moriarty pierde su fuga limpia.',
+    'q5no':'Watson salta a bordo y se lesiona el brazo. El equipo continúa, pero la vía de escape se está cerrando.',
+    'end-gold':'Celeste corta la cuerda marcada. Una red de carga bloquea la salida. Watson asegura la Estrella Escarlata; Holmes destapa la red cifrada de Moriarty. Detienen al Profesor antes de que salga el tren de medianoche.',
+    'end-silver':'Holmes encuentra el artefacto auténtico en el doble fondo de la lata de té de la señora Hudson. Pero las pruebas que faltan, o una teoría incompleta, dan a Moriarty tiempo para desaparecer en la niebla de Londres.',
+    'end-shadow':'La acusación llega demasiado tarde, o nombra al criminal equivocado. El tren de medianoche se lleva a Moriarty. Por la mañana la red de la Estrella Escarlata se ha esfumado y Celeste queda acusada del asesinato.',
+    'reveal-a':'El robo: Celeste robó un señuelo a petición del propio Sir Edmund. La Estrella auténtica ya había ido a Baker Street dentro de la lata de té sellada.',
+    'reveal-b':'El asesinato: durante su visita de las 18:10, Moriarty envenenó el tabaco de regalo. Sir Edmund lo fumó más tarde y murió a las 21:12, así que la coartada era auténtica.',
+    'reveal-c':'La puesta en escena incriminaba a Celeste e inventaba un intruso imposible. La Estrella era en sí un cifrado óptico que nombraba la red de Moriarty.',
+    'dec1-a':'Averigua cómo y cuándo murió Sir Edmund.',
+    'dec1-b':'Comprueba si alguien entró realmente desde fuera.',
+    'dec2-a':'Perfume en la vitrina. Vista en la galería. Ladrona conocida.',
+    'dec2-b':'Visitó a las seis. Quería la Estrella. Una sólida coartada de cena.',
+    'dec3-a':'El Teatro Phoenix. Puede que Celeste tenga la llave del almacén.',
+    'dec3-b':'Crown Dock. Los hombres de Moriarty mueven un tren privado.'
+  }
+};
 const UI_I18N = {
   en:{
     slideOf:(a,b)=>`${a} / ${b}`,
@@ -1687,6 +1798,8 @@ const UI_I18N = {
     ledDp:'DP',
     ledTime:'Time',
     ledClues:'Clues',
+    glossShow:'Translate',
+    glossHide:'Hide translation',
     branchLocked:'Your ledger does not support this ending',
     coverKicker:'A branching English mystery',
     coverSub:'Recover the artefact. Solve the murder. Outsmart Moriarty.',
@@ -1740,6 +1853,8 @@ const UI_I18N = {
     ledDp:'DP',
     ledTime:'Zeit',
     ledClues:'Hinweise',
+    glossShow:'Übersetzen',
+    glossHide:'Übersetzung ausblenden',
     branchLocked:'Dein Protokoll trägt dieses Ende nicht',
     coverKicker:'Ein verzweigtes englisches Krimispiel',
     coverSub:'Finde das Artefakt. Kläre den Mord. Überliste Moriarty.',
@@ -1793,6 +1908,8 @@ const UI_I18N = {
     ledDp:'PD',
     ledTime:'Tiempo',
     ledClues:'Pistas',
+    glossShow:'Traducir',
+    glossHide:'Ocultar traducción',
     branchLocked:'Tu registro no sostiene este final',
     coverKicker:'Un misterio inglés ramificado',
     coverSub:'Recupera el artefacto. Resuelve el asesinato. Supera a Moriarty.',
@@ -1919,6 +2036,7 @@ function goNode(id, record) {
 
 /* ── Scale the 1280×720 stage to fit any viewport, never scroll ── */
 if (BRANCH) ledgerInit();
+setTimeout(wireGlosses, 0);
 
 function fitStage() {
   const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
@@ -2470,9 +2588,20 @@ function renderRail() {
 
 /* Gap fill. Several gaps per slide, grouped and explained by .gap-row —
    and several gaps per row, which the engine scores individually. */
+/* Typography must never decide whether a learner is right. An author writing
+   can’t / couldn’t with a curly apostrophe — which is what good prose wants —
+   made the answer unreachable from a keyboard, which types a straight one.
+   Both sides are normalised: curly quotes flattened, and the various dashes
+   too, for the same reason. Found on the Scarlet Star final lock, where the
+   key AND every alternative were unmatchable. */
+const flatten = s => s.trim().toLowerCase()
+  .replace(/[\u2018\u2019\u201B\u02BC\u00B4\u0060]/g, "'")
+  .replace(/[\u201C\u201D]/g, '"')
+  .replace(/[\u2010-\u2015]/g, '-')
+  .replace(/\s+/g, ' ');
 const gapOk = g => g.dataset.answer.split('|')
-  .map(a => a.trim().toLowerCase())
-  .includes(g.value.trim().toLowerCase().replace(/\s+/g, ' '));
+  .map(flatten)
+  .includes(flatten(g.value));
 
 function markGap(g) {
   const ok = gapOk(g);
@@ -2565,6 +2694,40 @@ if (actInput) {
   sync();
 }
 
+/* ── Glosses. NARRATIVE_TR is per-lesson; absent, none of this runs. ── */
+function wireGlosses() {
+  if (typeof NARRATIVE_TR === 'undefined') return;
+  document.querySelectorAll('.gloss[data-tr]').forEach(el => {
+    if (el._glossed) return;
+    el._glossed = true;
+    const tr = document.createElement('p'); tr.className = 'gloss-tr';
+    const btn = document.createElement('button'); btn.className = 'gloss-btn'; btn.type = 'button';
+    el.after(tr); tr.before(btn);
+    btn.addEventListener('click', () => {
+      const on = tr.classList.toggle('show');
+      btn.textContent = t(on ? 'glossHide' : 'glossShow');
+    });
+    el._gloss = { tr, btn };
+  });
+  syncGlosses();
+}
+function syncGlosses() {
+  if (typeof NARRATIVE_TR === 'undefined') return;
+  const bank = NARRATIVE_TR[currentLang];
+  // No translation for this language means no control — an empty reveal is
+  // worse than none, which is the same reason a half-done language stays out
+  // of the switcher entirely.
+  document.documentElement.dataset.gloss = bank ? 'on' : 'off';
+  document.querySelectorAll('.gloss[data-tr]').forEach(el => {
+    const g = el._gloss; if (!g) return;
+    const txt = bank && bank[el.dataset.tr];
+    g.btn.hidden = !txt;
+    g.tr.innerHTML = txt || '';
+    g.tr.classList.remove('show');
+    g.btn.textContent = t('glossShow');
+  });
+}
+
 /* ── Events ── */
 document.addEventListener('click', e => {
   const a = e.target.closest('[data-action]');
@@ -2623,6 +2786,7 @@ document.addEventListener('keydown', e => {
 
 /* ── Language ── */
 function applyLang() {
+  syncGlosses();
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const v = t(el.dataset.i18n);
     if (v != null) el.innerHTML = v;
