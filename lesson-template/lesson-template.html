@@ -280,6 +280,10 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 
 /* Two-column teaching layout */
 .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+/* Three across, for a lesson that genuinely has three parallel things to say
+   — the case ledger's DP / Time / Clues, or a three-ending fork. Cards get
+   narrow fast, so keep each body under about twenty-five words. */
+.cols-3 { grid-template-columns: repeat(3, 1fr); }
 
 /* ── QUESTIONS ── */
 .q-stem { font-size: 25px; line-height: 1.5; color: var(--text); margin-bottom: 22px; }
@@ -307,6 +311,20 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 .opt.correct { border-color: var(--ok); background: color-mix(in srgb, var(--ok) 20%, var(--surface2)); }
 .opt.wrong   { border-color: var(--no); background: color-mix(in srgb, var(--no) 18%, var(--surface2)); }
 .opt:disabled { cursor: default; }
+
+/* ── Branch mode: the case ledger ──────────────────────────────────────
+   A branching lesson carries state across nodes. It rides in the nav bar
+   so it is visible on every screen without stealing canvas space. */
+.ledger { display: flex; gap: 18px; align-items: center; margin-inline-end: 14px; }
+.led { font: 600 11.5px/1 'DM Mono', monospace; letter-spacing: .09em;
+       text-transform: uppercase; color: var(--text-dim); white-space: nowrap; }
+.led b { color: var(--text-dim); font-weight: 600; }
+.led i { font-style: normal; color: var(--accent-bright); margin-inline-start: 5px; }
+.led.spend i { color: var(--contrast); }
+.choice[disabled] { opacity: .38; cursor: not-allowed; }
+.choice-why { display: block; font: 500 11.5px/1.4 'DM Mono', monospace;
+              letter-spacing: .06em; text-transform: uppercase;
+              color: var(--text-dim); margin-top: 6px; }
 
 /* Gap-fill */
 .gap {
@@ -968,6 +986,11 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
     <div class="deck-rail" id="deckRail" data-i18n-stops="railStops" hidden></div>
     <div class="deck-bar">
       <select class="lang-select" id="langSelect" aria-label="Language"></select>
+      <div class="ledger" id="ledger" hidden>
+        <span class="led"><b data-i18n="ledDp">DP</b> <i id="ledDp">0</i></span>
+        <span class="led"><b data-i18n="ledTime">TIME</b> <i id="ledTime">•••</i></span>
+        <span class="led"><b data-i18n="ledClues">CLUES</b> <i id="ledClues">0</i></span>
+      </div>
       <button class="nav-btn" data-action="prev" aria-label="Previous">‹</button>
       <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
       <span class="deck-count" id="deckCount">1 / 1</span>
@@ -1030,7 +1053,9 @@ const UI_I18N = {
     s1Note:'Optional note, caveat, or common-mistake warning.',
     s2Eyebrow:'Question 1', s2Title:'Choose the best option',
     s2Stem:'The board <em>_______</em> the proposal before the deadline.',
-    s3Eyebrow:'Question 2', s3Title:'Complete the sentence'
+    s3Eyebrow:'Question 2', s3Title:'Complete the sentence',
+    ledDp:'DP', ledTime:'Time', ledClues:'Clues',
+    branchLocked:'Your ledger does not support this ending'
   },
   de: {
     btnStart:'Beginnen →', btnCheck:'Prüfen', btnNext:'Weiter →', btnRestart:'Neu starten',
@@ -1063,10 +1088,12 @@ const UI_I18N = {
     s1Note:'Optionaler Hinweis, Einschränkung oder Warnung vor einem typischen Fehler.',
     s2Eyebrow:'Frage 1', s2Title:'Wähle die beste Option',
     s2Stem:'The board <em>_______</em> the proposal before the deadline.',
-    s3Eyebrow:'Frage 2', s3Title:'Vervollständige den Satz'
+    s3Eyebrow:'Frage 2', s3Title:'Vervollständige den Satz',
+    ledDp:'DP', ledTime:'Zeit', ledClues:'Hinweise',
+    branchLocked:'Dein Protokoll trägt dieses Ende nicht'
   },
   /* Fill these in later — English shows through until you do. */
-  es:{}, fr:{}, it:{}, pt:{}, ru:{}, ar:{}, zh:{}, ja:{}
+  fr:{}, it:{}, pt:{}, ru:{}, ar:{}, zh:{}, ja:{}
 };
 
 let currentLang = 'en';
@@ -1086,7 +1113,77 @@ const maxScore = scored.reduce((n, s) => n + Math.max(1, countIn(s)), 0);
 let idx = 0, score = 0;
 const answered = new WeakSet();
 
+/* ── Branch mode ────────────────────────────────────────────────────────
+   Opt in with <body data-flow="branch">. A branching lesson is a graph, not
+   a line: slides carry data-node, and links carry data-goto. Everything below
+   is inert in an ordinary deck, so the 200-odd linear lessons are unaffected.
+
+   Three things have to change, and they are the three that go wrong when a
+   branching game is faked with hyperlinks:
+     - prev must retrace the route actually taken, not slides[idx-1];
+     - the score denominator must count only the questions this learner met,
+       or every player is marked out of a paper they never sat;
+     - the ending must be decided by the ledger rather than by whichever
+       button the learner feels like pressing. */
+const BRANCH = document.body.dataset.flow === 'branch';
+const nodeOf = {};
+if (BRANCH) slides.forEach(sl => { if (sl.dataset.node) nodeOf[sl.dataset.node] = sl; });
+const START = BRANCH ? (document.body.dataset.start || slides[0].dataset.node) : null;
+const trail = [];
+const ledger = { dp: 0, time: 0, clues: new Set() };
+const seenScored = new Set();
+
+function ledgerInit() {
+  ledger.dp = 0;
+  ledger.time = +(document.body.dataset.time || 3);
+  ledger.clues.clear();
+  drawLedger();
+}
+function drawLedger() {
+  const box = document.getElementById('ledger');
+  if (!box) return;
+  box.hidden = !BRANCH;
+  if (!BRANCH) return;
+  document.getElementById('ledDp').textContent = ledger.dp;
+  document.getElementById('ledTime').textContent =
+    ledger.time > 0 ? '\u25CF'.repeat(ledger.time) : '\u2014';
+  document.getElementById('ledClues').textContent = ledger.clues.size;
+}
+/* Apply the cost or reward an element declares. Idempotent per element, so
+   paging back over a node never pays twice. */
+const spent = new WeakSet();
+function applyLedger(el) {
+  if (!BRANCH || !el || spent.has(el)) return;
+  spent.add(el);
+  if (el.dataset.dp)   ledger.dp = Math.max(0, ledger.dp + (+el.dataset.dp));
+  if (el.dataset.time) ledger.time = Math.max(0, ledger.time + (+el.dataset.time));
+  if (el.dataset.clue) el.dataset.clue.split(/\s+/).filter(Boolean)
+                          .forEach(c => ledger.clues.add(c));
+  drawLedger();
+}
+/* A ledger gate: data-require="dp>=8 && time>=1 && clues>=4".
+   Only these three names are in scope, and nothing is eval'd. */
+function meets(expr) {
+  if (!expr) return true;
+  const val = { dp: ledger.dp, time: ledger.time, clues: ledger.clues.size };
+  return expr.split('&&').every(part => {
+    const m = part.trim().match(/^(dp|time|clues)\s*(>=|<=|>|<|==)\s*(\d+)$/);
+    if (!m) return true;
+    const a = val[m[1]], b = +m[3];
+    return m[2] === '>=' ? a >= b : m[2] === '<=' ? a <= b
+         : m[2] === '>'  ? a >  b : m[2] === '<'  ? a <  b : a === b;
+  });
+}
+function goNode(id, record) {
+  const target = nodeOf[id];
+  if (!target) return;
+  if (record !== false) trail.push(idx);
+  show(slides.indexOf(target));
+}
+
 /* ── Scale the 1280×720 stage to fit any viewport, never scroll ── */
+if (BRANCH) ledgerInit();
+
 function fitStage() {
   const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
   // Centre explicitly. Relying on the wrapper to centre an oversized child is
@@ -1112,11 +1209,30 @@ function show(n) {
   // under the wash — so extra artwork never becomes a pasted-in box.
   stage.style.setProperty('--hero', slides[idx].dataset.bg
     ? `url('${slides[idx].dataset.bg}')` : '');
-  document.getElementById('progressFill').style.width =
-    (slides.length > 1 ? (idx / (slides.length - 1)) * 100 : 0) + '%';
-  document.getElementById('deckCount').textContent = t('slideOf')(idx + 1, slides.length);
-  document.querySelector('[data-action="prev"]').disabled = idx === 0;
-  document.querySelector('[data-action="next"]').disabled = idx === slides.length - 1;
+  // In branch mode idx/length is meaningless — a learner sees roughly half the
+  // nodes — so progress and the counter come from the node itself.
+  const cur = slides[idx];
+  document.getElementById('progressFill').style.width = BRANCH
+    ? (cur.dataset.progress || 0) + '%'
+    : (slides.length > 1 ? (idx / (slides.length - 1)) * 100 : 0) + '%';
+  document.getElementById('deckCount').textContent = BRANCH
+    ? (cur.dataset.act || '')
+    : t('slideOf')(idx + 1, slides.length);
+  document.querySelector('[data-action="prev"]').disabled =
+    BRANCH ? !trail.length : idx === 0;
+  document.querySelector('[data-action="next"]').disabled =
+    BRANCH ? !cur.querySelector('[data-goto]') : idx === slides.length - 1;
+  if (BRANCH) {
+    applyLedger(cur);
+    if (['mc','gap','match','order','sort','lock'].includes(cur.dataset.type))
+      seenScored.add(cur);
+    // A ledger gate greys out the endings the run did not earn.
+    cur.querySelectorAll('[data-require]').forEach(b => {
+      const okay = meets(b.dataset.require);
+      b.disabled = !okay;
+      b.classList.toggle('locked', !okay);
+    });
+  }
   if (slides[idx].dataset.type === 'results') renderResults();
   markRail(slides[idx]);
   if (slides[idx]._enter) slides[idx]._enter();
@@ -1125,7 +1241,12 @@ function show(n) {
 }
 
 function renderResults() {
-  const max = maxScore;
+  // Branch mode scores out of what this learner actually met. Counting every
+  // question in the file would mark them against a paper half of which was
+  // on the road not taken.
+  const max = BRANCH
+    ? [...seenScored].reduce((n, s) => n + Math.max(1, countIn(s)), 0)
+    : maxScore;
   document.getElementById('scoreVal').textContent = score;
   document.getElementById('scoreMax').textContent = max;
   const pct = max ? score / max : 0;
@@ -1201,6 +1322,16 @@ slides.filter(s => s.dataset.type === 'mc').forEach(slide => {
     if (!ok) o.classList.add('wrong');
     award(slide, ok);
     feedback(slide, ok, null, o.dataset.explain);
+    if (BRANCH) {
+      // The chosen option carries its own consequence and its own destination,
+      // so a wrong answer costs Time and routes to a setback node rather than
+      // simply refusing to move.
+      applyLedger(o);
+      const to = o.dataset.goto || slide.dataset.goto;
+      const cont = slide.querySelector('[data-action="branch-continue"]');
+      if (cont) { cont.hidden = false; cont.dataset.goto = to; }
+      else if (to) setTimeout(() => goNode(to), 1400);
+    }
   }));
 });
 
@@ -1673,6 +1804,13 @@ function checkGaps(slide) {
   const btn = slide.querySelector('[data-action="check"]');
   if (btn) btn.disabled = true;
   updateScoreChip();
+  // In branch mode a gap slide may pay into the ledger, but only when every
+  // gap on it is right. Without this a scored slide costs the learner effort
+  // and returns nothing to the state that picks their ending.
+  if (BRANCH && slide.dataset.dp) {
+    const clean = ![...slide.querySelectorAll('.gap')].some(g => g.classList.contains('wrong'));
+    if (clean) applyLedger(slide); else spent.add(slide);
+  }
 }
 
 /* ── Activation: word count, copy, and a print mirror (a textarea's
@@ -1696,11 +1834,19 @@ document.addEventListener('click', e => {
   const a = e.target.closest('[data-action]');
   if (!a) return;
   const act = a.dataset.action;
-  if (act === 'next') show(idx + 1);
-  if (act === 'prev') show(idx - 1);
+  if (act === 'next') BRANCH ? followFirst() : show(idx + 1);
+  if (act === 'prev') BRANCH ? (trail.length && show(trail.pop())) : show(idx - 1);
   if (act === 'check') checkGaps(a.closest('.slide'));
   if (act === 'check-order') { const sl = a.closest('.slide'); if (sl._check) sl._check(); }
-  if (act === 'restart') location.reload();
+  if (act === 'restart') {
+    if (!BRANCH) return location.reload();
+    // Replay resets the ledger but keeps the learner in the page, so a class
+    // can run the other route immediately.
+    trail.length = 0; seenScored.clear(); score = 0;
+    slides.forEach(sl => { answered.delete(sl); });
+    ledgerInit(); updateScoreChip();
+    goNode(a.dataset.goto || START, false);
+  }
   if (act === 'copy-writing') {
     const ta = document.getElementById('actInput');
     if (ta && navigator.clipboard) navigator.clipboard.writeText(ta.value).then(() => {
@@ -1711,13 +1857,32 @@ document.addEventListener('click', e => {
   }
 });
 
+/* Branch links. A choice may also move the ledger; the cost is paid once,
+   on the click that commits to it. */
+document.addEventListener('click', e => {
+  if (!BRANCH) return;
+  const g = e.target.closest('[data-goto]');
+  if (!g || g.disabled || g.dataset.action === 'restart') return;
+  if (g.classList.contains('opt')) return;   // options route after feedback
+  applyLedger(g);
+  goNode(g.dataset.goto);
+});
+function followFirst() {
+  const g = slides[idx].querySelector('[data-goto]:not([disabled])');
+  if (g) { applyLedger(g); goNode(g.dataset.goto); }
+}
+
 document.addEventListener('keydown', e => {
   if (e.target.matches('input, select, textarea')) {
     if (e.key === 'Enter') checkGaps(e.target.closest('.slide'));
     return;
   }
-  if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); show(idx + 1); }
-  if (['ArrowLeft', 'PageUp'].includes(e.key))         { e.preventDefault(); show(idx - 1); }
+  if (['ArrowRight', 'PageDown', ' '].includes(e.key)) {
+    e.preventDefault(); BRANCH ? followFirst() : show(idx + 1);
+  }
+  if (['ArrowLeft', 'PageUp'].includes(e.key)) {
+    e.preventDefault(); BRANCH ? (trail.length && show(trail.pop())) : show(idx - 1);
+  }
 });
 
 /* ── Language ── */
