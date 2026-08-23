@@ -23,7 +23,10 @@ CHROME = {
         'btnCopy': "'Copy'",
         'btnCopied': "'Copied'",
         'wordCount': "(n)=>`${n} ${n===1?'word':'words'}`",
-        'btnOpen': "'Open'"
+        'btnOpen': "'Open'",
+        'ledDp': "'DP'",
+        'ledTime': "'Time'",
+        'ledClues': "'Clues'"
     },
     'de': {
         'btnStart': "'Beginnen →'",
@@ -41,7 +44,10 @@ CHROME = {
         'btnCopy': "'Kopieren'",
         'btnCopied': "'Kopiert'",
         'wordCount': "(n)=>`${n} ${n===1?'Wort':'Wörter'}`",
-        'btnOpen': "'Öffnen'"
+        'btnOpen': "'Öffnen'",
+        'ledDp': "'DP'",
+        'ledTime': "'Zeit'",
+        'ledClues': "'Hinweise'"
     },
     'es': {
         'btnStart': "'Empezar →'",
@@ -59,7 +65,10 @@ CHROME = {
         'btnCopy': "'Copiar'",
         'btnCopied': "'Copiado'",
         'wordCount': "(n)=>`${n} ${n===1?'palabra':'palabras'}`",
-        'btnOpen': "'Abrir'"
+        'btnOpen': "'Abrir'",
+        'ledDp': "'DP'",
+        'ledTime': "'Tiempo'",
+        'ledClues': "'Pistas'"
     },
     'fr': {
         'btnStart': "'Commencer →'",
@@ -77,7 +86,10 @@ CHROME = {
         'btnCopy': "'Copier'",
         'btnCopied': "'Copié'",
         'wordCount': "(n)=>`${n} ${n===1?'mot':'mots'}`",
-        'btnOpen': "'Ouvrir'"
+        'btnOpen': "'Ouvrir'",
+        'ledDp': "'DP'",
+        'ledTime': "'Temps'",
+        'ledClues': "'Indices'"
     },
     'it': {
         'btnStart': "'Inizia →'",
@@ -95,7 +107,10 @@ CHROME = {
         'btnCopy': "'Copia'",
         'btnCopied': "'Copiato'",
         'wordCount': "(n)=>`${n} ${n===1?'parola':'parole'}`",
-        'btnOpen': "'Apri'"
+        'btnOpen': "'Apri'",
+        'ledDp': "'DP'",
+        'ledTime': "'Tempo'",
+        'ledClues': "'Indizi'"
     },
     'pt': {
         'btnStart': "'Começar →'",
@@ -113,7 +128,10 @@ CHROME = {
         'btnCopy': "'Copiar'",
         'btnCopied': "'Copiado'",
         'wordCount': "(n)=>`${n} ${n===1?'palavra':'palavras'}`",
-        'btnOpen': "'Abrir'"
+        'btnOpen': "'Abrir'",
+        'ledDp': "'DP'",
+        'ledTime': "'Tempo'",
+        'ledClues': "'Pistas'"
     },
     'ru': {
         'btnStart': "'Начать →'",
@@ -131,7 +149,10 @@ CHROME = {
         'btnCopy': "'Копировать'",
         'btnCopied': "'Скопировано'",
         'wordCount': "(n)=>{const a=n%10,b=n%100;return `${n} ${a===1&&b!==11?'слово':(a>=2&&a<=4&&(b<12||b>14))?'слова':'слов'}`}",
-        'btnOpen': "'Открыть'"
+        'btnOpen': "'Открыть'",
+        'ledDp': "'DP'",
+        'ledTime': "'Время'",
+        'ledClues': "'Улики'"
     },
     'ar': {
         'btnStart': "'ابدأ →'",
@@ -149,7 +170,10 @@ CHROME = {
         'btnCopy': "'نسخ'",
         'btnCopied': "'تم النسخ'",
         'wordCount': '(n)=>`${n} كلمة`',
-        'btnOpen': "'افتح'"
+        'btnOpen': "'افتح'",
+        'ledDp': "'DP'",
+        'ledTime': "'الوقت'",
+        'ledClues': "'أدلة'"
     },
     'zh': {
         'btnStart': "'开始 →'",
@@ -167,7 +191,10 @@ CHROME = {
         'btnCopy': "'复制'",
         'btnCopied': "'已复制'",
         'wordCount': '(n)=>`${n} 词`',
-        'btnOpen': "'打开'"
+        'btnOpen': "'打开'",
+        'ledDp': "'DP'",
+        'ledTime': "'时间'",
+        'ledClues': "'线索'"
     },
     'ja': {
         'btnStart': "'開始 →'",
@@ -185,6 +212,9 @@ CHROME = {
         'btnCopy': "'コピー'",
         'btnCopied': "'コピーしました'",
         'wordCount': '(n)=>`${n} 語`',
-        'btnOpen': "'開ける'"
+        'btnOpen': "'開ける'",
+        'ledDp': "'DP'",
+        'ledTime': "'時間'",
+        'ledClues': "'手がかり'"
     },
 }
