@@ -100,6 +100,14 @@ The live site follows `origin/main` within a few minutes.
 `/mnt/user-data/outputs/` works, so there is no need to route files through the
 desktop bridge or a connected folder.
 
+**Keep image batches to five files.** On 2026-08-23 a 21-file, 2.2 MB batch
+and then a 10-file, 1.1 MB batch both wedged the tab: `file_upload` timed out
+after 45s waiting for document_idle, and every subsequent screenshot failed
+with "script injection timed out" until the tab was closed and recreated. Five
+files at roughly 500 KB went through every time, eight batches in a row. The
+form accumulates across calls, so batching costs nothing — it is still one
+commit at the end.
+
 The trap is the commit form. **Clicking the summary field or the Commit
 button by element `ref` does nothing, reports success, and leaves the form
 untouched.** Three of the six commits in the Carrying the Load upload were lost
