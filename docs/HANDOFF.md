@@ -2640,25 +2640,58 @@ them to a module's `LIFT` to use them. Verified additive: rebuilding
 
 ---
 
-## Escalating a Complaint (C1) — shipped, but with no builder
+## Escalating a Complaint (C1) — the builder has been reconstructed
 
 `forbes-escalating-a-complaint-c1.html`, 21 slides, 34 scored points, EN+DE.
 Supabase `lessons` row **255**, access `free`, deck `true`. `check-lesson.js`
 exits clean; `check-library.js --vs-origin` reports no dropped entry.
 
-**Read this before you touch the file.** Every other deck in this repo is
-generated — edit the builder in `lesson-template/build/`, re-run it. This one
-is not. The session that authored it wrote `build_escalating.py`,
-`i18n_escalating.py` and a `lesson-template/textcontrast.py` (a glyph-level
-contrast audit), and its container was reclaimed before any of them left the
-sandbox. **None of them exist.** What survived was the self-contained preview
-HTML that had been sent to Innes, and the shipped page was reconstructed from
-it by replacing the three inlined `data:image/jpeg` URIs with repo paths.
+**This entry used to say the page had no generator. It does now.**
+`lesson-template/build/build_escalating.py` and `i18n_escalating.py` were
+rebuilt from the shipped HTML, so the page is back under the normal rule: edit
+the builder, re-run it, never hand-edit the generated file.
 
-So: hand-editing this page is currently the only way to change it, and the
-usual "your edit will be overwritten by the next builder run" warning does not
-apply — there is nothing to re-run. If it needs more than a small fix, write
-the builder first and treat the current HTML as the spec.
+The history is still worth knowing. The session that first authored the deck
+wrote a builder, an i18n module and a `lesson-template/textcontrast.py`
+(glyph-level contrast audit) and lost all three when its container was
+reclaimed; what survived was the self-contained preview HTML sent to Innes,
+and the shipped page was reconstructed from it by swapping three inlined
+`data:image/jpeg` URIs for repo paths. `textcontrast.py` is still gone — only
+its finding survived, see below.
+
+Rebuilding reproduces the shipped page's slides and `UI_I18N` block byte for
+byte. Four things differ and all are understood:
+
+- The `<!-- SEO -->` block is stripped, as by every builder run. `tools/seo.py`
+  puts it back.
+- Five palette tokens move by one unit in one channel — `--border`, `--accent`,
+  `--accent-bright`, `--accent-dim`, `--contrast`. `extract-palette.py` is
+  deterministic here, so this is Pillow rounding in the original sandbox. The
+  builder records what the script emits today.
+- `.q-ctx` and the reworded `.ledger[hidden]` comment arrive from the template,
+  which moved on after the deck shipped. This deck uses no `mc(ctx=…)`.
+- **`.bank-chip` went the other way, and was fixed rather than accepted.** The
+  lost session had generalised the light-theme chip ground to both themes,
+  after measuring every word-bank chip on the two gap slides and the activation
+  slide at 1.38:1–3.03:1 against this deck's bright hero. That change existed
+  only inside the shipped page's own copy of the stylesheet, so regenerating
+  reverted it. It has been lifted into `lesson-template/lesson-template.html`
+  (base `.bank-chip` rule now mixes into `var(--surface)`; the
+  `html[data-theme="light"]` override it duplicated is gone), which is where an
+  engine change belongs. Light decks are unaffected — the new base rule is the
+  declaration the override already carried. **Every other deck now inherits it
+  on its next rebuild.**
+
+**One latent defect, deliberately left in place.** Nine `T['en']` values in
+`i18n_escalating.py` are longer than the text the same key occupies in the
+slides: `case3`, `case4`, `factNote1`, `factNote2`, `moves1`–`moves4`,
+`proto2`. The HTML carries trimmed sentences, the translation table carries the
+full ones, so switching to German and back to English swaps in longer copy than
+the slide was laid out for. That is the signature of a hand-edit made to the
+generated page after the layout gate complained. It was reproduced, not
+repaired, so that the reconstruction could be verified against what shipped.
+Closing it is a one-pass edit: pick one text per key, put it in the builder and
+the i18n module, re-run `check-lesson.js`.
 
 **Artwork is borrowed.** `--hero` is `DesignPitch/podium.jpg` and both
 `data-bg` slides use `DesignPitch/pair.jpg`, so the palette in this deck was
@@ -2666,8 +2699,8 @@ derived from the Design Pitch hero, not from art of its own — and the library
 card shares its thumbnail with `forbes-english-lesson-2.html`. Innes generated
 four `conflict at work` illustrations (Noma Bar style, coral/slate) about
 forty minutes after this deck was previewed; they are the obvious replacement.
-Doing that properly means re-running `extract-palette.py` on the new hero and
-rebuilding — which needs the builder that does not exist yet.
+That is now a small job: point `F`/`HERO`/`BG` at the new folder, paste in a
+fresh `extract-palette.py` block, re-run the builder.
 
 There is also a companion take-away that never entered the repo:
 `escalation-audit-prompt.md`, an eleven-check audit prompt for a learner's own
