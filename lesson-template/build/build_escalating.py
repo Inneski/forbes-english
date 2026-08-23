@@ -52,9 +52,17 @@ import deck as D
 
 TPL = 'lesson-template/lesson-template.html'
 OUT = 'forbes-escalating-a-complaint-c1.html'
-F = 'DesignPitch'
-HERO = 'podium.jpg'          # borrowed from the design-pitch lesson for now
-BG = 'pair.jpg'              # second background, on the case file and activation
+# The cover is not up for discussion: Innes likes the podium shot and it
+# stays. It is still borrowed from the design-pitch lesson, which is why the
+# library card shows the same picture as forbes-english-lesson-2.html. That is
+# a known cost, not an oversight. The palette derives from the hero, so it is
+# unchanged too.
+HERO_F = 'DesignPitch'
+HERO = 'podium.jpg'
+# Only the interior background is this lesson's own: two ranks of profiles
+# facing off across a colour divide, on the case file and the activation.
+F = 'Escalation'
+BG = 'two-sides.jpg'
 
 # Mechanically derived — the verbatim output of
 #     python3 lesson-template/extract-palette.py DesignPitch/podium.jpg
@@ -80,7 +88,7 @@ PALETTE = '''  --hero: url('%s/%s');
   --accent-bright : #dc998a;
   --accent-dim    : #8c4738;
   --secondary     : #a8c0c1;
-  --contrast      : #2bdea8;''' % (F, HERO)
+  --contrast      : #2bdea8;''' % (HERO_F, HERO)
 
 # ── the teaching slides ────────────────────────────────────────────────
 # (eyebrow_key, eyebrow, title_key, title, [(head_key, head, body, note_key,
