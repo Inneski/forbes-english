@@ -766,6 +766,9 @@ function detectCategories(item) {
   if (/el zar/.test(t)) cats.push('Music', 'Negotiation');
   if (/nietzsche|eckhart tolle|\btolle\b/.test(t)) cats.push('Philosophy');
   if (/minecraft|\blego\b|\bdnd\b|dungeon|d&d/.test(t)) cats.push('Gaming');
+  // Minecraft is also its own filter: it is the single biggest run of themed
+  // lessons on the site, and 'Gaming' buries it among the RPG and Lego ones.
+  if (/minecraft|dino-?craft/.test(t)) cats.push('Minecraft');
   if (/\brpg\b|role[\s_-]?playing|career quest|falcon racing|parisian conquest|wild frame|thornwick/.test(t)) cats.push('Role Playing Games');
   if (/football|soccer|champions league|eintracht|vfb[\s_-]?stuttgart|\bgolf\b|tennis|skiing|\bski\b|water polo|\bmtb\b|mountain[\s_-]?bik|ridgeline|dartboard|scooter tricks/.test(t)) cats.push('Sports');
   if (/architect|rem koolhaas|max lamb|interior design|restaurant interior|\binterior\b|cafe kowloon/.test(t)) cats.push('Architectural Design');
@@ -793,7 +796,7 @@ function detectCategories(item) {
   if (item.video) cats.push('Video Lessons');
   if (NOT_ACTUALLY_SPEAKING.has(item.file)) {
     cats.push('Grammar activity');
-  } else if (/quiz|grammar[\s_-]?test|jeopardy|grammar atelier/.test(t)) {
+  } else if (/quiz|grammar[\s_-]?test|jeopardy|grammar atelier|time signals/.test(t)) {
     cats.push('Grammar activity');
   } else if (/roleplay|role-play|escape room|alias|speaking activity/.test(t)) {
     cats.push('Speaking activity');
@@ -834,13 +837,14 @@ levels.forEach(lvl => {
   levelFilters.appendChild(btn);
 });
 
-const categories = ['ALL', 'Film & TV', 'Geopolitics', 'Philosophy', 'Gaming', 'Role Playing Games', 'Sports', 'Architectural Design', 'Fashion', 'Music', 'Construction', 'Energy', 'Technology & AI', 'Negotiation', 'Business', 'Animal Welfare', 'Nature & Wildlife', 'Workplace Communication', 'Emergency Services', 'Martial Arts', 'IELTS', 'Video Lessons', 'Modal Verbs', 'Tenses', 'Prepositions', 'Phrasal Verbs', 'Passive Voice', 'Gerunds & Infinitives', 'Grammar activity', 'Speaking activity', 'Lesson plan', 'Slide Decks'];
+const categories = ['ALL', 'Film & TV', 'Geopolitics', 'Philosophy', 'Gaming', 'Minecraft', 'Role Playing Games', 'Sports', 'Architectural Design', 'Fashion', 'Music', 'Construction', 'Energy', 'Technology & AI', 'Negotiation', 'Business', 'Animal Welfare', 'Nature & Wildlife', 'Workplace Communication', 'Emergency Services', 'Martial Arts', 'IELTS', 'Video Lessons', 'Modal Verbs', 'Tenses', 'Prepositions', 'Phrasal Verbs', 'Passive Voice', 'Gerunds & Infinitives', 'Grammar activity', 'Speaking activity', 'Lesson plan', 'Slide Decks'];
 const catLabels = {
   'ALL': 'All',
   'Film & TV': 'Film & TV',
   'Geopolitics': 'Geopolitics',
   'Philosophy': 'Philosophy',
   'Gaming': 'Gaming',
+  'Minecraft': 'Minecraft',
   'Role Playing Games': 'Role Playing Games',
   'Sports': 'Sports',
   'Architectural Design': 'Architectural Design',
@@ -1089,6 +1093,7 @@ const LESSON_IMAGES = {
   "forbes-english-lesson (B2).html": "AILearning/retro-desk-sunset.jpg",
   "forbes-english-lesson-TopGear.html": "Top Gear/hero.jpg",
   "present-perfect-time-signals.html": "present-perfect-time-signals/bg01.jpg",
+  "past-continuous-time-signals.html": "past-continuous-time-signals/bg01.jpg",
   "sherpa-tensing-route-map.html": "Sherpa Tensing/thumb-route-map.png",
   "sherpa-tensing-camp-one-present-continuous.html": "SherpaCamps/camp-one-ripple-rings.png",
   "sherpa-tensing-camp-two-present-simple.html": "SherpaCamps/camp-two-frequency-mountain.png",
@@ -1175,6 +1180,7 @@ const CATEGORY_STYLE = {
   'Gerunds & Infinitives':      ['#e8eef2,#c9d9e4', '🔗'],
   'Emergency Services':         ['#fbe9e6,#f5c6bd', '🚒'],
   'Gaming':                    ['#e9f0fb,#c9dbf5', '🎮'],
+  'Minecraft':                 ['#eaf3e6,#cde3c2', '⛏️'],
   'Role Playing Games':        ['#f3e8f7,#e0c9f0', '🎲'],
   'Martial Arts':              ['#f0e9f7,#d9c5ef', '🥋'],
   'Music':                     ['#fdeceb,#f6cfc9', '🎸'],
