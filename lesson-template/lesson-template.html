@@ -458,7 +458,10 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
 .bank-chip {
   font-family: var(--font-mono); font-size: 12px;
   padding: 5px 12px; border-radius: 999px;
-  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  /* NOT a tint into `transparent`. See the note beside the light-theme block
+     lower down: a see-through fill is a hole in the plate, and the ink then
+     sits on whatever artwork happens to be behind it. */
+  background: color-mix(in srgb, var(--accent) 16%, var(--surface));
   border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
   color: var(--accent-bright);
 }
@@ -835,14 +838,29 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
    nothing, so on a light lesson their rust text — #701c00, which reads at
    7.8:1 on the surface — sat straight on the artwork and measured 1.53:1 to
    1.94:1. The Check button was the worst of it. Give them a real ground and
-   the same ink reads. Light theme only: on a dark canvas --accent-bright is
-   the bright end of the palette and the transparent fill is correct. */
+   the same ink reads.
+
+   "Light theme only" is what this note used to say, on the reasoning that a
+   dark deck's canvas is dark. It is not: rule 5 puts the hero behind every
+   slide at 0.72, so a chip's ground is the *artwork*, and a hero with a bright
+   region puts a bright ground under it. Measured on the escalation deck — dark
+   theme, a cream sun disc and a pale wall in the hero — every word-bank chip
+   on the two gap slides and the activation slide came in between 1.38:1 and
+   3.03:1, with 100% of the glyph pixels under AA. The fix belongs on the base
+   rule for both themes, which is where it now is (see .bank-chip above); the
+   light-theme override that used to sit here was the same declaration and has
+   gone.
+
+   That measurement was made in the sandbox that built the escalation deck and
+   was lost with it, along with the glyph-level audit script it was made by. It
+   survived only inside the shipped page's own copy of this stylesheet, and was
+   lifted back into the template here so that rebuilding that deck — or any
+   other — stops reverting it. */
 /* Do NOT reach for `html[data-theme="light"] .btn` here. It scores one
    attribute plus one type and beats `.btn-solid`, which scores one class —
    the cover's Begin button lost its red fill and its cream label went to
    1.03:1. :where() does not rescue it either, because the attribute counts
    in the same specificity column as the class. Fix the base rule instead. */
-html[data-theme="light"] .bank-chip { background: color-mix(in srgb, var(--accent) 16%, var(--surface)); }
 /* The solid button's label is --void, which is right on a dark canvas where
    --void is the darkest token and --accent the bright one. Inverted, cream on
    the accent red measures 4.45:1 — a hair under AA at 17px, which is not
