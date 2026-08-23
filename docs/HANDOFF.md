@@ -2637,3 +2637,47 @@ them to a module's `LIFT` to use them. Verified additive: rebuilding
 - `build_docket.py` no longer reproduces its shipped output: the template has
   moved on since it was built (902 insertions). Not investigated; the file was
   reverted rather than shipped.
+
+---
+
+## Escalating a Complaint (C1) — shipped, but with no builder
+
+`forbes-escalating-a-complaint-c1.html`, 21 slides, 34 scored points, EN+DE.
+Supabase `lessons` row **255**, access `free`, deck `true`. `check-lesson.js`
+exits clean; `check-library.js --vs-origin` reports no dropped entry.
+
+**Read this before you touch the file.** Every other deck in this repo is
+generated — edit the builder in `lesson-template/build/`, re-run it. This one
+is not. The session that authored it wrote `build_escalating.py`,
+`i18n_escalating.py` and a `lesson-template/textcontrast.py` (a glyph-level
+contrast audit), and its container was reclaimed before any of them left the
+sandbox. **None of them exist.** What survived was the self-contained preview
+HTML that had been sent to Innes, and the shipped page was reconstructed from
+it by replacing the three inlined `data:image/jpeg` URIs with repo paths.
+
+So: hand-editing this page is currently the only way to change it, and the
+usual "your edit will be overwritten by the next builder run" warning does not
+apply — there is nothing to re-run. If it needs more than a small fix, write
+the builder first and treat the current HTML as the spec.
+
+**Artwork is borrowed.** `--hero` is `DesignPitch/podium.jpg` and both
+`data-bg` slides use `DesignPitch/pair.jpg`, so the palette in this deck was
+derived from the Design Pitch hero, not from art of its own — and the library
+card shares its thumbnail with `forbes-english-lesson-2.html`. Innes generated
+four `conflict at work` illustrations (Noma Bar style, coral/slate) about
+forty minutes after this deck was previewed; they are the obvious replacement.
+Doing that properly means re-running `extract-palette.py` on the new hero and
+rebuilding — which needs the builder that does not exist yet.
+
+There is also a companion take-away that never entered the repo:
+`escalation-audit-prompt.md`, an eleven-check audit prompt for a learner's own
+escalation email. Innes has it locally. Worth a home here if the lesson keeps it.
+
+### Fixed in passing
+
+`carrying-the-load-c1.html` shipped while its Supabase `access` still said
+`pro`; the flag was flipped to `free` afterwards. The card updated live, but
+the page's JSON-LD kept `isAccessibleForFree:false` with a `.paywalled`
+`hasPart`, and `library.html`'s crawlable index still read "— subscribers",
+because both are written into files by `tools/seo.py`. `tools/lessons.json`
+now says `free` and a `seo.py` run has corrected all three.
