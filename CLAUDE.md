@@ -77,6 +77,35 @@ Deliver the files first, ask afterwards.
 
 The live site follows `origin/main` within a few minutes.
 
+### Driving the web uploader: commits fail silently
+
+`file_upload` accepts container paths directly — anything under
+`/mnt/user-data/outputs/` works, so there is no need to route files through the
+desktop bridge or a connected folder.
+
+The trap is the commit form. **Clicking the summary field or the Commit
+button by element `ref` does nothing, reports success, and leaves the form
+untouched.** Three of the six commits in the Carrying the Load upload were lost
+this way; the tool output read `Clicked on element ref_148` every time. The
+first click after a `file_upload` is also swallowed, so focus stays on
+"choose your files" and the typed summary goes nowhere.
+
+What works: click by **coordinate**, and make that click its own tool call
+rather than the first item of a batch. Then screenshot and confirm the text is
+actually in the field before clicking Commit. The layout shifts by ~17px once
+the "ProTip" line appears, so re-read the button position from that screenshot.
+
+Because the failure is silent, **the byte-for-byte check is what tells you
+whether you committed at all** — not just whether the bytes are right. Run it
+over the full changed-file list, not a sample:
+
+```bash
+for f in $(git diff --name-only main <branch>); do
+  [ "$(git hash-object "$f")" = "$(git rev-parse "origin/main:$f" 2>/dev/null)" ] \
+    && echo "OK   $f" || echo "FAIL $f"
+done
+```
+
 ### Before uploading `library.html`, always run
 
 ```bash
