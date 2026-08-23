@@ -38,6 +38,10 @@ node   lesson-template/check-lesson.js <lesson>.html               # must exit c
 python3 tools/seo.py                                              # ALWAYS last
 ```
 
+**On Windows there is no `python3`.** Use `py` (the launcher) or `python`, or
+add an alias — every command in this file and in the docs is written `python3`
+because the builders were authored on Linux. `node` is the same on both.
+
 **`tools/seo.py` runs after every build, without exception.** It writes the
 title, description, canonical, Open Graph and JSON-LD into each page, plus
 `sitemap.xml`, `robots.txt` and `lesson-meta.json` — the last of which the
@@ -57,9 +61,22 @@ counting `<section class="slide` in the source returns N+1.
 
 ## Publishing
 
-`git push` currently fails with a proxy 403: *"not in this session's authorized
-repository set."* That is a session-startup setting, not something you can fix
-from inside. Two routes:
+**Try `git push` first.** Whether it works depends on where you are running,
+so find out rather than assuming:
+
+- **Claude Code on Innes's machine** — push works. It uses his own git
+  credentials with no proxy in between. Commit and push; ignore the whole
+  uploader section below.
+- **A cloud Cowork session** — push fails with a proxy 403, *"not in this
+  session's authorized repository set."* That is a session-startup setting and
+  cannot be fixed from inside the session. Use one of the two routes below.
+
+If you are pushing directly, note that everything downstream is unchanged: the
+live site still follows `origin/main`, `tools/seo.py` still runs last, and
+`check-library.js --vs-origin` is still worth running before you touch
+`library.html` — a stale in-memory copy can drop entries whatever the transport.
+
+### When push is blocked
 
 - **If you have Chrome tools**, use GitHub's web uploader: `/upload/main` for
   root files, `/upload/main/<folder>` for a new directory — one directory per
@@ -159,3 +176,15 @@ its page and its download are all fine. But `comingSoon()` is
 
 Update `docs/HANDOFF.md` if you changed the queue, learned something a future
 session needs, or found a defect you did not fix. That file is the handover.
+
+## Working from Windows
+
+Innes's machine is Windows (`erazorhead`, win32 x64). Two things bite a repo
+that was authored entirely on Linux:
+
+- **`python3` does not exist.** Use `py` or `python`. See the pipeline note.
+- **Line endings.** This repo is LF throughout. Clone with
+  `git config --global core.autocrlf false` set, or git rewrites every file to
+  CRLF on checkout and the first commit shows all 244 pages as modified. If a
+  diff ever comes back absurdly large with no visible content change, this is
+  why — check `git diff --stat` before believing it.
