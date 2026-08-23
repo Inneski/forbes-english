@@ -288,6 +288,13 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 /* ── QUESTIONS ── */
 .q-stem { font-size: 25px; line-height: 1.5; color: var(--text); margin-bottom: 22px; }
 .q-stem em { font-style: normal; color: var(--accent-bright); font-weight: 600; }
+/* deck.py's mc(ctx=…) has emitted .q-ctx since it was added, but nothing ever
+   styled it: with no size and no margin it inherited the body rule and the
+   stem's plate shadow painted straight over it. Situational questions were
+   unreadable on the first lesson that used the argument. Set one notch below
+   the stem, dimmed, so it reads as the scene and not as the question. */
+.q-ctx { font-size: 19px; line-height: 1.5; color: var(--text-dim);
+         margin-bottom: 26px; max-width: 62em; }
 
 .opts { display: grid; gap: 11px; }
 .opts.two-up { grid-template-columns: 1fr 1fr; }
@@ -316,6 +323,11 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
    A branching lesson carries state across nodes. It rides in the nav bar
    so it is visible on every screen without stealing canvas space. */
 .ledger { display: flex; gap: 18px; align-items: center; margin-inline-end: 14px; }
+/* An author display rule outranks the UA sheet's [hidden] { display: none },
+   so the branch-mode ledger rendered "DP 0 TIME ••• CLUES 0" in the deck bar of
+   every non-branching lesson built from this template. The attribute is the
+   switch ledgerInit() throws; this makes the CSS respect it. */
+.ledger[hidden] { display: none; }
 .led { font: 600 11.5px/1 'DM Mono', monospace; letter-spacing: .09em;
        text-transform: uppercase; color: var(--text-dim); white-space: nowrap; }
 .led b { color: var(--text-dim); font-weight: 600; }
