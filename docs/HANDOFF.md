@@ -2574,3 +2574,66 @@ of a point — measured 4.25:1 to 4.39:1 on graded feedback across the nine.
 
 **All nine light lessons now carry the plate**, not just Ukraine. The item left
 open in the section above is closed.
+
+---
+
+## 2026-08-23 — Carrying the Load (C1), and three template defects it surfaced
+
+New lesson, not a rebuild. Innes supplied a Liane Davey blog post on dealing
+with a co-worker who does not pull their weight, and four Black Isler office
+illustrations. Nothing from the post is reproduced: the four-rung escalation
+model and the behaviour/impact/question unit are the ideas kept, and every
+paragraph, example script and distractor is written fresh, with new names.
+
+`carrying-the-load-c1.html` — 58 slides, 44 scored items in five sections
+(8 comprehension, 8 anatomy, 8 escalation, 10 vocabulary, 10 grammar), plus a
+five-paragraph reading, a four-rung reference, and an activation stage.
+`build_carrying.py` + `i18n_carrying.py`. English and German interface;
+the lesson content is deliberately monolingual — Innes asked for English only,
+and the switcher translates the chrome, the section titles and the activation
+briefs, which is what rule 5 and the checker actually require.
+
+Catalogue row inserted in Supabase (`id 253`, access `pro`), `LESSON_IMAGES`
+entry added to `library.html` on top of a fresh `origin/main` copy, `seo.py`
+run last.
+
+### Three defects, all in shared files, all fixed here
+
+**1. `.q-ctx` was never styled.** `deck.py`'s `mc(ctx=…)` has emitted
+`<p class="q-ctx">` since the argument was added, and no lesson had ever used
+it. The template lists `.q-ctx` in the on-canvas plate rule and nowhere else,
+so it inherited body sizing with no margin, and the stem's plate shadow painted
+straight over it — the situational line was half-hidden under the question on
+all eight escalation slides. `check-lesson.js` passed throughout: it measures
+whether a slide fits, not whether two elements overlap. Rule added next to
+`.q-stem` in the template.
+
+**2. The branch-mode ledger showed on every deck.** `.ledger { display: flex }`
+outranks the UA sheet's `[hidden] { display: none }`, so `DP 0 · TIME ••• ·
+CLUES 0` rendered in the deck bar of a lesson with no ledger. The attribute is
+the switch `ledgerInit()` throws; `.ledger[hidden] { display: none }` makes the
+CSS respect it. Any deck built from the current template had this.
+
+**3. `ledDp` / `ledTime` / `ledClues` had no home.** The same ledger's three
+labels are `data-i18n`, but `assemble()` replaces the whole `UI_I18N` block with
+the lesson's own module, so the template's copies are discarded and the checker
+fails on "data-i18n with no English key". They are chrome, so they were added to
+`chrome_i18n.py` for all ten languages rather than re-declared per lesson. Add
+them to a module's `LIFT` to use them. Verified additive: rebuilding
+`build_docket.py` with and without the change gives byte-identical output.
+
+### Watch out
+
+- **`tools/seo.py` cannot reach Supabase from a Cowork sandbox** — the egress
+  proxy returns 403 on the tunnel, so it silently falls back to
+  `tools/lessons.json`, and a lesson that exists only in Supabase gets **no SEO
+  block at all**. Add the row to the cache as well as to the table. The cache
+  was 244 rows against 248 in Supabase when this was written; it is stale, and
+  appending is safe while a full refresh is not.
+- `check-library.js --vs-origin` fails on `lesson-template.html` and
+  `sherlock-scarlet-star_3.html` ("52 decks, all with a card"). Pre-existing —
+  verified identical against an untouched `origin/main` copy — and not fixed
+  here.
+- `build_docket.py` no longer reproduces its shipped output: the template has
+  moved on since it was built (902 insertions). Not investigated; the file was
+  reverted rather than shipped.
