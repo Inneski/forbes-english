@@ -8,10 +8,16 @@ non-vibes way.
 
 Usage:
     python3 lesson-template/extract-palette.py <path-to-hero-image> [--light]
+                                               [--accent-hue <degrees>] [--accent-sat <0-1>]
 
 Outputs a ready-to-paste CSS :root block plus a WCAG contrast report.
 Default is a dark theme (dark canvas, light text). Pass --light for a
 paper/light theme.
+
+--accent-hue rotates the accent family to a given hue (0-360) while leaving
+the canvas, surfaces, text and every contrast loop exactly as derived. Use it
+when the honestly-derived accent is the same colour as the artwork and the UI
+disappears into it. It is still a one-command, reproducible palette.
 
 Requires: pillow  (pip install pillow --break-system-packages)
 """
@@ -82,7 +88,7 @@ def dominant_colours(path, k=14):
     return [(rgb, n / total) for n, rgb in colours]
 
 
-def build_palette(path, dark=True):
+def build_palette(path, dark=True, accent_hue=None, accent_sat=None):
     pals = dominant_colours(path)
 
     # Accent = the most colourful thing with enough presence to read as "the"
@@ -96,6 +102,27 @@ def build_palette(path, dark=True):
 
     accent = max(pals, key=accent_score)[0]
     ah, al, asat = to_hls(accent)
+
+    # ── Optional hue override ─────────────────────────────────────────
+    # Occasionally the accent the image hands you is the *wrong* accent for
+    # the page even though it is honestly derived: a coral hero yields a
+    # coral accent, and coral UI on coral artwork reads as one flat wash.
+    # --accent-hue rotates the accent family to a requested hue and leaves
+    # everything else — canvas, surfaces, text, and every contrast loop —
+    # exactly as derived. It is a rotation, not a hand-picked colour: the
+    # saturation and lightness still come from the image, and the palette is
+    # still reproducible from one command.
+    if accent_hue is not None:
+        ah = (accent_hue % 360) / 360.0
+        accent = from_hls(ah, al, asat)
+    if accent_sat is not None:
+        # A rotated hue keeps the source colour's saturation, which is wrong
+        # when the source was a vivid one and the target is a muted family:
+        # rotating a hot coral to green yields neon, not foliage. Setting the
+        # saturation explicitly is the companion knob, and every downstream
+        # contrast loop still runs.
+        asat = max(0.0, min(1.0, accent_sat))
+        accent = from_hls(ah, al, asat)
 
     # Secondary = the most colourful thing far enough away in hue to contrast.
     def secondary_score(item):
@@ -118,13 +145,33 @@ def build_palette(path, dark=True):
                         min(0.22, max(0.06, ds_)))
         surface = shift(void, dl=+0.045, ds=+0.01)
         surface2 = shift(void, dl=+0.085, ds=+0.01)
+        # A deep, saturated hue taken straight from the image (crimson,
+        # forest, navy) does not carry a button or a rule on a dark canvas.
+        # Lift it — keeping its hue — until it does. This mirrors the
+        # deepening loop the light theme has always had; without it a
+        # dark deck built on a dark-accent hero simply cannot pass §4.
+        guard = 0
+        while contrast_ratio(accent, surface) < 4.5 and guard < 24:
+            hx, lx, sx = to_hls(accent)
+            accent = from_hls(hx, min(0.92, lx + 0.035), max(0.0, sx - 0.015))
+            guard += 1
+
         border = shift(accent, dl=-0.20, ds=-0.30)
         # Warm the text very slightly toward the accent hue for cohesion.
         text = from_hls(ah, 0.955, 0.16)
         if contrast_ratio(text, surface) < 8:
             text = (244, 240, 233)
         text_dim = shift(text, dl=-0.26, ds=+0.02)
+
+        # "Bright" on a dark canvas means lighter still, and it must clear
+        # the same 4.5 bar since headings and eyebrows are read, not decorative.
         accent_bright = shift(accent, dl=+0.14, ds=+0.06)
+        guard = 0
+        while contrast_ratio(accent_bright, surface) < 4.5 and guard < 14:
+            hx, lx, sx = to_hls(accent_bright)
+            accent_bright = from_hls(hx, min(0.94, lx + 0.03), sx)
+            guard += 1
+
         accent_dim = shift(accent, dl=-0.18, ds=-0.05)
     else:
         # ── LIGHT THEME ──────────────────────────────────────────────
@@ -175,11 +222,17 @@ def build_palette(path, dark=True):
     # emphasis and eyebrows vanish into the body copy. When the image's
     # dominant colour is already near-white, brightening is the wrong move:
     # deepen and saturate instead.
+    # Reach the separation with LIGHTNESS first and saturation only a little.
+    # The old loop added 0.08 saturation per step with no ceiling, so a muted
+    # accent (a leafy green, a dusty blue) came out of it fluorescent — the
+    # one colour on the page that had not been derived from anything. Cap the
+    # gain just above the accent's own saturation and the family stays whole.
+    sat_ceiling = min(1.0, asat + 0.18)
     guard = 0
     step_b = -0.05 if dark else +0.05
     while contrast_ratio(accent_bright, text) < 1.45 and guard < 12:
         hb, lb, sb = to_hls(accent_bright)
-        accent_bright = from_hls(hb, lb + step_b, min(1.0, sb + 0.08))
+        accent_bright = from_hls(hb, lb + step_b, min(sat_ceiling, sb + 0.03))
         guard += 1
 
     # ── Contrast colour ───────────────────────────────────────────────
@@ -212,10 +265,24 @@ def main():
     if not args:
         sys.exit(__doc__)
     dark = "--light" not in sys.argv
+    accent_hue = None
+    accent_sat = None
+    for a in sys.argv[1:]:
+        if a.startswith("--accent-hue"):
+            accent_hue = float(a.split("=", 1)[1]) if "=" in a else \
+                float(sys.argv[sys.argv.index(a) + 1])
+        if a.startswith("--accent-sat"):
+            accent_sat = float(a.split("=", 1)[1]) if "=" in a else \
+                float(sys.argv[sys.argv.index(a) + 1])
     path = args[0]
-    p = build_palette(path, dark=dark)
+    p = build_palette(path, dark=dark, accent_hue=accent_hue, accent_sat=accent_sat)
 
-    print(f"/* Palette derived from {path} ({'dark' if dark else 'light'} theme) */")
+    hue_note = ""
+    if accent_hue is not None:
+        hue_note = f", accent rotated to hue {accent_hue:g}deg"
+    if accent_sat is not None:
+        hue_note += f", saturation {accent_sat:g}"
+    print(f"/* Palette derived from {path} ({'dark' if dark else 'light'} theme{hue_note}) */")
     print(":root {")
     order = ["void", "surface", "surface2", "border", "text", "text-dim",
              "accent", "accent-bright", "accent-dim", "secondary", "contrast"]
