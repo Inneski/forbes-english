@@ -45,7 +45,23 @@
        extract-palette.py minecraft/dc2-hero.jpg --accent-hue=80 --accent-sat=0.85
      and take its --accent. 14.06:1 on --surface. */
   --lime: #c7f36f;
-  --logo-mark: var(--lime);
+  /* Both lines of the lockup run baby blue on this deck. It is the one light
+     colour the artwork does not already use — the skies are coral, the
+     silhouettes near-black, the suns cream — so the mark separates from all
+     three grounds it has to sit on. */
+  --baby: #9ad4f5;
+  /* Every plate, card and option button in the deck runs at this opacity.
+     One knob so the whole surface treatment moves together.
+
+     45% is the thinnest value that still clears 4.5:1 for body text against
+     the composited artwork. Measured by hiding every glyph, sampling the
+     95th-percentile luminance behind each text box across the question
+     slides, and taking the worst: 26% bottoms out at 3.62:1 (the option
+     buttons over the Stegosaurus silhouette), 45% at 5.10:1, 60% at 6.85:1.
+     Do not thin it below 45 without re-running that measurement. */
+  --plate: 45%;
+  --logo-mark: var(--baby);
+  --logo-word: var(--baby);
 
   --void          : #090c0e;
   --surface       : #12181c;
@@ -251,23 +267,29 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 /* ── LOGO ── */
 .fe-logo { width: 152px; height: auto; display: block; }
 .fe-logo-mark { color: var(--logo-mark, var(--accent)); }
-.fe-logo-word { fill: var(--text); opacity: 0; transition: opacity .25s ease; }
+.fe-logo-word { fill: var(--logo-word, var(--text)); opacity: 0; transition: opacity .25s ease; }
 .fonts-ready .fe-logo-word { opacity: 1; }   /* never flash a fallback face */
 .slide[data-type="cover"] .fe-logo { width: 232px; }
 
 /* ── COVER ── */
+/* The title block sits on the ground line rather than the middle of the
+   frame, so the artwork's subject is not covered by its own title. The
+   wordmark keeps the top: `margin-bottom:auto` on the logo eats the free
+   space, which pins it up and lets everything below it sink. */
 .cover-inner {
   height: 100%;
   display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
+  align-items: center; justify-content: flex-end;
   text-align: center; gap: 4px;
+  padding-bottom: 30px;
 }
+.cover-inner .fe-logo { margin-bottom: auto; }
 .cover-title {
   font-family: var(--font-display);
   font-size: 62px; font-weight: 900; line-height: 1.06;
   color: var(--text);
   text-shadow: var(--cover-shadow);
-  margin-top: 26px;
+  margin-top: 0;
 }
 .cover-title em { font-style: normal; color: var(--accent-bright); }
 .cover-sub {
@@ -276,7 +298,7 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
   text-shadow: var(--cover-shadow);
 }
 .cover-meta {
-  display: flex; gap: 10px; margin-top: 26px; flex-wrap: wrap; justify-content: center;
+  display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; justify-content: center;
 }
 .chip {
   font-family: var(--font-mono); font-size: 11.5px;
@@ -305,7 +327,7 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 
 /* Content sits in a translucent card so it stays legible over the pattern. */
 .card {
-  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  background: color-mix(in srgb, var(--surface) var(--plate), transparent);
   border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
   border-radius: var(--r);
   padding: 30px 34px;
@@ -314,7 +336,7 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 .card + .card { margin-top: 16px; }
 .cols .card + .card,
 .cols .card { margin-top: 0; }   /* side-by-side cards must share a top edge */
-.prose { font-size: 20px; line-height: 1.62; color: var(--text); }
+.prose { font-size: 20px; line-height: 1.62; color: var(--text); text-shadow: var(--cover-shadow); }
 .prose + .prose { margin-top: 14px; }
 .prose strong { color: var(--accent-bright); font-weight: 600; }
 .dim { color: var(--text-dim); }
@@ -343,7 +365,9 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
   display: flex; align-items: center; gap: 14px;
   width: 100%; text-align: left;
   font-family: var(--font-ui); font-size: 19px; color: var(--text);
-  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  text-shadow: var(--cover-shadow);
+  background: color-mix(in srgb, var(--surface2) var(--plate), transparent);
+  backdrop-filter: blur(4px);
   border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
   border-radius: var(--r);
   padding: 15px 20px; cursor: pointer;
@@ -550,7 +574,8 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
 .match-item {
   font-family: var(--font-ui); font-size: 15.5px; line-height: 1.4;
   text-align: left; color: var(--text);
-  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  background: color-mix(in srgb, var(--surface2) var(--plate), transparent);
+  backdrop-filter: blur(4px);
   border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
   border-radius: var(--r); padding: 11px 16px; cursor: pointer;
   transition: border-color .15s, background .15s, opacity .2s;
@@ -583,7 +608,8 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
 .chunk {
   font-family: var(--font-ui); font-size: 15.5px; line-height: 1.35;
   color: var(--text);
-  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  background: color-mix(in srgb, var(--surface2) var(--plate), transparent);
+  backdrop-filter: blur(4px);
   border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
   border-radius: 999px; padding: 9px 16px; cursor: pointer;
   transition: border-color .15s, background .15s, opacity .2s;
@@ -635,7 +661,8 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
 .sort-item {
   font-family: var(--font-ui); font-size: 15.5px; line-height: 1.35;
   color: var(--text);
-  background: color-mix(in srgb, var(--surface2) 88%, transparent);
+  background: color-mix(in srgb, var(--surface2) var(--plate), transparent);
+  backdrop-filter: blur(4px);
   border: 1.5px solid color-mix(in srgb, var(--border) 50%, transparent);
   border-radius: 999px; padding: 9px 16px; cursor: grab;
   transition: border-color .15s, background .15s, opacity .2s;
@@ -858,13 +885,14 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
 .eyebrow, .slide-title, .q-stem, .q-ctx, .order-hint,
 .slide-body > .prose, .cover-title, .cover-sub, .act-target-label,
 .feedback.show, .score-big {
-  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  background: color-mix(in srgb, var(--surface) var(--plate), transparent);
   border-radius: 8px;
+  backdrop-filter: blur(4px);
   /* The plate is grown with a spread shadow rather than padding: padding
      changes the content box, and on the cover that was enough to tip the
      subtitle onto a second line. A spread costs no layout at all. */
-  box-shadow: 0 0 0 0.34em color-mix(in srgb, var(--surface) 94%, transparent);
-  text-shadow: none;
+  box-shadow: 0 0 0 0.34em color-mix(in srgb, var(--surface) var(--plate), transparent);
+  text-shadow: var(--cover-shadow);
 }
 /* Short labels should not stretch a plate across the whole column. */
 .eyebrow, .slide-title, .order-hint { width: fit-content; }
@@ -872,6 +900,13 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
 /* The cover is centred, so its plates are too. */
 .cover-title, .cover-sub { width: fit-content; margin-inline: auto; max-width: 100%; }
 .cover-sub { padding-inline: 0.22em; }
+/* The cover goes thinner than the rest of the deck and is allowed to: its
+   title is 62px display type, which carries a 3:1 bar rather than 4.5:1, and
+   --cover-shadow is doing real work underneath it. Interior slides run 19-20px
+   body copy and get the deck-wide --plate. */
+.slide[data-type="cover"] {
+  --plate: 26%;
+}
 .score-big { width: fit-content; }
 
 /* A transparent background is a hole in the plate. .btn was
