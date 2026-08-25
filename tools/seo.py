@@ -60,6 +60,9 @@ START, END = '<!-- SEO:start -->', '<!-- SEO:end -->'
 LIST_START, LIST_END = '<!-- SEO:lessons:start -->', '<!-- SEO:lessons:end -->'
 
 # Pages that are not lessons but must still be indexable and described.
+# A fourth element is optional: the page's own share image. Without one a
+# page falls back to the site logo, which is right for index and pricing and
+# wrong for any page that has real artwork of its own.
 PAGES = {
     'index.html': ('English lessons that are actually lessons',
                    'Interactive English lessons at A1 to C2 — grammar, '
@@ -72,6 +75,15 @@ PAGES = {
     'pricing.html': ('Plans and pricing',
                      'What a Forbes English subscription costs, and which '
                      'lessons are free forever.', 0.7),
+    'ielts.html': ('IELTS Academic Writing',
+                   'A nine-lesson route through IELTS Academic Writing — '
+                   'Task 1 reports and Task 2 essays, in the order they '
+                   'should be taught.', 0.9, '/ielts-model-answers/hero.jpg'),
+    'ielts-question-bank.html': ('IELTS Task 2 Question Bank & Ideas',
+                                 '48 IELTS Writing Task 2 questions sorted by '
+                                 'topic and by essay type, each topic with '
+                                 'arguments for both sides. Free.', 0.9,
+                                 '/ielts-question-bank/hero.jpg'),
 }
 SKIP = {'locked.html', 'account.html', 'index_1.html', 'front-page.html'}
 
@@ -417,12 +429,13 @@ def sitemap(rows, images):
         e.append('  </url>')
         return e
 
-    for f, (_, _, prio) in PAGES.items():
+    for f, meta in PAGES.items():
+        prio = meta[2]; img = meta[3] if len(meta) > 3 else None
         p = os.path.join(ROOT, f)
         if os.path.exists(p):
             out += url('%s/%s' % (SITE, f),
                        time.strftime('%Y-%m-%d', time.gmtime(os.path.getmtime(p))),
-                       prio)
+                       prio, img)
     for r in rows:
         p = os.path.join(ROOT, r['file'])
         if not os.path.exists(p) or coming_soon(r, images):
@@ -563,14 +576,16 @@ def main(check=False):
             if not check:
                 open(f, 'w', encoding='utf-8').write(new)
 
-    for f, (t, d, _) in PAGES.items():
+    for f, meta in PAGES.items():
+        t, d = meta[0], meta[1]
+        page_img = meta[3] if len(meta) > 3 else DEFAULT_IMAGE
         p = os.path.join(ROOT, f)
         if not os.path.exists(p):
             continue
         src = open(p, encoding='utf-8').read()
         title = '%s | %s' % (t, BRAND)
         new = inject(src, seo_block('%s/%s' % (SITE, f), title, d,
-                                    DEFAULT_IMAGE), esc(title))
+                                    page_img), esc(title))
         if f == 'index.html':
             # One place where the site says what it is and who runs it.
             # Both Google and an answer engine resolve the brand from here.
