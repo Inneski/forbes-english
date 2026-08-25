@@ -378,6 +378,64 @@
     transition: transform .15s ease, box-shadow .15s ease;
   }
   .sherpa-banner:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(210,62,110,.45); }
+  /* The routes are a family now — Sherpa for the tenses, IELTS for the exam.
+     Side by side so neither reads as the only one; stacked on narrow. */
+  .route-banners {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    max-width: 900px;
+    margin: 12px auto 0;
+  }
+  .route-banners .sherpa-banner { max-width: none; margin: 0; }
+  @media (max-width: 760px) { .route-banners { grid-template-columns: 1fr; } }
+  .sherpa-banner.ielts-banner {
+    background: linear-gradient(135deg, #B8962E, #8A6F1F);
+    border-color: var(--gold-bright);
+    box-shadow: 0 4px 16px rgba(184,150,46,.30);
+  }
+  .sherpa-banner.ielts-banner:hover { box-shadow: 0 6px 20px rgba(184,150,46,.45); }
+  .sherpa-banner.ielts-banner .sherpa-sub { color: #FBF3DC; }
+  /* Filtering to IELTS gives you nine lessons in no particular order. The
+     hub is the order, so say so at the point the filter is used. */
+  .cat-hub {
+    display: none;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 16px;
+    padding: 12px 16px;
+    border: 1px solid var(--gold-bright);
+    border-left: 4px solid var(--gold);
+    border-radius: var(--radius);
+    background: #fdf8ea;
+    text-decoration: none;
+  }
+  .cat-hub.on { display: flex; }
+  .cat-hub .cat-hub-ico { font-size: 1.4rem; line-height: 1; }
+  .cat-hub .cat-hub-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    font-size: 0.95rem;
+    color: var(--green-deep);
+  }
+  .cat-hub .cat-hub-sub { font-size: 0.82rem; color: var(--muted); margin-top: 2px; }
+  .cat-hub .cat-hub-go {
+    margin-left: auto;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.85rem;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+  .cat-hub:hover { background: #fbf1d8; }
+  @media (max-width: 560px) {
+    .cat-hub { flex-wrap: wrap; }
+    .cat-hub .cat-hub-go { margin-left: 0; width: 100%; }
+  }
   .sherpa-banner .sherpa-ico { font-size: 1.7rem; line-height: 1; }
   .sherpa-banner .sherpa-text { text-align: left; }
   .sherpa-banner .sherpa-title {
@@ -474,13 +532,22 @@
   <div class="hero-inner">
     <div class="hero-tag">Lesson Library</div>
     <div class="stats" id="stats"></div>
-    <a class="sherpa-banner" href="sherpa-tensing-route-map.html">
-      <div class="sherpa-ico">🏔️</div>
-      <div class="sherpa-text">
-        <div class="sherpa-title">Sherpa Tensing</div>
-        <div class="sherpa-sub">The route up the tenses — 13 camps, active &amp; passive voice</div>
-      </div>
-    </a>
+    <div class="route-banners">
+      <a class="sherpa-banner" href="sherpa-tensing-route-map.html">
+        <div class="sherpa-ico">🏔️</div>
+        <div class="sherpa-text">
+          <div class="sherpa-title">Sherpa Tensing</div>
+          <div class="sherpa-sub">The route up the tenses — 13 camps, active &amp; passive voice</div>
+        </div>
+      </a>
+      <a class="sherpa-banner ielts-banner" href="ielts.html">
+        <div class="sherpa-ico">🎓</div>
+        <div class="sherpa-text">
+          <div class="sherpa-title">IELTS Writing</div>
+          <div class="sherpa-sub">Task 1 and Task 2 in order — nine steps, plus a free question bank</div>
+        </div>
+      </a>
+    </div>
   </div>
 </div>
 <main>
@@ -497,6 +564,14 @@
     <button class="free-toggle" id="freeToggle" style="margin-left:10px;">Free only</button>
   </div>
   <div id="count"></div>
+  <a class="cat-hub" id="catHub" href="ielts.html">
+    <div class="cat-hub-ico">🎓</div>
+    <div>
+      <div class="cat-hub-title">Start at the IELTS hub</div>
+      <div class="cat-hub-sub">These nine lessons in the order they should be taken, plus a free Task 2 question bank</div>
+    </div>
+    <div class="cat-hub-go">Open the hub &rarr;</div>
+  </a>
   <div class="grid" id="grid">
 <!-- SEO:lessons:start -->
 <style>#seo-lesson-index{grid-column:1/-1;font-family:Lato,sans-serif}#seo-lesson-index h2{font-family:"Playfair Display",serif;font-size:1.5rem;margin:8px 0 4px}#seo-lesson-index h3{font-family:"Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;font-size:.95rem;color:#5d6f64;margin:18px 0 6px}#seo-lesson-index ul{columns:3;column-gap:32px;list-style:none;padding:0}#seo-lesson-index li{break-inside:avoid;margin:0 0 6px;font-size:.95rem}#seo-lesson-index a{color:#14301f;text-decoration:none;border-bottom:1px solid #c8d4c8}#seo-lesson-index a:hover{border-color:#b8962e}@media(max-width:900px){#seo-lesson-index ul{columns:1}}</style>
@@ -930,6 +1005,7 @@ document.getElementById('navAll').addEventListener('click', (e) => {
 const grid = document.getElementById('grid');
 const countEl = document.getElementById('count');
 const emptyEl = document.getElementById('empty');
+const hubEl = document.getElementById('catHub');
 const searchEl = document.getElementById('search');
 const statsEl = document.getElementById('stats');
 
@@ -1288,6 +1364,9 @@ function render() {
   countEl.textContent = `${ready} lesson${ready !== 1 ? 's' : ''}`
     + (soonCount ? ` · ${soonCount} coming soon` : '');
   emptyEl.style.display = filtered.length === 0 ? 'block' : 'none';
+  // Only while the IELTS filter is on. Off ALL, it would be an advert; on
+  // IELTS, it is the answer to "which of these nine do I open first".
+  if (hubEl) hubEl.classList.toggle('on', activeCategory === 'IELTS');
 }
 
 searchEl.addEventListener('input', render);
