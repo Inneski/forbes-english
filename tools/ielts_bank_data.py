@@ -79,6 +79,32 @@ TOPICS = [
  ],
 },
 {
+ 'id':'energy', 'name':'Energy & resources',
+ 'blurb':'Environment covers behaviour and pollution; this covers where the power comes from.',
+ 'prompts':[
+  ('Some argue that nuclear power is the only realistic way to cut emissions quickly; others believe it is too dangerous. Discuss both views and give your own opinion.','discussion'),
+  ('Governments should stop all new oil and gas exploration immediately. To what extent do you agree?','opinion'),
+  ('Many regions face growing shortages of fresh water. What are the causes, and what measures could governments take?','measure'),
+  ('Some countries are covering large areas of land with wind turbines and solar panels. Do the advantages of this outweigh the disadvantages?','outweigh'),
+  ('Household energy use has fallen in some countries while the number of devices has risen. Why is this happening, and is it a positive or a negative development?','direct'),
+  ('The price of energy should be kept low even if that means using more polluting sources. To what extent do you agree?','opinion'),
+  ('Some believe individuals should be required to reduce their energy use; others argue that only industry matters at this scale. Discuss both views and give your own opinion.','discussion'),
+  ('Some countries depend on a single neighbour for most of their energy. What problems does this cause, and what could be done about it?','measure'),
+ ],
+ 'for_h':'Arguments for moving fast, whatever it costs',
+ 'for':[
+  'Emissions accumulate. A tonne avoided this decade is worth more than a tonne avoided in the next, because the damage is a function of the total in the atmosphere rather than of the annual rate.',
+  'The cost of solar and wind has fallen faster than almost any forecast, and it falls further with each unit built. Delay does not preserve the option; it forfeits the learning that made the option cheap.',
+  'A country that imports its fuel imports a foreign policy with it. Energy built at home is a security argument before it is an environmental one, which is why it survives changes of government.',
+ ],
+ 'against_h':'Arguments for caution',
+ 'against':[
+  'Energy prices are a floor under the cost of everything else — food, transport, heating. Raising them is a tax that takes the largest share from the smallest incomes, and it is felt within a month.',
+  'Wind and sun are intermittent, and storage at national scale does not yet exist at the required size. A grid that cannot cover a still, cold week has to keep the old plant standing anyway.',
+  'A country that closes its own production while continuing to import has not reduced emissions; it has moved them somewhere with weaker rules and added the shipping.',
+ ],
+},
+{
  'id':'technology', 'name':'Technology & work',
  'blurb':'Devices, screens and the workplace — artificial intelligence has its own topic.',
  'prompts':[
@@ -157,6 +183,32 @@ TOPICS = [
  ],
 },
 {
+ 'id':'gender', 'name':'Gender & equality',
+ 'blurb':'A long-standing exam topic the bank had nothing on.',
+ 'prompts':[
+  ('In many countries women are still under-represented in senior positions. What are the causes, and what measures could change it?','measure'),
+  ('Some believe companies should be required to employ equal numbers of men and women; others argue jobs should go to the best candidate regardless. Discuss both views and give your own opinion.','discussion'),
+  ('Men and women should share housework and childcare equally. To what extent do you agree?','opinion'),
+  ('Some sports pay male competitors far more than female competitors. Do the reasons given for this outweigh the case against it?','outweigh'),
+  ('More women than men now attend university in many countries. Why is this happening, and is it a positive or a negative development?','direct'),
+  ('Schools should actively encourage girls into science and boys into caring professions. To what extent do you agree?','opinion'),
+  ('Some argue that differences between men and women at work are mainly the result of upbringing; others believe they reflect genuine differences in preference. Discuss both views and give your own opinion.','discussion'),
+  ('Some countries now offer fathers the same paid leave as mothers. Do the advantages of this outweigh the disadvantages?','outweigh'),
+ ],
+ 'for_h':'Arguments for active measures',
+ 'for':[
+  'Where hiring is left entirely to judgement, the judgement reproduces whoever is already there — people rate candidates who resemble the current holder of the role as a better "fit". A requirement interrupts a loop that does not open on its own.',
+  'Career damage from taking leave is a timing effect, not an ability effect: promotion decisions cluster in the same decade as childbirth. Equalising leave moves the cost onto both parents, which is what stops employers pricing it into one of them.',
+  'Subject choice narrows before ability does. Girls leave physics and boys leave nursing at the age where the decision is about what people like them do, which is exactly the kind of belief a school can change.',
+ ],
+ 'against_h':'Arguments against them',
+ 'against':[
+  'A quota changes the composition of a shortlist without changing what produced it. If the pipeline is the problem, filling the top of it from a thin supply drains the level below and postpones the fix.',
+  'Where averages differ, they differ far less than the range within either group, so a rule applied by category will misplace a great many individuals in order to correct a statistic.',
+  'Anyone appointed under a requirement has their appointment discounted by colleagues, including the ones who would have been appointed anyway. The measure buys a number at the cost of the authority of the people in it.',
+ ],
+},
+{
  'id':'health', 'name':'Health & society',
  'blurb':'Usually about who pays, and who decides.',
  'prompts':[
@@ -209,6 +261,32 @@ TOPICS = [
  ],
 },
 {
+ 'id':'immigration', 'name':'Immigration & integration',
+ 'blurb':'Handle carefully and argue both sides — examiners reward the balance, not the position.',
+ 'prompts':[
+  ('Some argue that immigration solves labour shortages; others believe it lowers wages for existing workers. Discuss both views and give your own opinion.','discussion'),
+  ('People who move to a new country should adopt its customs and way of life. To what extent do you agree?','opinion'),
+  ('Many skilled workers leave poorer countries for wealthier ones. What problems does this cause, and what measures could reduce it?','measure'),
+  ('Some cities have become home to people from a very large number of different countries. Do the advantages of this outweigh the disadvantages?','outweigh'),
+  ('More people than ever are living in a country other than the one they were born in. Why is this happening, and is it a positive or a negative development?','direct'),
+  ('Governments should require new arrivals to pass a test in the national language. To what extent do you agree?','opinion'),
+  ('Some believe schools should teach children about the cultures of the countries their classmates come from; others say the national curriculum should come first. Discuss both views and give your own opinion.','discussion'),
+  ('Some countries select immigrants according to the skills their economy needs. Do the advantages of this approach outweigh the disadvantages?','outweigh'),
+ ],
+ 'for_h':'Arguments that movement is a gain',
+ 'for':[
+  'Arrivals are concentrated in working age, so they pay in for years before they draw out. In a country with an ageing population that timing is precisely the shortfall the pension system is facing.',
+  'Shortages in nursing, construction and agriculture are not shortages of willingness but of trained people available now. Training takes a decade; the ward is short-staffed this winter.',
+  'Money sent home by workers abroad reaches households directly and exceeds most countries’ foreign aid budgets. It is aid that arrives without being administered, and without conditions attached.',
+ ],
+ 'against_h':'Arguments that the costs are understated',
+ 'against':[
+  'The gains are spread thinly across consumers and employers; the pressure on housing, school places and clinics lands in particular streets. An average benefit and a local cost are not the same politics.',
+  'A country that loses the doctors it trained has paid for an education another country will collect on. The transfer runs from poorer to richer, which is the opposite direction to the one usually described.',
+  'Where a large group can live and work entirely in one language, the incentive to learn the national one weakens — and without it, the second generation inherits the parents’ labour market rather than the country’s.',
+ ],
+},
+{
  'id':'family', 'name':'Family & society',
  'blurb':'Change over a generation — usually with a judgement attached.',
  'prompts':[
@@ -258,6 +336,32 @@ TOPICS = [
   'Building faster than the sewers, schools and trains can absorb produces a place that is crowded and underserved at the same time. The infrastructure has a longer lead time than the housing, and it is rarely funded first.',
   'A city that replaces everything old with something profitable loses the thing that made people want to be there. The character is an asset with no line in the accounts, so it is spent first.',
   'Green space per resident falls as density rises, and it falls fastest for the people with the smallest homes — exactly those with the least private space to make up the difference.',
+ ],
+},
+{
+ 'id':'gentrification', 'name':'Gentrification & housing',
+ 'blurb':'Who a neighbourhood is improved for. Cities & housing covers planning; this covers displacement.',
+ 'prompts':[
+  ('When run-down neighbourhoods are improved, the original residents are often priced out. What problems does this cause, and what measures could prevent it?','measure'),
+  ('Some believe that investment in poor areas benefits everyone eventually; others argue it mainly benefits newcomers. Discuss both views and give your own opinion.','discussion'),
+  ('Governments should limit how much rent a landlord is allowed to charge. To what extent do you agree?','opinion'),
+  ('In many popular areas, a large number of homes are bought as second homes or holiday lets. Do the disadvantages of this outweigh the advantages?','outweigh'),
+  ('More people are renting for their whole adult lives rather than buying a home. Why is this happening, and is it a positive or a negative development?','direct'),
+  ('A fixed proportion of every new housing development should be reserved for people on low incomes. To what extent do you agree?','opinion'),
+  ('Some argue that new buildings in an old neighbourhood should be required to match its existing style; others say each period should build in its own. Discuss both views and give your own opinion.','discussion'),
+  ('The character of many city centres has changed as independent shops are replaced by chains. What are the causes, and what could be done about it?','measure'),
+ ],
+ 'for_h':'Arguments that renewal is worth its disruption',
+ 'for':[
+  'Money arriving in a neglected area repairs things nobody else was going to repair — the roof, the road, the empty unit on the corner. Refusing the investment does not preserve the neighbourhood; it preserves the decay.',
+  'A rising tax base is what funds the school and the clinic in that same postcode. Areas that stay poor stay under-served, and the under-service is a direct consequence of the low revenue.',
+  'Some of the original residents are owners, and for them the change is the single largest financial gain of their lives. Treating every long-term resident as a victim ignores which of them holds the deed.',
+ ],
+ 'against_h':'Arguments that the cost falls on the wrong people',
+ 'against':[
+  'The improvement is paid for by the people who leave. Rents rise before wages do, so the residents who endured the area at its worst are gone before the benefit arrives.',
+  'A community is a network of favours — childcare, a lift to hospital, a spare key. Scatter the people and the network does not move with them; it simply stops existing, and nothing in the accounts records that it was lost.',
+  'Displacement pushes the poorest further from work, which lengthens commutes, raises transport costs and lowers earnings. The problem is not solved, only relocated to somewhere with fewer photographers.',
  ],
 },
 {
@@ -336,6 +440,32 @@ TOPICS = [
   'Money raised in tax was going to be spent by someone anyway; the case has to be that the state will spend it better, and that is a claim requiring evidence rather than assumption.',
   'Public programmes are far easier to start than to stop, so a spending decision commits future governments who were not part of it.',
   'High marginal rates change behaviour at the margin: they alter where firms locate and how much people work, and those effects are slow, real and hard to reverse.',
+ ],
+},
+{
+ 'id':'charity', 'name':'Charity & community',
+ 'blurb':'Who helps, who should, and whether giving works.',
+ 'prompts':[
+  ('Some believe helping the poor should be the job of the state; others argue charities do it better. Discuss both views and give your own opinion.','discussion'),
+  ('Young people should be required to spend time volunteering in their community. To what extent do you agree?','opinion'),
+  ('Fewer people are volunteering in some countries than in the past. What are the causes, and what measures could reverse it?','measure'),
+  ('Some argue that giving money to people begging in the street does more harm than good. To what extent do you agree?','opinion'),
+  ('More people now donate to causes abroad than to ones in their own country. Why is this happening, and is it a positive or a negative development?','direct'),
+  ('Large charities should be required to publish exactly how every donation is spent. To what extent do you agree?','opinion'),
+  ('Some believe wealthy individuals have a duty to give away much of their money; others say it is theirs to keep. Discuss both views and give your own opinion.','discussion'),
+  ('Some companies allow their staff paid time off to do voluntary work. Do the advantages of this outweigh the disadvantages?','outweigh'),
+ ],
+ 'for_h':'Arguments for voluntary giving and volunteering',
+ 'for':[
+  'A charity can act before a case has been proved to a committee. That freedom is exactly what lets it reach people the state has not yet written a rule for — and the rule, when it comes, is usually written from what the charity found.',
+  'Volunteering supplies something money cannot buy at the price: presence. An hour of company for someone who lives alone has no market rate, so no budget will ever fund it properly.',
+  'Giving away money is the one redistribution that requires no one’s consent but the giver’s. It moves faster than any tax change and is not reversed by the next election.',
+ ],
+ 'against_h':'Arguments for state provision instead',
+ 'against':[
+  'Charitable money follows sympathy, not need. The photogenic cause is funded twice over while the unglamorous one — drainage, addiction, prison leavers — is left to a system that is being praised for not being needed.',
+  'A service that depends on donations cannot promise anything. The people who most need certainty are handed the least reliable form of help, and the shortfall appears exactly when a recession makes it worst.',
+  'Where private giving substitutes for taxation, the priorities of a few large donors replace those of an electorate, and the resulting spending answers to nobody who is affected by it.',
  ],
 },
 {
