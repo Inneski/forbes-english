@@ -112,7 +112,7 @@
     font-weight: 700;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    font-size: 0.68rem;
+    font-size: 10.9px;
     color: var(--green-mid);
     margin-bottom: clamp(10px, 1.6vh, 16px);
   }
@@ -125,7 +125,7 @@
   .hero h1 {
     font-family: 'Playfair Display', serif;
     font-weight: 700;
-    font-size: clamp(1.75rem, 3.5vw, 3rem);
+    font-size: clamp(28px, 3.5vw, 48px);
     line-height: 1.06;
     letter-spacing: -0.015em;
     margin-bottom: clamp(10px, 1.8vh, 18px);
@@ -137,14 +137,16 @@
   }
   .hero .lead {
     color: var(--muted);
-    font-size: clamp(0.85rem, 1.05vw, 0.98rem);
+    font-size: clamp(13.6px, 1.05vw, 15.7px);
     font-weight: 300;
     line-height: 1.6;
     max-width: 40ch;
   }
 
   /* ── artwork ── */
-  .art { position: relative; }
+  /* The stage never scrolls, so the artwork must be allowed to give way
+     rather than push its own column past the hero's box. */
+  .art { position: relative; min-height: 0; margin: 0; display: flex; align-items: center; }
   .art::before {
     content: '';
     position: absolute;
@@ -157,6 +159,8 @@
     display: block;
     width: 100%;
     height: auto;
+    max-height: 100%;
+    object-fit: cover;
     border-radius: var(--radius);
     box-shadow: 0 22px 50px rgba(0,0,0,0.42);
   }
@@ -229,6 +233,9 @@
     line-height: 1.35;
     margin-top: 1px;
   }
+  .feature-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .feature-row .feature { margin-top: 10px; }
+  @media (max-width: 900px) { .feature-row { grid-template-columns: 1fr; gap: 8px; } }
   .feature.feature-ielts {
     background: linear-gradient(100deg, var(--green-lift), var(--green-deep));
   }
@@ -256,6 +263,11 @@
   @media (max-height: 660px) {
     .hero .lead { display: none; }
     .art::before { display: none; }
+    /* A short window plus a large browser font is the tightest case the
+       fixed stage has to survive; pull the headline down so the hero
+       still fits its box instead of spilling over the deck. */
+    .hero h1 { font-size: clamp(24px, 3vw, 40px); }
+    .eyebrow { margin-bottom: 8px; }
     .tile { gap: 6px; }
     .tile svg { width: 18px; height: 18px; }
   }
@@ -435,6 +447,7 @@ body { display: flex; flex-direction: column; }
       </a>
     </div>
 
+    <div class="feature-row">
     <a class="feature feature-ielts" href="ielts.html">
       <svg viewBox="0 0 24 24"><path d="M5 4h11l3.5 3.5V20a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/><path d="M15.5 4v4h4"/><path d="M7.5 12.5h9M7.5 16h6"/></svg>
       <div class="feature-text">
@@ -452,6 +465,7 @@ body { display: flex; flex-direction: column; }
       </div>
       <div class="feature-go">Open the map &rarr;</div>
     </a>
+    </div>
   </nav>
 
 </div>
