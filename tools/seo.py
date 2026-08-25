@@ -63,6 +63,18 @@ LIST_START, LIST_END = '<!-- SEO:lessons:start -->', '<!-- SEO:lessons:end -->'
 # A fourth element is optional: the page's own share image. Without one a
 # page falls back to the site logo, which is right for index and pricing and
 # wrong for any page that has real artwork of its own.
+# The question bank's own size is data, not prose. Reading it from the
+# builder's source is the only way this description cannot go stale — it
+# already did once: the bank grew from 48 prompts to 136 and this file
+# quietly rewrote the page's meta description back to "48".
+try:
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from ielts_bank_data import TOPICS as _BANK_TOPICS
+    _BANK_N = sum(len(t['prompts']) for t in _BANK_TOPICS)
+    _BANK_T = len(_BANK_TOPICS)
+except Exception:                      # the tool must still run without it
+    _BANK_N, _BANK_T = 136, 17
+
 PAGES = {
     'index.html': ('English lessons that are actually lessons',
                    'Interactive English lessons at A1 to C2 — grammar, '
@@ -80,9 +92,10 @@ PAGES = {
                    'Task 1 reports and Task 2 essays, in the order they '
                    'should be taught.', 0.9, '/ielts-model-answers/hero.jpg'),
     'ielts-question-bank.html': ('IELTS Task 2 Question Bank & Ideas',
-                                 '48 IELTS Writing Task 2 questions sorted by '
-                                 'topic and by essay type, each topic with '
-                                 'arguments for both sides. Free.', 0.9,
+                                 f'{_BANK_N} IELTS Writing Task 2 questions '
+                                 f'across {_BANK_T} topics, sorted by essay '
+                                 'type, each topic with arguments for both '
+                                 'sides. Free.', 0.9,
                                  '/ielts-question-bank/hero.jpg'),
 }
 SKIP = {'locked.html', 'account.html', 'index_1.html', 'front-page.html'}
