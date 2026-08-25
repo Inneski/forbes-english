@@ -103,11 +103,22 @@ if (process.argv.includes('--vs-origin')) {
   try {
     execSync('git fetch origin -q', { cwd: ROOT, stdio: 'ignore' });
     const theirs = parseMap(execSync('git show origin/main:library.html', { cwd: ROOT }).toString());
-    const mine = new Set(seen.keys());
+    const mine = new Map(seen);   // lesson -> image
     const lost = theirs.filter(e => !mine.has(e.lesson)).map(e => e.lesson + ' -> ' + e.image);
     say(!lost.length, 'no entry on origin is missing from this copy',
         lost.map(d => '        ' + d).join('\n') +
         (lost.length ? '\n        ^ uploading this file would delete those cards' : ''));
+
+    /* Presence is not enough. On 2026-08-25 an IELTS upload passed the check
+       above and still reverted a thumbnail: the entry was present in both
+       copies, with a stale VALUE, because the local base predated the commit
+       that changed it. A key that exists is not a key that matches. */
+    const stale = theirs
+      .filter(e => mine.has(e.lesson) && mine.get(e.lesson) !== e.image)
+      .map(e => e.lesson + '\n          origin ' + e.image + '\n          yours  ' + mine.get(e.lesson));
+    say(!stale.length, 'no entry on origin is silently changed by this copy',
+        stale.map(d => '        ' + d).join('\n') +
+        (stale.length ? '\n        ^ uploading this file would revert those thumbnails' : ''));
   } catch (e) {
     console.log('  ' + YEL + 'SKIP' + OFF + '  could not read origin/main (' + e.message.split('\n')[0] + ')');
   }
