@@ -294,7 +294,10 @@ function personaliseGate(html, m, url) {
     `<meta name="description" content="${desc}">`,
     `<link rel="canonical" href="${canonical}">`,
     `<meta property="og:type" content="article">`,
-    `<meta property="og:title" content="${title}">`,
+    `<meta property="og:site_name" content="Forbes English">`,
+    // The row now carries the plain title, so the brand is added here, in the
+    // one place that decides how a gate page is labelled.
+    `<meta property="og:title" content="${title} | Forbes English">`,
     `<meta property="og:description" content="${desc}">`,
     `<meta property="og:url" content="${canonical}">`,
     image ? `<meta property="og:image" content="${image}">` : "",
