@@ -12,6 +12,7 @@
  *            the runtime shuffle that hides its position is a real shuffle
  *   BANK     a word bank does not hand over the gap answers in gap order
  *   EXPLAIN  every scored question carries an explanation
+ *   RESOLVE  and that explanation is words, not an unresolved i18n key
  *   ACTIVATE every lesson ends with a speaking + writing production task
  *   SORT     every sorting slide has 2+ bins, no stray items, no empty bin
  *   I18N     at least one language besides English is complete, and every data-i18n
@@ -40,7 +41,7 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
   await page.waitForTimeout(2000);
 
   const r = await page.evaluate(() => {
-    const out = { layout: [], answers: [], explain: [], i18n: [], logo: null, scroll: null, bank: null, markup: null, sort: [] };
+    const out = { layout: [], answers: [], explain: [], resolve: [], i18n: [], logo: null, scroll: null, bank: null, markup: null, sort: [] };
     const slides = [...document.querySelectorAll('.slide')];
 
     // ── LAYOUT ──────────────────────────────────────────────────────
@@ -309,6 +310,52 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
   //    the comparator is inconsistent, and what V8 actually does with four
   //    elements is leave the first where it is 35.9% of the time against a
   //    fair 25%. Authored-first plus that comparator is a scoreable pattern.
+  // ── RESOLVE ───────────────────────────────────────────────────────────
+  // Answer the questions and read what the learner is actually shown.
+  //
+  // data-explain may hold the sentence itself, which is what most of the
+  // library does, or a UI_I18N key so the explanation translates with the rest
+  // of the deck. Both Grammar Court decks shipped keys into an engine with no
+  // way to look one up, and eighty questions read "Correct. c1i1exp" on the
+  // live site for three weeks. Every existing gate passed: the attribute was
+  // present (EXPLAIN), it carried no tags to print (MARKUP), every data-i18n
+  // node resolved (I18N), nothing threw (RUNTIME) and the deck still scored
+  // 41/41. Nothing short of reading the rendered feedback can see it, so this
+  // runs last, after every other measurement, and answers the paper to do it.
+  const resolveMisses = await page.evaluate(() => {
+    const misses = [];
+    const slides = [...document.querySelectorAll('.slide')];
+    slides.forEach(s => {
+      const type = s.dataset.type;
+      if (type !== 'mc' && type !== 'gap') return;
+      slides.forEach(x => x.classList.remove('is-active'));
+      s.classList.add('is-active');
+      if (type === 'mc') {
+        const key = [...s.querySelectorAll('.opt')].find(o => o.hasAttribute('data-correct'));
+        if (key) key.click();
+      } else {
+        s.querySelectorAll('.gap').forEach(g => { g.value = (g.dataset.answer || '').split('|')[0]; });
+        const btn = s.querySelector('[data-action="check"]');
+        if (btn) btn.click();
+      }
+      // Whatever this slide names in data-explain — on the row, on an option,
+      // on a single gap — must not come back out on screen verbatim. A written
+      // explanation is a sentence and contains spaces, so it can never trip
+      // this; only a key can, and a key on screen is the bug.
+      const named = [s, ...s.querySelectorAll('[data-explain]')]
+        .map(el => (el.dataset && el.dataset.explain || '').trim())
+        .filter(v => v && !/\s/.test(v));
+      s.querySelectorAll('.feedback').forEach(f => {
+        const shown = f.textContent.trim();
+        if (!shown) return;
+        named.forEach(k => {
+          if (new RegExp('(^|\\s)' + k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '($|[\\s.,;:!?])').test(shown)) misses.push(k);
+        });
+      });
+    });
+    return [...new Set(misses)];
+  });
+
   const src = require('fs').readFileSync(path.resolve(file), 'utf8');
   const optsBlocks = [...src.matchAll(/<div class="opts[^"]*">([\s\S]*?)<\/div>/g)];
   const keyAt = [];
@@ -373,6 +420,17 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
   head('EXPLAIN');
   if (!r.explain.length) ok('every scored question has an explanation');
   else r.explain.forEach(e => bad(`slide ${e.n} (${e.type}) has a question with no data-explain`));
+
+  head('RESOLVE');
+  if (!resolveMisses.length) ok('answered feedback reads as words, not as an i18n key');
+  else {
+    bad(`the feedback prints its own key instead of the explanation: ` +
+        `${resolveMisses.slice(0, 6).join(', ')}` +
+        `${resolveMisses.length > 6 ? ` +${resolveMisses.length - 6} more` : ''}`);
+    console.log(DIM('          A learner answering correctly reads "Correct. c1i1exp".'));
+    console.log(DIM('          Either write the explanation into data-explain, or carry the'));
+    console.log(DIM('          engine change that resolves a key through UI_I18N.'));
+  }
 
   head('ACTIVATION');
   if (r.hasActivation) ok('lesson ends with an activation stage');

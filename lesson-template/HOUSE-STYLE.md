@@ -406,6 +406,20 @@ worse than one who is wrong and marked right.
 It shows after answering, right or wrong. Every question gets one. A quiz
 that only says "Not quite" teaches nothing.
 
+`data-explain` takes **either the sentence itself or a `UI_I18N` key**. Most of
+the library writes the sentence, which is simplest and stays in English in every
+language. A key translates with the rest of the deck, and is the better choice
+on a lesson that ships more than one language. A key must exist in `UI_I18N.en`;
+the **RESOLVE** gate answers the paper and fails if a learner would be shown the
+key instead of the explanation. Both Grammar Court decks shipped keys before the
+engine could resolve them, and eighty questions read *"Correct. c1i1exp"* live.
+
+A single `.gap` inside a row may also carry its own `data-explain`, appended
+after the row's. Use it where one row is teaching two separate things — a row
+like *They said they \_\_\_ already \_\_\_* is teaching the backshift in the first
+gap and the participle in the second, and one shared explanation can only make
+one of those two points.
+
 **Timed search (`search`).** An identify-the-object hunt against a clock, for
 concrete vocabulary:
 

@@ -1155,6 +1155,16 @@ let currentLang = 'en';
 const t = k => (UI_I18N[currentLang] && UI_I18N[currentLang][k] != null)
   ? UI_I18N[currentLang][k] : UI_I18N.en[k];
 
+/* An explanation may be written straight into data-explain, which is what most
+   of the library does, or given as a UI_I18N key so that it translates with
+   the rest of the deck. Resolve a key; pass literal text through untouched.
+   Both Grammar Court decks shipped with keys here and printed "Correct.
+   c1i1exp" under all eighty of their questions, because nothing ever looked
+   the key up. A literal explanation is a sentence and can never collide with
+   a key name, so this is safe on every existing lesson. */
+const explainOf = v => (v && typeof v === 'string' && typeof UI_I18N.en[v] === 'string')
+  ? t(v) : v;
+
 /* ── Deck state ── */
 const stage   = document.getElementById('stage');
 const slides  = [...document.querySelectorAll('.slide')];
@@ -1329,7 +1339,7 @@ function feedback(slide, ok, extra, ownExplain) {
   if (!el) return;
   // An option's own explanation wins: telling a learner why THEIR answer was
   // wrong beats restating why the key was right.
-  const reason = ownExplain || el.dataset.explain;
+  const reason = explainOf(ownExplain || el.dataset.explain);
   const why = reason ? ' ' + reason : '';
   // innerHTML, not textContent: explanations carry <strong> and <em>, and the
   // whole point of an explanation is that the word being taught is marked.
@@ -1823,8 +1833,13 @@ function markGap(g) {
    exam-prep five points and two other lessons one each.
 
    A miss now names every answer it missed, not just the first. */
-function fillFeedback(fb, missed) {
-  const why = fb.dataset.explain ? ' ' + fb.dataset.explain : '';
+function fillFeedback(fb, missed, gaps) {
+  /* The row explains the row. A single gap may also carry data-explain of its
+     own, because a row like "They said they ___ already ___" is teaching two
+     different things and the second half had no way to be explained at all:
+     one .gap-row holds one .feedback, so its second point was unreachable. */
+  const why = [fb.dataset.explain, ...(gaps || []).map(g => g.dataset.explain)]
+    .map(explainOf).filter(Boolean).map(p => ' ' + p).join('');
   fb.innerHTML = (missed.length === 0 ? t('fbCorrect')
     : `${t('fbWrong')} ${t('fbAnswer')} ` +
       missed.map(g => g.dataset.answer.split('|')[0]).join(', ') + '.') + why;
@@ -1833,7 +1848,7 @@ function fillFeedback(fb, missed) {
 
 function markGroup(gaps, fb) {
   const missed = gaps.filter(g => !markGap(g));
-  if (fb) fillFeedback(fb, missed);
+  if (fb) fillFeedback(fb, missed, gaps);
   return missed;
 }
 
