@@ -2863,3 +2863,44 @@ to the live table.
 
 Supabase rows 192 and 193 already had `deck = true`; the post-publish step from
 the revamp note was done.
+
+### The `seo.py` duplicate-block trap is closed (2026-08-26)
+
+The note above said a full `seo.py` run would give
+`forbes-english-dinosaur-minecraft.html` a second SEO block. It would have:
+that page's tags were written by hand and carried no `<!-- SEO:start -->`
+fence, so `inject()` fell through to its "insert after the viewport tag" branch
+and added a whole second block — a second canonical, a second `og:title`, a
+second `LearningResource` — while the run printed a cheerful *"rewrote 1 page"*.
+
+Two changes, because one of them is the file and the other is the class:
+
+- **The file is fenced.** Its existing tags are now wrapped in
+  `<!-- SEO:start -->` / `<!-- SEO:end -->`, so a run replaces them like any
+  other lesson. Verified: after fencing, a real run rewrites it in place with
+  exactly one canonical, one `og:title`, one `ld+json` and the right `<title>`.
+- **`inject()` refuses instead.** It now returns `None` when a page has no fence
+  but already carries a canonical or an `og:` tag, and the run prints a warning
+  naming every such file rather than duplicating silently. A refused page still
+  gets its `lesson-meta.json` row — only the file write is skipped, because
+  dropping the row would hand that lesson a generic gate page.
+
+Verified both ways: the guard fires on the pre-fence file (untouched, named in
+the warning, row still in `lesson-meta.json`), and does not fire on any of the
+other 259.
+
+Two stale values were fixed by hand at the same time, both from the same source
+— the Dino-Craft Part I title change that never made it out of Supabase:
+
+- `library.html`'s crawlable list and `llms.txt` still showed *"Dino-Craft: C1
+  English Expedition (Minecraft ed.)"*. One line each.
+- `lesson-meta.json` named `/minecraft/3gaje02rloj51.png` as that lesson's
+  image, where `library.html` has said `minecraft/dc1-hero.jpg` since the
+  thumbnail was repointed at real artwork. The gate page and every share card
+  were serving the old screenshot.
+
+**`sitemap.xml` and the auto-generated descriptions were left alone.** The
+sitemap diff is `lastmod` churn only, and `describe()` would replace the
+hand-written *"A player's monument to the apex predator — built one block at a
+time."* with a truncated sentence off the page. Both are Innes's call, not a
+defect.
