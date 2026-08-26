@@ -576,7 +576,14 @@ def main(check=False):
         url = '%s/%s' % (SITE, quote(r['file']))
         new = inject(src, seo_block(url, title, desc, img, r, noindex=soon),
                      esc(title))
-        index[r['file']] = {'title': title, 'description': desc,
+        # The plain title, not `title`. The Worker builds the gate page from
+        # this row and adds the brand itself, so handing it the already
+        # brand-suffixed <title> put "| Forbes English" inside the gate's own
+        # <h1> and made its <title> say it twice. It read that way on 194 of
+        # the 260 entries — the other 66 only escaped because page_title()
+        # drops the brand when the line would run past 65 characters, which is
+        # why it looked like a handful of odd pages rather than the default.
+        index[r['file']] = {'title': clean(r['title']), 'description': desc,
                             'level': r.get('level'), 'image': img,
                             'access': r['access']}
         # The Worker reads lesson-meta.json to build each gate page. The
