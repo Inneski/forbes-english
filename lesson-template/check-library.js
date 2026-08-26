@@ -73,8 +73,13 @@ say(!missingLesson.length, 'every entry points at a lesson that exists',
 /* ── every deck has an entry ─────────────────────────────────────────
    A scrolling lesson without a card is a choice. A finished 16:9 deck
    without one is an oversight — it had a hero derived for it. */
+/* The template is deck-shaped by definition and is not a lesson: it has no
+   hero, no Supabase row and nothing to put on a card. Excluding it here is
+   the fix for a gate that had been failing on it since the day it landed. */
+const NOT_A_LESSON = new Set(['lesson-template.html']);
 const decks = fs.readdirSync(ROOT).filter(f =>
-  f.endsWith('.html') && fs.readFileSync(path.join(ROOT, f), 'utf8').includes('class="stage-wrap"'));
+  f.endsWith('.html') && !NOT_A_LESSON.has(f)
+  && fs.readFileSync(path.join(ROOT, f), 'utf8').includes('class="stage-wrap"'));
 const deckNoCard = decks.filter(d => !seen.has(d));
 say(!deckNoCard.length, decks.length + ' decks, all with a card',
     deckNoCard.map(d => '        ' + d).join('\n'));
