@@ -844,6 +844,15 @@ const NOT_ACTUALLY_SPEAKING = new Set([
   'forbes-roleplay-reddit-french-TEST-p3.html'
 ]);
 
+// A lesson whose title is its story, not its syllabus, is invisible to every
+// grammar regex below. The Scarlet Star teaches past modals and reported
+// speech; its title says "The Scarlet Star" and nothing else, and renaming it
+// to carry the keywords would spoil a card that sells the case, not the
+// syllabus. Listed by file, so the tags stay true without touching the title.
+const GRAMMAR_TAGS = {
+  'sherlock-scarlet-star.html': ['Modal Verbs', 'Tenses', 'Reported Speech']
+};
+
 function detectCategories(item) {
   const t = (item.title + ' ' + item.file).toLowerCase();
   const cats = [];
@@ -859,7 +868,7 @@ function detectCategories(item) {
   // Minecraft is also its own filter: it is the single biggest run of themed
   // lessons on the site, and 'Gaming' buries it among the RPG and Lego ones.
   if (/minecraft|dino-?craft/.test(t)) cats.push('Minecraft');
-  if (/\brpg\b|role[\s_-]?playing|career quest|falcon racing|parisian conquest|wild frame|thornwick/.test(t)) cats.push('Role Playing Games');
+  if (/\brpg\b|role[\s_-]?playing|career quest|falcon racing|parisian conquest|wild frame|thornwick|sherlock|scarlet star/.test(t)) cats.push('Role Playing Games');
   if (/football|soccer|champions league|eintracht|vfb[\s_-]?stuttgart|\bgolf\b|tennis|skiing|\bski\b|water polo|\bmtb\b|mountain[\s_-]?bik|ridgeline|dartboard|scooter tricks/.test(t)) cats.push('Sports');
   if (/architect|rem koolhaas|max lamb|interior design|restaurant interior|\binterior\b|cafe kowloon/.test(t)) cats.push('Architectural Design');
   if (/fashion|atelier|couture/.test(t)) cats.push('Fashion');
@@ -874,15 +883,17 @@ function detectCategories(item) {
   if (/fire[\s_-]?brigade|feuerwehr|firefighter/.test(t)) cats.push('Emergency Services');
   if (/taekwondo/.test(t)) cats.push('Martial Arts');
   if (/\bielts\b/.test(t)) cats.push('IELTS');
-  if (/\bmodal\b|\bmust\b|have to|\bshould\b|might vs|going to|deduction/.test(t)) cats.push('Modal Verbs');
+  if (/\bmodals?\b|\bmust\b|have to|\bshould\b|might vs|going to|deduction/.test(t)) cats.push('Modal Verbs');
   // `used to` and `be used to + -ing` are past-habit forms taught alongside the
   // tenses, and three lessons on them had no topic category at all -- they were
   // reachable only under ALL and Lesson plan.
   if (/past simple|present perfect|present continuous|present simple|past continuous|past modals|future simple|used to|\btense\b|going to/.test(t)) cats.push('Tenses');
+  if (/reported speech|indirect speech|backshift|say(s|ing)? (that|he|she|they)/.test(t)) cats.push('Reported Speech');
   if (/preposition/.test(t)) cats.push('Prepositions');
   if (/phrasal verb|take.{0,3}put|make.{0,3}do/.test(t)) cats.push('Phrasal Verbs');
   if (/passive/.test(t)) cats.push('Passive Voice');
   if (/gerund|infinitive/.test(t)) cats.push('Gerunds & Infinitives');
+  (GRAMMAR_TAGS[item.file] || []).forEach(c => cats.push(c));
   if (item.video) cats.push('Video Lessons');
   if (NOT_ACTUALLY_SPEAKING.has(item.file)) {
     cats.push('Grammar activity');
@@ -893,7 +904,7 @@ function detectCategories(item) {
   }
   if (/\.pptx$/i.test(item.file) || item.deck) cats.push('Slide Decks');
   if (cats.length === 0) cats.push('Lesson plan');
-  return cats;
+  return Array.from(new Set(cats));
 }
 // The Free/Pro split is a real column on the `lessons` table, and it is what
 // the Cloudflare Worker enforces before it serves the file (src/index.js).
@@ -927,7 +938,7 @@ levels.forEach(lvl => {
   levelFilters.appendChild(btn);
 });
 
-const categories = ['ALL', 'Film & TV', 'Geopolitics', 'Philosophy', 'Gaming', 'Minecraft', 'Role Playing Games', 'Sports', 'Architectural Design', 'Fashion', 'Music', 'Construction', 'Energy', 'Technology & AI', 'Negotiation', 'Business', 'Animal Welfare', 'Nature & Wildlife', 'Workplace Communication', 'Emergency Services', 'Martial Arts', 'IELTS', 'Video Lessons', 'Modal Verbs', 'Tenses', 'Prepositions', 'Phrasal Verbs', 'Passive Voice', 'Gerunds & Infinitives', 'Grammar activity', 'Speaking activity', 'Lesson plan', 'Slide Decks'];
+const categories = ['ALL', 'Film & TV', 'Geopolitics', 'Philosophy', 'Gaming', 'Minecraft', 'Role Playing Games', 'Sports', 'Architectural Design', 'Fashion', 'Music', 'Construction', 'Energy', 'Technology & AI', 'Negotiation', 'Business', 'Animal Welfare', 'Nature & Wildlife', 'Workplace Communication', 'Emergency Services', 'Martial Arts', 'IELTS', 'Video Lessons', 'Modal Verbs', 'Tenses', 'Prepositions', 'Phrasal Verbs', 'Passive Voice', 'Gerunds & Infinitives', 'Reported Speech', 'Grammar activity', 'Speaking activity', 'Lesson plan', 'Slide Decks'];
 const catLabels = {
   'ALL': 'All',
   'Film & TV': 'Film & TV',
@@ -958,6 +969,7 @@ const catLabels = {
   'Phrasal Verbs': 'Phrasal Verbs',
   'Passive Voice': 'Passive Voice',
   'Gerunds & Infinitives': 'Gerunds & Infinitives',
+  'Reported Speech': 'Reported Speech',
   'Grammar activity': 'Grammar activities',
   'Speaking activity': 'Speaking activities',
   'Lesson plan': 'Lesson plans',
@@ -1280,6 +1292,7 @@ const CATEGORY_STYLE = {
   'Phrasal Verbs':              ['#f8f2e8,#f0dfc9', '🔤'],
   'Passive Voice':             ['#f2e8ec,#e4c9d3', '🔁'],
   'Gerunds & Infinitives':      ['#e8eef2,#c9d9e4', '🔗'],
+  'Reported Speech':           ['#f2eee8,#e4d8c6', '💬'],
   'Emergency Services':         ['#fbe9e6,#f5c6bd', '🚒'],
   'Gaming':                    ['#e9f0fb,#c9dbf5', '🎮'],
   'Minecraft':                 ['#eaf3e6,#cde3c2', '⛏️'],
