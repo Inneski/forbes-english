@@ -2630,10 +2630,16 @@ them to a module's `LIFT` to use them. Verified additive: rebuilding
   block at all**. Add the row to the cache as well as to the table. The cache
   was 244 rows against 248 in Supabase when this was written; it is stale, and
   appending is safe while a full refresh is not.
-- `check-library.js --vs-origin` fails on `lesson-template.html` and
-  `sherlock-scarlet-star_3.html` ("52 decks, all with a card"). Pre-existing —
-  verified identical against an untouched `origin/main` copy — and not fixed
-  here.
+- ~~`check-library.js --vs-origin` fails on `lesson-template.html` and
+  `sherlock-scarlet-star_3.html`.~~ **Both closed on 2026-08-26.** It was two
+  problems sharing one message: the template is not a lesson and the gate now
+  says so (`NOT_A_LESSON`, `c8e6a0b`), and `sherlock-scarlet-star_3.html` was a
+  real finding the gate had been reporting all along — an unlinked pre-SEO draft
+  of the Scarlet Star competing with the live page in search, deleted on Innes's
+  instruction (`3645207`). The general lesson is worth keeping: **a
+  long-standing "pre-existing, fails on clean main" failure is not
+  automatically noise**, and quoting it forward unexamined is what kept a
+  duplicate page live for months.
 - `build_docket.py` no longer reproduces its shipped output: the template has
   moved on since it was built (902 insertions). Not investigated; the file was
   reverted rather than shipped.
@@ -2714,3 +2720,146 @@ the page's JSON-LD kept `isAccessibleForFree:false` with a `.paywalled`
 `hasPart`, and `library.html`'s crawlable index still read "— subscribers",
 because both are written into files by `tools/seo.py`. `tools/lessons.json`
 now says `free` and a `seo.py` run has corrected all three.
+
+---
+
+## Grammar Court B1 — audit and repair (2026-08-26)
+
+Innes asked for a bug and grammar check on the live Part I page. All thirteen
+gates passed, a headless walkthrough scored 41/41, and there were still seven
+defects underneath — one of them site-wide. What follows is what changed and,
+more usefully, why the gates could not see any of it.
+
+### Every explanation printed its own i18n key
+
+`data-explain="c1i1exp"` holds a **key**, and `feedback()` concatenated the
+attribute raw. A learner answering question 1 correctly read:
+
+> Correct. c1i1exp
+
+All forty explanations in each deck, live, confirmed with a logged-in fetch in
+Chrome. **No other deck in the library uses keys here** — the other ~200 write
+the sentence into the attribute — so this was specific to the Grammar Court
+revamp, which wanted explanations that translate.
+
+Every existing gate passed it: EXPLAIN checks that a `data-explain` exists,
+MARKUP checks that tags render rather than print, I18N checks that `data-i18n`
+nodes resolve — `data-explain` is not one — and RUNTIME sees no error, because
+there is no error. The deck still scored 41/41. **Nothing short of reading the
+rendered feedback could see it**, which is exactly what the new gate does.
+
+Fixed in the engine rather than by inlining the English, so the three
+translations survive:
+
+```js
+const explainOf = v => (v && typeof v === 'string' && typeof UI_I18N.en[v] === 'string')
+  ? t(v) : v;
+```
+
+A written explanation is a sentence and can never collide with a key name, so
+this is inert on every deck that writes literal text. It is in
+`lesson-template.html` — the authority — and in the two decks that need it now.
+**The other ~200 lesson files still carry the pre-change engine.** That is safe
+(the change is purely additive and they use no keys) but it is a real
+divergence: they pick it up on their next rebuild from the template, not
+before. A blanket propagation across every deck is a deliberate operation of
+its own and was not done here.
+
+`fillFeedback` also grew a third argument so a **single gap** can carry its own
+`data-explain`, appended after the row's. `c4i4bexp` existed in all three
+languages and was referenced nowhere, because one `.gap-row` holds one
+`.feedback` and the participle half of *had ... eaten* had no way to be
+explained at all.
+
+### New gate: RESOLVE
+
+`check-lesson.js` now answers every `mc` and `gap` slide and reads what comes
+back. If anything the slide names in `data-explain` — on the row, on an option,
+on a single gap — appears in the rendered feedback verbatim, it fails. Only a
+key can trip it; an explanation contains spaces.
+
+Verified the way this project requires: **the gate fails on the exact file that
+shipped** and passes on the corrected one. It runs last, after every other
+measurement, because it answers the paper to do its work. Checked against ten
+other decks and the template for false positives — none.
+
+### Two answer-key defects
+
+- **Part I question 10** had two correct answers. *She \_\_\_ be happier if she
+  \_\_\_ a job she enjoyed* keyed `would … found` while also offering
+  `would … had`, and *if she had a job she enjoyed* is ordinary second
+  conditional. Options shuffle, so a learner who reasoned correctly was marked
+  wrong at random. The distractor is now `would … has`, the present-simple
+  if-clause the case actually teaches, and the explanation no longer argues in a
+  circle ("«Had» is wrong because we need the past simple of «find»" — nothing
+  in the stem asked for *find*).
+- **Gap tolerance.** `couldn't` and `didn't` accepted only the contraction, so
+  *could not* and *did not* — correct reported speech — were marked wrong.
+  Expanded in the data (`data-answer="couldn't|could not"`), never in `gapOk`;
+  Part II already did this properly.
+
+Part II's third-conditional distractors are mixed conditionals and therefore
+real English (*if you hadn't told me, I wouldn't know* is arguably better than
+the key). Those items are ordinary exam convention and stay, but `c2i3exp` now
+says so in all three languages instead of leaving a right answer unmarked.
+
+### Question numbering
+
+Part I labelled its questions 1–18, then jumped to 24 and ran out at 40 against
+a 41-point deck: the labels implied the five gap rows were items 19–23, but item
+4.4 is worth two points. Both decks now number **multiple-choice questions
+1–30**, which is what Part II already did and which cannot drift from the score.
+
+### Site-wide: the gate page double-branded every Pro lesson
+
+`tools/seo.py` wrote `page_title(r)` — the brand-suffixed `<title>` — into
+`lesson-meta.json`. `personaliseGate()` in `src/index.js` uses that value for
+the gate's `<h1>`, its `og:title` and its JSON-LD `name`, **and appends the
+brand again** for `<title>`. Anonymous visitors and crawlers got:
+
+- tab title: `Grammar Court — B1, Part I | Forbes English | Forbes English`
+- `<h1>`: `Grammar Court — B1, Part I | Forbes English`
+
+**194 of the 260 entries carried the suffix.** The other 66 escaped only
+because `page_title()` drops the brand when the line would run past 65
+characters, which is why it read as a handful of odd pages rather than as the
+default. These are the indexed public faces of every Pro lesson.
+
+`seo.py` now stores `clean(r['title'])`; the Worker adds the brand in the one
+place that decides how a gate page is labelled, and gained an `og:site_name`.
+249 titles were rewritten in `lesson-meta.json` (the brand on 194, plus the
+`(level)` suffix `page_title()` appends, which the gate already shows in its own
+eyebrow).
+
+**`lesson-meta.json` was rewritten in place rather than by running `seo.py`.**
+Do not run it casually: on a clean checkout it also rewrites
+`forbes-english-dinosaur-minecraft.html`, which carries hand-written SEO tags
+with no `SEO:start`/`SEO:end` markers, so the run **injects a second, duplicate
+SEO block and replaces the `<title>` with a worse one**. That trap is still
+there and is worth fixing before the next full run.
+
+One row of `tools/lessons.json` also disagreed with the live table —
+`forbes-english-dinosaur-minecraft.html`, cached as *"Dino-Craft: C1 English
+Expedition (Minecraft ed.)"* against *"Dino-Craft Part I: The Expedition"* in
+Supabase and in the page's own `<title>`. The table wins; the cache row was
+corrected. Everything else matched: files, levels and access all hash identical
+to the live table.
+
+### Smaller things
+
+- Four result strings (`resPerfect`/`resStrong`/`resMid`/`resLow`) were defined
+  twice per language in both decks — the template's generic set, then the
+  courtroom set. The later literal won, so the right one showed; the shadowed
+  copies are gone.
+- *"The Past Simple is **always** used with specific past time expressions"*
+  overstated the rule — a past continuous takes one too (*at 8pm yesterday I
+  was watching…*). Softened in all three languages.
+- Spanish: *«tu pareja»* reads as a spouse. The activation is pair work, so
+  *«tu compañero»*. Both decks. *«en parejas»* for the activity itself is fine.
+- Straight and curly apostrophes were mixed, sometimes on one slide — Case 3's
+  eyebrow said `can't` and its body `can’t`. Normalised across the slide text
+  and the `UI_I18N` strings. Attribute values were left alone, and gap answers
+  are unaffected either way because `flatten()` normalises both sides.
+
+Supabase rows 192 and 193 already had `deck = true`; the post-publish step from
+the revamp note was done.
