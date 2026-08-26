@@ -346,6 +346,15 @@ def inject(src, block, title):
     if START in src and END in src:
         return re.sub(re.escape(START) + '.*?' + re.escape(END), lambda _: block,
                       src, count=1, flags=re.S)
+    # A page with no fence but with SEO tags already in its head was written by
+    # hand. Inserting here would leave it with TWO canonicals, two og:titles and
+    # two LearningResource blocks, and nothing would say so — the run just
+    # reports "rewrote 1 page". Refuse, and name the file: the fix is to wrap
+    # the hand-written tags in the fence once, after which this is a normal
+    # generated block. `forbes-english-dinosaur-minecraft.html` sat like this
+    # for weeks and was only found because a session diffed a dry run.
+    if re.search(r'<(?:link[^>]+rel="canonical"|meta[^>]+property="og:)', src):
+        return None
     anchor = re.search(r'<meta name="viewport"[^>]*>', src)
     if anchor:
         i = anchor.end()
@@ -559,6 +568,7 @@ def main(check=False):
     print('  lessons: %d (from %s) · thumbnails: %d' % (len(rows), source,
                                                         len(images)))
     changed = skipped = 0
+    unfenced = []
     index = {}
 
     for r in rows:
@@ -576,6 +586,9 @@ def main(check=False):
         url = '%s/%s' % (SITE, quote(r['file']))
         new = inject(src, seo_block(url, title, desc, img, r, noindex=soon),
                      esc(title))
+        if new is None:
+            unfenced.append(r['file'])
+            new = src            # still indexed below; only the write is skipped
         # The plain title, not `title`. The Worker builds the gate page from
         # this row and adds the brand itself, so handing it the already
         # brand-suffixed <title> put "| Forbes English" inside the gate's own
@@ -606,6 +619,10 @@ def main(check=False):
         title = '%s | %s' % (t, BRAND)
         new = inject(src, seo_block('%s/%s' % (SITE, f), title, d,
                                     page_img), esc(title))
+        if new is None:
+            unfenced.append(f)
+            skipped += 1
+            continue
         if f == 'index.html':
             # One place where the site says what it is and who runs it.
             # Both Google and an answer engine resolve the brand from here.
@@ -642,6 +659,14 @@ def main(check=False):
              encoding='utf-8').write(llms_txt(rows, index, images))
     print('  %s %d page(s); skipped %d' %
           ('would rewrite' if check else 'rewrote', changed, skipped))
+    if unfenced:
+        print('  ! %d page(s) carry hand-written SEO tags with no '
+              '<!-- SEO:start --> fence — NOT touched, or this run would have '
+              'given each of them a second canonical and a second og:title:'
+              % len(unfenced))
+        for f in unfenced:
+            print('      %s' % f)
+        print('    Wrap the existing tags in the fence once, then re-run.')
     soon = [r for r in rows if coming_soon(r, images)]
     print('  coming soon (no hero): %d — noindexed, and out of the sitemap, '
           'the crawlable index and llms.txt' % len(soon))
