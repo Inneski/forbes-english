@@ -725,7 +725,7 @@
 </head>
 <body>
 <div class="bg-image-panel">
-  <img src="Architecture/architecture-1-hero.png" alt="A red pathway leading through a city park at dusk toward a tower under construction">
+  <img src="Architecture/architecture-1-hero.png" alt="A red pathway receding between rows of misty high-rise towers at dusk, a lone figure walking towards the light at the vanishing point">
 </div>
 <div class="page-wrap">
 
@@ -772,7 +772,7 @@
   <nav class="activity-nav">
     <button class="nav-tab active" onclick="showActivity(0)" id="tab-0">01 · Multiple Choice</button>
     <button class="nav-tab" onclick="showActivity(1)" id="tab-1">02 · Gap Fill</button>
-    <button class="nav-tab" onclick="showActivity(2)" id="tab-2">03 · Categorise</button>
+    <button class="nav-tab" onclick="showActivity(2)" id="tab-2">03 · Categorise &amp; Match</button>
   </nav>
 
   <!-- ═══════════════════════════════════════════════
@@ -902,8 +902,8 @@
 
     <div class="word-bank" id="word-bank-1">
       <div class="word-bank-label">Word Bank</div>
-      <span class="word-chip">porosity</span>
       <span class="word-chip">datum</span>
+      <span class="word-chip">porous</span>
       <span class="word-chip">programmatic</span>
       <span class="word-chip">tectonic</span>
       <span class="word-chip">phenomenological</span>
@@ -981,7 +981,7 @@
     <div class="activity-header">
       <div class="activity-tag">Activity 03 · Categorise</div>
       <div class="activity-title">Register & Context</div>
-      <div class="activity-intro">Drag each phrase into the correct category: <strong>Presentation Register</strong> (used when pitching to clients or juries) or <strong>Critical Register</strong> (used in reviews, essays, or critique). Consider tone, stance, and the relationship implied between speaker and audience.</div>
+      <div class="activity-intro">Drag each phrase into the correct category: <strong>Presentation Register</strong> (used when pitching to clients or juries) or <strong>Critical Register</strong> (used in reviews, essays, or critique). Consider tone, stance, and the relationship implied between speaker and audience. A matching task on architectural terminology follows once you have checked your answers.</div>
     </div>
 
     <div class="q-card active" id="a2-q0" style="display:block">
@@ -1152,7 +1152,7 @@
     </svg>
 
     <div class="results-score" id="final-score-display">0</div>
-    <div class="results-total" id="final-total-display">OUT OF 18</div>
+    <div class="results-total" id="final-total-display">OUT OF 24</div>
     <div class="results-message" id="results-message">Excellent work.</div>
     <div class="results-sub" id="results-sub">Your command of architectural and design language demonstrates the register and precision expected at the highest professional levels.</div>
 
@@ -1215,9 +1215,9 @@ const mcFeedback = [
   }
 ];
 
-const gapAnswers = ["porosity","tectonic","datum","programmatic","vernacular","phenomenological"];
+const gapAnswers = ["porous","tectonic","datum","programmatic","vernacular","phenomenological"];
 const gapFeedback = [
-  "<strong>porosity</strong> — from Latin <em>porus</em> (pore). In architectural discourse, it describes the degree to which a building allows light, air, movement, and views to permeate through it. Used for buildings that avoid hard boundaries.",
+  "<strong>porous</strong> — from Latin <em>porus</em> (pore), itself from Greek <em>poros</em> (passage). In architectural discourse a <em>porous</em> building lets light, air, movement, and views permeate through it instead of presenting hard boundaries. The adjective is what qualifies a noun such as <em>quality</em>; the abstract noun is <strong>porosity</strong> — \"the porosity of the façade\", but \"a porous façade\".",
   "<strong>tectonic</strong> — from Greek <em>tekton</em> (builder/carpenter). In architecture it means making the logic of construction visible and expressive. A <em>tectonic</em> building reads its own making through joinery, structure, and detail.",
   "<strong>datum</strong> — a fixed reference point or line from which all other measurements are taken. Used in architectural composition for a horizontal or vertical element that organises the entire scheme in relation to itself.",
   "<strong>programmatic</strong> — relating to the building's programme: the functional brief, the uses it contains, and how those uses are distributed and related spatially. <em>Programmatic clarity</em> means the organisation of spaces is logical, resolved, and clearly driven by the brief.",
@@ -1404,6 +1404,16 @@ function resetDrag() {
 
 function checkDrag() {
   if (dragChecked) return;
+
+  // All six phrases must be placed — checking locks the score permanently.
+  const placedCount = document.querySelectorAll('#zone-presentation .drag-item, #zone-critical .drag-item').length;
+  if (placedCount < 6) {
+    const fbGuard = document.getElementById('fb-a2-q0');
+    fbGuard.className = 'feedback show incorrect-fb';
+    fbGuard.innerHTML = 'Place all six phrases before checking — ' + (6 - placedCount) + ' still in the bank. Checking locks your answers.';
+    return;
+  }
+
   dragChecked = true;
 
   // Disable reset button now that answers are locked
@@ -1440,16 +1450,16 @@ function checkDrag() {
   updateScoreDisplay();
 
   const fb = document.getElementById('fb-a2-q0');
-  fb.classList.add('show');
+  fb.className = 'feedback show';
   if (correct === 6) {
     fb.classList.add('correct-fb');
-    fb.innerHTML = "✓ Perfect! You correctly identified all six phrases. <strong>Presentation register</strong> uses first person, inclusive language ('we envision', 'our proposal'), and invites the audience into a shared vision. <strong>Critical register</strong> uses third person, analytical distance, and evaluative language ('tentative', 'troubling ambiguity').";
+    fb.innerHTML = "✓ Perfect! You correctly identified all six phrases. The reliable cue is <strong>stance</strong>, not grammar. <strong>Presentation register</strong> advocates: it states intent and benefit, and it is on the building's side — often in the first person ('we envision', 'our proposal'), but just as often in an impersonal passive ('the palette <em>has been selected to</em> age gracefully'). <strong>Critical register</strong> judges: it stands outside the building and appraises it, with evaluative adjectives ('tentative', 'troubling ambiguity') and no stake in its success.";
   } else if (correct >= 4) {
     fb.classList.add('correct-fb');
-    fb.innerHTML = `✓ Good — ${correct}/6 correct. Presentation register invites and includes; critical register evaluates from a distance. Review any phrases marked in red.`;
+    fb.innerHTML = `✓ Good — ${correct}/6 correct. Presentation register advocates — intent and benefit, whether or not it says 'we'; critical register evaluates from a distance. Review any phrases marked in red.`;
   } else {
     fb.classList.add('incorrect-fb');
-    fb.innerHTML = `✗ ${correct}/6 correct. Remember: presentation register is collaborative and visionary; critical register is evaluative and distanced. Look for pronouns and evaluative adjectives as clues.`;
+    fb.innerHTML = `✗ ${correct}/6 correct. Remember: presentation register is visionary and advocating; critical register is evaluative and distanced. Ask who the speaker is for — the building, or the reader judging it. A first-person pronoun is a clue, but its absence is not: presentation register uses the impersonal passive too.`;
   }
   document.getElementById('drag-score-display').textContent = correct + '/6 correct';
 
@@ -1465,6 +1475,21 @@ let matchScore = 0;
 
 function checkMatch() {
   if (matchChecked) return;
+
+  // Every term needs a definition, and each definition is used exactly once.
+  const chosen = matchAnswers.map((_, i) => document.getElementById('match-' + i).value);
+  const fbGuard = document.getElementById('fb-a2-q1');
+  if (chosen.some(v => !v)) {
+    fbGuard.className = 'feedback show incorrect-fb';
+    fbGuard.innerHTML = 'Choose a definition for every term before checking — ' + chosen.filter(v => !v).length + ' still unanswered. Checking locks your answers.';
+    return;
+  }
+  if (new Set(chosen).size < chosen.length) {
+    fbGuard.className = 'feedback show incorrect-fb';
+    fbGuard.innerHTML = 'Each definition belongs to exactly one term, and you have used one of them more than once. Adjust your answers before checking.';
+    return;
+  }
+
   matchChecked = true;
 
   let correct = 0;
@@ -1485,7 +1510,7 @@ function checkMatch() {
   updateScoreDisplay();
 
   const fb = document.getElementById('fb-a2-q1');
-  fb.classList.add('show');
+  fb.className = 'feedback show';
   const msg = correct === 6
     ? '✓ Excellent — 6/6. You have a thorough command of architectural critical vocabulary.'
     : `${correct}/6 correct. Review the terms and their definitions below:`;
