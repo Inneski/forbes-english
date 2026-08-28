@@ -226,9 +226,10 @@ function clearError() {
   authError.classList.remove("show");
 }
 
-switchLink.addEventListener("click", () => {
-  mode = mode === "login" ? "signup" : "login";
-  clearError();
+// Split out of the toggle handler so the submit path can send someone back to
+// the login form without also wiping the message explaining why.
+function applyMode(next) {
+  mode = next;
   if (mode === "signup") {
     authTitle.textContent = "Create your account";
     authLead.textContent = "Sign up to subscribe and unlock every lesson.";
@@ -244,6 +245,11 @@ switchLink.addEventListener("click", () => {
     switchLink.textContent = "Sign up";
     document.getElementById("forgot-wrap").hidden = false;
   }
+}
+
+switchLink.addEventListener("click", () => {
+  clearError();
+  applyMode(mode === "login" ? "signup" : "login");
 });
 
 // Someone who cannot get in is someone who cannot pay, so the reset path
@@ -284,7 +290,7 @@ authForm.addEventListener("submit", async (e) => {
   const password = document.getElementById("password").value;
   authSubmit.disabled = true;
 
-  const { error } = mode === "signup"
+  const { data, error } = mode === "signup"
     ? await sbSignUp(email, password)
     : await sbSignIn(email, password);
 
@@ -294,6 +300,21 @@ authForm.addEventListener("submit", async (e) => {
     return;
   }
   if (mode === "signup") {
+    // Signing up with an address that already has a confirmed account is not
+    // an error: Supabase returns 200 and an obfuscated user, deliberately, so
+    // this endpoint cannot be used to test which addresses are registered.
+    // The tell is an empty identities array -- a genuinely new signup comes
+    // back with one identity. Without this branch the form says "check your
+    // email", no email ever arrives, and the visitor signs up again.
+    const identities = data && data.user && data.user.identities;
+    if (Array.isArray(identities) && identities.length === 0) {
+      showError(
+        "That email already has an account. Log in below, or use " +
+        "\u201CForgot password?\u201D if you cannot remember it."
+      );
+      applyMode("login");
+      return;
+    }
     showError("Check your email to confirm your account, then log in.");
     return;
   }

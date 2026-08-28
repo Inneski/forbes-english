@@ -47,8 +47,17 @@ window.sb.auth.getSession().then(({ data }) => writeSessionCookie(data.session))
 
 // --- small helpers used by account.html ---
 
+// emailRedirectTo must be an allowed URL in the Supabase dashboard
+// (Authentication -> URL Configuration -> Redirect URLs), same as the reset
+// link below. Without it the confirmation link falls back to the project's
+// Site URL and drops a newly confirmed user on the library, with nothing
+// telling them a plan is the next step.
 async function sbSignUp(email, password) {
-  return window.sb.auth.signUp({ email, password });
+  return window.sb.auth.signUp({
+    email,
+    password,
+    options: { emailRedirectTo: `${location.origin}/account.html` },
+  });
 }
 
 async function sbSignIn(email, password) {
