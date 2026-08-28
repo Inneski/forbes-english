@@ -91,8 +91,8 @@ PAGES = {
                    'A nine-lesson route through IELTS Academic Writing — '
                    'Task 1 reports and Task 2 essays, in the order they '
                    'should be taught.', 0.9, '/ielts-model-answers/hero.jpg'),
-    'ielts-question-bank.html': ('IELTS Task 2 Question Bank & Ideas',
-                                 f'{_BANK_N} IELTS Writing Task 2 questions '
+    'ielts-question-bank.html': ('IELTS Academic Writing Task 2: Question Bank & Ideas',
+                                 f'{_BANK_N} IELTS Academic Writing Task 2 questions '
                                  f'across {_BANK_T} topics, sorted by essay '
                                  'type, each topic with arguments for both '
                                  'sides. Free.', 0.9,
