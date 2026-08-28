@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#F0723F">
+<title>The Last Train Home — Future Simple Cybervoxel RPG</title>
+<style>
+
+
+:root {
+  --brown: #F0723F;
+  --brown-light: #F6A04B;
+  --brown-dark: #6E2418;
+  --ink: #24100A;
+  --cream: #FFF4D8;
+  --gold: #FFD166;
+  --burgundy: #9F321F;
+  --accent: #FFE9A8;
+  --right: #4f815e;
+  --wrong: #a13e44;
+}
+
+* { box-sizing: border-box; }
+html, body { min-height: 100%; margin: 0; background: var(--brown); }
+body, button { font-family: "Courier New", Courier, monospace; }
+button { -webkit-tap-highlight-color: transparent; }
+
+.game { position: relative; isolation: isolate; width: 100vw; min-height: 100svh; overflow-x: hidden; overflow-y: auto; color: var(--ink); background: linear-gradient(135deg,var(--brown-light),var(--brown)); }
+.scene, .wash { position: absolute; inset: 0; width: 100%; height: 100%; }
+.scene { z-index: 0; object-fit: cover; object-position: center; background: var(--brown); }
+.wash { z-index: 1; pointer-events: none; }
+.cover-wash, .wash-left, .success-wash { background: linear-gradient(90deg,rgba(255,244,216,.93) 0%,rgba(246,160,75,.77) 40%,rgba(240,114,63,.03) 70%); }
+.wash-right, .failure-wash { background: linear-gradient(270deg,rgba(255,244,216,.93) 0%,rgba(246,160,75,.77) 40%,rgba(240,114,63,.03) 70%); }
+.wash-centre { background: radial-gradient(circle at center,rgba(255,244,216,.94) 0%,rgba(246,160,75,.76) 41%,rgba(240,114,63,.04) 73%); }
+.tone-light { color: var(--cream); }
+.tone-light .cover-wash, .tone-light .wash-left, .tone-light .success-wash { background: linear-gradient(90deg,rgba(36,16,10,.91) 0%,rgba(110,36,24,.76) 42%,rgba(240,114,63,.02) 72%); }
+.tone-light .wash-right, .tone-light .failure-wash { background: linear-gradient(270deg,rgba(36,16,10,.91) 0%,rgba(110,36,24,.76) 42%,rgba(240,114,63,.02) 72%); }
+.tone-light .wash-centre { background: radial-gradient(circle at center,rgba(36,16,10,.91) 0%,rgba(110,36,24,.72) 42%,rgba(240,114,63,.03) 74%); }
+
+.cover-copy, .copy, .ending-copy { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: flex-start; }
+.cover-copy { width: min(780px,54vw); min-height: 100svh; justify-content: center; padding: clamp(6rem,10vh,8.5rem) clamp(1.2rem,4.6vw,5.4rem); }
+.cover-copy h1, .copy h1, .ending-copy h1 { margin: 0; font-weight: 700; line-height: .94; letter-spacing: -.045em; text-wrap: balance; text-shadow: 0 0 .15rem #fff,0 0 .48rem #fff,0 0 1.05rem var(--cream); }
+.tone-light .cover-copy h1, .tone-light .copy h1, .tone-light .ending-copy h1, .tone-light .story, .tone-light .copy h2, .tone-light .lead, .tone-light .ending-copy > p { text-shadow: 0 0 .18rem var(--ink),0 0 .52rem var(--ink),0 0 1.1rem var(--brown-light); }
+.cover-copy h1 { font-size: clamp(3rem,6.1vw,7rem); }
+.cover-copy h1 em { color: var(--burgundy); font-style: normal; }
+.eyebrow { margin: 0 0 .85rem; color: var(--burgundy); font-size: clamp(.7rem,1vw,.94rem); font-weight: 700; letter-spacing: .14em; text-transform: uppercase; text-shadow: 0 0 .22rem #fff,0 0 .72rem var(--cream); }
+.tone-light .eyebrow { color: var(--accent); text-shadow: 0 0 .18rem var(--ink),0 0 .58rem var(--ink); }
+.lead, .ending-copy > p:not(.eyebrow) { max-width: 660px; margin: 1.2rem 0; font-size: clamp(1rem,1.42vw,1.38rem); font-weight: 700; line-height: 1.5; text-shadow: 0 0 .22rem #fff,0 0 .72rem var(--cream); }
+.rules { display: flex; flex-wrap: wrap; gap: .6rem; margin: .1rem 0 1.5rem; }
+.rules > span, .result { color: var(--ink); background: rgba(255,244,216,.96); border: 3px solid var(--ink); box-shadow: 6px 6px 0 rgba(36,16,10,.38); text-shadow: none; }
+.rules > span { padding: .62rem .76rem; font-size: clamp(.66rem,.82vw,.8rem); font-weight: 700; letter-spacing: .04em; }
+.cover-copy small { margin-top: 1rem; color: var(--ink); font-size: .72rem; font-weight: 700; text-shadow: 0 0 .4rem var(--cream); }
+.tone-light .cover-copy small { color: var(--cream); text-shadow: 0 0 .18rem var(--ink),0 0 .55rem var(--ink); }
+
+.translation { display: block; margin-top: .28em; color: inherit; font: inherit; line-height: 1.24; letter-spacing: normal; text-transform: none; }
+h1 > .translation { margin-top: .22em; line-height: 1.08; }
+.story > .translation, .lead > .translation, .ending-copy > p > .translation { margin-top: .42em; }
+.answer-copy { display: flex; flex: 1; flex-direction: column; min-width: 0; }
+.bilingual-button { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.22; }
+.language-controls { display: flex; justify-self: end; gap: .28rem; }
+.language-controls.standalone { position: absolute; z-index: 10; top: 1rem; right: 1rem; }
+.language-controls button { min-width: 40px; padding: .38rem .45rem; color: var(--cream); background: rgba(36,16,10,.78); border: 2px solid rgba(255,244,216,.75); font-size: .58rem; font-weight: 700; cursor: pointer; }
+.language-controls button.active { color: var(--ink); background: var(--cream); border-color: var(--gold); box-shadow: 3px 3px 0 rgba(36,16,10,.55); }
+.language-controls button:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.translated .copy, .translated .cover-copy, .translated .ending-copy { justify-content: flex-start; padding-top: clamp(6.3rem,9vh,7.4rem); padding-bottom: 4rem; }
+
+.primary, .secondary, .answers button, .routes button { appearance: none; border-radius: 0; cursor: pointer; transition: transform .12s ease,filter .12s ease,box-shadow .12s ease; }
+.primary, .secondary { min-height: 52px; padding: .82rem 1.1rem; color: var(--cream); background: var(--burgundy); border: 3px solid var(--ink); box-shadow: 7px 7px 0 rgba(36,16,10,.78); font-size: clamp(.78rem,.95vw,.94rem); font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+.secondary { color: var(--ink); background: var(--cream); }
+.primary:hover, .secondary:hover, .answers button:hover, .routes button:hover { transform: translate(-2px,-2px); filter: brightness(1.06); box-shadow: 9px 9px 0 rgba(36,16,10,.65); }
+.primary:active, .secondary:active, .answers button:active, .routes button:active { transform: translate(3px,3px); box-shadow: 2px 2px 0 rgba(36,16,10,.72); }
+.primary:focus-visible, .secondary:focus-visible, .answers button:focus-visible, .routes button:focus-visible, .restart:focus-visible { outline: 4px solid var(--gold); outline-offset: 3px; }
+
+.hud { position: absolute; z-index: 5; inset: 0 0 auto; display: grid; grid-template-columns: 110px minmax(150px,1fr) 150px 110px auto; align-items: center; gap: clamp(.5rem,1.1vw,1rem); width: 100%; padding: clamp(.7rem,1.5vw,1.05rem) clamp(.8rem,3.2vw,3.2rem); background: linear-gradient(180deg,rgba(36,16,10,.92),rgba(36,16,10,0)); color: var(--cream); text-shadow: 2px 2px 0 var(--ink); }
+.hud-stat { display: flex; flex-direction: column; gap: .12rem; }
+.hud-stat span { color: var(--brown-light); font-size: .56rem; font-weight: 700; letter-spacing: .1em; }
+.hud-stat strong { color: var(--cream); font-size: clamp(.92rem,1.2vw,1.16rem); letter-spacing: .05em; }
+.tiles, .chances { align-items: flex-end; text-align: right; }
+.meter { position: relative; height: 14px; border: 3px solid var(--cream); background: rgba(36,16,10,.76); box-shadow: 4px 4px 0 rgba(36,16,10,.72); }
+.meter i { display: block; height: 100%; background: linear-gradient(90deg,var(--brown),var(--gold),var(--burgundy)); transition: width .32s ease; }
+.meter b { position: absolute; top: -7px; width: 4px; height: 23px; background: var(--cream); box-shadow: 0 0 8px var(--cream); }
+
+.copy { width: min(750px,49vw); min-height: 100svh; justify-content: center; padding: clamp(5.8rem,10vh,7.4rem) clamp(1rem,3.7vw,4rem) clamp(4rem,6vh,5rem); }
+.pos-right .copy { margin-left: auto; align-items: flex-end; text-align: right; }
+.pos-centre .copy { width: min(890px,68vw); margin-inline: auto; justify-content: flex-start; align-items: center; padding-top: clamp(6rem,9vh,7rem); text-align: center; }
+.copy h1 { max-width: 100%; font-size: clamp(2rem,3.75vw,4.35rem); }
+.story { max-width: 670px; margin: .72rem 0; font-size: clamp(.91rem,1.1vw,1.08rem); font-weight: 700; line-height: 1.46; text-shadow: 0 0 .22rem #fff,0 0 .72rem var(--cream); }
+.clue { display: flex; flex-direction: column; gap: .22rem; max-width: 100%; margin: .42rem 0; padding: .62rem .78rem; color: var(--ink); background: rgba(255,244,216,.86); border-left: 5px solid var(--burgundy); box-shadow: 4px 4px 0 rgba(36,16,10,.24); backdrop-filter: blur(4px); }
+.pos-right .clue { border-left: 0; border-right: 5px solid var(--burgundy); }
+.clue > span { color: var(--burgundy); font-size: .62rem; font-weight: 700; letter-spacing: .12em; }
+.clue strong { font-size: clamp(.96rem,1.15vw,1.14rem); line-height: 1.34; }
+.copy h2 { margin: .34rem 0 .5rem; font-size: clamp(1.04rem,1.32vw,1.28rem); line-height: 1.26; text-shadow: 0 0 .22rem #fff,0 0 .72rem var(--cream); }
+.answers, .routes { display: grid; gap: .48rem; width: 100%; max-width: 690px; }
+.answers button, .routes button { display: flex; align-items: center; width: 100%; min-height: 52px; padding: .56rem .66rem; color: var(--ink); text-align: left; background: rgba(255,244,216,.97); border: 3px solid var(--ink); box-shadow: 5px 5px 0 rgba(36,16,10,.56); font-size: clamp(.86rem,1.02vw,1rem); font-weight: 700; line-height: 1.3; }
+.pos-right .answers button { flex-direction: row-reverse; text-align: right; }
+.answers button b { display: grid; flex: 0 0 32px; width: 32px; height: 32px; margin-right: .62rem; place-items: center; color: var(--cream); background: var(--burgundy); border: 2px solid var(--ink); line-height: 1; }
+.pos-right .answers button b { margin-right: 0; margin-left: .62rem; }
+.routes { grid-template-columns: repeat(2,minmax(0,1fr)); margin-top: .65rem; }
+.routes button { flex-direction: column; align-items: flex-start; gap: .34rem; min-height: 92px; padding: .8rem; }
+.routes button strong { color: var(--burgundy); font-size: clamp(.8rem,.96vw,.94rem); letter-spacing: .03em; }
+.routes button > span { color: var(--brown-dark); font-size: .72rem; letter-spacing: .05em; }
+.feedback { width: 100%; max-width: 670px; margin-top: .6rem; padding: .84rem .9rem; color: var(--ink); text-align: left; text-shadow: none; background: rgba(255,244,216,.98); border: 4px solid var(--ink); box-shadow: 6px 6px 0 rgba(36,16,10,.58); }
+.feedback.right { border-color: var(--right); }
+.feedback.wrong { border-color: var(--wrong); }
+.feedback > strong { display: block; margin-bottom: .28rem; color: var(--burgundy); font-size: .85rem; letter-spacing: .05em; }
+.feedback p { margin: 0 0 .62rem; font-size: .9rem; font-weight: 700; line-height: 1.4; }
+.small { min-height: 40px; padding: .56rem .8rem; box-shadow: 4px 4px 0 rgba(36,16,10,.58); }
+.restart { position: absolute; z-index: 6; right: clamp(.7rem,2.2vw,2.3rem); bottom: clamp(.6rem,1.4vw,1.1rem); padding: .48rem .58rem; color: var(--cream); background: rgba(36,16,10,.78); border: 2px solid rgba(255,244,216,.75); font-size: .6rem; font-weight: 700; letter-spacing: .05em; cursor: pointer; }
+
+.ending-copy { width: min(710px,49vw); min-height: 100svh; justify-content: center; padding: clamp(6rem,10vh,8rem) clamp(1.2rem,4.7vw,5.5rem) 3rem; }
+.success-ending .ending-copy { align-items: flex-start; margin-right: auto; text-align: left; }
+.failure-ending .ending-copy { align-items: flex-end; margin-left: auto; text-align: right; }
+.ending-copy h1 { font-size: clamp(2.35rem,4vw,4.6rem); }
+.result { display: inline-flex; flex-direction: column; gap: .22rem; margin: .2rem 0 1.15rem; padding: .72rem .9rem; }
+.result strong { font-size: 1.4rem; }
+.result span { font-size: .66rem; font-weight: 700; letter-spacing: .07em; }
+.actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .8rem; }
+.success-ending .actions { justify-content: flex-start; }
+
+@media (max-width: 860px) {
+  .scene { object-position: center; }
+  .cover-wash, .success-wash, .failure-wash, .wash-left, .wash-right, .wash-centre { background: linear-gradient(180deg,rgba(240,114,63,.02) 0%,rgba(240,114,63,.42) 28%,rgba(255,244,216,.97) 100%); }
+  .tone-light .cover-wash, .tone-light .success-wash, .tone-light .failure-wash, .tone-light .wash-left, .tone-light .wash-right, .tone-light .wash-centre { background: linear-gradient(180deg,rgba(36,16,10,.02) 0%,rgba(36,16,10,.48) 28%,rgba(36,16,10,.97) 100%); }
+  .cover-copy, .copy, .ending-copy, .pos-centre .copy { width: 100%; min-height: 100svh; justify-content: flex-end; align-items: flex-start; margin: 0; padding: 6.5rem 1rem 3.9rem; text-align: left; }
+  .cover-copy h1 { font-size: clamp(2.65rem,11.8vw,4.65rem); }
+  .copy h1 { font-size: clamp(1.82rem,7.6vw,3.15rem); }
+  .story { margin: .48rem 0; font-size: .86rem; }
+  .clue { margin: .28rem 0; padding: .5rem .62rem; }
+  .pos-right .clue { border-right: 0; border-left: 5px solid var(--burgundy); }
+  .copy h2 { margin: .26rem 0 .38rem; font-size: .98rem; }
+  .answers { gap: .36rem; }
+  .answers button { min-height: 45px; padding: .42rem .5rem; font-size: .82rem; }
+  .pos-right .answers button { flex-direction: row; text-align: left; }
+  .pos-right .answers button b { margin-right: .52rem; margin-left: 0; }
+  .routes { grid-template-columns: 1fr; }
+  .routes button { min-height: 66px; }
+  .hud { grid-template-columns: 72px 1fr 94px 72px; gap: .35rem; padding: .58rem .6rem 2.8rem; }
+  .hud-stat span { font-size: .43rem; }
+  .hud-stat strong { font-size: .75rem; }
+  .hud .language-controls { position: absolute; right: .6rem; bottom: .35rem; }
+  .language-controls.standalone { top: .6rem; right: .6rem; }
+  .translated .copy, .translated .cover-copy, .translated .ending-copy, .translated.pos-centre .copy { padding-top: 7.4rem; }
+  .actions { justify-content: flex-start; }
+}
+
+@media (max-height: 760px) and (min-width: 861px) {
+  .copy { padding-top: 5.2rem; padding-bottom: 3rem; }
+  .story { margin: .45rem 0; }
+  .clue { margin: .25rem 0; }
+  .answers button { min-height: 46px; padding-block: .42rem; }
+}
+
+@media print {
+  .scene, .wash, .hud, .restart, .actions { display: none; }
+  .game { min-height: auto; color: var(--ink); background: white; }
+  .ending-copy { width: 100%; min-height: auto; padding: 2rem; }
+}
+</style>
+<style id="low-fog-v2">
+/* V2: keep generated artwork unobscured on every playable screen. Text already
+   sits in image-specific negative space and carries content-aware shadows. */
+.play > .wash { display: none !important; }
+.cover > .cover-wash,
+.ending > .wash { opacity: .28; }
+.play .clue { backdrop-filter: none; }
+</style>
+</head>
+<body>
+<div id="app">
+  <main class="game cover tone-dark">
+    <img class="scene" src="last-train-home-rpg/01_cover.webp" alt="Jax looks across the orange megacity toward his home tower">
+    <div class="wash cover-wash"></div>
+    <section class="cover-copy">
+      <p class="eyebrow">FUTURE SIMPLE · CYBERVOXEL RPG</p>
+      <h1>THE LAST TRAIN HOME</h1>
+      <p class="lead">Jax's train has broken down. Cross the dangerous megacity and reach his home tower before lockdown.</p>
+      <div class="rules"><span>+5 CORRECT</span><span>4 ACCESS SHARDS</span><span>3 CHANCES</span></div>
+      <p class="lead"><strong>JavaScript is required for branching choices and scoring.</strong></p>
+    </section>
+  </main>
+</div>
+<script>window.CYBERVOXEL_GAME_DATA={"startScene":"breakdown","pointLabel":"FUTURE POINTS","tileLabel":"ACCESS SHARDS","cover":{"image":"01_cover.webp","tone":"dark","eyebrow":"FUTURE SIMPLE · CYBERVOXEL RPG","title":"THE LAST TRAIN HOME","lead":"Jax's last train breaks down after a nightclub. Cross the dangerous megacity and reach his home tower before lockdown.","rules":["+5 CORRECT","4 ACCESS SHARDS","3 CHANCES"],"start":"START NIGHT RUN","small":"Single player · A1–A2 · three branching routes · 75 possible points","local":{"es":{"eyebrow":"FUTURO SIMPLE · RPG CYBERVOXEL","title":"EL ÚLTIMO TREN A CASA","lead":"El último tren de Jax se avería después de una discoteca. Cruza la peligrosa megaciudad y llega a su torre antes del cierre.","rules":["+5 CORRECTA","4 FRAGMENTOS","3 OPORTUNIDADES"],"start":"EMPEZAR LA RUTA NOCTURNA","small":"Un jugador · A1–A2 · tres rutas · 75 puntos posibles"},"de":{"eyebrow":"FUTUR MIT WILL · CYBERVOXEL-RPG","title":"DER LETZTE ZUG NACH HAUSE","lead":"Jax' letzter Zug fällt nach einem Clubbesuch aus. Durchquere die gefährliche Megastadt und erreiche seinen Wohnturm vor der Abriegelung.","rules":["+5 RICHTIG","4 ZUGANGSSPLITTER","3 CHANCEN"],"start":"NACHTWEG STARTEN","small":"Ein Spieler · A1–A2 · drei Wege · 75 mögliche Punkte"}}},"ui":{"off":{},"es":{"points":"PUNTOS","tiles":"FRAGMENTOS","chances":"OPORTUNIDADES","evidence":"PISTA VISUAL","recovered":"FRAGMENTO RECUPERADO","correct":"La ruta continúa.","falseTrail":"PREDICCIÓN ERRÓNEA","noPoints":"Sin puntos. Respuesta correcta:","continue":"CONTINUAR","restart":"EMPEZAR DE NUEVO","finalScore":"PUNTUACIÓN FINAL","playAgain":"JUGAR OTRA VEZ","print":"IMPRIMIR RESULTADO"},"de":{"points":"PUNKTE","tiles":"SPLITTER","chances":"CHANCEN","evidence":"BILDHINWEIS","recovered":"SPLITTER GEFUNDEN","correct":"Der Weg geht weiter.","falseTrail":"FALSCHE VORHERSAGE","noPoints":"Keine Punkte. Richtige Antwort:","continue":"WEITER","restart":"NEU STARTEN","finalScore":"ENDPUNKTZAHL","playAgain":"NOCH EINMAL","print":"ERGEBNIS DRUCKEN"}},"endings":{"master":{"success":true,"image":"23_ending.webp","label":"FUTURE SIMPLE MASTER","title":"PERFECT NIGHT RUN","text":"Jax has reached home before lockdown with every shard and every prediction correct. The city will remember this route.","local":{"es":{"label":"MAESTRO DEL FUTURO SIMPLE","title":"RUTA NOCTURNA PERFECTA","text":"Jax ha llegado a casa antes del cierre con todos los fragmentos y todas las predicciones correctas. La ciudad recordará esta ruta."},"de":{"label":"FUTUR-MEISTER","title":"PERFEKTER NACHTWEG","text":"Jax hat vor der Abriegelung sein Zuhause erreicht—mit allen Splittern und jeder richtigen Vorhersage. Die Stadt wird sich an diesen Weg erinnern."}}},"complete":{"success":true,"image":"23_ending.webp","label":"QUEST COMPLETE","title":"JAX IS HOME","text":"The four shards have opened the tower. Jax reaches his apartment as the orange sun rises over the megacity.","local":{"es":{"label":"MISIÓN COMPLETADA","title":"JAX ESTÁ EN CASA","text":"Los cuatro fragmentos han abierto la torre. Jax llega a su piso cuando sale el sol naranja sobre la megaciudad."},"de":{"label":"QUEST GESCHAFFT","title":"JAX IST ZU HAUSE","text":"Die vier Splitter haben den Turm geöffnet. Jax erreicht seine Wohnung, als die orange Sonne über der Megastadt aufgeht."}}},"missing":{"success":false,"image":"22_tower_gate.webp","label":"ACCESS DENIED","title":"THE GATE STAYS LOCKED","text":"Jax has reached the tower, but he needs all four access shards and at least 50 points. Try another route.","local":{"es":{"label":"ACCESO DENEGADO","title":"LA PUERTA SIGUE CERRADA","text":"Jax ha llegado a la torre, pero necesita los cuatro fragmentos y al menos 50 puntos. Prueba otra ruta."},"de":{"label":"ZUGANG VERWEIGERT","title":"DAS TOR BLEIBT ZU","text":"Jax hat den Turm erreicht, braucht aber alle vier Splitter und mindestens 50 Punkte. Wähle einen anderen Weg."}}},"failed":{"success":false,"image":"20_patrol_robots.webp","label":"LOCKDOWN","title":"THE PATROL CATCHES JAX","text":"Three wrong predictions have used all his chances. The district closes before he reaches home.","local":{"es":{"label":"CIERRE","title":"LA PATRULLA ATRAPA A JAX","text":"Tres predicciones erróneas han gastado todas sus oportunidades. El distrito cierra antes de que llegue a casa."},"de":{"label":"ABRIEGELUNG","title":"DIE PATROUILLE ERWISCHT JAX","text":"Drei falsche Vorhersagen haben alle Chancen verbraucht. Das Viertel wird gesperrt, bevor er zu Hause ist."}}}},"scenes":{"breakdown":{"image":"02_breakdown.webp","position":"left","tone":"light","act":"NIGHT RUN · BROKEN TRAIN","title":"THE TRAIN IS DEAD","story":"The carriage jerks. The lights die. Smoke rises from the motor.","clue":"Smoke is pouring from the engine. The driver cannot restart it.","prompt":"What will happen next?","points":5,"correctNext":"shutters","wrongNext":"shutters","answers":[{"text":"The train won't move again tonight.","correct":true},{"text":"The train moved yesterday."},{"text":"The train is moving now."}],"local":{"es":{"act":"RUTA NOCTURNA · TREN AVERIADO","title":"EL TREN NO FUNCIONA","story":"El vagón da un tirón. Las luces se apagan. Sale humo del motor.","clue":"Sale humo del motor. El conductor no puede arrancarlo.","prompt":"¿Qué pasará después?","answers":["El tren no volverá a moverse esta noche.","El tren se movió ayer.","El tren se está moviendo ahora."]},"de":{"act":"NACHTWEG · ZUGAUSFALL","title":"DER ZUG IST KAPUTT","story":"Der Wagen ruckelt. Das Licht geht aus. Rauch steigt aus dem Motor.","clue":"Rauch kommt aus dem Motor. Der Fahrer kann ihn nicht neu starten.","prompt":"Was wird als Nächstes passieren?","answers":["Der Zug wird heute Nacht nicht mehr fahren.","Der Zug fuhr gestern.","Der Zug fährt gerade."]}}},"shutters":{"image":"03_shutters.webp","position":"left","tone":"light","act":"NIGHT RUN · CLOSING STATION","title":"THE SHUTTERS ARE FALLING","story":"Jax and Nyra run for the exit as lockdown starts.","clue":"The exit shutters are halfway down. Lockdown begins soon.","prompt":"Complete: The station ___ soon.","points":5,"correctNext":"patrol","wrongNext":"patrol","answers":[{"text":"closed"},{"text":"will close","correct":true},{"text":"is close"}],"local":{"es":{"act":"RUTA NOCTURNA · ESTACIÓN CERRANDO","title":"LAS PERSIANAS BAJAN","story":"Jax y Nyra corren hacia la salida cuando empieza el cierre.","clue":"Las persianas están a medio bajar. El cierre empezará pronto.","prompt":"Completa: La estación ___ pronto.","answers":["cerró","cerrará","está cerrar"]},"de":{"act":"NACHTWEG · STATION SCHLIESST","title":"DIE TORE SINKEN","story":"Jax und Nyra laufen zum Ausgang, als die Abriegelung beginnt.","clue":"Die Tore sind halb geschlossen. Die Abriegelung beginnt bald.","prompt":"Ergänze: Die Station ___ bald.","answers":["schloss","wird schließen","ist schließen"]}}},"patrol":{"image":"04_patrol.webp","position":"right","tone":"light","act":"NIGHT RUN · NYRA'S WARNING","title":"SEARCHLIGHTS WAKE UP","story":"Nyra checks the streets while patrol drones leave their docks.","clue":"Searchlights are switching on above every platform.","prompt":"Choose the best prediction.","points":5,"correctNext":"mono","wrongNext":"mono","answers":[{"text":"Patrol drones searched the platforms yesterday."},{"text":"Patrol drones are searches the platforms."},{"text":"Patrol drones will search the platforms.","correct":true}],"local":{"es":{"act":"RUTA NOCTURNA · AVISO DE NYRA","title":"SE ENCIENDEN LOS FOCOS","story":"Nyra vigila las calles mientras los drones salen de sus bases.","clue":"Los focos se están encendiendo sobre todos los andenes.","prompt":"Elige la mejor predicción.","answers":["Los drones de patrulla buscaron ayer en los andenes.","Los drones de patrulla está buscan en los andenes.","Los drones de patrulla buscarán en los andenes."]},"de":{"act":"NACHTWEG · NYRAS WARNUNG","title":"DIE SUCHSCHEINWERFER STARTEN","story":"Nyra prüft die Straßen, während Patrouillendrohnen starten.","clue":"Über jedem Bahnsteig gehen Suchscheinwerfer an.","prompt":"Wähle die beste Vorhersage.","answers":["Patrouillendrohnen suchten gestern die Bahnsteige ab.","Patrouillendrohnen ist suchen die Bahnsteige.","Patrouillendrohnen werden die Bahnsteige absuchen."]}}},"mono":{"image":"05_mono_offer.webp","position":"left","tone":"dark","act":"NIGHT RUN · FIRST SHARD","title":"MONO KNOWS A WAY","story":"A small one-eyed android waits beside the broken gate.","clue":"Mono knows a safe route and holds out an access shard.","prompt":"What does Mono offer?","points":5,"relic":true,"correctNext":"route_one","wrongNext":"route_one","answers":[{"text":"'I'll guide you home.'","correct":true},{"text":"'I guided you home yesterday.'"},{"text":"'I am guide you home.'"}],"local":{"es":{"act":"RUTA NOCTURNA · PRIMER FRAGMENTO","title":"MONO CONOCE UN CAMINO","story":"Un pequeño androide de un ojo espera junto a la puerta rota.","clue":"Mono conoce una ruta segura y ofrece un fragmento de acceso.","prompt":"¿Qué ofrece Mono?","answers":["'Te guiaré a casa.'","'Te guié a casa ayer.'","'Yo estoy guiarte a casa.'"]},"de":{"act":"NACHTWEG · ERSTER SPLITTER","title":"MONO KENNT EINEN WEG","story":"Ein kleiner einäugiger Android wartet am kaputten Tor.","clue":"Mono kennt einen sicheren Weg und hält einen Zugangssplitter hin.","prompt":"Was bietet Mono an?","answers":["'Ich werde dich nach Hause führen.'","'Ich führte dich gestern nach Hause.'","'Ich bin dich nach Hause führen.'"]}}},"route_one":{"image":"06_route_one.webp","position":"centre","tone":"light","act":"ROUTE CHOICE 1","title":"STREET OR SKY?","story":"The station is sealing. Choose one escape route.","choices":[{"route":"UNDERPASS","next":"underpass","label":"FLOODED UNDERPASS","note":"Cooler, but crowded and unstable."},{"route":"ROOFTOP","next":"drones","label":"ROOFTOP MARKET","note":"Faster, but armed delivery drones enforce curfew."}],"local":{"es":{"act":"ELECCIÓN DE RUTA 1","title":"¿CALLE O CIELO?","story":"La estación se está cerrando. Elige una ruta de escape.","choices":[{"label":"PASO SUBTERRÁNEO INUNDADO","note":"Más fresco, pero lleno e inestable."},{"label":"MERCADO EN LOS TEJADOS","note":"Más rápido, pero drones armados hacen cumplir el toque de queda."}]},"de":{"act":"WEGWAHL 1","title":"STRASSE ODER DACH?","story":"Die Station wird abgeriegelt. Wähle einen Fluchtweg.","choices":[{"label":"ÜBERFLUTETER TUNNEL","note":"Kühler, aber voll und instabil."},{"label":"DACHMARKT","note":"Schneller, aber bewaffnete Lieferdrohnen setzen die Ausgangssperre durch."}]}}},"underpass":{"image":"07_underpass.webp","position":"right","tone":"light","act":"ROUTE · UNDERPASS","title":"THE CITY MOVES BELOW","story":"Jax, Nyra and Mono pass families sheltering in old service tunnels.","clue":"The surface is hotter every year. More families already use the tunnels.","prompt":"Complete: Extreme heat ___ more people underground.","points":5,"correctNext":"ai","wrongNext":"ai","answers":[{"text":"forced"},{"text":"will force","correct":true},{"text":"is force tomorrow"}],"local":{"es":{"act":"RUTA · PASO SUBTERRÁNEO","title":"LA CIUDAD BAJA","story":"Jax, Nyra y Mono pasan junto a familias refugiadas en viejos túneles de servicio.","clue":"La superficie está más caliente cada año. Más familias ya usan los túneles.","prompt":"Completa: El calor extremo ___ a más personas bajo tierra.","answers":["obligó","obligará","está obligar mañana"]},"de":{"act":"WEG · UNTERFÜHRUNG","title":"DIE STADT ZIEHT NACH UNTEN","story":"Jax, Nyra und Mono gehen an Familien in alten Versorgungstunneln vorbei.","clue":"Die Oberfläche wird jedes Jahr heißer. Mehr Familien nutzen schon die Tunnel.","prompt":"Ergänze: Extreme Hitze ___ mehr Menschen unter die Erde.","answers":["zwang","wird zwingen","ist morgen zwingen"]}}},"drones":{"image":"08_drones.webp","position":"left","tone":"dark","act":"ROUTE · ROOFTOPS","title":"DELIVERY BY DAY. CURFEW BY NIGHT.","story":"The drones deliver parcels by day. After this zone is locked down, they scan the roofs and stun pedestrians.","clue":"Parcel boxes hang below them, but their red weapon lights are active. The old courier bicycle is unused.","prompt":"What will probably happen to human couriers?","points":5,"correctNext":"ai","wrongNext":"ai","answers":[{"text":"Delivery drones replaced every courier last night."},{"text":"Delivery drones are replace couriers."},{"text":"Delivery drones will replace many couriers.","correct":true}],"local":{"es":{"act":"RUTA · TEJADOS","title":"REPARTO DE DÍA. TOQUE DE QUEDA DE NOCHE.","story":"Los drones reparten paquetes de día. Después de que se cierre esta zona, vigilan los tejados y aturden a los peatones.","clue":"Llevan cajas, pero las luces rojas de sus armas están activas. La vieja bicicleta de reparto está abandonada.","prompt":"¿Qué ocurrirá probablemente con los repartidores humanos?","answers":["Los drones sustituyeron a todos anoche.","Los drones están sustituir repartidores.","Los drones de reparto sustituirán a muchos repartidores."]},"de":{"act":"WEG · DÄCHER","title":"LIEFERUNG AM TAG. AUSGANGSSPERRE BEI NACHT.","story":"Tagsüber liefern die Drohnen Pakete. Nachdem diese Zone abgeriegelt wurde, scannen sie die Dächer und betäuben Fußgänger.","clue":"Unter ihnen hängen Pakete, aber ihre roten Waffenlichter sind aktiv. Das alte Kurierrad wird nicht benutzt.","prompt":"Was wird wahrscheinlich mit menschlichen Kurieren passieren?","answers":["Lieferdrohnen ersetzten gestern alle Kuriere.","Lieferdrohnen sind Kuriere ersetzen.","Lieferdrohnen werden viele Kuriere ersetzen."]}}},"ai":{"image":"09_ai_control.webp","position":"right","tone":"light","act":"NIGHT RUN · AI CONTROL","title":"NO HUMAN DRIVER","story":"Jax, Nyra and Mono enter a control room where an AI routes every train.","clue":"No human is working here. The AI already controls every rail switch.","prompt":"Complete: AI ___ most public transport in the future.","points":5,"correctNext":"battery","wrongNext":"battery","answers":[{"text":"will control","correct":true},{"text":"controlled"},{"text":"will controls"}],"local":{"es":{"act":"RUTA NOCTURNA · CONTROL DE IA","title":"SIN CONDUCTOR HUMANO","story":"Jax, Nyra y Mono entran en una sala donde una IA dirige todos los trenes.","clue":"Aquí no trabaja ninguna persona. La IA ya controla todos los cambios de vía.","prompt":"Completa: La IA ___ la mayor parte del transporte público en el futuro.","answers":["controlará","controló","will controla"]},"de":{"act":"NACHTWEG · KI-KONTROLLE","title":"KEIN MENSCHLICHER FAHRER","story":"Jax, Nyra und Mono betreten einen Raum, in dem eine KI jeden Zug steuert.","clue":"Hier arbeitet kein Mensch. Die KI kontrolliert schon jede Weiche.","prompt":"Ergänze: KI ___ in Zukunft die meisten öffentlichen Verkehrsmittel.","answers":["wird kontrollieren","kontrollierte","will kontrolliert"]}}},"battery":{"image":"10_battery.webp","position":"right","tone":"light","act":"NIGHT RUN · SECOND SHARD","title":"MONO POWERS UP","story":"Jax installs a fresh power cell. Dawn is two hours away.","clue":"Mono's new power cell is full. Dawn is only two hours away.","prompt":"Which prediction does Jax make?","points":5,"relic":true,"correctNext":"no_return","wrongNext":"no_return","answers":[{"text":"The battery lasted until dawn."},{"text":"The battery will last until dawn.","correct":true},{"text":"The battery will lasting until dawn."}],"local":{"es":{"act":"RUTA NOCTURNA · SEGUNDO FRAGMENTO","title":"MONO SE RECARGA","story":"Jax instala una batería nueva. Faltan dos horas para el amanecer.","clue":"La batería de Mono está llena. Solo faltan dos horas para el amanecer.","prompt":"¿Qué predice Jax?","answers":["La batería duró hasta el amanecer.","La batería durará hasta el amanecer.","La batería will durando hasta el amanecer."]},"de":{"act":"NACHTWEG · ZWEITER SPLITTER","title":"MONO HAT WIEDER STROM","story":"Jax setzt eine neue Energiezelle ein. Bis zum Morgen sind es zwei Stunden.","clue":"Monos neue Energiezelle ist voll. Der Morgen ist nur zwei Stunden entfernt.","prompt":"Was sagt Jax voraus?","answers":["Die Batterie hielt bis zum Morgen.","Die Batterie wird bis zum Morgen halten.","Die Batterie wird haltend bis zum Morgen."]}}},"no_return":{"image":"11_no_return.webp","position":"left","tone":"dark","act":"NIGHT RUN · NO TURNING BACK","title":"HOME IS AHEAD","story":"Jax, Nyra and Mono leave the sealed station behind. Home is still far away.","clue":"The station is sealed behind him. His home tower is ahead.","prompt":"Complete: Jax ___ go back to the train.","points":5,"correctNext":"route_two","wrongNext":"route_two","answers":[{"text":"doesn't"},{"text":"wasn't"},{"text":"won't","correct":true}],"local":{"es":{"act":"RUTA NOCTURNA · SIN VUELTA ATRÁS","title":"CASA ESTÁ DELANTE","story":"Jax, Nyra y Mono dejan atrás la estación cerrada. Su hogar aún está lejos.","clue":"La estación está cerrada detrás de él. Su torre está delante.","prompt":"Completa: Jax ___ volver al tren.","answers":["doesn't","wasn't","won't"]},"de":{"act":"NACHTWEG · KEIN ZURÜCK","title":"ZU HAUSE LIEGT VOR IHM","story":"Jax, Nyra und Mono lassen die geschlossene Station zurück. Ihr Zuhause ist noch weit weg.","clue":"Die Station ist hinter ihm geschlossen. Sein Wohnturm liegt vor ihm.","prompt":"Ergänze: Jax ___ zum Zug zurückgehen.","answers":["doesn't","wasn't","won't"]}}},"route_two":{"image":"12_route_two.webp","position":"centre","tone":"light","act":"ROUTE CHOICE 2","title":"MARKET OR SKYBRIDGE?","story":"Both routes lead toward the tower. Both reveal a different future.","choices":[{"route":"BAZAAR","next":"cashless","label":"CASHLESS BAZAAR","note":"Crowded scanners, many witnesses."},{"route":"FOOD LAB","next":"food","label":"SYNTHETIC FOOD LAB","note":"Cracked bridge, quiet machines."}],"local":{"es":{"act":"ELECCIÓN DE RUTA 2","title":"¿BAZAR O PUENTE AÉREO?","story":"Las dos rutas llevan a la torre. Cada una muestra un futuro distinto.","choices":[{"label":"BAZAR SIN EFECTIVO","note":"Escáneres llenos, muchos testigos."},{"label":"LABORATORIO DE COMIDA SINTÉTICA","note":"Puente roto, máquinas silenciosas."}]},"de":{"act":"WEGWAHL 2","title":"BASAR ODER HIMMELSBRÜCKE?","story":"Beide Wege führen zum Turm. Jeder zeigt eine andere Zukunft.","choices":[{"label":"BARGELDLOSER BASAR","note":"Volle Scanner, viele Zeugen."},{"label":"LABOR FÜR SYNTHETISCHES ESSEN","note":"Rissige Brücke, stille Maschinen."}]}}},"cashless":{"image":"13_cashless.webp","position":"left","tone":"light","act":"ROUTE · CASHLESS BAZAAR","title":"THE LAST COIN","story":"Jax spots an old coin while shoppers pay with hand scans.","clue":"Everyone pays with a hand scan. An old coin lies ignored.","prompt":"What may happen to cash?","points":5,"correctNext":"razor","wrongNext":"razor","answers":[{"text":"Cash will disappear from many cities.","correct":true},{"text":"Cash disappeared tomorrow."},{"text":"Cash will disappears."}],"local":{"es":{"act":"RUTA · BAZAR SIN EFECTIVO","title":"LA ÚLTIMA MONEDA","story":"Jax ve una moneda antigua mientras la gente paga escaneando la mano.","clue":"Todos pagan con un escáner de mano. Una moneda queda olvidada.","prompt":"¿Qué puede pasar con el efectivo?","answers":["El efectivo desaparecerá de muchas ciudades.","El efectivo desapareció mañana.","El efectivo will desaparece."]},"de":{"act":"WEG · BARGELDLOSER BASAR","title":"DIE LETZTE MÜNZE","story":"Jax entdeckt eine alte Münze, während die Leute mit Handscans bezahlen.","clue":"Alle zahlen per Handscanner. Eine alte Münze bleibt unbeachtet.","prompt":"Was könnte mit Bargeld passieren?","answers":["Bargeld wird aus vielen Städten verschwinden.","Bargeld verschwand morgen.","Bargeld will verschwindet."]}}},"food":{"image":"14_food_lab.webp","position":"right","tone":"dark","act":"ROUTE · FOOD LAB","title":"DINNER FROM A MACHINE","story":"Robotic arms print meal cubes beside an empty soil planter.","clue":"Machines are printing meals. The soil planter is empty.","prompt":"Choose the prediction.","points":5,"correctNext":"razor","wrongNext":"razor","answers":[{"text":"Synthetic food became tomorrow."},{"text":"Synthetic food will become common.","correct":true},{"text":"Synthetic food will becoming common."}],"local":{"es":{"act":"RUTA · LABORATORIO DE COMIDA","title":"CENA DE UNA MÁQUINA","story":"Brazos robóticos imprimen comida junto a una maceta vacía.","clue":"Las máquinas imprimen comidas. La maceta con tierra está vacía.","prompt":"Elige la predicción.","answers":["La comida sintética fue común mañana.","La comida sintética será común.","La comida sintética will siendo común."]},"de":{"act":"WEG · ESSENSLABOR","title":"ABENDESSEN AUS DER MASCHINE","story":"Roboterarme drucken Mahlzeiten neben einem leeren Pflanzkasten.","clue":"Maschinen drucken Essen. Der Pflanzkasten mit Erde ist leer.","prompt":"Wähle die Vorhersage.","answers":["Synthetisches Essen wurde morgen normal.","Synthetisches Essen wird normal werden.","Synthetisches Essen wird werdend normal."]}}},"razor":{"image":"15_razor.webp","position":"left","tone":"light","act":"NIGHT RUN · RAZOR'S CHECKPOINT","title":"PAY THE STREET TOLL","story":"Razor blocks the alley. Rook, a young runner in his gang, watches Jax and recognises him from a music club.","clue":"Razor points at the shard. Armed street drones close the exit.","prompt":"Which threat is correct?","points":5,"correctNext":"rook","wrongNext":"rook","answers":[{"text":"'We took your pass tomorrow.'"},{"text":"'We will took your pass.'"},{"text":"'We'll take your pass.'","correct":true}],"local":{"es":{"act":"RUTA NOCTURNA · CONTROL DE RAZOR","title":"PAGA EL PEAJE","story":"Razor bloquea el callejón. Rook, un joven mensajero de su banda, observa a Jax y lo reconoce de un club de música.","clue":"Razor señala el fragmento. Los drones armados cierran la salida.","prompt":"¿Qué amenaza es correcta?","answers":["'Tomamos tu pase mañana.'","'We will took tu pase.'","'Tomaremos tu pase.'"]},"de":{"act":"NACHTWEG · RAZORS SPERRE","title":"ZAHL DEN STRASSENZOLL","story":"Razor blockiert die Gasse. Rook, ein junger Kurier seiner Gang, beobachtet Jax und erkennt ihn aus einem Musikclub wieder.","clue":"Razor zeigt auf den Splitter. Bewaffnete Drohnen schließen den Ausgang.","prompt":"Welche Drohung ist richtig?","answers":["'Wir nahmen deinen Pass morgen.'","'We will took deinen Pass.'","'Wir werden deinen Pass nehmen.'"]}}},"rook":{"image":"16_rook.webp","position":"right","tone":"light","act":"NIGHT RUN · ROOK'S MOVE","title":"A QUICK DECISION","story":"Rook sees a side alley and pulls out a pulse-decoy.","clue":"The gang is watching Jax. Rook has only one second to act.","prompt":"Which sentence shows a quick decision?","points":5,"correctNext":"checkpoint","wrongNext":"checkpoint","answers":[{"text":"'I'll distract them.'","correct":true},{"text":"'I distracted them tomorrow.'"},{"text":"'I will distracting them.'"}],"local":{"es":{"act":"RUTA NOCTURNA · JUGADA DE ROOK","title":"UNA DECISIÓN RÁPIDA","story":"Rook ve un callejón y saca un señuelo de pulso.","clue":"La banda vigila a Jax. Rook solo tiene un segundo para actuar.","prompt":"¿Qué frase muestra una decisión rápida?","answers":["'Los distraeré.'","'Los distraje mañana.'","'I will distrayéndolos.'"]},"de":{"act":"NACHTWEG · ROOKS ZUG","title":"EINE SCHNELLE ENTSCHEIDUNG","story":"Rook sieht eine Seitengasse und zieht einen Impuls-Köder.","clue":"Die Gang beobachtet Jax. Rook hat nur eine Sekunde.","prompt":"Welcher Satz zeigt eine schnelle Entscheidung?","answers":["'Ich werde sie ablenken.'","'Ich lenkte sie morgen ab.'","'I will sie ablenkend.'"]}}},"checkpoint":{"image":"17_checkpoint.webp","position":"left","tone":"dark","act":"NIGHT RUN · THIRD SHARD","title":"THE BARRIER UNLOCKS","story":"Nyra reconnects the lock cable. Rook needs his orange glasses back.","clue":"His orange glasses are on the other side. Nyra turns the barrier light green.","prompt":"Complete: Rook ___ his orange glasses back.","points":5,"relic":true,"correctNext":"cloud_city","wrongNext":"cloud_city","answers":[{"text":"got"},{"text":"will get","correct":true},{"text":"will gets"}],"local":{"es":{"act":"RUTA NOCTURNA · TERCER FRAGMENTO","title":"LA BARRERA SE ABRE","story":"Nyra vuelve a conectar el cable de la cerradura. Rook necesita recuperar sus gafas naranjas.","clue":"Sus gafas naranjas están al otro lado. Nyra pone en verde la luz de la barrera.","prompt":"¿Qué hará Rook?","answers":["Recuperó sus gafas naranjas.","Recuperará sus gafas naranjas.","Va recuperará sus gafas naranjas."]},"de":{"act":"NACHTWEG · DRITTER SPLITTER","title":"DIE SPERRE ÖFFNET SICH","story":"Nyra verbindet das Schlosskabel wieder. Rook braucht seine orangefarbene Brille zurück.","clue":"Seine orangefarbene Brille liegt auf der anderen Seite. Nyra schaltet das Licht an der Sperre auf Grün.","prompt":"Was wird Rook tun?","answers":["Er holte seine orangefarbene Brille zurück.","Er wird seine orangefarbene Brille zurückholen.","Er wird seine orangefarbene Brille zurückholt."]}}},"cloud_city":{"image":"18_cloud_city.webp","position":"right","tone":"dark","act":"NIGHT RUN · CITY ABOVE CLOUDS","title":"WHO WILL LIVE UP THERE?","story":"Jax, Nyra, Mono and Rook reach the high platform carrying their instruments. Rook is a huge fan of Jax's guitar riffage.","clue":"All four look from the crowded lower city to the luxury homes above the pollution.","prompt":"What will probably happen?","points":5,"correctNext":"route_three","wrongNext":"route_three","answers":[{"text":"Rich districts moved higher tomorrow."},{"text":"Rich districts will moving higher."},{"text":"Rich districts will move higher above the clouds.","correct":true}],"local":{"es":{"act":"RUTA NOCTURNA · CIUDAD SOBRE LAS NUBES","title":"¿QUIÉN VIVIRÁ ARRIBA?","story":"Jax, Nyra, Mono y Rook llegan a la plataforma elevada con sus instrumentos. Rook es un gran fan de los riffs de guitarra de Jax.","clue":"Los cuatro miran desde la ciudad baja y abarrotada hacia las viviendas de lujo sobre la contaminación.","prompt":"¿Qué ocurrirá probablemente?","answers":["Los distritos ricos subieron mañana.","Los distritos ricos will subiendo.","Los distritos ricos subirán por encima de las nubes."]},"de":{"act":"NACHTWEG · STADT ÜBER DEN WOLKEN","title":"WER WIRD DORT OBEN LEBEN?","story":"Jax, Nyra, Mono und Rook erreichen mit ihren Instrumenten die hohe Plattform. Rook ist ein großer Fan von Jax’ Gitarrenriffs.","clue":"Alle vier blicken von der vollen Unterstadt zu den Luxuswohnungen über dem Smog.","prompt":"Was wird wahrscheinlich passieren?","answers":["Reiche Viertel zogen morgen höher.","Reiche Viertel werden höher ziehend.","Reiche Viertel werden höher über die Wolken ziehen."]}}},"route_three":{"image":"19_route_three.webp","position":"centre","tone":"dark","act":"ROUTE CHOICE 3","title":"THE LAST BLOCK","story":"Jax can see his tower. One final danger stands between him and home.","choices":[{"route":"AVENUE","next":"patrol_robots","label":"PATROL AVENUE","note":"Bright, guarded and exposed."},{"route":"SHAFTS","next":"freight_lift","label":"FREIGHT SHAFTS","note":"Hidden, old and unstable."}],"local":{"es":{"act":"ELECCIÓN DE RUTA 3","title":"LA ÚLTIMA MANZANA","story":"Jax ve su torre. Solo queda un peligro antes de llegar a casa.","choices":[{"label":"AVENIDA DE PATRULLAS","note":"Iluminada, vigilada y expuesta."},{"label":"POZOS DE CARGA","note":"Ocultos, viejos e inestables."}]},"de":{"act":"WEGWAHL 3","title":"DER LETZTE BLOCK","story":"Jax sieht seinen Turm. Nur eine Gefahr trennt ihn noch von zu Hause.","choices":[{"label":"PATROUILLENALLEE","note":"Hell, bewacht und offen."},{"label":"FRACHTSCHÄCHTE","note":"Versteckt, alt und instabil."}]}}},"patrol_robots":{"image":"20_patrol_robots.webp","position":"left","tone":"light","act":"ROUTE · PATROL AVENUE","title":"PROTECTION FOR WHOM?","story":"Robot guards protect the luxury gate. The poorer street has none.","clue":"Every guard faces the rich entrance. No robot watches the side street.","prompt":"Will robots protect every district?","points":5,"correctNext":"tower_gate","wrongNext":"tower_gate","answers":[{"text":"No, they won't.","correct":true},{"text":"Yes, they did."},{"text":"No, they aren't protect."}],"local":{"es":{"act":"RUTA · AVENIDA DE PATRULLAS","title":"¿PROTECCIÓN PARA QUIÉN?","story":"Los robots protegen la puerta de lujo. La calle pobre no tiene ninguno.","clue":"Todos los guardias miran la entrada rica. Ningún robot vigila la calle lateral.","prompt":"¿Protegerán los robots todos los distritos?","answers":["No, no los protegerán.","Sí, los protegieron.","No, they aren't protect."]},"de":{"act":"WEG · PATROUILLENALLEE","title":"SCHUTZ FÜR WEN?","story":"Roboter bewachen das Luxustor. Die ärmere Straße hat keinen Schutz.","clue":"Jeder Wächter blickt zum reichen Eingang. Kein Roboter bewacht die Seitenstraße.","prompt":"Werden Roboter jedes Viertel schützen?","answers":["Nein, werden sie nicht.","Ja, sie taten es.","Nein, they aren't protect."]}}},"freight_lift":{"image":"21_freight_lift.webp","position":"right","tone":"dark","act":"ROUTE · FREIGHT SHAFTS","title":"THE OLD LIFT","story":"The lift hangs from a frayed cable while sparks hit the floor.","clue":"The cable is frayed. The overloaded motor is throwing sparks.","prompt":"What will happen if Jax uses the lift?","points":5,"correctNext":"tower_gate","wrongNext":"tower_gate","answers":[{"text":"It failed tomorrow."},{"text":"It will fail.","correct":true},{"text":"It will failing."}],"local":{"es":{"act":"RUTA · POZOS DE CARGA","title":"EL VIEJO ASCENSOR","story":"El ascensor cuelga de un cable roto mientras caen chispas.","clue":"El cable está desgastado. El motor sobrecargado echa chispas.","prompt":"¿Qué pasará si Jax usa el ascensor?","answers":["Falló mañana.","Fallará.","It will fallando."]},"de":{"act":"WEG · FRACHTSCHÄCHTE","title":"DER ALTE AUFZUG","story":"Der Aufzug hängt an einem ausgefransten Kabel. Funken fallen.","clue":"Das Kabel ist beschädigt. Der überlastete Motor sprüht Funken.","prompt":"Was wird passieren, wenn Jax den Aufzug benutzt?","answers":["Er fiel morgen aus.","Er wird ausfallen.","Er wird ausfallend."]}}},"tower_gate":{"image":"22_tower_gate.webp","position":"left","tone":"light","act":"FINAL CHALLENGE · HOME TOWER","title":"ONE SOCKET IS EMPTY","story":"Three shards glow in the gate. The tower AI asks for one final forecast.","clue":"Thousands of homes already rise vertically above the crowded streets.","prompt":"Complete: By 2050, more city residents ___ in vertical towers.","points":5,"relic":true,"finalChoice":true,"correctNext":"ending","wrongNext":"ending","answers":[{"text":"lived tomorrow"},{"text":"will living"},{"text":"will live","correct":true}],"local":{"es":{"act":"RETO FINAL · TORRE DE CASA","title":"FALTA UN FRAGMENTO","story":"Tres fragmentos brillan. La IA de la torre pide una última predicción.","clue":"Miles de viviendas ya suben en vertical sobre las calles llenas.","prompt":"Completa: Para 2050, más habitantes ___ en torres verticales.","answers":["vivieron mañana","will viviendo","vivirán"]},"de":{"act":"LETZTE AUFGABE · WOHNTURM","title":"EIN SOCKEL IST LEER","story":"Drei Splitter leuchten. Die Turm-KI verlangt eine letzte Vorhersage.","clue":"Tausende Wohnungen ragen schon senkrecht über die vollen Straßen.","prompt":"Ergänze: Bis 2050 ___ mehr Stadtbewohner in vertikalen Türmen.","answers":["lebten morgen","werden lebend","werden leben"]}}}},"images":{"01_cover.webp":"last-train-home-rpg/01_cover.webp","02_breakdown.webp":"last-train-home-rpg/02_breakdown.webp","03_shutters.webp":"last-train-home-rpg/03_shutters.webp","04_patrol.webp":"last-train-home-rpg/04_patrol.webp","05_mono_offer.webp":"last-train-home-rpg/05_mono_offer.webp","06_route_one.webp":"last-train-home-rpg/06_route_one.webp","07_underpass.webp":"last-train-home-rpg/07_underpass.webp","08_drones.webp":"last-train-home-rpg/08_drones.webp","09_ai_control.webp":"last-train-home-rpg/09_ai_control.webp","10_battery.webp":"last-train-home-rpg/10_battery.webp","11_no_return.webp":"last-train-home-rpg/11_no_return.webp","12_route_two.webp":"last-train-home-rpg/12_route_two.webp","13_cashless.webp":"last-train-home-rpg/13_cashless.webp","14_food_lab.webp":"last-train-home-rpg/14_food_lab.webp","15_razor.webp":"last-train-home-rpg/15_razor.webp","16_rook.webp":"last-train-home-rpg/16_rook.webp","17_checkpoint.webp":"last-train-home-rpg/17_checkpoint.webp","18_cloud_city.webp":"last-train-home-rpg/18_cloud_city.webp","19_route_three.webp":"last-train-home-rpg/19_route_three.webp","20_patrol_robots.webp":"last-train-home-rpg/20_patrol_robots.webp","21_freight_lift.webp":"last-train-home-rpg/21_freight_lift.webp","22_tower_gate.webp":"last-train-home-rpg/22_tower_gate.webp","23_ending.webp":"last-train-home-rpg/23_ending.webp"}};</script>
+<script>(() => {
+  const DATA = window.CYBERVOXEL_GAME_DATA;
+  const root = document.getElementById("app");
+  const maximum = 75;
+  const initial = (lang = "off") => ({ started: false, sceneId: DATA.startScene || "breakdown", score: 0, chances: 3, answer: null, route: [], tiles: 0, finalCorrect: null, lang });
+  let state = initial();
+
+  const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
+  const translation = (text) => text ? `<span class="translation" lang="${state.lang}">${esc(text)}</span>` : "";
+  const bilingual = (english, local) => `<span>${esc(english)}</span>${state.lang === "off" ? "" : translation(local)}`;
+  const image = (name, alt) => `<img class="scene" src="${DATA.images[name]}" alt="${esc(alt)}">`;
+  const languageControls = (standalone = false) => `<div class="language-controls ${standalone ? "standalone" : ""}" role="group" aria-label="Translation language">${["off", "es", "de"].map((item) => `<button data-lang="${item}" class="${state.lang === item ? "active" : ""}" aria-pressed="${state.lang === item}">${item.toUpperCase()}</button>`).join("")}</div>`;
+
+  function localUi() { return state.lang === "off" ? null : DATA.ui[state.lang]; }
+  function localScene() { return state.lang === "off" ? null : DATA.scenes[state.sceneId]?.local?.[state.lang]; }
+  function localAct(scene) { return state.lang === "off" ? null : scene.local?.[state.lang]?.act; }
+
+  function scoreHud() {
+    const ui = localUi();
+    const progress = Math.min(100, Math.round((state.score / maximum) * 100));
+    return `<header class="hud">
+      <div class="hud-stat"><span>${bilingual(DATA.pointLabel || "FUTURE POINTS", ui?.points)}</span><strong>${state.score}</strong></div>
+      <div class="meter"><i style="width:${progress}%"></i><b style="left:66.6%"></b></div>
+      <div class="hud-stat tiles"><span>${bilingual(DATA.tileLabel || "ACCESS SHARDS", ui?.tiles)}</span><strong>${"◆".repeat(state.tiles)}${"◇".repeat(4 - state.tiles)}</strong></div>
+      <div class="hud-stat chances"><span>${bilingual("CHANCES", ui?.chances)}</span><strong>${"♥".repeat(state.chances)}${"♡".repeat(3 - state.chances)}</strong></div>
+      ${languageControls()}
+    </header>`;
+  }
+
+  function result() {
+    if (state.finalCorrect && state.tiles === 4 && state.score === maximum && state.chances > 0) return DATA.endings.master;
+    if (state.finalCorrect && state.tiles === 4 && state.score >= 50 && state.chances > 0) return DATA.endings.complete;
+    if (state.finalCorrect && state.tiles < 4) return DATA.endings.missing;
+    return DATA.endings.failed;
+  }
+
+  function renderCover() {
+    const cover = DATA.cover;
+    const local = state.lang === "off" ? null : cover.local[state.lang];
+    root.innerHTML = `<main class="game cover tone-${cover.tone || "dark"} ${state.lang !== "off" ? "translated" : ""}">
+      ${image(cover.image, "Jax looks across the orange megacity toward his home tower")}
+      <div class="wash cover-wash"></div>${languageControls(true)}
+      <section class="cover-copy">
+        <p class="eyebrow">${bilingual(cover.eyebrow, local?.eyebrow)}</p>
+        <h1>${bilingual(cover.title, local?.title)}</h1>
+        <p class="lead">${bilingual(cover.lead, local?.lead)}</p>
+        <div class="rules">${cover.rules.map((rule, index) => `<span>${bilingual(rule, local?.rules[index])}</span>`).join("")}</div>
+        <button class="primary bilingual-button" data-action="start">${bilingual(cover.start, local?.start)}</button>
+        <small>${bilingual(cover.small, local?.small)}</small>
+      </section>
+    </main>`;
+  }
+
+  function renderEnding() {
+    const current = result();
+    const ui = localUi();
+    const local = state.lang === "off" ? null : current.local[state.lang];
+    root.innerHTML = `<main class="game ending tone-light ${current.success ? "success-ending" : "failure-ending"} ${state.lang !== "off" ? "translated" : ""}">
+      ${image(current.image, current.title)}<div class="wash ${current.success ? "success-wash" : "failure-wash"}"></div>${scoreHud()}
+      <section class="ending-copy">
+        <p class="eyebrow">${bilingual(current.label, local?.label)}</p>
+        <h1>${bilingual(current.title, local?.title)}</h1>
+        <p>${bilingual(current.text, local?.text)}</p>
+        <div class="result"><span>${bilingual("FINAL SCORE", ui?.finalScore)}</span><strong>${state.score} / ${maximum}</strong><span>${"◆".repeat(state.tiles)}${"◇".repeat(4 - state.tiles)}</span></div>
+        <div class="actions"><button class="primary bilingual-button" data-action="reset">${bilingual("PLAY AGAIN", ui?.playAgain)}</button><button class="secondary bilingual-button" data-action="print">${bilingual("PRINT RESULT", ui?.print)}</button></div>
+      </section>
+    </main>`;
+  }
+
+  function renderPlay() {
+    const scene = DATA.scenes[state.sceneId];
+    const local = localScene();
+    const ui = localUi();
+    const answered = state.answer !== null;
+    const selected = answered ? scene.answers[state.answer] : null;
+    const correctIndex = scene.answers?.findIndex((item) => item.correct) ?? -1;
+    const correct = correctIndex >= 0 ? scene.answers[correctIndex].text : "";
+    const localCorrect = correctIndex >= 0 ? local?.answers?.[correctIndex] : "";
+    const answers = scene.answers && !answered ? `<div class="answers">${scene.answers.map((option, index) => `<button data-answer="${index}"><b>${String.fromCharCode(65 + index)}</b><span class="answer-copy">${bilingual(option.text, local?.answers?.[index])}</span></button>`).join("")}</div>` : "";
+    let feedback = "";
+    if (answered) {
+      const englishMessage = selected.correct ? `+${scene.points ?? 0} points.${scene.relic ? " One orange access shard recovered." : " The night run continues."}` : `No points. Correct answer: ${correct}`;
+      const localMessage = !ui ? "" : selected.correct ? `+${scene.points ?? 0}. ${scene.relic ? ui.recovered : ui.correct}` : `${ui.noPoints} ${localCorrect}`;
+      feedback = `<div class="feedback ${selected.correct ? "right" : "wrong"}"><strong>${bilingual(selected.correct ? (scene.relic ? "SHARD RECOVERED" : "CORRECT PREDICTION") : "WRONG PREDICTION", selected.correct ? (scene.relic ? ui?.recovered : ui?.correct) : ui?.falseTrail)}</strong><p>${bilingual(englishMessage, localMessage)}</p><button class="primary small bilingual-button" data-action="continue">${bilingual("CONTINUE", ui?.continue)}</button></div>`;
+    }
+    const routes = scene.choices ? `<div class="routes">${scene.choices.map((choice, index) => `<button data-choice="${index}"><strong>${bilingual(choice.label, local?.choices?.[index]?.label)}</strong><span>${bilingual(choice.note, local?.choices?.[index]?.note)}</span></button>`).join("")}</div>` : "";
+    root.innerHTML = `<main class="game play pos-${scene.position} tone-${scene.tone || "dark"} ${state.lang !== "off" ? "translated" : ""}">
+      ${image(scene.image, scene.title)}<div class="wash wash-${scene.position}"></div>${scoreHud()}
+      <section class="copy" aria-live="polite">
+        <p class="eyebrow">${bilingual(scene.act, localAct(scene))}</p>
+        <h1>${bilingual(scene.title, local?.title)}</h1>
+        <p class="story">${bilingual(scene.story, local?.story)}</p>
+        ${scene.clue ? `<div class="clue"><span>${bilingual("VISUAL CLUE", ui?.evidence)}</span><strong>${bilingual(scene.clue, local?.clue)}</strong></div>` : ""}
+        ${scene.prompt ? `<h2>${bilingual(scene.prompt, local?.prompt)}</h2>` : ""}
+        ${answers}${feedback}${routes}
+      </section>
+      <button class="restart bilingual-button" data-action="reset">${bilingual("START OVER", ui?.restart)}</button>
+    </main>`;
+  }
+
+  function render() {
+    if (!state.started) renderCover();
+    else if (state.sceneId === "ending") renderEnding();
+    else renderPlay();
+  }
+
+  root.addEventListener("click", (event) => {
+    const button = event.target.closest("button");
+    if (!button) return;
+    if (button.dataset.lang) { state.lang = button.dataset.lang; render(); return; }
+    const action = button.dataset.action;
+    if (action === "start") { state.started = true; render(); return; }
+    if (action === "reset") { state = initial(state.lang); render(); return; }
+    if (action === "print") { window.print(); return; }
+    const scene = DATA.scenes[state.sceneId];
+    if (button.dataset.answer !== undefined && state.answer === null) {
+      const index = Number(button.dataset.answer);
+      const option = scene.answers[index];
+      state.answer = index;
+      if (scene.finalChoice) state.finalCorrect = Boolean(option.correct);
+      if (option.correct) {
+        state.score += scene.points ?? 0;
+        if (scene.relic) state.tiles = Math.min(4, state.tiles + 1);
+      } else {
+        state.chances = Math.max(0, state.chances - 1);
+      }
+      render(); return;
+    }
+    if (action === "continue" && state.answer !== null) {
+      const option = scene.answers[state.answer];
+      if (!option.correct && state.chances === 0) state.sceneId = "ending";
+      else state.sceneId = option.correct ? scene.correctNext : scene.wrongNext;
+      state.answer = null; render(); return;
+    }
+    if (button.dataset.choice !== undefined) {
+      const choice = scene.choices[Number(button.dataset.choice)];
+      state.route.push(choice.route);
+      state.sceneId = choice.next;
+      state.answer = null;
+      render();
+    }
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
