@@ -88,7 +88,7 @@ PAGES = {
                      'What a Forbes English subscription costs, and which '
                      'lessons are free forever.', 0.7),
     'ielts.html': ('IELTS Academic Writing',
-                   'A nine-lesson route through IELTS Academic Writing — '
+                   'A ten-lesson route through IELTS Academic Writing — '
                    'Task 1 reports and Task 2 essays, in the order they '
                    'should be taught.', 0.9, '/ielts-model-answers/hero.jpg'),
     'ielts-question-bank.html': ('IELTS Academic Writing Task 2: Question Bank & Ideas',
