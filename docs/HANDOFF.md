@@ -12,6 +12,58 @@ stale copy.
 
 ---
 
+## Interior Design pair — two old-format lessons fixed and shipped
+
+`forbes-interior-design-c1.html` and `interior-design-vocabulary.html` were
+both sitting as "Coming soon" — no `LESSON_IMAGES` entry, no hero art. Both
+are **old-format, hand-authored lessons**, not deck-template builds (zero
+`data-type` sections, no builder script in `lesson-template/build/`), so
+hand-editing them directly was correct here, unlike a deck.
+
+`interior-design-vocabulary.html` audited clean — shipped as-is.
+
+`forbes-interior-design-c1.html` had three real bugs, all fixed in place:
+
+- **Show-Answer scored as correct.** `fibHint()` revealed the answer and
+  then let the same input still register as a correct submit — free points
+  for pressing the hint button. Rewritten to reveal without scoring.
+- **Static counters lagged the real question count.** Progress read "0 / 18"
+  and the final score denominator read "/ 24" against an actual 22 scored
+  questions (`TOTAL_Q = 22`, with a dead `TOTAL = 24` leftover comment).
+  Corrected to 17/22 and /22.
+- **Matching activity could complete early.** `checkMatchComplete()` gated on
+  `matchDone >= TOTAL_PAIRS` (attempts made) instead of `matchScore >=
+  TOTAL_PAIRS` (pairs actually correct) — wrong guesses alone could trigger
+  "complete". Fixed to gate on score.
+
+Hero art for both came from the six unused `material_and_space_architectural
+_design_interiors` Midjourney images already sitting in Downloads (Aug 3) —
+no new art was commissioned. Picked by content match, not just looks:
+`InteriorDesignPhrases/hero.jpg` (image C2) for the Presentation Phrases
+deck, `InteriorDesignVocab/hero.jpg` (image B3, a literal threshold/doorway
+shot) for the Vocabulary lesson, which teaches the word "liminal". Added as
+`library.html` card thumbnails only, not in-page hero banners — these are
+old-format pages and don't carry a `--hero` banner slot.
+
+Confirms the mechanism from the `library.html` section below: **"Coming
+soon" is derived purely from `!LESSON_IMAGES[l.file]`.** There is no
+separate stored flag to flip. Adding the two `LESSON_IMAGES` entries and
+re-running `tools/seo.py` (which regenerates `lesson-meta.json`'s
+`coming_soon` field from the same map) was the whole fix — no manual edit of
+generated metadata.
+
+Published as three commits via the GitHub web uploader (git push still
+403s from this sandbox): `7f272b9` (Presentation Phrases hero), `692a976`
+(Vocabulary hero), `269ad1b` (bug fixes + both `LESSON_IMAGES` entries +
+SEO regen). `library.html` was re-fetched from `origin/main` immediately
+before the final edit — `557c2ef` landed on `index.html` mid-session and
+did not touch `library.html`, confirmed by re-diff. All three verified
+byte-for-byte against `origin/main`, `check-library.js --vs-origin` clean.
+Live cards confirmed showing real thumbnails (not "Coming soon") after a
+cache-busted reload.
+
+---
+
 ## Open queue — artwork staged, none built
 
 | Lesson | Artwork | State |
