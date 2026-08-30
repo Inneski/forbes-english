@@ -212,9 +212,18 @@ body{margin:0;background:var(--ink);color:var(--cream);
    demo, which turns the map into a list you walk down instead of a place
    you look at. This is the map: one stage, the trail up the hill on the
    artwork, eight stops on it. Nothing below the fold. */
-.stage{position:relative;width:100%;aspect-ratio:16/9;
-  max-height:calc(100svh - 52px - 62px);margin:0 auto;overflow:hidden;
-  isolation:isolate;background:#bcd4cf}
+/* ── WHY NOTHING LINED UP ──────────────────────────────────────────────
+   The stage was `width:100%` with `aspect-ratio:16/9` AND a max-height. On a
+   wide window the height clamped first, so the BOX stopped being 16:9 while
+   the image inside it stayed 16:9 and `object-fit:cover` cropped top and
+   bottom to fill. Every painted feature then sat a few percent from where it
+   was measured - the drawn trail missed the painted one, and the dots missed
+   both. The coordinates were never wrong; the frame was lying to them.
+   Clamping the WIDTH out of the same height budget keeps the box exactly
+   16:9, so image pixels and stage percentages mean the same thing again. */
+.stage{position:relative;aspect-ratio:16/9;
+  width:min(100%, calc((100svh - 114px) * 16 / 9));
+  margin:0 auto;overflow:hidden;isolation:isolate;background:#bcd4cf}
 
 /* ── ONE SCENE MERGES INTO THE NEXT ────────────────────────────────────
    All ten plates are stacked and cross-faded by opacity, so moving between
@@ -237,34 +246,44 @@ body{margin:0;background:var(--ink);color:var(--cream);
 @keyframes draw{0%,8%{stroke-dashoffset:760;opacity:.25}
   60%,88%{stroke-dashoffset:0;opacity:.95}100%{stroke-dashoffset:0;opacity:.25}}
 
-.stop{position:absolute;z-index:5;transform:translate(-50%,-50%);
-  display:flex;align-items:center;gap:.5rem;text-decoration:none;cursor:pointer}
-.stop .n{flex:none;width:clamp(22px,2.2vw,32px);aspect-ratio:1;border-radius:50%;
+/* ── WHY THE CIRCLES DID NOT STICK TO THE LINE ─────────────────────────
+   The stop was a flex ROW - dot then label - positioned with
+   `transform:translate(-50%,-50%)`. That centres the whole ROW on the
+   coordinate, and the label still takes up width even when it is invisible,
+   so the dot ended up roughly 7.5% of the stage to the RIGHT of the point it
+   was given. Measured: a dot set to left:37.73% rendered at 45.24%.
+   Now the anchor is a zero-size POINT. The dot is centred on it and the
+   label hangs off it, so what is positioned is the circle itself and it
+   cannot drift when the label changes length. */
+.stop{ position:absolute;z-index:5;width:0;height:0;text-decoration:none;
+  --dot:clamp(22px,2.2vw,32px) }
+.stop .n{ position:absolute;left:0;top:0;transform:translate(-50%,-50%);
+  width:var(--dot);height:var(--dot);border-radius:50%;
   display:grid;place-items:center;background:var(--c);color:#fff;
   font-family:'Barlow Condensed',sans-serif;font-weight:800;
   font-size:clamp(.74rem,1.15vw,.98rem);
   box-shadow:0 0 0 3px rgba(255,255,255,.92),0 3px 12px rgba(0,0,0,.4);
-  transition:transform .2s ease,box-shadow .2s ease}
-.stop .lab{opacity:0;transform:translateX(-6px);transition:opacity .2s,transform .2s;
+  transition:transform .2s ease,box-shadow .2s ease }
+.stop .lab{ position:absolute;top:0;left:calc(var(--dot) * .72);
+  transform:translateY(-50%);opacity:0;
+  transition:opacity .2s ease,transform .2s ease;
   background:rgba(8,30,31,.9);border-radius:7px;padding:.34rem .6rem;
-  box-shadow:0 4px 14px rgba(0,0,0,.35)}
-.stop .lab b{display:block;font-family:'Monocraft',ui-monospace,monospace;
+  box-shadow:0 4px 14px rgba(0,0,0,.35);white-space:nowrap }
+.stop[data-target="07-present-perfect"] .lab,
+.stop[data-target="08-present-perfect-continuous"] .lab{
+  left:auto;right:calc(var(--dot) * .72) }
+.stop .lab b{ display:block;font-family:'Monocraft',ui-monospace,monospace;
   font-synthesis:none;font-size:clamp(.72rem,1.05vw,.9rem);color:var(--cream);
-  letter-spacing:.01em}
-.stop .lab i{display:block;font-style:normal;font-family:'Barlow Condensed',sans-serif;
-  font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-  font-size:.62rem;color:var(--c);filter:brightness(1.45);margin-top:1px}
-.stop:hover .lab,.stop:focus-visible .lab{opacity:1;transform:none}
-.stop:hover .n,.stop:focus-visible .n{transform:scale(1.2);
-  box-shadow:0 0 0 3px #fff,0 0 0 8px var(--c),0 4px 16px rgba(0,0,0,.45)}
-.stop:focus-visible{outline:none}
-.stop:nth-child(n+7){flex-direction:row-reverse}
-/* ── PHONES ───────────────────────────────────────────────────────────
-   On touch there is no hover, so I had made every label permanently
-   visible - which on a phone is eight tooltips stacked on top of each
-   other in a pile. The labels go away entirely on touch; the caption at
-   the foot of the map already names whatever is showing, and it only ever
-   names one thing. */
+  letter-spacing:.01em }
+.stop .lab i{ display:block;font-style:normal;
+  font-family:'Barlow Condensed',sans-serif;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;font-size:.62rem;
+  color:var(--c);filter:brightness(1.45);margin-top:1px }
+.stop:hover .lab,.stop:focus-visible .lab{ opacity:1 }
+.stop:hover .n,.stop:focus-visible .n{ transform:translate(-50%,-50%) scale(1.2);
+  box-shadow:0 0 0 3px #fff,0 0 0 8px var(--c),0 4px 16px rgba(0,0,0,.45) }
+.stop:focus-visible{ outline:none }
+
 @media (hover:none){
   .stop .lab{ display:none }
   .stop .n{ width:34px; font-size:.95rem }   /* a finger, not a cursor */
@@ -323,7 +342,7 @@ h1{margin:0;font-family:'Monocraft',ui-monospace,monospace;font-synthesis:none;
 .cloud-b{top:27%;left:-22%;width:clamp(52px,6vw,88px);opacity:.44;
   animation-duration:76s;animation-delay:-31s}
 @keyframes drift{from{transform:translateX(0)}to{transform:translateX(140vw)}}
-.lantern{position:absolute;z-index:4;left:27.2%;top:79%;width:4%;aspect-ratio:1;
+.lantern{position:absolute;z-index:4;left:28.6%;top:83.5%;width:3.4%;aspect-ratio:1;
   border-radius:50%;pointer-events:none;
   background:radial-gradient(circle,rgba(255,244,214,.95),rgba(232,99,42,.5) 34%,transparent 72%);
   animation:pulse 2.8s ease-in-out infinite}
@@ -452,21 +471,21 @@ h1{margin:0;font-family:'Monocraft',ui-monospace,monospace;font-synthesis:none;
   <div class="cloud cloud-b" aria-hidden="true"><span></span></div>
   <div class="lantern" aria-hidden="true"></div>
   <svg class="trail" viewBox="0 0 1280 720" preserveAspectRatio="none" aria-hidden="true">
-    <path d="M 505 720 C 540 653, 650 639, 694 589 C 743 534, 702 490, 790 448 C 840 423, 842 394, 901 375"></path>
+    <path d="M 458.2 716.4 C 464.6 709.8, 481.7 689.4, 496.6 676.8 C 511.6 664.2, 529.9 651.6, 547.8 640.8 C 565.8 630.0, 585.8 623.4, 604.2 612.0 C 622.5 600.6, 641.3 585.6, 657.9 572.4 C 674.6 559.2, 690.8 546.0, 704.0 532.8 C 717.2 519.6, 725.8 506.4, 737.3 493.2 C 748.8 480.0, 759.0 465.6, 773.1 453.6 C 787.2 441.6, 805.1 430.3, 821.8 421.2 C 838.4 412.1, 856.3 405.7, 873.0 398.9 C 889.6 392.0, 913.5 383.3, 921.6 380.2"></path>
   </svg>
   <div class="copy">
     <div class="eyebrow">The English tense journey</div>
     <h1>Block Camp</h1>
     <div class="pill">One trail &middot; eight tenses</div>
   </div>
-  <a class="stop" href="present-simple-time-signals.html" data-target="01-present-simple" style="--c:#7A93B5;left:41.11%;top:96.16%"><span class="n">1</span><span class="lab"><b>Present Simple</b><i>Base camp at dawn &middot; A1 → A2</i></span></a><a class="stop" href="present-continuous-time-signals.html" data-target="02-present-continuous" style="--c:#E66085;left:45.53%;top:90.94%"><span class="n">2</span><span class="lab"><b>Present Continuous</b><i>The working clearing &middot; A1 → A2</i></span></a><a class="stop" href="past-simple-time-signals.html" data-target="03-past-simple" style="--c:#B08968;left:50.28%;top:86.81%"><span class="n">3</span><span class="lab"><b>Past Simple</b><i>The old campsite &middot; A1 → A2</i></span></a><a class="stop" href="past-continuous-time-signals.html" data-target="04-past-continuous" style="--c:#F1D779;left:54.49%;top:81.24%"><span class="n">4</span><span class="lab"><b>Past Continuous</b><i>Afternoon fire &middot; A1 → A2</i></span></a><a class="stop" href="going-to-infinitive.html" data-target="05-going-to" style="--c:#70A43A;left:56.62%;top:72.70%"><span class="n">5</span><span class="lab"><b>Going To</b><i>The trail sign &middot; A1 → A2</i></span></a><a class="stop" href="future-simple-will.html" data-target="06-future-simple" style="--c:#F0723F;left:59.31%;top:64.78%"><span class="n">6</span><span class="lab"><b>Future Simple</b><i>Sunset ridge &middot; A2 → B1</i></span></a><a class="stop" href="present-perfect-time-signals.html" data-target="07-present-perfect" style="--c:#2E7D65;left:63.84%;top:59.87%"><span class="n">7</span><span class="lab"><b>Present Perfect</b><i>Twilight summit marker &middot; A2 → B1</i></span></a><a class="stop" href="present-perfect-continuous-time-signals.html" data-target="08-present-perfect-continuous" style="--c:#46B0AB;left:68.00%;top:53.91%"><span class="n">8</span><span class="lab"><b>Present Perfect Cont.</b><i>The night watch &middot; B1</i></span></a>
+  <a class="stop" href="blockcamp-present-simple.html" data-target="01-present-simple" style="--c:#7A93B5;left:37.73%;top:95.79%"><span class="n">1</span><span class="lab"><b>Present Simple</b><i>Base camp at dawn &middot; A1 → A2</i></span></a><a class="stop" href="blockcamp-present-continuous.html" data-target="02-present-continuous" style="--c:#E66085;left:42.21%;top:89.64%"><span class="n">2</span><span class="lab"><b>Present Continuous</b><i>The working clearing &middot; A1 → A2</i></span></a><a class="stop" href="blockcamp-past-simple.html" data-target="03-past-simple" style="--c:#B08968;left:47.24%;top:84.95%"><span class="n">3</span><span class="lab"><b>Past Simple</b><i>The old campsite &middot; A1 → A2</i></span></a><a class="stop" href="blockcamp-past-continuous.html" data-target="04-past-continuous" style="--c:#F1D779;left:51.79%;top:78.95%"><span class="n">4</span><span class="lab"><b>Past Continuous</b><i>Afternoon fire &middot; A1 → A2</i></span></a><a class="stop" href="blockcamp-going-to.html" data-target="05-going-to" style="--c:#70A43A;left:55.95%;top:72.13%"><span class="n">5</span><span class="lab"><b>Going To</b><i>The trail sign &middot; A1 → A2</i></span></a><a class="stop" href="blockcamp-future-simple.html" data-target="06-future-simple" style="--c:#F0723F;left:59.57%;top:64.41%"><span class="n">6</span><span class="lab"><b>Future Simple</b><i>Sunset ridge &middot; A2 → B1</i></span></a><a class="stop" href="blockcamp-present-perfect.html" data-target="07-present-perfect" style="--c:#2E7D65;left:64.16%;top:58.54%"><span class="n">7</span><span class="lab"><b>Present Perfect</b><i>Twilight summit marker &middot; A2 → B1</i></span></a><a class="stop" href="blockcamp-present-perfect-continuous.html" data-target="08-present-perfect-continuous" style="--c:#46B0AB;left:69.39%;top:54.56%"><span class="n">8</span><span class="lab"><b>Present Perfect Cont.</b><i>The night watch &middot; B1</i></span></a>
   <div class="caption"><b></b><i></i></div>
 </main>
 <div class="tourbar">
   <button id="tour-toggle" type="button">Play the day</button>
   <span class="hint"><span class="hint-mouse">Hover a stop to visit it &middot; click to open its lesson</span><span class="hint-touch">Tap a stop to visit it &middot; tap again to open its lesson</span></span>
 </div>
-<nav class="stations"><a class="row" href="present-simple-time-signals.html" style="--c:#7A93B5"><b>1</b><span><i>Present Simple</i><em>Base camp at dawn &middot; A1 → A2</em></span></a><a class="row" href="present-continuous-time-signals.html" style="--c:#E66085"><b>2</b><span><i>Present Continuous</i><em>The working clearing &middot; A1 → A2</em></span></a><a class="row" href="past-simple-time-signals.html" style="--c:#B08968"><b>3</b><span><i>Past Simple</i><em>The old campsite &middot; A1 → A2</em></span></a><a class="row" href="past-continuous-time-signals.html" style="--c:#F1D779"><b>4</b><span><i>Past Continuous</i><em>Afternoon fire &middot; A1 → A2</em></span></a><a class="row" href="going-to-infinitive.html" style="--c:#70A43A"><b>5</b><span><i>Going To</i><em>The trail sign &middot; A1 → A2</em></span></a><a class="row" href="future-simple-will.html" style="--c:#F0723F"><b>6</b><span><i>Future Simple</i><em>Sunset ridge &middot; A2 → B1</em></span></a><a class="row" href="present-perfect-time-signals.html" style="--c:#2E7D65"><b>7</b><span><i>Present Perfect</i><em>Twilight summit marker &middot; A2 → B1</em></span></a><a class="row" href="present-perfect-continuous-time-signals.html" style="--c:#46B0AB"><b>8</b><span><i>Present Perfect Cont.</i><em>The night watch &middot; B1</em></span></a></nav>
+<nav class="stations"><a class="row" href="blockcamp-present-simple.html" style="--c:#7A93B5"><b>1</b><span><i>Present Simple</i><em>Base camp at dawn &middot; A1 → A2</em></span></a><a class="row" href="blockcamp-present-continuous.html" style="--c:#E66085"><b>2</b><span><i>Present Continuous</i><em>The working clearing &middot; A1 → A2</em></span></a><a class="row" href="blockcamp-past-simple.html" style="--c:#B08968"><b>3</b><span><i>Past Simple</i><em>The old campsite &middot; A1 → A2</em></span></a><a class="row" href="blockcamp-past-continuous.html" style="--c:#F1D779"><b>4</b><span><i>Past Continuous</i><em>Afternoon fire &middot; A1 → A2</em></span></a><a class="row" href="blockcamp-going-to.html" style="--c:#70A43A"><b>5</b><span><i>Going To</i><em>The trail sign &middot; A1 → A2</em></span></a><a class="row" href="blockcamp-future-simple.html" style="--c:#F0723F"><b>6</b><span><i>Future Simple</i><em>Sunset ridge &middot; A2 → B1</em></span></a><a class="row" href="blockcamp-present-perfect.html" style="--c:#2E7D65"><b>7</b><span><i>Present Perfect</i><em>Twilight summit marker &middot; A2 → B1</em></span></a><a class="row" href="blockcamp-present-perfect-continuous.html" style="--c:#46B0AB"><b>8</b><span><i>Present Perfect Cont.</i><em>The night watch &middot; B1</em></span></a></nav>
 <script>
 (() => {
   const stage = document.querySelector('.stage');
