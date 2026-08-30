@@ -92,7 +92,7 @@ PAGES = {
                    'Reading and the vocabulary that feeds them, in the order '
                    'they should be taught.', 0.9, '/ielts-model-answers/hero.jpg'),
     'ielts-writing.html': ('IELTS Academic Writing',
-                   'An eleven-lesson route through IELTS Academic Writing — '
+                   'A twelve-lesson route through IELTS Academic Writing — '
                    'Task 1 reports and Task 2 essays, in the order they '
                    'should be taught.', 0.9, '/ielts-model-answers/hero.jpg'),
     'ielts-speaking.html': ('IELTS Speaking',
