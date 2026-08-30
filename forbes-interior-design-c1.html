@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- SEO:start -->
-<meta name="robots" content="noindex,follow">
 <meta name="description" content="An interactive C1 English lesson from Forbes English: Interior Design Presentation Phrases (C1).">
 <link rel="canonical" href="https://forbesenglish.com/forbes-interior-design-c1.html">
 <meta property="og:type" content="article">
@@ -12,13 +11,13 @@
 <meta property="og:title" content="Interior Design Presentation Phrases (C1) | Forbes English">
 <meta property="og:description" content="An interactive C1 English lesson from Forbes English: Interior Design Presentation Phrases (C1).">
 <meta property="og:url" content="https://forbesenglish.com/forbes-interior-design-c1.html">
-<meta property="og:image" content="https://forbesenglish.com/logo-forbes-english_1.png">
+<meta property="og:image" content="https://forbesenglish.com/InteriorDesignPhrases/hero.jpg">
 <meta property="og:locale" content="en_GB">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Interior Design Presentation Phrases (C1) | Forbes English">
 <meta name="twitter:description" content="An interactive C1 English lesson from Forbes English: Interior Design Presentation Phrases (C1).">
-<meta name="twitter:image" content="https://forbesenglish.com/logo-forbes-english_1.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Interior Design Presentation Phrases (C1)","description":"An interactive C1 English lesson from Forbes English: Interior Design Presentation Phrases (C1).","url":"https://forbesenglish.com/forbes-interior-design-c1.html","inLanguage":"en","learningResourceType":"lesson","interactivityType":"active","isAccessibleForFree":false,"image":"https://forbesenglish.com/logo-forbes-english_1.png","provider":{"@type":"Organization","name":"Forbes English","url":"https://forbesenglish.com/"},"isPartOf":{"@type":"Course","name":"Forbes English lesson library","url":"https://forbesenglish.com/library.html"},"educationalLevel":"C1","teaches":"C1 English","datePublished":"2026-08-07","hasPart":{"@type":"WebPageElement","isAccessibleForFree":false,"cssSelector":".paywalled"}}</script>
+<meta name="twitter:image" content="https://forbesenglish.com/InteriorDesignPhrases/hero.jpg">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Interior Design Presentation Phrases (C1)","description":"An interactive C1 English lesson from Forbes English: Interior Design Presentation Phrases (C1).","url":"https://forbesenglish.com/forbes-interior-design-c1.html","inLanguage":"en","learningResourceType":"lesson","interactivityType":"active","isAccessibleForFree":false,"image":"https://forbesenglish.com/InteriorDesignPhrases/hero.jpg","provider":{"@type":"Organization","name":"Forbes English","url":"https://forbesenglish.com/"},"isPartOf":{"@type":"Course","name":"Forbes English lesson library","url":"https://forbesenglish.com/library.html"},"educationalLevel":"C1","teaches":"C1 English","datePublished":"2026-08-07","hasPart":{"@type":"WebPageElement","isAccessibleForFree":false,"cssSelector":".paywalled"}}</script>
 <!-- SEO:end -->
 <title>Interior Design Presentation Phrases (C1) | Forbes English</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -508,7 +507,7 @@
 <div class="score-bar">
   <span>Score: <span class="score-val" id="score-display">0</span></span>
   <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-  <span id="progress-text">0 / 18 answered</span>
+  <span id="progress-text">0 / 17 completed</span>
 </div>
 
 <main>
@@ -823,7 +822,7 @@
   <div id="final-screen">
     <div class="final-score-ring">
       <div class="final-score-num" id="final-num">0</div>
-      <div class="final-score-denom" id="final-denom">/ 24</div>
+      <div class="final-score-denom" id="final-denom">/ 22</div>
     </div>
     <div class="final-title" id="final-title">Well Done!</div>
     <div class="final-msg" id="final-msg">You've completed the Interior Design Phrases lesson. Review any areas where you lost marks, paying particular attention to adjective vs. noun forms and preposition usage.</div>
@@ -836,8 +835,7 @@
 // ─── STATE ───
 let score = 0;
 let totalAnswered = 0;
-const TOTAL = 24; // 6 MC + 5 FIB + 5 DnD + (6 matching pairs = 6 wait, let's count as 6) = 22 + but matching we'll count as 6
-const TOTAL_Q = 22; // for progress
+const TOTAL_Q = 22; // 6 MC + 5 FIB + 5 DnD + 6 matching pairs — matches maxScore in showFinal()
 let mc_answered = [false,false,false,false,false,false];
 let fib_answered = [false,false,false,false,false];
 let dnd_answered = [false,false,false,false,false];
@@ -918,8 +916,19 @@ function fibCheck(qn, correct, alts) {
 
 function fibHint(qn, correct) {
   if (fib_answered[qn-1]) return;
-  document.getElementById('fib-i'+qn).value = correct;
-  fibCheck(qn, correct, []);
+  fib_answered[qn-1] = true;
+  const inp = document.getElementById('fib-i'+qn);
+  inp.value = correct;
+  inp.disabled = true;
+  inp.classList.add('wrong-input');
+  document.getElementById('fib-check'+qn).disabled = true;
+  document.getElementById('fib-hint'+qn).disabled = true;
+  const fb = document.getElementById('fib-fb'+qn);
+  fb.style.display = 'block';
+  fb.classList.add('wrong');
+  document.getElementById('fib-s'+qn).textContent = '✗';
+  updateScoreBar();
+  checkFibComplete();
 }
 
 function fibCheckMulti(qn, correctOptions) {
@@ -1106,7 +1115,7 @@ function matchRight(elId, id) {
 }
 
 function checkMatchComplete() {
-  if (matchDone >= TOTAL_PAIRS) {
+  if (matchScore >= TOTAL_PAIRS) {
     match_done = true;
     document.getElementById('next-4').classList.add('visible');
     document.getElementById('tab-4').classList.add('done');
