@@ -2904,3 +2904,43 @@ sitemap diff is `lastmod` churn only, and `describe()` would replace the
 hand-written *"A player's monument to the apex predator — built one block at a
 time."* with a truncated sentence off the page. Both are Innes's call, not a
 defect.
+
+## Reading the Elevation (C1) — built 2026-08-30
+
+`reading-the-elevation-c1.html`, 29 slides, 40 points, EN + DE. New lesson from
+a mixed vocabulary list Innes supplied; the ~36 architecture items in it are the
+syllabus. Builders: `lesson-template/build/build_elevation.py` +
+`i18n_elevation.py`. Cache row id 276, access `free` — **the Supabase row still
+has to be added by Innes**, `tools/seo.py` could not reach the table from this
+container (403 on the tunnel) and fell back to `tools/lessons.json`.
+
+Five Black Isler architectural illustrations came with it. The Noma Bar
+cantilever is the hero at 0.51 mean luminance, so house style §4a puts it in the
+LIGHT theme; `extract-palette.py --light` returned the building's own navy as
+the accent and its coral as the secondary, every contrast row PASS.
+
+Three things worth carrying to the next deck:
+
+- **The MC key is rotated to `n % 4` at build time**, not shuffled. Same finding
+  as The Last Mile: authoring every item with the key first is readable, but the
+  source order survives into the PDF export and the KEYS gate fails on it.
+- **A shared alphabetical word bank can still leak an answer key on one slide.**
+  The bank spans all three gap slides, and the BANK gate reads each slide
+  separately — the third slide's two answers sat at bank positions 2 and 3,
+  ascending, until the rows were reordered meticulous-then-liminal.
+- **The activation slide overflowed by 59px** and no other slide did. Cutting
+  five speaking prompts to four fixed it. Check the overflow in GERMAN too: the
+  checker only measures the language it loads, and German runs longer than
+  English on every brief.
+
+### Preview note: a repeated `data-bg` costs a full base64 copy each time
+
+Inlining the artwork naively for the self-contained preview produced **3.4 MB**
+from 725 KB of actual image, because the four per-slide backgrounds are
+referenced 21 times and each reference carried its own copy. Storing each image
+once in a map and resolving the tokens with a shim injected before the engine
+script takes the same file to **0.84 MB**. Verified standalone with the network
+blocked in Playwright — no JS errors, every slide's `--hero` resolves to a data
+URI. Worth doing on any deck with more than a handful of `data-bg` slides; the
+existing "no slide may reuse a background" note explains the cost but not the
+fix.
