@@ -87,10 +87,18 @@ PAGES = {
     'pricing.html': ('Plans and pricing',
                      'What a Forbes English subscription costs, and which '
                      'lessons are free forever.', 0.7),
-    'ielts.html': ('IELTS Academic Writing',
+    'ielts.html': ('IELTS Academic',
+                   'The IELTS Academic route — Writing, Speaking, Listening, '
+                   'Reading and the vocabulary that feeds them, in the order '
+                   'they should be taught.', 0.9, '/ielts-model-answers/hero.jpg'),
+    'ielts-writing.html': ('IELTS Academic Writing',
                    'An eleven-lesson route through IELTS Academic Writing — '
                    'Task 1 reports and Task 2 essays, in the order they '
                    'should be taught.', 0.9, '/ielts-model-answers/hero.jpg'),
+    'ielts-speaking.html': ('IELTS Speaking',
+                   'The IELTS Speaking route — how long an answer should be, '
+                   'how to extend one without waffling, and how to fill the '
+                   'two minutes of the long turn.', 0.9, '/ielts-speaking/hero.jpg'),
     'ielts-question-bank.html': ('IELTS Academic Writing Task 2: Question Bank & Ideas',
                                  f'{_BANK_N} IELTS Academic Writing Task 2 questions '
                                  f'across {_BANK_T} topics, sorted by essay '
