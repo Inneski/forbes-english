@@ -17,6 +17,8 @@
  *   SORT     every sorting slide has 2+ bins, no stray items, no empty bin
  *   I18N     at least one language besides English is complete, and every data-i18n
  *            attribute resolves to a real key
+ *   HEAD     the page carries a real <title> and a generated SEO block —
+ *            not the template's "Lesson Title" placeholder
  *   LOGO     Forbes and ENGLISH render to the same optical width
  *   RUNTIME  no JS errors
  *
@@ -439,6 +441,22 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
   head('I18N');
   if (!r.i18n.length) ok(`${r.langs} complete language(s) offered; no partial ones; all data-i18n resolve`);
   else r.i18n.forEach(i => bad(`${i.kind}: ${i.list.slice(0, 8).join(', ')}${i.list.length > 8 ? ` +${i.list.length - 8} more` : ''}`));
+
+  head('HEAD');
+  {
+    const title = (src.match(/<title>([\s\S]*?)<\/title>/) || [])[1];
+    const hasSeo = /<!--\s*SEO:start\s*-->/.test(src) && /<!--\s*SEO:end\s*-->/.test(src);
+    const canon  = /<link[^>]+rel="canonical"/.test(src);
+    const placeholder = !title || /^\s*(Lesson Title|The Lesson Title)\b/i.test(title.trim());
+    if (placeholder)
+      bad(`<title> is still the template placeholder${title ? ` ("${title.trim()}")` : ' (missing)'} — set it, or run tools/seo.py which writes it from the Supabase row`);
+    else if (!hasSeo)
+      bad('no <!-- SEO:start --> block — run tools/seo.py so the page has a description, og tags and JSON-LD');
+    else if (!canon)
+      bad('SEO block present but no rel="canonical" — the block looks hand-written; run tools/seo.py');
+    else
+      ok(`head is complete — "${title.trim().slice(0, 58)}${title.trim().length > 58 ? '…' : ''}"`);
+  }
 
   head('LOGO');
   if (!r.logo) bad('no .fe-logo found — the stacked lockup is required');

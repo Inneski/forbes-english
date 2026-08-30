@@ -24,8 +24,13 @@
 :root {
   --hero: url('sample-hero.jpg');   /* real lessons: url('<folder>/hero.jpg') */
 
-  /* Uncomment to run the Forbes mark in the contrasting colour instead of
-     the accent — e.g. lime on a pink-dominant lesson. See HOUSE-STYLE §2. */
+  /* Recolour the lockup. --logo-mark is the Forbes glyph (default --accent);
+     --logo-word is ENGLISH (default --text). Set both to the same value to keep
+     the two lines reading as one object. Derive it from the palette, never by
+     hand — e.g. a muted leafy green is --contrast pulled back toward --text-dim:
+       --logo-mark: color-mix(in srgb, var(--contrast) 45%, var(--text-dim));
+       --logo-word: var(--logo-mark);
+     See HOUSE-STYLE §2. */
   /* --logo-mark: var(--contrast); */
 
   --void          : #0c1113;
@@ -210,7 +215,7 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 /* ── LOGO ── */
 .fe-logo { width: 152px; height: auto; display: block; }
 .fe-logo-mark { color: var(--logo-mark, var(--accent)); }
-.fe-logo-word { fill: var(--text); opacity: 0; transition: opacity .25s ease; }
+.fe-logo-word { fill: var(--logo-word, var(--text)); opacity: 0; transition: opacity .25s ease; }
 .fonts-ready .fe-logo-word { opacity: 1; }   /* never flash a fallback face */
 .slide[data-type="cover"] .fe-logo { width: 232px; }
 
