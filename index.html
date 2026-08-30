@@ -203,19 +203,77 @@
     color: var(--ink);
   }
 
-  /* ── featured ── */
+  /* ── featured ──
+     Geometry matched to library.html's .sherpa-banner. These ran 148.8px
+     tall at 1440 against the library's 77: the .feature-go tail ("Open the
+     route →") could not sit beside the icon and the sub in a 360px grid
+     column, so all three panels wrapped to three lines. The tail is gone
+     and the padding is pinned. Type is a shade under what it was, never
+     over: matching the library's larger 0.95rem title made the panels
+     TALLER at 900px and below, where they are already single-column and
+     were never wrapping.
+     Type here is px, not rem, deliberately: this page is a fixed stage that
+     hides its own overflow, so a browser font-size setting must not be able
+     to inflate it — claude/homepage-fixed-stage-and-browser-font-size.md. */
   .feature {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 14px;
     margin-top: 10px;
-    padding: clamp(11px, 1.7vh, 16px) clamp(16px, 2vw, 24px);
+    padding: 12px 18px;
     border-radius: var(--radius);
     background: linear-gradient(100deg, var(--pink-bright), var(--pink-deep));
     text-decoration: none;
-    transition: transform .18s ease, box-shadow .18s ease;
+    position: relative;
+    overflow: hidden;
+    transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
   }
-  .feature:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(110,28,64,0.3); }
+
+  /* ── hover expansion ──
+     The panel grows and reveals its call to action, and NONE of it costs
+     layout: transform, opacity and filter only. That constraint is not
+     stylistic — this page is a fixed one-screen stage with overflow
+     hidden, and at 900x700 there are only ~17px between the bottom of the
+     hero and the top of the deck. Anything that grew a real box here would
+     reintroduce exactly the collision recorded in
+     claude/homepage-fixed-stage-and-browser-font-size.md.
+
+     scale is 1.025: the grid gap is 10px, so a hovered panel encroaches
+     ~4.5px into it and never touches its neighbour.
+
+     Gated behind (hover: hover) so a tablet — which is a real slice of this
+     audience — never lands in a stuck hover state, and the CTA is decorative
+     only: the whole panel is the link, so nothing is lost without it. */
+  .feature-go {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translate(14px, -50%);
+    opacity: 0;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-size: 11.5px;
+    color: #ffffff;
+    white-space: nowrap;
+    pointer-events: none;
+    transition: opacity .2s ease, transform .2s ease;
+  }
+  @media (hover: hover) {
+    .feature:hover {
+      transform: translateY(-2px) scale(1.025);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.30);
+      filter: saturate(1.12) brightness(1.06);
+      z-index: 2;
+    }
+    .feature:hover .feature-sub { opacity: 0; transform: translateX(-6px); }
+    .feature:hover .feature-go  { opacity: 1; transform: translate(0, -50%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .feature, .feature-go, .feature-sub { transition: none; }
+    .feature:hover { transform: none; }
+  }
   .feature svg { width: 26px; height: 26px; stroke: #fff; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex: none; }
   .feature-text { flex: 1 1 auto; min-width: 0; }
   .feature-title {
@@ -223,15 +281,16 @@
     font-weight: 800;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    font-size: 0.86rem;
+    font-size: 13.5px;
     color: #ffffff;
     line-height: 1.2;
   }
   .feature-sub {
-    font-size: 0.78rem;
+    font-size: 12px;
     color: rgba(255,255,255,0.85);
     line-height: 1.35;
     margin-top: 1px;
+    transition: opacity .18s ease, transform .18s ease;
   }
   .feature-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
   .feature-row .feature { margin-top: 10px; }
@@ -243,15 +302,6 @@
   .feature.feature-blockcamp {
     background: linear-gradient(100deg, #3E5C8F, #2C4470);
   }
-  .feature-go {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 800;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    font-size: 0.72rem;
-    color: #ffffff;
-    white-space: nowrap;
-  }
 
   /* ── responsive ── */
   @media (max-width: 900px) {
@@ -262,7 +312,7 @@
   @media (max-width: 560px) {
     .deck-grid { grid-template-columns: repeat(2, 1fr); }
     .masthead-meta { display: none; }
-    .feature-sub, .feature-go { display: none; }
+    .feature-sub { display: none; }
   }
   @media (max-height: 660px) {
     .hero .lead { display: none; }
