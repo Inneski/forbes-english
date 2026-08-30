@@ -389,13 +389,22 @@
   }
   .route-banners .sherpa-banner { max-width: none; margin: 0; }
   @media (max-width: 760px) { .route-banners { grid-template-columns: 1fr; } }
+  /* Gold is a light ground, so this banner carries dark text where the pink
+     and blue ones carry white. The previous #B8962E with white text measured
+     2.82:1, under the 4.50 AA floor for text this size — it had been live and
+     hard to read in bright light. Note this file's --green-deep is #1b3a28,
+     lighter than index.html's #14301f, and lands at 4.42 on the gradient's
+     deep end, still under the floor. Both pages therefore use the literal
+     #102818 so they match each other rather than two different greens.
+     Worst point anywhere on the gradient: 4.95. Measure the DEEP end. */
   .sherpa-banner.ielts-banner {
-    background: linear-gradient(135deg, #B8962E, #8A6F1F);
+    background: linear-gradient(135deg, var(--gold-bright), var(--gold));
     border-color: var(--gold-bright);
     box-shadow: 0 4px 16px rgba(184,150,46,.30);
   }
   .sherpa-banner.ielts-banner:hover { box-shadow: 0 6px 20px rgba(184,150,46,.45); }
-  .sherpa-banner.ielts-banner .sherpa-sub { color: #FBF3DC; }
+  .sherpa-banner.ielts-banner .sherpa-title { color: #102818; }
+  .sherpa-banner.ielts-banner .sherpa-sub { color: rgba(16, 40, 24, 0.92); }
   .sherpa-banner.blockcamp-banner {
     background: linear-gradient(135deg, #3E5C8F, #2C4470);
     border-color: #7FA8D9;

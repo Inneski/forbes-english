@@ -296,9 +296,25 @@
   .feature-row .feature { margin-top: 10px; }
   @media (max-width: 1100px) { .feature-row { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 900px) { .feature-row { grid-template-columns: 1fr; gap: 8px; } }
+  /* IELTS runs gold to match library.html. Gold is a light ground, so this
+     panel inverts to dark text rather than the white the other two use:
+     white on #b8962e measures 2.82:1, under the 4.50 AA floor for text this
+     size, and the hover's brightness(1.06) drops it further to 2.50. Dark
+     green on this gradient measures 8.20:1 at rest and 9.35:1 hovered.
+     This is not a one-off treatment — .tb-cta-gold (the Go Pro pill) already
+     runs gold with green-deep text for the same reason.
+     Ink is the literal #102818, and the sub sits at 0.92 alpha rather than
+     0.85, because the binding case is the DEEP end of the gradient, not the
+     light one: --green-deep on #b8962e measures 5.05 but the sub at 0.85
+     falls to 4.02. At #102818 / 0.92 the worst point anywhere on the
+     gradient is 4.95. Measure the dark end, not the cover colour. */
   .feature.feature-ielts {
-    background: linear-gradient(100deg, var(--green-lift), var(--green-deep));
+    background: linear-gradient(100deg, var(--gold-bright), var(--gold));
   }
+  .feature.feature-ielts .feature-title,
+  .feature.feature-ielts .feature-go { color: #102818; }
+  .feature.feature-ielts .feature-sub { color: rgba(16, 40, 24, 0.92); }
+  .feature.feature-ielts svg { stroke: #102818; }
   .feature.feature-blockcamp {
     background: linear-gradient(100deg, #3E5C8F, #2C4470);
   }
