@@ -12,6 +12,144 @@ stale copy.
 
 ---
 
+## Block Camp II — the passive descent: order, source truth, and two dead mechanics
+
+### `git push` WORKS from a Claude Code remote session
+
+This session pushed `claude/blockcamp-station-9-passive-17vt6t` straight to
+GitHub — no proxy 403, no web uploader, no `SendUserFile` fallback. The whole
+uploader procedure in `CLAUDE.md` (five-file image batches, click-by-coordinate,
+the silent-commit trap) is a **Cowork sandbox** problem, not a universal one.
+**Try `git push` first and find out** rather than assuming you are locked out;
+it costs two seconds and skips an hour of uploader choreography.
+
+### The descent runs in the SAME ORDER as the climb
+
+Station N mirrors camp N-8. Innes: *"present simple should start the descent
+(same as the ascent order)"*.
+
+| station | tense | camp |
+|---|---|---|
+| 9 | Present Simple Passive | 1 |
+| 10 | Present Continuous Passive | 2 |
+| 11 | Past Simple Passive | 3 |
+| 12 | Past Continuous Passive | 4 |
+| 13 | Going To Passive | 5 |
+| 14 | Future Simple Passive | 6 |
+| 15 | Present Perfect Passive | 7 |
+| 16 | The Trial — mixed active and passive | — |
+
+Camp 8, Present Perfect Continuous, has no usable passive ("has been being
+built"), which is why the line is seven passives and a trial.
+
+`build_descent.py`'s docstring table listed the **reversed** order until
+2026-08-31 — an abandoned model. The published station 15 deck had been right
+the whole time. Anything that contradicts the table above is the stale copy.
+
+### A deck from after review, a source from before it
+
+The branch carried `blockcamp-passive-present-perfect.html` as corrected in
+`0c291bc`, but the matching source was never pushed — GitHub blocked it three
+times — so `station09.py` (as it then was) predated Innes's review. **Rebuilding
+from it reverted nine of his fixes**: the object in gold, the agent in greenish
+white, PAST PARTICIPLE and THIRD in the participle's purple, "who cares?!", the
+per-station scoring messages and the results-panel spacing.
+
+Both files are now in the repo and verified: **`build_descent.py 15` followed by
+`apply-placement.py` reproduces the published deck byte-identical.**
+
+**The placement pass is part of the build, not an optional extra.** Six slides
+were moved by measurement after the builder ran, so the builder alone differs on
+exactly those six. Placement lives in the HTML, never in the station source —
+do not back-port `data-side`/`data-vpos` into the `sec()` calls, which is a trap
+this session fell into and had to undo.
+
+    python3 build_descent.py <n>          # from lesson-template/descent/
+    python3 lesson-template/checker/apply-placement.py <deck>.html
+
+### Two dead mechanics in `slidekit.py`, both live on station 15
+
+Found by `check-lesson.js`, which **does** apply to Block Camp decks — it is not
+only for the `deck.py` family. Run it.
+
+- **`gap()` emitted no Check button.** `checkGaps()` is reachable by a
+  `[data-action="check"]` click or by Enter inside a gap; the slide offered
+  neither affordance. Six points across the two gap slides scored only for a
+  learner who guessed to press Enter, and the deck reported the result as earned
+  either way. Measured before the fix: zero buttons on the slide, Enter marking
+  all three gaps correct.
+- **`mc()` emitted no `.feedback` element.** The engine's `feedback()` opens
+  `const el = slide.querySelector('.feedback'); if (!el) return;` — so every
+  call was a no-op. **Eighteen per-distractor explanations per deck were in the
+  DOM as `data-explain` and never once shown**, and right and wrong alike
+  produced no message at all. Same shape as the pooled-gap-note defect further
+  down this file. `mc()` now takes an optional `why=` for the key's own reason,
+  which the engine already falls back to (`ownExplain || el.dataset.explain`).
+
+**Station 15 still needs its rebuild.** It was left alone on Innes's explicit
+instruction. The change is purely additive — 12 lines, 6 `.feedback` elements
+and the 2 gap Check buttons, no content or placement change — and it is one
+command once he says go. Its MCs have no `why=` yet, so a right answer would
+read a bare "Correct."; worth writing six reasons at the same time.
+
+### Known gaps on the line, none of them blocking
+
+- **German and Spanish scoring messages are still the camp's ACTIVE wording.**
+  `build_descent.py`'s `messages` substitution uses `count=1` against a pattern
+  that matches every language block, so only `en` is rewritten. On station 15 a
+  learner on Deutsch or Español is told *"Geh zurück zum Merksatz"* — go back to
+  the dictum, about the second and third form — on a deck about the passive.
+  Station 9 has the identical gap. Fixing it changes both published pages.
+- **Neither descent deck is in the catalogue**, so `tools/seo.py` skips them and
+  both fail the HEAD gate with no description, og tags or JSON-LD. That is a
+  publishing prerequisite, not a build defect: register the row, then re-run
+  `seo.py`. Neither is in `library.html`'s `LESSON_IMAGES` either, so both would
+  ship as "Coming soon" today.
+- **`--mark-obj` #ffd633 collides with `--mark-inf` #eec32f.** Computed here,
+  not taken on trust: **CIE76 ΔE 8.48**, 1.4° of HSV hue (1.84° in CIE-LCh).
+  Under 10 reads as one colour to most people, so two roles are wearing the same
+  yellow. Stations 9 to 12 contain no infinitive, so nothing collides yet; it
+  lands at **station 13, Going To Passive**, where "is going to be built" puts an
+  infinitive and an object on one slide. Innes rules on which one moves.
+- **`chassis-head.html` and `chassis-tail.html`** in `lesson-template/descent/`
+  are superseded — `split()` cuts the chassis live and nothing reads them — and
+  `blockcamp-passive-intro.html` is an abandoned first build, live and unlinked,
+  teaching the wrong syllabus. All three are marked for deletion and were left
+  in place this session on Innes's instruction.
+
+### `check-lesson.js` KEYS is a FALSE POSITIVE on this family
+
+It reports "the key is option A in 6 of 6 questions (100%)" because it reads the
+static source order. The Block Camp engine Fisher-Yates shuffles options on
+first view. Measured over six independent loads, the key landed at indices
+`031003 / 011231 / 221312 / 032220 / 133313 / 020300`. **Do not "deal the keys
+across the letters in the source"** — the shuffle overwrites source order, so it
+would achieve nothing. Teaching the gate to detect a runtime shuffle would stop
+this costing a session's attention every time.
+
+### `seo.py` reverts hand-edits to generated HTML — the pro flag is data
+
+Running `seo.py` rewrote `forbes-english-lesson (2).html`, undoing Innes's own
+commit `1855e09` ("Business Conditionals: mark as free in structured data") from
+two hours earlier. `tools/lessons.json` has **`pro: None`** for id 37, so the
+generator writes `isAccessibleForFree: false` and re-adds the paywall `hasPart`.
+Reverted here to preserve his intent, but **the page edit will be undone by
+every future `seo.py` run until the data changes**: set `pro = false` on row 37
+in Supabase (reachable via the `mcp__Supabase__*` tools, not over HTTP from a
+sandbox) and refresh the cache. Same class as the deck-vs-builder rule — the
+generated file is never the place to record a decision.
+
+### Running the checkers needs two things this container did not have
+
+    pip install numpy pillow
+    export NODE_PATH=/opt/node22/lib/node_modules   # playwright is global
+
+Without numpy, `apply-placement.py` dies in an import inside `check-placement.py`
+and the placement pass is silently skipped — which looks exactly like a build
+that differs from the published deck for no reason.
+
+---
+
 ## Interior Design pair — two old-format lessons fixed and shipped
 
 `forbes-interior-design-c1.html` and `interior-design-vocabulary.html` were
