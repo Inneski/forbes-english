@@ -40,6 +40,10 @@
 :root {
   --hero: url('Business2/hero.jpg');
 
+  /* Forbes ENGLISH lockup — dark leafy green, both lines. See note above. */
+  --logo-mark: #1C4722;
+  --logo-word: #1C4722;
+
   --void          : #090e0d;
   --surface       : #121c1a;
   --surface2      : #1a2925;
@@ -217,9 +221,19 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 @keyframes slide-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
 /* ── LOGO ── */
-.fe-logo { width: 152px; height: auto; display: block; }
+/* A DARK mark on this cover needs a LIGHT halo — the inverse of the halo the
+   cover title gets, because the backdrop behind the lockup is a mid-light
+   peach, not a dark one. Measured against the real pixels there, #1C4722 is
+   2.66:1 bare; the halo is what makes it crisp. Lesson-level on purpose: a
+   blanket rule in the template would put a white glow around the light logo
+   every dark-covered lesson uses. */
+.fe-logo {
+  filter: drop-shadow(0 0 5px rgba(255,255,255,.55))
+          drop-shadow(0 1px 2px rgba(255,255,255,.75));
+  width: 152px; height: auto; display: block;
+}
 .fe-logo-mark { color: var(--logo-mark, var(--accent)); }
-.fe-logo-word { fill: var(--text); opacity: 0; transition: opacity .25s ease; }
+.fe-logo-word { fill: var(--logo-word, var(--text)); opacity: 0; transition: opacity .25s ease; }
 .fonts-ready .fe-logo-word { opacity: 1; }   /* never flash a fallback face */
 .slide[data-type="cover"] .fe-logo { width: 232px; }
 
@@ -336,12 +350,44 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 .feedback.ok { color: var(--ok-text); }
 .feedback.no { color: var(--no-text); }
 
+/* A feedback line that is a DIRECT child of .slide-body has no card behind
+   it, so it sits straight on the hero. At --bg-opacity 0.72 the green and
+   the red disappear the moment the artwork underneath goes pale. Give it its
+   own plate — same idiom as .card, translucent with a backdrop blur — so the
+   picture still shows through but the text has something to sit on.
+   Feedback inside a .gap-row keeps its card instead — see .gap-row below. */
+.slide-body > .feedback {
+  margin-top: 12px;
+  padding: 8px 15px;
+  border-radius: var(--r);
+  border-left: 3px solid transparent;
+  transition: opacity .2s, background .2s;
+}
+.slide-body > .feedback.show {
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  backdrop-filter: blur(3px);
+  border-left-color: currentColor;
+}
+
+/* A gap row already sits in a card, so it needs no plate of its own — but at
+   the shared 82% the answer key printed inside it still washes out wherever
+   the hero underneath is pale, which is most of the lower half of this one.
+   Raising only THIS card to 94% fixes the feedback and the sentence together
+   and costs nothing in layout. Teaching cards stay at 82%. */
+.gap-row { background: color-mix(in srgb, var(--surface) 94%, transparent); }
+
 /* ── BUTTONS ── */
 .btn {
   font-family: var(--font-ui); font-size: 15px; font-weight: 600;
   letter-spacing: .03em;
   padding: 12px 26px; border-radius: var(--r);
-  border: 1px solid var(--accent); background: transparent; color: var(--accent-bright);
+  border: 1px solid var(--accent); color: var(--accent-bright);
+  /* NOT transparent. A bare outlined button on the artwork disappears wherever
+     the hero goes pale — on this deck that is the whole lower third, which is
+     exactly where Check sits. Same plate as .card, so the picture still reads
+     through it. :hover and .btn-solid override this and are unaffected. */
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  backdrop-filter: blur(3px);
   cursor: pointer; transition: background .15s, color .15s;
 }
 .btn:hover { background: var(--accent); color: var(--void); }
@@ -401,15 +447,21 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 }
 .act-target-label {
   font-family: var(--font-mono); font-size: 11.5px;
-  letter-spacing: .12em; text-transform: uppercase; color: var(--text-dim);
+  letter-spacing: .12em; text-transform: uppercase;
+  color: color-mix(in srgb, var(--text-dim) 45%, var(--text));
   margin-right: 4px;
 }
 .bank-chip {
   font-family: var(--font-mono); font-size: 12px;
   padding: 5px 12px; border-radius: 999px;
-  background: color-mix(in srgb, var(--accent) 16%, transparent);
-  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  /* The old 16% accent fill was almost transparent, so the chips read on the
+     dark half of the hero and vanished on the pale half. Plate them like the
+     cards; the accent stays in the border and the text. No size change, so the
+     bank still wraps to the same two rows. */
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 65%, transparent);
   color: var(--accent-bright);
+  backdrop-filter: blur(3px);
 }
 .act-cols { align-items: stretch; }
 .act-card { display: flex; flex-direction: column; padding: 20px 24px; }
@@ -573,6 +625,15 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 .score-big, .slide-body > .prose, .act-target-label {
   text-shadow: 0 1px 2px rgba(0,0,0,0.55), 0 0 12px rgba(0,0,0,0.38);
 }
+/* Dim prose on the canvas — the instruction line above a word bank — is the
+   faintest text on any slide and lands on the pale floor of this hero. Lift it
+   and deepen the halo. Colour and shadow only: slides 9/11/12 have no vertical
+   slack to spend on a plate. */
+.slide-body > .prose.dim {
+  color: color-mix(in srgb, var(--text-dim) 40%, var(--text));
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8), 0 0 10px rgba(0,0,0,0.65),
+               0 0 20px rgba(0,0,0,0.45);
+}
 html[data-theme="light"] .slide-title, html[data-theme="light"] .eyebrow,
 html[data-theme="light"] .q-stem, html[data-theme="light"] .q-ctx,
 html[data-theme="light"] .order-hint, html[data-theme="light"] .cover-title,
@@ -580,6 +641,10 @@ html[data-theme="light"] .cover-sub, html[data-theme="light"] .score-big,
 html[data-theme="light"] .slide-body > .prose,
 html[data-theme="light"] .act-target-label {
   text-shadow: 0 1px 2px rgba(255,255,255,0.75), 0 0 12px rgba(255,255,255,0.55);
+}
+html[data-theme="light"] .slide-body > .prose.dim {
+  text-shadow: 0 1px 2px rgba(255,255,255,0.9), 0 0 10px rgba(255,255,255,0.8),
+               0 0 20px rgba(255,255,255,0.6);
 }
 </style>
 </head>
@@ -660,8 +725,8 @@ html[data-theme="light"] .act-target-label {
           </div>
           <div class="card">
             <p class="prose"><strong data-i18n="v2h">provided that / once</strong></p>
-            <p class="prose" style="margin-top:8px;font-size:18px">A condition with a hint of a guarantee attached.</p>
-            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="v2b">&ldquo;<em>Provided that</em> all stakeholders agree&hellip;&rdquo; Present tense, always.</p>
+            <p class="prose" style="margin-top:8px;font-size:18px"><em>provided that</em> = only if. <em>once</em> = when, and it will.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="v2b">&ldquo;<em>Provided that</em> all stakeholders agree&hellip;&rdquo; Present tense after both, never <em>will</em>.</p>
           </div>
           <div class="card">
             <p class="prose"><strong data-i18n="v3h">Should + subject + verb</strong></p>
@@ -683,12 +748,12 @@ html[data-theme="light"] .act-target-label {
         <h2 class="slide-title" data-i18n="qTitle">Complete the sentence</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">If the board <strong>approves</strong> the merger, the company ______ its market share significantly.</p>
+        <p class="q-stem">If the board <strong>approves</strong> the merger, the company ______ its market presence across Asia.</p>
         <div class="opts">
-          <button class="opt" data-explain="Close, but the simple form is what a real future outcome takes. <em>Will be expanding</em> describes a process, not a result.">would be expanding steadily</button>
-          <button class="opt" data-explain="Past simple. It cannot follow a present-tense <em>if</em>-clause about a future possibility.">expanded very significantly</button>
-          <button class="opt" data-explain="Second-conditional structure, which would mean the approval is unlikely &mdash; contradicting <em>approves</em>.">would expand substantially</button>
-          <button class="opt" data-correct data-explain="First conditional: <em>if</em> + present simple &rarr; <em>will</em> + bare infinitive. The approval is realistic, so <strong>will expand</strong>.">will expand noticeably</button>
+          <button class="opt" data-explain="Close, but the simple form is what a real future outcome takes. <em>Would be expanding</em> describes a process, and it is second-conditional mood.">would be steadily expanding</button>
+          <button class="opt" data-explain="Past simple. It cannot follow a present-tense <em>if</em>-clause about a future possibility.">very quickly expanded</button>
+          <button class="opt" data-explain="Second-conditional structure, which would mean the approval is unlikely &mdash; contradicting <em>approves</em>.">would slowly expand</button>
+          <button class="opt" data-correct data-explain="First conditional: <em>if</em> + present simple &rarr; <em>will</em> + bare infinitive. The approval is realistic, so <strong>will expand</strong>.">will certainly expand</button>
         </div>
         <p class="feedback" data-explain="First conditional: <em>if</em> + present simple &rarr; <em>will</em> + bare infinitive."></p>
       </div>
@@ -700,12 +765,12 @@ html[data-theme="light"] .act-target-label {
         <h2 class="slide-title" data-i18n="qTitle">Complete the sentence</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">______ we had invested in that technology earlier, we would not be facing these supply chain issues today.</p>
+        <p class="q-stem">______ in that technology earlier, we would not be facing these supply chain issues today.</p>
         <div class="opts">
-          <button class="opt" data-explain="<em>Although</em> introduces a contrast, not a condition. It cannot carry regret about a past action.">Although</button>
-          <button class="opt" data-explain="Grammatical as <em>If we had invested</em>, but the sentence is already inverted: the verb comes first, so <em>If</em> would make it ungrammatical.">If</button>
-          <button class="opt" data-explain="<em>Provided</em> needs <em>that</em> and a present tense. It cannot take the past perfect.">Provided</button>
-          <button class="opt" data-correct data-explain="<strong>Had we invested</strong> is an inverted third conditional &mdash; the formal written form of <em>If we had invested&hellip;</em>.">Had</button>
+          <button class="opt" data-explain="Present perfect. It cannot express an imagined past, and it cannot pair with <em>would not be facing</em>.">Have we invested</button>
+          <button class="opt" data-explain="<em>Should we</em> + bare infinitive points forward to something that might yet happen. It cannot take <em>earlier</em>.">Should we invest</button>
+          <button class="opt" data-explain="<em>Were we to invest</em> is a formal hypothetical about the future. <em>Earlier</em> puts this firmly in the past.">Were we to invest</button>
+          <button class="opt" data-correct data-explain="<strong>Had we invested</strong> is the inverted third conditional &mdash; the formal written form of <em>If we had invested&hellip;</em> Note that the inversion absorbs the <em>had</em>: it is never <em>Had we had invested</em>.">Had we invested</button>
         </div>
         <p class="feedback" data-explain="The inversion <em>Had we invested&hellip;</em> is the formal third conditional, common in business writing."></p>
       </div>
@@ -738,7 +803,7 @@ html[data-theme="light"] .act-target-label {
         <div class="opts">
           <button class="opt" data-explain="<em>Would confirm</em> is second-conditional mood. The result clause here is <em>will cancel</em>, so the condition is real.">would confirm the payment</button>
           <button class="opt" data-explain="Past perfect belongs to the third conditional. This sentence looks forward.">had confirmed the payment</button>
-          <button class="opt" data-correct data-explain="<em>Unless</em> = <em>if&hellip;not</em>, and it introduces a real future condition: present simple in the clause, <em>will</em> in the result.">confirms payment promptly</button>
+          <button class="opt" data-correct data-explain="<em>Unless</em> = <em>if&hellip;not</em>, and it introduces a real future condition: present simple in the clause, <em>will</em> in the result.">confirms the payment</button>
           <button class="opt" data-explain="This is the classic error: never <em>will</em> after <em>if</em> or <em>unless</em>.">will confirm their payment</button>
         </div>
         <p class="feedback" data-explain="<em>Unless</em> takes the present simple, exactly like <em>if</em>. Never <em>will</em> in the condition clause."></p>
@@ -751,12 +816,12 @@ html[data-theme="light"] .act-target-label {
         <h2 class="slide-title" data-i18n="qTitle">Complete the sentence</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">If the CEO <strong>had announced</strong> the restructuring last quarter, the board ______ more time to prepare a response.</p>
+        <p class="q-stem">If the CEO <strong>had announced</strong> the restructuring last quarter, the board ______ to prepare a response.</p>
         <div class="opts">
-          <button class="opt" data-correct data-explain="Third conditional: <em>if</em> + past perfect &rarr; <strong>would have</strong> + past participle. It did not happen, so the board did not get the time.">would have had enough</button>
-          <button class="opt" data-explain="<em>Would have</em> alone is incomplete &mdash; the result clause needs the past participle too.">would have enough time</button>
-          <button class="opt" data-explain="Future perfect. It has no place in a third conditional.">will have had sufficient</button>
-          <button class="opt" data-explain="Past perfect belongs in the <em>if</em>-clause, not in the result.">had had sufficient time</button>
+          <button class="opt" data-correct data-explain="Third conditional: <em>if</em> + past perfect &rarr; <strong>would have</strong> + past participle. It did not happen, so the board did not get the time.">would have had enough time</button>
+          <button class="opt" data-explain="Continuous. <em>Have</em> in the sense of <em>possess</em> does not take a continuous form at all.">would be having enough time</button>
+          <button class="opt" data-explain="Future perfect. It has no place in a third conditional.">will have had sufficient time</button>
+          <button class="opt" data-explain="Past perfect belongs in the <em>if</em>-clause, not in the result. The result needs <em>would</em>.">had had considerable time</button>
         </div>
         <p class="feedback" data-explain="Third conditional: <em>if</em> + past perfect &rarr; <em>would have</em> + past participle."></p>
       </div>
@@ -769,15 +834,15 @@ html[data-theme="light"] .act-target-label {
       </div></div>
       <div class="slide-body">
         <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="vHint">Type the form of the bracketed verb that the conditional needs.</p>
-        <div class="card gap-row" style="padding:12px 16px">
-          <p class="q-stem" style="margin-bottom:0;font-size:19px">Provided that all stakeholders <input class="gap" data-answer="agree|agrees" aria-label="gap" style="width:210px"> <em>(agree)</em> to the revised terms, the contract will be signed by the end of the month.</p>
-          <p class="feedback" data-explain="<em>Provided that</em> introduces a real condition, so present simple. Both forms are accepted here."></p>
+        <div class="card gap-row" style="padding:10px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:19px">Provided that all stakeholders <input class="gap" data-answer="agree" aria-label="gap" style="width:210px"> <em>(agree)</em> to the revised terms, the contract will be signed by the end of the month.</p>
+          <p class="feedback" data-explain="<em>Provided that</em> introduces a real condition, so present simple &mdash; and <em>stakeholders</em> is plural, so <strong>agree</strong>, never <em>agrees</em>."></p>
         </div>
-        <div class="card gap-row" style="padding:12px 16px">
+        <div class="card gap-row" style="padding:10px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">If the development team <input class="gap" data-answer="had started" aria-label="gap" style="width:210px"> <em>(start)</em> testing earlier, we would not have missed the launch deadline.</p>
           <p class="feedback" data-explain="Third conditional: <em>if</em> + past perfect. The testing did not start early &mdash; this is an imagined past."></p>
         </div>
-        <div class="card gap-row" style="padding:12px 16px">
+        <div class="card gap-row" style="padding:10px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">If I <input class="gap" data-answer="were|was" aria-label="gap" style="width:210px"> <em>(be)</em> in your position, I would renegotiate the terms before signing anything.</p>
           <p class="feedback" data-explain="Second conditional. <strong>Were</strong> is the subjunctive form preferred in business writing; <em>was</em> is also heard."></p>
         </div>
@@ -796,7 +861,7 @@ html[data-theme="light"] .act-target-label {
         <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="vHint">Type the form of the bracketed verb that the conditional needs.</p>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">Should the auditors <input class="gap" data-answer="identify" aria-label="gap" style="width:210px"> <em>(identify)</em> any discrepancies, the finance director will be notified immediately.</p>
-          <p class="feedback" data-explain="<em>Should</em> + subject + base verb is an inverted first conditional &mdash; the formal equivalent of <em>If the auditors identify&hellip;</em>."></p>
+          <p class="feedback" data-explain="<em>Should</em> + subject + base verb is an inverted first conditional &mdash; the formal equivalent of <em>If the auditors identify&hellip;</em>"></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
           <p class="q-stem" style="margin-bottom:0;font-size:19px">The project <input class="gap" data-answer="would have been" aria-label="gap" style="width:210px"> <em>(be)</em> completed on time if the supplier had delivered the components as scheduled.</p>
@@ -816,7 +881,7 @@ html[data-theme="light"] .act-target-label {
       <div class="slide-body">
         <div class="act-target" style="margin-bottom:12px">
           <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
-          <span class="bank-chip">Should this be</span> <span class="bank-chip">had we reviewed</span> <span class="bank-chip">have we reviewed</span> <span class="bank-chip">if we continue</span> <span class="bank-chip">if we continued</span> <span class="bank-chip">once we expand</span> <span class="bank-chip">unless we expand</span> <span class="bank-chip">you do not settle</span>
+          <span class="bank-chip">had we reviewed</span> <span class="bank-chip">have we reviewed</span> <span class="bank-chip">if we continue</span> <span class="bank-chip">if we continued</span> <span class="bank-chip">once we expand</span> <span class="bank-chip">should this be</span> <span class="bank-chip">unless we expand</span> <span class="bank-chip">you do not settle</span>
         </div>
         <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="eHint">Three of the eight phrases in the bank are wrong for these gaps.</p>
         <div class="card gap-row" style="padding:12px 16px">
@@ -841,7 +906,7 @@ html[data-theme="light"] .act-target-label {
       <div class="slide-body">
         <div class="act-target" style="margin-bottom:12px">
           <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
-          <span class="bank-chip">Should this be</span> <span class="bank-chip">had we reviewed</span> <span class="bank-chip">have we reviewed</span> <span class="bank-chip">if we continue</span> <span class="bank-chip">if we continued</span> <span class="bank-chip">once we expand</span> <span class="bank-chip">unless we expand</span> <span class="bank-chip">you do not settle</span>
+          <span class="bank-chip">had we reviewed</span> <span class="bank-chip">have we reviewed</span> <span class="bank-chip">if we continue</span> <span class="bank-chip">if we continued</span> <span class="bank-chip">once we expand</span> <span class="bank-chip">should this be</span> <span class="bank-chip">unless we expand</span> <span class="bank-chip">you do not settle</span>
         </div>
         <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="eHint">Three of the eight phrases in the bank are wrong for these gaps.</p>
         <div class="card gap-row" style="padding:12px 16px">
@@ -866,7 +931,7 @@ html[data-theme="light"] .act-target-label {
       <div class="slide-body">
         <div class="act-target" style="margin-bottom:12px">
           <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
-          <span class="bank-chip">Should this be</span> <span class="bank-chip">had we reviewed</span> <span class="bank-chip">have we reviewed</span> <span class="bank-chip">if we continue</span> <span class="bank-chip">if we continued</span> <span class="bank-chip">once we expand</span> <span class="bank-chip">unless we expand</span> <span class="bank-chip">you do not settle</span>
+          <span class="bank-chip">had we reviewed</span> <span class="bank-chip">have we reviewed</span> <span class="bank-chip">if we continue</span> <span class="bank-chip">if we continued</span> <span class="bank-chip">once we expand</span> <span class="bank-chip">should this be</span> <span class="bank-chip">unless we expand</span> <span class="bank-chip">you do not settle</span>
         </div>
         <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="eHint">Three of the eight phrases in the bank are wrong for these gaps.</p>
         <div class="card gap-row" style="padding:12px 16px">
