@@ -60,11 +60,33 @@ def cards(pairs):
     return '\n'.join(out)
 
 
-def mc(n, of, bg, side, vpos, title, stem, correct, wrong, es='', de=''):
+def mc(n, of, bg, side, vpos, title, stem, correct, wrong, es='', de='', why=''):
+    """A multiple-choice slide.  `why` explains why the KEY is right.
+
+    THE FEEDBACK ELEMENT IS WHAT MAKES ANY OF THIS VISIBLE, and it was missing.
+    The engine's feedback() opens with
+
+        const el = slide.querySelector('.feedback');
+        if (!el) return;
+
+    and this helper emitted no such element, so every call was a no-op: the
+    per-distractor explanations went into the DOM as data-explain attributes
+    and were never once shown, right and wrong alike produced no message at
+    all, and a learner got no reason for anything. Eighteen written
+    explanations per deck reaching nobody - the same defect as the pooled gap
+    note in docs/HANDOFF.md, in a second place.
+
+    `why` fills the slide-level data-explain, which the engine falls back to
+    when the clicked option has none of its own (`ownExplain || el.dataset
+    .explain`). So a right answer is explained by `why` and a wrong one by its
+    own line, which is the behaviour the engine was always written for.
+    """
     opts = ['        <button class="opt" data-correct>%s</button>' % correct]
-    for text, why in wrong:
+    for text, w in wrong:
         opts.append('        <button class="opt" data-explain="%s">%s</button>'
-                    % (why.replace('"', '&quot;'), text))
+                    % (w.replace('"', '&quot;'), text))
+    fb = ('        <p class="feedback" data-explain="%s"></p>' % why.replace('"', '&quot;')
+          if why else '        <p class="feedback"></p>')
     return sec('mc', bg, side, vpos,
         '      <div class="slide-head"><div>\n'
         '        <div class="eyebrow">Practice &middot; %d / %d</div>\n'
@@ -73,7 +95,8 @@ def mc(n, of, bg, side, vpos, title, stem, correct, wrong, es='', de=''):
         '      <div class="slide-body">\n'
         '        <p class="q-stem">%s%s</p>\n'
         '        <div class="opts">\n%s\n        </div>\n'
-        '      </div>' % (n, of, title, stem, gloss(es, de), '\n'.join(opts)))
+        '%s\n'
+        '      </div>' % (n, of, title, stem, gloss(es, de), '\n'.join(opts), fb))
 
 
 def sort(bg, side, vpos, title, hint, bins, items, explain):
@@ -109,6 +132,15 @@ def gap(n, of, bg, side, vpos, title, hint, rows):
             '<input class="gap" data-answer="%s" aria-label="gap" style="width:%dpx">%s</p>\n'
             '          <p class="feedback" data-explain="%s"></p>\n'
             '        </div>' % (before, answer, width, after, why.replace('"', '&quot;')))
+    # THE CHECK BUTTON IS NOT OPTIONAL, AND IT WAS MISSING FOR THE WHOLE LINE.
+    # checkGaps() is reachable two ways: a [data-action="check"] click, or
+    # Enter inside a gap. This helper emitted neither a button nor any other
+    # affordance, so both gap slides scored only for a learner who guessed to
+    # press Enter - six points a deck reports as earned whether or not anybody
+    # could find them. Measured on station 9 before the fix: zero buttons on
+    # the slide, and Enter marking all three gaps correct. The engine already
+    # expects the button and disables it after marking (`if (btn)`), so this
+    # is the slide catching up with the engine, not a new mechanism.
     return sec('gap', bg, side, vpos,
         '      <div class="slide-head"><div>\n'
         '        <div class="eyebrow">Practice &middot; %d / %d</div>\n'
@@ -116,6 +148,9 @@ def gap(n, of, bg, side, vpos, title, hint, rows):
         '      </div></div>\n'
         '      <div class="slide-body">\n'
         '        <p class="prose dim" style="margin-bottom:6px;font-size:16px">%s</p>\n%s\n'
+        '        <div style="margin-top:12px">\n'
+        '          <button class="btn" data-action="check">Check</button>\n'
+        '        </div>\n'
         '      </div>' % (n, of, title, hint, '\n'.join(out)))
 
 
