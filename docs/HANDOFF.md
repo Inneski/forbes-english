@@ -86,20 +86,23 @@ only for the `deck.py` family. Run it.
   down this file. `mc()` now takes an optional `why=` for the key's own reason,
   which the engine already falls back to (`ownExplain || el.dataset.explain`).
 
-**Station 15 still needs its rebuild.** It was left alone on Innes's explicit
-instruction. The change is purely additive — 12 lines, 6 `.feedback` elements
-and the 2 gap Check buttons, no content or placement change — and it is one
-command once he says go. Its MCs have no `why=` yet, so a right answer would
-read a bare "Correct."; worth writing six reasons at the same time.
+**Station 15 has been rebuilt** (it was held back one session on Innes's
+instruction, then released). Both stations' MC keys now carry a `why=`, so a
+right answer gives a reason rather than a bare "Correct." Placement re-applied
+on both; the same six moves came back on station 15, so the measurement is
+stable across a rebuild.
 
 ### Known gaps on the line, none of them blocking
 
-- **German and Spanish scoring messages are still the camp's ACTIVE wording.**
-  `build_descent.py`'s `messages` substitution uses `count=1` against a pattern
-  that matches every language block, so only `en` is rewritten. On station 15 a
-  learner on Deutsch or Español is told *"Geh zurück zum Merksatz"* — go back to
-  the dictum, about the second and third form — on a deck about the passive.
-  Station 9 has the identical gap. Fixing it changes both published pages.
+- ~~German and Spanish scoring messages are still the camp's ACTIVE wording~~ —
+  **fixed.** `rescore()` now scopes each substitution to its own language block
+  and raises on a missing block or key. The old substitution was global with
+  `count=1`, and English is always the first match in the file, so `de` and `es`
+  were never rewritten: both decks told a struggling learner *"Geh zurück zum
+  Merksatz"* / *"Vuelve al lema"* on a deck about the passive. **Station 15 is
+  rebuilt** and no longer byte-identical to what was first published — that is
+  deliberate, and it also lands its six `.feedback` elements and two gap Check
+  buttons.
 - **Neither descent deck is in the catalogue**, so `tools/seo.py` skips them and
   both fail the HEAD gate with no description, og tags or JSON-LD. That is a
   publishing prerequisite, not a build defect: register the row, then re-run
