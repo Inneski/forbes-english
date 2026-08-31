@@ -176,14 +176,26 @@ bracketed `(live)` / `(stop)` / `(study)`:
 signals differ per tense (Future Simple and the Present Perfects carry five
 chips, not four). It is content authoring, not a regex.
 
-### None of the sixteen are in the catalogue
+### The sixteen WERE in the catalogue - `tools/lessons.json` was 17 rows stale
 
-`tools/lessons.json` has **zero** Block Camp rows, so `seo.py` skips all sixteen:
-no description, no og tags, no JSON-LD, and **not one of them is in
-`sitemap.xml`**. They are in `library.html`'s `LESSON_IMAGES`, so they show and
-open, but nothing else knows they exist. This is the backlog item named in
-`claude/blocksavvy-unit-status.md` and it is still open. The two descent decks
-are in the same position.
+An earlier pass of this file said none of the sixteen Block Camp decks were in
+the catalogue, because `tools/lessons.json` had no Block Camp rows. **They were
+in Supabase the whole time** (ids 277-292). The CACHE was 17 rows behind, and
+`seo.py` cannot reach Supabase from a sandbox (proxy 403) so it silently used
+the stale copy. Refreshed via the `mcp__Supabase__*` tools, which do work:
+267 rows -> 284. All sixteen now carry metadata and are in `sitemap.xml`
+(227 -> 243 URLs), and `blockcamp-past-simple.html` passes all fifteen gates.
+
+**The same stale cache is what kept reverting `1855e09`.** Business Conditionals
+is `access: free` in the live table and always was; the cache said `pro`, and
+`seo.py` does `free = row['access'] != 'pro'`. An earlier note here called it
+"`pro: None`" - that was a misreading: the cache has no `pro` key at all, so
+every row returned None. The column is `access`, values `free` / `pro`.
+
+**Refresh the cache before trusting anything `seo.py` writes**, and refresh it
+from the MCP path, not from `seo.py`'s own HTTP fetch. A stale cache does not
+error - it quietly withholds metadata from every lesson it has not heard of, and
+overwrites deliberate edits on the ones it has.
 
 ### `seo.py` reverts hand-edits to generated HTML — the pro flag is data
 
