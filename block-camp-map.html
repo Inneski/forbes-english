@@ -409,6 +409,64 @@ h1{margin:0;font-family:'Monocraft',ui-monospace,monospace;font-synthesis:none;
   .cloud,.lantern{animation:none}.stop .lab{opacity:1;transform:none}
   .caption{transition:none}}
 
+/* ── BOTH PARTS, FROM THE MAP ────────────────────────────────────────
+   Innes: "why cant you access part 2s in block camp?" Because a camp dot was
+   an anchor to Part 1 and nothing else, and the eight-row station list that
+   might have carried the other eight only appeared under 820px. On a laptop
+   there was no route to Part 2 at all.
+   The dots keep their behaviour exactly - it took three goes to make a tap
+   preview a camp before it opened it, and none of that is worth risking for
+   a link. The second part lives in a panel over the map instead, so the map
+   still owns the whole screen and nothing scrolls. */
+.lessons{ position:absolute; z-index:9; right:20px; bottom:74px;
+  width:min(430px, calc(100vw - 40px)); max-height:min(70vh, 560px); overflow:auto;
+  background:rgba(8,30,31,.95); backdrop-filter:blur(8px); border-radius:14px;
+  box-shadow:0 14px 44px rgba(0,0,0,.5); padding:14px 16px 16px }
+.lessons[hidden]{ display:none }
+.lessons-head{ display:flex; align-items:center; justify-content:space-between;
+  gap:14px; margin-bottom:10px }
+.lessons-head b{ font-family:'Monocraft',ui-monospace,monospace; font-synthesis:none;
+  font-size:.9rem; color:var(--cream) }
+.lessons-head button{ font-family:'Barlow Condensed',sans-serif; font-weight:700;
+  letter-spacing:.1em; text-transform:uppercase; font-size:.66rem; cursor:pointer;
+  padding:6px 12px; border-radius:999px; border:1px solid rgba(255,244,214,.3);
+  background:transparent; color:var(--cream) }
+.lessons ol{ list-style:none; margin:0; padding:0; display:grid; gap:7px }
+.lessons li{ display:flex; align-items:center; gap:11px;
+  background:rgba(255,244,214,.05); border:1px solid rgba(255,244,214,.13);
+  border-left:4px solid var(--c); border-radius:10px; padding:8px 10px }
+.lessons li b{ flex:none; width:24px; height:24px; border-radius:50%;
+  background:var(--c); color:#fff; display:grid; place-items:center;
+  font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:.78rem }
+.lessons .who{ flex:1 1 auto; min-width:0 }
+.lessons .who i{ display:block; font-style:normal; color:var(--cream);
+  font-family:'Monocraft',ui-monospace,monospace; font-synthesis:none;
+  font-size:.8rem; line-height:1.25 }
+.lessons .who em{ display:block; font-style:normal; color:#93aca1;
+  font-family:'Barlow Condensed',sans-serif; font-weight:700; letter-spacing:.09em;
+  text-transform:uppercase; font-size:.58rem; margin-top:2px }
+.lessons .parts{ flex:none; display:flex; gap:6px }
+.lessons .parts a{ font-family:'Barlow Condensed',sans-serif; font-weight:700;
+  letter-spacing:.08em; text-transform:uppercase; font-size:.64rem;
+  text-decoration:none; color:var(--cream); padding:5px 9px; border-radius:7px;
+  border:1px solid rgba(255,244,214,.26); white-space:nowrap }
+.lessons .parts a:hover, .lessons .parts a:focus-visible{
+  background:var(--c); border-color:var(--c); color:#08201f }
+@media (max-width:820px){
+  .lessons{ right:14px; left:14px; width:auto; bottom:88px }
+}
+/* The station list carries both parts too - the row opens Part 1, the chip
+   beside it opens Part 2. */
+@media (max-width:820px){
+  .row-wrap{ display:flex; align-items:stretch; gap:8px }
+  .row-wrap .row{ flex:1 1 auto }
+  .row-2{ flex:none; display:grid; place-items:center; text-decoration:none;
+    padding:0 14px; border-radius:10px; color:var(--cream);
+    border:1px solid rgba(255,244,214,.18); background:rgba(255,244,214,.05);
+    font-family:'Barlow Condensed',sans-serif; font-weight:700;
+    letter-spacing:.08em; text-transform:uppercase; font-size:.66rem }
+}
+
 /* The map keeps its 16:9 so the dots stay on the painted trail, which means
    on a portrait phone it is a band with a lot of dark below it. That space
    becomes the same eight stations as a list - the map for people who can
@@ -553,10 +611,12 @@ h1{margin:0;font-family:'Monocraft',ui-monospace,monospace;font-synthesis:none;
 </main>
   <div class="tourbar">
     <button id="tour-toggle" type="button">Play the day</button>
-    <span class="hint"><span class="hint-mouse">Hover a stop to visit it &middot; click to open its lesson</span><span class="hint-touch">Tap a stop to visit it &middot; tap again to open its lesson</span></span>
+    <button id="lessons-toggle" type="button">All 16 lessons</button>
+    <span class="hint"><span class="hint-mouse">Hover a stop to visit it &middot; click to open Part 1</span><span class="hint-touch">Tap a stop to visit it &middot; tap again to open Part 1</span></span>
   </div>
+<div class="lessons" id="lessons" hidden><div class="lessons-head"><b>Every camp, both parts</b><button type="button" id="lessons-close" aria-label="Close">Close</button></div><ol><li style="--c:#7A93B5"><b>1</b><span class="who"><i>Present Simple</i><em>Base camp at dawn &middot; A1 → A2</em></span><span class="parts"><a href="blockcamp-present-simple.html">Part 1</a><a href="blockcamp-present-simple-2.html">Part 2</a></span></li><li style="--c:#E66085"><b>2</b><span class="who"><i>Present Continuous</i><em>The working clearing &middot; A1 → A2</em></span><span class="parts"><a href="blockcamp-present-continuous.html">Part 1</a><a href="blockcamp-present-continuous-2.html">Part 2</a></span></li><li style="--c:#B08968"><b>3</b><span class="who"><i>Past Simple</i><em>The old campsite &middot; A1 → A2</em></span><span class="parts"><a href="blockcamp-past-simple.html">Part 1</a><a href="blockcamp-past-simple-2.html">Part 2</a></span></li><li style="--c:#F1D779"><b>4</b><span class="who"><i>Past Continuous</i><em>Afternoon fire &middot; A1 → A2</em></span><span class="parts"><a href="blockcamp-past-continuous.html">Part 1</a><a href="blockcamp-past-continuous-2.html">Part 2</a></span></li><li style="--c:#70A43A"><b>5</b><span class="who"><i>Going To</i><em>The trail sign &middot; A1 → A2</em></span><span class="parts"><a href="blockcamp-going-to.html">Part 1</a><a href="blockcamp-going-to-2.html">Part 2</a></span></li><li style="--c:#F0723F"><b>6</b><span class="who"><i>Future Simple</i><em>Sunset ridge &middot; A2 → B1</em></span><span class="parts"><a href="blockcamp-future-simple.html">Part 1</a><a href="blockcamp-future-simple-2.html">Part 2</a></span></li><li style="--c:#2E7D65"><b>7</b><span class="who"><i>Present Perfect</i><em>Twilight summit marker &middot; A2 → B1</em></span><span class="parts"><a href="blockcamp-present-perfect.html">Part 1</a><a href="blockcamp-present-perfect-2.html">Part 2</a></span></li><li style="--c:#46B0AB"><b>8</b><span class="who"><i>Present Perfect Cont.</i><em>The night watch &middot; B1</em></span><span class="parts"><a href="blockcamp-present-perfect-continuous.html">Part 1</a><a href="blockcamp-present-perfect-continuous-2.html">Part 2</a></span></li></ol></div>
 </div>
-<nav class="stations"><a class="row" href="blockcamp-present-simple.html" style="--c:#7A93B5"><b>1</b><span><i>Present Simple</i><em>Base camp at dawn &middot; A1 → A2</em></span></a><a class="row" href="blockcamp-present-continuous.html" style="--c:#E66085"><b>2</b><span><i>Present Continuous</i><em>The working clearing &middot; A1 → A2</em></span></a><a class="row" href="blockcamp-past-simple.html" style="--c:#B08968"><b>3</b><span><i>Past Simple</i><em>The old campsite &middot; A1 → A2</em></span></a><a class="row" href="blockcamp-past-continuous.html" style="--c:#F1D779"><b>4</b><span><i>Past Continuous</i><em>Afternoon fire &middot; A1 → A2</em></span></a><a class="row" href="blockcamp-going-to.html" style="--c:#70A43A"><b>5</b><span><i>Going To</i><em>The trail sign &middot; A1 → A2</em></span></a><a class="row" href="blockcamp-future-simple.html" style="--c:#F0723F"><b>6</b><span><i>Future Simple</i><em>Sunset ridge &middot; A2 → B1</em></span></a><a class="row" href="blockcamp-present-perfect.html" style="--c:#2E7D65"><b>7</b><span><i>Present Perfect</i><em>Twilight summit marker &middot; A2 → B1</em></span></a><a class="row" href="blockcamp-present-perfect-continuous.html" style="--c:#46B0AB"><b>8</b><span><i>Present Perfect Cont.</i><em>The night watch &middot; B1</em></span></a></nav>
+<nav class="stations"><div class="row-wrap" style="--c:#7A93B5"><a class="row" href="blockcamp-present-simple.html" style="--c:#7A93B5"><b>1</b><span><i>Present Simple</i><em>Base camp at dawn &middot; A1 → A2</em></span></a><a class="row-2" href="blockcamp-present-simple-2.html">Part&nbsp;2</a></div><div class="row-wrap" style="--c:#E66085"><a class="row" href="blockcamp-present-continuous.html" style="--c:#E66085"><b>2</b><span><i>Present Continuous</i><em>The working clearing &middot; A1 → A2</em></span></a><a class="row-2" href="blockcamp-present-continuous-2.html">Part&nbsp;2</a></div><div class="row-wrap" style="--c:#B08968"><a class="row" href="blockcamp-past-simple.html" style="--c:#B08968"><b>3</b><span><i>Past Simple</i><em>The old campsite &middot; A1 → A2</em></span></a><a class="row-2" href="blockcamp-past-simple-2.html">Part&nbsp;2</a></div><div class="row-wrap" style="--c:#F1D779"><a class="row" href="blockcamp-past-continuous.html" style="--c:#F1D779"><b>4</b><span><i>Past Continuous</i><em>Afternoon fire &middot; A1 → A2</em></span></a><a class="row-2" href="blockcamp-past-continuous-2.html">Part&nbsp;2</a></div><div class="row-wrap" style="--c:#70A43A"><a class="row" href="blockcamp-going-to.html" style="--c:#70A43A"><b>5</b><span><i>Going To</i><em>The trail sign &middot; A1 → A2</em></span></a><a class="row-2" href="blockcamp-going-to-2.html">Part&nbsp;2</a></div><div class="row-wrap" style="--c:#F0723F"><a class="row" href="blockcamp-future-simple.html" style="--c:#F0723F"><b>6</b><span><i>Future Simple</i><em>Sunset ridge &middot; A2 → B1</em></span></a><a class="row-2" href="blockcamp-future-simple-2.html">Part&nbsp;2</a></div><div class="row-wrap" style="--c:#2E7D65"><a class="row" href="blockcamp-present-perfect.html" style="--c:#2E7D65"><b>7</b><span><i>Present Perfect</i><em>Twilight summit marker &middot; A2 → B1</em></span></a><a class="row-2" href="blockcamp-present-perfect-2.html">Part&nbsp;2</a></div><div class="row-wrap" style="--c:#46B0AB"><a class="row" href="blockcamp-present-perfect-continuous.html" style="--c:#46B0AB"><b>8</b><span><i>Present Perfect Cont.</i><em>The night watch &middot; B1</em></span></a><a class="row-2" href="blockcamp-present-perfect-continuous-2.html">Part&nbsp;2</a></div></nav>
 <script>
 (() => {
   const stage = document.querySelector('.stage');
@@ -632,6 +692,21 @@ h1{margin:0;font-family:'Monocraft',ui-monospace,monospace;font-synthesis:none;
   });
 
   btn.addEventListener('click', () => playing ? stop() : play());
+
+  // The lesson panel. It pauses the tour when it opens - a list you are
+  // reading while the picture changes behind it is two things at once.
+  const panel = document.querySelector('#lessons');
+  const open  = document.querySelector('#lessons-toggle');
+  const close = document.querySelector('#lessons-close');
+  const setPanel = on => {
+    panel.hidden = !on;
+    open.textContent = on ? 'Hide lessons' : 'All 16 lessons';
+    if (on) { stop(); show('hero'); }
+  };
+  open.addEventListener('click', () => setPanel(panel.hidden));
+  close.addEventListener('click', () => { setPanel(false); open.focus(); });
+  addEventListener('keydown', e => { if (e.key === 'Escape' && !panel.hidden) {
+    setPanel(false); open.focus(); } });
 
   // On touch, a tap would navigate before you had seen the place you were
   // going to. First tap previews the scene, second tap on the same stop

@@ -1131,6 +1131,57 @@ em.t-present, b.t-present { color: var(--t-present-simple) !important;
 .slide[data-side="left"]  .slide-head { margin-right: auto; }
 .slide[data-side="right"] .slide-body,
 .slide[data-side="right"] .slide-head { margin-left: auto; }
+
+/* ── A THIRD PLACE TO STAND, AND A NUDGE ─────────────────────────────
+   Left and right were the only two answers the format had, and several of
+   Innes's notes are not asking for either of them. "Move to middle" (Past
+   Continuous 20, Going To 2 slide 8) has no left/right answer at all. And
+   "move left onto the wall" (Present Simple 14) or "move right" (Present
+   Continuous 11) is a shift WITHIN a side: the block is on the correct half
+   and straddling a window or a corner at its edge - flipping it lands it on
+   a character, which is worse. Innes, on Past Continuous 2 slide 9:
+   "characters beats buildings".
+
+   So: a centre, and a nudge. The nudge translates the block without changing
+   the layout, so it can never reflow a slide and lose a line - but it CAN
+   push a block past the canvas edge, and the overflow gate measures that. */
+.slide[data-side="center"] .slide-body,
+.slide[data-side="center"] .slide-head { margin-left: auto; margin-right: auto; }
+/* Centring the COLUMN is not centring the text. On Past Continuous 20 the
+   head and body both measured dead centre while the word chips and the Check
+   button sat at 0.31 and 0.26 of the frame, because everything inside a
+   side-pinned column is aligned to the pinned edge and "centre" had no edge
+   of its own. Innes: "past cont 20 is not central yet!" - he was looking at
+   the ink, which is the only thing anybody looks at. */
+.slide[data-side="center"] .slide-head { justify-content: center; }
+.slide[data-side="center"] .slide-body,
+.slide[data-side="center"] .slide-head { align-items: center; }
+.slide[data-side="center"] .cols,
+.slide[data-side="center"] .para,
+.slide[data-side="center"] .match-col { justify-items: center; }
+.slide[data-side="center"] .order-bank,
+.slide[data-side="center"] .order-slot,
+.slide[data-side="center"] .exlist,
+.slide[data-side="center"] .sort-bank { justify-content: center; }
+.slide[data-side="center"] .slide-body > .para-note,
+.slide[data-side="center"] .order-hint { text-align: center !important; }
+/* ...but the words INSIDE a box still read left to right off a common edge.
+   Centring those would be a different defect. */
+.slide[data-side="center"] .card, .slide[data-side="center"] .para-block,
+.slide[data-side="center"] .q-stem, .slide[data-side="center"] .opt,
+.slide[data-side="center"] .freq { text-align: left; }
+
+.slide { --nudge-x: 104px; --nudge-y: 60px; }
+.slide[data-nudge] .slide-head,
+.slide[data-nudge] .slide-body { translate: var(--nx, 0) var(--ny, 0); }
+.slide[data-nudge~="left"]       { --nx: calc(-1 * var(--nudge-x)); }
+.slide[data-nudge~="right"]      { --nx: var(--nudge-x); }
+.slide[data-nudge~="left-far"]   { --nx: calc(-2 * var(--nudge-x)); }
+.slide[data-nudge~="right-far"]  { --nx: calc(2 * var(--nudge-x)); }
+.slide[data-nudge~="up"]         { --ny: calc(-1 * var(--nudge-y)); }
+.slide[data-nudge~="down"]       { --ny: var(--nudge-y); }
+.slide[data-nudge~="up-far"]     { --ny: calc(-2 * var(--nudge-y)); }
+.slide[data-nudge~="down-far"]   { --ny: calc(2 * var(--nudge-y)); }
 /* With every box hugging its text, alignment inside the column is what
    decides where it actually lands. Left-aligned inside a RIGHT column puts a
    narrow card in the middle of the picture - which is what Innes saw on
@@ -1167,10 +1218,17 @@ em.t-present, b.t-present { color: var(--t-present-simple) !important;
    different right-hand edges read as three unrelated things. The body is the
    grid; every box in it fills one column, so the column is as wide as the
    widest box and they all match it. */
-.slide[data-side] .slide-body:has(> .para, > .cols) {
+/* OPT-IN. This rule was written for ONE slide of Future Simple 1b and left in
+   the shared shell, where it widened every box in all sixteen decks by ~188px.
+   That single regression is the source of "boxes too long" across the line.
+   A deck now has to ask for it: <div class="stage" data-equal="1">. */
+.stage[data-equal] .slide[data-side] .slide-body:has(> .para, > .cols),
+.slide[data-side][data-equal] .slide-body:has(> .para, > .cols) {
   display: grid; grid-template-columns: fit-content(100%); align-content: start; }
-.slide[data-side="right"] .slide-body:has(> .para, > .cols) { justify-content: end; }
-.slide[data-side] .slide-body:has(> .para, > .cols) > * { width: 100%; }
+.stage[data-equal] .slide[data-side="right"] .slide-body:has(> .para, > .cols),
+.slide[data-side="right"][data-equal] .slide-body:has(> .para, > .cols) { justify-content: end; }
+.stage[data-equal] .slide[data-side] .slide-body:has(> .para, > .cols) > *,
+.slide[data-side][data-equal] .slide-body:has(> .para, > .cols) > * { width: 100%; }
 /* The pill and the dictum fill the column too, so the group has one right
    edge instead of three. They are NOT allowed to widen it: `fit-content(100%)`
    caps the column at the body, and every box then matches the widest one that
@@ -1220,7 +1278,18 @@ em.t-present, b.t-present { color: var(--t-present-simple) !important;
    canvas width its rows became long thin bars across the artwork. */
 .slide[data-side][data-type="match"] .slide-body,
 .slide[data-side][data-type="match"] .slide-head { width: 68%; }
-.slide[data-type="match"] .match-grid { grid-template-columns: 1fr 1.2fr; }
+/* The two columns are sized by their CONTENT, not by a share of the body.
+   As `1fr 1.2fr` inside a 68% column the second track was far wider than the
+   phrases in it, and with the items pushed to the track's outer edge the pair
+   read as two lists on opposite sides of the slide with a hole between them -
+   "I have lived here .................. since April". Innes asked for the
+   second column to come left; sizing the tracks to the phrases does it, and
+   it narrows the whole block, which is the same complaint he made about match
+   rows being "long thin bars across the artwork". */
+.slide[data-type="match"] .match-grid { grid-template-columns: max-content max-content;
+  justify-content: start; }
+.slide[data-side="right"][data-type="match"] .match-grid { justify-content: end; }
+.slide[data-side="center"][data-type="match"] .match-grid { justify-content: center; }
 .slide[data-side][data-type="gap"] .slide-body,
 .slide[data-side][data-type="order"] .slide-body { width: 62%; }
 .slide[data-side][data-type="results"] .slide-body,
@@ -1334,8 +1403,60 @@ em.t-present, b.t-present { color: var(--t-present-simple) !important;
 .card, .para-block, .freq, .order-hint, .gap-row {
   width: fit-content; max-width: 100%;
 }
-.opt { width: fit-content; min-width: 200px; max-width: 100%; }
-.opts { align-items: flex-start; }
+/* ONE WIDTH FOR THE WHOLE ANSWER GROUP.
+   `width: fit-content` sized every option against its own text, so four
+   answers of different lengths gave four different edges - Innes on Present
+   Continuous 13: "answers right-to-left". And `min-width: 200px` held a box
+   holding the word "Do" at 200px - the same slide's other complaint, and the
+   "black boxes narrower" note on Present Simple 15.
+   The group is a grid of ONE column. The column is as wide as the widest
+   answer and no wider, every option fills it, so the answers share both
+   edges and the group hugs its own longest line. The floor is a touch
+   target, not a look: 118px is comfortably past the 44px minimum with the
+   letter chip and padding included. */
+.opts { display: grid; justify-content: start;
+  grid-template-columns: minmax(min(118px, 100%), max-content); }
+.slide[data-side="right"] .opts { justify-content: end; }
+.opts.two-up { grid-template-columns: repeat(2, minmax(min(118px, 100%), max-content)); }
+.opt { width: 100%; min-width: 0; max-width: 100%; }
+/* A drop target is NOT sized like a label. Innes on Past Continuous 15,
+   "boxes too long" - but shrink-to-fit is the wrong correction: a bin sized
+   to the word WAS is too small to drop "the villagers" into, and the first
+   chip that lands in it makes it jump. So the pair is a fixed pair of
+   targets, wide enough for the longest chip in the line and no wider, equal
+   to each other because a target of a different size to its neighbour is a
+   real defect. `assert_bins_hold_their_chips` in the checker measures the
+   widest chip against this number and fails the build if it grows past it. */
+.slide[data-side] .sort-bins { width: fit-content;
+  display: grid; grid-template-columns: repeat(2, 210px); gap: 14px; }
+.slide[data-side] .sort-bin { width: 210px; }
+/* The pair of targets follows the slide's own side. It did not: on Present
+   Perfect 2 slide 15 the bins sat at the left of a right-pinned slide, right
+   on top of four characters, while the chips above them ran to the right
+   edge - Innes: "move boxes to right". Nothing about a drop target wants it
+   left-aligned inside a right-hand column. */
+.slide[data-side="right"] .sort-bins { margin-left: auto; margin-right: 0; }
+.slide[data-side="left"]  .sort-bins { margin-right: auto; margin-left: 0; }
+.slide[data-side="center"] .sort-bins { margin-left: auto; margin-right: auto; }
+/* An example list is a COLUMN of examples, not a wrapping row. As a wrapping
+   flex row its max-content width was every example laid end to end, and a
+   card sized by `fit-content` therefore ran to the full width of the column
+   no matter how short its longest line was - which is what Innes saw as
+   "text at the right end of the box" and "make the boxes narrower". One
+   example per row makes the widest example the card's natural width, so the
+   card hugs what it holds. Checked for height: no slide in the line paints
+   outside the canvas after this change. */
+.slide[data-side] .exlist { display: grid; grid-auto-flow: row;
+  justify-items: start; }
+/* THREE slides in the line cannot afford the narrower card the change gives
+   them: with the examples stacked they wrap to another row and go past the
+   bottom of the canvas - Present Simple 8 by 62px, Present Continuous 7 by
+   27px, Future Simple 8 by 5px. Nothing scrolls in this format, so those
+   three keep the full-width column by asking for it on the slide itself:
+   <section class="slide" ...>. The trade-off is written on the
+   slide rather than hidden in a stylesheet, and the width checker still
+   reports those cards - a known cost, not a silent one. */
+.slide[data-side][data-equal] .exlist { display: flex; flex-wrap: wrap; }
 /* A gap-fill row hugs like everything else. The earlier `width: auto` was an
    over-correction: fit-content already refuses to shrink below the sentence's
    own natural width, so the sentence never wraps around its input boxes - it
@@ -1703,7 +1824,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="teach" data-bg="present-perfect-continuous-time-signals/bg21.jpg" data-side="left" data-vpos="top">
+    <section class="slide" data-type="teach" data-bg="present-perfect-continuous-time-signals/bg21.jpg" data-side="right" data-vpos="top">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="fsEyebrow">The pair</div>
         <h2 class="slide-title" data-i18n="fsTitle">How long?</h2>
@@ -2044,7 +2165,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="results" data-bg="present-perfect-continuous-time-signals/bg41.jpg" data-side="left" data-vpos="top">
+    <section class="slide" data-type="results" data-bg="present-perfect-continuous-time-signals/bg41.jpg" data-side="right" data-vpos="top">
       <div class="slide-body" style="align-items:center;text-align:center">
         <div class="score-big"><span id="scoreVal">0</span><span class="dim" style="font-size:34px">/<span id="scoreMax">0</span></span></div>
         <p class="prose" style="margin-top:18px" id="scoreMsg"></p>
