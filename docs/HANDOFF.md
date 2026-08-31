@@ -120,15 +120,70 @@ stable across a rebuild.
   teaching the wrong syllabus. All three are marked for deletion and were left
   in place this session on Innes's instruction.
 
-### `check-lesson.js` KEYS is a FALSE POSITIVE on this family
+### `check-lesson.js` KEYS is NOT a false positive — it reads the source on purpose
 
-It reports "the key is option A in 6 of 6 questions (100%)" because it reads the
-static source order. The Block Camp engine Fisher-Yates shuffles options on
-first view. Measured over six independent loads, the key landed at indices
-`031003 / 011231 / 221312 / 032220 / 133313 / 020300`. **Do not "deal the keys
-across the letters in the source"** — the shuffle overwrites source order, so it
-would achieve nothing. Teaching the gate to detect a runtime shuffle would stop
-this costing a session's attention every time.
+An earlier pass of this file called it one, on the grounds that the engine
+Fisher-Yates shuffles on first view (measured: the key landed at
+`031003 / 011231 / 221312 / …` over six loads). **That reasoning was wrong.**
+The gate's own comment says why it reads the source:
+
+> Where is the key in the SOURCE? By the time the page is measurable the engine
+> has already reordered the options, so this is invisible in the browser — which
+> is why it survived until a student noticed. **It still leaks through print and
+> PDF export.**
+
+There is no runtime shuffle in a printed deck or a PDF export, so a source that
+parks the key first puts it at A on every question on paper. `slidekit.mc()` did
+exactly that; it now deals the key by question number, `(n - 1) % len(options)`,
+which is deterministic so a rebuild reproduces. Both descent decks read
+`[0, 1, 2, 3, 0, 1]` and pass.
+
+**The lesson is more general than the gate.** A measurement that only looks at
+the rendered page cannot see a defect that lives in the artefact — print, PDF,
+crawler, or reader mode. Ask what the file says, not only what the browser
+shows.
+
+### All sixteen Block Camp I decks share one unanswerable slide
+
+Innes, on the live Past Simple deck: *"All answers should be possible and there
+is nothing to say otherwise."* Gap slide 2, "Choose a time signal", was broken
+three ways at once, and **the same slide with the same three faults is in all
+sixteen decks — 48 unanswerable scored items, all live**:
+
+1. **Nothing in the sentence selects a signal.** "We finished the roof ___",
+   "The village bell rang ___", "Steve found the diamonds ___" — every bank chip
+   fits every gap. Pure guesses, and correct English marked wrong.
+2. **The bank has 4 or 5 chips against 3 gaps**, under a hint reading "Each is
+   used once". One chip must go unused, so elimination misleads as well.
+3. **The explanations describe the phrase, not the choice** — recurring defect
+   pattern 4, further down this file.
+
+Measured across the line rather than assumed: every word-bank gap slide in
+`blockcamp-*.html` has zero `class="dim"` determiners in any stem.
+
+`blockcamp-past-simple.html` is fixed and is the worked example. The fix uses
+the deck's **own** idiom — gap slide 1 already determines its answers with a
+bracketed `(live)` / `(stop)` / `(study)`:
+
+- the hint carries the anchor the exercise counts back from, and admits the
+  leftover chip: *"Today is Friday. One signal per gap — one is left over."*
+- each stem names its day or its time of day: `(on Thursday)`,
+  `(after dark, while the village slept)`, `(on Wednesday)`
+- each explanation does the arithmetic: *"Wednesday is two days before Friday…"*
+- en, de and es all updated; the stems stay English, as gap 1's already do
+
+**The other fifteen still need it**, and they need their own sentences — the
+signals differ per tense (Future Simple and the Present Perfects carry five
+chips, not four). It is content authoring, not a regex.
+
+### None of the sixteen are in the catalogue
+
+`tools/lessons.json` has **zero** Block Camp rows, so `seo.py` skips all sixteen:
+no description, no og tags, no JSON-LD, and **not one of them is in
+`sitemap.xml`**. They are in `library.html`'s `LESSON_IMAGES`, so they show and
+open, but nothing else knows they exist. This is the backlog item named in
+`claude/blocksavvy-unit-status.md` and it is still open. The two descent decks
+are in the same position.
 
 ### `seo.py` reverts hand-edits to generated HTML — the pro flag is data
 
