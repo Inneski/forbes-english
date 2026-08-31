@@ -9,9 +9,10 @@ sources: cowork
 ## The short version
 
 Sixteen decks (eight tenses x two parts), a hub (`block-camp.html`) and a
-one-screen route map (`block-camp-map.html`) are **live**. A large corrective
-pass is **done locally and NOT published**. Nothing goes up until Innes has
-looked at the proof sheet.
+one-screen route map (`block-camp-map.html`) are **live**. The large corrective
+pass **shipped** in `fb2e25a` - this file used to say it was pending, and that
+was stale. Verified: `data-equal` is opt-in (8 uses), the `min-width:200px`
+answer-box floor is gone, `.sort-bins` is fixed-width.
 
 ## What was lost, and why it does not matter now
 
@@ -41,7 +42,7 @@ Simple 1 and 2 ask for it. Three other slides ask for it because they cannot
 afford the height without it: Present Simple 8, Present Continuous 7,
 Future Simple 8.
 
-## Fixed locally, not yet published
+## Fixed and published in `fb2e25a`
 
 | | |
 |---|---|
@@ -57,11 +58,35 @@ the `Block Camp Proof Sheet` artifact.
 
 ## The checker
 
-`claude/blockcamp-visual-checker.md` holds the four scripts in full. It renders
-each slide, measures where the ink actually lands, builds a local-detail map of
-the plate, and scores all six placements the deck can express. It independently
-found every wrong-side slide Innes had found by eye: Present Simple 12,
-Past Simple 2 / 8 / 17 / 18, Past Continuous 6 / 20.
+`lesson-template/checker/` holds all seven scripts, in the repo - the project
+doc is a transcription of them, not a design. The checker renders each slide,
+measures where the ink actually lands, builds a local-detail map of the plate,
+and scores all six placements the deck can express.
+
+**It did NOT find every wrong-side slide Innes named, and this file used to say
+it did.** It found Present Simple 12, Past Simple 2 / 8 / 17 / 18, Past
+Continuous 6 / 20. It **missed Past Simple 7, 16 and 19**, which scored x1.12,
+x1.02 and x1.11 - all under the x1.30 threshold - so `apply-placement` left them
+and they sat exactly where he had objected to them. `check-placement` reported
+**zero** placement findings on that deck, before and after. The tooling agreed
+with itself while three of his instructions fell through the gap.
+
+They are now pinned (7 -> right/top, 16 -> right/top, 19 -> right/bottom) and
+applied. On 7 and 19 the measurement had actually picked the same side and was
+merely too timid to act; on 16 it genuinely prefers left, and his call outranks
+it - the detail map cannot see that the sunset road it likes is the subject of
+the picture.
+
+### `pins.json`: an absent entry means NEVER REVIEWED
+
+Not "reviewed and clean". Five decks have no entry: `past-simple-2`,
+`present-simple-2`, `present-continuous-2`, `future-simple-2` and - until now -
+`past-simple`. **Do not let `apply-placement.py` run unsupervised on those.**
+
+The rule that lost the three slides was: pin only where Innes OVERRULED the
+measurement. That is the wrong rule, because it records the disagreement and
+not the instruction. The rule now is: **pin every slide he names, whichever way
+the measurement falls.**
 
 ## Still open
 
@@ -71,13 +96,32 @@ Past Simple 2 / 8 / 17 / 18, Past Continuous 6 / 20.
 - Four slides sit just under the placement threshold (x1.31-x1.36) and were
   left alone: Present Perfect 6, Past Continuous 6, Past Simple 2 p14,
   Present Perfect Continuous 2 p10.
-- Nudges the six-slot model cannot express. Innes on Present Simple 14 ("move
-  left onto the wall") and Present Continuous 9 ("move right") is asking for a
-  shift WITHIN a side, to sit on flat wall rather than straddle a window. The
-  deck has no horizontal-offset knob. Adding one is the next real capability.
+- ~~Nudges the six-slot model cannot express~~ - **built and shipped.**
+  `data-nudge="fine"` with `--nx` / `--ny` offsets, solved per slide by
+  `solve-nudge.py` and written by `apply-pins.py`. Live on four decks, e.g.
+  Present Simple 14 at -152px and Present Continuous 11 at +133px. This entry
+  described it as "the next real capability" long after it existed.
 - Backlog: `tools/lessons.json` and `seo.py` not refreshed for the sixteen;
   eight guides missing from `library.html`'s static SEO index; `docs/HANDOFF.md`
   carries superseded wording.
+
+## Nobody has ever assessed whether these decks can be ANSWERED
+
+Every pass over this line has measured **geometry**: where ink lands, box
+widths, overflow, placement. Innes's own defect lists were layout too. The
+checker scores pixels and has no notion of whether a question is answerable.
+
+The cost surfaced on the live Past Simple deck, reported by Innes: gap slide 2,
+"Choose a time signal", cannot be answered. Nothing in any sentence selects a
+signal, the bank carries 4-5 chips against 3 gaps, and the hint says "Each is
+used once", which is false. **The identical slide with the identical three
+faults is in all sixteen decks - 48 unanswerable scored items.**
+`blockcamp-past-simple.html` is fixed and is the worked example; see
+`docs/HANDOFF.md`.
+
+**Assume this is not the only one.** Answerability has never been in scope for
+any deck in this line, so the time-signal slide is an unexamined defect rather
+than a design decision - confirmed, not assumed.
 
 ## Two rules that came out of this
 
