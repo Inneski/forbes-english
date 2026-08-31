@@ -81,10 +81,17 @@ def mc(n, of, bg, side, vpos, title, stem, correct, wrong, es='', de='', why='')
     .explain`). So a right answer is explained by `why` and a wrong one by its
     own line, which is the behaviour the engine was always written for.
     """
-    opts = ['        <button class="opt" data-correct>%s</button>' % correct]
-    for text, w in wrong:
-        opts.append('        <button class="opt" data-explain="%s">%s</button>'
-                    % (w.replace('"', '&quot;'), text))
+    # THE KEY IS DEALT ACROSS THE LETTERS IN THE SOURCE, NOT PARKED AT A.
+    # The engine Fisher-Yates shuffles on first view, so on screen this is
+    # invisible - which is exactly why it survived. It is NOT invisible in
+    # print or a PDF export, where there is no runtime shuffle and the key sits
+    # at A on every question. check-lesson.js's KEYS gate reads the source for
+    # this reason. Position rotates with the question number, so the deal is
+    # deterministic and a rebuild is reproducible.
+    opts = ['        <button class="opt" data-explain="%s">%s</button>'
+            % (w.replace('"', '&quot;'), text) for text, w in wrong]
+    opts.insert((n - 1) % (len(wrong) + 1),
+                '        <button class="opt" data-correct>%s</button>' % correct)
     fb = ('        <p class="feedback" data-explain="%s"></p>' % why.replace('"', '&quot;')
           if why else '        <p class="feedback"></p>')
     return sec('mc', bg, side, vpos,
