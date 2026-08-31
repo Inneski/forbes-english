@@ -99,6 +99,10 @@ PAGES = {
                    'The IELTS Speaking route — how long an answer should be, '
                    'how to extend one without waffling, and how to fill the '
                    'two minutes of the long turn.', 0.9, '/ielts-speaking/hero.jpg'),
+    'level-checker.html': ('Level Checker',
+                           'A free adaptive placement test for English '
+                           'tenses. Six questions a level, A1 to C1, and it '
+                           'tells you which lesson to start on.', 0.8),
     'ielts-question-bank.html': ('IELTS Academic Writing Task 2: Question Bank & Ideas',
                                  f'{_BANK_N} IELTS Academic Writing Task 2 questions '
                                  f'across {_BANK_T} topics, sorted by essay '
@@ -527,7 +531,10 @@ def llms_txt(rows, index, images):
             '- [Lesson library](%s/library.html): every lesson, filterable by '
             'level and topic.' % SITE,
             '- [Plans](%s/pricing.html): what a subscription costs and what '
-            'stays free.' % SITE, '']
+            'stays free.' % SITE,
+            '- [Level Checker](%s/level-checker.html): a free adaptive '
+            'placement test for the tenses, A1 to C1, that names the lesson '
+            'to start on.' % SITE, '']
     return '\n'.join(out)
 
 
