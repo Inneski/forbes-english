@@ -231,12 +231,27 @@ STATION = dict(
     slides=SLIDES,
     # The chassis brought camp 1's scoring messages with it - "go back to the
     # paradigm", about the third-person -s, on a deck that does not teach it.
-    # Every station overrides its own.
-    messages=dict(
+    # Every station overrides its own, IN EVERY LANGUAGE THE CHASSIS FILLS:
+    # de and es are not decoration here, they are the same wrong advice in
+    # another language for anyone who changes the picker.
+    messages={
+      'en': dict(
         resLow='Go back to the swap. The object of the active is the subject of the passive.',
         resMid='Look again at &lsquo;is&rsquo; and &lsquo;are&rsquo;. Count the thing in front, not the doer.',
         resStrong='Strong. Check the ones where you had to choose the third form.',
         resPerfect='Full marks. Now say how something is done, and name nobody.',
-        resNext='Recognising it is half of it. Now produce it &rarr;',
-    ),
+        resNext='Recognising it is half of it. Now produce it &rarr;'),
+      'de': dict(
+        resLow='Geh zur&uuml;ck zum Tausch. Das Objekt des Aktivsatzes ist das Subjekt des Passivsatzes.',
+        resMid='Sieh dir &lsquo;is&rsquo; und &lsquo;are&rsquo; noch einmal an. Z&auml;hle das Ding davor, nicht den T&auml;ter.',
+        resStrong='Stark. Sieh dir die an, bei denen du die dritte Form w&auml;hlen musstest.',
+        resPerfect='Volle Punktzahl. Sag jetzt, wie etwas gemacht wird, ohne jemanden zu nennen.',
+        resNext='Erkennen ist die halbe Miete. Jetzt anwenden &rarr;'),
+      'es': dict(
+        resLow='Vuelve al cambio. El objeto de la activa es el sujeto de la pasiva.',
+        resMid='Mira otra vez &lsquo;is&rsquo; y &lsquo;are&rsquo;. Cuenta la cosa de delante, no quien la hace.',
+        resStrong='Muy bien. Revisa las que te obligaron a elegir la tercera forma.',
+        resPerfect='Puntuaci&oacute;n perfecta. Ahora di c&oacute;mo se hace algo, sin nombrar a nadie.',
+        resNext='Reconocerlo es la mitad. Ahora prod&uacute;celo &rarr;'),
+    },
 )

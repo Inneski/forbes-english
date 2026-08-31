@@ -93,28 +93,32 @@ mc(1, 6, B % 'bg05.jpg', 'right', 'top', 'Choose the passive',
    [('has built', 'That is active &mdash; it says the bridge did the building.'),
     ('has been build', 'The passive needs the third form: built.'),
     ('have been built', 'One bridge, so the auxiliary is &lsquo;has&rsquo;.')],
-   'El puente ______ ya.', 'Die Br&uuml;cke ______ schon.'),
+   'El puente ______ ya.', 'Die Br&uuml;cke ______ schon.',
+   why='One bridge, so &lsquo;has&rsquo; &mdash; then &lsquo;been&rsquo;, then the third form, &lsquo;built&rsquo;.'),
 
 mc(2, 6, B % 'bg12.jpg', 'left', 'top', 'Choose the passive',
    'Three chests ______ this week.', 'have been opened',
    [('has been opened', 'Three chests is plural, so &lsquo;have&rsquo;.'),
     ('have been open', '&lsquo;open&rsquo; is the first form. The third is &lsquo;opened&rsquo;.'),
     ('have opened', 'Active &mdash; chests cannot open themselves.')],
-   'Tres cofres ______ esta semana.', 'Drei Kisten ______ diese Woche.'),
+   'Tres cofres ______ esta semana.', 'Drei Kisten ______ diese Woche.',
+   why='Three chests is plural, so &lsquo;have been&rsquo;, and the third form is &lsquo;opened&rsquo;.'),
 
 mc(3, 6, B % 'bg14.jpg', 'right', 'top', 'Say no',
    'The wall ______ yet.', "hasn't been repaired",
    [("hasn't repaired", 'Active. The wall is not doing the repairing.'),
     ("haven't been repaired", 'One wall, so &lsquo;has&rsquo;.'),
     ("hasn't been repair", 'Third form: repaired.')],
-   'El muro ______ todav&iacute;a.', 'Die Mauer ______ noch nicht.'),
+   'El muro ______ todav&iacute;a.', 'Die Mauer ______ noch nicht.',
+   why='To say no, the &lsquo;not&rsquo; goes on the first auxiliary: hasn&rsquo;t been repaired.'),
 
 mc(4, 6, B % 'bg33.jpg', 'left', 'top', 'Ask the question',
    '______ the diamonds been found?', 'Have',
    [('Has', '&lsquo;Diamonds&rsquo; is plural.'),
     ('Are', 'That is a present passive, and there is a &lsquo;been&rsquo; here.'),
     ('Did', 'A past simple question does not take &lsquo;been&rsquo;.')],
-   '&iquest;______ encontrado los diamantes?', '______ die Diamanten gefunden?'),
+   '&iquest;______ encontrado los diamantes?', '______ die Diamanten gefunden?',
+   why='To ask, the auxiliary moves to the front. Diamonds is plural, so it is &lsquo;Have&rsquo;.'),
 
 mc(5, 6, B % 'bg38.jpg', 'right', 'top', 'Active, or passive?',
    'Which means the same as &lsquo;A creeper has broken the wall&rsquo;?',
@@ -122,14 +126,16 @@ mc(5, 6, B % 'bg38.jpg', 'right', 'top', 'Active, or passive?',
    [('The wall has broken a creeper.', 'That swaps who did what.'),
     ('The wall has been break by a creeper.', 'Third form: broken.'),
     ('A creeper has been broken by the wall.', 'Both halves the wrong way round.')],
-   '&iquest;Cu&aacute;l significa lo mismo?', 'Welcher Satz bedeutet dasselbe?'),
+   '&iquest;Cu&aacute;l significa lo mismo?', 'Welcher Satz bedeutet dasselbe?',
+   why='The wall was the object, so it goes to the front; the creeper follows &lsquo;by&rsquo;.'),
 
 mc(6, 6, B % 'bg40.jpg', 'left', 'top', 'Leave it, or keep it?',
    'Which is better English?', 'My chest has been opened.',
    [('My chest has been opened by somebody.', '&lsquo;By somebody&rsquo; adds nothing. Drop it.'),
     ('My chest has been opened by a person.', 'Same problem &mdash; the doer is not news.'),
     ('My chest has opened.', 'That says it opened itself.')],
-   '&iquest;Cu&aacute;l suena mejor?', 'Welcher Satz klingt besser?'),
+   '&iquest;Cu&aacute;l suena mejor?', 'Welcher Satz klingt besser?',
+   why='Nobody needs telling that somebody opened it. Drop the doer and the sentence improves.'),
 
 sort(B % 'bg26.jpg', 'right', 'top', '&lsquo;has been&rsquo;, or &lsquo;have been&rsquo;?',
      'Click a subject, then click the words that go with it.',
@@ -193,12 +199,27 @@ STATION = dict(
     slides=SLIDES,
     # The chassis brought camp 7's scoring messages with it, so a learner who
     # scored nothing was told "Go back to the dictum" - about a slide this
-    # deck has not got. Every station overrides its own.
-    messages=dict(
+    # deck has not got. Every station overrides its own, IN EVERY LANGUAGE THE
+    # CHASSIS FILLS. de and es shipped carrying that same wrong advice in
+    # German and Spanish until the substitution stopped being global.
+    messages={
+      'en': dict(
         resLow='Go back to the swap. The object of the active is the subject of the passive.',
         resMid='Look again at the third form. &lsquo;Broke&rsquo; and &lsquo;broken&rsquo; are not the same word.',
         resStrong='Strong. Check the ones where you had to choose &lsquo;has&rsquo; or &lsquo;have&rsquo;.',
         resPerfect='Full marks. Now say what has been done, and name nobody.',
-        resNext='Recognising it is half of it. Now produce it &rarr;',
-    ),
+        resNext='Recognising it is half of it. Now produce it &rarr;'),
+      'de': dict(
+        resLow='Geh zur&uuml;ck zum Tausch. Das Objekt des Aktivsatzes ist das Subjekt des Passivsatzes.',
+        resMid='Sieh dir die dritte Form noch einmal an. &lsquo;Broke&rsquo; und &lsquo;broken&rsquo; sind nicht dasselbe Wort.',
+        resStrong='Stark. Sieh dir die an, bei denen du zwischen &lsquo;has&rsquo; und &lsquo;have&rsquo; w&auml;hlen musstest.',
+        resPerfect='Volle Punktzahl. Sag jetzt, was gemacht worden ist, ohne jemanden zu nennen.',
+        resNext='Erkennen ist die halbe Miete. Jetzt anwenden &rarr;'),
+      'es': dict(
+        resLow='Vuelve al cambio. El objeto de la activa es el sujeto de la pasiva.',
+        resMid='Mira otra vez la tercera forma. &lsquo;Broke&rsquo; y &lsquo;broken&rsquo; no son la misma palabra.',
+        resStrong='Muy bien. Revisa las que te obligaron a elegir entre &lsquo;has&rsquo; y &lsquo;have&rsquo;.',
+        resPerfect='Puntuaci&oacute;n perfecta. Ahora di lo que se ha hecho, sin nombrar a nadie.',
+        resNext='Reconocerlo es la mitad. Ahora prod&uacute;celo &rarr;'),
+    },
 )

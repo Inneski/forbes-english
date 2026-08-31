@@ -127,6 +127,43 @@ def cover(cov, st):
     return re.sub(r'(<span class="chip">)[^<]*(</span>)', swap, cov, count=3)
 
 
+# The chassis fills en, de and es; the other seven blocks are empty and fall
+# back to English at runtime. Anything filled that a station does not rewrite
+# still carries the CAMP's active-voice advice.
+CHASSIS_LANGS = ('en', 'de', 'es')
+
+
+def rescore(tail, messages):
+    """Replace the results messages, SCOPED TO EACH LANGUAGE BLOCK.
+
+    THE SUBSTITUTION USED TO BE GLOBAL WITH count=1, WHICH ONLY EVER HIT en.
+    The key names repeat once per language, and the first match in the file is
+    always English, so de and es kept the chassis camp's ACTIVE wording: a
+    learner on Deutsch was told "Geh zurueck zum Merksatz" - go back to the
+    dictum, about the second and third form - on a deck about the passive.
+
+    `messages` is either {key: text} (English only, as the first stations were
+    written) or {lang: {key: text}}. A language the station does not supply is
+    left alone and named in the return value, so the caller can say out loud
+    which blocks are still wearing the camp's words.
+    """
+    if messages and all(isinstance(v, str) for v in messages.values()):
+        messages = {'en': messages}
+    for lang, msgs in messages.items():
+        m = re.search(r'^  %s: \{$' % lang, tail, re.M)
+        if not m:
+            raise SystemExit('no %s block in the chassis dictionary' % lang)
+        end = tail.find('\n  },', m.end())
+        block = tail[m.end():end]
+        for key, val in msgs.items():
+            pat = re.compile(r'(\n\s*%s: )(".*?"|\'.*?\')(,)' % key)
+            if not pat.search(block):
+                raise SystemExit('message key %s.%s not found in the chassis' % (lang, key))
+            block = pat.sub(lambda mm: mm.group(1) + '"%s"' % val + mm.group(3), block, count=1)
+        tail = tail[:m.end()] + block + tail[end:]
+    return tail
+
+
 def build(st):
     head, cov, tail = split(os.path.join(ROOT, st['chassis']))
     head = re.sub(r'<title>[^<]*</title>', '<title>%s</title>' % st['doctitle'], head)
@@ -134,18 +171,7 @@ def build(st):
     head = head.replace('  --mark-aux: #46d98a;', '  --mark-aux: #46d98a;\n' + MARKS, 1)
     head = head.replace('.aux { color: var(--mark-aux) !important; font-weight: 700; }',
                         '.aux { color: var(--mark-aux) !important; font-weight: 700; }' + ROLE_CSS, 1)
-    # THE SCORE MESSAGES BELONG TO THE STATION, NOT TO THE CAMP THE CHASSIS
-    # CAME FROM. Lifting Part I's dictionary brought its messages with it, so
-    # a learner who scored 0 on the passive was told "Go back to the dictum" -
-    # advice about a slide this deck does not have.
-    # The dictionary sits in the SCRIPT, which is after the slides - so this
-    # rewrites the tail, not the head. Patching the head silently did nothing
-    # and the deck kept telling learners to go back to a slide it lacks.
-    for key, val in st.get('messages', {}).items():
-        pat = re.compile(r'(\n\s*%s: )(".*?"|\'.*?\')(,)' % key)
-        if not pat.search(tail):
-            raise SystemExit('message key %s not found in the chassis dictionary' % key)
-        tail = pat.sub(lambda m: m.group(1) + '"%s"' % val + m.group(3), tail, count=1)
+    tail = rescore(tail, st.get('messages', {}))
     out = head + '\n\n    '.join([cover(cov, st)] + st['slides']) + tail
     path = os.path.join(ROOT, st['file'])
     open(path, 'w', encoding='utf-8').write(out)
@@ -154,4 +180,11 @@ def build(st):
 
 if __name__ == '__main__':
     mod = importlib.import_module('station%02d' % int(sys.argv[1]))
-    print('built', build(mod.STATION))
+    st = mod.STATION
+    print('built', build(st))
+    msgs = st.get('messages', {})
+    done = set(msgs) if not all(isinstance(v, str) for v in msgs.values()) else {'en'}
+    stale = [l for l in CHASSIS_LANGS if l not in done]
+    if stale:
+        print('  WARNING: results messages still the chassis camp\'s ACTIVE wording in: %s'
+              % ', '.join(stale))
