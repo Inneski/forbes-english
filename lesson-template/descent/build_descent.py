@@ -6,14 +6,23 @@ again on the way down, each one now in the passive, so a learner who climbed
 past camp 3 in brown meets brown again coming down. House style, Appendix A:
 "Passive-voice descent markers are separate camps."
 
-    station  9  Present Perfect Passive      <- camp 7
-    station 10  Future Simple Passive        <- camp 6
-    station 11  Going To Passive             <- camp 5
+THE DESCENT RUNS IN THE SAME ORDER AS THE CLIMB. Innes: "present simple should
+start the descent (same as the ascent order)". Station N mirrors camp N-8, so
+you meet the tenses in the order you learned them, not in reverse.
+
+    station  9  Present Simple Passive       <- camp 1
+    station 10  Present Continuous Passive   <- camp 2
+    station 11  Past Simple Passive          <- camp 3
     station 12  Past Continuous Passive      <- camp 4
-    station 13  Past Simple Passive          <- camp 3
-    station 14  Present Continuous Passive   <- camp 2
-    station 15  Present Simple Passive       <- camp 1
+    station 13  Going To Passive             <- camp 5
+    station 14  Future Simple Passive        <- camp 6
+    station 15  Present Perfect Passive      <- camp 7
     station 16  The Trial - mixed active and passive, every tense
+
+This table listed the REVERSED order until 2026-08-31 - an abandoned model from
+before the order was settled. The station 15 deck has been right since it was
+published; the table and the source filename were what lagged, because the push
+that would have fixed them was blocked three times.
 
 Camp 8, Present Perfect Continuous, has no usable passive: nobody teaches
 "has been being built". That is why the line has seven tense passives and a
@@ -42,16 +51,47 @@ import importlib, os, re, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '..', '..'))
 
-# ── one new role, in the same discipline as --mark-aux ───────────────────
-# Every passive is BE + PAST PARTICIPLE. The auxiliary already owns green;
-# the participle is the other half and needs a colour that never changes.
-# Hue 265, a cool violet: far from aux green (148), from the modal, and from
-# every one of the thirteen tense accents, so the two halves of a passive can
-# never be read as the same job whichever camp's colour the deck is wearing.
-MARK_PP = "  --mark-pp: #b39bf5;"
-PP_CSS = """
-/* THE PARTICIPLE IS A JOB, NOT AN EMPHASIS. See --mark-pp above. */
-.pp { color: var(--mark-pp) !important; font-weight: 700; }
+# ── three new roles, in the same discipline as --mark-aux ────────────────
+# Why each is what it is, in the block below the declaration.
+MARKS = """  --mark-pp: #b39bf5;
+  --mark-obj: #ffd633;
+  --mark-agent: #cfe8d8;"""
+
+# THREE ROLES, AND THE PASSIVE IS THE MOVE BETWEEN THEM.
+#
+#   --mark-pp     the past participle. Every passive is BE + participle; the
+#                 auxiliary already owns green, so the other half takes hue
+#                 265, far from aux green (148), from the modal, and from all
+#                 thirteen tense accents. Innes: if a participle is purple
+#                 then the WORDS "past participle" and "third form" are purple
+#                 too, wherever they are written. A label for a role wears the
+#                 role's colour or the reader has to learn the rule twice.
+#
+#   --mark-obj    the object of the active - which is the subject of the
+#                 passive. ONE colour for BOTH, because they are the same
+#                 thing in two places, and seeing it move is the lesson.
+#
+#   --mark-agent  the doer. Greenish white: present when it matters, quiet
+#                 enough to look droppable, which is what it usually is.
+#
+# NOTE, and it needs a ruling: --mark-inf is already #eec32f, a gold, and it
+# is used heavily in Future Simple 1a (20 times) and Going To 1b. The object
+# yellow above is brighter and they never share a slide in this line, but
+# Going To Passive and Future Simple Passive will put an infinitive and an
+# object on the same page. Decide there whether the infinitive moves.
+ROLE_CSS = """
+/* One colour per job. See the MARKS block above for why each is what it is. */
+.pp    { color: var(--mark-pp) !important;    font-weight: 700; }
+.obj   { color: var(--mark-obj) !important;   font-weight: 700; }
+.agent { color: var(--mark-agent) !important; font-weight: 700; }
+
+/* THE RESULTS SLIDE STACKED THREE PANELS WITH 18px BETWEEN THEM, so the score
+   plate and the message plate read as one overlapping box - Innes: "Now use
+   it (overlapping boxes)". The panels are separated and the message is capped
+   at a readable measure instead of running the width of the column. */
+.slide[data-type="results"] .score-big { margin-bottom: 10px; }
+.slide[data-type="results"] #scoreMsg  { margin-top: 26px !important; max-width: 34ch; }
+.slide[data-type="results"] .slide-body > .prose.dim { margin-top: 22px !important; }
 """
 
 
@@ -91,9 +131,21 @@ def build(st):
     head, cov, tail = split(os.path.join(ROOT, st['chassis']))
     head = re.sub(r'<title>[^<]*</title>', '<title>%s</title>' % st['doctitle'], head)
     head = re.sub(r"--hero: url\('[^']*'\)", "--hero: url('%s')" % st['hero'], head)
-    head = head.replace('  --mark-aux: #46d98a;', '  --mark-aux: #46d98a;\n' + MARK_PP, 1)
+    head = head.replace('  --mark-aux: #46d98a;', '  --mark-aux: #46d98a;\n' + MARKS, 1)
     head = head.replace('.aux { color: var(--mark-aux) !important; font-weight: 700; }',
-                        '.aux { color: var(--mark-aux) !important; font-weight: 700; }' + PP_CSS, 1)
+                        '.aux { color: var(--mark-aux) !important; font-weight: 700; }' + ROLE_CSS, 1)
+    # THE SCORE MESSAGES BELONG TO THE STATION, NOT TO THE CAMP THE CHASSIS
+    # CAME FROM. Lifting Part I's dictionary brought its messages with it, so
+    # a learner who scored 0 on the passive was told "Go back to the dictum" -
+    # advice about a slide this deck does not have.
+    # The dictionary sits in the SCRIPT, which is after the slides - so this
+    # rewrites the tail, not the head. Patching the head silently did nothing
+    # and the deck kept telling learners to go back to a slide it lacks.
+    for key, val in st.get('messages', {}).items():
+        pat = re.compile(r'(\n\s*%s: )(".*?"|\'.*?\')(,)' % key)
+        if not pat.search(tail):
+            raise SystemExit('message key %s not found in the chassis dictionary' % key)
+        tail = pat.sub(lambda m: m.group(1) + '"%s"' % val + m.group(3), tail, count=1)
     out = head + '\n\n    '.join([cover(cov, st)] + st['slides']) + tail
     path = os.path.join(ROOT, st['file'])
     open(path, 'w', encoding='utf-8').write(out)

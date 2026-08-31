@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-"""Station 9 — Present Perfect Passive.  Mirrors camp 7, and wears its green.
+"""Station 15 — Present Perfect Passive.  Mirrors camp 7, and wears its green.
 
-The first camp on the way down, so it carries the SWAP as well as its own
-tense: everything below it assumes a learner can already turn a sentence
-round. Stations 10 to 15 teach only their own auxiliary.
+THE DESCENT RUNS IN THE SAME ORDER AS THE CLIMB. Innes: "present simple should
+start the descent (same as the ascent order)". So Present Simple Passive is
+station 9 and this one is second from the bottom - you meet the tenses in the
+order you learned them, not in reverse.
 """
 from slidekit import head, sec, gloss, para, cards, mc, sort, match, gap, order, results, activate
 
@@ -14,25 +15,28 @@ SLIDES = [
 sec('teach', B % 'bg01.jpg', 'left', 'top',
     head('What it means', 'The same event, told the other way round') + '\n' +
     cards([
-      ('Active', 'Somebody has taken the map.',
-       ['the villagers <b>have mined</b> the stone', 'a creeper <b>has broken</b> the wall'],
-       gloss('Alguien ha tomado el mapa.', 'Jemand hat die Karte genommen.')),
-      ('Passive', 'The map <em class="aux">has been</em> <em class="pp">taken</em>.',
-       ['the stone <b><em class="aux">has been</em> <em class="pp">mined</em></b>',
-        'the wall <b><em class="aux">has been</em> <em class="pp">broken</em></b>'],
+      ('Active', '<em class="agent">Alex</em> has taken <em class="obj">the map</em>.',
+       ['<em class="agent">the villagers</em> have mined <em class="obj">the stone</em>',
+        '<em class="agent">a creeper</em> has broken <em class="obj">the wall</em>'],
+       gloss('Alex ha tomado el mapa.', 'Alex hat die Karte genommen.')),
+      ('Passive', '<em class="obj">The map</em> <em class="aux">has been</em> <em class="pp">taken</em>.',
+       ['<em class="obj">the stone</em> <em class="aux">has been</em> <em class="pp">mined</em>',
+        '<em class="obj">the wall</em> <em class="aux">has been</em> <em class="pp">broken</em>'],
        gloss('El mapa ha sido tomado.', 'Die Karte wurde genommen.')),
     ])),
 
 sec('teach', B % 'bg22.jpg', 'right', 'top',
-    head('The swap', 'Three moves, and only three') + '\n' +
+    head('The swap', '<em class="obj">The object</em> becomes the subject') + '\n' +
     para([
-      ('1 &middot; The object goes to the front',
-       [('active', 'Alex has taken <b>the map</b>'), ('passive', '<b>The map</b> ...')], ''),
-      ('2 &middot; The verb becomes HAVE BEEN + participle',
-       [('active', '<b>has taken</b>'), ('passive', '<em class="aux">has been</em> <em class="pp">taken</em>')], ''),
-      ('3 &middot; The doer can leave',
-       [('keep it', '... <b>by Alex</b>'), ('drop it', '... and say nothing')], ''),
-    ], 'THING + <em class="aux">has</em> / <em class="aux">have been</em> + <b>PAST PARTICIPLE</b>')),
+      ('Active &mdash; the doer goes first',
+       [('', '<em class="agent">Alex</em> has taken <em class="obj">the map</em>')], ''),
+      ('Passive &mdash; the same map, now in front',
+       [('', '<em class="obj">The map</em> <em class="aux">has been</em> <em class="pp">taken</em> '
+             '<em class="agent">by Alex</em>')], ''),
+      ('And the doer can go',
+       [('', '<em class="obj">The map</em> <em class="aux">has been</em> <em class="pp">taken</em>.')], ''),
+    ], '<em class="obj">THING</em> + <em class="aux">has</em> / <em class="aux">have been</em> '
+       '+ <em class="pp">PAST PARTICIPLE</em>')),
 
 sec('teach', B % 'bg31.jpg', 'left', 'top',
     head('The form', 'Two auxiliaries, then the third form') + '\n' +
@@ -56,7 +60,7 @@ sec('teach', B % 'bg02.jpg', 'right', 'top',
        [('VERB', 'build &rarr; built &rarr; <em class="pp">built</em>'),
         ('VERB', 'break &rarr; broke &rarr; <em class="pp">broken</em>'),
         ('VERB', 'take &rarr; took &rarr; <em class="pp">taken</em>')], ''),
-    ], 'the passive ALWAYS uses the <b>THIRD</b> form')),
+    ], 'the passive ALWAYS uses the <em class="pp">THIRD</em> form')),
 
 sec('teach', B % 'bg04.jpg', 'left', 'top',
     head('Why choose it', 'When the doer is not the point') + '\n' +
@@ -70,10 +74,10 @@ sec('teach', B % 'bg06.jpg', 'right', 'top',
     head('The doer', '&lsquo;by&rsquo; is optional, and usually left out') + '\n' +
     para([
       ('Keep &lsquo;by&rsquo; when the doer is news',
-       [('yes', 'The map <em class="aux">has been</em> <em class="pp">drawn</em> <b>by a villager</b>.')], ''),
+       [('yes', 'The map <em class="aux">has been</em> <em class="pp">drawn</em> <em class="agent">by a villager</em>.')], ''),
       ('Drop it when it is not',
        [('no', 'The door <em class="aux">has been</em> <em class="pp">locked</em>. '
-              '<span class="dim">(by somebody &mdash; who cares)</span>')], ''),
+              '<span class="dim">(by somebody &mdash; who cares?!)</span>')], ''),
     ], 'most passives carry <b>NO</b> &lsquo;by&rsquo; at all')),
 
 sec('teach', B % 'bg07.jpg', 'left', 'top',
@@ -182,9 +186,19 @@ STATION = dict(
     file='blockcamp-passive-present-perfect.html',
     chassis='blockcamp-present-perfect.html',   # camp 7: brings its green with it
     title='Present Perfect Passive',
-    sub='Station 9: it has been done, and it still counts',
+    sub='Station 15: it has been done, and it still counts',
     level='B1',
-    doctitle='Block Camp II — Passive 9: Present Perfect Passive (B1) | Forbes English',
+    doctitle='Block Camp II — Passive 15: Present Perfect Passive (B1) | Forbes English',
     hero=B % 'bg31.jpg',
     slides=SLIDES,
+    # The chassis brought camp 7's scoring messages with it, so a learner who
+    # scored nothing was told "Go back to the dictum" - about a slide this
+    # deck has not got. Every station overrides its own.
+    messages=dict(
+        resLow='Go back to the swap. The object of the active is the subject of the passive.',
+        resMid='Look again at the third form. &lsquo;Broke&rsquo; and &lsquo;broken&rsquo; are not the same word.',
+        resStrong='Strong. Check the ones where you had to choose &lsquo;has&rsquo; or &lsquo;have&rsquo;.',
+        resPerfect='Full marks. Now say what has been done, and name nobody.',
+        resNext='Recognising it is half of it. Now produce it &rarr;',
+    ),
 )
