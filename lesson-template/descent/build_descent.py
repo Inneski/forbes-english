@@ -166,6 +166,17 @@ def rescore(tail, messages):
 
 def build(st):
     head, cov, tail = split(os.path.join(ROOT, st['chassis']))
+    # THE CHASSIS BRINGS THE CAMP'S SEO BLOCK WITH IT, AND IT IS POISON.
+    # Once tools/seo.py had written blocks into the Part I decks, every descent
+    # deck built afterwards inherited one wholesale: station 9 shipped carrying
+    # camp 1's canonical - <link rel="canonical" href=".../blockcamp-present-
+    # simple.html"> - which tells Google this page is a DUPLICATE of the active
+    # lesson and to index that one instead. Also its og:title, its description
+    # and its JSON-LD name, all naming the wrong lesson.
+    # check-lesson.js's HEAD gate passed it, because the gate asks whether a
+    # block is PRESENT, not whether it belongs to this page.
+    # Strip it. seo.py writes the right one once the deck has a catalogue row.
+    head = re.sub(r'\n?<!-- SEO:start -->.*?<!-- SEO:end -->\n?', '\n', head, flags=re.S)
     head = re.sub(r'<title>[^<]*</title>', '<title>%s</title>' % st['doctitle'], head)
     head = re.sub(r"--hero: url\('[^']*'\)", "--hero: url('%s')" % st['hero'], head)
     head = head.replace('  --mark-aux: #46d98a;', '  --mark-aux: #46d98a;\n' + MARKS, 1)
