@@ -225,8 +225,10 @@ STATION = dict(
     chassis='blockcamp-present-simple.html',   # camp 1: brings its slate with it
     title='Present Simple Passive',
     sub='Station 9: it is done, and nobody is named',
-    level='B1',
-    doctitle='Block Camp II — Passive 9: Present Simple Passive (B1) | Forbes English',
+    # GRADED, NOT FLAT. The descent climbs like the ascent: camp 1 is A1, and
+    # the passive of it is one step harder, not four. Station 15 stays B1.
+    level='A2',
+    doctitle='Block Camp II — Passive 9: Present Simple Passive (A2) | Forbes English',
     hero=B % 'bg31.jpg',
     slides=SLIDES,
     # The chassis brought camp 1's scoring messages with it - "go back to the
