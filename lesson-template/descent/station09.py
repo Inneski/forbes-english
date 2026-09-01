@@ -75,7 +75,7 @@ sec('teach', B % 'bg31.jpg', 'left', 'top',
        'the <em class="pp">participle</em> never does'),
     'data-w="wide" style="--wcols:3"'),
 
-sec('teach', B % 'bg02.jpg', 'right', 'top',
+sec('teach', B % 'bg02.jpg', 'left', 'top',
     head('The form', 'The participle is the THIRD form') + '\n' +
     para([
       ('Regular &mdash; add -ed', [('VERB', 'mine &rarr; mined &rarr; <em class="pp">mined</em>'),
@@ -89,7 +89,7 @@ sec('teach', B % 'bg02.jpg', 'right', 'top',
              'Unregelm&auml;&szlig;ig: die dritte Form lernen')),
     ], 'the passive ALWAYS uses the <em class="pp">THIRD</em> form')),
 
-sec('teach', B % 'bg04.jpg', 'left', 'top',
+sec('teach', B % 'bg04.jpg', 'right', 'top',
     head('Why choose it', 'When the doer is not the point') + '\n' +
     para([
       ('You do not know who',
@@ -103,7 +103,7 @@ sec('teach', B % 'bg04.jpg', 'left', 'top',
        gloss('La cosa importa m&aacute;s', 'Die Sache ist wichtiger')),
     ])),
 
-sec('teach', B % 'bg06.jpg', 'right', 'top',
+sec('teach', B % 'bg06.jpg', 'left', 'top',
     head('The doer', '&lsquo;by&rsquo; is optional, and usually left out') + '\n' +
     para([
       ('Keep &lsquo;by&rsquo; when the doer is news',
@@ -120,7 +120,7 @@ sec('teach', B % 'bg06.jpg', 'right', 'top',
 # The slide this tense earns on its own. Present perfect passive is about a
 # result that still counts; present simple passive is about how things are
 # done - which is why it is the voice of every process, rule and sign.
-sec('teach', B % 'bg07.jpg', 'left', 'top',
+sec('teach', B % 'bg07.jpg', 'right', 'top',
     head('Where you meet it', 'Processes, rules and signs') + '\n' +
     para([
       ('A process &mdash; step after step',
@@ -135,7 +135,7 @@ sec('teach', B % 'bg07.jpg', 'left', 'top',
        gloss('Un cartel: corto, sin nombres', 'Ein Schild: kurz, niemand genannt')),
     ], 'this is where the present simple passive lives')),
 
-mc(1, 6, B % 'bg05.jpg', 'right', 'top', 'Choose the passive',
+mc(1, 6, B % 'bg05.jpg', 'left', 'top', 'Choose the passive',
    'The stone ______ by villagers.', 'is mined',
    [('mines', 'That is active &mdash; it says the stone does the mining.'),
     ('is mine', '&lsquo;Mine&rsquo; is the first form. The third is &lsquo;mined&rsquo;.'),
@@ -143,7 +143,7 @@ mc(1, 6, B % 'bg05.jpg', 'right', 'top', 'Choose the passive',
    'La piedra ______ por los aldeanos.', 'Der Stein ______ von Dorfbewohnern.',
    why='One stone, so &lsquo;is&rsquo;, and the third form of &lsquo;mine&rsquo; is &lsquo;mined&rsquo;.'),
 
-mc(2, 6, B % 'bg12.jpg', 'left', 'top', 'Choose the passive',
+mc(2, 6, B % 'bg12.jpg', 'right', 'top', 'Choose the passive',
    'The torches ______ every ten blocks.', 'are placed',
    [('is placed', '&lsquo;Torches&rsquo; is plural, so &lsquo;are&rsquo;.'),
     ('are place', '&lsquo;Place&rsquo; is the first form. The third is &lsquo;placed&rsquo;.'),
@@ -195,7 +195,7 @@ sort(B % 'bg26.jpg', 'right', 'top', '&lsquo;is&rsquo;, or &lsquo;are&rsquo;?',
      'One thing takes &lsquo;is&rsquo;. More than one takes &lsquo;are&rsquo;. '
      '&lsquo;Bread&rsquo; is uncountable, so it takes &lsquo;is&rsquo; too. The doer changes nothing.'),
 
-match(B % 'bg34.jpg', 'left', 'top', 'Match the active to its passive',
+match(B % 'bg34.jpg', 'right', 'top', 'Match the active to its passive',
       'Click an active sentence, then click the passive that means the same.',
       [('Villagers mine the stone', 'the stone is mined',
         'Los aldeanos extraen la piedra', 'Dorfbewohner bauen den Stein ab',
@@ -217,7 +217,7 @@ match(B % 'bg34.jpg', 'left', 'top', 'Match the active to its passive',
         'los diamantes se encuentran', 'die Diamanten werden gefunden')],
       'The object of the active is always the subject of the passive.'),
 
-gap(1, 2, B % 'bg27.jpg', 'right', 'top', 'Write the participle',
+gap(1, 2, B % 'bg27.jpg', 'left', 'top', 'Write the participle',
     'Type the verb in brackets in its third form.',
     [('The wall is ', 'broken', '. <span class="dim">(break)</span>',
       'Not &lsquo;broke&rsquo; &mdash; that is the second form.', 170,
@@ -229,7 +229,7 @@ gap(1, 2, B % 'bg27.jpg', 'right', 'top', 'Write the participle',
       'find &rarr; found &rarr; found. Here the second and third are the same word.', 170,
       'Los diamantes son ______. (encontrar)', 'Die Diamanten werden ______. (finden)')]),
 
-gap(2, 2, B % 'bg12.jpg', 'left', 'top', '&lsquo;is&rsquo;, or &lsquo;are&rsquo;?',
+gap(2, 2, B % 'bg12.jpg', 'right', 'top', '&lsquo;is&rsquo;, or &lsquo;are&rsquo;?',
     'Look at the thing in front, not at the doer.',
     [('The torches ', 'are', ' placed by villagers.', 'Torches is plural.', 130,
       'Las antorchas ______ colocadas por los aldeanos.',

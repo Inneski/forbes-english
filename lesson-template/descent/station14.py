@@ -135,7 +135,7 @@ sec('teach', B % 'bg09.jpg', 'left', 'top',
        gloss('No hace falta decirlo', 'Muss man nicht sagen')),
     ], 'most passives carry <b>NO</b> &lsquo;by&rsquo; at all')),
 
-mc(1, 6, B % 'bg05.jpg', 'right', 'top', 'Choose the passive',
+mc(1, 6, B % 'bg05.jpg', 'left', 'top', 'Choose the passive',
    'The wall ______ by winter.', 'will be built',
    [('will built', 'The bare verb &lsquo;be&rsquo; is missing.'),
     ('will being built', '&lsquo;being&rsquo; follows is or are, never a modal.'),
@@ -170,7 +170,7 @@ mc(4, 6, B % 'bg35.jpg', 'left', 'bottom', 'Ask the question',
 
 # The hardest question on the deck, and the one camp 6 built toward: two
 # sentences that are both correct English, decided by the situation.
-mc(5, 6, B % 'bg37.jpg', 'right', 'top', 'Which future?',
+mc(5, 6, B % 'bg37.jpg', 'left', 'top', 'Which future?',
    'Look at those plans on the table. The village ______ rebuilt.',
    'is going to be',
    [('will be', 'A prediction or an on-the-spot decision &mdash; but the plans are already drawn.'),
@@ -225,7 +225,7 @@ match(B % 'bg19.jpg', 'left', 'top', 'Match the active to its passive',
         'el puente ser&aacute; terminado', 'die Br&uuml;cke wird fertiggestellt werden')],
       'The object of the active is always the subject of the passive.'),
 
-gap(1, 2, B % 'bg18.jpg', 'right', 'top', 'Write the missing word',
+gap(1, 2, B % 'bg18.jpg', 'left', 'top', 'Write the missing word',
     'The same word is missing from every chain.',
     [('The wall will ', 'be', ' built.',
       'A modal takes a bare verb; in the passive it is &lsquo;be&rsquo;.', 120,
@@ -250,7 +250,7 @@ gap(2, 2, B % 'bg31.jpg', 'left', 'top', 'Write the participle',
       'El puente ser&aacute; ______. (terminar)',
       'Die Br&uuml;cke wird ______ werden. (fertigstellen)')]),
 
-order(B % 'bg38.jpg', 'right', 'top', 'the wall | will | be | built .',
+order(B % 'bg38.jpg', 'left', 'top', 'the wall | will | be | built .',
       'The thing, then will, then be, then the third form.',
       'El muro ser&aacute; construido.', 'Die Mauer wird gebaut werden.'),
 

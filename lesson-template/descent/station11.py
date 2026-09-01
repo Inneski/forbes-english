@@ -53,7 +53,7 @@ sec('teach', B % 'bg38.jpg', 'right', 'top',
     ], '<em class="obj">THING</em> + <em class="aux">was</em> / <em class="aux">were</em> '
        '+ <em class="pp">PAST PARTICIPLE</em>')),
 
-sec('teach', B % 'bg10.jpg', 'left', 'top',
+sec('teach', B % 'bg10.jpg', 'right', 'top',
     head('The form', 'Only &lsquo;was&rsquo; and &lsquo;were&rsquo; change') + '\n' +
     para([
       ('One thing', [('the wall', '<em class="aux">was</em> <em class="pp">built</em>'),
@@ -132,7 +132,7 @@ sec('teach', B % 'bg28.jpg', 'left', 'top',
        gloss('Qu&iacute;talo si no lo es', 'Sonst f&auml;llt es weg')),
     ], 'most passives carry <b>NO</b> &lsquo;by&rsquo; at all')),
 
-mc(1, 6, B % 'bg05.jpg', 'right', 'top', 'Choose the passive',
+mc(1, 6, B % 'bg05.jpg', 'left', 'top', 'Choose the passive',
    'The wall ______ in 1990.', 'was built',
    [('built', 'That is active &mdash; it needs somebody in front doing the building.'),
     ('was build', '&lsquo;Build&rsquo; is the first form. The third is &lsquo;built&rsquo;.'),
@@ -141,7 +141,7 @@ mc(1, 6, B % 'bg05.jpg', 'right', 'top', 'Choose the passive',
    why='One wall, so &lsquo;was&rsquo;, and the third form of &lsquo;build&rsquo; is &lsquo;built&rsquo;.'),
 
 # The mistake this deck exists to stop, put straight to the learner.
-mc(2, 6, B % 'bg12.jpg', 'left', 'top', 'Second form, or third?',
+mc(2, 6, B % 'bg12.jpg', 'right', 'top', 'Second form, or third?',
    'The window ______ during the storm.', 'was broken',
    [('was broke', '&lsquo;Broke&rsquo; is the second form. The passive takes the third: broken.'),
     ('were broken', 'One window, so &lsquo;was&rsquo;.'),
@@ -165,7 +165,7 @@ mc(4, 6, B % 'bg31.jpg', 'left', 'top', 'Say no',
    'El puente ______ ese a&ntilde;o.', 'Die Br&uuml;cke ______ in jenem Jahr.',
    why='The &lsquo;not&rsquo; goes on the auxiliary: <em class="aux">wasn&rsquo;t</em> + the third form.'),
 
-mc(5, 6, B % 'bg33.jpg', 'right', 'top', 'Ask the question',
+mc(5, 6, B % 'bg33.jpg', 'left', 'top', 'Ask the question',
    '______ the diamonds found last week?', 'Were',
    [('Was', '&lsquo;Diamonds&rsquo; is plural.'),
     ('Did', 'A passive question never starts with &lsquo;did&rsquo;.'),

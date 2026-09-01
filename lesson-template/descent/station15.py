@@ -52,7 +52,7 @@ sec('teach', B % 'bg31.jpg', 'left', 'top',
     ], '<em class="aux">&lsquo;BEEN&rsquo;</em> never changes &mdash; only <em class="aux">&lsquo;has&rsquo;</em> / <em class="aux">&lsquo;have&rsquo;</em> does'),
     'data-w="wide" style="--wcols:3"'),
 
-sec('teach', B % 'bg02.jpg', 'right', 'top',
+sec('teach', B % 'bg02.jpg', 'left', 'top',
     head('The form', 'The participle is the THIRD form') + '\n' +
     para([
       ('Regular &mdash; add -ed', [('VERB', 'mine &rarr; mined &rarr; <em class="pp">mined</em>'),
@@ -63,7 +63,7 @@ sec('teach', B % 'bg02.jpg', 'right', 'top',
         ('VERB', 'take &rarr; took &rarr; <em class="pp">taken</em>')], gloss('Irregulares: apr&eacute;ndete la tercera', 'Unregelm&auml;&szlig;ig: die dritte Form lernen')),
     ], 'the passive ALWAYS uses the <em class="pp">THIRD</em> form')),
 
-sec('teach', B % 'bg04.jpg', 'left', 'top',
+sec('teach', B % 'bg04.jpg', 'right', 'top',
     head('Why choose it', 'When the doer is not the point') + '\n' +
     para([
       ('You do not know who', [('', 'My chest <em class="aux">has been</em> <em class="pp">opened</em>.')], gloss('No sabes qui&eacute;n', 'Man wei&szlig; nicht, wer')),
@@ -71,7 +71,7 @@ sec('teach', B % 'bg04.jpg', 'left', 'top',
       ('The thing matters more', [('', 'Three diamonds <em class="aux">have been</em> <em class="pp">found</em>.')], gloss('La cosa importa m&aacute;s', 'Die Sache ist wichtiger')),
     ])),
 
-sec('teach', B % 'bg06.jpg', 'right', 'top',
+sec('teach', B % 'bg06.jpg', 'left', 'top',
     head('The doer', '&lsquo;by&rsquo; is optional, and usually left out') + '\n' +
     para([
       ('Keep &lsquo;by&rsquo; when the doer is news',
@@ -105,7 +105,7 @@ mc(2, 6, B % 'bg12.jpg', 'left', 'top', 'Choose the passive',
    'Tres cofres ______ esta semana.', 'Drei Kisten ______ diese Woche.',
    why='Three chests is plural, so &lsquo;have been&rsquo;, and the third form is &lsquo;opened&rsquo;.'),
 
-mc(3, 6, B % 'bg14.jpg', 'right', 'top', 'Say no',
+mc(3, 6, B % 'bg14.jpg', 'left', 'top', 'Say no',
    'The wall ______ yet.', "hasn't been repaired",
    [("hasn't repaired", 'Active. The wall is not doing the repairing.'),
     ("haven't been repaired", 'One wall, so &lsquo;has&rsquo;.'),
@@ -145,7 +145,7 @@ sort(B % 'bg26.jpg', 'right', 'top', '&lsquo;has been&rsquo;, or &lsquo;have bee
       (1, 'the maps'), (1, 'three chests'), (1, 'they'), (1, 'the diamonds')],
      'One thing takes &lsquo;has been&rsquo;. More than one takes &lsquo;have been&rsquo;. The doer changes nothing.'),
 
-match(B % 'bg34.jpg', 'left', 'top', 'Match the active to its passive',
+match(B % 'bg34.jpg', 'right', 'top', 'Match the active to its passive',
       'Click an active sentence, then click the passive that means the same.',
       [('They have lit the torches', 'the torches have been lit',
         'Han encendido las antorchas', 'Sie haben die Fackeln angez&uuml;ndet',
@@ -167,7 +167,7 @@ match(B % 'bg34.jpg', 'left', 'top', 'Match the active to its passive',
         'el pan ha sido comido', 'das Brot ist gegessen worden')],
       'The object of the active is always the subject of the passive.'),
 
-gap(1, 2, B % 'bg27.jpg', 'right', 'top', 'Write the participle',
+gap(1, 2, B % 'bg27.jpg', 'left', 'top', 'Write the participle',
     'Type the verb in brackets in its third form.',
     [('The wall has been ', 'broken', '. <span class="dim">(break)</span>',
       'Not &lsquo;broke&rsquo; &mdash; that is the second form.', 170,

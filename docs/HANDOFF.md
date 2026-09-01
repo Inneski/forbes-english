@@ -137,6 +137,58 @@ Three things worth carrying forward.
   lower `--bg-opacity` for a busy hero does not apply here and would have made
   it worse: the problem was flatness and brightness, not detail.
 
+## Negative space is now measured — it never was, and it showed
+
+Innes, opening a deck I had just built: *"slides 5-10 with text on wrong side —
+like are you even scanning for negative space?!"* No. Nothing was.
+
+Every gate measured whether text **fits**: overflow, scroll height, ink into the
+bottom chrome, ink off the sides. All of them pass a slide whose text sits
+squarely on a character's face, because that slide fits perfectly. Six rounds
+of "text on the wrong side" this week were found by eye, one slide at a time.
+
+```bash
+python3 lesson-template/checker/check-negative-space.py     # must PASS
+```
+
+**How it works, and why it needs no idea what a character is.** A Minecraft
+plate is mostly flat sky, flat ground and flat wall — low local contrast — with
+the subject carrying nearly all the fine detail. So it takes the gradient
+magnitude of the plate, sums it over the exact rectangle the text occupies and
+over the mirrored rectangle on the other side, and reports the ratio. Past
+1.35× the text is on the busy half and the empty half is going to waste.
+
+It found **48 slides across the line**, 40 of them in the eight passive decks —
+because I took `data-side` from the station templates and never once looked at
+the plates. All 468 side-pinned slides in Block Camp now sit on the quieter
+half.
+
+### And "too low" has a second meaning
+
+`--rail-clear` fixed text running *into* the chrome. It does not fix a short
+block pinned to the floor with 148–480px of dead sky above it, which is what
+Innes means the other half of the time. Twenty-nine of those were lifted: a
+nudge up under 300px of dead space, and re-centred over it.
+
+### The trap when you fix these in bulk
+
+A plate is often used by **more than one slide in a deck**. Keying a fix on
+`data-bg` with `count=1` hits the same tag every time — one slide ended up with
+`data-nudge="up"` three times over while the two that needed it kept sitting
+low. If you script a composition fix, key it on the slide index, and audit
+afterwards:
+
+```bash
+# any section tag carrying the same attribute twice
+python3 - <<'EOF'
+import re, glob, collections
+for f in glob.glob('blockcamp-*.html'):
+    for m in re.finditer(r'<section class="slide[^>]*>', open(f).read()):
+        c = collections.Counter(re.findall(r'\b(data-[a-z-]+)=', m.group(0)))
+        if any(v > 1 for v in c.values()): print(f, dict(c))
+EOF
+```
+
 ## Block Camp II is built: eight decks, stations 9 to 16
 
 The passive descent is finished and published. Station N mirrors camp N-8 and

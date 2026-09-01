@@ -46,7 +46,7 @@ sec('teach', B % 'bg01.jpg', 'left', 'top',
 
 # The four corners on one slide. Nothing here is new; the point is that the
 # learner can see the grid is now closed, and where this deck sits in it.
-sec('teach', B % 'bg23.jpg', 'right', 'top',
+sec('teach', B % 'bg23.jpg', 'left', 'top',
     head('The form', 'Two words you already have') + '\n' +
     para([
       ('Now, in general', [('station 9', '<em class="aux">is</em> <em class="pp">built</em>')],
@@ -77,7 +77,7 @@ sec('teach', B % 'bg09.jpg', 'left', 'top',
 # THE SLIDE THIS DECK OWNS, and camp 4's whole subject. The long action is
 # passive; the thing that cuts across it is a plain past simple, and both
 # clauses are on screen at once so the shape can be seen rather than described.
-sec('teach', B % 'bg13.jpg', 'right', 'top',
+sec('teach', B % 'bg13.jpg', 'left', 'top',
     head('The shape', 'The long one, and the one that cuts in') + '\n' +
     para([
       ('The long action &mdash; passive',
@@ -136,7 +136,7 @@ sec('teach', B % 'bg36.jpg', 'left', 'top',
        gloss('No hace falta decirlo', 'Muss man nicht sagen')),
     ], 'most passives carry <b>NO</b> &lsquo;by&rsquo; at all')),
 
-mc(1, 6, B % 'bg05.jpg', 'right', 'top', 'Choose the passive',
+mc(1, 6, B % 'bg05.jpg', 'left', 'top', 'Choose the passive',
    'The wall ______ when the creeper arrived.', 'was being built',
    [('was built', 'That is finished. The sentence needs an action still going on.'),
     ('was being build', 'Third form: built.'),
@@ -164,7 +164,7 @@ mc(3, 6, B % 'bg14.jpg', 'right', 'bottom', 'Which half is which?',
    'Die Karte wurde gerade gezeichnet, als die Lampe ______.',
    why='The long action is passive continuous; the thing that cuts across it is a plain past simple.'),
 
-mc(4, 6, B % 'bg28.jpg', 'left', 'bottom', 'Say no',
+mc(4, 6, B % 'bg28.jpg', 'right', 'bottom', 'Say no',
    'The bridge ______ that week.', "wasn't being repaired",
    [("didn't being repaired", 'A passive never uses &lsquo;did&rsquo;.'),
     ("weren't being repaired", 'One bridge, so &lsquo;was&rsquo;.'),
@@ -223,7 +223,7 @@ match(B % 'bg31.jpg', 'left', 'top', 'Match the active to its passive',
         'el pan estaba siendo horneado', 'das Brot wurde gerade gebacken')],
       'The object of the active is always the subject of the passive.'),
 
-gap(1, 2, B % 'bg23.jpg', 'right', 'top', 'Write the participle',
+gap(1, 2, B % 'bg23.jpg', 'left', 'top', 'Write the participle',
     'Type the verb in brackets in its third form.',
     [('The map was being ', 'drawn', '. <span class="dim">(draw)</span>',
       'draw &rarr; drew &rarr; drawn. Not &lsquo;drew&rsquo;.', 170,
@@ -253,7 +253,7 @@ gap(2, 2, B % 'bg38.jpg', 'left', 'top', 'Which tense in each half?',
       'Las antorchas ______ siendo encendidas mientras and&aacute;bamos.',
       'Die Fackeln ______ angez&uuml;ndet, w&auml;hrend wir gingen.')]),
 
-order(B % 'bg27.jpg', 'right', 'top', 'the wall | was | being | built .',
+order(B % 'bg27.jpg', 'left', 'top', 'the wall | was | being | built .',
       'The thing, then was, then being, then the third form.',
       'El muro estaba siendo construido.', 'Die Mauer wurde gerade gebaut.'),
 
