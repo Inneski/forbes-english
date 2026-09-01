@@ -1171,6 +1171,25 @@ em.t-present, b.t-present { color: var(--t-present-simple) !important;
 .slide[data-side] .slide-body { flex: 0 1 auto; justify-content: flex-start; }
 .slide[data-side][data-vpos="top"] { justify-content: flex-start; }
 .slide[data-side][data-vpos="bottom"] { justify-content: flex-end; }
+/* ── THE BOTTOM ANCHOR ENDED UNDERNEATH THE CHROME ────────────────────
+   Measured: the slide's 64px padding puts a bottom-anchored body's last line
+   at y=656. The deck bar starts at 644 and the nav buttons at 655. So EVERY
+   data-vpos="bottom" slide in the line finished 12px inside the chrome
+   before its plate spread was counted - and with the spread, 33 slides
+   across the eighteen decks painted ink down to exactly 666.
+
+   Innes has reported this a dozen times in different words - "sometimes the
+   text is hanging too low", "move text up", "some of the text is too low" -
+   and each report was answered with a per-slide nudge. That is treating the
+   symptom: the anchor itself is 30px too low, and every slide that uses it
+   is wrong by the same amount.
+
+   One constant, measured from the bar rather than guessed, per CLAUDE.md.
+   check-lesson.js's overflow gate catches the other end: if a tall slide
+   cannot afford the clearance it now fails loudly instead of hiding under
+   the nav. */
+.slide { --rail-clear: 96px; }
+.slide[data-vpos="bottom"] { padding-bottom: var(--rail-clear); }
 /* Every plate in the template is painted by a spread box-shadow, so its
    PAINTED box is bigger than its layout box on all four sides - 0.34em of
    spread, which is ~13px behind a 38px title and ~4px behind a 13px eyebrow.
@@ -1308,6 +1327,9 @@ em.t-present, b.t-present { color: var(--t-present-simple) !important;
    sit but underneath. Innes, on Past Simple 8: "translations would be better
    right of text not under". With the examples flowing, the beside rule has
    the horizontal room it always needed. */
+.slide[data-w="wide"] .para {
+  grid-auto-flow: column !important;
+  grid-auto-columns: 1fr; width: 100%; gap: 14px; }
 .slide[data-w="wide"] .exlist { display: flex !important; flex-wrap: wrap; }
 /* ...AND THE GLOSS SITS BESIDE THEM, NOT UNDER. With the examples flowing,
    one row of chips measured 505px and the German gloss 375px in an 819px
@@ -1346,6 +1368,20 @@ em.t-present, b.t-present { color: var(--t-present-simple) !important;
 .slide[data-boxw] .para,
 .slide[data-boxw] .sort-pool,
 .slide[data-boxw] .sort-bank { width: var(--boxw) !important; max-width: 100%; }
+/* ...BUT --boxw IS A MEASUREMENT OF THE ENGLISH HEAD, AND ONLY OF THAT.
+   German runs about a third longer and Spanish longer still. Pinned at the
+   English width, Present Continuous 2b slide 6 painted to y=719 in German and
+   y=811 in Spanish - a hundred pixels off a 720px canvas, in a language
+   check-lesson.js does not render.
+   The pin is what was asked for ("make boxes same width as eyebrow") and it
+   is right in the language the deck is reviewed in. The other two get the
+   width they need instead of the width that matches: alignment is a nicety,
+   staying on the page is not. Card groups only - a sort pool is pinned to
+   keep it off a character, which is not a nicety. */
+:root[lang="de"] .slide[data-boxw] .cols,
+:root[lang="de"] .slide[data-boxw] .para,
+:root[lang="es"] .slide[data-boxw] .cols,
+:root[lang="es"] .slide[data-boxw] .para { width: 100% !important; }
 /* ...and the rule does not stop at the paradigm. Innes, on Future Simple 1b
    slide 6: "make the bottom three boxes same width." Two example boxes and the
    formula pill under them are three statements about one rule, and three
@@ -1976,7 +2012,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="teach" data-bg="present-perfect-time-signals/bg32.jpg" data-side="right" data-vpos="top">
+    <section class="slide" data-type="teach" data-bg="present-perfect-time-signals/bg32.jpg" data-side="right" data-vpos="top" data-w="wide" style="--col-w:70%">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="thirdEyebrow">The form</div>
         <h2 class="slide-title" data-i18n="thirdTitle">The participle is the THIRD form</h2>
@@ -2027,7 +2063,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="teach" data-bg="present-perfect-time-signals/bg30.jpg" data-side="right" data-vpos="top">
+    <section class="slide" data-type="teach" data-bg="present-perfect-time-signals/bg30.jpg" data-side="right" data-vpos="top" data-w="wide">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="placeEyebrow">Where they sit</div>
         <h2 class="slide-title" data-i18n="placeTitle">The five small words</h2>
@@ -2282,7 +2318,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="gap" data-bg="present-perfect-time-signals/bg23.jpg" data-side="left" data-vpos="top">
+    <section class="slide" data-type="gap" data-bg="present-perfect-time-signals/bg23.jpg" data-side="left" data-vpos="top" data-w="wide" style="--col-w:76%">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="gap2Eyebrow">Practice</span> &middot; 2 / 2</div>
         <h2 class="slide-title" data-i18n="gap2Title">Which words leave the date out?</h2>

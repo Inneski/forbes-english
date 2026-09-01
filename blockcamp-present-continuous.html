@@ -1163,6 +1163,25 @@ em.t-present, b.t-present { color: var(--t-present-simple) !important;
 .slide[data-side] .slide-body { flex: 0 1 auto; justify-content: flex-start; }
 .slide[data-side][data-vpos="top"] { justify-content: flex-start; }
 .slide[data-side][data-vpos="bottom"] { justify-content: flex-end; }
+/* ── THE BOTTOM ANCHOR ENDED UNDERNEATH THE CHROME ────────────────────
+   Measured: the slide's 64px padding puts a bottom-anchored body's last line
+   at y=656. The deck bar starts at 644 and the nav buttons at 655. So EVERY
+   data-vpos="bottom" slide in the line finished 12px inside the chrome
+   before its plate spread was counted - and with the spread, 33 slides
+   across the eighteen decks painted ink down to exactly 666.
+
+   Innes has reported this a dozen times in different words - "sometimes the
+   text is hanging too low", "move text up", "some of the text is too low" -
+   and each report was answered with a per-slide nudge. That is treating the
+   symptom: the anchor itself is 30px too low, and every slide that uses it
+   is wrong by the same amount.
+
+   One constant, measured from the bar rather than guessed, per CLAUDE.md.
+   check-lesson.js's overflow gate catches the other end: if a tall slide
+   cannot afford the clearance it now fails loudly instead of hiding under
+   the nav. */
+.slide { --rail-clear: 96px; }
+.slide[data-vpos="bottom"] { padding-bottom: var(--rail-clear); }
 /* Every plate in the template is painted by a spread box-shadow, so its
    PAINTED box is bigger than its layout box on all four sides - 0.34em of
    spread, which is ~13px behind a 38px title and ~4px behind a 13px eyebrow.
@@ -1300,6 +1319,9 @@ em.t-present, b.t-present { color: var(--t-present-simple) !important;
    sit but underneath. Innes, on Past Simple 8: "translations would be better
    right of text not under". With the examples flowing, the beside rule has
    the horizontal room it always needed. */
+.slide[data-w="wide"] .para {
+  grid-auto-flow: column !important;
+  grid-auto-columns: 1fr; width: 100%; gap: 14px; }
 .slide[data-w="wide"] .exlist { display: flex !important; flex-wrap: wrap; }
 /* ...AND THE GLOSS SITS BESIDE THEM, NOT UNDER. With the examples flowing,
    one row of chips measured 505px and the German gloss 375px in an 819px
@@ -1338,6 +1360,20 @@ em.t-present, b.t-present { color: var(--t-present-simple) !important;
 .slide[data-boxw] .para,
 .slide[data-boxw] .sort-pool,
 .slide[data-boxw] .sort-bank { width: var(--boxw) !important; max-width: 100%; }
+/* ...BUT --boxw IS A MEASUREMENT OF THE ENGLISH HEAD, AND ONLY OF THAT.
+   German runs about a third longer and Spanish longer still. Pinned at the
+   English width, Present Continuous 2b slide 6 painted to y=719 in German and
+   y=811 in Spanish - a hundred pixels off a 720px canvas, in a language
+   check-lesson.js does not render.
+   The pin is what was asked for ("make boxes same width as eyebrow") and it
+   is right in the language the deck is reviewed in. The other two get the
+   width they need instead of the width that matches: alignment is a nicety,
+   staying on the page is not. Card groups only - a sort pool is pinned to
+   keep it off a character, which is not a nicety. */
+:root[lang="de"] .slide[data-boxw] .cols,
+:root[lang="de"] .slide[data-boxw] .para,
+:root[lang="es"] .slide[data-boxw] .cols,
+:root[lang="es"] .slide[data-boxw] .para { width: 100% !important; }
 /* ...and the rule does not stop at the paradigm. Innes, on Future Simple 1b
    slide 6: "make the bottom three boxes same width." Two example boxes and the
    formula pill under them are three statements about one rule, and three
@@ -2024,27 +2060,22 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="teach" data-bg="present-continuous-time-signals/bg16.jpg" data-side="right" data-vpos="top" data-w="wide">
+    <section class="slide" data-type="teach" data-bg="present-continuous-time-signals/bg16.jpg" data-side="right" data-vpos="top" data-w="wide" style="--wcols:2">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="nowEyebrow">Time signals</div>
         <h2 class="slide-title" data-i18n="nowTitle">This exact second</h2>
       </div></div>
       <div class="slide-body">
-        <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
+        <div class="cols" style="grid-template-columns:1fr 1fr">
           <div class="card">
             <p class="prose"><strong data-i18n="nowH1">Plain now</strong></p>
-            <p class="prose" data-i18n="nowB1" style="margin-top:8px;font-size:18px">All four point at this moment.</p>
-            <p class="prose dim" style="margin-top:8px;font-size:15px"><span class="exlist"><span>now</span><span>right now</span><span>at the moment</span><span>just now</span></span><span class="sup" data-lang="es"><b>ES</b><span>ahora &middot; ahora mismo &middot; en este momento &middot; hace un momento</span></span><span class="sup" data-lang="de"><b>DE</b><span>jetzt &middot; gerade jetzt &middot; im Moment &middot; eben gerade</span></span></p>
+            <p class="prose" data-i18n="nowB1" style="margin-top:8px;font-size:18px">All five point at this moment.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px"><span class="exlist"><span>now</span><span>right now</span><span>at the moment</span><span>just now</span><span>currently</span></span><span class="sup" data-lang="es"><b>ES</b><span>ahora &middot; ahora mismo &middot; en este momento &middot; hace un momento &middot; actualmente</span></span><span class="sup" data-lang="de"><b>DE</b><span>jetzt &middot; gerade jetzt &middot; im Moment &middot; eben gerade &middot; zurzeit</span></span></p>
           </div>
           <div class="card">
-            <p class="prose"><strong data-i18n="nowH2">Pointing words</strong></p>
-            <p class="prose" data-i18n="nowB2" style="margin-top:8px;font-size:18px">Tell someone to notice it happening.</p>
-            <p class="prose dim" style="margin-top:8px;font-size:15px"><span class="exlist"><span>Look!</span><span>Listen!</span></span><span class="sup" data-lang="es"><b>ES</b><span>&rsquo;&iexcl;Mira!&rsquo; y &rsquo;&iexcl;Escucha!&rsquo;</span></span><span class="sup" data-lang="de"><b>DE</b><span>&rsquo;Schau!&rsquo; und &rsquo;H&ouml;r mal!&rsquo;</span></span></p>
-          </div>
-          <div class="card">
-            <p class="prose"><strong data-i18n="nowH3">Not stopped yet</strong></p>
-            <p class="prose" data-i18n="nowB3" style="margin-top:8px;font-size:18px">It began earlier and carries on.</p>
-            <p class="prose dim" style="margin-top:8px;font-size:15px"><span class="exlist"><span>still</span></span><span class="sup" data-lang="es"><b>ES</b><span>&rsquo;still&rsquo; = todav&iacute;a</span></span><span class="sup" data-lang="de"><b>DE</b><span>&rsquo;still&rsquo; = noch immer</span></span></p>
+            <p class="prose"><strong data-i18n="nowH2">Not times, but signals</strong></p>
+            <p class="prose" data-i18n="nowB2" style="margin-top:8px;font-size:18px">Look! and Listen! tell someone to notice it. still says it began earlier and has not stopped.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px"><span class="exlist"><span>Look!</span><span>Listen!</span><span>still</span></span><span class="sup" data-lang="es"><b>ES</b><span>&rsquo;&iexcl;Mira!&rsquo; y &rsquo;&iexcl;Escucha!&rsquo; &middot; &rsquo;still&rsquo; = todav&iacute;a</span></span><span class="sup" data-lang="de"><b>DE</b><span>&rsquo;Schau!&rsquo; und &rsquo;H&ouml;r mal!&rsquo; &middot; &rsquo;still&rsquo; = noch immer</span></span></p>
           </div>
         </div>
       </div>
@@ -2469,13 +2500,11 @@ const UI_I18N = {
     matchHint: "Click a signal, then click what it means.",
     matchTitle: "How wide is that &lsquo;now&rsquo;?",
     matchWhy: "The first three mean this second. The last three stretch wider.",
-    nowB1: "All four point at this moment.",
-    nowB2: "Tell someone to notice it happening.",
-    nowB3: "It began earlier and carries on.",
+    nowB1: "All five point at this moment.",
+    nowB2: "Look! and Listen! tell someone to notice it. still says it began earlier and has not stopped.",
     nowEyebrow: "Time signals",
     nowH1: "Plain now",
-    nowH2: "Pointing words",
-    nowH3: "Not stopped yet",
+    nowH2: "Not times, but signals",
     nowTitle: "This exact second",
     ord1Eyebrow: "Practice",
     ord1Hint: "Click the words in the right order.",
@@ -2584,13 +2613,11 @@ const UI_I18N = {
     matchHint: "Klicke ein Signal an, dann seine Bedeutung.",
     matchTitle: "Wie weit reicht dieses &rsquo;now&rsquo;?",
     matchWhy: "Die ersten drei meinen diese Sekunde. Die letzten drei reichen weiter.",
-    nowB1: "Alle vier zeigen auf diesen Moment.",
-    nowB2: "Sag jemandem, es jetzt zu bemerken.",
-    nowB3: "Es begann fr&uuml;her und l&auml;uft weiter.",
+    nowB1: "Alle f&uuml;nf zeigen auf diesen Moment.",
+    nowB2: "&rsquo;Look!&rsquo; und &rsquo;Listen!&rsquo; sagen jemandem, er soll es bemerken. &rsquo;still&rsquo; hei&szlig;t: es begann fr&uuml;her und l&auml;uft weiter.",
     nowEyebrow: "Zeitsignale",
     nowH1: "Einfach jetzt",
-    nowH2: "Hinweisw&ouml;rter",
-    nowH3: "Noch nicht vorbei",
+    nowH2: "Keine Zeitangaben, sondern Signale",
     nowTitle: "Genau diese Sekunde",
     ord1Eyebrow: "&Uuml;bung",
     ord1Hint: "Klicke die W&ouml;rter in der richtigen Reihenfolge an.",
@@ -2699,13 +2726,11 @@ const UI_I18N = {
     matchHint: "Haz clic en una se&ntilde;al y luego en su significado.",
     matchTitle: "&iquest;Cu&aacute;n ancho es ese &rsquo;now&rsquo;?",
     matchWhy: "Las tres primeras son este segundo. Las tres &uacute;ltimas se extienden m&aacute;s.",
-    nowB1: "Las cuatro apuntan a este momento.",
-    nowB2: "Dile a alguien que lo note ahora.",
-    nowB3: "Empez&oacute; antes y contin&uacute;a.",
+    nowB1: "Las cinco apuntan a este momento.",
+    nowB2: "&rsquo;Look!&rsquo; y &rsquo;Listen!&rsquo; le dicen a alguien que lo note. &rsquo;still&rsquo; significa que empez&oacute; antes y sigue.",
     nowEyebrow: "Se&ntilde;ales de tiempo",
     nowH1: "Ahora, sin m&aacute;s",
-    nowH2: "Palabras que se&ntilde;alan",
-    nowH3: "A&uacute;n sin parar",
+    nowH2: "No son tiempos, son se&ntilde;ales",
     nowTitle: "Este mismo segundo",
     ord1Eyebrow: "Pr&aacute;ctica",
     ord1Hint: "Haz clic en las palabras en el orden correcto.",

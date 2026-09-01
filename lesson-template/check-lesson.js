@@ -19,6 +19,7 @@
  *            attribute resolves to a real key
  *   HEAD     the page carries a real <title> and a generated SEO block —
  *            not the template's "Lesson Title" placeholder
+ *   ART      every background and hero the page names exists on disk
  *   LOGO     Forbes and ENGLISH render to the same optical width
  *   RUNTIME  no JS errors
  *
@@ -456,6 +457,38 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
       bad('SEO block present but no rel="canonical" — the block looks hand-written; run tools/seo.py');
     else
       ok(`head is complete — "${title.trim().slice(0, 58)}${title.trim().length > 58 ? '…' : ''}"`);
+  }
+
+  // ── ART ─────────────────────────────────────────────────────────────
+  // A DECK CAN REFERENCE ARTWORK THAT IS NOT IN THE REPO, AND NOTHING SAID SO.
+  // blockcamp-future-simple-2 shipped with --hero pointing at
+  // future-simple-will/bg22-flip.jpg, a horizontally mirrored bg22 that was
+  // made in the sandbox that built the deck and never committed - it has no
+  // git history at all. The page does not error: a background-image that 404s
+  // just paints nothing, so the cover went out black and stayed that way until
+  // Innes opened it. "https://forbesenglish.com/blockcamp-future-simple-2 has
+  // no cover."
+  // Every gate here ran green on that page. They all measure the DOM, and the
+  // DOM was fine; the file was missing on disk. So this one reads the disk.
+  // Comments are stripped first - the authoring note in every deck names
+  // data-bg="folder/other.jpg" as an example, and it is not a reference.
+  head('ART');
+  {
+    const fs = require('fs');
+    const src = fs.readFileSync(file, 'utf8').replace(/<!--[\s\S]*?-->/g, '');
+    const dir = path.dirname(path.resolve(file));
+    const refs = new Set();
+    for (const m of src.matchAll(/--hero:\s*url\('([^']+)'\)/g)) refs.add(m[1]);
+    for (const m of src.matchAll(/data-bg="([^"]+)"/g)) refs.add(m[1]);
+    const gone = [...refs].filter(u => !/^(https?:|data:)/.test(u)
+                                    && !fs.existsSync(path.join(dir, u)));
+    if (gone.length) {
+      bad(`${gone.length} image reference(s) point at a file that is not in the repo`);
+      gone.forEach(u => console.log(DIM('          ' + u)));
+      console.log(DIM('          A missing background paints nothing and throws nothing.'));
+    } else {
+      ok(`every one of ${refs.size} image reference(s) resolves on disk`);
+    }
   }
 
   head('LOGO');
