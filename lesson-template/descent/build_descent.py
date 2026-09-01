@@ -307,47 +307,106 @@ PART_LINK = re.compile(r'<a class="part-link"[^>]*>.*?</a>', re.S)
 # slides are ABOUT, and each belongs to exactly one chain, so they take that
 # chain's colour: being pink, been turquoise. That is the answer to the slide's
 # own question in the colour of the answer.
+# THE RULE, AS INNES SETTLED IT ON 2026-09-01:
+#
+#   "is/are always blue - then is blue + being pink, was brown + being yellow"
+#
+# The be-auxiliary keeps its OWN tense's colour wherever it appears, and the
+# word that changes the chain carries the tense the chain becomes. So 'is' is
+# blue in every sentence in the line, and what follows it says which chain you
+# are in: nothing (present simple), 'being' (present continuous, pink), 'going
+# to' (lime). 'was' is brown everywhere, and 'was being' is brown then yellow.
+#
+# The first version coloured the whole span by the chain, which made 'is' lime
+# inside 'is going to' and blue two slides later - "is/are not blue
+# consistently in document". This is that fix, generalised to every chain
+# rather than patched onto the one deck he was looking at.
+#
+# has / have are NOT split: unlike be they have no present-simple job in this
+# line - a bare 'has' here is always the front of a perfect - so 'has been' is
+# turquoise end to end.
+#
+# The vocabulary below is the complete set of auxiliary spans in the eight
+# stations, taken by grepping the sources rather than imagined. Anything not
+# in it keeps role green, so a new word cannot go unstyled, and
+# check-colour-roles.py's ORPHAN gate watches for exactly that.
+HEAD_TENSE = {
+    'is': 't-ps', 'are': 't-ps', 'am': 't-ps',
+    "isn't": 't-ps', "aren't": 't-ps',
+    'was': 't-past', 'were': 't-past',
+    "wasn't": 't-past', "weren't": 't-past',
+}
+# What the tail does to the chain, given the tense of the head it follows.
+TAIL_TENSE = {
+    'being':       {'t-ps': 't-pc', 't-past': 't-pastc'},
+    'been':        {'t-ps': 't-pperf', 't-past': 't-pperf'},
+    'going to':    {'t-ps': 't-gt'},
+    'going to be': {'t-ps': 't-gt'},
+}
+# Spans that are one unit, with no be-auxiliary to hold out in front.
 AUX_TENSE = {
     't-ps':    ['am', 'is', 'are', "isn't", "aren't"],
-    't-pc':    ['is being', 'are being', "isn't being", "aren't being", 'being'],
-    't-past':  ['was', 'were', "wasn't", "weren't", 'did', 'was been'],
-    't-pastc': ['was being', 'were being', "wasn't being", "weren't being"],
+    't-past':  ['was', 'were', "wasn't", "weren't", 'did'],
     't-pperf': ['has', 'have', 'has been', 'have been',
                 "hasn't been", "haven't been", 'been'],
-    't-gt':    ['is going to', 'are going to', 'going to', 'is going to be',
-                "isn't going to", "aren't going to"],
+    't-gt':    ['going to'],
 }
 AUX_LOOKUP = {w: cls for cls, words in AUX_TENSE.items() for w in words}
 AUX_SPAN = re.compile(r'<em class="aux">([^<]*)</em>')
 
+# A bare 'being' is the word a slide is ABOUT, with no auxiliary beside it to
+# take its tense from, so it takes the station's. Only the two continuous
+# stations differ; everywhere else 'being' means the present continuous, the
+# chain it is introduced on.
+STATION_TENSE = {
+    'blockcamp-passive-present-continuous.html': 't-pc',
+    'blockcamp-passive-past-continuous.html': 't-pastc',
+}
 
-def tense_in_situ(html):
-    """Recolour every auxiliary span by the tense of the chain it belongs to."""
+
+def _norm(raw):
+    """A named word wears inverted commas, and the closing one is the SAME
+    entity as the apostrophe in isn't - so strip the wrapping pair before
+    turning what is left into an apostrophe, or 'is' normalises to "is'"."""
+    w = raw.replace('&nbsp;', ' ').strip()
+    if w.startswith('&lsquo;') and w.endswith('&rsquo;'):
+        w = w[len('&lsquo;'):-len('&rsquo;')]
+    return w.replace('&rsquo;', "'").strip().lower()
+
+
+def tense_in_situ(html, station_file=''):
+    """Colour every auxiliary by the tense of the chain it belongs to."""
+    bare_being = STATION_TENSE.get(station_file, 't-pc')
+
+    def em(cls, text):
+        return '<em class="%s">%s</em>' % (cls, text)
+
     def swap(m):
-        # A named word wears inverted commas, and the closing one is the
-        # SAME entity as the apostrophe in isn't - so strip the pair that
-        # wraps the word before turning what is left into an apostrophe,
-        # or 'is' normalises to "is'" and matches nothing.
-        # Innes: "is/are not blue consistently in document". On station 13
-        # the whole 'is going to' was lime, so the 'is' inside it was lime
-        # while a bare 'is' two slides earlier was blue - the same word in two
-        # colours on one deck. 'going to' is a lexical marker sitting on top
-        # of an ordinary present-simple be, which is why this one splits: the
-        # be stays blue everywhere and 'going to' carries the tense.
-        # NOT applied to 'is being' or 'was being', which he specified as
-        # single pink and yellow units. Flagged to him rather than decided.
         raw = m.group(1).strip()
-        for head in ('is', 'are', 'am', 'Is', 'Are', 'Am',
-                     'isn&rsquo;t', 'aren&rsquo;t'):
-            if raw.startswith(head + ' ') and raw[len(head):].strip() == 'going to':
-                return ('<em class="t-ps">%s</em> <em class="t-gt">going to</em>'
-                        % head)
-        word = m.group(1).replace('&nbsp;', ' ').strip()
-        if word.startswith('&lsquo;') and word.endswith('&rsquo;'):
-            word = word[len('&lsquo;'):-len('&rsquo;')]
-        word = word.replace('&rsquo;', "'").strip().lower()
+        words = _norm(raw).split()
+
+        # head + tail: the be keeps its own tense, the tail carries the chain
+        if len(words) > 1 and words[0] in HEAD_TENSE:
+            head_cls = HEAD_TENSE[words[0]]
+            tail = ' '.join(words[1:])
+            tail_cls = TAIL_TENSE.get(tail, {}).get(head_cls)
+            if tail_cls:
+                # keep the ORIGINAL text, so entities and capitals survive
+                head_txt = raw.split(' ')[0]
+                tail_txt = raw[len(head_txt):].strip()
+                if tail == 'going to be':
+                    tail_txt, be = tail_txt[:-2].strip(), tail_txt[-2:]
+                    return (em(head_cls, head_txt) + ' ' + em(tail_cls, tail_txt)
+                            + ' ' + em('inf', be))
+                return em(head_cls, head_txt) + ' ' + em(tail_cls, tail_txt)
+
+        word = _norm(raw)
+        if word == 'being':
+            return m.group(0).replace('class="aux"', 'class="%s"' % bare_being, 1)
         cls = AUX_LOOKUP.get(word)
-        return m.group(0) if not cls else m.group(0).replace('class="aux"', 'class="%s"' % cls, 1)
+        return m.group(0) if not cls else m.group(0).replace(
+            'class="aux"', 'class="%s"' % cls, 1)
+
     return AUX_SPAN.sub(swap, html)
 
 
@@ -376,7 +435,7 @@ def build(st):
     head = head.replace('.aux { color: var(--mark-aux) !important; font-weight: 700; }',
                         '.aux { color: var(--mark-aux) !important; font-weight: 700; }' + ROLE_CSS, 1)
     tail = rescore(tail, st.get('messages', {}))
-    body = tense_in_situ('\n\n    '.join([cover(cov, st)] + st['slides']))
+    body = tense_in_situ('\n\n    '.join([cover(cov, st)] + st['slides']), st['file'])
     out = head + body + tail
     out = retarget_part_link(out, st)
     path = os.path.join(ROOT, st['file'])

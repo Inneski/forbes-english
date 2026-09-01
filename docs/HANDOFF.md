@@ -188,12 +188,37 @@ tense the chain is in, that is the one question a learner never needs answered.
 They can see it is an auxiliary. They cannot see which tense, and the trail
 already taught them a colour for each.
 
-It is **one central rule**, not eight hand-edits: `AUX_TENSE` in
-`build_descent.py` maps the complete auxiliary vocabulary of the eight stations
-(taken by grepping the sources, not imagined) and `tense_in_situ()` rewrites
-every span at build time. Anything not in the map keeps role green, so a new
-word cannot go unstyled. **Add a word to a station and add it to that map**, or
-it ships green in a deck where nothing else is.
+**The be-auxiliary keeps its own tense; the added word carries the chain.**
+Innes settled this after the first version coloured whole spans by the chain,
+which made `is` lime inside `is going to` and blue two slides later - "is/are
+not blue consistently in document". His ruling: *"is/are always blue - then is
+blue + being pink, was brown + being yellow"*. So:
+
+| | |
+|---|---|
+| `is` `are` `am` | blue, everywhere |
+| `was` `were` | brown, everywhere |
+| `is being` | blue + pink |
+| `was being` | brown + yellow |
+| `is going to be` | blue + lime + gold |
+| `has been` | turquoise, end to end |
+
+`has`/`have` are the one exception and it is principled: unlike be, they have
+no present-simple job in this line - a bare `has` here is always the front of a
+perfect - so there is nothing to hold out in front.
+
+It is **one central rule**, not eight hand-edits: `HEAD_TENSE`, `TAIL_TENSE`
+and `AUX_TENSE` in `build_descent.py` hold the complete auxiliary vocabulary of
+the eight stations (grepped from the sources, not imagined) and
+`tense_in_situ()` rewrites every span at build time. Anything not in the map
+keeps role green, so a new word cannot go unstyled. **Add a word to a station
+and add it to that map**, or it ships green in a deck where nothing else is.
+
+**Do not hand-tag a tense class in a station source.** The two contrast grids
+were hand-tagged when this was a special case, and when the split shipped they
+silently kept `is being` as one pink unit while every other deck had moved -
+a hand tag is invisible to the central rule by construction. They are back on
+`class="aux"`.
 
 The participle stays purple in every chain. It is the constant the decks exist
 to teach.
