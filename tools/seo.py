@@ -99,6 +99,11 @@ PAGES = {
                    'The IELTS Speaking route — how long an answer should be, '
                    'how to extend one without waffling, and how to fill the '
                    'two minutes of the long turn.', 0.9, '/ielts-speaking/hero.jpg'),
+    'ielts-listening.html': ('IELTS Listening',
+                   'The IELTS Listening route — thirty minutes, four sections, '
+                   'forty questions, and every recording played once. How the '
+                   'test is built, and what to do in the seconds before each '
+                   'section starts.', 0.9, '/ielts-listening/hero.jpg'),
     'level-checker.html': ('Level Checker',
                            'A free adaptive placement test for English '
                            'tenses. Six questions a level, A1 to C1, and it '
