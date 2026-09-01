@@ -3779,6 +3779,65 @@ else ready();
   function lang() { return document.documentElement.lang || 'en'; }
   function active() { return document.querySelector('.slide.is-active'); }
 
+  /* THE PANEL WAS EMPTY ON A THIRD OF THE LINE, AND IT WAS LOOKING IN ONE
+     PLACE ONLY. Innes: "ENG/DE button skimps on duties a lot". Measured
+     across the eighteen Block Camp decks in German: 137 of 414 slides opened
+     the panel and were told "nothing here is English-only" - and the empty
+     ones are almost always slides 1-8, the TEACH slides.
+
+     The reason is SEL. It lists the exercise shapes - stems, options, chips,
+     sort items, match items - because those are what the DICTIONARY holds.
+     A teach slide's prose is not in the dictionary at all. But it is not
+     untranslated: it carries its ES/DE gloss inline, in a .sup, right there
+     in the markup. The panel simply never looked at them.
+
+     So the dictionary is now the first source and the slide's own glosses are
+     the second. Each visible .sup is paired with the English of the element
+     it hangs off - the example list, the paradigm head, the stem - and listed
+     like any other row. Nothing new to author: this is the deck showing what
+     it already says.
+
+     It also rescues the two passive decks, which are the worst on the line
+     (7 and 15 strings covered out of 86 and 88) because they take their
+     chassis, and therefore their dictionary, from the ACTIVE camp they
+     descend past - so almost nothing in it matches their own sentences. */
+  function glossRows(s, L, seen, rows) {
+    var esc = function (t) { return t.replace(/&/g, '&amp;').replace(/</g, '&lt;'); };
+    var add = function (en, de) {
+      if (!en || !de || seen[en]) return;
+      seen[en] = 1;
+      rows.push('<div class="tr-row"><span>' + esc(en) + '</span><span>' + esc(de) + '</span></div>');
+    };
+    [].forEach.call(s.querySelectorAll('.sup[data-lang="' + L + '"]'), function (sup) {
+      if (!sup.offsetParent && getComputedStyle(sup).display === 'none') return;
+      var host = sup.parentElement;
+      if (!host) return;
+      var de = (sup.querySelector('span') || sup).textContent.replace(/\s+/g, ' ').trim();
+      if (!de) return;
+      /* AN EXAMPLE LIST IS A LIST ON BOTH SIDES, AND norm() FLATTENS IT.
+         Its first output read "yesterdaylast nightin 1990when I was a child"
+         against the whole German line - one unreadable row that also repeated
+         four rows the dictionary had already given individually. The gloss is
+         written with the same middots and in the same order as the chips, so
+         when the two sides count the same they are paired one to one, and
+         anything already listed is skipped. Only a mismatch falls back to the
+         single joined row, which is still better than nothing. */
+      var list = host.querySelector('.exlist');
+      if (list) {
+        var chips = [].map.call(list.children, function (c) {
+          return (c.textContent || '').replace(/\s+/g, ' ').trim(); });
+        var parts = de.split(/\s*[\u00b7\u2022]\s*/).filter(Boolean);
+        if (chips.length && chips.length === parts.length) {
+          chips.forEach(function (c, i) { add(c, parts[i]); });
+          return;
+        }
+        add(chips.join(' \u00b7 '), de);
+        return;
+      }
+      add(norm(host), de);
+    });
+  }
+
   function render() {
     var L = lang(), dict = TR[L] || {}, s = active();
     var seen = {}, rows = [];
@@ -3789,6 +3848,7 @@ else ready();
       rows.push('<div class="tr-row"><span>' + k.replace(/&/g, '&amp;').replace(/</g, '&lt;') +
                 '</span><span>' + dict[k] + '</span></div>');
     });
+    if (s && L !== 'en') glossRows(s, L, seen, rows);
     panel.innerHTML = '<h4>' + (L === 'de' ? 'Auf Deutsch' : L === 'es' ? 'En español' : 'Translation') + '</h4>' +
       (rows.length ? '<div class="tr-grid">' + rows.join('') + '</div>'
                    : '<p class="tr-empty">' +
