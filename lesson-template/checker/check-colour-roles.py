@@ -159,6 +159,16 @@ def auxjob(name, body, findings, allowed):
         nxt = re.sub(r'&[a-z]+;', "'", m.group(3)).strip().lower()
         if word not in BE_HAVE_DO:
             continue
+        # A NEGATIVE CONTRACTION IS NOT A MAIN VERB. The camp decks split
+        # isn't / aren't / don't into the auxiliary and the negative so the
+        # two halves can be coloured apart, which leaves the aux span butted
+        # straight up against <em class="neg">n't</em> with no space. Reading
+        # the next word characters then gives 'n', and this gate convicted
+        # 'is' of being a main verb on the present continuous deck. The
+        # contraction is the one case where what follows an auxiliary is
+        # neither a verb nor a gap.
+        if 'neg' in m.group(2):
+            continue
         # A WORD IN INVERTED COMMAS IS BEING NAMED, NOT USED. "only 'is' /
         # 'are' changes" is a sentence ABOUT the auxiliaries; the quotes are
         # the house convention that says so, and Innes asked for them by name

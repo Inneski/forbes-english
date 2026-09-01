@@ -339,7 +339,7 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 .freq-stop { text-align: center; }
 .freq-tick { width: 2px; height: 12px; margin: -22px auto 10px;
   background: var(--void); opacity: .55; }
-.freq-word { font-family: var(--font-ui); font-size: 20px; font-weight: 600; color: var(--text); }
+.freq-word { font-family: var(--font-ui); font-size: 20px; font-weight: 600; color: var(--mark-freq); }
 .freq-pct { font-family: var(--font-mono); font-size: 12.5px; color: var(--accent-bright); margin-top: 3px; }
 .freq-gloss { font-family: var(--font-ui); font-size: 14.5px; color: var(--text-dim); margin-top: 4px; }
 .freq-rule { margin-top: 18px; text-align: center; font-family: var(--font-ui);
@@ -1055,6 +1055,7 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
      is the word that turns the sentence over, and it earns a colour of its
      own for exactly that reason. */
   --mark-neg: #f65af6;
+  --mark-freq: #00D9FF;
 }
 em.aux, b.aux { color: var(--mark-aux) !important; font-weight: 700; }
 .verb { color: var(--mark-inf) !important; font-weight: 700; font-style: normal; }
@@ -1072,6 +1073,11 @@ em.neg, b.neg { color: var(--mark-neg) !important; font-weight: 700; }
    outrank a bare b.adv, so without it the adverb stayed accent-blue and
    nothing visibly changed. */
 b.sig { color: var(--text) !important; font-weight: 700; }
+b.freq, em.freq { color: var(--mark-freq) !important; font-weight: 700; }
+/* The examples wear the formula's own grey where the formula says
+   SENTENCE, so the two map onto each other at a glance. Innes: "match
+   up Alex Farms with the SENTENCE grey". */
+b.sent { color: var(--text-dim) !important; font-weight: 700; }
 /* .sig is the time signal - a short adverb or a whole phrase, the two cards
    on this slide are teaching the same thing about both. It is deliberately
    NOT in check-colour-roles.py's role whitelist: it is the one class here
@@ -2120,7 +2126,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
             <div class="freq-row"><div class="freq-word">hardly ever</div><div class="freq-pct">~5%</div><div class="freq-gloss">almost never<span class="sup" data-lang="es"><b>ES</b><span>casi nunca</span></span><span class="sup" data-lang="de"><b>DE</b><span>fast nie</span></span></div></div>
             <div class="freq-row"><div class="freq-word">never</div><div class="freq-pct">0%</div><div class="freq-gloss">not once<span class="sup" data-lang="es"><b>ES</b><span>nunca</span></span><span class="sup" data-lang="de"><b>DE</b><span>nie</span></span></div></div>
           </div>
-          <p class="freq-rule" data-i18n="freqRule"><span class="formula">SUBJECT + <b>always</b> + VERB</span><span class="formula">SUBJECT + <em class="t-ps">am</em> / <em class="t-ps">are</em> / <em class="t-ps">is</em> + <b>always</b></span></p>
+          <p class="freq-rule" data-i18n="freqRule"><span class="formula">SUBJECT + <b class="freq">ADVERB OF FREQUENCY</b> + VERB</span><span class="formula">SUBJECT + <em class="t-ps">am</em> / <em class="t-ps">are</em> / <em class="t-ps">is</em> + <b class="freq">ADVERB OF FREQUENCY</b></span></p>
         </div>
       </div>
     </section>
@@ -2162,12 +2168,12 @@ em, i, .card .prose.dim em { font-style: normal !important;
           <div class="card">
             <p class="prose"><strong data-i18n="ordH1">Short adverbs</strong></p>
             <p class="prose" data-i18n="ordB1" style="margin-top:8px;font-size:18px">Before the verb. After &rsquo;be&rsquo;.</p>
-            <p class="prose dim" style="margin-top:8px;font-size:15px"><span class="formula"><b class="sig">adverb</b> + <em class="verb">verb</em></span><span class="formula"><em class="t-ps">am</em> / <em class="t-ps">are</em> / <em class="t-ps">is</em> + <b class="sig">adverb</b></span><span class="exlist"><span>Steve <b class="sig">often</b> <em class="verb">mines</em></span><span>the wolf <em class="t-ps">is</em> <b class="sig">usually</b> friendly</span></span><span class="sup" data-lang="es"><b>ES</b><span>Steve pica a menudo &middot; el lobo suele ser amistoso</span></span><span class="sup" data-lang="de"><b>DE</b><span>Steve gr&auml;bt oft &middot; der Wolf ist meistens freundlich</span></span></p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px"><span class="formula"><b class="freq">adverb</b> + <em class="verb">verb</em></span><span class="formula"><em class="t-ps">am</em> / <em class="t-ps">are</em> / <em class="t-ps">is</em> + <b class="freq">adverb</b></span><span class="exlist"><span>Steve <b class="freq">often</b> <em class="verb">mines</em></span><span>the wolf <em class="t-ps">is</em> <b class="freq">usually</b> friendly</span></span><span class="sup" data-lang="es"><b>ES</b><span>Steve pica a menudo &middot; el lobo suele ser amistoso</span></span><span class="sup" data-lang="de"><b>DE</b><span>Steve gr&auml;bt oft &middot; der Wolf ist meistens freundlich</span></span></p>
           </div>
           <div class="card">
             <p class="prose"><strong data-i18n="ordH2">Longer phrases</strong></p>
             <p class="prose" data-i18n="ordB2" style="margin-top:8px;font-size:18px">Start or end. Both fine.</p>
-            <p class="prose dim" style="margin-top:8px;font-size:15px"><span class="formula"><b class="sig">time phrase</b> + sentence</span><span class="formula">sentence + <b class="sig">time phrase</b></span><span class="exlist"><span><b class="sig">Every morning</b>, Alex farms</span><span>Alex farms <b class="sig">every morning</b></span></span><span class="sup" data-lang="es"><b>ES</b><span>cada ma&ntilde;ana, Alex cultiva &middot; Alex cultiva cada ma&ntilde;ana</span></span><span class="sup" data-lang="de"><b>DE</b><span>jeden Morgen bestellt Alex &middot; Alex bestellt jeden Morgen</span></span></p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px"><span class="formula"><b class="sig">time phrase</b> + sentence</span><span class="formula">sentence + <b class="sig">time phrase</b></span><span class="exlist"><span><b class="sig">Every morning</b>, <b class="sent">Alex farms</b></span><span><b class="sent">Alex farms</b> <b class="sig">every morning</b></span></span><span class="sup" data-lang="es"><b>ES</b><span>cada ma&ntilde;ana, Alex cultiva &middot; Alex cultiva cada ma&ntilde;ana</span></span><span class="sup" data-lang="de"><b>DE</b><span>jeden Morgen bestellt Alex &middot; Alex bestellt jeden Morgen</span></span></p>
           </div>
         </div>
       </div>
@@ -2609,7 +2615,7 @@ const UI_I18N = {
     fbCorrect: 'Correct.',
     fbWrong: 'Not quite.',
     freqEyebrow: "How often?",
-    freqRule: "<span class=\"formula\">SUBJECT + <b>always</b> + VERB</span><span class=\"formula\">SUBJECT + <em class=\"t-ps\">am</em> / <em class=\"t-ps\">are</em> / <em class=\"t-ps\">is</em> + <b>always</b></span>",
+    freqRule: "<span class=\"formula\">SUBJECT + <b class=\"freq\">ADVERB OF FREQUENCY</b> + VERB</span><span class=\"formula\">SUBJECT + <em class=\"t-ps\">am</em> / <em class=\"t-ps\">are</em> / <em class=\"t-ps\">is</em> + <b class=\"freq\">ADVERB OF FREQUENCY</b></span>",
     freqTitle: "Adverbs of frequency",
     gap1Eyebrow: "Practice",
     gap1Hint: "Type the verb in brackets in the right form.",
@@ -2722,7 +2728,7 @@ const UI_I18N = {
     fbCorrect: 'Richtig.',
     fbWrong: 'Nicht ganz.',
     freqEyebrow: "Wie oft?",
-    freqRule: "<span class=\"formula\">SUBJECT + <b>always</b> + VERB</span><span class=\"formula\">SUBJECT + <em class=\"t-ps\">am</em> / <em class=\"t-ps\">are</em> / <em class=\"t-ps\">is</em> + <b>always</b></span>",
+    freqRule: "<span class=\"formula\">SUBJECT + <b class=\"freq\">ADVERB OF FREQUENCY</b> + VERB</span><span class=\"formula\">SUBJECT + <em class=\"t-ps\">am</em> / <em class=\"t-ps\">are</em> / <em class=\"t-ps\">is</em> + <b class=\"freq\">ADVERB OF FREQUENCY</b></span>",
     freqTitle: "Häufigkeitsadverbien",
     gap1Eyebrow: "&Uuml;bung",
     gap1Hint: "Schreibe das Verb in Klammern in der richtigen Form.",
@@ -2835,7 +2841,7 @@ const UI_I18N = {
     fbCorrect: 'Correcto.',
     fbWrong: 'No exactamente.',
     freqEyebrow: "&iquest;Con qu&eacute; frecuencia?",
-    freqRule: "<span class=\"formula\">SUBJECT + <b>always</b> + VERB</span><span class=\"formula\">SUBJECT + <em class=\"t-ps\">am</em> / <em class=\"t-ps\">are</em> / <em class=\"t-ps\">is</em> + <b>always</b></span>",
+    freqRule: "<span class=\"formula\">SUBJECT + <b class=\"freq\">ADVERB OF FREQUENCY</b> + VERB</span><span class=\"formula\">SUBJECT + <em class=\"t-ps\">am</em> / <em class=\"t-ps\">are</em> / <em class=\"t-ps\">is</em> + <b class=\"freq\">ADVERB OF FREQUENCY</b></span>",
     freqTitle: "Adverbios de frecuencia",
     gap1Eyebrow: "Pr&aacute;ctica",
     gap1Hint: "Escribe el verbo entre par&eacute;ntesis en la forma correcta.",
