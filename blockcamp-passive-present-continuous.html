@@ -1064,6 +1064,8 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
      lesson-template/tense-palette.css - 5.4:1 on the darkest orange surface,
      2.9:1 against --text, so no lifting was needed. */
   --t-present-simple: #7A93B5;
+  --t-present-continuous: #E68EA6;   /* 7.54:1 here */
+  --mark-neg: #f65af6;               /* 6.62:1, and 97 in RGB from the pink */
 }
 em.aux, b.aux { color: var(--mark-aux) !important; font-weight: 700; }
 /* One colour per job. See the MARKS block above for why each is what it is. */
@@ -1151,6 +1153,8 @@ em.aux, b.aux { color: var(--mark-aux) !important; font-weight: 700; }
 .slide[data-type="results"] #scoreMsg  { margin-top: 26px !important; max-width: 34ch; }
 .slide[data-type="results"] .slide-body > .prose.dim { margin-top: 22px !important; }
 
+em.t-pc, b.t-pc { color: var(--t-present-continuous) !important; font-weight: 700; }
+em.neg, b.neg { color: var(--mark-neg) !important; font-weight: 700; }
 em.modal, b.modal { color: var(--mark-modal) !important; font-weight: 700; }
 em.inf, b.inf { color: var(--mark-inf) !important; font-weight: 700; }
 em.t-present, b.t-present { color: var(--t-present-simple) !important;
@@ -2170,7 +2174,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
             <div class="para-row"><span class="para-subj"></span><span class="para-verb">same thing in front, same third form at the end</span></div>
           </div>
         </div>
-        <p class="para-note"><span class="formula"><em class="obj">THING</em> + <em class="t-ps">am</em> / <em class="t-ps">is</em> / <em class="t-ps">are</em> + <em class="t-pc">being</em> + <em class="pp">PAST PARTICIPLE</em></span></p>
+        <p class="para-note"><span class="formula"><em class="obj">THING</em> + <em class="t-pc">am</em> / <em class="t-pc">is</em> / <em class="t-pc">are</em> + <em class="t-pc">being</em> + <em class="pp">PAST PARTICIPLE</em></span></p>
       </div>
     </section>
 
@@ -2193,8 +2197,8 @@ em, i, .card .prose.dim em { font-style: normal !important;
           </div>
           <div class="para-block">
             <div class="para-head">Asking</div><span class="sup" data-lang="es"><b>ES</b><span>&iquest;Se est&aacute; construyendo?</span></span><span class="sup" data-lang="de"><b>DE</b><span>Wird es gerade gebaut?</span></span>
-            <div class="para-row"><span class="para-subj">one</span><span class="para-verb"><em class="t-ps">Is</em> it <em class="t-pc">being</em> <em class="pp">built</em>?</span></div>
-            <div class="para-row"><span class="para-subj">more</span><span class="para-verb"><em class="t-ps">Are</em> they <em class="t-pc">being</em> <em class="pp">built</em>?</span></div>
+            <div class="para-row"><span class="para-subj">one</span><span class="para-verb"><em class="t-pc">Is</em> it <em class="t-pc">being</em> <em class="pp">built</em>?</span></div>
+            <div class="para-row"><span class="para-subj">more</span><span class="para-verb"><em class="t-pc">Are</em> they <em class="t-pc">being</em> <em class="pp">built</em>?</span></div>
           </div>
         </div>
         <p class="para-note"><span class="formula">only <em class="t-ps">&lsquo;is&rsquo;</em> / <em class="t-ps">&lsquo;are&rsquo;</em> changes &mdash; <em class="t-pc">&lsquo;being&rsquo;</em> and the <em class="pp">participle</em> never do</span></p>
@@ -2671,12 +2675,12 @@ const UI_I18N = {
     par2A: "Negative",
     par2B: "Question",
     par2Eyebrow: "The form",
-    par2Note: "<span class=\"formula\">SUBJECT + <b><em class=\"aux\">am</em> / <em class=\"aux\">are</em> / <em class=\"aux\">is</em></b> + <em class=\"aux\">not</em> + VERB-ing</span><span class=\"formula\"><b><em class=\"aux\">Am</em> / <em class=\"aux\">Are</em> / <em class=\"aux\">Is</em></b> + SUBJECT + VERB-ing <i>?</i></span>",
+    par2Note: "<span class=\"formula\">SUBJECT + <b><em class=\"t-pc\">am</em> / <em class=\"t-pc\">are</em> / <em class=\"t-pc\">is</em></b> + <em class=\"neg\">not</em> + VERB-ing</span><span class=\"formula\"><b><em class=\"t-pc\">Am</em> / <em class=\"t-pc\">Are</em> / <em class=\"t-pc\">Is</em></b> + SUBJECT + VERB-ing <i>?</i></span>",
     par2Title: "Negative and question",
     parA: "am &middot; are &middot; is",
     parB: "Short forms",
     parEyebrow: "The form",
-    parNote: "<span class=\"formula\">SUBJECT + <b><em class=\"aux\">am</em> / <em class=\"aux\">are</em> / <em class=\"aux\">is</em></b> + VERB-ing</span>",
+    parNote: "<span class=\"formula\">SUBJECT + <b><em class=\"t-pc\">am</em> / <em class=\"t-pc\">are</em> / <em class=\"t-pc\">is</em></b> + VERB-ing</span>",
     parTitle: "Three parts, every time",
     qEyebrow: "Practice",
     qTitleForm: "Choose the right form",
@@ -2785,12 +2789,12 @@ const UI_I18N = {
     par2A: "Verneinung",
     par2B: "Frage",
     par2Eyebrow: "Die Form",
-    par2Note: "<span class=\"formula\">SUBJECT + <b><em class=\"aux\">am</em> / <em class=\"aux\">are</em> / <em class=\"aux\">is</em></b> + <em class=\"aux\">not</em> + VERB-ing</span><span class=\"formula\"><b><em class=\"aux\">Am</em> / <em class=\"aux\">Are</em> / <em class=\"aux\">Is</em></b> + SUBJECT + VERB-ing <i>?</i></span>",
+    par2Note: "<span class=\"formula\">SUBJECT + <b><em class=\"t-pc\">am</em> / <em class=\"t-pc\">are</em> / <em class=\"t-pc\">is</em></b> + <em class=\"neg\">not</em> + VERB-ing</span><span class=\"formula\"><b><em class=\"t-pc\">Am</em> / <em class=\"t-pc\">Are</em> / <em class=\"t-pc\">Is</em></b> + SUBJECT + VERB-ing <i>?</i></span>",
     par2Title: "Verneinung und Frage",
     parA: "am &middot; are &middot; is",
     parB: "Kurzformen",
     parEyebrow: "Die Form",
-    parNote: "<span class=\"formula\">SUBJECT + <b><em class=\"aux\">am</em> / <em class=\"aux\">are</em> / <em class=\"aux\">is</em></b> + VERB-ing</span>",
+    parNote: "<span class=\"formula\">SUBJECT + <b><em class=\"t-pc\">am</em> / <em class=\"t-pc\">are</em> / <em class=\"t-pc\">is</em></b> + VERB-ing</span>",
     parTitle: "Drei Teile, jedes Mal",
     qEyebrow: "&Uuml;bung",
     qTitleForm: "W&auml;hle die richtige Form",
@@ -2899,12 +2903,12 @@ const UI_I18N = {
     par2A: "Negativo",
     par2B: "Pregunta",
     par2Eyebrow: "La forma",
-    par2Note: "<span class=\"formula\">SUBJECT + <b><em class=\"aux\">am</em> / <em class=\"aux\">are</em> / <em class=\"aux\">is</em></b> + <em class=\"aux\">not</em> + VERB-ing</span><span class=\"formula\"><b><em class=\"aux\">Am</em> / <em class=\"aux\">Are</em> / <em class=\"aux\">Is</em></b> + SUBJECT + VERB-ing <i>?</i></span>",
+    par2Note: "<span class=\"formula\">SUBJECT + <b><em class=\"t-pc\">am</em> / <em class=\"t-pc\">are</em> / <em class=\"t-pc\">is</em></b> + <em class=\"neg\">not</em> + VERB-ing</span><span class=\"formula\"><b><em class=\"t-pc\">Am</em> / <em class=\"t-pc\">Are</em> / <em class=\"t-pc\">Is</em></b> + SUBJECT + VERB-ing <i>?</i></span>",
     par2Title: "Negativo y pregunta",
     parA: "am &middot; are &middot; is",
     parB: "Formas cortas",
     parEyebrow: "La forma",
-    parNote: "<span class=\"formula\">SUBJECT + <b><em class=\"aux\">am</em> / <em class=\"aux\">are</em> / <em class=\"aux\">is</em></b> + VERB-ing</span>",
+    parNote: "<span class=\"formula\">SUBJECT + <b><em class=\"t-pc\">am</em> / <em class=\"t-pc\">are</em> / <em class=\"t-pc\">is</em></b> + VERB-ing</span>",
     parTitle: "Tres partes, siempre",
     qEyebrow: "Pr&aacute;ctica",
     qTitleForm: "Elige la forma correcta",

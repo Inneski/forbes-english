@@ -444,6 +444,47 @@ def tense_in_situ(html, station_file=''):
     return AUX_SPAN.sub(swap, html)
 
 
+# ── A QUESTION SPLITS THE CHAIN, AND THE CHAIN IS STILL THE CHAIN ───────
+# Innes: "was/were should not appear as brown in past continuous sentences
+# ever" and "is/are should not appear as blue in present continuous sentences
+# ever".
+#
+# tense_in_situ() reads one span at a time, which is right for a statement -
+# 'was being' arrives as a single span and comes out yellow. It is wrong for a
+# question, because inversion puts the subject INSIDE the chain:
+#
+#     Was  it  being built?          Is  it  being built?
+#
+# and the two halves arrive as two spans with a pronoun between them. Read
+# separately, 'Was' is a bare past simple be and 'Is' a bare present simple
+# one, so they came out brown and blue against a yellow and a pink 'being' -
+# two colours on one chain, and the wrong two.
+#
+# So: a second pass over the assembled slides. A simple-tense be followed
+# within a few words by a continuous 'being' is not a bare be at all; it is the
+# front half of a chain the question has opened up, and it takes the colour of
+# the half that names the tense.
+SPLIT_BY_QUESTION = re.compile(
+    r'(<em class=")(t-ps|t-past)(">(?:Am|Is|Are|Was|Were|am|is|are|was|were)</em>)'
+    r'((?:</?[a-z][^>]*>|[^<>]){0,40}?)'
+    r'(<em class="(t-pc|t-pastc)">being</em>)')
+
+
+def rejoin_split_chains(html):
+    def fix(m):
+        return m.group(1) + m.group(6) + m.group(3) + m.group(4) + m.group(5)
+    # Until it stops changing: a formula names both halves of the be -
+    # "THING + was / were + being + PAST PARTICIPLE" - so one pass recolours
+    # 'was' and leaves 'were' behind it still brown. The same shape appears
+    # with 'am / is / are' on station 10.
+    for _ in range(6):
+        out = SPLIT_BY_QUESTION.sub(fix, html)
+        if out == html:
+            return out
+        html = out
+    return html
+
+
 def retarget_part_link(out, st):
     link = ('<a class="part-link" id="partLink" href="block-camp-descent-map.html">'
             'Descent map</a>')
@@ -470,6 +511,7 @@ def build(st):
                         '.aux { color: var(--mark-aux) !important; font-weight: 700; }' + ROLE_CSS, 1)
     tail = rescore(tail, st.get('messages', {}))
     body = tense_in_situ('\n\n    '.join([cover(cov, st)] + st['slides']), st['file'])
+    body = rejoin_split_chains(body)
     out = head + body + tail
     out = retarget_part_link(out, st)
     path = os.path.join(ROOT, st['file'])

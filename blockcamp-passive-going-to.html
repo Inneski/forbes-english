@@ -1054,6 +1054,25 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
      the bare verb after it wears, and 7.4:1 / 7.1:1 on these decks' surfaces.
      Innes: "will in orange, base verb in gold". */
   --mark-modal: #ff8a4c;
+  /* THE BLUE 'AM / ARE / IS' RULE, BROUGHT UP FROM THE DESCENT ───────
+     Innes: "put the blue am/are/is rule in here". Station 13 splits the
+     chain three ways - the be blue, 'going to' its own green, the base verb
+     gold - and his reason is a teaching one, not a decorative one: a blue be
+     at the FRONT is what a question looks like, so 'Are you going to come?'
+     shows its own inversion, and the same 'going to' rides on a present be
+     or a past one, which is only visible if the be is coloured apart from it.
+     That second half is why this deck now has a past-version slide too.
+     Values are camp 5's and camp 3's own hexes from
+     lesson-template/tense-palette.css - the colours a learner met on the
+     route map before they ever opened a lesson. */
+  --t-present-simple: #7A93B5;
+  --t-past-simple: #B08968;
+  --t-going-to: #70A43A;
+  /* The negative is a role, so it gets a token like the others - and
+     the ORPHAN gate caught that it did not: a rule painted with
+     var(--text) reads as unstyled to a checker that watches for role
+     tokens, which is the gate doing exactly its job. */
+  --mark-neg: #f65af6;
   --mark-inf: #eec32f;
 
   /* A tense named inside a pill that this deck does NOT teach keeps its own
@@ -1150,6 +1169,21 @@ em.aux, b.aux { color: var(--mark-aux) !important; font-weight: 700; }
 .slide[data-type="results"] #scoreMsg  { margin-top: 26px !important; max-width: 34ch; }
 .slide[data-type="results"] .slide-body > .prose.dim { margin-top: 22px !important; }
 
+/* Green stays the auxiliary that has no tense of its own - 'do' in the wrong
+   answer on the mistakes slide, 'has' in the contrast. Everything with a tense
+   now wears it. */
+em.t-ps, b.t-ps   { color: var(--t-present-simple) !important; font-weight: 700; }
+em.t-past         { color: var(--t-past-simple) !important;    font-weight: 700; }
+em.t-gt, b.t-gt   { color: var(--t-going-to) !important;       font-weight: 700;
+                    /* two words, one idea: splitting the chain into two
+                       spans gave the browser a break opportunity inside
+                       it, and the narrow three-column paradigm took it -
+                       'going / to / build' down three lines. */
+                    white-space: nowrap; }
+/* Innes on the present continuous deck: "'NOT' in white". A negative is not a
+   tense and not a role; it is the word that turns the sentence over, and it
+   reads as itself. */
+em.neg            { color: var(--mark-neg) !important;         font-weight: 700; }
 em.modal, b.modal { color: var(--mark-modal) !important; font-weight: 700; }
 em.inf, b.inf { color: var(--mark-inf) !important; font-weight: 700; }
 em.t-present, b.t-present { color: var(--t-present-simple) !important;
@@ -2597,6 +2631,11 @@ const RTL_LANGS = ['ar'];
 
 const UI_I18N = {
   en: {
+    pastA: "was",
+    pastB: "were",
+    pastEyebrow: "The past version",
+    pastNote: "<span class=\"formula\">SUBJECT + <b><em class=\"t-past\">was</em> / <em class=\"t-past\">were</em></b> + <em class=\"t-gt\">going to</em> + BASE VERB</span><span class=\"exlist\"><span>we <em class=\"t-past\">were</em> <em class=\"t-gt\">going to</em> <em class=\"inf\">wait</em> &mdash; <span class=\"dim\">then it rained</span></span></span><span class=\"dictum\">THE CHAIN IS THE SAME &mdash; ONLY THE FIRST WORD MOVES</span>",
+    pastTitle: "The plan you had, before it changed",
     partLink: "Part 2 &rarr;",
     actEyebrow: 'Activation',
     actPlaceholder: "Tomorrow I am going to&hellip;",
@@ -2618,7 +2657,7 @@ const UI_I18N = {
     btnOpen: 'Open',
     btnRestart: 'Start again',
     btnStart: 'Begin →',
-    chipCount: "21 slides",
+    chipCount: "22 slides",
     chipFocus: "Block Camp",
     chipLevel: "A1 &middot; Grammar",
     coverFine: "NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.",
@@ -2653,7 +2692,7 @@ const UI_I18N = {
     misB: "Never -ing after going to",
     misC: "&lsquo;do&rsquo; has no job here",
     misEyebrow: "Watch out",
-    misNote: "<span class=\"formula\"><em class=\"aux\">going to</em> + <b>BASE VERB</b></span>",
+    misNote: "<span class=\"formula\"><em class=\"t-gt\">going to</em> + <b>BASE VERB</b></span>",
     misTitle: "The only three mistakes",
     ord1Eyebrow: "Practice",
     ord1Hint: "Click the words in the right order.",
@@ -2663,13 +2702,13 @@ const UI_I18N = {
     par2A: "Say no",
     par2B: "Ask",
     par2Eyebrow: "The form",
-    par2Note: "<span class=\"formula\">SUBJECT + <em class=\"aux\">am</em> / <em class=\"aux\">are</em> / <em class=\"aux\">is</em> + <em class=\"aux\">not</em> + <em class=\"aux\">going to</em> + BASE VERB</span><span class=\"formula\"><b><em class=\"aux\">Am</em> / <em class=\"aux\">Are</em> / <em class=\"aux\">Is</em></b> + SUBJECT + <em class=\"aux\">going to</em> + BASE VERB ?</span>",
+    par2Note: "<span class=\"formula\">SUBJECT + <em class=\"t-ps\">am</em> / <em class=\"t-ps\">are</em> / <em class=\"t-ps\">is</em> + <em class=\"neg\">not</em> + <em class=\"t-gt\">going to</em> + BASE VERB</span><span class=\"formula\"><b><em class=\"t-ps\">Am</em> / <em class=\"t-ps\">Are</em> / <em class=\"t-ps\">Is</em></b> + SUBJECT + <em class=\"t-gt\">going to</em> + BASE VERB ?</span>",
     par2Title: "Saying no, and asking",
     parA: "am",
     parB: "are",
     parC: "is",
     parEyebrow: "The form",
-    parNote: "<span class=\"formula\">SUBJECT + <b><em class=\"aux\">am</em> / <em class=\"aux\">are</em> / <em class=\"aux\">is</em></b> + <em class=\"aux\">going to</em> + BASE VERB</span><span class=\"dictum\">&lsquo;AM / ARE / IS&rsquo; FIRST &mdash; BASE VERB LAST!</span>",
+    parNote: "<span class=\"formula\">SUBJECT + <b><em class=\"t-ps\">am</em> / <em class=\"t-ps\">are</em> / <em class=\"t-ps\">is</em></b> + <em class=\"t-gt\">going to</em> + BASE VERB</span><span class=\"dictum\">&lsquo;AM / ARE / IS&rsquo; FIRST &mdash; BASE VERB LAST!</span>",
     parTitle: "Only &lsquo;am / are / is&rsquo; changes",
     qEyebrow: "Practice",
     qTitleAsk: "Asking and saying no",
@@ -2701,6 +2740,11 @@ const UI_I18N = {
     wordCount: (n)=>`${n} ${n===1?'word':'words'}`
   },
   de: {
+    pastA: "was",
+    pastB: "were",
+    pastEyebrow: "Die Vergangenheitsform",
+    pastNote: "<span class=\"formula\">SUBJEKT + <b><em class=\"t-past\">was</em> / <em class=\"t-past\">were</em></b> + <em class=\"t-gt\">going to</em> + GRUNDFORM</span><span class=\"exlist\"><span>wir <em class=\"t-past\">were</em> <em class=\"t-gt\">going to</em> <em class=\"inf\">wait</em> &mdash; <span class=\"dim\">dann kam der Regen</span></span></span><span class=\"dictum\">DIE KETTE BLEIBT &mdash; NUR DAS ERSTE WORT WECHSELT</span>",
+    pastTitle: "Der Plan, den du hattest, bevor er sich &auml;nderte",
     partLink: "Teil 2 &rarr;",
     actEyebrow: 'Anwendung',
     actPlaceholder: "Tomorrow I am going to&hellip;",
@@ -2722,7 +2766,7 @@ const UI_I18N = {
     btnOpen: 'Öffnen',
     btnRestart: 'Neu starten',
     btnStart: 'Beginnen →',
-    chipCount: "21 Folien",
+    chipCount: "22 Folien",
     chipFocus: "Block Camp",
     chipLevel: "A1 &middot; Grammatik",
     coverFine: "KEIN OFFIZIELLES MINECRAFT-PRODUKT. NICHT VON MOJANG ODER MICROSOFT GENEHMIGT ODER UNTERST&Uuml;TZT.",
@@ -2757,7 +2801,7 @@ const UI_I18N = {
     misB: "Nie -ing nach &rsquo;going to&rsquo;",
     misC: "&rsquo;do&rsquo; hat hier nichts zu tun",
     misEyebrow: "Achtung",
-    misNote: "<span class=\"formula\"><em class=\"aux\">going to</em> + <b>BASE VERB</b></span>",
+    misNote: "<span class=\"formula\"><em class=\"t-gt\">going to</em> + <b>BASE VERB</b></span>",
     misTitle: "Nur diese drei Fehler",
     ord1Eyebrow: "&Uuml;bung",
     ord1Hint: "Klicke die W&ouml;rter in der richtigen Reihenfolge an.",
@@ -2767,13 +2811,13 @@ const UI_I18N = {
     par2A: "Nein sagen",
     par2B: "Fragen",
     par2Eyebrow: "Die Form",
-    par2Note: "<span class=\"formula\">SUBJECT + <em class=\"aux\">am</em> / <em class=\"aux\">are</em> / <em class=\"aux\">is</em> + <em class=\"aux\">not</em> + <em class=\"aux\">going to</em> + BASE VERB</span><span class=\"formula\"><b><em class=\"aux\">Am</em> / <em class=\"aux\">Are</em> / <em class=\"aux\">Is</em></b> + SUBJECT + <em class=\"aux\">going to</em> + BASE VERB ?</span>",
+    par2Note: "<span class=\"formula\">SUBJECT + <em class=\"t-ps\">am</em> / <em class=\"t-ps\">are</em> / <em class=\"t-ps\">is</em> + <em class=\"neg\">not</em> + <em class=\"t-gt\">going to</em> + BASE VERB</span><span class=\"formula\"><b><em class=\"t-ps\">Am</em> / <em class=\"t-ps\">Are</em> / <em class=\"t-ps\">Is</em></b> + SUBJECT + <em class=\"t-gt\">going to</em> + BASE VERB ?</span>",
     par2Title: "Nein sagen und fragen",
     parA: "am",
     parB: "are",
     parC: "is",
     parEyebrow: "Die Form",
-    parNote: "<span class=\"formula\">SUBJECT + <b><em class=\"aux\">am</em> / <em class=\"aux\">are</em> / <em class=\"aux\">is</em></b> + <em class=\"aux\">going to</em> + BASE VERB</span><span class=\"dictum\">&lsquo;AM / ARE / IS&rsquo; FIRST &mdash; BASE VERB LAST!</span>",
+    parNote: "<span class=\"formula\">SUBJECT + <b><em class=\"t-ps\">am</em> / <em class=\"t-ps\">are</em> / <em class=\"t-ps\">is</em></b> + <em class=\"t-gt\">going to</em> + BASE VERB</span><span class=\"dictum\">&lsquo;AM / ARE / IS&rsquo; FIRST &mdash; BASE VERB LAST!</span>",
     parTitle: "Nur &rsquo;am / are / is&rsquo; &auml;ndert sich",
     qEyebrow: "&Uuml;bung",
     qTitleAsk: "Fragen und verneinen",
@@ -2805,6 +2849,11 @@ const UI_I18N = {
     wordCount: (n)=>`${n} ${n===1?'Wort':'Wörter'}`
   },
   es: {
+    pastA: "was",
+    pastB: "were",
+    pastEyebrow: "La versi&oacute;n en pasado",
+    pastNote: "<span class=\"formula\">SUJETO + <b><em class=\"t-past\">was</em> / <em class=\"t-past\">were</em></b> + <em class=\"t-gt\">going to</em> + VERBO BASE</span><span class=\"exlist\"><span>we <em class=\"t-past\">were</em> <em class=\"t-gt\">going to</em> <em class=\"inf\">wait</em> &mdash; <span class=\"dim\">entonces llovi&oacute;</span></span></span><span class=\"dictum\">LA CADENA NO CAMBIA &mdash; SOLO LA PRIMERA PALABRA</span>",
+    pastTitle: "El plan que ten&iacute;as, antes de que cambiara",
     partLink: "Parte 2 &rarr;",
     actEyebrow: 'Activación',
     actPlaceholder: "Tomorrow I am going to&hellip;",
@@ -2826,7 +2875,7 @@ const UI_I18N = {
     btnOpen: 'Abrir',
     btnRestart: 'Empezar de nuevo',
     btnStart: 'Empezar →',
-    chipCount: "21 diapositivas",
+    chipCount: "22 diapositivas",
     chipFocus: "Block Camp",
     chipLevel: "A1 &middot; Gram&aacute;tica",
     coverFine: "NO ES UN PRODUCTO OFICIAL DE MINECRAFT. NO EST&Aacute; APROBADO NI ASOCIADO CON MOJANG NI MICROSOFT.",
@@ -2861,7 +2910,7 @@ const UI_I18N = {
     misB: "Nunca -ing tras &rsquo;going to&rsquo;",
     misC: "&rsquo;do&rsquo; no pinta nada aqu&iacute;",
     misEyebrow: "Cuidado",
-    misNote: "<span class=\"formula\"><em class=\"aux\">going to</em> + <b>BASE VERB</b></span>",
+    misNote: "<span class=\"formula\"><em class=\"t-gt\">going to</em> + <b>BASE VERB</b></span>",
     misTitle: "Solo hay tres fallos",
     ord1Eyebrow: "Pr&aacute;ctica",
     ord1Hint: "Haz clic en las palabras en el orden correcto.",
@@ -2871,13 +2920,13 @@ const UI_I18N = {
     par2A: "Decir no",
     par2B: "Preguntar",
     par2Eyebrow: "La forma",
-    par2Note: "<span class=\"formula\">SUBJECT + <em class=\"aux\">am</em> / <em class=\"aux\">are</em> / <em class=\"aux\">is</em> + <em class=\"aux\">not</em> + <em class=\"aux\">going to</em> + BASE VERB</span><span class=\"formula\"><b><em class=\"aux\">Am</em> / <em class=\"aux\">Are</em> / <em class=\"aux\">Is</em></b> + SUBJECT + <em class=\"aux\">going to</em> + BASE VERB ?</span>",
+    par2Note: "<span class=\"formula\">SUBJECT + <em class=\"t-ps\">am</em> / <em class=\"t-ps\">are</em> / <em class=\"t-ps\">is</em> + <em class=\"neg\">not</em> + <em class=\"t-gt\">going to</em> + BASE VERB</span><span class=\"formula\"><b><em class=\"t-ps\">Am</em> / <em class=\"t-ps\">Are</em> / <em class=\"t-ps\">Is</em></b> + SUBJECT + <em class=\"t-gt\">going to</em> + BASE VERB ?</span>",
     par2Title: "Decir no y preguntar",
     parA: "am",
     parB: "are",
     parC: "is",
     parEyebrow: "La forma",
-    parNote: "<span class=\"formula\">SUBJECT + <b><em class=\"aux\">am</em> / <em class=\"aux\">are</em> / <em class=\"aux\">is</em></b> + <em class=\"aux\">going to</em> + BASE VERB</span><span class=\"dictum\">&lsquo;AM / ARE / IS&rsquo; FIRST &mdash; BASE VERB LAST!</span>",
+    parNote: "<span class=\"formula\">SUBJECT + <b><em class=\"t-ps\">am</em> / <em class=\"t-ps\">are</em> / <em class=\"t-ps\">is</em></b> + <em class=\"t-gt\">going to</em> + BASE VERB</span><span class=\"dictum\">&lsquo;AM / ARE / IS&rsquo; FIRST &mdash; BASE VERB LAST!</span>",
     parTitle: "Solo cambia &rsquo;am / are / is&rsquo;",
     qEyebrow: "Pr&aacute;ctica",
     qTitleAsk: "Preguntar y negar",

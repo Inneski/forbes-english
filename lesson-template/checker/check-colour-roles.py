@@ -80,6 +80,24 @@ ALLOW = {
 # blind spot in exactly the place the checker exists to watch.
 AUXC = r'(?:aux|t-ps|t-pc|t-past|t-pastc|t-pperf|t-gt|t-fs)'
 
+# ── A SIMPLE TENSE'S COLOUR INSIDE A CONTINUOUS SENTENCE ────────────────
+# Innes stated this one with an "ever" in it, which makes it enforceable:
+# "was/were should not appear as brown in past continuous sentences ever",
+# "is/are should not appear as blue in present continuous sentences ever".
+#
+# It happens when a QUESTION splits the chain - "Was it being built?" puts the
+# subject between the two halves, so a span-by-span recolour sees a bare 'Was'
+# and paints it past simple brown against a past continuous yellow 'being'.
+# Two colours on one chain, and the wrong two.
+#
+# build_descent.py rejoins them; this is the gate that says so, because the
+# same shape can be written by hand on any Block Camp I deck and nothing else
+# would notice.
+SPLIT_CHAIN = re.compile(
+    r'<em class="(t-ps|t-past)">((?:Am|Is|Are|Was|Were|am|is|are|was|were))</em>'
+    r'(?:</?[a-z][^>]*>|[^<>]){0,40}?'
+    r'<em class="(t-pc|t-pastc)">being</em>')
+
 ADV = (r'(?:just|already|never|ever|still|not|recently|lately|only|always|'
        r'nearly|almost|finally|yet)')
 AUX_THEN_WORD = re.compile(
@@ -265,6 +283,11 @@ def main(decks):
                                  "'%s' follows an auxiliary but is not .pp  %s"
                                  % (w, DIM % ('...' + where.strip()[-46:]))))
         auxjob(name, body, findings, allowed)
+        for m in SPLIT_CHAIN.finditer(body):
+            findings.append((name, 'SPLITCHAIN',
+                             "'%s' wears %s inside a continuous chain - a question "
+                             "splits the chain, it does not change it"
+                             % (m.group(2), m.group(1))))
         for w in re.findall(r'class=\\?"pp\\?">([^<]+)</em>', body):
             if w.lower() in SECOND_ONLY:
                 findings.append((name, 'SECOND', "'%s' is a past simple form wearing the participle colour" % w))
@@ -282,6 +305,7 @@ def main(decks):
             print('    ' + GRN % 'PASS', '%-18s %-22s consistent across %d decks' % (tok, v, len(ds)))
 
     for kind, title in (('ORPHAN', 'ORPHANS'), ('UNTAGGED', 'UNTAGGED'),
+                        ('SPLITCHAIN', 'A CHAIN SPLIT BY A QUESTION'),
                         ('SECOND', 'SECOND FORMS'), ('AUXJOB', 'AUXILIARY DOING ANOTHER JOB')):
         rows = [f for f in findings if f[1] == kind]
         print('\n  %s' % title)
