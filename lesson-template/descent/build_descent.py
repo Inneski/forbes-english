@@ -311,11 +311,16 @@ PART_LINK = re.compile(r'<a class="part-link"[^>]*>.*?</a>', re.S)
 #
 #   "is/are always blue - then is blue + being pink, was brown + being yellow"
 #
-# The be-auxiliary keeps its OWN tense's colour wherever it appears, and the
-# word that changes the chain carries the tense the chain becomes. So 'is' is
-# blue in every sentence in the line, and what follows it says which chain you
-# are in: nothing (present simple), 'being' (present continuous, pink), 'going
-# to' (lime). 'was' is brown everywhere, and 'was being' is brown then yellow.
+# A BARE be-auxiliary keeps its own tense's colour wherever it appears - 'is'
+# is blue and 'was' is brown in every sentence in the line - and a chain built
+# on top of one is coloured by what that chain IS:
+#
+#   is / are / am              blue
+#   was / were                 brown
+#   is being, was being        one unit, pink and yellow: the be and the
+#                              'being' are the same piece of grammar
+#   is going to be             three pieces, three colours: blue + lime + gold
+#   has been                   turquoise end to end
 #
 # The first version coloured the whole span by the chain, which made 'is' lime
 # inside 'is going to' and blue two slides later - "is/are not blue
@@ -337,16 +342,28 @@ HEAD_TENSE = {
     "wasn't": 't-past', "weren't": 't-past',
 }
 # What the tail does to the chain, given the tense of the head it follows.
+# Only 'going to' splits. Innes, refining the ruling once he saw it in situ:
+#
+#   "is/are/am being = pink, was/were being = yellow, to be + going to +
+#    infinitive: am/are/is = blue, going to = green, infinitive = white gold"
+#
+# So a continuous chain is ONE unit in its own colour - the be and the 'being'
+# are the same piece of grammar and reading them as two colours broke the
+# chain up for no gain - while 'going to' really is three separate pieces
+# stacked on an ordinary present-simple be, and gets three colours.
 TAIL_TENSE = {
-    'being':       {'t-ps': 't-pc', 't-past': 't-pastc'},
     'been':        {'t-ps': 't-pperf', 't-past': 't-pperf'},
     'going to':    {'t-ps': 't-gt'},
     'going to be': {'t-ps': 't-gt'},
 }
-# Spans that are one unit, with no be-auxiliary to hold out in front.
+# Spans that are one unit: no be held out in front, because the be belongs to
+# the chain rather than sitting under it.
 AUX_TENSE = {
     't-ps':    ['am', 'is', 'are', "isn't", "aren't"],
     't-past':  ['was', 'were', "wasn't", "weren't", 'did'],
+    't-pc':    ['am being', 'is being', 'are being',
+                "isn't being", "aren't being"],
+    't-pastc': ['was being', 'were being', "wasn't being", "weren't being"],
     't-pperf': ['has', 'have', 'has been', 'have been',
                 "hasn't been", "haven't been", 'been'],
     't-gt':    ['going to'],
