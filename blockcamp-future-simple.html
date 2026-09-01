@@ -635,6 +635,14 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
   display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
   min-height: 44px;
 }
+/* A SIDE-PLACED SLIDE'S CHIPS HUG THEIR SIDE. Centred rows reach into the
+   middle of the frame, which is where the artwork's subject usually is: on
+   Present Simple 2 slide 13 the top row ran under the fisherman's rod, and on
+   Present Simple 1 slide 15 'every weekend' sat out in the middle. Innes on
+   both: "move those middle words left". The pool already sits inside the
+   side-placed column; this stops the rows re-centring within it. */
+.slide[data-side="left"]  .sort-pool { justify-content: flex-start; }
+.slide[data-side="right"] .sort-pool { justify-content: flex-end; }
 .sort-bins { display: grid; gap: 14px; }
 /* The bin gets the card's own backdrop, not a bare tint. `--inset` alone
    is nearly transparent, and over a bright hero the bin outline and its
@@ -1376,6 +1384,23 @@ em.t-present, b.t-present { color: var(--t-present-simple) !important;
 :root[lang="es"] .card .prose.dim > .sup[data-lang="es"],
 :root[lang="de"] .card .prose.dim > .sup[data-lang="de"] {
   display: inline; margin-left: 10px; }
+/* THE TRANSLATION GOES BESIDE THE EXAMPLES, NOT UNDER THEM. Innes: "All
+   translations better to right of text than under". The rule above already
+   asked for inline, and it could never work: .slide[data-side] .exlist is a
+   block-level GRID (one example per row, see below), so anything following it
+   is pushed to a new line whatever its own display says. Making the paragraph
+   a flex row puts the stacked examples and the gloss side by side.
+
+   Underneath still wins on some slides - his examples are Present Simple 2
+   slides 8 and 14, where the examples are long and the card is narrow. Those
+   ask for it by name with data-tr="under" on the slide, so the exception is
+   written on the slide and not hidden here. */
+:root[lang="es"] .slide:not([data-tr="under"]) .card .prose.dim:has(> .exlist):has(> .sup[data-lang="es"]),
+:root[lang="de"] .slide:not([data-tr="under"]) .card .prose.dim:has(> .exlist):has(> .sup[data-lang="de"]) {
+  display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+:root[lang="es"] .slide:not([data-tr="under"]) .card .prose.dim > .sup[data-lang="es"],
+:root[lang="de"] .slide:not([data-tr="under"]) .card .prose.dim > .sup[data-lang="de"] {
+  margin-left: 0; margin-top: 0; }
 /* A paradigm block's HEADING is already translated by the switcher, so it
    never takes a gloss - a gloss there rendered "GEDANKEN de Gedanken", the
    same word twice. What the block DOES owe a translation is its VERBS, which
@@ -2901,7 +2926,19 @@ slides.filter(s => s.dataset.type === 'order').forEach(slide => {
   const answer = box.dataset.answer.split('|').map(x => x.trim());
   const target = document.createElement('div'); target.className = 'order-target';
   const pool   = document.createElement('div'); pool.className   = 'order-pool';
-  shuffled(answer.map((txt, i) => ({ txt, i })))
+  /* A FAIR SHUFFLE CAN DEAL THE ANSWER. With four chunks, Fisher-Yates lands
+     on the solved order 1 time in 24, and the learner is handed a finished
+     sentence to "build". Innes met exactly that on Present Simple 2 slide 18:
+     "first | you | mine | the ore ." in answer order. Measured over 12 loads
+     the shuffle is uniform and healthy - which is the problem, not the excuse.
+     Re-deal while the order is the answer. Bounded, and skipped for a
+     one-chunk sentence, which has no other order to offer. */
+  let deal = answer.map((txt, i) => ({ txt, i }));
+  for (let tries = 0; tries < 12; tries++) {
+    deal = shuffled(answer.map((txt, i) => ({ txt, i })));
+    if (answer.length < 2 || deal.some((c, i) => c.i !== i)) break;
+  }
+  deal
         .forEach(({ txt, i }) => {
           const b = document.createElement('button');
           b.className = 'chunk';

@@ -1602,7 +1602,19 @@ slides.filter(s => s.dataset.type === 'order').forEach(slide => {
   const answer = box.dataset.answer.split('|').map(x => x.trim());
   const target = document.createElement('div'); target.className = 'order-target';
   const pool   = document.createElement('div'); pool.className   = 'order-pool';
-  shuffled(answer.map((txt, i) => ({ txt, i })))
+  /* A FAIR SHUFFLE CAN DEAL THE ANSWER. With four chunks, Fisher-Yates lands
+     on the solved order 1 time in 24, and the learner is handed a finished
+     sentence to "build". Innes met exactly that on Present Simple 2 slide 18:
+     "first | you | mine | the ore ." in answer order. Measured over 12 loads
+     the shuffle is uniform and healthy - which is the problem, not the excuse.
+     Re-deal while the order is the answer. Bounded, and skipped for a
+     one-chunk sentence, which has no other order to offer. */
+  let deal = answer.map((txt, i) => ({ txt, i }));
+  for (let tries = 0; tries < 12; tries++) {
+    deal = shuffled(answer.map((txt, i) => ({ txt, i })));
+    if (answer.length < 2 || deal.some((c, i) => c.i !== i)) break;
+  }
+  deal
         .forEach(({ txt, i }) => {
           const b = document.createElement('button');
           b.className = 'chunk';

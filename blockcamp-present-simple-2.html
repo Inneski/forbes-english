@@ -629,6 +629,14 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
   display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
   min-height: 44px;
 }
+/* A SIDE-PLACED SLIDE'S CHIPS HUG THEIR SIDE. Centred rows reach into the
+   middle of the frame, which is where the artwork's subject usually is: on
+   Present Simple 2 slide 13 the top row ran under the fisherman's rod, and on
+   Present Simple 1 slide 15 'every weekend' sat out in the middle. Innes on
+   both: "move those middle words left". The pool already sits inside the
+   side-placed column; this stops the rows re-centring within it. */
+.slide[data-side="left"]  .sort-pool { justify-content: flex-start; }
+.slide[data-side="right"] .sort-pool { justify-content: flex-end; }
 .sort-bins { display: grid; gap: 14px; }
 /* The bin gets the card's own backdrop, not a bare tint. `--inset` alone
    is nearly transparent, and over a bright hero the bin outline and its
@@ -1368,6 +1376,23 @@ em.t-present, b.t-present { color: var(--t-present-simple) !important;
 :root[lang="es"] .card .prose.dim > .sup[data-lang="es"],
 :root[lang="de"] .card .prose.dim > .sup[data-lang="de"] {
   display: inline; margin-left: 10px; }
+/* THE TRANSLATION GOES BESIDE THE EXAMPLES, NOT UNDER THEM. Innes: "All
+   translations better to right of text than under". The rule above already
+   asked for inline, and it could never work: .slide[data-side] .exlist is a
+   block-level GRID (one example per row, see below), so anything following it
+   is pushed to a new line whatever its own display says. Making the paragraph
+   a flex row puts the stacked examples and the gloss side by side.
+
+   Underneath still wins on some slides - his examples are Present Simple 2
+   slides 8 and 14, where the examples are long and the card is narrow. Those
+   ask for it by name with data-tr="under" on the slide, so the exception is
+   written on the slide and not hidden here. */
+:root[lang="es"] .slide:not([data-tr="under"]) .card .prose.dim:has(> .exlist):has(> .sup[data-lang="es"]),
+:root[lang="de"] .slide:not([data-tr="under"]) .card .prose.dim:has(> .exlist):has(> .sup[data-lang="de"]) {
+  display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+:root[lang="es"] .slide:not([data-tr="under"]) .card .prose.dim > .sup[data-lang="es"],
+:root[lang="de"] .slide:not([data-tr="under"]) .card .prose.dim > .sup[data-lang="de"] {
+  margin-left: 0; margin-top: 0; }
 /* A paradigm block's HEADING is already translated by the switcher, so it
    never takes a gloss - a gloss there rendered "GEDANKEN de Gedanken", the
    same word twice. What the block DOES owe a translation is its VERBS, which
@@ -1800,12 +1825,12 @@ em, i, .card .prose.dim em { font-style: normal !important;
           <div class="card">
             <p class="prose"><strong data-i18n="stH1">Not changing soon</strong></p>
             <p class="prose" data-i18n="stB1" style="margin-top:8px;font-size:18px">A job, a home, who owns what. True for months or years.</p>
-            <p class="prose dim" style="margin-top:8px;font-size:15px"><span class="exlist"><span>my sister <b>works</b> as a nurse</span><span>Alex <b>lives</b> in the village</span><span>this pickaxe <b>belongs</b> to Steve</span></span><span class="sup" data-lang="es"><b>ES</b><span>mi hermana es enfermera &middot; Alex vive en el pueblo &middot; este pico es de Steve</span></span><span class="sup" data-lang="de"><b>DE</b><span>meine Schwester ist Krankenschwester &middot; Alex wohnt im Dorf &middot; diese Spitzhacke geh&ouml;rt Steve</span></span></p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px"><span class="exlist"><span>my sister <b>works</b> as a nurse</span><span>Alex <b>lives</b> in the village</span><span>this pickaxe <b>belongs</b> to Steve</span></span><span class="sup" data-lang="es"><b>ES</b><span>mi hermana trabaja de enfermera &middot; Alex vive en el pueblo &middot; este pico pertenece a Steve</span></span><span class="sup" data-lang="de"><b>DE</b><span>meine Schwester arbeitet als Krankenschwester &middot; Alex wohnt im Dorf &middot; diese Spitzhacke geh&ouml;rt Steve</span></span></p>
           </div>
           <div class="card">
             <p class="prose"><strong data-i18n="stH2">No frequency word needed</strong></p>
             <p class="prose" data-i18n="stB2" style="margin-top:8px;font-size:18px">A state does not need &lsquo;always&rsquo; or &lsquo;every day&rsquo; &mdash; it just is.</p>
-            <p class="prose dim" style="margin-top:8px;font-size:15px"><span class="exlist"><span>the village <em class="aux">has</em> two farms</span></span><span class="sup" data-lang="es"><b>ES</b><span>el pueblo tiene dos granjas</span></span><span class="sup" data-lang="de"><b>DE</b><span>das Dorf hat zwei H&ouml;fe</span></span></p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px"><span class="exlist"><span>the village <b>has</b> two farms</span></span><span class="sup" data-lang="es"><b>ES</b><span>el pueblo tiene dos granjas</span></span><span class="sup" data-lang="de"><b>DE</b><span>das Dorf hat zwei H&ouml;fe</span></span></p>
           </div>
         </div>
       </div>
@@ -1832,10 +1857,10 @@ em, i, .card .prose.dim em { font-style: normal !important;
           <div class="para-block">
             <div class="para-head" data-i18n="svC">Senses and having</div><span class="sup" data-lang="es"><b>ES</b><span>ver &middot; o&iacute;r &middot; poseer &middot; pertenecer &middot; tener &middot; costar</span></span><span class="sup" data-lang="de"><b>DE</b><span>sehen &middot; h&ouml;ren &middot; besitzen &middot; geh&ouml;ren &middot; haben &middot; kosten</span></span>
             <div class="para-row"><span class="para-subj">see</span><span class="para-verb">hear &middot; own</span></div>
-            <div class="para-row"><span class="para-subj">belong</span><span class="para-verb"><em class="aux">have</em> &middot; cost</span></div>
+            <div class="para-row"><span class="para-subj">belong</span><span class="para-verb">have &middot; cost</span></div>
           </div>
         </div>
-        <p class="para-note" style="text-align:center;margin-top:14px;font-size:13px" data-i18n="svNote"><span class="formula">a state verb + <b>-ing</b> <i>= wrong</i></span><span class="formula">&lsquo;I <em class="aux">am</em> knowing&rsquo; <i>#10007;</i> &nbsp; &lsquo;I know&rsquo; <i>#10003;</i></span></p>
+        <p class="para-note" style="text-align:center;margin-top:14px;font-size:13px" data-i18n="svNote"><span class="formula">a state verb + <b>-ing</b> <i>= wrong</i></span><span class="formula"><s>&lsquo;I am knowing&rsquo;</s> &nbsp; &lsquo;I know&rsquo; <i>&#10003;</i></span></p>
       </div>
     </section>
 
@@ -1855,7 +1880,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
           <div class="card">
             <p class="prose"><strong data-i18n="ttH2">Your own plan is not a timetable</strong></p>
             <p class="prose" data-i18n="ttB2" style="margin-top:8px;font-size:18px">If you arranged it yourself, use the present continuous.</p>
-            <p class="prose dim" style="margin-top:8px;font-size:15px"><span class="exlist"><span>I <b>meet</b> Ana tomorrow #10007;</span><span>I <b><em class="aux">am</em> meeting</b> Ana tomorrow #10003;</span></span><span class="sup" data-lang="es"><b>ES</b><span>quedo con Ana ma&ntilde;ana</span></span><span class="sup" data-lang="de"><b>DE</b><span>ich treffe Ana morgen</span></span></p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px"><span class="exlist"><span><s>I <b>meet</b> Ana tomorrow</s></span><span>I <b>am meeting</b> Ana tomorrow <i>&#10003;</i></span></span><span class="sup" data-lang="es"><b>ES</b><span>quedo con Ana ma&ntilde;ana</span></span><span class="sup" data-lang="de"><b>DE</b><span>ich treffe Ana morgen</span></span></p>
           </div>
         </div>
       </div>
@@ -1890,7 +1915,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
         <h2 class="slide-title" data-i18n="qTitleUse">Which use is it?</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">My sister ______ as a nurse at the village hospital.<span class="sup" data-lang="es"><b>ES</b><span>Mi hermana ______ de enfermera en el hospital del pueblo.</span></span><span class="sup" data-lang="de"><b>DE</b><span>Meine Schwester ______ als Krankenschwester im Dorfkrankenhaus.</span></span></p>
+        <p class="q-stem">My sister ______ as a nurse at the village hospital.<span class="sup" data-lang="es"><b>ES</b><span>Mi hermana trabaja de enfermera en el hospital del pueblo.</span></span><span class="sup" data-lang="de"><b>DE</b><span>Meine Schwester arbeitet als Krankenschwester im Dorfkrankenhaus.</span></span></p>
         <div class="opts">
           <button class="opt" data-correct>works</button>
           <button class="opt" data-explain="That would mean just today, not her job.<span class=&quot;sup&quot; data-lang=&quot;es&quot;><b>ES</b><span>Eso ser&iacute;a solo hoy, no su profesi&oacute;n.</span></span><span class=&quot;sup&quot; data-lang=&quot;de&quot;><b>DE</b><span>Das hie&szlig;e nur heute, nicht ihr Beruf.</span></span>">is working</button>
@@ -1903,13 +1928,13 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="mc" data-bg="present-simple-time-signals/bg09.jpg" data-side="left">
+    <section class="slide" data-type="mc" data-bg="present-simple-time-signals/bg09.jpg" data-side="left" data-tr="under">
       <div class="slide-head"><div>
         <div class="eyebrow"><span data-i18n="qEyebrow">Practice</span> &middot; 2 / 6</div>
         <h2 class="slide-title" data-i18n="qTitleForm">Choose the right form</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">I ______ the answer to that riddle.<span class="sup" data-lang="es"><b>ES</b><span>Yo ______ la respuesta a ese acertijo.</span></span><span class="sup" data-lang="de"><b>DE</b><span>Ich ______ die Antwort auf dieses Rätsel.</span></span></p>
+        <p class="q-stem">I ______ the answer to that riddle.<span class="sup" data-lang="es"><b>ES</b><span>Yo sé la respuesta a ese acertijo.</span></span><span class="sup" data-lang="de"><b>DE</b><span>Ich weiß die Antwort auf dieses Rätsel.</span></span></p>
         <div class="opts">
           <button class="opt" data-explain="State verbs never take the continuous.<span class=&quot;sup&quot; data-lang=&quot;es&quot;><b>ES</b><span>Los verbos de estado nunca van en continuo.</span></span><span class=&quot;sup&quot; data-lang=&quot;de&quot;><b>DE</b><span>Zustandsverben stehen nie im Verlauf.</span></span>">am knowing</button>
           <button class="opt" data-explain="That form does not exist in English.<span class=&quot;sup&quot; data-lang=&quot;es&quot;><b>ES</b><span>Esa forma no existe en ingl&eacute;s.</span></span><span class=&quot;sup&quot; data-lang=&quot;de&quot;><b>DE</b><span>Diese Form gibt es im Englischen nicht.</span></span>">am know</button>
@@ -1928,7 +1953,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
         <h2 class="slide-title" data-i18n="qTitleUse">Which use is it?</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">The minecart ______ at 6:45 tomorrow morning.<span class="sup" data-lang="es"><b>ES</b><span>La vagoneta ______ a las 6:45 de la mañana.</span></span><span class="sup" data-lang="de"><b>DE</b><span>Die Lore ______ morgen früh um 6:45.</span></span></p>
+        <p class="q-stem">The minecart ______ at 6:45 tomorrow morning.<span class="sup" data-lang="es"><b>ES</b><span>La vagoneta sale a las 6:45 de la mañana.</span></span><span class="sup" data-lang="de"><b>DE</b><span>Die Lore fährt morgen früh um 6:45 ab.</span></span></p>
         <div class="opts">
           <button class="opt" data-explain="That would be your own arrangement, not a published time.<span class=&quot;sup&quot; data-lang=&quot;es&quot;><b>ES</b><span>Eso ser&iacute;a un plan tuyo, no una hora publicada.</span></span><span class=&quot;sup&quot; data-lang=&quot;de&quot;><b>DE</b><span>Das w&auml;re dein eigener Plan, keine ver&ouml;ffentlichte Zeit.</span></span>">is leaving</button>
           <button class="opt" data-explain="One minecart takes -s.<span class=&quot;sup&quot; data-lang=&quot;es&quot;><b>ES</b><span>Un minecart lleva -s.</span></span><span class=&quot;sup&quot; data-lang=&quot;de&quot;><b>DE</b><span>Ein Minecart nimmt -s.</span></span>">leave</button>
@@ -1947,7 +1972,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
         <h2 class="slide-title" data-i18n="qTitleTense">Simple or continuous?</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">I ______ Alex tomorrow. We arranged it last night.<span class="sup" data-lang="es"><b>ES</b><span>Yo ______ con Alex mañana. Lo quedamos anoche.</span></span><span class="sup" data-lang="de"><b>DE</b><span>Ich ______ Alex morgen. Wir haben es gestern Abend verabredet.</span></span></p>
+        <p class="q-stem">I ______ Alex tomorrow. We arranged it last night.<span class="sup" data-lang="es"><b>ES</b><span>Yo quedo con Alex mañana. Lo quedamos anoche.</span></span><span class="sup" data-lang="de"><b>DE</b><span>Ich treffe Alex morgen. Wir haben es gestern Abend verabredet.</span></span></p>
         <div class="opts">
           <button class="opt" data-explain="That is the timetable form, and nobody published this time.<span class=&quot;sup&quot; data-lang=&quot;es&quot;><b>ES</b><span>Esa es la forma de horario y nadie public&oacute; esta hora.</span></span><span class=&quot;sup&quot; data-lang=&quot;de&quot;><b>DE</b><span>Das ist die Fahrplanform, aber diese Zeit hat niemand ver&ouml;ffentlicht.</span></span>">meet</button>
           <button class="opt" data-correct>am meeting</button>
@@ -1966,7 +1991,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
         <h2 class="slide-title" data-i18n="qTitleUse">Which use is it?</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">First you mine the ore. Then you ______ it in the furnace.<span class="sup" data-lang="es"><b>ES</b><span>Primero picas el mineral. Luego lo ______ en el horno.</span></span><span class="sup" data-lang="de"><b>DE</b><span>Zuerst baust du das Erz ab. Dann ______ du es im Ofen.</span></span></p>
+        <p class="q-stem">First you mine the ore. Then you ______ it in the furnace.<span class="sup" data-lang="es"><b>ES</b><span>Primero picas el mineral. Luego lo fundes en el horno.</span></span><span class="sup" data-lang="de"><b>DE</b><span>Zuerst baust du das Erz ab. Dann schmilzt du es im Ofen.</span></span></p>
         <div class="opts">
           <button class="opt" data-correct>smelt</button>
           <button class="opt" data-explain="Instructions are not a running commentary.<span class=&quot;sup&quot; data-lang=&quot;es&quot;><b>ES</b><span>Las instrucciones no son un comentario en directo.</span></span><span class=&quot;sup&quot; data-lang=&quot;de&quot;><b>DE</b><span>Anweisungen sind keine Live-Reportage.</span></span>">are smelting</button>
@@ -2021,7 +2046,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="match" data-bg="present-simple-time-signals/bg37.jpg" data-side="left" data-vpos="top">
+    <section class="slide" data-type="match" data-bg="present-simple-time-signals/bg37.jpg" data-side="left" data-vpos="top" data-tr="under">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="matchEyebrow">Practice</div>
         <h2 class="slide-title" data-i18n="matchTitle">What does each state verb mean?</h2>
@@ -2317,7 +2342,7 @@ const UI_I18N = {
     svB: "Feelings",
     svC: "Senses and having",
     svEyebrow: "Use 4",
-    svNote: "<span class=\"formula\">a state verb + <b>-ing</b> <i>= wrong</i></span><span class=\"formula\">&lsquo;I <em class=\"aux\">am</em> knowing&rsquo; <i>#10007;</i> &nbsp; &lsquo;I know&rsquo; <i>#10003;</i></span>",
+    svNote: "<span class=\"formula\">a state verb + <b>-ing</b> <i>= wrong</i></span><span class=\"formula\"><s>&lsquo;I am knowing&rsquo;</s> &nbsp; &lsquo;I know&rsquo; <i>&#10003;</i></span>",
     svTitle: "State verbs take no -ing",
     ttB1: "A railway, a school, a cinema. You did not choose it and you cannot move it.",
     ttB2: "If you arranged it yourself, use the present continuous.",
@@ -2420,7 +2445,7 @@ const UI_I18N = {
     svB: "Gef&uuml;hle",
     svC: "Sinne und Besitz",
     svEyebrow: "Verwendung 4",
-    svNote: "<span class=\"formula\">a state verb + <b>-ing</b> <i>= wrong</i></span><span class=\"formula\">&lsquo;I <em class=\"aux\">am</em> knowing&rsquo; <i>#10007;</i> &nbsp; &lsquo;I know&rsquo; <i>#10003;</i></span>",
+    svNote: "<span class=\"formula\">a state verb + <b>-ing</b> <i>= wrong</i></span><span class=\"formula\"><s>&lsquo;I am knowing&rsquo;</s> &nbsp; &lsquo;I know&rsquo; <i>&#10003;</i></span>",
     svTitle: "Zustandsverben: kein -ing",
     ttB1: "Eine Bahn, eine Schule, ein Kino. Du hast sie nicht gew&auml;hlt und kannst sie nicht verschieben.",
     ttB2: "Wenn du es selbst verabredet hast, nimm das Present Continuous.",
@@ -2523,7 +2548,7 @@ const UI_I18N = {
     svB: "Sentimientos",
     svC: "Sentidos y posesi&oacute;n",
     svEyebrow: "Uso 4",
-    svNote: "<span class=\"formula\">a state verb + <b>-ing</b> <i>= wrong</i></span><span class=\"formula\">&lsquo;I <em class=\"aux\">am</em> knowing&rsquo; <i>#10007;</i> &nbsp; &lsquo;I know&rsquo; <i>#10003;</i></span>",
+    svNote: "<span class=\"formula\">a state verb + <b>-ing</b> <i>= wrong</i></span><span class=\"formula\"><s>&lsquo;I am knowing&rsquo;</s> &nbsp; &lsquo;I know&rsquo; <i>&#10003;</i></span>",
     svTitle: "Verbos de estado: sin -ing",
     ttB1: "Un tren, una escuela, un cine. T&uacute; no la elegiste y no puedes moverla.",
     ttB2: "Si lo quedaste t&uacute;, usa el present continuous.",
@@ -2846,7 +2871,19 @@ slides.filter(s => s.dataset.type === 'order').forEach(slide => {
   const answer = box.dataset.answer.split('|').map(x => x.trim());
   const target = document.createElement('div'); target.className = 'order-target';
   const pool   = document.createElement('div'); pool.className   = 'order-pool';
-  shuffled(answer.map((txt, i) => ({ txt, i })))
+  /* A FAIR SHUFFLE CAN DEAL THE ANSWER. With four chunks, Fisher-Yates lands
+     on the solved order 1 time in 24, and the learner is handed a finished
+     sentence to "build". Innes met exactly that on Present Simple 2 slide 18:
+     "first | you | mine | the ore ." in answer order. Measured over 12 loads
+     the shuffle is uniform and healthy - which is the problem, not the excuse.
+     Re-deal while the order is the answer. Bounded, and skipped for a
+     one-chunk sentence, which has no other order to offer. */
+  let deal = answer.map((txt, i) => ({ txt, i }));
+  for (let tries = 0; tries < 12; tries++) {
+    deal = shuffled(answer.map((txt, i) => ({ txt, i })));
+    if (answer.length < 2 || deal.some((c, i) => c.i !== i)) break;
+  }
+  deal
         .forEach(({ txt, i }) => {
           const b = document.createElement('button');
           b.className = 'chunk';
@@ -3447,7 +3484,7 @@ const ready = () => document.body.classList.add('fonts-ready');
 if (document.fonts && document.fonts.ready) { document.fonts.ready.then(ready); setTimeout(ready, 1500); }
 else ready();
 </script>
-<script>window.BW_TR={"es": {"My sister ______ as a nurse at the village hospital.": "Mi hermana ______ de enfermera en el hospital del pueblo.", "I ______ the answer to that riddle.": "Yo ______ la respuesta a ese acertijo.", "The minecart ______ at 6:45 tomorrow morning.": "La vagoneta ______ a las 6:45 de la mañana.", "I ______ Alex tomorrow. We arranged it last night.": "Yo ______ con Alex mañana. Lo quedamos anoche.", "First you mine the ore. Then you ______ it in the furnace.": "Primero picas el mineral. Luego lo ______ en el horno.", "Which one is a timetable, not a personal plan?": "¿Cuál es un horario y no un plan personal?", "is working": "está trabajando", "work": "trabajar / trabajan", "are working": "están trabajando", "works": "trabaja", "am know": "(no existe)", "knowing": "sabiendo", "know": "saber", "am knowing": "(no existe)", "is leaving": "está saliendo", "will leaving": "(no existe)", "leave": "salir / salen", "leaves": "sale", "meets": "queda", "do meet": "sí quedo", "meet": "quedar", "am meeting": "he quedado", "smelts": "funde", "smelting": "fundiendo", "are smelting": "están fundiendo", "smelt": "fundir / fundes", "The film starts at eight.": "La peli empieza a las ocho.", "I am seeing the villager later today.": "Voy a ver al aldeano más tarde.", "They are building a bridge this week.": "Están construyendo un puente esta semana.", "We are exploring the caves on Saturday.": "Vamos a explorar las cuevas el sábado.", "finally you craft the sword": "por fin forjas la espada", "the market opens on Mondays": "el mercado abre los lunes", "school starts at nine": "el colegio empieza a las nueve", "my sister works as a nurse": "mi hermana es enfermera", "this pickaxe belongs to Steve": "este pico es de Steve", "first you mine the ore": "primero picas el mineral", "Alex lives in the village": "Alex vive en el pueblo", "the minecart leaves at 6:45": "la vagoneta sale a las 6:45", "then you smelt it": "luego lo fundes", "permanent state": "estado permanente", "timetable": "horario", "instruction": "instrucción", "believe": "creer", "belong to": "pertenecer a", "prefer": "preferir", "cost": "costar", "understand": "entender", "have it in your head": "tenerlo en la cabeza", "think it is true": "pensar que es verdad", "like one more than another": "gustar más uno que otro", "see what it means": "ver lo que significa", "be owned by someone": "ser de alguien", "have a price": "tener un precio", "Steve the answer. (know)": "Steve ______ la respuesta. (saber)", "Alex a new sword right now. (craft)": "Alex ______ una espada nueva ahora mismo. (forjar)", "This map to the librarian. (belong)": "Este mapa ______ al bibliotecario. (pertenecer)", "(know)": "(saber)", "(craft)": "(forjar)", "(belong)": "(pertenecer)", "after that": "después", "finally": "por fin", "first": "primero", "then": "luego", "you dig down to the lava layer.": "______ cavas hasta la capa de lava.", "you build a wall around it.": "______ construyes un muro alrededor.", "you place the portal frame.": "______ colocas el marco del portal.", "at 6:45": "a las 6:45", "the minecart": "la vagoneta", "tomorrow .": "mañana .", "the ore .": "el mineral .", "you": "tú", "mine": "picar", "works as": "trabaja de", "belongs to": "es de", "knows": "sabe", "wants": "quiere", "the train leaves": "el tren sale", "starts at": "empieza a las", "first you": "primero tú", "then you": "luego tú"}, "de": {"My sister ______ as a nurse at the village hospital.": "Meine Schwester ______ als Krankenschwester im Dorfkrankenhaus.", "I ______ the answer to that riddle.": "Ich ______ die Antwort auf dieses Rätsel.", "The minecart ______ at 6:45 tomorrow morning.": "Die Lore ______ morgen früh um 6:45.", "I ______ Alex tomorrow. We arranged it last night.": "Ich ______ Alex morgen. Wir haben es gestern Abend verabredet.", "First you mine the ore. Then you ______ it in the furnace.": "Zuerst baust du das Erz ab. Dann ______ du es im Ofen.", "Which one is a timetable, not a personal plan?": "Welcher Satz ist ein Fahrplan und kein eigener Plan?", "is working": "arbeitet gerade", "work": "arbeiten", "are working": "arbeiten gerade", "works": "arbeitet", "am know": "(gibt es nicht)", "knowing": "wissend", "know": "wissen", "am knowing": "(gibt es nicht)", "is leaving": "fährt gerade ab", "will leaving": "(gibt es nicht)", "leave": "abfahren", "leaves": "fährt ab", "meets": "trifft", "do meet": "treffe wirklich", "meet": "treffen", "am meeting": "treffe (verabredet)", "smelts": "schmilzt", "smelting": "schmelzend", "are smelting": "schmelzen gerade", "smelt": "schmelzen", "The film starts at eight.": "Der Film beginnt um acht.", "I am seeing the villager later today.": "Ich treffe den Dorfbewohner später heute.", "They are building a bridge this week.": "Sie bauen diese Woche eine Brücke.", "We are exploring the caves on Saturday.": "Wir erkunden am Samstag die Höhlen.", "finally you craft the sword": "zum Schluss schmiedest du das Schwert", "the market opens on Mondays": "der Markt öffnet montags", "school starts at nine": "die Schule beginnt um neun", "my sister works as a nurse": "meine Schwester ist Krankenschwester", "this pickaxe belongs to Steve": "diese Spitzhacke gehört Steve", "first you mine the ore": "zuerst baust du das Erz ab", "Alex lives in the village": "Alex wohnt im Dorf", "the minecart leaves at 6:45": "die Lore fährt um 6:45 ab", "then you smelt it": "dann schmilzt du es", "permanent state": "dauerhafter Zustand", "timetable": "Fahrplan", "instruction": "Anweisung", "believe": "glauben", "belong to": "gehören zu", "prefer": "bevorzugen", "cost": "kosten", "understand": "verstehen", "have it in your head": "es im Kopf haben", "think it is true": "es für wahr halten", "like one more than another": "eins lieber mögen als ein anderes", "see what it means": "sehen, was es bedeutet", "be owned by someone": "jemandem gehören", "have a price": "einen Preis haben", "Steve the answer. (know)": "Steve ______ die Antwort. (wissen)", "Alex a new sword right now. (craft)": "Alex ______ gerade ein neues Schwert. (schmieden)", "This map to the librarian. (belong)": "Diese Karte ______ dem Bibliothekar. (gehören)", "(know)": "(wissen)", "(craft)": "(schmieden)", "(belong)": "(gehören)", "after that": "danach", "finally": "zum Schluss", "first": "zuerst", "then": "dann", "you dig down to the lava layer.": "______ gräbst du bis zur Lavaschicht.", "you build a wall around it.": "______ baust du eine Mauer darum.", "you place the portal frame.": "______ setzt du den Portalrahmen.", "at 6:45": "um 6:45", "the minecart": "die Lore", "tomorrow .": "morgen .", "the ore .": "das Erz .", "you": "du", "mine": "abbauen", "works as": "arbeitet als", "belongs to": "gehört", "knows": "weiß", "wants": "will", "the train leaves": "der Zug fährt ab", "starts at": "beginnt um", "first you": "zuerst du", "then you": "dann du"}};</script>
+<script>window.BW_TR={"es": {"My sister ______ as a nurse at the village hospital.": "Mi hermana trabaja de enfermera en el hospital del pueblo.", "I ______ the answer to that riddle.": "Yo sé la respuesta a ese acertijo.", "The minecart ______ at 6:45 tomorrow morning.": "La vagoneta sale a las 6:45 de la mañana.", "I ______ Alex tomorrow. We arranged it last night.": "Yo quedo con Alex mañana. Lo quedamos anoche.", "First you mine the ore. Then you ______ it in the furnace.": "Primero picas el mineral. Luego lo fundes en el horno.", "Which one is a timetable, not a personal plan?": "¿Cuál es un horario y no un plan personal?", "is working": "está trabajando", "work": "trabajar / trabajan", "are working": "están trabajando", "works": "trabaja", "am know": "(no existe)", "knowing": "sabiendo", "know": "saber", "am knowing": "(no existe)", "is leaving": "está saliendo", "will leaving": "(no existe)", "leave": "salir / salen", "leaves": "sale", "meets": "queda", "do meet": "sí quedo", "meet": "quedar", "am meeting": "he quedado", "smelts": "funde", "smelting": "fundiendo", "are smelting": "están fundiendo", "smelt": "fundir / fundes", "The film starts at eight.": "La peli empieza a las ocho.", "I am seeing the villager later today.": "Voy a ver al aldeano más tarde.", "They are building a bridge this week.": "Están construyendo un puente esta semana.", "We are exploring the caves on Saturday.": "Vamos a explorar las cuevas el sábado.", "finally you craft the sword": "por fin forjas la espada", "the market opens on Mondays": "el mercado abre los lunes", "school starts at nine": "el colegio empieza a las nueve", "my sister works as a nurse": "mi hermana trabaja de enfermera", "this pickaxe belongs to Steve": "este pico pertenece a Steve", "first you mine the ore": "primero picas el mineral", "Alex lives in the village": "Alex vive en el pueblo", "the minecart leaves at 6:45": "la vagoneta sale a las 6:45", "then you smelt it": "luego lo fundes", "permanent state": "estado permanente", "timetable": "horario", "instruction": "instrucción", "believe": "creer", "belong to": "pertenecer a", "prefer": "preferir", "cost": "costar", "understand": "entender", "have it in your head": "tenerlo en la cabeza", "think it is true": "pensar que es verdad", "like one more than another": "gustar más uno que otro", "see what it means": "ver lo que significa", "be owned by someone": "ser de alguien", "have a price": "tener un precio", "Steve the answer. (know)": "Steve sabe la respuesta. (saber)", "Alex a new sword right now. (craft)": "Alex está forjando una espada nueva ahora mismo. (forjar)", "This map to the librarian. (belong)": "Este mapa pertenece al bibliotecario. (pertenecer)", "(know)": "(saber)", "(craft)": "(forjar)", "(belong)": "(pertenecer)", "after that": "después", "finally": "por fin", "first": "primero", "then": "luego", "you dig down to the lava layer.": "Primero cavas hasta la capa de lava.", "you build a wall around it.": "Después construyes un muro alrededor.", "you place the portal frame.": "Por fin colocas el marco del portal.", "at 6:45": "a las 6:45", "the minecart": "la vagoneta", "tomorrow .": "mañana .", "the ore .": "el mineral .", "you": "tú", "mine": "picar", "works as": "trabaja de", "belongs to": "es de", "knows": "sabe", "wants": "quiere", "the train leaves": "el tren sale", "starts at": "empieza a las", "first you": "primero tú", "then you": "luego tú"}, "de": {"My sister ______ as a nurse at the village hospital.": "Meine Schwester arbeitet als Krankenschwester im Dorfkrankenhaus.", "I ______ the answer to that riddle.": "Ich weiß die Antwort auf dieses Rätsel.", "The minecart ______ at 6:45 tomorrow morning.": "Die Lore fährt morgen früh um 6:45 ab.", "I ______ Alex tomorrow. We arranged it last night.": "Ich treffe Alex morgen. Wir haben es gestern Abend verabredet.", "First you mine the ore. Then you ______ it in the furnace.": "Zuerst baust du das Erz ab. Dann schmilzt du es im Ofen.", "Which one is a timetable, not a personal plan?": "Welcher Satz ist ein Fahrplan und kein eigener Plan?", "is working": "arbeitet gerade", "work": "arbeiten", "are working": "arbeiten gerade", "works": "arbeitet", "am know": "(gibt es nicht)", "knowing": "wissend", "know": "wissen", "am knowing": "(gibt es nicht)", "is leaving": "fährt gerade ab", "will leaving": "(gibt es nicht)", "leave": "abfahren", "leaves": "fährt ab", "meets": "trifft", "do meet": "treffe wirklich", "meet": "treffen", "am meeting": "treffe (verabredet)", "smelts": "schmilzt", "smelting": "schmelzend", "are smelting": "schmelzen gerade", "smelt": "schmelzen", "The film starts at eight.": "Der Film beginnt um acht.", "I am seeing the villager later today.": "Ich treffe den Dorfbewohner später heute.", "They are building a bridge this week.": "Sie bauen diese Woche eine Brücke.", "We are exploring the caves on Saturday.": "Wir erkunden am Samstag die Höhlen.", "finally you craft the sword": "zum Schluss schmiedest du das Schwert", "the market opens on Mondays": "der Markt öffnet montags", "school starts at nine": "die Schule beginnt um neun", "my sister works as a nurse": "meine Schwester arbeitet als Krankenschwester", "this pickaxe belongs to Steve": "diese Spitzhacke gehört Steve", "first you mine the ore": "zuerst baust du das Erz ab", "Alex lives in the village": "Alex wohnt im Dorf", "the minecart leaves at 6:45": "die Lore fährt um 6:45 ab", "then you smelt it": "dann schmilzt du es", "permanent state": "dauerhafter Zustand", "timetable": "Fahrplan", "instruction": "Anweisung", "believe": "glauben", "belong to": "gehören zu", "prefer": "bevorzugen", "cost": "kosten", "understand": "verstehen", "have it in your head": "es im Kopf haben", "think it is true": "es für wahr halten", "like one more than another": "eins lieber mögen als ein anderes", "see what it means": "sehen, was es bedeutet", "be owned by someone": "jemandem gehören", "have a price": "einen Preis haben", "Steve the answer. (know)": "Steve weiß die Antwort. (wissen)", "Alex a new sword right now. (craft)": "Alex schmiedet gerade ein neues Schwert. (schmieden)", "This map to the librarian. (belong)": "Diese Karte gehört dem Bibliothekar. (gehören)", "(know)": "(wissen)", "(craft)": "(schmieden)", "(belong)": "(gehören)", "after that": "danach", "finally": "zum Schluss", "first": "zuerst", "then": "dann", "you dig down to the lava layer.": "Zuerst gräbst du bis zur Lavaschicht.", "you build a wall around it.": "Danach baust du eine Mauer darum.", "you place the portal frame.": "Zum Schluss setzt du den Portalrahmen.", "at 6:45": "um 6:45", "the minecart": "die Lore", "tomorrow .": "morgen .", "the ore .": "das Erz .", "you": "du", "mine": "abbauen", "works as": "arbeitet als", "belongs to": "gehört", "knows": "weiß", "wants": "will", "the train leaves": "der Zug fährt ab", "starts at": "beginnt um", "first you": "zuerst du", "then you": "dann du"}};</script>
 <script>
 /* TRANSLATE-ON-REQUEST.
    The dictionary is keyed by the EXACT normalised English on screen, and the
