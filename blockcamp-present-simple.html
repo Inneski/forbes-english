@@ -493,6 +493,23 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
   border-radius: 6px; padding: 6px 10px; cursor: pointer;
 }
 .lang-select:focus { outline: 1px solid var(--accent); }
+/* ── THE OTHER HALF OF THE LESSON WAS UNREACHABLE FROM INSIDE IT ─────
+   Innes: "There should be an easier way to find part 2 without clicking on
+   'ALL 24 Lessons'". Every camp is two decks and neither linked to the other,
+   so the only route from Part 1 to Part 2 was out to the library and back in.
+   One chip in the deck bar, beside the language picker: always on screen,
+   never over the artwork, and it costs the composition nothing. */
+.part-link {
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em;
+  text-transform: uppercase; text-decoration: none; white-space: nowrap;
+  background: var(--scrim); color: var(--accent-bright);
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  border-radius: 6px; padding: 6px 10px;
+  transition: background .18s ease, color .18s ease;
+}
+.part-link:hover { background: color-mix(in srgb, var(--accent) 26%, var(--scrim));
+  color: var(--text); }
+.stage.on-cover .part-link { opacity: .9; }
 
 /* ── RESULTS ── */
 .score-big {
@@ -1033,6 +1050,7 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
   --t-present-simple: #7A93B5;
 }
 em.aux, b.aux { color: var(--mark-aux) !important; font-weight: 700; }
+.verb { color: var(--mark-inf) !important; font-weight: 700; font-style: normal; }
 em.modal, b.modal { color: var(--mark-modal) !important; font-weight: 700; }
 em.inf, b.inf { color: var(--mark-inf) !important; font-weight: 700; }
 em.t-present, b.t-present { color: var(--t-present-simple) !important;
@@ -2011,13 +2029,14 @@ em, i, .card .prose.dim em { font-style: normal !important;
             <div class="para-row"><span class="para-subj">you</span><span class="para-verb">build</span></div>
             <div class="para-row"><span class="para-subj">we</span><span class="para-verb">build</span></div>
             <div class="para-row"><span class="para-subj">they</span><span class="para-verb">build</span></div>
+            <div class="para-note"><span class="sup" data-lang="es"><b>ES</b><span>yo construyo &middot; t&uacute; construyes &middot; nosotros construimos &middot; ellos construyen</span></span><span class="sup" data-lang="de"><b>DE</b><span>ich baue &middot; du baust &middot; wir bauen &middot; sie bauen</span></span></div>
           </div>
           <div class="para-block">
             <div class="para-head" data-i18n="parB">&lsquo;he&rsquo; &middot; &lsquo;she&rsquo; &middot; &lsquo;it&rsquo;: add &lsquo;-s&rsquo;</div>
             <div class="para-row"><span class="para-subj">he</span><span class="para-verb">build<em>s</em></span></div>
             <div class="para-row"><span class="para-subj">she</span><span class="para-verb">build<em>s</em></span></div>
             <div class="para-row"><span class="para-subj">it</span><span class="para-verb">build<em>s</em></span></div>
-            <div class="para-note">Steve = he &middot; Alex = she</div>
+            <div class="para-note">Steve = he &middot; Alex = she<span class="sup" data-lang="es"><b>ES</b><span>&eacute;l construye &middot; ella construye &middot; ello construye</span></span><span class="sup" data-lang="de"><b>DE</b><span>er baut &middot; sie baut &middot; es baut</span></span></div>
           </div>
         </div>
         <p class="para-note" style="text-align:center;margin-top:14px;font-size:13px" data-i18n="parNote"><span class="dictum">&lsquo;HE / SHE / IT&rsquo; &mdash; an &lsquo;(E)S&rsquo; must fit!</span></p>
@@ -2107,7 +2126,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
           <div class="card">
             <p class="prose"><strong data-i18n="ordH1">Short adverbs</strong></p>
             <p class="prose" data-i18n="ordB1" style="margin-top:8px;font-size:18px">Before the verb. After &rsquo;be&rsquo;.</p>
-            <p class="prose dim" style="margin-top:8px;font-size:15px"><span class="formula"><b>adverb</b> + verb</span><span class="formula"><em class="aux">am</em> / <em class="aux">are</em> / <em class="aux">is</em> + <b>adverb</b></span><span class="exlist"><span>Steve <b>often mines</b></span><span>the wolf <b><em class="aux">is</em> usually</b> friendly</span></span><span class="sup" data-lang="es"><b>ES</b><span>Steve pica a menudo &middot; el lobo suele ser amistoso</span></span><span class="sup" data-lang="de"><b>DE</b><span>Steve gr&auml;bt oft &middot; der Wolf ist meistens freundlich</span></span></p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px"><span class="formula"><b>adverb</b> + <em class="verb">verb</em></span><span class="formula"><em class="aux">am</em> / <em class="aux">are</em> / <em class="aux">is</em> + <b>adverb</b></span><span class="exlist"><span>Steve <b>often</b> <em class="verb">mines</em></span><span>the wolf <em class="aux">is</em> <b>usually</b> friendly</span></span><span class="sup" data-lang="es"><b>ES</b><span>Steve pica a menudo &middot; el lobo suele ser amistoso</span></span><span class="sup" data-lang="de"><b>DE</b><span>Steve gr&auml;bt oft &middot; der Wolf ist meistens freundlich</span></span></p>
           </div>
           <div class="card">
             <p class="prose"><strong data-i18n="ordH2">Longer phrases</strong></p>
@@ -2119,13 +2138,13 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="teach" data-bg="present-simple-time-signals/bg15.jpg" data-side="left" data-vpos="top" data-w="wide" style="--wcols:2">
+    <section class="slide" data-type="teach" data-bg="present-simple-time-signals/bg15.jpg" data-side="left" data-vpos="top">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="famEyebrow">Time signals</div>
         <h2 class="slide-title" data-i18n="famTitle">every + period &middot; on / at + day</h2>
       </div></div>
       <div class="slide-body">
-        <div class="cols" style="grid-template-columns:1fr 1fr">
+        <div class="cols" style="grid-template-columns:1fr">
           <div class="card">
             <p class="prose"><strong data-i18n="famH1">every + period</strong></p>
             <p class="prose" data-i18n="famB1" style="margin-top:8px;font-size:18px">A fixed cycle.</p>
@@ -2174,7 +2193,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
         <h2 class="slide-title" data-i18n="qTitleForm">Choose the right form</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">Alex ______ the sheep every morning.<span class="sup" data-lang="es"><b>ES</b><span>Alex ______ a las ovejas cada mañana.</span></span><span class="sup" data-lang="de"><b>DE</b><span>Alex ______ die Schafe jeden Morgen.</span></span></p>
+        <p class="q-stem">Alex ______ the sheep every morning.<span class="sup" data-lang="es"><b>ES</b><span>Alex alimenta a las ovejas cada mañana.</span></span><span class="sup" data-lang="de"><b>DE</b><span>Alex füttert die Schafe jeden Morgen.</span></span></p>
         <div class="opts">
           <button class="opt" data-explain="That is the I / you / we / they column.">feed</button>
           <button class="opt" data-correct>feeds</button>
@@ -2193,7 +2212,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
         <h2 class="slide-title" data-i18n="qTitleForm">Choose the right form</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">They ______ to school on weekdays.<span class="sup" data-lang="es"><b>ES</b><span>Ellos ______ al colegio entre semana.</span></span><span class="sup" data-lang="de"><b>DE</b><span>Sie ______ wochentags zur Schule.</span></span></p>
+        <p class="q-stem">They ______ to school on weekdays.<span class="sup" data-lang="es"><b>ES</b><span>Ellos no van al colegio entre semana.</span></span><span class="sup" data-lang="de"><b>DE</b><span>Sie gehen wochentags nicht zur Schule.</span></span></p>
         <div class="opts">
           <button class="opt" data-explain="doesn&rsquo;t is the he / she / it row.">doesn&rsquo;t go</button>
           <button class="opt" data-explain="After don&rsquo;t the -s is gone.">don&rsquo;t goes</button>
@@ -2212,7 +2231,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
         <h2 class="slide-title" data-i18n="qTitleForm">Choose the right form</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">______ Steve mine on Mondays?<span class="sup" data-lang="es"><b>ES</b><span>¿______ pica Steve los lunes?</span></span><span class="sup" data-lang="de"><b>DE</b><span>______ Steve montags ab?</span></span></p>
+        <p class="q-stem">______ Steve mine on Mondays?<span class="sup" data-lang="es"><b>ES</b><span>¿Pica Steve los lunes?</span></span><span class="sup" data-lang="de"><b>DE</b><span>Baut Steve montags ab?</span></span></p>
         <div class="opts">
           <button class="opt" data-explain="Do is the I / you / we / they row.">Do</button>
           <button class="opt" data-explain="Is would need an -ing verb: Is Steve mining?">Is</button>
@@ -2250,7 +2269,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
         <h2 class="slide-title" data-i18n="qTitleSignal">Choose the right signal</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">You ______ meet a Warden. It almost never happens.<span class="sup" data-lang="es"><b>ES</b><span>Tú ______ te encuentras un Warden. Casi nunca pasa.</span></span><span class="sup" data-lang="de"><b>DE</b><span>Du triffst ______ einen Warden. Es passiert fast nie.</span></span></p>
+        <p class="q-stem">You ______ meet a Warden. It almost never happens.<span class="sup" data-lang="es"><b>ES</b><span>Rara vez te encuentras un Warden. Casi nunca pasa.</span></span><span class="sup" data-lang="de"><b>DE</b><span>Du triffst kaum je einen Warden. Es passiert fast nie.</span></span></p>
         <div class="opts">
           <button class="opt" data-explain="always is the far end: 100%.">always</button>
           <button class="opt" data-correct>hardly ever</button>
@@ -2269,7 +2288,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
         <h2 class="slide-title" data-i18n="qTitleSignal">Choose the right signal</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-stem">Steve eats breakfast ______. He is never late for it.<span class="sup" data-lang="es"><b>ES</b><span>Steve desayuna ______. Nunca llega tarde.</span></span><span class="sup" data-lang="de"><b>DE</b><span>Steve frühstückt ______. Er kommt nie zu spät.</span></span></p>
+        <p class="q-stem">Steve eats breakfast ______. He is never late for it.<span class="sup" data-lang="es"><b>ES</b><span>Steve desayuna a las siete. Nunca llega tarde.</span></span><span class="sup" data-lang="de"><b>DE</b><span>Steve frühstückt um sieben Uhr. Er kommt nie zu spät.</span></span></p>
         <div class="opts">
           <button class="opt" data-explain="Breakfast is daily, not monthly.">once a month</button>
           <button class="opt" data-correct>at 7 o&rsquo;clock</button>
@@ -2473,7 +2492,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     <div class="deck-rail" id="deckRail" data-i18n-stops="railStops" hidden></div>
     <div class="tr-panel" id="bwTrPanel"></div>
     <div class="deck-bar">
-      <select class="lang-select" id="langSelect" aria-label="Language"></select><button class="tr-btn" id="bwTrBtn" hidden>EN</button>
+      <select class="lang-select" id="langSelect" aria-label="Language"></select><button class="tr-btn" id="bwTrBtn" hidden>EN</button><a class="part-link" id="partLink" href="blockcamp-present-simple-2.html" data-i18n="partLink">Part 2 &rarr;</a>
       <div class="ledger" id="ledger" hidden>
         <span class="led"><b data-i18n="ledDp">DP</b> <i id="ledDp">0</i></span>
         <span class="led"><b data-i18n="ledTime">TIME</b> <i id="ledTime">•••</i></span>
@@ -2509,6 +2528,7 @@ const RTL_LANGS = ['ar'];
 
 const UI_I18N = {
   en: {
+    partLink: "Part 2 &rarr;",
     actEyebrow: 'Activation',
     actPlaceholder: "Every morning I&hellip;",
     actSpeak1: "Your morning, from waking up to leaving the house. Three different signals.",
@@ -2621,6 +2641,7 @@ const UI_I18N = {
     wordCount: (n)=>`${n} ${n===1?'word':'words'}`
   },
   de: {
+    partLink: "Teil 2 &rarr;",
     actEyebrow: 'Anwendung',
     actPlaceholder: "Every morning I&hellip;",
     actSpeak1: "Dein Morgen, vom Aufwachen bis zum Rausgehen. Drei verschiedene Signale.",
@@ -2705,7 +2726,7 @@ const UI_I18N = {
     parA: "Subjekt + Grundform",
     parB: "&rsquo;he&rsquo; &middot; &rsquo;she&rsquo; &middot; &rsquo;it&rsquo;: &rsquo;-s&rsquo; anh&auml;ngen",
     parEyebrow: "Die Form",
-    parNote: "<span class=\"dictum\">&lsquo;HE / SHE / IT&rsquo; &mdash; an &lsquo;(E)S&rsquo; must fit!</span>",
+    parNote: "<span class=\"dictum\">&lsquo;HE / SHE / IT&rsquo; &mdash; an &lsquo;(E)S&rsquo; must fit!</span><span class=\"sup\" data-lang=\"de\"><b>DE</b><span>Merksatz: bei er / sie / es h&auml;ngt ein &lsquo;-(e)s&rsquo; an</span></span>",
     parTitle: "Die ganze Zeitform",
     qEyebrow: "&Uuml;bung",
     qTitleForm: "W&auml;hle die richtige Form",
@@ -2733,6 +2754,7 @@ const UI_I18N = {
     wordCount: (n)=>`${n} ${n===1?'Wort':'Wörter'}`
   },
   es: {
+    partLink: "Parte 2 &rarr;",
     actEyebrow: 'Activación',
     actPlaceholder: "Every morning I&hellip;",
     actSpeak1: "Tu ma&ntilde;ana, de levantarte a salir de casa. Tres se&ntilde;ales distintas.",
@@ -2817,7 +2839,7 @@ const UI_I18N = {
     parA: "Sujeto + verbo base",
     parB: "&rsquo;he&rsquo; &middot; &rsquo;she&rsquo; &middot; &rsquo;it&rsquo;: a&ntilde;ade &rsquo;-s&rsquo;",
     parEyebrow: "La forma",
-    parNote: "<span class=\"dictum\">&lsquo;HE / SHE / IT&rsquo; &mdash; an &lsquo;(E)S&rsquo; must fit!</span>",
+    parNote: "<span class=\"dictum\">&lsquo;HE / SHE / IT&rsquo; &mdash; an &lsquo;(E)S&rsquo; must fit!</span><span class=\"sup\" data-lang=\"es\"><b>ES</b><span>regla: con &eacute;l / ella / ello se a&ntilde;ade una &lsquo;-(e)s&rsquo;</span></span>",
     parTitle: "Todo el tiempo verbal",
     qEyebrow: "Pr&aacute;ctica",
     qTitleForm: "Elige la forma correcta",
@@ -3797,7 +3819,7 @@ const ready = () => document.body.classList.add('fonts-ready');
 if (document.fonts && document.fonts.ready) { document.fonts.ready.then(ready); setTimeout(ready, 1500); }
 else ready();
 </script>
-<script>window.BW_TR={"es": {"build": "construir", "you": "tú / vosotros", "we": "nosotros", "they": "ellos", "he": "él", "builds": "construye", "she": "ella", "it": "ello (cosa/animal)", "Steve = he · Alex = she": "Steve = él · Alex = ella", "every + period · on / at + day": "every + periodo · on / at + día", "in / at · counted · fixed points": "in / at · contado · puntos fijos", "Alex ______ the sheep every morning.": "Alex ______ a las ovejas cada mañana.", "is feed": "(no existe)", "feed": "dar de comer", "are feeding": "están dando de comer", "feeds": "da de comer", "They ______ to school on weekdays.": "Ellos ______ al colegio entre semana.", "not go": "(no existe)", "don’t goes": "(no existe)", "doesn’t go": "no va", "don’t go": "no van", "______ Steve mine on Mondays?": "¿______ pica Steve los lunes?", "Do": "(auxiliar para I/you/we/they)", "Has": "tiene", "Does": "(auxiliar para he/she/it)", "Is": "es / está", "Which sentence puts the adverb in the right place?": "¿Qué frase coloca el adverbio en el sitio correcto?", "The wolf usually is friendly.": "El lobo normalmente es amistoso. (orden incorrecto)", "Usually the wolf friendly is.": "(orden incorrecto)", "The wolf is friendly usually is.": "(orden incorrecto)", "The wolf is usually friendly.": "El lobo normalmente es amistoso.", "You ______ meet a Warden. It almost never happens.": "Tú ______ te encuentras un Warden. Casi nunca pasa.", "twice a week": "dos veces por semana", "every day": "cada día", "always": "siempre", "hardly ever": "casi nunca", "Steve eats breakfast ______. He is never late for it.": "Steve desayuna ______. Nunca llega tarde.", "at the weekend": "el fin de semana", "at 7 o’clock": "a las siete", "three times a year": "tres veces al año", "once a month": "una vez al mes", "in the morning": "por la mañana", "every morning": "cada mañana", "on Mondays": "los lunes", "on weekdays": "entre semana", "at night": "por la noche", "in the evening": "por la tarde", "every year": "cada año", "every weekend": "cada fin de semana", "at weekends": "los fines de semana", "every + period": "every + periodo", "on / at + day": "on / at + día", "in / at + part of day": "in / at + parte del día", "usually": "normalmente", "often": "a menudo", "sometimes": "a veces", "never": "nunca", "0% of the time": "el 0% de las veces", "many times, but not most": "muchas veces, pero no la mayoría", "on some days only": "solo algunos días", "almost never at all": "casi nunca", "on most days": "casi todos los días", "100% of the time": "el 100% de las veces", "She bread in the morning. (make)": "Ella ______ pan por la mañana. (hacer)", "(make)": "(hacer)", "We caves in the afternoon. (explore)": "Nosotros ______ cuevas por la tarde. (explorar)", "(explore)": "(explorar)", "The Enderman at night. (appear)": "El Enderman ______ de noche. (aparecer)", "(appear)": "(aparecer)", "after school": "después del colegio", "once a day": "una vez al día", "I check my map — one time, every day.": "Miro mi mapa ______ — una vez, cada día.", "The village holds a festival .": "El pueblo celebra una fiesta ______.", "He plays with his friends , when lessons finish.": "Juega con sus amigos ______, cuando acaban las clases.", "mines .": "pica .", "Steve": "Steve", "the wolf": "el lobo", "friendly .": "amistoso .", "is": "es / está", "before school": "antes del colegio"}, "de": {"build": "bauen", "you": "du / ihr", "we": "wir", "they": "sie", "he": "er", "builds": "baut", "she": "sie", "it": "es", "Steve = he · Alex = she": "Steve = er · Alex = sie", "every + period · on / at + day": "every + Zeitraum · on / at + Tag", "in / at · counted · fixed points": "in / at · gezählt · feste Punkte", "Alex ______ the sheep every morning.": "Alex ______ die Schafe jeden Morgen.", "is feed": "(gibt es nicht)", "feed": "füttern", "are feeding": "füttern gerade", "feeds": "füttert", "They ______ to school on weekdays.": "Sie ______ wochentags zur Schule.", "not go": "(gibt es nicht)", "don’t goes": "(gibt es nicht)", "doesn’t go": "geht nicht", "don’t go": "gehen nicht", "______ Steve mine on Mondays?": "______ Steve montags ab?", "Do": "(Hilfsverb für I/you/we/they)", "Has": "hat", "Does": "(Hilfsverb für he/she/it)", "Is": "ist", "Which sentence puts the adverb in the right place?": "Welcher Satz stellt das Adverb an die richtige Stelle?", "The wolf usually is friendly.": "Der Wolf ist meistens freundlich. (falsche Stellung)", "Usually the wolf friendly is.": "(falsche Stellung)", "The wolf is friendly usually is.": "(falsche Stellung)", "The wolf is usually friendly.": "Der Wolf ist meistens freundlich.", "You ______ meet a Warden. It almost never happens.": "Du triffst ______ einen Warden. Es passiert fast nie.", "twice a week": "zweimal pro Woche", "every day": "jeden Tag", "always": "immer", "hardly ever": "fast nie", "Steve eats breakfast ______. He is never late for it.": "Steve frühstückt ______. Er kommt nie zu spät.", "at the weekend": "am Wochenende", "at 7 o’clock": "um sieben Uhr", "three times a year": "dreimal im Jahr", "once a month": "einmal im Monat", "in the morning": "morgens", "every morning": "jeden Morgen", "on Mondays": "montags", "on weekdays": "wochentags", "at night": "nachts", "in the evening": "abends", "every year": "jedes Jahr", "every weekend": "jedes Wochenende", "at weekends": "an Wochenenden", "every + period": "every + Zeitraum", "on / at + day": "on / at + Tag", "in / at + part of day": "in / at + Tageszeit", "usually": "normalerweise", "often": "oft", "sometimes": "manchmal", "never": "nie", "0% of the time": "0 % der Zeit", "many times, but not most": "oft, aber nicht meistens", "on some days only": "nur an manchen Tagen", "almost never at all": "so gut wie nie", "on most days": "an den meisten Tagen", "100% of the time": "100 % der Zeit", "She bread in the morning. (make)": "Sie ______ morgens Brot. (machen)", "(make)": "(machen)", "We caves in the afternoon. (explore)": "Wir ______ nachmittags Höhlen. (erkunden)", "(explore)": "(erkunden)", "The Enderman at night. (appear)": "Der Enderman ______ nachts. (erscheinen)", "(appear)": "(erscheinen)", "after school": "nach der Schule", "once a day": "einmal am Tag", "I check my map — one time, every day.": "Ich schaue ______ auf meine Karte — einmal, jeden Tag.", "The village holds a festival .": "Das Dorf feiert ______ ein Fest.", "He plays with his friends , when lessons finish.": "Er spielt ______ mit seinen Freunden, wenn der Unterricht endet.", "mines .": "baut ab .", "Steve": "Steve", "the wolf": "der Wolf", "friendly .": "freundlich .", "is": "ist", "before school": "vor der Schule"}};</script>
+<script>window.BW_TR={"es": {"build": "construir", "you": "tú / vosotros", "we": "nosotros", "they": "ellos", "he": "él", "builds": "construye", "she": "ella", "it": "ello (cosa/animal)", "Steve = he · Alex = she": "Steve = él · Alex = ella", "every + period · on / at + day": "every + periodo · on / at + día", "in / at · counted · fixed points": "in / at · contado · puntos fijos", "Alex ______ the sheep every morning.": "Alex alimenta a las ovejas cada mañana.", "is feed": "(no existe)", "feed": "dar de comer", "are feeding": "están dando de comer", "feeds": "da de comer", "They ______ to school on weekdays.": "Ellos no van al colegio entre semana.", "not go": "(no existe)", "don’t goes": "(no existe)", "doesn’t go": "no va", "don’t go": "no van", "______ Steve mine on Mondays?": "¿Pica Steve los lunes?", "Do": "(auxiliar para I/you/we/they)", "Has": "tiene", "Does": "(auxiliar para he/she/it)", "Is": "es / está", "Which sentence puts the adverb in the right place?": "¿Qué frase coloca el adverbio en el sitio correcto?", "The wolf usually is friendly.": "El lobo normalmente es amistoso. (orden incorrecto)", "Usually the wolf friendly is.": "(orden incorrecto)", "The wolf is friendly usually is.": "(orden incorrecto)", "The wolf is usually friendly.": "El lobo normalmente es amistoso.", "You ______ meet a Warden. It almost never happens.": "Rara vez te encuentras un Warden. Casi nunca pasa.", "twice a week": "dos veces por semana", "every day": "cada día", "always": "siempre", "hardly ever": "casi nunca", "Steve eats breakfast ______. He is never late for it.": "Steve desayuna a las siete. Nunca llega tarde.", "at the weekend": "el fin de semana", "at 7 o’clock": "a las siete", "three times a year": "tres veces al año", "once a month": "una vez al mes", "in the morning": "por la mañana", "every morning": "cada mañana", "on Mondays": "los lunes", "on weekdays": "entre semana", "at night": "por la noche", "in the evening": "por la tarde", "every year": "cada año", "every weekend": "cada fin de semana", "at weekends": "los fines de semana", "every + period": "every + periodo", "on / at + day": "on / at + día", "in / at + part of day": "in / at + parte del día", "usually": "normalmente", "often": "a menudo", "sometimes": "a veces", "never": "nunca", "0% of the time": "el 0% de las veces", "many times, but not most": "muchas veces, pero no la mayoría", "on some days only": "solo algunos días", "almost never at all": "casi nunca", "on most days": "casi todos los días", "100% of the time": "el 100% de las veces", "She bread in the morning. (make)": "Ella hace pan por la mañana. (hacer)", "(make)": "(hacer)", "We caves in the afternoon. (explore)": "Nosotros exploramos cuevas por la tarde. (explorar)", "(explore)": "(explorar)", "The Enderman at night. (appear)": "El Enderman aparece de noche. (aparecer)", "(appear)": "(aparecer)", "after school": "después del colegio", "once a day": "una vez al día", "I check my map — one time, every day.": "Miro mi mapa una vez al día — una vez, cada día.", "The village holds a festival .": "El pueblo celebra una fiesta cada año.", "He plays with his friends , when lessons finish.": "Juega con sus amigos después del colegio, cuando acaban las clases.", "mines .": "pica .", "Steve": "Steve", "the wolf": "el lobo", "friendly .": "amistoso .", "is": "es / está", "before school": "antes del colegio"}, "de": {"build": "bauen", "you": "du / ihr", "we": "wir", "they": "sie", "he": "er", "builds": "baut", "she": "sie", "it": "es", "Steve = he · Alex = she": "Steve = er · Alex = sie", "every + period · on / at + day": "every + Zeitraum · on / at + Tag", "in / at · counted · fixed points": "in / at · gezählt · feste Punkte", "Alex ______ the sheep every morning.": "Alex füttert die Schafe jeden Morgen.", "is feed": "(gibt es nicht)", "feed": "füttern", "are feeding": "füttern gerade", "feeds": "füttert", "They ______ to school on weekdays.": "Sie gehen wochentags nicht zur Schule.", "not go": "(gibt es nicht)", "don’t goes": "(gibt es nicht)", "doesn’t go": "geht nicht", "don’t go": "gehen nicht", "______ Steve mine on Mondays?": "Baut Steve montags ab?", "Do": "(Hilfsverb für I/you/we/they)", "Has": "hat", "Does": "(Hilfsverb für he/she/it)", "Is": "ist", "Which sentence puts the adverb in the right place?": "Welcher Satz stellt das Adverb an die richtige Stelle?", "The wolf usually is friendly.": "Der Wolf ist meistens freundlich. (falsche Stellung)", "Usually the wolf friendly is.": "(falsche Stellung)", "The wolf is friendly usually is.": "(falsche Stellung)", "The wolf is usually friendly.": "Der Wolf ist meistens freundlich.", "You ______ meet a Warden. It almost never happens.": "Du triffst kaum je einen Warden. Es passiert fast nie.", "twice a week": "zweimal pro Woche", "every day": "jeden Tag", "always": "immer", "hardly ever": "fast nie", "Steve eats breakfast ______. He is never late for it.": "Steve frühstückt um sieben Uhr. Er kommt nie zu spät.", "at the weekend": "am Wochenende", "at 7 o’clock": "um sieben Uhr", "three times a year": "dreimal im Jahr", "once a month": "einmal im Monat", "in the morning": "morgens", "every morning": "jeden Morgen", "on Mondays": "montags", "on weekdays": "wochentags", "at night": "nachts", "in the evening": "abends", "every year": "jedes Jahr", "every weekend": "jedes Wochenende", "at weekends": "an Wochenenden", "every + period": "every + Zeitraum", "on / at + day": "on / at + Tag", "in / at + part of day": "in / at + Tageszeit", "usually": "normalerweise", "often": "oft", "sometimes": "manchmal", "never": "nie", "0% of the time": "0 % der Zeit", "many times, but not most": "oft, aber nicht meistens", "on some days only": "nur an manchen Tagen", "almost never at all": "so gut wie nie", "on most days": "an den meisten Tagen", "100% of the time": "100 % der Zeit", "She bread in the morning. (make)": "Sie macht morgens Brot. (machen)", "(make)": "(machen)", "We caves in the afternoon. (explore)": "Wir erkunden nachmittags Höhlen. (erkunden)", "(explore)": "(erkunden)", "The Enderman at night. (appear)": "Der Enderman erscheint nachts. (erscheinen)", "(appear)": "(erscheinen)", "after school": "nach der Schule", "once a day": "einmal am Tag", "I check my map — one time, every day.": "Ich schaue einmal am Tag auf meine Karte — einmal, jeden Tag.", "The village holds a festival .": "Das Dorf feiert jedes Jahr ein Fest.", "He plays with his friends , when lessons finish.": "Er spielt nach der Schule mit seinen Freunden, wenn der Unterricht endet.", "mines .": "baut ab .", "Steve": "Steve", "the wolf": "der Wolf", "friendly .": "freundlich .", "is": "ist", "before school": "vor der Schule"}};</script>
 <script>
 /* TRANSLATE-ON-REQUEST.
    The dictionary is keyed by the EXACT normalised English on screen, and the

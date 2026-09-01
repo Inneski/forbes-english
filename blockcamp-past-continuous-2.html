@@ -498,6 +498,23 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
   border-radius: 6px; padding: 6px 10px; cursor: pointer;
 }
 .lang-select:focus { outline: 1px solid var(--accent); }
+/* ── THE OTHER HALF OF THE LESSON WAS UNREACHABLE FROM INSIDE IT ─────
+   Innes: "There should be an easier way to find part 2 without clicking on
+   'ALL 24 Lessons'". Every camp is two decks and neither linked to the other,
+   so the only route from Part 1 to Part 2 was out to the library and back in.
+   One chip in the deck bar, beside the language picker: always on screen,
+   never over the artwork, and it costs the composition nothing. */
+.part-link {
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em;
+  text-transform: uppercase; text-decoration: none; white-space: nowrap;
+  background: var(--scrim); color: var(--accent-bright);
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  border-radius: 6px; padding: 6px 10px;
+  transition: background .18s ease, color .18s ease;
+}
+.part-link:hover { background: color-mix(in srgb, var(--accent) 26%, var(--scrim));
+  color: var(--text); }
+.stage.on-cover .part-link { opacity: .9; }
 
 /* ── RESULTS ── */
 .score-big {
@@ -2489,7 +2506,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     <div class="deck-rail" id="deckRail" data-i18n-stops="railStops" hidden></div>
     <div class="tr-panel" id="bwTrPanel"></div>
     <div class="deck-bar">
-      <select class="lang-select" id="langSelect" aria-label="Language"></select><button class="tr-btn" id="bwTrBtn" hidden>EN</button>
+      <select class="lang-select" id="langSelect" aria-label="Language"></select><button class="tr-btn" id="bwTrBtn" hidden>EN</button><a class="part-link" id="partLink" href="blockcamp-past-continuous.html" data-i18n="partLink">&larr; Part 1</a>
       <div class="ledger" id="ledger" hidden>
         <span class="led"><b data-i18n="ledDp">DP</b> <i id="ledDp">0</i></span>
         <span class="led"><b data-i18n="ledTime">TIME</b> <i id="ledTime">•••</i></span>
@@ -2525,6 +2542,7 @@ const RTL_LANGS = ['ar'];
 
 const UI_I18N = {
   en: {
+    partLink: "&larr; Part 1",
     actEyebrow: 'Activation',
     actPlaceholder: "I was digging when&hellip;",
     actSpeak1: "Tell your partner about a time something interrupted you. What were you doing when it happened?",
@@ -2633,6 +2651,7 @@ const UI_I18N = {
     wordCount: (n)=>`${n} ${n===1?'word':'words'}`
   },
   de: {
+    partLink: "&larr; Teil 1",
     actEyebrow: 'Anwendung',
     actPlaceholder: "I was digging when&hellip;",
     actSpeak1: "Erz&auml;hle deinem Partner von einem Mal, als dich etwas unterbrochen hat. Was hast du gerade gemacht?",
@@ -2741,6 +2760,7 @@ const UI_I18N = {
     wordCount: (n)=>`${n} ${n===1?'Wort':'Wörter'}`
   },
   es: {
+    partLink: "&larr; Parte 1",
     actEyebrow: 'Activación',
     actPlaceholder: "I was digging when&hellip;",
     actSpeak1: "Cu&eacute;ntale a tu compa&ntilde;ero una vez que algo te interrumpi&oacute;. &iquest;Qu&eacute; estabas haciendo?",

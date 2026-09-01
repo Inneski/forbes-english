@@ -493,6 +493,23 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
   border-radius: 6px; padding: 6px 10px; cursor: pointer;
 }
 .lang-select:focus { outline: 1px solid var(--accent); }
+/* ── THE OTHER HALF OF THE LESSON WAS UNREACHABLE FROM INSIDE IT ─────
+   Innes: "There should be an easier way to find part 2 without clicking on
+   'ALL 24 Lessons'". Every camp is two decks and neither linked to the other,
+   so the only route from Part 1 to Part 2 was out to the library and back in.
+   One chip in the deck bar, beside the language picker: always on screen,
+   never over the artwork, and it costs the composition nothing. */
+.part-link {
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em;
+  text-transform: uppercase; text-decoration: none; white-space: nowrap;
+  background: var(--scrim); color: var(--accent-bright);
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  border-radius: 6px; padding: 6px 10px;
+  transition: background .18s ease, color .18s ease;
+}
+.part-link:hover { background: color-mix(in srgb, var(--accent) 26%, var(--scrim));
+  color: var(--text); }
+.stage.on-cover .part-link { opacity: .9; }
 
 /* ── RESULTS ── */
 .score-big {
@@ -2016,8 +2033,8 @@ em, i, .card .prose.dim em { font-style: normal !important;
             <p class="prose dim" style="margin-top:8px;font-size:15px"><span class="exlist"><span>water <b>flows</b> downhill</span></span><span class="sup" data-lang="es"><b>ES</b><span>el agua corre hacia abajo</span></span><span class="sup" data-lang="de"><b>DE</b><span>Wasser flie&szlig;t bergab</span></span></p>
           </div>
           <div class="card">
-            <p class="prose"><strong data-i18n="recH3">Now four more</strong></p>
-            <p class="prose" data-i18n="recB3" style="margin-top:8px;font-size:18px">States &middot; timetables &middot; instructions &middot; state verbs.</p>
+            <p class="prose"><strong data-i18n="recH3">Now three more</strong></p>
+            <p class="prose" data-i18n="recB3" style="margin-top:8px;font-size:18px">Permanent states &middot; timetables &middot; instructions.</p>
           </div>
         </div>
       </div>
@@ -2048,7 +2065,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
 
     <section class="slide" data-type="teach" data-bg="present-simple-time-signals/bg36.jpg" data-side="right" data-vpos="top" data-w="wide">
       <div class="slide-head"><div>
-        <div class="eyebrow" data-i18n="svEyebrow">Use 4</div>
+        <div class="eyebrow" data-i18n="svEyebrow">The rule</div>
         <h2 class="slide-title" data-i18n="svTitle">State verbs take no -ing</h2>
       </div></div>
       <div class="slide-body">
@@ -2076,7 +2093,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
 
     <section class="slide" data-type="teach" data-bg="present-simple-time-signals/bg34.jpg" data-side="right" data-vpos="top">
       <div class="slide-head"><div>
-        <div class="eyebrow" data-i18n="ttEyebrow">Use 5</div>
+        <div class="eyebrow" data-i18n="ttEyebrow">Use 4</div>
         <h2 class="slide-title" data-i18n="ttTitle">A future in a present tense</h2>
       </div></div>
       <div class="slide-body">
@@ -2098,7 +2115,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
 
     <section class="slide" data-type="teach" data-bg="present-simple-time-signals/bg28.jpg" data-side="right" data-vpos="top" data-w="wide" style="--wcols:2">
       <div class="slide-head"><div>
-        <div class="eyebrow" data-i18n="inEyebrow">Use 6</div>
+        <div class="eyebrow" data-i18n="inEyebrow">Use 5</div>
         <h2 class="slide-title" data-i18n="inTitle">Instructions and directions</h2>
       </div></div>
       <div class="slide-body">
@@ -2423,7 +2440,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     <div class="deck-rail" id="deckRail" data-i18n-stops="railStops" hidden></div>
     <div class="tr-panel" id="bwTrPanel"></div>
     <div class="deck-bar">
-      <select class="lang-select" id="langSelect" aria-label="Language"></select><button class="tr-btn" id="bwTrBtn" hidden>EN</button>
+      <select class="lang-select" id="langSelect" aria-label="Language"></select><button class="tr-btn" id="bwTrBtn" hidden>EN</button><a class="part-link" id="partLink" href="blockcamp-present-simple.html" data-i18n="partLink">&larr; Part 1</a>
       <div class="ledger" id="ledger" hidden>
         <span class="led"><b data-i18n="ledDp">DP</b> <i id="ledDp">0</i></span>
         <span class="led"><b data-i18n="ledTime">TIME</b> <i id="ledTime">•••</i></span>
@@ -2459,6 +2476,7 @@ const RTL_LANGS = ['ar'];
 
 const UI_I18N = {
   en: {
+    partLink: "&larr; Part 1",
     actEyebrow: 'Activation',
     actPlaceholder: "First you&hellip;",
     actSpeak1: "Tell your partner how to get from your classroom to the front door. Use first, then and after that.",
@@ -2502,7 +2520,7 @@ const UI_I18N = {
     hint6: "Ask: can I move this time myself, or did somebody else fix it?",
     inB1: "Every step is present simple, even though nobody is doing it yet.",
     inB2: "They carry the order, so the verb does not have to.",
-    inEyebrow: "Use 6",
+    inEyebrow: "Use 5",
     inH1: "Recipes and routes",
     inH2: "The step words",
     inTitle: "Instructions and directions",
@@ -2524,13 +2542,13 @@ const UI_I18N = {
     qTitleUse: "Which use is it?",
     recB1: "It happens again and again.",
     recB2: "It stays true.",
-    recB3: "States &middot; timetables &middot; instructions &middot; state verbs.",
+    recB3: "Permanent states &middot; timetables &middot; instructions.",
     recEyebrow: "From Part 1",
     recH1: "Habits",
     recH2: "Facts",
-    recH3: "Now four more",
+    recH3: "Now three more",
     recTitle: "You already have two uses",
-    resLow: "Go back to Use 5. If somebody else fixed the time, it is present simple.",
+    resLow: "Go back to Use 4. If somebody else fixed the time, it is present simple.",
     resMid: "Look again at the timetable test: who set the time?",
     resNext: 'Recognising the language is half of it. Now produce it →',
     resPerfect: "Full marks. Now give the instructions out loud.",
@@ -2550,18 +2568,19 @@ const UI_I18N = {
     svA: "Thoughts",
     svB: "Feelings",
     svC: "Senses and having",
-    svEyebrow: "Use 4",
+    svEyebrow: "The rule",
     svNote: "<span class=\"formula\">a state verb + <b>-ing</b> <i>= wrong</i></span><span class=\"formula\"><s>&lsquo;I am knowing&rsquo;</s> &nbsp; &lsquo;I know&rsquo; <i>&#10003;</i></span>",
     svTitle: "State verbs take no -ing",
     ttB1: "A railway, a school, a cinema. You did not choose it and you cannot move it.",
     ttB2: "If you arranged it yourself, use the present continuous.",
-    ttEyebrow: "Use 5",
+    ttEyebrow: "Use 4",
     ttH1: "Somebody else set the time",
     ttH2: "Your own plan is not a timetable",
     ttTitle: "A future in a present tense",
     wordCount: (n)=>`${n} ${n===1?'word':'words'}`
   },
   de: {
+    partLink: "&larr; Teil 1",
     actEyebrow: 'Anwendung',
     actPlaceholder: "First you&hellip;",
     actSpeak1: "Erkl&auml;re deinem Partner den Weg vom Klassenzimmer zur Haust&uuml;r. Benutze first, then und after that.",
@@ -2605,7 +2624,7 @@ const UI_I18N = {
     hint6: "Frage: Kann ich diese Zeit selbst verschieben, oder hat sie jemand anderes festgelegt?",
     inB1: "Jeder Schritt steht im Present Simple, obwohl es noch niemand tut.",
     inB2: "Sie tragen die Reihenfolge, damit das Verb es nicht muss.",
-    inEyebrow: "Verwendung 6",
+    inEyebrow: "Verwendung 5",
     inH1: "Rezepte und Wege",
     inH2: "Die Schrittw&ouml;rter",
     inTitle: "Anweisungen und Wege",
@@ -2627,13 +2646,13 @@ const UI_I18N = {
     qTitleUse: "Welche Verwendung ist das?",
     recB1: "Es passiert immer wieder.",
     recB2: "Es bleibt wahr.",
-    recB3: "Zust&auml;nde &middot; Fahrpl&auml;ne &middot; Anweisungen &middot; Zustandsverben.",
+    recB3: "Dauerhafte Zust&auml;nde &middot; Fahrpl&auml;ne &middot; Anweisungen.",
     recEyebrow: "Aus Teil 1",
     recH1: "Gewohnheiten",
     recH2: "Fakten",
-    recH3: "Jetzt vier weitere",
+    recH3: "Jetzt drei weitere",
     recTitle: "Du kennst schon zwei",
-    resLow: "Geh zur&uuml;ck zu Verwendung 5. Wenn jemand anderes die Zeit festgelegt hat, ist es Present Simple.",
+    resLow: "Geh zur&uuml;ck zu Verwendung 4. Wenn jemand anderes die Zeit festgelegt hat, ist es Present Simple.",
     resMid: "Schau dir den Fahrplan-Test noch einmal an: Wer hat die Zeit festgelegt?",
     resNext: 'Die Sprache zu erkennen ist die halbe Miete. Jetzt anwenden →',
     resPerfect: "Volle Punktzahl. Jetzt die Anweisungen laut geben.",
@@ -2653,18 +2672,19 @@ const UI_I18N = {
     svA: "Gedanken",
     svB: "Gef&uuml;hle",
     svC: "Sinne und Besitz",
-    svEyebrow: "Verwendung 4",
+    svEyebrow: "Die Regel",
     svNote: "<span class=\"formula\">a state verb + <b>-ing</b> <i>= wrong</i></span><span class=\"formula\"><s>&lsquo;I am knowing&rsquo;</s> &nbsp; &lsquo;I know&rsquo; <i>&#10003;</i></span>",
     svTitle: "Zustandsverben: kein -ing",
     ttB1: "Eine Bahn, eine Schule, ein Kino. Du hast sie nicht gew&auml;hlt und kannst sie nicht verschieben.",
     ttB2: "Wenn du es selbst verabredet hast, nimm das Present Continuous.",
-    ttEyebrow: "Verwendung 5",
+    ttEyebrow: "Verwendung 4",
     ttH1: "Jemand anderes hat die Zeit festgelegt",
     ttH2: "Dein eigener Plan ist kein Fahrplan",
     ttTitle: "Zukunft in der Gegenwart",
     wordCount: (n)=>`${n} ${n===1?'Wort':'Wörter'}`
   },
   es: {
+    partLink: "&larr; Parte 1",
     actEyebrow: 'Activación',
     actPlaceholder: "First you&hellip;",
     actSpeak1: "Explica a tu compa&ntilde;ero c&oacute;mo ir de tu clase a la puerta principal. Usa first, then y after that.",
@@ -2708,7 +2728,7 @@ const UI_I18N = {
     hint6: "Preg&uacute;ntate: &iquest;puedo mover yo esta hora, o la fij&oacute; otra persona?",
     inB1: "Cada paso va en present simple, aunque a&uacute;n nadie lo est&eacute; haciendo.",
     inB2: "Ellas llevan el orden, as&iacute; el verbo no tiene que hacerlo.",
-    inEyebrow: "Uso 6",
+    inEyebrow: "Uso 5",
     inH1: "Recetas y rutas",
     inH2: "Las palabras de paso",
     inTitle: "Instrucciones y direcciones",
@@ -2730,13 +2750,13 @@ const UI_I18N = {
     qTitleUse: "&iquest;Qu&eacute; uso es?",
     recB1: "Pasa una y otra vez.",
     recB2: "Sigue siendo verdad.",
-    recB3: "Estados &middot; horarios &middot; instrucciones &middot; verbos de estado.",
+    recB3: "Estados permanentes &middot; horarios &middot; instrucciones.",
     recEyebrow: "De la Parte 1",
     recH1: "H&aacute;bitos",
     recH2: "Hechos",
-    recH3: "Ahora cuatro m&aacute;s",
+    recH3: "Ahora tres m&aacute;s",
     recTitle: "Ya tienes dos usos",
-    resLow: "Vuelve al Uso 5. Si otra persona fij&oacute; la hora, es present simple.",
+    resLow: "Vuelve al Uso 4. Si otra persona fij&oacute; la hora, es present simple.",
     resMid: "Vuelve al test del horario: &iquest;qui&eacute;n fij&oacute; la hora?",
     resNext: 'Reconocer el lenguaje es solo la mitad. Ahora prodúcelo →',
     resPerfect: "Puntuaci&oacute;n perfecta. Ahora da las instrucciones en voz alta.",
@@ -2756,12 +2776,12 @@ const UI_I18N = {
     svA: "Pensamientos",
     svB: "Sentimientos",
     svC: "Sentidos y posesi&oacute;n",
-    svEyebrow: "Uso 4",
+    svEyebrow: "La regla",
     svNote: "<span class=\"formula\">a state verb + <b>-ing</b> <i>= wrong</i></span><span class=\"formula\"><s>&lsquo;I am knowing&rsquo;</s> &nbsp; &lsquo;I know&rsquo; <i>&#10003;</i></span>",
     svTitle: "Verbos de estado: sin -ing",
     ttB1: "Un tren, una escuela, un cine. T&uacute; no la elegiste y no puedes moverla.",
     ttB2: "Si lo quedaste t&uacute;, usa el present continuous.",
-    ttEyebrow: "Uso 5",
+    ttEyebrow: "Uso 4",
     ttH1: "Otra persona fij&oacute; la hora",
     ttH2: "Tu propio plan no es un horario",
     ttTitle: "Un futuro en presente",
