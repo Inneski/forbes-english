@@ -49,7 +49,8 @@ sec('teach', B % 'bg31.jpg', 'left', 'top',
        gloss('han sido tomados', 'wurden genommen')),
       ('Asking', [('one', '<em class="aux">Has</em> it <em class="aux">been</em> <em class="pp">taken</em>?'),
                   ('more', '<em class="aux">Have</em> they <em class="aux">been</em> <em class="pp">taken</em>?')], gloss('&iquest;Ha sido tomado? &middot; &iquest;Han sido tomados?', 'Ist sie genommen worden? &middot; Sind sie genommen worden?')),
-    ], '<em class="aux">&lsquo;BEEN&rsquo;</em> never changes &mdash; only <em class="aux">&lsquo;has&rsquo;</em> / <em class="aux">&lsquo;have&rsquo;</em> does')),
+    ], '<em class="aux">&lsquo;BEEN&rsquo;</em> never changes &mdash; only <em class="aux">&lsquo;has&rsquo;</em> / <em class="aux">&lsquo;have&rsquo;</em> does'),
+    'data-w="wide" style="--wcols:3"'),
 
 sec('teach', B % 'bg02.jpg', 'right', 'top',
     head('The form', 'The participle is the THIRD form') + '\n' +

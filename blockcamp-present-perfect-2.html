@@ -1352,9 +1352,14 @@ em.t-present, b.t-present { color: var(--t-present-simple) !important;
    sit but underneath. Innes, on Past Simple 8: "translations would be better
    right of text not under". With the examples flowing, the beside rule has
    the horizontal room it always needed. */
+/* A PARADIGM WRAPS INTO ROWS; IT DOES NOT RUN OFF THE EDGE.
+   `grid-auto-flow: column` put every block in ONE row whatever --wcols said,
+   so station 16's seven-chain slide rendered seven columns and three of them
+   were off the right of the canvas. check-lesson.js measures scrollHeight and
+   never saw it - nothing in the line measured horizontal overflow at all. */
 .slide[data-w="wide"] .para {
-  grid-auto-flow: column !important;
-  grid-auto-columns: 1fr; width: 100%; gap: 14px; }
+  grid-template-columns: repeat(var(--wcols, 3), 1fr) !important;
+  grid-auto-flow: row !important; width: 100%; gap: 14px; }
 .slide[data-w="wide"] .exlist { display: flex !important; flex-wrap: wrap; }
 /* ...AND THE GLOSS SITS BESIDE THEM, NOT UNDER. With the examples flowing,
    one row of chips measured 505px and the German gloss 375px in an 819px

@@ -997,6 +997,7 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
   --mark-pp: #b39bf5;
   --mark-obj: #f65af6;
   --mark-agent: #cfe8d8;
+  --t-past-simple: #B08968;
 
   /* THE MODAL IS NOT AN AUXILIARY, AND THE LINE HAD BEEN PRETENDING IT WAS.
      8.34 painted every `am is are was were do does did have has had will`
@@ -1040,6 +1041,12 @@ em.aux, b.aux { color: var(--mark-aux) !important; font-weight: 700; }
 .pp    { color: var(--mark-pp) !important;    font-weight: 700; }
 .obj   { color: var(--mark-obj) !important;   font-weight: 700; }
 .agent { color: var(--mark-agent) !important; font-weight: 700; }
+/* THE SECOND FORM, WHICH THE PASSIVE MUST NOT TAKE. Station 11 sets 'broke'
+   beside 'broken' and the whole slide is the difference between them; with no
+   rule behind .t-past the second form rendered plain white and half the
+   contrast was missing. #B08968 is camp 3's own hex from
+   lesson-template/tense-palette.css - the brown a learner climbed past. */
+.t-past { color: var(--t-past-simple) !important; font-weight: 700; }
 
 /* THE RESULTS SLIDE STACKED THREE PANELS WITH 18px BETWEEN THEM, so the score
    plate and the message plate read as one overlapping box - Innes: "Now use
@@ -1340,9 +1347,14 @@ em.t-present, b.t-present { color: var(--t-present-simple) !important;
    sit but underneath. Innes, on Past Simple 8: "translations would be better
    right of text not under". With the examples flowing, the beside rule has
    the horizontal room it always needed. */
+/* A PARADIGM WRAPS INTO ROWS; IT DOES NOT RUN OFF THE EDGE.
+   `grid-auto-flow: column` put every block in ONE row whatever --wcols said,
+   so station 16's seven-chain slide rendered seven columns and three of them
+   were off the right of the canvas. check-lesson.js measures scrollHeight and
+   never saw it - nothing in the line measured horizontal overflow at all. */
 .slide[data-w="wide"] .para {
-  grid-auto-flow: column !important;
-  grid-auto-columns: 1fr; width: 100%; gap: 14px; }
+  grid-template-columns: repeat(var(--wcols, 3), 1fr) !important;
+  grid-auto-flow: row !important; width: 100%; gap: 14px; }
 .slide[data-w="wide"] .exlist { display: flex !important; flex-wrap: wrap; }
 /* ...AND THE GLOSS SITS BESIDE THEM, NOT UNDER. With the examples flowing,
    one row of chips measured 505px and the German gloss 375px in an 819px
@@ -2024,7 +2036,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
       </div>
     </section>
 
-    <section class="slide" data-type="teach" data-bg="present-simple-time-signals/bg31.jpg" data-side="left" data-vpos="top">
+    <section class="slide" data-type="teach" data-bg="present-simple-time-signals/bg31.jpg" data-side="left" data-vpos="top" data-w="wide" style="--wcols:3">
       <div class="slide-head"><div>
         <div class="eyebrow">The form</div>
         <h2 class="slide-title">One auxiliary, then the third form</h2>

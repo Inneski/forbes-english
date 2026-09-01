@@ -185,10 +185,19 @@ def auxjob(name, body, findings, allowed):
 
 
 def slides_of(src):
-    """Only what a learner sees: slides, not the CSS and not the dictionary."""
+    """Only what a learner sees: slides, not the CSS and not the dictionary.
+
+    STRUCK-THROUGH TEXT IS A COUNTER-EXAMPLE AND IS DROPPED. A <s> block is
+    the deck showing a learner a sentence that is WRONG - station 16 prints
+    `the wall was been built` on purpose, as the thing that happens when you
+    pick the tense before the voice. Reading it as a model produced two
+    findings against a slide that was doing its job, and the only way to
+    silence them would have been to un-teach the mistake.
+    """
     a = src.find('<section class="slide')
     b = src.find('const UI_I18N')
-    return src[a:b if b > a else len(src)]
+    body = src[a:b if b > a else len(src)]
+    return re.sub(r'<s>.*?</s>', '', body, flags=re.S)
 
 
 def main(decks):
@@ -203,9 +212,22 @@ def main(decks):
             tokens[tok][val.strip()].append(name)
 
         defined = set(re.findall(r'--(mark-[a-z]+):', src))
-        styled = set(re.findall(r'\.([a-z]+)\s*\{\s*color:\s*var\(--mark-', src))
-        used = set(re.findall(r'class=\\?"([a-z]+)\\?"', body)) & {
-            'aux', 'pp', 'obj', 'agent', 'inf', 'modal'}
+        # Every class named in the SELECTOR of any rule that sets a role
+        # colour. Reading the selector whole matters: the line rules are
+        # written `em.aux, b.aux { ... }`, so a pattern anchored to one class
+        # at the start of the rule misses the second half and reports a class
+        # that is perfectly well styled.
+        styled = set()
+        for sel, body_css in re.findall(r'([^{}]+)\{([^}]*)\}', src):
+            if re.search(r'color:\s*var\(--(?:mark|t)-', body_css):
+                styled |= set(re.findall(r'\.([a-z][a-z-]*)', sel))
+        # The set is every role class in the system. It used to stop at six,
+        # and station 11 shipped .t-past nine times with no token and no rule
+        # behind it - rendering plain white, which is the exact failure this
+        # check exists to catch, in a class it had never been told about.
+        used = set(re.findall(r'class=\\?"([a-z-]+)\\?"', body)) & {
+            'aux', 'pp', 'obj', 'agent', 'inf', 'modal',
+            't-past', 't-present', 'state', 'action'}
         for c in sorted(used - styled):
             findings.append((name, 'ORPHAN', 'class .%s is used on a slide but no rule colours it' % c))
 

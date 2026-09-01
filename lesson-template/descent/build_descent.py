@@ -55,7 +55,8 @@ ROOT = os.path.abspath(os.path.join(HERE, '..', '..'))
 # Why each is what it is, in the block below the declaration.
 MARKS = """  --mark-pp: #b39bf5;
   --mark-obj: #f65af6;
-  --mark-agent: #cfe8d8;"""
+  --mark-agent: #cfe8d8;
+  --t-past-simple: #B08968;"""
 
 # THREE ROLES, AND THE PASSIVE IS THE MOVE BETWEEN THEM.
 #
@@ -95,6 +96,12 @@ ROLE_CSS = """
 .pp    { color: var(--mark-pp) !important;    font-weight: 700; }
 .obj   { color: var(--mark-obj) !important;   font-weight: 700; }
 .agent { color: var(--mark-agent) !important; font-weight: 700; }
+/* THE SECOND FORM, WHICH THE PASSIVE MUST NOT TAKE. Station 11 sets 'broke'
+   beside 'broken' and the whole slide is the difference between them; with no
+   rule behind .t-past the second form rendered plain white and half the
+   contrast was missing. #B08968 is camp 3's own hex from
+   lesson-template/tense-palette.css - the brown a learner climbed past. */
+.t-past { color: var(--t-past-simple) !important; font-weight: 700; }
 
 /* THE RESULTS SLIDE STACKED THREE PANELS WITH 18px BETWEEN THEM, so the score
    plate and the message plate read as one overlapping box - Innes: "Now use

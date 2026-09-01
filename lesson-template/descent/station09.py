@@ -72,7 +72,8 @@ sec('teach', B % 'bg31.jpg', 'left', 'top',
        gloss('&iquest;Se extrae? &middot; &iquest;Se extraen?',
              'Wird er abgebaut? &middot; Werden sie abgebaut?')),
     ], 'only <em class="aux">&lsquo;is&rsquo;</em> / <em class="aux">&lsquo;are&rsquo;</em> changes &mdash; '
-       'the <em class="pp">participle</em> never does')),
+       'the <em class="pp">participle</em> never does'),
+    'data-w="wide" style="--wcols:3"'),
 
 sec('teach', B % 'bg02.jpg', 'right', 'top',
     head('The form', 'The participle is the THIRD form') + '\n' +

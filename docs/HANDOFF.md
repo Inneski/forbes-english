@@ -137,6 +137,77 @@ Three things worth carrying forward.
   lower `--bg-opacity` for a busy hero does not apply here and would have made
   it worse: the problem was flatness and brightness, not detail.
 
+## Block Camp II is built: eight decks, stations 9 to 16
+
+The passive descent is finished and published. Station N mirrors camp N-8 and
+takes that camp's chassis, so it wears the camp's palette and re-uses its
+plates — the descent runs in the same order as the climb.
+
+| station | tense | level | access | id |
+|---|---|---|---|---|
+| 9  | Present Simple Passive     | A2 | **free** | 295 |
+| 10 | Present Continuous Passive | A2 | pro | 297 |
+| 11 | Past Simple Passive        | A2 | pro | 298 |
+| 12 | Past Continuous Passive    | B1 | pro | 299 |
+| 13 | Going To Passive           | B1 | pro | 300 |
+| 14 | Future Simple Passive      | B1 | pro | 301 |
+| 15 | Present Perfect Passive    | B1 | pro | 296 |
+| 16 | The Trial                  | B1 | pro | 302 |
+
+Station 9 is free as the entry to Part II, mirroring camp 1. **Camp 8 has no
+passive** — nobody says "has been being built" — so its plates carry the Trial
+instead, which is why the line is seven tense passives and a trial.
+
+Each deck is one auxiliary harder than the last and re-teaches nothing:
+station 9 carries the SWAP (object to the front, doer optional) because its
+auxiliary is the smallest; 10 adds `being`; 11 is 9 one tense back and owns the
+second-versus-third-form problem; 12 closes the four corners and owns the
+two-clause shape; 13 owns `be` after `going to`; 14 owns the will/going-to
+choice with the doer already gone; 16 removes every label and asks for voice
+first, tense second.
+
+### What building them changed in the shared machinery
+
+- **`--mark-obj` moved off the gold.** It was #ffd633 against `--mark-inf`'s
+  #eec32f — ΔE 8.5 — and station 13 puts a bare verb and an object on one page.
+  The infinitive did **not** move (gold is 46 words across three published Part
+  I decks). The magenta #f65af6 was searched for, not picked: every hue at
+  three lightnesses and three saturations, scored on its smallest ΔE against
+  all nine fixed roles and every deck accent, rejecting anything under 4.5:1.
+  Min ΔE 50.5 — its distance from the participle purple, which it shares a line
+  with on every passive sentence.
+- **`slidekit.sec()` takes an `attrs` argument.** Until it did, a station could
+  not reach any composition knob — station 16's seven-chain slide overflowed by
+  204px and there was no way to say "wide" from a station file.
+- **`match()`, `gap()` and `order()` take glosses**, optionally. Before this the
+  two built decks covered 7 and 15 strings out of 86 and 88, the worst on the
+  line. Now 51–61 rows each, with only the cover and the results slide empty.
+- **`.t-past` is in the descent's role CSS.** Station 11 shipped it nine times
+  with no token behind it, rendering plain white, and the ORPHANS check only
+  knew six class names. It knows ten now — verified by stripping the rule from
+  a real deck and watching it fail.
+
+### Two gate gaps this found, both now closed
+
+- **Struck-through text was being read as a model.** Station 16 prints
+  `the wall was been built` on purpose. `check-colour-roles.py` drops `<s>`
+  blocks now; the only alternative was to un-teach the mistake.
+- **Nothing measured horizontal overflow.** `grid-auto-flow: column` put seven
+  paradigm blocks in one row and three of them rendered off the right of the
+  canvas — `check-lesson.js` measures `scrollHeight` and never saw it. The
+  `.para` rule wraps into rows now. A slide can still overflow sideways with no
+  gate to catch it, so **shoot wide slides and look**, in all three languages.
+
+### Still open on Part II
+
+- **Sort and activation slides show nothing in the EN/DE panel** (2–4 slides
+  per deck; the rest is cover and results, which is correct). Their chips have
+  no gloss mechanism, and the chassis dictionary belongs to the active camp
+  these decks descend past. Adding one means a two-line sort chip, which
+  changes that slide's layout — worth a look, not urgent.
+- The Trial's seven-chain slide sits over Steve on camp 8's plate. Legible, but
+  a different plate would be better if one is ever commissioned.
+
 ## The colour system, stated once — and the gate that now enforces it
 
 Innes spent an evening finding mis-coloured words by eye and it was faster

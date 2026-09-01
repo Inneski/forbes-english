@@ -14,10 +14,19 @@ def head(eyebrow, title):
             '      </div></div>' % (eyebrow, title))
 
 
-def sec(kind, bg, side, vpos, inner):
+def sec(kind, bg, side, vpos, inner, attrs=''):
+    """`attrs` is anything else the slide needs on its own tag.
+
+    The shell's composition knobs - data-w, --col-w, data-boxw, data-nudge,
+    data-tr, data-align - all live on the section, and until this parameter
+    existed a station could not reach any of them. Station 16 slide 3 holds
+    seven chains in one column and overflowed by 204px; there was no way to
+    say `wide` from a station file.
+    """
     v = ' data-vpos="%s"' % vpos if vpos else ''
-    return ('<section class="slide" data-type="%s" data-bg="%s" data-side="%s"%s>\n%s\n    </section>'
-            % (kind, bg, side, v, inner))
+    a = (' ' + attrs) if attrs else ''
+    return ('<section class="slide" data-type="%s" data-bg="%s" data-side="%s"%s%s>\n%s\n    </section>'
+            % (kind, bg, side, v, a, inner))
 
 
 def gloss(es, de):
