@@ -1027,6 +1027,18 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
      lesson-template/tense-palette.css - 5.4:1 on the darkest orange surface,
      2.9:1 against --text, so no lifting was needed. */
   --t-present-simple: #7A93B5;
+
+  /* THE SECOND FORM IS A CAMP, AND IT ALREADY HAS A COLOUR.
+     Innes, on the test slide: "make the past simple verbs in brown / past
+     participles in purple". The two halves of that slide are the whole
+     lesson - 'I have lived' against 'I moved' - and the participles were
+     already purple while the second forms were plain white, so only one side
+     of the contrast was carrying any signal.
+     Brown is not a new colour: #B08968 is camp 3's own hex from
+     lesson-template/tense-palette.css, the same brown a learner climbed past
+     on the way here. 5.2:1 on --surface, which is the plate these rows sit
+     on. */
+  --t-past-simple: #B08968;
 }
 em.aux, b.aux { color: var(--mark-aux) !important; font-weight: 700; }
 /* ONE COLOUR PER JOB. The past participle is purple wherever it appears -
@@ -1036,6 +1048,7 @@ em.aux, b.aux { color: var(--mark-aux) !important; font-weight: 700; }
 .pp { color: var(--mark-pp) !important; font-weight: 700; }
 em.modal, b.modal { color: var(--mark-modal) !important; font-weight: 700; }
 em.inf, b.inf { color: var(--mark-inf) !important; font-weight: 700; }
+em.t-past, b.t-past { color: var(--t-past-simple) !important; font-weight: 700; }
 em.t-present, b.t-present { color: var(--t-present-simple) !important;
   font-weight: 700; }
 /* a struck-through error stays struck through, auxiliary or not */
@@ -2028,11 +2041,11 @@ em, i, .card .prose.dim em { font-style: normal !important;
           </div>
           <div class="para-block">
             <div class="para-head" data-i18n="lineB">Falls back to past simple</div><span class="sup" data-lang="es"><b>ES</b><span>el tiempo est&aacute; cerrado</span></span><span class="sup" data-lang="de"><b>DE</b><span>die Zeit ist abgeschlossen</span></span>
-            <div class="para-row"><span class="para-subj">a stated time</span><span class="para-verb">I <em>moved</em> here ten years ago.</span></div>
-            <div class="para-row"><span class="para-subj">once you ask</span><span class="para-verb">I <em>went</em> in 2019.</span></div>
+            <div class="para-row"><span class="para-subj">a stated time</span><span class="para-verb">I <em class="t-past">moved</em> here ten years ago.</span></div>
+            <div class="para-row"><span class="para-subj">once you ask</span><span class="para-verb">I <em class="t-past">went</em> in 2019.</span></div>
           </div>
         </div>
-        <p class="para-note" style="text-align:center;margin-top:14px;font-size:13px" data-i18n="lineNote"><span class="formula">name a finished time and the sentence <b>DROPS A CAMP</b></span></p>
+        <p class="para-note" style="text-align:center;margin-top:14px;font-size:13px" data-i18n="lineNote"><span class="formula">name a finished time and it becomes <b>PAST SIMPLE</b></span></p>
       </div>
     </section>
 
@@ -2047,15 +2060,15 @@ em, i, .card .prose.dim em { font-style: normal !important;
           <div class="para-block">
             <div class="para-head" data-i18n="goneA">&lsquo;gone&rsquo; &mdash; still away</div><span class="sup" data-lang="es"><b>ES</b><span>Alex se ha ido a la mina</span></span><span class="sup" data-lang="de"><b>DE</b><span>Alex ist zur Mine gegangen</span></span>
             <div class="para-row"><span class="para-subj">not back</span><span class="para-verb">Alex <em><em class="aux">has</em> <em class="pp">gone</em></em> to the mine.</span></div>
-            <div class="para-row"><span class="para-subj">so</span><span class="para-verb">She <em class="aux">is</em> <em class="aux">not</em> here now.</span></div>
+            <div class="para-row"><span class="para-subj">so</span><span class="para-verb">She <em class="t-present">is</em> not here now.</span></div>
           </div>
           <div class="para-block">
             <div class="para-head" data-i18n="goneB">&lsquo;been&rsquo; &mdash; back again</div><span class="sup" data-lang="es"><b>ES</b><span>Alex ha estado en la mina</span></span><span class="sup" data-lang="de"><b>DE</b><span>Alex ist in der Mine gewesen</span></span>
             <div class="para-row"><span class="para-subj">back again</span><span class="para-verb">Alex <em><em class="aux">has</em> <em class="pp">been</em></em> to the mine.</span></div>
-            <div class="para-row"><span class="para-subj">so</span><span class="para-verb">She is here, and she <em>has</em> the story.</span></div>
+            <div class="para-row"><span class="para-subj">so</span><span class="para-verb">She is here, and she <em class="t-present">has</em> the story.</span></div>
           </div>
         </div>
-        <p class="para-note" style="text-align:center;margin-top:14px;font-size:13px" data-i18n="goneNote"><span class="formula">&lsquo;gone&rsquo; = <em class="aux">not</em> here &nbsp;&middot;&nbsp; &lsquo;been&rsquo; = here, and <em>has</em> the story</span></p>
+        <p class="para-note" style="text-align:center;margin-top:14px;font-size:13px" data-i18n="goneNote"><span class="formula">&lsquo;gone&rsquo; = not here &nbsp;&middot;&nbsp; &lsquo;been&rsquo; = here, and <em class="t-present">has</em> the story</span></p>
       </div>
     </section>
 
@@ -2514,7 +2527,7 @@ const UI_I18N = {
     goneA: "&lsquo;gone&rsquo; &mdash; still away",
     goneB: "&lsquo;been&rsquo; &mdash; back again",
     goneEyebrow: "The trap",
-    goneNote: "<span class=\"formula\">&lsquo;gone&rsquo; = <em class=\"aux\">not</em> here &nbsp;&middot;&nbsp; &lsquo;been&rsquo; = here, and <em>has</em> the story</span>",
+    goneNote: "<span class=\"formula\">&lsquo;gone&rsquo; = not here &nbsp;&middot;&nbsp; &lsquo;been&rsquo; = here, and <em class=\"t-present\">has</em> the story</span>",
     goneTitle: "&lsquo;gone&rsquo; or &lsquo;been&rsquo;?",
     hint1: "Does the word introduce a LENGTH of time, or the POINT it started?",
     hint2: "Ten years is a length, not a starting point.",
@@ -2531,7 +2544,7 @@ const UI_I18N = {
     lineA: "Stays here",
     lineB: "Falls back to past simple",
     lineEyebrow: "The line",
-    lineNote: "<span class=\"formula\">name a finished time and the sentence <b>DROPS A CAMP</b></span>",
+    lineNote: "<span class=\"formula\">name a finished time and it becomes <b>PAST SIMPLE</b></span>",
     lineTitle: "The one test that settles it",
     matchEyebrow: "Practice",
     matchHint: "Click a beginning, then click its ending.",
@@ -2622,7 +2635,7 @@ const UI_I18N = {
     goneA: "&rsquo;gone&rsquo; &mdash; noch weg",
     goneB: "&rsquo;been&rsquo; &mdash; wieder da",
     goneEyebrow: "Die Falle",
-    goneNote: "<span class=\"formula\">&lsquo;gone&rsquo; = <em class=\"aux\">not</em> here &nbsp;&middot;&nbsp; &lsquo;been&rsquo; = here, and <em>has</em> the story</span>",
+    goneNote: "<span class=\"formula\">&lsquo;gone&rsquo; = not here &nbsp;&middot;&nbsp; &lsquo;been&rsquo; = here, and <em class=\"t-present\">has</em> the story</span>",
     goneTitle: "&rsquo;gone&rsquo; oder &rsquo;been&rsquo;?",
     hint1: "F&uuml;hrt das Wort eine DAUER ein oder den PUNKT, an dem es anfing?",
     hint2: "Zehn Jahre sind eine Dauer, kein Anfangspunkt.",
@@ -2639,7 +2652,7 @@ const UI_I18N = {
     lineA: "Bleibt hier",
     lineB: "F&auml;llt ins Past Simple",
     lineEyebrow: "Die Grenze",
-    lineNote: "<span class=\"formula\">name a finished time and the sentence <b>DROPS A CAMP</b></span>",
+    lineNote: "<span class=\"formula\">Nenne eine abgeschlossene Zeit &mdash; und es wird <b>PAST SIMPLE</b></span>",
     lineTitle: "Der eine Test, der es entscheidet",
     matchEyebrow: "&Uuml;bung",
     matchHint: "Klicke auf einen Anfang und dann auf das passende Ende.",
@@ -2730,7 +2743,7 @@ const UI_I18N = {
     goneA: "&rsquo;gone&rsquo; &mdash; sigue fuera",
     goneB: "&rsquo;been&rsquo; &mdash; ya ha vuelto",
     goneEyebrow: "La trampa",
-    goneNote: "<span class=\"formula\">&lsquo;gone&rsquo; = <em class=\"aux\">not</em> here &nbsp;&middot;&nbsp; &lsquo;been&rsquo; = here, and <em>has</em> the story</span>",
+    goneNote: "<span class=\"formula\">&lsquo;gone&rsquo; = not here &nbsp;&middot;&nbsp; &lsquo;been&rsquo; = here, and <em class=\"t-present\">has</em> the story</span>",
     goneTitle: "&iquest;&rsquo;gone&rsquo; o &rsquo;been&rsquo;?",
     hint1: "&iquest;La palabra introduce una DURACI&Oacute;N o el PUNTO en que empez&oacute;?",
     hint2: "Diez a&ntilde;os son una duraci&oacute;n, no un punto de partida.",
@@ -2747,7 +2760,7 @@ const UI_I18N = {
     lineA: "Se queda aqu&iacute;",
     lineB: "Cae al pasado simple",
     lineEyebrow: "La l&iacute;nea",
-    lineNote: "<span class=\"formula\">name a finished time and the sentence <b>DROPS A CAMP</b></span>",
+    lineNote: "<span class=\"formula\">Nombra un tiempo terminado y se convierte en <b>PAST SIMPLE</b></span>",
     lineTitle: "La prueba que lo decide",
     matchEyebrow: "Pr&aacute;ctica",
     matchHint: "Haz clic en un principio y luego en su final.",
