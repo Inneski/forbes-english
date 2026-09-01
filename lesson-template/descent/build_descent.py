@@ -54,7 +54,7 @@ ROOT = os.path.abspath(os.path.join(HERE, '..', '..'))
 # ── three new roles, in the same discipline as --mark-aux ────────────────
 # Why each is what it is, in the block below the declaration.
 MARKS = """  --mark-pp: #b39bf5;
-  --mark-obj: #ffd633;
+  --mark-obj: #f65af6;
   --mark-agent: #cfe8d8;"""
 
 # THREE ROLES, AND THE PASSIVE IS THE MOVE BETWEEN THEM.
@@ -74,11 +74,22 @@ MARKS = """  --mark-pp: #b39bf5;
 #   --mark-agent  the doer. Greenish white: present when it matters, quiet
 #                 enough to look droppable, which is what it usually is.
 #
-# NOTE, and it needs a ruling: --mark-inf is already #eec32f, a gold, and it
-# is used heavily in Future Simple 1a (20 times) and Going To 1b. The object
-# yellow above is brighter and they never share a slide in this line, but
-# Going To Passive and Future Simple Passive will put an infinitive and an
-# object on the same page. Decide there whether the infinitive moves.
+# THE RULING, AND IT WAS OVERDUE. The object used to be #ffd633, a yellow,
+# against --mark-inf's #eec32f: 1.4 degrees apart in hue, CIE76 deltaE 8.5.
+# They never shared a slide while the descent had two decks, but Going To
+# Passive and Future Simple Passive put a bare verb and an object on the same
+# page, and a learner would have had to tell them apart at deltaE 8.5.
+#
+# THE INFINITIVE DID NOT MOVE. Gold is the bare verb on three Part I decks and
+# 46 separate words; the object exists only in the eight descent decks, two of
+# them built. Moving the newer role costs less and breaks nothing published.
+#
+# The magenta was searched for, not picked: every hue at three lightnesses and
+# three saturations, scored on its smallest deltaE against all nine fixed
+# roles AND every deck accent in the line, rejecting anything under 4.5:1 on
+# any surface. #f65af6 won at min deltaE 50.5 - which is its distance from the
+# participle purple, the one it shares a line with on every passive sentence.
+# Six times the collision it replaces. Gold 144.9, green 155.0, agent 106.8.
 ROLE_CSS = """
 /* One colour per job. See the MARKS block above for why each is what it is. */
 .pp    { color: var(--mark-pp) !important;    font-weight: 700; }

@@ -119,8 +119,25 @@ def sort(bg, side, vpos, title, hint, bins, items, explain):
 
 
 def match(bg, side, vpos, title, hint, pairs, explain):
-    rows = '\n'.join('        <div class="match-pair" data-term="%s" data-def="%s"></div>' % p
-                     for p in pairs)
+    """`pairs` is (term, def) or (term, def, term_es, term_de, def_es, def_de).
+
+    A MATCH SLIDE USED TO BE THE ONE SHAPE WITH NOWHERE TO PUT A TRANSLATION.
+    The engine builds its items from data-term/data-def in JS, so there was no
+    element to hang a gloss on, and the EN/DE panel showed nothing at all on
+    every match slide in the line. The engine now reads data-term-es/-de and
+    data-def-es/-de; this emits them when a pair supplies them, and emits
+    exactly what it used to when a pair does not.
+    """
+    out = []
+    for p in pairs:
+        term, dfn = p[0], p[1]
+        tr = ''
+        if len(p) == 6:
+            tr = (' data-term-es="%s" data-term-de="%s"'
+                  ' data-def-es="%s" data-def-de="%s"' % p[2:])
+        out.append('        <div class="match-pair" data-term="%s" data-def="%s"%s></div>'
+                   % (term, dfn, tr))
+    rows = '\n'.join(out)
     return sec('match', bg, side, vpos,
         head('Practice', title) + '\n'
         '      <div class="slide-body">\n'
@@ -131,14 +148,21 @@ def match(bg, side, vpos, title, hint, pairs, explain):
 
 
 def gap(n, of, bg, side, vpos, title, hint, rows):
+    """A row is (before, answer, after, why, width) or the same plus (es, de).
+
+    The gloss goes on the stem, where every other exercise shape carries it, so
+    a learner on Deutsch can read the sentence they are being asked to finish.
+    """
     out = []
-    for before, answer, after, why, width in rows:
+    for row in rows:
+        before, answer, after, why, width = row[:5]
+        g = gloss(row[5], row[6]) if len(row) == 7 else ''
         out.append(
             '        <div class="card gap-row" style="padding:12px 16px">\n'
             '          <p class="q-stem" style="margin-bottom:0;font-size:19px">%s'
-            '<input class="gap" data-answer="%s" aria-label="gap" style="width:%dpx">%s</p>\n'
+            '<input class="gap" data-answer="%s" aria-label="gap" style="width:%dpx">%s%s</p>\n'
             '          <p class="feedback" data-explain="%s"></p>\n'
-            '        </div>' % (before, answer, width, after, why.replace('"', '&quot;')))
+            '        </div>' % (before, answer, width, after, g, why.replace('"', '&quot;')))
     # THE CHECK BUTTON IS NOT OPTIONAL, AND IT WAS MISSING FOR THE WHOLE LINE.
     # checkGaps() is reachable two ways: a [data-action="check"] click, or
     # Enter inside a gap. This helper emitted neither a button nor any other
@@ -161,17 +185,19 @@ def gap(n, of, bg, side, vpos, title, hint, rows):
         '      </div>' % (n, of, title, hint, '\n'.join(out)))
 
 
-def order(bg, side, vpos, answer, explain):
+def order(bg, side, vpos, answer, explain, es='', de=''):
+    """The hint line carries the gloss - the chips themselves are the puzzle."""
+    _ = None
     return sec('order', bg, side, vpos,
         head('Practice', 'Build the sentence') + '\n'
         '      <div class="slide-body">\n'
-        '        <p class="order-hint">Click the words in the right order.</p>\n'
+        '        <p class="order-hint">Click the words in the right order.%s</p>\n'
         '        <div class="order" data-answer="%s"></div>\n'
         '        <div style="margin-top:12px">\n'
         '          <button class="btn" data-action="check-order">Check</button>\n'
         '        </div>\n'
         '        <p class="feedback" data-explain="%s"></p>\n'
-        '      </div>' % (answer, explain.replace('"', '&quot;')))
+        '      </div>' % (gloss(es, de), answer, explain.replace('"', '&quot;')))
 
 
 def results(bg, side, vpos):

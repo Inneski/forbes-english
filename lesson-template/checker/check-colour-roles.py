@@ -150,6 +150,13 @@ def auxjob(name, body, findings, allowed):
         nxt = re.sub(r'&[a-z]+;', "'", m.group(3)).strip().lower()
         if word not in BE_HAVE_DO:
             continue
+        # A WORD IN INVERTED COMMAS IS BEING NAMED, NOT USED. "only 'is' /
+        # 'are' changes" is a sentence ABOUT the auxiliaries; the quotes are
+        # the house convention that says so, and Innes asked for them by name
+        # ("Only 'am / are / is' changes: missing inverted commas"). Without
+        # this the gate reads that line as a copula before a noun.
+        if '&lsquo;' in m.group(1) or '&rsquo;' in m.group(1):
+            continue
         # Read through the words that are never the verb itself.
         if nxt in ADVERBS or nxt in PRONOUN:
             continue
@@ -250,5 +257,5 @@ def main(decks):
 
 if __name__ == '__main__':
     decks = sys.argv[1:] or sorted(
-        d for d in glob.glob('blockcamp-*.html') if 'passive-intro' not in d)
+        glob.glob('blockcamp-*.html'))
     sys.exit(main(decks))
