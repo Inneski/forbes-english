@@ -287,6 +287,39 @@ descent says yes; the camp decks have never said either way. **Settle it once
 and the gate can enforce it everywhere** - that single unmade decision is
 behind most of this week's round trips.
 
+## The negator is always split out
+
+Innes, asked whether every `not` and `n't` should be magenta: **"always split"**.
+
+A contraction is two pieces of grammar in one word, so it prints as two. The
+auxiliary keeps its colour, the `n't` takes the negative's magenta:
+
+```
+was n't being        has n't been        do n't build
+```
+
+Inside a chain that leaves two same-coloured halves bracketing one magenta,
+which is not a broken chain - it is the chain with the negative shown **where
+English puts it**, straight after the first auxiliary. The single-colour
+version was hiding a teaching point.
+
+74 contractions split across 12 decks, raw markup and escaped dictionary
+strings alike. `check-colour-roles.py` gained **NEGSPLIT**, verified firing on
+a deliberately broken copy.
+
+**`won't` is the one exception, and it is not a preference.** Every other
+contraction in the line splits into a real word plus `n't`. `won't` splits into
+*"wo"*, which is not a word and must never appear on a slide. It stays whole in
+the modal's orange, and the gate does not look at it. `can't` and `shan't`
+would be the same case; neither is in the line.
+
+**Magenta marks the grammatical negator, not negative meaning.** `never`,
+`hardly ever` and `no` are frequency and quantity words - on Present Simple
+`never` is in the frequency scale wearing beacon blue. A bare `not` in prose or
+an aside also stays plain: *"this is the voice of a scene, not of a fact"*,
+*"(not by me!)"*. Colouring those makes the page look like it is teaching a
+grammar point inside a parenthesis.
+
 ## Still open
 
 - **Three slides' ink crosses the deck bar by ~4px** — present-perfect-2 18,

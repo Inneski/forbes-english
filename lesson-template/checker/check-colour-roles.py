@@ -98,6 +98,20 @@ SPLIT_CHAIN = re.compile(
     r'(?:</?[a-z][^>]*>|[^<>]){0,40}?'
     r'<em class="(t-pc|t-pastc)">being</em>')
 
+# ── A CONTRACTION LEFT WHOLE INSIDE A ROLE SPAN ─────────────────────────
+# Innes, asked whether every not and n't should be magenta: "always split".
+# A contraction is two pieces of grammar in one word - the auxiliary and the
+# negator - so it is printed as two, and the negative sits where English puts
+# it, straight after the first auxiliary.
+#
+# 'won't' is the one exception and it is not a preference: every other
+# contraction splits into a real word plus n't, and won't splits into "wo",
+# which is not a word and must never appear on a slide. can't and shan't
+# would be the same case; neither is in the line.
+WHOLE_CONTRACTION = re.compile(
+    r'<em class=\\?"([a-z-]+)\\?">(is|are|am|was|were|has|have|had|do|does|did)'
+    r'n&rsquo;t')
+
 ADV = (r'(?:just|already|never|ever|still|not|recently|lately|only|always|'
        r'nearly|almost|finally|yet)')
 AUX_THEN_WORD = re.compile(
@@ -283,6 +297,11 @@ def main(decks):
                                  "'%s' follows an auxiliary but is not .pp  %s"
                                  % (w, DIM % ('...' + where.strip()[-46:]))))
         auxjob(name, body, findings, allowed)
+        for m in WHOLE_CONTRACTION.finditer(body):
+            findings.append((name, 'NEGSPLIT',
+                             "'%sn't' is one span - the auxiliary and the negator "
+                             "are two pieces of grammar and print as two"
+                             % m.group(2)))
         for m in SPLIT_CHAIN.finditer(body):
             findings.append((name, 'SPLITCHAIN',
                              "'%s' wears %s inside a continuous chain - a question "
@@ -306,6 +325,7 @@ def main(decks):
 
     for kind, title in (('ORPHAN', 'ORPHANS'), ('UNTAGGED', 'UNTAGGED'),
                         ('SPLITCHAIN', 'A CHAIN SPLIT BY A QUESTION'),
+                        ('NEGSPLIT', 'A CONTRACTION LEFT WHOLE'),
                         ('SECOND', 'SECOND FORMS'), ('AUXJOB', 'AUXILIARY DOING ANOTHER JOB')):
         rows = [f for f in findings if f[1] == kind]
         print('\n  %s' % title)

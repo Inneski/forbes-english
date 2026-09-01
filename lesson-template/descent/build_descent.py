@@ -62,7 +62,8 @@ MARKS = """  --mark-pp: #b39bf5;
   --t-past-continuous: #F1D779;
   --t-going-to: #70A43A;
   --t-future-simple: #F0723F;
-  --t-present-perfect: #70E0E0;"""
+  --t-present-perfect: #70E0E0;
+  --mark-neg: #f65af6;"""
 
 # THREE ROLES, AND THE PASSIVE IS THE MOVE BETWEEN THEM.
 #
@@ -161,6 +162,7 @@ ROLE_CSS = """
 .t-gt    { color: var(--t-going-to) !important;           font-weight: 700; }
 .t-fs    { color: var(--t-future-simple) !important;      font-weight: 700; }
 .t-pperf { color: var(--t-present-perfect) !important;    font-weight: 700; }
+.neg     { color: var(--mark-neg) !important;             font-weight: 700; }
 
 /* ── THE EYEBROW TAKES THE COLOUR THE AUXILIARIES GAVE UP ────────────
    Innes: "headings like 'The form' can be green". Green was the auxiliary's
@@ -470,6 +472,39 @@ SPLIT_BY_QUESTION = re.compile(
     r'(<em class="(t-pc|t-pastc)">being</em>)')
 
 
+# ── THE NEGATOR COMES OUT OF THE CHAIN, ALWAYS ──────────────────────────
+# Innes, asked whether every not and n't should be magenta: "always split".
+#
+# So a contraction is two pieces of grammar in one word and is printed as two:
+# the auxiliary keeps its tense colour, the n't takes the negative's magenta.
+# Inside a chain that leaves two same-coloured halves bracketing one magenta -
+#
+#     was n't being        has n't been
+#
+# which is not a broken chain but the chain with the negative shown WHERE
+# ENGLISH PUTS IT, straight after the first auxiliary. That is a teaching
+# point the single-colour version was hiding.
+#
+# 'won't' is the one exception and it is not a preference: every other
+# contraction here splits into a real word plus n't, and won't splits into
+# "wo", which is not a word and must never appear on a slide. It stays whole
+# in the modal's orange. can't and shan't would be the same case; neither is
+# in the line.
+NEG_SPLIT = re.compile(
+    r'<em class="([a-z-]+)">(is|are|am|was|were|has|have|had|do|does|did)'
+    r'(n&rsquo;t)( [a-z]+)?</em>')
+
+
+def split_negatives(html):
+    def cut(m):
+        cls, stem, nt, tail = m.groups()
+        out = '<em class="%s">%s</em><em class="neg">%s</em>' % (cls, stem, nt)
+        if tail:
+            out += ' <em class="%s">%s</em>' % (cls, tail.strip())
+        return out
+    return NEG_SPLIT.sub(cut, html)
+
+
 def rejoin_split_chains(html):
     def fix(m):
         return m.group(1) + m.group(6) + m.group(3) + m.group(4) + m.group(5)
@@ -512,6 +547,7 @@ def build(st):
     tail = rescore(tail, st.get('messages', {}))
     body = tense_in_situ('\n\n    '.join([cover(cov, st)] + st['slides']), st['file'])
     body = rejoin_split_chains(body)
+    body = split_negatives(body)
     out = head + body + tail
     out = retarget_part_link(out, st)
     path = os.path.join(ROOT, st['file'])

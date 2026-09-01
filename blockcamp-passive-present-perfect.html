@@ -1029,6 +1029,7 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
   --t-going-to: #70A43A;
   --t-future-simple: #F0723F;
   --t-present-perfect: #70E0E0;
+  --mark-neg: #f65af6;
   --mark-pp: #b39bf5;
 
   /* THE MODAL IS NOT AN AUXILIARY, AND THE LINE HAD BEEN PRETENDING IT WAS.
@@ -1058,6 +1059,15 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
      worst contrast anywhere in the line is 5.9:1. Innes: "will in orange,
      base verb in gold". */
   --mark-modal: #ff8a4c;
+  /* THE NEGATOR COMES OUT OF THE CHAIN, ALWAYS. Innes, asked whether every
+     not and n't should be magenta: "always split". A contraction is two
+     pieces of grammar in one word, so it is printed as two - the auxiliary
+     keeps its colour and the n't takes the negative's. #f65af6 clears 6:1 on
+     the darkest surface in the line.
+     'won't' is the one exception and it is not a preference: every other
+     contraction splits into a real word plus n't, and won't splits into "wo",
+     which is not a word and must never appear on a slide. It stays whole. */
+  --mark-neg: #f65af6;
   --mark-inf: #eec32f;
 
   /* A tense named inside a pill that this deck does NOT teach keeps its own
@@ -1119,6 +1129,7 @@ em.aux, b.aux { color: var(--mark-aux) !important; font-weight: 700; }
 .t-gt    { color: var(--t-going-to) !important;           font-weight: 700; }
 .t-fs    { color: var(--t-future-simple) !important;      font-weight: 700; }
 .t-pperf { color: var(--t-present-perfect) !important;    font-weight: 700; }
+.neg     { color: var(--mark-neg) !important;             font-weight: 700; }
 
 /* ── THE EYEBROW TAKES THE COLOUR THE AUXILIARIES GAVE UP ────────────
    Innes: "headings like 'The form' can be green". Green was the auxiliary's
@@ -1154,6 +1165,7 @@ em.aux, b.aux { color: var(--mark-aux) !important; font-weight: 700; }
 .slide[data-type="results"] #scoreMsg  { margin-top: 26px !important; max-width: 34ch; }
 .slide[data-type="results"] .slide-body > .prose.dim { margin-top: 22px !important; }
 
+em.neg, b.neg { color: var(--mark-neg) !important; font-weight: 700; }
 /* ONE COLOUR PER JOB. The past participle is purple wherever it appears -
    in the passive decks, and here in the family that teaches it. Same
    #b39bf5 the descent uses. A role wears its colour or the reader has to
@@ -2192,12 +2204,12 @@ em, i, .card .prose.dim em { font-style: normal !important;
           <div class="para-block">
             <div class="para-head">One thing</div><span class="sup" data-lang="es"><b>ES</b><span>ha sido tomado</span></span><span class="sup" data-lang="de"><b>DE</b><span>wurde genommen</span></span>
             <div class="para-row"><span class="para-subj">the map</span><span class="para-verb"><em class="t-pperf">has been</em> <em class="pp">taken</em></span></div>
-            <div class="para-row"><span class="para-subj">no</span><span class="para-verb"><em class="t-pperf">hasn&rsquo;t been</em> <em class="pp">taken</em></span></div>
+            <div class="para-row"><span class="para-subj">no</span><span class="para-verb"><em class="t-pperf">has</em><em class="neg">n&rsquo;t</em> <em class="t-pperf">been</em> <em class="pp">taken</em></span></div>
           </div>
           <div class="para-block">
             <div class="para-head">More than one</div><span class="sup" data-lang="es"><b>ES</b><span>han sido tomados</span></span><span class="sup" data-lang="de"><b>DE</b><span>wurden genommen</span></span>
             <div class="para-row"><span class="para-subj">the maps</span><span class="para-verb"><em class="t-pperf">have been</em> <em class="pp">taken</em></span></div>
-            <div class="para-row"><span class="para-subj">no</span><span class="para-verb"><em class="t-pperf">haven&rsquo;t been</em> <em class="pp">taken</em></span></div>
+            <div class="para-row"><span class="para-subj">no</span><span class="para-verb"><em class="t-pperf">have</em><em class="neg">n&rsquo;t</em> <em class="t-pperf">been</em> <em class="pp">taken</em></span></div>
           </div>
           <div class="para-block">
             <div class="para-head">Asking</div><span class="sup" data-lang="es"><b>ES</b><span>&iquest;Ha sido tomado? &middot; &iquest;Han sido tomados?</span></span><span class="sup" data-lang="de"><b>DE</b><span>Ist sie genommen worden? &middot; Sind sie genommen worden?</span></span>
@@ -2292,7 +2304,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
           </div>
           <div class="para-block">
             <div class="para-head">yet &mdash; at the end</div><span class="sup" data-lang="es"><b>ES</b><span>todav&iacute;a no &mdash; al final</span></span><span class="sup" data-lang="de"><b>DE</b><span>noch nicht &mdash; am Ende</span></span>
-            <div class="para-row"><span class="para-subj"></span><span class="para-verb">The wall <em class="t-pperf">hasn&rsquo;t been</em> <em class="pp">repaired</em> yet.</span></div>
+            <div class="para-row"><span class="para-subj"></span><span class="para-verb">The wall <em class="t-pperf">has</em><em class="neg">n&rsquo;t</em> <em class="t-pperf">been</em> <em class="pp">repaired</em> yet.</span></div>
           </div>
         </div>
         <p class="para-note"><span class="formula">the signal sits between <em class="t-pperf">&lsquo;has&rsquo;</em> and <em class="t-pperf">&lsquo;been&rsquo;</em></span></p>
@@ -2669,7 +2681,7 @@ const UI_I18N = {
     negA: "Say no",
     negB: "Ask",
     negEyebrow: "The form",
-    negNote: "<span class=\"formula\">SUBJECT + <em class=\"aux\">haven&rsquo;t</em> / <em class=\"aux\">hasn&rsquo;t</em> + <em class=\"pp\">PAST PARTICIPLE</em></span><span class=\"formula\"><em class=\"aux\">Have</em> / <em class=\"aux\">Has</em> + SUBJECT + <em class=\"pp\">PAST PARTICIPLE</em> ?</span>",
+    negNote: "<span class=\"formula\">SUBJECT + <em class=\"aux\">have</em><em class=\"neg\">n&rsquo;t</em> / <em class=\"aux\">has</em><em class=\"neg\">n&rsquo;t</em> + <em class=\"pp\">PAST PARTICIPLE</em></span><span class=\"formula\"><em class=\"aux\">Have</em> / <em class=\"aux\">Has</em> + SUBJECT + <em class=\"pp\">PAST PARTICIPLE</em> ?</span>",
     negTitle: "Saying no, and asking",
     ord1Eyebrow: "Practice",
     ord1Hint: "Click the words in the right order.",
@@ -2778,7 +2790,7 @@ const UI_I18N = {
     negA: "Nein sagen",
     negB: "Fragen",
     negEyebrow: "Die Form",
-    negNote: "<span class=\"formula\">SUBJECT + <em class=\"aux\">haven&rsquo;t</em> / <em class=\"aux\">hasn&rsquo;t</em> + <em class=\"pp\">PAST PARTICIPLE</em></span><span class=\"formula\"><em class=\"aux\">Have</em> / <em class=\"aux\">Has</em> + SUBJECT + <em class=\"pp\">PAST PARTICIPLE</em> ?</span>",
+    negNote: "<span class=\"formula\">SUBJECT + <em class=\"aux\">have</em><em class=\"neg\">n&rsquo;t</em> / <em class=\"aux\">has</em><em class=\"neg\">n&rsquo;t</em> + <em class=\"pp\">PAST PARTICIPLE</em></span><span class=\"formula\"><em class=\"aux\">Have</em> / <em class=\"aux\">Has</em> + SUBJECT + <em class=\"pp\">PAST PARTICIPLE</em> ?</span>",
     negTitle: "Nein sagen und fragen",
     ord1Eyebrow: "&Uuml;bung",
     ord1Hint: "Klicke die W&ouml;rter in der richtigen Reihenfolge an.",
@@ -2887,7 +2899,7 @@ const UI_I18N = {
     negA: "Decir no",
     negB: "Preguntar",
     negEyebrow: "La forma",
-    negNote: "<span class=\"formula\">SUBJECT + <em class=\"aux\">haven&rsquo;t</em> / <em class=\"aux\">hasn&rsquo;t</em> + <em class=\"pp\">PAST PARTICIPLE</em></span><span class=\"formula\"><em class=\"aux\">Have</em> / <em class=\"aux\">Has</em> + SUBJECT + <em class=\"pp\">PAST PARTICIPLE</em> ?</span>",
+    negNote: "<span class=\"formula\">SUBJECT + <em class=\"aux\">have</em><em class=\"neg\">n&rsquo;t</em> / <em class=\"aux\">has</em><em class=\"neg\">n&rsquo;t</em> + <em class=\"pp\">PAST PARTICIPLE</em></span><span class=\"formula\"><em class=\"aux\">Have</em> / <em class=\"aux\">Has</em> + SUBJECT + <em class=\"pp\">PAST PARTICIPLE</em> ?</span>",
     negTitle: "Decir no y preguntar",
     ord1Eyebrow: "Pr&aacute;ctica",
     ord1Hint: "Haz clic en las palabras en el orden correcto.",
