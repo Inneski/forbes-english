@@ -227,7 +227,11 @@ def main(decks):
         # check exists to catch, in a class it had never been told about.
         used = set(re.findall(r'class=\\?"([a-z-]+)\\?"', body)) & {
             'aux', 'pp', 'obj', 'agent', 'inf', 'modal',
-            't-past', 't-present', 'state', 'action'}
+            't-past', 't-present', 'state', 'action',
+            # tense-in-situ, added with the contrast slides. Listed here for
+            # the same reason .t-past was: a class the gate has not been told
+            # about is a class it cannot catch shipping unstyled.
+            't-ps', 't-pc', 't-pastc', 't-gt', 't-fs', 't-pperf'}
         for c in sorted(used - styled):
             findings.append((name, 'ORPHAN', 'class .%s is used on a slide but no rule colours it' % c))
 

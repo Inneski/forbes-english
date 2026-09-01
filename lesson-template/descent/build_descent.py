@@ -56,7 +56,13 @@ ROOT = os.path.abspath(os.path.join(HERE, '..', '..'))
 MARKS = """  --mark-pp: #b39bf5;
   --mark-obj: #f65af6;
   --mark-agent: #cfe8d8;
-  --t-past-simple: #B08968;"""
+  --t-present-simple: #7A93B5;
+  --t-present-continuous: #E66085;
+  --t-past-simple: #B08968;
+  --t-past-continuous: #F1D779;
+  --t-going-to: #70A43A;
+  --t-future-simple: #F0723F;
+  --t-present-perfect: #589784;"""
 
 # THREE ROLES, AND THE PASSIVE IS THE MOVE BETWEEN THEM.
 #
@@ -102,6 +108,46 @@ ROLE_CSS = """
    contrast was missing. #B08968 is camp 3's own hex from
    lesson-template/tense-palette.css - the brown a learner climbed past. */
 .t-past { color: var(--t-past-simple) !important; font-weight: 700; }
+
+/* ── TENSE IN SITU, ON THE SLIDES THAT SET TENSES AGAINST EACH OTHER ──
+   Innes: "Tenses in situ e.g. Past Continuous 'was being' or 'were walking'
+   should be in yellow as present simple is blue and past simple brown. e.g.
+   this page 'Is' blue 'is being' pink 'was' brown 'was being' yellow".
+
+   He was looking at station 12's second slide, where four chains sit in one
+   column - is / is being / was / was being - and every one of them was the
+   same role green, which is the one thing the slide is not about. Role colour
+   answers "what job is this word doing"; on that slide every learner already
+   knows the answer, and the question is "which tense is this". So on a
+   CONTRAST slide only, the auxiliary chain wears its own camp's colour from
+   lesson-template/tense-palette.css - the colour that camp's page, its route
+   marker and its descent station all already wear.
+
+   The participle stays purple in every row. It is the constant the slide is
+   built to show, and colouring it by tense would destroy the point.
+
+   Everywhere else, role colour is unchanged. This is not a new default.
+
+   TWO DEVIATIONS, BOTH DELIBERATE.
+
+   Present perfect ships as #2E7D65 and fails on a dark deck: 3.30:1 on
+   station 12's warm surface and 3.49:1 on the Trial's cool one. That is the
+   caution tense-palette.css writes down for its dark tokens, and its own
+   remedy - lighten toward white, keep the hue. Solved rather than guessed:
+   80% is the strongest mix that clears 4.5:1 on BOTH surfaces (4.81 and
+   5.09), and it also sits furthest from its two nearest neighbours in the
+   band that clears. #589784.
+
+   tense-palette.css says never more than three tense colours on one slide.
+   Station 16's grid has seven, because seven chains side by side IS that
+   slide. Overruled knowingly, once, on the one slide whose subject is the
+   set. */
+.t-ps    { color: var(--t-present-simple) !important;     font-weight: 700; }
+.t-pc    { color: var(--t-present-continuous) !important; font-weight: 700; }
+.t-pastc { color: var(--t-past-continuous) !important;    font-weight: 700; }
+.t-gt    { color: var(--t-going-to) !important;           font-weight: 700; }
+.t-fs    { color: var(--t-future-simple) !important;      font-weight: 700; }
+.t-pperf { color: var(--t-present-perfect) !important;    font-weight: 700; }
 
 /* THE RESULTS SLIDE STACKED THREE PANELS WITH 18px BETWEEN THEM, so the score
    plate and the message plate read as one overlapping box - Innes: "Now use

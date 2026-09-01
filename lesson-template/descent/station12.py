@@ -49,13 +49,13 @@ sec('teach', B % 'bg01.jpg', 'left', 'top',
 sec('teach', B % 'bg23.jpg', 'left', 'top',
     head('The form', 'Two words you already have') + '\n' +
     para([
-      ('Now, in general', [('station 9', '<em class="aux">is</em> <em class="pp">built</em>')],
+      ('Now, in general', [('station 9', '<em class="t-ps">is</em> <em class="pp">built</em>')],
        gloss('Ahora, en general', 'Jetzt, allgemein')),
-      ('Now, as you watch', [('station 10', '<em class="aux">is being</em> <em class="pp">built</em>')],
+      ('Now, as you watch', [('station 10', '<em class="t-pc">is being</em> <em class="pp">built</em>')],
        gloss('Ahora, mientras miras', 'Jetzt, w&auml;hrend du zusiehst')),
-      ('Then, finished', [('station 11', '<em class="aux">was</em> <em class="pp">built</em>')],
+      ('Then, finished', [('station 11', '<em class="t-past">was</em> <em class="pp">built</em>')],
        gloss('Entonces, terminado', 'Damals, abgeschlossen')),
-      ('Then, still going', [('station 12', '<em class="aux">was being</em> <em class="pp">built</em>')],
+      ('Then, still going', [('station 12', '<em class="t-pastc">was being</em> <em class="pp">built</em>')],
        gloss('Entonces, todav&iacute;a en marcha', 'Damals, noch im Gange')),
     ], '<em class="obj">THING</em> + <em class="aux">was</em> / <em class="aux">were</em> '
        '+ <em class="aux">being</em> + <em class="pp">PAST PARTICIPLE</em>')),

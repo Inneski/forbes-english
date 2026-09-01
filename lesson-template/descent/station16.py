@@ -49,33 +49,39 @@ sec('teach', B % 'bg01.jpg', 'left', 'top',
     ])),
 
 # THE WHOLE DESCENT ON ONE PAGE. Nothing here is new; the value is that seven
-# chains a learner met one at a time are finally side by side.
+# chains a learner met one at a time are finally side by side - each in its
+# own camp's colour, so the grid reads as the trail rather than as a list.
+# The third form stays purple down the right-hand edge, which is the point.
 sec('teach', B % 'bg22.jpg', 'left', 'top',
     head('The seven', 'Every passive you have met') + '\n' +
     para([
       ('now, in general',
-       [('9', '<em class="aux">is</em> / <em class="aux">are</em> <em class="pp">built</em>')],
+       [('9', '<em class="t-ps">is</em> / <em class="t-ps">are</em> <em class="pp">built</em>')],
        gloss('ahora, en general', 'jetzt, allgemein')),
       ('now, as you watch',
-       [('10', '<em class="aux">is being</em> <em class="pp">built</em>')],
+       [('10', '<em class="t-pc">is being</em> <em class="pp">built</em>')],
        gloss('ahora, mientras miras', 'jetzt, w&auml;hrend du zusiehst')),
       ('then, finished',
-       [('11', '<em class="aux">was</em> / <em class="aux">were</em> <em class="pp">built</em>')],
+       [('11', '<em class="t-past">was</em> / <em class="t-past">were</em> <em class="pp">built</em>')],
        gloss('entonces, terminado', 'damals, abgeschlossen')),
       ('then, still going',
-       [('12', '<em class="aux">was being</em> <em class="pp">built</em>')],
+       [('12', '<em class="t-pastc">was being</em> <em class="pp">built</em>')],
        gloss('entonces, en marcha', 'damals, im Gange')),
       ('later, planned',
-       [('13', '<em class="aux">is going to</em> <em class="inf">be</em> <em class="pp">built</em>')],
+       [('13', '<em class="t-gt">is going to be</em> <em class="pp">built</em>')],
        gloss('luego, planeado', 'sp&auml;ter, geplant')),
       ('later, promised',
-       [('14', '<em class="modal">will</em> <em class="inf">be</em> <em class="pp">built</em>')],
+       [('14', '<em class="t-fs">will be</em> <em class="pp">built</em>')],
        gloss('luego, prometido', 'sp&auml;ter, versprochen')),
       ('finished, still counts',
-       [('15', '<em class="aux">has been</em> <em class="pp">built</em>')],
+       [('15', '<em class="t-pperf">has been</em> <em class="pp">built</em>')],
        gloss('terminado, y a&uacute;n cuenta', 'fertig, und z&auml;hlt noch')),
     ], 'seven chains, one <em class="pp">third form</em> at the end of every one'),
-    'data-w="wide" style="--wcols:4;--col-w:74%"'),
+    # Three columns, not four. At four the grid ran 74% of the canvas and the
+    # last card of the top row landed on the runner's head - which the
+    # negative-space gate cannot see, because it measures the 52% column a
+    # normal side-pinned slide occupies and this slide opted out of that.
+    'data-w="wide" style="--wcols:3;--col-w:58%"'),
 
 # THE SLIDE THIS DECK OWNS. Voice first, tense second, and the sentence that
 # happens when a learner does it the other way round.
