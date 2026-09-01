@@ -517,6 +517,18 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 .match-item.picked { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 22%, var(--surface2)); }
 .match-item.done { opacity: .45; cursor: default; border-color: var(--ok); }
 .match-item.miss { border-color: var(--no); animation: shake .3s; }
+/* A GLOSSED MATCH ITEM IS TWO LINES, AND TWELVE OF THEM DO NOT FIT.
+   In English slide 16 of Present Continuous 2b ends 8px clear of the rail;
+   in German every item grows a second line and the last row lands BEHIND
+   the progress bar. check-lesson.js measures the page in English, so its
+   LAYOUT gate passed it - noted in docs/HANDOFF.md, because a deck can now
+   overflow in a language the gate never renders.
+   The glossed variant gives back what it costs: tighter rows, a tighter
+   gloss, and no change to a single-line item anywhere else on the site. */
+.match-item:has(> .sup) { padding: 7px 14px; }
+.match-item > .sup { margin-top: 2px; font-size: 12.5px; line-height: 1.35; }
+.match-col:has(.match-item > .sup) { gap: 5px; }
+.match-grid:has(.match-item > .sup) { gap: 10px; }
 @keyframes shake { 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
 
 /* ── ORDERING (build the sentence) ───────────────────────────────────

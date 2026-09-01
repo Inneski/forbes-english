@@ -583,6 +583,18 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
 .match-item.picked { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 22%, var(--surface2)); }
 .match-item.done { opacity: .45; cursor: default; border-color: var(--ok); }
 .match-item.miss { border-color: var(--no); animation: shake .3s; }
+/* A GLOSSED MATCH ITEM IS TWO LINES, AND TWELVE OF THEM DO NOT FIT.
+   In English slide 16 of Present Continuous 2b ends 8px clear of the rail;
+   in German every item grows a second line and the last row lands BEHIND
+   the progress bar. check-lesson.js measures the page in English, so its
+   LAYOUT gate passed it - noted in docs/HANDOFF.md, because a deck can now
+   overflow in a language the gate never renders.
+   The glossed variant gives back what it costs: tighter rows, a tighter
+   gloss, and no change to a single-line item anywhere else on the site. */
+.match-item:has(> .sup) { padding: 7px 14px; }
+.match-item > .sup { margin-top: 2px; font-size: 12.5px; line-height: 1.35; }
+.match-col:has(.match-item > .sup) { gap: 5px; }
+.match-grid:has(.match-item > .sup) { gap: 10px; }
 @keyframes shake { 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
 
 /* ── ORDERING (build the sentence) ───────────────────────────────────
@@ -1148,7 +1160,7 @@ em.t-present, b.t-present { color: var(--t-present-simple) !important;
 .slide-title { margin-top: 28px; }
 .slide[data-side="right"] .slide-head { justify-content: flex-end; }
 .slide[data-side] .slide-body,
-.slide[data-side] .slide-head { width: 52%; }
+.slide[data-side] .slide-head { width: var(--col-w, 52%); }
 .slide[data-side="left"]  .slide-body,
 .slide[data-side="left"]  .slide-head { margin-right: auto; }
 .slide[data-side="right"] .slide-body,
@@ -1234,6 +1246,46 @@ em.t-present, b.t-present { color: var(--t-present-simple) !important;
 .slide[data-side] .para { grid-auto-flow: row !important; gap: 12px;
   width: fit-content; }
 .slide[data-side] .cols > .card, .slide[data-side] .para > .para-block { width: 100%; }
+/* ── A WIDER COLUMN, FOR THE SLIDES THAT ASK FOR ONE ──────────────────
+   52% is a default, not a law, and the stack rule above is a FALLBACK for a
+   column too narrow to hold a row - not the intent.
+
+   Present Continuous 1a slide 6 is the case that proves it: three
+   time-signal cards, stacked into one column by that rule, with the third
+   card 42px off the bottom of the frame. check-lesson.js has been failing
+   LAYOUT on that slide since the deck shipped. Innes: "slide 6 falling off
+   page (redo composition wider)". Stacking cannot fix it - there is no
+   vertical room left to give.
+
+   So: one custom property for the column width, per CLAUDE.md ("layout
+   constants belong in one custom property"), rather than a second hardcoded
+   percentage sitting next to the first. data-w="wide" widens the column and
+   hands the cards their real columns back. It is OPT-IN: every slide without
+   it measures exactly as before. */
+.slide[data-w="wide"] { --col-w: 64%; }
+.slide[data-w="wide"] .cols {
+  grid-template-columns: repeat(var(--wcols, 3), 1fr) !important;
+  width: 100%; gap: 14px; }
+
+/* ── A GROUP THAT IS AS WIDE AS THE SLIDE SAYS ────────────────────────
+   `width: fit-content` above sizes a card group to its longest line, and a
+   line of prose is an arbitrary number. On Present Continuous 2b slide 6
+   that put the two cards at 577px under a 394px title plate: right edges
+   flush, left edges 183px apart, on a slide with only two elements in it.
+   Innes: "make boxes same width as eyebrow".
+
+   Same knob answers slide 15, where the sort pool ran 167px wider than the
+   bins beneath it and its middle row reached back across Alex's arms:
+   "move those middle phrases better so they are more on right and not
+   encroaching character". A pool no wider than its own bins cannot.
+
+   The number lives on the slide it belongs to, not in the shell, because it
+   is a measurement of THAT slide's head - and check-lesson.js's LAYOUT gate
+   measures whether the re-wrap still fits. */
+.slide[data-boxw] .cols,
+.slide[data-boxw] .para,
+.slide[data-boxw] .sort-pool,
+.slide[data-boxw] .sort-bank { width: var(--boxw) !important; max-width: 100%; }
 /* ...and the rule does not stop at the paradigm. Innes, on Future Simple 1b
    slide 6: "make the bottom three boxes same width." Two example boxes and the
    formula pill under them are three statements about one rule, and three
@@ -2937,16 +2989,43 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
   const terms = document.createElement('div');
   const defs = document.createElement('div');
   terms.className = defs.className = 'match-col';
-  const mk = (txt, cls, key) => {
+  /* A MATCH SLIDE WAS THE ONE EXERCISE WITH NOWHERE TO PUT A TRANSLATION.
+     Every other shape carries its ES/DE gloss in the markup; this one builds
+     its items from data-term/data-def in JS, so there was no element to hang
+     one on and the slide simply had none. Innes, on Present Continuous 2b
+     slide 16: "translate words underneath".
+
+     Optional and backward-compatible: a pair with no data-term-es/-de and no
+     data-def-es/-de renders exactly the button it rendered before. The gloss
+     goes in a .sup, which is the site's existing mechanism - hidden unless
+     the root lang matches, and stripped by bwNorm() so the EN/DE panel still
+     lists the English, not the English plus its own translation. */
+  const mk = (txt, cls, key, glosses) => {
     const b = document.createElement('button');
     b.className = 'match-item ' + cls;
-    b.textContent = txt;
+    b.appendChild(document.createTextNode(txt));
     b.dataset.key = key;
+    (glosses || []).forEach(([lang, label, text]) => {
+      if (!text) return;
+      const s = document.createElement('span');
+      s.className = 'sup';
+      s.dataset.lang = lang;
+      const tag = document.createElement('b');
+      tag.textContent = label;
+      const body = document.createElement('span');
+      body.innerHTML = text;
+      s.append(tag, body);
+      b.appendChild(s);
+    });
     return b;
   };
-  pairs.forEach(p => terms.appendChild(mk(p.dataset.term, 'term', p.dataset.term)));
+  const gl = (p, side) => [['es', 'ES', p.dataset[side + 'Es']],
+                           ['de', 'DE', p.dataset[side + 'De']]];
+  pairs.forEach(p => terms.appendChild(
+    mk(p.dataset.term, 'term', p.dataset.term, gl(p, 'term'))));
   shuffled(pairs)
-    .forEach(p => defs.appendChild(mk(p.dataset.def, 'def', p.dataset.term)));
+    .forEach(p => defs.appendChild(
+      mk(p.dataset.def, 'def', p.dataset.term, gl(p, 'def'))));
   grid.replaceChildren(terms, defs);
 
   let picked = null, done = 0;
