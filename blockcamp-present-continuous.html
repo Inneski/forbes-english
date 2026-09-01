@@ -1754,6 +1754,30 @@ em, i, .card .prose.dim em { font-style: normal !important;
   background: var(--accent-bright); border-color: var(--accent-bright);
 }
 .nav-btn[data-action="next"]:disabled { box-shadow: none; }
+
+/* ── FIRST-RUN HINT ON THE LANGUAGE SWITCH ────────────────────────────────
+   Innes, about a control that has been shipping on every lesson for months:
+   "I didnt know the ENG/DE button existed." A control nobody finds is a
+   control that is not there, and the whole translation layer - every gloss,
+   every EN/DE panel - sits behind this one.
+
+   So it announces itself, ONCE. The ring pulses until the first interaction
+   and is then off for good (localStorage), because a control that keeps
+   pulsing after you have used it stops reading as an invitation and starts
+   reading as an error. Reduced-motion gets the accent border without the
+   animation - still findable, nothing moving. */
+@keyframes bw-notice {
+  0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 60%, transparent); }
+  70%  { box-shadow: 0 0 0 7px color-mix(in srgb, var(--accent) 0%, transparent); }
+  100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 0%, transparent); }
+}
+.lang-select.bw-notice, .tr-btn.bw-notice {
+  border-color: var(--accent) !important;
+  animation: bw-notice 2.2s ease-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lang-select.bw-notice, .tr-btn.bw-notice { animation: none; }
+}
 </style>
 </head>
 <body>
@@ -1810,9 +1834,9 @@ em, i, .card .prose.dim em { font-style: normal !important;
           </div>
           <div class="para-block">
             <div class="para-head" data-i18n="parB">Short forms</div><span class="sup" data-lang="es"><b>ES</b><span>as&iacute; se habla de verdad</span></span><span class="sup" data-lang="de"><b>DE</b><span>so spricht man wirklich</span></span>
-            <div class="para-row"><span class="para-subj">I</span><span class="para-verb"><em>&rsquo;m</em> building</span></div>
-            <div class="para-row"><span class="para-subj">you / we / they</span><span class="para-verb"><em>&rsquo;re</em> building</span></div>
-            <div class="para-row"><span class="para-subj">he / she / it</span><span class="para-verb"><em>&rsquo;s</em> building</span></div>
+            <div class="para-row"><span class="para-subj">I</span><span class="para-verb"><em class="aux">&rsquo;m</em> building</span></div>
+            <div class="para-row"><span class="para-subj">you / we / they</span><span class="para-verb"><em class="aux">&rsquo;re</em> building</span></div>
+            <div class="para-row"><span class="para-subj">he / she / it</span><span class="para-verb"><em class="aux">&rsquo;s</em> building</span></div>
             <div class="para-note">This is what people actually say.</div>
           </div>
         </div>
@@ -1830,16 +1854,16 @@ em, i, .card .prose.dim em { font-style: normal !important;
         <div class="para">
           <div class="para-block">
             <div class="para-head" data-i18n="par2A">Negative</div><span class="sup" data-lang="es"><b>ES</b><span>en Escocia e Irlanda tambi&eacute;n se dice &rsquo;amn&rsquo;t&rsquo;</span></span><span class="sup" data-lang="de"><b>DE</b><span>in Schottland und Irland sagt man auch &rsquo;amn&rsquo;t&rsquo;</span></span>
-            <div class="para-row"><span class="para-subj">I</span><span class="para-verb"><em>&rsquo;m <em class="aux">not</em></em> building</span></div>
+            <div class="para-row"><span class="para-subj">I</span><span class="para-verb"><em class="aux">&rsquo;m</em> <em class="aux">not</em> building</span></div>
             <div class="para-row"><span class="para-subj">you / we / they</span><span class="para-verb"><em class="aux">aren&rsquo;t</em> building</span></div>
             <div class="para-row"><span class="para-subj">he / she / it</span><span class="para-verb"><em class="aux">isn&rsquo;t</em> building</span></div>
             <div class="para-note">Scots and Irish English also say &lsquo;amn&rsquo;t&rsquo;.</div>
           </div>
           <div class="para-block">
             <div class="para-head" data-i18n="par2B">Question</div><span class="sup" data-lang="es"><b>ES</b><span>respuestas cortas</span></span><span class="sup" data-lang="de"><b>DE</b><span>Kurzantworten</span></span>
-            <div class="para-row"><span class="para-subj"><em>Am</em></span><span class="para-verb">I building?</span></div>
-            <div class="para-row"><span class="para-subj"><em>Are</em></span><span class="para-verb">you building?</span></div>
-            <div class="para-row"><span class="para-subj"><em>Is</em></span><span class="para-verb">he building?</span></div>
+            <div class="para-row"><span class="para-subj"><em class="aux">Am</em></span><span class="para-verb">I building?</span></div>
+            <div class="para-row"><span class="para-subj"><em class="aux">Are</em></span><span class="para-verb">you building?</span></div>
+            <div class="para-row"><span class="para-subj"><em class="aux">Is</em></span><span class="para-verb">he building?</span></div>
             <div class="para-note">Yes, I am. &middot; No, he isn&rsquo;t.</div>
           </div>
         </div>
@@ -1890,7 +1914,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
             <div class="freq-row"><div class="freq-word">these days</div><div class="freq-pct">weeks or months</div><div class="freq-gloss">a passing phase<span class="sup" data-lang="es"><b>ES</b><span>estos d&iacute;as</span></span><span class="sup" data-lang="de"><b>DE</b><span>zurzeit</span></span></div></div>
             <div class="freq-row"><div class="freq-word">this year</div><div class="freq-pct">a whole year</div><div class="freq-gloss">and still not forever<span class="sup" data-lang="es"><b>ES</b><span>este a&ntilde;o</span></span><span class="sup" data-lang="de"><b>DE</b><span>dieses Jahr</span></span></div></div>
           </div>
-          <p class="freq-rule" data-i18n="howRule"><span class="formula">every one of these <em class="aux">is</em> <b>TEMPORARY</b></span></p>
+          <p class="freq-rule" data-i18n="howRule"><span class="formula">every one of these is <b>TEMPORARY</b></span></p>
         </div>
       </div>
     </section>
@@ -2332,7 +2356,7 @@ const UI_I18N = {
     hint5: "The action started earlier and has <strong>not stopped</strong>.",
     hint6: "<em>every day</em> is a habit. <em>&lsquo;today&rsquo;</em> is just &lsquo;today&rsquo;.",
     howEyebrow: "How long is &lsquo;now&rsquo;?",
-    howRule: "<span class=\"formula\">every one of these <em class=\"aux\">is</em> <b>TEMPORARY</b></span>",
+    howRule: "<span class=\"formula\">every one of these is <b>TEMPORARY</b></span>",
     howTitle: "The moment is elastic",
     ledClues: 'Clues',
     ledDp: 'DP',
@@ -2447,7 +2471,7 @@ const UI_I18N = {
     hint5: "Die Handlung begann fr&uuml;her und <strong>h&ouml;rt nicht auf</strong>.",
     hint6: "&rsquo;every day&rsquo; ist eine Gewohnheit. &rsquo;today&rsquo; ist nur heute.",
     howEyebrow: "Wie lang ist &rsquo;now&rsquo;?",
-    howRule: "<span class=\"formula\">every one of these <em class=\"aux\">is</em> <b>TEMPORARY</b></span>",
+    howRule: "<span class=\"formula\">every one of these is <b>TEMPORARY</b></span>",
     howTitle: "Der Moment ist dehnbar",
     ledClues: 'Hinweise',
     ledDp: 'DP',
@@ -2562,7 +2586,7 @@ const UI_I18N = {
     hint5: "La acci&oacute;n empez&oacute; antes y <strong>no ha parado</strong>.",
     hint6: "&rsquo;every day&rsquo; es un h&aacute;bito. &rsquo;today&rsquo; es solo hoy.",
     howEyebrow: "&iquest;Cu&aacute;nto dura &rsquo;now&rsquo;?",
-    howRule: "<span class=\"formula\">every one of these <em class=\"aux\">is</em> <b>TEMPORARY</b></span>",
+    howRule: "<span class=\"formula\">every one of these is <b>TEMPORARY</b></span>",
     howTitle: "El momento es el&aacute;stico",
     ledClues: 'Pistas',
     ledDp: 'DP',
@@ -3639,6 +3663,30 @@ document.addEventListener('click', function (e) {
   var on = panel.classList.toggle('show');
   b.classList.toggle('on', on);
 });
+</script>
+<script>
+/* Draws the eye to the language switch until it is used once. See .bw-notice
+   in the stylesheet for why. Storage is wrapped: a browser with site data
+   blocked throws on both read and write, and that must not cost the deck its
+   boot. Worst case there, the ring simply shows every visit. */
+(function () {
+  var KEY = 'bw-lang-used', seen = null;
+  try { seen = localStorage.getItem(KEY); } catch (e) {}
+  if (seen) return;
+  var els = ['langSelect', 'bwTrBtn']
+    .map(function (id) { return document.getElementById(id); })
+    .filter(Boolean);
+  if (!els.length) return;
+  els.forEach(function (el) { el.classList.add('bw-notice'); });
+  function done() {
+    els.forEach(function (el) { el.classList.remove('bw-notice'); });
+    try { localStorage.setItem(KEY, '1'); } catch (e) {}
+  }
+  els.forEach(function (el) {
+    el.addEventListener('change', done);
+    el.addEventListener('click', done);
+  });
+})();
 </script>
 </body>
 </html>

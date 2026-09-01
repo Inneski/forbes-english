@@ -823,6 +823,30 @@
   .trans-de-select.correct-sel { border-color: #3D8C1A; background: #EAF4E2; color: #1E5C0C; }
   .trans-de-select.wrong-sel { border-color: #C0392B; background: #FDE8E3; color: #8B1A1A; }
   .trans-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 700; margin-bottom: 6px; }
+
+/* ── FIRST-RUN HINT ON THE LANGUAGE SWITCH ────────────────────────────────
+   Innes, about a control that has been shipping on every lesson for months:
+   "I didnt know the ENG/DE button existed." A control nobody finds is a
+   control that is not there, and the whole translation layer - every gloss,
+   every EN/DE panel - sits behind this one.
+
+   So it announces itself, ONCE. The ring pulses until the first interaction
+   and is then off for good (localStorage), because a control that keeps
+   pulsing after you have used it stops reading as an invitation and starts
+   reading as an error. Reduced-motion gets the accent border without the
+   animation - still findable, nothing moving. */
+@keyframes bw-notice {
+  0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 60%, transparent); }
+  70%  { box-shadow: 0 0 0 7px color-mix(in srgb, var(--accent) 0%, transparent); }
+  100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 0%, transparent); }
+}
+.lang-select.bw-notice, .tr-btn.bw-notice {
+  border-color: var(--accent) !important;
+  animation: bw-notice 2.2s ease-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lang-select.bw-notice, .tr-btn.bw-notice { animation: none; }
+}
 </style>
 </head>
 <body>
@@ -2158,6 +2182,30 @@ function startLesson() {
 // INIT
 // ============================================================
 initLangSwitch();
+</script>
+<script>
+/* Draws the eye to the language switch until it is used once. See .bw-notice
+   in the stylesheet for why. Storage is wrapped: a browser with site data
+   blocked throws on both read and write, and that must not cost the deck its
+   boot. Worst case there, the ring simply shows every visit. */
+(function () {
+  var KEY = 'bw-lang-used', seen = null;
+  try { seen = localStorage.getItem(KEY); } catch (e) {}
+  if (seen) return;
+  var els = ['langSelect', 'bwTrBtn']
+    .map(function (id) { return document.getElementById(id); })
+    .filter(Boolean);
+  if (!els.length) return;
+  els.forEach(function (el) { el.classList.add('bw-notice'); });
+  function done() {
+    els.forEach(function (el) { el.classList.remove('bw-notice'); });
+    try { localStorage.setItem(KEY, '1'); } catch (e) {}
+  }
+  els.forEach(function (el) {
+    el.addEventListener('change', done);
+    el.addEventListener('click', done);
+  });
+})();
 </script>
 </body>
 </html>

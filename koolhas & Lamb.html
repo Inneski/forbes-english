@@ -590,6 +590,30 @@ html[data-theme="light"] .slide-body > .prose,
 html[data-theme="light"] .act-target-label {
   text-shadow: 0 1px 2px rgba(255,255,255,0.75), 0 0 12px rgba(255,255,255,0.55);
 }
+
+/* ── FIRST-RUN HINT ON THE LANGUAGE SWITCH ────────────────────────────────
+   Innes, about a control that has been shipping on every lesson for months:
+   "I didnt know the ENG/DE button existed." A control nobody finds is a
+   control that is not there, and the whole translation layer - every gloss,
+   every EN/DE panel - sits behind this one.
+
+   So it announces itself, ONCE. The ring pulses until the first interaction
+   and is then off for good (localStorage), because a control that keeps
+   pulsing after you have used it stops reading as an invitation and starts
+   reading as an error. Reduced-motion gets the accent border without the
+   animation - still findable, nothing moving. */
+@keyframes bw-notice {
+  0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 60%, transparent); }
+  70%  { box-shadow: 0 0 0 7px color-mix(in srgb, var(--accent) 0%, transparent); }
+  100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 0%, transparent); }
+}
+.lang-select.bw-notice, .tr-btn.bw-notice {
+  border-color: var(--accent) !important;
+  animation: bw-notice 2.2s ease-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lang-select.bw-notice, .tr-btn.bw-notice { animation: none; }
+}
 </style>
 </head>
 <body>
@@ -1395,6 +1419,30 @@ updateScoreChip();
 const ready = () => document.body.classList.add('fonts-ready');
 if (document.fonts && document.fonts.ready) { document.fonts.ready.then(ready); setTimeout(ready, 1500); }
 else ready();
+</script>
+<script>
+/* Draws the eye to the language switch until it is used once. See .bw-notice
+   in the stylesheet for why. Storage is wrapped: a browser with site data
+   blocked throws on both read and write, and that must not cost the deck its
+   boot. Worst case there, the ring simply shows every visit. */
+(function () {
+  var KEY = 'bw-lang-used', seen = null;
+  try { seen = localStorage.getItem(KEY); } catch (e) {}
+  if (seen) return;
+  var els = ['langSelect', 'bwTrBtn']
+    .map(function (id) { return document.getElementById(id); })
+    .filter(Boolean);
+  if (!els.length) return;
+  els.forEach(function (el) { el.classList.add('bw-notice'); });
+  function done() {
+    els.forEach(function (el) { el.classList.remove('bw-notice'); });
+    try { localStorage.setItem(KEY, '1'); } catch (e) {}
+  }
+  els.forEach(function (el) {
+    el.addEventListener('change', done);
+    el.addEventListener('click', done);
+  });
+})();
 </script>
 </body>
 </html>
