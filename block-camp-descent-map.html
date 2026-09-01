@@ -60,7 +60,7 @@
       pointer-events: none;
       background:
         linear-gradient(180deg, rgba(8, 31, 29, .10), transparent 42%, rgba(8, 31, 29, .22)),
-        linear-gradient(90deg, rgba(8, 31, 29, .34), transparent 48%);
+        linear-gradient(90deg, rgba(8, 31, 29, .52), rgba(8, 31, 29, .12) 38%, transparent 56%);
     }
 
     .masthead {
@@ -68,8 +68,8 @@
       z-index: 8;
       top: clamp(1.3rem, 5vw, 4.6rem);
       left: clamp(1.25rem, 6vw, 6.8rem);
-      width: min(620px, 82vw);
-      text-shadow: 0 3px 28px rgba(8, 31, 29, .32);
+      width: min(780px, 86vw);
+      text-shadow: 0 3px 28px rgba(8, 31, 29, .42);
     }
 
     .back-link,
@@ -83,7 +83,7 @@
     .back-link {
       display: inline-block;
       margin-bottom: 1.1rem;
-      color: rgba(16, 47, 43, .78);
+      color: rgba(255, 244, 214, .8);
       text-decoration: none;
     }
 
@@ -91,17 +91,29 @@
 
     .eyebrow {
       margin: 0 0 .65rem;
-      color: #8b5e18;
+      color: var(--sand);
     }
 
     h1 {
       margin: 0;
-      font-family: "Monocraft Header", ui-monospace, monospace;
-      font-size: clamp(2.6rem, 6.5vw, 6.7rem);
+      font-family: 'Monocraft', ui-monospace, monospace;
+      font-size: clamp(1.85rem, 4.6vw, 4.6rem);
       font-weight: 900;
-      line-height: .9;
-      letter-spacing: -.04em;
+      line-height: .96;
+      letter-spacing: -.02em;
+      white-space: nowrap;
       text-transform: uppercase;
+    }
+
+    /* The voice, under the camp. Not Monocraft: it is a reading line, and
+       black Monocraft for reading is exactly what Innes ruled out on the
+       hub. */
+    .subhead {
+      margin: .5rem 0 0;
+      color: var(--cream);
+      font-size: clamp(1rem, 1.9vw, 1.5rem);
+      font-weight: 800;
+      letter-spacing: .01em;
     }
 
     .dictum {
@@ -188,7 +200,7 @@
     }
 
     .route-node span {
-      font-family: "Monocraft Header", ui-monospace, monospace;
+      font-family: 'Monocraft', ui-monospace, monospace;
       font-size: clamp(.66rem, 1.2vw, 1rem);
       font-weight: 900;
     }
@@ -227,19 +239,24 @@
     }
 
     .route-node.is-unlocked {
-      background: rgba(41, 76, 66, .94);
+      background: var(--tense);
+      color: var(--tense-ink);
       box-shadow:
         0 4px 16px rgba(8, 31, 29, .32),
-        0 0 0 7px rgba(255, 244, 214, .16);
+        0 0 0 7px color-mix(in srgb, var(--tense) 34%, transparent);
     }
 
     .route-node.is-selected {
-      background: var(--orange);
-      transform: translate(-50%, -50%) scale(calc(var(--depth, 1) * 1.12));
+      transform: translate(-50%, -50%) scale(calc(var(--depth, 1) * 1.16));
       box-shadow:
         0 4px 16px rgba(8, 31, 29, .32),
-        0 0 24px rgba(232, 99, 42, .72);
+        0 0 0 8px color-mix(in srgb, var(--tense) 62%, transparent),
+        0 0 26px color-mix(in srgb, var(--tense) 85%, transparent);
     }
+
+    /* The tooltip picks the colour up too, so hovering a node names the
+       camp it came down from in that camp's own colour. */
+    .route-node::before { border-left: 4px solid var(--tense); }
 
     .route-node.is-complete {
       background: var(--cream);
@@ -316,43 +333,65 @@
     .camper-leg.left { left: 24%; }
     .camper-leg.right { right: 24%; }
 
-    .destination-gate {
-      position: absolute;
-      z-index: 4;
-      left: 81%;
-      top: 30%;
-      width: clamp(48px, 6vw, 92px);
-      aspect-ratio: 1;
-      object-fit: contain;
-      opacity: .65;
-      transform: translate(-50%, -50%);
-      filter: drop-shadow(0 7px 7px rgba(8, 31, 29, .32));
-      pointer-events: none;
-    }
-
+    /* Now a card in the bottom-right corner, closed until a marker is
+       clicked. The route runs bottom-left to upper-right and its last
+       station sits at 78%/40%, so the lower-right quadrant is the one
+       corner of this plate the path never crosses. It carries the selected
+       station's tense colour, so the card and the marker read as one
+       thing. */
     .lesson-panel {
       position: absolute;
       z-index: 9;
-      left: clamp(.8rem, 2.4vw, 1.6rem);
       right: clamp(.8rem, 2.4vw, 1.6rem);
       bottom: clamp(.8rem, 2vw, 1.4rem);
+      width: min(360px, calc(100vw - 1.6rem));
       display: flex;
-      align-items: center;
-      gap: clamp(.9rem, 2.2vw, 2rem);
-      padding: .62rem .7rem .62rem 1.05rem;
-      border: 1px solid rgba(255, 244, 214, .22);
-      border-radius: 999px;
-      background: rgba(8, 31, 29, .84);
-      box-shadow: 0 14px 38px rgba(8, 31, 29, .34);
+      flex-direction: column;
+      align-items: flex-start;
+      gap: .5rem;
+      padding: 1rem 1.05rem 1.05rem;
+      border: 1px solid color-mix(in srgb, var(--tense, #fff4d6) 44%, transparent);
+      border-radius: 1.1rem;
+      background: rgba(8, 31, 29, .9);
+      box-shadow: 0 14px 38px rgba(8, 31, 29, .44);
       backdrop-filter: blur(12px);
+      transform-origin: bottom right;
+      transition: opacity .22s ease, transform .22s ease, visibility .22s;
     }
-    /* kicker over title on the left, structure alongside, action pinned right */
-    .panel-lead { min-width: 0; }
-    .panel-open-wrap { margin-left: auto; flex: none; }
+
+    /* Closed is the default, so the map opens uncovered. */
+    .lesson-panel:not(.is-open) {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px) scale(.97);
+      pointer-events: none;
+    }
+
+    .panel-lead { min-width: 0; width: 100%; padding-right: 1.6rem; }
+    .panel-open-wrap { margin-top: .35rem; flex: none; }
+
+    .panel-close {
+      position: absolute;
+      top: .5rem;
+      right: .55rem;
+      display: grid;
+      place-items: center;
+      width: 1.7rem;
+      aspect-ratio: 1;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(255, 244, 214, .12);
+      color: var(--cream);
+      font-size: .9rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .panel-close:hover { background: rgba(255, 244, 214, .24); }
 
     .panel-kicker {
       margin: 0 0 .12rem;
-      color: var(--sand);
+      color: var(--tense, var(--sand));
       font-size: .64rem;
       font-weight: 850;
       letter-spacing: .14em;
@@ -362,15 +401,13 @@
     .panel-title {
       margin: 0;
       font-size: clamp(1.05rem, 1.6vw, 1.4rem);
-      line-height: 1.02;
+      line-height: 1.05;
       letter-spacing: -.02em;
-      white-space: nowrap;
     }
 
     .panel-structure {
       margin: 0;
       flex: none;
-      white-space: nowrap;
       color: var(--cream);
       font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
       font-size: .82rem;
@@ -388,10 +425,8 @@
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
     }
-    @media (max-width: 1180px) { .panel-copy { display: none; } }
-    @media (max-width: 860px) {
-      .panel-structure { display: none; }
-      .panel-title { white-space: normal; }
+    @media (max-width: 620px) {
+      .lesson-panel { left: clamp(.8rem, 2.4vw, 1.6rem); width: auto; }
     }
 
 
@@ -404,11 +439,13 @@
     }
 
     .complete-button {
+      display: inline-block;
       border: 0;
       border-radius: 999px;
-      padding: .58rem .78rem;
-      background: var(--orange);
-      color: #fff;
+      padding: .58rem .86rem;
+      background: var(--tense, var(--orange));
+      color: var(--tense-ink, #fff);
+      text-decoration: none;
       font-size: .66rem;
       font-weight: 900;
       letter-spacing: .09em;
@@ -420,22 +457,6 @@
       background: rgba(255, 244, 214, .18);
       color: rgba(255, 244, 214, .52);
       cursor: default;
-    }
-
-    .part-two-tease {
-      position: absolute;
-      z-index: 5;
-      left: 81%;
-      top: 23.5%;
-      transform: translateX(-50%);
-      color: rgba(255, 244, 214, .78);
-      font-size: .58rem;
-      font-weight: 900;
-      letter-spacing: .14em;
-      text-align: center;
-      text-shadow: 0 2px 8px rgba(8, 31, 29, .55);
-      text-transform: uppercase;
-      white-space: nowrap;
     }
 
     @keyframes flame {
@@ -450,7 +471,6 @@
       .back-link { color: rgba(255, 244, 214, .8); }
       .lesson-panel { border-radius: 1rem; flex-wrap: wrap; }
       .route-node::before { display: none; }
-      .destination-gate, .part-two-tease { display: none; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -471,9 +491,10 @@
 
     <header class="masthead">
       <a class="back-link" href="https://forbesenglish.com/block-camp-map">← Part I · Tense Trail</a>
-      <p class="eyebrow">Block Camp II · The Far Side</p>
-      <h1 id="map-title">Passive Voice</h1>
-      <div class="dictum">One descent · eight stations</div>
+      <p class="eyebrow">The far side of the trail</p>
+      <h1 id="map-title">BLOCK CAMP II</h1>
+      <p class="subhead">Passive voice · the descent</p>
+      <div class="dictum">One descent · eight stations · tap a marker</div>
     </header>
 
     <svg class="route-layer" viewBox="0 0 1664 936" preserveAspectRatio="none" aria-hidden="true">
@@ -482,14 +503,14 @@
     </svg>
 
     <div class="route-nodes" id="route-nodes" aria-label="Passive voice route stations">
-      <button class="route-node" style="--x:13%;--y:81%;--depth:1" data-index="0" data-short="Present simple passive" aria-label="Station 9: Present simple passive"><span>9</span></button>
-      <button class="route-node" style="--x:28%;--y:79%;--depth:.97" data-index="1" data-short="Present continuous passive" aria-label="Station 10: Present continuous passive"><span>10</span></button>
-      <button class="route-node" style="--x:42%;--y:75%;--depth:.93" data-index="2" data-short="Past simple passive" aria-label="Station 11: Past simple passive"><span>11</span></button>
-      <button class="route-node" style="--x:53%;--y:70%;--depth:.89" data-index="3" data-short="Past continuous passive" aria-label="Station 12: Past continuous passive"><span>12</span></button>
-      <button class="route-node" style="--x:61%;--y:62%;--depth:.84" data-index="4" data-short="Going to passive" aria-label="Station 13: Going to passive"><span>13</span></button>
-      <button class="route-node" style="--x:67%;--y:54%;--depth:.79" data-index="5" data-short="Future simple passive" aria-label="Station 14: Future simple passive"><span>14</span></button>
-      <button class="route-node" style="--x:72%;--y:47%;--depth:.74" data-index="6" data-short="Present perfect passive" aria-label="Station 15: Present perfect passive"><span>15</span></button>
-      <button class="route-node" style="--x:78%;--y:40%;--depth:.7" data-index="7" data-short="The Trial" aria-label="Station 16: The Trial"><span>16</span></button>
+      <button class="route-node" style="--x:13%;--y:81%;--depth:1;--tense:#7A93B5;--tense-ink:#0a1f1c" data-index="0" data-short="Present simple passive" aria-label="Station 9: Present simple passive"><span>9</span></button>
+      <button class="route-node" style="--x:28%;--y:79%;--depth:.97;--tense:#E66085;--tense-ink:#0a1f1c" data-index="1" data-short="Present continuous passive" aria-label="Station 10: Present continuous passive"><span>10</span></button>
+      <button class="route-node" style="--x:42%;--y:75%;--depth:.93;--tense:#B08968;--tense-ink:#0a1f1c" data-index="2" data-short="Past simple passive" aria-label="Station 11: Past simple passive"><span>11</span></button>
+      <button class="route-node" style="--x:53%;--y:70%;--depth:.89;--tense:#F1D779;--tense-ink:#0a1f1c" data-index="3" data-short="Past continuous passive" aria-label="Station 12: Past continuous passive"><span>12</span></button>
+      <button class="route-node" style="--x:61%;--y:62%;--depth:.84;--tense:#70A43A;--tense-ink:#0a1f1c" data-index="4" data-short="Going to passive" aria-label="Station 13: Going to passive"><span>13</span></button>
+      <button class="route-node" style="--x:67%;--y:54%;--depth:.79;--tense:#F0723F;--tense-ink:#0a1f1c" data-index="5" data-short="Future simple passive" aria-label="Station 14: Future simple passive"><span>14</span></button>
+      <button class="route-node" style="--x:72%;--y:47%;--depth:.74;--tense:#2E7D65;--tense-ink:#fff4d6" data-index="6" data-short="Present perfect passive" aria-label="Station 15: Present perfect passive"><span>15</span></button>
+      <button class="route-node" style="--x:78%;--y:40%;--depth:.7;--tense:#46B0AB;--tense-ink:#0a1f1c" data-index="7" data-short="The Trial" aria-label="Station 16: The Trial"><span>16</span></button>
     </div>
 
     <div class="camper-token" id="camper-token" aria-hidden="true">
@@ -500,10 +521,8 @@
       <span class="camper-leg right"></span>
     </div>
 
-    <img class="destination-gate" src="BlockCampDescent/trial-gate.png" alt="">
-    <div class="part-two-tease" aria-hidden="true">Far-side camp</div>
-
-    <section class="lesson-panel" aria-live="polite" aria-labelledby="panel-title">
+    <section class="lesson-panel" id="lesson-panel" aria-live="polite" aria-labelledby="panel-title">
+      <button class="panel-close" id="panel-close" type="button" aria-label="Close station details">&times;</button>
       <div class="panel-lead">
         <p class="panel-kicker" id="panel-kicker">Station 09 &middot; Camp one, coming down</p>
         <h2 class="panel-title" id="panel-title">Present Simple Passive</h2>
@@ -583,6 +602,8 @@
       const structure = document.getElementById("panel-structure");
       const copy = document.getElementById("panel-copy");
       const openLink = document.getElementById("panel-open");
+      const panel = document.getElementById("lesson-panel");
+      const panelClose = document.getElementById("panel-close");
       const progressPath = document.getElementById("route-progress-path");
       let completed = Math.max(0, Math.min(8, Number(new URLSearchParams(location.search).get("completed")) || 0));
       let selected = Math.min(completed, 7);
@@ -594,7 +615,14 @@
         structure.textContent = lesson.structure;
         copy.textContent = lesson.copy;
         if (openLink) openLink.href = lesson.href;
+        // the card takes the marker's colour, so the two read as one thing
+        const node = nodes[index];
+        panel.style.setProperty("--tense", node.style.getPropertyValue("--tense"));
+        panel.style.setProperty("--tense-ink", node.style.getPropertyValue("--tense-ink"));
       }
+
+      function openPanel() { panel.classList.add("is-open"); }
+      function closePanel() { panel.classList.remove("is-open"); }
 
       function render() {
         const currentIndex = Math.min(Math.max(completed, selected), 7);
@@ -620,7 +648,18 @@
           selected = index;
           renderPanel(index);
           render();
+          openPanel();
         });
+      });
+
+      panelClose.addEventListener("click", closePanel);
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closePanel();
+      });
+      // Clicking the plate itself dismisses; clicking inside the card does not.
+      document.querySelector(".map-stage").addEventListener("click", (e) => {
+        if (!e.target.closest(".lesson-panel") && !e.target.closest(".route-node"))
+          closePanel();
       });
 
       window.BlockCampPassiveProgress = Object.freeze({
@@ -629,6 +668,7 @@
           selected = Math.min(completed, 7);
           renderPanel(selected);
           render();
+          openPanel();
         },
         getCompleted() {
           return completed;
