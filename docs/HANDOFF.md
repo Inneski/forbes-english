@@ -137,6 +137,101 @@ Three things worth carrying forward.
   lower `--bg-opacity` for a busy hero does not apply here and would have made
   it worse: the problem was flatness and brightness, not detail.
 
+## Block Camp: the colour rule now has a gate, and four new layout knobs
+
+Innes reported six colour defects by eye, across four separate messages —
+*"green 'was'? "*, *"'had' is green for no reason"*, *"why is has/have/am in
+green"*, *"green colored words — what is the logic here?"* — and
+`check-colour-roles.py` passed every time. It only knew about participles.
+
+**It now has AUXJOB.** A be/have/do form is an auxiliary only when a verb
+follows it. If what follows is a determiner, if it is the whole of a paradigm
+cell, or if it sits inside a translation gloss, it is the main verb and the
+green is a lie. Verified failing against the pre-fix copies at `e995f7b`: it
+reports six of the ones he found by eye.
+
+The determiner list was **narrowed from a first version** that also convicted
+pronouns and prepositions and produced 35 findings, 29 of them inverted
+questions — "Have you eaten?", "Is she going?" — where the auxiliary is doing
+exactly its job. A gate that cries wolf 29 times in 35 is a gate nobody runs.
+
+It still **cannot see** `was small` or `is PAST SIMPLE`: those need to know an
+adjective from a verb. If a third case of that shape turns up, that is the
+next thing to teach it — not a wider follower list.
+
+Run it before shipping any deck:
+
+```bash
+python3 lesson-template/checker/check-colour-roles.py      # 0 findings
+```
+
+It then found **nine more, live, that nobody had reported** — including the
+German word `am` in "am Ende" and the Spanish `has` in "¿has estado cavando?",
+both painted green by an automated tagger matching them as English
+auxiliaries. All fixed.
+
+### Four opt-in knobs, all in the shared shell
+
+The shell had `data-side`, `data-vpos` and `data-nudge` and nothing else, so
+"the boxes are the wrong shape" had no answer but moving the block. These are
+all opt-in — a slide without them measures exactly as it did before.
+
+| knob | what it does | why it exists |
+|---|---|---|
+| `data-w="wide"` + `--wcols` | widens the column past 52% and gives the cards their real columns back; also lets a card FLOW its examples instead of one per row | six slides overflowed the canvas because the narrow-column fallback stacked two or three cards into one |
+| `data-boxw` + `--boxw` | pins a card group, sort pool or bank to a named width | `width: fit-content` sizes a group to its longest line, and a line of prose is an arbitrary number |
+| `data-tr="beside"` | puts the ES/DE gloss to the right of the example chips | it is opt-in because at three cards to a row it squeezes the chips to a column one word deep |
+| `data-align="right"` | right-aligns card prose (not the lists) | a right-pinned column whose paragraphs all fall short of its own edge |
+
+`check-lesson.js` now **passes on all 19 Block Camp decks.** Five overflows
+that had been failing since the decks shipped are gone: future-simple-2 8,
+present-perfect-2 8, present-perfect-continuous 8 and present-perfect 8 by
+22px, present-simple-2 6 by 14px.
+
+### The gate renders in English only
+
+Present Continuous 2b slide 16 fits in English and **overflowed in German**,
+where every match item grows a second line — and `check-lesson.js` passed it,
+because it renders the page in English. Any slide whose height depends on
+translated text can do this. Until the gate loops the languages, shoot the
+deck in `de` before shipping a slide with inline glosses:
+
+```bash
+node lesson-template/checker/shots.js <deck>.html <n> <outdir>   # English
+# then select #langSelect = de and re-shoot; German is the longest of the three
+```
+
+### The EN/DE panel was looking in one place only
+
+Innes: *"ENG/DE button skimps on duties a lot"*. Measured across the eighteen
+decks in German: **137 of 414 slides** opened the panel and were told
+"nothing here is English-only" — and the empty ones were almost always slides
+1–8, the **teach** slides.
+
+The selector list covers the exercise shapes, because those are what the
+dictionary holds. A teach slide's prose is not in the dictionary at all — but
+it is not untranslated: it carries its gloss inline, in a `.sup`. The panel
+never looked. It does now, dictionary first and the slide's own glosses
+second. **137 → 52**, and on the sixteen Part I decks the only empties left
+are the cover and the results slide.
+
+**The 19 that remain are the two passive decks.** `slidekit` was called with
+`es='' de=''` on eight of their slides, so they have no inline gloss to fall
+back on and their chassis dictionary belongs to the active camp they descend
+past. That is authoring work on `station09.py` / `station15.py`, and it is the
+next thing to do to those two decks.
+
+### Still open
+
+- **The two passive decks have no catalogue row**, so `seo.py` writes them no
+  metadata and `check-library.js --vs-origin` reports them cardless. A
+  publishing decision, not a bug.
+- **The placement sweep** still needs redoing with the fixed renderer.
+- `--mark-inf` (#eec32f) and `--mark-obj` (#ffd633) are 1.4° apart in hue,
+  ΔE 8.5. They never share a slide yet. Going To Passive and Future Simple
+  Passive will put an infinitive and an object on one page — decide at
+  station 13.
+
 ## Block Camp II — the passive descent: order, source truth, and two dead mechanics
 
 ### `git push` WORKS from a Claude Code remote session
