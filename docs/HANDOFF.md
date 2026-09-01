@@ -150,6 +150,15 @@ the three false ones.
 
 ### Smaller things worth carrying
 
+* **`git push` worked from this cloud session.** `CLAUDE.md` and house style
+  §11 both say a cloud session gets a proxy 403 and must fall back to the web
+  uploader or `SendUserFile`. That was true of the sessions that wrote those
+  notes and it is not universal: this one pushed
+  `claude/forbes-c2-multilingual-support-povk8z` to `origin` on the first
+  attempt. The instruction in `CLAUDE.md` is already the right one — **try
+  `git push` first and find out** — so treat the 403 as a thing that happens
+  to some sessions, not as the expected outcome, and do not go looking for
+  Chrome tools before you have tried.
 * **`check-library.js`'s "every deck has a card" has moved again.** The note
   further down this file says it fails on `blockcamp-passive-intro.html` and
   `blockcamp-passive-present-perfect.html`. Both are clean now; the only
