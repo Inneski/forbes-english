@@ -85,6 +85,11 @@ ALLOW = {
         'pc bg30 - as above',
     ('blockcamp-passive-past-continuous.html', 13):
         'pc bg33 - sleeper on the left, creeper on the right. No good half exists.',
+    ('blockcamp-passive-future-simple.html', 10):
+        'fs bg12 - blind spot 1, and a clean example of it. Alex is at 7-24% of '
+        'the frame; the right half is an unlit cave mouth, which is texture '
+        'without a subject and scores 1.45x. Measured at full size, the right '
+        'is the correct half and the gate disagrees.',
 }
 
 

@@ -83,7 +83,7 @@ sec('teach', B % 'bg06.jpg', 'left', 'top',
 # THE TRAP: two words that both follow an auxiliary and both come from 'be'.
 # Station 10 taught 'being'; this deck's word is 'be', and they are one slot
 # apart in the same sentence shape.
-sec('teach', B % 'bg28.jpg', 'right', 'top',
+sec('teach', B % 'bg28.jpg', 'left', 'top',
     head('The trap', '<em class="inf">&lsquo;be&rsquo;</em>, '
                      '<em class="aux">&lsquo;being&rsquo;</em>, '
                      '<em class="aux">&lsquo;been&rsquo;</em>') + '\n' +
@@ -119,7 +119,7 @@ sec('teach', B % 'bg04.jpg', 'left', 'top',
        gloss('Un aviso no nombra a nadie', 'Eine Ansage nennt niemanden')),
     ], 'this is the voice of a notice on a wall')),
 
-sec('teach', B % 'bg19.jpg', 'right', 'top',
+sec('teach', B % 'bg19.jpg', 'left', 'top',
     head('Time signals', 'How far ahead the plan reaches') + '\n' +
     cards([
       ('Soon', 'Close enough to point at.',
@@ -133,7 +133,7 @@ sec('teach', B % 'bg19.jpg', 'right', 'top',
     ]),
     'data-w="wide" style="--wcols:2"'),
 
-sec('teach', B % 'bg16.jpg', 'left', 'top',
+sec('teach', B % 'bg16.jpg', 'right', 'top',
     head('The doer', 'The planner is the first thing to go') + '\n' +
     para([
       ('Worth saying',
@@ -155,7 +155,7 @@ mc(1, 6, B % 'bg02.jpg', 'right', 'top', 'Choose the passive',
    'Die Mauer ______ n&auml;chste Woche.',
    why='&lsquo;going to&rsquo; takes a bare verb, and in the passive that bare verb is &lsquo;be&rsquo;.'),
 
-mc(2, 6, B % 'bg15.jpg', 'right', 'top', 'Choose the passive',
+mc(2, 6, B % 'bg15.jpg', 'left', 'top', 'Choose the passive',
    'The torches ______ tonight.', 'are going to be lit',
    [('is going to be lit', '&lsquo;Torches&rsquo; is plural, so &lsquo;are&rsquo;.'),
     ('are going to be light', 'Third form: lit.'),
@@ -164,7 +164,7 @@ mc(2, 6, B % 'bg15.jpg', 'right', 'top', 'Choose the passive',
    why='More than one torch, so &lsquo;are going to&rsquo; &mdash; then be, then the third form.'),
 
 # The be / being / been question, which is the deck's own trap.
-mc(3, 6, B % 'bg39.jpg', 'right', 'bottom', 'Which word goes in?',
+mc(3, 6, B % 'bg39.jpg', 'left', 'top', 'Which word goes in?',
    'The bridge is going to ______ repaired.', 'be',
    [('being', '&lsquo;being&rsquo; follows is or are. After &lsquo;going to&rsquo; it is &lsquo;be&rsquo;.'),
     ('been', '&lsquo;been&rsquo; follows has or have.'),
@@ -172,7 +172,7 @@ mc(3, 6, B % 'bg39.jpg', 'right', 'bottom', 'Which word goes in?',
    'El puente va a ______ reparado.', 'Die Br&uuml;cke wird repariert ______.',
    why='&lsquo;going to&rsquo; always takes a bare verb, and the bare verb of the passive is &lsquo;be&rsquo;.'),
 
-mc(4, 6, B % 'bg30.jpg', 'left', 'bottom', 'Say no',
+mc(4, 6, B % 'bg30.jpg', 'left', 'top', 'Say no',
    'The wheat ______ this year.', "isn't going to be planted",
    [("isn't going to plant", 'Active &mdash; that says the wheat plants something.'),
     ("doesn't going to be planted", 'A passive never uses &lsquo;does&rsquo;.'),
@@ -189,7 +189,7 @@ mc(5, 6, B % 'bg09.jpg', 'right', 'top', 'Ask the question',
    '______ das Tor bei Sonnenuntergang geschlossen?',
    why='To ask, the first auxiliary moves to the front. One gate, so &lsquo;Is&rsquo;.'),
 
-mc(6, 6, B % 'bg11.jpg', 'left', 'top', 'Plan, or evidence?',
+mc(6, 6, B % 'bg11.jpg', 'right', 'top', 'Plan, or evidence?',
    'Look at those cracks. The wall ______ down.', 'is going to be knocked',
    [('was going to be knocked', 'A plan somebody had in the past. The cracks are here NOW.'),
     ('is currently being knocked', 'That says the work is happening as you speak.'),
@@ -245,7 +245,7 @@ gap(1, 2, B % 'bg17.jpg', 'left', 'top', 'Write the missing word',
       '&iquest;La puerta va a ______ cerrada?',
       'Wird das Tor geschlossen ______?')]),
 
-gap(2, 2, B % 'bg31.jpg', 'left', 'top', 'Write the participle',
+gap(2, 2, B % 'bg31.jpg', 'right', 'top', 'Write the participle',
     'Type the verb in brackets in its third form.',
     [('The map is going to be ', 'drawn', '. <span class="dim">(draw)</span>',
       'draw &rarr; drew &rarr; drawn.', 170,
@@ -265,7 +265,7 @@ order(B % 'bg38.jpg', 'right', 'top',
       'The thing, then is going to, then be, then the third form.',
       'El muro va a ser construido.', 'Die Mauer wird gebaut werden.'),
 
-order(B % 'bg40.jpg', 'left', 'top',
+order(B % 'bg40.jpg', 'right', 'top',
       'the map | is | going to | be | drawn | by Alex .',
       '&lsquo;by&rsquo; and the doer come last, after the participle.',
       'El mapa va a ser dibujado por Alex.',
@@ -292,7 +292,7 @@ STATION = dict(
     # deck has to hold be / being / been apart. B1, like station 12.
     level='B1',
     doctitle='Block Camp II — Passive 13: Going To Passive (B1) | Forbes English',
-    hero=B % 'bg21.jpg',
+    hero=B % 'bg21-mirrored.jpg',
     slides=SLIDES,
     messages={
       'en': dict(

@@ -57,7 +57,7 @@ MARKS = """  --mark-pp: #b39bf5;
   --mark-obj: #909294;
   --mark-agent: #ffffff;
   --t-present-simple: #7A93B5;
-  --t-present-continuous: #E66085;
+  --t-present-continuous: #E68EA6;
   --t-past-simple: #B08968;
   --t-past-continuous: #F1D779;
   --t-going-to: #70A43A;
@@ -328,6 +328,20 @@ def tense_in_situ(html):
         # SAME entity as the apostrophe in isn't - so strip the pair that
         # wraps the word before turning what is left into an apostrophe,
         # or 'is' normalises to "is'" and matches nothing.
+        # Innes: "is/are not blue consistently in document". On station 13
+        # the whole 'is going to' was lime, so the 'is' inside it was lime
+        # while a bare 'is' two slides earlier was blue - the same word in two
+        # colours on one deck. 'going to' is a lexical marker sitting on top
+        # of an ordinary present-simple be, which is why this one splits: the
+        # be stays blue everywhere and 'going to' carries the tense.
+        # NOT applied to 'is being' or 'was being', which he specified as
+        # single pink and yellow units. Flagged to him rather than decided.
+        raw = m.group(1).strip()
+        for head in ('is', 'are', 'am', 'Is', 'Are', 'Am',
+                     'isn&rsquo;t', 'aren&rsquo;t'):
+            if raw.startswith(head + ' ') and raw[len(head):].strip() == 'going to':
+                return ('<em class="t-ps">%s</em> <em class="t-gt">going to</em>'
+                        % head)
         word = m.group(1).replace('&nbsp;', ' ').strip()
         if word.startswith('&lsquo;') and word.endswith('&rsquo;'):
             word = word[len('&lsquo;'):-len('&rsquo;')]

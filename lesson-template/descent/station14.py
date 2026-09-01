@@ -104,7 +104,7 @@ sec('teach', B % 'bg17.jpg', 'right', 'top',
 
 # THE CHOICE. Camp 6's second half in one slide, with the doer already gone
 # from both sides so only the meaning is left to choose between.
-sec('teach', B % 'bg25.jpg', 'right', 'top',
+sec('teach', B % 'bg25.jpg', 'left', 'top',
     head('The choice', '<em class="modal">will be</em>, or '
                        '<em class="aux">is going to be</em>?') + '\n' +
     para([
@@ -143,7 +143,7 @@ mc(1, 6, B % 'bg05.jpg', 'left', 'top', 'Choose the passive',
    'El muro ______ para el invierno.', 'Die Mauer ______ bis zum Winter.',
    why='A modal takes a bare verb, and in the passive that bare verb is &lsquo;be&rsquo;.'),
 
-mc(2, 6, B % 'bg12.jpg', 'left', 'top', 'One, or many?',
+mc(2, 6, B % 'bg12.jpg', 'right', 'top', 'One, or many?',
    'The torches ______ at sunset.', 'will be lit',
    [('will are be lit', 'Two auxiliaries in a row. &lsquo;will&rsquo; needs nothing else.'),
     ('are will be lit', 'The modal comes first, and it never doubles up.'),
@@ -151,7 +151,7 @@ mc(2, 6, B % 'bg12.jpg', 'left', 'top', 'One, or many?',
    'Las antorchas ______ al anochecer.', 'Die Fackeln ______ bei Sonnenuntergang.',
    why='&lsquo;will&rsquo; never changes. Plural or singular, the chain is the same four words.'),
 
-mc(3, 6, B % 'bg32.jpg', 'right', 'bottom', 'Say no',
+mc(3, 6, B % 'bg32.jpg', 'right', 'top', 'Say no',
    'The bridge ______ this year.', "won't be repaired",
    [("doesn't be repaired", 'A passive never uses &lsquo;does&rsquo;.'),
     ("won't being repaired", '&lsquo;being&rsquo; never follows a modal.'),
@@ -159,7 +159,7 @@ mc(3, 6, B % 'bg32.jpg', 'right', 'bottom', 'Say no',
    'El puente ______ este a&ntilde;o.', 'Die Br&uuml;cke ______ dieses Jahr.',
    why='The &lsquo;not&rsquo; goes on &lsquo;will&rsquo;, and the rest of the chain does not move.'),
 
-mc(4, 6, B % 'bg35.jpg', 'left', 'bottom', 'Ask the question',
+mc(4, 6, B % 'bg35.jpg', 'left', 'top', 'Ask the question',
    '______ the gate be locked from Monday?', 'Will',
    [('Is', 'That would need &lsquo;going to&rsquo; after it.'),
     ('Does', 'A passive question never starts with &lsquo;does&rsquo;.'),
