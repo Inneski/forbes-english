@@ -12,6 +12,131 @@ stale copy.
 
 ---
 
+## `tools/seo.py` cannot reach Supabase from a cloud session — and fails quietly
+
+Found while publishing the risk-management deck, and it is a trap for every
+future cloud session, so it goes above the lesson notes.
+
+`seo.py` fetches the `lessons` table over HTTPS and falls back to
+`tools/lessons.json` when that fails. **In a cloud Cowork session the fetch
+always fails** — the egress proxy refuses the tunnel:
+
+```
+! supabase unreachable (<urlopen error Tunnel connection failed: 403 Forbidden>)
+  — using /home/claude/repo/tools/lessons.json
+```
+
+That is a one-line warning in the middle of otherwise normal output, and the
+run then reports success. The cache is a **committed file that only gets
+refreshed by a successful run**, so it is exactly as stale as the last machine
+that could reach the database. On 2026-08-31 it was **17 rows behind**: the
+sixteen `blockcamp-*` tense lessons and, of course, the new one.
+
+Two things go wrong, and only the first is obvious:
+
+1. **A new lesson gets no SEO block at all**, because it is not in the cache,
+   so `check-lesson.js`'s HEAD gate keeps failing however many times you re-run
+   the generator.
+2. **Stale rows get written into live pages as fact.** The cache said
+   `forbes-english-lesson (2).html` (Business Conditionals) was `pro`; the
+   table says `free`. The first run duly rewrote that page's JSON-LD to
+   `isAccessibleForFree: false` and added a `.paywalled` `hasPart` — silently
+   paywalling a free lesson's structured data, in a file nobody had touched.
+   It was caught only by reading the diff and checking the claim against the
+   live table.
+
+**So: refresh the cache before running `seo.py` in a cloud session.** The
+Supabase MCP tools work even though `urllib` does not, so pull the same select
+the script uses and write it to the same path:
+
+```sql
+select json_agg(t order by t.sort_order asc nulls last, t.id asc)::text
+from (select id, file, title, level, access, deck, video, created_at, sort_order
+      from lessons) t;
+```
+
+…then write those rows to `tools/lessons.json` and run `seo.py`. **Commit the
+refreshed cache** — that is what spares the next session the same hour.
+
+Read the diff afterwards either way. `git diff --stat` should show additions
+only; anything that shrinks a page, or flips an `isAccessibleForFree`, is the
+cache talking and not the database. On Innes's own machine the fetch works and
+none of this applies.
+
+---
+
+## Managing Risk (C1/C2) — built, checked, SEO done, awaiting upload
+
+`forbes-risk-management-c1-c2.html`, 24 slides, 38 scored points, English +
+German + Spanish all complete (the other seven stay `{}` and are not offered).
+Builder `lesson-template/build/build_risk.py`, strings
+`lesson-template/build/i18n_risk.py`, artwork `RiskManagement/` (eleven
+supplied flat-vector illustrations, one family, hero plus ten per-slide
+backgrounds).
+
+New build, not a conversion — nothing on the site covered enterprise risk.
+It sits beside `forbes-c1-negotiation` and `forbes-escalating-a-complaint-c1`
+without overlapping them: negotiation moves another party, escalation routes a
+problem upward, this one names and grades a thing that has not happened yet.
+
+**`check-lesson.js` now reports `all checks passed`** — every gate including
+HEAD. The `lessons` row was created on Innes's explicit "upload to forbes"
+(id 293, `level` `C1-C2`, `access` `pro`, `deck` **false**), the cache was
+refreshed from the live table, and `tools/seo.py` ran clean.
+
+`access` was not asked about: the table is 229 pro to 54 free and all twelve
+most recent additions are pro, so pro is the house default rather than a guess.
+One `update` reverses it.
+
+**`deck` is still false and must stay false until the file actually serves.**
+House style: fetch the raw HTML in a browser, confirm it carries
+`data-type="activate"`, and only then
+
+```sql
+update lessons set deck = true where id = 293;   -- tusioporxpjtegjlqkkb
+```
+
+**The row is live now and the file is not.** Until the upload lands, the
+published `library.html` shows this lesson as a disabled "Coming soon" card,
+because the live copy of `LESSON_IMAGES` has no entry for it and
+`comingSoon()` is `!LESSON_IMAGES[l.file]`. The local `library.html` does have
+the entry, so the card goes straight to live the moment the files land
+together. That window is the cost of creating the row before uploading, and it
+was accepted deliberately rather than overlooked.
+
+The upload itself could not be done from this session: `git push` returns the
+proxy 403, and there were no Chrome tools and no linked device, so GitHub's
+web uploader was unreachable too. Every changed file went out by
+`SendUserFile`.
+
+Everything is committed on the local branch `risk-management-c1-c2` and was
+delivered by `SendUserFile`, because `git push` returned the usual proxy 403.
+
+Three things worth carrying forward.
+
+* **`check-library.js`'s "every deck has a card" failure has moved.** The note
+  elsewhere in this file and in the house style says it fails on
+  `lesson-template.html` and `sherlock-scarlet-star_3.html`. It now fails on
+  `blockcamp-passive-intro.html` and `blockcamp-passive-present-perfect.html`
+  instead. Same pre-existing class, different files — do not treat it as
+  something you broke, and do not go looking for the two files the old note
+  names.
+
+* **Both builders in `lesson-template/build/` hardcode
+  `sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')`**,
+  a path from a sandbox that no longer exists. Anything cloned anywhere else
+  imports `deck` only by luck. `build_risk.py` and `i18n_risk.py` use
+  `os.path.dirname(os.path.abspath(__file__))` instead, which works from any
+  checkout including Innes's Windows machine. Worth doing to the rest.
+
+* **A flat area in a background image is worse than a busy one.** The
+  binoculars illustration had a cream field across its bottom quarter — fine as
+  a hero, but at 34% opacity behind translucent cards it became a bright stripe
+  that ate the contrast of whatever row landed on it, visibly on the matching
+  slide's last pair. Cropping the band off fixed it. The house-style advice to
+  lower `--bg-opacity` for a busy hero does not apply here and would have made
+  it worse: the problem was flatness and brightness, not detail.
+
 ## Block Camp II — the passive descent: order, source truth, and two dead mechanics
 
 ### `git push` WORKS from a Claude Code remote session
