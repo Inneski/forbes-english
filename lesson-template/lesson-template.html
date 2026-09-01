@@ -46,6 +46,44 @@
   --contrast      : #1ded49;
 }
 
+/* ── audio (Listening) ───────────────────────────────────────────────
+   A player that behaves like the exam: one play, no scrubbing, and the
+   Continue button stays locked until the recording has finished. The
+   replay control appears only afterwards and says plainly that the real
+   test does not offer it. */
+.audio-player { display: flex; flex-direction: column; gap: 14px; }
+.audio-row { display: flex; align-items: center; gap: 16px; }
+.audio-play {
+  flex: 0 0 auto; width: 62px; height: 62px; border-radius: 50%;
+  border: 2px solid var(--accent); background: var(--surface2);
+  color: var(--accent); cursor: pointer; font-size: 22px; line-height: 1;
+  display: grid; place-items: center; transition: background .15s ease, opacity .15s ease;
+}
+.audio-play:hover:not(:disabled) { background: var(--accent); color: var(--void); }
+.audio-play:disabled { opacity: .45; cursor: default; border-color: var(--border); color: var(--text-dim); }
+.audio-meta { flex: 1 1 auto; min-width: 0; }
+.audio-label {
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--text-dim);
+}
+.audio-track {
+  margin-top: 8px; height: 8px; border-radius: 4px; background: var(--surface2);
+  border: 1px solid var(--border); overflow: hidden;
+}
+.audio-fill { height: 100%; width: 0; background: var(--accent); transition: width .2s linear; }
+.audio-time {
+  margin-top: 6px; font-family: var(--font-mono); font-size: 14px; color: var(--text-dim);
+  display: flex; justify-content: space-between;
+}
+.audio-state { font-family: var(--font-ui); font-size: 17px; color: var(--text-dim); }
+.audio-state.done { color: var(--accent-bright); }
+.audio-replay {
+  margin-top: 2px; background: none; border: 0; padding: 0; cursor: pointer;
+  font-family: var(--font-ui); font-size: 14px; color: var(--text-dim);
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.audio-replay:hover { color: var(--text); }
+
 /* ── Fixed tokens: identical in every lesson. Do not edit. ── */
 :root {
   --slide-w: 1280px;
@@ -885,7 +923,7 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
     <!-- ══════════════════════════════════════════════════════════
          REPLACE 2 of 2: SLIDES
          Author one <section class="slide"> per screen.
-         data-type: cover | teach | mc | gap | match | order | discuss | results | activate
+         data-type: cover | teach | audio | mc | gap | match | order | discuss | results | activate
          data-bg="folder/other.jpg" swaps the background pattern on that slide.
          Everything a learner reads must fit WITHOUT scrolling.
          If it does not fit, split it across two slides — never shrink type.
@@ -1114,6 +1152,11 @@ const UI_I18N = {
     s2Eyebrow:'Question 1', s2Title:'Choose the best option',
     s2Stem:'The board <em>_______</em> the proposal before the deadline.',
     s3Eyebrow:'Question 2', s3Title:'Complete the sentence',
+    audioPlay:'Play the recording', audioOnce:'You will hear this once. Press play when you are ready.',
+    audioPlaying:'Playing — you cannot pause or rewind.',
+    audioDone:'That is the end of the recording.',
+    audioReplay:'Play it again — the real test will not let you',
+    audioMissing:'The recording could not be loaded.',
     ledDp:'DP', ledTime:'Time', ledClues:'Clues', glossShow:'Translate', glossHide:'Hide',
     branchLocked:'Your ledger does not support this ending'
   },
@@ -1149,6 +1192,11 @@ const UI_I18N = {
     s2Eyebrow:'Frage 1', s2Title:'Wähle die beste Option',
     s2Stem:'The board <em>_______</em> the proposal before the deadline.',
     s3Eyebrow:'Frage 2', s3Title:'Vervollständige den Satz',
+    audioPlay:'Aufnahme abspielen', audioOnce:'Du hörst das einmal. Drücke Play, wenn du bereit bist.',
+    audioPlaying:'Läuft — Pausieren und Zurückspulen sind nicht möglich.',
+    audioDone:'Das ist das Ende der Aufnahme.',
+    audioReplay:'Noch einmal abspielen — im echten Test geht das nicht',
+    audioMissing:'Die Aufnahme konnte nicht geladen werden.',
     ledDp:'DP', ledTime:'Zeit', ledClues:'Hinweise', glossShow:'Übersetzen', glossHide:'Ausblenden',
     branchLocked:'Dein Protokoll trägt dieses Ende nicht'
   },
@@ -1452,6 +1500,94 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
       setTimeout(() => el.classList.remove('miss'), 320);
     }
   });
+});
+
+/* Listening audio. Author as
+     <div class="audio" data-src="folder/file.mp3" data-label="Section 1 · 3 min"></div>
+   inside a slide with data-type="audio". The engine builds the player.
+
+   It behaves like the test, deliberately:
+     · one play — the button locks once it has been pressed
+     · no scrubbing — the bar reports progress, it does not accept clicks
+     · the slide's [data-action="next"] Continue button stays disabled until
+       the recording ends, so nobody reaches the questions early
+   A replay control appears only after it has finished, and it says in words
+   that the real test does not offer one. A classroom needs to replay; a
+   learner practising alone should know that is not the exam. */
+slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
+  const box = slide.querySelector('.audio');
+  if (!box || !box.dataset.src) return;
+
+  const audio = new Audio(box.dataset.src);
+  audio.preload = 'auto';
+
+  const wrap  = document.createElement('div'); wrap.className = 'audio-player';
+  const row   = document.createElement('div'); row.className = 'audio-row';
+  const btn   = document.createElement('button');
+  btn.className = 'audio-play'; btn.type = 'button';
+  btn.setAttribute('aria-label', t('audioPlay')); btn.textContent = '▶';
+  const meta  = document.createElement('div'); meta.className = 'audio-meta';
+  const label = document.createElement('div'); label.className = 'audio-label';
+  label.textContent = box.dataset.label || '';
+  const track = document.createElement('div'); track.className = 'audio-track';
+  const fill  = document.createElement('div'); fill.className = 'audio-fill';
+  const time  = document.createElement('div'); time.className = 'audio-time';
+  const now   = document.createElement('span'); now.textContent = '0:00';
+  const left  = document.createElement('span'); left.textContent = '';
+  const state = document.createElement('div'); state.className = 'audio-state';
+  state.textContent = t('audioOnce');
+
+  track.append(fill); time.append(now, left); meta.append(label, track, time);
+  row.append(btn, meta); wrap.append(row, state);
+  box.replaceChildren(wrap);
+
+  const cont = slide.querySelector('[data-action="next"]');
+  if (cont) cont.disabled = true;
+
+  const mmss = n => Number.isFinite(n)
+    ? Math.floor(n / 60) + ':' + String(Math.floor(n % 60)).padStart(2, '0') : '';
+
+  audio.addEventListener('loadedmetadata', () => { left.textContent = mmss(audio.duration); });
+  audio.addEventListener('timeupdate', () => {
+    if (!audio.duration) return;
+    fill.style.width = (audio.currentTime / audio.duration * 100) + '%';
+    now.textContent = mmss(audio.currentTime);
+    left.textContent = mmss(audio.duration - audio.currentTime);
+  });
+  audio.addEventListener('error', () => {
+    state.textContent = t('audioMissing');
+    btn.disabled = true;
+    if (cont) cont.disabled = false;   // never trap a learner behind a broken file
+  });
+  audio.addEventListener('ended', () => {
+    slide.dataset.played = 'yes';
+    fill.style.width = '100%';
+    state.textContent = t('audioDone');
+    state.classList.add('done');
+    if (cont) cont.disabled = false;
+    const again = document.createElement('button');
+    again.className = 'audio-replay'; again.type = 'button';
+    again.textContent = t('audioReplay');
+    again.addEventListener('click', () => {
+      audio.currentTime = 0; audio.play();
+      state.textContent = t('audioPlaying'); state.classList.remove('done');
+      again.remove();
+    });
+    wrap.append(again);
+  });
+
+  btn.addEventListener('click', () => {
+    btn.disabled = true;
+    state.textContent = t('audioPlaying');
+    audio.play().catch(() => {
+      state.textContent = t('audioMissing');
+      if (cont) cont.disabled = false;
+    });
+  });
+
+  // Leaving the slide stops the recording rather than letting it run on
+  // behind the questions.
+  slide._leave = () => { if (!audio.paused) audio.pause(); };
 });
 
 /* Sentence building. Author as
