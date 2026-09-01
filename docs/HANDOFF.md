@@ -12,6 +12,162 @@ stale copy.
 
 ---
 
+## The Social Edge (C2) — BUILT AND CHECKED, blocked on five image files
+
+`forbes-social-edge-c2.html`, 24 slides, 40 scored points, English + German +
+Spanish all complete (the other seven stay `{}` and are not offered). Builder
+`lesson-template/build/build_socialedge.py`, strings
+`lesson-template/build/i18n_socialedge.py`, artwork **not yet in the repo**.
+
+New build, not a conversion. Asked for as "make forbes english C2 class with
+spanish and german support" against Bright Simons's essay *The Social Edge of
+Intelligence* (The Ideas Letter 62, 16 April 2026), pasted in full with five
+flat-vector illustrations. Nothing on the site taught the language of written
+argument; the two nearest decks do not overlap it —
+`forbes-risk-management-c1-c2` owns calibration and hedging, which is why this
+one deliberately leaves calibration alone, and
+`forbes-ai-productive-struggle-c1` owns AI as a classroom subject rather than
+as a text to argue with.
+
+Six teaching points: nominalisation; the seven verbs of decline as a scale
+rather than a synonym set; reporting verbs as a verdict (*argues* reports,
+*establishes* signs, *declines to examine* is a critique); concede-then-pivot;
+conditional chains and inversion; metaphor that argues. Then 2 sorts (three
+bins each, three items per bin), 2 gap slides, 1 match, 2 orders, 8 multiple
+choice, results, activation.
+
+### THE ONE THING BLOCKING IT: the five images never reached the sandbox
+
+Innes attached five illustrations with the request. **A remote Claude Code
+session receives attached images as conversation content, not as files** —
+there is nothing on disk, `/mnt/user-data/uploads` does not exist, and no tool
+can write them out. This is not the same problem as the push 403 and it will
+recur every time artwork is attached to a cloud session. The deck is finished
+in every other respect and was built against the paths the files will occupy:
+
+| file | which illustration |
+|---|---|
+| `SocialEdge/hero.jpg` | the row of profiles in suits ending in a machine head |
+| `SocialEdge/watchers.jpg` | the crowd in hats and dark glasses on the striped ground |
+| `SocialEdge/barroom.jpg` | the bar at dusk, people talking across the counter |
+| `SocialEdge/typewriters.jpg` | the row of chimps at typewriters |
+| `SocialEdge/nightshift.jpg` | terminals under a low sun, headset operator |
+
+The profiles-to-machine plate is the cover because it carries the essay's own
+argument — a lineage of minds and what is standing at the end of it. To finish:
+
+```bash
+mkdir -p SocialEdge      # drop the five files in, exactly those names
+python3 lesson-template/extract-palette.py SocialEdge/hero.jpg   # paste over PALETTE
+python3 lesson-template/build/build_socialedge.py
+node   lesson-template/check-lesson.js forbes-social-edge-c2.html
+python3 tools/seo.py
+```
+
+Two gates stay red until that happens, and only those two: `check-lesson.js`
+ART (five missing image references) and `check-library.js` "every thumbnail
+file exists". Everything else passes. The `library.html` `LESSON_IMAGES` entry
+is already in and points at `SocialEdge/hero.jpg`.
+
+### The palette is PROVISIONAL, and here is why it is still defensible
+
+`PALETTE` in the builder is the verbatim output of `extract-palette.py` run on
+`RiskManagement/outlook.jpg`, not on this deck's hero. That is a stand-in, and
+it is flagged as one at the top of the builder.
+
+It is a close stand-in because **the five supplied illustrations are visibly
+the same generator and the same two-tone coral/slate family as the eleven
+`RiskManagement/` plates**, and that family is mechanically stable. Measured,
+rather than assumed — four plates from it:
+
+| plate | `--void` | `--accent` | `--contrast` |
+|---|---|---|---|
+| `hero.jpg` | `#100f0b` | `#e99776` | `#1dedc4` |
+| `boardroom.jpg` | `#0b0d0a` | `#e79e8a` | `#1dedb6` |
+| `stakeholders.jpg` | `#090e0e` | `#e5a78e` | `#1dedc5` |
+| `outlook.jpg` | `#0a0d0e` | `#eb9f87` | `#1dedbb` |
+
+The accent moves by three points across the whole family. `outlook.jpg` was
+picked because its composition matches the real hero's — large slate field,
+coral secondary, dark figures. Re-deriving from the real hero will move the
+deck by almost nothing, but **do it anyway**: the rule is that a lesson's
+colours come from its own picture, and one command satisfies it.
+
+`bgmeasure.py` against stand-ins staged in `SocialEdge/` reported mean
+luminance 0.115 and text-vs-brightest 4.37. That is above house style §5's
+0.025–0.08 band — and so is the *shipped* risk deck on the same family, at
+0.091 and 3.68. This artwork family simply reads bright in the dark theme; the
+numbers here are on the better side of the one already published. Re-measure
+with the real hero before drawing any conclusion from that.
+
+### No `lessons` row was created, on purpose
+
+`seo.py` writes an SEO block only for files that have a row in the Supabase
+`lessons` table, so the HEAD gate cannot pass until one exists. Creating the
+row is a live write that immediately puts a disabled "Coming soon" card on the
+published library page — the risk deck's notes above record that this window
+was accepted only after an explicit instruction. It has not been done here.
+Innes to confirm `access` (the table is 229 pro to 54 free; pro is the house
+default) and then, after the file actually serves, `deck = true`.
+
+`tools/lessons.json` **was** refreshed from the live table, which is safe and
+is what the note below asks for. The diff is honest: `forbes-risk-management
+-c1-c2` flipped `deck` false→true (it shipped), six `blockcamp-*` rows have
+slightly different `created_at` values than the hand-set ones in the old
+cache, and the row order now matches the `sort_order` the query asks for.
+`seo.py` then rewrote 0 pages and reordered `sitemap.xml` without adding or
+removing a single URL — verified by comparing the two `<loc>` sets.
+
+### The fallback-font trap, and a new checker for it
+
+**Chromium in a cloud sandbox cannot load fonts.googleapis.com** (the egress
+proxy refuses the tunnel; `curl` gets through, Chromium does not). The page
+then renders in a fallback face that is *wider* than DM Sans, and every layout
+gate silently measures the wrong thing. This invented three overflows on this
+deck that do not exist: both sort slides "overflowing" by 5px in German and
+Spanish, and — intermittently, because the font load is a race — slide 8 by
+21px in English. Three consecutive clean `check-lesson.js` runs and one run
+with the real fonts cached say all of them fit.
+
+**Do not trim real copy to satisfy a fallback-font measurement.** Cache the
+fonts first:
+
+```bash
+curl -A "<a Chrome UA>" "<the fonts.googleapis.com href from the deck>" -o fonts.css
+# fetch each fonts.gstatic.com URL it names, rewrite the href to the local file
+FONTCACHE=/path/to/fonts node lesson-template/checker/check-layout-langs.js deck.html
+```
+
+`lesson-template/checker/check-layout-langs.js` is new. It runs
+`check-lesson.js`'s exact LAYOUT measurement **once per language the deck's
+own switcher offers**, which closes the gap this file already names — twelve
+Block Camp slides overflowed in German while passing every gate in English.
+With `FONTCACHE` set it fails; without it, it downgrades every overflow to a
+WARN and exits 0, precisely so that a future session does not delete German
+copy to please a broken measurement. It found the one real overflow on this
+deck (the German activation brief at five lines instead of four) and cleared
+the three false ones.
+
+### Smaller things worth carrying
+
+* **`check-library.js`'s "every deck has a card" has moved again.** The note
+  further down this file says it fails on `blockcamp-passive-intro.html` and
+  `blockcamp-passive-present-perfect.html`. Both are clean now; the only
+  failure on a fresh checkout is this lesson's own missing hero.
+* **`coverTitle` is identical in all three languages and that is deliberate.**
+  "The Social Edge" is the term the essay coins for its own framework and the
+  match slide asks the learner to pair "the Social Edge Paradox" with its
+  definition. A German cover reading "Der soziale Vorsprung" would name
+  something the rest of the deck never mentions. Every other key is genuinely
+  translated. Do not "fix" it.
+* **A three-bin sort is worth the extra width at C2.** Both sorts here are
+  three bins of three rather than two of four: reporting is not endorsing and
+  neither is critique, and a two-bin version of that question is half a coin
+  toss. It costs about 40px of chip area, which is why the sort items were all
+  trimmed to one rendered line.
+
+---
+
 ## `tools/seo.py` cannot reach Supabase from a cloud session — and fails quietly
 
 Found while publishing the risk-management deck, and it is a trap for every
