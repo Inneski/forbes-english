@@ -85,7 +85,7 @@ sec('teach', B % 'bg22.jpg', 'right', 'top',
     ], 'a modal always takes a bare verb &mdash; and here it is '
        '<em class="inf">&lsquo;be&rsquo;</em>')),
 
-sec('teach', B % 'bg17.jpg', 'left', 'top',
+sec('teach', B % 'bg17.jpg', 'right', 'top',
     head('Why choose it', 'A promise, a prediction, a rule for later') + '\n' +
     para([
       ('A prediction',

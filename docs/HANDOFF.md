@@ -137,6 +137,14 @@ Three things worth carrying forward.
   lower `--bg-opacity` for a busy hero does not apply here and would have made
   it worse: the problem was flatness and brightness, not detail.
 
+## Still open
+
+- **Three slides' ink crosses the deck bar by ~4px** — present-perfect-2 18,
+  present-continuous 17, present-continuous-2 18. All top-anchored, all long
+  gap slides. `check-lesson.js` passes them because its overflow gate measures
+  the canvas edge, not the bar at y=644. Measured, not fixed.
+- **Sort and activation slides show nothing in the EN/DE panel** (2–4 per deck).
+
 ## Negative space is now measured — it never was, and it showed
 
 Innes, opening a deck I had just built: *"slides 5-10 with text on wrong side —
@@ -148,27 +156,84 @@ squarely on a character's face, because that slide fits perfectly. Six rounds
 of "text on the wrong side" this week were found by eye, one slide at a time.
 
 ```bash
-python3 lesson-template/checker/check-negative-space.py     # must PASS
+python3 lesson-template/checker/check-negative-space.py     # must PASS — two gates
 ```
 
-**How it works, and why it needs no idea what a character is.** A Minecraft
-plate is mostly flat sky, flat ground and flat wall — low local contrast — with
-the subject carrying nearly all the fine detail. So it takes the gradient
-magnitude of the plate, sums it over the exact rectangle the text occupies and
-over the mirrored rectangle on the other side, and reports the ratio. Past
-1.35× the text is on the busy half and the empty half is going to waste.
+### The first version of this gate measured the wrong thing. Read this before trusting a metric.
 
-It found **48 slides across the line**, 40 of them in the eight passive decks —
-because I took `data-side` from the station templates and never once looked at
-the plates. All 468 side-pinned slides in Block Camp now sit on the quieter
-half.
+v1 summed **edge-gradient magnitude** per half and called the busier half
+occupied, on the theory that a plate is flat sky and flat wall with the subject
+carrying the detail. That theory is wrong. Texture density is not subjecthood:
+a brick wall and a starfield are pure texture, a smooth-shaded villager two
+metres from camera is almost none.
 
-### And "too low" has a second meaning
+Innes, after it shipped: *"Pages 8, 15, 18 have text on wrong side on past
+continuous passive… again you havent done your job."* All three had **passed**,
+at 0.92, 0.82 and 0.94 — the metric scored the empty half busier than the
+villager. The 48 slides v1 "found" were found by a metric that cannot tell a
+character from a wall; some of those flips were luck.
 
-`--rail-clear` fixed text running *into* the chrome. It does not fix a short
-block pinned to the floor with 148–480px of dead sky above it, which is what
-Innes means the other half of the time. Twenty-nine of those were lifted: a
-nudge up under 300px of dead space, and re-centred over it.
+**What actually separates them.** These plates are graded hard to one hue per
+camp — gold, pink, teal, green — and the terrain, sky and architecture all sit
+inside that grade. The characters do not: Steve's teal shirt and purple legs, a
+villager's brown robe, skin tones. They are the pixels that break the plate's
+own colour statistics. So: CIE Lab, the plate's median colour as its grade,
+every pixel scored by robust distance from it — each channel over its own
+median-absolute-deviation, so a natural sky-to-ground ramp is not convicted of
+being a sky. Luminance is weighted to 0.25 because a blown-out sun or a lit
+window is the one non-character thing that reliably breaks a grade. Score each
+half by the mean of its top decile.
+
+**Validated as a measurement, which v1 never was.** Twelve slides labelled by
+eye: Innes's three, five more confirmed to sit on a character, and four
+confirmed correct — including two that a luminance-heavy variant convicted (a
+warm window in a blue room, a bright sky over an empty lawn). Worst true
+positive 1.30, worst true negative 1.21; `MARGIN` sits at 1.25 in that gap.
+**That gap is only 8% wide.** Findings under about 1.4× are "go and look", not
+proof — which is why the ratio is printed. Seven slides are in `ALLOW` with a
+reason, six of them the known blind spot.
+
+v2 found **23 slides**, of which 17 were flipped and, separately, 8 more were
+lifted off the floor (below). Both gates were verified failing against a
+deliberately broken copy before being trusted.
+
+### "Too low" had a third meaning, and it was one constant again
+
+`--rail-clear` fixed text running *into* the chrome. Per-slide nudges lifted
+short blocks off the floor. Neither touched the real one: **`justify-content:
+center` centres in the 720px canvas, but the bottom 76px of that canvas is the
+deck bar.** The box a reader actually sees is 644 tall and its middle is higher.
+Measured across all 24 decks, *every* centred side-pinned slide landed with
+0.133 of the frame — 96px — more air above it than below.
+
+```
+.slide { --centre-clear: 96px; }
+.slide[data-side]:not([data-vpos])::after {
+  content: ''; flex: 0 1 var(--centre-clear); min-height: 0; }
+.slide[data-side]:not([data-vpos]) > .slide-head,
+.slide[data-side]:not([data-vpos]) > .slide-body { flex-shrink: 0; }
+```
+
+Two things about that shape, both learned by breaking it:
+
+- **It is a shrinkable spacer, not padding.** `padding-bottom` takes the height
+  whether the slide can spare it or not, and going-to 13 and 17 and
+  present-continuous-2 10 immediately overflowed by 18–43px.
+- **The spacer has to be the only thing that yields.** With the body still at
+  `flex: 0 1 auto` the shrink was shared and the same three slides still spilled
+  by 15–35px. Pinning head and body to `flex-shrink: 0` puts all of it on the
+  spacer, which is exactly what a reserve is for.
+
+That is 40-odd slides fixed by one constant. It also means DE and ES are safe by
+construction: where the longer text needs the room, the spacer gives it back.
+
+**And the bottom anchor now has its own gate.** `data-vpos="bottom"` is a
+deliberate call, so it is only overruled by measurement: the same off-grade
+score, turned ninety degrees, comparing the top half of the text column against
+the bottom half of the *visible* column (down to the bar, not to 720). Past
+1.50× the slide is anchored onto the subject. Eight were, and are now `top`.
+The margin is held above `MARGIN` on purpose — a bottom anchor usually knows
+something the metric does not.
 
 ### The trap when you fix these in bulk
 

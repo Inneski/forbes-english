@@ -123,7 +123,7 @@ sec('teach', B % 'bg30.jpg', 'right', 'top',
              'als &middot; w&auml;hrend &middot; w&auml;hrend')),
     ])),
 
-sec('teach', B % 'bg36.jpg', 'left', 'top',
+sec('teach', B % 'bg36.jpg', 'right', 'top',
     head('The doer', 'Still optional, still usually gone') + '\n' +
     para([
       ('Worth saying',
@@ -155,7 +155,7 @@ mc(2, 6, B % 'bg21.jpg', 'left', 'top', 'Choose the passive',
    why='More than one torch, so &lsquo;were being&rsquo; &mdash; then the third form.'),
 
 # The two halves, and which tense each takes. This is the deck in one question.
-mc(3, 6, B % 'bg14.jpg', 'right', 'bottom', 'Which half is which?',
+mc(3, 6, B % 'bg14.jpg', 'right', 'top', 'Which half is which?',
    'The map was being drawn when the lamp ______ out.', 'went',
    [('was going', 'Both halves long, and then nothing interrupts anything.'),
     ('was gone', 'That is not a past simple; it reads as a state.'),
@@ -191,7 +191,7 @@ mc(6, 6, B % 'bg39.jpg', 'left', 'top', 'Finished, or still going?',
    'Welcher Satz sagt, dass es NICHT fertig war?',
    why='&lsquo;was being&rsquo; is the only one that puts an unfinished action in the past.'),
 
-sort(B % 'bg25.jpg', 'right', 'top', 'Which half takes which tense?',
+sort(B % 'bg25.jpg', 'left', 'top', 'Which half takes which tense?',
      'Click a half, then click the tense it takes.',
      ['was / were being &mdash; the long one', 'past simple &mdash; the cut'],
      [(0, 'the wall ___ built'), (0, 'the map ___ drawn'),
@@ -238,7 +238,7 @@ gap(1, 2, B % 'bg23.jpg', 'left', 'top', 'Write the participle',
       'El puente estaba siendo ______. (reparar)',
       'Die Br&uuml;cke wurde gerade ______. (reparieren)')]),
 
-gap(2, 2, B % 'bg38.jpg', 'left', 'top', 'Which tense in each half?',
+gap(2, 2, B % 'bg38.jpg', 'right', 'top', 'Which tense in each half?',
     'The long half is passive; the short one that cuts in is past simple.',
     [('The wall was being built when a creeper ', 'arrived', '.',
       'The interruption is a plain past simple.', 150,

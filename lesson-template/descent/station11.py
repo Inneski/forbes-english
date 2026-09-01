@@ -183,7 +183,7 @@ mc(6, 6, B % 'bg19.jpg', 'left', 'top', 'Active, or passive?',
    '&iquest;Cu&aacute;l significa lo mismo?', 'Welcher Satz bedeutet dasselbe?',
    why='The bridge was the object, so it goes to the front; the creeper follows &lsquo;by&rsquo;.'),
 
-sort(B % 'bg27.jpg', 'right', 'top', 'Second form, or third?',
+sort(B % 'bg27.jpg', 'left', 'top', 'Second form, or third?',
      'Click a word, then click which form it is.',
      ['second &mdash; active', 'third &mdash; passive'],
      [(0, 'broke'), (0, 'took'), (0, 'wrote'), (0, 'ate'),

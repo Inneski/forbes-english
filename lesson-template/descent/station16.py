@@ -50,7 +50,7 @@ sec('teach', B % 'bg01.jpg', 'left', 'top',
 
 # THE WHOLE DESCENT ON ONE PAGE. Nothing here is new; the value is that seven
 # chains a learner met one at a time are finally side by side.
-sec('teach', B % 'bg22.jpg', 'right', 'top',
+sec('teach', B % 'bg22.jpg', 'left', 'top',
     head('The seven', 'Every passive you have met') + '\n' +
     para([
       ('now, in general',
@@ -157,7 +157,7 @@ sec('teach', B % 'bg36.jpg', 'left', 'top',
     ]),
     'data-w="wide" style="--wcols:2"'),
 
-mc(1, 6, B % 'bg04.jpg', 'right', 'top', 'Which tense?',
+mc(1, 6, B % 'bg04.jpg', 'left', 'top', 'Which tense?',
    'The wall ______ in 1990.', 'was built',
    [('is built', '&lsquo;In 1990&rsquo; is a closed window, so it cannot be a present.'),
     ('has been built', 'A dated year closes the door; the present perfect needs it open.'),
@@ -174,7 +174,7 @@ mc(2, 6, B % 'bg13.jpg', 'left', 'top', 'Which tense?',
    'H&ouml;r mal - die Glocke ______ gerade.',
    why='&lsquo;Right now&rsquo; plus an unfinished action is the present continuous passive.'),
 
-mc(3, 6, B % 'bg20.jpg', 'right', 'bottom', 'Which voice?',
+mc(3, 6, B % 'bg20.jpg', 'left', 'bottom', 'Which voice?',
    'Which is the better sentence to put in a notice?',
    'The gate will be locked at sunset.',
    [('Somebody will lock the gate at sunset.', 'A notice does not need a vague somebody in it.'),
@@ -184,7 +184,7 @@ mc(3, 6, B % 'bg20.jpg', 'right', 'bottom', 'Which voice?',
    'Welcher Satz passt besser auf ein Schild?',
    why='Nobody needs telling who locks a gate, so the passive removes the noise.'),
 
-mc(4, 6, B % 'bg07.jpg', 'left', 'bottom', 'Which word?',
+mc(4, 6, B % 'bg07.jpg', 'left', 'top', 'Which word?',
    'The bridge has ______ repaired at last.', 'been',
    [('being', '&lsquo;being&rsquo; follows is, are, was or were &mdash; never has.'),
     ('be', '&lsquo;be&rsquo; follows a modal or &lsquo;going to&rsquo;.'),
@@ -193,7 +193,7 @@ mc(4, 6, B % 'bg07.jpg', 'left', 'bottom', 'Which word?',
    'Die Br&uuml;cke ist endlich repariert ______.',
    why='&lsquo;has&rsquo; in front means &lsquo;been&rsquo;, every time, on every station.'),
 
-mc(5, 6, B % 'bg32.jpg', 'right', 'top', 'Active, or passive?',
+mc(5, 6, B % 'bg32.jpg', 'left', 'top', 'Active, or passive?',
    'Your friend asks who smashed the window. Which do you say?',
    'A creeper broke it.',
    [('It was broken by a creeper.', 'Correct English, but they asked WHO, so name the creeper first.'),
@@ -259,7 +259,7 @@ gap(1, 2, B % 'bg19.jpg', 'right', 'top', 'Fill the chain',
       'La puerta ______ cerrada desde el lunes.',
       'Das Tor wird ab Montag verschlossen ______.')]),
 
-gap(2, 2, B % 'bg31.jpg', 'left', 'top', 'Which voice does it want?',
+gap(2, 2, B % 'bg31.jpg', 'right', 'top', 'Which voice does it want?',
     'Type &lsquo;active&rsquo; or &lsquo;passive&rsquo; for each situation.',
     [('A notice on a wall about closing time: ', 'passive', '.',
       'A notice names nobody, so the passive is the better sentence.', 150,
@@ -286,7 +286,7 @@ order(B % 'bg40.jpg', 'right', 'top',
       'La puerta ser&aacute; cerrada al anochecer.',
       'Das Tor wird bei Sonnenuntergang verschlossen werden.'),
 
-results(B % 'bg41.jpg', 'right', 'top'),
+results(B % 'bg41.jpg', 'left', 'top'),
 
 activate(B % 'bg35.jpg', 'Now choose for yourself',
          ['is done', 'is being done', 'was done', 'has been done',

@@ -198,7 +198,7 @@ mc(6, 6, B % 'bg11.jpg', 'left', 'top', 'Plan, or evidence?',
    'Sieh dir die Risse an. Die Mauer ______.',
    why='Evidence you can point at is exactly what &lsquo;going to&rsquo; is for.'),
 
-sort(B % 'bg26.jpg', 'right', 'top',
+sort(B % 'bg26.jpg', 'left', 'top',
      '<em class="inf">be</em>, <em class="aux">being</em>, or <em class="aux">been</em>?',
      'Click a beginning, then click the word that follows it.',
      ['be', 'being', 'been'],
@@ -209,7 +209,7 @@ sort(B % 'bg26.jpg', 'right', 'top',
      '&lsquo;is&rsquo; and &lsquo;are&rsquo; take &lsquo;being&rsquo;. '
      '&lsquo;has&rsquo; and &lsquo;have&rsquo; take &lsquo;been&rsquo;.'),
 
-match(B % 'bg13.jpg', 'left', 'top', 'Match the active to its passive',
+match(B % 'bg13.jpg', 'right', 'top', 'Match the active to its passive',
       'Click an active sentence, then click the passive that means the same.',
       [('They are going to build the wall', 'the wall is going to be built',
         'Van a construir el muro', 'Sie werden die Mauer bauen',
@@ -271,7 +271,7 @@ order(B % 'bg40.jpg', 'left', 'top',
       'El mapa va a ser dibujado por Alex.',
       'Die Karte wird von Alex gezeichnet werden.'),
 
-results(B % 'bg25.jpg', 'left', 'top'),
+results(B % 'bg25.jpg', 'right', 'top'),
 
 activate(B % 'bg35.jpg', 'Now announce something',
          ['is going to be built', 'are going to be made', 'is going to be closed',

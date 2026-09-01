@@ -159,7 +159,7 @@ mc(3, 6, B % 'bg20.jpg', 'right', 'bottom', '&lsquo;being&rsquo;, or &lsquo;been
    'Die Br&uuml;cke wird ______ repariert.',
    why='&lsquo;is&rsquo; in front means &lsquo;being&rsquo;. &lsquo;been&rsquo; would need &lsquo;has&rsquo;.'),
 
-mc(4, 6, B % 'bg29.jpg', 'left', 'bottom', 'Say no',
+mc(4, 6, B % 'bg29.jpg', 'left', 'top', 'Say no',
    'The village ______ rebuilt this week.', "isn't being",
    [("isn't been", '&lsquo;been&rsquo; goes with has, not with is.'),
     ("doesn't being", 'A passive never uses &lsquo;does&rsquo;.'),
@@ -243,7 +243,7 @@ gap(2, 2, B % 'bg31.jpg', 'left', 'top', '&lsquo;being&rsquo;, or &lsquo;been&rs
      ('We are ', 'being', ' watched.', '&lsquo;are&rsquo; takes &lsquo;being&rsquo;.', 140,
       'Nos est&aacute;n ______ observando.', 'Wir werden gerade ______ beobachtet.')]),
 
-order(B % 'bg21.jpg', 'right', 'top', 'the wall | is | being | built .',
+order(B % 'bg21.jpg', 'left', 'top', 'the wall | is | being | built .',
       'The thing, then is, then being, then the third form.',
       'El muro est&aacute; siendo construido.', 'Die Mauer wird gerade gebaut.'),
 

@@ -1193,6 +1193,35 @@ em.t-present, b.t-present { color: var(--t-present-simple) !important;
    the nav. */
 .slide { --rail-clear: 96px; }
 .slide[data-vpos="bottom"] { padding-bottom: var(--rail-clear); }
+/* ── AND SO WAS THE CENTRED ANCHOR ───────────────────────────────────
+   Same bug, other anchor. justify-content:center centres the block in the
+   720px canvas, but the bottom 76px of that canvas is the deck bar, so the
+   box a reader actually sees is 644 tall and its middle is 38px higher.
+   Measured across the corpus, every centred side-pinned slide landed with
+   0.133 of the frame - 96px - more air above it than below: the offset plus
+   the head/body asymmetry.
+
+   Innes, again: "text too low in some cases". A per-slide nudge was the wrong
+   answer the first time and is still the wrong answer: the anchor is wrong,
+   and every slide using it is wrong by the same 96px. Reserving the same
+   air below it that the bar and the asymmetry take away moves the block up
+   by exactly half of it, which is exactly the error. Measured to zero, not
+   guessed, and one constant rather than a nudge per slide.
+
+   It is a SHRINKABLE flex spacer, not padding. Padding took the height away
+   whether or not the slide could spare it, and three tall centred slides -
+   going-to 13 and 17, present-continuous-2 10 - immediately overflowed by
+   18-43px. `flex: 0 1` reserves the clearance when there is room and gives
+   it back when there is not, so a tall slide keeps its old placement instead
+   of losing a line. */
+.slide { --centre-clear: 96px; }
+.slide[data-side]:not([data-vpos])::after {
+  content: ''; flex: 0 1 var(--centre-clear); min-height: 0; }
+/* ...and the spacer has to be the ONLY thing that yields, or the body shrinks
+   with it and spills its last line instead. Measured: without this, going-to
+   13 and 17 and present-continuous-2 10 still overflowed by 15-35px. */
+.slide[data-side]:not([data-vpos]) > .slide-head,
+.slide[data-side]:not([data-vpos]) > .slide-body { flex-shrink: 0; }
 /* Every plate in the template is painted by a spread box-shadow, so its
    PAINTED box is bigger than its layout box on all four sides - 0.34em of
    spread, which is ~13px behind a 38px title and ~4px behind a 13px eyebrow.
@@ -2354,7 +2383,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     </section>
 
 
-    <section class="slide" data-type="order" data-bg="present-continuous-time-signals/bg37.jpg" data-side="left" data-vpos="top">
+    <section class="slide" data-type="order" data-bg="present-continuous-time-signals/bg37.jpg" data-side="right" data-vpos="top">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="ord1Eyebrow">Practice</div>
         <h2 class="slide-title" data-i18n="ord1Title">Build the sentence</h2>
