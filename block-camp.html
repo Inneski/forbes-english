@@ -181,25 +181,57 @@ h1 em { font-style: normal; color: var(--pink-mid); }
 /* The route map, from the page the nav actually sends people to. Styled here
    because .sherpa-banner belongs to library.html's stylesheet, not this one -
    borrowing the class name got a bare blue link. */
-.route-banner{ display:flex; align-items:center; gap:clamp(14px,2.4vw,24px);
+/* Blue, and the same blue. Innes: "the block camp button is blue on the front
+   page and should continue to be blue on the hub page". That is
+   index.html's .feature-blockcamp, linear-gradient(100deg,#3E5C8F,#2C4470),
+   copied rather than re-picked - two blues a shade apart read as a mistake,
+   which is the whole reason he noticed. Cream on it is 6.1:1 at the light end
+   and 8.8:1 at the dark, so the label needed no adjusting; only .rb-sub moved,
+   off the green tint it was carrying. */
+.route-banner{ position:relative; overflow:hidden; isolation:isolate;
+  display:flex; align-items:center; gap:clamp(14px,2.4vw,24px);
   text-decoration:none; color:#fff4d6;
-  background:linear-gradient(100deg,#14403a,#1d5b4c 60%,#2b6f52);
+  background:linear-gradient(100deg,#3E5C8F,#2C4470);
   border-radius:var(--radius); padding:clamp(16px,2.6vw,24px) clamp(18px,3vw,30px);
-  margin:0 0 clamp(26px,4vw,44px); box-shadow:0 8px 26px rgba(20,48,31,.28);
+  margin:0 0 clamp(26px,4vw,44px); box-shadow:0 8px 26px rgba(24,40,72,.30);
   transition:transform .18s ease, box-shadow .18s ease; }
 .route-banner:hover,.route-banner:focus-visible{ transform:translateY(-2px);
-  box-shadow:0 14px 34px rgba(20,48,31,.36); }
+  box-shadow:0 14px 34px rgba(24,40,72,.42); }
+
+/* "look more inviting to be clicked some how (sparkle animation?)". Two
+   layers, both behind the copy (z-index:-1 inside the banner's own stacking
+   context, which is what isolation:isolate is for):
+     ::before  four fixed glints that breathe, so the banner is never dead
+     ::after   one slow sheen crossing every 7s, so it reads as a button
+   Nothing moves the layout and nothing sits over the text. */
+.route-banner::before{ content:""; position:absolute; inset:0; z-index:-1;
+  background:
+    radial-gradient(2.5px 2.5px at 14% 28%, rgba(255,244,214,.95), transparent 60%),
+    radial-gradient(2px 2px at 33% 74%, rgba(255,244,214,.8), transparent 60%),
+    radial-gradient(3px 3px at 68% 22%, rgba(255,244,214,.9), transparent 60%),
+    radial-gradient(2px 2px at 88% 66%, rgba(255,244,214,.75), transparent 60%);
+  animation:rb-glint 3.4s ease-in-out infinite alternate; }
+.route-banner::after{ content:""; position:absolute; top:0; bottom:0; z-index:-1;
+  left:-40%; width:34%;
+  background:linear-gradient(100deg,transparent,rgba(255,244,214,.16) 46%,transparent);
+  transform:skewX(-14deg);
+  animation:rb-sheen 7s cubic-bezier(.5,0,.5,1) infinite; }
+.route-banner:hover::after{ animation-duration:2.4s; }
+@keyframes rb-glint{ from{ opacity:.35 } to{ opacity:1 } }
+@keyframes rb-sheen{ 0%{ left:-40% } 55%,100%{ left:118% } }
 .rb-icon{ font-size:clamp(1.6rem,3vw,2.3rem); line-height:1; flex:none; }
 .rb-copy{ flex:1; }
 .rb-title{ display:block; font-family:'Barlow Condensed',sans-serif;
   font-weight:800; letter-spacing:.06em; text-transform:uppercase;
   font-size:clamp(1.05rem,2vw,1.4rem); }
-.rb-sub{ display:block; font-size:.95rem; color:#cfe3d6; margin-top:3px; }
+.rb-sub{ display:block; font-size:.95rem; color:#d6e2f5; margin-top:3px; }
 .rb-go{ flex:none; font-family:'Barlow Condensed',sans-serif; font-weight:700;
   letter-spacing:.1em; text-transform:uppercase; font-size:.8rem;
   border:1px solid rgba(255,244,214,.4); border-radius:999px; padding:8px 15px; }
 @media (max-width:620px){ .route-banner{ flex-wrap:wrap } .rb-go{ margin-left:auto } }
-@media (prefers-reduced-motion:reduce){ .route-banner{ transition:none } }
+@media (prefers-reduced-motion:reduce){ .route-banner{ transition:none }
+  .route-banner::before,.route-banner::after{ animation:none }
+  .route-banner::before{ opacity:.7 } .route-banner::after{ display:none } }
 </style>
 <style>
 /* ── HEADER FACE ────────────────────────────────────────────────────
