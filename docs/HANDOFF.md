@@ -253,6 +253,40 @@ in step with `AUX_TENSE`. Both were verified firing against a deliberately
 broken copy - a class with no rule, and a participle left untagged after a
 tense-coloured auxiliary.
 
+## Stop finding colour defects by eye: check-unmarked.py
+
+Innes, on Going To 2: *"short forms of am/are/is in this doc need to be blue -
+is this mistake throughout all of Block Camp? How many other blunders are there
+that I have to search for?"*
+
+Nobody could answer that, and that was the real defect. `check-colour-roles.py`
+only ever asked whether a word ALREADY WEARING a role class was wearing the
+right one. **A word wearing no class at all was invisible to it**, and every
+contraction in the line - `I'm`, `we're`, `she's` - sat in that blind spot.
+
+```bash
+python3 lesson-template/checker/check-unmarked.py            # must PASS
+python3 lesson-template/checker/check-unmarked.py --review   # the judgement calls
+```
+
+The answer turned out to be **10 contractions in 3 decks**, not the whole line.
+
+**It fails on one thing only, on purpose.** A be-contraction carries a be
+wherever it appears and no summary line is built out of one, so a bare `'m` is
+always a gap. A bare `is` is not: `.formula` and `.exlist` also hold one-line
+summaries - *"every one of these is TEMPORARY"* - where `is` is doing a
+sentence's work. The first cut reported all of it, 73 findings, and the ten
+that mattered were buried. **A gate that cries wolf stops being read**, so the
+rest is a `--review` list that does not fail.
+
+**34 of those are still unresolved, and they need a ruling, not a fix.** They
+are bare auxiliaries inside example sentences in paradigm cells - *"Your boots
+are filthy"*, *"We had two horses then"*. Whether the `be` inside an
+illustrative sentence wears its tense colour is a teaching decision. The
+descent says yes; the camp decks have never said either way. **Settle it once
+and the gate can enforce it everywhere** - that single unmade decision is
+behind most of this week's round trips.
+
 ## Still open
 
 - **Three slides' ink crosses the deck bar by ~4px** — present-perfect-2 18,

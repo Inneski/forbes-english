@@ -104,8 +104,42 @@ h1 em { font-style: normal; color: var(--pink-mid); }
   border-left: 3px solid var(--gold-bright);
 }
 .gt-note strong { color: var(--ink); font-weight: 700; }
-.hero-art { border-radius: var(--radius); overflow: hidden; box-shadow: 0 18px 44px rgba(20,48,31,0.22); display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
-.hero-art img { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* THE ROUTE MAP, AS THE THING YOU SEE FIRST. Same blue as index.html's
+   .feature-blockcamp and the same sparkle as the descent banner - it is the
+   same button, given the room the two adventure covers were using. */
+.route-hero { position: relative; overflow: hidden; isolation: isolate;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
+  min-height: 260px; padding: clamp(22px,3vw,32px);
+  border-radius: var(--radius); text-decoration: none; color: #fff4d6;
+  background: linear-gradient(100deg,#3E5C8F,#2C4470);
+  box-shadow: 0 18px 44px rgba(24,40,72,.30);
+  transition: transform .18s ease, box-shadow .18s ease; }
+.route-hero:hover, .route-hero:focus-visible { transform: translateY(-3px);
+  box-shadow: 0 22px 52px rgba(24,40,72,.42); }
+.rh-icon { font-size: clamp(2rem,4vw,3rem); line-height: 1; }
+.rh-title { font-family: 'Monocraft', ui-monospace, monospace; font-synthesis: none;
+  font-size: clamp(1.35rem,2.6vw,2rem); line-height: 1.05; margin-top: auto; }
+.rh-sub { font-size: .98rem; line-height: 1.45; color: #d6e2f5; max-width: 34ch; }
+.rh-go { margin-top: 12px; font-family: 'Barlow Condensed',sans-serif; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase; font-size: .82rem;
+  border: 1px solid rgba(255,244,214,.45); border-radius: 999px; padding: 9px 17px; }
+.route-hero::before { content: ""; position: absolute; inset: 0; z-index: -1;
+  background:
+    radial-gradient(2.5px 2.5px at 16% 22%, rgba(255,244,214,.95), transparent 60%),
+    radial-gradient(2px 2px at 76% 34%, rgba(255,244,214,.8), transparent 60%),
+    radial-gradient(3px 3px at 60% 12%, rgba(255,244,214,.9), transparent 60%),
+    radial-gradient(2px 2px at 88% 72%, rgba(255,244,214,.75), transparent 60%);
+  animation: rb-glint 3.4s ease-in-out infinite alternate; }
+.route-hero::after { content: ""; position: absolute; top: 0; bottom: 0; z-index: -1;
+  left: -40%; width: 34%;
+  background: linear-gradient(100deg,transparent,rgba(255,244,214,.16) 46%,transparent);
+  transform: skewX(-14deg);
+  animation: rb-sheen 7s cubic-bezier(.5,0,.5,1) infinite; }
+.route-hero:hover::after { animation-duration: 2.4s; }
+@media (prefers-reduced-motion:reduce) {
+  .route-hero { transition: none }
+  .route-hero::before { animation: none; opacity: .7 }
+  .route-hero::after { display: none } }
 
 /* ── track ── */
 .track { margin-top: clamp(30px,5vw,52px); }
@@ -364,29 +398,22 @@ h1 { font-size: clamp(1.7rem, 4.1vw, 2.7rem); line-height: 1.12; }
   <div class="hero">
     <div>
       <div class="eyebrow">Block Camp · Grammar, Block by Block</div>
-      <h1>Block <em>Camp</em></h1>
+      <h1>BLOCK <em>CAMP</em></h1>
       <p class="lede"><strong>Every lesson here is set in a blocky, voxel-built world.</strong> Branching RPG adventures with real choices and a grammar point built into the plot, plus a full run of Minecraft-themed grammar lessons and illustrated references — one place for all of it.</p>
       <p class="gt-note"><strong>Twenty-four grammar lessons and two adventures.</strong> Sixteen units up through the tenses, and eight more back down through the passive. Plus two branching RPGs, eight illustrated references covering every major tense, and eight more Minecraft grammar lessons from A2 to C1.</p>
     </div>
-    <div class="hero-art">
-      <img src="block-camp/last-train-home-rpg/01_cover.webp" alt="Blocky voxel-art cover for The Last Train Home, a cyberpunk megacity scene">
-      <img src="block-camp/dracula-castle-of-if/01_cover.webp" alt="Blocky voxel-art cover for Dracula: The Castle of If, a gothic castle scene">
-    </div>
+    <a class="route-hero" href="block-camp-map.html">
+      <span class="rh-icon" aria-hidden="true">&#9968;</span>
+      <span class="rh-title">The Route Map</span>
+      <span class="rh-sub">One trail, eight tenses &mdash; up through the camps, then back down in the passive</span>
+      <span class="rh-go">Open the map &rarr;</span>
+    </a>
   </div>
 
 
   <!-- The route map and the sixteen lessons. Both were live and unreachable:
        nothing on the site linked to either, so the only way in was to type the
        URL. A page nobody can navigate to is not published. -->
-  <a class="route-banner" href="block-camp-map.html">
-    <span class="rb-icon" aria-hidden="true">&#9968;</span>
-    <span class="rb-copy">
-      <span class="rb-title">The Route Map</span>
-      <span class="rb-sub">One trail, eight tenses &mdash; up through the camps, then back down in the passive</span>
-    </span>
-    <span class="rb-go">Open &rarr;</span>
-  </a>
-
   <section class="track">
     <div class="track-head">
       <h2>Block Camp I &mdash; the climb</h2>
