@@ -569,6 +569,18 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
 .match-item.picked { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 22%, var(--surface2)); }
 .match-item.done { opacity: .45; cursor: default; border-color: var(--ok); }
 .match-item.miss { border-color: var(--no); animation: shake .3s; }
+/* A GLOSSED MATCH ITEM IS TWO LINES, AND TWELVE OF THEM DO NOT FIT.
+   In English slide 16 of Present Continuous 2b ends 8px clear of the rail;
+   in German every item grows a second line and the last row lands BEHIND
+   the progress bar. check-lesson.js measures the page in English, so its
+   LAYOUT gate passed it - noted in docs/HANDOFF.md, because a deck can now
+   overflow in a language the gate never renders.
+   The glossed variant gives back what it costs: tighter rows, a tighter
+   gloss, and no change to a single-line item anywhere else on the site. */
+.match-item:has(> .sup) { padding: 7px 14px; }
+.match-item > .sup { margin-top: 2px; font-size: 12.5px; line-height: 1.35; }
+.match-col:has(.match-item > .sup) { gap: 5px; }
+.match-grid:has(.match-item > .sup) { gap: 10px; }
 @keyframes shake { 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
 
 /* ── ORDERING (build the sentence) ───────────────────────────────────
@@ -882,6 +894,24 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
 .cover-title, .cover-sub { width: fit-content; margin-inline: auto; max-width: 100%; }
 .cover-sub { padding-inline: 0.22em; }
 .score-big { width: fit-content; }
+/* ── THE RESULTS PANELS OVERLAPPED, AND THE SPREAD IS WHY ─────────────
+   Every plate on this page is grown with `box-shadow: 0 0 0 0.34em` rather
+   than padding (see the note above - padding tipped the cover subtitle onto
+   a second line). At the score's 84px that spread is 28.5px in each
+   direction, and the panel under it is 18px away: the score plate and the
+   message plate paint into each other, and "Now use it" 14px below sits
+   inside both. Innes, on Past Simple 21: "text box overlap".
+   The gaps now exceed the spread they have to clear. The same fix is in
+   lesson-template/descent/build_descent.py for the Part II decks; this is
+   Part I catching up with it.
+
+   The empty message plate goes too. Before anything is answered #scoreMsg
+   has no text, and an empty plate is not nothing - it is a 28px dark square
+   floating under the score with no explanation. */
+.slide[data-type="results"] .score-big { margin-bottom: 10px; }
+.slide[data-type="results"] #scoreMsg  { margin-top: 34px !important; max-width: 34ch; }
+.slide[data-type="results"] #scoreMsg:empty { display: none; }
+.slide[data-type="results"] .slide-body > .prose.dim { margin-top: 34px !important; }
 
 /* A transparent background is a hole in the plate. .btn was
    `background: transparent` and .bank-chip a 16% tint of --accent into
@@ -1126,7 +1156,7 @@ em.t-present, b.t-present { color: var(--t-present-simple) !important;
 .slide-title { margin-top: 28px; }
 .slide[data-side="right"] .slide-head { justify-content: flex-end; }
 .slide[data-side] .slide-body,
-.slide[data-side] .slide-head { width: 52%; }
+.slide[data-side] .slide-head { width: var(--col-w, 52%); }
 .slide[data-side="left"]  .slide-body,
 .slide[data-side="left"]  .slide-head { margin-right: auto; }
 .slide[data-side="right"] .slide-body,
@@ -1197,6 +1227,16 @@ em.t-present, b.t-present { color: var(--t-present-simple) !important;
 .slide[data-side="right"] .q-stem, .slide[data-side="right"] .opt,
 .slide[data-side="right"] .freq { text-align: left; }
 
+/* ── RIGHT-ALIGNING A PARAGRAPH, WHERE THE SLIDE ASKS FOR IT ──────────
+   The rule above keeps card text left-aligned even in a right-pinned column,
+   because a ragged LEFT edge is the harder one to read. On a card whose lines
+   all fall well short of its own right edge that costs more than it buys: the
+   paragraph floats away from the edge the whole column is pinned to. Innes,
+   on Past Simple 2b slide 3: "right align paragraph please".
+   Opt-in and prose only - the example chips keep their left edge, because
+   they are a list and a list reads down its left. */
+.slide[data-align="right"] .card > .prose:not(.dim) { text-align: right; }
+
 /* Vertical placement, measured the same way. Without it the body stayed
    centred, so on artwork whose empty part is the sky the text sat on the busy
    middle and read as "too low". */
@@ -1212,6 +1252,70 @@ em.t-present, b.t-present { color: var(--t-present-simple) !important;
 .slide[data-side] .para { grid-auto-flow: row !important; gap: 12px;
   width: fit-content; }
 .slide[data-side] .cols > .card, .slide[data-side] .para > .para-block { width: 100%; }
+/* ── A WIDER COLUMN, FOR THE SLIDES THAT ASK FOR ONE ──────────────────
+   52% is a default, not a law, and the stack rule above is a FALLBACK for a
+   column too narrow to hold a row - not the intent.
+
+   Present Continuous 1a slide 6 is the case that proves it: three
+   time-signal cards, stacked into one column by that rule, with the third
+   card 42px off the bottom of the frame. check-lesson.js has been failing
+   LAYOUT on that slide since the deck shipped. Innes: "slide 6 falling off
+   page (redo composition wider)". Stacking cannot fix it - there is no
+   vertical room left to give.
+
+   So: one custom property for the column width, per CLAUDE.md ("layout
+   constants belong in one custom property"), rather than a second hardcoded
+   percentage sitting next to the first. data-w="wide" widens the column and
+   hands the cards their real columns back. It is OPT-IN: every slide without
+   it measures exactly as before. */
+.slide[data-w="wide"] { --col-w: 64%; }
+.slide[data-w="wide"] .cols {
+  grid-template-columns: repeat(var(--wcols, 3), 1fr) !important;
+  width: 100%; gap: 14px; }
+/* A WIDE CARD DOES NOT NEED ONE EXAMPLE PER ROW. The stack rule below exists
+   so a NARROW card hugs its longest example; in a wide column it only makes
+   the card four rows tall - and it is what left the ES/DE gloss nowhere to
+   sit but underneath. Innes, on Past Simple 8: "translations would be better
+   right of text not under". With the examples flowing, the beside rule has
+   the horizontal room it always needed. */
+.slide[data-w="wide"] .exlist { display: flex !important; flex-wrap: wrap; }
+/* ...AND THE GLOSS SITS BESIDE THEM, NOT UNDER. With the examples flowing,
+   one row of chips measured 505px and the German gloss 375px in an 819px
+   card: 880px, so it wrapped to its own line and looked exactly like the
+   stacked version it replaced. Letting the chip list SHRINK (it wraps to two
+   rows) and pinning the gloss to the right of it puts both on one band, which
+   is what was asked for. Capped at 44% so a long German line can never
+   squeeze the examples to a column of one word each.
+
+   OPT-IN, and the reason is a measurement. Applied to every wide slide, this
+   also reached Present Continuous 1a slide 6, which is wide with THREE cards:
+   at 230px each, 'beside' left the chips a column one word deep - "right /
+   now", "at the / moment". A card needs real width before a gloss can share
+   its row, and only the slide knows whether it has it. Same vocabulary as
+   data-tr="under", which the line already uses to force the other way. */
+.slide[data-tr="beside"] .card .prose.dim:has(> .exlist):has(> .sup) { flex-wrap: nowrap !important; }
+.slide[data-tr="beside"] .card .prose.dim > .exlist { flex: 1 1 auto; min-width: 0; }
+.slide[data-tr="beside"] .card .prose.dim > .sup { flex: 0 1 auto; max-width: 44%; margin-top: 0; }
+
+/* ── A GROUP THAT IS AS WIDE AS THE SLIDE SAYS ────────────────────────
+   `width: fit-content` above sizes a card group to its longest line, and a
+   line of prose is an arbitrary number. On Present Continuous 2b slide 6
+   that put the two cards at 577px under a 394px title plate: right edges
+   flush, left edges 183px apart, on a slide with only two elements in it.
+   Innes: "make boxes same width as eyebrow".
+
+   Same knob answers slide 15, where the sort pool ran 167px wider than the
+   bins beneath it and its middle row reached back across Alex's arms:
+   "move those middle phrases better so they are more on right and not
+   encroaching character". A pool no wider than its own bins cannot.
+
+   The number lives on the slide it belongs to, not in the shell, because it
+   is a measurement of THAT slide's head - and check-lesson.js's LAYOUT gate
+   measures whether the re-wrap still fits. */
+.slide[data-boxw] .cols,
+.slide[data-boxw] .para,
+.slide[data-boxw] .sort-pool,
+.slide[data-boxw] .sort-bank { width: var(--boxw) !important; max-width: 100%; }
 /* ...and the rule does not stop at the paradigm. Innes, on Future Simple 1b
    slide 6: "make the bottom three boxes same width." Two example boxes and the
    formula pill under them are three statements about one rule, and three

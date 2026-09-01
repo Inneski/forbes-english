@@ -15,7 +15,7 @@ adverb between the auxiliary and the participle is bare text inside a <b>:
 It captured 'just', found it was not a participle, and moved on without a word.
 A silent tagger is how a colour rule rots. This gate is the loud version.
 
-Four things are checked:
+Five things are checked:
 
   TOKENS     every --mark-* / --t-* holds ONE value across every deck. A role
              with two colours is the defect the whole scheme exists to prevent.
@@ -25,6 +25,21 @@ Four things are checked:
              carries no .pp - the 'lit' and 'left' case, reported not skipped.
   SECOND     a past-simple form wearing .pp. 'went' and 'gone' are different
              jobs; colouring the second form teaches the opposite of the slide.
+  AUXJOB     .aux on a word that is not doing the auxiliary's job. THIS GATE
+             MISSED EVERY ONE OF THESE and Innes found all six by eye, over
+             four separate messages: "green 'was'? ", "'had' is green for no
+             reason", "why is has/have/am in green", "green colored words -
+             what is the logic here?". They were the past copula in an
+             example ("when I was a child"), the lexical verb on the one
+             slide whose subject is that it is NOT an auxiliary ("I have a
+             sword"), a copula in a sentence about the tense ("every step is
+             PAST SIMPLE"), a second form in a table of second forms
+             ("have -> had"), and - the one that gives the game away - the
+             GERMAN word 'am' in the gloss "am Ende", which an automated
+             tagger matched as the English auxiliary.
+             A be/have/do form is an auxiliary only when a verb follows it.
+             If what follows is a determiner, a pronoun, a preposition or
+             nothing at all, it is the main verb and the green is a lie.
 
     python3 lesson-template/checker/check-colour-roles.py [deck.html ...]
 """
@@ -66,6 +81,73 @@ AUX_THEN_WORD = re.compile(
 RED, GRN, DIM = '\x1b[31m%s\x1b[0m', '\x1b[32m%s\x1b[0m', '\x1b[2m%s\x1b[0m'
 
 
+# ── AUXJOB ───────────────────────────────────────────────────────────────
+# A be/have/do form is an AUXILIARY only when a verb follows it. These are the
+# words that, following one, prove it is the MAIN verb instead: you cannot say
+# "is a", "have a sword", "was small" and still be looking at an auxiliary.
+BE_HAVE_DO = {'am', 'is', 'are', 'was', 'were', 'be', 'been', 'being',
+              'have', 'has', 'had', 'do', 'does', 'did',
+              "isn't", "aren't", "wasn't", "weren't", "haven't", "hasn't",
+              "hadn't", "don't", "doesn't", "didn't"}
+NOT_A_VERB = {
+    # DETERMINERS ONLY, and the narrowing is a measurement. The first version
+    # also convicted on pronouns and prepositions and produced 35 findings, of
+    # which 29 were inverted questions - "Have you eaten?", "Is she going?" -
+    # where the auxiliary is doing exactly its job and the subject simply comes
+    # next. One more was "didn't like", where 'like' is the bare verb. A gate
+    # that cries wolf 29 times out of 35 is a gate nobody runs.
+    # A determiner after a be/have/do form is different: there is no English
+    # sentence where "is a", "have a", "was a" is an auxiliary.
+    'a', 'an', 'the', 'my', 'your', 'his', 'her', 'its', 'our', 'their',
+    'this', 'that', 'these', 'those', 'every', 'each', 'another',
+    'one', 'two', 'three', 'four', 'five', 'both',
+}
+# Glosses are not English grammar demonstrations. Any .aux inside a .sup is
+# wrong by construction - that is how the German 'am' in "am Ende" got green.
+GLOSS = re.compile(r'<span class=\\?"sup\\?"[^>]*>.*?</span>\s*</span>', re.S)
+# The tag, then the next word - through a closing </em>, a </b>, a <b>, an
+# adverb, whatever the markup puts between them.
+AUX_NEXT = re.compile(
+    r'<em class=\\?"aux\\?">([^<]*)</em>'
+    r'((?:</?[a-z][^>]*>|\s|&[a-z]+;)*)'
+    r'([A-Za-z\u2019\']*)')
+
+
+def auxjob(name, body, findings, allowed):
+    """.aux on a word that is not doing an auxiliary's job."""
+    for m in GLOSS.finditer(body):
+        for g in re.finditer(r'<em class=\\?"aux\\?">([^<]*)</em>', m.group(0)):
+            findings.append((name, 'AUXJOB',
+                             "'%s' is inside a translation gloss - a gloss is "
+                             "not English grammar, so nothing in it is an "
+                             "auxiliary" % g.group(1)))
+    # A paradigm cell whose ENTIRE content is the be/have/do form is a verb
+    # table, not a structure: "have -> had" lists the second form of a lexical
+    # verb. That is the past-simple 'had' case.
+    for w in re.findall(r'<span class="para-verb"><em class=\\?"aux\\?">([^<]+)</em></span>', body):
+        findings.append((name, 'AUXJOB',
+                         "'%s' is the whole of a paradigm cell - a verb table "
+                         "lists lexical forms, not auxiliaries" % w))
+    for m in AUX_NEXT.finditer(body):
+        word = re.sub(r'&[a-z]+;', "'", m.group(1)).strip().lower()
+        nxt = re.sub(r'&[a-z]+;', "'", m.group(3)).strip().lower()
+        if word not in BE_HAVE_DO:
+            continue
+        # 'not' and the adverbs never end the phrase; keep looking past them.
+        if nxt in ('not', 'just', 'already', 'never', 'ever', 'still', 'always'):
+            continue
+        if not nxt or nxt not in NOT_A_VERB:
+            continue
+        if (name, word) in ALLOW:
+            allowed.append((name, word))
+            continue
+        where = re.sub(r'<[^>]+>', '', m.group(0))
+        findings.append((name, 'AUXJOB',
+                         "'%s' is followed by '%s' - a main verb wearing the "
+                         "auxiliary colour  %s"
+                         % (word, nxt, DIM % where.strip()[:44])))
+
+
 def slides_of(src):
     """Only what a learner sees: slides, not the CSS and not the dictionary."""
     a = src.find('<section class="slide')
@@ -101,6 +183,7 @@ def main(decks):
                 findings.append((name, 'UNTAGGED',
                                  "'%s' follows an auxiliary but is not .pp  %s"
                                  % (w, DIM % ('...' + where.strip()[-46:]))))
+        auxjob(name, body, findings, allowed)
         for w in re.findall(r'class=\\?"pp\\?">([^<]+)</em>', body):
             if w.lower() in SECOND_ONLY:
                 findings.append((name, 'SECOND', "'%s' is a past simple form wearing the participle colour" % w))
@@ -117,7 +200,8 @@ def main(decks):
             v, ds = next(iter(vals.items()))
             print('    ' + GRN % 'PASS', '%-18s %-22s consistent across %d decks' % (tok, v, len(ds)))
 
-    for kind, title in (('ORPHAN', 'ORPHANS'), ('UNTAGGED', 'UNTAGGED'), ('SECOND', 'SECOND FORMS')):
+    for kind, title in (('ORPHAN', 'ORPHANS'), ('UNTAGGED', 'UNTAGGED'),
+                        ('SECOND', 'SECOND FORMS'), ('AUXJOB', 'AUXILIARY DOING ANOTHER JOB')):
         rows = [f for f in findings if f[1] == kind]
         print('\n  %s' % title)
         if not rows:

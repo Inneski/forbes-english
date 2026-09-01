@@ -583,6 +583,18 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
 .match-item.picked { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 22%, var(--surface2)); }
 .match-item.done { opacity: .45; cursor: default; border-color: var(--ok); }
 .match-item.miss { border-color: var(--no); animation: shake .3s; }
+/* A GLOSSED MATCH ITEM IS TWO LINES, AND TWELVE OF THEM DO NOT FIT.
+   In English slide 16 of Present Continuous 2b ends 8px clear of the rail;
+   in German every item grows a second line and the last row lands BEHIND
+   the progress bar. check-lesson.js measures the page in English, so its
+   LAYOUT gate passed it - noted in docs/HANDOFF.md, because a deck can now
+   overflow in a language the gate never renders.
+   The glossed variant gives back what it costs: tighter rows, a tighter
+   gloss, and no change to a single-line item anywhere else on the site. */
+.match-item:has(> .sup) { padding: 7px 14px; }
+.match-item > .sup { margin-top: 2px; font-size: 12.5px; line-height: 1.35; }
+.match-col:has(.match-item > .sup) { gap: 5px; }
+.match-grid:has(.match-item > .sup) { gap: 10px; }
 @keyframes shake { 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
 
 /* ── ORDERING (build the sentence) ───────────────────────────────────
@@ -633,6 +645,14 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
   display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
   min-height: 44px;
 }
+/* A SIDE-PLACED SLIDE'S CHIPS HUG THEIR SIDE. Centred rows reach into the
+   middle of the frame, which is where the artwork's subject usually is: on
+   Present Simple 2 slide 13 the top row ran under the fisherman's rod, and on
+   Present Simple 1 slide 15 'every weekend' sat out in the middle. Innes on
+   both: "move those middle words left". The pool already sits inside the
+   side-placed column; this stops the rows re-centring within it. */
+.slide[data-side="left"]  .sort-pool { justify-content: flex-start; }
+.slide[data-side="right"] .sort-pool { justify-content: flex-end; }
 .sort-bins { display: grid; gap: 14px; }
 /* The bin gets the card's own backdrop, not a bare tint. `--inset` alone
    is nearly transparent, and over a bright hero the bin outline and its
@@ -896,6 +916,24 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
 .cover-title, .cover-sub { width: fit-content; margin-inline: auto; max-width: 100%; }
 .cover-sub { padding-inline: 0.22em; }
 .score-big { width: fit-content; }
+/* ── THE RESULTS PANELS OVERLAPPED, AND THE SPREAD IS WHY ─────────────
+   Every plate on this page is grown with `box-shadow: 0 0 0 0.34em` rather
+   than padding (see the note above - padding tipped the cover subtitle onto
+   a second line). At the score's 84px that spread is 28.5px in each
+   direction, and the panel under it is 18px away: the score plate and the
+   message plate paint into each other, and "Now use it" 14px below sits
+   inside both. Innes, on Past Simple 21: "text box overlap".
+   The gaps now exceed the spread they have to clear. The same fix is in
+   lesson-template/descent/build_descent.py for the Part II decks; this is
+   Part I catching up with it.
+
+   The empty message plate goes too. Before anything is answered #scoreMsg
+   has no text, and an empty plate is not nothing - it is a 28px dark square
+   floating under the score with no explanation. */
+.slide[data-type="results"] .score-big { margin-bottom: 10px; }
+.slide[data-type="results"] #scoreMsg  { margin-top: 34px !important; max-width: 34ch; }
+.slide[data-type="results"] #scoreMsg:empty { display: none; }
+.slide[data-type="results"] .slide-body > .prose.dim { margin-top: 34px !important; }
 
 /* A transparent background is a hole in the plate. .btn was
    `background: transparent` and .bank-chip a 16% tint of --accent into
@@ -1140,7 +1178,7 @@ em.t-present, b.t-present { color: var(--t-present-simple) !important;
 .slide-title { margin-top: 28px; }
 .slide[data-side="right"] .slide-head { justify-content: flex-end; }
 .slide[data-side] .slide-body,
-.slide[data-side] .slide-head { width: 52%; }
+.slide[data-side] .slide-head { width: var(--col-w, 52%); }
 .slide[data-side="left"]  .slide-body,
 .slide[data-side="left"]  .slide-head { margin-right: auto; }
 .slide[data-side="right"] .slide-body,
@@ -1211,6 +1249,16 @@ em.t-present, b.t-present { color: var(--t-present-simple) !important;
 .slide[data-side="right"] .q-stem, .slide[data-side="right"] .opt,
 .slide[data-side="right"] .freq { text-align: left; }
 
+/* ── RIGHT-ALIGNING A PARAGRAPH, WHERE THE SLIDE ASKS FOR IT ──────────
+   The rule above keeps card text left-aligned even in a right-pinned column,
+   because a ragged LEFT edge is the harder one to read. On a card whose lines
+   all fall well short of its own right edge that costs more than it buys: the
+   paragraph floats away from the edge the whole column is pinned to. Innes,
+   on Past Simple 2b slide 3: "right align paragraph please".
+   Opt-in and prose only - the example chips keep their left edge, because
+   they are a list and a list reads down its left. */
+.slide[data-align="right"] .card > .prose:not(.dim) { text-align: right; }
+
 /* Vertical placement, measured the same way. Without it the body stayed
    centred, so on artwork whose empty part is the sky the text sat on the busy
    middle and read as "too low". */
@@ -1226,6 +1274,70 @@ em.t-present, b.t-present { color: var(--t-present-simple) !important;
 .slide[data-side] .para { grid-auto-flow: row !important; gap: 12px;
   width: fit-content; }
 .slide[data-side] .cols > .card, .slide[data-side] .para > .para-block { width: 100%; }
+/* ── A WIDER COLUMN, FOR THE SLIDES THAT ASK FOR ONE ──────────────────
+   52% is a default, not a law, and the stack rule above is a FALLBACK for a
+   column too narrow to hold a row - not the intent.
+
+   Present Continuous 1a slide 6 is the case that proves it: three
+   time-signal cards, stacked into one column by that rule, with the third
+   card 42px off the bottom of the frame. check-lesson.js has been failing
+   LAYOUT on that slide since the deck shipped. Innes: "slide 6 falling off
+   page (redo composition wider)". Stacking cannot fix it - there is no
+   vertical room left to give.
+
+   So: one custom property for the column width, per CLAUDE.md ("layout
+   constants belong in one custom property"), rather than a second hardcoded
+   percentage sitting next to the first. data-w="wide" widens the column and
+   hands the cards their real columns back. It is OPT-IN: every slide without
+   it measures exactly as before. */
+.slide[data-w="wide"] { --col-w: 64%; }
+.slide[data-w="wide"] .cols {
+  grid-template-columns: repeat(var(--wcols, 3), 1fr) !important;
+  width: 100%; gap: 14px; }
+/* A WIDE CARD DOES NOT NEED ONE EXAMPLE PER ROW. The stack rule below exists
+   so a NARROW card hugs its longest example; in a wide column it only makes
+   the card four rows tall - and it is what left the ES/DE gloss nowhere to
+   sit but underneath. Innes, on Past Simple 8: "translations would be better
+   right of text not under". With the examples flowing, the beside rule has
+   the horizontal room it always needed. */
+.slide[data-w="wide"] .exlist { display: flex !important; flex-wrap: wrap; }
+/* ...AND THE GLOSS SITS BESIDE THEM, NOT UNDER. With the examples flowing,
+   one row of chips measured 505px and the German gloss 375px in an 819px
+   card: 880px, so it wrapped to its own line and looked exactly like the
+   stacked version it replaced. Letting the chip list SHRINK (it wraps to two
+   rows) and pinning the gloss to the right of it puts both on one band, which
+   is what was asked for. Capped at 44% so a long German line can never
+   squeeze the examples to a column of one word each.
+
+   OPT-IN, and the reason is a measurement. Applied to every wide slide, this
+   also reached Present Continuous 1a slide 6, which is wide with THREE cards:
+   at 230px each, 'beside' left the chips a column one word deep - "right /
+   now", "at the / moment". A card needs real width before a gloss can share
+   its row, and only the slide knows whether it has it. Same vocabulary as
+   data-tr="under", which the line already uses to force the other way. */
+.slide[data-tr="beside"] .card .prose.dim:has(> .exlist):has(> .sup) { flex-wrap: nowrap !important; }
+.slide[data-tr="beside"] .card .prose.dim > .exlist { flex: 1 1 auto; min-width: 0; }
+.slide[data-tr="beside"] .card .prose.dim > .sup { flex: 0 1 auto; max-width: 44%; margin-top: 0; }
+
+/* ── A GROUP THAT IS AS WIDE AS THE SLIDE SAYS ────────────────────────
+   `width: fit-content` above sizes a card group to its longest line, and a
+   line of prose is an arbitrary number. On Present Continuous 2b slide 6
+   that put the two cards at 577px under a 394px title plate: right edges
+   flush, left edges 183px apart, on a slide with only two elements in it.
+   Innes: "make boxes same width as eyebrow".
+
+   Same knob answers slide 15, where the sort pool ran 167px wider than the
+   bins beneath it and its middle row reached back across Alex's arms:
+   "move those middle phrases better so they are more on right and not
+   encroaching character". A pool no wider than its own bins cannot.
+
+   The number lives on the slide it belongs to, not in the shell, because it
+   is a measurement of THAT slide's head - and check-lesson.js's LAYOUT gate
+   measures whether the re-wrap still fits. */
+.slide[data-boxw] .cols,
+.slide[data-boxw] .para,
+.slide[data-boxw] .sort-pool,
+.slide[data-boxw] .sort-bank { width: var(--boxw) !important; max-width: 100%; }
 /* ...and the rule does not stop at the paradigm. Innes, on Future Simple 1b
    slide 6: "make the bottom three boxes same width." Two example boxes and the
    formula pill under them are three statements about one rule, and three
@@ -1374,6 +1486,23 @@ em.t-present, b.t-present { color: var(--t-present-simple) !important;
 :root[lang="es"] .card .prose.dim > .sup[data-lang="es"],
 :root[lang="de"] .card .prose.dim > .sup[data-lang="de"] {
   display: inline; margin-left: 10px; }
+/* THE TRANSLATION GOES BESIDE THE EXAMPLES, NOT UNDER THEM. Innes: "All
+   translations better to right of text than under". The rule above already
+   asked for inline, and it could never work: .slide[data-side] .exlist is a
+   block-level GRID (one example per row, see below), so anything following it
+   is pushed to a new line whatever its own display says. Making the paragraph
+   a flex row puts the stacked examples and the gloss side by side.
+
+   Underneath still wins on some slides - his examples are Present Simple 2
+   slides 8 and 14, where the examples are long and the card is narrow. Those
+   ask for it by name with data-tr="under" on the slide, so the exception is
+   written on the slide and not hidden here. */
+:root[lang="es"] .slide:not([data-tr="under"]) .card .prose.dim:has(> .exlist):has(> .sup[data-lang="es"]),
+:root[lang="de"] .slide:not([data-tr="under"]) .card .prose.dim:has(> .exlist):has(> .sup[data-lang="de"]) {
+  display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+:root[lang="es"] .slide:not([data-tr="under"]) .card .prose.dim > .sup[data-lang="es"],
+:root[lang="de"] .slide:not([data-tr="under"]) .card .prose.dim > .sup[data-lang="de"] {
+  margin-left: 0; margin-top: 0; }
 /* A paradigm block's HEADING is already translated by the switcher, so it
    never takes a gloss - a gloss there rendered "GEDANKEN de Gedanken", the
    same word twice. What the block DOES owe a translation is its VERBS, which
@@ -1729,6 +1858,30 @@ em, i, .card .prose.dim em { font-style: normal !important;
   background: var(--accent-bright); border-color: var(--accent-bright);
 }
 .nav-btn[data-action="next"]:disabled { box-shadow: none; }
+
+/* ── FIRST-RUN HINT ON THE LANGUAGE SWITCH ────────────────────────────────
+   Innes, about a control that has been shipping on every lesson for months:
+   "I didnt know the ENG/DE button existed." A control nobody finds is a
+   control that is not there, and the whole translation layer - every gloss,
+   every EN/DE panel - sits behind this one.
+
+   So it announces itself, ONCE. The ring pulses until the first interaction
+   and is then off for good (localStorage), because a control that keeps
+   pulsing after you have used it stops reading as an invitation and starts
+   reading as an error. Reduced-motion gets the accent border without the
+   animation - still findable, nothing moving. */
+@keyframes bw-notice {
+  0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 60%, transparent); }
+  70%  { box-shadow: 0 0 0 7px color-mix(in srgb, var(--accent) 0%, transparent); }
+  100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 0%, transparent); }
+}
+.lang-select.bw-notice, .tr-btn.bw-notice {
+  border-color: var(--accent) !important;
+  animation: bw-notice 2.2s ease-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lang-select.bw-notice, .tr-btn.bw-notice { animation: none; }
+}
 </style>
 </head>
 <body>
@@ -1907,7 +2060,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
           <div class="card">
             <p class="prose"><strong data-i18n="sigH2">Further ahead</strong></p>
             <p class="prose" data-i18n="sigB2" style="margin-top:8px;font-size:18px">Weeks, months, a year.</p>
-            <p class="prose dim" style="margin-top:8px;font-size:15px"><span class="exlist"><span>next week</span><span>in two days</span><span>at the weekend</span><span>soon</span></span><span class="sup" data-lang="es"><b>ES</b><span>la semana que viene &middot; en dos d&iacute;as &middot; el fin de semana &middot; pronto</span></span><span class="sup" data-lang="de"><b>DE</b><span>n&auml;chste Woche &middot; in zwei Tagen &middot; <em class="aux">am</em> Wochenende &middot; bald</span></span></p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px"><span class="exlist"><span>next week</span><span>in two days</span><span>at the weekend</span><span>soon</span></span><span class="sup" data-lang="es"><b>ES</b><span>la semana que viene &middot; en dos d&iacute;as &middot; el fin de semana &middot; pronto</span></span><span class="sup" data-lang="de"><b>DE</b><span>n&auml;chste Woche &middot; in zwei Tagen &middot; am Wochenende &middot; bald</span></span></p>
           </div>
         </div>
       </div>
@@ -2825,16 +2978,43 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
   const terms = document.createElement('div');
   const defs = document.createElement('div');
   terms.className = defs.className = 'match-col';
-  const mk = (txt, cls, key) => {
+  /* A MATCH SLIDE WAS THE ONE EXERCISE WITH NOWHERE TO PUT A TRANSLATION.
+     Every other shape carries its ES/DE gloss in the markup; this one builds
+     its items from data-term/data-def in JS, so there was no element to hang
+     one on and the slide simply had none. Innes, on Present Continuous 2b
+     slide 16: "translate words underneath".
+
+     Optional and backward-compatible: a pair with no data-term-es/-de and no
+     data-def-es/-de renders exactly the button it rendered before. The gloss
+     goes in a .sup, which is the site's existing mechanism - hidden unless
+     the root lang matches, and stripped by bwNorm() so the EN/DE panel still
+     lists the English, not the English plus its own translation. */
+  const mk = (txt, cls, key, glosses) => {
     const b = document.createElement('button');
     b.className = 'match-item ' + cls;
-    b.textContent = txt;
+    b.appendChild(document.createTextNode(txt));
     b.dataset.key = key;
+    (glosses || []).forEach(([lang, label, text]) => {
+      if (!text) return;
+      const s = document.createElement('span');
+      s.className = 'sup';
+      s.dataset.lang = lang;
+      const tag = document.createElement('b');
+      tag.textContent = label;
+      const body = document.createElement('span');
+      body.innerHTML = text;
+      s.append(tag, body);
+      b.appendChild(s);
+    });
     return b;
   };
-  pairs.forEach(p => terms.appendChild(mk(p.dataset.term, 'term', p.dataset.term)));
+  const gl = (p, side) => [['es', 'ES', p.dataset[side + 'Es']],
+                           ['de', 'DE', p.dataset[side + 'De']]];
+  pairs.forEach(p => terms.appendChild(
+    mk(p.dataset.term, 'term', p.dataset.term, gl(p, 'term'))));
   shuffled(pairs)
-    .forEach(p => defs.appendChild(mk(p.dataset.def, 'def', p.dataset.term)));
+    .forEach(p => defs.appendChild(
+      mk(p.dataset.def, 'def', p.dataset.term, gl(p, 'def'))));
   grid.replaceChildren(terms, defs);
 
   let picked = null, done = 0;
@@ -2876,7 +3056,19 @@ slides.filter(s => s.dataset.type === 'order').forEach(slide => {
   const answer = box.dataset.answer.split('|').map(x => x.trim());
   const target = document.createElement('div'); target.className = 'order-target';
   const pool   = document.createElement('div'); pool.className   = 'order-pool';
-  shuffled(answer.map((txt, i) => ({ txt, i })))
+  /* A FAIR SHUFFLE CAN DEAL THE ANSWER. With four chunks, Fisher-Yates lands
+     on the solved order 1 time in 24, and the learner is handed a finished
+     sentence to "build". Innes met exactly that on Present Simple 2 slide 18:
+     "first | you | mine | the ore ." in answer order. Measured over 12 loads
+     the shuffle is uniform and healthy - which is the problem, not the excuse.
+     Re-deal while the order is the answer. Bounded, and skipped for a
+     one-chunk sentence, which has no other order to offer. */
+  let deal = answer.map((txt, i) => ({ txt, i }));
+  for (let tries = 0; tries < 12; tries++) {
+    deal = shuffled(answer.map((txt, i) => ({ txt, i })));
+    if (answer.length < 2 || deal.some((c, i) => c.i !== i)) break;
+  }
+  deal
         .forEach(({ txt, i }) => {
           const b = document.createElement('button');
           b.className = 'chunk';
@@ -3502,6 +3694,65 @@ else ready();
   function lang() { return document.documentElement.lang || 'en'; }
   function active() { return document.querySelector('.slide.is-active'); }
 
+  /* THE PANEL WAS EMPTY ON A THIRD OF THE LINE, AND IT WAS LOOKING IN ONE
+     PLACE ONLY. Innes: "ENG/DE button skimps on duties a lot". Measured
+     across the eighteen Block Camp decks in German: 137 of 414 slides opened
+     the panel and were told "nothing here is English-only" - and the empty
+     ones are almost always slides 1-8, the TEACH slides.
+
+     The reason is SEL. It lists the exercise shapes - stems, options, chips,
+     sort items, match items - because those are what the DICTIONARY holds.
+     A teach slide's prose is not in the dictionary at all. But it is not
+     untranslated: it carries its ES/DE gloss inline, in a .sup, right there
+     in the markup. The panel simply never looked at them.
+
+     So the dictionary is now the first source and the slide's own glosses are
+     the second. Each visible .sup is paired with the English of the element
+     it hangs off - the example list, the paradigm head, the stem - and listed
+     like any other row. Nothing new to author: this is the deck showing what
+     it already says.
+
+     It also rescues the two passive decks, which are the worst on the line
+     (7 and 15 strings covered out of 86 and 88) because they take their
+     chassis, and therefore their dictionary, from the ACTIVE camp they
+     descend past - so almost nothing in it matches their own sentences. */
+  function glossRows(s, L, seen, rows) {
+    var esc = function (t) { return t.replace(/&/g, '&amp;').replace(/</g, '&lt;'); };
+    var add = function (en, de) {
+      if (!en || !de || seen[en]) return;
+      seen[en] = 1;
+      rows.push('<div class="tr-row"><span>' + esc(en) + '</span><span>' + esc(de) + '</span></div>');
+    };
+    [].forEach.call(s.querySelectorAll('.sup[data-lang="' + L + '"]'), function (sup) {
+      if (!sup.offsetParent && getComputedStyle(sup).display === 'none') return;
+      var host = sup.parentElement;
+      if (!host) return;
+      var de = (sup.querySelector('span') || sup).textContent.replace(/\s+/g, ' ').trim();
+      if (!de) return;
+      /* AN EXAMPLE LIST IS A LIST ON BOTH SIDES, AND norm() FLATTENS IT.
+         Its first output read "yesterdaylast nightin 1990when I was a child"
+         against the whole German line - one unreadable row that also repeated
+         four rows the dictionary had already given individually. The gloss is
+         written with the same middots and in the same order as the chips, so
+         when the two sides count the same they are paired one to one, and
+         anything already listed is skipped. Only a mismatch falls back to the
+         single joined row, which is still better than nothing. */
+      var list = host.querySelector('.exlist');
+      if (list) {
+        var chips = [].map.call(list.children, function (c) {
+          return (c.textContent || '').replace(/\s+/g, ' ').trim(); });
+        var parts = de.split(/\s*[\u00b7\u2022]\s*/).filter(Boolean);
+        if (chips.length && chips.length === parts.length) {
+          chips.forEach(function (c, i) { add(c, parts[i]); });
+          return;
+        }
+        add(chips.join(' \u00b7 '), de);
+        return;
+      }
+      add(norm(host), de);
+    });
+  }
+
   function render() {
     var L = lang(), dict = TR[L] || {}, s = active();
     var seen = {}, rows = [];
@@ -3512,6 +3763,7 @@ else ready();
       rows.push('<div class="tr-row"><span>' + k.replace(/&/g, '&amp;').replace(/</g, '&lt;') +
                 '</span><span>' + dict[k] + '</span></div>');
     });
+    if (s && L !== 'en') glossRows(s, L, seen, rows);
     panel.innerHTML = '<h4>' + (L === 'de' ? 'Auf Deutsch' : L === 'es' ? 'En español' : 'Translation') + '</h4>' +
       (rows.length ? '<div class="tr-grid">' + rows.join('') + '</div>'
                    : '<p class="tr-empty">' +
@@ -3556,6 +3808,30 @@ document.addEventListener('click', function (e) {
   var on = panel.classList.toggle('show');
   b.classList.toggle('on', on);
 });
+</script>
+<script>
+/* Draws the eye to the language switch until it is used once. See .bw-notice
+   in the stylesheet for why. Storage is wrapped: a browser with site data
+   blocked throws on both read and write, and that must not cost the deck its
+   boot. Worst case there, the ring simply shows every visit. */
+(function () {
+  var KEY = 'bw-lang-used', seen = null;
+  try { seen = localStorage.getItem(KEY); } catch (e) {}
+  if (seen) return;
+  var els = ['langSelect', 'bwTrBtn']
+    .map(function (id) { return document.getElementById(id); })
+    .filter(Boolean);
+  if (!els.length) return;
+  els.forEach(function (el) { el.classList.add('bw-notice'); });
+  function done() {
+    els.forEach(function (el) { el.classList.remove('bw-notice'); });
+    try { localStorage.setItem(KEY, '1'); } catch (e) {}
+  }
+  els.forEach(function (el) {
+    el.addEventListener('change', done);
+    el.addEventListener('click', done);
+  });
+})();
 </script>
 </body>
 </html>

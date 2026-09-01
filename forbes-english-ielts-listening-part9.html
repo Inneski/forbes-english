@@ -594,6 +594,18 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
 .match-item.picked { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 22%, var(--surface2)); }
 .match-item.done { opacity: .45; cursor: default; border-color: var(--ok); }
 .match-item.miss { border-color: var(--no); animation: shake .3s; }
+/* A GLOSSED MATCH ITEM IS TWO LINES, AND TWELVE OF THEM DO NOT FIT.
+   In English slide 16 of Present Continuous 2b ends 8px clear of the rail;
+   in German every item grows a second line and the last row lands BEHIND
+   the progress bar. check-lesson.js measures the page in English, so its
+   LAYOUT gate passed it - noted in docs/HANDOFF.md, because a deck can now
+   overflow in a language the gate never renders.
+   The glossed variant gives back what it costs: tighter rows, a tighter
+   gloss, and no change to a single-line item anywhere else on the site. */
+.match-item:has(> .sup) { padding: 7px 14px; }
+.match-item > .sup { margin-top: 2px; font-size: 12.5px; line-height: 1.35; }
+.match-col:has(.match-item > .sup) { gap: 5px; }
+.match-grid:has(.match-item > .sup) { gap: 10px; }
 @keyframes shake { 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
 
 /* ── ORDERING (build the sentence) ───────────────────────────────────
@@ -907,6 +919,24 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
 .cover-title, .cover-sub { width: fit-content; margin-inline: auto; max-width: 100%; }
 .cover-sub { padding-inline: 0.22em; }
 .score-big { width: fit-content; }
+/* ── THE RESULTS PANELS OVERLAPPED, AND THE SPREAD IS WHY ─────────────
+   Every plate on this page is grown with `box-shadow: 0 0 0 0.34em` rather
+   than padding (see the note above - padding tipped the cover subtitle onto
+   a second line). At the score's 84px that spread is 28.5px in each
+   direction, and the panel under it is 18px away: the score plate and the
+   message plate paint into each other, and "Now use it" 14px below sits
+   inside both. Innes, on Past Simple 21: "text box overlap".
+   The gaps now exceed the spread they have to clear. The same fix is in
+   lesson-template/descent/build_descent.py for the Part II decks; this is
+   Part I catching up with it.
+
+   The empty message plate goes too. Before anything is answered #scoreMsg
+   has no text, and an empty plate is not nothing - it is a 28px dark square
+   floating under the score with no explanation. */
+.slide[data-type="results"] .score-big { margin-bottom: 10px; }
+.slide[data-type="results"] #scoreMsg  { margin-top: 34px !important; max-width: 34ch; }
+.slide[data-type="results"] #scoreMsg:empty { display: none; }
+.slide[data-type="results"] .slide-body > .prose.dim { margin-top: 34px !important; }
 
 /* A transparent background is a hole in the plate. .btn was
    `background: transparent` and .bank-chip a 16% tint of --accent into
@@ -942,6 +972,30 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
    large text. --surface as the label takes the same pair to 5.00:1. */
 html[data-theme="light"] .btn-solid { color: var(--surface); }
 html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 92%, transparent); }
+
+/* ── FIRST-RUN HINT ON THE LANGUAGE SWITCH ────────────────────────────────
+   Innes, about a control that has been shipping on every lesson for months:
+   "I didnt know the ENG/DE button existed." A control nobody finds is a
+   control that is not there, and the whole translation layer - every gloss,
+   every EN/DE panel - sits behind this one.
+
+   So it announces itself, ONCE. The ring pulses until the first interaction
+   and is then off for good (localStorage), because a control that keeps
+   pulsing after you have used it stops reading as an invitation and starts
+   reading as an error. Reduced-motion gets the accent border without the
+   animation - still findable, nothing moving. */
+@keyframes bw-notice {
+  0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 60%, transparent); }
+  70%  { box-shadow: 0 0 0 7px color-mix(in srgb, var(--accent) 0%, transparent); }
+  100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 0%, transparent); }
+}
+.lang-select.bw-notice, .tr-btn.bw-notice {
+  border-color: var(--accent) !important;
+  animation: bw-notice 2.2s ease-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lang-select.bw-notice, .tr-btn.bw-notice { animation: none; }
+}
 </style>
 </head>
 <body>
@@ -1731,16 +1785,43 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
   const terms = document.createElement('div');
   const defs = document.createElement('div');
   terms.className = defs.className = 'match-col';
-  const mk = (txt, cls, key) => {
+  /* A MATCH SLIDE WAS THE ONE EXERCISE WITH NOWHERE TO PUT A TRANSLATION.
+     Every other shape carries its ES/DE gloss in the markup; this one builds
+     its items from data-term/data-def in JS, so there was no element to hang
+     one on and the slide simply had none. Innes, on Present Continuous 2b
+     slide 16: "translate words underneath".
+
+     Optional and backward-compatible: a pair with no data-term-es/-de and no
+     data-def-es/-de renders exactly the button it rendered before. The gloss
+     goes in a .sup, which is the site's existing mechanism - hidden unless
+     the root lang matches, and stripped by bwNorm() so the EN/DE panel still
+     lists the English, not the English plus its own translation. */
+  const mk = (txt, cls, key, glosses) => {
     const b = document.createElement('button');
     b.className = 'match-item ' + cls;
-    b.textContent = txt;
+    b.appendChild(document.createTextNode(txt));
     b.dataset.key = key;
+    (glosses || []).forEach(([lang, label, text]) => {
+      if (!text) return;
+      const s = document.createElement('span');
+      s.className = 'sup';
+      s.dataset.lang = lang;
+      const tag = document.createElement('b');
+      tag.textContent = label;
+      const body = document.createElement('span');
+      body.innerHTML = text;
+      s.append(tag, body);
+      b.appendChild(s);
+    });
     return b;
   };
-  pairs.forEach(p => terms.appendChild(mk(p.dataset.term, 'term', p.dataset.term)));
+  const gl = (p, side) => [['es', 'ES', p.dataset[side + 'Es']],
+                           ['de', 'DE', p.dataset[side + 'De']]];
+  pairs.forEach(p => terms.appendChild(
+    mk(p.dataset.term, 'term', p.dataset.term, gl(p, 'term'))));
   shuffled(pairs)
-    .forEach(p => defs.appendChild(mk(p.dataset.def, 'def', p.dataset.term)));
+    .forEach(p => defs.appendChild(
+      mk(p.dataset.def, 'def', p.dataset.term, gl(p, 'def'))));
   grid.replaceChildren(terms, defs);
 
   let picked = null, done = 0;
@@ -2465,6 +2546,30 @@ updateScoreChip();
 const ready = () => document.body.classList.add('fonts-ready');
 if (document.fonts && document.fonts.ready) { document.fonts.ready.then(ready); setTimeout(ready, 1500); }
 else ready();
+</script>
+<script>
+/* Draws the eye to the language switch until it is used once. See .bw-notice
+   in the stylesheet for why. Storage is wrapped: a browser with site data
+   blocked throws on both read and write, and that must not cost the deck its
+   boot. Worst case there, the ring simply shows every visit. */
+(function () {
+  var KEY = 'bw-lang-used', seen = null;
+  try { seen = localStorage.getItem(KEY); } catch (e) {}
+  if (seen) return;
+  var els = ['langSelect', 'bwTrBtn']
+    .map(function (id) { return document.getElementById(id); })
+    .filter(Boolean);
+  if (!els.length) return;
+  els.forEach(function (el) { el.classList.add('bw-notice'); });
+  function done() {
+    els.forEach(function (el) { el.classList.remove('bw-notice'); });
+    try { localStorage.setItem(KEY, '1'); } catch (e) {}
+  }
+  els.forEach(function (el) {
+    el.addEventListener('change', done);
+    el.addEventListener('click', done);
+  });
+})();
 </script>
 </body>
 </html>
