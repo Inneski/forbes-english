@@ -240,7 +240,7 @@ def main(decks):
             # tense-in-situ, added with the contrast slides. Listed here for
             # the same reason .t-past was: a class the gate has not been told
             # about is a class it cannot catch shipping unstyled.
-            't-ps', 't-pc', 't-pastc', 't-gt', 't-fs', 't-pperf', 'verb'}
+            't-ps', 't-pc', 't-pastc', 't-gt', 't-fs', 't-pperf', 'verb', 'neg'}
         for c in sorted(used - styled):
             findings.append((name, 'ORPHAN', 'class .%s is used on a slide but no rule colours it' % c))
 
