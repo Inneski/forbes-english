@@ -105,7 +105,7 @@ sec('teach', B % 'bg37.jpg', 'left', 'top',
        gloss('Prefieres no decir qui&eacute;n', 'Man will nicht sagen, wer')),
     ], 'this is the voice of history, and of an excuse')),
 
-sec('teach', B % 'bg25.jpg', 'right', 'top',
+sec('teach', B % 'bg25.jpg', 'left', 'top',
     head('Time signals', 'Words that close the door') + '\n' +
     cards([
       ('A named time', 'The sentence says exactly when.',
@@ -119,7 +119,7 @@ sec('teach', B % 'bg25.jpg', 'right', 'top',
     ]),
     'data-w="wide" style="--wcols:2"'),
 
-sec('teach', B % 'bg28.jpg', 'left', 'top',
+sec('teach', B % 'bg28.jpg', 'right', 'top',
     head('The doer', '&lsquo;by&rsquo; is optional here too') + '\n' +
     para([
       ('Keep it when the doer is the news',
@@ -213,7 +213,7 @@ match(B % 'bg29.jpg', 'left', 'top', 'Match the active to its passive',
         'los diamantes fueron encontrados', 'die Diamanten wurden gefunden')],
       'The object of the active is always the subject of the passive.'),
 
-gap(1, 2, B % 'bg23.jpg', 'right', 'top', 'Write the third form',
+gap(1, 2, B % 'bg23.jpg', 'left', 'top', 'Write the third form',
     'Type the verb in brackets in its third form, not its second.',
     [('The bridge was ', 'broken', '. <span class="dim">(break)</span>',
       'Not &lsquo;broke&rsquo; &mdash; that is the second form.', 170,
@@ -225,7 +225,7 @@ gap(1, 2, B % 'bg23.jpg', 'right', 'top', 'Write the third form',
       'eat &rarr; ate &rarr; eaten. Not &lsquo;ate&rsquo;.', 170,
       'El pan fue ______. (comer)', 'Das Brot wurde ______. (essen)')]),
 
-gap(2, 2, B % 'bg36.jpg', 'left', 'top', '&lsquo;was&rsquo;, or &lsquo;were&rsquo;?',
+gap(2, 2, B % 'bg36.jpg', 'right', 'top', '&lsquo;was&rsquo;, or &lsquo;were&rsquo;?',
     'Look at the thing in front, not at the doer.',
     [('The torches ', 'were', ' lit by Alex.', 'Torches is plural.', 130,
       'Las antorchas ______ encendidas por Alex.',
@@ -241,7 +241,7 @@ order(B % 'bg30.jpg', 'right', 'top', 'the wall | was | built | in 1990 .',
       'The thing, then was, then the third form, then the time.',
       'El muro fue construido en 1990.', 'Die Mauer wurde 1990 gebaut.'),
 
-order(B % 'bg34.jpg', 'left', 'top',
+order(B % 'bg34.jpg', 'right', 'top',
       'the bridge | was | broken | by a creeper .',
       '&lsquo;by&rsquo; and the doer come last, after the participle.',
       'El puente fue roto por un creeper.',

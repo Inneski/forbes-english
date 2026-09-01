@@ -113,10 +113,15 @@ sec('teach', B % 'bg16.jpg', 'right', 'top',
        gloss('ahora &middot; ahora mismo &middot; en este momento &middot; actualmente',
              'jetzt &middot; gerade jetzt &middot; im Moment &middot; zurzeit')),
       ('Look and listen', 'Tell someone to notice it happening.',
-       ['Look!', 'Listen!', 'still'],
-       gloss('&iexcl;Mira! &middot; &iexcl;Escucha! &middot; todav&iacute;a',
-             'Schau! &middot; H&ouml;r mal! &middot; noch immer')),
+       ['Look!', 'Listen!'],
+       gloss('&iexcl;Mira! &middot; &iexcl;Escucha!',
+             'Schau! &middot; H&ouml;r mal!')),
+      ('Not finished yet', 'It started before now and has not stopped.',
+       ['still'],
+       gloss('todav&iacute;a', 'noch immer')),
     ]),
+    # Three cards in a two-column grid: the third wraps to its own row rather
+    # than squeezing all three into 64% of the canvas.
     'data-w="wide" style="--wcols:2"'),
 
 sec('teach', B % 'bg09.jpg', 'left', 'top',
@@ -150,7 +155,7 @@ mc(2, 6, B % 'bg06.jpg', 'right', 'top', 'Choose the passive',
 
 # The being/been question, asked rather than told. Its distractor is the exact
 # confusion the teach slide names, so a wrong click lands on the explanation.
-mc(3, 6, B % 'bg20.jpg', 'right', 'bottom', '&lsquo;being&rsquo;, or &lsquo;been&rsquo;?',
+mc(3, 6, B % 'bg20.jpg', 'right', 'top', '&lsquo;being&rsquo;, or &lsquo;been&rsquo;?',
    'The bridge is ______ repaired at the moment.', 'being',
    [('been', '&lsquo;been&rsquo; needs has or have in front, not &lsquo;is&rsquo;.'),
     ('be', 'That would need &lsquo;will&rsquo; in front of it.'),

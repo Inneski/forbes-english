@@ -54,49 +54,62 @@ ROOT = os.path.abspath(os.path.join(HERE, '..', '..'))
 # ── three new roles, in the same discipline as --mark-aux ────────────────
 # Why each is what it is, in the block below the declaration.
 MARKS = """  --mark-pp: #b39bf5;
-  --mark-obj: #f65af6;
-  --mark-agent: #cfe8d8;
+  --mark-obj: #909294;
+  --mark-agent: #ffffff;
   --t-present-simple: #7A93B5;
   --t-present-continuous: #E66085;
   --t-past-simple: #B08968;
   --t-past-continuous: #F1D779;
   --t-going-to: #70A43A;
   --t-future-simple: #F0723F;
-  --t-present-perfect: #589784;"""
+  --t-present-perfect: #70E0E0;"""
 
 # THREE ROLES, AND THE PASSIVE IS THE MOVE BETWEEN THEM.
 #
-#   --mark-pp     the past participle. Every passive is BE + participle; the
-#                 auxiliary already owns green, so the other half takes hue
-#                 265, far from aux green (148), from the modal, and from all
-#                 thirteen tense accents. Innes: if a participle is purple
-#                 then the WORDS "past participle" and "third form" are purple
-#                 too, wherever they are written. A label for a role wears the
-#                 role's colour or the reader has to learn the rule twice.
+#   --mark-pp     the past participle, hue 265. Every passive is BE +
+#                 participle, and the participle is the half that never
+#                 changes, so it is the one colour that holds across all seven
+#                 chains. Innes: if a participle is purple then the WORDS
+#                 "past participle" and "third form" are purple too, wherever
+#                 they are written. A label for a role wears the role's colour
+#                 or the reader has to learn the rule twice.
 #
 #   --mark-obj    the object of the active - which is the subject of the
 #                 passive. ONE colour for BOTH, because they are the same
 #                 thing in two places, and seeing it move is the lesson.
 #
-#   --mark-agent  the doer. Greenish white: present when it matters, quiet
-#                 enough to look droppable, which is what it usually is.
+#   --mark-agent  the doer.
 #
-# THE RULING, AND IT WAS OVERDUE. The object used to be #ffd633, a yellow,
-# against --mark-inf's #eec32f: 1.4 degrees apart in hue, CIE76 deltaE 8.5.
-# They never shared a slide while the descent had two decks, but Going To
-# Passive and Future Simple Passive put a bare verb and an object on the same
-# page, and a learner would have had to tell them apart at deltaE 8.5.
+# THE SECOND RULING, 2026-09-01. Innes, on two shipped stations at once:
+# "white = the agent / grey = the thing / is/are being = pink / past
+# participle = purple / has/have been = turquoise / past simple= brown".
 #
-# THE INFINITIVE DID NOT MOVE. Gold is the bare verb on three Part I decks and
-# 46 separate words; the object exists only in the eight descent decks, two of
-# them built. Moving the newer role costs less and breaks nothing published.
+# The agent goes to pure white (#ffffff) from a greenish white, and the object
+# from magenta to a neutral grey. That reads as a demotion of the magenta and
+# it is: the magenta was searched for and won on deltaE, but it won a contest
+# about telling roles apart, and the roles are no longer what carries the
+# lesson. The chains are. A saturated magenta beside a pink auxiliary and a
+# purple participle is three loud colours in one sentence; white and grey put
+# the two nouns in the background where a passive sentence wants them and let
+# the chain be the thing you see.
 #
-# The magenta was searched for, not picked: every hue at three lightnesses and
-# three saturations, scored on its smallest deltaE against all nine fixed
-# roles AND every deck accent in the line, rejecting anything under 4.5:1 on
-# any surface. #f65af6 won at min deltaE 50.5 - which is its distance from the
-# participle purple, the one it shares a line with on every passive sentence.
-# Six times the collision it replaces. Gold 144.9, green 155.0, agent 106.8.
+# The grey is #909294 - solved, not picked. It clears 4.5:1 on the darkest of
+# the eight descent surfaces at 5.24:1 (every one of them was measured) and
+# sits 189 in RGB distance from the agent white, which is the only colour it
+# has to be told apart from at a glance.
+#
+# TURQUOISE FOR THE PRESENT PERFECT, AND IT OVERRULES THE PALETTE. Camp 7 is
+# #2E7D65 in lesson-template/tense-palette.css and that is what the route map
+# and the camp page wear. It fails on a dark deck (3.3:1) and Innes asked for
+# turquoise by name. #70E0E0 was searched the same way the magenta was: the
+# cyan band at every saturation and value, rejecting anything under 4.5:1 on
+# any of the eight surfaces, scored on its smallest deltaE against all the
+# fixed roles and every tense accent. It clears 10.5:1 at worst and sits 83
+# from camp 8's teal, its nearest neighbour. The descent deviates from the
+# palette here; Part I does not.
+#
+# THE INFINITIVE DID NOT MOVE, EITHER TIME. Gold is the bare verb on three
+# Part I decks and 46 separate words.
 ROLE_CSS = """
 /* One colour per job. See the MARKS block above for why each is what it is. */
 .pp    { color: var(--mark-pp) !important;    font-weight: 700; }
@@ -148,6 +161,16 @@ ROLE_CSS = """
 .t-gt    { color: var(--t-going-to) !important;           font-weight: 700; }
 .t-fs    { color: var(--t-future-simple) !important;      font-weight: 700; }
 .t-pperf { color: var(--t-present-perfect) !important;    font-weight: 700; }
+
+/* ── THE EYEBROW TAKES THE COLOUR THE AUXILIARIES GAVE UP ────────────
+   Innes: "headings like 'The form' can be green". Green was the auxiliary's
+   for the whole line and is now nobody's - every chain wears its own tense -
+   so it is free, and an eyebrow is exactly what it should go to: it labels
+   the slide without competing with anything inside it, and one steady colour
+   across all eight stations makes the deck's spine legible at a glance.
+   #46d98a still ships as --mark-aux on all 24 decks, so Part I is unaffected
+   and the token keeps its name and its meaning there. */
+.slide .eyebrow { color: var(--mark-aux); }
 
 /* THE RESULTS SLIDE STACKED THREE PANELS WITH 18px BETWEEN THEM, so the score
    plate and the message plate read as one overlapping box - Innes: "Now use
@@ -243,6 +266,61 @@ def rescore(tail, messages):
 PART_LINK = re.compile(r'<a class="part-link"[^>]*>.*?</a>', re.S)
 
 
+# ── THE CHAIN CARRIES ITS OWN TENSE'S COLOUR, EVERYWHERE ────────────────
+# Innes, on two shipped stations at once: "we need a better color coding
+# system / white = the agent / grey = the thing / is/are being = pink / past
+# participle = purple / has/have been = turquoise / past simple= brown".
+#
+# The old system answered "what JOB is this word doing" - one green for every
+# auxiliary in the line. On a descent where the whole point is which tense the
+# chain is in, that is the one question the learner never needs answered: they
+# can see it is an auxiliary. What they cannot see is which tense, and the
+# trail already taught them a colour for each.
+#
+# So the tense colours stop being a contrast-slide special case and become the
+# system. The mapping below is the whole auxiliary vocabulary of the eight
+# stations, taken from the sources rather than imagined - grep the .aux spans
+# and this is the complete list. Anything not in it keeps role green, so a new
+# word cannot go unstyled; check-colour-roles.py's ORPHAN gate still watches.
+#
+# NOT the participle: it stays purple in every chain. It is the constant, and
+# a learner who sees purple at the end of all seven has learned the rule the
+# decks exist to teach.
+#
+# 'being' and 'been' on their own are the words the station-10 and station-15
+# slides are ABOUT, and each belongs to exactly one chain, so they take that
+# chain's colour: being pink, been turquoise. That is the answer to the slide's
+# own question in the colour of the answer.
+AUX_TENSE = {
+    't-ps':    ['am', 'is', 'are', "isn't", "aren't"],
+    't-pc':    ['is being', 'are being', "isn't being", "aren't being", 'being'],
+    't-past':  ['was', 'were', "wasn't", "weren't", 'did', 'was been'],
+    't-pastc': ['was being', 'were being', "wasn't being", "weren't being"],
+    't-pperf': ['has', 'have', 'has been', 'have been',
+                "hasn't been", "haven't been", 'been'],
+    't-gt':    ['is going to', 'are going to', 'going to', 'is going to be',
+                "isn't going to", "aren't going to"],
+}
+AUX_LOOKUP = {w: cls for cls, words in AUX_TENSE.items() for w in words}
+AUX_SPAN = re.compile(r'<em class="aux">([^<]*)</em>')
+
+
+def tense_in_situ(html):
+    """Recolour every auxiliary span by the tense of the chain it belongs to."""
+    def swap(m):
+        # A named word wears inverted commas, and the closing one is the
+        # SAME entity as the apostrophe in isn't - so strip the pair that
+        # wraps the word before turning what is left into an apostrophe,
+        # or 'is' normalises to "is'" and matches nothing.
+        word = m.group(1).replace('&nbsp;', ' ').strip()
+        if word.startswith('&lsquo;') and word.endswith('&rsquo;'):
+            word = word[len('&lsquo;'):-len('&rsquo;')]
+        word = word.replace('&rsquo;', "'").strip().lower()
+        cls = AUX_LOOKUP.get(word)
+        return m.group(0) if not cls else m.group(0).replace('class="aux"', 'class="%s"' % cls, 1)
+    return AUX_SPAN.sub(swap, html)
+
+
 def retarget_part_link(out, st):
     link = ('<a class="part-link" id="partLink" href="block-camp-descent-map.html">'
             'Descent map</a>')
@@ -268,7 +346,8 @@ def build(st):
     head = head.replace('.aux { color: var(--mark-aux) !important; font-weight: 700; }',
                         '.aux { color: var(--mark-aux) !important; font-weight: 700; }' + ROLE_CSS, 1)
     tail = rescore(tail, st.get('messages', {}))
-    out = head + '\n\n    '.join([cover(cov, st)] + st['slides']) + tail
+    body = tense_in_situ('\n\n    '.join([cover(cov, st)] + st['slides']))
+    out = head + body + tail
     out = retarget_part_link(out, st)
     path = os.path.join(ROOT, st['file'])
     open(path, 'w', encoding='utf-8').write(out)

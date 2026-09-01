@@ -98,7 +98,7 @@ sec('teach', B % 'bg16.jpg', 'left', 'top',
       ('Because the auxiliary belongs to the TENSE',
        [('', 'pick the voice, and the chain writes itself')],
        gloss('El auxiliar pertenece al tiempo', 'Das Hilfsverb geh&ouml;rt zur Zeit')),
-    ], 'choose the <em class="obj">voice</em>, then the <em class="aux">tense</em> &mdash; '
+    ], 'choose the <b>voice</b>, then the <b>tense</b> &mdash; '
        'never the other way round')),
 
 sec('teach', B % 'bg09.jpg', 'right', 'top',

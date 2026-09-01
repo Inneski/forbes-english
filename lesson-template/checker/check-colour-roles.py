@@ -71,12 +71,21 @@ ALLOW = {
         "perfect. English genuinely overlaps here; the slide is right.",
 }
 
+# ── THE AUXILIARY IS NO LONGER ALWAYS GREEN ─────────────────────────────
+# The descent recolours every auxiliary chain by its own tense, so the three
+# gates below - which all keyed on class="aux" - matched nothing on eight decks
+# the moment that shipped. A gate that silently stops looking is worse than no
+# gate, so they match the tense classes too. Keep this list and
+# build_descent.py's AUX_TENSE in step: a class in one and not the other is a
+# blind spot in exactly the place the checker exists to watch.
+AUXC = r'(?:aux|t-ps|t-pc|t-past|t-pastc|t-pperf|t-gt|t-fs)'
+
 ADV = (r'(?:just|already|never|ever|still|not|recently|lately|only|always|'
        r'nearly|almost|finally|yet)')
 AUX_THEN_WORD = re.compile(
-    r'<em class=\\?"aux\\?">[^<]*</em>'
+    r'<em class=\\?"%s\\?">[^<]*</em>'
     r'(?:\s*(?:<em>%s</em>|%s))*'
-    r'\s+([a-z]+)\b' % (ADV, ADV))
+    r'\s+([a-z]+)\b' % (AUXC, ADV, ADV))
 
 RED, GRN, DIM = '\x1b[31m%s\x1b[0m', '\x1b[32m%s\x1b[0m', '\x1b[2m%s\x1b[0m'
 
@@ -125,15 +134,15 @@ GLOSS = re.compile(r'<span class=\\?"sup\\?"[^>]*>.*?</span>\s*</span>', re.S)
 # The tag, then the next word - through a closing </em>, a </b>, a <b>, an
 # adverb, whatever the markup puts between them.
 AUX_NEXT = re.compile(
-    r'<em class=\\?"aux\\?">([^<]*)</em>'
+    r'<em class=\\?"%s\\?">([^<]*)</em>'
     r'((?:</?[a-z][^>]*>|\s|&[a-z]+;)*)'
-    r'([A-Za-z\u2019\']*)')
+    r'([A-Za-z\u2019\']*)' % AUXC)
 
 
 def auxjob(name, body, findings, allowed):
     """.aux on a word that is not doing an auxiliary's job."""
     for m in GLOSS.finditer(body):
-        for g in re.finditer(r'<em class=\\?"aux\\?">([^<]*)</em>', m.group(0)):
+        for g in re.finditer(r'<em class=\\?"%s\\?">([^<]*)</em>' % AUXC, m.group(0)):
             findings.append((name, 'AUXJOB',
                              "'%s' is inside a translation gloss - a gloss is "
                              "not English grammar, so nothing in it is an "
@@ -141,7 +150,7 @@ def auxjob(name, body, findings, allowed):
     # A paradigm cell whose ENTIRE content is the be/have/do form is a verb
     # table, not a structure: "have -> had" lists the second form of a lexical
     # verb. That is the past-simple 'had' case.
-    for w in re.findall(r'<span class="para-verb"><em class=\\?"aux\\?">([^<]+)</em></span>', body):
+    for w in re.findall(r'<span class="para-verb"><em class=\\?"%s\\?">([^<]+)</em></span>' % AUXC, body):
         findings.append((name, 'AUXJOB',
                          "'%s' is the whole of a paradigm cell - a verb table "
                          "lists lexical forms, not auxiliaries" % w))

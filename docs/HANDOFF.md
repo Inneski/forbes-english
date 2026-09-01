@@ -174,6 +174,48 @@ band the subject occupies, checked by eye once per plate and stored the way
 exact rather than statistical. About 40 plates per camp, and roughly 25 have
 already been eyeballed in this session's commits.
 
+## The descent's colour system, 2026-09-01
+
+Innes replaced it wholesale, on two stations at once:
+
+> white = the agent / grey = the thing / is/are being = pink / past participle
+> = purple / has/have been = turquoise / past simple = brown
+
+**The chain now carries its own tense's colour, everywhere** - not just on the
+contrast grids where the idea started. One green for every auxiliary answered
+"what job is this word doing", and on a descent whose whole subject is which
+tense the chain is in, that is the one question a learner never needs answered.
+They can see it is an auxiliary. They cannot see which tense, and the trail
+already taught them a colour for each.
+
+It is **one central rule**, not eight hand-edits: `AUX_TENSE` in
+`build_descent.py` maps the complete auxiliary vocabulary of the eight stations
+(taken by grepping the sources, not imagined) and `tense_in_situ()` rewrites
+every span at build time. Anything not in the map keeps role green, so a new
+word cannot go unstyled. **Add a word to a station and add it to that map**, or
+it ships green in a deck where nothing else is.
+
+The participle stays purple in every chain. It is the constant the decks exist
+to teach.
+
+Two colours were solved rather than picked, both against all eight descent
+surfaces: the object grey `#909294` (5.24:1 at worst, 189 RGB from the agent
+white, which is the only thing it must be told apart from) and the present
+perfect turquoise `#70E0E0` (10.5:1 at worst, 83 from camp 8's teal). **The
+turquoise deviates from `tense-palette.css`**, which has camp 7 at `#2E7D65`:
+that value fails on a dark deck at 3.3:1, and Innes asked for turquoise by
+name. The route map and the camp page are unchanged; only the descent moves.
+
+Green is now the eyebrow's, on all eight stations - the auxiliaries vacated it
+and a slide label is what it should go to.
+
+**When you change this, change the checker with it.** `check-colour-roles.py`'s
+three aux-keyed gates all matched on `class="aux"`, so they silently matched
+nothing the moment the recolour shipped. They now match `AUXC`, which must stay
+in step with `AUX_TENSE`. Both were verified firing against a deliberately
+broken copy - a class with no rule, and a participle left untagged after a
+tense-coloured auxiliary.
+
 ## Still open
 
 - **Three slides' ink crosses the deck bar by ~4px** — present-perfect-2 18,
