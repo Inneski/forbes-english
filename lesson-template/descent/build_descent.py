@@ -228,6 +228,27 @@ def rescore(tail, messages):
     return tail
 
 
+# ── THE CHASSIS ALSO BRINGS THE CAMP'S PART 1 / PART 2 CHIP ─────────────
+# Each Block Camp I camp is two decks and they now link to each other from the
+# deck bar. A descent station is ONE deck, so that chip arrives meaning nothing
+# and pointing into Part I: the first rebuild after the chip shipped put
+# "Part 2 ->" on the Trial, aimed at Present Perfect Continuous Part 2.
+#
+# Deleting it would leave a station with no way out but the browser's back
+# button, so it is retargeted instead, at the thing a station actually has a
+# sibling relationship with: the descent route map. The data-i18n key is
+# dropped with it - the chassis dictionary still holds the CAMP's word for
+# "Part 2" in all three languages, and leaving the key would put that back on
+# screen the moment somebody chose Deutsch. Same trap as the cover chips.
+PART_LINK = re.compile(r'<a class="part-link"[^>]*>.*?</a>', re.S)
+
+
+def retarget_part_link(out, st):
+    link = ('<a class="part-link" id="partLink" href="block-camp-descent-map.html">'
+            'Descent map</a>')
+    return PART_LINK.sub(link, out)
+
+
 def build(st):
     head, cov, tail = split(os.path.join(ROOT, st['chassis']))
     # THE CHASSIS BRINGS THE CAMP'S SEO BLOCK WITH IT, AND IT IS POISON.
@@ -248,6 +269,7 @@ def build(st):
                         '.aux { color: var(--mark-aux) !important; font-weight: 700; }' + ROLE_CSS, 1)
     tail = rescore(tail, st.get('messages', {}))
     out = head + '\n\n    '.join([cover(cov, st)] + st['slides']) + tail
+    out = retarget_part_link(out, st)
     path = os.path.join(ROOT, st['file'])
     open(path, 'w', encoding='utf-8').write(out)
     return path

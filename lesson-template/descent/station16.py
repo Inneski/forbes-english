@@ -135,7 +135,7 @@ sec('teach', B % 'bg28.jpg', 'left', 'top',
        gloss('tras has o have', 'nach has oder have')),
     ], 'the word in FRONT decides &mdash; it has decided every time on this descent')),
 
-sec('teach', B % 'bg30.jpg', 'right', 'top',
+sec('teach', B % 'bg30.jpg', 'left', 'top',
     head('The doer', 'Everything you have learned about &lsquo;by&rsquo;') + '\n' +
     para([
       ('Keep it &mdash; the doer is a surprise',
@@ -190,7 +190,7 @@ mc(3, 6, B % 'bg20.jpg', 'left', 'bottom', 'Which voice?',
    'Welcher Satz passt besser auf ein Schild?',
    why='Nobody needs telling who locks a gate, so the passive removes the noise.'),
 
-mc(4, 6, B % 'bg07.jpg', 'left', 'top', 'Which word?',
+mc(4, 6, B % 'bg07.jpg', 'right', 'top', 'Which word?',
    'The bridge has ______ repaired at last.', 'been',
    [('being', '&lsquo;being&rsquo; follows is, are, was or were &mdash; never has.'),
     ('be', '&lsquo;be&rsquo; follows a modal or &lsquo;going to&rsquo;.'),
@@ -228,7 +228,7 @@ sort(B % 'bg26.jpg', 'left', 'top', 'Which station does it come from?',
      'Present perfect looks back from now, so it sits with THEN &mdash; but the '
      'window it looks through is still open, which is why it can say &lsquo;so far&rsquo;.'),
 
-match(B % 'bg23.jpg', 'left', 'top', 'Match the sentence to its job',
+match(B % 'bg23.jpg', 'right', 'top', 'Match the sentence to its job',
       'Click a sentence, then click what it is doing.',
       [('The gate is locked at sunset.', 'a rule, every day',
         'La puerta se cierra al anochecer.', 'Das Tor wird bei Sonnenuntergang verschlossen.',

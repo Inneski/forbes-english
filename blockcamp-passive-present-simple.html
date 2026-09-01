@@ -493,6 +493,23 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
   border-radius: 6px; padding: 6px 10px; cursor: pointer;
 }
 .lang-select:focus { outline: 1px solid var(--accent); }
+/* ── THE OTHER HALF OF THE LESSON WAS UNREACHABLE FROM INSIDE IT ─────
+   Innes: "There should be an easier way to find part 2 without clicking on
+   'ALL 24 Lessons'". Every camp is two decks and neither linked to the other,
+   so the only route from Part 1 to Part 2 was out to the library and back in.
+   One chip in the deck bar, beside the language picker: always on screen,
+   never over the artwork, and it costs the composition nothing. */
+.part-link {
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em;
+  text-transform: uppercase; text-decoration: none; white-space: nowrap;
+  background: var(--scrim); color: var(--accent-bright);
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  border-radius: 6px; padding: 6px 10px;
+  transition: background .18s ease, color .18s ease;
+}
+.part-link:hover { background: color-mix(in srgb, var(--accent) 26%, var(--scrim));
+  color: var(--text); }
+.stage.on-cover .part-link { opacity: .9; }
 
 /* ── RESULTS ── */
 .score-big {
@@ -997,7 +1014,13 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
   --mark-pp: #b39bf5;
   --mark-obj: #f65af6;
   --mark-agent: #cfe8d8;
+  --t-present-simple: #7A93B5;
+  --t-present-continuous: #E66085;
   --t-past-simple: #B08968;
+  --t-past-continuous: #F1D779;
+  --t-going-to: #70A43A;
+  --t-future-simple: #F0723F;
+  --t-present-perfect: #589784;
 
   /* THE MODAL IS NOT AN AUXILIARY, AND THE LINE HAD BEEN PRETENDING IT WAS.
      8.34 painted every `am is are was were do does did have has had will`
@@ -1048,6 +1071,46 @@ em.aux, b.aux { color: var(--mark-aux) !important; font-weight: 700; }
    lesson-template/tense-palette.css - the brown a learner climbed past. */
 .t-past { color: var(--t-past-simple) !important; font-weight: 700; }
 
+/* ── TENSE IN SITU, ON THE SLIDES THAT SET TENSES AGAINST EACH OTHER ──
+   Innes: "Tenses in situ e.g. Past Continuous 'was being' or 'were walking'
+   should be in yellow as present simple is blue and past simple brown. e.g.
+   this page 'Is' blue 'is being' pink 'was' brown 'was being' yellow".
+
+   He was looking at station 12's second slide, where four chains sit in one
+   column - is / is being / was / was being - and every one of them was the
+   same role green, which is the one thing the slide is not about. Role colour
+   answers "what job is this word doing"; on that slide every learner already
+   knows the answer, and the question is "which tense is this". So on a
+   CONTRAST slide only, the auxiliary chain wears its own camp's colour from
+   lesson-template/tense-palette.css - the colour that camp's page, its route
+   marker and its descent station all already wear.
+
+   The participle stays purple in every row. It is the constant the slide is
+   built to show, and colouring it by tense would destroy the point.
+
+   Everywhere else, role colour is unchanged. This is not a new default.
+
+   TWO DEVIATIONS, BOTH DELIBERATE.
+
+   Present perfect ships as #2E7D65 and fails on a dark deck: 3.30:1 on
+   station 12's warm surface and 3.49:1 on the Trial's cool one. That is the
+   caution tense-palette.css writes down for its dark tokens, and its own
+   remedy - lighten toward white, keep the hue. Solved rather than guessed:
+   80% is the strongest mix that clears 4.5:1 on BOTH surfaces (4.81 and
+   5.09), and it also sits furthest from its two nearest neighbours in the
+   band that clears. #589784.
+
+   tense-palette.css says never more than three tense colours on one slide.
+   Station 16's grid has seven, because seven chains side by side IS that
+   slide. Overruled knowingly, once, on the one slide whose subject is the
+   set. */
+.t-ps    { color: var(--t-present-simple) !important;     font-weight: 700; }
+.t-pc    { color: var(--t-present-continuous) !important; font-weight: 700; }
+.t-pastc { color: var(--t-past-continuous) !important;    font-weight: 700; }
+.t-gt    { color: var(--t-going-to) !important;           font-weight: 700; }
+.t-fs    { color: var(--t-future-simple) !important;      font-weight: 700; }
+.t-pperf { color: var(--t-present-perfect) !important;    font-weight: 700; }
+
 /* THE RESULTS SLIDE STACKED THREE PANELS WITH 18px BETWEEN THEM, so the score
    plate and the message plate read as one overlapping box - Innes: "Now use
    it (overlapping boxes)". The panels are separated and the message is capped
@@ -1056,6 +1119,7 @@ em.aux, b.aux { color: var(--mark-aux) !important; font-weight: 700; }
 .slide[data-type="results"] #scoreMsg  { margin-top: 26px !important; max-width: 34ch; }
 .slide[data-type="results"] .slide-body > .prose.dim { margin-top: 22px !important; }
 
+.verb { color: var(--mark-inf) !important; font-weight: 700; font-style: normal; }
 em.modal, b.modal { color: var(--mark-modal) !important; font-weight: 700; }
 em.inf, b.inf { color: var(--mark-inf) !important; font-weight: 700; }
 em.t-present, b.t-present { color: var(--t-present-simple) !important;
@@ -1484,8 +1548,22 @@ em.t-present, b.t-present { color: var(--t-present-simple) !important;
    canvas, so they get a wider column rather than none. */
 .slide[data-type="activate"] .slide-body,
 .slide[data-type="activate"] .slide-head { width: auto; margin-left: 0; margin-right: 0; }
+/* 76% put the chip bank and the feedback line at x=940 on a 1280 canvas -
+   past the column, across the plate, and straight over whoever is standing on
+   the far side. Innes on Present Simple 15: "move the position on the screen
+   to stop overlap", and in the same note that 'every weekend' should wrap
+   under 'at weekends', which is what happens once the bank is inside its own
+   column instead of sprawling across the frame.
+   58% is not a taste: three 210px bins and two 14px gaps need 658px, and 58%
+   of the 1152px content box is 668. Wide enough to hold the widest mechanic
+   in the line, and nothing over. */
 .slide[data-side][data-type="sort"] .slide-body,
-.slide[data-side][data-type="sort"] .slide-head { width: 76%; }
+.slide[data-side][data-type="sort"] .slide-head { width: var(--col-w, 58%); }
+/* var(), not a bare 58%, because three boards in the line hold more chips
+   than the others and wrap to an extra row inside it - past-simple-2 15 and
+   present-simple-2 13 in German, present-continuous-2 15 in all three - and
+   an extra row is 46px into the deck bar. Those three carry --col-w inline.
+   Everything else stays in its column. */
 /* Match and sort rows are short phrases. Left at column width they render as
    long thin bars laid across the artwork, which is the "16 too long box". */
 .match-item, .sort-item { width: fit-content; max-width: 100%; }
@@ -2456,7 +2534,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     <div class="deck-rail" id="deckRail" data-i18n-stops="railStops" hidden></div>
     <div class="tr-panel" id="bwTrPanel"></div>
     <div class="deck-bar">
-      <select class="lang-select" id="langSelect" aria-label="Language"></select><button class="tr-btn" id="bwTrBtn" hidden>EN</button>
+      <select class="lang-select" id="langSelect" aria-label="Language"></select><button class="tr-btn" id="bwTrBtn" hidden>EN</button><a class="part-link" id="partLink" href="block-camp-descent-map.html">Descent map</a>
       <div class="ledger" id="ledger" hidden>
         <span class="led"><b data-i18n="ledDp">DP</b> <i id="ledDp">0</i></span>
         <span class="led"><b data-i18n="ledTime">TIME</b> <i id="ledTime">•••</i></span>
@@ -2492,6 +2570,7 @@ const RTL_LANGS = ['ar'];
 
 const UI_I18N = {
   en: {
+    partLink: "Part 2 &rarr;",
     actEyebrow: 'Activation',
     actPlaceholder: "Every morning I&hellip;",
     actSpeak1: "Your morning, from waking up to leaving the house. Three different signals.",
@@ -2604,6 +2683,7 @@ const UI_I18N = {
     wordCount: (n)=>`${n} ${n===1?'word':'words'}`
   },
   de: {
+    partLink: "Teil 2 &rarr;",
     actEyebrow: 'Anwendung',
     actPlaceholder: "Every morning I&hellip;",
     actSpeak1: "Dein Morgen, vom Aufwachen bis zum Rausgehen. Drei verschiedene Signale.",
@@ -2688,7 +2768,7 @@ const UI_I18N = {
     parA: "Subjekt + Grundform",
     parB: "&rsquo;he&rsquo; &middot; &rsquo;she&rsquo; &middot; &rsquo;it&rsquo;: &rsquo;-s&rsquo; anh&auml;ngen",
     parEyebrow: "Die Form",
-    parNote: "<span class=\"dictum\">&lsquo;HE / SHE / IT&rsquo; &mdash; an &lsquo;(E)S&rsquo; must fit!</span>",
+    parNote: "<span class=\"dictum\">&lsquo;HE / SHE / IT&rsquo; &mdash; an &lsquo;(E)S&rsquo; must fit!</span><span class=\"sup\" data-lang=\"de\"><b>DE</b><span>Merksatz: bei er / sie / es h&auml;ngt ein &lsquo;-(e)s&rsquo; an</span></span>",
     parTitle: "Die ganze Zeitform",
     qEyebrow: "&Uuml;bung",
     qTitleForm: "W&auml;hle die richtige Form",
@@ -2716,6 +2796,7 @@ const UI_I18N = {
     wordCount: (n)=>`${n} ${n===1?'Wort':'Wörter'}`
   },
   es: {
+    partLink: "Parte 2 &rarr;",
     actEyebrow: 'Activación',
     actPlaceholder: "Every morning I&hellip;",
     actSpeak1: "Tu ma&ntilde;ana, de levantarte a salir de casa. Tres se&ntilde;ales distintas.",
@@ -2800,7 +2881,7 @@ const UI_I18N = {
     parA: "Sujeto + verbo base",
     parB: "&rsquo;he&rsquo; &middot; &rsquo;she&rsquo; &middot; &rsquo;it&rsquo;: a&ntilde;ade &rsquo;-s&rsquo;",
     parEyebrow: "La forma",
-    parNote: "<span class=\"dictum\">&lsquo;HE / SHE / IT&rsquo; &mdash; an &lsquo;(E)S&rsquo; must fit!</span>",
+    parNote: "<span class=\"dictum\">&lsquo;HE / SHE / IT&rsquo; &mdash; an &lsquo;(E)S&rsquo; must fit!</span><span class=\"sup\" data-lang=\"es\"><b>ES</b><span>regla: con &eacute;l / ella / ello se a&ntilde;ade una &lsquo;-(e)s&rsquo;</span></span>",
     parTitle: "Todo el tiempo verbal",
     qEyebrow: "Pr&aacute;ctica",
     qTitleForm: "Elige la forma correcta",
@@ -3780,7 +3861,7 @@ const ready = () => document.body.classList.add('fonts-ready');
 if (document.fonts && document.fonts.ready) { document.fonts.ready.then(ready); setTimeout(ready, 1500); }
 else ready();
 </script>
-<script>window.BW_TR={"es": {"build": "construir", "you": "tú / vosotros", "we": "nosotros", "they": "ellos", "he": "él", "builds": "construye", "she": "ella", "it": "ello (cosa/animal)", "Steve = he · Alex = she": "Steve = él · Alex = ella", "every + period · on / at + day": "every + periodo · on / at + día", "in / at · counted · fixed points": "in / at · contado · puntos fijos", "Alex ______ the sheep every morning.": "Alex ______ a las ovejas cada mañana.", "is feed": "(no existe)", "feed": "dar de comer", "are feeding": "están dando de comer", "feeds": "da de comer", "They ______ to school on weekdays.": "Ellos ______ al colegio entre semana.", "not go": "(no existe)", "don’t goes": "(no existe)", "doesn’t go": "no va", "don’t go": "no van", "______ Steve mine on Mondays?": "¿______ pica Steve los lunes?", "Do": "(auxiliar para I/you/we/they)", "Has": "tiene", "Does": "(auxiliar para he/she/it)", "Is": "es / está", "Which sentence puts the adverb in the right place?": "¿Qué frase coloca el adverbio en el sitio correcto?", "The wolf usually is friendly.": "El lobo normalmente es amistoso. (orden incorrecto)", "Usually the wolf friendly is.": "(orden incorrecto)", "The wolf is friendly usually is.": "(orden incorrecto)", "The wolf is usually friendly.": "El lobo normalmente es amistoso.", "You ______ meet a Warden. It almost never happens.": "Tú ______ te encuentras un Warden. Casi nunca pasa.", "twice a week": "dos veces por semana", "every day": "cada día", "always": "siempre", "hardly ever": "casi nunca", "Steve eats breakfast ______. He is never late for it.": "Steve desayuna ______. Nunca llega tarde.", "at the weekend": "el fin de semana", "at 7 o’clock": "a las siete", "three times a year": "tres veces al año", "once a month": "una vez al mes", "in the morning": "por la mañana", "every morning": "cada mañana", "on Mondays": "los lunes", "on weekdays": "entre semana", "at night": "por la noche", "in the evening": "por la tarde", "every year": "cada año", "every weekend": "cada fin de semana", "at weekends": "los fines de semana", "every + period": "every + periodo", "on / at + day": "on / at + día", "in / at + part of day": "in / at + parte del día", "usually": "normalmente", "often": "a menudo", "sometimes": "a veces", "never": "nunca", "0% of the time": "el 0% de las veces", "many times, but not most": "muchas veces, pero no la mayoría", "on some days only": "solo algunos días", "almost never at all": "casi nunca", "on most days": "casi todos los días", "100% of the time": "el 100% de las veces", "She bread in the morning. (make)": "Ella ______ pan por la mañana. (hacer)", "(make)": "(hacer)", "We caves in the afternoon. (explore)": "Nosotros ______ cuevas por la tarde. (explorar)", "(explore)": "(explorar)", "The Enderman at night. (appear)": "El Enderman ______ de noche. (aparecer)", "(appear)": "(aparecer)", "after school": "después del colegio", "once a day": "una vez al día", "I check my map — one time, every day.": "Miro mi mapa ______ — una vez, cada día.", "The village holds a festival .": "El pueblo celebra una fiesta ______.", "He plays with his friends , when lessons finish.": "Juega con sus amigos ______, cuando acaban las clases.", "mines .": "pica .", "Steve": "Steve", "the wolf": "el lobo", "friendly .": "amistoso .", "is": "es / está", "before school": "antes del colegio"}, "de": {"build": "bauen", "you": "du / ihr", "we": "wir", "they": "sie", "he": "er", "builds": "baut", "she": "sie", "it": "es", "Steve = he · Alex = she": "Steve = er · Alex = sie", "every + period · on / at + day": "every + Zeitraum · on / at + Tag", "in / at · counted · fixed points": "in / at · gezählt · feste Punkte", "Alex ______ the sheep every morning.": "Alex ______ die Schafe jeden Morgen.", "is feed": "(gibt es nicht)", "feed": "füttern", "are feeding": "füttern gerade", "feeds": "füttert", "They ______ to school on weekdays.": "Sie ______ wochentags zur Schule.", "not go": "(gibt es nicht)", "don’t goes": "(gibt es nicht)", "doesn’t go": "geht nicht", "don’t go": "gehen nicht", "______ Steve mine on Mondays?": "______ Steve montags ab?", "Do": "(Hilfsverb für I/you/we/they)", "Has": "hat", "Does": "(Hilfsverb für he/she/it)", "Is": "ist", "Which sentence puts the adverb in the right place?": "Welcher Satz stellt das Adverb an die richtige Stelle?", "The wolf usually is friendly.": "Der Wolf ist meistens freundlich. (falsche Stellung)", "Usually the wolf friendly is.": "(falsche Stellung)", "The wolf is friendly usually is.": "(falsche Stellung)", "The wolf is usually friendly.": "Der Wolf ist meistens freundlich.", "You ______ meet a Warden. It almost never happens.": "Du triffst ______ einen Warden. Es passiert fast nie.", "twice a week": "zweimal pro Woche", "every day": "jeden Tag", "always": "immer", "hardly ever": "fast nie", "Steve eats breakfast ______. He is never late for it.": "Steve frühstückt ______. Er kommt nie zu spät.", "at the weekend": "am Wochenende", "at 7 o’clock": "um sieben Uhr", "three times a year": "dreimal im Jahr", "once a month": "einmal im Monat", "in the morning": "morgens", "every morning": "jeden Morgen", "on Mondays": "montags", "on weekdays": "wochentags", "at night": "nachts", "in the evening": "abends", "every year": "jedes Jahr", "every weekend": "jedes Wochenende", "at weekends": "an Wochenenden", "every + period": "every + Zeitraum", "on / at + day": "on / at + Tag", "in / at + part of day": "in / at + Tageszeit", "usually": "normalerweise", "often": "oft", "sometimes": "manchmal", "never": "nie", "0% of the time": "0 % der Zeit", "many times, but not most": "oft, aber nicht meistens", "on some days only": "nur an manchen Tagen", "almost never at all": "so gut wie nie", "on most days": "an den meisten Tagen", "100% of the time": "100 % der Zeit", "She bread in the morning. (make)": "Sie ______ morgens Brot. (machen)", "(make)": "(machen)", "We caves in the afternoon. (explore)": "Wir ______ nachmittags Höhlen. (erkunden)", "(explore)": "(erkunden)", "The Enderman at night. (appear)": "Der Enderman ______ nachts. (erscheinen)", "(appear)": "(erscheinen)", "after school": "nach der Schule", "once a day": "einmal am Tag", "I check my map — one time, every day.": "Ich schaue ______ auf meine Karte — einmal, jeden Tag.", "The village holds a festival .": "Das Dorf feiert ______ ein Fest.", "He plays with his friends , when lessons finish.": "Er spielt ______ mit seinen Freunden, wenn der Unterricht endet.", "mines .": "baut ab .", "Steve": "Steve", "the wolf": "der Wolf", "friendly .": "freundlich .", "is": "ist", "before school": "vor der Schule"}};</script>
+<script>window.BW_TR={"es": {"build": "construir", "you": "tú / vosotros", "we": "nosotros", "they": "ellos", "he": "él", "builds": "construye", "she": "ella", "it": "ello (cosa/animal)", "Steve = he · Alex = she": "Steve = él · Alex = ella", "every + period · on / at + day": "every + periodo · on / at + día", "in / at · counted · fixed points": "in / at · contado · puntos fijos", "Alex ______ the sheep every morning.": "Alex alimenta a las ovejas cada mañana.", "is feed": "(no existe)", "feed": "dar de comer", "are feeding": "están dando de comer", "feeds": "da de comer", "They ______ to school on weekdays.": "Ellos no van al colegio entre semana.", "not go": "(no existe)", "don’t goes": "(no existe)", "doesn’t go": "no va", "don’t go": "no van", "______ Steve mine on Mondays?": "¿Pica Steve los lunes?", "Do": "(auxiliar para I/you/we/they)", "Has": "tiene", "Does": "(auxiliar para he/she/it)", "Is": "es / está", "Which sentence puts the adverb in the right place?": "¿Qué frase coloca el adverbio en el sitio correcto?", "The wolf usually is friendly.": "El lobo normalmente es amistoso. (orden incorrecto)", "Usually the wolf friendly is.": "(orden incorrecto)", "The wolf is friendly usually is.": "(orden incorrecto)", "The wolf is usually friendly.": "El lobo normalmente es amistoso.", "You ______ meet a Warden. It almost never happens.": "Rara vez te encuentras un Warden. Casi nunca pasa.", "twice a week": "dos veces por semana", "every day": "cada día", "always": "siempre", "hardly ever": "casi nunca", "Steve eats breakfast ______. He is never late for it.": "Steve desayuna a las siete. Nunca llega tarde.", "at the weekend": "el fin de semana", "at 7 o’clock": "a las siete", "three times a year": "tres veces al año", "once a month": "una vez al mes", "in the morning": "por la mañana", "every morning": "cada mañana", "on Mondays": "los lunes", "on weekdays": "entre semana", "at night": "por la noche", "in the evening": "por la tarde", "every year": "cada año", "every weekend": "cada fin de semana", "at weekends": "los fines de semana", "every + period": "every + periodo", "on / at + day": "on / at + día", "in / at + part of day": "in / at + parte del día", "usually": "normalmente", "often": "a menudo", "sometimes": "a veces", "never": "nunca", "0% of the time": "el 0% de las veces", "many times, but not most": "muchas veces, pero no la mayoría", "on some days only": "solo algunos días", "almost never at all": "casi nunca", "on most days": "casi todos los días", "100% of the time": "el 100% de las veces", "She bread in the morning. (make)": "Ella hace pan por la mañana. (hacer)", "(make)": "(hacer)", "We caves in the afternoon. (explore)": "Nosotros exploramos cuevas por la tarde. (explorar)", "(explore)": "(explorar)", "The Enderman at night. (appear)": "El Enderman aparece de noche. (aparecer)", "(appear)": "(aparecer)", "after school": "después del colegio", "once a day": "una vez al día", "I check my map — one time, every day.": "Miro mi mapa una vez al día — una vez, cada día.", "The village holds a festival .": "El pueblo celebra una fiesta cada año.", "He plays with his friends , when lessons finish.": "Juega con sus amigos después del colegio, cuando acaban las clases.", "mines .": "pica .", "Steve": "Steve", "the wolf": "el lobo", "friendly .": "amistoso .", "is": "es / está", "before school": "antes del colegio"}, "de": {"build": "bauen", "you": "du / ihr", "we": "wir", "they": "sie", "he": "er", "builds": "baut", "she": "sie", "it": "es", "Steve = he · Alex = she": "Steve = er · Alex = sie", "every + period · on / at + day": "every + Zeitraum · on / at + Tag", "in / at · counted · fixed points": "in / at · gezählt · feste Punkte", "Alex ______ the sheep every morning.": "Alex füttert die Schafe jeden Morgen.", "is feed": "(gibt es nicht)", "feed": "füttern", "are feeding": "füttern gerade", "feeds": "füttert", "They ______ to school on weekdays.": "Sie gehen wochentags nicht zur Schule.", "not go": "(gibt es nicht)", "don’t goes": "(gibt es nicht)", "doesn’t go": "geht nicht", "don’t go": "gehen nicht", "______ Steve mine on Mondays?": "Baut Steve montags ab?", "Do": "(Hilfsverb für I/you/we/they)", "Has": "hat", "Does": "(Hilfsverb für he/she/it)", "Is": "ist", "Which sentence puts the adverb in the right place?": "Welcher Satz stellt das Adverb an die richtige Stelle?", "The wolf usually is friendly.": "Der Wolf ist meistens freundlich. (falsche Stellung)", "Usually the wolf friendly is.": "(falsche Stellung)", "The wolf is friendly usually is.": "(falsche Stellung)", "The wolf is usually friendly.": "Der Wolf ist meistens freundlich.", "You ______ meet a Warden. It almost never happens.": "Du triffst kaum je einen Warden. Es passiert fast nie.", "twice a week": "zweimal pro Woche", "every day": "jeden Tag", "always": "immer", "hardly ever": "fast nie", "Steve eats breakfast ______. He is never late for it.": "Steve frühstückt um sieben Uhr. Er kommt nie zu spät.", "at the weekend": "am Wochenende", "at 7 o’clock": "um sieben Uhr", "three times a year": "dreimal im Jahr", "once a month": "einmal im Monat", "in the morning": "morgens", "every morning": "jeden Morgen", "on Mondays": "montags", "on weekdays": "wochentags", "at night": "nachts", "in the evening": "abends", "every year": "jedes Jahr", "every weekend": "jedes Wochenende", "at weekends": "an Wochenenden", "every + period": "every + Zeitraum", "on / at + day": "on / at + Tag", "in / at + part of day": "in / at + Tageszeit", "usually": "normalerweise", "often": "oft", "sometimes": "manchmal", "never": "nie", "0% of the time": "0 % der Zeit", "many times, but not most": "oft, aber nicht meistens", "on some days only": "nur an manchen Tagen", "almost never at all": "so gut wie nie", "on most days": "an den meisten Tagen", "100% of the time": "100 % der Zeit", "She bread in the morning. (make)": "Sie macht morgens Brot. (machen)", "(make)": "(machen)", "We caves in the afternoon. (explore)": "Wir erkunden nachmittags Höhlen. (erkunden)", "(explore)": "(erkunden)", "The Enderman at night. (appear)": "Der Enderman erscheint nachts. (erscheinen)", "(appear)": "(erscheinen)", "after school": "nach der Schule", "once a day": "einmal am Tag", "I check my map — one time, every day.": "Ich schaue einmal am Tag auf meine Karte — einmal, jeden Tag.", "The village holds a festival .": "Das Dorf feiert jedes Jahr ein Fest.", "He plays with his friends , when lessons finish.": "Er spielt nach der Schule mit seinen Freunden, wenn der Unterricht endet.", "mines .": "baut ab .", "Steve": "Steve", "the wolf": "der Wolf", "friendly .": "freundlich .", "is": "ist", "before school": "vor der Schule"}};</script>
 <script>
 /* TRANSLATE-ON-REQUEST.
    The dictionary is keyed by the EXACT normalised English on screen, and the

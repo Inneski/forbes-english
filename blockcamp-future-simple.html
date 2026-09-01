@@ -1486,8 +1486,22 @@ em.t-present, b.t-present { color: var(--t-present-simple) !important;
    canvas, so they get a wider column rather than none. */
 .slide[data-type="activate"] .slide-body,
 .slide[data-type="activate"] .slide-head { width: auto; margin-left: 0; margin-right: 0; }
+/* 76% put the chip bank and the feedback line at x=940 on a 1280 canvas -
+   past the column, across the plate, and straight over whoever is standing on
+   the far side. Innes on Present Simple 15: "move the position on the screen
+   to stop overlap", and in the same note that 'every weekend' should wrap
+   under 'at weekends', which is what happens once the bank is inside its own
+   column instead of sprawling across the frame.
+   58% is not a taste: three 210px bins and two 14px gaps need 658px, and 58%
+   of the 1152px content box is 668. Wide enough to hold the widest mechanic
+   in the line, and nothing over. */
 .slide[data-side][data-type="sort"] .slide-body,
-.slide[data-side][data-type="sort"] .slide-head { width: 76%; }
+.slide[data-side][data-type="sort"] .slide-head { width: var(--col-w, 58%); }
+/* var(), not a bare 58%, because three boards in the line hold more chips
+   than the others and wrap to an extra row inside it - past-simple-2 15 and
+   present-simple-2 13 in German, present-continuous-2 15 in all three - and
+   an extra row is 46px into the deck bar. Those three carry --col-w inline.
+   Everything else stays in its column. */
 /* Match and sort rows are short phrases. Left at column width they render as
    long thin bars laid across the artwork, which is the "16 too long box". */
 .match-item, .sort-item { width: fit-content; max-width: 100%; }

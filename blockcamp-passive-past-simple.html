@@ -497,6 +497,23 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
   border-radius: 6px; padding: 6px 10px; cursor: pointer;
 }
 .lang-select:focus { outline: 1px solid var(--accent); }
+/* ── THE OTHER HALF OF THE LESSON WAS UNREACHABLE FROM INSIDE IT ─────
+   Innes: "There should be an easier way to find part 2 without clicking on
+   'ALL 24 Lessons'". Every camp is two decks and neither linked to the other,
+   so the only route from Part 1 to Part 2 was out to the library and back in.
+   One chip in the deck bar, beside the language picker: always on screen,
+   never over the artwork, and it costs the composition nothing. */
+.part-link {
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em;
+  text-transform: uppercase; text-decoration: none; white-space: nowrap;
+  background: var(--scrim); color: var(--accent-bright);
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  border-radius: 6px; padding: 6px 10px;
+  transition: background .18s ease, color .18s ease;
+}
+.part-link:hover { background: color-mix(in srgb, var(--accent) 26%, var(--scrim));
+  color: var(--text); }
+.stage.on-cover .part-link { opacity: .9; }
 
 /* ── RESULTS ── */
 .score-big {
@@ -1003,7 +1020,13 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
   --mark-pp: #b39bf5;
   --mark-obj: #f65af6;
   --mark-agent: #cfe8d8;
+  --t-present-simple: #7A93B5;
+  --t-present-continuous: #E66085;
   --t-past-simple: #B08968;
+  --t-past-continuous: #F1D779;
+  --t-going-to: #70A43A;
+  --t-future-simple: #F0723F;
+  --t-present-perfect: #589784;
 
   /* THE MODAL IS NOT AN AUXILIARY, AND THE LINE HAD BEEN PRETENDING IT WAS.
      8.34 painted every `am is are was were do does did have has had will`
@@ -1053,6 +1076,46 @@ em.aux, b.aux { color: var(--mark-aux) !important; font-weight: 700; }
    contrast was missing. #B08968 is camp 3's own hex from
    lesson-template/tense-palette.css - the brown a learner climbed past. */
 .t-past { color: var(--t-past-simple) !important; font-weight: 700; }
+
+/* ── TENSE IN SITU, ON THE SLIDES THAT SET TENSES AGAINST EACH OTHER ──
+   Innes: "Tenses in situ e.g. Past Continuous 'was being' or 'were walking'
+   should be in yellow as present simple is blue and past simple brown. e.g.
+   this page 'Is' blue 'is being' pink 'was' brown 'was being' yellow".
+
+   He was looking at station 12's second slide, where four chains sit in one
+   column - is / is being / was / was being - and every one of them was the
+   same role green, which is the one thing the slide is not about. Role colour
+   answers "what job is this word doing"; on that slide every learner already
+   knows the answer, and the question is "which tense is this". So on a
+   CONTRAST slide only, the auxiliary chain wears its own camp's colour from
+   lesson-template/tense-palette.css - the colour that camp's page, its route
+   marker and its descent station all already wear.
+
+   The participle stays purple in every row. It is the constant the slide is
+   built to show, and colouring it by tense would destroy the point.
+
+   Everywhere else, role colour is unchanged. This is not a new default.
+
+   TWO DEVIATIONS, BOTH DELIBERATE.
+
+   Present perfect ships as #2E7D65 and fails on a dark deck: 3.30:1 on
+   station 12's warm surface and 3.49:1 on the Trial's cool one. That is the
+   caution tense-palette.css writes down for its dark tokens, and its own
+   remedy - lighten toward white, keep the hue. Solved rather than guessed:
+   80% is the strongest mix that clears 4.5:1 on BOTH surfaces (4.81 and
+   5.09), and it also sits furthest from its two nearest neighbours in the
+   band that clears. #589784.
+
+   tense-palette.css says never more than three tense colours on one slide.
+   Station 16's grid has seven, because seven chains side by side IS that
+   slide. Overruled knowingly, once, on the one slide whose subject is the
+   set. */
+.t-ps    { color: var(--t-present-simple) !important;     font-weight: 700; }
+.t-pc    { color: var(--t-present-continuous) !important; font-weight: 700; }
+.t-pastc { color: var(--t-past-continuous) !important;    font-weight: 700; }
+.t-gt    { color: var(--t-going-to) !important;           font-weight: 700; }
+.t-fs    { color: var(--t-future-simple) !important;      font-weight: 700; }
+.t-pperf { color: var(--t-present-perfect) !important;    font-weight: 700; }
 
 /* THE RESULTS SLIDE STACKED THREE PANELS WITH 18px BETWEEN THEM, so the score
    plate and the message plate read as one overlapping box - Innes: "Now use
@@ -1490,8 +1553,22 @@ em.t-present, b.t-present { color: var(--t-present-simple) !important;
    canvas, so they get a wider column rather than none. */
 .slide[data-type="activate"] .slide-body,
 .slide[data-type="activate"] .slide-head { width: auto; margin-left: 0; margin-right: 0; }
+/* 76% put the chip bank and the feedback line at x=940 on a 1280 canvas -
+   past the column, across the plate, and straight over whoever is standing on
+   the far side. Innes on Present Simple 15: "move the position on the screen
+   to stop overlap", and in the same note that 'every weekend' should wrap
+   under 'at weekends', which is what happens once the bank is inside its own
+   column instead of sprawling across the frame.
+   58% is not a taste: three 210px bins and two 14px gaps need 658px, and 58%
+   of the 1152px content box is 668. Wide enough to hold the widest mechanic
+   in the line, and nothing over. */
 .slide[data-side][data-type="sort"] .slide-body,
-.slide[data-side][data-type="sort"] .slide-head { width: 76%; }
+.slide[data-side][data-type="sort"] .slide-head { width: var(--col-w, 58%); }
+/* var(), not a bare 58%, because three boards in the line hold more chips
+   than the others and wrap to an extra row inside it - past-simple-2 15 and
+   present-simple-2 13 in German, present-continuous-2 15 in all three - and
+   an extra row is 46px into the deck bar. Those three carry --col-w inline.
+   Everything else stays in its column. */
 /* Match and sort rows are short phrases. Left at column width they render as
    long thin bars laid across the artwork, which is the "16 too long box". */
 .match-item, .sort-item { width: fit-content; max-width: 100%; }
@@ -2464,7 +2541,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
     <div class="deck-rail" id="deckRail" data-i18n-stops="railStops" hidden></div>
     <div class="tr-panel" id="bwTrPanel"></div>
     <div class="deck-bar">
-      <select class="lang-select" id="langSelect" aria-label="Language"></select><button class="tr-btn" id="bwTrBtn" hidden>EN</button>
+      <select class="lang-select" id="langSelect" aria-label="Language"></select><button class="tr-btn" id="bwTrBtn" hidden>EN</button><a class="part-link" id="partLink" href="block-camp-descent-map.html">Descent map</a>
       <div class="ledger" id="ledger" hidden>
         <span class="led"><b data-i18n="ledDp">DP</b> <i id="ledDp">0</i></span>
         <span class="led"><b data-i18n="ledTime">TIME</b> <i id="ledTime">•••</i></span>
@@ -2500,6 +2577,7 @@ const RTL_LANGS = ['ar'];
 
 const UI_I18N = {
   en: {
+    partLink: "Part 2 &rarr;",
     actEyebrow: 'Activation',
     actPlaceholder: "Yesterday I&hellip;",
     actSpeak1: "Tell your partner three things you did yesterday.",
@@ -2609,6 +2687,7 @@ const UI_I18N = {
     wordCount: (n)=>`${n} ${n===1?'word':'words'}`
   },
   de: {
+    partLink: "Teil 2 &rarr;",
     actEyebrow: 'Anwendung',
     actPlaceholder: "Yesterday I&hellip;",
     actSpeak1: "Erz&auml;hle deinem Partner drei Dinge, die du gestern gemacht hast.",
@@ -2718,6 +2797,7 @@ const UI_I18N = {
     wordCount: (n)=>`${n} ${n===1?'Wort':'Wörter'}`
   },
   es: {
+    partLink: "Parte 2 &rarr;",
     actEyebrow: 'Activación',
     actPlaceholder: "Yesterday I&hellip;",
     actSpeak1: "Cu&eacute;ntale a tu compa&ntilde;ero tres cosas que hiciste ayer.",

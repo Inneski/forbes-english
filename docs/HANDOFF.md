@@ -137,6 +137,43 @@ Three things worth carrying forward.
   lower `--bg-opacity` for a busy hero does not apply here and would have made
   it worse: the problem was flatness and brightness, not detail.
 
+## The negative-space gate is a filter, not a certificate
+
+Read this before you tell Innes a deck is clean.
+
+It measures how far each half of a plate sits from the plate's own colour
+grade. That catches loud cases and it caught seventeen. Innes then found three
+more on the shipped Trial, and each is a different reason the measurement
+cannot work:
+
+1. **A busy background with nobody in it.** Slide 7 has Steve on the right and
+   a wall of bookshelves on the left. Wooden shelves and coloured spines are as
+   far off a teal grade as a person is, so the two halves scored level (1.03).
+2. **A character wearing the plate's own grade.** Slide 12's witch is teal on
+   teal - robe, hat and all, only her face off-grade - while the free half
+   holds glass bottles with warm corks. The gate called the half WITH the witch
+   the quieter one, at 0.84. Backwards, not marginal.
+3. **A small subject in a big column.** Slide 16's climber is about a twelfth
+   of the column, and a top-decile mean over the whole half averages her away.
+
+No per-half colour statistic fixes those: in each case the colour statistics
+genuinely do not separate. So the gate stays as a filter, and looking is made
+cheap instead:
+
+```bash
+python3 lesson-template/checker/contact-sheet.py <deck>.html   # one PNG per deck
+```
+
+Every side-pinned slide as a thumbnail with its text band shaded. One image
+instead of twenty. **Run it on any deck you touch, and look at it.** The three
+above are obvious in the sheet and invisible to the number.
+
+The durable fix, not yet done, is a per-plate subject map - which horizontal
+band the subject occupies, checked by eye once per plate and stored the way
+`checker/pins.json` stores Innes's placement calls. After that the gate is
+exact rather than statistical. About 40 plates per camp, and roughly 25 have
+already been eyeballed in this session's commits.
+
 ## Still open
 
 - **Three slides' ink crosses the deck bar by ~4px** — present-perfect-2 18,
