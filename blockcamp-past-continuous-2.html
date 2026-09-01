@@ -917,6 +917,24 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
 .cover-title, .cover-sub { width: fit-content; margin-inline: auto; max-width: 100%; }
 .cover-sub { padding-inline: 0.22em; }
 .score-big { width: fit-content; }
+/* ── THE RESULTS PANELS OVERLAPPED, AND THE SPREAD IS WHY ─────────────
+   Every plate on this page is grown with `box-shadow: 0 0 0 0.34em` rather
+   than padding (see the note above - padding tipped the cover subtitle onto
+   a second line). At the score's 84px that spread is 28.5px in each
+   direction, and the panel under it is 18px away: the score plate and the
+   message plate paint into each other, and "Now use it" 14px below sits
+   inside both. Innes, on Past Simple 21: "text box overlap".
+   The gaps now exceed the spread they have to clear. The same fix is in
+   lesson-template/descent/build_descent.py for the Part II decks; this is
+   Part I catching up with it.
+
+   The empty message plate goes too. Before anything is answered #scoreMsg
+   has no text, and an empty plate is not nothing - it is a 28px dark square
+   floating under the score with no explanation. */
+.slide[data-type="results"] .score-big { margin-bottom: 10px; }
+.slide[data-type="results"] #scoreMsg  { margin-top: 34px !important; max-width: 34ch; }
+.slide[data-type="results"] #scoreMsg:empty { display: none; }
+.slide[data-type="results"] .slide-body > .prose.dim { margin-top: 34px !important; }
 
 /* A transparent background is a hole in the plate. .btn was
    `background: transparent` and .bank-chip a 16% tint of --accent into
@@ -1267,6 +1285,30 @@ em.t-present, b.t-present { color: var(--t-present-simple) !important;
 .slide[data-w="wide"] .cols {
   grid-template-columns: repeat(var(--wcols, 3), 1fr) !important;
   width: 100%; gap: 14px; }
+/* A WIDE CARD DOES NOT NEED ONE EXAMPLE PER ROW. The stack rule below exists
+   so a NARROW card hugs its longest example; in a wide column it only makes
+   the card four rows tall - and it is what left the ES/DE gloss nowhere to
+   sit but underneath. Innes, on Past Simple 8: "translations would be better
+   right of text not under". With the examples flowing, the beside rule has
+   the horizontal room it always needed. */
+.slide[data-w="wide"] .exlist { display: flex !important; flex-wrap: wrap; }
+/* ...AND THE GLOSS SITS BESIDE THEM, NOT UNDER. With the examples flowing,
+   one row of chips measured 505px and the German gloss 375px in an 819px
+   card: 880px, so it wrapped to its own line and looked exactly like the
+   stacked version it replaced. Letting the chip list SHRINK (it wraps to two
+   rows) and pinning the gloss to the right of it puts both on one band, which
+   is what was asked for. Capped at 44% so a long German line can never
+   squeeze the examples to a column of one word each.
+
+   OPT-IN, and the reason is a measurement. Applied to every wide slide, this
+   also reached Present Continuous 1a slide 6, which is wide with THREE cards:
+   at 230px each, 'beside' left the chips a column one word deep - "right /
+   now", "at the / moment". A card needs real width before a gloss can share
+   its row, and only the slide knows whether it has it. Same vocabulary as
+   data-tr="under", which the line already uses to force the other way. */
+.slide[data-tr="beside"] .card .prose.dim:has(> .exlist):has(> .sup) { flex-wrap: nowrap !important; }
+.slide[data-tr="beside"] .card .prose.dim > .exlist { flex: 1 1 auto; min-width: 0; }
+.slide[data-tr="beside"] .card .prose.dim > .sup { flex: 0 1 auto; max-width: 44%; margin-top: 0; }
 
 /* ── A GROUP THAT IS AS WIDE AS THE SLIDE SAYS ────────────────────────
    `width: fit-content` above sizes a card group to its longest line, and a

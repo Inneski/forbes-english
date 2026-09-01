@@ -862,6 +862,24 @@ html[data-gloss="on"] .gloss-btn { display: inline-block; }
 .cover-title, .cover-sub { width: fit-content; margin-inline: auto; max-width: 100%; }
 .cover-sub { padding-inline: 0.22em; }
 .score-big { width: fit-content; }
+/* ── THE RESULTS PANELS OVERLAPPED, AND THE SPREAD IS WHY ─────────────
+   Every plate on this page is grown with `box-shadow: 0 0 0 0.34em` rather
+   than padding (see the note above - padding tipped the cover subtitle onto
+   a second line). At the score's 84px that spread is 28.5px in each
+   direction, and the panel under it is 18px away: the score plate and the
+   message plate paint into each other, and "Now use it" 14px below sits
+   inside both. Innes, on Past Simple 21: "text box overlap".
+   The gaps now exceed the spread they have to clear. The same fix is in
+   lesson-template/descent/build_descent.py for the Part II decks; this is
+   Part I catching up with it.
+
+   The empty message plate goes too. Before anything is answered #scoreMsg
+   has no text, and an empty plate is not nothing - it is a 28px dark square
+   floating under the score with no explanation. */
+.slide[data-type="results"] .score-big { margin-bottom: 10px; }
+.slide[data-type="results"] #scoreMsg  { margin-top: 34px !important; max-width: 34ch; }
+.slide[data-type="results"] #scoreMsg:empty { display: none; }
+.slide[data-type="results"] .slide-body > .prose.dim { margin-top: 34px !important; }
 
 /* A transparent background is a hole in the plate. .btn was
    `background: transparent` and .bank-chip a 16% tint of --accent into
