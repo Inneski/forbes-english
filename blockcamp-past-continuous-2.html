@@ -1017,7 +1017,18 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
      `going to` is green because it IS the be-auxiliary - `am going to`,
      `is going to` - so the green keeps meaning exactly what it meant on
      the other twelve decks. */
-  --mark-modal: var(--accent-bright);
+  /* WILL IS ORANGE, EVERYWHERE, AND ON TWO DECKS IT HAD TO STOP BEING THE
+     ACCENT. --mark-modal was var(--accent-bright), which is a different hex
+     on every deck - and on the Going To decks that is a lime (#7eda23 /
+     #acc44c), CIE76 deltaE 44.5 and 42.2 from the auxiliary green that
+     'going to' wears. Two greens, on the one pair of decks whose whole
+     subject is telling 'will' from 'going to'.
+     One hex now, the one the Future Simple decks were already using, so the
+     word looks the same wherever a learner meets it: deltaE 99.5 from the
+     aux green, 45.0 from the gold the bare verb after it wears, and its
+     worst contrast anywhere in the line is 5.9:1. Innes: "will in orange,
+     base verb in gold". */
+  --mark-modal: #ff8a4c;
   --mark-inf: #eec32f;
 
   /* A tense named inside a pill that this deck does NOT teach keeps its own
@@ -1026,11 +1037,21 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
      when/if pill is asking them to borrow. Same hex as
      lesson-template/tense-palette.css - 5.4:1 on the darkest orange surface,
      2.9:1 against --text, so no lifting was needed. */
+  /* THE CAMP'S OWN COLOUR, FOR THE CAMP'S OWN NAME.
+     Innes: "'PAST SIMPLE' should be brown". #B08968 is camp 3's hex from
+     lesson-template/tense-palette.css - the brown a learner climbed past on
+     the way here - and the words for a role wear the role's colour wherever
+     they are written, which is the rule the purple participle already
+     follows. */
+  --t-past-simple: #B08968;
+
   --t-present-simple: #7A93B5;
 }
 em.aux, b.aux { color: var(--mark-aux) !important; font-weight: 700; }
 em.modal, b.modal { color: var(--mark-modal) !important; font-weight: 700; }
 em.inf, b.inf { color: var(--mark-inf) !important; font-weight: 700; }
+/* Any element, not just em/b - a camp name can sit in a <strong> heading. */
+.t-past { color: var(--t-past-simple) !important; font-weight: 700; }
 em.t-present, b.t-present { color: var(--t-present-simple) !important;
   font-weight: 700; }
 /* a struck-through error stays struck through, auxiliary or not */
@@ -2058,7 +2079,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
             <div class="para-row"><span class="para-subj">have = possess</span><span class="para-verb">The house <em>belonged</em> to Alex.</span></div>
           </div>
         </div>
-        <p class="para-note" style="text-align:center;margin-top:14px;font-size:13px" data-i18n="stateNote"><span class="formula">a state <em class="aux">is</em> <em class="aux">not</em> an activity &mdash; use the <b>PAST SIMPLE</b></span></p>
+        <p class="para-note" style="text-align:center;margin-top:14px;font-size:13px" data-i18n="stateNote"><span class="formula">a state <em class="aux">is</em> <em class="aux">not</em> an activity &mdash; use the <b class="t-past">PAST SIMPLE</b></span></p>
       </div>
     </section>
 
@@ -2102,7 +2123,7 @@ em, i, .card .prose.dim em { font-style: normal !important;
             <div class="freq-row"><div class="freq-word">when</div><div class="freq-pct">a moment</div><div class="freq-gloss">it arrives and it is done<span class="sup" data-lang="es"><b>ES</b><span>cuando</span></span><span class="sup" data-lang="de"><b>DE</b><span>als</span></span></div></div>
             <div class="freq-row"><div class="freq-word">suddenly</div><div class="freq-pct">an instant</div><div class="freq-gloss">no warning at all<span class="sup" data-lang="es"><b>ES</b><span>de repente</span></span><span class="sup" data-lang="de"><b>DE</b><span>pl&ouml;tzlich</span></span></div></div>
           </div>
-          <p class="freq-rule" data-i18n="howRule"><span class="formula">the top three take <b><em class="aux">WAS</em> / <em class="aux">WERE</em> + -ING</b>, the bottom two take the <b>PAST SIMPLE</b></span></p>
+          <p class="freq-rule" data-i18n="howRule"><span class="formula">the top three take <b><em class="aux">WAS</em> / <em class="aux">WERE</em> + -ING</b>, the bottom two take the <b class="t-past">PAST SIMPLE</b></span></p>
         </div>
       </div>
     </section>
@@ -2518,7 +2539,7 @@ const UI_I18N = {
     hint5: "The complaint sits between &lsquo;was&rsquo; and the -ing verb.",
     hint6: "Look for the long action first. Which word is in front of it?",
     howEyebrow: "How long is each one?",
-    howRule: "<span class=\"formula\">the top three take <b><em class=\"aux\">WAS</em> / <em class=\"aux\">WERE</em> + -ING</b>, the bottom two take the <b>PAST SIMPLE</b></span>",
+    howRule: "<span class=\"formula\">the top three take <b><em class=\"aux\">WAS</em> / <em class=\"aux\">WERE</em> + -ING</b>, the bottom two take the <b class=\"t-past\">PAST SIMPLE</b></span>",
     howTitle: "From no edge to an instant",
     joinA: "&lsquo;while&rsquo; + the long one",
     joinB: "&lsquo;when&rsquo; + the short one",
@@ -2567,7 +2588,7 @@ const UI_I18N = {
     stateB: "Feeling and senses",
     stateC: "Having",
     stateEyebrow: "The exception",
-    stateNote: "<span class=\"formula\">a state <em class=\"aux\">is</em> <em class=\"aux\">not</em> an activity &mdash; use the <b>PAST SIMPLE</b></span>",
+    stateNote: "<span class=\"formula\">a state <em class=\"aux\">is</em> <em class=\"aux\">not</em> an activity &mdash; use the <b class=\"t-past\">PAST SIMPLE</b></span>",
     stateTitle: "The verbs that refuse the -ing",
     useB1: "It started before, and it did not stop for you.",
     useB2: "Short, finished, and it happened in the middle.",
@@ -2626,7 +2647,7 @@ const UI_I18N = {
     hint5: "Die Beschwerde steht zwischen &rsquo;was&rsquo; und dem -ing-Verb.",
     hint6: "Such zuerst die lange Handlung. Welches Wort steht davor?",
     howEyebrow: "Wie lang ist jede?",
-    howRule: "<span class=\"formula\">die oberen drei nehmen <b><em class=\"aux\">WAS</em> / <em class=\"aux\">WERE</em> + -ING</b>, die unteren zwei das <b>PAST SIMPLE</b></span>",
+    howRule: "<span class=\"formula\">die oberen drei nehmen <b><em class=\"aux\">WAS</em> / <em class=\"aux\">WERE</em> + -ING</b>, die unteren zwei das <b class=\"t-past\">PAST SIMPLE</b></span>",
     howTitle: "Von randlos bis Augenblick",
     joinA: "&rsquo;while&rsquo; + die lange",
     joinB: "&rsquo;when&rsquo; + die kurze",
@@ -2675,7 +2696,7 @@ const UI_I18N = {
     stateB: "F&uuml;hlen und Sinne",
     stateC: "Besitzen",
     stateEyebrow: "Die Ausnahme",
-    stateNote: "<span class=\"formula\">a state <em class=\"aux\">is</em> <em class=\"aux\">not</em> an activity &mdash; use the <b>PAST SIMPLE</b></span>",
+    stateNote: "<span class=\"formula\">a state <em class=\"aux\">is</em> <em class=\"aux\">not</em> an activity &mdash; use the <b class=\"t-past\">PAST SIMPLE</b></span>",
     stateTitle: "Verben, die kein -ing nehmen",
     useB1: "Sie fing vorher an und h&ouml;rte deinetwegen nicht auf.",
     useB2: "Kurz, abgeschlossen, und mittendrin passiert.",
@@ -2734,7 +2755,7 @@ const UI_I18N = {
     hint5: "La queja va entre &rsquo;was&rsquo; y el verbo en -ing.",
     hint6: "Busca primero la acci&oacute;n larga. &iquest;Qu&eacute; palabra va delante?",
     howEyebrow: "&iquest;Cu&aacute;nto dura cada una?",
-    howRule: "<span class=\"formula\">las tres de arriba llevan <b><em class=\"aux\">WAS</em> / <em class=\"aux\">WERE</em> + -ING</b>, las dos de abajo el <b>PAST SIMPLE</b></span>",
+    howRule: "<span class=\"formula\">las tres de arriba llevan <b><em class=\"aux\">WAS</em> / <em class=\"aux\">WERE</em> + -ING</b>, las dos de abajo el <b class=\"t-past\">PAST SIMPLE</b></span>",
     howTitle: "De sin bordes a un instante",
     joinA: "&rsquo;while&rsquo; + la larga",
     joinB: "&rsquo;when&rsquo; + la corta",
@@ -2783,7 +2804,7 @@ const UI_I18N = {
     stateB: "Sentir y sentidos",
     stateC: "Poseer",
     stateEyebrow: "La excepci&oacute;n",
-    stateNote: "<span class=\"formula\">a state <em class=\"aux\">is</em> <em class=\"aux\">not</em> an activity &mdash; use the <b>PAST SIMPLE</b></span>",
+    stateNote: "<span class=\"formula\">a state <em class=\"aux\">is</em> <em class=\"aux\">not</em> an activity &mdash; use the <b class=\"t-past\">PAST SIMPLE</b></span>",
     stateTitle: "Los verbos que no admiten -ing",
     useB1: "Empez&oacute; antes y no se par&oacute; por ti.",
     useB2: "Corta, acabada, y pas&oacute; en mitad de la otra.",

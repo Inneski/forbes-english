@@ -89,19 +89,36 @@ BE_HAVE_DO = {'am', 'is', 'are', 'was', 'were', 'be', 'been', 'being',
               'have', 'has', 'had', 'do', 'does', 'did',
               "isn't", "aren't", "wasn't", "weren't", "haven't", "hasn't",
               "hadn't", "don't", "doesn't", "didn't"}
-NOT_A_VERB = {
-    # DETERMINERS ONLY, and the narrowing is a measurement. The first version
-    # also convicted on pronouns and prepositions and produced 35 findings, of
-    # which 29 were inverted questions - "Have you eaten?", "Is she going?" -
-    # where the auxiliary is doing exactly its job and the subject simply comes
-    # next. One more was "didn't like", where 'like' is the bare verb. A gate
-    # that cries wolf 29 times out of 35 is a gate nobody runs.
-    # A determiner after a be/have/do form is different: there is no English
-    # sentence where "is a", "have a", "was a" is an auxiliary.
-    'a', 'an', 'the', 'my', 'your', 'his', 'her', 'its', 'our', 'their',
-    'this', 'that', 'these', 'those', 'every', 'each', 'another',
-    'one', 'two', 'three', 'four', 'five', 'both',
+# THE FIRST VERSION CONVICTED ON DETERMINERS ONLY, AND IT WAS TOO TIMID.
+# Auditing every .aux in the line against the word that follows it turned up a
+# whole family it could not see: "your hands are FILTHY", "I am EXHAUSTED",
+# "the ground is still WET", "you are OUT of breath", "there is PAINT on your
+# hands". Every one is a copula with a predicate, and every one was green.
+# So the test is inverted. An auxiliary is only an auxiliary when a VERB
+# follows it, and a verb is recognisable: an -ing form, a known participle, or
+# anything at all after do/does/did (which take a bare infinitive). A pronoun
+# means an inverted question - "Have you eaten?" - and the verb is one word
+# further on, so those are read through. An adverb or 'not' is read through
+# too. Anything else convicts.
+PRONOUN = {'i', 'you', 'he', 'she', 'it', 'we', 'they', 'there',
+           'anybody', 'somebody', 'everybody', 'nobody', 'anyone', 'someone'}
+ADVERBS = {'not', 'just', 'already', 'never', 'ever', 'still', 'recently',
+           'lately', 'only', 'always', 'nearly', 'almost', 'finally', 'yet',
+           'usually', 'often', 'sometimes', 'probably', 'really', 'also'}
+DO_FORMS = {'do', 'does', 'did', "don't", "doesn't", "didn't"}
+# Verbs the line uses that neither end in -ing nor sit in PARTICIPLE.
+IRREGULAR_PP = {
+    'grown', 'known', 'seen', 'given', 'taken', 'driven', 'flown', 'thrown',
+    'worn', 'torn', 'drawn', 'blown', 'shown', 'spoken', 'broken', 'chosen',
+    'frozen', 'risen', 'written', 'ridden', 'eaten', 'beaten', 'fallen',
+    'forgotten', 'hidden', 'sung', 'run', 'won', 'begun', 'lost', 'sent',
+    'built', 'kept', 'left', 'made', 'found', 'put', 'read', 'said', 'done',
+    'gone', 'been', 'had', 'got', 'met', 'paid', 'sold', 'told', 'heard',
 }
+EXTRA_VERB = {'be', 'been', 'being', 'going', 'go', 'come', 'get', 'have',
+              'had', 'has', 'take', 'build', 'leave', 'rain', 'snow', 'call',
+              'wait', 'win', 'quit', 'run', 'try', 'plant', 'hatch', 'burst',
+              'explode', 'fall', 'hand', 'tell', 'like', 'matter'}
 # Glosses are not English grammar demonstrations. Any .aux inside a .sup is
 # wrong by construction - that is how the German 'am' in "am Ende" got green.
 GLOSS = re.compile(r'<span class=\\?"sup\\?"[^>]*>.*?</span>\s*</span>', re.S)
@@ -133,18 +150,30 @@ def auxjob(name, body, findings, allowed):
         nxt = re.sub(r'&[a-z]+;', "'", m.group(3)).strip().lower()
         if word not in BE_HAVE_DO:
             continue
-        # 'not' and the adverbs never end the phrase; keep looking past them.
-        if nxt in ('not', 'just', 'already', 'never', 'ever', 'still', 'always'):
+        # Read through the words that are never the verb itself.
+        if nxt in ADVERBS or nxt in PRONOUN:
             continue
-        if not nxt or nxt not in NOT_A_VERB:
+        # A formula pill legitimately ENDS on the auxiliary
+        # ("SUBJECT + am / are / is + VERB-ing"), so an empty follower proves
+        # nothing.
+        if not nxt:
+            continue
+        if word in DO_FORMS:          # do/does/did take a bare infinitive
+            continue
+        # A regular participle is any -ed form, and there is no closed list
+        # of those. 'worked', 'grown', 'changed', 'wanted' and 'counted' were
+        # all convicted by the first inverted version; the irregulars that do
+        # not end in -ed are named in IRREGULAR_PP below.
+        if (nxt.endswith('ing') or nxt.endswith('ed') or nxt in PARTICIPLE
+                or nxt in SECOND or nxt in EXTRA_VERB or nxt in IRREGULAR_PP):
             continue
         if (name, word) in ALLOW:
             allowed.append((name, word))
             continue
         where = re.sub(r'<[^>]+>', '', m.group(0))
         findings.append((name, 'AUXJOB',
-                         "'%s' is followed by '%s' - a main verb wearing the "
-                         "auxiliary colour  %s"
+                         "'%s' is followed by '%s', which is not a verb - so this "
+                         "is a main verb wearing the auxiliary colour  %s"
                          % (word, nxt, DIM % where.strip()[:44])))
 
 

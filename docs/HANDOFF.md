@@ -137,6 +137,82 @@ Three things worth carrying forward.
   lower `--bg-opacity` for a busy hero does not apply here and would have made
   it worse: the problem was flatness and brightness, not detail.
 
+## The colour system, stated once — and the gate that now enforces it
+
+Innes spent an evening finding mis-coloured words by eye and it was faster
+than any gate I had. The system he was checking against, written down:
+
+| role | colour | token |
+|---|---|---|
+| finite auxiliary (`be`/`have`/`do` **doing an auxiliary's job**) | green | `--mark-aux` #46d98a |
+| `will` / `shall` / `won't` | orange | `--mark-modal` #ff8a4c |
+| bare verb after a modal **or after `going to`** | gold | `--mark-inf` #eec32f |
+| past participle, and the WORDS for it | purple | `--mark-pp` #b39bf5 |
+| second form, and the words `PAST SIMPLE` | brown | `--t-past-simple` #B08968 |
+| a sentence that has dropped to present simple | slate | `--t-present-simple` #7A93B5 |
+| state vs action (Present Continuous 2b only) | blue / pink | `--mark-state`, `--mark-action` |
+
+Two consolidations came out of that:
+
+- **`will` was the deck accent, and on the Going To decks the accent is a
+  lime.** Measured ΔE from the auxiliary green that `going to` wears: 44.5 and
+  42.2. Two greens, on the one pair of decks whose whole subject is telling
+  `will` from `going to`. `--mark-modal` is now one literal hex line-wide —
+  the orange the Future Simple decks already used — ΔE 99.5 from aux green,
+  45.0 from the gold, worst contrast anywhere 5.9:1.
+- **A named word wears inverted commas.** "Only 'am / are / is' changes",
+  "no 'did' with 'was' / 'were'". This is not decoration: it is what tells a
+  reader (and the gate) that the word is being *named*, not *used*.
+
+### AUXJOB, inverted
+
+The first version convicted only on determiners. Auditing every `.aux` in the
+line against the word that follows it found a whole family it could not see —
+`your hands are FILTHY`, `I am EXHAUSTED`, `the ground is WET`, `you are OUT
+of breath`, `there is PAINT on your hands`, `the creeper is CLOSE`. Copulas,
+all green.
+
+So the test is inverted: **an auxiliary is only an auxiliary when a verb
+follows it.** A verb is an `-ing` form, an `-ed` form, a known irregular
+participle, or anything at all after `do/does/did`. A pronoun means an
+inverted question and is read through; so are `not` and the adverbs. Anything
+else convicts. That found fourteen more nobody had reported, across six decks.
+
+It still cannot see `is finished` or `am exhausted` — both end in `-ed` and
+there is no way to tell an adjective from a participle by shape. If a third
+case turns up, teach it those two words by name; do not loosen the rule.
+
+```bash
+python3 lesson-template/checker/check-colour-roles.py     # must be 0 findings
+```
+
+## Composition: the checklist that actually catches things
+
+Six rounds of "text on the wrong side" and "too low" this session. What
+worked, in order of how much it caught:
+
+1. **`node lesson-template/checker/shots.js <deck>.html <n> <dir>`, and LOOK.**
+   Every side error was invisible to every gate — the text fitted, it just sat
+   on the character. The rule is simply: the block goes on the half without a
+   face in it.
+2. **Measure the ink, do not eyeball the height.** The deck bar starts at
+   y=644. `--rail-clear: 96px` fixed the whole `data-vpos="bottom"` class at
+   once, after a dozen individual nudges had been applied to symptoms.
+3. **Shoot it in German.** `check-lesson.js` renders English only. German runs
+   ~⅓ longer and Spanish longer still; twelve slides overflowed in German
+   that were clean in English, one of them off the canvas entirely.
+
+Knobs available, all opt-in (see the shell CSS for why each exists):
+`data-w="wide"` + `--wcols`, `--col-w`, `data-boxw` + `--boxw`,
+`data-tr="beside"`, `data-align="right"`, `data-nudge`, `--rail-clear`.
+
+**Two heroes were mirrored for composition** — `future-simple-will/bg22-flip.jpg`
+and `going-to-infinitive/bg25-flip.jpg` — so the cover title sits over open
+scenery and the characters sit opposite it. Both are generated files, not
+edits in place, because the unflipped originals are still slide backgrounds.
+The first of those was missing from the repo entirely and shipped a black
+cover; `check-lesson.js` now has an **ART** gate that reads the disk.
+
 ## Block Camp: the colour rule now has a gate, and four new layout knobs
 
 Innes reported six colour defects by eye, across four separate messages —
