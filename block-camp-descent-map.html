@@ -333,19 +333,25 @@
     .lesson-panel {
       position: absolute;
       z-index: 9;
-      right: clamp(1rem, 3vw, 2.6rem);
-      bottom: clamp(1rem, 3vw, 2.4rem);
-      width: min(390px, calc(100vw - 2rem));
-      padding: 1.05rem 1.1rem;
-      border: 1px solid rgba(255, 244, 214, .24);
-      border-radius: 1rem;
-      background: rgba(8, 31, 29, .86);
-      box-shadow: 0 18px 45px rgba(8, 31, 29, .28);
+      left: clamp(.8rem, 2.4vw, 1.6rem);
+      right: clamp(.8rem, 2.4vw, 1.6rem);
+      bottom: clamp(.8rem, 2vw, 1.4rem);
+      display: flex;
+      align-items: center;
+      gap: clamp(.9rem, 2.2vw, 2rem);
+      padding: .62rem .7rem .62rem 1.05rem;
+      border: 1px solid rgba(255, 244, 214, .22);
+      border-radius: 999px;
+      background: rgba(8, 31, 29, .84);
+      box-shadow: 0 14px 38px rgba(8, 31, 29, .34);
       backdrop-filter: blur(12px);
     }
+    /* kicker over title on the left, structure alongside, action pinned right */
+    .panel-lead { min-width: 0; }
+    .panel-open-wrap { margin-left: auto; flex: none; }
 
     .panel-kicker {
-      margin: 0 0 .42rem;
+      margin: 0 0 .12rem;
       color: var(--sand);
       font-size: .64rem;
       font-weight: 850;
@@ -355,13 +361,16 @@
 
     .panel-title {
       margin: 0;
-      font-size: clamp(1.25rem, 2.4vw, 2rem);
-      line-height: .98;
-      letter-spacing: -.025em;
+      font-size: clamp(1.05rem, 1.6vw, 1.4rem);
+      line-height: 1.02;
+      letter-spacing: -.02em;
+      white-space: nowrap;
     }
 
     .panel-structure {
-      margin: .65rem 0 0;
+      margin: 0;
+      flex: none;
+      white-space: nowrap;
       color: var(--cream);
       font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
       font-size: .82rem;
@@ -369,18 +378,23 @@
     }
 
     .panel-copy {
-      margin: .55rem 0 .9rem;
-      color: rgba(255, 244, 214, .7);
-      font-size: .82rem;
-      line-height: 1.45;
+      margin: 0;
+      min-width: 0;
+      color: rgba(255, 244, 214, .68);
+      font-size: .8rem;
+      line-height: 1.35;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+    @media (max-width: 1180px) { .panel-copy { display: none; } }
+    @media (max-width: 860px) {
+      .panel-structure { display: none; }
+      .panel-title { white-space: normal; }
     }
 
-    .panel-actions {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    }
+
 
     .completion-count {
       font-size: .64rem;
@@ -434,7 +448,7 @@
       .map-art { object-position: 58% center; }
       .masthead { top: 1.2rem; left: 1.1rem; }
       .back-link { color: rgba(255, 244, 214, .8); }
-      .lesson-panel { right: .7rem; bottom: .7rem; left: .7rem; width: auto; }
+      .lesson-panel { border-radius: 1rem; flex-wrap: wrap; }
       .route-node::before { display: none; }
       .destination-gate, .part-two-tease { display: none; }
     }
@@ -490,14 +504,13 @@
     <div class="part-two-tease" aria-hidden="true">Far-side camp</div>
 
     <section class="lesson-panel" aria-live="polite" aria-labelledby="panel-title">
-      <p class="panel-kicker" id="panel-kicker">Station 09 · Change the focus</p>
-      <h2 class="panel-title" id="panel-title">Active → Passive</h2>
-      <p class="panel-structure" id="panel-structure">OBJECT + BE + PAST PARTICIPLE</p>
-      <p class="panel-copy" id="panel-copy">Start the descent by choosing what matters: the person doing the action, or the thing affected by it.</p>
-      <div class="panel-actions">
-        <span class="completion-count" id="completion-count">0 / 8 complete</span>
-        <a class="complete-button" id="panel-open" href="blockcamp-passive-present-simple.html">Open station &rarr;</a>
+      <div class="panel-lead">
+        <p class="panel-kicker" id="panel-kicker">Station 09 &middot; Camp one, coming down</p>
+        <h2 class="panel-title" id="panel-title">Present Simple Passive</h2>
       </div>
+      <p class="panel-structure" id="panel-structure">AM / IS / ARE + PAST PARTICIPLE</p>
+      <p class="panel-copy" id="panel-copy">The swap itself: the object goes to the front, the doer becomes optional.</p>
+      <span class="panel-open-wrap"><a class="complete-button" id="panel-open" href="blockcamp-passive-present-simple.html">Open station &rarr;</a></span>
     </section>
   </main>
 
@@ -570,7 +583,6 @@
       const structure = document.getElementById("panel-structure");
       const copy = document.getElementById("panel-copy");
       const openLink = document.getElementById("panel-open");
-      const count = document.getElementById("completion-count");
       const progressPath = document.getElementById("route-progress-path");
       let completed = Math.max(0, Math.min(8, Number(new URLSearchParams(location.search).get("completed")) || 0));
       let selected = Math.min(completed, 7);
@@ -601,7 +613,6 @@
         const currentNode = nodes[currentIndex];
         camper.style.left = currentNode.style.getPropertyValue("--x");
         camper.style.top = currentNode.style.getPropertyValue("--y");
-        count.textContent = completed === 8 ? "Route complete" : `${completed} / 8 complete`;
       }
 
       nodes.forEach((node, index) => {
