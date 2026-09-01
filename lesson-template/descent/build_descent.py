@@ -320,7 +320,18 @@ PART_LINK = re.compile(r'<a class="part-link"[^>]*>.*?</a>', re.S)
 #   is being, was being        one unit, pink and yellow: the be and the
 #                              'being' are the same piece of grammar
 #   is going to be             three pieces, three colours: blue + lime + gold
+#   was going to be            the same, with the be brown
 #   has been                   turquoise end to end
+#
+# WHY 'going to' IS THE ONE THAT SPLITS, in Innes's words: "the gain of
+# colouring is/are in blue for going to is to make it easier to see how
+# questions and sentences are constructed, and because there is a past tense
+# version was/were going to that can take on the brown". Both halves are the
+# argument. A blue be at the FRONT is what a question looks like - 'Is the
+# wall going to be built?' - so holding it out shows the inversion; and the
+# same 'going to' rides on a present or a past be, which is only visible if
+# the be is coloured separately from it. Neither is true of 'being', where the
+# be and the participle-marker are one piece of grammar.
 #
 # The first version coloured the whole span by the chain, which made 'is' lime
 # inside 'is going to' and blue two slides later - "is/are not blue
@@ -353,8 +364,14 @@ HEAD_TENSE = {
 # stacked on an ordinary present-simple be, and gets three colours.
 TAIL_TENSE = {
     'been':        {'t-ps': 't-pperf', 't-past': 't-pperf'},
-    'going to':    {'t-ps': 't-gt'},
-    'going to be': {'t-ps': 't-gt'},
+    # 'going to' takes a PAST head as readily as a present one, and Innes
+    # named that as half the reason it splits at all: "there is a past tense
+    # version 'was/were going to' that can take on the brown". Without the
+    # 't-past' row here, 'was going to be knocked' would have shipped on role
+    # green in a deck where nothing else is - the map's own escape hatch
+    # working exactly as designed, and silently.
+    'going to':    {'t-ps': 't-gt', 't-past': 't-gt'},
+    'going to be': {'t-ps': 't-gt', 't-past': 't-gt'},
 }
 # Spans that are one unit: no be held out in front, because the be belongs to
 # the chain rather than sitting under it.

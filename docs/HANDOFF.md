@@ -201,14 +201,19 @@ blue + being pink, was brown + being yellow"*. So:
 | `is being` `are being` `am being` | one unit, pink |
 | `was being` `were being` | one unit, yellow |
 | `is going to be` | three pieces: blue + lime + gold |
+| `was going to be` | the same, with the be brown |
 | `has been` | turquoise, end to end |
 
-**Only `going to` splits**, and there is a reason it is the exception: a
-continuous chain's be and its `being` are the same piece of grammar, and
-colouring them separately broke the chain up for no gain, while `going to`
-really is three separate pieces stacked on an ordinary present-simple be. That
-distinction is Innes's, made after seeing the first version in situ; the
-first attempt split the continuous chains too.
+**Only `going to` splits**, and Innes gave the reason: *"the gain of colouring
+is/are in blue for going to is to make it easier to see how questions and
+sentences are constructed, and because there is a past tense version was/were
+going to that can take on the brown"*. Both halves matter. A blue be at the
+FRONT is what a question looks like - *Is the wall going to be built?* - so
+holding it out shows the inversion; and the same `going to` rides on a present
+or a past be, which is only visible if the be is coloured apart from it.
+Neither is true of `being`, where the be and the marker are one piece of
+grammar - which is why the first attempt, splitting the continuous chains too,
+was wrong.
 
 `has`/`have` are the one exception and it is principled: unlike be, they have
 no present-simple job in this line - a bare `has` here is always the front of a
