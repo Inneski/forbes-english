@@ -3995,3 +3995,47 @@ particular camp's surfaces. The pattern is now clear enough to name: **a tense
 colour is a system value, but the ink a deck paints with is a per-deck
 measurement.** Keep the published token as-is so the TOKENS gate holds the
 line together, and add `--<tense>-ink` beside it when the render says so.
+
+### 2026-09-02, last — the perfect's have goes turquoise, and green is now do-support alone
+
+Innes: "Present perfect have go turquoise - I concur." 110 spans across five
+camp decks, plus the eight descent stations via the builder. `--mark-aux`
+green fell from 255 spans to 74, and every one of those 74 is now do-support
+or a commentary copula. The system's three sentences are in
+`docs/COLOUR-RULES.md`; the reference page is `docs/colour-rules.html`.
+
+Four things came out of it that a future session needs:
+
+- **`build_descent.py`'s auxiliary pass was not quote-aware.** `AUX_SPAN`
+  matched `<em class="aux">` and nothing else, so 37 auxiliaries inside the
+  JS dictionary strings — written `class=\"aux\"` — came through green while
+  the English slide was correct. The German and Spanish versions of eight
+  stations had been wrong since the pass was written. It is also now
+  case-blind: a sentence-initial `Have` was missed for the same reason
+  (`AUX_LOOKUP` is all lower case). **This is the third time this session
+  that the escaped-dictionary quoting trap has bitten** — CLAUDE.md warns
+  about it for hand edits, but the builder had the same bug inside it.
+- **A role colour on a solid accent plate is a blind spot.** Present
+  perfect's dictum had the participle violet on the turquoise fill at
+  **1.18:1** — invisible, on the takeaway line of the slide that teaches the
+  participle. Every other measurement this week was ink on a dark
+  translucent card; nothing looks at the one place the ground is light and
+  opaque. Fixed by keeping the hue and dropping the lightness
+  (`#B39BF5` → `#4B3B8A`). It is the only dictum in 24 decks carrying a role
+  span, so this is one rule, not a class — but a gate for "role colour
+  inside `.dictum`" would be four lines and would have caught it.
+- **The AUXJOB gate earned its keep again**: it found `We have had the flat`
+  with `had` — the participle of the main verb — wearing the auxiliary green,
+  the moment the `have` beside it changed colour.
+- **Turquoise on a turquoise camp.** `#70E0E0` sits 41–58 in RGB from the
+  four perfect decks' own `--accent-bright` — the closest pair in the system,
+  closer than the brown/yellow one flagged earlier. Not a legibility problem
+  (8.4:1) but in a formula pill the marked `HAVE / HAS` and the generic
+  `VERB-ING` slot now look alike. Lifting the turquoise does not help: it
+  goes white before it separates. If it needs fixing, quieten the pill's
+  generic slot, not the tense. Raised with Innes; not acted on.
+
+Also: `borrowing` / `leaving` on present-continuous-2 slide 7 are pink, and
+the `WAS / WERE + -ING` label on past-continuous-2 is yellow, both for the
+same reason — the form the slide names should wear the colour the slide
+teaches.

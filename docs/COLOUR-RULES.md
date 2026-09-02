@@ -13,14 +13,16 @@ enforce these live in `lesson-template/checker/check-colour-roles.py` and
 2. **The `be` that IS the verb wears its own tense.**
    Brown in past simple, slate in present simple.
 3. **Green is the helper that carries no meaning of its own.**
-   `do / does / did`. And — still unruled — `have / has / had` in the
-   perfects. See "Open" at the foot of this file.
+   `do / does / did`, and nothing else. Innes ruled the perfect's `have`
+   turquoise on 2026-09-02 — `has seen` is one form, and the `have` is the
+   half that inverts for a question and takes the negative, so it carries
+   the tense rather than helping it.
 
 ## Role colours — the same on every deck
 
 | class | token | hex | what it marks | spans |
 |---|---|---|---|---|
-| `.aux` | `--mark-aux` | `#46D98A` mint | the meaningless helper: do-support, and `have/has` in the perfects | 255 |
+| `.aux` | `--mark-aux` | `#46D98A` mint | do-support: `do / does / did`. Nothing else. | 74 |
 | `.neg` | `--mark-neg` | `#F65AF6` magenta | every `not` and `n't`, always | 135 |
 | `.inf` | `--mark-inf` | `#EEC32F` gold | the bare infinitive — after do-support, after a modal, after `going to` | 155 |
 | `.modal` | `--mark-modal` | `#FF8A4C` orange | `will / would / can / should` | 100 |
@@ -39,10 +41,10 @@ rather than adding more.
 | tense | class | token | hex | spans |
 |---|---|---|---|---|
 | present simple | `.t-ps`, `.t-present` | `--t-present-simple` | `#7A93B5` slate | 210 |
-| present continuous | `.t-pc` | `--t-present-continuous` | `#E68EA6` soft rose | 140 |
-| past simple | `.t-past` | `--t-past-simple` | `#B08968` brown | 176 |
-| past continuous | `.t-pastc` | `--t-past-continuous` | `#F1D779` yellow | 85 |
-| present perfect | `.t-pperf` | `--t-present-perfect` | `#70E0E0` turquoise | 49 |
+| present continuous | `.t-pc` | `--t-present-continuous` | `#E68EA6` soft rose | 143 |
+| past simple | `.t-past` | `--t-past-simple` | `#B08968` brown | 191 |
+| past continuous | `.t-pastc` | `--t-past-continuous` | `#F1D779` yellow | 112 |
+| present perfect | `.t-pperf` | `--t-present-perfect` | `#70E0E0` turquoise | 196 |
 | going to | `.t-gt` | `--t-going-to` | `#70A43A` lime | 131 |
 | future simple | `.t-fs` | `--t-future-simple` | `#F0723F` orange | 1 |
 
@@ -102,13 +104,28 @@ doing an auxiliary's job).
 simple form left unmarked (needs a verb list), and effective contrast
 measured off the render rather than off the token.
 
-## Open — one decision, not yet made
+## A role colour on a solid accent plate
 
-If the continuous's `be` is half the tense, then the perfect's `have` is
-half the tense in the same way: `has been`, `have seen`. By rule 1 it should
-go turquoise. That is ~148 spans across six decks and it is the last green
-that is not do-support. Decide it once, not one deck at a time.
+The `.dictum` is the one place in the line where a role span sits on a
+**filled, light** background instead of a dark translucent one. Present
+perfect's takeaway line — "after have, use the THIRD FORM" — had the
+participle violet on the turquoise fill at **1.18:1**: invisible, on the
+slide that teaches the participle. The hue is kept and the lightness taken
+down instead (`#B39BF5` → `#4B3B8A`, L\* 69 → 31). It is the only dictum in
+24 decks carrying a role span; if a second appears, copy that rule.
 
-Also open: whether the `be` inside an *illustrative* sentence — as opposed
+## Watch: turquoise on a turquoise camp
+
+The four perfect decks are themed turquoise, so `--t-present-perfect`
+`#70E0E0` sits **41–58 in RGB** from their own `--accent-bright` — closer
+than any other pair in the system. It is not a legibility problem (8.4:1 on
+the card) but in a formula pill the marked `HAVE / HAS` and the generic
+`VERB-ING` slot, which wears the accent, now look alike. Lifting the
+turquoise does not help: it goes white before it separates. If it needs
+fixing, the move is to quieten the pill's generic slot, not the tense.
+
+## Open
+
+Whether the `be` inside an *illustrative* sentence — as opposed
 to a taught form — wears its tense colour at all. 33 cases;
 `check-unmarked.py --review` lists them.

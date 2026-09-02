@@ -388,7 +388,14 @@ AUX_TENSE = {
     't-gt':    ['going to'],
 }
 AUX_LOOKUP = {w: cls for cls, words in AUX_TENSE.items() for w in words}
-AUX_SPAN = re.compile(r'<em class="aux">([^<]*)</em>')
+# QUOTE-AWARE, AND CASE-BLIND. Two misses found on 2026-09-02, when Innes ruled
+# the perfect's have turquoise: 37 auxiliaries came out of this pass still
+# green, every one of them inside a JS dictionary string, where the markup is
+# written class=\"aux\" and this pattern only ever matched class="aux". The
+# English slide was right and the German and Spanish ones were not - the same
+# quoting trap CLAUDE.md warns about, this time inside the builder itself.
+# A sentence-initial 'Have' missed too, because AUX_LOOKUP is all lower case.
+AUX_SPAN = re.compile(r'<em class=(\\?")aux\1>([^<]*)</em>')
 
 # A bare 'being' is the word a slide is ABOUT, with no auxiliary beside it to
 # take its tense from, so it takes the station's. Only the two continuous
@@ -414,16 +421,18 @@ def tense_in_situ(html, station_file=''):
     """Colour every auxiliary by the tense of the chain it belongs to."""
     bare_being = STATION_TENSE.get(station_file, 't-pc')
 
-    def em(cls, text):
-        return '<em class="%s">%s</em>' % (cls, text)
-
     def swap(m):
-        raw = m.group(1).strip()
+        q = m.group(1)          # '"' in raw markup, '\\"' inside a JS string
+
+        def em(cls, text):
+            return '<em class=%s%s%s>%s</em>' % (q, cls, q, text)
+
+        raw = m.group(2).strip()
         words = _norm(raw).split()
 
         # head + tail: the be keeps its own tense, the tail carries the chain
-        if len(words) > 1 and words[0] in HEAD_TENSE:
-            head_cls = HEAD_TENSE[words[0]]
+        if len(words) > 1 and words[0].lower() in HEAD_TENSE:
+            head_cls = HEAD_TENSE[words[0].lower()]
             tail = ' '.join(words[1:])
             tail_cls = TAIL_TENSE.get(tail, {}).get(head_cls)
             if tail_cls:
@@ -437,11 +446,12 @@ def tense_in_situ(html, station_file=''):
                 return em(head_cls, head_txt) + ' ' + em(tail_cls, tail_txt)
 
         word = _norm(raw)
-        if word == 'being':
-            return m.group(0).replace('class="aux"', 'class="%s"' % bare_being, 1)
-        cls = AUX_LOOKUP.get(word)
+        old = 'class=%saux%s' % (q, q)
+        if word.lower() == 'being':
+            return m.group(0).replace(old, 'class=%s%s%s' % (q, bare_being, q), 1)
+        cls = AUX_LOOKUP.get(word) or AUX_LOOKUP.get(word.lower())
         return m.group(0) if not cls else m.group(0).replace(
-            'class="aux"', 'class="%s"' % cls, 1)
+            old, 'class=%s%s%s' % (q, cls, q), 1)
 
     return AUX_SPAN.sub(swap, html)
 

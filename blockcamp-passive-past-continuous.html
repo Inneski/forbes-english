@@ -1032,6 +1032,7 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
   --t-future-simple: #F0723F;
   --t-present-perfect: #70E0E0;
   --mark-neg: #f65af6;
+  --t-past-continuous: #F1D779;
 
   /* THE MODAL IS NOT AN AUXILIARY, AND THE LINE HAD BEEN PRETENDING IT WAS.
      8.34 painted every `am is are was were do does did have has had will`
@@ -1166,6 +1167,24 @@ em.aux, b.aux { color: var(--mark-aux) !important; font-weight: 700; }
 .slide[data-type="results"] #scoreMsg  { margin-top: 26px !important; max-width: 34ch; }
 .slide[data-type="results"] .slide-body > .prose.dim { margin-top: 22px !important; }
 
+/* THE BE THAT MAKES THE TENSE WEARS THE TENSE. Innes, on Present Continuous 2:
+   "why are we making is green? lets make them pink" - and then, looking at the
+   past continuous: "maybe was & were should be a brighter yellow instead of
+   green". Same ruling, and it makes the whole system sayable in one line: the
+   be that forms a continuous is half of the tense, so it takes the tense
+   colour; green is left for the helper that carries no meaning of its own,
+   which is do / does / did. (The be that IS the verb takes its own tense too -
+   brown in past simple, slate in present simple.)
+   The colour is tense-palette's published #F1D779, not this deck's accent.
+   The accent is the same yellow pulled DOWN at hue 52 to clear the emphasis
+   floor for body text (see the palette note at the top of the file), and the
+   -ing verb renders in it. So the be comes out a shade brighter than the verb
+   it helps - which is right, because the be is the half that moves for a
+   question and takes the negative. One yellow across the line, and the two
+   halves of the form still read as one thing. */
+  /* NB: this token belongs to the tense, not to the deck - keep it at the
+     published value so the TOKENS gate can hold the line together. */
+em.t-pastc, b.t-pastc { color: var(--t-past-continuous) !important; font-weight: 700; }
 em.neg, b.neg { color: var(--mark-neg) !important; font-weight: 700; }
 em.modal, b.modal { color: var(--mark-modal) !important; font-weight: 700; }
 em.inf, b.inf { color: var(--mark-inf) !important; font-weight: 700; }
@@ -2653,7 +2672,7 @@ const UI_I18N = {
     formA: "One person or thing",
     formB: "Everybody else",
     formEyebrow: "The form",
-    formNote: "<span class=\"formula\">SUBJECT + <em class=\"aux\">was</em> / <em class=\"aux\">were</em> + <b>VERB-ING</b></span><span class=\"formula\">drop either half and the tense <em class=\"aux\">is</em> gone</span>",
+    formNote: "<span class=\"formula\">SUBJECT + <em class=\"t-pastc\">was</em> / <em class=\"t-pastc\">were</em> + <b>VERB-ING</b></span><span class=\"formula\">drop either half and the tense <em class=\"aux\">is</em> gone</span>",
     formTitle: "Two parts, and you need both",
     gap1Eyebrow: "Practice",
     gap1Hint: "Type the verb in brackets in its -ing form.",
@@ -2668,7 +2687,7 @@ const UI_I18N = {
     hint5: "This tense never uses &lsquo;did&rsquo;. The &lsquo;not&rsquo; goes onto &lsquo;was&rsquo; or &lsquo;were&rsquo;.",
     hint6: "Are you standing inside the action, or looking back at it as one finished thing?",
     howEyebrow: "How long was it running?",
-    howRule: "<span class=\"formula\">a second or a season, every one of these <em class=\"aux\">was</em> <b>STILL RUNNING</b></span>",
+    howRule: "<span class=\"formula\">a second or a season, every one of these <em class=\"t-pastc\">was</em> <b>STILL RUNNING</b></span>",
     howTitle: "All of it still going",
     ingA: "Most verbs",
     ingB: "Verbs ending in e",
@@ -2686,7 +2705,7 @@ const UI_I18N = {
     negA: "Say no",
     negB: "Ask",
     negEyebrow: "The form",
-    negNote: "<span class=\"formula\">SUBJECT + <em class=\"aux\">was</em><em class=\"neg\">n&rsquo;t</em> / <em class=\"aux\">were</em><em class=\"neg\">n&rsquo;t</em> + <b>VERB-ING</b></span><span class=\"formula\"><em class=\"aux\">Was</em> / <em class=\"aux\">Were</em> + SUBJECT + <b>VERB-ING</b> ?</span>",
+    negNote: "<span class=\"formula\">SUBJECT + <em class=\"t-pastc\">was</em><em class=\"neg\">n&rsquo;t</em> / <em class=\"t-pastc\">were</em><em class=\"neg\">n&rsquo;t</em> + <b>VERB-ING</b></span><span class=\"formula\"><em class=\"t-pastc\">Was</em> / <em class=\"t-pastc\">Were</em> + SUBJECT + <b>VERB-ING</b> ?</span>",
     negTitle: "Saying no, and asking",
     ord1Eyebrow: "Practice",
     ord1Hint: "Click the words in the right order.",
@@ -2762,7 +2781,7 @@ const UI_I18N = {
     formA: "Eine Person oder Sache",
     formB: "Alle anderen",
     formEyebrow: "Die Form",
-    formNote: "<span class=\"formula\">SUBJECT + <em class=\"aux\">was</em> / <em class=\"aux\">were</em> + <b>VERB-ING</b></span><span class=\"formula\">drop either half and the tense <em class=\"aux\">is</em> gone</span>",
+    formNote: "<span class=\"formula\">SUBJECT + <em class=\"t-pastc\">was</em> / <em class=\"t-pastc\">were</em> + <b>VERB-ING</b></span><span class=\"formula\">drop either half and the tense <em class=\"aux\">is</em> gone</span>",
     formTitle: "Zwei Teile, und du brauchst beide",
     gap1Eyebrow: "&Uuml;bung",
     gap1Hint: "Schreibe das Verb in Klammern in der -ing-Form.",
@@ -2795,7 +2814,7 @@ const UI_I18N = {
     negA: "Nein sagen",
     negB: "Fragen",
     negEyebrow: "Die Form",
-    negNote: "<span class=\"formula\">SUBJECT + <em class=\"aux\">was</em><em class=\"neg\">n&rsquo;t</em> / <em class=\"aux\">were</em><em class=\"neg\">n&rsquo;t</em> + <b>VERB-ING</b></span><span class=\"formula\"><em class=\"aux\">Was</em> / <em class=\"aux\">Were</em> + SUBJECT + <b>VERB-ING</b> ?</span>",
+    negNote: "<span class=\"formula\">SUBJECT + <em class=\"t-pastc\">was</em><em class=\"neg\">n&rsquo;t</em> / <em class=\"t-pastc\">were</em><em class=\"neg\">n&rsquo;t</em> + <b>VERB-ING</b></span><span class=\"formula\"><em class=\"t-pastc\">Was</em> / <em class=\"t-pastc\">Were</em> + SUBJECT + <b>VERB-ING</b> ?</span>",
     negTitle: "Nein sagen und fragen",
     ord1Eyebrow: "&Uuml;bung",
     ord1Hint: "Klicke die W&ouml;rter in der richtigen Reihenfolge an.",
@@ -2871,7 +2890,7 @@ const UI_I18N = {
     formA: "Una persona o cosa",
     formB: "Todos los dem&aacute;s",
     formEyebrow: "La forma",
-    formNote: "<span class=\"formula\">SUBJECT + <em class=\"aux\">was</em> / <em class=\"aux\">were</em> + <b>VERB-ING</b></span><span class=\"formula\">drop either half and the tense <em class=\"aux\">is</em> gone</span>",
+    formNote: "<span class=\"formula\">SUBJECT + <em class=\"t-pastc\">was</em> / <em class=\"t-pastc\">were</em> + <b>VERB-ING</b></span><span class=\"formula\">drop either half and the tense <em class=\"aux\">is</em> gone</span>",
     formTitle: "Dos partes, y hacen falta las dos",
     gap1Eyebrow: "Pr&aacute;ctica",
     gap1Hint: "Escribe el verbo entre par&eacute;ntesis en su forma -ing.",
@@ -2904,7 +2923,7 @@ const UI_I18N = {
     negA: "Decir no",
     negB: "Preguntar",
     negEyebrow: "La forma",
-    negNote: "<span class=\"formula\">SUBJECT + <em class=\"aux\">was</em><em class=\"neg\">n&rsquo;t</em> / <em class=\"aux\">were</em><em class=\"neg\">n&rsquo;t</em> + <b>VERB-ING</b></span><span class=\"formula\"><em class=\"aux\">Was</em> / <em class=\"aux\">Were</em> + SUBJECT + <b>VERB-ING</b> ?</span>",
+    negNote: "<span class=\"formula\">SUBJECT + <em class=\"t-pastc\">was</em><em class=\"neg\">n&rsquo;t</em> / <em class=\"t-pastc\">were</em><em class=\"neg\">n&rsquo;t</em> + <b>VERB-ING</b></span><span class=\"formula\"><em class=\"t-pastc\">Was</em> / <em class=\"t-pastc\">Were</em> + SUBJECT + <b>VERB-ING</b> ?</span>",
     negTitle: "Decir no y preguntar",
     ord1Eyebrow: "Pr&aacute;ctica",
     ord1Hint: "Haz clic en las palabras en el orden correcto.",

@@ -1074,6 +1074,23 @@ html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 9
      lesson-template/tense-palette.css - 5.4:1 on the darkest orange surface,
      2.9:1 against --text, so no lifting was needed. */
   --t-present-simple: #7A93B5;
+  /* Innes: "was/were brown". They are not auxiliaries here - on this deck they
+     ARE the past simple, the finite verb itself, so they wear the tense and not
+     the green that marks a helper. `did` stays green for the same reason: it is
+     a dummy auxiliary carrying no meaning of its own. Same hex as
+     lesson-template/tense-palette.css; 5.5:1 on --surface, 4.9:1 on --surface2,
+     and re-measured off the render because these cards are translucent. */
+  /* The route map's brown is #B08968, and on THIS deck it fails: the camp is
+     themed brown, so brown ink on a brown card measured 3.4:1 off the render
+     and read as faint - the same trap as the Present Simple formula pill,
+     where the token looked fine against an opaque surface and the composite
+     did not. Lifted mechanically rather than hand-picked: L* raised in Lab
+     with the hue and chroma of #B08968 held exactly (L* 60 -> 73), stopping
+     at the first step clearing 5:1 on the card. 5.2:1 there, 6.6:1 on the
+     darker plate. The system token keeps its published value so the whole
+     line stays consistent; only the ink this deck paints with is lifted. */
+  --t-past-simple: #B08968;
+  --t-past-ink: #D5AB89;
 }
 em.aux, b.aux { color: var(--mark-aux) !important; font-weight: 700; }
 /* One colour per job. See the MARKS block above for why each is what it is. */
@@ -1167,6 +1184,7 @@ em.modal, b.modal { color: var(--mark-modal) !important; font-weight: 700; }
 em.inf, b.inf { color: var(--mark-inf) !important; font-weight: 700; }
 em.t-present, b.t-present { color: var(--t-present-simple) !important;
   font-weight: 700; }
+em.t-past, b.t-past { color: var(--t-past-ink) !important; font-weight: 700; }
 /* a struck-through error stays struck through, auxiliary or not */
 .para-row s, .prose s, .exlist span s { color: var(--text-dim) !important; }
 
@@ -2632,7 +2650,7 @@ const UI_I18N = {
     beB: "were",
     beC: "Ask",
     beEyebrow: "The odd one out",
-    beNote: "<span class=\"formula\">no &lsquo;did&rsquo; with <b><em class=\"aux\">&lsquo;was&rsquo;</em> / <em class=\"aux\">&lsquo;were&rsquo;</em></b></span>",
+    beNote: "<span class=\"formula\">no &lsquo;did&rsquo; with <b><em class=\"t-past\">&lsquo;was&rsquo;</em> / <em class=\"t-past\">&lsquo;were&rsquo;</em></b></span>",
     beTitle: "&lsquo;was&rsquo; and &lsquo;were&rsquo; never use &lsquo;did&rsquo;",
     btnCheck: 'Check',
     btnCopied: 'Copied',
@@ -2657,7 +2675,7 @@ const UI_I18N = {
     edB: "Verbs ending in e",
     edC: "Double the consonant",
     edEyebrow: "The form",
-    edNote: "<span class=\"formula\">consonant + y &rarr; <b>-ied</b></span><span class=\"formula\">study &rarr; <b>studied</b> &nbsp; carry &rarr; <b>carried</b></span>",
+    edNote: "<span class=\"formula\">consonant + y &rarr; <b class=\"t-past\">-ied</b></span><span class=\"formula\">study &rarr; <b class=\"t-past\">studied</b> &nbsp; carry &rarr; <b class=\"t-past\">carried</b></span>",
     edTitle: "Regular verbs take -ed",
     fbAnswer: 'Answer:',
     fbCorrect: 'Correct.',
@@ -2742,7 +2760,7 @@ const UI_I18N = {
     beB: "were",
     beC: "Fragen",
     beEyebrow: "Die Ausnahme",
-    beNote: "<span class=\"formula\">no &lsquo;did&rsquo; with <b><em class=\"aux\">&lsquo;was&rsquo;</em> / <em class=\"aux\">&lsquo;were&rsquo;</em></b></span>",
+    beNote: "<span class=\"formula\">no &lsquo;did&rsquo; with <b><em class=\"t-past\">&lsquo;was&rsquo;</em> / <em class=\"t-past\">&lsquo;were&rsquo;</em></b></span>",
     beTitle: "&rsquo;was&rsquo; und &rsquo;were&rsquo; brauchen kein &rsquo;did&rsquo;",
     btnCheck: 'Prüfen',
     btnCopied: 'Kopiert',
@@ -2767,7 +2785,7 @@ const UI_I18N = {
     edB: "Verben auf e",
     edC: "Konsonant verdoppeln",
     edEyebrow: "Die Form",
-    edNote: "<span class=\"formula\">consonant + y &rarr; <b>-ied</b></span><span class=\"formula\">study &rarr; <b>studied</b> &nbsp; carry &rarr; <b>carried</b></span>",
+    edNote: "<span class=\"formula\">consonant + y &rarr; <b class=\"t-past\">-ied</b></span><span class=\"formula\">study &rarr; <b class=\"t-past\">studied</b> &nbsp; carry &rarr; <b class=\"t-past\">carried</b></span>",
     edTitle: "Regelm&auml;&szlig;ig: einfach -ed",
     fbAnswer: 'Antwort:',
     fbCorrect: 'Richtig.',
@@ -2852,7 +2870,7 @@ const UI_I18N = {
     beB: "were",
     beC: "Preguntar",
     beEyebrow: "La excepci&oacute;n",
-    beNote: "<span class=\"formula\">no &lsquo;did&rsquo; with <b><em class=\"aux\">&lsquo;was&rsquo;</em> / <em class=\"aux\">&lsquo;were&rsquo;</em></b></span>",
+    beNote: "<span class=\"formula\">no &lsquo;did&rsquo; with <b><em class=\"t-past\">&lsquo;was&rsquo;</em> / <em class=\"t-past\">&lsquo;were&rsquo;</em></b></span>",
     beTitle: "&rsquo;was&rsquo; y &rsquo;were&rsquo; nunca usan &rsquo;did&rsquo;",
     btnCheck: 'Comprobar',
     btnCopied: 'Copiado',
@@ -2877,7 +2895,7 @@ const UI_I18N = {
     edB: "Verbos que acaban en e",
     edC: "Duplica la consonante",
     edEyebrow: "La forma",
-    edNote: "<span class=\"formula\">consonant + y &rarr; <b>-ied</b></span><span class=\"formula\">study &rarr; <b>studied</b> &nbsp; carry &rarr; <b>carried</b></span>",
+    edNote: "<span class=\"formula\">consonant + y &rarr; <b class=\"t-past\">-ied</b></span><span class=\"formula\">study &rarr; <b class=\"t-past\">studied</b> &nbsp; carry &rarr; <b class=\"t-past\">carried</b></span>",
     edTitle: "Regulares: solo -ed",
     fbAnswer: 'Respuesta:',
     fbCorrect: 'Correcto.',
