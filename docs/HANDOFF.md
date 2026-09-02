@@ -3915,3 +3915,43 @@ Still open, and still the root of most of the round trips: **whether the `be`
 inside an illustrative sentence wears its tense colour.** 33 cases,
 `check-unmarked.py --review` lists them. It is a teaching call, not a defect,
 and until it is made the same report keeps coming back one slide at a time.
+
+### 2026-09-02, later — past simple forms were gold, and the brown needed lifting on three decks
+
+Innes: "past simple verbs should be brown not gold". They were not marked at
+all — bare `<em>`/`<b>`, which the decks paint with the accent — so `went`,
+`took`, `studied`, `-ied`, `worked`, `exploded` all read as the deck's
+"learn this" gold rather than as the tense. 56 forms marked `.t-past` across
+**past-simple (28), past-simple-2 (17) and past-continuous-2 (11)**; the
+last of those because the standing ruling is that a past simple clause inside
+a past continuous sentence is brown. `did` and `BASE VERB` stay gold — the
+bare infinitive after do-support is a different thing and is correctly gold.
+
+All three decks needed `--t-past-ink: #D5AB89`, the mechanically lifted brown
+(L\* raised in Lab, hue and chroma held), because #B08968 measured 3.4 / 4.4 /
+4.2 : 1 off their renders. **On past-continuous-2 the lifted brown sits closer
+to that deck's yellow than it does elsewhere** — it works because the yellow
+is on the -ing verb and the brown on the past simple clause, in separate
+cards, but if the two are ever set in one phrase that pairing needs looking
+at rather than measuring.
+
+Two consequences worth knowing:
+
+- **The AUXJOB gate had to be narrowed.** Its paradigm-cell rule and its
+  not-followed-by-a-verb rule were reading tense classes as auxiliaries, so
+  every correctly-marked `went` / `came` / `had` became a finding. Wearing
+  `.aux` claims "I am a helper"; wearing a tense colour claims "I carry the
+  tense", which a main verb does. Those two rules now read `.aux|.modal`
+  only. Verified still firing on a broken copy. The cost is recorded in the
+  file: a descent deck's be wears `t-pc`, not `.aux`, so it is no longer
+  checked for following a non-verb.
+- **The escaped-dictionary quoting trap bit twice in one session.** Adding a
+  class to a `<b>` that also lives in a JS dictionary string writes
+  `class="t-past"` into a double-quoted string and kills the deck's JS.
+  `check-lesson.js`'s RUNTIME check catches it both times, so it is gated —
+  but the fix is to escape the quotes on any line matching `^\s+key: "` in
+  the same pass, not afterwards.
+
+Still not gated: **a past simple form left unmarked.** It needs a verb list to
+detect, which is why it went unseen. Worth doing next time somebody is in
+`check-unmarked.py`, restricted to decks that define `--t-past-ink`.

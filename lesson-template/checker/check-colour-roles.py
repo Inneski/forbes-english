@@ -79,6 +79,15 @@ ALLOW = {
 # build_descent.py's AUX_TENSE in step: a class in one and not the other is a
 # blind spot in exactly the place the checker exists to watch.
 AUXC = r'(?:aux|t-ps|t-pc|t-past|t-pastc|t-pperf|t-gt|t-fs)'
+# Two of the AUXJOB rules test a claim that ONLY the auxiliary colour makes.
+# Wearing .aux says "I am a helper"; wearing a TENSE colour says "I carry the
+# tense", which is exactly what a main verb does - 'have -> had', 'we had two
+# horses then', 'the creeper exploded'. So the paradigm-cell rule and the
+# not-followed-by-a-verb rule read .aux and .modal only. The gloss rule keeps
+# the full list: a tense colour inside a German gloss is still wrong.
+# Cost, recorded so nobody has to rediscover it: a descent deck's be, which
+# wears t-pc rather than .aux, is no longer checked for following a non-verb.
+AUXHELP = r'(?:aux|modal)'
 
 # ── A SIMPLE TENSE'S COLOUR INSIDE A CONTINUOUS SENTENCE ────────────────
 # Innes stated this one with an "ever" in it, which makes it enforceable:
@@ -179,7 +188,7 @@ GLOSS = re.compile(r'<span class=\\?"sup\\?"[^>]*>.*?</span>\s*</span>', re.S)
 AUX_NEXT = re.compile(
     r'<em class=\\?"%s\\?">([^<]*)</em>'
     r'((?:</?[a-z][^>]*>|\s|&[a-z]+;)*)'
-    r'([A-Za-z\u2019\']*)' % AUXC)
+    r'([A-Za-z\u2019\']*)' % AUXHELP)
 
 
 def auxjob(name, body, findings, allowed):
@@ -193,7 +202,7 @@ def auxjob(name, body, findings, allowed):
     # A paradigm cell whose ENTIRE content is the be/have/do form is a verb
     # table, not a structure: "have -> had" lists the second form of a lexical
     # verb. That is the past-simple 'had' case.
-    for w in re.findall(r'<span class="para-verb"><em class=\\?"%s\\?">([^<]+)</em></span>' % AUXC, body):
+    for w in re.findall(r'<span class="para-verb"><em class=\\?"%s\\?">([^<]+)</em></span>' % AUXHELP, body):
         findings.append((name, 'AUXJOB',
                          "'%s' is the whole of a paradigm cell - a verb table "
                          "lists lexical forms, not auxiliaries" % w))
