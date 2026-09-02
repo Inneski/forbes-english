@@ -3871,3 +3871,47 @@ blocked in Playwright — no JS errors, every slide's `--hero` resolves to a dat
 URI. Worth doing on any deck with more than a handful of `data-bg` slides; the
 existing "no slide may reuse a background" note explains the cost but not the
 fix.
+
+## 2026-09-02 — Block Camp colour: two defect classes, both now gated
+
+Two things that had gone unseen across the whole line, found only because
+Innes kept reporting single instances.
+
+**A negator wearing somebody else's colour.** Eleven negators were tagged
+`.aux` or `.modal` and printed green or orange beside the auxiliary they are
+supposed to contrast with — `have not seen`, `was not listening`, `does not
+matter`, `will not agree` — across seven decks. Four decks had no `em.neg`
+rule at all, so a negator on them had nowhere to go. `check-colour-roles.py`
+now carries a **NEGCOLOUR** gate: any `not` / `n't` / `never` in a role span
+that is not `.neg` fails. It found the two `.modal` ones on its own after the
+first nine were fixed.
+
+**A bare infinitive after do-support left unmarked.** `don't build`,
+`did not go`, `does not matter`, `may not be` — the auxiliary and the negator
+were marked, the verb they govern was not. Fixed in four decks. Not yet
+gated; the shape is `<em class="aux">do/does/did</em>` (optionally a negator)
+followed by a bare lowercase word, and it is worth a gate next time somebody
+is in this file.
+
+**Contrast has to be measured off the RENDER, not off the token.** Two
+reports this week were the same bug wearing different clothes: Present Simple's
+formula pill (a translucent plate over lit artwork, so `am/are/is` measured
+4.78:1 despite a token that passes against `--surface`) and Past Simple's
+`was/were` (the route map's brown #B08968 on a deck themed brown — 3.4:1).
+Every gate we have compares token against token and can see neither. The lift
+for the brown was derived mechanically rather than picked: L\* raised in Lab
+with hue and chroma held exactly, stopping at the first step clearing 5:1,
+giving `--t-past-ink: #D5AB89` local to that deck while `--t-past-simple`
+keeps its published value so the TOKENS gate still holds the line together.
+**A render-time contrast check — sample ink against its actual composited
+background, per slide — is the single highest-value gate still missing.**
+
+**Innes's slide numbers can run one ahead of `shots.js` indices.** On
+present-simple and present-continuous they matched exactly; on past-simple
+"page 6" was slide 5 and "slide 7" was slide 6. Check the content matches the
+report before assuming the index does.
+
+Still open, and still the root of most of the round trips: **whether the `be`
+inside an illustrative sentence wears its tense colour.** 33 cases,
+`check-unmarked.py --review` lists them. It is a teaching call, not a defect,
+and until it is made the same report keeps coming back one slide at a time.
