@@ -112,6 +112,17 @@ WHOLE_CONTRACTION = re.compile(
     r'<em class=\\?"([a-z-]+)\\?">(is|are|am|was|were|has|have|had|do|does|did)'
     r'n&rsquo;t')
 
+# ── A NEGATOR WEARING SOMEBODY ELSE'S COLOUR ────────────────────────────
+# Innes: "should all nots and n'ts be magenta?" - yes, and the answer has to
+# be enforced, because the failure is silent. NEGSPLIT catches a contraction
+# left whole; this catches the other half of the same rule, a negator that
+# WAS split out but then tagged .aux, so it prints green beside the auxiliary
+# it is supposed to contrast with. Nine of them were sitting across five
+# decks - 'have not seen', 'was not listening', 'does not matter' - and no
+# gate could see them, because every one was well-formed markup.
+NEG_MISCOLOURED = re.compile(
+    r'<(?:em|b)\s+class=\\?"([a-z-]+)\\?"\s*>\s*(not|n&rsquo;t|never)\s*</(?:em|b)>')
+
 ADV = (r'(?:just|already|never|ever|still|not|recently|lately|only|always|'
        r'nearly|almost|finally|yet)')
 AUX_THEN_WORD = re.compile(
@@ -302,6 +313,12 @@ def main(decks):
                              "'%sn't' is one span - the auxiliary and the negator "
                              "are two pieces of grammar and print as two"
                              % m.group(2)))
+        for m in NEG_MISCOLOURED.finditer(body):
+            if m.group(1) == 'neg':
+                continue
+            findings.append((name, 'NEGCOLOUR',
+                             "'%s' is tagged .%s - a negator is always magenta"
+                             % (m.group(2).replace('&rsquo;', "'"), m.group(1))))
         for m in SPLIT_CHAIN.finditer(body):
             findings.append((name, 'SPLITCHAIN',
                              "'%s' wears %s inside a continuous chain - a question "
@@ -326,6 +343,7 @@ def main(decks):
     for kind, title in (('ORPHAN', 'ORPHANS'), ('UNTAGGED', 'UNTAGGED'),
                         ('SPLITCHAIN', 'A CHAIN SPLIT BY A QUESTION'),
                         ('NEGSPLIT', 'A CONTRACTION LEFT WHOLE'),
+                        ('NEGCOLOUR', 'A NEGATOR IN THE WRONG COLOUR'),
                         ('SECOND', 'SECOND FORMS'), ('AUXJOB', 'AUXILIARY DOING ANOTHER JOB')):
         rows = [f for f in findings if f[1] == kind]
         print('\n  %s' % title)
