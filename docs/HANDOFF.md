@@ -3955,3 +3955,43 @@ Two consequences worth knowing:
 Still not gated: **a past simple form left unmarked.** It needs a verb list to
 detect, which is why it went unseen. Worth doing next time somebody is in
 `check-unmarked.py`, restricted to decks that define `--t-past-ink`.
+
+### 2026-09-02, later still — what the green means, settled
+
+Innes, on the past continuous: "maybe was & were should be a brighter yellow
+instead of green". Done, and it closes the rule he had already half-made on
+Present Continuous 2 ("why are we making is green? lets make them pink").
+
+**The rule, in one line: the be that MAKES the tense wears the tense. Green is
+the helper that carries no meaning of its own.**
+
+- `was` / `were` + -ing → `--t-past-continuous` #F1D779 (59 spans across the
+  two past continuous decks). Deliberately the published tense yellow, not the
+  deck accent: the accent is the same yellow pulled down at hue 52 for body
+  text, so the be now comes out a shade brighter than the -ing verb it helps —
+  which is right, since the be is the half that inverts for a question and
+  takes the negative.
+- `is` / `are` / `am` + -ing → the present continuous pink (done earlier).
+- The be that IS the verb → its own tense (brown in past simple, slate in
+  present simple).
+- **Green `--mark-aux` #46d98a is now: `do`/`does`/`did` do-support, and
+  `have`/`has`/`had` in the perfects.** That second group is the one still
+  unruled — if a perfect's `have` is half of the tense the way a continuous's
+  `be` is, it should go turquoise, and the same argument applies. Worth
+  putting to Innes as one question rather than one deck at a time.
+
+**`going to` is a different green** — `--t-going-to` lime #70A43A, 111 spans.
+Except on **future-simple-2**, which had never been given the going-to rule at
+all: 18 chains wore the auxiliary mint as one lump, so `is going to` read as a
+single helper. Split per the standing ruling (be blue, `going to` lime,
+infinitive gold), and the two cue rows on slide 7 that stand in for "going to"
+went lime with them so the ladder and its pill agree. That deck needed
+`--t-going-to-ink: #7BAF44` (published lime measured 4.0:1 on its warm cards)
+— the third deck-local lift this session, same Lab method.
+
+**Three decks now carry a lifted ink token** (`--t-past-ink` ×3,
+`--t-going-to-ink` ×1) because a published tense colour failed against that
+particular camp's surfaces. The pattern is now clear enough to name: **a tense
+colour is a system value, but the ink a deck paints with is a per-deck
+measurement.** Keep the published token as-is so the TOKENS gate holds the
+line together, and add `--<tense>-ink` beside it when the render says so.
