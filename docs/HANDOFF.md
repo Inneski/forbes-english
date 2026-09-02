@@ -4039,3 +4039,26 @@ Also: `borrowing` / `leaving` on present-continuous-2 slide 7 are pink, and
 the `WAS / WERE + -ING` label on past-continuous-2 is yellow, both for the
 same reason — the form the slide names should wear the colour the slide
 teaches.
+
+### 2026-09-02 — `tools/seo.py` deletes lessons it has never heard of
+
+Merging Innes's `long-way-home-rpg` push and then running `seo.py`, as the
+pipeline says to, **removed the new lesson from `library.html`, `llms.txt`,
+`lesson-meta.json` and `sitemap.xml`**. Caught in the diff before it was
+committed; nothing shipped.
+
+The cause: in a cloud session the Supabase fetch fails on the proxy and
+`seo.py` falls back to `tools/lessons.json`, a cache that predates the new
+lesson. It then regenerates the crawlable index from that cache and deletes
+every entry the cache does not contain. The run reports success. It prints
+`! supabase unreachable (…) — using tools/lessons.json`, and that line is
+the only warning you get.
+
+This is the same shape as the `library.html` clobber already documented, but
+worse, because the pipeline says to run `seo.py` after **every** build
+without exception — so it will happen again to whoever pulls a lesson added
+from Innes's machine. Recorded in CLAUDE.md next to the pipeline.
+
+**The fix worth making**: `seo.py` should refuse to REMOVE an entry when it
+is running off the cache — additive-only in fallback mode. Deleting on the
+strength of a stale cache is never right.

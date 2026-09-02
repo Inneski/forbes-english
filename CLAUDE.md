@@ -50,6 +50,19 @@ overwrites the generated HTML and takes the SEO block with it, so a deck
 shipped without this step goes out with no metadata at all. It is idempotent;
 run it twice if you are unsure. `--check` reports without writing.
 
+**In a cloud session, `seo.py` cannot reach Supabase and falls back to
+`tools/lessons.json`. Anything added since that cache was written is
+DELETED from `library.html`, `llms.txt`, `lesson-meta.json` and the
+sitemap — silently, and the run still reports success.** It happened on
+2026-09-02: a `seo.py` run after pulling Innes's newly pushed
+`long-way-home-rpg` stripped the lesson out of all four indexes. The
+failure looks exactly like a normal run; the only sign is the diff.
+
+So in a cloud session: run it, then **read `git diff` on those four files
+before committing**, and `git checkout --` any line it removed. The line it
+prints, `! supabase unreachable … using tools/lessons.json`, is the warning
+that this can happen.
+
 Every deck is **generated**. Edit the builder in `lesson-template/build/` and
 re-run it; hand-editing the generated HTML works once and is then overwritten.
 `deck.py` and `chrome_i18n.py` are shared — use them, don't rewrite them.
