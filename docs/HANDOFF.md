@@ -4314,3 +4314,25 @@ passive decks still have es/de-only glosses and word banks, and their gloss
 CSS is still hardcoded to es/de. The merge is mechanical —
 `lesson-template/bank_merge.py <deck> <dir>` does it, asserting every count: bank JSON per language keyed by the exact English, 25-string
 gloss array in document order, CSS regenerated from the es template.
+
+## 2026-09-03 — Entities in text-only UI strings, all sixteen Block Camp I decks
+
+Seen in the Portuguese screenshot while checking the gloss work: the score
+chip read `PONTUA&CCEDIL;&ATILDE;O 0/29`. `updateScoreChip()` writes
+`t('scoreLabel')` with `textContent`, so an entity in that string prints
+literally. The `pt` block had `"Pontua&ccedil;&atilde;o"` and the `fr` block
+had `btnCopied: "Copi&eacute;"` — the copy button's confirmation, also
+`textContent` — on every one of the sixteen Block Camp I decks, since
+`1f072ae` rolled the same blocks out to all of them. Both decoded to the plain
+characters in all sixteen. The passive decks were clean.
+
+`check-lesson.js` now has an ENTITIES gate: the four keys that are consumed
+with `textContent` (`scoreLabel`, `glossHide`, `glossShow`, `btnCopied`) fail
+the check if any language's value carries `&…;`. Verified failing against the
+pre-fix `blockcamp-past-simple.html` before it was trusted. If a future key is
+written with `textContent`, add it to `textKeys` in the gate.
+
+Found by the same sixteen-deck run, untouched: **`blockcamp-present-continuous.html`
+slide 17 overflows by 3px in English** on the committed version too (`git
+show HEAD:` copy fails the same way). Not caused by anything in this session;
+it is the only Block Camp I deck that does not pass `check-lesson.js` today.

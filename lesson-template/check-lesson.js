@@ -373,6 +373,19 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
     if (at >= 0 && btns.length > 1) keyAt.push({ at, of: btns.length });
   });
   const badShuffle = /\.sort\(\(\)\s*=>\s*Math\.random\(\)/.test(src);
+  // ── ENTITIES: strings that reach the page as text must not carry &...; ──
+  // Four UI_I18N keys are written with textContent, not innerHTML, so an
+  // entity in them prints literally. The Portuguese score chip shipped on all
+  // sixteen Block Camp decks as "PONTUA&CCEDIL;&ATILDE;O 0/29" this way.
+  head('ENTITIES');
+  const textKeys = ['scoreLabel', 'glossHide', 'glossShow', 'btnCopied'];
+  const entityHits = [];
+  for (const m of src.matchAll(/^\s{4}(\w+):\s*(["'])(.*?)\2,?\s*$/gm)) {
+    if (textKeys.includes(m[1]) && /&[a-zA-Z#0-9]+;/.test(m[3])) entityHits.push(`${m[1]}: ${m[3]}`);
+  }
+  if (!entityHits.length) ok('text-only UI strings carry no HTML entities');
+  else entityHits.forEach(h => bad(`${h} is set with textContent and will print the entity literally`));
+
   head('KEYS');
   let keysOk = true;
   if (keyAt.length >= 4) {
