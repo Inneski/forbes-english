@@ -4165,3 +4165,58 @@ past the deck bar, but so do English, German and Spanish — it is the
 thing, and the completeness guard means a *wrong* language is worse than a
 missing one, because it ships. Those four want a native-speaker pass before
 they go live.
+
+### 2026-09-02 — all sixteen camp decks in nine languages
+
+`UI_I18N` is done: every Block Camp I deck now offers **en de es fr it pt ru
+ar zh ja**. 113 language blocks, ~12,100 strings, produced by a Workflow
+fan-out and merged with `lesson-template/i18n_tool.py`.
+
+**Run `i18n_tool.py status` rather than trusting your own notes.** I merged
+six languages into `future-simple`, merged only Arabic into
+`future-simple-2`, and then wrote a commit message saying both were done.
+Only the status command caught it.
+
+**The verification that actually mattered was not the one I designed.** The
+workflow's adversarial verify stage died almost entirely on a session limit
+(97 agents done, 111 errored). What validated the blocks was a structural
+gate (keys, function keys, `keep_english`, HTML class lists) plus rendering,
+and rendering found every defect that mattered:
+
+- **The Arabic slide counter read backwards.** `"5 / 22"` is three bidi runs,
+  so RTL reorders them to `22 / 5`. The string is correct; only the render is
+  wrong. Fixed with U+2066/U+2069 isolates, applied inside `i18n_tool.py` so
+  it holds for every Arabic block — see `rtl_isolate()`.
+- **Wrapping titles.** A title that fits one line in English wraps in most
+  other languages and pushes the body 4–8px through the deck bar. Hit
+  past-simple 6, present-continuous-2 8, past-continuous-2 5. Japanese
+  overflowed *most* on past-simple despite being the shortest text — the
+  quoted English terms give break opportunities English prose does not.
+- **present-simple slide 4 was already broken in German and Spanish**, by
+  10px, shipped, since the slide was written. The two formula pills fit one
+  line in English and two in every other language, and the spacing was built
+  for the one-line case. Nobody measures a language they cannot read. Fixed
+  by tightening `.freq .freq-rule` — all ten languages now clear.
+
+**Structural equality with English is a prompt to look, not a defect.** 12 of
+3,400 comparisons differ in the SHIPPED de/es — a language with no copula has
+no word to carry `<em class="aux">`. Russian and Chinese were flagged for the
+same thing and were right. Do not "fix" these.
+
+**Known gap in `checker/overflow` (scratch, not committed):** it did not flag
+de/es on present-simple slide 4 even though direct measurement puts both at
++10px. Cause not established. Treat a clean run as suggestive, not proof, and
+measure a specific slide directly when it matters.
+
+**Still untranslated, per language:** 643 always-on `.sup` glosses and 1,735
+`BW_TR` word-bank entries. The gloss CSS is also hardcoded to `es`/`de`
+(`:root[lang="es"] .sup[data-lang="es"]`), so glosses the translators DID
+write for the new languages — present-simple's `parNote` carries one in every
+language — are inert until those rules are generalised. Deliberate: a gloss
+on one slide and nothing elsewhere is worse than none.
+
+**Not native-checked.** fr/it/pt read well. ru/ar/zh/ja are plausible and
+handle the hard parts correctly (Russian's `n%10===1&&n%100!==11` plural,
+Arabic's dual, Japanese's no-plural 語) but no native speaker has read them,
+and the completeness guard means a wrong language ships the moment it is
+complete.
