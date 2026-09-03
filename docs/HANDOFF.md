@@ -4277,3 +4277,40 @@ otherwise Playwright's own install. On this machine playwright is global, so
 
 **Still open from the handover, unchanged:** German and Spanish overflow
 present-simple slide 7 by 22px; the scratch overflow checker is unreliable.
+
+## 2026-09-03 — Present Simple: word bank and glosses in all ten languages
+
+`blockcamp-present-simple.html` now carries `BW_TR` (80 entries) and the 25
+always-on `.sup` glosses in fr, it, pt, ru, ar, zh and ja as well as es and de,
+and the gloss CSS is generalised: every `:root[lang="es"] … .sup[data-lang="es"]`
+rule is now written out for all nine gloss languages (the `data-boxw` width
+knob is deliberately still de/es only). That also switches on the per-language
+`parNote` glosses the translators had already written into `UI_I18N`, which
+were inert until now.
+
+Conventions carried over from es/de and applied in every language: gap
+sentences are glossed with the gap filled; "(no existe)"-style markers for
+non-existent forms; auxiliary notes keep the English pronouns; Steve, Alex,
+Warden and Enderman stay in Latin script; skeletons keep the English function
+word ("every + période"). Portuguese is European, matching the deck's `pt` UI
+block (tu forms, pequeno-almoço). Chinese and Japanese mark person on
+uninflected verbs with "(he/she/it 用)" / "(he/she/it の形)". **Not
+native-checked**, same as the UI strings.
+
+**Layout was measured in every language, not just English.**
+`lesson-template/checker/overflow-langs.js` (new, committed) repeats
+`check-lesson.js`'s LAYOUT measurement with each offered language switched on.
+First run: es/fr/it/pt over on slide 2 by 9px (the he/she/it paradigm gloss
+wrapped to two lines — es had been shipping that way), pt over on slide 7 by
+52px (the "every + period" gloss wrapped, and the weekday gloss fell under the
+chips instead of beside them). Fixed by shortening five glosses, one of them
+Spanish: the he/she/it line is now "él / ella / ello construye" and its
+equivalents — three pronouns, one verb, which is the teaching point anyway.
+All ten languages now fit on all 22 slides. Run this tool after any gloss or
+`UI_I18N` change; the English-only checker cannot see these.
+
+**Still open across the line:** the other 15 Block Camp I decks and the eight
+passive decks still have es/de-only glosses and word banks, and their gloss
+CSS is still hardcoded to es/de. The merge is mechanical —
+`lesson-template/bank_merge.py <deck> <dir>` does it, asserting every count: bank JSON per language keyed by the exact English, 25-string
+gloss array in document order, CSS regenerated from the es template.
