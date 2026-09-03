@@ -115,6 +115,26 @@ def text_to_js(text):
     return json.dumps(text, ensure_ascii=False)
 
 
+# THE SLIDE COUNTER READS BACKWARDS IN ARABIC. "5 / 22" is three bidi runs -
+# a number, a neutral separator, a number - so an RTL paragraph reorders them
+# and the learner sees "22 / 5". Found by rendering the deck bar, not by
+# reading the JSON: every structural check passes, because the string IS
+# "5 / 22". The score chip escapes it only because "0/28" has no spaces and
+# stays one run.
+#
+# U+2066 LEFT-TO-RIGHT ISOLATE ... U+2069 POP DIRECTIONAL ISOLATE pins the run
+# without affecting anything around it. Applied here rather than asked of the
+# translator, because it is a rendering fact about Arabic, not a translation
+# choice, and it has to hold for every deck.
+ISOLATE_LANGS = ('ar',)
+
+
+def rtl_isolate(lang, fn):
+    if lang not in ISOLATE_LANGS or '\\u2066' in fn:
+        return fn
+    return fn.replace('`${a} / ${b}`', '`\\u2066${a} / ${b}\\u2069`')
+
+
 def cmd_extract(deck, lang):
     src = open(deck, encoding='utf-8').read()
     vals = parse(src, lang)
@@ -152,7 +172,7 @@ def cmd_merge(deck, lang, path):
     for k in en:                                  # English order, always
         v = new[k]
         if isinstance(v, dict) and '__function__' in v:
-            lines.append('    %s: %s,' % (k, v['__function__']))
+            lines.append('    %s: %s,' % (k, rtl_isolate(lang, v['__function__'])))
             fns.append(k)
         else:
             lines.append('    %s: %s,' % (k, text_to_js(v)))
