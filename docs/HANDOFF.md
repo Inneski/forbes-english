@@ -12,6 +12,116 @@ stale copy.
 
 ---
 
+## 2026-09-03 — three duplicate lessons merged, two of them then rebuilt as decks
+
+Started as a full house-style audit of the catalogue and turned into two
+lessons. Both halves are worth carrying forward.
+
+### The audit
+
+All **93 deck files exit `check-lesson.js` clean** — twelve gates, zero
+failures. The only file that fails is `lesson-template.html`, which is the
+placeholder title and expected.
+
+**145 catalogued lessons are still scrolling pages.** That is after excluding
+every family that is deliberately not a deck: Sherpa Tensing, Sailing the Seas,
+the time-signals pages, the `.pptx` deck-viewers, the block-camp RPGs and the
+three IELTS scrolling pages. Grouped by whether artwork exists:
+
+| | |
+|---|---|
+| artwork on disk, convertible today with nothing commissioned | **77** |
+| art exists but is a 1200px library card, under the §3 hero minimum | **22** |
+| no artwork at all | **46** |
+
+The 77 cluster into families that share one artwork set — `minecraft/` covers
+nine lessons, `Nietzsche/` six, `lego/` six, then pairs for Ecuador, Football,
+Skiing, Tennis, Top Gear, Water Polo, Fire Brigade, fashion and Animal Welfare.
+Converting by family is much cheaper than converting by date.
+
+### Three lessons were in the catalogue twice
+
+Same shape each time: an original, then a later **re-skin** of it filed under a
+second `pro` row. Measured by diffing the question data, not by filename.
+
+| Survivor | Retired | Row |
+|---|---|---|
+| `forbes-english-meetings.html` (48) | `forbes-english-ope- say in your words.html` | 54 |
+| `-dinosaurs C1.html` (7) | `forbes-english-lesson (dinosoausrs c1).html` | 40 |
+| `forbes-english-football-b1.html` (125) | `forbes-english-football-b1-argentina.html` | 126 |
+
+Football's `questions` array was **byte-identical** across both files; the
+dinosaur pair's `SECTIONS` differed by a single apostrophe escape; the
+open-answer pair differed on six lines, all metadata.
+
+**The re-skin is always the better build, and that is the thing to notice.**
+Both re-skins had been given real artwork and a better mechanic while the
+original kept emoji placeholders — Dino-Craft replaced two 🦕 with 3376×1440
+illustrations, the Argentina edition added a rotating per-question background
+photo. Deciding by filename or by which row is older throws that away. Diff the
+question data first: if it is identical, the question is which one *looks*
+better, not which one is canonical.
+
+Retired files became **~950-byte redirect stubs** (meta refresh +
+`location.replace`, canonical at the survivor, `robots: noindex, follow`),
+following the `full_grammar_test` precedent. `seo.py` correctly refuses to
+fence them and reports them as hand-written SEO — that warning is expected and
+should be left alone. They also drop out of the sitemap, `llms.txt` and the
+crawlable index, because removing their `LESSON_IMAGES` entry makes them read
+as "coming soon". Right outcome, slightly indirect reason.
+
+**`docs/HERO-QUEUE.md` is wrong about the dinosaur cluster.** It records a
+"three-file cluster at 0.80–0.88" including `forbes-english-dinosaur-minecraft`.
+Re-measured: the pair scores **0.92** against each other, **0.07** against
+Dino-Craft Part I and 0.06 against `forbes-english-dinosaurs.html`. Three
+separate lessons; only the pair is a duplicate. Following that note would have
+merged two lessons that are not duplicates.
+
+### Then the survivors were rebuilt as decks
+
+A merge that leaves a scrolling page has not brought the lesson up to house
+style — rule 1 and §10. Both convertible survivors now go through the template
+and exit clean:
+
+* **`-dinosaurs C1.html`** — 23 slides, 25 scored, EN+DE, `DinoCraft0/`.
+  Renamed **Dino-Craft Part 0: The Briefing** at Innes's call: it is five
+  activity types with no teaching, which is a placement test, and it belongs
+  before Part I rather than beside it with a colliding name.
+* **`forbes-english-football-b1.html`** — 21 slides, 14 scored, **EN+DE+ES**,
+  `FootballB1/`, light palette. Spanish ships complete because the old page
+  carried a Spanish gloss on every item; explanations are `UI_I18N` keys so
+  the gloss lands in the Spanish build only.
+
+Defects the rebuild removed, all of them the recurring pattern:
+**every one of football's fourteen keys was at index 0**; four of five dinosaur
+keys at index 1; the dinosaur **word bank listed all five answers in gap
+order**; one explanation named its option by letter; ten items had no
+explanation of their own; and **neither lesson taught anything** — every rule
+lived only in post-answer feedback. Three teaching slides now open each deck.
+
+**Teach cards: use the six-item form even above B2.** House style says the
+five-item form (English body) is usually right at B2 and above. It renders as a
+translated heading over an English rule, which is the half-translated screen §8
+exists to prevent. Caught by screenshotting the Spanish build, not by any gate.
+
+### Still to do
+
+* **Nothing is published.** Files, images and builders were delivered by
+  `SendUserFile`; `git push` returns the usual proxy 403. Local branch
+  `merge-duplicate-lessons`, commits `918ae38` and `8bb3e50`.
+* **Supabase, after the files are live and propagation is confirmed:**
+  `delete from lessons where id in (40, 54, 126);` and
+  `update lessons set title = 'Dino-Craft Part 0: The Briefing' where id = 7;`
+  Consider `sort_order` so Part 0 sits ahead of Parts I and II. Until row 7 is
+  retitled the deck's `<title>` reads "Dinosaurs (C1)", because `seo.py` writes
+  it from the table — that is not a bug in the build.
+* `Football/stadium-silhouette.jpg`, `minecraft/Skeletal_Dinosaur.webp` and the
+  four `minecraft/blackisler_*.png` are now unreferenced. `git rm` them from a
+  session that can push.
+* The other 143 conversion candidates. Start with a family.
+
+---
+
 ## `tools/seo.py` cannot reach Supabase from a cloud session — and fails quietly
 
 Found while publishing the risk-management deck, and it is a trap for every
