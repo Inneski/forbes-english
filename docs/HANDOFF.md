@@ -4062,3 +4062,40 @@ from Innes's machine. Recorded in CLAUDE.md next to the pipeline.
 **The fix worth making**: `seo.py` should refuse to REMOVE an entry when it
 is running off the cache — additive-only in fallback mode. Deleting on the
 strength of a stale cache is never right.
+
+### 2026-09-02 — the hub hardcodes the Free/Pro tag
+
+Making Past Simple 1a free changed the database row and everything that
+reads it: `library.html`'s grid (which pulls `access` live from Supabase via
+`sb-client.js`), the crawlable index, the gate page, and the deck's
+`isAccessibleForFree`. **`block-camp.html` did not**, because its Free/Pro
+tag is typed in by hand, once per thumbnail, with nothing linking it to the
+column it reports. The front page of the line contradicted the paywall, and
+it surfaces as "it still says pro", not as an error.
+
+`lesson-template/checker/check-access.py` now compares all 24 hardcoded tags
+against `tools/lessons.json`. Verified firing on a broken copy, both ways it
+can fail — a wrong tag, and a card with no tag. **Run it whenever an access
+flag moves.**
+
+Three separate "a hardcoded duplicate of a fact drifts from the fact" bugs
+turned up in one session: the hub's access tags, the `.aux` markup inside the
+descent's JS dictionaries, and `tools/lessons.json` versus Supabase. The
+pattern is worth naming: **anything typed twice will disagree eventually, and
+the second copy is always the one nobody looks at.** Where the duplicate
+cannot be removed, gate it.
+
+Also: the hub's Camp I note said "Part 1 free", which claims all eight Part 1
+decks are free. Five are not, and that predates this change. Now "Part 1 free
+on units 1–3", matching the descent's "station 9 free". It is sales copy —
+Innes may reword it.
+
+**How to change an access flag** (the full list, in order):
+1. `update lessons set access = '<free|pro>' where file = '<deck>.html'` in
+   Supabase — the Worker enforces this one and nothing else does.
+2. The same field in `tools/lessons.json`, or the next cloud `seo.py` run
+   reverts the indexes off the stale cache.
+3. `python3 tools/seo.py`, then **read the diff** on `library.html`,
+   `llms.txt`, `lesson-meta.json` and the deck itself.
+4. The hand-typed tag in `block-camp.html`.
+5. `python3 lesson-template/checker/check-access.py` — must pass.
