@@ -4099,3 +4099,69 @@ Innes may reword it.
    `llms.txt`, `lesson-meta.json` and the deck itself.
 4. The hand-typed tag in `block-camp.html`.
 5. `python3 lesson-template/checker/check-access.py` — must pass.
+
+### 2026-09-02 — adding a language is translation volume, not engineering
+
+The decks were already built for this and nobody had noticed. Every deck
+declares all ten languages in `LANGS`, `RTL_LANGS = ['ar']` is in place, and
+`initLang()` only offers a language whose `UI_I18N` block is as long as
+English:
+
+    LANGS.filter(l => l.code === 'en' ||
+                      Object.keys(UI_I18N[l.code] || {}).length >= enKeys)
+
+So a language appears the moment its block is complete and never before. No
+engine edit, no CSS, no build change. The Sherpa Tensing pages already run
+the full nine (`de es fr it pt ru ar zh ja`) on a different mechanism
+(`EX_TR` + `TR_ORDER`), which is where the target set comes from.
+
+**The size of the job, measured across the 24 decks:**
+
+| surface | strings per language |
+|---|---|
+| `UI_I18N` keys | 1,461 |
+| always-on `.sup` glosses (ES/DE inline) | 643 |
+| `BW_TR` word-bank entries | 1,735 |
+| **total** | **3,839** |
+
+Seven languages to reach the Sherpa set is **26,873 strings**. The eight
+passive stations carry only 3 `UI_I18N` keys each because their content is
+generated — those go through `build_descent.py`, whose `CHASSIS_LANGS` is
+still `('en', 'de', 'es')`.
+
+**`lesson-template/i18n_tool.py`** does the mechanical half:
+
+    i18n_tool.py extract <deck> [lang] > out.json   # HTML unescaped for a translator
+    i18n_tool.py merge   <deck> <lang> <in.json>    # re-escapes, refuses a short block
+    i18n_tool.py status  [decks...]                 # which languages are complete
+
+Two traps it now handles, both found by using it:
+
+- **The empty stubs shadow you.** Each deck ships the eight unwritten
+  languages as one-line stubs at the foot of `UI_I18N` (`fr: {},`). A block
+  written above one of those is silently overridden — a later key in an
+  object literal wins — so the language stays empty, the switcher goes on
+  hiding it, and the merge *looks* like it worked. The tool writes into the
+  last block, deletes any earlier duplicate, and refuses to leave more than
+  one behind.
+- **`slideOf` and `wordCount` are functions**, not strings. Omit them and the
+  block is two keys short of English, so the language never appears. They are
+  carried across and reported, because the plural rule needs a human.
+
+**Ten keys stay in English by convention** — checked against the ES and DE
+blocks, which agree: `beA`, `beB` (the paradigm cells `was`/`were`),
+`beNote`, `didNote`, `edNote`, `irNote` (the formula plates show English
+grammar), `coverTitle`, `chipFocus`, `ledDp`, and `actPlaceholder` (the
+learner writes in English).
+
+**French is done on `blockcamp-past-simple.html`** — the free flagship, 108
+keys. Verified: the switcher offers Français, `documentElement.lang` follows,
+and every slide was measured for overflow in French. Slide 22 reports 22px
+past the deck bar, but so do English, German and Spanish — it is the
+`.slide-body` container's own box, pre-existing, and nothing visible crosses.
+
+**Still to decide, and it is not a coding question:** `ru`, `ar`, `zh` and
+`ja` are learner-facing pedagogical glosses. A wrong one teaches a wrong
+thing, and the completeness guard means a *wrong* language is worse than a
+missing one, because it ships. Those four want a native-speaker pass before
+they go live.
