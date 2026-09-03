@@ -133,7 +133,7 @@ def lessons():
             headers={'apikey': SUPABASE_ANON,
                      'Authorization': 'Bearer ' + SUPABASE_ANON})
         rows = json.loads(urllib.request.urlopen(req, timeout=20).read())
-        with open(CACHE, 'w', encoding='utf-8') as fh:
+        with open(CACHE, 'w', encoding='utf-8', newline='\n') as fh:
             json.dump(rows, fh, ensure_ascii=False, indent=1)
         return rows, 'supabase'
     except Exception as e:                                  # noqa: BLE001
@@ -627,7 +627,7 @@ def main(check=False):
         if new != src:
             changed += 1
             if not check:
-                open(f, 'w', encoding='utf-8').write(new)
+                open(f, 'w', encoding='utf-8', newline='\n').write(new)
 
     for f, meta in PAGES.items():
         t, d = meta[0], meta[1]
@@ -665,18 +665,16 @@ def main(check=False):
         if new != src:
             changed += 1
             if not check:
-                open(p, 'w', encoding='utf-8').write(new)
+                open(p, 'w', encoding='utf-8', newline='\n').write(new)
 
     if not check:
-        open(os.path.join(ROOT, 'robots.txt'), 'w', encoding='utf-8').write(ROBOTS)
-        open(os.path.join(ROOT, 'sitemap.xml'), 'w', encoding='utf-8').write(
+        open(os.path.join(ROOT, 'robots.txt'), 'w', encoding='utf-8', newline='\n').write(ROBOTS)
+        open(os.path.join(ROOT, 'sitemap.xml'), 'w', encoding='utf-8', newline='\n').write(
             sitemap(rows, images))
         # The Worker reads this to build a real gate page per lesson.
-        open(os.path.join(ROOT, 'lesson-meta.json'), 'w',
-             encoding='utf-8').write(json.dumps(index, ensure_ascii=False,
+        open(os.path.join(ROOT, 'lesson-meta.json'), 'w', encoding='utf-8', newline='\n').write(json.dumps(index, ensure_ascii=False,
                                                 indent=0, sort_keys=True))
-        open(os.path.join(ROOT, 'llms.txt'), 'w',
-             encoding='utf-8').write(llms_txt(rows, index, images))
+        open(os.path.join(ROOT, 'llms.txt'), 'w', encoding='utf-8', newline='\n').write(llms_txt(rows, index, images))
     print('  %s %d page(s); skipped %d' %
           ('would rewrite' if check else 'rewrote', changed, skipped))
     if unfenced:

@@ -1,8 +1,11 @@
 # Handover — "SUBJECT + am/are/is is fuzzy" on Present Simple slide 4
 
-**Status: unresolved.** One fix shipped on a strong hypothesis (`efca4c2`), not
-confirmed. Innes still saw the problem before that fix went out; nobody has
-checked since.
+**Status: RESOLVED 2026-09-03.** The cause was not `color-mix()` — the
+reporting machine runs Chrome 152. It was the `.freq` class naming both the
+frequency card and the inline marker inside the pill, so the marker carried the
+card's backdrop blur, and a wrapped inline's blur covers its whole first line.
+See the 2026-09-03 section of `docs/HANDOFF.md` for the measurements and the
+fix. The rest of this file is kept as the record of what was ruled out and how.
 
 Read `CLAUDE.md` first — the pipeline and the publishing rules there still apply.
 

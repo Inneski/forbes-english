@@ -36,7 +36,12 @@ const GRN = s => `\x1b[32m${s}\x1b[0m`;
 const DIM = s => `\x1b[2m${s}\x1b[0m`;
 
 (async () => {
-  const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
+  // The sandbox pins its own Chromium; on any other machine (Innes's Windows
+  // box, with playwright installed globally) that path does not exist, so fall
+  // back to whatever browser playwright installed for itself.
+  const pinned = '/opt/pw-browsers/chromium';
+  const browser = await chromium.launch(
+    require('fs').existsSync(pinned) ? { executablePath: pinned } : {});
   const page = await browser.newPage({ viewport: { width: 1400, height: 820 } });
   const jsErrors = [];
   page.on('pageerror', e => jsErrors.push(e.message));

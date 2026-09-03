@@ -4220,3 +4220,60 @@ handle the hard parts correctly (Russian's `n%10===1&&n%100!==11` plural,
 Arabic's dual, Japanese's no-plural 語) but no native speaker has read them,
 and the completeness guard means a wrong language ships the moment it is
 complete.
+
+## 2026-09-03 — The fuzzy pill: found, fixed, and it was never color-mix
+
+`docs/HANDOVER-fuzzy-pill.md` carried this as unresolved with a live
+hypothesis (his browser predates `color-mix()`). That hypothesis is dead: the
+reporting machine runs Chrome 152 as its default browser, on a 3840x2160
+panel at 200% Windows scaling, so DPR 2 and a 1920x~960 CSS viewport. The
+`efca4c2` fallbacks are harmless and stay; the other 23 decks do **not** need
+the sweep.
+
+**The cause is a class-name collision in `blockcamp-present-simple.html`.**
+`.freq` names the frequency-scale card (plate at 52% surface, 16px side
+padding, `backdrop-filter: blur(8px)`) *and* the role colour on
+`<b class="freq">ADVERB OF FREQUENCY</b>` inside the formula pill. The inline
+marker therefore carried the card's plate, padding and blur. On one line that
+is invisible. The second pill on slide 4 wraps in every language, which splits
+the marker across two lines, and Chrome applies an inline element's
+backdrop-filter to the bounding box of all its fragments — the whole first
+line. "SUBJECT + am / are / is +" was painted, then blurred by the marker
+painted after it. The blue sat on top of its own blur and stayed crisp, which
+is exactly the screenshot: grey words soft and washed, blue beside them sharp.
+
+Reproduced and isolated on the reporting machine, live site, Chrome 148 in
+the desktop-app pane, stage at 1.333:
+- pill 2 forced to one line → first line crisp and bright;
+- `backdrop-filter: none` on `.formula` only → no change (matches the earlier
+  ruling-out, which had tested the pill and not the marker);
+- `backdrop-filter: none` on `b.freq` only, pill still wrapping → fixed.
+
+**Fix:** one rule after the `.freq` card plate, `b.freq, em.freq { padding: 0;
+background: none; backdrop-filter: none; }`, with the reasoning in the CSS
+comment beside it. Dropping the 32px of accidental padding also narrows both
+pills. Only present-simple has inline `freq` markers, so the other decks are
+not affected today — but every one of the 24 has the same `.freq` card rule,
+so a marker added to any of them will hit this again. The line-wide fix, if
+anyone touches the card CSS, is to scope it to `.card.freq`.
+
+Why three earlier passes missed it: they measured the *pill* — its computed
+colours, its edge steepness at three scales — and the pill was innocent. The
+defect lives on a child element and only on the wrapped line. Any time the
+complaint is "this one looks different from that one" and the computed styles
+match, diff the *children* and the *line count*, not the box.
+
+**How to inspect a live deck at true pixels from the desktop app:** the pane
+downsamples a 1920-wide viewport to 800, which hides exactly this class of
+defect. Set the viewport to 800x400, then from the console
+`stage.style.transform = 'translate(-100px,-690px) scale(1.33333)'` to put the
+region of interest on screen at 1:1. `fitStage()` restores it, and any resize
+event resets it, so apply it after the resize settles.
+
+**`check-lesson.js` now runs on Windows.** It pinned the sandbox's
+`/opt/pw-browsers/chromium`; it now uses that path only if it exists and
+otherwise Playwright's own install. On this machine playwright is global, so
+`export NODE_PATH="$(npm root -g)"` before running it.
+
+**Still open from the handover, unchanged:** German and Spanish overflow
+present-simple slide 7 by 22px; the scratch overflow checker is unreliable.

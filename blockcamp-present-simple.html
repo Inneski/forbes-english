@@ -1918,6 +1918,24 @@ b.sent { color: var(--text-dim) !important; font-weight: 700; }
   backdrop-filter: blur(8px); }
 .freq { background: var(--surface); background: color-mix(in srgb, var(--surface) 52%, transparent);
   backdrop-filter: blur(8px); }
+/* FUZZY PILL. Innes, on slide 4, more than once: "SUBJECT + am/are/is is
+   fuzzy". Not faint - that was 168a3fe - fuzzy. Cause: `.freq` is two things
+   in this deck. It is the frequency-scale card styled just above, and it is
+   the colour class on the <b class="freq">ADVERB OF FREQUENCY</b> marker
+   inside the formula pill (the role-colour rule near the top). So the card's
+   plate, its 16px side padding and its backdrop blur all landed on an inline
+   marker. On one line that is invisible. When the pill wraps - and the second
+   pill on slide 4 wraps in every language - the marker is split across two
+   lines, and Chrome applies an inline element's backdrop-filter to the
+   bounding box of ALL its fragments, which is the whole first line. "SUBJECT
+   + am / are / is +" was painted first and then blurred by the marker painted
+   after it. The blue sat on top of its own blur and stayed crisp, which is
+   why the complaint was always about the grey words beside it. Measured on
+   the reporting machine at 1920x960: removing backdrop-filter from the marker
+   alone, pill still wrapping, restored the first line; forcing the pill onto
+   one line did the same; removing it from .formula changed nothing. The
+   marker is ink, not a box. */
+b.freq, em.freq { padding: 0; background: none; backdrop-filter: none; }
 .opt { background: var(--surface2); background: color-mix(in srgb, var(--surface2) 53%, transparent);
   backdrop-filter: blur(8px); }
 .match-item, .sort-item, .sort-bin, .order-chunk, .bank-chip, .chip {
