@@ -4165,3 +4165,121 @@ past the deck bar, but so do English, German and Spanish — it is the
 thing, and the completeness guard means a *wrong* language is worse than a
 missing one, because it ships. Those four want a native-speaker pass before
 they go live.
+
+---
+
+## 2026-09-03 — The Pharma Sales Interview (B2–C1), built from a client brief
+
+`forbes-pharma-sales-interview-c1.html`, 22 slides, 32 scored points.
+Builder `lesson-template/build/build_pharma.py`, strings
+`i18n_pharma.py`, artwork `make_pharma_hero.py`. English + German,
+`check-lesson.js` exits clean.
+
+Not a forbesenglish.com URL rebuild — the request was an email from a
+prospective student, so the lesson was written from scratch against his
+situation: a sales leader at a large pharmaceutical multinational,
+interviewing for a pharmaceutical sales role at a smaller Spanish company
+that also has a German organisation, two interviews in English within
+weeks, "out of practice and sometimes has to search for the right words".
+
+**The content decision worth keeping.** The panel is Spanish, so English is
+their second language too, and that inverts the usual register advice. The
+Latinate vocabulary a British listener finds stiff — *demonstrate*,
+*sufficient*, *obtain*, *exceeded* — is what a Spanish listener decodes
+instantly, and the idiomatic phrasal verbs a strong B2/C1 speaker has spent
+years acquiring (*pull it off*, *touch and go*, *circle back*, *wing it*)
+are exactly what costs them. That is the whole of the first sort slide, and
+the right-hand bin is deliberately framed as *fluent English that is still
+the wrong choice here*, not as an error bin. If another lesson is ever built
+for a non-native audience, this is the reusable idea.
+
+### Four things a future session needs
+
+**1. The hero is a generated stand-in, and it is meant to be replaced.**
+Innes attached five illustrations — flat coral-and-slate silhouettes of two
+people across a desk. They arrived as images in the conversation and never
+reached the container's filesystem, so `make_pharma_hero.py` reproduces the
+composition and palette instead. Swapping in the real artwork is:
+
+```bash
+# drop the real JPEG at PharmaInterview/hero.jpg, then
+python3 lesson-template/extract-palette.py PharmaInterview/hero.jpg
+# paste that block over PALETTE in build_pharma.py
+python3 lesson-template/build/build_pharma.py
+python3 lesson-template/bgmeasure.py "$PWD/forbes-pharma-sales-interview-c1.html"
+python3 tools/seo.py
+```
+
+Nothing else in the lesson refers to the artwork. **Re-measure the wash** —
+see 3 below — rather than carrying the current values over.
+
+**2. `git push` worked from this cloud session.** No proxy 403. `CLAUDE.md`
+and HOUSE-STYLE §11.3 both say push is blocked and route everything through
+the GitHub web uploader; that was not true here, and the uploader's
+silent-commit trap was never reached. **So test `git push --dry-run` before
+assuming you need the uploader** — it is one command and it decides the
+whole publishing route.
+
+**3. A bright hero needs the wash raised, and the numbers are measured.**
+At the template default (`--wash-mid` 0.06 / `--wash-edge` 0.20) this coral
+hero rendered `mean_bg_luminance 0.1194` with text at `4.12:1` against the
+brightest background — outside the 0.025–0.08 band HOUSE-STYLE §5 asks for
+and well under "comfortably above 7:1". Swept it:
+
+| wash mid / edge | mean luminance | text vs brightest |
+|---|---|---|
+| 0.06 / 0.20 (template) | 0.1194 | 4.12 |
+| 0.20 / 0.38 (§5 suggestion) | 0.0801 | 5.36 |
+| 0.28 / 0.46 | 0.0636 | 6.25 |
+| **0.36 / 0.54 (shipped)** | **0.0486** | **7.34** |
+
+§5's suggested 0.20/0.38 was not enough for this hero. The builder patches
+the two values with an assert on the template block, so it fails loudly if
+the template moves them.
+
+**4. The Supabase row is deliberately NOT inserted yet.** `library.html`
+calls `await sbGetLessons()` at runtime, so a row in the `lessons` table
+puts a card on the **live** site immediately. This work is on a branch, not
+`main`, so the row would point at a 404 until it merges. The lesson is in
+`tools/lessons.json` (which is what `seo.py` reads, since its urllib still
+cannot tunnel to Supabase from a cloud session even though the MCP tools
+can) so the indexes and the SEO block are correct on the branch.
+
+**On merge, run this** — until it runs, the lesson has no library card, and
+the next `seo.py` run that reaches Supabase for real will strip it from
+`library.html`, `llms.txt`, `lesson-meta.json` and the sitemap:
+
+```sql
+insert into lessons (id, file, title, level, access, deck, video, created_at)
+values (304, 'forbes-pharma-sales-interview-c1.html',
+        'The Pharma Sales Interview — Two Rounds in English (B2–C1)',
+        'B2', 'free', true, false, '2026-09-03T00:00:00+00:00');
+```
+
+`access` is set to `free` on the assumption this is a lead lesson for a
+prospective student. If it should be Pro, change it in both the table and
+`tools/lessons.json` and re-run `seo.py` — see the access-flag checklist
+above.
+
+### Smaller notes
+
+- **German overflows before English does, and only by a few pixels.** The
+  activation slide was 8px over in English (eleven target chips and prompts
+  written longer than the escalating deck's) and teach slide 2 was 3px over
+  in German after that was fixed. Both were found by measuring every slide
+  in both languages, not by the checker, which only measures English. Worth
+  doing on any deck that ships two languages:
+  compare `.slide-body` `scrollHeight` against `clientHeight` per slide,
+  per language, and measure the *natural* height of each card's children —
+  the cards all stretch to the tallest, so the rendered heights are equal
+  and tell you nothing about which one to trim.
+- **`check-lesson.js` and `bgmeasure.py` both need Playwright**, which is
+  not in the image. `npm install playwright --no-save` plus
+  `pip install playwright`, with the pre-installed browser at
+  `PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers` and the binary at
+  `/opt/pw-browsers/chromium-1194/chrome-linux/chrome`. Do not run
+  `playwright install`.
+- **Arrow-key navigation stops on a gap slide** if the focus is in an
+  input. Anything scripting the deck should blur first or click
+  `.nav-btn[data-action="next"]`. Not a bug — worth knowing before you
+  conclude a deck is broken at slide 9.
