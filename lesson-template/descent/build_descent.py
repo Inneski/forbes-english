@@ -232,10 +232,14 @@ def cover(cov, st):
     return re.sub(r'(<span class="chip">)[^<]*(</span>)', swap, cov, count=3)
 
 
-# The chassis fills en, de and es; the other seven blocks are empty and fall
-# back to English at runtime. Anything filled that a station does not rewrite
-# still carries the CAMP's active-voice advice.
-CHASSIS_LANGS = ('en', 'de', 'es')
+# Whatever the camp deck's dictionary holds comes across wholesale - this
+# tuple does not filter it, it names the languages the stale-wording warning
+# below should cover. So it has to grow with the camp decks: as soon as a camp
+# is translated into a new language, its mirrored station inherits that block,
+# and any results message the station does not rewrite carries the CAMP's
+# ACTIVE-voice advice in that language, on a deck about the passive. Silent,
+# and only visible to a learner reading in that language.
+CHASSIS_LANGS = ('en', 'de', 'es', 'fr', 'it', 'pt', 'ru', 'ar', 'zh', 'ja')
 
 
 def rescore(tail, messages):
