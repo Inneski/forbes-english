@@ -199,6 +199,37 @@
    plates - same trap as the ending eyebrow. Brighter gold for label text;
    var(--accent) still fills badges and buttons, where it is the background. */
 .gloss b,.feedback .translation b,.feedback>strong,.clue span,.langsel i{color:#ffd166}
+
+/* HUD MOVED TO THE FOOT OF THE FRAME
+   A 62px bar across the top sat exactly where heads are: the artwork is
+   composed with faces high in the frame, so the bar was cropping them. The
+   bottom 8% carries more raw detail (59.5 vs 29.8 mean gradient) but it is
+   foreground texture - deck, rock, water - which costs nothing to cover. */
+.hud{inset:auto 0 0;background:linear-gradient(0deg,color-mix(in srgb,var(--dark) 94%,transparent),transparent)}
+.game .hud{background:rgba(5,11,13,.72);backdrop-filter:blur(7px)}
+
+/* START OVER now rides in the bar rather than floating over the picture */
+.hud .restart{position:static;z-index:auto;padding:.4rem .48rem;white-space:nowrap}
+
+/* the copy block: reclaim the top, keep clear of the bar at the foot */
+.copy{padding-top:clamp(2.4rem,4.5vh,3.4rem);padding-bottom:clamp(6.2rem,9.5vh,7.4rem)}
+.pos-centre .copy{padding-top:clamp(2.8rem,5vh,4rem)}
+.scene-stamp{bottom:5.4rem}
+
+@media(min-width:881px) and (max-height:790px){
+  .copy{padding-top:2rem;padding-bottom:5.8rem}
+  .tr-on .copy{padding-top:1.9rem;padding-bottom:5.6rem}
+}
+@media(max-width:880px){
+  .copy,.pos-centre .copy,.pos-right .copy{padding:2.6rem 1rem 7rem}
+  .scene-stamp{bottom:6.4rem}
+  /* four controls in one row on a phone: buy headroom rather than rely on 7px */
+  .hud .tools{gap:.18rem}
+  .hud .tools button{padding:.34rem .3rem}
+  .tools .langsel button{min-width:24px;padding:.34rem .18rem}
+  .hud .restart{padding:.34rem .34rem;font-size:.5rem}
+}
+@media(max-width:560px){.copy{padding-top:2.4rem}}
 </style>
 </head>
 <body>
@@ -614,9 +645,9 @@ function launchOdyssey(){
       app.innerHTML = `
       <main id="slide-${String(state.scene + 1).padStart(2, "0")}" class="game play slide pos-${position} v-${visual.vert} ${lang === "off" ? "" : "tr-on"} visual-${visual.key}" style="--base:${theme.base};--light:${theme.light};--dark:${theme.dark};--accent:${theme.accent};--hot:${theme.hot};--cream:${theme.cream};--scene-image:url('${visual.image}');--scene-x:${visual.x};--scene-y:${visual.y || "center"};--scene-zoom:${visual.zoom};--scene-filter:${visual.filter}">
         <div class="scene-art" aria-hidden="true"></div><div class="wash wash-${position}" aria-hidden="true"></div><div class="grain" aria-hidden="true"></div>
-        <header class="hud"><div class="hud-stat"><span>GLORY</span><strong>${state.score}</strong></div><div class="meter"><i style="width:${progress}%"></i><b style="left:${progress}%"></b></div><div class="hud-stat centre-stat"><span>SLIDE</span><strong>${state.scene + 1} / ${scenes.length}</strong></div><div class="hud-stat"><span>CREW \xB7 SUPPLIES</span><strong>${state.crew} \xB7 ${state.supplies}</strong></div><div class="hud-stat chances"><span>CHANCES</span><strong>${"\u2665".repeat(state.hearts)}${"\u2661".repeat(5 - state.hearts)}</strong></div><div class="tools"><button data-action="codex">CODEX</button><span class="langsel" role="group" aria-label="Translation language"><i>TRANSLATE</i>${["off","es","de"].map((L) => `<button data-action="lang" data-lang="${L}" class="${lang === L ? "on" : ""}" aria-pressed="${lang === L}">${L.toUpperCase()}</button>`).join("")}</span></div></header>
+        <header class="hud"><div class="hud-stat"><span>GLORY</span><strong>${state.score}</strong></div><div class="meter"><i style="width:${progress}%"></i><b style="left:${progress}%"></b></div><div class="hud-stat centre-stat"><span>SLIDE</span><strong>${state.scene + 1} / ${scenes.length}</strong></div><div class="hud-stat"><span>CREW \xB7 SUPPLIES</span><strong>${state.crew} \xB7 ${state.supplies}</strong></div><div class="hud-stat chances"><span>CHANCES</span><strong>${"\u2665".repeat(state.hearts)}${"\u2661".repeat(5 - state.hearts)}</strong></div><div class="tools"><button data-action="codex">CODEX</button><span class="langsel" role="group" aria-label="Translation language"><i>TRANSLATE</i>${["off","es","de"].map((L) => `<button data-action="lang" data-lang="${L}" class="${lang === L ? "on" : ""}" aria-pressed="${lang === L}">${L.toUpperCase()}</button>`).join("")}</span><button class="restart" data-action="reset">START OVER</button></div></header>
         <section class="copy" aria-live="polite"><p class="eyebrow">${esc(scene.chapter)} \xB7 ${esc(scene.location)}</p><h1>${esc(scene.title)}</h1><p class="story">${esc(scene.narrative)}${tx ? gloss(tx.n) : ""}</p><div class="clue"><strong>${esc(scene.focus)} \xB7 ${scene.kind === "choice" ? "ROUTE DECISION" : scene.kind === "boss" ? "BOSS TEST \xB7 DOUBLE GLORY" : "NARRATIVE TENSE TEST"}</strong></div><h2>${esc(scene.prompt)}${tx ? gloss(tx.p) : ""}</h2>${!state.answered ? `<div class="answers">${options}</div>` : ""}${feedback}</section>
-        <div class="scene-stamp" aria-hidden="true"><span>${String(state.scene + 1).padStart(2, "0")}</span><b>${esc(scene.location)}</b></div><button class="restart" data-action="reset">START OVER</button>
+        <div class="scene-stamp" aria-hidden="true"><span>${String(state.scene + 1).padStart(2, "0")}</span><b>${esc(scene.location)}</b></div>
         ${codex ? codexHtml() : ""}
       </main>`;
     } catch (err) {
