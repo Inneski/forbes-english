@@ -38,7 +38,7 @@ COLOURS = {
     '#19130E': '#1A0A0C',   # the 8-way pixel outline behind every glyph
     '#4C3C2F': '#4C2A31',   # chrome borders
     '#DCC7B4': '#E6CDD2',   # chrome text
-    '#B08968': '#D66D77',   # chrome accent: the past perfect's ink (COLOUR-RULES: the
+    '#B08968': '#E27881',   # chrome accent: the past perfect's ink (COLOUR-RULES: the
                             # route-map maroon #6E0B24 lifted in Lab until it reads)
     '#1F1711': '#1F0A0E',   # text on the pressed accent button
 }

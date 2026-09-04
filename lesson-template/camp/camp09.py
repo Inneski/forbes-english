@@ -801,26 +801,27 @@ TR_PAIRS = [
 TR = {'es': {k: v for k, v, _ in TR_PAIRS}, 'de': {k: v for k, _, v in TR_PAIRS}}
 
 
-PALETTE = """  --void          : #0e090a;
-  --surface       : #1c1214;
-  --surface2      : #291a1d;
-  --border        : #786330;
+PALETTE = """  --void          : #160e13;
+  --surface       : #251720;
+  --surface2      : #311f2a;
+  --border        : #af9046;
   --text          : #f5f4f2;
   --text-dim      : #bfb7a3;
-  --accent        : #dfaa2f;
-  --accent-bright : #eec568;
-  --accent-dim    : #96711c;
-  --secondary     : #0f0507;
+  --accent        : #e9c572;
+  --accent-bright : #f6c146;
+  --accent-dim    : #d6a229;
+  --secondary     : #2e1b27;
   --contrast      : #1dbfed;
 """
 
 TOKENS = """  /* THE PAST PERFECT'S OWN COLOUR. #6E0B24 is the route map's maroon, kept
      at its system value for the TOKENS gate. It measures 1.5:1 on this deck's
      surface - unreadable - so the ink is lifted the way --t-past-ink was:
-     L* raised in Lab with hue and chroma held (L* 23 -> 59), stopping at the
-     first step past 5:1 on the card. 5.5:1 there. */
+     L* raised in Lab with hue and chroma held (L* 23 -> 61), stopping at the
+     first step past 5:1 on BOTH card surfaces once the scenes were lifted
+     (lift_scenes.py): 5.9:1 on --surface, 5.3:1 on --surface2. */
   --t-past-perfect: #6E0B24;
-  --t-past-perfect-ink: #d66d77;
+  --t-past-perfect-ink: #e27881;
   /* THE PARTICIPLE IS PURPLE WHEREVER IT IS WRITTEN - docs/COLOUR-RULES.md,
      the same token the four perfect decks and the descent carry. */
   --mark-pp: #b39bf5;"""
