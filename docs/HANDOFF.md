@@ -65,15 +65,29 @@ in template CSS added since they were last built — 1190 and 141 lines, mostly
 the exam-style audio player. Harmless, but it is a separate change and wants
 a look before it ships. They were edited in place instead.
 
-### Five decks rebuilt
+### Ten decks rebuilt
 
-| Was | Now | Items | Notes |
+| Was | Now | Scored | Notes |
 |---|---|---|---|
-| `tense-review-minecraft.html` | 21 slides, light | 30 | see below |
+| `tense-review-minecraft.html` | 21 slides, light | 30 | |
 | `nietzsche-film-vocab-c1-part5.html` | 21 slides | 15 | first Nietzsche deck |
-| `forbes-english-present-perfect-lego-b1.html` | 24 slides, light | 26 | first Lego deck |
-| `forbes-english-lego-passive-active.html` | 19 slides | 20 | second Lego deck |
+| `forbes-english-present-perfect-lego-b1.html` | 24 slides, light | 26 | |
+| `forbes-english-lego-passive-active.html` | 19 slides | 20 | |
+| `forbes-lego-b2.html` | 17 slides | 15 | Part I of a pair |
+| `forbes-lego-b2-part2.html` | 15 slides | 20 | Part II; was 15, see below |
+| `forbes-english-minecraft-b1.html` | 20 slides | 26 | |
+| `forbes-english-minecraft-c1.html` | 23 slides | 26 | |
+| `forbes-english-minecraft-editorial.html` | 23 slides | 32 | |
 | plus the three Spanish retrofits | | | |
+
+Every one exits `check-lesson.js` clean, has no overflow in any of the three
+languages (checked at 1280×720 with a headless pass, not by eye), and has
+`deck = true` on its Supabase row.
+
+The Lego B2 pair's score went from 15 to 20 because the deck engine counts
+both blanks of a two-fault error-correction sentence where the old page
+counted the pair as one point. That is the more honest number and nothing on
+the page claims otherwise.
 
 New artwork folder: `TenseReview/` — five flat-vector Minecraft scenes from
 Downloads, cream and dusty pink, deliberately unlike the Past Modals set so
@@ -103,6 +117,58 @@ Every one of these turned up in more than one lesson tonight.
 - **Gap-fills compared with `===`.** `'ve finished` marked wrong on a B1
   lesson. Pipe-separate every reasonable contraction and spelling.
 
+### The artwork ran out, and that is the thing to fix first
+
+**There is no unused Minecraft artwork left.** Every flat-vector illustration
+in `minecraft/` is now the hero or a background of Past Modals, Tense Review,
+Minecraft B1 or Minecraft C1. What that forced:
+
+- **Minecraft B1** uses the three rendered in-game scenes that were on disk
+  and unspoken for (`MinecraftB1/`). They suit the subject but three
+  backgrounds over twenty slides is thin.
+- **Minecraft C1** uses three voxel studies from Innes's Downloads
+  (`MinecraftC1/`) — an Odysseus figure, a warrior, a group of creatures,
+  all photographed with a shallow depth of field. They read as objects made
+  of blocks rather than as screenshots, which suits a lesson about Minecraft
+  as something a scholar writes about. Also three.
+- **Minecraft Trivia** has no folder of its own at all: it points at
+  `MinecraftB1/` and rotates its accent to pink so the two do not read as
+  one deck.
+
+**Do not use the three Twin Peaks images in `minecraft/`.** They are a
+recognisable homage — the Red Room, identifiable characters, and a "Welcome
+to Twin Peaks" sign legible in the corner of the widest one. Cropping the
+sign does not fix what the rest of the frame is, and it is not going on a
+published lesson cover. They were considered and rejected for the Trivia
+deck.
+
+The rest of what is in Downloads under a Minecraft name is a voxel character
+line-up with weapons and blood, which is not for a B1 class.
+
+**The shopping list, four to five per deck, flat vector, 1400px+ landscape:**
+a shelter at dusk with mobs outside; a crafting table or workbench; a mine
+shaft with ore in the wall; a village; a Nether portal; the End. Any four of
+those in the house family replace Minecraft B1's and the Trivia deck's
+backgrounds by editing the filenames in the builder.
+
+### Two decks now share a builder pattern worth copying
+
+`build_mcc1.py` and `build_mced.py` both take a single `MC` list and split it
+across two activities with different eyebrows, by slicing:
+
+```python
++ "".join(D.mc(i + 1, 6, MC[i], 'mcEyebrow', 'Activity 1 · Register', ...)
+          for i in range(6))
++ "".join(D.mc(i + 1, 6, MC[6 + i], 'dndEyebrow', 'Activity 2 · Collocation', ...)
+          for i in range(6))
+```
+
+That is how a page's "drag and drop" activity becomes multiple choice without
+merging it into activity one. Both pages had authored four candidate answers
+per sentence and then poured the private pools into one shared tray; the
+chips were a presentation, and each item was always four options against one
+stem.
+
 ### Still open
 
 - **Polish.** `must-have-to-lego-polish.html` and `minecraft-lesson.html`
@@ -122,9 +188,32 @@ Every one of these turned up in more than one lesson tonight.
 - Tidy-up needing a session that can `git rm`: `Football/stadium-silhouette.jpg`,
   `minecraft/Skeletal_Dinosaur.webp`, four `minecraft/blackisler_*.png`.
 - Whether the grey `--void` should move into `lesson-template.html` and
-  `extract-palette.py` rather than being lifted per lesson. Six builders now
-  carry the same three-line comment saying a re-derivation will put the black
-  back.
+  `extract-palette.py` rather than being lifted per lesson. Ten builders now
+  carry the same comment saying a re-derivation will put the black back.
+- `forbes-english-minecraft-editorial.html` has three content problems the
+  format could not fix: its matching activity restates the keys of questions
+  one, three and five almost verbatim, so a learner who did activity one gets
+  three of seven free; the cats explanation is circular; and the sand
+  explanation invents a floor-check mechanic the game does not have.
+- `forbes-english-minecraft-c1.html` question three has a defensible second
+  answer, which its own explanation concedes, and question twelve's *seized
+  upon* collocates perfectly well with *potential*. Both want a rewritten
+  stem rather than a re-key.
+- **Four decks fail the new short-key check and were not fixed.** The
+  ANSWERS gate now catches a key that is conspicuously *shorter* than its
+  distractors as well as longer — `alchemist_b2_lesson.html` (22 characters
+  against 35), `carrying-the-load-c1.html` (28 against 74),
+  `forbes-conservation-c1.html` (three items, up to 70 against 134) and
+  `forbes-nature-agency-part1.html` (four items, up to 29 against 64). Each
+  wants the distractors tightened, which is content work, not a re-key.
+
+  The thresholds are deliberately stricter than the long case: 1.5x and ten
+  characters, against 1.10x and four. Being the shortest of four happens by
+  chance far more often than being conspicuously the longest, and at the long
+  case's numbers this fired on 35 of the 105 decks — almost all of them
+  closed sets where length carries nothing, like a preposition item keying
+  *at* against *from*. The calibration is written into the comment beside
+  the check.
 
 ### The Lego and Nietzsche queues, audited
 
