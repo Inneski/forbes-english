@@ -390,6 +390,11 @@ AUX_TENSE = {
     't-pperf': ['has', 'have', 'has been', 'have been',
                 "hasn't been", "haven't been", 'been'],
     't-gt':    ['going to'],
+    # Camp 9 / station 17, the past perfect. Like the present perfect's have
+    # (COLOUR-RULES: 'has seen is one form, and the have is the half that
+    # inverts for a question and takes the negative'), 'had' carries the
+    # tense, so 'had been' wears the past perfect's maroon end to end.
+    't-ppf':   ['had', 'had been', "hadn't", "hadn't been"],
 }
 AUX_LOOKUP = {w: cls for cls, words in AUX_TENSE.items() for w in words}
 # QUOTE-AWARE, AND CASE-BLIND. Two misses found on 2026-09-02, when Innes ruled
@@ -564,6 +569,22 @@ def build(st):
     body = split_negatives(body)
     out = head + body + tail
     out = retarget_part_link(out, st)
+    if st.get('tr'):
+        # THE CHASSIS DICTIONARY IS THE CAMP'S, NOT THE STATION'S. The EN/DE
+        # panel read BW_TR from the active camp the station descends past, so
+        # on the eight stations almost none of their own stems and options
+        # were in it (7 and 15 strings of 86 and 88 on the two worst). A
+        # station that authors its own table replaces the camp's wholesale.
+        import json
+        out = re.sub(r'<script>window\.BW_TR=.*?;</script>',
+                     lambda m: '<script>window.BW_TR=%s;</script>'
+                     % json.dumps(st['tr'], ensure_ascii=False), out, count=1, flags=re.S)
+    if st.get('row'):
+        # A station with no catalogue row yet ships with no SEO block and the
+        # HEAD gate fails; the camp builder writes one from a synthetic row.
+        sys.path.insert(0, os.path.join(ROOT, 'lesson-template', 'camp'))
+        from build_camp import seo
+        out = seo(out, st)
     path = os.path.join(ROOT, st['file'])
     open(path, 'w', encoding='utf-8').write(out)
     return path
