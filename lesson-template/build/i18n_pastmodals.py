@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Interface strings for Past Modals in Minecraft (B2), English and German."""
+"""Interface strings for Past Modals in Minecraft (B2): English, German, Spanish."""
 import json, sys
 sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
 from chrome_i18n import CHROME
@@ -15,6 +15,9 @@ TAIL = {
     'de': {'branchLocked': "'Dein Protokoll trägt dieses Ende nicht'",
            'glossHide': "'Ausblenden'", 'glossShow': "'Übersetzen'",
            'ledClues': "'Hinweise'", 'ledDp': "'DP'", 'ledTime': "'Zeit'"},
+    'es': {'branchLocked': "'Tu registro no admite este final'",
+           'glossHide': "'Ocultar'", 'glossShow': "'Traducir'",
+           'ledClues': "'Pistas'", 'ledDp': "'DP'", 'ledTime': "'Tiempo'"},
 }
 
 T = {}
@@ -228,6 +231,109 @@ T['de'] = dict(
     resStrong='Stark. Das Bedauernspaar sitzt — sieh dir das Deduktionspaar noch einmal an.',
     resMid='Gute Grundlage. Zurück zur Sicherheits-Folie: die meisten Fehler sind must/might.',
     resLow='Lies die drei Einstiegsfolien noch einmal. Die Form ändert sich nie, nur das Modalverb.',
+)
+
+T['es'] = dict(
+    coverTitle='Modales <em>del pasado</em>',
+    coverSub='Lo que deberías haber hecho, lo que podrías haber hecho y cómo lo sabes',
+    chipLevel='B2 · Intermedio alto', chipFocus='Modal + have + participio',
+    chipCount='16 diapositivas',
+
+    formEyebrow='Antes de las preguntas', formTitle='Una forma, cinco funciones',
+    fo1h='La forma nunca cambia', fo1b=
+        'Todos son <strong>modal + have + participio</strong>. El modal lleva el '
+        'significado; <em>have + participio</em> solo indica que hablamos del pasado.',
+    fo1n='<em>Have</em> nunca pasa a <em>had</em> aquí, sea cual sea el sujeto.',
+    fo2h='Mirar atrás a un error', fo2b=
+        '<strong>Should have</strong> es un consejo que llega tarde: lo correcto no '
+        'ocurrió. <strong>Could have</strong> es la oportunidad que existía y no se '
+        'aprovechó.',
+    fo2n='Ambos señalan un pasado que pudo ser distinto. Solo <em>should</em> reprocha.',
+    fo3h='Deducir qué pasó', fo3b=
+        '<strong>Must have</strong> es casi certeza a partir de indicios. <strong>Might '
+        'have</strong> es una suposición. <strong>Needn&rsquo;t have</strong> dice que se '
+        'hizo y no hacía falta.',
+    fo3n='<em>Needn&rsquo;t have</em> es el que se escapa: la acción <em>sí</em> ocurrió.',
+
+    sureEyebrow='La pareja de la deducción', sureTitle='¿Cuánta seguridad tienes?',
+    su1h='Casi seguro', su1b=
+        '<strong>Must have.</strong> Hay huellas alrededor del cofre, así que el ladrón '
+        '<em>must have</em> estado aquí. No lo viste; los indicios dejan poco margen para '
+        'otra cosa.',
+    su1n='En torno al 90% o más. No es prueba — es una conclusión.',
+    su2h='Una posibilidad entre varias', su2b=
+        '<strong>Might have</strong> o <strong>could have.</strong> Nadie vio quién rompió '
+        'el puente, así que <em>might have</em> sido un griefer. Es una suposición, '
+        'ofrecida como tal.',
+    su2n='Menos del 50%. <em>May have</em> es lo mismo en un registro más formal.',
+    su3h='La negación se invierte', su3b=
+        'Para una negación segura, el inglés usa <strong>can&rsquo;t have</strong>, no '
+        '<em>mustn&rsquo;t have</em>: <em>she can&rsquo;t have finished already</em>.',
+    su3n='<em>Mustn&rsquo;t have</em> es uno de los errores más comunes en B2, y no es inglés.',
+
+    regEyebrow='La pareja del arrepentimiento', regTitle='El pasado que no ocurrió',
+    re1h='Should have', re1b=
+        '<em>You <strong>should have</strong> built the walls higher.</em> La acción '
+        'correcta, identificada después. Lleva crítica, así que cae con fuerza.',
+    re1n='<em>Shouldn&rsquo;t have</em> critica algo que <em>sí</em> se hizo.',
+    re2h='Could have', re2b=
+        '<em>You <strong>could have</strong> used the Elytra.</em> La capacidad o la '
+        'oportunidad estaba ahí y no se usó. Sin reproche.',
+    re2n='También suaviza una sugerencia: <em>you could have asked me</em> es más amable que <em>should</em>.',
+    re3h='Needn&rsquo;t have', re3b=
+        '<em>He <strong>needn&rsquo;t have</strong> walked &mdash; there was a horse.</em> '
+        'Caminó. Fue esfuerzo desperdiciado. La acción ocurrió.',
+    re3n='Compara <em>didn&rsquo;t need to walk</em>, que suele significar que no caminó en absoluto.',
+
+    mcEyebrow='Actividad 1 · Opción múltiple', mcTitle='Elige el modal que encaja',
+    m1why='<strong>Should have put.</strong> Consejo o crítica a posteriori: guardar los '
+          'diamantes era lo correcto y no ocurrió.',
+    m2why='<strong>Must have built.</strong> Las antorchas y los muros lisos son indicios, '
+          'y Steve saca de ahí una conclusión firme. Es deducción, no obligación.',
+    m3why='<strong>Could have destroyed.</strong> La explosión tenía fuerza para destruirlo '
+          'todo y no lo hizo. Una posibilidad pasada que no se cumplió.',
+    m4why='<strong>Needn&rsquo;t have bothered.</strong> Leo sí recogió la madera; '
+          'simplemente no hacía falta. <em>Shouldn&rsquo;t have</em> lo convertiría en un '
+          'error en vez de esfuerzo inútil, y <em>mustn&rsquo;t have</em> no existe.',
+    m5why='<strong>Might have been.</strong> Nadie lo vio, así que es una suposición '
+          'insegura — una explicación entre varias, ofrecida como tal.',
+
+    fibEyebrow='Actividad 2 · La forma exacta', fibTitle='Completa la frase',
+    fibHint='Dos palabras cada vez: un modal y luego <em>have</em>.',
+    f1why='<strong>Should have prepared.</strong> Arrepentimiento y crítica sobre una '
+          'acción pasada que era la correcta y no ocurrió.',
+    f2why='<strong>Could have found.</strong> Alex tenía el mapa, así que la oportunidad '
+          'existía. No la usó. Capacidad u ocasión, sin realizar.',
+    f3why='<strong>Needn&rsquo;t have walked.</strong> Caminó — ese es el punto. El caballo '
+          'lo hacía innecesario, pero la caminata ocurrió.',
+    f4why='<strong>Must have been.</strong> Las huellas son el indicio, y la conclusión se '
+          'sigue de ellas con casi total seguridad.',
+    f5why='<strong>Might have caused.</strong> Nadie lo sabe, así que la inundación se '
+          'ofrece como una explicación posible, no como la respuesta.',
+
+    matchEyebrow='Actividad 3 · Significado', matchTitle='Relaciona la frase con su función',
+    matchHint='Haz clic en una frase y luego en lo que significa.',
+    matchWhy='Cinco modales, cinco funciones: deducción, crítica, esfuerzo inútil, una '
+             'suposición y una oportunidad desaprovechada. La forma es idéntica en los '
+             'cinco — solo el modal te dice cuál estás leyendo.',
+
+    actTitle='Explica el desastre', actUse='Usa al menos cuatro:',
+    actSpeakBrief='Uno de vosotros lleva el servidor y quiere saber qué pasó. El otro '
+                  'estaba allí. Cuatro minutos cada uno, luego cambiad.',
+    actSpeak1='La base fue destruida durante la noche. Di qué pasó y cuánta seguridad tienes.',
+    actSpeak2='Tu compañero te culpa. Di qué podrías haber hecho, sin admitir un error.',
+    actSpeak3='Describe algo que no habría hecho falta que hicieras la semana pasada.',
+    actSpeak4='Da tres deducciones, cada una más segura que la anterior.',
+    actWriteKind='Escritura · 150–200 palabras',
+    actWriteBrief='Escribe el informe del incidente que publicaría un admin del servidor '
+                  'después del asalto. Di qué debió de pasar, qué pudo pasar y qué debería '
+                  'haber hecho el equipo — y mantén separados los tres grados de seguridad.',
+    actPlaceholder='From the state of the east wall, the raiders must have…',
+
+    resPerfect='Puntuación perfecta. Sabes situar una acción pasada entre la suposición y la certeza.',
+    resStrong='Muy bien. La pareja del arrepentimiento está firme — repasa la de la deducción.',
+    resMid='Buena base. Vuelve a la diapositiva de la certeza: casi todos los fallos son must/might.',
+    resLow='Vuelve a leer las tres diapositivas iniciales. La forma nunca cambia; solo el modal.',
 )
 
 

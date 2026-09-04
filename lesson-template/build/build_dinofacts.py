@@ -199,7 +199,8 @@ def build():
 
     import i18n_dinofacts as I
     s = D.assemble(TPL, OUT, slides, PALETTE,
-                   'Advanced Dinosaur Facts | C1 | Forbes English', I)
+                   'Advanced Dinosaur Facts | C1 | Forbes English', I,
+                   langs=('en', 'de', 'es'))
     print('wrote %s — %d slides, %d MC, %d gaps, %d pairs, %d timeline, %d bytes'
           % (OUT, s.count('<section class="slide'), len(MC), len(FIB), len(MATCH),
              len(TIMELINE), len(s)))

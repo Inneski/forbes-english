@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Interface strings for Advanced Dinosaur Facts (C1), English and German.
+"""Interface strings for Advanced Dinosaur Facts (C1), English, German, Spanish.
 
 Teach-card bodies translate (the six-item form). The English being taught —
 the terminology itself, the question stems, the options and the word bank —
@@ -20,6 +20,9 @@ TAIL = {
     'de': {'branchLocked': "'Dein Protokoll trägt dieses Ende nicht'",
            'glossHide': "'Ausblenden'", 'glossShow': "'Übersetzen'",
            'ledClues': "'Hinweise'", 'ledDp': "'DP'", 'ledTime': "'Zeit'"},
+    'es': {'branchLocked': "'Tu registro no admite este final'",
+           'glossHide': "'Ocultar'", 'glossShow': "'Traducir'",
+           'ledClues': "'Pistas'", 'ledDp': "'DP'", 'ledTime': "'Tiempo'"},
 }
 
 T = {}
@@ -272,6 +275,143 @@ T['de'] = dict(
     resStrong='Stark. Die Fachbegriffe sitzen — bei den Zahlen lohnt ein zweiter Durchgang.',
     resMid='Gute Grundlage. Geh zurück zur dritten Folie: Die meisten Fehler sind Reichweitenwörter und Zahlen.',
     resLow='Arbeite die drei Einstiegsfolien gründlich durch und wiederhole. Das Vokabular ist systematisch, nicht willkürlich.',
+)
+
+T['es'] = dict(
+    coverTitle='El mundo oculto de los <em>dinosaurios</em>',
+    coverSub='Paleontología avanzada, las palabras que usa el campo y los datos que se niegan a quedarse quietos',
+    chipLevel='C1 · Avanzado', chipFocus='Vocabulario académico y precisión',
+    chipCount='16 diapositivas',
+
+    ologyEyebrow='Antes de las preguntas', ologyTitle='Qué estudia realmente cada -ología',
+    ol1h='Leer la raíz',
+    ol1b='<strong>Ichno-</strong> es una huella, <strong>osteo-</strong> un hueso, '
+         '<strong>palyno-</strong> polen, <strong>tapho-</strong> un enterramiento. La '
+         'raíz nombra la evidencia; <em>-ology</em> solo significa el estudio de eso.',
+    ol1n='Adivina la raíz y casi siempre adivinarás el campo. Ese es todo el truco.',
+    ol2h='Por qué importa aquí',
+    ol2b='La <strong>ichnology</strong> lee huellas, así que recupera comportamiento '
+         '— manadas, velocidad, caza — de animales cuyos huesos nunca aparecieron en '
+         'ese lugar.',
+    ol2n='La <strong>taphonomy</strong> plantea otra pregunta: no qué vivió, sino cómo llegó a conservarse.',
+    ol3h='El casi acierto es el distractor',
+    ol3b='La <strong>phylogenetics</strong> reconstruye parentescos, no fósiles. En una '
+         'pregunta sobre huellas resulta plausible, contigua y equivocada &mdash; que es '
+         'exactamente lo que es un buen distractor.',
+    ol3n='En C1 la respuesta incorrecta rara vez es absurda. Suele ser el término vecino.',
+
+    thermEyebrow='Un sufijo, cinco respuestas', thermTitle='Cómo genera calor un animal, o cómo no lo genera',
+    th1h='Los dos que ya conoces',
+    th1b='Un <strong>ectotherm</strong> toma el calor del exterior; un '
+         '<strong>endotherm</strong> genera el suyo. Lagarto y mamífero, a grandes rasgos.',
+    th1n='<em>Cold-blooded</em> y <em>warm-blooded</em> son las palabras cotidianas para estos dos.',
+    th2h='El del medio',
+    th2b='Un <strong>mesotherm</strong> genera calor pero funciona entre los dos ritmos. '
+         'Así puede crecer un dinosaurio 600 kg al año sin el apetito de un mamífero.',
+    th2n='Los atunes y algunos tiburones lo hacen hoy, y por eso la idea pudo ponerse a prueba.',
+    th3h='Los dos que hablan de estabilidad',
+    th3b='<strong>Homeothermic</strong> significa mantener una temperatura constante; '
+         '<strong>poikilothermic</strong>, dejar que varíe. Esa es una pregunta distinta '
+         'de la de dónde viene el calor.',
+    th3n='Así que un animal puede ser ectotérmico y homeotérmico a la vez. Los pares no son opuestos.',
+
+    claimEyebrow='La destreza que se evalúa', claimTitle='Lee la afirmación, no el tema',
+    cl1h='El número lleva la respuesta',
+    cl1b='<em>75%</em> y <em>95%</em> no son redondeos. Uno es el evento K-Pg, el otro '
+         'el Pérmico-Triásico. Un distractor a menudo se diferencia de la clave en una '
+         'sola cifra.',
+    cl1n='Cuando dos opciones solo difieren en un número, el número <em>es</em> la pregunta.',
+    cl2h='Atención a la palabra de alcance',
+    cl2b='<em>Exclusively</em>, <em>only</em>, <em>never</em>, <em>confined to</em> '
+         '&mdash; un absoluto hace una afirmación mucho más fácil de refutar, y la '
+         'ciencia rara vez los escribe.',
+    cl2n='Un matiz (<em>likely</em>, <em>possibly</em>, <em>broadly accept</em>) suele ser la apuesta más segura.',
+    cl3h='Plausible no es lo mismo que aceptado',
+    cl3b='Todos los distractores de aquí son cosas que una persona razonable podría '
+         'creer. La pregunta es qué <em>acepta</em> hoy el campo, que es algo más '
+         'estrecho que lo que suena sensato.',
+    cl3n='<em>Most accurately reflects consensus</em> está haciendo trabajo de verdad en ese enunciado.',
+
+    mcEyebrow='Actividad 1 · Opción múltiple', mcTitle='¿Qué apoya realmente la evidencia?',
+    q1why='<strong>Las plumas estaban probablemente extendidas entre los celurosaurios.</strong> '
+          'La Formación Yixian, en China, conserva plumas o protoplumas en '
+          'Sinosauropteryx, Microraptor, Yuanchuavis y otros &mdash; así que las plumas '
+          'son muy anteriores a las aves y sirvieron para el calor y la exhibición antes '
+          'que para el vuelo.',
+    q2why='<strong>En torno al 75%.</strong> El evento K-Pg se llevó por igual '
+          'invertebrados marinos, mosasaurios, pterosaurios y dinosaurios no avianos. La '
+          'cifra del 95% corresponde a la extinción Pérmico-Triásica, hace ~252 Ma, la '
+          'peor registrada.',
+    q3why='<strong>Vértebras neumatizadas.</strong> Los sacos aéreos de un sistema '
+          'respiratorio de tipo aviano ahuecaron los huesos, recortando hasta un 10% de '
+          'la masa esquelética y haciendo el gigantismo biomecánicamente posible. Ese '
+          'mismo sistema aportaba el oxígeno que exigían esos cuerpos.',
+    q4why='<strong>Semiacuático.</strong> El material marroquí de Nizar Ibrahim mostró '
+          'huesos compactos y densos, extremidades traseras cortas, pies en forma de '
+          'remo y un hocico sensible a la presión &mdash; y una dieta basada en grandes '
+          'peces sarcopterigios como Onchopristis.',
+    q5why='<strong>600&ndash;700 kg al año.</strong> La histología ósea — contar anillos '
+          'de crecimiento — da la acumulación de masa más rápida conocida en un '
+          'vertebrado terrestre. Ese ritmo es en sí mismo el argumento a favor de la '
+          'mesotermia o de una endotermia plena.',
+
+    fibEyebrow='Actividad 2 · El término exacto', fibTitle='La palabra que usaría el campo',
+    fibHint='Dieciocho palabras en el banco; cinco huecos. Los casi aciertos están ahí a propósito.',
+    bankLabel='Banco de palabras:',
+    f1why='La <strong>ichnology</strong> es el estudio de los fósiles traza — huellas, '
+          'madrigueras, marcas de cola. Los rastros de yacimientos como el río Paluxy '
+          'dan comportamiento de manada en saurópodos y de caza en terópodos que ningún '
+          'esqueleto podría dar.',
+    f2why='El <strong>infrasound</strong> es sonido por debajo de unos 20 Hz. Las fosas '
+          'nasales de un hadrosaurio con cresta como Parasaurolophus podían resonar en '
+          'ese rango, y hoy los elefantes y las ballenas azules lo usan para llegar a '
+          'kilómetros de distancia.',
+    f3why='<strong>Mesothermic</strong> — el metabolismo intermedio propuesto por Grady '
+          'et al. en 2014. Explica el crecimiento juvenil rápido sin la demanda calórica '
+          'de un mamífero.',
+    f4why='<strong>Carnian.</strong> La Formación Ischigualasto, en Argentina, conserva '
+          'sedimentos del Carniense, ~231&ndash;237 Ma, con los dinosaurios confirmados '
+          'más antiguos. El Episodio Pluvial Carniense pudo abrirles la puerta ecológica '
+          'que atravesaron.',
+    f5why='<strong>Schweitzer.</strong> El artículo de Mary Schweitzer de 2005 describió '
+          'aparentes vasos sanguíneos y fragmentos de proteína en un fémur de T. rex. La '
+          'química del hierro de la hemoglobina podría conservar moléculas orgánicas '
+          'mucho más tiempo de lo esperado — sigue siendo una cuestión abierta.',
+
+    matchEyebrow='Actividad 3 · Cinco que rompen las reglas',
+    matchTitle='Relaciona el animal con lo que lo hace extraño',
+    matchHint='Haz clic en un nombre y luego en lo que lo caracteriza.',
+    matchWhy='Cada uno se resiste a una categoría limpia: un dromeosaurio con cuatro '
+             'alas, un herbívoro acorazado con un arma, un dinosaurio con plumas de '
+             'exhibición anterior al vuelo, un cráneo construido para el impacto y un '
+             'terópodo que renunció a la carne.',
+
+    ordEyebrow='Actividad 4 · La cronología', ordTitle='Ordena los hitos',
+    ordHint='Haz clic en una tarjeta para colocarla; haz clic en una colocada para retirarla.',
+    ordWhy='Los dinosaurios aparecen hace ~233 Ma, alcanzan su apogeo en el Jurásico '
+           'hace ~150 Ma y terminan en el límite K-Pg hace ~66 Ma. Las dos últimas '
+           'entradas no tratan de dinosaurios viviendo sino de personas encontrándolos: '
+           'Buckland y Owen los nombran entre 1820 y 1840, y los años 2000 reabren todo '
+           'el campo con plumas y tejido blando.',
+
+    actTitle='Presenta el dato extraño', actUse='Usa al menos cuatro:',
+    actSpeakBrief='Uno presenta y el otro es el colega escéptico que pide las pruebas. '
+                  'Cuatro minutos cada uno, luego cambiad.',
+    actSpeak1='Explica a alguien no especialista por qué "de sangre caliente o de sangre fría" es la pregunta equivocada para un dinosaurio.',
+    actSpeak2='Tu colega dice que las plumas prueban que los dinosaurios volaban. Corrige la inferencia sin descartarle.',
+    actSpeak3='Argumenta qué puede decirnos la ichnology que un esqueleto no puede — y sé concreto sobre lo que no puede.',
+    actSpeak4='Presenta el hallazgo de tejido blando de Schweitzer y matízalo con el cuidado que merece la evidencia.',
+    actWriteKind='Escritura · 200–250 palabras',
+    actWriteBrief='Escribe el breve recuadro de "estado de la cuestión" para un panel de '
+                  'museo sobre uno de estos temas: el metabolismo de los dinosaurios, la '
+                  'evolución de las plumas o el Spinosaurus. Indica qué está establecido, '
+                  'marca qué está en disputa y no des al visitante ninguna certeza falsa.',
+    actPlaceholder='The evidence now broadly supports…',
+
+    resPerfect='Puntuación perfecta. Sabes leer una afirmación científica por su precisión, no solo por su tema.',
+    resStrong='Muy bien. La terminología está firme — donde compensa una segunda pasada es en las cifras.',
+    resMid='Buena base. Vuelve a la tercera diapositiva: casi todos los fallos son palabras de alcance y cifras.',
+    resLow='Lee bien las tres diapositivas iniciales y vuelve a intentarlo. El vocabulario es sistemático, no arbitrario.',
 )
 
 

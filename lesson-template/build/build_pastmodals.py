@@ -177,7 +177,8 @@ def build():
 
     import i18n_pastmodals as I
     s = D.assemble(TPL, OUT, slides, PALETTE,
-                   'Past Modals in Minecraft (B2) | Forbes English', I)
+                   'Past Modals in Minecraft (B2) | Forbes English', I,
+                   langs=('en', 'de', 'es'))
     print('wrote %s — %d slides, %d MC, %d gaps, %d pairs, %d bytes'
           % (OUT, s.count('<section class="slide'), len(MC), len(FIB), len(MATCH), len(s)))
 

@@ -232,7 +232,8 @@ def build():
 
     import i18n_dinocraft0 as I
     s = D.assemble(TPL, OUT, slides, PALETTE,
-                   'Dino-Craft Part 0: The Briefing (C1) | Forbes English', I)
+                   'Dino-Craft Part 0: The Briefing (C1) | Forbes English', I,
+                   langs=('en', 'de', 'es'))
     print('wrote %s — %d slides, %d MC, %d fib, %d dnd, %d pairs, %d order, %d bytes'
           % (OUT, s.count('<section class="slide'), len(MC), len(FIB), len(DND),
              len(MATCH), len(ORDER), len(s)))

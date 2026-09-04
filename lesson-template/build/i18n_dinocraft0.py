@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Interface strings for Dino-Craft Part 0: The Briefing (C1), English and German.
+"""Interface strings for Dino-Craft Part 0: The Briefing (C1): English, German, Spanish.
 
 Teach-card bodies translate (the six-item form) rather than staying English.
 House style says the five-item form is usually right at B2 and above, but a
@@ -23,6 +23,9 @@ TAIL = {
     'de': {'branchLocked': "'Dein Protokoll trägt dieses Ende nicht'",
            'glossHide': "'Ausblenden'", 'glossShow': "'Übersetzen'",
            'ledClues': "'Hinweise'", 'ledDp': "'DP'", 'ledTime': "'Zeit'"},
+    'es': {'branchLocked': "'Tu registro no admite este final'",
+           'glossHide': "'Ocultar'", 'glossShow': "'Traducir'",
+           'ledClues': "'Pistas'", 'ledDp': "'DP'", 'ledTime': "'Tiempo'"},
 }
 
 T = {}
@@ -197,6 +200,93 @@ T['de'] = dict(
     resStrong='Stark. Teil I passt zu dir. Sieh dir vorher noch einmal die Aufgabe an, die dich Punkte gekostet hat.',
     resMid='Solide C1-Grundlage mit Lücken. Lies die drei Einstiegsfolien noch einmal und wiederhole das Briefing vor Teil I.',
     resLow='Arbeite die drei Lehrfolien gründlich durch und komm dann zurück. Die Expedition setzt alle drei Strukturen voraus.',
+)
+
+T['es'] = dict(
+    coverTitle='Dino-Craft <em>Parte 0</em>',
+    coverSub='El briefing — cinco actividades para situar tu inglés C1 antes de que salga la expedición',
+    chipLevel='C1 · Avanzado', chipFocus='Briefing de nivel',
+    chipCount='23 diapositivas',
+
+    conEyebrow='Antes de las preguntas', conTitle='Cómo se enuncia lo que la ciencia acepta',
+    con1h='La pasiva del consenso',
+    con1b='El inglés expone los hallazgos establecidos en pasiva y en pasado simple: '
+          '<em>the T. rex was considered an apex predator</em>. Se omite el agente '
+          'porque lo que importa es el hallazgo, no quién lo hizo.',
+    con1n='Las formas perfectas y continuas suenan a proceso inacabado, no a conclusión.',
+    con2h='Atenuar una afirmación',
+    con2b='La ciencia rara vez afirma de forma rotunda. <em>Widely believed to have '
+          'been</em>, <em>is thought to be</em>, <em>appears to have</em> — el matiz '
+          'marca con cuánta firmeza sostiene el campo esa afirmación.',
+    con2n='<em>Believed to have been</em> informa de una creencia actual sobre el pasado.',
+    con3h='El registro lo sostiene',
+    con3b='Una teoría <em>gains traction</em>; un descubrimiento <em>transforms our '
+          'understanding</em>; un hábitat queda <em>disrupted</em>. En C1 la colocación '
+          'fija es la diferencia entre fluido y meramente correcto.',
+    con3n='Todas son expresiones fijas. Cambia una palabra y deja de sonar nativo.',
+
+    cfEyebrow='El pasado irreal', cfTitle='Un pasado que no ocurrió',
+    cf1h='Tercer condicional',
+    cf1b='Una condición pasada irreal lleva un resultado pasado irreal: <em>if the '
+         'asteroid had not struck, the dinosaurs would have survived</em>. Las dos '
+         'mitades tienen que ir en pasado.',
+    cf1n='Un resultado en presente (<em>would survive</em>) lo convierte en un condicional mixto — otra frase distinta.',
+    cf2h='¿Cuánta seguridad tienes?',
+    cf2b='Cambia el modal para cambiar la confianza: <em>would have</em> (seguro), '
+         '<em>might</em> o <em>could have</em> (posible), <em>may have</em> (posible, '
+         'más formal).',
+    cf2n='Todos mantienen <em>have + participio</em>. Esa parte no se mueve.',
+    cf3h='La inversión elimina el <em>if</em>',
+    cf3b='<em>Had the asteroid not struck Earth…</em> es el equivalente formal de '
+         '<em>if the asteroid had not struck Earth</em>. Invierte el auxiliar y el '
+         'sujeto, y borra el <em>if</em>.',
+    cf3n='Solo registro escrito. Es habitual en prosa académica y raro al hablar.',
+
+    ppEyebrow='La trampa', ppTitle='Las cláusulas de participio y lo que falla en ellas',
+    pp1h='Qué hace',
+    pp1b='<em>Having mined the amber block, the player…</em> comprime <em>after the '
+         'player had mined</em> en tres palabras. Indica que una acción terminó antes '
+         'de que empezara la siguiente.',
+    pp1n='<em>Having + participio</em> para una acción acabada; <em>-ing</em> solo para una simultánea.',
+    pp2h='La regla del sujeto',
+    pp2b='El participio no tiene sujeto propio, así que toma prestado el de la oración '
+         'principal. Quien hizo la primera acción tiene que ser quien hace la segunda.',
+    pp2n='Esa es toda la regla. Todo lo demás se deduce de ella.',
+    pp3h='El participio suelto',
+    pp3b='<em>Having mined the amber block, the velociraptor was discovered.</em> El '
+         'sujeto de la principal es el velociraptor, así que la frase dice que fue el '
+         'velociraptor quien picó el bloque.',
+    pp3n='Es el error de escritura más común en C1, y quien escribe casi nunca lo oye.',
+
+    mcEyebrow='Actividad 1 · Opción múltiple', mcTitle='Elige la forma que encaja',
+    fibEyebrow='Actividad 2 · La palabra exacta', fibTitle='Colocación, registro y precisión',
+    fibHint='Escribe la palabra. Varias frases admiten más de una respuesta.',
+    dndEyebrow='Actividad 3 · Marcadores del discurso', dndTitle='Pon la expresión correcta en el hueco',
+    dndHint='Tres de las ocho expresiones del banco no corresponden a ningún hueco.',
+    bankLabel='Banco de palabras:',
+    matchEyebrow='Actividad 4 · Terminología', matchTitle='El vocabulario que el campo usa de verdad',
+    matchHint='Haz clic en un término y luego en lo que significa.',
+    ordEyebrow='Actividad 5 · Construcción de frases', ordTitle='Reconstruye la frase',
+    ordHint='Haz clic en un fragmento para colocarlo; haz clic en uno colocado para retirarlo.',
+
+    actTitle='Da el briefing a la expedición', actUse='Usa al menos cuatro:',
+    actSpeakBrief='Tú eres el científico de la expedición; tu compañero es el escéptico '
+                  'que pide pruebas. Tres minutos cada uno, luego cambiad.',
+    actSpeak1='Explica qué cambiaron los fósiles con plumas hallados en China y cuánta confianza tiene el campo en ello.',
+    actSpeak2='Argumenta qué habría pasado con los dinosaurios si el asteroide no hubiera impactado. Mantente en el pasado irreal.',
+    actSpeak3='Corrige una idea equivocada muy extendida sobre los dinosaurios — el tamaño de un velociraptor o su color — sin decir "eso está mal".',
+    actSpeak4='Tu compañero afirma que el Pteranodon era un dinosaurio. Corrígele, con educación, en un solo turno.',
+    actWriteKind='Escritura · 200–250 palabras',
+    actWriteBrief='Escribe la nota informativa que lee el equipo de la expedición antes '
+                  'de desplegarse. Expón qué está establecido, qué sigue en disputa y '
+                  'qué no debe dar por supuesto el equipo. Atenúa las afirmaciones que '
+                  'lo merezcan.',
+    actPlaceholder='It is now widely accepted that…',
+
+    resPerfect='Puntuación perfecta. La pasiva del consenso, el pasado irreal y la regla del participio están firmes — pasa directo a la Parte I.',
+    resStrong='Muy bien. La Parte I te vendrá bien. Repasa la actividad que te costó los puntos antes de empezarla.',
+    resMid='Una base C1 sólida con lagunas. Relee las tres diapositivas iniciales y vuelve a hacer el briefing antes de la Parte I.',
+    resLow='Trabaja bien las tres diapositivas de teoría y vuelve. La expedición da por supuestas las tres estructuras.',
 )
 
 
