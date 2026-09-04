@@ -7,7 +7,7 @@
  * so they cannot be missed by eye:
  *
  *   LAYOUT   every slide fits the 1280x720 canvas, and nothing scrolls
- *   ANSWERS  the correct MC option is not simply the longest one
+ *   ANSWERS  the correct MC option is neither the longest nor the shortest
  *   KEYS     the key is not parked at the same option letter every time, and
  *            the runtime shuffle that hides its position is a real shuffle
  *   BANK     a word bank does not hand over the gap answers in gap order
@@ -49,7 +49,7 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
   await page.waitForTimeout(2000);
 
   const r = await page.evaluate(() => {
-    const out = { layout: [], answers: [], explain: [], resolve: [], i18n: [], logo: null, scroll: null, bank: null, markup: null, sort: [] };
+    const out = { layout: [], answers: [], short: [], explain: [], resolve: [], i18n: [], logo: null, scroll: null, bank: null, markup: null, sort: [] };
     const slides = [...document.querySelectorAll('.slide')];
 
     // ── LAYOUT ──────────────────────────────────────────────────────
@@ -94,6 +94,27 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
           // to clear an absolute floor as well.
           if (kl > maxOther * 1.10 && kl - maxOther >= 4) {
             out.answers.push({ n: i + 1, key: kl, maxOther, ratio: +(kl / maxOther).toFixed(2) });
+          }
+          // The mirror image is just as bad and was invisible until 2026-09-04.
+          // Two transformation items on the Lego B2 pair keyed the SHORTEST
+          // option — 55 characters against a 95-character shortest distractor,
+          // and 67 against 104 — because the distractors had been padded with
+          // explanatory clauses while the key stayed tight. Short-is-the-answer
+          // is exactly as scoreable as long-is-the-answer.
+          //
+          // The thresholds here are deliberately stricter than the long case,
+          // and the reason is that being the shortest of four happens by
+          // chance far more often than being conspicuously the longest. Run at
+          // the long case's 1.10x and 4 characters, this fired on 35 of the
+          // 105 decks, and the great majority were closed sets where length
+          // carries nothing: a preposition item keying "at" against "from" is
+          // 2 against 6 and tells a learner absolutely nothing. At 1.5x and 10
+          // characters it fires on five, and those five are real — a 32-char
+          // key against a 69-char distractor on a C1 reading item is a tell
+          // anyone would notice.
+          const minOther = Math.min(...others);
+          if (minOther > kl * 1.50 && minOther - kl >= 10) {
+            out.short.push({ n: i + 1, key: kl, minOther, ratio: +(minOther / kl).toFixed(2) });
           }
         }
       }
@@ -422,12 +443,21 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
   if (keysOk) ok(`the key moves around${keyAt.length ? ` across ${keyAt.length} questions` : ''}, and the shuffle is uniform`);
 
   head('ANSWERS');
-  if (!r.answers.length) ok('no multiple-choice answer is conspicuously the longest');
-  else {
+  if (!r.answers.length && !r.short.length) {
+    ok('no multiple-choice answer stands out by length');
+  } else {
     r.answers.forEach(a => bad(
       `slide ${a.n}: correct option is longest — ${a.key} chars vs ${a.maxOther} (${a.ratio}x). ` +
       `A learner can score by picking the longest.`));
-    console.log(DIM('          Fix by lengthening the distractors, not by shortening the key.'));
+    if (r.answers.length) {
+      console.log(DIM('          Fix by lengthening the distractors, not by shortening the key.'));
+    }
+    r.short.forEach(a => bad(
+      `slide ${a.n}: correct option is shortest — ${a.key} chars vs ${a.minOther} (${a.ratio}x). ` +
+      `A learner can score by picking the shortest.`));
+    if (r.short.length) {
+      console.log(DIM('          Fix by tightening the distractors, not by padding the key.'));
+    }
   }
 
   head('BANK');
