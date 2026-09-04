@@ -171,6 +171,10 @@ its page and its download are all fine. But `comingSoon()` is
 
 ## Standing constraints
 
+- **Every deck ships Spanish and German as a minimum.** Innes said so on
+  2026-09-04, after three decks went out EN+DE. `assemble()` still defaults to
+  `('en', 'de')`, so pass `langs=('en', 'de', 'es')` explicitly — and write the
+  teach cards in the six-item form so the rule text travels with its heading.
 - **Learner-facing text must never mention a previous version of the lesson.**
   No "the old version marked this wrong" on a slide. That belongs in the
   builder docstring and the commit message.
