@@ -12,6 +12,149 @@ stale copy.
 
 ---
 
+## 2026-09-04 — the Spanish minimum, five decks, and a live defect on 31 pages
+
+Overnight session. Innes was awake for the first part and asleep for the
+rest; everything below is on `origin/main` and live.
+
+### Spanish is now a floor, not an option
+
+**"Must have Spanish and German at least."** Every deck ships EN + DE + ES
+from here. `assemble()` still defaults to `('en', 'de')`, so the builder has
+to pass `langs=('en', 'de', 'es')` explicitly — that is the whole change, and
+it is easy to forget because nothing fails without it. The rule is in
+`CLAUDE.md` under Standing constraints now.
+
+Three decks that had already shipped EN+DE were retrofitted and republished:
+Past Modals in Minecraft, Dino-Craft Part 0, Advanced Dinosaur Facts.
+
+Write teach cards in the **six-item form** when you add a language. The
+five-item form leaves the body in English, which produces a translated
+heading over an English rule — the half-finished screen §8 exists to
+prevent. It is invisible to every gate; the only way to catch it is to
+screenshot the non-English build.
+
+### Every writing box on 31 decks printed `&hellip;` literally
+
+`actPlaceholder` reaches the page as a `placeholder` attribute, set from JS
+through `data-i18n-ph`. **An attribute assigned from JS never parses
+entities.** Every Block Camp deck had been showing `Yesterday I&hellip;` in
+its writing box, in every language, since it shipped — twenty-four of them,
+plus seven others.
+
+Nothing was wrong with the builders: every other string on a slide is HTML,
+so writing `&hellip;` is the correct habit. The fix is central and already
+in:
+
+- `deck.py` has `TEXT_ONLY_KEYS` and `as_text()`; `activate()` and
+  `assemble()` unescape those values on the way out. **Keep writing entities
+  in builders.** They come out right.
+- `check-lesson.js`'s ENTITIES gate now covers `actPlaceholder` as well as
+  the four textContent keys, and reads the authored `placeholder="…"` in the
+  markup too.
+
+**The twenty-four Block Camp decks have no builder in this repo.** Grep found
+none — `build_camp5.py` and `build_camp7.py` are something else. They were
+edited in place, which is the one case where hand-editing generated HTML
+survives, because there is no next run. If those builders ever land, re-run
+them against the current `deck.py` and the fix comes back on its own.
+
+**Two decks are behind the template.** `forbes-english-lesson-2.html` and
+`reading-the-elevation-c1.html` both have builders, but re-running them pulls
+in template CSS added since they were last built — 1190 and 141 lines, mostly
+the exam-style audio player. Harmless, but it is a separate change and wants
+a look before it ships. They were edited in place instead.
+
+### Five decks rebuilt
+
+| Was | Now | Items | Notes |
+|---|---|---|---|
+| `tense-review-minecraft.html` | 21 slides, light | 30 | see below |
+| `nietzsche-film-vocab-c1-part5.html` | 21 slides | 15 | first Nietzsche deck |
+| `forbes-english-present-perfect-lego-b1.html` | 24 slides, light | 26 | first Lego deck |
+| `forbes-english-lego-passive-active.html` | 19 slides | 20 | second Lego deck |
+| plus the three Spanish retrofits | | | |
+
+New artwork folder: `TenseReview/` — five flat-vector Minecraft scenes from
+Downloads, cream and dusty pink, deliberately unlike the Past Modals set so
+the two Minecraft decks do not read as one deck twice.
+
+### Defects worth recognising again
+
+Every one of these turned up in more than one lesson tonight.
+
+- **The key was the longest option because the answer was the longest tense
+  name.** Four of six on Tense Review, four of seven on the Lego passive.
+  The fix is a fourth option at least as long as the key, and it has to be a
+  real error, not padding.
+- **A key sequence that repeats.** Nietzsche Part V ran `c, b, d, a` from
+  question five to the end — and Part IV of the same series carries the
+  identical sequence character for character, because they are one build
+  re-skinned. `check-lesson.js` catches clustering, not periodicity.
+- **A rubric that promises something the items do not deliver.** Tense
+  Review's error-correction section said every sentence contained one error;
+  item five contained none, and the feedback said so. A learner who trusted
+  the rubric lost the point for being right.
+- **An item keyed against its own stem.** Nietzsche Q6 gave the definition of
+  *unprecedented* and marked *groundbreaking* correct.
+- **A "matching" activity whose right-hand column holds two values.** That is
+  a sort, and `match()` cannot pair six terms to two definitions. Both Lego
+  pages had one.
+- **Gap-fills compared with `===`.** `'ve finished` marked wrong on a B1
+  lesson. Pipe-separate every reasonable contraction and spelling.
+
+### Still open
+
+- **Polish.** `must-have-to-lego-polish.html` and `minecraft-lesson.html`
+  both carry Polish as their only L1 support. Polish is not one of the site's
+  nine languages, is not in `chrome_i18n.py`, and is not in the template's
+  `LANGS`. Adding it touches the shared template and all 100 decks.
+  `must-have-to-lego-polish.html` is the stronger case: it has the best
+  pre-teaching of any Lego page and a complete ten-language `UI_I18N` of its
+  own. **Innes has not decided.** Do not convert either page until he has.
+- Two live scoring bugs on `must-have-to-lego-polish.html`, which is still
+  the scrolling page: `checkFill()` selects all ten `input.fi` on the page,
+  so Exercise 1's Check button scores and reveals Exercise 4's four answers
+  before the learner sees them; and the results panel never opens, because
+  `tick()` waits for 19 answers and only 18 exist.
+- `sort_order` is null across the Dino-Craft series, so Part 0 does not sit
+  ahead of Parts I and II.
+- Tidy-up needing a session that can `git rm`: `Football/stadium-silhouette.jpg`,
+  `minecraft/Skeletal_Dinosaur.webp`, four `minecraft/blackisler_*.png`.
+- Whether the grey `--void` should move into `lesson-template.html` and
+  `extract-palette.py` rather than being lifted per lesson. Six builders now
+  carry the same three-line comment saying a re-derivation will put the black
+  back.
+
+### The Lego and Nietzsche queues, audited
+
+Both families were audited in full. The findings that change what you build:
+
+**Nietzsche (six pages).** Parts IV and V are one build re-skinned; Parts I
+and II likewise. Part I is A2–B1 content labelled C1 in the title, the schema
+and the library — either re-level it honestly or fold it into Part II.
+`nietzsche-grammar-test-part4.html` is named grammar and contains film
+vocabulary. Part III's question 15 is unanswerable as printed: the error it
+asks for sits in a span that is not underlined. `forbes-nietzsche-c1.html` is
+the richest page of the six and the natural anchor, but its engine writes
+options in fixed order and the key is at index 1 in thirteen of seventeen
+questions — always pressing B scores 13/17.
+
+**Lego (nine pages).** No two are duplicates; the question sets are disjoint.
+But three separate B2 lessons teach the same car-vocabulary field —
+`forbes-english-b2-lego-cars.html`, `forbes-lego-b2` + part 2, and
+`forbes-english-skyline-lego-b2.html` — 67 scored items over one word list,
+with *prototype* a scored answer in all three. `forbes-english-b2-lego-cars`
+is the weakest of the three and the candidate to retire: eight of its
+twenty-six keys are the longest option, including four of six reading items
+at +11 to +31 characters, which makes that section scorable without reading
+the passage. Salvage its reading text ("From Baseplate to Bugatti") into the
+`forbes-lego-b2` pair first. `forbes-english-skyline-lego-b2.html` has four
+content errors including an option (*ensure*) that does not appear in its own
+sentence, and fifteen of its twenty-six items have no explanation.
+
+---
+
 ## 2026-09-03 — three duplicate lessons merged, two of them then rebuilt as decks
 
 Started as a full house-style audit of the catalogue and turned into two
