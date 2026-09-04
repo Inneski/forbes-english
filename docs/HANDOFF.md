@@ -12,6 +12,73 @@ stale copy.
 
 ---
 
+## 2026-09-04 — Block Camp hub remade dark (built in a cloud session, NOT yet pushed)
+
+Innes: "remake block camp hub so it looks snazzy", direction chosen: dark and
+immersive. `block-camp.html` is now the one page in the line that matches the
+maps and the RPGs instead of the library's cream. The nav band and the fenced
+SEO block are byte-identical to before; everything below the band is new.
+
+What the page does now:
+
+- The route map's own resting plate (tent, bridge, lookout tower) full-bleed
+  behind the title, as a new file **`BlockCamp/hub-hero.jpg`** (159 KB, the
+  1600x900 scene that was only ever inlined inside `block-camp-map.html`).
+  Left-and-bottom gradient overlay on desktop; near-solid overlay on phones,
+  where there is no "left side" to hide the copy on.
+- A tally strip (16 units · 8 stations · 3 adventures · 8 references) sitting
+  on the hero's bottom edge, each tile an anchor to its section.
+- Every climb and descent card wears its camp's colour — the same eight as
+  the map's stops (`#7A93B5 #E66085 #B08968 #F1D779 #70A43A #F0723F #2E7D65
+  #46B0AB`) — as a 3px top stripe, a numbered badge and the Part/Station
+  label. The badge sits BESIDE the title, not on the cover: every cover
+  carries its own title top-left and a badge there hid the first letter.
+  References use the same colours by tense; the Trial and the adventures
+  are gold.
+- Pro chips carry a padlock (matching the map's paid-link convention); Free
+  chips are solid gold. Both map links are wide image strips. The three RPGs
+  are three plates in a row rather than a list.
+- Copy corrected: "two adventures" → three. Playfair Display dropped from the
+  font request (nothing used it any more); Monocraft stays for h1/h2 only.
+
+**The builder is in the repo this time:**
+`lesson-template/build/block-camp-hub/` — `build.py` (card data + assembly),
+`template.html`, and `seo.html` / `nav.html` / `monocraft.css` lifted
+verbatim so those stay stable. Run `python3
+lesson-template/build/block-camp-hub/build.py` from the repo root; it writes
+`block-camp.html` and a downscaled self-contained preview to `$PREVIEW_DIR`
+(default `/tmp`). Edit the data tables, not the HTML. **If `seo.py` ever
+rewrites the hub's SEO block, copy it back into `seo.html` or the next build
+reverts it.**
+
+Verified in the sandbox: every `href`/`src`/`url()` on the page resolves to a
+file in the repo; screenshots at 1280 and 390 wide; the top band unchanged.
+`seo.py` was NOT run — nothing it writes changed, and a cloud run against the
+stale `tools/lessons.json` cache is the documented way to lose entries.
+
+**Push was blocked** (repo not attached as a session source — see CLAUDE.md
+"When push is blocked"). The commit is handed over as a git bundle; the
+handoff for the session that applies it is `docs/HANDOFF-block-camp-hub.md`.
+
+**It collides with the Past Perfect trio** (branch `past-perfect-camp`, its
+own bundle, also unpushed as of this writing — see the section below and
+`claude/past-perfect-camp-build.md`). That branch adds three cards to the OLD
+hub markup: camp 9, station 17 and the ninth reference. Whichever bundle lands
+second will conflict in `block-camp.html`. The resolution is not a merge of
+the HTML: **take this hub's version and re-run the builder.** Its data tables
+already list camp 9 (`#d66d77`, the deck's own ink), station 17 and the ninth
+reference, and each card is emitted only when its page exists in the repo —
+tested both ways in the sandbox. The tally strip, the section notes and the
+closing count are computed from what is present, so 16/8/8 becomes 17/9/9
+without anyone editing a number.
+
+Not done, deliberately, and worth asking Innes about: the eight "More
+Minecraft Lessons" cards are the weakest artwork on the page (older heroes,
+mixed aspect ratios); a parallax or lantern glint on the hero was offered but
+not built. Both are small, incremental steps if he wants them.
+
+---
+
 ## 2026-09-04 — Harari at Davos: the deck tested a text it never showed
 
 Innes: "this is difficult to follow." It was. The 24-slide deck had condensed

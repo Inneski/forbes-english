@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Block Camp | Forbes English</title>
+{{SEO}}
+<meta name="theme-color" content="#0b1a12">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ── BLOCK CAMP HUB, DARK EDITION ─────────────────────────────────────
+   The line's own pages - the route map, the descent map, the three RPGs -
+   are all dark, full-bleed artwork with a glass panel over it. The hub was
+   the one page in the set still wearing the library's cream. Innes:
+   "remake block camp hub so it looks snazzy". So: the map's own trail scene
+   full-bleed behind the title, deep forest green everywhere else, and every
+   card wearing its camp's colour - the same eight the map's stops wear. */
+:root {
+  --bg:        #0b1a12;
+  --bg-2:      #0f2419;
+  --panel:     rgba(255,255,255,.045);
+  --panel-2:   rgba(255,255,255,.075);
+  --line:      rgba(255,255,255,.10);
+  --cream:     #f2f7f3;
+  --paper:     #fff4d6;     /* the map's glass-panel cream */
+  --muted:     #a9bdb0;
+  --dim:       #7f9489;
+  --gold:      #e8c04a;
+  --gold-pale: #f2dc9e;
+  --gold-deep: #9c7818;
+  --green-deep:#14301f;
+  --green-lift:#234a33;
+  --radius:    14px;
+  --c:         var(--gold);   /* per-card camp colour */
+  --ci:        #0b1a12;       /* ink that sits on --c */
+}
+* { box-sizing: border-box; }
+html { background: var(--bg); }
+body {
+  margin: 0; font-family: 'Lato', sans-serif; color: var(--cream);
+  background:
+    radial-gradient(900px 520px at 85% 30%, rgba(112,164,58,.08), transparent 60%),
+    radial-gradient(700px 500px at 5% 80%, rgba(70,176,171,.06), transparent 60%),
+    var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+img { display: block; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+/* ── top band (same lockup as the homepage - untouched) ── */
+.topband { background: var(--green-deep); border-bottom: 1px solid rgba(232,192,74,0.25); position: relative; z-index: 3; }
+.tb-inner {
+  max-width: 1180px; margin: 0 auto;
+  padding: 10px clamp(20px,4vw,40px);
+  display: flex; align-items: center; justify-content: space-between; gap: 20px;
+}
+.tb-logo { display: block; text-decoration: none; line-height: 1; color: #faf8f3; font-size: 26px; }
+.tb-logo-mark { display: block; width: 2.93em; height: auto; }
+.tb-logo-sub {
+  display: block; font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
+  font-size: .385em; letter-spacing: .518em; margin: .13em -.518em 0 0; white-space: nowrap;
+}
+@media (max-width: 1024px) { .tb-nav-sub { display: none; } }
+.tb-links { display: flex; align-items: center; gap: clamp(12px, 2vw, 26px); flex-wrap: wrap; }
+.tb-links a {
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
+  letter-spacing: 0.06em; font-size: 0.78rem; text-transform: uppercase;
+  color: #faf8f3; text-decoration: none; opacity: 0.85; transition: opacity .15s ease;
+}
+.tb-links a:hover, .tb-links a[aria-current] { opacity: 1; }
+.tb-links a[aria-current] { color: var(--gold); }
+.tb-cta { background: var(--green-lift); color: #faf8f3 !important; padding: 6px 14px; border-radius: 20px; opacity: 1 !important; border: 1px solid rgba(232,192,74,0.4); }
+.tb-cta:hover { background: var(--gold-deep); }
+.tb-cta-gold { background: var(--gold); color: var(--green-deep) !important; padding: 6px 14px; border-radius: 20px; opacity: 1 !important; font-weight: 700; }
+.tb-cta-gold:hover { background: var(--gold-pale); }
+@media (max-width: 620px) { .tb-links a:not(.tb-cta):not(.tb-cta-gold) { display: none; } }
+
+/* ── type ── */
+{{MONOCRAFT}}
+.mono { font-family: 'Monocraft', ui-monospace, monospace; font-synthesis: none; letter-spacing: 0; }
+.eyebrow {
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase; font-size: .8rem; color: var(--gold);
+}
+
+/* ── HERO: the trail, full-bleed ─────────────────────────────────────
+   The map's own resting plate (tent, bridge, lookout tower), cropped so the
+   tower stays on the right and the copy sits over the darkened left. The
+   overlay is two gradients: one from the left so the words are on near-black,
+   one from the bottom so the plate dissolves into the page rather than
+   ending at a line. */
+.hero {
+  position: relative; isolation: isolate; overflow: hidden;
+  min-height: clamp(540px, 74vh, 720px);
+  display: flex; align-items: center;
+  background: var(--bg-2);
+}
+.hero-art {
+  position: absolute; inset: 0; z-index: -2;
+  background: url(BlockCamp/hub-hero.jpg) center 62% / cover no-repeat;
+}
+.hero::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background:
+    linear-gradient(90deg, rgba(11,26,18,.96) 0%, rgba(11,26,18,.86) 32%, rgba(11,26,18,.42) 60%, rgba(11,26,18,.08) 100%),
+    linear-gradient(180deg, rgba(11,26,18,.55) 0%, rgba(11,26,18,0) 28%, rgba(11,26,18,0) 62%, var(--bg) 100%);
+}
+/* On a phone there is no "left side" to hide the copy on - the whole plate
+   is behind the words - so the overlay goes near-solid and the art lives
+   in the bottom third, where the buttons end. */
+@media (max-width: 760px) {
+  .hero { min-height: 0; }
+  .hero-art { background-position: center 35%; }
+  .hero::before { background:
+    linear-gradient(180deg, rgba(11,26,18,.9) 0%, rgba(11,26,18,.86) 55%, rgba(11,26,18,.5) 80%, var(--bg) 100%); }
+}
+.hero-inner {
+  width: 100%; max-width: 1180px; margin: 0 auto;
+  padding: clamp(48px,7vw,84px) clamp(20px,4vw,40px) clamp(64px,9vw,120px);
+}
+.hero h1 {
+  margin: 14px 0 18px; color: var(--paper);
+  font-size: clamp(2.6rem, 7.2vw, 5.4rem); line-height: .98;
+  text-shadow: 0 4px 0 rgba(0,0,0,.35), 0 10px 40px rgba(0,0,0,.5);
+}
+.hero h1 em { font-style: normal; color: var(--gold); }
+.hero .lede {
+  font-size: clamp(1.02rem, 1.4vw, 1.18rem); line-height: 1.6; color: #d9e6dd;
+  max-width: 46ch; margin: 0 0 26px;
+}
+.hero .lede strong { color: var(--paper); font-weight: 700; }
+.cta-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase; font-size: .88rem;
+  text-decoration: none; padding: 13px 22px; border-radius: 999px;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn-gold { background: var(--gold); color: var(--bg); box-shadow: 0 10px 30px rgba(232,192,74,.28); }
+.btn-gold:hover { background: var(--gold-pale); box-shadow: 0 14px 36px rgba(232,192,74,.4); }
+.btn-glass {
+  color: var(--paper); border: 1px solid rgba(255,244,214,.45);
+  background: rgba(11,26,18,.45); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
+.btn-glass:hover { background: rgba(255,244,214,.12); }
+.btn svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* the tally, sitting on the hero's bottom edge */
+.tally {
+  position: relative; z-index: 2;
+  max-width: 1180px; margin: clamp(-52px,-6vw,-70px) auto 0;
+  padding: 0 clamp(20px,4vw,40px);
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+}
+.tally a {
+  display: flex; flex-direction: column; gap: 3px; text-decoration: none;
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+  border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 16px 18px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 20px 50px rgba(0,0,0,.45);
+  transition: transform .18s ease, border-color .18s ease;
+}
+.tally a:hover { transform: translateY(-3px); border-color: var(--c); }
+.tally .n { font-size: clamp(1.6rem,3vw,2.3rem); line-height: 1; color: var(--c); }
+.tally .l { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; font-size: .78rem; color: var(--paper); }
+.tally .s { font-size: .85rem; color: var(--muted); }
+@media (max-width: 760px) { .tally { grid-template-columns: repeat(2, 1fr); } }
+
+/* ── sections ── */
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 clamp(20px,4vw,40px) clamp(50px,8vw,90px); }
+.track { margin-top: clamp(48px,7vw,88px); scroll-margin-top: 24px; }
+.track-head { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; }
+.track-head h2 { margin: 0; font-size: clamp(1.25rem,2.6vw,1.75rem); color: var(--paper); }
+.track-head h2 .k { color: var(--gold); }
+.track-note { font-size: .92rem; color: var(--dim); }
+.track-blurb { color: var(--muted); font-size: 1rem; line-height: 1.6; margin: 0 0 22px; max-width: 68ch; }
+.track-rule { height: 2px; margin: 12px 0 22px; border-radius: 2px;
+  background: linear-gradient(90deg, var(--gold), rgba(232,192,74,0)); }
+
+/* ── map strip: a wide plate that links to a map ── */
+.map-strip {
+  position: relative; isolation: isolate; overflow: hidden;
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; flex-wrap: wrap;
+  min-height: 150px; padding: clamp(18px,2.6vw,26px) clamp(18px,3vw,30px);
+  border-radius: var(--radius); border: 1px solid var(--line);
+  text-decoration: none; color: var(--paper); margin-bottom: 22px;
+  box-shadow: 0 16px 40px rgba(0,0,0,.4);
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.map-strip:hover { transform: translateY(-3px); border-color: rgba(232,192,74,.6); box-shadow: 0 24px 56px rgba(0,0,0,.55); }
+.map-strip .art { position: absolute; inset: 0; z-index: -2; background-size: cover; background-repeat: no-repeat; transition: transform 6s ease; }
+.map-strip:hover .art { transform: scale(1.04); }
+.map-strip::before { content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(90deg, rgba(11,26,18,.92) 0%, rgba(11,26,18,.6) 45%, rgba(11,26,18,.15) 100%); }
+.ms-title { display: block; font-size: clamp(1.1rem,2vw,1.5rem); }
+.ms-sub { display: block; font-size: .95rem; color: #cfdcd3; margin-top: 6px; max-width: 52ch; }
+.ms-go { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: .8rem;
+  border: 1px solid rgba(255,244,214,.45); border-radius: 999px; padding: 9px 16px; white-space: nowrap; }
+
+/* ── cards ── */
+.grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px;
+  grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 1000px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 700px)  { .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+.card {
+  position: relative; display: flex; flex-direction: column; height: 100%;
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+  overflow: hidden; text-decoration: none; color: inherit;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease;
+}
+.card::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--c); z-index: 2; }
+.card:hover { transform: translateY(-4px); background: var(--panel-2); border-color: var(--c);
+  box-shadow: 0 18px 40px rgba(0,0,0,.5), 0 0 0 1px var(--c) inset, 0 0 32px -8px var(--c); }
+.thumb { position: relative; aspect-ratio: 16/9; overflow: hidden; background: #000; }
+.thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+.card:hover .thumb img { transform: scale(1.06); }
+/* The camp number sits beside the title, not on the cover: every cover
+   carries its own title top-left, and a badge there hid the first letter. */
+.row { display: flex; align-items: center; gap: 9px; }
+.num {
+  flex: none; width: 26px; height: 26px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--c); color: var(--ci);
+  font-family: 'Monocraft', ui-monospace, monospace; font-synthesis: none; font-size: .8rem; line-height: 1;
+  box-shadow: 0 0 14px -2px var(--c);
+}
+.body { display: flex; flex-direction: column; gap: 5px; padding: 12px 14px 14px; flex: 1; }
+.card-title { font-weight: 700; font-size: 1rem; line-height: 1.35; color: var(--cream); letter-spacing: -.005em; }
+.card-sub { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: .74rem; color: var(--c); }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: auto; padding-top: 6px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .08em; font-size: .68rem; padding: 3px 9px; border-radius: 20px;
+  background: rgba(255,255,255,.08); color: var(--muted);
+}
+.chip-free { background: var(--gold); color: var(--bg); }
+.chip-pro { border: 1px solid rgba(232,192,74,.5); color: var(--gold-pale); background: transparent; }
+.chip-pro svg { width: 8px; height: 10px; fill: currentColor; }
+
+/* ── adventures: three wide plates ── */
+.adv { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 900px) { .adv { grid-template-columns: 1fr; } }
+.adv .card { --c: var(--gold); }
+.adv .thumb { aspect-ratio: 16/10; }
+.adv .card-title { font-size: 1.15rem; }
+.adv .desc { font-size: .93rem; line-height: 1.55; color: var(--muted); margin: 2px 0 6px; }
+.chip-start { background: #E66085; color: var(--bg); }
+.chip-new { background: #46B0AB; color: var(--bg); }
+@media (max-width: 900px) {
+  .adv .card { flex-direction: row; }
+  .adv .thumb { width: 38%; aspect-ratio: auto; flex: none; }
+}
+@media (max-width: 520px) {
+  .adv .card { flex-direction: column; }
+  .adv .thumb { width: 100%; aspect-ratio: 16/10; }
+}
+
+/* ── closing band ── */
+.note {
+  margin-top: clamp(48px,7vw,88px);
+  position: relative; overflow: hidden; isolation: isolate;
+  background: linear-gradient(100deg, #1b3a28, #14301f);
+  border: 1px solid rgba(232,192,74,.35);
+  border-radius: var(--radius); padding: clamp(24px,3.4vw,34px) clamp(22px,3.6vw,38px);
+  display: grid; grid-template-columns: 1fr auto; gap: 22px; align-items: center;
+}
+.note::before { content: ""; position: absolute; inset: 0; z-index: -1;
+  background:
+    radial-gradient(2.5px 2.5px at 14% 28%, rgba(255,244,214,.9), transparent 60%),
+    radial-gradient(2px 2px at 33% 74%, rgba(255,244,214,.7), transparent 60%),
+    radial-gradient(3px 3px at 68% 22%, rgba(255,244,214,.85), transparent 60%),
+    radial-gradient(2px 2px at 88% 66%, rgba(255,244,214,.7), transparent 60%);
+  animation: glint 3.4s ease-in-out infinite alternate; }
+@keyframes glint { from { opacity: .3 } to { opacity: 1 } }
+@media (max-width: 700px) { .note { grid-template-columns: 1fr; } }
+.note h3 { margin: 0 0 8px; font-size: 1.15rem; color: var(--paper); }
+.note p { margin: 0; line-height: 1.6; color: var(--muted); font-size: .98rem; max-width: 62ch; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+
+{{NAV}}
+
+<header class="hero">
+  <div class="hero-art" role="img" aria-label="A voxel woodland trail from a tent, over a bridge, up to a lookout tower"></div>
+  <div class="hero-inner">
+    <div class="eyebrow">Forbes English &middot; Grammar, block by block</div>
+    <h1 class="mono">BLOCK <em>CAMP</em></h1>
+    <p class="lede"><strong>Every lesson here is set in a blocky, voxel-built world.</strong> One trail up through the eight tenses, the same trail back down in the passive, three branching adventures with a grammar point built into the plot &mdash; and every illustrated reference in one place.</p>
+    <div class="cta-row">
+      <a class="btn btn-gold" href="block-camp-map.html">Open the route map <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      <a class="btn btn-glass" href="#climb">Start at camp 1</a>
+    </div>
+  </div>
+</header>
+
+<nav class="tally" aria-label="What is here">
+  <a href="#climb" style="--c:#7A93B5"><span class="n mono">{{N_CLIMB}}</span><span class="l">Units</span><span class="s">the climb &middot; eight tenses, two parts each</span></a>
+  <a href="#descent" style="--c:#E66085"><span class="n mono">{{N_DESCENT}}</span><span class="l">Stations</span><span class="s">the descent &middot; every camp in the passive</span></a>
+  <a href="#adventures" style="--c:#F0723F"><span class="n mono">3</span><span class="l">Adventures</span><span class="s">branching RPGs &middot; multiple endings</span></a>
+  <a href="#references" style="--c:#46B0AB"><span class="n mono">{{N_REFS}}</span><span class="l">References</span><span class="s">illustrated &middot; 41 scenes each</span></a>
+</nav>
+
+<div class="wrap">
+
+  <section class="track" id="climb">
+    <div class="track-head">
+      <h2 class="mono"><span class="k">I.</span> The climb</h2>
+      <span class="track-note">{{W_CLIMB}} units &middot; two per tense &middot; active voice &middot; Part 1 free on camps 1&ndash;3</span>
+    </div>
+    <div class="track-rule"></div>
+    <a class="map-strip" href="block-camp-map.html">
+      <span class="art" style="background-image:url(BlockCamp/hub-hero.jpg);background-position:center 70%"></span>
+      <span><span class="ms-title mono">The Route Map</span><span class="ms-sub">One trail, eight camps &mdash; hover a stop to see the camp, click to open Part 1. Or play the day and watch the whole climb.</span></span>
+      <span class="ms-go">Open the map &rarr;</span>
+    </a>
+    <ul class="grid">
+{{CLIMB}}
+    </ul>
+  </section>
+
+  <section class="track" id="descent">
+    <div class="track-head">
+      <h2 class="mono"><span class="k">II.</span> The descent</h2>
+      <span class="track-note">{{W_DESCENT}} stations &middot; the same camps in the passive &middot; station 9 free</span>
+    </div>
+    <div class="track-rule"></div>
+    <p class="track-blurb">Coming back down, you meet every camp again with the doer taken out of the
+      sentence. Each station wears its camp&rsquo;s colour and re-uses its scenery, so passing
+      camp 3 on the way down looks like camp 3. The Trial at the end takes the labels off.</p>
+    <a class="map-strip" href="block-camp-descent-map.html">
+      <span class="art" style="background-image:url(BlockCampDescent/watchtower-far-side.jpg);background-position:center 55%"></span>
+      <span><span class="ms-title mono">The Descent Route</span><span class="ms-sub">The far side of the watchtower &mdash; eight stations back down to the valley.</span></span>
+      <span class="ms-go">Open the map &rarr;</span>
+    </a>
+    <ul class="grid">
+{{DESCENT}}
+    </ul>
+  </section>
+
+  <section class="track" id="adventures">
+    <div class="track-head">
+      <h2 class="mono"><span class="k">III.</span> Adventures</h2>
+      <span class="track-note">click-through &middot; branching story &middot; multiple endings</span>
+    </div>
+    <div class="track-rule"></div>
+    <ul class="adv">
+      <li><a class="card" href="block-camp/last-train-home-rpg.html">
+        <span class="thumb"><img src="block-camp/last-train-home-rpg/01_cover.webp" alt="" loading="lazy"></span>
+        <span class="body">
+          <span class="card-title">The Last Train Home</span>
+          <span class="desc">A cyberpunk megacity, a curfew closing in, and one train left before the checkpoints seal the district. Every route out is a prediction about what will happen next.</span>
+          <span class="chips"><span class="chip chip-start">Start here</span><span class="chip">Future Simple</span><span class="chip">A1&ndash;A2</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span>
+        </span>
+      </a></li>
+      <li><a class="card" href="block-camp/dracula-castle-of-if.html">
+        <span class="thumb"><img src="block-camp/dracula-castle-of-if/01_cover.webp" alt="" loading="lazy"></span>
+        <span class="body">
+          <span class="card-title">Dracula: The Castle of If</span>
+          <span class="desc">Bram Stoker&rsquo;s castle, reimagined as a branching grammar nightmare &mdash; every escape route runs on a conditional, and every guard&rsquo;s report comes back in the passive voice.</span>
+          <span class="chips"><span class="chip chip-new">New</span><span class="chip">Conditionals</span><span class="chip">Passive</span><span class="chip">B2</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span>
+        </span>
+      </a></li>
+      <li><a class="card" href="block-camp/long-way-home-rpg.html">
+        <span class="thumb"><img src="block-camp/long-way-home-rpg/00_cover.webp" alt="" loading="lazy"></span>
+        <span class="body">
+          <span class="card-title">The Long Way Home</span>
+          <span class="desc">Homer&rsquo;s Odyssey rebuilt block by block. Thirty-six scenes of storm and monster where the tense you choose decides what happened first &mdash; and losing the thread costs you the crew.</span>
+          <span class="chips"><span class="chip chip-new">New</span><span class="chip">Narrative Tenses</span><span class="chip">B1</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span>
+        </span>
+      </a></li>
+    </ul>
+  </section>
+
+  <section class="track" id="references">
+    <div class="track-head">
+      <h2 class="mono"><span class="k">IV.</span> Grammar References</h2>
+      <span class="track-note">{{W_REFS}} tenses &middot; use, form, questions and signals &middot; 41 illustrated scenes each</span>
+    </div>
+    <div class="track-rule"></div>
+    <ul class="grid">
+{{REFS}}
+    </ul>
+  </section>
+
+  <section class="track" id="more">
+    <div class="track-head">
+      <h2 class="mono"><span class="k">V.</span> More Minecraft Lessons</h2>
+      <span class="track-note">standalone grammar lessons, A2&ndash;C1</span>
+    </div>
+    <div class="track-rule"></div>
+    <ul class="grid">
+{{MORE}}
+    </ul>
+  </section>
+
+  <div class="note">
+    <div>
+      <h3 class="mono">Browse everything</h3>
+      <p>All {{N_TOTAL}} Block Camp units, the three adventures and every reference, alongside the rest of the library.</p>
+    </div>
+    <a class="btn btn-gold" href="library.html">All lessons &rarr;</a>
+  </div>
+
+</div>
+</body>
+</html>

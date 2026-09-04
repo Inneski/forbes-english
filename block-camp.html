@@ -19,308 +19,289 @@
 <meta name="twitter:description" content="Grammar lessons in a blocky, voxel-built world. Branching RPG adventures and Minecraft grammar lessons, together in one place.">
 <meta name="twitter:image" content="https://forbesenglish.com/block-camp/last-train-home-rpg/01_cover.webp">
 <!-- SEO:end -->
+<meta name="theme-color" content="#0b1a12">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow+Condensed:wght@600;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Lato:wght@400;700&display=swap" rel="stylesheet">
 <style>
+/* ── BLOCK CAMP HUB, DARK EDITION ─────────────────────────────────────
+   The line's own pages - the route map, the descent map, the three RPGs -
+   are all dark, full-bleed artwork with a glass panel over it. The hub was
+   the one page in the set still wearing the library's cream. Innes:
+   "remake block camp hub so it looks snazzy". So: the map's own trail scene
+   full-bleed behind the title, deep forest green everywhere else, and every
+   card wearing its camp's colour - the same eight the map's stops wear. */
 :root {
-  --green-deep:  #14301f;
-  --green-mid:   #1b3a28;
-  --green-lift:  #234a33;
-  --gold:        #b8962e;
-  --gold-bright: #e8c04a;
-  --gold-pale:   #f2dc9e;
-  --gold-deep:   #9c7818;
-  --pink-mid:    #8f2856;
-  --cream:       #faf8f3;
-  --ink:         #182a1f;
-  --muted:       #5d6f64;
-  --radius:      12px;
+  --bg:        #0b1a12;
+  --bg-2:      #0f2419;
+  --panel:     rgba(255,255,255,.045);
+  --panel-2:   rgba(255,255,255,.075);
+  --line:      rgba(255,255,255,.10);
+  --cream:     #f2f7f3;
+  --paper:     #fff4d6;     /* the map's glass-panel cream */
+  --muted:     #a9bdb0;
+  --dim:       #7f9489;
+  --gold:      #e8c04a;
+  --gold-pale: #f2dc9e;
+  --gold-deep: #9c7818;
+  --green-deep:#14301f;
+  --green-lift:#234a33;
+  --radius:    14px;
+  --c:         var(--gold);   /* per-card camp colour */
+  --ci:        #0b1a12;       /* ink that sits on --c */
 }
 * { box-sizing: border-box; }
+html { background: var(--bg); }
 body {
-  margin: 0;
-  font-family: 'Lato', sans-serif;
-  color: var(--ink);
+  margin: 0; font-family: 'Lato', sans-serif; color: var(--cream);
   background:
-    radial-gradient(1100px 620px at 72% 42%, rgba(35,74,51,0.05), transparent 62%),
-    radial-gradient(900px 500px at 10% 0%, rgba(35,74,51,0.05), transparent 60%),
-    linear-gradient(165deg, #ffffff 0%, #f6f8f5 55%, #eef3ef 100%);
+    radial-gradient(900px 520px at 85% 30%, rgba(112,164,58,.08), transparent 60%),
+    radial-gradient(700px 500px at 5% 80%, rgba(70,176,171,.06), transparent 60%),
+    var(--bg);
   -webkit-font-smoothing: antialiased;
 }
+a { color: inherit; }
+img { display: block; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
-/* ── top band (same lockup as the homepage) ── */
-.topband { background: var(--green-deep); border-bottom: 1px solid rgba(232,192,74,0.25); }
+/* ── top band (same lockup as the homepage - untouched) ── */
+.topband { background: var(--green-deep); border-bottom: 1px solid rgba(232,192,74,0.25); position: relative; z-index: 3; }
 .tb-inner {
   max-width: 1180px; margin: 0 auto;
   padding: 10px clamp(20px,4vw,40px);
   display: flex; align-items: center; justify-content: space-between; gap: 20px;
 }
-.tb-logo {
-  display: block; text-decoration: none; line-height: 1;
-  color: var(--cream); font-size: 26px;
-}
+.tb-logo { display: block; text-decoration: none; line-height: 1; color: #faf8f3; font-size: 26px; }
 .tb-logo-mark { display: block; width: 2.93em; height: auto; }
 .tb-logo-sub {
-  display: block;
-  font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
-  font-size: .385em; letter-spacing: .518em;
-  margin: .13em -.518em 0 0;
-  white-space: nowrap;
+  display: block; font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
+  font-size: .385em; letter-spacing: .518em; margin: .13em -.518em 0 0; white-space: nowrap;
 }
-.tb-nav-sub { }
 @media (max-width: 1024px) { .tb-nav-sub { display: none; } }
 .tb-links { display: flex; align-items: center; gap: clamp(12px, 2vw, 26px); flex-wrap: wrap; }
 .tb-links a {
   font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
   letter-spacing: 0.06em; font-size: 0.78rem; text-transform: uppercase;
-  color: var(--cream); text-decoration: none; opacity: 0.85; transition: opacity .15s ease;
+  color: #faf8f3; text-decoration: none; opacity: 0.85; transition: opacity .15s ease;
 }
 .tb-links a:hover, .tb-links a[aria-current] { opacity: 1; }
-.tb-links a[aria-current] { color: var(--gold-bright); }
-.tb-cta { background: var(--green-lift); color: var(--cream) !important; padding: 6px 14px; border-radius: 20px; opacity: 1 !important; border: 1px solid rgba(232,192,74,0.4); }
+.tb-links a[aria-current] { color: var(--gold); }
+.tb-cta { background: var(--green-lift); color: #faf8f3 !important; padding: 6px 14px; border-radius: 20px; opacity: 1 !important; border: 1px solid rgba(232,192,74,0.4); }
 .tb-cta:hover { background: var(--gold-deep); }
-.tb-cta-gold { background: var(--gold-bright); color: var(--green-deep) !important; padding: 6px 14px; border-radius: 20px; opacity: 1 !important; font-weight: 700; }
+.tb-cta-gold { background: var(--gold); color: var(--green-deep) !important; padding: 6px 14px; border-radius: 20px; opacity: 1 !important; font-weight: 700; }
 .tb-cta-gold:hover { background: var(--gold-pale); }
 @media (max-width: 620px) { .tb-links a:not(.tb-cta):not(.tb-cta-gold) { display: none; } }
 
-.wrap { max-width: 1180px; margin: 0 auto; padding: clamp(26px,5vw,54px) clamp(20px,4vw,40px) clamp(50px,8vw,90px); }
-
-/* ── masthead ── */
-.hero { display: grid; grid-template-columns: 1.15fr 1fr; gap: clamp(24px,4vw,48px); align-items: center; margin-bottom: clamp(34px,5vw,58px); }
-@media (max-width: 820px) { .hero { grid-template-columns: 1fr; } }
-.eyebrow {
-  font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
-  letter-spacing: 0.14em; text-transform: uppercase; font-size: 0.82rem;
-  color: var(--gold-deep); margin-bottom: 10px;
-}
-h1 { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(2.1rem, 5vw, 3.3rem); line-height: 1.06; margin: 0 0 16px; }
-h1 em { font-style: normal; color: var(--pink-mid); }
-.lede { font-size: 1.08rem; line-height: 1.62; color: var(--muted); max-width: 46ch; margin: 0 0 18px; }
-.lede strong { color: var(--ink); font-weight: 700; }
-.gt-note {
-  font-size: 0.92rem; line-height: 1.55; color: var(--muted); max-width: 46ch;
-  margin: 0 0 18px; padding: 10px 0 10px 14px;
-  border-left: 3px solid var(--gold-bright);
-}
-.gt-note strong { color: var(--ink); font-weight: 700; }
-/* THE ROUTE MAP, AS THE THING YOU SEE FIRST. Same blue as index.html's
-   .feature-blockcamp and the same sparkle as the descent banner - it is the
-   same button, given the room the two adventure covers were using. */
-.route-hero { position: relative; overflow: hidden; isolation: isolate;
-  display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
-  min-height: 260px; padding: clamp(22px,3vw,32px);
-  border-radius: var(--radius); text-decoration: none; color: #fff4d6;
-  background: linear-gradient(100deg,#3E5C8F,#2C4470);
-  box-shadow: 0 18px 44px rgba(24,40,72,.30);
-  transition: transform .18s ease, box-shadow .18s ease; }
-.route-hero:hover, .route-hero:focus-visible { transform: translateY(-3px);
-  box-shadow: 0 22px 52px rgba(24,40,72,.42); }
-.rh-icon { font-size: clamp(2rem,4vw,3rem); line-height: 1; }
-.rh-title { font-family: 'Monocraft', ui-monospace, monospace; font-synthesis: none;
-  font-size: clamp(1.35rem,2.6vw,2rem); line-height: 1.05; margin-top: auto; }
-.rh-sub { font-size: .98rem; line-height: 1.45; color: #d6e2f5; max-width: 34ch; }
-.rh-go { margin-top: 12px; font-family: 'Barlow Condensed',sans-serif; font-weight: 700;
-  letter-spacing: .1em; text-transform: uppercase; font-size: .82rem;
-  border: 1px solid rgba(255,244,214,.45); border-radius: 999px; padding: 9px 17px; }
-.route-hero::before { content: ""; position: absolute; inset: 0; z-index: -1;
-  background:
-    radial-gradient(2.5px 2.5px at 16% 22%, rgba(255,244,214,.95), transparent 60%),
-    radial-gradient(2px 2px at 76% 34%, rgba(255,244,214,.8), transparent 60%),
-    radial-gradient(3px 3px at 60% 12%, rgba(255,244,214,.9), transparent 60%),
-    radial-gradient(2px 2px at 88% 72%, rgba(255,244,214,.75), transparent 60%);
-  animation: rb-glint 3.4s ease-in-out infinite alternate; }
-.route-hero::after { content: ""; position: absolute; top: 0; bottom: 0; z-index: -1;
-  left: -40%; width: 34%;
-  background: linear-gradient(100deg,transparent,rgba(255,244,214,.16) 46%,transparent);
-  transform: skewX(-14deg);
-  animation: rb-sheen 7s cubic-bezier(.5,0,.5,1) infinite; }
-.route-hero:hover::after { animation-duration: 2.4s; }
-@media (prefers-reduced-motion:reduce) {
-  .route-hero { transition: none }
-  .route-hero::before { animation: none; opacity: .7 }
-  .route-hero::after { display: none } }
-
-/* ── track ── */
-.track { margin-top: clamp(30px,5vw,52px); }
-.track-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; padding-bottom: 12px; border-bottom: 2px solid rgba(20,48,31,0.12); margin-bottom: 26px; }
-.track-blurb { color: var(--muted); font-size: 0.98rem; line-height: 1.55;
-  margin: 0 0 18px; max-width: 68ch; }
-.track-head h2 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: clamp(1.5rem,3vw,2rem); margin: 0; }
-.track-note { font-size: 0.95rem; color: var(--muted); }
-
-.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
-.step {
-  display: grid; grid-template-columns: 96px 1fr auto; gap: clamp(14px,2.4vw,26px);
-  align-items: center;
-  background: #fff; border: 1px solid rgba(20,48,31,0.10);
-  border-radius: var(--radius); padding: clamp(14px,2.2vw,18px) clamp(16px,2.6vw,26px);
-  text-decoration: none; color: inherit;
-  box-shadow: 0 2px 10px rgba(20,48,31,0.05);
-  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
-}
-.step:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(20,48,31,0.13); border-color: rgba(184,150,46,0.55); }
-@media (max-width: 700px) { .step { grid-template-columns: 60px 1fr; } .step-go { display: none; } }
-.step-thumb { width: 96px; height: 96px; border-radius: 8px; overflow: hidden; }
-.step-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
-@media (max-width: 700px) { .step-thumb { width: 60px; height: 60px; } }
-.step-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.22rem; margin: 0 0 6px; }
-.step-desc { font-size: 0.98rem; line-height: 1.55; color: var(--muted); margin: 0; }
-.tags { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 10px; }
-.tag {
-  font-family: 'Barlow Condensed', sans-serif; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.07em; font-size: 0.68rem; padding: 3px 9px; border-radius: 20px;
-  background: rgba(20,48,31,0.06); color: var(--muted);
-}
-.tag-start { background: var(--gold-bright); color: var(--green-deep); }
-.tag-new { background: var(--pink-mid); color: var(--cream); }
-.step-go {
-  font-family: 'Barlow Condensed', sans-serif; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.07em; font-size: 0.8rem; color: var(--green-lift); white-space: nowrap;
-}
-
-/* ── mini grid (references / standalone lessons) ── */
-.mini-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px; }
-.mini-card {
-  display: flex; flex-direction: column;
-  background: #fff; border: 1px solid rgba(20,48,31,0.10);
-  border-radius: var(--radius); overflow: hidden;
-  text-decoration: none; color: inherit;
-  box-shadow: 0 2px 10px rgba(20,48,31,0.05);
-  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
-}
-.mini-card:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(20,48,31,0.13); border-color: rgba(184,150,46,0.55); }
-.mini-thumb { aspect-ratio: 16/10; overflow: hidden; }
-.mini-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.mini-body { padding: 12px 14px 14px; }
-.mini-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 0.98rem; margin: 0 0 8px; line-height: 1.3; }
-
-/* ── closing note ── */
-.note {
-  margin-top: clamp(34px,5vw,56px);
-  background: var(--green-deep); color: var(--cream);
-  border-radius: var(--radius); padding: clamp(22px,3.4vw,32px) clamp(22px,3.6vw,38px);
-  display: grid; grid-template-columns: 1fr auto; gap: 22px; align-items: center;
-}
-@media (max-width: 700px) { .note { grid-template-columns: 1fr; } }
-.note h3 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.3rem; margin: 0 0 8px; }
-.note p { margin: 0; line-height: 1.6; opacity: 0.86; font-size: 0.98rem; max-width: 62ch; }
-.note a {
-  font-family: 'Barlow Condensed', sans-serif; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.07em; font-size: 0.82rem; text-decoration: none; white-space: nowrap;
-  background: var(--gold-bright); color: var(--green-deep); padding: 10px 20px; border-radius: 22px;
-}
-.note a:hover { background: var(--gold-pale); }
-
-/* The route map, from the page the nav actually sends people to. Styled here
-   because .sherpa-banner belongs to library.html's stylesheet, not this one -
-   borrowing the class name got a bare blue link. */
-/* Blue, and the same blue. Innes: "the block camp button is blue on the front
-   page and should continue to be blue on the hub page". That is
-   index.html's .feature-blockcamp, linear-gradient(100deg,#3E5C8F,#2C4470),
-   copied rather than re-picked - two blues a shade apart read as a mistake,
-   which is the whole reason he noticed. Cream on it is 6.1:1 at the light end
-   and 8.8:1 at the dark, so the label needed no adjusting; only .rb-sub moved,
-   off the green tint it was carrying. */
-.route-banner{ position:relative; overflow:hidden; isolation:isolate;
-  display:flex; align-items:center; gap:clamp(14px,2.4vw,24px);
-  text-decoration:none; color:#fff4d6;
-  background:linear-gradient(100deg,#3E5C8F,#2C4470);
-  border-radius:var(--radius); padding:clamp(16px,2.6vw,24px) clamp(18px,3vw,30px);
-  margin:0 0 clamp(26px,4vw,44px); box-shadow:0 8px 26px rgba(24,40,72,.30);
-  transition:transform .18s ease, box-shadow .18s ease; }
-.route-banner:hover,.route-banner:focus-visible{ transform:translateY(-2px);
-  box-shadow:0 14px 34px rgba(24,40,72,.42); }
-
-/* "look more inviting to be clicked some how (sparkle animation?)". Two
-   layers, both behind the copy (z-index:-1 inside the banner's own stacking
-   context, which is what isolation:isolate is for):
-     ::before  four fixed glints that breathe, so the banner is never dead
-     ::after   one slow sheen crossing every 7s, so it reads as a button
-   Nothing moves the layout and nothing sits over the text. */
-.route-banner::before{ content:""; position:absolute; inset:0; z-index:-1;
-  background:
-    radial-gradient(2.5px 2.5px at 14% 28%, rgba(255,244,214,.95), transparent 60%),
-    radial-gradient(2px 2px at 33% 74%, rgba(255,244,214,.8), transparent 60%),
-    radial-gradient(3px 3px at 68% 22%, rgba(255,244,214,.9), transparent 60%),
-    radial-gradient(2px 2px at 88% 66%, rgba(255,244,214,.75), transparent 60%);
-  animation:rb-glint 3.4s ease-in-out infinite alternate; }
-.route-banner::after{ content:""; position:absolute; top:0; bottom:0; z-index:-1;
-  left:-40%; width:34%;
-  background:linear-gradient(100deg,transparent,rgba(255,244,214,.16) 46%,transparent);
-  transform:skewX(-14deg);
-  animation:rb-sheen 7s cubic-bezier(.5,0,.5,1) infinite; }
-.route-banner:hover::after{ animation-duration:2.4s; }
-@keyframes rb-glint{ from{ opacity:.35 } to{ opacity:1 } }
-@keyframes rb-sheen{ 0%{ left:-40% } 55%,100%{ left:118% } }
-.rb-icon{ font-size:clamp(1.6rem,3vw,2.3rem); line-height:1; flex:none; }
-.rb-copy{ flex:1; }
-.rb-title{ display:block; font-family:'Barlow Condensed',sans-serif;
-  font-weight:800; letter-spacing:.06em; text-transform:uppercase;
-  font-size:clamp(1.05rem,2vw,1.4rem); }
-.rb-sub{ display:block; font-size:.95rem; color:#d6e2f5; margin-top:3px; }
-.rb-go{ flex:none; font-family:'Barlow Condensed',sans-serif; font-weight:700;
-  letter-spacing:.1em; text-transform:uppercase; font-size:.8rem;
-  border:1px solid rgba(255,244,214,.4); border-radius:999px; padding:8px 15px; }
-@media (max-width:620px){ .route-banner{ flex-wrap:wrap } .rb-go{ margin-left:auto } }
-@media (prefers-reduced-motion:reduce){ .route-banner{ transition:none }
-  .route-banner::before,.route-banner::after{ animation:none }
-  .route-banner::before{ opacity:.7 } .route-banner::after{ display:none } }
-</style>
-<style>
-/* ── HEADER FACE ────────────────────────────────────────────────────
-      https://github.com/IdreesInc/Monocraft
-      Innes: "block camp needs the minecraft font in the headers." Mojang's own
-      typeface is an official asset and compliance condition 3 puts every official
-      asset out of bounds - covers, thumbnails, everywhere - so it cannot ship
-      however well it would look. Monocraft is the legitimate answer: an OFL font
-      that emulates the Minecraft UI face and, in the author's own words, "does
-      not include any assets or font files from the original game". It is ours to
-      embed and ours to redistribute.
-      Subset to Latin-1 + Latin Extended-A plus the punctuation the decks use
-      (curly quotes, dashes, ellipsis, arrow, middot): 357 KB of TTF down to 19 KB
-      of woff2. Black is the weight that matches the game's UI; the lighter cuts
-      read as an ordinary pixel mono. 
-   Every heading on this page moves from Playfair Display to Monocraft.
-   Body copy stays on Lato and the eyebrows stay on Barlow Condensed: a
-   pixel face is a display face, and setting paragraphs in one is what
-   made the decks hard to read before Carlito went in.
-
-   Monocraft is MONOSPACED, so the same words run about a fifth wider
-   than Playfair. Each heading size is pulled back to match, and the h1
-   clamp is retuned so it still fits a phone without hyphenating. */
-/* Declared across the whole weight range on purpose. The headings this
-   replaces asked Playfair for 700 and 900; with a single 400 face the browser
-   would SYNTHESISE the bold by smearing the glyphs sideways, which on a pixel
-   font turns clean square edges into mush. One file, every weight, no
-   synthesis. */
+/* ── type ── */
 @font-face{font-family:'Monocraft';font-style:normal;font-weight:100 900;
   font-display:swap;
   src:url(data:font/woff2;base64,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) format('woff2');}
-/* MONOCRAFT IS A DISPLAY FACE, NOT A READING ONE. It used to cover
-   .step-title and .mini-title too - the label under every card, forty-odd
-   times down the page. Innes: "I dont want black monocraft for reading.
-   Use the other one." The pixel face keeps what it is good at, the h1 and
-   the section heads; the card titles go back to Playfair. */
-h1, .track-head h2, .note h3 {
-  font-family: 'Monocraft', 'Playfair Display', serif;
-  font-synthesis: none;            /* never faux-bold a pixel face */
-  letter-spacing: 0;
+
+.mono { font-family: 'Monocraft', ui-monospace, monospace; font-synthesis: none; letter-spacing: 0; }
+.eyebrow {
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+  letter-spacing: .16em; text-transform: uppercase; font-size: .8rem; color: var(--gold);
 }
-h1 { font-size: clamp(1.7rem, 4.1vw, 2.7rem); line-height: 1.12; }
-.track-head h2 { font-size: clamp(1.2rem, 2.4vw, 1.6rem); }
-/* AND NOT A SERIF EITHER. Moving them off Monocraft, I sent them to Playfair
-   Display, which is the page's display serif - so a card label was still set
-   in a face chosen for headings. Innes, pointing at the lede: "use this font
-   (Lato maybe?) as the font under the thumbnails". It is Lato, the body face,
-   and he is right that it is the one for a line you read rather than announce.
-   Sized up slightly: Lato's x-height is smaller than Playfair's at the same
-   point size, and these were already sized down once for the pixel face. */
-.step-title { font-family: 'Lato', sans-serif; font-weight: 700;
-  font-size: 1.14rem; line-height: 1.34; letter-spacing: -.005em; }
-.mini-title { font-family: 'Lato', sans-serif; font-weight: 700;
-  font-size: 1rem; line-height: 1.4; letter-spacing: -.005em; }
-.note h3 { font-size: 1.1rem; }
+
+/* ── HERO: the trail, full-bleed ─────────────────────────────────────
+   The map's own resting plate (tent, bridge, lookout tower), cropped so the
+   tower stays on the right and the copy sits over the darkened left. The
+   overlay is two gradients: one from the left so the words are on near-black,
+   one from the bottom so the plate dissolves into the page rather than
+   ending at a line. */
+.hero {
+  position: relative; isolation: isolate; overflow: hidden;
+  min-height: clamp(540px, 74vh, 720px);
+  display: flex; align-items: center;
+  background: var(--bg-2);
+}
+.hero-art {
+  position: absolute; inset: 0; z-index: -2;
+  background: url(BlockCamp/hub-hero.jpg) center 62% / cover no-repeat;
+}
+.hero::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background:
+    linear-gradient(90deg, rgba(11,26,18,.96) 0%, rgba(11,26,18,.86) 32%, rgba(11,26,18,.42) 60%, rgba(11,26,18,.08) 100%),
+    linear-gradient(180deg, rgba(11,26,18,.55) 0%, rgba(11,26,18,0) 28%, rgba(11,26,18,0) 62%, var(--bg) 100%);
+}
+/* On a phone there is no "left side" to hide the copy on - the whole plate
+   is behind the words - so the overlay goes near-solid and the art lives
+   in the bottom third, where the buttons end. */
+@media (max-width: 760px) {
+  .hero { min-height: 0; }
+  .hero-art { background-position: center 35%; }
+  .hero::before { background:
+    linear-gradient(180deg, rgba(11,26,18,.9) 0%, rgba(11,26,18,.86) 55%, rgba(11,26,18,.5) 80%, var(--bg) 100%); }
+}
+.hero-inner {
+  width: 100%; max-width: 1180px; margin: 0 auto;
+  padding: clamp(48px,7vw,84px) clamp(20px,4vw,40px) clamp(64px,9vw,120px);
+}
+.hero h1 {
+  margin: 14px 0 18px; color: var(--paper);
+  font-size: clamp(2.6rem, 7.2vw, 5.4rem); line-height: .98;
+  text-shadow: 0 4px 0 rgba(0,0,0,.35), 0 10px 40px rgba(0,0,0,.5);
+}
+.hero h1 em { font-style: normal; color: var(--gold); }
+.hero .lede {
+  font-size: clamp(1.02rem, 1.4vw, 1.18rem); line-height: 1.6; color: #d9e6dd;
+  max-width: 46ch; margin: 0 0 26px;
+}
+.hero .lede strong { color: var(--paper); font-weight: 700; }
+.cta-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase; font-size: .88rem;
+  text-decoration: none; padding: 13px 22px; border-radius: 999px;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn-gold { background: var(--gold); color: var(--bg); box-shadow: 0 10px 30px rgba(232,192,74,.28); }
+.btn-gold:hover { background: var(--gold-pale); box-shadow: 0 14px 36px rgba(232,192,74,.4); }
+.btn-glass {
+  color: var(--paper); border: 1px solid rgba(255,244,214,.45);
+  background: rgba(11,26,18,.45); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
+.btn-glass:hover { background: rgba(255,244,214,.12); }
+.btn svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* the tally, sitting on the hero's bottom edge */
+.tally {
+  position: relative; z-index: 2;
+  max-width: 1180px; margin: clamp(-52px,-6vw,-70px) auto 0;
+  padding: 0 clamp(20px,4vw,40px);
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+}
+.tally a {
+  display: flex; flex-direction: column; gap: 3px; text-decoration: none;
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+  border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 16px 18px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 20px 50px rgba(0,0,0,.45);
+  transition: transform .18s ease, border-color .18s ease;
+}
+.tally a:hover { transform: translateY(-3px); border-color: var(--c); }
+.tally .n { font-size: clamp(1.6rem,3vw,2.3rem); line-height: 1; color: var(--c); }
+.tally .l { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; font-size: .78rem; color: var(--paper); }
+.tally .s { font-size: .85rem; color: var(--muted); }
+@media (max-width: 760px) { .tally { grid-template-columns: repeat(2, 1fr); } }
+
+/* ── sections ── */
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 clamp(20px,4vw,40px) clamp(50px,8vw,90px); }
+.track { margin-top: clamp(48px,7vw,88px); scroll-margin-top: 24px; }
+.track-head { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; }
+.track-head h2 { margin: 0; font-size: clamp(1.25rem,2.6vw,1.75rem); color: var(--paper); }
+.track-head h2 .k { color: var(--gold); }
+.track-note { font-size: .92rem; color: var(--dim); }
+.track-blurb { color: var(--muted); font-size: 1rem; line-height: 1.6; margin: 0 0 22px; max-width: 68ch; }
+.track-rule { height: 2px; margin: 12px 0 22px; border-radius: 2px;
+  background: linear-gradient(90deg, var(--gold), rgba(232,192,74,0)); }
+
+/* ── map strip: a wide plate that links to a map ── */
+.map-strip {
+  position: relative; isolation: isolate; overflow: hidden;
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; flex-wrap: wrap;
+  min-height: 150px; padding: clamp(18px,2.6vw,26px) clamp(18px,3vw,30px);
+  border-radius: var(--radius); border: 1px solid var(--line);
+  text-decoration: none; color: var(--paper); margin-bottom: 22px;
+  box-shadow: 0 16px 40px rgba(0,0,0,.4);
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.map-strip:hover { transform: translateY(-3px); border-color: rgba(232,192,74,.6); box-shadow: 0 24px 56px rgba(0,0,0,.55); }
+.map-strip .art { position: absolute; inset: 0; z-index: -2; background-size: cover; background-repeat: no-repeat; transition: transform 6s ease; }
+.map-strip:hover .art { transform: scale(1.04); }
+.map-strip::before { content: ""; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(90deg, rgba(11,26,18,.92) 0%, rgba(11,26,18,.6) 45%, rgba(11,26,18,.15) 100%); }
+.ms-title { display: block; font-size: clamp(1.1rem,2vw,1.5rem); }
+.ms-sub { display: block; font-size: .95rem; color: #cfdcd3; margin-top: 6px; max-width: 52ch; }
+.ms-go { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: .8rem;
+  border: 1px solid rgba(255,244,214,.45); border-radius: 999px; padding: 9px 16px; white-space: nowrap; }
+
+/* ── cards ── */
+.grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px;
+  grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 1000px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 700px)  { .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+.card {
+  position: relative; display: flex; flex-direction: column; height: 100%;
+  background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+  overflow: hidden; text-decoration: none; color: inherit;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease;
+}
+.card::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--c); z-index: 2; }
+.card:hover { transform: translateY(-4px); background: var(--panel-2); border-color: var(--c);
+  box-shadow: 0 18px 40px rgba(0,0,0,.5), 0 0 0 1px var(--c) inset, 0 0 32px -8px var(--c); }
+.thumb { position: relative; aspect-ratio: 16/9; overflow: hidden; background: #000; }
+.thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+.card:hover .thumb img { transform: scale(1.06); }
+/* The camp number sits beside the title, not on the cover: every cover
+   carries its own title top-left, and a badge there hid the first letter. */
+.row { display: flex; align-items: center; gap: 9px; }
+.num {
+  flex: none; width: 26px; height: 26px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--c); color: var(--ci);
+  font-family: 'Monocraft', ui-monospace, monospace; font-synthesis: none; font-size: .8rem; line-height: 1;
+  box-shadow: 0 0 14px -2px var(--c);
+}
+.body { display: flex; flex-direction: column; gap: 5px; padding: 12px 14px 14px; flex: 1; }
+.card-title { font-weight: 700; font-size: 1rem; line-height: 1.35; color: var(--cream); letter-spacing: -.005em; }
+.card-sub { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; font-size: .74rem; color: var(--c); }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: auto; padding-top: 6px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .08em; font-size: .68rem; padding: 3px 9px; border-radius: 20px;
+  background: rgba(255,255,255,.08); color: var(--muted);
+}
+.chip-free { background: var(--gold); color: var(--bg); }
+.chip-pro { border: 1px solid rgba(232,192,74,.5); color: var(--gold-pale); background: transparent; }
+.chip-pro svg { width: 8px; height: 10px; fill: currentColor; }
+
+/* ── adventures: three wide plates ── */
+.adv { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 900px) { .adv { grid-template-columns: 1fr; } }
+.adv .card { --c: var(--gold); }
+.adv .thumb { aspect-ratio: 16/10; }
+.adv .card-title { font-size: 1.15rem; }
+.adv .desc { font-size: .93rem; line-height: 1.55; color: var(--muted); margin: 2px 0 6px; }
+.chip-start { background: #E66085; color: var(--bg); }
+.chip-new { background: #46B0AB; color: var(--bg); }
+@media (max-width: 900px) {
+  .adv .card { flex-direction: row; }
+  .adv .thumb { width: 38%; aspect-ratio: auto; flex: none; }
+}
+@media (max-width: 520px) {
+  .adv .card { flex-direction: column; }
+  .adv .thumb { width: 100%; aspect-ratio: 16/10; }
+}
+
+/* ── closing band ── */
+.note {
+  margin-top: clamp(48px,7vw,88px);
+  position: relative; overflow: hidden; isolation: isolate;
+  background: linear-gradient(100deg, #1b3a28, #14301f);
+  border: 1px solid rgba(232,192,74,.35);
+  border-radius: var(--radius); padding: clamp(24px,3.4vw,34px) clamp(22px,3.6vw,38px);
+  display: grid; grid-template-columns: 1fr auto; gap: 22px; align-items: center;
+}
+.note::before { content: ""; position: absolute; inset: 0; z-index: -1;
+  background:
+    radial-gradient(2.5px 2.5px at 14% 28%, rgba(255,244,214,.9), transparent 60%),
+    radial-gradient(2px 2px at 33% 74%, rgba(255,244,214,.7), transparent 60%),
+    radial-gradient(3px 3px at 68% 22%, rgba(255,244,214,.85), transparent 60%),
+    radial-gradient(2px 2px at 88% 66%, rgba(255,244,214,.7), transparent 60%);
+  animation: glint 3.4s ease-in-out infinite alternate; }
+@keyframes glint { from { opacity: .3 } to { opacity: 1 } }
+@media (max-width: 700px) { .note { grid-template-columns: 1fr; } }
+.note h3 { margin: 0 0 8px; font-size: 1.15rem; color: var(--paper); }
+.note p { margin: 0; line-height: 1.6; color: var(--muted); font-size: .98rem; max-width: 62ch; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
 </style>
 </head>
 <body>
@@ -400,324 +381,161 @@ h1 { font-size: clamp(1.7rem, 4.1vw, 2.7rem); line-height: 1.12; }
   </div>
 </nav>
 
+<header class="hero">
+  <div class="hero-art" role="img" aria-label="A voxel woodland trail from a tent, over a bridge, up to a lookout tower"></div>
+  <div class="hero-inner">
+    <div class="eyebrow">Forbes English &middot; Grammar, block by block</div>
+    <h1 class="mono">BLOCK <em>CAMP</em></h1>
+    <p class="lede"><strong>Every lesson here is set in a blocky, voxel-built world.</strong> One trail up through the eight tenses, the same trail back down in the passive, three branching adventures with a grammar point built into the plot &mdash; and every illustrated reference in one place.</p>
+    <div class="cta-row">
+      <a class="btn btn-gold" href="block-camp-map.html">Open the route map <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      <a class="btn btn-glass" href="#climb">Start at camp 1</a>
+    </div>
+  </div>
+</header>
+
+<nav class="tally" aria-label="What is here">
+  <a href="#climb" style="--c:#7A93B5"><span class="n mono">16</span><span class="l">Units</span><span class="s">the climb &middot; eight tenses, two parts each</span></a>
+  <a href="#descent" style="--c:#E66085"><span class="n mono">8</span><span class="l">Stations</span><span class="s">the descent &middot; every camp in the passive</span></a>
+  <a href="#adventures" style="--c:#F0723F"><span class="n mono">3</span><span class="l">Adventures</span><span class="s">branching RPGs &middot; multiple endings</span></a>
+  <a href="#references" style="--c:#46B0AB"><span class="n mono">8</span><span class="l">References</span><span class="s">illustrated &middot; 41 scenes each</span></a>
+</nav>
+
 <div class="wrap">
 
-  <div class="hero">
-    <div>
-      <div class="eyebrow">Block Camp · Grammar, Block by Block</div>
-      <h1>BLOCK <em>CAMP</em></h1>
-      <p class="lede"><strong>Every lesson here is set in a blocky, voxel-built world.</strong> Branching RPG adventures with real choices and a grammar point built into the plot, plus a full run of Minecraft-themed grammar lessons and illustrated references — one place for all of it.</p>
-      <p class="gt-note"><strong>Twenty-four grammar lessons and two adventures.</strong> Sixteen units up through the tenses, and eight more back down through the passive. Plus two branching RPGs, eight illustrated references covering every major tense, and eight more Minecraft grammar lessons from A2 to C1.</p>
-    </div>
-    <a class="route-hero" href="block-camp-map.html">
-      <span class="rh-icon" aria-hidden="true">&#9968;</span>
-      <span class="rh-title">The Route Map</span>
-      <span class="rh-sub">One trail, eight tenses &mdash; up through the camps, then back down in the passive</span>
-      <span class="rh-go">Open the map &rarr;</span>
-    </a>
-  </div>
-
-
-  <!-- The route map and the sixteen lessons. Both were live and unreachable:
-       nothing on the site linked to either, so the only way in was to type the
-       URL. A page nobody can navigate to is not published. -->
-  <section class="track">
+  <section class="track" id="climb">
     <div class="track-head">
-      <h2>Block Camp I &mdash; the climb</h2>
-      <span class="track-note">sixteen units &middot; two per tense &middot; active voice &middot; Part 1 free on units 1&ndash;3</span>
+      <h2 class="mono"><span class="k">I.</span> The climb</h2>
+      <span class="track-note">sixteen units &middot; two per tense &middot; active voice &middot; Part 1 free on camps 1&ndash;3</span>
     </div>
-    <ul class="mini-grid">
-
-      <li><a class="mini-card" href="blockcamp-present-simple.html">
-        <div class="mini-thumb"><img src="BlockCamp/present-simple-1a.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">1. Present Simple &mdash; Part 1</h3><div class="tags"><span class="tag">A1</span><span class="tag">Free</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="blockcamp-present-simple-2.html">
-        <div class="mini-thumb"><img src="BlockCamp/present-simple-1b.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">1. Present Simple &mdash; Part 2</h3><div class="tags"><span class="tag">A2</span><span class="tag">Pro</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="blockcamp-present-continuous.html">
-        <div class="mini-thumb"><img src="BlockCamp/present-continuous-1a.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">2. Present Continuous &mdash; Part 1</h3><div class="tags"><span class="tag">A1</span><span class="tag">Free</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="blockcamp-present-continuous-2.html">
-        <div class="mini-thumb"><img src="BlockCamp/present-continuous-1b.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">2. Present Continuous &mdash; Part 2</h3><div class="tags"><span class="tag">A2</span><span class="tag">Pro</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="blockcamp-past-simple.html">
-        <div class="mini-thumb"><img src="BlockCamp/past-simple-1a.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">3. Past Simple &mdash; Part 1</h3><div class="tags"><span class="tag">A1</span><span class="tag">Free</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="blockcamp-past-simple-2.html">
-        <div class="mini-thumb"><img src="BlockCamp/past-simple-1b.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">3. Past Simple &mdash; Part 2</h3><div class="tags"><span class="tag">A2</span><span class="tag">Pro</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="blockcamp-past-continuous.html">
-        <div class="mini-thumb"><img src="BlockCamp/past-continuous-1a.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">4. Past Continuous &mdash; Part 1</h3><div class="tags"><span class="tag">A1</span><span class="tag">Pro</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="blockcamp-past-continuous-2.html">
-        <div class="mini-thumb"><img src="BlockCamp/past-continuous-1b.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">4. Past Continuous &mdash; Part 2</h3><div class="tags"><span class="tag">A2</span><span class="tag">Pro</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="blockcamp-going-to.html">
-        <div class="mini-thumb"><img src="BlockCamp/going-to-1a.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">5. Going To &mdash; Part 1</h3><div class="tags"><span class="tag">A1</span><span class="tag">Pro</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="blockcamp-going-to-2.html">
-        <div class="mini-thumb"><img src="BlockCamp/going-to-1b.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">5. Going To &mdash; Part 2</h3><div class="tags"><span class="tag">A2</span><span class="tag">Pro</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="blockcamp-future-simple.html">
-        <div class="mini-thumb"><img src="BlockCamp/future-simple-1a.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">6. Future Simple &mdash; Part 1</h3><div class="tags"><span class="tag">A2</span><span class="tag">Pro</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="blockcamp-future-simple-2.html">
-        <div class="mini-thumb"><img src="BlockCamp/future-simple-1b.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">6. Future Simple &mdash; Part 2</h3><div class="tags"><span class="tag">B1</span><span class="tag">Pro</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="blockcamp-present-perfect.html">
-        <div class="mini-thumb"><img src="BlockCamp/present-perfect-1a.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">7. Present Perfect &mdash; Part 1</h3><div class="tags"><span class="tag">A2</span><span class="tag">Pro</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="blockcamp-present-perfect-2.html">
-        <div class="mini-thumb"><img src="BlockCamp/present-perfect-1b.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">7. Present Perfect &mdash; Part 2</h3><div class="tags"><span class="tag">B1</span><span class="tag">Pro</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="blockcamp-present-perfect-continuous.html">
-        <div class="mini-thumb"><img src="BlockCamp/present-perfect-continuous-1a.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">8. Present Perfect Continuous &mdash; Part 1</h3><div class="tags"><span class="tag">B1</span><span class="tag">Pro</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="blockcamp-present-perfect-continuous-2.html">
-        <div class="mini-thumb"><img src="BlockCamp/present-perfect-continuous-1b.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">8. Present Perfect Continuous &mdash; Part 2</h3><div class="tags"><span class="tag">B1</span><span class="tag">Pro</span></div></div>
-      </a></li>
-
+    <div class="track-rule"></div>
+    <a class="map-strip" href="block-camp-map.html">
+      <span class="art" style="background-image:url(BlockCamp/hub-hero.jpg);background-position:center 70%"></span>
+      <span><span class="ms-title mono">The Route Map</span><span class="ms-sub">One trail, eight camps &mdash; hover a stop to see the camp, click to open Part 1. Or play the day and watch the whole climb.</span></span>
+      <span class="ms-go">Open the map &rarr;</span>
+    </a>
+    <ul class="grid">
+<li><a class="card" style="--c:#7A93B5;--ci:#0b1a12" href="blockcamp-present-simple.html"><span class="thumb"><img src="BlockCamp/present-simple-1a.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="num" aria-hidden="true">1</span><span class="card-title">Present Simple</span></span><span class="card-sub">Part 1</span><span class="chips"><span class="chip">A1</span><span class="chip chip-free">Free</span></span></span></a></li>
+<li><a class="card" style="--c:#7A93B5;--ci:#0b1a12" href="blockcamp-present-simple-2.html"><span class="thumb"><img src="BlockCamp/present-simple-1b.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="num" aria-hidden="true">1</span><span class="card-title">Present Simple</span></span><span class="card-sub">Part 2</span><span class="chips"><span class="chip">A2</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
+<li><a class="card" style="--c:#E66085;--ci:#0b1a12" href="blockcamp-present-continuous.html"><span class="thumb"><img src="BlockCamp/present-continuous-1a.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="num" aria-hidden="true">2</span><span class="card-title">Present Continuous</span></span><span class="card-sub">Part 1</span><span class="chips"><span class="chip">A1</span><span class="chip chip-free">Free</span></span></span></a></li>
+<li><a class="card" style="--c:#E66085;--ci:#0b1a12" href="blockcamp-present-continuous-2.html"><span class="thumb"><img src="BlockCamp/present-continuous-1b.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="num" aria-hidden="true">2</span><span class="card-title">Present Continuous</span></span><span class="card-sub">Part 2</span><span class="chips"><span class="chip">A2</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
+<li><a class="card" style="--c:#B08968;--ci:#0b1a12" href="blockcamp-past-simple.html"><span class="thumb"><img src="BlockCamp/past-simple-1a.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="num" aria-hidden="true">3</span><span class="card-title">Past Simple</span></span><span class="card-sub">Part 1</span><span class="chips"><span class="chip">A1</span><span class="chip chip-free">Free</span></span></span></a></li>
+<li><a class="card" style="--c:#B08968;--ci:#0b1a12" href="blockcamp-past-simple-2.html"><span class="thumb"><img src="BlockCamp/past-simple-1b.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="num" aria-hidden="true">3</span><span class="card-title">Past Simple</span></span><span class="card-sub">Part 2</span><span class="chips"><span class="chip">A2</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
+<li><a class="card" style="--c:#F1D779;--ci:#0b1a12" href="blockcamp-past-continuous.html"><span class="thumb"><img src="BlockCamp/past-continuous-1a.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="num" aria-hidden="true">4</span><span class="card-title">Past Continuous</span></span><span class="card-sub">Part 1</span><span class="chips"><span class="chip">A1</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
+<li><a class="card" style="--c:#F1D779;--ci:#0b1a12" href="blockcamp-past-continuous-2.html"><span class="thumb"><img src="BlockCamp/past-continuous-1b.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="num" aria-hidden="true">4</span><span class="card-title">Past Continuous</span></span><span class="card-sub">Part 2</span><span class="chips"><span class="chip">A2</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
+<li><a class="card" style="--c:#70A43A;--ci:#0b1a12" href="blockcamp-going-to.html"><span class="thumb"><img src="BlockCamp/going-to-1a.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="num" aria-hidden="true">5</span><span class="card-title">Going To</span></span><span class="card-sub">Part 1</span><span class="chips"><span class="chip">A1</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
+<li><a class="card" style="--c:#70A43A;--ci:#0b1a12" href="blockcamp-going-to-2.html"><span class="thumb"><img src="BlockCamp/going-to-1b.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="num" aria-hidden="true">5</span><span class="card-title">Going To</span></span><span class="card-sub">Part 2</span><span class="chips"><span class="chip">A2</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
+<li><a class="card" style="--c:#F0723F;--ci:#0b1a12" href="blockcamp-future-simple.html"><span class="thumb"><img src="BlockCamp/future-simple-1a.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="num" aria-hidden="true">6</span><span class="card-title">Future Simple</span></span><span class="card-sub">Part 1</span><span class="chips"><span class="chip">A2</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
+<li><a class="card" style="--c:#F0723F;--ci:#0b1a12" href="blockcamp-future-simple-2.html"><span class="thumb"><img src="BlockCamp/future-simple-1b.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="num" aria-hidden="true">6</span><span class="card-title">Future Simple</span></span><span class="card-sub">Part 2</span><span class="chips"><span class="chip">B1</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
+<li><a class="card" style="--c:#2E7D65;--ci:#f2f7f3" href="blockcamp-present-perfect.html"><span class="thumb"><img src="BlockCamp/present-perfect-1a.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="num" aria-hidden="true">7</span><span class="card-title">Present Perfect</span></span><span class="card-sub">Part 1</span><span class="chips"><span class="chip">A2</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
+<li><a class="card" style="--c:#2E7D65;--ci:#f2f7f3" href="blockcamp-present-perfect-2.html"><span class="thumb"><img src="BlockCamp/present-perfect-1b.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="num" aria-hidden="true">7</span><span class="card-title">Present Perfect</span></span><span class="card-sub">Part 2</span><span class="chips"><span class="chip">B1</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
+<li><a class="card" style="--c:#46B0AB;--ci:#0b1a12" href="blockcamp-present-perfect-continuous.html"><span class="thumb"><img src="BlockCamp/present-perfect-continuous-1a.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="num" aria-hidden="true">8</span><span class="card-title">Present Perfect Continuous</span></span><span class="card-sub">Part 1</span><span class="chips"><span class="chip">B1</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
+<li><a class="card" style="--c:#46B0AB;--ci:#0b1a12" href="blockcamp-present-perfect-continuous-2.html"><span class="thumb"><img src="BlockCamp/present-perfect-continuous-1b.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="num" aria-hidden="true">8</span><span class="card-title">Present Perfect Continuous</span></span><span class="card-sub">Part 2</span><span class="chips"><span class="chip">B1</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
     </ul>
   </section>
 
-  <section class="track">
-    <a class="route-banner" href="block-camp-descent-map.html" style="margin-bottom:22px">
-      <span class="rb-icon" aria-hidden="true">&#9968;</span>
-      <span class="rb-copy">
-        <span class="rb-title">The Descent Route</span>
-        <span class="rb-sub">The far side of the watchtower &mdash; eight stations back down in the passive</span>
-      </span>
-      <span class="rb-go">Open &rarr;</span>
-    </a>
+  <section class="track" id="descent">
     <div class="track-head">
-      <h2>Block Camp II &mdash; the descent</h2>
-      <span class="track-note">eight stations &middot; the same eight camps in the passive &middot; station 9 free</span>
+      <h2 class="mono"><span class="k">II.</span> The descent</h2>
+      <span class="track-note">eight stations &middot; the same camps in the passive &middot; station 9 free</span>
     </div>
+    <div class="track-rule"></div>
     <p class="track-blurb">Coming back down, you meet every camp again with the doer taken out of the
       sentence. Each station wears its camp&rsquo;s colour and re-uses its scenery, so passing
       camp 3 on the way down looks like camp 3. The Trial at the end takes the labels off.</p>
-    <ul class="mini-grid">
-
-      <li><a class="mini-card" href="blockcamp-passive-present-simple.html">
-        <div class="mini-thumb"><img src="BlockCamp/passive-9-present-simple.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">9. Present Simple Passive</h3><div class="tags"><span class="tag">A2</span><span class="tag">Free</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="blockcamp-passive-present-continuous.html">
-        <div class="mini-thumb"><img src="BlockCamp/passive-10-present-continuous.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">10. Present Continuous Passive</h3><div class="tags"><span class="tag">A2</span><span class="tag">Pro</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="blockcamp-passive-past-simple.html">
-        <div class="mini-thumb"><img src="BlockCamp/passive-11-past-simple.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">11. Past Simple Passive</h3><div class="tags"><span class="tag">A2</span><span class="tag">Pro</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="blockcamp-passive-past-continuous.html">
-        <div class="mini-thumb"><img src="BlockCamp/passive-12-past-continuous.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">12. Past Continuous Passive</h3><div class="tags"><span class="tag">B1</span><span class="tag">Pro</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="blockcamp-passive-going-to.html">
-        <div class="mini-thumb"><img src="BlockCamp/passive-13-going-to.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">13. Going To Passive</h3><div class="tags"><span class="tag">B1</span><span class="tag">Pro</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="blockcamp-passive-future-simple.html">
-        <div class="mini-thumb"><img src="BlockCamp/passive-14-future-simple.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">14. Future Simple Passive</h3><div class="tags"><span class="tag">B1</span><span class="tag">Pro</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="blockcamp-passive-present-perfect.html">
-        <div class="mini-thumb"><img src="BlockCamp/passive-15-present-perfect.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">15. Present Perfect Passive</h3><div class="tags"><span class="tag">B1</span><span class="tag">Pro</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="blockcamp-passive-trial.html">
-        <div class="mini-thumb"><img src="BlockCamp/passive-16-trial.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">16. The Trial</h3><div class="tags"><span class="tag">B1</span><span class="tag">Pro</span></div></div>
-      </a></li>
-
+    <a class="map-strip" href="block-camp-descent-map.html">
+      <span class="art" style="background-image:url(BlockCampDescent/watchtower-far-side.jpg);background-position:center 55%"></span>
+      <span><span class="ms-title mono">The Descent Route</span><span class="ms-sub">The far side of the watchtower &mdash; eight stations back down to the valley.</span></span>
+      <span class="ms-go">Open the map &rarr;</span>
+    </a>
+    <ul class="grid">
+<li><a class="card" style="--c:#7A93B5;--ci:#0b1a12" href="blockcamp-passive-present-simple.html"><span class="thumb"><img src="BlockCamp/passive-9-present-simple.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="num" aria-hidden="true">9</span><span class="card-title">Present Simple Passive</span></span><span class="card-sub">Station 9</span><span class="chips"><span class="chip">A2</span><span class="chip chip-free">Free</span></span></span></a></li>
+<li><a class="card" style="--c:#E66085;--ci:#0b1a12" href="blockcamp-passive-present-continuous.html"><span class="thumb"><img src="BlockCamp/passive-10-present-continuous.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="num" aria-hidden="true">10</span><span class="card-title">Present Continuous Passive</span></span><span class="card-sub">Station 10</span><span class="chips"><span class="chip">A2</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
+<li><a class="card" style="--c:#B08968;--ci:#0b1a12" href="blockcamp-passive-past-simple.html"><span class="thumb"><img src="BlockCamp/passive-11-past-simple.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="num" aria-hidden="true">11</span><span class="card-title">Past Simple Passive</span></span><span class="card-sub">Station 11</span><span class="chips"><span class="chip">A2</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
+<li><a class="card" style="--c:#F1D779;--ci:#0b1a12" href="blockcamp-passive-past-continuous.html"><span class="thumb"><img src="BlockCamp/passive-12-past-continuous.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="num" aria-hidden="true">12</span><span class="card-title">Past Continuous Passive</span></span><span class="card-sub">Station 12</span><span class="chips"><span class="chip">B1</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
+<li><a class="card" style="--c:#70A43A;--ci:#0b1a12" href="blockcamp-passive-going-to.html"><span class="thumb"><img src="BlockCamp/passive-13-going-to.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="num" aria-hidden="true">13</span><span class="card-title">Going To Passive</span></span><span class="card-sub">Station 13</span><span class="chips"><span class="chip">B1</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
+<li><a class="card" style="--c:#F0723F;--ci:#0b1a12" href="blockcamp-passive-future-simple.html"><span class="thumb"><img src="BlockCamp/passive-14-future-simple.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="num" aria-hidden="true">14</span><span class="card-title">Future Simple Passive</span></span><span class="card-sub">Station 14</span><span class="chips"><span class="chip">B1</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
+<li><a class="card" style="--c:#2E7D65;--ci:#f2f7f3" href="blockcamp-passive-present-perfect.html"><span class="thumb"><img src="BlockCamp/passive-15-present-perfect.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="num" aria-hidden="true">15</span><span class="card-title">Present Perfect Passive</span></span><span class="card-sub">Station 15</span><span class="chips"><span class="chip">B1</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
+<li><a class="card" style="--c:#e8c04a;--ci:#0b1a12" href="blockcamp-passive-trial.html"><span class="thumb"><img src="BlockCamp/passive-16-trial.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="num" aria-hidden="true">16</span><span class="card-title">The Trial</span></span><span class="card-sub">Station 16 &middot; every tense, no labels</span><span class="chips"><span class="chip">B1</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
     </ul>
   </section>
 
-  <section class="track">
+  <section class="track" id="adventures">
     <div class="track-head">
-      <h2>Adventures</h2>
-      <span class="track-note">click-through · branching story · multiple endings</span>
+      <h2 class="mono"><span class="k">III.</span> Adventures</h2>
+      <span class="track-note">click-through &middot; branching story &middot; multiple endings</span>
     </div>
-    <div class="steps">
-
-      <a class="step" href="block-camp/last-train-home-rpg.html">
-        <div class="step-thumb"><img src="block-camp/last-train-home-rpg/01_cover.webp" alt=""></div>
-        <div>
-          <h3 class="step-title">The Last Train Home</h3>
-          <p class="step-desc">A cyberpunk megacity, a curfew closing in, and one train left before the checkpoints seal the district. Every route out is a prediction about what will happen next.</p>
-          <div class="tags"><span class="tag tag-start">Start here</span><span class="tag">Future Simple</span><span class="tag">A1&ndash;A2</span><span class="tag">RPG</span><span class="tag">Pro</span></div>
-        </div>
-        <div class="step-go">Open &rarr;</div>
-      </a>
-
-      <a class="step" href="block-camp/dracula-castle-of-if.html">
-        <div class="step-thumb"><img src="block-camp/dracula-castle-of-if/01_cover.webp" alt=""></div>
-        <div>
-          <h3 class="step-title">Dracula: The Castle of If</h3>
-          <p class="step-desc">Bram Stoker's castle, reimagined as a branching grammar nightmare &mdash; every escape route runs on a conditional, and every guard's report comes back in the passive voice.</p>
-          <div class="tags"><span class="tag tag-new">New</span><span class="tag">Conditionals</span><span class="tag">Passive Voice</span><span class="tag">B2</span><span class="tag">RPG</span><span class="tag">Pro</span></div>
-        </div>
-        <div class="step-go">Open &rarr;</div>
-      </a>
-
-      <a class="step" href="block-camp/long-way-home-rpg.html">
-        <div class="step-thumb"><img src="block-camp/long-way-home-rpg/00_cover.webp" alt=""></div>
-        <div>
-          <h3 class="step-title">The Long Way Home</h3>
-          <p class="step-desc">Homer&rsquo;s Odyssey rebuilt block by block. Thirty-six scenes of storm and monster where the tense you choose decides what happened first &mdash; and losing the thread costs you the crew.</p>
-          <div class="tags"><span class="tag">Narrative Tenses</span><span class="tag">B1</span><span class="tag">RPG</span><span class="tag">Pro</span></div>
-        </div>
-        <div class="step-go">Open &rarr;</div>
-      </a>
-
-    </div>
-  </section>
-
-  <section class="track">
-    <div class="track-head">
-      <h2>Grammar References</h2>
-      <span class="track-note">eight tenses · use, form, questions and signals · 41 illustrated scenes each</span>
-    </div>
-    <ul class="mini-grid">
-
-      <li><a class="mini-card" href="present-simple-time-signals.html">
-        <div class="mini-thumb"><img src="present-simple-time-signals/bg01.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">Present Simple</h3><div class="tags"><span class="tag">A1</span><span class="tag">Pro</span></div></div>
+    <div class="track-rule"></div>
+    <ul class="adv">
+      <li><a class="card" href="block-camp/last-train-home-rpg.html">
+        <span class="thumb"><img src="block-camp/last-train-home-rpg/01_cover.webp" alt="" loading="lazy"></span>
+        <span class="body">
+          <span class="card-title">The Last Train Home</span>
+          <span class="desc">A cyberpunk megacity, a curfew closing in, and one train left before the checkpoints seal the district. Every route out is a prediction about what will happen next.</span>
+          <span class="chips"><span class="chip chip-start">Start here</span><span class="chip">Future Simple</span><span class="chip">A1&ndash;A2</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span>
+        </span>
       </a></li>
-
-      <li><a class="mini-card" href="present-continuous-time-signals.html">
-        <div class="mini-thumb"><img src="present-continuous-time-signals/bg01.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">Present Continuous</h3><div class="tags"><span class="tag">A1</span><span class="tag">Pro</span></div></div>
+      <li><a class="card" href="block-camp/dracula-castle-of-if.html">
+        <span class="thumb"><img src="block-camp/dracula-castle-of-if/01_cover.webp" alt="" loading="lazy"></span>
+        <span class="body">
+          <span class="card-title">Dracula: The Castle of If</span>
+          <span class="desc">Bram Stoker&rsquo;s castle, reimagined as a branching grammar nightmare &mdash; every escape route runs on a conditional, and every guard&rsquo;s report comes back in the passive voice.</span>
+          <span class="chips"><span class="chip chip-new">New</span><span class="chip">Conditionals</span><span class="chip">Passive</span><span class="chip">B2</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span>
+        </span>
       </a></li>
-
-      <li><a class="mini-card" href="past-simple-time-signals.html">
-        <div class="mini-thumb"><img src="past-simple-time-signals/bg01.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">Past Simple</h3><div class="tags"><span class="tag">A1</span><span class="tag">Pro</span></div></div>
+      <li><a class="card" href="block-camp/long-way-home-rpg.html">
+        <span class="thumb"><img src="block-camp/long-way-home-rpg/00_cover.webp" alt="" loading="lazy"></span>
+        <span class="body">
+          <span class="card-title">The Long Way Home</span>
+          <span class="desc">Homer&rsquo;s Odyssey rebuilt block by block. Thirty-six scenes of storm and monster where the tense you choose decides what happened first &mdash; and losing the thread costs you the crew.</span>
+          <span class="chips"><span class="chip chip-new">New</span><span class="chip">Narrative Tenses</span><span class="chip">B1</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span>
+        </span>
       </a></li>
-
-      <li><a class="mini-card" href="going-to-infinitive.html">
-        <div class="mini-thumb"><img src="going-to-infinitive/bg01.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">Going To</h3><div class="tags"><span class="tag">A1</span><span class="tag">Pro</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="future-simple-will.html">
-        <div class="mini-thumb"><img src="future-simple-will/bg01.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">Future Simple: Will</h3><div class="tags"><span class="tag">A1</span><span class="tag">Pro</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="past-continuous-time-signals.html">
-        <div class="mini-thumb"><img src="past-continuous-time-signals/bg01.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">Past Continuous</h3><div class="tags"><span class="tag">A1</span><span class="tag">Pro</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="present-perfect-time-signals.html">
-        <div class="mini-thumb"><img src="present-perfect-time-signals/bg07.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">Present Perfect</h3><div class="tags"><span class="tag">A1</span><span class="tag">Free</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="present-perfect-continuous-time-signals.html">
-        <div class="mini-thumb"><img src="present-perfect-continuous-time-signals/bg01.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">Present Perfect Continuous</h3><div class="tags"><span class="tag">A1</span><span class="tag">Pro</span></div></div>
-      </a></li>
-
     </ul>
   </section>
 
-  <section class="track">
+  <section class="track" id="references">
     <div class="track-head">
-      <h2>More Minecraft Lessons</h2>
+      <h2 class="mono"><span class="k">IV.</span> Grammar References</h2>
+      <span class="track-note">eight tenses &middot; use, form, questions and signals &middot; 41 illustrated scenes each</span>
+    </div>
+    <div class="track-rule"></div>
+    <ul class="grid">
+<li><a class="card" style="--c:#7A93B5;--ci:#0b1a12" href="present-simple-time-signals.html"><span class="thumb"><img src="present-simple-time-signals/bg01.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="card-title">Present Simple</span></span><span class="chips"><span class="chip">A1</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
+<li><a class="card" style="--c:#E66085;--ci:#0b1a12" href="present-continuous-time-signals.html"><span class="thumb"><img src="present-continuous-time-signals/bg01.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="card-title">Present Continuous</span></span><span class="chips"><span class="chip">A1</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
+<li><a class="card" style="--c:#B08968;--ci:#0b1a12" href="past-simple-time-signals.html"><span class="thumb"><img src="past-simple-time-signals/bg01.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="card-title">Past Simple</span></span><span class="chips"><span class="chip">A1</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
+<li><a class="card" style="--c:#F1D779;--ci:#0b1a12" href="past-continuous-time-signals.html"><span class="thumb"><img src="past-continuous-time-signals/bg01.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="card-title">Past Continuous</span></span><span class="chips"><span class="chip">A1</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
+<li><a class="card" style="--c:#70A43A;--ci:#0b1a12" href="going-to-infinitive.html"><span class="thumb"><img src="going-to-infinitive/bg01.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="card-title">Going To</span></span><span class="chips"><span class="chip">A1</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
+<li><a class="card" style="--c:#F0723F;--ci:#0b1a12" href="future-simple-will.html"><span class="thumb"><img src="future-simple-will/bg01.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="card-title">Future Simple: Will</span></span><span class="chips"><span class="chip">A1</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
+<li><a class="card" style="--c:#2E7D65;--ci:#f2f7f3" href="present-perfect-time-signals.html"><span class="thumb"><img src="present-perfect-time-signals/bg07.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="card-title">Present Perfect</span></span><span class="chips"><span class="chip">A1</span><span class="chip chip-free">Free</span></span></span></a></li>
+<li><a class="card" style="--c:#46B0AB;--ci:#0b1a12" href="present-perfect-continuous-time-signals.html"><span class="thumb"><img src="present-perfect-continuous-time-signals/bg01.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="card-title">Present Perfect Continuous</span></span><span class="chips"><span class="chip">A1</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
+    </ul>
+  </section>
+
+  <section class="track" id="more">
+    <div class="track-head">
+      <h2 class="mono"><span class="k">V.</span> More Minecraft Lessons</h2>
       <span class="track-note">standalone grammar lessons, A2&ndash;C1</span>
     </div>
-    <ul class="mini-grid">
-
-      <li><a class="mini-card" href="minecraft-lesson.html">
-        <div class="mini-thumb"><img src="minecraft/giant-golem-moonrise.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">Must &amp; Have To</h3><div class="tags"><span class="tag">A2</span><span class="tag">Pro</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="forbes-english-minecraft-b1.html">
-        <div class="mini-thumb"><img src="minecraft/pig-creeper-building-hero.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">Minecraft B1 Lesson</h3><div class="tags"><span class="tag">B1</span><span class="tag">Pro</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="forbes-english-minecraft-editorial.html">
-        <div class="mini-thumb"><img src="minecraft/enderman-desert-landscape.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">Minecraft Trivia</h3><div class="tags"><span class="tag">B1</span><span class="tag">Pro</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="forbes-english-past-modals-minecraft.html">
-        <div class="mini-thumb"><img src="minecraft/minecraft-underwater-temple.png" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">Past Modals</h3><div class="tags"><span class="tag">B2</span><span class="tag">Pro</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="tense-review-minecraft.html">
-        <div class="mini-thumb"><img src="minecraft/creeper-hillside-dusk.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">Tense Review</h3><div class="tags"><span class="tag">B2</span><span class="tag">Pro</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="forbes-english-dinosaur-minecraft.html">
-        <div class="mini-thumb"><img src="minecraft/dc1-hero.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">Dino-Craft Part I</h3><div class="tags"><span class="tag">C1</span><span class="tag">Pro</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="forbes-english-dinosaur-minecraft-part2.html">
-        <div class="mini-thumb"><img src="minecraft/dc2-hero.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">Dino-Craft Part II</h3><div class="tags"><span class="tag">C1</span><span class="tag">Pro</span></div></div>
-      </a></li>
-
-      <li><a class="mini-card" href="forbes-english-minecraft-c1.html">
-        <div class="mini-thumb"><img src="minecraft/minecraft-landscape-thumb.jpg" alt=""></div>
-        <div class="mini-body"><h3 class="mini-title">Minecraft C1 Lesson</h3><div class="tags"><span class="tag">C1</span><span class="tag">Pro</span></div></div>
-      </a></li>
-
+    <div class="track-rule"></div>
+    <ul class="grid">
+<li><a class="card" href="minecraft-lesson.html"><span class="thumb"><img src="minecraft/giant-golem-moonrise.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="card-title">Must &amp; Have To</span></span><span class="chips"><span class="chip">A2</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
+<li><a class="card" href="forbes-english-minecraft-b1.html"><span class="thumb"><img src="minecraft/pig-creeper-building-hero.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="card-title">Minecraft B1 Lesson</span></span><span class="chips"><span class="chip">B1</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
+<li><a class="card" href="forbes-english-minecraft-editorial.html"><span class="thumb"><img src="minecraft/enderman-desert-landscape.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="card-title">Minecraft Trivia</span></span><span class="chips"><span class="chip">B1</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
+<li><a class="card" href="forbes-english-past-modals-minecraft.html"><span class="thumb"><img src="minecraft/minecraft-underwater-temple.png" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="card-title">Past Modals</span></span><span class="chips"><span class="chip">B2</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
+<li><a class="card" href="tense-review-minecraft.html"><span class="thumb"><img src="minecraft/creeper-hillside-dusk.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="card-title">Tense Review</span></span><span class="chips"><span class="chip">B2</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
+<li><a class="card" href="forbes-english-dinosaur-minecraft.html"><span class="thumb"><img src="minecraft/dc1-hero.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="card-title">Dino-Craft Part I</span></span><span class="chips"><span class="chip">C1</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
+<li><a class="card" href="forbes-english-dinosaur-minecraft-part2.html"><span class="thumb"><img src="minecraft/dc2-hero.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="card-title">Dino-Craft Part II</span></span><span class="chips"><span class="chip">C1</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
+<li><a class="card" href="forbes-english-minecraft-c1.html"><span class="thumb"><img src="minecraft/minecraft-landscape-thumb.jpg" alt="" loading="lazy"></span><span class="body"><span class="row"><span class="card-title">Minecraft C1 Lesson</span></span><span class="chips"><span class="chip">C1</span><span class="chip chip-pro"><svg viewBox="0 0 10 12" aria-hidden="true"><path d="M2 5V3.5a3 3 0 0 1 6 0V5h1v7H1V5h1zm1.4 0h3.2V3.5a1.6 1.6 0 0 0-3.2 0V5z"/></svg>Pro</span></span></span></a></li>
     </ul>
   </section>
 
   <div class="note">
     <div>
-      <h3>Browse everything</h3>
-      <p>All sixteen Minecraft lessons and both RPG adventures, alongside the rest of the library.</p>
+      <h3 class="mono">Browse everything</h3>
+      <p>All twenty-four Block Camp units, the three adventures and every reference, alongside the rest of the library.</p>
     </div>
-    <a href="library.html">All lessons &rarr;</a>
+    <a class="btn btn-gold" href="library.html">All lessons &rarr;</a>
   </div>
 
 </div>
