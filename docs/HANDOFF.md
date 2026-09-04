@@ -117,39 +117,44 @@ Every one of these turned up in more than one lesson tonight.
 - **Gap-fills compared with `===`.** `'ve finished` marked wrong on a B1
   lesson. Pipe-separate every reasonable contraction and spelling.
 
-### The artwork ran out, and that is the thing to fix first
+### The artwork shortage, resolved
 
-**There is no unused Minecraft artwork left.** Every flat-vector illustration
-in `minecraft/` is now the hero or a background of Past Modals, Tense Review,
-Minecraft B1 or Minecraft C1. What that forced:
+**Fixed on 2026-09-04.** The shortage was in `minecraft/`, which is exhausted
+— every flat-vector illustration there is the hero or a background of Past
+Modals, Tense Review, Minecraft B1 or Minecraft C1. But Innes's Downloads
+holds a large set of the same flat-vector family under names that do not say
+"minecraft" first: the `*_award_winning_beautiful_minimalist_*`,
+`*_Cube_pixel_art_minimalist_vector_*` and `*_Noma_Bar_style_*` batches. Search
+Downloads by *style* words, not by subject, and there is plenty left.
 
-- **Minecraft B1** uses the three rendered in-game scenes that were on disk
-  and unspoken for (`MinecraftB1/`). They suit the subject but three
-  backgrounds over twenty slides is thin.
-- **Minecraft C1** uses three voxel studies from Innes's Downloads
-  (`MinecraftC1/`) — an Odysseus figure, a warrior, a group of creatures,
-  all photographed with a shallow depth of field. They read as objects made
-  of blocks rather than as screenshots, which suits a lesson about Minecraft
-  as something a scholar writes about. Also three.
-- **Minecraft Trivia** has no folder of its own at all: it points at
-  `MinecraftB1/` and rotates its accent to pink so the two do not read as
-  one deck.
+What that gave the two decks that were on stopgaps:
+
+- **`MinecraftB1/`** is now `hero.jpg` (a blocky figure and a bicycle under a
+  wide pastel sky), `reef.jpg` (underwater, turtle, a block dissolving) and
+  `grove.jpg` (a tall blue mob in coral scrub). The palette is
+  `extract-palette.py --light --accent-hue=340 --accent-sat=0.65`. The accent
+  is rotated because the honest derivation of that hero returns Tense Review's
+  warm sand almost exactly, and two decks cannot share a palette and still
+  read as two decks. The three rendered in-game scenes it used to carry
+  (`temple.jpg`, `rex.jpg`) are retired.
+- **`MinecraftEd/`** exists for the first time: `hero.jpg` (a blocky figure
+  over a moonlit city), `ridge.jpg` (a dusk ridge, figures walking under
+  poplars), `dusk.jpg` (a lone figure on a rise at sunset). Dark, cool,
+  derived unrotated. The Trivia deck no longer borrows B1's folder.
+- **Minecraft C1** is unchanged — three voxel studies in `MinecraftC1/`, accent
+  rotated to teal.
+
+**Still to clean up:** `MinecraftB1/temple.jpg` and `MinecraftB1/rex.jpg` are
+deleted locally but still on `origin/main`. The GitHub web uploader cannot
+delete, so they need a `git rm` from a session that can push, or deleting
+through the GitHub UI. Nothing references them.
 
 **Do not use the three Twin Peaks images in `minecraft/`.** They are a
 recognisable homage — the Red Room, identifiable characters, and a "Welcome
 to Twin Peaks" sign legible in the corner of the widest one. Cropping the
 sign does not fix what the rest of the frame is, and it is not going on a
-published lesson cover. They were considered and rejected for the Trivia
-deck.
-
-The rest of what is in Downloads under a Minecraft name is a voxel character
-line-up with weapons and blood, which is not for a B1 class.
-
-**The shopping list, four to five per deck, flat vector, 1400px+ landscape:**
-a shelter at dusk with mobs outside; a crafting table or workbench; a mine
-shaft with ore in the wall; a village; a Nether portal; the End. Any four of
-those in the house family replace Minecraft B1's and the Trivia deck's
-backgrounds by editing the filenames in the builder.
+published lesson cover. Likewise the `minecraft_lego_from_another_planet`
+sets: voxel character line-ups with weapons and blood, not for a B1 class.
 
 ### Two decks now share a builder pattern worth copying
 
