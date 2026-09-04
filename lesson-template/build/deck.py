@@ -16,6 +16,22 @@ import html as _html
 import re
 
 
+# UI_I18N keys that reach the page as plain text rather than as HTML —
+# textContent for the first four, a `placeholder` attribute set from JS for
+# the last. An entity in any of them prints literally. It shipped that way on
+# 31 decks: every Block Camp writing box read "Yesterday I&hellip;". The
+# builders are not at fault for writing `&hellip;` — everything else on a
+# slide is HTML — so the fix belongs here, and `check-lesson.js` has an
+# ENTITIES gate that fails the page if it ever comes back.
+TEXT_ONLY_KEYS = ('scoreLabel', 'glossHide', 'glossShow', 'btnCopied',
+                  'actPlaceholder')
+
+
+def as_text(t):
+    """Entities out. For strings that land in text or attribute nodes."""
+    return _html.unescape(t)
+
+
 # ── guards ─────────────────────────────────────────────────────────────
 def assert_no_key_is_longest(mc, label='MC'):
     """mc: list of dicts with 'options' (list) and 'correct' (index)."""
@@ -381,7 +397,8 @@ def activate(title, use_label, chips, speak_kind, speak_brief, speak_items,
     </section>
 ''' % (title, use_label,
        "\n          ".join('<span class="bank-chip">%s</span>' % c for c in chips),
-       speak_kind, speak_brief, lis, write_kind, write_brief, placeholder)
+       speak_kind, speak_brief, lis, write_kind, write_brief,
+       as_text(placeholder))
 
 
 # ── assembly ───────────────────────────────────────────────────────────
@@ -395,8 +412,19 @@ def assemble(tpl_path, out_path, slides, palette, title, i18n_module, langs=('en
                palette, s, count=1, flags=re.S)
     s = s.replace('<title>' + re.search(r'<title>(.*?)</title>', s, re.S).group(1) + '</title>',
                   '<title>%s</title>' % title, 1)
+    def _render(c):
+        r = i18n_module.render(c)
+        # Same reason as TEXT_ONLY_KEYS above: these values are assigned to a
+        # text node or a placeholder attribute, where "&hellip;" is six
+        # characters rather than an ellipsis.
+        for k in TEXT_ONLY_KEYS:
+            r = re.sub(r'(\n\s*%s: )(["\'])(.*?)\2' % k,
+                       lambda m: m.group(1) + m.group(2)
+                                 + as_text(m.group(3)) + m.group(2), r)
+        return r
+
     block = 'const UI_I18N = {\n' + ",\n".join(
-        ['  %s: %s' % (c, i18n_module.render(c)) for c in langs]
+        ['  %s: %s' % (c, _render(c)) for c in langs]
         + ['  %s: {}' % c for c in all_langs if c not in langs]) + '\n};'
     s = re.sub(r'const UI_I18N = \{.*?\n\};', block, s, count=1, flags=re.S)
 
