@@ -105,6 +105,20 @@ Block Camp. Three pages, all in this branch, none pushed — `git push` is
 refused from the sandbox, so they went to him as a bundle
 (`past-perfect-camp.bundle`).
 
+**Applied, merged and pushed** by a later cloud session, same day: the bundle
+merged onto `main` (which by then had the dark hub — see the section above)
+as `1b56f8c`, with the anticipated `block-camp.html` conflict resolved
+exactly as documented (hub side + rebuild). `check-lesson.js`,
+`overflow-langs.js` and `check-colour-roles.py` all pass clean on
+`blockcamp-past-perfect.html` and `blockcamp-passive-past-perfect.html`;
+`check-library.js --vs-origin` passes (the one WARN — card ≠ hero — is
+pre-existing across the whole Block Camp line, not new here); `seo.py
+--check` reported zero rewrites needed, so it was not run for real (same
+stale-cache risk as always in a cloud sandbox). The three Supabase rows
+below were inserted after the push, confirmed present with no prior
+duplicates. Route maps still don't know camp 9 / station 17 (see Open,
+below) — untouched, as that was explicitly out of scope for this bundle.
+
 | page | what | built by |
 |---|---|---|
 | `blockcamp-past-perfect.html` | **9. Past Perfect — Part 1** (B1, 22 slides, 28 pts, EN/DE/ES) | `lesson-template/camp/build_camp.py 9` ← `camp09.py` |
