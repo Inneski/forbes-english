@@ -140,23 +140,24 @@ TPL = 'lesson-template/lesson-template.html'
 OUT = 'harari_davos_c2_lesson_v2.html'
 F = 'Harari'
 
-# Derived: python3 lesson-template/extract-palette.py Harari/hero.jpg
-# Every row PASS. Dark, not light: both variants pass, and the cover is a dark
-# interior looking out at a bright window, so dark matches what the picture is.
-# Dark also carries the stronger set — accent at 11.84:1 against 4.81:1.
+# Derived: python3 lesson-template/extract-palette.py Harari/hero.jpg --light
+# Every row PASS. The deck shipped dark first (both variants pass, and the
+# cover is a dark interior looking out at a bright window). Innes: "brighten
+# it up" — so the paper variant, unedited, as tense-review does. The three
+# slide backgrounds are cream-and-pale-blue and sit far better on it.
 PALETTE = '''  --hero: url('%s/hero.jpg');
 
-  --void          : #0f100a;
-  --surface       : #1d1e13;
-  --surface2      : #2a2b1b;
-  --border        : #b4a292;
-  --text          : #f5f3f2;
-  --text-dim      : #bfb1a3;
-  --accent        : #ead5c2;
-  --accent-bright : #fbb779;
-  --accent-dim    : #cea682;
+  --void          : #d8c0ac;
+  --surface       : #e1d1c4;
+  --surface2      : #dcc8b8;
+  --border        : #966e4a;
+  --text          : #2a1d11;
+  --text-dim      : #5e452e;
+  --accent        : #8c4402;
+  --accent-bright : #613813;
+  --accent-dim    : #ea7f1f;
   --secondary     : #618893;
-  --contrast      : #2adfde;''' % F
+  --contrast      : #0c504f;''' % F
 
 # ── The source, in the order the deck reads it ────────────────────────
 # Quotations are verbatim from the transcript. Anything that is not is a
@@ -641,9 +642,6 @@ def build():
     s = D.assemble(TPL, OUT, slides, PALETTE,
                    'Harari at Davos — Argument &amp; Register (C2) | Forbes English', I,
                    langs=('en', 'de', 'es'))
-    # Three of the four images are cream-and-pale-blue, and at the shipped 0.72
-    # the wash swallows the sort-bin labels. Measured, not assumed — see HANDOFF.
-    s = s.replace('  --bg-opacity: 0.72;', '  --bg-opacity: 0.40;', 1)
     open(OUT, 'w', encoding='utf-8', newline='\n').write(s)
     print('wrote %s — %d <section class="slide" (checker header is authoritative), '
           '%d MC, %d gap slides, 2 sorts, %d bytes'
