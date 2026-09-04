@@ -12,6 +12,136 @@ stale copy.
 
 ---
 
+## 2026-09-04 — Camp 9 / Station 17 / the ninth reference: the Past Perfect, and a builder for new camps
+
+Innes sent a 41-slide "Past Perfect · The Maroon Memory Vault" deck (a CSS-only
+radio deck, his own artwork, ES/DE, ten "memory shard" questions) and asked for
+it to become an active camp, a passive station and a 41-page reference for
+Block Camp. Three pages, all in this branch, none pushed — `git push` is
+refused from the sandbox, so they went to him as a bundle
+(`past-perfect-camp.bundle`).
+
+| page | what | built by |
+|---|---|---|
+| `blockcamp-past-perfect.html` | **9. Past Perfect — Part 1** (B1, 22 slides, 28 pts, EN/DE/ES) | `lesson-template/camp/build_camp.py 9` ← `camp09.py` |
+| `blockcamp-passive-past-perfect.html` | **17. Past Perfect Passive** (B1, 22 slides, 27 pts) | `lesson-template/descent/build_descent.py 17` ← `station17.py` |
+| `past-perfect-time-signals.html` | **Past Perfect: Time Signals (Minecraft ed.)** — 41 scenes + 10 shard checks | `lesson-template/camp/build_reference.py` |
+
+Artwork: `past-perfect-time-signals/bg01–41.jpg`, the Vault's scenes resized
+1536×864 → 1280×720 (the family size). Cards: `BlockCamp/past-perfect-1a.jpg`,
+`BlockCamp/passive-17-past-perfect.jpg`. Hub, `library.html` LESSON_IMAGES,
+`tools/lessons.json`, sitemap/llms/lesson-meta all carry the three.
+
+**Numbering.** Innes chose "append": camp 9 after Present Perfect Continuous in
+the climb, station 17 after The Trial in the descent — station N still mirrors
+camp N−8, nothing existing renumbers. `block-camp.html` prose says nine tenses /
+seventeen units / nine stations / nine references now.
+
+**Font.** The Vault embedded a 101-glyph font named "Minecraft Regular" (not
+Monocraft) with a broken capital A and no accents — every ES/DE line and the
+"meaning" rows fell back to Arial. Asked whether the trio should go to
+Monocraft, Innes said *"change to Monocraft if that is the one used in Block
+Camp by all the others"*. It is not: all 24 camp decks and the six references
+run in embedded Pixelify Sans + Silkscreen; Monocraft is only on the hub and
+route-map headings. So the trio matches the line. The real Monocraft v4 (OFL,
+all weights, full Latin) was fetched and sits at `/home/claude/pp/Monocraft.ttc`
+in the sandbox only — not needed, not committed.
+
+### `lesson-template/camp/build_camp.py` — the climb has a builder again
+
+The Part I generator was lost with a sandbox; `blockcamp-status.md` rightly
+says the published HTML is the source of truth for camps 1–8. A NEW camp still
+has to come from somewhere, so this does for the climb what `build_descent.py`
+does for the descent: takes a published deck as chassis (shell, fonts, engine,
+chrome strings) and replaces slides, palette, tense tokens, cover, dictionary,
+`BW_TR`, part link, SEO block. Three things it learned that a future camp spec
+should know:
+
+1. **`UI_I18N` in a chassis holds the LESSON in ten languages.** Keep any
+   lesson key and a learner who picks Français gets the past simple's cover
+   on a past perfect deck. Every non-chrome key is dropped from every language,
+   the spec supplies en/de/es, and fr..ja are **emptied, not trimmed** —
+   `check-lesson.js`'s I18N gate fails a partial dictionary (33/106), while
+   `initLang()` simply hides an empty one from the menu.
+2. **A brand-new deck has no catalogue row, so `seo.py` skips it and the HEAD
+   gate fails.** `build_camp.seo()` writes the block from `seo.py`'s own
+   functions against the row the deck WILL have (`spec['row']`, `spec['card']`).
+   `build_descent.py` and `build_reference.py` call the same function. When the
+   row exists, `seo.py`'s normal run overwrites it with an identical block.
+3. **The past perfect's ink.** `--t-past-perfect: #6E0B24` is kept at the
+   route-map value for the TOKENS gate and measures 1.5:1 on the surface;
+   `--t-past-perfect-ink: #d66d77` is L* 23 → 59 in Lab with hue/chroma held,
+   the first step clearing 5:1. Class `.t-ppf`; participles `.pp` purple; the
+   LATER action in every sentence keeps the past simple's `--t-past-ink`
+   brown, so the two pasts sit side by side in two colours. `check-colour-
+   roles.py`'s `AUXC` and `build_descent.py`'s `AUX_TENSE` both know `t-ppf`.
+
+Layout lessons from this deck, all in the spec now: a one-line title is capped
+at GERMAN length ("Welches Wort passt?" not "…legt die Reihenfolge fest?"); a
+gap slide with a word bank, a hint and three glossed rows is the tightest slide
+in the line — the hint folded into the bank row, rows at 9px padding, 150px
+inputs, and stems short enough not to wrap at the checker's 1400px viewport
+(a `.dim` label pushed `.q-stem` to 70px there while it looked fine at 1280);
+a 6-pair match with DE glosses runs 14px into the deck bar — five pairs.
+
+### `build_descent.py` learned three things for station 17
+
+- `AUX_TENSE['t-ppf']` = had / had been / hadn't / hadn't been. **A bare
+  'been' is written with its class in the station spec**, not as
+  `class="aux"`: `tense_in_situ()` paints any lone 'been' the present
+  perfect's turquoise, which was right while every lone 'been' on the descent
+  belonged to 'has been'. 'Had it been locked?' is the first that does not.
+- `STATION['tr']` replaces `BW_TR` wholesale. The chassis dictionary is the
+  camp's, so the EN/DE panel on the eight existing stations covers almost
+  none of their own stems and options (7 and 15 strings of 86 and 88 on the
+  two worst — the panel's `glossRows` rescue only reaches slides with a
+  `.sup`). Station 17 authors its own 70-row table. The other eight could.
+- `STATION['row']` / `['card']` → the SEO block, as above.
+
+### `build_reference.py` — the family finally has a builder
+
+Takes `past-simple-time-signals.html` as the shell (fonts, stylesheet, chrome,
+script verbatim), swaps the six colour slots, and fills 41 sections from
+`reference-content.json` (kicker / title / meaning / example / FORM / YOUR TURN,
+EN+ES+DE) and `reference-quiz.json`. The family had no interaction; the ten
+shard slides are click-once buttons with a `SHARDS n / 10` counter in the nav
+bar (`QUIZ_CSS` / `QUIZ_JS`). Measured to fit the 1080px canvas in EN, DE and
+ES with the last element's bottom — the family's `check-lesson.js` gates do not
+apply to these pages (no activate stage, no `UI_I18N`, no lockup, by design).
+Keep the SEO fence EMPTY rather than removing it: the family head carries four
+hand-written `og:` tags after `<title>`, and `seo.inject()` refuses an
+unfenced page that has any.
+
+### To publish (Innes, on his machine)
+
+```
+git fetch ~/Downloads/past-perfect-camp.bundle past-perfect-camp:incoming
+git merge incoming            # four commits on aa77a0a; touches no shared file but hub/library/lessons.json/seo outputs
+git push
+```
+
+Then the three Supabase rows — **after** the push, not before (a row whose
+page 404s puts a dead card in the live library; see forbes-english-blockworld
+memory, 2026-08-27):
+
+```sql
+insert into lessons (file, title, level, access, deck, video) values
+ ('blockcamp-past-perfect.html',         'Block Camp — Past Perfect 1a: The Earlier Past',     'B1', 'pro', true,  false),
+ ('blockcamp-passive-past-perfect.html', 'Block Camp II — Passive 17: Past Perfect Passive',   'B1', 'pro', true,  false),
+ ('past-perfect-time-signals.html',      'Past Perfect: Time Signals (Minecraft ed.)',          'B1', 'pro', false, false);
+```
+
+### Open
+
+- **Part 2 of camp 9** (PPF3–PPF5: backshift, third conditional, wish) —
+  the cover's `partLink` points at the route map until it exists.
+- The route maps (`block-camp-map.html`, `block-camp-descent-map.html`) do
+  not know camp 9 / station 17 yet — the hub does.
+- `library.html`'s Tenses category regex: check that "past perfect" lands in
+  Tenses (the doc for the family flags the same gap for every new tense).
+- The eight older stations could take a `tr` table each now that the builder
+  accepts one.
+
 ## 2026-09-04 — Harari at Davos: the deck tested a text it never showed
 
 Innes: "this is difficult to follow." It was. The 24-slide deck had condensed

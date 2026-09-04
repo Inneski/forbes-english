@@ -8,6 +8,14 @@ sources: cowork
 
 ## The short version
 
+**2026-09-04: a ninth camp.** `blockcamp-past-perfect.html` (9. Past Perfect —
+Part 1) and `blockcamp-passive-past-perfect.html` (17. Past Perfect Passive)
+are built, gated and in the `past-perfect-camp` bundle, not yet pushed. They
+came from a NEW generator, `lesson-template/camp/build_camp.py` — the climb has
+a builder again, chassis-based like the descent's — and the descent builder
+learned `t-ppf`, per-station `tr` tables and a synthetic SEO row. Details in
+`docs/HANDOFF.md`, 2026-09-04. "Sixteen decks" below is now eighteen.
+
 Sixteen decks (eight tenses x two parts), a hub (`block-camp.html`) and a
 one-screen route map (`block-camp-map.html`) are **live**. The large corrective
 pass **shipped** in `fb2e25a` - this file used to say it was pending, and that
