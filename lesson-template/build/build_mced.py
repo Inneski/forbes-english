@@ -38,24 +38,23 @@ activity one gets three of the seven free. The cats explanation is circular. And
 the sand explanation invents a floor-check mechanic the game does not have.
 None is a defect the format can fix; each wants a rewrite.
 
-**This deck borrows Minecraft B1's artwork, and that is the thing to fix
-first.** Every flat-vector Minecraft illustration in `minecraft/` is already
-the hero or a background of Past Modals or Tense Review. The three rendered
-night scenes that were left are a Twin Peaks homage &mdash; recognisable
-characters in the Red Room, and a "Welcome to Twin Peaks" sign legible in the
-corner of the widest one. That is somebody else's work on a published lesson
-cover, so it is not going out, and cropping the sign out does not fix what the
-rest of the frame still is. So this deck points at `MinecraftB1/` and rotates
-its accent to keep the two apart on screen.
+**The artwork is now its own.** The deck used to point at `MinecraftB1/` and
+rotate its accent, because every flat-vector Minecraft illustration in
+`minecraft/` was already the hero or a background of Past Modals or Tense
+Review, and the three rendered night scenes that were left are a Twin Peaks
+homage &mdash; recognisable characters in the Red Room, and a "Welcome to Twin
+Peaks" sign legible in the corner of the widest one. That was somebody else's
+work on a published lesson cover.
 
-Four flat-vector Minecraft scenes in the house family would replace this
-properly: something at night with mobs, a piston or redstone contraption, a
-Nether portal, and the End. Change `F` and the three filenames below and rerun.
+`MinecraftEd/` is three flat-vector scenes from Innes's Downloads, in the same
+minimal-vector family as Tense Review and the Lego set: a blocky figure over a
+moonlit city for the cover, a dusk ridge with figures walking under poplars,
+and a lone figure on a rise at sunset. They are darker and cooler
+than Minecraft B1's, which keeps the two apart on screen and suits a
+trivia deck whose long options want a quiet ground.
 
 `--void` is lifted off the derived near-black to a grey, per Innes's standing
-preference. The accent is rotated because two decks cannot share one palette
-and one artwork set and still read as two decks; everything else is
-`extract-palette.py` output unedited.
+preference. Everything else is `extract-palette.py` output unedited.
 """
 import sys
 sys.path.insert(0, '/home/claude/forbes-english/lesson-template/build')
@@ -64,30 +63,29 @@ from mced_data import MC, FIB, MATCH, ORDER
 
 TPL = 'lesson-template/lesson-template.html'
 OUT = 'forbes-english-minecraft-editorial.html'
-F = 'MinecraftB1'
+F = 'MinecraftEd'
 
-# python3 lesson-template/extract-palette.py MinecraftB1/hero.jpg \
-#            --accent-hue=330 --accent-sat=0.6
+# python3 lesson-template/extract-palette.py MinecraftEd/hero.jpg
 PALETTE = '''  --hero: url('%s/hero.jpg');
 
-  --void          : #2c2727;
-  --surface       : #1f1d13;
-  --surface2      : #2b291b;
-  --border        : #a65a80;
-  --text          : #f5f2f4;
-  --text-dim      : #bfa3b1;
-  --accent        : #e185b3;
-  --accent-bright : #f1bcd7;
-  --accent-dim    : #c84285;
-  --secondary     : #fdd369;
-  --contrast      : #1ded21;''' % F
+  --void          : #26302f;
+  --surface       : #131b1b;
+  --surface2      : #1b2727;
+  --border        : #d9b460;
+  --text          : #f5f4f2;
+  --text-dim      : #bfb7a3;
+  --accent        : #fbe0a4;
+  --accent-bright : #ffc035;
+  --accent-dim    : #f2c051;
+  --secondary     : #8aa6af;
+  --contrast      : #1dc1ed;''' % F
 
 CHIPS = ['turns into', 'is created when', 'can only be obtained by',
          'despite having', 'even though', 'up to', 'exactly', 'only then']
 
-TRIV_BG = ['temple.jpg', 'rex.jpg', 'hero.jpg', 'temple.jpg', 'rex.jpg', 'hero.jpg']
-COMP_BG = ['rex.jpg', 'hero.jpg', 'temple.jpg', 'rex.jpg', 'hero.jpg', 'temple.jpg']
-FIB_BG = ['hero.jpg', 'temple.jpg', 'rex.jpg']
+TRIV_BG = ['ridge.jpg', 'dusk.jpg', 'hero.jpg', 'ridge.jpg', 'dusk.jpg', 'hero.jpg']
+COMP_BG = ['dusk.jpg', 'hero.jpg', 'ridge.jpg', 'dusk.jpg', 'hero.jpg', 'ridge.jpg']
+FIB_BG = ['hero.jpg', 'ridge.jpg', 'dusk.jpg']
 
 
 def build():
@@ -148,7 +146,7 @@ def build():
                     '<em>-ing</em>; <em>even though</em> takes a clause.',
                     'op3n', '<em>Despite having</em> the lowest durability &mdash; not '
                             '<em>despite it has</em>.')],
-                  folder=F, bg='temple.jpg')
+                  folder=F, bg='ridge.jpg')
 
         + D.teach('nuEyebrow', 'The detail',
                   'nuTitle', 'Numbers, and the words hung in front of nouns',
@@ -173,7 +171,7 @@ def build():
                     'and predictable.',
                     'nu3n', 'It is the same <em>re-</em> as in <em>rebuild</em>, '
                             '<em>retry</em> and <em>reload</em>.')],
-                  folder=F, bg='rex.jpg')
+                  folder=F, bg='dusk.jpg')
 
         + "".join(D.mc(i + 1, 6, MC[i], 'mcEyebrow', 'Activity 1 &middot; Trivia',
                        'mcTitle', 'What does a player actually know?',
@@ -203,7 +201,7 @@ def build():
                           'ordTitle', 'Put the seven steps in order',
                           'ordHint', 'Click a step to place it, click a placed step to '
                                      'take it back.',
-                          why, folder=F, bg='temple.jpg')
+                          why, folder=F, bg='ridge.jpg')
                   for chunks, why in ORDER)
 
         + D.results('resNext', 'You know the facts. Now tell them &rarr;',
@@ -227,7 +225,7 @@ def build():
                      'least one turn on a concession &mdash; the surprising part is what '
                      'makes a fact worth telling.',
                      'Despite being the weakest tool in the game, the gold pickaxe…',
-                     folder=F, bg='rex.jpg')
+                     folder=F, bg='dusk.jpg')
     )
 
     import i18n_mced as I

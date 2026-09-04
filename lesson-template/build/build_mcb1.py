@@ -34,16 +34,18 @@ What changed, beyond the format:
   English words with a gaming sense &mdash; which is the part a learner can take
   away from the lesson and use somewhere else.
 
-**Artwork is a stopgap and wants replacing.** Every flat-vector Minecraft
-illustration in `minecraft/` is already the hero or a background of Past Modals
-or Tense Review, and the rest of what is in Innes's Downloads under that name is
-a voxel character line-up with weapons and blood — not for a B1 class. So this
-deck uses the three rendered Minecraft scenes that were already on disk and
-unspoken for: the sunrise world for the cover, the underwater temple, and the
-voxel dinosaur. They are a consistent family and they suit the subject, but
-three backgrounds across twenty-three slides is thin. Four or five flat-vector
-scenes in the house family &mdash; a shelter at dusk, a crafting table, a mine,
-a village &mdash; would replace them by editing the filenames below.
+**The artwork is a flat-vector set from Innes's Downloads**, in the same
+minimal-vector family as Tense Review and the Lego decks: a blocky figure and a
+bicycle under a wide pastel sky for the cover, an underwater scene with a turtle
+and a dissolving block, and a tall blue mob standing in coral scrub. It replaces
+the three rendered in-game scenes this deck shipped with, which were a stopgap:
+they were the only Minecraft images on disk not already spoken for by Past
+Modals or Tense Review.
+
+The accent is rotated to rose because the honest derivation returns the same
+warm sand as Tense Review's, and two decks cannot share one palette and still
+read as two decks. Everything else is `extract-palette.py --light` output
+unedited; the hero is pale, so a dark theme would fight it.
 
 `--void` is lifted off the derived near-black to a grey, per Innes's standing
 preference. Every other token is `extract-palette.py` output unedited.
@@ -57,27 +59,28 @@ TPL = 'lesson-template/lesson-template.html'
 OUT = 'forbes-english-minecraft-b1.html'
 F = 'MinecraftB1'
 
-# python3 lesson-template/extract-palette.py MinecraftB1/hero.jpg
+# python3 lesson-template/extract-palette.py MinecraftB1/hero.jpg --light \
+#            --accent-hue=340 --accent-sat=0.65
 PALETTE = '''  --hero: url('%s/hero.jpg');
 
-  --void          : #2c2c26;
-  --surface       : #1f1d13;
-  --surface2      : #2b291b;
-  --border        : #d6a52a;
-  --text          : #f5f4f2;
-  --text-dim      : #bfb7a3;
-  --accent        : #fdd369;
-  --accent-bright : #ffc42f;
-  --accent-dim    : #f6b615;
-  --secondary     : #12589a;
-  --contrast      : #1dbbed;''' % F
+  --void          : #d8c6ac;
+  --surface       : #e1d5c4;
+  --surface2      : #dccdb8;
+  --border        : #964a63;
+  --text          : #2a1119;
+  --text-dim      : #5e2e3e;
+  --accent        : #bc003f;
+  --accent-bright : #89002e;
+  --accent-dim    : #f1457f;
+  --secondary     : #c4d7dd;
+  --contrast      : #075515;''' % F
 
 CHIPS = ['you have to', 'otherwise', 'I have just', 'for two hours',
          'when I find', 'take damage', 'spawn point', 'first, then, after that']
 
-MC_BG = ['temple.jpg', 'rex.jpg', 'hero.jpg', 'temple.jpg', 'rex.jpg', 'hero.jpg']
-FIB_BG = ['rex.jpg', 'temple.jpg', 'hero.jpg']
-DD_BG = ['temple.jpg', 'hero.jpg', 'rex.jpg']
+MC_BG = ['grove.jpg', 'reef.jpg', 'hero.jpg', 'grove.jpg', 'reef.jpg', 'hero.jpg']
+FIB_BG = ['reef.jpg', 'grove.jpg', 'hero.jpg']
+DD_BG = ['grove.jpg', 'hero.jpg', 'reef.jpg']
 
 
 def build():
@@ -140,7 +143,7 @@ def build():
                     'lower register.',
                     'co3n', 'It always points forward to a consequence, and the '
                             'consequence is always the bad one.')],
-                  folder=F, bg='temple.jpg')
+                  folder=F, bg='grove.jpg')
 
         + D.teach('vcEyebrow', 'The vocabulary',
                   'vcTitle', 'Game words that are ordinary English underneath',
@@ -165,7 +168,7 @@ def build():
                     'carrying.',
                     'vc3n', '<em>Biome</em> and <em>inventory</em> are used unchanged in '
                             'geography and in business.')],
-                  folder=F, bg='rex.jpg')
+                  folder=F, bg='reef.jpg')
 
         + "".join(D.mc(i + 1, len(MC), q, 'mcEyebrow',
                        'Activity 1 &middot; Multiple choice',
@@ -193,14 +196,14 @@ def build():
         + D.match(MATCH, 'matchEyebrow', 'Activity 4 &middot; The glossary',
                   'matchTitle', 'Match the term to its meaning',
                   'matchHint', 'Click a term, then click what it means.',
-                  'matchWhy', folder=F, bg='temple.jpg')
+                  'matchWhy', folder=F, bg='grove.jpg')
 
         + "".join(D.order(chunks, 'ordEyebrow',
                           'Activity 5 &middot; The first night',
                           'ordTitle', 'Put the seven steps in order',
                           'ordHint', 'Click a step to place it, click a placed step to '
                                      'take it back.',
-                          why, folder=F, bg='rex.jpg')
+                          why, folder=F, bg='reef.jpg')
                   for chunks, why in ORDER)
 
         + D.results('resNext', 'You survived the night. Now explain it &rarr;',
@@ -225,7 +228,7 @@ def build():
                      'simple for the rules and the present perfect for your own '
                      'experience.',
                      'The first thing you have to do is…',
-                     folder=F, bg='temple.jpg')
+                     folder=F, bg='grove.jpg')
     )
 
     import i18n_mcb1 as I
