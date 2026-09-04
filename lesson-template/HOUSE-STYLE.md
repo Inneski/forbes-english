@@ -479,10 +479,22 @@ That leaves two honest states, and the checker enforces them:
 **Partial is a failure**, not a work-in-progress: it puts a language in the
 menu that silently reverts to English halfway down the screen.
 
-English and German are the minimum. Beyond that, finish what you start: the
-nine-language set is Spanish, French, Italian, Portuguese, Russian, Arabic,
-Chinese and Japanese alongside German, and `forbes-c1-negotiation.html` carries
-all nine as the worked reference.
+**English, German and Spanish are the minimum**, on Innes's instruction of
+2026-09-04. It used to be English and German, and three decks shipped that way
+before the rule changed; they were retrofitted. `assemble()` still defaults to
+`('en', 'de')`, so a builder has to pass `langs=('en', 'de', 'es')` explicitly,
+and nothing fails if it forgets.
+
+Beyond the three, finish what you start: the nine-language set is Spanish,
+French, Italian, Portuguese, Russian, Arabic, Chinese and Japanese alongside
+German, and `forbes-c1-negotiation.html` carries all nine as the worked
+reference.
+
+**Write teach cards in the six-item form whenever a deck carries more than
+English.** The five-item form leaves the card body in English, so a translated
+heading sits over an English rule — the half-finished screen this section
+exists to prevent. No gate catches it; the only way to see it is to screenshot
+a non-English build.
 
 **Scope boundary — this holds and does not change:** translate the app's own
 chrome. **Do not translate the English being taught** — question stems,
