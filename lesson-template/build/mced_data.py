@@ -195,10 +195,7 @@ _MC_RAW = [
     ("Sand and gravel are gravity-affected blocks, but placing a _____ or any "
      "other non-solid block directly beneath them will prevent them from "
      "falling.",
-     ["torch",
-      "wooden plank",
-      "glass block",
-      "stone slab"],
+     ["torch", "slab", "plank", "glass"],
      "q12why"),
 ]
 
