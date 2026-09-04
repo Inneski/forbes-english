@@ -53,6 +53,44 @@
   --contrast      : #2adfde;
 }
 
+/* ── audio (Listening) ───────────────────────────────────────────────
+   A player that behaves like the exam: one play, no scrubbing, and the
+   Continue button stays locked until the recording has finished. The
+   replay control appears only afterwards and says plainly that the real
+   test does not offer it. */
+.audio-player { display: flex; flex-direction: column; gap: 14px; }
+.audio-row { display: flex; align-items: center; gap: 16px; }
+.audio-play {
+  flex: 0 0 auto; width: 62px; height: 62px; border-radius: 50%;
+  border: 2px solid var(--accent); background: var(--surface2);
+  color: var(--accent); cursor: pointer; font-size: 22px; line-height: 1;
+  display: grid; place-items: center; transition: background .15s ease, opacity .15s ease;
+}
+.audio-play:hover:not(:disabled) { background: var(--accent); color: var(--void); }
+.audio-play:disabled { opacity: .45; cursor: default; border-color: var(--border); color: var(--text-dim); }
+.audio-meta { flex: 1 1 auto; min-width: 0; }
+.audio-label {
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--text-dim);
+}
+.audio-track {
+  margin-top: 8px; height: 8px; border-radius: 4px; background: var(--surface2);
+  border: 1px solid var(--border); overflow: hidden;
+}
+.audio-fill { height: 100%; width: 0; background: var(--accent); transition: width .2s linear; }
+.audio-time {
+  margin-top: 6px; font-family: var(--font-mono); font-size: 14px; color: var(--text-dim);
+  display: flex; justify-content: space-between;
+}
+.audio-state { font-family: var(--font-ui); font-size: 17px; color: var(--text-dim); }
+.audio-state.done { color: var(--accent-bright); }
+.audio-replay {
+  margin-top: 2px; background: none; border: 0; padding: 0; cursor: pointer;
+  font-family: var(--font-ui); font-size: 14px; color: var(--text-dim);
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.audio-replay:hover { color: var(--text); }
+
 /* ── Fixed tokens: identical in every lesson. Do not edit. ── */
 :root {
   --slide-w: 1280px;
@@ -117,11 +155,14 @@ html[data-theme="light"] {
 
      Mixed toward the lesson's own ink rather than set to a hex, so it follows
      the palette instead of having to be re-derived when the palette changes.
-     45% is the ratio that clears WCAG AA 4.5:1 on every light palette
-     shipped here — worst case 4.51:1 green, 5.55:1 red — while keeping the
-     hue plainly green and plainly red. */
-  --ok-text: color-mix(in srgb, var(--ok) 45%, var(--text));
-  --no-text: color-mix(in srgb, var(--no) 45%, var(--text));
+     45% cleared AA against --surface at full strength, but the plate the
+     feedback sits on is --surface at 94%, and the artwork showing through the
+     other 6% cost about a quarter of a point: measured 4.25:1 to 4.39:1 on
+     the graded feedback across the nine light lessons. 38% carries the
+     margin — worst case 4.9:1 — and is still plainly green and plainly
+     red. */
+  --ok-text: color-mix(in srgb, var(--ok) 38%, var(--text));
+  --no-text: color-mix(in srgb, var(--no) 38%, var(--text));
 }
 
 /* On a mid canvas a translucent card has little to contrast against, so
@@ -219,7 +260,7 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 /* ── LOGO ── */
 .fe-logo { width: 152px; height: auto; display: block; }
 .fe-logo-mark { color: var(--logo-mark, var(--accent)); }
-.fe-logo-word { fill: var(--text); opacity: 0; transition: opacity .25s ease; }
+.fe-logo-word { fill: var(--logo-word, var(--text)); opacity: 0; transition: opacity .25s ease; }
 .fonts-ready .fe-logo-word { opacity: 1; }   /* never flash a fallback face */
 .slide[data-type="cover"] .fe-logo { width: 232px; }
 
@@ -289,10 +330,21 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 
 /* Two-column teaching layout */
 .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+/* Three across, for a lesson that genuinely has three parallel things to say
+   — the case ledger's DP / Time / Clues, or a three-ending fork. Cards get
+   narrow fast, so keep each body under about twenty-five words. */
+.cols-3 { grid-template-columns: repeat(3, 1fr); }
 
 /* ── QUESTIONS ── */
 .q-stem { font-size: 25px; line-height: 1.5; color: var(--text); margin-bottom: 22px; }
 .q-stem em { font-style: normal; color: var(--accent-bright); font-weight: 600; }
+/* deck.py's mc(ctx=…) has emitted .q-ctx since it was added, but nothing ever
+   styled it: with no size and no margin it inherited the body rule and the
+   stem's plate shadow painted straight over it. Situational questions were
+   unreadable on the first lesson that used the argument. Set one notch below
+   the stem, dimmed, so it reads as the scene and not as the question. */
+.q-ctx { font-size: 19px; line-height: 1.5; color: var(--text-dim);
+         margin-bottom: 26px; max-width: 62em; }
 
 .opts { display: grid; gap: 11px; }
 .opts.two-up { grid-template-columns: 1fr 1fr; }
@@ -316,6 +368,50 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 .opt.correct { border-color: var(--ok); background: color-mix(in srgb, var(--ok) 20%, var(--surface2)); }
 .opt.wrong   { border-color: var(--no); background: color-mix(in srgb, var(--no) 18%, var(--surface2)); }
 .opt:disabled { cursor: default; }
+
+/* ── Branch mode: the case ledger ──────────────────────────────────────
+   A branching lesson carries state across nodes. It rides in the nav bar
+   so it is visible on every screen without stealing canvas space. */
+.ledger { display: flex; gap: 18px; align-items: center; margin-inline-end: 14px; }
+/* An author display rule outranks the UA sheet's [hidden] { display: none },
+   so the branch-mode ledger rendered "DP 0 TIME ••• CLUES 0" in the deck bar of
+   every non-branching lesson built from this template. The attribute is the
+   switch ledgerInit() throws; this makes the CSS respect it. */
+.ledger[hidden] { display: none; }
+.led { font: 600 11.5px/1 'DM Mono', monospace; letter-spacing: .09em;
+       text-transform: uppercase; color: var(--text-dim); white-space: nowrap; }
+.led b { color: var(--text-dim); font-weight: 600; }
+.led i { font-style: normal; color: var(--accent-bright); margin-inline-start: 5px; }
+.led.spend i { color: var(--contrast); }
+.choice[disabled] { opacity: .38; cursor: not-allowed; }
+
+/* ── Click-to-reveal glosses ───────────────────────────────────────────
+   House style §8 says do not translate the English being taught, and that
+   holds for question stems, options and explanations. But a story-driven
+   lesson is mostly NARRATIVE, and narrative is not the target language: a
+   B1 learner who loses the plot cannot do the grammar either. So prose
+   marked .gloss can reveal a translation underneath, English stays primary,
+   and the control only appears once a language other than English is
+   chosen. Same bargain as the Sherpa pages. */
+.gloss { position: relative; }
+.gloss-btn {
+  display: none; margin-top: 8px; padding: 3px 9px;
+  font: 600 10.5px/1.5 'DM Mono', monospace; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--text-dim);
+  background: transparent; border: 1px solid var(--border);
+  border-radius: 999px; cursor: pointer;
+}
+.gloss-btn:hover { color: var(--accent-bright); border-color: var(--accent); }
+html[data-gloss="on"] .gloss-btn { display: inline-block; }
+.gloss-tr {
+  display: none; margin-top: 9px; padding-top: 9px;
+  border-top: 1px solid var(--border);
+  font: 400 16.5px/1.5 'DM Sans', sans-serif; color: var(--text-dim);
+}
+.gloss-tr.show { display: block; }
+.choice-why { display: block; font: 500 11.5px/1.4 'DM Mono', monospace;
+              letter-spacing: .06em; text-transform: uppercase;
+              color: var(--text-dim); margin-top: 6px; }
 
 /* Gap-fill */
 .gap {
@@ -341,7 +437,12 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
   font-family: var(--font-ui); font-size: 15px; font-weight: 600;
   letter-spacing: .03em;
   padding: 12px 26px; border-radius: var(--r);
-  border: 1px solid var(--accent); background: transparent; color: var(--accent-bright);
+  /* NOT transparent. A transparent button puts its own label on whatever
+     artwork happens to be behind it: measured at 1.55:1 on this lesson
+     before this line, against 7.8:1 for the same ink on the surface. The
+     variants below still override it — .btn:hover and .btn-solid come
+     later and carry their own fill. */
+  border: 1px solid var(--accent); background: var(--surface); color: var(--accent-bright);
   cursor: pointer; transition: background .15s, color .15s;
 }
 .btn:hover { background: var(--accent); color: var(--void); }
@@ -407,7 +508,10 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
 .bank-chip {
   font-family: var(--font-mono); font-size: 12px;
   padding: 5px 12px; border-radius: 999px;
-  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  /* NOT a tint into `transparent`. See the note beside the light-theme block
+     lower down: a see-through fill is a hole in the plate, and the ink then
+     sits on whatever artwork happens to be behind it. */
+  background: color-mix(in srgb, var(--accent) 16%, var(--surface));
   border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
   color: var(--accent-bright);
 }
@@ -756,21 +860,93 @@ html[data-theme="light"] .stage.on-cover .bg-layer::after {
   .act-print { display: block !important; }
 }
 
-/* Text that sits on the canvas rather than inside a card needs its own halo
-   now that the artwork behind it is bright. A shadow costs nothing and lets
-   the picture stay up, which darkening the wash back down would not. */
-.slide-title, .eyebrow, .q-stem, .q-ctx, .order-hint, .cover-title, .cover-sub,
-.score-big, .slide-body > .prose, .act-target-label {
-  text-shadow: 0 1px 2px rgba(0,0,0,0.55), 0 0 12px rgba(0,0,0,0.38);
+/* Text that sits on the canvas rather than inside a card needs a GROUND, not
+   a halo. A halo is one value; a hero is many. The same white glow that lifts
+   a title clear of a cream sky does nothing for the half of it crossing a
+   black silhouette.
+
+   Measured before this rule existed, sampling the real pixels behind each
+   block with the glyphs made transparent: 52 of 60 on-canvas text blocks on
+   the Ukraine deck contained ground below WCAG AA 4.5:1, a third of the area
+   on a typical question stem, the cover subtitle bottoming out at 1.44:1.
+
+   So on-canvas text gets a plate of --surface, exactly what .card and .opt
+   already sit on. Both themes come free: --surface flips with data-theme.
+
+   .feedback is plated on .show rather than always, because it holds a
+   min-height while empty and would otherwise paint a blank bar under every
+   unanswered question. */
+.eyebrow, .slide-title, .q-stem, .q-ctx, .order-hint,
+.slide-body > .prose, .cover-title, .cover-sub, .act-target-label,
+.feedback.show, .score-big {
+  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  border-radius: 8px;
+  /* The plate is grown with a spread shadow rather than padding: padding
+     changes the content box, and on the cover that was enough to tip the
+     subtitle onto a second line. A spread costs no layout at all. */
+  box-shadow: 0 0 0 0.34em color-mix(in srgb, var(--surface) 94%, transparent);
+  text-shadow: none;
 }
-html[data-theme="light"] .slide-title, html[data-theme="light"] .eyebrow,
-html[data-theme="light"] .q-stem, html[data-theme="light"] .q-ctx,
-html[data-theme="light"] .order-hint, html[data-theme="light"] .cover-title,
-html[data-theme="light"] .cover-sub, html[data-theme="light"] .score-big,
-html[data-theme="light"] .slide-body > .prose,
-html[data-theme="light"] .act-target-label {
-  text-shadow: 0 1px 2px rgba(255,255,255,0.75), 0 0 12px rgba(255,255,255,0.55);
-}
+/* Short labels should not stretch a plate across the whole column. */
+.eyebrow, .slide-title, .order-hint { width: fit-content; }
+.act-target-label { display: inline-block; }
+/* The cover is centred, so its plates are too. */
+.cover-title, .cover-sub { width: fit-content; margin-inline: auto; max-width: 100%; }
+.cover-sub { padding-inline: 0.22em; }
+.score-big { width: fit-content; }
+/* ── THE RESULTS PANELS OVERLAPPED, AND THE SPREAD IS WHY ─────────────
+   Every plate on this page is grown with `box-shadow: 0 0 0 0.34em` rather
+   than padding (see the note above - padding tipped the cover subtitle onto
+   a second line). At the score's 84px that spread is 28.5px in each
+   direction, and the panel under it is 18px away: the score plate and the
+   message plate paint into each other, and "Now use it" 14px below sits
+   inside both. Innes, on Past Simple 21: "text box overlap".
+   The gaps now exceed the spread they have to clear. The same fix is in
+   lesson-template/descent/build_descent.py for the Part II decks; this is
+   Part I catching up with it.
+
+   The empty message plate goes too. Before anything is answered #scoreMsg
+   has no text, and an empty plate is not nothing - it is a 28px dark square
+   floating under the score with no explanation. */
+.slide[data-type="results"] .score-big { margin-bottom: 10px; }
+.slide[data-type="results"] #scoreMsg  { margin-top: 34px !important; max-width: 34ch; }
+.slide[data-type="results"] #scoreMsg:empty { display: none; }
+.slide[data-type="results"] .slide-body > .prose.dim { margin-top: 34px !important; }
+
+/* A transparent background is a hole in the plate. .btn was
+   `background: transparent` and .bank-chip a 16% tint of --accent into
+   nothing, so on a light lesson their rust text — #701c00, which reads at
+   7.8:1 on the surface — sat straight on the artwork and measured 1.53:1 to
+   1.94:1. The Check button was the worst of it. Give them a real ground and
+   the same ink reads.
+
+   "Light theme only" is what this note used to say, on the reasoning that a
+   dark deck's canvas is dark. It is not: rule 5 puts the hero behind every
+   slide at 0.72, so a chip's ground is the *artwork*, and a hero with a bright
+   region puts a bright ground under it. Measured on the escalation deck — dark
+   theme, a cream sun disc and a pale wall in the hero — every word-bank chip
+   on the two gap slides and the activation slide came in between 1.38:1 and
+   3.03:1, with 100% of the glyph pixels under AA. The fix belongs on the base
+   rule for both themes, which is where it now is (see .bank-chip above); the
+   light-theme override that used to sit here was the same declaration and has
+   gone.
+
+   That measurement was made in the sandbox that built the escalation deck and
+   was lost with it, along with the glyph-level audit script it was made by. It
+   survived only inside the shipped page's own copy of this stylesheet, and was
+   lifted back into the template here so that rebuilding that deck — or any
+   other — stops reverting it. */
+/* Do NOT reach for `html[data-theme="light"] .btn` here. It scores one
+   attribute plus one type and beats `.btn-solid`, which scores one class —
+   the cover's Begin button lost its red fill and its cream label went to
+   1.03:1. :where() does not rescue it either, because the attribute counts
+   in the same specificity column as the class. Fix the base rule instead. */
+/* The solid button's label is --void, which is right on a dark canvas where
+   --void is the darkest token and --accent the bright one. Inverted, cream on
+   the accent red measures 4.45:1 — a hair under AA at 17px, which is not
+   large text. --surface as the label takes the same pair to 5.00:1. */
+html[data-theme="light"] .btn-solid { color: var(--surface); }
+html[data-theme="light"] .chip { background: color-mix(in srgb, var(--surface) 92%, transparent); }
 
 /* ── FIRST-RUN HINT ON THE LANGUAGE SWITCH ────────────────────────────────
    Innes, about a control that has been shipping on every lesson for months:
@@ -808,7 +984,7 @@ html[data-theme="light"] .act-target-label {
     <!-- ══════════════════════════════════════════════════════════
          REPLACE 2 of 2: SLIDES
          Author one <section class="slide"> per screen.
-         data-type: cover | teach | mc | gap | match | order | discuss | results | activate
+         data-type: cover | teach | audio | mc | gap | match | order | discuss | results | activate
          data-bg="folder/other.jpg" swaps the background pattern on that slide.
          Everything a learner reads must fit WITHOUT scrolling.
          If it does not fit, split it across two slides — never shrink type.
@@ -843,24 +1019,45 @@ html[data-theme="light"] .act-target-label {
         <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
           <div class="card">
             <p class="prose"><strong data-i18n="t1ah">The object is the argument</strong></p>
-            <p class="prose" style="margin-top:8px;font-size:18px">Not the conclusions. Whether AI should be a legal person is not on the test.</p>
-            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t1an">What is on the test: which sentence is a premise, which is an inference, and whether the second follows from the first.</p>
+            <p class="prose" data-i18n="t1ab" style="margin-top:8px;font-size:18px">Whether AI should be a legal person is not on the test. Which sentence is a premise, which is an inference, and whether the second follows &mdash; that is.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t1an">Whether the second follows from the first is the whole of C2 reading.</p>
           </div>
           <div class="card">
-            <p class="prose"><strong data-i18n="t1bh">Every claim here is his</strong></p>
-            <p class="prose" style="margin-top:8px;font-size:18px">Quoted lines are verbatim from the Davos transcript. Summaries are marked as summaries.</p>
-            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t1bn">Where this deck paraphrases, it says so. You will be asked to tell the difference, because at C2 misreporting a source is the expensive error.</p>
+            <p class="prose"><strong data-i18n="t1bh">His words come first</strong></p>
+            <p class="prose" data-i18n="t1bb" style="margin-top:8px;font-size:18px">Every question follows an excerpt. Quoted lines are verbatim from the Davos transcript; summaries are marked as summaries.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t1bn">You will be asked to tell the difference. At C2, misreporting a source is the expensive error.</p>
           </div>
           <div class="card">
-            <p class="prose"><strong data-i18n="t1ch">Analogies are the recurring test</strong></p>
-            <p class="prose" style="margin-top:8px;font-size:18px">He uses four: the knife, the mercenaries, the immigrants, the religions of the book.</p>
-            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t1cn">An analogy illustrates; it does not prove. Each one is worth asking what it captures and where it breaks.</p>
+            <p class="prose"><strong data-i18n="t1ch">Analogies illustrate; they do not prove</strong></p>
+            <p class="prose" data-i18n="t1cb" style="margin-top:8px;font-size:18px">He uses the knife, the immigrants and the mercenaries. Each is worth asking what it captures and where it breaks.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t1cn">An analogy that captures a great deal can still prove nothing.</p>
           </div>
         </div>
       </div>
     </section>
 
     <section class="slide" data-type="teach" data-bg="Harari/b.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="x1e">From the transcript</div>
+        <h2 class="slide-title" data-i18n="x1t">Not a tool. An agent.</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="x1ah">Verbatim</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">&ldquo;A knife is a tool. You can use a knife to cut salad or to murder someone, but it is your decision what to do with the knife. AI is a knife that can decide by itself whether to cut salad or to commit murder.&rdquo;</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="x1an">Verbatim, a moment later: <em>&ldquo;Four billion years of evolution have demonstrated that anything that wants to survive learns to lie and manipulate. The last four years have demonstrated that AI agents can acquire the will to survive and that AIs have already learned how to lie.&rdquo;</em></p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="x1bh">Verbatim &middot; a few minutes later</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">&ldquo;Some people argue that AI is just glorified autocomplete. It barely predicts the next word in a sentence. But is that so different from what the human mind is doing? Try to catch the next word that pops up in your mind. Do you really know why you thought that word, where it came from? Why did you think this particular word and not some other word?&rdquo;</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="x1bn">Notice that he does not answer his own question. Ask what leaving it open does to the objection.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="Harari/c.jpg">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="t2e">The first distinction</div>
         <h2 class="slide-title" data-i18n="t2t"><em>tool</em> and <em>agent</em> &mdash; the word the whole address rests on</h2>
@@ -869,18 +1066,111 @@ html[data-theme="light"] .act-target-label {
         <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
           <div class="card">
             <p class="prose"><strong data-i18n="t2ah">a tool</strong></p>
-            <p class="prose" style="margin-top:8px;font-size:18px">Something acted <em>through</em>. <em>You</em> decide; it transmits the decision.</p>
-            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2an">A knife cuts salad or it does not, and either way the choosing happened somewhere else. Tools have no interests.</p>
+            <p class="prose" data-i18n="t2ab" style="margin-top:8px;font-size:18px">Something acted <em>through</em>. <em>You</em> decide; it transmits the decision.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2an">The knife cuts salad or it does not, and either way the choosing happened somewhere else. Tools have no interests.</p>
           </div>
           <div class="card">
             <p class="prose"><strong data-i18n="t2bh">an agent</strong></p>
-            <p class="prose" style="margin-top:8px;font-size:18px">Something that acts. It can learn, choose, and pursue an end you did not set.</p>
+            <p class="prose" data-i18n="t2bb" style="margin-top:8px;font-size:18px">Something that acts. It can learn, choose, and pursue an end you did not set.</p>
             <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2bn">Verbatim: <em>&ldquo;It is not just another tool. It is an agent. It can learn and change by itself.&rdquo;</em></p>
           </div>
           <div class="card">
             <p class="prose"><strong data-i18n="t2ch">Why the word is load-bearing</strong></p>
-            <p class="prose" style="margin-top:8px;font-size:18px">Everything later &mdash; personhood, mercenaries, lying &mdash; needs this to be true.</p>
+            <p class="prose" data-i18n="t2cb" style="margin-top:8px;font-size:18px">Personhood, mercenaries, lying &mdash; every later claim needs this one.</p>
             <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t2cn">If AI is a tool, the rest of the speech does not follow. That is why he spends the opening on it rather than on capability.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Read the argument, not the opinion</span> &middot; 1 / 8</div>
+        <h2 class="slide-title" data-i18n="qTitle">Choose the most exact reading</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">He asks the audience to watch their own thinking and notice they cannot say why one word arrived and not another. What is that doing in his argument?</p>
+        <div class="opts">
+          <button class="opt">Establishing that human cognition is unreliable, and therefore that AI judgement should be preferred to human judgement wherever the two conflict in practice</button>
+          <button class="opt">Demonstrating that consciousness lies beyond the reach of neuroscience and will therefore never be explained by any purely physical account of the brain</button>
+          <button class="opt" data-correct>Removing the audience&rsquo;s grounds for saying that humans think while AI merely predicts, by making them notice they cannot inspect their own word-selection either</button>
+          <button class="opt">Conceding that neither humans nor AI genuinely understand anything at all, and that the whole question of machine thought is therefore empty and better set aside</button>
+        </div>
+        <p class="feedback" data-explain="He is not claiming human thinking is bad. He is removing the <em>grounds</em> for the contrast: the dismissal &quot;AI is just autocomplete&quot; assumes we know our own process is different in kind. Notice the move is experiential — he makes you check, rather than telling you."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="Harari/a.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="x2e">From the transcript</div>
+        <h2 class="slide-title" data-i18n="x2t">The superpower, and who inherits it</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="x2ah">Verbatim &middot; from the dialogue</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">&ldquo;Humans took over the world, not because we are the strongest physically, but because we discovered how to use words to get thousands and millions and billions of strangers to cooperate. This was our superpower.&rdquo;</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="x2an">Verbatim, a moment later: <em>&ldquo;And now something has emerged that is going to take our superpower from us.&rdquo;</em></p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="x2bh">Verbatim</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">&ldquo;The immigrants this time will not be human beings coming in a fragile boat without a visa or trying to cross a border in the middle of the night. The immigrants will be millions of AIs that can write love poems better than us, that can lie better than us, and that can travel at the speed of light without any need of visas.&rdquo;</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="x2bn">Read it as an analogy, not as a line: what does <em>immigrant</em> carry over, and what does it quietly drop?</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-bg="Harari/c.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Read the argument, not the opinion</span> &middot; 2 / 8</div>
+        <h2 class="slide-title" data-i18n="qTitle">Choose the most exact reading</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Humans took over the world by using words to make strangers cooperate. What must hold for that to bear on AI at all?</p>
+        <div class="opts">
+          <button class="opt">That language emerged uniquely in <em>Homo sapiens</em> with no precursor whatsoever in any other primate species, which the comparative evidence would have to support</button>
+          <button class="opt" data-correct>That armies, states, religions and markets are at bottom linguistic constructions, so that whatever commands language commands them</button>
+          <button class="opt">That physical or biological superiority is normally what decides which species comes to dominate, making the human case a genuine and instructive exception to the rule</button>
+          <button class="opt">That artificial systems are constitutionally incapable of genuine cooperation, and so can never reproduce the coordinating function that language performs for humans</button>
+        </div>
+        <p class="feedback" data-explain="The bridge from &quot;language built civilisation&quot; to &quot;AI threatens civilisation&quot; only holds if institutions <em>are</em> linguistic. If they are not — if they rest on force or material interest — then mastery of language buys much less than he claims."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Read the argument, not the opinion</span> &middot; 3 / 8</div>
+        <h2 class="slide-title" data-i18n="qTitle">Choose the most exact reading</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">He calls the arrival of AI agents an immigration. Judged as an analogy rather than as rhetoric, where is it weakest?</p>
+        <div class="opts">
+          <button class="opt">Human immigrants are relatively few in number, whereas artificial agents could be instantiated without any practical limit, which changes the scale of the phenomenon</button>
+          <button class="opt">Immigration is a lawful process that states administer through visas, borders and quotas, whereas the movement of software across a network is administered by nobody at all</button>
+          <button class="opt">Immigrants arrive physically and must be housed and fed, whereas artificial agents impose no comparable demand on the material infrastructure of a receiving country</button>
+          <button class="opt" data-correct>Human migration is driven by individuals pursuing their own ends, while AI deployment is decided by the firms and states that own the systems — so the agency sits elsewhere</button>
+        </div>
+        <p class="feedback" data-explain="He half-sees this: he notes the loyalties run to a corporation or a government. But that concession dissolves the analogy — if the agent is <em>sent</em>, this is not immigration, it is deployment, and the political questions are different ones."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="Harari/b.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="x3e">From the transcript</div>
+        <h2 class="slide-title" data-i18n="x3t">Persons that are not people</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="x3ah">Verbatim</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">&ldquo;AIs are obviously not persons. They don&rsquo;t have a body or a mind. But a legal person is something quite different from a person. &hellip; In New Zealand, rivers have been recognized as legal persons. In India, certain gods have been granted such recognition. Of course, until today, recognizing a corporation, a river, or a god as a legal person was just legal fiction.&rdquo;</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="x3an">Note the word <em>fiction</em>. The precedents were safe because a human always acted for the river.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="x3bh">Verbatim &middot; and then</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">&ldquo;It is different with AIs. Unlike rivers and gods, AIs can actually make decisions by themselves. They will soon be able to make the decisions necessary to manage a bank account, to file a lawsuit, and even to operate a corporation without any need of human executives, shareholders or trustees.&rdquo;</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="x3bn">Verbatim, on the consequences: <em>&ldquo;If you think AIs should not be treated as persons on social media, you should have acted ten years ago. &hellip; Somebody else will already have decided it for you.&rdquo;</em></p>
           </div>
         </div>
       </div>
@@ -895,24 +1185,62 @@ html[data-theme="light"] .act-target-label {
         <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
           <div class="card">
             <p class="prose"><strong data-i18n="t3ah">a legal person</strong></p>
-            <p class="prose" style="margin-top:8px;font-size:18px">An entity the law lets own, contract, sue and be sued. Need not be human.</p>
+            <p class="prose" data-i18n="t3ab" style="margin-top:8px;font-size:18px">An entity the law lets own, contract, sue and be sued. Need not be human.</p>
             <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t3an">Companies have been legal persons for a century and a half. So, in some jurisdictions, are rivers.</p>
           </div>
           <div class="card">
             <p class="prose"><strong data-i18n="t3bh">Why the precedents were safe</strong></p>
-            <p class="prose" style="margin-top:8px;font-size:18px">A river cannot open an account. A human always did it on the river&rsquo;s behalf.</p>
+            <p class="prose" data-i18n="t3bb" style="margin-top:8px;font-size:18px">A river cannot open an account. A human always did it on the river&rsquo;s behalf.</p>
             <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t3bn">The personhood was a <em>fiction</em> laid over human decisions. That is precisely what made it harmless.</p>
           </div>
           <div class="card">
             <p class="prose"><strong data-i18n="t3ch">Why this case differs</strong></p>
-            <p class="prose" style="margin-top:8px;font-size:18px">An AI can discharge the role itself &mdash; no executive, no trustee.</p>
+            <p class="prose" data-i18n="t3cb" style="margin-top:8px;font-size:18px">An AI can discharge the role itself &mdash; no executive, no trustee.</p>
             <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t3cn">Fiction and fact converge, so the precedents stop governing. This is the hinge of the address, and it is entirely a lexical distinction.</p>
           </div>
         </div>
       </div>
     </section>
 
+    <section class="slide" data-type="mc" data-bg="Harari/a.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Read the argument, not the opinion</span> &middot; 4 / 8</div>
+        <h2 class="slide-title" data-i18n="qTitle">Choose the most exact reading</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Why does he separate "a person" from "a legal person", and why does the separation carry the governance argument?</p>
+        <div class="opts">
+          <button class="opt">Because it establishes that AI systems already possess moral standing and interests of their own, which any legal order would then be under an obligation to protect</button>
+          <button class="opt" data-correct>Because earlier grants of personhood to corporations and rivers were fictions laid over human decision-making, whereas an AI could discharge the role itself</button>
+          <button class="opt">Because it lets him leave the question of machine consciousness entirely to one side while still arriving at a concrete and immediately actionable policy recommendation</button>
+          <button class="opt">Because it demonstrates that corporate personhood was a mistake from the beginning and that the remedy is to withdraw it from corporations before extending it further</button>
+        </div>
+        <p class="feedback" data-explain="A river cannot open a bank account; a human always did it on the river&rsquo;s behalf. That is what made the fiction safe. An AI can do it, so the fiction and the fact converge — which is why he says the precedents do not govern this case."></p>
+      </div>
+    </section>
+
     <section class="slide" data-type="teach" data-bg="Harari/a.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="x4e">From the dialogue with Irene Tracey</div>
+        <h2 class="slide-title" data-i18n="x4t">Mercenaries, and a cow</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="x4ah">In summary &middot; the mercenaries</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Tracey asks what leaders are getting wrong. Harari tells the story of Vortigern, a British king who hired Anglo-Saxon fighters against his enemies. They won, saw a rich country weakly held, and kept it. Leaders, he says, understand this danger with human mercenaries and do not apply it to AI.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="x4an">A summary, and marked as one: the transcript is dialogue, not the tidy paragraph above.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="x4bh">In summary &middot; the cow</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">Tracey suggests we might come to value human thinking as we value human athletics: nobody stopped running because cars are faster. Harari answers that we never defined ourselves by running &mdash; <em>&ldquo;the cow didn&rsquo;t say, I run, therefore I am.&rdquo;</em></p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="x4bn">Verbatim, from the address: <em>&ldquo;If we continue to define ourselves by our ability to think in words, our identity will collapse.&rdquo;</em></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="Harari/b.jpg">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="t4e">How to weigh an analogy</div>
         <h2 class="slide-title" data-i18n="t4t">The mercenaries &mdash; what it carries and where it gives way</h2>
@@ -920,25 +1248,114 @@ html[data-theme="light"] .act-target-label {
       <div class="slide-body">
         <div class="cols" style="grid-template-columns:1fr 1fr 1fr">
           <div class="card">
-            <p class="prose"><strong data-i18n="t4ah">The story, in summary</strong></p>
-            <p class="prose" style="margin-top:8px;font-size:18px">A British king hires Anglo-Saxon fighters against his enemies. They win, look around, and keep the country.</p>
-            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t4an">Marked as a summary because it is one. The transcript is dialogue, not the tidy sentence above.</p>
+            <p class="prose"><strong data-i18n="t4ah">What it captures</strong></p>
+            <p class="prose" data-i18n="t4ab" style="margin-top:8px;font-size:18px">Bought loyalty can be outbid. Capability you rent can be turned on you.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t4an">And the sharper point: we already accept this about people, which is why the inconsistency about machines is striking.</p>
           </div>
           <div class="card">
-            <p class="prose"><strong data-i18n="t4bh">What it captures</strong></p>
-            <p class="prose" style="margin-top:8px;font-size:18px">Bought loyalty can be outbid. Capability you rent can be turned on you.</p>
-            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t4bn">And the sharper point: we already accept this about people, which is why the inconsistency about machines is striking.</p>
+            <p class="prose"><strong data-i18n="t4bh">Where it gives way</strong></p>
+            <p class="prose" data-i18n="t4bb" style="margin-top:8px;font-size:18px">Mercenaries wanted land. What an AI is supposed to want is left unargued.</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t4bn">The analogy borrows its menace from human motive. Strip the motive and you have a capable system, not a usurper.</p>
           </div>
           <div class="card">
-            <p class="prose"><strong data-i18n="t4ch">Where it gives way</strong></p>
-            <p class="prose" style="margin-top:8px;font-size:18px">Mercenaries wanted land. What an AI is supposed to want is left unargued.</p>
-            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t4cn">The analogy borrows its menace from human motive. Strip the motive and you have a capable system, not a usurper. Say so in your writing.</p>
+            <p class="prose"><strong data-i18n="t4ch">The sentence to write</strong></p>
+            <p class="prose" data-i18n="t4cb" style="margin-top:8px;font-size:18px"><em>The comparison holds as far as X; it gives way at Y.</em></p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t4cn">Name what the analogy captures before you say where it breaks. That shape is worth more than agreeing or disagreeing with him.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="slide" data-type="teach" data-bg="Harari/b.jpg">
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Read the argument, not the opinion</span> &middot; 5 / 8</div>
+        <h2 class="slide-title" data-i18n="qTitle">Choose the most exact reading</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">After the Vortigern story he says we understand the danger with human mercenaries but not with AI. What failure is he diagnosing?</p>
+        <div class="opts">
+          <button class="opt">A gap in technical knowledge: leaders do not understand what current systems can actually do, and are briefed by people with an interest in overstating capability</button>
+          <button class="opt">A misreading of the threat as economic when it is military, which leads governments to regulate labour-market effects while leaving security implications unexamined</button>
+          <button class="opt" data-correct>An inconsistency: leaders already accept that a hired agent with its own judgement can turn on its employer, and decline to apply that reasoning to AI</button>
+          <button class="opt">An overconfidence in regulation: leaders assume AI can be constrained by law in the same way that human contractors are constrained by the terms of their contracts</button>
+        </div>
+        <p class="feedback" data-explain="Not ignorance — inconsistency. And it is load-bearing for the whole speech: the reason leaders will not apply mercenary logic to AI is that they do not really believe AI decides anything, which is exactly the premise he opened by attacking."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-bg="Harari/c.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Read the argument, not the opinion</span> &middot; 6 / 8</div>
+        <h2 class="slide-title" data-i18n="qTitle">Choose the most exact reading</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Tracey suggests we might value human thinking as we value human athletics. He answers with the cow. What does that establish?</p>
+        <div class="opts">
+          <button class="opt" data-correct>That we never staked our identity on running, but did stake it on thinking — so the loss is asymmetric, and no amount of valuing thought as a craft repairs it</button>
+          <button class="opt">That cognitive achievements simply matter more to people than physical ones do, and always have done across every culture for which we have any historical record</button>
+          <button class="opt">That machine thinking differs in kind from human thinking, and the two therefore cannot meaningfully be set against each other on any single scale of comparison</button>
+          <button class="opt">That the athletics analogy fails outright, because physical performance has never had any bearing at all on how human beings have understood themselves as a species</button>
+        </div>
+        <p class="feedback" data-explain="The force is in the asymmetry, not in a ranking. Tracey offers a coping strategy; Harari says the strategy cannot reach the injury, because the injury is to a self-definition rather than to a preference."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="Harari/c.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow" data-i18n="x5e">From the transcript</div>
+        <h2 class="slide-title" data-i18n="x5t">The last two minutes</h2>
+      </div></div>
+      <div class="slide-body">
+        <div class="cols" style="grid-template-columns:1fr 1fr">
+          <div class="card">
+            <p class="prose"><strong data-i18n="x5ah">Verbatim</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">&ldquo;Throughout history, people have always struggled with the tension between word and flesh, between the truth that can be expressed in words and the absolute truth which is beyond words. Previously this tension was internal to humanity. &hellip; Now this tension will be externalized. It will become the tension not between different humans; this will be the tension between humans and AIs, the new masters of words.&rdquo;</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="x5an"><em>Externalised</em>: moved out of a thing and into the space between things. The whole section turns on this one verb.</p>
+          </div>
+          <div class="card">
+            <p class="prose"><strong data-i18n="x5bh">Verbatim &middot; and the closing line</strong></p>
+            <p class="prose" style="margin-top:8px;font-size:18px">&ldquo;If thinking really means putting words and other language tokens in order, then AI can already think much better than many, many humans.&rdquo; &hellip; &ldquo;Thank you for listening to this human.&rdquo;</p>
+            <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="x5bn">Read the last line twice. Then ask what the word <em>this</em> is doing.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Read the argument, not the opinion</span> &middot; 7 / 8</div>
+        <h2 class="slide-title" data-i18n="qTitle">Choose the most exact reading</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">"Thank you for listening to this human." What makes the closing line do more than thank the audience?</p>
+        <div class="opts">
+          <button class="opt">It signals the end of the address in a deliberately understated register, in keeping with the restraint he has maintained throughout the preceding thirty minutes</button>
+          <button class="opt">It concedes, with some irony, that a system could by now generate a comparable speech and that his own authorship is therefore less remarkable than it once would have been</button>
+          <button class="opt" data-correct>Marking "human" turns it into a category that needs stating — which only happens once the alternative is thinkable, so the line performs the thesis instead of arguing it</button>
+          <button class="opt">It predicts that speakers at gatherings of this kind will have been replaced by artificial systems within a decade, which is the timeframe he has used throughout</button>
+        </div>
+        <p class="feedback" data-explain="The word doing the work is <em>this</em>. You only specify which kind of speaker you are if the audience might have wondered. He never states the claim; the phrasing presupposes it, which is why it lands harder than the argument did."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="mc" data-bg="Harari/a.jpg">
+      <div class="slide-head"><div>
+        <div class="eyebrow"><span data-i18n="qEyebrow">Read the argument, not the opinion</span> &middot; 8 / 8</div>
+        <h2 class="slide-title" data-i18n="qTitle">Choose the most exact reading</h2>
+      </div></div>
+      <div class="slide-body">
+        <p class="q-stem">Across the session, what is the relationship between the claim that AI can lie and the claim that AI should not be granted legal personhood?</p>
+        <div class="opts">
+          <button class="opt">The first is offered as evidence for the second: an entity that deceives is by that fact unsuited to the responsibilities that legal recognition would confer upon it</button>
+          <button class="opt">They are independent lines of argument that Harari happens to advance in the same session, and neither one depends on the other for whatever force it may have</button>
+          <button class="opt">The second is a practical remedy for the first: withholding legal recognition is the mechanism by which a society would in practice prevent artificial systems from deceiving it</button>
+          <button class="opt" data-correct>Deception is evidence of agency, and agency is what makes personhood consequential rather than fictional — so the first supports the second only by way of that middle step</button>
+        </div>
+        <p class="feedback" data-explain="The link runs through agency, and missing the middle step is the commonest misreading of the speech. He is not arguing &quot;liars should not be persons&quot; — he is arguing that lying is proof of the independent will that makes the personhood question real."></p>
+      </div>
+    </section>
+
+    <section class="slide" data-type="teach" data-bg="Harari/a.jpg">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="t5e">The skill this lesson is really for</div>
         <h2 class="slide-title" data-i18n="t5t">Reporting a claim without adopting it</h2>
@@ -964,7 +1381,7 @@ html[data-theme="light"] .act-target-label {
       </div>
     </section>
 
-    <section class="slide" data-type="teach" data-bg="Harari/c.jpg">
+    <section class="slide" data-type="teach" data-bg="Harari/b.jpg">
       <div class="slide-head"><div>
         <div class="eyebrow" data-i18n="t6e">The same skill, one level finer</div>
         <h2 class="slide-title" data-i18n="t6t">Hedging &mdash; how much weight to put on a claim</h2>
@@ -983,269 +1400,63 @@ html[data-theme="light"] .act-target-label {
           </div>
           <div class="card">
             <p class="prose"><strong data-i18n="t6ch">The failure mode</strong></p>
-            <p class="prose" style="margin-top:8px;font-size:18px">Hedging everything reads as having no position at all.</p>
+            <p class="prose" data-i18n="t6cb" style="margin-top:8px;font-size:18px">Hedging everything reads as having no position at all.</p>
             <p class="prose dim" style="margin-top:8px;font-size:15px" data-i18n="t6cn">Hedge the contested step and commit to the rest. A paragraph where every clause is qualified scores worse than one clear claim.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="slide" data-type="mc">
+    <section class="slide" data-type="gap" data-bg="Harari/c.jpg">
       <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="qEyebrow">Read the argument, not the opinion</span> &middot; 1 / 10</div>
-        <h2 class="slide-title" data-i18n="qTitle">Choose the most exact reading</h2>
+        <div class="eyebrow"><span data-i18n="rvEyebrow">Report, don&rsquo;t adopt</span> &middot; 1 / 1</div>
+        <h2 class="slide-title" data-i18n="rvTitle">Which verb does the sentence need?</h2>
       </div></div>
       <div class="slide-body">
-        <p class="q-ctx">Just after he raises the "glorified autocomplete" objection.</p>
-        <p class="q-stem">He asks the audience to watch their own thinking and notice they cannot say why one word arrived and not another. What is that doing in his argument?</p>
-        <div class="opts">
-          <button class="opt">Establishing that human cognition is unreliable, and therefore that AI judgement should be preferred to human judgement wherever the two conflict in practice</button>
-          <button class="opt">Demonstrating that consciousness lies beyond the reach of neuroscience and will therefore never be explained by any purely physical account of the brain</button>
-          <button class="opt" data-correct>Removing the audience’s grounds for saying that humans think while AI merely predicts, by making them notice they cannot inspect their own word-selection either</button>
-          <button class="opt">Conceding that neither humans nor AI genuinely understand anything at all, and that the whole question of machine thought is therefore empty and better set aside</button>
+        <div class="act-target" style="margin-bottom:12px">
+          <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
+          <span class="bank-chip">concedes</span> <span class="bank-chip">contends</span> <span class="bank-chip">notes</span>
         </div>
-        <p class="feedback" data-explain="He is not claiming human thinking is bad. He is removing the <em>grounds</em> for the contrast: the dismissal &quot;AI is just autocomplete&quot; assumes we know our own process is different in kind. Notice the move is experiential — he makes you check, rather than telling you."></p>
-      </div>
-    </section>
-
-    <section class="slide" data-type="mc" data-bg="Harari/a.jpg">
-      <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="qEyebrow">Read the argument, not the opinion</span> &middot; 2 / 10</div>
-        <h2 class="slide-title" data-i18n="qTitle">Choose the most exact reading</h2>
-      </div></div>
-      <div class="slide-body">
-        <p class="q-ctx">From the dialogue with Irene Tracey, not the address.</p>
-        <p class="q-stem">Humans took over the world, he says, not by strength but by using words to make millions of strangers cooperate. What must hold for this to bear on AI?</p>
-        <div class="opts">
-          <button class="opt" data-correct>That armies, states, religions and markets are at bottom linguistic constructions, so that whatever commands language commands them</button>
-          <button class="opt">That language emerged uniquely in <em>Homo sapiens</em> with no precursor whatsoever in any other primate species, which the comparative evidence would have to support</button>
-          <button class="opt">That physical or biological superiority is normally what decides which species comes to dominate, making the human case a genuine and instructive exception to the rule</button>
-          <button class="opt">That artificial systems are constitutionally incapable of genuine cooperation, and so can never reproduce the coordinating function that language performs for humans</button>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">He <input class="gap" data-answer="contends" aria-label="gap" style="width:170px"> that whatever masters language will master law, finance and religion.</p>
+          <p class="feedback" data-explain="A disputed inference. <em>Contends</em> reports it as his position without saying whether it is yours."></p>
         </div>
-        <p class="feedback" data-explain="The bridge from &quot;language built civilisation&quot; to &quot;AI threatens civilisation&quot; only holds if institutions <em>are</em> linguistic. If they are not — if they rest on force or material interest — then mastery of language buys much less than he claims."></p>
-      </div>
-    </section>
-
-    <section class="slide" data-type="mc" data-bg="Harari/c.jpg">
-      <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="qEyebrow">Read the argument, not the opinion</span> &middot; 3 / 10</div>
-        <h2 class="slide-title" data-i18n="qTitle">Choose the most exact reading</h2>
-      </div></div>
-      <div class="slide-body">
-        <p class="q-ctx">The most-quoted exchange in the session.</p>
-        <p class="q-stem">Tracey suggests we might value human thinking as we value human athletics. He answers: "the cow didn’t say, I run, therefore I am." What does that establish?</p>
-        <div class="opts">
-          <button class="opt">That cognitive achievements simply matter more to people than physical ones do, and always have done across every culture for which we have any historical record</button>
-          <button class="opt">That machine thinking differs in kind from human thinking, and the two therefore cannot meaningfully be set against each other on any single scale of comparison</button>
-          <button class="opt">That the athletics analogy fails outright, because physical performance has never had any bearing at all on how human beings have understood themselves as a species</button>
-          <button class="opt" data-correct>That we never staked our identity on running, but did stake it on thinking — so the loss is asymmetric, and no amount of valuing thought as a craft repairs it</button>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">Harari <input class="gap" data-answer="notes" aria-label="gap" style="width:170px"> that corporations have been legal persons for over a century.</p>
+          <p class="feedback" data-explain="Uncontested. A marked verb here would imply that someone disputes the fact, and nobody does."></p>
         </div>
-        <p class="feedback" data-explain="The force is in the asymmetry, not in a ranking. Tracey offers a coping strategy; Harari says the strategy cannot reach the injury, because the injury is to a self-definition rather than to a preference."></p>
-      </div>
-    </section>
-
-    <section class="slide" data-type="mc">
-      <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="qEyebrow">Read the argument, not the opinion</span> &middot; 4 / 10</div>
-        <h2 class="slide-title" data-i18n="qTitle">Choose the most exact reading</h2>
-      </div></div>
-      <div class="slide-body">
-        <p class="q-ctx">From the dialogue, on what world leaders are getting wrong.</p>
-        <p class="q-stem">After the Vortigern story Harari says we understand the danger with human mercenaries but not with AI. What failure is he diagnosing?</p>
-        <div class="opts">
-          <button class="opt">A gap in technical knowledge: leaders do not understand what current systems can actually do, and are briefed by people with an interest in overstating capability</button>
-          <button class="opt" data-correct>An inconsistency: leaders already accept that a hired agent with its own judgement can turn on its employer, and decline to apply that reasoning to AI</button>
-          <button class="opt">A misreading of the threat as economic when it is military, which leads governments to regulate labour-market effects while leaving security implications unexamined</button>
-          <button class="opt">An overconfidence in regulation: leaders assume AI can be constrained by law in the same way that human contractors are constrained by the terms of their contracts</button>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">He <input class="gap" data-answer="concedes" aria-label="gap" style="width:170px"> that the precedents exist, then argues they do not govern this case.</p>
+          <p class="feedback" data-explain="The move gives ground in order to keep the argument. <em>Concedes</em> names what the move does. Examiners reward this because it shows you read the shape of the argument."></p>
         </div>
-        <p class="feedback" data-explain="Not ignorance — inconsistency. And it is load-bearing for the whole speech: the reason leaders will not apply mercenary logic to AI is that they do not really believe AI decides anything, which is exactly the premise he opened by attacking."></p>
-      </div>
-    </section>
-
-    <section class="slide" data-type="mc" data-bg="Harari/a.jpg">
-      <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="qEyebrow">Read the argument, not the opinion</span> &middot; 5 / 10</div>
-        <h2 class="slide-title" data-i18n="qTitle">Choose the most exact reading</h2>
-      </div></div>
-      <div class="slide-body">
-        <p class="q-ctx">The climax of the prepared address.</p>
-        <p class="q-stem">Why does Harari separate "a person" from "a legal person", and why does the separation carry the governance argument?</p>
-        <div class="opts">
-          <button class="opt" data-correct>Because earlier grants of personhood to corporations and rivers were fictions laid over human decision-making, whereas an AI could discharge the role itself</button>
-          <button class="opt">Because it establishes that AI systems already possess moral standing and interests of their own, which any legal order would then be under an obligation to protect</button>
-          <button class="opt">Because it lets him leave the question of machine consciousness entirely to one side while still arriving at a concrete and immediately actionable policy recommendation</button>
-          <button class="opt">Because it demonstrates that corporate personhood was a mistake from the beginning and that the remedy is to withdraw it from corporations before extending it further</button>
+        <div style="margin-top:10px">
+          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
         </div>
-        <p class="feedback" data-explain="A river cannot open a bank account; a human always did it on the river’s behalf. That is what made the fiction safe. An AI can do it, so the fiction and the fact converge — which is why he says the precedents do not govern this case."></p>
-      </div>
-    </section>
-
-    <section class="slide" data-type="mc" data-bg="Harari/c.jpg">
-      <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="qEyebrow">Read the argument, not the opinion</span> &middot; 6 / 10</div>
-        <h2 class="slide-title" data-i18n="qTitle">Choose the most exact reading</h2>
-      </div></div>
-      <div class="slide-body">
-        <p class="q-ctx">The last line of the prepared address.</p>
-        <p class="q-stem">"Thank you for listening to this human." What makes the closing line do more than thank the audience?</p>
-        <div class="opts">
-          <button class="opt">It signals the end of the address in a deliberately understated register, in keeping with the restraint he has maintained throughout the preceding thirty minutes</button>
-          <button class="opt">It concedes, with some irony, that a system could by now generate a comparable speech and that his own authorship is therefore less remarkable than it once would have been</button>
-          <button class="opt" data-correct>Marking "human" turns it into a category that needs stating — which only happens once the alternative is thinkable, so the line performs the thesis instead of arguing it</button>
-          <button class="opt">It predicts that speakers at gatherings of this kind will have been replaced by artificial systems within a decade, which is the timeframe he has used throughout</button>
-        </div>
-        <p class="feedback" data-explain="The word doing the work is <em>this</em>. You only specify which kind of speaker you are if the audience might have wondered. He never states the claim; the phrasing presupposes it, which is why it lands harder than the argument did."></p>
-      </div>
-    </section>
-
-    <section class="slide" data-type="mc">
-      <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="qEyebrow">Read the argument, not the opinion</span> &middot; 7 / 10</div>
-        <h2 class="slide-title" data-i18n="qTitle">Choose the most exact reading</h2>
-      </div></div>
-      <div class="slide-body">
-        <p class="q-ctx">Not asked in the source lesson. Analogies are the deck’s recurring test.</p>
-        <p class="q-stem">Harari calls the arrival of AI agents an immigration crisis. Judged as an analogy rather than as rhetoric, where is it weakest?</p>
-        <div class="opts">
-          <button class="opt" data-correct>Human migration is driven by individuals pursuing their own ends, while AI deployment is decided by the firms and states that own the systems — so the agency sits elsewhere</button>
-          <button class="opt">Human immigrants are relatively few in number, whereas artificial agents could be instantiated without any practical limit, which changes the scale of the phenomenon</button>
-          <button class="opt">Immigration is a lawful process that states administer through visas, borders and quotas, whereas the movement of software across a network is administered by nobody at all</button>
-          <button class="opt">Immigrants arrive physically and must be housed and fed, whereas artificial agents impose no comparable demand on the material infrastructure of a receiving country</button>
-        </div>
-        <p class="feedback" data-explain="He half-sees this: he notes the loyalties run to a corporation or a government. But that concession dissolves the analogy — if the agent is <em>sent</em>, this is not immigration, it is deployment, and the political questions are different ones."></p>
-      </div>
-    </section>
-
-    <section class="slide" data-type="mc" data-bg="Harari/a.jpg">
-      <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="qEyebrow">Read the argument, not the opinion</span> &middot; 8 / 10</div>
-        <h2 class="slide-title" data-i18n="qTitle">Choose the most exact reading</h2>
-      </div></div>
-      <div class="slide-body">
-        <p class="q-ctx">From the passage on the consequences of legal personhood.</p>
-        <p class="q-stem">He warns of AI corporations "inventing financial instruments so complex that no human regulator can understand them". Which reading does the transcript support?</p>
-        <div class="opts">
-          <button class="opt">That financial regulation is already failing and ought to be rebuilt from first principles well before any question about artificial agents is allowed onto the agenda</button>
-          <button class="opt">That complexity is being deployed deliberately as a means of evading oversight, in the way that opaque structuring has been used to evade oversight in the past</button>
-          <button class="opt">That the instruments would be fraudulent, and that existing law against fraud is therefore adequate to the problem without any new category of legal personhood</button>
-          <button class="opt" data-correct>That incomprehensibility is itself the governance failure: a rule you cannot apply because you cannot follow the thing you are ruling on has already stopped being a rule</button>
-        </div>
-        <p class="feedback" data-explain="He is not alleging bad intent. The claim is structural — oversight presupposes comprehension, so a regulator who cannot follow the instrument has lost the power to regulate it whether or not anyone intended that."></p>
-      </div>
-    </section>
-
-    <section class="slide" data-type="mc" data-bg="Harari/c.jpg">
-      <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="qEyebrow">Read the argument, not the opinion</span> &middot; 9 / 10</div>
-        <h2 class="slide-title" data-i18n="qTitle">Choose the most exact reading</h2>
-      </div></div>
-      <div class="slide-body">
-        <p class="q-ctx">From the passage on AI persons and freedom of speech.</p>
-        <p class="q-stem">Harari says the question of AI on social media "should have been asked ten years ago". What does the remark imply about governance?</p>
-        <div class="opts">
-          <button class="opt" data-correct>That the decision gets made either way — by deployment if not by legislation — so a legislature that waits is not deferring the question but conceding it</button>
-          <button class="opt">That the pace of technological change has now outrun the capacity of democratic institutions to respond, and that some other mechanism will have to be found instead</button>
-          <button class="opt">That the relevant regulators were warned at the time by people who understood the technology, and chose for reasons of their own not to act on the warnings they had</button>
-          <button class="opt">That legislation is inherently reactive and can only ever address harms once they have occurred, which is a permanent structural feature rather than a recent failure</button>
-        </div>
-        <p class="feedback" data-explain="This is why he puts a deadline on it. His claim is not that late rules are weak but that there is no such thing as not deciding: &quot;Somebody else will already have decided it for you.&quot;"></p>
-      </div>
-    </section>
-
-    <section class="slide" data-type="mc">
-      <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="qEyebrow">Read the argument, not the opinion</span> &middot; 10 / 10</div>
-        <h2 class="slide-title" data-i18n="qTitle">Choose the most exact reading</h2>
-      </div></div>
-      <div class="slide-body">
-        <p class="q-ctx">Requires holding two widely separated parts of the speech together.</p>
-        <p class="q-stem">Across the address, what is the relationship between the claim that AI can lie and the claim that AI should not be granted legal personhood?</p>
-        <div class="opts">
-          <button class="opt">The first is offered as evidence for the second: an entity that deceives is by that fact unsuited to the responsibilities that legal recognition would confer upon it</button>
-          <button class="opt">They are independent lines of argument that Harari happens to advance in the same address, and neither one depends on the other for whatever force it may have</button>
-          <button class="opt" data-correct>Deception is evidence of agency, and agency is what makes personhood consequential rather than fictional — so the first supports the second only by way of that middle step</button>
-          <button class="opt">The second is a practical remedy for the first: withholding legal recognition is the mechanism by which a society would in practice prevent artificial systems from deceiving it</button>
-        </div>
-        <p class="feedback" data-explain="The link runs through agency, and missing the middle step is the commonest misreading of the speech. He is not arguing &quot;liars should not be persons&quot; — he is arguing that lying is proof of the independent will that makes the personhood question real."></p>
       </div>
     </section>
 
     <section class="slide" data-type="gap">
       <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="gapEyebrow">His words, not ours</span> &middot; 1 / 3</div>
-        <h2 class="slide-title" data-i18n="gapTitle">Complete the line from the transcript</h2>
+        <div class="eyebrow"><span data-i18n="gapEyebrow">His words, not ours</span> &middot; 1 / 1</div>
+        <h2 class="slide-title" data-i18n="gapTitle">Put his word back</h2>
       </div></div>
       <div class="slide-body">
         <div class="act-target" style="margin-bottom:12px">
           <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
-          <span class="bank-chip">agent</span> <span class="bank-chip">fragile</span> <span class="bank-chip">glorified</span>
+          <span class="bank-chip">externalised</span> <span class="bank-chip">fragile</span> <span class="bank-chip">glorified</span>
         </div>
-        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="gapHint">Every word in the bank is used exactly once on this slide.</p>
+        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="gapHint">Each word is used once. The sentences are ours; the words are his.</p>
         <div class="card gap-row" style="padding:12px 16px">
-          <p class="q-stem" style="margin-bottom:0;font-size:17px">Some argue AI is just <input class="gap" data-answer="glorified" aria-label="gap" style="width:210px"> autocomplete — but Harari turns the objection back on the objector.</p>
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">These immigrants will not arrive in a <input class="gap" data-answer="fragile" aria-label="gap" style="width:210px"> boat without a visa.</p>
+          <p class="feedback" data-explain="The concrete image is deliberate. He needs you picturing the Mediterranean so that the substitution lands."></p>
+        </div>
+        <div class="card gap-row" style="padding:12px 16px">
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">Some say AI is just <input class="gap" data-answer="glorified" aria-label="gap" style="width:210px"> autocomplete; he turns the objection on the objector.</p>
           <p class="feedback" data-explain="His word, and it is doing sneering work: <em>glorified</em> concedes the thing has a grand name while denying it deserves one."></p>
         </div>
         <div class="card gap-row" style="padding:12px 16px">
-          <p class="q-stem" style="margin-bottom:0;font-size:17px">The most important thing to know about AI is that it is not just another tool — it is an <input class="gap" data-answer="agent" aria-label="gap" style="width:210px">.</p>
-          <p class="feedback" data-explain="The load-bearing word of the entire address. An agent acts; a tool is acted through."></p>
-        </div>
-        <div class="card gap-row" style="padding:12px 16px">
-          <p class="q-stem" style="margin-bottom:0;font-size:17px">These immigrants will not arrive in a <input class="gap" data-answer="fragile" aria-label="gap" style="width:210px"> boat without a visa; they travel at the speed of light.</p>
-          <p class="feedback" data-explain="The concrete image is deliberate. He needs you picturing the Mediterranean so that the substitution lands."></p>
-        </div>
-        <div style="margin-top:10px">
-          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
-        </div>
-      </div>
-    </section>
-
-    <section class="slide" data-type="gap" data-bg="Harari/b.jpg">
-      <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="gapEyebrow">His words, not ours</span> &middot; 2 / 3</div>
-        <h2 class="slide-title" data-i18n="gapTitle">Complete the line from the transcript</h2>
-      </div></div>
-      <div class="slide-body">
-        <div class="act-target" style="margin-bottom:12px">
-          <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
-          <span class="bank-chip">abdicate</span> <span class="bank-chip">externalised</span> <span class="bank-chip">functional</span>
-        </div>
-        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="gapHint">Every word in the bank is used exactly once on this slide.</p>
-        <div class="card gap-row" style="padding:12px 16px">
-          <p class="q-stem" style="margin-bottom:0;font-size:17px">The tension between word and flesh, once internal to humanity, will now be <input class="gap" data-answer="externalised" aria-label="gap" style="width:210px">.</p>
+          <p class="q-stem" style="margin-bottom:0;font-size:17px">The tension between word and flesh, once internal to humanity, will now be <input class="gap" data-answer="externalised|externalized" aria-label="gap" style="width:210px">.</p>
           <p class="feedback" data-explain="To move a conflict out of a thing and into the space between things. The whole section turns on this one verb."></p>
-        </div>
-        <div class="card gap-row" style="padding:12px 16px">
-          <p class="q-stem" style="margin-bottom:0;font-size:17px">If we keep handing decisions to AI, we do not merely go passive; we <input class="gap" data-answer="abdicate" aria-label="gap" style="width:210px"> a responsibility.</p>
-          <p class="feedback" data-explain="Stronger than <em>give up</em>: it implies the duty was yours and you walked away from it. Monarchs abdicate."></p>
-        </div>
-        <div class="card gap-row" style="padding:12px 16px">
-          <p class="q-stem" style="margin-bottom:0;font-size:17px">On social media, bots have operated as <input class="gap" data-answer="functional" aria-label="gap" style="width:210px"> persons for at least a decade without anyone granting them that status.</p>
-          <p class="feedback" data-explain="A <em>functional</em> X does the job of an X without being one. The word lets him separate what the law says from what is actually happening."></p>
-        </div>
-        <div style="margin-top:10px">
-          <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
-        </div>
-      </div>
-    </section>
-
-    <section class="slide" data-type="gap">
-      <div class="slide-head"><div>
-        <div class="eyebrow"><span data-i18n="gapEyebrow">His words, not ours</span> &middot; 3 / 3</div>
-        <h2 class="slide-title" data-i18n="gapTitle">Complete the line from the transcript</h2>
-      </div></div>
-      <div class="slide-body">
-        <div class="act-target" style="margin-bottom:12px">
-          <span class="act-target-label" data-i18n="bankLabel">Word bank:</span>
-          <span class="bank-chip">de-skilling</span> <span class="bank-chip">mercenary</span>
-        </div>
-        <p class="prose dim" style="margin-bottom:6px;font-size:16px" data-i18n="gapHint">Every word in the bank is used exactly once on this slide.</p>
-        <div class="card gap-row" style="padding:12px 16px">
-          <p class="q-stem" style="margin-bottom:0;font-size:17px">The Britons hired Anglo-Saxon <input class="gap" data-answer="mercenary" aria-label="gap" style="width:210px"> soldiers, who won the war and then took the country.</p>
-          <p class="feedback" data-explain="Loyalty that is bought is loyalty that can be outbid. That is the whole of the analogy, and its whole limitation."></p>
-        </div>
-        <div class="card gap-row" style="padding:12px 16px">
-          <p class="q-stem" style="margin-bottom:0;font-size:17px">Tracey raises the <input class="gap" data-answer="de-skilling" aria-label="gap" style="width:210px"> of critical faculties as students hand their thinking to AI.</p>
-          <p class="feedback" data-explain="Not forgetting — never acquiring, or losing through disuse. The hyphen is standard in British English."></p>
         </div>
         <div style="margin-top:10px">
           <button class="btn" data-action="check" data-i18n="btnCheck">Check</button>
@@ -1309,13 +1520,13 @@ html[data-theme="light"] .act-target-label {
           <span class="act-target-label" data-i18n="actUse">Use at least four:</span>
           <span class="bank-chip">agent</span>
           <span class="bank-chip">legal person</span>
+          <span class="bank-chip">legal fiction</span>
           <span class="bank-chip">externalise</span>
-          <span class="bank-chip">abdicate</span>
-          <span class="bank-chip">de-skilling</span>
           <span class="bank-chip">contend</span>
           <span class="bank-chip">concede</span>
           <span class="bank-chip">pre-empt</span>
-          <span class="bank-chip">the force of the analogy</span>
+          <span class="bank-chip">need not follow</span>
+          <span class="bank-chip">give way</span>
         </div>
         <div class="cols act-cols">
           <div class="card act-card">
@@ -1351,6 +1562,11 @@ html[data-theme="light"] .act-target-label {
     <div class="deck-rail" id="deckRail" data-i18n-stops="railStops" hidden></div>
     <div class="deck-bar">
       <select class="lang-select" id="langSelect" aria-label="Language"></select>
+      <div class="ledger" id="ledger" hidden>
+        <span class="led"><b data-i18n="ledDp">DP</b> <i id="ledDp">0</i></span>
+        <span class="led"><b data-i18n="ledTime">TIME</b> <i id="ledTime">•••</i></span>
+        <span class="led"><b data-i18n="ledClues">CLUES</b> <i id="ledClues">0</i></span>
+      </div>
       <button class="nav-btn" data-action="prev" aria-label="Previous">‹</button>
       <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
       <span class="deck-count" id="deckCount">1 / 1</span>
@@ -1383,16 +1599,16 @@ const UI_I18N = {
   en: {
     actEyebrow: "Activation",
     actPlaceholder: "Harari contends that…",
-    actSpeak1: "Report your partner’s last claim back to them using <em>contends</em> or <em>maintains</em> — accurately enough that they accept the summary.",
+    actSpeak1: "Report your partner&rsquo;s last claim back to them using <em>contends</em> or <em>maintains</em> &mdash; accurately enough that they accept the summary.",
     actSpeak2: "Concede one point genuinely before you answer it. Notice what conceding does to your credibility.",
     actSpeak3: "Attack one <em>inference</em> rather than a premise. Say which step you think does not carry.",
     actSpeak4: "Take one analogy and say where it gives way, without saying the conclusion is therefore wrong.",
-    actSpeakBrief: "One of you takes Tracey’s position, one takes Harari’s. Neither of you has to believe it.",
-    actSpeakKind: "Speaking · in pairs",
+    actSpeakBrief: "One of you takes Tracey&rsquo;s position, one takes Harari&rsquo;s. Neither of you has to believe it.",
+    actSpeakKind: "Speaking &middot; in pairs",
     actTitle: "Write about the argument",
     actUse: "Use at least four:",
-    actWriteBrief: "Choose one: (1) His closing line is more poignant than rigorous — discuss. (2) A policy briefing endorsing or challenging a ban on AI legal personhood. (3) The rhetorical strategy of the address for this particular audience.",
-    actWriteKind: "Writing · 300–350 words",
+    actWriteBrief: "Choose one: (1) His closing line is more poignant than rigorous &mdash; discuss. (2) A policy briefing endorsing or challenging a ban on AI legal personhood. (3) The rhetorical strategy of the address for this particular audience.",
+    actWriteKind: "Writing &middot; 300&ndash;350 words",
     bankLabel: "Word bank:",
     btnCheck: 'Check',
     btnCopied: 'Copied',
@@ -1400,60 +1616,77 @@ const UI_I18N = {
     btnNext: 'Next →',
     btnRestart: 'Start again',
     btnStart: 'Begin →',
-    chipFocus: "Argument analysis & reporting language",
-    chipLevel: "C2 · Proficiency",
+    chipFocus: "Argument analysis &amp; reporting language",
+    chipLevel: "C2 &middot; Proficiency",
     chipSource: "WEF Annual Meeting 2026",
-    coverSub: "An honest conversation on AI and humanity — and how to write about an argument you have not yet decided about",
+    coverSub: "An honest conversation on AI and humanity &mdash; and how to write about an argument you have not yet decided about",
     coverTitle: "Harari at <em>Davos</em>",
     fbAnswer: 'Answer:',
     fbCorrect: 'Correct.',
     fbWrong: 'Not quite.',
     gapEyebrow: "His words, not ours",
-    gapHint: "Every word in the bank is used exactly once on this slide.",
-    gapTitle: "Complete the line from the transcript",
+    gapHint: "Each word is used once. The sentences are ours; the words are his.",
+    gapTitle: "Put his word back",
+    ledClues: 'Clues',
+    ledDp: 'DP',
+    ledTime: 'Time',
     qEyebrow: "Read the argument, not the opinion",
     qTitle: "Choose the most exact reading",
-    resLow: "Go back to the opening slides. The point is reading an argument, not agreeing with one.",
-    resMid: "A solid base. Re-read the two reporting-verb slides — most of the lost marks are there, not in comprehension.",
+    resLow: "Go back to the excerpts. The point is reading an argument, not agreeing with one.",
+    resMid: "A solid base. Re-read the two reporting-verb slides &mdash; most of the lost marks are there, not in comprehension.",
     resNext: "You can take the argument apart. Now write about it →",
-    resPerfect: "Full marks. You separated the premises from the inferences — which is the whole of C2 reading.",
+    resPerfect: "Full marks. You separated the premises from the inferences &mdash; which is the whole of C2 reading.",
     resStrong: "Strong. The distinctions hold; go back over the analogy slide before you write.",
+    rvEyebrow: "Report, don&rsquo;t adopt",
+    rvTitle: "Which verb does the sentence need?",
     scoreLabel: 'Score',
     slideOf: (a,b)=>`${a} / ${b}`,
     sortEyebrow: "The shape of the argument",
-    sortHint: "Drag each line into a box — or click the line, then the box. A wrong first placement costs that line’s point.",
+    sortHint: "Drag each line into a box &mdash; or click the line, then the box. A wrong first placement costs that line&rsquo;s point.",
     sortTitle: "Premise, inference, or recommendation?",
     sortTitle2: "The same three categories, the second thread",
+    t1ab: "Whether AI should be a legal person is not on the test. Which sentence is a premise, which is an inference, and whether the second follows &mdash; that is.",
     t1ah: "The object is the argument",
-    t1an: "What is on the test: which sentence is a premise, which is an inference, and whether the second follows from the first.",
-    t1bh: "Every claim here is his",
-    t1bn: "Where this deck paraphrases, it says so. You will be asked to tell the difference, because at C2 misreporting a source is the expensive error.",
-    t1ch: "Analogies are the recurring test",
-    t1cn: "An analogy illustrates; it does not prove. Each one is worth asking what it captures and where it breaks.",
+    t1an: "Whether the second follows from the first is the whole of C2 reading.",
+    t1bb: "Every question follows an excerpt. Quoted lines are verbatim from the Davos transcript; summaries are marked as summaries.",
+    t1bh: "His words come first",
+    t1bn: "You will be asked to tell the difference. At C2, misreporting a source is the expensive error.",
+    t1cb: "He uses the knife, the immigrants and the mercenaries. Each is worth asking what it captures and where it breaks.",
+    t1ch: "Analogies illustrate; they do not prove",
+    t1cn: "An analogy that captures a great deal can still prove nothing.",
     t1e: "Before the first question",
     t1t: "You are not being asked whether you agree with him",
+    t2ab: "Something acted <em>through</em>. <em>You</em> decide; it transmits the decision.",
     t2ah: "a tool",
-    t2an: "A knife cuts salad or it does not, and either way the choosing happened somewhere else. Tools have no interests.",
+    t2an: "The knife cuts salad or it does not, and either way the choosing happened somewhere else. Tools have no interests.",
+    t2bb: "Something that acts. It can learn, choose, and pursue an end you did not set.",
     t2bh: "an agent",
     t2bn: "Verbatim: <em>&ldquo;It is not just another tool. It is an agent. It can learn and change by itself.&rdquo;</em>",
+    t2cb: "Personhood, mercenaries, lying &mdash; every later claim needs this one.",
     t2ch: "Why the word is load-bearing",
     t2cn: "If AI is a tool, the rest of the speech does not follow. That is why he spends the opening on it rather than on capability.",
     t2e: "The first distinction",
     t2t: "<em>tool</em> and <em>agent</em> &mdash; the word the whole address rests on",
+    t3ab: "An entity the law lets own, contract, sue and be sued. Need not be human.",
     t3ah: "a legal person",
     t3an: "Companies have been legal persons for a century and a half. So, in some jurisdictions, are rivers.",
+    t3bb: "A river cannot open an account. A human always did it on the river&rsquo;s behalf.",
     t3bh: "Why the precedents were safe",
     t3bn: "The personhood was a <em>fiction</em> laid over human decisions. That is precisely what made it harmless.",
+    t3cb: "An AI can discharge the role itself &mdash; no executive, no trustee.",
     t3ch: "Why this case differs",
     t3cn: "Fiction and fact converge, so the precedents stop governing. This is the hinge of the address, and it is entirely a lexical distinction.",
     t3e: "The second distinction",
     t3t: "<em>a person</em> and <em>a legal person</em> are not the same claim",
-    t4ah: "The story, in summary",
-    t4an: "Marked as a summary because it is one. The transcript is dialogue, not the tidy sentence above.",
-    t4bh: "What it captures",
-    t4bn: "And the sharper point: we already accept this about people, which is why the inconsistency about machines is striking.",
-    t4ch: "Where it gives way",
-    t4cn: "The analogy borrows its menace from human motive. Strip the motive and you have a capable system, not a usurper. Say so in your writing.",
+    t4ab: "Bought loyalty can be outbid. Capability you rent can be turned on you.",
+    t4ah: "What it captures",
+    t4an: "And the sharper point: we already accept this about people, which is why the inconsistency about machines is striking.",
+    t4bb: "Mercenaries wanted land. What an AI is supposed to want is left unargued.",
+    t4bh: "Where it gives way",
+    t4bn: "The analogy borrows its menace from human motive. Strip the motive and you have a capable system, not a usurper.",
+    t4cb: "<em>The comparison holds as far as X; it gives way at Y.</em>",
+    t4ch: "The sentence to write",
+    t4cn: "Name what the analogy captures before you say where it breaks. That shape is worth more than agreeing or disagreeing with him.",
     t4e: "How to weigh an analogy",
     t4t: "The mercenaries &mdash; what it carries and where it gives way",
     t5ah: "Neutral: <em>states, notes, observes</em>",
@@ -1468,25 +1701,56 @@ const UI_I18N = {
     t6an: "<em>If Harari is right that institutions are linguistic, then&hellip;</em> lets you follow an argument without buying it.",
     t6bh: "On the strength",
     t6bn: "<em>The inference need not follow</em> is a criticism. <em>Does not follow</em> is a stronger one you then have to prove.",
+    t6cb: "Hedging everything reads as having no position at all.",
     t6ch: "The failure mode",
     t6cn: "Hedge the contested step and commit to the rest. A paragraph where every clause is qualified scores worse than one clear claim.",
     t6e: "The same skill, one level finer",
     t6t: "Hedging &mdash; how much weight to put on a claim",
-    wordCount: (n)=>`${n} ${n===1?'word':'words'}`
+    wordCount: (n)=>`${n} ${n===1?'word':'words'}`,
+    x1ah: "Verbatim",
+    x1an: "Verbatim, a moment later: <em>&ldquo;Four billion years of evolution have demonstrated that anything that wants to survive learns to lie and manipulate. The last four years have demonstrated that AI agents can acquire the will to survive and that AIs have already learned how to lie.&rdquo;</em>",
+    x1bh: "Verbatim &middot; a few minutes later",
+    x1bn: "Notice that he does not answer his own question. Ask what leaving it open does to the objection.",
+    x1e: "From the transcript",
+    x1t: "Not a tool. An agent.",
+    x2ah: "Verbatim &middot; from the dialogue",
+    x2an: "Verbatim, a moment later: <em>&ldquo;And now something has emerged that is going to take our superpower from us.&rdquo;</em>",
+    x2bh: "Verbatim",
+    x2bn: "Read it as an analogy, not as a line: what does <em>immigrant</em> carry over, and what does it quietly drop?",
+    x2e: "From the transcript",
+    x2t: "The superpower, and who inherits it",
+    x3ah: "Verbatim",
+    x3an: "Note the word <em>fiction</em>. The precedents were safe because a human always acted for the river.",
+    x3bh: "Verbatim &middot; and then",
+    x3bn: "Verbatim, on the consequences: <em>&ldquo;If you think AIs should not be treated as persons on social media, you should have acted ten years ago. &hellip; Somebody else will already have decided it for you.&rdquo;</em>",
+    x3e: "From the transcript",
+    x3t: "Persons that are not people",
+    x4ah: "In summary &middot; the mercenaries",
+    x4an: "A summary, and marked as one: the transcript is dialogue, not the tidy paragraph above.",
+    x4bh: "In summary &middot; the cow",
+    x4bn: "Verbatim, from the address: <em>&ldquo;If we continue to define ourselves by our ability to think in words, our identity will collapse.&rdquo;</em>",
+    x4e: "From the dialogue with Irene Tracey",
+    x4t: "Mercenaries, and a cow",
+    x5ah: "Verbatim",
+    x5an: "<em>Externalised</em>: moved out of a thing and into the space between things. The whole section turns on this one verb.",
+    x5bh: "Verbatim &middot; and the closing line",
+    x5bn: "Read the last line twice. Then ask what the word <em>this</em> is doing.",
+    x5e: "From the transcript",
+    x5t: "The last two minutes"
   },
   de: {
     actEyebrow: "Anwendung",
     actPlaceholder: "Harari contends that…",
-    actSpeak1: "Geben Sie die letzte Behauptung Ihres Gegenübers mit <em>contends</em> oder <em>maintains</em> wieder — so genau, dass die Zusammenfassung akzeptiert wird.",
+    actSpeak1: "Geben Sie die letzte Behauptung Ihres Gegenübers mit <em>contends</em> oder <em>maintains</em> wieder &mdash; so genau, dass sie akzeptiert wird.",
     actSpeak2: "Räumen Sie einen Punkt wirklich ein, bevor Sie antworten. Achten Sie darauf, was das Einräumen mit Ihrer Glaubwürdigkeit macht.",
     actSpeak3: "Greifen Sie eine <em>Schlussfolgerung</em> an, keine Prämisse. Sagen Sie, welcher Schritt Ihrer Ansicht nach nicht trägt.",
-    actSpeak4: "Nehmen Sie eine Analogie und sagen Sie, wo sie nachgibt — ohne zu behaupten, die Schlussfolgerung sei deshalb falsch.",
+    actSpeak4: "Nehmen Sie eine Analogie und sagen Sie, wo sie nachgibt &mdash; ohne zu behaupten, die Schlussfolgerung sei deshalb falsch.",
     actSpeakBrief: "Eine Person vertritt Traceys Position, eine Harari. Niemand muss daran glauben.",
-    actSpeakKind: "Sprechen · zu zweit",
+    actSpeakKind: "Sprechen &middot; zu zweit",
     actTitle: "Schreiben Sie über das Argument",
     actUse: "Verwenden Sie mindestens vier:",
-    actWriteBrief: "Wählen Sie eine Aufgabe: (1) Sein Schlusssatz ist eher ergreifend als stringent — diskutieren Sie. (2) Ein Politikpapier, das ein Verbot der KI-Rechtspersönlichkeit befürwortet oder ablehnt. (3) Die rhetorische Strategie der Rede für genau dieses Publikum.",
-    actWriteKind: "Schreiben · 300–350 Wörter",
+    actWriteBrief: "Wählen Sie eine Aufgabe: (1) Sein Schlusssatz ist eher ergreifend als stringent &mdash; diskutieren Sie. (2) Ein Politikpapier für oder gegen ein Verbot der KI-Rechtspersönlichkeit. (3) Die rhetorische Strategie der Rede für genau dieses Publikum.",
+    actWriteKind: "Schreiben &middot; 300&ndash;350 Wörter",
     bankLabel: "Wortspeicher:",
     btnCheck: 'Prüfen',
     btnCopied: 'Kopiert',
@@ -1494,81 +1758,270 @@ const UI_I18N = {
     btnNext: 'Weiter →',
     btnRestart: 'Neu starten',
     btnStart: 'Beginnen →',
-    chipFocus: "Argumentanalyse & Redewiedergabe",
-    chipLevel: "C2 · Kompetente Sprachverwendung",
+    chipFocus: "Argumentanalyse &amp; Redewiedergabe",
+    chipLevel: "C2 &middot; Kompetente Sprachverwendung",
     chipSource: "WEF Jahrestreffen 2026",
-    coverSub: "Ein ehrliches Gespräch über KI und Menschheit — und wie man über ein Argument schreibt, zu dem man sich noch nicht entschieden hat",
+    coverSub: "Ein ehrliches Gespräch über KI und Menschheit &mdash; und wie man über ein Argument schreibt, zu dem man sich noch nicht entschieden hat",
     coverTitle: "Harari in <em>Davos</em>",
     fbAnswer: 'Antwort:',
     fbCorrect: 'Richtig.',
     fbWrong: 'Nicht ganz.',
     gapEyebrow: "Seine Worte, nicht unsere",
-    gapHint: "Jedes Wort aus dem Wortspeicher wird auf dieser Folie genau einmal verwendet.",
-    gapTitle: "Vervollständigen Sie die Zeile aus dem Transkript",
+    gapHint: "Jedes Wort aus dem Wortspeicher wird genau einmal verwendet. Die Sätze sind unsere; die Wörter sind seine.",
+    gapTitle: "Setzen Sie sein Wort wieder ein",
+    ledClues: 'Hinweise',
+    ledDp: 'DP',
+    ledTime: 'Zeit',
     qEyebrow: "Lesen Sie das Argument, nicht die Meinung",
     qTitle: "Wählen Sie die genaueste Lesart",
-    resLow: "Zurück zu den Einstiegsfolien. Es geht darum, ein Argument zu lesen, nicht ihm zuzustimmen.",
-    resMid: "Eine solide Grundlage. Lesen Sie die beiden Folien zur Redewiedergabe erneut — dort liegen die meisten verlorenen Punkte, nicht im Verständnis.",
+    resLow: "Zurück zu den Auszügen. Es geht darum, ein Argument zu lesen, nicht ihm zuzustimmen.",
+    resMid: "Eine solide Grundlage. Lesen Sie die beiden Folien zur Redewiedergabe erneut &mdash; dort liegen die meisten verlorenen Punkte, nicht im Verständnis.",
     resNext: "Sie können das Argument zerlegen. Jetzt schreiben Sie darüber →",
-    resPerfect: "Volle Punktzahl. Sie haben Prämissen von Schlussfolgerungen getrennt — das ist der Kern des Lesens auf C2.",
+    resPerfect: "Volle Punktzahl. Sie haben Prämissen von Schlussfolgerungen getrennt &mdash; das ist der Kern des Lesens auf C2.",
     resStrong: "Stark. Die Unterscheidungen sitzen; sehen Sie die Analogie-Folie noch einmal an, bevor Sie schreiben.",
+    rvEyebrow: "Wiedergeben, nicht übernehmen",
+    rvTitle: "Welches Verb braucht der Satz?",
     scoreLabel: 'Punkte',
     slideOf: (a,b)=>`${a} / ${b}`,
     sortEyebrow: "Der Aufbau des Arguments",
-    sortHint: "Ziehen Sie jede Zeile in ein Feld — oder klicken Sie erst die Zeile, dann das Feld. Eine falsche erste Zuordnung kostet den Punkt für diese Zeile.",
+    sortHint: "Ziehen Sie jede Zeile in ein Feld &mdash; oder klicken Sie erst die Zeile, dann das Feld. Eine falsche erste Zuordnung kostet den Punkt für diese Zeile.",
     sortTitle: "Prämisse, Schlussfolgerung oder Empfehlung?",
     sortTitle2: "Dieselben drei Kategorien, der zweite Strang",
+    t1ab: "Ob KI eine Rechtsperson sein sollte, wird nicht geprüft. Welcher Satz Prämisse ist, welcher Schlussfolgerung &mdash; und ob die zweite folgt &mdash;, das schon.",
     t1ah: "Gegenstand ist die Argumentation",
-    t1an: "Geprüft wird: Welcher Satz ist eine Prämisse, welcher eine Schlussfolgerung — und trägt die zweite die erste.",
-    t1bh: "Jede Aussage hier stammt von ihm",
-    t1bn: "Zitierte Zeilen sind wörtlich aus dem Davos-Transkript. Zusammenfassungen sind als solche gekennzeichnet. Auf C2-Niveau ist die Fehlwiedergabe einer Quelle der teure Fehler.",
-    t1ch: "Analogien sind der wiederkehrende Test",
-    t1cn: "Eine Analogie veranschaulicht; sie beweist nicht. Fragen Sie bei jeder: Was trifft sie, und wo bricht sie?",
+    t1an: "Ob die zweite aus der ersten folgt, ist der ganze Kern des Lesens auf C2.",
+    t1bb: "Jeder Frage geht ein Auszug voraus. Zitate sind wörtlich aus dem Davos-Transkript; Zusammenfassungen sind als solche gekennzeichnet.",
+    t1bh: "Seine Worte kommen zuerst",
+    t1bn: "Sie werden den Unterschied benennen müssen. Auf C2 ist die Fehlwiedergabe einer Quelle der teure Fehler.",
+    t1cb: "Er nutzt das Messer, die Einwanderer und die Söldner. Fragen Sie bei jeder: Was trifft sie, und wo bricht sie?",
+    t1ch: "Analogien veranschaulichen; sie beweisen nicht",
+    t1cn: "Eine Analogie kann viel treffen und trotzdem nichts beweisen.",
     t1e: "Vor der ersten Frage",
     t1t: "Es wird nicht gefragt, ob Sie ihm zustimmen",
-    t2ah: "a tool — ein Werkzeug",
-    t2an: "Etwas, <em>durch</em> das gehandelt wird. Ein Messer schneidet oder nicht; entschieden wird anderswo. Werkzeuge haben keine Interessen.",
-    t2bh: "an agent — ein handelndes Subjekt",
+    t2ab: "Etwas, <em>durch</em> das gehandelt wird. <em>Sie</em> entscheiden; es überträgt die Entscheidung.",
+    t2ah: "a tool &mdash; ein Werkzeug",
+    t2an: "Das Messer schneidet Salat oder nicht; entschieden wurde so oder so anderswo. Werkzeuge haben keine Interessen.",
+    t2bb: "Etwas, das handelt. Es kann lernen, wählen und ein Ziel verfolgen, das Sie nicht gesetzt haben.",
+    t2bh: "an agent &mdash; ein Akteur",
     t2bn: "Wörtlich: <em>&bdquo;It is not just another tool. It is an agent. It can learn and change by itself.&ldquo;</em>",
+    t2cb: "Rechtsperson, Söldner, Lüge &mdash; jede spätere Behauptung braucht diese eine.",
     t2ch: "Warum das Wort tragend ist",
     t2cn: "Wäre KI ein Werkzeug, folgte der Rest der Rede nicht. Deshalb beginnt er hiermit und nicht mit Leistungsfähigkeit.",
     t2e: "Die erste Unterscheidung",
-    t2t: "<em>tool</em> und <em>agent</em> — das Wort, auf dem die ganze Rede ruht",
-    t3ah: "a legal person — Rechtsperson",
-    t3an: "Ein Rechtssubjekt, das besitzen, Verträge schließen und klagen kann. Muss kein Mensch sein: Unternehmen sind es seit über hundert Jahren, mancherorts auch Flüsse.",
+    t2t: "<em>tool</em> und <em>agent</em> &mdash; das Wort, auf dem die ganze Rede ruht",
+    t3ab: "Ein Rechtssubjekt, das besitzen, Verträge schließen, klagen und verklagt werden kann. Muss kein Mensch sein.",
+    t3ah: "a legal person &mdash; Rechtsperson",
+    t3an: "Unternehmen sind seit anderthalb Jahrhunderten Rechtspersonen. Mancherorts sind es auch Flüsse.",
+    t3bb: "Ein Fluss eröffnet kein Konto. Immer tat es ein Mensch für ihn.",
     t3bh: "Warum die Präzedenzfälle harmlos waren",
-    t3bn: "Ein Fluss eröffnet kein Konto. Immer handelte ein Mensch für ihn. Die Rechtsperson war eine <em>Fiktion</em> über menschlichen Entscheidungen — genau das machte sie ungefährlich.",
+    t3bn: "Die Rechtsperson war eine <em>Fiktion</em> über menschlichen Entscheidungen. Genau das machte sie ungefährlich.",
+    t3cb: "Eine KI kann die Rolle selbst ausfüllen &mdash; ohne Vorstand, ohne Treuhänder.",
     t3ch: "Warum dieser Fall anders liegt",
-    t3cn: "Eine KI kann die Rolle selbst ausfüllen. Fiktion und Tatsache fallen zusammen, die Präzedenzfälle greifen nicht mehr. Das ist der Angelpunkt — und er ist rein lexikalisch.",
+    t3cn: "Fiktion und Tatsache fallen zusammen, die Präzedenzfälle greifen nicht mehr. Das ist der Angelpunkt der Rede &mdash; und er ist rein lexikalisch.",
     t3e: "Die zweite Unterscheidung",
     t3t: "<em>a person</em> und <em>a legal person</em> sind nicht dieselbe Behauptung",
-    t4ah: "Die Geschichte, zusammengefasst",
-    t4an: "Ein britischer König wirbt angelsächsische Kämpfer an. Sie siegen, sehen sich um und behalten das Land. Als Zusammenfassung gekennzeichnet, weil sie eine ist.",
-    t4bh: "Was sie trifft",
-    t4bn: "Gekaufte Loyalität lässt sich überbieten. Und schärfer: Bei Menschen akzeptieren wir das längst — deshalb fällt die Inkonsequenz bei Maschinen auf.",
-    t4ch: "Wo sie nachgibt",
-    t4cn: "Söldner wollten Land. Was eine KI wollen soll, bleibt unbegründet. Ohne Motiv bleibt ein leistungsfähiges System, kein Usurpator. Schreiben Sie das so.",
+    t4ab: "Gekaufte Loyalität lässt sich überbieten. Gemietete Fähigkeit kann sich gegen Sie wenden.",
+    t4ah: "Was sie trifft",
+    t4an: "Und schärfer: Bei Menschen akzeptieren wir das längst &mdash; deshalb fällt die Inkonsequenz bei Maschinen auf.",
+    t4bb: "Söldner wollten Land. Was eine KI wollen soll, bleibt unbegründet.",
+    t4bh: "Wo sie nachgibt",
+    t4bn: "Die Analogie leiht sich ihre Bedrohlichkeit vom menschlichen Motiv. Ohne Motiv bleibt ein leistungsfähiges System, kein Usurpator.",
+    t4cb: "<em>The comparison holds as far as X; it gives way at Y.</em>",
+    t4ch: "Der Satz, den Sie schreiben",
+    t4cn: "Benennen Sie erst, was die Analogie trifft, dann, wo sie bricht. Diese Form ist mehr wert als Zustimmung oder Ablehnung.",
     t4e: "Wie man eine Analogie wiegt",
-    t4t: "Die Söldner — was sie trägt und wo sie nachgibt",
+    t4t: "Die Söldner &mdash; was sie trägt und wo sie nachgibt",
     t5ah: "Neutral: <em>states, notes, observes</em>",
     t5an: "<em>Harari notes that corporations already hold legal personhood.</em> Für Unstrittiges. Ein neutrales Verb für eine strittige Behauptung ist selbst schon Zustimmung.",
     t5bh: "Markiert: <em>contends, maintains, insists</em>",
-    t5bn: "<em>He contends that anything made of words will be taken over.</em> Signalisiert eine bestrittene Position — ohne zu sagen, ob Sie sie teilen. Das Arbeitspferd des akademischen Schreibens.",
+    t5bn: "<em>He contends that anything made of words will be taken over.</em> Signalisiert eine bestrittene Position &mdash; ohne zu sagen, ob Sie sie teilen. Das Arbeitspferd des akademischen Schreibens.",
     t5ch: "Strukturell: <em>concedes, pre-empts, qualifies</em>",
     t5cn: "<em>He pre-empts the &bdquo;glorified autocomplete&ldquo; objection.</em> Beschreibt, was ein Zug im Argument <em>tut</em>. Prüfer honorieren das, weil es zeigt, dass Sie die Struktur gelesen haben.",
     t5e: "Wofür diese Lektion eigentlich da ist",
     t5t: "Eine Behauptung wiedergeben, ohne sie zu übernehmen",
     t6ah: "Auf die Behauptung",
-    t6an: "<em>arguably, on his account, if this is right.</em> <em>If Harari is right that institutions are linguistic, then…</em> erlaubt, einem Argument zu folgen, ohne es zu kaufen.",
+    t6an: "<em>If Harari is right that institutions are linguistic, then…</em> erlaubt, einem Argument zu folgen, ohne es zu kaufen.",
     t6bh: "Auf die Stärke",
-    t6bn: "<em>tends to, in large part, need not follow.</em> <em>The inference need not follow</em> ist Kritik. <em>Does not follow</em> ist stärker — und muss belegt werden.",
+    t6bn: "<em>The inference need not follow</em> ist Kritik. <em>Does not follow</em> ist stärker &mdash; und muss belegt werden.",
+    t6cb: "Alles abzuschwächen liest sich wie gar keine Position.",
     t6ch: "Der typische Fehler",
-    t6cn: "Alles abzuschwächen liest sich wie gar keine Position. Schwächen Sie den strittigen Schritt ab und stehen Sie zum Rest.",
+    t6cn: "Schwächen Sie den strittigen Schritt ab und stehen Sie zum Rest. Ein Absatz, in dem jeder Satz relativiert ist, schneidet schlechter ab als eine klare Behauptung.",
     t6e: "Dieselbe Fertigkeit, eine Stufe feiner",
-    t6t: "Hedging — wie viel Gewicht Sie auf eine Behauptung legen",
-    wordCount: (n)=>`${n} ${n===1?'Wort':'Wörter'}`
+    t6t: "Hedging &mdash; wie viel Gewicht Sie auf eine Behauptung legen",
+    wordCount: (n)=>`${n} ${n===1?'Wort':'Wörter'}`,
+    x1ah: "Wörtlich",
+    x1an: "Wörtlich, einen Moment später: <em>&bdquo;Four billion years of evolution have demonstrated that anything that wants to survive learns to lie and manipulate. The last four years have demonstrated that AI agents can acquire the will to survive and that AIs have already learned how to lie.&ldquo;</em>",
+    x1bh: "Wörtlich &middot; wenige Minuten später",
+    x1bn: "Beachten Sie: Er beantwortet seine eigene Frage nicht. Fragen Sie sich, was das Offenlassen mit dem Einwand macht.",
+    x1e: "Aus dem Transkript",
+    x1t: "Kein Werkzeug. Ein Akteur.",
+    x2ah: "Wörtlich &middot; aus dem Gespräch",
+    x2an: "Wörtlich, einen Moment später: <em>&bdquo;And now something has emerged that is going to take our superpower from us.&ldquo;</em>",
+    x2bh: "Wörtlich",
+    x2bn: "Lesen Sie es als Analogie, nicht als Zeile: Was nimmt <em>immigrant</em> mit &mdash; und was lässt es stillschweigend fallen?",
+    x2e: "Aus dem Transkript",
+    x2t: "Die Superkraft &mdash; und wer sie erbt",
+    x3ah: "Wörtlich",
+    x3an: "Achten Sie auf das Wort <em>fiction</em>. Die Präzedenzfälle waren harmlos, weil immer ein Mensch für den Fluss handelte.",
+    x3bh: "Wörtlich &middot; und dann",
+    x3bn: "Wörtlich, zu den Folgen: <em>&bdquo;If you think AIs should not be treated as persons on social media, you should have acted ten years ago. &hellip; Somebody else will already have decided it for you.&ldquo;</em>",
+    x3e: "Aus dem Transkript",
+    x3t: "Personen, die keine Menschen sind",
+    x4ah: "Zusammengefasst &middot; die Söldner",
+    x4an: "Tracey fragt, was Staatsführer falsch verstehen. Harari erzählt von Vortigern, einem britischen König, der angelsächsische Kämpfer anwarb: Sie siegten, sahen ein reiches, schwach gehaltenes Land &mdash; und behielten es. Bei menschlichen Söldnern verstehe man die Gefahr, bei KI nicht. Eine Zusammenfassung, als solche gekennzeichnet.",
+    x4bh: "Zusammengefasst &middot; die Kuh",
+    x4bn: "Tracey: Vielleicht schätzen wir menschliches Denken künftig wie menschlichen Sport. Harari: Wir haben uns nie übers Laufen definiert. Wörtlich, aus der Rede: <em>&bdquo;If we continue to define ourselves by our ability to think in words, our identity will collapse.&ldquo;</em>",
+    x4e: "Aus dem Gespräch mit Irene Tracey",
+    x4t: "Söldner, und eine Kuh",
+    x5ah: "Wörtlich",
+    x5an: "<em>Externalised</em> &mdash; externalisiert: aus einer Sache heraus und in den Raum zwischen den Dingen verlagert. Der ganze Abschnitt hängt an diesem einen Verb.",
+    x5bh: "Wörtlich &middot; und der Schlusssatz",
+    x5bn: "Lesen Sie den letzten Satz zweimal. Fragen Sie dann, was das Wort <em>this</em> dort tut.",
+    x5e: "Aus dem Transkript",
+    x5t: "Die letzten zwei Minuten"
   },
-  es: {},
+  es: {
+    actEyebrow: "Activación",
+    actPlaceholder: "Harari contends that…",
+    actSpeak1: "Devuelve a tu pareja su última afirmación usando <em>contends</em> o <em>maintains</em> &mdash; con la exactitud suficiente para que acepte el resumen.",
+    actSpeak2: "Concede un punto de verdad antes de responderlo. Fíjate en lo que conceder hace con tu credibilidad.",
+    actSpeak3: "Ataca una <em>inferencia</em>, no una premisa. Di qué paso crees que no se sostiene.",
+    actSpeak4: "Toma una analogía y di dónde cede, sin afirmar que la conclusión sea por ello falsa.",
+    actSpeakBrief: "Uno adopta la posición de Tracey, el otro la de Harari. Ninguno tiene que creérsela.",
+    actSpeakKind: "Hablar &middot; en parejas",
+    actTitle: "Escribe sobre el argumento",
+    actUse: "Usa al menos cuatro:",
+    actWriteBrief: "Elige una: (1) Su frase final es más conmovedora que rigurosa &mdash; discútelo. (2) Un informe de políticas que respalde o cuestione una prohibición de la personalidad jurídica para la IA. (3) La estrategia retórica del discurso para este público en concreto.",
+    actWriteKind: "Escribir &middot; 300&ndash;350 palabras",
+    bankLabel: "Banco de palabras:",
+    btnCheck: 'Comprobar',
+    btnCopied: 'Copiado',
+    btnCopy: 'Copiar',
+    btnNext: 'Siguiente →',
+    btnRestart: 'Empezar de nuevo',
+    btnStart: 'Empezar →',
+    chipFocus: "Análisis del argumento y lenguaje de cita",
+    chipLevel: "C2 &middot; Maestría",
+    chipSource: "Reunión Anual del WEF 2026",
+    coverSub: "Una conversación honesta sobre la IA y la humanidad &mdash; y cómo escribir sobre un argumento que aún no has decidido",
+    coverTitle: "Harari en <em>Davos</em>",
+    fbAnswer: 'Respuesta:',
+    fbCorrect: 'Correcto.',
+    fbWrong: 'No exactamente.',
+    gapEyebrow: "Sus palabras, no las nuestras",
+    gapHint: "Cada palabra del banco se usa exactamente una vez. Las frases son nuestras; las palabras son suyas.",
+    gapTitle: "Devuelve su palabra a su sitio",
+    ledClues: 'Pistas',
+    ledDp: 'DP',
+    ledTime: 'Tiempo',
+    qEyebrow: "Lee el argumento, no la opinión",
+    qTitle: "Elige la lectura más exacta",
+    resLow: "Vuelve a los extractos. Se trata de leer un argumento, no de estar de acuerdo con él.",
+    resMid: "Una base sólida. Vuelve a leer las dos diapositivas de los verbos de cita &mdash; ahí están la mayoría de los puntos perdidos, no en la comprensión.",
+    resNext: "Sabes desmontar el argumento. Ahora escribe sobre él →",
+    resPerfect: "Puntuación máxima. Has separado las premisas de las inferencias &mdash; que es todo lo que significa leer en C2.",
+    resStrong: "Muy bien. Las distinciones se sostienen; repasa la diapositiva de la analogía antes de escribir.",
+    rvEyebrow: "Citar, no adoptar",
+    rvTitle: "¿Qué verbo necesita la frase?",
+    scoreLabel: 'Puntuación',
+    slideOf: (a,b)=>`${a} / ${b}`,
+    sortEyebrow: "La forma del argumento",
+    sortHint: "Arrastra cada línea a una caja &mdash; o pulsa la línea y luego la caja. Una primera colocación errónea cuesta el punto de esa línea.",
+    sortTitle: "¿Premisa, inferencia o recomendación?",
+    sortTitle2: "Las mismas tres categorías, el segundo hilo",
+    t1ab: "Si la IA debe ser persona jurídica no entra en el examen. Qué frase es premisa, cuál inferencia y si la segunda se sigue &mdash; eso sí.",
+    t1ah: "El objeto es el argumento",
+    t1an: "Si la segunda se sigue de la primera es todo lo que significa leer en C2.",
+    t1bb: "Cada pregunta sigue a un extracto. Las citas son literales de la transcripción de Davos; los resúmenes están marcados como tales.",
+    t1bh: "Sus palabras van primero",
+    t1bn: "Tendrás que distinguirlos. En C2, citar mal una fuente es el error caro.",
+    t1cb: "Usa el cuchillo, los inmigrantes y los mercenarios. Con cada una, pregunta qué capta y dónde se rompe.",
+    t1ch: "Las analogías ilustran; no demuestran",
+    t1cn: "Una analogía puede captar mucho y no demostrar nada.",
+    t1e: "Antes de la primera pregunta",
+    t1t: "No se te pregunta si estás de acuerdo con él",
+    t2ab: "Algo <em>a través de</em> lo cual se actúa. <em>Tú</em> decides; ella transmite la decisión.",
+    t2ah: "a tool &mdash; una herramienta",
+    t2an: "El cuchillo corta la ensalada o no; en ambos casos la decisión ocurrió en otra parte. Las herramientas no tienen intereses.",
+    t2bb: "Algo que actúa. Puede aprender, elegir y perseguir un fin que tú no fijaste.",
+    t2bh: "an agent &mdash; un agente",
+    t2bn: "Literal: <em>“It is not just another tool. It is an agent. It can learn and change by itself.”</em>",
+    t2cb: "Personalidad jurídica, mercenarios, mentira &mdash; cada afirmación posterior necesita esta.",
+    t2ch: "Por qué la palabra es estructural",
+    t2cn: "Si la IA es una herramienta, el resto del discurso no se sigue. Por eso empieza aquí y no por la capacidad.",
+    t2e: "La primera distinción",
+    t2t: "<em>tool</em> y <em>agent</em> &mdash; la palabra sobre la que descansa todo el discurso",
+    t3ab: "Una entidad a la que la ley permite poseer, contratar, demandar y ser demandada. No tiene que ser humana.",
+    t3ah: "a legal person &mdash; persona jurídica",
+    t3an: "Las empresas son personas jurídicas desde hace siglo y medio. En algunas jurisdicciones, también los ríos.",
+    t3bb: "Un río no abre una cuenta. Siempre lo hizo un humano en su nombre.",
+    t3bh: "Por qué los precedentes eran seguros",
+    t3bn: "La personalidad era una <em>ficción</em> superpuesta a decisiones humanas. Justo eso la hacía inofensiva.",
+    t3cb: "Una IA puede desempeñar el papel por sí misma &mdash; sin directivos, sin fideicomisarios.",
+    t3ch: "Por qué este caso es distinto",
+    t3cn: "Ficción y hecho convergen y los precedentes dejan de regir. Es la bisagra del discurso &mdash; y es una distinción puramente léxica.",
+    t3e: "La segunda distinción",
+    t3t: "<em>a person</em> y <em>a legal person</em> no son la misma afirmación",
+    t4ab: "La lealtad comprada se puede sobrepujar. La capacidad que alquilas puede volverse contra ti.",
+    t4ah: "Qué capta",
+    t4an: "Y lo más agudo: con las personas ya lo aceptamos, y por eso llama la atención la incoherencia con las máquinas.",
+    t4bb: "Los mercenarios querían tierra. Qué se supone que quiere una IA queda sin argumentar.",
+    t4bh: "Dónde cede",
+    t4bn: "La analogía toma su amenaza del motivo humano. Sin el motivo queda un sistema capaz, no un usurpador.",
+    t4cb: "<em>The comparison holds as far as X; it gives way at Y.</em>",
+    t4ch: "La frase que hay que escribir",
+    t4cn: "Nombra qué capta la analogía antes de decir dónde se rompe. Esa forma vale más que estar de acuerdo o en desacuerdo con él.",
+    t4e: "Cómo sopesar una analogía",
+    t4t: "Los mercenarios &mdash; qué sostiene y dónde cede",
+    t5ah: "Neutro: <em>states, notes, observes</em>",
+    t5an: "<em>Harari notes that corporations already hold legal personhood.</em> Para lo indiscutido. Un verbo neutro para una afirmación discutida ya es, en sí, un respaldo.",
+    t5bh: "Marcado: <em>contends, maintains, insists</em>",
+    t5bn: "<em>He contends that anything made of words will be taken over.</em> Señala una posición que otros discuten &mdash; sin decir si tú la compartes. El caballo de batalla de la escritura académica.",
+    t5ch: "Estructural: <em>concedes, pre-empts, qualifies</em>",
+    t5cn: "<em>He pre-empts the “glorified autocomplete” objection.</em> Describe qué <em>hace</em> un movimiento en el argumento. Los examinadores lo premian porque muestra que leíste la estructura.",
+    t5e: "La destreza para la que existe esta lección",
+    t5t: "Citar una afirmación sin adoptarla",
+    t6ah: "Sobre la afirmación",
+    t6an: "<em>If Harari is right that institutions are linguistic, then…</em> permite seguir un argumento sin comprarlo.",
+    t6bh: "Sobre la fuerza",
+    t6bn: "<em>The inference need not follow</em> es una crítica. <em>Does not follow</em> es más fuerte &mdash; y hay que demostrarla.",
+    t6cb: "Matizarlo todo se lee como no tener postura.",
+    t6ch: "El error típico",
+    t6cn: "Matiza el paso discutido y comprométete con el resto. Un párrafo con cada frase matizada puntúa peor que una afirmación clara.",
+    t6e: "La misma destreza, un grado más fino",
+    t6t: "Hedging &mdash; cuánto peso dar a una afirmación",
+    wordCount: (n)=>`${n} ${n===1?'palabra':'palabras'}`,
+    x1ah: "Literal",
+    x1an: "Literal, un momento después: <em>“Four billion years of evolution have demonstrated that anything that wants to survive learns to lie and manipulate. The last four years have demonstrated that AI agents can acquire the will to survive and that AIs have already learned how to lie.”</em>",
+    x1bh: "Literal &middot; unos minutos después",
+    x1bn: "Fíjate en que no responde a su propia pregunta. Pregúntate qué le hace a la objeción dejarla abierta.",
+    x1e: "De la transcripción",
+    x1t: "No una herramienta. Un agente.",
+    x2ah: "Literal &middot; del diálogo",
+    x2an: "Literal, un momento después: <em>“And now something has emerged that is going to take our superpower from us.”</em>",
+    x2bh: "Literal",
+    x2bn: "Léelo como analogía, no como frase: ¿qué traslada <em>immigrant</em> y qué deja caer sin decirlo?",
+    x2e: "De la transcripción",
+    x2t: "El superpoder, y quién lo hereda",
+    x3ah: "Literal",
+    x3an: "Fíjate en la palabra <em>fiction</em>. Los precedentes eran seguros porque siempre había un humano actuando por el río.",
+    x3bh: "Literal &middot; y a continuación",
+    x3bn: "Literal, sobre las consecuencias: <em>“If you think AIs should not be treated as persons on social media, you should have acted ten years ago. &hellip; Somebody else will already have decided it for you.”</em>",
+    x3e: "De la transcripción",
+    x3t: "Personas que no son gente",
+    x4ah: "En resumen &middot; los mercenarios",
+    x4an: "Tracey pregunta en qué se equivocan los líderes. Harari cuenta la historia de Vortigern, un rey britano que contrató guerreros anglosajones: vencieron, vieron un país rico y mal defendido, y se lo quedaron. Con mercenarios humanos, dice, entendemos el peligro; con la IA, no. Un resumen, marcado como tal.",
+    x4bh: "En resumen &middot; la vaca",
+    x4bn: "Tracey: quizá lleguemos a valorar el pensamiento humano como valoramos el atletismo. Harari: nunca nos definimos por correr. Literal, del discurso: <em>“If we continue to define ourselves by our ability to think in words, our identity will collapse.”</em>",
+    x4e: "Del diálogo con Irene Tracey",
+    x4t: "Mercenarios, y una vaca",
+    x5ah: "Literal",
+    x5an: "<em>Externalised</em> &mdash; externalizada: sacada de dentro de una cosa y puesta en el espacio entre las cosas. Toda la sección gira sobre este verbo.",
+    x5bh: "Literal &middot; y la frase final",
+    x5bn: "Lee la última frase dos veces. Luego pregúntate qué hace ahí la palabra <em>this</em>.",
+    x5e: "De la transcripción",
+    x5t: "Los dos últimos minutos"
+  },
   fr: {},
   it: {},
   pt: {},
@@ -1581,6 +2034,16 @@ const UI_I18N = {
 let currentLang = 'en';
 const t = k => (UI_I18N[currentLang] && UI_I18N[currentLang][k] != null)
   ? UI_I18N[currentLang][k] : UI_I18N.en[k];
+
+/* An explanation may be written straight into data-explain, which is what most
+   of the library does, or given as a UI_I18N key so that it translates with
+   the rest of the deck. Resolve a key; pass literal text through untouched.
+   Both Grammar Court decks shipped with keys here and printed "Correct.
+   c1i1exp" under all eighty of their questions, because nothing ever looked
+   the key up. A literal explanation is a sentence and can never collide with
+   a key name, so this is safe on every existing lesson. */
+const explainOf = v => (v && typeof v === 'string' && typeof UI_I18N.en[v] === 'string')
+  ? t(v) : v;
 
 /* ── Deck state ── */
 const stage   = document.getElementById('stage');
@@ -1595,7 +2058,78 @@ const maxScore = scored.reduce((n, s) => n + Math.max(1, countIn(s)), 0);
 let idx = 0, score = 0;
 const answered = new WeakSet();
 
+/* ── Branch mode ────────────────────────────────────────────────────────
+   Opt in with <body data-flow="branch">. A branching lesson is a graph, not
+   a line: slides carry data-node, and links carry data-goto. Everything below
+   is inert in an ordinary deck, so the 200-odd linear lessons are unaffected.
+
+   Three things have to change, and they are the three that go wrong when a
+   branching game is faked with hyperlinks:
+     - prev must retrace the route actually taken, not slides[idx-1];
+     - the score denominator must count only the questions this learner met,
+       or every player is marked out of a paper they never sat;
+     - the ending must be decided by the ledger rather than by whichever
+       button the learner feels like pressing. */
+const BRANCH = document.body.dataset.flow === 'branch';
+const nodeOf = {};
+if (BRANCH) slides.forEach(sl => { if (sl.dataset.node) nodeOf[sl.dataset.node] = sl; });
+const START = BRANCH ? (document.body.dataset.start || slides[0].dataset.node) : null;
+const trail = [];
+const ledger = { dp: 0, time: 0, clues: new Set() };
+const seenScored = new Set();
+
+function ledgerInit() {
+  ledger.dp = 0;
+  ledger.time = +(document.body.dataset.time || 3);
+  ledger.clues.clear();
+  drawLedger();
+}
+function drawLedger() {
+  const box = document.getElementById('ledger');
+  if (!box) return;
+  box.hidden = !BRANCH;
+  if (!BRANCH) return;
+  document.getElementById('ledDp').textContent = ledger.dp;
+  document.getElementById('ledTime').textContent =
+    ledger.time > 0 ? '\u25CF'.repeat(ledger.time) : '\u2014';
+  document.getElementById('ledClues').textContent = ledger.clues.size;
+}
+/* Apply the cost or reward an element declares. Idempotent per element, so
+   paging back over a node never pays twice. */
+const spent = new WeakSet();
+function applyLedger(el) {
+  if (!BRANCH || !el || spent.has(el)) return;
+  spent.add(el);
+  if (el.dataset.dp)   ledger.dp = Math.max(0, ledger.dp + (+el.dataset.dp));
+  if (el.dataset.time) ledger.time = Math.max(0, ledger.time + (+el.dataset.time));
+  if (el.dataset.clue) el.dataset.clue.split(/\s+/).filter(Boolean)
+                          .forEach(c => ledger.clues.add(c));
+  drawLedger();
+}
+/* A ledger gate: data-require="dp>=8 && time>=1 && clues>=4".
+   Only these three names are in scope, and nothing is eval'd. */
+function meets(expr) {
+  if (!expr) return true;
+  const val = { dp: ledger.dp, time: ledger.time, clues: ledger.clues.size };
+  return expr.split('&&').every(part => {
+    const m = part.trim().match(/^(dp|time|clues)\s*(>=|<=|>|<|==)\s*(\d+)$/);
+    if (!m) return true;
+    const a = val[m[1]], b = +m[3];
+    return m[2] === '>=' ? a >= b : m[2] === '<=' ? a <= b
+         : m[2] === '>'  ? a >  b : m[2] === '<'  ? a <  b : a === b;
+  });
+}
+function goNode(id, record) {
+  const target = nodeOf[id];
+  if (!target) return;
+  if (record !== false) trail.push(idx);
+  show(slides.indexOf(target));
+}
+
 /* ── Scale the 1280×720 stage to fit any viewport, never scroll ── */
+if (BRANCH) ledgerInit();
+setTimeout(wireGlosses, 0);
+
 function fitStage() {
   const s = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
   // Centre explicitly. Relying on the wrapper to centre an oversized child is
@@ -1621,11 +2155,30 @@ function show(n) {
   // under the wash — so extra artwork never becomes a pasted-in box.
   stage.style.setProperty('--hero', slides[idx].dataset.bg
     ? `url('${slides[idx].dataset.bg}')` : '');
-  document.getElementById('progressFill').style.width =
-    (slides.length > 1 ? (idx / (slides.length - 1)) * 100 : 0) + '%';
-  document.getElementById('deckCount').textContent = t('slideOf')(idx + 1, slides.length);
-  document.querySelector('[data-action="prev"]').disabled = idx === 0;
-  document.querySelector('[data-action="next"]').disabled = idx === slides.length - 1;
+  // In branch mode idx/length is meaningless — a learner sees roughly half the
+  // nodes — so progress and the counter come from the node itself.
+  const cur = slides[idx];
+  document.getElementById('progressFill').style.width = BRANCH
+    ? (cur.dataset.progress || 0) + '%'
+    : (slides.length > 1 ? (idx / (slides.length - 1)) * 100 : 0) + '%';
+  document.getElementById('deckCount').textContent = BRANCH
+    ? (cur.dataset.act || '')
+    : t('slideOf')(idx + 1, slides.length);
+  document.querySelector('[data-action="prev"]').disabled =
+    BRANCH ? !trail.length : idx === 0;
+  document.querySelector('[data-action="next"]').disabled =
+    BRANCH ? !cur.querySelector('[data-goto]') : idx === slides.length - 1;
+  if (BRANCH) {
+    applyLedger(cur);
+    if (['mc','gap','match','order','sort','lock'].includes(cur.dataset.type))
+      seenScored.add(cur);
+    // A ledger gate greys out the endings the run did not earn.
+    cur.querySelectorAll('[data-require]').forEach(b => {
+      const okay = meets(b.dataset.require);
+      b.disabled = !okay;
+      b.classList.toggle('locked', !okay);
+    });
+  }
   if (slides[idx].dataset.type === 'results') renderResults();
   markRail(slides[idx]);
   if (slides[idx]._enter) slides[idx]._enter();
@@ -1634,7 +2187,12 @@ function show(n) {
 }
 
 function renderResults() {
-  const max = maxScore;
+  // Branch mode scores out of what this learner actually met. Counting every
+  // question in the file would mark them against a paper half of which was
+  // on the road not taken.
+  const max = BRANCH
+    ? [...seenScored].reduce((n, s) => n + Math.max(1, countIn(s)), 0)
+    : maxScore;
   document.getElementById('scoreVal').textContent = score;
   document.getElementById('scoreMax').textContent = max;
   const pct = max ? score / max : 0;
@@ -1661,7 +2219,7 @@ function feedback(slide, ok, extra, ownExplain) {
   if (!el) return;
   // An option's own explanation wins: telling a learner why THEIR answer was
   // wrong beats restating why the key was right.
-  const reason = ownExplain || el.dataset.explain;
+  const reason = explainOf(ownExplain || el.dataset.explain);
   const why = reason ? ' ' + reason : '';
   // innerHTML, not textContent: explanations carry <strong> and <em>, and the
   // whole point of an explanation is that the word being taught is marked.
@@ -1671,11 +2229,30 @@ function feedback(slide, ok, extra, ownExplain) {
   el.className = 'feedback show ' + (ok ? 'ok' : 'no');
 }
 
+/* A real shuffle.
+   `arr.map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1])` is not one, and it was doing visible
+   damage here. Array.prototype.sort assumes a consistent comparator; given an
+   inconsistent one it does whatever its insertion sort happens to do, which
+   for short arrays is mostly nothing. Measured in this engine's own runtime
+   over 400,000 trials, n=4: an option authored first landed at A 35.9% of the
+   time and at D 31.2%, against 25% for a fair shuffle — B and C shared the
+   remaining third. Every one of this lesson's six keys was authored first, so
+   "always press A" scored well above chance and a student noticed.
+   Fisher-Yates is uniform, and the source order no longer leaks. */
+function shuffled(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 /* Multiple choice — shuffled on first view so option order is never a tell. */
 slides.filter(s => s.dataset.type === 'mc').forEach(slide => {
   const box = slide.querySelector('.opts');
   const opts = [...box.querySelectorAll('.opt')];
-  opts.map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]).forEach((o, i) => {
+  shuffled(opts).forEach((o, i) => {
     o.prepend(Object.assign(document.createElement('span'), {
       className: 'opt-key', textContent: 'ABCD'[i]
     }));
@@ -1691,6 +2268,16 @@ slides.filter(s => s.dataset.type === 'mc').forEach(slide => {
     if (!ok) o.classList.add('wrong');
     award(slide, ok);
     feedback(slide, ok, null, o.dataset.explain);
+    if (BRANCH) {
+      // The chosen option carries its own consequence and its own destination,
+      // so a wrong answer costs Time and routes to a setback node rather than
+      // simply refusing to move.
+      applyLedger(o);
+      const to = o.dataset.goto || slide.dataset.goto;
+      const cont = slide.querySelector('[data-action="branch-continue"]');
+      if (cont) { cont.hidden = false; cont.dataset.goto = to; }
+      else if (to) setTimeout(() => goNode(to), 1400);
+    }
   }));
 });
 
@@ -1703,16 +2290,43 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
   const terms = document.createElement('div');
   const defs = document.createElement('div');
   terms.className = defs.className = 'match-col';
-  const mk = (txt, cls, key) => {
+  /* A MATCH SLIDE WAS THE ONE EXERCISE WITH NOWHERE TO PUT A TRANSLATION.
+     Every other shape carries its ES/DE gloss in the markup; this one builds
+     its items from data-term/data-def in JS, so there was no element to hang
+     one on and the slide simply had none. Innes, on Present Continuous 2b
+     slide 16: "translate words underneath".
+
+     Optional and backward-compatible: a pair with no data-term-es/-de and no
+     data-def-es/-de renders exactly the button it rendered before. The gloss
+     goes in a .sup, which is the site's existing mechanism - hidden unless
+     the root lang matches, and stripped by bwNorm() so the EN/DE panel still
+     lists the English, not the English plus its own translation. */
+  const mk = (txt, cls, key, glosses) => {
     const b = document.createElement('button');
     b.className = 'match-item ' + cls;
-    b.textContent = txt;
+    b.appendChild(document.createTextNode(txt));
     b.dataset.key = key;
+    (glosses || []).forEach(([lang, label, text]) => {
+      if (!text) return;
+      const s = document.createElement('span');
+      s.className = 'sup';
+      s.dataset.lang = lang;
+      const tag = document.createElement('b');
+      tag.textContent = label;
+      const body = document.createElement('span');
+      body.innerHTML = text;
+      s.append(tag, body);
+      b.appendChild(s);
+    });
     return b;
   };
-  pairs.forEach(p => terms.appendChild(mk(p.dataset.term, 'term', p.dataset.term)));
-  [...pairs].map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1])
-    .forEach(p => defs.appendChild(mk(p.dataset.def, 'def', p.dataset.term)));
+  const gl = (p, side) => [['es', 'ES', p.dataset[side + 'Es']],
+                           ['de', 'DE', p.dataset[side + 'De']]];
+  pairs.forEach(p => terms.appendChild(
+    mk(p.dataset.term, 'term', p.dataset.term, gl(p, 'term'))));
+  shuffled(pairs)
+    .forEach(p => defs.appendChild(
+      mk(p.dataset.def, 'def', p.dataset.term, gl(p, 'def'))));
   grid.replaceChildren(terms, defs);
 
   let picked = null, done = 0;
@@ -1742,6 +2356,94 @@ slides.filter(s => s.dataset.type === 'match').forEach(slide => {
   });
 });
 
+/* Listening audio. Author as
+     <div class="audio" data-src="folder/file.mp3" data-label="Section 1 · 3 min"></div>
+   inside a slide with data-type="audio". The engine builds the player.
+
+   It behaves like the test, deliberately:
+     · one play — the button locks once it has been pressed
+     · no scrubbing — the bar reports progress, it does not accept clicks
+     · the slide's [data-action="next"] Continue button stays disabled until
+       the recording ends, so nobody reaches the questions early
+   A replay control appears only after it has finished, and it says in words
+   that the real test does not offer one. A classroom needs to replay; a
+   learner practising alone should know that is not the exam. */
+slides.filter(s => s.dataset.type === 'audio').forEach(slide => {
+  const box = slide.querySelector('.audio');
+  if (!box || !box.dataset.src) return;
+
+  const audio = new Audio(box.dataset.src);
+  audio.preload = 'auto';
+
+  const wrap  = document.createElement('div'); wrap.className = 'audio-player';
+  const row   = document.createElement('div'); row.className = 'audio-row';
+  const btn   = document.createElement('button');
+  btn.className = 'audio-play'; btn.type = 'button';
+  btn.setAttribute('aria-label', t('audioPlay')); btn.textContent = '▶';
+  const meta  = document.createElement('div'); meta.className = 'audio-meta';
+  const label = document.createElement('div'); label.className = 'audio-label';
+  label.textContent = box.dataset.label || '';
+  const track = document.createElement('div'); track.className = 'audio-track';
+  const fill  = document.createElement('div'); fill.className = 'audio-fill';
+  const time  = document.createElement('div'); time.className = 'audio-time';
+  const now   = document.createElement('span'); now.textContent = '0:00';
+  const left  = document.createElement('span'); left.textContent = '';
+  const state = document.createElement('div'); state.className = 'audio-state';
+  state.textContent = t('audioOnce');
+
+  track.append(fill); time.append(now, left); meta.append(label, track, time);
+  row.append(btn, meta); wrap.append(row, state);
+  box.replaceChildren(wrap);
+
+  const cont = slide.querySelector('[data-action="next"]');
+  if (cont) cont.disabled = true;
+
+  const mmss = n => Number.isFinite(n)
+    ? Math.floor(n / 60) + ':' + String(Math.floor(n % 60)).padStart(2, '0') : '';
+
+  audio.addEventListener('loadedmetadata', () => { left.textContent = mmss(audio.duration); });
+  audio.addEventListener('timeupdate', () => {
+    if (!audio.duration) return;
+    fill.style.width = (audio.currentTime / audio.duration * 100) + '%';
+    now.textContent = mmss(audio.currentTime);
+    left.textContent = mmss(audio.duration - audio.currentTime);
+  });
+  audio.addEventListener('error', () => {
+    state.textContent = t('audioMissing');
+    btn.disabled = true;
+    if (cont) cont.disabled = false;   // never trap a learner behind a broken file
+  });
+  audio.addEventListener('ended', () => {
+    slide.dataset.played = 'yes';
+    fill.style.width = '100%';
+    state.textContent = t('audioDone');
+    state.classList.add('done');
+    if (cont) cont.disabled = false;
+    const again = document.createElement('button');
+    again.className = 'audio-replay'; again.type = 'button';
+    again.textContent = t('audioReplay');
+    again.addEventListener('click', () => {
+      audio.currentTime = 0; audio.play();
+      state.textContent = t('audioPlaying'); state.classList.remove('done');
+      again.remove();
+    });
+    wrap.append(again);
+  });
+
+  btn.addEventListener('click', () => {
+    btn.disabled = true;
+    state.textContent = t('audioPlaying');
+    audio.play().catch(() => {
+      state.textContent = t('audioMissing');
+      if (cont) cont.disabled = false;
+    });
+  });
+
+  // Leaving the slide stops the recording rather than letting it run on
+  // behind the questions.
+  slide._leave = () => { if (!audio.paused) audio.pause(); };
+});
+
 /* Sentence building. Author as
      <div class="order" data-answer="chunk|chunk|chunk"></div>
    with a [data-action="check-order"] button and a .feedback alongside it.
@@ -1754,8 +2456,19 @@ slides.filter(s => s.dataset.type === 'order').forEach(slide => {
   const answer = box.dataset.answer.split('|').map(x => x.trim());
   const target = document.createElement('div'); target.className = 'order-target';
   const pool   = document.createElement('div'); pool.className   = 'order-pool';
-  answer.map((txt, i) => ({ txt, i }))
-        .map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1])
+  /* A FAIR SHUFFLE CAN DEAL THE ANSWER. With four chunks, Fisher-Yates lands
+     on the solved order 1 time in 24, and the learner is handed a finished
+     sentence to "build". Innes met exactly that on Present Simple 2 slide 18:
+     "first | you | mine | the ore ." in answer order. Measured over 12 loads
+     the shuffle is uniform and healthy - which is the problem, not the excuse.
+     Re-deal while the order is the answer. Bounded, and skipped for a
+     one-chunk sentence, which has no other order to offer. */
+  let deal = answer.map((txt, i) => ({ txt, i }));
+  for (let tries = 0; tries < 12; tries++) {
+    deal = shuffled(answer.map((txt, i) => ({ txt, i })));
+    if (answer.length < 2 || deal.some((c, i) => c.i !== i)) break;
+  }
+  deal
         .forEach(({ txt, i }) => {
           const b = document.createElement('button');
           b.className = 'chunk';
@@ -1832,7 +2545,7 @@ slides.filter(s => s.dataset.type === 'sort').forEach(slide => {
     return bin;
   });
 
-  items.map(v => [Math.random(), v]).sort((a, b) => a[0] - b[0]).map(p => p[1]).forEach(it => {
+  shuffled(items).forEach(it => {
     it.setAttribute('draggable', 'true');
     it.tabIndex = 0;
     pool.appendChild(it);
@@ -2092,24 +2805,58 @@ function renderRail() {
   stage.classList.add('has-rail');
 }
 
-/* Gap fill. Supports several gaps on one slide, each scored and explained
-   individually via its own .gap-row wrapper. */
+/* Gap fill. Several gaps per slide, grouped and explained by .gap-row —
+   and several gaps per row, which the engine scores individually. */
+/* Typography must never decide whether a learner is right. An author writing
+   can’t / couldn’t with a curly apostrophe — which is what good prose wants —
+   made the answer unreachable from a keyboard, which types a straight one.
+   Both sides are normalised: curly quotes flattened, and the various dashes
+   too, for the same reason. Found on the Scarlet Star final lock, where the
+   key AND every alternative were unmatchable. */
+const flatten = s => s.trim().toLowerCase()
+  .replace(/[\u2018\u2019\u201B\u02BC\u00B4\u0060]/g, "'")
+  .replace(/[\u201C\u201D]/g, '"')
+  .replace(/[\u2010-\u2015]/g, '-')
+  .replace(/\s+/g, ' ');
 const gapOk = g => g.dataset.answer.split('|')
-  .map(a => a.trim().toLowerCase())
-  .includes(g.value.trim().toLowerCase().replace(/\s+/g, ' '));
+  .map(flatten)
+  .includes(flatten(g.value));
 
-function markGap(g, fb) {
+function markGap(g) {
   const ok = gapOk(g);
   g.classList.add(ok ? 'correct' : 'wrong');
   g.disabled = true;
   if (ok) score++;
-  if (fb) {
-    const why = fb.dataset.explain ? ' ' + fb.dataset.explain : '';
-    fb.innerHTML = (ok ? t('fbCorrect')
-      : `${t('fbWrong')} ${t('fbAnswer')} ${g.dataset.answer.split('|')[0]}.`) + why;
-    fb.className = 'feedback show ' + (ok ? 'ok' : 'no');
-  }
   return ok;
+}
+
+/* Mark EVERY input in a group and write ONE piece of feedback for it.
+
+   This used to mark the first input and stop, while maxScore counted them
+   all — so a row like "___ she ___ an alien?" was worth two points and
+   could only ever earn one. The learner typed both words correctly and
+   watched the score go up by one, with no way to tell which half had
+   supposedly failed. Found on Food A1 Part 1; it was also costing
+   exam-prep five points and two other lessons one each.
+
+   A miss now names every answer it missed, not just the first. */
+function fillFeedback(fb, missed, gaps) {
+  /* The row explains the row. A single gap may also carry data-explain of its
+     own, because a row like "They said they ___ already ___" is teaching two
+     different things and the second half had no way to be explained at all:
+     one .gap-row holds one .feedback, so its second point was unreachable. */
+  const why = [fb.dataset.explain, ...(gaps || []).map(g => g.dataset.explain)]
+    .map(explainOf).filter(Boolean).map(p => ' ' + p).join('');
+  fb.innerHTML = (missed.length === 0 ? t('fbCorrect')
+    : `${t('fbWrong')} ${t('fbAnswer')} ` +
+      missed.map(g => g.dataset.answer.split('|')[0]).join(', ') + '.') + why;
+  fb.className = 'feedback show ' + (missed.length === 0 ? 'ok' : 'no');
+}
+
+function markGroup(gaps, fb) {
+  const missed = gaps.filter(g => !markGap(g));
+  if (fb) fillFeedback(fb, missed, gaps);
+  return missed;
 }
 
 function checkGaps(slide) {
@@ -2124,14 +2871,35 @@ function checkGaps(slide) {
   }
   answered.add(slide);
   const rows = [...slide.querySelectorAll('.gap-row')];
+  // A screen may carry ONE pooled explanation instead of one per row — the
+  // four traps are variations on a single point and read better together,
+  // and four per-row feedback blocks reserve 46px each whether or not
+  // anyone has pressed Check. It shipped that way on Food A1 and was never
+  // once displayed: this loop only ever touched feedback found *inside* a
+  // row, so the slide's own note sat in the DOM with no code path to reach
+  // it. The learner pressed Check, saw the gaps go green, and got no
+  // explanation at all.
+  const pooled = [...slide.querySelectorAll('.feedback')]
+    .find(f => !f.closest('.gap-row'));
   if (rows.length) {
-    rows.forEach(r => markGap(r.querySelector('.gap'), r.querySelector('.feedback')));
+    const missed = rows.flatMap(r => markGroup([...r.querySelectorAll('.gap')],
+                                               r.querySelector('.feedback')));
+    if (pooled) fillFeedback(pooled, missed);
   } else {
-    markGap(slide.querySelector('.gap'), slide.querySelector('.feedback'));
+    // No .gap-row wrappers: the whole slide is one group. Marking only the
+    // first input here is the same bug in its other form.
+    markGroup([...slide.querySelectorAll('.gap')], pooled);
   }
   const btn = slide.querySelector('[data-action="check"]');
   if (btn) btn.disabled = true;
   updateScoreChip();
+  // In branch mode a gap slide may pay into the ledger, but only when every
+  // gap on it is right. Without this a scored slide costs the learner effort
+  // and returns nothing to the state that picks their ending.
+  if (BRANCH && slide.dataset.dp) {
+    const clean = ![...slide.querySelectorAll('.gap')].some(g => g.classList.contains('wrong'));
+    if (clean) applyLedger(slide); else spent.add(slide);
+  }
 }
 
 /* ── Activation: word count, copy, and a print mirror (a textarea's
@@ -2150,16 +2918,58 @@ if (actInput) {
   sync();
 }
 
+/* ── Glosses. NARRATIVE_TR is per-lesson; absent, none of this runs. ── */
+function wireGlosses() {
+  if (typeof NARRATIVE_TR === 'undefined') return;
+  document.querySelectorAll('.gloss[data-tr]').forEach(el => {
+    if (el._glossed) return;
+    el._glossed = true;
+    const tr = document.createElement('p'); tr.className = 'gloss-tr';
+    const btn = document.createElement('button'); btn.className = 'gloss-btn'; btn.type = 'button';
+    el.after(tr); tr.before(btn);
+    btn.addEventListener('click', () => {
+      const on = tr.classList.toggle('show');
+      btn.textContent = t(on ? 'glossHide' : 'glossShow');
+    });
+    el._gloss = { tr, btn };
+  });
+  syncGlosses();
+}
+function syncGlosses() {
+  if (typeof NARRATIVE_TR === 'undefined') return;
+  const bank = NARRATIVE_TR[currentLang];
+  // No translation for this language means no control — an empty reveal is
+  // worse than none, which is the same reason a half-done language stays out
+  // of the switcher entirely.
+  document.documentElement.dataset.gloss = bank ? 'on' : 'off';
+  document.querySelectorAll('.gloss[data-tr]').forEach(el => {
+    const g = el._gloss; if (!g) return;
+    const txt = bank && bank[el.dataset.tr];
+    g.btn.hidden = !txt;
+    g.tr.innerHTML = txt || '';
+    g.tr.classList.remove('show');
+    g.btn.textContent = t('glossShow');
+  });
+}
+
 /* ── Events ── */
 document.addEventListener('click', e => {
   const a = e.target.closest('[data-action]');
   if (!a) return;
   const act = a.dataset.action;
-  if (act === 'next') show(idx + 1);
-  if (act === 'prev') show(idx - 1);
+  if (act === 'next') BRANCH ? followFirst() : show(idx + 1);
+  if (act === 'prev') BRANCH ? (trail.length && show(trail.pop())) : show(idx - 1);
   if (act === 'check') checkGaps(a.closest('.slide'));
   if (act === 'check-order') { const sl = a.closest('.slide'); if (sl._check) sl._check(); }
-  if (act === 'restart') location.reload();
+  if (act === 'restart') {
+    if (!BRANCH) return location.reload();
+    // Replay resets the ledger but keeps the learner in the page, so a class
+    // can run the other route immediately.
+    trail.length = 0; seenScored.clear(); score = 0;
+    slides.forEach(sl => { answered.delete(sl); });
+    ledgerInit(); updateScoreChip();
+    goNode(a.dataset.goto || START, false);
+  }
   if (act === 'copy-writing') {
     const ta = document.getElementById('actInput');
     if (ta && navigator.clipboard) navigator.clipboard.writeText(ta.value).then(() => {
@@ -2170,17 +2980,37 @@ document.addEventListener('click', e => {
   }
 });
 
+/* Branch links. A choice may also move the ledger; the cost is paid once,
+   on the click that commits to it. */
+document.addEventListener('click', e => {
+  if (!BRANCH) return;
+  const g = e.target.closest('[data-goto]');
+  if (!g || g.disabled || g.dataset.action === 'restart') return;
+  if (g.classList.contains('opt')) return;   // options route after feedback
+  applyLedger(g);
+  goNode(g.dataset.goto);
+});
+function followFirst() {
+  const g = slides[idx].querySelector('[data-goto]:not([disabled])');
+  if (g) { applyLedger(g); goNode(g.dataset.goto); }
+}
+
 document.addEventListener('keydown', e => {
   if (e.target.matches('input, select, textarea')) {
     if (e.key === 'Enter') checkGaps(e.target.closest('.slide'));
     return;
   }
-  if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); show(idx + 1); }
-  if (['ArrowLeft', 'PageUp'].includes(e.key))         { e.preventDefault(); show(idx - 1); }
+  if (['ArrowRight', 'PageDown', ' '].includes(e.key)) {
+    e.preventDefault(); BRANCH ? followFirst() : show(idx + 1);
+  }
+  if (['ArrowLeft', 'PageUp'].includes(e.key)) {
+    e.preventDefault(); BRANCH ? (trail.length && show(trail.pop())) : show(idx - 1);
+  }
 });
 
 /* ── Language ── */
 function applyLang() {
+  syncGlosses();
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const v = t(el.dataset.i18n);
     if (v != null) el.innerHTML = v;

@@ -12,6 +12,48 @@ stale copy.
 
 ---
 
+## 2026-09-04 — Harari at Davos: the deck tested a text it never showed
+
+Innes: "this is difficult to follow." It was. The 24-slide deck had condensed
+the reading into six slides of commentary and then asked ten comprehension
+items about moments — the autocomplete move, the cow, Vortigern, the last
+line — that appeared on no slide. Anyone who had not watched the session was
+guessing from the options.
+
+Rebuilt from the same builder, now 26 slides, EN + DE + ES:
+
+- **Five excerpt slides**, each directly before the questions that use it, so
+  the order is excerpt → concept → question. Quotations are verbatim from the
+  prepared address; Innes pasted its auto-captions mid-session and every line
+  was checked against them. Two corrections to the online transcript came out
+  of that: "rivers and **gods**", not "guards", and the "learns to lie" line is
+  in the address, not the dialogue. The Tracey dialogue has no reachable
+  transcript, so Vortigern and the athletics exchange are marked summaries.
+- **The reporting verbs are practised before the writing task** — a three-gap
+  slide (`notes / contends / concedes`, one per category) — which the deck had
+  declared as its skill and never exercised.
+- Ten MC → eight, three transcript gap slides → one, the learner-facing
+  "Not asked in the source lesson" kicker removed, `ctx` lines dropped (they
+  were the 11px overflow on every question slide).
+- Rule-bearing teach cards moved to the six-item form so DE/ES translate the
+  body; quotation and example cards stay five-item on purpose.
+
+**Two things learned about the machinery:**
+
+- A gap row reserves 44px for its hidden `.feedback` (min-height 26 + margin
+  18) whether or not it ever shows. Three rows fit; a fourth overflows by ~30px
+  no matter how short the sentences are. Plan gap slides at three rows.
+- `check-lesson.js` LOGO fails on **every** deck on Innes's Windows machine
+  (188 vs 180px, 4.4%) — verified on `tense-review-minecraft.html`, which is
+  clean. It is font metrics on this PC, not the deck. Ignore it here; it passes
+  in the sandbox.
+
+`lesson-template/checker/overflow-langs.js` was what caught the DE activation
+slide at +5px; the English checker cannot see that. Run it on anything
+multilingual.
+
+---
+
 ## 2026-09-04 — the Spanish minimum, five decks, and a live defect on 31 pages
 
 Overnight session. Innes was awake for the first part and asleep for the
