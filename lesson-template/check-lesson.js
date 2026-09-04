@@ -374,17 +374,29 @@ const DIM = s => `\x1b[2m${s}\x1b[0m`;
   });
   const badShuffle = /\.sort\(\(\)\s*=>\s*Math\.random\(\)/.test(src);
   // ── ENTITIES: strings that reach the page as text must not carry &...; ──
-  // Four UI_I18N keys are written with textContent, not innerHTML, so an
+  // Some UI_I18N keys are written with textContent, not innerHTML, so an
   // entity in them prints literally. The Portuguese score chip shipped on all
   // sixteen Block Camp decks as "PONTUA&CCEDIL;&ATILDE;O 0/29" this way.
+  //
+  // `actPlaceholder` is the same failure through a different door: it is
+  // applied to a `placeholder` attribute via data-i18n-ph, and an attribute
+  // set from JS never parses entities either. Nietzsche Part V shipped a draft
+  // with "the film&hellip;" sitting in the writing box; the builder passes the
+  // same string, so it also has to be checked in the page body below.
   head('ENTITIES');
-  const textKeys = ['scoreLabel', 'glossHide', 'glossShow', 'btnCopied'];
+  const textKeys = ['scoreLabel', 'glossHide', 'glossShow', 'btnCopied',
+                    'actPlaceholder'];
   const entityHits = [];
   for (const m of src.matchAll(/^\s{4}(\w+):\s*(["'])(.*?)\2,?\s*$/gm)) {
     if (textKeys.includes(m[1]) && /&[a-zA-Z#0-9]+;/.test(m[3])) entityHits.push(`${m[1]}: ${m[3]}`);
   }
+  // The authored placeholder="..." in the markup is what a learner sees before
+  // any language is chosen, so it is checked too.
+  for (const m of src.matchAll(/data-i18n-ph="[^"]*"\s+placeholder="([^"]*)"/g)) {
+    if (/&[a-zA-Z#0-9]+;/.test(m[1])) entityHits.push(`placeholder attribute: ${m[1]}`);
+  }
   if (!entityHits.length) ok('text-only UI strings carry no HTML entities');
-  else entityHits.forEach(h => bad(`${h} is set with textContent and will print the entity literally`));
+  else entityHits.forEach(h => bad(`${h} is set as text and will print the entity literally`));
 
   head('KEYS');
   let keysOk = true;
